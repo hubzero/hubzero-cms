@@ -8,7 +8,7 @@
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::editListX();
 	JToolBarHelper::help( 'screen.plugins' );
-
+	$ordering = ($this->lists['order'] == 'p.folder' || $this->lists['order'] == 'p.ordering');
 	$rows =& $this->items;
 
 ?>
@@ -47,8 +47,8 @@
 			<?php echo JHTML::_('grid.sort',   'Published', 'p.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 		</th>
 		<th width="8%" nowrap="nowrap">
-			<?php echo JHTML::_('grid.sort',   'Order', 'p.folder', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
-			<?php echo JHTML::_('grid.order',  $rows ); ?>
+			<?php echo JHTML::_('grid.sort',   'Order', 'p.ordering', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+			<?php if ($ordering) echo JHTML::_('grid.order',  $rows ); ?>
 		</th>
 		<th nowrap="nowrap" width="10%">
 			<?php echo JHTML::_('grid.sort',   'Access', 'groupname', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
@@ -83,7 +83,6 @@
 	$checked 	= JHTML::_('grid.checkedout',   $row, $i );
 	$published 	= JHTML::_('grid.published', $row, $i );
 
-	$ordering = ($this->lists['order'] == 'p.folder');
 ?>
 	<tr class="<?php echo "row$k"; ?>">
 		<td align="right">

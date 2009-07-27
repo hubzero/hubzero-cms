@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 11371 2008-12-30 01:31:50Z ian $
+* @version		$Id: CHANGELOG.php 11722 2009-03-27 21:56:05Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -37,7 +37,106 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
--------------------- 1.5.9 Stable Release [9-January-2008] ------------------
+-------------------- 1.5.10 Stable Release [27-March-2009] ------------------
+
+27-Mar-2009 Anthony Ferrara
+ # Fixed a few issues with the language install packs (double &lt; characters, and a missing file)
+
+27-Mar-2009 Wilco Jansen
+ - Removed mk-MK language pack in installer
+ + Added be-BY, et-EE, gu-IN, mn-MN and ur-PK language pack in installer
+ ^ Updated bg-BG installer language pack
+ ^ Updated CREDITS.php with translators information and other contributors
+ ^ Changed helpsite reference matching installation language file changes
+^! Moderate Priority: A series of XSS and CSRF faults exist in the administrator application. Affected administrator components include com_admin, com_media, com_search. Both com_admin and com_search contain XSS vulnerabilities, and com_media contains 2 CSRF vulnerabilities.
+^! Low Priority: A XSS vulnerability exists in the category view of com_content.
+ ^ Updated version tags in translation manifest files
+
+25-Mar-2009 Wilco Jansen
+ ^ Activated installation check and updated version files
+
+11-Mar-2009 Ian MacLennan
+ # [#14515] Atom feed does not validate
+
+9-Mar-2009 Wilco Jansen
+ # [#15215] Inconsistent prefix for index.php in com_user
+
+8-Mar-2009 Wilco Jansen
+ # [#15300] Missing translation in pagebreak plugin
+ # [#15107] Save order enabled and creating random results when active sorting column isn't ordering
+ # [#14818] filesystem file move doesn't return false when not read- or writable
+ # [#14827] Page break does not work correctly when tables are included in the page sections. The <div></div> pairs are uneven.
+ # [#15137] sef plugin does not convert data attribute
+ # [#9701]  Installation of Extensions fails when they include zip files
+ # [#15044] JArchiveZip::_extractNative() fails to discover zip_open() failure
+ # [#14525] pagebreak doesn't work correct if using JCE
+ # [#14558] Pagebreak Plugin Does Not Keep Track of Active Page
+ # [#14947] Status Module Icon RTL issue
+ # [#15266] Bad URL after redirect when Register to Read More in Section, Category Menu Items
+ # [#15362] Not valid XHTML output in com_content and com_contact
+ # [#15354] com_media loads css files from the backend
+ # [#15375] Missing language string
+ # [#15376] Login redirect no longer returns you to your current page if no redirect specified
+ # [#15233] Search doesn't work with international characters when SEF is enabled
+ # [#14514] parameter element id of type folderlist and filelist are not correct
+ # [#13285] Wrong tag-IDs used by openid.js
+ # [#12119] Changing the module's 'Position' drop-down doesn't change the 'Order' drop-down.
+ # [#15359] spambots are still able to see registration page even if registration is turned off
+ # [#14071] menu image alignment
+ # [#14875] JFolder::folders returns unnecessary warning
+ # [#14705] Web link Router incorrectly grabs wrong category item
+ # [#15143] Ampersand in Site Name breaks Position field in vCard
+ # [#14022] Faulty error handling in JFactory::getXMLParser
+ # [#14228] Article alias field missing from in category views
+ # [#14381] Incorrect checked out date format in the back-end
+ # [#15282] Undefined index HTTP_USER_AGENT in behavior.php
+ ! Big thanks to the Joomla Bug Squad for a weekend of hard work!
+
+1-Mar-2009 Ian MacLennan
+ # [#12137] Cache Saving module doesn't clear the module's cache data
+ # [#13111] Inconsistent encoding behaviour - "&amp;" stays as "&amp;" in articles but is converted to "&" in modules
+ # [#13999] When installing a new module, its title is not translated
+ # [#14059] Case sensitive image extensions
+ # [#14286] Template JA Purity: Link all the text in an article if category is shown
+ # [#14565] Omitted UTF-8 modifier in preg_replace function (com_search)
+ # [#14758] Article HTML filtering doesn't work if only one Filter group is selected
+ # [#14795] JInstallerComponent::_rollback_menu() - Error when getting DB Connector
+ # [#14859] untranslated message installing language files for component
+ # [#14896] Changes of menu items aren't applied immediately if caching is enabled
+ # [#14945] Site Title over Joomla's Logo RTL issue
+ # [#15006] Setting Tooltip Offset Breaks Tooltip
+ # [#15047] installer.php parseMedia pointing to wrong dir.
+ # [#15124] Filter Function on Archived Article Doesn't Work
+ # [#15217] custom <installfile> isn't upgraded on component installation
+ # [#15237] Loadposition Deletes Dollar signs
+ # [#14660] Short open tag in admin.categories.html.php
+
+19-Feb-2009 Wilco Jansen
+ # [#14004] Can't sort categories by "order" column in reverse order
+
+15-Feb-2009 Kevin Devine
+ # [#15007] Bad Tooltip Help on Section, Category, and Article Alias
+ # [#14710] User Details not translated
+ # [#14720] •Untranslated strings in com_contact with patch
+ # [#14944] Copy Menu Items
+ # [#11798] Missing l10n in JApplicationHelper::parseXMLInstallFile()
+
+07-Feb-2009 Kevin Devine
+ # [#14865] Directory Persmissions doesn't list correct tmp or log directories
+ # [#14767] Menu alias not respecting "active" setting
+ # [#14857] Cache Plugin Can Cache Incorrect Data]
+ # [#14948] Little tag error in mod_feed
+
+29-Jan-2009 Kevin Devine
+ # [#14510] Section List drill down to Category List: Filter doesn't work if global content filters set
+ # [#14491] JString::rtrim method incorrect
+ # [#14496] Pagebreak outputs incompatible <BR/> elements (XHTML)
+ # [#14571] Wrong date in "last updated" in section blog when using beez
+ # [#14468] user name word translation not correct in register form.
+ # [#14439] Wrong authorEmail in Rhuk Milkyway
+ # [#13973] SEF Background Image Fix Breaks Some Javascript ***
+
+-------------------- 1.5.9 Stable Release [9-January-2009] ------------------
 
 09-Jan-2009 Ian MacLennan
  # [#14495] Issue 14398 fix doesn't work with SEF off

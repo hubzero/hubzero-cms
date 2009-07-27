@@ -64,7 +64,16 @@
 				<?php echo $lists['feed_limit']; ?>
 			</td>
 		</tr>
-
+		<tr>
+			<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Feed Email' ); ?>::<?php echo JText::_( 'TIPFEEDEMAIL' ); ?>">
+			<?php echo JText::_( 'Feed Email' ); ?>
+			</span>
+			</td>
+			<td>
+				<?php echo $lists['feed_email']; ?>
+			</td>
+		</tr>
 	</tbody>
 	</table>
 </fieldset>

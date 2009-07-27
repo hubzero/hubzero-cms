@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10869 2008-08-30 07:24:03Z willebil $
+ * @version		$Id: controller.php 11676 2009-03-08 20:45:04Z willebil $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -40,7 +40,17 @@ class SearchController extends JController
 
 	function search()
 	{
-		$post['searchword'] = JRequest::getString('searchword', null, 'post');
+		// slashes cause errors, <> get stripped anyway later on. # causes problems.
+		$badchars = array('#','>','<','\\'); 
+		$searchword = trim(str_replace($badchars, '', JRequest::getString('searchword', null, 'post')));
+		// if searchword enclosed in double quotes, strip quotes and do exact match
+		if (substr($searchword,0,1) == '"' && substr($searchword, -1) == '"') { 
+			$post['searchword'] = substr($searchword,1,-1);
+			JRequest::setVar('searchphrase', 'exact');
+		}
+		else {
+			$post['searchword'] = $searchword;
+		}
 		$post['ordering']	= JRequest::getWord('ordering', null, 'post');
 		$post['searchphrase']	= JRequest::getWord('searchphrase', 'all', 'post');
 		$post['limit']  = JRequest::getInt('limit', null, 'post');
@@ -54,14 +64,21 @@ class SearchController extends JController
 			}
 		}
 
-		// set Itemid id for links
-		$menu = &JSite::getMenu();
-		$items	= $menu->getItems('link', 'index.php?option=com_search&view=search');
+		// No need to guess Itemid if it's already present in the URL
+		if (JRequest::getInt('Itemid') > 0) {
+			$post['Itemid'] = JRequest::getInt('Itemid');
+		} else {
 
-		if(isset($items[0])) {
-			$post['Itemid'] = $items[0]->id;
+			// set Itemid id for links
+			$menu = &JSite::getMenu();
+			$items	= $menu->getItems('link', 'index.php?option=com_search&view=search');
+
+			if(isset($items[0])) {
+				$post['Itemid'] = $items[0]->id;
+			}
+
 		}
-
+		
 		unset($post['task']);
 		unset($post['submit']);
 

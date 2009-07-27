@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <tr>
 	<td height="40">
 		<label id="usernamemsg" for="username">
-			<?php echo JText::_( 'Username' ); ?>:
+			<?php echo JText::_( 'User name' ); ?>:
 		</label>
 	</td>
 	<td>

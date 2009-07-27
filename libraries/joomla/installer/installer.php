@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: installer.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: installer.php 11646 2009-03-01 19:34:56Z ian $
  * @package		Joomla.Framework
  * @subpackage	Installer
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -775,7 +775,7 @@ class JInstaller extends JObject
 
 		/*
 		 * Here we set the folder we are going to copy the files to.
-		 * 	Default 'media' Files are copied to the JPATH_BASE/images folder
+		 * 	Default 'media' Files are copied to the JPATH_BASE/media folder
 		 */
 		$folder = ($element->attributes('destination')) ? DS.$element->attributes('destination') : null;
 		$destination = JPath::clean(JPATH_ROOT.DS.'media'.$folder);

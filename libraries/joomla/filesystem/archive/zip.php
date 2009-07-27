@@ -224,14 +224,14 @@ class JArchiveZip extends JObject
 	function _extractNative($archive, $destination, $options)
 	{
 		if ($zip = zip_open($archive)) {
-			if ($zip) {
+			if (is_resource($zip)) {
 				// Make sure the destination folder exists
 				if (!JFolder::create($destination)) {
 					$this->set('error.message', 'Unable to create destination');
 					return false;
 				}
 				// Read files in the archive
-				while ($file = zip_read($zip))
+				while ($file = @zip_read($zip))
 				{
 					if (zip_entry_open($zip, $file, "r")) {
 						if (substr(zip_entry_name($file), strlen(zip_entry_name($file)) - 1) != "/") {
@@ -247,7 +247,7 @@ class JArchiveZip extends JObject
 						return false;
 					}
 				}
-				zip_close($zip);
+				@zip_close($zip);
 			}
 		} else {
 			$this->set('error.message', 'Unable to open archive');
@@ -280,8 +280,22 @@ class JArchiveZip extends JObject
 		// Initialize variables
 		$entries = array ();
 
+		// Find the last central directory header entry
+		$fhLast = strpos($data, $this->_ctrlDirEnd);
+		do {
+			$last = $fhLast;		
+		} while(($fhLast = strpos($data, $this->_ctrlDirEnd, $fhLast+1)) !== false);
+		
+		
+		// Find the central directory offset
+		$offset = 0;
+		if($last) {
+			$endOfCentralDirectory = unpack('vNumberOfDisk/vNoOfDiskWithStartOfCentralDirectory/vNoOfCentralDirectoryEntriesOnDisk/vTotalCentralDirectoryEntries/VSizeOfCentralDirectory/VCentralDirectoryOffset/vCommentLength', substr($data, $last+4));
+			$offset	= $endOfCentralDirectory['CentralDirectoryOffset'];
+		}
+		
 		// Get details from Central directory structure.
-		$fhStart = strpos($data, $this->_ctrlDirHeader);
+		$fhStart = strpos($data, $this->_ctrlDirHeader, $offset);
 		do {
 			if (strlen($data) < $fhStart +31) {
 				$this->set('error.message', 'Invalid ZIP data');
@@ -297,7 +311,7 @@ class JArchiveZip extends JObject
 				$this->set('error.message', 'Invalid ZIP data');
 				return false;
 			}
-			$info = unpack('vInternal/VExternal', substr($data, $fhStart +36, 6));
+			$info = unpack('vInternal/VExternal/VOffset', substr($data, $fhStart +36, 10));
 
 			$entries[$name]['type'] = ($info['Internal'] & 0x01) ? 'text' : 'binary';
 			$entries[$name]['attr'] = (($info['External'] & 0x10) ? 'D' : '-') .
@@ -305,19 +319,18 @@ class JArchiveZip extends JObject
 									  (($info['External'] & 0x03) ? 'S' : '-') .
 									  (($info['External'] & 0x02) ? 'H' : '-') .
 									  (($info['External'] & 0x01) ? 'R' : '-');
-		} while (($fhStart = strpos($data, $this->_ctrlDirHeader, $fhStart +46)) !== false);
+			$entries[$name]['offset'] = $info['Offset'];
 
-		// Get details from local file header.
-		$fhStart = strpos($data, $this->_fileHeader);
-		do {
-			if (strlen($data) < $fhStart +34) {
+			// Get details from local file header since we have the offset
+			$lfhStart = strpos($data, $this->_fileHeader, $entries[$name]['offset']);
+			if (strlen($data) < $lfhStart +34) {
 				$this->set('error.message', 'Invalid ZIP data');
 				return false;
 			}
-			$info = unpack('vMethod/VTime/VCRC32/VCompressed/VUncompressed/vLength/vExtraLength', substr($data, $fhStart +8, 25));
-			$name = substr($data, $fhStart +30, $info['Length']);
-			$entries[$name]['_dataStart'] = $fhStart +30 + $info['Length'] + $info['ExtraLength'];
-		} while (strlen($data) > $fhStart +30 + $info['Length'] && ($fhStart = strpos($data, $this->_fileHeader, $fhStart +30 + $info['Length'])) !== false);
+			$info = unpack('vMethod/VTime/VCRC32/VCompressed/VUncompressed/vLength/vExtraLength', substr($data, $lfhStart +8, 25));
+			$name = substr($data, $lfhStart +30, $info['Length']);
+			$entries[$name]['_dataStart'] = $lfhStart +30 + $info['Length'] + $info['ExtraLength'];
+		} while ((($fhStart = strpos($data, $this->_ctrlDirHeader, $fhStart +46)) !== false));	
 
 		$this->_metadata = array_values($entries);
 		return true;

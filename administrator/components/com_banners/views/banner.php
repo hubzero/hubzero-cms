@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 10554 2008-07-15 17:15:19Z ircmaxell $
+ * @version		$Id: banner.php 11655 2009-03-08 20:04:17Z willebil $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -38,6 +38,7 @@ class BannersViewBanner
 	{
 		BannersViewBanner::setBannersToolbar();
 		$user =& JFactory::getUser();
+		$ordering = ($lists['order'] == 'b.ordering');
 		JHTML::_('behavior.tooltip');
 		?>
 		<form action="index.php?option=com_banners" method="post" name="adminForm">
@@ -81,7 +82,7 @@ class BannersViewBanner
 					</th>
 					<th width="8%" nowrap="nowrap">
 						<?php echo JHTML::_('grid.sort',   'Order', 'b.ordering', @$lists['order_Dir'], @$lists['order'] ); ?>
-						<?php echo JHTML::_('grid.order',  $rows ); ?>
+						<?php if ($ordering) echo JHTML::_('grid.order',  $rows ); ?>
 					</th>
 					<th width="5%" nowrap="nowrap">
 						<?php echo JHTML::_('grid.sort',   'Sticky', 'b.Sticky', @$lists['order_Dir'], @$lists['order'] ); ?>
@@ -162,7 +163,8 @@ class BannersViewBanner
 						<?php echo $published;?>
 					</td>
 					<td class="order">
-						<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" class="text_area" style="text-align: center" />
+                    	<?php $disabled = $ordering ?  '' : 'disabled="disabled"'; ?>
+						<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 					</td>
 					<td align="center">
 						<?php echo $row->sticky ? JText::_( 'Yes' ) : JText::_( 'No' );?>

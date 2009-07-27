@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: file.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: file.php 11713 2009-03-27 09:18:26Z willebil $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -135,6 +135,8 @@ class MediaControllerFile extends MediaController
 	function delete()
 	{
 		global $mainframe;
+
+		JRequest::checkToken( 'request' ) or jexit( 'Invalid Token' );
 
 		// Set FTP credentials, if given
 		jimport('joomla.client.helper');

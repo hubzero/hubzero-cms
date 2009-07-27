@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: string.php 11399 2009-01-05 20:07:29Z kdevine $
+* @version		$Id: string.php 11550 2009-01-30 00:32:51Z kdevine $
 * @package		Joomla.Framework
 * @subpackage	Utilities
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -359,7 +359,7 @@ class JString
 	{
 		jimport('phputf8.trim');
 		if ( $charlist === FALSE ) {
-			return utf8_rltrim( $str );
+			return utf8_rtrim($str);
 		} else {
 			return utf8_rtrim( $str, $charlist );
 		}

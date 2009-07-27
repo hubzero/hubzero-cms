@@ -554,7 +554,7 @@ td.sectiontableentry2 {
 table.contentpaneopen, table.contentpane {
 	margin: 0;
 	padding: 0;
-	width: auto;
+	width: 100%;
 }
 
 table.contentpaneopen li {

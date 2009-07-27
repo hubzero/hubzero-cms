@@ -86,7 +86,7 @@ var JOpenID_com = new Class({
 		switcher.inject($('com-form-login'));
 
 		var link = new Element('a', { 'styles': {'text-align' : 'right', 'display' : 'block', 'font-size' : 'xx-small'}, 'href' : 'http://openid.net'});
-		link.inject($('form-login'));
+		link.inject($('com-form-login'));
 
 		//Initialise members
 		this.switcher = switcher;
@@ -110,13 +110,13 @@ var JOpenID_com = new Class({
 
 		if(state == 0)
 		{
-			username.removeClass('system-openid');
+			username.removeClass('com-system-openid');
 			var text = JLanguage.LOGIN_WITH_OPENID;
 			password.effect('height',  {duration: time}).start(0, this.length);
 		}
 		else
 		{
-			username.addClass('system-openid');
+			username.addClass('com-system-openid');
 			var text = JLanguage.NORMAL_LOGIN;
 			password.effect('height',  {duration: time}).start(this.length, 0);
 		}

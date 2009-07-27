@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: item.php 10873 2008-08-30 07:40:32Z willebil $
+ * @version		$Id: item.php 11646 2009-03-01 19:34:56Z ian $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -496,9 +496,8 @@ class MenusModelItem extends JModel
 		$row->checkin();
 		$row->reorder( 'menutype='.$db->Quote( $row->menutype ).' AND parent='.(int)$row->parent );
 
-		// clean menu cache
-		$cache =& JFactory::getCache('mod_mainmenu');
-		$cache->clean();
+		// clean cache
+		MenusHelper::cleanCache();
 
 		return true;
 	}
@@ -555,10 +554,9 @@ class MenusModelItem extends JModel
 			}
 		}
 
-		// clean menu cache
-		$cache =& JFactory::getCache('mod_mainmenu');
-		$cache->clean();
-
+		// clean cache
+		MenusHelper::cleanCache();
+		
 		return true;
 	}
 

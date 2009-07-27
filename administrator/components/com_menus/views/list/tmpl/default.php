@@ -40,7 +40,7 @@
 			</th>
 			<th width="8%" nowrap="nowrap">
 				<?php echo JHTML::_('grid.sort',   'Order by', 'm.ordering', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
-				<?php echo JHTML::_('grid.order',  $this->items ); ?>
+				<?php if ($this->ordering) echo JHTML::_('grid.order',  $this->items ); ?>
 			</th>
 			<th width="10%">
 				<?php echo JHTML::_('grid.sort',   'Access', 'groupname', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>

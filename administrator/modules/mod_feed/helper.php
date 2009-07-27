@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: helper.php 11617 2009-02-07 14:16:17Z kdevine $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -94,7 +94,7 @@ class modFeedHelper
 			?>
 				<tr>
 					<td align="center">
-						<image src="<?php echo $iUrl; ?>" alt="<?php echo @$iTitle; ?>"/>
+						<img src="<?php echo $iUrl; ?>" alt="<?php echo @$iTitle; ?>"/>
 					</td>
 				</tr>
 			<?php

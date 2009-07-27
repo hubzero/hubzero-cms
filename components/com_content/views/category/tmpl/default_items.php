@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<?php if ($this->params->get('filter')) : ?>
 			<td align="left" width="60%" nowrap="nowrap">
 				<?php echo JText::_($this->params->get('filter_type') . ' Filter').'&nbsp;'; ?>
-				<input type="text" name="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.adminForm.submit();" />
+				<input type="text" name="filter" value="<?php echo $this->escape($this->lists['filter']);?>" class="inputbox" onchange="document.adminForm.submit();" />
 			</td>
 		<?php endif; ?>
 		<?php if ($this->params->get('show_pagination_limit')) : ?>
@@ -81,7 +81,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<?php
 			echo $this->escape($item->title).' : ';
 			$link = JRoute::_('index.php?option=com_user&view=login');
-			$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
+			$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid), false);
 			$fullURL = new JURI($link);
 			$fullURL->setVar('return', base64_encode($returnURL));
 			$link = $fullURL->toString();

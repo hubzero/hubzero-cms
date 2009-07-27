@@ -3,8 +3,8 @@
 	<tag>lv-LV</tag>
 	<name>Latvian</name>
 	<description>Latvian language installation for Joomla</description>
-	<version>1.5.9</version>
-	<creationdate>January 2009</creationdate>
+    <version>1.5.10</version>
+    <creationDate>March 2009</creationDate>
 	<author>Latvian Joomla! Translation Team</author>
     <copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>

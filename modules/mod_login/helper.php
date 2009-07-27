@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 11299 2008-11-22 01:40:44Z ian $
+* @version		$Id: helper.php 11668 2009-03-08 20:33:38Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -26,7 +26,9 @@ class modLoginHelper
 		}
 		else
 		{
-			$url = JURI::base(true);
+			// stay on the same page
+			$uri = JFactory::getURI();
+			$url = $uri->toString(array('path', 'query', 'fragment'));
 		}
 
 		return base64_encode($url);

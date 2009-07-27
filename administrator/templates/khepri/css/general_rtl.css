@@ -1,5 +1,5 @@
 /**
-* @version $Id: general_rtl.css 10387 2008-06-03 10:59:16Z pasamio $
+* @version $Id: general_rtl.css 11663 2009-03-08 20:27:58Z willebil $
 * @copyright Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
@@ -117,10 +117,12 @@ body{
 #border-top .title{
 	padding-right: 180px;
 	padding-left: 0px;
+	float: right;
 }
 
 #module-status {
 	float:left;
+	background-position: right 5px;
 }
 
 #module-status span{

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 11396 2009-01-05 15:40:43Z kdevine $
+ * @version		$Id: controller.php 11679 2009-03-08 20:50:06Z willebil $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -214,7 +214,7 @@ class ContactController extends JController
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_contact'.DS.'tables');
 		$contact =& JTable::getInstance('contact', 'Table');
 		$contact->load($contactId);
-		$user =& JFactory::getUser();		
+		$user =& JFactory::getUser();
 
 		// Get the contact detail parameters
 		$params = new JParameter($contact->params);
@@ -267,12 +267,12 @@ class ContactController extends JController
 			$v->setNote($contact->misc);
 			$v->setURL( JURI::base(), 'WORK');
 			$v->setTitle($contact->con_position);
-			$v->setOrg($SiteName);
+			$v->setOrg(html_entity_decode($SiteName, ENT_COMPAT, 'UTF-8'));
 
 			$filename = str_replace(' ', '_', $contact->name);
 			$v->setFilename($filename);
 
-			$output = $v->getVCard($SiteName);
+			$output = $v->getVCard(html_entity_decode($SiteName, ENT_COMPAT, 'UTF-8'));
 			$filename = $v->getFileName();
 
 			// Send vCard file headers
@@ -328,7 +328,7 @@ class ContactController extends JController
 
 		// Prevent form submission if one of the banned text is discovered in the email field
 		if(false === $this->_checkText($email, $bannedEmail )) {
-			$this->setError( JText::sprintf('MESGHASBANNEDTEXT', 'Email') );
+			$this->setError( JText::sprintf('MESGHASBANNEDTEXT', JText::_('Email')) );
 			return false;
 		}
 
@@ -339,7 +339,7 @@ class ContactController extends JController
 
 		// Prevent form submission if one of the banned text is discovered in the subject field
 		if(false === $this->_checkText($subject, $bannedSubject)) {
-			$this->setError( JText::sprintf('MESGHASBANNEDTEXT', 'Subject') );
+			$this->setError( JText::sprintf('MESGHASBANNEDTEXT',JText::_('Subject')) );
 			return false;
 		}
 
@@ -350,7 +350,7 @@ class ContactController extends JController
 
 		// Prevent form submission if one of the banned text is discovered in the text field
 		if(false === $this->_checkText( $body, $bannedText )) {
-			$this->setError( JText::sprintf('MESGHASBANNEDTEXT', 'Message') );
+			$this->setError( JText::sprintf('MESGHASBANNEDTEXT', JText::_('Message')) );
 			return false;
 		}
 

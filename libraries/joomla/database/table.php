@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: table.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: table.php 11646 2009-03-01 19:34:56Z ian $
  * @package		Joomla.Framework
  * @subpackage	Table
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -384,6 +384,7 @@ class JTable extends JObject
 				JError::raiseError( 500, $err );
 			}
 		}
+		return true;
 	}
 
 	/**

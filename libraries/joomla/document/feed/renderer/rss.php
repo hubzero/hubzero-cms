@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: rss.php 10772 2008-08-23 11:53:16Z willebil $
+ * @version		$Id: rss.php 11687 2009-03-11 17:49:23Z ian $
  * @package		Joomla.Framework
  * @subpackage	Document
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -50,21 +50,23 @@ class JDocumentRendererRSS extends JDocumentRenderer
 
 		$uri =& JFactory::getURI();
 		$url = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
-
-		$feed = "<rss version=\"2.0\">\n";
+		$syndicationURL =& JRoute::_('&format=feed&type=atom');
+		
+		$feed = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
 		$feed.= "	<channel>\n";
 		$feed.= "		<title>".$data->title."</title>\n";
 		$feed.= "		<description>".$data->description."</description>\n";
-		$feed.= "		<link>".$url.$data->link."</link>\n";
+		$feed.= "		<link>".str_replace(' ','%20',$url.$data->link)."</link>\n";
 		$feed.= "		<lastBuildDate>".htmlspecialchars($now->toRFC822(), ENT_COMPAT, 'UTF-8')."</lastBuildDate>\n";
 		$feed.= "		<generator>".$data->getGenerator()."</generator>\n";
-
+		$feed.= '       <atom:link rel="self" type="application/atom+xml" href="'.str_replace(' ','%20',$url.$syndicationURL).'" />';
+	
 		if ($data->image!=null)
 		{
 			$feed.= "		<image>\n";
 			$feed.= "			<url>".$data->image->url."</url>\n";
 			$feed.= "			<title>".htmlspecialchars($data->image->title, ENT_COMPAT, 'UTF-8')."</title>\n";
-			$feed.= "			<link>".$data->image->link."</link>\n";
+			$feed.= "			<link>".str_replace(' ','%20',$data->image->link)."</link>\n";
 			if ($data->image->width != "") {
 				$feed.= "			<width>".$data->image->width."</width>\n";
 			}
@@ -114,15 +116,16 @@ class JDocumentRendererRSS extends JDocumentRenderer
 		for ($i=0; $i<count($data->items); $i++)
 		{
 			if ((strpos($data->items[$i]->link, 'http://') === false) and (strpos($data->items[$i]->link, 'https://') === false)) {
-				$data->items[$i]->link = $url.$data->items[$i]->link;
+				$data->items[$i]->link = str_replace(' ','%20',$url.$data->items[$i]->link);
 			}
 			$feed.= "		<item>\n";
 			$feed.= "			<title>".htmlspecialchars(strip_tags($data->items[$i]->title), ENT_COMPAT, 'UTF-8')."</title>\n";
-			$feed.= "			<link>".$data->items[$i]->link."</link>\n";
+			$feed.= "			<link>".str_replace(' ','%20',$data->items[$i]->link)."</link>\n";
 			$feed.= "			<description><![CDATA[".$this->_relToAbs($data->items[$i]->description)."]]></description>\n";
 
-			if ($data->items[$i]->author!="") {
-				$feed.= "			<author>".htmlspecialchars($data->items[$i]->author, ENT_COMPAT, 'UTF-8')."</author>\n";
+			if ($data->items[$i]->authorEmail!="") {
+				$feed.= "			<author>".htmlspecialchars($data->items[$i]->authorEmail . ' (' . 
+										$data->items[$i]->author . ')', ENT_COMPAT, 'UTF-8')."</author>\n";
 			}
 			/*
 			// on hold

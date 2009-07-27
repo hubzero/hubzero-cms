@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.sections.html.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: admin.sections.html.php 11655 2009-03-08 20:04:17Z willebil $
 * @package		Joomla
 * @subpackage	Sections
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -72,7 +72,7 @@ class sections_html
 				</th>
 				<th width="8%" nowrap="nowrap">
 					<?php echo JHTML::_('grid.sort',   'Order', 's.ordering', @$lists['order_Dir'], @$lists['order'] ); ?>
-					<?php echo JHTML::_('grid.order',  $rows ); ?>
+					<?php if ($ordering) echo JHTML::_('grid.order',  $rows ); ?>
 				</th>
 				<th width="10%">
 					<?php echo JHTML::_('grid.sort',   'Access', 'groupname', @$lists['order_Dir'], @$lists['order'] ); ?>
@@ -260,7 +260,7 @@ class sections_html
 						</label>
 					</td>
 					<td colspan="2">
-						<input class="text_area" type="text" name="alias" id="alias" value="<?php echo $row->alias; ?>" size="50" maxlength="255" title="<?php echo JText::_( 'TIPNAMEFIELD' ); ?>" />
+						<input class="text_area" type="text" name="alias" id="alias" value="<?php echo $row->alias; ?>" size="50" maxlength="255" title="<?php echo JText::_( 'ALIASTIP' ); ?>" />
 					</td>
 				</tr>
 				<tr>

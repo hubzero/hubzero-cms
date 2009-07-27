@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
+ * @version		$Id: view.html.php 11646 2009-03-01 19:34:56Z ian $
  * @package		Joomla
  * @subpackage	Weblinks
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -126,7 +126,7 @@ class SearchViewSearch extends JView
 				}
 				else
 				{
-					$searchwords = preg_split("/\s+/", $searchword);
+					$searchwords = preg_split("/\s+/u", $searchword);
 					$needle = $searchwords[0];
 				}
 

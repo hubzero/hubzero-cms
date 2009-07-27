@@ -37,7 +37,7 @@ function modMainMenuXMLCallback(&$node, $args)
 		$node->addAttribute('class', 'parent');
 	}
 
-	if (isset($path) && in_array($node->attributes('id'), $path))
+	if (isset($path) && (in_array($node->attributes('id'), $path) || in_array($node->attributes('rel'), $path)))
 	{
 		if ($node->attributes('class')) {
 			$node->addAttribute('class', $node->attributes('class').' active');
@@ -72,6 +72,7 @@ function modMainMenuXMLCallback(&$node, $args)
 	} else {
 		$node->removeAttribute('id');
 	}
+	$node->removeAttribute('rel');
 	$node->removeAttribute('level');
 	$node->removeAttribute('access');
 }

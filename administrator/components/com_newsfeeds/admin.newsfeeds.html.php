@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.newsfeeds.html.php 11371 2008-12-30 01:31:50Z ian $
+* @version		$Id: admin.newsfeeds.html.php 11655 2009-03-08 20:04:17Z willebil $
 * @package		Joomla
 * @subpackage	Newsfeeds
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -68,7 +68,7 @@ class HTML_newsfeeds
 					</th>
 					<th width="8%" nowrap="nowrap">
 						<?php echo JHTML::_('grid.sort',   'Order', 'a.ordering', @$lists['order_Dir'], @$lists['order'] ); ?>
-						<?php echo JHTML::_('grid.order',  $rows ); ?>
+						<?php if ($ordering) echo JHTML::_('grid.order',  $rows ); ?>
 					</th>
 					<th class="title" width="10%">
 						<?php echo JHTML::_('grid.sort',   'Category', 'catname', @$lists['order_Dir'], @$lists['order'] ); ?>

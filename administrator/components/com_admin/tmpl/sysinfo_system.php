@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: sysinfo_system.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: sysinfo_system.php 11713 2009-03-27 09:18:26Z willebil $
  */
 // No direct access
 defined('_JEXEC') or die('Restricted access');
@@ -90,7 +90,7 @@ defined('_JEXEC') or die('Restricted access');
 				<strong><?php echo JText::_( 'User Agent' ); ?>:</strong>
 			</td>
 			<td>
-				<?php echo phpversion() <= "4.2.1" ? getenv( "HTTP_USER_AGENT" ) : $_SERVER['HTTP_USER_AGENT'];?>
+				<?php echo htmlspecialchars(phpversion() <= "4.2.1" ? getenv( "HTTP_USER_AGENT" ) : $_SERVER['HTTP_USER_AGENT'], ENT_QUOTES);?>
 			</td>
 		</tr>
 		</tbody>

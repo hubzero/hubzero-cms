@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: menutype.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: menutype.php 11646 2009-03-01 19:34:56Z ian $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -271,6 +271,10 @@ class MenusModelMenutype extends JModel
 			$this->setError( $menuTable->getErrorMsg() );
 			return false;
 		}
+		
+		// clean cache
+		MenusHelper::cleanCache();
+				
 		return true;
 	}
 }

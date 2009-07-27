@@ -5,7 +5,7 @@
 		<tr>
 			<td align="left" width="100%">
 				<?php echo JText::_( 'Filter' ); ?>:
-				<input type="text" name="search" id="search" value="<?php echo $this->search; ?>" class="text_area" onchange="document.adminForm.submit();" />
+				<input type="text" name="search" id="search" value="<?php echo $this->escape($this->search); ?>" class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
 				<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
 			</td>
@@ -63,7 +63,7 @@
 						<?php echo $i+1+$this->pageNav->limitstart; ?>
 					</td>
 					<td>
-						<?php echo $row->search_term;?>
+						<?php echo htmlspecialchars($row->search_term, ENT_QUOTES, 'UTF-8'); ?>
 					</td>
 					<td align="center">
 						<?php echo $row->hits; ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: application.php 11409 2009-01-10 02:27:08Z willebil $
+ * @version		$Id: application.php 11687 2009-03-11 17:49:23Z ian $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -191,7 +191,10 @@ class ConfigControllerApplication extends ConfigController
 		$formats	= array (JHTML::_('select.option', 'RSS2.0', JText::_('RSS')), JHTML::_('select.option', 'Atom', JText::_('Atom')));
 		$summary	= array (JHTML::_('select.option', 1, JText::_('Full Text')), JHTML::_('select.option', 0, JText::_('Intro Text')),);
 		$lists['feed_limit']	= JHTML::_('select.genericlist',  $listLimit, 'feed_limit', 'class="inputbox" size="1"', 'value', 'text', ($row->feed_limit ? $row->feed_limit : 10));
-
+		$emailOptions = array (	JHTML::_('select.option', 'author', JText::_('Author Email')),
+								JHTML::_('select.option', 'site', JText::_('Site Email')));
+		$lists['feed_email'] = JHTML::_('select.genericlist', $emailOptions, 'feed_email', 'class="inputbox" size="1"', 'value', 'text', ($row->feed_email) ? $row->feed_email : 'author');
+		
 		// SESSION SETTINGS
 		$stores = JSession::getStores();
 		$options = array();
@@ -298,6 +301,7 @@ class ConfigControllerApplication extends ConfigController
 
 		// FEED SETTINGS
 		$config_array['feed_limit']		= JRequest::getVar('feed_limit', 10, 'post', 'int');
+		$config_array['feed_email']		= JRequest::getVar('feed_email', 'author', 'post', 'word');
 
 		// SERVER SETTINGS
 		$config_array['secret']				= JRequest::getVar('secret', 0, 'post', 'string');

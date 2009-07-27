@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: helper.php 11646 2009-03-01 19:34:56Z ian $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -149,5 +149,23 @@ class MenusHelper
 		}
 		$published = JHTML::_('select.radiolist',  $put, 'published', '', 'value', 'text', $row->published );
 		return $published;
+	}
+	
+	/**
+	* clean system cache
+	*/ 
+	function cleanCache()
+	{
+		global $mainframe;
+		
+		if ($mainframe->getCfg('caching')) {
+			// clean system cache
+			$cache =& JFactory::getCache('_system');
+			$cache->clean();
+			
+			// clean mod_mainmenu cache
+			$cache2 =& JFactory::getCache('mod_mainmenu');
+			$cache2->clean();
+		}
 	}
 }

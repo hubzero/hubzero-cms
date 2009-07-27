@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10752 2008-08-23 01:53:31Z eddieajau $
+* @version		$Id: view.html.php 11673 2009-03-08 20:41:00Z willebil $
 * @package		Joomla
 * @subpackage	Registration
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -29,6 +29,13 @@ class UserViewRegister extends JView
 	function display($tpl = null)
 	{
 		global $mainframe;
+
+		// Check if registration is allowed
+		$usersConfig = &JComponentHelper::getParams( 'com_users' );
+		if (!$usersConfig->get( 'allowUserRegistration' )) {
+			JError::raiseError( 403, JText::_( 'Access Forbidden' ));
+			return;
+		}
 
 		$pathway  =& $mainframe->getPathway();
 		$document =& JFactory::getDocument();

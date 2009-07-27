@@ -12,6 +12,7 @@
 	JToolBarHelper::addNewX();
 	JToolBarHelper::preferences('com_weblinks', '380');
 	JToolBarHelper::help( 'screen.weblink' );
+	$ordering = ($this->lists['order'] == 'a.ordering');
 ?>
 <form action="index.php" method="post" name="adminForm">
 <table>
@@ -48,7 +49,7 @@
 			</th>
 			<th width="8%" nowrap="nowrap">
 				<?php echo JHTML::_('grid.sort',  'Order', 'a.ordering', $this->lists['order_Dir'], $this->lists['order'] ); ?>
-				<?php echo JHTML::_('grid.order',  $this->items ); ?>
+				<?php if ($ordering) echo JHTML::_('grid.order',  $this->items ); ?>
 			</th>
 			<th width="15%"  class="title">
 				<?php echo JHTML::_('grid.sort',  'Category', 'category', $this->lists['order_Dir'], $this->lists['order'] ); ?>
@@ -79,8 +80,6 @@
 
 		$checked 	= JHTML::_('grid.checkedout',   $row, $i );
 		$published 	= JHTML::_('grid.published', $row, $i );
-
-		$ordering = ($this->lists['order'] == 'a.ordering');
 
 		$row->cat_link 	= JRoute::_( 'index.php?option=com_categories&section=com_weblinks&task=edit&type=other&cid[]='. $row->catid );
 		?>

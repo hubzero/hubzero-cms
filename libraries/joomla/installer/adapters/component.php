@@ -190,7 +190,8 @@ class JInstallerComponent extends JObject
 		$installScriptElement =& $this->manifest->getElementByPath('installfile');
 		if (is_a($installScriptElement, 'JSimpleXMLElement')) {
 			// Make sure it hasn't already been copied (this would be an error in the xml install file)
-			if (!file_exists($this->parent->getPath('extension_administrator').DS.$installScriptElement->data()))
+			// Only copy over an existing file when upgrading components
+			if (!file_exists($this->parent->getPath('extension_administrator').DS.$installScriptElement->data()) || $this->parent->getOverwrite())
 			{
 				$path['src']	= $this->parent->getPath('source').DS.$installScriptElement->data();
 				$path['dest']	= $this->parent->getPath('extension_administrator').DS.$installScriptElement->data();
@@ -207,7 +208,8 @@ class JInstallerComponent extends JObject
 		$uninstallScriptElement =& $this->manifest->getElementByPath('uninstallfile');
 		if (is_a($uninstallScriptElement, 'JSimpleXMLElement')) {
 			// Make sure it hasn't already been copied (this would be an error in the xml install file)
-			if (!file_exists($this->parent->getPath('extension_administrator').DS.$uninstallScriptElement->data()))
+			// Only copy over an existing file when upgrading components
+			if (!file_exists($this->parent->getPath('extension_administrator').DS.$uninstallScriptElement->data()) || $this->parent->getOverwrite())
 			{
 				$path['src']	= $this->parent->getPath('source').DS.$uninstallScriptElement->data();
 				$path['dest']	= $this->parent->getPath('extension_administrator').DS.$uninstallScriptElement->data();
@@ -715,7 +717,7 @@ class JInstallerComponent extends JObject
 	function _rollback_menu($arg)
 	{
 		// Get database connector object
-		$db =& $this->parent->getDBO;
+		$db =& $this->parent->getDBO();
 
 		// Remove the entry from the #__components table
 		$query = 'DELETE ' .

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: router.php 10752 2008-08-23 01:53:31Z eddieajau $
+* @version		$Id: router.php 11678 2009-03-08 20:48:42Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -82,7 +82,7 @@ function WeblinksBuildRoute(&$query)
 				}
 				elseif (isset($query['view']) && $query['view'] == 'category'
 					&& isset($item->query['view']) && $item->query['view'] == 'category'
-					&& isset($item->query['id']) && isset($query['id']) && $item->query['id'] != $query['id'])
+					&& isset($item->query['id']) && isset($query['id']) && $item->query['id'] == $query['id'])
 				{
 					// This menu item links to the category view but we need to append the category id to it.
 					$itemid		= $item->id;

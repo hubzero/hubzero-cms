@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: example.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: example.php 11720 2009-03-27 21:27:42Z ian $
  * @package		Joomla
  * @subpackage	JFramework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -65,7 +65,7 @@ class plgUserExample extends JPlugin {
 	 * @param	boolean		true if user was succesfully stored in the database
 	 * @param	string		message
 	 */
-	function onAfterStoreUser($user, $isnew, $succes, $msg)
+	function onAfterStoreUser($user, $isnew, $success, $msg)
 	{
 		global $mainframe;
 

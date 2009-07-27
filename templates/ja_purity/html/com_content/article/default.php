@@ -69,7 +69,7 @@ if (
 				<?php echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->article->catslug, $this->article->sectionid)).'">'; ?>
 			<?php endif; ?>
 			<?php echo $this->article->category; ?>
-			<?php if ($this->params->get('link_section')) : ?>
+			<?php if ($this->params->get('link_category')) : ?>
 				<?php echo '</a>'; ?>
 			<?php endif; ?>
 		</span>

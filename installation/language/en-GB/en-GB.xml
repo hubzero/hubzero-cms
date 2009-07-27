@@ -2,8 +2,8 @@
 <!-- $Id: en-GB.xml 10511 2008-07-06 19:21:55Z willebil $ -->
 <metafile version="1.5" client="installation">
 	<name>English(United Kingdom)</name>
-	<version>1.5.4</version>
-	<creationDate>2008-03-15</creationDate>
+    <version>1.5.10</version>
+    <creationDate>March 2009</creationDate>
 	<author>Joomla! Project</author>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>

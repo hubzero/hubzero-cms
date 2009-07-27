@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: filelist.php 10707 2008-08-21 09:52:47Z eddieajau $
+* @version		$Id: filelist.php 11670 2009-03-08 20:37:02Z willebil $
 * @package		Joomla.Framework
 * @subpackage	Parameter
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -76,6 +76,6 @@ class JElementFilelist extends JElement
 			}
 		}
 
-		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, "param$name");
+		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.$name);
 	}
 }

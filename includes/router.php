@@ -305,6 +305,13 @@ class JRouterSite extends JRouter
 			if ($component != "com_search") { // Cheep fix on searches
 				$parts = $this->_encodeSegments($parts);
 			}
+			else { // fix up search for URL
+				$total = count($parts);
+				for($i=0; $i<$total; $i++) {
+					// urlencode twice because it is decoded once after redirect
+					$parts[$i] = urlencode(urlencode(stripcslashes($parts[$i])));
+				}
+			}
 
 			$result = implode('/', $parts);
 			$tmp	= ($result != "") ? '/'.$result : '';

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: view.html.php 11666 2009-03-08 20:31:39Z willebil $
 * @package		Joomla
 * @subpackage	Media
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -34,8 +34,12 @@ class MediaViewImagesList extends JView
 		// Do not allow cache
 		JResponse::allowCache(false);
 
+		$app = JFactory::getApplication();
+		$append = '';
+		if ($app->getClientId() == 1) $append = 'administrator/';
+
 		JHTML::_('behavior.mootools');
-		JHTML::_('stylesheet', 'popup-imagelist.css', 'administrator/components/com_media/assets/');
+		JHTML::_('stylesheet', 'popup-imagelist.css', $append .'components/com_media/assets/');
 
 		$document =& JFactory::getDocument();
 		$document->addScriptDeclaration("var ImageManager = window.parent.ImageManager;");

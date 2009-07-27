@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.modules.html.php 10559 2008-07-16 20:57:43Z instance $
+* @version		$Id: admin.modules.html.php 11672 2009-03-08 20:39:41Z willebil $
 * @package		Joomla
 * @subpackage	Modules
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -30,7 +30,7 @@ class HTML_modules
 		$user =& JFactory::getUser();
 
 		//Ordering allowed ?
-		$ordering = (($lists['order'] == 'm.position'));
+		$ordering = ($lists['order'] == 'm.ordering' || $lists['order'] == 'm.position');
 
 		JHTML::_('behavior.tooltip');
 		?>
@@ -71,10 +71,10 @@ class HTML_modules
 					<?php echo JHTML::_('grid.sort', 'Published', 'm.published', @$lists['order_Dir'], @$lists['order'] ); ?>
 				</th>
 				<th width="80" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'Order', 'm.position', @$lists['order_Dir'], @$lists['order'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'Order', 'm.ordering', @$lists['order_Dir'], @$lists['order'] ); ?>
 				</th>
 				<th width="1%">
-					<?php echo JHTML::_('grid.order',  $rows ); ?>
+					<?php if ($ordering) echo JHTML::_('grid.order',  $rows ); ?>
 				</th>
 				<?php
 				if ( $client->id == 0 ) {
@@ -307,12 +307,24 @@ class HTML_modules
 						</td>
 						<td>
 							<input type="text" id="position" class="combobox" name="position" value="<?php echo $row->position; ?>" />
-							<ul id="combobox-position" style="display:none;"><?php
-							$positions = $model->getPositions();
-							for ($i=0,$n=count($positions);$i<$n;$i++) {
-								echo '<li>',$positions[$i],'</li>';
-							}
-							?></ul>
+							<ul id="combobox-position" style="display:none;">
+							<?php
+								$positions = $model->getPositions();
+								foreach ($positions as $position) {
+									echo '<li>'.$position.'</li>';
+								}
+							?>
+							</ul>
+							<script language="javascript" type="text/javascript">
+								window.addEvent('domready', function() { 
+									$('combobox-position-select').addEvent('change', function() {
+										changeDynaList('ordering', orders, document.adminForm.position.value, 0, 0);
+									});
+									$('position').addEvent('change', function() {
+										changeDynaList('ordering', orders, document.adminForm.position.value, 0, 0);
+									});
+								});
+							</script>
 						</td>
 					</tr>
 					<tr>

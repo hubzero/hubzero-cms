@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 11213 2008-10-25 12:43:11Z pasamio $
+ * @version		$Id: view.php 11625 2009-02-15 15:32:42Z kdevine $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -35,7 +35,7 @@ class ContentViewElement extends JView
 		$nullDate	= $db->getNullDate();
 
 		$document	= & JFactory::getDocument();
-		$document->setTitle('Article Selection');
+		$document->setTitle(JText::_('Article Selection'));
 
 		JHTML::_('behavior.modal');
 

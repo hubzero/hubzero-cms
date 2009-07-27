@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10880 2008-08-31 17:51:53Z willebil $
+ * @version		$Id: view.html.php 11665 2009-03-08 20:30:23Z willebil $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -139,7 +139,7 @@ class ContactViewCategory extends JView
 		$this->assignRef('category',	$category);
 		$this->assignRef('params',		$pparams);
 
-		$this->assign('action',		$uri->toString());
+		$this->assign('action',		str_replace('&', '&amp;', $uri->toString()));
 
 		parent::display($tpl);
 	}

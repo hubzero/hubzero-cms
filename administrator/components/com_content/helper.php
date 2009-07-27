@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: helper.php 11299 2008-11-22 01:40:44Z ian $
+ * @version		$Id: helper.php 11646 2009-03-01 19:34:56Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -49,6 +49,11 @@ class ContentHelper
 		$gid	= $user->get( 'gid' );
 
 		$filterGroups	=  $config->get( 'filter_groups' );
+		
+		// convert to array if one group selected
+		if ( (!is_array($filterGroups) && (int) $filterGroups > 0) ) { 
+			$filterGroups = array($filterGroups);
+		}
 
 		if (is_array($filterGroups) && in_array( $gid, $filterGroups ))
 		{

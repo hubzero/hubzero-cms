@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: article.php 11253 2008-11-10 23:38:48Z ircmaxell $
+ * @version		$Id: article.php 11646 2009-03-01 19:34:56Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -360,6 +360,11 @@ class ContentModelArticle extends JModel
 
 		$filterGroups	= $config->get( 'filter_groups' );
 
+		// convert to array if one group selected
+		if ( (!is_array($filterGroups) && (int) $filterGroups > 0) ) { 
+			$filterGroups = array($filterGroups);
+		}
+		
 		if (is_array($filterGroups) && in_array( $gid, $filterGroups ))
 		{
 			$filterType		= $config->get( 'filter_type' );

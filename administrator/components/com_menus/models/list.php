@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: list.php 10878 2008-08-30 17:29:13Z willebil $
+ * @version		$Id: list.php 11646 2009-03-01 19:34:56Z ian $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -296,6 +296,10 @@ class MenusModelList extends JModel
 
 		//Now, we need to rebuild sublevels...
 		$this->_rebuildSubLevel();
+		
+		// clean cache
+		MenusHelper::cleanCache();
+		
 		return true;
 	}
 
@@ -341,8 +345,13 @@ class MenusModelList extends JModel
 			$row->load( $firstroot );
 			$row->reorder( 'menutype = '.$this->_db->Quote($row->menutype).' AND parent = '.(int) $row->parent );
 		} // if
+		
 		//Rebuild sublevel
 		$this->_rebuildSubLevel();
+		
+		// clean cache
+		MenusHelper::cleanCache();
+		
 		return true;
 	}
 
@@ -381,10 +390,9 @@ class MenusModelList extends JModel
             }
         }
 
-		// Clear the content cache
-		// TODO: Is this necessary?
-		$cache = & JFactory::getCache('com_content');
-		$cache->clean();
+		// clean cache
+		MenusHelper::cleanCache();
+        
 		return count($items);
 	}
 
@@ -412,10 +420,10 @@ class MenusModelList extends JModel
 			return false;
 		}
 
-		// Clear the content cache
-		// TODO: Is this necessary?
-		$cache = & JFactory::getCache('com_content');
-		$cache->clean();
+		// clean cache (require helper because method can be called from com_trash)
+		require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_menus'.DS.'helpers'.DS.'helper.php' );
+		MenusHelper::cleanCache();
+		
 		return count($items);
 	}
 
@@ -445,7 +453,10 @@ class MenusModelList extends JModel
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-
+		
+		// clean cache
+		MenusHelper::cleanCache();
+		
 		return true;
 	}
 
@@ -490,9 +501,8 @@ class MenusModelList extends JModel
 			}
 		}
 
-		// clean menu cache
-		$cache =& JFactory::getCache('mod_mainmenu');
-		$cache->clean();
+		// clean cache
+		MenusHelper::cleanCache();
 
 		return true;
 	}
@@ -527,10 +537,9 @@ class MenusModelList extends JModel
 			}
 		}
 
-		// clean menu cache
-		$cache =& JFactory::getCache('mod_mainmenu');
-		$cache->clean();
-
+		// clean cache
+		MenusHelper::cleanCache();
+		
 		return true;
 	}
 
@@ -542,11 +551,10 @@ class MenusModelList extends JModel
 			$this->setError($row->getError());
 			return false;
 		}
-
-		// clean menu cache
-		$cache =& JFactory::getCache('mod_mainmenu');
-		$cache->clean();
-
+		
+		// clean cache
+		MenusHelper::cleanCache();
+		
 		return true;
 	}
 
@@ -579,10 +587,9 @@ class MenusModelList extends JModel
 			$row->reorder('menutype = '.$this->_db->Quote($menutype).' AND parent = '.(int) $group.' AND published >=0');
 		}
 
-		// clean menu cache
-		$cache =& JFactory::getCache('mod_mainmenu');
-		$cache->clean();
-
+		// clean cache
+		MenusHelper::cleanCache();
+		
 		return true;
 	}
 
@@ -642,10 +649,9 @@ class MenusModelList extends JModel
 			}
 		}
 
-		// clean menu cache
-		$cache =& JFactory::getCache('mod_mainmenu');
-		$cache->clean();
-
+		// clean cache
+		MenusHelper::cleanCache();
+		
 		return true;
 	}
 

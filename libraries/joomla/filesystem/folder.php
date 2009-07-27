@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: folder.php 11307 2008-11-24 00:21:48Z ian $
+ * @version		$Id: folder.php 11675 2009-03-08 20:43:54Z willebil $
  * @package		Joomla.Framework
  * @subpackage	FileSystem
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -423,9 +423,9 @@ class JFolder
 		$handle = opendir($path);
 		while (($file = readdir($handle)) !== false)
 		{
-			$dir = $path . DS . $file;
-			$isDir = is_dir($dir);
 			if (($file != '.') && ($file != '..') && (!in_array($file, $exclude))) {
+				$dir = $path . DS . $file;
+				$isDir = is_dir($dir);
 				if ($isDir) {
 					if ($recurse) {
 						if (is_integer($recurse)) {
@@ -484,25 +484,27 @@ class JFolder
 		$handle = opendir($path);
 		while (($file = readdir($handle)) !== false)
 		{
-			$dir = $path . DS . $file;
-			$isDir = is_dir($dir);
-			if (($file != '.') && ($file != '..') && (!in_array($file, $exclude)) && $isDir) {
-				// Removes filtered directories
-				if (preg_match("/$filter/", $file)) {
-					if ($fullpath) {
-						$arr[] = $dir;
-					} else {
-						$arr[] = $file;
+			if (($file != '.') && ($file != '..') && (!in_array($file, $exclude))) {
+				$dir = $path . DS . $file;
+				$isDir = is_dir($dir);
+				if ($isDir) {
+					// Removes filtered directories
+					if (preg_match("/$filter/", $file)) {
+						if ($fullpath) {
+							$arr[] = $dir;
+						} else {
+							$arr[] = $file;
+						}
 					}
-				}
-				if ($recurse) {
-					if (is_integer($recurse)) {
-						$arr2 = JFolder::folders($dir, $filter, $recurse - 1, $fullpath);
-					} else {
-						$arr2 = JFolder::folders($dir, $filter, $recurse, $fullpath);
+					if ($recurse) {
+						if (is_integer($recurse)) {
+							$arr2 = JFolder::folders($dir, $filter, $recurse - 1, $fullpath);
+						} else {
+							$arr2 = JFolder::folders($dir, $filter, $recurse, $fullpath);
+						}
+						
+						$arr = array_merge($arr, $arr2);
 					}
-					
-					$arr = array_merge($arr, $arr2);
 				}
 			}
 		}

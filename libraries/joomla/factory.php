@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: factory.php 10871 2008-08-30 07:30:33Z willebil $
+ * @version		$Id: factory.php 11680 2009-03-08 20:51:13Z willebil $
  * @package		Joomla.Framework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -332,7 +332,7 @@ class JFactory
 						isset( $options['cache_time'] ) ? $options['cache_time'] : 0
 					);
 					$simplepie->handle_content_type();
-					if ($simplepie->data) {
+					if ($simplepie->init()) {
 						$doc = $simplepie;
 					} else {
 						JError::raiseWarning( 'SOME_ERROR_CODE', JText::_('ERROR LOADING FEED DATA') );

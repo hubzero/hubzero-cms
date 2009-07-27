@@ -1,4 +1,4 @@
-<?php // @version $Id: default.php 10822 2008-08-27 17:16:00Z tcp $
+<?php // @version $Id: default.php 11623 2009-02-15 15:23:08Z kdevine $
 defined('_JEXEC') or die('Restricted access');
 ?>
 <?php if($this->params->get('show_page_title',1)) : ?>
@@ -11,5 +11,5 @@ defined('_JEXEC') or die('Restricted access');
 </h1>
 
 <div class="contentdescription">
-	<?php echo JText::_('WELCOME_DESC'); ?>
+	<?php echo $this->params->get('welcome_desc', JText::_( 'WELCOME_DESC' ));; ?>
 </div>

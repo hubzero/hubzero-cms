@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: atom.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: atom.php 11687 2009-03-11 17:49:23Z ian $
  * @package		Joomla.Framework
  * @subpackage	Document
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -50,32 +50,37 @@ defined('JPATH_BASE') or die();
 	{
 		$now	=& JFactory::getDate();
 		$data	=& $this->_doc;
+		
+		$uri =& JFactory::getURI();
+		$url = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
+		$syndicationURL =& JRoute::_('&format=feed&type=atom');
 
-		$feed = "<feed xmlns=\"http://www.w3.org/2005/Atom\" xml:base=\"".$data->getBase()."\"";
+		$feed = "<feed xmlns=\"http://www.w3.org/2005/Atom\" ";
 		if ($data->language!="") {
 			$feed.= " xml:lang=\"".$data->language."\"";
 		}
 		$feed.= ">\n";
 		$feed.= "	<title type=\"text\">".htmlspecialchars($data->title, ENT_COMPAT, 'UTF-8')."</title>\n";
 		$feed.= "	<subtitle type=\"text\">".htmlspecialchars($data->description, ENT_COMPAT, 'UTF-8')."</subtitle>\n";
-		$feed.= "	<link rel=\"alternate\" type=\"text/html\" href=\"".$data->link."\"/>\n";
-		$feed.= "	<id>".$data->link."</id>\n";
+		$feed.= "	<link rel=\"alternate\" type=\"text/html\" href=\"".$url."\"/>\n";
+		$feed.= "	<id>".str_replace(' ','%20',$data->getBase())."</id>\n";
 		$feed.= "	<updated>".htmlspecialchars($now->toISO8601(), ENT_COMPAT, 'UTF-8')."</updated>\n";
 		if ($data->editor!="") {
 			$feed.= "	<author>\n";
 			$feed.= "		<name>".$data->editor."</name>\n";
 			if ($data->editorEmail!="") {
-				$feed.= "		<email>".$data->editorEmail."</email>\n";
+				$feed.= "		<email>".htmlspecialchars($data->editorEmail, ENT_COMPAT, 'UTF-8')."</email>\n";
 			}
 			$feed.= "	</author>\n";
 		}
 		$feed.= "	<generator uri=\"http://joomla.org\" version=\"1.5\">".$data->getGenerator()."</generator>\n";
-		$feed.= "<link rel=\"self\" type=\"application/atom+xml\" href=\"". $data->syndicationURL . "\" />\n";
+		$feed.= '<link rel="self" type="application/atom+xml" href="'.str_replace(' ','%20',$url.$syndicationURL). "\" />\n";
+
 		for ($i=0;$i<count($data->items);$i++)
 		{
 			$feed.= "	<entry>\n";
 			$feed.= "		<title>".htmlspecialchars(strip_tags($data->items[$i]->title), ENT_COMPAT, 'UTF-8')."</title>\n";
-			$feed.= '		<link rel="alternate" type="text/html" href="'.$data->items[$i]->link."\"/>\n";
+			$feed.= '		<link rel="alternate" type="text/html" href="'.$url.$data->items[$i]->link."\"/>\n";
 
 			if ($data->items[$i]->date=="") {
 				$data->items[$i]->date = $now->toUnix();
@@ -83,12 +88,15 @@ defined('JPATH_BASE') or die();
 			$itemDate =& JFactory::getDate($data->items[$i]->date);
 			$feed.= "		<published>".htmlspecialchars($itemDate->toISO8601(), ENT_COMPAT, 'UTF-8')."</published>\n";
 			$feed.= "		<updated>".htmlspecialchars($itemDate->toISO8601(),ENT_COMPAT, 'UTF-8')."</updated>\n";
-			$feed.= "		<id>".htmlspecialchars($data->items[$i]->link, ENT_COMPAT, 'UTF-8')."</id>\n";
+			$feed.= "		<id>".str_replace(' ', '%20', $url.$data->items[$i]->link)."</id>\n";
 
 			if ($data->items[$i]->author!="")
 			{
 				$feed.= "		<author>\n";
 				$feed.= "			<name>".htmlspecialchars($data->items[$i]->author, ENT_COMPAT, 'UTF-8')."</name>\n";
+				if ($data->items[$i]->authorEmail!="") {
+					$feed.= "		<email>".htmlspecialchars($data->items[$i]->authorEmail, ENT_COMPAT, 'UTF-8')."</email>\n";
+				}
 				$feed.= "		</author>\n";
 			}
 			if ($data->items[$i]->description!="") {

@@ -159,6 +159,10 @@ class JInstallerModule extends JObject
 		$this->parent->parseMedia($this->manifest->getElementByPath('media'), $clientId);
 		$this->parent->parseLanguages($this->manifest->getElementByPath('languages'), $clientId);
 
+		// Load the language file
+		$lang		= & JFactory::getLanguage();
+		$lang->load($mname,$basePath);
+
 		// Parse deprecated tags
 		$this->parent->parseFiles($this->manifest->getElementByPath('images'), -1);
 
@@ -188,7 +192,7 @@ class JInstallerModule extends JObject
 		// So all we need to do is create an entry when we can't find one
 		if (!$id) {
 			$row = & JTable::getInstance('module');
-			$row->title = $this->get('name');
+			$row->title = JText::_($this->get('name'));
 			$row->ordering = $row->getNextOrder( "position='left'" );
 			$row->position = 'left';
 			$row->showtitle = 1;

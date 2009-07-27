@@ -41,6 +41,7 @@ JCombobox.prototype = {
 	{
 		var list = document.getElementById('combobox-'+element.id).getElementsByTagName('LI');
 		var select = document.createElement("select");
+		select.setAttribute('id','combobox-'+element.id+'-select');
 		for ( var i=0; i < list.length; i++) {
 			// Do population bit here
 			var o = document.createElement('option');

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: pagebreak.php 10906 2008-09-05 07:27:34Z willebil $
+* @version		$Id: pagebreak.php 11662 2009-03-08 20:25:57Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -41,6 +41,8 @@ function plgContentPagebreak( &$row, &$params, $page=0 )
 
 	$print   = JRequest::getBool('print');
 	$showall = JRequest::getBool('showall');
+
+	JPlugin::loadLanguage( 'plg_content_pagebreak' );
 
 	if (!$pluginParams->get('enabled', 1)) {
 		$print = true;
@@ -84,7 +86,7 @@ function plgContentPagebreak( &$row, &$params, $page=0 )
 		} else {
 			$row->toc = '';
 		}
-		$row->text = preg_replace( $regex, '<BR/>', $row->text );
+		$row->text = preg_replace( $regex, '<br/>', $row->text );
 		return true;
 	}
 
@@ -109,7 +111,7 @@ function plgContentPagebreak( &$row, &$params, $page=0 )
 				$page_text = $page + 1;
 				if ( $page && @$matches[$page-1][2] )
 				{
-					$attrs = JUtility::parseAttributes($matches[$page-1][1]);
+					$attrs = JUtility::parseAttributes($matches[$page-1][0]);
 
 					if ( @$attrs['title'] ) {
 						$row->page_title = $attrs['title'];
@@ -164,6 +166,8 @@ function plgContentCreateTOC( &$row, &$matches, &$page )
 {
 
 	$heading = $row->title;
+	$limitstart = JRequest::getInt('limitstart', 0);
+	$showall = JRequest::getInt('showall', 0);
 
 	// TOC Header
 	$row->toc = '
@@ -176,10 +180,11 @@ function plgContentCreateTOC( &$row, &$matches, &$page )
 	';
 
 	// TOC First Page link
+	$class = ($limitstart === 0 && $showall === 0) ? 'toclink active' : 'toclink';
 	$row->toc .= '
 	<tr>
 		<td>
-		<a href="'. JRoute::_( '&showall=&limitstart=') .'" class="toclink">'
+		<a href="'. JRoute::_( '&showall=&limitstart=') .'" class="'. $class .'">'
 		. $heading .
 		'</a>
 		</td>
@@ -215,10 +220,11 @@ function plgContentCreateTOC( &$row, &$matches, &$page )
 			$title	= JText::sprintf( 'Page #', $i );
 		}
 
+		$class = ($limitstart == $i-1) ? 'toclink active' : 'toclink';
 		$row->toc .= '
 			<tr>
 				<td>
-				<a href="'. $link .'" class="toclink">'
+				<a href="'. $link .'" class="'. $class .'">'
 				. $title .
 				'</a>
 				</td>
@@ -235,10 +241,11 @@ function plgContentCreateTOC( &$row, &$matches, &$page )
 	if ($params->get('showall') )
 	{
 		$link = JRoute::_( '&showall=1&limitstart=');
+		$class = ($showall == 1) ? 'toclink active' : 'toclink';
 		$row->toc .= '
 		<tr>
 			<td>
-				<a href="'. $link .'" class="toclink">'
+				<a href="'. $link .'" class="'. $class .'">'
 				. JText::_( 'All Pages' ) .
 				'</a>
 			</td>

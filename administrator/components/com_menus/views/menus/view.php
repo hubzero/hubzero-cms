@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: view.php 11625 2009-02-15 15:32:42Z kdevine $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -74,7 +74,7 @@ class MenusViewMenus extends JView
 		JToolBarHelper::help( 'screen.menumanager' );
 
 		$document = & JFactory::getDocument();
-		$document->setTitle('Copy Menu Items');
+		$document->setTitle(JText::_('Copy Menu Items'));
 
 		$this->assignRef('items', $items);
 		$this->assignRef('table', $table);
@@ -102,7 +102,7 @@ class MenusViewMenus extends JView
 		$menuItems	= $this->get('MenuItems');
 
 		$document = & JFactory::getDocument();
-		$document->setTitle('Confirm Delete Menu Type: ' . $table->menutype );
+		$document->setTitle(JText::_('Confirm Delete Menu Type') . ': ' . $table->menutype );
 
 
 		$this->assignRef('table', $table);

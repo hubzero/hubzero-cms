@@ -1,4 +1,4 @@
-<?php // @version $Id: blog_item.php 11386 2009-01-04 02:34:35Z ian $
+<?php // @version $Id: blog_item.php 11552 2009-01-30 00:38:32Z kdevine $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -68,9 +68,9 @@ endif; ?>
 </p>
 <?php endif; ?>
 
-<?php if ((!empty ($this->item->modified) && $this->item->params->get('show_modify_date')) || ($this->item->params->get('show_author') && ($this->item->author != "")) || ($this->item->params->get('show_create_date'))) : ?>
+<?php if ((intval($this->item->modified) !=0 && $this->item->params->get('show_modify_date')) || ($this->item->params->get('show_author') && ($this->item->author != "")) || ($this->item->params->get('show_create_date'))) : ?>
 <p class="iteminfo">
-	<?php if (!empty ($this->item->modified) && $this->item->params->get('show_modify_date')) : ?>
+	<?php if ( intval($this->item->modified) != 0 && $this->item->params->get('show_modify_date')) : ?>
 	<span class="modifydate">
 		<?php echo JText::sprintf('LAST_UPDATED2', JHTML::_('date', $this->item->modified, JText::_('DATE_FORMAT_LC2'))); ?>
 	</span>

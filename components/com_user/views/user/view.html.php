@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 11215 2008-10-26 02:25:51Z ian $
+* @version		$Id: view.html.php 11623 2009-02-15 15:23:08Z kdevine $
 * @package		Joomla
 * @subpackage	Weblinks
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -55,10 +55,10 @@ class UserViewUser extends JView
 		if (is_object( $menu )) {
 			$menu_params = new JParameter( $menu->params );
 			if (!$menu_params->get( 'page_title')) {
-				$params->set('page_title',	JText::_( 'User Details' ));
+				$params->set('page_title',	JText::_( 'Registered Area' ));
 			}
 		} else {
-			$params->set('page_title',	JText::_( 'User Details' ));
+			$params->set('page_title',	JText::_( 'Registered Area' ));
 		}
 		$document	= &JFactory::getDocument();
 		$document->setTitle( $params->get( 'page_title' ) );

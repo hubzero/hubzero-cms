@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: user.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: user.php 11688 2009-03-13 02:05:56Z ian $
  * @package		Joomla.Framework
  * @subpackage	User
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -404,7 +404,7 @@ class JUser extends JObject
 			$now =& JFactory::getDate();
 			$this->set( 'registerDate', $now->toMySQL() );
 
-			// Check that username is not greater than 25 characters
+			// Check that username is not greater than 150 characters
 			$username = $this->get( 'username' );
 			if ( strlen($username) > 150 )
 			{
@@ -412,7 +412,7 @@ class JUser extends JObject
 				$this->set( 'username', $username );
 			}
 
-			// Check that password is not greater than 50 characters
+			// Check that password is not greater than 100 characters
 			$password = $this->get( 'password' );
 			if ( strlen($password) > 100 )
 			{

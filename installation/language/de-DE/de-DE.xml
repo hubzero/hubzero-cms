@@ -2,9 +2,9 @@
 <!-- $Id: de-DE.xml 287 2008-06-30 19:29:49Z sisko1990 $ -->
 <metafile version="1.5" client="installation" >
   <name>German (Germany)</name>
-  <version>1.5.9</version>
-  <creationDate>January 2009</creationDate>
-  <author>http://www.jgerman.de</author>
+    <version>1.5.10</version>
+    <creationDate>March 2009</creationDate>
+    <author>http://www.jgerman.de</author>
 	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <description>Deutsche Sprachdatei für den Web-Installer</description>

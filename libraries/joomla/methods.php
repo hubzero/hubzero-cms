@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: methods.php 10707 2008-08-21 09:52:47Z eddieajau $
+* @version		$Id: methods.php 11646 2009-03-01 19:34:56Z ian $
 * @package		Joomla.Framework
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -55,7 +55,7 @@ class JRoute
 		$url = $uri->toString(array('path', 'query', 'fragment'));
 
 		// Replace spaces
-		$url = preg_replace('/\s/', '%20', $url);
+		$url = preg_replace('/\s/u', '%20', $url);
 
 		/*
 		 * Get the secure/unsecure URLs.

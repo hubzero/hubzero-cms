@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: frontpage.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: frontpage.php 11655 2009-03-08 20:04:17Z willebil $
 * @package		Joomla
 * @subpackage	Content
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -80,7 +80,7 @@ class FrontpageView
 						<?php echo JHTML::_('grid.sort',   'Order', 'fpordering', @$lists['order_Dir'], @$lists['order'] ); ?>
 		 			</th>
 					<th width="1%">
-						<?php echo JHTML::_('grid.order',  $rows ); ?>
+						<?php if ($ordering) echo JHTML::_('grid.order',  $rows ); ?>
 					</th>
 					<th width="8%" nowrap="nowrap">
 						<?php echo JHTML::_('grid.sort',   'Access', 'groupname', @$lists['order_Dir'], @$lists['order'] ); ?>

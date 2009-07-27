@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 11386 2009-01-04 02:34:35Z ian $
+ * @version		$Id: view.html.php 11664 2009-03-08 20:29:17Z willebil $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -161,7 +161,7 @@ class ContentViewSection extends ContentView
 			else
 			{
 				$item->readmore_link = JRoute::_("index.php?option=com_user&view=login");
-				$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
+				$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid),false);
 				$fullURL = new JURI($item->readmore_link);
 				$fullURL->setVar('return', base64_encode($returnURL));
 				$item->readmore_link = $fullURL->toString();

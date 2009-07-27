@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10878 2008-08-30 17:29:13Z willebil $
+ * @version		$Id: controller.php 11646 2009-03-01 19:34:56Z ian $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -77,9 +77,6 @@ class MenusController extends JController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$cache = & JFactory::getCache('com_content');
-		$cache->clean();
 
 		$model	=& $this->getModel( 'Item' );
 		$post	= JRequest::get('post');

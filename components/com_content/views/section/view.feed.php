@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.feed.php 10827 2008-08-27 23:10:15Z charlvn $
+ * @version		$Id: view.feed.php 11687 2009-03-11 17:49:23Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -32,7 +32,9 @@ class ContentViewSection extends JView
 		global $mainframe;
 		$doc =& JFactory::getDocument();
 		$params =& $mainframe->getParams();
-
+		$feedEmail = ($mainframe->getCfg('feed_email')) ? $mainframe->getCfg('feed_email') : 'author';
+		$siteEmail = $mainframe->getCfg('mailfrom');
+		
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
 
@@ -63,6 +65,13 @@ class ContentViewSection extends JView
 			$item->description 	= $description;
 			$item->date			= $row->created;
 			$item->category   	= $row->category;
+			$item->author		= $author;
+			if ($feedEmail == 'site') {
+				$item->authorEmail = $siteEmail;
+			}
+			else {
+				$item->authorEmail = $row->author_email;
+			}
 
 			// loads item info into rss array
 			$doc->addItem( $item );

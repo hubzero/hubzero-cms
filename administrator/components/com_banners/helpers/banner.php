@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: banner.php 11646 2009-03-01 19:34:56Z ian $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -62,7 +62,7 @@ class BannerHelper
 	 */
 	function isImage( $url )
 	{
-		$result = preg_match( '#(\.bmp|\.gif|\.jpg|\.jpeg|\.png)$#', $url );
+		$result = preg_match( '#(\.bmp|\.gif|\.jpg|\.jpeg|\.png)$#i', $url );
 		return $result;
 	}
 
@@ -74,7 +74,7 @@ class BannerHelper
 	 */
 	function isFlash( $url )
 	{
-		$result = preg_match( '#\.swf$#', $url );
+		$result = preg_match( '#\.swf$#i', $url );
 		return $result;
 	}
 }
