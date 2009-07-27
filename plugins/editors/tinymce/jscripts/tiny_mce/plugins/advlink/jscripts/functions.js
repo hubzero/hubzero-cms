@@ -57,7 +57,7 @@ function init() {
 	if (elm != null && elm.nodeName == "A")
 		action = "update";
 
-	formObj.insert.value = tinyMCE.getLang('lang_' + action, 'Insert', true); 
+	formObj.insert.value = tinyMCE.getLang('lang_' + action, 'Insert', true);
 
 	setPopupControlsDisabled(true);
 

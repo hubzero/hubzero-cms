@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: view.php 10882 2008-08-31 17:55:14Z willebil $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -80,7 +80,11 @@ class ConfigApplicationView
 								<?php echo $userparams->render('userparams'); ?>
 							</fieldset>
 							<fieldset class="adminform">
-								<legend><?php echo JText::_( 'Media Settings' ); ?></legend>
+								<legend><?php echo JText::_( 'Media Settings' ); ?>
+				<span class="error hasTip" title="<?php echo JText::_( 'Warning' );?>::<?php echo JText::_( 'WARNPATHCHANGES' ); ?>">
+					<?php echo ConfigApplicationView::WarningIcon(); ?>
+				</span>
+								</legend>
 								<?php echo $mediaparams->render('mediaparams'); ?>
 							</fieldset>
 						</td>

@@ -33,7 +33,7 @@ var TinyMCE_TemplatePlugin = {
 		content = tinyMCE.getParam("template_selected_content_classes", '').split(/\s+/);
 
 		for (x = 0; x < cdate.length; x++)
-			TinyMCE_TemplatePlugin.functions[cdate[x]] = TinyMCE_TemplatePlugin.functions['cdate'];	
+			TinyMCE_TemplatePlugin.functions[cdate[x]] = TinyMCE_TemplatePlugin.functions['cdate'];
 
 		for (x = 0; x < mdate.length; x++)
 			TinyMCE_TemplatePlugin.functions[mdate[x]] = TinyMCE_TemplatePlugin.functions['mdate'];
@@ -124,7 +124,7 @@ var TinyMCE_TemplatePlugin = {
 						for (x=0; x<nodeArray.length; x++)
 							tinyMCE.getNodeTree(nodeArray[x], current);
 
-						/** 
+						/**
 						 * inner function used in the loop below.
 						 * compares the supplied HTML element to the new template to:
 						 * - find a match with the new template and copy the element's content over
@@ -146,7 +146,7 @@ var TinyMCE_TemplatePlugin = {
 										if (newTmpl[n].className && newTmpl[n].className.match(new RegExp(names[c], "gi"))) {
 											newTmpl[n].innerHTML = elm.innerHTML;
 											//if(tinyMCE.getAttrib(elm,TinyMCE_TemplatePlugin.TMPL_DATE_SRC_ATTR,"") != "") {
-											//	tinyMCE.setAttrib(newTmpl[n], TinyMCE_TemplatePlugin.TMPL_DATE_SRC_ATTR, tinyMCE.getAttrib(elm,TinyMCE_TemplatePlugin.TMPL_DATE_SRC_ATTR)); 
+											//	tinyMCE.setAttrib(newTmpl[n], TinyMCE_TemplatePlugin.TMPL_DATE_SRC_ATTR, tinyMCE.getAttrib(elm,TinyMCE_TemplatePlugin.TMPL_DATE_SRC_ATTR));
 											//}
 											replaced = true;
 											break;
@@ -155,7 +155,7 @@ var TinyMCE_TemplatePlugin = {
 									}
 								}
 							}
-	
+
 							return replaced;
 						};
 
@@ -443,7 +443,7 @@ var TinyMCE_TemplatePlugin = {
 	/**
 	 * template functions - functions for modifying template content
 	 */
-	functions : { 
+	functions : {
 		blank : function(elm, editor_event) {},
 
 		cdate : function(elm, editor_event) {
@@ -476,7 +476,7 @@ var TinyMCE_TemplatePlugin = {
 		 */
 		selectedContent : function(elm, editor_event) {
 			var ds = tinyMCE.selectedInstance.getData('template');
-	
+
 			if (editor_event != TinyMCE_TemplatePlugin.TMPL_TEMPLATE_EVENT)
 				return;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: parameter.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: parameter.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Parameter
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -23,7 +23,6 @@ JLoader::register('JElement', dirname(__FILE__).DS.'parameter'.DS.'element.php')
 /**
  * Parameter handler
  *
- * @author 		Johan Janssens <johan.janssens@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage		Parameter
  * @since		1.5

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: string.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: string.php 10707 2008-08-21 09:52:47Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Utilities
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -45,7 +45,6 @@ require_once(JPATH_LIBRARIES.DS.'phputf8'.DS.'utf8.php');
  * All functions assume the validity of utf-8 strings.
  *
  * @static
- * @author 		David Gal <david@joomla.co.il>
  * @package 	Joomla.Framework
  * @subpackage	Utilities
  * @since		1.5

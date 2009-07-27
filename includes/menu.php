@@ -18,8 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * JMenu class
  *
- * @author Louis Landry   <louis.landry@joomla.org>
- * @author Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Application
  * @since		1.5

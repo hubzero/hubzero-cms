@@ -4,7 +4,7 @@ if (typeof(MooTools) != 'undefined'){
 
 		Element.extend(
 		{
-			hide: function(timeout) 
+			hide: function(timeout)
 			{
 				this.status = 'hide';
 				clearTimeout (this.timeout);
@@ -15,8 +15,8 @@ if (typeof(MooTools) != 'undefined'){
 					this.anim();
 				}
 			},
-					
-			show: function(timeout) 
+
+			show: function(timeout)
 			{
 				this.status = 'show';
 				clearTimeout (this.timeout);
@@ -134,9 +134,9 @@ if (typeof(MooTools) != 'undefined'){
 
 
 		});
-		
 
-		var DropdownMenu = new Class({	
+
+		var DropdownMenu = new Class({
 			initialize: function(element)
 			{
 				//$(element).mh = 0;
@@ -159,7 +159,7 @@ if (typeof(MooTools) != 'undefined'){
 									el2.show(0);
 									return false;
 								});
-		
+
 								el.addEvent('mouseout', function()
 								{
 									el.setDeactive();
@@ -187,11 +187,11 @@ if (typeof(MooTools) != 'undefined'){
 				return this;
 			}
 		});
-		
+
 		Window.onDomReady(function() {new DropdownMenu($E('#ja-mainnav ul.menu'))});
-	
+
 	}else {
-	
+
 		sfHover = function() {
 		var sfEls = document.getElementById("ja-mainnav").getElementsByTagName("li");
 		for (var i=0; i<sfEls.length; ++i) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: openid.php 10497 2008-07-03 16:36:12Z ircmaxell $
+ * @version		$Id: openid.php 10709 2008-08-21 09:58:52Z eddieajau $
  * @package		Joomla
  * @subpackage	JFramework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -20,7 +20,6 @@ jimport( 'joomla.plugin.plugin' );
 /**
  * OpenID Authentication Plugin
  *
- * @author	Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla
  * @subpackage	openID
  * @since 1.5

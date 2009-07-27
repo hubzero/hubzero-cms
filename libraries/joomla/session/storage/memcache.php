@@ -20,8 +20,6 @@ defined('JPATH_BASE') or die();
  *
  * -- Inspired in both design and implementation by the Horde memcache handler --
  *
- * @author		Louis Landry <louis.landry@joomla.org>
- * @author		Mitch Pirtle
  * @package		Joomla.Framework
  * @subpackage	Session
  * @since		1.5

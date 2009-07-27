@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: ftp.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: ftp.php 10707 2008-08-21 09:52:47Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Client
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -53,7 +53,6 @@ if (!defined('FTP_NATIVE')) {
 /**
  * FTP client class
  *
- * @author		Louis Landry  <louis.landry@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Client
  * @since		1.5

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10623 2008-08-08 21:56:48Z ircmaxell $
+ * @version		$Id: controller.php 10877 2008-08-30 17:23:28Z willebil $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -666,7 +666,7 @@ class ContentController extends JController
 
 		// Get metadata string
 		$metadata = JRequest::getVar( 'meta', null, 'post', 'array');
-		if (is_array($params))
+		if (is_array($metadata))
 		{
 			$txt = array();
 			foreach ($metadata as $k => $v) {
@@ -1275,6 +1275,7 @@ class ContentController extends JController
 			$row->hits						= '0';
 			$row->ordering					= '0';
 			$row->title						= $item->title;
+			$row->alias						= $item->alias;
 			$row->title_alias				= $item->title_alias;
 			$row->introtext					= $item->introtext;
 			$row->fulltext					= $item->fulltext;
@@ -1447,7 +1448,7 @@ class ContentController extends JController
 
 		// Set page title
 		$document->setTitle(JText::_('Article Preview'));
-		$document->addStyleSheet('../templates/'.$template.'/css/editor.css');
+		$document->addStyleSheet(JURI::root() . 'templates/'.$template.'/css/editor.css');
 		$document->setBase(JUri::root());
 
 		// Render article preview

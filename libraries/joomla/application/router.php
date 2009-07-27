@@ -25,7 +25,6 @@ define('JROUTER_MODE_SEF', 1);
  * Class to create and parse routes
  *
  * @abstract
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	Application
  * @since		1.5

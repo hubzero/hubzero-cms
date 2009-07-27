@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mysql.php 10431 2008-06-15 19:42:18Z willebil $
+* @version		$Id: mysql.php 10796 2008-08-25 07:51:20Z tcp $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -273,6 +273,10 @@ class JDatabaseMySQL extends JDatabase
 			$command_line = trim( $command_line );
 			if ($command_line != '') {
 				$this->_cursor = mysql_query( $command_line, $this->_resource );
+				if ($this->_debug) {
+					$this->_ticker++;
+					$this->_log[] = $command_line;
+				}
 				if (!$this->_cursor) {
 					$error = 1;
 					$this->_errorNum .= mysql_errno( $this->_resource ) . ' ';

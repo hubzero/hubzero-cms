@@ -1,7 +1,7 @@
 <?php
 
 /**
-* @version		$Id: ldap.php 10553 2008-07-15 09:36:15Z pasamio $
+* @version		$Id: ldap.php 10707 2008-08-21 09:52:47Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Client
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -14,7 +14,6 @@
 /**
  * LDAP client class
  *
- * @author		Samuel Moffatt <pasamio@gmail.com>
  * @package		Joomla.Framework
  * @subpackage	Client
  * @since		1.5
@@ -318,7 +317,7 @@ class JLDAP extends JObject
 			return $result;
 		}
 	}
-	
+
 	/**
 	 * Deletes a given DN from the tree
 	 *
@@ -327,24 +326,24 @@ class JLDAP extends JObject
 	 * @access public
 	 */
 	function delete($dn) {
-		return @ldap_delete($this->_resource, $dn);	
+		return @ldap_delete($this->_resource, $dn);
 	}
-	
+
 	/**
 	 * Create a new DN
-	 * 
+	 *
 	 * @param string dn The DN where you want to put the object
 	 * @param array entries An array of arrays describing the object to add
-	 * @return bool result of operation 
+	 * @return bool result of operation
 	 */
 	function create($dn, $entries) {
 		return @ldap_add($this->_resource, $dn, $entries);
 	}
-	
+
 	/**
 	 * Add an attribute to the given DN
 	 * Note: DN has to exist already
-	 * 
+	 *
 	 * @param string dn The DN of the entry to add the attribute
 	 * @param array entry An array of arrays with attributes to add
 	 * @return bool Result of operation
@@ -352,7 +351,7 @@ class JLDAP extends JObject
 	function add($dn, $entry) {
 		return @ldap_mod_add($this->_resource, $dn, $entry);
 	}
-	
+
 	/**
 	 * Rename the entry
 	 *
@@ -363,18 +362,18 @@ class JLDAP extends JObject
 	 * @return bool Result of operation
 	 */
 	function rename($dn, $newdn, $newparent, $deleteolddn) {
-		return @ldap_rename($this->_resource, $dn, $newdn, $newparent, $deleteolddn);	
+		return @ldap_rename($this->_resource, $dn, $newdn, $newparent, $deleteolddn);
 	}
-	
+
 	/**
 	 * Returns the error message
 	 *
 	 * @return string error message
 	 */
 	function getErrorMsg() {
-		return @ldap_error($this->_resource);	
+		return @ldap_error($this->_resource);
 	}
-	  
+
 	/**
 	 * Converts a dot notation IP address to net address (e.g. for Netware, etc)
 	 *
@@ -420,7 +419,7 @@ class JLDAP extends JObject
 		$addrtype = intval(substr($networkaddress, 0, 1));
 		$networkaddress = substr($networkaddress, 2); // throw away bytes 0 and 1 which should be the addrtype and the "#" separator
 
-		if (($addrtype == 8) || ($addrtype = 9)) {    
+		if (($addrtype == 8) || ($addrtype = 9)) {
 			// TODO 1.6: If UDP or TCP, (TODO fill addrport and) strip portnumber information from address
 			$networkaddress = substr($networkaddress, (strlen($networkaddress)-4));
 		}
@@ -461,10 +460,10 @@ class JLDAP extends JObject
 		}
 		return Array('protocol'=>$addrtypes[$addrtype], 'address'=>$addr);
 	}
-	
+
 	/**
 	 * Generates a LDAP compatible password
-	 * 
+	 *
 	 * @param string password Clear text password to encrypt
 	 * @param string type Type of password hash, either md5 or SHA
 	 * @return string encrypted password
@@ -473,7 +472,7 @@ class JLDAP extends JObject
 		$userpassword = '';
 		switch(strtolower($type)) {
 			case 'sha':
-				$userpassword = '{SHA}' . base64_encode( pack( 'H*', sha1( $password ) ) ); 	
+				$userpassword = '{SHA}' . base64_encode( pack( 'H*', sha1( $password ) ) );
 			case 'md5':
 			default:
 				$userpassword = '{MD5}' . base64_encode( pack( 'H*', md5( $password ) ) );

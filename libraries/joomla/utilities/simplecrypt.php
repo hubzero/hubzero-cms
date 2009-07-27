@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: simplecrypt.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: simplecrypt.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Utilities
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -19,7 +19,6 @@ defined('JPATH_BASE') or die();
  * JSimpleCrypt is a very simple encryption algorithm for encyrpting/decrypting strings
  *
  * @static
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	Utilities
  * @since		1.5

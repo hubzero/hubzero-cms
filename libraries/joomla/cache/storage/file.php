@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: file.php 10433 2008-06-19 18:43:59Z willebil $
+ * @version		$Id: file.php 10814 2008-08-27 01:09:52Z tcp $
  * @package		Joomla.Framework
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * File cache storage handler
  *
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Cache
  * @since		1.5
@@ -58,12 +57,12 @@ class JCacheStorageFile extends JCacheStorage
 		$this->_setExpire($id, $group);
 		if (file_exists($path)) {
 			$data = file_get_contents($path);
-			if($data) {		
+			if($data) {
 				// Remove the initial die() statement
 				$data	= preg_replace('/^.*\n/', '', $data);
 			}
 		}
-		
+
 		return $data;
 	}
 
@@ -83,11 +82,11 @@ class JCacheStorageFile extends JCacheStorage
 		$path		= $this->_getFilePath($id, $group);
 		$expirePath	= $path . '_expire';
 		$die		= '<?php die("Access Denied"); ?>'."\n";
-		
+
 		// Prepend a die string
-		
+
 		$data		= $die.$data;
-		
+
 		$fp = @fopen($path, "wb");
 		if ($fp) {
 			if ($this->_locking) {
@@ -186,7 +185,7 @@ class JCacheStorageFile extends JCacheStorage
 		$files = JFolder::files($this->_root, '_expire', true, true);
 		foreach($files As $file) {
 			$time = @file_get_contents($file);
-			if ($time > $this->_now) {
+			if ($time < $this->_now) {
 				$result |= JFile::delete($file);
 				$result |= JFile::delete(str_replace('_expire', '', $file));
 			}

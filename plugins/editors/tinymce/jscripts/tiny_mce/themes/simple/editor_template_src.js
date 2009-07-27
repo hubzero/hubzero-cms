@@ -67,7 +67,7 @@ var TinyMCE_SimpleTheme = {
 				case "strike":
 					tinyMCE.switchClass(editor_id + '_strikethrough', 'mceButtonSelected');
 				break;
-				
+
 				case "ul":
 					tinyMCE.switchClass(editor_id + '_bullist', 'mceButtonSelected');
 				break;

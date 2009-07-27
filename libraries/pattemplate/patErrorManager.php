@@ -4,7 +4,7 @@
  * application-internal error management. Creates patError objects for
  * any errors for precise error management.
  *
- *	$Id: patErrorManager.php 10381 2008-06-01 03:35:53Z pasamio $
+ *	$Id: patErrorManager.php 10871 2008-08-30 07:30:33Z willebil $
  *
  * @package	patError
  */
@@ -212,8 +212,8 @@ class patErrorManager
 			jexit(
 				'JError::raise -> Static method JError::' . $function . ' does not exist.' .
 				' Contact a developer to debug' .
-				'<br/><strong>Error was</strong> ' .
-				'<br/>' . $error->getMessage()
+				'<br /><strong>Error was</strong> ' .
+				'<br />' . $error->getMessage()
 			);
 		}
     }

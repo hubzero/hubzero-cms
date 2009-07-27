@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: eaccelerator.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: eaccelerator.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * eAccelerator cache storage handler
  *
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Cache
  * @since		1.5

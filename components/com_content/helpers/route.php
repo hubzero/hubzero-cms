@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: route.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: route.php 10768 2008-08-23 11:32:34Z willebil $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -98,6 +98,17 @@ class ContentHelperRoute
 
 		$menus	= &JApplication::getMenu('site', array());
 		$items	= $menus->getItems('componentid', $component->id);
+		$active = $menus->getActive();
+		
+		if($active)
+		{
+			foreach($needles as $needle => $id)
+			{
+				if ((@$active->query['view'] == $needle) && (@$active->query['id'] == $id) && (@$active->query['option'] == 'com_content')) {
+					return $active;
+				}
+			}
+		}
 
 		$match = null;
 

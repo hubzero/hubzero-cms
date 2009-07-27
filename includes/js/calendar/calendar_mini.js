@@ -10,7 +10,7 @@
  * Public License, as long as you do not remove or alter this notice.
  */
 
-// $Id: calendar_mini.js 10389 2008-06-03 11:27:38Z pasamio $
+// $Id: calendar_mini.js 10712 2008-08-21 10:09:39Z eddieajau $
 
 Calendar = function (mondayFirst, dateStr, onSelected, onClose) { this.activeDiv = null; this.currentDateEl = null; this.checkDisabled = null; this.timeout = null; this.onSelected = onSelected || null; this.onClose = onClose || null; this.dragging = false; this.hidden = false; this.minYear = 1970; this.maxYear = 2050; this.dateFormat = Calendar._TT["DEF_DATE_FORMAT"]; this.ttDateFormat = Calendar._TT["TT_DATE_FORMAT"]; this.isPopup = true; this.weekNumbers = true; this.mondayFirst = mondayFirst; this.dateStr = dateStr; this.ar_days = null; this.table = null; this.element = null; this.tbody = null; this.firstdayname = null; this.monthsCombo = null; this.yearsCombo = null; this.hilitedMonth = null; this.activeMonth = null; this.hilitedYear = null; this.activeYear = null; if (!Calendar._DN3) { var ar = new Array(); for (var i = 8; i > 0;) { ar[--i] = Calendar._DN[i].substr(0, 3);}
 Calendar._DN3 = ar; ar = new Array(); for (var i = 12; i > 0;) { ar[--i] = Calendar._MN[i].substr(0, 3);}
@@ -190,4 +190,4 @@ if (((0 == (year%4)) && ( (0 != (year%100)) || (0 == (year%400)))) && month == 1
 (this.getMonth() == date.getMonth()) &&
 (this.getDate() == date.getDate()));}; Date.prototype.print = function (frm) { var str = new String(frm); var m = this.getMonth(); var d = this.getDate(); var y = this.getFullYear(); var wn = this.getWeekNumber(); var w = this.getDay(); var s = new Array(); s["d"] = d; s["dd"] = (d < 10) ? ("0" + d) : d; s["m"] = 1+m; s["mm"] = (m < 9) ? ("0" + (1+m)) : (1+m); s["y"] = y; s["yy"] = new String(y).substr(2, 2); s["w"] = wn; s["ww"] = (wn < 10) ? ("0" + wn) : wn; with (Calendar) { s["D"] = _DN3[w]; s["DD"] = _DN[w]; s["M"] = _MN3[m]; s["MM"] = _MN[m];}
 var re = /(.*)(\W|^)(d|dd|m|mm|y|yy|MM|M|DD|D|w|ww)(\W|$)(.*)/; while (re.exec(str) != null) { str = RegExp.$1 + RegExp.$2 + s[RegExp.$3] + RegExp.$4 + RegExp.$5;}
-return str;}; window.calendar = null; 
+return str;}; window.calendar = null;

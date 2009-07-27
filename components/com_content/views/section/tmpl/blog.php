@@ -17,8 +17,8 @@ $cparams =& JComponentHelper::getParams('com_media');
 	<?php if ($this->params->get('show_description') && $this->section->description) : ?>
 		<?php echo $this->section->description; ?>
 	<?php endif; ?>
-		<br/>
-		<br/>
+		<br />
+		<br />
 	</td>
 </tr>
 <?php endif; ?>
@@ -48,7 +48,31 @@ if (($numIntroArticles != $startIntroArticles) && ($i < $this->total)) : ?>
 		<tr>
 		<?php
 			$divider = '';
+			if ($this->params->get('multi_column_order')) : // order across, like front page
 			for ($z = 0; $z < $this->params->def('num_columns', 2); $z ++) :
+				if ($z > 0) : $divider = " column_separator"; endif; ?>
+				<?php
+				$rows = (int) ($this->params->get('num_intro_articles', 4) / $this->params->get('num_columns'));
+				$cols = ($this->params->get('num_intro_articles', 4) % $this->params->get('num_columns'));
+				?>
+					<td valign="top"
+						width="<?php echo intval(100 / $this->params->get('num_columns')) ?>%"
+						class="article_column<?php echo $divider ?>">
+						<?php
+						$loop = (($z < $cols)?1:0) + $rows;
+
+						for ($y = 0; $y < $loop; $y ++) :
+							$target = $i + ($y * $this->params->get('num_columns')) + $z;
+							if ($target < $this->total && $target < ($numIntroArticles)) :
+								$this->item =& $this->getItem($target, $this->params);
+								echo $this->loadTemplate('item');
+							endif;
+						endfor;
+						?></td>
+						<?php endfor; 
+						$i = $i + $this->params->get('num_intro_articles', 4) ; 
+			else : // otherwise, order down, same as before (default behaviour)
+				for ($z = 0; $z < $this->params->get('num_columns'); $z ++) :
 				if ($z > 0) : $divider = " column_separator"; endif; ?>
 				<td valign="top" width="<?php echo intval(100 / $this->params->get('num_columns')) ?>%" class="article_column<?php echo $divider ?>">
 				<?php for ($y = 0; $y < ($this->params->get('num_intro_articles', 4) / $this->params->get('num_columns')); $y ++) :
@@ -59,7 +83,8 @@ if (($numIntroArticles != $startIntroArticles) && ($i < $this->total)) : ?>
 					endif;
 				endfor; ?>
 				</td>
-		<?php endfor; ?>
+		<?php endfor; 
+		endif; ?> 
 		</tr>
 		</table>
 	</td>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: response.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: response.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -27,7 +27,6 @@ $GLOBALS['_JRESPONSE']->body	 = array();
  * response variables.  This includes header and body.
  *
  * @static
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @since		1.5

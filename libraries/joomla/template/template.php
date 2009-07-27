@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: template.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: template.php 10707 2008-08-21 09:52:47Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Template
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -20,7 +20,6 @@ jimport('pattemplate.patTemplate');
 /**
  * Template class, provides an easy interface to parse and display a template file
  *
- * @author 		Johan Janssens <johan.janssens@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage		Template
  * @since		1.5

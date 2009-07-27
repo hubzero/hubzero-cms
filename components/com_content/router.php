@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: router.php 10588 2008-07-26 12:20:06Z ircmaxell $
+* @version		$Id: router.php 10711 2008-08-21 10:09:03Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -41,7 +41,7 @@ function ContentBuildRoute(&$query)
 		unset($query['catid']);
 		unset($query['id']);
 	}
-	
+
 	if (isset($view) and ($view == 'section' && !empty($query['Itemid']))) {
 		if (($mView != 'section') or ($mView == 'section' and $mId != intval($query['id']))) {
 			$segments[] = 'section';

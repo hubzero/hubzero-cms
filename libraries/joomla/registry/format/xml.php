@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: xml.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: xml.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Registry
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * XML Format for JRegistry
  *
- * @author 		Samuel Moffatt <pasamio@gmail.com>
  * @package 	Joomla.Framework
  * @subpackage		Registry
  * @since		1.5

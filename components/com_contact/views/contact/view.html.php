@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10571 2008-07-21 01:27:35Z pasamio $
+ * @version		$Id: view.html.php 10808 2008-08-25 16:30:11Z tcp $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -69,7 +69,7 @@ class ContactViewContact extends JView
 		// because the application sets a default page title, we need to get it
 		// right from the menu item itself
 		if (is_object( $menu ) && isset($menu->query['view']) && $menu->query['view'] == 'contact' && isset($menu->query['id']) && $menu->query['id'] == $contact->id) {
-			$menu_params = new JParameter( $menu->params );			
+			$menu_params = new JParameter( $menu->params );
 			if (!$menu_params->get( 'page_title')) {
 				$pparams->set('page_title',	$contact->name);
 			}
@@ -109,7 +109,7 @@ class ContactViewContact extends JView
 			$contact->email_to = JHTML::_('email.cloak', $contact->email_to);
 		}
 
-		if ($contact->params->get('show_street_adress') || $contact->params->get('show_suburb') || $contact->params->get('show_state') || $contact->params->get('show_postcode') || $contact->params->get('show_country'))
+		if ($contact->params->get('show_street_address') || $contact->params->get('show_suburb') || $contact->params->get('show_state') || $contact->params->get('show_postcode') || $contact->params->get('show_country'))
 		{
 			if (!empty ($contact->address) || !empty ($contact->suburb) || !empty ($contact->state) || !empty ($contact->country) || !empty ($contact->postcode)) {
 				$contact->params->set('address_check', 1);

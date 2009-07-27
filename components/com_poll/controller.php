@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: controller.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: controller.php 10869 2008-08-30 07:24:03Z willebil $
 * @package		Joomla
 * @subpackage	Polls
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -21,7 +21,6 @@ jimport('joomla.application.component.controller');
  * Static class to hold controller functions for the Poll component
  *
  * @static
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla
  * @subpackage	Poll
  * @since		1.5
@@ -36,6 +35,7 @@ class PollController extends JController
 	 */
 	function display()
 	{
+		JRequest::setVar('view','poll'); // force it to be the polls view
 		parent::display();
 	}
 

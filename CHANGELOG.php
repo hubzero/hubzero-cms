@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 10625 2008-08-12 19:04:10Z ircmaxell $
+* @version		$Id: CHANGELOG.php 10919 2008-09-09 20:50:29Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -38,10 +38,115 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+-------------------- 1.5.7 Stable Release [9-September-2008] ------------------
+
+09-Sep-2008 Wilco Jansen
+ # Security fixes, thanks JSST!
+ # Changed version tags of default language file to 1.5.7
+ # Change of version file
+
+05-Sep-2008 Wilco Jansen
+ # Enabled installation check
+ # [12543] pagebreak plugin: undefined variable full
+ # [12663] Feeds in com_content don't show up more than once when caching is enabled
+ # [12519] Clean up Outdated Sample Content
+ # [12480] When a guest uses a registered article view url a 403 or 404  is thrown
+
+31-Aug-2008 Wilco Jansen
+ # [12039] Cannot override contact list length
+ # [12481] When saving or cancellig a frontend edit you are redirected to a blank page instead of the article
+ # [12536] Warnings for Path to Image Folder and Path to Media Folder
+
+30-Aug-2008 Wilco Jansen
+ # [10175] JRoute::_() and Application Redirect() Causing CGI Error IIS 6
+ # [10691] Section/Category Blog fills top->bottom instead of left->right
+ # [10943] Error of menu display according to access right
+ # [10953] Time zone need to be changed
+ # [11330] Box Width Parameter in mod_search Has No Effect
+ # [11621] Warning: strpos() [function.strpos]: Empty delimiter
+ # [11870] show_noauth problem  in 2 module helpers
+ # [12071] SEO: index and follow meta tag in print view
+ # [12165] Pagination in com_categories does not respect sectionfilter
+ # [12167] Show Search Results" Option in Search Component Not Working
+ # [12204] ja_purity template - site logo text goes under header background
+ # [12229] Article Order Drop-Down List on Front End Shows Archived and Trashed Articles
+ # [12259] Help Key Reference Update for Modules: New Screen
+ # [12276] Selection of name/username doesnt work in mod_login
+ # [12336] Terms impossible to translate in  admin.newsfeeds.php
+ # [12394] Incorrect colspan in admin mod_latest
+ # [12425] When a guest tries to view unauthorized content, redirect should be to login not register
+ # [12426] Polls and Search use the wrong view - IIS 7
+ # [12432] Category search plugin not working
+ # [12438] <BR/> tags do not pass html validation
+ ! There where a dozen mismatches in the language files, so not all <br /> tags have been replaced,
+   new language files for 1.5.7 need to be validated on this issue.
+ # [12442] JA Purity SVN changes can break backwards compatibility with existing sites
+ # [12462] Menu item is still locked after closing it
+ # [12492] Preview an edited artcle does not use template editor.css
+ # [12055] Archive intro text is cut to 255 characters - causes formatting problems
+ # [12457] Alias is copied incorrectly, when copying an article
+ # [12460] $row->getError() all over the shop where $row is not initialized
+ # [12194] URL: Incorrect SEF URLs for outgoing recommandation e-mails
+
+29-Aug-2008 Charl van Niekerk
+ # [10458] Pagebreak in article in blog layout does not work - limitstart double usage ( Tim, Arno )
+
+28-Aug-2008 Andrew Eddie
+ # [12110] Beez Template - Newsflash - Article URL not provided when "Title Linkable" is Yes
+ # [12033] Menu Separator shows as link instead of plain text when using Legacy Menu Formats
+ # [12261] textarea parameter type cannot handle more than one line of data
+
+28-Aug-2008 Charl van Niekerk
+ # [11763] RSS feed produces incorrect publish date ( Hannes )
+
+27-Aug-2008 Toby Patterson
+ # [9343] Profiling J1.5 framework ( Dalibor, Hannes )
+ # [11018] TMLSelect makes all items selected when using not numeric keys and selected item is 0 ( Alessandro )
+ # [11255] JMail class ignores JConfig.sendmail path for sendmail ( Ernie, Jens )
+ # [11535] Coding error in metadata handling of com_content controller.php ( John )
+ # [12101] Cache: JCacheStorageFile::gc flawed logic in cache expiry ( Geraint )
+ # [12146] SEO: User/Developer frontend: $document->setMetadata creates duplicate meta tags. ( Paul, Mickael )
+ # [12382] XMLrpc client id is to high ( Emil )
+ # [12461] Cache: can't Clean Cache File with Cache Manager when change Cache Handler ( Akarawuth )
+
+26-Aug-2008 Charl van Niekerk
+ # [9824] alt tags missing for some img tags ( Gergo Erdosi )
+
+25-Aug-2008 Toby Patterson
+ # [10265] & not replaced with &amp; in the external links ( Denis, Hannes )
+ # [10384] Single quote in title is escaped twice when editing an article in frontend ( Arnault, Bill )
+ # [11115] queryBatch does not log queries in debugmode ( Ian )
+ # [12441] Street Address is not shown in contacts ( Eduardo, JBS )
+
+24-Aug-2008 Sam Moffatt
+ # [11970] ja_purity email and print button files misnamed and not used
+
+23-Aug-2008 Wilco Jansen
+ # [11327] Base path showed in media manager is missing slashes
+ # [11544] JSite::getParams() doesn't work as expected
+ # [11561] Section blog resulting breadcrumbs issue
+ # [12080] System generated RSS feeds not rendering correctly for external URLs
+ # [12118] Latest version check &help.j.org at Joomla! Help
+ # [12187] Ja_purity default article layout does not display Edit icon for authors
+ # [12252] Outdated Links in Welcome to Joomla! and Newsfeed Fixes
+ # [12268] Multiple issues with Top menu in JA_Purity
+ # [12399] Copying Newsflash Module in Sample Data results in 500 error and duplicate key for menu table
+ # [12353] More aritcle links in section blog not working
+
+22-Aug-2008 Toby Patterson
+ # [#10965] Not all instances of module are deleted when module is uninstalled ( Andrzej and Sam )
+ # [#11561] Patch: Beez Contact Image, typo in attribute value ( Rene and Elin )
+
+19-Aug-2008 Toby Patterson
+ # [#12010] Remove confusing error message about language files for extension installations ( thanks Amy && Sam)
+
+13-August-2008 Anthony Ferrara
+ ^ Remove install check
+
 -------------------- 1.5.6 Stable Release [12-August-2008] ------------------
 
 05-Aug-2008 Toby Patterson
- [#10906] Error in JURI::buildQuery if using "param[key]=value" GET parameter
+ # [#10906] Error in JURI::buildQuery if using "param[key]=value" GET parameter
 
 -------------------- 1.5.5 Stable Release [27-July-2008] ---------------------
 
@@ -58,7 +163,7 @@ $ -> Language fix or change
 
 21-July-2008 Anthony Ferrara
  # [#11718] Pagebreak plugin still does not work
- # [#11844] SEF Plugin breaks Google Webmaster Tools JS 
+ # [#11844] SEF Plugin breaks Google Webmaster Tools JS
 
 21-July-2008 Sam Moffatt
  # [#11818] JA_Purity : CSS style not correctly apply to menu in Hornav position
@@ -77,7 +182,7 @@ $ -> Language fix or change
 
 17-July-2008 Mati Kochen
  # [#10823] mosmsg is ignored - added support in legacy plugin (thanks Ian for code suggestions)
- 
+
 16-July-2008 Alan Langford
  # [#11846] Allow "collapse all" on all instances of JPane
 

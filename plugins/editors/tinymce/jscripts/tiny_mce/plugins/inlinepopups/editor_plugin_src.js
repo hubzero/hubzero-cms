@@ -104,7 +104,7 @@ TinyMCE_Engine.prototype.closeWindow = function(win) {
 	if (!gotit)
 		this.orgCloseWindow(win);
 
-	tinyMCE.selectedInstance.getWin().focus(); 
+	tinyMCE.selectedInstance.getWin().focus();
 };
 
 TinyMCE_Engine.prototype.setWindowTitle = function(win_ref, title) {

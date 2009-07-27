@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: readmore.php 10571 2008-07-21 01:27:35Z pasamio $
+ * @version		$Id: readmore.php 10709 2008-08-21 09:58:52Z eddieajau $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -19,7 +19,6 @@ jimport( 'joomla.plugin.plugin' );
 /**
  * Editor Readmore buton
  *
- * @author Johan Janssens <johan.janssens@joomla.org>
  * @package Editors-xtd
  * @since 1.5
  */

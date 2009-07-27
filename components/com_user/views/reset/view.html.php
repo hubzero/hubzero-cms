@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 7399 2007-05-14 04:10:09Z eddieajau $
+ * @version		$Id: view.html.php 10752 2008-08-23 01:53:31Z eddieajau $
  * @package		Joomla
  * @subpackage	User
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -20,7 +20,6 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the Users component
  *
- * @author		Rob Schley <rob.schley@joomla.org>
  * @package		Joomla
  * @subpackage	User
  * @since		1.5
@@ -74,7 +73,7 @@ class UserViewReset extends JView
 		// because the application sets a default page title, we need to get it
 		// right from the menu item itself
 		if (is_object( $menu )) {
-			$menu_params = new JParameter( $menu->params );			
+			$menu_params = new JParameter( $menu->params );
 			if (!$menu_params->get( 'page_title')) {
 				$params->set('page_title',	JText::_( 'FORGOT_YOUR_PASSWORD' ));
 			}

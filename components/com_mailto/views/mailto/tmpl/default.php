@@ -32,25 +32,25 @@ $data	= $this->get('data');
 
 	<p>
 		<?php echo JText::_('EMAIL_TO'); ?>:
-		<br/>
+		<br />
 		<input type="text" name="mailto" class="inputbox" size="25" value="<?php echo $data->mailto ?>"/>
 	</p>
 
 	<p>
 		<?php echo JText::_('SENDER'); ?>:
-		<br/>
+		<br />
 		<input type="text" name="sender" class="inputbox" value="<?php echo $data->sender ?>" size="25" />
 	</p>
 
 	<p>
 		<?php echo JText::_('YOUR_EMAIL'); ?>:
-		<br/>
+		<br />
 		<input type="text" name="from" class="inputbox" value="<?php echo $data->from ?>" size="25" />
 	</p>
 
 	<p>
 		<?php echo JText::_('SUBJECT'); ?>:
-		<br/>
+		<br />
 		<input type="text" name="subject" class="inputbox" value="<?php echo $data->subject ?>" size="25" />
 	</p>
 

@@ -48,7 +48,7 @@ switch ($tmpTools->getParam(JA_TOOL_SCREEN)){
 		$tmpWidth = intval($tmpTools->getParam('ja_screen_width'));
 		$tmpWrapMin = $tmpWidth ? ($tmpWidth+1).'px' : '751px';
 		$tmpWidth = $tmpWidth ? $tmpWidth.'px' : '750px';
-		break;		
+		break;
 	default:
 		$tmpWidth = intval($tmpTools->getParam(JA_TOOL_SCREEN));
 		$tmpWrapMin = $tmpWidth ? ($tmpWidth+1).'px' : '751px';

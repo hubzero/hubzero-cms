@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: controller.php 10836 2008-08-28 10:56:44Z eddieajau $
  * @package		Joomla
  * @subpackage	Templates
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -212,10 +212,9 @@ class TemplatesController
 		jimport('joomla.filesystem.file');
 		if (JFile::exists($file) && count($params))
 		{
-			$txt = null;
-			foreach ($params as $k => $v) {
-				$txt .= "$k=$v\n";
-			}
+			$registry = new JRegistry();
+			$registry->loadArray($params);
+			$txt = $registry->toString();
 
 			// Try to make the params file writeable
 			if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0755')) {

@@ -16,7 +16,7 @@ var TPU = { //Template Popup Utils
 	data : tinyMCE.selectedInstance.getData('template'),
 
  	init : function() {
- 		document.forms[0].insert.value = tinyMCE.getLang('lang_' + this.data.currentAction, 'Insert', true); 
+ 		document.forms[0].insert.value = tinyMCE.getLang('lang_' + this.data.currentAction, 'Insert', true);
 		TPU.loadTemplatePaths();
 
 		if (this.data.currentAction == "update")
@@ -60,14 +60,14 @@ var TPU = { //Template Popup Utils
 
 		// Force complete document
 /*		if (!/<body/gi.test(this.currentTemplateHTML)) {
-			this.currentTemplateHTML = '<html xmlns="http://www.w3.org/1999/xhtml">' + 
-				'<head>' + 
-					'<title>blank_page</title>' + 
-					'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' + 
-				'</head>' + 
-				'<body>' + 
-				this.currentTemplateHTML + 
-				'</body>' + 
+			this.currentTemplateHTML = '<html xmlns="http://www.w3.org/1999/xhtml">' +
+				'<head>' +
+					'<title>blank_page</title>' +
+					'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' +
+				'</head>' +
+				'<body>' +
+				this.currentTemplateHTML +
+				'</body>' +
 				'</html>';
 		}*/
 

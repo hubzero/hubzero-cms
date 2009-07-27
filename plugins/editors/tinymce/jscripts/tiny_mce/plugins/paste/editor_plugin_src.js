@@ -5,7 +5,7 @@
  * @copyright Copyright © 2004-2007, Moxiecode Systems AB, All rights reserved.
  */
 
-/* Import plugin specific language pack */ 
+/* Import plugin specific language pack */
 tinyMCE.importPluginLanguagePack('paste');
 
 var TinyMCE_PastePlugin = {
@@ -34,8 +34,8 @@ var TinyMCE_PastePlugin = {
 		return true;
 	},
 
-	getControlHTML : function(cn) { 
-		switch (cn) { 
+	getControlHTML : function(cn) {
+		switch (cn) {
 			case "pastetext":
 				return tinyMCE.getButtonHTML(cn, 'lang_paste_text_desc', '{$pluginurl}/images/pastetext.gif', 'mcePasteText', true);
 
@@ -44,40 +44,40 @@ var TinyMCE_PastePlugin = {
 
 			case "selectall":
 				return tinyMCE.getButtonHTML(cn, 'lang_selectall_desc', '{$pluginurl}/images/selectall.gif', 'mceSelectAll', true);
-		} 
+		}
 
-		return ''; 
+		return '';
 	},
 
-	execCommand : function(editor_id, element, command, user_interface, value) { 
-		switch (command) { 
-			case "mcePasteText": 
+	execCommand : function(editor_id, element, command, user_interface, value) {
+		switch (command) {
+			case "mcePasteText":
 				if (user_interface) {
 					if ((tinyMCE.isMSIE && !tinyMCE.isOpera) && !tinyMCE.getParam('paste_use_dialog', false))
-						TinyMCE_PastePlugin._insertText(clipboardData.getData("Text"), true); 
-					else { 
-						var template = new Array(); 
-						template['file']	= '../../plugins/paste/pastetext.htm'; // Relative to theme 
-						template['width']  = 450; 
-						template['height'] = 400; 
-						var plain_text = ""; 
-						tinyMCE.openWindow(template, {editor_id : editor_id, plain_text: plain_text, resizable : "yes", scrollbars : "no", inline : "yes", mceDo : 'insert'}); 
+						TinyMCE_PastePlugin._insertText(clipboardData.getData("Text"), true);
+					else {
+						var template = new Array();
+						template['file']	= '../../plugins/paste/pastetext.htm'; // Relative to theme
+						template['width']  = 450;
+						template['height'] = 400;
+						var plain_text = "";
+						tinyMCE.openWindow(template, {editor_id : editor_id, plain_text: plain_text, resizable : "yes", scrollbars : "no", inline : "yes", mceDo : 'insert'});
 					}
 				} else
 					TinyMCE_PastePlugin._insertText(value['html'], value['linebreaks']);
 
 				return true;
 
-			case "mcePasteWord": 
+			case "mcePasteWord":
 				if (user_interface) {
 					if ((tinyMCE.isMSIE && !tinyMCE.isOpera) && !tinyMCE.getParam('paste_use_dialog', false)) {
 						TinyMCE_PastePlugin._insertWordContent(TinyMCE_PastePlugin._clipboardHTML());
-					} else { 
-						var template = new Array(); 
-						template['file']	= '../../plugins/paste/pasteword.htm'; // Relative to theme 
-						template['width']  = 450; 
-						template['height'] = 400; 
-						var plain_text = ""; 
+					} else {
+						var template = new Array();
+						template['file']	= '../../plugins/paste/pasteword.htm'; // Relative to theme
+						template['width']  = 450;
+						template['height'] = 400;
+						var plain_text = "";
 						tinyMCE.openWindow(template, {editor_id : editor_id, plain_text: plain_text, resizable : "yes", scrollbars : "no", inline : "yes", mceDo : 'insert'});
 					}
 				} else
@@ -86,13 +86,13 @@ var TinyMCE_PastePlugin = {
 				return true;
 
 			case "mceSelectAll":
-				tinyMCE.execInstanceCommand(editor_id, 'selectall'); 
-				return true; 
+				tinyMCE.execInstanceCommand(editor_id, 'selectall');
+				return true;
 
-		} 
+		}
 
-		// Pass to next handler in chain 
-		return false; 
+		// Pass to next handler in chain
+		return false;
 	},
 
 	// Private plugin internal methods
@@ -117,63 +117,63 @@ var TinyMCE_PastePlugin = {
 		return true;
 	},
 
-	_insertText : function(content, bLinebreaks) { 
+	_insertText : function(content, bLinebreaks) {
 		if (content && content.length > 0) {
-			if (bLinebreaks) { 
-				// Special paragraph treatment 
+			if (bLinebreaks) {
+				// Special paragraph treatment
 				if (tinyMCE.getParam("paste_create_paragraphs", true)) {
 					var rl = tinyMCE.getParam("paste_replace_list", '\u2122,<sup>TM</sup>,\u2026,...,\u201c|\u201d,",\u2019,\',\u2013|\u2014|\u2015|\u2212,-').split(',');
 					for (var i=0; i<rl.length; i+=2)
 						content = content.replace(new RegExp(rl[i], 'gi'), rl[i+1]);
 
-					content = tinyMCE.regexpReplace(content, "\r\n\r\n", "</p><p>", "gi"); 
-					content = tinyMCE.regexpReplace(content, "\r\r", "</p><p>", "gi"); 
-					content = tinyMCE.regexpReplace(content, "\n\n", "</p><p>", "gi"); 
+					content = tinyMCE.regexpReplace(content, "\r\n\r\n", "</p><p>", "gi");
+					content = tinyMCE.regexpReplace(content, "\r\r", "</p><p>", "gi");
+					content = tinyMCE.regexpReplace(content, "\n\n", "</p><p>", "gi");
 
-					// Has paragraphs 
-					if ((pos = content.indexOf('</p><p>')) != -1) { 
-						tinyMCE.execCommand("Delete"); 
+					// Has paragraphs
+					if ((pos = content.indexOf('</p><p>')) != -1) {
+						tinyMCE.execCommand("Delete");
 
-						var node = tinyMCE.selectedInstance.getFocusElement(); 
+						var node = tinyMCE.selectedInstance.getFocusElement();
 
-						// Get list of elements to break 
-						var breakElms = new Array(); 
+						// Get list of elements to break
+						var breakElms = new Array();
 
-						do { 
-							if (node.nodeType == 1) { 
-								// Don't break tables and break at body 
-								if (node.nodeName == "TD" || node.nodeName == "BODY") 
-									break; 
-		
-								breakElms[breakElms.length] = node; 
-							} 
-						} while(node = node.parentNode); 
+						do {
+							if (node.nodeType == 1) {
+								// Don't break tables and break at body
+								if (node.nodeName == "TD" || node.nodeName == "BODY")
+									break;
 
-						var before = "", after = "</p>"; 
-						before += content.substring(0, pos); 
+								breakElms[breakElms.length] = node;
+							}
+						} while(node = node.parentNode);
 
-						for (var i=0; i<breakElms.length; i++) { 
-							before += "</" + breakElms[i].nodeName + ">"; 
-							after += "<" + breakElms[(breakElms.length-1)-i].nodeName + ">"; 
-						} 
+						var before = "", after = "</p>";
+						before += content.substring(0, pos);
 
-						before += "<p>"; 
-						content = before + content.substring(pos+7) + after; 
-					} 
-				} 
+						for (var i=0; i<breakElms.length; i++) {
+							before += "</" + breakElms[i].nodeName + ">";
+							after += "<" + breakElms[(breakElms.length-1)-i].nodeName + ">";
+						}
+
+						before += "<p>";
+						content = before + content.substring(pos+7) + after;
+					}
+				}
 
 				if (tinyMCE.getParam("paste_create_linebreaks", true)) {
-					content = tinyMCE.regexpReplace(content, "\r\n", "<br />", "gi"); 
-					content = tinyMCE.regexpReplace(content, "\r", "<br />", "gi"); 
-					content = tinyMCE.regexpReplace(content, "\n", "<br />", "gi"); 
+					content = tinyMCE.regexpReplace(content, "\r\n", "<br />", "gi");
+					content = tinyMCE.regexpReplace(content, "\r", "<br />", "gi");
+					content = tinyMCE.regexpReplace(content, "\n", "<br />", "gi");
 				}
-			} 
-		
-			tinyMCE.execCommand("mceInsertRawHTML", false, content); 
+			}
+
+			tinyMCE.execCommand("mceInsertRawHTML", false, content);
 		}
 	},
 
-	_insertWordContent : function(content) { 
+	_insertWordContent : function(content) {
 		if (content && content.length > 0) {
 			// Cleanup Word content
 			var bull = String.fromCharCode(8226);

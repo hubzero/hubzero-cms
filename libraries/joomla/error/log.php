@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: log.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: log.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Error
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -21,7 +21,6 @@ defined('JPATH_BASE') or die();
  * This class is designed to build log files based on the
  * W3C specification at: http://www.w3.org/TR/WD-logfile.html
  *
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	Error
  * @since		1.5

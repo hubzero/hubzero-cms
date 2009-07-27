@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: installer.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: installer.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Installer
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -23,7 +23,6 @@ jimport('joomla.filesystem.path');
 /**
  * Joomla base installer class
  *
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Installer
  * @since		1.5
@@ -715,10 +714,6 @@ class JInstaller extends JObject
 
 				// If the language folder is not present, then the core pack hasn't been installed... ignore
 				if (!JFolder::exists(dirname($path['dest']))) {
-					$appl	 = &JFactory::getApplication();
-					$name	 = JText::_($appl->getName());
-					$warning = JText::sprintf('INSTALLER LANG NOT INSTALLED', $file->data(), $name, $file->attributes('tag') );
-					JError::raiseNotice(200, 'JInstaller::install: '.$warning);
 					continue;
 				}
 			} else {
@@ -805,7 +800,7 @@ class JInstaller extends JObject
 		{
 			$path['src']	= $source.DS.$file->data();
 			$path['dest']	= $destination.DS.$file->data();
-			
+
 			// Is this path a file or folder?
 			$path['type']	= ( $file->name() == 'folder') ? 'folder' : 'file';
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: pane.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: pane.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -19,7 +19,6 @@ defined('JPATH_BASE') or die();
  * JPane abstract class
  *
  * @abstract
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @since		1.5
@@ -111,7 +110,6 @@ class JPane extends JObject
 /**
  * JPanelTabs class to to draw parameter panes
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @since		1.5
@@ -209,7 +207,6 @@ class JPaneTabs extends JPane
 /**
  * JPanelSliders class to to draw parameter panes
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @since		1.5

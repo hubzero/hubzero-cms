@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: toolbar.modules.html.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: toolbar.modules.html.php 10863 2008-08-30 06:52:50Z willebil $
  * @package		Joomla
  * @subpackage	Modules
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -25,7 +25,12 @@ class TOOLBAR_modules {
 		JToolBarHelper::title( JText::_( 'Module' ) . ': <small><small>[ '. JText::_( 'New' ) .' ]</small></small>', 'module.png' );
 		JToolBarHelper::customX( 'edit', 'forward.png', 'forward_f2.png', 'Next', true );
 		JToolBarHelper::cancel();
-		JToolBarHelper::help( 'screen.modules.new' );
+		if ($client->name == 'site') {
+			JToolBarHelper::help( 'screen.modulessite.edit' );
+		} 
+		else {
+			JToolBarHelper::help( 'screen.modulesadministrator.edit');
+		}
 	}
 
 	/**

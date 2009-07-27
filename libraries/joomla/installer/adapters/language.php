@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * Language installer
  *
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Installer
  * @since		1.5
@@ -87,7 +86,7 @@ class JInstallerLanguage extends JObject
 			$basePath = $client->path;
 			$clientId = $client->id;
 			$element =& $root->getElementByPath('files');
-			
+
 			return $this->_install($cname, $basePath, $clientId, $element);
 		}
 		else
@@ -97,7 +96,7 @@ class JInstallerLanguage extends JObject
 			$basePath = JPATH_SITE;
 			$clientId = 0;
 			$element =& $root->getElementByPath('files');
-			
+
 			return $this->_install($cname, $basePath, $clientId, $element);
 		}
 	}

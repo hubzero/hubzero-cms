@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: route.php 9019 2007-09-26 00:40:35Z jinx $
+ * @version		$Id: route.php 10752 2008-08-23 01:53:31Z eddieajau $
  * @package		Joomla
  * @subpackage	Weblinks
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -33,7 +33,7 @@ class WeblinksHelperRoute
 			'category' => (int) $catid,
 			'categories' => null
 		);
-		
+
 		//Find the itemid
 		$itemid = WeblinksHelperRoute::_findItem($needles);
 		$itemid = $itemid ? '&Itemid='.$itemid : '';

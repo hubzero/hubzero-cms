@@ -426,7 +426,7 @@ var TinyMCE_AdvancedTheme = {
 
 				ml.show();
 			return true;
-	
+
 			case "backcolorpicker":
 				this._pickColor(editor_id, 'HiliteColor');
 				return true;
@@ -434,7 +434,7 @@ var TinyMCE_AdvancedTheme = {
 			case "mceColorPicker":
 				if (user_interface) {
 					var template = [];
-	
+
 					if (!value['callback'] && !value['color'])
 						value['color'] = value['document'].getElementById(value['element_id']).value;
 
@@ -519,7 +519,7 @@ var TinyMCE_AdvancedTheme = {
 	getEditorTemplate : function(settings, editorId) {
 		function removeFromArray(in_array, remove_array) {
 			var outArray = new Array(), skip;
-			
+
 			for (var i=0; i<in_array.length; i++) {
 				skip = false;
 
@@ -556,7 +556,7 @@ var TinyMCE_AdvancedTheme = {
 		var styleSelectHTML = '<option value="">{$lang_theme_style_select}</option>';
 		if (settings['theme_advanced_styles']) {
 			var stylesAr = settings['theme_advanced_styles'].split(';');
-			
+
 			for (var i=0; i<stylesAr.length; i++) {
 				var key, value;
 
@@ -826,7 +826,7 @@ var TinyMCE_AdvancedTheme = {
 			// Get node path
 			var parentNode = node;
 			var path = new Array();
-			
+
 			while (parentNode != null) {
 				if (parentNode.nodeName.toUpperCase() == "BODY") {
 					break;
@@ -995,7 +995,7 @@ var TinyMCE_AdvancedTheme = {
 
 		// Select class in select box
 		var selectElm = document.getElementById(editor_id + "_styleSelect");
-		
+
 		if (selectElm) {
 			TinyMCE_AdvancedTheme._setupCSSClasses(editor_id);
 

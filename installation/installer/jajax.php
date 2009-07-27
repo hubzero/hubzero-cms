@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: jajax.php 10382 2008-06-01 06:56:02Z pasamio $
+ * @version		$Id: jajax.php 10833 2008-08-28 10:37:50Z eddieajau $
  * @package		Joomla
  * @subpackage	Installation
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -254,7 +254,7 @@ class JAJAXLang extends JObject
 	*/
 	function _($string, $jsSafe = false)
 	{
-		//$key = str_replace( ' ', '_', strtoupper( trim( $string ) ) );echo '<br>'.$key;
+		//$key = str_replace( ' ', '_', strtoupper( trim( $string ) ) );echo '<br />'.$key;
 		$key = strtoupper($string);
 		$key = substr($key, 0, 1) == '_' ? substr($key, 1) : $key;
 		if (isset ($this->_strings[$key])) {

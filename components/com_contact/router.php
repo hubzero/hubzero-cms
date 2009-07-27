@@ -110,12 +110,12 @@ function ContactBuildRoute(&$query)
 			}
 
 			$segments[] = $query['catid'];
-			
+
 			unset($query['view']);
 			unset($query['catid']);
 			unset($query['catalias']);
 		}
-		
+
 		// Check if a id was specified.
 		if (isset($query['id']))
 		{

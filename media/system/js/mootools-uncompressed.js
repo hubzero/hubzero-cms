@@ -286,7 +286,7 @@ document.head = document.getElementsByTagName('head')[0];
 /*
 Class: window
 	Some properties are attached to the window object by the browser detection.
-	
+
 Note:
 	browser detection is entirely object-based. We dont sniff.
 
@@ -1355,7 +1355,7 @@ Array.extend({
 
 });
 
-/* 
+/*
 Script: Function.js
 	Contains Function prototypes and utility functions .
 
@@ -1389,11 +1389,11 @@ Function.extend({
 				If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
 				Default is false.
 		arguments - A single argument or array of arguments that will be passed to the function when called.
-		
+
 					If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
-					
+
 					Default is no custom arguments, the function will receive the standard arguments when called.
-					
+
 		delay - Numeric value: if set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
 				Default is no delay.
 		periodical - Numeric value: if set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
@@ -3030,56 +3030,56 @@ Class: Elements
 */
 
 Elements.extend({
-	
+
 	/*
 	Property: filterByTag
 		Filters the collection by a specified tag name.
 		Returns a new Elements collection, while the original remains untouched.
 	*/
-	
+
 	filterByTag: function(tag){
 		return new Elements(this.filter(function(el){
 			return (Element.getTag(el) == tag);
 		}));
 	},
-	
+
 	/*
 	Property: filterByClass
 		Filters the collection by a specified class name.
 		Returns a new Elements collection, while the original remains untouched.
 	*/
-	
+
 	filterByClass: function(className, nocash){
 		var elements = this.filter(function(el){
 			return (el.className && el.className.contains(className, ' '));
 		});
 		return (nocash) ? elements : new Elements(elements);
 	},
-	
+
 	/*
 	Property: filterById
 		Filters the collection by a specified ID.
 		Returns a new Elements collection, while the original remains untouched.
 	*/
-	
+
 	filterById: function(id, nocash){
 		var elements = this.filter(function(el){
 			return (el.id == id);
 		});
 		return (nocash) ? elements : new Elements(elements);
 	},
-	
+
 	/*
 	Property: filterByAttribute
 		Filters the collection by a specified attribute.
 		Returns a new Elements collection, while the original remains untouched.
-		
+
 	Arguments:
 		name - the attribute name.
 		operator - optional, the attribute operator.
 		value - optional, the attribute value, only valid if the operator is specified.
 	*/
-	
+
 	filterByAttribute: function(name, operator, value, nocash){
 		var elements = this.filter(function(el){
 			var current = Element.getProperty(el, name);
@@ -3155,7 +3155,7 @@ function $ES(selector, filter){
 $$.shared = {
 
 	'regexp': /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
-	
+
 	'xpath': {
 
 		getParam: function(items, context, param, i){
@@ -3178,7 +3178,7 @@ $$.shared = {
 			items.push(temp.join(''));
 			return items;
 		},
-		
+
 		getItems: function(items, context, nocash){
 			var elements = [];
 			var xpath = document.evaluate('.//' + items.join('//'), context, $$.shared.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
@@ -3187,9 +3187,9 @@ $$.shared = {
 		}
 
 	},
-	
+
 	'normal': {
-		
+
 		getParam: function(items, context, param, i){
 			if (i == 0){
 				if (param[2]){
@@ -3323,11 +3323,11 @@ Element.extend({
 		}
 		return el;
 	}/*compatibility*/,
-	
-	getElementsByClassName: function(className){ 
-		return this.getElements('.' + className); 
+
+	getElementsByClassName: function(className){
+		return this.getElements('.' + className);
 	}
-	
+
 	/*end compatibility*/
 
 });
@@ -3626,8 +3626,8 @@ Element.Events.domready = {
 
 /*compatibility*/
 
-window.onDomReady = function(fn){ 
-	return this.addEvent('domready', fn); 
+window.onDomReady = function(fn){
+	return this.addEvent('domready', fn);
 };
 
 /*end compatibility*/
@@ -3635,7 +3635,7 @@ window.onDomReady = function(fn){
 /*
 Script: Window.Size.js
 	Window cross-browser dimensions methods.
-	
+
 Note:
 	The Functions in this script require an XHTML doctype.
 
@@ -3765,7 +3765,7 @@ Options:
 	unit - the unit is 'px' by default (other values include things like 'em' for fonts or '%').
 	wait - boolean: to wait or not to wait for a current transition to end before running another of the same instance. defaults to true.
 	fps - the frames per second for the transition; default is 50
-	
+
 Events:
 	onStart - the function to execute as the effect begins; nothing (<Class.empty>) by default.
 	onComplete - the function to execute after the effect has processed; nothing (<Class.empty>) by default.
@@ -3867,7 +3867,7 @@ Fx.Base = new Class({
 		if (!end) this.fireEvent('onCancel', this.element);
 		return this;
 	}/*compatibility*/,
-	
+
 	custom: function(from, to){
 		return this.start(from, to);
 	},
@@ -4431,7 +4431,7 @@ License:
 Class: Fx.Slide
 	The slide effect; slides an element in horizontally or vertically, the contents will fold inside.
 	Inherits methods, properties, options and events from <Fx.Base>.
-	
+
 Note:
 	Fx.Slide requires an XHTML doctype.
 
@@ -4778,7 +4778,7 @@ Fx.Transitions.extend({
 	Fx.Transitions[transition] = new Fx.Transition(function(p){
 		return Math.pow(p, [i + 2]);
 	});
-	
+
 	/*compatibility*/
 	Fx.Transitions.compat(transition);
 	/*end compatibility*/
@@ -4797,7 +4797,7 @@ var Drag = {};
 /*
 Class: Drag.Base
 	Modify two css properties of an element based on the position of the mouse.
-	
+
 Note:
 	Drag.Base requires an XHTML doctype.
 
@@ -4819,7 +4819,7 @@ Options:
 	limit:
 		x - array with start and end limit relative to modifiers.x
 		y - array with start and end limit relative to modifiers.y
-		
+
 Events:
 	onStart - optional, function to execute when the user starts to drag (on mousedown);
 	onComplete - optional, function to execute when the user completes the drag.
@@ -5099,7 +5099,7 @@ Options:
 	encoding - the encoding, defaults to utf-8.
 	autoCancel - cancels the already running request if another one is sent. defaults to false.
 	headers - accepts an object, that will be set to request headers.
-	
+
 Events:
 	onRequest - function to execute when the XHR request is fired.
 	onSuccess - function to execute when the XHR request completes.
@@ -5264,7 +5264,7 @@ Options:
 	update - $(element) to insert the response text of the XHR into, upon completion of the request.
 	evalScripts - boolean; default is false. Execute scripts in the response text onComplete. When the response is javascript the whole response is evaluated.
 	evalResponse - boolean; default is false. Force global evalulation of the whole response, no matter what content-type it is.
-	
+
 Events:
 	onComplete - function to execute when the ajax request completes.
 
@@ -6039,7 +6039,7 @@ Hash.Cookie = Hash.extend({
 		Cookie.set(this.name, str, this.options);
 		return true;
 	},
-	
+
 	/*
 	Property: load
 		Loads the cookie and assigns it to the Hash.
@@ -6113,7 +6113,7 @@ var Color = new Class({
 	/*
 	Property: mix
 		Mixes two or more colors with the Color.
-		
+
 	Arguments:
 		color - a color to mix. you can use as arguments how many colors as you want to mix with the original one.
 		alpha - if you use a number as the last argument, it will be threated as the amount of the color to mix.
@@ -6144,7 +6144,7 @@ var Color = new Class({
 	/*
 	Property: setHue
 		Modifies the hue of the Color, and returns a new one.
-	
+
 	Arguments:
 		value - the hue to set
 	*/
@@ -6156,7 +6156,7 @@ var Color = new Class({
 	/*
 	Property: setSaturation
 		Changes the saturation of the Color, and returns a new one.
-	
+
 	Arguments:
 		percent - the percentage of the saturation to set
 	*/
@@ -6168,7 +6168,7 @@ var Color = new Class({
 	/*
 	Property: setBrightness
 		Changes the brightness of the Color, and returns a new one.
-	
+
 	Arguments:
 		percent - the percentage of the brightness to set
 	*/
@@ -6216,7 +6216,7 @@ Class: Array
 */
 
 Array.extend({
-	
+
 	/*
 	Property: rgbToHsb
 		Converts a RGB array to an HSB array.
@@ -6378,7 +6378,7 @@ License:
 /*
 Class: Slider
 	Creates a slider with two elements: a knob and a container. Returns the values.
-	
+
 Note:
 	The Slider requires an XHTML doctype.
 
@@ -6391,7 +6391,7 @@ Options:
 	steps - the number of steps for your slider.
 	mode - either 'horizontal' or 'vertical'. defaults to horizontal.
 	offset - relative offset for knob position. default to 0.
-	
+
 Events:
 	onChange - a function to fire when the value changes.
 	onComplete - a function to fire when you're done dragging.
@@ -6585,7 +6585,7 @@ Arguments:
 
 Options:
 	handles - a collection of elements to be used for drag handles. defaults to the elements.
-	
+
 Events:
 	onStart - function executed when the item starts dragging
 	onComplete - function executed when the item ends dragging
@@ -6737,7 +6737,7 @@ Options:
 
 	offsets - the distance of your tooltip from the mouse. an Object with x/y properties.
 	fixed - if set to true, the toolTip will not follow the mouse.
-	
+
 Events:
 	onShow - optionally you can alter the default onShow behaviour with this option (like displaying a fade in effect);
 	onHide - optionally you can alter the default onHide behaviour with this option (like displaying a fade out effect);
@@ -6952,7 +6952,7 @@ License:
 Class: Accordion
 	The Accordion class creates a group of elements that are toggled when their handles are clicked. When one elements toggles in, the others toggles back.
 	Inherits methods, properties, options and events from <Fx.Elements>.
-	
+
 Note:
 	The Accordion requires an XHTML doctype.
 
@@ -6970,7 +6970,7 @@ Options:
 	opacity - boolean, will add an opacity transition to the accordion if true. defaults to true.
 	width - boolean, will add a width transition to the accordion if true. defaults to false, css mastery is required to make this work!
 	alwaysHide - boolean, will allow to hide all elements if true, instead of always keeping one element shown. defaults to false.
-	
+
 Events:
 	onActive - function to execute when an element starts to show
 	onBackground - function to execute when an element starts to hide

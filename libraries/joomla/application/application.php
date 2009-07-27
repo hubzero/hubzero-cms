@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: application.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: application.php 10851 2008-08-29 22:36:02Z willebil $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -261,7 +261,7 @@ class JApplication extends JObject
 	 * sent this will be accomplished using a JavaScript statement.
 	 *
 	 * @access	public
-	 * @param	string	$url	The URL to redirect to.
+	 * @param	string	$url	The URL to redirect to. Can only be http/https URL
 	 * @param	string	$msg	An optional message to display on redirect.
 	 * @param	string  $msgType An optional message type.
 	 * @return	none; calls exit().
@@ -278,6 +278,25 @@ class JApplication extends JObject
 		// Strip out any line breaks
 		$url = preg_split("/[\r\n]/", $url);
 		$url = $url[0];
+
+		// If we don't start with a http we need to fix this before we proceed
+		// We could validly start with something else (e.g. ftp), though this would
+		// be unlikely and isn't supported by this API
+		if(!preg_match( '#^http#', $url )) {
+			$uri =& JURI::getInstance();
+			$prefix = $uri->toString(Array('scheme', 'user', 'pass', 'host', 'port'));
+			if($url[0] == '/') {
+				// we just need the prefix since we have a path relative to the root
+				$url = $prefix . $url;
+			} else {
+				// its relative to where we are now, so lets add that
+				$parts = explode('/', $uri->toString(Array('path')));
+				array_pop($parts);
+				$path = implode('/',$parts).'/';
+				$url = $prefix . $path . $url;
+			}
+		}
+
 
 		// If the message exists, enqueue it
 		if (trim( $msg )) {

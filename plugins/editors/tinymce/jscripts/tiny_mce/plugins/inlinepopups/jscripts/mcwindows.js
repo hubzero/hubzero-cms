@@ -344,7 +344,7 @@ MCWindow.prototype.minimize = function() {
 };
 
 MCWindow.prototype.maximize = function() {
-	
+
 };
 
 MCWindow.prototype.startResize = function() {

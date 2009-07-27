@@ -1,5 +1,5 @@
 <jtmpl:comment>
-@version	$Id: mainconfig.html 10223 2008-04-19 14:45:50Z ircmaxell $
+@version	$Id: mainconfig.html 10871 2008-08-30 07:30:33Z willebil $
 @package	Joomla
 @subpackage	Installation
 @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -362,13 +362,13 @@
 								</td>
 								<td>
 									<input class="input_box" id="migration_script" name="sqlFile" type="file" size="20"  />
-									<br/>
+									<br />
 									<input class="input_box" id="sqlUploaded" name="sqlUploaded" type="checkbox" /><jtmpl:translate key="tipUploaded">I have already uploaded a SQL file</jtmpl:translate>
-									<br/>
+									<br />
 									<input class="input_box" id="migration" name="migration" type="checkbox" /><jtmpl:translate key="tipMigration">This script is a Joomla! 1.0 migration script.</jtmpl:translate>
-									<br/>
+									<br />
 									<input class="button" type="button" name="migrationLoad" value="<jtmpl:translate>Upload and execute</jtmpl:translate>" onclick="migrationSql(filename, 'migration');" />
-									<br/><br/>
+									<br /><br />
 									<span id="theMigrationResponse">{VAR_DIRCHECK} {VAR_MIGRESPONSE}</span>
 								</td>
 							</tr>

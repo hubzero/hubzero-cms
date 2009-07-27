@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: category.php 8031 2007-07-17 23:14:23Z jinx $
+ * @version		$Id: search.php 10752 2008-08-23 01:53:31Z eddieajau $
  * @package		Joomla
  * @subpackage	Search
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

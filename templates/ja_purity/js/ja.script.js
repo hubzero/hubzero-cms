@@ -73,10 +73,10 @@ window.addEvent ('load', function(e){
 	var divs = $ES('.moduletable',$('ja-botsl'));
 	var maxh = 0;
 	divs.each(function(el, i){
-		maxh < el.getStyle('height').toInt()?maxh=el.getStyle('height').toInt():'';		
+		maxh < el.getStyle('height').toInt()?maxh=el.getStyle('height').toInt():'';
 	});
 	divs.each(function(el, i){
-		el.setStyle('height', maxh);		
+		el.setStyle('height', maxh);
 	});
 });
 
@@ -88,19 +88,19 @@ switchFontSize=function(ckname,val){
 				bd.removeClass('fs'+CurrentFontSize);
 				CurrentFontSize++;
 				bd.addClass('fs'+CurrentFontSize);
-			}		
+			}
 		break;
 		case 'dec':
 			if (CurrentFontSize-1 > 0) {
 				bd.removeClass('fs'+CurrentFontSize);
 				CurrentFontSize--;
 				bd.addClass('fs'+CurrentFontSize);
-			}		
+			}
 		break;
 		default:
 			bd.removeClass('fs'+CurrentFontSize);
 			CurrentFontSize = val;
-			bd.addClass('fs'+CurrentFontSize);		
+			bd.addClass('fs'+CurrentFontSize);
 	}
 	Cookie.set(ckname, CurrentFontSize,{duration:365});
 }

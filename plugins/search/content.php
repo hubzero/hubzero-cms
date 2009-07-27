@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: content.php 10579 2008-07-22 14:54:24Z ircmaxell $
+ * @version		$Id: content.php 10860 2008-08-30 06:45:31Z willebil $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -47,6 +47,7 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 	$user	=& JFactory::getUser();
 
 	require_once(JPATH_SITE.DS.'components'.DS.'com_content'.DS.'helpers'.DS.'route.php');
+	require_once(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_search'.DS.'helpers'.DS.'search.php');
 
 	$searchText = $text;
 	if (is_array( $areas )) {

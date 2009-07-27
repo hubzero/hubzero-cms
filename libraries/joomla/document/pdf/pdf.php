@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: pdf.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: pdf.php 10707 2008-08-21 09:52:47Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Document
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -18,8 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * DocumentPDF class, provides an easy interface to parse and display a pdf document
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Document
  * @since		1.5

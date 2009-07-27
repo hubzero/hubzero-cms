@@ -1,4 +1,4 @@
-<?php // @version $Id: default.php 10381 2008-06-01 03:35:53Z pasamio $
+<?php // @version $Id: default.php 10864 2008-08-30 07:08:04Z willebil $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -9,7 +9,11 @@ if ($type == 'logout') : ?>
 <form action="index.php" method="post" name="login" class="log">
 	<?php if ($params->get('greeting')) : ?>
 	<p>
-		<?php echo JText::sprintf('HINAME', $user->get('name')); ?>
+	<?php if ($params->get('name')) : {
+		echo JText::sprintf( 'HINAME', $user->get('name') );
+	} else : {
+		echo JText::sprintf( 'HINAME', $user->get('username') );
+	} endif; ?>
 	</p>
 	<?php endif; ?>
 	<p>

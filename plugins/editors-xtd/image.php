@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: image.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: image.php 10709 2008-08-21 09:58:52Z eddieajau $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -19,7 +19,6 @@ jimport( 'joomla.plugin.plugin' );
 /**
  * Editor Image buton
  *
- * @author Johan Janssens <johan.janssens@joomla.org>
  * @package Editors-xtd
  * @since 1.5
  */

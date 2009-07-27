@@ -56,7 +56,7 @@ var TinyMCE_LayerPlugin = {
 				if (state)
 					tinyMCE.addCSSClass(nl[i], 'mceVisualAid');
 				else
-					tinyMCE.removeCSSClass(nl[i], 'mceVisualAid');					
+					tinyMCE.removeCSSClass(nl[i], 'mceVisualAid');
 			}
 		}
 	},

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: pagebreak.php 10576 2008-07-21 12:50:09Z ircmaxell $
+* @version		$Id: pagebreak.php 10906 2008-09-05 07:27:34Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -47,7 +47,7 @@ function plgContentPagebreak( &$row, &$params, $page=0 )
 	}
 
 	if ($print) {
-		$row->text = preg_replace( $regex, '<BR/>', $row->text );
+		$row->text = preg_replace( $regex, '<br />', $row->text );
 		return true;
 	}
 
@@ -57,7 +57,7 @@ function plgContentPagebreak( &$row, &$params, $page=0 )
 	}
 
 	$db		=& JFactory::getDBO();
-	$full 	= JRequest::getBool('fullview');
+    $view  = JRequest::getCmd('view');
 
 	if(!$page) {
 		$page = 0;
@@ -65,7 +65,7 @@ function plgContentPagebreak( &$row, &$params, $page=0 )
 
 
 	// check whether plugin has been unpublished
-	if (!JPluginHelper::isEnabled('content', 'pagebreak') || $params->get( 'intro_only' )|| $params->get( 'popup' ) || $full) {
+	if (!JPluginHelper::isEnabled('content', 'pagebreak') || $params->get( 'intro_only' )|| $params->get( 'popup' ) || $view != 'article') {
 		$row->text = preg_replace( $regex, '', $row->text );
 		return;
 	}

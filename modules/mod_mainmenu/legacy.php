@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: legacy.php 10396 2008-06-05 19:19:55Z willebil $
+* @version		$Id: legacy.php 10856 2008-08-30 06:35:08Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -21,7 +21,7 @@ function mosGetMenuLink($mitem, $level = 0, & $params, $open = null)
 {
 	global $Itemid;
 	$txt = '';
-	//needed to break reference to prevent altering the actual menu item 
+	//needed to break reference to prevent altering the actual menu item
 	$mitem = clone($mitem);
 	// Menu Link is a special type that is a link to another item
 	if ($mitem->type == 'menulink')
@@ -43,6 +43,7 @@ function mosGetMenuLink($mitem, $level = 0, & $params, $open = null)
 	switch ($mitem->type)
 	{
 		case 'separator' :
+			$mitem->browserNav = 3;
 			break;
 
 		case 'url' :
@@ -81,7 +82,7 @@ function mosGetMenuLink($mitem, $level = 0, & $params, $open = null)
 	if ($params->get('full_active_id'))
 	{
 		// support for `active_menu` of 'Link - Url' if link is relative
-		if ($id == '' && $mitem->type == 'url' && strpos('http', $mitem->link) === false) {
+		if ($id == '' && $mitem->type == 'url' && strpos($mitem->link, 'http') === false) {
 			$url = array();
 			if(strpos($mitem->link, '&amp;') !== false)
 			{
@@ -273,7 +274,7 @@ function mosShowVIMenu(& $params)
 	$cacheIndex = array();
 	if(is_array($rows) && count($rows)) {
 	    foreach ($rows as $index => $v) {
-		    if ($v->access <= $user->get('gid')) {
+		    if ($v->access <= $user->get('aid')) {
 			    $pt = $v->parent;
 			    $list = @ $children[$pt] ? $children[$pt] : array ();
 			    array_push($list, $v);

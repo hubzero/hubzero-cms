@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: user.php 10456 2008-06-26 17:24:13Z willebil $
+ * @version		$Id: user.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	User
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -21,7 +21,6 @@ jimport( 'joomla.html.parameter');
 /**
  * User class.  Handles all application interaction with a user
  *
- * @author 		Louis Landry <louis.landry@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	User
  * @since		1.5

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 10554 2008-07-15 17:15:19Z ircmaxell $
+ * @version		$Id: banner.php 10878 2008-08-30 17:29:13Z willebil $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -351,7 +351,7 @@ class BannerControllerBanner extends JController
 		;
 		$db->setQuery( $query );
 		if (!$db->query()) {
-			return JError::raiseWarning( 500, $row->getError() );
+			return JError::raiseWarning( 500, $db->getError() );
 		}
 		$this->setMessage( JText::sprintf( $publish ? 'Items published' : 'Items unpublished', $n ) );
 	}
@@ -376,7 +376,7 @@ class BannerControllerBanner extends JController
 			;
 			$db->setQuery( $query );
 			if (!$db->query()) {
-				JError::raiseWarning( 500, $row->getError() );
+				JError::raiseWarning( 500, $db->getError() );
 			}
 		}
 

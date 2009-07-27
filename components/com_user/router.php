@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: router.php 10579 2008-07-22 14:54:24Z ircmaxell $
+* @version		$Id: router.php 10752 2008-08-23 01:53:31Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -23,7 +23,7 @@ function UserBuildRoute(&$query)
 			$menu = &JSite::getMenu();
 			$menuItem = &$menu->getItem( $query['Itemid'] );
 			if(!isset($menuItem->query['view']) || $menuItem->query['view'] != $query['view']) {
-				$segments[] = $query['view'];	
+				$segments[] = $query['view'];
 			}
 		}
 		unset($query['view']);
@@ -46,4 +46,3 @@ function UserParseRoute($segments)
 
 	return $vars;
 }
-?>

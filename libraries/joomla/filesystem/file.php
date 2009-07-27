@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: file.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: file.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	FileSystem
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -21,7 +21,6 @@ jimport('joomla.filesystem.path');
  * A File handling class
  *
  * @static
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	FileSystem
  * @since		1.5

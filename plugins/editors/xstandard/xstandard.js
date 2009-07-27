@@ -1,5 +1,5 @@
 /**
- * @version		$Id: xstandard.js 10389 2008-06-03 11:27:38Z pasamio $
+ * @version		$Id: xstandard.js 10714 2008-08-21 10:10:14Z eddieajau $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -13,26 +13,25 @@
 /**
  * JXStandard javascript behavior
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla
  * @since		1.5
  * @version     1.0
  */
 var JXStandard = new Class({
 
-	instances : null,		
+	instances : null,
 
 	initialize: function()
 	{
 	 	this.instances = $ES('object[type=application/x-xstandard]');
-	
+
 	 	var self = this;
 	 	document.adminForm.onsubmit = function() {
 	 		self.save();
 		 }
 	},
 
-	save: function() 
+	save: function()
 	{
 		this.instances.each(function(instance)
 		{

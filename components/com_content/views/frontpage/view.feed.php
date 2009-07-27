@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.feed.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: view.feed.php 10827 2008-08-27 23:10:15Z charlvn $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -52,14 +52,13 @@ class ContentViewFrontpage extends JView
 			// strip html from feed item description text
 			$description	= ($params->get('feed_summary', 0) ? $row->introtext.$row->fulltext : $row->introtext);
 			$author			= $row->created_by_alias ? $row->created_by_alias : $row->author;
-			@$date			= ( $row->created ? date( 'r', strtotime($row->created) ) : '' );
-
+						
 			// load individual item creator class
 			$item = new JFeedItem();
 			$item->title 		= $title;
 			$item->link 		= $link;
 			$item->description 	= $description;
-			$item->date			= $date;
+			$item->date			= $row->created;
 			$item->category   	= 'frontpage';
 
 			// loads item info into rss array

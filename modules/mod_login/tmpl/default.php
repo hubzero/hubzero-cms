@@ -3,7 +3,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php if($type == 'logout') : ?>
 <form action="index.php" method="post" name="login" id="form-login">
 <?php if ($params->get('greeting')) : ?>
-	<div><?php echo JText::sprintf( 'HINAME', $user->get('name') ); ?></div>
+	<div>
+	<?php if ($params->get('name')) : {
+		echo JText::sprintf( 'HINAME', $user->get('name') );
+	} else : {
+		echo JText::sprintf( 'HINAME', $user->get('username') );
+	} endif; ?>
+	</div>
 <?php endif; ?>
 	<div align="center">
 		<input type="submit" name="Submit" class="button" value="<?php echo JText::_( 'BUTTON_LOGOUT'); ?>" />

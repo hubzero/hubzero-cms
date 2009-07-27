@@ -111,6 +111,8 @@ function makeTransBG() {
 <div id="ja-headerwrap">
 	<div id="ja-header" class="clearfix" style="background: url(<?php echo $tmpTools->templateurl(); ?>/images/header/<?php echo $tmpTools->getRandomImage(dirname(__FILE__).DS.'images/header'); ?>) no-repeat top <?php if($this->direction == 'rtl') echo 'left'; else echo 'right';?>;">
 
+	<div class="ja-headermask">&nbsp;</div>
+
 	<?php
 		$siteName = $tmpTools->sitename();
 		if ($tmpTools->getParam('logoType')=='image'): ?>
@@ -125,8 +127,6 @@ function makeTransBG() {
 		</h1>
 		<p class="site-slogan"><?php echo $sloganText;?></p>
 	<?php endif; ?>
-
-	<div class="ja-headermask">&nbsp;</div>
 
 	<?php $tmpTools->genToolMenu(JA_TOOL_FONT, 'png'); ?>
 

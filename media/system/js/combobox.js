@@ -15,7 +15,6 @@
  * Used for transforming <input type="text" ... /> tags into combobox dropdowns with appropriate <noscript> tag following
  * for dropdown list information
  *
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package		Joomla
  * @since		1.5
  * @version     1.0

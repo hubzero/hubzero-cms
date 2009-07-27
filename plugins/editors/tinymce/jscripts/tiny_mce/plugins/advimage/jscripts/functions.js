@@ -105,7 +105,7 @@ function init() {
 	if (elm != null && elm.nodeName == "IMG")
 		action = "update";
 
-	formObj.insert.value = tinyMCE.getLang('lang_' + action, 'Insert', true); 
+	formObj.insert.value = tinyMCE.getLang('lang_' + action, 'Insert', true);
 
 	if (action == "update") {
 		var src = tinyMCE.getAttrib(elm, 'src');
@@ -497,7 +497,7 @@ function updateImageData(start) {
 
 function resetImageData() {
 	var formObj = document.forms[0];
-	formObj.width.value = formObj.height.value = "";	
+	formObj.width.value = formObj.height.value = "";
 }
 
 function getSelectValue(form_obj, field_name) {

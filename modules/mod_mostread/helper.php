@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10616 2008-08-06 11:06:39Z hackwar $
+* @version		$Id: helper.php 10857 2008-08-30 06:41:16Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -32,7 +32,7 @@ class modMostReadHelper
 		$aid		= $user->get('aid', 0);
 
 		$contentConfig = &JComponentHelper::getParams( 'com_content' );
-		$access		= !$contentConfig->get('shownoauth');
+		$access		= !$contentConfig->get('show_noauth');
 
 		$nullDate	= $db->getNullDate();
 		$date =& JFactory::getDate();
@@ -74,7 +74,12 @@ class modMostReadHelper
 		$lists	= array();
 		foreach ( $rows as $row )
 		{
-			$lists[$i]->link = JRoute::_(ContentHelperRoute::getArticleRoute($row->slug, $row->catslug, $row->sectionid));
+			if($row->access <= $aid)
+			{
+				$lists[$i]->link = JRoute::_(ContentHelperRoute::getArticleRoute($row->slug, $row->catslug, $row->sectionid));
+			} else {
+				$lists[$i]->link = JRoute::_('index.php?option=com_user&view=login');
+			}
 			$lists[$i]->text = htmlspecialchars( $row->title );
 			$i++;
 		}

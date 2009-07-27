@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * Tree Class.
  *
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	Base
  * @since		1.5
@@ -63,7 +62,6 @@ class JTree extends JObject
 /**
  * Tree Node Class.
  *
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	Base
  * @since		1.5

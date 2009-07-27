@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: modules.php 6140 2007-01-02 03:44:18Z eddiea $
+ * @version		$Id: modules.php 10822 2008-08-27 17:16:00Z tcp $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2007 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -51,9 +51,9 @@ function modChrome_jarounded($module, &$params, &$attribs)
 				<div>
 					<div>
 						<?php if ($module->showtitle != 0) : ?>
-						<?php						
+						<?php
 						if(isset($_COOKIE['Mod'.$module->id])) $modhide = $_COOKIE['Mod'.$module->id];
-						else $modhide = 'show'; 
+						else $modhide = 'show';
 						?>
 						<h3 class="<?php echo $modhide; ?>"><span><?php echo $module->title; ?></span></h3>
 						<?php endif; ?>

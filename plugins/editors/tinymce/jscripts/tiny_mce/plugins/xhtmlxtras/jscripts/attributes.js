@@ -16,7 +16,7 @@ function init() {
 	var elm = inst.getFocusElement();
 
 	var f = document.forms[0];
-	
+
 	var onclick = tinyMCE.cleanupEventStr(tinyMCE.getAttrib(elm, 'onclick'));
 
 	setFormValue('title', tinyMCE.getAttrib(elm, 'title'));
@@ -38,12 +38,12 @@ function init() {
 	setFormValue('onkeypress', tinyMCE.cleanupEventStr(tinyMCE.getAttrib(elm, 'onkeypress')));
 	setFormValue('onkeydown', tinyMCE.cleanupEventStr(tinyMCE.getAttrib(elm, 'onkeydown')));
 	setFormValue('onkeyup', tinyMCE.cleanupEventStr(tinyMCE.getAttrib(elm, 'onkeyup')));
-	
+
 	className = tinyMCE.getVisualAidClass(tinyMCE.getAttrib(elm, 'class'), false);
-		
+
 	addClassesToList('classlist', 'advlink_styles');
 	selectByValue(f, 'classlist', className, true);
-	
+
 	TinyMCE_EditableSelects.init();
 }
 
@@ -57,11 +57,11 @@ function insertAction() {
 	var inst = tinyMCE.getInstanceById(tinyMCE.getWindowArg('editor_id'));
 	var elm = inst.getFocusElement();
 
-	tinyMCEPopup.execCommand("mceBeginUndoLevel");	
+	tinyMCEPopup.execCommand("mceBeginUndoLevel");
 	tinyMCEPopup.restoreSelection();
-	
+
 	setAllAttribs(elm);
-	
+
 	tinyMCE.handleVisualAid(inst.getBody(), true, inst.visualAid, inst);
 	tinyMCE._setEventsEnabled(inst.getBody(), false);
 	tinyMCEPopup.execCommand("mceEndUndoLevel");

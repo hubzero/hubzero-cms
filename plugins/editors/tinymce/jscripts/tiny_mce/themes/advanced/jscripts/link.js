@@ -27,7 +27,7 @@ function init() {
 
 	document.forms[0].href.value = tinyMCE.getWindowArg('href');
 	document.forms[0].linktitle.value = tinyMCE.getWindowArg('title');
-	document.forms[0].insert.value = tinyMCE.getLang('lang_' + tinyMCE.getWindowArg('action'), 'Insert', true); 
+	document.forms[0].insert.value = tinyMCE.getLang('lang_' + tinyMCE.getWindowArg('action'), 'Insert', true);
 
 	addClassesToList('styleSelect', 'theme_advanced_link_styles');
 	selectByValue(formObj, 'styleSelect', tinyMCE.getWindowArg('className'), true);

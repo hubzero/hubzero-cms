@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: error.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: error.php 10871 2008-08-30 07:30:33Z willebil $
  * @package		Joomla.Framework
  * @subpackage	Error
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -56,8 +56,6 @@ $GLOBALS['_JERROR_HANDLERS'] = array(
  * 	- Stephan Schmidt		<scst@php-tools.net>
  *
  * @static
- * @author		Louis Landry <louis.landry@joomla.org>
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	Error
  * @since		1.5
@@ -148,8 +146,8 @@ class JError
 			jexit(
 				'JError::raise -> Static method JError::' . $function . ' does not exist.' .
 				' Contact a developer to debug' .
-				'<br/><strong>Error was</strong> ' .
-				'<br/>' . $exception->getMessage()
+				'<br /><strong>Error was</strong> ' .
+				'<br />' . $exception->getMessage()
 			);
 		}
 

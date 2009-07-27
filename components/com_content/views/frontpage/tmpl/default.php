@@ -32,6 +32,7 @@ if (($numIntroArticles != $startIntroArticles) && ($i < $this->total)) : ?>
 		<tr>
 		<?php
 			$divider = '';
+			if ($this->params->get('multi_column_order')) : // order across as before
 			for ($z = 0; $z < $this->params->def('num_columns', 2); $z ++) :
 				if ($z > 0) : $divider = " column_separator"; endif; ?>
 				<?php
@@ -49,9 +50,23 @@ if (($numIntroArticles != $startIntroArticles) && ($i < $this->total)) : ?>
 						echo $this->loadTemplate('item');
 					endif;
 				endfor;
-				?>
+						?></td>
+						<?php endfor; 
+						$i = $i + $this->params->get('num_intro_articles') ; 
+			else : // otherwise, order down columns, like old category blog
+				for ($z = 0; $z < $this->params->get('num_columns'); $z ++) :
+					if ($z > 0) : $divider = " column_separator"; endif; ?>
+					<td valign="top" width="<?php echo intval(100 / $this->params->get('num_columns')) ?>%" class="article_column<?php echo $divider ?>">
+					<?php for ($y = 0; $y < ($this->params->get('num_intro_articles') / $this->params->get('num_columns')); $y ++) :
+					if ($i < $this->total && $i < ($numIntroArticles)) :
+						$this->item =& $this->getItem($i, $this->params);
+						echo $this->loadTemplate('item');
+						$i ++;
+					endif;
+				endfor; ?>
 				</td>
-		<?php endfor; ?>
+		<?php endfor; 
+		endif;?>
 		<?php $i = $i + $this->params->get('num_intro_articles') ; ?>
 		</tr>
 		</table>

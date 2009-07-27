@@ -1862,7 +1862,7 @@ $rss->image = $image;
 	$item = new FeedItem();
 	$item->title = "This is an the test title of an item";
 	$item->link = "http://localhost/item/";
-	$item->description = "<b>description in </b><br/>HTML";
+	$item->description = "<b>description in </b><br />HTML";
 
 	//optional
 	//item->descriptionTruncSize = 500;

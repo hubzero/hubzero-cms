@@ -1,5 +1,5 @@
 /**
-* @version		$Id: switcher.js 10389 2008-06-03 11:27:38Z pasamio $
+* @version		$Id: switcher.js 10708 2008-08-21 09:58:05Z eddieajau $
 * @package		Joomla
 * @subpackage	Config
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -14,7 +14,6 @@
 /**
  * Switcher behavior for configuration component
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Extensions
  * @subpackage	Config
  * @since		1.5

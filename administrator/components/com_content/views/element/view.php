@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 10554 2008-07-15 17:15:19Z ircmaxell $
+ * @version		$Id: view.php 10710 2008-08-21 10:08:12Z eddieajau $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -176,7 +176,7 @@ class ContentViewElement extends JView
 		$search				= $mainframe->getUserStateFromRequest('articleelement.search',				'search',			'',	'string');
 		$search				= JString::strtolower($search);
 
-		// get list of categories for dropdown filter	
+		// get list of categories for dropdown filter
 		$filter = ($filter_sectionid >= 0) ? ' WHERE cc.section = '.$db->Quote($filter_sectionid) : '';
 
 		// get list of categories for dropdown filter
@@ -185,9 +185,9 @@ class ContentViewElement extends JView
 				' INNER JOIN #__sections AS s ON s.id = cc.section' .
 				$filter .
 				' ORDER BY s.ordering, cc.ordering';
-		
+
 		$lists['catid'] = ContentHelper::filterCategory($query, $catid);
-		
+
 		// get list of sections for dropdown filter
 		$javascript = 'onchange="document.adminForm.submit();"';
 		$lists['sectionid'] = JHTML::_('list.section', 'filter_sectionid', $filter_sectionid, $javascript);

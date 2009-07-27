@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: framework.php 10625 2008-08-12 19:04:10Z ircmaxell $
+* @version		$Id: framework.php 10907 2008-09-05 07:51:33Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -24,7 +24,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 /*
  * Installation check, and check on removal of the install directory.
  */
-if (!file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) || (filesize( JPATH_CONFIGURATION . DS . 'configuration.php' ) < 10) || file_exists( JPATH_INSTALLATION . DS . 'index.php' ) ) {
+if (!file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) || (filesize( JPATH_CONFIGURATION . DS . 'configuration.php' ) < 10) || file_exists( JPATH_INSTALLATION . DS . 'index.php' )) {
 	if( file_exists( JPATH_INSTALLATION . DS . 'index.php' ) ) {
 		header( 'Location: installation/index.php' );
 		exit();

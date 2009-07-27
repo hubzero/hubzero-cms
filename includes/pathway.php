@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: pathway.php 8180 2007-07-23 05:52:29Z eddieajau $
+* @version		$Id: pathway.php 10752 2008-08-23 01:53:31Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * Class to manage the site application pathway
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package 	Joomla
  * @since		1.5
  */

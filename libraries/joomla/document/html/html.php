@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: html.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: html.php 10787 2008-08-24 07:45:36Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	Document
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -20,7 +20,6 @@ jimport('joomla.application.module.helper');
 /**
  * DocumentHTML class, provides an easy interface to parse and display an html document
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Document
  * @since		1.5
@@ -277,6 +276,31 @@ class JDocumentHTML extends JDocument
 
 		return eval($str);
 	}
+
+        /**             
+         * Count the number of child menu items
+         *              
+         * @access public
+         * @return integer Number of child menu items
+         */
+        function countMenuChildren() {
+                static $children;
+                if(!isset($children)) {
+                        $dbo =& JFactory::getDBO();
+                        $menu =& JSite::getMenu();
+                        $where = Array();
+                        $active = $menu->getActive();
+                        if($active) {
+				$where[] = 'parent = ' . $active->id;
+				$where[] = 'published = 1';
+                        	$dbo->setQuery('SELECT COUNT(*) FROM #__menu WHERE '. implode(' AND ', $where));
+                        	$children = $dbo->loadResult(); 
+                	} else {
+				$children = 0;
+			}
+		}
+                return $children;
+        }
 
 	/**
 	 * Load a template file

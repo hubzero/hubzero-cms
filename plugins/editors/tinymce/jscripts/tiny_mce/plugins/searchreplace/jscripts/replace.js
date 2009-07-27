@@ -22,7 +22,7 @@ function searchNext(replacemode) {
 		return;
 
 	// Do search
-	tinyMCEPopup.execCommand('mceSearch', false, { 
+	tinyMCEPopup.execCommand('mceSearch', false, {
 		string : formObj.searchstring.value,
 		replacestring : formObj.replacestring.value,
 		replacemode : replacemode,

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: poll.php 10462 2008-06-28 10:01:42Z willebil $
+* @version		$Id: poll.php 10752 2008-08-23 01:53:31Z eddieajau $
 * @package		Joomla
 * @subpackage	Polls
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -48,7 +48,7 @@ class PollModelPoll extends JModel
 			;
 		$db->setQuery( $query );
 		$db->query();
-		
+
 		$date =& JFactory::getDate();
 
 		$query = 'INSERT INTO #__poll_date'
@@ -60,5 +60,3 @@ class PollModelPoll extends JModel
 		$db->query();
 	}
 }
-
-?>

@@ -41,7 +41,7 @@ function init() {
 	formObj.hspace.value = tinyMCE.getWindowArg('hspace');
 	formObj.width.value = tinyMCE.getWindowArg('width');
 	formObj.height.value = tinyMCE.getWindowArg('height');
-	formObj.insert.value = tinyMCE.getLang('lang_' + tinyMCE.getWindowArg('action'), 'Insert', true); 
+	formObj.insert.value = tinyMCE.getLang('lang_' + tinyMCE.getWindowArg('action'), 'Insert', true);
 
 	// Handle file browser
 	if (isVisible('srcbrowser'))
@@ -60,7 +60,7 @@ var preloadImg = new Image();
 
 function resetImageData() {
 	var formObj = document.forms[0];
-	formObj.width.value = formObj.height.value = "";	
+	formObj.width.value = formObj.height.value = "";
 }
 
 function updateImageData() {

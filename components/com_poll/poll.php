@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: poll.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: poll.php 10752 2008-08-23 01:53:31Z eddieajau $
 * @package		Joomla
 * @subpackage	Polls
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -43,5 +43,3 @@ $controller->execute(JRequest::getCmd('task'));
 
 // Redirect if set by the controller
 $controller->redirect();
-
-?>

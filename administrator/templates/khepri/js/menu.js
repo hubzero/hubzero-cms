@@ -1,5 +1,5 @@
 /**
-* @version		$Id: menu.js 10389 2008-06-03 11:27:38Z pasamio $
+* @version		$Id: menu.js 10702 2008-08-21 09:31:31Z eddieajau $
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
@@ -12,7 +12,6 @@
 /**
  * JMenu javascript behavior
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla
  * @since		1.5
  * @version     1.0

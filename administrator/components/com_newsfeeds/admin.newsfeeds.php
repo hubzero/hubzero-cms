@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.newsfeeds.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: admin.newsfeeds.php 10866 2008-08-30 07:09:42Z willebil $
 * @package		Joomla
 * @subpackage	Newsfeeds
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -458,6 +458,6 @@ function saveOrder(  )
 		$row->reorder('catid = '.(int) $group);
 	}
 
-	$msg 	= 'New ordering saved';
+	$msg 	= JText::_( 'New ordering saved' );
 	$mainframe->redirect( 'index.php?option=com_newsfeeds', $msg );
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: session.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: session.php 10707 2008-08-21 09:52:47Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Session
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -26,7 +26,6 @@ JLoader::register('JSessionStorage', dirname(__FILE__).DS.'storage.php');
 * Based on the standart PHP session handling mechanism it provides
 * for you more advanced features such as expire timeouts.
 *
-* @author		Johan Janssens <johan.janssens@joomla.org>
 * @package		Joomla.Framework
 * @subpackage	Session
 * @since		1.5

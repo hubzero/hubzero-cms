@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: languages.php 10439 2008-06-21 20:34:35Z willebil $
+ * @version		$Id: languages.php 10710 2008-08-21 10:08:12Z eddieajau $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -148,7 +148,7 @@ class InstallerModelLanguages extends InstallerModel
 		if($this->_state->get('pagination.offset') > $this->_state->get('pagination.total')) {
 			$this->setState('pagination.offset',0);
 		}
-		
+
 		if($this->_state->get('pagination.limit') > 0) {
 			$this->_items = array_slice( $rows, $this->_state->get('pagination.offset'), $this->_state->get('pagination.limit') );
 		} else {

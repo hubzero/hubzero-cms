@@ -1,4 +1,4 @@
-<?php // @version: $Id$
+<?php // @version: $Id: form.php 10822 2008-08-27 17:16:00Z tcp $
 defined('_JEXEC') or die('Restricted access');
 ?>
 <script language="javascript" type="text/javascript">

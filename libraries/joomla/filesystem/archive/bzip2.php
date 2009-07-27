@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * Bzip2 format adapter for the JArchive class
  *
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	FileSystem
  * @since		1.5

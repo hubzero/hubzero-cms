@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: helper.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Mail
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -22,7 +22,6 @@ defined('JPATH_BASE') or die();
  * TODO: Test these methods as the regex work is first run and not tested thoroughly
  *
  * @static
- * @author 		Louis Landry <louis.landry@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	Mail
  * @since		1.5

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: Translate.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: Translate.php 10707 2008-08-21 09:52:47Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Template
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -38,7 +38,6 @@ class patTemplate_Function_Translate extends patTemplate_Function
 	* @param	array	parameters of the function (= attributes of the tag)
 	* @param	string	content of the tag
 	* @return	string	content to insert into the template
-	* @author	Andrew Eddie
 	* Function modifed for Joomla!
 	*/
 	function call( $params, $content )

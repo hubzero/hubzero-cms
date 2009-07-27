@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
 * APC session storage handler for PHP
 *
-* @author		Johan Janssens <johan.janssens@joomla.org>
 * @package		Joomla.Framework
 * @subpackage	Session
 * @since		1.5

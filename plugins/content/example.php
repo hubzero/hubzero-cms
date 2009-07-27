@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: example.php 10497 2008-07-03 16:36:12Z ircmaxell $
+ * @version		$Id: example.php 10714 2008-08-21 10:10:14Z eddieajau $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -114,7 +114,7 @@ class plgContentExample extends JPlugin
 	 *
 	 * Method is called right before content is saved into the database.
 	 * Article object is passed by reference, so any changes will be saved!
-	 * NOTE:  Returning false will abort the save with an error.  
+	 * NOTE:  Returning false will abort the save with an error.
 	 * 	You can set the error by calling $article->setError($message)
 	 *
 	 * @param 	object		A JTableContent object
@@ -136,7 +136,7 @@ class plgContentExample extends JPlugin
 	 *
 	 * @param 	object		A JTableContent object
 	 * @param 	bool		If the content is just about to be created
-	 * @return	void		
+	 * @return	void
 	 */
 	function onAfterContentSave( &$article, $isNew )
 	{

@@ -1,5 +1,5 @@
 <jtmpl:comment>
-@version	$Id: adminlists.html 9765 2007-12-30 08:21:02Z ircmaxell $
+@version	$Id: adminlists.html 10871 2008-08-30 07:30:33Z willebil $
 @package	Joomla
 @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 @license	GNU/GPL, see LICENSE.php
@@ -60,7 +60,7 @@ See COPYRIGHT.php for copyright notices and details.
 		<input type="checkbox" name="cid[]" id="cb{ITEM_ID}" value="{ITEM_ID}" onclick="isChecked(this);" />
 	</jtmpl:sub>
 	<jtmpl:sub condition="__default">
-		<a href="javascript:submitbutton('checkin');" onmouseover="return escape('{ITEM_EDITOR}<br/>{ITEM_CHECKED_OUT_TIME}<br/><jtmpl:Translate>Click to check in</jtmpl:Translate>')">
+		<a href="javascript:submitbutton('checkin');" onmouseover="return escape('{ITEM_EDITOR}<br />{ITEM_CHECKED_OUT_TIME}<br /><jtmpl:Translate>Click to check in</jtmpl:Translate>')">
 			<img src="images/checked_out.png" border="0" alt="" /></a>
 		<input type="hidden" name="id" value="{ITEM_ID}" />
 	</jtmpl:sub>

@@ -5,7 +5,7 @@ function init() {
 	var task = (tinyMCE.getWindowArg("replacestring") != null) ? "replace" : "search";
 	mcTabs.displayTab(task + '_tab', task +'_panel');
 	manageReplaceButtons();
-	
+
 	var formObj = document.forms[0];
 
 	formObj[task + "_panel_searchstring"].value = tinyMCE.getWindowArg("searchstring");
@@ -28,7 +28,7 @@ function searchNext(replacemode) {
 	}
 
 	// Do search
-	tinyMCEPopup.execCommand('mceSearch', false, { 
+	tinyMCEPopup.execCommand('mceSearch', false, {
 		string : formObj[task + "_panel_searchstring"].value,
 		replacestring : formObj["replace_panel_replacestring"].value,
 		replacemode : replacemode,

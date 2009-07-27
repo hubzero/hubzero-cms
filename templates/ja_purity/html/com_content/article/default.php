@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php if ($this->params->get('show_page_title', 1) && $this->params->get('page_title') != $this->article->title) : ?>
 <div class="componentheading<?php echo $this->params->get('pageclass_sfx')?>"><?php echo $this->escape($this->params->get('page_title')); ?></div>
 <?php endif; ?>
-<?php if ($this->user->authorize('com_content', 'edit', 'content', 'all') && !$this->print) : ?>
+<?php if (($this->user->authorize('com_content', 'edit', 'content', 'all') || $this->user->authorize('com_content', 'edit', 'content', 'own')) && !$this->print) : ?>
 	<div class="contentpaneopen_edit<?php echo $this->params->get( 'pageclass_sfx' ); ?>" >
 		<?php echo JHTML::_('icon.edit', $this->article, $this->params, $this->access); ?>
 	</div>
@@ -41,13 +41,13 @@ if (
 			<?php echo JHTML::_('date', $this->article->created, JText::_('DATE_FORMAT_LC2')) ?>
 		</span>
 	<?php endif; ?>
-	
+
 	<?php if (($this->params->get('show_author')) && ($this->article->author != "")) : ?>
 		<span class="createby">
 			<?php JText::printf(($this->article->created_by_alias ? $this->article->created_by_alias : $this->article->author) ); ?>
 		</span>
 	<?php endif; ?>
-	
+
 	<?php if (($this->params->get('show_section') && $this->article->sectionid) || ($this->params->get('show_category') && $this->article->catid)) : ?>
 		<?php if ($this->params->get('show_section') && $this->article->sectionid && isset($this->article->section)) : ?>
 		<span class="article-section">
@@ -85,13 +85,13 @@ if (
 			<?php echo JHTML::_('icon.email',  $this->article, $this->params, $this->access); ?>
 			</span>
 			<?php endif; ?>
-		
+
 			<?php if ( $this->params->get( 'show_print_icon' )) : ?>
 			<span>
 			<?php echo JHTML::_('icon.print_popup',  $this->article, $this->params, $this->access); ?>
 			</span>
 			<?php endif; ?>
-	
+
 			<?php if ($this->params->get('show_pdf_icon')) : ?>
 			<span>
 			<?php echo JHTML::_('icon.pdf',  $this->article, $this->params, $this->access); ?>

@@ -15,7 +15,6 @@
  *
  * Inspired by: Chris Campbell <www.particletree.com>
  *
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Forms
  * @since		1.5

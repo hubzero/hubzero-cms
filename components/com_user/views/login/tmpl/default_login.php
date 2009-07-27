@@ -24,7 +24,7 @@ endif; ?>
 			<?php echo $this->image; ?>
 			<?php if ( $this->params->get( 'description_login' ) ) : ?>
 				<?php echo $this->params->get( 'description_login_text' ); ?>
-				<br/><br/>
+				<br /><br />
 			<?php endif; ?>
 		</div>
 	</td>

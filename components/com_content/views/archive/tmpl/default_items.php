@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<?php endif; ?>
 		</h5>
 		<div class="intro">
-			<?php echo substr($item->introtext, 0, 255); ?>...
+			<?php echo substr(strip_tags($item->introtext), 0, 255);  ?>...
 		</div>
 	</li>
 <?php endforeach; ?>

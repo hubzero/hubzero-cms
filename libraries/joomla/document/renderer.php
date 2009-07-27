@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: renderer.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: renderer.php 10707 2008-08-21 09:52:47Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Document
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -19,7 +19,6 @@ defined('JPATH_BASE') or die();
  * Abstract class for a renderer
  *
  * @abstract
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Document
  * @since		1.5

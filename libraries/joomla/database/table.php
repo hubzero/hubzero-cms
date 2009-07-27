@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: table.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: table.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Table
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -21,7 +21,6 @@ defined('JPATH_BASE') or die();
  * Parent classes to all tables.
  *
  * @abstract
- * @author		Andrew Eddie <eddieajau@users.sourceforge.net>
  * @package 	Joomla.Framework
  * @subpackage	Table
  * @since		1.0

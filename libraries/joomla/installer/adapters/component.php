@@ -485,11 +485,11 @@ class JInstallerComponent extends JObject
 		if ($componentrow) {
 			// set the value of exists to be the value of the old id
 			$exists = $componentrow['id'];
-			// and set the old params 
+			// and set the old params
 			$oldparams = $componentrow['params'];
 			// and old enabled
 			$oldenabled = $componentrow['enabled'];
-			
+
 			// Don't do anything if overwrite has not been enabled
 			if ( ! $this->parent->getOverwrite() ) {
 				return true;

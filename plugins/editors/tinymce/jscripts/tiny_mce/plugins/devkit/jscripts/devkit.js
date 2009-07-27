@@ -258,7 +258,7 @@ function renderCommandStates() {
 
 function renderUndoRedo() {
 	var se = document.getElementById('undo_redo'), inst, n, h = '', i, le, id, d, ur;
-	var f = document.forms[0];	
+	var f = document.forms[0];
 
 	if (tinyMCE.undoLevels) {
 		le = tinyMCE.undoLevels;

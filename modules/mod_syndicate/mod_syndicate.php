@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mod_syndicate.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: mod_syndicate.php 10812 2008-08-26 19:36:10Z charlvn $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -26,5 +26,4 @@ if(is_null($link)) {
 	return;
 }
 
-$img = JHTML::_('image.site', 'livemarks.png', '/images/M_images/');
 require(JModuleHelper::getLayoutPath('mod_syndicate'));

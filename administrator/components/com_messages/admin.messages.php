@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.messages.php 10554 2008-07-15 17:15:19Z ircmaxell $
+* @version		$Id: admin.messages.php 10710 2008-08-21 10:08:12Z eddieajau $
 * @package		Joomla
 * @subpackage	Messages
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -80,7 +80,7 @@ function showMessages( $option )
 	$where[] = ' a.user_id_to='.(int) $user->get('id');
 
 	if ($search != '') {
-		$searchEscaped = $db->Quote( '%'.$db->getEscaped( $search, true ).'%', false ); 
+		$searchEscaped = $db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
 		$where[] = '( a.subject LIKE '.$searchEscaped.' OR a.message LIKE '.$searchEscaped.' )';
 	}
 	if ( $filter_state ) {

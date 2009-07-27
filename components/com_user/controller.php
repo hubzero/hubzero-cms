@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10492 2008-07-02 06:38:28Z ircmaxell $
+ * @version		$Id: controller.php 10919 2008-09-09 20:50:29Z willebil $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -117,7 +117,7 @@ class UserController extends JController
 
 		if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
 			$return = base64_decode($return);
-			if (strpos( $return, 'http' ) !== false && strpos( $return, JURI::base() ) !== 0) {
+			if (!JURI::isInternal($return)) {
 				$return = '';
 			}
 		}
@@ -165,7 +165,7 @@ class UserController extends JController
 		{
 			if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
 				$return = base64_decode($return);
-				if (strpos( $return, 'http' ) !== false && strpos( $return, JURI::base() ) !== 0) {
+				if (!JURI::isInternal($return)) {
 					$return = '';
 				}
 			}
@@ -190,9 +190,9 @@ class UserController extends JController
 			JError::raiseError( 403, JText::_( 'Access Forbidden' ));
 			return;
 		}
-		
+
 		$user 	=& JFactory::getUser();
-		
+
 		if ( $user->get('guest')) {
 			JRequest::setVar('view', 'register');
 		} else {
@@ -251,7 +251,7 @@ class UserController extends JController
 		if ($useractivation == '1')
 		{
 			jimport('joomla.user.helper');
-			$user->set('activation', md5( JUserHelper::genRandomPassword()) );
+			$user->set('activation', JUtility::getHash( JUserHelper::genRandomPassword()) );
 			$user->set('block', '1');
 		}
 
@@ -274,7 +274,7 @@ class UserController extends JController
 		} else {
 			$message = JText::_( 'REG_COMPLETE' );
 		}
-		
+
 		$this->setRedirect('index.php', $message);
 	}
 

@@ -1,5 +1,5 @@
 <?php
-// @version $Id: default.php 10381 2008-06-01 03:35:53Z pasamio $
+// @version $Id: default.php 10871 2008-08-30 07:30:33Z willebil $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -20,12 +20,12 @@ defined('_JEXEC') or die('Restricted access');
 
 			switch ($button_pos) :
 			    case 'top' :
-				    $button = $button.'<br/>';
+				    $button = $button.'<br />';
 				    $output = $button.$output;
 				    break;
 
 			    case 'bottom' :
-				    $button = '<br/>'.$button;
+				    $button = '<br />'.$button;
 				    $output = $output.$button;
 				    break;
 

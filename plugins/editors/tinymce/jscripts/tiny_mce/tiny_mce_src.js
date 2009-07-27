@@ -473,7 +473,7 @@ TinyMCE_Engine.prototype = {
 						le.setAttribute('rel', 'stylesheet');
 						le.setAttribute('type', 'text/css');
 
-						nl[0].appendChild(le);			
+						nl[0].appendChild(le);
 					} else
 						document.write('<link href="' + ar[x] + '" rel="stylesheet" type="text/css" />');
 
@@ -2253,7 +2253,7 @@ TinyMCE_Engine.prototype = {
 				} catch(e) {
 					// Just ignore any errors I know this is ugly!!
 				}
-	
+
 				if (!csses)
 					return [];
 
@@ -2554,7 +2554,7 @@ function TinyMCE_Control(settings) {
 				tinyMCE.addPlugin(pn, tos);
 			}
 
-			this.plugins[this.plugins.length] = pn; 
+			this.plugins[this.plugins.length] = pn;
 		}
 	}
 };
@@ -3545,7 +3545,7 @@ TinyMCE_Control.prototype = {
 					// If target node is text do special treatment, (Mozilla 1.3 fix)
 					if (rng.startContainer.nodeType == 3) {
 						var node = rng.startContainer.splitText(rng.startOffset);
-						node.parentNode.insertBefore(value, node); 
+						node.parentNode.insertBefore(value, node);
 					} else
 						rng.insertNode(value);
 
@@ -3777,7 +3777,7 @@ TinyMCE_Control.prototype = {
 
 		// Try the style height
 		if (this.settings.height == 0)
-			this.settings.height = replace_element.style.height; 
+			this.settings.height = replace_element.style.height;
 
 		// If no width/height then default to 320x240, better than nothing
 		if (this.settings.width == 0)
@@ -5065,7 +5065,7 @@ TinyMCE_Cleanup.prototype = {
 					p = p.substring(s.indent_levels);
 
 				o += p + l + '\n';
-	
+
 				if (this.inRe.test(l))
 					p += this.inStr;
 			}
@@ -6256,7 +6256,7 @@ tinyMCE.add(TinyMCE_Engine, {
 	},
 
 	addSelectAccessibility : function(e, s, w) {
-		// Add event handlers 
+		// Add event handlers
 		if (!s._isAccessible) {
 			s.onkeydown = tinyMCE.accessibleEventHandler;
 			s.onblur = tinyMCE.accessibleEventHandler;
@@ -7400,7 +7400,7 @@ TinyMCE_Layer.prototype = {
 				b.src = 'javascript:false;';
 				b.frameBorder = '0';
 				b.scrolling = 'no';
-	
+
 				d.body.appendChild(b);
 			}
 

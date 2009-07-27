@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * Renders a SQL element
  *
- * @author 		Sam Moffatt <sam.moffatt@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage		Parameter
  * @since		1.5
@@ -38,6 +37,8 @@ class JElementSQL extends JElement
 	{
 		$db			= & JFactory::getDBO();
 		$db->setQuery($node->attributes('query'));
-		return JHTML::_('select.genericlist',  $db->loadObjectList(), ''.$control_name.'['.$name.']', 'class="inputbox"', 'value', $name, $value, $control_name.$name);
+		$key = ($node->attributes('key_field') ? $node->attributes('key_field') : 'value');
+		$val = ($node->attributes('value_field') ? $node->attributes('value_field') : $name);
+		return JHTML::_('select.genericlist',  $db->loadObjectList(), ''.$control_name.'['.$name.']', 'class="inputbox"', $key, $val, $value, $control_name.$name);
 	}
 }

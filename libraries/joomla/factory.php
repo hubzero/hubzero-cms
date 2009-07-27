@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: factory.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: factory.php 10871 2008-08-30 07:30:33Z willebil $
  * @package		Joomla.Framework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -566,7 +566,7 @@ class JFactory
 		}
 
 		if ($db->getErrorNum() > 0) {
-			JError::raiseError(500 , 'JDatabase::getInstance: Could not connect to database <br/>' . 'joomla.library:'.$db->getErrorNum().' - '.$db->getErrorMsg() );
+			JError::raiseError(500 , 'JDatabase::getInstance: Could not connect to database <br />' . 'joomla.library:'.$db->getErrorNum().' - '.$db->getErrorMsg() );
 		}
 
 		$db->debug( $debug );
@@ -608,7 +608,7 @@ class JFactory
 				$mail->useSMTP($smtpauth, $smtphost, $smtpuser, $smtppass);
 				break;
 			case 'sendmail' :
-				$mail->IsSendmail();
+				$mail->useSendmail($sendmail);
 				break;
 			default :
 				$mail->IsMail();

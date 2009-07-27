@@ -1,11 +1,11 @@
-<?php // @version $Id: _item.php 10554 2008-07-15 17:15:19Z ircmaxell $
+<?php // @version $Id: _item.php 10828 2008-08-28 07:53:08Z eddieajau $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
 <?php if ($params->get('item_title')) : ?>
 <h4>
-	<?php if ($params->get('link_titles') && $linkOn != '') : ?>
-	<a href="<?php echo JRoute::_($linkOn); ?>" class="contentpagetitle<?php echo $params->get('moduleclass_sfx'); ?>">
+	<?php if ($params->get('link_titles') && (isset($item->linkOn))) : ?>
+	<a href="<?php echo JRoute::_($item->linkOn); ?>" class="contentpagetitle<?php echo $params->get('moduleclass_sfx'); ?>">
 		<?php echo $item->title; ?></a>
 	<?php else :
 		echo $item->title;

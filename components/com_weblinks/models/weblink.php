@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: weblink.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: weblink.php 10752 2008-08-23 01:53:31Z eddieajau $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -20,7 +20,6 @@ jimport('joomla.application.component.model');
 /**
  * Weblinks Component Weblink Model
  *
- * @author Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla
  * @subpackage	Weblinks
  * @since 1.5
@@ -292,4 +291,3 @@ class WeblinksModelWeblink extends JModel
 		return true;
 	}
 }
-?>

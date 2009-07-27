@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: application.php 10456 2008-06-26 17:24:13Z willebil $
+ * @version		$Id: application.php 10854 2008-08-29 22:45:24Z willebil $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -130,9 +130,9 @@ class ConfigControllerApplication extends ConfigController
 								JHTML::_('select.option', 4, JText::_('(UTC +04:00) Abu Dhabi, Muscat, Baku, Tbilisi')),
 								JHTML::_('select.option', 4.5, JText::_('(UTC +04:30) Kabul')),
 								JHTML::_('select.option', 5, JText::_('(UTC +05:00) Ekaterinburg, Islamabad, Karachi, Tashkent')),
-								JHTML::_('select.option', 5.5, JText::_('(UTC +05:30) Bombay, Calcutta, Madras, New Delhi')),
+								JHTML::_('select.option', 5.5, JText::_('(UTC +05:30) Bombay, Calcutta, Madras, New Delhi, Colombo')),
 								JHTML::_('select.option', 5.75, JText::_('(UTC +05:45) Kathmandu')),
-								JHTML::_('select.option', 6, JText::_('(UTC +06:00) Almaty, Dhaka, Colombo')),
+								JHTML::_('select.option', 6, JText::_('(UTC +06:00) Almaty, Dhaka')),
 								JHTML::_('select.option', 6.30, JText::_('(UTC +06:30) Yagoon')),
 								JHTML::_('select.option', 7, JText::_('(UTC +07:00) Bangkok, Hanoi, Jakarta')),
 								JHTML::_('select.option', 8, JText::_('(UTC +08:00) Beijing, Perth, Singapore, Hong Kong')),

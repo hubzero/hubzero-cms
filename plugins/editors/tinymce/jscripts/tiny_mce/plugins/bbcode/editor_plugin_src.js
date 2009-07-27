@@ -70,7 +70,7 @@ var TinyMCE_BBCodePlugin = {
 		rep(/&amp;/gi,"&");
 		rep(/&undefined;/gi,"'"); // quickfix
 
-		return s; 
+		return s;
 	},
 
 	// BBCode -> HTML from PunBB dialect
@@ -95,7 +95,7 @@ var TinyMCE_BBCodePlugin = {
 		rep(/\[code\](.*?)\[\/code\]/gi,"<span class=\"codeStyle\">$1</span>&nbsp;");
 		rep(/\[quote.*?\](.*?)\[\/quote\]/gi,"<span class=\"quoteStyle\">$1</span>&nbsp;");
 
-		return s; 
+		return s;
 	}
 };
 

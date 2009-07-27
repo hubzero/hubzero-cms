@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: router.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: router.php 10752 2008-08-23 01:53:31Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -131,7 +131,7 @@ function WeblinksBuildRoute(&$query)
 
 			// Push the catid onto the stack.
 			$segments[] = $query['id'];
-			
+
 			unset($query['view']);
 			unset($query['id']);
 			unset($query['alias']);
@@ -145,8 +145,8 @@ function WeblinksBuildRoute(&$query)
 
 			// Push the catid onto the stack.
 			$segments[] = $query['catid'];
-			
-			
+
+
 			if (isset($query['alias'])) {
 				$query['id'] .= ':'.$query['alias'];
 			}
@@ -265,4 +265,3 @@ function WeblinksParseRoute($segments)
 
 	return $vars;
 }
-?>

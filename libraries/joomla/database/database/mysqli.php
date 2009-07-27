@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mysqli.php 10431 2008-06-15 19:42:18Z willebil $
+* @version		$Id: mysqli.php 10796 2008-08-25 07:51:20Z tcp $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -289,6 +289,10 @@ class JDatabaseMySQLi extends JDatabase
 			$command_line = trim( $command_line );
 			if ($command_line != '') {
 				$this->_cursor = mysqli_query( $this->_resource, $command_line );
+				if ($this->_debug) {
+					$this->_ticker++;
+					$this->_log[] = $command_line;
+				}
 				if (!$this->_cursor) {
 					$error = 1;
 					$this->_errorNum .= mysqli_errno( $this->_resource ) . ' ';

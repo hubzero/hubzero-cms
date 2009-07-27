@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: article.php 10579 2008-07-22 14:54:24Z ircmaxell $
+ * @version		$Id: article.php 10912 2008-09-05 19:45:22Z willebil $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -20,7 +20,6 @@ jimport('joomla.application.component.model');
 /**
  * Content Component Article Model
  *
- * @author	Louis Landry <louis.landry@joomla.org>
  * @package		Joomla
  * @subpackage	Content
  * @since 1.5
@@ -322,7 +321,7 @@ class ContentModelArticle extends JModel
 			$article->publish_down = $date->toMySQL();
 		}
 
-		$article->title = trim( JFilterOutput::ampReplace($article->title) );
+		$article->title = trim( $article->title );
 
 		// Publishing state hardening for Authors
 		if (!$user->authorize('com_content', 'publish', 'content', 'all'))
@@ -406,7 +405,7 @@ class ContentModelArticle extends JModel
 			$this->setError($article->getError());
 			return false;
 		}
-		
+
 		// Store the article table to the database
 		if (!$article->store()) {
 			$this->setError($this->_db->getErrorMsg());
@@ -599,7 +598,7 @@ class ContentModelArticle extends JModel
 		 * we are looking for and we have access to it.
 		 */
 		$where = ' WHERE a.id = '. (int) $this->_id;
-		$where .= ' AND a.access <= '. (int) $aid;
+//		$where .= ' AND a.access <= '. (int) $aid;
 
 		if (!$user->authorize('com_content', 'edit', 'content', 'all'))
 		{

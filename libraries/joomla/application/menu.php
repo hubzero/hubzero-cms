@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: menu.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: menu.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Application
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -18,8 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * JMenu class
  *
- * @author Louis Landry   <louis.landry@joomla.org>
- * @author Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Application
  * @since		1.5

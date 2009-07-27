@@ -1,4 +1,4 @@
-<?php // @version $Id: complete.php  $
+<?php // @version $Id: complete.php 10822 2008-08-27 17:16:00Z tcp $
 defined('_JEXEC') or die('Restricted access');
 ?>
 

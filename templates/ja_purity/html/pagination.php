@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: pagination.php 8543 2007-08-24 13:59:00Z friesengeist $
+ * @version		$Id: pagination.php 10822 2008-08-27 17:16:00Z tcp $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2007 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php

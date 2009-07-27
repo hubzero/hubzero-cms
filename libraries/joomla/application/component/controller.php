@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: controller.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: controller.php 10910 2008-09-05 19:41:09Z willebil $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -302,7 +302,7 @@ class JController extends JObject
 		$view->setLayout($viewLayout);
 
 		// Display the view
-		if ($cachable) {
+		if ($cachable && $viewType != 'feed') {
 			global $option;
 			$cache =& JFactory::getCache($option, 'view');
 			$cache->get($view, 'display');

@@ -1008,15 +1008,6 @@ p.site-slogan {
 
 /* MAIN NAVIGATION
 --------------------------------------------------------- */
-#ja-mainnavwrap {
-	border-top: 1px solid #555555;
-	background: #444444;
-}
-
-#ja-mainnav {
-	border-left: 1px solid #333333;
-	background: #444444;
-}
 
 #ja-pathway {
 	font-size: 92%;

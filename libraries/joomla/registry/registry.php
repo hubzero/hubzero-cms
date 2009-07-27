@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: registry.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: registry.php 10815 2008-08-27 01:15:56Z tcp $
  * @package		Joomla.Framework
  * @subpackage	Registry
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -21,7 +21,6 @@ JLoader::register('JRegistryFormat', dirname(__FILE__).DS.'format.php');
 /**
  * JRegistry class
  *
- * @author 		Louis Landry <louis.landry@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	Registry
  * @since 		1.5
@@ -127,7 +126,8 @@ class JRegistry extends JObject
 		{
 			// Get the namespace
 			//$namespace = array_shift($nodes);
-			if (count($nodes)<2) {
+			$count = count($nodes);
+			if ($count < 2) {
 				$namespace	= $this->_defaultNameSpace;
 				$nodes[1]	= $nodes[0];
 			} else {
@@ -136,7 +136,7 @@ class JRegistry extends JObject
 
 			if (isset($this->_registry[$namespace])) {
 				$ns = & $this->_registry[$namespace]['data'];
-				$pathNodes = count($nodes) - 1;
+				$pathNodes = $count - 1;
 
 				//for ($i = 0; $i < $pathNodes; $i ++) {
 				for ($i = 1; $i < $pathNodes; $i ++) {
@@ -166,10 +166,13 @@ class JRegistry extends JObject
 		$nodes = explode('.', $regpath);
 
 		// Get the namespace
-		if (count($nodes)<2) {
+		$count = count($nodes);
+
+		if ($count < 2) {
 			$namespace = $this->_defaultNameSpace;
 		} else {
 			$namespace = array_shift($nodes);
+			$count--;
 		}
 
 		if (!isset($this->_registry[$namespace])) {
@@ -178,7 +181,7 @@ class JRegistry extends JObject
 
 		$ns = & $this->_registry[$namespace]['data'];
 
-		$pathNodes = count($nodes) - 1;
+		$pathNodes = $count - 1;
 
 		if ($pathNodes < 0) {
 			$pathNodes = 0;

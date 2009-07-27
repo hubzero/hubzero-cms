@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: simplexml.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: simplexml.php 10815 2008-08-27 01:15:56Z tcp $
 * @package		Joomla.Framework
 * @subpackage	Utilities
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -282,7 +282,8 @@ class JSimpleXML extends JObject
 	function _startElement($parser, $name, $attrs = array())
 	{
 		//Check to see if tag is root-level
-		if (count($this->_stack) == 0)
+		$count = count($this->_stack);
+		if ($count == 0)
 		{
 			//If so, set the document as the current tag
 			$classname = get_class( $this ) . 'Element';
@@ -298,7 +299,7 @@ class JSimpleXML extends JObject
 			$parent = $this->_getStackLocation();
 
 			//Add the child
-			eval('$this->'.$parent.'->addChild($name, $attrs, '.count($this->_stack).');');
+			eval('$this->'.$parent.'->addChild($name, $attrs, '.$count.');');
 
 			//Update the stack
 			eval('$this->_stack[] = $name.\'[\'.(count($this->'.$parent.'->'.$name.') - 1).\']\';');
@@ -350,7 +351,6 @@ class JSimpleXML extends JObject
  * To loop through all of the direct children of a specific tag for this object, it
  * is probably easier to use the arrays of the specific tag names, as explained above.
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package 	Joomla.Framework
  * @subpackage	Utilities
  * @since 1.5

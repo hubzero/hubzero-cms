@@ -15,7 +15,7 @@
 	<params>
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="width" type="text" default="20" label="Box Width" description="Size of the search text box" />
+		<param name="width" type="text" default="20" label="Box Width" description="Size of the search text box in characters" />
 		<param name="text" type="text" default="" label="Text" description="PARAMTEXT" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="button" type="radio" default="" label="Search Button" description="Display a Search Button">

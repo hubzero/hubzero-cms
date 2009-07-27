@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10616 2008-08-06 11:06:39Z hackwar $
+* @version		$Id: helper.php 10868 2008-08-30 07:22:26Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -41,8 +41,8 @@ class modNewsFlashHelper
 					$item->linkOn = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
 					$item->linkText = JText::_('Read more text');
 				} else {
-					$item->linkOn = JRoute::_('index.php?option=com_user&task=register');
-					$item->linkText = JText::_('Register To Read More');
+					$item->linkOn = JRoute::_('index.php?option=com_user&view=login');
+					$item->linkText = JText::_('Login To Read More');
 				}
 			}
 		}

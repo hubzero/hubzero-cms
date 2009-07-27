@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: application.php 10382 2008-06-01 06:56:02Z pasamio $
+* @version		$Id: application.php 10912 2008-09-05 19:45:22Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -214,7 +214,7 @@ class JSite extends JApplication
 			}
 			else
 			{
-				JError::raiseError( 403, JText::_('Not Authorised') );
+				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 			}
 		}
 	}
@@ -228,18 +228,19 @@ class JSite extends JApplication
 	 */
 	function &getParams($option = null)
 	{
-		static $params;
-
-		if (!is_object($params))
+		static $params = array();
+		$hash = '__default';
+		if(!empty($option)) $hash = $option;
+		if (!isset($params[$hash]))
 		{
 			// Get component parameters
 			if (!$option) {
 				$option = JRequest::getCmd('option');
 			}
-			$params = &JComponentHelper::getParams($option);
+			$params[$hash] =& JComponentHelper::getParams($option);
 
 			// Get menu parameters
-			$menus	= &JSite::getMenu();
+			$menus	=& JSite::getMenu();
 			$menu	= $menus->getActive();
 
 			$title       = htmlspecialchars_decode($this->getCfg('sitename' ));
@@ -248,16 +249,16 @@ class JSite extends JApplication
 			// Lets cascade the parameters if we have menu item parameters
 			if (is_object($menu))
 			{
-				$params->merge(new JParameter($menu->params));
+				$params[$hash]->merge(new JParameter($menu->params));
 				$title = $menu->name;
 
 			}
 
-			$params->def( 'page_title'      , $title );
-			$params->def( 'page_description', $description );
+			$params[$hash]->def( 'page_title'      , $title );
+			$params[$hash]->def( 'page_description', $description );
 		}
 
-		return $params;
+		return $params[$hash];
 	}
 
 	/**

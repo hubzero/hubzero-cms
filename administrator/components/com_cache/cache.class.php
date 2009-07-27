@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: cache.class.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: cache.class.php 10818 2008-08-27 06:07:24Z tcp $
  * @package		Joomla
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -122,7 +122,7 @@ class CacheData extends JObject
 	 */
 	function cleanCache( $group='' )
 	{
-		$cache =& JFactory::getCache();
+		$cache =& JFactory::getCache('', 'callback', 'file');
 		$cache->clean( $group );
 	}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: atom.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: atom.php 10707 2008-08-21 09:52:47Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Document
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -23,8 +23,6 @@ defined('JPATH_BASE') or die();
  * Please note that just by using this class you won't automatically
  * produce valid atom files. For example, you have to specify either an editor
  * for the feed or an author for every single feed item.
- *
- * @author	Johan Janssens <johan.janssens@joomla.org>
  *
  * @package 	Joomla.Framework
  * @subpackage	Document

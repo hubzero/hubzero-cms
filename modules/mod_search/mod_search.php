@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mod_search.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: mod_search.php 10855 2008-08-29 22:47:34Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -22,6 +22,7 @@ $imagebutton	 = $params->get('imagebutton', '');
 $button_pos		 = $params->get('button_pos', 'left');
 $button_text	 = $params->get('button_text', JText::_('Search'));
 $width			 = intval($params->get('width', 20));
+$maxlength		 = $width > 20 ? $width : 20;
 $text			 = $params->get('text', JText::_('search...'));
 $set_Itemid		 = intval($params->get('set_itemid', 0));
 $moduleclass_sfx = $params->get('moduleclass_sfx', '');

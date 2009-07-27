@@ -19,8 +19,6 @@ defined('JPATH_BASE') or die();
  * Abstract observer class to implement the observer design pattern
  *
  * @abstract
- * @author		Louis Landry <louis.landry@joomla.org>
- * @package		Joomla.Framework
  * @subpackage	Base
  * @since		1.5
  */

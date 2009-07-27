@@ -41,7 +41,7 @@ function init() {
 				break;
 		}
 
-		document.forms[0].insert.value = tinyMCE.getLang('lang_update', 'Insert', true); 
+		document.forms[0].insert.value = tinyMCE.getLang('lang_update', 'Insert', true);
 	}
 
 	document.getElementById('filebrowsercontainer').innerHTML = getBrowserHTML('filebrowser','src','media','media');

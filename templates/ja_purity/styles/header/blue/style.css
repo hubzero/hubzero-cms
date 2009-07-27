@@ -50,71 +50,68 @@ p.site-slogan {
 	color: #C3DFED;
 }
 
+/*--------------------------- VISUAL ----------------------------*/
+/* -------- All levels -------- */
 #ja-mainnavwrap {
-	border-top: 1px solid #2A84B1;
-	background: #1374A5;
-}
-
-#ja-mainnav {
-	border-left: 1px solid #005A87;
-	background: #1374A5;
-}
-
-#ja-mainnav ul.menu {
-	border-right: 1px solid #2A84B1;
-}
-
-#ja-mainnav ul.menu li a {
-	border-left: 1px solid #2A84B1;
-	border-right: 1px solid #005A87;
-	color: #C3DFED;
-}
-
-#ja-mainnav ul.menu li a:hover,
-#ja-mainnav ul.menu li a:active,
-#ja-mainnav ul.menu li a:focus {
-	background-color: #2A84B1;
-}
-
-#ja-mainnav ul.menu li:hover,
-#ja-mainnav ul.menu li.sfhover,
-#ja-mainnav ul.menu li.havechildsfhover,
-#ja-mainnav ul.menu li.havechild-activesfhover {
-	background-color: #2A84B1;
-}
-
-#ja-mainnav ul.menu li.active a,
-#ja-mainnav ul.menu li.active a:hover,
-#ja-mainnav ul.menu li.active a:active,
-#ja-mainnav ul.menu li.active a:focus  {
-	background-color: #005A87;
-}
-
-#ja-mainnav ul.menu li ul {
-	border: 1px solid #2A84B1;
-	background: url(images/opaque.png);
-}
-
-#ja-mainnav ul.menu li ul li {
 	border-top: 1px solid #4394BD;
-	border-bottom: 1px solid #006699;
+	background: #1374A5;
+}
+#ja-mainnav ul, #ja-mainnav li {
+	background-image: none;
+	list-style: none;
 }
 
-#ja-mainnav ul.menu li ul a {
+#ja-mainnav span.separator {
+	display:none;
+}
+
+/* -------- Top level -------- */
+#ja-mainnav > ul {
+	background-color: #1374A5;
+	padding-left: 20px;
+}
+
+#ja-mainnav > ul > li {
+	background-color: #1374A5;
+	border-left: 1px solid #4394BD;
+	border-right: 1px solid #005A87;
+	margin-right: 1px;
+}
+
+#ja-mainnav > ul > li.active {
+	background: url(../../../images/arrow2.png) no-repeat bottom center #1374A5;
 	color: #C3DFED;
 }
 
-#ja-mainnav ul.menu li ul a:hover,
-#ja-mainnav ul.menu li ul a:active,
-#ja-mainnav ul.menu li ul a:focus,
-#ja-mainnav ul.menu ul li:hover,
-#ja-mainnav ul.menu ul li.sfhover,
-#ja-mainnav ul.menu ul li.havesubchildsfhover,
-#ja-mainnav ul.menu ul li.havesubchild-activesfhover,
-#ja-mainnav ul.menu ul ul li:hover,
-#ja-mainnav ul.menu ul ul li.sfhover,
-#ja-mainnav ul.menu ul ul li.havesubchildsfhover,
-#ja-mainnav ul.menu ul ul li.havesubchild-activesfhover {
+#ja-mainnav > ul > li:hover,
+#ja-mainnav > ul > li:active,
+#ja-mainnav > ul > li:focus {
+	background: url(../../../images/arrow2.png) no-repeat bottom center #2A84B1;
+	color: #C3DFED;
+}
+
+/* -------- sub-levels -------- */
+#ja-mainnav ul ul li {
+	border-left: 1px solid #4394BD;
+	border-right: 1px solid #005A87;
+	border-top: 1px solid #4394BD;
+	border-bottom: 1px solid #005A87;
+	margin-bottom: 1px;
+}
+
+#ja-mainnav li ul { /* second-level lists */
+	background-color: #2A84B1;
+}
+
+#ja-mainnav li a {
+	color: #C3DFED;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#ja-mainnav ul ul  li:hover,
+#ja-mainnav ul ul  li:active,
+#ja-mainnav ul ul  li:focus {
 	background: #006699;
 	color: #C3DFED;
 }

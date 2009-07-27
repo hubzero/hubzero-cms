@@ -1,5 +1,5 @@
 /**
-* @version      $Id: mediamanager.js 10389 2008-06-03 11:27:38Z pasamio $
+* @version      $Id: mediamanager.js 10710 2008-08-21 10:08:12Z eddieajau $
 * @package      Joomla
 * @copyright    Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license      GNU/GPL, see LICENSE.php
@@ -14,8 +14,6 @@
 /**
  * JMediaManager behavior for media component
  *
- * @author      Johan Janssens <johan.janssens@joomla.org>
- * @author      Louis Landry <louis.landry@joomla.org>
  * @package     Joomla.Extensions
  * @subpackage  Media
  * @since       1.5
@@ -41,7 +39,7 @@ var MediaManager = {
             },{ text: 'Media', open: true, data: { url: 'index.php?option=com_media&view=mediaList&tmpl=component', target: 'folderframe'}});
         this.tree.adopt('media-tree');
     },
-    
+
     submit: function(task)
     {
         form = window.frames['folderframe'].document.getElementById('mediamanager-form');

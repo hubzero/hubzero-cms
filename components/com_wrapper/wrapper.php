@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: wrapper.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: wrapper.php 10704 2008-08-21 09:38:40Z eddieajau $
 * @package		Joomla
 * @subpackage	Wrapper
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -31,7 +31,6 @@ switch (JRequest::getCmd('task'))
  * Static class to hold controller functions for the Wrapper component
  *
  * @static
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla
  * @subpackage	Wrapper
  * @since		1.5

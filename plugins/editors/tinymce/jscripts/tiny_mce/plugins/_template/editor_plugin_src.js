@@ -29,7 +29,7 @@ var TinyMCE_TemplatePlugin = {
 	 * The current keys are longname, author, authorurl, infourl and version.
 	 *
 	 * @returns Name/value array containing information about the plugin.
-	 * @type Array 
+	 * @type Array
 	 */
 	getInfo : function() {
 		return {
@@ -44,7 +44,7 @@ var TinyMCE_TemplatePlugin = {
 	/**
 	 * Gets executed when a TinyMCE editor instance is initialized.
 	 *
-	 * @param {TinyMCE_Control} Initialized TinyMCE editor control instance. 
+	 * @param {TinyMCE_Control} Initialized TinyMCE editor control instance.
 	 */
 	initInstance : function(inst) {
 		// You can take out plugin specific parameters

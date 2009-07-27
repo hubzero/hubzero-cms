@@ -9,7 +9,7 @@
 //\  Please read the license agreement (available through the link above)
 //\  before using overLIB. Direct any licensing questions to erik@bosrup.com.
 //\
-//\  Do not sell this as your own work or remove this copyright notice. 
+//\  Do not sell this as your own work or remove this copyright notice.
 //\  For full details on copying or changing this script please read the
 //\  license agreement at the link above. Please give credit on sites that
 //\  use overLIB and submit changes of the script so other people can use

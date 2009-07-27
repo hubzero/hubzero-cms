@@ -265,7 +265,7 @@ function init() {
 	formObj.dir.value = dir;
 	formObj.lang.value = lang;
 	formObj.backgroundimage.value = background;
-	formObj.insert.value = tinyMCE.getLang('lang_' + action, 'Insert', true); 
+	formObj.insert.value = tinyMCE.getLang('lang_' + action, 'Insert', true);
 
 	updateColor('bordercolor_pick', 'bordercolor');
 	updateColor('bgcolor_pick', 'bgcolor');

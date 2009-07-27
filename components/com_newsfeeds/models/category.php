@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: category.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: category.php 10704 2008-08-21 09:38:40Z eddieajau $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -20,7 +20,6 @@ jimport('joomla.application.component.model');
 /**
  * Newsfeeds Component Category Model
  *
- * @author Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla
  * @subpackage	Newsfeeds
  * @since 1.5

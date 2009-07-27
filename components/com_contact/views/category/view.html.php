@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
+ * @version		$Id: view.html.php 10880 2008-08-31 17:51:53Z willebil $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -36,10 +36,14 @@ class ContactViewCategory extends JView
 
 		// Selected Request vars
 		$categoryId			= JRequest::getVar('catid',				0,				'', 'int');
-		$limit				= JRequest::getVar('limit',				$mainframe->getCfg('list_limit'),	'', 'int');
 		$limitstart			= JRequest::getVar('limitstart',		0,				'', 'int');
 		$filter_order		= JRequest::getVar('filter_order',		'cd.ordering',	'', 'cmd');
 		$filter_order_Dir	= JRequest::getVar('filter_order_Dir',	'ASC',			'', 'word');
+
+		$pparams->def('display_num', $mainframe->getCfg('list_limit'));
+		$default_limit = $pparams->def('display_num', 20);
+
+		$limit = $mainframe->getUserStateFromRequest('com_contact.'.$this->getLayout().'.limit', 'limit', $default_limit, 'int');
 
 		// query options
 		$options['aid'] 		= $user->get('aid', 0);
@@ -108,7 +112,7 @@ class ContactViewCategory extends JView
 		// because the application sets a default page title, we need to get it
 		// right from the menu item itself
 		if (is_object( $menu )) {
-			$menu_params = new JParameter( $menu->params );			
+			$menu_params = new JParameter( $menu->params );
 			if (!$menu_params->get( 'page_title')) {
 				$pparams->set('page_title',	$category->title);
 			}

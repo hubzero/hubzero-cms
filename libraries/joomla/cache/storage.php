@@ -19,7 +19,6 @@ defined('JPATH_BASE') or die();
  * Abstract cache storage handler
  *
  * @abstract
- * @author		Louis Landry <louis.landry@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Cache
  * @since		1.5
@@ -52,7 +51,7 @@ class JCacheStorage extends JObject
 
 	/**
 	 * Returns a reference to a cache storage hanlder object, only creating it
-	 * if it doesn't already exist. 
+	 * if it doesn't already exist.
 	 *
 	 * @static
 	 * @param	string	$handler	The cache storage handler to instantiate

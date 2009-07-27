@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: router.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: router.php 10702 2008-08-21 09:31:31Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * Class to create and parse routes
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package 	Joomla
  * @since		1.5
  */

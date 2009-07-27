@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10616 2008-08-06 11:06:39Z hackwar $
+ * @version		$Id: view.html.php 10868 2008-08-30 07:22:26Z willebil $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -78,7 +78,7 @@ class ContentViewSection extends ContentView
 		// because the application sets a default page title, we need to get it
 		// right from the menu item itself
 		if (is_object( $menu )) {
-			$menu_params = new JParameter( $menu->params );			
+			$menu_params = new JParameter( $menu->params );
 			if (!$menu_params->get( 'page_title')) {
 				$params->set('page_title',	$section->title);
 			}
@@ -160,7 +160,7 @@ class ContentViewSection extends ContentView
 			}
 			else
 			{
-				$item->readmore_link = JRoute::_("index.php?option=com_user&task=register");
+				$item->readmore_link = JRoute::_("index.php?option=com_user&view=login");
 				$item->readmore_register = true;
 			}
 		}

@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * XCache cache storage handler
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Cache
  * @since		1.5

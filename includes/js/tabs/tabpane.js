@@ -50,12 +50,12 @@ function hasSupport() {
 
 	if (typeof hasSupport.support != "undefined")
 		return hasSupport.support;
-	
+
 	var ie55 = /msie 5\.[56789]/i.test( navigator.userAgent );
-	
+
 	hasSupport.support = ( typeof document.implementation != "undefined" &&
 			document.implementation.hasFeature( "html", "1.0" ) || ie55 )
-			
+
 	// IE55 has a serious DOM1 bug... Patch it!
 	if ( ie55 ) {
 		document._getElementsByTagName = document.getElementsByTagName;
@@ -79,16 +79,16 @@ function hasSupport() {
 //
 function WebFXTabPane( el, bUseCookie ) {
 	if ( !hasSupport() || el == null ) return;
-	
+
 	this.element = el;
 	this.element.tabPane = this;
 	this.pages = [];
 	this.selectedIndex = null;
 	this.useCookie = bUseCookie != null ? bUseCookie : true;
-	
+
 	// add class name tag to class name
 	this.element.className = this.classNameTag + " " + this.element.className;
-	
+
 	// add tab row
 	this.tabRow = document.createElement( "div" );
 	this.tabRow.className = "tab-row";
@@ -101,7 +101,7 @@ function WebFXTabPane( el, bUseCookie ) {
 			tabIndex = 0;
 	}
 	this.selectedIndex = tabIndex;
-	
+
 	// loop through child nodes and add them
 	var cs = el.childNodes;
 	var n;
@@ -120,42 +120,42 @@ WebFXTabPane.prototype.setSelectedIndex = function ( n ) {
 			this.pages[ this.selectedIndex ].hide();
 		this.selectedIndex = n;
 		this.pages[ this.selectedIndex ].show();
-		
+
 		if ( this.useCookie )
 			WebFXTabPane.setCookie( "webfxtab_" + this.element.id, n );	// session cookie
 	}
 };
-	
+
 WebFXTabPane.prototype.getSelectedIndex = function () {
 	return this.selectedIndex;
 };
-	
+
 WebFXTabPane.prototype.addTabPage = function ( oElement ) {
 	if ( !hasSupport() ) return;
-	
+
 	if ( oElement.tabPage == this )	// already added
 		return oElement.tabPage;
 
 	var n = this.pages.length;
 	var tp = this.pages[n] = new WebFXTabPage( oElement, this, n );
 	tp.tabPane = this;
-	
+
 	// move the tab out of the box
 	this.tabRow.appendChild( tp.tab );
-			
+
 	if ( n == this.selectedIndex )
 		tp.show();
 	else
 		tp.hide();
-		
+
 	return tp;
 };
-	
+
 WebFXTabPane.prototype.dispose = function () {
 	this.element.tabPane = null;
-	this.element = null;		
+	this.element = null;
 	this.tabRow = null;
-	
+
 	for (var i = 0; i < this.pages.length; i++) {
 		this.pages[i].dispose();
 		this.pages[i] = null;
@@ -204,11 +204,11 @@ WebFXTabPane.removeCookie = function ( name ) {
 //
 function WebFXTabPage( el, tabPane, nIndex ) {
 	if ( !hasSupport() || el == null ) return;
-	
+
 	this.element = el;
 	this.element.tabPage = this;
 	this.index = nIndex;
-	
+
 	var cs = el.childNodes;
 	for (var i = 0; i < cs.length; i++) {
 		if (cs[i].nodeType == 1 && cs[i].className == "tab") {
@@ -216,10 +216,10 @@ function WebFXTabPage( el, tabPane, nIndex ) {
 			break;
 		}
 	}
-	
+
 	// insert a tag around content to support keyboard navigation
-	
-	
+
+
 	var a = document.createElement( "A" );
 	this.aElement = a;
 	a.href = "#";
@@ -228,7 +228,7 @@ function WebFXTabPage( el, tabPane, nIndex ) {
 		a.appendChild( this.tab.firstChild );
 	this.tab.appendChild( a );
 
-	
+
 	// hook up events, using DOM0
 	var oThis = this;
 	this.tab.onclick = function () { oThis.select(); };
@@ -241,7 +241,7 @@ WebFXTabPage.prototype.show = function () {
 	var s = el.className + " selected";
 	s = s.replace(/ +/g, " ");
 	el.className = s;
-	
+
 	this.element.style.display = "block";
 };
 
@@ -253,11 +253,11 @@ WebFXTabPage.prototype.hide = function () {
 
 	this.element.style.display = "none";
 };
-	
+
 WebFXTabPage.prototype.select = function () {
 	this.tabPane.setSelectedIndex( this.index );
 };
-	
+
 WebFXTabPage.prototype.dispose = function () {
 	this.aElement.onclick = null;
 	this.aElement = null;
@@ -295,47 +295,47 @@ function setupAllTabs() {
 	var tabPageRe = /tab\-page/;
 	var cn, el;
 	var parentTabPane;
-	
+
 	for ( var i = 0; i < l; i++ ) {
 		el = all[i]
 		cn = el.className;
 
 		// no className
 		if ( cn == "" ) continue;
-		
+
 		// uninitiated tab pane
 		if ( tabPaneRe.test( cn ) && !el.tabPane )
 			new WebFXTabPane( el );
-	
+
 		// unitiated tab page wit a valid tab pane parent
 		else if ( tabPageRe.test( cn ) && !el.tabPage &&
 					tabPaneRe.test( el.parentNode.className ) ) {
-			el.parentNode.tabPane.addTabPage( el );			
+			el.parentNode.tabPane.addTabPage( el );
 		}
 	}
 }
 
 function disposeAllTabs() {
 	if ( !hasSupport() ) return;
-	
+
 	var all = document.getElementsByTagName( "*" );
 	var l = all.length;
 	var tabPaneRe = /tab\-pane/;
 	var cn, el;
 	var tabPanes = [];
-	
+
 	for ( var i = 0; i < l; i++ ) {
 		el = all[i]
 		cn = el.className;
 
 		// no className
 		if ( cn == "" ) continue;
-		
+
 		// tab pane
 		if ( tabPaneRe.test( cn ) && el.tabPane )
 			tabPanes[tabPanes.length] = el.tabPane;
 	}
-	
+
 	for (var i = tabPanes.length - 1; i >= 0; i--) {
 		tabPanes[i].dispose();
 		tabPanes[i] = null;
@@ -349,7 +349,7 @@ function disposeAllTabs() {
 if ( typeof window.addEventListener != "undefined" )
 	window.addEventListener( "load", setupAllTabs, false );
 
-// IE 
+// IE
 else if ( typeof window.attachEvent != "undefined" ) {
 	window.attachEvent( "onload", setupAllTabs );
 	window.attachEvent( "onunload", disposeAllTabs );
@@ -363,6 +363,6 @@ else {
 			setupAllTabs();
 		};
 	}
-	else 
+	else
 		window.onload = setupAllTabs;
 }

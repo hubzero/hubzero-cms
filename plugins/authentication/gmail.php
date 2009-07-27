@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: gmail.php 10396 2008-06-05 19:19:55Z willebil $
+ * @version		$Id: gmail.php 10709 2008-08-21 09:58:52Z eddieajau $
  * @package		Joomla
  * @subpackage	JFramework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -20,7 +20,6 @@ jimport( 'joomla.plugin.plugin' );
 /**
  * GMail Authentication Plugin
  *
- * @author Samuel Moffatt <sam.moffatt@joomla.org>
  * @package		Joomla
  * @subpackage	JFramework
  * @since 1.5

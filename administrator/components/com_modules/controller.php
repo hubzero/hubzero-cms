@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10498 2008-07-04 00:05:36Z ian $
+ * @version		$Id: controller.php 10878 2008-08-30 17:29:13Z willebil $
  * @package		Joomla
  * @subpackage	Modules
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -236,7 +236,7 @@ class ModulesController extends JController
 			$query = 'INSERT INTO #__modules_menu (moduleid,menuid) VALUES '.implode( ',', $tuples );
 			$db->setQuery( $query );
 			if (!$db->query()) {
-				return JError::raiseWarning( 500, $row->getError() );
+				return JError::raiseWarning( 500, $db->getError() );
 			}
 		}
 
@@ -298,7 +298,7 @@ class ModulesController extends JController
 		;
 		$db->setQuery( $query );
 		if (!$db->query()) {
-			return JError::raiseWarning( 500, $row->getError() );
+			return JError::raiseWarning( 500, $db->getError() );
 		}
 
 		// check needed to stop a module being assigned to `All`
@@ -310,7 +310,7 @@ class ModulesController extends JController
 			;
 			$db->setQuery( $query );
 			if (!$db->query()) {
-				return JError::raiseWarning( 500, $row->getError() );
+				return JError::raiseWarning( 500, $db->getError() );
 			}
 		}
 		else
@@ -325,7 +325,7 @@ class ModulesController extends JController
 					;
 					$db->setQuery( $query );
 					if (!$db->query()) {
-						return JError::raiseWarning( 500, $row->getError() );
+						return JError::raiseWarning( 500, $db->getError() );
 					}
 				}
 			}
@@ -535,7 +535,7 @@ class ModulesController extends JController
 				$lang->load( $module->module, $langbase );
 			}
 		}
-		
+
 		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'xml.php' );
 		ModulesHelperXML::parseXMLModuleFile( $modules, $client );
 

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mod_latest.php 10459 2008-06-27 10:01:23Z eddieajau $
+* @version		$Id: mod_latest.php 10867 2008-08-30 07:11:13Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -117,7 +117,7 @@ else
 {
 ?>
 		<tr>
-			<td>
+			<td colspan="3">
 				<?php echo JText::_( 'No matching results' );?>
 			</td>
 		</tr>

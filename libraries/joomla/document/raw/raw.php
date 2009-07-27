@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: raw.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: raw.php 10707 2008-08-21 09:52:47Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Document
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -18,7 +18,6 @@ defined('JPATH_BASE') or die();
 /**
  * DocumentRAW class, provides an easy interface to parse and display raw output
  *
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Document
  * @since		1.5

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
+* @version		$Id: view.html.php 10752 2008-08-23 01:53:31Z eddieajau $
 * @package		Joomla
 * @subpackage	Weblinks
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -146,7 +146,7 @@ class WeblinksViewCategory extends JView
 			$item->count	= $i;
 			$k = 1 - $k;
 		}
-		
+
 		$count = count($categories);
 		for($i = 0; $i < $count; $i++)
 		{
@@ -166,4 +166,3 @@ class WeblinksViewCategory extends JView
 		parent::display($tpl);
 	}
 }
-?>

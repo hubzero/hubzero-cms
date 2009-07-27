@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: reset.php 7399 2007-05-14 04:10:09Z eddieajau $
+ * @version		$Id: reset.php 10919 2008-09-09 20:50:29Z willebil $
  * @package		Joomla
  * @subpackage	User
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -20,7 +20,6 @@ jimport('joomla.application.component.model');
 /**
  * User Component Reset Model
  *
- * @author		Rob Schley <rob.schley@joomla.org>
  * @package		Joomla
  * @subpackage	User
  * @since		1.5
@@ -74,7 +73,7 @@ class UserModelReset extends JModel
 		}
 
 		// Generate a new token
-		$token = md5(JUserHelper::genRandomPassword());
+		$token = JUtility::getHash(JUserHelper::genRandomPassword());
 
 		$query	= 'UPDATE #__users'
 				. ' SET activation = '.$db->Quote($token)
@@ -113,10 +112,10 @@ class UserModelReset extends JModel
 		global $mainframe;
 
 		if(strlen($token) != 32) {
-			$this->setError(JText::_('INVALID_TOKEN'));	
+			$this->setError(JText::_('INVALID_TOKEN'));
 			return false;
 		}
-		
+
 		$db	= &JFactory::getDBO();
 		$db->setQuery('SELECT id FROM #__users WHERE block = 0 AND activation = '.$db->Quote($token));
 

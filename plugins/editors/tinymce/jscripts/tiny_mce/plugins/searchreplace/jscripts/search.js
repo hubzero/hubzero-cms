@@ -20,7 +20,7 @@ function searchNext() {
 		return;
 
 	// Do search
-	tinyMCEPopup.execCommand('mceSearch', false, { 
+	tinyMCEPopup.execCommand('mceSearch', false, {
 		string : formObj.searchstring.value,
 		casesensitive : formObj.casesensitivebox.checked,
 		backwards : formObj.backwards[0].checked

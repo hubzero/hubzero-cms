@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 7682 2007-06-08 16:12:14Z friesengeist $
+ * @version		$Id: controller.php 10869 2008-08-30 07:24:03Z willebil $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -34,6 +34,7 @@ class SearchController extends JController
 	 */
 	function display()
 	{
+		JRequest::setVar('view','search'); // force it to be the polls view
 		parent::display();
 	}
 

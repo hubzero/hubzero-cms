@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: application.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: application.php 10823 2008-08-27 17:18:14Z tcp $
 * @package		Joomla
 * @subpackage	Installation
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -42,7 +42,7 @@ class JXMLRPC extends JApplication
 	*/
 	function __construct($config = array())
 	{
-		$config['clientId'] = 4;
+		$config['clientId'] = 3;
 		parent::__construct($config);
 
 		//Set the encoding

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: request.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: request.php 10919 2008-09-09 20:50:29Z willebil $
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -131,6 +131,7 @@ class JRequest
 		if (isset($GLOBALS['_JREQUEST'][$name]['SET.'.$hash]) && ($GLOBALS['_JREQUEST'][$name]['SET.'.$hash] === true)) {
 			// Get the variable from the input hash
 			$var = (isset($input[$name]) && $input[$name] !== null) ? $input[$name] : $default;
+			$var = JRequest::_cleanVar($var, $mask, $type);
 		}
 		elseif (!isset($GLOBALS['_JREQUEST'][$name][$sig]))
 		{

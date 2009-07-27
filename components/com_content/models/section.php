@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: section.php 10616 2008-08-06 11:06:39Z hackwar $
+ * @version		$Id: section.php 10704 2008-08-21 09:38:40Z eddieajau $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -20,7 +20,6 @@ jimport('joomla.application.component.model');
 /**
  * Content Component Section Model
  *
- * @author	Louis Landry <louis.landry@joomla.org>
  * @package		Joomla
  * @subpackage	Content
  * @since 1.5

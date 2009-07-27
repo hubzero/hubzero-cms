@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: document.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: document.php 10816 2008-08-27 04:17:00Z tcp $
 * @package		Joomla.Framework
 * @subpackage	Document
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -22,7 +22,6 @@ JLoader::register('JDocumentRenderer', dirname(__FILE__).DS.'renderer.php');
  * Document class, provides an easy interface to parse and display a document
  *
  * @abstract
- * @author		Johan Janssens <johan.janssens@joomla.org>
  * @package		Joomla.Framework
  * @subpackage	Document
  * @since		1.5
@@ -376,10 +375,17 @@ class JDocument extends JObject
 	function getMetaData($name, $http_equiv = false)
 	{
 		$result = '';
-		if ($http_equiv == true) {
-			$result = @$this->_metaTags['http-equiv'][$name];
+		$name = strtolower($name);
+		if($name == 'generator') { 
+			$result = $this->getGenerator();
+		} elseif($name == 'description') {
+			$result = $this->getDescription();
 		} else {
-			$result = @$this->_metaTags['standard'][$name];
+			if ($http_equiv == true) {
+				$result = @$this->_metaTags['http-equiv'][$name];
+			} else {
+				$result = @$this->_metaTags['standard'][$name];
+			}
 		}
 		return $result;
 	}
@@ -395,10 +401,17 @@ class JDocument extends JObject
 	 */
 	function setMetaData($name, $content, $http_equiv = false)
 	{
-		 if ($http_equiv == true) {
-			$this->_metaTags['http-equiv'][$name] = $content;
+		$name = strtolower($name);
+		if($name == 'generator') { 
+			$this->setGenerator($content);
+		} elseif($name == 'description') {
+			$this->setDescription($content);
 		} else {
-			$this->_metaTags['standard'][$name] = $content;
+			if ($http_equiv == true) {
+				$this->_metaTags['http-equiv'][$name] = $content;
+			} else {
+				$this->_metaTags['standard'][$name] = $content;
+			}
 		}
 	}
 
