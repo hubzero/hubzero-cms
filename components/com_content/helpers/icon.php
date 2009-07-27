@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: icon.php 10881 2008-08-31 17:53:30Z willebil $
+ * @version		$Id: icon.php 11213 2008-10-25 12:43:11Z pasamio $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -71,7 +71,7 @@ class JHTMLIcon
 		$link	= $base.JRoute::_( ContentHelperRoute::getArticleRoute($article->slug, $article->catslug, $article->sectionid) , false );
 		$url	= 'index.php?option=com_mailto&tmpl=component&link='.base64_encode( $link );
 
-		$status = 'width=400,height=300,menubar=yes,resizable=yes';
+		$status = 'width=400,height=350,menubar=yes,resizable=yes';
 
 		if ($params->get('show_icons')) 	{
 			$text = JHTML::_('image.site', 'emailButton.png', '/images/M_images/', NULL, NULL, JText::_('Email'));
@@ -136,7 +136,7 @@ class JHTMLIcon
 	{
 		$url  = 'index.php?view=article';
 		$url .=  @$article->catslug ? '&catid='.$article->catslug : '';
-		$url .= '&id='.$article->slug.'&tmpl=component&print=1&page='.@ $request->limitstart;
+		$url .= '&id='.$article->slug.'&tmpl=component&print=1&layout=default&page='.@ $request->limitstart;
 
 		$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
 

@@ -1,4 +1,4 @@
-<?php // @version $Id: default_form.php 10381 2008-06-01 03:35:53Z pasamio $
+<?php // @version $Id: default_form.php 11215 2008-10-26 02:25:51Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 		<div class="contact_email<?php echo $this->params->get( 'pageclass_sfx' ); ?>"><label id="contact_textmsg" for="contact_text" class="textarea">
 		<?php echo JText::_( 'Enter your message' ); ?>*:</label>
-		<textarea name="text" id="contact_text" class="inputbox required"></textarea>
+		<textarea name="text" id="contact_text" class="inputbox required" rows="10" cols="40"></textarea>
 	</div>
 	<?php if ($this->contact->params->get( 'show_email_copy' )): ?>
 	<div class="contact_email_checkbox<?php echo $this->params->get( 'pageclass_sfx' ); ?>">

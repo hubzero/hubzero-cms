@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: database.php 10431 2008-06-15 19:42:18Z willebil $
+* @version		$Id: database.php 11137 2008-10-15 19:47:01Z kdevine $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -493,7 +493,7 @@ class JDatabase extends JObject
 	function nameQuote( $s )
 	{
 		// Only quote if the name is not using dot-notation
-		if (strpos( '.', $s ) === false)
+		if (strpos( $s, '.' ) === false)
 		{
 			$q = $this->_nameQuote;
 			if (strlen( $q ) == 1) {

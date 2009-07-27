@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 10919 2008-09-09 20:50:29Z willebil $
+* @version		$Id: CHANGELOG.php 11253 2008-11-10 23:38:48Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -27,7 +27,6 @@ Joomla! 1.5, including beta and release candidate versions.
 Our thanks to all those people who've contributed bug reports and
 code fixes.
 
-
 Legend:
 
 * -> Security Fix
@@ -37,6 +36,120 @@ $ -> Language fix or change
 ^ -> Change
 - -> Removed
 ! -> Note
+
+-------------------- 1.5.8 Stable Release [10-November-2008] ------------------
+
+10-Nov-2008 Anthony Ferrara
+ # Added security fixes
+
+10-Nov-2008 Wilco Jansen
+ # Changed version tags of default language file to 1.5.8 (Wohnaiki)
+ # Change of version file
+
+07-Nov-2008 Sam Moffatt
+ # [#13590] New installation languages to get into 1.5.8
+
+01-Nov-2008 Ian MacLennan
+ # [#13470] Missing languagestrings in mod_breadcrumbs.ini
+ # [#13440] Later versions of cURL break GMail plugin
+ # [#13432] Description error
+ # [#13412] typo in en-GB.mod_latestnews.ini
+ # [#13388] Admin modules xml does not uninstall ini files
+ # [#13373] Defaut config change to cope with flash10 issue
+ # [#12854] emailcloak whitespace
+
+30-Oct-2008 Kevin Devine
+ # [#13326] Beez 'Your Details' page
+ # [#12696] **SEF plugin does not convert object param and onmouseover/onmouseout rollovers
+ # [#13405] Further Changes to Welcome to Joomla! Module
+
+29-Oct-2008 Sam Moffatt
+ # [#13387] Incorrect regexp in JTableUser matches too many fields
+
+28-Oct-2008 Kevin Devine
+ # [#13313] Archive is not getdate - 1.5.7
+
+25-Oct-2008 Ian MacLennan
+ # [#12920] **Perform isInternal checking on referer values in User Controller
+ # [#10954] **Start Publishing is automatically changed upon editing an article when time zone is not set to UTC 00:00
+ # [#12798] **Beez Html Folder
+ # [#12372] **Secure password is not allowed when editing account details
+
+
+25-Oct-2008 Ian MacLennan
+ # [#13323] **New Welcome to Joomla module and Security Newsfeed module in CPANEL
+ # [#12885] **Newsfeed Module Cache is broken
+ # [#13165] please select an item message does not append task to javascript pop up
+ # [#11798] Missing l10n in JApplicationHelper::parseXMLInstallFile() - patch 2 committed only
+ # [#11807] mosMenuCheck missing return statement
+ # [#13297] Missing languagestrings in com_menus.ini
+ # [#13265] **Remove illegal characters in Article Keywords
+ # [#11759] **Bug in menu system when changing menu link type
+
+25-Oct-2008 Sam Moffatt
+ # [#13264] **Untranslated Strings in en-GB.tpl_ja_purity.ini
+ # [#13262] Untranslated Strings in Unknown file
+ # [#13253] Untranslated Strings in en-GB.ini
+ # [#13242] print icon on layout "blog category" as first page
+ # [#13233] reset button on article selection for menu item doesn't work
+ # [#13223] Same language string in Section layout of a menu item**
+ # [#13217] **Error in the increase of hits count when editing article in front end
+ # [#12878] error language string in mod_feed.ini
+ # [#12542] **Inconsistent showing of default records in un-install screens (templates/language)
+
+
+
+19-Oct-2008 Ian MacLennan
+ # [#12697] **More sample data changes, including UTF-8 Fixes
+ # [#12724] **Content Router appends ID to item and is different from the menu (revert 11561)
+ # [#12859] **Backend: Disabled Admin Menu = javascript error
+ # [#12864] Issue with JMenu and large sites
+ # [#12950] **Beez template: The password reset doesn't work at all
+ # [#13198] *** Temporary users cannot log out
+
+15-Oct-2008 Kevin Devine
+ # [#13076] **Feed module target attribute not validating
+ # [#13064] **Problem with mod_related_items Keyword Matching
+ # [#12550] **nameQuote() mixed order in strpos
+ # [#12625] ** default_form.php in com_search has onClick on button tag which fails XHTML 1.0 Transitional validation
+
+13-Oct-2008 Ian MacLennan
+ # [#13164] JFolder::files and JFolder::folders don't function properly when using integral search depth
+ # [#13152] Component Directories to be completely deleted upon bogus entry into jos_components
+ # [#13151] Wrong wording in language file
+ # [#13017] Install language with pdf fonts with both admin and site bug (patch included)
+ # [#13015] Frontpage blog wrong number of links
+ # [#12942] A tag of category link is not closed in Section blog view
+ # [#12602] mod_stats shows wrong time
+ # [#12533] Missing method in JRecordSet
+ # [#12424] Correct or Remove Show_noauth parameter from sections module
+ # [#11707] In category blog layout, edit icon not displayed for user who canEdit if show title is 'No'
+ # [#11261] Cache: Undefined variable: rows in /administrator/components/com_cache/cache.class.php on line 114
+
+10-Oct-2008 Kevin Devine
+ # [#12722] STRIPOS
+
+06-Oct-2008 Ian MacLennan
+ # [#12843] Text 'New ordering saved' cannot be translated in weblinks
+ # [#12734] Missing language string JA Purity
+ # [#12031] File Not Found or Compoent Not Found When SEARCH Button is Pressed
+ # [#12011] E-mail content pop-up window too short in Beez
+
+02-Oct-2008 Ian MacLennan
+ # [#12855] Misspelling of category in components/com_content/views/category/view.feed.php
+
+25-Sep-2008 Ian MacLennan
+ # [#12778] Remove commercial newsfeeds from joomla installation packages
+ # [#12731] Wrong frontpage article after upgrade to 1.5.7
+ # [#11521] ****Image does not display in Contacts when an image directory is configured
+ # [#12338] URL: mod_login loses ItemID on redirect
+
+22-Sep-2008 Ian MacLennan
+ # [10254] Remove brackets around date/time in "Last Updated"
+ # [12630] Plural/singular issue for Section list
+
+09-Sep-2008 Anthony Ferrara
+ ^ Disabled Installation Check
 
 -------------------- 1.5.7 Stable Release [9-September-2008] ------------------
 

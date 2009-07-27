@@ -30,7 +30,10 @@ $cparams =& JComponentHelper::getParams('com_media');
 			<?php if ($this->params->get('show_cat_num_articles')) : ?>
 			&nbsp;
 			<span class="small">
-				( <?php echo $category->numitems ." ". JText::_( 'items' );?> )
+				( <?php if ($category->numitems==1) {
+				echo $category->numitems ." ". JText::_( 'item' );}
+				else {
+				echo $category->numitems ." ". JText::_( 'items' );} ?> )
 			</span>
 			<?php endif; ?>
 			<?php if ($this->params->def('show_category_description', 1) && $category->description) : ?>

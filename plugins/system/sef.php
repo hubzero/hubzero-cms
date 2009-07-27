@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: sef.php 10576 2008-07-21 12:50:09Z ircmaxell $
+* @version		$Id: sef.php 11232 2008-10-30 19:23:59Z kdevine $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -62,7 +62,23 @@ class plgSystemSef extends JPlugin
         $buffer    = preg_replace($regex, "$1=\"$base\$2\"", $buffer);
 		$regex     = '#(onclick="window.open\(\')(?!/|'.$protocols.'|\#)([^/]+[^\']*?\')#m';
 		$buffer    = preg_replace($regex, '$1'.$base.'$2', $buffer);
+		
+		// ONMOUSEOVER / ONMOUSEOUT
+		$regex 		= '#(onmouseover|onmouseout)="this.src=([\']+)(?!/|'.$protocols.'|\#|\')([^"]+)"#m';
+		$buffer 	= preg_replace($regex, '$1="this.src=$2'. $base .'$3$4"', $buffer);
+		
+		// Background image
+		$regex 		= '#url\([\'\"]?(?!/|'.$protocols.'|\#)([^\)\'\"]+)[\'\"]?\)#m';
+		$buffer 	= preg_replace($regex, 'url(\''. $base .'$1$2\')', $buffer);
+		
+		// OBJECT <param name="xx", value="yy">
+		$regex 		= '#<param name="(movie|src|url)" value="(?!/|'.$protocols.'|\#|\')([^"]*)"#m';
+		$buffer 	= preg_replace($regex, '<param name="$1" value="'. $base .'$2"', $buffer);
 
+		// OBJECT <param value="xx", name="yy">
+		$regex 		= '#<param value="(?!/|'.$protocols.'|\#|\')([^"]*)" name="(movie|src|url)"#m';
+		$buffer 	= preg_replace($regex, '<param value="'. $base .'$1" name="$2"', $buffer);
+		
 		JResponse::setBody($buffer);
 		return true;
 	}

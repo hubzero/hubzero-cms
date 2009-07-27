@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10711 2008-08-21 10:09:03Z eddieajau $
+* @version		$Id: view.html.php 11215 2008-10-26 02:25:51Z ian $
 * @package		Joomla
 * @subpackage	Weblinks
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -73,6 +73,9 @@ class UserViewUser extends JView
 	function _displayForm($tpl = null)
 	{
 		global $mainframe;
+
+		// Load the form validation behavior
+		JHTML::_('behavior.formvalidation');
 
 		$user     =& JFactory::getUser();
 		$params = &$mainframe->getParams();

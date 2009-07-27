@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10616 2008-08-06 11:06:39Z hackwar $
+* @version		$Id: helper.php 11074 2008-10-13 04:54:12Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -27,7 +27,7 @@ class modSectionsHelper
 
 		$count	= intval($params->get('count', 20));
 		$contentConfig 	= &JComponentHelper::getParams( 'com_content' );
-		$access	= !$contentConfig->get('shownoauth');
+		$access	= !$contentConfig->get('show_noauth');
 
 		$gid 		= $user->get('aid', 0);
 		$now		= date('Y-m-d H:i:s', time() + $mainframe->getCfg('offset') * 60 * 60);

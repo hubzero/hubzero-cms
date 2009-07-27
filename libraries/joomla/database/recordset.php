@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: recordset.php 10571 2008-07-21 01:27:35Z pasamio $
+* @version		$Id: recordset.php 11074 2008-10-13 04:54:12Z ian $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -45,6 +45,14 @@ class JRecordSet
 	function RecordCount() {
 		return $this->count;
 	}
+	
+	/**
+	 * @return int
+	 */
+	function RowCount() {
+		return $this->RecordCount();
+	}
+	
 	/**
 	 * @return mixed A row from the data array or null
 	 */

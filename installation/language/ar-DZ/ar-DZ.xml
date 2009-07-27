@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: ar-DZ.xml 006 2008-11-02 dzconstantine $ -->
+<metafile version="1.5" client="installation" >
+	<name>Arabic(العربية)</name>
+	<version>1.5.7</version>
+	<creationDate>2008-09-19</creationDate>
+	<author>Saber Bousba</author>
+	<authorEmail>saber.bousba@gmail.com</authorEmail>
+	<authorUrl>www.dzconstantine.com</authorUrl>
+	<copyright>Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>ملف اللغة العربية (الجزائر) لمثبت جملة!</description>
+	<metadata>
+		<name>Arabic (العربية)</name>
+		<tag>ar-DZ</tag>
+		<rtl>1</rtl>
+		<locale>ar_DZ.utf8, ar_DZ.UTF-8, ar_DZ, ara_DZ, ar, arabic, arabic-dz, ar_DZ.arabic8, ,ar_DZ.ISO-8859-6, ar_DZ.ISO8859-6, ar_DZ.ISO88596, dza, DZA, DZD, algeria, dz, Peoples Democratic Republic of Algeria, Arabic-Algeria, Arabic_Algeria</locale>
+		<winCodePage>utf-8</winCodePage>
+		<backwardLang>arabic</backwardLang>
+	</metadata>
+	<params />
+</metafile>

@@ -177,7 +177,7 @@ class JInstallerLanguage extends JObject
 		}
 
 		// Copy all the necessary font files to the common pdf_fonts directory
-		$this->parent->setPath('extension_site', $basePath.DS."language".DS.'pdf_fonts');
+		$this->parent->setPath('extension_site', JPATH_SITE.DS."language".DS.'pdf_fonts');
 		$overwrite = $this->parent->setOverwrite(true);
 		if ($this->parent->parseFiles($root->getElementByPath('fonts')) === false) {
 			// Install failed, rollback changes

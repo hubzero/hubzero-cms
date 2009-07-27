@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: cache.class.php 10818 2008-08-27 06:07:24Z tcp $
+ * @version		$Id: cache.class.php 11074 2008-10-13 04:54:12Z ian $
  * @package		Joomla
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -100,13 +100,14 @@ class CacheData extends JObject
 	function getRows( $start, $limit )
 	{
 		$i = 0;
-		if (count($this->_items) == 0) {
+		$rows = array();
+		if (!is_array($this->_items)) {
 			return null;
 		}
 
 		foreach ($this->_items as $item)
 		{
-			if ($i >= $start && $i < $start+$limit) {
+			if ( (($i >= $start) && ($i < $start+$limit)) || ($limit == 0) ) {
 				$rows[] = $item;
 			}
 			$i++;

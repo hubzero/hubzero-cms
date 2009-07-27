@@ -1,4 +1,4 @@
-<?php // @version $Id: blog_item.php 10381 2008-06-01 03:35:53Z pasamio $
+<?php // @version $Id: blog_item.php 11215 2008-10-26 02:25:51Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -25,7 +25,7 @@ endif; ?>
 
 <?php if ($this->item->params->get('show_pdf_icon') || $this->item->params->get('show_print_icon') || $this->item->params->get('show_email_icon')) : ?>
 <p class="buttonheading">
-	<img src="<?php echo $this->baseurl ?>/templates/beez/images/trans.gif" alt="<?php echo JText::_('attention open in a new window'); ?>" />
+	<img src="<?php echo $this->baseurl ?>/templates/<? echo $mainframe->getTemplate(); ?>/images/trans.gif" alt="<?php echo JText::_('attention open in a new window'); ?>" />
 	<?php if ($this->item->params->get('show_pdf_icon')) :
 		echo JHTML::_('icon.pdf', $this->item, $this->item->params, $this->access);
 	endif;
@@ -60,7 +60,7 @@ endif; ?>
                 <?php echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->catslug, $this->item->sectionid)).'">'; ?>
             <?php endif; ?>
             <?php echo $this->item->category; ?>
-            <?php if ($this->item->params->get('link_section')) : ?>
+            <?php if ($this->item->params->get('link_category')) : ?>
                 <?php echo '</a>'; ?>
             <?php endif; ?>
         </span>
@@ -72,7 +72,7 @@ endif; ?>
 <p class="iteminfo">
 	<?php if (!empty ($this->item->modified) && $this->item->params->get('show_modify_date')) : ?>
 	<span class="modifydate">
-		<?php echo JText::_('Last Updated').' ('.JHTML::_('date', $this->item->modified, JText::_('DATE_FORMAT_LC2')).')'; ?>
+		<?php echo JText::sprintf('LAST_UPDATED2', JHTML::_('date', $this->item->modified, JText::_('DATE_FORMAT_LC2'))); ?>
 	</span>
 	<?php endif; ?>
 

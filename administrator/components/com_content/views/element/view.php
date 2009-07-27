@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 10710 2008-08-21 10:08:12Z eddieajau $
+ * @version		$Id: view.php 11213 2008-10-25 12:43:11Z pasamio $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -61,7 +61,7 @@ class ContentViewElement extends JView
 						<?php echo JText::_( 'Filter' ); ?>:
 						<input type="text" name="search" id="search" value="<?php echo $lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
 						<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-						<button onclick="getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+						<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
 					</td>
 					<td nowrap="nowrap">
 						<?php

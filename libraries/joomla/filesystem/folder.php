@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: folder.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: folder.php 11074 2008-10-13 04:54:12Z ian $
  * @package		Joomla.Framework
  * @subpackage	FileSystem
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -397,9 +397,11 @@ class JFolder
 				if ($isDir) {
 					if ($recurse) {
 						if (is_integer($recurse)) {
-							$recurse--;
+							$arr2 = JFolder::files($dir, $filter, $recurse - 1, $fullpath);
+						} else {
+							$arr2 = JFolder::files($dir, $filter, $recurse, $fullpath);
 						}
-						$arr2 = JFolder::files($dir, $filter, $recurse, $fullpath);
+						
 						$arr = array_merge($arr, $arr2);
 					}
 				} else {
@@ -461,9 +463,11 @@ class JFolder
 				}
 				if ($recurse) {
 					if (is_integer($recurse)) {
-						$recurse--;
+						$arr2 = JFolder::folders($dir, $filter, $recurse - 1, $fullpath);
+					} else {
+						$arr2 = JFolder::folders($dir, $filter, $recurse, $fullpath);
 					}
-					$arr2 = JFolder::folders($dir, $filter, $recurse, $fullpath);
+					
 					$arr = array_merge($arr, $arr2);
 				}
 			}

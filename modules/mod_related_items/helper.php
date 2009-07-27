@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: helper.php 11137 2008-10-15 19:47:01Z kdevine $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -62,7 +62,7 @@ class modRelatedItemsHelper
 				{
 					$key = trim($key);
 					if ($key) {
-						$likes[] = $db->getEscaped($key);
+						$likes[] = ',' . $db->getEscaped($key) . ','; // surround with commas so first and last items have surrounding commas
 					}
 				}
 
@@ -79,7 +79,7 @@ class modRelatedItemsHelper
 							' WHERE a.id != '.(int) $id .
 							' AND a.state = 1' .
 							' AND a.access <= ' .(int) $user->get('aid', 0) .
-							' AND ( a.metakey LIKE "%'.implode('%" OR a.metakey LIKE "%', $likes).'%" )' .
+							' AND ( CONCAT(",", REPLACE(a.metakey,", ",","),",") LIKE "%'.implode('%" OR CONCAT(",", REPLACE(a.metakey,", ",","),",") LIKE "%', $likes).'%" )' . //remove single space after commas in keywords
 							' AND ( a.publish_up = '.$db->Quote($nullDate).' OR a.publish_up <= '.$db->Quote($now).' )' .
 							' AND ( a.publish_down = '.$db->Quote($nullDate).' OR a.publish_down >= '.$db->Quote($now).' )';
 					$db->setQuery($query);

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: controller.php 11002 2008-10-07 01:12:20Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -199,7 +199,7 @@ class WeblinksController extends JController
 		$model = $this->getModel('weblink');
 		$model->saveorder($cid, $order);
 
-		$msg = 'New ordering saved';
+		$msg = JText::_( 'New ordering saved' );
 		$this->setRedirect( 'index.php?option=com_weblinks', $msg );
 	}
 }

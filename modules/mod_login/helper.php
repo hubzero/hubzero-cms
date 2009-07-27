@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: helper.php 10967 2008-09-26 00:01:51Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -22,7 +22,7 @@ class modLoginHelper
 		{
 			$menu =& JSite::getMenu();
 			$item = $menu->getItem($itemid);
-			$url = $item->link;
+			$url = $item->link.'&Itemid='.$itemid;
 		}
 		else
 		{

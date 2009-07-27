@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5" client="installation">
+    <tag>sq-AL</tag>
+	<name>Shqip(Shqipni)</name>
+	<description>Gjuha shqipe për instaluesin e internetit</description>
+	<version>1.5.7</version>
+	<creationDate>2008-03-15</creationDate>
+	<author>Blendi Kraja</author>
+	<authorEmail>kumt@gegnia.com</authorEmail>
+	<authorUrl>www.blendikraja.com</authorUrl>
+	<copyright>
+		Copyright (C) 2005 - 2008 Open Source Matters. Tana t'drejtat
+		rezervue.
+	</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>	
+	<metadata>
+		<name>Shqip (Shqpni)</name>
+		<tag>sq-AL</tag>
+		<rtl>0</rtl>
+		<locale>
+			sq-AL.utf8, sq-AL.UTF-8, sq_AL, alb_AL, al, shqip,
+			shqipni, shqipëri, kosovë, kosova,
+		</locale>
+		<winCodePage>iso-8859-1</winCodePage>
+		<backwardLang>shqip</backwardLang>
+	</metadata>
+	<params />
+</metafile>

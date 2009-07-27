@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.feed.php 10827 2008-08-27 23:10:15Z charlvn $
+ * @version		$Id: view.feed.php 10989 2008-10-03 01:01:36Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -38,7 +38,7 @@ class ContentViewCategory extends JView
 		$category	= & $this->get( 'Category' );
 		$rows 		= & $this->get( 'Data' );
 
-		$doc->link = JRoute::_(ContentHelperRoute::getCategoryRoute($category->id, $cagtegory->sectionid));
+		$doc->link = JRoute::_(ContentHelperRoute::getCategoryRoute($category->id, $category->sectionid));
 
 		foreach ( $rows as $row )
 		{

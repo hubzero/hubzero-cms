@@ -48,7 +48,7 @@ if (($numIntroArticles != $startIntroArticles) && ($i < $this->total)) : ?>
 		<tr>
 		<?php
 			$divider = '';
-			if ($this->params->get('multi_column_order')) : // order across, like front page
+			if ($this->params->def('multi_column_order', 0)) : // order across, like front page
 			for ($z = 0; $z < $this->params->def('num_columns', 2); $z ++) :
 				if ($z > 0) : $divider = " column_separator"; endif; ?>
 				<?php

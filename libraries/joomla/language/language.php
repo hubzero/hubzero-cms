@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: language.php 10834 2008-08-28 10:38:50Z eddieajau $
+* @version		$Id: language.php 11236 2008-11-02 02:44:35Z ian $
 * @package		Joomla.Framework
 * @subpackage	Language
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -81,7 +81,7 @@ class JLanguage extends JObject
 	var $_paths	= array();
 
 	/**
-	 * Transaltions
+	 * Translations
 	 *
 	 * @var		array
 	 * @access	protected
@@ -576,7 +576,7 @@ class JLanguage extends JObject
 	* Get the list of orphaned strings if being tracked
 	*
 	* @access	public
-	* @return	boolean True is in debug mode
+	* @return	array Orphaned text
 	* @since	1.5
 	*/
 	function getOrphans() {

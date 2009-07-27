@@ -1,5 +1,5 @@
 <?php
-// @version $Id: default.php 10871 2008-08-30 07:30:33Z willebil $
+// @version $Id: default.php 11215 2008-10-26 02:25:51Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('search') ?>
 	</label>
 	<?php
-		    $output = '<input name="searchword" id="mod_search_searchword" maxlength="20" alt="'.$button_text.'" class="inputbox'.$moduleclass_sfx.'" type="text" size="'.$width.'" value="'.$text.'"  onblur="if(this.value==\'\') this.value=\''.$text.'\';" onfocus="if(this.value==\''.$text.'\') this.value=\'\';" />';
+		    $output = '<input name="searchword" id="mod_search_searchword" maxlength="20" class="inputbox'.$moduleclass_sfx.'" type="text" size="'.$width.'" value="'.$text.'"  onblur="if(this.value==\'\') this.value=\''.$text.'\';" onfocus="if(this.value==\''.$text.'\') this.value=\'\';" />';
 
 			if ($button) :
 			    if ($imagebutton) :

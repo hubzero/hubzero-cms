@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: menuitem.php 10707 2008-08-21 09:52:47Z eddieajau $
+* @version		$Id: menuitem.php 11214 2008-10-26 01:29:04Z ian $
 * @package		Joomla.Framework
 * @subpackage	Parameter
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -110,6 +110,17 @@ class JElementMenuItem extends JElement
 				for ($i = 0; $i < $n; $i++)
 				{
 					$item = &$groupedList[$type->menutype][$i];
+					
+					//If menutype is changed but item is not saved yet, use the new type in the list
+					if ( JRequest::getString('option', '', 'get') == 'com_menus' ) {
+						$currentItemArray = JRequest::getVar('cid', array(0), '', 'array');
+						$currentItemId = (int) $currentItemArray[0];
+						$currentItemType = JRequest::getString('type', '', 'get');
+						if ( $currentItemId == $item->id && $currentItemType != $item->type) {
+							$item->type = $currentItemType;
+						}
+					}
+					
 					$disable = strpos($node->attributes('disable'), $item->type) !== false ? true : false;
 					$options[] = JHTML::_('select.option',  $item->id, '&nbsp;&nbsp;&nbsp;' .$item->treename, 'value', 'text', $disable );
 

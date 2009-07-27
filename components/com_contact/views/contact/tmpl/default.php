@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: default.php 10571 2008-07-21 01:27:35Z pasamio $
+ * $Id: default.php 10967 2008-09-26 00:01:51Z ian $
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -49,7 +49,7 @@ $cparams = JComponentHelper::getParams ('com_media');
 			<td rowspan="2" align="right" valign="top">
 			<?php if ( $this->contact->image && $this->contact->params->get( 'show_image' ) ) : ?>
 				<div style="float: right;">
-					<?php echo JHTML::_('image', $cparams->get('image_path') . '/'.$this->contact->image, JText::_( 'Contact' ), array('align' => 'middle')); ?>
+					<?php echo JHTML::_('image', '/images/stories' . '/'.$this->contact->image, JText::_( 'Contact' ), array('align' => 'middle')); ?>
 				</div>
 			<?php endif; ?>
 			</td>

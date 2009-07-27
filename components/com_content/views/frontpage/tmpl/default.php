@@ -32,7 +32,7 @@ if (($numIntroArticles != $startIntroArticles) && ($i < $this->total)) : ?>
 		<tr>
 		<?php
 			$divider = '';
-			if ($this->params->get('multi_column_order')) : // order across as before
+			if ($this->params->def('multi_column_order',1)) : // order across as before
 			for ($z = 0; $z < $this->params->def('num_columns', 2); $z ++) :
 				if ($z > 0) : $divider = " column_separator"; endif; ?>
 				<?php
@@ -66,8 +66,7 @@ if (($numIntroArticles != $startIntroArticles) && ($i < $this->total)) : ?>
 				endfor; ?>
 				</td>
 		<?php endfor; 
-		endif;?>
-		<?php $i = $i + $this->params->get('num_intro_articles') ; ?>
+		endif;?>		
 		</tr>
 		</table>
 	</td>

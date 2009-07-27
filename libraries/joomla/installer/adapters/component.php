@@ -314,7 +314,7 @@ class JInstallerComponent extends JObject
 		// First order of business will be to load the component object table from the database.
 		// This should give us the necessary information to proceed.
 		$row = & JTable::getInstance('component');
-		if ( !$row->load((int) $id) ) {
+		if ( !$row->load((int) $id) || !trim($row->option) ) {
 			JError::raiseWarning(100, JText::_('ERRORUNKOWNEXTENSION'));
 			return false;
 		}

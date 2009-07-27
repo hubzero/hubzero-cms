@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10768 2008-08-23 11:32:34Z willebil $
+* @version		$Id: view.html.php 11236 2008-11-02 02:44:35Z ian $
 * @package		Joomla
 * @subpackage	Media
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -58,7 +58,7 @@ class MediaViewMedia extends JView
 		JHTML::script('mootree.js');
 		JHTML::stylesheet('mootree.css');
 
-		if ($config->get('enable_flash', 1)) {
+		if ($config->get('enable_flash', 0)) {
 			JHTML::_('behavior.uploader', 'file-upload', array('onAllComplete' => 'function(){ MediaManager.refreshFrame(); }'));
 		}
 

@@ -12,7 +12,7 @@
 				<input type="text" name="searchword" id="search_searchword" size="30" maxlength="20" value="<?php echo $this->escape($this->searchword); ?>" class="inputbox" />
 			</td>
 			<td width="100%" nowrap="nowrap">
-				<button name="Search" onClick="this.form.submit()" class="button"><?php echo JText::_( 'Search' );?></button>
+				<button name="Search" onclick="this.form.submit()" class="button"><?php echo JText::_( 'Search' );?></button>
 			</td>
 		</tr>
 		<tr>

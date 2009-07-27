@@ -37,8 +37,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<link rel="stylesheet" type="text/css" href="templates/<?php echo  $this->template ?>/css/norounded.css" />
 <?php endif; ?>
 
-<script type="text/javascript" src="templates/<?php echo  $this->template ?>/js/menu.js"></script>
-<script type="text/javascript" src="templates/<?php echo  $this->template ?>/js/index.js"></script>
+<?php if(JModuleHelper::isEnabled('menu')) : ?>
+	<script type="text/javascript" src="templates/<?php echo  $this->template ?>/js/menu.js"></script>
+	<script type="text/javascript" src="templates/<?php echo  $this->template ?>/js/index.js"></script>
+<?php endif; ?>
 
 </head>
 <body id="minwidth-body">

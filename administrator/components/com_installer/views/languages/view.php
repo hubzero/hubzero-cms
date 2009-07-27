@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 10466 2008-06-28 14:42:22Z ircmaxell $
+ * @version		$Id: view.php 11213 2008-10-25 12:43:11Z pasamio $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -33,7 +33,7 @@ class InstallerViewLanguages extends InstallerViewDefault
 		/*
 		 * Set toolbar items for the page
 		 */
-		JToolBarHelper::deleteList( JText::_('UNINSTALL LANGUAGE'), 'remove', 'Uninstall' );
+		JToolBarHelper::deleteList( 'UNINSTALL LANGUAGE', 'remove', 'Uninstall' );
 		JToolBarHelper::help( 'screen.installer' );
 
 		// Get data from the model

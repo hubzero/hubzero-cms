@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<h5 class="metadata">
 		<?php if ($this->params->get('show_create_date')) : ?>
 			<span class="created-date">
-				<?php echo JText::_('Created').': '.$item->created; ?>
+				<?php echo JText::_('Created') .': '.  JHTML::_( 'date', $item->created, JText::_('DATE_FORMAT_LC2')) ?>
 			</span>
 			<?php endif; ?>
 			<?php if ($this->params->get('show_author')) : ?>

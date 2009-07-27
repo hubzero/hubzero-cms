@@ -1,31 +1,15 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
-<script language="javascript" type="text/javascript">
-function submitbutton( pressbutton ) {
-	var form = document.userform;
-	var r = new RegExp("[\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-]", "i");
 
-	if (pressbutton == 'cancel') {
-		form.task.value = 'cancel';
-		form.submit();
-		return;
-	}
-
-	// do field validation
-	if (form.name.value == "") {
-		alert( "<?php echo JText::_( 'Please enter your name.', true );?>" );
-	} else if (form.email.value == "") {
-		alert( "<?php echo JText::_( 'Please enter a valid e-mail address.', true );?>" );
-	} else if (((form.password.value != "") || (form.password2.value != "")) && (form.password.value != form.password2.value)){
-		alert( "<?php echo JText::_( 'REGWARN_VPASS2', true );?>" );
-	} else if (r.exec(form.password.value)) {
-		alert( "<?php printf( JText::_( 'VALID_AZ09', true ), JText::_( 'Password', true ), 4 );?>" );
-	} else {
-		form.submit();
-	}
-}
+<script type="text/javascript">
+<!--
+	Window.onDomReady(function(){
+		document.formvalidator.setHandler('passverify', function (value) { return ($('password').value == value); }	);
+	});
+// -->
 </script>
-<form action="index.php" method="post" name="userform" autocomplete="off">
+
+<form action="index.php" method="post" name="userform" autocomplete="off" class="form-validate">
 <?php if ( $this->params->def( 'show_page_title', 1 ) ) : ?>
 	<div class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
 		<?php echo $this->escape($this->params->get('page_title')); ?>
@@ -49,7 +33,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="name" name="name" value="<?php echo $this->user->get('name');?>" size="40" />
+		<input class="inputbox required" type="text" id="name" name="name" value="<?php echo $this->user->get('name');?>" size="40" />
 	</td>
 </tr>
 <tr>
@@ -59,7 +43,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="email" name="email" value="<?php echo $this->user->get('email');?>" size="40" />
+		<input class="inputbox required validate-email" type="text" id="email" name="email" value="<?php echo $this->user->get('email');?>" size="40" />
 	</td>
 </tr>
 <?php if($this->user->get('password')) : ?>
@@ -70,7 +54,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="password" id="password" name="password" value="" size="40" />
+		<input class="inputbox validate-password" type="password" id="password" name="password" value="" size="40" />
 	</td>
 </tr>
 <tr>
@@ -80,13 +64,13 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="password" id="password2" name="password2" size="40" />
+		<input class="inputbox validate-passverify" type="password" id="password2" name="password2" size="40" />
 	</td>
 </tr>
 <?php endif; ?>
 </table>
 <?php if(isset($this->params)) :  echo $this->params->render( 'params' ); endif; ?>
-	<button class="button" type="submit" onclick="submitbutton( this.form );return false;"><?php echo JText::_('Save'); ?></button>
+	<button class="button validate" type="submit" onclick="submitbutton( this.form );return false;"><?php echo JText::_('Save'); ?></button>
 
 	<input type="hidden" name="username" value="<?php echo $this->user->get('username');?>" />
 	<input type="hidden" name="id" value="<?php echo $this->user->get('id');?>" />

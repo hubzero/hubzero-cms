@@ -64,7 +64,7 @@ if( $feed != false )
 				<?php
 				if ( !is_null( $currItem->get_link() ) ) {
 				?>
-					<a href="<?php echo $currItem->get_link(); ?>" target="_child">
+					<a href="<?php echo $currItem->get_link(); ?>" target="_blank">
 					<?php echo $currItem->get_title(); ?></a>
 				<?php
 				}

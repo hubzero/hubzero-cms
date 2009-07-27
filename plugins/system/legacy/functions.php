@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: functions.php 10439 2008-06-21 20:34:35Z willebil $
+ * @version		$Id: functions.php 11214 2008-10-26 01:29:04Z ian $
  * @package		Joomla.Legacy
  * @subpackage	1.5
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -603,7 +603,7 @@ function mosMenuCheck( $Itemid, $menu_option, $task, $gid )
 {
 	$user =& JFactory::getUser();
 	$menus =& JSite::getMenu();
-	$menus->authorize($Itemid, $user->get('aid'));
+	return $menus->authorize($Itemid, $user->get('aid'));
 }
 
 /**

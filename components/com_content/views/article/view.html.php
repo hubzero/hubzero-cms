@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10912 2008-09-05 19:45:22Z willebil $
+ * @version		$Id: view.html.php 11213 2008-10-25 12:43:11Z pasamio $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -58,6 +58,12 @@ class ContentViewArticle extends ContentView
 		}
 
 		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
+		
+		if (!$params->get('intro_only') && ($this->getLayout() == 'default') && ($limitstart == 0))
+		{
+			$model =& $this->getModel();
+			$model->hit();
+		}
 
 		// Create a user access object for the current user
 		$access = new stdClass();

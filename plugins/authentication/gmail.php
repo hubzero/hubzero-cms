@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: gmail.php 10709 2008-08-21 09:58:52Z eddieajau $
+ * @version		$Id: gmail.php 11236 2008-11-02 02:44:35Z ian $
  * @package		Joomla
  * @subpackage	JFramework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -61,6 +61,7 @@ class plgAuthenticationGMail extends JPlugin
 			{
 				$curl = curl_init('https://mail.google.com/mail/feed/atom');
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 				//curl_setopt($curl, CURLOPT_HEADER, 1);
 				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 				curl_setopt($curl, CURLOPT_USERPWD, $credentials['username'].':'.$credentials['password']);

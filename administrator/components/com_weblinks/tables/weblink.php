@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: weblink.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: weblink.php 11253 2008-11-10 23:38:48Z ircmaxell $
 * @package		Joomla
 * @subpackage	Weblinks
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -150,6 +150,11 @@ class TableWeblink extends JTable
 			$this->setError( JText::_('Please provide a valid URL'));
 			return false;
 		}
+
+		//Remove all HTML tags from the title and description
+		$filter = new JFilterInput(array(), array(), 0, 0);
+		$this->description = $filter->clean($this->description);
+		$this->title = $filter->clean($this->title);
 
 		/** check for valid name */
 		if (trim($this->title) == '') {

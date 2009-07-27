@@ -32,6 +32,10 @@ class JMenuSite extends JMenu
 	 */
 	function load()
 	{
+
+		$cache = &JFactory::getCache('_system', 'output');
+
+		if (!$data = $cache->get('menu_items')) {
 		// Initialize some variables
 		$db		= & JFactory::getDBO();
 
@@ -76,6 +80,10 @@ class JMenuSite extends JMenu
 			parse_str($url, $menus[$key]->query);
 		}
 
+			$cache->store(serialize($menus), 'menu_items');
 		$this->_items = $menus;
+		} else {
+			$this->_items = unserialize($data);
+	}
 	}
 }

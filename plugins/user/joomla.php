@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: joomla.php 10709 2008-08-21 09:58:52Z eddieajau $
+* @version		$Id: joomla.php 11190 2008-10-20 00:49:55Z ian $
 * @package		Joomla
 * @subpackage	JFramework
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -155,10 +155,10 @@ class plgUserJoomla extends JPlugin
 	 */
 	function onLogoutUser($user, $options = array())
 	{
-		//Make sure we're a valid user first
-		if($user['id'] == 0) return true;
-
 		$my =& JFactory::getUser();
+		//Make sure we're a valid user first
+		if($user['id'] == 0 && !$my->get('tmp_user')) return true;
+
 		//Check to see if we're deleting the current session
 		if($my->get('id') == $user['id'])
 		{

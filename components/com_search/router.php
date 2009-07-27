@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: router.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: router.php 11002 2008-10-07 01:12:20Z ian $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -24,10 +24,16 @@ function SearchBuildRoute( &$query )
 		unset($query['searchword']);
 	}
 
+	// Retrieve configuration options - needed to know which SEF URLs are used
+	$app =& JFactory::getApplication();
+	// Allows for searching on strings that include ".xxx" that appear to Apache as an extension
+	if (($app->getCfg('sef')) && ($app->getCfg('sef_rewrite')) && !($app->getCfg('sef_suffix'))) {
+		$segments[] .= '/';
+	}
+
 	if (isset($query['view'])) {
 		unset($query['view']);
 	}
-
 	return $segments;
 }
 

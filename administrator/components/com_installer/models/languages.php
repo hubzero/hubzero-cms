@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: languages.php 10710 2008-08-21 10:08:12Z eddieajau $
+ * @version		$Id: languages.php 11213 2008-10-25 12:43:11Z pasamio $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -130,8 +130,8 @@ class InstallerModelLanguages extends InstallerModel
 
 				// if current than set published
 				$clientVals =& JApplicationHelper::getClientInfo($row->client_id);
-				$lang = 'lang_'.$clientVals->name;
-				if ( $mainframe->getCfg($lang) == basename( $row->language ) ) {
+				$lang = JComponentHelper::getParams('com_languages');
+				if ( $lang->get($clientVals->name, 'en-GB') == basename( $row->language ) ) {
 					$row->published	= 1;
 				} else {
 					$row->published = 0;
