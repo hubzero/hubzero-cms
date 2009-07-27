@@ -1,4 +1,4 @@
-<?php // @version $Id: default.php 10864 2008-08-30 07:08:04Z willebil $
+<?php // @version $Id: default.php 11796 2009-05-06 02:03:15Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -57,7 +57,7 @@ if ($type == 'logout') : ?>
 	if ($usersConfig->get('allowUserRegistration')) : ?>
 	<p>
 		<?php echo JText::_('No account yet?'); ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_user&task=register#content'); ?>">
+		<a href="<?php echo JRoute::_('index.php?option=com_user&view=register#content'); ?>">
 			<?php echo JText::_('Register'); ?></a>
 	</p>
 	<?php endif;

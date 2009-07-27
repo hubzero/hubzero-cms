@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: head.php 10707 2008-08-21 09:52:47Z eddieajau $
+* @version		$Id: head.php 11917 2009-05-29 19:37:05Z ian $
 * @package		Joomla.Framework
 * @subpackage	Document
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -74,7 +74,7 @@ class JDocumentRendererHead extends JDocumentRenderer
 				if ($type == 'http-equiv') {
 					$strHtml .= $tab.'<meta http-equiv="'.$name.'" content="'.$content.'"'.$tagEnd.$lnEnd;
 				} elseif ($type == 'standard') {
-					$strHtml .= $tab.'<meta name="'.$name.'" content="'.$content.'"'.$tagEnd.$lnEnd;
+					$strHtml .= $tab.'<meta name="'.$name.'" content="'.str_replace('"',"'",$content).'"'.$tagEnd.$lnEnd;
 				}
 			}
 		}

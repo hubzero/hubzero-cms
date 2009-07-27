@@ -1,4 +1,4 @@
-<?php // @version $Id: default.php 11386 2009-01-04 02:34:35Z ian $
+<?php // @version $Id: default.php 11917 2009-05-29 19:37:05Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -11,16 +11,16 @@ defined('_JEXEC') or die('Restricted access');
 <?php endif; ?>
 
 <?php if ($this->params->get('show_page_title',1) && $this->params->get('page_title') != $this->article->title) : ?>
-<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+<h1 class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
         <?php echo $this->escape($this->params->get('page_title')); ?>
 </h1>
 <?php endif; ?>
 
 <?php if ($this->params->get('show_title')) : ?>
-<h2 class="contentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+<h2 class="contentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 	<?php if ($this->params->get('link_titles') && $this->article->readmore_link != '') : ?>
-	<a href="<?php echo $this->article->readmore_link; ?>" class="contentpagetitle<?php echo $this->params->get('pageclass_sfx'); ?>">
-		<?php echo $this->article->title; ?></a>
+	<a href="<?php echo $this->article->readmore_link; ?>" class="contentpagetitle<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+		<?php echo $this->escape($this->article->title); ?></a>
 	<?php else :
 		echo $this->escape($this->article->title);
 	endif; ?>
@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<?php if (($this->params->get('show_author')) && ($this->article->author != "")) : ?>
 	<span class="createdby">
-		<?php JText::printf('Written by', ($this->article->created_by_alias ? $this->article->created_by_alias : $this->article->author)); ?>
+		<?php JText::printf('Written by', ($this->article->created_by_alias ? $this->escape($this->article->created_by_alias) : $this->escape($this->article->author))); ?>
 	</span>
 	<?php endif; ?>
 
@@ -77,7 +77,7 @@ endif; ?>
 		<?php if ($this->params->get('link_section')) : ?>
 			<?php echo '<a href="'.JRoute::_(ContentHelperRoute::getSectionRoute($this->article->sectionid)).'">'; ?>
 		<?php endif; ?>
-		<?php echo $this->article->section; ?>
+		<?php echo $this->escape($this->article->section); ?>
 		<?php if ($this->params->get('link_section')) : ?>
 			<?php echo '</a>'; ?>
 		<?php endif; ?>
@@ -91,7 +91,7 @@ endif; ?>
 		<?php if ($this->params->get('link_category')) : ?>
 			<?php echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->article->catslug, $this->article->sectionid)).'">'; ?>
 		<?php endif; ?>
-		<?php echo $this->article->category; ?>
+		<?php echo $this->escape($this->article->category); ?>
 		<?php if ($this->params->get('link_category')) : ?>
 			<?php echo '</a>'; ?>
 		<?php endif; ?>
@@ -104,8 +104,8 @@ endif; ?>
 
 <?php if ($this->params->get('show_url') && $this->article->urls) : ?>
 <span class="small">
-	<a href="<?php echo $this->article->urls; ?>" target="_blank">
-		<?php echo $this->article->urls; ?></a>
+	<a href="<?php echo $this->escape($this->article->urls); ?>" target="_blank">
+		<?php echo $this->escape($this->article->urls); ?></a>
 </span>
 <?php endif; ?>
 

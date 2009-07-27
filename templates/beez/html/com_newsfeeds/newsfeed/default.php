@@ -1,4 +1,4 @@
-<?php // @version $Id: default.php 11371 2008-12-30 01:31:50Z ian $
+<?php // @version $Id: default.php 11917 2009-05-29 19:37:05Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -31,14 +31,14 @@ defined('_JEXEC') or die('Restricted access');
 		   }
 ?>
 <?php if ( $this->params->get( 'show_page_title', 1 ) ) : ?>
-<h1 style="<?php echo $direction; ?><?php echo $align; ?>" class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+<h1 style="<?php echo $direction; ?><?php echo $align; ?>" class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 	<?php echo $this->escape($this->params->get('page_title')); ?>
 </h1>
 <?php endif; ?>
 
-<h2 style="<?php echo $direction; ?><?php echo $align; ?>" class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+<h2 style="<?php echo $direction; ?><?php echo $align; ?>" class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 	<a href="<?php echo $this->newsfeed->channel['link']; ?>" target="_blank">
-		<?php echo str_replace('&apos;', "'", $this->newsfeed->channel['title']); ?></a>
+		<?php echo str_replace('&apos;', "'", $this->escape($this->newsfeed->channel['title'])); ?></a>
 </h2>
 
 <?php if ( $this->params->get( 'show_feed_description' ) )  : ?>
@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php if ( isset( $this->newsfeed->image['url'] ) && isset( $this->newsfeed->image['title'] ) && $this->params->get( 'show_feed_image' ) ) : ?>
 <p style="<?php echo $direction; ?><?php echo $align; ?>">
-<img src="<?php echo $this->newsfeed->image['url']; ?>" alt="<?php echo $this->newsfeed->image['title']; ?>" />
+<img src="<?php echo $this->escape($this->newsfeed->image['url']); ?>" alt="<?php echo $this->escape($this->newsfeed->image['title']); ?>" />
 </p>
 <?php endif; ?>
 
@@ -59,8 +59,8 @@ defined('_JEXEC') or die('Restricted access');
 	<?php foreach ( $this->newsfeed->items as $item ) : ?>
 	<li style="<?php echo $direction; ?><?php echo $align; ?>">
 		<?php if ( !is_null( $item->get_link() ) ) : ?>
-		<a href="<?php echo $item->get_link(); ?>" target="_blank">
-			<?php echo $item->get_title(); ?></a>
+		<a href="<?php echo $this->escape($item->get_link()); ?>" target="_blank">
+			<?php echo $this->escape($item->get_title()); ?></a>
 		<?php endif; ?>
 		<?php if ( $this->params->get( 'show_item_description' ) && $item->get_description() ) : ?>
 		<br />

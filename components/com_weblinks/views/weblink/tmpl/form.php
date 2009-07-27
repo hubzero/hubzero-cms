@@ -23,7 +23,7 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo $this->action ?>" method="post" name="adminForm" id="adminForm">
 <?php if ( $this->params->def( 'show_page_title', 1 ) ) : ?>
-	<div class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 		<?php echo $this->escape($this->params->get('page_title')); ?>
 	</div>
 <?php endif; ?>
@@ -55,7 +55,7 @@ function submitbutton(pressbutton)
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="jformurl" name="jform[url]" value="<?php echo $this->weblink->url; ?>" size="50" maxlength="250" />
+		<input class="inputbox" type="text" id="jformurl" name="jform[url]" value="<?php echo $this->escape($this->weblink->url); ?>" size="50" maxlength="250" />
 	</td>
 </tr>
 <tr>

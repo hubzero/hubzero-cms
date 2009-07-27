@@ -1,4 +1,4 @@
-<?php // @version: $Id: default_items.php 11393 2009-01-05 02:11:06Z ian $
+<?php // @version: $Id: default_items.php 11917 2009-05-29 19:37:05Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -20,8 +20,8 @@ document.adminForm.submit( task );
 <?php if ($this->params->get('filter')) : ?>
 <div class="filter">
 	<p>
-		<?php echo JText::_($this->params->get('filter_type') . ' ' . 'Filter').'&nbsp;'; ?>
-		<input type="text" name="filter" value="<?php echo $this->lists['filter']; ?>" class="inputbox" onchange="document.adminForm.submit();" />
+		<?php echo JText::_($this->escape($this->params->get('filter_type')) . ' ' . 'Filter').'&nbsp;'; ?>
+		<input type="text" name="filter" value="<?php echo $this->escape($this->lists['filter']); ?>" class="inputbox" onchange="document.adminForm.submit();" />
 	</p>
 </div>
 <?php endif; ?>
@@ -37,30 +37,30 @@ document.adminForm.submit( task );
 
 	<?php if ($this->params->get('show_headings')) : ?>
 	<tr>
-		<th class="sectiontableheader<?php echo $this->params->get('pageclass_sfx'); ?>" id="count">
+		<th class="sectiontableheader<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" id="count">
 			<?php echo JText::_('Num'); ?>
 		</th>
 
 		<?php if ($this->params->get('show_title')) : ?>
-		<th class="sectiontableheader<?php echo $this->params->get('pageclass_sfx'); ?>" id="tableOrdering">
+		<th class="sectiontableheader<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" id="tableOrdering">
 			<?php echo JHTML::_('grid.sort', 'Item Title', 'a.title', $this->lists['order_Dir'], $this->lists['order']); ?>
 		</th>
 		<?php endif; ?>
 
 		<?php if ($this->params->get('show_date')) : ?>
-		<th class="sectiontableheader<?php echo $this->params->get('pageclass_sfx'); ?>" id="tableOrdering2">
+		<th class="sectiontableheader<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" id="tableOrdering2">
 			<?php echo JHTML::_('grid.sort', 'Date', 'a.created', $this->lists['order_Dir'], $this->lists['order']); ?>
 		</th>
 		<?php endif; ?>
 
 		<?php if ($this->params->get('show_author')) : ?>
-		<th class="sectiontableheader<?php echo $this->params->get('pageclass_sfx'); ?>" id="author">
+		<th class="sectiontableheader<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" id="author">
 			<?php echo JHTML::_('grid.sort', 'Author', 'author', $this->lists['order_Dir'], $this->lists['order']); ?>
 		</th>
 		<?php endif; ?>
 
 		<?php if ($this->params->get('show_hits')) : ?>
-		<th align="center" class="sectiontableheader<?php echo $this->params->get('pageclass_sfx'); ?>" width="5%" nowrap="nowrap" id="hits">
+		<th align="center" class="sectiontableheader<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" width="5%" nowrap="nowrap" id="hits">
 			<?php echo JHTML::_('grid.sort', 'Hits', 'a.hits', $this->lists['order_Dir'], $this->lists['order']); ?>
 		</th>
 		<?php endif; ?>
@@ -68,9 +68,9 @@ document.adminForm.submit( task );
 	<?php endif; ?>
 
 	<?php foreach ($this->items as $item) : ?>
-	<tr class="sectiontableentry<?php echo ($item->odd + 1) . $this->params->get('pageclass_sfx'); ?>">
+	<tr class="sectiontableentry<?php echo ($item->odd + 1) . $this->escape($this->params->get('pageclass_sfx')); ?>">
 		<td headers="count">
-			<?php echo $this->pagination->getRowOffset($item->count); ?>
+			<?php echo $this->pagination->getRowOffset((int)$item->count); ?>
 		</td>
 
 		<?php if ($this->params->get('show_title')) : ?>
@@ -89,19 +89,19 @@ document.adminForm.submit( task );
 
 		<?php if ($this->params->get('show_date')) : ?>
 		<td  headers="tableOrdering2">
-			<?php echo $item->created; ?>
+			<?php echo $this->escape($item->created); ?>
 		</td>
 		<?php endif; ?>
 
 		<?php if ($this->params->get('show_author')) : ?>
 		<td headers="author">
-			<?php echo $item->created_by_alias ? $item->created_by_alias : $item->author; ?>
+			<?php echo $item->created_by_alias ? $this->escape($item->created_by_alias) : $this->escape($item->author); ?>
 		</td>
 		<?php endif; ?>
 
 		<?php if ($this->params->get('show_hits')) : ?>
 		<td headers="hits">
-			<?php echo $item->hits ? $item->hits : '-'; ?>
+			<?php echo $item->hits ? (int)$item->hits : '-'; ?>
 		</td>
 		<?php endif; ?>
 
@@ -117,8 +117,8 @@ document.adminForm.submit( task );
 <?php echo $this->pagination->getPagesLinks();
 endif; ?>
 
-<input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />
-<input type="hidden" name="sectionid" value="<?php echo $this->category->sectionid; ?>" />
+<input type="hidden" name="id" value="<?php echo (int)$this->category->id; ?>" />
+<input type="hidden" name="sectionid" value="<?php echo (int)$this->category->sectionid; ?>" />
 <input type="hidden" name="task" value="<?php echo $this->lists['task']; ?>" />
 <input type="hidden" name="filter_order" value="" />
 <input type="hidden" name="filter_order_Dir" value="" />

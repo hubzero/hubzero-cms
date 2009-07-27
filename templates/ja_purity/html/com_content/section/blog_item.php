@@ -2,16 +2,16 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <?php if ($this->user->authorize('com_content', 'edit', 'content', 'all') || $this->user->authorize('com_content', 'edit', 'content', 'own')) : ?>
-	<div class="contentpaneopen_edit<?php echo $this->item->params->get( 'pageclass_sfx' ); ?>" style="float: left;">
+	<div class="contentpaneopen_edit<?php echo $this->escape($this->item->params->get( 'pageclass_sfx' )); ?>" style="float: left;">
 		<?php echo JHTML::_('icon.edit', $this->item, $this->item->params, $this->access); ?>
 	</div>
 <?php endif; ?>
-<div class="contentpaneopen<?php echo $this->item->params->get( 'pageclass_sfx' ); ?>">
+<div class="contentpaneopen<?php echo $this->escape($this->item->params->get( 'pageclass_sfx' )); ?>">
 
 <?php if ($this->item->params->get('show_title')) : ?>
-<h2 class="contentheading<?php echo $this->item->params->get( 'pageclass_sfx' ); ?>">
+<h2 class="contentheading<?php echo $this->escape($this->item->params->get( 'pageclass_sfx' )); ?>">
 	<?php if ($this->item->params->get('link_titles') && $this->item->readmore_link != '') : ?>
-	<a href="<?php echo $this->item->readmore_link; ?>" class="contentpagetitle<?php echo $this->item->params->get( 'pageclass_sfx' ); ?>">
+	<a href="<?php echo $this->item->readmore_link; ?>" class="contentpagetitle<?php echo $this->escape($this->item->params->get( 'pageclass_sfx' )); ?>">
 		<?php echo $this->escape($this->item->title); ?>
 	</a>
 	<?php else : ?>
@@ -44,17 +44,17 @@ if (
 
 <?php if (($this->item->params->get('show_author')) && ($this->item->author != "")) : ?>
 	<span class="createby">
-		<?php JText::printf(($this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author) ); ?>
+		<?php JText::printf(($this->item->created_by_alias ? $this->escape($this->item->created_by_alias) : $this->escape($this->item->author)) ); ?>
 	</span>
 <?php endif; ?>
 
 <?php if (($this->item->params->get('show_section') && $this->item->sectionid) || ($this->item->params->get('show_category') && $this->item->catid)) : ?>
-	<?php if ($this->item->params->get('show_section') && $this->item->sectionid && isset($this->item->section)) : ?>
+	<?php if ($this->item->params->get('show_section') && $this->item->sectionid && isset($this->section->title)) : ?>
 	<span class="article-section">
 		<?php if ($this->item->params->get('link_section')) : ?>
 			<?php echo '<a href="'.JRoute::_(ContentHelperRoute::getSectionRoute($this->item->sectionid)).'">'; ?>
 		<?php endif; ?>
-		<?php echo $this->item->section; ?>
+		<?php echo $this->escape($this->section->title); ?>
 		<?php if ($this->item->params->get('link_section')) : ?>
 			<?php echo '</a>'; ?>
 		<?php endif; ?>
@@ -68,7 +68,7 @@ if (
 		<?php if ($this->item->params->get('link_category')) : ?>
 			<?php echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->catslug, $this->item->sectionid)).'">'; ?>
 		<?php endif; ?>
-		<?php echo $this->item->category; ?>
+		<?php echo $this->escape($this->item->category); ?>
 		<?php if ($this->item->params->get('link_category')) : ?>
 			<?php echo '</a>'; ?>
 		<?php endif; ?>
@@ -102,7 +102,7 @@ if (
 <?php if ($this->item->params->get('show_url') && $this->item->urls) : ?>
 	<span class="article-url">
 		<a href="http://<?php echo $this->item->urls ; ?>" target="_blank">
-			<?php echo $this->item->urls; ?></a>
+			<?php echo $this->escape($this->item->urls); ?></a>
 	</span>
 <?php endif; ?>
 </div>
@@ -124,7 +124,7 @@ if (
 <?php endif; ?>
 
 <?php if ($this->item->params->get('show_readmore') && $this->item->readmore) : ?>
-	<a href="<?php echo $this->item->readmore_link; ?>" title="<?php echo $this->item->title; ?>" class="readon<?php echo $this->item->params->get('pageclass_sfx'); ?>">
+	<a href="<?php echo $this->escape($this->item->readmore_link); ?>" title="<?php echo $this->escape($this->item->title); ?>" class="readon<?php echo $this->escape($this->item->params->get('pageclass_sfx')); ?>">
 			<?php if ($this->item->readmore_register) : ?>
 				<?php echo JText::_('Register to read more...'); ?>
 			<?php else : ?>

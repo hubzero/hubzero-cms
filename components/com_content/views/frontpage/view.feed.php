@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.feed.php 11687 2009-03-11 17:49:23Z ian $
+ * @version		$Id: view.feed.php 11795 2009-05-06 01:59:19Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -35,7 +35,7 @@ class ContentViewFrontpage extends JView
 		$db			=& JFactory::getDBO();
 		$document	=& JFactory::getDocument();
 		$params =& $mainframe->getParams();
-		$feedEmail = ($mainframe->getCfg('feed_email')) ? $mainframe->getCfg('feed_email') : 'author';
+		$feedEmail = (@$mainframe->getCfg('feed_email')) ? $mainframe->getCfg('feed_email') : 'author';
 		$siteEmail = $mainframe->getCfg('mailfrom');
 		$document->link = JRoute::_('index.php?option=com_content&view=frontpage');
 

@@ -20,7 +20,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php if($this->direction == 'rtl') : ?>
 	<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/offline_rtl.css" type="text/css" />
 	<?php endif; ?>
-	<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/general.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/system.css" type="text/css" />
 </head>
 <body>
 <jdoc:include type="message" />

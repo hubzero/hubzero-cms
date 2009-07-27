@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: rss.php 11687 2009-03-11 17:49:23Z ian $
+ * @version		$Id: rss.php 11806 2009-05-10 00:28:51Z kdevine $
  * @package		Joomla.Framework
  * @subpackage	Document
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -50,7 +50,7 @@ class JDocumentRendererRSS extends JDocumentRenderer
 
 		$uri =& JFactory::getURI();
 		$url = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
-		$syndicationURL =& JRoute::_('&format=feed&type=atom');
+		$syndicationURL =& JRoute::_('&format=feed&type=rss');
 		
 		$feed = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
 		$feed.= "	<channel>\n";
@@ -59,7 +59,6 @@ class JDocumentRendererRSS extends JDocumentRenderer
 		$feed.= "		<link>".str_replace(' ','%20',$url.$data->link)."</link>\n";
 		$feed.= "		<lastBuildDate>".htmlspecialchars($now->toRFC822(), ENT_COMPAT, 'UTF-8')."</lastBuildDate>\n";
 		$feed.= "		<generator>".$data->getGenerator()."</generator>\n";
-		$feed.= '       <atom:link rel="self" type="application/atom+xml" href="'.str_replace(' ','%20',$url.$syndicationURL).'" />';
 	
 		if ($data->image!=null)
 		{
@@ -84,8 +83,9 @@ class JDocumentRendererRSS extends JDocumentRenderer
 		if ($data->copyright!="") {
 			$feed.= "		<copyright>".htmlspecialchars($data->copyright,ENT_COMPAT, 'UTF-8')."</copyright>\n";
 		}
-		if ($data->editor!="") {
-			$feed.= "		<managingEditor>".htmlspecialchars($data->editor, ENT_COMPAT, 'UTF-8')."</managingEditor>\n";
+		if ($data->editorEmail!="") {
+			$feed.= "		<managingEditor>".htmlspecialchars($data->editorEmail, ENT_COMPAT, 'UTF-8').' ('.
+				htmlspecialchars($data->editor, ENT_COMPAT, 'UTF-8').")</managingEditor>\n";
 		}
 		if ($data->webmaster!="") {
 			$feed.= "		<webMaster>".htmlspecialchars($data->webmaster, ENT_COMPAT, 'UTF-8')."</webMaster>\n";
@@ -121,6 +121,7 @@ class JDocumentRendererRSS extends JDocumentRenderer
 			$feed.= "		<item>\n";
 			$feed.= "			<title>".htmlspecialchars(strip_tags($data->items[$i]->title), ENT_COMPAT, 'UTF-8')."</title>\n";
 			$feed.= "			<link>".str_replace(' ','%20',$data->items[$i]->link)."</link>\n";
+			$feed.= "			<guid>".str_replace(' ','%20',$data->items[$i]->link)."</guid>\n";
 			$feed.= "			<description><![CDATA[".$this->_relToAbs($data->items[$i]->description)."]]></description>\n";
 
 			if ($data->items[$i]->authorEmail!="") {
@@ -173,7 +174,7 @@ class JDocumentRendererRSS extends JDocumentRenderer
 	function _relToAbs($text)
 	{
 		$base = JURI::base();
-  		$text = preg_replace("/(href|src)=\"(?!http|ftp|https)([^\"]*)\"/", "$1=\"$base\$2\"", $text);
+  		$text = preg_replace("/(href|src)=\"(?!http|ftp|https|mailto)([^\"]*)\"/", "$1=\"$base\$2\"", $text);
 
 		return $text;
 	}

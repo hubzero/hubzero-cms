@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: content.php 11305 2008-11-23 19:14:25Z ian $
+* @version		$Id: content.php 11809 2009-05-13 16:09:23Z ian $
 * @package		Joomla.Framework
 * @subpackage	Table
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -59,10 +59,6 @@ class JTableContent extends JTable
 	var $checked_out			= 0;
 	/** @var time */
 	var $checked_out_time		= 0;
-	/** @var datetime */
-	var $frontpage_up		= null;
-	/** @var datetime */
-	var $frontpage_down		= null;
 	/** @var datetime */
 	var $publish_up			= null;
 	/** @var datetime */

@@ -1,4 +1,4 @@
-<?php // @version $Id: default_form.php 11215 2008-10-26 02:25:51Z ian $
+<?php // @version $Id: default_form.php 11917 2009-05-29 19:37:05Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -20,25 +20,25 @@ defined('_JEXEC') or die('Restricted access');
 </script>
 
 <form action="<?php echo JRoute::_('index.php'); ?>" class="form-validate" method="post" name="emailForm" id="emailForm">
-	<div class="contact_email<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+	<div class="contact_email<?php echo $this->escape($this->params->get( 'pageclass_sfx' )); ?>">
 		<label for="contact_name">
 		<?php echo JText::_( 'Enter your name' ); ?>:</label>
 		<input type="text" name="name" id="contact_name" size="30" class="inputbox" value="" />
 	</div>
-	<div class="contact_email<?php echo  $this->params->get( 'pageclass_sfx' ); ?>"><label id="contact_emailmsg" for="contact_email">
+	<div class="contact_email<?php echo  $this->escape($this->params->get( 'pageclass_sfx' )); ?>"><label id="contact_emailmsg" for="contact_email">
 		<?php echo JText::_( 'Email address' ); ?>*:</label>
 		<input type="text" id="contact_email" name="email" size="30" value="" class="inputbox required validate-email" maxlength="100" />
 	</div>
-	<div class="contact_email<?php echo  $this->params->get( 'pageclass_sfx' ); ?>"><label for="contact_subject">
+	<div class="contact_email<?php echo  $this->escape($this->params->get( 'pageclass_sfx' )); ?>"><label for="contact_subject">
 		<?php echo JText::_( 'Message subject' ); ?>:</label>
 		<input type="text" name="subject" id="contact_subject" size="30" class="inputbox" value="" />
 	</div>
-		<div class="contact_email<?php echo $this->params->get( 'pageclass_sfx' ); ?>"><label id="contact_textmsg" for="contact_text" class="textarea">
+		<div class="contact_email<?php echo $this->escape($this->params->get( 'pageclass_sfx' )); ?>"><label id="contact_textmsg" for="contact_text" class="textarea">
 		<?php echo JText::_( 'Enter your message' ); ?>*:</label>
 		<textarea name="text" id="contact_text" class="inputbox required" rows="10" cols="40"></textarea>
 	</div>
 	<?php if ($this->contact->params->get( 'show_email_copy' )): ?>
-	<div class="contact_email_checkbox<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+	<div class="contact_email_checkbox<?php echo $this->escape($this->params->get( 'pageclass_sfx' )); ?>">
 	<input type="checkbox" name="email_copy" id="contact_email_copy" value="1"  />
 	<label for="contact_email_copy" class="copy">
 	<?php echo JText::_( 'EMAIL_A_COPY' ); ?>
@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php endif; ?>
 	<button class="button validate" type="submit"><?php echo JText::_('Send'); ?></button>
 	<input type="hidden" name="view" value="contact" />
-	<input type="hidden" name="id" value="<?php echo $this->contact->id; ?>" />
+	<input type="hidden" name="id" value="<?php echo (int)$this->contact->id; ?>" />
 	<input type="hidden" name="task" value="submit" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

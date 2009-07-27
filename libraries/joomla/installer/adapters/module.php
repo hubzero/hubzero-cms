@@ -159,10 +159,6 @@ class JInstallerModule extends JObject
 		$this->parent->parseMedia($this->manifest->getElementByPath('media'), $clientId);
 		$this->parent->parseLanguages($this->manifest->getElementByPath('languages'), $clientId);
 
-		// Load the language file
-		$lang		= & JFactory::getLanguage();
-		$lang->load($mname,$basePath);
-
 		// Parse deprecated tags
 		$this->parent->parseFiles($this->manifest->getElementByPath('images'), -1);
 
@@ -250,6 +246,11 @@ class JInstallerModule extends JObject
 			$this->parent->abort(JText::_('Module').' '.JText::_('Install').': '.JText::_('Could not copy setup file'));
 			return false;
 		}
+
+		// Load module language file
+		$lang =& JFactory::getLanguage();
+		$lang->load($row->module, JPATH_BASE.DS.'..');
+
 		return true;
 	}
 

@@ -1,7 +1,7 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
 <?php if ($this->user->authorize('com_content', 'edit', 'content', 'all') || $this->user->authorize('com_content', 'edit', 'content', 'own')) : ?>
-	<div class="contentpaneopen_edit<?php echo $this->item->params->get( 'pageclass_sfx' ); ?>">
+	<div class="contentpaneopen_edit<?php echo $this->escape($this->item->params->get( 'pageclass_sfx' )); ?>">
 		<?php echo JHTML::_('icon.edit', $this->item, $this->item->params, $this->access); ?>
 	</div>
 <?php endif; ?>
@@ -10,12 +10,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php endif; ?>
 
 <?php if ($this->item->params->get('show_title') || $this->item->params->get('show_pdf_icon') || $this->item->params->get('show_print_icon') || $this->item->params->get('show_email_icon')) : ?>
-<table class="contentpaneopen<?php echo $this->item->params->get( 'pageclass_sfx' ); ?>">
+<table class="contentpaneopen<?php echo $this->escape($this->item->params->get( 'pageclass_sfx' )); ?>">
 <tr>
 	<?php if ($this->item->params->get('show_title')) : ?>
-	<td class="contentheading<?php echo $this->item->params->get( 'pageclass_sfx' ); ?>" width="100%">
+	<td class="contentheading<?php echo $this->escape($this->item->params->get( 'pageclass_sfx' )); ?>" width="100%">
 		<?php if ($this->item->params->get('link_titles') && $this->item->readmore_link != '') : ?>
-		<a href="<?php echo $this->item->readmore_link; ?>" class="contentpagetitle<?php echo $this->item->params->get( 'pageclass_sfx' ); ?>">
+		<a href="<?php echo $this->item->readmore_link; ?>" class="contentpagetitle<?php echo $this->escape($this->item->params->get( 'pageclass_sfx' )); ?>">
 			<?php echo $this->escape($this->item->title); ?></a>
 		<?php else : ?>
 			<?php echo $this->escape($this->item->title); ?>
@@ -47,16 +47,16 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	echo $this->item->event->afterDisplayTitle;
 endif; ?>
 <?php echo $this->item->event->beforeDisplayContent; ?>
-<table class="contentpaneopen<?php echo $this->item->params->get( 'pageclass_sfx' ); ?>">
+<table class="contentpaneopen<?php echo $this->escape($this->item->params->get( 'pageclass_sfx' )); ?>">
 <?php if (($this->item->params->get('show_section') && $this->item->sectionid) || ($this->item->params->get('show_category') && $this->item->catid)) : ?>
 <tr>
 	<td>
-		<?php if ($this->item->params->get('show_section') && $this->item->sectionid && isset($this->item->section)) : ?>
+		<?php if ($this->item->params->get('show_section') && $this->item->sectionid && isset($this->section->title)) : ?>
 		<span>
 			<?php if ($this->item->params->get('link_section')) : ?>
 				<?php echo '<a href="'.JRoute::_(ContentHelperRoute::getSectionRoute($this->item->sectionid)).'">'; ?>
 			<?php endif; ?>
-			<?php echo $this->item->section; ?>
+			<?php echo $this->escape($this->section->title); ?>
 			<?php if ($this->item->params->get('link_section')) : ?>
 				<?php echo '</a>'; ?>
 			<?php endif; ?>
@@ -70,7 +70,7 @@ endif; ?>
 			<?php if ($this->item->params->get('link_category')) : ?>
 				<?php echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->catslug, $this->item->sectionid)).'">'; ?>
 			<?php endif; ?>
-			<?php echo $this->item->category; ?>
+			<?php echo $this->escape($this->item->category); ?>
 			<?php if ($this->item->params->get('link_category')) : ?>
 				<?php echo '</a>'; ?>
 			<?php endif; ?>
@@ -84,7 +84,7 @@ endif; ?>
 <tr>
 	<td width="70%"  valign="top" colspan="2">
 		<span class="small">
-			<?php JText::printf( 'Written by', ($this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author) ); ?>
+			<?php JText::printf( 'Written by', ($this->escape($this->item->created_by_alias) ? $this->escape($this->item->created_by_alias) : $this->escape($this->item->author)) ); ?>
 		</span>
 		&nbsp;&nbsp;
 	</td>
@@ -102,8 +102,8 @@ endif; ?>
 <?php if ($this->item->params->get('show_url') && $this->item->urls) : ?>
 <tr>
 	<td valign="top" colspan="2">
-		<a href="http://<?php echo $this->item->urls ; ?>" target="_blank">
-			<?php echo $this->item->urls; ?></a>
+		<a href="http://<?php echo $this->escape($this->item->urls) ; ?>" target="_blank">
+			<?php echo $this->escape($this->item->urls); ?></a>
 	</td>
 </tr>
 <?php endif; ?>
@@ -128,7 +128,7 @@ endif; ?>
 <?php if ($this->item->params->get('show_readmore') && $this->item->readmore) : ?>
 <tr>
 	<td  colspan="2">
-		<a href="<?php echo $this->item->readmore_link; ?>" class="readon<?php echo $this->item->params->get('pageclass_sfx'); ?>">
+		<a href="<?php echo $this->item->readmore_link; ?>" class="readon<?php echo $this->escape($this->item->params->get('pageclass_sfx')); ?>">
 			<?php if ($this->item->readmore_register) :
 				echo JText::_('Register to read more...');
 			elseif ($readmore = $this->item->params->get('readmore')) :

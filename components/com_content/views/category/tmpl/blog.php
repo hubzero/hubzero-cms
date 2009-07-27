@@ -3,11 +3,11 @@ defined('_JEXEC') or die('Restricted access');
 $cparams =& JComponentHelper::getParams('com_media');
 ?>
 <?php if ($this->params->get('show_page_title', 1)) : ?>
-<div class="componentheading<?php echo $this->params->get('pageclass_sfx');?>">
+<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 	<?php echo $this->escape($this->params->get('page_title')); ?>
 </div>
 <?php endif; ?>
-<table class="blog<?php echo $this->params->get('pageclass_sfx');?>" cellpadding="0" cellspacing="0">
+<table class="blog<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" cellpadding="0" cellspacing="0">
 <?php if ($this->params->def('show_description', 1) || $this->params->def('show_description_image', 1)) :?>
 <tr>
 	<td valign="top">
@@ -93,7 +93,7 @@ if (($numIntroArticles != $startIntroArticles) && ($i < $this->total)) : ?>
 <?php if ($this->params->get('num_links') && ($i < $this->total)) : ?>
 <tr>
 	<td valign="top">
-		<div class="blog_more<?php echo $this->params->get('pageclass_sfx') ?>">
+		<div class="blog_more<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 			<?php
 				$this->links = array_splice($this->items, $i - $this->pagination->limitstart);
 				echo $this->loadTemplate('links');

@@ -12,11 +12,11 @@
 		JHTML::_('script', 'openid.js');
 endif; ?>
 <form action="<?php echo JRoute::_( 'index.php', true, $this->params->get('usesecure')); ?>" method="post" name="com-login" id="com-form-login">
-<table width="100%" border="0" align="center" cellpadding="4" cellspacing="0" class="contentpane<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+<table width="100%" border="0" align="center" cellpadding="4" cellspacing="0" class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 <tr>
 	<td colspan="2">
 		<?php if ( $this->params->get( 'show_login_title' ) ) : ?>
-		<div class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+		<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 			<?php echo $this->params->get( 'header_login' ); ?>
 		</div>
 		<?php endif; ?>
@@ -61,7 +61,7 @@ endif; ?>
 	$usersConfig = &JComponentHelper::getParams( 'com_users' );
 	if ($usersConfig->get('allowUserRegistration')) : ?>
 	<li>
-		<a href="<?php echo JRoute::_( 'index.php?option=com_user&task=register' ); ?>">
+		<a href="<?php echo JRoute::_( 'index.php?option=com_user&view=register' ); ?>">
 			<?php echo JText::_('REGISTER'); ?></a>
 	</li>
 	<?php endif; ?>

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.feed.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: view.feed.php 11782 2009-04-24 17:25:58Z kdevine $
 * @package		Joomla
 * @subpackage	Weblinks
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -36,6 +36,10 @@ class WeblinksViewCategory extends JView
 		$document->link = JRoute::_('index.php?option=com_weblinks&view=category&id='.JRequest::getVar('id',null, '', 'int'));
 
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
+		$siteEmail = $mainframe->getCfg('mailfrom');
+		$fromName = $mainframe->getCfg('fromname');
+		$document->editor = $fromName;
+		$document->editorEmail = $siteEmail;
 
 		// Get some data from the model
 		$items		=& $this->get( 'data' );

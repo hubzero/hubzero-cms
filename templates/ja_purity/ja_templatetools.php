@@ -29,8 +29,8 @@ class JA_Tools {
 		if (isset($_COOKIE[$this->template.'_tpl']) && $_COOKIE[$this->template.'_tpl'] == $this->template){
 			foreach($this->_params_cookie as $k=>$v) {
 				$kc = $this->template."_".$k;
-				if (isset($_GET[$k])){
-					$v = $_GET[$k];
+				if (JRequest::getVar($k, null, 'GET') !== null) {
+					$v = preg_replace('/[\x00-\x1F\x7F<>;\/\"\'%()]/', '', JRequest::getString($k, '', 'GET'));
 					setcookie ($kc, $v, $exp, '/');
 				}else{
 					if (isset($_COOKIE[$kc])){
@@ -48,9 +48,9 @@ class JA_Tools {
 
 	function getParam ($param, $default='') {
 		if (isset($this->_params_cookie[$param])) {
-			return $this->_params_cookie[$param];
+			return preg_replace('/[\x00-\x1F\x7F<>;\/\"\'%()]/', '', $this->_params_cookie[$param]);
 		}
-		return $this->_tpl->params->get($param, $default);
+		return preg_replace('/[\x00-\x1F\x7F<>;\/\"\'%()]/', '', $this->_tpl->params->get($param, $default));
 	}
 
 	function setParam ($param, $value) {

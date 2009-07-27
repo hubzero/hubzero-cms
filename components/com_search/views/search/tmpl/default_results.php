@@ -1,13 +1,13 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 
-<table class="contentpaneopen<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+<table class="contentpaneopen<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 	<tr>
 		<td>
 		<?php
 		foreach( $this->results as $result ) : ?>
 			<fieldset>
 				<div>
-					<span class="small<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+					<span class="small<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 						<?php echo $this->pagination->limitstart + $result->count.'. ';?>
 					</span>
 					<?php if ( $result->href ) :
@@ -24,7 +24,7 @@
 						<?php endif;
 						if ( $result->section ) : ?>
 							<br />
-							<span class="small<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+							<span class="small<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 								(<?php echo $this->escape($result->section); ?>)
 							</span>
 						<?php endif; ?>
@@ -35,7 +35,7 @@
 				</div>
 				<?php
 					if ( $this->params->get( 'show_date' )) : ?>
-				<div class="small<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+				<div class="small<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 					<?php echo $result->created; ?>
 				</div>
 				<?php endif; ?>

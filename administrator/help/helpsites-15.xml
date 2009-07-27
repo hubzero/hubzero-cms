@@ -7,5 +7,6 @@
     <site tag="hu-HU" url="http://help.joomla.org.hu"> Hungarian -joomla.org.hu</site>
     <site tag="de-DE" url="http://hilfe.jgerman.de"> German -hilfe.jgerman.de</site>
     <site tag="nl-NL" url="http://help.joomlacommunity.eu"> Dutch(NL) - help.joomlacommunity.eu</site>
+    <site tag="ca-ES" url="http://www.joomla.cat"> Catalan - joomla.cat</site>
 </sites>
 </joshelp>

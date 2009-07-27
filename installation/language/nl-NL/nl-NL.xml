@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<metafile version="1.5" client="installation" >
-    <name>Nederlands (nl-NL)</name>
-    <version>1.5.10</version>
-    <creationDate>March 2009</creationDate>
-	<author>Joomla! Nederlands</author>
-	<copyright>(C) 2005-2009 Open Source Matters. All rights reserved.</copyright>
-    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <description>Dutch language installation for Joomla</description>
-    <metadata>
-    	<name>Nederlands (nl-NL)</name>
-    	<tag>nl-NL</tag>
-    	<rtl>0</rtl>
-    	<locale>nl-NL.utf-8, nl-NL.UTF-8, nl-NL, dut_BE, dut-NL, nl_NL, nl, dutch, dutch-be, dutch-nl, nl, belgium, netherlands, nld_NLD, nl_NL@euro, nl_NL.ISO8859-1, nl_NL.UTF-8</locale>
-    	<winCodePage>iso-8859-1</winCodePage>
-    	<backwardLang>dutch</backwardLang>
-    </metadata>
-    <params />
+<metafile version="1.5"  client="installation" >
+	<tag>nl-NL</tag>
+	<name>Nederlands nl-NL</name>
+	<description>Dutch language installation for Joomla</description>
+	<version>1.5.9</version>
+	<creationdate>2009-05-11</creationdate>
+	<author>Dutch Translation Team</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<metadata>
+		<name>Nederlands (nl-NL)</name>
+		<tag>nl-NL</tag>
+		<rtl>0</rtl>
+		<locale>nl_NL, nld_NLD, dutch, dutch-nl, nl, netherlands, nl_NL@euro, nl_NL.ISO8859-1, dut-NL, nl-NL.utf-8, nl_NL.utf8, nl-NL.UTF-8, dut_BE, dutch-be, belgium</locale>
+		<wincodepage>iso-8859-1</wincodepage>
+		<backwardlang>dutch</backwardlang>
+		<pdffontname>vera</pdffontname>
+	</metadata>
+	<params></params>
 </metafile>

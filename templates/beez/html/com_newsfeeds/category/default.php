@@ -1,17 +1,17 @@
-<?php // @version $Id: default.php 10498 2008-07-04 00:05:36Z ian $
+<?php // @version $Id: default.php 11917 2009-05-29 19:37:05Z ian $
 defined('_JEXEC') or die('Restricted access');
 $cparams = JComponentHelper::getParams ('com_media');
 ?>
 
 <?php if ( $this->params->get( 'show_page_title',1)): ?>
-<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
+<h1 class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 	<?php echo $this->escape($this->params->get('page_title')); ?>
 </h1>
 <?php endif; ?>
 
-<div class="newsfeed<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+<div class="newsfeed<?php echo $this->escape($this->params->get( 'pageclass_sfx' )); ?>">
 	<?php if ( $this->category->image || $this->category->description ) : ?>
-	<div class="contentdescription<?php echo $this->params->get('pageclass_sfx'); ?>">
+	<div class="contentdescription<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 
 		<?php if ( $this->category->image ) : ?>
 		<img src="<?php echo $this->baseurl . '/' . $cparams->get('image_path').'/'.$this->category->image; ?>" class="image_<?php echo $this->category->image_position; ?>" />

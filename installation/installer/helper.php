@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: helper.php 11954 2009-06-01 19:33:58Z ian $
  * @package		Joomla
  * @subpackage	Installation
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -865,12 +865,6 @@ class JInstallationHelper
 			 */
 			$buffer = str_replace ( $newPrefix.'modules', $newPrefix.'modules_migration', $buffer );
 			$buffer = str_replace ( $newPrefix.'menu', $newPrefix.'menu_migration', $buffer );
-
-			/*
-			 * rename two aro_acl... field names
-			 */
-			$buffer = preg_replace ( '/group_id(?!.{15,25}aro_id)/', 'id', $buffer );
-			$buffer = preg_replace ( '/aro_id(?=.{1,6}section_value)/', 'id', $buffer );
 
 			/*
 			 * convert to utf-8

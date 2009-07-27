@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 11674 2009-03-08 20:42:10Z willebil $
+* @version		$Id: helper.php 11799 2009-05-06 02:15:50Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -300,8 +300,22 @@ class JMenuTree extends JTree
 
 		$iParams = new JParameter($tmp->params);
 		if ($params->get('menu_images') && $iParams->get('menu_image') && $iParams->get('menu_image') != -1) {
-			$imgalign = $params->get('menu_images_align', 0) == 1 ? 'right' : 'left';
-			$image = '<img src="'.JURI::base(true).'/images/stories/'.$iParams->get('menu_image').'" align="'.$imgalign.'" alt="'.$item->alias.'" />';
+			switch ($params->get('menu_images_align', 0)){
+				case 0 : 
+				$imgalign='align="left"';
+				break;
+				
+				case 1 :
+				$imgalign='align="right"';
+				break;
+				
+				default :
+				$imgalign='';
+				break;
+			}
+				
+			
+			$image = '<img src="'.JURI::base(true).'/images/stories/'.$iParams->get('menu_image').'" '.$imgalign.' alt="'.$item->alias.'" />';
 			if($tmp->ionly){
 				 $tmp->name = null;
 			 }

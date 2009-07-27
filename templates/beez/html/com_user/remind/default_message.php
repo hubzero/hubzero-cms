@@ -3,9 +3,9 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div class="componentheading">
-	<?php echo $this->message->title; ?>
+	<?php echo $this->escape($this->message->title); ?>
 </div>
 
 <div class="message">
-	<?php echo $this->message->text; ?>
+	<?php echo $this->escape($this->message->text); ?>
 </div>

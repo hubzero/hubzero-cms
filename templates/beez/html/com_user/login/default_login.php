@@ -1,4 +1,4 @@
-<?php // @version $Id: default_login.php 10381 2008-06-01 03:35:53Z pasamio $
+<?php // @version $Id: default_login.php 11796 2009-05-06 02:03:15Z ian $
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <form action="<?php echo JRoute::_( 'index.php', true, $this->params->get('usesecure')); ?>" method="post" name="login" id="login" class="login_form<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
@@ -38,11 +38,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</div>
 	</fieldset>
 	<p>
-		<a href="<?php echo JRoute::_( 'index.php?option=com_user&task=lostPassword' ); ?>">
+		<a href="<?php echo JRoute::_( 'index.php?option=com_user&view=reset#content' ); ?>">
 			<?php echo JText::_('Lost Password?'); ?></a>
 		<?php if ( $this->params->get( 'registration' ) ) : ?>
 		<?php echo JText::_('No account yet?'); ?>
-		<a href="<?php echo JRoute::_( 'index.php?option=com_user&task=register' ); ?>">
+		<a href="<?php echo JRoute::_( 'index.php?option=com_user&view=register#content' ); ?>">
 			<?php echo JText::_( 'Register' ); ?></a>
 		<?php endif; ?>
 	</p>

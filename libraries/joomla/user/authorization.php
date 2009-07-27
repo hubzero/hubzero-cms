@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: authorization.php 10834 2008-08-28 10:38:50Z eddieajau $
+* @version		$Id: authorization.php 11784 2009-04-24 17:34:11Z kdevine $
 * @package		Joomla.Framework
 * @subpackage	User
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -143,10 +143,6 @@ class JAuthorization extends gacl_api
 		$this->addACL( 'com_media', 'popup', 'users', 'super administrator' );
 		$this->addACL( 'com_media', 'popup', 'users', 'administrator' );
 		$this->addACL( 'com_media', 'popup', 'users', 'manager' );
-		$this->addACL( 'com_media', 'popup', 'users', 'registered' );
-		$this->addACL( 'com_media', 'popup', 'users', 'author' );
-		$this->addACL( 'com_media', 'popup', 'users', 'editor' );
-		$this->addACL( 'com_media', 'popup', 'users', 'publisher' );
 
 		$this->addACL( 'com_menus', 'manage', 'users', 'administrator' );
 		$this->addACL( 'com_menus', 'manage', 'users', 'super administrator' );

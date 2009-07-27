@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: file.php 11656 2009-03-08 20:05:54Z willebil $
+ * @version		$Id: file.php 11807 2009-05-10 00:33:43Z kdevine $
  * @package		Joomla.Framework
  * @subpackage	FileSystem
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -374,7 +374,11 @@ class JFile
 	 * @since 1.5
 	 */
 	function getName($file) {
-		$slash = strrpos($file, DS) + 1;
-		return substr($file, $slash);
+		$slash = strrpos($file, DS);
+		if ($slash !== false) {
+			return substr($file, $slash + 1);
+		} else {
+			return $file;
+		}
 	}
 }

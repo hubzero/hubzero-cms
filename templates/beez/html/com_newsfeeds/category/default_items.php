@@ -1,4 +1,4 @@
-<?php // @version $Id: default_items.php 10381 2008-06-01 03:35:53Z pasamio $
+<?php // @version $Id: default_items.php 11917 2009-05-29 19:37:05Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -17,18 +17,18 @@ defined('_JEXEC') or die('Restricted access');
 	<?php if ( $this->params->get( 'show_headings' ) ) : ?>
 	<tr>
 
-		<th class="sectiontableheader<?php echo $this->params->get( 'pageclass_sfx' ); ?>" width="5" id="num">
+		<th class="sectiontableheader<?php echo $this->escape($this->params->get( 'pageclass_sfx' )); ?>" width="5" id="num">
 			<?php echo JText::_( 'Num' ); ?>
 		</th>
 
 		<?php if ( $this->params->get( 'show_name' ) ) : ?>
-		<th width="90%" class="sectiontableheader<?php echo $this->params->get( 'pageclass_sfx' ); ?>" id="name">
+		<th width="90%" class="sectiontableheader<?php echo $this->escape($this->params->get( 'pageclass_sfx' )); ?>" id="name">
 			<?php echo JText::_( 'Feed Name' ); ?>
 		</th>
 		<?php endif; ?>
 
 		<?php if ( $this->params->get( 'show_articles' ) ) : ?>
-		<th width="10%" class="sectiontableheader<?php echo $this->params->get( 'pageclass_sfx' ); ?>" nowrap="nowrap" id="num_a">
+		<th width="10%" class="sectiontableheader<?php echo $this->escape($this->params->get( 'pageclass_sfx' )); ?>" nowrap="nowrap" id="num_a">
 			<?php echo JText::_('Num Articles'); ?>
 		</th>
 		<?php endif; ?>
@@ -44,8 +44,8 @@ defined('_JEXEC') or die('Restricted access');
 		</td>
 
 		<td width="90%" headers="name">
-			<a href="<?php echo $item->link; ?>" class="category<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
-				<?php echo $item->name; ?></a>
+			<a href="<?php echo $item->link; ?>" class="category<?php echo $this->escape($this->params->get( 'pageclass_sfx' )); ?>">
+				<?php echo $this->escape($item->name); ?></a>
 		</td>
 
 		<?php if ( $this->params->get( 'show_articles' ) ) : ?>

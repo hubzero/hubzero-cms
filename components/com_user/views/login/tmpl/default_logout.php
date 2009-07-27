@@ -1,19 +1,19 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 <?php /** @todo Should this be routed */ ?>
-<form action="index.php" method="post" name="login" id="login">
+<form action="<?php echo JRoute::_( 'index.php' ); ?>" method="post" name="login" id="login">
 <?php if ( $this->params->get( 'show_logout_title' ) ) : ?>
-<div class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
-	<?php echo $this->params->get( 'header_logout' ); ?>
+<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+	<?php echo $this->escape($this->params->get( 'header_logout' )); ?>
 </div>
 <?php endif; ?>
-<table border="0" align="center" cellpadding="4" cellspacing="0" class="contentpane<?php echo $this->params->get( 'pageclass_sfx' ); ?>" width="100%">
+<table border="0" align="center" cellpadding="4" cellspacing="0" class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" width="100%">
 <tr>
 	<td valign="top">
 		<div>
 		<?php echo $this->image; ?>
 		<?php
 			if ($this->params->get('description_logout')) :
-				echo $this->params->get('description_logout_text');
+				echo $this->escape($this->params->get('description_logout_text'));
 			endif;
 		?>
 		</div>

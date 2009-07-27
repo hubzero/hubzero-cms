@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: module.php 10707 2008-08-21 09:52:47Z eddieajau $
+* @version		$Id: module.php 11810 2009-05-13 16:14:07Z ian $
 * @package		Joomla.Framework
 * @subpackage	Document
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -73,13 +73,13 @@ class JDocumentRendererModule extends JDocumentRenderer
 
 		$contents = '';
 		if ($mod_params->get('cache', 0) && $conf->getValue( 'config.caching' ))
-		{
+		{	
 			$cache =& JFactory::getCache( $module->module );
 
 			$cache->setLifeTime( $mod_params->get( 'cache_time', $conf->getValue( 'config.cachetime' ) * 60 ) );
 			$cache->setCacheValidation(true);
 
-			$contents =  $cache->get( array('JModuleHelper', 'renderModule'), array( $module, $params ), $module->id. $user->get('aid', 0) );
+			$contents =  $cache->get( array('JModuleHelper', 'renderModule'), array( $module, $params ), $module->id. $user->get('aid', 0).md5(JRequest::getURI()) );
 		} else {
 			$contents = JModuleHelper::renderModule($module, $params);
 		}

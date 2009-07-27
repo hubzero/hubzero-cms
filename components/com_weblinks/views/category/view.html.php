@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10752 2008-08-23 01:53:31Z eddieajau $
+* @version		$Id: view.html.php 11917 2009-05-29 19:37:05Z ian $
 * @package		Joomla
 * @subpackage	Weblinks
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -117,7 +117,7 @@ class WeblinksViewCategory extends JView
 
 			$link = JRoute::_( 'index.php?view=weblink&catid='.$category->slug.'&id='. $item->slug);
 
-			$menuclass = 'category'.$params->get( 'pageclass_sfx' );
+			$menuclass = 'category'.$this->escape($params->get( 'pageclass_sfx' ));
 
 			$itemParams = new JParameter($item->params);
 			switch ($itemParams->get('target', $params->get('target')))

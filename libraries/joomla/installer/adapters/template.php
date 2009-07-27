@@ -137,6 +137,11 @@ class JInstallerTemplate extends JObject
 			$this->parent->abort(JText::_('Template').' '.JText::_('Install').': '.JText::_('Could not copy setup file'));
 			return false;
 		}
+
+		// Load template language file
+		$lang =& JFactory::getLanguage();
+		$lang->load('tpl_'.$name);
+
 		return true;
 	}
 

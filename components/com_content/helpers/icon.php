@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: icon.php 11213 2008-10-25 12:43:11Z pasamio $
+ * @version		$Id: icon.php 11917 2009-05-29 19:37:05Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -123,7 +123,7 @@ class JHTMLIcon
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= $date;
 		$overlib .= '&lt;br /&gt;';
-		$overlib .= $author;
+		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
 
 		$button = JHTML::_('link', JRoute::_($url), $text);
 

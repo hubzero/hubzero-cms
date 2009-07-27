@@ -54,6 +54,7 @@
 		<param name="menu_images_align" type="radio" default="0" label="Menu Icon Alignment" description="Alignment of the Menu Icons">
 			<option value="0">Left</option>
 			<option value="1">Right</option>
+			<option value="2">None</option>
 		</param>
 		 <param name="menu_images_link" type="radio" default="0" label="Menu Icon Link" description="PARAMMENUICONLINK">
 		      	<option value="0">No</option>

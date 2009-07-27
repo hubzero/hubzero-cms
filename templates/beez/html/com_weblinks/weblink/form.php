@@ -1,8 +1,8 @@
-<?php // @version $Id: form.php 11215 2008-10-26 02:25:51Z ian $
+<?php // @version $Id: form.php 11917 2009-05-29 19:37:05Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 <?php if($this->params->get('show_page_title',1)) : ?>
-<h2 class="componentheading<?php echo $this->params->get('pageclass_sfx') ?>">
+<h2 class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')) ?>">
         <?php echo $this->escape($this->params->get('page_title')) ?>
 </h2>
 <?php endif; ?>
@@ -44,7 +44,7 @@ function submitbutton(pressbutton)
     </div>
 	<div>
 	<label for="jformurl"><?php echo JText::_( 'URL' ); ?>:</label>
-	<input class="inputbox" type="text" id="jformurl" name="jform[url]" value="<?php echo $this->weblink->url; ?>" size="50" maxlength="250" />
+	<input class="inputbox" type="text" id="jformurl" name="jform[url]" value="<?php echo $this->escape($this->weblink->url); ?>" size="50" maxlength="250" />
 	</div>
 
 	<div>
@@ -78,8 +78,8 @@ function submitbutton(pressbutton)
         </button>
 </div>
 
-        <input type="hidden" name="jform[id]" value="<?php echo $this->weblink->id; ?>" />
-        <input type="hidden" name="jform[ordering]" value="<?php echo $this->weblink->ordering; ?>" />
+        <input type="hidden" name="jform[id]" value="<?php echo (int)$this->weblink->id; ?>" />
+        <input type="hidden" name="jform[ordering]" value="<?php echo (int)$this->weblink->ordering; ?>" />
         <input type="hidden" name="jform[approved]" value="<?php echo $this->weblink->approved; ?>" />
         <input type="hidden" name="option" value="com_weblinks" />
         <input type="hidden" name="controller" value="weblink" />

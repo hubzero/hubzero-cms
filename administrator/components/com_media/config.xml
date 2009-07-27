@@ -9,6 +9,12 @@
 			<option value="0">NO</option>
 			<option value="1">YES</option>
 		</param>
+		<param name="allowed_media_usergroup" type="list" default="3" label="ALLOWED_USERGROUP" description="ALLOWED_USERGROUP_DESC">
+			<option value="4">Registered</option>
+			<option value="3">Author</option>
+			<option value="2">Editor</option>
+			<option value="1">Publisher</option>
+		</param>		
 		<param name="check_mime" type="radio" default="1" label="CHECK MIME" description="CHECK MIME DESC">
 			<option value="0">NO</option>
 			<option value="1">YES</option>

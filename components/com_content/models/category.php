@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: category.php 11687 2009-03-11 17:49:23Z ian $
+ * @version		$Id: category.php 11794 2009-05-06 01:56:42Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -386,6 +386,12 @@ class ContentModelCategory extends JModel
 		if ($filter_order && $filter_order_Dir)
 		{
 			$orderby .= $filter_order .' '. $filter_order_Dir.', ';
+		}
+	    elseif($filter_order == '' && $filter_order_Dir == '')
+		{
+				$filter_order='a.ordering';
+				$filter_order_Dir='ASC';
+				$orderby .= $filter_order .' '. $filter_order_Dir.', ';
 		}
 
 		if ($filter_order == 'author')

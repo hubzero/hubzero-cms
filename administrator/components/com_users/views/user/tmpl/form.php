@@ -22,7 +22,7 @@
 
 <?php
 	// clean item data
-	JFilterOutput::objectHTMLSafe( $user, ENT_QUOTES, '' );
+	JFilterOutput::objectHTMLSafe( $this->user, ENT_QUOTES, '' );
 
 	if ($this->user->get('lastvisitDate') == "0000-00-00 00:00:00") {
 		$lvisit = JText::_( 'Never' );

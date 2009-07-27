@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<tr>
 		<th colspan="3" class="sectiontableheader">
 			<img src="<?php echo $this->baseurl; ?>/components/com_poll/assets/poll.png" align="middle" border="0" width="12" height="14" alt="" />
-			<?php echo $this->poll->title; ?>
+			<?php echo $this->escape($this->poll->title); ?>
 		</th>
 	</tr>
 </thead>
@@ -19,10 +19,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</tr>
 	<tr class="sectiontableentry<?php echo $vote->odd; ?>">
 		<td align="right" width="25">
-			<strong><?php echo $vote->hits; ?></strong>&nbsp;
+			<strong><?php echo $this->escape($vote->hits); ?></strong>&nbsp;
 		</td>
 		<td width="30" >
-			<?php echo $vote->percent; ?>%
+			<?php echo $this->escape($vote->percent); ?>%
 		</td>
 		<td width="300" >
 			<div class="<?php echo $vote->class; ?>" style="height:<?php echo $vote->barheight; ?>px;width:<?php echo $vote->percent; ?>%"></div>
@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</td>
 		<td class="smalldark">
 			&nbsp;:&nbsp;
-			<?php echo $this->first_vote; ?>
+			<?php echo $this->escape($this->first_vote); ?>
 		</td>
 	</tr>
 	<tr>
@@ -58,7 +58,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</td>
 		<td class="smalldark">
 			&nbsp;:&nbsp;
-			<?php echo $this->last_vote; ?>
+			<?php echo $this->escape($this->last_vote); ?>
 		</td>
 	</tr>
 </tbody>

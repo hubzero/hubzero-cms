@@ -1,4 +1,4 @@
-<?php // @version $Id: default_items.php 10381 2008-06-01 03:35:53Z pasamio $
+<?php // @version $Id: default_items.php 11917 2009-05-29 19:37:05Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 </script>
 
 <div class="display">
-	<form action="<?php echo htmlspecialchars($this->action); ?>" method="post" name="adminForm">
+	<form action="<?php echo $this->escape($this->action); ?>" method="post" name="adminForm">
 		<?php echo JText :: _('Display Num'); ?>&nbsp;
 		<?php echo $this->pagination->getLimitBox(); ?>
 		<input type="hidden" name="filter_order" value="<?php echo $this->lists['order'] ?>" />
@@ -27,16 +27,16 @@ defined('_JEXEC') or die('Restricted access');
 	<?php if ($this->params->def('show_headings', 1)) : ?>
 	<tr>
 
-		<th class="sectiontableheader<?php echo $this->params->get('pageclass_sfx'); ?>" width="5" id="num">
+		<th class="sectiontableheader<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" width="5" id="num">
 			<?php echo JText::_('Num'); ?>
 		</th>
 
-		<th width="90%" class="sectiontableheader<?php echo $this->params->get('pageclass_sfx'); ?>" id="title">
+		<th width="90%" class="sectiontableheader<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" id="title">
 			<?php echo JHTML::_('grid.sort', 'Web Link', 'title', $this->lists['order_Dir'], $this->lists['order']); ?>
 		</th>
 
 		<?php if ($this->params->get('show_link_hits')) : ?>
-		<th width="10%" class="sectiontableheader<?php echo $this->params->get('pageclass_sfx'); ?>" nowrap="nowrap" id="hits">
+		<th width="10%" class="sectiontableheader<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" nowrap="nowrap" id="hits">
 			<?php echo JHTML::_('grid.sort', 'Hits', 'hits', $this->lists['order_Dir'], $this->lists['order']); ?>
 		</th>
 		<?php endif; ?>
@@ -64,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		<?php if ($this->params->get('show_link_hits')) : ?>
 		<td headers="hits">
-			<?php echo $item->hits; ?>
+			<?php echo (int)$item->hits; ?>
 		</td>
 		<?php endif; ?>
 

@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <form action="<?php echo JRoute::_( 'index.php' ); ?>" method="post" name="userform" autocomplete="off" class="form-validate">
 <?php if ( $this->params->def( 'show_page_title', 1 ) ) : ?>
-	<div class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 		<?php echo $this->escape($this->params->get('page_title')); ?>
 	</div>
 <?php endif; ?>
@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</label>
 	</td>
 	<td>
-		<input class="inputbox required" type="text" id="name" name="name" value="<?php echo $this->user->get('name');?>" size="40" />
+		<input class="inputbox required" type="text" id="name" name="name" value="<?php echo $this->escape($this->user->get('name'));?>" size="40" />
 	</td>
 </tr>
 <tr>
@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</label>
 	</td>
 	<td>
-		<input class="inputbox required validate-email" type="text" id="email" name="email" value="<?php echo $this->user->get('email');?>" size="40" />
+		<input class="inputbox required validate-email" type="text" id="email" name="email" value="<?php echo $this->escape($this->user->get('email'));?>" size="40" />
 	</td>
 </tr>
 <?php if($this->user->get('password')) : ?>

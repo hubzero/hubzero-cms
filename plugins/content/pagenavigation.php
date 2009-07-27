@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: pagenavigation.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: pagenavigation.php 11783 2009-04-24 17:28:10Z kdevine $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -150,13 +150,13 @@ function plgContentNavigation( &$row, &$params, $page=0 )
 		}
 
 		if ($row->prev) {
-			$row->prev = JRoute::_('index.php?option=com_content&view=article&catid='.$row->prev->catslug.'&id='.$row->prev->slug);
+			$row->prev = JRoute::_(ContentHelperRoute::getArticleRoute($row->prev->slug, $row->prev->catslug));
 		} else {
 			$row->prev = '';
 		}
 
 		if ($row->next) {
-			$row->next = JRoute::_('index.php?option=com_content&view=article&catid='.$row->next->catslug.'&id='.$row->next->slug);
+			$row->next = JRoute::_(ContentHelperRoute::getArticleRoute($row->next->slug, $row->next->catslug));
 		} else {
 			$row->next = '';
 		}

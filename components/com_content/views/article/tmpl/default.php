@@ -4,17 +4,17 @@ defined('_JEXEC') or die('Restricted access');
 $canEdit	= ($this->user->authorize('com_content', 'edit', 'content', 'all') || $this->user->authorize('com_content', 'edit', 'content', 'own'));
 ?>
 <?php if ($this->params->get('show_page_title', 1) && $this->params->get('page_title') != $this->article->title) : ?>
-	<div class="componentheading<?php echo $this->params->get('pageclass_sfx')?>">
+	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 		<?php echo $this->escape($this->params->get('page_title')); ?>
 	</div>
 <?php endif; ?>
 <?php if ($canEdit || $this->params->get('show_title') || $this->params->get('show_pdf_icon') || $this->params->get('show_print_icon') || $this->params->get('show_email_icon')) : ?>
-<table class="contentpaneopen<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+<table class="contentpaneopen<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 <tr>
 	<?php if ($this->params->get('show_title')) : ?>
-	<td class="contentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>" width="100%">
+	<td class="contentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" width="100%">
 		<?php if ($this->params->get('link_titles') && $this->article->readmore_link != '') : ?>
-		<a href="<?php echo $this->article->readmore_link; ?>" class="contentpagetitle<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+		<a href="<?php echo $this->article->readmore_link; ?>" class="contentpagetitle<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 			<?php echo $this->escape($this->article->title); ?></a>
 		<?php else : ?>
 			<?php echo $this->escape($this->article->title); ?>
@@ -57,7 +57,7 @@ $canEdit	= ($this->user->authorize('com_content', 'edit', 'content', 'all') || $
 	echo $this->article->event->afterDisplayTitle;
 endif; ?>
 <?php echo $this->article->event->beforeDisplayContent; ?>
-<table class="contentpaneopen<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+<table class="contentpaneopen<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 <?php if (($this->params->get('show_section') && $this->article->sectionid) || ($this->params->get('show_category') && $this->article->catid)) : ?>
 <tr>
 	<td>
@@ -66,7 +66,7 @@ endif; ?>
 			<?php if ($this->params->get('link_section')) : ?>
 				<?php echo '<a href="'.JRoute::_(ContentHelperRoute::getSectionRoute($this->article->sectionid)).'">'; ?>
 			<?php endif; ?>
-			<?php echo $this->article->section; ?>
+			<?php echo $this->escape($this->article->section); ?>
 			<?php if ($this->params->get('link_section')) : ?>
 				<?php echo '</a>'; ?>
 			<?php endif; ?>
@@ -80,7 +80,7 @@ endif; ?>
 			<?php if ($this->params->get('link_category')) : ?>
 				<?php echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->article->catslug, $this->article->sectionid)).'">'; ?>
 			<?php endif; ?>
-			<?php echo $this->article->category; ?>
+			<?php echo $this->escape($this->article->category); ?>
 			<?php if ($this->params->get('link_category')) : ?>
 				<?php echo '</a>'; ?>
 			<?php endif; ?>
@@ -93,7 +93,7 @@ endif; ?>
 <tr>
 	<td valign="top">
 		<span class="small">
-			<?php JText::printf( 'Written by', ($this->article->created_by_alias ? $this->article->created_by_alias : $this->article->author) ); ?>
+			<?php JText::printf( 'Written by', ($this->escape($this->article->created_by_alias) ? $this->escape($this->article->created_by_alias) : $this->escape($this->article->author)) ); ?>
 		</span>
 		&nbsp;&nbsp;
 	</td>
@@ -112,7 +112,7 @@ endif; ?>
 <tr>
 	<td valign="top">
 		<a href="http://<?php echo $this->article->urls ; ?>" target="_blank">
-			<?php echo $this->article->urls; ?></a>
+			<?php echo $this->escape($this->article->urls); ?></a>
 	</td>
 </tr>
 <?php endif; ?>

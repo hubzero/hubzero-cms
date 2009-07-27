@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: factory.php 11680 2009-03-08 20:51:13Z willebil $
+ * @version		$Id: factory.php 11811 2009-05-13 16:16:52Z ian $
  * @package		Joomla.Framework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -130,7 +130,7 @@ class JFactory
 	 * if it doesn't already exist.
 	 *
 	 * @access public
-	 * @return object JLanguage
+	 * @return object JDocument
 	 */
 	function &getDocument()
 	{

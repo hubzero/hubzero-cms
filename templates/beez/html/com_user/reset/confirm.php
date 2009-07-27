@@ -1,4 +1,4 @@
-<?php // @version $Id: confirm.php 10822 2008-08-27 17:16:00Z tcp $
+<?php // @version $Id: confirm.php 11786 2009-04-24 17:48:08Z kdevine $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo JText::_('Confirm your Account'); ?>
 </div>
 
-<form action="index.php?option=com_user&amp;task=confirmreset" method="post" class="josForm form-validate">
+<form action="<?php echo JRoute::_( 'index.php?option=com_user&task=confirmreset' ); ?>" method="post" class="josForm form-validate">
 	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="contentpane">
 		<tr>
 			<td colspan="2" height="40">

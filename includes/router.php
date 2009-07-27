@@ -244,9 +244,16 @@ class JRouterSite extends JRouter
 
 			if (file_exists($path) && count($segments))
 			{
-				if ($component != "com_search") { // Cheep fix on searches
+				if ($component != "com_search") { // Cheap fix on searches
 					//decode the route segments
 					$segments = $this->_decodeSegments($segments);
+				}
+				else { // fix up search for URL
+					$total = count($segments);
+					for($i=0; $i<$total; $i++) {
+						// urldecode twice because it is encoded twice
+						$segments[$i] = urldecode(urldecode(stripcslashes($segments[$i])));
+					}
 				}
 
 				require_once $path;

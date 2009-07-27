@@ -189,34 +189,55 @@ class JInstallerComponent extends JObject
 		// If there is an install file, lets copy it.
 		$installScriptElement =& $this->manifest->getElementByPath('installfile');
 		if (is_a($installScriptElement, 'JSimpleXMLElement')) {
-			// Make sure it hasn't already been copied (this would be an error in the xml install file)
-			// Only copy over an existing file when upgrading components
-			if (!file_exists($this->parent->getPath('extension_administrator').DS.$installScriptElement->data()) || $this->parent->getOverwrite())
-			{
-				$path['src']	= $this->parent->getPath('source').DS.$installScriptElement->data();
-				$path['dest']	= $this->parent->getPath('extension_administrator').DS.$installScriptElement->data();
-				if (!$this->parent->copyFiles(array ($path))) {
-					// Install failed, rollback changes
-					$this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Could not copy PHP install file.'));
-					return false;
+			// check if it actually has a value
+			$installScriptFilename = $installScriptElement->data();
+			if(empty($installScriptFilename)) {
+				if(JDEBUG) JError::raiseWarning(43, JText::sprintf('BLANKSCRIPTELEMENT', JText::_('install')));
+			} else {
+				// Make sure it hasn't already been copied (this would be an error in the xml install file)
+				// Only copy over an existing file when upgrading components
+				if (!file_exists($this->parent->getPath('extension_administrator').DS.$installScriptFilename) || $this->parent->getOverwrite())
+				{
+					$path['src']	= $this->parent->getPath('source').DS.$installScriptFilename;
+					$path['dest']	= $this->parent->getPath('extension_administrator').DS.$installScriptFilename;
+					if(file_exists($path['src']) && file_exists(dirname($path['dest']))) {
+						if (!$this->parent->copyFiles(array ($path))) {
+							// Install failed, rollback changes
+							$this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Could not copy PHP install file.'));
+							return false;
+						}
+					} else if(JDEBUG) {
+						JError::raiseWarning(42, JText::sprintf('INVALIDINSTALLFILE', JText::_('install')));
+					}
 				}
+				$this->set('install.script', $installScriptFilename);
 			}
-			$this->set('install.script', $installScriptElement->data());
 		}
 
 		// If there is an uninstall file, lets copy it.
 		$uninstallScriptElement =& $this->manifest->getElementByPath('uninstallfile');
 		if (is_a($uninstallScriptElement, 'JSimpleXMLElement')) {
-			// Make sure it hasn't already been copied (this would be an error in the xml install file)
-			// Only copy over an existing file when upgrading components
-			if (!file_exists($this->parent->getPath('extension_administrator').DS.$uninstallScriptElement->data()) || $this->parent->getOverwrite())
-			{
-				$path['src']	= $this->parent->getPath('source').DS.$uninstallScriptElement->data();
-				$path['dest']	= $this->parent->getPath('extension_administrator').DS.$uninstallScriptElement->data();
-				if (!$this->parent->copyFiles(array ($path))) {
-					// Install failed, rollback changes
-					$this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Could not copy PHP uninstall file.'));
-					return false;
+			// check it actually has a value
+			$uninstallScriptFilename = $uninstallScriptElement->data();
+			if(empty($uninstallScriptFilename)) {
+				// display a warning when we're in debug mode
+				if(JDEBUG) JError::raiseWarning(43, JText::sprintf('BLANKSCRIPTELEMENT', JText::_('uninstall')));
+			} else {
+				// Make sure it hasn't already been copied (this would be an error in the xml install file)
+				// Only copy over an existing file when upgrading components
+				if (!file_exists($this->parent->getPath('extension_administrator').DS.$uninstallScriptFilename) || $this->parent->getOverwrite())
+				{
+					$path['src']	= $this->parent->getPath('source').DS.$uninstallScriptFilename;
+					$path['dest']	= $this->parent->getPath('extension_administrator').DS.$uninstallScriptFilename;
+					if(file_exists($path['src']) && file_exists(dirname($path['dest']))) {
+						if (!$this->parent->copyFiles(array ($path))) {
+							// Install failed, rollback changes
+							$this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Could not copy PHP install file.'));
+							return false;
+						}
+					} else if(JDEBUG) {
+						JError::raiseWarning(42, JText::sprintf('INVALIDINSTALLFILE', JText::_('uninstall')));
+					}
 				}
 			}
 		}
@@ -294,6 +315,11 @@ class JInstallerComponent extends JObject
 			$this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Could not copy setup file'));
 			return false;
 		}
+
+		// Load component lang file
+		$lang =& JFactory::getLanguage();
+		$lang->load(strtolower("com_".str_replace(" ", "", $this->get('name'))));
+
 		return true;
 	}
 

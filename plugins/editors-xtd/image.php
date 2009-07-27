@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: image.php 10709 2008-08-21 09:58:52Z eddieajau $
+ * @version		$Id: image.php 11784 2009-04-24 17:34:11Z kdevine $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -48,7 +48,18 @@ class plgButtonImage extends JPlugin
 	function onDisplay($name)
 	{
 		global $mainframe;
-
+		$params =& JComponentHelper::getParams('com_media');
+		$ranks = array('publisher', 'editor', 'author', 'registered');
+		$acl = & JFactory::getACL();
+		for($i = 0; $i < $params->get('allowed_media_usergroup', 3); $i++)
+		{
+			$acl->addACL( 'com_media', 'popup', 'users', $ranks[$i] );
+		}
+		//Make sure the user is authorized to view this page
+		$user = & JFactory::getUser();
+		if (!$user->authorize( 'com_media', 'popup' )) {
+			return;
+		}
 		$doc 		=& JFactory::getDocument();
 		$template 	= $mainframe->getTemplate();
 

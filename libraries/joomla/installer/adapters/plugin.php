@@ -200,6 +200,11 @@ class JInstallerPlugin extends JObject
 			$this->parent->abort(JText::_('Plugin').' '.JText::_('Install').': '.JText::_('Could not copy setup file'));
 			return false;
 		}
+
+		// Load plugin language file
+		$lang =& JFactory::getLanguage();
+		$lang->load('plg_'.$group.'_'.$pname);
+
 		return true;
 	}
 

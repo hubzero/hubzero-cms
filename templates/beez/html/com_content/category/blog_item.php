@@ -1,17 +1,17 @@
-<?php // @version $Id: blog_item.php 11386 2009-01-04 02:34:35Z ian $
+<?php // @version $Id: blog_item.php 11917 2009-05-29 19:37:05Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
 <?php if ($this->user->authorize('com_content', 'edit', 'content', 'all') || $this->user->authorize('com_content', 'edit', 'content', 'own')) : ?>
-<div class="contentpaneopen_edit<?php echo $this->item->params->get('pageclass_sfx'); ?>">
+<div class="contentpaneopen_edit<?php echo $this->escape($this->item->params->get('pageclass_sfx')); ?>">
 	<?php echo JHTML::_('icon.edit', $this->item, $this->item->params, $this->access); ?>
 </div>
 <?php endif; ?>
 
 <?php if ($this->item->params->get('show_title')) : ?>
-<h2 class="contentheading<?php echo $this->item->params->get('pageclass_sfx'); ?>">
+<h2 class="contentheading<?php echo $this->escape($this->item->params->get('pageclass_sfx')); ?>">
 	<?php if ($this->item->params->get('link_titles') && $this->item->readmore_link != '') : ?>
-		<a href="<?php echo $this->item->readmore_link; ?>" class="contentpagetitle<?php echo $this->item->params->get('pageclass_sfx'); ?>">
+		<a href="<?php echo $this->item->readmore_link; ?>" class="contentpagetitle<?php echo $this->escape($this->item->params->get('pageclass_sfx')); ?>">
 			<?php echo $this->escape($this->item->title); ?></a>
 	<?php else :
 		echo $this->escape($this->item->title);
@@ -45,7 +45,7 @@ endif; ?>
             <?php if ($this->item->params->get('link_section')) : ?>
                 <?php echo '<a href="'.JRoute::_(ContentHelperRoute::getSectionRoute($this->item->sectionid)).'">'; ?>
             <?php endif; ?>
-            <?php echo $this->item->section; ?>
+            <?php echo $this->escape($this->item->section); ?>
             <?php if ($this->item->params->get('link_section')) : ?>
                 <?php echo '</a>'; ?>
             <?php endif; ?>
@@ -59,7 +59,7 @@ endif; ?>
             <?php if ($this->item->params->get('link_category')) : ?>
                 <?php echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->catslug, $this->item->sectionid)).'">'; ?>
             <?php endif; ?>
-            <?php echo $this->item->category; ?>
+            <?php echo $this->escape($this->item->category); ?>
             <?php if ($this->item->params->get('link_category')) : ?>
                 <?php echo '</a>'; ?>
             <?php endif; ?>
@@ -78,7 +78,7 @@ endif; ?>
 
 	<?php if (($this->item->params->get('show_author')) && ($this->item->author != "")) : ?>
 	<span class="createdby">
-		<?php JText::printf('Written by', ($this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author)); ?>
+		<?php JText::printf('Written by', ($this->escape($this->item->created_by_alias) ? $this->escape($this->item->created_by_alias) : $this->escape($this->item->author))); ?>
 	</span>
 	<?php endif; ?>
 
@@ -95,7 +95,7 @@ endif; ?>
 <?php if ($this->item->params->get('show_url') && $this->item->urls) : ?>
 <span class="small">
 	<a href="<?php echo $this->item->urls; ?>" target="_blank">
-		<?php echo $this->item->urls; ?></a>
+		<?php echo $this->escape($this->item->urls); ?></a>
 </span>
 <?php endif; ?>
 
@@ -107,13 +107,13 @@ endif; ?>
 
 <?php if ($this->item->params->get('show_readmore') && $this->item->readmore) : ?>
 <p>
-	<a href="<?php echo $this->item->readmore_link; ?>" class="readon<?php echo $this->item->params->get('pageclass_sfx'); ?>">
+	<a href="<?php echo $this->item->readmore_link; ?>" class="readon<?php echo $this->escape($this->item->params->get('pageclass_sfx')); ?>">
 		<?php if ($this->item->readmore_register) :
 			echo JText::_('Register to read more...');
 		elseif ($readmore = $this->item->params->get('readmore')) :
 			echo $readmore;
 		else :
-			echo JText::sprintf('Read more', $this->item->title);
+			echo JText::sprintf('Read more', $this->escape($this->item->title));
 		endif; ?></a>
 </p>
 <?php endif; ?>

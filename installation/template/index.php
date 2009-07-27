@@ -24,7 +24,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<div id="header1">
 			<div id="header2">
 				<div id="header3">
-					<div id="version"><?php echo JText::_('Version#') ?></div>
+					<div id="version"><?php echo JVERSION ?></div>
 					<span><?php echo JText::_('Installation') ?></span>
 				</div>
 			</div>

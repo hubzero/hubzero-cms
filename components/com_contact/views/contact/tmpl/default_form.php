@@ -1,5 +1,5 @@
 <?php
-/** $Id: default_form.php 11328 2008-12-12 19:22:41Z kdevine $ */
+/** $Id: default_form.php 11917 2009-05-29 19:37:05Z ian $ */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	$script = '<!--
@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<td colspan="2">
 	<br /><br />
 	<form action="<?php echo JRoute::_( 'index.php' );?>" method="post" name="emailForm" id="emailForm" class="form-validate">
-		<div class="contact_email<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+		<div class="contact_email<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 			<label for="contact_name">
 				&nbsp;<?php echo JText::_( 'Enter your name' );?>:
 			</label>

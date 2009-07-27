@@ -1,4 +1,4 @@
-<?php // @version $Id: default_graph.php 10381 2008-06-01 03:35:53Z pasamio $
+<?php // @version $Id: default_graph.php 11917 2009-05-29 19:37:05Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 </dl>
 
 <h3>
-	<?php echo $this->poll->title; ?>
+	<?php echo $this->escape($this->poll->title); ?>
 </h3>
 
 <table class="pollstableborder">

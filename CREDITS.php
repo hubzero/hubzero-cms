@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: CREDITS.php 11714 2009-03-27 10:27:44Z willebil $
+ * @version		$Id: CREDITS.php 11924 2009-05-30 08:11:59Z pasamio $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -81,7 +81,7 @@ Croatian (hr-HR) - Croatian Translation Team - Klaudia B.
 Czech (cs-CZ) - Czech Translation Team - Svatopluk Vit
 Danish (da-DK) - Danish Translation Team - Ronny Buelund, Mikael Winther, Ole Bang Ottosen
 Dutch (nl-NL) - Dutch Translation Team - Vancanneyt Sander, Marijke Stuivenberg
-English (en-US) - Joomla! Project - Jennifer Marriot
+English (en-US) -  US English Translation Team - Jennifer Marriott
 Esperanto (eo-XX) - Esperanto Translation Team - Cindy McKee, Fabien Tschudy
 Estonian (et-EE) - Estonian Translation Team - Rivo Zängov
 Finnish (fi-FI) - Finnish Translation Team - Markku Suominen
@@ -94,7 +94,7 @@ Hindi-Devanagari (hi-IN) - IndicJoomla! Team - Vishal Pahuja
 Hungarian (hu-HU) - Magyar Joomla! Felhasznalok Nemzetkozi Egyesulete - Jozsef Tamas Herczeg, Annamaria Ban
 Icelandic (is-IS) - Joomlis! Icelandic Joomla Community [joomlis.net] - Magnús Guðlaugsson
 Italian (it-IT) - Italian Translation Team - Stefania Gaianigo, Alessandro Rossi
-Japanese (ja-JP) - Japanese Translation Team - Noriaki Koide
+Japanese (ja-JP) - Japanese Translation Team - Noriaki Koide, Hiroko Hirano
 Laotian (lo-LA) - Joomla LaiLao Team (LaoOpenSource) - Akarawuth Tamrareang , Viengsakhone phanthanousy , Outhai Saioudom
 Latvian (lv-LV) - Joomla Latvian Team - Edgars Piruška, Iveta Rītiņa-Namiķe, Ingars Stepkāns
 Lithuanian (lt-LT) - Lithuanian Translation Team - Stasys Svabas

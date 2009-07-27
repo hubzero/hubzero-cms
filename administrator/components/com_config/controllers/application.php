@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: application.php 11687 2009-03-11 17:49:23Z ian $
+ * @version		$Id: application.php 11795 2009-05-06 01:59:19Z ian $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -193,7 +193,7 @@ class ConfigControllerApplication extends ConfigController
 		$lists['feed_limit']	= JHTML::_('select.genericlist',  $listLimit, 'feed_limit', 'class="inputbox" size="1"', 'value', 'text', ($row->feed_limit ? $row->feed_limit : 10));
 		$emailOptions = array (	JHTML::_('select.option', 'author', JText::_('Author Email')),
 								JHTML::_('select.option', 'site', JText::_('Site Email')));
-		$lists['feed_email'] = JHTML::_('select.genericlist', $emailOptions, 'feed_email', 'class="inputbox" size="1"', 'value', 'text', ($row->feed_email) ? $row->feed_email : 'author');
+		$lists['feed_email'] = JHTML::_('select.genericlist', $emailOptions, 'feed_email', 'class="inputbox" size="1"', 'value', 'text', (@$row->feed_email) ? $row->feed_email : 'author');
 		
 		// SESSION SETTINGS
 		$stores = JSession::getStores();

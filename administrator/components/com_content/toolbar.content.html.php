@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: toolbar.content.html.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: toolbar.content.html.php 11798 2009-05-06 02:11:47Z ian $
 * @package		Joomla
 * @subpackage	Content
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -64,7 +64,7 @@ class TOOLBAR_content
 	{
 		global $filter_state;
 
-		JToolBarHelper::title( JText::_( 'Article Manager' ), 'addedit.png' );
+		JToolBarHelper::title( JText::_( 'Article Manager' ), 'article.png' );
 		if ($filter_state == 'A' || $filter_state == NULL) {
 			JToolBarHelper::unarchiveList();
 		}

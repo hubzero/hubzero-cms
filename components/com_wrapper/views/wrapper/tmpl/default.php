@@ -12,10 +12,10 @@ function iFrameHeight() {
 	}
 }
 </script>
-<div class="contentpane<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 <?php if ( $this->params->get( 'show_page_title', 1 ) ) : ?>
-	<div class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
-	<?php echo $this->params->get( 'page_title' ); ?>
+	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+	<?php echo $this->escape($this->params->get( 'page_title' )); ?>
 	</div>
 <?php endif; ?>
 <iframe <?php echo $this->wrapper->load; ?>
@@ -27,7 +27,7 @@ function iFrameHeight() {
 	scrolling="<?php echo $this->params->get( 'scrolling' ); ?>"
 	align="top"
 	frameborder="0"
-	class="wrapper<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+	class="wrapper<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 	<?php echo JText::_( 'NO_IFRAMES' ); ?>
 </iframe>
 </div>
