@@ -61,20 +61,23 @@
             </form>
 
             <!-- File Upload Form -->
-            <form action="<?php echo JURI::base(); ?>index.php?option=com_media&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JUtility::getToken();?>=1" id="uploadForm" method="post" enctype="multipart/form-data">
-                <fieldset>
-                    <legend><?php echo JText::_( 'Upload File' ); ?> [ <?php echo JText::_( 'Max' ); ?>&nbsp;<?php echo ($this->config->get('upload_maxsize') / 1000000); ?>M ]</legend>
-                    <fieldset class="actions">
-                        <input type="file" id="file-upload" name="Filedata" />
-                        <input type="submit" id="file-upload-submit" value="<?php echo JText::_('Start Upload'); ?>"/>
-                        <span id="upload-clear"></span>
-                    </fieldset>
-                    <ul class="upload-queue" id="upload-queue">
-                        <li style="display: none" />
-                    </ul>
-                </fieldset>
-                <input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_media'); ?>" />
-            </form>
+			<?php $canUpload= ($this->user->authorize('com_media', 'upload')); ?> 	
+			<?php if ($canUpload) : ?>
+				<form action="<?php echo JURI::base(); ?>index.php?option=com_media&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JUtility::getToken();?>=1" id="uploadForm" method="post" enctype="multipart/form-data">
+					<fieldset>
+						<legend><?php echo JText::_( 'Upload File' ); ?> [ <?php echo JText::_( 'Max' ); ?>&nbsp;<?php echo ($this->config->get('upload_maxsize') / 1000000); ?>M ]</legend>
+						<fieldset class="actions">
+							<input type="file" id="file-upload" name="Filedata" />
+							<input type="submit" id="file-upload-submit" value="<?php echo JText::_('Start Upload'); ?>"/>
+							<span id="upload-clear"></span>
+						</fieldset>
+						<ul class="upload-queue" id="upload-queue">
+							<li style="display: none" />
+						</ul>
+					</fieldset>
+					<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_media'); ?>" />
+				</form>
+			<?php endif; ?>
         </td>
     </tr>
 </table>

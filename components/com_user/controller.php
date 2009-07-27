@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 12389 2009-07-01 00:34:45Z ian $
+ * @version		$Id: controller.php 12538 2009-07-22 17:26:51Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -250,7 +250,7 @@ class UserController extends JController
 
 		// Set some initial user values
 		$user->set('id', 0);
-		$user->set('usertype', '');
+		$user->set('usertype', $newUsertype);
 		$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
 
 		$date =& JFactory::getDate();

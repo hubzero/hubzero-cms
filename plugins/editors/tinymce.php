@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: tinymce.php 12354 2009-06-24 14:38:24Z ian $
+ * @version		$Id: tinymce.php 12543 2009-07-23 01:47:21Z ian $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -322,14 +322,6 @@ class plgEditorTinymce extends JPlugin
 			$buttons4[]	= 'template';
 		}
 
-		// tinybrowser
-		$tinybrowser	= $this->params->def( 'tinybrowser', 1 );
-		if ( $tinybrowser ) {
-			$file_browser_callback	= "file_browser_callback : \"tinyBrowser\",";
-		} else {
-			$file_browser_callback	= "";
-		}
-
 		// advimage
 		$advimage = $this->params->def( 'advimage', 1 );
 		if ( $advimage ) {
@@ -535,10 +527,6 @@ class plgEditorTinymce extends JPlugin
 				}
 				});
 				</script>";
-				if ( $tinybrowser ) {
-					$return .="\t<script type=\"text/javascript\" src=\"".JURI::root()."plugins/editors/tinymce/jscripts/tiny_mce/plugins/tinybrowser/tb_tinymce.js.php\"></script>\n";
-					setcookie('tinybrowser_lang', $langPrefix, 0, "/");
-				}
 		  break;
 		}
 

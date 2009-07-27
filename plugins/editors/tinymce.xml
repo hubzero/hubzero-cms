@@ -167,10 +167,6 @@
  			<option value="1">Show</option>
  		</param>
  		<param name="@spacer" type="spacer" default="" label="" description="" />
- 		<param name="tinybrowser" type="radio" default="1" label="Tinybrowser" description="Turn on/off Tinybrowser for images/links">
- 			<option value="0">Off</option>
- 			<option value="1">On</option>
- 		</param>
  		<param name="advimage" type="radio" default="1" label="Advanced image" description="Turn on/off a more advanced image dialog">
  			<option value="0">Off</option>
  			<option value="1">On</option>

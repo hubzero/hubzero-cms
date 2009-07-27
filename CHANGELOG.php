@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 12389 2009-07-01 00:34:45Z ian $
+* @version		$Id: CHANGELOG.php 12543 2009-07-23 01:47:21Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -36,6 +36,20 @@ $ -> Language fix or change
 ^ -> Change
 - -> Removed
 ! -> Note
+
+
+-------------------- 1.5.13 Stable Release [22-July-2009] ------------------
+
+22-Jul-2009 Ian MacLennan
+ # [#15548] Plugin content/emailcloak: package oomla
+ # [#16073] Front End Account Creation does not save 'usertype' in jos_users table
+ # [#16726] Edit icon does not appear in correct area (buttonheading)
+ # [#17008] Untranslated error message in Media Manager
+ # [#17053] 1.5.12 Media Manager showing upload Error
+ # [#17101] Reversion of changes to Image Button in 1.5.12
+
+06-Jul-2009 Sam Moffatt
+ # [#17058] Incorrect _JEXEC check breaks TinyMCE JS when using compressed mode
 
 -------------------- 1.5.12 Stable Release [30-June-2009] ------------------
 

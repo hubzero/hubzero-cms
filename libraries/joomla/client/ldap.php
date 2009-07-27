@@ -1,7 +1,7 @@
 <?php
 
 /**
-* @version		$Id: ldap.php 10707 2008-08-21 09:52:47Z eddieajau $
+* @version		$Id: ldap.php 12543 2009-07-23 01:47:21Z ian $
 * @package		Joomla.Framework
 * @subpackage	Client
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -18,6 +18,10 @@
  * @subpackage	Client
  * @since		1.5
  */
+
+// no direct access
+defined('_JEXEC') or die('Restricted access');
+
 class JLDAP extends JObject
 {
 	/** @var string Hostname of LDAP server

@@ -1,7 +1,7 @@
 <?php
 /**
-* @version		$Id: emailcloak.php 10381 2008-06-01 03:35:53Z pasamio $
-* @package		oomla
+* @version		$Id: emailcloak.php 12537 2009-07-22 17:15:21Z ian $
+* @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant

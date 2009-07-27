@@ -39,7 +39,7 @@ $canEdit	= ($this->user->authorize('com_content', 'edit', 'content', 'all') || $
 	</td>
 	<?php endif; ?>
 	<?php if ($canEdit) : ?>
-	<td>
+	<td align="right" width="100%" class="buttonheading">
 		<?php echo JHTML::_('icon.edit', $this->item, $this->item->params, $this->access); ?>
 	</td>
 	<?php endif; ?>

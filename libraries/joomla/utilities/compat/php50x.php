@@ -17,6 +17,10 @@
  *
  * @since		1.5
  */
+
+// Check to ensure this file is within the rest of the framework
+defined('JPATH_BASE') or die('Restricted access');
+
 if (!defined('FILE_USE_INCLUDE_PATH')) {
 	define('FILE_USE_INCLUDE_PATH', 1);
 }
@@ -97,9 +101,14 @@ if (!function_exists('file_put_contents')) {
 /**
  * Ported PHP5 function to PHP4 for forward compatibility
  */
-function clone($object) {
-	return unserialize(serialize($object));
-}
+
+if (version_compare(phpversion(), '5.0') < 0) {
+    eval('
+    function clone($object) {
+      return unserialize(serialize($object));
+    }
+    ');
+  }
 
 if(!function_exists('stripos')) {
  function stripos($haystack, $needle, $offset = 0) {

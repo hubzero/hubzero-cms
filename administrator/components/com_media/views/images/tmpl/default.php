@@ -50,17 +50,44 @@ echo $params->get('image_path', 'images/stories');?>/';
 	<input type="hidden" id="f_file" name="f_file" />
 	<input type="hidden" id="tmpl" name="component" />
 </form>
-<form action="<?php echo JURI::base(); ?>index.php?option=com_media&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;pop_up=1&amp;<?php echo JUtility::getToken();?>=1" id="uploadForm" method="post" enctype="multipart/form-data">
-	<fieldset>
-		<legend><?php echo JText::_('Upload'); ?></legend>
-		<fieldset class="actions">
-			<input type="file" id="file-upload" name="Filedata" />
-			<input type="submit" id="file-upload-submit" value="<?php echo JText::_('Start Upload'); ?>"/>
-			<span id="upload-clear"></span>
+<?php	$params =& JComponentHelper::getParams('com_media');
+		$acl = & JFactory::getACL();
+		switch ($params->get('allowed_media_usergroup')) 
+		{
+			case '1':
+				$acl->addACL( 'com_media', 'upload', 'users', 'publisher' );
+				break;
+			case '2':
+				$acl->addACL( 'com_media', 'upload', 'users', 'publisher' );
+				$acl->addACL( 'com_media', 'upload', 'users', 'editor' );
+				break;
+			case '3': 
+				$acl->addACL( 'com_media', 'upload', 'users', 'publisher' );
+				$acl->addACL( 'com_media', 'upload', 'users', 'editor' );				
+				$acl->addACL( 'com_media', 'upload', 'users', 'author' );
+				break;								
+			case '4':
+				$acl->addACL( 'com_media', 'upload', 'users', 'publisher' );				
+				$acl->addACL( 'com_media', 'upload', 'users', 'editor' );
+				$acl->addACL( 'com_media', 'upload', 'users', 'author' );
+				$acl->addACL( 'com_media', 'upload', 'users', 'registered' );
+				break;
+		} ?>
+<?php $user = & JFactory::getUser(); ?>
+<?php $canUpload= ($user->authorize('com_media', 'upload')); ?> 	
+<?php if ($canUpload) : ?>			
+	<form action="<?php echo JURI::base(); ?>index.php?option=com_media&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;pop_up=1&amp;<?php echo JUtility::getToken();?>=1" id="uploadForm" method="post" enctype="multipart/form-data">
+		<fieldset>
+			<legend><?php echo JText::_('Upload'); ?></legend>
+			<fieldset class="actions">
+				<input type="file" id="file-upload" name="Filedata" />
+				<input type="submit" id="file-upload-submit" value="<?php echo JText::_('Start Upload'); ?>"/>
+				<span id="upload-clear"></span>
+			</fieldset>
+			<ul class="upload-queue" id="upload-queue">
+				<li style="display: none" />
+			</ul>
 		</fieldset>
-		<ul class="upload-queue" id="upload-queue">
-			<li style="display: none" />
-		</ul>
-	</fieldset>
-	<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_media&view=images&tmpl=component&e_name='.JRequest::getCmd('e_name')); ?>" />
+		<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_media&view=images&tmpl=component&e_name='.JRequest::getCmd('e_name')); ?>" />
 </form>
+<?php endif; ?>

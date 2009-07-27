@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: file.php 12346 2009-06-24 13:16:14Z ian $
+ * @version		$Id: file.php 12541 2009-07-22 17:36:38Z ian $
  * @package		Joomla.Framework
  * @subpackage	FileSystem
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -336,6 +336,7 @@ class JFile
 			// Copy the file to the destination directory
 			if (is_uploaded_file($src) && $ftp->store($src, $dest))
 			{
+			            $ret = true;
                 		unlink($src);
 			} else {
 				JError::raiseWarning(21, JText::_('WARNFS_ERR02'));
