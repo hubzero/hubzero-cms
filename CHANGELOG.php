@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 9961 2008-01-21 12:18:18Z willebil $
+* @version		$Id: CHANGELOG.php 9992 2008-02-06 20:58:24Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -36,6 +36,62 @@ Legend:
 ^ -> Change
 - -> Removed
 ! -> Note
+
+-------------------- 1.5.1 Stable Release [8-February-2008] ---------------------
+
+05-Feb-2008 Anthony Ferrara
+ # Fixed [9552] Added missing DOMMIT files
+ # Fixed [9620] When trying to login, the site returns 'Invalid Token'
+ # Added live_site parameter to config, and JURI::base override (fixes SEF and proxy issues)
+
+05-Feb-2008 Ian MacLennan
+ # Fixed [9512] Removed superfluous references to JUser
+ # Fixed [9596] Incorrect language string in Beez
+ # Fixed [9257] Fixed comments in index.php and administrator/index.php
+ # Fixed [9399] XMLRPC Blogger more_text tag problem
+ * Fixed [9406] XMLRPC Blogger API
+
+05-Feb-2008 Andrew Eddie
+ # Turned XML-RPC server off by default
+
+04-Feb-2008 Wilco Jansen
+ # Fixed [9111] error.php contains a relative url to Home Page (Thanks Jens)
+ # Fixed [9516] Links in archive module don't work with SEF (Thanks Jens)
+ # Fixed [9211] Installation always falling back to joomla_backwards.sql (Thanks Jens)
+
+01-Feb-2008 Ian MacLennan
+ # Fixed [#9320] Problem with allowing HTML in requests [patch] (Thanks Jens)
+
+01-Feb-2008 Anthony Ferrara
+ * Fixed remote execution vulnerability in phpmailer
+ # [#6730] batchQuery() Bug: Broken splitting function
+ # [#8776] Mass Email BCC option (Thanks JM)
+
+30-Jan-2008 Anthony Ferrara
+ # Fixed htaccess instructions (refering to a second section that was removed)
+ # [topic,257873] Fixed possible notice with com_content router
+ # [#9518] When creating menu item for a poll, you cannot select poll (Thanks Ian MacLennan)
+ # [#9383] Search for contacts generates bad links (Thanks Jens-Christian Skibakk)
+ # [#9426] PopUp Url link broken
+
+29-Jan-2008 Ian MacLennan
+ # Fixed [#9342] Poll goes 404 after voting - fixed redirect URL.
+
+28-Jan-2008 Anthony Ferrara
+ # Fixed memcache session driver config param loading (changed it to work like cache driver)
+ # [#9225] Typo in joomla_backwards.sql (Thanks Jens-Christian Skibakk)
+ # [#8823] Modules don't show up when eAccelerator is enabled (Thanks Dalibor Karlovic)
+
+28-Jan-2008 Robin Muilwijk
+ # Fixed [#9472] Session not cleared properly
+ # Fixed [#9291] Error in call method
+ # Fixed [#9251] Additional double quote in weblink's template
+ # Fixed [#8173] Problem with preg_quote in function utf8_ireplace
+
+27-Jan-2008 Wilco Jansen
+ ^ Remove the installation check
+ # [9401] Help in backend showind 404 [Patch], thanks Jens-Christian Skibakk for the patch
+ # [9412] publish_down is initialized to 1970 in some environments, thanks Kevin for the patch
 
 -------------------- 1.5.0 Stable Release [21-January-2008] ---------------------
 

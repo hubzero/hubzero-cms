@@ -1,5 +1,5 @@
 ##
-# @version $Id: htaccess.txt 9795 2008-01-02 11:33:07Z rmuilwijk $
+# @version $Id: htaccess.txt 9975 2008-01-30 17:02:11Z ircmaxell $
 # @package Joomla
 # @copyright Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 # @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -16,10 +16,6 @@
 # your .htaccess file.  If using it causes your server to error out, comment it out (add # to
 # beginning of line), reload your site in your browser and test your sef url's.  If they work,
 # it has been set by your server administrator and you do not need it set here.
-#
-# Only use one of the two SEF sections that follow.  Lines that can be uncommented
-# (and thus used) have only one #.  Lines with two #'s should not be uncommented
-# In the section that you don't use, all lines should start with #
 #
 #####################################################
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: icon.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: icon.php 9985 2008-02-05 16:44:18Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -27,8 +27,6 @@ class JHTMLIcon
 {
 	function create($article, $params, $access, $attribs = array())
 	{
-		$user =& JFactory::getUser();
-
 		$url = 'index.php?task=new&id=0&sectionid='.$article->sectionid;
 
 		if ($params->get('show_icons')) {
@@ -43,8 +41,6 @@ class JHTMLIcon
 
 	function pdf($article, $params, $access, $attribs = array())
 	{
-		$user =& JFactory::getUser();
-
 		$url  = 'index.php?view=article;';
 		$url .=  @$article->catslug ? '&catid='.$article->catslug : '';
 		$url .= '&id='.$article->slug.'&format=pdf';
@@ -67,8 +63,6 @@ class JHTMLIcon
 
 	function email($article, $params, $access, $attribs = array())
 	{
-		$user =& JFactory::getUser();
-
 		//$link	= JURI::base()."index.php?view=article&id=".$article->slug;
 		$uri     =& JURI::getInstance();
 		$base  = $uri->toString( array('scheme', 'host', 'port'));
@@ -136,8 +130,6 @@ class JHTMLIcon
 
 	function print_popup($article, $params, $access, $attribs = array())
 	{
-		$user =& JFactory::getUser();
-
 		$url  = 'index.php?view=article';
 		$url .=  @$article->catslug ? '&catid='.$article->catslug : '';
 		$url .= '&id='.$article->slug.'&tmpl=component&print=1&page='.@ $request->limitstart;
@@ -159,8 +151,6 @@ class JHTMLIcon
 
 	function print_screen($article, $params, $access, $attribs = array())
 	{
-		$user =& JFactory::getUser();
-
 		// checks template image directory for image, if non found default are loaded
 		if ( $params->get( 'show_icons' ) ) {
 			$text = JHTML::_('image.site',  'printButton.png', '/images/M_images/', NULL, NULL, JText::_( 'Print' ) );
@@ -171,4 +161,3 @@ class JHTMLIcon
 	}
 
 }
-?>

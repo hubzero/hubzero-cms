@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Id: str_ireplace.php 7692 2007-06-08 20:41:29Z tcp $
+* @version $Id: str_ireplace.php 9970 2008-01-28 08:45:11Z rmuilwijk $
 * @package utf8
 * @subpackage strings
 */
@@ -33,7 +33,7 @@ function utf8_ireplace($search, $replace, $str, $count = NULL){
 
         $search = utf8_strtolower($search);
 
-        $search = preg_quote($search);
+        $search = preg_quote($search, '/');
         $lstr = utf8_strtolower($str);
         $i = 0;
         $matched = 0;

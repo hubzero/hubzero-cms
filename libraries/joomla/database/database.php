@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: database.php 9870 2008-01-05 10:56:58Z eddieajau $
+* @version		$Id: database.php 9978 2008-02-01 17:23:39Z ircmaxell $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -339,6 +339,50 @@ class JDatabase extends JObject
 		}
 		$this->_hasQuoted = true;
 	}
+
+	/**
+	 * Splits a string of queries into an array of individual queries
+	 *
+	 * @access public
+	 * @param string The queries to split
+	 * @return array queries
+	 */
+	function splitSql( $queries )
+	{
+		$start = 0;
+		$open = false;
+		$open_char = '';
+		$end = strlen($queries);
+		$query_split = array();
+		for($i=0;$i<$end;$i++) {
+			$current = substr($queries,$i,1);
+			if(($current == '"' || $current == '\'')) {
+				$n = 2;
+				while(substr($queries,$i - $n + 1, 1) == '\\' && $n < $i) {
+					$n ++;
+				}
+				if($n%2==0) {
+					if ($open) {
+						if($current == $open_char) {
+							$open = false;
+							$open_char = '';
+						}
+					} else {
+						$open = true;
+						$open_char = $current;
+					}
+				}
+			} 
+			if(($current == ';' && !$open)|| $i == $end - 1) {
+				$query_split[] = substr($queries, $start, ($i - $start + 1));
+				$start = $i + 1;
+			}
+		}
+
+		return $query_split;
+	}
+
+
 
 	/**
 	 * Checks if field name needs to be quoted

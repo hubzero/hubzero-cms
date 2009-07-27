@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: controller.php 9831 2008-01-03 01:10:35Z eddieajau $
+* @version		$Id: controller.php 9973 2008-01-29 20:10:29Z ian $
 * @package		Joomla
 * @subpackage	Polls
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -88,11 +88,9 @@ class PollController extends JController
 		$menu = &JSite::getMenu();
 		$items	= $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 
-		if(isset($items[0])) {
-			$itemid = $items[0]->id;
-		}
+		$itemid = isset($items[0]) ? '&Itemid='.$items[0]->id : '';
 
-		$this->setRedirect( JRoute::_('index.php?option=com_poll&id='. $poll_id.':'.$poll->alias.'&Itemid='.$itemid, false), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_poll&id='. $poll_id.':'.$poll->alias.$itemid, false), $msg );
 	}
 }
 ?>

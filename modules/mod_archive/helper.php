@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: helper.php 9981 2008-02-04 14:19:13Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -32,7 +32,7 @@ class modArchiveHelper
 
 		$menu = &JSite::getMenu();
 		$item = $menu->getItems('link', 'index.php?option=com_content&view=archive', true);
-		$itemid = isset($item) ? $item->id : 0;
+		$itemid = isset($item) ? '&Itemid='.$item->id : '';
 
 		$i		= 0;
 		$lists	= array();
@@ -44,7 +44,7 @@ class modArchiveHelper
 			$month_name		= $date->toFormat("%B");
 			$created_year	= $date->toFormat("%Y");
 
-			$lists[$i]->link	= JRoute::_('index.php?option=com_content&view=archive&year='.$created_year.'&month='.$created_month.'&Itemid='.$itemid);
+			$lists[$i]->link	= JRoute::_('index.php?option=com_content&view=archive&year='.$created_year.'&month='.$created_month.$itemid);
 			$lists[$i]->text	= $month_name.', '.$created_year;
 			$i++;
 		}

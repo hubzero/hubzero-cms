@@ -1,4 +1,4 @@
-# $Id: joomla_backward.sql 9939 2008-01-14 01:09:22Z eddieajau $
+# $Id: joomla_backward.sql 9972 2008-01-28 16:15:51Z ircmaxell $
 
 # --------------------------------------------------------
 
@@ -742,7 +742,7 @@ CREATE TABLE `#__core_acl_aro` (
   `name` varchar(255) NOT NULL default '',
   `hidden` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `__section_value_value_aro` (`section_value`(100),`value`(100)),
+  UNIQUE KEY `#__section_value_value_aro` (`section_value`(100),`value`(100)),
   KEY `#__gacl_hidden_aro` (`hidden`)
 ) TYPE=MyISAM;
 

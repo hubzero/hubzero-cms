@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 9808 2008-01-03 00:37:34Z eddieajau $
+ * @version		$Id: view.php 9991 2008-02-05 22:13:22Z ircmaxell $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -111,6 +111,7 @@ class ConfigApplicationView
 		<div class="clr"></div>
 
 		<input type="hidden" name="c" value="global" />
+		<input type="hidden" name="live_site" value="<?php echo $row->live_site; ?>" />
 		<input type="hidden" name="option" value="com_config" />
 		<input type="hidden" name="secret" value="<?php echo $row->secret; ?>" />
 		<input type="hidden" name="task" value="" />

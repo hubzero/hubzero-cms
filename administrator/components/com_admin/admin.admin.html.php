@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: admin.admin.html.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: admin.admin.html.php 9965 2008-01-27 01:23:44Z willebil $
  * @package		Joomla
  * @subpackage	Admin
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -236,7 +236,7 @@ class HTML_admin_misc
 					<?php
 				} else {
 					?>
-					<iframe name="helpFrame" src="<?php echo JURI::base() .'/help/' .$lang->getTag(). '/' . $page;?>" class="helpFrame" frameborder="0"></iframe>
+					<iframe name="helpFrame" src="<?php echo JURI::base() .'help/' .$langTag. '/' . $page;?>" class="helpFrame" frameborder="0"></iframe>
 					<?php
 				}
 				?>

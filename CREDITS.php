@@ -49,6 +49,7 @@ Marko Schmuck
 Jui-Yu Tsai (Ray)
 Charl van Niekerk
 Laurens Vanderput
+Arno Zijlstra
 
 Documentation Contributers:
 ---------------------------

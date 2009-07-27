@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: date.php 9912 2008-01-09 21:14:31Z hackwar $
+* @version		$Id: date.php 9966 2008-01-27 16:30:40Z willebil $
 * @package		Joomla.Framework
 * @subpackage	Utilities
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -132,7 +132,7 @@ class JDate extends JObject
 			$this->_date -= $tzOffset;
 			return;
 		}
-		$this->_date = strtotime($date);
+        $this->_date = (strtotime($date) == -1) ? false : strtotime($date);
 		if ($this->_date) {
 			$this->_date -= $tzOffset;
 		}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: request.php 9944 2008-01-14 21:10:22Z eddieajau $
+ * @version		$Id: request.php 9990 2008-02-05 21:54:06Z ian $
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -434,7 +434,20 @@ class JRequest
 	function checkToken( $method = 'post' )
 	{
 		$token	= JUtility::getToken();
-		return JRequest::getVar( $token, '', $method, 'alnum' );
+		if(!JRequest::getVar( $token, '', $method, 'alnum' )) {
+			$session = JFactory::getSession();
+			if($session->isNew()) {
+				//Redirect to login screen
+				global $mainframe;
+				$return = JRoute::_('index.php');
+;				$mainframe->redirect($return, JText::_('SESSION_EXPIRED'));
+				$mainframe->close();
+			} else {
+				return false;
+			}
+		} else {
+			return true;	
+		}
 	}
 
 	/**

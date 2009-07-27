@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mysqli.php 9870 2008-01-05 10:56:58Z eddieajau $
+* @version		$Id: mysqli.php 9978 2008-02-01 17:23:39Z ircmaxell $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -282,7 +282,7 @@ class JDatabaseMySQLi extends JDatabase
 				$this->_sql = 'BEGIN;' . $this->_sql . '; COMMIT;';
 			}
 		}
-		$query_split = preg_split ("/[;]+/", $this->_sql);
+		$query_split = $this->splitSql($this->_sql);
 		$error = 0;
 		foreach ($query_split as $command_line) {
 			$command_line = trim( $command_line );

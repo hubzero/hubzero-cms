@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.massmail.html.php 9815 2008-01-03 00:48:12Z eddieajau $
+* @version		$Id: admin.massmail.html.php 9980 2008-02-01 18:02:34Z ircmaxell $
 * @package		Joomla
 * @subpackage	Massmail
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -84,6 +84,18 @@ class HTML_massmail
 						<?php echo $lists['gid']; ?>
 					</td>
 				</tr>
+
+				<tr>
+			       <td class="key">
+							<label for="mm_bcc" title="<?php echo JText::_( 'Send as Blind Carbon Copy' ); ?>">
+									<?php echo JText::_( 'Recipients as BCC' ); ?>:
+							</label>
+					</td>
+					<td>
+							<input type="checkbox" name="mm_bcc" id="mm_bcc" value="1" />
+					</td>
+				</tr>
+
 				</table>
 			</fieldset>
 		</div>

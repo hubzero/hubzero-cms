@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: configuration.php-dist 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: configuration.php-dist 9991 2008-02-05 22:13:22Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -62,6 +62,7 @@ class JConfig {
 	var $tmp_path	= '/tmp';
 	var $log_path	= '/var/logs';
 	var $offset = '0';
+	var $live_site = ''; 					// Optional, Full url to Joomla install.
 
 	/* Session settings */
 	var $lifetime = '15';					// Session time

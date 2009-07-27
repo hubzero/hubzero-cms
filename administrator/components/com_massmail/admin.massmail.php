@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.massmail.php 9815 2008-01-03 00:48:12Z eddieajau $
+* @version		$Id: admin.massmail.php 9980 2008-02-01 18:02:34Z ircmaxell $
 * @package		Joomla
 * @subpackage	Massmail
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -71,6 +71,7 @@ function sendMail()
 	$subject			= JRequest::getVar( 'mm_subject', '', 'post', 'string' );
 	$gou				= JRequest::getVar( 'mm_group', '0', 'post', 'int' );
 	$recurse			= JRequest::getVar( 'mm_recurse', 'NO_RECURSE', 'post', 'word' );
+	$bcc				= JRequest::getVar( 'mm_bcc', 0, 'post', 'int' );
 
 	// pulls message inoformation either in text or html format
 	if ( $mode ) {
@@ -125,8 +126,16 @@ function sendMail()
 	$mailer->IsHTML($mode);
 
 	// Add recipients
-	foreach ($rows as $row) {
-		$mailer->addRecipient($row->email);
+
+	if ( $bcc ) {
+		foreach ($rows as $row) {
+			$mailer->addBCC($row->email);
+		}
+		$mailer->addRecipient($mainframe->getCfg('mailfrom'));
+	}else {
+		foreach ($rows as $row) {
+ 			$mailer->addRecipient($row->email);
+ 		}
 	}
 
 	// Send the Mail

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 9873 2008-01-05 11:24:43Z eddieajau $
+ * @version		$Id: controller.php 9968 2008-01-28 08:28:16Z rmuilwijk $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -82,7 +82,7 @@ class ContentController extends JController
 			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
 		}
 
-		if ( $model->isCheckedOut($user->get ('id')))
+		if ( $model->isCheckedOut($user->get('id')))
 		{
 			$msg = JText::sprintf('DESCBEINGEDITTED', JText::_('The item'), $model->get('title'));
 			$this->setRedirect(JRoute::_('index.php?view=article&id='.$model->get('id'), false), $msg);

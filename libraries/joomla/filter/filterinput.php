@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: filterinput.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: filterinput.php 9979 2008-02-01 17:28:33Z ian $
  * @package		Joomla.Framework
  * @subpackage	Filter
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -148,7 +148,12 @@ class JFilterInput extends JObject
 				break;
 
 			case 'STRING' :
-				$filter	= JFilterInput::getInstance();
+				// Check for static usage and assign $filter the proper variable
+				if(is_object($this) && get_class($this) == 'JFilterInput') {
+					$filter =& $this;
+				} else {
+					$filter =& JFilterInput::getInstance();
+				}
 				$result = (string) $filter->_remove($filter->_decode((string) $source));
 				break;
 
@@ -167,8 +172,13 @@ class JFilterInput extends JObject
 				break;
 
 			default :
+				// Check for static usage and assign $filter the proper variable
+				if(is_object($this) && get_class($this) == 'JFilterInput') {
+					$filter =& $this;
+				} else {
+					$filter =& JFilterInput::getInstance();
+				}
 				// Are we dealing with an array?
-				$filter	= JFilterInput::getInstance();
 				if (is_array($source)) {
 					foreach ($source as $key => $value)
 					{
