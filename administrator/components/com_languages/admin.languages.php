@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.languages.php 9813 2008-01-03 00:45:11Z eddieajau $
+* @version		$Id: admin.languages.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla
 * @subpackage	Languages
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -125,7 +125,7 @@ function publishLanguage( $language )
 	global $mainframe;
 
 	// Check for request forgeries
-	JRequest::checkToken() or die( 'Invalid Token' );
+	JRequest::checkToken() or jexit( 'Invalid Token' );
 
 	// Initialize some variables
 	$client	=& JApplicationHelper::getClientInfo(JRequest::getVar('client', '0', '', 'int'));

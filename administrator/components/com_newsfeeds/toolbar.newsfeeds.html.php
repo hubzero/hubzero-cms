@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: toolbar.newsfeeds.html.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: toolbar.newsfeeds.html.php 10113 2008-03-07 12:15:42Z eddieajau $
 * @package		Joomla
 * @subpackage	Newsfeeds
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -29,7 +29,7 @@ class TOOLBAR_newsfeeds
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();
-		JToolBarHelper::preferences( 'com_newsfeeds' );
+		JToolBarHelper::preferences( 'com_newsfeeds','400');
 		JToolBarHelper::help( 'screen.newsfeeds' );
 	}
 

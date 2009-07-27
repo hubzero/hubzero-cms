@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mod_feed.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: mod_feed.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -12,7 +12,7 @@
 */
 
 /** ensure this file is being included by a parent file */
-defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+defined('_JEXEC') or die( 'Restricted access' );
 
 // Include the syndicate functions only once
 require_once (dirname(__FILE__).DS.'helper.php');

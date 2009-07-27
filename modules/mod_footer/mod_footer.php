@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mod_footer.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: mod_footer.php 10079 2008-02-28 13:39:08Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -16,9 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 
 global $mainframe;
 
-jimport('joomla.utilities.date');
-
-$date = new JDate();
+$date =& JFactory::getDate();
 $cur_year	= $date->toFormat('%Y');
 $csite_name	= $mainframe->getCfg('sitename');
 

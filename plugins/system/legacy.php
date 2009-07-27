@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: legacy.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: legacy.php 10066 2008-02-26 04:20:57Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -71,7 +71,7 @@ class  plgSystemLegacy extends JPlugin
 		JLoader::register('mosModule'       , dirname(__FILE__).DS.'legacy'.DS.'module.php');
 		//JLoader::register('mosPageNav'    , dirname(__FILE__).DS.'legacy'.DS.'pagination.php');
 		JLoader::register('mosParameters'   , dirname(__FILE__).DS.'legacy'.DS.'parameters.php');
-		JLoader::register('patFactory'      , dirname(__FILE__).DS.'legacy'.DS.'patfacory.php');
+		JLoader::register('patFactory'      , dirname(__FILE__).DS.'legacy'.DS.'patfactory.php');
 		JLoader::register('mosProfiler'     , dirname(__FILE__).DS.'legacy'.DS.'profiler.php');
 		JLoader::register('mosSection'      , dirname(__FILE__).DS.'legacy'.DS.'section.php');
 		JLoader::register('mosSession'      , dirname(__FILE__).DS.'legacy'.DS.'session.php');

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Id: loader.php 9853 2008-01-04 15:43:29Z instance $
+* @version $Id: loader.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla.Framework
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -162,6 +162,17 @@ function __autoload($class)
 		return true;
 	}
 	return false;
+}
+
+/**
+ * Global application exit.
+ *
+ * This function provides a single exit point for the framework.
+ *
+ * @param mixed Exit code or string. Defaults to zero.
+ */
+function jexit($message = 0) {
+    exit($message);
 }
 
 /**

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 9877 2008-01-05 12:37:25Z mtk $
+* @version		$Id: helper.php 10112 2008-03-07 12:12:30Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -159,7 +159,9 @@ class modMainMenuHelper
 						$xml->addAttribute('id', $tagId);
 					}
 
-					echo JFilterOutput::ampReplace($xml->toString((bool)$params->get('show_whitespace')));
+					$result = JFilterOutput::ampReplace($xml->toString((bool)$params->get('show_whitespace')));
+					$result = str_replace(array('<ul/>', '<ul />'), '', $result);
+					echo $result;
 				}
 				break;
 		}

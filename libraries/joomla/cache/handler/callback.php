@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: callback.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: callback.php 10082 2008-02-28 16:29:13Z ircmaxell $
 * @package		Joomla.Framework
 * @subpackage	Cache
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -124,6 +124,11 @@ class JCacheCallback extends JCache
 	 */
 	function _makeId($callback, $args)
 	{
+		if(is_array($callback) && is_object($callback[0])) {
+			$vars = get_object_vars($callback[0]);
+			$vars[] = strtolower(get_class($callback[0]));
+			$callback[0] = $vars;
+		}
 		return md5(serialize(array($callback, $args)));
 	}
 }

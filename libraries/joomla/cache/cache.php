@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: cache.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: cache.php 10082 2008-02-28 16:29:13Z ircmaxell $
  * @package		Joomla.Framework
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -82,6 +82,11 @@ class JCache extends JObject
 			$this->_options['storage'] = $options['storage'];
 		} else {
 			$this->_options['storage'] = 'file';
+		}
+
+		//Fix to detect if template positions are enabled...
+		if(JRequest::getCMD('tpl',0)) {
+			$this->_options['caching'] = false;
 		}
 	}
 

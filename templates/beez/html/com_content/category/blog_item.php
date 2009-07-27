@@ -1,4 +1,4 @@
-<?php // @version $Id: blog_item.php 9718 2007-12-20 22:35:36Z eddieajau $
+<?php // @version $Id: blog_item.php 10038 2008-02-14 19:53:39Z hackwar $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -60,7 +60,7 @@ endif; ?>
                 <?php echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->catslug, $this->item->sectionid)).'">'; ?>
             <?php endif; ?>
             <?php echo $this->item->category; ?>
-            <?php if ($this->item->params->get('link_section')) : ?>
+            <?php if ($this->item->params->get('link_category')) : ?>
                 <?php echo '</a>'; ?>
             <?php endif; ?>
         </span>

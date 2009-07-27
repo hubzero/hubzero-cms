@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: hu-HU.xml 9768 2007-12-30 09:15:49Z localicer $ -->
 <metafile version="1.5" client="installation" >
     <name>Hungarian (formal)</name>
-    <version>1.5.0</version>
-    <creationDate>2008-01-02</creationDate>
+    <version>1.5.2</version>
+    <creationDate>2008-03-16</creationDate>
     <author>Magyar Joomla Felhasznalok Nemzetkozi Egyesulete</author>
     <authorEmail>info@joomla.org.hu</authorEmail>
     <authorUrl>www.joomla.org.hu</authorUrl>

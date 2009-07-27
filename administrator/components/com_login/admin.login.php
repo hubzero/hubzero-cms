@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: admin.login.php 9814 2008-01-03 00:45:28Z eddieajau $
+ * @version		$Id: admin.login.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Joomla.Extensions
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -53,7 +53,7 @@ class LoginController
 		global $mainframe;
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken('request') or jexit( 'Invalid Token' );
 
 		$credentials = array();
 

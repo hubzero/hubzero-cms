@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: helper.php 10043 2008-02-16 21:50:49Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -29,11 +29,23 @@ class modRandomImageHelper
 
 
 		if ($width == '') {
-			($size[0] > 100 ? $width = 100 : $width = $size[0]);
+			$width = 100;
 		}
+
+		if ($size[0] < $width) {
+			$width = $size[0];
+		}
+
+		$coeff = $size[0]/$size[1];
 		if ($height == '') {
-			$coeff 	= $size[0]/$size[1];
 			$height = (int) ($width/$coeff);
+		} else {
+			$newheight = min ($height, (int) ($width/$coeff));
+			if ($newheight < $height) {
+				$height = $newheight;
+			} else {
+				$width = $height * $coeff;
+			}
 		}
 
 		$image->width 	= $width;

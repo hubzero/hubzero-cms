@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: contact.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: contact.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.model');
 
@@ -38,7 +38,9 @@ class ContactModelContact extends JModel
 		$groupBy	= @$options['group by'];
 		$orderBy	= @$options['order by'];
 
-		$select = 'a.*, cc.title as category_name';
+		$select = 'a.*, cc.title as category_name, '
+		. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+		. ' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(\':\', cc.id, cc.alias) ELSE cc.id END AS catslug ';
 		$from	= '#__contact_details AS a';
 
 		$joins[] = 'INNER JOIN #__categories AS cc on cc.id = a.catid';

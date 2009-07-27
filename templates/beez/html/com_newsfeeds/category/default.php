@@ -1,4 +1,4 @@
-<?php // @version $Id: default.php 9506 2007-12-08 21:00:27Z willebil $
+<?php // @version $Id: default.php 10100 2008-03-04 21:08:19Z ircmaxell $
 defined('_JEXEC') or die('Restricted access');
 $cparams = JComponentHelper::getParams ('com_media');
 ?>
@@ -14,7 +14,7 @@ $cparams = JComponentHelper::getParams ('com_media');
 	<div class="contentdescription<?php echo $this->params->get('pageclass_sfx'); ?>">
 
 		<?php if ( $this->category->image ) : ?>
-		<img src="<?php echo $this->baseurl . $cparams->get('image_path').'/'.$this->category->image; ?>" class="image_<?php echo $this->category->image_position; ?>" />
+		<img src="<?php echo $this->baseurl . '/' . $cparams->get('image_path').'/'.$this->category->image; ?>" class="image_<?php echo $this->category->image_position; ?>" />
 		<?php endif; ?>
 
 		<?php if ( $this->params->get( 'description' ) ) :

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 9897 2008-01-05 23:21:53Z louis $
+ * @version		$Id: banner.php 10079 2008-02-28 13:39:08Z ircmaxell $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -74,8 +74,8 @@ class TableBanner extends JTable
 	{
 		parent::__construct( '#__banner', 'bid', $_db );
 
-		jimport('joomla.utilities.date');
-		$now = new JDate();
+
+		$now =& JFactory::getDate();
 		$this->set( 'date', $now->toMySQL() );
 	}
 

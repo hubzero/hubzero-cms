@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: category.php 9918 2008-01-10 01:41:37Z pasamio $
+ * @version		$Id: category.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.model');
 
@@ -423,11 +423,8 @@ class ContentModelCategory extends JModel
 
 		$user		=& JFactory::getUser();
 		$gid		= $user->get('aid', 0);
-		// TODO: Should we be using requestTime here? or is JDate ok?
-		// $now		= $mainframe->get('requestTime');
 
-		jimport('joomla.utilities.date');
-		$jnow		= new JDate();
+		$jnow		=& JFactory::getDate();
 		$now			= $jnow->toMySQL();
 
 		// Get the page/component configuration

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: helper.php 10026 2008-02-12 20:45:17Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -24,7 +24,12 @@ class modFeedHelper
 		//  get RSS parsed object
 		$options = array();
 		$options['rssUrl'] 		= $rssurl;
-		$options['cache_time'] 	= 3600;
+		if ($params->get('cache')) {
+			$options['cache_time']  = $params->get('cache_time', 15) ;
+			$options['cache_time']	*= 60;	
+		} else {
+			$options['cache_time'] = null;
+		}
 
 		$rssDoc =& JFactory::getXMLparser('RSS', $options);
 

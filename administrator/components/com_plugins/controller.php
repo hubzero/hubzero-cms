@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 9820 2008-01-03 00:52:19Z eddieajau $
+ * @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.controller' );
 
@@ -65,7 +65,7 @@ class PluginsController extends JController
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db   =& JFactory::getDBO();
 		$row  =& JTable::getInstance('plugin');
@@ -110,7 +110,7 @@ class PluginsController extends JController
 	function publish( )
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db		=& JFactory::getDBO();
 		$user	=& JFactory::getUser();
@@ -146,7 +146,7 @@ class PluginsController extends JController
 	function cancel(  )
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$client  = JRequest::getWord( 'filter_client', 'site' );
 
@@ -161,7 +161,7 @@ class PluginsController extends JController
 	function order(  )
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db =& JFactory::getDBO();
 
@@ -189,7 +189,7 @@ class PluginsController extends JController
 	function access( )
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 		JArrayHelper::toInteger($cid, array(0));
@@ -230,7 +230,7 @@ class PluginsController extends JController
 	function saveorder( )
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 		JArrayHelper::toInteger($cid, array(0));

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 9968 2008-01-28 08:28:16Z rmuilwijk $
+ * @version		$Id: controller.php 10125 2008-03-11 09:21:37Z willebil $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.controller');
 
@@ -110,7 +110,7 @@ class ContentController extends JController
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Initialize variables
 		$db			= & JFactory::getDBO();
@@ -205,6 +205,11 @@ class ContentController extends JController
 		{
 			// messaging for new items
 			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_messages'.DS.'tables'.DS.'message.php');
+
+			// load language for messaging
+			$lang =& JFactory::getLanguage();
+			$lang->load('com_messages');
+
 			$query = 'SELECT id' .
 					' FROM #__users' .
 					' WHERE sendEmail = 1';

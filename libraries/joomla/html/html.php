@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: html.php 9789 2008-01-02 01:01:00Z jinx $
+ * @version		$Id: html.php 10079 2008-02-28 13:39:08Z ircmaxell $
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @copyright	Copyright (C) 2005 - 2007 Open Source Matters. All rights reserved.
@@ -211,14 +211,14 @@ class JHTML
 			$format = JText::_('DATE_FORMAT_LC1');
 		}
 
-		jimport('joomla.utilities.date');
+
 
 		if(is_null($offset))
 		{
 			$config =& JFactory::getConfig();
 			$offset = $config->getValue('config.offset');
 		}
-		$instance = new JDate($date);
+		$instance =& JFactory::getDate($date);
 		$instance->setOffset($offset);
 
 		return $instance->toFormat($format);

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 9805 2008-01-02 23:32:34Z eddieajau $
+ * @version		$Id: banner.php 10113 2008-03-07 12:15:42Z eddieajau $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -30,7 +30,7 @@ class BannersViewBanner
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();
-		JToolBarHelper::preferences('com_banners', '150');
+		JToolBarHelper::preferences('com_banners', '200');
 		JToolBarHelper::help( 'screen.banners' );
 	}
 
@@ -356,7 +356,7 @@ class BannersViewBanner
 					</tr>
 					<tr >
 						<td valign="top" align="right" class="key">
-							<?php echo JText::_( 'Clicks' ); ?>
+							<?php echo JText::_( 'Clicks' ); ?>:
 						</td>
 						<td colspan="2">
 							<?php echo $row->clicks;?>

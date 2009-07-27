@@ -147,6 +147,11 @@ form#form-login ul {
 	padding-left: 0px;
 }
 
+form#com-form-login ul {
+	padding-right: 20px;
+	padding-left: 0px;
+}
+
 a.readon {
 	background:transparent url(../images/mw_readon_rtl.png) no-repeat scroll left top;
 	float:right;

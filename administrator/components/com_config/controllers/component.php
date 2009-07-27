@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: component.php 9808 2008-01-03 00:37:34Z eddieajau $
+ * @version		$Id: component.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -72,7 +72,7 @@ class ConfigControllerComponent extends JController
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$component = JRequest::getCmd( 'component' );
 

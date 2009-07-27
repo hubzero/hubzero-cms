@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: view.php 10113 2008-03-07 12:15:42Z eddieajau $
 * @package		Joomla
 * @subpackage	Search
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -30,7 +30,7 @@ class SearchViewSearch extends JView
 
 		JToolBarHelper::title( JText::_( 'Search Statistics' ), 'searchtext.png' );
 		JToolBarHelper::custom( 'reset', 'delete.png', 'delete_f2.png', 'Reset', false );
-		JToolBarHelper::preferences( 'com_search', '140' );
+		JToolBarHelper::preferences( 'com_search', '150' );
 		JToolBarHelper::help( 'screen.stats.searches' );
 
 		$document = & JFactory::getDocument();

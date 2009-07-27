@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: user.php 9954 2008-01-17 17:12:50Z ircmaxell $
+ * @version		$Id: user.php 10079 2008-02-28 13:39:08Z ircmaxell $
  * @package		Joomla.Framework
  * @subpackage	User
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -16,7 +16,7 @@
 defined('JPATH_BASE') or die();
 
 jimport( 'joomla.html.parameter');
-jimport( 'joomla.utilities.date');
+
 
 /**
  * User class.  Handles all application interaction with a user
@@ -400,8 +400,8 @@ class JUser extends JObject
 			$array['password'] = $crypt.':'.$salt;
 
 			// Set the registration timestamp
-			jimport('joomla.utilities.date');
-			$now = new JDate();
+			
+			$now =& JFactory::getDate();
 			$this->set( 'registerDate', $now->toMySQL() );
 
 			// Check that username is not greater than 25 characters

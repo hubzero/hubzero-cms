@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: ini.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: ini.php 10082 2008-02-28 16:29:13Z ircmaxell $
  * @package		Joomla.Framework
  * @subpackage	Registry
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -169,7 +169,7 @@ class JRegistryFormatINI extends JRegistryFormat
 					// $value = trim(substr($line, $pos +1));
 					$value = substr($line, $pos +1);
 
-					if (strpos($value, '|'))
+					if (strpos($value, '|') !== false && preg_match('#(?<!\\\)\|#', $value))
 					{
 						$lines = explode('\n', $value);
 						$values = array();

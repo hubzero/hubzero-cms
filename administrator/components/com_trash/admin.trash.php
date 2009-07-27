@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.trash.php 9872 2008-01-05 11:14:10Z eddieajau $
+* @version		$Id: admin.trash.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla
 * @subpackage	Trash
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -247,7 +247,7 @@ function deleteTrash( $cid, $option )
 	global $mainframe;
 
 	// Check for request forgeries
-	JRequest::checkToken() or die( 'Invalid Token' );
+	JRequest::checkToken() or jexit( 'Invalid Token' );
 
 	$db		=& JFactory::getDBO();
 	$return	= JRequest::getCmd( 'return', 'viewContent', 'post' );
@@ -331,7 +331,7 @@ function restoreTrash( $cid, $option )
 	global $mainframe;
 
 	// Check for request forgeries
-	JRequest::checkToken() or die( 'Invalid Token' );
+	JRequest::checkToken() or jexit( 'Invalid Token' );
 
 	$db		= & JFactory::getDBO();
 	$type	= JRequest::getCmd( 'type', '', 'post' );

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: pagenavigation.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: pagenavigation.php 10079 2008-02-28 13:39:08Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -25,13 +25,13 @@ function plgContentNavigation( &$row, &$params, $page=0 )
 
 	if ($params->get('show_item_navigation') && ($view == 'article'))
 	{
-		jimport('joomla.utilities.date');
+
 		$html 		= '';
 		$db 		= & JFactory::getDBO();
 		$user		= & JFactory::getUser();
 		$nullDate	= $db->getNullDate();
 
-		$date		= new JDate();
+		$date		=& JFactory::getDate();
 		$config 	= & JFactory::getConfig();
 		$now 		= $date->toMySQL();
 

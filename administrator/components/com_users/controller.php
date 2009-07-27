@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 9933 2008-01-13 22:38:11Z ircmaxell $
+ * @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Users
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -76,7 +76,7 @@ class UsersController extends JController
 		global $mainframe;
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$option = JRequest::getCmd( 'option');
 
@@ -236,7 +236,7 @@ class UsersController extends JController
 	function remove()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db 			=& JFactory::getDBO();
 		$currentUser 	=& JFactory::getUser();
@@ -323,7 +323,7 @@ class UsersController extends JController
 	function block( )
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db 			=& JFactory::getDBO();
 		$acl			=& JFactory::getACL();
@@ -406,7 +406,7 @@ class UsersController extends JController
 	function logout( )
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		global $mainframe;
 

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: joomla.php 9948 2008-01-16 16:29:32Z ircmaxell $
+* @version		$Id: joomla.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla
 * @subpackage	JFramework
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
 */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.plugin.plugin');
 
@@ -78,6 +78,11 @@ class plgUserJoomla extends JPlugin
 		jimport('joomla.user.helper');
 
 		$instance =& $this->_getUser($user, $options);
+
+		// if _getUser returned an error, then pass it back.
+		if (JError::isError( $instance )) {
+			return $instance;
+		}
 
 		// If the user is blocked, redirect with an error
 		if ($instance->get('block') == 1) {

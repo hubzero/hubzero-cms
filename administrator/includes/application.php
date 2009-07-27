@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: application.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: application.php 10079 2008-02-28 13:39:08Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -261,11 +261,11 @@ class JAdministrator extends JApplication
 		if ($purge > 0)
 		{
 			// purge old messages at day set in message configuration
-			// TODO: Should this be JDate? Or updated to handle offset
-			$past = date( 'Y-m-d H:i:s', time() - $purge * 86400 );
+			$past =& JFactory::getDate(time() - $purge * 86400);
+			$pastStamp = $past->toMySQL();
 
 			$query = 'DELETE FROM #__messages'
-			. ' WHERE date_time < ' . $db->Quote( $past )
+			. ' WHERE date_time < ' . $db->Quote( $pastStamp )
 			. ' AND user_id_to = ' . (int) $userid
 			;
 			$db->setQuery( $query );

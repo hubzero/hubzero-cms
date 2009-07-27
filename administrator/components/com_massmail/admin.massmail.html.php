@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.massmail.html.php 9980 2008-02-01 18:02:34Z ircmaxell $
+* @version		$Id: admin.massmail.html.php 10114 2008-03-07 12:17:47Z eddieajau $
 * @package		Joomla
 * @subpackage	Massmail
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -92,7 +92,7 @@ class HTML_massmail
 							</label>
 					</td>
 					<td>
-							<input type="checkbox" name="mm_bcc" id="mm_bcc" value="1" />
+							<input type="checkbox" name="mm_bcc" id="mm_bcc" value="1" checked="checked" />
 					</td>
 				</tr>
 

@@ -1,6 +1,6 @@
 <?php
 /**
-* version $Id: view.html.php 9934 2008-01-13 22:40:54Z ircmaxell $
+* version $Id: view.html.php 10100 2008-03-04 21:08:19Z ircmaxell $
 * @package		Joomla
 * @subpackage	Newsfeeds
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -14,7 +14,7 @@
 */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
@@ -45,8 +45,8 @@ class NewsfeedsViewCategories extends JView
 		// Define image tag attributes
 		if ($params->get('image') != -1)
 		{
-			$attribs['align'] = '"'. $params->get('image_align').'"';
-			$attribs['hspace'] = '"6"';
+			$attribs['align'] = $params->get('image_align');
+			$attribs['hspace'] = 6;
 
 			// Use the static HTML library to build the image tag
 

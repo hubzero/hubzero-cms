@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: openid.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: openid.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	JFramework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
 
@@ -112,6 +112,7 @@ class plgAuthenticationOpenID extends JPlugin
 
 			//Create the url query information
 			$options['return'] = isset($options['return']) ? base64_encode($options['return']) : base64_encode(JURI::base());
+			$options[JUtility::getToken()] = 1;
 
 			$process_url  = sprintf($entry_url->toString()."&username=%s", $credentials['username']);
 			$process_url .= '&'.JURI::buildQuery($options);

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: section.php 9936 2008-01-13 22:44:03Z ircmaxell $
+* @version		$Id: section.php 10079 2008-02-28 13:39:08Z ircmaxell $
 * @package		Joomla.Framework
 * @subpackage	Table
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -94,7 +94,7 @@ class JTableSection extends JTable
 		}
 		$this->alias = JFilterOutput::stringURLSafe($this->alias);
 		if(trim(str_replace('-','',$this->alias)) == '') {
-			$datenow = new JDate();
+			$datenow =& JFactory::getDate();
 			$this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
 		}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: folder.php 9827 2008-01-03 00:58:16Z eddieajau $
+ * @version		$Id: folder.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Media
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -55,7 +55,7 @@ class MediaControllerFolder extends MediaController
 			foreach ($paths as $path)
 			{
 				if ($path !== JFilterInput::clean($path, 'path')) {
-					JError::raiseWarning(100, JText::_('Unable to delete:').htmlspecialchars($path, ENT_COMPAT, 'UTF-8').' '.JText::_('WARNFILENAME'));
+					JError::raiseWarning(100, JText::_('Unable to delete:').htmlspecialchars($path, ENT_COMPAT, 'UTF-8').' '.JText::_('WARNDIRNAME'));
 					continue;
 				}
 
@@ -97,7 +97,7 @@ class MediaControllerFolder extends MediaController
 		global $mainframe;
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Set FTP credentials, if given
 		jimport('joomla.client.helper');

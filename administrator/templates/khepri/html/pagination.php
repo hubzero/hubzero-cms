@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: pagination.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: pagination.php 10100 2008-03-04 21:08:19Z ircmaxell $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -120,9 +120,9 @@ function pagination_list_render($list)
 function pagination_item_active(&$item)
 {
 	if($item->base>0)
-		return "<a title=\"".$item->text."\" onclick=\"javascript: document.adminForm.limitstart.value=".$item->base."; submitform();return false;\">".$item->text."</a>";
+		return "<a href=\"#\" title=\"".$item->text."\" onclick=\"javascript: document.adminForm.limitstart.value=".$item->base."; submitform();return false;\">".$item->text."</a>";
 	else
-		return "<a title=\"".$item->text."\" onclick=\"javascript: document.adminForm.limitstart.value=0; submitform();return false;\">".$item->text."</a>";
+		return "<a href=\"#\" title=\"".$item->text."\" onclick=\"javascript: document.adminForm.limitstart.value=0; submitform();return false;\">".$item->text."</a>";
 }
 
 function pagination_item_inactive(&$item)

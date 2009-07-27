@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: select.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: select.php 10115 2008-03-07 12:44:27Z ian $
 * @package		Joomla.Framework
 * @subpackage	HTML
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -65,9 +65,9 @@ class JHTMLSelect
 	{
 		$html = '';
 
-		while(current($arr) !== FALSE)
+		foreach ($arr as $i => $option)
 		{
-			$element =& $arr[key($arr)]; // since current doesn't return a reference, need to do this
+			$element =& $arr[$i]; // since current doesn't return a reference, need to do this
 
 			$isArray = is_array( $element );
 			$extra	 = '';
@@ -100,9 +100,9 @@ class JHTMLSelect
 			else
 			{
 				//if no string after hypen - take hypen out
-				$splitText = explode( " - ", $t, 2 );
+				$splitText = explode( ' - ', $t, 2 );
 				$t = $splitText[0];
-				if(isset($splitText[1])){ $t .= " - ". $splitText[1]; }
+				if(isset($splitText[1])){ $t .= ' - '. $splitText[1]; }
 
 				//$extra = '';
 				//$extra .= $id ? ' id="' . $arr[$i]->id . '"' : '';
@@ -132,7 +132,6 @@ class JHTMLSelect
 
 				$html .= '<option value="'. $k .'" '. $extra .'>' . $t . '</option>';
 			}
-			next($arr);
 		}
 
 		return $html;

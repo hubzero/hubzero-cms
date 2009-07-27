@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 9992 2008-02-06 20:58:24Z willebil $
+* @version		$Id: CHANGELOG.php 10168 2008-03-22 05:21:20Z pasamio $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -32,10 +32,221 @@ Legend:
 
 * -> Security Fix
 # -> Bug Fix
+$ -> Language fix or change
 + -> Addition
 ^ -> Change
 - -> Removed
 ! -> Note
+
+-------------------- 1.5.2 Stable Release [22-March-2008] ---------------------
+
+22-Mar-2008 Sam Moffatt
+ $ Added ko-KR installation language files
+
+21-Mar-2008 Sam Moffatt
+ $ Added lt-LT, pl-PL and ca-ES installation language files
+
+20-Mar-2008 Ian MacLennan
+ $ Added bn-IN and th-TH installation language files
+
+20-Mar-2008 Andrew Eddie
+ # Fixed double-quoting bug in gacl_api::del_object
+
+15-Mar-2008 Ian MacLennan
+ # [#9816] Fixed openid toggle link doesn't appear on component.  Also fixes duplicate ids for com and mod.
+ # [#9816] Fixed username cannot contain + or - characters
+ # [#9816] Fixed css resulting from first patch above
+
+15-Mar-2008 Sam Moffatt
+ ^ Updated language XML files version to 1.5.2 and date to 2008-03-15 (pour JM)
+
+12-Mar-2008 Ian MacLennan
+ # [#10156] Param for disabling the Flash Uploader
+
+11-Mar-2008 Anthony Ferrara
+ # [#10077] Edit links for frontpage layout broken when not default menu item.
+
+11-Mar-2008 Wilco Jansen
+ # [10129] front-end message when article submitted not translated
+
+10-Mar-2008 Wilco Jansen
+ # [9971] Default parameter (global configuration) not stored in table
+ # [9976] Invalid behavior after switching list length
+ # [10112] Strings and tips added for 10019 editing options
+ # [10124] Notice layout in milkyway is not right due to missing some css
+ # [10071] Email alert for private message is confusing
+
+09-Mar-2008 Mati Kochen
+ # [#10083] Upgraded TCPDF Library to v2.6
+ # [#10102] Removed unneeded IF clause for ICONV usage
+
+08-Mar-2008 Andrew Eddie
+ # [#10103] Additional Content Filtering
+
+07-Mar-2008 Ian MacLennan
+ # [#9808] JHTMLSelect::Options dies if empty array passed
+ # [#10027] When bulit a menu with catalog list which catalog has no articles, error comes out when click this menu
+ # [#10055] Administrator login not possible due to unmasked querys.
+
+07-Mar-2008 Andrew Eddie
+ # [#10032] JView::get() does not defer properly to JObject::get()
+ # [#9641] Extra <ul /> added by mod_mainmenu in access restricted menus
+ # [#10047] Size correction for some parameters pop-ups (patch)
+ ^ Massmail BCC checkbox checked by default
+
+05-Mar-2008 Ian MacLennan
+ # [#9817] TableUser has sendEmail set to 1 by default instead of 0, while JUser has it set to 0 by default
+
+04-Mar-2008 Anthony Ferrara
+ # [#9964] lost password sends a bad link when Joomla is in a directory (Thanks Tomasz Dobrzynski)
+ # [#10011] 2 Bugs in com_newsfeed
+ # [#9828] Broken Links to blog items
+ # [#8679] Incorrect anchors in pagination for admin template
+
+01-Mar-2008 Alan Langford
+ ^ Conditional load of JLoader to support unit test.
+ + Add jexit() global exit function, also for unit test.
+ ^ Replace all non-environment calls to die() and exit() with jexit() (except external libs).
+ ^ Make die message on no _JEXEC defined consistent throughout.
+
+29-Feb-2008 Toby Patterson
+ # [#8775] Administration Toolbar translation issues
+
+29-Feb-2008 Anthony Ferrara
+ # Error Log Library overwriting $date var (fatal error)
+ # [#9673] Media Manager + Global paths issues
+ # [#9978] Alias URLs don't work when SEF enabled
+ * Sanitization of image and media paths in global config
+ # Fix for date in com_messages (Thanks Jens)
+
+28-Feb-2008 Anthony Ferrara
+ + JFactory::getDate
+ + Support for locale based JDate override (for support of non-gregorian calendars)
+ ^ Changed all calls from $date = new JDate() to $date =& JFactory::getDate();
+ ^ JDate now does the translations on its own (it does not rely on setlocale()) for thread safe function.
+ $ Added support for xx-XX.date.php in frontend language directories (to be used for non-gregorian calendars).
+ ! all instances of JDate should now be retrieved via JFactory::getDate(); (to allow for overrides)
+ # Notice with JTable::isCheckedOut when called statically
+ # [#9832] [#9696] Invalid Itemid causes router to choke
+ # [#7860] Cache Callback ID not reliable if callback is object
+ # [#9715] Development info cached (also fixes tpl=1 case)
+ # [#9421] Fix for INI parsing with | in the content
+ $ [#9848] DESCNEWITEMSFIRST & LAST added to many places.
+ # [#9377] Easier translation and localization
+ # Upgrade TCPDF to 2.2.002 (Removes GD, libjpeg and libpng dependancies)
+ # [#9968] Fix for router using default menu item vars if non-sef url passed when sef is enabled
+ # [#9288] Title not escaped in link for section blog view
+
+28-Feb-2008 Wilco Jansen
+ # [9946] Page title issue for contents
+
+28-Feb-2008 Sam Moffatt
+ ^ Changed incorrect and misleading text in LDAP Authentication plugin
+
+28-Feb-2008 Ian MacLennan
+ # [#9402] Alternative read more
+ # [#9909] Newsflash Module returns incorrect SEF URL
+ # [#9847] JTable::isCheckedOut() can throw an undefined method error
+ # [#9912] Error in sample data
+ $ [#9967] 2 missing strings in admin
+ # [#7960] JFilterInput
+
+27-Feb-2008 Ian MacLennan
+ # [#9648] Cache folder disapearing with legacy mode enabled
+ # [#9805] bad url element for content pdf links]
+
+26-Feb-2008 Ian MacLennan
+ # [#9845] com_user Login form does not offer OpenId login option
+ # [#9844] created date on openid created users is invalid
+ # [#8676] OpenID related untranslated strings [js]
+
+26-Feb-2008 Hannes Papenberg
+ # [#9916] Saving Article Layout menu does not work
+
+25-Feb-2008 Ian MacLennan
+ # [#9932] Typo in file
+ # [#9907] Code cleanup com_weblinks, <button> element improperly closed
+
+25-Feb-2008Mati Kochen
+ ^ [#9857] Updated TCPDF Library to support RTL - Thanks JM.
+
+23-Feb-2008 Ian MacLennan
+ # [#9778] Breadcrumb includes separators
+ # [#9513] Search module in rhuk_milkyway - IE6
+ # [#8547] Com_media: Unable to delete files with spaces
+ # [#9862] Remember me can display confusing error message.
+
+
+22-Feb-2008 Anthony Ferrara
+ # Fix parse_str &amp; issues
+ # [#9867] �Hardcoded strings + some errors (Thanks JM)
+
+21-Feb-2008 Ian MacLennan
+ # [#9840] •Hard coded string missing translation
+ # [#9579] Contact Send-Email Form Routing to Wrong Address
+ # [#9739] sefRelToAbs( 'http://localhost/index.php?option=com_content&view=frontpage&Itemid=1' ) returns wrong URL
+
+20-Feb-2008 Ian MacLennan
+ # [#9807] Notice error in lib/j/html/html/list.php, sign of bigger problem (thanks Jens)
+
+19-Feb-2008 Anthony Ferrara
+ # [#9534] Tooltips hidden behind some tabs
+ # [#8800] Changing order of articles
+ # [#9708] Styling of loadmodule plugin fix.
+ # [#9710] mod_feed htmlentities issues.
+ # [#9758] Frontend error message for checked out content partially translated
+
+16-Feb-2008 Ian MacLennan
+ # [9635] mod_random_image doesn't work as advertised
+ # [8230] missing error handler on jfactory getxmlparser
+
+15-Feb-2008 Ian MacLennan
+ # [#8684] Errors not correctly trapped on login
+
+14-Feb-2008 Ian MacLennan
+ # [#9655] Cannot have more than 1 mootools tree on a page
+
+13-Feb-2008 Ian MacLennan
+ # [#9263] Bug in com_search: incorrect highliting of multiple search words
+ # [#8738] Backend Login Problems--error message not shown when frontend or blocked user attempts login
+ # [#9630] Language strings missing
+ # [#9636] mod_banners cannot validate as XHTML 1.0 Strict
+ # [#9289] reference to wrapper url produces errors when no modules are loaded
+ # [#9719] JDate->toISO8601 suggestion/correction
+
+12-Feb-2008 Ian MacLennan
+ # [#9695] Invalid Token message received when trying to authenticate with OpenID
+ # [#9006] Incorrect delete section message
+ # [#9253] Incorrect caching time of the feed XML in mod_feed
+ # [#9490] Fatal error: Call to a member function name() helper.php
+ # [#8808] PDF from an article - "contributed by" isof "written by"
+ # [#9555] Poll Manager poll's title sorting broken
+
+12-Feb-2008 Anthony Ferrara
+ # [#9697] Khepri has type="module" instead of type="modules" for Admin Submenu (Thanks Jens)
+
+11-Feb-2008 Andrew Eddie
+ $ Fixed string for XML-RPC server tip (default is no) in com_config.ini
+
+10-Feb-2008 Ian MacLennan
+ # Fixed [9371] h3 Title not translated at install step4 and 5
+ # Fixed [9697] Khepri has type="module" instead of type="modules" for Admin Submenu
+
+10-Feb-2008 Anthony Ferrara
+ # Fixed issue with notice populating $live_site on upgrade from 1.5.0
+
+10-Feb-2008 Sam Moffatt
+ # Fixed [#9381] Misnamed variable errors in migration
+
+09-Feb-2008 Ian MacLennan
+ # Fixed [8602] Cookie error message in installation process
+ # Fixed [9458] Email on new article - "from" is missing
+ # Fixed [8368] Template preview shows only used module positions
+ # Fixed [9434] Sample data: Two Resource Modules
+ # Fixed [9690] Version number in administrator backend shows 1.5.0
+ # Fixed [9312] Pre-installation Check wrongly recommends Display Errors ON
+ # Fixed [9408] Articles don't change if you change a category to another section
+
 
 -------------------- 1.5.1 Stable Release [8-February-2008] ---------------------
 

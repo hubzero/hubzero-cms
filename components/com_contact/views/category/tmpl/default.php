@@ -1,8 +1,8 @@
 <?php
 /**
- * $Id: default.php 9934 2008-01-13 22:40:54Z ircmaxell $
+ * $Id: default.php 10094 2008-03-02 04:35:10Z instance $
  */
-defined( '_JEXEC' ) or die();
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $cparams =& JComponentHelper::getParams('com_media');
 ?>

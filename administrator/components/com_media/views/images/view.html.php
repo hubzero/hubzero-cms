@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 9944 2008-01-14 21:10:22Z eddieajau $
+* @version		$Id: view.html.php 10129 2008-03-12 10:45:50Z ian $
 * @package		Joomla
 * @subpackage	Media
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
 */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
@@ -30,6 +30,8 @@ class MediaViewImages extends JView
 	function display($tpl = null)
 	{
 		global $mainframe;
+		
+		$config =& JComponentHelper::getParams('com_media');
 
 		$app = JFactory::getApplication();
 		$append = '';
@@ -37,7 +39,9 @@ class MediaViewImages extends JView
 
 		JHTML::_('script'    , 'popup-imagemanager.js', $append .'components/com_media/assets/');
 		JHTML::_('stylesheet', 'popup-imagemanager.css', $append .'components/com_media/assets/');
-		JHTML::_('behavior.uploader', 'file-upload', array('onAllComplete' => 'function(){ ImageManager.refreshFrame(); }'));
+		if ($config->get('enable_flash', 1)) {
+			JHTML::_('behavior.uploader', 'file-upload', array('onAllComplete' => 'function(){ ImageManager.refreshFrame(); }'));
+		}
 
 		/*
 		 * Display form for FTP credentials?
@@ -47,7 +51,7 @@ class MediaViewImages extends JView
 		$ftp = !JClientHelper::hasCredentials('ftp');
 
 		$this->assignRef( 'session',	JFactory::getSession());
-		$this->assignRef( 'config',		JComponentHelper::getParams('com_media'));
+		$this->assignRef( 'config',		$config);
 		$this->assignRef( 'state',		$this->get('state'));
 		$this->assignRef( 'folderList',	$this->get('folderList'));
 		$this->assign('require_ftp', $ftp);

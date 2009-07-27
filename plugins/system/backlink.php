@@ -1,7 +1,7 @@
 <?php
 
 /**
-* @version		$Id: backlink.php 9918 2008-01-10 01:41:37Z pasamio $
+* @version		$Id: backlink.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -157,7 +157,7 @@ class plgSystemBacklink extends JPlugin
 		$name = $name ? $name : "Unknown";
 
 		header('Location: ' . str_replace('&amp;','&',$url), true, '301'); // redirect and kill of and &amp;
-		die(JText :: sprintf('"%s" has moved to <a href="%s">%s</a>. Click the link if your browser does not redirect you automatically.', $name, $url, $url));
+		jexit(JText :: sprintf('"%s" has moved to <a href="%s">%s</a>. Click the link if your browser does not redirect you automatically.', $name, $url, $url));
 	}
 
 	function _legacysef()

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: weblink.php 9831 2008-01-03 01:10:35Z eddieajau $
+ * @version		$Id: weblink.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.controller');
 
@@ -60,7 +60,7 @@ class WeblinksControllerWeblink extends WeblinksController
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Get some objects from the JApplication
 		$db		=& JFactory::getDBO();
@@ -103,7 +103,7 @@ class WeblinksControllerWeblink extends WeblinksController
 
 		// send email notification to admins
 		foreach ($adminRows as $adminRow) {
-			JUtility::sendAdminMail($adminRow->name, $adminRow->email, '', 'Weblink', $post['title']." URL link ".$post[url], $user->get('username'), JURI::base());
+			JUtility::sendAdminMail($adminRow->name, $adminRow->email, '',  JText::_('Web Link'), $post['title']." URL link ".$post[url], $user->get('username'), JURI::base());
 		}
 
 		$this->setRedirect(JRoute::_('index.php?option=com_weblinks&view=category&id='.$post['catid'], false), $msg);

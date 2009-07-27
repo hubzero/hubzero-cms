@@ -1,8 +1,8 @@
 <?php
 /**
- * $Id: default.php 9718 2007-12-20 22:35:36Z eddieajau $
+ * $Id: default.php 10094 2008-03-02 04:35:10Z instance $
  */
-defined( '_JEXEC' ) or die();
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $cparams = JComponentHelper::getParams ('com_media');
 ?>
@@ -67,7 +67,7 @@ $cparams = JComponentHelper::getParams ('com_media');
 <tr>
 	<td colspan="2">
 	<?php echo JText::_( 'Download information as a' );?>
-		<a href="index.php?option=com_contact&amp;task=vcard&amp;contact_id=<?php echo $this->contact->id; ?>&amp;format=raw&amp;tmpl=component">
+		<a href="<?php echo JURI::base(); ?>index.php?option=com_contact&amp;task=vcard&amp;contact_id=<?php echo $this->contact->id; ?>&amp;format=raw&amp;tmpl=component">
 			<?php echo JText::_( 'VCard' );?></a>
 	</td>
 </tr>

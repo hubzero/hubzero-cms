@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: helper.php 10027 2008-02-12 21:13:18Z ian $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -216,7 +216,7 @@ class JApplicationHelper
 		 *
 		 * Should be 'install', but for backward compatability we will accept 'mosinstall'.
 		 */
-		if ($xml->document->name() != 'install' && $xml->document->name() != 'mosinstall') {
+		if ( !is_object($xml->document) || ($xml->document->name() != 'install' && $xml->document->name() != 'mosinstall')) {
 			unset($xml);
 			return false;
 		}

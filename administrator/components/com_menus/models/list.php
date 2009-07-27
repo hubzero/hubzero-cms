@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: list.php 9872 2008-01-05 11:14:10Z eddieajau $
+ * @version		$Id: list.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
 
@@ -165,7 +165,13 @@ class MenusModelList extends JModel
 					$list[$i]->descrip 	= JText::_('Component');
 					$query 			= parse_url($list[$i]->link);
 					$view = array();
-					if(isset($query['query'])) parse_str($query['query'], $view);
+					if(isset($query['query'])) {
+						if(strpos($query['query'], '&amp;') !== false)
+						{
+						   $query['query'] = str_replace('&amp;','&',$query['query']);
+						}
+						parse_str($query['query'], $view);
+					}
 					$list[$i]->view		= $list[$i]->com_name;
 					if (isset($view['view']))
 					{

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: message.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: message.php 10123 2008-03-10 12:24:14Z willebil $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -12,7 +12,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.database.table');
 
@@ -119,6 +119,7 @@ class TableMessage extends JTable
 	 */
 	function send($fromId = null, $toId = null, $subject = null, $message = null, $mailfrom = null, $fromname = null)
 	{
+		global $mainframe;
 		$db =& JFactory::getDBO();
 
 		if (is_object($this))
@@ -144,20 +145,31 @@ class TableMessage extends JTable
 			$this->user_id_to	= $toId;
 			$this->subject		= $subject;
 			$this->message		= $message;
-			// TODO: Should this be JDate?
-			$this->date_time	= date('Y-m-d H:i:s');
+			$date =& JFactory::getDate();
+			$this->date_time	= $date->toMySQL();
 
 			if ($this->store())
 			{
 				if ($domail)
 				{
+					$query = 'SELECT name, email' .
+							' FROM #__users' .
+							' WHERE id = '.(int) $fromId;
+					$db->setQuery($query);
+					$fromObject = $db->loadObject();
+					$fromname	= $fromObject->name;
+					$mailfrom	= $fromObject->email;
+					$siteURL		= JURI::base();
+					$sitename 		= $mainframe->getCfg( 'sitename' );
+
 					$query = 'SELECT email' .
 							' FROM #__users' .
 							' WHERE id = '.(int) $toId;
 					$db->setQuery($query);
 					$recipient	= $db->loadResult();
-					$subject	= JText::_('A new private message has arrived');
-					$msg		= JText::_('A new private message has arrived');
+
+					$subject	= sprintf (JText::_('A new private message has arrived'), $sitename);
+					$msg		= sprintf (JText::_('Please login to read your message'), $siteURL);
 
 					JUtility::sendMail($mailfrom, $fromname, $recipient, $subject, $msg);
 				}

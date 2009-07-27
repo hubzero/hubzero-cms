@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: weblinks.php 9918 2008-01-10 01:41:37Z pasamio $
+ * @version		$Id: weblinks.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.model');
 

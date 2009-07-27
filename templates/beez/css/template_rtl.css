@@ -1,5 +1,5 @@
 /**
- * @version $Id: template_rtl.css 9765 2007-12-30 08:21:02Z ircmaxell $
+ * @version $Id: template_rtl.css 10054 2008-02-22 11:24:37Z mtk $
  * @package Joomla
  * @subpackage Accessible-Template-Beez
  * @copyright Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -214,6 +214,10 @@ form.login .button{
 
 #right form.poll fieldset label{
 	padding: 0 4px 0 0;
+}
+
+#right form.poll fieldset input{
+        float:right;
 }
 
 #right ul{

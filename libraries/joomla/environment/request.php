@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: request.php 9990 2008-02-05 21:54:06Z ian $
+ * @version		$Id: request.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -446,7 +446,7 @@ class JRequest
 				return false;
 			}
 		} else {
-			return true;	
+			return true;
 		}
 	}
 
@@ -524,7 +524,7 @@ class JRequest
 			// PHP Zend_Hash_Del_Key_Or_Index bug
 			$failed |= is_numeric( $key );
 			if ($failed) {
-				die( 'Illegal variable <b>' . implode( '</b> or <b>', $banned ) . '</b> passed to script.' );
+				jexit( 'Illegal variable <b>' . implode( '</b> or <b>', $banned ) . '</b> passed to script.' );
 			}
 			if ($globalise) {
 				$GLOBALS[$key] = $value;

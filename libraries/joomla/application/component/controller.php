@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: controller.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: controller.php 10111 2008-03-07 11:56:46Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -24,9 +24,6 @@ defined('JPATH_BASE') or die();
  * @abstract
  * @package		Joomla.Framework
  * @subpackage	Application
- * @author		Johan Janssens <johan.janssens@joomla.org>
- * @author		Louis Landry <louis.landry@joomla.org>
- * @author 		Andrew Eddie
  * @since		1.5
  */
 class JController extends JObject

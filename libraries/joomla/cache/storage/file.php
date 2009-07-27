@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: file.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: file.php 10071 2008-02-27 19:17:32Z ian $
  * @package		Joomla.Framework
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -140,6 +140,11 @@ class JCacheStorageFile extends JCacheStorage
 
 		$return = true;
 		$folder	= $group;
+
+		if(trim($folder) == '') {
+			$mode = 'notgroup';
+		}
+
 		switch ($mode)
 		{
 			case 'notgroup':

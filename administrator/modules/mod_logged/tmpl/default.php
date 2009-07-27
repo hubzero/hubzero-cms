@@ -1,4 +1,7 @@
-<?php /** $Id: default.php 9828 2008-01-03 00:59:43Z eddieajau $ */ defined( '_JEXEC' ) or die(); ?>
+<?php
+/** $Id: default.php 10094 2008-03-02 04:35:10Z instance $ */
+defined( '_JEXEC' ) or die( 'Restricted access' );
+?>
 
 <form method="post" action="index.php?option=com_users">
 	<table class="adminlist">

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: helper.php 10079 2008-02-28 13:39:08Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -36,8 +36,8 @@ class modRelatedItemsHelper
 
 		$nullDate			= $db->getNullDate();
 
-		jimport('joomla.utilities.date');
-		$date = new JDate();
+
+		$date =& JFactory::getDate();
 		$now  = $date->toMySQL();
 
 		$related			= array();

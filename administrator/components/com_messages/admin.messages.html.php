@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.messages.html.php 9858 2008-01-04 18:26:20Z tsai146 $
+* @version		$Id: admin.messages.html.php 10092 2008-02-29 23:03:38Z ircmaxell $
 * @package		Joomla
 * @subpackage	Messages
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -110,7 +110,7 @@ class HTML_messages
 						<?php echo $author; ?>
 					</td>
 					<td>
-						<?php echo $row->date_time; ?>
+						<?php echo JHTML::_('date', $row->date_time, JText::_('DATE_FORMAT_LC2')); ?>
 					</td>
 				</tr>
 				<?php $k = 1 - $k;

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 9991 2008-02-05 22:13:22Z ircmaxell $
+ * @version		$Id: view.php 10023 2008-02-12 15:33:45Z ircmaxell $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -46,7 +46,7 @@ class ConfigApplicationView
 
 		// Set document data
 		$document =& JFactory::getDocument();
-		$document->setBuffer($contents, 'module', 'submenu');
+		$document->setBuffer($contents, 'modules', 'submenu');
 
 		// Load settings for the FTP layer
 		jimport('joomla.client.helper');
@@ -111,7 +111,7 @@ class ConfigApplicationView
 		<div class="clr"></div>
 
 		<input type="hidden" name="c" value="global" />
-		<input type="hidden" name="live_site" value="<?php echo $row->live_site; ?>" />
+		<input type="hidden" name="live_site" value="<?php echo isset($row->live_site) ? $row->live_site : ''; ?>" />
 		<input type="hidden" name="option" value="com_config" />
 		<input type="hidden" name="secret" value="<?php echo $row->secret; ?>" />
 		<input type="hidden" name="task" value="" />

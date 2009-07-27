@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.messages.php 9872 2008-01-05 11:14:10Z eddieajau $
+* @version		$Id: admin.messages.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla
 * @subpackage	Messages
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -168,7 +168,7 @@ function saveConfig( $option )
 	global $mainframe;
 
 	// Check for request forgeries
-	JRequest::checkToken() or die( 'Invalid Token' );
+	JRequest::checkToken() or jexit( 'Invalid Token' );
 
 	$db		=& JFactory::getDBO();
 	$user	=& JFactory::getUser();
@@ -222,7 +222,7 @@ function saveMessage( $option )
 	global $mainframe;
 
 	// Check for request forgeries
-	JRequest::checkToken() or die( 'Invalid Token' );
+	JRequest::checkToken() or jexit( 'Invalid Token' );
 
 	require_once(dirname(__FILE__).DS.'tables'.DS.'message.php');
 
@@ -271,7 +271,7 @@ function removeMessage( $cid, $option )
 	global $mainframe;
 
 	// Check for request forgeries
-	JRequest::checkToken() or die( 'Invalid Token' );
+	JRequest::checkToken() or jexit( 'Invalid Token' );
 
 	$db =& JFactory::getDBO();
 

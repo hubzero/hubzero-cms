@@ -1,4 +1,7 @@
-<?php /** $Id: default_form.php 9831 2008-01-03 01:10:35Z eddieajau $ */ defined( '_JEXEC' ) or die(); ?>
+<?php
+/** $Id: default_form.php 10094 2008-03-02 04:35:10Z instance $ */
+defined( '_JEXEC' ) or die( 'Restricted access' );
+?>
 <script type="text/javascript">
 <!--
 	function validateForm( frm ) {

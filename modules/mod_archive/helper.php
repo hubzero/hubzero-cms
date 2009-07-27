@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 9981 2008-02-04 14:19:13Z willebil $
+* @version		$Id: helper.php 10079 2008-02-28 13:39:08Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -14,7 +14,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.utilities.date');
+
 
 class modArchiveHelper
 {
@@ -38,7 +38,7 @@ class modArchiveHelper
 		$lists	= array();
 		foreach ( $rows as $row )
 		{
-			$date = new JDate($row->created);
+			$date =& JFactory::getDate($row->created);
 
 			$created_month	= $date->toFormat("%m");
 			$month_name		= $date->toFormat("%B");

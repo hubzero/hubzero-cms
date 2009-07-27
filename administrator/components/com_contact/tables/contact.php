@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: contact.php 9936 2008-01-13 22:44:03Z ircmaxell $
+ * @version		$Id: contact.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 
 /**
@@ -110,7 +110,7 @@ class TableContact extends JTable
 		}
 		$this->alias = JFilterOutput::stringURLSafe($this->alias);
 		if(trim(str_replace('-','',$this->alias)) == '') {
-			$datenow = new JDate();
+			$datenow =& JFactory::getDate();
 			$this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
 		}
 

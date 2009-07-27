@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: content.php 9875 2008-01-05 11:33:51Z eddieajau $
+ * @version		$Id: content.php 10079 2008-02-28 13:39:08Z ircmaxell $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -64,8 +64,7 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 	$limit 			= $pluginParams->def( 'search_limit', 		50 );
 
 	$nullDate 		= $db->getNullDate();
-	jimport('joomla.utilities.date');
-	$date = new JDate();
+	$date =& JFactory::getDate();
 	$now = $date->toMySQL();
 
 	$text = trim( $text );

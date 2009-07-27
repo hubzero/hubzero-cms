@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 9923 2008-01-11 21:58:51Z ian $
+ * @version		$Id: view.html.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Weblinks
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
@@ -112,18 +112,18 @@ class SearchViewSearch extends JView
 				}
 
 				$row = SearchHelper::prepareSearchContent( $row, 200, $needle );
-
 				$searchwords = array_unique( $searchwords );
-
-				foreach($searchwords AS $k=>$hlword) {
-					// the original code invoked $this->escape( $hlword ) twice on $hlword
-					// this didn't make sense to me, so I removed one of them.
-					$searchwords[$k] = $this->escape( stripslashes( $hlword ) );
+				$searchRegex = '#(';
+				$x = 0;
+				foreach ($searchwords as $k => $hlword)
+				{
+					$searchRegex .= ($x == 0 ? '' : '|');
+					$searchRegex .= preg_quote($hlword, '#');
+					$x++;
 				}
-
-				$searchRegex = implode( '|', $searchwords );
-
-				$row = eregi_replace( '('.$searchRegex.')', '<span class="highlight">\0</span>', $row );
+				$searchRegex .= ')#iu';
+				
+				$row = preg_replace($searchRegex, '<span class="highlight">\0</span>', $row );
 
 				$result =& $results[$i];
 			    if ($result->created) {

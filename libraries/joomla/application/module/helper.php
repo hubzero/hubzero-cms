@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 9779 2007-12-31 01:44:42Z jinx $
+* @version		$Id: helper.php 10034 2008-02-13 21:06:54Z ian $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -85,6 +85,14 @@ class JModuleHelper
 		for($i = 0; $i < $total; $i++) {
 			if($modules[$i]->position == $position) {
 				$result[] =& $modules[$i];
+			}
+		}
+		if(count($result) == 0) {
+			if(JRequest::getBool('tp')) {
+				$result[0] = JModuleHelper::getModule( 'mod_'.$position );
+				$result[0]->title = $position;
+				$result[0]->content = $position;
+				$result[0]->position = $position;
 			}
 		}
 
@@ -268,8 +276,8 @@ class JModuleHelper
 
 		$db->setQuery( $query );
 
-		if (!($modules = $db->loadObjectList())) {
-			JError::raiseWarning( 'SOME_ERROR_CODE', "Error loading Modules: " . $db->getErrorMsg());
+		if (null === ($modules = $db->loadObjectList())) {
+			JError::raiseWarning( 'SOME_ERROR_CODE', JText::_( 'Error Loading Modules' ) . $db->getErrorMsg());
 			return false;
 		}
 

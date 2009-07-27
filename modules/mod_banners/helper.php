@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: helper.php 10033 2008-02-13 20:11:04Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -81,7 +81,7 @@ class modBannersHelper
 		}
 		else if (BannerHelper::isImage( $item->imageurl ))
 		{
-			$image 	= '<img src="'.$baseurl.'images/banners/'.$item->imageurl.'" border="0" alt="'.JText::_('Banner').'" />';
+			$image 	= '<img src="'.$baseurl.'images/banners/'.$item->imageurl.'" alt="'.JText::_('Banner').'" />';
 			if ($item->clickurl)
 			{
 				switch ($params->get( 'target', 1 ))

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: classes.php 9886 2008-01-05 18:02:09Z hackwar $
+* @version		$Id: classes.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla.Legacy
 * @subpackage	1.5
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -28,7 +28,7 @@ class mosAbstractTasker
 {
 	function mosAbstractTasker()
 	{
-		die( 'mosAbstractTasker deprecated, use JController instead' );
+		jexit( 'mosAbstractTasker deprecated, use JController instead' );
 	}
 }
 

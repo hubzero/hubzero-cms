@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: date.php 9966 2008-01-27 16:30:40Z willebil $
+* @version		$Id: date.php 10121 2008-03-09 09:48:22Z mtk $
 * @package		Joomla.Framework
 * @subpackage	Utilities
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -180,8 +180,9 @@ class JDate extends JObject
 	 */
 	function toISO8601($local = false)
 	{
-		$date = ($local) ? $this->_date + $this->_offset : $this->_date;
-		$date = ($this->_date !== false) ? date('Y-m-d\TH:i:s+0000', $date) : null;
+		$date   = ($local) ? $this->_date + $this->_offset : $this->_date;
+        $offset = ($local) ? sprintf("%+03d", $this->getOffset()).':00' : 'Z';
+        $date   = ($this->_date !== false) ? date('Y-m-d\TH:i:s', $date).$offset : null;
 		return $date;
 	}
 
@@ -224,12 +225,80 @@ class JDate extends JObject
 	 */
 	function toFormat($format = '%Y-%m-%d %H:%M:%S')
 	{
-		$date = ($this->_date !== false) ? strftime($format, $this->_date + $this->_offset) : null;
-		// for Windows there is a need to convert the OS date string to utf-8.
-		if ( JUtility::isWinOS() && function_exists('iconv') ) {
-			$lang =& JFactory::getLanguage();
-			return iconv($lang->getWinCP(), 'UTF-8', $date);
-		}
+		$date = ($this->_date !== false) ? $this->_strftime($format, $this->_date + $this->_offset) : null;
+		
 		return $date;
 	}
+
+	/**
+	 * Translates needed strings in for JDate::toFormat (see {@link PHP_MANUAL#strftime})
+	 *
+	 * @access protected
+	 * @param string $format The date format specification string (see {@link PHP_MANUAL#strftime})
+	 * @param int $time Unix timestamp
+	 * @return string a date in the specified format
+	 */
+	function _strftime($format, $time) 
+	{
+		if(strpos($format, '%a') !== false) 
+			$format = str_replace('%a', $this->_dayToString(date('w', $time), true), $format);
+		if(strpos($format, '%A') !== false) 
+			$format = str_replace('%A', $this->_dayToString(date('w', $time)), $format);
+		if(strpos($format, '%b') !== false)
+			$format = str_replace('%b', $this->_monthToString(date('n', $time), true), $format);
+		if(strpos($format, '%B') !== false)
+			$format = str_replace('%B', $this->_monthToString(date('n', $time)), $format);
+		$date = strftime($format, $time);
+		return $date;
+	}
+	
+	/**
+	 * Translates month number to string
+	 *
+	 * @access protected
+	 * @param int $month The numeric month of the year
+	 * @param bool $abbr Return the abreviated month string?
+	 * @return string month string
+	 */
+	function _monthToString($month, $abbr = false)
+	{
+		switch ($month)
+		{
+			case 1:  return $abbr ? JText::_('JANUARY_SHORT')   : JText::_('JANUARY');
+			case 2:  return $abbr ? JText::_('FEBRUARY_SHORT')  : JText::_('FEBRUARY');
+			case 3:  return $abbr ? JText::_('MARCH_SHORT')     : JText::_('MARCH');
+			case 4:  return $abbr ? JText::_('APRIL_SHORT')     : JText::_('APRIL');
+			case 5:  return $abbr ? JText::_('MAY_SHORT')       : JText::_('MAY');
+			case 6:  return $abbr ? JText::_('JUNE_SHORT')      : JText::_('JUNE');
+			case 7:  return $abbr ? JText::_('JULY_SHORT')      : JText::_('JULY');
+			case 8:  return $abbr ? JText::_('AUGUST_SHORT')    : JText::_('AUGUST');
+			case 9:  return $abbr ? JText::_('SEPTEMBER_SHORT')  : JText::_('SEPTEMBER');
+			case 10: return $abbr ? JText::_('OCTOBER_SHORT')   : JText::_('OCTOBER');
+			case 11: return $abbr ? JText::_('NOVEMBER_SHORT')  : JText::_('NOVEMBER');
+			case 12: return $abbr ? JText::_('DECEMBER_SHORT')  : JText::_('DECEMBER');
+		}
+	}
+	
+	/**
+	 * Translates day of week number to string
+	 *
+	 * @access protected
+	 * @param int $day The numeric day of the week
+	 * @param bool $abbr Return the abreviated day string?
+	 * @return string day string
+	 */
+	function _dayToString($day, $abbr = false)
+	{
+		switch ($day)
+		{
+			case 0: return $abbr ? JText::_('SUN') : JText::_('SUNDAY');
+			case 1: return $abbr ? JText::_('MON') : JText::_('MONDAY');
+			case 2: return $abbr ? JText::_('TUE') : JText::_('TUESDAY');
+			case 3: return $abbr ? JText::_('WED') : JText::_('WEDNESDAY');
+			case 4: return $abbr ? JText::_('THU') : JText::_('THURSDAY');
+			case 5: return $abbr ? JText::_('FRI') : JText::_('FRIDAY');
+			case 6: return $abbr ? JText::_('SAT') : JText::_('SATURDAY');
+		}
+	}
+		
 }

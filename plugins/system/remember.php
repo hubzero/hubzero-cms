@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: remember.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: remember.php 10061 2008-02-24 03:59:34Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -65,7 +65,13 @@ class plgSystemRemember extends JPlugin
 
 				$crypt	= new JSimpleCrypt($key);
 				$str	= $crypt->decrypt($str);
-				$mainframe->login(unserialize($str));
+				
+				$options = array();
+				$options['silent'] = true;
+				if (!$mainframe->login(@unserialize($str), $options)) {
+					// Clear the remember me cookie
+					setcookie( JUtility::getHash('JLOGIN_REMEMBER'), false, time() - 86400, '/' );
+				}
 			}
 		}
 	}

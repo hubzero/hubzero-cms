@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 9831 2008-01-03 01:10:35Z eddieajau $
+ * @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	MailTo
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.controller');
 
@@ -47,7 +47,7 @@ class MailtoController extends JController
 		global $mainframe;
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db	=& JFactory::getDBO();
 

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: eo-XX.xml 9798 1-2008 cindio $ -->
 <metafile version="1.5" client="installation" >
 	<name>Esperanto</name>
-	<version>1.5.0</version>
-	<creationDate>sep 2007</creationDate>
+	<version>1.5.2</version>
+	<creationDate>March 2008</creationDate>
 	<author>liberaprogramaro.net</author>
 	<authorEmail>joomla@liberaprogramaro.net</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>

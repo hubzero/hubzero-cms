@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 9872 2008-01-05 11:14:10Z eddieajau $
+ * @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Modules
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -182,7 +182,7 @@ class ModulesController extends JController
 	function copy()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Initialize some variables
 		$db 	=& JFactory::getDBO();
@@ -250,7 +250,7 @@ class ModulesController extends JController
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		global $mainframe;
 
@@ -557,7 +557,7 @@ class ModulesController extends JController
 		global $mainframe;
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Initialize some variables
 		$db		=& JFactory::getDBO();
@@ -610,7 +610,7 @@ class ModulesController extends JController
 		global $mainframe;
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Initialize some variables
 		$db 	=& JFactory::getDBO();
@@ -657,7 +657,7 @@ class ModulesController extends JController
 		global $mainframe;
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Initialize some variables
 		$db		=& JFactory::getDBO();
@@ -678,7 +678,7 @@ class ModulesController extends JController
 		global $mainframe;
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Initialize some variables
 		$db		=& JFactory::getDBO();
@@ -709,7 +709,7 @@ class ModulesController extends JController
 		global $mainframe;
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Initialize some variables
 		$db		=& JFactory::getDBO();
@@ -758,7 +758,7 @@ class ModulesController extends JController
 	function saveOrder()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Initialize some variables
 		$db		=& JFactory::getDBO();

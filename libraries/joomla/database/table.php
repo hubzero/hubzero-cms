@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: table.php 9860 2008-01-04 20:46:05Z louis $
+ * @version		$Id: table.php 10081 2008-02-28 13:59:38Z ircmaxell $
  * @package		Joomla.Framework
  * @subpackage	Table
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -593,8 +593,8 @@ class JTable extends JObject
 		if ($oid !== null) {
 			$this->$k = $oid;
 		}
-		jimport('joomla.utilities.date');
-		$date = new JDate();
+
+		$date =& JFactory::getDate();
 		$time = $date->toMysql();
 
 		$query = 'UPDATE '.$this->_db->nameQuote( $this->_tbl ) .
@@ -688,7 +688,7 @@ class JTable extends JObject
 	 */
 	function isCheckedOut( $with = 0, $against = null)
 	{
-		if(isset($this) && is_null($against)) {
+		if(isset($this) && is_a($this, 'JTable') && is_null($against)) {
 			$against = $this->get( 'checked_out' );
 		}
 

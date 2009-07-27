@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: frontpage.php 9811 2008-01-03 00:42:00Z eddieajau $
+* @version		$Id: frontpage.php 10079 2008-02-28 13:39:08Z ircmaxell $
 * @package		Joomla
 * @subpackage	Content
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -27,15 +27,13 @@ class FrontpageView
 	*/
 	function showList( &$rows, $page, $option, $lists )
 	{
-		jimport('joomla.utilities.date');
-
 		$limitstart = JRequest::getVar('limitstart', '0', '', 'int');
 
 		$user 		=& JFactory::getUser();
 		$db 		=& JFactory::getDBO();
 		$nullDate 	= $db->getNullDate();
 		$config		=& JFactory::getConfig();
-		$now		= new JDate();
+		$now		=& JFactory::getDate();
 
 		//Ordering allowed ?
 		$ordering = (($lists['order'] == 'fpordering'));
@@ -117,8 +115,8 @@ class FrontpageView
 
 				$link = JRoute::_( 'index.php?option=com_content&task=edit&cid[]='. $row->id );
 
-				$publish_up = new JDate($row->publish_up);
-				$publish_down = new JDate($row->publish_down);
+				$publish_up =& JFactory::getDate($row->publish_up);
+				$publish_down =& JFactory::getDate($row->publish_down);
 				$publish_up->setOffset($config->getValue('config.offset'));
 				$publish_down->setOffset($config->getValue('config.offset'));
 				if ( $now->toUnix() <= $publish_up->toUnix() && $row->state == 1 ) {

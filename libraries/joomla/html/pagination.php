@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: pagination.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: pagination.php 10124 2008-03-10 12:40:29Z willebil $
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -76,8 +76,10 @@ class JPagination extends JObject
 			$this->limitstart = 0;
 		}
 
-		if (!$this->limit) {
+		if (!$this->limit)
+		{
 			$this->limit = $total;
+			$this->limitstart = 0;
 		}
 
 		if ($this->limitstart > $this->total) {

@@ -154,9 +154,18 @@ class JRouterSite extends JRouter
 		$menu  =& JSite::getMenu(true);
 		$route = $uri->getPath();
 
+		//Get the variables from the uri
+		$vars = $uri->getQuery(true);
+
 		//Handle an empty URL (special case)
 		if(empty($route))
 		{
+
+			//If route is empty AND option is set in the query, assume it's non-sef url, and parse apropriately
+			if(isset($vars['option']) || isset($vars['Itemid'])) {
+				return $this->_parseRawRoute($uri);
+			}
+			
 			$item = $menu->getDefault();
 
 			//Set the information in the request
@@ -171,8 +180,6 @@ class JRouterSite extends JRouter
 			return $vars;
 		}
 
-		//Get the variables from the uri
-		$vars = $uri->getQuery(true);
 
 		/*
 		 * Parse the application route
@@ -295,16 +302,18 @@ class JRouterSite extends JRouter
 		/*
 		 * Build the application route
 		 */
-		if (isset($query['Itemid']))
+		$built = false;
+		if (isset($query['Itemid']) && !empty($query['Itemid']))
 		{
 			$item = $menu->getItem($query['Itemid']);
 
-			if ($query['option'] == $item->component) {
+			if (is_object($item) && $query['option'] == $item->component) {
 				$tmp = !empty($tmp) ? $item->route.'/'.$tmp : $item->route;
+				$built = true;
 			}
 		}
-		else
-		{
+		
+		if(!$built) {
 			$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
 		}
 

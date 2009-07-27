@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 9821 2008-01-03 00:53:48Z eddieajau $
+ * @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.controller' );
 
@@ -76,7 +76,7 @@ class PollController extends JController
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db		=& JFactory::getDBO();
 
@@ -141,7 +141,7 @@ class PollController extends JController
 	function remove()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db		=& JFactory::getDBO();
 		$cid	= JRequest::getVar( 'cid', array(), '', 'array' );
@@ -171,7 +171,7 @@ class PollController extends JController
 		global $mainframe;
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db 	=& JFactory::getDBO();
 		$user 	=& JFactory::getUser();
@@ -211,7 +211,7 @@ class PollController extends JController
 	function cancel()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$id		= JRequest::getVar( 'id', 0, '', 'int' );
 		$db		=& JFactory::getDBO();

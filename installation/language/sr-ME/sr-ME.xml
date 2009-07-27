@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <metafile version="1.5" client="installation" >
     <name>Montenegrin</name>
-    <veMEion>1.5.0</veMEion>
-    <creationDate>September 16, 2007</creationDate>
+    <version>1.5.2</version>
+    <creationDate>March 2008</creationDate>
     <author>Joomla! Project</author>
     <authorEmail>admin@joomlamontenegro.com</authorEmail>
     <authorUrl>www.joomla.org</authorUrl>
@@ -13,7 +13,7 @@
        <name>Ijekavski (ME)</name>
        <tag>sr-ME</tag>
        <rtl>0</rtl>
-              <locale>sr_ME.utf8, sr_ME.UTF-8, srb_ME, sr_ME, me, mon,  Serbian, serbian, srpski, Srpski</locale>
+              <locale>sr_ME.utf8, sr_ME.UTF8, srb_ME, sr_ME, me, mon,  Serbian, serbian, srpski, Srpski</locale>
       <winCodePage>utf-8</winCodePage>
       <backwardLang>Montenegrin</backwardLang>
     </metadata>

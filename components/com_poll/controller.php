@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: controller.php 9973 2008-01-29 20:10:29Z ian $
+* @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla
 * @subpackage	Polls
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -47,7 +47,7 @@ class PollController extends JController
 		global $mainframe;
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$db			=& JFactory::getDBO();
 		$poll_id	= JRequest::getVar( 'id', 0, '', 'int' );

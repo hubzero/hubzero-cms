@@ -1,4 +1,7 @@
-<?php /** $Id: default_items.php 9718 2007-12-20 22:35:36Z eddieajau $ */ defined( '_JEXEC' ) or die(); ?>
+<?php
+/** $Id: default_items.php 10094 2008-03-02 04:35:10Z instance $ */
+defined( '_JEXEC' ) or die( 'Restricted access' );
+?>
 <?php foreach($this->items as $item) : ?>
 <tr>
 	<td align="right" width="5">

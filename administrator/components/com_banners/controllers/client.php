@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: client.php 9872 2008-01-05 11:14:10Z eddieajau $
+ * @version		$Id: client.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -131,7 +131,7 @@ class BannerControllerClient extends JController
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$this->setRedirect( 'index.php?option=com_banners&c=client' );
 
@@ -163,7 +163,7 @@ class BannerControllerClient extends JController
 	function cancel()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$this->setRedirect( 'index.php?option=com_banners&c=client' );
 
@@ -177,7 +177,7 @@ class BannerControllerClient extends JController
 	function remove()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$this->setRedirect( 'index.php?option=com_banners&c=client' );
 

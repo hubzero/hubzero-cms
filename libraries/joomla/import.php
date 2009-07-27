@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: import.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: import.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -17,13 +17,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 /**
  * Load the loader class
  */
-require_once( JPATH_LIBRARIES.DS.'loader.php');
-
-/**
- * Joomla! Global version define
- */
-if (!defined('JVERSION')) {
-	define('JVERSION', '1.5.0');
+if (! class_exists('JLoader')) {
+    require_once( JPATH_LIBRARIES.DS.'loader.php');
 }
 
 /**
@@ -42,6 +37,10 @@ JLoader::import( 'joomla.environment.response'  );
 //Factory class and methods
 JLoader::import( 'joomla.factory' 				);
 JLoader::import( 'joomla.version' 				);
+if (!defined('JVERSION')) {
+	$version = new JVersion();
+	define('JVERSION', $version->getShortVersion());
+}
 
 //Error
 JLoader::import( 'joomla.error.error' 			);

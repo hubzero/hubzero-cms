@@ -2,7 +2,7 @@
 /**
  * Compiler for patTemplate
  *
- * $Id: Compiler.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: Compiler.php 10094 2008-03-02 04:35:10Z instance $
  *
  * WARNING: This is still experimental!
  *
@@ -17,7 +17,7 @@ defined('JPATH_BASE') or die();
 /**
  * Compiler for patTemplate
  *
- * $Id: Compiler.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: Compiler.php 10094 2008-03-02 04:35:10Z instance $
  *
  * WARNING: This is still experimental!
  *
@@ -418,7 +418,7 @@ class patTemplate_Compiler extends patTemplate
 
 		if( !is_callable( 'compiledTemplate', $name ) )
 		{
-			die( 'Unknown template' );
+			jexit( 'Unknown template' );
 		}
 
 		compiledTemplate::$name();

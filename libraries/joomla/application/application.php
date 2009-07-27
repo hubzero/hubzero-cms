@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: application.php 9910 2008-01-08 00:10:44Z jinx $
+* @version		$Id: application.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -54,7 +54,7 @@ class JApplication extends JObject
 	 * @access	protected
 	 */
 	var $_name = null;
-	
+
 	/**
 	 * The scope of the application
 	 *
@@ -547,6 +547,12 @@ class JApplication extends JObject
 		// Trigger onLoginFailure Event
 		$this->triggerEvent('onLoginFailure', array((array)$response));
 
+
+		// If silent is set, just return false
+		if (isset($options['silent']) && $options['silent']) {
+			return false;
+		}
+
 		// Return the error
 		return JError::raiseWarning('SOME_ERROR_CODE', JText::_('E_LOGIN_AUTHENTICATE'));
 	}
@@ -741,7 +747,7 @@ class JApplication extends JObject
 		$session->set('user',		new JUser());
 
 		if (!$storage->insert( $session->getId(), $this->getClientId())) {
-			die( $storage->getError());
+			jexit( $storage->getError());
 		}
 
 		return $session;

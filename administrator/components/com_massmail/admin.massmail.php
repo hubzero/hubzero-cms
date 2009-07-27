@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.massmail.php 9980 2008-02-01 18:02:34Z ircmaxell $
+* @version		$Id: admin.massmail.php 10094 2008-03-02 04:35:10Z instance $
 * @package		Joomla
 * @subpackage	Massmail
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -61,7 +61,7 @@ function sendMail()
 	global $mainframe;
 
 	// Check for request forgeries
-	JRequest::checkToken() or die( 'Invalid Token' );
+	JRequest::checkToken() or jexit( 'Invalid Token' );
 
 	$db					=& JFactory::getDBO();
 	$user 				=& JFactory::getUser();

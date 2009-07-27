@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: icon.php 9985 2008-02-05 16:44:18Z ian $
+ * @version		$Id: icon.php 10072 2008-02-27 20:52:12Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -41,7 +41,7 @@ class JHTMLIcon
 
 	function pdf($article, $params, $access, $attribs = array())
 	{
-		$url  = 'index.php?view=article;';
+		$url  = 'index.php?view=article';
 		$url .=  @$article->catslug ? '&catid='.$article->catslug : '';
 		$url .= '&id='.$article->slug.'&format=pdf';
 
@@ -114,11 +114,11 @@ class JHTMLIcon
 		$date = JHTML::_('date', $article->created);
 		$author = $article->created_by_alias ? $article->created_by_alias : $article->author;
 
-		$overlib .= '<br />';
+		$overlib .= '&lt;br /&gt;';
 		$overlib .= JText::_($article->groups);
-		$overlib .= '<br />';
+		$overlib .= '&lt;br /&gt;';
 		$overlib .= $date;
-		$overlib .= '<br />';
+		$overlib .= '&lt;br /&gt;';
 		$overlib .= $author;
 
 		$button = JHTML::_('link', JRoute::_($url), $text);

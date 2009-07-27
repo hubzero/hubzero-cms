@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: archive.php 9873 2008-01-05 11:24:43Z eddieajau $
+ * @version		$Id: archive.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.model');
 

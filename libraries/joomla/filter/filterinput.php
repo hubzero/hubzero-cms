@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: filterinput.php 9979 2008-02-01 17:28:33Z ian $
+ * @version		$Id: filterinput.php 10086 2008-02-28 22:26:53Z ian $
  * @package		Joomla.Framework
  * @subpackage	Filter
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -149,7 +149,7 @@ class JFilterInput extends JObject
 
 			case 'STRING' :
 				// Check for static usage and assign $filter the proper variable
-				if(is_object($this) && get_class($this) == 'JFilterInput') {
+				if(isset($this) && is_a( $this, 'JFilterInput' )) {
 					$filter =& $this;
 				} else {
 					$filter =& JFilterInput::getInstance();

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: behavior.php 9767 2007-12-30 09:10:41Z mtk $
+* @version		$Id: behavior.php 10037 2008-02-14 15:59:57Z ian $
 * @package		Joomla.Framework
 * @subpackage	HTML
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -264,9 +264,11 @@ class JHTMLBehavior
 		$rt['data']		= (array_key_exists('data', $root)) ? $root['data'] : null;
 		$rootNode = JHTMLBehavior::_getJSObject($rt);
 
+		$treeName		= (array_key_exists('treeName', $params)) ? $params['treeName'] : '';
+
 		$js = '		window.addEvent(\'domready\', function(){
-			tree = new MooTreeControl('.$options.','.$rootNode.');
-			tree.adopt(\''.$id.'\');})';
+			tree'.$treeName.' = new MooTreeControl('.$options.','.$rootNode.');
+			tree'.$treeName.'.adopt(\''.$id.'\');})';
 
 		// Attach tooltips to document
 		$document =& JFactory::getDocument();

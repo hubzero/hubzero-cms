@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: banner.php 10094 2008-03-02 04:35:10Z instance $
  * @package  Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -13,7 +13,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
 jimport( 'joomla.application.component.helper' );
@@ -94,8 +94,8 @@ class BannersModelBanner extends JModel
 		$n		= count( $list );
 
 		$trackImpressions = $config->get( 'track_impressions' );
-		// TODO: Should this be JDate?
-		$trackDate = date( 'Y-m-d' );
+		$date =& JFactory::getDate();
+		$trackDate = $date->toFormat( '%Y-%m-%d' );
 
 		// TODO: Change loop single sql with where bid = x OR bid = y format
 		for ($i = 0; $i < $n; $i++) {
@@ -144,8 +144,8 @@ class BannersModelBanner extends JModel
 		$db		= &$this->getDBO();
 
 		$trackClicks = $config->get( 'track_clicks' );
-		// TODO: Should this be JDate?
-		$trackDate = date( 'Y-m-d' );
+		$date =& JFactory::getDate();
+		$trackDate = $date->toFormat( '%Y-%m-%d' );
 
 		// update click count
 		$query = 'UPDATE #__banner' .

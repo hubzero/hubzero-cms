@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: admin.cache.php 9806 2008-01-03 00:35:03Z eddieajau $
+ * @version		$Id: admin.cache.php 10094 2008-03-02 04:35:10Z instance $
  * @package		Joomla
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -88,7 +88,7 @@ class CacheController
 	function deleteCache($cid)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$client	=& JApplicationHelper::getClientInfo(JRequest::getVar('client', '0', '', 'int'));
 

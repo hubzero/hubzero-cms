@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: methods.php 9878 2008-01-05 13:51:57Z jinx $
+* @version		$Id: methods.php 10130 2008-03-13 01:11:39Z ian $
 * @package		Joomla.Framework
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -101,8 +101,8 @@ class JRoute
  * Text  handling class
  *
  * @static
- * @package 		Joomla.Framework
- * @subpackage	I18N
+ * @package 	Joomla.Framework
+ * @subpackage	Language
  * @since		1.5
  */
 class JText

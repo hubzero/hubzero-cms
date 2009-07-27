@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: blogger.php 9988 2008-02-05 20:30:50Z ian $
+ * @version		$Id: blogger.php 10079 2008-02-28 13:39:08Z ircmaxell $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -179,7 +179,7 @@ class plgXMLRPCBloggerServices
 		}
 		
 		$nullDate 		= $db->getNullDate();
-		$date = new JDate();
+		$date =& JFactory::getDate();
 		$now = $date->toMySQL();
 
 		$query = 'SELECT a.title AS title,'
@@ -268,8 +268,7 @@ class plgXMLRPCBloggerServices
 		$item->catid	 	= $blogid;
 		$item->sectionid 	= $cat->section;
 
-		jimport('joomla.utilities.date');
-		$date = new JDate();
+		$date =& JFactory::getDate();
 
 		$item->created		= $date->toMySQL();
 		$item->created_by	= $user->get('id');
@@ -411,7 +410,7 @@ class plgXMLRPCBloggerServices
 		$db =& JFactory::getDBO();
 
 		$nullDate 		= $db->getNullDate();
-		$date = new JDate();
+		$date =& JFactory::getDate();
 		$now = $date->toMySQL();
 
 		$blogid = (int) $blogid;
