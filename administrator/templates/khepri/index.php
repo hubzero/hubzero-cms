@@ -42,7 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <script type="text/javascript" src="templates/<?php echo  $this->template ?>/js/index.js"></script>
 
 </head>
-<body id="minwidth">
+<body id="minwidth-body">
 	<div id="border-top" class="<?php echo $this->params->get('headerColor','green');?>">
 		<div>
 			<div>

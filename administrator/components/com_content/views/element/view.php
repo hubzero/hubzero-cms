@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 10036 2008-02-14 14:23:16Z hackwar $
+ * @version		$Id: view.php 10192 2008-04-04 05:55:20Z tcp $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -53,7 +53,7 @@ class ContentViewElement extends JView
 		$page = &$this->get('Pagination');
 		JHTML::_('behavior.tooltip');
 		?>
-		<form action="index.php?option=com_content&amp;task=element&amp;tmpl=component" method="post" name="adminForm">
+		<form action="index.php?option=com_content&amp;task=element&amp;tmpl=component&amp;object=id" method="post" name="adminForm">
 
 			<table>
 				<tr>

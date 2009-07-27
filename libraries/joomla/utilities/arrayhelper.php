@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: arrayhelper.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: arrayhelper.php 10207 2008-04-17 15:46:15Z ircmaxell $
  * @package		Joomla.Framework
  * @subpackage	Utilities
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -193,7 +193,7 @@ class JArrayHelper
 		}
 
 		// Handle the default case
-		if ((is_null($result))) {
+		if (is_null($result)) {
 			$result = $default;
 		}
 

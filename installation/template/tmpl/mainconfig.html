@@ -1,5 +1,5 @@
 <jtmpl:comment>
-@version	$Id: mainconfig.html 9765 2007-12-30 08:21:02Z ircmaxell $
+@version	$Id: mainconfig.html 10223 2008-04-19 14:45:50Z ircmaxell $
 @package	Joomla
 @subpackage	Installation
 @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -10,23 +10,25 @@
 <!--
 	function validateForm( frm, task ) {
 
-		document.formvalidator.handlers['adminEmail'] = document.formvalidator.handlers['email'];
-		var valid = document.formvalidator.isValid(frm);
+		var valid_site = document.formvalidator.isValid(frm, 'vars[siteName]');
+		var valid_email = document.formvalidator.isValid(frm, 'vars[adminEmail]');
+		var valid_password = document.formvalidator.isValid(frm, 'vars[adminPassword]');
+		var confirm_password = document.formvalidator.isValid(frm, 'vars[confirmAdminPassword]');
 
 		var siteName 				= getElementByName( frm, 'vars[siteName]' );
 		var adminEmail 				= getElementByName( frm, 'vars[adminEmail]' );
 		var adminPassword 			= getElementByName( frm, 'vars[adminPassword]' );
 		var confirmAdminPassword 	= getElementByName( frm, 'vars[confirmAdminPassword]' );
 
-		if (siteName.value == '') {
+		if (siteName.value == '' || !valid_site) {
 			alert( '<jtmpl:translate key="warnSiteName" escape="yes">Please enter a site name</jtmpl:translate>' );
 		} else if (this.document.filename.migstatus.value == '1' && this.document.filename.dataLoaded.value == '1') {
 			submitForm( frm, task ); // Migration doesn't need email or admin passord
-		} else if (adminEmail.value == '' || !valid) {
+		} else if (adminEmail.value == '' || !valid_email) {
 			alert( '<jtmpl:translate key="warnEmailAddress" escape="yes">Please enter a valid email address</jtmpl:translate>' );
-		} else if (adminPassword.value == '') {
+		} else if (adminPassword.value == '' || !valid_password) {
 			alert( '<jtmpl:translate key="warnAdminPassword" escape="yes">Please enter a valid admin password</jtmpl:translate>' );
-		} else if (adminPassword.value != confirmAdminPassword.value) {
+		} else if (adminPassword.value != confirmAdminPassword.value || !confirm_password) {
 			alert( '<jtmpl:translate key="warnAdminPasswordDoesntMatch" escape="yes">Admin password doesn\'t match the confirm admin password field</jtmpl:translate>' );
 		} else {
 			if (this.document.filename.dataLoaded.value == '1' || confirm( '<jtmpl:translate key="warnNoData" escape="yes">No sample data or other data installed. OK to continue. Cancel to redo this step</jtmpl:translate>' )) {
@@ -163,7 +165,7 @@
 									</label>
 									</td>
 									<td align="center">
-									<input class="inputbox validate required none sitenamemsg" type="text" id="siteName" name="vars[siteName]" size="30" value="{VAR_SITENAME}" />
+									<input class="inputbox validate required sitename sitenamemsg" type="text" id="siteName" name="vars[siteName]" size="30" value="{VAR_SITENAME}" />
 									</td>
 								</tr>
 							</table>
@@ -206,21 +208,21 @@
 							<tr>
 								<td class="item">
 								<label for="adminPassword">
-									<jtmpl:translate>Admin password</jtmpl:translate>
+									<span id="passwordmsg"><jtmpl:translate>Admin password</jtmpl:translate></span>
 								</label>
 								</td>
 								<td align="center">
-								<input onfocus="clearPasswordFields( adminForm );" class="inputbox" type="password" id="adminPassword" name="vars[adminPassword]" value="" size="30"/>
+								<input onfocus="clearPasswordFields( adminForm );" class="inputbox validate required password passwordmsg" type="password" id="adminPassword" name="vars[adminPassword]" value="" size="30"/>
 								</td>
 							</tr>
 							<tr>
 								<td class="item">
 								<label for="confirmAdminPassword">
-									<jtmpl:translate>Confirm admin password</jtmpl:translate>
+									<span id="confirmpasswordmsg"><jtmpl:translate>Confirm admin password</jtmpl:translate></span>
 								</label>
 								</td>
 								<td align="center">
-								<input class="inputbox" type="password" id="confirmAdminPassword" name="vars[confirmAdminPassword]" value="" size="30"/>
+								<input class="inputbox validate required confirmpassword confirmpasswordmsg" type="password" id="confirmAdminPassword" name="vars[confirmAdminPassword]" value="" size="30"/>
 								</td>
 							</tr>
 							</table>
@@ -367,7 +369,7 @@
 									<br/>
 									<input class="button" type="button" name="migrationLoad" value="<jtmpl:translate>Upload and execute</jtmpl:translate>" onclick="migrationSql(filename, 'migration');" />
 									<br/><br/>
-									<span id="theMigrationResponse">{VAR_DIRCHECK} {VAR_MIGRESPONSE}<span>
+									<span id="theMigrationResponse">{VAR_DIRCHECK} {VAR_MIGRESPONSE}</span>
 								</td>
 							</tr>
 

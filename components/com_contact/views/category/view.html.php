@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: view.html.php 10206 2008-04-17 02:52:39Z instance $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -64,7 +64,7 @@ class ContactViewCategory extends JView
 
 		//prepare contacts
 		if($pparams->get('show_email', 0) == 1) {
-		    jimport('joomla.mail.helper');
+			jimport('joomla.mail.helper');
 		}
 
 		$k = 0;
@@ -72,13 +72,13 @@ class ContactViewCategory extends JView
 		{
 			$contact =& $contacts[$i];
 
-			$contact->link	   = JRoute::_('index.php?option=com_contact&view=contact&id='.$contact->slug.'&catid='.$contact->catslug);
-			if($pparams->get('show_email', 0) == 1) {
-			    $contact->email_to = trim($contact->email_to);
-				if(!empty($contact->email_to) && JMailHelper::isEmailAddress($contact->email_to)) {
-				    $contact->email_to = JHTML::_('email.cloak', $contact->email_to);
+			$contact->link = JRoute::_('index.php?option=com_contact&view=contact&id='.$contact->slug.'&catid='.$contact->catslug);
+			if ($pparams->get('show_email', 0) == 1) {
+				$contact->email_to = trim($contact->email_to);
+				if (!empty($contact->email_to) && JMailHelper::isEmailAddress($contact->email_to)) {
+					$contact->email_to = JHTML::_('email.cloak', $contact->email_to);
 				} else {
-				    $contact->email_to = '';
+					$contact->email_to = '';
 				}
 			}
 
@@ -110,6 +110,9 @@ class ContactViewCategory extends JView
 		} else {
 			$document->setTitle(JText::_('Contact'));
 		}
+
+		// Prepare category description
+		$category->description = JHTML::_('content.prepare', $category->description);
 
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;

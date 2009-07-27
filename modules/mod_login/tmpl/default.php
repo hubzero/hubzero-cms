@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						' var modlogin = 1;';
 		$document = &JFactory::getDocument();
 		$document->addScriptDeclaration( $langScript );
-		JHTML::_('script', 'openid.js');		
+		JHTML::_('script', 'openid.js');
 endif; ?>
 <form action="<?php echo JRoute::_( 'index.php', true, $params->get('usesecure')); ?>" method="post" name="login" id="form-login" >
 	<?php echo $params->get('pretext'); ?>

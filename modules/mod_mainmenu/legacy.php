@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: legacy.php 10055 2008-02-22 14:47:00Z ircmaxell $
+* @version		$Id: legacy.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -82,11 +82,11 @@ function mosGetMenuLink($mitem, $level = 0, & $params, $open = null)
 		// support for `active_menu` of 'Link - Url' if link is relative
 		if ($id == '' && $mitem->type == 'url' && strpos('http', $mitem->link) === false) {
 			$url = array();
-			if(strpos($mitem->link, '&amp;') !== false) 
-			{ 
-			   $mitem->link = str_replace('&amp;','&',$mitem->link); 
-			} 
-			
+			if(strpos($mitem->link, '&amp;') !== false)
+			{
+			   $mitem->link = str_replace('&amp;','&',$mitem->link);
+			}
+
 			parse_str($mitem->link, $url);
 			if (isset ($url['Itemid'])) {
 				if ($url['Itemid'] == $current_itemid) {

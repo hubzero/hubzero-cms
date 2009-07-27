@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: eaccelerator.php 9972 2008-01-28 16:15:51Z ircmaxell $
+ * @version		$Id: eaccelerator.php 10214 2008-04-19 08:59:04Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -54,7 +54,7 @@ class JCacheStorageEaccelerator extends JCacheStorage
 		$cache_id = $this->_getCacheId($id, $group);
 		$this->_setExpire($cache_id);
 		$cache_content = eaccelerator_get($cache_id);
-		if($cache_content === null) 
+		if($cache_content === null)
 		{
 			return false;
 		}

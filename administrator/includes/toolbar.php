@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: toolbar.php 10094 2008-03-02 04:35:10Z instance $
+* @version		$Id: toolbar.php 10201 2008-04-13 12:18:05Z pasamio $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -485,7 +485,7 @@ class JToolBarHelper
 		$path		= urlencode( $path );
 		$bar = & JToolBar::getInstance('toolbar');
 		// Add a configuration button
-		$bar->appendButton( 'Popup', 'config', $alt, 'index.php?option=com_config&controller=component&component='.$component.'&path='.$path, $width, $height );
+		$bar->appendButton( 'Popup', 'config', $alt, 'index.php?option=com_config&amp;controller=component&amp;component='.$component.'&amp;path='.$path, $width, $height );
 	}
 }
 

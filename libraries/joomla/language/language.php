@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: language.php 9792 2008-01-02 09:36:00Z tcp $
+* @version		$Id: language.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Language
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -382,7 +382,7 @@ class JLanguage extends JObject
 	function _getCallerInfo()
 	{
 			// Try to determine the source if none was provided
-		if ( ! function_exists('debug_backtrace') ) {
+		if ( ! function_exists('debug_backtrace') || extension_loaded('Zend Optimizer') ) {
 			return null;
 		}
 
@@ -748,7 +748,7 @@ class JLanguage extends JObject
 	function _parseXMLLanguageFile($path)
 	{
 		$xml = & JFactory::getXMLParser('Simple');
-		
+
 		// Load the file
 		if (!$xml || !$xml->loadFile($path)) {
 			return null;

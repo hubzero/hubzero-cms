@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version		$Id: model.php 10116 2008-03-07 16:13:57Z ian $
+ * @version		$Id: model.php 10207 2008-04-17 15:46:15Z ircmaxell $
  * @package		Joomla
  * @subpackage	Installation
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -321,12 +321,6 @@ class JInstallationModel extends JModel
 		}
 		if (!preg_match( '#^[a-zA-Z]+[a-zA-Z0-9_]*$#', $DBPrefix )) {
 			$this->setError(JText::_('MYSQLPREFIXINVALIDCHARS'));
-			$this->setData('back', 'dbconfig');
-			$this->setData('errors', $errors);
-			return false;
-		}
-		if (!preg_match( '#^[a-zA-Z]+[a-zA-Z0-9_]*$#', $DBname )) {
-			$this->setError(JText::_('MYSQLDBNAMEINVALIDCHARS'));
 			$this->setData('back', 'dbconfig');
 			$this->setData('errors', $errors);
 			return false;

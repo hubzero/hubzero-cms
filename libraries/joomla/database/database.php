@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: database.php 9978 2008-02-01 17:23:39Z ircmaxell $
+* @version		$Id: database.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -372,7 +372,7 @@ class JDatabase extends JObject
 						$open_char = $current;
 					}
 				}
-			} 
+			}
 			if(($current == ';' && !$open)|| $i == $end - 1) {
 				$query_split[] = substr($queries, $start, ($i - $start + 1));
 				$start = $i + 1;

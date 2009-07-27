@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: controller.php 10214 2008-04-19 08:59:04Z eddieajau $
  * @package		Joomla
  * @subpackage	Users
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -105,7 +105,7 @@ class UsersController extends JController
 			//return false;
 			return $this->execute('edit');
 		}
-		
+
 		$objectID 	= $acl->get_object_id( 'users', $user->get('id'), 'ARO' );
 		$groups 	= $acl->get_object_groups( $objectID, 'ARO' );
 		$this_group = strtolower( $acl->get_group_name( $groups[0], 'ARO' ) );

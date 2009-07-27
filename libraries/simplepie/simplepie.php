@@ -1594,7 +1594,7 @@ function embed_wmedia(width, height, link) {
 
 			// Strip illegal characters
 			//$data = SimplePie_Misc::utf8_bad_replace($data);
-			
+
 			$parser =& new $this->parser_class();
 			$parser->pre_process($data, 'UTF-8');
 			// If we want the XML, just output that and quit
@@ -7569,7 +7569,7 @@ class SimplePie_Misc
 		{
 			return SimplePie_Misc::fix_protocol(SimplePie_Misc::compress_parse_url('http', $parsed['authority'], $parsed['path'], $parsed['query'], $parsed['fragment']), $http);
 		}
-		
+
 		if ($parsed['scheme'] === '' && $parsed['authority'] === '' && !file_exists($url))
 		{
 			return SimplePie_Misc::fix_protocol(SimplePie_Misc::compress_parse_url('http', $parsed['path'], '', $parsed['query'], $parsed['fragment']), $http);
@@ -9194,7 +9194,7 @@ class SimplePie_Misc
 				{
 					$match[$i] = '';
 				}
-				
+
 				// Set blank vars
 				$year = 1970;
 				$month = 1;
@@ -9471,7 +9471,7 @@ class SimplePie_Misc
 	 * @author Amir Mohammad Saied <amir@php.net>
 	 * @copyright 1997-2006 Pierre-Alain Joye,Tomas V.V.Cox,Amir Mohammad Saied
 	 * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
-	 * @version CVS: $Id: simplepie.php 8827 2007-09-10 16:19:39Z jinx $
+	 * @version CVS: $Id: simplepie.php 10214 2008-04-19 08:59:04Z eddieajau $
 	 * @link http://pear.php.net/package/Validate
 	 * @access public
 	 * @param string $data Data to strip comments from
@@ -9778,7 +9778,7 @@ class SimplePie_Misc
 	 			trigger_error('needle is not a string or an integer', E_USER_WARNING);
 	 			return false;
 	 		}
-	 
+
 	 		return strpos(strtolower($haystack), $needle, $offset);
 	 	}
 	 }

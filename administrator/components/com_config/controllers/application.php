@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: application.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: application.php 10214 2008-04-19 08:59:04Z eddieajau $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -299,7 +299,7 @@ class ConfigControllerApplication extends ConfigController
 		$config_array['log_path']			= JRequest::getVar('log_path', JPATH_ROOT.DS.'logs', 'post', 'string');
 		$config_array['tmp_path']			= JRequest::getVar('tmp_path', JPATH_ROOT.DS.'tmp', 'post', 'string');
 		$config_array['live_site'] 			= rtrim(JRequest::getVar('live_site','','post','string'), '/\\');
-		
+
 		// LOCALE SETTINGS
 		$config_array['offset']				= JRequest::getVar('offset', 0, 'post', 'float');
 

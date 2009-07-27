@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: user.php 10079 2008-02-28 13:39:08Z ircmaxell $
+ * @version		$Id: user.php 10214 2008-04-19 08:59:04Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	User
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -400,7 +400,7 @@ class JUser extends JObject
 			$array['password'] = $crypt.':'.$salt;
 
 			// Set the registration timestamp
-			
+
 			$now =& JFactory::getDate();
 			$this->set( 'registerDate', $now->toMySQL() );
 

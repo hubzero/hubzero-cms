@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mysqli.php 9978 2008-02-01 17:23:39Z ircmaxell $
+* @version		$Id: mysqli.php 10207 2008-04-17 15:46:15Z ircmaxell $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -272,6 +272,7 @@ class JDatabaseMySQLi extends JDatabase
 		$this->_errorNum = 0;
 		$this->_errorMsg = '';
 		if ($p_transaction_safe) {
+			$this->_sql = rtrim($this->_sql, '; \t\r\n\0');
 			$si = $this->getVersion();
 			preg_match_all( "/(\d+)\.(\d+)\.(\d+)/i", $si, $m );
 			if ($m[1] >= 4) {

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: helper.php 10215 2008-04-19 09:28:27Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -20,8 +20,9 @@ class modLoginHelper
 	{
 		if($itemid =  $params->get($type))
 		{
-			$url = 'index.php?Itemid='.$itemid;
-			$url = JRoute::_($url, false);
+			$menu =& JSite::getMenu();
+			$item = $menu->getItem($itemid);
+			$url = $item->link;
 		}
 		else
 		{
@@ -36,6 +37,6 @@ class modLoginHelper
 	function getType()
 	{
 		$user = & JFactory::getUser();
-	    return (!$user->get('guest')) ? 'logout' : 'login';
+		return (!$user->get('guest')) ? 'logout' : 'login';
 	}
 }

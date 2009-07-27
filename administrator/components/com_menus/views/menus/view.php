@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: view.php 10212 2008-04-19 00:06:00Z ian $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -71,7 +71,7 @@ class MenusViewMenus extends JView
 		JToolBarHelper::title(  JText::_( 'Copy Menu' ) );
 		JToolBarHelper::custom( 'doCopyMenu', 'copy.png', 'copy_f2.png', 'Copy', false );
 		JToolBarHelper::cancel();
-		JToolBarHelper::help( 'screen.menumanager.copy' );
+		JToolBarHelper::help( 'screen.menumanager' );
 
 		$document = & JFactory::getDocument();
 		$document->setTitle('Copy Menu Items');

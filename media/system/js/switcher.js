@@ -1,5 +1,5 @@
 /**
-* @version		$Id: switcher.js 9765 2007-12-30 08:21:02Z ircmaxell $
+* @version		$Id: switcher.js 10223 2008-04-19 14:45:50Z ircmaxell $
 * @package		Joomla
 * @subpackage	Config
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -40,7 +40,7 @@ var JSwitcher = new Class({
 		}
 
 		//hide all
-		elements = $ES('div', element);
+		elements = element.getElements('div[id^=page-]');
 		for (i=0; i < elements.length; i++) {
 			this.hide(elements[i])
 		}

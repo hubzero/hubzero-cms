@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: remember.php 10061 2008-02-24 03:59:34Z ian $
+* @version		$Id: remember.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -65,7 +65,7 @@ class plgSystemRemember extends JPlugin
 
 				$crypt	= new JSimpleCrypt($key);
 				$str	= $crypt->decrypt($str);
-				
+
 				$options = array();
 				$options['silent'] = true;
 				if (!$mainframe->login(@unserialize($str), $options)) {

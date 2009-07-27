@@ -18,4 +18,9 @@
 			<?php echo @$this->item->author != '' ? $this->item->author : '&nbsp;'; ?>
 		</span>
 	</td>
+	<td align="center">
+		<span class="editlinktip hasTip" title="<?php echo (@$this->item->legacy ? JText::_( 'Not Compatible Extension') : JText::_('Compatible Extension'));?>">
+			<img src="images/<?php echo (@$this->item->legacy ? 'publish_x.png' : 'tick.png');?>"/>
+		</span>
+	</td>
 </tr>

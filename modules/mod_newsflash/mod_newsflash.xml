@@ -28,6 +28,10 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="showLastSeparator" type="radio" default="1" label="Show last separator" description="Show separator after last article">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param name="readmore" type="radio" default="0" label="Read More" description="Show/Hide the Read More button">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>

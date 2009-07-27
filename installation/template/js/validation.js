@@ -1,5 +1,5 @@
 /**
-* @version		$Id: validation.js 9765 2007-12-30 08:21:02Z ircmaxell $
+* @version		$Id: validation.js 10223 2008-04-19 14:45:50Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL, see LICENSE.php
@@ -52,9 +52,15 @@ JFormValidator.prototype = {
 										return regex.test(value);
 									}
 								  }
+		this.handlers['sitename']	= { enabled : true,
+									exec : function (value) {
+										regex=/^(.){1,200}$/;
+										return regex.test(value);
+									}
+								  }
 		this.handlers['password']	= { enabled : true,
 									exec : function (value) {
-										regex=/^[a-zA-Z]\w{3,14}$/;
+										regex=/^\S[\S ]{2,98}\S$/;
 										return regex.test(value);
 									}
 								  }
@@ -192,12 +198,14 @@ JFormValidator.prototype = {
 		}
 	},
 
-	isValid: function(form) 
+	isValid: function(form, element) 
 	{
 		var valid = true;
 		for (var i=0;i < form.elements.length; i++) {
-			if (this.validate(form.elements[i]) == false) {
-				valid = false;
+			if ((element == '') || ((element != '') && (form.elements[i].name==element))) {
+				if (this.validate(form.elements[i]) == false) {
+					valid = false;
+				}
 			}
 		}
 		return valid;

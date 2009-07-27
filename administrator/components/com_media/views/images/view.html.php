@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10129 2008-03-12 10:45:50Z ian $
+* @version		$Id: view.html.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla
 * @subpackage	Media
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -30,7 +30,7 @@ class MediaViewImages extends JView
 	function display($tpl = null)
 	{
 		global $mainframe;
-		
+
 		$config =& JComponentHelper::getParams('com_media');
 
 		$app = JFactory::getApplication();

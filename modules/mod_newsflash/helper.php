@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10079 2008-02-28 13:39:08Z ircmaxell $
+* @version		$Id: helper.php 10186 2008-04-02 13:10:12Z pasamio $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -46,10 +46,6 @@ class modNewsFlashHelper
 			}
 
 			$item->linkOn = $linkOn;
-		}
-
-		if (!$params->get('image')) {
-			$item->text = preg_replace( '/<img[^>]*>/', '', $item->text );
 		}
 
 		if (!$params->get('image')) {

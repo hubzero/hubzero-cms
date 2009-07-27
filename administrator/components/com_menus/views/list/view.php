@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: view.php 10212 2008-04-19 00:06:00Z ian $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -97,7 +97,7 @@ class MenusViewList extends JView
 		JToolBarHelper::title( JText::_( 'Copy Menu Items' ) );
 		JToolBarHelper::custom( 'doCopy', 'copy.png', 'copy_f2.png', 'Copy', false );
 		JToolBarHelper::cancel('cancelItem');
-		JToolBarHelper::help( 'screen.menus.copy' );
+		JToolBarHelper::help( 'screen.menus' );
 
 		$document = & JFactory::getDocument();
 		$document->setTitle('Copy Menu Items');
@@ -133,7 +133,7 @@ class MenusViewList extends JView
 		JToolBarHelper::title( JText::_( 'Menu Items' ) . ': <small><small>[ '. JText::_( 'Move' ) .' ]</small></small>' );
 		JToolBarHelper::custom( 'doMove', 'move.png', 'move_f2.png', 'Move', false );
 		JToolBarHelper::cancel('cancelItem');
-		JToolBarHelper::help( 'screen.menus.move' );
+		JToolBarHelper::help( 'screen.menus' );
 
 		$document = & JFactory::getDocument();
 		$document->setTitle('Copy Menu Items');

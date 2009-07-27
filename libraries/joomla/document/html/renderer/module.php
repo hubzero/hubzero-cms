@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: module.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: module.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla.Framework
 * @subpackage	Document
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -37,7 +37,9 @@ class JDocumentRendererModule extends JDocumentRenderer
 	{
 		if (!is_object($module))
 		{
-			$module =& JModuleHelper::getModule($module);
+			$title	= isset($params['title']) ? $params['title'] : null;
+
+			$module =& JModuleHelper::getModule($module, $title);
 
 			if (!is_object($module))
 			{

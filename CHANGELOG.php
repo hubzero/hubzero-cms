@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 10168 2008-03-22 05:21:20Z pasamio $
+* @version		$Id: CHANGELOG.php 10238 2008-04-23 22:50:56Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -37,6 +37,90 @@ $ -> Language fix or change
 ^ -> Change
 - -> Removed
 ! -> Note
+
+
+-------------------- 1.5.3 Stable Release [22-April-2008] ---------------------
+
+19-Apr-2008 Anthony Ferrara
+ # [#10009] Search Function yields warning
+ # [#10150] Installation minimum password length doesn't work
+ # [#10725] Installation not xhtml compliant
+ # [#10739] Spelling error in com_installer.ini
+ # [#10092] Switcher hides nested divs
+ # Fix for fatal error related to [#10638]
+
+19-Apr-2008 Andrew Eddie
+ ! Trailing white-space cleanup
+ # [#9725] JFilterInput Infinite Loop
+
+18-Apr-2008 Ian MacLennan
+ # [#10732] Help screen updates for Menu Manager
+
+18-Apr-2008 Sam Moffatt
+ # [#10724] Custom user groups fail to display
+ # [#10707] update link to forum in Sample content
+ # [#10638] mod_newsflash renders article separator after last article
+
+17-Apr-2008 Anthony Ferrara
+ # [#9858] Flash Uploader not loading properly
+ # [#10511] Print button showing Array Print Array
+ # [#9775] Cache directory not writable causes warning
+ # [#10588] QueryBatch executing empty queries
+ # [#10675] Code Cleanup
+ # [#10702] JURI::clean fix (not properly stripping out /'s) - Thanks Alex Stylianos
+ # [#10308] Installer rejects valid DB names
+ # [#10323] Wrong param count for class_exists in TCPDF
+
+14-Apr-2008 Mati Kochen
+ + Offline validation
+ + Legacy-Marker - a marker to show (admin) extensions requiring Legacy-Mode ON
+
+13-Apr-2008 Sam Moffatt
+ # [#10639] mod_newsflash renders bad "read more" link text
+ # [#10574] Problem with template rhuk_milkyway in white color variation.
+ # [#10540] com_login not w3c valid
+ # [#10539] Contacts string repeat twice in com_contacts language file
+ # [#10510] /templates/beez/com_content/section/default.php
+ # [#10302] Milky Way and Beez lack editor.css files
+ # [#9984] Plugin parameters with pipes still not working perfectly
+ # [#10402] Mainmenu Module issues
+ # [#9977] Search module changing '-' to ':' in keywords
+ # [#10097] Various XHTML fixes
+
+10-Apr-2008 Anthony Ferrara
+ # [#10508] Caching pathway and breadcrumbs fix
+ # [#10329] Debug fails with version of Zend Optimizer
+
+10-Apr-2008 Mati Kochen
+ # [#10299] Added 'Use Global' as default value to weblink.xml
+
+09-Apr-2008 Mati Kochen
+ # [#10253] Better PDF coding
+
+09-Apr-2008 Mati Kochen
+ # [#10297] Fixed RTL in Offline message
+
+04-Apr-2008 Toby Patterson
+ # Fixed [#10307] "Select Article" breaks on change category refresh ( Thanks Michael )
+
+03-Apr-2008 Toby Patterson
+ # Fixed [#10197] component install error fails to reference left over folder in administrator/components folder
+ # Fixed [#10200] jdoc:include type="module" not usable
+ # Fixed [#10012] $task is not properly passed to extensions
+ # Fixed [#10345] emailcloak is not removed if the article does not contain @
+
+29-Mar-2008 Ian MacLennan
+ # Fixed [#9335] Extra/Random table class (sectionentrytable0)
+
+29-Mar-2008 Sam Moffatt
+ ! Removed old TODO notice in installer
+
+28-Mar-2008 Wilco Jansen
+ # Fixed [9118] Uncaught Error message in Extension Manager when uninstalling deleted component
+ ! Thanks Ian for the patch
+
+26-Mar-2008 Toby Patterson
+ # Fixed [9015] No .blank class in system general.css
 
 -------------------- 1.5.2 Stable Release [22-March-2008] ---------------------
 

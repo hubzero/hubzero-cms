@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.modules.html.php 9818 2008-01-03 00:51:35Z eddieajau $
+* @version		$Id: admin.modules.html.php 10201 2008-04-13 12:18:05Z pasamio $
 * @package		Joomla
 * @subpackage	Modules
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -464,6 +464,17 @@ class HTML_modules
 						else :
 							echo "<div  style=\"text-align: center; padding: 5px; \">".JText::_('There are no legacy parameters for this item')."</div>";
 						endif;
+						echo $pane->endPanel();
+					}
+
+
+				if ($p->getNumParams('other')) {
+					echo $pane->startPanel(JText :: _('Other Parameters'), "other-page");
+					if($params = $p->render('params', 'other')) :
+						echo $params;
+						else :
+						echo "<div  style=\"text-align: center; padding: 5px; \">".JText::_('There are no other parameters for this item')."</div>";
+  						endif;
 						echo $pane->endPanel();
 					}
 					echo $pane->endPane();

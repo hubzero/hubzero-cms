@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: pathway.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: pathway.php 10199 2008-04-10 15:23:36Z ircmaxell $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -109,6 +109,25 @@ class JPathway extends JObject
 
 		// Use array_values to reset the array keys numerically
 		return array_values($pw);
+	}
+
+	/**
+	 * Set the JPathway items array.
+	 *
+	 * @access	public
+	 * @param	array	$pathway	An array of pathway objects.
+	 * @return	array	The previous pathway data.
+	 * @since	1.5
+	 */
+	function setPathway($pathway)
+	{
+		$oldPathway	= $this->_pathway;
+		$pathway	= (array) $pathway;
+
+		// Set the new pathway.
+		$this->_pathway = array_values($pathway);
+
+		return array_values($oldPathway);
 	}
 
 	/**

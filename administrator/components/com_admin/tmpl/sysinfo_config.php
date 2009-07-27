@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: sysinfo_config.php 8630 2007-08-30 04:30:51Z robs $
+ * @version		$Id: sysinfo_config.php 10186 2008-04-02 13:10:12Z pasamio $
  */
 // No direct access
 defined('_JEXEC') or die('Restricted access');
@@ -44,6 +44,10 @@ defined('_JEXEC') or die('Restricted access');
 					$cf[$k] = 'var $ftp_user = \'xxxxxx\'';
 				} else if (eregi( 'var \$ftp_pass ', $v)) {
 					$cf[$k] = 'var $ftp_pass = \'xxxxxx\'';
+				} else if (eregi( 'var \$smtpuser ', $v)) {
+					$cf[$k] = 'var $smtpuser = \'xxxxxx\'';
+				} else if (eregi( 'var \$smtppass ', $v)) {
+					$cf[$k] = 'var $smtppass = \'xxxxxx\'';
 				} else if (eregi( '<?php', $v)) {
 					$cf[$k] = '';
 				} else if (eregi( '\?>', $v)) {

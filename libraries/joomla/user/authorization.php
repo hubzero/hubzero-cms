@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: authorization.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: authorization.php 10211 2008-04-18 04:26:36Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	User
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -353,7 +353,7 @@ class JAuthorization extends gacl_api
 			if ($inclusive) {
 				$where = ' WHERE g1.lft BETWEEN '.(int) $root->lft.' AND '.(int) $root->rgt;
 			} else {
-				$where = ' WHERE g1.lft BETWEEN 3 AND 22 ';
+				$where = ' WHERE g1.lft > '.(int) $root->lft.' AND g1.lft <'.(int) $root->rgt;
 			}
 		}
 

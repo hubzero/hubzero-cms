@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: toolbar.php 10093 2008-03-01 08:34:08Z tcp $
+* @version		$Id: toolbar.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla.Legacy
 * @subpackage	1.5
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -59,7 +59,7 @@ class mosToolBar {
 		} else {
 			$onclick = "javascript:submitbutton('$task')";
 		}
-		
+
 		?>
 		<td>
 			<a class="toolbar" onclick="<?php echo $onclick ;?>">

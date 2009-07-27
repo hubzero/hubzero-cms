@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: view.html.php 10214 2008-04-19 08:59:04Z eddieajau $
  * @package		Joomla
  * @subpackage	Weblinks
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -122,7 +122,7 @@ class SearchViewSearch extends JView
 					$x++;
 				}
 				$searchRegex .= ')#iu';
-				
+
 				$row = preg_replace($searchRegex, '<span class="highlight">\0</span>', $row );
 
 				$result =& $results[$i];

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.content.html.php 10079 2008-02-28 13:39:08Z ircmaxell $
+* @version		$Id: admin.content.html.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla
 * @subpackage	Content
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -31,7 +31,7 @@ class ContentView
 	*/
 	function showContent( &$rows, &$lists, $page, $redirect )
 	{
-	
+
 		global $mainframe;
 
 		// Initialize variables

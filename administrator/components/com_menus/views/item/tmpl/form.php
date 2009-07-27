@@ -13,6 +13,10 @@ function submitbutton(pressbutton) {
 	if ( (type != "separator") && (trim( form.name.value ) == "") ){
 		alert( "<?php echo JText::_( 'Item must have a title', true ); ?>" );
 	}
+	<?php if( $this->name == "Category List Layout" ){ ?>
+	else if( document.getElementById('urlparamsid').value == 0 ){
+ 		alert( "<?php echo JText::_('Please select a Category', true ); ?>" );
+	} <?php } ?>
 	<?php if( $this->name == "Article Layout" ){ ?>
 	else if( document.getElementById('id_id').value == 0 ){
 		alert( "<?php echo JText::_('Please select an Article', true ); ?>" );

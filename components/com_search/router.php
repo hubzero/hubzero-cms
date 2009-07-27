@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: router.php 9928 2008-01-12 02:29:03Z ian $
+ * @version		$Id: router.php 10214 2008-04-19 08:59:04Z eddieajau $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -23,7 +23,7 @@ function SearchBuildRoute( &$query )
 		$segments[] = $query['searchword'];
 		unset($query['searchword']);
 	}
-	
+
 	if (isset($query['view'])) {
 		unset($query['view']);
 	}

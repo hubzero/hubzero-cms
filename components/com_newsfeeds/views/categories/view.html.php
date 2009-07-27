@@ -1,6 +1,6 @@
 <?php
 /**
-* version $Id: view.html.php 10100 2008-03-04 21:08:19Z ircmaxell $
+* version $Id: view.html.php 10206 2008-04-17 02:52:39Z instance $
 * @package		Joomla
 * @subpackage	Newsfeeds
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -41,6 +41,9 @@ class NewsfeedsViewCategories extends JView
 		{
 			$category =& $categories[$i];
 			$category->link = JRoute::_('index.php?view=category&id='. $category->slug );
+
+			// Prepare category description
+			$category->description = JHTML::_('content.prepare', $category->description);
 		}
 		// Define image tag attributes
 		if ($params->get('image') != -1)

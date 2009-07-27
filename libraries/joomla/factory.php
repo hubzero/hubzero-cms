@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: factory.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: factory.php 10207 2008-04-17 15:46:15Z ircmaxell $
  * @package		Joomla.Framework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -323,7 +323,9 @@ class JFactory
 				if (!is_null( $options['rssUrl'] ))
 				{
 					jimport ('simplepie.simplepie');
-					$simplepie = new SimplePie($options['rssUrl']);
+					if(!is_writable(JPATH_BASE.DS.'cache')) {
+						$options['cache_time'] = 0;
+					}
 					$simplepie = new SimplePie(
 						$options['rssUrl'],
 						JPATH_BASE.DS.'cache',

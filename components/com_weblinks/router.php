@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: router.php 9949 2008-01-16 16:37:45Z ircmaxell $
+* @version		$Id: router.php 10223 2008-04-19 14:45:50Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -34,7 +34,7 @@ function WeblinksBuildRoute(&$query)
 		$menu		= &JSite::getMenu();
 		$items		= $menu->getItems('componentid', $component->id);
 	}
-	
+
 	// Search for an appropriate menu item.
 	if (is_array($items))
 	{
@@ -122,9 +122,31 @@ function WeblinksBuildRoute(&$query)
 	// Check if the router found an appropriate itemid.
 	if (!$itemid)
 	{
-		// Check if a id was specified.
-		if (isset($query['id']))
+		// Check if a category was specified
+		if (isset($query['view']) && $query['view'] == 'category' && isset($query['id']))
 		{
+			if (isset($query['alias'])) {
+				$query['id'] .= ':'.$query['alias'];
+			}
+
+			// Push the catid onto the stack.
+			$segments[] = $query['id'];
+			
+			unset($query['view']);
+			unset($query['id']);
+			unset($query['alias']);
+		}
+		// Check if a id was specified.
+		elseif (isset($query['id']))
+		{
+			if (isset($query['catalias'])) {
+				$query['catid'] .= ':'.$query['catalias'];
+			}
+
+			// Push the catid onto the stack.
+			$segments[] = $query['catid'];
+			
+			
 			if (isset($query['alias'])) {
 				$query['id'] .= ':'.$query['alias'];
 			}
@@ -134,6 +156,8 @@ function WeblinksBuildRoute(&$query)
 			unset($query['view']);
 			unset($query['id']);
 			unset($query['alias']);
+			unset($query['catid']);
+			unset($query['catalias']);
 		}
 		elseif (isset($query['catid']))
 		{
@@ -223,19 +247,18 @@ function WeblinksParseRoute($segments)
 		// Check if there are any route segments to handle.
 		if ($count)
 		{
-			if (count($segments[0]) == 2)
+			if ($count == 2)
 			{
 				// We are viewing a weblink.
 				$vars['view']	= 'weblink';
-				$vars['id']		= $segments[$count-2];
-				$vars['catid']	= $segments[$count-1];
-
+				$vars['catid']	= $segments[$count-2];
+				$vars['id']		= $segments[$count-1];
 			}
 			else
 			{
 				// We are viewing a category.
 				$vars['view']	= 'category';
-				$vars['catid']	= $segments[$count-1];
+				$vars['id']	= $segments[$count-1];
 			}
 		}
 	}

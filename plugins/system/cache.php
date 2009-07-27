@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: cache.php 10082 2008-02-28 16:29:13Z ircmaxell $
+* @version		$Id: cache.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -73,7 +73,7 @@ class  plgSystemCache extends JPlugin
 		 if($mainframe->isAdmin() || JDEBUG) {
 		 	return;
 		 }
-		
+
 
 		$data  = $this->_cache->get();
 

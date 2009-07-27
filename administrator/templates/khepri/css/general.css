@@ -1,5 +1,5 @@
 /**
-* @version $Id: general.css 9756 2007-12-29 16:15:31Z mtk $
+* @version $Id: general.css 10203 2008-04-14 14:57:54Z mtk $
 * @copyright Copyright (C) 2005 - 2006 Open Source Matters. All rights reserved.
 * @license GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
@@ -132,7 +132,8 @@ textarea:focus { background-color: #ffd }
 #module-status      { float: right; }
 #module-status span { display: block; float: left; line-height: 16px; padding: 4px 10px 0 22px; margin-bottom: 5px; }
 
-#module-status .legacy-mode { background: url(../images/mini_icon.png) 3px 5px no-repeat; color: #c00;}
+#module-status { background: url(../images/mini_icon.png) 3px 5px no-repeat; }
+.legacy-mode{ color: #c00;}
 #module-status .preview 			  { background: url(../images/menu/icon-16-media.png) 3px 3px no-repeat; }
 #module-status .unread-messages,
 #module-status .no-unread-messages { background: url(../images/menu/icon-16-messages.png) 3px 3px no-repeat; }
@@ -556,6 +557,7 @@ table.noshow fieldset { margin: 15px 7px 7px 7px; }
 	border: 1px solid #D4D5AA;
 	padding: 5px;
 	max-width: 200px;
+	z-index: 50;
 }
 
 .tool-title {

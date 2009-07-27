@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mod_login.php 10135 2008-03-16 10:55:06Z ian $
+* @version		$Id: mod_login.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -34,7 +34,7 @@ $langs = JHTML::_('select.genericlist',   $languages, 'lang', ' class="inputbox"
 						' var modlogin = 1;';
 		$document = &JFactory::getDocument();
 		$document->addScriptDeclaration( $langScript );
-		JHTML::_('script', 'openid.js');		
+		JHTML::_('script', 'openid.js');
 endif; ?>
 <form action="<?php echo JRoute::_( 'index.php', true, $params->get('usesecure')); ?>" method="post" name="login" id="form-login" style="clear: both;">
 	<p id="form-login-username">

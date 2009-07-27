@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: router.php 10127 2008-03-11 20:46:31Z ircmaxell $
+* @version		$Id: router.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -37,7 +37,7 @@ function ContentBuildRoute(&$query)
 			$menuItem = &$menu->getItem( $query['Itemid'] );
 			if (isset($menuItem->query['id'])) {
 				if($query['id'] != $menuItem->query['id']) {
-					$segments[] = $query['id'];	
+					$segments[] = $query['id'];
 				}
 			} else {
 				$segments[] = $query['id'];

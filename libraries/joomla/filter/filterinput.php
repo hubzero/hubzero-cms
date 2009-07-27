@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: filterinput.php 10086 2008-02-28 22:26:53Z ian $
+ * @version		$Id: filterinput.php 10214 2008-04-19 08:59:04Z eddieajau $
  * @package		Joomla.Framework
  * @subpackage	Filter
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -324,6 +324,7 @@ class JFilterInput extends JObject
 			 */
 			while ($currentSpace !== false)
 			{
+				$attr			= '';
 				$fromSpace		= substr($tagLeft, ($currentSpace +1));
 				$nextSpace		= strpos($fromSpace, ' ');
 				$openQuotes		= strpos($fromSpace, '"');
@@ -442,7 +443,7 @@ class JFilterInput extends JObject
 				// strips unicode, hex, etc
 				$attrSubSet[1] = str_replace('&#', '', $attrSubSet[1]);
 				// strip normal newline within attr value
-				$attrSubSet[1] = preg_replace('/\s+/', '', $attrSubSet[1]);
+				$attrSubSet[1] = preg_replace('/[\n\r]/', '', $attrSubSet[1]);
 				// strip double quotes
 				$attrSubSet[1] = str_replace('"', '', $attrSubSet[1]);
 				// convert single quotes from either side to doubles (Single quotes shouldn't be used to pad attr value)

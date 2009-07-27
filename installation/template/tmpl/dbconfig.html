@@ -1,5 +1,5 @@
 <jtmpl:comment>
-@version	$Id: dbconfig.html 10116 2008-03-07 16:13:57Z ian $
+@version	$Id: dbconfig.html 10214 2008-04-19 08:59:04Z eddieajau $
 @package	Joomla
 @subpackage	Installation
 @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -38,12 +38,9 @@
 		} else if (DBPrefix.value.length > 15) {
 			alert('<jtmpl:translate key="MYSQLPREFIXTOOLONG" escape="yes">The MySQL Table Prefix must be a maximum of 15 characters</jtmpl:translate>');
 			return;
-		} else if (!regex.test(DBname.value)) {
-			alert('<jtmpl:translate key="MYSQLDBNAMEINVALIDCHARS" escape="yes">The MySQL Database Name must start with a letter, and be followed by only letters, numbers or underscores</jtmpl:translate>');
-			return;		
 		} else if (!regex.test(DBPrefix.value)) {
 			alert('<jtmpl:translate key="MYSQLPREFIXINVALIDCHARS" escape="yes">The MySQL Table Prefix must start with a letter, and be followed by only letters, numbers or underscores</jtmpl:translate>');
-			return;		
+			return;
 		} else {
 			submitForm( frm, task );
 		}

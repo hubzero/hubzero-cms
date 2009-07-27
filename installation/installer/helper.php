@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version		$Id: helper.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: helper.php 10214 2008-04-19 08:59:04Z eddieajau $
  * @package		Joomla
  * @subpackage	Installation
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -1295,12 +1295,10 @@ class JInstallationHelper
 			JInstallationHelper::getDBErrors($errors, $db );
 		}
 
-		// TODO: SAM: This doesn't work?
 		/*
 		 * Add core client modules from old site to modules table as unpublished
-		 * SAM: Of course this doesn't work since we dont use this table any more!
 		 */
-		$query = 'SELECT id FROM '.$newPrefix.'modules_migration WHERE client_id = 0 '; //AND module != "mod_mainmenu"';
+		$query = 'SELECT id FROM '.$newPrefix.'modules_migration WHERE client_id = 0 ';
 		$db->setQuery( $query );
 		$lookup = $db->loadResultArray();
 		JInstallationHelper::getDBErrors($errors, $db );

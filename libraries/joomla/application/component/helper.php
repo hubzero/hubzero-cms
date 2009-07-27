@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10111 2008-03-07 11:56:46Z eddieajau $
+* @version		$Id: helper.php 10190 2008-04-03 09:11:20Z tcp $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -99,8 +99,6 @@ class JComponentHelper
 		$scope = $mainframe->scope; //record the scope
 		$mainframe->scope = $name;  //set scope to component name
 
-		$task = JRequest::getString( 'task' );
-
 		// Build the component path
 		$name = preg_replace('/[^A-Z0-9_\.-]/i', '', $name);
 		$file = substr( $name, 4 );
@@ -147,7 +145,10 @@ class JComponentHelper
 				$varname = 'mosConfig_'.$k;
 				$$varname = $v;
 			}
+
 		}
+
+		$task = JRequest::getString( 'task' );
 
 		// Load common language files
 		$lang =& JFactory::getLanguage();

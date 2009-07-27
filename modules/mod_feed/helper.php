@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10026 2008-02-12 20:45:17Z ian $
+* @version		$Id: helper.php 10214 2008-04-19 08:59:04Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -26,7 +26,7 @@ class modFeedHelper
 		$options['rssUrl'] 		= $rssurl;
 		if ($params->get('cache')) {
 			$options['cache_time']  = $params->get('cache_time', 15) ;
-			$options['cache_time']	*= 60;	
+			$options['cache_time']	*= 60;
 		} else {
 			$options['cache_time'] = null;
 		}

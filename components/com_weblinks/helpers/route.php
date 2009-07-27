@@ -33,20 +33,32 @@ class WeblinksHelperRoute
 			'category' => (int) $catid,
 			'categories' => null
 		);
+		
+		//Find the itemid
+		$itemid = WeblinksHelperRoute::_findItem($needles);
+		$itemid = $itemid ? '&Itemid='.$itemid : '';
 
 		//Create the link
-		$link = 'index.php?option=com_weblinks&view=weblink&id='. $id . '&catid='.$catid;
-		$link .= '&Itemid=' . WeblinksHelperRoute::_findItem($needles);
+		$link = 'index.php?option=com_weblinks&view=weblink&id='. $id . '&catid='.$catid . $itemid;
 
 		return $link;
 	}
 
 	function _findItem($needles)
 	{
-		$component =& JComponentHelper::getComponent('com_weblinks');
+		static $items;
 
-		$menus	= &JApplication::getMenu('site', array());
-		$items	= $menus->getItems('componentid', $component->id);
+		if (!$items)
+		{
+			$component =& JComponentHelper::getComponent('com_weblinks');
+			$menu = &JSite::getMenu();
+			$items = $menu->getItems('componentid', $component->id);
+		}
+
+		if (!is_array($items)) {
+			return null;
+		}
+
 		$match = null;
 		foreach($needles as $needle => $id)
 		{
