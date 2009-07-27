@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: de-DE.xml 475 2009-05-16 19:14:54Z sisko1990 $ -->
+<metafile version="1.5" client="installation">
+  <tag>de-DE</tag>
+  <name>German (Germany-Switzerland-Austria)</name>
+  <description>Deutsche Sprachdatei für den Web-Installer</description>
+  <version>1.5.9</version>
+  <creationDate>May 2009</creationDate>
+  <author>J!German</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <metadata>
+    <name>Deutsch (DE-CH-AT)</name>
+    <tag>de-DE</tag>
+    <rtl>0</rtl>
+    <locale>de_DE.UTF-8, de_DE.UTF-8@euro, de-DE.utf8, de-DE.utf8@euro, de_DE, ger_DE, ger-DE, deu_de, de, deu, ger, german-de, german, germany, de_CH.UTF-8, de_CH.UTF-8@euro, de-CH.utf8, de-CH.utf8@euro, de_CH, swiss, switzerland, de_AT.UTF-8, de_AT.UTF-8@euro, de-AT.utf8, de-AT.utf8@euro, de_AT, austrian, austria</locale>
+    <winCodePage>iso-8859-1</winCodePage>
+    <backwardLang>german</backwardLang>
+  </metadata>
+</metafile>

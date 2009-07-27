@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5" client="installation" >
+	<tag>ar-DZ</tag>
+	<name>Arabic - Algeria</name>
+	<description>Arabic Algeria language installation for Joomla</description>
+	<version>1.5.9</version>
+	<creationDate>March 2009</creationDate>
+    <author>Saber Bousba</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<metadata>
+		<name>Arabic - Algeria</name>
+		<tag>ar-DZ</tag>
+
+		<rtl>1</rtl>
+		<locale>ar_DZ.utf8, ar_DZ.UTF-8, ar_DZ, ara_DZ, ar, arabic, arabic-dz, ar_DZ.arabic8, ,ar_DZ.ISO-8859-6, ar_DZ.ISO8859-6, ar_DZ.ISO88596, dza, DZA, DZD, algeria, dz, Arabic-Algeria, Arabic_Algeria</locale>
+		<winCodePage>utf-8</winCodePage>
+		<backwardLang>arabic</backwardLang>
+	</metadata>
+</metafile>

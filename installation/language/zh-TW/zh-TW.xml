@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<metafile version="1.5" client="installation">
+    <name>Traditional Chinese (Taiwan)</name>
+    <version>1.5.9</version>
+    <creationDate>March 2009</creationDate>
+    <author>TaiwanJoomla</author>
+    <copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <description>Traditional Chinese language installation for Joomla</description>
+    <metadata>
+    	<name>Traditional Chinese (Taiwan)</name>
+    	<tag>zh-TW</tag>
+    	<rtl>0</rtl>
+    	<locale>zh_TW.UTF-8, zh_TW.utf8, zh, zho, zhi, zh_TW, zho_TW, zhi_TW, traditional_chinese</locale>
+    	<winCodePage>cp950</winCodePage>
+    	<backwardLang>traditional_chinese</backwardLang>
+    </metadata>
+    <params />
+</metafile>

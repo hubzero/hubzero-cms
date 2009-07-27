@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5"  client="installation" >
+	<name>Bulgarian (Български)</name>
+    <version>1.5.9</version>
+    <creationDate>March 2009</creationDate>
+    <author>BULTRANS</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <description>Bulgarian installation language for Joomla</description>
+	<metadata>
+		<name>Bulgarian (Български)</name>
+		<tag>bg-BG</tag>
+		<rtl>0</rtl>
+		<locale>bg-BG.utf8, bg-BG.UTF-8, bgr-BGR.UTF-8, bgr_BGR.UTF-8, bg_BG.UTF-8, bg-BG, bgr-BGR, bgr_BGR, bg_BG, bg, bgr, bulgarian, bulgaria</locale>
+		<wincodepage>UTF-8</wincodepage>
+		<backwardlang>bulgarian</backwardlang>
+	</metadata>
+	<params />
+</metafile>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5" client="installation">
+	<tag>bn-BD</tag>
+	<name>Bengali(Bangladesh)</name>
+    <version>1.5.9</version>
+    <creationDate>March 2009</creationDate>
+	<author>www.nayadak.org</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>Bengali(Bangladesh) language file for web installer</description>
+	<metadata>
+		<name>Bengali(Bangladesh)</name>
+		<tag>bn-BD</tag>
+		<rtl>0</rtl>
+		<locale>
+			bn_BD.utf8, bn_BD.UTF-8, bn_BD, bng_BD, bn, Bangla,bengali, Bengali-Bangladesh, bd, Bangladesh		</locale>
+		<winCodePage>iso-8859-1</winCodePage>
+		<backwardLang>Bengali</backwardLang>
+	</metadata>
+	<params />
+</metafile>

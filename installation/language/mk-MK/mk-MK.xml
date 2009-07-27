@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5" client="installation" >
+	<name>Македонски(Macedonia)</name>
+	<version>1.5.9</version>
+	<creationDate>January 2009</creationDate>
+	<author>Joomla! Project</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>Македонски јазик за веб инсталирачот</description>
+	<metadata>
+		<name>Македонски (Macedonia)</name>
+		<tag>mk-MK</tag>
+		<rtl>0</rtl>
+		<locale>mk_MK.utf8, mk_MK.UTF-8, mk_MK, macedonia, macedonian</locale>
+		<winCodePage>utf-8</winCodePage>
+		<backwardLang>Macedonian</backwardLang>
+	</metadata>
+	<params />
+</metafile>

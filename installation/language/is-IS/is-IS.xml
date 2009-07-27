@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5" client="installation">
+	<name>Icelandic-IS</name>
+	<tag>is-IS</tag>
+    <version>1.5.9</version>
+    <creationDate>March 2009</creationDate>
+	<author>Joomlís!</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>Icelandic language installation pack for Joomla</description>
+	<metadata>
+		<name>Íslenska (Iceland)</name>
+		<tag>is-IS</tag>
+		<rtl>0</rtl>
+		<locale>is_IS.utf8, is_IS.UTF-8, is_IS, is_IS.iso88591, is_IS.ISO8859-1, is_IS.ISO8859-15, ISO-8859-1, ISO-8859-15, UTF-8, isl_IS, icelandic, Icelandic, icelandic-is, is, IS, isl, iceland, íslenska</locale>
+		<winCodePage>iso-8859-1</winCodePage>
+		<backwardLang>icelandic</backwardLang>
+		<pdfFontName>freesans</pdfFontName>			
+	</metadata>
+	<params />
+</metafile>

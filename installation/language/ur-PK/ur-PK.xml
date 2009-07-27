@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5" client="installation" >
+	<name>Urdu Pakistan (اردو)</name>
+	<version>1.5.9</version>
+	<creationDate>March 2009</creationDate>
+	<author>Basim</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>Urdu language installation for Joomla</description>
+	<metadata>
+		<name>Urdu Pakistan (اردو)</name>
+		<tag>ur-PK</tag>
+		<rtl>1</rtl>
+		<locale>ur_PK.utf8, ur-PK.UTF-8, ur-PK, urd_PK, ur, urdu, urdu-pk, pk, IRP, Pakistan, watan, pak, Islamic Republic of Pakistan, اردو, پاکستان, اسلامی جمہوریہ پاکستان</locale>
+		<winCodePage>UTF-8</winCodePage>
+		<backwardLang>urdu</backwardLang>
+	</metadata>
+	<params />
+</metafile>

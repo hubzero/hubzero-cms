@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5" client="installation" >
+    <name>Montenegrin</name>
+    <version>1.5.9</version>
+    <creationDate>April 2009</creationDate>
+    <author>joomlamontenegro.com</author>
+    <copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <description>Montenegrin language installation for Joomla</description>
+    <metadata>
+       <name>Montenegrin</name>
+       <tag>sr-ME</tag>
+       <rtl>0</rtl>
+              <locale>sr_ME.utf8</locale>
+      <winCodePage>utf-8</winCodePage>
+      <backwardLang>Montenegrin</backwardLang>
+    </metadata>
+    <params />
+</metafile>
