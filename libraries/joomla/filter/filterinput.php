@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: filterinput.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: filterinput.php 11324 2008-12-05 19:06:24Z kdevine $
  * @package		Joomla.Framework
  * @subpackage	Filter
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -498,9 +498,9 @@ class JFilterInput extends JObject
 		}
 		$source = strtr($source, $ttr);
 		// convert decimal
-		$source = preg_replace('/&#(\d+);/me', "chr(\\1)", $source); // decimal notation
+		$source = preg_replace('/&#(\d+);/me', "utf8_encode(chr(\\1))", $source); // decimal notation
 		// convert hex
-		$source = preg_replace('/&#x([a-f0-9]+);/mei', "chr(0x\\1)", $source); // hex notation
+		$source = preg_replace('/&#x([a-f0-9]+);/mei', "utf8_encode(chr(0x\\1))", $source); // hex notation
 		return $source;
 	}
 }

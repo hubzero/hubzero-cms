@@ -1,4 +1,4 @@
-<?php // @version $Id: default.php 10498 2008-07-04 00:05:36Z ian $
+<?php // @version $Id: default.php 11305 2008-11-23 19:14:25Z ian $
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <?php if($this->params->get('show_page_title',1)) : ?>
@@ -14,7 +14,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_user#content'); ?>" method="post" id="josForm" name="josForm" class="form-validate user">
-	<h2 class="componentheading"><?php echo JText::_('Registration'); ?></h2>
 	<?php if(isset($this->message)) :
 		$this->display('message');
 	endif; ?>

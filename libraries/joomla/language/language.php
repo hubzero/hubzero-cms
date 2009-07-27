@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: language.php 11236 2008-11-02 02:44:35Z ian $
+* @version		$Id: language.php 11305 2008-11-23 19:14:25Z ian $
 * @package		Joomla.Framework
 * @subpackage	Language
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -335,6 +335,13 @@ class JLanguage extends JObject
 
 		if ($content = @file_get_contents( $filename ))
 		{
+
+			//Take off BOM if present in the ini file
+			if ( $content[0] == "\xEF" && $content[1] == "\xBB" && $content[2] == "\xBF" )
+            {
+				$content = substr( $content, 3 );
+		  	}
+
 			$registry	= new JRegistry();
 			$registry->loadINI($content);
 			$newStrings	= $registry->toArray( );

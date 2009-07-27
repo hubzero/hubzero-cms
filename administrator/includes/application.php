@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: application.php 10382 2008-06-01 06:56:02Z pasamio $
+* @version		$Id: application.php 11409 2009-01-10 02:27:08Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -82,7 +82,13 @@ class JAdministrator extends JApplication
 	*/
 	function route()
 	{
+		$uri = JURI::getInstance();
 
+		if($this->getCfg('force_ssl') >= 1 && strtolower($uri->getScheme()) != 'https') {
+			//forward to https
+			$uri->setScheme('https');
+			$this->redirect($uri->toString());
+		}
 	}
 
 	/**

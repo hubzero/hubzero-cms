@@ -1,4 +1,4 @@
-<?php // @version $Id: default.php 10498 2008-07-04 00:05:36Z ian $
+<?php // @version $Id: default.php 11307 2008-11-24 00:21:48Z ian $
 defined('_JEXEC') or die('Restricted access');
 $cparams = JComponentHelper::getParams ('com_media');
 ?>
@@ -13,9 +13,9 @@ $cparams = JComponentHelper::getParams ('com_media');
 <div class="contentdescription<?php echo $this->params->get('pageclass_sfx'); ?>">
 
 	<?php if ($this->params->get('image') != -1 && $this->params->get('image') != '') : ?>
-	<img src="<?php echo $this->baseurl . $cparams->get('image_path').'/'.$this->params->get('image'); ?>" class="image_<?php echo $this->params->get('image_align'); ?>" alt="<?php echo JText::_('Contacts'); ?>" />
+	<img src="<?php echo $this->baseurl .'/'. 'images/stories' . '/'. $this->params->get('image'); ?>" class="image_<?php echo $this->params->get('image_align'); ?>" alt="<?php echo JText::_( 'Contacts' ); ?>" />
 	<?php elseif($this->category->image): ?>
-	<img src="<?php echo $this->baseurl . $cparams->get('image_path').'/'.$this->category->image; ?>" class="image_<?php echo $this->category->image_position; ?>" alt="<?php echo JText::_('Contacts'); ?>" />
+	<img src="<?php echo $this->baseurl .'/'. 'images/stories' . '/'. $this->category->image; ?>" class="image_<?php echo $this->category->image_position; ?>" alt="<?php echo JText::_( 'Contacts' ); ?>" />
 	<?php endif; ?>
 
 	<?php echo $this->category->description; ?>

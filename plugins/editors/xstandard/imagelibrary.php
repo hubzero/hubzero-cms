@@ -62,14 +62,25 @@ function xs_build_path($path, $name) {
 	$p = str_replace("\\", "/", trim($path));
 	$n = trim($name);
 
+	$return = '';
 	if (strlen($p) > 0 and strlen($n) > 0) {
 		if (substr($p, strlen($p) - 1, 1) == "/") {
-			return $p . $n;
+			$return = $p . $n;
 		} else {
-			return $p . "/" . $n;
+			$return = $p . "/" . $n;
 		}
 	} else {
-		return $p . $n;
+		$return = $p . $n;
+	}
+
+	//make sure return is above $path
+	$realreturn = realpath($return);
+	$realpath = realpath($path);
+	if(strpos($realreturn, $realpath) !== 0) {
+		//the returned path does not start with the given path.  Default to path
+		return $realpath;
+	} else {
+		return $realreturn;
 	}
 }
 

@@ -1,6 +1,4 @@
 <?php
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
 
 /**
  * The OpenID library's Diffie-Hellman implementation.
@@ -12,12 +10,12 @@ defined('JPATH_BASE') or die();
  * @access private
  * @package OpenID
  * @author JanRain, Inc. <openid@janrain.com>
- * @copyright 2005 Janrain, Inc.
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
+ * @copyright 2005-2008 Janrain, Inc.
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache
  */
 
+require_once 'Auth/OpenID.php';
 require_once 'Auth/OpenID/BigMath.php';
-require_once 'Auth/OpenID/HMACSHA1.php';
 
 function Auth_OpenID_getDefaultMod()
 {
@@ -91,93 +89,25 @@ class Auth_OpenID_DiffieHellman {
         return $this->public;
     }
 
-    /**
-     * Generate the arguments for an OpenID Diffie-Hellman association
-     * request
-     */
-    function getAssocArgs()
-    {
-        $cpub = $this->lib->longToBase64($this->getPublicKey());
-        $args = array(
-                      'openid.dh_consumer_public' => $cpub,
-                      'openid.session_type' => 'DH-SHA1'
-                      );
-
-        if ($this->lib->cmp($this->mod, Auth_OpenID_getDefaultMod()) ||
-            $this->lib->cmp($this->gen, Auth_OpenID_getDefaultGen())) {
-            $args['openid.dh_modulus'] = $this->lib->longToBase64($this->mod);
-            $args['openid.dh_gen'] = $this->lib->longToBase64($this->gen);
-        }
-
-        return $args;
-    }
-
     function usingDefaultValues()
     {
         return ($this->mod == Auth_OpenID_getDefaultMod() &&
                 $this->gen == Auth_OpenID_getDefaultGen());
     }
 
-    /**
-     * Perform the server side of the OpenID Diffie-Hellman association
-     */
-    function serverAssociate($consumer_args, $assoc_secret)
-    {
-        $lib =& Auth_OpenID_getMathLib();
-
-        if (isset($consumer_args['openid.dh_modulus'])) {
-            $mod = $lib->base64ToLong($consumer_args['openid.dh_modulus']);
-        } else {
-            $mod = null;
-        }
-
-        if (isset($consumer_args['openid.dh_gen'])) {
-            $gen = $lib->base64ToLong($consumer_args['openid.dh_gen']);
-        } else {
-            $gen = null;
-        }
-
-        $cpub64 = @$consumer_args['openid.dh_consumer_public'];
-        if (!isset($cpub64)) {
-            return false;
-        }
-
-        $dh = new Auth_OpenID_DiffieHellman($mod, $gen);
-        $cpub = $lib->base64ToLong($cpub64);
-        $mac_key = $dh->xorSecret($cpub, $assoc_secret);
-        $enc_mac_key = base64_encode($mac_key);
-        $spub64 = $lib->longToBase64($dh->getPublicKey());
-
-        $server_args = array(
-                             'session_type' => 'DH-SHA1',
-                             'dh_server_public' => $spub64,
-                             'enc_mac_key' => $enc_mac_key
-                             );
-
-        return $server_args;
-    }
-
-    function consumerFinish($reply)
-    {
-        $spub = $this->lib->base64ToLong($reply['dh_server_public']);
-        if ($this->lib->cmp($spub, 0) <= 0) {
-            return false;
-        }
-        $enc_mac_key = base64_decode($reply['enc_mac_key']);
-        return $this->xorSecret($spub, $enc_mac_key);
-    }
-
-    function xorSecret($composite, $secret)
+    function xorSecret($composite, $secret, $hash_func)
     {
         $dh_shared = $this->getSharedSecret($composite);
         $dh_shared_str = $this->lib->longToBinary($dh_shared);
-        $sha1_dh_shared = Auth_OpenID_SHA1($dh_shared_str);
+        $hash_dh_shared = $hash_func($dh_shared_str);
 
         $xsecret = "";
-        for ($i = 0; $i < strlen($secret); $i++) {
-            $xsecret .= chr(ord($secret[$i]) ^ ord($sha1_dh_shared[$i]));
+        for ($i = 0; $i < Auth_OpenID::bytes($secret); $i++) {
+            $xsecret .= chr(ord($secret[$i]) ^ ord($hash_dh_shared[$i]));
         }
 
         return $xsecret;
     }
 }
+
+?>

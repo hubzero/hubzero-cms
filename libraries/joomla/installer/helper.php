@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: helper.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: helper.php 11299 2008-11-22 01:40:44Z ian $
  * @package		Joomla.Framework
  * @subpackage	Installer
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -102,7 +102,7 @@ class JInstallerHelper
 	 *
 	 * @static
 	 * @param string $p_filename The uploaded package filename or install directory
-	 * @return boolean True on success, False on error
+	 * @return Array Two elements - extractdir and packagefile
 	 * @since 1.5
 	 */
 	function unpack($p_filename)
@@ -240,7 +240,7 @@ class JInstallerHelper
 	 * Clean up temporary uploaded package and unpacked extension
 	 *
 	 * @static
-	 * @param string $p_file Path to the uploaded package file
+	 * @param string $package Path to the uploaded package file
 	 * @param string $resultdir Path to the unpacked extension
 	 * @return boolean True on success
 	 * @since 1.5

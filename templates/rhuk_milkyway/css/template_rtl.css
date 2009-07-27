@@ -65,7 +65,6 @@ td.pill_l {
 #pillmenu a {
 	float:none;
 	padding: 0px 10px;
-	display: -moz-inline-table;
 }
 
 #search{
@@ -114,6 +113,10 @@ div.module_menu ul{
 	padding-left: 0px;
 }
 
+h1 {
+	text-align: right;	
+}
+	
 h2, .contentheading{
 	text-align: right;
 }

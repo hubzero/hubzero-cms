@@ -2,14 +2,12 @@
 <metafile version="1.5"  client="installation" >
 	<tag>lv-LV</tag>
 	<name>Latvian</name>
-	<description>Latvian language file for web installer</description>
-	<version>1.5.4</version>
-	<creationdate>March 2008</creationdate>
-	<author>Latvian Joomla! Project</author>
-	<authorurl>www.joomla.org</authorurl>
-	<authoremail>joomlalv@gmail.com</authoremail>
-	<copyright>(C) 2007 Open Source Matters. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL V2</license>
+	<description>Latvian language installation for Joomla</description>
+	<version>1.5.9</version>
+	<creationdate>January 2009</creationdate>
+	<author>Latvian Joomla! Translation Team</author>
+    <copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<metadata>
 		<name>Latvian</name>
 		<tag>lv-LV</tag>
@@ -18,5 +16,5 @@
 		<wincodepage>utf-8</wincodepage>
 		<backwardlang>latvian</backwardlang>
 	</metadata>
-	<params></params>
+	<params />
 </metafile>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10919 2008-09-09 20:50:29Z willebil $
+ * @version		$Id: controller.php 11391 2009-01-04 13:35:50Z ian $
  * @package		Joomla
  * @subpackage	MailTo
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -55,7 +55,7 @@ class MailtoController extends JController
 
 		$timeout = $session->get('com_mailto.formtime', 0);
 		if($timeout == 0 || time() - $timeout < 20) {
-			JError::raiseNotice( 500, 'EMAIL_NOT_SENT' );
+			JError::raiseNotice( 500, JText:: _ ('EMAIL_NOT_SENT' ));
 			return $this->mailto();
 		}
 
@@ -70,7 +70,7 @@ class MailtoController extends JController
 		// Verify that this is a local link
 		if(!JURI::isInternal($link)) {
 			//Non-local url...  
-			JError::raiseNotice( 500, 'EMAIL_NOT_SENT' );
+			JError::raiseNotice( 500, JText:: _ ('EMAIL_NOT_SENT' ));
 			return $this->mailto();
 		}
 
@@ -91,7 +91,7 @@ class MailtoController extends JController
 		/*
 		 * Here is the meat and potatoes of the header injection test.  We
 		 * iterate over the array of form input and check for header strings.
-		 * If we fine one, send an unauthorized header and die.
+		 * If we find one, send an unauthorized header and die.
 		 */
 		foreach ($fields as $field)
 		{
@@ -147,7 +147,7 @@ class MailtoController extends JController
 		// Send the email
 		if ( JUtility::sendMail($from, $sender, $email, $subject, $body) !== true )
 		{
-			JError::raiseNotice( 500, 'EMAIL_NOT_SENT' );
+			JError::raiseNotice( 500, JText:: _ ('EMAIL_NOT_SENT' ));
 			return $this->mailto();
 		}
 

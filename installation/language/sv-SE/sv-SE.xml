@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metafile version="1.5" client="installation">
     <name>Svenska (Sverige)</name>
-    <version>1.5.4</version>
-    <creationDate>June 2008</creationDate>
+    <version>1.5.9</version>
+    <creationDate>January 2009</creationDate>
     <author>SvenskJoomla! - Sune Hultman and Christer Gerhardsson</author>
-    <authorEmail>info@svenskjoomla.se</authorEmail>
-    <authorUrl>www.svenskjoomla.se</authorUrl>
-    <copyright>(C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
+    <copyright>(C) 2005 - 2009 Open Source Matters. All rights reserved.</copyright>
   	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <description>Swedish language file for web installer</description>
+    <description>Swedish language installation for Joomla</description>
     <metadata>
     	<name>Svenska (Sverige)</name>
     	<tag>sv-SE</tag>

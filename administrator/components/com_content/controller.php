@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10877 2008-08-30 17:23:28Z willebil $
+ * @version		$Id: controller.php 11400 2009-01-05 20:08:56Z kdevine $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -1297,6 +1297,7 @@ class ContentController extends JController
 			$row->metakey					= $item->metakey;
 			$row->metadesc					= $item->metadesc;
 			$row->access					= $item->access;
+			$row->metadata					= $item->metadata;
 
 			if (!$row->check()) {
 				JError::raiseError( 500, $row->getError() );

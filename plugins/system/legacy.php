@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: legacy.php 10709 2008-08-21 09:58:52Z eddieajau $
+* @version		$Id: legacy.php 11299 2008-11-22 01:40:44Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -256,6 +256,24 @@ class  plgSystemLegacy extends JPlugin
 		$mosmsg = JRequest::getVar( 'mosmsg' );
 		$mainframe->enqueueMessage( $mosmsg );
 	}
+
+	/**
+     * Fixes the $my global if the user was restored by the remember me plugin
+     */
+	function onAfterInitialise()
+	{
+		$user	=& JFactory::getUser();
+		if ($user->id) {
+			if ($GLOBALS['my']->id === 0) {
+				$GLOBALS['my']	= (object)$user->getProperties();
+				$GLOBALS['my']->gid = $user->get('aid', 0);
+			}
+		}
+
+		return true;
+	}
+
+
 
 	function onAfterRoute()
 	{

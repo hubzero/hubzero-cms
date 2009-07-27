@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: cache.php 10709 2008-08-21 09:58:52Z eddieajau $
+* @version		$Id: cache.php 11299 2008-11-22 01:40:44Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -44,13 +44,15 @@ class  plgSystemCache extends JPlugin
 		parent::__construct($subject, $config);
 
 		$user =& JFactory::getUser();
-
+		//Set the language in the class
+		$config =& JFactory::getConfig();
 		$options = array(
 			'cachebase' 	=> JPATH_BASE.DS.'cache',
 			'defaultgroup' 	=> 'page',
 			'lifetime' 		=> $this->params->get('cachetime', 15) * 60,
 			'browsercache'	=> $this->params->get('browsercache', false),
-			'caching'		=> false
+			'caching'		=> false,
+			'language'		=> $config->getValue('config.language', 'en-GB')
 		);
 
 		jimport('joomla.cache.cache');

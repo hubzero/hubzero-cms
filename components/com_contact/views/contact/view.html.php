@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10808 2008-08-25 16:30:11Z tcp $
+ * @version		$Id: view.html.php 11393 2009-01-05 02:11:06Z ian $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -58,6 +58,18 @@ class ContactViewContact extends JView
 		if (!is_object( $contact )) {
 			JError::raiseError( 404, 'Contact not found' );
 			return;
+		}
+		
+		// check if access is registered/special
+		if (($contact->access > $user->get('aid', 0)) || ($contact->category_access > $user->get('aid', 0))) {
+			$uri		= JFactory::getURI();
+			$return		= $uri->toString();
+			
+			$url  = 'index.php?option=com_user&view=login';
+			$url .= '&return='.base64_encode($return);
+			
+			$mainframe->redirect($url, JText::_('You must login first') );
+			
 		}
 
 		$options['category_id']	= $contact->catid;

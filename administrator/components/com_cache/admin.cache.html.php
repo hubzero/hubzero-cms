@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: admin.cache.html.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: admin.cache.html.php 11403 2009-01-06 06:19:31Z ian $
  * @package		Joomla
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -102,5 +102,52 @@ class CacheView
 		<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 		<?php
+	}
+	function showPurgeExecute(){
+		?>
+       <form action="index.php" method="post" name="adminForm">
+        <table class="adminlist" cellspacing="1">
+        <thead>
+			<tr>
+				<th align="left" style="text-align: left;">
+					<?php echo JText::_( 'Purge expired items' ); ?>
+				</th>
+			</tr>
+        </thead>
+        			<tr>
+				<td align="left">
+				<?php echo JText::_( 'Click on the Purge expired icon in the toolbar to delete all expired cache files. Note: Cache files that are still current will not be deleted.'); ?> <br />
+                <span style="font-weight: bold"><?php echo JText::_( 'WARNING: This can be resource intensive on sites with large number of items!' ); ?></span>
+				</td>
+			</tr>
+        </table>
+        <input type="hidden" name="task" value="" />
+		<input type="hidden" name="option" value="com_cache" />
+        <?php echo JHTML::_( 'form.token' ); ?>
+        </form>
+         <?php
+	}
+	function purgeSuccess(){
+		?>
+        <form action="index.php" method="post" name="adminForm">
+        <table class="adminlist" cellspacing="1">
+        <thead>
+			<tr>
+				<th align="left" style="text-align: left;">
+					<?php echo JText::_( 'Success!' ); ?>
+				</th>
+			</tr>
+        </thead>
+        			<tr>
+				<td align="left">
+					<?php echo JText::_( 'Expired items have been purged' ); ?>
+				</td>
+			</tr>
+        </table>
+        <input type="hidden" name="task" value="" />
+		<input type="hidden" name="option" value="com_cache" />
+        <?php echo JHTML::_( 'form.token' ); ?>
+        </form>
+		 <?php
 	}
 }

@@ -1,4 +1,4 @@
-<?php // @version $Id: default.php 11215 2008-10-26 02:25:51Z ian $
+<?php // @version $Id: default.php 11386 2009-01-04 02:34:35Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -27,9 +27,9 @@ defined('_JEXEC') or die('Restricted access');
 </h2>
 <?php endif; ?>
 
-<?php if ((!empty ($this->article->modified) && $this->params->get('show_modify_date')) || ($this->params->get('show_author') && ($this->article->author != "")) || ($this->params->get('show_create_date'))) : ?>
+<?php if ((intval($this->article->modified) !=0 && $this->params->get('show_modify_date')) || ($this->params->get('show_author') && ($this->article->author != "")) || ($this->params->get('show_create_date'))) : ?>
 <p class="articleinfo">
-	<?php if (!empty ($this->article->modified) && $this->params->get('show_modify_date')) : ?>
+	<?php if (intval($this->article->modified) !=0 && $this->params->get('show_modify_date')) : ?>
 	<span class="modifydate">
 		<?php echo JText::sprintf('LAST_UPDATED2', JHTML::_('date', $this->article->modified, JText::_('DATE_FORMAT_LC2'))); ?>
 	</span>
@@ -57,7 +57,7 @@ endif; ?>
 	<?php if ($this->print) :
 		echo JHTML::_('icon.print_screen', $this->article, $this->params, $this->access);
 	elseif ($this->params->get('show_pdf_icon') || $this->params->get('show_print_icon') || $this->params->get('show_email_icon')) : ?>
-	<img src="<?php echo $this->baseurl ?>/templates/<? echo $mainframe->getTemplate(); ?>/images/trans.gif" alt="<?php echo JText::_('attention open in a new window'); ?>" />
+	<img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/trans.gif" alt="<?php echo JText::_('attention open in a new window'); ?>" />
 	<?php if ($this->params->get('show_pdf_icon')) :
 		echo JHTML::_('icon.pdf', $this->article, $this->params, $this->access);
 	endif;

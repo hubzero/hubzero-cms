@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: helper.php 11253 2008-11-10 23:38:48Z ircmaxell $
+ * @version		$Id: helper.php 11299 2008-11-22 01:40:44Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -61,7 +61,7 @@ class ContentHelper
 					$filter	= new JFilterInput();
 					break;
 				case 'WL':
-					$filter	= new JFilterInput( $filterTags, $filterAttrs, 0, 0 );
+					$filter	= new JFilterInput( $filterTags, $filterAttrs, 0, 0, 0);  // turn off xss auto clean
 					break;
 				case 'BL':
 				default:
@@ -70,7 +70,7 @@ class ContentHelper
 			}
 			$row->introtext	= $filter->clean( $row->introtext );
 			$row->fulltext	= $filter->clean( $row->fulltext );
-		} elseif(empty($filterGroups)) {
+		} elseif(empty($filterGroups) && $gid != '25') { // no default filtering for super admin (gid=25)
 			$filter = new JFilterInput( array(), array(), 1, 1 );
 			$row->introtext	= $filter->clean( $row->introtext );
 			$row->fulltext	= $filter->clean( $row->fulltext );

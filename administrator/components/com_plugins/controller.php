@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: controller.php 11386 2009-01-04 02:34:35Z ian $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -41,8 +41,8 @@ class PluginsController extends JController
 		$this->registerTask( 'orderdown' , 	'order' );
 
 		$this->registerTask( 'accesspublic' 	, 	'access' );
-		$this->registerTask( 'accessregisterd'  , 	'access' );
-		$this->registerTask( 'acessspecial' 	, 	'access' );
+		$this->registerTask( 'accessregistered'  , 	'access' );
+		$this->registerTask( 'accessspecial' 	, 	'access' );
 
 	}
 

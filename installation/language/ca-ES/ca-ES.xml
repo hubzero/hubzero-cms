@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: ca-ES.xml 2008-07-01 22:33:10 dverger ~0 $ -->
 <metafile version="1.5"  client="installation" >
-	<name>Catalan</name>
-	<version>1.5.4</version>
-	<creationDate>2008-07-01</creationDate>
-	<author>Joomla! Project</author>
-	<authorEmail>info@joomla.cat</authorEmail>
-	<authorUrl>www.joomla.cat</authorUrl>
-	<copyright>Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
+	<name>Catalan-ES</name>
+	<version>1.5.9</version>
+	<creationDate>January 2009</creationDate>
+	<author>www.joomla.cat</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>Catalan language file for web installer</description>
 	<metadata>

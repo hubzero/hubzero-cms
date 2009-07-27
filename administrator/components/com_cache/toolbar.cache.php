@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: toolbar.cache.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: toolbar.cache.php 11393 2009-01-05 02:11:06Z ian $
  * @package		Joomla
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -19,7 +19,14 @@ require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
 
 switch ($task)
 {
-	default:
+		case 'purgeadmin':
+		TOOLBAR_cache::_PURGEADMIN();
+		break;
+		case 'purge':
+		TOOLBAR_cache::_PURGEADMIN();
+		break;
+		default:
 		TOOLBAR_cache::_DEFAULT();
 		break;
+
 }

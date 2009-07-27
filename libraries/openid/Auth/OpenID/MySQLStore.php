@@ -1,6 +1,4 @@
 <?php
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
 
 /**
  * A MySQL store.
@@ -25,27 +23,27 @@ class Auth_OpenID_MySQLStore extends Auth_OpenID_SQLStore {
     function setSQL()
     {
         $this->sql['nonce_table'] =
-            "CREATE TABLE %s (nonce CHAR(8) UNIQUE PRIMARY KEY, ".
-            "expires INTEGER) TYPE=InnoDB";
+            "CREATE TABLE %s (\n".
+            "  server_url VARCHAR(2047) NOT NULL,\n".
+            "  timestamp INTEGER NOT NULL,\n".
+            "  salt CHAR(40) NOT NULL,\n".
+            "  UNIQUE (server_url(255), timestamp, salt)\n".
+            ") ENGINE=InnoDB";
 
         $this->sql['assoc_table'] =
-            "CREATE TABLE %s (server_url BLOB, handle VARCHAR(255), ".
-            "secret BLOB, issued INTEGER, lifetime INTEGER, ".
-            "assoc_type VARCHAR(64), PRIMARY KEY (server_url(255), handle)) ".
-            "TYPE=InnoDB";
-
-        $this->sql['settings_table'] =
-            "CREATE TABLE %s (setting VARCHAR(128) UNIQUE PRIMARY KEY, ".
-            "value BLOB) TYPE=InnoDB";
-
-        $this->sql['create_auth'] =
-            "INSERT INTO %s VALUES ('auth_key', !)";
-
-        $this->sql['get_auth'] =
-            "SELECT value FROM %s WHERE setting = 'auth_key'";
+            "CREATE TABLE %s (\n".
+            "  server_url BLOB NOT NULL,\n".
+            "  handle VARCHAR(255) NOT NULL,\n".
+            "  secret BLOB NOT NULL,\n".
+            "  issued INTEGER NOT NULL,\n".
+            "  lifetime INTEGER NOT NULL,\n".
+            "  assoc_type VARCHAR(64) NOT NULL,\n".
+            "  PRIMARY KEY (server_url(255), handle)\n".
+            ") ENGINE=InnoDB";
 
         $this->sql['set_assoc'] =
-            "REPLACE INTO %s VALUES (?, ?, !, ?, ?, ?)";
+            "REPLACE INTO %s (server_url, handle, secret, issued,\n".
+            "  lifetime, assoc_type) VALUES (?, ?, !, ?, ?, ?)";
 
         $this->sql['get_assocs'] =
             "SELECT handle, secret, issued, lifetime, assoc_type FROM %s ".
@@ -59,13 +57,13 @@ class Auth_OpenID_MySQLStore extends Auth_OpenID_SQLStore {
             "DELETE FROM %s WHERE server_url = ? AND handle = ?";
 
         $this->sql['add_nonce'] =
-            "REPLACE INTO %s (nonce, expires) VALUES (?, ?)";
+            "INSERT INTO %s (server_url, timestamp, salt) VALUES (?, ?, ?)";
 
-        $this->sql['get_nonce'] =
-            "SELECT * FROM %s WHERE nonce = ?";
+        $this->sql['clean_nonce'] =
+            "DELETE FROM %s WHERE timestamp < ?";
 
-        $this->sql['remove_nonce'] =
-            "DELETE FROM %s WHERE nonce = ?";
+        $this->sql['clean_assoc'] =
+            "DELETE FROM %s WHERE issued + lifetime < ?";
     }
 
     /**

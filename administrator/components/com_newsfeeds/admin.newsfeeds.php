@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.newsfeeds.php 10866 2008-08-30 07:09:42Z willebil $
+* @version		$Id: admin.newsfeeds.php 11371 2008-12-30 01:31:50Z ian $
 * @package		Joomla
 * @subpackage	Newsfeeds
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -206,7 +206,10 @@ function editNewsFeed($edit)
 	$lists['category'] 			= JHTML::_('list.category',  'catid', $option, intval( $row->catid ) );
 	// build the html select list
 	$lists['published'] 		= JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $row->published );
-
+		$rtl[] = JHTML::_('select.option',  '0', JText::_( 'Site Language Direction' ) );
+   		$rtl[] = JHTML::_('select.option',  '1', JText::_( 'Left to Right Direction' ) );
+  		$rtl[] = JHTML::_('select.option',  '2', JText::_( 'Right to Left Direction' ) );
+    	$lists['rtl'] = JHTML::_('select.genericlist',   $rtl, 'rtl', 'class="inputbox"', 'value', 'text', intval( $row->rtl ) );
 	HTML_newsfeeds::editNewsFeed( $row, $lists, $option );
 }
 
@@ -230,9 +233,7 @@ function saveNewsFeed(  )
 
 	// Sets rtl value when rtl checkbox ticked
 	$isRtl = JRequest::getInt('rtl');
-	if ($isRtl) {
-		$row->rtl = 1;
-	}
+
 
 	// pre-save checks
 	if (!$row->check()) {

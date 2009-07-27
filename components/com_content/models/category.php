@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: category.php 10704 2008-08-21 09:38:40Z eddieajau $
+ * @version		$Id: category.php 11408 2009-01-10 02:24:28Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -379,10 +379,9 @@ class ContentModelCategory extends JModel
 		global $mainframe;
 		// Get the page/component configuration
 		$params = &$mainframe->getParams();
-
-		$filter_order		= JRequest::getCmd('filter_order');
-		$filter_order_Dir	= JRequest::getWord('filter_order_Dir');
-
+		$itemid = JRequest::getInt('id', 0) . ':' . JRequest::getInt('Itemid', 0);
+		$filter_order  = $mainframe->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'cmd');
+		$filter_order_Dir = $mainframe->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
 		$orderby = ' ORDER BY ';
 		if ($filter_order && $filter_order_Dir)
 		{
@@ -487,6 +486,7 @@ class ContentModelCategory extends JModel
 			{
 				// clean filter variable
 				$filter = JString::strtolower($filter);
+				$hitsFilter = intval($filter);
 				$filter	= $this->_db->Quote( '%'.$this->_db->getEscaped( $filter, true ).'%', false );
 
 				switch ($params->get('filter_type'))
@@ -500,7 +500,7 @@ class ContentModelCategory extends JModel
 						break;
 
 					case 'hits' :
-						$where .= ' AND a.hits LIKE '.$filter;
+						$where .= ' AND a.hits >= '.$hitsFilter. ' ';
 						break;
 				}
 			}

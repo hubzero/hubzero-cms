@@ -2,13 +2,11 @@
 <metafile version="1.5"  client="installation" >
 	<tag>ta-LK</tag>
 	<name>Tamil (Sri Lanka)</name>
-	<description>Tamil (Sri Lanka) language file for web installer</description>
-	<version>1.5.4</version>
-	<creationDate>2008-03-18</creationDate>
-	<author>UoM, LK</author>
-	<authorUrl>ta.lakapps.lk</authorUrl>
-	<authorEmail>sarves@cse.mrt.ac.lk</authorEmail>
-	<copyright>Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
+	<description>Tamil (Sri Lanka) language installation for Joomla</description>
+	<version>1.5.9</version>
+	<creationDate>January 2009</creationDate>
+	<author>joomla.tamil-it.org/</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<metadata>
 		<name>Tamil (Sri Lanka)</name>

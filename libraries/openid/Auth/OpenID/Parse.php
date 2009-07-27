@@ -1,6 +1,4 @@
 <?php
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
 
 /**
  * This module implements a VERY limited parser that finds <link> tags
@@ -77,8 +75,8 @@ defined('JPATH_BASE') or die();
  * @access private
  * @package OpenID
  * @author JanRain, Inc. <openid@janrain.com>
- * @copyright 2005 Janrain, Inc.
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
+ * @copyright 2005-2008 Janrain, Inc.
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache
  */
 
 /**
@@ -106,6 +104,9 @@ class Auth_OpenID_Parse {
     var $_tag_expr = "<%s\b(?!:)([^>]*?)(?:\/>|>(.*?)(?:<\/?%s\s*>|\Z))";
 
     var $_attr_find = '\b(\w+)=("[^"]*"|\'[^\']*\'|[^\'"\s\/<>]+)';
+
+    var $_open_tag_expr = "<%s\b";
+    var $_close_tag_expr = "<((\/%s\b)|(%s[^>\/]*\/))>";
 
     function Auth_OpenID_Parse()
     {
@@ -138,6 +139,8 @@ class Auth_OpenID_Parse {
      */
     function tagMatcher($tag_name, $close_tags = null)
     {
+        $expr = $this->_tag_expr;
+
         if ($close_tags) {
             $options = implode("|", array_merge(array($tag_name), $close_tags));
             $closer = sprintf("(?:%s)", $options);
@@ -145,18 +148,49 @@ class Auth_OpenID_Parse {
             $closer = $tag_name;
         }
 
-        $expr = sprintf($this->_tag_expr, $tag_name, $closer);
+        $expr = sprintf($expr, $tag_name, $closer);
         return sprintf("/%s/%s", $expr, $this->_re_flags);
     }
 
-    function htmlFind()
+    function openTag($tag_name)
     {
-        return $this->tagMatcher('html');
+        $expr = sprintf($this->_open_tag_expr, $tag_name);
+        return sprintf("/%s/%s", $expr, $this->_re_flags);
+    }
+
+    function closeTag($tag_name)
+    {
+        $expr = sprintf($this->_close_tag_expr, $tag_name, $tag_name);
+        return sprintf("/%s/%s", $expr, $this->_re_flags);
+    }
+
+    function htmlBegin($s)
+    {
+        $matches = array();
+        $result = preg_match($this->openTag('html'), $s,
+                             $matches, PREG_OFFSET_CAPTURE);
+        if ($result === false || !$matches) {
+            return false;
+        }
+        // Return the offset of the first match.
+        return $matches[0][1];
+    }
+
+    function htmlEnd($s)
+    {
+        $matches = array();
+        $result = preg_match($this->closeTag('html'), $s,
+                             $matches, PREG_OFFSET_CAPTURE);
+        if ($result === false || !$matches) {
+            return false;
+        }
+        // Return the offset of the first match.
+        return $matches[count($matches) - 1][1];
     }
 
     function headFind()
     {
-        return $this->tagMatcher('head', array('body'));
+        return $this->tagMatcher('head', array('body', 'html'));
     }
 
     function replaceEntities($str)
@@ -196,17 +230,24 @@ class Auth_OpenID_Parse {
                                  "",
                                  $html);
 
-        // Try to find the <HTML> tag.
-        $html_re = $this->htmlFind();
-        $html_matches = array();
-        if (!preg_match($html_re, $stripped, $html_matches)) {
+        $html_begin = $this->htmlBegin($stripped);
+        $html_end = $this->htmlEnd($stripped);
+
+        if ($html_begin === false) {
             return array();
         }
+
+        if ($html_end === false) {
+            $html_end = strlen($stripped);
+        }
+
+        $stripped = substr($stripped, $html_begin,
+                           $html_end - $html_begin);
 
         // Try to find the <HEAD> tag.
         $head_re = $this->headFind();
         $head_matches = array();
-        if (!preg_match($head_re, $html_matches[0], $head_matches)) {
+        if (!preg_match($head_re, $stripped, $head_matches)) {
             return array();
         }
 
@@ -289,20 +330,21 @@ class Auth_OpenID_Parse {
     }
 }
 
-function Auth_OpenID_legacy_discover($html_text)
+function Auth_OpenID_legacy_discover($html_text, $server_rel,
+                                     $delegate_rel)
 {
     $p = new Auth_OpenID_Parse();
 
     $link_attrs = $p->parseLinkAttrs($html_text);
 
     $server_url = $p->findFirstHref($link_attrs,
-                                    'openid.server');
+                                    $server_rel);
 
     if ($server_url === null) {
         return false;
     } else {
         $delegate_url = $p->findFirstHref($link_attrs,
-                                          'openid.delegate');
+                                          $delegate_rel);
         return array($delegate_url, $server_url);
     }
 }

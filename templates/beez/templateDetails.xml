@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install PUBLIC "-//Joomla! 1.5//DTD template 1.0//EN" "http://dev.joomla.org/xml/1.5/template-install.dtd">
+<!DOCTYPE install PUBLIC "-//Joomla! 1.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.5/template-install.dtd">
 <install version="1.5" type="template">
 	<name>beez</name>
 	<creationDate>19 February 2007</creationDate>
@@ -87,8 +87,8 @@
 		<filename>html/com_weblinks/category/default.php</filename>
 		<filename>html/com_weblinks/category/default_items.php</filename>
 		<filename>html/com_weblinks/category/index.html</filename>
-		<filename>html/com_weblinks/weblinks/form.php</filename>
-		<filename>html/com_weblinks/weblinks/index.html</filename>
+		<filename>html/com_weblinks/weblink/form.php</filename>
+		<filename>html/com_weblinks/weblink/index.html</filename>
 		<filename>html/com_weblinks/index.html</filename>
 		<filename>html/com_user/user/index.html</filename>
 		<filename>html/com_user/user/default.php</filename>

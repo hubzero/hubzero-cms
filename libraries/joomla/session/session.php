@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: session.php 10707 2008-08-21 09:52:47Z eddieajau $
+* @version		$Id: session.php 11409 2009-01-10 02:27:08Z willebil $
 * @package		Joomla.Framework
 * @subpackage	Session
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -70,6 +70,15 @@ class JSession extends JObject
 	var $_security = array( 'fix_browser' );
 
 	/**
+	* Force cookies to be SSL only
+	*
+	* @access protected
+	* @default false
+	* @var bool $force_ssl
+	*/
+	var $_force_ssl = false;
+
+	/**
 	* Constructor
 	*
 	* @access protected
@@ -100,6 +109,8 @@ class JSession extends JObject
 
 		//set options
 		$this->_setOptions( $options );
+
+		$this->_setCookieParams();
 
 		//load the session
 		$this->_start();
@@ -563,6 +574,19 @@ class JSession extends JObject
 		return $id;
 	}
 
+	 /**
+	 * Set session cookie parameters
+	 *
+	 * @access private
+	 */
+	function _setCookieParams() {
+		$cookie	=	session_get_cookie_params();
+		if($this->_force_ssl) {
+			$cookie['secure'] = true;
+		}
+		session_set_cookie_params( $cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure'] );
+	}
+
 	/**
 	* Create a token-string
 	*
@@ -648,6 +672,10 @@ class JSession extends JObject
 		// get security options
 		if( isset( $options['security'] ) ) {
 			$this->_security	=	explode( ',', $options['security'] );
+		}
+
+		if( isset( $options['force_ssl'] ) ) {
+			$this->_force_ssl = (bool) $options['force_ssl'];
 		}
 
 		//sync the session maxlifetime

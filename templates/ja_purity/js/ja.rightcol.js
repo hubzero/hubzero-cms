@@ -19,7 +19,8 @@ var JA_Collapse_Mod = new Class({
 				return;
 			}
 
-			el.status = 'show';
+			el.titleEl.className = rightCollapseDefault;
+			el.status = rightCollapseDefault;
 			el.openH = el.elmain.getStyle('height').toInt();
 			el.elmain.setStyle ('overflow','hidden');
 
@@ -40,7 +41,7 @@ var JA_Collapse_Mod = new Class({
 			}
 			el.hide = function() {
 				el.titleEl.className='hide';
-				var ch = el.elmain.getStyle('height').toInt();
+				var ch = (rightCollapseDefault=='hide')?0:el.elmain.getStyle('height').toInt();
 				new Fx.Style(el.elmain,'height',{onComplete:el.toggleStatus}).start(ch,0);
 			}
 			el.toggleStatus = function () {

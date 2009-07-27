@@ -34,7 +34,7 @@ JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 		// do field validation
 		if (form.title.value == "") {
 			alert( "<?php echo JText::_( 'Poll must have a title', true ); ?>" );
-		} else if( isNaN( parseInt( form.lag.value ) ) ) {
+		} else if (isNaN(parseInt( form.lag.value ) ) || parseInt(form.lag.value) < 1)  {
 			alert( "<?php echo JText::_( 'Poll must have a non-zero lag time', true ); ?>" );
 		//} else if (form.menu.options.value == ""){
 		//	alert( "Poll must have pages." );

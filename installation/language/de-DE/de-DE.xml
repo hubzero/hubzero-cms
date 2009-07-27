@@ -2,12 +2,10 @@
 <!-- $Id: de-DE.xml 287 2008-06-30 19:29:49Z sisko1990 $ -->
 <metafile version="1.5" client="installation" >
   <name>German (Germany)</name>
-  <version>1.5.4</version>
-  <creationDate>July 2008</creationDate>
-  <author>Joomla! Project</author>
-	<authorEmail>info@jgerman.de</authorEmail>
-	<authorUrl>http://www.jgerman.de</authorUrl>
-	<copyright>(C) 2008 J!German. Alle Rechte vorbehalten.</copyright>
+  <version>1.5.9</version>
+  <creationDate>January 2009</creationDate>
+  <author>http://www.jgerman.de</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <description>Deutsche Sprachdatei für den Web-Installer</description>
     <metadata>

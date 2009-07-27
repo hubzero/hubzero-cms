@@ -1,26 +1,27 @@
 <?php
-/** $Id: default_form.php 10381 2008-06-01 03:35:53Z pasamio $ */
+/** $Id: default_form.php 11328 2008-12-12 19:22:41Z kdevine $ */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-?>
-<script type="text/javascript">
-<!--
-	function validateForm( frm ) {
-		var valid = document.formvalidator.isValid(frm);
-		if (valid == false) {
-			// do field validation
-			if (frm.email.invalid) {
-				alert( "<?php echo JText::_( 'Please enter a valid e-mail address.', true );?>" );
-			} else if (frm.text.invalid) {
-				alert( "<?php echo JText::_( 'CONTACT_FORM_NC', true ); ?>" );
+
+	$script = '<!--
+		function validateForm( frm ) {
+			var valid = document.formvalidator.isValid(frm);
+			if (valid == false) {
+				// do field validation
+				if (frm.email.invalid) {
+					alert( "' . JText::_( 'Please enter a valid e-mail address.', true ) . '" );
+				} else if (frm.text.invalid) {
+					alert( "' . JText::_( 'CONTACT_FORM_NC', true ) . '" );
+				}
+				return false;
+			} else {
+				frm.submit();
 			}
-			return false;
-		} else {
-			frm.submit();
 		}
-	}
-// -->
-</script>
-<?php if(isset($this->error)) : ?>
+		// -->';
+	$document =& JFactory::getDocument();
+	$document->addScriptDeclaration($script);
+	
+	if(isset($this->error)) : ?>
 <tr>
 	<td><?php echo $this->error; ?></td>
 </tr>

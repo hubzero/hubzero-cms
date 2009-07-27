@@ -1,6 +1,4 @@
 <?php
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
 
 /**
  * This file supplies a dumb store backend for OpenID servers and
@@ -12,15 +10,15 @@ defined('JPATH_BASE') or die();
  *
  * @package OpenID
  * @author JanRain, Inc. <openid@janrain.com>
- * @copyright 2005 Janrain, Inc.
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
+ * @copyright 2005-2008 Janrain, Inc.
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache
  */
 
 /**
  * Import the interface for creating a new store class.
  */
 require_once 'Auth/OpenID/Interface.php';
-require_once 'Auth/OpenID/HMACSHA1.php';
+require_once 'Auth/OpenID/HMAC.php';
 
 /**
  * This is a store for use in the worst case, when you have no way of
@@ -81,18 +79,11 @@ class Auth_OpenID_DumbStore extends Auth_OpenID_OpenIDStore {
     }
 
     /**
-     * This implementation does nothing.
-     */
-    function storeNonce($nonce)
-    {
-    }
-
-    /**
      * In a system truly limited to dumb mode, nonces must all be
      * accepted. This therefore always returns true, which makes
      * replay attacks feasible.
      */
-    function useNonce($nonce)
+    function useNonce($server_url, $timestamp, $salt)
     {
         return true;
     }
@@ -103,15 +94,6 @@ class Auth_OpenID_DumbStore extends Auth_OpenID_OpenIDStore {
     function getAuthKey()
     {
         return $this->auth_key;
-    }
-
-    /**
-     * This store is a dumb mode store, so this method is overridden
-     * to return true.
-     */
-    function isDumb()
-    {
-        return true;
     }
 }
 

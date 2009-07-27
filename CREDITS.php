@@ -2,7 +2,7 @@
 /**
  * @version		$Id$
  * @package		Joomla
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -24,6 +24,7 @@ Blagovest Dachev
 Andrew Eddie
 Anthony Ferrara
 David Gall
+Gergo Erdosi
 Rey Gigataras
 Wilco Jansen
 Johan Janssens
@@ -42,13 +43,15 @@ Robin Muilwijk
 Hannes Pappenberg
 Toby Patterson
 Nur Aini Rakhmawati
-Steve Reichgut
 Emir Sakic
 Rob Schley
+Amy Stephen
 Marko Schmuck
+Airton Torres
 Jui-Yu Tsai (Ray)
 Charl van Niekerk
 Laurens Vanderput
+Elin Warring
 Arno Zijlstra
 
 Documentation Contributers:
@@ -61,52 +64,56 @@ Chad McKissick
 René Serradeil
 Andy Wallace
 
-Translation contributers:
+Translation contributors:
 -------------------------
+Arabic Algeria (ar-DZ) - Saber Bousba
 Basque (eu-ES) - Basque Translation Team (Basque Language School of Santurtzi) - Abel Camacho, Pedro Lonbide
-Belarusian (be-BY) - Dennis Hermacki
-Bengali (bn-IN) - IndicJoomla! Team - Romit Chatterjee
-Bosnian (bs-BA) - Bosnian Joomla! Community (joomla.ba) - Emir Sakic
-Bulgarian (bg-BG) - Joomla! Bulgaria - Ivo Apostolov
-Catalan (ca-ES) - Joomla! Catalan Countries (joomla.cat) - Damià Verger
-Chinese-Traditional (zh-TW) - Traditional Chinese Translation Team - Eddy Chang
+Belarusian (be-BY) - Dennis Hermatski
+Bengali (bn-BD) – Kamal Sikder
+Bulgarian (bg-BG) - Joomla! Bulgaria - Ivo Apostolov, Yury Boev
+Catalan (ca-ES) - Joomla! Catalan Countries - Damià Verger
+Chinese Simplified (zh-CN) - Johnathan Cheung
+Chinese Traditional (zh-TW) - Traditional Chinese Translation Team - Eddy Chang
 Croatian (hr-HR) - Croatian Translation Team - Klaudia B.
 Czech (cs-CZ) - Czech Translation Team - Svatopluk Vit
 Danish (da-DK) - Danish Translation Team - Ronny Buelund, Mikael Jensen, Ole Bang Ottosen
 Dutch (nl-NL) - Joomla! Nederlands - Vancanneyt Sander
+English (en-US) - Joomla! Project - Jennifer Marriot
 Esperanto (eo-XX) - Esperanto Translation Team - Cindy McKee, Fabien Tschudy
-Finnish (fi-FI) - Finnish Translation Team (joomlaportal.fi) - Markku Suominen
-French (fr-FR) - French Translation Team (joomlafacile.com)
+Finnish (fi-FI) - Finnish Translation Team - Markku Suominen
+French (fr-FR) - French Translation Team - Nicolas Ogier
 German (de-DE)/(de-CH)/(de-AT) - J!German - Jan Erik Zassenhaus, Karin Nikolaj, David Jakob, Antonio Cambule\
-Greek (el-GR) - Greek Joomla Community [joomla.gr] - Aris Ntatsis
-Hebrew (he-IL) - SmartMtK.com for Joomla!Hebrew (joomla.co.il) - Mati (MtK) Kochen
+Greek (el-GR) - Greek Joomla Community - Aris Ntatsis
+Hebrew (he-IL) - Joomla!Hebrew - Mati (MtK) Kochen
 Hindi-Devanagari (hi-IN) - IndicJoomla! Team - Vishal Pahuja
-Hungarian (hu-HU) - Magyar Joomla! Felhasznalok Nemzetkozi Egyesulete (joomla.org.hu) - Jozsef Tamas Herczeg, Annamaria Ban
+Hungarian (hu-HU) - Magyar Joomla! Felhasznalok Nemzetkozi Egyesulete - Jozsef Tamas Herczeg, Annamaria Ban
+Icelandic (is-IS) - Joomlís! - Magnús Guðlaugsson
 Italian (it-IT) - Italian Translation Team - Stefania Gaianigo, Alessandro Rossi
-Japanese (ja-JP) - Japanese Translation Team - Nori Aki
-Korean (ko-KR) - Korean Translation Team - Song S. Kim
-Lao (lo-LA) - Joomla LaiLao Team (LaoOpenSource) - Akarawuth Tamrareang , Viengsakhone phanthanousy , Outhai Saioudom
+Japanese (ja-JP) - Japanese Translation Team - Noriaki Koide
+Laotian (lo-LA) - Joomla LaiLao Team (LaoOpenSource) - Akarawuth Tamrareang , Viengsakhone phanthanousy , Outhai Saioudom
 Latvian (lv-LV) - Joomla Latvian Team - Edgars Piruška, Iveta Rītiņa-Namiķe, Ingars Stepkāns
-Lithuanian (lt-LT) - Lithuanian Translation Team - Stasys
-Montenegrin (sr-ME) - Montenegrin Translation Team (joomlamontenegro.com)
-Norwegian bokmål (nb-NO) - Joomla! i Norge - Coordinators: Jens-Christian Skibakk and Rune Rasmussen
-Persian (fa-IR) - Joomfa Team(Joomla Farsi) - M.Alavi nik, Hamid abolhasani,Amin bagheri,Sayyed Saeed farzad,Sayyed ahmad sayyedi,Vahid Hosein Khani,Omid pileh var
+Lithuanian (lt-LT) - Lithuanian Translation Team - Stasys Svabas
+Macedonian (mk-MK) - ?
+Montenegrin (sr-ME) - Montenegrin Translation Team - Miljan Vujošević
+Norwegian bokmål (nb-NO) - Joomla! i Norge - Jens-Christian Skibakk, Rune Rasmussen
+Persian/Farsi (fa-IR) - Joomfa Team(Joomla Farsi) - M.Alavi nik, Hamid abolhasani,Amin bagheri,Sayyed Saeed farzad,Sayyed ahmad sayyedi,Vahid Hosein Khani,Omid pileh var
 Polish - Poland (pl-PL) - Polskie Centrum Joomla! - Michał Sobkowiak, Stefan Wajda
-Portuguese Brazilian (pt-BR) - Comunidade Joomla! Brasil (joomla.com.br) - Fabricio Elias Costa (FaBMak)
-Portuguese (pt-PT) - Comunidade JoomlaPT.com - Paulo Izidoro
-Romanian (ro-RO) - Romanian Joomla! Community (joomla.ro) - Cosmin Lebu
+Portuguese Brazilian (pt-BR) - Joomla! Brasil - Fabricio Elias Costa (FaBMak)
+Portuguese (pt-PT) - Joomla! Portugal - Paulo Izidoro
+Romanian (ro-RO) - Romanian Joomla! Community - Cosmin Lebu
 Russian (ru-RU) - Russian Translation Team - Serge Litvinov
-Serbian (sr-RS) - Joomla! Serbia team (joomlaserbia.com) - Marko Milenovic
-Sindhi (sd-PK) - Raheel H. Kaghzi
+Serbian (sr-RS) - Joomla! Serbia team - Marko Milenovic
+Sindhi (sd-PK) - Raheel H. Kaghzi, Shafiq-ur-rehman Khatri
+Sinhala (si-LK) - Rashan Anushka
 Slovak (sk-SK) - Slovak Translation Team - Karol Cejka, Viliam Kmec, Alexander Horvath, Marek Sabo
-Spanish (es-ES) TodosJuntos.org - Joomla!'s Spanish Community Translation Team
+Spanish (es-ES) - Joomla!'s Spanish Community Translation Team - Javier Galasse
 Swedish (sv-SE) - Swedish Translation Team (SvenskJoomla!) - Sune Hultman, Christer Gerhardsson
 Syriac (sy-IQ) - Pauls! Dinka
-Tamil (ta-LK) - UoM, LK
-Thai (th-TH) - Joomla LaiThai Team (JoomlaCorner) - Akarawuth Tamrareang , Supachai Teasakul
-Turkish (tr-TR) - Joomla! Turkiye (joomlaturkiye.org) - Oguz Kaan Cagatay Kilinc
+Tamil (ta-LK) - Sri Lanka -UoM, LK, sarves
+Thai (th-TH) - Joomla LaiThai Team (JoomlaCorner) - Akarawuth Tamrareang , Supachai Teasakul, Pisan Chueachatchai
+Turkish (tr-TR) - Joomla! Turkiye - Ümit Kenan Gönüllü, Uğur Uygur
 Ukrainian (uk-UA) - Ukrainian Translation Team - Denys Nosov
-Vietnamese (vi-VN) - Việt Nam Translation Team - Viet Vu Hoang
+Vietnamese (vi-VN) - Việt Nam Translation Team - Viet Hoang Vu
 
 Pizaa Bug and fun Event
 -----------------------
@@ -149,37 +156,43 @@ Archive
 -------
 Author:		Vincent Blavet
 Copyright:	Copyright (C) 1997-2003 The PHP Group
-License:	PHP License 3.0
+License:	BSD License
 
 Domit
 -----
 Author:		John Heinstein
 Copyright:	Copyright (C) 2004 John Heinstein. All rights reserved
-License:	GNU Lesser General Public License (LGPL)
+License:	GNU Lesser General Public License (LGPL) 2.1 or later
 
 Feedcreator
 -----------
 Author:		Kai Blankenhorn
 Copyright:	Copyright (C) Kai Blankenhorn
-License:	GNU Lesser General Public License (LGPL)
+License:	GNU Lesser General Public License (LGPL) 2.1 or later
 
 Geshi
 -----
 Author:		Nigel McNie
 Copyright:	Copyright (C) 2004 - 2007 Nigel McNie
-License:	GNU General Public License (GPL)
+License:	GNU General Public License (GPL) 2 or later
 
 js-calendar
 -----------
 Author:		Mihai Bazon
 Copyright:	Copyright (C) Mihai Bazon, 2002
-License:    GNU Lesser General Public License (LGPL)
+License:	GNU Lesser General Public License (LGPL) 2.1 or later
+
+js-dtree
+--------
+Author:		Geir Landrö
+Copyright:	Copyright (c) 2002-2003 Geir Landrö
+License:	Freeware license
 
 js-jscook-menu
 --------------
 Author:		Heng Yuan
 Copyright:	Copyright (C) 2002-2005 by Heng Yuan
-License:    MIT License
+License:	MIT License
 
 js-overlib
 ----------
@@ -187,23 +200,35 @@ Author:		Erik Bosrup
 Copyright:	Copyright (C) Erik Bosrup 1998-2004. All rights reserved.
 License:	Artistic (see http://www.bosrup.com/web/overlib/?License)
 
-js-tabs
--------
+js-squeezebox, js-swiff, js-fancyupload
+---------------------------------------
+Author:		Harald Kirschner
+Copyright:	Copyright (C) Harald Kirschner
+License:	MIT-style license
+
+js-tab-pane
+-----------
 Author:		Erik Arvidsson
 Copyright:	Copyright (C) 1998 - 2003 Erik Arvidsson
 License:	GNU General Public License (GPL)
+
+js-wz-tooltip
+-------------
+Author:		Walter Zorn
+Copyright:	Copyright (c) 2002-2004 Walter Zorn. All rights reserved.
+License:	GNU Lesser General Public License (LGPL) 2.1 or later
 
 Mootools
 --------
 Author:		Valerio Proietti
 Copyright:	Copyright (C) 2007 Valerio Proietti
-License:	MIT-style license
+License:	MIT license
 
-OpenID
-------
+PHP OpenID
+----------
 Author:		Janrain, Inc.
-Copyright:	Copyright (C) 2005 Janrain, Inc.
-License:	GNU Lesser General Public License (LGPL)
+Copyright:	Copyright (C) 2005 - 2008 Janrain, Inc.
+License:	Apache License 2.0
 
 patError
 ------
@@ -227,19 +252,25 @@ PHPGACL
 -------
 Author:		Mike Benoit
 Copyright:	Copyright (C) 2002, 2003 Mike Benoit
-License:	GNU Lesser General Public License (LGPL)
+License:	GNU Lesser General Public License (LGPL) 2.1 or later
 
 PHPInputfilter
 --------------
 Author:		Daniel Morris
 Copyright:	Copyright (C) Daniel Morris
-License:    GNU General Public License (GPL)
+License:	GNU General Public License (GPL)
 
 PHPMailer
 --------
 Author:		Brent R. Matzelle
 Copyright:	Copyright (C) 2001 - 2003 Brent R. Matzelle
-License:    GNU General Public License (GPL)
+License:	GNU Lesser General Public License (LGPL) 2.1
+
+phpUTF8
+-------
+Author:		Harry Fuecks
+Copyright:	Copyright (C) Harry Fuecks
+License:	GNU Lesser General Public License (LGPL) 2.1
 
 PHPXMLRPC
 ---------
@@ -247,20 +278,38 @@ Author:		Edd Dumbill
 Copyright:	Copyright (C) 1999,2000,2002 Edd Dumbill
 License:	BSD License
 
+SimplePie
+---------
+Author:		Ryan Parman and Geoffrey Sneddon
+Copyright:	Copyright (C) 2004-2007, Ryan Parman and Geoffrey Sneddon
+License:	BSD License
+
+TCPDF
+-----
+Author:		Nicola Asuni
+Copyright:	Copyright (C) Nicola Asuni
+License:	GNU Lesser General Public License (LGPL) 2.1
+
 TinyMCE
 -------
 Author:		Moxiecode Systems
 Copyright:	Copyright (C) 2005-2006, Moxiecode Systems AB, All rights reserved.
-License:	GNU Lesser General Public License (LGPL)
+License:	GNU Lesser General Public License (LGPL) 2.1
 
 VCard
 -----
 Author:		Kai Blankenhorn
 Copyright:	Copyright (C) Kai Blankenhorn
-License:	GNU General Public License (GPL)
+License:	GNU General Public License (GPL) 2 or later
 
-FOOOD Icons (Administrator Toolbar)
------------------------------------
+XStandard Lite
+--------------
+Author:		Belus Technology Inc.
+Copyright:	Copyright (c) 2006 Belus Technology Inc.
+License:	Freeware license
+
+FOOOD Icons
+-----------
 Copyright:	2004 iCandy Junior Icons
 License:	http://www.iconaholic.com/help/joomla.html
 Notes:		Please note these icons are NOT OPEN SOURCE but used with permission

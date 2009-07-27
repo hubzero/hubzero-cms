@@ -1,5 +1,5 @@
 <?php
-/** $Id: default_address.php 10381 2008-06-01 03:35:53Z pasamio $ */
+/** $Id: default_address.php 11328 2008-12-12 19:22:41Z kdevine $ */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <?php if ( ( $this->contact->params->get( 'address_check' ) > 0 ) &&  ( $this->contact->address || $this->contact->suburb  || $this->contact->state || $this->contact->country || $this->contact->postcode ) ) : ?>
@@ -49,7 +49,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </table>
 <br />
 <?php endif; ?>
-<?php if ( ($this->contact->email_to && $this->contact->params->get( 'show_email' )) || $this->contact->telephone  || $this->contact->fax || $this->contact->mobile || $this->contact->webpage ) : ?>
+<?php if ( ($this->contact->email_to && $this->contact->params->get( 'show_email' )) || 
+			($this->contact->telephone && $this->contact->params->get( 'show_telephone' )) || 
+			($this->contact->fax && $this->contact->params->get( 'show_fax' )) || 
+			($this->contact->mobile && $this->contact->params->get( 'show_mobile' )) || 
+			($this->contact->webpage && $this->contact->params->get( 'show_webpage' )) ) : ?>
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <?php if ( $this->contact->email_to && $this->contact->params->get( 'show_email' ) ) : ?>
 <tr>

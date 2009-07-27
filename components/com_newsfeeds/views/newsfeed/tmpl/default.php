@@ -1,12 +1,42 @@
 <?php // no direct acces
 defined('_JEXEC') or die('Restricted access'); ?>
-<div style="direction: <?php echo $this->newsfeed->rtl ? 'rtl' :'ltr'; ?>; text-align: <?php echo $this->newsfeed->rtl ? 'right' :'left'; ?>">
+<?php
+		$lang = &JFactory::getLanguage();
+		$myrtl =$this->newsfeed->rtl;
+		 if ($lang->isRTL() && $myrtl==0){
+		   $direction= "direction:rtl !important;";
+		   $align= "text-align:right !important;";
+		   }
+		 else if ($lang->isRTL() && $myrtl==1){
+		   $direction= "direction:ltr !important;";
+		   $align= "text-align:left !important;";
+		   }
+		  else if ($lang->isRTL() && $myrtl==2){
+		   $direction= "direction:rtl !important;";
+		   $align= "text-align:right !important;";
+		   }
+
+		else if ($myrtl==0) {
+		$direction= "direction:ltr !important;";
+		   $align= "text-align:left !important;";
+		   }
+		else if ($myrtl==1) {
+		$direction= "direction:ltr !important;";
+		   $align= "text-align:left !important;";
+		   }
+		else if ($myrtl==2) {
+		   $direction= "direction:rtl !important;";
+		   $align= "text-align:right !important;";
+		   }
+
+?>
+<div style="<?php echo $direction; ?><?php echo $align; ?>">
 <?php if ($this->params->get('show_page_title', 1)) : ?>
-	<div class="componentheading<?php echo $this->params->get('pageclass_sfx')?>"><?php echo $this->escape($this->params->get('page_title')); ?></div>
+	<div class="componentheading<?php echo $this->params->get('pageclass_sfx')?>" style="<?php echo $direction; ?><?php echo $align; ?>"><?php echo $this->escape($this->params->get('page_title')); ?></div>
 <?php endif; ?>
 <table width="100%" class="contentpane<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
 <tr>
-	<td class="contentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+	<td class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>" style="<?php echo $direction; ?><?php echo $align; ?>">
 		<a href="<?php echo $this->newsfeed->channel['link']; ?>" target="_blank">
 			<?php echo str_replace('&apos;', "'", $this->newsfeed->channel['title']); ?></a>
 	</td>

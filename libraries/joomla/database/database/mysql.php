@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mysql.php 10796 2008-08-25 07:51:20Z tcp $
+* @version		$Id: mysql.php 11316 2008-11-27 03:11:24Z ian $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -209,21 +209,23 @@ class JDatabaseMySQL extends JDatabase
 			return false;
 		}
 
+		// Take a local copy so that we don't modify the original query and cause issues later
+		$sql = $this->_sql;
 		if ($this->_limit > 0 || $this->_offset > 0) {
-			$this->_sql .= ' LIMIT '.$this->_offset.', '.$this->_limit;
+			$sql .= ' LIMIT '.$this->_offset.', '.$this->_limit;
 		}
 		if ($this->_debug) {
 			$this->_ticker++;
-			$this->_log[] = $this->_sql;
+			$this->_log[] = $sql;
 		}
 		$this->_errorNum = 0;
 		$this->_errorMsg = '';
-		$this->_cursor = mysql_query( $this->_sql, $this->_resource );
+		$this->_cursor = mysql_query( $sql, $this->_resource );
 
 		if (!$this->_cursor)
 		{
 			$this->_errorNum = mysql_errno( $this->_resource );
-			$this->_errorMsg = mysql_error( $this->_resource )." SQL=$this->_sql";
+			$this->_errorMsg = mysql_error( $this->_resource )." SQL=$sql";
 
 			if ($this->_debug) {
 				JError::raiseError(500, 'JDatabaseMySQL::query: '.$this->_errorNum.' - '.$this->_errorMsg );
@@ -256,7 +258,7 @@ class JDatabaseMySQL extends JDatabase
 		$this->_errorNum = 0;
 		$this->_errorMsg = '';
 		if ($p_transaction_safe) {
-			$this->_sql = rtrim($this->_sql, '; \t\r\n\0');
+			$this->_sql = rtrim($this->_sql, "; \t\r\n\0");
 			$si = $this->getVersion();
 			preg_match_all( "/(\d+)\.(\d+)\.(\d+)/i", $si, $m );
 			if ($m[1] >= 4) {

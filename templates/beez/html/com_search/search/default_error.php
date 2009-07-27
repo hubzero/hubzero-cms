@@ -1,4 +1,4 @@
-<?php // @version $Id: default_error.php 10381 2008-06-01 03:35:53Z pasamio $
+<?php // @version $Id: default_error.php 11299 2008-11-22 01:40:44Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -6,5 +6,5 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo JText::_('Error') ?>
 </h2>
 <div class="error<?php echo $this->params->get( 'pageclass_sfx' ) ?>">
-	<p><?php $this->escape($this->error); ?></p>
+	<p><?php echo $this->escape($this->error); ?></p>
 </div>

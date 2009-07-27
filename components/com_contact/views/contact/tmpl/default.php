@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: default.php 10967 2008-09-26 00:01:51Z ian $
+ * $Id: default.php 11328 2008-12-12 19:22:41Z kdevine $
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -21,7 +21,7 @@ $cparams = JComponentHelper::getParams ('com_media');
 		<?php echo JText::_( 'Select Contact' ); ?>:
 			<br />
 			<?php echo JHTML::_('select.genericlist',  $this->contacts, 'contact_id', 'class="inputbox" onchange="this.form.submit()"', 'id', 'name', $this->contact->id);?>
-			<option type="hidden" name="option" value="com_contact" />
+			<input type="hidden" name="option" value="com_contact" />
 		</form>
 	</td>
 </tr>
@@ -49,7 +49,7 @@ $cparams = JComponentHelper::getParams ('com_media');
 			<td rowspan="2" align="right" valign="top">
 			<?php if ( $this->contact->image && $this->contact->params->get( 'show_image' ) ) : ?>
 				<div style="float: right;">
-					<?php echo JHTML::_('image', '/images/stories' . '/'.$this->contact->image, JText::_( 'Contact' ), array('align' => 'middle')); ?>
+					<?php echo JHTML::_('image', 'images/stories' . '/'.$this->contact->image, JText::_( 'Contact' ), array('align' => 'middle')); ?>
 				</div>
 			<?php endif; ?>
 			</td>

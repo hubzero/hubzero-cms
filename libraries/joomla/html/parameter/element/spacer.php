@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: spacer.php 10707 2008-08-21 09:52:47Z eddieajau $
+* @version		$Id: spacer.php 11371 2008-12-30 01:31:50Z ian $
 * @package		Joomla.Framework
 * @subpackage	Parameter
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -40,7 +40,7 @@ class JElementSpacer extends JElement
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 		if ($value) {
-			return $value;
+			return JText::_($value);
 		} else {
 			return '<hr />';
 		}

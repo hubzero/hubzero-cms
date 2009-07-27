@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: application.php 10851 2008-08-29 22:36:02Z willebil $
+* @version		$Id: application.php 11409 2009-01-10 02:27:08Z willebil $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -282,7 +282,7 @@ class JApplication extends JObject
 		// If we don't start with a http we need to fix this before we proceed
 		// We could validly start with something else (e.g. ftp), though this would
 		// be unlikely and isn't supported by this API
-		if(!preg_match( '#^http#', $url )) {
+		if(!preg_match( '#^http#i', $url )) {
 			$uri =& JURI::getInstance();
 			$prefix = $uri->toString(Array('scheme', 'user', 'pass', 'host', 'port'));
 			if($url[0] == '/') {
@@ -748,6 +748,18 @@ class JApplication extends JObject
 	{
 		$options = array();
 		$options['name'] = $name;
+		switch($this->_clientId) {
+			case 0:
+				if($this->getCfg('force_ssl') == 2) {
+					$options['force_ssl'] = true;
+				}
+				break;
+			case 1:
+				if($this->getCfg('force_ssl') >= 1) {
+					$options['force_ssl'] = true;
+				}
+				break;
+		}
 
 		$session =& JFactory::getSession($options);
 

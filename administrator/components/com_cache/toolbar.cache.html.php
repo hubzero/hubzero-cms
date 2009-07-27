@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: toolbar.cache.html.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: toolbar.cache.html.php 11393 2009-01-05 02:11:06Z ian $
  * @package		Joomla
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -26,8 +26,15 @@ class TOOLBAR_cache
 	*/
 	function _DEFAULT() {
 
-		JToolBarHelper::title( JText::_( 'Cache Manager' ), 'cache.png' );
+		JToolBarHelper::title( JText::_( 'Cache Manager - Clean Cache Admin' ), 'checkin.png' );
 		JToolBarHelper::custom( 'delete', 'delete.png', 'delete_f2.png', 'Delete', true );
+		JToolBarHelper::help( 'screen.cache' );
+	}
+
+	function _PURGEADMIN() {
+
+		JToolBarHelper::title( JText::_( 'Cache Manager - Purge Cache Admin' ), 'checkin.png' );
+		JToolBarHelper::custom( 'purge', 'delete.png', 'delete_f2.png', 'Purge expired', false );
 		JToolBarHelper::help( 'screen.cache' );
 	}
 }

@@ -1,4 +1,4 @@
-<?php // @version $Id: default.php 10721 2008-08-22 05:22:43Z tcp $
+<?php // @version $Id: default.php 11307 2008-11-24 00:21:48Z ian $
 defined('_JEXEC') or die('Restricted access');
 $cparams = JComponentHelper::getParams ('com_media');
 ?>
@@ -33,7 +33,7 @@ $cparams = JComponentHelper::getParams ('com_media');
 
 	<?php if ($this->contact->image && $this->contact->params->get('show_image')) : ?>
 	<div style="float: right;">
-		<?php echo JHTML::_('image', $cparams->get('image_path').'/'.$this->contact->image, JText::_( 'Contact' ), array('align' => 'middle')); ?>
+		<?php echo JHTML::_('image', 'images/stories' . '/'.$this->contact->image, JText::_( 'Contact' ), array('align' => 'middle')); ?>
 	</div>
 	<?php endif; ?>
 

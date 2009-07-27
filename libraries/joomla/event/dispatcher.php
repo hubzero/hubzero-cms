@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: dispatcher.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: dispatcher.php 11387 2009-01-04 02:47:53Z ian $
 * @package		Joomla.Framework
 * @subpackage	Event
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -27,7 +27,7 @@ jimport('joomla.base.observable');
  * @subpackage	Event
  * @since	1.5
  * @see		JPlugin
- * @link http://dev.joomla.org/component/option,com_jd-wiki/Itemid,31/id,tutorials:plugins/ Plugins tutorial
+ * @link http://docs.joomla.org/Tutorial:Plugins Plugin tutorials
  */
 class JDispatcher extends JObservable
 {

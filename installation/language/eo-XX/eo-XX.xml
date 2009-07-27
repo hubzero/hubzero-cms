@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metafile version="1.5" client="installation" >
 	<name>Esperanto</name>
-	<version>1.5.4</version>
+	<version>1.5.9</version>
 	<creationDate>March 2008</creationDate>
 	<author>liberaprogramaro.net</author>
-	<authorEmail>joomla@liberaprogramaro.net</authorEmail>
-	<authorUrl>www.joomla.org</authorUrl>
-	<copyright>Copyright (C) 2005 - 2008 Open Source Matters. Ĉiuj rajtoj rezervitaj.</copyright>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>Esperanta lingvo por instalilo</description>
 	<metadata>

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: toolbar.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: toolbar.php 11307 2008-11-24 00:21:48Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -159,7 +159,7 @@ class JToolBarHelper
 	{
 		$bar = & JToolBar::getInstance('toolbar');
 		// Add an upload button
-		$bar->appendButton( 'Popup', 'upload', $alt, "index.php?option=com_media&tmpl=component&task=popupUpload&directory=$directory", 550, 80 );
+		$bar->appendButton( 'Popup', 'upload', $alt, "index.php?option=com_media&tmpl=component&task=popupUpload&directory=$directory", 640, 520 );
 	}
 
 	/**

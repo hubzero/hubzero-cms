@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: controller.php 11299 2008-11-22 01:40:44Z ian $
  * @package		Joomla
  * @subpackage	Users
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -459,6 +459,6 @@ class UsersController extends JController
 	function contact()
 	{
 		$contact_id = JRequest::getVar( 'contact_id', '', 'post', 'int' );
-		$this->setRedirect( 'index.php?option=com_contact&atask=edit&cid[]='. $contact_id );
+		$this->setRedirect( 'index.php?option=com_contact&task=edit&cid[]='. $contact_id );
 	}
 }

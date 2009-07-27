@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: admin.cache.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: admin.cache.php 11403 2009-01-06 06:19:31Z ian $
  * @package		Joomla
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -40,7 +40,12 @@ switch ( JRequest::getVar( 'task' ) )
 		CacheController::deleteCache($cid);
 		CacheController::showCache();
 		break;
-
+	case 'purgeadmin':
+		CacheController::showPurgeCache();
+		break;
+	case 'purge':
+		CacheController::purgeCache();
+		break;
 	default :
 		CacheController::showCache();
 		break;
@@ -94,5 +99,18 @@ class CacheController
 
 		$cmData = new CacheData($client->path.DS.'cache');
 		$cmData->cleanCacheList( $cid );
+	}
+	function showPurgeCache()
+	{	
+		// Check for request forgeries
+		CacheView::showPurgeExecute();
+	}
+	function purgeCache()
+	{	
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		$cache =& JFactory::getCache('');
+		$cache->gc();
+		CacheView::purgeSuccess();
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: content.php 11214 2008-10-26 01:29:04Z ian $
+* @version		$Id: content.php 11305 2008-11-23 19:14:25Z ian $
 * @package		Joomla.Framework
 * @subpackage	Table
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -152,7 +152,7 @@ class JTableContent extends JTable
 					$clean_keys[] = trim($key);
 				}
 			}
-			$this->metakey = implode(",", $clean_keys); // put array back together delimited by commas
+			$this->metakey = implode(", ", $clean_keys); // put array back together delimited by ", "
 		}
 		
 		// clean up description -- eliminate quotes and <> brackets

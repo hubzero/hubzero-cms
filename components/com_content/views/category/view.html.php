@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10868 2008-08-30 07:22:26Z willebil $
+ * @version		$Id: view.html.php 11408 2009-01-10 02:24:28Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -179,6 +179,10 @@ class ContentViewCategory extends ContentView
 			else
 			{
 				$item->link = JRoute::_('index.php?option=com_user&task=register');
+				$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
+				$fullURL = new JURI($item->link);
+				$fullURL->setVar('return', base64_encode($returnURL));
+				$item->link = $fullURL->toString();
 				$item->readmore_register = true;
 			}
 			$item->created	= JHTML::_('date', $item->created, $this->params->get('date_format'));
@@ -237,6 +241,10 @@ class ContentViewCategory extends ContentView
 			else
 			{
 				$item->readmore_link = JRoute::_('index.php?option=com_user&view=login');
+				$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
+				$fullURL = new JURI($item->readmore_link);
+				$fullURL->setVar('return', base64_encode($returnURL));
+				$item->readmore_link = $fullURL->toString();
 				$item->readmore_register = true;
 			}
 		}
@@ -258,9 +266,10 @@ class ContentViewCategory extends ContentView
 	{
 		// Table ordering values
 		$filter				= JRequest::getString('filter');
-		$filter_order		= JRequest::getCmd('filter_order');
-		$filter_order_Dir	= JRequest::getCmd('filter_order_Dir');
-
+		global $mainframe;
+		$itemid = JRequest::getInt('id',0) . ':' . JRequest::getInt('Itemid',0);
+		$filter_order  = $mainframe->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'cmd');
+		$filter_order_Dir = $mainframe->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
 		$lists['task']      = 'category';
 		$lists['filter']    = $filter;
 		$lists['order']     = $filter_order;

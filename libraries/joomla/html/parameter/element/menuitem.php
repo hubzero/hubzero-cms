@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: menuitem.php 11214 2008-10-26 01:29:04Z ian $
+* @version		$Id: menuitem.php 11324 2008-12-05 19:06:24Z kdevine $
 * @package		Joomla.Framework
 * @subpackage	Parameter
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -115,7 +115,7 @@ class JElementMenuItem extends JElement
 					if ( JRequest::getString('option', '', 'get') == 'com_menus' ) {
 						$currentItemArray = JRequest::getVar('cid', array(0), '', 'array');
 						$currentItemId = (int) $currentItemArray[0];
-						$currentItemType = JRequest::getString('type', '', 'get');
+						$currentItemType = JRequest::getString('type', $item->type, 'get');
 						if ( $currentItemId == $item->id && $currentItemType != $item->type) {
 							$item->type = $currentItemType;
 						}

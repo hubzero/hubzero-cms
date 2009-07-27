@@ -1,6 +1,4 @@
 <?php
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
 
 /**
  * This is the PHP OpenID library by JanRain, Inc.
@@ -15,16 +13,22 @@ defined('JPATH_BASE') or die();
  *
  * @package OpenID
  * @author JanRain, Inc. <openid@janrain.com>
- * @copyright 2005 Janrain, Inc.
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
+ * @copyright 2005-2008 Janrain, Inc.
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache
  */
+
+/**
+ * The library version string
+ */
+define('Auth_OpenID_VERSION', '2.1.2');
 
 /**
  * Require the fetcher code.
  */
-require_once "Services/Yadis/PlainHTTPFetcher.php";
-require_once "Services/Yadis/ParanoidHTTPFetcher.php";
+require_once "Auth/Yadis/PlainHTTPFetcher.php";
+require_once "Auth/Yadis/ParanoidHTTPFetcher.php";
 require_once "Auth/OpenID/BigMath.php";
+require_once "Auth/OpenID/URINorm.php";
 
 /**
  * Status code returned by the server when the only option is to show
@@ -99,7 +103,7 @@ define('Auth_OpenID_punct',
        "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
 
 if (Auth_OpenID_getMathLib() === null) {
-    define('Auth_OpenID_NO_MATH_SUPPORT', true);
+    Auth_OpenID_setNoMathSupport();
 }
 
 /**
@@ -111,41 +115,85 @@ if (Auth_OpenID_getMathLib() === null) {
 class Auth_OpenID {
 
     /**
-     * These namespaces are automatically fixed in query arguments by
-     * Auth_OpenID::fixArgs.
+     * Return true if $thing is an Auth_OpenID_FailureResponse object;
+     * false if not.
+     *
+     * @access private
      */
-    function getOpenIDNamespaces()
+    function isFailure($thing)
     {
-        return array('openid',
-                     'sreg');
+        return is_a($thing, 'Auth_OpenID_FailureResponse');
     }
 
     /**
-     * Rename query arguments back to 'openid.' from 'openid_'
+     * Gets the query data from the server environment based on the
+     * request method used.  If GET was used, this looks at
+     * $_SERVER['QUERY_STRING'] directly.  If POST was used, this
+     * fetches data from the special php://input file stream.
+     *
+     * Returns an associative array of the query arguments.
+     *
+     * Skips invalid key/value pairs (i.e. keys with no '=value'
+     * portion).
+     *
+     * Returns an empty array if neither GET nor POST was used, or if
+     * POST was used but php://input cannot be opened.
      *
      * @access private
-     * @param array $args An associative array of URL query arguments
      */
-    function fixArgs($args)
+    function getQuery($query_str=null)
     {
-        foreach (array_keys($args) as $key) {
-            $fixed = $key;
-            if (preg_match('/^openid/', $key)) {
-                foreach (Auth_OpenID::getOpenIDNamespaces() as $ns) {
-                    if (preg_match('/'.$ns.'_/', $key)) {
-                        $fixed = preg_replace('/'.$ns.'_/', $ns.'.', $fixed);
-                    }
-                }
+        $data = array();
 
-                if ($fixed != $key) {
-                    $val = $args[$key];
-                    unset($args[$key]);
-                    $args[$fixed] = $val;
-                }
+        if ($query_str !== null) {
+            $data = Auth_OpenID::params_from_string($query_str);
+        } else if (!array_key_exists('REQUEST_METHOD', $_SERVER)) {
+            // Do nothing.
+        } else {
+          // XXX HACK FIXME HORRIBLE.
+          //
+          // POSTing to a URL with query parameters is acceptable, but
+          // we don't have a clean way to distinguish those parameters
+          // when we need to do things like return_to verification
+          // which only want to look at one kind of parameter.  We're
+          // going to emulate the behavior of some other environments
+          // by defaulting to GET and overwriting with POST if POST
+          // data is available.
+          $data = Auth_OpenID::params_from_string($_SERVER['QUERY_STRING']);
+
+          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $str = file_get_contents('php://input');
+
+            if ($str === false) {
+              $post = array();
+            } else {
+              $post = Auth_OpenID::params_from_string($str);
             }
+
+            $data = array_merge($data, $post);
+          }
         }
 
-        return $args;
+        return $data;
+    }
+
+    function params_from_string($str)
+    {
+        $chunks = explode("&", $str);
+
+        $data = array();
+        foreach ($chunks as $chunk) {
+            $parts = explode("=", $chunk, 2);
+
+            if (count($parts) != 2) {
+                continue;
+            }
+
+            list($k, $v) = $parts;
+            $data[$k] = urldecode($v);
+        }
+
+        return $data;
     }
 
     /**
@@ -160,16 +208,36 @@ class Auth_OpenID {
         if (is_dir($dir_name) || @mkdir($dir_name)) {
             return true;
         } else {
-            if (Auth_OpenID::ensureDir(dirname($dir_name))) {
-                return is_dir($dir_name) || @mkdir($dir_name);
-            } else {
-                return false;
+            $parent_dir = dirname($dir_name);
+
+            // Terminal case; there is no parent directory to create.
+            if ($parent_dir == $dir_name) {
+                return true;
             }
+
+            return (Auth_OpenID::ensureDir($parent_dir) && @mkdir($dir_name));
         }
     }
 
     /**
-     * Convenience function for getting array values.
+     * Adds a string prefix to all values of an array.  Returns a new
+     * array containing the prefixed values.
+     *
+     * @access private
+     */
+    function addPrefix($values, $prefix)
+    {
+        $new_values = array();
+        foreach ($values as $s) {
+            $new_values[] = $prefix . $s;
+        }
+        return $new_values;
+    }
+
+    /**
+     * Convenience function for getting array values.  Given an array
+     * $arr and a key $key, get the corresponding value from the array
+     * or return $default if the key is absent.
      *
      * @access private
      */
@@ -182,10 +250,38 @@ class Auth_OpenID {
                 return $fallback;
             }
         } else {
-            trigger_error("Auth_OpenID::arrayGet expected " .
-                          "array as first parameter", E_USER_WARNING);
+            trigger_error("Auth_OpenID::arrayGet (key = ".$key.") expected " .
+                          "array as first parameter, got " .
+                          gettype($arr), E_USER_WARNING);
+
             return false;
         }
+    }
+
+    /**
+     * Replacement for PHP's broken parse_str.
+     */
+    function parse_str($query)
+    {
+        if ($query === null) {
+            return null;
+        }
+
+        $parts = explode('&', $query);
+
+        $new_parts = array();
+        for ($i = 0; $i < count($parts); $i++) {
+            $pair = explode('=', $parts[$i]);
+
+            if (count($pair) != 2) {
+                continue;
+            }
+
+            list($key, $value) = $pair;
+            $new_parts[$key] = urldecode($value);
+        }
+
+        return $new_parts;
     }
 
     /**
@@ -216,6 +312,7 @@ class Auth_OpenID {
      * "Appends" query arguments onto a URL.  The URL may or may not
      * already have arguments (following a question mark).
      *
+     * @access private
      * @param string $url A URL, which may or may not already have
      * arguments.
      * @param array $args Either an array key/value pairs or an array of
@@ -256,38 +353,6 @@ class Auth_OpenID {
     }
 
     /**
-     * Turn a string into an ASCII string.
-     *
-     * Replace non-ascii characters with a %-encoded, UTF-8
-     * encoding. This function will fail if the input is a string and
-     * there are non-7-bit-safe characters. It is assumed that the
-     * caller will have already translated the input into a Unicode
-     * character sequence, according to the encoding of the HTTP POST
-     * or GET.
-     *
-     * Do not escape anything that is already 7-bit safe, so we do the
-     * minimal transform on the identity URL
-     *
-     * @access private
-     */
-    function quoteMinimal($s)
-    {
-        $res = array();
-        for ($i = 0; $i < strlen($s); $i++) {
-            $c = $s[$i];
-            if ($c >= "\x80") {
-                for ($j = 0; $j < count(utf8_encode($c)); $j++) {
-                    array_push($res, sprintf("%02X", ord($c[$j])));
-                }
-            } else {
-                array_push($res, $c);
-            }
-        }
-
-        return implode('', $res);
-    }
-
-    /**
      * Implements python's urlunparse, which is not available in PHP.
      * Given the specified components of a URL, this function rebuilds
      * and returns the URL.
@@ -303,7 +368,7 @@ class Auth_OpenID {
      * specified components.
      */
     function urlunparse($scheme, $host, $port = null, $path = '/',
-                                    $query = '', $fragment = '')
+                        $query = '', $fragment = '')
     {
 
         if (!$scheme) {
@@ -315,7 +380,7 @@ class Auth_OpenID {
         }
 
         if (!$path) {
-            $path = '/';
+            $path = '';
         }
 
         $result = $scheme . "://" . $host;
@@ -349,66 +414,139 @@ class Auth_OpenID {
      */
     function normalizeUrl($url)
     {
-        if ($url === null) {
+        @$parsed = parse_url($url);
+
+        if (!$parsed) {
             return null;
         }
 
-        assert(is_string($url));
-
-        $old_url = $url;
-        $url = trim($url);
-
-        if (strpos($url, "://") === false) {
-            $url = "http://" . $url;
-        }
-
-        $parsed = @parse_url($url);
-
-        if ($parsed === false) {
-            return null;
-        }
-
-        $defaults = array(
-                          'scheme' => '',
-                          'host' => '',
-                          'path' => '',
-                          'query' => '',
-                          'fragment' => '',
-                          'port' => ''
-                          );
-
-        $parsed = array_merge($defaults, $parsed);
-
-        if (($parsed['scheme'] == '') ||
-            ($parsed['host'] == '')) {
-            if ($parsed['path'] == '' &&
-                $parsed['query'] == '' &&
-                $parsed['fragment'] == '') {
+        if (isset($parsed['scheme']) &&
+            isset($parsed['host'])) {
+            $scheme = strtolower($parsed['scheme']);
+            if (!in_array($scheme, array('http', 'https'))) {
                 return null;
             }
-
-            $url = 'http://' + $url;
-            $parsed = parse_url($url);
-
-            $parsed = array_merge($defaults, $parsed);
+        } else {
+            $url = 'http://' . $url;
         }
 
-        $tail = array_map(array('Auth_OpenID', 'quoteMinimal'),
-                          array($parsed['path'],
-                                $parsed['query'],
-                                $parsed['fragment']));
-        if ($tail[0] == '') {
-            $tail[0] = '/';
+        $normalized = Auth_OpenID_urinorm($url);
+        if ($normalized === null) {
+            return null;
+        }
+        list($defragged, $frag) = Auth_OpenID::urldefrag($normalized);
+        return $defragged;
+    }
+
+    /**
+     * Replacement (wrapper) for PHP's intval() because it's broken.
+     *
+     * @access private
+     */
+    function intval($value)
+    {
+        $re = "/^\\d+$/";
+
+        if (!preg_match($re, $value)) {
+            return false;
         }
 
-        $url = Auth_OpenID::urlunparse($parsed['scheme'], $parsed['host'],
-                                       $parsed['port'], $tail[0], $tail[1],
-                                       $tail[2]);
+        return intval($value);
+    }
 
-        assert(is_string($url));
+    /**
+     * Count the number of bytes in a string independently of
+     * multibyte support conditions.
+     *
+     * @param string $str The string of bytes to count.
+     * @return int The number of bytes in $str.
+     */
+    function bytes($str)
+    {
+        return strlen(bin2hex($str)) / 2;
+    }
 
-        return $url;
+    /**
+     * Get the bytes in a string independently of multibyte support
+     * conditions.
+     */
+    function toBytes($str)
+    {
+        $hex = bin2hex($str);
+
+        if (!$hex) {
+            return array();
+        }
+
+        $b = array();
+        for ($i = 0; $i < strlen($hex); $i += 2) {
+            $b[] = chr(base_convert(substr($hex, $i, 2), 16, 10));
+        }
+
+        return $b;
+    }
+
+    function urldefrag($url)
+    {
+        $parts = explode("#", $url, 2);
+
+        if (count($parts) == 1) {
+            return array($parts[0], "");
+        } else {
+            return $parts;
+        }
+    }
+
+    function filter($callback, &$sequence)
+    {
+        $result = array();
+
+        foreach ($sequence as $item) {
+            if (call_user_func_array($callback, array($item))) {
+                $result[] = $item;
+            }
+        }
+
+        return $result;
+    }
+
+    function update(&$dest, &$src)
+    {
+        foreach ($src as $k => $v) {
+            $dest[$k] = $v;
+        }
+    }
+
+    /**
+     * Wrap PHP's standard error_log functionality.  Use this to
+     * perform all logging. It will interpolate any additional
+     * arguments into the format string before logging.
+     *
+     * @param string $format_string The sprintf format for the message
+     */
+    function log($format_string)
+    {
+        $args = func_get_args();
+        $message = call_user_func_array('sprintf', $args);
+        error_log($message);
+    }
+
+    function autoSubmitHTML($form, $title="OpenId transaction in progress")
+    {
+        return("<html>".
+               "<head><title>".
+               $title .
+               "</title></head>".
+               "<body onload='document.forms[0].submit();'>".
+               $form .
+               "<script>".
+               "var elements = document.forms[0].elements;".
+               "for (var i = 0; i < elements.length; i++) {".
+               "  elements[i].style.display = \"none\";".
+               "}".
+               "</script>".
+               "</body>".
+               "</html>");
     }
 }
-
 ?>

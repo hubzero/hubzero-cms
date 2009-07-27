@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: menu.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: menu.php 11299 2008-11-22 01:40:44Z ian $
  * @package		Joomla.Framework
  * @subpackage	Application
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -252,7 +252,6 @@ class JMenu extends JObject
 	 * Getter for the menu array
 	 *
 	 * @access public
-	 * @param string $name The menu name
 	 * @return array
 	 */
 	function getMenu() {

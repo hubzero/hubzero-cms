@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metafile version="1.5" client="installation" >
     <name>Spanish (Español internacional)</name>
-    <version>1.5.4</version>
+    <version>1.5.9</version>
     <creationDate>Jun 2008</creationDate>
     <author>TodosJuntos.org Comunidad Hispana de Joomla!</author>
-    <authorEmail>traduccion@todosjuntos.org</authorEmail>
-    <authorUrl>www.todosjuntos.org</authorUrl>
-	<copyright>Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <description>Spanish language file for web installer</description>
+    <description>Spanish language installation for Joomla</description>
     <metadata>
     	<name>Spanish (Español internacional)</name>
     	<tag>es-ES</tag>

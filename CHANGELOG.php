@@ -1,8 +1,8 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 11253 2008-11-10 23:38:48Z ircmaxell $
+* @version		$Id: CHANGELOG.php 11371 2008-12-30 01:31:50Z ian $
 * @package		Joomla
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -36,6 +36,142 @@ $ -> Language fix or change
 ^ -> Change
 - -> Removed
 ! -> Note
+
+-------------------- 1.5.9 Stable Release [9-January-2008] ------------------
+
+09-Jan-2009 Ian MacLennan
+ # [#14495] Issue 14398 fix doesn't work with SEF off
+
+09-Jan-2009 Wilco Jansen
+ ^ Updated the CREDITS.php file with new list of translators, and some contributers
+ ^ Changed  /installation/template/tmpl/finish.html updated link to community site
+ ^ Updated language packs to 1.5.9 (thanks JM for the huge job of coordinating this)
+ ^ Activated installation check
+ ^ Implemented security fixes
+ ! Thanks to all who provided the patches and worked hard on testing and documenting this release
+
+06-Jan-2009 Ian MacLennan
+ # [#14414] string is unnecessary
+ # [#14433] Fix for openid transition issues
+ # [#14434] Typo in Cache Manager
+
+05-Jan-2009 Kevin Devine
+ # [#14415] Rhuk Milkyway: Some strings unnecessary
+ # [#14389] String missing in en-GB.com_installer.ini
+ # [#10680] Blank page if vcard is not enabled in the contact parameters, but selected
+ # [#13942] The 'modules' view in com_installer does not display author email and url
+ # [#14070] Article archive pagination
+ # [#14339] JString bug for strspn()
+ # [#13949] robots & author metadata lost on copy
+ # [#12812] 1.5.7. uri.php changes break backend urls if $live_site=Http (note uppercase H)
+ # [#14394] Poll error message strange
+
+05-Jan-2009 Sam Moffatt
+ - Removed extraneous com_statistics language file
+
+04-Jan-2009 Ian MacLennan
+ # [#14408] Weird characters in LICENSES.php
+ # [#14395] e-mail a friend shows language string not the translation
+ # [#14374] One english remaining string in mod_search
+ # [#11871] vCard displays excess spaces
+ # [#14412] 404 if menu access is set to Public and Contact item to Registered
+ # [#14402] In Category List, user cannot see what is being filtered
+ # [#14391] en-GB.com_statistics.ini should be deleted
+ # [#14410] Outdated link in the installer language file
+ # [#14317] Cache space not freed
+ # [#12577] Small change in components/com_banners/models/banner.php
+
+03-Jan-2009 Ian MacLennan
+ # [#14392] Register to read more should redirect to article, not front page.
+ # [#14390] Hits Filter in Category List Uses Like Instead of Greater Than or Equal
+ # [#14313] short php notation in beez as committed in 12798 creates problems on Windows hosting
+ # [#14360] Spacers JAPurity Translatable
+ # [#14171] No image
+ # [#14106] Changing the access for plugins on the plugins list does not work in 1.5.8
+ # [#13811] Wrong license for PHPMailer in CREDITS.php
+ # [#13517] CSS errors in rhuk_milkyway/css/template_rtl.css
+ # [#12023] Aditional Help server is deleted when helper servers are reset
+ # [#11874] New modules cannot be added when there are no modules in the table for a given client
+ # [#10840] Cache:filter on view table category doesn't work if cache is enabled
+ # [#14227] Fix for old dev.joomla.org links
+ # [#14398] Category list loses column sort when you navigate to new page
+
+01-Jan-2009 Wilco Jansen
+ ! Revert CHANGELOG.php, COPYRIGHT.php, CREDITS.php, INSTALL.php, LICENSE.php, LICENSES.php to webroot
+
+01-Jan-2009 Ian MacLennan
+ # [#12217] Current OpenID used by joomla does not work with Yahoo - OpenID 2.0 protocol is required
+
+30-Dec-2008 Ian MacLennan
+ # [#12746] Replace PEAR with a GPL alternative - updated Archive_Tar to relicensed BSD version.
+
+30-Dec-2008 Wilco Jansen
+ - Removed CHANGELOG.php, COPYRIGHT.php, CREDITS.php, INSTALL.php, LICENSE.php, LICENSES.php from webroot
+ ^ Moved informational php files from previous line to text versions in install/information
+ ! See discussion at http://mail.google.com/mail/#inbox/11e86e6661059074
+
+29-Dec-2008 Ian MacLennan
+ # [#14308] Spacer Values Not Translatable
+ # [#14196] Non registered users can print full pdf of registered article
+ # [#13490] Fulltext search for Uncategorized and Archived articles
+ # [#11235] RTL feeds PARAM not saved in db + rtl feeds not correctly displayed in Milkyway as well as in Beez/solution included
+
+12-Dec-2008 Kevin Devine
+ # [#12868] Contact form 1.5.7 not valid XHTML 1.0 Transitional (+solution)
+
+05-Dec-2008 Kevin Devine
+ # [#13909] strpos error on editing alias menu item
+ # [#13901] Editor deletes content when default filter is applied: UTF-8 compatibility not enforced with JInputFilter.
+
+26-Nov-2008 Ian MacLennan
+ # [#13860] Calling JDatabase::Query() or anything invoking JDatabase::Query() more than once causes SQL error
+ # [#12989] 404 - Contact not found - with dropdown in contact view
+
+24-Nov-2008 Ian MacLennan
+ # [#13859] Bad file reference in the "Beez" template
+ # [#13694] Archive Module count Parameter doesnt work//needs tool tip correction
+
+23-Nov-2008 Ian MacLennan
+ # [#13794] Space between meta keywords gone after saving article
+ # [#13634] Beez override differences in titles
+ # [#13570] Missing h1 text-align in rhuk_milkyway/css/template_rtl.css
+ # [#13499] • Cope with ini files wrongly encoded utf8 with bom - patch attached
+ # [#13549] typo in sample_data.sql
+ # [#13761] Media Manager Javascript error: Object doesn't support this property or method [IE only]
+ # [#13700] Contact image changes for Beez override
+ # [#13514] Untranslated Strings in en-GB.ini after SVN 11236
+ # [#12939] JFolder::delete bug when folder contain symbolic links on folders
+ # [#12841] Toolbar & Button Mediamanager
+ # [#12730] 'page'-string in plugins/content/pagebreak.php not properly externalized
+
+21-Nov-2008 Ian MacLennan
+ # [#13770] Remove default filter for super admin users, fix filter whitelist problem
+ # [#13666] Untranslated Strings in admin/mod_feed
+ # [#13662] Legacy Plugin - Login Timeout - Refresh
+ # [#13633] Tooltip language string in com_config
+ # [#13632] Wrong date Last Updated in Beez
+ # [#13626] Untranslated strings in com_contact
+ # [#13617] JMenu getMenu() doc error
+ # [#13611] Inconsistency in login/logout redirection page of mod_login
+ # [#13608] Untranslated Strings in com_weblinks
+ # [#13584] Beez template override for com_search doesn't echo error message
+ # [#13574] JInstallerHelper class function description mistakes
+ # [#13542] 'Change Contact Details' link loads wrong page.
+ # [#13505] onPrepareContent fix for non com_content Components
+ # [#12925] ja_purity default status for the right modules collapsible function does not work
+ # [#12887] CSS and XHTML valid error in template JA_Purity///link to css validator broken
+ # [#12247] query_batch change a sql in a wrong way
+ # [#12115] Cache: plgSystemCache plugin doesn't respect site/page language
+ # [#13616] Changes at help screens
+
+18-Nov-2008 Jui-Yu Tsai
+ # [#13673] Front end article submission auto-populates "finish publishing" date with same date as "start publishing"
+
+14-Nov-2008 Jui-Yu Tsai
+ # [#13045] Contact category incorrect links
+
+10-Nov-2008 Anthony Ferrara
+ # Removed Install Check
 
 -------------------- 1.5.8 Stable Release [10-November-2008] ------------------
 

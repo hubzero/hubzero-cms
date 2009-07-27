@@ -6,7 +6,6 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo $this->escape($this->params->get('page_title')) ?>
 </h2>
 <?php endif; ?>
-<h1 class="componentheading"><?php echo JText::_('FORGOT_YOUR_USERNAME'); ?></h1>
 
 <form action="index.php?option=com_user&amp;task=remindusername" method="post" class="josForm form-validate">
 	<p><?php echo JText::_('REMIND_USERNAME_DESCRIPTION'); ?></p>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10711 2008-08-21 10:09:03Z eddieajau $
+ * @version		$Id: view.html.php 11398 2009-01-05 20:03:27Z kdevine $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -46,11 +46,12 @@ class ContentViewArchive extends ContentView
 
 		// Request variables
 		$task 		= JRequest::getCmd('task');
-		$limit		= JRequest::getVar('limit', $params->get('display_num', 20), '', 'int');
+		$limit		= $mainframe->getUserStateFromRequest('com_content.'.$this->getLayout().'.limit', 'limit', $params->get('display_num', 20), 'int');
 		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
 		$month		= JRequest::getInt( 'month' );
 		$year		= JRequest::getInt( 'year' );
 		$filter		= JRequest::getString( 'filter' );
+		JRequest::setVar('limit', (int) $limit);
 
 		// Get some data from the model
 		$state = & $this->get( 'state' );

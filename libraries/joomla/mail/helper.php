@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: helper.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: helper.php 11380 2009-01-01 15:48:59Z ian $
  * @package		Joomla.Framework
  * @subpackage	Mail
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -134,7 +134,7 @@ class JMailHelper
 		}
 
 		// Check the domain
-		$domain_array	= explode(".", $domain);
+		$domain_array	= explode(".", rtrim( $domain, '.' ));
 		$regex		= '/^[A-Za-z0-9-]{0,63}$/';
 		foreach ($domain_array as $domain ) {
 

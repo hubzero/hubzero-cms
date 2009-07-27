@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: banner.php 11393 2009-01-05 02:11:06Z ian $
  * @package  Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -181,7 +181,7 @@ class BannersModelBanner extends JModel
 		$db = &$this->getDBO();
 
 		// redirect to banner url
-		$query = 'SELECT clickurl FROM #__banner' .
+		$query = 'SELECT clickurl, bid FROM #__banner' .
 			' WHERE bid = ' . (int) $id;
 
 		$db->setQuery( $query );

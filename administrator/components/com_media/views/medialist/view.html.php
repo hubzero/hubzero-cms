@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: view.html.php 11307 2008-11-24 00:21:48Z ian $
 * @package		Joomla
 * @subpackage	Media
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -43,7 +43,7 @@ class MediaViewMediaList extends JView
 
 		$document->addScriptDeclaration("
 		window.addEvent('domready', function() {
-			window.top.document.updateUploader();
+			window.top.document.updateUploader && window.top.document.updateUploader();
 			$$('a.img-preview').each(function(el) {
 				el.addEvent('click', function(e) {
 					new Event(e).stop();

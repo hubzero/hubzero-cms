@@ -1,4 +1,4 @@
-<?php // @version $Id: blog_item.php 11215 2008-10-26 02:25:51Z ian $
+<?php // @version $Id: blog_item.php 11386 2009-01-04 02:34:35Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -25,7 +25,7 @@ endif; ?>
 
 <?php if ($this->item->params->get('show_pdf_icon') || $this->item->params->get('show_print_icon') || $this->item->params->get('show_email_icon')) : ?>
 <p class="buttonheading">
-	<img src="<?php echo $this->baseurl ?>/templates/<? echo $mainframe->getTemplate(); ?>/images/trans.gif" alt="<?php echo JText::_('attention open in a new window'); ?>" />
+	<img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/trans.gif" alt="<?php echo JText::_('attention open in a new window'); ?>" />
 	<?php if ($this->item->params->get('show_pdf_icon')) :
 		echo JHTML::_('icon.pdf', $this->item, $this->item->params, $this->access);
 	endif;

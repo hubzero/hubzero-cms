@@ -1,14 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <metafile version="1.5" client="installation">
     <name>Traditional Chinese (Taiwan)</name>
-    <version>1.5.4</version>
-    <creationDate>3/16/2008</creationDate>
+    <version>1.5.9</version>
+    <creationDate>January 2009</creationDate>
     <author>TaiwanJoomla</author>
-    <authorEmail>taiwanmambo@gmail.com</authorEmail>
-    <authorUrl>www.joomla.org.tw</authorUrl>
-    <copyright>Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <description>Traditional Chinese language file for web installer</description>
+    <description>Traditional Chinese language installation for Joomla</description>
     <metadata>
     	<name>Traditional Chinese (Taiwan)</name>
     	<tag>zh-TW</tag>

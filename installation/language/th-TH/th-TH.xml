@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metafile version="1.5" client="installation" >
     <name>Thai(ภาษาไทย)</name>
-    <version>1.5.4</version>
-    <creationDate>March 2006</creationDate>
-    <author>Joomla! Project</author>
-    <authorEmail>admin@joomla.org</authorEmail>
-    <authorUrl>www.joomla.org</authorUrl>
-    <copyright>Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
+    <version>1.5.9</version>
+    <creationDate>January 2009</creationDate>
+    <author>joomlacorner.com</author>
+    <copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <description>Thai language file for web installer </description>
+    <description>Thai language installation for Joomla </description>
     <metadata>
     	<name>Thai (ภาษาไทย)</name>
     	<tag>th-TH</tag>

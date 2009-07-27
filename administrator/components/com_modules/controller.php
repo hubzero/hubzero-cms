@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10878 2008-08-30 17:29:13Z willebil $
+ * @version		$Id: controller.php 11386 2009-01-04 02:34:35Z ian $
  * @package		Joomla
  * @subpackage	Modules
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -407,7 +407,8 @@ class ModulesController extends JController
 		. ' ORDER BY ordering'
 		;
 		$db->setQuery( $query );
-		if ( !($orders = $db->loadObjectList()) ) {
+		$orders = $db->loadObjectList();
+		if ($db->getErrorNum()) {
 			echo $db->stderr();
 			return false;
 		}

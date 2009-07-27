@@ -256,7 +256,7 @@ if( $botsl ) :
 
 	<div class="ja-cert">
 		<jdoc:include type="modules" name="syndicate" />
-		<a href="http://jigsaw.w3.org/css-validator/validator?uri=<?php echo urlencode(JRequest::getURI());?>" target="_blank" title="<?php echo JText::_("CSS Validity");?>" style="text-decoration: none;">
+    <a href="http://jigsaw.w3.org/css-validator/check/referer" target="_blank" title="<?php echo JText::_("CSS Validity");?>" style="text-decoration: none;">
 		<img src="<?php echo $tmpTools->templateurl(); ?>/images/but-css.gif" border="none" alt="<?php echo JText::_("CSS Validity");?>" />
 		</a>
 		<a href="http://validator.w3.org/check/referer" target="_blank" title="<?php echo JText::_("XHTML Validity");?>" style="text-decoration: none;">

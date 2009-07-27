@@ -1,4 +1,4 @@
-<?php // @version: $Id: default_items.php 10381 2008-06-01 03:35:53Z pasamio $
+<?php // @version: $Id: default_items.php 11393 2009-01-05 02:11:06Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -20,7 +20,7 @@ document.adminForm.submit( task );
 <?php if ($this->params->get('filter')) : ?>
 <div class="filter">
 	<p>
-		<?php echo JText::_('Filter'); ?>&nbsp;
+		<?php echo JText::_($this->params->get('filter_type') . ' ' . 'Filter').'&nbsp;'; ?>
 		<input type="text" name="filter" value="<?php echo $this->lists['filter']; ?>" class="inputbox" onchange="document.adminForm.submit();" />
 	</p>
 </div>
@@ -120,6 +120,7 @@ endif; ?>
 <input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />
 <input type="hidden" name="sectionid" value="<?php echo $this->category->sectionid; ?>" />
 <input type="hidden" name="task" value="<?php echo $this->lists['task']; ?>" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+<input type="hidden" name="filter_order" value="" />
 <input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="limitstart" value="0" />
 </form>

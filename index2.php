@@ -1,8 +1,8 @@
 <?php
 /**
-* @version		$Id: index2.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: index2.php 11407 2009-01-09 17:23:42Z willebil $
 * @package		Joomla
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or

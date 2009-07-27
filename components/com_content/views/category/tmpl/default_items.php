@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<tr>
 		<?php if ($this->params->get('filter')) : ?>
 			<td align="left" width="60%" nowrap="nowrap">
-				<?php echo JText::_('Filter').'&nbsp;'; ?>
+				<?php echo JText::_($this->params->get('filter_type') . ' Filter').'&nbsp;'; ?>
 				<input type="text" name="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.adminForm.submit();" />
 			</td>
 		<?php endif; ?>
@@ -81,6 +81,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<?php
 			echo $this->escape($item->title).' : ';
 			$link = JRoute::_('index.php?option=com_user&view=login');
+			$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
+			$fullURL = new JURI($link);
+			$fullURL->setVar('return', base64_encode($returnURL));
+			$link = $fullURL->toString();
 		?>
 		<a href="<?php echo $link; ?>">
 			<?php echo JText::_( 'Register to read more...' ); ?></a>
@@ -124,6 +128,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />
 <input type="hidden" name="sectionid" value="<?php echo $this->category->sectionid; ?>" />
 <input type="hidden" name="task" value="<?php echo $this->lists['task']; ?>" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+<input type="hidden" name="filter_order" value="" />
 <input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="limitstart" value="0" />
 </form>

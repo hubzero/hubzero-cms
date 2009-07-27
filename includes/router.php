@@ -36,14 +36,22 @@ class JRouterSite extends JRouter
 	{
 		$vars = array();
 
+		// Get the application
+		$app =& JFactory::getApplication();
+
+		if($app->getCfg('force_ssl') == 2 && strtolower($uri->getScheme()) != 'https') {
+			//forward to https
+			$uri->setScheme('https');
+			$app->redirect($uri->toString());
+		}
+
+
 		// Get the path
 		$path = $uri->getPath();
 
 		//Remove the suffix
 		if($this->_mode == JROUTER_MODE_SEF)
 		{
-			// Get the application
-			$app =& JFactory::getApplication();
 
 			if($app->getCfg('sef_suffix') && !(substr($path, -9) == 'index.php' || substr($path, -1) == '/'))
 			{

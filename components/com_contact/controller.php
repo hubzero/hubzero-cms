@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10554 2008-07-15 17:15:19Z ircmaxell $
+ * @version		$Id: controller.php 11396 2009-01-05 15:40:43Z kdevine $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -214,12 +214,13 @@ class ContactController extends JController
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_contact'.DS.'tables');
 		$contact =& JTable::getInstance('contact', 'Table');
 		$contact->load($contactId);
+		$user =& JFactory::getUser();		
 
 		// Get the contact detail parameters
-		$pparams = &$mainframe->getParams('com_contact');
+		$params = new JParameter($contact->params);
 
-		// Should we show the vcard?
-		if ($pparams->get('allow_vcard', 0))
+		// Show the Vcard if contact parameter indicates (prevents direct access)
+		if (($params->get('allow_vcard', 0)) && ($user->get('aid', 0) >= $contact->access))
 		{
 			// Parse the contact name field and build the nam information for the vcard.
 			$firstname 	= null;
@@ -284,7 +285,7 @@ class ContactController extends JController
 
 			print $output;
 		} else {
-			JError::raiseWarning('SOME_ERROR_CODE', 'ContactController::vCard: '.JText::_('NOTAUTH'));
+			JError::raiseWarning('SOME_ERROR_CODE', 'ContactController::vCard: '.JText::_('ALERTNOTAUTH'));
 			return false;
 		}
 	}

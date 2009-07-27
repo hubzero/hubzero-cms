@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10711 2008-08-21 10:09:03Z eddieajau $
+* @version		$Id: view.html.php 11299 2008-11-22 01:40:44Z ian $
 * @package		Joomla
 * @subpackage	Weblinks
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -131,10 +131,10 @@ class WeblinksViewWeblink extends JView
 			if (is_object( $menu )) {
 				$menu_params = new JParameter( $menu->params );
 				if (!$menu_params->get( 'page_title')) {
-					$params->set('page_title',	JText::_( JText::_('Submit a Web Link') ));
+					$params->set('page_title', JText::_('Submit a Web Link') );
 				}
 			} else {
-				$params->set('page_title',	JText::_( JText::_('Submit a Web Link') ));
+				$params->set('page_title', JText::_('Submit a Web Link') );
 			}
 
 			$document->setTitle( $params->get( 'page_title' ) );

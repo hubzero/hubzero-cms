@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.contact.php 10571 2008-07-21 01:27:35Z pasamio $
+* @version		$Id: admin.contact.php 11299 2008-11-22 01:40:44Z ian $
 * @package		Joomla
 * @subpackage	Contact
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -303,12 +303,12 @@ function saveContact( $task )
 	{
 		case 'apply':
 		case 'save2copy':
-			$msg	= JText::sprintf( 'Changes to X saved', 'Contact' );
+			$msg	= JText::sprintf( 'Changes to X saved', JText::_('Contact') );
 			$link	= 'index.php?option=com_contact&task=edit&cid[]='. $row->id .'';
 			break;
 
 		case 'save2new':
-			$msg	= JText::sprintf( 'Changes to X saved', 'Contact' );
+			$msg	= JText::sprintf( 'Changes to X saved', JText::_('Contact') );
 			$link	= 'index.php?option=com_contact&task=edit';
 			break;
 

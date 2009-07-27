@@ -228,6 +228,7 @@ class modMenuHelper
 				$menu->addSeparator();
 			}
 			$menu->addChild(new JMenuNode(JText::_('Clean Cache'), 'index.php?option=com_cache', 'class:config'));
+			$menu->addChild(new JMenuNode(JText::_('Purge Expired Cache'), 'index.php?option=com_cache&task=purgeadmin', 'class:config'));
 
 			$menu->getParent();
 		}

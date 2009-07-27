@@ -9,8 +9,8 @@
  *
  * @package OpenID
  * @author JanRain, Inc. <openid@janrain.com>
- * @copyright 2005 Janrain, Inc.
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
+ * @copyright 2005-2008 Janrain, Inc.
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache
  */
 
 /**
@@ -20,16 +20,14 @@
  * consumers.  If you want to create an SQL-driven store, please see
  * then {@link Auth_OpenID_SQLStore} class.
  *
+ * Change: Version 2.0 removed the storeNonce, getAuthKey, and isDumb
+ * methods, and changed the behavior of the useNonce method to support
+ * one-way nonces.
+ *
  * @package OpenID
  * @author JanRain, Inc. <openid@janrain.com>
  */
 class Auth_OpenID_OpenIDStore {
-    /**
-     * @var integer The length of the auth key that should be returned
-     * by the getAuthKey method.
-     */
-    var $AUTH_KEY_LEN = 20;
-
     /**
      * This method puts an Association object into storage,
      * retrievable by server URL and handle.
@@ -49,6 +47,60 @@ class Auth_OpenID_OpenIDStore {
                       "not implemented", E_USER_ERROR);
     }
 
+    /*
+     * Remove expired nonces from the store.
+     *
+     * Discards any nonce from storage that is old enough that its
+     * timestamp would not pass useNonce().
+     *
+     * This method is not called in the normal operation of the
+     * library.  It provides a way for store admins to keep their
+     * storage from filling up with expired data.
+     *
+     * @return the number of nonces expired
+     */
+    function cleanupNonces()
+    {
+        trigger_error("Auth_OpenID_OpenIDStore::cleanupNonces ".
+                      "not implemented", E_USER_ERROR);
+    }
+
+    /*
+     * Remove expired associations from the store.
+     *
+     * This method is not called in the normal operation of the
+     * library.  It provides a way for store admins to keep their
+     * storage from filling up with expired data.
+     *
+     * @return the number of associations expired.
+     */
+    function cleanupAssociations()
+    {
+        trigger_error("Auth_OpenID_OpenIDStore::cleanupAssociations ".
+                      "not implemented", E_USER_ERROR);
+    }
+
+    /*
+     * Shortcut for cleanupNonces(), cleanupAssociations().
+     *
+     * This method is not called in the normal operation of the
+     * library.  It provides a way for store admins to keep their
+     * storage from filling up with expired data.
+     */
+    function cleanup()
+    {
+        return array($this->cleanupNonces(),
+                     $this->cleanupAssociations());
+    }
+
+    /**
+     * Report whether this storage supports cleanup
+     */
+    function supportsCleanup()
+    {
+        return true;
+    }
+
     /**
      * This method returns an Association object from storage that
      * matches the server URL and, if specified, handle. It returns
@@ -58,7 +110,7 @@ class Auth_OpenID_OpenIDStore {
      * If no handle is specified, the store may return any association
      * which matches the server URL. If multiple associations are
      * valid, the recommended return value for this method is the one
-     * that will remain valid for the longest duration.
+     * most recently issued.
      *
      * This method is allowed (and encouraged) to garbage collect
      * expired associations when found. This method must not return
@@ -110,71 +162,28 @@ class Auth_OpenID_OpenIDStore {
     }
 
     /**
-     * Stores a nonce. This is used by the consumer to prevent replay
-     * attacks.
+     * Called when using a nonce.
      *
-     * @param string $nonce The nonce to store.
+     * This method should return C{True} if the nonce has not been
+     * used before, and store it for a while to make sure nobody
+     * tries to use the same value again.  If the nonce has already
+     * been used, return C{False}.
      *
-     * @return null
-     */
-    function storeNonce($nonce)
-    {
-        trigger_error("Auth_OpenID_OpenIDStore::storeNonce ".
-                      "not implemented", E_USER_ERROR);
-    }
-
-    /**
-     * This method is called when the library is attempting to use a
-     * nonce. If the nonce is in the store, this method removes it and
-     * returns a value which evaluates as true. Otherwise it returns a
-     * value which evaluates as false.
-     *
-     * This method is allowed and encouraged to treat nonces older
-     * than some period (a very conservative window would be 6 hours,
-     * for example) as no longer existing, and return False and remove
-     * them.
+     * Change: In earlier versions, round-trip nonces were used and a
+     * nonce was only valid if it had been previously stored with
+     * storeNonce.  Version 2.0 uses one-way nonces, requiring a
+     * different implementation here that does not depend on a
+     * storeNonce call.  (storeNonce is no longer part of the
+     * interface.
      *
      * @param string $nonce The nonce to use.
      *
      * @return bool Whether or not the nonce was valid.
      */
-    function useNonce($nonce)
+    function useNonce($server_url, $timestamp, $salt)
     {
         trigger_error("Auth_OpenID_OpenIDStore::useNonce ".
                       "not implemented", E_USER_ERROR);
-    }
-
-    /**
-     * This method returns a key used to sign the tokens, to ensure
-     * that they haven't been tampered with in transit. It should
-     * return the same key every time it is called. The key returned
-     * should be {@link AUTH_KEY_LEN} bytes long.
-     *
-     * @return string The key. It should be {@link AUTH_KEY_LEN} bytes in
-     * length, and use the full range of byte values. That is, it
-     * should be treated as a lump of binary data stored in a string.
-     */
-    function getAuthKey()
-    {
-        trigger_error("Auth_OpenID_OpenIDStore::getAuthKey ".
-                      "not implemented", E_USER_ERROR);
-    }
-
-    /**
-     * This method must return true if the store is a dumb-mode-style
-     * store. Unlike all other methods in this class, this one
-     * provides a default implementation, which returns false.
-     *
-     * In general, any custom subclass of {@link Auth_OpenID_OpenIDStore}
-     * won't override this method, as custom subclasses are only likely to
-     * be created when the store is fully functional.
-     *
-     * @return bool true if the store works fully, false if the
-     * consumer will have to use dumb mode to use this store.
-     */
-    function isDumb()
-    {
-        return false;
     }
 
     /**

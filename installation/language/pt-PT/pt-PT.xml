@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: pt-PT.xml 10132 2008-03-15 09:55:02Z horus_68 $ -->
 <metafile version="1.5" client="installation" >
 	<name>Português(pt-PT)</name>
-	<version>1.5.4</version>
-	<creationDate>2008-03-15</creationDate>
+	<version>1.5.9</version>
+	<creationDate>January 2009</creationDate>
 	<author>Comunidade Joomlapt.com</author>
-	<authorEmail>geral@joomlapt.com</authorEmail>
-	<authorUrl>www.joomlapt.com</authorUrl>
-	<copyright>Copyright (C) 2005 - 2008 Open Source Matters. Todos os direitos reservados.</copyright>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. Todos os direitos reservados.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>Pacote de idioma Português (Portugal) para o instalador web do Joomla</description>
 	<metadata>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: application.php 10854 2008-08-29 22:45:24Z willebil $
+ * @version		$Id: application.php 11409 2009-01-10 02:27:08Z willebil $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -105,6 +105,13 @@ class ConfigControllerApplication extends ConfigController
 		$lists['xmlrpc_server'] = JHTML::_('select.booleanlist', 'xmlrpc_server', 'class="inputbox"', $row->xmlrpc_server);
 		$lists['error_reporting'] = JHTML::_('select.genericlist',  $errors, 'error_reporting', 'class="inputbox" size="1"', 'value', 'text', $row->error_reporting);
 		$lists['enable_ftp'] 	= JHTML::_('select.booleanlist', 'ftp_enable', 'class="inputbox"', intval($row->ftp_enable));
+		
+		$forceSSL = array(
+								JHTML::_('select.option', 0, JText::_('None')),
+								JHTML::_('select.option', 1, JText::_('Administrator Only')),
+								JHTML::_('select.option', 2, JText::_('Entire Site')),
+						);
+		$lists['force_ssl'] = JHTML::_('select.genericlist', $forceSSL, 'force_ssl', 'class="inputbox" size="1"', 'value', 'text', @$row->force_ssl);
 
 		// LOCALE SETTINGS
 		$timeoffset = array (	JHTML::_('select.option', -12, JText::_('(UTC -12:00) International Date Line West')),
@@ -300,6 +307,7 @@ class ConfigControllerApplication extends ConfigController
 		$config_array['log_path']			= JRequest::getVar('log_path', JPATH_ROOT.DS.'logs', 'post', 'string');
 		$config_array['tmp_path']			= JRequest::getVar('tmp_path', JPATH_ROOT.DS.'tmp', 'post', 'string');
 		$config_array['live_site'] 			= rtrim(JRequest::getVar('live_site','','post','string'), '/\\');
+		$config_array['force_ssl'] 			= JRequest::getVar('force_ssl', 0, 'post', 'int');
 
 		// LOCALE SETTINGS
 		$config_array['offset']				= JRequest::getVar('offset', 0, 'post', 'float');

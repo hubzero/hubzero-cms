@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
 <metafile version="1.5" client="installation" >
     <name>Basque (Euskara estandarra)</name>
-    <version>1.5.4</version>
-    <creationDate>2008-03-17</creationDate>
+    <version>1.5.9</version>
+    <creationDate>January 2009</creationDate>
     <author>Santurtziko Udal Euskaltegia (SUE)</author>
-    <authorEmail>didatika@santurtzieus.com</authorEmail>
-    <authorUrl>www.santurtzieus.com</authorUrl>
     <copyright>Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <description>Basque language file for web installer</description>
+    <description>Basque language installation for Joomla</description>
     <metadata>
     	<name>Basque (Euskara estandarra)</name>
     	<tag>eu-ES</tag>

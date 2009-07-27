@@ -12,6 +12,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+JLoader::register('JTableContent', JPATH_LIBRARIES . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'content.php');
+
 /**
  * Utility class to fire onPrepareContent for non-article based content.
  *
@@ -34,9 +36,10 @@ class JHTMLContent
 			$params = array();
 		}
 		/*
-		 * Create a skeleton of an article
+		 * Create a skeleton of an article. This is a bit of a hack.
 		 */
-		$article = new stdClass();
+		$nodb = null;
+		$article = new JTableContent($nodb);
 		$article->text = $text;
 		JPluginHelper::importPlugin('content');
 		$dispatcher = &JDispatcher::getInstance();

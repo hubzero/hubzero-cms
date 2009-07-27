@@ -349,7 +349,7 @@
 	</positions>
 
 	<params>
-		<param type="spacer" default="&lt;B&gt;Template Logo&lt;/B&gt;" />
+		<param type="spacer" default="Template Logo" />
 		<param name="logoType" type="list" default="image" label="Logo type" description="LOGO TYPE DESCRIPTION">
 			<option value="image">Image</option>
 			<option value="text">Text</option>
@@ -357,14 +357,14 @@
 		<param name="logoText" type="text" default="" size="50" label="Logo text" description="LOGO TEXT DESCRIPTION" />
 		<param name="sloganText" type="text" default="" size="50" label="Slogan" description="SLOGAN DESCRIPTION" />
 
-		<param type="spacer" default="&lt;hr /&gt;&lt;B&gt;Horizontal Navigation&lt;/B&gt;" />		
+		<param type="spacer" default="Horizontal Navigation" />		
 		<param name="horNavType" type="list" default="moo" label="Horizontal Navigation Type" description="Suckerfish menu or JAMoo menu">
 			<option value="moo">JAMoo Menu</option>
 			<option value="css">Suckerfish Menu</option>
 		</param>
 		
 
-		<param type="spacer" default="&lt;hr /&gt;&lt;B&gt;Template Font Size&lt;/B&gt;" />
+		<param type="spacer" default="Template Font Size" />
 		<param name="ja_font" type="list" default="3" label="Font size" description="FONT SIZE DESCRIPTION">
 			<option value="1">1</option>
 			<option value="2">2</option>
@@ -374,7 +374,7 @@
 			<option value="6">6</option>
 		</param>
 		
-		<param type="spacer" default="&lt;hr /&gt;&lt;B&gt;Template Width&lt;/B&gt;" />
+		<param type="spacer" default="Template_Width" />
 		<param name="ja_screen" type="list" default="950" label="Template Width" description="TEMPLATE WIDTH DESCRIPTION">
 			<option value="auto">AUTO</option>
 			<option value="750">Narrow Screen</option>
@@ -384,12 +384,12 @@
 		</param>		
 		<param name="ja_screen_width" type="text" default="" label="Specified width" description="SPECIFIED WIDTH DESCRIPTION" />
 		
-		<param type="spacer" default="&lt;hr /&gt;&lt;B&gt;Template Styles&lt;/B&gt;" />
+		<param type="spacer" default="Template Styles" />
 		<param name="theme_header" type="folderlist" directory="templates/ja_purity/styles/header" default="" label="Header Themes" description="HEADER THEMES DESCRIPTION" />
 		<param name="theme_background" type="folderlist" directory="templates/ja_purity/styles/background" default="" label="Background Themes" description="BACKGROUND THEMES DESCRIPTION" />
 		<param name="theme_elements" type="folderlist" directory="templates/ja_purity/styles/elements" default="" label="Primary Elements" description="PRIMARY ELEMENTS DESCRIPTION" />
 		
-		<param type="spacer" default="&lt;hr /&gt;&lt;B&gt;Right modules collapsible function&lt;/B&gt;" />
+		<param type="spacer" default="Right modules" />
 		<param name="rightCollapsible" type="radio" default="1" label="Right modules collapsible function" description="RIGHT MODULES COLLAPSIBLE FUNCTION DESCRIPTION">
 			<option value="1">Enable</option>
 			<option value="0">Disable</option>
@@ -400,11 +400,5 @@
 		</param>
 		<param name="excludeModules" type="text" default="38" size="50" label="Exclude Modules" description="EXCLUDE MODULES DESCRIPTION" />
 		
-		<param type="spacer"/>
-
-		<param name="showComponent" type="radio" default="1" label="Show Component" description="SHOW COMPONENT DESCRIPTION">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
 	</params>
 </install>
