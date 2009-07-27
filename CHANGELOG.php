@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 10588 2008-07-26 12:20:06Z ircmaxell $
+* @version		$Id: CHANGELOG.php 10625 2008-08-12 19:04:10Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -37,6 +37,11 @@ $ -> Language fix or change
 ^ -> Change
 - -> Removed
 ! -> Note
+
+-------------------- 1.5.6 Stable Release [12-August-2008] ------------------
+
+05-Aug-2008 Toby Patterson
+ [#10906] Error in JURI::buildQuery if using "param[key]=value" GET parameter
 
 -------------------- 1.5.5 Stable Release [27-July-2008] ---------------------
 

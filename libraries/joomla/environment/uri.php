@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: uri.php 10491 2008-07-02 06:16:27Z ircmaxell $
+ * @version		$Id: uri.php 10617 2008-08-06 12:13:05Z tcp $
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -482,7 +482,7 @@ class JURI extends JObject
 				continue;
 			}
 
-			$thekey = ( !$akey ) ? $key : $akey.'[]';
+			$thekey = ( !$akey ) ? $key : $akey.'['.$key.']';
 			$out[] = $thekey."=".urlencode($val);
 		}
 

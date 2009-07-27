@@ -112,6 +112,11 @@ class UserModelReset extends JModel
 	{
 		global $mainframe;
 
+		if(strlen($token) != 32) {
+			$this->setError(JText::_('INVALID_TOKEN'));	
+			return false;
+		}
+		
 		$db	= &JFactory::getDBO();
 		$db->setQuery('SELECT id FROM #__users WHERE block = 0 AND activation = '.$db->Quote($token));
 

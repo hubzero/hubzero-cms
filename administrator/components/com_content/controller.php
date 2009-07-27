@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10497 2008-07-03 16:36:12Z ircmaxell $
+ * @version		$Id: controller.php 10623 2008-08-08 21:56:48Z ircmaxell $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

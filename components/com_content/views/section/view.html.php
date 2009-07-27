@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10588 2008-07-26 12:20:06Z ircmaxell $
+ * @version		$Id: view.html.php 10616 2008-08-06 11:06:39Z hackwar $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
