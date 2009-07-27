@@ -87,7 +87,9 @@ function GroupsParseRoute($segments)
 		}
 	}
 	if (isset($segments[2]) && $segments[1] == 'wiki') {
-		$vars['pagename'] = $segments[2];
+		$vars['pagename'] = array_pop($segments);
+		$s = implode(DS,$segments);
+		$vars['scope'] = $s;
 	}
 
     return $vars;
