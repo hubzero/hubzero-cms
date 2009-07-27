@@ -1,0 +1,500 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*#content #sub-menu {
+	background: #EFEFEF url("images/tabs_bg.gif") left bottom repeat-x;
+	margin: 0;
+	padding: 0;
+	height: 38px;
+	}
+#content #sub-menu ul {
+	margin: 0;
+	padding: 0 10px 0 10px;
+	list-style: none;
+	position: relative;
+	height: 38px;
+	background: none;
+	}
+#content #sub-menu li {
+	margin: 0;
+	padding: 6px 0 0 0;
+	background: none;
+	position: absolute;
+	top: 0;
+	display: block;
+	width: 97px;
+	height: 32px;
+	}
+#sub-menu li a {
+	margin: 0;
+	padding: 10px 0 0 0;
+	background: url("images/tabs.png") 0 0 no-repeat;
+	color: #fff;
+	display: block;
+	width: 97px;
+	height: 22px;
+	text-align: center;
+	border: none;
+	}
+#sm-1 {
+	left: 10px;
+	z-index: 160;
+	}
+#sm-2 {
+	left: 95px;
+	z-index: 159;
+	}
+#sm-3 {
+	left: 180px;
+	z-index: 158;
+	}
+#sm-4 {
+	left: 265px;
+	z-index: 157;
+	}
+#sm-5 {
+	left: 351px;
+	z-index: 156;
+	}
+#sm-6 {
+	top: 0;
+	left: 436px;
+	z-index: 155;
+	}
+#sub-menu li a:hover {
+	border: none;
+	background: url("images/tabs.png") 0 -38px no-repeat;
+	}
+#sub-menu li.active {
+	z-index: 175;
+	}
+#sub-menu li.active a {
+	background: url("images/tabs.png") 0 -76px no-repeat;
+	color: #333;
+	z-index: 376;
+	}*/
+
+	.section {
+		padding: 0 15px;
+		border-bottom: 1px solid #EFEFEF;
+		}
+	.main {
+		/*border-top: 1px solid #EFEFEF;*/
+		border-bottom: none;
+	}
+	.below {
+		margin: 2em 0 0 0;
+		padding-top: 1em;
+		}
+	.aside {
+		float: right;
+		width: 214px;
+		padding-top: 1em;
+		}
+	.subject {
+		margin: 1em 0;
+		margin-right: 235px;
+		padding: 1.4em;
+		background: #F7F7F7;
+		border-top: 1px solid #E3E3E3;
+		border-bottom: 1px solid #E3E3E3;
+		}
+	.main .subject {
+		border: none;
+		background: transparent;
+		padding: 0;
+	}
+	.main .subject h1,
+	.main .subject h1,
+	.main .subject h2,
+	.main .subject h3,
+	.main .subject h4,
+	.main .subject h5,
+	.main .subject h6 {
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		color: #333;
+		text-shadow: none;
+		font-weight: bold;
+		padding: 0;
+		margin: 1em 0;
+		border: none;
+	}
+	.main .subject h1 {
+		font-size: 1.8em;
+	}
+	.main .subject h2 span {
+		color: #333;
+	}
+	.main .subject ul,
+	.main .subject ol {
+		padding: 0;
+		margin: 1em 0;
+	}
+	.main .subject ol {
+		list-style-type: decimal;
+	}
+	.main .subject li {
+		padding: 0;
+		margin: 0.2em 0 0.2em 2em;
+	}
+	.main .subject ul li {
+		padding-left: 12px;
+	}
+	.main .subject dd {
+		color: #888;
+	}
+	.main .subject table {
+		border: 2px solid #ccc;
+		width: auto;
+	}
+	#revisionhistory {
+		width: 100%;
+	}
+	.main .subject table td, 
+	.main .subject table th {
+		border: 1px solid #ccc;
+		margin: 0;
+		padding: 0.2em 0.4em;
+	}
+	.main .subject blockquote {
+		margin: 2em 0 2.5em 0;
+		padding: 5px 0 5px 10px;
+	}
+	#hubForm label.hide {
+		display: none;
+	}
+
+/* Attachments */
+#attachments {
+	margin: 0;
+	padding: 0;
+	min-width: 100px;
+}
+#attachments form,
+#attachments fieldset,
+#attachments table {
+	padding: 0;
+	margin: 0;
+}
+#attachments table {
+	width: auto;
+}
+#attachments tbody td {
+	padding: 0.2em 0.4em;
+}
+
+/* Comments */
+ol.comments {
+    list-style-type: none !important;
+	margin-left: 0;
+	padding-left: 0;
+}
+
+ol.comments > li {
+    /*clear: left;*/
+    margin: 0 !important;
+    padding: 0 0 2em 125px;
+	/*padding: 0 0 1em 0;*/
+    border-top: 1px solid #efefef;
+}
+
+ol.comments li li {
+    margin-left:  20px;
+}
+ol.comments ol.comments {
+	margin-left: 125px;
+}
+/*ol.comments > li ol.comments li {
+	clear: none;
+}*/
+ol.comments div.cwrap {
+	margin: 0 0 0 125px;
+}
+ol.comments dl.comment-details {
+    float: left;
+    /*margin: 1em 20px 2em -125px !important;*/
+	margin: 1.2em 20px 2em 0 !important;
+    padding: 0;
+    width: 105px;
+    color: #777;
+    font-size: 11px;
+    text-align: right;
+}
+
+ol.comments dl.comment-details dt {
+	font-weight: bold;
+	color: #777;
+	font-size: 12px;
+	padding-bottom: 1em;
+}
+ol.comments dl.comment-details dd {
+	margin-bottom: 0;
+}
+ol.comments .name {
+	color: #777;
+	font-size: 12px;
+}
+
+ol.comments li.author dl.comment-details dt a,
+ol.comments li.author dl.comment-details dt a:link,
+ol.comments li.author dl.comment-details dt a:visited,
+ol.comments li.author dl.comment-details dt a:active {
+	color:  #FF54AC;
+}
+        
+ol.comments li.author dl.comment-details dt a:hover {
+	color: #ff6600;
+}
+        
+ol.comments li dl.comment-details dt a.comment-counter:link,
+ol.comments li dl.comment-details dt a.comment-counter:visited,
+ol.comments li dl.comment-details dt a.comment-counter:active {
+	color: #999 !important;
+}
+        
+ol.comments li dl.comment-details dt a.comment-counter:hover {
+	color: #ff6600 !important;
+}
+
+ol.comments li p.comment-content-object-link {
+	font-size: italic;
+	color: #999;
+}
+
+ol.comments .none      { background-position: right 0; }
+ol.comments .half      { background-position: right -40px; }
+ol.comments .one       { background-position: right -80px; }
+ol.comments .onehalf   { background-position: right -120px; }
+ol.comments .two       { background-position: right -160px; }
+ol.comments .twohalf   { background-position: right -200px; }
+ol.comments .three     { background-position: right -240px; }
+ol.comments .threehalf { background-position: right -280px; }
+ol.comments .four      { background-position: right -320px; }
+ol.comments .fourhalf  { background-position: right -360px; }
+ol.comments .five      { background-position: right -400px; }
+.avgreview {
+}
+.plaincomment {
+	 background: url("images/comment.gif") right top no-repeat;
+}
+.authorcomment {
+	 background: url("images/author.gif") right top no-repeat;
+}
+.avgreview span,
+.plaincomment span,
+.authorcomment span {
+	visibility: hidden;
+}
+
+/* Table of contents */
+.article-toc,
+.article-tags,
+.article-search {
+	background-color: #eee;
+	margin: 0 0 1em 0;
+	padding: 0.5em;
+}
+.article-toc h3,
+.article-tags h3,
+.article-search h3 {
+	margin: 0;
+	padding: 0.4em;
+	color: #fff;
+	background: #777;
+	font-size: 1em;
+	font-family: "Lucida Grande", "Trebuchet MS", Verdana, Arial, sans-serif;
+	text-shadow: none;
+	font-weight: bold;
+}
+.article-toc ul, 
+.article-tags ol {
+	margin: 0;
+	padding: 0.4em;
+	max-height: 300px;
+	overflow: auto;
+	border: 1px solid #aaa;
+	background: #fff;
+}
+.article-toc ul li {
+	background-image: none;
+}
+.article-tags ol {
+	max-height: none;
+	font-size: 90%;
+}
+.article-tags p {
+	border: 1px solid #aaa;
+	background: #fff;
+	margin: 0;
+	padding: 0.4em;
+}
+.article-toc ul ul {
+	max-height: none;
+	border: none;
+	margin: 0 0 0 1em;
+	padding: 0;
+}
+.article-toc li {
+	margin: 0;
+	padding: 0.2em;
+}
+.tocnumber {
+	display: none;
+}
+
+/* Diffs */
+.diff-deletedline {
+	border: 1px solid #EFCCC2; 
+	background: #FFF2EF;
+	margin: 1em 0;
+	padding: 1em;
+}
+.diff-addedline {
+	border: 1px solid #DAE6DA;
+	background: #F2FFF2;
+	margin: 1em 0;
+	padding: 1em;
+}
+del.diffchange {
+	color: #CC0000;
+}
+ins.diffchange {
+	color: #360;
+}
+
+/* Topic details */
+.topic-details,
+.topic-details th,
+.topic-details td {
+	border-color: #F7F7F7;
+}
+.topic-details th {
+	text-align: right;
+	color: #999;
+	white-space: nowrap;
+}
+
+/* Misc. */
+pre {
+	font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+	line-height: 1.45em;
+	color: #555;
+	margin: 1em 0 1em 1.5em;
+	padding: 0.2em;
+	border: 1px solid #ccc;
+	font-size: 110%;
+	overflow: auto;
+	background-color: #eee;
+}
+code,
+tt {
+	font-family: Monaco, ProFont, "Bitstream Vera Sans Mono", "American Typewriter", "Andale Mono", monospace;
+	font-size: 1.09em; /* 1.09em for Courier */
+}
+.resource {
+	margin: 0;
+	border: none;
+}
+.resource th {
+	width: 8em;
+	text-align: right;
+}
+.resource td,
+.resource th {
+	padding-bottom: 10px;
+}
+#content ol..footnotes {
+	border: 1px dotted #ccc;
+	background-color: #f9f9f9;
+	font-size: 90%;
+}
+#content ol.footnotes li {
+       padding: 0.2em 0;
+}
+#hubForm .paramlist input, 
+#hubForm .paramlist select, 
+#hubForm .paramlist textarea,
+#hubForm .paramlist label {
+	display: inline;
+	width: auto;
+}
+#hubForm fieldset {
+	padding: 0 2% 1.75em 2%;
+	width: 66%;
+}
+#hubForm h3 {
+	display: none;
+}
+hr {
+	border-top: 1px solid #ccc;
+	background-image: none;
+	height: 1px;
+	width: auto;
+}
+.timestamp {
+	text-align: left;
+	color: #aaa;
+	font-size: 90%;
+	font-style: italic;
+	border-top: 1px solid #ddd;
+	padding-top: 0.5em;
+	margin: 2em 0 0 0;
+	}
+a.ext-link {
+	background: url("images/extlink.gif") 0 0.4em no-repeat;
+	padding-left: 15px;
+	}
+a.missing {
+	background: url("images/missinglink.gif") 0 0.4em no-repeat;
+	padding-left: 7px;
+	}
+/* Preview */
+#preview .section {
+	padding: 0;
+}
+#preview .main .aside {
+}
+#preview .main .subject {
+	max-height: 400px;
+	overflow: auto;
+	border: 2px solid #eee;
+	padding: 1em;
+	margin: 1em 1em 0 0;
+	background: url("images/draft.gif");
+}
+
+/* IE 7 hacks */
+html>body .resource th {
+	*width: 10em;
+}
+html>body #useroptions {
+	*margin-bottom: 0;
+	*padding-bottom: 0;
+}
+/* IE 6 hacks */
+* html ol.comments div.cwrap { 
+	height: 6em;
+}
+* html #useroptions {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+* html .aside p input {
+	width: 13em;
+}
+* html #revisionhistory {
+	clear: none;float:left;
+}
+* html .article-toc ul {
+	height: 300px;
+	list-style: none;
+}
+* html .article-toc ul ul {
+	height: auto;
+}

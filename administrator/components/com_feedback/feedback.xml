@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+	<name>Feedback</name>
+	<author>snowwitje</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Capture and manage user success stories. </description>
+    <files>
+        <filename>feedback.css</filename>
+        <filename>feedback.php</filename>
+        <filename>feedback.html.php</filename>
+	    <filename>controller.php</filename>
+	    <filename>router.php</filename>
+	    <filename>index.html</filename>
+		<filename>images/contributor.gif</filename>
+		<filename>images/poll-large.gif</filename>
+		<filename>images/quotes-large.gif</filename>
+		<filename>images/wishbone-large.gif</filename>
+		<filename>images/alert-large.gif</filename>
+    </files>
+    <languages>
+                    <language tag="en-GB">en-GB.com_feedback.ini</language>
+		            </languages>
+    <administration>
+        <menu>Feedback</menu>
+		<submenu>
+			<menu>Manage Success Stories</menu>
+		</submenu>
+        <files>
+    		<filename>admin.controller.php</filename>
+	    	<filename>admin.feedback.html.php</filename>
+		    <filename>admin.feedback.php</filename>
+		    <filename>config.xml</filename>
+		    <filename>index.html</filename>	
+		    <filename>quotes.class.php</filename>
+		    <filename>selectedquotes.class.php</filename>
+		    <filename>toolbar.feedback.html.php</filename>
+		    <filename>toolbar.feedback.php</filename>
+        </files>
+		<languages folder="admin">
+                <language tag="en-GB">en-GB.com_feedback.ini</language>
+        </languages>
+    </administration>
+</install>

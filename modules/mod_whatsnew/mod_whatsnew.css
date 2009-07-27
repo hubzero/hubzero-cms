@@ -1,0 +1,78 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_whatsnew CSS
+	-- -- -- -- -- -- --
+
+*/
+	div.draggable .expandedlist li.new,
+	#mod-whatsnew li {
+		background: url("new.png") 0.7em 0.7em no-repeat;
+		}
+	#mod-whatsnew ul {
+		list-style: none;
+		margin: 1em 0 0 0;
+		padding: 0 0.5em;
+		}
+	#mod-whatsnew li {
+		background-position: 0 0.2em;
+		padding: 0 0 0 20px;
+		margin: 0 0 0.5em 0;
+		}
+	#mod-whatsnew li span {
+		display: block;
+		color: #999;
+		font-size: 90%;
+		}
+	li #mod-whatsnew .more {
+		border-top: 1px solid #ddd;
+		padding: 0.5em;
+		}
+	div.draggable div.body p.category-header small a {
+		color: #333333;
+		font-size: x-small;
+		border-bottom: 1px solid #999;
+		}
+	div.draggable div.body p.category-header-details {
+		margin: 0;
+		padding: 0.5em 1em;
+ 		background: #f6f6f3;
+		color: #77735c;
+		border-top: 1px dotted #CCC;
+		border-bottom: 1px dotted #CCC;
+		overflow: hidden;		
+		}
+	div.draggable div.body .q,
+	div.draggable div.body .taggi {
+		float: none;
+		}
+	div.draggable div.body .taggi a {
+		padding: 3px 5px;
+		line-height: 100%;
+		display: inline;
+		float: none;
+		background: #FFF6D3;
+		border-right: 1px solid #DFD5AF;
+		border-bottom: 1px solid #DFD5AF;
+		}
+	div.draggable div.body .configure {
+		float: right;
+		text-transform: uppercase;
+		font-size: x-small;
+		margin: 0;
+		}
+	div.draggable div.body .configure a {
+		border: none;
+		background: none;
+		font-size: xx-small;
+		padding: 0;
+		}

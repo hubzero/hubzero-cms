@@ -1,0 +1,127 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mysessions
+	-- -- -- -- -- -- --
+
+*/
+	div.draggable .expandedlist li.session {
+		position: relative;
+		background: url("images/application.png") 0.5em 0.7em no-repeat;
+		}
+	div.draggable .expandedlist li.shared {
+		background: url("images/application_double.png") 0.5em 1.2em no-repeat;
+		}
+	div.draggable .emphasis .expandedlist li {
+		border-color: #A0A0A0;
+		background-color: #A0A0A0;
+		}
+	div.draggable .emphasis .expandedlist li.even {
+		background-color: #909090;
+		}
+	div.draggable .expandedlist .disconnect,
+	div.draggable .expandedlist .closetool {
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		position: absolute;
+		top: 0.7em;
+		text-indent: -55em;
+		border: none;
+		right: 10px;
+		}
+	div.draggable .expandedlist .disconnect {
+		background: url("images/disconnect.png") 0 0 no-repeat;
+		}
+	div.draggable .expandedlist .closetool {
+		background: url("images/stop.png") 0 0 no-repeat;
+		}
+	div.draggable .expandedlist .disconnect:hover,
+	div.draggable .expandedlist .closetool:hover {
+		background-position: 0 -16px;
+		}
+/* emphasis */
+	div.draggable .emphasis .expandedlist .disconnect {
+		width: 28px;
+		height: 14px;
+		background: url("images/disconnect_dark.gif") 0 0 no-repeat;
+		}
+	div.draggable .emphasis .expandedlist .closetool {
+		width: 14px;
+		height: 14px;
+		background: url("images/close.gif") 0 0 no-repeat;
+		}
+	div.draggable .emphasis .expandedlist .disconnect:hover,
+	div.draggable .emphasis .expandedlist .closetool:hover {
+		background-position: 0 -14px;
+		}
+	div.draggable .emphasis .expandedlist a:hover,
+	div.draggable .emphasis #diskusage a:hover {
+		color: #FF9966;
+		}
+/* Disk usage */
+	#diskusage { 
+		margin: 0;
+		padding: 0.5em 1em 0.1em 1em;
+		}
+	#diskusage dt {
+		color: #aaa;
+		}
+	.emphasis #diskusage dt {
+		color: #ccc;
+		}
+	#diskusage #du-amount { 
+		position: relative; /* IE is dumb */
+		display: block;
+		height: 20px;
+		margin: 0 0 15px;
+		background: #edf2ea;
+		}
+	.emphasis #diskusage #du-amount { 
+		background: #646464;
+		}
+	#diskusage #du-msg { 
+		margin: 0;
+		padding: 0;
+		}
+	#diskusage #du-amount span {
+		position: absolute;
+		top: 0;
+		left: 0;
+		line-height: 1.5em;
+		text-indent: 7px;
+		}
+	.emphasis #diskusage #du-amount span {
+		color: #fff;
+		}
+	#diskusage #du-amount div {
+		position: relative; 
+		background: #c9d9c0;
+		height: 20px; 
+		width: 75%; 
+		text-align:right; 
+		}
+	.emphasis #diskusage #du-amount div {
+		background: #ccc; 
+		}
+	#diskusage #du-amount div strong {
+		position: absolute;
+		right: -5px;
+		top: -2px;
+		display: block;
+		height: 24px;
+		width: 9px;
+		text-align: left;
+		text-indent: -9999px;
+		overflow: hidden;
+		}

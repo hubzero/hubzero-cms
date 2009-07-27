@@ -1,0 +1,155 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	nanohub.org CSS
+	IE 7 Windows hacks
+	-- -- -- -- -- -- --
+
+*/
+
+	.news-title {
+		margin-top: -1.7em;
+		}
+	#welcome table {
+		width: 90%;
+	}
+	#frontpage .tool,
+	#frontpage .presentation,
+	#frontpage .learningmodule {
+		padding-bottom: 1em;
+		}
+/* Forms */
+	#hubForm fieldset {
+		padding: 0 2% 1.75em 22%;
+		width: 45%; }
+	#hubForm .group {
+		margin: 0;
+		padding: 0 0 1.5em 0;
+		left: 0em;
+		}
+	#hubForm .group label {
+		margin: 0;
+		width: 49.5%;
+		}
+	#hubForm legend {
+		color: #333;
+		}
+	#hubForm fieldset .group fieldset {
+		margin: 0 1% 0 0;
+		width: 44%;
+		}
+	#hubForm .group label input,
+	#hubForm .group label select {
+		width: 90%;
+		margin: 0;
+		}
+	#hubForm .group label:first-child {
+		margin: 0;
+		}
+	#hubForm fieldset .group fieldset:first-child {
+		margin-left: 0;	
+		}
+	#hubForm .warning,
+	#hubForm .error {
+		margin: 0;
+		display: inline-block;
+		}
+	#hubForm .group .hint {
+		margin: 0;
+		}
+	#hubForm .threeup label {
+		padding: 0;
+		width: 33%;
+		}
+/* com_events */
+	.ecalendar .today {
+		width: 13%;
+		}
+	.ecalendar caption a:hover,
+	.datenav a:hover {
+		background-position: 0 -15px;
+		}
+	td.event-date {
+		width: 2em;
+		}
+/* com_kb */
+	.com_kb .withleft .threecolumn {
+		width: 30%;
+		}
+/* com_members */
+	.com_members .subject {
+		padding-top: 2em;
+		}
+	.com_members .category-header {
+		margin: 0;
+		}
+	.com_members p#letter-index {
+		margin: 0 0 1em 0;
+		}
+/* com_topics */
+	.com_topics .resource th {
+		width: 10em;
+		}
+	.com_topics #useroptions {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		}
+/* com_groups */
+	.com_groups .resource th {
+		width: 10em;
+		}
+	.com_groups #section-useroptions {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		}
+	.com_groups #grouplist {
+		margin-top: 1em;
+		}
+/* com_resources */
+	.com_resources .results {
+		margin-top: 1em;
+		float: none;
+		}
+	.com_resources .results li:first-child {
+		float: none;
+		}
+	.rankinfo dt span {
+		top: 2px;
+		}
+	.supportingdocs ul li {
+		border-top: none;
+		border-bottom: 1px solid #fff;
+		}
+	.related-resources td.ranking span { 
+		margin: 3px 0 0 10px;
+		}
+	.com_resources ol.comments,
+	.com_resources ol.comments li,
+	.com_resources ol.comments div.cwrap,
+	.com_resources ol.comments dl.comment-details {
+		position: relative;
+		height: 1%;
+		}	
+	.com_resources ol.comments {
+		margin-top: 0;
+		}
+	#reviews .avgrating span { 
+		display: block; 
+		}
+	#reviews li div { 
+		margin-top: -3em; 
+		}
+/* com_xpoll */
+	.com_xpoll .aside,
+	.com_xpoll .subject {
+		padding-top: 2em;
+		}

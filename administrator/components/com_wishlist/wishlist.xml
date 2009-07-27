@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+	<name>Wishlist</name>
+	<author>Alissa</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Manage wishlists</description>
+	<files>
+		<filename>controller.php</filename>
+		<filename>edit.gif</filename>
+		<filename>images/admincomment.gif</filename>
+		<filename>images/bg_overview.gif</filename>
+		<filename>images/cake.gif</filename>
+		<filename>images/changestatus.gif</filename>
+		<filename>images/clover.gif</filename>
+		<filename>images/clover_burning.gif</filename>
+		<filename>images/clover_granted.gif</filename>
+		<filename>images/clover_new.gif</filename>
+		<filename>images/clover_urgent.gif</filename>
+		<filename>images/cog.png</filename>
+		<filename>images/comment.gif</filename>
+		<filename>images/config.gif</filename>
+		<filename>images/delete.gif</filename>
+		<filename>images/edit.gif</filename>
+		<filename>images/grant.gif</filename>
+		<filename>images/moneybag.png</filename>
+		<filename>images/moneybag_add.png</filename>
+		<filename>images/moneybag_empty.png</filename>
+		<filename>images/nonprivate.gif</filename>
+		<filename>images/pin.gif</filename>
+		<filename>images/pin_large.gif</filename>
+		<filename>images/private.gif</filename>
+		<filename>images/privatewish.gif</filename>
+		<filename>images/reply.gif</filename>
+		<filename>images/submitter.gif</filename>
+		<filename>images/transfer.gif</filename>
+		<filename>images/wish_big_new.gif</filename>
+		<filename>images/wish_big_reg.gif</filename>
+		<filename>images/wish_burning.gif</filename>
+		<filename>images/wish_granted.gif</filename>
+		<filename>images/wish_new.gif</filename>
+		<filename>images/wish_open.gif</filename>
+		<filename>images/wish_urgent.gif</filename>
+		<filename>images/wishbone.gif</filename>
+		<filename>images/wishbone.png</filename>
+		<filename>images/wishbone_burning.png</filename>
+		<filename>images/wishbone_granted.png</filename>
+		<filename>images/wishbone_new.png</filename>
+		<filename>images/wishbone_urgent.png</filename>
+		<filename>images/wishlist.gif</filename>
+		<filename>images/arrow.gif</filename>
+		<filename>index.html</filename>
+		<filename>router.php</filename>
+		<filename>wishlist.css</filename>
+		<filename>wishlist.html.php</filename>
+		<filename>wishlist.js</filename>
+		<filename>wishlist.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_wishlist.ini</language>
+	</languages>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+	</uninstall>
+	<administration>
+		<menu>Wishlists</menu>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_wishlist.ini</language>
+		</languages>
+	 	<files>
+		<filename>config.xml</filename>
+		<filename>admin.controller.php</filename>
+		<filename>admin.wishlist.php</filename>
+		<filename>toolbar.wishlist.html.php</filename>
+		<filename>toolbar.wishlist.php</filename>
+		<filename>wishlist.config.php</filename>
+		<filename>wishlist.wishlist.php</filename>
+		</files>
+	</administration>
+</install>

@@ -1,0 +1,33 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mygroups
+	-- -- -- -- -- -- --
+
+*/
+	div.draggable .compactlist li.group {
+		background-position: 0.7em 0.7em;
+		}
+	div.draggable .compactlist li span span.status {
+		}
+	div.draggable .compactlist li span span.member {
+		color: #66AA00;
+		}
+	div.draggable .compactlist li span span.manager {
+		color: #ff1177;
+		}
+	div.draggable .compactlist li span span.pending {
+		color: #AA3300;
+		}
+	div.draggable .compactlist li span span.invitee {
+		color: #aaaaaa;
+		}

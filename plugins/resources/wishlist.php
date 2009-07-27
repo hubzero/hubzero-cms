@@ -1,0 +1,145 @@
+<?php
+/**
+ * @package		HUBzero CMS
+ * @author		Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ *
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+
+//-----------
+
+jimport( 'joomla.plugin.plugin' );
+JPlugin::loadLanguage( 'plg_resources_wishlist' );
+JPlugin::loadLanguage( 'com_wishlist' );
+	
+//-----------
+
+class plgResourcesWishlist extends JPlugin
+{
+	function plgResourcesWishlist(&$subject, $config)
+	{
+		parent::__construct($subject, $config);
+
+		// Load plugin parameters
+		$this->_plugin = JPluginHelper::getPlugin( 'resources', 'wishlist' );
+		$this->_params = new JParameter( $this->_plugin->params );
+		
+		// Get the component parameters
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'wishlist.config.php' );
+		$wconfig = new WishlistConfig( 'com_wishlist' );
+		$this->config = $wconfig;
+	}
+	
+	//-----------
+	
+	function &onResourcesAreas( $resource ) 
+	{
+		if ($resource->type != 7) {
+			$areas = array();
+		} else {
+			
+			$areas = array(
+				'wishlist' => JText::_('Wishlist')
+			);
+		}
+		
+		return $areas;
+	}
+
+	//-----------
+
+	function onResources( $resource, $option, $areas, $rtrn='all' )
+	{
+		// Check if our area is in the array of areas we want to return results for
+		if (is_array( $areas )) {
+			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) ) 
+			&& !array_intersect( $areas, array_keys( $this->onResourcesAreas( $resource ) ) )) {
+				$rtrn = 'metadata';
+			}
+		}
+		
+		// Display only for tools
+		
+		if ($resource->type != 7) {
+			return array('html'=>'','metadata'=>'');
+		}
+		
+
+		$database =& JFactory::getDBO();
+		$juser 	  =& JFactory::getUser();
+		
+		$option = 'com_wishlist';
+		$category = 'resource';
+		
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.wishlist.php' );
+		//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.config.php' );
+		require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'wishlist.html.php' );
+		require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
+		
+		include_once( JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'xcomment.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
+		
+		WishlistController::setVar('_option', $option);
+		WishlistController::authorize_admin();
+		
+		WishlistController::setVar('category', $category);
+		WishlistController::setVar('refid', $resource->id);
+		WishlistController::setVar('_task', 'wishlist');
+		WishlistController::setVar('_error', 0);
+		WishlistController::setVar('config', $this->config);
+		WishlistController::setVar('plugin', 1);
+		WishlistController::setVar('limit', $this->_params->get('limit'));
+		
+		$banking = (isset($this->config->parameters['banking']) && $this->config->parameters['banking']==1 ) ? 1: 0;
+		WishlistController::setVar('banking', $banking);
+		
+		//$obj = new Wishlist( $database );
+		//$id = $obj->get_wishlistID($resource->id, $category);
+		//$objWish = new Wish( $database );
+		//$filters = WishlistController::getFilters(0);
+		//$items = $objWish->get_wishes($id, $filters, 0, $juser);
+		
+	
+		$html = WishlistController::wishlist();
+		
+		$items = WishlistController::getVar('wishcount');
+		$id = WishlistController::getVar('listid');
+		
+		
+		// Build the HTML meant for the "about" tab's metadata overview
+		$metadata = '';
+			if ($rtrn == 'all' || $rtrn == 'metadata') {
+				$metadata  = '<p class="wishlist"><a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$resource->id.a.'active=wishlist').'">'.JText::sprintf('NUM_WISHES',$items);
+				$metadata .= '</a> (<a href="'.JRoute::_('index.php?option='.$option.a.'id='.$id.a.'task=add').'">'.JText::_('Add a new wish').'</a>)</p>'.n;
+		}
+		
+		$arr = array(
+				'html'=>$html,
+				'metadata'=>$metadata
+			);
+
+		return $arr;
+	}
+	
+	//-------------------
+}
+

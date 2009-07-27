@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+	<name>Events</name>
+	<author></author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description></description>
+	<files>
+	   	<filename>calendar.css</filename>
+		<filename>controller.php</filename>
+		<filename>events.category.php</filename>
+		<filename>events.css</filename>
+		<filename>events.date.php</filename>
+		<filename>events.repeat.php</filename>
+		<filename>router.php</filename>
+		<filename>events.php</filename>
+		<filename>events.html.php</filename>
+		<filename>events.class.php</filename>
+		<filename>events.tags.php</filename>
+		<filename>index.html</filename>
+		<filename>images/event.gif</filename>
+		<filename>images/calendar-hilite.gif</filename>
+		<filename>images/calendar-icon.gif</filename>
+		<filename>images/calendar-next.gif</filename>
+		<filename>images/calendar-next.png</filename>
+		<filename>images/calendar-prev.gif</filename>
+		<filename>images/calendar-previous.png</filename>
+		<filename>images/calendar-td.gif</filename>
+		<filename>images/calendar-valid.gif</filename>
+		<filename>images/calendar.png</filename>
+		<filename>images/tabs.png</filename>
+		<filename>images/tabs_bg.gif</filename>
+		<filename>js/calendar.rc4.js</filename>
+		<filename>js/events.js</filename>
+		<filename>events.config.php</filename>
+	</files>
+	<install>
+	    <sql>
+	        <file charset="utf8" driver="mysql">install.sql</file>
+		 </sql>
+	</install>
+	<uninstall>
+	</uninstall>
+	<installfile>install.events.php</installfile>
+	<uninstallfile>uninstall.events.php</uninstallfile>
+	<administration>
+		<menu>Events</menu>
+			<submenu>
+				<menu>Manage Events</menu>
+				<menu task="cats">Manage Events Categories</menu>    		
+				<menu task="configure">Edit Config</menu>
+			</submenu>
+		<files>
+			<filename>admin.controller.php</filename>
+			<filename>admin.events.php</filename>
+			<filename>admin.events.html.php</filename>
+			<filename>toolbar.events.php</filename>
+			<filename>toolbar.events.html.php</filename>
+			<filename>install.sql</filename>
+			<filename>index.html</filename>
+			<filename>images/help_ques.gif</filename>
+			<filename>images/help_ques_inact.gif</filename>
+		</files>
+                <languages folder="admin">
+                        <language tag="en-GB">en-GB.com_events.ini</language>
+                </languages>
+	</administration>
+        <languages>
+                <language tag="en-GB">en-GB.com_events.ini</language>
+        </languages>
+
+</install>

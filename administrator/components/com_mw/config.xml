@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<config>
+	<params>
+		<param name="mw_on" type="radio" default="0" label="Middleware" description="Indicate whether the component is active or not">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</param>
+		<param name="mwDBDriver" type="text" menu="hide" label="Middleware DB Driver" default="mysql" description="Middleware DB Driver" />
+		<param name="mwDBHost" type="text" menu="hide" label="Middleware DB Host" default="localhost" description="Middleware DB Host" />
+		<param name="mwDBPort" type="text" menu="hide" label="Middleware DB Port" default="" description="Middleware DB Port" />
+		<param name="mwDBUsername" type="text" menu="hide" label="Middleware DB Username" default="" description="Middleware DB Username" />
+		<param name="mwDBPassword" type="text" menu="hide" label="Middleware DB Password" default="" description="Middleware DB Password" />
+		<param name="mwDBDatabase" type="text" menu="hide" label="Middleware Database" default="" description="Middleware Database" />
+		<param name="mwDBPrefix" type="text" menu="hide" label="Middleware DB Prefix" default="" description="Middleware DB Prefix" />
+		<param name="storagehost" type="text" menu="hide" label="Storage host" default="" description="The host the storage indicator should use" />
+		<param name="show_storage" type="list" default="1" label="Show storage" description="Select wether to show the storage meter or not.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+	</params>
+</config>

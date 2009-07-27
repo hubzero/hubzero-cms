@@ -1,0 +1,116 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_feedback CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	iframe {
+		border: none;
+		}
+	#member-picture {
+		background-color: #f3f1ed;
+		}
+	#member-picture fieldset {
+		margin: 1.5em 0 2em 0;
+		padding: 0.5em 0;
+		}
+	#member-picture table,
+	#member-picture td,
+	#member-picture th {
+		border: none;
+		}
+		
+/* Supporting styles missing from main.css
+
+/* Four Columns */
+	.columns {
+		margin: 0;
+		padding: 0;
+		border: none;
+		float: left;
+		text-align: left;
+		}
+	.four {
+		width: 23%; background:none;
+		}
+	.four.first {
+		padding: 0 1.25% 0 0;
+		}
+	.four.second {
+		padding: 0 1.25% 0 1.25%;
+		}
+	.four.third {
+		padding: 0 1.25% 0 1.25%;
+		}
+	.four.fourth {
+		padding: 0 0 0 1.25%;
+		}
+	/* Two Columns */
+	.two {
+		width: 48%; background:none;
+		}
+	.two.first {
+		padding: 0 2% 0 0;
+		}
+	.two.second {
+		padding: 0 0 0 2%;
+		}
+/* Three Columns */
+	.three {
+		width: 31.5%; background:none;
+		}
+	.three.first {
+		padding: 0 1.25% 0 0;
+		}
+	.three.second {
+		padding: 0 1.25% 0 1.25%;
+		}
+	.three.third {
+		padding: 0 0 0 1.25%;
+		}
+	.three.first.second {
+		padding: 0 1.25% 0 0;
+		width: 64.5%;
+		}
+	.three.second.third {
+		padding: 0 0 0 1.25%;
+		width: 64.5%;
+		}
+		
+/* Introduction columns */
+	.mainsection {
+		background-color: #EFEFEF;
+		}
+	.mainsection h3 a { 
+		padding: 7em 0.9em 0 0.9em;
+		}
+	#srch h3,
+	#earn h3,
+	#ask h3,
+	#ans h3 {
+		margin: 0;
+		padding:0;
+		}
+	#story h3 a {
+		background: url("images/quotes-large.gif") 50% 30% no-repeat;
+		}
+	#poll h3 a {
+		background: url("images/poll-large.gif") 50% 30% no-repeat;
+		}
+	#problem h3 a {
+		background: url("images/alert-large.gif") 50% 30% no-repeat;
+		}
+	#wish h3 a {
+		background: url("images/wishbone-large.gif") 50% 30% no-repeat;
+		}

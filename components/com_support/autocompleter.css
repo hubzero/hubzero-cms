@@ -1,0 +1,44 @@
+/* Autocompleter */
+div.autocompleter-loading {
+	float: left;
+	clear: right;
+	background:	#fff url("images/spinner.gif") no-repeat center;
+	width: 20px;
+	height: 16px;
+}
+
+ul.autocompleter-choices {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	list-style:	none;
+	border:	1px solid #333;
+	background-color: #fff; /*#52616F;*/
+	border-right-color: #ddd;
+	border-bottom-color: #ddd;
+	text-align:	left;
+	z-index: 50;
+}
+ul.autocompleter-choices li {
+	position: relative;
+	padding: 0.1em 1.5em 0.1em 1em;
+	margin: 0;
+	cursor:	pointer;
+	font-weight: normal;
+	font-size: 1em;
+}
+ul.autocompleter-choices li.autocompleter-selected {
+	background-color: #444;
+	color: #fff;
+}
+ul.autocompleter-choices span.autocompleter-queried {
+	font-weight: bold;
+}
+ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried {
+	color: #9FCFFF;
+}
+
+/* IE 7 hacks */
+html>body #hubForm {
+	*position: inherit;
+}

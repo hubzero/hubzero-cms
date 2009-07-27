@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+ <name>MW</name>
+ <author>Rick Kennell</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+ <files>
+  <filename>router.php</filename>
+  <filename>controller.php</filename>
+  <filename>index.html</filename>
+  <filename>mw</filename>
+  <filename>mw.class.php</filename>
+  <filename>mw.css</filename>
+  <filename>mw.html.php</filename>
+  <filename>mw.php</filename>
+  <filename>mw.js</filename>
+  <filename>mw.utils.php</filename>
+  <filename>SignedVncViewer-20070502-01.jar</filename>
+  <filename>VncViewer-20070502-01.jar</filename>
+  <filename>images/close-light.gif</filename>
+  <filename>images/corner.png</filename>
+  <filename>images/folder.gif</filename>
+  <filename>images/trash.gif</filename>
+ </files>
+	<languages>
+		<language tag="en-GB">en-GB.com_mw.ini</language>
+	</languages>
+	<installfile>
+		<filename>install.mw.php</filename>
+	</installfile>
+	<uninstallfile>
+		<filename>uninstall.mw.php</filename>
+	</uninstallfile>
+	<administration>
+		<menu>Middleware</menu>
+		<files>
+  			<filename>mw.license.php</filename>
+			<filename>index.html</filename>
+			<filename>admin.controller.php</filename>
+			<filename>admin.mw.html.php</filename>
+			<filename>admin.mw.php</filename>
+			<filename>config.xml</filename>
+			<filename>mw.config.php</filename>
+			<filename>toolbar.mw.html.php</filename>
+			<filename>toolbar.mw.php</filename>
+		</files>
+          <languages folder="admin">
+               <language tag="en-GB">en-GB.com_mw.ini</language>
+          </languages>
+	</administration>
+</install>

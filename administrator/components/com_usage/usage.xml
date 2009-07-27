@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+<name>Usage</name>
+<author></author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+        <languages>
+                <language tag="en-GB">en-GB.com_usage.ini</language>
+        </languages>
+
+<files>
+  <filename>router.php</filename>
+  <filename>controller.php</filename>
+  <filename>index.html</filename>
+  <filename>usage.html.php</filename>
+  <filename>about.php</filename>
+  <filename>usage.php</filename>
+  <filename>usage.css</filename>
+  <filename>usage.js</filename>
+  <filename>usage.helper.php</filename>
+	<filename>maps/images/markerB.png</filename>
+	<filename>maps/images/markerU.png</filename>
+	<filename>maps/js/Clusterer2.js</filename>
+	<filename>maps/js/elabel.js</filename>
+	<filename>maps/online.php</filename>
+	<filename>maps/images/1.png</filename>
+	<filename>maps/images/10.png</filename>
+	<filename>maps/images/11.png</filename>
+	<filename>maps/images/2.png</filename>
+	<filename>maps/images/3.png</filename>
+	<filename>maps/images/4.png</filename>
+	<filename>maps/images/5.png</filename>
+	<filename>maps/images/6.png</filename>
+	<filename>maps/images/7.png</filename>
+	<filename>maps/images/8.png</filename>
+	<filename>maps/images/9.png</filename>
+	<filename>maps/images/m.png</filename>
+	<filename>maps/images/marker.png</filename>
+	<filename>maps/images/markerG.png</filename>
+	<filename>maps/images/marker_red.png</filename>
+	<filename>maps/images/org.png</filename>
+	<filename>maps/animation.php</filename>
+	<filename>maps/maps.php</filename>
+	<filename>maps/tools.php</filename>
+	<filename>maps/us-maps.php</filename>
+	<filename>maps/web_all.php</filename>
+	<filename>maps/web_gradient.php</filename>
+	<filename>maps/whoisonline.php</filename>
+</files>
+<install>
+    <sql>
+        <file charset="utf8" driver="mysql">install.sql</file>
+    </sql>
+</install>
+<uninstall>
+</uninstall>
+<administration>
+	<menu>Usage</menu>
+	<files>
+		<filename>admin.controller.php</filename>
+		<filename>admin.usage.html.php</filename>
+		<filename>admin.usage.php</filename>
+		<filename>config.xml</filename>
+		<filename>toolbar.usage.html.php</filename>
+		<filename>toolbar.usage.php</filename>
+	</files>
+</administration>
+</install>

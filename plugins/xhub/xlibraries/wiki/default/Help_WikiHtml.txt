@@ -1,0 +1,57 @@
+The wiki supports inserting HTML into any wiki context.
+
+HTML support is built-in, and does not require installing any additional packages.
+
+== How to Use HTML ==
+To inform the wiki engine that a block of text should be treated as HTML, use the ''html'' processor. 
+
+This example should explain:
+{{{
+#!html
+<pre>{{{
+#!html
+&lt;h1 style="text-align: right; color: blue"&gt;HTML Test&lt;/h1&gt;
+}}}</pre>
+}}}
+
+Results in:
+{{{
+#!html
+<h1 style="text-align: right; color: blue">HTML Test</h1>
+}}}
+
+Note that the wiki sanitizes your HTML code before displaying it. That means that if you try to use potentially dangerous constructs such as Javascript event handlers, those will be removed from the output. 
+
+{{{
+{{{
+#!html
+&lt;div class=warning style="border: 2pt solid; text-align: center"&gt;
+This is the ''only'' way to go.
+&lt;/div&gt;
+}}}
+}}}
+
+Results in:
+{{{
+#!html
+<div class=warning style="border: 2pt solid; text-align: center">
+This is the ''only'' way to go.
+</div>
+}}}
+
+For spans, you should rather use the Macro call syntax:
+{{{
+  Hello [[span(''WORLD'' (click [#world-anchor here]), style=color: green; font-size: 120%, id=world-anchor)]]!
+}}}
+
+Results in:
+  Hello [[span(''WORLD'' (click [#world-anchor here]), style=color: green; font-size: 120%, id=world-anchor)]]!
+
+
+== More Information ==
+
+ * http://www.w3.org/ -- World Wide Web Consortium
+ * http://www.w3.org/MarkUp/ -- HTML Markup Home Page
+
+----
+See also: [Help:WikiFormatting Wiki Formatting], [Help:WikiMacros Wiki Macros]

@@ -1,0 +1,242 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_events CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Columns */
+	.section {
+		padding: 0;
+		border-top: 1px solid #EFEFEF;
+		}
+	.main {
+		border: none;
+		}
+	.below {
+		margin: 2em 0 0 0;
+		padding-top: 1em;
+		}
+	.aside {
+		float: right;
+		width: 214px;
+		padding-top: 1em;
+		}
+	.subject {
+		margin: 1em 0;
+		margin-right: 235px;
+		padding: 1.4em;
+		background: #F7F7F7;
+		border-top: 1px solid #E3E3E3;
+		border-bottom: 1px solid #E3E3E3;
+		}
+	.main .subject {
+		border: none;
+		background: transparent;
+		padding: 0;
+		}
+	.main {
+		padding-top: 2em;
+		}
+/* Date navigation */
+	#event-categories,
+	.calendarwrap {
+		background-color: #F6F6F6;
+		padding: 1em;
+		border: 1px solid #d4d4cd;
+		margin: 0 0 1em 0;
+		}
+	.ecalendar {
+		border: none;
+		position: relative;
+		z-index: 1;
+		}
+	.ecalendar caption,
+	.datenav, .aside .datenav {
+		padding: 0;
+		text-align: right;
+		color: #555;
+		font-weight: bold;
+		margin: 0;
+		}
+	.ecalendar caption {
+		caption-side: top;
+		border: none;
+		}
+	.ecalendar caption a,
+	.datenav a {
+		background: transparent url("images/calendar-next.png") no-repeat;
+		margin-right: 1em;
+		padding: 15px 0 0 15px;
+		overflow: hidden;
+		float: left;
+		height: 0;
+		width: 0;
+		border: none;
+		}
+	.ecalendar caption a:first-child,
+	.datenav a:first-child {
+		background-image: url("images/calendar-previous.png");
+		}
+	.ecalendar caption a:hover,
+	.datenav a:hover {
+		background-position: left bottom;
+		border: none;
+		}
+	.ecalendar th {
+		padding: 1.25em 0 0 0;
+		text-align: center;
+		text-shadow: none;
+		font-size: 0.96em;
+		font-weight: normal;
+		color: #aa9;
+		border: none;
+		}
+	.ecalendar td {
+		padding: 0.4em 0;
+		border: 1px solid #d4d4cd;
+		width: 14.28%;
+		text-align: center;
+		color: #aa9;
+		font-size: 0.9em;
+		}
+	.ecalendar td a {
+		display: block;
+		margin: 0;
+		padding: 0 !important;
+		float: none;
+		text-decoration: none;
+		text-align: center;
+		border:none;
+		}
+	.ecalendar td a:hover {
+		border: none;
+		color: #000;
+		}
+	.ecalendar .selected td,
+	.ecalendar .selected {
+		background-color: #000;
+		color: #fff;
+		border-color: #333;
+		}
+	.ecalendar .selected td a,
+	.ecalendar .selected a {
+		color: #fff;
+		}
+	.ecalendar .selected td a:hover,
+	.ecalendar .selected a:hover {
+		color: #fff;
+		}
+	.ecalendar .today {
+		background: #fff;
+		border: 1px solid #887;
+		margin: -1px -1px -1px 0;
+		width: 100%;
+		float: right;
+		color: #222;
+		}
+/* Events listing */
+	#content ul.events {
+    	list-style-type: none !important;
+		margin-left: 0;
+		padding-left: 0;
+		border-bottom: 1px solid #ddd;
+		}
+	#content ul.events li ul.events {
+		margin: -1px 0 0 0;
+		padding: 0;
+		border-bottom: none;
+		}
+	#content ul.events > li {
+    	clear: left;
+    	margin: 0 !important;
+    	padding: 0 0 1em 0;
+    	border-top: 1px solid #ddd;
+		background: none;
+		}
+	#content ul.events > li ul.events li {
+		clear: none;
+		}
+	#content ul.events li li {
+    	margin-left:  20px;
+		}
+	#content ul.events div.ewrap {
+		margin: 0 0 0 125px;
+		}
+	#content ul.events dl.event-details {
+    	float: left;
+    	margin: 1.2em 20px 2em 0 !important;
+    	padding: 0;
+    	width: 105px;
+    	color: #777;
+    	font-size: 11px;
+    	text-align: right;
+		}
+	#content ul.events dl.event-details dt {
+		font-weight: bold;
+		color: #777;
+		font-size: 12px;
+		padding-bottom: 1em;
+		}
+	#content ul.events .title {
+		color: #777;
+		font-size: 12px;
+		font-weight: bold;
+		}
+	#content ul.events li.author dl.event-details dt a,
+	#content ul.events li.author dl.event-details dt a:link,
+	#content ul.events li.author dl.event-details dt a:visited,
+	#content ul.events li.author dl.event-details dt a:active {
+		color:  #FF54AC;
+		}
+	#content ul.events li.author dl.comment-details dt a:hover {
+		color: #ff6600;
+		}
+	#content ul.events li dl.event-details dt a.comment-counter:link,
+	#content ul.events li dl.event-details dt a.comment-counter:visited,
+	#content ul.events li dl.event-details dt a.comment-counter:active {
+		color: #999 !important;
+		}
+	#content ul.events li dl.event-details dt a.comment-counter:hover {
+		color: #ff6600 !important;
+		}
+	#content ul.events li p.comment-content-object-link {
+		color: #999;
+		}
+/* IE 7 hacks */
+	html>body .ecalendar .today {
+		*width: 13%;
+		}
+	html>body .ecalendar caption a:hover,
+	html>body .datenav a:hover {
+		*background-position: 0 -15px;
+		}
+/* IE 6 hacks */
+	* html #content ul.events li {
+		background-image: none;
+		border-top: 1px solid #ddd;
+		}
+	* html .ecalendar .today {
+		width: 13%;
+		}
+	* html .ecalendar caption a.prv,
+	* html .datenav a.prv {
+		background-image: url("images/calendar-previous.png");
+		}
+	* html .ecalendar caption a:hover,
+	* html .datenav a:hover {
+		background-position: 0 -15px;
+		}
+	* html #content ul.events div.ewrap { 
+		height: 6em;
+		}

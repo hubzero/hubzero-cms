@@ -1,0 +1,115 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mycontributions
+	-- -- -- -- -- -- --
+
+*/
+
+/* Contribution status */
+	div.draggable .expandedlist li.draft {
+		background: url("images/draft.gif") 0.7em 1em  no-repeat;
+		}
+	div.draggable .expandedlist li.published {
+		background: url("images/check.gif") 0.7em 1em  no-repeat;
+		}
+	div.draggable .expandedlist li.pending {
+		background: url("images/pending.gif") 0.7em 1em  no-repeat;
+		}
+ 
+	div.draggable .expandedlist li span.extra {
+		float: right;
+		width: 140px;
+		margin: 0;
+		margin-left: -2em;
+		padding: 0;
+		margin-top: -3em;
+		vertical-align: middle;
+		/*border-left: 1px solid #ccc;*/
+		padding-left: 0.5em;
+		margin-right: -1em;
+		text-align: right;
+	}
+	div.draggable .expandedlist li span.item_new {
+		color:#FF0000;
+		background: url("images/attention.gif") center right no-repeat;
+		text-transform: uppercase;
+		font-size: 90%;
+		display: block;
+		overflow: visible;
+		position: absolute;
+		padding: 0;
+		margin: 0;
+		padding-right: 8px;
+	}
+	
+	div.draggable .expandedlist li span.status_installed a,
+	div.draggable .expandedlist li span.status_created a  {
+		color: #FF0000;
+		background: url("images/attention.gif") right no-repeat;
+		padding-right: 8px;
+		padding-top: 0.1em;
+		font-weight: bold;
+		border: none;
+	}
+	div.draggable .expandedlist li span.status_published a {
+		color: #009900;
+		font-weight: bold;
+		border: none;
+	}
+	div.draggable .expandedlist li span.status_registered a,
+	div.draggable .expandedlist li span.status_approved a, 
+	div.draggable .expandedlist li span.status_uploaded a, 
+	div.draggable .expandedlist li span.status_updated a, 	
+	div.draggable .expandedlist li span.status_abandoned a,
+	div.draggable .expandedlist li span.status_retired a {
+		color: #666666;
+		font-weight: bold;
+		border: none;
+	}
+	
+	div.draggable .expandedlist li span.item_q, 
+	div.draggable .expandedlist li span.item_w, 
+	div.draggable .expandedlist li span.item_s, 
+	div.draggable .expandedlist li span.item_empty {
+		margin: 0 0 0 0;
+		border: none;
+		float: left;
+		width: 30.5%;		
+		padding: 0 2% 0 0;
+		text-align: left;
+		display: block;		
+		
+	}
+	div.draggable .expandedlist li span.item_q a:hover, 
+	div.draggable .expandedlist li span.item_w a:hover, 
+	div.draggable .expandedlist li span.item_s a:hover {
+		border: none;
+		background-position: 0 -19px;
+	}
+	div.draggable .expandedlist li span.item_q a {
+		background: url("images/qanda.gif") 0 0 no-repeat;
+		padding-left: 17px;
+	}
+	div.draggable .expandedlist li span.item_w a {
+		background: url("images/wishlist.gif") 0 0 no-repeat;
+		padding-left: 17px;
+	}
+	div.draggable .expandedlist li span.item_s a {
+		background: url("images/warning.gif") 0 0 no-repeat;
+		padding-left: 17px;
+	}
+	
+	div.draggable .expandedlist li span.hasitems a {
+	 	background-position:-30px 0;
+		color:#FF0000;
+	}
