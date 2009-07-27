@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 9872 2008-01-05 11:14:10Z eddieajau $
+* @version		$Id: view.html.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 * @subpackage	Config
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

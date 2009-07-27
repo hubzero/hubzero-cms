@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: framework.php 10234 2008-04-21 21:19:25Z ircmaxell $
+* @version		$Id: framework.php 10506 2008-07-05 21:32:20Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -58,7 +58,7 @@ unset( $CONFIG );
  */
 
 // Include object abstract class
-jimport( 'joomla.utilities.compat.compat' );
+require_once(JPATH_SITE.DS.'libraries'.DS.'joomla'.DS.'utilities'.DS.'compat'.DS.'compat.php');
 
 // System profiler
 if (JDEBUG) {

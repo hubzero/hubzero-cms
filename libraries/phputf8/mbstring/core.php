@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Id: core.php 9086 2007-09-30 08:35:38Z pasamio $
+* @version $Id: core.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package utf8
 * @subpackage strings
 */

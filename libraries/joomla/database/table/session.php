@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: session.php 9948 2008-01-16 16:29:32Z ircmaxell $
+* @version		$Id: session.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	Table
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

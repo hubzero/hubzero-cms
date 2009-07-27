@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.sections.html.php 9822 2008-01-03 00:54:38Z eddieajau $
+* @version		$Id: admin.sections.html.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 * @subpackage	Sections
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

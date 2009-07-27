@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mod_online.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: mod_online.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php

@@ -1,19 +1,15 @@
 <?php
 /**
- * $Id: default.php 10094 2008-03-02 04:35:10Z instance $
+ * $Id: default.php 10498 2008-07-04 00:05:36Z ian $
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $cparams =& JComponentHelper::getParams('com_media');
 ?>
 
-<?php if ( $this->params->get( 'show_page_title' ) ) : ?>
+<?php if ( $this->params->get( 'show_page_title', 1 ) ) : ?>
 <div class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
-<?php if ($this->category->title) :
-	echo $this->escape($this->params->get('page_title')).' - '.$this->escape($this->category->title);
-else :
-	echo $this->escape($this->params->get('page_title'));
-endif; ?>
+<?php echo $this->escape($this->params->get('page_title')); ?>
 </div>
 <?php endif; ?>
 <div class="contentpane<?php echo $this->params->get( 'pageclass_sfx' ); ?>">

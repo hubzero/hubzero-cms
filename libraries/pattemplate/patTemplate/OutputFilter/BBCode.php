@@ -2,7 +2,7 @@
 /**
  * patTemplate BBCode output filter
  *
- * $Id: BBCode.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: BBCode.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * Uses patBBCode.
  *
@@ -17,7 +17,7 @@ defined('JPATH_BASE') or die();
 /**
  * patTemplate BBCode output filter
  *
- * $Id: BBCode.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: BBCode.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * Uses patBBCode. Note that patBBCode's syntax is not
  * entirely the same than the 'official' BBCode. See the

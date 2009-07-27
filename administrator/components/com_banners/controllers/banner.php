@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: banner.php 10431 2008-06-15 19:42:18Z willebil $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -160,7 +160,7 @@ class BannerControllerBanner extends JController
 		// Imagelist
 		$javascript			= 'onchange="changeDisplayImage();"';
 		$directory			= '/images/banners';
-		$lists['imageurl']	= JHTML::_('list.images',  'imageurl', $row->imageurl, $javascript, $directory );
+		$lists['imageurl']	= JHTML::_('list.images',  'imageurl', $row->imageurl, $javascript, $directory, "bmp|gif|jpg|png|swf"  );
 
 		// build list of categories
 		$lists['catid']		= JHTML::_('list.category',  'catid', 'com_banner', intval( $row->catid ) );

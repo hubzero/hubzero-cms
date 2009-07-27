@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: uri.php 10214 2008-04-19 08:59:04Z eddieajau $
+ * @version		$Id: uri.php 10491 2008-07-02 06:16:27Z ircmaxell $
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -248,9 +248,9 @@ class JURI extends JObject
 		// Get the scheme
 		if(!isset($root))
 		{
-			$uri	        =& JURI::getInstance();
-			$root['prefix'] = $uri->toString( array('scheme', 'host', 'port'));
-			$root['path']    = JURI::base(true);
+			$uri	        =& JURI::getInstance(JURI::base());
+			$root['prefix'] = $uri->toString( array('scheme', 'host', 'port') );
+			$root['path']   = rtrim($uri->toString( array('path') ), '/\\');
 		}
 
 		// Get the scheme

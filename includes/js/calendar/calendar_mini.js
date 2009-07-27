@@ -10,7 +10,7 @@
  * Public License, as long as you do not remove or alter this notice.
  */
 
-// $Id: calendar_mini.js 49 2005-09-15 02:55:27Z rhuk $
+// $Id: calendar_mini.js 10389 2008-06-03 11:27:38Z pasamio $
 
 Calendar = function (mondayFirst, dateStr, onSelected, onClose) { this.activeDiv = null; this.currentDateEl = null; this.checkDisabled = null; this.timeout = null; this.onSelected = onSelected || null; this.onClose = onClose || null; this.dragging = false; this.hidden = false; this.minYear = 1970; this.maxYear = 2050; this.dateFormat = Calendar._TT["DEF_DATE_FORMAT"]; this.ttDateFormat = Calendar._TT["TT_DATE_FORMAT"]; this.isPopup = true; this.weekNumbers = true; this.mondayFirst = mondayFirst; this.dateStr = dateStr; this.ar_days = null; this.table = null; this.element = null; this.tbody = null; this.firstdayname = null; this.monthsCombo = null; this.yearsCombo = null; this.hilitedMonth = null; this.activeMonth = null; this.hilitedYear = null; this.activeYear = null; if (!Calendar._DN3) { var ar = new Array(); for (var i = 8; i > 0;) { ar[--i] = Calendar._DN[i].substr(0, 3);}
 Calendar._DN3 = ar; ar = new Array(); for (var i = 12; i > 0;) { ar[--i] = Calendar._MN[i].substr(0, 3);}

@@ -1,5 +1,5 @@
 /**
-* @version		$Id: validation.js 10223 2008-04-19 14:45:50Z ircmaxell $
+* @version		$Id: validation.js 10389 2008-06-03 11:27:38Z pasamio $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL, see LICENSE.php

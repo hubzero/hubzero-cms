@@ -68,7 +68,7 @@ Belarusian (be-BY) - Dennis Hermacki
 Bengali (bn-IN) - IndicJoomla! Team - Romit Chatterjee
 Bosnian (bs-BA) - Bosnian Joomla! Community (joomla.ba) - Emir Sakic
 Bulgarian (bg-BG) - Joomla! Bulgaria - Ivo Apostolov
-Catalan (ca-ES) - Damià Verger
+Catalan (ca-ES) - Joomla! Catalan Countries (joomla.cat) - Damià Verger
 Chinese-Traditional (zh-TW) - Traditional Chinese Translation Team - Eddy Chang
 Croatian (hr-HR) - Croatian Translation Team - Klaudia B.
 Czech (cs-CZ) - Czech Translation Team - Svatopluk Vit
@@ -108,6 +108,35 @@ Turkish (tr-TR) - Joomla! Turkiye (joomlaturkiye.org) - Oguz Kaan Cagatay Kilinc
 Ukrainian (uk-UA) - Ukrainian Translation Team - Denys Nosov
 Vietnamese (vi-VN) - Việt Nam Translation Team - Viet Vu Hoang
 
+Pizaa Bug and fun Event
+-----------------------
+Chris Davenport
+Kevin Devine
+Anthony Ferrara
+Jerry Hilburn
+Louis Landry
+Wilco Jansen
+Jennifer Marriott
+Rob Schley
+Amy Stephen
+Nereyda Valentin-Macias
+Elin Waring
+Michael Casha
+Marcelo Eden
+Matt Thomas
+Ross Crawford
+Mickael Maison
+Ian MacLennan
+Jaap Woltjes
+Alan Langford
+Michael Hamanaka
+Joe LeBlanc
+Shannon Quinn
+Michelle Bisson
+Airton Torres
+Toni Marie Swats
+Jon Giles
+Matheus Mendes
 
 Joomla! 1.5 includes or is derivative of works distributed under the licenses listed below.
 The full text for most of the licenses listed below can be found in the LICENSES.php file.

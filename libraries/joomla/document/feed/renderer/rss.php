@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: rss.php 10079 2008-02-28 13:39:08Z ircmaxell $
+ * @version		$Id: rss.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	Document
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

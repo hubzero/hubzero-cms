@@ -1,8 +1,8 @@
-<?php // @version $Id: default.php 9837 2008-01-03 16:49:24Z tsai146 $
+<?php // @version $Id: default.php 10498 2008-07-04 00:05:36Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<?php if($this->params->get('show_page_title')) : ?>
+<?php if($this->params->get('show_page_title',1)) : ?>
 <h2 class="componentheading<?php echo $this->params->get('pageclass_sfx') ?>">
 	<?php echo $this->escape($this->params->get('page_title')) ?>
 </h2>

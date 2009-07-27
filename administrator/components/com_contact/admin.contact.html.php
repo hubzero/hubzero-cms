@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.contact.html.php 9809 2008-01-03 00:38:55Z eddieajau $
+* @version		$Id: admin.contact.html.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 * @subpackage	Contact
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

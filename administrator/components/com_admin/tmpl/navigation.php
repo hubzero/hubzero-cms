@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: navigation.php 8630 2007-08-30 04:30:51Z robs $
+ * @version		$Id: navigation.php 10381 2008-06-01 03:35:53Z pasamio $
  */
 // No direct access
 defined('_JEXEC') or die('Restricted access');

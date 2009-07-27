@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: list.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: list.php 10439 2008-06-21 20:34:35Z willebil $
 * @package		Joomla.Framework
 * @subpackage		HTML
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -46,7 +46,7 @@ class JHTMLList
 	/**
 	* Build the select list to choose an image
 	*/
-	function images( $name, $active = NULL, $javascript = NULL, $directory = NULL )
+	function images( $name, $active = NULL, $javascript = NULL, $directory = NULL, $extensions =  "bmp|gif|jpg|png" )
 	{
 		if ( !$directory ) {
 			$directory = '/images/stories/';
@@ -60,7 +60,7 @@ class JHTMLList
 		$imageFiles = JFolder::files( JPATH_SITE.DS.$directory );
 		$images 	= array(  JHTML::_('select.option',  '', '- '. JText::_( 'Select Image' ) .' -' ) );
 		foreach ( $imageFiles as $file ) {
-			if ( eregi( "bmp|gif|jpg|png", $file ) ) {
+		   if ( eregi( $extensions, $file ) ) {
 				$images[] = JHTML::_('select.option',  $file );
 			}
 		}
@@ -210,12 +210,16 @@ class JHTMLList
 	/**
 	* Select list of active sections
 	*/
-	function section( $name, $active = NULL, $javascript = NULL, $order = 'ordering' )
+	function section( $name, $active = NULL, $javascript = NULL, $order = 'ordering', $uncategorized = true )
 	{
 		$db =& JFactory::getDBO();
 
 		$categories[] = JHTML::_('select.option',  '-1', '- '. JText::_( 'Select Section' ) .' -' );
-		$categories[] = JHTML::_('select.option',  '0', JText::_( 'Uncategorized' ) );
+		
+		if ($uncategorized) {
+			$categories[] = JHTML::_('select.option',  '0', JText::_( 'Uncategorized' ) );
+		}
+		
 		$query = 'SELECT id AS value, title AS text'
 		. ' FROM #__sections'
 		. ' WHERE published = 1'

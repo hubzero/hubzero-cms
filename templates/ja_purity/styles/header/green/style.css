@@ -1,0 +1,120 @@
+#ja-headerwrap {
+	background: #7BA566;
+	color: #E4EFDF;
+}
+
+.ja-headermask {
+	background: url(images/header-mask.png) no-repeat top right;
+}
+
+#ja-header a {
+	color: #E4EFDF;
+}
+
+h1.logo-text a {
+	color: #E4EFDF !important;
+}
+
+p.site-slogan {
+	background: #9DBF8C;
+}
+
+#ja-search {
+	background: url(images/icon-search.gif) no-repeat center left;
+}
+
+#ja-search .inputbox {
+	border: 1px solid #658854;
+	color: #E4EFDF;
+	background: #9DBF8C;
+}
+
+.sectiontableheader {
+	background: #88B074;
+}
+
+#ja-botslwrap {
+	background: #7BA566;
+	color: #E4EFDF;
+}
+
+.ja-box-right div.moduletable {
+	background: url(images/vdot2.gif) repeat-y left;
+}
+
+.ja-box-center div.moduletable {
+	background: url(images/vdot2.gif) repeat-y left;
+}
+
+#ja-botsl a {
+	color: #E4EFDF;
+}
+
+#ja-mainnavwrap {
+	border-top: 1px solid #9DBF8C;
+	background: #88B074;
+}
+
+#ja-mainnav {
+	border-left: 1px solid #658854;
+	background: #88B074;
+}
+
+#ja-cssmenu {
+	border-right: 1px solid #9DBF8C;
+}
+
+#ja-cssmenu li a {
+	border-left: 1px solid #9DBF8C;
+	border-right: 1px solid #658854;
+	color: #E4EFDF;
+}
+
+#ja-cssmenu li a:hover,
+#ja-cssmenu li a:active,
+#ja-cssmenu li a:focus {
+	background-color: #9DBF8C;
+}
+
+#ja-cssmenu li:hover,
+#ja-cssmenu li.sfhover,
+#ja-cssmenu li.havechildsfhover,
+#ja-cssmenu li.havechild-activesfhover {
+	background-color: #9DBF8C;
+}
+
+#ja-cssmenu li a.active,
+#ja-cssmenu li a.active:hover,
+#ja-cssmenu li a.active:active,
+#ja-cssmenu li a.active:focus {
+	background-color: #658854;
+}
+
+#ja-cssmenu li ul {
+	border: 1px solid #9DBF8C;
+	background: url(images/opaque.png);
+}
+
+#ja-cssmenu li ul li {
+	border-top: 1px solid #A4C594;
+	border-bottom: 1px solid #7BA566;
+}
+
+#ja-cssmenu li ul a {
+	color: #E4EFDF;
+}
+
+#ja-cssmenu li ul a:hover,
+#ja-cssmenu li ul a:active,
+#ja-cssmenu li ul a:focus,
+#ja-cssmenu ul li:hover,
+#ja-cssmenu ul li.sfhover,
+#ja-cssmenu ul li.havesubchildsfhover,
+#ja-cssmenu ul li.havesubchild-activesfhover,
+#ja-cssmenu ul ul li:hover,
+#ja-cssmenu ul ul li.sfhover,
+#ja-cssmenu ul ul li.havesubchildsfhover,
+#ja-cssmenu ul ul li.havesubchild-activesfhover {
+	background: #7BA566;
+	color: #E4EFDF;
+}

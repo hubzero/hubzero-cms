@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mysqli.php 10207 2008-04-17 15:46:15Z ircmaxell $
+* @version		$Id: mysqli.php 10431 2008-06-15 19:42:18Z willebil $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -536,7 +536,7 @@ class JDatabaseMySQLi extends JDatabase
 	 */
 	function insertObject( $table, &$object, $keyName = NULL )
 	{
-		$fmtsql = "INSERT INTO $table ( %s ) VALUES ( %s ) ";
+		$fmtsql = 'INSERT INTO '.$this->nameQuote($table).' ( %s ) VALUES ( %s ) ';
 		$fields = array();
 		foreach (get_object_vars( $object ) as $k => $v) {
 			if (is_array($v) or is_object($v) or $v === NULL) {
@@ -567,7 +567,7 @@ class JDatabaseMySQLi extends JDatabase
 	 */
 	function updateObject( $table, &$object, $keyName, $updateNulls=true )
 	{
-		$fmtsql = "UPDATE $table SET %s WHERE %s";
+		$fmtsql = 'UPDATE '.$this->nameQuote($table).' SET %s WHERE %s';
 		$tmp = array();
 		foreach (get_object_vars( $object ) as $k => $v) {
 			if( is_array($v) or is_object($v) or $k[0] == '_' ) { // internal or NA field

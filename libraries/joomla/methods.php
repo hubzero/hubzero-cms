@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: methods.php 10130 2008-03-13 01:11:39Z ian $
+* @version		$Id: methods.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php

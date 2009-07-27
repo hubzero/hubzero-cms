@@ -1,4 +1,4 @@
-# $Id: joomla.sql 10131 2008-03-14 13:28:57Z hackwar $
+# $Id: joomla.sql 10501 2008-07-04 23:30:20Z willebil $
 
 # --------------------------------------------------------
 
@@ -669,7 +669,6 @@ CREATE TABLE `#__templates_menu` (
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
 # Dumping data for table `#__templates_menu`
-
 INSERT INTO `#__templates_menu` VALUES ('rhuk_milkyway', '0', '0');
 INSERT INTO `#__templates_menu` VALUES ('khepri', '0', '1');
 

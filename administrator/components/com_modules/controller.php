@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: controller.php 10498 2008-07-04 00:05:36Z ian $
  * @package		Joomla
  * @subpackage	Modules
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -535,9 +535,14 @@ class ModulesController extends JController
 				$lang->load( $module->module, $langbase );
 			}
 		}
-
+		
 		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'xml.php' );
 		ModulesHelperXML::parseXMLModuleFile( $modules, $client );
+
+		$n = count($modules);
+		for ($i = 0; $i < $n; $i++) {
+			$modules[$i]->name = JText::_(stripslashes($modules[$i]->name));
+		}
 
 		// sort array of objects alphabetically by name
 		JArrayHelper::sortObjects( $modules, 'name' );

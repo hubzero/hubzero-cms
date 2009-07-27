@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10094 2008-03-02 04:35:10Z instance $
+* @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
 * @package		Joomla
 * @subpackage	Weblinks
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -57,6 +57,7 @@ class WeblinksViewWeblink extends JView
 		$model		=& $this->getModel();
 		$user		=& JFactory::getUser();
 		$uri     	=& JFactory::getURI();
+		$params = &$mainframe->getParams();
 
 		// Make sure you are logged in and have the necessary access rights
 		if ($user->get('gid') < 19) {
@@ -77,7 +78,21 @@ class WeblinksViewWeblink extends JView
 			//}
 
 			// Set page title
-			$document->setTitle(JText::_('Links').' - '.JText::_('Edit'));
+			$menus	= &JSite::getMenu();
+			$menu	= $menus->getActive();
+
+			// because the application sets a default page title, we need to get it
+			// right from the menu item itself
+			if (is_object( $menu )) {
+				$menu_params = new JParameter( $menu->params );
+				if (!$menu_params->get( 'page_title')) {
+					$params->set('page_title',	JText::_( 'Web Links'.' - '.JText::_('Edit') ));
+				}
+			} else {
+				$params->set('page_title',	JText::_( 'Web Links'.' - '.JText::_('Edit') ));
+			}
+
+			$document->setTitle( $params->get( 'page_title' ) );
 
 			//set breadcrumbs
 			if($item->query['view'] != 'weblink')
@@ -106,7 +121,22 @@ class WeblinksViewWeblink extends JView
 			$weblink->ordering = 0;
 
 			// Set page title
-			$document->setTitle(JText::_('Links').' - '.JText::_('New'));
+			// Set page title
+			$menus	= &JSite::getMenu();
+			$menu	= $menus->getActive();
+
+			// because the application sets a default page title, we need to get it
+			// right from the menu item itself
+			if (is_object( $menu )) {
+				$menu_params = new JParameter( $menu->params );
+				if (!$menu_params->get( 'page_title')) {
+					$params->set('page_title',	JText::_( JText::_('Submit a Web Link') ));
+				}
+			} else {
+				$params->set('page_title',	JText::_( JText::_('Submit a Web Link') ));
+			}
+
+			$document->setTitle( $params->get( 'page_title' ) );
 
 			// Add pathway item
 			$pathway->addItem(JText::_('New'), '');
@@ -132,7 +162,7 @@ class WeblinksViewWeblink extends JView
 
 		$this->assignRef('lists'   , $lists);
 		$this->assignRef('weblink' , $weblink);
-
+		$this->assignRef('params' ,	 $params);
 		parent::display($tpl);
 	}
 }

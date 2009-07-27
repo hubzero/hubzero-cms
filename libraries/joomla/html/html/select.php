@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: select.php 10115 2008-03-07 12:44:27Z ian $
+* @version		$Id: select.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	HTML
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

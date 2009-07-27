@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: controller.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla
  * @subpackage	Installer
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -36,7 +36,11 @@ class InstallerController extends JController
 	 */
 	function installform()
 	{
+		global $mainframe;
+
 		$model	= &$this->getModel( 'Install' );
+		$model->setState( 'install.directory', $mainframe->getCfg( 'config.tmp_path' ));
+
 		$view	= &$this->getView( 'Install');
 
 		$ftp =& JClientHelper::setCredentialsFromRequest('ftp');

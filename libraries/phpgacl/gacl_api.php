@@ -1453,13 +1453,13 @@ class gacl_api extends gacl {
 		$name = trim($name);
 		$value = trim($value);
 
-		if (empty($name) AND empty($value) ) {
+		if (empty($name) AND $value === '') {
 			$this->debug_text("get_group_id(): name and value, at least one is required");
 			return false;
 		}
 
 		$query = 'SELECT id FROM '. $table .' WHERE ';
-		if ( !empty($value) ) {
+		if ($value !== '') {
 		  $query .= ' value='. $this->db->quote($value);
 		} else {
 		  $query .= ' name='. $this->db->quote($name);
@@ -1961,7 +1961,7 @@ class gacl_api extends gacl {
 		$object_section_value = trim($object_section_value);
 		$object_value = trim($object_value);
 
-		if (empty($group_id) OR empty($object_value) OR empty($object_section_value)) {
+		if (empty($group_id) OR $object_value === '' OR $object_section_value === '') {
 			$this->debug_text("add_group_object(): Group ID: ($group_id) OR Value ($object_value) OR Section value ($object_section_value) is empty, this is required");
 			return false;
 		}
@@ -2049,7 +2049,7 @@ class gacl_api extends gacl {
 		$object_section_value = trim($object_section_value);
 		$object_value = trim($object_value);
 
-		if (empty($group_id) OR empty($object_value) OR empty($object_section_value)) {
+		if (empty($group_id) OR $object_value === '' OR $object_section_value === '') {
 			$this->debug_text("del_group_object(): Group ID:  ($group_id) OR Section value: $object_section_value OR Value ($object_value) is empty, this is required");
 			return false;
 		}
@@ -2163,7 +2163,7 @@ class gacl_api extends gacl {
 		}
 
 		// update value if it is specified.
-		if (!empty($value)) {
+		if ($value !== '' OR $value !== null) {
 			$set[] = 'value='. $this->db->quote($value);
 		}
 
@@ -2840,7 +2840,7 @@ class gacl_api extends gacl {
 		$section_value = trim($section_value);
 		$value = trim($value);
 
-		if (empty($section_value) AND empty($value) ) {
+		if (empty($section_value) AND $value === '') {
 			$this->debug_text("get_object_id(): Section Value ($value) AND value ($value) is empty, this is required");
 			return false;
 		}
@@ -3112,6 +3112,9 @@ class gacl_api extends gacl {
 			$this->debug_db('add_object');
 			return false;
 		}
+
+		// Joomla/MySQL
+		$insert_id = $this->db->insertid();
 
 		$this->debug_text("add_object(): Added object as ID: $insert_id");
 		return $insert_id;
@@ -3474,7 +3477,7 @@ class gacl_api extends gacl {
 		$name = trim($name);
 		$value = trim($value);
 
-		if (empty($name) AND empty($value) ) {
+		if (empty($name) AND $value === '') {
 			$this->debug_text('get_object_section_section_id(): Both Name ('. $name .') and Value ('. $value .') are empty, you must specify at least one.');
 			return FALSE;
 		}
@@ -3483,7 +3486,7 @@ class gacl_api extends gacl {
 		$where = ' WHERE ';
 
 		// limit by value if specified
-		if (!empty($value)) {
+		if ($value !== '') {
 			$query .= $where .'value='. $this->db->quote($value);
 			$where = ' AND ';
 		}

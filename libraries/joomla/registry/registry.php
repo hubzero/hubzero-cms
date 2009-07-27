@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: registry.php 9783 2007-12-31 14:56:55Z pasamio $
+ * @version		$Id: registry.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	Registry
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

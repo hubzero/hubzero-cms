@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: client.php 9805 2008-01-02 23:32:34Z eddieajau $
+ * @version		$Id: client.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

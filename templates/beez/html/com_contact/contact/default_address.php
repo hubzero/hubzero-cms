@@ -1,4 +1,4 @@
-<?php // @version $Id: default_address.php 10214 2008-04-19 08:59:04Z eddieajau $
+<?php // @version $Id: default_address.php 10381 2008-06-01 03:35:53Z pasamio $
 defined('_JEXEC') or die('Restricted access');
 ?>
 

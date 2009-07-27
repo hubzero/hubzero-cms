@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: framework.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: framework.php 10382 2008-06-01 06:56:02Z pasamio $
 * @package		Joomla
 * @subpackage	Installation
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -46,7 +46,7 @@ define( 'JPATH_INCLUDES', dirname(__FILE__) );
  */
 
 // Include object abstract class
-jimport( 'joomla.utilities.compat.compat' );
+require_once(JPATH_SITE.DS.'libraries'.DS.'joomla'.DS.'utilities'.DS.'compat'.DS.'compat.php');
 
 // Joomla! library imports
 jimport( 'joomla.database.table' );

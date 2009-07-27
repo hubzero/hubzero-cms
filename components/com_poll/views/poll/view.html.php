@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10094 2008-03-02 04:35:10Z instance $
+* @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
 * @package		Joomla
 * @subpackage	Poll
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -50,7 +50,20 @@ class PollViewPoll extends JView
 		$params = $mainframe->getParams();
 
 		//Set page title information
-		$document->setTitle($poll->title);
+		$menus	= &JSite::getMenu();
+		$menu	= $menus->getActive();
+
+		// because the application sets a default page title, we need to get it
+		// right from the menu item itself
+		if (is_object( $menu )) {
+			$menu_params = new JParameter( $menu->params );			
+			if (!$menu_params->get( 'page_title')) {
+				$params->set('page_title',	$poll->title);
+			}
+		} else {
+			$params->set('page_title',	$poll->title);
+		}
+		$document->setTitle( $params->get( 'page_title' ) );
 
 		//Set pathway information
 		$pathway->addItem($poll->title, '');

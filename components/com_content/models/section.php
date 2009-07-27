@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: section.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: section.php 10456 2008-06-26 17:24:13Z willebil $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -259,17 +259,13 @@ class ContentModelSection extends JModel
 		{
 			$user	=& JFactory::getUser();
 
+			// Get the page/component configuration
 			$params = &$mainframe->getParams();
 
 			$noauth	= !$params->get('show_noauth');
 			$gid		= $user->get('aid', 0);
 			$now		= $mainframe->get('requestTime');
 			$nullDate	= $this->_db->getNullDate();
-
-			// Get the parameters of the active menu item
-			$menu	=& JSite::getMenu();
-			$item    = $menu->getActive();
-			$params	=& $menu->getParams($item->id);
 
 			// Ordering control
 			$orderby = $params->get('orderby', '');
@@ -443,10 +439,9 @@ class ContentModelSection extends JModel
 			$orderby .= $filter_order .' '. $filter_order_Dir.', ';
 		}
 
-		// Get the parameters of the active menu item
-		$menu	=& JSite::getMenu();
-		$item    = $menu->getActive();
-		$params	=& $menu->getParams($item->id);
+		// Get the page/component configuration
+		$app =& JFactory::getApplication();
+		$params =& $app->getParams();
 
 		switch ($state)
 		{
@@ -487,7 +482,11 @@ class ContentModelSection extends JModel
 		$nullDate	= $this->_db->getNullDate();
 
 		// First thing we need to do is assert that the articles are in the current category
-		$where = ' WHERE a.access <= '.(int) $aid;
+		if ($noauth) {
+			$where = ' WHERE a.access <= '.(int) $aid;
+		} else {
+			$where = ' WHERE 1';
+		}
 		if ($this->_id) {
 			$where .= ' AND s.id = '.(int)$this->_id;
 		}

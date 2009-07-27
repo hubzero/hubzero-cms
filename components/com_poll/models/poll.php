@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: poll.php 10094 2008-03-02 04:35:10Z instance $
+* @version		$Id: poll.php 10462 2008-06-28 10:01:42Z willebil $
 * @package		Joomla
 * @subpackage	Polls
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -48,9 +48,13 @@ class PollModelPoll extends JModel
 			;
 		$db->setQuery( $query );
 		$db->query();
+		
+		$date =& JFactory::getDate();
 
 		$query = 'INSERT INTO #__poll_date'
-			. ' SET date = NOW(), vote_id = '. (int) $option_id . ', poll_id = ' . (int) $poll_id
+			. ' SET date = ' . $db->Quote($date->toMySQL())
+			. ', vote_id = ' . (int) $option_id
+			. ', poll_id = ' . (int) $poll_id
 		;
 		$db->setQuery( $query );
 		$db->query();

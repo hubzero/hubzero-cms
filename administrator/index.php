@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: index.php 9987 2008-02-05 17:43:24Z ian $
+* @version		$Id: index.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php

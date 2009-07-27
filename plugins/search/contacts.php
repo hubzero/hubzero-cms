@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: contacts.php 9975 2008-01-30 17:02:11Z ircmaxell $
+ * @version		$Id: contacts.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10206 2008-04-17 02:52:39Z instance $
+ * @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -46,7 +46,7 @@ class ContentViewCategory extends ContentView
 		// Request variables
 		$layout     = JRequest::getCmd('layout');
 		$task		= JRequest::getCmd('task');
-		$limit		= $mainframe->getUserStateFromRequest('com_content.'.$this->getLayout().'.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limit = $mainframe->getUserStateFromRequest('limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
 
 		// Parameters
@@ -95,7 +95,17 @@ class ContentViewCategory extends ContentView
 		$access->canPublish		= $user->authorize('com_content', 'publish', 'content', 'all');
 
 		// Set page title per category
-		$document->setTitle($category->title. ' - '. $params->get( 'page_title'));
+		// because the application sets a default page title, we need to get it
+		// right from the menu item itself
+		if (is_object( $menu )) {
+			$menu_params = new JParameter( $menu->params );			
+			if (!$menu_params->get( 'page_title')) {
+				$params->set('page_title',	$category->title);
+			}
+		} else {
+			$params->set('page_title',	$category->title);
+		}
+		$document->setTitle( $params->get( 'page_title' ) );
 
 		//set breadcrumbs
 		if(is_object($menu) && $menu->query['view'] != 'category') {

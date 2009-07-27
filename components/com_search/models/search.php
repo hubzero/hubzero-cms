@@ -142,7 +142,13 @@ class SearchModelSearch extends JModel
 
 			$rows = array();
 			for ($i = 0, $n = count( $results); $i < $n; $i++) {
-				$rows = array_merge( (array)$rows, (array)$results[$i] );
+				// Lets remove HTML and check again - Could we be finding HTML tags not content?
+				foreach ($results[$i] as $_result) {
+			    	    if ( strpos(strtolower(strip_tags($_result->text)), strtolower($this->getState('keyword'))) === false) {
+				    } else {
+					$rows[] = $_result;
+			    	    }
+				}
 			}
 
 			$this->_total	= count($rows);

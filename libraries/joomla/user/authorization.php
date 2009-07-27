@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: authorization.php 10211 2008-04-18 04:26:36Z pasamio $
+* @version		$Id: authorization.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	User
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -328,8 +328,9 @@ class JAuthorization extends gacl_api
 			. ' INNER JOIN #__core_acl_groups_'.$type.'_map AS gm ON gm.group_id = g.id'
 			. ' INNER JOIN #__core_acl_'.$type.' AS ao ON ao.id = gm.'.$type.'_id'
 			. ' WHERE ao.value='.$db->Quote($value)
+			. ' ORDER BY g.id'
 		);
-		$obj = $db->loadObject(  );
+		$obj = $db->loadObject();
 		return $obj;
 	}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: ini.php 10200 2008-04-13 05:06:44Z pasamio $
+ * @version		$Id: ini.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	Registry
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

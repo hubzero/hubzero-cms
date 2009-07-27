@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: admin.cache.html.php 9806 2008-01-03 00:35:03Z eddieajau $
+ * @version		$Id: admin.cache.html.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

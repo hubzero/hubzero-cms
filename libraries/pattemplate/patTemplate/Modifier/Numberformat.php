@@ -2,7 +2,7 @@
 /**
  * patTemplate modfifier Numberformat
  *
- * $Id: Numberformat.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: Numberformat.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * @package		patTemplate
  * @subpackage	Modifiers

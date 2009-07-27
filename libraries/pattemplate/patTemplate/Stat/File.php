@@ -2,7 +2,7 @@
 /**
  * Base class for patTemplate Stat
  *
- * $Id: File.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: File.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * A stat component should be implemented for each reader
  * to support caching. Stats return information about the
@@ -19,7 +19,7 @@ defined('JPATH_BASE') or die();
 /**
  * Base class for patTemplate Stat
  *
- * $Id: File.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: File.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * A stat component should be implemented for each reader
  * to support caching. Stats return information about the

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: tinymce.php 9889 2008-01-05 20:13:15Z willebil $
+ * @version		$Id: tinymce.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php

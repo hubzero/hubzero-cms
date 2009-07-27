@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: element.php 9872 2008-01-05 11:14:10Z eddieajau $
+ * @version		$Id: element.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10027 2008-02-12 21:13:18Z ian $
+* @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -145,6 +145,10 @@ class JApplicationHelper
 			case 'admin':
 				$path 	= DS.'components'.DS. $user_option .DS.'admin.'. $name .'.php';
 				$result = JApplicationHelper::_checkPath( $path, -1 );
+				if ($result == null) {
+					$path = DS.'components'.DS. $user_option .DS. $name .'.php';
+					$result = JApplicationHelper::_checkPath( $path, -1 );
+				}
 				break;
 
 			case 'admin_html':
@@ -222,6 +226,7 @@ class JApplicationHelper
 		}
 
 		$data = array();
+		$data['legacy'] = $xml->document->name() == 'mosinstall';
 
 		$element = & $xml->document->name[0];
 		$data['name'] = $element ? $element->data() : '';

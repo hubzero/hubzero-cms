@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: admin.admin.html.php 10023 2008-02-12 15:33:45Z ircmaxell $
+ * @version		$Id: admin.admin.html.php 10441 2008-06-21 20:49:11Z willebil $
  * @package		Joomla
  * @subpackage	Admin
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -256,7 +256,16 @@ class HTML_admin_misc
 		?>
 		<pre>
 			<?php
+			ob_start();
 			readfile( JPATH_SITE.DS.'CHANGELOG.php' );
+			$changelog = ob_get_contents();
+			ob_clean();
+			
+			// Strip php tag
+			$changelog = preg_replace('/\<\?php[^\?]*\?\>/','',$changelog);
+			
+			// Convert all other HTML entities
+			echo htmlentities($changelog);
 			?>
 		</pre>
 		<?php

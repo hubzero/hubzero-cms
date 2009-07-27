@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: list.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: list.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -283,7 +283,7 @@ class MenusModelList extends JModel
 				if (!$found && $curr->menutype!=$menu) {
 					$curr->parent = 0;
 				}
-			} // if
+			} 
 			$curr->menutype = $menu;
 			$curr->ordering = '9999';
 			$curr->home		= 0;
@@ -293,6 +293,9 @@ class MenusModelList extends JModel
 			}
 			$curr->reorder( 'menutype = '.$this->_db->Quote($curr->menutype).' AND parent = '.(int) $curr->parent );
 		} // foreach
+
+		//Now, we need to rebuild sublevels... 
+		$this->_rebuildSubLevel();
 		return true;
 	}
 
@@ -320,7 +323,7 @@ class MenusModelList extends JModel
 						break;
 					} // if
 				}
-			}
+			} 
 			if (!$found) {
 				$row->parent = 0;
 				$row->ordering = $ordering++;
@@ -338,6 +341,8 @@ class MenusModelList extends JModel
 			$row->load( $firstroot );
 			$row->reorder( 'menutype = '.$this->_db->Quote($row->menutype).' AND parent = '.(int) $row->parent );
 		} // if
+		//Rebuild sublevel
+		$this->_rebuildSubLevel();
 		return true;
 	}
 
@@ -362,7 +367,7 @@ class MenusModelList extends JModel
             }
             $default++;
 		}
-        if (count($items) > 0) {
+        if (!empty($items)) {
             // Sent menu items to the trash
             JArrayHelper::toInteger($items, array(0));
             $where = ' WHERE (id = ' . implode( ' OR id = ', $items ) . ') AND home = 0';
@@ -589,7 +594,7 @@ class MenusModelList extends JModel
 	{
 		JArrayHelper::toInteger($ids);
 
-		if (count( $ids )) {
+		if (!empty( $ids )) {
 
 			// Add all children to the list
 			foreach ($ids as $id)
@@ -702,5 +707,37 @@ class MenusModelList extends JModel
 			$return = $this->_addChildren($row->id, $list);
 		}
 		return $return;
+	}
+
+	/*
+	 * Rebuild the sublevel field for items in the menu (if called with 2nd param = 0 or no params, it will rebuild entire menu tree's sublevel
+	 * @param array of menu item ids to change level to
+	 * @param int level to set the menu items to (based on parent 
+	 */
+	function _rebuildSubLevel($cid = array(0), $level = 0)
+	{
+		JArrayHelper::toInteger($cid, array(0));
+		$db =& $this->getDBO();
+		$ids = implode( ',', $cid );
+		$cids = array();
+		if($level == 0) {
+			$query 	= 'UPDATE #__menu SET sublevel = 0 WHERE parent = 0';
+			$db->setQuery($query);
+			$db->query();
+			$query 	= 'SELECT id FROM #__menu WHERE parent = 0';
+			$db->setQuery($query);
+			$cids 	= $db->loadResultArray(0);
+		} else {
+			$query	= 'UPDATE #__menu SET sublevel = '.(int) $level
+					.' WHERE parent IN ('.$ids.')';
+			$db->setQuery( $query );
+			$db->query();
+			$query	= 'SELECT id FROM #__menu WHERE parent IN ('.$ids.')';
+			$db->setQuery( $query );
+			$cids 	= $db->loadResultArray( 0 );
+		}	
+		if (!empty( $cids )) {
+			$this->_rebuildSubLevel( $cids, $level + 1 );
+		}
 	}
 }

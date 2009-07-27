@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -39,6 +39,7 @@ class ContentViewArchive extends ContentView
 		// Initialize some variables
 		$user		=& JFactory::getUser();
 		$pathway	=& $mainframe->getPathway();
+		$document	=& JFactory::getDocument();
 
 		// Get the page/component configuration
 		$params = &$mainframe->getParams('com_content');
@@ -64,6 +65,21 @@ class ContentViewArchive extends ContentView
 
 		jimport('joomla.html.pagination');
 		$pagination = new JPagination($total, $limitstart, $limit);
+
+		$menus	= &JSite::getMenu();
+		$menu	= $menus->getActive();
+
+		// because the application sets a default page title, we need to get it
+		// right from the menu item itself
+		if (is_object( $menu )) {
+			$menu_params = new JParameter( $menu->params );			
+			if (!$menu_params->get( 'page_title')) {
+				$params->set('page_title',	JText::_( 'Archives' ));
+			}
+		} else {
+			$params->set('page_title',	JText::_( 'Archives' ));
+		}
+		$document->setTitle( $params->get( 'page_title' ) );
 
 		$form = new stdClass();
 		// Month Field

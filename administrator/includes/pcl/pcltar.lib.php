@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Id: pcltar.lib.php 7890 2007-07-07 12:52:33Z friesengeist $
+* @version $Id: pcltar.lib.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 */
 

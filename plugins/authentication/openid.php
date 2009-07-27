@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: openid.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: openid.php 10497 2008-07-03 16:36:12Z ircmaxell $
  * @package		Joomla
  * @subpackage	JFramework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -63,6 +63,7 @@ class plgAuthenticationOpenID extends JPlugin
 		}
 
 		require_once(JPATH_LIBRARIES.DS.'openid'.DS.'consumer.php');
+		jimport('joomla.filesystem.folder');
 
 		// Access the session data
 		$session =& JFactory::getSession();
@@ -78,10 +79,11 @@ class plgAuthenticationOpenID extends JPlugin
 
 		// Create and/or start using the data store
 		$store_path = JPATH_ROOT . '/tmp/_joomla_openid_store';
-		if (!file_exists($store_path) && !mkdir($store_path))
+		if (!JFolder::exists($store_path) && !JFolder::create($store_path))
 		{
-			print "Could not create the FileStore directory '$store_path'. " . " Please check the effective permissions.";
-			exit (0);
+			$response->type = JAUTHENTICATE_STATUS_FAILURE;
+			$response->error_message = "Could not create the FileStore directory '$store_path'. " . " Please check the effective permissions.";
+			return false;
 		}
 
 		// Create store object

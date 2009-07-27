@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: model.php 10111 2008-03-07 11:56:46Z eddieajau $
+* @version		$Id: model.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

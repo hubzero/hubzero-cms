@@ -2,7 +2,7 @@
 /**
  * patTemplate Reader that reads from a database using PEAR::DB
  *
- * $Id: DB.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: DB.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * @package		patTemplate
  * @subpackage	Readers
@@ -35,7 +35,7 @@ define('PATTEMPLATE_READER_DB_ERROR_UNKNOWN_INPUT', 'patTemplate::Reader::DB::00
 /**
  * patTemplate Reader that reads from a database using PEAR::DB
  *
- * $Id: DB.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: DB.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * @package		patTemplate
  * @subpackage	Readers

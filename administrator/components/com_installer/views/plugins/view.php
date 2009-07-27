@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: view.php 10466 2008-06-28 14:42:22Z ircmaxell $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -34,7 +34,7 @@ class InstallerViewPlugins extends InstallerViewDefault
 		 * Set toolbar items for the page
 		 */
 		JToolBarHelper::deleteList( '', 'remove', 'Uninstall' );
-		JToolBarHelper::help( 'screen.installer2' );
+		JToolBarHelper::help( 'screen.installer' );
 
 		// Get data from the model
 		$state		= &$this->get('State');

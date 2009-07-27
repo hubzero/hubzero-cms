@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: session.php 9948 2008-01-16 16:29:32Z ircmaxell $
+* @version		$Id: session.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	Session
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -82,6 +82,12 @@ class JSession extends JObject
 		// Register faked "destructor" in PHP4, this needs to happen before creating the session store
 		if (version_compare(PHP_VERSION, '5') == -1) {
 			register_shutdown_function((array(&$this, '__destruct')));
+		}
+
+		//Need to destroy any existing sessions started with session.auto_start
+		if (session_id()) {
+			session_unset();
+			session_destroy();
 		}
 
 		//set default sessios save handler

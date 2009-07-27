@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: log.php 10089 2008-02-29 13:44:52Z ircmaxell $
+ * @version		$Id: log.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	Error
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

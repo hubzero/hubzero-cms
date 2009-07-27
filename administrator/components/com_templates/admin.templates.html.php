@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.templates.html.php 9823 2008-01-03 00:55:17Z eddieajau $
+* @version		$Id: admin.templates.html.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 * @subpackage	Templates
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: database.php 10214 2008-04-19 08:59:04Z eddieajau $
+* @version		$Id: database.php 10431 2008-06-15 19:42:18Z willebil $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -486,17 +486,24 @@ class JDatabase extends JObject
 	/**
 	 * Quote an identifier name (field, table, etc)
 	 *
-	 * @access public
-	 * @param string The name
-	 * @return string The quoted name
+	 * @access	public
+	 * @param	string	The name
+	 * @return	string	The quoted name
 	 */
 	function nameQuote( $s )
 	{
-		$q = $this->_nameQuote;
-		if (strlen( $q ) == 1) {
-			return $q . $s . $q;
-		} else {
-			return $q{0} . $s . $q{1};
+		// Only quote if the name is not using dot-notation
+		if (strpos( '.', $s ) === false)
+		{
+			$q = $this->_nameQuote;
+			if (strlen( $q ) == 1) {
+				return $q . $s . $q;
+			} else {
+				return $q{0} . $s . $q{1};
+			}
+		}
+		else {
+			return $s;
 		}
 	}
 	/**
@@ -804,7 +811,7 @@ class JDatabase extends JObject
 	}
 
 	/**
-	 * Update ab object in the database
+	 * Update an object in the database
 	 *
 	 * @abstract
 	 * @access public

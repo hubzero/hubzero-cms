@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -31,7 +31,7 @@ class modBreadCrumbsHelper
 			$items[$i]->link = JRoute::_($items[$i]->link);
 		}
 
-		if ($params->get('showHome'))
+		if ($params->get('showHome', 1))
 		{
 			$item = new stdClass();
 			$item->name = $params->get('homeText', JText::_('Home'));

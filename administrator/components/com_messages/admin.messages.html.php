@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.messages.html.php 10092 2008-02-29 23:03:38Z ircmaxell $
+* @version		$Id: admin.messages.html.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 * @subpackage	Messages
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -84,7 +84,7 @@ class HTML_messages
 				$alt = $row->state ? JText::_( 'Read' ) : JText::_( 'Read' );
 
 				if ( $user->authorize( 'com_users', 'manage' ) ) {
-					$linkA 	= 'index.php?option=com_users&task=editA&id='. $row->user_id_from;
+					$linkA 	= 'index.php?option=com_users&view=user&task=edit&cid[]='. $row->user_id_from;
 					$author = '<a href="'. JRoute::_( $linkA ) .'" title="'. JText::_( 'Edit User' ) .'">'. $row->user_from .'</a>';
 				} else {
 					$author = $row->user_from;

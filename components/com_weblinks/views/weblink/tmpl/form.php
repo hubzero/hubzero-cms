@@ -22,9 +22,11 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo $this->action ?>" method="post" name="adminForm" id="adminForm">
-<div class="componentheading">
-	<?php echo JText::_( 'Submit A Web Link' );?>
-</div>
+<?php if ( $this->params->def( 'show_page_title', 1 ) ) : ?>
+	<div class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+		<?php echo $this->escape($this->params->get('page_title')); ?>
+	</div>
+<?php endif; ?>
 <table cellpadding="4" cellspacing="1" border="0" width="100%">
 <tr>
 	<td width="10%">

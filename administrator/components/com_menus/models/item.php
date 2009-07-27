@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: item.php 10119 2008-03-08 11:27:22Z eddieajau $
+ * @version		$Id: item.php 10439 2008-06-21 20:34:35Z willebil $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -436,7 +436,10 @@ class MenusModelItem extends JModel
 				$temp3 = array();
 				foreach ($temp2 as $k => $v)
 				{
-					$temp3[] = $k.'='.$v;
+					if ( $k && strlen($v) )
+					{
+						$temp3[] = $k.'='.$v;
+					}
 				}
 				$url = null;
 				$row->link = $prefix . '?' . implode( '&', $temp3 );

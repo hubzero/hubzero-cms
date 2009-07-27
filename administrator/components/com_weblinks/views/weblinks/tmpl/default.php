@@ -10,7 +10,7 @@
 	JToolBarHelper::deleteList();
 	JToolBarHelper::editListX();
 	JToolBarHelper::addNewX();
-	JToolBarHelper::preferences('com_weblinks', '360');
+	JToolBarHelper::preferences('com_weblinks', '380');
 	JToolBarHelper::help( 'screen.weblink' );
 ?>
 <form action="index.php" method="post" name="adminForm">
@@ -94,12 +94,12 @@
 			<td>
 				<?php
 				if (  JTable::isCheckedOut($this->user->get ('id'), $row->checked_out ) ) {
-					echo $row->title;
+					echo $this->escape($row->title);
 				} else {
 				?>
-				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Weblinks' );?>::<?php echo $row->title; ?>">
+				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Weblinks' );?>::<?php echo $this->escape($row->title); ?>">
 					<a href="<?php echo $link; ?>">
-						<?php echo $row->title; ?></a></span>
+						<?php echo $this->escape($row->title); ?></a></span>
 				<?php
 				}
 				?>
@@ -114,9 +114,9 @@
 				<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 			</td>
 			<td>
-				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Category' );?>::<?php echo $row->category; ?>">
+				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Category' );?>::<?php echo $this->escape($row->category); ?>">
 				<a href="<?php echo $row->cat_link; ?>" >
-				<?php echo $row->category; ?></a><span>
+				<?php echo $this->escape($row->category); ?></a></span>
 			</td>
 			<td align="center">
 				<?php echo $row->hits; ?>

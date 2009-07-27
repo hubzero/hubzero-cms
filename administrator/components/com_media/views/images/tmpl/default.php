@@ -62,5 +62,5 @@ echo $params->get('image_path', 'images/stories');?>/';
 			<li style="display: none" />
 		</ul>
 	</fieldset>
-	<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_media&view=images&tmpl=component'); ?>" />
+	<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_media&view=images&tmpl=component&e_name='.JRequest::getCmd('e_name')); ?>" />
 </form>

@@ -24,9 +24,10 @@
 	// clean item data
 	JFilterOutput::objectHTMLSafe( $user, ENT_QUOTES, '' );
 
-	$lvisit = $this->user->get('lastvisitDate');
-	if ($lvisit == "0000-00-00 00:00:00") {
-		$lvisit = JText::_( 'Never');
+	if ($this->user->get('lastvisitDate') == "0000-00-00 00:00:00") {
+		$lvisit = JText::_( 'Never' );
+	} else {
+		$lvisit	= JHTML::_('date', $this->user->get('lastvisitDate'), '%Y-%m-%d %H:%M:%S');
 	}
 ?>
 <script language="javascript" type="text/javascript">
@@ -139,7 +140,7 @@
 						<?php echo $this->lists['gid']; ?>
 					</td>
 				</tr>
-				<?php if ($this->user->authorize( 'com_users', 'block user' )) { ?>
+				<?php if ($this->me->authorize( 'com_users', 'block user' )) { ?>
 				<tr>
 					<td class="key">
 						<?php echo JText::_( 'Block User' ); ?>
@@ -148,7 +149,7 @@
 						<?php echo $this->lists['block']; ?>
 					</td>
 				</tr>
-				<?php } if ($this->user->authorize( 'com_users', 'email_events' )) { ?>
+				<?php } if ($this->me->authorize( 'com_users', 'email_events' )) { ?>
 				<tr>
 					<td class="key">
 						<?php echo JText::_( 'Receive System Emails' ); ?>
@@ -163,7 +164,7 @@
 						<?php echo JText::_( 'Register Date' ); ?>
 					</td>
 					<td>
-						<?php echo $this->user->get('registerDate');?>
+						<?php echo JHTML::_('date', $this->user->get('registerDate'), '%Y-%m-%d %H:%M:%S');?>
 					</td>
 				</tr>
 				<tr>
@@ -294,7 +295,7 @@
 	<input type="hidden" name="option" value="com_users" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="contact_id" value="" />
-	<?php if (!$this->user->authorize( 'com_users', 'email_events' )) { ?>
+	<?php if (!$this->me->authorize( 'com_users', 'email_events' )) { ?>
 	<input type="hidden" name="sendEmail" value="0" />
 	<?php } ?>
 	<?php echo JHTML::_( 'form.token' ); ?>

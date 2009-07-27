@@ -2,7 +2,7 @@
 /**
  * Base class for patTemplate variable modifiers
  *
- * $Id: Modifier.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: Modifier.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * A modifier is used to modify a variable when it's parsed
  * into the template.
@@ -18,7 +18,7 @@ defined('JPATH_BASE') or die();
 /**
  * Base class for patTemplate variable modifiers
  *
- * $Id: Modifier.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: Modifier.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * A modifier is used to modify a variable when it's parsed
  * into the template.

@@ -1,4 +1,4 @@
-<?php // @version $Id: default_item.php 9718 2007-12-20 22:35:36Z eddieajau $
+<?php // @version $Id: default_item.php 10381 2008-06-01 03:35:53Z pasamio $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -60,7 +60,7 @@ endif; ?>
 			<?php echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->catslug, $this->item->sectionid)).'">'; ?>
 		<?php endif; ?>
 		<?php echo $this->item->category; ?>
-		<?php if ($this->item->params->get('link_section')) : ?>
+		<?php if ($this->item->params->get('link_category')) : ?>
 			<?php echo '</a>'; ?>
 		<?php endif; ?>
 	</span>

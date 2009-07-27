@@ -1,7 +1,7 @@
 <?php
 /**
  * Legacy Mode compatibility
- * @version		$Id: database.mysqli.php 7692 2007-06-08 20:41:29Z tcp $
+ * @version		$Id: database.mysqli.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Legacy
  * @deprecated	As of version 1.5
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: admin.categories.html.php 9807 2008-01-03 00:36:42Z eddieajau $
+ * @version		$Id: admin.categories.html.php 10439 2008-06-21 20:34:35Z willebil $
  * @package		Joomla
  * @subpackage	Categories
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -121,6 +121,8 @@ class categories_html
 		if( count( $rows ) ) {
 		for ($i=0, $n=count( $rows ); $i < $n; $i++) {
 			$row 	= &$rows[$i];
+
+			JFilterOutput::objectHtmlSafe($row);
 
 			$row->sect_link = JRoute::_( 'index.php?option=com_sections&task=edit&cid[]='. $row->section );
 
@@ -389,7 +391,7 @@ class categories_html
 						<td valign="top" colspan="3">
 							<?php
 							// parameters : areaname, content, width, height, cols, rows, show xtd buttons
-							echo $editor->display( 'description',  $row->description, '550', '300', '60', '20', array('pagebreak', 'readmore') ) ;
+							echo $editor->display( 'description',  htmlspecialchars($row->description, ENT_QUOTES), '550', '300', '60', '20', array('pagebreak', 'readmore') ) ;
 							?>
 						</td>
 					</tr>

@@ -2,7 +2,7 @@
 /**
  * patTemplate StripWhitespace output filter
  *
- * $Id: StripWhitespace.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: StripWhitespace.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * Will remove all whitespace and replace it with a single space.
  *
@@ -17,7 +17,7 @@ defined('JPATH_BASE') or die();
 /**
  * patTemplate StripWhitespace output filter
  *
- * $Id: StripWhitespace.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: StripWhitespace.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * Will remove all whitespace and replace it with a single space.
  *

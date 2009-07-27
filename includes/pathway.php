@@ -49,11 +49,12 @@ class JPathwaySite extends JPathway
 					switch($link->type)
 					{
 						case 'menulink' :
+						case 'url' :
 							$url = $link->link;
 							break;
-                        case 'separator' :
-                            $url = null;
-                            break;
+						case 'separator' :
+							$url = null;
+							break;
 						default      :
 							$url = 'index.php?Itemid='.$link->id;
 					}

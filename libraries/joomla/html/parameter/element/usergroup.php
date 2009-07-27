@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: usergroup.php 10119 2008-03-08 11:27:22Z eddieajau $
+* @version		$Id: usergroup.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	Parameter
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

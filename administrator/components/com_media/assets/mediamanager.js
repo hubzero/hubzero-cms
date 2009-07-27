@@ -1,5 +1,5 @@
 /**
-* @version      $Id: mediamanager.js 9884 2008-01-05 16:59:53Z ircmaxell $
+* @version      $Id: mediamanager.js 10389 2008-06-03 11:27:38Z pasamio $
 * @package      Joomla
 * @copyright    Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license      GNU/GPL, see LICENSE.php

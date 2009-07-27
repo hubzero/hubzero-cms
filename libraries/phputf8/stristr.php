@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Id: stristr.php 8839 2007-09-11 16:23:16Z jinx $
+* @version $Id: stristr.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package utf8
 * @subpackage strings
 */

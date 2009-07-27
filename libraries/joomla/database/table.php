@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: table.php 10081 2008-02-28 13:59:38Z ircmaxell $
+ * @version		$Id: table.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	Table
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

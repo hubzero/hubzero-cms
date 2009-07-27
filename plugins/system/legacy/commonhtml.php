@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: commonhtml.php 9865 2008-01-04 23:35:32Z eddieajau $
+ * @version		$Id: commonhtml.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Legacy
  * @subpackage	1.5
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: controller.php 10471 2008-06-29 13:49:31Z willebil $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -419,6 +419,13 @@ class MenusController extends JController
 			return false;
 		}
 
+		$item =& JTable::getInstance( 'menu' );
+		$item->load($id);
+		if(!$item->get('published')) {
+			$this->setRedirect( 'index.php?option=com_menus&task=view&menutype='.$menu, JText::_('The Default Menu Item Must Be Published') );
+			return false;
+		} 
+
 		$model =& $this->getModel( 'List' );
 		if ($model->setHome($id)) {
 			$msg = JText::_( 'Default Menu Item Set' );
@@ -718,6 +725,7 @@ class MenusController extends JController
 			$copy->id 		= NULL;
 			$copy->parent 	= $a_ids[$original->parent];
 			$copy->menutype = $menu_name;
+			$copy->home 	= 0;
 
 			if ( !$copy->check() ) {
 				JError::raiseWarning( 500, $copy->getError() );

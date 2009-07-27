@@ -1,6 +1,6 @@
 <?php
 /**
-* version $Id: view.html.php 10206 2008-04-17 02:52:39Z instance $
+* version $Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
 * @package		Joomla
 * @subpackage	Newsfeeds
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -45,8 +45,22 @@ class NewsfeedsViewCategory extends JView
 		$total		= $this->get('total');
 		$pagination	= &$this->get('pagination');
 
-		// Set page title per category
-		$document->setTitle( $category->title. ' - '. $params->get( 'page_title'));
+		// Set page title
+		$menus	= &JSite::getMenu();
+		$menu	= $menus->getActive();
+
+		// because the application sets a default page title, we need to get it
+		// right from the menu item itself
+		if (is_object( $menu )) {
+			$menu_params = new JParameter( $menu->params );
+			if (!$menu_params->get( 'page_title')) {
+				$params->set('page_title',	$category->title);
+			}
+		} else {
+			$params->set('page_title',	$category->title);
+		}
+
+		$document->setTitle( $params->get( 'page_title' ) );
 
 		//set breadcrumbs
 		$pathway->addItem($category->title, '');

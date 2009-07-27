@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: user.php 10214 2008-04-19 08:59:04Z eddieajau $
+ * @version		$Id: user.php 10456 2008-06-26 17:24:13Z willebil $
  * @package		Joomla.Framework
  * @subpackage	User
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -188,7 +188,8 @@ class JUser extends JObject
 			jimport('joomla.user.helper');
 			if (!$id = JUserHelper::getUserId($id)) {
 				JError::raiseWarning( 'SOME_ERROR_CODE', 'JUser::_load: User '.$id.' does not exist' );
-				return false;
+				$retval = false;
+				return $retval;
 			}
 		}
 

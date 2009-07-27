@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: application.php 10214 2008-04-19 08:59:04Z eddieajau $
+ * @version		$Id: application.php 10456 2008-06-26 17:24:13Z willebil $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -116,6 +116,7 @@ class ConfigControllerApplication extends ConfigController
 								JHTML::_('select.option', -7, JText::_('(UTC -07:00) Mountain Time (US &amp; Canada)')),
 								JHTML::_('select.option', -6, JText::_('(UTC -06:00) Central Time (US &amp; Canada), Mexico City')),
 								JHTML::_('select.option', -5, JText::_('(UTC -05:00) Eastern Time (US &amp; Canada), Bogota, Lima')),
+								JHTML::_('select.option', -4.5, JText::_('(UTC -04:30) Venezuela')),
 								JHTML::_('select.option', -4, JText::_('(UTC -04:00) Atlantic Time (Canada), Caracas, La Paz')),
 								JHTML::_('select.option', -3.5, JText::_('(UTC -03:30) St. John\'s, Newfoundland, Labrador')),
 								JHTML::_('select.option', -3, JText::_('(UTC -03:00) Brazil, Buenos Aires, Georgetown')),
@@ -388,6 +389,11 @@ class ConfigControllerApplication extends ConfigController
 		$oldconfig->setValue('config.ftp_pass', $config_array['ftp_pass']);
 		$oldconfig->setValue('config.ftp_root', $config_array['ftp_root']);
 		JClientHelper::getCredentials('ftp', true);
+
+		if(!$config->get('caching') && $oldconfig->get('caching')) {
+			$cache = JFactory::getCache();
+			$cache->clean();
+		}
 
 		// Try to make configuration.php writeable
 		jimport('joomla.filesystem.path');

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mod_latest.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: mod_latest.php 10459 2008-06-27 10:01:23Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -104,7 +104,7 @@ if (count( $rows ))
 					<?php echo htmlspecialchars($row->title, ENT_QUOTES, 'UTF-8');?></a>
 			</td>
 			<td>
-				<?php echo $row->$dateProperty;?>
+				<?php echo JHTML::_('date', $row->$dateProperty, '%Y-%m-%d %H:%M:%S'); ?>
 			</td>
 			<td>
 				<?php echo $author;?>

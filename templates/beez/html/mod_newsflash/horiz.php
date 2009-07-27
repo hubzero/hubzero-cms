@@ -1,4 +1,4 @@
-<?php // @version $Id: horiz.php 8796 2007-09-09 15:46:34Z jinx $
+<?php // @version $Id: horiz.php 10381 2008-06-01 03:35:53Z pasamio $
 defined('_JEXEC') or die('Restricted access');
 ?>
 

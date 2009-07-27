@@ -9471,7 +9471,7 @@ class SimplePie_Misc
 	 * @author Amir Mohammad Saied <amir@php.net>
 	 * @copyright 1997-2006 Pierre-Alain Joye,Tomas V.V.Cox,Amir Mohammad Saied
 	 * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
-	 * @version CVS: $Id: simplepie.php 10214 2008-04-19 08:59:04Z eddieajau $
+	 * @version CVS: $Id: simplepie.php 10381 2008-06-01 03:35:53Z pasamio $
 	 * @link http://pear.php.net/package/Validate
 	 * @access public
 	 * @param string $data Data to strip comments from

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: pagebreak.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: pagebreak.php 10498 2008-07-04 00:05:36Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -167,7 +167,7 @@ function plgContentCreateTOC( &$row, &$matches, &$page )
 
 	// TOC Header
 	$row->toc = '
-	<table cellpadding="0" cellspacing="0" class="contenttoc" align="right">
+	<table cellpadding="0" cellspacing="0" class="contenttoc">
 	<tr>
 		<th>'
 		. JText::_( 'Article Index' ) .

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: message.php 10123 2008-03-10 12:24:14Z willebil $
+ * @version		$Id: message.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php

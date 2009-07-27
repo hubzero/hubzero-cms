@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: jajax.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: jajax.php 10382 2008-06-01 06:56:02Z pasamio $
  * @package		Joomla
  * @subpackage	Installation
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -53,7 +53,7 @@ $xajax->registerFunction(array('instDefault', 'JAJAXHandler', 'sampledata'));
 JError::setErrorHandling(E_ERROR, 'callback', array('JAJAXHandler','handleError'));
 JError::setErrorHandling(E_WARNING, 'callback', array('JAJAXHandler','handleError'));
 JError::setErrorHandling(E_NOTICE, 'callback', array('JAJAXHandler','handleError'));
-jimport( 'joomla.utilities.compat.compat' );
+require_once(JPATH_SITE.DS.'libraries'.DS.'joomla'.DS.'utilities'.DS.'compat'.DS.'compat.php');
 
 /**
  * AJAX Task handler class

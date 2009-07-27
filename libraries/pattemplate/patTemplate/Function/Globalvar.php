@@ -3,7 +3,7 @@
  * patTemplate function that enables adding global variables
  * from within a template.
  *
- * $Id: Globalvar.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: Globalvar.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * @package		patTemplate
  * @subpackage	Functions
@@ -24,7 +24,7 @@ defined('JPATH_BASE') or die();
  * default  >  default value of the variable
  * hidden   >  whether to output the content of the variable: yes|no
  *
- * $Id: Globalvar.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: Globalvar.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * @package		patTemplate
  * @subpackage	Functions

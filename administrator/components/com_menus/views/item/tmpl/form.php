@@ -13,11 +13,31 @@ function submitbutton(pressbutton) {
 	if ( (type != "separator") && (trim( form.name.value ) == "") ){
 		alert( "<?php echo JText::_( 'Item must have a title', true ); ?>" );
 	}
-	<?php if( $this->name == "Category List Layout" ){ ?>
+	<?php if( $this->item->type == 'component' && isset($this->item->linkparts['option']) && $this->item->linkparts['option'] == 'com_newsfeeds' && isset($this->item->linkparts['view']) && $this->item->linkparts['view'] == 'category' ){ ?>
 	else if( document.getElementById('urlparamsid').value == 0 ){
  		alert( "<?php echo JText::_('Please select a Category', true ); ?>" );
 	} <?php } ?>
-	<?php if( $this->name == "Article Layout" ){ ?>
+	<?php if( $this->item->type == 'component' && isset($this->item->linkparts['option']) && $this->item->linkparts['option'] == 'com_weblinks' && isset($this->item->linkparts['view']) && $this->item->linkparts['view'] == 'category' ){ ?>
+	else if( document.getElementById('urlparamsid').value == 0 ){
+ 		alert( "<?php echo JText::_('Please select a Category', true ); ?>" );
+	} <?php } ?>
+	<?php if( $this->item->type == 'component' && isset($this->item->linkparts['option']) && $this->item->linkparts['option'] == 'com_newsfeeds' && isset($this->item->linkparts['view']) && $this->item->linkparts['view'] == 'newsfeed' ){ ?>
+	else if( document.getElementById('urlparamsid').value == 0 ){
+ 		alert( "<?php echo JText::_('Please select a Feed', true ); ?>" );
+	} <?php } ?>
+	<?php if( $this->item->type == 'component' && isset($this->item->linkparts['option']) && $this->item->linkparts['option'] == 'com_content' && isset($this->item->linkparts['view']) && $this->item->linkparts['view'] == 'category' ){ ?>
+	else if( document.getElementById('urlparamsid').value == 0 ){
+ 		alert( "<?php echo JText::_('Please select a Category', true ); ?>" );
+	} <?php } ?>
+	<?php if( $this->item->type == 'component' && isset($this->item->linkparts['option']) && $this->item->linkparts['option'] == 'com_content' && isset($this->item->linkparts['view']) && $this->item->linkparts['view'] == 'section' ){ ?>
+	else if( document.getElementById('urlparamsid').value == 0 ){
+ 		alert( "<?php echo JText::_('Please select a Section', true ); ?>" );
+	} <?php } ?>	
+	<?php if( $this->item->type == 'component' && isset($this->item->linkparts['option']) && $this->item->linkparts['option'] == 'com_poll' && isset($this->item->linkparts['view']) && $this->item->linkparts['view'] == 'poll' ){ ?>
+	else if( document.getElementById('urlparamsid').value == 0 ){
+ 		alert( "<?php echo JText::_('Please select a Poll', true ); ?>" );
+	} <?php } ?>
+	<?php if( $this->item->type == 'component' && isset($this->item->linkparts['option']) && $this->item->linkparts['option'] == 'com_content' && isset($this->item->linkparts['view']) && $this->item->linkparts['view'] == 'article' && !isset($this->item->linkparts['layout']) ){ ?>
 	else if( document.getElementById('id_id').value == 0 ){
 		alert( "<?php echo JText::_('Please select an Article', true ); ?>" );
 	} <?php } ?> else {

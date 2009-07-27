@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: newsfeeds.php 9875 2008-01-05 11:33:51Z eddieajau $
+ * @version		$Id: newsfeeds.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: response.php 9967 2008-01-28 08:21:02Z rmuilwijk $
+ * @version		$Id: response.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

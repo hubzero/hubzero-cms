@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10214 2008-04-19 08:59:04Z eddieajau $
+ * @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
  * @package		Joomla
  * @subpackage	Weblinks
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -45,6 +45,25 @@ class SearchViewSearch extends JView
 		$areas      = &$this->get('areas');
 		$state 		= &$this->get('state');
 		$searchword = $state->get('keyword');
+
+		$params = &$mainframe->getParams();
+
+		$menus	= &JSite::getMenu();
+		$menu	= $menus->getActive();
+
+		// because the application sets a default page title, we need to get it
+		// right from the menu item itself
+		if (is_object( $menu )) {
+			$menu_params = new JParameter( $menu->params );
+			if (!$menu_params->get( 'page_title')) {
+				$params->set('page_title',	JText::_( 'Search' ));
+			}
+		} else {
+			$params->set('page_title',	JText::_( 'Search' ));
+		}
+
+		$document	= &JFactory::getDocument();
+		$document->setTitle( $params->get( 'page_title' ) );
 
 		// Get the parameters of the active menu item
 		$params	= &$mainframe->getParams();

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: installer.php 10180 2008-03-28 21:06:34Z willebil $
+ * @version		$Id: installer.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	Installer
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -805,6 +805,9 @@ class JInstaller extends JObject
 		{
 			$path['src']	= $source.DS.$file->data();
 			$path['dest']	= $destination.DS.$file->data();
+			
+			// Is this path a file or folder?
+			$path['type']	= ( $file->name() == 'folder') ? 'folder' : 'file';
 
 			/*
 			 * Before we can add a file to the copyfiles array we need to ensure

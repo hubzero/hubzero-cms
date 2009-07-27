@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: sysinfo_directory.php 9506 2007-12-08 21:00:27Z willebil $
+ * @version		$Id: sysinfo_directory.php 10381 2008-06-01 03:35:53Z pasamio $
  */
 // No direct access
 defined('_JEXEC') or die('Restricted access');
@@ -56,6 +56,7 @@ $cparams = JComponentHelper::getParams ('com_media');
 				writableCell( 'language/'.$slang );
 			}
 
+			writableCell( 'media' );
 			writableCell( 'modules' );
 			writableCell( 'plugins' );
 			writableCell( 'plugins/content' );

@@ -3,7 +3,7 @@
  * patTemplate input filter to allow the short modifier syntax
  * that is used by Smarty
  *
- * $Id: ShortModifiers.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: ShortModifiers.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * @package		patTemplate
  * @subpackage	Filters
@@ -17,7 +17,7 @@ defined('JPATH_BASE') or die();
  * patTemplate input filter to allow the short modifier syntax
  * that is used by Smarty
  *
- * $Id: ShortModifiers.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: ShortModifiers.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * This will replace the variables with patTemplate:var/> tags that
  * have the name and the modifier attribute set.

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: folder.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: folder.php 10456 2008-06-26 17:24:13Z willebil $
  * @package		Joomla
  * @subpackage	Media
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -54,7 +54,7 @@ class MediaControllerFolder extends MediaController
 		if (count($paths)) {
 			foreach ($paths as $path)
 			{
-				if ($path !== JFilterInput::clean($path, 'path')) {
+				if ($path !== JFile::makeSafe($path)) {
 					JError::raiseWarning(100, JText::_('Unable to delete:').htmlspecialchars($path, ENT_COMPAT, 'UTF-8').' '.JText::_('WARNDIRNAME'));
 					continue;
 				}

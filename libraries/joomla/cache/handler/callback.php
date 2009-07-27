@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: callback.php 10082 2008-02-28 16:29:13Z ircmaxell $
+* @version		$Id: callback.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	Cache
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

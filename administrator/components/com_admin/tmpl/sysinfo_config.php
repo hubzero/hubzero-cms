@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: sysinfo_config.php 10186 2008-04-02 13:10:12Z pasamio $
+ * @version		$Id: sysinfo_config.php 10381 2008-06-01 03:35:53Z pasamio $
  */
 // No direct access
 defined('_JEXEC') or die('Restricted access');

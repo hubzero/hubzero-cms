@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.php 9783 2007-12-31 14:56:55Z pasamio $
+* @version		$Id: view.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 * @subpackage	Menus
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -139,7 +139,7 @@ class MenusViewItem extends JView
 
 		// Set toolbar items for the page
 		JToolBarHelper::cancel('view');
-		JToolBarHelper::help( 'screen.menus.type' );
+		JToolBarHelper::help( 'screen.menus.edit' );
 
 		// Add scripts and stylesheets to the document
 		$document	= & JFactory::getDocument();

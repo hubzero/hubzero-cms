@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: application.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: application.php 10382 2008-06-01 06:56:02Z pasamio $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -242,7 +242,7 @@ class JSite extends JApplication
 			$menus	= &JSite::getMenu();
 			$menu	= $menus->getActive();
 
-			$title       = $this->getCfg('sitename' );
+			$title       = htmlspecialchars_decode($this->getCfg('sitename' ));
 			$description = $this->getCfg('MetaDesc');
 
 			// Lets cascade the parameters if we have menu item parameters

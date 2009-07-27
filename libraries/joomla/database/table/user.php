@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: user.php 10134 2008-03-16 01:48:59Z ian $
+* @version		$Id: user.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	Table
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

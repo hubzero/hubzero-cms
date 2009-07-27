@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: controller.php 10497 2008-07-03 16:36:12Z ircmaxell $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -584,8 +584,10 @@ class ContentController extends JController
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Initialize variables
-		$db			= & JFactory::getDBO();
+		$db		= & JFactory::getDBO();
 		$user		= & JFactory::getUser();
+		$dispatcher 	= & JDispatcher::getInstance();
+		JPluginHelper::importPlugin('content');
 
 		$details	= JRequest::getVar( 'details', array(), 'post', 'array');
 		$option		= JRequest::getCmd( 'option' );
@@ -606,8 +608,10 @@ class ContentController extends JController
 		// sanitise id field
 		$row->id = (int) $row->id;
 
+		$isNew = true;
 		// Are we saving from an item edit?
 		if ($row->id) {
+			$isNew = false;
 			$datenow =& JFactory::getDate();
 			$row->modified 		= $datenow->toMySQL();
 			$row->modified_by 	= $user->get('id');
@@ -689,6 +693,12 @@ class ContentController extends JController
 		// Increment the content version number
 		$row->version++;
 
+		$result = $dispatcher->trigger('onBeforeContentSave', array(&$row, $isNew));
+		if(in_array(false, $result, true)) {
+			JError::raiseError(500, $row->getError());
+			return false;
+		}
+
 		// Store the content to the database
 		if (!$row->store()) {
 			JError::raiseError( 500, $db->stderr() );
@@ -737,6 +747,8 @@ class ContentController extends JController
 
 		$cache = & JFactory::getCache('com_content');
 		$cache->clean();
+
+		$dispatcher->trigger('onAfterContentSave', array(&$row, $isNew));
 
 		switch ($task)
 		{

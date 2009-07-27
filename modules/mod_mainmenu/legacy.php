@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: legacy.php 10214 2008-04-19 08:59:04Z eddieajau $
+* @version		$Id: legacy.php 10396 2008-06-05 19:19:55Z willebil $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -21,7 +21,8 @@ function mosGetMenuLink($mitem, $level = 0, & $params, $open = null)
 {
 	global $Itemid;
 	$txt = '';
-
+	//needed to break reference to prevent altering the actual menu item 
+	$mitem = clone($mitem);
 	// Menu Link is a special type that is a link to another item
 	if ($mitem->type == 'menulink')
 	{

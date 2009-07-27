@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: article.php 10119 2008-03-08 11:27:22Z eddieajau $
+ * @version		$Id: article.php 10497 2008-07-03 16:36:12Z ircmaxell $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -275,6 +275,8 @@ class ContentModelArticle extends JModel
 
 		$article  =& JTable::getInstance('content');
 		$user     =& JFactory::getUser();
+		$dispatcher =& JDispatcher::getInstance();
+		JPluginHelper::importPlugin('content');
 
 		// Bind the form fields to the web link table
 		if (!$article->bind($data, "published")) {
@@ -398,6 +400,13 @@ class ContentModelArticle extends JModel
 
 		$article->version++;
 
+		//Trigger OnBeforeContentSave
+		$result = $dispatcher->trigger('onBeforeContentSave', array(&$article, $isNew));
+		if(in_array(false, $result, true)) {
+			$this->setError($article->getError());
+			return false;
+		}
+		
 		// Store the article table to the database
 		if (!$article->store()) {
 			$this->setError($this->_db->getErrorMsg());
@@ -410,6 +419,9 @@ class ContentModelArticle extends JModel
 		}
 
 		$article->reorder("catid = " . (int) $data['catid']);
+
+		//Trigger OnAfterContentSave
+		$dispatcher->trigger('onAfterContentSave', array(&$article, $isNew));
 
 		$this->_article	=& $article;
 

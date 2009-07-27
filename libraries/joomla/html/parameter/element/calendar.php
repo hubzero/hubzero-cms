@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: calendar.php 10094 2008-03-02 04:35:10Z instance $
+* @version		$Id: calendar.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	Parameter
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

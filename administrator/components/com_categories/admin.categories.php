@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: admin.categories.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: admin.categories.php 10439 2008-06-21 20:34:35Z willebil $
  * @package		Joomla
  * @subpackage	Categories
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -257,7 +257,7 @@ function showCategories( $section, $option )
 
 	// get list of sections for dropdown filter
 	$javascript = 'onchange="document.adminForm.submit();"';
-	$lists['sectionid']	= JHTML::_('list.section',  'sectionid', $sectionid, $javascript );
+	$lists['sectionid']	= JHTML::_('list.section',  'sectionid', $sectionid, $javascript, 'ordering', false );
 
 	// state filter
 	$lists['state']	= JHTML::_('grid.state',  $filter_state );

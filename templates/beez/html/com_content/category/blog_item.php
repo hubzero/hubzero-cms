@@ -1,4 +1,4 @@
-<?php // @version $Id: blog_item.php 10038 2008-02-14 19:53:39Z hackwar $
+<?php // @version $Id: blog_item.php 10381 2008-06-01 03:35:53Z pasamio $
 defined('_JEXEC') or die('Restricted access');
 ?>
 

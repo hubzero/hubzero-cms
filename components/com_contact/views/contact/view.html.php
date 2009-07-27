@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -66,7 +66,17 @@ class ContactViewContact extends JView
 		$contacts = $modelCat->getContacts( $options );
 
 		// Set the document page title
-		$document->setTitle(JText::_('Contact').' - '.$contact->name);
+		// because the application sets a default page title, we need to get it
+		// right from the menu item itself
+		if (is_object( $menu )) {
+			$menu_params = new JParameter( $menu->params );			
+			if (!$menu_params->get( 'page_title')) {
+				$pparams->set('page_title',	$contact->name);
+			}
+		} else {
+			$pparams->set('page_title',	$contact->name);
+		}
+		$document->setTitle( $pparams->get( 'page_title' ) );
 
 		//set breadcrumbs
 		if (isset( $menu ) && isset($menu->query['view']) && $menu->query['view'] != 'contact'){

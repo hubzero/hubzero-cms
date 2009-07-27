@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mod_popular.php 9764 2007-12-30 07:48:11Z ircmaxell $
+* @version		$Id: mod_popular.php 10460 2008-06-27 10:03:09Z eddieajau $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -48,7 +48,7 @@ foreach ($rows as $row)
 				<?php echo htmlspecialchars($row->title, ENT_QUOTES, 'UTF-8');?></a>
 		</td>
 		<td>
-			<?php echo $row->created;?>
+			<?php echo JHTML::_('date', $row->created, '%Y-%m-%d %H:%M:%S'); ?>
 		</td>
 		<td>
 			<?php echo $row->hits;?>

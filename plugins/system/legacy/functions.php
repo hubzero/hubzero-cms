@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: functions.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: functions.php 10439 2008-06-21 20:34:35Z willebil $
  * @package		Joomla.Legacy
  * @subpackage	1.5
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -784,11 +784,11 @@ function josGetArrayInts( $name, $type=NULL ) {
  *
  * @deprecated	As of version 1.5
  */
-function josSpoofCheck( $header=false, $alternate=false )
+function josSpoofCheck( $header=false, $alternate=null )
 {
 	// Lets make sure they saw the html form
 	$check = true;
-	$hash	= josSpoofValue();
+	$hash	= josSpoofValue($alternate);
 	$valid	= JRequest::getBool( $hash, 0, 'post' );
 	if (!$valid) {
 		$check = false;

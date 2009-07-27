@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: templates.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @version		$Id: templates.php 10439 2008-06-21 20:34:35Z willebil $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -156,6 +156,11 @@ class InstallerModelTemplates extends InstallerModel
 			}
 		}
 		$this->setState('pagination.total', count($rows));
+		// if the offset is greater than the total, then can the offset
+		if($this->_state->get('pagination.offset') > $this->_state->get('pagination.total')) {
+			$this->setState('pagination.offset',0);
+		}
+		
 		if($this->_state->get('pagination.limit') > 0) {
 			$this->_items = array_slice( $rows, $this->_state->get('pagination.offset'), $this->_state->get('pagination.limit') );
 		} else {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: arrayhelper.php 10207 2008-04-17 15:46:15Z ircmaxell $
+ * @version		$Id: arrayhelper.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	Utilities
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

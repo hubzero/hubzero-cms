@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: standard.php 10101 2008-03-05 08:01:48Z tcp $
+* @version		$Id: standard.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	HTML
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

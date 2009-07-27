@@ -1,4 +1,4 @@
-<?php // @version $Id: default_items.php 9718 2007-12-20 22:35:36Z eddieajau $
+<?php // @version $Id: default_items.php 10381 2008-06-01 03:35:53Z pasamio $
 defined('_JEXEC') or die('Restricted access');
 ?>
 

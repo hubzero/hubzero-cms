@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: pagination.php 10124 2008-03-10 12:40:29Z willebil $
+ * @version		$Id: pagination.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -404,18 +404,11 @@ class JPagination extends JObject
 	function _list_footer($list)
 	{
 		// Initialize variables
-		$lang =& JFactory::getLanguage();
 		$html = "<div class=\"list-footer\">\n";
 
-		if ($lang->isRTL()) {
-			$html .= "\n<div class=\"counter\">".$list['pagescounter']."</div>";
-			$html .= $list['pageslinks'];
-			$html .= "\n<div class=\"limit\">".JText::_('Display Num').$list['limitfield']."</div>";
-		} else {
-			$html .= "\n<div class=\"limit\">".JText::_('Display Num').$list['limitfield']."</div>";
-			$html .= $list['pageslinks'];
-			$html .= "\n<div class=\"counter\">".$list['pagescounter']."</div>";
-		}
+		$html .= "\n<div class=\"limit\">".JText::_('Display Num').$list['limitfield']."</div>";
+		$html .= $list['pageslinks'];
+		$html .= "\n<div class=\"counter\">".$list['pagescounter']."</div>";
 
 		$html .= "\n<input type=\"hidden\" name=\"limitstart\" value=\"".$list['limitstart']."\" />";
 		$html .= "\n</div>";
@@ -426,35 +419,21 @@ class JPagination extends JObject
 	function _list_render($list)
 	{
 		// Initialize variables
-		$lang =& JFactory::getLanguage();
 		$html = null;
 
 		// Reverse output rendering for right-to-left display
-		if($lang->isRTL())
-		{
-			$html .=  $list['previous']['data'];
-			$html .= $list['start']['data'];
-			$list['pages'] = array_reverse( $list['pages'] );
-			foreach( $list['pages'] as $page ) {
-				$html .= $page['data'];
-			}
-			$html .= $list['end']['data'];
-			$html .= $list['next']['data'];
+		$html .= '&lt;&lt; ';
+		$html .= $list['start']['data'];
+		$html .= ' &lt; ';
+		$html .= $list['previous']['data'];
+		foreach( $list['pages'] as $page ) {
+			$html .= ' '.$page['data'];
 		}
-		else
-		{
-			$html .= '&lt;&lt; ';
-			$html .= $list['start']['data'];
-			$html .= ' &lt; ';
-			$html .= $list['previous']['data'];
-			foreach( $list['pages'] as $page ) {
-				$html .= ' '.$page['data'];
-			}
-			$html .= ' '. $list['next']['data'];
-			$html .= ' &gt;';
-			$html .= ' '. $list['end']['data'];
-			$html .= ' &gt;&gt;';
-		}
+		$html .= ' '. $list['next']['data'];
+		$html .= ' &gt;';
+		$html .= ' '. $list['end']['data'];
+		$html .= ' &gt;&gt;';
+
 		return $html;
 	}
 

@@ -1,6 +1,5 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
-<div style="direction: <?php echo $rssrtl ? 'rtl' :'ltr'; ?>; text-align: <?php echo $rssrtl ? 'right' :'left'; ?>">
 <?php
 if( $feed != false )
 {
@@ -92,7 +91,7 @@ if( $feed != false )
 						}
 					}
 					?>
-					<div style="text-align: <?php echo $params->get('rssrtl', 0) ? 'right': 'left'; ?> ! important">
+					<div class="newsfeed_item<?php echo $params->get( 'moduleclass_sfx'); ?>"  >
 						<?php echo $text; ?>
 					</div>
 					<?php
@@ -107,4 +106,3 @@ if( $feed != false )
 		</tr>
 	</table>
 <?php } ?>
-</div>

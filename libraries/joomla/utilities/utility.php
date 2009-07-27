@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: utility.php 9944 2008-01-14 21:10:22Z eddieajau $
+ * @version		$Id: utility.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	Utilities
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

@@ -1,5 +1,5 @@
 /**
- * @version		$Id: xstandard.js 9765 2007-12-30 08:21:02Z ircmaxell $
+ * @version		$Id: xstandard.js 10389 2008-06-03 11:27:38Z pasamio $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php

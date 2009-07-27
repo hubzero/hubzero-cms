@@ -1,11 +1,11 @@
 <?php
 /**
-* @version $Id: zip.lib.php 8041 2007-07-18 10:25:00Z humvee $
+* @version $Id: zip.lib.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 */
 
 
-// $Id: zip.lib.php 8041 2007-07-18 10:25:00Z humvee $
+// $Id: zip.lib.php 10381 2008-06-01 03:35:53Z pasamio $
 //
 // The "GNU General Public License" (GPL) is available at
 // http://www.gnu.org/licenses/gpl-2.0.html.

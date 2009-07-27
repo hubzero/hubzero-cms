@@ -1,4 +1,4 @@
-# $Id: joomla_backward.sql 10131 2008-03-14 13:28:57Z hackwar $
+# $Id: joomla_backward.sql 10506 2008-07-05 21:32:20Z willebil $
 
 # --------------------------------------------------------
 
@@ -669,9 +669,9 @@ CREATE TABLE `#__templates_menu` (
 ) TYPE=MyISAM;
 
 # Dumping data for table `#__templates_menu`
-
 INSERT INTO `#__templates_menu` VALUES ('rhuk_milkyway', '0', '0');
 INSERT INTO `#__templates_menu` VALUES ('khepri', '0', '1');
+
 
 # --------------------------------------------------------
 

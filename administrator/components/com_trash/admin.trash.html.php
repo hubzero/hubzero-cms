@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.trash.html.php 9824 2008-01-03 00:55:39Z eddieajau $
+* @version		$Id: admin.trash.html.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 * @subpackage	Trash
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

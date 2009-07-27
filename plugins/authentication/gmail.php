@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: gmail.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: gmail.php 10396 2008-06-05 19:19:55Z willebil $
  * @package		Joomla
  * @subpackage	JFramework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -87,7 +87,7 @@ class plgAuthenticationGMail extends JPlugin
 			}
 		}
 		else {
-			$message = 'curl isn\'t insalled';
+			$message = 'curl isn\'t installed';
 		}
 
 		if ($success)

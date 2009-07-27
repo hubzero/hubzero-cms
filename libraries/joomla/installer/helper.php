@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: helper.php 9978 2008-02-01 17:23:39Z ircmaxell $
+ * @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	Installer
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

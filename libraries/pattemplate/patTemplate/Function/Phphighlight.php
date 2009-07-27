@@ -2,7 +2,7 @@
 /**
  * patTemplate function that highlights PHP code in your templates
  *
- * $Id: Phphighlight.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: Phphighlight.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * @package		patTemplate
  * @subpackage	Functions
@@ -15,7 +15,7 @@ defined('JPATH_BASE') or die();
 /**
  * patTemplate function that highlights PHP code in your templates
  *
- * $Id: Phphighlight.php 8287 2007-08-01 08:38:59Z eddieajau $
+ * $Id: Phphighlight.php 10381 2008-06-01 03:35:53Z pasamio $
  *
  * @package		patTemplate
  * @subpackage	Functions

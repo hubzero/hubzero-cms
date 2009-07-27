@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: router.php 10223 2008-04-19 14:45:50Z ircmaxell $
+* @version		$Id: router.php 10381 2008-06-01 03:35:53Z pasamio $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php

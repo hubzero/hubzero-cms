@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 10212 2008-04-19 00:06:00Z ian $
+ * @version		$Id: view.php 10381 2008-06-01 03:35:53Z pasamio $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.

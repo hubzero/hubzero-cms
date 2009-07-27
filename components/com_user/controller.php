@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10094 2008-03-02 04:35:10Z instance $
+ * @version		$Id: controller.php 10492 2008-07-02 06:38:28Z ircmaxell $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -117,6 +117,9 @@ class UserController extends JController
 
 		if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
 			$return = base64_decode($return);
+			if (strpos( $return, 'http' ) !== false && strpos( $return, JURI::base() ) !== 0) {
+				$return = '';
+			}
 		}
 
 		$options = array();
@@ -162,6 +165,9 @@ class UserController extends JController
 		{
 			if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
 				$return = base64_decode($return);
+				if (strpos( $return, 'http' ) !== false && strpos( $return, JURI::base() ) !== 0) {
+					$return = '';
+				}
 			}
 
 			// Redirect if the return url is not registration or login
@@ -184,8 +190,14 @@ class UserController extends JController
 			JError::raiseError( 403, JText::_( 'Access Forbidden' ));
 			return;
 		}
-
-		JRequest::setVar('view', 'register');
+		
+		$user 	=& JFactory::getUser();
+		
+		if ( $user->get('guest')) {
+			JRequest::setVar('view', 'register');
+		} else {
+			$this->setredirect('index.php?option=com_user&task=edit',JText::_('You are already registered.'));
+		}
 
 		parent::display();
 	}
@@ -262,10 +274,8 @@ class UserController extends JController
 		} else {
 			$message = JText::_( 'REG_COMPLETE' );
 		}
-
-		//TODO :: this needs to be replace by raiseMessage
-		JError::raiseNotice('', $message);
-		$this->register();
+		
+		$this->setRedirect('index.php', $message);
 	}
 
 	function activate()

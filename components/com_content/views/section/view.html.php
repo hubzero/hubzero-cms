@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10206 2008-04-17 02:52:39Z instance $
+ * @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -71,6 +71,21 @@ class ContentViewSection extends ContentView
 			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
 			$document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
 		}
+
+		$menus	= &JSite::getMenu();
+		$menu	= $menus->getActive();
+
+		// because the application sets a default page title, we need to get it
+		// right from the menu item itself
+		if (is_object( $menu )) {
+			$menu_params = new JParameter( $menu->params );			
+			if (!$menu_params->get( 'page_title')) {
+				$params->set('page_title',	$section->title);
+			}
+		} else {
+			$params->set('page_title',	$section->title);
+		}
+		$document->setTitle( $params->get( 'page_title' ) );
 
 		// Prepare section description
 		$section->description = JHTML::_('content.prepare', $section->description);
