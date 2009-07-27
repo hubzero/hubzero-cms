@@ -1,3 +1,5 @@
+<?php // no direct access
+defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <form action="index.php" method="post" name="adminForm">
 	<?php if ($this->ftp) : ?>
 		<?php echo $this->loadTemplate('ftp'); ?>

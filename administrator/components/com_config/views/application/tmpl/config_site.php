@@ -1,3 +1,5 @@
+<?php // no direct access
+defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <fieldset class="adminform">
 	<legend><?php echo JText::_( 'Site Settings' ); ?></legend>
 	<table class="admintable" cellspacing="1">

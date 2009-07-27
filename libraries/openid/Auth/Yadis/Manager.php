@@ -7,6 +7,9 @@
  * @package OpenID
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 /**
  * The base session class used by the Auth_Yadis_Manager.  This
  * class wraps the default PHP session machinery and should be

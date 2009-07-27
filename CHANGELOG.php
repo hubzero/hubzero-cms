@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 11987 2009-06-03 01:08:57Z ian $
+* @version		$Id: CHANGELOG.php 12389 2009-07-01 00:34:45Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -36,6 +36,57 @@ $ -> Language fix or change
 ^ -> Change
 - -> Removed
 ! -> Note
+
+-------------------- 1.5.12 Stable Release [30-June-2009] ------------------
+
+29-Jun-2009 Ian MacLennan
+ # [#16977] Incomplete language definitions in TinyMCE 3.2
+ # [#17006] Revert escaping of html in contact miscellaneous information.
+
+28-Jun-2009 Ian MacLennan
+ + Added mk-MK installer language pack
+
+27-Jun-2009 Ian MacLennan
+ # [#17005] Installer SQL shows TinyMCE as version 2.0
+
+-------------------- 1.5.12 Release Candidate [24-June-2009] ------------------
+
+24-Jun-2009 Ian MacLennan
+ $ [#16950] Lots of missing language strings in TinyMCE v3
+ # [#16593] JFile::upload() uses chmod 777 in FTP mode
+ # [#15673] Different time create date and start publishing in beez
+ # [#16601] Section filter on article manager showing non content sections as well 
+ # [#16607] Mod Newsflash read more link broken with Beez template
+ # [#16719] JHTML::tooltip quote problem
+ # [#16753] CSS file is not updated when you edit the joomla
+ # [#16890] Page title isn't displayed at Default login page
+ # [#16896] Modified Date disappears in 1.5.11
+ $ Added language string for Toggle Editor
+ ^ Updated LICENSES.php and CREDITS.php to reflect library license changes and updates
+
+23-Jun-2009 Ian MacLennan
+ # [#12376] Update to TinyMCE 3.2.4.1
+
+22-Jun-2009 Ian MacLennan
+ # [#12886] PHPMailer version used in 1.5 does not allow secure connection to SMTP servers
+
+20-Jun-2009 Ian MacLennan
+ # [#14540] Component Contact at Beez
+ # [#16686] pagebreak - duplicate title, not respecting show titles
+ # [#16779] JA_Purity: Anchor tag for Category Title not closed in Front Page Blog Layout
+ # [#16820] Untranslated strings in Beez template
+ # [#15727] Module cache, id, Itemid - reverted
+
+14-Jun-2009 Ian MacLennan
+ # [#16235] mod_feed Tool tip is incorrect
+ # [#16511] Language date format isn't correct
+ # [#16595] Category table view output wrong due to error in file
+ # [#16597] Parameter "Minimum User Level for Media Manager" doesn't work
+ # [#16742] Wrong link to OpenID login-bg.gif in system.css
+
+09-Jun-2009 Ian MacLennan
+ # [#12746] Replace PEAR with a GPL compatible alternative
+ # [#15541] Article Catagory Layout incorrectly sorted
 
 -------------------- 1.5.11 Stable Release [03-June-2009] ------------------
 

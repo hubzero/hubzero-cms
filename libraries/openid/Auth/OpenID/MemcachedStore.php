@@ -15,6 +15,9 @@
  * Contributed by Open Web Technologies <http://openwebtech.ru/>
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 /**
  * Import the interface for creating a new store class.
  */

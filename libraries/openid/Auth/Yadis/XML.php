@@ -7,6 +7,9 @@
  * @package OpenID
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 /**
  * The base class for wrappers for available PHP XML-parsing
  * extensions.  To work with this Yadis library, subclasses of this

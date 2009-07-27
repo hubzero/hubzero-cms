@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: languages.php 11213 2008-10-25 12:43:11Z pasamio $
+ * @version		$Id: languages.php 12389 2009-07-01 00:34:45Z ian $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -11,6 +11,9 @@
  * source software licenses. See COPYRIGHT.php for copyright notices and
  * details.
  */
+
+// no direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 // Import library dependencies
 require_once(dirname(__FILE__).DS.'extension.php');

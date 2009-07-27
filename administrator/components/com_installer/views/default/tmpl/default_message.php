@@ -1,4 +1,5 @@
-<?php
+<?php // no direct access
+	defined( '_JEXEC' ) or die( 'Restricted access' ); 
 	$state			= &$this->get('State');
 	$message1		= $state->get('message');
 	$message2		= $state->get('extension.message');

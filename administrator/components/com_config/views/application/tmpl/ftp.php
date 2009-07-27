@@ -1,3 +1,5 @@
+<?php // no direct access
+defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <fieldset title="<?php echo JText::_('DESCFTPTITLE'); ?>" class="adminform">
 	<legend><?php echo JText::_('DESCFTPTITLE'); ?></legend>
 

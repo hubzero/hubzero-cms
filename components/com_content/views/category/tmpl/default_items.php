@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </tr>
 <?php endif; ?>
 <?php foreach ($this->items as $item) : ?>
-<tr class="sectiontableentry<?php echo ($item->odd +1 ) . $this->escape($this->params->get('pageclass_sfx')); ?>; ?>" >
+<tr class="sectiontableentry<?php echo ($item->odd +1 ) . $this->escape($this->params->get('pageclass_sfx')); ?>" >
 	<td align="right">
 		<?php echo $this->pagination->getRowOffset( $item->count ); ?>
 	</td>

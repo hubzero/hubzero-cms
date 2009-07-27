@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: view.html.php 12352 2009-06-24 13:52:57Z ian $
 * @package		Joomla
 * @subpackage	Login
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -47,7 +47,10 @@ class UserViewLogin extends JView
 		$type = (!$user->get('guest')) ? 'logout' : 'login';
 
 		// Set some default page parameters if not set
-		$params->def( 'page_title', 				1 );
+		$params->def( 'show_page_title', 				1 );
+		if (!$params->get( 'page_title')) {
+				$params->set('page_title',	JText::_( 'Login' ));
+			}
 		if(!$item)
 		{
 			$params->def( 'header_login', 			'' );

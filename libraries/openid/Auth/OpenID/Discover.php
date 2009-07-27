@@ -4,6 +4,9 @@
  * The OpenID and Yadis discovery implementation for OpenID 1.2.
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 require_once "Auth/OpenID.php";
 require_once "Auth/OpenID/Parse.php";
 require_once "Auth/OpenID/Message.php";

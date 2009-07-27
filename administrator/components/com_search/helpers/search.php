@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: search.php 10579 2008-07-22 14:54:24Z ircmaxell $
+ * @version		$Id: search.php 12389 2009-07-01 00:34:45Z ian $
  * @package  Joomla
  * @subpackage	Search
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -11,6 +11,9 @@
  * source software licenses. See COPYRIGHT.php for copyright notices and
  * details.
  */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * @package		Joomla

@@ -6,6 +6,9 @@
  * @package OpenID
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 /**
  * Import tools needed to deal with messages.
  */

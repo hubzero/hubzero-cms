@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: editor.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: editor.php 12075 2009-06-14 18:32:10Z ian $
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -257,8 +257,9 @@ class JEditor extends JObservable
 				$plugin = new $className($this, (array)$plugin);
 			}
 
-			// Try to authenticate
-			$result[] = $plugin->onDisplay($editor);
+			// Try to authenticate -- only add to array if authentication is successful
+			$resultTest = $plugin->onDisplay($editor);
+			if ($resultTest) $result[] =  $resultTest;
 		}
 
 		return $result;

@@ -1,5 +1,17 @@
-<?php // @version: $Id: form.php 11917 2009-05-29 19:37:05Z ian $
+<?php // @version: $Id: form.php 12389 2009-07-01 00:34:45Z ian $
 defined('_JEXEC') or die('Restricted access');
+$config =& JFactory::getConfig();
+$publish_up =& JFactory::getDate($this->article->publish_up);
+$publish_up->setOffset($config->getValue('config.offset'));
+$publish_up = $publish_up->toFormat();
+
+if (! isset($this->article->publish_down) || $this->article->publish_down == 'Never') {
+	$publish_down = JText::_('Never');
+} else {
+	$publish_down =& JFactory::getDate($this->article->publish_down);
+	$publish_down->setOffset($config->getValue('config.offset'));
+	$publish_down = $publish_down->toFormat();
+}
 ?>
 <script language="javascript" type="text/javascript">
 <!--
@@ -131,14 +143,14 @@ echo $this->editor->display('text', $this->article->text, '100%', '400', '70', '
 		<label for="publish_up">
 			<?php echo JText::_( 'Start Publishing' ); ?>:
 		</label>
-        <?php echo JHTML::_('calendar', $this->article->publish_up, 'publish_up', 'publish_up', '%Y-%m-%d %H:%M:%S', array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
+        <?php echo JHTML::_('calendar', $publish_up, 'publish_up', 'publish_up', '%Y-%m-%d %H:%M:%S', array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
 	</div>
 	<div class="wrap">&nbsp;</div>
 	<div>
 		<label for="publish_down">
 			<?php echo JText::_( 'Finish Publishing' ); ?>:
 		</label>
-        <?php echo JHTML::_('calendar', $this->article->publish_down, 'publish_down', 'publish_down', '%Y-%m-%d %H:%M:%S', array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
+        <?php echo JHTML::_('calendar', $publish_down, 'publish_down', 'publish_down', '%Y-%m-%d %H:%M:%S', array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
 	</div>
 	<div class="wrap">&nbsp;</div>
 	<div>
@@ -183,7 +195,7 @@ echo $this->editor->display('text', $this->article->text, '100%', '400', '70', '
 	<input type="hidden" name="id" value="<?php echo $this->article->id; ?>" />
 	<input type="hidden" name="version" value="<?php echo $this->article->version; ?>" />
 	<input type="hidden" name="created_by" value="<?php echo $this->article->created_by; ?>" />
-	<input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
+	<input type="hidden" name="referer" value="<?php echo str_replace(array('"', '<', '>', "'"), '', @$_SERVER['HTTP_REFERER']); ?>" />
 	<input type="hidden" name="task" value="" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

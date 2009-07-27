@@ -13,6 +13,9 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 /**
  * Require the PEAR DB module because we'll need it for the SQL-based
  * stores implemented here.  We silence any errors from the inclusion

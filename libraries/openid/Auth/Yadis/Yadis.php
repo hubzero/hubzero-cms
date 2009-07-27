@@ -13,6 +13,9 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 /**
  * Need both fetcher types so we can use the right one based on the
  * presence or absence of CURL.

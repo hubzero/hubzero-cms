@@ -1,5 +1,5 @@
 <?php
-/** $Id: default_address.php 11917 2009-05-29 19:37:05Z ian $ */
+/** $Id: default_address.php 12387 2009-06-30 01:17:44Z ian $ */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <?php if ( ( $this->contact->params->get( 'address_check' ) > 0 ) &&  ( $this->contact->address || $this->contact->suburb  || $this->contact->state || $this->contact->country || $this->contact->postcode ) ) : ?>
@@ -115,7 +115,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php echo $this->contact->params->get( 'marker_misc' ); ?>
 	</td>
 	<td>
-		<?php echo $this->escape($this->contact->misc); ?>
+		<?php echo nl2br($this->contact->misc); ?>
 	</td>
 </tr>
 </table>

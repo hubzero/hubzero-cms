@@ -1,4 +1,8 @@
 <?php
+
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 $path_extra = dirname(__FILE__);
 $path = ini_get('include_path');
 $path = $path_extra . DS . $path;

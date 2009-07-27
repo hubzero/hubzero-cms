@@ -35,6 +35,9 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 // OF THE POSSIBILITY OF SUCH DAMAGE.
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 	// XML RPC Server class
 	// requires: xmlrpc.inc
 

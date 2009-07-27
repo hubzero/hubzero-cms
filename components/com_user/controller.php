@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 11215 2008-10-26 02:25:51Z ian $
+ * @version		$Id: controller.php 12389 2009-07-01 00:34:45Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -83,7 +83,7 @@ class UserController extends JController
 				$msg	= JText::_('PASSWORDS_DO_NOT_MATCH');
 				// something is wrong. we are redirecting back to edit form.
 				// TODO: HTTP_REFERER should be replaced with a base64 encoded form field in a later release
-				$return = @$_SERVER['HTTP_REFERER'];
+				$return = str_replace(array('"', '<', '>', "'"), '', @$_SERVER['HTTP_REFERER']);
 				if (empty($return) || !JURI::isInternal($return)) {
 					$return = JURI::base();
 				}

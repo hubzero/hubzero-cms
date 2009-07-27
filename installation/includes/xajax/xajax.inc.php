@@ -623,7 +623,7 @@ class xajax
 			if (!empty($_SERVER['PATH_INFO'])) {
 				$sPath = parse_url($_SERVER['PATH_INFO']);
 			} else {
-				$sPath = parse_url($_SERVER['PHP_SELF']);
+				$sPath = parse_url(str_replace(array('"', '<', '>', "'"), '', $_SERVER["PHP_SELF"]));
 			}
 			$aURL['path'] = $sPath['path'];
 			unset($sPath);

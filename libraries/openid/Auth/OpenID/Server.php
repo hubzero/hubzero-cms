@@ -89,6 +89,9 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 /**
  * Required imports
  */

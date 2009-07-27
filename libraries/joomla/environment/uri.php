@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: uri.php 10919 2008-09-09 20:50:29Z willebil $
+ * @version		$Id: uri.php 12389 2009-07-01 00:34:45Z ian $
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -220,7 +220,7 @@ class JURI extends JObject
 
 				if (strpos(php_sapi_name(), 'cgi') !== false && !empty($_SERVER['REQUEST_URI'])) {
 					//Apache CGI
-					$base['path'] =  rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+					$base['path'] =  rtrim(dirname(str_replace(array('"', '<', '>', "'"), '', $_SERVER["PHP_SELF"])), '/\\');
 				} else {
 					//Others
 					$base['path'] =  rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');

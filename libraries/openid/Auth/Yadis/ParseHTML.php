@@ -13,6 +13,9 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 /**
  * This class is responsible for scanning an HTML string to find META
  * tags and their attributes.  This is used by the Yadis discovery

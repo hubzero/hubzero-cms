@@ -42,6 +42,9 @@
 ** - Documentation: http://xstandard.com/xstandard-lite-for-partner-cms/
 ****************************************************************************************/
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 function xs_xhtml_escape($text) {
 	return str_replace(array("&", "<", ">", "\""), array("&amp;", "&lt;", "&gt;", "&quot;"), $text);
 }

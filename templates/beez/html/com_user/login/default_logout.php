@@ -1,9 +1,9 @@
-<?php // @version $Id: default_logout.php 11917 2009-05-29 19:37:05Z ian $
+<?php // @version $Id: default_logout.php 12352 2009-06-24 13:52:57Z ian $
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
 <form action="<?php echo JRoute::_( 'index.php' ); ?>" method="post" name="login" id="login" class="logout_form<?php echo $this->escape($this->params->get( 'pageclass_sfx' )); ?>">
-	<?php if ( $this->params->get( 'page_title' ) ) : ?>
+	<?php if ( $this->params->get( 'show_logout_title' ) ) : ?>
 	<h1 class="componentheading<?php echo $this->escape($this->params->get( 'pageclass_sfx' )); ?>">
 		<?php echo $this->params->get( 'header_logout' ); ?>
 	</h1>

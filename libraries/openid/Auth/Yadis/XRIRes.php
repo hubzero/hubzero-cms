@@ -4,6 +4,9 @@
  * Code for using a proxy XRI resolver.
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 require_once 'Auth/Yadis/XRDS.php';
 require_once 'Auth/Yadis/XRI.php';
 

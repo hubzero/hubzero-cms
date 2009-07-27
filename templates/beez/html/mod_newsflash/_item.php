@@ -1,4 +1,4 @@
-<?php // @version $Id: _item.php 11215 2008-10-26 02:25:51Z ian $
+<?php // @version $Id: _item.php 12349 2009-06-24 13:37:19Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -21,9 +21,9 @@ endif; ?>
 echo JFilterOutput::ampReplace($item->text);
 
 $itemparams=new JParameter($item->attribs);
-$readmoretxt=$itemparams->get('readmore',JText::_('Read more'));
+$readmoretxt=$itemparams->get('readmore',JText::_('Read more text'));
 if (isset($item->linkOn) && $item->readmore && $params->get('readmore')) : ?>
 <a href="<?php echo $item->linkOn; ?>" class="readon">
-	<?php echo $readmoretxt; ?></a>
+	<?php echo $readmoretxt.' ' . $item->title; ?></a>
 <?php endif; ?>
 <span class="article_separator">&nbsp;</span>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: component.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: component.php 12389 2009-07-01 00:34:45Z ian $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -11,6 +11,9 @@
  * source software licenses. See COPYRIGHT.php for copyright notices and
  * details.
  */
+
+// no direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once( JPATH_COMPONENT.DS.'views'.DS.'component'.DS.'view.php' );
 

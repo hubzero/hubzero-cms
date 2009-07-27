@@ -44,6 +44,6 @@
 			<option value="1">Use global</option>
 			<option value="0">No caching</option>
 		</param>
-		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time in seconds before the module is re-cached." />
+		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
 	</params>
 </install>

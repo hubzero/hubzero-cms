@@ -42,6 +42,9 @@
 ** - Documentation: http://xstandard.com/xstandard-lite-for-partner-cms/
 ****************************************************************************************/
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 $base_path = "../../../";
 require_once( $base_path . 'configuration.php' );
 

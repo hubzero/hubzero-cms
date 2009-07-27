@@ -39,6 +39,9 @@
  * @package OpenID
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 /**
  * Import message and extension internals.
  */

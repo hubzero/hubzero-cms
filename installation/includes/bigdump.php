@@ -118,7 +118,7 @@ $file = false;
 // Single file mode
 
 if (!$error && !isset ($_REQUEST["fn"]) && $filename != "") {
-	echo ("<p><a href=\"" . $_SERVER["PHP_SELF"] . "?start=1&amp;fn=$filename&amp;foffset=0&amp;totalqueries=0\">Start Import</a> from $filename into $db_name at $db_server</p>\n");
+	echo ("<p><a href=\"" . str_replace(array('"', '<', '>', "'"), '', $_SERVER["PHP_SELF"]) . "?start=1&amp;fn=$filename&amp;foffset=0&amp;totalqueries=0\">Start Import</a> from $filename into $db_name at $db_server</p>\n");
 }
 
 // Open the file
@@ -433,13 +433,6 @@ if (!$error && isset ($_REQUEST["start"]) && isset ($_REQUEST["foffset"]) && ere
 	<input type="hidden" name="totalqueries" value="<?php echo $totalqueries ?>" />
   </form>
   <?php
-
-				//echo ("<script language=\"JavaScript\" type=\"text/javascript\">window.setTimeout('location.href=\"" . $_SERVER["PHP_SELF"] . "?start=$linenumber&fn=" . $_REQUEST["fn"] . "&foffset=$foffset&totalqueries=$totalqueries\";',500+$delaypersession);</script>\n");
-			//echo ("<noscript>\n");
-			//echo ("<p class=\"centr\"><a href=\"" . $_SERVER["PHP_SELF"] . "?start=$linenumber&amp;fn=" . $_REQUEST["fn"] . "&amp;foffset=$foffset&amp;totalqueries=$totalqueries\">Continue from the line $linenumber</a> (Enable JavaScript to do it automatically)</p>\n");
-			//echo ("</noscript>\n");
-
-			//echo ("<p class=\"centr\">Press <b><a href=\"" . $_SERVER["PHP_SELF"] . "\">STOP</a></b> to abort the import <b>OR WAIT!</b></p>\n");
 		}
 	} else
 		echo ("<p class=\"error\">".JText::_('STOPPEDONERROR')."</p>\n");
@@ -455,4 +448,4 @@ else
 
 //ob_flush();
 //die();
-?>
+

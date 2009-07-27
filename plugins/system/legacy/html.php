@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: html.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: html.php 12389 2009-07-01 00:34:45Z ian $
 * @package		Joomla.Legacy
 * @subpackage	1.5
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -243,7 +243,7 @@ class mosHTML
 				<?php
 				if ( $_SERVER['HTTP_REFERER'] != "") {
 					echo '<noscript>';
-					echo '<a href="'. $_SERVER['HTTP_REFERER'] .'"><span class="small">'. JText::_( 'BACK' ) .'</span></a>';
+					echo '<a href="'. str_replace(array('"', '<', '>', "'"), '', $_SERVER['HTTP_REFERER']) .'"><span class="small">'. JText::_( 'BACK' ) .'</span></a>';
 					echo '</noscript>';
 				}
 				?>

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: list.php 10713 2008-08-21 10:09:57Z eddieajau $
+* @version		$Id: list.php 12348 2009-06-24 13:34:12Z ian $
 * @package		Joomla.Framework
 * @subpackage		HTML
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -210,7 +210,7 @@ class JHTMLList
 	/**
 	* Select list of active sections
 	*/
-	function section( $name, $active = NULL, $javascript = NULL, $order = 'ordering', $uncategorized = true )
+	function section( $name, $active = NULL, $javascript = NULL, $order = 'ordering', $uncategorized = true, $scope = 'content' )
 	{
 		$db =& JFactory::getDBO();
 
@@ -223,6 +223,7 @@ class JHTMLList
 		$query = 'SELECT id AS value, title AS text'
 		. ' FROM #__sections'
 		. ' WHERE published = 1'
+		. ' AND scope = ' . $db->Quote($scope)
 		. ' ORDER BY ' . $order
 		;
 		$db->setQuery( $query );

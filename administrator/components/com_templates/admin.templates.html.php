@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.templates.html.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: admin.templates.html.php 12351 2009-06-24 13:48:00Z ian $
 * @package		Joomla
 * @subpackage	Templates
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -556,7 +556,7 @@ class TemplatesView
 	{
 		JRequest::setVar( 'hidemainmenu', 1 );
 
-		$css_path = $client->path . $filename;
+		$css_path = $client->path.DS.'templates'.DS.$template.DS.'css'.DS.$filename;
 
 ?>
 		<form action="index.php" method="post" name="adminForm">

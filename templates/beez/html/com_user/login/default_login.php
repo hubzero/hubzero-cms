@@ -1,8 +1,8 @@
-<?php // @version $Id: default_login.php 11796 2009-05-06 02:03:15Z ian $
+<?php // @version $Id: default_login.php 12352 2009-06-24 13:52:57Z ian $
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <form action="<?php echo JRoute::_( 'index.php', true, $this->params->get('usesecure')); ?>" method="post" name="login" id="login" class="login_form<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
-	<?php if ( $this->params->get( 'page_title' ) ) : ?>
+	<?php if ( $this->params->get( 'show_login_title' ) ) : ?>
 	<h1 class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
 		<?php echo $this->params->get( 'header_login' ); ?>
 	</h1>
@@ -39,7 +39,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</fieldset>
 	<p>
 		<a href="<?php echo JRoute::_( 'index.php?option=com_user&view=reset#content' ); ?>">
-			<?php echo JText::_('Lost Password?'); ?></a>
+			<?php JPlugin::loadLanguage( 'tpl_beez' ); echo JText::_('Lost Password?'); ?></a>
 		<?php if ( $this->params->get( 'registration' ) ) : ?>
 		<?php echo JText::_('No account yet?'); ?>
 		<a href="<?php echo JRoute::_( 'index.php?option=com_user&view=register#content' ); ?>">

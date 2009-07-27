@@ -8,6 +8,9 @@
  * http://openid.net/developers/specs/
  */
 
+// Do not allow direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 require_once "Auth/OpenID/Extension.php";
 
 define('Auth_OpenID_PAPE_NS_URI',

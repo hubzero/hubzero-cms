@@ -798,7 +798,7 @@ class FeedCreator extends HtmlDescribable {
 	 * @access private
 	 */
 	function _generateFilename() {
-		$fileInfo = pathinfo($_SERVER["PHP_SELF"]);
+		$fileInfo = pathinfo(str_replace(array('"', '<', '>', "'"), '', $_SERVER["PHP_SELF"]));
 		return substr($fileInfo["basename"],0,-(strlen($fileInfo["extension"])+1)).".xml";
 	}
 
@@ -1541,7 +1541,7 @@ class MBOXCreator extends FeedCreator {
 	 * @access private
 	 */
 	function _generateFilename() {
-		$fileInfo = pathinfo($_SERVER["PHP_SELF"]);
+		$fileInfo = pathinfo(str_replace(array('"', '<', '>', "'"), '', $_SERVER["PHP_SELF"]));
 		return substr($fileInfo["basename"],0,-(strlen($fileInfo["extension"])+1)).".mbox";
 	}
 }
@@ -1745,7 +1745,7 @@ class HTMLCreator extends FeedCreator {
 	 * @access private
 	 */
 	function _generateFilename() {
-		$fileInfo = pathinfo($_SERVER["PHP_SELF"]);
+		$fileInfo = pathinfo(str_replace(array('"', '<', '>', "'"), '', $_SERVER["PHP_SELF"]));
 		return substr($fileInfo["basename"],0,-(strlen($fileInfo["extension"])+1)).".html";
 	}
 }
@@ -1784,7 +1784,7 @@ class JSCreator extends HTMLCreator {
 	 * @access private
 	 */
 	function _generateFilename() {
-		$fileInfo = pathinfo($_SERVER["PHP_SELF"]);
+		$fileInfo = pathinfo(str_replace(array('"', '<', '>', "'"), '', $_SERVER["PHP_SELF"]));
 		return substr($fileInfo["basename"],0,-(strlen($fileInfo["extension"])+1)).".js";
 	}
 

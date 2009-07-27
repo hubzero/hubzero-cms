@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: CREDITS.php 11924 2009-05-30 08:11:59Z pasamio $
+ * @version		$Id: CREDITS.php 12356 2009-06-24 18:20:14Z ian $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -251,8 +251,8 @@ License:	GNU Lesser General Public License (LGPL)
 Pear
 ----
 Author:		Sterling Hughes, Stig Bakken, Tomas V.V.Cox, Greg Beaver
-Copyright:	Copyright (C) 1997-2006 The PHP Group
-License:	PHP License 3.0
+Copyright:	Copyright (C) 1997-2009 The PHP Group
+License:	BSD License
 
 PHPGACL
 -------
@@ -268,8 +268,9 @@ License:	GNU General Public License (GPL)
 
 PHPMailer
 --------
-Author:		Brent R. Matzelle
+Author:		Andy Prevost, Brent R. Matzelle
 Copyright:	Copyright (C) 2001 - 2003 Brent R. Matzelle
+		Copyright (c) 2004-2009, Andy Prevost. All Rights Reserved.
 License:	GNU Lesser General Public License (LGPL) 2.1
 
 phpUTF8
@@ -299,7 +300,7 @@ License:	GNU Lesser General Public License (LGPL) 2.1
 TinyMCE
 -------
 Author:		Moxiecode Systems
-Copyright:	Copyright (C) 2005-2006, Moxiecode Systems AB, All rights reserved.
+Copyright:	Copyright (C) 2005-2009, Moxiecode Systems AB, All rights reserved.
 License:	GNU Lesser General Public License (LGPL) 2.1
 
 VCard

@@ -69,7 +69,7 @@ if (
 			<?php echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->catslug, $this->item->sectionid)).'">'; ?>
 		<?php endif; ?>
 		<?php echo $this->escape($this->item->category); ?>
-		<?php if ($this->item->params->get('link_section')) : ?>
+		<?php if ($this->item->params->get('link_category')) : ?>
 			<?php echo '</a>'; ?>
 		<?php endif; ?>
 	</span>
@@ -102,7 +102,8 @@ if (
 <?php if ($this->item->params->get('show_url') && $this->item->urls) : ?>
 	<span class="article-url">
 		<a href="http://<?php echo $this->escape($this->item->urls) ; ?>" target="_blank">
-			<?php echo $this->escape($this->item->urls); ?></a>
+			<?php echo $this->escape($this->item->urls); ?>
+		</a>
 	</span>
 <?php endif; ?>
 </div>
