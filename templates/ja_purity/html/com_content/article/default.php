@@ -1,6 +1,6 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
-<?php if ($this->params->get('show_page_title', 1)) : ?>
+<?php if ($this->params->get('show_page_title', 1) && $this->params->get('page_title') != $this->article->title) : ?>
 <div class="componentheading<?php echo $this->params->get('pageclass_sfx')?>"><?php echo $this->escape($this->params->get('page_title')); ?></div>
 <?php endif; ?>
 <?php if ($this->user->authorize('com_content', 'edit', 'content', 'all') && !$this->print) : ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: banner.php 10554 2008-07-15 17:15:19Z ircmaxell $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -399,14 +399,36 @@ class BannersViewBanner
 						</td>
 					</tr>
 					<tr>
+						<td class="key">
+							<label for="width">
+								<?php echo JText::_( 'Width' ); ?>:
+							</label>
+						</td>
+						<td>
+							<input class="inputbox" type="text" name="width" id="width" size="6" value="<?php echo $lists['width'];?>" />
+						</td>
+					</tr>
+					<tr>
+						<td class="key">
+							<label for="height">
+								<?php echo JText::_( 'Height' ); ?>:
+							</label>
+						</td>
+						<td>
+							<input class="inputbox" type="text" name="height" id="height" size="6" value="<?php echo $lists['height'];?>" />
+						</td>
+					</tr>
+					<tr>
 						<td valign="top" class="key">
 							<?php echo JText::_( 'Banner Image' ); ?>:
 						</td>
 						<td valign="top">
 							<?php
-							if (eregi("swf", $row->imageurl)) {
+							if (preg_match("#swf$#i", $row->imageurl)) {
 								?>
-								<img src="images/blank.png" name="imagelib">
+								<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" border="0" width="<?php echo $lists['width'];?>" height="<?php echo $lists['height'];?>">
+									<param name="movie" value="../images/banners/<?php echo $row->imageurl; ?>"><embed src="../images/banners/<?php echo $row->imageurl; ?>" loop="false" pluginspage="http://www.macromedia.com/go/get/flashplayer" type="application/x-shockwave-flash"  width="<?php echo $lists['width'];?>" height="<?php echo $lists['height'];?>"></embed>
+								</object>
 								<?php
 							} elseif (eregi("gif|jpg|png", $row->imageurl)) {
 								?>

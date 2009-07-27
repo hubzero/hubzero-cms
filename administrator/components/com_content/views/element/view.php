@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 10497 2008-07-03 16:36:12Z ircmaxell $
+ * @version		$Id: view.php 10554 2008-07-15 17:15:19Z ircmaxell $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -177,9 +177,7 @@ class ContentViewElement extends JView
 		$search				= JString::strtolower($search);
 
 		// get list of categories for dropdown filter	
-		if ($filter_sectionid >= 0) {
-			$filter = ' WHERE cc.section = '.$db->Quote($filter_sectionid);
-		}
+		$filter = ($filter_sectionid >= 0) ? ' WHERE cc.section = '.$db->Quote($filter_sectionid) : '';
 
 		// get list of categories for dropdown filter
 		$query = 'SELECT cc.id AS value, cc.title AS text, section' .

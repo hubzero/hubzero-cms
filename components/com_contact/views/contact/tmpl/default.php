@@ -1,15 +1,15 @@
 <?php
 /**
- * $Id: default.php 10498 2008-07-04 00:05:36Z ian $
+ * $Id: default.php 10571 2008-07-21 01:27:35Z pasamio $
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $cparams = JComponentHelper::getParams ('com_media');
 ?>
-<?php if ( $this->params->get( 'show_page_title', 1 ) && !$this->contact->params->get( 'popup' ) ) : ?>
-<div class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
-	<?php echo $this->params->get( 'page_title' ); ?>
-</div>
+<?php if ( $this->params->get( 'show_page_title', 1 ) && !$this->contact->params->get( 'popup' ) && $this->params->get('page_title') != $this->contact->name ) : ?>
+	<div class="componentheading<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
+		<?php echo $this->params->get( 'page_title' ); ?>
+	</div>
 <?php endif; ?>
 <div id="component-contact">
 <table width="100%" cellpadding="0" cellspacing="0" border="0" class="contentpaneopen<?php echo $this->params->get( 'pageclass_sfx' ); ?>">

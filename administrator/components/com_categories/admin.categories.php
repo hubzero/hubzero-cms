@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: admin.categories.php 10439 2008-06-21 20:34:35Z willebil $
+ * @version		$Id: admin.categories.php 10571 2008-07-21 01:27:35Z pasamio $
  * @package		Joomla
  * @subpackage	Categories
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -980,7 +980,6 @@ function saveOrder( &$cid, $section )
 		if ($row->ordering != $order[$i]) {
 			$row->ordering = $order[$i];
 			if (!$row->store()) {
-				//TODO - convert to JError
 				JError::raiseError(500, $db->getErrorMsg());
 			}
 		}

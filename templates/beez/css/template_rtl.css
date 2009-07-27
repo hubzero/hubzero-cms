@@ -1,5 +1,5 @@
 /**
- * @version $Id: template_rtl.css 10387 2008-06-03 10:59:16Z pasamio $
+ * @version $Id: template_rtl.css 10571 2008-07-21 01:27:35Z pasamio $
  * @package Joomla
  * @subpackage Accessible-Template-Beez
  * @copyright Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -342,7 +342,8 @@ form.search_result, form.registration, form.lost_password, .login_form{
 }
 
 .only input{
-	float: left;
+	float: right;
+	margin:0 0 0 10px;
 }
 
 form.registration label, form.lost_password label, .login_form label{

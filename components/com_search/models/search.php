@@ -135,20 +135,14 @@ class SearchModelSearch extends JModel
 			JPluginHelper::importPlugin( 'search');
 			$dispatcher =& JDispatcher::getInstance();
 			$results = $dispatcher->trigger( 'onSearch', array(
-				$this->getState('keyword'),
-				$this->getState('match'),
-				$this->getState('ordering'),
-				$areas['active']) );
+			$this->getState('keyword'),
+			$this->getState('match'),
+			$this->getState('ordering'),
+			$areas['active']) );
 
 			$rows = array();
-			for ($i = 0, $n = count( $results); $i < $n; $i++) {
-				// Lets remove HTML and check again - Could we be finding HTML tags not content?
-				foreach ($results[$i] as $_result) {
-			    	    if ( strpos(strtolower(strip_tags($_result->text)), strtolower($this->getState('keyword'))) === false) {
-				    } else {
-					$rows[] = $_result;
-			    	    }
-				}
+			foreach($results AS $result) {
+				$rows = array_merge( (array) $rows, (array) $result);
 			}
 
 			$this->_total	= count($rows);

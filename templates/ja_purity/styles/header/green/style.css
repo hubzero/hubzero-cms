@@ -60,61 +60,61 @@ p.site-slogan {
 	background: #88B074;
 }
 
-#ja-cssmenu {
+#ja-mainnav ul.menu {
 	border-right: 1px solid #9DBF8C;
 }
 
-#ja-cssmenu li a {
+#ja-mainnav ul.menu li a {
 	border-left: 1px solid #9DBF8C;
 	border-right: 1px solid #658854;
 	color: #E4EFDF;
 }
 
-#ja-cssmenu li a:hover,
-#ja-cssmenu li a:active,
-#ja-cssmenu li a:focus {
+#ja-mainnav ul.menu li a:hover,
+#ja-mainnav ul.menu li a:active,
+#ja-mainnav ul.menu li a:focus {
 	background-color: #9DBF8C;
 }
 
-#ja-cssmenu li:hover,
-#ja-cssmenu li.sfhover,
-#ja-cssmenu li.havechildsfhover,
-#ja-cssmenu li.havechild-activesfhover {
+#ja-mainnav ul.menu li:hover,
+#ja-mainnav ul.menu li.sfhover,
+#ja-mainnav ul.menu li.havechildsfhover,
+#ja-mainnav ul.menu li.havechild-activesfhover {
 	background-color: #9DBF8C;
 }
 
-#ja-cssmenu li a.active,
-#ja-cssmenu li a.active:hover,
-#ja-cssmenu li a.active:active,
-#ja-cssmenu li a.active:focus {
+#ja-mainnav ul.menu li.active a,
+#ja-mainnav ul.menu li.active a:hover,
+#ja-mainnav ul.menu li.active a:active,
+#ja-mainnav ul.menu li.active a:focus  {
 	background-color: #658854;
 }
 
-#ja-cssmenu li ul {
+#ja-mainnav ul.menu li ul {
 	border: 1px solid #9DBF8C;
 	background: url(images/opaque.png);
 }
 
-#ja-cssmenu li ul li {
+#ja-mainnav ul.menu li ul li {
 	border-top: 1px solid #A4C594;
 	border-bottom: 1px solid #7BA566;
 }
 
-#ja-cssmenu li ul a {
+#ja-mainnav ul.menu li ul a {
 	color: #E4EFDF;
 }
 
-#ja-cssmenu li ul a:hover,
-#ja-cssmenu li ul a:active,
-#ja-cssmenu li ul a:focus,
-#ja-cssmenu ul li:hover,
-#ja-cssmenu ul li.sfhover,
-#ja-cssmenu ul li.havesubchildsfhover,
-#ja-cssmenu ul li.havesubchild-activesfhover,
-#ja-cssmenu ul ul li:hover,
-#ja-cssmenu ul ul li.sfhover,
-#ja-cssmenu ul ul li.havesubchildsfhover,
-#ja-cssmenu ul ul li.havesubchild-activesfhover {
+#ja-mainnav ul.menu li ul a:hover,
+#ja-mainnav ul.menu li ul a:active,
+#ja-mainnav ul.menu li ul a:focus,
+#ja-mainnav ul.menu ul li:hover,
+#ja-mainnav ul.menu ul li.sfhover,
+#ja-mainnav ul.menu ul li.havesubchildsfhover,
+#ja-mainnav ul.menu ul li.havesubchild-activesfhover,
+#ja-mainnav ul.menu ul ul li:hover,
+#ja-mainnav ul.menu ul ul li.sfhover,
+#ja-mainnav ul.menu ul ul li.havesubchildsfhover,
+#ja-mainnav ul.menu ul ul li.havesubchild-activesfhover {
 	background: #7BA566;
 	color: #E4EFDF;
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: sef.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: sef.php 10576 2008-07-21 12:50:09Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -58,7 +58,7 @@ class plgSystemSef extends JPlugin
       	$buffer = preg_replace_callback( $regex, array('plgSystemSEF', 'route'), $buffer );
 
        	$protocols = '[a-zA-Z0-9]+:'; //To check for all unknown protocals (a protocol must contain at least one alpahnumeric fillowed by :
-      	$regex     = '#(src|href)="(?!/|'.$protocols.'|\#)([^"]*)"#m';
+      	$regex     = '#(src|href)="(?!/|'.$protocols.'|\#|\')([^"]*)"#m';
         $buffer    = preg_replace($regex, "$1=\"$base\$2\"", $buffer);
 		$regex     = '#(onclick="window.open\(\')(?!/|'.$protocols.'|\#)([^/]+[^\']*?\')#m';
 		$buffer    = preg_replace($regex, '$1'.$base.'$2', $buffer);

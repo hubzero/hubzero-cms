@@ -395,7 +395,7 @@
 			<option value="0">Disable</option>
 		</param>
 		<param name="rightCollapseDefault" type="radio" default="show" label="Default status" description="DEFAULT STATUS DESCRIPTION">
-			<option value="show">Expend All</option>
+			<option value="show">Expand All</option>
 			<option value="hide">Collapse All</option>
 		</param>
 		<param name="excludeModules" type="text" default="38" size="50" label="Exclude Modules" description="EXCLUDE MODULES DESCRIPTION" />

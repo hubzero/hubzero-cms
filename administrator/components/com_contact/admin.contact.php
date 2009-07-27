@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.contact.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: admin.contact.php 10571 2008-07-21 01:27:35Z pasamio $
 * @package		Joomla
 * @subpackage	Contact
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -488,7 +488,6 @@ function saveOrder( &$cid )
 		if ($row->ordering != $order[$i]) {
 			$row->ordering = $order[$i];
 			if (!$row->store()) {
-				//TODO - convert to JError
 				JError::raiseError(500, $db->getErrorMsg() );
 			}
 		}

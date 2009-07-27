@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.feed.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: view.feed.php 10579 2008-07-22 14:54:24Z ircmaxell $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -32,11 +32,13 @@ class ContentViewCategory extends JView
 
 		$doc     =& JFactory::getDocument();
 		$params =& $mainframe->getParams();
-		$doc->link = JRoute::_('index.php?option=com_content&view=category&id='.JRequest::getVar('id',null, '', 'int'));
 
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
+		$category	= & $this->get( 'Category' );
 		$rows 		= & $this->get( 'Data' );
+
+		$doc->link = JRoute::_(ContentHelperRoute::getCategoryRoute($category->id, $cagtegory->sectionid));
 
 		foreach ( $rows as $row )
 		{
@@ -46,7 +48,7 @@ class ContentViewCategory extends JView
 
 			// url link to article
 			// & used instead of &amp; as this is converted by feed creator
-			$link = JRoute::_('index.php?option=com_content&view=article&id='. $row->slug .'&catid='.$row->catslug );
+			$link = JRoute::_(ContentHelperRoute::getArticleRoute($row->slug, $row->catslug, $row->sectionid));
 
 			// strip html from feed item description text
 			$description	= ($params->get('feed_summary', 0) ? $row->introtext.$row->fulltext : $row->introtext);
@@ -66,4 +68,3 @@ class ContentViewCategory extends JView
 		}
 	}
 }
-?>

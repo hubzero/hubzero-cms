@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.cpanel.html.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: admin.cpanel.html.php 10559 2008-07-16 20:57:43Z instance $
 * @package		Joomla
 * @subpackage	Admin
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -31,8 +31,9 @@ class HTML_cpanel
 	{
 		global $mainframe;
 
-		$modules	=& JModuleHelper::getModules('cpanel');
-		$pane		=& JPane::getInstance('sliders');
+		$modules = &JModuleHelper::getModules('cpanel');
+        // TODO: allowAllClose should default true in J!1.6, so remove the array when it does.
+		$pane = &JPane::getInstance('sliders', array('allowAllClose' => true));
 		echo $pane->startPane("content-pane");
 
 		foreach ($modules as $module) {

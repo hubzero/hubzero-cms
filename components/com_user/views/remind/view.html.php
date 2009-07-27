@@ -55,10 +55,10 @@ class UserViewRemind extends JView
 		if (is_object( $menu )) {
 			$menu_params = new JParameter( $menu->params );			
 			if (!$menu_params->get( 'page_title')) {
-				$params->set('page_title',	JText::_( 'Forgot your username?' ));
+				$params->set('page_title',	JText::_( 'FORGOT_YOUR_USERNAME' ));
 			}
 		} else {
-			$params->set('page_title',	JText::_( 'Forgot your username?' ));
+			$params->set('page_title',	JText::_( 'FORGOT_YOUR_USERNAME' ));
 		}
 		$document	= &JFactory::getDocument();
 		$document->setTitle( $params->get( 'page_title' ) );

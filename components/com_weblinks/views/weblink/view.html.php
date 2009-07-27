@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
+* @version		$Id: view.html.php 10572 2008-07-21 01:52:00Z pasamio $
 * @package		Joomla
 * @subpackage	Weblinks
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -61,7 +61,8 @@ class WeblinksViewWeblink extends JView
 
 		// Make sure you are logged in and have the necessary access rights
 		if ($user->get('gid') < 19) {
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			  JResponse::setHeader('HTTP/1.0 403',true);
+              JError::raiseWarning( 403, JText::_('ALERTNOTAUTH') ); 
 			return;
 		}
 

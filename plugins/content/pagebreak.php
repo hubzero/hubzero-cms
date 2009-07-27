@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: pagebreak.php 10498 2008-07-04 00:05:36Z ian $
+* @version		$Id: pagebreak.php 10576 2008-07-21 12:50:09Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -33,7 +33,7 @@ $mainframe->registerEvent( 'onPrepareContent', 'plgContentPagebreak' );
 function plgContentPagebreak( &$row, &$params, $page=0 )
 {
 	// expression to search for
-	$regex = '#<hr(.*)class=\"system-pagebreak\"(.*)\/>#iU';
+	$regex = '#<hr([^>]*?)class=(\"|\')system-pagebreak(\"|\')([^>]*?)\/*>#iU';
 
 	// Get Plugin info
 	$plugin			=& JPluginHelper::getPlugin('content', 'pagebreak');
@@ -52,7 +52,7 @@ function plgContentPagebreak( &$row, &$params, $page=0 )
 	}
 
 	//simple performance check to determine whether bot should process further
-	if ( JString::strpos( $row->text, 'class="system-pagebreak' ) === false ) {
+    if ( strpos( $row->text, 'class="system-pagebreak' ) === false && strpos( $row->text, 'class=\'system-pagebreak' ) === false ) {
 		return true;
 	}
 

@@ -470,16 +470,26 @@ class JInstallerComponent extends JObject
 		$option = strtolower("com_".str_replace(" ", "", $this->get('name')));
 
 		// If a component exists with this option in the table than we don't need to add menus
-		$query = 'SELECT id' .
+		// Grab the params for later
+		$query = 'SELECT id, params, enabled' .
 				' FROM #__components' .
-				' WHERE `option` = '.$db->Quote($option);
+				' WHERE `option` = '.$db->Quote($option) .
+				' ORDER BY `parent` ASC';
 
 		$db->setQuery($query);
-		$exists = $db->loadResult();
+		$componentrow = $db->loadAssoc(); // will return null on error
+		$exists = 0;
+		$oldparams = '';
 
 		// Check if menu items exist
-		if ($exists) {
-
+		if ($componentrow) {
+			// set the value of exists to be the value of the old id
+			$exists = $componentrow['id'];
+			// and set the old params 
+			$oldparams = $componentrow['params'];
+			// and old enabled
+			$oldenabled = $componentrow['enabled'];
+			
 			// Don't do anything if overwrite has not been enabled
 			if ( ! $this->parent->getOverwrite() ) {
 				return true;
@@ -511,11 +521,15 @@ class JInstallerComponent extends JObject
 			$db_ordering = 0;
 			$db_admin_menu_img = ($menuElement->attributes('img')) ? $menuElement->attributes('img') : 'js/ThemeOffice/component.png';
 			$db_iscore = 0;
-			$db_params = $this->parent->getParams();
-			$db_enabled = 1;
+			// use the old params if a previous entry exists
+			$db_params = $exists ? $oldparams : $this->parent->getParams();
+			// use the old enabled field if a previous entry exists
+			$db_enabled = $exists ? $oldenabled : 1;
 
+			// This works because exists will be zero (autoincr)
+			// or the old component id
 			$query = 'INSERT INTO #__components' .
-				' VALUES( "", '.$db->Quote($db_name).', '.$db->Quote($db_link).', '.(int) $db_menuid.',' .
+				' VALUES( '.$exists .', '.$db->Quote($db_name).', '.$db->Quote($db_link).', '.(int) $db_menuid.',' .
 				' '.(int) $db_parent.', '.$db->Quote($db_admin_menu_link).', '.$db->Quote($db_admin_menu_alt).',' .
 				' '.$db->Quote($db_option).', '.(int) $db_ordering.', '.$db->Quote($db_admin_menu_img).',' .
 				' '.(int) $db_iscore.', '.$db->Quote($db_params).', '.(int) $db_enabled.' )';
@@ -525,7 +539,8 @@ class JInstallerComponent extends JObject
 				$this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.$db->stderr(true));
 				return false;
 			}
-			$menuid = $db->insertid();
+			// save ourselves a call if we don't need it
+			$menuid = $exists ? $exists : $db->insertid(); // if there was an existing value, reuse
 
 			/*
 			 * Since we have created a menu item, we add it to the installation step stack

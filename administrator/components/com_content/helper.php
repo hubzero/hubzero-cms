@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: helper.php 10571 2008-07-21 01:27:35Z pasamio $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -31,15 +31,15 @@ class ContentHelper
 		$text		= str_replace( '<br>', '<br />', $text );
 
 		// Search for the {readmore} tag and split the text up accordingly.
-		$tagPos	= JString::strpos( $text, '<hr id="system-readmore" />' );
+		$pattern = '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
+		$tagPos	= preg_match($pattern, $text);
 
-		if ( $tagPos === false )
+		if ( $tagPos == 0 )
 		{
 			$row->introtext	= $text;
 		} else
 		{
-			$row->introtext	= JString::substr($text, 0, $tagPos);
-			$row->fulltext	= JString::substr($text, $tagPos + 27 );
+			list($row->introtext, $row->fulltext) = preg_split($pattern, $text, 2);
 		}
 
 		// Filter settings

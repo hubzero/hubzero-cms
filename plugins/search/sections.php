@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: sections.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: sections.php 10579 2008-07-22 14:54:24Z ircmaxell $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -44,6 +44,8 @@ function plgSearchSections( $text, $phrase='', $ordering='', $areas=null )
 	$db		=& JFactory::getDBO();
 	$user	=& JFactory::getUser();
 
+	$searchText = $text;
+
 	require_once(JPATH_SITE.DS.'components'.DS.'com_content'.DS.'helpers'.DS.'route.php');
 
 	if (is_array( $areas )) {
@@ -77,7 +79,7 @@ function plgSearchSections( $text, $phrase='', $ordering='', $areas=null )
 	}
 
 	$text	= $db->Quote( '%'.$db->getEscaped( $text, true ).'%', false );
-	$query	= 'SELECT a.title AS title, a.description AS text,'
+	$query	= 'SELECT a.title AS title, a.description AS text, a.name, '
 	. ' "" AS created,'
 	. ' "2" AS browsernav,'
 	. ' a.id AS secid'
@@ -100,5 +102,11 @@ function plgSearchSections( $text, $phrase='', $ordering='', $areas=null )
 		$rows[$i]->section 	= JText::_( 'Section' );
 	}
 
-	return $rows;
+	$return = array();
+	foreach($rows AS $key => $section) {
+		if(searchHelper::checkNoHTML($section, $searchText, array('name', 'title', 'text'))) {
+			$return[] = $section;
+		}
+	}
+	return $return;
 }

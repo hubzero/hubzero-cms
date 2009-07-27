@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: readmore.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: readmore.php 10571 2008-07-21 01:27:35Z pasamio $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -59,7 +59,7 @@ class plgButtonReadmore extends JPlugin
 		$js = "
 			function insertReadmore(editor) {
 				var content = $getContent
-				if (content.match(/<hr id=\"system-readmore\" \/>/)) {
+				if (content.match(/<hr\s+id=(\"|')system-readmore(\"|')\s*\/*>/i)) {
 					alert('$present');
 					return false;
 				} else {

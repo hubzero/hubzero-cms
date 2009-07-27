@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
+ * @version		$Id: view.html.php 10588 2008-07-26 12:20:06Z ircmaxell $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -93,7 +93,7 @@ class ContentViewSection extends ContentView
 		for($i = 0; $i < count($categories); $i++)
 		{
 			$category =& $categories[$i];
-			$category->link = JRoute::_('index.php?view=category&id='.$category->slug);
+			$category->link = JRoute::_(ContentHelperRoute::getCategoryRoute($category->slug, $category->section).'&layout=default');
 
 			// Prepare category description
 			$category->description = JHTML::_('content.prepare', $category->description);

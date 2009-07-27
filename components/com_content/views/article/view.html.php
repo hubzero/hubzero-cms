@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
+ * @version		$Id: view.html.php 10572 2008-07-21 01:52:00Z pasamio $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -87,8 +87,8 @@ class ContentViewArticle extends ContentView
 		$menus = &JSite::getMenu();
 		$menu  = $menus->getActive();
 
-		if (is_object( $menu )) {
-			$menu_params = new JParameter( $menu->params );			
+		if (is_object( $menu ) && isset($menu->query['view']) && $menu->query['view'] == 'article' && isset($menu->query['id']) && $menu->query['id'] == $article->id) {
+			$menu_params = new JParameter( $menu->params );
 			if (!$menu_params->get( 'page_title')) {
 				$params->set('page_title',	$article->title);
 			}
@@ -179,7 +179,8 @@ class ContentViewArticle extends ContentView
 		$params		=& $mainframe->getParams('com_content');
 		// Make sure you are logged in and have the necessary access rights
 		if ($user->get('gid') < 19) {
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			  JResponse::setHeader('HTTP/1.0 403',true);
+              JError::raiseWarning( 403, JText::_('ALERTNOTAUTH') ); 
 			return;
 		}
 

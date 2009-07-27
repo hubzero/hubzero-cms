@@ -1,4 +1,4 @@
-<?php // @version $Id: _item.php 10381 2008-06-01 03:35:53Z pasamio $
+<?php // @version $Id: _item.php 10554 2008-07-15 17:15:19Z ircmaxell $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -20,7 +20,7 @@ endif; ?>
 <?php echo $item->beforeDisplayContent;
 echo JFilterOutput::ampReplace($item->text);
 if (isset($item->linkOn) && $item->readmore) : ?>
-<a href="<?php $item->linkOn; ?>" class="readon">
+<a href="<?php echo $item->linkOn; ?>" class="readon">
 	<?php echo JText::_('Read more'); ?></a>
 <?php endif; ?>
 <span class="article_separator">&nbsp;</span>

@@ -169,11 +169,7 @@ class JInstallerModule extends JObject
 		 */
 
 		// Check to see if a module by the same name is already installed
-		// Shouldn't this be stopped by the above section?
-		// Commented out pending removal
-		// TODO: Remove this at a later point
-		// see http://groups.google.com/group/joomla-devel/browse_thread/thread/7ef4cd7f80c98e41
-/*		$query = 'SELECT `id`' .
+		$query = 'SELECT `id`' .
 				' FROM `#__modules` ' .
 				' WHERE module = '.$db->Quote($mname) .
 				' AND client_id = '.(int)$clientId;
@@ -186,19 +182,11 @@ class JInstallerModule extends JObject
 		$id = $db->loadResult();
 
 		// Was there a module already installed with the same name?
-		if ($id) {
-
-			if ( ! $this->parent->getOverwrite())
-			{
-				// Install failed, roll back changes
-				$this->parent->abort(JText::_('Module').' '.JText::_('Install').': '.JText::_('Module').' "'.$mname.'" '.JText::_('already exists!'));
-				return false;
-			}
-
-
-		} else {
-*/
-
+		// If there was then we wouldn't be here because it would have
+		// been stopped by the above. Otherwise the files weren't there
+		// (e.g. migration) or its an upgrade (files overwritten)
+		// So all we need to do is create an entry when we can't find one
+		if (!$id) {
 			$row = & JTable::getInstance('module');
 			$row->title = $this->get('name');
 			$row->ordering = $row->getNextOrder( "position='left'" );
@@ -244,7 +232,7 @@ class JInstallerModule extends JObject
 			 * so that if we have to rollback the changes we can undo it.
 			 */
 			$this->parent->pushStep(array ('type' => 'menu', 'id' => $db->insertid()));
-//		} // TODO: Remove this re: database check removal
+		}
 
 		/**
 		 * ---------------------------------------------------------------------------------------------

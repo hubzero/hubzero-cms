@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: categories.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: categories.php 10579 2008-07-22 14:54:24Z ircmaxell $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -45,6 +45,7 @@ function plgSearchCategories( $text, $phrase='', $ordering='', $areas=null )
 {
 	$db		=& JFactory::getDBO();
 	$user	=& JFactory::getUser();
+	$searchText = $text;
 
 	require_once(JPATH_SITE.DS.'components'.DS.'com_content'.DS.'helpers'.DS.'route.php');
 
@@ -79,7 +80,7 @@ function plgSearchCategories( $text, $phrase='', $ordering='', $areas=null )
 	}
 
 	$text	= $db->Quote( '%'.$db->getEscaped( $text, true ).'%', false );
-	$query	= 'SELECT a.title, a.description AS text, "" AS created,'
+	$query	= 'SELECT a.title, a.description AS text, "" AS created, a.name,'
 	. ' "2" AS browsernav,'
 	. ' s.id AS secid, a.id AS catid,'
 	. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug'
@@ -104,5 +105,12 @@ function plgSearchCategories( $text, $phrase='', $ordering='', $areas=null )
 		$rows[$i]->section 	= JText::_( 'Category' );
 	}
 
-	return $rows;
+	$return = array();
+	foreach($rows AS $key => $category) {
+		if(searchHelper::checkNoHTML($category, $text, array('name', 'title', 'text'))) {
+			$return[] = $category;
+		}
+	}
+
+	return $return;
 }

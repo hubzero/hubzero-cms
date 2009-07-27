@@ -23,9 +23,14 @@ endif; ?>
 
 <table class="contentpaneopen<?php echo $params->get( 'moduleclass_sfx' ); ?>">
 	<tr>
-		<td valign="top" colspan="2"><?php echo $item->text; ?></td>
+		<td valign="top" ><?php echo $item->text; ?></td>
 	</tr>
+	<tr>
+        <td valign="top" >
+
+       <?php if (isset($item->linkOn) && $item->readmore && $params->get('readmore')) :
+	      echo '<a class="readmore" href="'.$item->linkOn.'">'.$item->linkText.'</a>';
+        endif; ?>
+		</td>
+     </tr>
 </table>
-<?php if (isset($item->linkOn) && $item->readmore && $params->get('readmore')) :
-	echo '<a href="'.$item->linkOn.'">'.JText::_('Read more text').'</a>';
-endif; ?>

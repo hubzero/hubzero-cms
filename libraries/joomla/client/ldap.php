@@ -1,7 +1,7 @@
 <?php
 
 /**
-* @version		$Id: ldap.php 10461 2008-06-27 13:19:24Z pasamio $
+* @version		$Id: ldap.php 10553 2008-07-15 09:36:15Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	Client
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -313,7 +313,6 @@ class JLDAP extends JObject
 		$result = @ldap_read($this->_resource, $base, $cn);
 
 		if ($result) {
-			// TODO: instead of just returning array of attributes, convert to object before returning
 			return @ldap_get_entries($this->_resource, $result);
 		} else {
 			return $result;
@@ -414,7 +413,6 @@ class JLDAP extends JObject
 	 *				 correctly, however, an IPX address does not seem to.  eDir 8.7 may correct this.
 	 *  Enhancement made by Merijn van de Schoot:
 	 *	 If addresstype is 8 (UDP) or 9 (TCP) do some additional parsing like still returning the IP address
-	 *	 TODO: Return an extra value with UDP or TCP portnumber
 	 */
 	function LDAPNetAddr($networkaddress)
 	{
@@ -422,7 +420,8 @@ class JLDAP extends JObject
 		$addrtype = intval(substr($networkaddress, 0, 1));
 		$networkaddress = substr($networkaddress, 2); // throw away bytes 0 and 1 which should be the addrtype and the "#" separator
 
-		if (($addrtype == 8) || ($addrtype = 9)) {    // if udp or tcp, (TODO fill addrport and) strip portnumber information from address
+		if (($addrtype == 8) || ($addrtype = 9)) {    
+			// TODO 1.6: If UDP or TCP, (TODO fill addrport and) strip portnumber information from address
 			$networkaddress = substr($networkaddress, (strlen($networkaddress)-4));
 		}
 

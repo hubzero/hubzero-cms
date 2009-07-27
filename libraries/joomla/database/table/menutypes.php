@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: menutypes.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: menutypes.php 10572 2008-07-21 01:52:00Z pasamio $
  * @package		Joomla.Framework
  * @subpackage	Table
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -49,9 +49,9 @@ class JTableMenuTypes extends JTable
 	 */
 	function check()
 	{
-		if (strstr( $this->menutype, '\'' ))
-		{
-			$this->setError(JText::_( 'The menu name cannot contain a \'', true ));
+		$this->menutype = JFilterOutput::stringURLSafe($this->menutype);
+		if(empty($this->menutype)) {
+			$this->setError( "Cannot save: Empty menu type" );
 			return false;
 		}
 
@@ -76,7 +76,7 @@ class JTableMenuTypes extends JTable
 		{
 			if ($menutype == $this->menutype)
 			{
-				$this->setError( "Cannot save: Duplicate menu type '$this->menutype'" );
+				$this->setError( "Cannot save: Duplicate menu type '{$this->menutype}'" );
 				return false;
 			}
 		}

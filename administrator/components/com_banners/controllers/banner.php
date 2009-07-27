@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 10431 2008-06-15 19:42:18Z willebil $
+ * @version		$Id: banner.php 10554 2008-07-15 17:15:19Z ircmaxell $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -153,6 +153,10 @@ class BannerControllerBanner extends JController
 			return JError::raiseWarning( 500, $db->getErrorMsg() );
 		}
 
+		$banner_params = new JParameter( $row->params );
+		$lists['width'] = $banner_params->get( 'width');
+		$lists['height'] = $banner_params->get( 'height');
+
 		$clientlist[]		= JHTML::_('select.option',  '0', JText::_( 'Select Client' ), 'cid', 'name' );
 		$clientlist			= array_merge( $clientlist, $db->loadObjectList() );
 		$lists['cid']		= JHTML::_('select.genericlist',   $clientlist, 'cid', 'class="inputbox" size="1"','cid', 'name', $row->cid );
@@ -180,6 +184,8 @@ class BannerControllerBanner extends JController
 	 */
 	function save()
 	{
+		global $mainframe;
+
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
@@ -193,6 +199,20 @@ class BannerControllerBanner extends JController
 		$post['custombannercode'] = JRequest::getVar( 'custombannercode', '', 'post', 'string', JREQUEST_ALLOWRAW );
 
 		$row =& JTable::getInstance('banner', 'Table');
+
+		// Save params temp fix
+		$temp1 = array();
+		$temp2 = array();
+		$temp1['width'] = (int) $post['width'];
+		$temp1['height'] = (int) $post['height'];
+			foreach ($temp1 as $k => $v)
+			{
+				if ( $k && strlen($v) )
+				{
+					$temp2[] = $k.'='.$v;
+				}
+			}
+		$row->params = implode( "\n", $temp2 );
 
 		if (!$row->bind( $post )) {
 			return JError::raiseWarning( 500, $row->getError() );

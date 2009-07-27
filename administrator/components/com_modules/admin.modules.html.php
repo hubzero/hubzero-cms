@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.modules.html.php 10498 2008-07-04 00:05:36Z ian $
+* @version		$Id: admin.modules.html.php 10559 2008-07-16 20:57:43Z instance $
 * @package		Joomla
 * @subpackage	Modules
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -225,7 +225,8 @@ class HTML_modules
 		JHTML::_('behavior.combobox');
 
 		jimport('joomla.html.pane');
-		$pane =& JPane::getInstance('sliders');
+        // TODO: allowAllClose should default true in J!1.6, so remove the array when it does.
+		$pane = &JPane::getInstance('sliders', array('allowAllClose' => true));
 		$editor 	=& JFactory::getEditor();
 
 		JHTML::_('behavior.tooltip');

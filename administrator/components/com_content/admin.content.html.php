@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.content.html.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: admin.content.html.php 10571 2008-07-21 01:27:35Z pasamio $
 * @package		Joomla
 * @subpackage	Content
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -439,9 +439,10 @@ class ContentView
 		jimport('joomla.html.pane');
 		JFilterOutput::objectHTMLSafe( $row );
 
-		$db		=& JFactory::getDBO();
-		$editor =& JFactory::getEditor();
-		$pane	=& JPane::getInstance('sliders');
+		$db		= &JFactory::getDBO();
+		$editor = &JFactory::getEditor();
+        // TODO: allowAllClose should default true in J!1.6, so remove the array when it does.
+		$pane	= &JPane::getInstance('sliders', array('allowAllClose' => true));
 
 		JHTML::_('behavior.tooltip');
 		?>
@@ -695,7 +696,7 @@ class ContentView
 		var title = form.title.value;
 
 		var alltext = window.top.<?php echo $editor->getContent('text') ?>;
-		alltext = alltext.replace('<hr id=\"system-readmore\" \/>', '');
+		alltext = alltext.replace(/<hr\s+id=(\"|')system-readmore(\"|')\s*\/*>/i, '');
 
 		</script>
 

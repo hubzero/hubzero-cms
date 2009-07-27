@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: recordset.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: recordset.php 10571 2008-07-21 01:27:35Z pasamio $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -65,31 +65,31 @@ class JRecordSet
 		return $this->data;
 	}
 	/**
-	 * TODO: No working
+	 * TODO: Remove for 1.6.  Deprecated
 	 */
 	function absolutepage() {
 		return 1;
 	}
 	/**
-	 * TODO: No working
+	 * TODO: Remove for 1.6.  Deprecated
 	 */
 	function atfirstpage() {
 		return 1;
 	}
 	/**
-	 * TODO: No working
+	 * TODO: Remove for 1.6.  Deprecated
 	 */
 	function atlastpage() {
 		return 1;
 	}
 	/**
-	 * TODO: No working
+	 * TODO: Remove for 1.6.  Deprecated
 	 */
 	function lastpageno() {
 		return 1;
 	}
 	/**
-	 * TODO: No working
+	 * TODO: Remove for 1.6.  Deprecated
 	 */
 	function Close() {
 	}

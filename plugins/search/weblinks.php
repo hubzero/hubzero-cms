@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: weblinks.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: weblinks.php 10579 2008-07-22 14:54:24Z ircmaxell $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -44,6 +44,8 @@ function plgSearchWeblinks( $text, $phrase='', $ordering='', $areas=null )
 	$db		=& JFactory::getDBO();
 	$user	=& JFactory::getUser();
 
+	$searchText = $text;
+
 	require_once(JPATH_SITE.DS.'components'.DS.'com_weblinks'.DS.'helpers'.DS.'route.php');
 
 	if (is_array( $areas )) {
@@ -70,9 +72,9 @@ function plgSearchWeblinks( $text, $phrase='', $ordering='', $areas=null )
 		case 'exact':
 			$text		= $db->Quote( '%'.$db->getEscaped( $text, true ).'%', false );
 			$wheres2 	= array();
-			$wheres2[] 	= 'LOWER(a.url) LIKE '.$text;
-			$wheres2[] 	= 'LOWER(a.description) LIKE '.$text;
-			$wheres2[] 	= 'LOWER(a.title) LIKE '.$text;
+			$wheres2[] 	= 'a.url LIKE '.$text;
+			$wheres2[] 	= 'a.description LIKE '.$text;
+			$wheres2[] 	= 'a.title LIKE '.$text;
 			$where 		= '(' . implode( ') OR (', $wheres2 ) . ')';
 			break;
 
@@ -85,9 +87,9 @@ function plgSearchWeblinks( $text, $phrase='', $ordering='', $areas=null )
 			{
 				$word		= $db->Quote( '%'.$db->getEscaped( $word, true ).'%', false );
 				$wheres2 	= array();
-				$wheres2[] 	= 'LOWER(a.url) LIKE '.$word;
-				$wheres2[] 	= 'LOWER(a.description) LIKE '.$word;
-				$wheres2[] 	= 'LOWER(a.title) LIKE '.$word;
+				$wheres2[] 	= 'a.url LIKE '.$word;
+				$wheres2[] 	= 'a.description LIKE '.$word;
+				$wheres2[] 	= 'a.title LIKE '.$word;
 				$wheres[] 	= implode( ' OR ', $wheres2 );
 			}
 			$where 	= '(' . implode( ($phrase == 'all' ? ') AND (' : ') OR ('), $wheres ) . ')';
@@ -117,7 +119,7 @@ function plgSearchWeblinks( $text, $phrase='', $ordering='', $areas=null )
 			$order = 'a.date DESC';
 	}
 
-	$query = 'SELECT a.title AS title, a.description AS text, a.date AS created,'
+	$query = 'SELECT a.title AS title, a.description AS text, a.date AS created, a.url, '
 	. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 	. ' CASE WHEN CHAR_LENGTH(b.alias) THEN CONCAT_WS(\':\', b.id, b.alias) ELSE b.id END as catslug, '
 	. ' CONCAT_WS( " / ", '.$db->Quote($section).', b.title ) AS section,'
@@ -137,5 +139,12 @@ function plgSearchWeblinks( $text, $phrase='', $ordering='', $areas=null )
 		$rows[$key]->href = WeblinksHelperRoute::getWeblinkRoute($row->slug, $row->catslug);
 	}
 
-	return $rows;
+	$return = array();
+	foreach($rows AS $key => $weblink) {
+		if(searchHelper::checkNoHTML($weblink, $searchText, array('url', 'text', 'title'))) {
+			$return[] = $weblink;
+		}
+	}
+
+	return $return;
 }

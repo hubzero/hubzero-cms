@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: helper.php 10579 2008-07-22 14:54:24Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -29,7 +29,6 @@ class modNewsFlashHelper
 		$item->readmore = (trim($item->fulltext) != '');
 		$item->metadesc = '';
 		$item->metakey 	= '';
-		$item->access 	= '';
 		$item->created 	= '';
 		$item->modified = '';
 
@@ -39,13 +38,13 @@ class modNewsFlashHelper
 			{
 				// Check to see if the user has access to view the full article
 				if ($item->access <= $user->get('aid', 0)) {
-					$linkOn = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
+					$item->linkOn = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
+					$item->linkText = JText::_('Read more text');
 				} else {
-					$linkOn = JRoute::_('index.php?option=com_user&task=register');
+					$item->linkOn = JRoute::_('index.php?option=com_user&task=register');
+					$item->linkText = JText::_('Register To Read More');
 				}
 			}
-
-			$item->linkOn = $linkOn;
 		}
 
 		if (!$params->get('image')) {
@@ -73,8 +72,7 @@ class modNewsFlashHelper
 		$items 	= (int) $params->get('items', 0);
 
 		$contentConfig	= &JComponentHelper::getParams( 'com_content' );
-		$noauth			= !$contentConfig->get('shownoauth');
-
+		$noauth			= !$contentConfig->get('show_noauth');
 		$date =& JFactory::getDate();
 		$now = $date->toMySQL();
 

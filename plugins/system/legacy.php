@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: legacy.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: legacy.php 10560 2008-07-17 04:44:11Z mtk $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -48,7 +48,7 @@ class  plgSystemLegacy extends JPlugin
 		// Set global configuration var for legacy mode
 		$config = &JFactory::getConfig();
 		$config->setValue('config.legacy', 1);
-
+		
 		// Import library dependencies
 		require_once(dirname(__FILE__).DS.'legacy'.DS.'classes.php');
 		require_once(dirname(__FILE__).DS.'legacy'.DS.'functions.php');
@@ -253,6 +253,9 @@ class  plgSystemLegacy extends JPlugin
 		 *  @deprecated As of version 1.5
 		 */
 		$GLOBALS['_MAMBOTS'] = new mosMambotHandler();
+		
+		$mosmsg = JRequest::getVar( 'mosmsg' );
+		$mainframe->enqueueMessage( $mosmsg );
 	}
 
 	function onAfterRoute()

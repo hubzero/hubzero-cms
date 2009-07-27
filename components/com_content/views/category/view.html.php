@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
+ * @version		$Id: view.html.php 10579 2008-07-22 14:54:24Z ircmaxell $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -46,8 +46,6 @@ class ContentViewCategory extends ContentView
 		// Request variables
 		$layout     = JRequest::getCmd('layout');
 		$task		= JRequest::getCmd('task');
-		$limit = $mainframe->getUserStateFromRequest('limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
 
 		// Parameters
 		$params->def('num_leading_articles', 	1);
@@ -64,10 +62,16 @@ class ContentViewCategory extends ContentView
 		$leading	= $params->get('num_leading_articles');
 		$links		= $params->get('num_links');
 
-		//In case we are in a blog view set the limit
+		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
+
 		if ($layout == 'blog') {
-			if ($limit ==  0) $limit = $intro + $leading + $links;
+			$default_limit = $intro + $leading + $links;
+		} else {
+			$params->def('display_num', $mainframe->getCfg('list_limit'));
+			$default_limit = $params->get('display_num');
 		}
+		$limit = $mainframe->getUserStateFromRequest('com_content.'.$this->getLayout().'.limit', 'limit', $default_limit, 'int');
+
 		JRequest::setVar('limit', (int) $limit);
 
 		$contentConfig = &JComponentHelper::getParams('com_content');
@@ -147,6 +151,7 @@ class ContentViewCategory extends ContentView
 		global $mainframe;
 
 		//create select lists
+		$user	= &JFactory::getUser();
 		$lists	= $this->_buildSortLists();
 
 		if (!count( $this->items ) )
@@ -165,7 +170,17 @@ class ContentViewCategory extends ContentView
 		$i = 0;
 		foreach($this->items as $key => $item)
 		{
-			$item->link		= JRoute::_('index.php?view=article&catid='.$this->category->slug.'&id='.$item->slug);
+			// checks if the item is a public or registered/special item
+			if ($item->access <= $user->get('aid', 0))
+			{
+				$item->link	= JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
+				$item->readmore_register = false;
+			}
+			else
+			{
+				$item->link = JRoute::_('index.php?option=com_user&task=register');
+				$item->readmore_register = true;
+			}
 			$item->created	= JHTML::_('date', $item->created, $this->params->get('date_format'));
 
 			$item->odd		= $k;

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: router.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: router.php 10579 2008-07-22 14:54:24Z ircmaxell $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -22,18 +22,12 @@ function UserBuildRoute(&$query)
 		} else {
 			$menu = &JSite::getMenu();
 			$menuItem = &$menu->getItem( $query['Itemid'] );
-			if (isset($menuItem->query['view'])) {
-				if($query['view'] != $menuItem->query['view']) {
-					$segments[] = $query['view'];	
-				}
-			} else {
-				$segments[] = $query['view'];
+			if(!isset($menuItem->query['view']) || $menuItem->query['view'] != $query['view']) {
+				$segments[] = $query['view'];	
 			}
 		}
-
 		unset($query['view']);
-	};
-
+	}
 	return $segments;
 }
 
@@ -41,22 +35,13 @@ function UserParseRoute($segments)
 {
 	$vars = array();
 
-	//Get the active menu item
-	$menu =& JSite::getMenu();
-	$item =& $menu->getActive();
-
-	// Count route segments
 	$count = count($segments);
-
-	if (isset( $segments[0] )) {
+	if(!empty($count)) {
 		$vars['view'] = $segments[0];
 	}
 
-	//Standard routing for articles
-	if(!isset($item))
-	{
+	if($count > 1) {
 		$vars['id']    = $segments[$count - 1];
-		return $vars;
 	}
 
 	return $vars;

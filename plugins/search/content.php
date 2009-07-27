@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: content.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: content.php 10579 2008-07-22 14:54:24Z ircmaxell $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -48,6 +48,7 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 
 	require_once(JPATH_SITE.DS.'components'.DS.'com_content'.DS.'helpers'.DS.'route.php');
 
+	$searchText = $text;
 	if (is_array( $areas )) {
 		if (!array_intersect( $areas, array_keys( plgSearchContentAreas() ) )) {
 			return array();
@@ -77,11 +78,11 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 		case 'exact':
 			$text		= $db->Quote( '%'.$db->getEscaped( $text, true ).'%', false );
 			$wheres2 	= array();
-			$wheres2[] 	= 'LOWER(a.title) LIKE '.$text;
-			$wheres2[] 	= 'LOWER(a.introtext) LIKE '.$text;
-			$wheres2[] 	= 'LOWER(a.`fulltext`) LIKE '.$text;
-			$wheres2[] 	= 'LOWER(a.metakey) LIKE '.$text;
-			$wheres2[] 	= 'LOWER(a.metadesc) LIKE '.$text;
+			$wheres2[] 	= 'a.title LIKE '.$text;
+			$wheres2[] 	= 'a.introtext LIKE '.$text;
+			$wheres2[] 	= 'a.`fulltext` LIKE '.$text;
+			$wheres2[] 	= 'a.metakey LIKE '.$text;
+			$wheres2[] 	= 'a.metadesc LIKE '.$text;
 			$where 		= '(' . implode( ') OR (', $wheres2 ) . ')';
 			break;
 
@@ -93,11 +94,11 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 			foreach ($words as $word) {
 				$word		= $db->Quote( '%'.$db->getEscaped( $word, true ).'%', false );
 				$wheres2 	= array();
-				$wheres2[] 	= 'LOWER(a.title) LIKE '.$word;
-				$wheres2[] 	= 'LOWER(a.introtext) LIKE '.$word;
-				$wheres2[] 	= 'LOWER(a.`fulltext`) LIKE '.$word;
-				$wheres2[] 	= 'LOWER(a.metakey) LIKE '.$word;
-				$wheres2[] 	= 'LOWER(a.metadesc) LIKE '.$word;
+				$wheres2[] 	= 'a.title LIKE '.$word;
+				$wheres2[] 	= 'a.introtext LIKE '.$word;
+				$wheres2[] 	= 'a.`fulltext` LIKE '.$word;
+				$wheres2[] 	= 'a.metakey LIKE '.$word;
+				$wheres2[] 	= 'a.metadesc LIKE '.$word;
 				$wheres[] 	= implode( ' OR ', $wheres2 );
 			}
 			$where = '(' . implode( ($phrase == 'all' ? ') AND (' : ') OR ('), $wheres ) . ')';
@@ -134,7 +135,7 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 	// search articles
 	if ( $sContent && $limit > 0 )
 	{
-		$query = 'SELECT a.title AS title,'
+		$query = 'SELECT a.title AS title, a.metadesc, a.metakey,'
 		. ' a.created AS created,'
 		. ' CONCAT(a.introtext, a.`fulltext`) AS text,'
 		. ' CONCAT_WS( "/", u.title, b.title ) AS section,'
@@ -174,7 +175,7 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 	// search uncategorised content
 	if ( $sUncategorised && $limit > 0 )
 	{
-		$query = 'SELECT id, a.title AS title, a.created AS created,'
+		$query = 'SELECT id, a.title AS title, a.created AS created, a.metadesc, a.metakey, '
 		. ' a.introtext AS text,'
 		. ' "2" as browsernav, "'. $db->Quote(JText::_('Uncategorised Content')) .'" AS section'
 		. ' FROM #__content AS a'
@@ -207,7 +208,7 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 	{
 		$searchArchived = JText::_( 'Archived' );
 
-		$query = 'SELECT a.title AS title,'
+		$query = 'SELECT a.title AS title, a.metadesc, a.metakey,'
 		. ' a.created AS created,'
 		. ' a.introtext AS text,'
 		. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'
@@ -247,7 +248,13 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 	{
 		foreach($rows as $row)
 		{
-			$results = array_merge($results, (array) $row);
+			$new_row = array();
+			foreach($row AS $key => $article) {
+				if(searchHelper::checkNoHTML($article, $searchText, array('text', 'title', 'metadesc', 'metakey'))) {
+					$new_row[] = $article;
+				}
+			}
+			$results = array_merge($results, (array) $new_row);
 		}
 	}
 

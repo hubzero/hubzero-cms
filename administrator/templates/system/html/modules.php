@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: modules.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: modules.php 10559 2008-07-16 20:57:43Z instance $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -44,8 +44,9 @@ function modChrome_sliders($module, &$params, &$attribs)
 {
 	jimport('joomla.html.pane');
 	// Initialize variables
-	$user		=& JFactory::getUser();
-	$sliders	=& JPane::getInstance('sliders');
+	$user = &JFactory::getUser();
+    // TODO: allowAllClose should default true in J!1.6, so remove the array when it does.
+	$sliders = &JPane::getInstance('sliders', array('allowAllClose' => true));
 
 	$editAllComponents 	= $user->authorize( 'administration', 'edit', 'components', 'all' );
 

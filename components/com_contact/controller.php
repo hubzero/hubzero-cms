@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: controller.php 10554 2008-07-15 17:15:19Z ircmaxell $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -306,13 +306,6 @@ class ContactController extends JController
 
 		$session =& JFactory::getSession();
 
-		/**
-		$model		= $this->getModel('contact');
-		$options['category_id']	= $contact->catid;
-		$options['order by']	= 'a.default_con DESC, a.ordering ASC';
-		$contact 		= $model->getContact( $options );
-		**/
-
 		// Get params and component configurations
 		$params		= new JParameter($contact->params);
 		$pparams	= &$mainframe->getParams('com_contact');
@@ -333,15 +326,9 @@ class ContactController extends JController
 		$bannedEmail 	= $configEmail . ($paramsEmail ? ';'.$paramsEmail : '');
 
 		// Prevent form submission if one of the banned text is discovered in the email field
-		if ( $bannedEmail ) {
-			$bannedEmail = explode( ';', $bannedEmail );
-			foreach ($bannedEmail as $value) {
-
-				if ( JString::stristr($email, $value) ) {
-					$this->setError( JText::sprintf('MESGHASBANNEDTEXT', 'Email') );
-					return false;
-				}
-			}
+		if(false === $this->_checkText($email, $bannedEmail )) {
+			$this->setError( JText::sprintf('MESGHASBANNEDTEXT', 'Email') );
+			return false;
 		}
 
 		// Determine banned subjects
@@ -350,14 +337,9 @@ class ContactController extends JController
 		$bannedSubject 	= $configSubject . ( $paramsSubject ? ';'.$paramsSubject : '');
 
 		// Prevent form submission if one of the banned text is discovered in the subject field
-		if ( $bannedSubject ) {
-			$bannedSubject = explode( ';', $bannedSubject );
-			foreach ($bannedSubject as $value) {
-				if ( JString::stristr($subject, $value) ) {
-					$this->setError( JText::sprintf('MESGHASBANNEDTEXT', 'Subject') );
-					return false;
-				}
-			}
+		if(false === $this->_checkText($subject, $bannedSubject)) {
+			$this->setError( JText::sprintf('MESGHASBANNEDTEXT', 'Subject') );
+			return false;
 		}
 
 		// Determine banned Text
@@ -366,14 +348,9 @@ class ContactController extends JController
 		$bannedText 	= $configText . ( $paramsText ? ';'.$paramsText : '' );
 
 		// Prevent form submission if one of the banned text is discovered in the text field
-		if ( $bannedText ) {
-			$bannedText = explode( ';', $bannedText );
-			foreach ($bannedText as $value) {
-				if ( JString::stristr($body, $value) ) {
-					$this->setError( JText::sprintf('MESGHASBANNEDTEXT', 'Message') );
-					return false;
-				}
-			}
+		if(false === $this->_checkText( $body, $bannedText )) {
+			$this->setError( JText::sprintf('MESGHASBANNEDTEXT', 'Message') );
+			return false;
 		}
 
 		// test to ensure that only one email address is entered
@@ -385,4 +362,29 @@ class ContactController extends JController
 
 		return true;
 	}
+
+	/**
+	 * Checks $text for values contained in the array $array, and sets error message if true...
+	 *
+	 * @param String	$text		Text to search against
+	 * @param String	$list		semicolon (;) seperated list of banned values
+	 * @return Boolean
+	 * @access protected
+	 * @since 1.5.4
+	 */
+	function _checkText($text, $list) {
+		if(empty($list) || empty($text)) return true;
+		$array = explode(';', $list);
+		foreach ($array as $value) {
+			$value = trim($value);
+			if(empty($value)) continue;
+			if ( JString::stristr($text, $value) !== false ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+
 }

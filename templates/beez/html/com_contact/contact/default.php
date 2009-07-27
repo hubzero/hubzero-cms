@@ -1,9 +1,9 @@
-<?php // @version $Id: default.php 10498 2008-07-04 00:05:36Z ian $
+<?php // @version $Id: default.php 10571 2008-07-21 01:27:35Z pasamio $
 defined('_JEXEC') or die('Restricted access');
 $cparams = JComponentHelper::getParams ('com_media');
 ?>
 
-<?php if ($this->params->get('show_page_title',1)) : ?>
+<?php if ($this->params->get('show_page_title',1) && $this->params->get('page_title') != $this->contact->name) : ?>
 <h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
 	<?php echo $this->escape($this->params->get('page_title')); ?>
 </h1>
