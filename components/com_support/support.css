@@ -1,0 +1,496 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*---------------------------------------------------------------
+	Columns
+---------------------------------------------------------------*/
+	.section {
+		padding: 0;
+		}
+	.main {
+		border-top: 1px solid #EFEFEF;
+		}
+	.below {
+		margin: 2em 0 0 0;
+		padding-top: 1em;
+		}
+	.aside {
+		float: right;
+		width: 214px;
+		padding-top: 1em;
+		}
+	.subject {
+		margin: 1em 0;
+		margin-right: 235px;
+		padding: 1.4em;
+		background: #F7F7F7;
+		border-top: 1px solid #E3E3E3;
+		border-bottom: 1px solid #E3E3E3;
+		}
+	fieldset.filters {
+		margin: 2em 0 2em 0;
+		padding: 1em;
+		background: #F5F7F2;
+		border-top: 1px solid #DEE4CD;
+		border-bottom: 1px solid #DEE4CD;
+		}
+	fieldset.filters label {
+		font-weight: bold;
+		margin-left: 0.5em;
+		margin-right: 0.5em;
+		}
+	.main h3 {
+		margin-top: 1em;
+		padding-top: 0;
+		}
+	.main .subject {
+		border: none;
+		background: transparent;
+		padding: 0 0 0 0;
+		margin-top: 1em;
+		}
+	.withleft .section {
+		margin-left: 250px;
+		}
+	.withleft .aside {
+		float: left;
+		width: 214px;
+		padding: 0 0 0 15px;
+		border-top: 1px solid #525252;
+		}
+	.withleft .subject {
+		margin-right: 0;
+		}
+	.aside h4,
+	.aside p {
+		color: #999;
+		}
+	.aside h4 {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		}
+	.aside fieldset {
+		margin: 1em 0 2em 0;
+		padding: 1em;
+		background: #F5F7F2;
+		border-top: 1px solid #DEE4CD;
+		border-bottom: 1px solid #DEE4CD;
+		}
+	.aside>fieldset {
+		margin-top: 0;
+		}
+	.aside fieldset label {
+		display: block;
+		margin-bottom: 0.5em;
+		}
+	.aside fieldset label input, 
+	.aside fieldset label select, 
+	.aside fieldset label textarea {
+		width: 100%;
+		}
+	.aside fieldset legend {
+		font-weight: bold;
+		padding: 0 0 1em 0;
+		}
+	.aside .sub-nav {
+		margin: 3.5em 0 2em 0;
+		padding: 1em;
+		background: #F4F4F4;
+		border-top: 1px solid #D8D8D8;
+		border-bottom: 1px solid #D8D8D8;
+		}
+	.aside .sub-nav li {
+		margin: 0.3em 0;
+		}
+	.withleft .aside ul {
+		border-top: 1px solid #525252;
+		border-bottom: 2px solid #E0E0E0;
+		padding: 0em 0 0 0;
+		}
+	.withleft .aside li {
+		border-top: 1px solid #fff;
+		border-bottom: 1px solid #fff;
+		margin-bottom: -1px;
+		}
+	.withleft .aside li a {
+		display: block;
+		padding: 0.3em 0.3em 0.3em 1.2em;
+		background: #F5F5F5 url("../images/bullets/arrow.gif") 0 0.4em no-repeat;
+		}
+	.withleft .aside li a.active {
+		background-color: #fff;
+		background-position: 0.2em 0.4em;
+		color: #333;
+		}
+	.withleft .aside li span {
+		display: block;
+		border-top: 1px solid #E0E0E0;
+		border-bottom: 1px solid #E0E0E0;
+		}
+	.withleft .aside li a:hover {
+		border: none;
+		background-position: 0.2em 0.4em;
+		background-color: #FFFFF5;
+		}
+	.subject #hubForm {
+		border: 5px solid #fff;
+		}
+	.subject #hubForm fieldset {
+		float: none;
+		margin: 0;
+		width: auto;
+		padding: 0 1em;
+		}
+	.subject #hubForm fieldset fieldset {
+		padding: 0 1em 1em 1em;
+		margin-top: 1em;
+		}
+	#hubForm .indent { 
+		margin-left: 1.75em; 
+		}
+	.subject #hubForm .group {
+		padding: 1.5em 0;
+		margin: 0;
+		top: 0;
+		left: 0;
+		}
+	.subject #hubForm .group label {
+		padding: 0;
+		float: left;
+		width: 47%;
+		padding-left: 1.5%;
+		padding-right: 1.5%;
+		}
+	.subject #hubForm .group label:first-child {
+		margin: 0;
+		}
+	#hubForm .top label {
+		padding: 0;
+		padding-left: 0%;
+		padding-right: 3%;
+		text-align: right;
+		margin: 0;
+		}
+	.subject #hubForm fieldset .top {
+		padding: 1em 0 0 0;
+		margin: 0;
+		}
+	#hubForm h4 {
+		display: none;
+		}
+	.subject #hubForm .threeup label {
+		padding: 0;
+		float: left;
+		width: 30%;
+		padding-left: 1.5%;
+		padding-right: 1.5%;
+		}
+	.subject #hubForm .submit {
+		margin-right: 0;
+		}
+	#comment {
+		margin: 0;
+		}
+	.main .aside p {
+		margin-top: 0;
+		}
+/*---------------------------------------------------------------
+	Ticket list
+---------------------------------------------------------------*/
+	#tktlist {
+		margin-bottom: 2em;
+		}
+	#tktlist tbody .reporter {
+		display: block;
+		font-size: 85%;
+		}
+	#tktlist tbody span.status {
+		font-weight: bold;
+		}
+	#tktlist tbody span.open {
+		color: #66AA00;
+		}
+	#tktlist tbody span.new {
+		color: #ff1177;
+		}
+	#tktlist tbody span.waiting {
+		color: #AA3300;
+		}
+	#tktlist tbody span.closed {
+		color: #aaaaaa;
+		}
+	#tktlist tbody span a {
+		color: #999;
+		border-bottom: 1px solid #999;
+		}
+	#tktlist tbody td {
+		border-top: 1px solid #efefef;
+		border-bottom: 1px solid #efefef;
+		}
+	#tktlist tbody tr.critical {
+		background: #fed;
+		color: #a22;
+		}
+	#tktlist tbody tr.major {
+		background: #ffd;
+		color: #880;
+		}
+	#tktlist tbody tr.normal {
+		}
+	#tktlist tbody tr.minor {
+		background: #dff;
+		color: #099;
+		}
+	#tktlist tbody tr.trivial {
+		background: #dde7ff;
+		color: #469;
+		}
+/*---------------------------------------------------------------
+	Keyword guide
+---------------------------------------------------------------*/
+	#keyword-guide {
+		border: 5px solid #eee;
+		font-size: 90%;
+		margin: 0 0 1em 0;
+		}
+	#keyword-guide tbody td,
+	#keyword-guide tbody th {
+		border-top: 1px solid #eee;
+		border-bottom: 1px solid #eee;
+		background-color: #fff;
+		}
+	#keyword-guide tbody th {
+		text-align: right;
+		font-weight: bold;
+		}
+	#keyword-guide thead th {
+		color: #fff;
+		background-color: #333;
+		}
+/*---------------------------------------------------------------
+	Ticket details
+---------------------------------------------------------------*/
+	#ticket-details {
+		font-size: 90%;
+		color: #999;
+		border-top: 2px solid #ddd;
+		margin-top: 0;
+		}
+	#ticket-details caption {
+		background: url("images/information.gif") 0 1em no-repeat;
+		margin: 0;
+		padding: 1em 0 0 0;
+		padding-left: 20px;
+		cursor: pointer;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		color: #555;
+		font-size: 90%;
+		width: 100%;
+		}
+	#ticket-details tbody {
+		margin: 0;
+		padding: 0;
+		}
+	
+	.overview {
+		border-top: 1px solid #EFEFEF;
+		}
+	.overview .aside {
+		padding-top: 0;
+		}
+	.overview blockquote {
+		color: #888;
+		padding: 0 0 0 1.7em;
+		border: none;
+		font: italic 1em Georgia, Times, serif;
+		background: url("images/quoteopen.gif") 0 0 no-repeat;
+		}
+
+	#content-header h2 {
+		border: none;
+		}
+	#content-header h3 {
+		color: #666;
+		font-size: 1.2em;
+		margin: 0 0 0.5em 0;
+		padding: 0;
+		border: none;
+		}
+	#content-header h3 a { 
+		color: #4583A6; 
+		text-decoration: none;
+		border-bottom: 1px solid #d8e5e9;
+		}
+	#content-header h3 a:hover {
+		color: #00f;
+		border-bottom: 1px solid #00f;
+		}
+
+	#useroptions {
+		margin: -3em 0 0 0;
+		color: #ccc;
+		}
+
+	strong.open {
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		color: #c00;
+		font-size: 1.2em;
+		}
+	strong.closed {
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		color: #000;
+		font-size: 1.2em;
+		}
+/*---------------------------------------------------------------
+	Comment lists
+---------------------------------------------------------------*/
+	ol.comments {
+		list-style-type:  none !important;
+		margin-left: 0;
+		padding-left: 0;
+		}
+	ol.comments > li {
+		clear: left;
+		margin: 0 !important;
+		padding: 0 0 2em 125px;
+		border-top: 1px solid #efefef;
+		}
+	ol.comments li li {
+		margin-left:  20px;
+		}
+	ol.comments .cwrap {
+		padding-right: 1em;
+		}
+	ol.comments dl.comment-details {
+		float: left;
+		margin: 1em 20px 1.7em -125px !important;
+		padding: 0;
+		width: 105px;
+		color: #777;
+		font-size: 90%; /*11px;*/
+		text-align: right;
+		}
+	ol.comments dl.comment-details dt {
+		font-weight: bold;
+		color: #777;
+		font-size: 10px;
+		padding-bottom: 1em;
+		}
+	ol.comments dl.comment-details dd {
+		padding: 0;
+		margin: 0.2em 0;
+		}
+	ol.comments .name {
+		color: #777;
+		font-size: 12px;
+		}
+	ol.comments li.submitter dl.comment-details dt a,
+	ol.comments li.submitter dl.comment-details dt a:link,
+	ol.comments li.submitter dl.comment-details dt a:visited,
+	ol.comments li.submitter dl.comment-details dt a:active {
+		color:  #FF54AC;
+		}
+	ol.comments li.author dl.comment-details dt a:hover {
+		color: #ff6600;
+		}
+	ol.comments li dl.comment-details dt a.comment-counter:link,
+	ol.comments li dl.comment-details dt a.comment-counter:visited,
+	ol.comments li dl.comment-details dt a.comment-counter:active {
+		color: #999 !important;
+		}
+	ol.comments li dl.comment-details dt a.comment-counter:hover {
+		color: #ff6600 !important;
+		}
+	ol.comments li p.comment-content-object-link {
+		font-style: italic;
+		color: #999;
+		}
+	ol.comments li.private {
+		background-color: #f8f2e9;
+		}
+	ol.comments li.submitter {
+		background-color: #f3f8e9;
+		}
+	ol.comments blockquote {
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+		color: #333;
+		}
+	ol.comments li dl.comment-details dt span {
+		width: 65px;
+		}
+	ol.comments li.submitter dl.comment-details dt span {
+		font-size: 90%;
+		background: url("images/submitter.gif") right top no-repeat;
+		}
+	ol.comments li.private dl.comment-details dt span {
+		background: url("images/private.gif") right top no-repeat;
+		}
+	ol.comments li.public dl.comment-details dt span {
+		background: url("images/public.gif") right top no-repeat;
+		}
+	ol.comments li dl.comment-details dt span span {
+		visibility: hidden;
+		}
+/* Changelog */
+	ol.comments .changelog ul {
+		border-top: 1px solid #ddd;
+		padding: 0.2em 0.2em 0.2em 30px;
+		margin: 0 0 0.5em 0;
+		font-size: 90%;
+		background: url("images/page_edit.png") 10px 0.4em no-repeat;
+		list-style: none;
+		}
+	ol.comments .changelog li {
+		padding: 0.1em;
+		margin: 0;
+		background: none;
+		}
+	ol.comments .changelog em {
+		font-style: italic;
+		}
+/* Email log */
+	ol.comments ul.emaillog,
+	ol.comments .changelog ul.emaillog {
+		border-top: 1px solid #ddd;
+		padding: 0.2em 0.2em 0.2em 30px;
+		margin: 0;
+		font-size: 90%;
+		background: url("images/email.png") 10px 0.2em no-repeat;
+		}
+	ol.comments .emaillog li {
+		padding: 0.1em;
+		margin: 0;
+		background: none;
+		}
+/*---------------------------------------------------------------
+	Tooltips
+---------------------------------------------------------------*/
+	.img-tip {
+		color: #fff;
+		width: 310px;
+		padding: 10px;
+		z-index: 13000;
+		text-align: left;
+		background: url("images/overlay.png") top left;
+		}
+	.img-tip #keyword-guide {
+		color: #888;
+		}
+	#ticket-feed {
+		margin-left: 2em;
+		}
+	.fixedImgTip {
+		margin-right: 1em;
+		}

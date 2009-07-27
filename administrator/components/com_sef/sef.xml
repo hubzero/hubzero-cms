@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+	<name>sef</name>
+	<author>W.H.Welch</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Allows Search Engine Friendly URLS for apache and IIS, returns proper 404 status code for missing content, provides logging of 404 errors, and creation of special "shortcut" URLs that allow the user to redirection to the new URL.</description>
+  	<installfile></installfile> 
+  	<uninstallfile></uninstallfile> 
+	<files>
+		<filename>index.html</filename>
+	</files>
+	<administration>
+		<menu>404 SEF</menu>
+		<files>
+			<filename>admin.controller.php</filename>
+			<filename>admin.sef.html.php</filename>
+			<filename>admin.sef.php</filename>
+			<filename>index.html</filename>
+			<filename>sef.class.php</filename>
+			<filename>toolbar.sef.html.php</filename>
+			<filename>toolbar.sef.php</filename>
+               <filename>images/up.png</filename>
+               <filename>images/down.png</filename>
+			<filename>config.xml</filename>
+		</files>
+	</administration>
+</install>

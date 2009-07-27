@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install version="1.5" type="plugin" group="tags">
+	<name>Tags - Answers</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Various functions for the Tags Component</description>
+	<files>
+		<filename plugin="answers">answers.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_tags_answers.ini</language>
+	</languages>
+</install>

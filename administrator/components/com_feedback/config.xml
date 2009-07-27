@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<config>
+	<params>
+		<param name="defaultpic" type="text" menu="hide" default="/components/com_feedback/images/contributor.gif" label="Default picture" description="Default placeholder image for user pictures" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="uploadpath" type="text" menu="hide" default="/site/quotes" label="Upload path" description="File path for pictures" />
+		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
+		<param name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed file types" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="blacklist" type="textarea" rows="15" cols="40" default="" description="A comma-separated list of IPs to be blacklisted" />
+		<param name="badwords" type="textarea" rows="15" cols="40" default="viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting" description="A comma-separated list of spam words" />
+	</params>
+</config>

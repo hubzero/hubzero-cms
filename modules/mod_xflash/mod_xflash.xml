@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="module" version="1.5">
+	<name>XFlash</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Displays HUB flash banner</description>
+	<files>
+		<filename module="mod_xflash">mod_xflash.php</filename>
+		<filename>mod_xflash.js</filename>
+		<filename>images/noflash.jpg</filename>
+		<filename>index.html</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
+	</files>
+	<params>
+		<param name="dynamic" type="radio" default="0" label="Dynamic content" description="Select whether to make banner load xml data or use local swf file">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="noflash_link" type="text" default="/answers/" label="Default link" description="The URL to be used for linking the default banner image (in case Flash doesn't load)" />
+		<param name="noflash_path" type="text" default="/site/xflash/noflash.jpg" label="Path to default image" description="Path to default image (in case Flash doesn't load" />
+		<param name="banner_path" type="text" default="/components/com_xflash/flashrotation" label="SWF path" description="Path to swf animation" />
+		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+	</params>
+</install>

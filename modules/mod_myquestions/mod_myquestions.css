@@ -1,0 +1,160 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_myquestions
+	-- -- -- -- -- -- --
+
+*/
+	div.draggable .expandedlist li.question {
+
+		background: url("images/q.gif") 0.7em 0.7em no-repeat;
+		}
+	div.draggable .expandedlist li.question a {
+		margin-right: 1em;
+		}
+	div.draggable .expandedlist li.question span.extra {
+		float: right;
+		margin: -1.7em 0 0 0;
+		padding: 0;
+		color: #333;
+		}
+
+	.responses_yes {
+		background: url("images/a_letter.gif") 0 0 no-repeat;
+		padding: 0 0 0 1em;
+		margin-left:0.5em;
+		margin-top:0;
+		}
+	.responses_no {
+		background: url("images/a_letter.gif") 0 -18px no-repeat;
+		padding: 0 0 0 1em;
+		margin-left:0.5em;
+		margin-top:0;
+		}
+	.points {
+		background: url("images/coin.gif") 0 0 no-repeat;
+		padding: 0 0 0 1em;
+		margin-left:0.5em;
+		margin-top:0;
+		}
+	.tilde {
+		background: url("images/tolda.gif") 0 0 no-repeat;
+		padding: 0 0 0 1em;
+		margin-left:0.5em;
+		margin-top:0;
+		}
+	.incentive span {
+		color:#666666;
+		text-transform:uppercase;
+		font-size: xx-small;
+		display:block;
+		margin:0;
+		margin-top:-0.5em;
+		margin-bottom:-0.8em;
+		padding:0;
+		float:right;
+		}
+	.incentive {
+		padding:1em 1em 0.5em 1em;
+		margin:0;
+	}
+	.q {
+		float:none;
+	}
+	.earnpoints {
+		margin:0;
+		padding:0;
+		font-size:x-small;
+		margin-left:-0.5em;
+		font-style:italic;
+		font-weight:600;
+		color:#FF3366;
+		}
+	.pts {
+		font-size:xx-small;
+	}
+	.economy {
+		vertical-align:middle;
+		text-align:center;
+	}
+	div.draggable li span.q {
+		display: block;
+		border: none;
+		width:70%;
+		margin-right:-0.5em;
+		font-size:small;
+		}
+	div.draggable  li span.extra {
+		float:right;
+		margin:0;
+		margin-left:-2em;
+		padding:0;
+		margin-top:-1.5em;
+		}
+	
+	div.draggable h4 small a {
+		color: #333333;
+		font-size: x-small;
+		border-bottom: 1px solid #999;
+		position: absolute;
+		right: 1em;
+		line-height:1.5em;
+	}
+		
+	div.draggable div.body p.category-header-details {
+		margin: 0;
+		padding: 0.5em 1em;
+	 	background:#f6f6f3;
+		color:#77735c;
+		border-top: 1px dotted #CCC;
+		border-bottom: 1px dotted #CCC;
+		overflow:hidden;		
+		}
+		
+	.taggi {
+		float:none;
+	}
+	
+	.taggi a {
+		padding: 3px 5px;
+		line-height: 100%;
+		display:inline;
+		float: none;
+		background: #FFF6D3;
+		border-right: 1px solid #DFD5AF;
+		border-bottom: 1px solid #DFD5AF;
+	}
+	.configure {
+		float:right;
+		text-transform:uppercase;
+		font-size:x-small;
+		margin:0;
+		
+	}
+	.configure a {
+		border:none;
+		background:none;
+		font-size:xx-small;
+		padding:0;
+	}
+	
+	/* IE 6  hacks */	
+	* html .category-header small {
+		float:right;
+		right: 0.5em;
+		margin-right:1em;
+		font-size: 1em;
+		}
+	* html ul.sortable li .questions li a {
+	 	margin-top:-1.5em;
+		}
+	

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+	<name>Support</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<files>
+		<filename>images/stophand.gif</filename>
+		<filename>support.tags.php</filename>
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>support.css</filename>
+		<filename>support.js</filename>
+		<filename>autocompleter.js</filename>
+		<filename>autocompleter.css</filename>
+		<filename>observer.js</filename>
+		<filename>support.php</filename>
+		<filename>support.html.php</filename>
+		<filename>support.tags.php</filename>
+		<filename>router.php</filename>
+		<filename>images/information.gif</filename>
+		<filename>images/private.gif</filename>
+		<filename>images/public.gif</filename>
+		<filename>images/submitter.gif</filename>
+		<filename>images/quoteopen.gif</filename>
+		<filename>images/delete.png</filename>
+		<filename>images/email.png</filename>
+		<filename>images/page_edit.png</filename>
+		<filename>images/overlay.png</filename>
+		<filename>images/stophand.gif</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_support.ini</language>
+	</languages>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+	</uninstall>
+	<administration>
+	      <menu>Support</menu>
+	      <submenu>
+	          <menu task="categories">Categories</menu>
+                  <menu task="messages">Messages</menu>
+                  <menu task="resolutions">Resolutions</menu>
+                  <menu task="sections">Sections</menu>
+                  <menu task="tickets">Tickets</menu>
+              </submenu>
+		<files>
+			<filename>support.reportabuse.php</filename>
+			<filename>admin.controller.php</filename>
+			<filename>admin.support.php</filename>
+			<filename>admin.support.html.php</filename>
+			<filename>support.attachment.php</filename>
+			<filename>support.category.php</filename>
+			<filename>support.comment.php</filename>
+			<filename>support.config.php</filename>
+			<filename>support.message.php</filename>
+			<filename>support.reportabuse.php</filename>
+			<filename>support.resolution.php</filename>
+			<filename>support.section.php</filename>
+			<filename>support.ticket.php</filename>
+			<filename>support.utils.php</filename>
+			<filename>toolbar.support.html.php</filename>
+			<filename>toolbar.support.php</filename>
+			<filename>config.xml</filename>
+			<filename>admin.support.css</filename>
+			<filename>images/information.gif</filename>
+			<filename>images/private.gif</filename>
+			<filename>images/public.gif</filename>
+			<filename>images/submitter.gif</filename>
+			<filename>images/quoteopen.gif</filename>
+			<filename>images/delete.png</filename>
+			<filename>images/email.png</filename>
+			<filename>images/page_edit.png</filename>
+		</files>
+          <languages folder="admin">
+               <language tag="en-GB">en-GB.com_support.ini</language>
+          </languages>
+	</administration>
+</install>

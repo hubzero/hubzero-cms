@@ -1,0 +1,48 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/* Dashboard //==================================================================== */
+	#dashboard h3 {
+		padding: 0.2em 2em 0.2em 1.7em; margin: 0; color:#666666;
+	}
+	#dashboard a {
+		color:#666666;
+	}
+	#dashboard a:hover {
+		border-bottom:1px solid #d3d3d3;
+	}
+	.hed-store 
+	{ background: url("images/cart.gif") 0 0 no-repeat;  }
+	.hed-abuse 
+	{ background: url("images/stophand.gif") 0 0 no-repeat; }
+	.hed-support
+	{ background: url("images/support.gif") 0 0 no-repeat; }
+	.hed-resources
+	{ background: url("images/pending_resources.gif") 0 0 no-repeat; }
+	.hed-contribtool
+	{ background: url("images/tool.gif") 0 0 no-repeat; }
+	.hed-quote
+	{ background: url("images/quote.gif") 0 0 no-repeat; }
+	.hed-wish
+	{ background: url("images/wish.gif") 0 0 no-repeat; }
+	.hed-stats
+	{ background: url("images/graph.gif") 0 0 no-repeat; }
+	.p-zeroitems {
+		color:#b3b3b3; background-color:#F5F5F5; border-top:1px solid #d3d3d3; border-bottom:1px solid #d3d3d3;padding:0.2em;
+	}
+	.p-attention {
+		color:#af723c; background-color:#f8f1eb; border-top:1px solid #dfc6b1; border-bottom:1px solid #dfc6b1;padding:0.2em;
+	}
+	#dashboard .p-attention a {
+		color:#ca4402;border:none;
+	}
+	#dashboard .p-attention a:hover {
+		border-bottom:1px solid #dfc6b1;
+	}
+	#element-box table.adminform { border:none; background:none; }

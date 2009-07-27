@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="module" version="1.5">
+	<name>What's New</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Lists the newest resources and events on the site.</description>
+	<files>
+		<filename module="mod_whatsnew">mod_whatsnew.php</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>mod_whatsnew.xml</filename>
+		<filename>mod_whatsnew.css</filename>
+		<filename>index.html</filename>
+		<filename>new.png</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.mod_whatsnew.ini</language>
+	</languages>
+	<params>
+		<param name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
+		<param name="count" type="text" default="5" label="Number of entries" description="The number of entries to display." />
+		<param name="feed" type="list" default="1" label="Feed link" description="Select whether to display a feed link">
+			<option value="1">Display link</option>
+			<option value="0">Hide link</option>
+		</param>
+		<param name="period" type="text" default="resources:month" label="Period:category" description="Time period and category to pull results for." />
+		<param name="tagged" type="radio" default="0" label="Show My Interests" description="Display whats new by the tags the user has listed as their interests.">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+	</params>
+</install>

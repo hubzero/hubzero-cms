@@ -1,0 +1,283 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_mw CSS
+	-- -- -- -- -- -- --
+
+*/
+	.section {
+		padding: 0 0px;
+		border-bottom: 1px solid #EFEFEF;
+		}
+	.main {
+		border-bottom: none;
+		}
+	.below {
+		margin: 2em 0 0 0;
+		padding-top: 1em;
+		}
+	.aside {
+		float: right;
+		width: 214px;
+		padding-top: 1em;
+		}
+	.subject {
+		margin: 1em 0;
+		margin-right: 235px;
+		padding: 1.4em;
+		background: #F7F7F7;
+		border-top: 1px solid #E3E3E3;
+		border-bottom: 1px solid #E3E3E3;
+		}
+	.main .subject {
+		border: none;
+		background: transparent;
+		padding: 1em 0 0 0;
+		}
+	.section>h3 {
+		display: none;
+		}
+/*---------------------------------------------------------------
+	Session options
+---------------------------------------------------------------*/
+	#app-options {
+		list-style: none;
+		margin: 1em 0 0 0;
+		padding: 5px 0 0 0;
+		position: absolute;
+		top: 40px;
+		right: 0;
+		}
+	#app-options li {
+		margin: 0;
+		padding: 0 0.7em;
+		display: inline;
+		border-right: 1px dotted #666;
+		background-image: none;
+		}
+	#app-options a { 
+		color: #333;
+		border: none;
+		}
+	#app-options .app-close {
+		text-align: right;
+		border: none;
+		}
+	#app-options .app-close a {
+		border: none;
+		margin: 0;
+		line-height: 14px;
+		height: 14px;
+		padding: 0 0 0 20px;
+		background: url("images/close-light.gif") 0 0 no-repeat;
+		}
+	#app-options .app-close>a { 
+		width: auto;
+		}
+	#app-options .app-close a:hover {
+		background-position: 0 -24px;
+		color: #c00;
+		border: none;
+		}
+/*---------------------------------------------------------------
+	App wrap
+---------------------------------------------------------------*/
+	#app-wrap {
+		border: 1px solid #ccc;
+		padding: 0 0 10px 0;
+		margin: 1em 0 1em 0;
+		position: relative;
+		overflow: hidden;
+		width: 100%;
+		}
+	/*#app-wrap #resizehandle {
+		margin: 0;
+		padding: 0;
+		height: 17px;
+		width: 295px;
+		text-align:right;
+		font-size:9px;
+		line-height: 9px;
+		display:block;
+		color: #333;
+		background: none;
+		position:absolute;
+		right:-1px;
+		bottom:0;
+		}
+	#app-wrap #resizehandle img {
+		vertical-align: bottom;
+		cursor: se-resize;
+		margin-left: 3px;
+		}
+	#app-wrap #positions {
+		margin: 0 2px 0 0;
+		padding: 0 0 0 0;
+		color: #333;
+		}
+	#app-wrap #resizehandle input {
+		font-size:9px;
+		margin: 0; padding: 0;
+		}
+	#app-wrap>#resizehandle {
+		right:0;
+		}*/
+	#app-wrap #resize {
+		margin: 0;
+		padding: 0;
+		height: 17px;
+		width: 295px;
+		text-align:right;
+		font-size:9px;
+		line-height: 9px;
+		display:block;
+		color: #333;
+		background: none;
+		position:absolute;
+		right:-1px;
+		bottom:0;
+		}
+	#app-wrap #resize img { 
+		vertical-align: bottom;
+		cursor: se-resize;
+		margin-left: 3px;
+		}
+	#app-wrap #positions {
+		margin: 0 2px 0 0;
+		padding: 0 0 0 0;
+		color: #333;
+		}
+	#app-wrap #resize input {
+		font-size:9px;
+		margin: 0; padding: 0;
+		}
+	#app-wrap>#resize {
+		right:0;
+		}
+/*---------------------------------------------------------------
+	Share form
+---------------------------------------------------------------*/
+	#app-share {
+		margin: 0;
+		padding: 0.5em;
+		background: #f4f4f4;
+		}
+	#app-share label,
+	#app-share span {
+		margin-right: 1em;
+		}
+/*---------------------------------------------------------------
+	Misc.
+---------------------------------------------------------------*/
+	#powered-by {
+		color: #999;
+		font-size: 90%;
+		}
+	#theapp {
+		margin: 10px;
+		padding: 0;
+		}
+	.ntools { 
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		}
+	.ntools li { 
+		margin: 0;
+		padding: 0;
+		}
+	#connectingTool { 
+		text-align: center;
+		font-size: 1.5em;
+		width: 15em;
+		margin: 0 auto;
+		padding: 3em 0 0 0;
+		}
+	.hide,
+	.hidden { 
+		display: none;
+		}
+	.section,
+	#session-section,
+	#about-section,
+	#answers-section { 
+		padding: 0;
+		}
+	.innerwrap {
+		position: relative;
+		}
+/*---------------------------------------------------------------
+	disk usage
+---------------------------------------------------------------*/
+	#diskusage { 
+        margin: 0;
+        padding: 0;
+		position: absolute;
+		top: 5px; 
+		right: 0px;
+    	}
+    #diskusage dt { 
+        position: relative; /* IE is dumb */
+        clear: both;
+        display: block; 
+        float: left; 
+        width: 104px; 
+        height: 20px; 
+        line-height: 20px;
+        margin-right: 17px;              
+		color: #999;
+        text-align: right; 
+    	}
+    #diskusage #du-amount { 
+        position: relative; /* IE is dumb */
+        display: block;                 
+        float: left;     
+        width: 197px; 
+        height: 20px; 
+        margin: 0 0 15px; 
+		background: #777;
+     	}
+	#diskusage #du-amount span {
+		position: absolute;
+		top: 0;
+		left: 0;
+		line-height: 1.5em;
+		color: #fff;
+		text-indent: 7px;
+		}
+    #diskusage #du-amount div { 
+        position: relative;
+		background: #ccc; 
+        height: 20px; 
+        width: 75%; 
+        text-align:right; 
+     	}
+    #diskusage #du-amount div strong { 
+        position: absolute; 
+        right: -5px; 
+        top: -2px; 
+        display: block;  
+        height: 24px; 
+        width: 9px; 
+        text-align: left;
+        text-indent: -9999px; 
+        overflow: hidden;
+     	}
+/*---------------------------------------------------------------
+	IE 6 hacks
+---------------------------------------------------------------*/
+	* html #app-options .app-close a { 
+		display: inline-block;
+		}
+	* html #diskusage #du-amount {
+		float: none;
+		}

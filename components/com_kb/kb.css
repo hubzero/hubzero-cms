@@ -1,0 +1,159 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_kb CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Sections */
+	.section {
+		padding: 0;
+		border-top: 1px solid #efefef;
+		}
+	.section .section {
+		padding: 0;
+		}
+	.main {
+		border: none;
+		}
+	.aside {
+		float: right;
+		width: 214px;
+		padding-top: 2em;
+		}
+	.subject {
+		margin: 1em 0;
+		margin-right: 235px;
+		padding: 1.4em;
+		background: #F7F7F7;
+		border-top: 1px solid #E3E3E3;
+		border-bottom: 1px solid #E3E3E3;
+		}
+	.main .subject {
+		border: none;
+		background: transparent;
+		margin-top: 0;
+		padding: 1em 0 0 0;
+		}
+	.aside h4,
+	.aside p {
+		color: #999;
+		}
+	.aside h4 {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		}
+	.withleft .aside {
+		float: left;
+		width: 214px;
+		}
+	.withleft .subject {
+		margin-right: 0;
+		margin-left: 250px;
+		}
+	.withleft .aside ul {
+		padding: 0;
+		border-top: 2px solid #E0E0E0;
+		border-bottom: 2px solid #E0E0E0;
+		}
+	.withleft .aside li {
+		border-top: 1px solid #fff;
+		border-bottom: 1px solid #fff;
+		background-image: none;
+		margin: -1px 0 0 0;
+		padding: 0;
+		}
+	.withleft .aside li a {
+		display: block;
+		padding: 1em 1em 1em 2em;
+		background: #F5F5F5 url("images/arrow.gif") 1em 1.4em no-repeat;
+		font-size: 85%;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		border: none;
+		}
+	.withleft .aside li.active a {
+		background-color: #fff;
+		background-position: 1.2em 1.4em;
+		color: #333;
+		}
+	.withleft .aside li span {
+		display: block;
+		border-top: 1px solid #E0E0E0;
+		border-bottom: 1px solid #E0E0E0;
+		}
+	.withleft .aside li a span {
+		border: none;
+		display: inline;
+		}
+	.withleft .aside li a:hover {
+		border: none;
+		background-position: 1.2em 1.4em;
+		background-color: #444;
+		color: #fff;
+		}
+	.withleft .aside ul ul {
+		padding: 0 0 0 1em;
+		margin: 0;
+		background: #fff;
+		}
+	.withleft .aside li li a {
+		display: block;
+		padding: 0.3em;
+		background: #fff;
+		text-transform: none;
+		letter-spacing: 1px;
+		}
+/* Misc. */
+	#fixwrap { 
+		float: left;
+		width: 100%;
+		}
+	.firstheader {
+		margin-top: 1em;
+		margin-bottom: 1em;
+		}
+	.threecolumn {
+		border: none;
+		margin-top: 0;
+		}
+/* Helpful/not helpful buttons */
+	.helpful {
+		color: #999;
+		margin-top: 1.5em;
+		border: 3px double #eee;
+		height: 1.6em;
+		padding: 0 0.2em;
+		}
+	.helpful span {
+		float: left;
+		margin-right: 1.5em;
+		}
+	.helpful strong.no {
+		background: url("images/minus_small.gif") 0 50% no-repeat;
+		color: #999;
+		padding-left: 13px;
+		}
+	.helpful strong.yes {
+		color: #999;
+		padding-left: 13px;
+		background: url("images/plus_small.gif") 0 50% no-repeat;
+		}
+/* IE 7 Hacks */
+	html>body .threecolumn {
+		*width: 30%;
+		}
+/* IE 6 Hacks */
+	* html .threecolumn {
+		width: 30%;
+		}

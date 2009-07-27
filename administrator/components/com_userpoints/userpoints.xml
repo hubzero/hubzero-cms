@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+	<name>Userpoints</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<files>
+	</files>
+	<install>
+	</install>
+	<uninstall>
+	</uninstall>
+	<installfile>
+		<filename>install.tags.php</filename>
+	</installfile>
+	<uninstallfile>
+		<filename>uninstall.tags.php</filename>
+	</uninstallfile>
+	<administration>
+		<menu>Manage Points</menu>
+		<submenu>
+			<menu task="summary">Summary</menu>
+		</submenu>
+		<files>
+			<filename>admin.userpoints.html.php</filename>
+			<filename>admin.userpoints.php</filename>
+			<filename>admin.controller.php</filename>
+			<filename>toolbar.userpoints.html.php</filename>
+			<filename>toolbar.userpoints.php</filename>
+			<filename>userpoints.xml</filename>
+			<filename>cron.php</filename>
+			<filename>index.html</filename>
+		</files>
+	</administration>
+</install>

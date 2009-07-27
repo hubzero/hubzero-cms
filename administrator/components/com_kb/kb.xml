@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+	<name>Kb</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Manage a knowledgebase</description>
+	<files>
+		<filename>router.php</filename>
+	    	<filename>controller.php</filename>
+		<filename>kb.css</filename>
+		<filename>kb.php</filename>
+		<filename>kb.html.php</filename>
+		<filename>images/arrow.gif</filename>
+		<filename>images/minus_small.gif</filename>
+		<filename>images/plus_small.gif</filename>
+        	<filename>index.html</filename>
+	</files>
+        <languages>
+                <language tag="en-GB">en-GB.com_kb.ini</language>
+        </languages>
+	<install>
+	    <sql>
+	        <file charset="utf8" driver="mysql">install.sql</file>
+	    </sql>
+	</install>
+	<uninstall>
+	</uninstall>
+	<install>
+	</install>
+	<installfile>
+		<filename></filename>
+	</installfile>
+	<uninstallfile>
+		<filename></filename>
+	</uninstallfile>
+	<administration>
+		<menu>Knowledgebase</menu>
+		<files>
+		    <filename>admin.controller.php</filename>
+			<filename>admin.kb.html.php</filename>
+			<filename>admin.kb.php</filename>
+			<filename>kb.class.php</filename>
+			<filename>toolbar.kb.php</filename>
+			<filename>toolbar.kb.html.php</filename>
+		</files>
+                <languages folder="admin">
+                        <language tag="en-GB">en-GB.com_kb.ini</language>
+                        <language tag="en-GB">en-GB.com_kb.menu.ini</language>
+                </languages>
+	</administration>
+    <params>
+        <param name="pageclass_sfx" type="text" size="20" default="" label="Page Class" description="A css class for the page, this allows individual page styling" />
+        <param name="show_title" type="radio" default="1" label="Page Title" description="Show/Hide the items title">
+            <option value="0">Hide</option>
+            <option value="1">Show</option>
+        </param>
+        <param name="show_intro" type="radio" default="1" label="Intro text" description="Show/Hide the item's intro text">
+            <option value="0">Hide</option>
+            <option value="1">Show</option>
+        </param>
+        <param name="show_full" type="radio" default="1" label="Full text" description="Show/Hide the item's full text">
+            <option value="0">Hide</option>
+            <option value="1">Show</option>
+        </param>
+        <param name="show_date" type="list" default="2" label="Date" description="Show/Hide the item's date - only affects this page">
+            <option value="0">Hide</option>
+            <option value="1">Created</option>
+            <option value="2">Modified</option>
+        </param>
+    </params>
+</install>

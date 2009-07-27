@@ -1,0 +1,944 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_groups CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Misc. */
+	.com_groups .main .subject {
+		background: transparent;
+		padding: 1em 0 0 0;
+		}
+	#sub-menu {
+		margin-bottom: -1px;
+		}
+	.com_groups .main h3 {
+		display: none;
+		}
+	.com_groups .main .main h3,
+	.com_groups .main form h3 {
+		display: block;
+		}
+	.com_groups .main .subject h1 {
+		font-size: 1.8em;
+		}
+	.com_groups .main .subject h2 span {
+		color: #333;
+		}
+	.com_groups .main .subject ul,
+	.com_groups .main .subject ol {
+		padding: 0;
+		margin: 1em 0;
+		}
+	.com_groups .main .subject ol {
+		list-style-type: decimal;
+		}
+	.com_groups .main .subject ul {
+		list-style-type: disc;
+		}
+	.com_groups .main .subject li {
+		padding: 0;
+		margin: 0.2em 0 0.2em 2em;
+		}
+	.com_groups .aside p:first-child {
+		margin-top: 0;
+		}
+	.com_groups .description {
+		font-size: 90%;
+		color: #aaa;
+	}
+	#hubForm dl dt {
+		font-weight: bold;
+		}
+	#grouplist {
+		margin: 1em 0;
+		}
+	.com_groups .results,
+	.com_groups .main .subject .results {
+		border: none;
+		list-style: none;
+		}
+	.com_groups .list-footer,
+	.com_groups .main .subject .list-footer {
+		list-style: none;
+		}
+	.com_groups .list-footer li,
+	.com_groups .main .subject .list-footer li {
+		margin: 0;
+		padding: 0 0.4em;
+		}
+	.com_groups .metadata table {
+		border: none;
+		margin: 0;
+		padding: 0;
+	}
+	.com_groups .metadata table th,
+	.com_groups .metadata table td {
+		padding: 0.1em 0.2em;
+		font-size: 90%;
+		color: #999;
+	}
+	.com_groups .metadata table th {
+		font-weight: bold;
+		white-space: nowrap;
+	}
+	.com_groups #hubForm .indent {
+		display: block;
+	}
+	#group-status {
+		-moz-border-radius-topright: 10px;
+		-moz-border-radius-topleft: 10px;
+		-webkit-border-top-right-radius: 10px;
+		-webkit-border-top-left-radius: 10px;
+		margin: 1em 0 0 0;
+		padding: 0.5em;
+		font-size: 1.2em;
+		font-weight: bold;
+		text-align: center;
+		}
+	#group-status span {
+		display: none;
+		}
+	p.member {
+		color: #66AA00;
+		border: 1px solid #66AA00;
+		background-color: #66AA00;
+		}
+	p.manager {
+		color: #ff1177;
+		border: 1px solid #ff1177;
+		background-color: #ff1177;
+		}
+	p.pending {
+		color: #AA3300;
+		border: 1px solid #AA3300;
+		background-color: #AA3300;
+		}
+	#group-status {
+		background-color: #fff;
+		}
+	#group-cancel {
+		margin: 0 0 1em 0;
+		text-align: center;
+		-moz-border-radius-bottomright: 10px;
+		-moz-border-radius-bottomleft: 10px;
+		-webkit-border-bottom-right-radius: 10px;
+		-webkit-border-bottom-left-radius: 10px;
+		}
+	p.member a,
+	p.manager a,
+	p.pending a {
+		color: #fff;
+		display: block;
+		border: 1px solid #ff1177;
+		-moz-border-radius-bottomright: 10px;
+		-moz-border-radius-bottomleft: 10px;
+		-webkit-border-bottom-right-radius: 10px;
+		-webkit-border-bottom-left-radius: 10px;
+		}
+	p.member a {
+		border: 1px solid #66AA00;
+		background-color: #66AA00;
+		}
+	p.manager a {
+		border: 1px solid #ff1177;
+		background-color: #ff1177;
+		}
+	p.pending a {
+		border: 1px solid #AA3300;
+		background-color: #AA3300;
+		}
+	p.member a:hover,
+	p.manager a:hover,
+	p.pending a:hover {
+		color: #fff;
+		background-color: #333;
+		}
+/* Letter index */
+	p#letter-index {
+		margin: 1em 0 1em 0;
+		padding: 0;
+		border: 1px solid #eee;
+		text-align: center;
+		}
+	p#letter-index a { 
+		padding: 0 0.4em;
+		border: none;
+		}
+	p#letter-index a.active-index {
+		font-weight: bold;
+		color: #333;
+		background-color: #eee;
+		}
+/* File manager */
+	iframe {
+		border: 1px solid #fff;
+		margin: 0;
+		padding: 0;
+		}
+	body#attachments,
+	body#attachments form,
+	body#attachments fieldset {
+		background: #fff;
+		margin: 0;
+		padding: 0;
+		border: none;
+		}
+	body#attachments iframe {
+		border: 1px solid #ddd;
+		margin: 0;
+		padding: 0;
+		}
+	body#attachments h1 {
+		font-size: 1em;
+		background: #aaa;
+		color: #fff;
+		margin: 0 1.5% 0 0;
+		padding: 0.2em 0.5em;
+		border: 1px solid #aaa;
+		}
+/*---------------------------------------------------------------
+	About tab
+---------------------------------------------------------------*/
+	#overview-section .aside {
+		padding-top: 1em;
+	}
+	#private-text {
+		border: 3px double #ddd;
+		padding: 0 1em;
+		}
+	#private-text .dash-header {
+		margin-top: 1em;
+		}
+	.metadata {
+		border: 1px dashed #bbb;
+		margin: 1em 0 1.5em 0;
+		padding: 10px;
+		}
+	.metadata p {
+		margin: 0.2em 0;
+		padding: 0 0 0 20px;
+		font-size: 90%;
+		}
+	.metadata .review {
+		background: url("../../../../components/com_groups/images/1.gif") -52px 50% no-repeat;
+		}
+	.metadata .citation {
+		background: url("../../../../components/com_groups/images/cite.gif") 0 50% no-repeat;
+		}
+	.metadata .usage { 
+		background: url("../../../../components/com_groups/images/stats.gif") 0 50% no-repeat;
+		}
+	.metadata .answer { 
+		background: url("../../../../components/com_groups/images/qanda.gif") 0 50% no-repeat;
+		}
+	.metadata .topics { 
+		background: url("../../../../components/com_groups/images/topic.gif") 0 50% no-repeat;
+		}
+	.metadata .groups { 
+		background: url("../../../../components/com_groups/images/group.gif") 0 50% no-repeat;
+		}
+	.metadata .resource { 
+		background: url("../../../../components/com_groups/images/resource.gif") 0 50% no-repeat;
+		}
+	.metadata .messages { 
+		background: url("../../../../components/com_groups/images/message.gif") 0 50% no-repeat;
+		}
+	#primary-document {
+		margin: 1em 0 1em 0;
+		}
+	.admin-options {
+		border: 3px solid #bbb;
+		margin: 0 0 1.5em 0;
+		padding: 10px;
+		}
+	.admin-options p {
+		margin: 0.2em 0;
+		font-size: 90%;
+		}
+/* Dashboards */
+	.dashboard {
+		border: 1px solid #efefef;
+		padding: 1em;
+		margin: 1em 0;
+		}
+	.dashboard h4.dash-header {
+		background-color: #aaa;
+		color: #fff;
+		padding: 0.2em 0.5em;
+		position: relative;
+		}
+	.dashboard h4.dash-header a {
+		color: #fff;
+		border: none;
+		}
+	.dashboard h4.dash-header small {
+		position: absolute;
+		right: 0.5em;
+		font-size: 1em;
+		}
+	.dashboard table {
+		margin: 1em 0 0 0;
+		}
+	td .edit,
+	td .delete {
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		text-indent: -55em;
+		margin: 0;
+		padding: 0;
+		border: none;
+		}
+	td .edit {
+		background: url("../../images/icons/page_white_edit.png") 0 0 no-repeat;
+		}
+	td .delete {
+		background: url("../../images/icons/delete.png") 0 0 no-repeat;
+		}		
+/* Activity logs */
+	.activity {
+		border: none;
+		margin: 1em 0;
+		}
+	.activity th {
+		text-align: right;
+		width: 5em;
+		}
+	.activity th,
+	.activity td {
+		border-top: 1px solid #efefef;
+		border-bottom: 1px solid #efefef;
+		}
+	.activity th span {
+		padding: 0.2em 0.4em;
+		}
+	.activity .wiki-created {
+		background-color: #e7e78b;
+		}
+	.activity .wiki-edited {
+		background-color: #c6ced6;
+		}
+	.activity .wiki-reverted {
+		background-color: #ffef9c;
+		}
+	.activity .wiki-deleted {
+		background-color: #fe930f;
+		}	
+	.activity .membership-action {
+		background-color: #ffef9c;
+		}
+	.activity .group-action {
+		background-color: #d0e895;
+		}
+	.activity .action {
+		color: #74b46c;
+		}
+	.activity .date,
+	.activity .author {
+		color: #aaa;
+		}
+	.activity .date {
+		text-align: right;
+		padding-right: 0;
+		}
+	.today {
+		background-color: #c00;
+		color: #fff;
+		}
+	.tomorrow {
+		background-color: #ff9803;
+		color: #fff;
+		}
+/*---------------------------------------------------------------
+	Wiki tab
+---------------------------------------------------------------*/
+	#wiki-section .hide {
+		display: block;
+		}
+	#wiki-section .section {
+		padding: 0;
+		}
+	#wiki-section .subject li {
+		background-image: none;
+		padding-left: 0;
+		}
+	#wiki-section .subject ol {
+		list-style-type: decimal;
+		}
+	#wiki-section .subject ul {
+		list-style-type: disc;
+		}
+	#wiki-section #hubForm .paramlist input, 
+	#wiki-section #hubForm .paramlist select, 
+	#wiki-section #hubForm .paramlist textarea,
+	#wiki-section #hubForm .paramlist label {
+		display: inline;
+		width: auto;
+		}
+	#wiki-section #hubForm fieldset {
+		padding: 0 2% 1.75em 2%;
+		width: 66%;
+		}
+	#wiki-section #hubForm.full fieldset {
+		padding: 0 2% 1.75em 2%;
+		width: 96%;
+		}
+	#wiki-section #hubForm .hide {
+		display: none;
+		}
+	#wiki-section #hubForm h3 {
+		display: none;
+		}
+	#wiki-section h2 {
+		border: none;
+		}
+	#wiki-section #hubForm .explaination .admin-options p {
+		margin: 0.2em 0;
+		padding: 0;
+		font-size: 90%;
+		}
+/* (sub) Tabs */
+	#sub-section-menu {
+		height: auto;
+		padding: 0;
+		background: none;
+		border: 3px double #ccc;
+		}
+	#sub-section-menu ul {
+		background: none;
+		border: none;
+		height: auto;
+		padding: 0;
+		margin: 0;
+		}
+	#sub-section-menu li {
+		height: auto;
+		padding: 0.2em 1em;
+		float: left;
+		display: block;
+		margin: 0;
+		background-image: none;
+		}
+	#sub-section-menu li a {
+		background: none;
+		height: auto;
+		padding: 0;
+		color: #BA7A75;
+		}
+	#sub-section-menu li a span {
+		background: none;
+		height: auto;
+		padding: 0;
+		}
+	#sub-section-menu li.active a {
+		color: #333;
+		border: none;
+		}
+/* Table of contents */
+	.article-toc,
+	.article-tags,
+	.article-search {
+		background-color: #eee;
+		margin: 0 0 1em 0;
+		padding: 0.5em;
+		}
+	.article-toc h3,
+	.article-tags h3,
+	.article-search h3 {
+		margin: 0;
+		padding: 0.4em;
+		color: #fff;
+		background: #777;
+		font-size: 1em;
+		font-weight: bold;
+		}
+	.article-toc ul, 
+	.article-tags ol {
+		margin: 0;
+		padding: 0.4em;
+		max-height: 300px;
+		overflow: auto;
+		border: 1px solid #aaa;
+		background: #fff;
+		}
+	.article-toc ul li {
+		background-image: none;
+		}
+	.article-tags ol {
+		max-height: none;
+		font-size: 90%;
+		}
+	.article-tags p {
+		border: 1px solid #aaa;
+		background: #fff;
+		margin: 0;
+		padding: 0.4em;
+		}
+	.article-toc ul ul {
+		max-height: none;
+		border: none;
+		margin: 0 0 0 1em;
+		padding: 0;
+		}
+	.article-toc li {
+		margin: 0;
+		padding: 0.2em;
+		}
+	.tocnumber {
+		display: none;
+		}
+/* Timestamp */
+	.timestamp {
+		text-align: left;
+		color: #aaa;
+		font-size: 90%;
+		font-style: italic;
+		border-top: 1px solid #ddd;
+		padding-top: 0.5em;
+		margin: 2em 0 0 0;
+		}
+	a.ext-link {
+		background: url("../../../../components/com_groups/images/extlink.gif") 0 0.4em no-repeat;
+		padding-left: 15px;
+		}
+	a.missing {
+		background: url("../../../../components/com_groups/images/missinglink.gif") 0 0.4em no-repeat;
+		padding-left: 7px;
+		}
+/* User options */
+	#section-useroptions {
+		list-style: none;
+		float: right;
+		margin: -2.5em 0 0 0;
+		padding: 0;
+		}
+	#section-useroptions a {
+		border: none;
+		color: #7F7F7F;
+		}
+	#section-useroptions a:hover {
+		border: none;
+		color: #000;
+		}
+	#section-useroptions li { 
+		margin: 0;
+		padding: 0.2em 0.5em;
+		float: left;
+		border-right: 1px solid #DDDDDD;
+		background-image: none;
+		}
+	#section-useroptions li.last {
+		border: none;
+		padding-right: 0;
+		}
+/* Diffs */
+	.diff-versions {
+		margin: 0;
+		}
+	.diff-versions dt {
+		font-weight: bold;
+		margin-top: 0.5em;
+		}
+	.diffs {
+		margin: 1em 0;
+		border: 2px solid #ccc;
+		}
+	.com_groups .main .subject table.diffs td, 
+	.com_groups .main .subject table.diffs th,
+	.diffs td, 
+	.diffs th {
+		border: 1px solid #fff;
+		margin: 0;
+		padding: 0.2em 0.8em;
+		}
+	.diffs th {
+		text-align: right;
+		background-color: #efefef;
+		}
+	.diff-marker {
+		width: 1em;
+		text-align: center;
+		}
+	.diff-deletedline {
+		border: 1px solid #EFCCC2; 
+		background: #FFF2EF;
+		margin: 1em 0;
+		padding: 1em;
+		color: #CC0000;
+		}
+	.diff-addedline {
+		border: 1px solid #DAE6DA;
+		background: #F2FFF2;
+		margin: 1em 0;
+		padding: 1em;
+		color: #360;
+		}
+	del.diffchange {
+		color: #CC0000;
+		}
+	ins.diffchange {
+		color: #360;
+		}
+/* Wiki Comments */
+	ol.comments {
+		list-style-type: none !important;
+		margin-left: 0;
+		padding-left: 0;
+		}
+	ol.comments > li {
+		margin: 0 !important;
+		padding: 0 0 2em 125px;
+		border-top: 1px solid #efefef;
+		}
+	ol.comments li li {
+		margin-left:  20px;
+		}
+	ol.comments ol.comments {
+		margin-left: 125px;
+		}
+	ol.comments div.cwrap {
+		margin: 0 0 0 125px;
+		}
+	ol.comments dl.comment-details {
+		float: left;
+		margin: 1.2em 20px 2em 0 !important;
+		padding: 0;
+		width: 105px;
+		color: #777;
+		font-size: 11px;
+		text-align: right;
+		}
+	ol.comments dl.comment-details dt {
+		font-weight: bold;
+		color: #777;
+		font-size: 12px;
+		padding-bottom: 1em;
+		}
+	ol.comments dl.comment-details dd {
+		margin-bottom: 0;
+		}
+	ol.comments .name {
+		color: #777;
+		font-size: 12px;
+		}
+	ol.comments li.author dl.comment-details dt a,
+	ol.comments li.author dl.comment-details dt a:link,
+	ol.comments li.author dl.comment-details dt a:visited,
+	ol.comments li.author dl.comment-details dt a:active {
+		color:  #FF54AC;
+		}
+	ol.comments li.author dl.comment-details dt a:hover {
+		color: #ff6600;
+		}
+	ol.comments li dl.comment-details dt a.comment-counter:link,
+	ol.comments li dl.comment-details dt a.comment-counter:visited,
+	ol.comments li dl.comment-details dt a.comment-counter:active {
+		color: #999 !important;
+		}
+	ol.comments li dl.comment-details dt a.comment-counter:hover {
+		color: #ff6600 !important;
+		}
+	ol.comments li p.comment-content-object-link {
+		font-style: italic;
+		color: #999;
+		}
+	ol.comments .none      { background-position: right 0; }
+	ol.comments .half      { background-position: right -40px; }
+	ol.comments .one       { background-position: right -80px; }
+	ol.comments .onehalf   { background-position: right -120px; }
+	ol.comments .two       { background-position: right -160px; }
+	ol.comments .twohalf   { background-position: right -200px; }
+	ol.comments .three     { background-position: right -240px; }
+	ol.comments .threehalf { background-position: right -280px; }
+	ol.comments .four      { background-position: right -320px; }
+	ol.comments .fourhalf  { background-position: right -360px; }
+	ol.comments .five      { background-position: right -400px; }
+	.avgreview {
+		}
+	.plaincomment {
+		background: url("../../../../components/com_groups/images/comment.gif") right top no-repeat;
+		}
+	.authorcomment {
+		background: url("../../../../components/com_groups/images/author.gif") right top no-repeat;
+		}
+	.avgreview span,
+	.plaincomment span,
+	.authorcomment span {
+		visibility: hidden;
+		}
+/* Misc. */
+	#wiki-section pre {
+		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+		line-height: 1.45em;
+		color: #555;
+		margin: 1em 0 1em 1.5em;
+		padding: 0.2em;
+		border: 1px solid #ccc;
+		font-size: 110%;
+		overflow: auto;
+		background-color: #eee;
+		}
+	#wiki-section code,
+	#wiki-section tt {
+		font-family: Monaco, ProFont, "Bitstream Vera Sans Mono", "American Typewriter", "Andale Mono", monospace;
+		font-size: 1.09em;
+		}
+	#wiki-section table td, 
+	#wiki-section table th {
+		border: 1px solid #ccc;
+		margin: 0;
+		padding: 0.2em 0.4em;
+		}
+/* Preview */
+	#preview .section {
+		padding: 0;
+		}
+	#preview .main .aside {
+		}
+	#preview .main .subject {
+		max-height: 400px;
+		overflow: auto;
+		border: 2px solid #eee;
+		padding: 1em;
+		margin: 1em 1em 0 0;
+		background: url("../../../../components/com_groups/images/draft.gif");
+		}
+/*---------------------------------------------------------------
+	Members tab
+---------------------------------------------------------------*/
+	.member-sets {
+		margin-bottom: 2em;
+		}
+	.member-sets tfoot td {
+		border-top: 1px solid #ddd;
+		text-align: right;
+		}
+	.member-sets tfoot td input {
+		margin-left: 2em;
+		}
+	#grouplist tbody span.status {
+		font-weight: bold;
+		}
+	#grouplist tbody span.member {
+		color: #66AA00;
+		}
+	#grouplist tbody span.manager {
+		color: #ff1177;
+		}
+	#grouplist tbody span.pending {
+		color: #AA3300;
+		}
+	#grouplist tbody span.invitee {
+		color: #aaaaaa;
+		}
+/* Forums */
+	#forum-list {
+		margin: 1em 0;
+		}
+	#forum-section .subject h3 {
+		display: block;
+		}
+	ol.comments {
+	    list-style-type:  none !important;
+		margin-left: 0;
+		padding-left: 0;
+		background: transparent;
+		border-bottom: 1px solid #ddd;
+		}
+	ol.comments > li {
+	    clear: left;
+	    margin: 0 !important;
+	    padding: 0 0 1em 105px;
+	    border-top: 1px solid #ddd;
+	min-height: 8em;
+		}
+	ol.comments li li {
+	    margin-left:  20px;
+		}
+	ol.comments ol {
+		margin-top: 2em;
+		margin-bottom: 0;
+		}
+	ol.comments dl.comment-details {
+	    float: left;
+	    margin: 1em 20px 2em -105px !important;
+	    padding: 0;
+	    width: 85px;
+	    color: #777;
+	    font-size: 11px;
+	    text-align: right;
+		}
+	ol.comments dl.comment-details dt {
+		font-weight: bold;
+		color: #777;
+		margin: 0;
+		text-align: right;
+		padding: 3px 0 1em 0;
+		}
+	ol.comments dl.comment-details dt span {
+		margin: 0;
+		padding: 0;
+		display: block;
+		width: 85px;
+		height: 14px;
+		overflow: hidden;
+		text-indent: -55em;
+		}
+	ol.comments dl.comment-details dt span span {
+		display: none;
+		}
+	ol.comments .name {
+		color: #777;
+		font-size: 12px;
+		}
+	ol.comments li.author dl.comment-details dt a,
+	ol.comments li.author dl.comment-details dt a:link,
+	ol.comments li.author dl.comment-details dt a:visited,
+	ol.comments li.author dl.comment-details dt a:active {
+		color:  #FF54AC;
+		}
+	ol.comments li.author dl.comment-details dt a:hover {
+		color: #ff6600;
+		}
+	ol.comments li dl.comment-details dt a.comment-counter:link,
+	ol.comments li dl.comment-details dt a.comment-counter:visited,
+	ol.comments li dl.comment-details dt a.comment-counter:active {
+		color: #999 !important;
+		}
+	ol.comments li dl.comment-details dt a.comment-counter:hover {
+		color: #ff6600 !important;
+		}
+	ol.comments li p.comment-content-object-link {
+		font-style: italic;
+		color: #999;
+		}
+	ol.comments li .cwrap {
+		
+		}
+	.subject #hubForm fieldset {
+		padding-left: 2%;
+		}
+	#forum-section {
+		padding-top: 1em;
+		}
+	#forum-list fieldset {
+		float: right;
+		margin: 0;
+		padding: 0;
+		}
+	#forum-list td span {
+		font-size: 90%;
+		}
+	#forum-list td span a {
+		color: #999;
+		border-bottom: 1px dotted #999;
+		}
+	#forum-list td span a:hover {
+		color: #333;
+		border-bottom: 1px solid #333;
+		}
+/*---------------------------------------------------------------
+	Resources tab
+---------------------------------------------------------------
+	.results {
+		list-style: none;
+		margin: 0 1em 1em 1em;
+		padding: 0;
+		position: relative;
+		}
+	.results li {
+		border-bottom: 1px solid #efefef;
+		padding: 1em 0 1em 1em;
+		margin: 0;
+		}
+	.results p,
+	.results .details {
+		margin: 0.5em 0;
+		padding: 0;
+		}
+	.results .title {
+		margin-left: -1em;
+		font-weight: bold;
+		}
+/* Resource item listing 
+	.results .resource {
+		}
+	.results .resource .title { 
+		margin-right: 220px; 
+		}
+	.results .resource .stats { 
+		margin: -1.5em 0 0 0;
+		float: right;
+		width: 190px;
+		background: none;
+		}
+	.results .resource .stats p { 
+		color: #999; 
+		font-size: 90%;
+		margin: 0 0 0.5em 0;
+		padding: 0;
+		}
+/* Category headers 
+	.category-header {
+		position: relative;
+		padding: 0.5em 0.5em 0.5em 1.5em;
+		margin: 1em 0 0 0;
+		color: #fff;
+		background: #bbb;
+		}
+	.category-header small {
+		position: absolute;
+		right: 0.5em;
+		font-size: 1em;
+		}
+	.opened {
+		background: #bbb;
+		}
+/* Misc. 
+	.category-wrap {
+		margin-bottom: 2em;
+		}
+	.category-wrap>p {
+		margin: 0 0 1em 0;
+		padding: 1em 0 1em 0;
+		}
+	.moreresults {
+		margin: 0 1em 2.5em 1em;
+		padding: 0;
+		font-weight: bold;
+		color: #999;
+		}
+	.aside .sub-nav,
+	.aside .sub-nav ul {
+		margin: 0;
+		list-style: none;
+		}
+	.aside .sub-nav ul {
+		padding-left: 1em;
+		}
+	.aside .sub-nav li.active a {
+		font-weight: bold;
+		}
+	.aside .sub-nav li.active li a {
+		border: none;
+		color: #4583A6;
+		font-weight: normal;
+		background-position: 0 0.7em; 
+		}
+	.aside .sub-nav li.active li a:hover { 
+		color: #c00;
+		background-position: 0.3em 0.7em;
+		}*/

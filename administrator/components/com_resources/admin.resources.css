@@ -1,0 +1,152 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+    - - - - - - - - -
+    com_resources
+    - - - - - - - - -
+*/
+	.yes,
+	.enabled,
+	.writeable,
+	.public, a.public {
+		color: green;
+		}
+	.no,
+	.disabled,
+	.unwriteable,
+	.registered, 
+	a.registered {
+		color: red;
+		}
+	.special, 
+	a.special { 
+		color: black; 
+		}
+	.enabled,
+	.writeable,
+	.disabled,
+	.unwriteable {
+		font-weight: bold;
+		}
+	
+	.clear {
+		clear: both;
+		margin: 0;
+		padding: 0;
+		}
+	
+	.draft,
+	.draftinternal,
+	.draftexternal,
+	.new,
+	.check,
+	.published,
+	.pending,
+	.expired,
+	.unpublished,
+	.deleted,
+	.upload { 
+		padding: 0; 
+		display: block; 
+		width: 12px; 
+		height: 12px; 
+		}
+	
+	.draft span,
+	.draftinternal span,
+	.draftexternal span,
+	.new span,
+	.hasassoc span,
+	.noassoc span,
+	.published span,
+	.pending span,
+	.expired span,
+	.unpublished span,
+	.deleted span,
+	.upload span { 
+		display: none; 
+		}	
+
+	.check,
+	.published { background: url("images/check.gif") 0 0 no-repeat; }
+	.pending { background: url("images/check_circle.gif") 0 0 no-repeat; }
+	.expired { background: url("images/check_star.gif") 0 0 no-repeat; }
+	.unpublished { background: url("images/minus.gif") 0 0 no-repeat; }
+	.upload { background: url("images/upload.gif") 0 0 no-repeat; }
+	.new { background: url("images/pending.gif") 0 0 no-repeat; }
+	.draftexternal, .draft { background: url("images/draft_external.gif") 0 0 no-repeat; }
+	.draftinternal { background: url("images/draft_internal.gif") 0 0 no-repeat; }
+	.deleted { background: url("images/deleted.gif") 0 0 no-repeat; }
+	
+	.hasassoc,
+	.noassoc { 
+		padding: 0;
+		margin: 0;
+		display: block;
+		width: 12px;
+		height: 12px;
+		border: none;
+		}
+	.hasassoc { background: url("images/tags.gif") 0 0 no-repeat; }
+	.noassoc { background: url("images/tags.gif") 0 -12px no-repeat; }
+	.hasassoc:hover,
+	.noassoc:hover { border: none; }
+
+	.key {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		}
+	.key li.draft,
+	.key li.draftinternal,
+	.key li.draftexternal,
+	.key li.new,
+	.key li.published,
+	.key li.pending,
+	.key li.expired,
+	.key li.deleted,
+	.key li.unpublished { 
+		margin: 0;
+		padding-left: 18px;
+		width: auto;
+		height: auto;
+		}
+	
+	.draft:hover,
+	.draftinternal:hover,
+	.draftexternal:hover,
+	.new:hover,
+	.published:hover,
+	.pending:hover,
+	.expired:hover,
+	.unpublished:hover,
+	.deleted:hover,
+	.upload:hover { border: none; }
+	
+	.check { text-indent: 50px; overflow: hidden; }
+	
+	#author-list { 
+		list-style: none;
+		margin: 0.5em;
+		padding-left: 0;
+		}
+	#author-list li {
+		border: 1px solid #ddd;
+		background: #efefef;
+		margin: 0 0 3px 0;
+		padding: 3px;
+		position: relative;
+		}
+	#author-list li .handle {
+		cursor:move;
+		float: right;
+		font-weight: bold;
+		color: #999;
+		}

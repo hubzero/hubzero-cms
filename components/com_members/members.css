@@ -1,0 +1,413 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_members CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Sections */
+	.section {
+		padding: 0 0px;
+		border-bottom: 1px solid #EFEFEF;
+		}
+	.main {
+		border-bottom: none;
+		}
+	.below {
+		margin: 2em 0 0 0;
+		padding-top: 1em;
+		}
+	.aside {
+		float: right;
+		width: 214px;
+		padding-top: 1em;
+		}
+	.subject {
+		margin: 1em 0;
+		margin-right: 235px;
+		padding: 1.4em;
+		background: #F7F7F7;
+		border-top: 1px solid #E3E3E3;
+		border-bottom: 1px solid #E3E3E3;
+		}
+	.main .subject {
+		border: none;
+		background: transparent;
+		padding: 1em 0 0 0;
+		}
+	.main h3 {
+		display: none;
+		}
+	.aside .metadata {
+		margin-top: 1em;
+		}
+	.aside .controls {
+		float: none;
+		margin: 1em 0;
+		width: auto;
+		}
+	.aside .sub-nav {
+		margin: 1em 0 2em 0;
+		padding: 1em;
+		background: #F4F4F4;
+		border-top: 1px solid #D8D8D8;
+		border-bottom: 1px solid #D8D8D8;
+		}
+	.aside .sub-nav ul {
+		margin: 0;
+		list-style: none;
+		}
+	.aside .sub-nav ul {
+		padding-left: 1em;
+		}
+	.aside .sub-nav li {
+		margin: 0.3em 0;
+		background-image: none;
+		}
+	.aside .sub-nav li.active a {
+		font-weight: bold;
+		}
+	.aside .sub-nav li.active li a {
+		border: none;
+		color: #4583A6;
+		font-weight: normal;
+		background-position: 0 0.7em; 
+		}
+	.aside .sub-nav li.active li a:hover { 
+		color: #c00;
+		background-position: 0.3em 0.7em;
+		}
+	.aside .sub-nav li ul {
+		margin: 0;
+		}
+	.aside fieldset {
+		margin: 1em 0 1em 0;
+		padding: 1em;
+		background: #F5F7F2;
+		border-top: 1px solid #DEE4CD;
+		border-bottom: 1px solid #DEE4CD;
+		}
+	.aside>fieldset {
+		margin-top: 0;
+		}
+	.aside fieldset label {
+		display: block;
+		margin-bottom: 0.5em;
+		}
+	.aside fieldset label input, 
+	.aside fieldset label select, 
+	.aside fieldset label textarea {
+		width: 100%;
+		}
+	.aside fieldset legend {
+		font-weight: bold;
+		padding: 0 0 1em 0;
+		}
+	iframe {
+		border: none;
+		}
+	#member-picture {
+		background-color: #f3f1ed;
+		}
+	#member-picture fieldset {
+		margin: 1.5em 0 2em 0;
+		padding: 0.5em 0;
+		}
+	#members {
+		margin-top: 1em;
+		}
+	#members td.locked {
+		border: none;
+		background-color: transparent;
+		margin: 0;
+		padding: 5px 10px 5px 30px;
+		}
+/*---------------------------------------------------------------
+	Form stylings
+---------------------------------------------------------------*/
+	#hubForm .threeup {
+		margin-left: -1.5%;
+		margin-right: -3%;
+		padding: 0 0 1.5em 0;
+		left: 0;
+		}
+	#hubForm .threeup label {
+		padding: 0;
+		float: left;
+		width: 30%;
+		margin-left: 0;
+		margin-right: 0;
+		padding-left: 1.5%;
+		padding-right: 1.5%;
+		}
+	#hubForm .group label:first-child {
+		margin-left: 0;
+		margin-right: 0;
+		}	
+/*---------------------------------------------------------------
+	Profile
+---------------------------------------------------------------*/
+	.profile {
+		margin-top: 1em;
+		border: none;
+		background: transparent;
+		}
+	.profile th, 
+	.profile td {
+		padding-bottom: 25px;
+		border-top: 1px solid #e5e5e5;
+		border-bottom: none;
+		}
+	.profile th {
+		text-align: right;
+		color: #999;
+		white-space: nowrap;
+		}
+	.profile td {
+		padding-right: 1.5em;
+		}
+	.profile .tags {
+		margin: 0;
+		}
+	.profile ul {
+		margin-left: 1.5em;
+		list-style: disc;
+		}
+	.profile td p {
+		margin: 1em 0;
+		}
+	.profile td p:first-child {
+		margin-top: 0;
+		}
+		
+	.portrait {
+		border: 3px double #e5e5e5;
+		padding: 10px;
+		margin: 0;
+		text-align: center;
+		}
+	.portrait img {
+		border: 1px solid #e5e5e5;
+		margin: 0;
+		padding: 0;
+		}
+	.metadata {
+		border: 1px dashed #bbb;
+		margin: 0 0 1.5em 0;
+		padding: 10px;
+		}
+	.metadata p {
+		margin: 0.2em 0;
+		padding: 0 0 0 20px;
+		font-size: 90%;
+		}
+	.metadata .review {
+		background: url("images/1.gif") -52px 50% no-repeat;
+		}
+	.metadata .citation {
+		background: url("images/cite.gif") 0 50% no-repeat;
+		}
+	.metadata .usage { 
+		background: url("images/stats.gif") 0 50% no-repeat;
+		}
+	.metadata .answer { 
+		background: url("images/qanda.gif") 0 50% no-repeat;
+		}
+	.metadata .topics { 
+		background: url("images/topic.gif") 0 50% no-repeat;
+		}
+	.metadata .groups { 
+		background: url("images/group.gif") 0 50% no-repeat;
+		}
+	.subject>.warning,
+	.subject>.locked {
+		margin: 0 0 2em 0;
+		}
+/*---------------------------------------------------------------
+	Contributions
+---------------------------------------------------------------*/
+	.results {
+		list-style: none;
+		margin: 1em 0 1em 0;
+		padding: 0;
+		position: relative;
+		border-top: 5px solid #dfdfdf;
+		border-bottom: 1px solid #dfdfdf;
+		}
+	.results li {
+		border-bottom: 1px solid #efefef;
+		padding: 1em 0 1em 1em;
+		margin: 0;
+		}
+	.results p,
+	.results .details {
+		margin: 0.5em 0;
+		padding: 0;
+		}
+	.results .details {
+		font-size: 90%;
+		color: #999;
+		}
+	.results .details span {
+		color: #fff;
+		margin: 0 0.5em;
+		}
+	.results .title {
+		margin-left: -1em;
+		font-weight: bold;
+		}
+	.results .metadata { 
+		margin: -1.5em 0 0 0;
+		float: right;
+		width: 190px;
+		background: none;
+		}
+	.results .warning {
+		padding: 10px 10px 10px 30px;
+		}
+	.results .metadata p { 
+		color: #999; 
+		font-size: 90%;
+		margin: 0 0 0.5em 0;
+		padding: 0;
+		}
+	.search {
+		margin: 0 1em 0.5em 1em;
+		border: none;
+		}
+/* Letter index */
+	p#letter-index {
+		margin: 1em 0 1em 0;
+		padding: 0;
+		border: 1px solid #eee;
+		text-align: center;
+		}
+	p#letter-index a { 
+		padding: 0 0.4em;
+		}
+	p#letter-index a.active-index {
+		font-weight: bold;
+		color: #333;
+		background-color: #eee;
+		}
+/* Category headers */
+	.category-header {
+		position: relative;
+		padding: 0.5em 0.5em 0.5em 1.5em;
+		margin: 1em 0 0 0;
+		color: #fff;
+		background: #bbb;
+		}
+	.category-header small {
+		position: absolute;
+		right: 0.5em;
+		font-size: 1em;
+		}
+	.opened {
+		background: #bbb;
+		}
+/* Misc. */
+	.moreresults {
+		margin: 0 1em 2em 1em;
+		padding: 0;
+		font-weight: bold;
+		color: #999;
+		}
+	.category-wrap {
+		margin-bottom: 1em;
+		}
+/*---------------------------------------------------------------
+	Groups
+---------------------------------------------------------------*/
+	#grouplist {
+		margin-top: 1em;
+		}
+	#grouplist tbody span.status {
+		font-weight: bold;
+		}
+	#grouplist tbody span.member {
+		color: #66AA00;
+		}
+	#grouplist tbody span.manager {
+		color: #ff1177;
+		}
+	#grouplist tbody span.pending {
+		color: #AA3300;
+		}
+	#grouplist tbody span.invitee {
+		color: #aaaaaa;
+		}
+/*---------------------------------------------------------------
+	Points
+---------------------------------------------------------------*/
+	#point-balance {
+		margin-top: 0;
+		background: #F7F4F2;
+		border-top: 1px solid #E7DFD8;
+		border-bottom: 1px solid #E7DFD8;
+		text-align: center;
+		color: #333;
+		font-weight: bold;
+		font-size: 1.5em;
+		padding: 0.5em;
+		}
+	#point-balance span {
+		display: none;
+		}
+	#point-balance small {
+		color: #888;
+		}
+/* Point transactions table */
+	.transactions .withdraw {
+		color: red;
+		}
+	.transactions .deposit {
+		color: green;
+		}
+	.transactions .textual-data {
+		text-align: left;
+		}
+	.transactions .numerical-data {
+		text-align: right;
+		}
+	.transactions .odd .highlight {
+		background-color: #eee;
+		}
+	.transactions .even .highlight {
+		background-color: #f8f8f8;
+		}
+	.odd {
+		background-color: #f6f6f1;
+		}
+	.even {
+		}
+	.data .small {
+		font-size: 95%;
+		display: block;
+		color: #888;
+		}
+/* Search results */
+	.results .member p {
+		margin-left: 60px;
+		}
+	.results .member .title {
+		text-indent: 0em;
+		}
+	.results .member .photo {
+	    text-align: center;
+		float: left;
+	    width: 50px;
+		display: block;
+		margin: 0.5em 0 0 0;
+		padding: 0;
+		}

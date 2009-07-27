@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="module" version="1.5">
+	<name>Events Calendar</name>
+	<author>nanoHUB.org</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Displays a calendar with days that have events linked. Requires events component.</description>
+	<files>
+		<filename module="mod_events_cal">mod_events_cal.php</filename>
+		<filename>index.html</filename>
+        <filename>tmpl/index.html</filename>
+        <filename>tmpl/default.php</filename>
+		<filename>mod_events_cal.css</filename>
+	</files>
+	<params>
+		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+		<param name="start_day" type="text" default="0" label="Start day" description="The day (number) the calendar should start on" />
+		<param name="display_last_month" type="radio" default="NO" label="Display last month" description="Display the calendar for the previous month">
+			<option value="YES_stop">Yes</option>
+			<option value="YES_stop_events">Yes (events)</option>
+			<option value="ALWAYS">Always</option>
+			<option value="ALWAYS_events">Always (events)</option>
+			<option value="NO">No</option>
+		</param>
+		<param name="display_last_month_days" type="text" default="0" label="Display last month days" description="Display last month days" />
+		<param name="display_next_month" type="list" default="NO" label="Display next month" description="Display the calendar for the next month">
+			<option value="YES_stop">Yes</option>
+			<option value="YES_stop_events">Yes (events)</option>
+			<option value="ALWAYS">Always</option>
+			<option value="ALWAYS_events">Always (events)</option>
+			<option value="NO">No</option>
+		</param>
+		<param name="display_next_month_days" type="text" default="0" label="Display next month days" description="Display next month days" />
+	</params>
+	<params group="advanced">
+		<param name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
+			<option value="1">Use global</option>
+			<option value="0">No caching</option>
+		</param>
+		<param name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
+	</params>
+        <languages>
+                <language tag="en-GB">en-GB.mod_events_cal.ini</language>
+        </languages>
+</install>

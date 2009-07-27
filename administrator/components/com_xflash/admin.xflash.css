@@ -1,0 +1,22 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/* CSS for XFlash admin interface //==================================================================== */
+	
+	#element-box table.admintable .xflash_hed_big { width:30%;font-size:3em;color:#bcbcbc; padding:0.7em;}
+	#element-box  fieldset.adminform, #content-pane fieldset.adminform, form.adminForm fieldset { border:0; background:none; padding-bottom:1em; }
+	#element-box table.admintable .xflash_hed_tips { color:#666; padding:0.7em 3em 0.7em 0; }
+	#element-box table.adminform { }
+	#element-box table.admintable .slidenum { background:#CCCCCC;color:#FFF; padding:0.2em; padding-left:1em; }
+	#content-pane .xflash_note, #element-box table.admintable .xflash_note  { color:#666; display:block;padding-top:0.5em;padding-bottom:0.5em; }
+	#element-box table.admintable input { width:75%; }
+	#element-box table.admintable input.minor  { background:#f1f1f1; }
+	#element-box table.admintable { width:600px; background:#f6f6f6; border:1px solid #ccc; }
+	#content-pane table.admintable { width:100%; border:none; background:transparent; }
+	

@@ -1,0 +1,24 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_myfavorites
+	-- -- -- -- -- -- --
+
+*/
+	div.draggable h4.fav-header span {
+		position: absolute;
+		right: 0.5em;
+		font-size: 85%;
+		}
+	div.draggable .compactlist li.favorite {
+		background: url("images/heart.png") 0.7em 0.7em no-repeat;
+		}

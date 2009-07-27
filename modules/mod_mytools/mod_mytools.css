@@ -1,0 +1,113 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mytools
+	-- -- -- -- -- -- --
+
+*/
+	.sortable .tab_panel {
+		display: none;
+		position: relative;
+		padding: 0;
+		margin: 0;
+		}
+	.sortable .tab_panel ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		background: #fff;
+		}
+	.sortable #alltools ul {
+		height: 20.3em;
+		overflow: auto;
+		position: relative; /* fix IE 6,7 - quirky support for overflow:auto, this line fixes it */
+		border-top: 1px solid #ddd;
+		border-bottom: 1px solid #ddd;
+		}
+	.sortable .tab_panel li {
+		border: none;
+		border-bottom: 1px solid #ddd;
+		margin: 0;
+		padding: 0.6em 3em 0.6em 0.7em;
+		position: relative;
+		background-image: none;
+		}
+	.sortable .tab_panel p {
+		margin: 0.5em;
+		padding: 0;
+		font-size: 90%;
+		color: #999;
+		}
+	.sortable .tab_panel.active {
+		display: block;
+		}
+	.sortable .tab_titles {
+		list-style-image: none;
+		list-style-type: none;
+		margin: 0px;
+		padding: 4px 0 0 4px;
+		height: 24px;
+		background: #333;
+		}
+	.sortable .tab_titles li {
+		float: left;
+		background-color: #656565;
+		padding: 4px 0 0 0;
+		margin-right: 1%;
+		cursor: pointer;
+		height: 20px;
+		width: 32%;
+		text-align: center;
+		color: #fff;
+		font-weight: bold;
+		background-image: none;
+		}
+	.sortable .tab_titles li.active {
+		background-color: #fff;
+		color: #333;
+		}
+	.sortable .fav,
+	.sortable .launchtool {
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		position: absolute;
+		top: 0.6em;
+		text-indent: -55em;
+		border: none;
+		}
+	.sortable .fav {
+		right: 50px;
+		background: url("images/fav_heart.gif") 0 0 no-repeat;
+		}
+	.sortable .launchtool {
+		right: 10px;
+		background: url("images/app_go.gif") 0 0 no-repeat;
+		}
+	.sortable .fav:hover,
+	.sortable .launchtool:hover {
+		background-position: 0 -16px;
+		}
+	.sortable #recenttools .fav,
+	.sortable #favtools .fav {
+		display: none;
+		}
+	.sortable .favd {
+		background-color: #FFFFEB;
+		}
+	.sortable .favd .fav {
+		background: url("images/heart.png") 0 0 no-repeat;
+		}
+	.sortable #alltools li {
+		padding-right: 60px;
+		}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="module" version="1.5">
+	<name>My Sessions</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>This module shows a list of the user's active tool sessions.</description>
+	<files>
+		<filename module="mod_mysessions">mod_mysessions.php</filename>
+		<filename>mod_mysessions.xml</filename>
+		<filename>mod_mysessions.css</filename>
+		<filename>mod_mysessions.js</filename>
+		<filename>index.html</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>images/application.png</filename>
+		<filename>images/application_double.png</filename>
+		<filename>images/close.gif</filename>
+		<filename>images/disconnect.png</filename>
+		<filename>images/disconnect_dark.gif</filename>
+		<filename>images/stop.png</filename>
+	</files>
+	<params>
+		<param name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
+		<param name="show_storage" type="list" default="1" label="Show storage" description="Select wether to show the storage meter or not.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+	</params>
+        <languages>
+                <language tag="en-GB">en-GB.mod_mysessions.ini</language>
+        </languages>
+</install>

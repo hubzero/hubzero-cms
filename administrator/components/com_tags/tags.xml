@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+	<name>Tags</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<files>
+		<filename>tags.html.php</filename>
+		<filename>tags.php</filename>
+		<filename>tags.class.php</filename>
+		<filename>tags.tag.php</filename>
+		<filename>tags.css</filename>
+		<filename>tags.js</filename>
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>router.php</filename>
+    		<filename>views/index.html</filename>
+    		<filename>views/intro/tmpl/default.php</filename>
+    		<filename>views/intro/tmpl/default.xml</filename>
+   		<filename>views/intro/tmpl/index.html</filename>
+		<filename>images/tagnav-sprite.gif</filename>
+ 		<filename>images/tagnav-sprite2.gif</filename>
+		<filename>images/tags-large.gif</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_tags.ini</language>
+	</languages>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+	</uninstall>
+	<administration>
+		<menu>Tags</menu>
+		<submenu>
+			<menu link="option=com_tags&amp;task=new">New Tag</menu>
+	  	</submenu>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_tags.ini</language>
+			<language tag="en-GB">en-GB.com_tags.menu.ini</language>
+		</languages>
+		<files>
+			<filename>admin.tags.html.php</filename>
+			<filename>admin.tags.php</filename>
+			<filename>admin.controller.php</filename>
+			<filename>install.sql</filename>
+			<filename>index.html</filename>
+			<filename>toolbar.tags.php</filename>
+		</files>
+	</administration>
+</install>

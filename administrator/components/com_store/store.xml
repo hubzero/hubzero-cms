@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+	<name>Store</name>
+	<author>Alissa Nedossekina</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Store</description>
+	<files>
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>store.css</filename>
+		<filename>store.html.php</filename>
+		<filename>store.js</filename>
+		<filename>store.php</filename>
+		<filename>router.php</filename>
+		<filename>images/nophoto.gif</filename>
+		<filename>images/premiumservice.gif</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_store.ini</language>
+	</languages>
+	<install>
+	</install>
+	<uninstall>
+	</uninstall>
+	<installfile>
+		<filename></filename>
+	</installfile>
+	<uninstallfile>
+		<filename></filename>
+	</uninstallfile>
+
+	<administration>
+		<menu>Store</menu>
+		<files>
+			<filename>admin.controller.php</filename>
+			<filename>admin.store.css</filename>
+			<filename>admin.store.html.php</filename>
+			<filename>admin.store.php</filename>
+			<filename>config.xml</filename>
+			<filename>store.class.php</filename>
+			<filename>store.config.php</filename>
+			<filename>index.html</filename>
+			<filename>toolbar.store.html.php</filename>
+			<filename>toolbar.store.php</filename>
+			<filename>receipt.pdf.php</filename>
+			<filename>images/check.gif</filename>
+			<filename>images/minus.gif</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_store.ini</language>
+	        </languages>
+	</administration>
+</install>

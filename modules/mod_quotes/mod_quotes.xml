@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="module" version="1.5">
+	<name>Quotes</name>
+	<author>Alissa</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>This module compliments the Feedback component. It is used to display selected quotes on Notable Quotes page.</description>
+	<files>
+		<filename module="mod_quotes">mod_quotes.php</filename>
+		<filename>mod_quotes.xml</filename>
+		<filename>index.html</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
+	</files>
+	<params>
+		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+		<param name="maxquotes" type="list" default="10" label="Maximum Number of Quotes" description="Define max number of quotes to display on the page">
+			<option value="1">1</option>
+			<option value="5">5</option>
+			<option value="10">10</option>
+			<option value="15">15</option>
+			<option value="">All</option>
+    	</param>
+	</params>
+        <languages>
+                <language tag="en-GB">en-GB.mod_quotes.ini</language>
+        </languages>
+
+</install>
