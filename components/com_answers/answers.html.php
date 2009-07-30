@@ -162,22 +162,35 @@ class AnswersHtml
 	public function searchform($filters, $option, $task='search', $banking)
 	{
 		$task = (isset($filters['mine']) && $filters['mine']!='0') ? 'myquestions' : 'search';
-		$html  = '<div class="filters">'.n;
-		$html .= '<form method="get" action="'.JRoute::_('index.php?option='.$option).'" name="adminForm" >'.n;
+		$html  = '';
+		$html .= '<form method="get" action="'.JRoute::_('index.php?option='.$option).'" id="adminForm" >'.n;
+		$html .= '<div class="filters">'.n;		
 		$html .= ' <fieldset>'.n;
-		$html .= t.'<label>Search: '.n;
-		$html .= t.'<input type="text" name="q" value="'.$filters['q'].'" /></label>'.n;
-		$html .= t.'<label>in: '.n;
+		$html .= t.'<label>'.JText::_('Find phrase').': '.n;
+		$html .= t.'<input type="text" name="q" value="'.$filters['q'].'" /></label> '.n;
+		$html .= t.t.'<label class="tagdisplay">'.JText::_('and/or tag').': '.n;
+
+		JPluginHelper::importPlugin( 'tageditor' );
+		$dispatcher =& JDispatcher::getInstance();	
+		$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$filters['tag'],'')) );
+		
+		if (count($tf) > 0) {
+			$html .= $tf[0];
+		} else {
+			$html .= t.t.t.'<input type="text" name="tag" id="tags-men" value="'.$filters['tag'].'" />'.n;
+		}
+		$html .= '</label>';
+		$html .= t.'<label>'.JText::_('in').': '.n;
 		$html .= t.'<select name="filterby">'.n;
+		$html .= t.' <option value="all"';
+		$html .= ($filters['filterby'] == 'all') ? ' selected="selected"' : '';
+		$html .= '>'.JText::_('ALL_QUESTIONS').'</option>'.n;
 		$html .= t.' <option value="open"';
 		$html .= ($filters['filterby'] == 'open') ? ' selected="selected"' : '';
 		$html .= '>'.JText::_('OPEN_QUESTIONS').'</option>'.n;
 		$html .= t.' <option value="closed"';
 		$html .= ($filters['filterby'] == 'closed') ? ' selected="selected"' : '';
 		$html .= '>'.JText::_('CLOSED_QUESTIONS').'</option>'.n;
-		$html .= t.' <option value="all"';
-		$html .= ($filters['filterby'] == 'all') ? ' selected="selected"' : '';
-		$html .= '>'.JText::_('ALL_QUESTIONS').'</option>'.n;
 		if($task != 'myquestions') {
 		$html .= t.' <option value="mine"';
 		$html .= ($filters['filterby'] == 'mine') ? ' selected="selected"' : '';
@@ -239,49 +252,21 @@ class AnswersHtml
 		$html .= t.'<li><a href="'.JRoute::_('index.php?option='.$option.a.'task=new').'" class="add"><span>'.JText::_('NEW_QUESTION').'</span></a></li>';
 		$html .= ' </ul>'.n;
 		$html .= '</div>'.n;
-		$html .= t.'<div class="clear"></div>'.n;
-		$html .= '<div class="main section">'.n;
-		//$html .= '<div id="fixwrap">'.n;	
-		$html .= '<div class="threecolumn farleft">'.n;
-		$html .= t.'<div class="mainsection" id="ask">'.n;
-		$html .= t.t.AnswersHtml::hed(3,'<a href="answers/question/new/">'.JText::_('ASK').'</a>').n;
-		$html .= t.t.'<p>'.JText::_('CANT_FIND_ANSWER').' <a href="kb/">'.JText::_('KNOWLEDGE_BASE').'</a> '.JText::_('OR_BY').' <a href="answers/search/">'.JText::_('SEARCH').'</a>? '.JText::_('ASK_YOUR_FELLOW').' '.$hubShortName.' '.JText::_('MEMBERS').'!</p>'.n;
-		$html .= t.'</div>'.n;
-		$html .= '</div>'.n;
-		if ($banking) {
-			$html .= '<div class="threecolumn middle">'.n;
-			$html .= t.'<div class="mainsection" id="earn">'.n;
-			$html .= t.t.AnswersHtml::hed(3,'<a href="'.$infolink.'">'.JText::_('EARN_POINTS').'</a>').n;
-			$html .= t.t.'<p>'.JText::_('START_EARNING').' '.$hubShortName.' '.JText::_('COMMUNITY').'. <a href="'.$infolink.'">'.JText::_('EARN_MORE').'</a>.</p>'.n;
-			$html .= t.'</div>'.n;
-			$html .= '</div>'.n;
-		} else {
-			$html .= '<div class="threecolumn middle">'.n;
-			$html .= t.'<div class="mainsection" id="srch">'.n;
-			$html .= t.t.AnswersHtml::hed(3,'<a href="answers/search/">'.JText::_('SEARCH').'</a>').n;
-			$html .= t.t.'<p>'.JText::_('HAVE_A_QUESTION').'</p>'.n;
-			$html .= t.'</div>'.n;
-			$html .= '</div>'.n;
-		}
-		$html .= '<div class="threecolumn farright">'.n;
-		$html .= t.'<div class="mainsection" id="ans">'.n;
-		$html .= t.t.AnswersHtml::hed(3,'<a href="answers/search/">'.JText::_('ANSWER').'</a>').n;
-		$html .= t.t.'<p>'.JText::_('SHARE_KNOWLEDGE').'</p>'.n;
-		$html .= t.'</div>'.n;
-		$html .= '</div>'.n;
-		
 		$html .= '<div class="clear"></div>'.n;
-		$html .= AnswersHtml::div( AnswersHtml::hed( 3, JText::_('LATEST_QUESTIONS') ), '', 'content-header' );
 		$html .= '<div class="main section">'.n;
-		
+		$html .= t.'<div class="aside">'.n;
+		$html .= t.t.'<p>'.JText::_('CANT_FIND_ANSWER').' <a href="kb/">'.JText::_('KNOWLEDGE_BASE').'</a> '.JText::_('OR_BY').' '.JText::_('SEARCH').'? '.JText::_('ASK_YOUR_FELLOW').' '.$hubShortName.' '.JText::_('MEMBERS').'!</p>'.n;
+		if($banking) {
+		$html .= t.t.'<p>'.JText::_('START_EARNING').' '.$hubShortName.' '.JText::_('COMMUNITY').'. <a href="'.$infolink.'">'.JText::_('EARN_MORE').'</a>.</p>'.n;
+		}		
+		$html .= t.'</div><!-- / .aside -->'.n;
+		$html .= t.'<div class="subject">'.n;
+		$html .= AnswersHtml::div( AnswersHtml::hed( 3, JText::_('LATEST_QUESTIONS') ), '', 'content-header' );
 		$html .= AnswersHtml::searchform($filters, $option, '', $banking);
 		$html .= AnswersHtml::htmlQuestions( $results, $option, $infolink, $banking );
 		$html .= $pageNav->getListFooter();
 		$html .= '</form>'.n;
-		$html .= t.'<div class="clear"></div>'.n;
-		$html .= ' </div><!-- / .main section  -->'.n;
-		//$html .= '</div><!-- / #fixwrap  -->'.n;
-		$html .= '</div><!-- / .section  -->'.n;
+		$html .= '</div><div class="clear"></div></div>'.n;	
 		
 		return $html;
 	}
@@ -297,7 +282,6 @@ class AnswersHtml
 		$html = AnswersHtml::div( AnswersHtml::hed( 2, $title ), '', 'content-header' );
 		$html .= '<div id="content-header-extra">'.n;
 		$html .= ' <ul id="useroptions">'.n;
-		//$html .= t.'<li><a href="'.JRoute::_('index.php?option='.$option).'"><span>'.JText::_('OVERVIEW').'</span></a></li>'.n;
 		if($task!='myquestions') {
 		$html .= t.'<li><a href="'.JRoute::_('index.php?option='.$option.a.'task=myquestions').'" class="myquestions"><span>'.JText::_('MY_QUESTIONS').'</span></a></li>';
 		}
@@ -306,34 +290,31 @@ class AnswersHtml
 		$html .= '</div>'.n;
 		
 		if(!$juser->get('guest') && $task=='myquestions') {
-			$html .= ' <ul class="breadcrumbtrail">'.n;
+			$html .= t.'<ul class="breadcrumbtrail">'.n;
 			$html .= t.'<li class="first"><span "class="myquestions"></span></li>'.n;
-			$html .= ' <li class="first">';
+			$html .= t.'<li class="first">';
 			$html .= ($filters['interest'] == 0 && $filters['assigned'] == 0) ? '<strong>' : '<a href="'.JRoute::_('index.php?option='.$option.'&task=myquestions').'">';
 			$html .= JText::_('Questions I asked');
 			$html .= ($filters['interest'] == 0 && $filters['assigned'] == 0) ? '</strong>' : '</a>';
 			$html .= '</li> '.n;
-			$html .= ' <li>';
+			$html .= t.'<li>';
 			$html .= ($filters['assigned'] == 1) ? '<strong>' : '<a href="'.JRoute::_('index.php?option='.$option.'&task=myquestions').'?assigned=1">';
 			$html .= JText::_('Questions related to my contributions');
 			$html .= ($filters['assigned'] == 1) ? '</strong>' : '</a>';
 			$html .= '</li> '.n;
-			$html .= ' <li>';
+			$html .= t.'<li>';
 			$html .= ($filters['interest'] == 1) ? '<strong>' : '<a href="'.JRoute::_('index.php?option='.$option.'&task=myquestions').'?interest=1">';
 			$html .= JText::_('Questions tagged with my interests');
 			$html .= ($filters['interest'] == 1) ? '</strong>' : '</a>';
 			$html .= '</li>'.n;
-			$html .= ' </ul>'.n;
-			
+			$html .= t.'</ul>'.n;		
 		}
-	
-	
+		
+		// Display question list
 		$html .= '<div class="main section">'.n;
-		
-		$html .= AnswersHtml::searchform($filters, $option, '', $banking);
-		
+		$html .= AnswersHtml::searchform($filters, $option, '', $banking);	
+		$html .= t.'<div class="aside">'.n;
 		if(!$juser->get('guest') && $task=='myquestions') {
-			$html .= t.'<div class="aside">'.n;
 			$html .= ' <p class="info">';
 			$html .= ($filters['interest'] == 0 && $filters['assigned'] == 0) ? JText::_('Please do not forget to close the questions you asked by selecting the best answer.') : '';
 			if($filters['interest'] == 1)  {
@@ -345,12 +326,17 @@ class AnswersHtml
 			}
 			$html .= ($filters['assigned'] == 1) ? JText::_('These questions were tagged with names of resources that you have <a href="/members/'.$juser->get('id').'/contributions">contributed</a>.')  : '';
 			$html .= ' <p>'.n;
-			$html .= t.'</div><!-- / .aside -->'.n;
-			$html .= t.'<div class="subject">'.n;
 		}
+		else {
+			$html .= t.t.'<p class="info_ask">'.JText::_('CANT_FIND_ANSWER').' <a href="kb/">'.JText::_('KNOWLEDGE_BASE').'</a> '.JText::_('OR_BY').' '.JText::_('SEARCH').'? '.JText::_('ASK_YOUR_FELLOW').' '.$hubShortName.' '.JText::_('MEMBERS').'!';
+			if($banking) {
+			$html .= '<br /><br />'.JText::_('START_EARNING').' '.$hubShortName.' '.JText::_('COMMUNITY').'. <a href="'.$infolink.'">'.JText::_('LEARN_MORE').'</a>';
+			}	
+			$html .= '</p>'.n;
+		}	
+		$html .= t.'</div><!-- / .aside -->'.n;
 		
-		
-		
+		$html .= t.'<div class="subject">'.n;
 		
 		if (count($results) > 0) {
 			$html .= AnswersHtml::htmlQuestions( $results, $option, $infolink, $banking );
@@ -363,11 +349,10 @@ class AnswersHtml
 			$html .= AnswersHtml::warning( JText::_('NO_RESULTS')).n;
 			}
 		}
-		$html .= '</form>'.n;
-		if(!$juser->get('guest') && $task=='myquestions') {
-			$html .= t.'</div><!-- / .subject -->'.n;
-		}
+	
+		$html .= t.'</div><!-- / .subject -->'.n;
 		$html .= t.'<div class="clear"></div>'.n;
+		$html .= '</form>'.n;
 		$html .= '</div><!-- / .main section -->'.n;
 		
 		return $html;
@@ -966,9 +951,7 @@ class AnswersHtml
 		$html .= t.t.'<label>'.JText::_('TAGS').': <span class="required">*</span><br />'.n;
 
 		JPluginHelper::importPlugin( 'tageditor' );
-		$dispatcher =& JDispatcher::getInstance();
-		
-		
+		$dispatcher =& JDispatcher::getInstance();	
 		$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$tag,'')) );
 		
 		if (count($tf) > 0) {
@@ -1043,86 +1026,111 @@ class AnswersHtml
 					
 		if ($rows) {
 			//$html  ='<div class="clear"></div>';
-			$html  = t.'<ul class="questions">'.n;
-			foreach ($rows as $row) 
-			{
-			$row->anonymous = (isset($row->anonymous)) ?  $row->anonymous : 0;
-			$row->rcount = (isset($row->rcount)) ?  $row->rcount : 0;
-			$row->helpful = (isset($row->helpful)) ? $row->helpful : 0;
-			$row->reports = (isset($row->reports)) ? $row->reports : 0;
-
-			if ($row->anonymous == 0) {
-					$xuser =& XUser::getInstance( $row->created_by );
-					if (is_object($xuser)) {
-						$name = $xuser->get('name');
-					} else {
-						$name = JText::_('Unknown');
+			$html  = t.'<ul class="questions plugin">'.n;
+	
+				$i=1;
+				foreach ($rows as $row) 
+				{
+				
+				$row->reports = (isset($row->reports)) ? $row->reports : 0;	
+				$row->created = $this->mkt($row->created);
+				$row->when = $this->timeAgo($row->created);
+				$row->points = $row->points ? $row->points : 0;
+				
+				if(!$row->reports) {
+					$i++;	
+					$link_on = JRoute::_('index.php?option=com_answers'.a.'task=question'.a.'id='.$row->id);
+					$tags    = AnswersHtml::getTagCloud($row->tags, $option);
+					$alt_r  = ($row->rcount == 0) ? 'No' : $row->rcount;
+					$alt_r .= ' '.JText::_('RESPONSE');
+					$alt_r .= ($row->rcount == 1) ? '' : 's';
+					$alt_r .= ' '.JText::_('TO_THIS_QUESTION');
+					
+					$alt_v  = ($row->helpful == 0) ? 'No' : $row->helpful;
+					$alt_v .= ' '.JText::_('RECOMMENDATION');
+					$alt_v .= ($row->helpful == 1) ? '' : 's';
+					$alt_v .= ' '.JText::_('AS_A_GOOD_QUESTION');
+					
+					// author name
+					$name = JText::_('ANONYMOUS');
+					if ($row->anonymous == 0) {
+						$xuser =& XUser::getInstance( $row->created_by );
+						if (is_object($xuser)) {
+							$name = $xuser->get('name');
+						} else {
+							$name = JText::_('Unknown');
+						}
 					}
-				}
-		
-			$link_on = JRoute::_('index.php?option='.$option.a.'task=question'.a.'id='.$row->id);
 			
-			if($row->reports > 0 ) {
-			
-			// do not display
-			$html .= t.' <li class="reg under_review"> ';
-			$html .= t.'<h4 class="review">'.JText::_('QUESTION_UNDER_REVIEW').'</h4>'.n;
-			$html .= t.t.'<p class="supplemental">'.JText::_('ASKED_BY').' ';
-			$html .= ($row->anonymous != 0) ? JText::_('ANONYMOUS') : $name;
-			$html .= ' - '.$row->when.' ago';
-			$html .= '</p>'.n;
-			$html .= t.'&nbsp; </li>'.n;
-			}
-			else {
-				
-				$tags   = AnswersHtml::getTagCloud($row->tags, $option);
-				$alt_r  = ($row->rcount == 0) ? 'No' : $row->rcount;
-				$alt_r .= ' '.JText::_('RESPONSE');
-				$alt_r .= ($row->rcount == 1) ? '' : 's';
-				$alt_r .= ' '.JText::_('TO_THIS_QUESTION');
-				
-				$alt_v  = ($row->helpful == 0) ? 'No' : $row->helpful;
-				$alt_v .= ' '.JText::_('RECOMMENDATION');
-				$alt_v .= ($row->helpful == 1) ? '' : 's';
-				$alt_v .= ' '.JText::_('AS_A_GOOD_QUESTION');
-				
-				$html .= t.' <li ';
-				$html .= (isset($row->reward) && $row->reward == 1 && $banking) ? ' class="reg hasreward' : 'class="reg';
-				$html .= '"';
-				//$html .= ($row->rcount > 0) ? ' hasanswers"' : '"';
-				$html .= '>'.n;
-				if ($row->state == 1) {
-					$html .= t.t.'<p class="acceptanswer"><span>'.JText::_('ANSWERED').'</span></p>'.n;
-				}
-				else if (isset($row->reward) && $row->reward == 1 && $banking) {
-					$html .= t.t.'<p class="rewardset">+ '.$row->points.' <a href="'.$infolink.'" title="There is a '.$row->points.' point reward for answering this question.">&nbsp;</a></p>'.n;
-				}
-				$html .= t.t.'<h4><a href="'. $link_on .'" title="'.JText::_('READ_IN_FULL').'">'.stripslashes($row->subject).'</a></h4>'.n;
-				if ($row->question != '') {
-					$row->question = stripslashes($row->question);
-					$html .= t.t.'<p class="snippet">';
-					$html .= AnswersHtml::shortenText($row->question, 200, 0);
+					
+					$html .= t.' <li class="reg';
+					$html .= (isset($row->reward) && $row->reward == 1 && $banking) ? ' hasreward' : '';
+					$html .= ($row->state == 1) ? ' answered' : '';
+					$html .= '"';
+					//$html .= ($row->rcount > 0) ? ' hasanswers"' : '"';
+					$html .= '>'.n;
+					/*
+					if ($row->state == 1) {
+						$html .= t.t.'<p class="acceptanswer"><span>'.JText::_('ANSWERED').'</span></p>'.n;
+					}
+					else if (isset($row->reward) && $row->reward == 1 && $banking) {
+						$html .= t.t.'<p class="rewardset">+ '.$row->points.' <a href="'.$infolink.'" title="There is a '.$row->points.' point reward for answering this question.">&nbsp;</a></p>'.n;
+					}*/
+					$html .= t.t.'<div class="ensemble_left">';
+					if ($row->question != '') {
+						$row->question = stripslashes($row->question);
+						$fulltext = htmlspecialchars(AnswersHtml::cleanText($row->question));
+					}
+					else {
+					 	$fulltext = stripslashes($row->subject);
+					}
+					$html .= t.t.'<h4><a href="'. $link_on .'" title="'.$fulltext.'">'.stripslashes($row->subject).'</a></h4>'.n;
+					
+					$html .= t.t.'<p class="supplemental">'.JText::_('ASKED_BY').' '.$name;
+					$html .= ' - '.$row->when.' ago';
 					$html .= '</p>'.n;
-				}
-				$html .= t.t.'<p class="supplemental">'.JText::_('ASKED_BY').' ';
-				$html .= ($row->anonymous != 0) ? JText::_('ANONYMOUS') : $name;
-				$html .= ' - '.$row->when.' ago &nbsp;&nbsp; '.$row->rcount.'<span class="responses_';
-				$html .= ($row->rcount == 0) ? 'no' : 'yes';
-				$html .= '"><a href="'.$link_on.'" title="'.$alt_r.'">&nbsp;</a></span>';
-				//$html .= ($row->rcount == 1) ? '' : 's';
-				$html .= '  '.$row->helpful.' <span class="votes_';
-				$html .= ($row->helpful == 0) ? 'no' : 'yes';
-				$html .= '"><a href="'.$link_on.'" title="'.$alt_v.'">&nbsp;</a></span>';
-				//$html .= ($row->helpful == 1) ? '' : 's';
-				$html .= '</p>'.n;
-				if($row->tags) {
-				$html .= t.t.'<p>Tags:</p> '.$tags.n;
-				}
-				$html .= t.'&nbsp; </li>'.n;
+					/*
+					if($tags) {
+					$html .= t.t.'<p>Tags:</p> '.$tags.n;
+					}
+					*/
+					
+					$html .= t.t.'</div>';
+					$html .= t.t.'<div class="ensemble_right">';
+					$html .= t.t.'<div class="statusupdate">'.n;
+					
+					$html .= t.t.'<p>'.$row->rcount.'<span class="responses_';
+					$html .= ($row->rcount == 0) ? 'no' : 'yes';
+					$html .= '"><a href="'.$link_on.'#answers" title="'.$alt_r.'">&nbsp;</a></span>';
+					$html .= '  '.$row->helpful.' <span class="votes_';
+					$html .= ($row->helpful == 0) ? 'no' : 'yes';
+					$html .= '"><a href="'.$link_on.'?vote=1" title="'.$alt_v.'">&nbsp;</a></span>';
+					$html .= t.t.'</p>';
+					//$html .= ($row->state==1) ? '<span class="update_answered">'.JText::_('ANSWERED').'</span>' : '<span class="update_unanswered"><a href="">'.JText::_('Answer this').'</a></span>';
+					$html .= ($row->state==1) ? '<span class="update_answered">'.JText::_('ANSWERED').'</span>' : '';
+					$html .= t.t.'</div>';
+					$html .= t.t.'<div class="rewardarea">'.n;
+					if (isset($row->reward) && $row->reward == 1 && $banking) {
+						$html .= t.t.'<p>+ '.$row->points.' <a href="'.$infolink.'" title="There is a '.$row->points.' point reward for answering this question.">&nbsp;</a></p>'.n;
+					}
+					$html .= t.t.'</div>';
+					$html .= t.t.'</div>';
+					$html .= t.t.'<div style="clear:left"></div>';
+					$html .= t.'&nbsp; </li>'.n;
+				  }
+				  else if($row->reports) {
+				  // do not display
+					$html .= t.' <li class="reg under_review"> ';
+					$html .= t.'<h4 class="review">'.JText::_('QUESTION_UNDER_REVIEW').'</h4>'.n;
+					$html .= t.t.'<p class="supplemental">'.JText::_('ASKED_BY').' '.$name;
+					$html .= ' - '.$row->when.' ago';
+					$html .= '</p>'.n;
+					$html .= t.'&nbsp; </li>'.n;
+				  }
 				
-				} // end if no abuse reports
-			}
-			$html .= t.'</ul>'.n;
+				}
+				
+				$html .= t.t.'</ul>'.n;
 		} else {
 			$html  = t.'<p>'.JText::_('NO_QUESTIONS_FOUND').'</p>'.n;
 		}
@@ -1131,7 +1139,26 @@ class AnswersHtml
 	}
 
 	//-----------
+	
+	public function cleanText($text, $desclen=300)
+	{
+		$elipse = false;
 
+		$text = preg_replace( "'<script[^>]*>.*?</script>'si", "", $text );
+		$text = str_replace( '{mosimage}', '', $text );
+		$text = str_replace( "\n", ' ', $text );
+		$text = str_replace( "\r", ' ', $text );
+		$text = preg_replace( '/<a\s+.*href=["\']([^"\']+)["\'][^>]*>([^<]*)<\/a>/i','\\2', $text );
+		$text = preg_replace( '/<!--.+?-->/', '', $text);
+		$text = preg_replace( '/{.+?}/', '', $text);
+		$text = strip_tags( $text );
+		if (strlen($text) > $desclen) $elipse = true;
+		$text = substr( $text, 0, $desclen );
+		if ($elipse) $text .= '...';
+		$text = trim($text);
+		
+		return $text;
+	}
 	
 }
 ?>

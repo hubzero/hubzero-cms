@@ -44,6 +44,8 @@ class Vote extends JTable
 		parent::__construct( '#__vote_log', 'id', $db );
 	}
 	
+	//-----------
+	
 	function check() 
 	{
 		if (trim( $this->referenceid ) == '') {
@@ -58,6 +60,8 @@ class Vote extends JTable
 		}
 		return true;
 	}
+	
+	//-----------
 	
 	function checkVote($refid=null, $category=null, $voter=null) 
 	{
@@ -80,6 +84,18 @@ class Vote extends JTable
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
+	}
+	
+	//-----------
+	
+	function getResults( $filters=array() ) 
+	{
+		$query = "SELECT c.* 
+				FROM $this->_tbl AS c 
+				WHERE c.referenceid=".$filters['id']." AND category='".$filters['category']."' ORDER BY c.voted DESC";
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
 	}
 }
 

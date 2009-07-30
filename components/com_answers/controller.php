@@ -113,7 +113,7 @@ class AnswersController extends JObject
 			case 'accept':      $this->accept();      break;
 			case 'myquestions': $this->myquestions(); break;
 			case 'search':      $this->search();      break;
-			case 'start':       $this->start();       break;
+			//case 'start':       $this->start();       break;
 			case 'delete':      $this->answer();      break;
 			case 'delete_q':    $this->delete_q();    break;
 			case 'rateitem':   	$this->rateitem();    break;
@@ -121,7 +121,7 @@ class AnswersController extends JObject
 			case 'reply':      	$this->reply();  	  break;
 			case 'math':      	$this->answer();  	  break;
 			
-			default: $this->start(); break;
+			default: $this->search(); break;
 		}
 	}
 
@@ -192,15 +192,10 @@ class AnswersController extends JObject
 		ximport('xmodule');
 		XModuleHelper::displayModules('force_mod');
 		echo '</div><!-- / .main section -->'.n;
-			
-		//echo AnswersHtml::hed( 2, $title );
-		//if($msg) { echo AnswersHtml::warning( $msg ); }
-		//ximport('xmodule');
-		//XModuleHelper::displayModules('force_mod');
 	
 	}
 	
-	
+
 	//-----------
 
 	protected function start() 
@@ -550,9 +545,6 @@ class AnswersController extends JObject
 		// Add the CSS to the template
 		$this->getStyles();
 		
-	
-	
-		
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '. JText::_(strtoupper($this->_task)) : '';
@@ -562,8 +554,7 @@ class AnswersController extends JObject
 		
 		$aq = new AnswersQuestion( $database );
 		//$BT = new BankTransaction( $database );
-		
-			
+				
 		// Get records
 		$results = $aq->getResults( $filters );
 		
@@ -613,7 +604,7 @@ class AnswersController extends JObject
 		$filters = array();
 		$filters['limit']    = JRequest::getInt( 'limit', 25 );
 		$filters['start']    = JRequest::getInt( 'limitstart', 0 );
-		$filters['tag']      = JRequest::getVar( 'tag', '' );
+		$filters['tag']      = JRequest::getVar( 'tags', '' );
 		$filters['q']        = JRequest::getVar( 'q', '' );
 		$filters['filterby'] = JRequest::getVar( 'filterby', '' );
 		$filters['sortby']   = JRequest::getVar( 'sortby', 'rewards' );
