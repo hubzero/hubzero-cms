@@ -386,10 +386,10 @@ class plgGroupsForum extends JPlugin
 		}
 
 		// Store new content
-		/*if (!$row->store()) {
+		if (!$row->store()) {
 			$this->setError( $row->getError() );
 			return $this->edittopic();
-		}*/
+		}
 
 		if ($row->parent) {
 			return $this->topic($row->parent);
