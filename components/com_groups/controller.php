@@ -378,7 +378,7 @@ class GroupsController extends JObject
 		if ($public_desc || $private_desc) {
 			ximport('wiki.parser');
 			$config = $this->config;
-			$p = new WikiParser( $group->get('cn'), $this->_option, $group->get('cn').DS.'wiki', 'group', $group->get('gidNumber'), $config->get('uploadpath') );
+			$p = new WikiParser( $group->get('cn'), $this->_option, $group->get('cn').DS.'wiki', 'group', $group->get('gidNumber'), $config->get('uploadpath'), $group->get('cn') );
 		}
 		if ($public_desc) {
 			$public_desc = $p->parse( n.stripslashes($public_desc) );
@@ -1682,8 +1682,7 @@ class GroupsController extends JObject
 		$sef = $juri->base().$sef;
 
 		// Email group members
-		foreach ($inviteemails as $mbr) 
-		{
+		
 			// E-mail subject
 			$subject = JText::sprintf('GROUPS_SUBJECT_INVITE', $group->get('cn'));
 
@@ -1698,16 +1697,26 @@ class GroupsController extends JObject
 
 			$email .= JText::sprintf('GROUPS_PLEASE_JOIN', $sef).r.n.r.n;
 
+			
+
+			$email .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $juser->get('name'), $juser->get('email')).r.n;
+		
+		foreach ($inviteemails as $mbr) 
+		{
 			if (!in_array($mbr, $registeredemails)) {
 				$email .= JText::sprintf('GROUPS_PLEASE_REGISTER', $jconfig->getValue('config.sitename'), $juri->base() . 'register').r.n.r.n;
 			}
-
-			$email .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $juser->get('name'), $juser->get('email')).r.n;
 			
 			// Send the e-mail
 			if (!$this->email($mbr, $jconfig->getValue('config.sitename').' '.$subject, $email, $from)) {
 				$this->setError( JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED').' '.$mbr );
 			}
+		}
+		
+		JPluginHelper::importPlugin( 'xmessage' );
+		$dispatcher =& JDispatcher::getInstance();
+		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_invite', $subject, $email, $from, $invitees, $this->_option ))) {
+			$this->setError( JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED') );
 		}
 		
 		if ($return == 'members') {
@@ -1924,7 +1933,7 @@ class GroupsController extends JObject
 		$xlog = new XGroupLog( $database );
 		$xlog->gid = $group->get('gidNumber');
 		$xlog->uid = $juser->get('id');
-		$xlog->logged = date( 'Y-m-d H:i:s', time() );
+		$xlog->timestamp = date( 'Y-m-d H:i:s', time() );
 		$xlog->action = 'group_deleted';
 		$xlog->comments = $log;
 		$xlog->actorid = $juser->get('id');
