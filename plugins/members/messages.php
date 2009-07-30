@@ -761,7 +761,7 @@ class plgMembersMessages extends JPlugin
 		}
 		$sbjt .= t.t.'</select> '.n;
 		$sbjt .= t.t.'<input class="option" type="submit" value="'.JText::_('MSG_APPLY').'" />'.n;
-		$sbjt .= t.t.'<input type="hidden" name="mid[]" id="msg'.$xnessage->id.'" value="'.$xmessage->id.'" />'.n;
+		$sbjt .= t.t.'<input type="hidden" name="mid[]" id="msg'.$xmessage->id.'" value="'.$xmessage->id.'" />'.n;
 		$sbjt .= t.'</fieldset>'.n;
 		$sbjt .= t.'<table class="profile" summary="'.JText::_('TBL_SUMMARY_OVERVIEW').'">'.n;
 		$sbjt .= t.t.'<tbody>'.n;
