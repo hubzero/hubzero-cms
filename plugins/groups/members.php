@@ -1102,7 +1102,7 @@ class plgGroupsMembers extends JPlugin
 				$subject = JText::_('GROUP_SUBJECT_MEMBERSHIP_DENIED');
 				$type = 'groups_requests_status';
 				
-				if (!$dispatcher->trigger( 'onTakeAction', array( $type, $group->get('managers'), $this->_option, $group->get('gidNumber') ))) {
+				if (!$dispatcher->trigger( 'onTakeAction', array( 'groups_requests_membership', $group->get('managers'), $this->_option, $group->get('gidNumber') ))) {
 					$this->setError( JText::_('GROUPS_ERROR_TAKE_ACTION_FAILED') );
 				}
 				break;
