@@ -81,12 +81,12 @@ class AnswersQuestion extends JTable
 		
 		switch ($filters['filterby'])
 		{
-			case 'mine':   $query .= "WHERE C.state!=2 "; $filters['mine'] = 1;       break;
-			case 'all':    $query .= "WHERE C.state!=2 ";       break;
-			case 'closed': $query .= "WHERE C.state=1 "; 		break;
-			case 'open':   $query .= "WHERE C.state=0 "; 		break;
-			case 'none':   $query .= "WHERE 1=2 "; 				break;
-			default:       $query .= "WHERE C.state!=2 "; 		break;
+			case 'mine':   		$query .= "WHERE C.state!=2 "; $filters['mine'] = 1;       break;
+			case 'all':    		$query .= "WHERE C.state!=2 ";      break;
+			case 'closed': 		$query .= "WHERE C.state=1 "; 		break;
+			case 'open':   		$query .= "WHERE C.state=0 "; 		break;
+			case 'none':   		$query .= "WHERE 1=2 "; 			break;
+			default:       		$query .= "WHERE C.state!=2 "; 		break;
 		}
 		if (isset($filters['q']) && $filters['q'] != '') {
 			$words   = explode(' ', $filters['q']);

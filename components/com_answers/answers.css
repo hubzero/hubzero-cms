@@ -1,12 +1,3 @@
-/**
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
- */
-
 /*
 
 	-- -- -- -- -- -- --
@@ -14,6 +5,131 @@
 	-- -- -- -- -- -- --
 
 */
+	#adminForm ul.textboxlist-holder {
+		position: absolute;
+		display:inline;
+		width:145px;
+		margin: 0;
+		padding: 0;
+		list-style:	none;
+		border:	1px solid #333;
+		background-color: #fff; /*#52616F;*/
+		border-right-color: #ddd;
+		border-bottom-color: #ddd;
+		text-align:	left;
+		z-index: 50;
+		height:20px;
+	}
+	.tagdisplay {
+		padding-right:150px;
+	}
+
+	
+
+/*---------------------------------------------------------------
+	Plugin styles
+---------------------------------------------------------------*/	
+	.answers_plugin {
+		margin:-1em 0.5em 0 0;
+	}
+	.answers_plugin h3 {
+		display:block;
+		margin-bottom:1em;
+	}
+	.answers_plugin h3 span {
+	}
+	.metadata .wishlist { 
+		background: url("images/wishlist.gif") 0 50% no-repeat;
+	}
+
+	.questions .ensemble_left {
+		float:left;
+		width:70%;
+		margin-left:0;
+		margin-top:0;
+		position:relative;
+	 	overflow:visible;
+		margin-right:0;
+		margin-bottom:-1em;
+		
+	}
+	.questions .ensemble_right {
+		float:right;
+		width:180px;
+		margin-top:-1em;
+		margin-left:-3em;
+		position:relative;
+	 	overflow:visible;	
+		margin-bottom:-1em;
+				
+	}
+	.answers_subtitle {
+		margin:-1em 0 1em 0;
+	}
+
+	.plugin p.supplemental {
+		color:#666666; font-size:80%;
+	}
+	.plugin li.reg {
+	 	padding-bottom:10px !important;	
+	}
+	.plugin .rewardarea p {
+		color:#000000;	
+	}	
+	
+	.statusupdate {
+		float:left;
+		width:120px;
+		display:block;		
+		margin-left:-1em;
+		margin-bottom:-1em;
+		margin-top:1em;
+		
+		/*border-left:1px solid #dedede;*/
+		text-align:center;
+		vertical-align:middle;
+		position:relative;
+		overflow:visible;
+	}
+	.rewardarea {
+		float:right; 
+		padding-top:1em;
+		padding-right:-1em;  
+		margin:0 0 0 -1em;
+		display:block;
+		width:80px;	
+		position:relative;
+		overflow:visible;
+		color:#000000;
+		text-align:right;	
+	}
+	.rewardarea a {
+		background: url("../com_store/images/coin.gif") 0 0  no-repeat;
+		padding: 0 0.5em 0.3em 0.8em;
+		border: none;		
+	}
+	
+	.update_answered,  .update_unanswered {
+		font-style:bold;
+		display:block;
+		padding-bottom:0.8em;
+		margin-top:-0.5em;
+	}
+	.update_answered {
+		/*color:#000000;
+		font-size:80%;
+		text-transform:uppercase;
+		background: transparent url("images/green-check.gif") 100px top no-repeat;*/
+		font-size:80%;
+		text-transform:uppercase;
+	}
+	.update_unanswered a {		
+		color:#d56113;	
+			
+	}
+	
+	
+/*  */
 	.main .subject {
 		margin-top: 0;
 		}
@@ -27,24 +143,29 @@
 	.questions {
 		list-style: none;
 		margin: 0 0 1em 0;
-		padding: 1.5em 0 0 0;
+		padding: 0 0 0 0;
+		border-top:2px solid #e3e3e3;
 		}
 	.questions li.reg {
 		margin: 0;
-		padding: 10px 0 0 25px;
-		background: transparent url("images/q_letter.gif") 0 10px no-repeat;
-		border-top: 1px solid #e4e4e4;
+		padding: 10px 0 0 35px;
+		background: transparent url("images/q_letter.gif") 10px 12px no-repeat;
+		border-bottom: 1px solid #e4e4e4;	
 		}
 	.questions li.hasanswers {
-		background: transparent url("images/qa.gif") 0 10px no-repeat;
+		background: transparent url("images/qa.gif") 10px 12px no-repeat;
 		}
 	.questions li.under_review {
-		background: #f5f5f5 url("images/q_letter.gif") 0 10px no-repeat;
+		background: #f5f5f5 url("images/q_letter.gif") 10px 12px no-repeat;
 		}
 	.questions li.hasreward {
-		background: transparent url("images/qr.gif") 0 10px no-repeat;
+		background: transparent url("images/qr.gif") 10px 12px no-repeat;
 		background-color: #fcf6f6;
-		border-top: 1px solid #ff9f79;
+		border-bottom: 1px solid #ff9f79;
+		}
+	.questions li.answered  {
+		background: transparent url("images/qchecked.gif") 10px 12px no-repeat;
+		background-color: #f5f5f5;
 		}
 	.questions h4 { 
 		margin: 0;
@@ -77,7 +198,7 @@
 		}
 	.answers li {
 		margin: 0 0 0 0;
-		padding: 0 0 30px 60px;
+		padding: 0 0 15px 60px;
 		border-top: 1px solid #CCC;
 		background-image:none;
 		}
@@ -167,6 +288,8 @@
 	.acceptanswer span { 
 		color: #999;
 		text-transform: uppercase;
+		padding-right: 20px;
+		background: transparent url("images/green-check.gif") right top no-repeat;
 		}
 	.answers .acceptanswer span { 
 		padding-right: 20px;
@@ -278,6 +401,12 @@
 		margin: 0;
 		padding:0;
 		}
+	p.info_ask {
+		margin:0;
+		padding: 1em;
+		padding-top:5em;
+		background: #EFEFEF url("images/qaicon.gif") 50% 0 no-repeat;
+	}
 	#srch h3 a {
 		background: url("images/srch.gif") 50% 30% no-repeat;
 		}
@@ -567,6 +696,7 @@
 		padding: 0;
 		margin: 0;
 		}
+	
 	.filters {
 		background: #f3f3f3;
 		border-top:1px solid #ccc;
@@ -798,6 +928,7 @@
 		font-weight:600;
 		line-height:1.2em;
 	}
+	
 	.chosen {
 		background: transparent url("images/bg_bestanswer.gif") right top repeat-x; 
 		overflow:hidden;
@@ -805,4 +936,50 @@
 	* html .chosen { background: none;}
 	* html ol.comments dl.comment-details { margin: 1em 20px 2em -50px; }
 	
-	#useroptions li { white-space:nowrap; }
+	#useroptions li { white-space:nowrap; overflow:visible; }
+	
+	.com_answers .section {
+		/*margin-left:-0.5em;*/
+		border:0;
+	}
+	.subtitle {
+		margin: -1em 1.5em 1.5em 1.3em;
+		font-weight:normal;
+	}
+	.spacer {
+		padding:0 1em 0 1em;
+	}
+	.myquestions {
+		background: transparent url("images/myquestions.png") 0 0 no-repeat; padding-left: 18px;padding-bottom:0.2em; 
+		margin-left:-1.5em;
+		margin-right:-0.5em;
+	}
+	/* Breadcrumbs */
+	.breadcrumbtrail {
+		border: 1px solid #eee;
+		margin-left: 1.2em;
+		margin-right: 1.2em;
+		padding: 1em;
+		list-style: none;
+		}
+	.breadcrumbtrail .myquestions {
+		margin-left:0;
+	}
+	.breadcrumbtrail li,
+	.breadcrumbtrail li {
+		font-size: 90%;
+		display: inline;
+		margin: 0;
+		padding: 0 0.5em 0 0.7em;
+		border-left: 1px solid #999;
+		background: none;
+		}
+	.breadcrumbtrail li.first,
+	.breadcrumbtrail .first {
+		padding: 0 0.5em 0 0;
+		border-left: none;
+		}
+	.breadcrumbtrail li.active,
+	.breadcrumbtrail .active {
+		font-weight: bold;
+		}
