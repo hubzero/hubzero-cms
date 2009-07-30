@@ -426,7 +426,7 @@ class GroupsHtml
 		$html  = GroupsHtml::div( GroupsHtml::hed(2,$group->get('description')), '', 'content-header' ).n;
 		$html .= '<div id="content-header-extra">'.n;
 		$html .= t.'<ul id="useroptions">'.n;
-		$html .= t.t.'<li class="last"><a class="group" href="'.JRoute::_('index.php?option='.$option).'">'.JText::_('GROUPS_ALL_GROUPS').'</a></li>'.n;
+		$html .= t.t.'<li class="last"><a class="group" href="'.JRoute::_('index.php?option='.$option.a.'task=browse').'">'.JText::_('GROUPS_ALL_GROUPS').'</a></li>'.n;
 		$html .= t.'</ul>'.n;
 		$html .= '</div><!-- / #content-header-extra -->'.n;
 		$html .= GroupsHtml::tabs( $option, $group->get('cn'), $cats, $tab );
