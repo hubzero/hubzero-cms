@@ -176,7 +176,7 @@ class plgXAuthenticationHzldap extends JPlugin
     		if ($matches[1] == 'ldaps://')
         		$negotiate_tls = false;
 
-    		if (is_numeric($matches[4]))
+    		if (isset($matches[4]) && is_numeric($matches[4]))
         		$port = $matches[4];
 		}
 	
