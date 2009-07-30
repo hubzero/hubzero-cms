@@ -406,7 +406,7 @@ class modMyContributions
 			//$html .= '</div>'."\n";
 		}
 
-		$html .= "\t\t".'<p class="more"><a href="/contribute/?task=start">'.JText::_('Start a new contribution').' &raquo;</a></p>'."\n";
+		$html .= "\t\t".'<ul class="module-nav"><li><a href="/contribute/?task=start">'.JText::_('Start a new contribution').' &raquo;</a></li></ul>'."\n";
 		
 		// Output final HTML
 		return $html;
