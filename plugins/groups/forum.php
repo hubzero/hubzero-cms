@@ -222,16 +222,16 @@ class plgGroupsForum extends JPlugin
 	
 	//-----------
 	
-	function topic() 
+	function topic($id=0) 
 	{
 		$database =& JFactory::getDBO();
-		
+
 		// Incoming
 		$filters = array();
 		$filters['authorized'] = $this->authorized;
 		$filters['limit']  = $this->limit;
 		$filters['start']  = $this->limitstart;
-		$filters['parent'] = JRequest::getInt( 'topic', 0 );
+		$filters['parent'] = ($id) ? $id : JRequest::getInt( 'topic', 0 );
 		
 		if ($filters['parent'] == 0) {
 			return $this->topics();
@@ -386,12 +386,16 @@ class plgGroupsForum extends JPlugin
 		}
 
 		// Store new content
-		if (!$row->store()) {
+		/*if (!$row->store()) {
 			$this->setError( $row->getError() );
 			return $this->edittopic();
+		}*/
+
+		if ($row->parent) {
+			return $this->topic($row->parent);
+		} else {
+			return $this->topics();
 		}
-		
-		return $this->topics();
 	}
 	
 	//-----------
