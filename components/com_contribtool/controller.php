@@ -2250,7 +2250,7 @@ class ContribtoolController extends JObject
 					
 			}
 			
-			if($version=='current') {
+			if($version=='dev') {
 				// update resource page
 				$this->updateResPage($rid, $status);
 			}
