@@ -184,7 +184,10 @@ class WishlistController extends JObject
 			case 'rateitem':   	$this->rateitem();    	break;
 			case 'savevote':    $this->savevote();      break;
 			case 'savereply':   $this->savereply();   	break;
-			case 'reply':      	$this->reply();  	  	break;		
+			case 'reply':      	$this->reply();  	  	break;	
+			
+			// Autocompleter - called via AJAX
+			case 'autocomplete': $this->autocomplete(); break;	
 			
 			default: $this->wishlist(); break;
 		}
@@ -358,8 +361,13 @@ class WishlistController extends JObject
 			
 			// need to log in to private list
 			if(!$wishlist->public && $juser->get('guest')) {			
-				$msg = 'This private wish list requires a login.';
-				WishlistController::$this->login($msg);
+				$msg = JText::_('This private wish list requires a login.');
+				if(!$plugin) {
+					WishlistController::login($msg);
+				}
+				else {
+					return WishlistHtml::warning( JText::_('You are not authorized to view this page.'));
+				}
 				return;
 			}
 						
@@ -602,8 +610,22 @@ class WishlistController extends JObject
 				$funds 		= $balance - $credit;			
 				$funds 		= ($funds > 0) ? $funds : '0';
 				$wish->funds = $funds;
+			}		
+			
+			if($action == 'move') {
+				
+				// what wishlist categories are we allowed to have?
+				$cats   = $this->config->parameters['categories'];
+				$cats   = $cats ? $cats : 'general, resource';
+				$wish->cats = $cats;
+				
+				if($wishlist->category=='group') {
+					$group = new XGroup();
+					$group->select($wishlist->referenceid);
+					$wishlist->cn = $group->cn;
+				}
+				
 			}
-
 			
 			// Get implementation plan
 			$objPlan = new WishlistPlan( $database );
@@ -637,9 +659,7 @@ class WishlistController extends JObject
 		
 		// calendar styling
 		$this->getStyles('com_events', 'calendar.css');
-		$document =& JFactory::getDocument();
-		$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'calendar.rc4.js');
-		$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'events.js');
+
 		
 		// Build the page title
 		$title  = JText::_(strtoupper($this->_name));
@@ -1192,14 +1212,16 @@ class WishlistController extends JObject
 						$login = $ruser->get('login');
 					}
 					
+					if($row->anonymous) {
+						$name = JText::_('ANONYMOUS');
+					}
+					
 					$subject = JText::_(strtoupper($this->_name)).', '.JText::_('NEW_WISH').' '.JText::_('FOR').' '.$wishlist->title.' '.JText::_('from').' '.$name;
 					
 					$from = array();
 					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
 					$from['email'] = $jconfig->getValue('config.mailfrom');
-					
-					
-					
+										
 					// get list owners
 					$objOwner = new WishlistOwner( $database );
 					$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist);					
@@ -1208,7 +1230,9 @@ class WishlistController extends JObject
 					$message .= JText::_('WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
 					$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($row->subject).r.n;
 					$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$row->proposed, '%d %b, %Y');
-					$message .= ' '.JText::_('BY').' '.$name.' ('.$login.')'.r.n.r.n;
+					$message .= ' '.JText::_('BY').' '.$name.' ';
+					$message .= $row->anonymous ? '' : '('.$login.')';
+					$message .= r.n.r.n;
 					
 					$message .= '----------------------------'.r.n;
 					$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$row->id);
@@ -1361,12 +1385,17 @@ class WishlistController extends JObject
 						$name = $ruser->get('name');
 						$login = $ruser->get('login');
 					}
+					if($objWish->anonymous) {
+						$name = JText::_('ANONYMOUS');
+					}
 		
 					$message  = '----------------------------'.r.n;
 					$message .= JText::_('WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
 					$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
 					$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
-					$message .= ' '.JText::_('BY').' '.$name.' ('.$login.')'.r.n.r.n;
+					$message .= ' '.JText::_('BY').' '.$name.' ';
+					$message .= $objWish->anonymous ? '' : '('.$login.')';
+					$message .= r.n.r.n;
 					
 					$message .= '----------------------------'.r.n;
 					if($status!='pending') {
@@ -1435,11 +1464,18 @@ class WishlistController extends JObject
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		
-		$listid = JRequest::getInt( 'wishlist', 0 );
-		$wishid = JRequest::getInt( 'wish', 0 );
-		$category = JRequest::getVar( 'type', '' );
-		$refid = JRequest::getInt( 'resource', 0);
+		$listid 	= JRequest::getInt( 'wishlist', 0 );
+		$wishid 	= JRequest::getInt( 'wish', 0 );
+		$category 	= JRequest::getVar( 'type', '' );
+		$refid 		= JRequest::getInt( 'resource', 0);
+		$cn			= JRequest::getVar( 'group', '');
 		
+		// some transfer options
+		$options = array();
+		$options['keepplan']   		= JRequest::getInt( 'keepplan', 0);
+		$options['keepcomments']   	= JRequest::getInt( 'keepcomments', 0);
+		$options['keepstatus']   	= JRequest::getInt( 'keepstatus', 0);
+		$options['keepfeedback']   	= JRequest::getInt( 'keepfeedback', 0);
 		
 		// missing wish id 
 		if(!$wishid) {
@@ -1454,6 +1490,10 @@ class WishlistController extends JObject
 		else if($category == 'general' ) {			
 			$refid = 1; // default to main wish list
 		}
+		else if ($category == 'group' && !$cn) {
+			echo WishlistHtml::alert( JText::_('Please specify a valid group name'));
+			exit();
+		}
 		
 		if($category=='question' or $category=='ticket') {
 			// move to a question or a ticket
@@ -1464,7 +1504,8 @@ class WishlistController extends JObject
 			$dispatcher->trigger( 'transferItem', array(
 					'wish',
 					$wishid,
-					$category)
+					$category,
+					$options)
 			);
 				
 		}
@@ -1472,6 +1513,19 @@ class WishlistController extends JObject
 		
 			$objWishlist = new Wishlist ( $database );
 			$objWish = new Wish( $database );
+			
+			// Get group id from cn
+			if($category == 'group') {
+				$group = new XGroup();
+					if(XGroupHelper::groups_exists($cn)) {
+						$group->select($cn);
+						$refid = $group->gidNumber;
+					}
+					else {
+						echo WishlistHtml::alert( JText::_('Group with this name does not exist'));
+						exit();
+					}
+			}
 			
 			// Where do we put this wish?
 			$newlist = $objWishlist->get_wishlistID($refid, $category);
@@ -1491,6 +1545,16 @@ class WishlistController extends JObject
 						}
 					
 			}
+			else if($category == 'group' && !$newlist) {
+			
+				// create private list for group
+				if(XGroupHelper::groups_exists($refid)) {
+						$group = new XGroup();
+						$group->select($refid);	
+						$newlist = $obj->createlist($cat, $refid, 0, $group->cn.' '.JText::_('Group'));
+				}
+				
+			}
 		
 			
 			// cannot add a wish to a non-found list
@@ -1502,16 +1566,121 @@ class WishlistController extends JObject
 				// Transfer wish
 				$objWish->load($wishid);
 				$objWish->wishlist = $newlist;
+				$objWish->assigned = 0; // moved wish is not assigned to anyone yet
 				$objWish->ranking = 0; // zero ranking
+				$objWish->due = '0000-00-00 00:00:00';
+				
+				// renew state if option chosen
+				if(!$options['keepstatus']) {
+					$objWish->status = 0;
+					$objWish->accepted = 0;
+				}
 				
 				if (!$objWish->store()) {
 					$this->_error = JText::_('Failed to move the wish.');
 				}
 				else {
 				
-					// also delete all previous votes for this wish
+					// also delete all previous owner votes for this wish
 					$objR = new WishRank( $database );
 					$objR->remove_vote($wishid);
+					
+					// delete plan if option chosen
+					if(!$options['keepplan']) {
+						$plan = new WishlistPlan($database);
+						$plan->deletePlan($wishid);
+					}
+					// delete comments if option chosen
+					if(!$options['keepcomments']) {
+						
+						$reply = new XComment( $database );
+						$comments1 = $reply->getResults( array('id'=>$wishid, 'category'=>'wish') );
+						if (count($comments1) > 0) {
+							foreach ($comments1 as $comment1) 
+							{
+								$comments2 = $reply->getResults( array('id'=>$comment1->id, 'category'=>'wishcomment') );
+								if (count($comments2) > 0) {
+									foreach ($comments2 as $comment2) 
+									{
+										$comments3 = $reply->getResults( array('id'=>$comment2->id, 'category'=>'wishcomment') );
+										if (count($comments3) > 0) {
+											foreach ($comments3 as $comment3) 
+											{
+												$reply->delete( $comment3->id );
+											}
+										}
+										$reply->delete( $comment2->id );
+									}
+								}
+								$reply->delete( $comment1->id );
+							}
+						}
+					}
+					
+					// delete community votes if option chosen
+					if(!$options['keepfeedback']) {
+						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'vote.class.php' );
+						$v = new Vote( $database );
+						$votes = $v->deleteVotes( array('id'=>$wishid, 'category'=>'wish') );
+					}
+					
+					// send message about transferred wish
+					$xhub =& XFactory::getHub();
+					$jconfig =& JFactory::getConfig();
+					$admin_email = $jconfig->getValue('config.mailfrom');
+					
+					$oldtitle = $objWishlist->getTitle($listid);
+					$newtitle = $objWishlist->getTitle($newlist);
+					
+					$name = JText::_('UNKNOWN');
+					$login = JText::_('UNKNOWN');
+					$ruser =& XUser::getInstance($objWish->proposed_by);
+					if (is_object($ruser)) {
+						$name = $ruser->get('name');
+						$login = $ruser->get('login');
+					}
+					
+					if($objWish->anonymous) {
+						$name = JText::_('ANONYMOUS');
+					}
+					
+					$subject1 = JText::_(strtoupper($this->_name)).', '.JText::_('NEW_WISH').' '.JText::_('FOR').' '.$newtitle.' '.JText::_('from').' '.$name.' - transferred';
+					$subject2 = JText::_(strtoupper($this->_name)).', '.JText::_('Your wish').' #'.$wishid.' '.JText::_('has been transferred to a different wish list');
+					
+					$from = array();
+					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
+					$from['email'] = $jconfig->getValue('config.mailfrom');
+										
+					// get list owners
+					$objOwner = new WishlistOwner( $database );
+					$owners   = $objOwner->get_owners($newlist, $this->admingroup );					
+		
+					$message  = '----------------------------'.r.n;
+					$message .= JText::_('WISH').' #'.$wishid.', '.$newtitle.' '.JText::_('WISHLIST').r.n;
+					$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
+					$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
+					$message .= ' '.JText::_('BY').' '.$name.' ';
+					$message .= $objWish->anonymous ? '' : '('.$login.')'.r.n;
+					$message .= JText::_('Transferred from Wish List ').' "'.$oldtitle.'"';
+					$message .= r.n.r.n;
+					
+					$message .= '----------------------------'.r.n;
+					$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'id='.$newlist.a.'wishid='.$wishid);
+					$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
+					
+					JPluginHelper::importPlugin( 'xmessage' );
+					$dispatcher =& JDispatcher::getInstance();
+					
+					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_new_wish', $subject1, $message, $from, $owners['individuals'], $this->_option ))) {
+								$this->setError( JText::_('Failed to message wish list owners.') );
+								echo WishlistHtml::alert( $this->_error );
+					}
+					
+					if (!$dispatcher->trigger( 'onSendMessage', array( 'support_item_transferred', $subject2, $message, $from, array($objWish->proposed_by), $this->_option ))) {
+								$this->setError( JText::_('Failed to message wish author.') );
+								echo WishlistHtml::alert( $this->_error );
+					}
+					
 				
 				}
 				
@@ -1944,6 +2113,57 @@ class WishlistController extends JObject
 				echo WishlistHtml::alert( $row->getError() );
 				exit();
 			}
+			else {
+				// Notify wish owner (only if someone else posts a comment)
+				$objWish = new Wish ( $database );
+				$objWish->load($wishid);
+				if($objWish->proposed_by != $row->added_by) {
+					// Build e-mail components
+					$xhub =& XFactory::getHub();
+					$jconfig =& JFactory::getConfig();
+					$admin_email = $jconfig->getValue('config.mailfrom');
+					
+					$name = JText::_('UNKNOWN');
+					$login = JText::_('UNKNOWN');
+					$ruser =& XUser::getInstance($row->added_by);
+					if (is_object($ruser)) {
+						$name = $ruser->get('name');
+						$login = $ruser->get('login');
+					}
+					if($row->anonymous) {
+						$name = JText::_('ANONYMOUS');
+					}
+					
+					$subject = JText::_(strtoupper($this->_name)).', '.JText::_('Comment posted on your wish').' #'.$wishid.' '.JText::_('by').' '.$name;
+					
+					$from = array();
+					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
+					$from['email'] = $jconfig->getValue('config.mailfrom');
+					
+					//$message  = '----------------------------'.r.n;
+					$message  = JText::_('WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
+					$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
+					$message .= '----------------------------'.r.n;
+					$message .= JText::_('Comment by').' '.$name.' ';
+					$message .= $row->anonymous ? '' : '('.$login.')';
+					$message .= ' '.JText::_('posted on').' '.JHTML::_('date',$row->proposed, '%d %b, %Y').':'.r.n;
+					$message .= '"'.$row->comment.'"';
+					$message .= r.n;
+					
+					$message .= '----------------------------'.r.n;
+					$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
+					$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
+					
+					JPluginHelper::importPlugin( 'xmessage' );
+					$dispatcher =& JDispatcher::getInstance();
+					
+					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_comment_posted', $subject, $message, $from, array($objWish->proposed_by), $this->_option ))) {
+								$this->setError( JText::_('Failed to message wish list owners.') );
+								echo WishlistHtml::alert( $this->_error );
+					}
+				}
+			}
+			
 		}
 	
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
@@ -2442,6 +2662,82 @@ class WishlistController extends JObject
 		$text = strip_tags( $text );
 		return $text;
 	}
+	
+	//------------
+	
+	public function transform($array, $newarray=array()) {
+		if(count($array)>0) {
+			foreach($array as $a) {
+				if(is_object($a)) {
+					$newarray[$a->gidNumber]= $a->description;
+				}
+				else {
+					$newarray[]= $a;
+				}
+			}
+		}
+		
+		return $newarray;
+	}
+	
+	//-----------
+
+	protected function autocomplete() 
+	{
+		$filters = array();
+		$filters['limit']  = 20;
+		$filters['start']  = 0;
+		$filters['search'] = trim(JRequest::getString( 'value', '' ));
+		$which = JRequest::getVar('which', 'resource');
+		
+		// Fetch results
+		$rows = $this->getAutocomplete( $filters, $which );
+
+		// Output search results in JSON format
+		$json = array();
+		if (count($rows) > 0) {
+			foreach ($rows as $row) 
+			{
+				if($which == 'resource') {
+					$json[] = '["'.$row->id.': '.htmlspecialchars($row->title).'","'.$row->id.'"]';
+				}
+				else {
+					$json[] = '["'.$row->description.'","'.$row->cn.'"]';
+				}
+				
+			}
+		}
+		
+		echo '['.implode(',',$json).']';
+		return;
+	}
+	
+	//-----------
+
+	private function getAutocomplete( $filters=array(), $which ) 
+	{
+		$database =& JFactory::getDBO();
+		
+		if($which == 'resource') {
+				$query = "SELECT r.title, r.id
+					FROM #__resources as r 
+					WHERE r.standalone=1 AND (LOWER( r.title ) LIKE '%".$filters['search']."%' OR LOWER( r.alias) LIKE '%".$filters['search']."%' OR r.id LIKE '".$filters['search']."%' )
+					ORDER BY r.title ASC";
+		}
+		else {
+				$query = "SELECT t.gidNumber, t.cn, t.description 
+					FROM #__xgroups AS t 
+					WHERE t.type=1 AND (LOWER( t.cn ) LIKE '%".$filters['search']."%' OR LOWER( t.description ) LIKE '%".$filters['search']."%')
+					ORDER BY t.description ASC";
+		}
+		
+		//WHERE (t.type=1 OR t.type=2) AND (LOWER( t.cn ) LIKE '%".$filters['search']."%' OR LOWER( t.description ) LIKE '%".$filters['search']."%')
+
+		$database->setQuery( $query );
+		return $database->loadObjectList();
+	}
+	
+	
 
 	
 }

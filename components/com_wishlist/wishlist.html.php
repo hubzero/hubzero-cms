@@ -402,9 +402,9 @@ class WishlistHtml
 		
 		if($wishlist) {	
 		  if(!$wishlist->public	 && $admin!= 2) {
-		  	$html .= WishlistHtml::div( WishlistHtml::hed( 2, 'Private Wish List' ), '', 'content-header' );
+		  	//$html .= WishlistHtml::div( WishlistHtml::hed( 2, 'Private Wish List' ), '', 'content-header' );
 		  	$html .= '<div class="main section">'.n;
-			$html  .= WishlistHtml::error(JText::_('Sorry, you are not authorized to view this private wish list.')).n;
+			$html .= WishlistHtml::warning(JText::_('Sorry, you are not authorized to view this private wish list.')).n;
 			$html .= '</div>'.n;	
 		  }
 		  else {
@@ -1007,7 +1007,7 @@ class WishlistHtml
 					$html .= strtoupper(JText::_('NO')).'</a></span></p>'.n;
 					$html .= t.t.'</div>'.n;
 				}
-				// delete wish?
+				// change status?
 				if($item->action == 'changestatus') {
 					$html .= t.'<a name="action"></a>'.n;
 					$html .= t.t.'<div class="takeaction">'.n;
@@ -1119,7 +1119,7 @@ class WishlistHtml
 					if($error) {
 					$html  .= WishlistHtml::error($error).n;
 					}
-					$html .= t.t.'<h4>'.JText::_('WISH_BELONGS_TO').'</h4>'.n;
+					$html .= t.t.'<h4>'.JText::_('WISH_BELONGS_TO').':</h4>'.n;
 					$html .= t.t.t.' <form id="moveWish" method="post" action="index.php?option='.$option.'">'.n;
 					$html .= t.t.t.'	 <fieldset>'.n;
 					$html .= t.t.t.'	  <input type="hidden"  name="task" value="movewish" />'.n;
@@ -1130,25 +1130,77 @@ class WishlistHtml
 					if($wishlist->category=='general') {
 					$html .= 'checked="checked"';
 					}
-					$html .= ' /> '.JText::_('MAIN_LIST').n;
+					$html .= ' /> '.JText::_('Main general wish list').n;
 					$html .= t.t.t.'	  </label>'.n;
 					$html .= t.t.t.'	 </fieldset>'.n;
+					
 					$html .= t.t.t.'	 <fieldset>'.n;
 					$html .= t.t.t.'	  <label>'.n;
 					$html .= t.t.t.'      <input class="option" type="radio" name="type" value="resource" ';
 					if($wishlist->category=='resource') {
 					$html .= 'checked="checked"';
 					}
-					$html .=' /> '.JText::_('Wish List for Resource with ID').n;
+					$html .=' /> '.JText::_('Wish list for resource (id)').n;
 					$html .= t.t.t.'	  </label>'.n;
 					$html .= t.t.t.'	  <label>'.n;
-					$html .= t.t.t.'      <input class="secondary_option" type="text" name="resource" value="';
+					$html .= t.t.t.'      <input class="secondary_option" type="text" name="resource" id="acresource" value="';
 					if($wishlist->category=='resource') {
-					$html .= $wishlist->referenceid.n;
+					$html .= $wishlist->referenceid;
 					}
-					$html .= '" />'.n;
+					$html .= '" autocomplete="off" />'.n;
 					$html .= t.t.t.'	  </label>'.n;
 					$html .= t.t.t.'	 </fieldset>'.n;
+					if(isset($item->cats) && preg_replace("/group/", "", $item->cats) != $item->cats) {
+					$html .= t.t.t.'	 <fieldset>'.n;
+					$html .= t.t.t.'	  <label>'.n;
+					$html .= t.t.t.'      <input class="option" type="radio" name="type" value="group" ';
+					if($wishlist->category=='group') {
+					$html .= 'checked="checked"';
+					}
+					$html .=' /> '.JText::_('Wish list for group (name)').n;
+					$html .= t.t.t.'	  </label>'.n;
+					$html .= t.t.t.'	  <label>'.n;
+					
+					$document =& JFactory::getDocument();
+					$document->addScript('components'.DS.'com_support'.DS.'observer.js');
+					$document->addScript('components'.DS.'com_wishlist'.DS.'autocompleter.js');
+					$document->addStyleSheet('components'.DS.'com_support'.DS.'autocompleter.css');
+					
+					$html .= t.t.t.'<input type="text" name="group" value="';
+					if($wishlist->category=='group') {
+					$html .= $wishlist->cn;
+					}
+					$html .= '" id="acgroup"  class="secondary_option" />'.n;
+					$html .= t.t.t.'	  </label>'.n;
+					$html .= t.t.t.'	 </fieldset>'.n;
+					}
+					$html .= t.t.t.'	 <fieldset class="separated">'.n;
+					$html .= t.t.'<h4>'.JText::_('Transfer Options').':</h4>'.n;
+					$html .= t.t.t.'	  <label>'.n;
+					$html .= t.t.t.'       <input class="option" type="checkbox" name="keepcomments" value="1" checked="checked" /> ';
+					$html .= JText::_('Preserve comments').n;
+					$html .= t.t.t.'	  </label>'.n;
+					$html .= t.t.t.'	 </fieldset>'.n;
+					$html .= t.t.t.'	 <fieldset>'.n;
+					$html .= t.t.t.'	  <label>'.n;
+					$html .= t.t.t.'       <input class="option" type="checkbox" name="keepplan" value="1" checked="checked" /> ';
+					$html .= JText::_('Preserve implementation plan').n;
+					$html .= t.t.t.'	  </label>'.n;
+					$html .= t.t.t.'	 </fieldset>'.n;
+					$html .= t.t.t.'	 <fieldset>'.n;
+					$html .= t.t.t.'	  <label>'.n;
+					$html .= t.t.t.'       <input class="option" type="checkbox" name="keepstatus" value="1" checked="checked" /> ';
+					$html .= JText::_('Preserve wish status').n;
+					$html .= t.t.t.'	  </label>'.n;
+					$html .= t.t.t.'	 </fieldset>'.n;
+					$html .= t.t.t.'	 <fieldset>'.n;
+					$html .= t.t.t.'	  <label>'.n;
+					$html .= t.t.t.'       <input class="option" type="checkbox" name="keepfeedback" value="1" checked="checked" /> ';
+					$html .= JText::_('Preserve community votes').n;
+					$html .= t.t.t.'	  </label>'.n;
+					$html .= t.t.t.'	 </fieldset>'.n;
+					
+					//$html .= t.t.t.WishlistHtml::formSelect('group', $wishlist->groups, $wishlist->referenceid, '');
 					/*
 					$html .= t.t.t.'	 <fieldset>'.n;
 					$html .= t.t.t.'	  <label>'.n;
@@ -1163,7 +1215,7 @@ class WishlistHtml
 					$html .= t.t.t.'	  </label>'.n;
 					$html .= t.t.t.'	 </fieldset>'.n;
 					*/
-					$html .= t.t.t.'	 <fieldset>'.n;
+					$html .= t.t.t.'	 <fieldset class="finalblock">'.n;
 					$html .= t.t.t.'     <input type="submit" value="'.strtolower(JText::_('Move this wish')).'" /> <span class="cancelaction">';
 					$html .= '<a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'">';
 					$html .= JText::_('CANCEL').'</a></span>'.n;
@@ -1234,6 +1286,10 @@ class WishlistHtml
 					// we are editing
 					if($item->action=='editplan') {
 						
+						$document =& JFactory::getDocument();
+						$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'calendar.rc4.js');
+						$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'events.js');
+		
 						$html .= '<form action="index.php" method="post" id="hubForm">'.n;
 						$html .= t.'<div class="explaination">'.n;
 						$html .= t.'	 <p>'.JText::_('You can set a deadline and describe the implementation plan for this wish.').'</p>'.n;
@@ -1837,10 +1893,11 @@ class WishlistHtml
 			$html .= ($wish->private) ? 'checked="checked"' : '';
 			$html .= '/>Make this wish private to list owners (hide from public) </label>'.n;
 			}
-			$html .= t.t.t.'	  <input type="hidden"  name="task" value="savewish" />'.n;
+			$html .= t.t.t.'	  <input type="hidden"  name="task" value="savewish" />'.n;					
 			$html .= t.t.t.'	  <input type="hidden" id="wishlist" name="wishlist" value="'.$wishlist->id.'" />'.n;
 			$html .= t.t.t.'	  <input type="hidden" id="status" name="status"  value="'.$wish->status.'" />'.n;
 			$html .= t.t.t.'	  <input type="hidden" id="id" name="id" value="'.$wish->id.'" />'.n;	
+			$html .= t.t.t.'	  <label>'.n;
 			$html .= t.t.t.'	  <label>Summary of your wish: <span class="required">required</span>'.n;
 			$html .= t.t.t.'	  <input name="subject" maxlength="120" id="subject" type="text" value="'.$wish->subject.'" /></label>'.n;
 			$html .= t.t.t.'	  <label>Explain in more detail: '.n;

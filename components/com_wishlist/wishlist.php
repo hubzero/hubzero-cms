@@ -45,6 +45,7 @@ include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishl
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.config.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'wishlist.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'wish.tags.php' );
 
 include_once( JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'xcomment.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');

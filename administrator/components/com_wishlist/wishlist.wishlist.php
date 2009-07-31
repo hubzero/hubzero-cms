@@ -94,9 +94,7 @@ class Wish extends JTable
 		return $this->_db->loadResult();
 		
 	 }
-	 
-	 
-	 
+	 	 
 	 //----------
 	 
 	 public function get_wishes ($listid, $filters, $admin, $juser=NULL) {
@@ -127,9 +125,7 @@ class Wish extends JTable
 				default: 			$sort = 'ws.accepted DESC, ws.status ASC, ws.proposed DESC';
 									break; 
 		}
-		
-		
-		
+				
 		$sql = "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, m.due AS myvote_due,";
 		if($uid) {
 		$sql.= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=".$uid.") AS ranked,";
@@ -200,7 +196,7 @@ class Wish extends JTable
 		return $this->_db->loadObjectList();
 	 }
 	 
-	  //----------
+	 //----------
 	 
 	 public function delete_wish ($wishid, $withdraw=0) {
 	 	
@@ -221,7 +217,8 @@ class Wish extends JTable
 		return true;
 	 
 	 }
-	  //----------
+	 
+	 //----------
 	 
 	 public function get_wish ($wishid, $juser='', $deleted=0) {
 	 
@@ -264,8 +261,8 @@ class Wish extends JTable
 		
 		return $wish;
 	 }
-	  //----------
-	  // Does the wish exist on this list?
+	 //----------
+	 // Does the wish exist on this list?
 	 public function check_wish ($wishid, $listid) {
 	 	
 		if ($wishid === NULL or $listid === NULL) {
@@ -280,7 +277,7 @@ class Wish extends JTable
 	 
 	 }
 	 
-	  //----------
+	 //----------
 	 
 	 public function getWishID ($which, $id, $listid, $admin) {
 	 	
@@ -310,7 +307,7 @@ class Wish extends JTable
 	 	
 	 }
 	 
-	  //----------
+	 //----------
 	 
 	 public function get_vote ($refid, $category= 'wish', $uid) {
 	 	
@@ -383,6 +380,19 @@ class WishlistPlan extends JTable
 		}
 	}
 	
+	//-----------
+	
+	public function deletePlan($wishid)
+	{
+		if($wishid == NULL) {
+		 return false;
+		}
+		
+		$query = "DELETE FROM $this->_tbl WHERE wishid='". $wishid."'";
+		$this->_db->setQuery( $query );
+		$this->_db->query();
+		
+	}
 	
 	
 	
@@ -701,10 +711,7 @@ class WishlistOwner extends JTable
 		return $collect;
 	 
 	 }
-	 
-	
-	
-	
+		
 	
 }
 //----------------------------------------------------------
@@ -947,16 +954,28 @@ class Wishlist extends JTable
 			break;
 			
 		} 
-		
-		
-			
-		
-		
-		
-		
+				
 		return 0;	
 		
 	}
+	
+	//------------
+	public function getTitle ($id)
+	{
+		
+		if ($id === NULL) {
+			return false;
+		}
+		$sql = "SELECT w.title "
+				. "\n FROM $this->_tbl AS w";
+		$sql .=	"\n WHERE w.id=".$id;
+		
+		$this->_db->setQuery( $sql );
+		return $this->_db->loadResult();
+		
+	
+	}
+	
 	//------------
 	public function is_primary ($id)
 	{
