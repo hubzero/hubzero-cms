@@ -649,8 +649,20 @@
 	}
 	#moveWish fieldset, #changeStatus fieldset {
 		display:block;
-		padding:0.5em 0 0.5em 0;
+		padding:0.7em 0;
 		vertical-align:middle;
+	}
+	#moveWish  .secondary_option {
+		width:450px;
+		position:absolute;
+		left:230px;
+	}
+	#moveWish .separated {
+		margin-top:1em;
+		padding-top:1em;
+	}
+	#moveWish .finalblock {
+		margin-top:1em;
 	}
 	#changeStatus {
 		margin-top:1em;
@@ -780,7 +792,9 @@
 	.moveitem {
 		background: #FFFDEF url("images/arrow.gif") 10px 10px no-repeat; 
 	}
-
+	.moveitem  h4 {
+		margin-bottom:1em;
+	}
 	.addbonus h4.summary {
 		color: #ba7745; 
 		border-bottom: 2px solid #EFEAC2;
@@ -887,6 +901,7 @@
 		color:#FF0000;
 	}
 	
+
 	
 /*---------------------------------------------------------------
 	Action links
