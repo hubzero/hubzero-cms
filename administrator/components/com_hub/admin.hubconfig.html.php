@@ -126,18 +126,12 @@ class HubConfigHTML
 										Site Images Dir
 									</span>
 								</td>
-								<td>
-									<input class="text_area" type="text" name="settings[hubSiteImagesDir]" size="30" value="<?php echo (isset($arr['hubSiteImagesDir'])) ? $arr['hubSiteImagesDir'] : ''; ?>" />
-								</td>
 							</tr>
 							<tr>
 								<td class="key">
 									<span class="editlinktip hasTip" title="Site Name::Enter the name of your web site. This will be used in various locations for example, the Back-end browser title bar and <em>Site Offline</em> pages.">
 										Site Images Path
 									</span>
-								</td>
-								<td>
-									<input class="text_area" type="text" name="settings[hubSiteImagesPath]" size="30" value="<?php echo (isset($arr['hubSiteImagesPath'])) ? $arr['hubSiteImagesPath'] : ''; ?>" />
 								</td>
 							</tr>
 							
@@ -280,74 +274,6 @@ class HubConfigHTML
 										?>
 								<tr>
 									<td class="key"><?php echo str_replace('mwDB', '', $field); ?></td>
-									<td>
-										<input class="text_area" type="text" name="settings[<?php echo $field; ?>]" size="30" value="<?php echo $value; ?>" />
-									</td>
-								</tr>
-								<?php
-									}	
-								}
-								?>
-							</tbody>
-						</table>
-					</fieldset>
-					<fieldset class="adminform">
-						<legend>Stats Database</legend>
-						<table class="admintable">
-							<tbody>
-								<?php
-								foreach ($arr as $field => $value) 
-								{
-									if (substr($field, 0, strlen('statsDB')) == 'statsDB') {
-										?>
-								<tr>
-									<td class="key"><?php echo str_replace('statsDB', '', $field); ?></td>
-									<td>
-										<input class="text_area" type="text" name="settings[<?php echo $field; ?>]" size="30" value="<?php echo $value; ?>" />
-									</td>
-								</tr>
-								<?php
-									}	
-								}
-								?>
-							</tbody>
-						</table>
-					</fieldset>
-				</div>
-				<div class="col width-50">
-					<fieldset class="adminform">
-						<legend>Punch Database</legend>
-						<table class="admintable">
-							<tbody>
-								<?php
-								foreach ($arr as $field => $value) 
-								{
-									if (substr($field, 0, strlen('punchDB')) == 'punchDB') {
-										?>
-								<tr>
-									<td class="key"><?php echo str_replace('punchDB', '', $field); ?></td>
-									<td>
-										<input class="text_area" type="text" name="settings[<?php echo $field; ?>]" size="30" value="<?php echo $value; ?>" />
-									</td>
-								</tr>
-								<?php
-									}	
-								}
-								?>
-							</tbody>
-						</table>
-					</fieldset>
-					<fieldset class="adminform">
-						<legend>Breeze Database</legend>
-						<table class="admintable">
-							<tbody>
-								<?php
-								foreach ($arr as $field => $value) 
-								{
-									if (substr($field, 0, strlen('breeze')) == 'breeze') {
-										?>
-								<tr>
-									<td class="key"><?php echo str_replace('breeze', '', $field); ?></td>
 									<td>
 										<input class="text_area" type="text" name="settings[<?php echo $field; ?>]" size="30" value="<?php echo $value; ?>" />
 									</td>
