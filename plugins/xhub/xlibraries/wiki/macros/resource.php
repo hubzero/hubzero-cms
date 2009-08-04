@@ -110,8 +110,8 @@ class ResourceMacro extends WikiMacro
 	
 	public function screenshots( $alias, $num=1 )
 	{
-		$xhub =& XFactory::getHub();
-		$path = $xhub->getCfg('hubResourcePath').DS.'tools';
+		$config =& JComponentHelper::getParams( 'com_resources' );
+		$path = $config->get('toolpath');
 		
 		$alias = strtolower($alias);
 		$d = @dir(JPATH_ROOT.$path.DS.$alias);
