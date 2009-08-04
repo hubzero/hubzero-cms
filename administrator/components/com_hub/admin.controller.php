@@ -282,7 +282,7 @@ class HubController extends JObject
 	{
 		global $mainframe;
 		
-		$f = array('hubShortName','hubShortURL','hubLongURL','hubSupportEmail','hubMonitorEmail','hubHomeDir','hubSiteImagesDir','hubSiteImagesPath');
+		$f = array('hubShortName','hubShortURL','hubLongURL','hubSupportEmail','hubMonitorEmail','hubHomeDir');
 		
 		$arr =& $this->loadConfiguration();
 		$arrr = array();
@@ -291,11 +291,8 @@ class HubController extends JObject
 			if ((substr($field, 0, strlen('registration')) != 'registration')
 			 && (substr($field, 0, strlen('hubLDAP')) != 'hubLDAP')
 			 && (substr($field, 0, strlen('forge')) != 'forge')
-			 && (substr($field, 0, strlen('punchDB')) != 'punchDB')
-			 && (substr($field, 0, strlen('breeze')) != 'breeze')
 			 && (substr($field, 0, strlen('mwDB')) != 'mwDB')
 			 && (substr($field, 0, strlen('ipDB')) != 'ipDB')
-			 && (substr($field, 0, strlen('statsDB')) != 'statsDB')
 			 && (substr($field, 0, strlen('hubFocusArea')) != 'hubFocusArea')
 			 && (substr($field, 0, strlen('hubLoginReturn')) != 'hubLoginReturn')
 			 && !in_array($field,$f)) {
