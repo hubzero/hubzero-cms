@@ -1886,7 +1886,7 @@ class ContribtoolController extends JObject
 		$livesite 		= $xhub->getCfg('hubLongURL');
 		$juser =& JFactory::getUser();
 		
-		$doiprefix 		= $xhub->getCfg('contribtoolDOI');
+		$doiprefix 		= isset($this->config->parameters['doi_prefix']) ? $this->config->parameters['doi_prefix'] : '';
 			
 		// get config
 		$ldap_save = isset($this->config->parameters['ldap_save']) ? $this->config->parameters['ldap_save'] : 0;
