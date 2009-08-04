@@ -1,9 +1,7 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * @license	GNU General Public License, version 2 (GPLv2) 
  *
  * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
@@ -355,8 +353,7 @@ class WishlistController extends JObject
 			if(!$juser->get('guest')) {
 				if(in_array($juser->get('id'), $wishlist->owners)) {
 					$this->_admin = 2;  // individual group owner
-				}
-			
+				}			
 			}
 			
 			// need to log in to private list
@@ -374,7 +371,8 @@ class WishlistController extends JObject
 			// get individual wishes
 			$objWish = new Wish( $database );
 			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $this->_admin, $juser);
-			$filters['limit'] = (isset($this->limit)) ? $this->limit : $filters['limit'];	
+			$filters['limit'] = (isset($this->limit)) ? $this->limit : $filters['limit'];
+			$total = $objWish->get_count($wishlist->id, $filters, $this->_admin, $juser);	
 			
 			// Get info on individual wishes			
 			if($wishlist->items) {
@@ -406,13 +404,9 @@ class WishlistController extends JObject
 						}
 						if($item->due < $delivery['immediate']) {
 							$item->urgent = 2;
-						}
-												
-						
-					}
-					
-				}
-				
+						}																	
+					}					
+				}				
 			}
 			
 			$wishlist->saved = $saved;
@@ -422,10 +416,10 @@ class WishlistController extends JObject
 			
 			$refid = $wishlist->referenceid;
 			$cat   = $wishlist->category;
-			$total = ($wishlist->items && count($wishlist->items) > 0) ? count($wishlist->items) : 0 ;
+			//$total = ($wishlist->items && count($wishlist->items) > 0) ? count($wishlist->items) : 0 ;
 			// record number of items for plugin display
 			if($plugin) {
-			$this->wishcount = $total;
+				$this->wishcount = $total;
 			}
 
 		}
@@ -445,25 +439,24 @@ class WishlistController extends JObject
 		WishlistController::getStyles('com_answers', 'vote.css');
 		//if(!$plugin) {
 		//WishlistController::getScripts('com_answers', 'vote');
-		//}
-		
+		//}		
 				
 		// Set the pathway
 		if(!$plugin) {
 		
-		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		if($wishlist->public or (!$wishlist->public && $this->_admin==2)) {	
+			// Build the page title
+			$title  = JText::_(strtoupper($this->_name));
+			if($wishlist->public or (!$wishlist->public && $this->_admin==2)) {	
 				$title .= ': '.$wishlist->title;
-		}	
-		
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title);
-		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		$this->startPath ($wishlist, $title, $pathway);	
+			}	
+			
+			// Set the page title
+			$document =& JFactory::getDocument();
+			$document->setTitle( $title);
+			
+			$app =& JFactory::getApplication();
+			$pathway =& $app->getPathway();
+			$this->startPath ($wishlist, $title, $pathway);	
 		}
 		
 		if(!$plugin) {		
@@ -632,13 +625,16 @@ class WishlistController extends JObject
 			$plan = $objPlan->getPlan($wishid);
 			$plan = $plan ? $plan[0] : '';
 			
+			// Record action
 			$wish->action = $action;
+			
+			// Get tags on this wish
+			$tagging = new WishTags( $database );
+			$wish->tags = $tagging->get_tags_on_object($wish->id, 0, 0, 0);
 			
 			$wish->com = $com;		
 			$refid = $wishlist->referenceid;
-			$cat   = $wishlist->category;
-			
-			
+			$cat   = $wishlist->category;			
 		}
 		
 		if (isset($this->comment)) {
@@ -646,8 +642,7 @@ class WishlistController extends JObject
 			
 		} else {
 			$addcomment = NULL;
-		}
-			
+		}		
 		
 		// Add the CSS to the template
 		$this->getStyles();
@@ -1084,6 +1079,11 @@ class WishlistController extends JObject
 		$aconfig =& JComponentHelper::getParams( 'com_answers' );
 		$infolink = $aconfig->get('infolink') ? $aconfig->get('infolink') : '/kb/points/'; 
 		
+		// Get tags on this wish
+		$tagging = new WishTags( $database );
+		$wish->tags = $wishid ? $tagging->get_tag_string($wishid, 0, 0, NULL, 0, 1) : JRequest::getVar( 'tag', '' );
+		
+		
 		// Add the CSS to the template
 		$this->getStyles();
 		$this->getScripts();
@@ -1098,8 +1098,7 @@ class WishlistController extends JObject
 				
 		// Set the page title
 		$document =& JFactory::getDocument();
-		$document->setTitle( $title.' - '.JText::_(strtoupper($this->_task)));
-		
+		$document->setTitle( $title.' - '.JText::_(strtoupper($this->_task)));	
 		
 		// Set the pathway
 		$app =& JFactory::getApplication();
@@ -1129,6 +1128,7 @@ class WishlistController extends JObject
 		$wishid = JRequest::getInt( 'id', 0 );
 		$reward = JRequest::getVar( 'reward', '');
 		$funds  = JRequest::getVar( 'funds', '0' );
+		$tags   = JRequest::getVar( 'tags', '' );
 		
 		// Login required
 		if ($juser->get('guest')) {
@@ -1191,6 +1191,12 @@ class WishlistController extends JObject
 		if (!$row->store()) {
 			echo WishlistHtml::alert( $row->getError() );
 			exit();
+		}
+		
+		if($tags) {
+			// Add the tags
+			$tagging = new WishTags( $database );
+			$tagging->tag_object($juser->get('id'), $row->id, $tags, 1, 0);
 		}
 		
 		$objWishlist = new Wishlist ( $database );			
@@ -2351,6 +2357,7 @@ class WishlistController extends JObject
 		$filters['sortby'] = trim(JRequest::getVar( 'sortby', '' ));
 		$filters['filterby'] = trim(JRequest::getVar( 'filterby', 'all' ));	
 		$filters['search'] = trim(JRequest::getVar( 'search', '' ));
+		$filters['tag'] = trim(JRequest::getVar( 'tags', '' ));
 
 		if($admin) {	$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : 'ranking'; }
 		else { 
@@ -2359,7 +2366,7 @@ class WishlistController extends JObject
 		}
 
 		// Paging vars
-		$filters['limit'] = JRequest::getInt( 'limit', 50 );
+		$filters['limit'] = JRequest::getInt( 'limit', 25 );
 		$filters['start'] = JRequest::getInt( 'limitstart', 0, 'get' );
 		
 		$filters['comments'] = JRequest::getVar( 'comments', 1, 'get');

@@ -94,11 +94,10 @@ class Wish extends JTable
 		return $this->_db->loadResult();
 		
 	 }
-	 	 
 	 //----------
 	 
-	 public function get_wishes ($listid, $filters, $admin, $juser=NULL) {
-	
+	 public function get_count ($listid, $filters, $admin, $juser=NULL) {
+	 	
 		if ($listid === NULL) {
 			return false;
 		}
@@ -109,43 +108,13 @@ class Wish extends JTable
 			$uid = 0;
 		}
 		
+		$sql = "SELECT count(*) FROM #__wishlist_item AS ws ";
 		
-		$sort = 'ws.status ASC, ws.proposed DESC';	
-		// list  sorting
-		switch ($filters['sortby']) 
-			{
-				case 'date':    	$sort = 'ws.status ASC, ws.proposed DESC';       
-									break;
-				case 'ranking':    	$sort = 'ws.status ASC, ranked, ws.ranking DESC, ws.proposed DESC';       
-									break;
-				case 'feedback':    $sort = 'positive DESC, ws.status ASC';       
-									break;
-				case 'bonus':    	$sort = 'ws.status ASC, bonus DESC, ws.proposed DESC';       
-									break;
-				default: 			$sort = 'ws.accepted DESC, ws.status ASC, ws.proposed DESC';
-									break; 
+		if($filters['tag']) {
+		$sql.= "\n JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
+		$sql.= "\n INNER JOIN #__tags AS TA ON RTA.tagid=TA.id ";
 		}
-				
-		$sql = "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, m.due AS myvote_due,";
-		if($uid) {
-		$sql.= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=".$uid.") AS ranked,";
-		}
-		else {
-		$sql.= "\n NULL AS ranked,";
-		} 
-		$sql.= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=ws.id) AS positive, ";
-		$sql.= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
 		
-		$sql.= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
-		$sql.= "\n (SELECT AVG(m.importance) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_imp, ";
-		$sql.= "\n (SELECT AVG(m.effort) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_effort, ";	
-		$sql.= "\n (SELECT m.due FROM #__wishlist_vote AS m WHERE m.wishid=ws.id ORDER BY m.due DESC LIMIT 1) AS average_due, ";	
-		$sql.= "\n (SELECT SUM(amount) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonus, ";
-		$sql.= "\n (SELECT COUNT(DISTINCT uid) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonusgivenby ";		
-		
-		$sql.= "\n FROM #__wishlist_item AS ws";
-		$sql.= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='".$uid."' ";
-		$sql.= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='".$uid."' ";
 		$sql.="\n WHERE ws.wishlist='".$listid."'";
 		// list  filtering
 		switch ($filters['filterby']) 
@@ -186,11 +155,152 @@ class Wish extends JTable
 		$sql.="\n AND ws.private='0'";
 		}
 		
+		if ($filters['tag']) {
+			$tagging = new WishTags( $this->_db );
+			$tags = $tagging->_parse_tags($filters['tag']);
+
+			$sql .= " AND (RTA.objectid=ws.id AND (RTA.tbl='wishlist') AND (TA.tag IN (";
+			$tquery = '';
+			foreach ($tags as $tagg)
+			{
+				$tquery .= "'".$tagg."',";
+			}
+			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$sql .= $tquery.") OR TA.raw_tag IN (".$tquery;
+			$sql .= ")))";			
+			$sql .= " GROUP BY ws.id ";
+	
+		}
+		
+		
+		$this->_db->setQuery( $sql );
+		return $this->_db->loadResult();
+	 
+	 }
+	 	 
+	 //----------
+	 
+	 public function get_wishes ($listid, $filters, $admin, $juser=NULL) {
+	
+		if ($listid === NULL) {
+			return false;
+		}
+		if (is_object($juser)) {
+			$uid = $juser->get('id');
+		}
+		else {
+			$uid = 0;
+		}
+		
+		$filters['tag'] = isset($filters['tag']) ? $filters['tag'] : '';
+				
+		$sort = 'ws.status ASC, ws.proposed DESC';	
+		// list  sorting
+		switch ($filters['sortby']) 
+			{
+				case 'date':    	$sort = 'ws.status ASC, ws.proposed DESC';       
+									break;
+				case 'ranking':    	$sort = 'ws.status ASC, ranked, ws.ranking DESC, ws.proposed DESC';       
+									break;
+				case 'feedback':    $sort = 'positive DESC, ws.status ASC';       
+									break;
+				case 'bonus':    	$sort = 'ws.status ASC, bonus DESC, ws.proposed DESC';       
+									break;
+				default: 			$sort = 'ws.accepted DESC, ws.status ASC, ws.proposed DESC';
+									break; 
+		}
+				
+		$sql = "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, m.due AS myvote_due,";
+		//$sql .= ($filters['tag']) ? " TA.tag, COUNT(DISTINCT TA.tag) AS uniques, " : " ";		
+		
+		if($uid) {
+		$sql.= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=".$uid.") AS ranked,";
+		}
+		else {
+		$sql.= "\n NULL AS ranked,";
+		} 
+		$sql.= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=ws.id) AS positive, ";
+		$sql.= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
+		
+		$sql.= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
+		$sql.= "\n (SELECT AVG(m.importance) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_imp, ";
+		$sql.= "\n (SELECT AVG(m.effort) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_effort, ";	
+		$sql.= "\n (SELECT m.due FROM #__wishlist_vote AS m WHERE m.wishid=ws.id ORDER BY m.due DESC LIMIT 1) AS average_due, ";	
+		$sql.= "\n (SELECT SUM(amount) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonus, ";
+		$sql.= "\n (SELECT COUNT(DISTINCT uid) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonusgivenby ";		
+		$sql.= "\n FROM #__wishlist_item AS ws";
+		
+		$sql.= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='".$uid."' ";
+		$sql.= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='".$uid."' ";
+		if($filters['tag']) {
+		$sql.= "\n JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
+		$sql.= "\n INNER JOIN #__tags AS TA ON RTA.tagid=TA.id ";
+		}
+		
+		$sql.="\n WHERE ws.wishlist='".$listid."'";
+	
+		// list  filtering
+		switch ($filters['filterby']) 
+			{
+				case 'all':    		$sql.= ' AND ws.status!=2';       
+									break;
+				case 'granted':    	$sql.= ' AND ws.status=1';       
+									break;
+				case 'open':    	$sql.= ' AND ws.status=0';       
+									break;								
+				case 'accepted':    $sql.= ' AND ws.accepted=1 AND ws.status=0';       
+									break;
+				case 'pending':     $sql.= ' AND ws.accepted=0 AND ws.status=0';       
+									break;
+				case 'rejected':    $sql.= ' AND ws.status=3';       
+									break;
+				case 'withdrawn':   $sql.= ' AND ws.status=4';       
+									break;
+				case 'deleted':     $sql.= ' AND ws.status=2';       
+									break;
+				case 'useraccepted':$sql.= ' AND ws.accepted=3 AND ws.status!=2';       
+									break;
+				case 'private':    	$sql.= ' AND ws.status!=2 AND ws.private=1';       
+									break;
+				case 'public':    	$sql.= ' AND ws.status!=2 AND ws.private=0';       
+									break;
+				case 'mine':    	if($uid) {
+									$sql.= ' AND ws.assigned="'.$uid.'" AND ws.status!=2';
+									}       
+									break;
+				case 'assigned':    $sql.= ' AND ws.assigned NOT NULL AND ws.status!=2';       
+									break;
+				default: 			$sql .= ' AND ws.status!=2';
+									break; 
+		}
+		// do not show private wishes
+		if(!$admin) {
+		$sql.="\n AND ws.private='0'";
+		}
+		
+		if ($filters['tag']) {
+			$tagging = new WishTags( $this->_db );
+			$tags = $tagging->_parse_tags($filters['tag']);
+
+			$sql .= " AND (RTA.objectid=ws.id AND (RTA.tbl='wishlist') AND (TA.tag IN (";
+			$tquery = '';
+			foreach ($tags as $tagg)
+			{
+				$tquery .= "'".$tagg."',";
+			}
+			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$sql .= $tquery.") OR TA.raw_tag IN (".$tquery;
+			$sql .= ")))";			
+			$sql .= " GROUP BY ws.id ";
+	
+		}
+		
 		$sql.= " ORDER BY ". $sort;
 		
-		if(isset ($filters['limit']) && $filters['limit']!=0) {
-		$sql.= " LIMIT ". $filters['limit'];
-		} 
+		//if(isset ($filters['limit']) && $filters['limit']!=0) {
+		//$sql.= " LIMIT ". $filters['limit'];
+		//}
+		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : ""; 
 	
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();

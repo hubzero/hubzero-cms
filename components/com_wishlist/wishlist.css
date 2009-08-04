@@ -11,7 +11,7 @@
 	
 
 	#wishlist {
-		padding:0; margin:0; list-style:none; border-top:2px solid #e3e3e3;
+		padding:0; margin:0; list-style:none; border-top:2px solid #e3e3e3; margin-top:1em;
 	}
 	#wishlist li {
 		background-color:none;
@@ -700,7 +700,8 @@
 		float:right;
 		text-align:right;
 		display:inline;
-		margin-top:-2em;
+		margin-top:-8px;
+		margin-bottom:-2em;
 	}
 
 /*---------------------------------------------------------------
@@ -1028,8 +1029,24 @@
 	.showreplyform:hover, .rep:hover {
 		background-position: 0 -20px;
 		}
+		
+/*---------------------------------------------------------------
+	Tags
+---------------------------------------------------------------*/	
 
-	
+	#wishitem .tags {
+		margin: -1.7em 0 0 3em;
+		}
+	#wishitem .tags li {
+		border: none;
+		}
+	#wishitem .tagcontainer {
+		position:relative;
+		color:#666666;
+		bottom:0;
+		left:3.2em;
+		margin-top:2em;
+	}
 /*---------------------------------------------------------------
 	Nav
 ---------------------------------------------------------------*/	
@@ -1040,7 +1057,13 @@
 	.nav_wishlist {
 		background: transparent url("images/wishbone.png") 0 0 no-repeat; padding-left: 20px;padding-bottom:0.2em; 
 	}
-
+/*---------------------------------------------------------------
+	Misc
+---------------------------------------------------------------*/	
+	.noresults {
+		border-top:2px solid #e3e3e3;
+		padding-top:1em;
+	}
 	
 /*---------------------------------------------------------------
 	Hacks
