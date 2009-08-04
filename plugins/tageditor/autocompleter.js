@@ -141,8 +141,14 @@ Autocompleter.Base = new Class({
 		var pos = this.element.getCoordinates(this.options.overflown);
 		var left = pos.left;
 		if (Browser.detect().name == 'trident' && Browser.detect().version <= 5) {
+			
 			var pos2 = $('maininput').getParent().getParent().getParent().getCoordinates(this.options.overflown);
 			left = pos.left - pos2.left + 145;
+			// fix for IE7 dispay of autocompleter when used in aside right div
+			if(left < 160) {
+			left = pos.left;	
+			}			
+			
 		}
 		this.choices.setStyles({
 			left: left,
