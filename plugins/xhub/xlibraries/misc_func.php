@@ -110,11 +110,11 @@ function caturl($a, $b, $vars = '') {
 }
 
 function stat_dbopen(&$db) {
-	$xhub = &XFactory::getHub();
-	$usagestats_dbhost = $xhub->getCfg('statsDBHost');
-	$usagestats_username = $xhub->getCfg('statsDBUsername');
-	$usagestats_password = $xhub->getCfg('statsDBPassword');
-	$usagestats_database = $xhub->getCfg('statsDBDatabase');
+    	$mconfig =& JComponentHelper::getParams( 'com_usage' );
+	$usagestats_dbhost = $mconfig->get('statsDBHost');
+	$usagestats_username = $mconfig->get('statsDBUsername');
+	$usagestats_password = $mconfig->get('statsDBPassword');
+	$usagestats_database = $mconfig->get('statsDBDatabase');
 	$db = mysql_connect($usagestats_dbhost, $usagestats_username, $usagestats_password);
 	if($db) { mysql_select_db($usagestats_database, $db); }
 }
