@@ -328,27 +328,6 @@ class MembersProfile extends JTable
 	
 	//-----------
 	
-	function deletePicture() 
-	{
-		ximport('fileuploadutils');
-		
-		$xhub =& XFactory::getHub();
-		
-		$dir = FileUploadUtils::niceidformat( $this->id );
-		
-		if (is_dir($xhub->getCfg('contributorsUploadPath').DS.$dir)) {
-			if (FileUploadUtils::delete_dir( $xhub->getCfg('contributorsUploadPath').DS.$dir )) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return true;
-		}
-	}
-	
-	//-----------
-	
 	function deleteAssociations() 
 	{
 		$assoc = new MembersAssociation( $this->_db );
