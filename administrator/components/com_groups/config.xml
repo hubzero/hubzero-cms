@@ -20,6 +20,10 @@
 
 <config>
 	<params>
+		<param name="ldapGroupMirror" type="radio" default="1" label="Enable LDAP Mirror" description="Mirror Group Data to LDAP.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param name="uploadpath" type="text" menu="hide" default="/site/groups" label="Upload path" description="File path for pictures" />
 		<param name="iconpath" type="text" menu="hide" default="/components/com_groups/images/icons" label="Icons" description="File path for icons" />
 	</params>
