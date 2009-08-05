@@ -1722,7 +1722,7 @@ class ContribtoolController extends JObject
 		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 		$scriptdir = isset($this->config->parameters['adminscript_dir']) ? $this->config->parameters['adminscript_dir'] : DS.'apps'.DS.'bin';
 		//$tarball_path = $this->rconfig->get('uploadpath');
-		$tarball_path = $xhub->getCfg('sourcecodePath');
+		$tarball_path = $this->config->parameters['sourcecodePath'];
 		
 		// Create a Tool object
 		$obj = new Tool( $database );
@@ -2291,18 +2291,17 @@ class ContribtoolController extends JObject
 			
 		// Get any HUB focus areas
 		// These are used where any resource is required to have one of these tags
-		$xhub =& XFactory::getHub();
-		$fa1 = $xhub->getCfg('hubFocusArea1');
-		$fa2 = $xhub->getCfg('hubFocusArea2');
-		$fa3 = $xhub->getCfg('hubFocusArea3');
-		$fa4 = $xhub->getCfg('hubFocusArea4');
-		$fa5 = $xhub->getCfg('hubFocusArea5');
-		$fa6 = $xhub->getCfg('hubFocusArea6');
-		$fa7 = $xhub->getCfg('hubFocusArea7');
-		$fa8 = $xhub->getCfg('hubFocusArea8');
-		$fa9 = $xhub->getCfg('hubFocusArea9');
-		$fa10 = $xhub->getCfg('hubFocusArea10');
-
+		$tconfig =& JComponentHelper::getParams( 'com_tags' );
+		$fa1 = $tconfig->get('focus_area_01');
+		$fa2 = $tconfig->get('focus_area_02');
+		$fa3 = $tconfig->get('focus_area_03');
+		$fa4 = $tconfig->get('focus_area_04');
+		$fa5 = $tconfig->get('focus_area_05');
+		$fa6 = $tconfig->get('focus_area_06');
+		$fa7 = $tconfig->get('focus_area_07');
+		$fa8 = $tconfig->get('focus_area_08');
+		$fa9 = $tconfig->get('focus_area_09');
+		$fa10 = $tconfig->get('focus_area_10');
 		
 		// Instantiate our tag object
 		$tagcloud = new ResourcesTags($database);
