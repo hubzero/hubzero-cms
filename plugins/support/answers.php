@@ -195,8 +195,8 @@ class plgSupportAnswers extends JPlugin
 			break;
 			
 			case 'question': 
-				$xhub =& XFactory::getHub();
-				$banking = $xhub->getCfg('hubBankAccounts');
+				$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+				$banking = $upconfig->get('bankAccounts')
 				
 				$reward = 0;
 				if ($banking) {

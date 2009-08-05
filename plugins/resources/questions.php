@@ -77,8 +77,8 @@ class plgResourcesQuestions extends JPlugin
 		$database =& JFactory::getDBO();
 		
 		// Are we banking?
-		$xhub =& XFactory::getHub();		
-		$banking = $xhub->getCfg('hubBankAccounts');
+		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$banking = $upconfig->get('bankAccounts');		
 		$xuser =& XFactory::getUser();
 		
 		// Info aboit points link

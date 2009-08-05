@@ -34,7 +34,6 @@ class UserPointsToolbar
 	public function MENU_User()
 	{
 		JToolBarHelper::title( JText::_( 'Manage Points' ), 'addedit.png' );
-
 	}
 
 	//-----------
@@ -59,7 +58,7 @@ class UserPointsToolbar
 	public function MENU_Default()
 	{
 		JToolBarHelper::title( JText::_( 'Manage Points' ), 'addedit.png' );
-
+		JToolBarHelper::preferences('com_userpoints', '550');
 	}
 
 	//-----------

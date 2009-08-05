@@ -107,8 +107,8 @@ class MwController extends JObject
 		}
 		
 		// Are we banking?
-		$xhub =& XFactory::getHub();
-		$banking = $xhub->getCfg('hubBankAccounts');
+		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$banking = $upconfig->get('bankAccounts');
 		$this->banking = ($banking && $this->config->get('banking') ) ? 1: 1;
 		
 		if ($banking) {
@@ -1079,6 +1079,11 @@ class MwController extends JObject
 		}
 		
 		$admin = false;
+		
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
+		$tv = new ToolVersion( $database );
+		$tv->loadFromInstance( $tool );
+
 		// If not licensed, check the user groups to see if they're in a group that should have access
 		if (!$licensed) {
 			// Check if the user is in any groups for this app
@@ -1086,7 +1091,7 @@ class MwController extends JObject
 			$tg = new ToolGroup( $database );
 			$database->setQuery( "SELECT * FROM ".$tg->getTableName()." WHERE toolid=".$tv->toolid );
 			$toolgroups = $database->loadObjectList();
-			
+
 			ximport('xuserhelper');
 			$xgroups = XUserHelper::getGroups($juser->get('id'), 'members');
 			$groups = array();
@@ -1117,9 +1122,6 @@ class MwController extends JObject
 		}
 		
 		// Check if the tool version is published
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
-		$tv = new ToolVersion( $database );
-		$tv->loadFromInstance( $tool );
 		if ($tv->state != 1 && !$admin) {
 			$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED license check, tool version is not published");
 			return false;

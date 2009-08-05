@@ -44,8 +44,8 @@ class plgResourcesReviews extends JPlugin
 		
 		
 		$this->infolink = '/kb/points/';
-		$xhub =& XFactory::getHub();
-		$this->banking = $xhub->getCfg('hubBankAccounts');
+		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$this->banking = $upconfig->get('bankAccounts');
 	}
 	
 	//-----------
