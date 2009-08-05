@@ -1063,8 +1063,6 @@ class ResourcesHtml
 		if (!$thistool) {
 			$statshtml = '';
 			
-			//$xhub =& XFactory::getHub();
-			//if ($xhub->getCfg('hubShowRanking')) {
 			if ($params->get('show_ranking')) {
 				$helper->getCitations();
 				$helper->getLastCitationDate();
