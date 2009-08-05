@@ -470,7 +470,8 @@ class XGroup extends JObject
 		$db = &JFactory::getDBO();
 		$xhub = &XFactory::getHub();
 
-		$ldapGroupMirror = $xhub->getCfg('ldapGroupMirror', false);
+		$gconfig = & JComponentHelper::getParams( 'com_groups' );
+		$ldapGroupMirror = $gconfig->get('ldapGroupMirror');
 
 		if (empty($db))
 			return false;
@@ -1000,7 +1001,8 @@ class XGroup extends JObject
 		$db = &JFactory::getDBO();
 		$xhub = &XFactory::getHub();
 
-		$ldapGroupMirror = $xhub->getCfg('ldapGroupMirror', false);
+		$gconfig = & JComponentHelper::getParams( 'com_groups' );
+		$ldapGroupMirror = $gconfig->get('ldapGroupMirror');
 
 		$query = "UPDATE #__xgroups SET " .
 			"cn=" . $db->Quote($this->cn) .
@@ -1454,7 +1456,8 @@ class XGroup extends JObject
 
 		$xhub = &XFactory::getHub();
 
-		$ldapGroupMirror = $xhub->getCfg('ldapGroupMirror', false);
+		$gconfig = & JComponentHelper::getParams( 'com_groups' );
+		$ldapGroupMirror = $gconfig->get('ldapGroupMirror');
 
 		//$this->logDebug("XGroup::delete()");
 
