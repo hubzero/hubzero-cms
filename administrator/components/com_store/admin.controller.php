@@ -102,8 +102,8 @@ class StoreController
 		$sconfig = new StoreConfig( $this->_option );
 		$this->config = $sconfig;
 		
-		$xhub =& XFactory::getHub();
-		$banking = $xhub->getCfg('hubBankAccounts');
+		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$banking = $upconfig->get('bankAccounts');
 		$this->banking = $banking;
 		
 		if ($banking) {

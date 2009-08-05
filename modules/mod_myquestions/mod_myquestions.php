@@ -407,7 +407,8 @@ $modmyquestions = new modMyQuestions();
 $modmyquestions->params = $params;
 
 $xhub =& XFactory::getHub();
-$banking = $xhub->getCfg('hubBankAccounts');
+$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+$banking = $upconfig->get('bankAccounts');
 $modmyquestions->banking = $banking;
 
 if ($banking) {

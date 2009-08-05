@@ -1583,7 +1583,8 @@ class SupportController
 		}
 		
 		// Check the HUB configuration to see if banking is turned on
-		$banking = $xhub->getCfg('hubBankAccounts');
+		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$banking = $upconfig->get('bankAccounts');
 		
 		// Give some points to whoever reported abuse
 		if ($banking && $gratitude) {

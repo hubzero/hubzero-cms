@@ -86,9 +86,8 @@ class AnswersController extends JObject
 	
 	public function execute()
 	{
-		$xhub =& XFactory::getHub();
-		
-		$banking = $xhub->getCfg('hubBankAccounts');
+		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$banking = $upconfig->get('bankAccounts');
 		$this->banking = $banking;
 		
 		if ($banking) {

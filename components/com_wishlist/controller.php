@@ -148,8 +148,8 @@ class WishlistController extends JObject
 		$this->admingroup = isset($this->config->parameters['group']) ? trim($this->config->parameters['group']) : 'hubadmin';
 		
 		// are we using banking functions?
-		$xhub =& XFactory::getHub();
-		$banking = $xhub->getCfg('hubBankAccounts');
+		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$banking =  $upconfig->get('bankAccounts');
 		$this->banking = ($banking && isset($this->config->parameters['banking']) && $this->config->parameters['banking']==1 ) ? 1: 0 ;
 		
 		if ($banking) {

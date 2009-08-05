@@ -232,11 +232,13 @@ class StoreController
 		$xhub 			=& XFactory::getHub();
 		$juser 			=& JFactory::getUser();
 		$hubShortName 	= $xhub->getCfg('hubShortName');
-		$banking 		= $xhub->getCfg('hubBankAccounts');
 		$now    		= date( 'Y-m-d H:i:s', time() );
 		$cartitems 		= array();
 		$cost			= 0;
 		$msg			= '';
+
+		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$banking =  $upconfig->get('bankAccounts');
 			
 		// incoming
 		$action = JRequest::getVar( 'action', '');

@@ -34,7 +34,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$database =& JFactory::getDBO();
 		
 		$xhub =& XFactory::getHub();
-		$banking = $xhub->getCfg('hubBankAccounts');
+		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$banking =  $upconfig->get('bankAccounts');
 		$hubname = $xhub->getCfg('hubShortName'); 
 				
 		$threemonths 	= date( 'Y-m-d H:i:s', time() - (92 * 24 * 60 * 60));
