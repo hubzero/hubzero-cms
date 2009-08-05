@@ -110,8 +110,8 @@ class XProfileHelper
 		if (!empty($storage) && !in_array($storage,array('mysql','ldap')))
 			return false;
 
-		$xhub = &XFactory::getHub();
-		$ldapProfileMirror = $xhub->getCfg('ldapProfileMirror', false);
+		$mconfig = & JComponentHelper::getParams( 'com_members' );
+		$ldapProfileMirror = $mconfig->get('ldapProfileMirror');
 
 		if (empty($storage))
 			$storage = ($ldapProfileMirror) ? 'all' : 'mysql';
@@ -696,8 +696,8 @@ class XProfile extends JObject
 			return false;
 		}
 
-		$xhub = &XFactory::getHub();
-		$ldapProfileMirror = $xhub->getCfg('ldapProfileMirror', false);
+		$mconfig = & JComponentHelper::getParams( 'com_members' );
+		$ldapProfileMirror = $mconfig->get('ldapProfileMirror');
 		
 		$modifiedDate = gmdate('Y-m-d H:i:s');
 		$this->set('modifiedDate', $modifiedDate);
@@ -948,8 +948,8 @@ class XProfile extends JObject
 			return false;
 		}
 
-		$xhub = &XFactory::getHub();
-		$ldapProfileMirror = $xhub->getCfg('ldapProfileMirror', false);
+		$mconfig = & JComponentHelper::getParams( 'com_members' );
+		$ldapProfileMirror = $mconfig->get('ldapProfileMirror');
 
 		$params = $this->_params;
 		$this->params = (is_object($params)) ? $params->toString() : '';
@@ -981,8 +981,8 @@ class XProfile extends JObject
 			return false;
 		}
 
-		$xhub = &XFactory::getHub();
-		$ldapProfileMirror = $xhub->getCfg('ldapProfileMirror', false);
+		$mconfig = & JComponentHelper::getParams( 'com_members' );
+		$ldapProfileMirror = $mconfig->get('ldapProfileMirror');
 
 		$modifiedDate = gmdate('Y-m-d H:i:s');
 		$this->set('modifiedDate', $modifiedDate);
@@ -1403,8 +1403,8 @@ class XProfile extends JObject
 			return false;
 		}
 
-		$xhub = &XFactory::getHub();
-		$ldapProfileMirror = $xhub->getCfg('ldapProfileMirror', false);
+		$mconfig = & JComponentHelper::getParams( 'com_members' );
+		$ldapProfileMirror = $mconfig->get('ldapProfileMirror');
 
 		if (empty($storage))
 			$storage = ($ldapProfileMirror) ? 'all' : 'mysql';
