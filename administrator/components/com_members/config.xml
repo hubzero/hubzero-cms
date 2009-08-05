@@ -20,6 +20,10 @@
 
 <config>
 	<params>
+		<param name="ldapProfileMirror" type="radio" default="1" label="Enable LDAP Mirror" description="Mirror Profile Data to LDAP.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param name="defaultpic" type="text" menu="hide" default="/components/com_members/images/profile.gif" label="Default picture" description="Default placeholder image for user pictures" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="webpath" type="text" menu="hide" default="/site/members" label="Upload path" description="File path for pictures" />
