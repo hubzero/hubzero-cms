@@ -46,6 +46,8 @@ class TagsToolbar
 	public function _Default() 
 	{
 		JToolBarHelper::title( JText::_( 'TAGS' ), 'addedit.png' );
+		JToolBarHelper::preferences('com_tags', '550');
+		JToolBarHelper::spacer();
 		JToolBarHelper::custom( 'merge', 'forward', '', JText::_('MERGE'), false );
 		JToolBarHelper::spacer();
 		JToolBarHelper::addNew();
