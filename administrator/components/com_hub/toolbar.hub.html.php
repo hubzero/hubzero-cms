@@ -51,6 +51,7 @@ class HubToolbar
 	public function _SITE() 
 	{
 		JToolBarHelper::title( JText::_('HUB Configuration').': '.JText::_('Site'), 'addedit.png' );
+		JToolBarHelper::preferences('com_hub', '550');
 		JToolBarHelper::save('savesite');
 		JToolBarHelper::cancel();
 	}
@@ -60,6 +61,7 @@ class HubToolbar
 	public function _REGISTRATION() 
 	{
 		JToolBarHelper::title( JText::_('HUB Configuration').': '.JText::_('Registration'), 'addedit.png' );
+		JToolBarHelper::preferences('com_hub', '550');
 		JToolBarHelper::save('savereg');
 		JToolBarHelper::cancel();
 	}

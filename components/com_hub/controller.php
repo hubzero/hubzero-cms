@@ -975,8 +975,6 @@ class HubController extends JObject
 
 	private function registrationField($name, $default, $task = 'create')
 	{
-		$xhub =& XFactory::getHub();
-
 		if (($task == 'register') || ($task == 'create'))
 			$index = 0;
 		else if ($task == 'proxy')
@@ -988,14 +986,18 @@ class HubController extends JObject
 		else
 			$index = 0;
 
-		$default    = str_pad($default, '-', 4);
-		$configured = $xhub->getCfg($name, $default);
-		$length     = strlen($configured);
+          $hconfig =& JComponentHelper::getParams('com_hub');
 
-		if ( $length > $index )
-			$value = substr($configured, $index, 1);
-		else
-			$value = substr($default, $index, 1);
+          $default    = str_pad($default, '-', 4);
+          $configured  = $hconfig->get($name);
+          if (empty($configured))
+               $configured = $default;
+          $length     = strlen($configured);
+          if ($length > $index) {
+               $value = substr($configured, $index, 1);
+          } else {
+               $value = substr($default, $index, 1);
+          }
 
 		switch ($value)
 		{
@@ -1093,7 +1095,8 @@ class HubController extends JObject
 		$return = base64_decode( JRequest::getVar('return', '',  'method', 'base64') );
 
 		if (empty($return)) {
-			$r = $xhub->getCfg('hubLoginReturn');
+		    	$hconfig = &JComponentHelper::getParams('com_hub');
+			$r = $hconfig->get('LoginReturn');
 			$return = ($r) ? $r : '/myhub';
 		}
 
