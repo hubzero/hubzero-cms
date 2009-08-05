@@ -894,8 +894,6 @@ class MembersController extends JObject
 
 	private function registrationField($name, $default, $task = 'create')
 	{
-		$xhub =& XFactory::getHub();
-
 		if (($task == 'register') || ($task == 'create')) {
 			$index = 0;
 		} else if ($task == 'proxy') {
@@ -907,11 +905,14 @@ class MembersController extends JObject
 		} else {
 			$index = 0;
 		}
+
+		$hconfig =& JComponentHelper::getParams('com_hub');
 		
 		$default    = str_pad($default, '-', 4);
-		$configured = $xhub->getCfg($name, $default);
+		$configured  = $hconfig->get($name);
+		if (empty($configured))
+		    	$configured = $default;
 		$length     = strlen($configured);
-
 		if ($length > $index) {
 			$value = substr($configured, $index, 1);
 		} else {

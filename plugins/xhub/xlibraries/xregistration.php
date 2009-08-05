@@ -381,8 +381,6 @@ class XRegistration
 
 	private function registrationField($name, $default, $task = 'register')
 	{
-		$xhub =& XFactory::getHub();
-
 		if (($task == 'register') || ($task == 'create') || ($task == 'new'))
 			$index = 0;
 		else if ($task == 'proxycreate')
@@ -394,14 +392,18 @@ class XRegistration
 		else
 			$index = 0;
 
-		$default = str_pad($default, '-', 4);
-		$configured = $xhub->getCfg($name, $default);
-		$length = strlen($configured);
+          $hconfig =& JComponentHelper::getParams('com_hub');
 
-		if ( $length > $index )
-			$value = substr($configured, $index, 1);
-		else
-			$value = substr($default, $index, 1);
+          $default    = str_pad($default, '-', 4);
+          $configured  = $hconfig->get($name);
+          if (empty($configured))
+               $configured = $default;
+          $length     = strlen($configured);
+          if ($length > $index) {
+               $value = substr($configured, $index, 1);
+          } else {
+               $value = substr($default, $index, 1);
+          }
 
 		switch($value)
 		{

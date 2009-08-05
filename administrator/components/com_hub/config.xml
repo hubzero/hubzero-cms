@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<config>
+	<params>
+		<param name="LoginReturn" type="text" menu="hide" default="" label="Login Return URL" description="Redirect here after login..." />
+		<param name="registrationUsername"  type="text" menu="hide" default="RRUU" label="Username" description="" />
+		<param name="registrationPassword"  type="text" menu="hide" default="RRUU" label="Password" description="" />
+		<param name="registrationConfirmPassword"  type="text" menu="hide" default="RRUU" label="Password Confirmation" description="" />
+		<param name="registrationFullname"  type="text" menu="hide" default="RRUU" label="Full Name" description="" />
+		<param name="registrationEmail"  type="text" menu="hide" default="RRUU" label="Email" description="" />
+		<param name="registrationConfirmEmail"  type="text" menu="hide" default="RRUU" label="Email Confirmation" description="" />
+		<param name="registrationURL"  type="text" menu="hide" default="OHHO" label="URL" description="" />
+		<param name="registrationPhone"  type="text" menu="hide" default="OHHO" label="Phone" description="" />
+		<param name="registrationEmployment"  type="text" menu="hide" default="RORO" label="Employment" description="" />
+		<param name="registrationOrganization"  type="text" menu="hide" default="OOOO" label="Organization" description="" />
+		<param name="registrationCitizenship"  type="text" menu="hide" default="RHRH" label="Citizenship" description="" />
+		<param name="registrationResidency"  type="text" menu="hide" default="RHRH" label="Residency" description="" />
+		<param name="registrationSex"  type="text" menu="hide" default="RHRH" label="Sex" description="" />
+		<param name="registrationDisability"  type="text" menu="hide" default="RHRH" label="Disability" description="" />
+		<param name="registrationHispanic"  type="text" menu="hide" default="RHRH" label="Hispanic" description="" />
+		<param name="registrationRace"  type="text" menu="hide" default="OHHH" label="Race" description="" />
+		<param name="registrationInterests"  type="text" menu="hide" default="OOOO" label="Interests" description="" />
+		<param name="registrationReason"  type="text" menu="hide" default="OOOO" label="Reason" description=""/>
+		<param name="registrationOptIn"  type="text" menu="hide" default="OOUU" label="OptIn" description="" />
+		<param name="registrationTOU"  type="text" menu="hide" default="RHRH" label="TOU" description="Terms of Use" />
+	</params>
+</config>

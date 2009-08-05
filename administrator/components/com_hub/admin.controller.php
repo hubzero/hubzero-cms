@@ -104,7 +104,7 @@ class HubController extends JObject
 			case 'savecom':      $this->savecom();             break;
 			
 			case 'registration': $this->settings();            break;
-			case 'savereg':      $this->_save('registration'); break;
+			case 'savereg':      $this->saveReg(); break;
 			case 'databases':    $this->settings();            break;
 			case 'savedb':       $this->_save('databases');    break;
 			case 'site':         $this->settings();            break;
@@ -239,7 +239,44 @@ class HubController extends JObject
 		
 		switch ($this->_task) 
 		{
-			case 'registration': HubConfigHTML::registration( $arr ); break;
+			case 'registration': 
+				//$config =& JComponentHelper::getParams( $this->_option );
+				$a = array();
+				$component =& JComponentHelper::getComponent( $this->_option );
+				$params = trim($component->params);
+				if ($params) {
+					$params = explode("\n", $params);
+					foreach ($params as $p) 
+					{
+						$b = explode("=",$p);
+						$a[$b[0]] = trim(end($b));
+					}
+				} else {
+					$a = array();
+				    $a['registrationUsername'] = 'RRUU';
+				    $a['registrationPassword'] = 'RRUU';
+				    $a['registrationConfirmPassword'] = 'RRUU';
+				    $a['registrationFullname'] = 'RRUU';
+				    $a['registrationEmail'] = 'RRUU';
+				    $a['registrationConfirmEmail'] = 'RRUU';
+				    $a['registrationURL'] = 'OHHO';
+				    $a['registrationPhone'] = 'OHHO';
+				    $a['registrationEmployment'] = 'RORO';
+				    $a['registrationOrganization'] = 'OOOO';
+				    $a['registrationCitizenship'] = 'RHRH';
+				    $a['registrationResidency'] = 'RHRH';
+				    $a['registrationSex'] = 'RHRH';
+				    $a['registrationDisability'] = 'RHRH';
+				    $a['registrationHispanic'] = 'RHRH';
+				    $a['registrationRace'] = 'OHHH';
+				    $a['registrationInterests'] = 'OOOO';
+				    $a['registrationReason'] = 'OOOO';
+				    $a['registrationOptIn'] = 'OOUU';
+				    $a['registrationTOU'] = 'RHRH';
+				}
+				
+				HubConfigHTML::registration( $a );
+				break;
 			case 'databases': HubConfigHTML::databases( $arr ); break;
 			case 'site':
 			default: HubConfigHTML::site( $arr ); break;
@@ -250,6 +287,11 @@ class HubController extends JObject
 	
 	protected function _save( $task='' ) 
 	{
+		if ($task == 'registration') {
+			$this->saveReg();
+			return;
+		}
+		
 		$settings = JRequest::getVar( 'settings', array(), 'post' );
 		
 		if (!is_array($settings) || empty($settings)) {
@@ -269,10 +311,54 @@ class HubController extends JObject
 				$arr[$name] = $value;
 			}
 		}
-
+		
 		$this->saveConfiguration($arr);
 		
 		$this->_redirect = 'index.php?option='.$this->_option.'&task='.$task;
+		$this->_message = JText::_('Configuration saved');
+	}
+	
+	protected function saveReg() 
+	{
+		$settings = JRequest::getVar( 'settings', array(), 'post' );
+
+		if (!is_array($settings) || empty($settings)) {
+			$this->_redirect = 'index.php?option='.$this->_option.'&task=registration';
+			return;
+		}
+
+		$arr = array();
+
+		$database =& JFactory::getDBO();
+		
+		$component = new JTableComponent( $database );
+		$component->loadByOption( $this->_option );
+		//$component->params = $params;
+		$params = trim($component->params);
+		if ($params) {
+			$params = explode("\n", $params);
+			foreach ($params as $p) 
+			{
+				$b = explode("=",$p);
+				$arr[$b[0]] = trim(end($b));
+			}
+		}
+		foreach ($settings as $name=>$value) 
+		{
+			$r = $value['create'].$value['proxy'].$value['update'].$value['edit'];
+
+			//$arr['registration'.$name] = $r;
+			$arr['registration'.trim($name)] = trim($r);
+		}
+		$a = array();
+		foreach ($arr as $k=>$v) 
+		{
+			$a[] = $k.'='.$v;
+		}
+		$component->params = implode("\n",$a);
+		$component->store();
+		
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=registration';
 		$this->_message = JText::_('Configuration saved');
 	}
 	
