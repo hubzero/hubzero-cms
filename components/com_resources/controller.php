@@ -318,7 +318,7 @@ class ResourcesController extends JObject
 		// Set the default sort
 		$xhub =& XFactory::getHub();
 		$default_sort = 'rating';
-		if ($xhub->getCfg('hubShowRanking')) {
+		if ($this->config->get('show_ranking')) {
 			$default_sort = 'ranking';
 		}
 		
@@ -1390,7 +1390,6 @@ class ResourcesController extends JObject
 		ximport('xserver');
 		
 		$database =& JFactory::getDBO();
-		$xhub   =& XFactory::getHub();
 		
 		// Get tool instance
 		$tool = JRequest::getVar( 'tool', 0 );
@@ -1407,7 +1406,7 @@ class ResourcesController extends JObject
 		
 		// Concat tarball name for this version
 		$tarname = $tv->toolname.'-r'.$tv->revision.'.tar.gz';
-		$tarball_path = $xhub->getCfg('sourcecodePath');
+		$tarball_path = $this->config->get('sourcecodePath');
 		$tarpath = $tarball_path.DS.$tv->toolname.DS;
 		$opencode = ($tv->codeaccess=='@OPEN') ? 1 : 0;
 					
@@ -1488,7 +1487,6 @@ class ResourcesController extends JObject
 		ximport('fileuploadutils');
 		
 		$xhub =& XFactory::getHub();
-		//$hubDOIpath = $xhub->getCfg('hubDOIpath');
 		$hubDOIpath = $this->config->get('doi');
 		
 		// Incoming

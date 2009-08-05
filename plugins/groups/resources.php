@@ -606,8 +606,8 @@ class plgGroupsResources extends JPlugin
 			$html .= t.'<label>'.n;
 			$html .= t.t.JText::_('RESOURCES_SORT_BY').n;
 			$html .= t.t.'<select name="sort">'.n;
-			$xhub =& XFactory::getHub();
-			if ($xhub->getCfg('hubShowRanking')) {
+			$config =& JComponentHelper::getParams( 'com_resources' );
+			if ($config->get('show_ranking')) {
 				$html .= t.t.t.'<option value="ranking"';
 				if ($sort == 'ranking') {
 					$html .= ' selected="selected"';

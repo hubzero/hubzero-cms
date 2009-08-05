@@ -492,9 +492,8 @@ class ToolVersion extends  JTable
 	
 		// Get some needed libraries
 		//include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
-		$xhub   =& XFactory::getHub();
 		$resource->tarname = $resource->alias.'-r'.$resource->revision.'.tar.gz';
-		$tarball_path = $xhub->getCfg('sourcecodePath');
+		$tarball_path = $config->get('sourcecodePath');
 		$resource->tarpath = $tarball_path.DS.$resource->alias.DS;
 		// Is tarball available?
 		$resource->taravailable = (file_exists( $resource->tarpath . $resource->tarname )) ? 1 : 0;		
