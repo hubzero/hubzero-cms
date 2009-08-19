@@ -106,7 +106,7 @@ class plgGroupsWiki extends JPlugin
 			if ($authorized) {
 				$access = "";
 			}
-			
+
 			/*$query = "SELECT f.id, f.created, f.created_by, 'index.php?option=' AS href, d.scope, d.group, d.access, d.title, d.pagename, d.version 
 						FROM #__wiki_version AS f, 
 							(
@@ -125,9 +125,9 @@ class plgGroupsWiki extends JPlugin
 			$database->setQuery( $query );
 			$rows = $database->loadObjectList();
 
-			$database->setQuery( "SELECT COUNT(*) FROM #__wiki_page AS p WHERE p.scope='".$group->get('cn').DS.'wiki'."' AND p.group='".$group->get('cn')."'" );
+			$database->setQuery( "SELECT COUNT(*) FROM #__wiki_page AS p WHERE p.scope='".$group->get('cn').DS.'wiki'."' AND p.group='".$group->get('cn')."' $access" );
 			$num = $database->loadResult();
-			
+
 			// Build the HTML meant for the "profile" tab's metadata overview
 			$arr['metadata'] = '<a href="'.JRoute::_('index.php?option='.$option.a.'gid='.$group->get('cn').a.'active=wiki').'">'.JText::sprintf('NUMBER_WIKI_PAGES',$num).'</a>'.n;
 			$arr['dashboard'] = $this->dashboard( $group, $rows, $authorized, $option );
