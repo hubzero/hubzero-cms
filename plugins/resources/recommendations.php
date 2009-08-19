@@ -139,8 +139,11 @@ class plgResourcesRecommendations extends JPlugin
 			$sbjt .= t.t.'<tbody>'.n;
 			foreach ($lines['return'] as $r)
 			{
-				$r['url'] = str_replace( '&amp;', '&', $r['url'] );
-				$r['url'] = str_replace( '&', '&amp;', $r['url'] );
+				//$r['url'] = str_replace( '&amp;', '&', $r['url'] );
+				//$r['url'] = str_replace( '&', '&amp;', $r['url'] );
+				if (strstr($r['nanoUrl'], '/contributors/')) {
+					$r['nanoUrl'] = str_replace( '/contributors/', '/members/', $r['nanoUrl'] );
+				}
 
 				$sbjt .= t.t.t.'<tr>'.n;
 				$sbjt .= t.t.t.t.'<td><a href="'.$r['nanoUrl'].'?rec='.$rid.'">'. $r['label'] . '</a></td>'.n;
