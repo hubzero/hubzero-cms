@@ -196,7 +196,7 @@ class plgSupportAnswers extends JPlugin
 			
 			case 'question': 
 				$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
-				$banking = $upconfig->get('bankAccounts')
+				$banking = $upconfig->get('bankAccounts');
 				
 				$reward = 0;
 				if ($banking) {
