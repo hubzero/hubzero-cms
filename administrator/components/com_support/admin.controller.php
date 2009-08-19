@@ -331,7 +331,7 @@ class SupportController
 					}
 				break;
 				case 'status':
-					$allowed = array('open','closed','all');
+					$allowed = array('open','closed','all','waiting','new');
 					if (!in_array($pieces[1],$allowed)) {
 						$pieces[1] = $filters[$pieces[0]];
 					}
@@ -527,15 +527,16 @@ class SupportController
 		}
 		
 		// Do some text cleanup
-		$row->summary = stripslashes($row->summary);
+		$row->summary = html_entity_decode(stripslashes($row->summary), ENT_COMPAT, 'UTF-8');
 		$row->summary = str_replace('&quote;','&quot;',$row->summary);
-		$row->summary = htmlspecialchars($row->summary);
+		$row->summary = htmlentities($row->summary, ENT_COMPAT, 'UTF-8');
 		
 		//$row->report  = stripslashes($row->report);
+		$row->report  = html_entity_decode(stripslashes($row->report), ENT_COMPAT, 'UTF-8');
 		$row->report  = str_replace('&quote;','&quot;',$row->report);
 		//$row->report  = htmlspecialchars($row->report);
 		$row->report  = str_replace("<br />","",$row->report);
-		$row->report  = htmlentities(stripslashes($row->report));
+		$row->report  = htmlentities($row->report, ENT_COMPAT, 'UTF-8');
 		$row->report  = nl2br($row->report);
 		$row->report  = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
 		$row->report  = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);

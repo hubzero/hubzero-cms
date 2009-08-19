@@ -89,9 +89,11 @@ class SupportTicket extends JTable
 		}*/
 		switch ($filters['status'])
 		{
-			case 'open':   $filter .= " AND (status=0 OR status=1)"; break;
-			case 'closed': $filter .= " AND status=2";               break;
-			case 'all':    $filter .= "";                            break;
+			case 'open':    $filter .= " AND (status=0 OR status=1)"; break;
+			case 'closed':  $filter .= " AND status=2";               break;
+			case 'all':     $filter .= "";                            break;
+			case 'new':     $filter .= " AND status=0 AND (owner IS NULL OR owner='') AND (resolved IS NULL OR resolved='') AND ((SELECT COUNT(*) FROM #__support_comments AS k WHERE k.ticket=f.id) <= 0 )"; break;
+			case 'waiting': $filter .= " AND status=1";               break;
 		}
 		if (isset($filters['severity']) && $filters['severity'] != '') {
 			$filter .= " AND severity='".$filters['severity']."'";
