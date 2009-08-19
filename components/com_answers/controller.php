@@ -604,6 +604,7 @@ class AnswersController extends JObject
 		$filters['limit']    = JRequest::getInt( 'limit', 25 );
 		$filters['start']    = JRequest::getInt( 'limitstart', 0 );
 		$filters['tag']      = JRequest::getVar( 'tags', '' );
+		$filters['tag']      = $filters['tag'] ? $filters['tag'] : JRequest::getVar( 'tag', '' );
 		$filters['q']        = JRequest::getVar( 'q', '' );
 		$filters['filterby'] = JRequest::getVar( 'filterby', '' );
 		$filters['sortby']   = JRequest::getVar( 'sortby', 'rewards' );

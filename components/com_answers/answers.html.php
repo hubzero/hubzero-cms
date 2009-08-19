@@ -163,8 +163,8 @@ class AnswersHtml
 	{
 		$task = (isset($filters['mine']) && $filters['mine']!='0') ? 'myquestions' : 'search';
 		$html  = '';
-		$html .= '<form method="get" action="'.JRoute::_('index.php?option='.$option).'" id="adminForm" >'.n;
-		$html .= '<div class="filters">'.n;		
+		
+		//$html .= '<div class="filters">'.n;		
 		$html .= ' <fieldset>'.n;
 		$html .= t.'<label>'.JText::_('Find phrase').': '.n;
 		$html .= t.'<input type="text" name="q" value="'.$filters['q'].'" /></label> '.n;
@@ -230,7 +230,7 @@ class AnswersHtml
 		$html .= t.'<input type="submit" value="'.JText::_('GO').'" />'.n;
 		$html .= ' </fieldset>'.n;
 		//$html .= '</form>'.n;
-		$html .= '</div>'.n;
+		//$html .= '</div>'.n;
 		return $html;
 	}
 
@@ -312,8 +312,11 @@ class AnswersHtml
 		
 		// Display question list
 		$html .= '<div class="main section">'.n;
-		$html .= AnswersHtml::searchform($filters, $option, '', $banking);	
+		$html .= '<form method="get" action="'.JRoute::_('index.php?option='.$option).'" id="adminForm" >'.n;
 		$html .= t.'<div class="aside">'.n;
+		if($task!='myquestions') {
+		$html .= AnswersHtml::searchform($filters, $option, '', $banking);	
+		}
 		if(!$juser->get('guest') && $task=='myquestions') {
 			$html .= ' <p class="info">';
 			$html .= ($filters['interest'] == 0 && $filters['assigned'] == 0) ? JText::_('Please do not forget to close the questions you asked by selecting the best answer.') : '';
@@ -339,14 +342,32 @@ class AnswersHtml
 		$html .= t.'<div class="subject">'.n;
 		
 		if (count($results) > 0) {
+			$html .= t.t.t.'<p class="note_total" >'.JText::_('Displaying ');
+			if($filters['start'] == 0) {
+			$html .= $pageNav->total > count($results) ? ' top '.count($results).' out of '.$pageNav->total : strtolower(JText::_('all')).' '.count($results) ;
+			}
+			else {
+				$html .= ($filters['start'] + 1);
+				$html .= ' - ';
+				$html .=$filters['start'] + count($results);
+				$html .=' out of '.$pageNav->total;
+				}
+			$html .= ' '.strtolower(JText::_('questions')).'</p>'.n;
 			$html .= AnswersHtml::htmlQuestions( $results, $option, $infolink, $banking );
 			$html .= $pageNav->getListFooter();
 		} else {
-			if($filters['q']) {
+			/*if($filters['q']) {
 			$html .= AnswersHtml::warning( JText::_('NO_RESULTS_FOR_TERM').' '.$filters['q'] ).n;
 			}
 			else {
 			$html .= AnswersHtml::warning( JText::_('NO_RESULTS')).n;
+			}*/
+			if($filters['filterby']=="all" && !$filters['tag'] && !$filters['q']) {
+				$html .= t.t.t.'<p class="noresults">'.JText::_('NO_RESULTS').'</p>'.n;
+			}
+			else {
+				$html .= t.t.t.'<p class="noresults">'.JText::_('There are currently no questions based on your search selection.').'</p>'.n;
+				$html .= t.t.t.'<p class="nav_questions"><a href="'.JRoute::_('index.php?option='.$option) .'">'.JText::_('View all questions').'</a></p>'.n;	
 			}
 		}
 	
@@ -1027,7 +1048,7 @@ class AnswersHtml
 		if ($rows) {
 			//$html  ='<div class="clear"></div>';
 			$html  = t.'<ul class="questions plugin">'.n;
-	
+				
 				$i=1;
 				foreach ($rows as $row) 
 				{
