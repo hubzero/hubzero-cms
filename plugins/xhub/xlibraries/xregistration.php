@@ -737,7 +737,7 @@ class XRegistration
 
 		if ($registrationOrganization == REG_REQUIRED)
 		{
-			if (empty($registration['org']))
+			if (empty($registration['org']) && empty($registration['orgtext']))
 			{
 				$this->_missing['org'] = 'Organization';
 				$this->_invalid['org'] = 'Invalid school/organization';
@@ -745,8 +745,13 @@ class XRegistration
 		}
 
 		if ($registrationOrganization != REG_HIDE)
-			if (!empty($registration['org']) && !XRegistrationHelper::validtext($registration['org']))
+		{
+			if (!empty($registration['org']) && !XRegistrationHelper::validtext($registration['org'])) {
 				$this->_invalid['org'] = 'Invalid school/organization. You may be using characters that are not allowed.';
+			} elseif (!empty($registration['orgtext']) && !XRegistrationHelper::validtext($registration['orgtext'])) {
+				$this->_invalid['org'] = 'Invalid school/organization. You may be using characters that are not allowed.';
+			}
+		}
 
 		if ($registrationCitizenship == REG_REQUIRED)
 		{
