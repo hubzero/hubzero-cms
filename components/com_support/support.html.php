@@ -217,7 +217,7 @@ class SupportHtml
 									</tr>
 									<tr>
 										<th>status:</th>
-										<td>open, closed, all</td>
+										<td>new, open, waiting, closed, all</td>
 									</tr>
 									<tr>
 										<th>reportedby:</th>
@@ -251,7 +251,9 @@ class SupportHtml
 							<?php echo JText::_('SHOW'); ?>:
 							<select name="show">
 								<option value=""<?php if ($filters['_show'] == '') { echo ' selected="selected"'; } ?>>--</option>
+								<option value="status:new"<?php if ($filters['_show'] == 'status:new') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_NEW'); ?></option>
 								<option value="status:open"<?php if ($filters['_show'] == 'status:open') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_OPEN'); ?></option>
+								<option value="status:waiting"<?php if ($filters['_show'] == 'status:waiting') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_WAITING'); ?></option>
 								<option value="status:closed"<?php if ($filters['_show'] == 'status:closed') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_CLOSED'); ?></option>
 								<option value="status:all"<?php if ($filters['_show'] == 'status:all') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_ALL'); ?></option>
 								<?php if ($admin) { ?>
@@ -328,13 +330,23 @@ class SupportHtml
 				}
 			}
 			
+			$lnk = 'index.php?option=com_whois&amp;query=uid%3D'.$row->login;
+			$targetuser = null;
+			if ($row->login) {
+				$targetuser =& JUser::getInstance($row->login);
+				if (is_object($targetuser) && $targetuser->id) {
+					$lnk = JRoute::_('index.php?option=com_members&id='.$targetuser->id);
+				}
+			}
+			
 			$when = SupportHtml::timeAgo($row->created);
 			
 			if ($row->owner == '') {
 				$row->owner = '&nbsp';
 			}
 			
-			$row->report = htmlentities(stripslashes($row->report),ENT_QUOTES);
+			//$row->report = htmlentities(stripslashes($row->report),ENT_QUOTES);
+			$row->report = htmlentities(stripslashes($row->report), ENT_COMPAT, 'UTF-8');
 			$row->report = str_replace(r,'',$row->report);
 			$row->report = str_replace(n,'',$row->report);
 			$row->report = str_replace(t,'',$row->report);
@@ -345,7 +357,7 @@ class SupportHtml
 								<td><?php echo $row->id; ?></td>
 								<td>
 									<a href="<?php echo JRoute::_('index.php?option='.$option.'&task=ticket&id='.$row->id); echo ($fstring != '') ? '?find='.$fstring : ''; ?>" title="<?php echo $row->report; ?>"><?php echo htmlentities(stripslashes($row->summary),ENT_QUOTES); ?></a>
-									<span class="reporter">by <?php echo $row->name; echo ($row->login) ? ' (<a href="index.php?option=com_whois&amp;query=uid%3D'.$row->login.'">'.$row->login.'</a>)' : ''; ?>, <?php echo JText::_('TAGS'); ?>: <?php echo $tags; ?></span>
+									<span class="reporter">by <?php echo $row->name; echo ($row->login) ? ' (<a href="'.$lnk.'">'.$row->login.'</a>)' : ''; ?>, <?php echo JText::_('TAGS'); ?>: <?php echo $tags; ?></span>
 								</td>
 								<td style="white-space: nowrap;"><span class="<?php echo $status; ?> status"><?php echo ($row->status == 2) ? '&radic; ' : ''; echo $status; echo ($row->status == 2) ? ' ('.$row->resolved.')' : ''; ?></span></td>
 								<td style="white-space: nowrap;"><?php echo $row->group; ?></td>
@@ -449,7 +461,21 @@ class SupportHtml
 ?>
 		<div id="content-header">
 			<h2><?php echo $title; ?></h2>
+<?php
+		$targetuser = null;
+		if ($row->login) {
+			$targetuser =& JUser::getInstance($row->login);
+		}
+		if ($targetuser->id) {
+			?>
+			<h3><?php echo JText::_('TICKET_SUBMITTED_ON').' '.JHTML::_('date',$row->created, '%d %b, %Y').' '.JText::_('AT').' '.JHTML::_('date', $row->created, '%I:%M %p').' '.JText::_('BY'); ?> <a href="<?php echo JRoute::_('index.php?option=com_members&id='.$targetuser->id); ?>"><?php echo ($row->login) ? $row->name.' ('.$row->login.')' : $row->name; ?></a></h3>
+			<?php
+		} else {
+?>
 			<h3><?php echo JText::_('TICKET_SUBMITTED_ON').' '.JHTML::_('date',$row->created, '%d %b, %Y').' '.JText::_('AT').' '.JHTML::_('date', $row->created, '%I:%M %p').' '.JText::_('BY'); ?> <a href="mailto:<?php echo $row->email; ?>"><?php echo ($row->login) ? $row->name.' ('.$row->login.')' : $row->name; ?></a></h3>
+<?php
+		}
+?>
 		</div><!-- / #content-header -->
 		
 		<div id="content-header-extra">

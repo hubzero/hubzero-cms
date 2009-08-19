@@ -296,16 +296,16 @@ class SupportController extends JObject
 			$row->summary = '';
 		} else {
 			// Do some text cleanup
-			$row->summary = stripslashes($row->summary);
+			$row->summary = html_entity_decode(stripslashes($row->summary), ENT_COMPAT, 'UTF-8');
 			$row->summary = str_replace('&quote;','&quot;',$row->summary);
-			$row->summary = htmlspecialchars($row->summary);
+			$row->summary = htmlentities($row->summary, ENT_COMPAT, 'UTF-8');
 		}
 		
-		$row->report = stripslashes($row->report);
+		$row->report = html_entity_decode(stripslashes($row->report), ENT_COMPAT, 'UTF-8');
 		$row->report = str_replace('&quote;','&quot;',$row->report);
 		if (!strstr( $row->report, '</p>' ) && !strstr( $row->report, '<pre class="wiki">' )) {
 			$row->report = str_replace("<br />","",$row->report);
-			$row->report = htmlentities($row->report);
+			$row->report = htmlentities($row->report, ENT_COMPAT, 'UTF-8');
 			$row->report = nl2br($row->report);
 			$row->report = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
 			$row->report = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
@@ -350,7 +350,7 @@ class SupportController extends JObject
 			$comment->comment = stripslashes($comment->comment);
 			if (!strstr( $comment->comment, '</p>' ) && !strstr( $comment->comment, '<pre class="wiki">' )) {
 				$comment->comment = str_replace("<br />","",$comment->comment);
-				$comment->comment = htmlentities($comment->comment);
+				$comment->comment = htmlentities($comment->comment, ENT_COMPAT, 'UTF-8');
 				$comment->comment = nl2br($comment->comment);
 				$comment->comment = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$comment->comment);
 			}
@@ -1257,7 +1257,7 @@ class SupportController extends JObject
 					}
 				break;
 				case 'status':
-					$allowed = array('open','closed','all');
+					$allowed = array('open','closed','all','new','waiting');
 					if (!in_array($pieces[1],$allowed)) {
 						$pieces[1] = $filters[$pieces[0]];
 					}
