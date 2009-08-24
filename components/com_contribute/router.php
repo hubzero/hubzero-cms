@@ -44,7 +44,7 @@ function contributeParseRoute($segments)
 		if (($segments[1] == 'register'))
 		{
 			$vars['option'] = 'com_contribtool';
-			$vars['task'] = 'newtool';
+			$vars['task'] = 'create';
 			return $vars;
 		}
 	}
