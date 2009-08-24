@@ -687,7 +687,7 @@ class ContribtoolController extends JObject
 						  'published' => '',
 						  'code' => '',
 						  'wiki' => '',
-						  'developers' => array($juser->get('uid')),
+						  'developers' => array($juser->get('id')),
 						  'vncGeometryX' => $vncGeometryX,
 						  'vncGeometryY' => $vncGeometryY,
 						  'team' => $juser->get('username') );
@@ -941,7 +941,7 @@ class ContribtoolController extends JObject
 					}
 	
 					// update history ticket
-					if($id && $oldstatus!=$status && $editversion !='current') { $this->updateTicket($this->_toolid, $oldstatus, $status, $comment); }
+					if($id && $oldstatus!=$status && $editversion !='current') { $this->updateTicket($this->_toolid, $oldstatus, $status, $comment, 0 , 1); }
 					
 					// display status page
 					$this->_task = 'status';
@@ -1143,6 +1143,16 @@ class ContribtoolController extends JObject
 						else if($newstate == ContribtoolHtml::getStatusNum('Published')) {
 							$objV->published = '1';		
 						}
+						
+						// update dev screenshots of a published tool changes status
+						if($oldstatus['state'] == ContribtoolHtml::getStatusNum('Published')) {
+							// Get version ids	
+							$to = $objV->getVersionIdFromResource($oldstatus['resourceid'],  'dev');
+							$from = $objV->getVersionIdFromResource($oldstatus['resourceid'], 'current');
+							
+							$this->transferScreenshots($from, $to, $oldstatus['resourceid']);
+						}
+						
 						$obj->state = $newstate;
 						$obj->state_changed = $today;	
 					}
@@ -1188,28 +1198,43 @@ class ContribtoolController extends JObject
 	}
 	//-----------
 
-	protected function email($toolid, $summary, $comment, $access)
+	protected function email($toolid, $summary, $comment, $access, $action)
 	{
+
 		$xhub 		=& XFactory::getHub();
 		$juser     	=& JFactory::getUser();
 		$database 	=& JFactory::getDBO();
+		$jconfig 	=& JFactory::getConfig();
 		
+		$headline = '';
+		
+		switch( $action ) 
+		{
+			case 1:    
+			$action = 'contribtool_info_changed';
+			$headline = JText::_('tool information changed');      
+			break;
+			case 2:    
+			$action = 'contribtool_status_changed';    
+			$headline = $summary;
+			break;
+			case 3:    
+			$action = 'contribtool_new_message';    	
+			$headline = JText::_('new message');
+			break;
+		}
+						
+		// Get tool information
 		$obj = new Tool($database);
 		$obj->getToolStatus( $toolid, $this->_option, $status, 'dev');
-		$headline = $summary ? $summary : JText::_('UPDATE');
-		if(!$summary && $comment) { $headline = JText::_('new message'); }
 		
 		// Build e-mail components
-		$admin_email = isset($this->config->parameters['developer_email']) ? $this->config->parameters['developer_email'] : $xhub->getCfg('hubSupportEmail');
-					
-		$subject = $xhub->getCfg('hubShortName').' '.JText::_(strtoupper($this->_name)).', '.JText::_('TOOL').' '.$status['toolname'].'(#'.$toolid.'): '.$headline;
-					
-		$from = array();
-		$from['name']  = $xhub->getCfg('hubShortName').' '.JText::_('APPS_DEVELOPMENT');
-		$from['email'] = $xhub->getCfg('hubSupportEmail');
-		
-		$message  = '----------------------------'.r.n;
-		$message .= strtoupper(JText::_('TOOL')).': '.$status['title'].' ('.$status['toolname'].')'.r.n;
+		$subject     = JText::_(strtoupper($this->_name)).', '.JText::_('TOOL').' '.$status['toolname'].'(#'.$toolid.'): '.$headline;
+		$from        = $jconfig->getValue('config.sitename').' '.JText::_('CONTRIBTOOL');
+		$hub         = array('email' => $jconfig->getValue('config.mailfrom'), 'name' => $from);
+			
+		// Compose Message
+		$message  = strtoupper(JText::_('TOOL')).': '.$status['title'].' ('.$status['toolname'].')'.r.n;
 		$message .= strtoupper(JText::_('SUMMARY')).': '.$summary.r.n;
 		$message .= strtoupper(JText::_('WHEN')).' '.JHTML::_('date', date( 'Y-m-d H:i:s', time() ), '%d %b, %Y').r.n;
 		$message .= strtoupper(JText::_('BY')).': '.$juser->get('username').r.n;
@@ -1221,44 +1246,63 @@ class ContribtoolController extends JObject
 		}
 		$message .= JText::_('TIP_URL_TO_STATUS').''.r.n;
 		$message .= $xhub->getCfg('hubLongURL').JRoute::_('index.php?option=com_contribtool&task=status&toolid='.$toolid) .r.n;
-		
-		// An array for all the addresses to be e-mailed
-		$emails = array();
-		$teamemails = array();
-		
+			
+		// Get team
 		$team = ContribtoolHelper::transform($status['developers'], 'uidNumber');
 		if(!$this->_admin) { $this->_admin = 0; }
-		$inteam = (in_array($juser->get('uid'), $team)) ? 1 : 0;
 		
-		foreach ($team as $member) {
-				$user =& XUser::getInstance ( $member );	
-				$teamemails[] = $user->get('email');
+		// Get admins
+		$admins = array();
+		$admingroup = isset($this->config->parameters['admingroup']) ? trim($this->config->parameters['admingroup']) : 'apps';
+		$group = new XGroup();
+		$group->select( $admingroup);
+		$members = $group->get('members');
+		$managers = $group->get('managers');
+		$members = array_merge($members, $managers);
+		if($members) {
+			foreach($members as $member) {
+				$muser =& XUser::getInstance( $member );
+					if (is_object($muser)) {
+							$admins[] = $member;
+					}
+				}
 		}
 		
+		$inteam = (in_array($juser->get('id'), $team)) ? 1 : 0;
+		
+		// collector for those who need to get notified
+		$users = array();
+	
 		// determine receipients
-		if($this->_admin==2 && $access != 1) { 
-			$emails = $teamemails; 
+		if($this->_admin==2 && $access != 1 && $action!=1 ) { 
+			$users = $team; 
 			if(!$inteam) {						
-				$emails[] = $juser->get('email'); // cc admin who made the change if not in team
-			}
-			else { 
-				$emails[] = $admin_email;
+				$users[] = $juser->get('id'); // cc admin who made the change if not in team
 			}
 		}
 		else if ($access == 1) {					
-			$emails[] = $admin_email; // send private message to admin
+			$users = $admins; // send private message to admins
 		}
-		else if (!$this->_admin) { // send to admin & team - action by dev team or new registration					
-			$emails = $teamemails;
-			$emails[] = $admin_email;
-		} 
+		else if($action == 3 && $this->_admin!=2)  {  // message is sent by team to admins		
+			$users = $admins;
+		}
+		else if($action == 1)  {  // info changed, only notify team			
+			$users = $team;
+		}
+		else  {  // send to admin & team in all other cases			
+			$users = array_merge($team, $admins);
+		}
 		
-		
-		// fire off email
+		// make sure we are not mailing twice
+		$users = array_unique($users); 
+				
+		// fire off message
 		if($summary or $comment) {
-			foreach ($emails as $email)
-			{
-				SupportUtils::send_email($email, $subject, $message, $from);
+			JPluginHelper::importPlugin( 'xmessage' );
+			$dispatcher =& JDispatcher::getInstance();
+			if (!$dispatcher->trigger( 'onSendMessage', array( $action, $subject, $message, $hub, $users, $this->_option ))) {
+					$this->setError( JText::_('Failed to message users.') );
+					echo ContribtoolHtml::alert( $this->_error );
 			}
 		}
 				
@@ -1274,6 +1318,7 @@ class ContribtoolController extends JObject
 		$obj = new Tool( $database);
 		$ticketid = $obj->getTicketId($toolid);
 		$summary = '';
+		$action = 1;
 
 		// see what changed
 		if($oldstuff != $newstuff) {
@@ -1289,7 +1334,8 @@ class ContribtoolController extends JObject
 			if ($oldstuff['version']!='' && $oldstuff['version'] != $newstuff['version'] ) {
 				$changelog[] = '<li><strong>'.strtolower(JText::_('DEV_VERSION_LABEL')).'</strong> '.JText::_('TICKET_CHANGED_FROM')
 				.' <em>'.$oldstuff['version'].'</em> '.JText::_('TO').' <em>'.$newstuff['version'].'</em></li>';
-				$summary .= ', '.strtolower(JText::_('VERSION'));
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('VERSION'));
 			}
 			else if($oldstuff['version']=='' && $newstuff['version']!='') {
 				$changelog[] = '<li><strong>'.strtolower(JText::_('DEV_VERSION_LABEL')).'</strong> '.JText::_('TICKET_SET_TO')
@@ -1298,7 +1344,8 @@ class ContribtoolController extends JObject
 			if ($oldstuff['description'] != $newstuff['description']) {
 				$changelog[] = '<li><strong>'.JText::_('TOOL').' '.strtolower(JText::_('DESCRIPTION')).'</strong> '.JText::_('TICKET_CHANGED_FROM')
 				.' <em>'.$oldstuff['description'].'</em> '.JText::_('TO').' <em>'.$newstuff['description'].'</em></li>';
-				$summary .= ', '.strtolower(JText::_('DESCRIPTION'));
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('DESCRIPTION'));
 			}
 			if ($oldstuff['exec'] != $newstuff['exec']) {
 				$changelog[] = '<li><strong>'.JText::_('TOOL_ACCESS').'</strong> '.JText::_('TICKET_CHANGED_FROM')
@@ -1307,36 +1354,38 @@ class ContribtoolController extends JObject
 				$changelog[] = '<li><strong>'.JText::_('ALLOWED_GROUPS').'</strong> '.JText::_('TICKET_SET_TO')
 				.' to <em>'.ContribtoolHtml::getGroups($newstuff['membergroups']).'</em></li>';
 				}
-				$summary .= ', '.strtolower(JText::_('TOOL_ACCESS'));
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('TOOL_ACCESS'));
 			}
 			if ($oldstuff['code'] != $newstuff['code']) {
 				$changelog[] = '<li><strong>'.JText::_('CODE_ACCESS').'</strong> '.JText::_('TICKET_CHANGED_FROM')
 				.' <em>'.$oldstuff['code'].'</em> '.JText::_('TO').' <em>'.$newstuff['code'].'</em></li>';
-				$summary .= ', '.strtolower(JText::_('CODE_ACCESS'));
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('CODE_ACCESS'));
 			}
 			if ($oldstuff['wiki'] != $newstuff['wiki']) {
 				$changelog[] = '<li><strong>'.JText::_('WIKI_ACCESS').'</strong> '.JText::_('TICKET_CHANGED_FROM')
 				.' <em>'.$oldstuff['wiki'].'</em> '.JText::_('TO').' <em>'.$newstuff['wiki'].'</em></li>';
-				$summary .= ', '.strtolower(JText::_('WIKI_ACCESS'));
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('WIKI_ACCESS'));
 			}
 			if ($oldstuff['vncGeometry'] != $newstuff['vncGeometry']) {
 				$changelog[] = '<li><strong>'.JText::_('VNC_GEOMETRY').'</strong> '.JText::_('TICKET_CHANGED_FROM')
 				.' <em>'.$oldstuff['vncGeometry'].'</em> to <em>'.$newstuff['vncGeometry'].'</em></li>';
-				$summary .= ', '.strtolower(JText::_('VNC_GEOMETRY'));
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('VNC_GEOMETRY'));
 			}
 			if ($oldstuff['developers'] != $newstuff['developers']) {
 				$changelog[] = '<li><strong>'.JText::_('DEVELOPMENT_TEAM').'</strong> '.JText::_('TICKET_CHANGED_FROM')
 				.' <em>'.ContribtoolHtml::getDevTeam($oldstuff['developers']).'</em> '.JText::_('TO').' <em>'.ContribtoolHtml::getDevTeam($newstuff['developers']).'</em></li>';
-				$summary .= ', '.strtolower(JText::_('DEVELOPMENT_TEAM'));
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('DEVELOPMENT_TEAM'));
 			}			
-			if ($oldstuff['vncGeometry'] != $newstuff['vncGeometry']) {
-				$changelog[] = '<li><strong>'.JText::_('VNC_GEOMETRY').'</strong> '.JText::_('TICKET_CHANGED_FROM')
-				.' <em>'.$oldstuff['vncGeometry'].'</em> '.JText::_('TO').' <em>'.$newstuff['vncGeometry'].'</em></li>';
-				$summary .= ', '.strtolower(JText::_('VNC_GEOMETRY'));
-			}
+			
 			// end of tool information changes
 			if($summary) {
 				$summary .= ' '.JText::_('INFO_CHANGED');
+				$action = 1;
 			}
 			
 			// tool status/priority changes
@@ -1350,6 +1399,7 @@ class ContribtoolController extends JObject
 				.' <em>'.ContribtoolHtml::getStatusName($oldstuff['state'], $oldstate).'</em> '.JText::_('TO').' <em>'.ContribtoolHtml::getStatusName($newstuff['state'], $newstate).'</em></li>';
 				$summary = JText::_('STATUS').' '.JText::_('TICKET_CHANGED_FROM').' '.$oldstate.' '.JText::_('TO').' '.$newstate;
 				$email = 1; // send email about status changes
+				$action = 2;
 			}
 		}
 
@@ -1361,9 +1411,11 @@ class ContribtoolController extends JObject
 
 		$rowc = new SupportComment( $database );
 		$rowc->ticket     = $ticketid;
+		
 		if($comment) {
-		$rowc->comment    = nl2br($comment);
-		$rowc->comment    = str_replace( '<br>', '<br />', $rowc->comment );
+			$action = 3;
+			$rowc->comment    = nl2br($comment);
+			$rowc->comment    = str_replace( '<br>', '<br />', $rowc->comment );
 		}
 		$rowc->created    = date( 'Y-m-d H:i:s', time() );
 		$rowc->created_by = $juser->get('username');
@@ -1376,7 +1428,7 @@ class ContribtoolController extends JObject
 		}
 		else if($email) { 
 			// send notification emails
-			$this->email($toolid, $summary, $comment, $access);
+			$this->email($toolid, $summary, $comment, $access, $action);
 		}
 
 		return true;
@@ -2136,8 +2188,7 @@ class ContribtoolController extends JObject
 						$output['fail'] .= '<br />* '.JText::_('Failed to create license in the database.');
 					}
 				}
-					
-				
+									
 				// update and publish resource page
 				$this->updateResPage($status['resourceid'], $status, '1', $new);
 				
