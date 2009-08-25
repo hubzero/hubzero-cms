@@ -54,6 +54,12 @@
 .wiki-button-image {
 	background: url("images/picture.png") 50% 50% no-repeat;
 }
+.wiki-button-file {
+	background: url("images/page_white.png") 50% 50% no-repeat;
+}
+.wiki-button-resource {
+	background: url("images/page.png") 50% 50% no-repeat;
+}
 .wiki-button-math {
 	background: url("images/text_formula.png") 50% 50% no-repeat;
 }
@@ -77,4 +83,7 @@
 }
 .wiki-button-table {
 	background: url("images/table.png") 50% 50% no-repeat;
+}
+.wiki-button-help {
+	background: url("images/help_purple.png") 50% 50% no-repeat;
 }
