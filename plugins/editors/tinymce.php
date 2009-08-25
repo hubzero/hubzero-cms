@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: tinymce.php 12543 2009-07-23 01:47:21Z ian $
+ * @version		$Id: tinymce.php 12546 2009-07-23 11:03:33Z erdsiger $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -492,8 +492,6 @@ class plgEditorTinymce extends JPlugin
 				plugins : \"$plugins\",
 				$skin
 				theme : \"$theme[$mode]\",
-				// Callbacks
-				$file_browser_callback
 				// Cleanup/Output
 				cleanup : $cleanup,
 				cleanup_on_startup : $cleanup_startup,

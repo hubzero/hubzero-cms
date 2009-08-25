@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 11236 2008-11-02 02:44:35Z ian $
+* @version		$Id: view.html.php 12544 2009-07-23 10:24:34Z erdsiger $
 * @package		Joomla
 * @subpackage	Media
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -88,6 +88,9 @@ class MediaViewMedia extends JView
 		$this->assign('require_ftp', $ftp);
 		$this->assign('folders_id', ' id="media-tree"');
 		$this->assign('folders', $this->get('folderTree'));
+		
+		$user =& JFactory::getUser();
+		$this->assignRef('user', $user);
 
 		// Set the toolbar
 		$this->_setToolBar();
