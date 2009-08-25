@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 12543 2009-07-23 01:47:21Z ian $
+* @version		$Id: CHANGELOG.php 12584 2009-07-30 17:46:47Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -37,6 +37,11 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+-------------------- 1.5.14 Stable Release [30-July-2009] ------------------
+
+23-Jul-2009 Gergo Erdosi
+ # [#17319] Media Manager is broken
+ # [#17323] TinyMCE Editor $file_browser_callback error in 1.5.13
 
 -------------------- 1.5.13 Stable Release [22-July-2009] ------------------
 
