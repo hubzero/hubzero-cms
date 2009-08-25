@@ -124,6 +124,23 @@ class EventsController
 			// Configuration
 			case 'configure':    $this->configure();    break;
 			case 'saveconfig':   $this->saveconfig();   break;
+			
+			// Respondents
+			case 'viewrespondent':    $this->viewrespondent();    break;
+			case 'viewlist':   $this->viewlist();   break;
+			case 'downloadlist':   $this->downloadlist();   break;
+			case 'removerespondent':   $this->removerespondent();   break;
+			
+			// Pages
+			case 'pages':    $this->pages();    break;
+			case 'addpage':   $this->addpage();   break;
+			case 'editpage':   $this->editpage();   break;
+			case 'savepage':   $this->savepage();   break;
+			case 'removepage':   $this->removepage();   break;
+			case 'orderuppage':   $this->orderuppage();   break;
+			case 'orderdownpage':   $this->orderdownpage();   break;
+			case 'reorderpage':   $this->reorderpage();   break;
+			case 'cancelpage':   $this->cancelpage();   break;
 
 			default: $this->events(); break;
 		}
@@ -552,6 +569,17 @@ class EventsController
 
 		$row->mask = 0;
 
+		// Get parameters
+		$params = JRequest::getVar( 'params', '', 'post' );
+		if (is_array( $params )) {
+			$txt = array();
+			foreach ( $params as $k=>$v) 
+			{
+				$txt[] = "$k=$v";
+			}
+			$row->params = implode( "\n", $txt );
+		}
+
 		if (!$row->check()) {
 			echo EventsHtml::alert( $row->getError() );
 			exit();
@@ -751,6 +779,13 @@ class EventsController
 		// Instantiate an event tags object
 		$rt = new EventsTags( $database );
 		
+		// Instantiate a page object
+		$ep = new EventsPage( $database );
+		
+		// Instantiate a respondent object
+		$er = new EventsRespondent( array() );
+		
+		
 		// Loop through the IDs and unpublish the event
 		foreach ($ids as $id) 
 		{
@@ -759,6 +794,12 @@ class EventsController
 			
 			// Delete the event
 			$event->delete( $id );
+			
+			// Delete any associated pages 
+			$ep->deletePages( $id );
+			
+			// Delete any associated respondents
+			$er->deleteRespondents( $id );
 		}
 	
 		// Redirect
@@ -1228,6 +1269,333 @@ class EventsController
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 		$this->_message = JText::_('EVENTS_CAL_LANG_CATEGORY_REMOVED');
+	}
+	
+	//----------------------------------------------------------
+	//  Respondents
+	//----------------------------------------------------------
+	
+	protected function viewrespondent()
+	{
+		EventsHtml::viewrespondent(new EventsRespondent(array('respondent_id' => JRequest::getInt('id', 0))));
+	}
+	
+	//-----------
+
+	protected function viewlist()
+	{
+		EventsHtml::viewlist($this->getRespondents(), $this->_option);
+	}
+	
+	//-----------
+	
+	private function getRespondents()
+	{
+		$app =& JFactory::getApplication();
+		$config = JFactory::getConfig();
+
+		$sorting = JRequest::getVar('sortby', 'registered DESC');
+		$filters = array(
+			'search' => urldecode(JRequest::getString('search')),
+			'id'     => JRequest::getVar('id', array()),
+			'sortby' => $sorting == 'registerby DESC' ? 'registered DESC' : $sorting,
+			'limit'  => $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int'),
+			'offset' => JRequest::getInt('limitstart', 0)
+		);
+		if (!$filters['limit']) $filters['limit'] = 30;
+		return new EventsRespondent($filters);	
+	}
+	
+	//-----------
+
+	protected function downloadlist()
+	{
+		EventsHtml::downloadlist($this->getRespondents(), $this->_option);
+	}
+	
+	
+	//-----------
+
+	protected function removerespondent() 
+	{
+		// Incoming
+		$workshop = JRequest::getInt( 'workshop', 0 );
+		$ids = JRequest::getVar( 'rid', array() );
+
+		// Get the single ID we're working with
+		if (!is_array($ids)) {
+			$ids = array();
+		}
+		
+		// Do we have any IDs?
+		if (!empty($ids)) {
+			$database =& JFactory::getDBO();
+		
+			$r = new EventsRespondent( array() );
+			
+			// Loop through each ID and delete the necessary items
+			foreach ($ids as $id) 
+			{
+				// Remove the profile
+				$r->delete( $id );
+			}
+		}
+		
+		// Output messsage and redirect
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=viewList&id[]='.$workshop;
+		$this->_message = JText::_('EVENTS_RESPONDENT_REMOVED');
+	}
+	
+	//----------------------------------------------------------
+	//  Pages
+	//----------------------------------------------------------
+
+	protected function pages()
+	{
+		$ids = JRequest::getVar( 'id', array(0) );
+		if (count($ids) < 1) {
+			$this->cancel();
+			return;
+		}
+
+		$app =& JFactory::getApplication();
+		$database =& JFactory::getDBO();
+
+		// Get filters
+		$filters = array();
+		$filters['event_id'] = $ids[0];
+		$filters['search'] = urldecode(JRequest::getString('search'));
+
+		// Get configuration
+		$config = JFactory::getConfig();
+		
+		// Get paging variables
+		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.pages.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$filters['limit'] = ($filters['limit']) ? $filters['limit'] : 25;
+		$filters['start'] = JRequest::getInt('limitstart', 0);
+
+		$obj = new EventsPage( $database );
+		
+		// Get a record count
+		$total = $obj->getCount( $filters );
+		
+		// Get records
+		$rows = $obj->getRecords( $filters );
+
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+
+		$event = new EventsEvent( $database );
+		$event->load( $ids[0] );
+
+		// Output HTML
+		EventsHtml::pages( $rows, $pageNav, $this->_option, $filters, $event );
+	}
+	
+	//-----------
+
+	protected function addpage()
+	{
+		$ids = JRequest::getVar( 'id', array() );
+		if (is_array($ids)) {
+			$id = (!empty($ids)) ? $ids[0] : 0;
+		} else {
+			$id = 0;
+		}
+		JRequest::setVar( 'id', array() );
+		$this->editpage($id);
+	}
+
+	//-----------
+
+	protected function editpage($eid=null) 
+	{
+		$database =& JFactory::getDBO();
+		
+		// Incoming
+		$eid = ($eid) ? $eid : JRequest::getInt( 'event', 0 );
+		$ids = JRequest::getVar( 'id', array() );
+		
+		// Get the single ID we're working with
+		if (is_array($ids)) {
+			$id = (!empty($ids)) ? $ids[0] : 0;
+		} else {
+			$id = 0;
+		}
+		
+		// Initiate database class and load info
+		$page = new EventsPage( $database );
+		$page->load( $id );
+		
+		$event = new EventsEvent( $database );
+		$event->load( $eid );
+		
+		// Ouput HTML
+		EventsHtml::editpage( $page, $event, $this->_option );
+	}
+
+	//-----------
+	
+	protected function savepage() 
+	{
+		$database =& JFactory::getDBO();
+		
+		// Bind incoming data to object
+		$row = new EventsPage( $database );
+		if (!$row->bind( $_POST )) {
+			echo EventsHtml::alert( $row->getError() );
+			exit();
+		}
+		
+		if (!$row->alias) {
+			$row->alias = $row->title;
+		}
+		
+		$row->alias = preg_replace("/[^a-zA-Z0-9]/", "", $row->alias);
+		$row->alias = strtolower($row->alias);
+		
+		// Get parameters
+		$params = JRequest::getVar( 'params', '', 'post' );
+		if (is_array( $params )) {
+			$txt = array();
+			foreach ( $params as $k=>$v) 
+			{
+				$txt[] = "$k=$v";
+			}
+			$row->params = implode( "\n", $txt );
+		}
+		
+		// Check content for missing required data
+		if (!$row->check()) {
+			echo EventsHtml::alert( $row->getError() );
+			exit();
+		}
+
+		// Store new content
+		if (!$row->store()) {
+			echo EventsHtml::alert( $row->getError() );
+			exit();
+		}
+		
+		// Redirect
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=pages&id[]='.$row->event_id;
+		$this->_message = JText::_('EVENTS_PAGE_SAVED');
+	}
+	
+	//-----------
+
+	protected function removepage() 
+	{
+		// Incoming
+		$event = JRequest::getInt( 'event', 0 );
+		$ids = JRequest::getVar( 'ids', array() );
+
+		// Get the single ID we're working with
+		if (!is_array($ids)) {
+			$ids = array();
+		}
+		
+		// Do we have any IDs?
+		if (!empty($ids)) {
+			$database =& JFactory::getDBO();
+		
+			$page = new EventsPage( $database );
+			
+			// Loop through each ID and delete the necessary items
+			foreach ($ids as $id) 
+			{
+				// Remove the profile
+				$page->delete( $id );
+			}
+		}
+		
+		// Output messsage and redirect
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=pages&id[]='.$event;
+		$this->_message = JText::_('EVENTS_PAGES_REMOVED');
+	}
+	
+	//-----------
+
+	protected function orderuppage() 
+	{
+		$this->reorderpage();
+	}
+	
+	//-----------
+	
+	protected function orderdownpage() 
+	{
+		$this->reorderpage();
+	}
+	
+	//-----------
+	
+	protected function reorderpage() 
+	{
+		$database =& JFactory::getDBO();
+		
+		// Incoming
+		$id = JRequest::getVar( 'id', array() );
+		$id = $id[0];
+		$pid = JRequest::getInt( 'event', 0 );
+
+		// Ensure we have an ID to work with
+		if (!$id) {
+			echo EventsHtml::alert( JText::_('No page ID found.') );
+			exit;
+		}
+		
+		// Ensure we have a parent ID to work with
+		if (!$pid) {
+			echo EventsHtml::alert( JText::_('No event ID found.') );
+			exit;
+		}
+
+		// Get the element moving down - item 1
+		$page1 = new EventsPage( $database );
+		$page1->load( $id );
+
+		// Get the element directly after it in ordering - item 2
+		$page2 = clone( $page1 );
+		$page2->getNeighbor( $this->_task );
+
+		switch ($this->_task) 
+		{
+			case 'orderuppage':				
+				// Switch places: give item 1 the position of item 2, vice versa
+				$orderup = $page2->ordering;
+				$orderdn = $page1->ordering;
+				
+				$page1->ordering = $orderup;
+				$page2->ordering = $orderdn;
+				break;
+			
+			case 'orderdownpage':
+				// Switch places: give item 1 the position of item 2, vice versa
+				$orderup = $page1->ordering;
+				$orderdn = $page2->ordering;
+				
+				$page1->ordering = $orderdn;
+				$page2->ordering = $orderup;
+				break;
+		}
+		
+		// Save changes
+		$page1->store();
+		$page2->store();
+		
+		// Redirect
+		$this->_redirect = 'index.php?option='. $this->_option .'&task=pages&id[]='. $pid;
+	}
+	
+	//-----------
+
+	protected function cancelpage()
+	{
+		$workshop = JRequest::getInt( 'workshop', 0 );
+		
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=pages&id[]='.$workshop;
 	}
 }
 ?>

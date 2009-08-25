@@ -41,6 +41,8 @@ require_once(JPATH_COMPONENT.DS.'events.repeat.php');
 require_once(JPATH_COMPONENT.DS.'events.category.php');
 require_once(JPATH_COMPONENT.DS.'events.tags.php');
 require_once(JPATH_COMPONENT.DS.'events.config.php');
+include_once(JPATH_COMPONENT.DS.'events.page.php');
+include_once(JPATH_COMPONENT.DS.'events.respondent.php');
 require_once(JPATH_COMPONENT.DS.'controller.php');
 
 $jacl =& JFactory::getACL();

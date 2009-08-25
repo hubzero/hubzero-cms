@@ -47,6 +47,8 @@ require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.repeat.php');
 require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.category.php');
 require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.tags.php');
 require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.config.php');
+require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.page.php');
+require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.respondent.php');
 require_once(JPATH_COMPONENT.DS.'admin.events.html.php');
 require_once(JPATH_COMPONENT.DS.'admin.controller.php');
 

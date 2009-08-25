@@ -59,6 +59,10 @@ class EventsEvent extends JTable
 	var $archived         = NULL;  
 	var $access           = NULL;
 	var $hits             = NULL;
+	var $registerby       = NULL;
+	var $params           = NULL;
+	var $restricted       = NULL;
+	var $email            = NULL;
 
 	//-----------
 

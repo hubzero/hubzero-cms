@@ -54,6 +54,9 @@ class EventsToolbar
 	public function _DEFAULT() 
 	{
 		JToolBarHelper::title( JText::_( 'EVENTS_MANAGER' ), 'addedit.png' );
+		JToolBarHelper::addNew( 'addpage', 'Add Page');
+		JToolBarHelper::custom('viewList', 'assign', JText::_( 'VIEW_RESPONDENTS' ), JText::_( 'VIEW_RESPONDENTS' ), true, false);
+		JToolBarHelper::spacer();
 		JToolBarHelper::publishList();
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::spacer();
@@ -93,6 +96,45 @@ class EventsToolbar
 		JToolBarHelper::spacer();
 		JToolBarHelper::media_manager();
 		JToolBarHelper::cancel('cancelcat');
+	}
+	
+	//-----------
+
+	public function _PAGES() 
+	{
+		JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'EVENTS' ).'</a>: <small><small>[ '.JText::_('PAGES').' ]</small></small>', 'addedit.png' );
+		JToolBarHelper::addNew( 'addpage', JText::_('ADD_PAGE'));
+		JToolBarHelper::editList( 'editpage' );
+		JToolBarHelper::deleteList( '', 'removepage', JText::_('REMOVE_PAGE') );
+	}
+	
+	//-----------
+	
+	public function _EDITPAGE($edit) 
+	{
+		$text = ( $edit ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
+		
+		JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'EVENTS_PAGE' ).'</a>: <small><small>[ '. $text.' ]</small></small>', 'user.png' );
+		JToolBarHelper::save('savepage');
+		JToolBarHelper::cancel('cancelpage');
+	}
+
+	//-----------
+	
+	public function _VIEWRESPONDENT()
+	{
+		JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'EVENTS' ).'</a>', 'user.png' );
+		JToolBarHelper::cancel();
+	}
+	
+	//-----------
+
+	public function _VIEWLIST()
+	{
+		JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'EVENTS' ).'</a>', 'user.png' );
+		JToolBarHelper::custom('downloadList', 'upload', JText::_('DOWNLOAD_CSV'), JText::_('DOWNLOAD_CSV'), false, false);
+		JToolBarHelper::deleteList( '', 'removerespondent', JText::_('Delete') );
+		JToolBarHelper::cancel();
 	}
 }
 ?>
