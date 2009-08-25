@@ -292,6 +292,7 @@ class EventsHtml
 						<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_TIMESHEET'); ?></th>
 						<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CHECKEDOUT'); ?></th>
 						<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
+						<th><?php echo JText::_('Pages'); ?></th>
 					</tr>
 				</thead>
 				<tfoot>
@@ -302,6 +303,8 @@ class EventsHtml
 				<tbody>
 <?php
 	$k = 0;
+	$database =& JFactory::getDBO();
+	$p = new EventsPage( $database );
 	for ($i=0, $n=count( $rows ); $i < $n; $i++) 
 	{
 		$row = &$rows[$i];
@@ -393,7 +396,9 @@ class EventsHtml
 					$times .= JText::_('EVENTS_CAL_LANG_TO').' : '.$row->publish_down.'<br />';
 				}
 			}
-
+			
+			$pages = $p->getCount(array('event_id'=>$row->id));
+			
 			if ($times) {
                 ?><span class="editlinktip hasTip" title="<?php echo JText::_( 'Publish Information' );?>::<?php echo $times; ?>">
 					<a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')">
@@ -421,6 +426,7 @@ class EventsHtml
 							echo '&nbsp;';
 						} ?></td>
 						<td><?php echo $row->groupname;?></td>
+						<td><a href="index.php?option=<?php echo $option ?>&amp;task=pages&amp;id[]=<? echo $row->id; ?>"><?php echo $pages; ?> <?php echo JText::_('Pages'); ?></a></td>
 					</tr>
 <?php
    $k = 1 - $k;
@@ -448,6 +454,8 @@ class EventsHtml
 		$xuserm =& XUser::getInstance( $row->modified_by );
 		$userm = is_object($xuserm) ? $xuserm->get('name') : '';
 		$userc = is_object($xuserc) ? $xuserc->get('name') : '';
+		
+		$params =& new JParameter( $row->params, JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'events.xml' );
 		?>
 		<script type="text/javascript" src="../components/<?php echo $option; ?>/js/calendar.rc4.js"></script>
 		<script type="text/javascript">
@@ -654,6 +662,34 @@ class EventsHtml
 						</tbody>
 					</table>
 				</fieldset>
+				<fieldset class="adminform">
+					<legend><?php echo JText::_('REGISTRATION'); ?></legend>
+					
+					<table class="admintable">
+						<tbody>
+							<tr>
+								<td class="key"><label for="registerby"><?php echo JText::_('REGISTER_BY'); ?>:</label></td>
+								<td>
+									<?php echo JHTML::_('calendar', $row->registerby, 'registerby', 'registerby', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+								</td>
+							</tr>
+							<tr>
+								<td class="key"><label for="email"><?php echo JText::_('EMAIL'); ?>:</label></td>
+								<td>
+									<input type="text" name="email" id="email" value="<?php echo stripslashes($row->email); ?>" size="50" />
+									<br /><span>The email registrations will be sent to.</span>
+								</td>
+							</tr>
+							<tr>
+								<td class="key"><label for="restricted"><?php echo JText::_('RESTRICTED'); ?>:</label></td>
+								<td>
+									<input type="text" name="restricted" id="restricted" value="<?php echo stripslashes($row->restricted); ?>" size="50" />
+									<br /><span>If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
 			</div>
 			<div class="col width-40">
 				<fieldset class="adminform">
@@ -690,6 +726,10 @@ class EventsHtml
 							</tr>
 						</tbody>
 					</table>
+				</fieldset>
+				<fieldset class="adminform">
+					<legend><?php echo JText::_('REGISTRATION_FIELDS'); ?></legend>
+					<?php echo $params->render(); ?>
 				</fieldset>
 			</div><div class="clr"></div>
 		
@@ -1056,6 +1096,434 @@ class EventsHtml
 			</fieldset>
 		</form>
 		<?php 
+	}
+	
+	//-----------
+	
+	public function pages( &$rows, &$pageNav, $option, $filters, $event ) 
+	{
+		?>
+		<script type="text/javascript">
+		function submitbutton(pressbutton) 
+		{
+			var form = document.getElementById('adminForm');
+			if (pressbutton == 'cancel') {
+				submitform( pressbutton );
+				return;
+			}
+			// do field validation
+			submitform( pressbutton );
+		}
+		</script>
+	
+		<form action="index.php" method="post" name="adminForm" id="adminForm">
+			<h2><?php echo stripslashes($event->title); ?></h2>
+			
+			<fieldset id="filter">
+				<label>
+					<?php echo JText::_('SEARCH'); ?>: 
+					<input type="text" name="search" value="<?php echo $filters['search']; ?>" />
+				</label>
+				
+				<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+			</fieldset>
+		
+			<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+				<thead>
+					<tr>
+						<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $rows );?>);" /></th>
+						<th><?php echo JText::_('ID'); ?></th>
+						<th><?php echo JText::_('TITLE'); ?></th>
+						<th colspan="3"><?php echo JText::_('REORDER'); ?></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<td colspan="6">
+							<?php echo $pageNav->getListFooter(); ?>
+						</td>
+					</tr>
+				</tfoot>
+				<tbody>
+<?php
+		$k = 0;
+		for ($i=0, $n=count( $rows ); $i < $n; $i++) 
+		{
+			$row = &$rows[$i];
+?>
+					<tr class="<?php echo "row$k"; ?>">
+						<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
+						<td><?php echo $row->id; ?></td>
+						<td><a href="index.php?option=<?php echo $option ?>&amp;task=editpage&amp;id[]=<? echo $row->id; ?>&amp;workshop=<?php echo $workshop->id; ?>"><?php echo stripslashes($row->title).' ('.stripslashes($row->alias).')'; ?></a></td>
+						<td><?php echo $pageNav->orderUpIcon( $i, ($row->position == @$rows[$i-1]->position), 'orderuppage' ); ?></td>
+						<td><?php echo $pageNav->orderDownIcon( $i, $n, ($row->position == @$rows[$i+1]->position), 'orderdownpage' ); ?></td>
+						<td><?php echo $row->ordering; ?></td>
+					</tr>
+<?php
+			$k = 1 - $k;
+		}
+?>
+				</tbody>
+			</table>
+		
+			<input type="hidden" name="event" value="<?php echo $event->id; ?>" />
+			<input type="hidden" name="option" value="<?php echo $option; ?>" />
+			<input type="hidden" name="task" value="" />
+			<input type="hidden" name="boxchecked" value="0" />
+		</form>
+		<?php
+	}
+
+	//-----------
+	
+	public function editpage( $page, $event, $option ) 
+	{
+		jimport('joomla.html.editor');
+		$editor =& JEditor::getInstance();
+		?>
+		<script type="text/javascript">
+		function submitbutton(pressbutton) 
+		{
+			var form = document.adminForm;
+			
+			if (pressbutton == 'cancel') {
+				submitform( pressbutton );
+				return;
+			}
+			
+			submitform( pressbutton );
+		}
+		</script>
+
+		<form action="index.php" method="post" name="adminForm">
+			<h2><?php echo stripslashes($event->title); ?></h2>
+			<div class="col width-60">
+				<fieldset class="adminform">
+					<legend><?php echo JText::_('PAGE'); ?></legend>
+					
+					<input type="hidden" name="event" value="<?php echo $event->id; ?>" />
+					<input type="hidden" name="id" value="<?php echo $page->id; ?>" />
+					<input type="hidden" name="option" value="<?php echo $option; ?>" />
+					<input type="hidden" name="task" value="savepage" />
+					
+					<table class="admintable">
+						<tbody>
+							<tr>
+								<td class="key"><label for="title"><?php echo JText::_('TITLE'); ?>:</label></td>
+								<td><input type="text" name="title" id="title" value="<?php echo htmlentities(stripslashes($page->title), ENT_QUOTES); ?>" size="50" /></td>
+							</tr>
+							<tr>
+								<td class="key"><label for="alias"><?php echo JText::_('ALIAS'); ?>:</label></td>
+								<td>
+									<input type="text" name="alias" id="alias" value="<?php echo stripslashes($page->alias); ?>" size="50" />
+									<br /><span>A short identifier for this page. Ex: "agenda". Alpha-numeric characters only. No spaces.</span>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<label for="pagetext"><?php echo JText::_('PAGE_TEXT'); ?>:</label><br />
+									<?php
+									echo $editor->display('pagetext', htmlentities(stripslashes($page->pagetext)), '100%', '350px', '40', '10');
+									?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+			</div>
+			<div class="col width-40">
+				<table>
+					<tbody>
+						<tr>
+							<th>Ordering</th>
+							<td><?php echo $page->ordering; ?></td>
+						</tr>
+						<tr>
+							<th>Created</th>
+							<td><?php echo $page->created; ?></td>
+						</tr>
+						<tr>
+							<th>Created by</th>
+							<td><?php echo $page->created_by; ?></td>
+						</tr>
+						<tr>
+							<th>Last Modified</th>
+							<td><?php echo $page->modified; ?></td>
+						</tr>
+						<tr>
+							<th>Modified by</th>
+							<td><?php echo $page->modified_by; ?></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="clr"></div>
+		</form>
+		<?php
+	}
+	
+	//-----------
+
+	public function viewrespondent($resp)
+	{
+		list($resp) = $resp->getRecords();
+	?>
+		<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+			<thead>
+				<tr><th colspan="2"><?php echo JText::_('RESPONDENT_DATA'); ?></th></tr>
+			</thead>
+			<tbody>
+				<?php if (!empty($resp->last_name) || !empty($resp->first_name)) : ?>
+				<tr><td><?php echo JText::_('NAME'); ?></td><td><?php echo $resp->last_name . ', ' . $resp->first_name; ?></td></tr>
+				<?php endif; ?>
+				<?php if (!empty($resp->email)): ?>
+				<tr><td><?php echo JText::_('EMAIL'); ?></td><td><a href="mailto:<?php echo $resp->email; ?>"><?php echo $resp->email; ?></a></td></tr>
+				<?php endif; ?>
+				<?php if (!empty($resp->affiliation)): ?>
+				<tr><td><?php echo JText::_('AFFILIATION'); ?></td><td><?php echo $resp->affiliation; ?></td></tr>
+				<?php endif; ?>
+				<?php if (!empty($resp->title)): ?>
+				<tr><td><?php echo JText::_('TITLE'); ?></td><td><?php echo $resp->title . (empty($resp->position_description) ? '' : ' - ' . $resp->position_description); ?></td></tr>
+				<?php endif; ?>
+				<?php if (!empty($resp->city) || !empty($resp->state) || !empty($resp->zip) || !empty($resp->country)): ?>
+				<tr><td><?php echo JText::_('LOCATION'); ?></td><td><?php echo $resp->city . ' ' . $resp->state . ' ' . $resp->country . ' ' . $resp->zip; ?></td></tr>
+				<?php endif; ?>
+				<?php if (!empty($resp->telephone) || !empty($resp->fax)): ?>
+				<tr><td><?php echo JText::_('TELEPHONE'); ?></td><td><?php echo $resp->telephone . (empty($resp->fax) ? '' : ' ' . $resp->fax . ' ('.JText::_('FAX').')'); ?></td></tr>
+				<?php endif; ?>	
+				<?php if (!empty($resp->website)): ?>
+				<tr><td><?php echo JText::_('WEBSITE'); ?></td><td><?php echo $resp->website; ?></td></tr>
+				<?php endif; ?>
+				<?php 
+				$race = WorkshopsRespondent::getRacialIdentification($resp->id);
+				if (!empty($race)): 
+				?>
+				<tr><td><?php echo JText::_('RACE'); ?></td><td><?php echo $race; ?></td></tr>
+				<?php endif; ?>
+				<?php if (!empty($resp->gender)): ?>
+				<tr><td><?php echo JText::_('GENDER'); ?></td><td><?php echo $resp->gender == 'm' ? JText::_('MALE') : JText::_('FEMALE'); ?></td></tr>
+				<?php endif; ?>
+				<?php if (!empty($resp->arrival)): ?>
+				<tr><td><?php echo JText::_('ARRIVAL'); ?></td><td><?php echo $resp->arrival; ?></td></tr>
+				<?php endif; ?>
+				<?php if (!empty($resp->arrival)): ?>
+				<tr><td><?php echo JText::_('DEPARTURE'); ?></td><td><?php echo $resp->departure; ?></td></tr>
+				<?php endif; ?>
+				<tr><td><?php echo JText::_('DISABILITY_CONTACT_REQUESTED'); ?></td><td><?php echo $resp->disability_needs ? JText::_('YES') : JText::_('NO'); ?></td></tr>
+				<?php if (!empty($resp->dietary_needs)): ?>
+				<tr><td><?php echo JText::_('DIETARY_RESTRICTION'); ?></td><td><?php echo $resp->dietary_needs; ?></td></tr>
+				<?php endif; ?>
+				<tr><td><?php echo JText::_('ATTENDING_DINNER'); ?></td><td><?php echo $resp->attending_dinner ? JText::_('YES') : JText::_('NO'); ?></td></tr>
+				<?php if (!empty($resp->abstract)): ?>
+				<tr><td><?php echo JText::_('ABSTRACT'); ?></td><td><?php echo $resp->abstract; ?></td></tr>
+				<?php endif; ?>
+				<?php if (!empty($resp->comment)): ?>
+				<tr><td><?php echo JText::_('COMMENT'); ?></td><td><?php echo $resp->comment; ?></td></tr>
+				<?php endif; ?>
+			</tbody>
+		</table>
+	<?php
+	}
+	
+	//-----------
+
+	private static $field_ordering = array(
+		'name' => 0, 'email' => 1, 'telephone' => 2, 'affiliation' => 3, 'position' => 4, 'address' => 5, 
+		'arrival' => 6, 'departure' => 7, 'website' => 8, 'gender' => 9, 'disability' => 10, 
+		'dietary' => 11, 'dinner' => 12, 'abstract' => 13, 'comments' => 14, 'degree' => 15,
+		'race' => 16, 
+		'fax' => 17, 'title' => 18 // folded into previous entries
+	);
+
+	//-----------
+
+	public function fieldSorter($a, $b)
+	{
+		return EventsHtml::$field_ordering[$a] < EventsHtml::$field_ordering[$b] ? -1 : 1;
+	}
+
+	//-----------
+
+	public function quoteCsv($val)
+	{
+		if (!isset($val)) return '';
+		if (strpos($val, "\n") !== false || strpos($val, ',') !== false)
+			return '"'.str_replace(array('\\', '"'), array('\\\\', '""'), $val).'"';
+
+		return $val;
+	}
+
+	//-----------
+
+	public function quoteCsvRow($vals)
+	{
+		return implode(',', array_map(array('EventsHtml', 'quoteCsv'), $vals))."\n";
+	}
+	
+	//-----------
+
+	public function downloadlist($resp, $option)
+	{
+		header('Content-type: text/comma-separated-values');
+		header('Content-disposition: attachment; filename="workshoprsvp.csv"');
+		$fields = array_merge(WorkshopsWorkshop::getDefinedFields(JRequest::getVar('id', arraY())), array('name'));
+		// Output header
+		usort($fields, array('EventsHtml', 'fieldSorter'));
+		echo EventsHtml::quoteCsvRow(array_map('ucfirst', $fields));
+		
+		$rows = $resp->getRecords();
+		
+		// Get a list of IDs to query the race identification for all of them at once to avoid
+		// querying for it in a loop later
+		$race_ids = array();
+		foreach ($rows as $re) 
+		{
+			$race_ids[$re->id] = array('identification' => '');
+		}
+			
+		foreach (WorkshopsRespondent::getRacialIdentification(array_keys($race_ids)) as $id=>$val) 
+		{
+			$race_ids[$id] = $val;
+		}
+		
+		// Output rows
+		foreach ($rows as $re)
+		{
+			$row = array(
+				$re->last_name . ', ' . $re->first_name
+			);
+			// TODO: Oops, I should have made these fields match up better in the first place.
+			foreach ($fields as $field) 
+			{
+				switch ($field)
+				{
+					case 'name': break;
+					case 'position': $row[] = $re->position_description; break;
+					case 'comments': $row[] = $re->comment; break;
+					case 'degree': $row[] = $re->highest_degree; break;
+					case 'race': $row[] = $race_ids[$re->id]['identification']; break;
+					case 'address': 
+						$address = array();
+						if ($re->city) $address[] = $re->city;
+						if ($re->state) $address[] = $re->state;
+						if ($re->zip) $address[] = $re->zip;
+						if ($re->country) $address[] = $re->country;
+						$row[] = implode(', ', $address);
+					break;
+					case 'disability': $row[] = $re->disability_needs ? 'Yes' : 'No'; break;
+					case 'dietary': $row[] = $re->dietary_needs; break;
+					case 'dinner': $row[] = $re->attending_dinner ? 'Yes' : 'No'; break;
+					default:
+						$row[] = $re->$field;
+					break;
+				}
+			}
+			echo EventsHtml::quoteCsvRow($row);
+		}
+		exit;
+	}
+	
+	//-----------
+
+	public function viewlist($resp, $option)
+	{
+		$rows = $resp->getRecords();
+		$pageNav = $resp->getPaginator();
+		?>
+		<script type="text/javascript">
+		function submitbutton(pressbutton) 
+		{
+			var form = document.getElementById('adminForm');
+			if (pressbutton == 'cancel') {
+				submitform( pressbutton );
+				return;
+			}
+			// do field validation
+			submitform( pressbutton );
+		}
+		</script>
+		
+		<form action="" method="post" name="adminForm" id="adminForm">
+			<fieldset id="filter">
+				<label>
+					<?php echo JText::_('SEARCH'); ?>: 
+					<input type="text" name="search" value="<?php echo $resp->getSearchTerms(); ?>" />
+				</label>
+			
+				<label>
+					<?php echo JText::_('SORT'); ?>:
+					<select name="sortby">
+						<option value="id DESC"<?php if ($resp->getOrdering() == 'id DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID_DESC'); ?></option>
+						<option value="id ASC"<?php if ($resp->getOrdering() == 'id ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID_ASC'); ?></option>
+						<option value="name DESC"<?php if ($resp->getOrdering() == 'name DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('NAME_DESC'); ?></option>
+						<option value="name ASC"<?php if ($resp->getOrdering() == 'name ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('NAME_ASC'); ?></option>
+						<option value="special DESC"<?php if ($resp->getOrdering() == 'special DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('SPECIAL_DESC'); ?></option>
+						<option value="special ASC"<?php if ($resp->getOrdering() == 'special ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('SPECIAL_ASC'); ?></option>
+						<option value="registered DESC"<?php if ($resp->getOrdering() == 'registered DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('REGISTERED_DESC'); ?></option>
+						<option value="registered ASC"<?php if ($resp->getOrdering() == 'registered ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('REGISTERED_ASC'); ?></option>
+					</select>
+				</label>
+				
+				<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+			</fieldset>
+			
+			<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+				<thead>
+		 			<tr>
+						<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $rows );?>);" /></th>
+						<th><?php echo JText::_('NAME'); ?></th>
+						<th><?php echo JText::_('EMAIL'); ?></th>
+						<th><?php echo JText::_('REGISTERED'); ?></th>
+						<th><?php echo JText::_('SPECIAL_NEEDS'); ?></th>
+						<th><?php echo JText::_('COMMENT'); ?></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<td colspan="6">
+							<?php echo $pageNav->getListFooter(); ?>
+						</td>
+					</tr>
+				</tfoot>
+				<tbody>
+<?php
+		/*$k = 0;
+		foreach ($rows as $idx=>&$row)
+		{
+			if (!@$row->id) continue;*/
+		$k = 0;
+		for ($i=0, $n=count( $rows ); $i < $n; $i++) 
+		{
+			$row = &$rows[$i];
+?>
+					<tr class="<?php echo "row$k"; ?>">
+						<td><input type="checkbox" name="rid[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
+						<td><a href="index.php?option=<?php echo $option ?>&amp;task=viewrespondent&amp;id=<? echo $row->id; ?>"><?php echo stripslashes($row->last_name . ', ' . $row->first_name); ?></a></td>
+						<td><a href="mailto:<?php echo $row->email ?>"><?php echo $row->email; ?></a></td>
+						<td><?php echo JHTML::_('date', $row->registered, '%d %b. %Y'); ?></td>
+						<td><?php 
+						if (!empty($row->dietary_needs)) {
+							echo 'Dietary needs: '.htmlentities($row->dietary_needs).'<br />';
+						}
+						if ($row->disability_needs) {
+							echo 'Disability consideration requested';
+						}
+						?></td>
+						<td><?php echo htmlentities($row->comment); ?></td>
+					</tr>
+<?php
+			$k = 1 - $k;
+		}
+?>
+				</tbody>
+			</table>
+			<input type="hidden" name="task" value="viewList" />
+			<input type="hidden" name="workshop" value="<?php $id = JRequest::getVar('id', array()); echo is_array($id) ? implode(',', $id) : $id; ?>" />
+			<input type="hidden" name="id[]" value="<?php $id = JRequest::getVar('id', array()); echo is_array($id) ? implode(',', $id) : $id; ?>" />
+			<input type="hidden" name="option" value="<?php echo $option ?>" />
+			<input type="hidden" name="boxchecked" value="0" />
+		</form>
+		<?php
 	}
 }
 ?>

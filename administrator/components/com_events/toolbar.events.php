@@ -36,6 +36,11 @@ switch ( $task )
 	case 'editcat':   EventsToolbar::_EDITCAT();    break;
 	case 'newcat':    EventsToolbar::_NEWCAT();     break;
 	case 'cats':      EventsToolbar::_DEFAULTCAT(); break;
+	case 'viewList': EventsToolbar::_VIEWLIST(); break;
+	case 'viewrespondent': EventsToolbar::_VIEWRESPONDENT(); break;
+	case 'pages':    EventsToolbar::_PAGES();     break;
+	case 'addpage':  EventsToolbar::_EDITPAGE(0); break;
+	case 'editpage': EventsToolbar::_EDITPAGE(1); break;
 	default: EventsToolbar::_DEFAULT(); break;
 }
 ?>

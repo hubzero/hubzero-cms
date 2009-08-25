@@ -49,6 +49,10 @@ function EventsBuildRoute(&$query)
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
+	if (!empty($query['page'])) {
+		$segments[] = $query['page'];
+		unset($query['page']);
+	}
 
 	return $segments;
 }
@@ -81,6 +85,12 @@ function EventsParseRoute($segments)
 		$vars['task'] = $segments[0];
 		if (isset($segments[1]) && is_numeric($segments[1])) {
 			$vars['id']  = $segments[1];
+		}
+		if (isset($segments[2])) {
+			$vars['page']  = $segments[2];
+			if ($segments[2] == 'register') {
+				$vars['task'] = 'register';
+			}
 		}
 	}
 

@@ -93,15 +93,17 @@ class EventsController extends JObject
 
 		switch ($this->getTask()) 
 		{
-			case 'delete':  $this->delete();  break;
-			case 'add':     $this->edit();    break;
-			case 'edit':    $this->edit();    break;
-			case 'save':    $this->save();    break;
-			case 'details': $this->details(); break;
-			case 'day':     $this->day();     break;
-			case 'week':    $this->week();    break;
-			case 'month':   $this->month();   break;
-			case 'year':    $this->year();    break;
+			case 'delete':   $this->delete();   break;
+			case 'add':      $this->edit();     break;
+			case 'edit':     $this->edit();     break;
+			case 'save':     $this->save();     break;
+			case 'details':  $this->details();  break;
+			case 'day':      $this->day();      break;
+			case 'week':     $this->week();     break;
+			case 'month':    $this->month();    break;
+			case 'year':     $this->year();     break;
+			case 'register': $this->register(); break;
+			case 'process':  $this->process();  break;
 
 			default: $this->month(); break;
 		}
@@ -613,6 +615,7 @@ class EventsController extends JObject
 			// Set the page title
 			$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)).': '.$row->title );
 			
+			// Set the pathway
 			$app =& JFactory::getApplication();
 			$pathway =& $app->getPathway();
 			if (count($pathway->getPathWay()) <= 0) {
@@ -623,8 +626,27 @@ class EventsController extends JObject
 			$pathway->addItem( $eday, 'index.php?option='.$this->_option.a.'year='.$eyear.a.'month='.$emonth.a.'day='.$eday );
 			$pathway->addItem( stripslashes($row->title), 'index.php?option='.$this->_option.a.'task=details'.a.'id='.$row->id );
 			
+			//------
+			
+			// Incoming
+			$alias = JRequest::getVar( 'page', '' );
+			
+			// Load the current page
+			$page = new EventsPage( $database );
+			if ($alias) {
+				$page->loadFromAlias( $alias, $row->id );
+			}
+
+			// Get the pages for this workshop
+			$pages = $page->loadPages( $row->id );
+			
+			if ($alias) {
+				$pathway->addItem(stripslashes($page->title),'index.php?option='.$this->_option.a.'task=details'.a.'id='.$row->id.a.'page='.$page->alias);
+			}
+			//------
+			
 			// Build the HTML
-			$html = EventsHtml::details($row, $offset, $option, $eyear, $emonth, $eday, $authorized, $fields, $this->config, $categories, $tags, $auth);
+			$html = EventsHtml::details($row, $offset, $option, $eyear, $emonth, $eday, $authorized, $fields, $this->config, $categories, $tags, $auth, $page, $pages);
 		} else {
 			// Set the page title
 			$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) );
@@ -635,6 +657,447 @@ class EventsController extends JObject
 		
 		// Output HTML
 		echo $html;
+	}
+
+	//-----------
+
+	protected function register()
+	{
+		$database =& JFactory::getDBO();
+		$document =& JFactory::getDocument();
+		
+		// Get some needed info
+		$offset = $this->offset;
+		$year   = $this->year;
+		$month  = $this->month;
+		$day    = $this->day;
+		$option = $this->_option;
+		
+		// Incoming
+		$id = JRequest::getInt( 'id', 0, 'request' );
+		
+		// Ensure we have an ID
+		if (!$id) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			return;
+		}
+		
+		// Load event
+		$event = new EventsEvent( $database );
+		$event->load( $id );
+		
+		// Ensure we have an event
+		if (!$event->title || $event->registerby == '0000-00-00 00:00:00') {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			return;
+		}
+		
+		$auth = true;
+		if ($this->config->getCfg('adminlevel')) {
+			$auth = $this->authorize();
+		}
+		
+		$bits = explode('-',$event->publish_up);
+		$eyear = $bits[0];
+		$emonth = $bits[1];
+		$edbits = explode(' ',$bits[2]);
+		$eday = $edbits[0];
+		
+		// Push some styles to the template
+		$this->getStyles();
+		
+		// Set the page title
+		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)).': '.stripslashes($event->title) );
+		
+		// Set the pathway
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+		}
+		$pathway->addItem( $eyear, 'index.php?option='.$this->_option.a.'year='.$eyear );
+		$pathway->addItem( $emonth, 'index.php?option='.$this->_option.a.'year='.$eyear.a.'month='.$emonth );
+		$pathway->addItem( $eday, 'index.php?option='.$this->_option.a.'year='.$eyear.a.'month='.$emonth.a.'day='.$eday );
+		$pathway->addItem( stripslashes($event->title), 'index.php?option='.$this->_option.a.'task=details'.a.'id='.$event->id );
+		$pathway->addItem( JText::_('Register'),'index.php?option='.$this->_option.a.'task=details'.a.'id='.$event->id.a.'page=register');
+		
+		$page = new EventsPage( $database );
+		$page->alias = $this->_task;
+		
+		// Get the pages for this workshop
+		$pages = $page->loadPages( $event->id );
+		
+		// Check if registration is still open
+		$registerby = $this->_mkt($event->registerby);
+		$now = time();
+		
+		$register = array();
+		$juser =& JFactory::getUser();
+		if (!$juser->get('guest')) {
+			$profile = new XProfile();
+			$profile->load( $juser->get('id') );
+			
+			$register['firstname'] = $profile->get('givenName');
+			$register['lastname'] = $profile->get('surname');
+			$register['affiliation'] = $profile->get('organization');
+			$register['email'] = $profile->get('email');
+			$register['telephone'] = $profile->get('phone');
+			$register['website'] = $profile->get('url');
+		}
+		
+		if ($registerby >= $now) {
+			// Is the registration restricted?
+			if ($event->restricted) {
+				$passwrd = JRequest::getVar('passwrd', '', 'post');
+				
+				if ($event->restricted == $passwrd) {
+					EventsHtml::register( $this->_option, $event, $year, $month, $day, $page, $pages, $register, null, null, $auth );
+				} else {
+					echo EventsHtml::restricted( $this->_option, $event, $year, $month, $day, $page, $pages, $auth );
+				}
+			} else {
+				EventsHtml::register( $this->_option, $event, $year, $month, $day, $page, $pages, $register, null, null, $auth );
+			}
+		} else {
+			echo EventsHtml::closed( $this->_option, $event, $year, $month, $day, $page, $pages, $auth );
+		}
+	}
+	//-----------
+	
+	private function _mkt($stime)
+	{
+		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
+			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		}
+		return $stime;
+	}
+
+	//-----------
+
+	protected function process() 
+	{
+		$database =& JFactory::getDBO();
+		$document =& JFactory::getDocument();
+		
+		// Get some needed info
+		$offset = $this->offset;
+		$year   = $this->year;
+		$month  = $this->month;
+		$day    = $this->day;
+		$option = $this->_option;
+		
+		// Incoming
+		$id = JRequest::getInt( 'id', 0, 'post' );
+		
+		// Ensure we have an ID
+		if (!$id) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			return;
+		}
+		
+		// Load event
+		$event = new EventsEvent( $database );
+		$event->load( $id );
+		
+		// Ensure we have an event
+		if (!$event->title) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			return;
+		}
+		
+		$auth = true;
+		if ($this->config->getCfg('adminlevel')) {
+			$auth = $this->authorize();
+		}
+		
+		$bits = explode('-',$event->publish_up);
+		$eyear = $bits[0];
+		$emonth = $bits[1];
+		$edbits = explode(' ',$bits[2]);
+		$eday = $edbits[0];
+		
+		$page = new EventsPage( $database );
+		$page->alias = $this->_task;
+		
+		// Get the pages for this workshop
+		$pages = $page->loadPages( $event->id );
+		
+		// Push some styles to the template
+		$this->getStyles();
+		
+		// Set the page title
+		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)).': '.stripslashes($event->title) );
+		
+		// Set the pathway
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+		}
+		$pathway->addItem( $eyear, 'index.php?option='.$this->_option.a.'year='.$eyear );
+		$pathway->addItem( $emonth, 'index.php?option='.$this->_option.a.'year='.$eyear.a.'month='.$emonth );
+		$pathway->addItem( $eday, 'index.php?option='.$this->_option.a.'year='.$eyear.a.'month='.$emonth.a.'day='.$eday );
+		$pathway->addItem( stripslashes($event->title), 'index.php?option='.$this->_option.a.'task=details'.a.'id='.$event->id );
+		$pathway->addItem( JText::_('Register'),'index.php?option='.$this->_option.a.'task=details'.a.'id='.$event->id.a.'page=register');
+		
+		// Incoming
+		$register   = JRequest::getVar('register', NULL, 'post');
+		$arrival    = JRequest::getVar('arrival', NULL, 'post');
+		$departure  = JRequest::getVar('departure', NULL, 'post');
+		$dietary    = JRequest::getVar('dietary', NULL, 'post');
+		$bos        = JRequest::getVar('bos', NULL, 'post');
+		$dinner     = JRequest::getVar('dinner', NULL, 'post');
+		$disability = JRequest::getVar('disability', NULL, 'post');
+		$race       = JRequest::getVar('race', NULL, 'post');
+
+		if ($register) {
+			$register = array_map('trim', $register);
+			$register = array_map(array('EventsController','purifyText'), $register);
+			
+			$validemail = $this->check_validEmail($register['email']);
+		}
+		if ($arrival) {
+			$arrival = array_map('trim', $arrival);
+			$arrival = array_map(array('EventsController','purifyText'), $arrival);
+		}
+		if ($departure) {
+			$departure = array_map('trim', $departure);
+			$departure = array_map(array('EventsController','purifyText'), $departure);
+		}
+		if ($dietary) {
+			$dietary = array_map('trim', $dietary);
+			$dietary = array_map(array('EventsController','purifyText'), $dietary);
+		}
+
+		$xhub =& XFactory::getHub();
+
+		$email   = $event->email;
+		$subject = 'Event Registration ('.$event->id.')';
+		$from    = $xhub->getCfg('hubShortName').' Event Registration';
+		$hub     = array('email' => $register['email'], 'name' => $from);
+	
+		if ($register['firstname'] && $register['lastname'] && $register['affiliation'] && ($validemail == 1)) {
+
+			$message  = 'Name: '. $register['firstname'].' '.$register['lastname'] .r.n;
+			$message .= 'Title: '. $register['title'] .r.n;
+			$message .= 'Affiliation: '. $register['affiliation'] .r.n;
+			$message .= 'Email: '. $register['email'] .r.n;
+			$message .= 'Website: '. $register['website'] .r.n;
+			$message .= 'Telephone: '. $register['telephone'] .r.n;
+			$message .= 'Fax: '. $register['fax'] .r.n.r.n;
+		
+			$message .= 'City: '. $register['city'] .r.n;
+			$message .= 'State/Province: '. $register['state'] .r.n;
+			$message .= 'Zip/Postal Code: '. $register['postalcode'] .r.n;
+			$message .= 'Country: '. $register['country'] .r.n.r.n;
+			
+			if (isset($register['position']) || isset($register['position_other'])) {
+				$message .= 'Current position: ';
+				$message .= ($register['position']) ? $register['position'] : $register['position_other'];
+				$message .= r.n.r.n;
+			}
+			if (isset($register['degree'])) {
+				$message .= 'Highest degree earned: '. $register['degree'] .r.n.r.n;
+			}
+			if (isset($register['sex'])) {
+				$message .= 'Gender: '. $register['sex'] .r.n.r.n;
+			}
+			if ($race) {
+				//$message .= 'Race: '.implode(', ',$race) .r.n.r.n;
+				$message .= 'Race: ';
+				foreach ($race as $r=>$t) 
+				{
+					$message .= ($r != 'nativetribe') ? $r.', ' : '';
+				}
+				if ($race['nativetribe'] != '') {
+					$message .= $race['nativetribe'];
+				}
+				$message .= r.n.r.n;
+			}
+			
+			if ($disability) {
+				$message .= '[X] I have auxiliary aids or services due to a disability. Please contact me.'.r.n.r.n;
+			} else {
+				$message .= '[ ] I have auxiliary aids or services due to a disability. Please contact me.'.r.n.r.n;
+			}
+			if (isset($dietary['needs']) || (isset($dietary['specific']) && $dietary['specific'] != '')) {
+				$message .= '[X] I have specific dietary needs.'.r.n.r.n;
+				$message .= '    Specific: '.$dietary['specific'].r.n.r.n;
+			} else {
+				$message .= '[ ] I have specific dietary needs.'.r.n.r.n;
+			}
+			
+			if ($arrival) {
+				$message .= '=== Arrival ==='.r.n;
+				$message .= 'Arrival Day: '. $arrival['day'] .r.n;
+				$message .= 'Arrival Time: '. $arrival['time'] .r.n.r.n;
+			}
+			if ($departure) {
+				$message .= '=== Departure ==='.r.n;
+				$message .= 'Departure Day: '. $departure['day'] .r.n;
+				$message .= 'Departure Time: '. $departure['time'] .r.n.r.n;
+			}
+			
+			/*if (!empty($bos)) {
+				$message .= 'Break Out Session(s): '.r.n;
+				for ($i=0, $n=count( $bos ); $i < $n; $i++) 
+				{
+					$message .= '  '.$bos[$i].r.n;
+				}
+				$message .= r.n;
+			}*/
+			if ($dinner) {
+				$message .= '[x] Attending dinner.'.r.n.r.n;
+			} else {
+				$message .= '[ ] Attending dinner.'.r.n.r.n;
+			}
+			
+			if (isset($register['additional'])) {
+				$message .= 'Additional: '. $register['additional'] .r.n.r.n;
+			}
+			
+			if (isset($register['comments'])) {
+				$message .= 'Comments: '. $register['comments'] .r.n.r.n;
+			}
+				
+			$this->send_email($hub, $email, $subject, $message);
+
+			$this->log($register);
+
+			echo EventsHtml::thanks( $this->_option, $event, $year, $month, $day, $auth, $page, $pages );
+		} else {
+			echo EventsHtml::register( $this->_option, $event, $year, $month, $day, $page, $pages, $register, $arrival, $departure, $auth, true);
+		}
+	}
+	
+	//-----------
+	
+	private function log($reg)
+	{
+		$dbh =& JFactory::getDBO();
+		$dbh->setQuery(
+			'INSERT INTO #__events_respondents(
+				event_id,
+				first_name, last_name, affiliation, title, city, state, zip, country, telephone, fax, email,
+				website, position_description, highest_degree, gender, arrival, departure, disability_needs, 
+				dietary_needs, attending_dinner, abstract, comment
+			)
+			VALUES ('.
+				$this->workshop->id . ', '.
+				$this->getValueString($dbh, $reg, array(
+					'firstname', 'lastname', 'affiliation', 'title', 'city', 'state', 'postalcode', 'country', 'telephone', 'fax', 'email',
+					'website', 'position', 'degree', 'gender', 'arrival', 'departure', 'disability', 
+					'dietary', 'dinner', 'additional', 'comments'
+				)).
+			')'
+		);
+		$dbh->query();
+		$races = JRequest::getVar('race', NULL, 'post');
+		if (!is_null($races) && !$races['refused'])
+		{
+			$resp_id = $dbh->insertid();
+			foreach (array('nativeamerican', 'asian', 'black', 'hawaiian', 'white', 'hispanic') as $race)
+				if (array_key_exists($race, $races) && $races[$race])
+					$dbh->execute(
+						'INSERT INTO #__workshops_respondent_race_rel(respondent_id, race, tribal_affiliation) 
+						VALUES ('.$resp_id.', \''.$race.'\', '.($race == 'nativeamerican' ? $dbh->quote($races['nativetribe']) : 'NULL').')'
+					);
+		}
+	}
+
+	//-----------
+
+	private function getValueString(&$dbh, $reg, $values)
+	{
+		$rv = array();
+		foreach ($values as $val)
+		{
+			switch ($val)
+			{
+				case 'position':
+					$rv[] = ((isset($reg['position']) || isset($reg['position_other'])) && ($reg['position'] || $reg['position_other'])) 
+						? $dbh->quote(
+							$reg['position'] ? $reg['position'] : $reg['position_other']
+						) 
+						: 'NULL';
+				break;
+				case 'gender':
+					$rv[] = (isset($reg['sex']) && ($reg['sex'] == 'male' || $reg['sex'] == 'female')) 
+						? '\''.substr($reg['sex'], 0, 1).'\'' 
+						: 'NULL';
+				break;
+				case 'dinner':
+					$dinner = JRequest::getVar('dinner', NULL, 'post');
+					$rv[] = is_null($dinner) ? 'NULL' : $dinner ? '1' : '0';
+				break;
+				case 'dietary':
+					$rv[] = (($dietary = JRequest::getVar('dietary', NULL, 'post'))) 
+						? $dbh->quote($dietary['specific']) 
+						: 'NULL';
+				break;
+				case 'arrival': case 'departure':
+					$rv[] = ($date = JRequest::getVar($val, NULL, 'post')) 
+						? $dbh->quote($date['day'] . ' ' . $date['time'])
+						: 'NULL';
+				break;
+				case 'disability':
+					$disability = JRequest::getVar('disability', NULL, 'post');
+					$rv[] = ($disability) ? '1' : '0';
+				break;
+				default:
+					$rv[] = array_key_exists($val, $reg) && isset($reg[$val]) ? $dbh->quote($reg[$val]) : 'NULL';
+			}
+		}
+		return implode($rv, ',');
+	}
+
+	//-----------
+
+	private function send_email(&$hub, $email, $subject, $message) 
+	{
+		if ($hub) {
+			$contact_email = $hub['email'];
+			$contact_name  = $hub['name'];
+
+			$args = "-f '" . $contact_email . "'";
+			$headers  = "MIME-Version: 1.0\n";
+			$headers .= "Content-type: text/plain; charset=iso-8859-1\n";
+			$headers .= 'From: ' . $contact_name .' <'. $contact_email . ">\n";
+			$headers .= 'Reply-To: ' . $contact_name .' <'. $contact_email . ">\n";
+			$headers .= "X-Priority: 3\n";
+			$headers .= "X-MSMail-Priority: High\n";
+			$headers .= 'X-Mailer: '. $hub['name'] .n;
+			if (mail($email, $subject, $message, $headers, $args)) {
+				return(1);
+			}
+		}
+		return(0);
+	}
+
+	//-----------
+
+	private function check_validEmail($email) 
+	{
+		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
+			return(1);
+		} else {
+			return(0);
+		}
+	}
+
+	//-----------
+	
+	private function purifyText( &$text ) 
+	{
+		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
+		$text = preg_replace( '/{.+?}/', '', $text );
+		$text = preg_replace( "'<script[^>]*>.*?</script>'si", '', $text );
+		$text = preg_replace( '/<a\s+.*?href="([^"]+)"[^>]*>([^<]+)<\/a>/is', '\2', $text );
+		$text = preg_replace( '/<!--.+?-->/', '', $text );
+		$text = preg_replace( '/&nbsp;/', ' ', $text );
+		$text = strip_tags( $text );
+
+		return $text;
 	}
 
 	//-----------
@@ -722,6 +1185,10 @@ class EventsController extends JObject
 			$event_down = new EventsDate( $row->publish_down );
 			$stop_publish = sprintf( "%4d-%02d-%02d",$event_down->year,$event_down->month,$event_down->day);
 			$end_time = $event_down->hour .':'. $event_down->minute;
+			
+			$event_registerby = new EventsDate( $row->registerby );
+			$registerby_date = sprintf( "%4d-%02d-%02d",$event_registerby->year,$event_registerby->month,$event_registerby->day);
+			$registerby_time = $event_registerby->hour .':'. $event_registerby->minute;
         
 			$row->reccurday_month = 99;
 			$row->reccurday_week = 99;
@@ -752,11 +1219,13 @@ class EventsController extends JObject
 			if ($year && $month && $day) {
 				$start_publish = $year.'-'.$month.'-'.$day;
 				$stop_publish = $year.'-'.$month.'-'.$day;
+				$registerby_date = $year.'-'.$month.'-'.$day;
 			} else {
 				$offset = $this->offset;
 				
 				$start_publish = strftime( "%Y-%m-%d", time()+($offset*60*60) ); //date( "Y-m-d" );
 				$stop_publish = strftime( "%Y-%m-%d", time()+($offset*60*60) );  //date( "Y-m-d" );
+				$registerby_date = strftime( "%Y-%m-%d", time()+($offset*60*60) );  //date( "Y-m-d" );
 			}
 			//$row = new EventsEvent( $database );
 			
@@ -771,6 +1240,7 @@ class EventsController extends JObject
 			
 			$start_time = "08:00";
 			$end_time = "17:00";
+			$registerby_time = "08:00";
 			
 			$lists = '';
 		}
@@ -791,8 +1261,10 @@ class EventsController extends JObject
 		
 		list($start_hrs, $start_mins) = explode(':',$start_time);
 		list($end_hrs, $end_mins) = explode(':',$end_time);
+		list($registerby_hrs, $registerby_mins) = explode(':',$registerby_time);
 		$start_pm = false;
 		$end_pm = false;
+		$registerby_pm = false;
 		if ($this->config->getCfg('calUseStdTime') == 'YES') { 
 			$start_hrs = intval($start_hrs);
 			if ($start_hrs >= 12) $start_pm = true;
@@ -805,21 +1277,38 @@ class EventsController extends JObject
 			if ($end_hrs >= 12) $end_pm = true;
 			if ($end_hrs > 12) $end_hrs -= 12;
 			else if ($end_hrs == 0) $end_hrs = 12;
+			
+			$registerby_hrs = intval($registerby_hrs);
+			if ($registerby_hrs >= 12) $registerby_pm = true;
+			if ($registerby_hrs > 12) $registerby_hrs -= 12;
+			else if ($registerby_hrs == 0) $registerby_hrs = 12;
+			if (strlen($registerby_mins) == 1) $registerby_mins = '0'.$registerby_mins;
+			$registerby_time = $registerby_hrs .":". $registerby_mins;
 		}
 		if (strlen($start_mins) == 1) $start_mins = '0'.$start_mins;
 		if (strlen($start_hrs) == 1) $start_hrs = '0'.$start_hrs;
 		$start_time = $start_hrs .':'. $start_mins;
+		
 		if (strlen($end_mins) == 1) $end_mins = '0'.$end_mins;
 		if (strlen($end_hrs) == 1) $end_hrs = '0'.$end_hrs;
 		$end_time = $end_hrs .':'. $end_mins;
+		
+		if (strlen($registerby_mins) == 1) $registerby_mins = '0'.$registerby_mins;
+		if (strlen($registerby_hrs) == 1) $registerby_hrs = '0'.$registerby_hrs;
+		$registerby_time = $registerby_hrs .':'. $registerby_mins;
 		
 		$times = array();
 		$times['start_publish'] = $start_publish;
 		$times['start_time'] = $start_time;
 		$times['start_pm'] = $start_pm;
+		
 		$times['stop_publish'] = $stop_publish;
 		$times['end_time'] = $end_time;
 		$times['end_pm'] = $end_pm;
+		
+		$times['registerby_date'] = $registerby_date;
+		$times['registerby_time'] = $registerby_time;
+		$times['registerby_pm'] = $registerby_pm;
 		
 		// Get tags on this event
 		$rt = new EventsTags( $database );
@@ -839,8 +1328,10 @@ class EventsController extends JObject
 			$pathway->addItem( stripslashes($row->title), 'index.php?option='.$this->_option.a.'task=details'.a.'id='.$row->id );
 		}
 		
+		$admin = $this->authorize();
+		
 		// Output HTML
-		EventsHtml::edit( $row, $fields, $times, $lists, $this->_option, $this->gid, $this->_task, $this->config, $this->_error );
+		EventsHtml::edit( $row, $fields, $times, $lists, $this->_option, $this->gid, $this->_task, $this->config, $admin, $this->_error );
 	}
 
 	//----------------------------------------------------------
@@ -873,6 +1364,14 @@ class EventsController extends JObject
 		
 		// Delete the event
 		$event->delete( $id );
+		
+		// Delete any associated pages 
+		$ep = new EventsPage( $database );
+		$ep->deletePages( $id );
+		
+		// Delete any associated respondents
+		$ep = new EventsRespondent( array() );
+		$er->deleteRespondents( $id );
 		
 		// Delete tags on this event
 		$rt = new EventsTags( $database );
@@ -922,6 +1421,8 @@ class EventsController extends JObject
 		$start_pm   = JRequest::getInt( 'start_pm', 0, 'post' );
 		$end_time   = JRequest::getVar( 'end_time', '17:00', 'post' );
 		$end_pm     = JRequest::getInt( 'end_pm', 0, 'post' );
+		//$registerby_time = JRequest::getVar( 'registerby_time', '00:00', 'post' );
+		//$registerby_pm   = JRequest::getInt( 'registerby_pm', 0, 'post' );
 		
 		$reccurweekdays = JRequest::getVar( 'reccurweekdays', array(), 'post' );
 		$reccurweeks    = JRequest::getVar( 'reccurweeks', array(), 'post' );
@@ -1025,6 +1526,15 @@ class EventsController extends JObject
 			if ($hrs < 10) $hrs = '0'.$hrs;
 			if ($mins < 10) $mins = '0'.$mins;
 			$end_time = $hrs.':'.$mins;
+			
+			/*list($hrs,$mins) = explode(':', $registerby_time);
+			$hrs = intval($hrs);
+			$mins = intval($mins);
+			if ($hrs!= 12 && $registerby_pm) $hrs += 12;
+			else if ($hrs == 12 && !$registerby_pm) $hrs = 0;
+			if ($hrs < 10) $hrs = '0'.$hrs;
+			if ($mins < 10) $mins = '0'.$mins;
+			$registerby_time = $hrs.':'.$mins;*/
 		}
 		
 		if ($row->publish_up) {
@@ -1039,7 +1549,14 @@ class EventsController extends JObject
 			$row->publish_down = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime));
 		} else {
 			$row->publish_down = strftime( "%Y-%m-%d 23:59:59", time()+($offset*60*60));
-		}	
+		}
+		
+		/*if ($row->registerby) {
+			$publishtime = $row->registerby.' '.$registerby_time.':00';
+			$row->registerby = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime));
+		} else {
+			$row->registerby = strftime( "%Y-%m-%d 23:59:59", time()+($offset*60*60));
+		}*/
         
 		if ($row->publish_up <> $row->publish_down) {
 			$row->reccurtype = intval( $row->reccurtype );

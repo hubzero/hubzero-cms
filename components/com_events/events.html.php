@@ -533,129 +533,145 @@ class EventsHtml
 	
 	//-----------
 
-	public function details($row, $offset, $option, $year, $month, $day, $authorized, $fields, $config, $categories, $tags, $auth) 
+	public function details($row, $offset, $option, $year, $month, $day, $authorized, $fields, $config, $categories, $tags, $auth, $page, $pages) 
 	{
 		$juser =& JFactory::getUser();
 		
 		$html = '';
 		if ($row) {
-			//ximport('xuser');
-			//$xuser = XUser::getInstance( $row->created_by );
-			$xuser =& JUser::getInstance( $row->created_by );
-			
-			if (is_object($xuser)) {
-				$name = $xuser->get('name');
-			} else {
-				$name = JText::_('EVENTS_CAL_LANG_UNKOWN');
-			}
-			
-			//$row->content = stripslashes($row->content);
-			$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-			$row->content = preg_replace_callback("/$UrlPtrn/", array('EventsHtml','autolink'), $row->content);
-			
-			$html .= '<table id="event-info" summary="'.JText::_('EVENTS_DETAILS_TABLE_SUMMARY').'">'.n;
-			$html .= ' <thead>'.n;
-			$html .= '  <tr>'.n;
-			$html .= '   <th colspan="2">'. stripslashes($row->title);
+			$html .= '<h3>'. stripslashes($row->title);
 			if ($authorized || $row->created_by == $juser->get('id')) {
 				$html .= '&nbsp;&nbsp;';
 				$html .= '<a href="'. JRoute::_('index.php?option='.$option.a.'task=edit'.a.'id='.$row->id) .'" title="'.JText::_('EDIT').'">[ '.strtolower(JText::_('Edit')).' ]</a>'.n;
 				$html .= '&nbsp;&nbsp;'.n;
 				$html .= '<a href="'. JRoute::_('index.php?option='.$option.a.'task=delete'.a.'id='.$row->id) .'" title="'.JText::_('DELETE').'">[ '.strtolower(JText::_('Delete')).' ]</a>'.n;
 			}
-			$html .= '</th>'.n;
-			$html .= '  </tr>'.n;
-			$html .= ' </thead>'.n;
-			$html .= ' <tbody>'.n;
-			$html .= '  <tr>'.n;
-			$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY').':</th>'.n;
-			$html .= '   <td>'. stripslashes($categories[$row->catid]) .'</td>'.n;
-			$html .= '  </tr>'.n;
-			$html .= '  <tr>'.n;
-			$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION').':</th>'.n;
-			$html .= '   <td>'. $row->content .'</td>'.n;
-			$html .= '  </tr>'.n;
-			$html .= '  <tr>'.n;
-			$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_WHEN').':</th>'.n;
-			$html .= '   <td>'.n;
+			$html .= '</h3>'.n;
+			if ($row->registerby && $row->registerby != '0000-00-00 00:00:00') {
+				$html .= EventsHtml::menu( $option, $row, $page, $pages );
+			}
 			
-			$ts = explode(':', $row->start_time);
-			if (intval($ts[0]) > 12) {
-				$ts[0] = ($ts[0] - 12);
-				$row->start_time = implode(':',$ts);
-				$row->start_time .= ' <small>PM</small>';
+			if ($page->alias != '') {
+				$html .= (trim($page->pagetext)) ? stripslashes($page->pagetext) : WorkshopsHtml::warning( JText::_('No information available.') );
 			} else {
-				$row->start_time .= (intval($ts[0]) == 12) ? ' <small>Noon</small>' : ' <small>AM</small>';
-			}
-			$te = explode(':', $row->stop_time);
-			if (intval($te[0]) > 12) {
-				$te[0] = ($te[0] - 12);
-				$row->stop_time = implode(':',$te);
-				$row->stop_time .= ' <small>PM</small>';
-			} else {
-				$row->stop_time .= (intval($te[0]) == 12) ? ' <small>Noon</small>' : ' <small>AM</small>';
-			}
-			//if ($config->getCfg('repeatview') == 'YES') {
-				if ($row->start_date == $row->stop_date) {
-					$html .= $row->start_date .', '.$row->start_time.'&nbsp;-&nbsp;'.$row->stop_time.'<br />';
+				//ximport('xuser');
+				//$xuser = XUser::getInstance( $row->created_by );
+				$xuser =& JUser::getInstance( $row->created_by );
+
+				if (is_object($xuser)) {
+					$name = $xuser->get('name');
 				} else {
-					$html .= JText::_('EVENTS_CAL_LANG_FROM').' '.$row->start_date.'&nbsp;-&nbsp;'.$row->start_time.'<br />'.
-						JText::_('EVENTS_CAL_LANG_TO').' '.$row->stop_date.'&nbsp;-&nbsp;'.$row->stop_time.'<br />';
+					$name = JText::_('EVENTS_CAL_LANG_UNKOWN');
 				}
-			/*} else {
-				$html .= $row->start_date .', '.$row->start_time.'&nbsp;-&nbsp;'.$row->stop_time.'<br />';
-			}*/
-			$html .= '   </td>'.n;
-			$html .= '  </tr>'.n;
-			if (trim($row->contact_info)) {
+
+				//$row->content = stripslashes($row->content);
+				$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+				$row->content = preg_replace_callback("/$UrlPtrn/", array('EventsHtml','autolink'), $row->content);
+				
+				$html .= '<table id="event-info" summary="'.JText::_('EVENTS_DETAILS_TABLE_SUMMARY').'">'.n;
+				/*$html .= ' <thead>'.n;
 				$html .= '  <tr>'.n;
-				$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_CONTACT').':</th>'.n;
-				$html .= '   <td>'. htmlentities($row->contact_info) .'</td>'.n;		
+				$html .= '   <th colspan="2">'. stripslashes($row->title);
+				if ($authorized || $row->created_by == $juser->get('id')) {
+					$html .= '&nbsp;&nbsp;';
+					$html .= '<a href="'. JRoute::_('index.php?option='.$option.a.'task=edit'.a.'id='.$row->id) .'" title="'.JText::_('EDIT').'">[ '.strtolower(JText::_('Edit')).' ]</a>'.n;
+					$html .= '&nbsp;&nbsp;'.n;
+					$html .= '<a href="'. JRoute::_('index.php?option='.$option.a.'task=delete'.a.'id='.$row->id) .'" title="'.JText::_('DELETE').'">[ '.strtolower(JText::_('Delete')).' ]</a>'.n;
+				}
+				$html .= '</th>'.n;
 				$html .= '  </tr>'.n;
-			}
-			if (trim($row->adresse_info)) {
+				$html .= ' </thead>'.n;*/
+				$html .= ' <tbody>'.n;
 				$html .= '  <tr>'.n;
-				$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_ADRESSE').':</th>'.n;
-				$html .= '   <td>'. $row->adresse_info .'</td>'.n;
+				$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY').':</th>'.n;
+				$html .= '   <td>'. stripslashes($categories[$row->catid]) .'</td>'.n;
 				$html .= '  </tr>'.n;
-			}
-			if (trim($row->extra_info)) {
 				$html .= '  <tr>'.n;
-				$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_EXTRA').':</th>'.n;
-				$html .= '   <td><a href="'. htmlentities($row->extra_info) .'">'. htmlentities($row->extra_info) .'</a></td>'.n;		
+				$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION').':</th>'.n;
+				$html .= '   <td>'. $row->content .'</td>'.n;
 				$html .= '  </tr>'.n;
-			}
-			foreach ($fields as $field) 
-			{
-				if (end($field) != NULL) {
-					if (end($field) == '1') {
-						$html .= '  <tr>'.n;
-						$html .= '   <th scope="row">'.$field[1].':</th>'.n;
-						$html .= '   <td>'.JText::_('YES').'</td>'.n;
-						$html .= '  </tr>'.n;
+				$html .= '  <tr>'.n;
+				$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_WHEN').':</th>'.n;
+				$html .= '   <td>'.n;
+
+				$ts = explode(':', $row->start_time);
+				if (intval($ts[0]) > 12) {
+					$ts[0] = ($ts[0] - 12);
+					$row->start_time = implode(':',$ts);
+					$row->start_time .= ' <small>PM</small>';
+				} else {
+					$row->start_time .= (intval($ts[0]) == 12) ? ' <small>Noon</small>' : ' <small>AM</small>';
+				}
+				$te = explode(':', $row->stop_time);
+				if (intval($te[0]) > 12) {
+					$te[0] = ($te[0] - 12);
+					$row->stop_time = implode(':',$te);
+					$row->stop_time .= ' <small>PM</small>';
+				} else {
+					$row->stop_time .= (intval($te[0]) == 12) ? ' <small>Noon</small>' : ' <small>AM</small>';
+				}
+				//if ($config->getCfg('repeatview') == 'YES') {
+					if ($row->start_date == $row->stop_date) {
+						$html .= $row->start_date .', '.$row->start_time.'&nbsp;-&nbsp;'.$row->stop_time.'<br />';
 					} else {
-						$html .= '  <tr>'.n;
-						$html .= '   <th scope="row">'.$field[1].':</th>'.n;
-						$html .= '   <td>'.end($field).'</td>'.n;
-						$html .= '  </tr>'.n;
+						$html .= JText::_('EVENTS_CAL_LANG_FROM').' '.$row->start_date.'&nbsp;-&nbsp;'.$row->start_time.'<br />'.
+							JText::_('EVENTS_CAL_LANG_TO').' '.$row->stop_date.'&nbsp;-&nbsp;'.$row->stop_time.'<br />';
+					}
+				/*} else {
+					$html .= $row->start_date .', '.$row->start_time.'&nbsp;-&nbsp;'.$row->stop_time.'<br />';
+				}*/
+				$html .= '   </td>'.n;
+				$html .= '  </tr>'.n;
+				if (trim($row->contact_info)) {
+					$html .= '  <tr>'.n;
+					$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_CONTACT').':</th>'.n;
+					$html .= '   <td>'. htmlentities($row->contact_info) .'</td>'.n;		
+					$html .= '  </tr>'.n;
+				}
+				if (trim($row->adresse_info)) {
+					$html .= '  <tr>'.n;
+					$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_ADRESSE').':</th>'.n;
+					$html .= '   <td>'. $row->adresse_info .'</td>'.n;
+					$html .= '  </tr>'.n;
+				}
+				if (trim($row->extra_info)) {
+					$html .= '  <tr>'.n;
+					$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_EXTRA').':</th>'.n;
+					$html .= '   <td><a href="'. htmlentities($row->extra_info) .'">'. htmlentities($row->extra_info) .'</a></td>'.n;		
+					$html .= '  </tr>'.n;
+				}
+				foreach ($fields as $field) 
+				{
+					if (end($field) != NULL) {
+						if (end($field) == '1') {
+							$html .= '  <tr>'.n;
+							$html .= '   <th scope="row">'.$field[1].':</th>'.n;
+							$html .= '   <td>'.JText::_('YES').'</td>'.n;
+							$html .= '  </tr>'.n;
+						} else {
+							$html .= '  <tr>'.n;
+							$html .= '   <th scope="row">'.$field[1].':</th>'.n;
+							$html .= '   <td>'.end($field).'</td>'.n;
+							$html .= '  </tr>'.n;
+						}
 					}
 				}
-			}
 
-			if ($config->getCfg('byview') == 'YES') {
-				$html .= '  <tr>'.n;
-				$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_AUTHOR_ALIAS').':</th>'.n;
-				$html .= '   <td>' . $name . '</td>'.n;
-				$html .= '  </tr>'.n;
+				if ($config->getCfg('byview') == 'YES') {
+					$html .= '  <tr>'.n;
+					$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_AUTHOR_ALIAS').':</th>'.n;
+					$html .= '   <td>' . $name . '</td>'.n;
+					$html .= '  </tr>'.n;
+				}
+				if ($tags) {
+					$html .= '  <tr>'.n;
+					$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_TAGS').':</th>'.n;
+					$html .= '   <td>' . $tags . '</td>'.n;
+					$html .= '  </tr>'.n;
+				}
+				$html .= ' </tbody>'.n;
+				$html .= '</table>'.n;
 			}
-			if ($tags) {
-				$html .= '  <tr>'.n;
-				$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_TAGS').':</th>'.n;
-				$html .= '   <td>' . $tags . '</td>'.n;
-				$html .= '  </tr>'.n;
-			}
-			$html .= ' </tbody>'.n;
-			$html .= '</table>'.n;
 		} else {
 			$html .= EventsHtml::warning( JText::_('EVENTS_CAL_LANG_REP_NOEVENTSELECTED') ).n;
 		}
@@ -672,7 +688,355 @@ class EventsHtml
 		
 		return $out;
 	}
+	//-----------
+	
+	public function menu( $option, $event, $page, $pages )
+	{
+		$html  = '<ul>'.n;
+		$html .= t.'<li';
+		if ($page->alias == '') {
+			$html .= ' class="active"';
+		}
+		$html .= '><a class="tab" href="'. JRoute::_('index.php?option='.$option.a.'task=details'.a.'id='.$event->id) .'"><span>'.JText::_('Overview').'</span></a></li>'.n;
+		if ($pages) {
+			foreach ($pages as $p) 
+			{
+				$html .= t.'<li';
+				if ($page->alias == $p->alias) {
+					$html .= ' class="active"';
+				}
+				$html .= '><a class="tab" href="'. JRoute::_('index.php?option='.$option.a.'task=details'.a.'id='.$event->id.a.'page='.$p->alias) .'"><span>'.trim(stripslashes($p->title)).'</span></a></li>'.n;
+			}
+		}
+		$html .= t.'<li';
+		if ($page->alias == 'register') {
+			$html .= ' class="active"';
+		}
+		$html .= '><a class="tab" href="'. JRoute::_('index.php?option='.$option.a.'task=details'.a.'id='.$event->id.a.'page=register') .'"><span>'.JText::_('Register').'</span></a></li>'.n;
+		$html .= '</ul>'.n;
+		$html .= '<div class="clear"></div>';
+		
+		return EventsHtml::div( $html, '', 'sub-sub-menu' );
+	}
 
+	//-----------
+
+	public function closed( $option, $event, $year, $month, $day, $page, $pages, $auth )
+	{
+		$html  = EventsHtml::starter( $option, $auth, $year, $month, $day );
+		$html .= EventsHtml::subnav( $option, $year, $month, $day, '' ).n;
+		$html .= '<div class="main section noaside">'.n;
+		$html .= '<h3>'. stripslashes($event->title).'</h3>'.n;
+		$html .= EventsHtml::menu( $option, $event, $page, $pages );
+		$html .= EventsHtml::warning( JText::_('This event\'s registration is closed.') );
+		$html .= '</div><!-- / .main section -->'.n;
+		
+		return $html;
+	}
+
+	//-----------
+
+	public function restricted( $option, $event, $year, $month, $day, $page, $pages, $auth )
+	{
+		$html  = EventsHtml::starter( $option, $auth, $year, $month, $day );
+		$html .= EventsHtml::subnav( $option, $year, $month, $day, '' ).n;
+		$html .= '<div class="main section noaside">'.n;
+		$html .= '<h3>'. stripslashes($event->title).'</h3>'.n;
+		$html .= EventsHtml::menu( $option, $event, $page, $pages );
+		
+		/*if (stripslashes($event->txt_restricted)) {
+			$html .= stripslashes($event->txt_restricted);
+		}*/
+
+		$html .= '<form method="post" action="index.php" id="hubForm">'.n;
+		$html .= t.'<div class="explaination">'.n;
+		$html .= t.t.'<p>'.JText::_('Please provide the password given to you in your invitation.').'</p>'.n;
+		$html .= t.'</div>'.n;
+		$html .= t.'<fieldset>'.n;
+		$html .= t.t.'<h3>'.JText::_('Limited Registration').'</h3>'.n;
+		$html .= t.t.'<label>'.n;
+		$html .= t.t.t.JText::_('Password').n;
+		$html .= t.t.t.'<input type="password" name="passwrd" />'.n;
+		$html .= t.t.'</label>'.n;
+		$html .= t.t.'<input type="hidden" name="id" value="'. $event->id .'" />'.n;
+		$html .= t.t.'<input type="hidden" name="option" value="'. $option .'" />'.n;
+		$html .= t.t.'<input type="hidden" name="task" value="register" />'.n;
+		$html .= t.'</fieldset>'.n;
+		$html .= t.'<div class="clear"></div>'.n;
+		$html .= t.'<p class="submit"><input type="submit" value="'.JText::_('Submit').'" /></p>'.n;
+		$html .= '</form>'.n;
+		$html .= '</div><!-- / .main section -->'.n;
+
+		return $html;
+	}
+
+	//-----------
+
+	public function register($option, $event, $year, $month, $day, $page, $pages, $register, $arrival, $departure, $auth, $error=false)
+	{
+		$params =& new JParameter( $event->params );
+		
+		$html  = EventsHtml::starter( $option, $auth, $year, $month, $day );
+		$html .= EventsHtml::subnav( $option, $year, $month, $day, '' ).n;
+		
+		$html .= '<div class="main section noaside">'.n;
+		$html .= '<h3>'. stripslashes($event->title).'</h3>'.n;
+		$html .= EventsHtml::menu( $option, $event, $page, $pages );
+		
+		/*if (stripslashes($event->txt_registration)) {
+			$html .= stripslashes($event->txt_registration);
+		}*/
+
+		if ($error) {
+			$html .= EventsHtml::error( JText::_('Some required fields were not filled in. Please try again.') );
+		}
+		
+		$xhub =& XFactory::getHub();
+		
+		echo $html;
+?>
+<form method="post" action="index.php" id="hubForm">
+	<div class="explaination">
+		<p><strong>For Information Contact</strong></p>
+		<?php
+		if (trim($event->contact_info)) {
+			echo stripslashes($event->contact_info);
+		} else {
+			echo '<p>No contact information provided.</p>'.n;
+		}
+		?>
+	</div>
+	<fieldset>
+		<h3>Name &amp; Title</h3>
+		<div class="group">
+			<label>First Name <span class="required">required</span>
+			<input type="text" name="register[firstname]" value="<?php echo (isset($register['firstname'])) ? $register['firstname'] : ''; ?>" /></label>
+		
+			<label>Last Name <span class="required">required</span>
+			<input type="text" name="register[lastname]" value="<?php echo (isset($register['lastname'])) ? $register['lastname'] : ''; ?>" /></label>
+		</div>
+		<div class="group">
+			<label>Affiliation <span class="required">required</span>
+			<input type="text" name="register[affiliation]" value="<?php echo (isset($register['affiliation'])) ? $register['affiliation'] : ''; ?>" /></label>
+		
+			<label>Title
+			<input type="text" name="register[title]" value="<?php echo (isset($register['title'])) ? $register['title'] : ''; ?>" /></label>
+		</div>
+		
+		<input type="hidden" name="id" value="<?php echo $event->id; ?>" />
+		<input type="hidden" name="option" value="<?php echo $option; ?>" />
+		<input type="hidden" name="task" value="process" />
+	</fieldset>
+	<fieldset>
+		<h3>Contact Information</h3>
+		<?php if ($params->get('show_address')) { ?>
+		<div class="group">
+			<label>City
+			<input type="text" name="register[city]" value="<?php echo (isset($register['city'])) ? $register['city'] : ''; ?>" /></label>
+		
+			<label>State/Province
+			<input type="text" name="register[state]" value="<?php echo (isset($register['state'])) ? $register['state'] : ''; ?>" /></label>
+		</div>
+		<div class="group">
+			<label>Zip/Postal code
+			<input type="text" name="register[postalcode]" value="<?php echo (isset($register['postalcode'])) ? $register['postalcode'] : ''; ?>" /></label>
+
+			<label>Country
+			<input type="text" name="register[country]" value="<?php echo (isset($register['country'])) ? $register['country'] : ''; ?>" /></label>
+		</div>
+		<?php } ?>
+		<div class="group">
+			<?php if ($params->get('show_telephone')) { ?>
+			<label>Telephone
+			<input type="text" name="register[telephone]" value="<?php echo (isset($register['telephone'])) ? $register['telephone'] : ''; ?>" /></label>
+			<?php } ?>
+			<?php if ($params->get('show_fax')) { ?>
+			<label>Fax
+			<input type="text" name="register[fax]" value="<?php echo (isset($register['fax'])) ? $register['fax'] : ''; ?>" /></label>
+			<?php } ?>
+		</div>
+		<div class="group">
+			<?php if ($params->get('show_email')) { ?>
+			<label>E-mail <span class="required">required</span>
+			<input type="text" name="register[email]" value="<?php echo (isset($register['email'])) ? $register['email'] : ''; ?>" /></label>
+			<?php } ?>
+			<?php if ($params->get('show_website')) { ?>
+			<label>Website
+			<input type="text" name="register[website]" value="<?php echo (isset($register['website'])) ? $register['website'] : ''; ?>" /></label>
+			<?php } ?>
+		</div>
+	</fieldset>
+<?php if ($params->get('show_position') 
+		|| $params->get('show_degree') 
+		|| $params->get('show_gender')
+		|| $params->get('show_race')) { ?>
+	<fieldset>
+		<h3>Demographics</h3>
+		
+		<?php if ($params->get('show_position')) { ?>
+		<label>
+			Which best describes your current position? 
+			<select name="register[position]">
+				<option value="" selected="selected">(select from list or enter below)</option>
+				<option value="university">University / College Student or Staff</option>
+				<option value="precollege">K-12 (Pre-College) Student or Staff</option>
+				<option value="nationallab">National Laboratory</option>
+				<option value="industry">Industry / Private Company</option>
+				<option value="government">Government Agency</option>
+				<option value="military">Military</option>
+				<option value="unemployed">Retired / Unemployed</option>
+			</select>
+			<input name="register[position_other]" type="text" value="<?php echo (isset($register['position_other'])) ? $register['position_other'] : ''; ?>" />
+		</label>
+		<?php } ?>
+		
+		<?php if ($params->get('show_degree')) { ?>
+		<fieldset>
+			<legend>Highest academic degree earned:</legend>
+			<label><input type="radio" class="option" name="register[degree]" value="bachelors" <?php echo ($register['degree'] == 'bachelors') ? 'checked="checked"': ''; ?> /> Bachelors degree</label>
+			<label><input type="radio" class="option" name="register[degree]" value="masters" <?php echo ($register['degree'] == 'masters') ? 'checked="checked"': ''; ?> /> Masters degree</label>
+			<label><input type="radio" class="option" name="register[degree]" value="doctoral" <?php echo ($register['degree'] == 'doctoral') ? 'checked="checked"': ''; ?> /> Doctoral degree</label>
+			<label><input type="radio" class="option" name="register[degree]" value="none of the above" <?php echo ($register['degree'] == 'none of the above') ? 'checked="checked"': ''; ?> /> None of the above</label>
+		</fieldset>
+		<?php } ?>
+		
+		<?php if ($params->get('show_gender')) { ?>
+		<fieldset>
+			<legend>Gender:</legend>
+			<label><input type="radio" name="register[sex]" value="male" class="option" <?php echo ($register['sex'] == 'male') ? 'checked="checked"': ''; ?> /> Male</label>
+			<label><input type="radio" name="register[sex]" value="female" class="option" <?php echo ($register['sex'] == 'female') ? 'checked="checked"': ''; ?> /> Female</label>
+			<label><input type="radio" name="register[sex]" value="refused" class="option" <?php echo ($register['sex'] == 'refused') ? 'checked="checked"': ''; ?> /> Do not wish to reveal</label>
+		</fieldset>
+		<?php } ?>
+		
+		<?php if ($params->get('show_race')) { ?>
+		<fieldset>
+			<legend>Race:</legend>
+			<p class="hint">Select one or more that apply.</p>
+			<label><input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican" value="nativeamerican" /> American Indian or Alaska Native</label>
+			<label class="indent">Tribal Affiliation(s):
+			<input name="race[nativetribe]" id="racenativetribe" type="text" value="" /></label>
+			<label><input type="checkbox" class="option" name="race[asian]" id="raceasian" /> Asian</label>
+			<label><input type="checkbox" class="option" name="race[black]" id="raceblack" /> Black or African American</label>
+			<label><input type="checkbox" class="option" name="race[hawaiian]" id="racehawaiian" /> Native Hawaiian or Other Pacific Islander</label>
+			<label><input type="checkbox" class="option" name="race[white]" id="racewhite" /> White</label>
+			<label><input type="checkbox" class="option" name="race[hispanic]" id="racehispanic" /> Hispanic or Latino</label>
+			<label><input type="checkbox" class="option" name="race[refused]" id="racerefused" /> Do not wish to reveal</label>
+		</fieldset>
+		<?php } ?>
+	</fieldset>
+<?php } ?>
+<?php if ($params->get('show_arrival') || $params->get('show_departure')) { ?>
+	<fieldset>
+		<h3>Arrival/Departure</h3>
+		
+		<?php if ($params->get('show_arrival')) { ?>
+		<fieldset>
+			<legend>Arrival Information</legend>
+		
+			<label>Arrival Day
+			<input type="text" name="arrival[day]" value="<?php echo (isset($arrival['day'])) ? $arrival['day'] : ''; ?>" /></label>
+		
+			<label>Arrival Time
+			<input type="text" name="arrival[time]" value="<?php echo (isset($arrival['time'])) ? $arrival['time'] : ''; ?>" /></label>
+		</fieldset>
+		<?php } ?>
+		
+		<?php if ($params->get('show_departure')) { ?>
+		<fieldset>
+			<legend>Departure Information</legend>
+		
+			<label>Departure Day
+			<input type="text" name="departure[day]" value="<?php echo (isset($departure['day'])) ? $departure['day'] : ''; ?>" /></label>
+		
+			<label>Departure Time
+			<input type="text" name="departure[time]" value="<?php echo (isset($departure['time'])) ? $departure['time'] : ''; ?>" /></label>
+		</fieldset>
+		<?php } ?>
+	</fieldset>
+<?php } ?>
+<?php if ($params->get('show_disability') || $params->get('show_dietary')) { ?>
+	<fieldset>
+		<h3>Disability/Dietary needs</h3>
+		<?php if ($params->get('show_disability')) { ?>
+		<label><input type="checkbox" class="option" name="disability" value="yes" /> I have auxiliary aids or services due to a disability. Please contact me.</label>
+		<?php } ?>
+		
+		<?php if ($params->get('show_dietary')) { ?>
+		<label><input type="checkbox" class="option" name="dietary[needs]" value="yes" /> I have specific dietary needs.</label>
+		<label class="indent">
+			Please specify
+			<input type="text" name="dietary[specific]" />
+		</label>
+		<?php } ?>
+	</fieldset>
+<?php } ?>
+<?php if ($params->get('show_dinner')) { ?>
+	<fieldset>
+		<h3>Dinner</h3>
+
+		<label><input type="checkbox" class="option" name="dinner" value="yes" /> I plan to attend the dinner.</label>
+	</fieldset>
+<?php } ?>
+	
+	<!-- <fieldset>
+		<h3>Break Out Session</h3>
+		<p>Please indicate which Break Out Session you would like to attend (please choose 3): <span class="required">required</span></p>
+		<label><input type="checkbox" class="option" name="bos[]" value="Computational Research Tools" /> Computational Research Tools</label>
+		<label><input type="checkbox" class="option" name="bos[]" value="Computational Learning Tools" /> Computational Learning Tools</label>
+		<label><input type="checkbox" class="option" name="bos[]" value="Community Wiki" /> Community Wiki</label>
+		<label><input type="checkbox" class="option" name="bos[]" value="Online Lectures and Tutorials" /> Online Lectures and Tutorials</label>
+		<label><input type="checkbox" class="option" name="bos[]" value="Experimental Properties and Databases" /> Experimental Properties and Databases</label>
+		<label><input type="checkbox" class="option" name="bos[]" value="Industrial Partnerships" /> Industrial Partnerships</label>
+		<label><input type="checkbox" class="option" name="bos[]" value="International Partnerships" /> International Partnerships</label>
+	</fieldset> -->
+	<?php if ($params->get('show_abstract')) { ?>
+	<fieldset>
+		<h3>Abstract</h3>
+		<label>
+			<?php 
+			if ($params->get('abstract_text')) {
+				echo stripslashes($params->get('abstract_text'));
+			}
+			?>
+			<textarea name="register[additional]" rows="16" cols="32"></textarea>
+		</label>
+	</fieldset>
+	<?php } ?>
+
+	<?php if ($params->get('show_comments')) { ?>
+	<fieldset>
+		<h3>Comments</h3>
+		<label>
+			Please use the space below to provide any additional comments:
+			<textarea name="register[comments]" rows="4" cols="32"></textarea>
+		</label>
+	</fieldset>
+	<?php } ?>
+	<div class="clear"></div>
+	<p class="submit"><input type="submit" value="Submit" /></p>
+</form>
+<!-- </div>/ .subject -->
+</div><!-- / .main section -->
+<?php
+	}
+	
+	//-----------
+	
+	public function thanks($option, $event, $year, $month, $day, $auth, $page, $pages)
+	{
+		$html  = EventsHtml::starter( $option, $auth, $year, $month, $day );
+		$html .= EventsHtml::subnav( $option, $year, $month, $day, '' ).n;
+		
+		$html .= '<div class="main section noaside">'.n;
+		$html .= '<h3>'. stripslashes($event->title).'</h3>'.n;
+		$html .= EventsHtml::menu( $option, $event, $page, $pages );
+		$html .= '<p class="passed">Thank you for registering for this event!</p>'.n;
+		$html .= '</div><!-- / .main section noaside -->'.n;
+
+		return $html;
+	}
+	
 	//-----------
 	
 	public function viewYear($option, $task, $year, $month=0, $day=0) 
@@ -895,7 +1259,7 @@ class EventsHtml
 
 	//-----------
 
-	public function edit( $row, $fields, $times, $lists, $option, $gid, $task, $config, $err='' ) 
+	public function edit( $row, $fields, $times, $lists, $option, $gid, $task, $config, $admin, $err='' ) 
 	{
 		$editor =& JFactory::getEditor();
 		?>
@@ -944,7 +1308,7 @@ class EventsHtml
 				<input type="text" name="extra_info" maxlength="240" value="<?php echo htmlentities(stripslashes($row->extra_info)); ?>" />
 			</label>
 <?php
-		foreach($fields as $field) 
+		foreach ($fields as $field) 
 		{
 			?>
 			<label>
@@ -1101,6 +1465,41 @@ class EventsHtml
             </table>
 		</fieldset><div class="clear"></div>
 <?php } ?>
+<?php /*if ($admin) { ?>
+		<div class="explaination">
+			<p><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REGISTER_INFO'); ?></p>
+		</div>
+		<fieldset>
+			<h3><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REGISTRATION'); ?></h3>
+			
+			<fieldset>
+				<legend><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REGISTERBY'); ?></legend>
+				<p>
+					<?php //echo JHTML::_('calendar', $stop_publish, 'publish_down', 'publish_down', '%Y-%m-%d', array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
+					<input class="option" type="text" name="registerby" id="registerby" size="10" maxlength="10" value="<?php echo $times['registerby_date']; ?>" />
+					<input class="option" type="text" name="registerby_time" id="registerby_time" size="5" maxlength="6" value="<?php echo $times['registerby_time']; ?>" />
+					<?php if ($config->getCfg('calUseStdTime') =='YES') { ?>
+					<input class="option" id="registerby_pm0" name="registerby_pm" type="radio"  value="0" <?php if (!$times['registerby_pm']) echo 'checked="checked"'; ?> /><small>AM</small>
+					<input class="option" id="registerby_pm1" name="registerby_pm" type="radio"  value="1" <?php if ($times['registerby_pm']) echo 'checked="checked"'; ?> /><small>PM</small>
+					<?php } ?>
+				</p>
+			</fieldset>
+
+			<label>
+				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_EMAIL'); ?>
+				<input type="text" name="email" maxlength="240" value="<?php echo stripslashes($row->email); ?>" />
+				<span class="hint">The email registrations will be sent to.</span>
+			</label>
+			
+			<label>
+				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_RESTRICTED'); ?>
+				<input type="text" name="restricted" maxlength="240" value="<?php echo stripslashes($row->restricted); ?>" />
+				<span class="hint">If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.</span>
+			</label>
+		</fieldset><div class="clear"></div>
+<?php }*/ ?>
+		<input type="hidden" name="email" value="<?php echo stripslashes($row->email); ?>" />
+		<input type="hidden" name="restricted" value="<?php echo stripslashes($row->restricted); ?>" />
 		<p class="submit"><input type="submit" value="<?php echo JText::_('Save'); ?> Event" /></p>
       
 		<input type="hidden" name="created_by" value="<?php echo $row->created_by; ?>" />
