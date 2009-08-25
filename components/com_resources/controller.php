@@ -681,7 +681,7 @@ class ResourcesController extends JObject
 				}
 			
 				// replace resource info with requested version
-				$tv->compileResource($thistool, $curtool, &$resource, $revision, $this->config);
+				$tv->compileResource($thistool, $curtool, &$resource, $revision, $tparams);
 			}
 		}
 
@@ -1373,7 +1373,7 @@ class ResourcesController extends JObject
 		$xserver = new XContentServer();
 		$xserver->filename($filename);
 		$xserver->disposition('inline');
-		$xserver->acceptranges(true);
+		$xserver->acceptranges(false); // @TODO fix byte range support
 		$xserver->serve();
 
 		// Should only get here on error
@@ -1406,7 +1406,9 @@ class ResourcesController extends JObject
 		
 		// Concat tarball name for this version
 		$tarname = $tv->toolname.'-r'.$tv->revision.'.tar.gz';
-		$tarball_path = $this->config->get('sourcecodePath');
+		// get contribtool params
+		$tparams =& JComponentHelper::getParams( 'com_contribtool' );
+		$tarball_path = $tparams->get('sourcecodePath');
 		$tarpath = $tarball_path.DS.$tv->toolname.DS;
 		$opencode = ($tv->codeaccess=='@OPEN') ? 1 : 0;
 					
@@ -1427,9 +1429,9 @@ class ResourcesController extends JObject
 		$xserver = new XContentServer();
 		$xserver->filename($tarpath . $tarname);
 		$xserver->disposition('attachment');
-		$xserver->acceptranges(true);
+		$xserver->acceptranges(false); // @TODO fix byte range support
 		$xserver->saveas($tarname);
-		$xserver->serve_attachment($tarpath . $tarname, $tarname, $acceptranges = true);
+		$xserver->serve_attachment($tarpath . $tarname, $tarname, false); // @TODO fix byte range support
 		
 		// Should only get here on error
 		JError::raiseError( 404, JText::_('SERVER_ERROR') );
