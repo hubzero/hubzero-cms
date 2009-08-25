@@ -763,7 +763,10 @@ class GroupsHtml
 		}
 		$html .= t.t.t.'</tbody>'.n;
 		$html .= t.t.'</table>'.n;
-		$html .= t.t.$pageNav->getListFooter();
+		//$html .= t.t.$pageNav->getListFooter();
+		$pn = $pageNav->getListFooter();
+		$pn = str_replace('/?','/browse/?',$pn);
+		$html .= $pn;
 		$html .= t.'</div><!-- / .subject -->'.n;
 		$html .= '</div><!-- / .main section --><div class="clear"></div>'.n;
 		$html .= '</form>'.n;
