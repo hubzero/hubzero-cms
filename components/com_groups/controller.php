@@ -855,11 +855,13 @@ class GroupsController extends JObject
 		if (!XMessageHelper::sendMessage( 'groups_requests_membership', $subject, $message, $from, $group->get('managers') )) {
 			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED').' '.$emailadmin );
 		}*/
-		$url = 'index.php?option='.$this->_option.a.'gid='.$group->get('cn').a.'active=members';
-		JPluginHelper::importPlugin( 'xmessage' );
-		$dispatcher =& JDispatcher::getInstance();
-		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_requests_membership', $subject, $message, $from, $group->get('managers'), $this->_option, $group->get('gidNumber'), $url ))) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED').' '.$emailadmin );
+		if ($group->get('join_policy') == 1) {
+			$url = 'index.php?option='.$this->_option.a.'gid='.$group->get('cn').a.'active=members';
+			JPluginHelper::importPlugin( 'xmessage' );
+			$dispatcher =& JDispatcher::getInstance();
+			if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_requests_membership', $subject, $message, $from, $group->get('managers'), $this->_option, $group->get('gidNumber'), $url ))) {
+				$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED').' '.$emailadmin );
+			}
 		}
 
 		// Push through to the groups listing
