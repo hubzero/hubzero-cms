@@ -1741,6 +1741,10 @@ class WishlistController extends JObject
 			echo WishlistHtml::alert( JText::_('ERROR_INVALID_AMOUNT'));
 			exit();
 		}
+		if($amount < 0) {
+			echo WishlistHtml::alert( JText::_('Cannot accept a negative amount.'));
+			exit();
+		}
 		else if($amount > $funds ) {			
 			echo WishlistHtml::alert( JText::_('ERROR_NO_FUNDS'));
 			exit();
@@ -1986,13 +1990,17 @@ class WishlistController extends JObject
 					$imp 	= 0;
 					$eff 	= 0;
 					$num 	= 0;
+					$skipped = 0; // how many times effort selection was skipped
 					
 					foreach($votes as $vote) {					
 						if(in_array($vote->userid, $owners)) {
 							// vote must come from list owner!							
 							$num++;
 							$imp += $vote->importance;
+							if($vote->effort!= 6) { // ingnore "don't know" selection
 							$eff += $vote->effort;
+							}
+							else { $skipped++; }
 						}
 						else {
 							// need to clean up this vote! looks like owners list changed since last voting
@@ -2002,7 +2010,8 @@ class WishlistController extends JObject
 					
 					// average values
 					$imp = $imp/$num;
-					$eff = $eff/$num;
+					$eff = ($num - $skipped) != 0 ? $eff/($num - $skipped) : 0;
+					$weight_i = ($num - $skipped) != 0 ? $weight_i : 7;
 										
 					// we need to factor in how many people voted 
 					$certainty = $co + $num/count($owners);
@@ -2015,7 +2024,8 @@ class WishlistController extends JObject
 				// determine weight of community feedback
 					$f = $item->positive + $item->negative;
 					$q = $f/$f_threshold;
-					$weight_f = ($weight_f >= 1) ? ($weight_f + $q * $weight_f) : $weight_f;
+					//$weight_f = ($weight_f >= 1) ? ($weight_f + $q * $weight_f) : $weight_f;
+					$weight_f = ($q >= 1) ? ($weight_f + $q * $weight_f) : $weight_f;
 									
 					$ranking += ($item->positive * $weight_f);
 					$ranking -= ($item->negative * $weight_f);

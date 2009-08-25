@@ -200,11 +200,11 @@ class Wish extends JTable
 			{
 				case 'date':    	$sort = 'ws.status ASC, ws.proposed DESC';       
 									break;
-				case 'ranking':    	$sort = 'ws.status ASC, ranked, ws.ranking DESC, ws.proposed DESC';       
+				case 'ranking':    	$sort = 'ws.status ASC, ranked, ws.ranking DESC, positive DESC, ws.proposed DESC';       
 									break;
 				case 'feedback':    $sort = 'positive DESC, ws.status ASC';       
 									break;
-				case 'bonus':    	$sort = 'ws.status ASC, bonus DESC, ws.proposed DESC';       
+				case 'bonus':    	$sort = 'ws.status ASC, bonus DESC, positive DESC, ws.proposed DESC';       
 									break;
 				default: 			$sort = 'ws.accepted DESC, ws.status ASC, ws.proposed DESC';
 									break; 
@@ -224,7 +224,7 @@ class Wish extends JTable
 		
 		$sql.= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
 		$sql.= "\n (SELECT AVG(m.importance) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_imp, ";
-		$sql.= "\n (SELECT AVG(m.effort) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_effort, ";	
+		$sql.= "\n (SELECT AVG(m.effort) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id AND m.effort!=6) AS average_effort, ";	
 		$sql.= "\n (SELECT m.due FROM #__wishlist_vote AS m WHERE m.wishid=ws.id ORDER BY m.due DESC LIMIT 1) AS average_due, ";	
 		$sql.= "\n (SELECT SUM(amount) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonus, ";
 		$sql.= "\n (SELECT COUNT(DISTINCT uid) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonusgivenby ";		
@@ -350,8 +350,9 @@ class Wish extends JTable
 		$sql.= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
 		
 		$sql.= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
+		$sql.= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id AND m.effort=6) AS num_skipped_votes, "; // did anyone skip effort selection?
 		$sql.= "\n (SELECT AVG(m.importance) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_imp, ";
-		$sql.= "\n (SELECT AVG(m.effort) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_effort, ";	
+		$sql.= "\n (SELECT AVG(m.effort) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id AND m.effort!=6) AS average_effort, ";	
 		$sql.= "\n (SELECT m.due FROM #__wishlist_vote AS m WHERE m.wishid=ws.id ORDER BY m.due DESC LIMIT 1) AS average_due, ";
 		$sql.= "\n (SELECT SUM(amount) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonus, ";
 		$sql.= "\n (SELECT COUNT(DISTINCT uid) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonusgivenby ";	

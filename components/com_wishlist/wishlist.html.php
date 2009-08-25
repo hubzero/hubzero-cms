@@ -259,6 +259,8 @@ class WishlistHtml
 				case '3':    $output=JText::_('TWODAYS');   	break;
 				case '4':    $output=JText::_('ONEDAY');   		break;
 				case '5':    $output=JText::_('FOURHOURS');   	break;
+				case '6':    $output=JText::_('don\'t know');   break;
+				case '7':    $output=JText::_('N/A');   		break;
 			}
 		}
 		
@@ -312,7 +314,7 @@ class WishlistHtml
 		$importance = array(''=>JText::_('SELECT_IMP'),'0.0'=>'0 -'.JText::_('RUBBISH'),'1'=>'1 - '.JText::_('MAYBE'),'2'=>'2 - '.JText::_('INTERESTING'), 
 		'3'=>'3 - '.JText::_('GOODIDEA'), '4'=>'4 - '.JText::_('IMPORTANT'), '5'=>'5 - '.JText::_('CRITICAL'));
 		$effort = array(''=>JText::_('SELECT_EFFORT'),'5'=>JText::_('FOURHOURS'),'4'=>JText::_('ONEDAY'),
-		'3'=>JText::_('TWODAYS'),'2'=>JText::_('ONEWEEK'),'1'=>JText::_('TWOWEEKS'),'0.0'=>JText::_('TWOMONTHS'));
+		'3'=>JText::_('TWODAYS'),'2'=>JText::_('ONEWEEK'),'1'=>JText::_('TWOWEEKS'),'0.0'=>JText::_('TWOMONTHS'), '6'=>JText::_('don\'t know'));
 		
 		$html  = '<form method="post" action="index.php?option='.$option.'" class="rankingform" id="rankForm">'.n;
 		
@@ -935,7 +937,10 @@ class WishlistHtml
 					$html .= t.t.t.t.'<p>'.JText::_('NA').'</p>'.n;	
 				}
 				else { 
-					// have ranking								
+					// have ranking	
+					if(isset($item->num_votes) && isset($item->num_skipped_votes) && $item->num_votes==$item->num_skipped_votes) {
+					$item->average_effort = 7;
+					}							
 					$html .= t.t.t.t.'<p>'.WishlistHtml::convertVote($item->average_imp, 'importance').'</p>'.n;
 					$html .= t.t.t.t.'<p>'.WishlistHtml::convertVote($item->average_effort,'effort').'</p>'.n;				
 				}
