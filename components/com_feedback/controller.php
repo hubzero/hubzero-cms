@@ -673,9 +673,9 @@ class FeedbackController extends JObject
 		$data['login']     = $reporter['login'];
 		$data['severity']  = 'normal';
 		$data['owner']     = NULL;
-		$data['category']  = $problem['topic'];
-		$data['summary']   = $problem['short'];
-		$data['report']    = $problem['long'];
+		$data['category']  = (isset($problem['topic'])) ? $problem['topic'] : '';
+		$data['summary']   = htmlentities($problem['short'], ENT_COMPAT, 'UTF-8');
+		$data['report']    = htmlentities($problem['long'], ENT_COMPAT, 'UTF-8');
 		$data['resolved']  = NULL;
 		$data['email']     = $reporter['email'];
 		$data['name']      = $reporter['name'];
@@ -1059,7 +1059,12 @@ class FeedbackController extends JObject
 		
 		// Bad words
 		$words = $this->config->get('badwords');
-		$badwords = explode(',', $words);
+		if ($words) {
+			$badwords = explode(',', $words);
+			array_map('trim',$badwords);
+		} else {
+			$badwords = array();
+		}
 
 		// Build an array of patterns to check againts
 		$patterns = array('/\[url=(.*?)\](.*?)\[\/url\]/s', '/\[url=(.*?)\[\/url\]/s');
