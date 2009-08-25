@@ -323,6 +323,7 @@ class WikiHtml
 	public function view( $sub, $name, $pagetitle, $page, $revision, $option, $tags, $output, $task, $authorized, $contributors, $q='' ) 
 	{
 		$params =& new JParameter( $page->params );
+		$mode = $params->get( 'mode', 'wiki' );
 		//'<a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope).'">'.$name.'</a>: '.
 		if ($sub) {
 			$hid = 'sub-content-header';
@@ -332,35 +333,30 @@ class WikiHtml
 		
 		$html  = '<div id="'.$hid.'">'.n;
 		$html .= WikiHtml::hed( 2, $pagetitle ).n;
-		
-		/*$html .= WikiHtml::hed( 3, 'Last Modified on '. JHTML::_('date',$revision->created, '%d %b, %Y') );
-		$html .= '<div id="content-header-extra">'.n;
-		$html .= WikiHtml::ranking( '', $page, $option );
-		$html .= '<p class="avgrating'. WikiHtml::getRatingClass( $page->rating ) .'"><span>Avg. Review: '.$page->rating.' out of 5 stars,</span> <a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=comments').'">'.$page->times_rated.' reviews</a></p>'.n;
-		$html .= '</div>'.n;*/
-		
-		$html .= WikiHtml::authors( $page, $params );
-		$html .= '</div><!-- /#content-header -->'.n;
-		/*$html .= '<div id="content-header-extra">
-						<ul id="useroptions">
-							<li><a href="#">New page</a></li>
-							<li class="last"><a href="'.JRoute::_('index.php?option='.$option).'">Topics Main</a></li>
-						</ul>
-					</div><!-- /content-header-extra -->'.n;*/
-		$html .= WikiHtml::subMenu( $sub, $option, $page->pagename, $page->scope, $page->state, $task, $params, $authorized );
-
-		$aside = '';
-		if ($output['toc']) {
-			$aside .= WikiHtml::div( WikiHtml::hed(3,JText::_('WIKI_PAGE_TABLE_OF_CONTENTS')).$output['toc'], 'article-toc' );
+		if (!$mode || ($mode && $mode != 'static')) {
+			$html .= WikiHtml::authors( $page, $params );
 		}
-		$aside .= WikiHtml::div( WikiHtml::hed(3,JText::_('WIKI_PAGE_TAGS')).WikiHtml::tagcloud( $tags ), 'article-tags' );
+		$html .= '</div><!-- /#content-header -->'.n;
 		
-		$output['text'] .= '<p class="timestamp">'.JText::_('WIKI_PAGE_LAST_MODIFIED').' '.JHTML::_('date',$revision->created, '%d %b, %Y').'</p>';
+		if (!$mode || ($mode && $mode != 'static')) {
+			$html .= WikiHtml::subMenu( $sub, $option, $page->pagename, $page->scope, $page->state, $task, $params, $authorized );
+			
+			$aside = '';
+			if ($output['toc']) {
+				$aside .= WikiHtml::div( WikiHtml::hed(3,JText::_('WIKI_PAGE_TABLE_OF_CONTENTS')).$output['toc'], 'article-toc' );
+			}
+			$aside .= WikiHtml::div( WikiHtml::hed(3,JText::_('WIKI_PAGE_TAGS')).WikiHtml::tagcloud( $tags ), 'article-tags' );
+
+			$output['text'] .= '<p class="timestamp">'.JText::_('WIKI_PAGE_LAST_MODIFIED').' '.JHTML::_('date',$revision->created, '%d %b, %Y').'</p>';
+
+			$c2  = WikiHtml::div( $aside, 'aside' );
+			$c2 .= WikiHtml::subject( $output['text'] );
+			
+			$html .= WikiHtml::div( $c2, 'main section' );
+		} else {
+			$html .= $output['text'];
+		}
 		
-		$c2  = WikiHtml::div( $aside, 'aside' );
-		$c2 .= WikiHtml::subject( $output['text'] );
-		
-		$html .= WikiHtml::div( $c2, 'main section' );
 		$html .= WikiHtml::div( '', 'clear' );
 		return $html;
 	}

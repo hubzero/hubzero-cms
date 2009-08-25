@@ -29,6 +29,7 @@ if (!HUB) {
 
 HUB.Wiki = {
 	editButtons: new Array(),
+	helpButtons: new Array(),
 	
 	initialize: function() {
 		var toolbar = $('wiki-toolbar');
@@ -55,6 +56,7 @@ HUB.Wiki = {
 		{
 			HUB.Wiki.insertEditButton(toolbar, HUB.Wiki.editButtons[i]);
 		}
+		HUB.Wiki.insertHelpButton(toolbar, HUB.Wiki.helpButtons[0]);
 		
 		var mode = $('params_mode');
 		if (mode) {
@@ -91,11 +93,21 @@ HUB.Wiki = {
 		
 		HUB.Wiki.addButton("wiki-button-link","Internal link","[","]","Link title","mw-editbutton-link");
 		HUB.Wiki.addButton("wiki-button-headline","Level 2 headline","\n== "," ==\n","Headline text","mw-editbutton-headline");
-		HUB.Wiki.addButton("wiki-button-image","Embedded file","[[Image(",")]]","Example.jpg","mw-editbutton-image");
+		HUB.Wiki.addButton("wiki-button-image","Embedded image","[[Image(",")]]","Example.jpg","mw-editbutton-image");
+		HUB.Wiki.addButton("wiki-button-file","Embedded file","[[File(",")]]","File.doc","mw-editbutton-file");
+		HUB.Wiki.addButton("wiki-button-resource","Embedded resource","[[Resource(",")]]","123","mw-editbutton-resource");
 		HUB.Wiki.addButton("wiki-button-math","Mathematical formula (LaTeX)","\x3cmath\x3e","\x3c/math\x3e","Insert formula here","mw-editbutton-math");
 		HUB.Wiki.addButton("wiki-button-nowiki","Ignore wiki formatting","{{{","}}}","Insert non-formatted text here","mw-editbutton-nowiki");
 		HUB.Wiki.addButton("wiki-button-hr","Horizontal line (use sparingly)","\n----\n","","","mw-editbutton-hr");
 		HUB.Wiki.addButton("wiki-button-table","Table","\n||cell1||cell2||\n||cell3||cell4||\n","","","mw-editbutton-table");
+		
+		HUB.Wiki.helpButtons[HUB.Wiki.helpButtons.length] =
+			{"imageId": "mw-editbutton-help",
+			 "imageFile": "wiki-button-help",
+			 "speedTip": "Help on formatting",
+			 "tagOpen": "",
+			 "tagClose": "",
+			 "sampleText": ""};
 	},
 	
 	// this function generates the actual toolbar buttons with localized text
@@ -123,6 +135,26 @@ HUB.Wiki = {
 		a.innerHTML = item.speedTip;
 		a.onclick = function() {
 			HUB.Wiki.insertTags(item.tagOpen, item.tagClose, item.sampleText);
+			return false;
+		};
+		
+		li.appendChild(a);
+		parent.appendChild(li);
+		return true;
+	},
+	
+	// this function generates the actual toolbar buttons with localized text
+	// we use it to avoid creating the toolbar where javascript is not enabled
+	insertHelpButton: function(parent, item) {		
+		var li = document.createElement("li");
+		var a = document.createElement("a");
+		a.className = item.imageFile + " popup";
+		if (item.imageId) a.id = item.imageId;
+		a.title = item.speedTip;
+		a.innerHTML = item.speedTip;
+		a.href = "/topics/Help:WikiFormatting";
+		a.onclick = function() {
+			window.open(this.href, 'popup', 'resizable=1,scrollbars=1,height=520,width=760');
 			return false;
 		};
 		
