@@ -26,6 +26,8 @@
 	<description>This module will display a trouble report form</description>
 	<files>
 		<filename module="mod_reportproblems">mod_reportproblems.php</filename>
+		<filename>mod_reportproblems.css</filename>
+		<filename>mod_reportproblems.js</filename>
 		<filename>index.html</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
@@ -38,6 +40,6 @@
 		</param>
 	</params>
 	<languages>
-                <language tag="en-GB">en-GB.mod_reportproblems.ini</language>
-        </languages>
+		<language tag="en-GB">en-GB.mod_reportproblems.ini</language>
+	</languages>
 </install>
