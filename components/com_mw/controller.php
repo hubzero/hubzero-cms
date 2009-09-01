@@ -235,7 +235,7 @@ class MwController extends JObject
 		$pathway->addItem( JText::_('MW_ACCESS_DENIED'), 'index.php?option='.$this->_option.a.'task='.$this->_task );
 
 		// Output HTML
-		echo MwHtml::accessdenied( $this->_option );
+		echo MwHtml::accessdenied( $this->_option, $this->getError() );
 	}
 	
 	//-----------
@@ -1024,6 +1024,7 @@ class MwController extends JObject
 	    
 		// Ensure we have a tool
 		if (!$tool) {
+			$this->setError('No tool provided.');
 			$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED null tool check");
 			return false;
 		}
@@ -1122,9 +1123,16 @@ class MwController extends JObject
 		}
 		
 		// Check if the tool version is published
-		if ($tv->state != 1 && !$admin) {
-			$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED license check, tool version is not published");
-			return false;
+		if ($tv->state != 1) {
+			// Check if they're either a licensed user to and this is a dev version or they're an admin
+			if (($tv->state == 3 && $licensed) || $admin) {
+				// Do nothing. They have access.
+			} else {
+				//if (!$admin && !$licensed && $tv->state == 3) {
+				$this->setError('This tool version is not published.');
+				$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED license check, tool version is not published");
+				return false;
+			}
 		}
 		
 		if ($licensed) {
