@@ -148,17 +148,19 @@ class MwHtml
 
 	//-----------
 
-	public function accessdenied( $option ) 
+	public function accessdenied( $option, $error='' ) 
 	{
 		$xhub =& XFactory::getHub();
 		
+		$error = ($error) ? '<br />'.$error : '';
+		
 		$html  = MwHtml::div(MwHtml::hed(2, JText::_('MW_ACCESS_DENIED')),'full','content-header').n;
 		$html .= '<div class="main section">'.n;
-		$html .= MwHtml::warning( JText::_('MW_ERROR_ACCESS_DENIED') );
-		$html .= '<p>The majority of tools on '.$xhub->getCfg('hubShortName').' are Open Source and freely available to the public.  However, this particular tool has restricted access.</p>'.n;
+		$html .= MwHtml::warning( JText::_('MW_ERROR_ACCESS_DENIED').$error );
+		$html .= '<p>The majority of tools on '.$xhub->getCfg('hubShortName').' are Open Source and freely available to the public. However, this particular tool has restricted access.</p>'.n;
 		$html .= '<h3>How do I fix this?</h3>'.n;
 		$html .= '<ul>'.n;
-		$html .= '<li>If you feel that you should be able to access this tool, please <a href="/support/report_problems/">contact us</a>, and we will check the permissions on your account.</li>'.n;
+		$html .= '<li>If you feel that you should be able to access this tool, please <a href="/feedback/report_problems/">contact us</a>, and we will check the permissions on your account.</li>'.n;
 		$html .= '<li>You might also try <a href="/tools/">browsing through other tools</a> on this site, to see if there is another freely available tool that would work just as well for you.</li>'.n;
 		$html .= '</ul>'.n;
 		$html .= '</div>'.n;
