@@ -125,6 +125,9 @@ class MembersController extends JObject
 			case 'changepassword': $this->changepassword(); break;
 			case 'raiselimit': $this->raiselimit(); break;
 
+			case 'whois':      $this->whois();      break;
+			case 'activity':   $this->activity();   break;
+
 			default: $this->browse(); break;
 		}
 	}
@@ -141,10 +144,11 @@ class MembersController extends JObject
 	
 	//-----------
 	
-	private function getStyles() 
+	private function getStyles($option='') 
 	{
+		$option = ($option) ? 'com_'.$option : $this->_option;
 		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
+		XDocument::addComponentStylesheet($option);
 	}
 
 	//-----------
@@ -1158,6 +1162,466 @@ class MembersController extends JObject
 		
 		// Push through to the profile view
 		$this->view();
+	}
+	
+	//-----------
+	
+	protected function activity()
+	{
+		// Set the page title
+		$document =& JFactory::getDocument();
+		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) );
+		
+		// Set the pathway
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+		}
+		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'task='.$this->_task);
+		
+		// Push some styles to the template
+		$this->getStyles();
+		$this->getStyles('usage');
+		
+		// Check if they're logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			echo MembersHtml::div( MembersHtml::hed( 2, JText::_('Active Users and Guests') ), 'full', 'content-header' );
+			echo '<div class="main section">'.n;
+			echo MembersHtml::warning( JText::_('MEMBERS_NOT_LOGGEDIN') );
+			echo XModuleHelper::renderModules('force_mod');
+			echo '</div><!-- / .main section -->'.n;
+			return;
+		}
+		if (!$juser->authorize($this->_option, 'manage')) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+		}
+		
+		$database =& JFactory::getDBO();
+		
+		// Get logged-in users
+		$prevuser = '';
+		$user  = array();
+		$users = array();
+
+		$sql = "SELECT s.username, x.host, x.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
+				FROM #__session AS s, #__xsession AS x
+				WHERE s.username <> '' AND s.session_id=x.session_id
+				ORDER BY username, host, ip, idle DESC";
+
+		$database->setQuery( $sql );
+		$result = $database->loadObjectList();
+
+		if ($result && count($result) > 0) {
+			foreach ($result as $row)
+			{
+				if ($prevuser != $row->username) {
+					if ($user) {
+						//$xlog->logDebug("com_whois::activity($prevuser)");
+						$xuser =& XUser::getInstance($prevuser);
+						$users[$prevuser] = $user;
+						$users[$prevuser]['name'] = $xuser->get('name');
+						$users[$prevuser]['org'] = $xuser->get('org');
+						$users[$prevuser]['orgtype'] = $xuser->get('orgtype');
+						//$users[$prevuser]['countryresident'] = getcountry($xuser->get('countryresident'));
+						$users[$prevuser]['countryresident'] = $xuser->get('countryresident');
+					}
+					$prevuser = $row->username;
+					$user = array();
+				}
+				array_push($user, array('host' => $row->host, 'ip' => $row->ip, 'idle' => $row->idle));
+			}
+			if ($user) {
+				//$xlog->logDebug("com_whois::activity($prevuser)");
+				$xuser =& XUser::getInstance($prevuser);
+				$users[$prevuser] = $user;
+				$users[$prevuser]['name'] = $xuser->get('name');
+				$users[$prevuser]['org'] = $xuser->get('org');
+				$users[$prevuser]['orgtype'] = $xuser->get('orgtype');
+				//$users[$prevuser]['countryresident'] = getcountry($xuser->get('countryresident'));
+				$users[$prevuser]['countryresident'] = $xuser->get('countryresident');
+			}
+		}
+
+		/*$ds = array();
+		
+		$ipdbo =& WhoisUtils::getIPDBO();
+		if ($ipdbo) {
+			$ipdbo->setQuery( "SELECT domain FROM domainfilter" );
+			$domains = $ipdbo->loadObjectList();
+			if ($domains) {
+				foreach ($domains as $domain)
+				{
+					$ds[] = $domain->domain;
+				}
+			}
+		}
+		
+		$ds = implode("','",$ds);*/
+		
+		$guests = array();
+		/*
+		$sql = "SELECT x.host, x.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
+				FROM #__session AS s, #__xsession AS x 
+				WHERE s.username = '' AND s.session_id=x.session_id AND x.domain NOT IN ('$ds')
+				ORDER BY host DESC, ip, idle DESC";
+		*/
+		$sql = "SELECT x.host, x.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
+				FROM #__session AS s, #__xsession AS x 
+				WHERE s.username = '' AND s.session_id=x.session_id
+				ORDER BY host DESC, ip, idle DESC";
+
+		$database->setQuery( $sql );
+		$result = $database->loadObjectList();
+		if ($result) {
+			if (count($result) > 0) {
+				foreach($result as $row) 
+				{
+					array_push($guests, array('host' => $row->host, 'ip' => $row->ip, 'idle' => $row->idle));
+				}
+			}
+		}
+		
+		// Output View
+		jimport( 'joomla.application.component.view');
+		$view = new JView( array('name'=>'activity') );
+		$view->title = JText::_('Active Users and Guests');
+		$view->option = $this->_option;
+		$view->users = $users;
+		$view->guests = $guests;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
+
+	protected function whois()
+	{
+		// Set the page title
+		$document =& JFactory::getDocument();
+		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) );
+		
+		// Set the pathway
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+		}
+		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'task='.$this->_task);
+		
+		// Push some styles to the template
+		$this->getStyles();
+		
+		// Check if they're logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			echo MembersHtml::div( MembersHtml::hed( 2, JText::_('Lookup User(s)') ), 'full', 'content-header' );
+			echo '<div class="main section">'.n;
+			echo MembersHtml::warning( JText::_('MEMBERS_NOT_LOGGEDIN') );
+			echo XModuleHelper::renderModules('force_mod');
+			echo '</div><!-- / .main section -->'.n;
+			return;
+		}
+		if (!$juser->authorize($this->_option, 'manage')) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+		}
+		
+		// Incoming
+		$query = JRequest::getVar( 'query', '' );
+		$uid   = JRequest::getVar( 'username', '' );
+		$mail  = JRequest::getVar( 'email', '' );
+		
+		if ($uid) {
+			$search = 'uid=' . $uid;
+		} elseif ($mail) {
+			$search = 'mail=' . $mail;
+		} else {
+			$search = $query;
+		}
+
+		jimport( 'joomla.application.component.view');
+		$view = new JView( array('name'=>'whois') );
+		$view->summaries = null;
+		$view->user = null;
+		$view->query = ($search) ? $search : '';
+		
+		// Do we have a query?
+		if ($search) {
+			// Parse the querystring
+			$result = $this->_parse_simplesearch($search);
+
+			// Perform the query
+			$logins = $this->_get_usernamesbyfilter($result); 
+			$summaries = $this->_get_summarybyfilter($result);
+			
+			// Did we get any results?
+			if ((count($logins) <= 0) || ($logins == false))  {
+				$this->setError( JText::_('No results found matching the provided query.') );
+			} elseif (count($logins) > 1) {
+				$view->summaries = $summaries;
+			} else {
+				$view->user = $logins[0]->username;
+			}
+		}
+
+		// Output View
+		$view->title = JText::_('Lookup User(s)');
+		$view->option = $this->_option;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	private function _get_summarybyfilter($args) 
+	{
+		return( $this->_get_attrsbyfilter('username uidNumber email name',$args) );
+	}
+	
+	//-----------
+
+	private function _get_usernamesbyfilter($args) 
+	{
+		return( $this->_get_attrsbyfilter('username',$args) );
+	}
+
+	//-----------
+
+	private function _get_attrsbyfilter($attrs, $filters) 
+	{
+		$result = false;
+		$filter = '';
+		
+		$select = '*';
+		if ($attrs) {
+			$attr_req = explode(' ', $attrs);
+			$attr_req = array_map('trim', $attr_req);
+			$select = '`'.implode('`,`',$attr_req).'`';
+		}
+		
+		if ($filters) {
+			$filter = implode(' OR ', $filters);
+		}
+
+		$database =& JFactory::getDBO();
+		$mp = new MembersProfile( $database );
+		$result = $mp->selectWhere( $select, $filter );
+
+		return $result;
+	}
+
+	//-----------
+
+	private function _parse_email_address($adrstring) 
+	{
+		$address = '';
+		// < > delimited email addresses override any others
+		if (ereg("< *(.+)\@(.+) *>", $adrstring, $match) === false)
+			ereg("([^ <\"]+)\@([^ >\"]+)", $adrstring, $match);
+		$mailbox = $match[1];
+		$host    = $match[2];
+		// remove email portion to get name portion
+		$name = str_replace($match[0], "", $adrstring);
+		// strip any exterior parens from name
+		if ( ereg("^ *\((.*)\) *$", $name, $match) )
+			$name = $match[1];
+		// strip any exterior quotes from name
+		if ( ereg("^ *\"(.*)\" *$", $name, $match) )
+			$name = $match[1];
+		$personal=trim($name);
+
+		if ($mailbox && $host)
+			$addr = $mailbox .'@'. $host;
+		else
+			$addr = '';
+
+		return( array($addr, $personal) );
+	}
+
+	//-----------
+
+	private function _parse_simplesearch($searchstr) 
+	{
+		$address = array();
+		$subs = preg_split("/\s*,\s*/", $searchstr);
+
+		for ($i=0; $i < count($subs); $i++) 
+		{
+			if (strlen($subs[$i]) <= 0) {
+				;
+			}
+			else if (preg_match("/^proxyUidNumber\s*(\!?\-?\+?=)\s*([^\s]+)/i", $subs[$i], $match)) {
+				//$thisresult = 'proxyUidNumber';
+				if ($match[1] == "=") {
+					//$thisresult .= '=';
+					$result[] = $this->_like('proxyUidNumber', $match[2]);
+				}
+				elseif ($match[1] == "-=") {
+					//$thisresult .= '<=';
+					$result[] = "proxyUidNumber <= '".$match[2]."'";
+				}
+				elseif ($match[1] == "+=") {
+					//$thisresult .= '>=';
+					$result[] = "proxyUidNumber >= '".$match[2]."'";
+				}
+				/*if ($match[1] == "!=") {
+					$thisresult .= '=';
+				}*/
+				//$thisresult .= $match[2];
+				/*if ($match[1] == "!=") {
+					$result[] = "!(" . $thisresult . ")";
+				}
+				else {*/
+					//$result[] = $thisresult;
+				//}
+			}
+			else if (preg_match("/^proxyConfirmed\s*(\!?=)\s*([^\s]+)/i", $subs[$i], $match)) {
+				$thisresult = null;
+				if (strtolower($match[2]) == "true" || $match[2] == 1 || $match[2] == -1) {
+					$thisresult = true;
+				}
+				elseif (strtolower($match[2]) == "false" || $match[2] == 0) {
+					$thisresult = false;
+				}
+				if($thisresult === true || $thisresult === false) {
+					if ($match[1] == "!=") {
+						$thisresult = !$thisresult;
+					}
+					if ($thisresult) {
+						$result[] = "&(!(proxyPassword=*))(proxyUidNumber=*)";
+					}
+					else {
+						$result[] = "&(proxyPassword=*)(proxyUidNumber=*)";
+					}
+				}
+			}
+			else if (preg_match("/^emailConfirmed\s*(\!?\-?\+?=)\s*([^\s]+)/i", $subs[$i], $match)) {
+				$thisresult = 'emailConfirmed';
+				if ($match[1] == "=") {
+					$thisresult .= '=';
+				}
+				elseif ($match[1] == "-=") {
+					$thisresult .= '<=';
+				}
+				elseif ($match[1] == "+=") {
+					$thisresult .= '>=';
+				}
+				elseif ($match[1] == "!=") {
+					$thisresult .= '=';
+				}
+				if (strtolower($match[2]) == "true") {
+					$thisresult .= "1";
+					if ($match[1] != "=" && $match[1] != "!=") {
+						$match[1] = "=";
+						$thisresult = "";
+					}
+				}
+				elseif (strtolower($match[2]) == "false") {
+					$thisresult .= "1";
+					if ($match[1] == "=") {
+						$match[1] = "!=";
+					}
+					elseif ($match[1] == "!=") {
+						$match[1] = "=";
+					}
+					else {
+						$match[1] = "=";
+						$thisresult = "";
+					}
+				}
+				else {
+					$thisresult .= "'".$match[2]."'";
+				}
+				/*if ($match[1] == "!=") {
+					$result[] = "!(" . $thisresult . ")";
+				}
+				else {*/
+					$result[] = $thisresult;
+				//}
+			}
+			else if (preg_match("/^uidNumber\s*(\!?\-?\+?=)\s*([^\s]+)/i", $subs[$i], $match)) {
+				//$thisresult = 'uidNumber';
+				if ($match[1] == "=") {
+					//$thisresult .= '=';
+					$result[] = $this->_like('uidNumber', $match[2]);
+				}
+				elseif ($match[1] == "-=") {
+					//$thisresult .= '<=';
+					$result[] = "uidNumber <= '".$match[2]."'";
+				}
+				elseif ($match[1] == "+=") {
+					//$thisresult .= '>=';
+					$result[] = "uidNumber >= '".$match[2]."'";
+				}
+				/*if ($match[1] == "!=") {
+					$thisresult .= '=';
+				}*/
+				//$thisresult .=  '\''.$match[2] .'\'';
+				/*if ($match[1] == "!=") {
+					$result[] = "!(" . $thisresult . ")";
+				}
+				else {*/
+					//$result[] = $thisresult;
+				//}
+			}
+			else if (preg_match("/^uid\s*=\s*([^\s]+)/i", $subs[$i], $match)) {
+				$result[] = $this->_like('username', $match[1]);
+			}
+			else if (preg_match("/^username\s*=\s*([^\s]+)/i", $subs[$i], $match)) {
+				$result[] = $this->_like('username', $match[1]);
+			}
+			else if (preg_match("/^login\s*=\s*([^\s]+)/i", $subs[$i], $match)) {
+				$result[] = $this->_like('username', $match[1]);
+			}
+			else if (preg_match("/^(em|m)ail\s*=\s*([^\s]+)/i", $subs[$i], $match)) {
+				$result[] = 'email=\''. $match[2] .'\'';
+			}
+			else if (preg_match("/^name\s*=\s*([^\s]+)/i", $subs[$i], $match)) {
+				$result[] = $this->_like('name', $match[1]);
+			}
+			else if (preg_match("/^cn\s*=\s*([^\s]+)/i", $subs[$i], $match)) {
+				$result[] = $this->_like('name', $match[1]);
+			}
+			else if (preg_match("/=/", $subs[$i], $match)) {
+				;
+			}
+			else if ( preg_match("/^[0-9]+$/", $subs[$i]) ) {
+				$result[] = 'uidNumber=\''. $subs[$i] .'\'';
+			}
+			else if ( preg_match("/^[^\s@]+$/", $subs[$i]) ) {
+				$result[] = $this->_like('username', $subs[$i]);
+			}
+			else {
+				$address[] = $subs[$i];
+			}
+		}
+
+		for ($i = 0; $i < count($address); $i++) 
+		{
+			$addr = $this->_parse_email_address($address[$i]);
+			if ($addr[0])
+				$result[] = "email='". $addr[0] ."'";
+				if ($addr[1])
+					$result[] = $this->_like('name', $addr[1]);
+		}
+		return( $result );
+	}
+	
+	private function _like($k, $v) 
+	{
+		if ((substr($v, -1) == '*' || substr($v, -1) == '?') 
+		 && (substr($v, 0, 1) == '*' || substr($v, 0, 1) == '?')) {
+			return $k." LIKE '%". substr($v, 1, -1) ."%'";
+		} elseif (substr($v, -1) == '*' || substr($v, -1) == '?') {
+			return $k." LIKE '". substr($v, 0, -1) ."%'";
+		} elseif (substr($v, 0, 1) == '*' || substr($v, 0, 1) == '?') {
+			return $k." LIKE '%". substr($v, 1) ."'";
+		} else {
+			return $k."='". $v ."'";
+		}
 	}
 
 	//-----------

@@ -269,6 +269,14 @@ class MembersProfile extends JTable
 	
 	//-----------
 	
+	public function selectWhere( $select, $where ) 
+	{
+		$query = "SELECT $select FROM $this->_tbl WHERE $where";
+
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
+	}
+	
 	/*function countContributions( $filters=array(), $id=NULL )
 	{
 		if ($id == NULL) {
