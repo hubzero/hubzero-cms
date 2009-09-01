@@ -105,13 +105,22 @@ class modResourceMenu
 		$html .= $this->xHubTags( $text );
 		$html .= "\t".'</div>'."\n";
 		
-		return $html;
+		$this->html = $html;
+		
+		ximport('xdocument');
+		XDocument::addModuleStylesheet('mod_resourcemenu');
+		
+		$jdocument =& JFactory::getDocument();
+		if (is_file(JPATH_ROOT.'/modules/mod_resourcemenu/mod_resourcemenu.js')) {
+			$jdocument->addScript('/modules/mod_resourcemenu/mod_resourcemenu.js');
+		}
 	}
 }
 
 //-------------------------------------------------------------
 
 $modresourcemenu = new modResourceMenu( $params );
+$modresourcemenu->display();
 
 require( JModuleHelper::getLayoutPath('mod_resourcemenu') );
 ?>

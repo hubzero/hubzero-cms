@@ -28,6 +28,8 @@
 		<filename module="mod_resourcemenu">mod_resourcemenu.php</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
+		<filename>mod_resourcemenu.js</filename>
+		<filename>mod_resourcemenu.css</filename>
 		<filename>mod_resourcemenu.xml</filename>
 		<filename>index.html</filename>
 	</files>
