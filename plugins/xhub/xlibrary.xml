@@ -452,6 +452,10 @@
 	<filename>xlibraries/ofc/php-ofc-library/ofc_x_axis_labels.php</filename>
 	<filename>xlibraries/ofc/php-ofc-library/ofc_line_base.php</filename>
 	<filename>xlibraries/ofc/php-ofc-library/ofc_bar.php</filename>
+	<filename>xlibraries/wiki/macros/recentpage.php</filename>
+	<filename>xlibraries/wiki/images/help_purple.png</filename>
+	<filename>xlibraries/wiki/images/page.png</filename>
+	<filename>xlibraries/wiki/images/page_white.png</filename>
 </files>
 <install>
     <sql>
