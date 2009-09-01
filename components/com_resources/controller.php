@@ -446,7 +446,9 @@ class ResourcesController extends JObject
 						if ($tool) {
 							$tool = $tool[0];
 						}
-						$tv->compileResource ($tool, '', &$resource, '', $this->config);
+						// get contribtool params
+						$tparams =& JComponentHelper::getParams( 'com_contribtool' );
+						$tv->compileResource ($tool, '', &$resource, '', $tparams);
 					}
 				}
 			
