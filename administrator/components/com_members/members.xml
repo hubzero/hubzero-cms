@@ -284,6 +284,12 @@
 		<filename>images/flags/zw.gif</filename>
 		<filename>views/contributors/index.html</filename>
 		<filename>views/members/index.html</filename>
+		<filename>views/activity/tmpl/default.php</filename>
+		<filename>views/activity/tmpl/default.xml</filename>
+		<filename>views/activity/tmpl/index.html</filename>
+		<filename>views/whois/tmpl/default.php</filename>
+		<filename>views/whois/tmpl/default.xml</filename>
+		<filename>views/whois/tmpl/index.html</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.com_members.ini</language>

@@ -1454,7 +1454,8 @@ class MembersHtml
 			$html .= t.t.t.'</select>'.n;
 			$html .= $message;
 			$html .= t.t.'</label>'.n;
-			$html .= t.t.t.'<input type="text" name="orgtext" value="'. htmlentities($orgtext,ENT_COMPAT,'UTF-8') .'" />'.n;
+			$html .= t.t.'<label for="orgtext" id="orgtextlabel">'.JText::_('Enter organization below').'</label>'.n;
+			$html .= t.t.'<input type="text" name="orgtext" id="orgtext" value="'. htmlentities($orgtext,ENT_COMPAT,'UTF-8') .'" />'.n;
 		}
 		
 		if ($registration->Interests != REG_HIDE) {
@@ -1847,6 +1848,53 @@ class MembersHtml
 		$text = str_replace('&','&amp;',$text);
 		$text = str_replace('"','&quot;',$text);
 		return $text;
+	}
+	
+	//-----------
+	
+	public function date2epoch($datestr) 
+	{
+		if (empty($datestr))
+			return null;
+
+		list ($date, $time) = explode(' ', $datestr);
+		list ($y, $m, $d) = explode('-', $date);
+		list ($h, $i, $s) = explode(':', $time);
+		return(mktime($h, $i, $s, $m, $d, $y));
+	}
+	
+	//-----------
+	
+	public function valformat($value, $format) 
+	{
+		if ($format == 1) {
+			return(number_format($value));
+		} elseif ($format == 2 || $format == 3) {
+			if ($format == 2) {
+				$min = round($value / 60);
+			} else {
+				$min = floor($value / 60);
+				$sec = $value - ($min * 60);
+			}
+			$hr = floor($min / 60);
+			$min -= ($hr * 60);
+			$day = floor($hr / 24);
+			$hr -= ($day * 24);
+			if ($day == 1) {
+				$day = "1 day, ";
+			} elseif ($day > 1) {
+				$day = number_format($day) . " days, ";
+			} else {
+				$day = "";
+			}
+			if ($format == 2) {
+				return(sprintf("%s%d:%02d", $day, $hr, $min));
+			} else {
+				return(sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec));
+			}
+		} else {
+			return($value);
+		}
 	}
 
 	//-----------

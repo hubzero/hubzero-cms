@@ -45,6 +45,10 @@ function membersBuildRoute(&$query)
 			unset($query['task']);
 		}
 	}
+	if (empty($query['id']) && !empty($query['task'])) {
+		$segments[] = $query['task'];
+		unset($query['task']);
+	}
 	/**/
  
     return $segments;
@@ -59,19 +63,26 @@ function membersParseRoute($segments)
 	}
 
 	if (isset($segments[0])) {
-		if ($segments[0]{0} == 'n')
+		if ($segments[0] == 'whois' || $segments[0] == 'activity') {
+			$vars['task'] = $segments[0];
+		} elseif ($segments[0]{0} == 'n') {
 			$vars['id'] = '-' . substr($segments[0],1);
-		else
+		} else {
 			$vars['id'] = $segments[0];
+		}
 	}
 	if (isset($segments[1])) {
-		$vars['active'] = $segments[1];
-		
-		if (isset($segments[2])) {
-			if (trim($segments[1]) == 'profile') {
-				$vars['task'] = $segments[2];
-			} else {
-				$vars['action'] = $segments[2];
+		if ($segments[1] == 'edit' || $segments[1] == 'changepassword' || $segments[1] == 'raiselimit'  || $segments[1] == 'cancel') {
+			$vars['task'] = $segments[1];
+		} else {
+			$vars['active'] = $segments[1];
+
+			if (isset($segments[2])) {
+				if (trim($segments[1]) == 'profile') {
+					$vars['task'] = $segments[2];
+				} else {
+					$vars['action'] = $segments[2];
+				}
 			}
 		}
 	}
