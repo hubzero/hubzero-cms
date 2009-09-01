@@ -47,6 +47,10 @@
 		<filename>images/page_edit.png</filename>
 		<filename>images/overlay.png</filename>
 		<filename>images/stophand.gif</filename>
+		<filename>views/index.html</filename>
+		<filename>views/index/tmpl/default.php</filename>
+		<filename>views/index/tmpl/default.xml</filename>
+		<filename>views/index/tmpl/index.html</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.com_support.ini</language>
