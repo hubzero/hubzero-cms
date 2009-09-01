@@ -152,13 +152,13 @@ class plgXAuthenticationHzldap extends JPlugin
         $xhub =& XFactory::getHub();
 
 		$hubShortName = $xhub->getCfg('hubShortName','');
-		$auth_method   = $xhub->getCfg('hubLDAPAuthMethod','bind');
-		$port          = $xhub->getCfg('hubLDAPPort','389');
+		$auth_method   = 'bind';
+		$port          = '389';
         $base_dn       = $xhub->getCfg('hubLDAPBaseDN','ou=Users,dc=localhost');
-        $search_string = $xhub->getCfg('hubLDAPSearchString','uid=[search],ou=Users,dc=localhost');
-        $users_dn      = $xhub->getCfg('hubLDAPUserDN','uid=[username],ou=Users,dc=localhost');
-		$use_ldapV3    = $xhub->getCfg('hubLDAPUseLDAP3','1');
-		$no_referrals  = intval( $xhub->getCfg('hubLDAPNoReferrals','1'));
+        $search_string = 'uid=[search],ou=Users,' . $base_dn;
+		$users_dn      = 'uid=[username],ou=Users,' . $base_dn;
+		$use_ldapV3    = 1;
+		$no_referrals  = 1;
         $negotiate_tls = $xhub->getCfg('hubLDAPNegotiateTLS','0');
         $username      = $xhub->getCfg('hubLDAPSearchUserDN','uid=search,dc=localhost');
 		$password      = $xhub->getCfg('hubLDAPSearchUserPW','');

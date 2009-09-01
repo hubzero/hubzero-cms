@@ -136,9 +136,9 @@ class XFactory
 				$acctmanPW = $xhub->getCfg('hubLDAPAcctMgrPW');
 				$pldap = $xhub->getCfg('hubLDAPMasterHost');
 				$negotiate_tls = $xhub->getCfg('hubLDAPNegotiateTLS','0');
-				$port          = $xhub->getCfg('hubLDAPPort','389');
-			    $use_ldapV3    = $xhub->getCfg('hubLDAPUseLDAP3','1');
-        		$no_referrals  = intval( $xhub->getCfg('hubLDAPNoReferrals','1'));
+				$port          = '389';
+			    $use_ldapV3    = 1;
+        		$no_referrals  = 1;
 
 				if (!is_numeric($port))
 					$port = '389';
