@@ -1467,8 +1467,8 @@ class ContribtoolHtml
 			</ul>
 		</div><!-- / #content-header-extra -->
 
-			<div class="main section">
- 			<p><?php if(!$admin) { echo  (JText::_('CONTRIBTOOL_CHECK_STATUS'). '( '.$total.' )'); } 
+		<div class="main section">
+ 			<p><?php if(!$admin) { echo  (JText::_('CONTRIBTOOL_CHECK_STATUS'). ' ( '.$total.' )'); } 
 			else { echo (JText::_('CONTRIBTOOL_LOGGED_AS_ADMIN').' '.JText::_('CONTRIBTOOL_ALL_SUBMISSIONS').' ('.$total.')');  } ?>.</p> 
 			<form action="index.php" method="get" name="adminForm">
 					<fieldset class="filters">
@@ -1571,10 +1571,12 @@ class ContribtoolHtml
 				
 			
 			</form>
+            <?php
+			echo ($total <= 0) ? '<p>'.JText::_('NO_CONTRIBUTIONS').'. <a href="'.JRoute::_('index.php?option='.$option.'&task=create').'" >'.JText::_('Contribute a new tool').'</a>.</p>' : '';
+			?>
 		</div><!-- /.main section -->	
 
 <?php 
-		echo ($total <= 0) ? JText::_('NO_CONTRIBUTIONS').' <a href="'.JRoute::_('index.php?option='.$option.'&task=newtool').'" >'.JText::_('CONTRIBTOOL_NEW_TOOL').'</a>' : '';
 	
 	
 	}
