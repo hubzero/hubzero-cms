@@ -49,12 +49,12 @@ class XLDAP extends JLDAP {
 
         $this->masterhost = $xhub->getCfg('hubLDAPMasterHost','localhost');
 		$this->slavehosts = $xhub->getCfg('hubLDAPSlaveHosts','');
-		$this->auth_method = $xhub->getCfg('hubLDAPAuthMethod','bind');
-		$this->port = $xhub->getCfg('hubLDAPPort','389');
+		$this->auth_method = 'bind';
+		$this->port = '389';
 		$this->base_dn = $xhub->getCfg('hubLDAPBaseDN','ou=People,dc=localhost');
-		$this->search_string = $xhub->getCfg('hubLDAPSearchString','uid=[search],ou=People,dc=localhost');
-		$this->use_ldapV3 = $xhub->getCfg('hubLDAPUseLDAP3','1');
-		$this->no_referrals = $xhub->getCfg('hubLDAPNoReferrals','1');
+		$this->search_string = '';
+		$this->use_ldapV3 = 1;
+		$this->no_referrals = 1;
 		$this->negotiate_tls = $xhub->getCfg('hubLDAPNegotiateTLS','0');
 		$this->username = $xhub->getCfg('hubLDAPSearchUserDN','uid=search,dc=localhost');
 		$this->password = $xhub->getCfg('hubLDAPSearchUserPW','');
