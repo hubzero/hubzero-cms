@@ -160,7 +160,7 @@ class FeedbackHtml
 	{
 		$html  = '<div>'.n;
 		$html .= t.'<p>Error processing form.</p>'.n;
-		$html .= t.'<p><a href="javascript:HUB.TroubleReport.reshowForm();" title="Edit report">Edit report</a></p>'.n;
+		$html .= t.'<p><a href="javascript:HUB.ReportProblem.reshowForm();" title="Edit report">Edit report</a></p>'.n;
 		$html .= '</div>'.n;
 		$html .= '<h3>Error!</h3>';
 		$html .= '<p>An error occurred while processing the from you submitted. Please edit your report, make sure all proper fields are filled in, and try submitting once more.</p>';
@@ -690,7 +690,7 @@ class FeedbackHtml
         if ($no_html) {
 			$html .= '<div>'.n;
 			$html .= t.'<p>'.JText::_('Your ticket').' # <span>'.$ticket.'</span></p>'.n;
-			$html .= t.'<p><a href="javascript:HUB.TroubleReport.resetForm();" title="'.JText::_('New report').'">'.JText::_('New report').'</a></p>'.n;
+			$html .= t.'<p><a href="javascript:HUB.ReportProblem.resetForm();" title="'.JText::_('New report').'">'.JText::_('New report').'</a></p>'.n;
 			$html .= '</div>'.n;
 			$html .= stripslashes($msg);
 		} else {

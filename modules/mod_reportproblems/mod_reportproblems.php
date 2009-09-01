@@ -47,7 +47,7 @@ class modReportProblems
 
 	//-----------
 	
-	private function browsercheck($sagent) 
+	private function _browsercheck($sagent) 
 	{
 		unset($os);
 		unset($os_version);
@@ -262,7 +262,7 @@ class modReportProblems
 
 	//-----------
 
-	private function generate_hash($input, $day)
+	private function _generate_hash($input, $day)
 	{	
 		// Add date:
 		$input .= $day . date('ny');
@@ -280,108 +280,48 @@ class modReportProblems
 	
 	public function display()
 	{
-		$mainframe =& $this->mainframe;
+		$this->juser = JFactory::getUser();
 
-		$juser =& JFactory::getUser();
+		$this->verified = (!$this->juser->get('guest')) ? 1 : 0;
+		$this->referrer = $_SERVER['REQUEST_URI'];
+		$this->referrer = str_replace( '&amp;', '&', $this->referrer );
+		$this->referrer = str_replace( '&', '&amp;', $this->referrer );
 		
-		$xhub =& XFactory::getHub();
-		$hubShortName = $xhub->getCfg('hubShortName');
-
-		$verified = (!$juser->get('guest')) ? 1 : 0;
-		$referrer = $_SERVER['REQUEST_URI'];
-		$referrer = str_replace( '&amp;', '&', $referrer );
-		$referrer = str_replace( '&', '&amp;', $referrer );
-		
+		$problem = array();
 		$problem['operand1'] = rand(0,10);
 		$problem['operand2'] = rand(0,10);
-		$sum = $problem['operand1'] + $problem['operand2'];
-		$krhash = $this->generate_hash($sum,date('j'));
+		$this->problem = $problem;
+		$this->sum = $problem['operand1'] + $problem['operand2'];
+		$this->krhash = $this->_generate_hash($this->sum,date('j'));
 		
 		if (isset($_SERVER['HTTP_USER_AGENT'])) {
-			list( $os, $os_version, $browser, $browser_ver ) = $this->browsercheck($_SERVER['HTTP_USER_AGENT']);
+			list( $os, $os_version, $browser, $browser_ver ) = $this->_browsercheck($_SERVER['HTTP_USER_AGENT']);
 		} else {
 			$os = '';
 			$os_version = '';
 			$browser = '';
 			$browser_ver = '';
 		}
-		?>
-	<div id="help-pane">
-		<div id="help-container">
-			<h1><?php echo JText::_('MOD_REPORTPROBLEMS_SUPPORT'); ?></h1>
-
-			<div class="threecolumn farleft">
-				<h2><?php echo JText::_('MOD_REPORTPROBLEMS_TROUBLE_REPORT'); ?></h2>
-				<?php echo JText::_('MOD_REPORTPROBLEMS_EXPLANATION'); ?>
-			</div><!-- / .threecolumn farleft -->
-			<div class="threecolumn middleright">
-				<form method="post" action="index.php" id="troublereport">
-					<fieldset class="reporter">
-						<label for="trLogin">
-							<?php echo $hubShortName; ?> <?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
-							<input type="text" name="reporter[login]" id="trLogin" value="<?php echo (!$juser->get('guest')) ? $juser->get('username') : ''; ?>" />
-						</label>
-				
-						<label for="trName">
-							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_NAME'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-							<input type="text" name="reporter[name]" id="trName" value="<?php echo (!$juser->get('guest')) ? $juser->get('name') : ''; ?>" />
-						</label>
-				
-						<label for="trEmail">
-							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_EMAIL'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-							<input type="text" name="reporter[email]" id="trEmail" value="<?php echo (!$juser->get('guest')) ? $juser->get('email') : ''; ?>" />
-						</label>
-<?php if (!$verified) { ?>
-						<label for="trAnswer">
-							<?php echo JText::sprintf('MOD_REPORTPROBLEMS_MATH_CAPTCHA', $problem['operand1'], $problem['operand2']); ?>
-							<input type="text" name="answer" id="trAnswer" value="" class="option" size="3" /></label><span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span><br />
-							<a href="/kb/misc/why_the_math_question"><?php echo JText::_('MOD_REPORTPROBLEMS_WHY_CAPTCHA'); ?></a>
-
-<?php } ?>
-					</fieldset>
-					<fieldset>
-						<label for="trProblem">
-							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_PROBLEM'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-							<textarea name="problem[long]" id="trProblem" <?php if (!$verified) { echo 'class="long" '; } ?>rows="10" cols="40"></textarea>
-						</label>
-
-						<input type="hidden" name="problem[topic]" value="???" />
-						<input type="hidden" name="problem[short]" value="" />
-						<input type="hidden" name="problem[referer]" value="<?php echo $referrer; ?>" />
-						<input type="hidden" name="problem[tool]" value="" />
-						<input type="hidden" name="problem[os]" value="<?php echo $os; ?>" />
-						<input type="hidden" name="problem[osver]" value="<?php echo $os_version; ?>" />
-						<input type="hidden" name="problem[browser]" value="<?php echo $browser; ?>" />
-						<input type="hidden" name="problem[browserver]" value="<?php echo $browser_ver; ?>" />
-						<input type="hidden" name="krhash" value="<?php echo $krhash; ?>" />
-						<input type="hidden" name="verified" value="<?php echo $verified; ?>" />
-						<input type="hidden" name="reporter[org]" value="<?php echo (!$juser->get('guest')) ? $juser->get('org') : ''; ?>" />
-						<input type="hidden" name="option" value="com_feedback" />
-						<input type="hidden" name="task" value="sendreport" />
-						<input type="hidden" name="no_html" value="1" />
-<?php if ($verified) { ?>
-						<input type="hidden" name="answer" value="<?php echo $sum; ?>" />
-<?php } ?>
-				 	</fieldset>
-					<div class="submit"><input type="submit" id="send-form" value="<?php echo JText::_('MOD_REPORTPROBLEMS_SUBMIT'); ?>" /></div>
-				</form>
-				<div id="trSending">
-				</div>
-				<div id="trSuccess">
-				</div>
-			</div><!-- / .threecolumn middleright -->
-			<div class="clear"></div>
-		</div><!-- / #help-container -->
-	</div><!-- / #help-pane -->
-		<?php
+		$this->os = $os;
+		$this->os_version = $os_version;
+		$this->browser = $browser;
+		$this->browser_ver = $browser_ver;
+		
+		ximport('xdocument');
+		XDocument::addModuleStylesheet('mod_reportproblems');
+		
+		$jdocument =& JFactory::getDocument();
+		if (is_file(JPATH_ROOT.'/modules/mod_reportproblems/mod_reportproblems.js')) {
+			$jdocument->addScript('/modules/mod_reportproblems/mod_reportproblems.js');
+		}
 	}
 }
 
 //-------------------------------------------------------------
 
 $modreportproblems = new modReportProblems();
-$modreportproblems->mainframe = $mainframe;
 $modreportproblems->params = $params;
+$modreportproblems->display();
 
 require( JModuleHelper::getLayoutPath('mod_reportproblems') );
 
