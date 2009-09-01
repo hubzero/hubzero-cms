@@ -102,11 +102,12 @@ class SupportController extends JObject
 			case 'create':     $this->create();     break;
 			case 'feed':       $this->feed();       break;
 			case 'delete':     $this->delete();     break;
+			case 'index':      $this->index();      break;
 			
 			case 'reportabuse': $this->reportabuse(); break;
 			case 'savereport':  $this->savereport();  break;
 			
-			default: $this->tickets(); break;
+			default: $this->index(); break;
 		}
 	}
 
@@ -152,6 +153,39 @@ class SupportController extends JObject
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
+	
+	protected function index() 
+	{
+		// Set the page title
+		$document =& JFactory::getDocument();
+		$document->setTitle( JText::_(strtoupper($this->_name)) );
+		
+		// Set the pathway
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+		}
+		
+		// Push some styles to the template
+		$this->getStyles();
+		$this->getStyles('answers');
+		
+		// Output HTML
+		jimport( 'joomla.application.component.view');
+		
+		ximport('xmodule');
+		
+		// Output HTML
+		$view = new JView( array('name'=>'index') );
+		$view->title = JText::_(strtoupper($this->_name));
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
 	
 	protected function login()
 	{

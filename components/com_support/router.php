@@ -82,12 +82,13 @@ function supportParseRoute($segments)
 
 	$count = count($segments);
 
-	if ($count == 0) {
+	/*if ($count == 0) {
 		$vars['option'] = 'com_content';
 		$vars['view'] = 'article';
 		$vars['route'] = 'support';
 	}
-	else if ($segments[0] == 'report_problems') {
+	else*/
+	if ($segments[0] == 'report_problems') {
 	    $vars['option'] = 'com_feedback';
 	    $vars['task'] = 'report';
 	}
