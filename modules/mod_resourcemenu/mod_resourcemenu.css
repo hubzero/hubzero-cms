@@ -1,0 +1,82 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_resourcemenu
+	-- -- -- -- -- -- --
+
+*/
+	#resources-menu { 
+		width: 586px; 
+		padding: 0 1em; 
+		background: #fff;
+		border: 1px solid #000;
+		position: absolute;
+		z-index: 400;
+		top: 165px;
+		left: 65px;
+		}
+	#resources-menu h3 {
+		margin: 0 0 0.5em 0;
+		padding: 0;
+		border: none;
+		font-weight: bold;
+		}
+	#resources-menu h4 {
+		margin: 0;
+		padding: 0;
+		}
+	#resources-menu ul { 
+		margin: 0 0 1em 0;
+		padding: 0;
+		background: transparent;
+		height: auto;
+		border: none;
+		}
+	#resources-menu li {
+		display: block;
+		float: none;
+		width: auto;
+		height: auto;
+		margin: 0;
+		padding: 0;
+		border: none;
+		}
+	#resources-menu a,
+	#nav li.active #resources-menu a { 
+		width: auto;
+		height: auto;
+		display: inline;
+		position: inherit;
+		padding: 0;
+		margin: 0;
+		line-height: normal;
+		color: #CC9666;
+		background: transparent;
+		}
+	#resources-menu li a:hover,
+	#nav li.active #resources-menu a:hover {
+		color: #ff6600;
+		border-bottom: 1px solid #ff6600;
+		background: transparent;
+		}
+	#resources-menu .farleft {
+		width: 25.5%;
+		border-color: #E7DFD8;
+		}
+	#resources-menu .middle {
+		width: 40.5%;
+		border-color: #E7DFD8;
+		}
+	#resources-menu .farright {
+		width: 25.5%;
+		border-color: #E7DFD8;
+		}
