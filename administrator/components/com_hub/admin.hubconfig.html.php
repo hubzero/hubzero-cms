@@ -120,48 +120,6 @@ class HubConfigHTML
 									<input class="text_area" type="text" name="settings[hubHomeDir]" size="30" value="<?php echo (isset($arr['hubHomeDir'])) ? $arr['hubHomeDir'] : ''; ?>" />
 								</td>
 							</tr>
-							<tr>
-								<td class="key">
-									<span class="editlinktip hasTip" title="Site Name::Enter the name of your web site. This will be used in various locations for example, the Back-end browser title bar and <em>Site Offline</em> pages.">
-										Site Images Dir
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td class="key">
-									<span class="editlinktip hasTip" title="Site Name::Enter the name of your web site. This will be used in various locations for example, the Back-end browser title bar and <em>Site Offline</em> pages.">
-										Site Images Path
-									</span>
-								</td>
-							</tr>
-							
-							<?php
-							for ($i=1, $n=11; $i < $n; $i++) 
-							{
-								?>
-								<tr>
-									<td class="key">
-										<span class="editlinktip hasTip" title="Focus Area::Enter a tag that represents one of the primary focus areas of your site.">
-											Focus Area (tag) <?php echo $i; ?>
-										</span>
-									</td>
-									<td>
-										<input class="text_area" type="text" name="settings[hubFocusArea<?php echo $i; ?>]" size="30" value="<?php echo (isset($arr['hubFocusArea'.$i])) ? $arr['hubFocusArea'.$i] : ''; ?>" />
-									</td>
-								</tr>
-								<?php
-							}
-							?>
-							<tr>
-								<td class="key">
-									<span class="editlinktip hasTip" title="Login Redirect::The page you wish to redirect users to after they login.">
-										Login Redirect
-									</span>
-								</td>
-								<td>
-									<input class="text_area" type="text" name="settings[hubLoginReturn]" size="30" value="<?php echo (isset($arr['hubLoginReturn'])) ? $arr['hubLoginReturn'] : ''; ?>" />
-								</td>
-							</tr>
 						</tbody>
 					</table>
 				</fieldset>
@@ -252,28 +210,6 @@ class HubConfigHTML
 										?>
 								<tr>
 									<td class="key"><?php echo str_replace('ipDB', '', $field); ?></td>
-									<td>
-										<input class="text_area" type="text" name="settings[<?php echo $field; ?>]" size="30" value="<?php echo $value; ?>" />
-									</td>
-								</tr>
-								<?php
-									}	
-								}
-								?>
-							</tbody>
-						</table>
-					</fieldset>
-					<fieldset class="adminform">
-						<legend>Middleware Database</legend>
-						<table class="admintable">
-							<tbody>
-								<?php
-								foreach ($arr as $field => $value) 
-								{
-									if (substr($field, 0, strlen('mwDB')) == 'mwDB') {
-										?>
-								<tr>
-									<td class="key"><?php echo str_replace('mwDB', '', $field); ?></td>
 									<td>
 										<input class="text_area" type="text" name="settings[<?php echo $field; ?>]" size="30" value="<?php echo $value; ?>" />
 									</td>
