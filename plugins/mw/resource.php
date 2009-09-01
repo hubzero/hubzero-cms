@@ -168,7 +168,8 @@ class plgMwResource extends JPlugin
 				}
 			
 				// replace resource info with requested version
-				$tv->compileResource($thistool, $curtool, $resource, $revision, $config);
+				$ctconfig =& JComponentHelper::getParams( 'com_contribtool' );
+				$tv->compileResource($thistool, $curtool, &$resource, $revision, $ctconfig);
 			}
 		}
 		
