@@ -144,9 +144,7 @@ class plgXMessageHandler extends JPlugin
 				$recipient->created = date( 'Y-m-d H:i:s', time() );
 				$recipient->expires = date( 'Y-m-d H:i:s', time() + (168 * 24 * 60 * 60) );
 				$recipient->actionid = (is_object($action)) ? $action->id : 0;
-				if (!$recipient->store()) {
-					return $recipient->getError();
-				}
+				
 				
 				// Get the user's methods for being notified
 				$notify = new XMessageNotify( $database );
@@ -161,8 +159,14 @@ class plgXMessageHandler extends JPlugin
 					{
 						$action = strtolower($method->method);
 
-						if (!$dispatcher->trigger( 'onMessage', array($from, $xmessage, $user, $action) )) {
-							$this->setError( JText::sprintf('Unable to message user %s with method %s', $uid, $action) );
+						if ($action == 'internal') {
+							if (!$recipient->store()) {
+								$this->setError( $recipient->getError() );
+							}
+						} else {
+							if (!$dispatcher->trigger( 'onMessage', array($from, $xmessage, $user, $action) )) {
+								$this->setError( JText::sprintf('Unable to message user %s with method %s', $uid, $action) );
+							}
 						}
 					}
 				} else {
@@ -176,6 +180,10 @@ class plgXMessageHandler extends JPlugin
 
 						$d = $pp->get('default_method');
 						$d = ($d) ? $d : 'email';
+
+						if (!$recipient->store()) {
+							$this->setError( $recipient->getError() );
+						}
 
 						// Use the Default in the case the user has no methods
 						if (!$dispatcher->trigger( 'onMessage', array($from, $xmessage, $user, $d) )) {
