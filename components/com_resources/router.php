@@ -66,6 +66,8 @@ function ResourcesParseRoute($segments)
 
 	if (is_numeric($segments[0])) {
 		$vars['id'] = $segments[0];
+	} elseif ($segments[0] == 'browse') {
+		$vars['task'] = $segments[0];
 	} else {
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.type.php');
 		
@@ -77,12 +79,10 @@ function ResourcesParseRoute($segments)
 		// Normalize the title
 		// This is so we can determine the type of resource to display from the URL
 		// For example, /resources/learningmodules => Learning Modules
-		$normalized_valid_chars = 'a-zA-Z0-9';
 		for ($i = 0; $i < count($types); $i++) 
 		{	
-			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $types[$i]->type);
+			$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $types[$i]->type);
 			$normalized = strtolower($normalized);
-			//$types[$i]->title = $normalized;
 			
 			if (trim($segments[0]) == $normalized) {
 				$vars['type'] = $segments[0];
@@ -98,42 +98,6 @@ function ResourcesParseRoute($segments)
 			}
 		}
 	}
-		
-	/*else if ($segments[0] == 'animations')
-		$vars['type'] = '5';
-	else if ($segments[0] == 'courses')
-		$vars['type'] = '6';
-	else if ($segments[0] == 'learningmodules')
-		$vars['type'] = '4';
-	else if ($segments[0] == 'notes')
-		$vars['type'] = '10';
-	else if ($segments[0] == 'downloads')
-		$vars['type'] = '9';
-	else if ($segments[0] == 'presentations' || $segments[0] == 'onlinepresentations')
-		$vars['type'] = '1';
-	else if ($segments[0] == 'publications')
-		$vars['type'] = '3';
-	else if ($segments[0] == 'series')
-		$vars['type'] = '31';
-	else if ($segments[0] == 'tags')
-		$vars['task'] = 'tags';
-	else if ($segments[0] == 'teachingmaterials')
-		$vars['type'] = '39';
-	else if ($segments[0] == 'tools')
-		$vars['type'] = '7';
-	else if ($segments[0] == 'toolsets')
-		$vars['type'] = '8';
-	else if ($segments[0] == 'workshops')
-		$vars['type'] = '2';
-	else if ($segments[0] == 'tutorials') {
-		$vars['type'] = '1';
-		$vars['tag'] = 'tutorial';
-	} else if ($segments[0] == 'seminars') {
-		$vars['type'] = '1';
-		$vars['tag'] = 'researchseminar';
-	} else {
-		$vars['alias'] = $segments[0];
-	}*/
 
 	if (!empty($segments[1])) {
 		switch ($segments[1]) 
