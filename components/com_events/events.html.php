@@ -893,19 +893,19 @@ class EventsHtml
 		<?php if ($params->get('show_degree')) { ?>
 		<fieldset>
 			<legend>Highest academic degree earned:</legend>
-			<label><input type="radio" class="option" name="register[degree]" value="bachelors" <?php echo ($register['degree'] == 'bachelors') ? 'checked="checked"': ''; ?> /> Bachelors degree</label>
-			<label><input type="radio" class="option" name="register[degree]" value="masters" <?php echo ($register['degree'] == 'masters') ? 'checked="checked"': ''; ?> /> Masters degree</label>
-			<label><input type="radio" class="option" name="register[degree]" value="doctoral" <?php echo ($register['degree'] == 'doctoral') ? 'checked="checked"': ''; ?> /> Doctoral degree</label>
-			<label><input type="radio" class="option" name="register[degree]" value="none of the above" <?php echo ($register['degree'] == 'none of the above') ? 'checked="checked"': ''; ?> /> None of the above</label>
+			<label><input type="radio" class="option" name="register[degree]" value="bachelors" <?php echo (isset($register['degree']) && $register['degree'] == 'bachelors') ? 'checked="checked"': ''; ?> /> Bachelors degree</label>
+			<label><input type="radio" class="option" name="register[degree]" value="masters" <?php echo (isset($register['degree']) && $register['degree'] == 'masters') ? 'checked="checked"': ''; ?> /> Masters degree</label>
+			<label><input type="radio" class="option" name="register[degree]" value="doctoral" <?php echo (isset($register['degree']) && $register['degree'] == 'doctoral') ? 'checked="checked"': ''; ?> /> Doctoral degree</label>
+			<label><input type="radio" class="option" name="register[degree]" value="none of the above" <?php echo (isset($register['degree']) && $register['degree'] == 'none of the above') ? 'checked="checked"': ''; ?> /> None of the above</label>
 		</fieldset>
 		<?php } ?>
 		
 		<?php if ($params->get('show_gender')) { ?>
 		<fieldset>
 			<legend>Gender:</legend>
-			<label><input type="radio" name="register[sex]" value="male" class="option" <?php echo ($register['sex'] == 'male') ? 'checked="checked"': ''; ?> /> Male</label>
-			<label><input type="radio" name="register[sex]" value="female" class="option" <?php echo ($register['sex'] == 'female') ? 'checked="checked"': ''; ?> /> Female</label>
-			<label><input type="radio" name="register[sex]" value="refused" class="option" <?php echo ($register['sex'] == 'refused') ? 'checked="checked"': ''; ?> /> Do not wish to reveal</label>
+			<label><input type="radio" name="register[sex]" value="male" class="option" <?php echo (isset($register['sex']) && $register['sex'] == 'male') ? 'checked="checked"': ''; ?> /> Male</label>
+			<label><input type="radio" name="register[sex]" value="female" class="option" <?php echo (isset($register['sex']) && $register['sex'] == 'female') ? 'checked="checked"': ''; ?> /> Female</label>
+			<label><input type="radio" name="register[sex]" value="refused" class="option" <?php echo (isset($register['sex']) && $register['sex'] == 'refused') ? 'checked="checked"': ''; ?> /> Do not wish to reveal</label>
 		</fieldset>
 		<?php } ?>
 		
