@@ -362,7 +362,7 @@ class Tool extends JTable
 	
 	public function getToolGroups($toolid, $groups = array())
 	{
-		$query  = "SELECT g.cn FROM #__tool_groups AS g ";
+		$query  = "SELECT DISTINCT g.cn FROM #__tool_groups AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
 		$query .= "WHERE g.toolid = '".$toolid."' AND g.role=0 ";
 		$this->_db->setQuery( $query );
