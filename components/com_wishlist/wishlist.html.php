@@ -308,7 +308,7 @@ class WishlistHtml
 
 	//-----------
 	
-	public function rankingForm($option, $wishlist, $task, $myvote)
+	public function rankingForm($option, $wishlist, $task, $myvote, $admin)
 	{
 
 		$importance = array(''=>JText::_('SELECT_IMP'),'0.0'=>'0 -'.JText::_('RUBBISH'),'1'=>'1 - '.JText::_('MAYBE'),'2'=>'2 - '.JText::_('INTERESTING'), 
@@ -325,9 +325,14 @@ class WishlistHtml
 		$html .= t.t.'<label>'.n;
 		$html .= t.t.t.WishlistHtml::formSelect('importance', $importance, $myvote->myvote_imp, 'rankchoices');
 		$html .= t.t.'</label>'.n;
+		if($admin == 2) {
 		$html .= t.t.'<label>'.n;
 		$html .= t.t.t.WishlistHtml::formSelect('effort', $effort, $myvote->myvote_effort, 'rankchoices');
-		$html .= t.t.'</label>'.n;		
+		$html .= t.t.'</label>'.n;	
+		}
+		else {
+		$html .= t.t.'<input type="hidden" name="effort" value="6" />'.n;
+		}	
 		$html .= t.t.'<input type="hidden" name="task" value="'.$task.'" />'.n;
 		//$html .= t.t.'<input type="hidden" name="id" value="'.$wishlist->id.'" />'.n;
 		$html .= t.t.'<input type="hidden" name="category" value="'.$wishlist->category.'" />'.n;
@@ -344,13 +349,19 @@ class WishlistHtml
 	
 	public function browseForm($option, $filters, $admin, $id, $total, $wishlist, $pageNav)
 	{
-		$sortbys = array('ranking'=>JText::_('RANKING'),'date'=>JText::_('DATE'),'feedback'=>JText::_('FEEDBACK'));
+		$sortbys = array();
+		if($admin) {
+			$sortbys['ranking']=JText::_('RANKING');
+		}
+		$sortbys['date'] = JText::_('DATE');
+		$sortbys['feedback'] = JText::_('FEEDBACK');
+		
 		if($wishlist->banking) {
-		$sortbys['bonus']=JText::_('Bonus');
+		$sortbys['bonus']=JText::_('Bonus & Popularity');
 		}
 		$filterbys = array('all'=>JText::_('ALL'),'open'=>JText::_('Active'),'granted'=>JText::_('GRANTED'), 'accepted'=>JText::_('Accepted'), 'rejected'=>JText::_('Rejected'));
 		
-		if($admin) { // a few extra options
+		if($admin == 1 or $admin == 2) { // a few extra options
 		$filterbys['private'] = JText::_('PRIVATE');
 		$filterbys['public'] = JText::_('PUBLIC');
 			if($admin == 2) {
@@ -376,11 +387,11 @@ class WishlistHtml
 		$html .= WishlistHtml::formSelect('filterby', $filterbys, $filters['filterby'], '', '');
 		$html .= t.t.t.'</label>'.n;
 		
-		if($admin) {
+		//if($admin) {
 		$html .= t.t.t.' &nbsp; <label> '.JText::_('SORTBY').':'.n;
 		$html .= WishlistHtml::formSelect('sortby', $sortbys, $filters['sortby'], '', '');
 		$html .= t.t.t.'</label>'.n;
-		}
+		//}
 		$html .= t.t.t.'<input type="submit" value="'.JText::_('GO').'" />'.n;
 		$html .= t.t.t.'<input type="hidden" name="limitstart" value="0" />'.n;
 		$html .= t.t.'</fieldset>'.n;
@@ -403,17 +414,18 @@ class WishlistHtml
 		// will display list of available public wish lists
 	}
 	
-	//----------
+//----------
 	
 	public function wishlist( $wishlist, $title, $option, $task, $admin, $error, $filters, $juser, $pageNav, $abuse) 
 	{
 	
 		$html = '';		
 		$xhub =& XFactory::getHub();
-		$hubShortName = $xhub->getCfg('hubShortName');		
+		$hubShortName = $xhub->getCfg('hubShortName');
+				
 		
 		if($wishlist) {	
-		  if(!$wishlist->public	 && $admin!= 2) {
+		  if(!$wishlist->public	 && !$admin) {
 		  	//$html .= WishlistHtml::div( WishlistHtml::hed( 2, 'Private Wish List' ), '', 'content-header' );
 		  	$html .= '<div class="main section">'.n;
 			$html .= WishlistHtml::warning(JText::_('Sorry, you are not authorized to view this private wish list.')).n;
@@ -428,11 +440,10 @@ class WishlistHtml
 			else {
 			$title .= ' ('.count($wishlist->items).')';
 			}
-		  	$html .= '<div class="wish_plugin">'.n;
-			if(count($wishlist->items) > 0) {
-			$html .= '<h3>'.$title.'</h3>'.n;
-			}
-			$html .= '</div>'.n;	
+		
+			$html .= '<h3>'.$title.n;
+			$html .= '   <span><a class="add" href="'.JRoute::_('index.php?option='.$option.a.'task=add'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">'.JText::_('ADD_NEW_WISH').'</a></span>'.n;
+			$html .= '</h3>'.n;
 		  }	
 		  
 		  else  {	
@@ -466,9 +477,9 @@ class WishlistHtml
 			$html .= '<div id="content-header-extra">'.n;
 			$html .= t.'<ul id="useroptions">'.n;
 			$html .= t.t.'<li class="last"><a class="add" href="'.JRoute::_('index.php?option='.$option.a.'task=add'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">'.JText::_('TASK_ADD').'</a></li>'.n;
-			if(($admin && $wishlist->category=='general') or ($admin && $wishlist->category=='resource') or ($admin==2 && $wishlist->category=='user') or ($admin==2 && $wishlist->category=='group')) {
+			//if($admin==2) {
 			//$html .= t.t.'<li class="last"><a class="config" href="'.JRoute::_('index.php?option='.$option.a.'task=settings'.a.'id='. $wishlist->id) .'">'.JText::_('List Settings').'</a></li>'.n;
-			}
+			//}
 			$html .= t.'</ul>'.n;
 			$html .= '</div><!-- / #content-header-extra -->'.n;	
 			$html .= '<div class="main section">'.n;
@@ -476,49 +487,48 @@ class WishlistHtml
 		 } // end if not plugin		
 			
 			// Display wishlist description
-			$html .= t.'<div class="aside">'.n;
 			if(!$wishlist->plugin) {
-			$html .= WishlistHtml::browseForm($option, $filters, $admin, $wishlist->id, count($wishlist->items), $wishlist, $pageNav);
-			}
-			
-			
-			if(isset($wishlist->resource) && $wishlist->category== 'resource' && !$wishlist->plugin) {
-				//$html .= t.t.'<p>'.JText::_('THIS_LIST_IS_FOR_RES').' #'.$wishlist->referenceid.', '.JText::_('ENTITLED').' "'.$wishlist->resource->title.'."';
-				$html .= t.t.'<p>'.JText::_('THIS_LIST_IS_FOR').' ';
-				$type  = substr($wishlist->resource->typetitle,0,strlen($wishlist->resource->typetitle) - 1);
-				$html .= strtolower($type).' '.JText::_('entitled').' <a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$wishlist->referenceid).'">'.$wishlist->resource->title.'</a>.';
-				$html .= '</p>'.n;
-				//$html .= ' '.JText::_('SUGGEST_AND_EARN').' <a href="">'.JText::_('EARN_POINTS').'</a>.</p>'.n;
-			}
-			else if($wishlist->description && !$wishlist->plugin) {
-				$html .= t.t.'<p>'.$wishlist->description.'<p>';
-			}
-			else {
-				$html .= t.t.'<p>'.JText::_('HELP_US_IMPROVE').' '.$hubShortName.' '.JText::_('HELP_IMPROVE_BY_IDEAS').'</p>';
-			}				
+				$html .= t.'<div class="aside">'.n;			
+				$html .= WishlistHtml::browseForm($option, $filters, $admin, $wishlist->id, count($wishlist->items), $wishlist, $pageNav);
+							
+				if(isset($wishlist->resource) && $wishlist->category== 'resource' && !$wishlist->plugin) {
+					$html .= t.t.'<p>'.JText::_('THIS_LIST_IS_FOR').' ';
+					$type  = substr($wishlist->resource->typetitle,0,strlen($wishlist->resource->typetitle) - 1);
+					$html .= strtolower($type).' '.JText::_('entitled').' <a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$wishlist->referenceid).'">'.$wishlist->resource->title.'</a>.';
+					$html .= '</p>'.n;
+				}
+				else if($wishlist->description && !$wishlist->plugin) {
+					$html .= t.t.'<p>'.$wishlist->description.'<p>';
+				}
+				else {
+					$html .= t.t.'<p>'.JText::_('HELP_US_IMPROVE').' '.$hubShortName.' '.JText::_('HELP_IMPROVE_BY_IDEAS').'</p>';
+				}				
+					
+				if($admin == 2 ) {
+				$html .= t.'<p class="info">'.JText::_('You are viewing this wish list as a list administrator.').' Edit <a href="'.JRoute::_('index.php?option='.$option.a.'task=settings'.a.'id='. $wishlist->id) .'">'.JText::_('List Settings').'</a>.</p>'.n;
+				}
+				else if($admin == 1) {
+				$html .= t.'<p class="info">'.JText::_('You are viewing this wish list as a site administrator.').'</p>'.n;
+				}	
+				else if($admin == 3) {
+				$html .= t.'<p class="info">'.JText::_('You are viewing this wish list as a member of its Advisory Committee. Please rank all new wishes by importance - your opinion will help list managers set priorities.').'</p>'.n;
+				}
 				
-			if($admin == 2 ) {
-			$html .= t.'<p class="info">'.JText::_('You are viewing this wish list as a list administrator.').' Edit <a href="'.JRoute::_('index.php?option='.$option.a.'task=settings'.a.'id='. $wishlist->id) .'">'.JText::_('List Settings').'</a>.</p>'.n;
+				
+				if(($admin==2 or $admin==3) && count($wishlist->items) >= 10 && $wishlist->category=='general' && $filters['filterby']=='all') {
+						// show what's popular
+						ximport('xmodule');
+						$html .= XModuleHelper::renderModules('wishvoters');
+				}
+						
+				$html .= t.'</div><!-- / .aside -->'.n;
+				$html .= t.'<div class="subject">'.n;
 			}
-			else if($admin ==1) {
-			$html .= t.'<p class="info">'.JText::_('You are viewing this wish list as a site administrator.').'</p>'.n;
-			}		
-			
-			//$html .= t.t.'<p>'.JText::_('Help').' '.$hubShortName.' '.JText::_('HELP_IMPROVE').' <a href="">'.JText::_('EARN_POINTS').'</a>.</p>';
-			if($wishlist->plugin) {
-				$html .= t.t.t.'<p>';
-				$html .= '<a class="add" href="'.JRoute::_('index.php?option='.$option.a.'task=add'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">'.JText::_('ADD_NEW_WISH').'</a></p>'.n;
-			}
-			$html .= t.'</div><!-- / .aside -->'.n;
-			$html .= t.'<div class="subject">'.n;
 		
-			// Browse form
-			//if(!$wishlist->plugin) {	
-			//$html .= WishlistHtml::browseForm($option, $filters, $admin, $wishlist->id, count($wishlist->items), $wishlist, $pageNav);
-			//}
-			
+	
 			// Display items
 			if($wishlist->items) {
+			 if(!$wishlist->plugin) {
 				$html .= t.t.t.'<p class="note_total" >'.JText::_('Displaying ');
 				if($filters['start'] == 0) {
 				$html .= $pageNav->total > count($wishlist->items) ? ' top '.count($wishlist->items).' out of '.$pageNav->total : strtolower(JText::_('all')).' '.count($wishlist->items) ;
@@ -530,6 +540,7 @@ class WishlistHtml
 				$html .=' out of '.$pageNav->total;
 				}
 				$html .= ' '.strtolower(JText::_('WISHES')).'</p>'.n;
+			  }
 				$html  .= t.'<ul id="wishlist">'.n;
 				$y = 1;
 			
@@ -538,7 +549,7 @@ class WishlistHtml
 				if(!$wishlist->plugin or ($wishlist->plugin && $y<= $filters['limit'])) {		
 				$y++;
 				$html  .= t.t.'<li class="reg ';
-				$html  .= (isset($item->ranked) && !$item->ranked && $item->status!=1 && $admin==2) ? ' newwish' : '' ;				
+				$html  .= (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($admin==2 or $admin==3)) ? ' newwish' : '' ;				
 				$html  .= ($item->private && $wishlist->public) ? ' private' : '' ;
 				$html  .= ($item->status==1) ? ' grantedwish' : '' ;
 				$html  .= '">'.n;
@@ -549,15 +560,15 @@ class WishlistHtml
 					if($item->reports) {
 					$html .= 'outstanding';
 					}
-					else if(isset($item->ranked) && !$item->ranked && $item->status!=1 && $item->status!=3 && $item->status!=4 && $admin==2)  {
+					else if(isset($item->ranked) && !$item->ranked && $item->status!=1 && $item->status!=3 && $item->status!=4 && ($admin==2 or $admin==3))  {
 					$html .= 'unranked';
 					}	else if($item->status==1) {
 					$html .= 'granted';
 					}
-					else if ($item->urgent==1 && $admin) {
+					else if ($item->urgent==1 && $admin==2) {
 					$html .= 'urgent';
 					}
-					else if ($item->urgent==2 && $admin) {
+					else if ($item->urgent==2 && $admin==2) {
 					$html .= 'burning';
 					}
 					else {
@@ -598,7 +609,7 @@ class WishlistHtml
 				
 				$html .= t.t.'<div class="ensemble_left">'.n;
 				if(!$item->reports) {
-				$html .= t.t.t.'<p class="wishcontent"><a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.'" class="wishtitle" title="'.htmlspecialchars(WishlistHtml::cleanText($item->about)).'" >'.WishlistHtml::shortenText($item->subject, 160, 0).'</a></p>'.n;
+				$html .= t.t.t.'<p class="wishcontent"><a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.a.'filterby='.$filters['filterby'].'" class="wishtitle" title="'.htmlspecialchars(WishlistHtml::cleanText($item->about)).'" >'.WishlistHtml::shortenText($item->subject, 160, 0).'</a></p>'.n;
 				
 				// display submitter name, time and num of comments
 				$html .= t.t.t.'<p class="proposed">'.JText::_('Proposed by').' '.$name.' '.JText::_('on').' '.JHTML::_('date',$item->proposed, '%d %b %Y');
@@ -606,12 +617,12 @@ class WishlistHtml
 				$html .= ', <a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?com=1#comments">'.$commentcount; 
 				$html .= $commentcount==1 ? ' '.JText::_('comment') : ' '.JText::_('comments');
 				$html .= '</a>';
-				if($admin) {
+				if($admin && $admin != 3) {
 						// what is owner login?
 						$assigned = JText::_('UNKNOWN');
 						$auser =& XUser::getInstance($item->assigned);
 						if (is_object($auser)) {
-							$assigned = $auser->get('login');
+							$assigned = $auser->get('name');
 						}
 						$html .= $item->assigned ? '<br /> '.JText::_('Assigned to').' '.$assigned : '';
 				}
@@ -631,8 +642,8 @@ class WishlistHtml
 					$html .= t.t.t.'<div class="wishranking">'.n;
 					$html .=($item->status==1) ?' <span class="special priority_number">'.JText::_('Granted').'</span>': '';
 					$html .=($item->status==1 && $item->granted!='0000-00-00 00:00:00') ?' <span class="mini">'.strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, '%d %b %y').'</span>': '';
-					if(isset($item->ranked) && !$item->ranked && $item->status==0 && $admin==2) {
-						$html .= t.t.t.'<a class="rankit" href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.'">'.JText::_('Rank this').'</a>'.n;
+					if(isset($item->ranked) && !$item->ranked && $item->status==0 && ($admin==2 or $admin==3)) {
+						$html .= t.t.t.'<a class="rankit" href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.a.'filterby='.$filters['filterby'].'">'.JText::_('Rank this').'</a>'.n;
 					} else if(isset($item->ranked) && $item->ranked && $item->status==0) {
 						$html .= t.t.t.'<span>'.JText::_('Priority').': <span class="priority_number">'.$item->ranking.'</span></span>'.n;
 					}
@@ -675,17 +686,17 @@ class WishlistHtml
 			}
 			else {
 				if($filters['filterby']=="all" && !$filters['tag']) {
-				$html .= t.t.t.'<p class="noresults">'.JText::_('There are currently no wishes on this list. Be the first to make a suggestion.').'</p>'.n;
+				$html .= t.t.t.'<p class="noresults">'.JText::_('There are currently no wishes on this list. Be the first to make a suggestion for improvement.').'</p>'.n;
 				}
 				else {
 				$html .= t.t.t.'<p class="noresults">'.JText::_('There are currently no wishes on this list based on your search selection.').'</p>'.n;
 				$html .= t.t.t.'<p class="nav_wishlist"><a href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">'.JText::_('View all wishes on this list').'</a></p>'.n;	
 				}
 			
-				$html .= t.t.t.'<p class="add"><a href="'.JRoute::_('index.php?option='.$option.a.'task=add'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">Add a new wish</a></p>'.n;	
+				//$html .= t.t.t.'<p class="add"><a href="'.JRoute::_('index.php?option='.$option.a.'task=add'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">Add a new wish</a></p>'.n;	
 			}	
 						
-			$html .= ($wishlist->plugin) ? '</div>' : '</div></form><div class="clear"></div></div>'.n;			
+			$html .= ($wishlist->plugin) ? '' : '</div></form><div class="clear"></div></div>'.n;			
 		  }
 		}
 		else {
@@ -699,7 +710,7 @@ class WishlistHtml
 	
 	//----------
 	
-	public function wish( $wishlist, $item,  $title, $option, $task, $error, $admin, $juser, $addcomment, $plan, $abuse=true, $canedit=false) 
+	public function wish( $wishlist, $item,  $title, $option, $task, $error, $admin, $juser, $addcomment, $plan, $filters, $abuse=true) 
 	{
 		
 		$html = '';
@@ -723,13 +734,12 @@ class WishlistHtml
 				$assigned = $auser->get('name');
 			}
 		}
-		$assigned = ($item->assigned && $admin) ? JText::_('assigned to').' <a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=editplan#plan">'.$assigned.'</a>' : '';	
+		$assigned = ($item->assigned && ($admin==2 or $admin==1)) ? JText::_('assigned to').' <a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?filterby='.$filters['filterby'].a.'action=editplan#plan">'.$assigned.'</a>' : '';	
 		
-		if(!$assigned && $admin && $item->status==0) {
-		$assigned = '<a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=editplan#plan">'.JText::_('unassigned').'</a>';
+		if(!$assigned && ($admin==2 or $admin==1) && $item->status==0) {
+		$assigned = '<a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?filterby='.$filters['filterby'].a.'action=editplan#plan">'.JText::_('unassigned').'</a>';
 		}
-		
-		
+			
 			// who granted the wish?
 			$granted_by = JText::_('UNKNOWN');
 			$guser =& XUser::getInstance($item->granted_by);
@@ -764,11 +774,8 @@ class WishlistHtml
 			break;
 		}
 		
-		
-		
-		
 		// Can't view wishes on a private list if not list admin
-		if(!$wishlist->public	 && $admin!= 2) {
+		if(!$wishlist->public	 &&  !$admin) {
 		  	$html .= WishlistHtml::div( WishlistHtml::hed( 2, JText::_('PRIVATE_LIST') ), '', 'content-header' );
 		  	$html .= '<div class="main section">'.n;
 			$html  .= WishlistHtml::error(JText::_('Sorry, you are unauthorized to view this private wish list.')).n;
@@ -781,32 +788,32 @@ class WishlistHtml
 			$html .='	<h3>'.JText::_('PROPOSED_ON').' '.JHTML::_('date',$item->proposed, '%d %b %Y').' ';
 			$html .= JText::_('AT').' '.JHTML::_('date', $item->proposed, '%I:%M %p').' '.JText::_('BY').' '.$name;
 			$html .= $assigned ? '; '.$assigned : '';
-			$html .='  </h3>'.n;
-			
+			$html .='  </h3>'.n;			
            // $html .='<span class="'.strtolower($status).'">'.strtoupper($status).'</span>'.n;
-           // $html .= ($item->status == 1 && $item->granted!='0000-00-00 00:00:00') ? strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, '%d %b, %y') : '';
-			
-           
+           // $html .= ($item->status == 1 && $item->granted!='0000-00-00 00:00:00') ? strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, '%d %b, %y') : '';          
 			$html .='</div><!-- / #content-header -->'.n;
 			
 			// Navigation
 			$html .= '<div id="content-header-extra">'.n;
 			$html .= t.'<ul id="useroptions">'.n;
+			
 			$html .= t.t.'<li>'.n;
 			if($item->prev) {
-				$html .= t.t.t.'<a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->prev.'"><span>&lsaquo; '.JText::_('PREV').'</span></a>'.n;
+				$html .= t.t.t.'<a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->prev.a.'filterby='.$filters['filterby'].'"><span>&lsaquo; '.JText::_('PREV').'</span></a>'.n;
 			} else {
 				$html .=t.t.t.'<span>&lsaquo; '.JText::_('PREV').'</span>'.n;
 			}
 			$html .= t.t.'</li>'.n;
-			$html .= t.t.'<li><a href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid).'"><span>'.JText::_('ALL_WISHES_ON_THIS_LIST').'</span></a></li>'.n;
+			
+			$html .= t.t.'<li><a href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'filterby='.$filters['filterby']).'" ><span>'.JText::_('All').'</span></a></li>'.n;
 			$html .= t.t.'<li class="last">';
 			if($item->next) {
-				$html .= t.t.t.'<a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->next.'"><span>'.JText::_('NEXT').' &rsaquo;</span></a>'.n;
+				$html .= t.t.t.'<a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->next.a.'filterby='.$filters['filterby'].'"><span>'.JText::_('NEXT').' &rsaquo;</span></a>'.n;
 			}
 			else {
 				$html .=t.t.t.'<span>'.JText::_('NEXT').' &rsaquo; </span>'.n;
 			}
+			
 			$html .= t.t.'</li>'.n;
 			$html .= t.'</ul>'.n;
 			$html .= '</div>'.n;
@@ -840,15 +847,15 @@ class WishlistHtml
 			}
 			$html .= t.t.t.'<h3';
 			$html .= ' class="wish_';
-					if(isset($item->ranked) && !$item->ranked && $item->status!=1 && $item->status!=3 && $item->status!=4 && $admin==2)  {
+					if(isset($item->ranked) && !$item->ranked && $item->status!=1 && $item->status!=3 && $item->status!=4 && ($admin==2 or $admin==3))  {
 					$html .= 'unranked';
 					}	else if($item->status==1) {
 					$html .= 'granted';
 					}
-					else if ($item->urgent==1 && $admin) {
+					else if ($item->urgent==1 && $admin==2) {
 					$html .= 'urgent';
 					}
-					else if ($item->urgent==2 && $admin) {
+					else if ($item->urgent==2 && $admin==2) {
 					$html .= 'burning';
 					}
 					else {
@@ -894,11 +901,13 @@ class WishlistHtml
 			} else {
 				// Show priority and ratings
 				$html .= t.t.'<div class="wishranked ';
-				if($admin!=2) {
+				if($admin==1) {
 				$html .= 'narrow';
 				}
 				$html .='">'.n;
-				$voters = ($item->num_votes <= count($wishlist->owners)) ? count($wishlist->owners) : $item->num_votes;
+				$eligible = array_merge($wishlist->owners, $wishlist->advisory);
+				$eligible = array_unique($eligible);
+				$voters = ($item->num_votes <= count($eligible)) ? count($eligible) : $item->num_votes;
 				$html .= t.t.t.'<div class="wishpriority">'.JText::_('PRIORITY').': '.$item->ranking.' <span>('.$item->num_votes.' out of '.$voters.' votes)</span>';
 				if($due && $item->status!=1) {
 				$html .= ($item->due <= date( 'Y-m-d H:i:s')) ? '<span class="overdue"><a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=editplan#plan">'.JText::_('overdue') : '<span class="due"><a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=editplan#plan">'.JText::_('due in ').' '.WishlistHTML::nicetime($item->due);
@@ -906,20 +915,25 @@ class WishlistHtml
 				}
 				$html .= '</div>'.n;
 				
-				// My opinion is available for list owners only
-				if($admin==2) {
+				// My opinion is available for list owners/advisory committee only
+				if($admin==2 or $admin==3) {
 					$html .= t.t.t.'<div class="rankingarea">'.n;
 					$html .= t.t.t.t.'<div>'.n;					
 					$html .= t.t.t.t.'<h4>'.JText::_('MY_OPINION').':</h4>';
 					
 					if(isset($item->ranked) && !$item->ranked && ($item->status==0 or $item->status==6) or $item->action=='editvote') {
 						// need to rank it
-						$html .= t.t.t.t.WishlistHtml::rankingForm($option, $wishlist, 'savevote', $item).n;							
+						$html .= t.t.t.t.WishlistHtml::rankingForm($option, $wishlist, 'savevote', $item, $admin).n;							
 					} else if(isset($item->ranked) && $item->ranked ) {						
 						// already ranked						
 						$html .= ($item->status==0 or $item->status==6) ? '<span class="editbutton"><a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.a.'action=editvote" class="editopinion">['.JText::_('EDIT').']</a></span>' : '';						
 						$html .= t.t.t.t.'<p>'.WishlistHtml::convertVote ($item->myvote_imp, 'importance').'</p>'.n;
-						$html .= t.t.t.t.'<p>'.WishlistHtml::convertVote ($item->myvote_effort, 'effort').'</p>'.n;					
+						if($admin == 2) {
+						$html .= t.t.t.t.'<p>'.WishlistHtml::convertVote ($item->myvote_effort, 'effort').'</p>'.n;	
+						}	
+						else {
+						$html .= t.t.t.t.'<p>'.JText::_('NA').'</p>'.n;
+						}			
 					}
 					else {
 						$html .= t.t.t.t.'<p>'.JText::_('NA').'</p>'.n;	
@@ -979,27 +993,27 @@ class WishlistHtml
 				$html .= t.t.t.'<p class="comment-options">';
 				
 				// some extra admin options
-				if($admin) {				
-				if($item->status!=1) {
-				$html .= t.t.t.t.'<a class="changestatus" href="';
-				$html .= JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=changestatus#action">'.JText::_('Change status').'</a>  '.n;
-				}
-				$html .= t.t.t.t.'<a class="transfer" href="';
-				$html .= JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=move#action">'.JText::_('MOVE').'</a>'.n;
-				if($item->private) {
-					$html .= t.t.t.t.'  <a class="makepublic" href="';
-					$html .= JRoute::_('index.php?option='.$option.a.'task=editprivacy'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?private=0">'.JText::_('MAKE_PUBLIC').'</a>'.n;	
-				}
-				else {
-					$html .= t.t.t.t.'  <a class="makeprivate" href="';
-					$html .= JRoute::_('index.php?option='.$option.a.'task=editprivacy'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?private=1">'.JText::_('MAKE_PRIVATE').'</a>'.n;	
-				}
-							
-				// site admins can edit wishes
-				if($canedit) {
-				$html .= t.t.t.t.'<a class="editwish" href="';
-				$html .= JRoute::_('index.php?option='.$option.a.'task=editwish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'">'.ucfirst(JText::_('Edit')).'</a>  '.n;
-				}
+				if($admin && $admin!=3) {				
+					if($item->status!=1) {
+					$html .= t.t.t.t.'<a class="changestatus" href="';
+					$html .= JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=changestatus#action">'.JText::_('Change status').'</a>  '.n;
+					}
+					$html .= t.t.t.t.'<a class="transfer" href="';
+					$html .= JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=move#action">'.JText::_('MOVE').'</a>'.n;
+					if($item->private) {
+						$html .= t.t.t.t.'  <a class="makepublic" href="';
+						$html .= JRoute::_('index.php?option='.$option.a.'task=editprivacy'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?private=0">'.JText::_('MAKE_PUBLIC').'</a>'.n;	
+					}
+					else {
+						$html .= t.t.t.t.'  <a class="makeprivate" href="';
+						$html .= JRoute::_('index.php?option='.$option.a.'task=editprivacy'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?private=1">'.JText::_('MAKE_PRIVATE').'</a>'.n;	
+					}
+								
+					// site admins can edit wishes
+					//if($admin==1) {
+					$html .= t.t.t.t.'<a class="editwish" href="';
+					$html .= JRoute::_('index.php?option='.$option.a.'task=editwish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'">'.ucfirst(JText::_('Edit')).'</a>  '.n;
+					//}
 				
 				}
 				// Report abuse option is for everyone
@@ -1008,11 +1022,9 @@ class WishlistHtml
 				if($juser->get('id') == $item->proposed_by && $item->status==0) {
 				$html .= t.t.t.t.' | <a class="deletewish" href="';
 				$html .= JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=delete#action">'.JText::_('Withdraw my wish').'</a>'.n;
-				}
+				}				
 				
-				
-				$html .= t.t.t.'</p>'.n;
-				
+				$html .= t.t.t.'</p>'.n;			
 	
 				// delete wish?
 				if($item->action == 'delete') {
@@ -1289,7 +1301,8 @@ class WishlistHtml
 				$html .= t.'</div>'.n;
 			
 				// Implementation plan block for list administrators
-				if($admin) {
+				//if($admin && $admin!=3) {
+				if($admin) {  // let advisory committee view this too
 					$html .=t.t.'<a name="plan"></a>'.n;
 					$html .=t.t.'<div id="section-plan">'.n;
 					$html .=t.t.'<h3><a href="javascript:void(0);" class="';
@@ -1454,10 +1467,10 @@ class WishlistHtml
 		$html .= '<div class="main section">'.n;
 		$html .= t.' <form id="hubForm" method="post"  action="'.JRoute::_('index.php?option='.$option.a.'task=savesettings').'?listid='.$wishlist->id.'">'.n;
 		$html .= t.'	 <div class="explaination">'.n;
-		$html .= t.'	 <p>'.JText::_('Use this screen to modify wishlist settings. Depending on the wishlist type, certain options are not available.').'</p>'.n;
+		$html .= t.'	 <p>'.JText::_('Use this screen to modify wish list settings. Depending on the wish list type, certain options are not available.').'</p>'.n;
 		$html .= t.'	 </div>'.n;
 		$html .= t.'	 <fieldset>'.n;
-		$html .= t.'	 <h3>'.JText::_('Wishlist Information').'</h3>'.n;
+		$html .= t.'	 <h3>'.JText::_('Wish List Information').'</h3>'.n;
 		
 		//if($wishlist->category=='general' && $wishlist->referenceid=='1') {
 		//$html .= t.'	 	<p class="highighted">'.JText::_('This is the primary site wishlist.').'</p>'.n;
@@ -1468,7 +1481,7 @@ class WishlistHtml
 			// Cannot change title of resource wish list
 			$html .= t.'	 	<span class="highighted">'.$wishlist->title.'</span>'.n;
 			$html .= t.'	 	<input name="title" id="title" type="hidden" value="'.$wishlist->title.'" /></label>'.n;
-			$html .= t.'	 	<p class="hint">'.JText::_('Title for a resource wishlist cannot change.').'</p>'.n;
+			$html .= t.'	 	<p class="hint">'.JText::_('Title for a resource wish list cannot change.').'</p>'.n;
 		}
 		else {
 			$html .= t.'	 	<input name="title" id="title" type="text" value="'.$wishlist->title.'" /></label>'.n;
@@ -1497,10 +1510,10 @@ class WishlistHtml
 		$html .= t.'	 </fieldset>'.n;
 		$html .= t.'	 <div class="clear"></div>'.n;
 		$html .= t.'	 <div class="explaination">'.n;
-		$html .= t.'	 <p>'.JText::_('Use this screen to add/delete groups who are allowed to manage the wishlist. Depending on the wishlist type, certain owner groups cannot be deleted. Every list should have at least one owner.').'</p>'.n;
+		$html .= t.'	 <p>'.JText::_('Use this screen to add/delete groups who are allowed to manage the wish list. Depending on the wish list type, certain owner groups cannot be deleted. Every list should have at least one owner.').'</p>'.n;
 		$html .= t.'	 </div>'.n;
 		$html .= t.'	 <fieldset>'.n;
-		$html .= t.'	 <h3>'.JText::_('Wishlist Owner Groups').'</h3>'.n;
+		$html .= t.'	 <h3>'.JText::_('Wish List Owner Groups').'</h3>'.n;
 		$html .= t.'	<table class="tktlist">'.n;
 		$html .= t.' 		<thead>'.n;
 		$html .= t.' 			<tr>'.n;
@@ -1542,15 +1555,16 @@ class WishlistHtml
 		}
 		$html .= t.' 		</tbody>'.n;				
 		$html .= t.'	</table>'.n;
-		$html .= t.'	 <label>'.JText::_('Add groups to manage this wishlist').': '.n;
-		$html .= t.'	 	<input name="newgroups"  type="text" value="" /></label>'.n;		
+		$html .= t.'	 <label>'.JText::_('Add groups to manage this wish list ').': '.n;
+		$html .= t.'	 	<input name="newgroups"  type="text" value="" />'.n;	
+		$html .= t.'	    <span>'.JText::_('Enter group names separated by commas (e.g. thisgroup, mygroup).').'</span></label>'.n;	
 		$html .= t.'	 </fieldset>'.n;
 		$html .= t.'	 <div class="clear"></div>'.n;
 		$html .= t.'	 <div class="explaination">'.n;
 		$html .= t.'	 <p>'.JText::_('Add/delete individual list owners who are not part of owner groups.').'</p>'.n;
 		$html .= t.'	 </div>'.n;
 		$html .= t.'	 <fieldset>'.n;
-		$html .= t.'	 <h3>'.JText::_('Wishlist Individual Owners').'</h3>'.n;
+		$html .= t.'	 <h3>'.JText::_('Wish List Individual Owners').'</h3>'.n;
 		$html .= t.'	<table class="tktlist">'.n;
 		$html .= t.' 		<thead>'.n;
 		$html .= t.' 			<tr>'.n;
@@ -1591,13 +1605,66 @@ class WishlistHtml
 		}
 		$html .= t.' 		</tbody>'.n;				
 		$html .= t.'	</table>'.n;
-		$html .= t.'	 <label>'.JText::_('Add individuals to manage this wishlist').': '.n;
-		$html .= t.'	 	<input name="newowners" id="newowners" type="text" value="" /></label>'.n;
+		$html .= t.'	 <label>'.JText::_('Add individuals to manage this wish list').': '.n;
+		$html .= t.'	 	<input name="newowners" id="newowners" type="text" value="" />'.n;
+		$html .= t.'	    <span>'.JText::_('Enter user logins separated by commas (e.g. joedoe, someone).').'</span></label>'.n;	
+		$html .= t.'	 </fieldset>'.n;
 		
+		if($wishlist->allow_advisory) {	
+		$html .= t.'	 <div class="clear"></div>'.n;
+		$html .= t.'	 <div class="explaination">'.n;
+		$html .= t.'	 <p>'.JText::_('Add/delete members of Advisory Committee for this list. Users in the Advisory Committee will be able to rank wishes by importance, but will have no access to other administrator controls. ').'</p>'.n;
+		$html .= t.'	 </div>'.n;
+		$html .= t.'	 <fieldset>'.n;
+		$html .= t.'	 <h3>'.JText::_('Wish List Advisory Committee').'</h3>'.n;
+		$html .= t.'	<table class="tktlist">'.n;
+		$html .= t.' 		<thead>'.n;
+		$html .= t.' 			<tr>'.n;
+		$html .= t.' 			 <th style="width:20px;"></th>'.n;
+		$html .= t.' 			 <th>'.JText::_('Name').'</th>'.n;
+		$html .= t.' 			 <th>'.JText::_('Login').'</th>'.n;
+		$html .= t.' 			 <th style="width:80px;">'.JText::_('Options').'</th>'.n;
+		$html .= t.' 			</tr>'.n;
+		$html .= t.'		</thead>'.n;
+		$html .= t.'		<tbody>'.n;
+		
+		
+		// if we have people outside of groups
+		if(count($wishlist->advisory) > 0) {
+			$k=1;
+					
+			for ($i=0, $n=count( $wishlist->advisory ); $i < $n; $i++) {
+				
+				if(!in_array($wishlist->advisory[$i], $allmembers)) {
+				$quser =& XUser::getInstance ( $wishlist->advisory[$i]);
+				$html .= t.' 			<tr>'.n;
+				$html .= t.' 			 <td>'.$k.'.</td>'.n;
+				$html .= t.' 			 <td>'.$quser->get('name').'</td>'.n;
+				$html .= t.' 			 <td>'.$quser->get('login').'</td>'.n;
+				$html .= t.' 			 <td>';
+				$html .=  '<a href="'.JRoute::_('index.php?option='.$option.a.'task=savesettings').'?listid='.$wishlist->id.a.'action=delete'.a.'user='.$wishlist->advisory[$i].'" class="delete">'.JText::_('remove').'</a>' ;
+				$html .= t.'			 </td>'.n;
+				$html .= t.' 			</tr>'.n;
+				$k++;
+				}
+			}
+		}
+		else {
+			$html .= t.' 			<tr>'.n;
+			$html .= t.' 			 <td colspan="4">'.JText::_('No advisory committee members found').'.</td>'.n;
+			$html .= t.' 			</tr>'.n;
+		}
+		$html .= t.' 		</tbody>'.n;				
+		$html .= t.'	</table>'.n;
+		$html .= t.'	 <label>'.JText::_('Add members of  Advisory Committee').': '.n;
+		$html .= t.'	 	<input name="newadvisory" id="newadvisory" type="text" value="" />'.n;
+		$html .= t.'	    <span>'.JText::_('Enter user logins separated by commas (e.g. joedoe, someone).').'</span></label>'.n;
 		if($wishlist->category=='resource' or ($wishlist->category=='general' && $wishlist->referenceid=='1')) {
 		$html .= t.'    <input type="hidden" name="public" value="'.$wishlist->public.'" />'.n;
 		}		
 		$html .= t.'	 </fieldset>'.n;
+		} // -- end if allow advisory
+	
 		$html .= t.'    <div class="clear"></div>'.n;
 		
 		$html .= t.'<p class="submit"><input type="submit" name="submit" value="'.JText::_('Save').'" /><span class="cancelaction">';

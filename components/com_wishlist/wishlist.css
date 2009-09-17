@@ -1064,6 +1064,15 @@
 		border-top:2px solid #e3e3e3;
 		padding-top:1em;
 	}
+	#wishlist-section h3 {
+		display: block;
+		}
+	.section h3 span {
+		display:inline;
+		float:right;
+		font-weight:normal;
+		font-size:small;
+	}
 	
 /*---------------------------------------------------------------
 	Hacks

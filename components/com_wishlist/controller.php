@@ -245,16 +245,13 @@ class WishlistController extends JObject
 	public function wishlist()
 	{
 		$database =& JFactory::getDBO();
-		$juser 	  =& JFactory::getUser();
-	
-		// get admin priviliges
-		WishlistController::authorize_admin();
+		$juser 	  =& JFactory::getUser();	
 		$abuse = WishlistController::useAbuse();
 		
+		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		$refid  = JRequest::getInt( 'rid', 0 );
 		$cat   	= JRequest::getVar( 'category', '' );
-		$filters = WishlistController::getFilters($this->_admin);
 		$saved  = JRequest::getInt( 'saved', 0 );
 		
 		// are we viewing this from within a plugin?
@@ -284,7 +281,6 @@ class WishlistController extends JObject
 			return;
 		}
 		
-
 		if(!$id && $refid) {
 			
 			$id = $obj->get_wishlistID($refid, $cat);
@@ -339,6 +335,10 @@ class WishlistController extends JObject
 			// remember list id for plugin use
 			$this->listid = isset($this->listid) ? $this->listid : $id;
 			
+			// get admin priviliges
+			WishlistController::authorize_admin($this->listid);
+			$filters = WishlistController::getFilters($this->_admin);
+			
 			// who are list owners?
 			$objOwner = new WishlistOwner( $database );
 			$objG 	  = new WishlistOwnerGroup( $database );
@@ -348,13 +348,7 @@ class WishlistController extends JObject
 			$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist);
 			$wishlist->owners = $owners['individuals'];
 			$wishlist->groups = $owners['groups'];
-			
-			// do we have a list owner?
-			if(!$juser->get('guest')) {
-				if(in_array($juser->get('id'), $wishlist->owners)) {
-					$this->_admin = 2;  // individual group owner
-				}			
-			}
+			$wishlist->advisory = $owners['advisory'];
 			
 			// need to log in to private list
 			if(!$wishlist->public && $juser->get('guest')) {			
@@ -416,7 +410,7 @@ class WishlistController extends JObject
 			
 			$refid = $wishlist->referenceid;
 			$cat   = $wishlist->category;
-			//$total = ($wishlist->items && count($wishlist->items) > 0) ? count($wishlist->items) : 0 ;
+	
 			// record number of items for plugin display
 			if($plugin) {
 				$this->wishcount = $total;
@@ -472,7 +466,7 @@ class WishlistController extends JObject
 
 	public function wish()
 	{
-		$database =& JFactory::getDBO();
+		$database   =& JFactory::getDBO();
 		$juser 		=& JFactory::getUser();
 	
 		
@@ -484,6 +478,7 @@ class WishlistController extends JObject
 		$action     = JRequest::getVar( 'action', '');
 		$com   		= JRequest::getInt( 'com', 0, 'get' );
 		$canedit 	= false;
+		
 			
 		if ($this->wishid && !$wishid) {
 			$wishid = $this->wishid;
@@ -523,24 +518,16 @@ class WishlistController extends JObject
 		else {	
 		
 			// get admin priviliges
-			$this->authorize_admin();
-			$canedit = $this->_admin ? true : false;		
+			$this->authorize_admin($wishlist->id);	
 			
 			// who are list owners?
 			$objOwner = new WishlistOwner( $database );
 			$objG 	  = new WishlistOwnerGroup( $database );
 			$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist);
 			$wishlist->owners = $owners['individuals'];
+			$wishlist->advisory = $owners['advisory'];
 			$wishlist->groups = $owners['groups'];
-			
-			// do we have a list owner?
-			if(!$juser->get('guest')) {
-				if(in_array($juser->get('id'), $wishlist->owners)) {
-					$this->_admin = 2;  // individual group owner
-				}
-			
-			}
-						
+					
 			if(!$wishlist->public && $juser->get('guest')) {
 				// need to log in to private list
 				$msg = 'This private wish list requires a login.';
@@ -555,10 +542,47 @@ class WishlistController extends JObject
 				return;
 			}
 			
-			// Get the next and previous wishes
-			$wish->prev = $objWish->getWishId('prev', $wishid, $listid, $this->_admin);
-			$wish->next = $objWish->getWishId('next', $wishid, $listid, $this->_admin);
+			if($wish->private && !$this->_admin) {
+				// need to be admin to view private wish
+				return WishlistHtml::warning( JText::_('You are not authorized to view this page.'));
+			}
 			
+			$filters = WishlistController::getFilters($this->_admin);
+			
+			// Get the next and previous wishes
+			$wish->prev = $objWish->getWishId('prev', $wishid, $listid, $this->_admin, $juser->get('id'), $filters);
+			$wish->next = $objWish->getWishId('next', $wishid, $listid, $this->_admin, $juser->get('id'), $filters);
+			
+			// Update average value for importance
+			$votesplit = isset($this->config->parameters['votesplit']) ? trim($this->config->parameters['votesplit']) : 0;
+			if(count($wishlist->advisory) > 0 && $votesplit) {
+				$objR = new WishRank ( $database );
+				$votes = $objR->get_votes($wish->id);
+				
+				// first consider votes by list owners
+				if($votes) {
+					$imp 		= 0;
+					$divisor 	= 0;
+					$co_adv 	= 0.8;
+					$co_reg 	= 0.2;
+					
+					foreach($votes as $vote) {										
+							
+							if(in_array($vote->userid, $wishlist->advisory)) {
+								$imp += $vote->importance * $co_adv;
+								$divisor +=$co_adv;
+							}
+							else {
+								$imp += $vote->importance * $co_reg;
+								$divisor +=$co_reg;
+							}	
+					}
+					
+					// weighted average 
+					$wish->average_imp = $imp/$divisor;
+				}
+			}
+				
 			// Get comments, abuse reports
 			$wish->replies = $this->getComments($wishid, 'wish', 0, $abuse, $wishlist->owners, $this->_admin);
 			$wish->reports = $this->getAbuseReports($wishid, 'wish');
@@ -695,7 +719,7 @@ class WishlistController extends JObject
 		
 		$title  = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
 						
-		echo WishlistHtml::wish( $wishlist, $wish,  $title, $this->_option, $this->_task,  $this->_error, $this->_admin, $juser, $addcomment, $plan, $abuse, $canedit);
+		echo WishlistHtml::wish( $wishlist, $wish,  $title, $this->_option, $this->_task,  $this->_error, $this->_admin, $juser, $addcomment, $plan, $filters, $abuse);
 	
 	}
 	
@@ -851,7 +875,7 @@ class WishlistController extends JObject
 			
 			// update priority on all wishes
 			$this->listid = $listid;
-			$this->rank();
+			$this->rank($listid);
 			
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid).'?saved=1';
 			return;
@@ -887,12 +911,22 @@ class WishlistController extends JObject
 		$newowners = ContribtoolHelper::makeArray(rtrim($_POST['newowners']));
 		$newgroups = ContribtoolHelper::makeArray(rtrim($_POST['newgroups']));
 		
+		$allow_advisory = isset($this->config->parameters['allow_advisory']) ? $this->config->parameters['allow_advisory'] : 0;
+		$newadvisory = $allow_advisory ? ContribtoolHelper::makeArray(rtrim($_POST['newadvisory'])) : array();
+		
+		if(!empty($newowners)) {
 		$objOwner->save_owners($listid, $this->config, $newowners );
+		}
+		if(!empty($newadvisory)) {
+		$objOwner->save_owners($listid, $this->config, $newadvisory, 2 );
+		}
+		if(!empty($newgroups)) {
 		$objG->save_owner_groups($listid, $this->config, $newgroups);
+		}
 		
 		// update priority on all wishes
 		$this->listid = $listid;
-		$this->rank();
+		$this->rank($listid);
 		
 		
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid).'?saved=1';
@@ -939,12 +973,14 @@ class WishlistController extends JObject
 		$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist);
 		$wishlist->owners = $owners['individuals'];
 		$wishlist->groups = $owners['groups'];
+		$wishlist->advisory = $owners['advisory'];
 		
 		$nativeowners = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist, 1);
 		$wishlist->nativeowners = $nativeowners['individuals'];
 		$wishlist->nativegroups = $nativeowners['groups'];
 		
-		
+		$wishlist->allow_advisory = isset($this->config->parameters['allow_advisory']) ? $this->config->parameters['allow_advisory'] : 0;
+			
 		// Add the CSS to the template
 		$this->getStyles();
 		$this->getScripts();
@@ -1049,7 +1085,7 @@ class WishlistController extends JObject
 		$this->authorize_admin($listid);
 		
 		// this is a private list, can't add to it
-		if(!$wishlist->public && $this->_admin!=2) {	
+		if(!$wishlist->public && $this->_admin) {	
 			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 			return;
 		}		
@@ -1811,7 +1847,7 @@ class WishlistController extends JObject
 				
 					// re-calculate rankings of remaining wishes
 					$this->listid = $wishlist->id;
-					$this->rank();
+					$this->rank($wishlist->id);
 				}
 				
 				// return bonuses
@@ -1883,7 +1919,7 @@ class WishlistController extends JObject
 		
 		// Login required
 		if ($juser->get('guest')) {
-			$msg = 'Please login to add a wish.';
+			$msg = 'Please login to rank a wish.';
 			$this->login($msg);
 			return;
 		}
@@ -1935,27 +1971,26 @@ class WishlistController extends JObject
 		else {
 			// update priority on all wishes
 			$this->listid = $wishlist->id;
-			$this->rank();
+			$this->rank($wishlist->id);
 		}
-		
-		
-		
+					
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
 		
 	}
 	
 	//-----------
 
-	public function rank()
+	public function rank($listid)
 	{
-		
+	
 		if(!$this->listid) {
-		 return false;
+		 $this->listid = $listid;
 		}
+		
 		
 		// get admin priviliges
 		$this->authorize_admin($this->listid);
-		
+				
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		$filters = $this->getFilters();
@@ -1965,6 +2000,8 @@ class WishlistController extends JObject
 		$objOwner = new WishlistOwner( $database );
 		$objR = new WishRank ( $database );
 		
+		$filters['limit'] = 0;
+		
 		$wishlist = $objWishlist->get_wishlist($this->listid);
 		$wishlist->items = $objWish->get_wishes($this->listid, $filters, $this->_admin, $juser);
 	
@@ -1973,15 +2010,22 @@ class WishlistController extends JObject
 		$weight_f = 0.5;
 		$f_threshold = 5;
 		$co = 0.5;
+		$co_adv = 0.8;
+		$co_reg = 0.2;
 		
+		// do we give more weight to votes coming from advisory committee?
+		$votesplit = isset($this->config->parameters['votesplit']) ? trim($this->config->parameters['votesplit']) : 0;	
 		
 		if($wishlist->items) {
 			
-			$owners = $objOwner->get_owners($this->listid, $this->admingroup , $wishlist);
-			$owners   =  $owners['individuals'];
+			$owners = $objOwner->get_owners($this->listid, $this->admingroup, $wishlist);
+			$managers   =  $owners['individuals'];
+			$advisory =  $owners['advisory'];
+			
+			$voters = array_merge($managers, $advisory);
 			
 			foreach($wishlist->items as $item) {
-				
+					
 				$votes = $objR->get_votes($item->id);
 				$ranking = 0;
 				
@@ -1991,13 +2035,24 @@ class WishlistController extends JObject
 					$eff 	= 0;
 					$num 	= 0;
 					$skipped = 0; // how many times effort selection was skipped
+					$divisor = 0;
 					
 					foreach($votes as $vote) {					
-						if(in_array($vote->userid, $owners)) {
+						if(in_array($vote->userid, $voters)) {
 							// vote must come from list owner!							
 							$num++;
-							$imp += $vote->importance;
-							if($vote->effort!= 6) { // ingnore "don't know" selection
+							if($votesplit && in_array($vote->userid, $advisory)) {
+								$imp += $vote->importance * $co_adv;
+								$divisor +=$co_adv;
+							}
+							else if($votesplit) {
+								$imp += $vote->importance * $co_reg;
+								$divisor +=$co_reg;
+							}
+							else {						
+								$imp += $vote->importance;
+							}
+							if($vote->effort!= 6) { // ignore "don't know" selection
 							$eff += $vote->effort;
 							}
 							else { $skipped++; }
@@ -2009,17 +2064,17 @@ class WishlistController extends JObject
 					}
 					
 					// average values
-					$imp = $imp/$num;
+					$imp = ($votesplit && $divisor) ? $imp/$divisor: $imp/$num;
 					$eff = ($num - $skipped) != 0 ? $eff/($num - $skipped) : 0;
 					$weight_i = ($num - $skipped) != 0 ? $weight_i : 7;
 										
 					// we need to factor in how many people voted 
-					$certainty = $co + $num/count($owners);
+					$certainty = $co + $num/count($voters);
 					
 					$ranking += ($imp * $weight_i) * $certainty;
 					$ranking += ($eff * $weight_e) * $certainty;
 					
-				}
+				} 
 				
 				// determine weight of community feedback
 					$f = $item->positive + $item->negative;
@@ -2029,28 +2084,26 @@ class WishlistController extends JObject
 									
 					$ranking += ($item->positive * $weight_f);
 					$ranking -= ($item->negative * $weight_f);
-				
-				
-				// Do we have a due date?
-				if($item->due) {
 					
-					$today = date( 'Y-m-d H:i:s');
-					// TBD
-				}
-								
+					//echo $item->id.' - '.$ranking.' -------';
+			     
+											
 				// Do not allow negative ranking
 				$ranking = ($ranking < 0) ? 0 : $ranking;
 				
 				// save calculated priority
+				
 				$row = new Wish ( $database );
 				$row->load($item->id);
 				$row->ranking = $ranking;
+
 		
 				// store new content
 				if (!$row->store()) {
 					echo WishlistHtml::alert( $row->getError() );
 					exit();
 				}
+				
 				
 			}
 			
@@ -2285,7 +2338,7 @@ class WishlistController extends JObject
 				else {
 					// update priority on all wishes
 					$this->listid = $listid;
-					$this->rank();
+					$this->rank($listid);
 				}
 			}
 						
@@ -2406,15 +2459,21 @@ class WishlistController extends JObject
 		}
 		
 		if($listid) {
+		$admingroup = isset($this->config->parameters['group']) ? trim($this->config->parameters['group']) : 'hubadmin';
+		
 		// Get list administrators
 		$database =& JFactory::getDBO();
 		$objOwner = new WishlistOwner( $database );
-		$owners = $objOwner->get_owners($listid,  $this->admingroup );
-		$owners =  $owners['individuals'];
+		$owners = $objOwner->get_owners($listid,  $admingroup );
+		$managers =  $owners['individuals'];
+		$advisory =  $owners['advisory'];
 				
 			if(!$juser->get('guest')) {
-				if(in_array($juser->get('id'), $owners)) {
-					$admin = 2;  // individual group owner
+				if(in_array($juser->get('id'), $managers)) {
+					$admin = 2;  // individual group manager
+				}
+				if(in_array($juser->get('id'), $advisory)) {
+					$admin = 3;  // advisory committee member
 				}
 			
 			}
