@@ -134,7 +134,7 @@ class ResourcesHelper extends JObject
 
 	function getContributors($showorgs=false)
 	{
-		if (!isset($this->_contributors)) {
+		if (!isset($this->_contributors) && !$this->_contributors) {
 			$this->getCons();
 		}
 		$contributors = $this->_contributors;

@@ -122,7 +122,7 @@ class ResourcesController extends JObject
 			case 'plugin':     $this->plugin();     break;
 			case 'savetags':   $this->savetags();   break;
 
-			default: $this->browse(); break;
+			default: $this->intro(); break;
 		}
 	}
 	
@@ -157,6 +157,44 @@ class ResourcesController extends JObject
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
+
+	protected function intro() 
+	{
+		$database =& JFactory::getDBO();
+		
+		// Get major types
+		$t = new ResourcesType( $database );
+		$categories = $t->getMajorTypes();
+		
+		// Push some needed styles and scripts to the template
+		$this->getStyles();
+		$this->getScripts();
+		
+		// Set the page title
+		$document =& JFactory::getDocument();
+		$document->setTitle( JText::_(strtoupper($this->_name)) );
+		
+		// Set the pathway
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+		}
+		
+		jimport( 'joomla.application.component.view');
+		
+		// Output HTML
+		$view = new JView( array('name'=>'intro') );
+		$view->title = JText::_(strtoupper($this->_name));
+		$view->categories = $categories;
+		$view->option = $this->_option;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+
+	//-----------
 
 	protected function browse()
 	{
@@ -232,11 +270,13 @@ class ResourcesController extends JObject
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
 		
+		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
+		$pathway->addItem( JText::_('ALL'), 'index.php?option='.$this->_option.a.'task='.$this->_task );
 		
 		// Output HTML
 		echo ResourcesHtml::browse($this->_option, $authorized, $title, $types, $filters, $pageNav, $results, $total, $this->config);
@@ -281,10 +321,9 @@ class ResourcesController extends JObject
 		// Normalize the title
 		// This is so we can determine the type of resource to display from the URL
 		// For example, /resources/learningmodules => Learning Modules
-		$normalized_valid_chars = 'a-zA-Z0-9';
 		for ($i = 0; $i < count($types); $i++) 
 		{	
-			$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $types[$i]->type);
+			$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $types[$i]->type);
 			$normalized = strtolower($normalized);
 			$types[$i]->title = $normalized;
 			
