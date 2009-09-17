@@ -326,7 +326,7 @@ class MwController extends JObject
 		$app['name']    = JRequest::getVar( 'sess', '' );
 		$app['name']    = str_replace(':','-',$app['name']);
 		$app['number']  = 0;
-		$app['version'] = JRequest::getVar( 'version', 'dfault' );
+		$app['version'] = JRequest::getVar( 'version', 'default' );
 
 		// Make sure we have an app to invoke
 		if (trim($app['name']) == '') {
