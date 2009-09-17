@@ -91,6 +91,20 @@ class EventsController
 		$config->load();
 		$this->config = $config;
 		
+		$tables = $database->getTableList();
+		$table = $database->_table_prefix.'respondent_race_rel';
+		if (!in_array($table,$tables)) {
+			$database->setQuery( "CREATE TABLE `#__events_respondent_race_rel` (
+			  `respondent_id` int(11) default NULL,
+			  `race` varchar(255) default NULL,
+			  `tribal_affiliation` varchar(255) default NULL
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;" );
+			if (!$database->query()) {
+				echo $database->getErrorMsg();
+				return false;
+			}
+		}
+		
 		define( '_CAL_CONF_STARDAY', $config->getCfg('starday'));
 		define( '_CAL_CONF_DEFCOLOR', $config->getCfg('navbarcolor'));
 		
@@ -183,7 +197,7 @@ class EventsController
 	{
 		$app =& JFactory::getApplication();
 		$database =& JFactory::getDBO();
-		
+
 		// Get configuration
 		$config = JFactory::getConfig();
 		
@@ -1452,6 +1466,7 @@ class EventsController
 			$row->alias = $row->title;
 		}
 		
+		$row->event_id = JRequest::getInt( 'event', 0 );
 		$row->alias = preg_replace("/[^a-zA-Z0-9]/", "", $row->alias);
 		$row->alias = strtolower($row->alias);
 		

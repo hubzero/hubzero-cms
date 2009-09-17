@@ -798,6 +798,7 @@ class EventsController extends JObject
 		// Load event
 		$event = new EventsEvent( $database );
 		$event->load( $id );
+		$this->event = $event;
 		
 		// Ensure we have an event
 		if (!$event->title) {
@@ -983,7 +984,7 @@ class EventsController extends JObject
 				dietary_needs, attending_dinner, abstract, comment
 			)
 			VALUES ('.
-				$this->workshop->id . ', '.
+				$this->event->id . ', '.
 				$this->getValueString($dbh, $reg, array(
 					'firstname', 'lastname', 'affiliation', 'title', 'city', 'state', 'postalcode', 'country', 'telephone', 'fax', 'email',
 					'website', 'position', 'degree', 'gender', 'arrival', 'departure', 'disability', 
@@ -993,13 +994,13 @@ class EventsController extends JObject
 		);
 		$dbh->query();
 		$races = JRequest::getVar('race', NULL, 'post');
-		if (!is_null($races) && !$races['refused'])
+		if (!is_null($races) && (!isset($races['refused']) || !$races['refused']))
 		{
 			$resp_id = $dbh->insertid();
 			foreach (array('nativeamerican', 'asian', 'black', 'hawaiian', 'white', 'hispanic') as $race)
 				if (array_key_exists($race, $races) && $races[$race])
 					$dbh->execute(
-						'INSERT INTO #__workshops_respondent_race_rel(respondent_id, race, tribal_affiliation) 
+						'INSERT INTO #__events_respondent_race_rel(respondent_id, race, tribal_affiliation) 
 						VALUES ('.$resp_id.', \''.$race.'\', '.($race == 'nativeamerican' ? $dbh->quote($races['nativetribe']) : 'NULL').')'
 					);
 		}
