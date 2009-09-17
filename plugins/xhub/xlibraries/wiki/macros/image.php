@@ -132,7 +132,9 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
         $quoted_re = "/(?:[\"'])(.*)(?:[\"'])$/";
         $attr = array();
         $style = array();
+		$href = '';
         $link = '';
+		$rel = 'lightbox';
 		
 		foreach ($args as $arg) 
 		{
@@ -150,9 +152,10 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
                 $bits = split('=', $arg);
 				$val = trim(end($bits));
 				$elt = $val; //extract_link($val);
-				$link = 'none';
+				$href = 'none';
 				if ($elt) {
-					$link = $elt;
+					$href = $elt;
+					$rel = 'external';
 				}
                 continue;
 			}
@@ -205,7 +208,8 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			
 			$path = JPATH_ROOT.$file;
 			
-			$link = $file;
+			$link = ($link) ? $link : $file;
+			$href = ($href) ? $href : $file;
 		} else {
 			ximport('wiki.config');
 			$configs = array();
@@ -218,6 +222,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$path = JPATH_ROOT.$config->filepath.DS.$this->pageid.DS.$filename;
 			
 			$link = $config->filepath.DS.$this->pageid.DS.$filename;
+			$href = ($href) ? $href : $config->filepath.DS.$this->pageid.DS.$filename;
 		}
 		
 		
@@ -243,11 +248,11 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		
 		$img = '<img src="'.$link.'" '.implode(' ',$attribs).' alt="'.$filename.'" />';
 			
-		if (!$link || $link == 'none') {
+		if (!$href || $href == 'none') {
 			return $img;
 		} else {
 			//return '['.$link.' '.$img.']';
-			return '<a rel="lightbox" href="'.$link.'" alt="">'.$img.'</a>';
+			return '<a rel="'.$rel.'" href="'.$href.'" alt="">'.$img.'</a>';
 		}
 	}
 }
