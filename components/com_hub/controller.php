@@ -1179,6 +1179,15 @@ class HubController extends JObject
 			return JError::raiseError( 404, "Invalid Authentication Realm Requested" );
 
 		$realmName = $realms[$realm];
+
+		// @TODO this default should be provided by plugin and probably should be different than the realm name
+  		// it should be a variable specifically for the login prompt.
+		if ($realmName == 'hzldap')
+		{
+			$app =& JFactory::getApplication();
+			$realmName = $app->getCfg('sitename') . ' Account';
+		}
+		
 		$usersConfig = &JComponentHelper::getParams( 'com_users' );
 		$registration_enabled = $usersConfig->get( 'allowUserRegistration' );
 		
