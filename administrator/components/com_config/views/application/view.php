@@ -103,6 +103,7 @@ class ConfigApplicationView
 							<?php require_once($tmplpath.DS.'config_server.php'); ?>
 							<?php require_once($tmplpath.DS.'config_locale.php'); ?>
 							<?php require_once($tmplpath.DS.'config_ftp.php'); ?>
+							<?php require_once($tmplpath.DS.'config_ldap.php'); ?>
 						</td>
 						<td width="40%">
 							<?php require_once($tmplpath.DS.'config_database.php'); ?>
