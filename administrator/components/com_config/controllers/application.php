@@ -389,6 +389,14 @@ class ConfigControllerApplication extends ConfigController
 		$MetaKeys			= htmlspecialchars( JRequest::getVar( 'MetaKeys', '', 'post', 'string' ),  ENT_COMPAT, 'UTF-8' );
 		$config->setValue('config.MetaKeys', $MetaKeys);
 
+		$config->setValue('config.ldap_primary', '');
+		$config->setValue('config.ldap_secondary', '');
+		$config->setValue('config.ldap_basedn', '');
+		$config->setValue('config.ldap_searchdn', '');
+		$config->setValue('config.ldap_searchpw', '');
+		$config->setValue('config.ldap_managerdn', '');
+		$config->setValue('config.ldap_managerpw', '');
+		$config->setValue('config.ldap_tls', '');
 		// handling of quotes (double and single) and amp characters
 		// htmlspecialchars not used to preserve ability to insert other html characters
 		$offline_message	= JRequest::getVar( 'offline_message', '', 'post', 'string' );
