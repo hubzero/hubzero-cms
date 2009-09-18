@@ -43,6 +43,7 @@
 		var frm = this.document.filename;
 		if(frm.what_to_load[0].checked) {
 			frm.instDefault.disabled = false;
+			frm.instHzDefault.disabled = false;
 			frm.sqlFile.disabled = true;
 			frm.oldPrefix.disabled = true;
 			frm.srcEncoding.disabled = true;
@@ -51,6 +52,7 @@
 			frm.sqlUploaded.disabled = true;
 		} else if(frm.what_to_load[1].checked) {
 			frm.instDefault.disabled = true;
+			frm.instHzDefault.disabled = true;
 			frm.sqlFile.disabled = false;
 			frm.oldPrefix.disabled = false;
 			frm.srcEncoding.disabled = false;
@@ -63,6 +65,11 @@
 	function JDefault() {
 		this.document.filename.dataLoaded.value = '1';
 		xajax_instDefault(xajax.getFormValues('filename'));
+	}
+
+	function JHzDefault() {
+		this.document.filename.dataLoaded.value = '1';
+		xajax_instHzDefault(xajax.getFormValues('filename'));
 	}
 
 	function externalSql(frm, task) {
@@ -274,7 +281,7 @@
 								</td>
 								<td>
 									<label for="default_sample">
-										<jtmpl:translate>Install default sample data</jtmpl:translate>
+										<jtmpl:translate>Install sample data</jtmpl:translate>
 									</label>
 								</td>
 								<td>
@@ -287,6 +294,18 @@
 								<td></td>
 								<td colspan="2">
 									<span id="theDefault"><input class="button" type="button" name="instDefault" value="<jtmpl:translate>clickToInstallDefault</jtmpl:translate>" onclick="JDefault();"/></span>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td colspan="2">
+									or
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td colspan="2">
+									<span id="theHzDefault"><input class="button" type="button" name="instHzDefault" value="<jtmpl:translate>clickToInstallHubDefault</jtmpl:translate>" onclick="JHzDefault();"/></span>
 								</td>
 							</tr>
 							<tr>
@@ -425,6 +444,7 @@
 	if(this.document.filename.migstatus.value == '1') {
 		this.document.filename.what_to_load.disabled = 1;
 		this.document.filename.instDefault.disabled = 1;
+		this.document.filename.instHzDefault.disabled = 1;
 		this.document.filename.default_sample.disabled = 1;
 		this.document.filename.migrate_sql.disabled = 1;
 	}
