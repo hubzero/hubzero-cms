@@ -185,7 +185,9 @@ class WishlistController extends JObject
 			case 'reply':      	$this->reply();  	  	break;	
 			
 			// Autocompleter - called via AJAX
-			case 'autocomplete': $this->autocomplete(); break;	
+			case 'autocomplete': $this->autocomplete(); break;
+			
+			case 'upload':     $this->upload();     break;	
 			
 			default: $this->wishlist(); break;
 		}
@@ -374,7 +376,7 @@ class WishlistController extends JObject
 				foreach ($wishlist->items as $item) {
 					
 					// Get comments and abuse reports
-					$item->replies = WishlistController::getComments($item->id, 'wish', 0, $abuse=false, $wishlist->owners, $this->_admin);
+					$item->replies = WishlistController::getComments($item->id, $item->id, 'wish', 0, $abuse=false, $wishlist->owners, $this->_admin, $skipattachments=1);
 					$item->reports = WishlistController::getAbuseReports($item->id, 'wish');	
 					
 					// Do some text cleanup
@@ -584,7 +586,7 @@ class WishlistController extends JObject
 			}
 				
 			// Get comments, abuse reports
-			$wish->replies = $this->getComments($wishid, 'wish', 0, $abuse, $wishlist->owners, $this->_admin);
+			$wish->replies = $this->getComments($wishid, $wishid, 'wish', 0, $abuse, $wishlist->owners, $this->_admin);
 			$wish->reports = $this->getAbuseReports($wishid, 'wish');
 			
 			// Do some text cleanup
@@ -1229,11 +1231,11 @@ class WishlistController extends JObject
 			exit();
 		}
 		
-		if($tags) {
+		//if($tags) {
 			// Add the tags
 			$tagging = new WishTags( $database );
-			$tagging->tag_object($juser->get('id'), $row->id, $tags, 1, 0);
-		}
+			$tagging->tag_object($juser->get('id'), $row->id, $tags, 1, 1);
+		//}
 		
 		$objWishlist = new Wishlist ( $database );			
 		$wishlist = $objWishlist->get_wishlist($listid);
@@ -2164,14 +2166,20 @@ class WishlistController extends JObject
 			}
 			
 			// Perform some text cleaning, etc.
+			$row->comment	= $row->comment=='Enter your comments...' ? '' : $row->comment;
 			$row->comment   = $this->purifyText($row->comment);
+			$attachment 	= $this->upload( $wishid);
+			$row->comment  .= ($attachment) ? n.$attachment : '';			
 			$row->comment   = nl2br($row->comment);
+			$row->comment   = str_replace( '<br>', '<br />', $row->comment );
 			$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 			$row->added   	= $when;
 			$row->state     = 0;
 			$row->category  = $category;
 			$row->added_by 	= $juser->get('id');
 			
+			
+		
 			// Check for missing (required) fields
 			if (!$row->check()) {
 				echo WishlistHtml::alert( $row->getError() );
@@ -2203,6 +2211,13 @@ class WishlistController extends JObject
 						$name = JText::_('ANONYMOUS');
 					}
 					
+					// Parse comments for attachments
+					$webpath = $this->getWebPath($wishid);
+					$attach = new WishAttachment( $database );
+					$attach->webpath = $xhub->getCfg('hubLongURL').$webpath;
+					$attach->uppath  = JPATH_ROOT.$webpath;
+					$attach->output  = 'email';
+					
 					$subject = JText::_(strtoupper($this->_name)).', '.JText::_('Comment posted on your wish').' #'.$wishid.' '.JText::_('by').' '.$name;
 					
 					$from = array();
@@ -2216,8 +2231,10 @@ class WishlistController extends JObject
 					$message .= JText::_('Comment by').' '.$name.' ';
 					$message .= $row->anonymous ? '' : '('.$login.')';
 					$message .= ' '.JText::_('posted on').' '.JHTML::_('date',$row->proposed, '%d %b, %Y').':'.r.n;
-					$message .= '"'.$row->comment.'"';
+					//$message .= '"'.$row->comment.'"';
+					$message .= $attach->parse($row->comment).r.n.r.n;
 					$message .= r.n;
+					
 					
 					$message .= '----------------------------'.r.n;
 					$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
@@ -2363,7 +2380,36 @@ class WishlistController extends JObject
 	// Misc retrievers
 	//----------------------------------------------------------
 	
-	public function getComments($itemid, $category, $level, $abuse=false, $owners, $admin)
+	public function getWebPath($wishid=0)
+	{
+		$webpath = isset($this->config->parameters['webpath']) ? $this->config->parameters['webpath'] : 'site/wishes';
+		
+		$webpath .= $wishid ? DS.$wishid : '';
+		
+		// Make sure the path doesn't end with a slash
+		if (substr($webpath, -1) == DS) { 
+			$webpath = substr($webpath, 0, strlen($webpath) - 1);
+		}
+		// Ensure the path starts with a slash
+		if (substr($webpath, 0, 1) != DS) { 
+			$webpath = DS.$webpath;
+		}
+		
+		if (!is_dir(JPATH_ROOT.$webpath)) {
+				jimport('joomla.filesystem.folder');
+				if (!JFolder::create( JPATH_ROOT.$webpath, 0777 )) {
+					$out .= JText::_('ERR_UNABLE_TO_CREATE_PATH');
+					return false;
+				}
+		}
+		
+		return $webpath;
+		
+	}
+	
+	//----------------
+	
+	public function getComments($parentid, $itemid, $category, $level, $abuse=false, $owners, $admin, $skipattachments=0)
 	{
 			$database =& JFactory::getDBO();
 			
@@ -2371,11 +2417,36 @@ class WishlistController extends JObject
 			$hc = new XComment( $database );
 			
 			$comments = $hc->getResults( array('id'=>$itemid, 'category'=>$category) );
-			
+		
 			if ($comments) {
+			
+				// Parse comment text for attachment tags
+				$xhub =& XFactory::getHub();
+				
+				if(!$skipattachments) {
+				$webpath = $this->getWebPath($parentid);
+			
+				$attach = new WishAttachment( $database );
+				$attach->webpath = $xhub->getCfg('hubLongURL').$webpath;
+				$attach->uppath  = JPATH_ROOT.$webpath;
+				$attach->output  = 'web';
+				}
+			
 				foreach ($comments as $comment) 
 				{
-					$comment->replies = WishlistController::getComments($comment->id, 'wishcomment', $level, $abuse, $owners, $admin);
+				
+					$comment->comment = stripslashes($comment->comment);
+					if(!$skipattachments) {
+						if (!strstr( $comment->comment, '</p>' ) && !strstr( $comment->comment, '<pre class="wiki">' )) {
+							$comment->comment = str_replace("<br />","",$comment->comment);
+							$comment->comment = htmlentities($comment->comment, ENT_COMPAT, 'UTF-8');
+							$comment->comment = nl2br($comment->comment);
+							$comment->comment = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$comment->comment);
+						}
+						$comment->comment = $attach->parse($comment->comment);
+					}
+				
+					$comment->replies = WishlistController::getComments($parentid, $comment->id, 'wishcomment', $level, $abuse, $owners, $admin, $skipattachments);
 					if ($abuse) {
 						$comment->reports = WishlistController::getAbuseReports($comment->id, 'wishcomment');
 					}
@@ -2811,7 +2882,64 @@ class WishlistController extends JObject
 
 		$database->setQuery( $query );
 		return $database->loadObjectList();
+}
+
+	//----------------------------------------------------------
+	// media manager
+	//----------------------------------------------------------
+
+	public function upload( $listdir )
+	{
+		
+		if (!$listdir) {
+			$this->setError( JText::_('SUPPORT_NO_UPLOAD_DIRECTORY') );
+			return '';
+		}
+		
+		// Incoming file
+		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
+		if (!$file['name']) {
+			//$this->setError( JText::_('SUPPORT_NO_FILE') );
+			return '';
+		}
+		
+		// Incoming
+		$description = JRequest::getVar( 'description', '' );
+		
+		$webpath = $this->getWebPath($listdir);
+		$path = JPATH_ROOT.$webpath;
+		
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = str_replace(' ','_',$file['name']);
+
+		// Perform the upload
+		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
+			$this->setError( JText::_('ERROR_UPLOADING') );
+			return '';
+		} else {
+			// File was uploaded
+			// Create database entry
+			$description = htmlspecialchars($description);
+			
+			$database =& JFactory::getDBO();
+			$row = new WishAttachment( $database );
+			$row->bind( array('id'=>0,'wish'=>$listdir,'filename'=>$file['name'],'description'=>$description) );
+			if (!$row->check()) {
+				$this->setError( $row->getError() );
+			}
+			if (!$row->store()) {
+				$this->setError( $row->getError() );
+			}
+			if (!$row->id) {
+				$row->getID();
+			}
+			
+			return '{attachment#'.$row->id.'}';
+		}
 	}
+	
 	
 	
 

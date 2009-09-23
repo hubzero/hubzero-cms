@@ -1829,7 +1829,7 @@ class WishlistHtml
 			
 			$html .= t.t.t.'<div class="addcomment'.$class.'" id="comm_'.$refid.'">'.n;
 			$html .= t.t.t.'<h3>'.JText::_('Add a comment').'</h3>'.n;
-			$html .= t.t.t.t.'<form action="index.php" method="post" id="commentform_'.$refid.'">'.n;
+			$html .= t.t.t.t.'<form action="index.php" method="post" id="commentform_'.$refid.'" enctype="multipart/form-data">'.n;
 			$html .= t.t.t.t.t.'<fieldset>'.n;
 			$html .= t.t.t.t.t.t.'<input type="hidden" name="option" value="'. $option .'" />'.n;
 			$html .= t.t.t.t.t.t.'<input type="hidden" name="listid" value="'. $listid .'" />'.n;
@@ -1838,7 +1838,19 @@ class WishlistHtml
 			$html .= t.t.t.t.t.t.'<input type="hidden" name="referenceid" value="'.$refid.'" />'.n;
 			$html .= t.t.t.t.t.t.'<input type="hidden" name="cat" value="'.$category.'" />'.n;
 			$html .= t.t.t.t.t.t.'<label><input class="option" type="checkbox" name="anonymous" value="1" /> '.JText::_('POST_COMMENT_ANONYMOUSLY').'</label>'.n;
-			$html .= t.t.t.t.t.t.'<label><textarea name="comment" rows="4" cols="50" class="commentarea">'.JText::_('Enter your comments...').'</textarea></label>'.n;
+			$html .= t.t.t.t.t.t.'<label><textarea name="comment" rows="10" cols="50" class="commentarea">'.JText::_('Enter your comments...').'</textarea></label>'.n;
+			$html .= t.t.t.t.t.'</fieldset>'.n;
+			$html .= t.t.t.t.t.'<fieldset>'.n;
+			$html .= t.t.t.t.t.'<div>'.n;			
+			$html .= t.t.t.t.t.t.'<label>'.n;			
+			$html .= t.t.t.t.t.t.JText::_('Attach file').n;	
+			$html .= t.t.t.t.t.t.t.'<input type="file" name="upload" id="upload" />'.n;					
+			$html .= t.t.t.t.t.t.'</label>'.n;	
+			$html .= t.t.t.t.t.t.'<label>'.n;	
+			$html .= t.t.t.t.t.t.t.JText::_('File description').n;	
+			$html .= t.t.t.t.t.t.'<input type="text" name="description" value="" />'.n;	
+            $html .= t.t.t.t.t.t.'</label>'.n;	
+			$html .= t.t.t.t.t.t.'</div>'.n;
 			$html .= t.t.t.t.t.'</fieldset>'.n;
 			$html .= t.t.t.t.t.'<fieldset class="postcomment">'.n;
 			$html .= t.t.t.t.t.'<input type="submit" value="'.JText::_('POST_COMMENT').'" /> <a href="javascript:void(0);" class="closeform" id="close_'.$refid.'">'.JText::_('CANCEL').'</a>'.n;

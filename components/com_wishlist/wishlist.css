@@ -582,7 +582,15 @@
 ---------------------------------------------------------------*/
 	.addcomment label {
 		display: block;
+		margin:0.8em 0;
 		}
+	.addcomment div label {
+		display:inline;
+	}
+	.addcomment div {
+		display: block;
+		margin:1em 0;
+	}
 	.addcomment .cancelreply {
 		margin-left: 2em;
 		background:#f8f7f7;
@@ -596,10 +604,13 @@
 		width:70%;
 	}
 	.addcomment h3 {
-		margin: 0 0 0.5em 0;
+		margin: 0 0 1em 0;
 	}
 	.commentarea {
-		width:90%;
+		width:100%;
+	}
+	.postcomment {
+		margin-top:2.5em;
 	}
 /*---------------------------------------------------------------
 	Misc
