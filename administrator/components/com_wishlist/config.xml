@@ -34,6 +34,6 @@
 			<option value="0">50/50</option>
 			<option value="1">80/20</option>
 		</param>
-		<param name="specialfiltertag" type="text" menu="hide" default="" label="Special filter tag" description="A special tag to filter main site Wish List" />
+		<param name="webpath" type="text" menu="hide" default="/site/wishlist" label="Web path for storing attachments" description="Specify directory for attachment storage" />
 	</params>
 </config>
