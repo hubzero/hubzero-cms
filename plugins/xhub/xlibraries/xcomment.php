@@ -60,7 +60,7 @@ class XComment extends JTable
 	{
 		$query = "SELECT c.* 
 				FROM $this->_tbl AS c 
-				WHERE c.referenceid=".$filters['id']." AND category='".$filters['category']."' AND state!=2 ORDER BY c.added DESC";
+				WHERE c.referenceid=".$filters['id']." AND category='".$filters['category']."' AND state!=2 ORDER BY c.added ASC";
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
