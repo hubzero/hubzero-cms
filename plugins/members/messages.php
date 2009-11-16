@@ -719,6 +719,7 @@ class plgMembersMessages extends JPlugin
 		$xmr = new XMessageRecipient( $database );
 		$xmr->loadRecord( $mid, $member->get('uidNumber') );
 		
+		$xmessage->message = str_replace("\n","\n ",$xmessage->message);
 		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 		$xmessage->message = preg_replace_callback("/$UrlPtrn/", array('plgMembersMessages','autolink'), $xmessage->message);
 		
