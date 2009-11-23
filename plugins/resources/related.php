@@ -112,37 +112,8 @@ class plgResourcesRelated extends JPlugin
 		$query = "SELECT k.* FROM (($sql1) UNION ($sql2)) AS k ORDER BY ranking DESC LIMIT 10";
 
 		// Execute the query
-		$database->setQuery( $sql1 );
-		$topics = $database->loadObjectList();
-		
-		$database->setQuery( $sql2 );
-		$resources = $database->loadObjectList();
-		
-		$rel = array();
-		if ($topics) {
-			foreach ($topics as $t) 
-			{
-				$rel[$t->ranking] = $t;
-			}
-		}
-		if ($resources) {
-			foreach ($resources as $r) 
-			{
-				$rel[$r->ranking] = $r;
-			}
-		}
-		
-		krsort($rel);
-		$i = 0;
-		$related = array();
-		foreach ($rel as $k=>$r) 
-		{
-			$i++;
-			if ($i == 11) {
-				break;
-			}
-			$related[] = $r;
-		}
+		$database->setQuery( $query );
+		$related = $database->loadObjectList();
 		
 		// Did we find any results?
 		if ($related) {
