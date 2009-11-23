@@ -178,9 +178,15 @@ class MembersController extends JObject
 			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
 		}
 		
-		// Output HTML
-		echo MembersHtml::div( MembersHtml::hed( 2, JText::_(strtoupper($this->_name)) ), 'full', 'content-header');
-		echo MembersHtml::div( MembersHtml::error( JText::_('MEMBERS_NOT_CONFIGURED') ), 'main section');
+		// Instantiate the view
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'abort') );
+		$view->option = $this->_option;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -221,7 +227,7 @@ class MembersController extends JObject
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
 		if ($filters['index']) {
-			$pathway->addItem( strtoupper($filters['index']), 'index.php?option='.$this->_option.a.'index='.$filters['index'] );
+			$pathway->addItem( strtoupper($filters['index']), 'index.php?option='.$this->_option.'&index='.$filters['index'] );
 		}
 
 		// Check authorization
@@ -249,8 +255,22 @@ class MembersController extends JObject
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
 	
-		// Output HTML
-		echo MembersHtml::browse( $this->_option, $title, $rows, $total, $filters, $pageNav, $authorized, $this->_view );
+		// Instantiate the view
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'browse') );
+		$view->option = $this->_option;
+		$view->title = $title;
+		$view->rows = $rows;
+		$view->filters = $filters;
+		$view->total = $total;
+		$view->authorized = $authorized;
+		$view->pageNav = $pageNav;
+		$view->view = $this->_view;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
