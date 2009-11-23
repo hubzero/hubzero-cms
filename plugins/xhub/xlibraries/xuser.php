@@ -29,7 +29,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  * xHUB User Class
  **/
 
-ximport('account.acct_user');
 ximport('xprofile');
 
 define('XUSER_EXISTS', 1);
@@ -516,14 +515,6 @@ class XUser extends JObject
 		
 		$entry['loginShell'] = '/bin/bash';
 		$entry['ftpShell'] = '/usr/lib/sftp-server';
-		$entry['member'][] = 'license=public,ou=licenses,' . $hubLDAPBaseDN;
-		$this->_sqllicense('public', $this->get('uid') );
-
-		if (strcasecmp($this->get('countryresident'),'US') == 0)
-		{
-			$entry['member'][] = 'license=US,ou=licenses,' . $hubLDAPBaseDN;
-			$this->_sqllicense('us', $this->get('uid') );
-		}
 
 		$xuser = XFactory::getUser();
 		
@@ -591,28 +582,6 @@ class XUser extends JObject
 
 
 		return 0;
-	}
-
-	function _sqllicense($license,$uid)
-	{
-	    	$db = &JFactory::getDBO();
-
-		$query = "SELECT * FROM #__licenses WHERE alias = " . $db->Quote($license);
-
-		$db->setQuery($query);
-		$result = $db->loadObject();
-
-		if ($result === false)
-		    	return;
-
-		$lid = $result->id;
-
-		$query = "INSERT INTO #__licenses_users (license_id,user_id) VALUES (" . $db->Quote($lid) . "," . $db->Quote($uid) . ");";
-
-		$result = $db->execute( $query );
-
-		if ($result === false)
-		    return;
 	}
 
 	function _renameUid($olduid, $newuid)
