@@ -1169,6 +1169,12 @@ class ContributeController extends JObject
 	
 	protected function attach_rename()
 	{
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		$name = trim(JRequest::getVar( 'name', '' ));
@@ -1191,7 +1197,11 @@ class ContributeController extends JObject
 
 	protected function attach_save()
 	{
+		// Check if they are logged in
 		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
 		$database =& JFactory::getDBO();
 
 		// Incoming
@@ -1364,6 +1374,12 @@ class ContributeController extends JObject
 
 	protected function attach_delete() 
 	{
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+		
 		$database =& JFactory::getDBO();
 		
 		// Incoming parent ID
@@ -1463,6 +1479,12 @@ class ContributeController extends JObject
 
 	protected function attachments( $id=null ) 
 	{
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+		
 		// Incoming
 		if (!$id) {
 			$id = JRequest::getInt( 'id', 0 );
@@ -1981,6 +2003,7 @@ class ContributeController extends JObject
 	private function send_email($from, $email, $subject, $message) 
 	{
 		if ($from) {
+		    	$xhub = &XFactory::getHub();
 			$contact_email = $from['email'];
 			$contact_name  = $from['name'];
 
@@ -1991,7 +2014,7 @@ class ContributeController extends JObject
 			$headers .= 'Reply-To: ' . $contact_name .' <'. $contact_email . ">\n";
 			$headers .= "X-Priority: 3\n";
 			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: ' . $hub['name'] . "\n";
+			$headers .= 'X-Mailer: ' . $xhub->getCfg('hubShortName') . "\n";
 			if (mail($email, $subject, $message, $headers, $args)) {
 				return(1);
 			}
