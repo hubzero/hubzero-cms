@@ -203,15 +203,21 @@ class ResourcesHtml
 	
 	public function selectGroup($groups, $value)
 	{
-		$html  = '<select name="group_owner">'.n;
+		$html  = '<select name="group_owner"';
+		if (!$groups) {
+			$html .= ' disabled="disabled"';
+		}
+		$html .= '>'.n;
 		$html .= ' <option value="">'.JText::_('Select group ...').'</option>'.n;
-		foreach ($groups as $group)
-		{
-			$html .= ' <option value="'.$group->cn.'"';
-			if ($value == $group->cn) {
-				$html .= ' selected="selected"';
+		if ($groups) {
+			foreach ($groups as $group)
+			{
+				$html .= ' <option value="'.$group->cn.'"';
+				if ($value == $group->cn) {
+					$html .= ' selected="selected"';
+				}
+				$html .= '>'.$group->description .'</option>'.n;
 			}
-			$html .= '>'.$group->description .'</option>'.n;
 		}
 		$html .= '</select>'.n;
 		return $html;

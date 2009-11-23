@@ -979,8 +979,9 @@ class ResourcesController extends JObject
 		} else {
 			$filters['sortby'] = JRequest::getVar( 'sortby', 'ranking' );
 		}
-		$filters['limit'] = JRequest::getInt( 'limit', 25 );
+		$filters['limit'] = JRequest::getInt( 'limit', 100 );
 		$filters['start'] = JRequest::getInt( 'limitstart', 0 );
+		$filters['year']  = JRequest::getInt( 'year', 0 );
 		$filters['id']    = $resource->id;
 		
 		$feedtype = JRequest::getVar( 'format', 'audio' );
@@ -1120,14 +1121,29 @@ class ResourcesController extends JObject
 						if (stripslashes($grandchild->introtext) != '') {
 							$gdescription = html_entity_decode(ResourcesHtml::cleanText(stripslashes($grandchild->introtext)));
 						}
-						if ($feedtype == 'video') {
-							if ($ftype == 'mp4' || $ftype == 'mov' || $ftype == 'wmv') {
-								$podcast = $grandchild->path;
-							}
-						} else {
-							if ($ftype == 'mp3') {
-								$podcast = $grandchild->path;
-							}
+						switch ($feedtype) 
+						{
+							case 'slides':
+								//if ($ftype == 'ppt' || $ftype == 'pdf' || $ftype == 'doc') {
+								if ($grandchild->logicaltype == 14) {
+									$podcast = $grandchild->path;
+								}
+							break;
+							
+							case 'video':
+								$vts = array('mp4', 'm4v', 'mov', 'wmv', 'avi', 'asf', 'qt', 'mp2', 'mpeg', 'mpe', 'mpg', 'mpv2');
+								if (in_array($ftype, $vts)) {
+									$podcast = $grandchild->path;
+								}
+							break;
+							
+							case 'audio':
+							default:
+								$ats = array('m4a', 'mp3', 'wav', 'aiff', 'aif', 'ra', 'ram');
+								if (in_array($ftype, $ats)) {
+									$podcast = $grandchild->path;
+								}
+							break;
 						}
 					}
 				}
@@ -1192,10 +1208,32 @@ class ResourcesController extends JObject
 						$enclosure->url = $podcast;
 						switch ( ResourcesHtml::getFileExtension($podcast) ) 
 						{
+							case 'm4v': $enclosure->type = 'video/x-m4v'; break;
 							case 'mp4': $enclosure->type = 'video/mp4'; break;
 							case 'wmv': $enclosure->type = 'video/wmv'; break;
 							case 'mov': $enclosure->type = 'video/quicktime'; break;
+							case 'qt': $enclosure->type = 'video/quicktime'; break;
+							case 'mpg': $enclosure->type = 'video/mpeg'; break;
+							case 'mpeg': $enclosure->type = 'video/mpeg'; break;
+							case 'mpe': $enclosure->type = 'video/mpeg'; break;
+							case 'mp2': $enclosure->type = 'video/mpeg'; break;
+							case 'mpv2': $enclosure->type = 'video/mpeg'; break;
+							
 							case 'mp3': $enclosure->type = 'audio/mpeg'; break;
+							case 'm4a': $enclosure->type = 'audio/x-m4a'; break;
+							case 'aiff': $enclosure->type = 'audio/x-aiff'; break;
+							case 'aif': $enclosure->type = 'audio/x-aiff'; break;
+							case 'wav': $enclosure->type = 'audio/x-wav'; break;
+							case 'ra': $enclosure->type = 'audio/x-pn-realaudio'; break;
+							case 'ram': $enclosure->type = 'audio/x-pn-realaudio'; break;
+							
+							case 'ppt': $enclosure->type = 'application/vnd.ms-powerpoint'; break;
+							case 'pps': $enclosure->type = 'application/vnd.ms-powerpoint'; break;
+							case 'pdf': $enclosure->type = 'application/pdf'; break;
+							case 'doc': $enclosure->type = 'application/msword'; break;
+							case 'txt': $enclosure->type = 'text/plain'; break;
+							case 'html': $enclosure->type = 'text/html'; break;
+							case 'htm': $enclosure->type = 'text/html'; break;
 						}
 						$enclosure->length = $fs;
 
@@ -1853,6 +1891,17 @@ class ResourcesController extends JObject
 		
 		// Get the list of groups that can access this resource
 		$allowedgroups = $resource->getGroups();
+		if ($resource->standalone != 1) {
+			$database =& JFactory::getDBO();
+			$helper = new ResourcesHelper( $resource->id, $database );
+			$helper->getParents();
+			$parents = $helper->parents;
+			if (count($parents) == 1) {
+				$p = new ResourcesResource( $database );
+				$p->load($parents[0]->id);
+				$allowedgroups = $p->getGroups();
+			}
+		}
 		$this->allowedgroups = $allowedgroups;
 		
 		// Find what groups the user has in common with the resource, if any
@@ -1942,9 +1991,8 @@ class ResourcesController extends JObject
 			return true;
 		}
 
-		// Create a Tool object
+	 	// Create a Tool object
 		$obj = new Tool( $database );
-
 		// check if user in tool dev team
 		$developers = $obj->getToolDevelopers($toolid);
 		if ($developers) {
