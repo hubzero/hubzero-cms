@@ -25,41 +25,29 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-function ToolsBuildRoute(&$query)
+jimport( 'joomla.application.component.view');
+
+/**
+ * HTML View class for the Projects Component
+ */
+
+class ToolsViewCSS extends JView
 {
-    $segments = array();
+    function display($tpl = null)
+    {
+    	ximport('xdocument');
 
-    return $segments;
-}
+    	$xhub  = & XFactory::getHub();
+	$image = JPATH_SITE . XDocument::getComponentStylesheet('com_tools', 'site_css.cs');
 
-function ToolsParseRoute($segments)
-{
-	$vars = array();
-    $xhub = &XFactory::getHub();
-
-	if (empty($segments))
-		return $vars;
-
-    if ($segments[0] == 'contribute') {
-        $vars['option'] = 'com_contribtool';
-    }
-    else if (empty($segments[1])) {
-        $vars['option'] = 'com_resources';
-        $vars['alias'] = $segments[0];
-    }
-
-	if (!empty($segments[1])) {
-		if ($segments[1] == 'report')
-        {
-			$xhub->redirect('/support/tickets?find=group:app-' . $segments[0]);
-        }
-		else if ($segments[1] == 'forge.png')
-			$vars['view'] = 'image';
-		else if ($segments[1] == 'site_css.cs')
-			$vars['view'] = 'css';
+	if (is_readable($image)) {
+		ob_clean();
+		header("Content-Type: text/css");
+		readfile($image);
+		ob_end_flush();
+		exit;
 	}
-
-        return $vars;
+    }
 }
 
 ?>

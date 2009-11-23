@@ -71,6 +71,22 @@ class XDocument
 			return $componentimage;
 	}
 
+	function getComponentStylesheet($component, $stylesheet)
+	{
+		global $mainframe;
+
+		$template  = $mainframe->getTemplate();
+
+		$templateimage = DS . "templates" . DS . $template . DS . "html" . DS . $component . DS . "css" . DS . $stylesheet;
+        
+		$componentimage = DS . "components" . DS . $component . DS . "css" . DS . $stylesheet;
+
+        	if (file_exists(JPATH_SITE . $templateimage))
+			return $templateimage;
+		else
+			return $componentimage;
+	}
+
 	function getModuleImage($module, $image)
 	{
 		global $mainframe;
