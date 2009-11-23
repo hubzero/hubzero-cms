@@ -33,7 +33,6 @@ define('PASS_SCORE_BAD', 0);
 define('PASS_SCORE_MEDIOCRE', 34);
 define('PASS_SCORE_GOOD', 50);
 define('PASS_SCORE_STRONG', 68);
-//ximport('account.acct_func');
 ximport('misc_func');
 
 class XRegistration
