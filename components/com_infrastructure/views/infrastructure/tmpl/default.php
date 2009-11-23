@@ -24,7 +24,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
+?>
 <h2><?php echo $this->forgeName;?>: Infrastructure</h2>
 <div id="forge">
 <div class="threecolumn farleft">
