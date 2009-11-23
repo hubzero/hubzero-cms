@@ -125,7 +125,7 @@ class plgGroupsWiki extends JPlugin
 			$database->setQuery( $query );
 			$rows = $database->loadObjectList();
 
-			$database->setQuery( "SELECT COUNT(*) FROM #__wiki_page AS p WHERE p.scope='".$group->get('cn').DS.'wiki'."' AND p.group='".$group->get('cn')."' $access" );
+			$database->setQuery( "SELECT COUNT(*) FROM #__wiki_page AS w WHERE w.scope='".$group->get('cn').DS.'wiki'."' AND w.group='".$group->get('cn')."' $access" );
 			$num = $database->loadResult();
 
 			// Build the HTML meant for the "profile" tab's metadata overview
