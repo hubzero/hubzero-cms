@@ -336,9 +336,9 @@ class EventsController extends JObject
 		// Get some needed info
 		$offset = $this->offset;
 		$option = $this->_option;
-		$year   = $this->year;
-		$month  = $this->month;
-		$day    = $this->day;
+		$year   = intval($this->year);
+		$month  = intval($this->month);
+		$day    = intval($this->day);
        
 		/* 
 		$startday = $this->config->getCfg('starday');
@@ -1057,6 +1057,7 @@ class EventsController extends JObject
 	private function send_email(&$hub, $email, $subject, $message) 
 	{
 		if ($hub) {
+		     $xhub = &XFactory::getHub();
 			$contact_email = $hub['email'];
 			$contact_name  = $hub['name'];
 
@@ -1067,7 +1068,7 @@ class EventsController extends JObject
 			$headers .= 'Reply-To: ' . $contact_name .' <'. $contact_email . ">\n";
 			$headers .= "X-Priority: 3\n";
 			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: '. $hub['name'] .n;
+			$headers .= 'X-Mailer: '.  $xhub->getCfg('hubShortName') .n;
 			if (mail($email, $subject, $message, $headers, $args)) {
 				return(1);
 			}
