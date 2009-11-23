@@ -473,11 +473,12 @@ class SupportController extends JObject
 			$item->date        = $date;
 			$item->category    = $row->category;
 			$item->author      = $author;
+			$item->authorEmail = $row->email;
 
 			// Loads item info into rss array
 			$doc->addItem( $item );
 		}
-		
+
 		// Output the feed
 		echo $doc->render();
 	}
@@ -933,9 +934,9 @@ class SupportController extends JObject
 			}*/
 			$summary = str_replace("\'","\\\\\\\\\'", $row->summary);
 			$summary = str_replace('\"','\\\\\\\\\"', $summary);
-			$query = "SELECT id FROM #__support_tickets WHERE LOWER(summary) LIKE '%".strtolower($summary)."%' LIMIT 1";
+			$query = "SELECT id FROM #__support_tickets WHERE LOWER(summary) LIKE '%".strtolower($summary)."%' AND type=1 LIMIT 1";
 		} else {
-			$query = "SELECT id FROM #__support_tickets WHERE LOWER(summary) LIKE '%".strtolower($row->summary)."%' LIMIT 1";
+			$query = "SELECT id FROM #__support_tickets WHERE LOWER(summary) LIKE '%".strtolower($row->summary)."%' AND type=1 LIMIT 1";
 		}
 		// check for an existing ticket with this report
 		$database->setQuery( $query );

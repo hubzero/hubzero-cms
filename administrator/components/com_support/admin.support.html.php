@@ -482,14 +482,18 @@ class SupportHtml
 				$lastcomment = $sc->newestComment(true, $row->id);
 			}
 			
-			if ($row->status == 2 || $row->resolved != '') {
+			if ($row->status == 2) {
 				$status = 'closed';
 			} elseif ($comments == 0 && $row->status == 0 && $row->owner == '' && $row->resolved == '') {
 				$status = 'new';
 			} elseif ($row->status == 1) {
 				$status = 'waiting';
 			} else {
-				$status = 'open';
+				if ($row->resolved != '') {
+					$status = 'reopened';
+				} else {
+					$status = 'open';
+				}
 			}
 			
 			$when = SupportHtml::timeAgo($row->created);
@@ -715,10 +719,12 @@ class SupportHtml
 							$access = 'submitter';
 						}
 						
-						$juseri =& JUser::getInstance( $comment->created_by );
 						$name = 'Unknown';
-						if (is_object($juseri)) {
-							$name = $juseri->get('name');
+						if ($comment->created_by) {
+							$juseri =& JUser::getInstance( $comment->created_by );
+							if (is_object($juseri)) {
+								$name = $juseri->get('name');
+							}
 						}
 						
 						$o = ($o == 'odd') ? 'even' : 'odd';

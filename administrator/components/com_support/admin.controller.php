@@ -1073,22 +1073,24 @@ class SupportController
 								$emails[] = $row->email;
 								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
 							}*/
-							$type = 'support_reply_submitted';
-							if ($row->status == 1) {
-								$element = $row->id;
-								$description = 'index.php?option='.$this->_option.a.'task=ticket'.a.'id='.$row->id;
-							} else {
-								$element = null;
-								$description = '';
-								if ($row->status == 2) {
-									$type = 'support_close_submitted';
+							if (is_object($suzer) && $zuser->get('id')) {
+								$type = 'support_reply_submitted';
+								if ($row->status == 1) {
+									$element = $row->id;
+									$description = 'index.php?option='.$this->_option.a.'task=ticket'.a.'id='.$row->id;
+								} else {
+									$element = null;
+									$description = '';
+									if ($row->status == 2) {
+										$type = 'support_close_submitted';
+									}
 								}
-							}
-							
-							if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $message, $from, array($zuser->get('id')), $this->_option ))) {
-								$this->setError( JText::_('Failed to message ticket submitter.') );
-							} else {
-								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
+
+								if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $message, $from, array($zuser->get('id')), $this->_option ))) {
+									$this->setError( JText::_('Failed to message ticket submitter.') );
+								} else {
+									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
+								}
 							}
 						}
 					}

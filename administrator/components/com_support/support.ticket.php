@@ -175,7 +175,7 @@ class SupportTicket extends JTable
 		}*/
 		if (isset($filters['search']) && $filters['search'] != '') {
 			$from = "(
-						( SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.login, f.name, f.type, f.section, f.group 
+						( SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.login, f.name, f.email, f.type, f.section, f.group 
 							FROM $this->_tbl AS f ";
 			if (isset($filters['tag']) && $filters['tag'] != '') {
 				$from .= ", #__support_tags AS st, #__tags as t ";
@@ -203,7 +203,7 @@ class SupportTicket extends JTable
 				$from .= "st.ticketid=f.id AND st.tagid=t.id AND t.tag='".$filters['tag']."'";
 			}
 			$from .= ") UNION (
-				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.login, g.name, g.type, g.section, g.group
+				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.login, g.name, g.email, g.type, g.section, g.group
 				FROM #__support_comments AS w, $this->_tbl AS g
 				WHERE w.ticket=g.id";
 			if (isset($filters['search']) && $filters['search'] != '') {
@@ -244,9 +244,9 @@ class SupportTicket extends JTable
 		$filter = $this->buildQuery( $filters, $admin );
 		
 		if (isset($filters['search']) && $filters['search'] != '') {
-			$sql = "SELECT `id`, `summary`, `report`, `category`, `status`, `severity`, `resolved`, `owner`, `created`, `login`, `name`, `group`";
+			$sql = "SELECT `id`, `summary`, `report`, `category`, `status`, `severity`, `resolved`, `owner`, `created`, `login`, `name`, `email`, `group`";
 		} else {
-			$sql = "SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.login, f.name";
+			$sql = "SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.login, f.name, f.email";
 		}
 		$sql .= " FROM $filter";
 		$sql .= " ORDER BY ".$filters['sort'].' '.$filters['sortdir'];
