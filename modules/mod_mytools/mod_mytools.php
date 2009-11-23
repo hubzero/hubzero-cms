@@ -78,6 +78,13 @@ class modToolList
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -101,10 +108,10 @@ class modToolList
 		
 		// Create a Tool object
 		$database 	=& JFactory::getDBO();
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
-		$obj = new Tool( $database );
-		$objV = new ToolVersion( $database );
+        include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
+        include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
+        $obj = new Tool( $database );
+        $objV = new ToolVersion( $database );
 	
 		if (is_array($lst)) {
 			$tools = array();
@@ -127,23 +134,15 @@ class modToolList
 						$rev = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
 						$item = trim(implode('_r',$bits));
 					}
-					$workspaces = array('workspace','workspace-med','workspace-big');
-					if (in_array($item,$workspaces)) {
-						$thistool = $objV->getVersionInfo('','current','workspace','');
-					} else {
-						$thistool = $objV->getVersionInfo('','current',$item,'');
-					}
+                    $workspaces = array('workspace','workspace-med','workspace-big');
+                    if (in_array($item,$workspaces)) {
+                        $thistool = $objV->getVersionInfo('','current','workspace','');
+                    } else {
+                        $thistool = $objV->getVersionInfo('','current',$item,'');
+                    }
 
 					if (is_array($thistool) && isset($thistool[0])) {
 						$t = $thistool[0];
-						if ($item == 'workspace-med') {
-							$t->instance = 'workspace-med';
-							$t->title = 'Workspace (1000x750)';
-						} else if ($item == 'workspace-big') {
-							$t->instance = 'workspace-big';
-							$t->title = 'Workspace (1150x750)';
-						}
-						
 						$tools[] = $t;
 					}
 				}
@@ -169,13 +168,14 @@ class modToolList
 						 1,
 						 $tool->revision,
 						 $tool->toolname);
-				if ($lst === null && $tool->toolname == 'workspace') {
-					$tool->title = 'Workspace (800x600)';
-					$toollist[strtolower('Workspace (1000x750)')] = new MwModApp('workspace-med',
-								'Workspace (1000x750)', $tool->description, $tool->mw, 0, '', 0, 1, $tool->revision, $tool->toolname);
-					$toollist[strtolower('Workspace (1150x750)')] = new MwModApp('workspace-big',
-								'Workspace (1150x750)', $tool->description, $tool->mw, 0, '', 0, 1, $tool->revision, $tool->toolname);
-				}
+                if ($lst === null && $tool->toolname == 'workspace') {
+                        $tool->title = 'Workspace (800x600)';
+                        $toollist[strtolower('Workspace (1000x750)')] = new MwModApp('workspace-med',
+                                                'Workspace (1000x750)', $tool->description, $tool->mw, 0, '', 0, 1, $tool->revision, $tool->toolname);
+                        $toollist[strtolower('Workspace (1150x750)')] = new MwModApp('workspace-big',
+                                                'Workspace (1150x750)', $tool->description, $tool->mw, 0, '', 0, 1, $tool->revision, $tool->toolname);
+                }
+
 			}
 			$toolnames[] = strtolower($tool->toolname);
 		}
@@ -195,7 +195,7 @@ class modToolList
 	
 	//-----------
 	
-	private function _buildList(&$toollist, $type='all')
+	public function buildList(&$toollist, $type='all')
 	{
 		if ($type == 'favs') {
 			$favs = array();
@@ -203,14 +203,15 @@ class modToolList
 			//$favs = (isset($this->favs)) ? $this->favs : array();
 			$favs = $this->favs;
 		}
+
 		
-		$database 	=& JFactory::getDBO();
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
-		$objV = new ToolVersion( $database );
-		
+		$database =& JFactory::getDBO();
+        include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
+        $objV = new ToolVersion( $database );		
+
 		$html  = "\t\t".'<ul>'."\n";
 		if (count($toollist) <= 0) {
-			$html .= "\t\t".' <li>No tools found.</li>'."\n";
+			$html .= "\t\t".' <li>'.JText::_('MOD_MYTOOLS_NONE_FOUND').'</li>'."\n";
 		} else {
 			foreach ($toollist as $tool)
 			{
@@ -226,11 +227,10 @@ class modToolList
 				
 					// from sep 28-07 version (svn revision) number is supplied at the end of the invoke command
 					$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
-					
-					$workspaces = array('workspace','workspace-med','workspace-big');
-					if (in_array($toolname,$workspaces)) {
-						$toolname = 'workspace';
-					}
+                    $workspaces = array('workspace','workspace-med','workspace-big');
+                    if (in_array($toolname,$workspaces)) {
+                            $toolname = 'workspace';
+                    }
 
 					// Build the HTML
 					$html .= "\t\t".' <li id="'.$tool->name.'"';
@@ -275,49 +275,44 @@ class modToolList
 	
 	public function display()
 	{
-		$juser =& JFactory::getUser();
-
 		$params = $this->params;
-		$html   = '';
 
 		// See if we have an incoming string of favorite tools
 		// This should only happen on AJAX requests
-		$fav = JRequest::getVar( 'fav', '' );
-		$no_html = JRequest::getVar( 'no_html', 0 );
+		$this->fav = JRequest::getVar( 'fav', '' );
+		$this->no_html = JRequest::getVar( 'no_html', 0 );
 
-		if ($fav || $no_html) {
+		if ($this->fav || $this->no_html) {
 			// We have a string of tools! This means we're updating the
 			// favorite tools pane of the module via AJAX
-			$favs = split(',',$fav);
+			$favs = split(',',$this->fav);
 			$favs = array_map('trim',$favs);
-			$this->favs = $favs;
-			$favtools = ($fav) ? $this->_getToollist($favs) : array();
 			
-			$html .= $this->_buildList($favtools, 'fav');
-			$html .= "\t\t".'<p>You may edit this list by checking/unchecking items from the All Tools list.</p>'."\n";
+			$this->favtools = ($this->fav) ? $this->_getToollist($favs) : array();
 		} else {
+			$juser =& JFactory::getUser();
+			
 			// Add the JavaScript that does the AJAX magic to the template
 			$document =& JFactory::getDocument();
 			$document->addScript('/modules/mod_mytools/mod_mytools.js');
-		
+
 			// Push the module CSS to the template
 			ximport('xdocument');
 			XDocument::addModuleStyleSheet('mod_mytools');
-		
+			
 			// Get a list of recent tools
 			$database =& JFactory::getDBO();
 			$rt = new RecentTool( $database );
 			$rows = $rt->getRecords( $juser->get('id') );
-			
+
 			$recent = array();
-			
 			if (!empty($rows)) {
 				foreach ($rows as $row)
 				{
 					$recent[] = $row->tool;
 				}
 			}
-		
+
 			// Get the user's list of favorites
 			$fav = $params->get('myhub_favs');
 			if ($fav) {
@@ -326,46 +321,19 @@ class modToolList
 				$favs = array();
 			}
 			$this->favs = $favs;
-			
-			// Get a list of applications that the user might invoke.
-			$rectools = $this->_getToollist($recent);
-			$favtools = $this->_getToollist($favs);
-			$alltools = $this->_getToollist();
 
-			// Build the HTML
-			$html .= '<div id="myToolsTabs">'."\n";
-			$html .= "\t".'<ul class="tab_titles">'."\n";
-			$html .= "\t".' <li title="recenttools" class="active">Recent</li>'."\n";
-			$html .= "\t".' <li title="favtools">Favorites</li>'."\n";
-			$html .= "\t".' <li title="alltools">All Tools</li>'."\n";
-			$html .= "\t".'</ul>'."\n";
-			
-			$html .= "\t".'<div id="recenttools" class="tab_panel active">'."\n";
-			$html .= $this->_buildList($rectools, 'recent');
-			$html .= "\t\t".'<p>These are your most recently used tools.</p>'."\n";
-			$html .= "\t".'</div>'."\n";
-			
-			$html .= "\t".'<div id="favtools" class="tab_panel">'."\n";
-			$html .= $this->_buildList($favtools, 'favs');
-			$html .= "\t\t".'<p>You may edit this list by checking/unchecking items from the All Tools list.</p>'."\n";
-			$html .= "\t".'</div>'."\n";
-			
-			$html .= "\t".'<div id="alltools" class="tab_panel">'."\n";
-			$html .= $this->_buildList($alltools, 'all');
-			$html .= "\t\t".'<p>Add a tool to your favorites by clicking a heart. Click the heart again to remove it.</p>'."\n";
-			$html .= "\t".'</div>'."\n";
-			$html .= '</div>'."\n";
+			// Get a list of applications that the user might invoke.
+			$this->rectools = $this->_getToollist($recent);
+			$this->favtools = $this->_getToollist($favs);
+			$this->alltools = $this->_getToollist();
 		}
-		
-		// Output HTML
-		echo $html;
 	}
 }
 
 //----------------------------------------------------------
 
-$modtoollist = new modToolList();
-$modtoollist->params = $params;
+$modtoollist = new modToolList( $params );
+$modtoollist->display();
 
 require( JModuleHelper::getLayoutPath('mod_mytools') );
 ?>
