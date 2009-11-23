@@ -216,6 +216,7 @@ class CitationsHtml
 				
 		$html .= t.t.'<input type="submit" name="go" value="'.JText::_('GO').'" />'.n;
 		$html .= t.t.'<input type="hidden" name="option" value="'. $option .'" />'.n;
+		$html .= t.t.'<input type="hidden" name="task" value="browse" />'.n;
 		$html .= t.'</fieldset>'.n;
 		
 		$html .= '</div><!-- / .aside -->'.n;
@@ -271,7 +272,15 @@ class CitationsHtml
 				$html .= ' </li>'.n;
 			}
 			$html .= '</ul>'.n;
-			$html .= $pageNav->getListFooter();
+			//$html .= $pageNav->getListFooter();
+			$paging = $pageNav->getListFooter();
+			$paging = str_replace('citations/?','citations/browse?',$paging);
+			//$paging = str_replace('resources?','resources/'.$resource->id.'?',$paging);
+			//$paging = str_replace('?/resources/'.$resource->id,'?',$paging);
+			//$paging = str_replace('?','?sortby='.$filters['sortby'].'&',$paging);
+			//$paging = str_replace('&&','&',$paging);
+			//$paging = str_replace('&amp;&amp;','&amp;',$paging);
+			$html .= $paging;
 		} else {
 			$html .= CitationsHtml::warning( JText::_('NO_CITATIONS_FOUND') ).n;
 		}
