@@ -466,7 +466,7 @@ class SupportHtml
 		if ($row->login) {
 			$targetuser =& JUser::getInstance($row->login);
 		}
-		if ($targetuser->id) {
+		if (is_object($targetuser) && $targetuser->id) {
 			?>
 			<h3><?php echo JText::_('TICKET_SUBMITTED_ON').' '.JHTML::_('date',$row->created, '%d %b, %Y').' '.JText::_('AT').' '.JHTML::_('date', $row->created, '%I:%M %p').' '.JText::_('BY'); ?> <a href="<?php echo JRoute::_('index.php?option=com_members&id='.$targetuser->id); ?>"><?php echo ($row->login) ? $row->name.' ('.$row->login.')' : $row->name; ?></a></h3>
 			<?php
@@ -602,10 +602,12 @@ class SupportHtml
 							$access = 'submitter';
 						}
 						
-						$xuser =& XUser::getInstance( $comment->created_by );
 						$name = 'Unknown';
-						if (is_object($xuser)) {
-							$name = $xuser->get('name');
+						if ($comment->created_by) {
+							$juseri =& JUser::getInstance( $comment->created_by );
+							if (is_object($juseri)) {
+								$name = $juseri->get('name');
+							}
 						}
 						
 						$o = ($o == 'odd') ? 'even' : 'odd';
