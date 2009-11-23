@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="module" version="1.5.0">
+	<name>My Points</name>
+	<author>Shawn Rice</author>
+	<creationDate>October 2009</creationDate>
+	<copyright>(C) 2007 Network for Computational Nanotechnology</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>zooley@purdue.edu</authorEmail>
+	<authorUrl>zooley.nanohub.org</authorUrl>
+	<version>1</version>
+	<description>This module will display a point total and list of most recent point transactions.</description>
+	<files>
+		<filename module="mod_mypoints">mod_mypoints.php</filename>
+		<filename>index.html</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>mod_mypoints.css</filename>
+	</files>
+	<params>
+		<param name="moduleclass" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />
+		<param name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
+	</params>
+	<languages>
+		<language tag="en-GB">en-GB.mod_mypoints.ini</language>
+        </languages>
+</install>
