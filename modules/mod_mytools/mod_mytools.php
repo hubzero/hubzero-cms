@@ -134,12 +134,7 @@ class modToolList
 						$rev = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
 						$item = trim(implode('_r',$bits));
 					}
-                    $workspaces = array('workspace','workspace-med','workspace-big');
-                    if (in_array($item,$workspaces)) {
-                        $thistool = $objV->getVersionInfo('','current','workspace','');
-                    } else {
-                        $thistool = $objV->getVersionInfo('','current',$item,'');
-                    }
+                    $thistool = $objV->getVersionInfo('','current',$item,'');
 
 					if (is_array($thistool) && isset($thistool[0])) {
 						$t = $thistool[0];
@@ -168,14 +163,6 @@ class modToolList
 						 1,
 						 $tool->revision,
 						 $tool->toolname);
-                if ($lst === null && $tool->toolname == 'workspace') {
-                        $tool->title = 'Workspace (800x600)';
-                        $toollist[strtolower('Workspace (1000x750)')] = new MwModApp('workspace-med',
-                                                'Workspace (1000x750)', $tool->description, $tool->mw, 0, '', 0, 1, $tool->revision, $tool->toolname);
-                        $toollist[strtolower('Workspace (1150x750)')] = new MwModApp('workspace-big',
-                                                'Workspace (1150x750)', $tool->description, $tool->mw, 0, '', 0, 1, $tool->revision, $tool->toolname);
-                }
-
 			}
 			$toolnames[] = strtolower($tool->toolname);
 		}
@@ -227,10 +214,6 @@ class modToolList
 				
 					// from sep 28-07 version (svn revision) number is supplied at the end of the invoke command
 					$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
-                    $workspaces = array('workspace','workspace-med','workspace-big');
-                    if (in_array($toolname,$workspaces)) {
-                            $toolname = 'workspace';
-                    }
 
 					// Build the HTML
 					$html .= "\t\t".' <li id="'.$tool->name.'"';
