@@ -271,7 +271,71 @@
         text-align: left;
         text-indent: -9999px; 
         overflow: hidden;
-     	}
+		}
+/* Error Message */
+	#error-wrap {
+		margin: 0;
+		padding: 3em 0 3em 0;
+		border: none;
+		text-align: center;
+		}
+	#error-box {
+		margin: 0 auto;
+		padding: 10px 10px 10px 10px;
+		width: 500px;
+		text-align: left;
+		border: 1px solid #EFCCC2; 
+		color: #CC0000;
+		background: #FFF2EF;
+		/* Rounded corners */
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;	
+		-khtml-border-radius: 10px;
+		border-radius: 10px;
+		/* Shadows */
+		box-shadow: 0px 2px 4px #CCC;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* length length length color */
+		-moz-box-shadow: #ccc 0px 2px 4px; /* color length length length */
+		}
+	#error-box.code-403 {
+		border-color: #fbd894; /*#EFEAC2;*/
+		color: #CC6633; 
+		background: #FFFDEF;
+		}
+	#error-box h2 {
+		margin: 0;
+		padding: 0;
+		font-weight: bold;
+		font-size: 1.4em;
+		line-height: 1.4em;
+		color: #CC0000;
+		} 
+	#error-box h3, 
+	#error-box h4 {
+		color: #CC0000;
+		}
+	#error-box.code-403 h2, 
+	#error-box.code-403 h3, 
+	#error-box.code-403 h4 {
+		color: #CC6633;
+		}
+	#error-box ol {
+		margin: 1em 0 1em 2em;
+		padding: 0;
+		}
+	#error-box ol li {
+		line-height: 1.5em;
+		}
+	.error-reasons {
+		padding: 1em;
+		background-color: #fff;
+		border: 1px solid #ddd;
+		/* Rounded corners */
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;	
+		-khtml-border-radius: 10px;
+		border-radius: 10px;
+		}
 /*---------------------------------------------------------------
 	IE 6 hacks
 ---------------------------------------------------------------*/
