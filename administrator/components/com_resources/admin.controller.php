@@ -973,8 +973,10 @@ class ResourcesController extends JObject
 		// Incoming authors
 		$authorsOldstr = JRequest::getVar( 'old_authors', '', 'post' );
 		$authorsNewstr = JRequest::getVar( 'new_authors', '', 'post' );
-
-		if ($authorsNewstr != $authorsOldstr) {
+		if (!$authorsNewstr) {
+			$authorsNewstr = $authorsOldstr;
+		}
+		//if ($authorsNewstr != $authorsOldstr) {
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'resources.contributor.php');
 			
 			$authorsNew = split(',',$authorsNewstr);
@@ -1010,7 +1012,7 @@ class ResourcesController extends JObject
 					}
 				}
 			}
-		}
+		//}
 
 		// If this is a child, add parent/child association
 		$pid = JRequest::getInt( 'pid', 0, 'post' );
@@ -1088,6 +1090,7 @@ class ResourcesController extends JObject
 	private function send_email($from, $email, $subject, $message) 
 	{
 		if ($from) {
+		     $xhub = &XFactory::getHub();	
 			$contact_email = $from['email'];
 			$contact_name  = $from['name'];
 
@@ -1098,7 +1101,7 @@ class ResourcesController extends JObject
 			$headers .= 'Reply-To: ' . $contact_name .' <'. $contact_email . ">\n";
 			$headers .= "X-Priority: 3\n";
 			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: ' . $hub['name'] . "\n";
+			$headers .= 'X-Mailer: ' . $xhub->getCfg('hubShortName') . "\n";
 			if (mail($email, $subject, $message, $headers, $args)) {
 				return(1);
 			}

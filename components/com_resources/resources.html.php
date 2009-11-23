@@ -916,7 +916,7 @@ class ResourcesHtml
 				if (strtolower($type) == 'swf') {
 					$height = '400px';
 					if ($no_html) {
-						$height = '99%';
+						$height = '100%';
 					}
 					$html .= t.t.t.'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,65,0" width="100%" height="'.$height.'" id="SlideContent" VIEWASTEXT>'.n;
 					$html .= t.t.t.' <param name="movie" value="'. $url .'" />'.n;
@@ -1160,23 +1160,26 @@ class ResourcesHtml
 				break;
 					
 				case 6:
+				case 31:
+				case 2:
 					// If more than one child the show the list of children
 					$helper->getChildren( $resource->id, 0, 'no' );
 					$children = $helper->children;
-					
+
 					if ($children) {
 						$dls = ResourcesHtml::writeChildren( $config, $option, $database, $resource, $children, $live_site, '', '', $resource->id, $fsize );
 					
 						$html .= ResourcesHtml::supportingDocuments($dls);
 					}
 				
-					$html .= t.t.'<p><a class="feed" id="resource-audio-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'.n;
-					$html .= t.t.'<a class="feed" id="resource-video-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a></p>'.n;
+					$html .= t.t.'<p>'.n;
+					$html .= t.t.t.'<a class="feed" id="resource-audio-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'.n;
+					$html .= t.t.t.'<a class="feed" id="resource-video-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a><br />'.n;
+					$html .= t.t.t.'<a class="feed" id="resource-slides-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=slides">'.JText::_('Slides/Notes podcast').'</a>'.n;
+					$html .= t.t.'</p>'.n;
 				break;
 				
 				case 8:
-				case 31:
-				case 2:
 					$html .= t.t.'<p><a class="feed" id="resource-audio-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'.n;
 					$html .= t.t.'<a class="feed" id="resource-video-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a></p>'.n;
 					// do nothing
@@ -1727,7 +1730,7 @@ class ResourcesHtml
 				break;
 				
 				case 32:
-					$url = JRoute::_('index.php?option='.$option.a.'id='.$pid.a.'task=play');
+					$url = JRoute::_('index.php?option='.$option.a.'id='.$pid.a.'resid='.$id.a.'task=play');
 				break;
 				
 				default: 
@@ -2355,7 +2358,7 @@ class ResourcesHtml
 		//$html .= ResourcesHtml::div( '<p id="tagline"><a href="'.JRoute::_('index.php?option=com_contribute').'">'.JText::_('BECOME_A_CONTRIBUTOR').'</a></p>', '', 'content-header-extra' );
 		
 		$html .= '<div class="main section">';
-		$html .= t.'<form action="'.JRoute::_('index.php?option='.$option).'" id="resourcesform" method="post">'.n;
+		$html .= t.'<form action="'.JRoute::_('index.php?option='.$option.a.'task=browse').'" id="resourcesform" method="post">'.n;
 		$html .= t.t.'<div class="aside">';
 		
 		$html .= t.t.t.'<fieldset>'.n;
@@ -2398,12 +2401,12 @@ class ResourcesHtml
 		//$html .= $pageNav->getListFooter();
 		$pn = $pageNav->getListFooter();
 		$pn = str_replace('/?/&amp;','/?',$pn);
-		$f = '';
+		$f = 'task=browse';
 		foreach ($filters as $k=>$v) 
 		{
-			$f .= ($v && $k != 'authorized' && $k != 'limit' && $k != 'start') ? $k.'='.$v.a : '';
+			$f .= ($v && $k != 'authorized' && $k != 'limit' && $k != 'start') ? a.$k.'='.$v : '';
 		}
-		$pn = str_replace('?','?'.$f,$pn);
+		$pn = str_replace('?','?'.$f.a,$pn);
 		$html .= $pn;
 		
 		$html .= t.t.'</div>';

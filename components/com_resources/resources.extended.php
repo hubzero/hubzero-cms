@@ -103,12 +103,22 @@ class ResourcesHelper extends JObject
 	
 	function getToolAuthors($toolname, $revision) 
 	{
+		if (false) // @FIXME  quick hack to deal with influx of LDAP data in jos_tool_groups
+		{
 		$sql = "SELECT n.uidNumber AS id, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS org, t.*, NULL as role"
 			 . "\n FROM #__tool_authors AS t, #__xprofiles AS n "
 			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='".$toolname."'"
 			 . "\n AND t.revision='".$revision."'"
 			 . "\n ORDER BY t.ordering";
-	
+		}
+		else
+		{
+		$sql = "SELECT n.uidNumber AS id, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS org, t.*, NULL as role"
+			 . "\n FROM #__tool_authors AS t, #__xprofiles AS n, #__tool_version AS v "
+			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='".$toolname."' AND v.id=t.version_id and v.state<>3"
+			 . "\n AND t.revision='".$revision."'"
+			 . "\n ORDER BY t.ordering";
+		}
 		$this->_db->setQuery( $sql );
 		$cons = $this->_db->loadObjectList();
 		$this->_contributors = $cons;
@@ -368,6 +378,9 @@ class ResourcesHelper extends JObject
 			 . "\n JOIN #__resource_assoc AS a ON r.id=a.child_id"
 			 . "\n LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
 			 . "\n WHERE r.published=1 AND a.parent_id=".$filters['id']." AND r.standalone=1 AND r.type=rt.id";
+		if (isset($filters['year']) && $filters['year'] > 0) {
+			$sql .= " AND r.publish_up >= '".$filters['year']."-01-01 00:00:00' AND r.publish_up <= '".$filters['year']."-12-31 23:59:59'";
+		}
 		$sql .= " ORDER BY ";
 		switch ($filters['sortby']) 
 		{

@@ -37,7 +37,11 @@ HUB.Resources = {
 			
 			// Modal boxes for presentations
 			$$('a.play').each(function(el) {
-				el.href = el.href + '?no_html=1';
+				if (el.href.indexOf('?') == -1) {
+					el.href = el.href + '?no_html=1';
+				} else {
+					el.href = el.href + '&no_html=1';
+				}
 				el.addEvent('click', function(e) {
 					new Event(e).stop();
 
