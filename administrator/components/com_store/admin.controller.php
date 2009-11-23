@@ -735,6 +735,7 @@ class StoreController
 	function send_email($hub, $email, $subject, $message) 
 	{
 		if ($hub) {
+		    	$xhub = &XFactory::getHub();
 			$contact_email = $hub['email'];
 			$contact_name  = $hub['name'];
 
@@ -745,7 +746,7 @@ class StoreController
 			$headers .= 'Reply-To: ' . $contact_name .' <'. $contact_email . ">\n";
 			$headers .= "X-Priority: 3\n";
 			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: '. $hub['name'] .n;
+			$headers .= 'X-Mailer: '. $xhub->getCfg('hubShortName') .n;
 			if (mail($email, $subject, $message, $headers, $args)) {
 				return(1);
 			}
