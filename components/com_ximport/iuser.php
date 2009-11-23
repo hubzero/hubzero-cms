@@ -29,86 +29,86 @@ ximport('xprofile');
 
 $mycount = 0;
 
-function _compareusers()
+function _compareusers($mode = 0)
 {
 	$mycount = 0;
-               $xhub = &XFactory::getHub();
-               $conn = &XFactory::getPLDC();
-			$db = &JFactory::getDBO();
+	$xhub = &XFactory::getHub();
+	$conn = &XFactory::getPLDC();
+	$db = &JFactory::getDBO();
 
-               $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
+    $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
 
-               $dn = 'ou=users,' . $hubLDAPBaseDN;
-               //$filter = '(&(objectclass=*)(hasSubordinates=FALSE)(uidNumber=12434))';
-               //$filter = '(&(objectclass=*)(hasSubordinates=FALSE)(uidNumber=15825))';
-               //$filter = '(&(objectclass=*)(hasSubordinates=FALSE)(uidNumber=10617))';
-               $filter = '(&(objectclass=*)(hasSubordinates=FALSE))';
+    $dn = 'ou=users,' . $hubLDAPBaseDN;
+    //$filter = '(&(objectclass=*)(hasSubordinates=FALSE)(uidNumber=12434))';
+    //$filter = '(&(objectclass=*)(hasSubordinates=FALSE)(uidNumber=15825))';
+    //$filter = '(&(objectclass=*)(hasSubordinates=FALSE)(uidNumber=10617))';
+    $filter = '(&(objectclass=*)(hasSubordinates=FALSE))';
 
-               $sr = @ldap_search($conn, $dn, $filter, array("*","+")); //, $attributes, 0, 0, 0);
+    $sr = @ldap_search($conn, $dn, $filter, array("*","+")); //, $attributes, 0, 0, 0);
 
-               if ($sr === false)
-                    return false;
+    if ($sr === false)
+    	return false;
 
-               $count = @ldap_count_entries($conn, $sr);
+    $count = @ldap_count_entries($conn, $sr);
 
-               if ($count === false)
-                    return false;
+    if ($count === false)
+    	return false;
 
-               $entry = @ldap_first_entry($conn, $sr);
-				echo "<table>";
-               do
-               {	
-                    $attributes = ldap_get_attributes($conn, $entry);
-				$rowhtml = '';
-					$showrow = false;
+    $entry = @ldap_first_entry($conn, $sr);
 
-				if (0 && $attributes['uidNumber'][0] < 29000)
-				{
-				$mycount++;
-                    $entry = @ldap_next_entry($conn, $entry);
-				    continue;
-				}
+	echo "<table>";
+	echo "<tr><td>uidNumber</td><td>key</td><td>mysql</td><td>ldap</td><td>action</td></tr>";
+    
+	do
+    {	
+   		$attributes = ldap_get_attributes($conn, $entry);
+		$rowhtml = '';
+		$showrow = false;
 
-				$profile = new XProfile();
+		if (0 && $attributes['uidNumber'][0] < 29000)
+		{
+			$mycount++;
+            $entry = @ldap_next_entry($conn, $entry);
+		    continue;
+		}
+
+		$profile = new XProfile();
 			
-				$result = $profile->load($attributes['uid'][0]);
+		$result = $profile->load($attributes['uid'][0]);
 			
-				if ($result === false)
-					die('couldn\'t find profile for ' . $attributes['uid'][0]);
+		if ($result === false)
+			die('couldn\'t find profile for ' . $attributes['uid'][0]);
 
-				for($i = 0; $i < $attributes['count']; $i++)
-				{
-					$key = $attributes[$i];
-					$value = $attributes[$key];
+		for($i = 0; $i < $attributes['count']; $i++)
+		{
+			$key = $attributes[$i];
+			$value = $attributes[$key];
 	
-					for($j = 0; $j < $value['count']; $j++)
-					{
-						if (in_array($key,array('objectClass','structuralObjectClass','entryUUID','entryCSN','modifiersName','subschemaSubentry','hasSubordinates','creatorsName','entryDN')))
-							continue; // don't care about these
+			for($j = 0; $j < $value['count']; $j++)
+			{
+				if (in_array($key,array('objectClass','structuralObjectClass','entryUUID','entryCSN','modifiersName','subschemaSubentry','hasSubordinates','creatorsName','entryDN')))
+					continue; // don't care about these
 						
-						if ($key == 'createTimestamp')
-						{
-							$ddate = $profile->get('registerDate');
-							$myvalue = $value[$j];
-							$ldate = strftime("%F %T",strtotime($myvalue));
-							$dts = strtotime($ddate);
-							$lts = strtotime($ldate);
-							
+				if ($key == 'createTimestamp')
+				{
+					$ddate = $profile->get('registerDate');
+					$myvalue = $value[$j];
+					$ldate = strftime("%F %T",strtotime($myvalue));
+					$dts = strtotime($ddate);
+					$lts = strtotime($ldate);
 
-							if ($lts < $dts)
-							{
-							$showrow = true;
-					         	$rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
-							$rowhtml .= "<td>$key</td><td>" . $ddate . "</td>" . "<td>" . $value[$j] . "</td>";
-							$rowhtml .= "<td>" . $ddate . "</td>" . "<td>" . $ldate . "</td>";
-							$rowhtml .= "<td>" . $dts . "</td>" . "<td>" . $lts . "</td>";
-							//$rowhtml .= "<td>LDAP CREATED EARLIER!</td></tr>";
+					if ($lts < $dts)
+					{
+						$showrow = true;
+				       	$rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
+						$rowhtml .= "<td>$key</td><td>" . $ddate . "</td>" . "<td>" . $value[$j] . "</td>";
+						$rowhtml .= "<td>" . $ddate . "</td>" . "<td>" . $ldate . "</td>";
+						$rowhtml .= "<td>" . $dts . "</td>" . "<td>" . $lts . "</td>";
 							$rowhtml .= "<td>FIXED</td></tr>";
 							$profile->set('registerDate',$ldate);
 							$profile->update('mysql');
-							}
-
-						}
+					}
+				}
 						else if ($key == 'modifyTimestamp')
 						{
 							$ddate = $profile->get('modifiedDate');
@@ -188,13 +188,19 @@ function _compareusers()
 							if ($dbvalue != $value[$j])
 							{
 								$showrow = true;
-					               $rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
+					            $rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
 								$rowhtml .= "<td>$key</td><td>" . $dbvalue . "</td>" . "<td>" . $value[$j] . "</td>";
 								if ($dbvalue == '')
 								{
 									$profile->set('organization',$value[$j]);
 									$profile->update('mysql');
-									$rowhtml .= "<td>FIXED</td></tr>";
+									$rowhtml .= "<td>SYNCD TO LDAP</td></tr>";
+								}
+								else if (!empty($dbvalue) && !empty($value[$j]))
+								{
+									$profile->set('organization',$dbvalue);
+									$profile->update('ldap');
+									$rowhtml .= "<td>SYNCD TO MYSQL</td></tr>";
 								}
 								else
 								$rowhtml .= "<td>MISMATCH</td></tr>";
@@ -262,22 +268,46 @@ function _compareusers()
 						}
 						else if ($key == 'cn')
 						{
-						    	$dbvalue = $profile->get('name');
+						    $dbvalue = $profile->get('name');
 							if ($dbvalue != $value[$j])
 							{
 								$showrow = true;
-					               $rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
-								$rowhtml .= "<td>$key</td><td>" . $dbvalue . "</td>" . "<td>" . $value[$j] . "</td><td>MISMATCH</td></tr>";
+					            $rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
+								$rowhtml .= "<td>$key</td><td>" . $dbvalue . "</td>" . "<td>" . $value[$j];
+								if (empty($dbvalue))
+								{
+									$profile->set('name',$value[$j]);
+									$profile->update('mysql');
+									$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
+								}
+								else 
+								{
+									$profile->set('name',$dbvalue);
+									$profile->update('ldap');
+									$rowhtml .= "</td><td>SYNCD TO MYSQL</td></tr>";
+								}
 							}
 						}
 						else if ($key == 'sn')
 						{
-						    	$dbvalue = $profile->get('name');
+						   	$dbvalue = $profile->get('name');
 							if ($dbvalue != $value[$j])
 							{
 								$showrow = true;
-					               $rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
-								$rowhtml .= "<td>$key</td><td>" . $dbvalue . "</td>" . "<td>" . $value[$j] . "</td><td>MISMATCH</td></tr>";
+					            $rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
+								$rowhtml .= "<td>$key</td><td>" . $dbvalue . "</td>" . "<td>" . $value[$j];
+								if (empty($dbvalue))
+								{
+									$profile->set('name',$value[$j]);
+									$profile->update('mysql');
+									$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
+								}
+								else 
+								{
+									$profile->set('name',$dbvalue);
+									$profile->update('ldap');
+									$rowhtml .= "</td><td>SYNCD TO MYSQL</td></tr>";
+								}
 							}
 						}
 						else if ($key == 'regDate')
@@ -490,6 +520,7 @@ function _compareusers()
 						}
 						else
 						{
+							var_dump($profile);
 							echo "$key: " . $value[$j] . "<br>";
 						}
 					}
@@ -504,6 +535,7 @@ function _compareusers()
 
                }
                while($entry !== false);
+			echo "<tr><td>uidNumber</td><td>key</td><td>mysql</td><td>ldap</td><td>action</td></tr>";
 			echo "</table>\n";
 			echo "count = $count<br>";
 			echo "mycount = $mycount<br>";
