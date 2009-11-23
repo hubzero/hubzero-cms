@@ -25,12 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class WhatsnewController
+class WhatsnewController extends JObject
 {	
 	private $_name  = NULL;
 	private $_data  = array();
 	private $_task  = NULL;
-	private $_error = NULL;
 
 	//-----------
 	
@@ -75,7 +74,7 @@ class WhatsnewController
 	
 	//-----------
 	
-	private function getTask()
+	private function _getTask()
 	{
 		$task = JRequest::getVar( 'task', '' );
 		$this->_task = $task;
@@ -88,7 +87,7 @@ class WhatsnewController
 	
 	public function execute()
 	{
-		switch ($this->getTask()) 
+		switch ($this->_getTask()) 
 		{
 			case 'browse':   $this->browse(); break;
 			case 'feed.rss': $this->feed();   break;
@@ -105,7 +104,7 @@ class WhatsnewController
 		$database =& JFactory::getDBO();
 
 		// Determine if user has admin privledges
-		$authorized = $this->authorize();
+		$authorized = $this->_authorize();
 
 		// Incoming
 		$period = JRequest::getVar( 'period', 'month' );
@@ -115,10 +114,10 @@ class WhatsnewController
 		$limit = JRequest::getInt( 'limit', 25 );
 
 		// Get some needed CSS and JS
-		$this->getStyles();
+		$this->_getStyles();
 
 		// Get categories
-		$areas = $this->getAreas();
+		$areas = $this->_getAreas();
 		
 		// Was there a category passed in the querystring?
 		$area = trim(JRequest::getWord('category', ''));
@@ -279,7 +278,7 @@ class WhatsnewController
 		$limit = JRequest::getInt( 'limit', 25 );
 
 		// Get categories
-		$areas = $this->getAreas();
+		$areas = $this->_getAreas();
 		
 		// Was there a category passed in the querystring?
 		$area = trim(JRequest::getWord('category', ''));
@@ -429,7 +428,7 @@ class WhatsnewController
 	// Private functions
 	//----------------------------------------------------------
 	
-	private function getStyles($option='') 
+	private function _getStyles($option='') 
 	{
 		ximport('xdocument');
 		if ($option) {
@@ -441,7 +440,7 @@ class WhatsnewController
 
 	//-----------
 	
-	private function getScripts($option='',$name='')
+	private function _getScripts($option='',$name='')
 	{
 		$document =& JFactory::getDocument();
 		if ($option) {
@@ -458,7 +457,7 @@ class WhatsnewController
 	
 	//-----------
 	
-	private function getAreas()
+	private function _getAreas()
 	{
 		// Do we already have an array of areas?
 		if (!isset($this->searchareas) || empty($this->searchareas)) {
@@ -489,7 +488,7 @@ class WhatsnewController
 	
 	//-----------
 
-	private function authorize() 
+	private function _authorize() 
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
@@ -500,15 +499,6 @@ class WhatsnewController
 		// Check if they're a site admin (from Joomla)
 		if ($juser->authorize($this->_option, 'manage')) {
 			return true;
-		}
-	
-		// Check if they're a site admin (from LDAP)
-		$xuser =& XFactory::getUser();
-		if (is_object($xuser)) {
-			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-				return true;
-			}
 		}
 
 		return false;
