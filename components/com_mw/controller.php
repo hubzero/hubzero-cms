@@ -201,18 +201,24 @@ class MwController extends JObject
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
 		
+		// Set the pathway
 		$japp =& JFactory::getApplication();
 		$pathway =& $japp->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
-		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
+		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&task='.$this->_task );
 		
-		echo MwHtml::div( MwHtml::hed( 2, $title ), 'full', 'content-header' );
-		echo '<div class="main section">'.n;
-		ximport('xmodule');
-		XModuleHelper::displayModules('force_mod');
-		echo '</div><!-- / .main section -->'.n;
+		// Instantiate the view
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'login') );
+		$view->option = $this->_option;
+		$view->title = $title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -227,15 +233,23 @@ class MwController extends JObject
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
 
+		// Set the pathway
 		$japp =& JFactory::getApplication();
 		$pathway =& $japp->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
-		$pathway->addItem( JText::_('MW_ACCESS_DENIED'), 'index.php?option='.$this->_option.a.'task='.$this->_task );
+		$pathway->addItem( JText::_('MW_ACCESS_DENIED'), 'index.php?option='.$this->_option.'&task='.$this->_task );
 
-		// Output HTML
-		echo MwHtml::accessdenied( $this->_option, $this->getError() );
+		// Instantiate the view
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'accessdenied') );
+		$view->option = $this->_option;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -252,12 +266,13 @@ class MwController extends JObject
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
 		
+		// Set the pathway
 		$japp =& JFactory::getApplication();
 		$pathway =& $japp->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
-		$pathway->addItem( JText::_('MW_QUOTA_EXCEEDED'), 'index.php?option='.$this->_option.a.'task='.$this->_task );
+		$pathway->addItem( JText::_('MW_QUOTA_EXCEEDED'), 'index.php?option='.$this->_option.'&task='.$this->_task );
 		
 		// Check if the user is an admin.
 		$authorized = $this->_authorize();
@@ -269,8 +284,17 @@ class MwController extends JObject
 		$ms = new MwSession( $mwdb );
 		$sessions = $ms->getRecords( $juser->get('username'), '', $authorized );
 		
-		// Output HTML
-		echo MwHtml::quotaexceeded( $this->_option, $sessions, $authorized );
+		// Instantiate the view
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'quotaexceeded') );
+		$view->option = $this->_option;
+		$view->sessions = $sessions;
+		$view->authorized = $authorized;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -285,18 +309,15 @@ class MwController extends JObject
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
 		
-		//  Are we browsing files?
-		$browse = JRequest::getInt( 'browse', 0 );
-		
 		// Set the pathway
 		$japp =& JFactory::getApplication();
 		$pathway =& $japp->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
-		$pathway->addItem( JText::_('MW_STORAGE_MANAGEMENT'), 'index.php?option='.$this->_option.a.'task=storage' );
+		$pathway->addItem( JText::_('MW_STORAGE_MANAGEMENT'), 'index.php?option='.$this->_option.'&task=storage' );
 		
-		// output from purging
+		// Output from purging
 		$output = $this->__get('output');
 			
 		// Get their disk space usage
@@ -306,9 +327,18 @@ class MwController extends JObject
 			$percentage = $this->percent;
 		}
 		
-			
-		// Output HTML
-		echo MwHtml::storage( $this->_option, $this->banking, $exceeded, $output, $this->_error, $percentage, $browse);
+		// Instantiate the view
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'storage') );
+		$view->option = $this->_option;
+		$view->exceeded = $exceeded;
+		$view->output = $output;
+		$view->percentage = $percentage;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -327,15 +357,18 @@ class MwController extends JObject
 		$app['name']    = str_replace(':','-',$app['name']);
 		$app['number']  = 0;
 		$app['version'] = JRequest::getVar( 'version', 'default' );
+		
+		// Get the user's IP address
+		$ip = JRequest::getVar( 'REMOTE_ADDR', '', 'server' );
+
+		$xlog->logDebug("mw::invoke URL: $url : " . $app['name'] . " by " . $juser->get('username') . " from " . $ip);
+		$xlog->logDebug("mw::invoke REFERER:" . $_SERVER['HTTP_REFERER']);
 
 		// Make sure we have an app to invoke
 		if (trim($app['name']) == '') {
 			$this->_redirect = JRoute::_( 'index.php?option=com_myhub' );
 			return;
 		}
-		
-		// Get the user's IP address
-		$ip = JRequest::getVar( 'REMOTE_ADDR', '', 'server' );
 		
 		// Get the parent toolname (appname without any revision number "_r423")
 		$database =& JFactory::getDBO();
@@ -362,21 +395,17 @@ class MwController extends JObject
 		$app['caption'] = stripslashes($tv->title);
 
 		// Check if they have access to run this tool
-		$hasaccess = acc_gettoolaccess($app['name']);
-		$hasaccess2 = $this->_getToolAccess($app['name']);
-		
-		$status1 = (!$hasaccess) ? "PASSED" : "FAILED";
-		$status2 = ($hasaccess2) ? "PASSED" : "FAILED";
+		$hasaccess = $this->_getToolAccess($app['name']);
+		$status2 = ($hasaccess) ? "PASSED" : "FAILED";
 
-		$xlog->logDebug("mw::invoke URL:" . $url);
-		$xlog->logDebug("mw::invoke REFERER:" . $_SERVER['HTTP_REFERER']);
-		$xlog->logDebug("mw::invoke " . $app['name'] . " by " . $juser->get('username') . " from " . $ip . " acc_gettoolaccess " . $status1 . " _getToolAccess " . $status2);
+		$xlog->logDebug("mw::invoke " . $app['name'] . " by " . $juser->get('username') . " from " . $ip . " _getToolAccess " . $status2);
 
 		if ($this->getError()) {
 			echo '<!-- '.$this->getError().' -->';
 		}
-		if ($hasaccess) {
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=accessdenied');
+		if (!$hasaccess) {
+			//$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=accessdenied');
+			$this->accessdenied();
 			return;
 		}
 
@@ -399,7 +428,8 @@ class MwController extends JObject
 
 		// Have they reached their session quota?
 		if ($remain <= 0) {
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=quotaexceeded');
+			//$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=quotaexceeded');
+			$this->quotaexceeded();
 			return;
 		}
 		
@@ -642,12 +672,11 @@ class MwController extends JObject
 		// Check if we have access to run this tool.
 		// If not, force view to be read-only.
 		// This will happen in the event of sharing.
-		$noaccess = acc_gettoolaccess($row->appname);
-		$noaccess2 = $this->_getToolAccess($row->appname);
+		$noaccess = ($this->_getToolAccess($row->appname) == false);
 		if ($this->getError()) {
 			echo '<!-- '.$this->getError().' -->';
 		}
-		if ($noaccess != '') {
+		if ($noaccess) {
 		//if (!$noaccess) {
 			$command .= " readonly=1";
 		}
@@ -705,20 +734,44 @@ class MwController extends JObject
 		
 		// Get the sections
 		$sections = $dispatcher->trigger( 'onMw', array($toolname, $this->_option, $authorized, array($tab)) );
-
+		
 		// Add the default "Profile" section to the beginning of the lists
-		$body = '';
+		/*$body = '';
 		if ($tab == 'session') {
-			$body = MwHtml::session( $app['sess'], $output, $this->_option, $app, $toolname, $authorized, $this->config );
-		}
+			$body = $view->loadTemplate(); //MwHtml::session( $app['sess'], $output, $this->_option, $app, $toolname, $authorized, $this->config );
+		}*/
 		
 		$cat = array();
 		$cat['session'] = JText::_('MW_SESSION');
 		array_unshift($cats, $cat);
-		array_unshift($sections, array('html'=>$body,'metadata'=>''));
+		//array_unshift($sections, array('html'=>$body,'metadata'=>''));
 
 		// Output the HTML
-		echo MwHtml::view( $app, $authorized, $this->_option, $cats, $sections, $tab, $this->config );
+		//echo MwHtml::view( $app, $authorized, $this->_option, $cats, $sections, $tab, $this->config );
+		// Instantiate the view
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'session') );
+		$view->option = $this->_option;
+		$view->app = $app;
+		$view->authorized = $authorized;
+		$view->cats = $cats;
+		$view->sections = $sections;
+		$view->config = $this->config;
+		$view->tab = $tab;
+		$view->output = $output;
+		if ($app['sess']) {
+			// Get the middleware database
+			$mwdb =& MwUtils::getMWDBO();
+
+			// Load the viewperm
+			$ms = new MwViewperm( $mwdb );
+			$view->shares = $ms->loadViewperm( $app['sess'] );
+		}
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -953,8 +1006,8 @@ class MwController extends JObject
 	{
 		$retval = 1; // Assume success.
 		$fnoutput = array();
-
-		exec("/bin/sh components/".$this->_option."/mw $comm 2>&1 </dev/null",$output,$status);
+		$cmd = "/bin/sh components/".$this->_option."/mw $comm 2>&1 </dev/null";
+		exec($cmd,$output,$status);
 
 		$outln = 0;
 		if ($status != 0) {
@@ -1016,11 +1069,54 @@ class MwController extends JObject
 	}
 	
 	//-----------
-	
+	private function _getToolExportControl($exportcontrol)
+	{
+		$xlog =& XFactory::getLogger();
+	    $exportcontrol = strtolower($exportcontrol);
+
+        switch ($exportcontrol)
+        {
+            case 'us':
+                if (GeoUtils::ipcountry($_SERVER['REMOTE_ADDR']) != 'us') {
+                    $this->setError('This tool may only be accessed from within the U.S. Your current location could not be confirmed.');
+                    $xlog->logDebug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");
+                    return false;
+                }
+                break;
+
+            case 'd1':
+                if (GeoUtils::is_d1nation(GeoUtils::ipcountry($_SERVER['REMOTE_ADDR']))) {
+                    $this->setError('This tool may not be accessed from your current location due to export restrictions.');
+                    $xlog->logDebug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");
+                    return false;
+                } 
+                break;
+
+            case 'pu':
+                if (!GeoUtils::is_iplocation($_SERVER['REMOTE_ADDR'], $exportcontrol)) {
+                    $this->setError('This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.');
+                    $xlog->logDebug("mw::_getToolExportControl($exportControl) FAILED PURDUE export control check");
+                    return false;
+                }
+            	break;
+        }
+
+        $xlog->logDebug("mw::_getToolExportControl($exportcontrol) PASSED");
+		return true;
+	}
+
+
 	private function _getToolAccess($tool, $login='') 
 	{
+		ximport('xuserhelper');
+		ximport('xgeoutils');
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.toolgroup.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
+		
 		$xhub =& XFactory::getHub();
 		$xlog =& XFactory::getLogger();
+		$database =& JFactory::getDBO();
 	    
 		// Ensure we have a tool
 		if (!$tool) {
@@ -1028,163 +1124,128 @@ class MwController extends JObject
 			$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED null tool check");
 			return false;
 		}
-		//echo '<!-- Tool: '.$tool.' -->';
+
 		// Ensure we have a login
 		if ($login == '') {
 			$juser =& JFactory::getUser();
 			$login = $juser->get('username');
-		}
-		
-		$database =& JFactory::getDBO();
-		
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'mw.license.php' );
-		
-		// Get all the licenses on this tool
-		$lt = new LicenseTool( $database );
-		$tlicenses = $lt->getLicenses( $tool );
-		//echo '<!-- Tool licenses: ';
-		//print_r($tlicenses);
-		//echo '-->';
-		if (!$tlicenses) {
-			$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED tool license check, no tool licenses");
-			//return false;
-		}
-		
-		// Get all the licenses this user has access to
-		$lu = new LicenseUser( $database );
-		$ulicenses = $lu->getLicenses( $juser->get('id') );
-		//echo '<!-- User licenses: ';
-		//print_r($ulicenses);
-		//echo '-->';
-		if (!$ulicenses) {
-			$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED user license check, no user licenses");
-			//return false;
-		}
-		// See if any of the user's licenses and tool's licenses match
-		$ulids = array();
-		if ($ulicenses) {
-			foreach ($ulicenses as $ulicense) 
-			{
-				$ulids[] = $ulicense->license_id;
+			if ($login == '') {
+                $xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED null user check");
+			    return false;
 			}
 		}
 		
-		$licensed = false;
-		if ($tlicenses) {
-			foreach ($tlicenses as $tlicense) 
-			{
-				if (in_array($tlicense->license_id, $ulids)) {
-					$licensed = true;
-				}
-			}
-		}
-		
-		$admin = false;
-		
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
 		$tv = new ToolVersion( $database );
 		$tv->loadFromInstance( $tool );
 
-		// If not licensed, check the user groups to see if they're in a group that should have access
-		if (!$licensed) {
-			// Check if the user is in any groups for this app
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.toolgroup.php' );
-			$tg = new ToolGroup( $database );
-			$database->setQuery( "SELECT * FROM ".$tg->getTableName()." WHERE toolid=".$tv->toolid );
-			$toolgroups = $database->loadObjectList();
+		if (empty($tv)) {
+			$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
+			return false;
+		}
 
-			ximport('xuserhelper');
-			$xgroups = XUserHelper::getGroups($juser->get('id'), 'members');
-			$groups = array();
-			if ($xgroups) {
-				foreach ($xgroups as $xgroup) 
+		$tg = new ToolGroup( $database );
+		$database->setQuery( "SELECT * FROM ".$tg->getTableName()." WHERE toolid=".$tv->toolid );
+		$toolgroups = $database->loadObjectList();
+		if (empty($toolgroups)) {
+			$xlog->logDebug("mw::_getToolAccess($tool,$login) WARNING: no tool member groups");
+		}
+
+		$xgroups = XUserHelper::getGroups($juser->get('id'), 'members');
+		if (empty($xgroups)) {
+			$xlog->logDebug("mw::_getToolAccess($tool,$login) WARNING: user not in any groups");
+		}
+
+		// Check if the user is in any groups for this app
+
+		$ingroup = false;
+		$groups = array();
+		$indevgroup = false;
+		if ($xgroups) {
+			foreach ($xgroups as $xgroup) 
+			{
+				$groups[] = $xgroup->cn;
+			}
+			if ($toolgroups) {
+				foreach ($toolgroups as $toolgroup) 
 				{
-					$groups[] = $xgroup->cn;
-				}
-				if ($toolgroups) {
-					foreach ($toolgroups as $toolgroup) 
-					{
-						if (in_array($toolgroup->cn, $groups)) {
-							$licensed = true;
-							break;
-						}
+					if (in_array($toolgroup->cn, $groups)) {
+						$ingroup = true;
+						if ($toolgroup->role == 1)
+							$indevgroup = true;
+						break;
 					}
 				}
 			}
-			
-			// Check if the user is in the admin group
-			if (!$licensed) {
-				$ctconfig =& JComponentHelper::getParams( 'com_contribtool' );
-				if ($ctconfig->get('admingroup') != '' && in_array($ctconfig->get('admingroup'), $groups)) {
-					$licensed = true;
-					$admin = true;
-				}
-			}
 		}
-		
-		// Check if the tool version is published
-		if ($tv->state != 1) {
-			// Check if they're either a licensed user to and this is a dev version or they're an admin
-			if (($tv->state == 3 && $licensed) || $admin) {
-				// Do nothing. They have access.
-			} else {
-				//if (!$admin && !$licensed && $tv->state == 3) {
-				$this->setError('This tool version is not published.');
-				$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED license check, tool version is not published");
+
+		$admin = false;
+		$ctconfig =& JComponentHelper::getParams( 'com_contribtool' );
+		if ($ctconfig->get('admingroup') != '' && in_array($ctconfig->get('admingroup'), $groups)) {
+				$admin = true;
+		}
+
+		$exportAllowed = $this->_getToolExportControl($tv->exportControl);
+		$tisPublished = ($tv->state == 1);
+		$tisDev = ($tv->state == 3);
+	    $tisGroupControlled = ($tv->toolaccess == '@GROUP');	
+
+		if ($tisDev) {
+			if ($indevgroup) {
+				$xlog->logDebug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
+				return true;
+			}
+ 			else if ($admin) {
+				$xlog->logDebug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
+				return true;
+			}
+			else
+			{
+				$xlog->logDebug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
+        		$this->setError("The development version of this tool may only be accessed by members of it's development group.");
 				return false;
 			}
-		}
-		
-		if ($licensed) {
-			//echo '<!-- Licensed: true -->';
-			ximport('xgeoutils');
-			
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
-			$t = new ToolVersion( $database );
-			$t->loadFromInstance( $tool );
-			$t->exportControl = strtolower($t->exportControl);
-			//echo '<!-- Export control: '.$t->exportControl.' -->';
-			switch ($t->exportControl) 
-			{
-				case 'us':
-					if (GeoUtils::ipcountry($_SERVER['REMOTE_ADDR']) == 'us') {
-						return true;
-					} else {
-						$this->setError('This tool may only be accessed from within the U.S. Your current location could not be confirmed.');
-						$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED US export control check");
-						return false;
-					}
-				break;
-				
-				case 'd1':
-					if (GeoUtils::is_d1nation(GeoUtils::ipcountry($_SERVER['REMOTE_ADDR']))) {
-						$this->setError('This tool may not be accessed from your current location due to export restrictions.');
-						$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED D1 export control check");
-						return false;
-					} else {
-						return true;
-					}
-				break;
-				
-				case 'pu':
-					if (GeoUtils::is_iplocation($_SERVER['REMOTE_ADDR'], $t->exportControl)) {
-						return true;
-					} else {
-						$this->setError('This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.');
-						$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED PURDUE export control check");
-						return false;
-					}
-				break;
-				
-				default:
+		}		
+		else if ($tisPublished) {
+			if ($tisGroupControlled) {
+				if ($ingroup) {
+					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ACCESS GROUP)");
 					return true;
-				break;
+				}
+				else if ($admin) {
+					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
+					return true;
+				}
+				else {
+					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
+        			$this->setError("This tool may only be accessed by members of it's access control groups.");
+					return false;
+				}
 			}
-		//} else {
-		//	echo '<!-- Licensed: false -->';
+			else {
+				if (!$exportAllowed) {
+					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
+					return false;
+				}
+				else if ($admin) {
+					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
+					return true;
+				}
+				else if ($indevgroup) {
+					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
+					return true;
+				}
+				else {
+					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED");
+					return true;
+				}
+			}
 		}
-		
-		$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED license check");
+		else {
+				$xlog->logDebug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
+				$this->setError('This tool version is not published.');
+				return false;
+		}
+
 		return false;
 	}
 	
