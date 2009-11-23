@@ -96,12 +96,12 @@ class XSearchController
 		
 		// Set the page title
 		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_('SEARCH_TITLE') );
+		$document->setTitle( JText::_('COM_XSEARCH_TITLE') );
 		
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_('SEARCH_TITLE'),'index.php?option='.$this->_option);
+			$pathway->addItem(JText::_('COM_XSEARCH_TITLE'),'index.php?option='.$this->_option);
 		}
 		
 		// Add some needed CSS and JS to the template

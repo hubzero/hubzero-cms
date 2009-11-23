@@ -49,15 +49,10 @@ class XSearchHtml
 		$searchword = ($active && $active != 'all') ? $active.':'.$searchword : $searchword;
 		
 		$html  = t.'<fieldset>'.n;
-		$html .= t.t.'<legend>'.JText::_('Search').'</legend>'.n;
-		//$html  = t.'<fieldset>'.n;
-		//$html .= t.t.'<label for="details">'.JText::_('Details').': </label> '.n;
-		//$html .= t.t.'<input type="radio" id="activateDetails" name="details" checked="checked" /> On'.n;
-		//$html .= t.t.'<input type="radio" id="disableDetails" name="details" /> Off'.n;
-		//$html  = t.'</fieldset>'.n;
-		$html .= t.t.'<label>'.JText::_('KEYWORDS').': '.n;
+		$html .= t.t.'<legend>'.JText::_('COM_XSEARCH_SEARCH').'</legend>'.n;
+		$html .= t.t.'<label>'.JText::_('COM_XSEARCH_KEYWORDS').': '.n;
 		$html .= t.t.'<input type="text" name="searchword" size="25" value="'. htmlentities(utf8_encode(stripslashes($searchword)),ENT_COMPAT,'UTF-8') .'" /></label>'.n;
-		$html .= t.t.'<input type="submit" value="'.JText::_('SEARCH_AGAIN').'" />'.n;
+		$html .= t.t.'<input type="submit" value="'.JText::_('COM_XSEARCH_SEARCH_AGAIN').'" />'.n;
 		$html .= t.'</fieldset>'.n;
 
 		return $html;
@@ -120,12 +115,12 @@ class XSearchHtml
 					XSearchHtml::form( $keyword, $option )
 				);
 		$html .= XSearchHtml::subject( 
-					XSearchHtml::error( JText::_('NO_KEYWORD') )
+					XSearchHtml::error( JText::_('COM_XSEARCH_NO_KEYWORD') )
 				);
 		$html .= XSearchHtml::div('','clear').n;
 		$html .= '</form>'.n;
 		
-		$out  = XSearchHtml::div( XSearchHtml::hed( 2, JText::_('SEARCH_TITLE') ), 'full', 'content-header' ).n;
+		$out  = XSearchHtml::div( XSearchHtml::hed( 2, JText::_('COM_XSEARCH_TITLE') ), 'full', 'content-header' ).n;
 		$out .= XSearchHtml::div( $html, 'main section' );
 		
 		return $out;
@@ -155,7 +150,7 @@ class XSearchHtml
 	public function categories( $cats, $active, $searchword, $total, $option ) 
 	{
 		// Add the "all" category
-		$all = array('category'=>'all','title'=>JText::_('ALL_CATEGORIES'),'total'=>$total);
+		$all = array('category'=>'all','title'=>JText::_('COM_XSEARCH_ALL_CATEGORIES'),'total'=>$total);
 		
 		array_unshift($cats, $all);
 		
@@ -247,7 +242,7 @@ class XSearchHtml
 	
 	public function display( $keyword, $totals, $results, $cats, $active, $option, $start=0, $limit=0, $total ) 
 	{			
-		$html  = XSearchHtml::div( XSearchHtml::hed( 2, JText::_('SEARCH_TITLE') ), 'full', 'content-header' ).n;
+		$html  = XSearchHtml::div( XSearchHtml::hed( 2, JText::_('COM_XSEARCH_TITLE') ), 'full', 'content-header' ).n;
 		
 		$html .= '<div class="main section">'.n;
 		$html .= '<form action="'.JRoute::_('index.php?option='.$option).'" method="get">'.n;
@@ -257,7 +252,7 @@ class XSearchHtml
 				);
 		
 		$html .= '<div class="subject">'.n;
-		$html .= XSearchHtml::hed( 3, 'Search for: '.$keyword );
+		$html .= XSearchHtml::hed( 3, JText::_('COM_XSEARCH_SEARCH_FOR').' '.$keyword );
 		
 		$juri =& JURI::getInstance();
 		$foundresults = false;
@@ -302,7 +297,7 @@ class XSearchHtml
 					}
 				}
 				
-				$name  = ($name) ? $name : JText::_('ALL_CATEGORIES');
+				$name  = ($name) ? $name : JText::_('COM_XSEARCH_ALL_CATEGORIES');
 				$divid = ($divid) ? $divid : 'searchall';
 				
 				$num  = $total .' result';
@@ -378,7 +373,7 @@ class XSearchHtml
 
 					$html .= XSearchHtml::pagenav( $pageNav, $active, $keyword, $option );
 				} else {
-					$html .= '<p class="moreresults">'.JText::sprintf('TOP_SHOWN', $amt);
+					$html .= '<p class="moreresults">'.JText::sprintf('COM_XSEARCH_TOP_SHOWN', $amt);
 					// Add a "more" link if necessary
 					$ttl = 0;
 					if (is_array($totals[$k])) {
@@ -398,7 +393,7 @@ class XSearchHtml
 						} else {
 							$sef .= '?'.$qs;
 						}
-						$html .= ' | <a href="'.$sef.'">'.JText::_('SEE_MORE_RESULTS').'</a>';
+						$html .= ' | <a href="'.$sef.'">'.JText::_('COM_XSEARCH_SEE_MORE_RESULTS').'</a>';
 					}
 					$html .= '</p>'.n.n;
 				}
@@ -420,7 +415,7 @@ class XSearchHtml
 			$k++;
 		}
 		if (!$foundresults) {
-			$html .= XSearchHtml::warning( JText::_('NO_RESULTS') );
+			$html .= XSearchHtml::warning( JText::_('COM_XSEARCH_NO_RESULTS') );
 		}
 		$html .= '</div><!-- / .subject -->'.n;
 		$html .= XSearchHtml::div('','clear').n;
