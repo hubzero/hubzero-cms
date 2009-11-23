@@ -259,6 +259,7 @@ class HubConfigHTML
 								<th>Proxy</th>
 								<th>Update</th>
 								<th>Edit</th>
+								<th>&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -306,6 +307,15 @@ class HubConfigHTML
 						<option value="H"<?php if ($edit == 'H') { echo ' selected="selected"'; }?>>Hide</option>
 						<option value="U"<?php if ($edit == 'U') { echo ' selected="selected"'; }?>>Read only</option>
 					</select>
+				</td>
+				<td>
+					<?php
+					if ($field == 'Organization') {
+						echo '<a href="index.php?option=com_hub&amp;task=orgs">Edit Organization List</a>';
+					} else {
+						echo '&nbsp;';
+					}
+					?>
 				</td>
 			</tr>
 			<?php
