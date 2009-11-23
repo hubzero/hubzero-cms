@@ -567,6 +567,10 @@ class plgGroupsForum extends JPlugin
 			$frm .= t.'<fieldset>'.n;
 			$frm .= GroupsHtml::hed(4,'<a name="commentform"></a>'.JText::_('ADD_COMMENT')).n;
 			$frm .= t.t.'<label>'.n;
+			$frm .= t.t.t.'<input class="option" type="checkbox" name="anonymous" id="forum_anonymous" /> '.n;
+			$frm .= t.t.t.JText::_('FORUM_FORM_ANONYMOUS').n;
+			$frm .= t.t.'</label>'.n;
+			$frm .= t.t.'<label>'.n;
 			$frm .= t.t.t.JText::_('FORUM_FORM_COMMENTS').':'.n;
 			$frm .= t.t.t.'<textarea name="comment" id="forum_comments" rows="15" cols="35"></textarea>'.n;
 			$frm .= t.t.'</label>'.n;
@@ -639,6 +643,11 @@ class plgGroupsForum extends JPlugin
 			$html .= ($row->access != 4) ? ' checked="checked"' : '';
 			$html .= ' /> '.n;
 			$html .= t.t.t.JText::_('FORUM_FORM_ACCESS').n;
+			$html .= t.t.'</label>'.n;
+			
+			$html .= t.t.'<label>'.n;
+			$html .= t.t.t.'<input class="option" type="checkbox" name="anonymous" id="forum_anonymous" /> '.n;
+			$html .= t.t.t.JText::_('FORUM_FORM_ANONYMOUS').n;
 			$html .= t.t.'</label>'.n;
 
 			$html .= t.t.'<label>'.n;
