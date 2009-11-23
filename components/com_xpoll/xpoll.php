@@ -35,7 +35,6 @@ if ($config->getValue('config.debug')) {
 }
 
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'xpoll.class.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'xpoll.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
 // Instantiate controller

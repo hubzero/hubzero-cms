@@ -25,12 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class XPollController
+class XPollController extends JObject
 {	
 	private $_name  = NULL;
 	private $_data  = array();
 	private $_task  = NULL;
-	private $_error = NULL;
 	
 	//-----------
 	
@@ -135,22 +134,30 @@ class XPollController
 		$database =& JFactory::getDBO();
 		$redirect = 1;
 		
-		// Check for a session cookie (quick way to check if cookies are enabled)
-		/*$sessioncookie = JRequest::getVar( 'sessioncookie', '' );
-		if (!$sessioncookie) {
-			echo XPollHtml::hed(2,JText::_(strtoupper($this->_name))).n;
-			echo XPollHtml::error(JText::_('ALERT_ENABLED')).n;
-			return;
-		}*/
+		// Instantiate a view
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'vote') );
+		$view->option = $this->_option;
+
+		$document =& JFactory::getDocument();
+		$document->setTitle( JText::_(strtoupper($this->_option)));
+
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(JText::_(strtoupper($this->_option)),'index.php?option='.$this->_option);
+		}
 
 		// Incoming poll ID
 		$uid = JRequest::getInt( 'id', 0 );
+		$view->pollid = $uid;
 		
 		// Load the poll
 		$poll = new XPollPoll( $database );
 		if (!$poll->load( $uid )) {
-			echo XPollHtml::hed(2,JText::_(strtoupper($this->_name))).n;
-			echo XPollHtml::error(JText::_('NOTAUTH')).n;
+			$view->setError( JText::_('COM_XPOLL_NOTAUTH') );
+			$view->display();
 			return;
 		}
 
@@ -160,17 +167,16 @@ class XPollController
 		// Check if this user has already voted
 		$voted = JRequest::getVar( $cookiename, '0', 'cookie' );
 		if ($voted) {
-			echo XPollHtml::hed(2,JText::_(strtoupper($this->_name))).n;
-			echo XPollHtml::warning(JText::_('ALREADY_VOTED')).n;
-			echo XPollHtml::voted( $this->_option, $uid );
+			$view->setError( JText::_('COM_XPOLL_ALREADY_VOTED') );
+			$view->display();
 			return;
 		}
 
 		// Check if the user made a selection (voted for something)
 		$voteid = JRequest::getInt( 'voteid', 0 );
 		if (!$voteid) {
-			echo XPollHtml::hed(2,JText::_(strtoupper($this->_name))).n;
-			echo XPollHtml::error(JText::_('NO_SELECTION')).n;
+			$view->setError( JText::_('COM_XPOLL_NO_SELECTION') );
+			$view->display();
 			return;
 		}
 		
@@ -216,16 +222,10 @@ class XPollController
 		// Choose the action
 		if ($redirect) {
 			$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=view&id='. $uid );
-			//$this->_message = _THANKS;
 		} else {
-			$app =& JFactory::getApplication();
-			$pathway =& $app->getPathway();
-			if (count($pathway->getPathWay()) <= 0) {
-				$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-			}
-			$pathway->addItem(stripslashes($poll->title),'index.php?option='.$this->_option.a.'task=view'.a.'id='.$uid);
+			$pathway->addItem(stripslashes($poll->title),'index.php?option='.$this->_option.'&task=view&id='.$uid);
 			
-			echo XPollHtml::thanks( $this->_option, $uid );
+			$view->display();
 		}
 	}
 
@@ -234,6 +234,12 @@ class XPollController
 	protected function view() 
 	{
 		$database =& JFactory::getDBO();
+		
+		// Instantiate a view
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'view') );
+		$view->option = $this->_option;
 		
 		// Incoming
 		$uid = JRequest::getInt( 'id', 0 );
@@ -248,8 +254,8 @@ class XPollController
 
 		// If id value is passed and poll not published then exit
 		if ($poll->id != '' && !$poll->published) {
-			echo XPollHtml::hed(2,JText::_(strtoupper($this->_name))).n;
-			echo XPollHtml::error(JText::_('POLL_NOT_FOUND')).n;
+			$view->setError( JText::_('COM_XPOLL_POLL_NOT_FOUND') );
+			$view->display();
 			return;
 		}
 
@@ -260,7 +266,7 @@ class XPollController
 		if (isset($poll->id) && $poll->id != '' && $poll->published == 1) {
 			if (empty($poll->title)) {
 				$poll->id = '';
-				$poll->title = JText::_('SELECT_POLL');
+				$poll->title = JText::_('COM_XPOLL_SELECT_POLL');
 			}
 
 			// Get the first and last vote dates
@@ -268,8 +274,8 @@ class XPollController
 			$dates = $xpdate->getMinMaxDates( $poll->id );
 
 			if (isset($dates[0]->mindate)) {
-				$first_vote = JHTML::_( 'date', $dates[0]->mindate, JText::_('DATE_FORMAT_LC2') );
-				$last_vote  = JHTML::_( 'date', $dates[0]->maxdate, JText::_('DATE_FORMAT_LC2') );
+				$first_vote = JHTML::_( 'date', $dates[0]->mindate, JText::_('COM_XPOLL_DATE_FORMAT_LC2') );
+				$last_vote  = JHTML::_( 'date', $dates[0]->maxdate, JText::_('COM_XPOLL_DATE_FORMAT_LC2') );
 			}
 			
 			// Get the poll data
@@ -282,17 +288,25 @@ class XPollController
 		
 		// Set the page title
 		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)).': '.$poll->title);
+		$document->setTitle( JText::_(strtoupper($this->_option)).': '.$poll->title);
 
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+			$pathway->addItem(JText::_(strtoupper($this->_option)),'index.php?option='.$this->_option);
 		}
-		$pathway->addItem(stripslashes($poll->title),'index.php?option='.$this->_option.a.'task=view'.a.'id='.$uid);
+		$pathway->addItem(stripslashes($poll->title),'index.php?option='.$this->_option.'&task=view&id='.$uid);
 
-		// Output HTML
-		XPollHtml::showResults( $poll, $votes, $first_vote, $last_vote, $polls, $this->_option );
+		
+		$view->poll = $poll;
+		$view->polls = $polls;
+		$view->votes = $votes;
+		$view->first_vote = $first_vote;
+		$view->last_vote = $last_vote;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -315,17 +329,27 @@ class XPollController
 		
 		// Set the page title
 		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_('LATEST') );
+		$document->setTitle( JText::_(strtoupper($this->_option)).': '.JText::_('COM_XPOLL_LATEST') );
 		
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+			$pathway->addItem(JText::_(strtoupper($this->_option)),'index.php?option='.$this->_option);
 		}
-		$pathway->addItem(JText::_('LATEST'),'index.php?option='.$this->_option.a.'task=latest');
+		$pathway->addItem(JText::_('COM_XPOLL_LATEST'),'index.php?option='.$this->_option.'&task=latest');
 		
 		// Output HTML
-		XPollHtml::latest( $poll, $options, $this->_option );
+		jimport( 'joomla.application.component.view');
+
+		// Output HTML
+		$view = new JView( array('name'=>'latest') );
+		$view->option = $this->_option;
+		$view->poll = $poll;
+		$view->options = $options;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 }
 ?>
