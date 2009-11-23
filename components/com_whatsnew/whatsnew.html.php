@@ -94,17 +94,18 @@ class WhatsnewHtml
     {		
 		$html = $pageNav->getListFooter();
 		
-		$qs_bad = 'searchword='.urlencode(strToLower($category).':').'&';
-		$qs_good = 'searchword='.urlencode(strToLower($category).':'.$period).'&';
+		/*$qs_bad = 'category='.urlencode(strToLower($category).':').'&';
+		$qs_good = 'category='.urlencode(strToLower($category).':'.$period).'&';
 
-		$qs_bad2 = 'searchword='.urlencode(strToLower($category).':').'"';
-		$qs_good2 = 'searchword='.urlencode(strToLower($category).':'.$period).'"';
+		$qs_bad2 = 'category='.urlencode(strToLower($category).':').'"';
+		$qs_good2 = 'category='.urlencode(strToLower($category).':'.$period).'"';
 
 		$html = str_replace('%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C', '',$html);
 		$html = str_replace($qs_bad,$qs_good,$html);
-		$html = str_replace($qs_bad2,$qs_good2,$html);
-
-		$html = str_replace('whatsnew/?','whatsnew/'.$category.'-'.$period.'/?',$html);
+		$html = str_replace($qs_bad2,$qs_good2,$html);*/
+		$html = str_replace('category='.urlencode(strToLower($category)).'&amp;&amp;', '', $html);
+		$html = str_replace('category='.urlencode(strToLower($category)).'&amp;', '', $html);
+		$html = str_replace('whatsnew/?','whatsnew/'.$category.':'.$period.'/?',$html);
 		
 		return $html;
     }
@@ -266,7 +267,6 @@ class WhatsnewHtml
 							return JText::_('OPT_CALENDAR_YEAR').' '.$y;
 						}
 					}
-					
 				}
 			break;
 		}
