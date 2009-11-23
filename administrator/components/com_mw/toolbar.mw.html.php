@@ -39,48 +39,6 @@ class MwToolbar
 
 	//-----------
 	
-	public function _EDIT_LICENSE_ASSOC($edit) 
-	{
-		$text = ( $edit ? JText::_( 'EDIT_LICENSE_ASSOC' ) : JText::_( 'NEW_LICENSE_ASSOC' ) );
-		
-		JToolBarHelper::title( JText::_( 'Middleware' ).': <small><small>[ '. $text.' ]</small></small>', 'user.png' );
-		JToolBarHelper::save('savelicenseassoc');
-		JToolBarHelper::cancel('cancellicense');
-	}
-
-	//-----------
-	
-	public function _LICENSE_ASSOC() 
-	{
-		JToolBarHelper::title( JText::_( 'Middleware' ).': <small><small>[ '. JText::_('LICENSE_ASSOC').' ]</small></small>', 'user.png' );
-		JToolBarHelper::addNew('addlicenseassoc');
-		//JToolBarHelper::editList('editlicenseassoc');
-		JToolBarHelper::deleteList('Remove entry?', 'removelicenseassoc');
-	}
-	
-	//-----------
-	
-	public function _EDIT_LICENSE($edit) 
-	{
-		$text = ( $edit ? JText::_( 'EDIT_LICENSE' ) : JText::_( 'NEW_LICENSE' ) );
-		
-		JToolBarHelper::title( JText::_( 'Middleware' ).': <small><small>[ '. $text.' ]</small></small>', 'user.png' );
-		JToolBarHelper::save('savelicense');
-		JToolBarHelper::cancel('cancellicense');
-	}
-	
-	//-----------
-	
-	public function _LICENSES() 
-	{
-		JToolBarHelper::title( JText::_( 'Middleware' ).': <small><small>[ '. JText::_('LICENSES').' ]</small></small>', 'user.png' );
-		JToolBarHelper::addNew('addlicense');
-		JToolBarHelper::editList('editlicense');
-		JToolBarHelper::deleteList('Remove license?','removelicense');
-	}
-
-	//-----------
-	
 	public function _DEFAULT() 
 	{
 		JToolBarHelper::title( JText::_( 'Middleware' ), 'user.png' );

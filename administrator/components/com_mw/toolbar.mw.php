@@ -37,14 +37,6 @@ switch ($task)
 	case 'new':  MwToolbar::_CANCEL(); break;
 	case 'edit': MwToolbar::_CANCEL(); break;
 	
-	case 'addlicense': MwToolbar::_EDIT_LICENSE(0); break;
-	case 'editlicense': MwToolbar::_EDIT_LICENSE(1); break;
-	case 'licenses': MwToolbar::_LICENSES(); break;
-	
-	case 'addlicenseassoc': MwToolbar::_EDIT_LICENSE_ASSOC(0); break;
-	case 'editlicenseassoc': MwToolbar::_EDIT_LICENSE_ASSOC(1); break;
-	case 'licenseassoc': MwToolbar::_LICENSE_ASSOC(); break;
-	
 	default: MwToolbar::_DEFAULT(); break;
 }
 ?>

@@ -53,7 +53,6 @@
 	<administration>
 		<menu>Middleware</menu>
 		<files>
-  			<filename>mw.license.php</filename>
 			<filename>index.html</filename>
 			<filename>admin.controller.php</filename>
 			<filename>admin.mw.html.php</filename>
