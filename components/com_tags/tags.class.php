@@ -99,7 +99,8 @@ class Tags
 					'tag' => $r->tag,
 					'raw_tag' => $r->raw_tag,
 					'tagger_id' => $r->taggerid,
-					'admin' => $r->admin
+					'admin' => $r->admin,
+					'tag_id' => $r->id
 				);
 			}
 		}
