@@ -750,6 +750,7 @@ class FeedbackController extends JObject
 		}
 		// Output Thank You message
 		echo FeedbackHtml::reportThanks($msg, $row->id, $no_html, $this->_option);
+		//echo 'Testing. Temporarily down.';
 	}
 
 	private function getTool( $referrer ) 
@@ -777,6 +778,14 @@ class FeedbackController extends JObject
 					$tool = trim($bits[3]);
 				}
 			}
+			if (strstr($tool,'_r')) {
+				$version = strrchr($tool,'_r');
+				$tool = str_replace($version, '', $tool);
+			}
+			if (strstr($tool,'_dev')) {
+				$version = strrchr($tool,'_dev');
+				$tool = str_replace($version, '', $tool);
+			}
 		} else if (substr($referrer,0,6) == '/tools' || substr($referrer,0,10) == '/resources') {
 			$bits = explode('/', $referrer);
 			$tool = (isset($bits[2])) ? trim($bits[2]) : '';
@@ -784,7 +793,7 @@ class FeedbackController extends JObject
 			$bits = explode('/', $referrer);
 			$tool = (isset($bits[4])) ? trim($bits[4]) : '';
 		}
-		
+
 		return $tool;
 	}
 
@@ -812,7 +821,7 @@ class FeedbackController extends JObject
 		$tags = $rt->getTags( $resource->id, 0, 0, 1 );
 
 		if (!$tags) {
-			return '';
+			return 'app-'.$tool;
 		}
 
 		// Get tag/group associations
@@ -821,7 +830,7 @@ class FeedbackController extends JObject
 		$tgas = $tt->getRecords();
 			
 		if (!$tgas) {
-			return '';
+			return 'app-'.$tool;
 		}
 		
 		/*$ts = array();
@@ -855,6 +864,7 @@ class FeedbackController extends JObject
 				break;
 			}
 		}
+		return 'app-'.$tool;
 	}
 
 	//----------------------------------------------------------
