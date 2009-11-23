@@ -44,7 +44,7 @@
 			<option value="1">Registered users</option>
 			<option value="2">Private</option>
 		</param>
-		<param name="access_email" type="list" default="0" label="Email" description="Show/Hide the user email">
+		<param name="access_email" type="list" default="2" label="Email" description="Show/Hide the user email">
 			<option value="0">Public</option>
 			<option value="1">Registered users</option>
 			<option value="2">Private</option>
@@ -54,7 +54,7 @@
 			<option value="1">Registered users</option>
 			<option value="2">Private</option>
 		</param>
-		<param name="access_phone" type="list" default="0" label="Phone" description="Show/Hide the user phone">
+		<param name="access_phone" type="list" default="2" label="Phone" description="Show/Hide the user phone">
 			<option value="0">Public</option>
 			<option value="1">Registered users</option>
 			<option value="2">Private</option>
@@ -84,17 +84,17 @@
 			<option value="1">Registered users</option>
 			<option value="2">Private</option>
 		</param>
-		<param name="access_race" type="list" default="0" label="Race" description="Show/Hide the user race">
+		<param name="access_race" type="list" default="2" label="Race" description="Show/Hide the user race">
 			<option value="0">Public</option>
 			<option value="1">Registered users</option>
 			<option value="2">Private</option>
 		</param>
-		<param name="access_hispanic" type="list" default="0" label="Hispanic" description="Show/Hide the user hispanic heritage">
+		<param name="access_hispanic" type="list" default="2" label="Hispanic" description="Show/Hide the user hispanic heritage">
 			<option value="0">Public</option>
 			<option value="1">Registered users</option>
 			<option value="2">Private</option>
 		</param>
-		<param name="access_disability" type="list" default="0" label="Disability" description="Show/Hide the user disability">
+		<param name="access_disability" type="list" default="2" label="Disability" description="Show/Hide the user disability">
 			<option value="0">Public</option>
 			<option value="1">Registered users</option>
 			<option value="2">Private</option>
