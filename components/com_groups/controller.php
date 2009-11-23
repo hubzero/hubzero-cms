@@ -1066,6 +1066,10 @@ class GroupsController extends JObject
 			
 			// Set the pathway
 			$pathway->addItem($gtitle,'index.php?option='.$this->_option.a.'gid='.$group->get('cn'));
+		} else {
+			$group->set('join_policy', $this->config->get('join_policy'));
+			$group->set('privacy', $this->config->get('privacy'));
+			$group->set('access', $this->config->get('access'));
 		}
 
 		$p  = 'index.php?option='.$this->_option.a.'task='.$this->_task;
