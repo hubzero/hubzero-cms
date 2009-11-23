@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="main section">
 
-	 <div class="threecolumn farleft">
+	 <div class="three columns first">
 		<div id="kb" class="mainsection">
 			<h3><a href="/kb/">Knowledge Base</a></h3>
 	 		<p>Have a question or looking for more information about a <a href="/kb/tools/">tool</a> 
@@ -43,7 +43,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php echo XModuleHelper::renderModules( 'tcleft' ); ?>
 	</div>
 
-	<div class="threecolumn middle">
+	<div class="three columns second">
 		<div id="na" class="mainsection">
 			<h3><a href="answers/">Answers</a></h3>
 			<p>Couldn't find an answer to your question in our <a href="/kb/">knowledge base</a>? 
@@ -54,7 +54,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php echo XModuleHelper::renderModules( 'tcmiddle' ); ?>
 	</div>
 
-	<div class="threecolumn farright">
+	<div class="three columns third">
 		<div id="rp" class="mainsection">
 			<h3><a href="/feedback/report_problems/">Report Problems</a></h3>
 			<p><a href="/feedback/report_problems/">Report problems</a> with our form and have your problem entered into our <a href="/support/tickets/">ticket tracking 
