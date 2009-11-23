@@ -25,6 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+ximport('misc_func');
+
 class XRegistrationHelper
 {
 	function genemailconfirm() 
