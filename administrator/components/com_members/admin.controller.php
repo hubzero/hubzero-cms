@@ -247,15 +247,17 @@ class MembersController extends JObject
 		
 		$ec = JRequest::getInt( 'emailConfirmed', 0, 'post' );
 		if ($ec) {
-			//if (acc_useremailconfirm($profile->get('username'), $profile->get('username'))) {
 				$profile->set('emailConfirmed', 1);
-			//}
 		} else {
 			ximport('xregistrationhelper');
-			//$confirm = acc_useremailunconfirm($profile->get('username'), $profile->get('username'));
 			$confirm = XRegistrationHelper::genemailconfirm();
 			$profile->set('emailConfirmed', $confirm);
 		}
+		$se = JRequest::getInt( 'shadowExpire', 0, 'post' );
+		if ($se) 
+		    $profile->set('shadowExpire','1');
+		else
+		    $profile->set('shadowExpire', null);
 		
 		if (isset($p['email'])) {
 			$profile->set('email', trim($p['email']));
@@ -832,6 +834,106 @@ class MembersController extends JObject
 		
 		// Output HTML
 		MembersHtml::writeHosts( $app, $this->_option, $profile->get('uidNumber'), $rows, $this->getErrors() );
+	}
+	
+	//----------------------------------------------------------
+	//  Managers
+	//----------------------------------------------------------
+	
+	protected function addmanager()
+	{
+		// Incoming member ID
+		$id = JRequest::getInt( 'id', 0 );
+		if (!$id) {
+			$this->setError( JText::_('MEMBERS_NO_ID') );
+			$this->managers();
+		}
+		
+		// Load the profile
+		$profile = new XProfile();
+		$profile->load( $id );
+		
+		// Incoming host
+		$manager = JRequest::getVar( 'manager', '' );
+		if (!$manager) {
+			$this->setError( JText::_('MEMBERS_NO_MANAGER') );
+			$this->managers( $id );
+		}
+		
+		$managers = $profile->get('manager');
+		$managers[] = $manager;
+		
+		// Update the hosts list
+		$profile->set('manager', $managers);
+		if (!$profile->update()) {
+			$this->setError( $profile->getError() );
+		}
+		
+		// Push through to the hosts view
+		$this->managers( $profile );
+	}
+	
+	//-----------
+	
+	protected function deletemanager()
+	{
+		// Incoming member ID
+		$id = JRequest::getInt( 'id', 0 );
+		if (!$id) {
+			$this->setError( JText::_('MEMBERS_NO_ID') );
+			$this->managers();
+		}
+		
+		// Load the profile
+		$profile = new XProfile();
+		$profile->load( $id );
+		
+		// Incoming host
+		$manager = JRequest::getVar( 'manager', '' );
+		if (!$manager) {
+			$this->setError( JText::_('MEMBERS_NO_MANAGER') );
+			$this->managers( $profile );
+		}
+		
+		$managers = $profile->get('manager');
+		$a = array();
+		foreach ($managers as $h) 
+		{
+			if ($h != $manager) {
+				$a[] = $h;
+			}
+		}
+		
+		// Update the hosts list
+		$profile->set('manager', $a);
+		if (!$profile->update()) {
+			$this->setError( $profile->getError() );
+		}
+		
+		// Push through to the hosts view
+		$this->managers( $profile );
+	}
+	
+	//-----------
+
+	protected function managers( $profile=null )
+	{
+		// Get the app
+		$app =& JFactory::getApplication();
+		
+		// Incoming
+		if (!$profile) {
+			$id = JRequest::getInt( 'id', 0, 'get' );
+			
+			$profile = new XProfile();
+			$profile->load( $id );
+		}
+		
+		// Get a list of all hosts
+		$rows = $profile->get( 'manager' );
+		
+		// Output HTML
+		MembersHtml::writeManagers( $app, $this->_option, $profile->get('uidNumber'), $rows, $this->getErrors() );
 	}
 }
 ?>

@@ -207,14 +207,14 @@ class MembersProfile extends JTable
 		
 		if ($sqlsearch) {
 			$query .= ' WHERE'.$sqlsearch;
-			if (!$admin || $filters['show'] == 'contributors') {
+			if (!$admin || $filters['show'] == 'contributors' || (isset($filters['sortby']) && $filters['sortby'] == "RAND()")) {
 				$query .= " AND m.public=1";
 			}
 			if (isset($filters['sortby']) && $filters['sortby'] == "RAND()") {
 				$query .= " AND b.bio != '' AND b.bio IS NOT NULL AND m.picture != '' AND m.picture IS NOT NULL";
 			}
 		} else {
-			if (!$admin || $filters['show'] == 'contributors') {
+			if (!$admin || $filters['show'] == 'contributors' || (isset($filters['sortby']) && $filters['sortby'] == "RAND()")) {
 				$query .= " WHERE m.public=1";
 			}
 		}
