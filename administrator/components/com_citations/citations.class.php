@@ -173,7 +173,10 @@ class CitationsCitation extends JTable
 				$query .= ($filter['search']) ? " AND r.title LIKE '%".$filter['search']."%'" : "";
 			}
 		}
-		$query .= " ORDER BY ".$filter['sort']." LIMIT ".$filter['start'].",".$filter['limit'];
+		$query .= " ORDER BY ".$filter['sort'];
+		if (isset($filter['limit']) && $filter['limit'] > 0) {
+			$query .= " LIMIT ".$filter['start'].",".$filter['limit'];
+		}
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
