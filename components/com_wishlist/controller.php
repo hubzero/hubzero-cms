@@ -1,7 +1,8 @@
 <?php
 /**
+ * @author		Alissa Nedossekina <alisa@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * @license	GNU General Public License, version 2 (GPLv2) 
+ * @license		GNU General Public License, version 2 (GPLv2) 
  *
  * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
@@ -163,6 +164,7 @@ class WishlistController extends JObject
 			case 'settings':    $this->settings();  	break;
 			case 'savesettings':$this->savesettings(); 	break;
 			case 'newlist':     $this->createlist();    break;
+			case 'search':      $this->wishlist();    	break;
 			
 			case 'wish':     	$this->wish();    		break;
 			case 'add':     	$this->addwish();       break;			
@@ -368,7 +370,9 @@ class WishlistController extends JObject
 			$objWish = new Wish( $database );
 			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $this->_admin, $juser);
 			$filters['limit'] = (isset($this->limit)) ? $this->limit : $filters['limit'];
-			$total = $objWish->get_count($wishlist->id, $filters, $this->_admin, $juser);	
+	
+			$total = $objWish->get_count($wishlist->id, $filters, $this->_admin, $juser);
+
 			
 			// Get info on individual wishes			
 			if($wishlist->items) {
@@ -817,6 +821,8 @@ class WishlistController extends JObject
 		//is this wish assigned to anyone?
 		$assignedto = JRequest::getInt( 'assigned', 0 );
 		
+		$new_assignee = ($assignedto && $objWish->assigned != $assignedto) ? 1 : 0;
+		
 		$objWish->due = ($due ) ? $due : '0000-00-00 00:00:00';
 	    $objWish->assigned = ($assignedto ) ? $assignedto : 0;
 
@@ -824,6 +830,51 @@ class WishlistController extends JObject
 		if (!$objWish->store()) {
 			echo WishlistHtml::alert( $objWish->getError() );
 			exit();
+		}
+		
+		else if ($new_assignee) {
+				// Build e-mail components
+				$xhub =& XFactory::getHub();
+				$jconfig =& JFactory::getConfig();
+				$admin_email = $jconfig->getValue('config.mailfrom');
+									
+				// to wish assignee
+				$subject = JText::_(strtoupper($this->_name)).', '.JText::_('Wish').' #'.$wishid.' '.JText::_('has been assigned to you');
+					
+				$from = array();
+				$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
+				$from['email'] = $jconfig->getValue('config.mailfrom');
+					
+				$name = JText::_('UNKNOWN');
+				$login = JText::_('UNKNOWN');
+				$ruser =& XUser::getInstance($objWish->proposed_by);
+				if (is_object($ruser)) {
+					$name = $ruser->get('name');
+					$login = $ruser->get('login');
+				}
+				if($objWish->anonymous) {
+					$name = JText::_('ANONYMOUS');
+				}
+		
+				$message  = '----------------------------'.r.n;
+				$message .= JText::_('WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
+				$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
+				$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
+				$message .= ' '.JText::_('BY').' '.$name.' ';
+				$message .= $objWish->anonymous ? '' : '('.$login.')';
+				$message .= r.n.r.n;
+					
+				$message .= '----------------------------'.r.n;
+				$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
+				$message  .= JText::_('GO_TO').' '.$url.' '.JText::_('to view your assigned wish').'.';	
+				
+				JPluginHelper::importPlugin( 'xmessage' );
+				$dispatcher =& JDispatcher::getInstance();
+				
+				if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_wish_assigned', $subject, $message, $from, array($objWish->assigned), $this->_option ))) {
+					$this->setError( JText::_('Failed to message wish assignee.') );
+					echo WishlistHtml::alert( $this->_error );
+				}
 		}
 		
 		
@@ -1377,7 +1428,8 @@ class WishlistController extends JObject
 					
 					case 'accepted':
 					$objWish->status = 0;
-					$objWish->accepted = 1;    	
+					$objWish->accepted = 1; 
+					$objWish->assigned = $juser->get('id'); // assign to person who accepted the wish   	
 					break;
 					
 					case 'rejected':
@@ -1416,7 +1468,11 @@ class WishlistController extends JObject
 					$jconfig =& JFactory::getConfig();
 					$admin_email = $jconfig->getValue('config.mailfrom');
 					
-					$subject = JText::_(strtoupper($this->_name)).', '.JText::_('YOUR_WISH').' #'.$wishid.' is '.$status;
+					// to wish author
+					$subject1 = JText::_(strtoupper($this->_name)).', '.JText::_('YOUR_WISH').' #'.$wishid.' is '.$status;
+					
+					// to wish assignee
+					$subject2 = JText::_(strtoupper($this->_name)).', '.JText::_('Wish').' #'.$wishid.' '.JText::_('has been assigned to you');
 					
 					$from = array();
 					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
@@ -1442,22 +1498,16 @@ class WishlistController extends JObject
 					$message .= r.n.r.n;
 					
 					$message .= '----------------------------'.r.n;
+					$as_mes = $message;
 					if($status!='pending') {
 					$message .= JText::_('YOUR_WISH').' '.JText::_('HAS_BEEN').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'.r.n;
 					}
 					else {
-					$message .= JText::_('The status of your wish changed to').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'.r.n;
+					$message .= JText::_('The status of this wish changed to').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'.r.n;
 					}
 					$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$cat.a.'rid='.$refid.a.'wishid='.$wishid);
 					$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_WISH').'.';
-					
-					JPluginHelper::importPlugin( 'xmessage' );
-					$dispatcher =& JDispatcher::getInstance();
-					
-					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_status_changed', $subject, $message, $from, array($objWish->proposed_by), $this->_option ))) {
-								$this->setError( JText::_('Failed to message wish author.') );
-								echo WishlistHtml::alert( $this->_error );
-					}
+					$as_mes  .= JText::_('GO_TO').' '.$url.' '.JText::_('to view your assigned wish').'.';				
 					
 				}
 				
@@ -1491,6 +1541,23 @@ class WishlistController extends JObject
 				if (!$objWish->store()) {
 					echo WishlistHtml::alert( $objWish->getError() );
 					exit();
+				}
+				else if ($this->_task == 'editwish') {
+					JPluginHelper::importPlugin( 'xmessage' );
+					$dispatcher =& JDispatcher::getInstance();
+					
+					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_status_changed', $subject1, $message, $from, array($objWish->proposed_by), $this->_option ))) {
+								$this->setError( JText::_('Failed to message wish author.') );
+								echo WishlistHtml::alert( $this->_error );
+					}
+					
+					if($objWish->assigned && $objWish->proposed_by != $objWish->assigned && $status=='accepted') {
+						if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_wish_assigned', $subject2, $as_mes, $from, array($objWish->assigned), $this->_option ))) {
+								$this->setError( JText::_('Failed to message wish assignee.') );
+								echo WishlistHtml::alert( $this->_error );
+						}
+					}
+					
 				}
 			}	
 			
@@ -2007,13 +2074,7 @@ class WishlistController extends JObject
 		$wishlist = $objWishlist->get_wishlist($this->listid);
 		$wishlist->items = $objWish->get_wishes($this->listid, $filters, $this->_admin, $juser);
 	
-		$weight_e = 4;
-		$weight_i = 5;
-		$weight_f = 0.5;
-		$f_threshold = 5;
-		$co = 0.5;
-		$co_adv = 0.8;
-		$co_reg = 0.2;
+		
 		
 		// do we give more weight to votes coming from advisory committee?
 		$votesplit = isset($this->config->parameters['votesplit']) ? trim($this->config->parameters['votesplit']) : 0;	
@@ -2027,6 +2088,14 @@ class WishlistController extends JObject
 			$voters = array_merge($managers, $advisory);
 			
 			foreach($wishlist->items as $item) {
+			
+			$weight_e = 4;
+			$weight_i = 5;
+			$weight_f = 0.5;
+			$f_threshold = 5;
+			$co = 0.5;
+			$co_adv = 0.8;
+			$co_reg = 0.2;
 					
 				$votes = $objR->get_votes($item->id);
 				$ranking = 0;
@@ -2131,8 +2200,7 @@ class WishlistController extends JObject
 		$ajax    	= JRequest::getInt( 'ajax', 0 );
 		$category	= JRequest::getVar( 'cat', '' );
 		$when 		= date( 'Y-m-d H:i:s');
-		
-		
+				
 		$obj = new Wishlist( $database );
 		
 		// Get wishlist info
@@ -2176,9 +2244,7 @@ class WishlistController extends JObject
 			$row->added   	= $when;
 			$row->state     = 0;
 			$row->category  = $category;
-			$row->added_by 	= $juser->get('id');
-			
-			
+			$row->added_by 	= $juser->get('id');			
 		
 			// Check for missing (required) fields
 			if (!$row->check()) {
@@ -2191,66 +2257,128 @@ class WishlistController extends JObject
 				exit();
 			}
 			else {
-				// Notify wish owner (only if someone else posts a comment)
+				// Send notofications
 				$objWish = new Wish ( $database );
 				$objWish->load($wishid);
+							
+				// Build e-mail components
+				$xhub =& XFactory::getHub();
+				$jconfig =& JFactory::getConfig();
+				$admin_email = $jconfig->getValue('config.mailfrom');
+					
+				$name = JText::_('UNKNOWN');
+				$login = JText::_('UNKNOWN');
+				$ruser =& XUser::getInstance($row->added_by);
+				if (is_object($ruser)) {
+					$name = $ruser->get('name');
+					$login = $ruser->get('login');
+				}
+				if($row->anonymous) {
+					$name = JText::_('ANONYMOUS');
+				}
+				
+				// Parse comments for attachments
+				$webpath = $this->getWebPath($wishid);
+				$attach = new WishAttachment( $database );
+				$attach->webpath = $xhub->getCfg('hubLongURL').$webpath;
+				$attach->uppath  = JPATH_ROOT.$webpath;
+				$attach->output  = 'email';
+				
+				// email components	
+				$from = array();
+				$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
+				$from['email'] = $jconfig->getValue('config.mailfrom');
+				
+				// for the wish owner
+				$subject1 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('commented on your wish').' #'.$wishid;
+				
+				// for the person to whom wish is assigned
+				$subject2 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('commented on wish').' #'.$wishid.' '.JText::_('assigned to you');
+				
+				// for original commentor 
+				$subject3 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('replied to your comment on wish').' #'.$wishid;
+				
+				// for others included in the conversation thread.
+				$subject4 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('commented after you on wish').' #'.$wishid;
+				
+					
+				$message  = JText::_('WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
+				$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
+				$message .= '----------------------------'.r.n;
+				$message .= JText::_('Comment by').' '.$name.' ';
+				$message .= $row->anonymous ? '' : '('.$login.')';
+				$message .= ' '.JText::_('posted on').' '.JHTML::_('date',$row->added, '%d %b, %Y').':'.r.n;
+				$message .= $attach->parse($row->comment).r.n.r.n;
+				$message .= r.n;
+					
+					
+				$message .= '----------------------------'.r.n;
+				$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
+				$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
+					
+				JPluginHelper::importPlugin( 'xmessage' );
+				$dispatcher =& JDispatcher::getInstance();
+				
+				// collect ids of people who were already emailed
+				$contacted = array();
+					
 				if($objWish->proposed_by != $row->added_by) {
-					// Build e-mail components
-					$xhub =& XFactory::getHub();
-					$jconfig =& JFactory::getConfig();
-					$admin_email = $jconfig->getValue('config.mailfrom');
+				
+					$contacted[] = 	$objWish->proposed_by;			
 					
-					$name = JText::_('UNKNOWN');
-					$login = JText::_('UNKNOWN');
-					$ruser =& XUser::getInstance($row->added_by);
-					if (is_object($ruser)) {
-						$name = $ruser->get('name');
-						$login = $ruser->get('login');
-					}
-					if($row->anonymous) {
-						$name = JText::_('ANONYMOUS');
+					// send message to wish owner
+					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_comment_posted', $subject1, $message, $from, array($objWish->proposed_by), $this->_option ))) {
+						$this->setError( JText::_('Failed to message wish author.') );
+						echo WishlistHtml::alert( $this->_error );
 					}
 					
-					// Parse comments for attachments
-					$webpath = $this->getWebPath($wishid);
-					$attach = new WishAttachment( $database );
-					$attach->webpath = $xhub->getCfg('hubLongURL').$webpath;
-					$attach->uppath  = JPATH_ROOT.$webpath;
-					$attach->output  = 'email';
+				} // -- end send to wish author
+				
+				if($objWish->assigned && $objWish->assigned != $row->added_by && !in_array($objWish->assigned, $contacted)) {
+				
+					$contacted[] = $objWish->assigned;
+				
+					// send message to person to who wish is assigned
+					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_comment_posted', $subject2, $message, $from, array($objWish->assigned), $this->_option ))) {
+						$this->setError( JText::_('Failed to message the person to whom wish is assigned.') );
+						echo WishlistHtml::alert( $this->_error );
+					}
+				
+				} // -- end send message to person to who wish is assigned
+				
+				// get comment author if reply is posted to a comment
+				if($category=='wishcomment') {
+					$parent = new XComment( $database );
+					$parent->load($id);
+					$cuser =& JUser::getInstance($parent->added_by);
 					
-					$subject = JText::_(strtoupper($this->_name)).', '.JText::_('Comment posted on your wish').' #'.$wishid.' '.JText::_('by').' '.$name;
+					// send message to comment author
+					if(is_object($cuser) && $parent->added_by != $row->added_by && !in_array($parent->added_by, $contacted)) {
 					
-					$from = array();
-					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
-					$from['email'] = $jconfig->getValue('config.mailfrom');
+						$contacted[] = 	$parent->added_by;
+						if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_comment_thread', $subject3, $message, $from, array($parent->added_by), $this->_option ))) {
+							$this->setError( JText::_('Failed to message previous commentor.') );
+							echo WishlistHtml::alert( $this->_error );
+						}
+					}
 					
-					//$message  = '----------------------------'.r.n;
-					$message  = JText::_('WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
-					$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
-					$message .= '----------------------------'.r.n;
-					$message .= JText::_('Comment by').' '.$name.' ';
-					$message .= $row->anonymous ? '' : '('.$login.')';
-					$message .= ' '.JText::_('posted on').' '.JHTML::_('date',$row->proposed, '%d %b, %Y').':'.r.n;
-					//$message .= '"'.$row->comment.'"';
-					$message .= $attach->parse($row->comment).r.n.r.n;
-					$message .= r.n;
-					
-					
-					$message .= '----------------------------'.r.n;
-					$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
-					$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
-					
-					JPluginHelper::importPlugin( 'xmessage' );
-					$dispatcher =& JDispatcher::getInstance();
-					
-					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_comment_posted', $subject, $message, $from, array($objWish->proposed_by), $this->_option ))) {
-								$this->setError( JText::_('Failed to message wish list owners.') );
-								echo WishlistHtml::alert( $this->_error );
+				}
+				
+				// get all users who commented
+				$commentors = WishlistController::getComments($wishid, $wishid, 'wish', 0, false, array(), 0, 1, 1);
+				$comm = array_diff($commentors, $contacted);
+						
+				if(count($comm) > 0 ) {
+					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_comment_thread', $subject4, $message, $from, $comm, $this->_option ))) {
+							$this->setError( JText::_('Failed to message previous commentor.') );
+							echo WishlistHtml::alert( $this->_error );
 					}
 				}
-			}
+				
+							
+			} // -- end if success
 			
-		}
+		} // -- end if id & category
 	
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
 	}
@@ -2311,7 +2439,7 @@ class WishlistController extends JObject
 		$cat 	 = 'wish';
 		$vote 	 = JRequest::getVar( 'vote', '' );
 		$ip 	 = $this->ip_address();
-		
+				
 		
 		if(!$id) {
 			// cannot proceed		
@@ -2324,6 +2452,7 @@ class WishlistController extends JObject
 			return;
 		}
 		else {
+		
 			// load wish
 			$row = new Wish( $database );
 			$row->load( $id );
@@ -2331,10 +2460,13 @@ class WishlistController extends JObject
 			$objWishlist = new Wishlist( $database );
 			$listid = $row->wishlist;
 			$wishlist = $objWishlist->get_wishlist($listid);
+			
+			$this->authorize_admin($listid);	
+			$filters = WishlistController::getFilters($this->_admin);	
 					
 			$voted = $row->get_vote ($id, $cat, $juser->get('id'));
 					
-			if(!$voted && $row->proposed_by != $juser->get('id')) {
+			if(!$voted && $row->proposed_by != $juser->get('id') && $row->status==0) {
 							
 				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'vote.class.php' );
 				$v = new Vote( $database );
@@ -2366,10 +2498,10 @@ class WishlistController extends JObject
 			}
 			else {
 				if($page == 'wishlist') {
-					$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid);
+					$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']);
 				}
 				else {
-					$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$id);
+					$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$id.a.'filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']);
 				}
 			}
 		}
@@ -2409,12 +2541,14 @@ class WishlistController extends JObject
 	
 	//----------------
 	
-	public function getComments($parentid, $itemid, $category, $level, $abuse=false, $owners, $admin, $skipattachments=0)
+	public function getComments($parentid, $itemid, $category, $level, $abuse=false, $owners, $admin, $skipattachments=0, $getauthors = 0)
 	{
 			$database =& JFactory::getDBO();
+			$juser =& JFactory::getUser();
 			
 			$level++;
 			$hc = new XComment( $database );
+			$authors = array();
 			
 			$comments = $hc->getResults( array('id'=>$itemid, 'category'=>$category) );
 		
@@ -2445,8 +2579,13 @@ class WishlistController extends JObject
 						}
 						$comment->comment = $attach->parse($comment->comment);
 					}
+					
+					// get authors excluding current commentator
+					if($comment->added_by != $juser->get('id')) {
+						$authors[] = $comment->added_by;
+					} 
 				
-					$comment->replies = WishlistController::getComments($parentid, $comment->id, 'wishcomment', $level, $abuse, $owners, $admin, $skipattachments);
+					$comment->replies = WishlistController::getComments($parentid, $comment->id, 'wishcomment', $level, $abuse, $owners, $admin, $skipattachments, $getauthors);
 					if ($abuse) {
 						$comment->reports = WishlistController::getAbuseReports($comment->id, 'wishcomment');
 					}
@@ -2458,6 +2597,10 @@ class WishlistController extends JObject
 					
 				}
 			}
+			
+		if($getauthors) {
+		 return array_unique($authors);
+		}
 		
 		return $comments;
 	}
@@ -2501,8 +2644,9 @@ class WishlistController extends JObject
 
 		// Paging vars
 		$filters['limit'] = JRequest::getInt( 'limit', 25 );
-		$filters['start'] = JRequest::getInt( 'limitstart', 0, 'get' );
-		
+		$filters['start'] = JRequest::getInt( 'limitstart', 0);
+		$filters['new']   = JRequest::getInt( 'newsearch', 0);
+		$filters['start'] = $filters['new'] ? 0 : $filters['start'];		
 		$filters['comments'] = JRequest::getVar( 'comments', 1, 'get');
 
 
