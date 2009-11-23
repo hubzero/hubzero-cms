@@ -338,7 +338,6 @@ class WishlistHtml
 		$html .= t.t.'<input type="hidden" name="category" value="'.$wishlist->category.'" />'.n;
 		$html .= t.t.'<input type="hidden" name="rid" value="'.$wishlist->referenceid.'" />'.n;
 		$html .= t.t.'<input type="hidden" name="wishid" value="'.$myvote->id.'" />'.n;
-		$html .= t.t.'<input type="hidden" name="limitstart" value="0" />'.n;
 		$html .= t.t.'<input type="submit"  value="'.JText::_('SAVE').'" />';
 		$html .= t.'</fieldset>'.n;
 		$html .= '</form>'.n;
@@ -380,26 +379,19 @@ class WishlistHtml
 		if (count($tf) > 0) {
 			$html .= $tf[0];
 		} else {
-			$html .= t.t.t.'<input type="text" name="tag" id="tags-men" value="'.$filters['tag'].'" />'.n;
+			$html .= t.t.t.'<input type="text" name="tags" id="tags-men" value="'.$filters['tag'].'" />'.n;
 		}
 		$html .= '</label>';
 		$html .= t.t.t.'<label >'.JText::_('SHOW').': '.n;
 		$html .= WishlistHtml::formSelect('filterby', $filterbys, $filters['filterby'], '', '');
-		$html .= t.t.t.'</label>'.n;
-		
-		//if($admin) {
+		$html .= t.t.t.'</label>'.n;		
 		$html .= t.t.t.' &nbsp; <label> '.JText::_('SORTBY').':'.n;
 		$html .= WishlistHtml::formSelect('sortby', $sortbys, $filters['sortby'], '', '');
 		$html .= t.t.t.'</label>'.n;
-		//}
+		$html .= t.t.'<input type="hidden" name="newsearch" value="1" />'.n;
 		$html .= t.t.t.'<input type="submit" value="'.JText::_('GO').'" />'.n;
-		$html .= t.t.t.'<input type="hidden" name="limitstart" value="0" />'.n;
+		//$html .= t.t.'<input type="hidden" name="limitstart" value="0" />'.n;
 		$html .= t.t.'</fieldset>'.n;
-		//$html .= t.t.t.'<div class="note_total">'.JText::_('Displaying ');
-		//$html .= $pageNav->total > $total ? ' '.$total.' out of '.$pageNav->total : strtolower(JText::_('all')).' '.$total ;
-		//$html .= strtolower(JText::_('WISHES')).'</div>'.n;
-		//$html .= t.'</form>'.n;		
-		//$html .= '</div>'.n;
 		
 		return $html;
 	}
@@ -654,7 +646,7 @@ class WishlistHtml
 				}
 				
 				$html .= t.t.t.'<div id="wishlist_'.$item->id.'" class="'.$option.' intermed">';				
-				$html .= WishlistHtml::rateitem($item, $juser, $option, $wishlist->id, 0, 'wishlist', $wishlist->plugin);									
+				$html .= WishlistHtml::rateitem($item, $juser, $option, $wishlist->id, 0, 'wishlist', $wishlist->plugin, $filters);									
 				$html .= t.t.t.'</div>'.n;
 				
 				// Points				
@@ -681,7 +673,11 @@ class WishlistHtml
 			}				
 			$html .= t.'</ul>'.n;
 			if(!$wishlist->plugin) {
-			$html .= $pageNav->getListFooter();
+				//$html .= $pageNav->getListFooter();
+				$pagenavhtml = $pageNav->getListFooter();
+				$pagenavhtml = str_replace('wishlist/?','wishlist/'.$wishlist->category.'/'.$wishlist->referenceid.'/?',$pagenavhtml);
+				$pagenavhtml = str_replace('newsearch=1','newsearch=0',$pagenavhtml);
+				$html .= t.t.t.t.t.$pagenavhtml;
 			}
 			}
 			else {
@@ -880,7 +876,7 @@ class WishlistHtml
 				// only show thumbs ranking
 				$html .= t.t.'<div class="intermed" style="padding-top:5px;">'.n;
 				$html .= t.t.t.'<p id="wish_'.$item->id.'" class="'.$option.'">'.n;
-				$html .= t.t.t.t.WishlistHtml::rateitem($item, $juser, $option, $wishlist->id, $admin, 'wish');				
+				$html .= t.t.t.t.WishlistHtml::rateitem($item, $juser, $option, $wishlist->id, $admin, 'wish', $filters);				
 				$html .= t.t.t.'</p>'.n;
 				$html .= t.t.'</div>'.n;
 				
@@ -965,7 +961,7 @@ class WishlistHtml
 				$html .= t.t.t.'<div>'.n;
 				$html .= t.t.t.t.'<h4>'.JText::_('COMMUNITY_VOTE').':</h4>'.n;
 				$html .= t.t.t.t.'<div id="wish_'.$item->id.'" class="'.$option.'">';
-				$html .= t.t.t.t.WishlistHtml::rateitem($item, $juser, $option, $wishlist->id, $admin, 'wish');						
+				$html .= t.t.t.t.WishlistHtml::rateitem($item, $juser, $option, $wishlist->id, $admin, 'wish', $filters);						
 				$html .= t.t.t.t.'</div>'.n;
 				if($wishlist->banking) {
 					$html .= t.t.t.'<div class="assign_bonus">'.n;				
@@ -1867,7 +1863,7 @@ class WishlistHtml
 	// Thumbs voting
 	//-------------------------------------------------------------
 	
-	public function rateitem($item, $juser, $option, $listid, $admin = 0, $page='wishlist', $plugin=0) {
+	public function rateitem($item, $juser, $option, $listid, $admin = 0, $page='wishlist', $plugin=0, $filters=array()) {
 			
 			
 			$title = ($juser->get('id') == $item->proposed_by) ? JText::_('You cannot vote for your own wish') : '';
@@ -1875,20 +1871,28 @@ class WishlistHtml
 			if($item->vote) { $title = JText::_('You have already voted for this wish'); }
 			if($item->status==1 or $item->status==3 or $item->status==4) { $title = JText::_('Voting is closed for this wish'); }
 			
-			$html = n.t.t.t.'<span class="thumbsvote" title="'.$title.'">'.n;
-			
+			// are we voting yes or no
 			$pclass = (isset($item->vote) && $item->vote=="yes" && $item->status!=1) ? 'yes' : 'zero';
 			$nclass = (isset($item->vote) && $item->vote=="no" && $item->status!=1) ? 'no' : 'zero';
 			$item->positive = ($item->positive > 0) ? '+'.$item->positive: '&nbsp;&nbsp;'.$item->positive;
 			$item->negative = ($item->negative > 0) ? '-'.$item->negative: '&nbsp;&nbsp;'.$item->negative;
 			
-
-				$html .= t.t.t.t.'<span class="'.$pclass.'">'.$item->positive.'</span>'.n;
+			// import filters
+			
+			$filterln  = isset($filters['filterby']) ? a.'filterby='.$filters['filterby'] : '';
+			$filterln .= isset($filters['sortby']) ? a.'sortby='.$filters['sortby'] : '';
+			$filterln .= isset($filters['tag']) ? a.'tags='.$filters['tag'] : '';
+			$filterln .= isset($filters['limit']) ? a.'limit='.$filters['limit'] : '';
+			$filterln .= isset($filters['start']) ? a.'limitstart='.$filters['start'] : '';
+				
+			
+			$html  = n.t.t.t.'<span class="thumbsvote" title="'.$title.'">'.n;
+			$html .= t.t.t.t.'<span class="'.$pclass.'">'.$item->positive.'</span>'.n;
 					
 				if ($juser->get('guest')) {
-					$html .= t.t.t.t.'<span class="gooditem r_disabled"><a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.'" >&nbsp;</a></span>'.n;
+					$html .= t.t.t.t.'<span class="gooditem r_disabled"><a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.$filterln.'" >&nbsp;</a></span>'.n;
 					$html .= t.t.t.t.'<span class="'.$nclass.'">'.$item->negative.'</span>'.n;
-					$html .= t.t.t.t.'<span class="baditem r_disabled"><a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.'" >&nbsp;</a></span>'.n;	
+					$html .= t.t.t.t.'<span class="baditem r_disabled"><a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.$filterln.'" >&nbsp;</a></span>'.n;	
 			
 				}
 				else {					
@@ -1899,11 +1903,11 @@ class WishlistHtml
 				else if($item->vote) {
 					$html .= t.t.t.t.'<span>&nbsp;</span>'.n;
 				}
-				else if($plugin) { // no ajax
-					$html .= t.t.t.t.t.'<a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.'"  title="'.JText::_('THIS_IS_GOOD').'">&nbsp;</a>'.n;
-				}
+				//else if($plugin) { // no ajax
+					//$html .= t.t.t.t.t.'<a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.'"  title="'.JText::_('THIS_IS_GOOD').'">&nbsp;</a>'.n;
+				//}
 				else {
-					$html .= t.t.t.t.t.'<a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.'"  title="'.JText::_('THIS_IS_GOOD').'">&nbsp;</a>'.n;			
+					$html .= t.t.t.t.t.'<a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=yes'.a.'page='.$page.$filterln.'"  title="'.JText::_('THIS_IS_GOOD').'">&nbsp;</a>'.n;			
 					//$html .= t.t.t.t.t.'<a href="javascript:void(0);" class="revvote" title="'.JText::_('THIS_IS_GOOD').'">&nbsp;</a>'.n;
 				}
 				$html .= t.t.t.t.'</span>'.n;
@@ -1915,11 +1919,11 @@ class WishlistHtml
 				else if($item->vote) {
 					$html .= t.t.t.'<span>&nbsp;</span>'.n;
 				}
-				else if($plugin) { // no ajax
-					$html .= t.t.t.t.t.'<a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.'"  title="'.JText::_('THIS_IS_NOT_GOOD').'">&nbsp;</a>'.n;
-				}
+				//else if($plugin) { // no ajax
+					//$html .= t.t.t.t.t.'<a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.'"  title="'.JText::_('THIS_IS_NOT_GOOD').'">&nbsp;</a>'.n;
+				//}
 				else {
-					$html .= t.t.t.t.t.'<a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.'"  title="'.JText::_('THIS_IS_NOT_GOOD').'">&nbsp;</a>'.n;	
+					$html .= t.t.t.t.t.'<a href="index.php?option='.$option.a.'task=rateitem'.a.'refid='.$item->id.a.'vote=no'.a.'page='.$page.$filterln.'"  title="'.JText::_('THIS_IS_NOT_GOOD').'">&nbsp;</a>'.n;	
 					//$html .= t.t.t.t.t.'<a href="javascript:void(0);" class="revvote" title="'.JText::_('THIS_IS_NOT_GOOD').'">&nbsp;</a>'.n;
 				}
 				$html .= t.t.t.t.'</span>'.n;
@@ -1931,7 +1935,7 @@ class WishlistHtml
 				}
 				//$html .= t.t.t.t.'<span class="votinghints"><span><a href="index.php?option=com_support'.a.'task=reportabuse'.a.'category=wish'.a.'id='.$item->id.a.'parent='.$listid.'" class="abuse">'.JText::_('REPORT_ABUSE').'</a></span></span>'.n;
 						
-				$html .= t.t.t.'</span>'.n;
+			$html .= t.t.t.'</span>'.n;
 					
 			return $html;	
 	}

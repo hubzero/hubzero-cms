@@ -108,11 +108,11 @@ class Wish extends JTable
 			$uid = 0;
 		}
 		
-		$sql = "SELECT count(*) FROM #__wishlist_item AS ws ";
+		$sql = "SELECT ws.id FROM #__wishlist_item AS ws ";
 		
 		if($filters['tag']) {
-		$sql.= "\n JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
-		$sql.= "\n INNER JOIN #__tags AS TA ON RTA.tagid=TA.id ";
+		$sql.= "\n LEFT JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
+		$sql.= "\n LEFT JOIN #__tags AS TA ON RTA.tagid=TA.id ";
 		}
 		
 		$sql.="\n WHERE ws.wishlist='".$listid."'";
@@ -174,7 +174,9 @@ class Wish extends JTable
 		
 		
 		$this->_db->setQuery( $sql );
-		return $this->_db->loadResult();
+		$result = $this->_db->loadObjectList();
+		
+		return count($result);
 	 
 	 }
 	 	 
@@ -193,6 +195,8 @@ class Wish extends JTable
 		}
 		
 		$filters['tag'] = isset($filters['tag']) ? $filters['tag'] : '';
+		
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'wish.tags.php' );
 				
 		$sort = 'ws.status ASC, ws.proposed DESC';	
 		// list  sorting
