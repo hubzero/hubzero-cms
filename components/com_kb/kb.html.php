@@ -182,15 +182,15 @@ class KbHtml
 				
 			switch ($i) 
 			{
-				case 1: $cls = 'farleft';  break;
-				case 2: $cls = 'middle';   break;
-				case 3: $cls = 'farright'; break;
+				case 1: $cls = 'first';  break;
+				case 2: $cls = 'second';   break;
+				case 3: $cls = 'third'; break;
 			}
 				
 			if ($row->access <= $juser->get('aid')) {
 				$link = JRoute::_('index.php?option='.$option.a.'section='. $row->alias);
 				
-				$html .= t.t.'<div class="threecolumn '.$cls.'">'.n;
+				$html .= t.t.'<div class="three columns '.$cls.'">'.n;
 				$html .= t.t.t.'<p><a class="dir" href="'. $link .'">'. KbHtml::xhtml($row->title) .'</a>';
 				$html .= ' ('.$row->numitems.')';
 				if ($row->description) {
@@ -198,12 +198,12 @@ class KbHtml
 					$html .= KbHtml::xhtml(KbHtml::shortenText($row->description, 100, 0));
 				}
 				$html .= '</p>'.n;
-				$html .= t.t.'</div><!-- / .threecolumn '.$cls.' -->'.n;
+				$html .= t.t.'</div><!-- / .three columns '.$cls.' -->'.n;
 				$html .= ($i >= 3) ? '<div class="clear"></div>' : '';
 			} else {
-				$html .= t.t.'<div class="threecolumn '.$cls.'">'.n;
+				$html .= t.t.'<div class="three columns '.$cls.'">'.n;
 				$html .= t.t.t.'<p>'. $row->title .'<a href="'. JRoute::_( 'index.php?option=com_registration'.a.'task=register' ) .'"> ( '. _E_REGISTERED .' )</a></p>'.n;
-				$html .= t.t.'</div><!-- / .threecolumn '.$cls.' -->'.n;
+				$html .= t.t.'</div><!-- / .three columns '.$cls.' -->'.n;
 			}
 			
 			if ($i >= 3) { 
@@ -215,12 +215,12 @@ class KbHtml
 		$html .= KbHtml::div(
 					KbHtml::hed(3,JText::_('MOST_POPULAR_ARTICLES')).n.
 					KbHtml::articles($articles['top'], $option).n,
-					'twocolumn left'
+					'two columns first'
 				);
 		$html .= KbHtml::div(
 					KbHtml::hed(3,JText::_('MOST_RECENT_ARTICLES')).n.
 					KbHtml::articles($articles['new'], $option).n,
-					'twocolumn right'
+					'two columns second'
 				);
 		$html .= KbHtml::div('','clear').n;
 		
