@@ -92,7 +92,7 @@ class EventsController
 		$this->config = $config;
 		
 		$tables = $database->getTableList();
-		$table = $database->_table_prefix.'respondent_race_rel';
+		$table = $database->_table_prefix.'events_respondent_race_rel';
 		if (!in_array($table,$tables)) {
 			$database->setQuery( "CREATE TABLE `#__events_respondent_race_rel` (
 			  `respondent_id` int(11) default NULL,
