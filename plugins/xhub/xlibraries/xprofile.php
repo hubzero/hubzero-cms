@@ -25,21 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-/**
- *
- * Copyright (c) 2008 Purdue Research Foundation
- * All rights reserved.
- *
- * @author Nicholas J. Kisseberth
- *
- * Network for Computational Nanotechnology
- * Purdue University, West Lafayette, Indiana
- *
- */
-
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
-
 class XProfileHelper
 {
 	public function iterate_profiles($func, $storage)
@@ -202,7 +187,7 @@ class XProfile extends JObject
 			'regIP' => 'regIP', 'regHost' => 'regHost', 'nativeTribe' => 'nativeTribe', 'phone' => 'homePhone',
 			'proxyUidNumber' => 'proxyUidNumber', 'proxyPassword' => 'proxyPassword', 'disability' => 'disability', 
 			'hispanic' => 'hispanic', 'race' => 'race', 'admin' => 'admin', 'host' => 'host', 'edulevel' => 'edulevel',
-			'role' => 'role');
+			'role' => 'role', 'shadowExpire' => 'shadowExpire');
 
 	public function setError($msg)
 	{
@@ -786,11 +771,13 @@ class XProfile extends JObject
 		foreach(XProfile::$_s_propertyattrmap as $property => $attribute)
 		{
 			$current = $this->get($property);
+		    if ($property == 'shadowExpire') { echo "<br>$property=$current<br>"; }
 
-			if ($current == array()) 
+			if ($current == array() || $current === null) 
 				$current = '';
+
 			if ($userinfo[$attribute] !== false && $current == '')
-				$delete_attr[] = $attribute;
+				$delete_attr[$attribute] = array();
 			elseif ($userinfo[$attribute] !== false && $current != $userinfo[$attribute])
 				$replace_attr[$attribute] = $current;
 			elseif ($userinfo[$attribute] === false && $current != '')
@@ -921,7 +908,10 @@ class XProfile extends JObject
 			else
 				$first = false;
 
-			$query .= "$property=" . $db->Quote($this->get($property));
+			if ($this->get($property) == null)
+			    $query .= "$property=NULL";
+			else
+				$query .= "$property=" . $db->Quote($this->get($property));
 		}
  
 		$query .= " WHERE uidNumber=" . $db->Quote($this->get('uidNumber')) . ";";
