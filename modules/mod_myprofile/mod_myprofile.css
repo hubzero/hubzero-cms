@@ -1,0 +1,29 @@
+/**
+ * Copyright 2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_myprofile
+	-- -- -- -- -- -- --
+
+*/
+
+#myprofile-image {
+	text-align: center;
+}
+#myprofile-image img {
+	border: 1px solid #ddd;
+}
+#myprofile-bio {
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	max-height: 200px;
+	overflow: auto;
+}
