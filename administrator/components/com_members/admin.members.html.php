@@ -460,6 +460,13 @@ class MembersHtml
 					$html  = t.'<table class="admintable" summary="'.JText::_('ADMIN_PROFILE_TBL_SUMMARY').'">'.n;
 					$html .= t.t.'<tbody>'.n;
 					$html .= t.t.t.'<tr class="even">'.n;
+					$html .= t.t.t.t.'<td class="key">'.JText::_('COL_EXPIRE').'</td>'.n;
+					if ( $profile->get('shadowExpire') > 0 )
+						$html .= t.t.t.t.'<td> <label><input type="checkbox" name="shadowExpire" id="shadowExpire" value="1" checked="checked"/></label></td>';
+					else
+					     $html .= t.t.t.t.'<td> <label><input type="checkbox" name="shadowExpire" id="shadowExpire" value="1"/></label></td>';
+					$html .= t.t.t.'</tr>'.n;
+					$html .= t.t.t.'<tr class="even">'.n;
 					$html .= t.t.t.t.'<td class="key">'.JText::_('COL_PASSWORD').'</td>'.n;
 					$html .= t.t.t.t.'<td><a href="/password/lost">'.JText::_('RESET_PASSWORD').'</a></td>'.n;
 					$html .= t.t.t.'</tr>'.n;
@@ -587,16 +594,14 @@ class MembersHtml
 				
 				<fieldset class="adminform">
 					<legend><?php echo JText::_('HOSTS'); ?></legend>
-					<?php
-					/*$hosts = $profile->get('host');
-					if ($hosts) {
-						foreach ($hosts as $host) 
-						{
-							echo '<p>'.$host.'</p>'.n;
-						}
-					}*/
-					?>
+
 					<iframe width="100%" height="200" name="hosts" id="hosts" frameborder="0" src="index3.php?option=<?php echo $option; ?>&amp;task=hosts&amp;id=<?php echo $profile->get('uidNumber'); ?>"></iframe>
+				</fieldset>
+				
+				<fieldset class="adminform">
+					<legend><?php echo JText::_('Managers'); ?></legend>
+
+					<iframe width="100%" height="200" name="managers" id="managers" frameborder="0" src="index3.php?option=<?php echo $option; ?>&amp;task=managers&amp;id=<?php echo $profile->get('uidNumber'); ?>"></iframe>
 				</fieldset>
 			</div>
 			<div class="clr"></div>
@@ -864,6 +869,64 @@ class MembersHtml
 	</form>
  </body>
 </html>
+	<?php
+	}
+	
+	//-----------
+
+	public function writeManagers( $app, $option, $id, $rows, $errors=array() )
+	{
+	?>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml">
+	 <head>
+		<title><?php echo JText::_('MEMBER_HOSTS'); ?></title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+		<style type="text/css" media="screen">@import url(/templates/<?php echo $app->getTemplate(); ?>/css/main.css);</style>
+		<style type="text/css" media="screen">
+		body { min-width: 20px; background: #fff; margin: 0; padding: 0; }
+		</style>
+	 </head>
+	 <body>
+		<form action="index.php" method="post">
+			<table>
+			 <tbody>
+			  <tr>
+			   <td>
+			    <input type="hidden" name="option" value="<?php echo $option; ?>" />
+				<input type="hidden" name="no_html" value="1" />
+				<input type="hidden" name="id" value="<?php echo $id; ?>" />
+				<input type="hidden" name="task" value="addmanager" />
+
+				<input type="text" name="manager" value="" /> 
+				<input type="submit" value="<?php echo JText::_('Add Manager'); ?>" />
+			   </td>
+			  </tr>
+			 </tbody>
+			</table>
+			<br />
+			<table class="paramlist admintable">
+				<tbody>
+			<?php
+			if (count($rows) > 0) {
+				foreach ($rows as $row)
+				{
+					?>
+					<tr>
+						<td class="paramlist_key"><?php echo $row; ?></td>
+						<td class="paramlist_value"><a href="index.php?option=<?php echo $option; ?>&amp;no_html=1&amp;task=deletemanager&amp;manager=<?php echo $row; ?>&amp;id=<?php echo $id; ?>"><?php echo JText::_('DELETE'); ?></a></td>
+					</tr>
+					<?php
+				}
+			}
+			?>
+				</tbody>
+			</table>
+		</form>
+	 </body>
+	</html>
 	<?php
 	}
 }
