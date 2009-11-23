@@ -122,7 +122,7 @@ if ($groups) {
 			<h3><a href="<?php echo JRoute::_('index.php?option='.$option.a.'gid='.$group->cn); ?>"><?php echo stripslashes($group->description); ?></a></h3>
 			<!-- <p><?php echo $group->members; ?> Members</p> -->
 			<p><?php echo $public_desc; ?></p>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$option.a.'gid='.$group->cn); ?>">Learn more &rsaquo;</a>
+			<p><a href="<?php echo JRoute::_('index.php?option='.$option.a.'gid='.$group->cn); ?>">Learn more &rsaquo;</a></p>
 		</div>
 	</div><!-- / .four columns second -->
 <?php
