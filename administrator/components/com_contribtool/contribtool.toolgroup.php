@@ -84,6 +84,7 @@ class ToolGroup extends  JTable
 			$existing_members = ContribtoolHelper::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
 			$to_delete = array_diff($existing_members, $members);			
 			$group->_lists['delete']['managers'] = $to_delete;
+			$group->_lists['delete']['members'] = $to_delete;
 		}
 		else {
 			$group->set('type', 2 );
@@ -95,11 +96,13 @@ class ToolGroup extends  JTable
 		
 		if(XGroupHelper::groups_exists($devgroup))	{
 			$group->_lists['add']['managers'] = $members;
+			$group->_lists['add']['members'] = $members;
 			$group->update();
 		}
 		else {
 			$group->save();
 			$group->_lists['add']['managers'] = $members;
+			$group->_lists['add']['members'] = $members;
 			$group->update();			
 		}
 		if(!$exist) { $this->save($devgroup, $toolid, '1'); }
