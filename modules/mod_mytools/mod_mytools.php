@@ -104,14 +104,13 @@ class modToolList
 	
 	private function _getToollist($lst=NULL)
 	{
+		ximport('Hubzero_Tool');
+		ximport('Hubzero_Tool_Version');
+
 		$toollist = array();
 		
 		// Create a Tool object
 		$database 	=& JFactory::getDBO();
-        include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
-        include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
-        $obj = new Tool( $database );
-        $objV = new ToolVersion( $database );
 	
 		if (is_array($lst)) {
 			$tools = array();
@@ -134,7 +133,7 @@ class modToolList
 						$rev = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
 						$item = trim(implode('_r',$bits));
 					}
-                    $thistool = $objV->getVersionInfo('','current',$item,'');
+					$thistool = Hubzero_Tool_Version::getVersionInfo('','current',$item,'');
 
 					if (is_array($thistool) && isset($thistool[0])) {
 						$t = $thistool[0];
@@ -146,7 +145,7 @@ class modToolList
 			}
 		} else {
 			// Get all available tools
-			$tools = $obj->getMyTools();
+			$tools = Hubzero_Tool::getMyTools();
 		}
 		
 		$toolnames = array();
@@ -190,12 +189,9 @@ class modToolList
 			//$favs = (isset($this->favs)) ? $this->favs : array();
 			$favs = $this->favs;
 		}
-
 		
 		$database =& JFactory::getDBO();
-        include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
-        $objV = new ToolVersion( $database );		
-
+		
 		$html  = "\t\t".'<ul>'."\n";
 		if (count($toollist) <= 0) {
 			$html .= "\t\t".' <li>'.JText::_('MOD_MYTOOLS_NONE_FOUND').'</li>'."\n";
@@ -214,7 +210,7 @@ class modToolList
 				
 					// from sep 28-07 version (svn revision) number is supplied at the end of the invoke command
 					$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
-
+					
 					// Build the HTML
 					$html .= "\t\t".' <li id="'.$tool->name.'"';
 					// If we're in the 'all tools' pane ...
