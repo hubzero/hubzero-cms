@@ -123,7 +123,7 @@ class Tool extends JTable
 		
 		$query = "#__tool as f "
 				."JOIN #__tool_version AS v ON f.id=v.toolid AND v.state=3 "
-				."JOIN #__tool_groups AS g ON f.id=g.toolid AND g.role=1 "
+				."JOIN #__tool_groups AS g ON f.id=g.toolid AND g.cn=CONCAT('app-',f.toolname) AND g.role=1 "
 				."JOIN #__xgroups AS xg ON g.cn=xg.cn ";
 		if(!$admin) {
 		$query .="JOIN #__xgroups_managers AS m ON xg.gidNumber=m.gidNumber ";
@@ -176,10 +176,14 @@ class Tool extends JTable
 		$sql .= " LIMIT ".$filters['start'].",".$filters['limit'];
 				
 		}
-		
+//	var_dump($sql);	
 		$this->_db->setQuery( $sql );
-		return $this->_db->loadObjectList();
+		$xlog = &XFactory::getLogger();
+		$result = $this->_db->loadObjectList();
+		$xlog->logDebug($sql);
+		return $result;
 	}
+
 	//-----------
 	
 	public function getToolsOldScheme() 
@@ -332,7 +336,9 @@ class Tool extends JTable
 		$query .= "WHERE t.toolname = '".$toolname."'";
 		}
 		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
+		$result = $this->_db->loadObjectList();
+//		var_dump($this->_db);die();
+		return $result;
 	}
 	
 	
@@ -353,10 +359,11 @@ class Tool extends JTable
 	{
 		$query  = "SELECT m.uidNumber FROM #__tool_groups AS g ";
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
-		$query .= "JOIN #__xgroups_managers AS m ON xg.gidNumber=m.gidNumber ";
+		$query .= "JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
 		$query .= "WHERE g.toolid = '".$toolid."' AND g.role=1 ";
 		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
+		$result = $this->_db->loadObjectList();
+		return $result;
 	}
 	//-----------
 	
@@ -372,24 +379,9 @@ class Tool extends JTable
 	}
 	//-----------
 	
-	public function getLatestLdapTool($toolname, $config, $ldap=array())
-	{
-		ximport('account.acct_tools');
-		$latesttool = acc_gettoolnametool($toolname);
-		$ldap['tool'] 		= ($latesttool) ? $latesttool['tool'] : $toolname.$config->parameters['dev_suffix'];
-		$ldap['revision'] 	= ($latesttool) ? $latesttool['revision'] : 0;
-		$ldap['version'] 	= ($latesttool) ? $latesttool['version'] : 0;
-		
-		return $ldap;
-		
-	}
-	//-----------
-	
 	public function getToolStatus($toolid, $option, &$status, $version='dev', $ldap=false)
 	{
-		
 		$toolinfo = $this->getToolInfo(intval($toolid));
-			
 		if($toolinfo) {
 			
 			$objV = new ToolVersion( $this->_db);	

@@ -78,8 +78,6 @@ class ToolGroup extends  JTable
 		}
 		
 		$members = ContribtoolHelper::transform($members, 'uidNumber');
-		//print_r($members);
-		$obj = new Tool( $this->_db);	
 		$group = new XGroup();
 		if(XGroupHelper::groups_exists($devgroup)) {
 			$group->select($devgroup);		
@@ -113,11 +111,13 @@ class ToolGroup extends  JTable
 	
 	public function saveMemberGroups($toolid=NULL, $newgroups, $editversion='dev', $membergroups=array())
 	{
+		ximport('Hubzero_Tool');
+
 		if (!$toolid) {
 			return false;
 		}
-		$obj = new Tool( $this->_db);	
-		$membergroups = $obj->getToolGroups($toolid);
+
+		$membergroups = Hubzero_Tool::getToolGroups($toolid);
 		$membergroups = ContribtoolHelper::transform($membergroups, 'cn');
 		$newgroups = ContribtoolHelper::transform($newgroups, 'cn');
 		$to_delete = array_diff($membergroups, $newgroups);

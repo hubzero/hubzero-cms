@@ -235,6 +235,8 @@ class ToolVersion extends  JTable
 
 	public function unpublish($toolid=NULL, $vid=0)
 	{
+	    	$xlog = &XFactory::getLogger();
+
 		if (!$toolid) {
 			return false;
 		}
@@ -244,7 +246,11 @@ class ToolVersion extends  JTable
 		$query.= "id='".$vid."' AND ";
 		}
 		$query.= "toolid='".$toolid."' AND state='1'";
+
 		$this->_db->setQuery( $query);
+
+		$xlog->logDebug(__FUNCTION__ . "()  $query");
+
 		if($this->_db->query()) { return true; }
 		else {
 			return false;
@@ -254,6 +260,8 @@ class ToolVersion extends  JTable
 
 	public function save($toolid=NULL, $version='dev', $create_new = 0)
 	{
+	    	$xlog = &XFactory::getLogger();
+
 		if(!$this->toolid) {
 			$this->toolid= $toolid;
 		}
@@ -278,6 +286,8 @@ class ToolVersion extends  JTable
 		
 		$this->id = $result ? $result : 0;
 
+		$xlog->logDebug(__FUNCTION__ . " $toolid $version $create_new ");
+
 		if ((!$result && $create_new) or $this->id) 
 		{
 			if (!$this->store()) {
@@ -289,63 +299,69 @@ class ToolVersion extends  JTable
 		return true;
 			
 	}
+
+	public function store()
+	{
+	    	if (empty($this->id))
+		{
+	    		$xlog = &XFactory::getLogger();
+	    		$query = "SELECT id FROM #__tool_version WHERE toolname=" . $this->_db->Quote($this->toolname) .
+		    		" AND instance=" . $this->_db->Quote($this->instance) . ";";
+        		$this->_db->setQuery($query);
+	     	$result = $this->_db->loadResult();
+
+			if ($result)
+			{
+				$xlog->logDebug(__FUNCTION__ . " someone created this before me. Fixed");
+			}
+
+          	$this->id = $result ? $result : 0;
+		}
+
+	    	return parent::store();
+	}
 	//-----------
 	
 	public function getToolVersions( $toolid, &$versions, $toolname='', $ldap=false, $exclude_dev = 0) 
 	{
+		ximport('Hubzero_Tool');
+	    	$xlog =& XFactory::getLogger();
+
 		$objA = new ToolAuthor( $this->_db);	
+
 		if($ldap) {
-			$alltools = acc_gettoolnametools($toolname); 
-			$i=0;
-			
-			foreach($alltools as $t) {	
-				$versions[$i]->id 			= $i;
-				$versions[$i]->toolname 	= $t['cn'];
-				$versions[$i]->instance 	= $t['tool'];
-				$versions[$i]->title 		= $t['name'];
-				$versions[$i]->version 		= $t['version'];
-				$versions[$i]->revision 	= $t['revision'];
-				$versions[$i]->description 	= $t['description'];
-				$versions[$i]->fulltext 	= '';
-				$versions[$i]->toolaccess 	= ContribtoolLdap::getDbExec($t['exportControl']);
-				$versions[$i]->codeaccess 	= ($t['sourceControl']==true) ? '@OPEN' : '@DEV';
-				$versions[$i]->wikiaccess 	= ($t['projectPublic']==true) ? '@OPEN' : '@DEV';
-				$i++;
-			}
+		    	$xlog->logDebug("getToolVersions(): ldap read DEPRECATED.");
+			$ldap = false;
 		}
-		
-		else {
-			$query  = "SELECT v.*, d.doi_label as doi ";
-			$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
-			if($toolid) {
+
+		$query  = "SELECT v.*, d.doi_label as doi ";
+		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
+		if($toolid) {
 			$query .= "WHERE v.toolid = '".$toolid."' ";
-			} else if($toolname) {
+		} else if($toolname) {
 			$query .= "WHERE v.toolname = '".$toolname."' ";
-			}
-			if(($toolname or $toolid) && $exclude_dev) {
+		}
+		if(($toolname or $toolid) && $exclude_dev) {
 			$query .= "AND v.state != '3'";
-			}
-			$query .= " ORDER BY v.state DESC, v.revision DESC";
+		}
+		$query .= " ORDER BY v.state DESC, v.revision DESC";
 			
-			$this->_db->setQuery( $query );
-			$versions = $this->_db->loadObjectList();
+		$this->_db->setQuery( $query );
+		$versions = $this->_db->loadObjectList();
 			
-			if($versions) {
-				$obj = new Tool( $this->_db);
-				foreach($versions as $version) {
-					// get list of authors
-					if($version->state!=3) {
-						$version->authors = $objA->getToolAuthors($version->id);
-					}
-					else {
-						$rid = $obj->getResourceId($version->toolid);
-						$version->authors = $objA->getToolAuthors('dev', $rid);
-					}
+		if($versions) {
+			foreach($versions as $version) {
+				// get list of authors
+				if($version->state!=3) {
+					$version->authors = $objA->getToolAuthors($version->id);
+				}
+				else {
+					$rid = Hubzero_Tool::getResourceId($version->toolid);
+					$version->authors = $objA->getToolAuthors('dev', $rid);
 				}
 			}
-			
 		}
-		
+			
 		return $versions;
 	}
 	//-----------
@@ -353,87 +369,41 @@ class ToolVersion extends  JTable
 	
 	public function getVersionInfo($id, $version='', $toolname='', $instance='', $ldap=false)
 	{
-		if($ldap) {
-			// extract data from ldap
-			$ldap = array();	
-			
-			// Get the component parameters
-			$tconfig = new ContribtoolConfig('com_contribtool');
-			$this->config = $tconfig;
-			$dev_suffix = $this->config->parameters['dev_suffix'] ? $this->config->parameters['dev_suffix'] : '_dev';
-			
-			if($version=='current' && $toolname) {
-				$tool = acc_gettoolnametool($toolname);
+	    	$xlog =& XFactory::getLogger();
+
+	    	if ($ldap) {
+		 	$xlog->logDebug("getVersionInfo() ldap read DEPRECATED");
+			$ldap = false;
+		}	
+
+		// data comes from mysql
+		$juser  =& JFactory::getUser();
+		$query  = "SELECT v.*, d.doi_label as doi ";
+		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
+		if($id) {
+			$query .= "WHERE v.id = '".$id."' ";
+		}
+		else if($version && $toolname) {
+			$query.= "WHERE v.toolname='".$toolname."' ";
+			if($version=='current') {
+				$query .= "AND v.state=1 ORDER BY v.revision DESC LIMIT 1 ";
 			}
-			else if($version=='dev' && $toolname) {
-				$tool = acc_gettool($toolname.$dev_suffix);
+			else if($version=='dev') {
+				$query .= "AND v.state=3 LIMIT 1";
 			}
 			else {
-				$tool = acc_gettoolnametool($instance);
-			}	
-			$ldap[0]->tool 			= ($tool) ? $tool['tool'] : '';
-			$ldap[0]->revision 		= ($tool) ? $tool['revision'] : '';
-			$ldap[0]->version 		= ($tool) ? $tool['version'] : '';
-			$ldap[0]->title 		= ($tool) ? $tool['name'] : '';
-			$ldap[0]->description 	= ($tool) ? $tool['description'] : '';
-			$ldap[0]->fulltext 	= '';
-			$ldap[0]->toolaccess 	= (isset($tool['exportControl'])) ? ContribtoolLdap::getDbExec($tool['exportControl']) : '';
-			$ldap[0]->codeaccess 	= (isset($tool['sourceControl']) && $tool['sourceControl']==true) ? '@OPEN' : '@DEV';
-			$ldap[0]->wikiaccess 	= (isset($tool['projectPublic']) && $tool['projectPublic']==true) ? '@OPEN' : '@DEV';
-			
-			return $ldap;		
-		}		
-		else {
-			// data comes from mysql
-			$juser  =& JFactory::getUser();
-			$query  = "SELECT v.*, d.doi_label as doi ";
-			$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
-			if($id) {
-			$query .= "WHERE v.id = '".$id."' ";
-			}
-			else if($version && $toolname) {
-				$query.= "WHERE v.toolname='".$toolname."' ";
-				if($version=='current') {
-					$query .= "AND v.state=1 ORDER BY v.revision DESC LIMIT 1 ";
-				}
-				else if($version=='dev') {
-					$query .= "AND v.state=3 LIMIT 1";
-				}
-				else {
-					$query .= "AND v.version = '".$version."' ";
-				}		
-			}
-			else if($instance) {
-				$query.= "WHERE v.instance='".$instance."' ";
-			}
-			$this->_db->setQuery( $query );
-			return $this->_db->loadObjectList();
+				$query .= "AND v.version = '".$version."' ";
+			}		
 		}
+		else if($instance) {
+			$query.= "WHERE v.instance='".$instance."' ";
+		}
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
 	}
 	
 	//-----------
-	public function getVersionStatus ($option, &$status, $id=0, $version='', $toolname='', $ldap=false)
-	{
-		// get parent info
-		$obj = new Tool( $this->_db);
-		$objA = new ToolAuthor( $this->_db);		
-		$toolinfo = $obj->getToolInfo('', $toolname);
-			
-		if($toolinfo) {
-			
-			$version = $this->getVersionInfo($id, $version, $toolname);
-			
-			$developers = $obj->getToolDevelopers($toolinfo[0]->id);
-			
-			$authors = $objA->getToolAuthors($id,'',$version[0]->toolname, $version[0]->revision);
-				
-			$obj->buildToolStatus($toolinfo, $developers, $authors, &$status, $option, $ldap);
-		}
-		else {
-			return $status=array();
-		}
-	}
-	//--------------
+	
 	public function compileResource ($thistool, $curtool='', $resource, $revision, $config)
 	{
 		if($curtool) {		
@@ -534,6 +504,12 @@ class ToolVersion extends  JTable
 
 	public function validToolReg(&$tool, &$err, $id, $ldap, $config, $checker=0, $result=1)
 	{
+	    	$xlog =& XFactory::getLogger();
+
+		if ($ldap) {
+		    	$xlog->logDebug("validToolReg() ldap read DEPRECATED");
+			$ldap = false;
+		}
 		
 		$tgObj = new ToolGroup($this->_db);
 			
@@ -548,14 +524,6 @@ class ToolVersion extends  JTable
 		$this->_db->setQuery( $query );
 		$checker =$this->_db->loadResult();
 	
-		if($ldap) {
-			// check if toolname exists in LDAP
-			$ldap_toolname = acc_gettoolname($tool['toolname']);
-			if($ldap_toolname) {
-				$checker = 1;
-			}
-		}
-		
 		if ($checker or (in_array($tool['toolname'], array('test','shortname','hub','tool')) && !$id)) { 
 			$err['toolname'] = JText::_('ERR_TOOLNAME_EXISTS');
 		}
@@ -579,16 +547,6 @@ class ToolVersion extends  JTable
 				}				
 			}
 		
-		}
-		
-		if($ldap) {
-			// check if title can be used - LDAP	
-			$ldap_toolnames = acc_gettoolnames();
-			foreach ($ldap_toolnames as $tn) {
-				if(strtolower($tn['name']) == strtolower($tool['title']) && strtolower($tn['toolname']) != strtolower($tool['toolname'])) {
-				$checker = 1;
-				}
-			}
 		}
 		
 		$tool['toolname'] = strtolower($tool['toolname']);	// make toolname lower case by default	

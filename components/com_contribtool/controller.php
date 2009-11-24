@@ -25,6 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+ximport('Hubzero_Tool_Version');
+ximport('Hubzero_Tool');
+ximport('Hubzero_Group');
+
 class ContribtoolController extends JObject
 {
 	private $_name  = NULL;
@@ -301,17 +305,6 @@ class ContribtoolController extends JObject
 		// check access rights
 		if($this->check_access($this->_toolid, $juser, $this->_admin) ) {
 
-			// Create a Tool object
-			$obj = new Tool( $database );
-
-			// get tool status
-			$obj->getToolStatus( $this->_toolid, $this->_option, $status, 'dev', $ldap );
-
-			if(!$status) {
-				JError::raiseError( 404, JText::_('ERR_STATUS_CANNOT_FIND') );
-				return;
-			}
-			
 			// Create a Tool Version object
 			$objV = new ToolVersion( $database );
 			$objV->getToolVersions( $this->_toolid, $versions, '', $ldap); 
@@ -344,9 +337,22 @@ class ContribtoolController extends JObject
 			$pathway->addItem( JText::_('TASK_VERSIONS'), 'index.php?option='.$this->_option.a.'task=versions'.a.'toolid='.$this->_toolid );
 			}
 		}
-		
-		
-		echo ContribtoolHtml::writeToolVersions($versions, $juser, $status, $this->_admin, $this->_error, $this->_option, $this->_action, $title);
+
+		$status = array();
+		$hzt = Hubzero_Tool::getInstance($this->_toolid);
+		$hztv_dev = $hzt->getRevision('development');
+		$hztv_current = $hzt->getRevision('current');
+        $status['toolid'] = $hzt->id;
+        $status['published'] = $hzt->published;
+        $status['version'] = $hztv_dev->version;
+        $status['state'] = $hzt->state;
+        $status['toolname'] = $hzt->toolname;
+        $status['membergroups'] = Hubzero_Tool::getToolGroups($this->_toolid);
+        $status['resourceid'] = Hubzero_Tool::getResourceId($this->_toolid);
+        $status['currentrevision'] = $hztv_current->revision;
+        $status['currentversion'] = $hztv_current->version;
+
+		echo ContribtoolHtml::writeToolVersions($versions, $status, $this->_admin, $this->_error, $this->_option, $this->_action, $title);
 
 	}
 
@@ -561,7 +567,7 @@ class ContribtoolController extends JObject
 		
 		// Create a Tool object
 		$obj = new Tool( $database );
-		
+
 		// do we have an alias?
 		if($this->_toolid == 0) {
 			$alias = JRequest::getVar( 'alias', '');
@@ -784,7 +790,9 @@ class ContribtoolController extends JObject
 		$database 	=& JFactory::getDBO();
 		$xuser 		=& XFactory::getUser();
 		$juser 	   	=& JFactory::getUser();
+		$xlog       = &XFactory::getLogger();
 		$task  	    = $this->_task;
+		$exportmap  = array('@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -792,10 +800,9 @@ class ContribtoolController extends JObject
 		// set vars
 		$tool				= ($task=='save' or $task=='register') ? array_map('trim', $_POST['tool']): array();
 		$today 				= date( 'Y-m-d H:i:s', time() );
-		$ldap_read 			= isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 		$ldap_save		    = isset($this->config->parameters['ldap_save']) ? $this->config->parameters['ldap_save'] : 0;
 		$group_prefix       = isset($this->config->parameters['group_prefix']) ? $this->config->parameters['group_prefix'] : 'app-';
-		$dev_siffix       	= isset($this->config->parameters['dev_suffix']) ? $this->config->parameters['dev_suffix'] : '_dev';
+		$dev_suffix       	= isset($this->config->parameters['dev_suffix']) ? $this->config->parameters['dev_suffix'] : '_dev';
 		$invokedir 			= isset($this->config->parameters['invokescript_dir']) ? $this->config->parameters['invokescript_dir'] : DS.'apps';
 
 		if (!$this->_error) {
@@ -809,7 +816,6 @@ class ContribtoolController extends JObject
 		$this->getStyles();
 		$this->getScripts();
 
-
 		// pass data from forms
 		$id 			= JRequest::getInt( 'id', '');
 		$this->_action 	= JRequest::getVar( 'action', '');
@@ -817,15 +823,17 @@ class ContribtoolController extends JObject
 		$editversion 	= JRequest::getVar( 'editversion', 'dev','post');
 		$toolname 		= ($task=='save' or $task=='register') ? strtolower($tool['toolname']) : strtolower(JRequest::getVar( 'toolname', ''));
 
-
 		// Create a Tool object
-		$obj = new Tool( $database );
 		$objV = new ToolVersion( $database );
 		
 		if($id) {
+			$hzt = Hubzero_Tool::getInstance($id);
+			$hztv = $hzt->getRevision($editversion);
 			// get tool status before changes
-			$obj->getToolStatus( $id, $this->_option, $oldstatus, $editversion, $ldap_read);
-			
+			$oldstatus = ($hztv) ? $hztv->toArray() : array();
+			if (!empty($oldstatus))
+				$oldstatus['toolstate'] = $hzt->state;
+
 			// make sure user is authorized to go further
 			if(!$this->check_access($id, $juser, $this->_admin) ) { 
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
@@ -835,123 +843,10 @@ class ContribtoolController extends JObject
 		}
 
 		// new tool or edit
-		if($task=='register' or $task=='save') {
-
-			if($objV->validToolReg($tool, $err, $id, $ldap_read, $this->config)) {
-
-				// save tool info
-				if(!$id) { // new tool
-					$obj->published = 0;
-					$obj->toolname = $toolname;
-					$obj->state = 1;
-					$obj->priority = 3;
-					$obj->registered = $today;
-					$obj->state_changed = $today;
-					$obj->registered_by = $juser->get('username');
-					$obj->title = $tool['title'];
-
-					if (!$obj->store()) {
-						$this->_error=$obj->getError();
-						return;
-					}
-				}
-
-				// get tool id for newly registered tool
-				$this->_toolid = $id ? $id : $obj->getToolId($toolname);
-
-				// save version info
-				$binditems = array ('toolid'=>$this->_toolid, 'toolname'=>$toolname, 'title'=>$tool['title'], 'version'=>$tool['version'],
-						'description'=>$tool['description'], 'toolaccess'=>$tool['exec'], 'codeaccess'=>$tool['code'], 'wikiaccess'=>$tool['wiki'], 'vnc_geometry'=>$tool['vncGeometry']);
-				
-				//*******exportControl
-				$objV->exportControl = ContribtoolLdap::getldapExec($tool['exec']);
-
-				if($editversion=='dev') {				
-	
-					$objV->state = 3; // this will indicate dev version
-					$objV->instance = $toolname.$dev_siffix;
-					$objV->title = $tool['title'];
-					$objV->mw = isset($this->config->parameters['default_mw']) ? $this->config->parameters['default_mw'] : 'narwhal';
-					//$objV->vnc_command = $invokedir.DS.$toolname.DS.'invoke';
-					//$objV->vnc_command = $invokedir.DS.$toolname.DS.'dev'.DS.'middleware'.DS.'invoke';
-					$objV->vnc_command = $invokedir.DS.$toolname.DS.'dev'.DS.'middleware'.DS.'invoke -T dev';
-					
-				}
-
-				if (!$objV->bind($binditems)) {
-					$this->_error=$objV->getError();
-					return;
-				}
-
-				if (!$objV->save($this->_toolid, $editversion, 1) ) {
-					$this->_error=$objV->getError();
-					return;
-				}
-				
-				if(!$this->_error) {
-	
-					// create/update developers group
-					$objG = new ToolGroup( $database );
-					$groupexists = $obj->getToolDevGroup($this->_toolid);
-					$devgroup = $groupexists ? $groupexists : $group_prefix.$toolname;
-					$objG->saveGroup($this->_toolid, $devgroup, $tool['developers'], $groupexists);
-	
-					// store/update member groups
-					if(count($tool['membergroups'] > 0) && $tool['exec']=='@GROUP') {
-						$objG->saveMemberGroups($this->_toolid, $tool['membergroups'], $editversion);
-					}
-	
-					// get ticket information
-					$ticketid = $obj->getTicketId($this->_toolid);
-					$ticketid = $ticketid ? $ticketid : $this->createTicket($this->_toolid, $tool);
-	
-					// create resource page
-					$rid = $obj->getResourceId($this->_toolid);
-					$rid = $rid ? $rid : $this->createResPage($this->_toolid, $tool);
-					
-					// save authors
-					$objA = new ToolAuthor( $database);
-					if(!$id) { $objA->saveAuthors($tool['developers'], 'dev', $rid, '', $tool['toolname'] ); }
-	
-					// get tool status after updates
-					$obj->getToolStatus( $this->_toolid, $this->_option, $status, $editversion, $ldap_read);
-					
-					// update ldap if applicable
-					if($ldap_save) {
-						if(!$id) { $status['vncCommand'] = $invokedir.DS.$toolname.DS.'dev'.DS.'middleware'.DS.'invoke -T dev';	 }					
-						ContribtoolLdap::saveToLdap($toolname, $status, $id, $editversion, $devgroup, $this->_option);
-					}
-					
-					// license new tool										
-					if(!$id) {
-						include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_mw'.DS.'mw.license.php');
-						$devid = $objV->getDevVersionProperty ($toolname, 'id');
-						$objLic = new LicenseTool( $database);
-						$lic = new License( $database);
-						$license_id = $lic->getIdfromAlias('public');
-						
-						$objLic->license_id = $license_id ? $license_id : 10;
-						$objLic->tool_id = $devid; // this is in fact version id!!
-						$objLic->created = $today; 
-						
-						if ($objLic->check()) {
-							$objLic->store();
-						}
-												
-					}
-	
-					// update history ticket
-					if($id && $oldstatus!=$status && $editversion !='current') { $this->updateTicket($this->_toolid, $oldstatus, $status, $comment, 0 , 1); }
-					
-					// display status page
-					$this->_task = 'status';
-					$this->_msg = $id ? JText::_('NOTICE_TOOL_INFO_CHANGED'): JText::_('NOTICE_TOOL_INFO_REGISTERED');
-					$this->status();
-				}
-
-
-			} //--------end if valid
-			else {
+		if($task=='register' || $task=='save') 
+		{
+			if (!Hubzero_Tool::validate($tool,$err,$id))
+			{
 				// display form with errors
 				$title = JText::_(strtoupper($this->_name)).': '.JText::_('EDIT_TOOL');
 				$document =& JFactory::getDocument();
@@ -960,8 +855,136 @@ class ContribtoolController extends JObject
 				if($this->_toolid) { $tool['published']=$oldstatus['published']; }
 
 				echo ContribtoolHtml::writeToolForm($this->_option, $title, $this->_admin, $juser, $tool, $err, $id, $this->config, $this->_task);
-
+				
+				return;
 			}
+			else
+			{
+				$tool['vncGeometry'] = $tool['vncGeometryX'].'x'.$tool['vncGeometryY'];
+				$tool['toolname'] = strtolower($tool['toolname']);
+		        $tool['developers'] = array_map('trim', explode(',',$tool['developers']));
+		        $tool['membergroups'] = array_map('trim', explode(',',$tool['membergroups']));
+
+				// save tool info
+				if (!$id)  // new tool
+				{
+					$hzt = Hubzero_Tool::createInstance($toolname);
+					$hzt->toolname = $toolname;
+					$hzt->title = $tool['title'];
+					$hzt->published = 0;
+					$hzt->state = 1;
+					$hzt->priority = 3;
+					$hzt->registered = $today;
+					$hzt->state_changed = $today;
+					$hzt->registered_by = $juser->get('username');
+				}
+				else
+				{
+					$hzt = Hubzero_Tool::getInstance($id);
+				}
+
+				// get tool id for newly registered tool
+				$this->_toolid = $hzt->id;
+
+				// save version info
+				$hztv = $hzt->getRevision($editversion);
+				if ($hztv)
+				{
+					$oldstatus = $hztv->toArray();
+					$oldstatus['toolstate'] = $hzt->state;
+				}
+
+				if ($editversion=='dev')
+				{
+					if ($hztv === false)
+						$hztv = Hubzero_Tool_Version::createInstance($toolname.$dev_suffix);
+
+					$oldstatus = $hztv->toArray();
+					$oldstatus['toolstate'] = $hzt->state;
+					$hztv->toolid = $this->_toolid;
+					$hztv->toolname = $toolname;
+					$hztv->title = $tool['title'];
+					$hztv->version = $tool['version'];
+					$hztv->description = $tool['description'];
+					$hztv->toolaccess = $tool['exec'];
+					$hztv->codeaccess = $tool['code'];
+					$hztv->wikiaccess = $tool['wiki'];
+					$hztv->vnc_geometry = $tool['vncGeometry'];
+					$hztv->exportControl = $exportmap[$tool['exec']];
+					$hztv->state = 3;
+					$hztv->instance = $toolname.$dev_suffix;
+					$hztv->mw = isset($this->config->parameters['default_mw']) ? $this->config->parameters['default_mw'] : 'narwhal';
+				}
+				else
+				{
+					if ($hztv)
+					{
+						$hztv->toolid = $this->_toolid;
+						$hztv->toolname = $toolname;
+						$hztv->title = $tool['title'];
+						$hztv->version = $tool['version'];
+						$hztv->description = $tool['description'];
+						$hztv->toolaccess = $tool['exec'];
+						$hztv->codeaccess = $tool['code'];
+						$hztv->wikiaccess = $tool['wiki'];
+						$hztv->vnc_geometry = $tool['vncGeometry'];
+						$hztv->exportControl = $exportmap[$tool['exec']];
+					}
+				}
+
+				if (!$this->_error) 
+				{
+					// create/update developers group
+					$gid = $hztv->getDevelopmentGroup();
+					if ($gid == false)
+					{
+						$hzg = Hubzero_Group::createInstance($group_prefix . $toolname);
+					}
+					else
+					{
+						$hzg = Hubzero_Group::getInstance($gid);
+					}
+					$hzg->add('members',$tool['developers']);
+					$hztv->add('owner',$hzg->cn);
+
+                    // store/update member groups
+                    if(count($tool['membergroups'] > 0) && $tool['exec']=='@GROUP')
+                    {
+                        $hztv->add('member', $tool['membergroups']);
+                    }
+	
+					// get ticket information
+					if (empty($hzt->ticketid))
+					{
+						$hzt->ticketid = $this->createTicket($this->_toolid, $tool);
+					}
+
+					// create resource page
+					$rid = $hzt->getResourceId();
+
+					if (empty($rid))
+					{
+						$rid = $this->createResPage($this->_toolid, $tool);
+					}
+
+					$status = $hztv->toArray();
+					$status['toolstate'] = $hzt->state;
+
+					// update history ticket
+					if($id && $oldstatus!=$status && $editversion !='current') 
+					{ 
+						$this->newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, 0 , 1); 
+					}
+					
+					// display status page
+					$this->_task = 'status';
+					$this->_msg = $id ? JText::_('NOTICE_TOOL_INFO_CHANGED'): JText::_('NOTICE_TOOL_INFO_REGISTERED');
+					$hzg->update();
+					$hzt->update();
+					$hztv->update();
+					$this->status();
+				}
+			} //--------end if valid
 
 		} //---------end if register/save
 		else {
@@ -972,8 +995,7 @@ class ContribtoolController extends JObject
 			
 			if($newstate && !intval($newstate)) { $newstate = ContribtoolHtml::getStatusNum($newstate); }
 			
-			$this->_toolid = $id ? $id : $obj->getToolId($toolname);
-			$obj->load($this->_toolid); // load main tool info
+			$this->_toolid = $hzt->id;
 			
 			switch($task) 
 			{	
@@ -1031,37 +1053,40 @@ class ContribtoolController extends JObject
 				case 'saveversion':
 		
 					$newversion 	= JRequest::getVar( 'newversion', '' );
-					if($objV->validVersion($toolname, $newversion, $this->_error, $ldap_read, 1)) {
-						$objV->version = $newversion; 
-						
-						// save version info
-						if (!$objV->save($this->_toolid, $editversion) ) {
-							$this->_error=$objV->getError();
-							return;
-						}	 
-						else {
-							if($this->_action == 'confirm') {
-								$this->license (); 
-								return; // display license page
+
+					if (Hubzero_Tool::validateVersion($newversion, $this->_error, $hzt->id))
+					{
+						$hztv->version = $newversion;
+						$hztv->update();
+
+						if($this->_action == 'confirm') 
+						{
+							$this->license(); 
+							return; // display license page
+						}
+						else 
+						{ 
+							$status = $hztv->toArray();
+							$status['toolstate'] = $hzt->state;
+							// update history ticket
+							if ($oldstatus!=$status) 
+							{ 
+								$this->newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, ''); 
 							}
-							else { 
-								// get tool status after updates
-								$obj->getToolStatus( $this->_toolid, $this->_option, $status, $editversion, $ldap_read);
-		
-								// update history ticket
-								if($oldstatus!=$status) { $this->updateTicket($this->_toolid, $oldstatus, $status, ''); }
-								$this->_msg = JText::_('NOTICE_CHANGE_VERSION_SAVED');
-								$this->_task = 'status';
-								$this->status(); return; 
-							}	
+							$this->_msg = JText::_('NOTICE_CHANGE_VERSION_SAVED');
+							$this->_task = 'status';
+							$this->status(); 
+							return; 
 						}	
 																
 					}
-					else {
-						$this->version (); // display version page with error
+					else 
+					{
+						$this->version(); // display version page with error
 						return;
-					}		
-				break;
+					}	
+
+					break;
 				
 				// save version supplied by user
 				case 'savelicense':
@@ -1071,16 +1096,14 @@ class ContribtoolController extends JObject
 					'authorize'=>JRequest::getInt( 'authorize', 0));
 					$this->code = JRequest::getVar( 't_code', '@OPEN');
 					
-					if($objV->validLicense($toolname, $this->license_choice, $this->code, $this->_error)) {
+					if (Hubzero_Tool::validateLicense($this->license_choice, $this->code, $this->_error))
+					{
 							// code for saving license
-							$objV->license = strip_tags($this->license_choice['text']);
-							$objV->codeaccess = $this->code;
+							$hztv->license = strip_tags($this->license_choice['text']);
+							$hztv->codeaccess = $this->code;
 							
 							// save version info
-							if (!$objV->save($this->_toolid, $editversion) ) {
-								$this->_error=$objV->getError();
-								return;
-							}	
+							$hztv->update();
 							
 							if($this->_action != 'confirm') {
 								$this->_msg = JText::_('NOTICE_CHANGE_LICENSE_SAVED');
@@ -1102,100 +1125,108 @@ class ContribtoolController extends JObject
 				
 				// all details confirmed, version approved
 				case 'finalizeversion':
+					$hzt->state = $newstate;
+					$hzt->state_changed = $today;
+					$hzt->update();		
 
-					$obj->state = $newstate;
-					$obj->state_changed = $today;
-						
-					// save tool info
-					if (!$obj->store()) {
-						$this->_error=$obj->getError();
-						return;
+					$status = $hztv->toArray();
+					$status['toolstate'] = $hzt->state;
+					// update history ticket
+					if ($oldstatus!=$status) 
+					{ 
+						$this->newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, ''); 
 					}
-					else {
-						// get tool status after updates
-						$obj->getToolStatus( $this->_toolid, $this->_option, $status, $editversion, $ldap_read);
-	
-						// update history ticket
-						if($oldstatus!=$status) { $this->updateTicket($this->_toolid, $oldstatus, $status, '', 0, 1); }
-						$this->_msg = JText::_('NOTICE_STATUS_CHANGED');
-						$this->_task = 'status';
-						$this->status(); 
-						return;
-					}						
-				break;
+					$this->_msg = JText::_('NOTICE_STATUS_CHANGED');
+					$this->_task = 'status';
+					$this->status(); 
+					return;
+					break;
 				
 				// updating status and/or priority
 				case 'update':
-	
-					if(intval($newstate) && $newstate != $oldstatus['state']) {
-						if($newstate == ContribtoolHtml::getStatusNum('Approved') && $objV->validVersion($toolname, $oldstatus['version'], $this->_error, $ldap_read, 1)) { // check for version
+					if(intval($newstate) && $newstate != $oldstatus['toolstate']) {
+						$xlog->logDebug(__FUNCTION__ . "() state changing");
+
+						if($newstate == ContribtoolHtml::getStatusNum('Approved') && Hubzero_Tool::validateVersion($oldstatus['version'],$this->_error,$hzt->id))
+						{
+							$xlog->logDebug(__FUNCTION__ . "() state changing to approved, action confirm");
 							$this->_action = 'confirm';
 							$this->_task = JText::_('CONTRIBTOOL_APPROVE_TOOL');
 							$this->version();
 							return;
 						}
 						else if($newstate == ContribtoolHtml::getStatusNum('Approved')) {
+							$xlog->logDebug(__FUNCTION__ . "() state changing to approved, action new");
 							$this->_action = 'new';
 							$this->_task = JText::_('CONTRIBTOOL_APPROVE_TOOL');
 							$this->version();
 							return;
 						}
 						else if($newstate == ContribtoolHtml::getStatusNum('Published')) {
-							$objV->published = '1';		
+							$xlog->logDebug(__FUNCTION__ . "() state changing to published");
+							$hzt->published = '1';		
 						}
 						
 						// update dev screenshots of a published tool changes status
 						if($oldstatus['state'] == ContribtoolHtml::getStatusNum('Published')) {
-							// Get version ids	
-							$to = $objV->getVersionIdFromResource($oldstatus['resourceid'],  'dev');
-							$from = $objV->getVersionIdFromResource($oldstatus['resourceid'], 'current');
-							
-							$this->transferScreenshots($from, $to, $oldstatus['resourceid']);
+							$xlog->logDebug(__FUNCTION__ . "() state changing away from  published");
+							// Get version ids
+							$rid = $hzt->getResourceId();
+							$to = $objV->getVersionIdFromResource($rid,  'dev');
+							$from = $objV->getVersionIdFromResource($rid, 'current');
+							$dev_hztv = $hzt->getRevision('dev');
+							$current_hztv = $hzt->getRevision('current');
+							$xlog->logDebug("update: to=$to from=$from   dev=" . $dev_hztv->id . " current=" . $current_hztv->id);
+							if($to && $from) {
+							$this->transferScreenshots($from, $to, $rid);
+							}
 						}
 						
-						$obj->state = $newstate;
-						$obj->state_changed = $today;	
+						$xlog->logDebug(__FUNCTION__ . "() state changing to $newstate");
+						$hzt->state = $newstate;
+						$hzt->state_changed = $today;	
 					}
 					
 					// if priority changes 
 					if(intval($priority) && $priority != $oldstatus['priority']) {
-						$obj->priority = $priority;			
+						$hzt->priority = $priority;			
 					}
 					
 					// save tool info
-					if (!$obj->store()) {
-						$this->_error=$obj->getError();
-						return;
+					$hzt->update();
+					$hztv->update();
+					// get tool status after updates
+					$status = $hztv->toArray();
+					$status['toolstate'] = $hzt->state;
+					// update history ticket
+					$xlog->logDebug(__FUNCTION__ . "() before newUpdateTicket test");
+					if ($oldstatus!=$status || !empty($comment)) 
+					{ 
+					    $xlog->logDebug(__FUNCTION__ . "() before newUpdateTicket");
+						$this->newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, $access, 1); 
+					    $xlog->logDebug(__FUNCTION__ . "() after newUpdateTicket");
 					}
-					else {
-						// get tool status after updates
-						$obj->getToolStatus( $this->_toolid, $this->_option, $status, $editversion, $ldap_read);
-	
-						// update history ticket
-						if($oldstatus!=$status) { $this->updateTicket($this->_toolid, $oldstatus, $status, $comment, $access, 1); }
-						$this->_msg = JText::_('NOTICE_STATUS_CHANGED');
-						$this->_task = 'status';
-						$this->status(); 
-						return;
-					}
-					
-				break;
+					$this->_msg = JText::_('NOTICE_STATUS_CHANGED');
+					$this->_task = 'status';
+					$this->status(); 
+					return;
+					break;
+
 				// sending a message
 				case 'message':
-					if($comment) {
-						$this->updateTicket($this->_toolid, '', '', $comment, $access, 1);
+					if($comment) 
+					{
+						$this->newUpdateTicket($hzt->id, $hzt->ticketid, '', '', $comment, $access, 1);
 						$this->_msg = JText::_('NOTICE_MSG_SENT');
 					}
-						$this->_task = 'status';
-						$this->status(); 
-				
-				break;
-					
+					$this->_task = 'status';
+					$this->status(); 
+					return;
+					break;
 			}			
-
 		} //--------end if update
-
 	}
+
 	//-----------
 
 	protected function email($toolid, $summary, $comment, $access, $action)
@@ -1208,45 +1239,12 @@ class ContribtoolController extends JObject
 		
 		$headline = '';
 		
-		switch( $action ) 
-		{
-			case 1:    
-			$action = 'contribtool_info_changed';
-			$headline = JText::_('tool information changed');      
-			break;
-			case 2:    
-			$action = 'contribtool_status_changed';    
-			$headline = $summary;
-			break;
-			case 3:    
-			$action = 'contribtool_new_message';    	
-			$headline = JText::_('new message');
-			break;
-		}
-						
 		// Get tool information
 		$obj = new Tool($database);
 		$obj->getToolStatus( $toolid, $this->_option, $status, 'dev');
 		
-		// Build e-mail components
-		$subject     = JText::_(strtoupper($this->_name)).', '.JText::_('TOOL').' '.$status['toolname'].'(#'.$toolid.'): '.$headline;
-		$from        = $jconfig->getValue('config.sitename').' '.JText::_('CONTRIBTOOL');
-		$hub         = array('email' => $jconfig->getValue('config.mailfrom'), 'name' => $from);
-			
-		// Compose Message
-		$message  = strtoupper(JText::_('TOOL')).': '.$status['title'].' ('.$status['toolname'].')'.r.n;
-		$message .= strtoupper(JText::_('SUMMARY')).': '.$summary.r.n;
-		$message .= strtoupper(JText::_('WHEN')).' '.JHTML::_('date', date( 'Y-m-d H:i:s', time() ), '%d %b, %Y').r.n;
-		$message .= strtoupper(JText::_('BY')).': '.$juser->get('username').r.n;
-		$message .= '----------------------------'.r.n.r.n;
-		if($comment) {
-		$message .= strtoupper(JText::_('MESSAGE')).': '.r.n;
-		$message .= $comment.r.n;
-		$message .= '----------------------------'.r.n.r.n;
-		}
-		$message .= JText::_('TIP_URL_TO_STATUS').''.r.n;
-		$message .= $xhub->getCfg('hubLongURL').JRoute::_('index.php?option=com_contribtool&task=status&toolid='.$toolid) .r.n;
-			
+			// get admin priviliges
+		$this->authorize_admin();
 		// Get team
 		$team = ContribtoolHelper::transform($status['developers'], 'uidNumber');
 		if(!$this->_admin) { $this->_admin = 0; }
@@ -1272,30 +1270,69 @@ class ContribtoolController extends JObject
 		
 		// collector for those who need to get notified
 		$users = array();
-	
-		// determine receipients
-		if($this->_admin==2 && $access != 1 && $action!=1 ) { 
-			$users = $team; 
-			if(!$inteam) {						
-				$users[] = $juser->get('id'); // cc admin who made the change if not in team
-			}
-		}
-		else if ($access == 1) {					
-			$users = $admins; // send private message to admins
-		}
-		else if($action == 3 && $this->_admin!=2)  {  // message is sent by team to admins		
-			$users = $admins;
-		}
-		else if($action == 1)  {  // info changed, only notify team			
-			$users = $team;
-		}
-		else  {  // send to admin & team in all other cases			
-			$users = array_merge($team, $admins);
+		
+		switch( $action ) 
+		{
+			case 1:    
+			$action = 'contribtool_info_changed';
+			$headline = JText::_('tool information changed');
+			//$users = $team;           
+			break;
+			
+			case 2:    
+			$action = 'contribtool_status_changed';    
+			$headline = $summary;
+			//$users = $this->_admin==2 ? $team : $admins; 
+			//if(!$inteam) {						
+				//$users[] = $juser->get('id'); // cc person who made the change if not in team
+			//}    
+			break;
+			
+			case 3:    
+			$action = 'contribtool_new_message';    	
+			$headline = JText::_('new message');
+			//$users = $this->_admin==2 && $access != 1 ? $team : $admins;  
+			break;
+			
+			case 4:    
+			$action = 'contribtool_status_changed';    	
+			$headline = JText::_('new tool registration');
+			//$users = array_merge($team, $admins);
+			break;
+			
+			case 5:    
+			$action = 'contribtool_status_changed';    	
+			$headline = JText::_('tool registration cancelled');
+			//$users = array_merge($team, $admins);
+			break;
 		}
 		
+		// send messages to everyone
+		$users = array_merge($team, $admins);
+								
 		// make sure we are not mailing twice
 		$users = array_unique($users); 
 				
+	
+		// Build e-mail components
+		$subject     = JText::_(strtoupper($this->_name)).', '.JText::_('TOOL').' '.$status['toolname'].'(#'.$toolid.'): '.$headline;
+		$from        = $jconfig->getValue('config.sitename').' '.JText::_('CONTRIBTOOL');
+		$hub         = array('email' => $jconfig->getValue('config.mailfrom'), 'name' => $from);
+			
+		// Compose Message
+		$message  = strtoupper(JText::_('TOOL')).': '.$status['title'].' ('.$status['toolname'].')'.r.n;
+		$message .= strtoupper(JText::_('SUMMARY')).': '.$summary.r.n;
+		$message .= strtoupper(JText::_('WHEN')).' '.JHTML::_('date', date( 'Y-m-d H:i:s', time() ), '%d %b, %Y').r.n;
+		$message .= strtoupper(JText::_('BY')).': '.$juser->get('username').r.n;
+		$message .= '----------------------------'.r.n.r.n;
+		if($comment) {
+		$message .= strtoupper(JText::_('MESSAGE')).': '.r.n;
+		$message .= $comment.r.n;
+		$message .= '----------------------------'.r.n.r.n;
+		}
+		$message .= JText::_('TIP_URL_TO_STATUS').''.r.n;
+		$message .= $xhub->getCfg('hubLongURL').JRoute::_('index.php?option=com_contribtool&task=status&toolid='.$toolid) .r.n;
+			
 		// fire off message
 		if($summary or $comment) {
 			JPluginHelper::importPlugin( 'xmessage' );
@@ -1305,12 +1342,135 @@ class ContribtoolController extends JObject
 					echo ContribtoolHtml::alert( $this->_error );
 			}
 		}
-				
 	}
 
 	//-----------
 
-	protected function updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $changelog=array())
+	protected function newUpdateTicket($toolid, $ticketid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1, $changelog=array())
+	{
+		$juser =& JFactory::getUser();
+		$database =& JFactory::getDBO();
+		$xlog = &XFactory::getLogger();
+		$xlog->logDebug(__FUNCTION__ . "() started");
+		$summary = '';
+		// see what changed
+		if($oldstuff != $newstuff) {
+			if ($oldstuff['toolname'] != $newstuff['toolname']) {
+				$changelog[] = '<li><strong>'.JText::_('TOOLNAME').'</strong> '.JText::_('TICKET_CHANGED_FROM')
+				.' <em>'.$oldstuff['toolname'].'</em> '.JText::_('TO').' <em>'.$newstuff['toolname'].'</em></li>';
+			}
+			if ($oldstuff['title'] != $newstuff['title']) {
+				$changelog[] = '<li><strong>'.JText::_('TOOL').' '.strtolower(JText::_('TITLE')).'</strong> '.JText::_('TICKET_CHANGED_FROM')
+				.' <em>'.$oldstuff['title'].'</em> '.JText::_('TO').' <em>'.$newstuff['title'].'</em></li>';
+				$summary .= strtolower(JText::_('TITLE'));
+			}
+			if ($oldstuff['version']!='' && $oldstuff['version'] != $newstuff['version'] ) {
+				$changelog[] = '<li><strong>'.strtolower(JText::_('DEV_VERSION_LABEL')).'</strong> '.JText::_('TICKET_CHANGED_FROM')
+				.' <em>'.$oldstuff['version'].'</em> '.JText::_('TO').' <em>'.$newstuff['version'].'</em></li>';
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('VERSION'));
+			}
+			else if($oldstuff['version']=='' && $newstuff['version']!='') {
+				$changelog[] = '<li><strong>'.strtolower(JText::_('DEV_VERSION_LABEL')).'</strong> '.JText::_('TICKET_SET_TO')
+				.' <em>'.$newstuff['version'].'</em>';
+			}
+			if ($oldstuff['description'] != $newstuff['description']) {
+				$changelog[] = '<li><strong>'.JText::_('TOOL').' '.strtolower(JText::_('DESCRIPTION')).'</strong> '.JText::_('TICKET_CHANGED_FROM')
+				.' <em>'.$oldstuff['description'].'</em> '.JText::_('TO').' <em>'.$newstuff['description'].'</em></li>';
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('DESCRIPTION'));
+			}
+			if ($oldstuff['toolaccess'] != $newstuff['toolaccess']) {
+				$changelog[] = '<li><strong>'.JText::_('TOOL_ACCESS').'</strong> '.JText::_('TICKET_CHANGED_FROM')
+				.' <em>'.$oldstuff['toolaccess'].'</em> '.JText::_('TO').' <em>'.$newstuff['toolaccess'].'</em></li>';
+				if($newstuff['toolaccess']=='@GROUP') {
+				$changelog[] = '<li><strong>'.JText::_('ALLOWED_GROUPS').'</strong> '.JText::_('TICKET_SET_TO')
+				.' to <em>'.implode(',',$newstuff['membergroups']).'</em></li>';
+				}
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('TOOL_ACCESS'));
+			}
+			if ($oldstuff['codeaccess'] != $newstuff['codeaccess']) {
+				$changelog[] = '<li><strong>'.JText::_('CODE_ACCESS').'</strong> '.JText::_('TICKET_CHANGED_FROM')
+				.' <em>'.$oldstuff['codeaccess'].'</em> '.JText::_('TO').' <em>'.$newstuff['codeaccess'].'</em></li>';
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('CODE_ACCESS'));
+			}
+			if ($oldstuff['wikiaccess'] != $newstuff['wikiaccess']) {
+				$changelog[] = '<li><strong>'.JText::_('WIKI_ACCESS').'</strong> '.JText::_('TICKET_CHANGED_FROM')
+				.' <em>'.$oldstuff['wikiaccess'].'</em> '.JText::_('TO').' <em>'.$newstuff['wikiaccess'].'</em></li>';
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('WIKI_ACCESS'));
+			}
+			if ($oldstuff['vncGeometry'] != $newstuff['vncGeometry']) {
+				$changelog[] = '<li><strong>'.JText::_('VNC_GEOMETRY').'</strong> '.JText::_('TICKET_CHANGED_FROM')
+				.' <em>'.$oldstuff['vncGeometry'].'</em> to <em>'.$newstuff['vncGeometry'].'</em></li>';
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('VNC_GEOMETRY'));
+			}
+			if ($oldstuff['developers'] != $newstuff['developers']) {
+				$changelog[] = '<li><strong>'.JText::_('DEVELOPMENT_TEAM').'</strong> '.JText::_('TICKET_CHANGED_FROM')
+				.' <em>'.implode(',',$oldstuff['developers']) .'</em> '.JText::_('TO').' <em>'.implode(',',$newstuff['developers']).'</em></li>';
+				$summary .= $summary=='' ? '' : ', ';
+				$summary .= strtolower(JText::_('DEVELOPMENT_TEAM'));
+			}			
+			
+			// end of tool information changes
+			if($summary) {
+				$summary .= ' '.JText::_('INFO_CHANGED');
+				$action = 1;
+			}
+			
+			// tool status/priority changes
+			if ($oldstuff['priority'] != $newstuff['priority']) {
+				$changelog[] = '<li><strong>'.JText::_('PRIORITY').'</strong> '.JText::_('TICKET_CHANGED_FROM')
+				.' <em>'.ContribtoolHtml::getPriority($oldstuff['priority']).'</em> '.JText::_('TO').' <em>'.ContribtoolHtml::getPriority($newstuff['priority']).'</em></li>';
+				$email = 0; // do not send email about priority changes
+			}
+			if ($oldstuff['toolstate'] != $newstuff['toolstate']) {
+				$changelog[] = '<li><strong>'.JText::_('STATUS').'</strong> '.JText::_('TICKET_CHANGED_FROM')
+				.' <em>'.ContribtoolHtml::getStatusName($oldstuff['toolstate'], $oldstate).'</em> '.JText::_('TO').' <em>'.ContribtoolHtml::getStatusName($newstuff['toolstate'], $newstate).'</em></li>';
+				$summary = JText::_('STATUS').' '.JText::_('TICKET_CHANGED_FROM').' '.$oldstate.' '.JText::_('TO').' '.$newstate;
+				$email = 1; // send email about status changes
+				$action = 2;
+			}
+		}
+
+		// Were there any changes?
+		$log = implode(n,$changelog);
+		if ($log != '') {
+			$log = '<ul class="changelog">'.n.$log.'</ul>'.n;
+		}
+
+		$rowc = new SupportComment( $database );
+		$rowc->ticket     = $ticketid;
+		
+		if($comment) {
+			$action = $action==2 ? $action : 3;
+			$email = 1;
+			$rowc->comment    = nl2br($comment);
+			$rowc->comment    = str_replace( '<br>', '<br />', $rowc->comment );
+		}
+		$rowc->created    = date( 'Y-m-d H:i:s', time() );
+		$rowc->created_by = $juser->get('username');
+		$rowc->changelog  = $log;
+		$rowc->access     = $access;
+		$xlog->logDebug(__FUNCTION__ . "() storing ticket");
+		if (!$rowc->store()) {
+			$this->_error = $rowc->getError();
+			return false;
+		}
+		else if($email) { 
+			$xlog->logDebug(__FUNCTION__ . "() emailing notifications");
+			// send notification emails
+			$this->email($toolid, $summary, $comment, $access, $action);
+		}
+
+		return true;
+
+	}
+	//-----------
+	protected function updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1, $changelog=array())
 	{
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
@@ -1318,8 +1478,7 @@ class ContribtoolController extends JObject
 		$obj = new Tool( $database);
 		$ticketid = $obj->getTicketId($toolid);
 		$summary = '';
-		$action = 1;
-
+				
 		// see what changed
 		if($oldstuff != $newstuff) {
 			if ($oldstuff['toolname'] != $newstuff['toolname']) {
@@ -1413,7 +1572,8 @@ class ContribtoolController extends JObject
 		$rowc->ticket     = $ticketid;
 		
 		if($comment) {
-			$action = 3;
+			$action = $action==2 ? $action : 3;
+			$email = 1;
 			$rowc->comment    = nl2br($comment);
 			$rowc->comment    = str_replace( '<br>', '<br />', $rowc->comment );
 		}
@@ -1476,7 +1636,7 @@ class ContribtoolController extends JObject
 				$obj->saveTicketId($toolid, $row->id);
 
 				// make a record
-				$this->updateTicket($toolid, '', '', JText::_('NOTICE_TOOL_REGISTERED'), $access=0, $email=1);
+				$this->updateTicket($toolid, '', '', JText::_('NOTICE_TOOL_REGISTERED'), $access=0, $email=1, $action=4);
 			}
 
 		}
@@ -1626,14 +1786,14 @@ class ContribtoolController extends JObject
 			$obj->updateTool($this->_toolid, ContribtoolHtml::getStatusNum('Abandoned') , 5);
 					
 			// close ticket
-			$row = new SupportTicket( $database );
+			/*$row = new SupportTicket( $database );
 			$row->load($status['ticketid']);
 			$row->status = 2;
 			$row->created =  date( "Y-m-d H:i:s" );
-			$row->store();
+			$row->store();*/
 			
 			// add comment to ticket
-			$this->updateTicket($this->_toolid, '', '', JText::_('NOTICE_TOOL_CANCELLED'), $access=0, $email=1);					
+			$this->updateTicket($this->_toolid, '', '', JText::_('NOTICE_TOOL_CANCELLED'), $access=0, $email=1, $action=5);					
 			
 		}
 		else {
@@ -1765,6 +1925,10 @@ class ContribtoolController extends JObject
 
 	protected function finalizeTool(&$out)
 	{
+		$xlog =& XFactory::getLogger();
+
+		$xlog->logDebug("finalizeTool(): checkpoint 1");
+
 		if(!$this->_toolid) {
 			return false;
 		}
@@ -1776,6 +1940,7 @@ class ContribtoolController extends JObject
 		//$tarball_path = $this->rconfig->get('uploadpath');
 		$tarball_path = $this->config->parameters['sourcecodePath'];
 		
+		$xlog->logDebug("finalizeTool(): checkpoint 2");
 		// Create a Tool object
 		$obj = new Tool( $database );
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev', $ldap);
@@ -1796,6 +1961,7 @@ class ContribtoolController extends JObject
 			fclose($handle);
 
 			$command = '/bin/sh ' . $scriptdir.DS.'finalizetool -hubdir '.JPATH_ROOT.' -title "'.$status['title'].'" -version "'.$status['version'].'" -license '.$fname.' '.$status['toolname'];
+			$xlog->logDebug("finalizeTool(): checkpoint 3: $command");
 
 			if(!$this->invokescript($command, JText::_('NOTICE_VERSION_FINALIZED'), $output)) {
 				return false;
@@ -1816,8 +1982,9 @@ class ContribtoolController extends JObject
 						return false;
 					}
 				}
-				if (!copy(DS.'tmp'.DS.$tar, $file_path.'/'.$tar)) {
-    				$out.= " failed to copy $tar to $file_path";
+				$xlog->logDebug("finalizeTool(): checkpoint 4: " . DS.'tmp'.DS.$tar . " to " .  $file_path.'/'.$tar);
+				if (!@copy(DS.'tmp'.DS.$tar, $file_path.'/'.$tar)) {
+    					$out.= " failed to copy $tar to $file_path";
 					return false;
 				} else {
 					exec ('sudo -u apps rm -f /tmp/'.$tar, $out, $result);
@@ -1899,7 +2066,8 @@ class ContribtoolController extends JObject
 			}
 
 			if($ldap) { 
-				if(ContribtoolLdap::unpublishVersion($tatus['toolname'], 'all')) {
+			     $hzt = Hubzero_Tool::getInstance($this->_toolid);
+				if (is_object($hzt) && $hzt->unpublishAllVersions('ldap')) {
 					$output['pass'] .= '<br />* '.JText::_('NOTICE_UNPUBLISHED_PREV_VERSIONS_LDAP');
 				}
 				else {
@@ -1936,7 +2104,11 @@ class ContribtoolController extends JObject
 		$hubShortName 	= $xhub->getCfg('hubShortName');
 		$app 			=& JFactory::getApplication();
 		$livesite 		= $xhub->getCfg('hubLongURL');
+		$exportmap     = array('@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
 		$juser =& JFactory::getUser();
+		$xlog =& XFactory::getLogger();
+
+		$xlog->logDebug("publish(): checkpoint 1:$result");
 		
 		$doiprefix 		= isset($this->config->parameters['doi_prefix']) ? $this->config->parameters['doi_prefix'] : '';
 			
@@ -1950,6 +2122,7 @@ class ContribtoolController extends JObject
 
 		$output = array('class'=>'passed', 'msg'=>JText::_('NOTICE_SUCCESS_TOOL_PUBLISHED'), 'pass'=>'', 'fail'=>'');
 		
+		$xlog->logDebug("publish(): checkpoint 2:$result");
 		// get current status
 		$obj = new Tool( $database );
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev', $ldap_read);
@@ -1987,11 +2160,14 @@ class ContribtoolController extends JObject
 			}
 			
 			// check if version is valid
-			$objV->validVersion($status['toolname'], $status['version'], $error_v, $ldap_read, 1);
-			if($error_v) { $result = 0; $output['fail'] .= '<br />* '.$error_v; }
+			if (!Hubzero_Tool::validateVersion($status['version'],$error_v,$this->_toolid))
+			{
+				$result = 0; $output['fail'] .= '<br />* '.$error_v; 
+			}
 
 		}
 		
+		$xlog->logDebug("publish(): checkpoint 3:$result, running finalize tool");
 		// run finalizetool
 	
 		if($result) {
@@ -2005,6 +2181,7 @@ class ContribtoolController extends JObject
 		}
 		
 
+		$xlog->logDebug("publish(): checkpoint 4:$result, running doi stuff");
 		// register DOI handle
 
 		if($result && $usedoi) {
@@ -2058,57 +2235,30 @@ class ContribtoolController extends JObject
 		}
 
 
+		$xlog->logDebug("publish(): checkpoint 5:$result, running ldap stuff");
 		// ldap actions
 	
-		if($result && $ldap_save) {
-			
-			// create/update developers group
-			$objG = new ToolGroup( $database );
-			$devgroup = $obj->getToolDevGroup($this->_toolid);
-					
-			// unpublish previous published version
-			if(ContribtoolLdap::unpublishVersion($status['toolname'], 'previous')) {
-				$output['pass'] .= '<br />* '.JText::_('NOTICE_UNPUBLISHED_PREV_VERSION_LDAP').' '.$handle;
-			}
-			else {
-				$output['fail'] .= '<br />* '.JText::_('ERR_FAILED_TO_UNPUBLISH_PREV_VERSION_LDAP');
-			}
-			
-			$status['vncCommand'] = $invokedir.DS.$status['toolname'].DS.'r'.$status['revision'].DS.'middleware'.DS.'invoke -T r'.$status['revision'];
-			
-			// save new version in LDAP
-			if(ContribtoolLdap::saveToLdap($status['toolname'], $status, $this->_toolid, 'new', $devgroup, $this->_option)) {
-				$output['pass'] .= '<br />* '.JText::_('SUCCESS_LDAP_RECORD_CREATED').' '.$handle;
-			} else {
-				$output['fail'] .= '<br />* '.JText::_('ERR_LDAP_SAVE_FAILED');
-				$result = 0;
-			}
-		}
+		if($result) 
+		{
+			$hzt = Hubzero_Tool::getInstance($this->_toolid);
+			$hztv_cur = $hzt->getCurrentVersion();
+			$hztv_dev = $hzt->getDevelopmentVersion();
+
+			$xlog->logDebug("publish(): checkpoint 6:$result, running database stuff");
 		
-		
-		
-		// create tool instance in the database
-		if($result) {
-		
-			// new licensing stuff
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_mw'.DS.'mw.license.php');
-			$objLic = new LicenseTool( $database);
-			$lic = new License( $database);
-			$license_id = $lic->getIdfromAlias('public');
-			$license_id = $license_id ? $license_id : 10; 
-		
+			// create tool instance in the database
 		
 			$newtool = $status['toolname'].'_r'.$status['revision'];
 			
 			// get version id
-			$currentid = $objV->getCurrentVersionProperty ($status['toolname'], 'id');
+			$currentid = $hztv_cur->id; 
 			$new = ($currentid) ? 0 : 1;
-			$devid = $objV->getDevVersionProperty ($status['toolname'], 'id');
+			$devid = $hztv_dev->id; 
 			
 			// Get the right invoke path
 			
-			//$invoke = $invokedir.DS.$status['toolname'].DS.'invoke';	
 			$invoke = $invokedir.DS.$status['toolname'].DS.'r'.$status['revision'].DS.'middleware'.DS.'invoke -T r'.$status['revision'];	
+			$status['vncCommand'] = $invokedir.DS.$status['toolname'].DS.'r'.$status['revision'].DS.'middleware'.DS.'invoke -T r'.$status['revision'];
 						
 			// create new version
 			$binditems = array ('id'=>0, 'toolname'=>$status['toolname'], 'instance'=>$newtool, 'toolid'=>$this->_toolid, 'state'=>1, 'title'=>$status['title'], 
@@ -2116,25 +2266,41 @@ class ContribtoolController extends JObject
 				'wikiaccess'=>$status['wiki'], 'vnc_geometry'=>$status['vncGeometry'], 'vnc_command'=>$invoke, 'mw'=>$status['mw'], 
 				'released'=>$now, 'released_by'=>$juser->get('username'), 'license'=>$status['license'], 'fulltext'=>$status['fulltext']);
 			
-			//*******exportControl
-			$objV->exportControl = ContribtoolLdap::getldapExec($status['exec']);
-	
-			if (!$objV->bind($binditems)) {
-				$output['fail'] .= '<br />* '.$objV->getError();
+			$new_hztv = Hubzero_Tool_Version::createInstance($newtool);
+			$new_hztv->toolname = $status['toolname'];
+			$new_hztv->instance = $newtool;
+			$new_hztv->toolid = $this->_toolid;
+			$new_hztv->state = 1;
+			$new_hztv->title = $status['title'];
+			$new_hztv->version = $status['version'];
+			$new_hztv->revision = $status['revision'];
+			$new_hztv->description = $status['description'];
+			$new_hztv->toolaccess = $status['exec'];
+			$new_hztv->codeaccess = $status['code'];
+			$new_hztv->wikiaccess = $status['wiki'];
+			$new_hztv->vnc_geometry = $status['vncGeometry'];
+			$new_hztv->vnc_command = $invoke;
+			$new_hztv->mw = $status['mw'];
+			$new_hztv->released = $now;
+			$new_hztv->released_by = $juser->get('username');
+			$new_hztv->license = $status['license'];
+			$new_hztv->fulltext = $status['fulltext'];
+			$new_hztv->exportControl = $exportmap[$status['exec']];
+			
+			if (!$new_hztv->update())
+			{
+				$output['fail'] .= '<br />* ';
 				$result = 0;
 			}
-			if (!$objV->store()) {
-				$output['fail'] .= '<br />* '.$objV->getError();
-				$result = 0;
-			}
-			else {
+			else 
+			{
 				// update tool entry
-				$obj->load($this->_toolid);
-				if($obj->published!=1) {
-					$obj->published = 1;
+				$hzt = Hubzero_Tool::getInstance($this->_toolid);
+				if($hzt->published!=1) {
+					$hzt->published = 1;
 					// save tool info
-					if (!$obj->store()) {
-						$output['fail'] .= '<br />* '.$obj->getError();
+					if (!$hzt->update()) {
+						$output['fail'] .= '<br />* ';
 					}
 					else {
 						$output['pass'] .= '<br />* '.JText::_('NOTICE_TOOL_MARKED_PUBLISHED');
@@ -2143,17 +2309,8 @@ class ContribtoolController extends JObject
 				
 				// unpublish previous version
 				if(!$new) {
-					if($objV->unpublish($this->_toolid, $currentid)) {
+					if ($hzt->unpublishVersion($hztv_cur->instance)) {
 						$output['pass'] .= '<br />* '.JText::_('NOTICE_UNPUBLISHED_PREV_VERSION_DB');
-						
-						// remove public license
-						if($objLic->delete($license_id, $currentid)) {
-						$output['pass'] .= '<br />* '.JText::_('Previous license removed in the database.');
-						}
-						else {
-						$output['fail'] .= '<br />* '.JText::_('Failed to remove previous license from the database');
-						}
-						
 					}
 					else {
 						$output['fail'] .= '<br />* '.JText::_('ERR_FAILED_TO_UNPUBLISH_PREV_VERSION_DB');
@@ -2161,34 +2318,22 @@ class ContribtoolController extends JObject
 				}
 				
 				// get version id
-				$currentid = $objV->getCurrentVersionProperty ($status['toolname'], 'id');
+				$currentid = $new_hztv->id;
 				
 				// save authors for this version
 				$objA = new ToolAuthor( $database);
 				$objA->saveAuthors($status['developers'], $currentid, $status['resourceid'], $status['revision'], $status['toolname'] );
 				
-				// transfer screenshots				
-				if($this->transferScreenshots($devid, $currentid, $status['resourceid'])) {
-					$output['pass'] .= '<br />* '.JText::_('Screenshots (if avaliable) transferred successfully.');
-				}
-				else {
-					$output['fail'] .= '<br />* '.JText::_('There was a problem transferring screenshots.');
-				}
-				
-				// license new version																	
-				$objLic->license_id = $license_id ? $license_id : 10;
-				$objLic->tool_id = $currentid; // this is in fact version id!!
-				$objLic->created = $now; 
-						
-				if ($objLic->check()) {
-					if($objLic->store() ) {
-						$output['pass'] .= '<br />* '.JText::_('License created in the database');
+				// transfer screenshots
+				if($devid && $currentid) {				
+					if($this->transferScreenshots($devid, $currentid, $status['resourceid'])) {
+						$output['pass'] .= '<br />* '.JText::_('Screenshots (if avaliable) transferred successfully.');
 					}
 					else {
-						$output['fail'] .= '<br />* '.JText::_('Failed to create license in the database.');
+						$output['fail'] .= '<br />* '.JText::_('There was a problem transferring screenshots.');
 					}
 				}
-									
+				
 				// update and publish resource page
 				$this->updateResPage($status['resourceid'], $status, '1', $new);
 				
@@ -2196,6 +2341,7 @@ class ContribtoolController extends JObject
 					
 		}
 	
+		$xlog->logDebug("publish(): checkpoint 7:$result, gather output");
 		// format output
 		if(!$result) { 
 			$output['class'] = 'error';
@@ -3541,7 +3687,8 @@ class ContribtoolController extends JObject
 	*/
 	protected function transferScreenshots($sourceid, $destid, $rid)
 	{
-
+		$xlog = &XFactory::getLogger();
+		$xlog->logDebug(__FUNCTION__ . "()");
 		$database =& JFactory::getDBO();
 				
 		// Get resource information
@@ -3572,12 +3719,15 @@ class ContribtoolController extends JObject
 				return false;
 			}
 		}
+		$xlog->logDebug(__FUNCTION__ . "() $src");
 		
 		// do we have files to transfer?
 		$files = JFolder::files($src, '.', false, true, array());
+		$xlog->logDebug(__FUNCTION__ . "() $files");
 		if(!empty($files)) {
 				
 			// Copy directory
+			$xlog->logDebug(__FUNCTION__ . "() copying $src to $dest");
 			if (!JFolder::copy($src, $dest, '', true)) {
 				return false;
 			}
@@ -3588,10 +3738,14 @@ class ContribtoolController extends JObject
 					// Update screenshot information for this resource
 					$ss->updateFiles($rid, $sourceid, $destid, $copy=1);
 					
+					$xlog->logDebug(__FUNCTION__ . "() updated files");
 					return true;
 			}			
 		}	
 		
+
+		$xlog->logDebug(__FUNCTION__ . "() done");
+
 		return true;
 		
 	

@@ -80,7 +80,7 @@
 	</uninstall>
 
 	<administration>
-		<menu>Contribtool</menu>
+		<menu>Tools</menu>
 		<files>
 			<filename>admin.contribtool.html.php</filename>
 			<filename>admin.contribtool.php</filename>
@@ -91,7 +91,6 @@
 			<filename>contribtool.helper.php</filename>
 			<filename>contribtool.ldap.php</filename>
 		        <filename>contribtool.license.php</filename>
-			<filename>contribtool.setup.php</filename>
 			<filename>contribtool.tool.php</filename>
 			<filename>contribtool.toolgroup.php</filename>
 			<filename>contribtool.version.php</filename>

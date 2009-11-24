@@ -2,6 +2,7 @@
 /**
  * @package		HUBzero CMS
  * @author		Alissa Nedossekina <alisa@purdue.edu>
+ * @author		Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -33,8 +34,39 @@ $tconfig = new ContribtoolConfig('com_contribtool');
 $enabled = (isset($tconfig->parameters['contribtool_on'])) ? $tconfig->parameters['contribtool_on'] : 0;
 
 //-----------
-
-ContribtoolToolbar::_DEFAULT($enabled);
-
+switch($task)
+{
+     case 'cancel':
+	   	$toolid = JRequest::getInt('toolid',null,'method');
+	   	$id = JRequest::getVar('id',null,'method');
+	   	if (!is_null($toolid) && !is_null($id))
+	   		ContribtoolToolbar::_VIEWTOOLVERSIONS(1,$toolid);
+	   	else if (!is_null($toolid))
+	   		ContribtoolToolbar::_VIEWTOOLS(1);
+		else
+			ContribtoolToolbar::_DEFAULT($enabled);
+		break;
+     case 'view':
+	   	$toolid = JRequest::getInt('toolid',null,'method');
+	   	if (!is_null($toolid))
+	   		ContribtoolToolbar::_VIEWTOOLVERSIONS(1,$toolid);
+		else 
+			ContribtoolToolbar::_VIEWTOOLS(1);
+	   	break;
+     case 'apply':
+	case 'edit':
+	   	$toolid = JRequest::getInt('toolid',null,'method');
+	   	$id = JRequest::getVar('id',null,'method');
+	   	if (!is_null($toolid) && !is_null($id))
+	   		ContribtoolToolbar::_EDITTOOLVERSION(1);
+	   	else if (!is_null($toolid))
+	   		ContribtoolToolbar::_EDITTOOL(1,$toolid);
+		else
+			ContribtoolToolbar::_DEFAULT($enabled);
+	   	break;
+    default:	
+	   ContribtoolToolbar::_DEFAULT($enabled);
+	   break;
+}
 
 ?>

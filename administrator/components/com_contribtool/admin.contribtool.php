@@ -36,14 +36,11 @@ jimport('joomla.application.component.helper');
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.contribtool.html.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.config.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.setup.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.tool.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.version.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.helper.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.toolgroup.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.author.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.ldap.php' );
-//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.license.php' );
 
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.utils.php' );
 include_once( JPATH_ROOT.DS.'components'.DS.'com_support'.DS.'support.tags.php' );
@@ -59,7 +56,6 @@ require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.D
 require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.tags.php' );
 
-ximport('account.acct_tools');
 ximport('textfilter');
 ximport('fileuploadutils');
 ximport('xmodule');

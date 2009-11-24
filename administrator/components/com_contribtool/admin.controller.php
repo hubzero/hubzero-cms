@@ -2,6 +2,7 @@
 /**
  * @package		HUBzero CMS
  * @author		Alissa Nedossekina <alisa@purdue.edu>
+ * @author		Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -24,7 +25,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
+ximport('Hubzero_Tool');
+ximport('Hubzero_Tool_Version');
 class ContribtoolController extends JObject
 {	
 	private $_name  = NULL;
@@ -76,7 +78,7 @@ class ContribtoolController extends JObject
 	
 	private function getTask()
 	{
-		$task = JRequest::getVar( 'task', '' );
+		$task = JRequest::getVar( 'task', 'view' );
 		$this->_task = $task;
 		return $task;
 	}
@@ -85,9 +87,7 @@ class ContribtoolController extends JObject
 
 	public function execute()
 	{
-		
 		$database =& JFactory::getDBO();
-		$obj = new ContribtoolSetup ($database);
 		
 		// Check if component entry is there
 		$database->setQuery( "SELECT c.id FROM #__components as c WHERE c.option='".$this->_option."'" );
@@ -103,29 +103,15 @@ class ContribtoolController extends JObject
 		$config =& JComponentHelper::getParams( $this->_option );
 		$this->config = $config;
 		
-		// Check if all necessary tables are there		
-		$tables = $database->getTableList();
-		$table_tool_version = $database->_table_prefix.'tool_version';
-		$table_tool_groups = $database->_table_prefix.'tool_groups';
-		$setup = 0;
-		
-		if (!in_array($table_tool_version,$tables)) {
-			$setup = 1;
-		}
-		if (!in_array($table_tool_groups,$tables)) {
-			$setup = 2;
-		}
-		
-		if($setup && $this->getTask()!='setup') {
-			$this->startSetup ($setup);
-			return;
-		}
-		
 		switch ( $this->getTask() ) 
-		{	
-			case  'setup':  $this->setup();       			break; 
-			case  'start':  $this->startSetup();       		break; 
-		
+		{
+		    	case  'edit': $this->edit();					break;
+			case  'apply': $this->apply();				break;	
+			case  'save': $this->save();				break;	
+			case  'cancel': $this->cancel();				break;	
+			case  'editToolVersion': $this->editToolVersion();				break;	
+			case  'view': $this->view();				break;	
+			case  'editTool': $this->editTool();			break;
 			default: 		$this->pipeline(); 				break;
 		}
 	}
@@ -133,14 +119,6 @@ class ContribtoolController extends JObject
 	//----------------------------------------------------------
 	// Setup component
 	//----------------------------------------------------------
-	
-	public function startSetup($setup=0)
-	{
-		
-		// Output HTML
-		ContribtoolHtml::setup( $this->_option, $setup);
-	}
-	//-------------
 	
 	public function defaultParams()
 	{
@@ -168,226 +146,308 @@ class ContribtoolController extends JObject
 	
 	}
 	//-------------
-	
-	public function setup()
+
+	protected function cancel()
 	{
-		$database =& JFactory::getDBO();		
-		$tables = $database->getTableList();
-		$juser =& JFactory::getUser();
-		
-		$update = JRequest::getInt( 'update', 0);
-		
-		$table_tool 			= $database->_table_prefix.'tool';
-		$table_tool_version 	= $database->_table_prefix.'tool_version';
-		$table_tool_groups 		= $database->_table_prefix.'tool_groups';
-		$table_tool_authors 	= $database->_table_prefix.'tool_authors';
-		$table_tool_licenses 	= $database->_table_prefix.'tool_licenses';
-		$table_tool_statusviews = $database->_table_prefix.'tool_statusviews';
-		$table_screenshots 		= $database->_table_prefix.'screenshots';
-		$table_doi_mapping		= $database->_table_prefix.'doi_mapping';
-		
-		$obj = new ContribtoolSetup ($database);
-		
-		if($update) {
-	
-			// update component parameters (set defaults)
-			$params = $this->defaultParams();
-			$obj->updateComponentEntry($this->_option, $this->_name, $params);
-			// display summary
-			ContribtoolHtml:: summary($this->error, $this->_option, $this->config, $update);
-			return;
-		}
-		
-		// add tool table if not already present
-		if (!in_array($table_tool,$tables)) {
-		
-			if(!$obj->createToolTb()) {
-				$this->error .= '<br />'.$obj->getError();
-			}
-		}
-		
-		// add versions table if not already present
-		if (!in_array($table_tool_version,$tables)) {
-			
-			if(!$obj->createVersionTb()) {
-				$this->error .= '<br />'.$obj->getError();
-			}
-		}
-		else {
-		 	// check if vnc_command column is there
-			$database->setQuery( 'SHOW COLUMNS FROM `' .$table_tool_version. '` ' );
-    		$tableFields = $database->loadObjectList();
-			$vnc_command_found = 0;
-			foreach ($tableFields as $tf) {
-				if($tf->Field=='vnc_command') {
-					$vnc_command_found = 1;
-				}
-			}
-			if(!$vnc_command_found) {
-				// add field
-				$database->setQuery( 'ALTER TABLE '.$table_tool_version.' ADD vnc_command VARCHAR(100) AFTER vnc_geometry' );
-				$database->query();
-			}
-		}
-			
-		// add authors table if not already present
-		if (!in_array($table_tool_authors,$tables)) {
-		
-			if(!$obj->createAuthorsTb()) {
-				$this->error .= '<br />'.$obj->getError();
-			}
-		}
-		else {
-		 	// check if version_id column is there
-			$database->setQuery( 'SHOW COLUMNS FROM `' .$table_tool_authors. '` ' );
-    		$tableFields = $database->loadObjectList();
-			$vid_found = 0;
-			foreach ($tableFields as $tf) {
-				if($tf->Field=='version_id') {
-					$vid_found = 1;
-				}
-			}
-			if(!$vid_found) {
-				// add field
-				$database->setQuery( 'ALTER TABLE '.$table_tool_authors.' ADD version_id INTEGER(11) NOT NULL AFTER ordering' );
-				$database->query();
-			}
-		}
-			
-		// add licenses table with default data if not already present
-		if (!in_array($table_tool_licenses,$tables)) {
-		
-			if(!$obj->createLicensesTb()) {
-				$this->error .= '<br />'.$obj->getError();
-			}
-		}
-		
-		// add statusviews table if not already present
-		if (!in_array($table_tool_statusviews,$tables)) {
-		
-			if(!$obj->createStatusViewsTb()) {
-				$this->error .= '<br />'.$obj->getError();
-			}
-		}
-		
-		// add doi_mapping table if not already present
-		if (!in_array($table_doi_mapping,$tables)) {
-		
-			if(!$obj->createDOITb()) {
-				$this->error .= '<br />'.$obj->getError();
-			}
-		}
-		
-		// add tool_groups table if not already present
-		if (!in_array($table_tool_groups,$tables)) {
-		
-			if(!$obj->createGroupsTb()) {
-				$this->error .= '<br />'.$obj->getError();
-			}
-		}
-		
-		// add screenshots table if not already present
-		if (!in_array($table_screenshots,$tables)) {
-		
-			if(!$obj->createSSTb()) {
-				$this->error .= '<br />'.$obj->getError();		}
-		}
-		
-		if($this->error) {
-			ContribtoolHtml:: summary($this->error, $this->_option, $this->config, $update);
-			return;
-		}
-		
-		
-		// create some objects we'll need
-		$toolObj 	= new Tool( $database );
-		$objV	 	= new ToolVersion( $database );
-		$objA 	 	= new ToolAuthor( $database);
-		$resource 	= new ResourcesResource( $database);
-		$objG 		= new ToolGroup( $database );	
-		$st 		= new SupportTags( $database );
-		//include_once( JPATH_ROOT.DS.'components'.DS.'com_support'.DS.'support.tags.php' );
-		
-		// get tools data
-		$tools = $toolObj->getToolsOldScheme();
-		
-		// all tables/columns are there, now convert to new scheme
-		if(count($tools) > 0 ) {
-			// loop through tools
-			foreach ($tools as $tool) {
-				$uids = array();
-				
-				if(!$objV->getDevVersionProperty ($tool->toolname, 'id')) {
-					// create entry for dev version
-					$obj->createVersion($tool, $this->config, 'dev');
-				}
-				if($tool->published==1 && $tool->state!=8 && $tool->state!=9 &&  !$objV->getCurrentVersionProperty ($tool->toolname, 'id')) {
-					// create entry for published version if not already present
-					$obj->createVersion($tool, $this->config, 'current');
-				}
-				
-				// convert team to an array
-				if($tool->team) {
-					$developers = ContribtoolHelper::makeArray($tool->team);
-					foreach ($developers as $developer) {
-						$muser =& JUser::getInstance( $developer );
-						if (is_object($muser)) {
-							$uids[] = $muser->get('id');
-						} 
-					}
-				}
-				
-				
-				// create/update developers group
-				$group_prefix  = isset($this->config->parameters['group_prefix']) ? $this->config->parameters['group_prefix'] : 'app-';
-				$groupexists = $toolObj->getToolDevGroup($tool->id);
-				if(!$groupexists) {
-					$objG->saveGroup($tool->id, $group_prefix.$tool->toolname, $uids, $groupexists);
-				}
-				
-				// get tool status
-				$toolObj->getToolStatus( $tool->id, $this->_option, $status, 'dev', 0 );
+		    $toolid = JRequest::getInt( 'toolid', null );
 
-				
-				// add tool:tag to ticket
-				if($tool->ticketid) {
-					$st->tag_object( $juser->get('id'), $tool->ticketid, 'tool:'.$tool->toolname, 0, 0 );
-				}
-				else {
-					// create ticket
-					if($status) {
-					$this->createTicket($tool->id, $status);
-					}
-				}	
-	
-				// create resource page
-				$rid = $toolObj->getResourceId($tool->id);
-				if(!$rid && $status) {
-					$this->createResPage($tool->id, $status);
-				}		
-				
-			}
-		}
-		
+		    $ids = JRequest::getVar( 'id', array() );
 
-		// fix up authors
-		$versions = $objV->getAll(0);
-		if(count($versions) > 0) {
-			foreach ($versions as $v) {
-		
-				$database->setQuery( "UPDATE #__tool_authors SET version_id='$v->id' WHERE toolname='$v->toolname' AND revision='$v->revision'" );
-				if (!$database->query()) {
-					echo $database->getErrorMsg();
-					exit;
-				}
-				
-			}
-		
-		}
-			
-		ContribtoolHtml:: summary($this->error, $this->_option, $this->config, $update);	
-	
+		    if (is_array($ids))
+			   	$id = (!empty($ids)) ? $ids[0] : null;
+		    else
+			   	$id = $ids;
+
+		    if (is_numeric($toolid) && !is_numeric($id))
+			   $this->view(0);
+
+		    if (is_numeric($toolid) && is_numeric($id))
+			   $this->view($toolid,0);
 	}
+
+	protected function apply()
+	{
+	    $this->save(0);
+	}
+
+
+	protected function saveToolVersion($redirect = true)
+	{
+		// Incoming instance ID
+          $id = JRequest::getInt( 'id', 0, 'post' );
+
+          // Do we have an ID?
+          if (!$id) {
+			die('invalid tool instance id');
+               return;
+          }
+
+	   	$hztv = Hubzero_Tool_Version::getInstance( $id );
+
+		if (!$hztv)
+			die('tool instance not found');
+
+		$vnc_command = JRequest::getString('command', null, 'post');
+
+		if (is_null($vnc_command))
+			die('no command value returned by form');
+
+		$vnc_hostreq = JRequest::getString('hostreq', null, 'post');
+
+		if (is_null($vnc_hostreq))
+			die('no hostreq value returned by form');
+
+		$vnc_timeout = JRequest::getString('timeout', null, 'post');
+
+		if (is_null($vnc_timeout))
+			die('no timeout value returned by form');
+
+
+		if ($vnc_timeout == "0")
+		    $vnc_timeout = '0';
+		else if (!is_numeric($vnc_timeout))
+		    $vnc_timeout = null;
+		else
+		    $vnc_timeout = intval($vnc_timeout);
+
+		$vnc_hostreq = explode(',',$vnc_hostreq);
+
+		$hostreq = array();
+		foreach((array)$vnc_hostreq as $req)
+		{
+		    	if (!empty($req))
+			{
+			    	$hostreq[] = $req;
+			}
+		}
+
+		$hztv->hostreq = $hostreq;
+		$hztv->vnc_command = $vnc_command;
+		$hztv->vnc_timeout = $vnc_timeout;
+		$hztv->update();
+
+		if ($redirect) {
+			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . "&task=view&toolid=" . $hztv->toolid);
+			$this->_message = JText::_('TOOL_VERSION_SAVED');
+		}
+		else
+		{
+			$this->editToolVersion();
+		}
+	}
+
+	protected function saveTool($redirect = true)
+	{
+		// Incoming instance ID
+          $toolid = JRequest::getInt( 'toolid', null, 'post' );
+
+          // Do we have an ID?
+          if (!$toolid) {
+			die('invalid tool id');
+               return;
+          }
+
+	   	$hzt = Hubzero_Tool::getInstance( $toolid );
+
+		if (!$hzt)
+			die('tool not found');
+
+		$tooltitle = JRequest::getString('tooltitle',null,'post');
+
+		if (is_null($tooltitle))
+			die('no tooltitle returned by form');
+
+		$hzt->title = $tooltitle;
+		$hzt->update();
+
+		if ($redirect) {
+			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
+			$this->_message = JText::_('TOOL_SAVED');
+		}
+		else
+		{
+			$this->editTool();
+		}
+	}
+
+	protected function save($redirect = true)
+	{
+          $type = JRequest::getString( 'type', '' );
+
+		if ($type == "toolversion")
+		{
+			$this->saveToolVersion($redirect);
+		}
+		else if ($type == "tool")
+		{
+		    	$this->saveTool($redirect);
+		}
+	}
+
+	protected function edit()
+	{
+		    $toolid = JRequest::getInt( 'toolid', null );
+
+		    $ids = JRequest::getVar( 'id', array() );
+
+		    if (is_array($ids))
+			   	$id = (!empty($ids)) ? $ids[0] : null;
+		    else
+			   	$id = $ids;
+
+		    if (is_numeric($toolid) && !is_numeric($id))
+			   $this->editTool($toolid);
+
+		    if (is_numeric($toolid) && is_numeric($id))
+			   $this->editToolVersion($toolid,$id);
+	}
+
+	protected function editTool($toolid = null)
+	{
+		// Incoming instance ID
+          if (empty($toolid))
+		{
+		    $toolid = JRequest::getInt( 'toolid', null );
+		}
+
+          // Do we have an ID?
+          if (!$toolid) {
+			die('invalid tool id');
+               return;
+          }
+
+	   	$hzt = Hubzero_Tool::getInstance( $toolid );
+		
+		$data['toolid'] = $hzt->id;
+		$data['toolname'] = $hzt->toolname;
+		$data['title'] = $hzt->title;
+
+		ContribtoolHtml::editTool($data, $this->_option);
+	}
+
+	protected function editToolVersion($toolid  = null,$id = null)
+	{
+		// Incoming instance ID
+          if (empty($toolid))
+		{
+		    $toolid = JRequest::getInt( 'toolid', null );
+		}
+
+          // Do we have an ID?
+          if (!$toolid) {
+			die('invalid tool id');
+               return;
+          }
+
+		if (empty($id))
+		{
+		    	$id = JRequest::getInt('id',0);
+		}
+
+		if (!$id) {
+		    die('invalid tool version id');
+		    return;
+		}
+
+          $app =& JFactory::getApplication();
+          $database =& JFactory::getDBO();
+
+	   	$hzt = Hubzero_Tool_Version::getInstance( $id );
+		
+		$data['toolid'] = $hzt->toolid;
+		$data['id'] = $hzt->id;
+		$data['instance'] = $hzt->instance;
+		$data['vnc_command'] = $hzt->vnc_command;
+		$data['vnc_timeout'] = $hzt->vnc_timeout;
+		$data['hostreq'] = $hzt->hostreq;
+
+		ContribtoolHtml::editToolVersion($data, $this->_option);
+	}
+	
+     protected function view($toolid = null, $id = null)
+     {
+          $app =& JFactory::getApplication();
+          $database =& JFactory::getDBO();
+
+		if (is_null($toolid))
+			   $toolid = JRequest::getInt( 'toolid', null );
+
+		if (is_null($id))
+		{
+			$ids = JRequest::getVar( 'id', array() );
+
+			if (is_array($ids))
+		 		$id = (!empty($ids)) ? $ids[0] : null;
+			else
+		   		$id = $ids;
+		}
+
+          // Get configuration
+          $config = JFactory::getConfig();
+
+
+          jimport('joomla.html.pagination');
+
+		if (empty($toolid))
+		{
+          	// Get filters
+          	$filters = array();
+          	$filters['search'] = urldecode($app->getUserStateFromRequest($this->_option.'.search', 'search', ''));
+          	$filters['search_field'] = urldecode($app->getUserStateFromRequest($this->_option.'.search_field', 'search_field', 'toolname'));
+          	$filters['sortby'] = $app->getUserStateFromRequest($this->_option.'.sortby', 'sortby', 'toolname');
+          	// Get paging variables
+          	$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+          	$filters['start'] = JRequest::getInt('limitstart', 0);
+          	
+			// Get a record count
+			$total = Hubzero_Tool::getToolCount($filters, true);
+
+			// Get records
+			$rows = Hubzero_Tool::getToolSummaries($filters, true);
+
+          	// Initiate paging
+          	$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+
+
+			if (empty($filters['search_field']))
+			    	$filters['search_field'] = 'all';
+
+			if (empty($filters['sortby']))
+			    	$filters['sortby'] = 'state_changed DESC';
+
+          	// Output HTML
+          	ContribtoolHtml::browseTools( $rows, $pageNav, $this->_option, $filters );
+		}
+		else
+		{
+	    		$hzt = Hubzero_Tool::getInstance( $toolid );
+
+          	// Get a record count
+			$total = count($hzt->version);
+
+			$data['toolname'] = $hzt->toolname;
+			$data['id'] = $hzt->id;
+			$data['title'] = $hzt->title;
+
+          	// Get filters
+          	$filters = array();
+          	$filters['search'] = urldecode($app->getUserStateFromRequest($this->_option.'.search2', 'search', ''));
+          	$filters['search_field'] = urldecode($app->getUserStateFromRequest($this->_option.'.search_field2', 'search_field', 'toolname'));
+          	$filters['sortby'] = $app->getUserStateFromRequest($this->_option.'.sortby2', 'sortby', 'toolname');
+          	// Get paging variables
+          	$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit2', 'limit', $config->getValue('config.list_limit'), 'int');
+          	$filters['start'] = JRequest::getInt('limitstart', 0);
+          	
+			$data['version'] = $hzt->getToolVersionSummaries($filters, true);
+          	
+          	// Initiate paging
+			$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+
+          	// Output HTML
+			ContribtoolHtml::browseToolVersions($data, $pageNav, $this->_option, $filters );
+		}
+	}
+
 	//-----------
 	
 	protected function createResPage($toolid, $tool)
@@ -442,6 +502,7 @@ class ContribtoolController extends JObject
 
 	protected function createTicket($toolid, $tool)
 	{
+		ximport('Hubzero_Tool');
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
 
@@ -472,8 +533,7 @@ class ContribtoolController extends JObject
 				$st->tag_object( $juser->get('id'), $row->id, 'tool:'.$tool['toolname'], 0, 0 );
 
 				// store ticket id
-				$obj = new Tool( $database);
-				$obj->saveTicketId($toolid, $row->id);
+				Hubzero_Tool::saveTicketId($toolid, $row->id);
 
 				// make a record
 				$this->updateTicket($toolid, '', '', JText::_('Tool ticket was previously missing. The ticket has been created.'), $access=0, $email=1);
@@ -488,11 +548,11 @@ class ContribtoolController extends JObject
 	
 	protected function updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $changelog=array())
 	{
+		ximport('Hubzero_Tool');
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
 
-		$obj = new Tool( $database);
-		$ticketid = $obj->getTicketId($toolid);
+		$ticketid = Hubzero_Tool::getTicketId($toolid);
 		$summary = '';
 
 		// see what changed
