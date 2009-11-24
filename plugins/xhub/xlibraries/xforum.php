@@ -42,17 +42,18 @@ class XForum extends JTable
 	var $hits       = NULL;  // @var int(11)
 	var $group      = NULL;  // @var int(11)
 	var $access     = NULL;  // @var tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
+	var $anonymous  = NULL;  // @var tinyint(2)
 	
 	//-----------
 	
-	function __construct( &$db )
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__xforum', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->comment ) == '' or trim( $this->comment ) == JText::_('Enter your comments...')) {
 			$this->setError( JText::_('Please provide a comment') );
@@ -63,7 +64,7 @@ class XForum extends JTable
 	
 	//-----------
 	
-	function buildQuery( $filters=array() ) 
+	public function buildQuery( $filters=array() ) 
 	{
 		$query  = "FROM $this->_tbl AS c WHERE ";
 		if (isset($filters['parent']) && $filters['parent'] != 0) {
@@ -93,7 +94,7 @@ class XForum extends JTable
 	
 	//-----------
 	
-	function getCount( $filters=array() ) 
+	public function getCount( $filters=array() ) 
 	{
 		$filters['limit'] = 0;
 		
@@ -105,7 +106,7 @@ class XForum extends JTable
 	
 	//-----------
 	
-	function getRecords( $filters=array() ) 
+	public function getRecords( $filters=array() ) 
 	{
 		$query = "SELECT c.*";
 		if (!isset($filters['parent']) || $filters['parent'] == 0) {
@@ -120,7 +121,7 @@ class XForum extends JTable
 	
 	//-----------
 	
-	function getLastPost( $parent=null ) 
+	public function getLastPost( $parent=null ) 
 	{
 		if (!$parent) {
 			$parent = $this->parent;
@@ -137,7 +138,7 @@ class XForum extends JTable
 	
 	//-----------
 	
-	function deleteReplies( $parent=null ) 
+	public function deleteReplies( $parent=null ) 
 	{
 		if (!$parent) {
 			$parent = $this->parent;
@@ -169,7 +170,7 @@ class XForumPagination extends JObject
 	var $forum = null;       // The forum we're paging for
 
 	// Constructor
-	function __construct($total, $limitstart, $limit, $forum)
+	public function __construct($total, $limitstart, $limit, $forum)
 	{
 		// Value/Type checking
 		$this->total		= (int) $total;
@@ -212,13 +213,13 @@ class XForumPagination extends JObject
 	}
 
 	// Return the rationalised offset for a row with a given index.
-	function getRowOffset($index)
+	public function getRowOffset($index)
 	{
 		return $index +1 + $this->limitstart;
 	}
 
 	// Return the pagination data object, only creating it if it doesn't already exist
-	function getData()
+	public function getData()
 	{
 		static $data;
 		if (!is_object($data)) {
@@ -228,7 +229,7 @@ class XForumPagination extends JObject
 	}
 
 	// Create and return the pagination page list string, ie. Previous, Next, 1 2 3 ... x
-	function getPagesLinks()
+	public function getPagesLinks()
 	{
 		//$lang =& JFactory::getLanguage();
 
@@ -264,7 +265,7 @@ class XForumPagination extends JObject
 		}
 	}
 
-	function _list_render($list)
+	public function _list_render($list)
 	{
 		// Initialize variables
 		$lang =& JFactory::getLanguage();
@@ -288,12 +289,12 @@ class XForumPagination extends JObject
 		return $html;
 	}
 
-	function _item_active(&$item)
+	public function _item_active(&$item)
 	{
 		return '<a title="'.$item->text.'" href="'.$item->link.'" class="pagenav">'.$item->text.'</a>';
 	}
 
-	function _item_inactive(&$item)
+	public function _item_inactive(&$item)
 	{
 		return '<span class="pagenav">'.$item->text.'</span>';
 	}
@@ -305,7 +306,7 @@ class XForumPagination extends JObject
 	 * @return	object	Pagination data object
 	 * @since	1.5
 	 */
-	function _buildDataObject()
+	public function _buildDataObject()
 	{
 		// Initialize variables
 		$data = new stdClass();
@@ -350,7 +351,7 @@ class XForumPaginationObject extends JObject
 	var $base;
 	var $link;
 
-	function __construct($text, $base=null, $link=null)
+	public function __construct($text, $base=null, $link=null)
 	{
 		$this->text = $text;
 		$this->base = $base;
