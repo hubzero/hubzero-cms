@@ -20,7 +20,6 @@
 
 <install type="template" version="1.5">
 	<name>hubbasic</name>
-	<author>Zooley</author>
 	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
 	<description>HUBbasic</description>
