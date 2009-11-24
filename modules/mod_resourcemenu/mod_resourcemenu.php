@@ -29,7 +29,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class modResourceMenu
 {
-	private $params;
+	private $attributes = array();
 
 	//-----------
 
@@ -40,7 +40,23 @@ class modResourceMenu
 
 	//-----------
 
-	private function xHubTags( $ctext ) 
+	public function __set($property, $value)
+	{
+		$this->attributes[$property] = $value;
+	}
+	
+	//-----------
+	
+	public function __get($property)
+	{
+		if (isset($this->attributes[$property])) {
+			return $this->attributes[$property];
+		}
+	}
+
+	//-----------
+
+	private function _xHubTags( $ctext ) 
 	{
 		// Expression to search for
 		$regex = "/\{xhub:\s*[^\}]*\}/i";
@@ -55,7 +71,7 @@ class modResourceMenu
 				if ( preg_match($regex, $matches[0][$i], $tag) ) 
 				{
 					if ($tag[1] == 'module') {
-						$text = $this->xHubTagsModules($tag[2]);
+						$text = $this->_xHubTagsModules($tag[2]);
 					} else {
 						$text = '';
 					}
@@ -69,7 +85,7 @@ class modResourceMenu
 	
 	//-----------
 	
-	private function xHubTagsModules($options)
+	private function _xHubTagsModules($options)
 	{
 	    global $mainframe;
 
@@ -92,24 +108,19 @@ class modResourceMenu
 
 	public function display()
 	{
-		$database =& JFactory::getDBO();
-		
 		// Get the module parameters
 		$params =& $this->params;
-		$moduleid = $params->get('moduleid');
-		$moduleclass = $params->get('moduleclass');
-		$text = $params->get('content');
-		
+		$this->moduleid = $params->get('moduleid');
+		$this->moduleclass = $params->get('moduleclass');
+
 		// Build the HTML
-		$html  = "\t".'<div id="'.$moduleid.'" class="'.$moduleclass.'">'."\n";
-		$html .= $this->xHubTags( $text );
-		$html .= "\t".'</div>'."\n";
+		$this->html = $this->_xHubTags( $params->get('content') );
 		
-		$this->html = $html;
-		
+		// Push some CSS to the tmeplate
 		ximport('xdocument');
 		XDocument::addModuleStylesheet('mod_resourcemenu');
 		
+		// Push some javascript to the tmeplate
 		$jdocument =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.'/modules/mod_resourcemenu/mod_resourcemenu.js')) {
 			$jdocument->addScript('/modules/mod_resourcemenu/mod_resourcemenu.js');

@@ -41,6 +41,13 @@ class modMySessions
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -94,164 +101,50 @@ class modMySessions
 	}
 
 	//-----------
-
-	private function _session($juser, $app, $authorized) 
-	{
-		$component = 'index.php?option=com_mw';
-
-		// Build the series of links we need
-		$viewurl    = $component.'&task=view&sess='.$app->sessnum.'&tool='.$app->appname;
-		$closeurl   = $component.'&task=stop&sess='.$app->sessnum.'&tool='.$app->appname;
-		$disconnurl = $component.'&task=unshare&sess='.$app->sessnum.'&tool='.$app->appname;
-
-		// Resume session link
-		$html  = "\t\t".' <a href="'.$viewurl.'" title="'.JText::_('MY_SESSIONS_RESUME_TITLE').'">'.$app->sessname;
-		if ($authorized === 'admin') {
-			$html .= '<br />('.$app->username.')';
-		}
-		$html .= '</a>'."\n";
-		//$html .= ' <span class="time-remaining">'.$this->_getTimeout( $app->session ).'</span>';
-	
-		// A button to terminate the session.
-		if ($juser->get('username') == $app->username || $authorized === 'admin') {
-			$html .= "\t\t".' <a class="closetool" href="'.$closeurl.'" title="'.JText::_('MY_SESSIONS_TERMINATE_TITLE').'">'.JText::_('MY_SESSIONS_TERMINATE').'</a>'."\n";
-		} else {
-			$html .= "\t\t".' <a class="disconnect" href="'.$disconnurl.'" title="'.JText::_('MY_SESSIONS_DISCONNECT_TITLE').'">'.JText::_('MY_SESSIONS_DISCONNECT').'</a> <br />'.JText::_('MY_SESSIONS_OWNER').': '.$app->username."\n";
-		}
-	
-		return $html;
-	}
-
-	//-----------
-
-	private function _authorize() 
-	{
-		// Check if they're a site admin (from LDAP)
-		$xuser =& XFactory::getUser();
-		if (is_object($xuser)) {
-			if (in_array('middleware', $xuser->get('admin'))) {
-				return 'admin';
-			}
-		}
-
-		return false;
-	}
-
-	//-----------
 	
 	public function display()
 	{
 		// Get the module parameters
 		$params =& $this->params;
-		$moduleclass_sfx = $params->get( 'moduleclass_sfx' );
-		$show_storage = $params->get( 'show_storage' );
+		$this->moduleclass_sfx = $params->get( 'moduleclass_sfx' );
+		$this->show_storage = $params->get( 'show_storage' );
 		
 		// Check if the user is an admin.
-		$authorized = $this->_authorize();
+		$this->authorized = false;
+		
+		$xuser =& XFactory::getUser();
+		if (is_object($xuser)) {
+			if (in_array('middleware', $xuser->get('admin'))) {
+				$this->authorized = 'admin';
+			}
+		}
 		
 		$juser =& JFactory::getUser();
 		
-		// Get a list of existing application sessions.
-		//$sessions = MwUtils::getSessions( $admin );
+		// Get a connection to the middleware database
 		$mwdb =& MwUtils::getMWDBO();
 	
-		// Start building our HTML
-		$html  = '<div class="'.$moduleclass_sfx.'sessionlist">'."\n";
-		//$html .= "\t\t".'<h3>'.JText::_('MY_SESSIONS').'</h3>'."\n";
+		// Ensure we have a connection to the middleware
+		$this->error = false;
 		if (!$mwdb) {
-			$html .= "\t".'<p class="error">Middleware component not configured or enabled.</p>'."\n";
-			$html .= '</div>'."\n";
-			return $html;
+			$this->error = true;
+			return false;
 		}
 		
-		//$html .= "\t\t".' <li class="even">Unable to access session database.</li>'."\n";
 		$ms = new MwSession( $mwdb );
-		$sessions = $ms->getRecords( $juser->get('username'), '', $authorized );
+		$this->sessions = $ms->getRecords( $juser->get('username'), '', $this->authorized );
 	
 		// Push the module CSS to the template
 		ximport('xdocument');
 		XDocument::addModuleStyleSheet('mod_mysessions');
-		
-		$html .= "\t".'<ul class="expandedlist">'."\n";
-	
-		// Iterate through the session list and create links for each.
-		$is_even  = 1;
-		$appcount = 0;
-		if (is_array($sessions))
-		foreach ($sessions as $app)
-		{
-			// If we're on a specific tool page, show sessions for that tool ONLY
-			if ($this->specapp && $app->appname != $this->specapp) {
-				continue;
-			}
-				
-			// Highlight every other row
-			$html .= "\t\t".'<li class="';
-			$html .= ($is_even) ? 'even ' : '';
-			$html .= 'session">'."\n";
-			$html .= $this->_session($juser, $app, $authorized);
-			$html .= "\t\t".'</li>'."\n";
-			
-			$appcount++;
-			$is_even ^= 1;
-		}
-		if ($appcount == 0) {
-			if (is_array($sessions))
-				$html .= "\t\t".'<li class="session">'.JText::_('MY_SESSIONS_NONE').'</li>'."\n";
-			else
-				$html .= "\t\t".'<li class="session">Session database is not available.</li>'."\n";
-		}
-		$html .= "\t".'</ul>'."\n";
-		$html .= '</div>'."\n";
-
-		// Get the disk usage
-		if ($show_storage) {
-			$juser =& JFactory::getUser();
-			$du = MwUtils::getDiskUsage($juser->get('username'));
-			if (count($du) <=1) {
-				// Error
-				$config = JFactory::getConfig();
-
-				if ($config->getValue('config.debug')) {
-					$html .= '<p class="error">'.JText::_('MY_SESSIONS_ERROR_RETRIEVING_STORAGE').'</p>';
-				}
-			} else {
-				// Calculate the percentage of spaced used
-				bcscale(6);
-				$val = ($du['softspace'] > 0) ? bcdiv($du['space'], $du['softspace']) : 0;
-				$percent = round( $val * 100 );
-
-				// Amount can only have a max of 100 due to some display restrictions
-				$amount  = ($percent > 100) ? 100 : $percent;
-
-				// Add the JavaScript file that will do the AJAX magic
-				$document =& JFactory::getDocument();
-				$document->addScript('modules/mod_mysessions/mod_mysessions.js');
-
-				// Build the HTML
-				$html .= "\t\t".'<dl id="diskusage">'."\n";
-				$html .= "\t\t".' <dt>'.JText::_('MY_SESSIONS_STORAGE').' (<a href="'.JRoute::_('index.php?option=com_mw&task=storage').'">'.JText::_('MY_SESSIONS_MANAGE').'</a>)</dt>'."\n";
-				$html .= "\t\t".' <dd id="du-amount"><div style="width:'.$amount.'%;"><strong>&nbsp;</strong><span>'.$amount.'%</span></div></dd>'."\n";
-				if ($percent == 100) {
-					$html .= '<dd id="du-msg"><p class="warning">'.JText::_('MY_SESSIONS_MAXIMUM_STORAGE').'</p></dd>'."\n";
-				}
-				if ($percent > 100) {
-					$html .= '<dd id="du-msg"><p class="warning">'.JText::_('MY_SESSIONS_EXCEEDING_STORAGE').'</p></dd>'."\n";
-				}
-				$html .= "\t\t".'</dl>'."\n";
-			}
-		}
-		
-		// Output final HTML
-		return $html;
 	}
 }
 
 //-------------------------------------------------------------
 
-$modmysessions = new modMySessions();
-$modmysessions->params = $params;
+$modmysessions = new modMySessions( $params );
 $modmysessions->specapp = (isset($specapp)) ? $specapp : '';
+$modmysessions->display();
 
 require( JModuleHelper::getLayoutPath('mod_mysessions') );
 ?>

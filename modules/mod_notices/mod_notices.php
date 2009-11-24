@@ -29,7 +29,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class modNotices
 {
-	private $params;
+	private $attributes = array();
 
 	//-----------
 
@@ -40,7 +40,23 @@ class modNotices
 
 	//-----------
 
-	private function countdown($year, $month, $day, $hour, $minute)
+	public function __set($property, $value)
+	{
+		$this->attributes[$property] = $value;
+	}
+	
+	//-----------
+	
+	public function __get($property)
+	{
+		if (isset($this->attributes[$property])) {
+			return $this->attributes[$property];
+		}
+	}
+
+	//-----------
+
+	private function _countdown($year, $month, $day, $hour, $minute)
 	{
 		$config = JFactory::getConfig();
 
@@ -63,7 +79,7 @@ class modNotices
 
 	//-----------
 
-	private function mkt($stime)
+	private function _mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
 			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
@@ -73,7 +89,7 @@ class modNotices
 	
 	//-----------
 	
-	private function convert($stime)
+	private function _convert($stime)
 	{
 		$t = array();
 		$t['year']   = date('Y', $stime);
@@ -87,7 +103,7 @@ class modNotices
 
 	//-----------
 
-	private function timeto($stime)
+	private function _timeto($stime)
 	{
 		if ($stime[0] == 0 && $stime[1] == 0 && $stime[2] == 0) {
 			$o  = JText::_('IMMEDIATELY');
@@ -110,65 +126,63 @@ class modNotices
 		$now = date( 'Y-m-d H:i:s', time() );
 		
 		// Get some initial parameters
-		$params =& $this->params;
+		$params = $this->params;
 		$start = $params->get( 'start_publishing' );
 		$start = JHTML::_('date',$start,'%Y-%m-%d %H:%M:%S');
 		$stop  = $params->get( 'stop_publishing' );
 		$stop  = JHTML::_('date',$stop,'%Y-%m-%d %H:%M:%S');
 
-		$html = '';
-
-		$publish = false;
+		$this->publish = false;
 		if (!$start || $start == '0000-00-00 00:00:00') {
-			$publish = true;
+			$this->publish = true;
 		} else {
 			if ($start <= $now) {
-				$publish = true;
+				$this->publish = true;
 			} else {
-				$publish = false;
+				$this->publish = false;
 			}
 		}
 		if (!$stop || $stop == '0000-00-00 00:00:00') {
-			$publish = true;
+			$this->publish = true;
 		} else {
 			if ($stop >= $now) {
-				$publish = true;
+				$this->publish = true;
 			} else {
-				$publish = false;
+				$this->publish = false;
 			}
 		}
 
 		// Only do something if the module's time frame hasn't expired
-		if ($publish) {
+		if ($this->publish) {
 			// Get some parameters
-			$moduleid   = $params->get( 'moduleid' );
-			$alertlevel = $params->get( 'alertlevel' );
+			$this->moduleid   = $params->get( 'moduleid' );
+			$this->alertlevel = $params->get( 'alertlevel' );
 			$timezone   = $params->get( 'timezone' );
 			$message    = $params->get( 'message' );
 
 			// Convert start time
-			$start = $this->mkt($start);
-			$d = $this->convert($start);
+			$start = $this->_mkt($start);
+			$d = $this->_convert($start);
 			$time_start = $d['hour'].':'.$d['minute'].' '.$d['ampm'].', '.$d['month'].' '.$d['day'].', '.$d['year'];
 
 			// Convert end time
-			$stop = $this->mkt($stop);
-			$u = $this->convert($stop);
+			$stop = $this->_mkt($stop);
+			$u = $this->_convert($stop);
 			$time_end = $u['hour'].':'.$u['minute'].' '.$u['ampm'].', '.$u['month'].' '.$u['day'].', '.$u['year'];
 
 			// Convert countdown-to-start time
 			$d_month  = date('m', $start);
 			$d_day    = date('d', $start);
 			$d_hour   = date('H', $start);
-			$time_left = $this->countdown($d['year'], $d_month, $d_day, $d_hour, $d['minute']);
-			$time_cd_tostart = $this->timeto($time_left);
+			$time_left = $this->_countdown($d['year'], $d_month, $d_day, $d_hour, $d['minute']);
+			$time_cd_tostart = $this->_timeto($time_left);
 
 			// Convert countdown-to-return time
 			$u_month  = date('m', $stop);
 			$u_day    = date('d', $stop);
 			$u_hour   = date('H', $stop);
-			$time_left = $this->countdown($u['year'], $u_month, $u_day, $u_hour, $u['minute']);
-			$time_cd_toreturn = $this->timeto($time_left);
+			$time_left = $this->_countdown($u['year'], $u_month, $u_day, $u_hour, $u['minute']);
+			$time_cd_toreturn = $this->_timeto($time_left);
 
 			// Parse message for tags
 			$message = str_replace('<notice:start>', $time_start, $message);
@@ -176,20 +190,15 @@ class modNotices
 			$message = str_replace('<notice:countdowntostart>', $time_cd_tostart, $message);
 			$message = str_replace('<notice:countdowntoreturn>', $time_cd_toreturn, $message);
 			$message = str_replace('<notice:timezone>', $timezone, $message);
-	
-			// Build final HTML
-			$html .= "\t\t".'<div id="'. $moduleid .'" class="'.$alertlevel.'">'."\n";
-			$html .= "\t\t".' <p>'.stripslashes($message).'</p>'."\n";
-			$html .= "\t\t".'</div>'."\n";
+			
+			$this->message = $message;
 		}
-
-		// Output HTML
-		return $html;
 	}
 }
 
 //-------------------------------------------------------------
 
 $modnotices = new modNotices( $params );
+$modnotices->display();
 
 require( JModuleHelper::getLayoutPath('mod_notices') );

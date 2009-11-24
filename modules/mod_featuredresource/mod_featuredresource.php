@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 if (!class_exists('modFeaturedresource')) {
 	class modFeaturedresource
 	{
-		private $params;
+		private $attributes = array();
 
 		//-----------
 
@@ -39,7 +39,23 @@ if (!class_exists('modFeaturedresource')) {
 
 		//-----------
 
-		private function niceidformat($someid) 
+		public function __set($property, $value)
+		{
+			$this->attributes[$property] = $value;
+		}
+
+		//-----------
+
+		public function __get($property)
+		{
+			if (isset($this->attributes[$property])) {
+				return $this->attributes[$property];
+			}
+		}
+
+		//-----------
+
+		public function niceidformat($someid) 
 		{
 			while (strlen($someid) < 5) 
 			{
@@ -47,35 +63,10 @@ if (!class_exists('modFeaturedresource')) {
 			}
 			return $someid;
 		}
-
+		
 		//-----------
 
-		private function shortenText($text, $chars=300, $p=1) 
-		{
-			$text = strip_tags($text);
-			$text = trim($text);
-
-			if (strlen($text) > $chars) {
-				$text = $text.' ';
-				$text = substr($text,0,$chars);
-				$text = substr($text,0,strrpos($text,' '));
-				$text = $text.' &#8230;';
-			}
-
-			if ($text == '') {
-				$text = '&#8230;';
-			}
-
-			if ($p) {
-				$text = '<p>'.$text.'</p>';
-			}
-
-			return $text;
-		}
-
-		//-----------
-
-		private function encode_html($str, $quotes=1)
+		public function encode_html($str, $quotes=1)
 		{
 			$str = $this->ampersands($str);
 
@@ -94,7 +85,7 @@ if (!class_exists('modFeaturedresource')) {
 
 		//-----------
 
-		private function ampersands( $str ) 
+		public function ampersands( $str ) 
 		{
 			$str = stripslashes($str);
 			$str = str_replace('&#','*-*', $str);
@@ -111,8 +102,10 @@ if (!class_exists('modFeaturedresource')) {
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
 			ximport('featurehistory');
 			
+			$this->error = false;
 			if (!class_exists('FeatureHistory')) {
-				return JText::_('Error: Missing FeatureHistory class.');
+				$this->error = true;
+				return false;
 			}
 			
 			$database =& JFactory::getDBO();
@@ -128,8 +121,8 @@ if (!class_exists('modFeaturedresource')) {
 			$filters['minranking'] = trim($params->get( 'minranking' ));
 			$filters['tag'] = trim($params->get( 'tag' ));
 			
-			$cls = trim($params->get( 'moduleclass_sfx' ));
-			$txt_length = trim($params->get( 'txt_length' ));
+			$this->cls = trim($params->get( 'moduleclass_sfx' ));
+			$this->txt_length = trim($params->get( 'txt_length' ));
 			$catid = trim($params->get( 'catid' ));
 			
 			$start = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 00:00:00";
@@ -205,8 +198,6 @@ if (!class_exists('modFeaturedresource')) {
 				}
 			}
 			
-			$html = '';
-
 			// Did we get any results?
 			if ($row) {
 				$config =& JComponentHelper::getParams( 'com_resources' );
@@ -275,32 +266,19 @@ if (!class_exists('modFeaturedresource')) {
 					}
 				}
 
-				$href  = 'index.php?option=com_resources&id='.$id;
-
-				$normalized_valid_chars = 'a-zA-Z0-9';
-				$normalized = preg_replace("/[^$normalized_valid_chars]/", "", strtolower($row->typetitle));
+				//$normalized = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($row->typetitle));
 
 				$row->typetitle = trim(stripslashes($row->typetitle));
 				if (substr($row->typetitle, -1, 1) == 's' && substr($row->typetitle, -3, 3) != 'ies') {
 					$row->typetitle = substr($row->typetitle, 0, strlen($row->typetitle) - 1);
 				}
-
-				$html .= '<div class="'.$cls.'">'."\n";
-				//$html .= '<h3><a href="'.JRoute::_('index.php?option=com_resources&type='.$normalized).'">'.JText::_('Featured').' '.$row->typetitle.'</a></h3>'."\n";
-				$html .= '<h3>'.JText::_('Featured').' '.$row->typetitle.'</h3>'."\n";
-				if (is_file(JPATH_ROOT.$thumb)) {
-					$html .= '<p class="featured-img"><a href="'.JRoute::_($href).'"><img width="50" height="50" src="'.$thumb.'" alt="" /></a></p>'."\n";
-				}
-				$html .= '<p><a href="'.JRoute::_($href).'">'.stripslashes($row->title).'</a>: '."\n";
-				if ($row->introtext) {
-					$html .= $this->shortenText($this->encode_html(strip_tags($row->introtext)), $txt_length, 0)."\n";
-				}
-				$html .= '</p>'."\n";
-				$html .= '</div>'."\n";
+				
+				$this->id = $id;
+				$this->thumb = $thumb;
+				$this->row = $row;
+			} else {
+				$this->row = null;
 			}
-
-			// Output HTML
-			return $html;
 		}
 		
 		//-----------
@@ -427,5 +405,6 @@ if (!class_exists('modFeaturedresource')) {
 //-------------------------------------------------------------
 
 $modfeaturedresource = new modFeaturedresource( $params );
+$modfeaturedresource->display();
 
 require( JModuleHelper::getLayoutPath('mod_featuredresource') );

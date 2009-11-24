@@ -39,6 +39,13 @@ class modMyFavorites
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -61,9 +68,11 @@ class modMyFavorites
 		$database =& JFactory::getDBO();
 		
 		$params =& $this->params;
-		$moduleclass = $params->get( 'moduleclass' );
+		$this->moduleclass = $params->get( 'moduleclass' );
 		$limit = intval( $params->get( 'limit' ) );
 		$limit = ($limit) ? $limit : 5;
+		
+		$this->error = false;
 		
 		// Check for the existence of required tables that should be
 		// installed with the com_support component
@@ -72,7 +81,7 @@ class modMyFavorites
 		
 		if ($tables && array_search($database->_table_prefix.'xfavorites', $tables)===false) {
 			// Support tickets table not found!
-			echo JText::_('Required database table not found.');
+			$this->error = true;
 			return false;
 	    }
 
@@ -111,7 +120,7 @@ class modMyFavorites
 			);
 
 		// Get the search results
-		$results = $dispatcher->trigger( 'onMembersFavorites', array(
+		$this->results = $dispatcher->trigger( 'onMembersFavorites', array(
 				$member,
 				$option,
 				$authorized,
@@ -162,110 +171,23 @@ class modMyFavorites
 
 		// Do we have an active area?
 		if (count($activeareas) == 1 && !is_array(current($activeareas))) {
-			$active = $activeareas[0];
+			$this->active = $activeareas[0];
 		} else {
-			$active = '';
+			$this->active = '';
 		}
+		
+		$this->cats = $cats;
 		
 		// Push the module CSS to the template
 		ximport('xdocument');
 		XDocument::addModuleStyleSheet('mod_myfavorites');
-		
-		// Build the HTML
-		$foundresults = false;
-		$dopaging = false;
-
-		$k = 0;
-		$html = '';
-		foreach ($results as $category)
-		{
-			$amt = count($category);
-			
-			if ($amt > 0) {
-				$foundresults = true;
-				
-				$name  = $cats[$k]['title'];
-				$total = $cats[$k]['total'];
-				$divid = 'search'.$cats[$k]['category'];
-				
-				// Is this category the active category?
-				if (!$active || $active == $cats[$k]['category']) {
-					// It is - get some needed info
-					$name  = $cats[$k]['title'];
-					$total = $cats[$k]['total'];
-					$divid = 'search'.$cats[$k]['category'];
-					
-					if ($active == $cats[$k]['category']) {
-						$dopaging = true;
-					}
-				} else {
-					// It is not - does this category have sub-categories?
-					if (isset($cats[$k]['_sub']) && is_array($cats[$k]['_sub'])) {
-						// It does - loop through them and see if one is the active category
-						foreach ($cats[$k]['_sub'] as $sub) 
-						{
-							if ($active == $sub['category']) {
-								// Found an active category
-								$name  = $sub['title'];
-								$total = $sub['total'];
-								$divid = 'search'.$sub['category'];
-								
-								$dopaging = true;
-								break;
-							}
-						}
-					}
-				}
-				
-				$num  = $total .' result';
-				$num .= ($total > 1) ? 's' : '';
-			
-				// Build the category HTML
-				$html .= '<h4 class="fav-header" id="rel-'.$divid.'">'.$name.' <span>'.$num.'</span></h4>'.n;
-				$html .= '<div class="category-wrap" id="'.$divid.'">'.n;
-				
-				$html .= '<ol class="compactlist">'.n;			
-				foreach ($category as $row) 
-				{
-					$row->href = str_replace('&amp;', '&', $row->href);
-					$row->href = str_replace('&', '&amp;', $row->href);
-					
-					$html .= t.'<li class="favorite">'.n;
-					$html .= t.t.'<a href="'.$row->href.'">'.stripslashes($row->title).'</a>'.n;
-					$html .= t.'</li>'.n;
-				}
-				$html .= '</ol>'.n;
-
-				// Add a "more" link if necessary
-				if ($cats[$k]['total'] > 5) {
-					$html .= '<p class="more">'.JText::sprintf('NUMBER_FAVORITES_SHOWN', $amt);
-					$qs = 'area='.urlencode(strToLower($cats[$k]['category']));
-					$seff = JRoute::_('index.php?option=com_members'.a.'id='.$member->get('uidNumber').a.'active=favorites');
-					if (strstr( $seff, 'index' )) {
-						$seff .= a.$qs;
-					} else {
-						$seff .= '?'.$qs;
-					}
-					$html .= ' | <a href="'.$seff.'">'.JText::_('MORE_FAVORITES').'</a>';
-					$html .= '</p>'.n.n;
-				}
-				$html .= '</div><!-- / #'.$divid.' -->'.n;
-			}
-			$k++;
-		}
-		if (!$foundresults) {
-			$html .= '<p>'. JText::_('NO_FAVORITES') .'</p>';
-		}
-		
-		// Output the HTML
-		return $html;
 	}
 }
 
 //-------------------------------------------------------------
 
-$modmyfavorites = new modMyFavorites();
-$modmyfavorites->params = $params;
+$modmyfavorites = new modMyFavorites( $params );
+$modmyfavorites->display();
 
 require( JModuleHelper::getLayoutPath('mod_myfavorites') );
 ?>

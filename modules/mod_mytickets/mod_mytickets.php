@@ -39,6 +39,13 @@ class modMyTickets
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -110,7 +117,7 @@ class modMyTickets
 	
 	//-----------
 	
-	private function _timeAgo($timestamp) 
+	public function timeAgo($timestamp) 
 	{
 		// Convert YYYY-MM-DD HH:MM:SS time to unix time stamp
 		$timestamp = $this->_convertTime($timestamp);
@@ -124,54 +131,6 @@ class modMyTickets
 		$text  = $parts[0].' '.$parts[1];
 		return $text;
 	}
-	
-	//-----------
-	
-	private function _shortenText($text, $chars=300) 
-	{
-		$text = strip_tags($text);
-		$text = str_replace("\n",' ',$text);
-		$text = str_replace("\r",' ',$text);
-		$text = str_replace("\t",' ',$text);
-		$text = str_replace('   ',' ',$text);
-		$text = trim($text);
-
-		if (strlen($text) > $chars) {
-			$text = $text.' ';
-			$text = substr($text,0,$chars);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' &#8230;';
-		}
-		
-		if ($text == '') {
-			$text = '&#8230;';
-		}
-
-		return $text;
-	}
-	
-	//-----------
-	
-	private function _ticketlist( $rows )
-	{
-		if (count($rows) <= 0) {
-			$html  = "\t".'<p>'.JText::_('NO_TICKETS').'</p>'."\n";
-		} else {
-			$html  = "\t".'<ul class="expandedlist">'."\n";
-			foreach ($rows as $row)
-			{
-				$when = $this->_timeAgo($row->created);
-		
-				$html .= "\t\t".'<li class="support-ticket '.$row->severity.'">'."\n";
-				$html .= "\t\t\t".'<a href="'.JRoute::_('index.php?option=com_support&task=ticket&id='.$row->id).'" class="tooltips" title="#'.$row->id.' :: '.htmlentities(stripslashes($row->summary), ENT_QUOTES).'">#'.$row->id.': '.$this->_shortenText(stripslashes($row->summary), 35).'</a>'."\n";
-				$html .= "\t\t\t".'<span><span>'.$when.'</span>, <span>'.JText::sprintf('COMMENTS',$row->comments).'</span></span>'."\n";
-				$html .= "\t\t".'</li>';
-			}
-			$html .= "\t".'</ul>'."\n";
-		}
-		
-		return $html;
-	}
 
 	//-----------
 	
@@ -181,7 +140,7 @@ class modMyTickets
 		$database =& JFactory::getDBO();
 		
 		$params =& $this->params;
-		$moduleclass = $params->get( 'moduleclass' );
+		$this->moduleclass = $params->get( 'moduleclass' );
 		$limit = intval( $params->get( 'limit' ) );
 		$limit = ($limit) ? $limit : 10;
 		
@@ -203,7 +162,7 @@ class modMyTickets
 			. " ORDER BY created DESC"
 			. " LIMIT ".$limit
 			);
-		$rows1 = $database->loadObjectList();
+		$this->rows1 = $database->loadObjectList();
 		if ($database->getErrorNum()) {
 			echo $database->stderr();
 			return false;
@@ -216,7 +175,7 @@ class modMyTickets
 			. " ORDER BY created DESC"
 			. " LIMIT ".$limit
 			);
-		$rows2 = $database->loadObjectList();
+		$this->rows2 = $database->loadObjectList();
 		if ($database->getErrorNum()) {
 			echo $database->stderr();
 			return false;
@@ -242,43 +201,25 @@ class modMyTickets
 				 ORDER BY created DESC
 				 LIMIT $limit"
 				);
-			$rows3 = $database->loadObjectList();
+			$this->rows3 = $database->loadObjectList();
 			if ($database->getErrorNum()) {
 				echo $database->stderr();
 				return false;
 			}
 		} else {
-			$rows3 = null;
+			$this->rows3 = null;
 		}
 		
 		// Push the module CSS to the template
 		ximport('xdocument');
 		XDocument::addModuleStyleSheet('mod_mytickets');
-		
-		// Build the HTML
-		$html  = '<div';
-		$html .= ($moduleclass) ? ' class="'.$moduleclass.'">'."\n" : '>'."\n";
-		$html .= "\t".'<h4>Submitted Tickets</h4>'."\n";
-		$html .= $this->_ticketlist( $rows1 );
-		$html .= "\t".'<h4>Assigned Tickets</h4>'."\n";
-		$html .= $this->_ticketlist( $rows2 );
-		$html .= "\t".'<h4>Tickets On My Contributions</h4>'."\n";
-		$html .= $this->_ticketlist( $rows3 );
-		$html .= "\t".'<ul class="module-nav">'."\n";
-		$html .= "\t\t".'<li><a href="'.JRoute::_('index.php?option=com_support&task=tickets').'">'.JText::_('ALL_TICKETS').'</a></li>'."\n";
-		$html .= "\t\t".'<li><a href="'.JRoute::_('index.php?option=com_feedback&task=report_problems').'">'.JText::_('NEW_TICKET').'</a></li>'."\n";
-		$html .= "\t".'</ul>'."\n";
-		$html .= '</div>'."\n";
-		
-		// Output the HTML
-		echo $html;
 	}
 }
 
 //-------------------------------------------------------------
 
-$modmytickets = new modMyTickets();
-$modmytickets->params = $params;
+$modmytickets = new modMyTickets( $params );
+$modmytickets->display();
 
 require( JModuleHelper::getLayoutPath('mod_mytickets') );
 ?>

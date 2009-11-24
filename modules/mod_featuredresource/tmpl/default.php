@@ -25,6 +25,27 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-echo $modfeaturedresource->display();
+$html = '';
+if ($modfeaturedresource->error) {
+	$html .= '<p class="error">'.JText::_('MOD_FEATUREDRESOURCE_MISSING_CLASS').'</p>'."\n";
+} else {
+	ximport('Hubzero_View_Helper_Html');
+	
+	if ($modfeaturedresource->row) {
+		$html .= '<div class="'.$modfeaturedresource->cls.'">'."\n";
+		$html .= '<h3>'.JText::_('MOD_FEATUREDRESOURCE_FEATURED').' '.$modfeaturedresource->row->typetitle.'</h3>'."\n";
+		if (is_file(JPATH_ROOT.$modfeaturedresource->thumb)) {
+			$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_resources&id='.$modfeaturedresource->id).'"><img width="50" height="50" src="'.$modfeaturedresource->thumb.'" alt="" /></a></p>'."\n";
+		}
+		$html .= '<p><a href="'.JRoute::_('index.php?option=com_resources&id='.$modfeaturedresource->id).'">'.stripslashes($modfeaturedresource->row->title).'</a>: '."\n";
+		if ($modfeaturedresource->row->introtext) {
+			$html .= Hubzero_View_Helper_Html::shortenText($modfeaturedresource->encode_html(strip_tags($modfeaturedresource->row->introtext)), $modfeaturedresource->txt_length, 0)."\n";
+		}
+		$html .= '</p>'."\n";
+		$html .= '</div>'."\n";
+	}
+}
 
+// Output HTML
+echo $html;
 ?>

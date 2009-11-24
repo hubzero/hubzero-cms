@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 if (!class_exists('modLatestusage')) {
 	class modLatestusage
 	{
-		private $params;
+		private $attributes = array();
 
 		//-----------
 
@@ -38,8 +38,24 @@ if (!class_exists('modLatestusage')) {
 		}
 
 		//-----------
+
+		public function __set($property, $value)
+		{
+			$this->attributes[$property] = $value;
+		}
+
+		//-----------
+
+		public function __get($property)
+		{
+			if (isset($this->attributes[$property])) {
+				return $this->attributes[$property];
+			}
+		}
+
+		//-----------
 		
-		private function getOnlineCount() 
+		private function _getOnlineCount() 
 		{
 		    $db =& JFactory::getDBO();
 			$sessions = null;
@@ -85,78 +101,31 @@ if (!class_exists('modLatestusage')) {
 
 			$params =& $this->params;
 			
-			//$count = $this->getOnlineCount();
+			//$count = $this->_getOnlineCount();
 			
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_usage'.DS.'usage.helper.php' );
 			$udb =& UsageHelper::getUDBO();
 			
-			$cls = trim($params->get( 'moduleclass_sfx' ));
+			$this->cls = trim($params->get( 'moduleclass_sfx' ));
 			
 			if ($udb) {
 				$udb->setQuery( 'SELECT value FROM summary_user_vals WHERE datetime = (SELECT MAX(datetime) FROM summary_user_vals) AND period = "12" AND colid = "1" AND rowid = "1"' );
-				$users = $udb->loadResult();
+				$this->users = $udb->loadResult();
 				
 				$udb->setQuery( 'SELECT value FROM summary_simusage_vals WHERE datetime  = (SELECT MAX(datetime) FROM summary_simusage_vals) AND period = "12" AND colid = "1" AND rowid = "2"' );
-				$sims = $udb->loadResult();
+				$this->sims = $udb->loadResult();
 			} else {
 				$database->setQuery( "SELECT COUNT(*) FROM #__users" );
-				$users = $database->loadResult();
+				$this->users = $database->loadResult();
 				
-				$sims = 0;
+				$this->sims = 0;
 			}
 			
 			$database->setQuery( "SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1" );
-			$resources = $database->loadResult();
+			$this->resources = $database->loadResult();
 			
 			$database->setQuery( "SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1 AND type=7" );
-			$tools = $database->loadResult();
-			
-			$html  = '<table ';
-			$html .= ($cls) ? 'class="'.$cls.'" ' : '';
-			$html .= 'summary="'.JText::_('Latest usage').'">'."\n";
-			/*$html .= "\t".'<thead>'."\n";
-			$html .= "\t\t".'<tr>'."\n";
-			$html .= "\t\t\t".'<th colspan="2">'.JText::_('Usage for prior 12 months').'</th>'."\n";
-			$html .= "\t\t".'</tr>'."\n";
-			$html .= "\t".'</thead>'."\n";
-			$html .= "\t".'<tbody>'."\n";*/
-			$html .= "\t".'<caption>'.JText::_('Usage for prior 12 months').'</caption>'."\n";
-			$html .= "\t".'<tfoot>'."\n";
-			$html .= "\t\t".'<tr>'."\n";
-			$html .= "\t\t\t".'<td><a href="'.JRoute::_('index.php?option=com_usage&task=maps&type=online').'">'.JText::_('Who\'s online?').'</a></td>'."\n";
-			$html .= "\t\t\t".'<td class="more"><a href="'.JRoute::_('index.php?option=com_usage').'">'.JText::_('More &rsaquo;').'</a></td>'."\n";
-			$html .= "\t\t".'</tr>'."\n";
-			$html .= "\t".'</tfoot>'."\n";
-			$html .= "\t".'<tbody>'."\n";
-			/*$html .= "\t\t".'<tr>'."\n";
-			$html .= "\t\t\t".'<th scope="row">'.JText::_('Guests Online').'</th>'."\n";
-			$html .= "\t\t\t".'<td class="numerical-data">'.$count['guest'].'</td>'."\n";
-			$html .= "\t\t".'</tr>'."\n";
-			$html .= "\t\t".'<tr>'."\n";
-			$html .= "\t\t\t".'<th scope="row">'.JText::_('Members Online').'</th>'."\n";
-			$html .= "\t\t\t".'<td class="numerical-data">'.$count['user'].'</td>'."\n";
-			$html .= "\t\t".'</tr>'."\n";*/
-			$html .= "\t\t".'<tr>'."\n";
-			$html .= "\t\t\t".'<th scope="row">'.JText::_('Users').'</th>'."\n";
-			$html .= "\t\t\t".'<td class="numerical-data">'.$users.'</td>'."\n";
-			$html .= "\t\t".'</tr>'."\n";
-			$html .= "\t\t".'<tr>'."\n";
-			$html .= "\t\t\t".'<th scope="row">'.JText::_('Resources').'</th>'."\n";
-			$html .= "\t\t\t".'<td class="numerical-data">'.$resources.'</td>'."\n";
-			$html .= "\t\t".'</tr>'."\n";
-			$html .= "\t\t".'<tr>'."\n";
-			$html .= "\t\t\t".'<th scope="row">'.JText::_('Tools').'</th>'."\n";
-			$html .= "\t\t\t".'<td class="numerical-data">'.$tools.'</td>'."\n";
-			$html .= "\t\t".'</tr>'."\n";
-			$html .= "\t\t".'<tr>'."\n";
-			$html .= "\t\t\t".'<th scope="row">'.JText::_('Simulations').'</th>'."\n";
-			$html .= "\t\t\t".'<td class="numerical-data">'.$sims.'</td>'."\n";
-			$html .= "\t\t".'</tr>'."\n";
-			$html .= "\t".'</tbody>'."\n";
-			$html .= '</table>'."\n";
-			
-			// Output HTML
-			return $html;
+			$this->tools = $database->loadResult();
 		}
 	}
 }
@@ -164,5 +133,6 @@ if (!class_exists('modLatestusage')) {
 //-------------------------------------------------------------
 
 $modlatestusage = new modLatestusage( $params );
+$modlatestusage->display();
 
 require( JModuleHelper::getLayoutPath('mod_latestusage') );

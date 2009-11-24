@@ -31,6 +31,13 @@ class modXSearch
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -50,27 +57,16 @@ class modXSearch
 	public function display()
 	{
 		$params =& $this->params;
-		$width  = intval( $params->get( 'width', 20 ) );
-		$text   = $params->get( 'text', JText::_('SEARCH_BOX') );
-		$clasfx = $params->get( 'moduleclass_sfx' );
-		?>
-
-		<form method="get" action="<?php echo JRoute::_('index.php?option=com_xsearch'); ?>" id="searchform"<?php if ($clasfx) { echo ' class="'.$clasfx.'"'; } ?>>
-			<fieldset>
-				<legend><?php echo $text; ?></legend>
-				<label for="searchword"><?php echo $text; ?></label>
-				<input type="text" name="searchword" id="searchword" size="<?php echo $width; ?>" value="<?php echo $text; ?>" />
-			</fieldset>
-		</form>
-
-		<?php
+		$this->width  = intval( $params->get( 'width', 20 ) );
+		$this->text   = $params->get( 'text', JText::_('SEARCH_BOX') );
+		$this->clasfx = $params->get( 'moduleclass_sfx' );
 	}
 }
 
 //-------------------------------------------------------------
 
-$modxsearch = new modXSearch();
-$modxsearch->params = $params;
+$modxsearch = new modXSearch( $params );
+$modxsearch->display();
 
 require( JModuleHelper::getLayoutPath('mod_xsearch') );
 ?>

@@ -28,13 +28,29 @@ defined('_JEXEC') or die( 'Restricted access' );
 if (!class_exists('modFeaturedmember')) {
 	class modFeaturedmember
 	{
-		private $params;
+		private $attributes = array();
 
 		//-----------
 
 		public function __construct( $params ) 
 		{
 			$this->params = $params;
+		}
+
+		//-----------
+
+		public function __set($property, $value)
+		{
+			$this->attributes[$property] = $value;
+		}
+
+		//-----------
+
+		public function __get($property)
+		{
+			if (isset($this->attributes[$property])) {
+				return $this->attributes[$property];
+			}
 		}
 
 		//-----------
@@ -55,32 +71,7 @@ if (!class_exists('modFeaturedmember')) {
 
 		//-----------
 
-		private function shortenText($text, $chars=300, $p=1) 
-		{
-			$text = strip_tags($text);
-			$text = trim($text);
-
-			if (strlen($text) > $chars) {
-				$text = $text.' ';
-				$text = substr($text,0,$chars);
-				$text = substr($text,0,strrpos($text,' '));
-				$text = $text.' &#8230;';
-			}
-
-			if ($text == '') {
-				$text = '&#8230;';
-			}
-
-			if ($p) {
-				$text = '<p>'.$text.'</p>';
-			}
-
-			return $text;
-		}
-
-		//-----------
-
-		private function encode_html($str, $quotes=1)
+		public function encode_html($str, $quotes=1)
 		{
 			$str = $this->ampersands($str);
 
@@ -111,13 +102,29 @@ if (!class_exists('modFeaturedmember')) {
 
 		//-----------
 
+		private function thumb( $thumb ) 
+		{
+			$image = explode('.',$thumb);
+			$n = count($image);
+			$image[$n-2] .= '_thumb';
+			$end = array_pop($image);
+			$image[] = $end;
+			$thumb = implode('.',$image);
+			
+			return $thumb;
+		}
+
+		//-----------
+
 		public function display() 
 		{
 			ximport('featurehistory');
 			ximport('xprofile');
 			
+			$this->error = false;
 			if (!class_exists('FeatureHistory')) {
-				return JText::_('Error: Missing FeatureHistory class.');
+				$this->error = true;
+				return false;
 			}
 			
 			$database =& JFactory::getDBO();
@@ -128,8 +135,8 @@ if (!class_exists('modFeaturedmember')) {
 			$filters['limit'] = 1;
 			$filters['show']  = trim($params->get( 'show' ));
 			
-			$cls = trim($params->get( 'moduleclass_sfx' ));
-			$txt_length = trim($params->get( 'txt_length' ));
+			$this->cls = trim($params->get( 'moduleclass_sfx' ));
+			$this->txt_length = trim($params->get( 'txt_length' ));
 			$catid = trim($params->get( 'catid' ));
 			$min = trim($params->get( 'min_contributions' ));
 			$show = trim($params->get( 'show' ));
@@ -221,18 +228,18 @@ if (!class_exists('modFeaturedmember')) {
 				}
 			}
 
-			$html = '';
-
 			// Did we have a result to display?
 			if ($row) {
+				$this->row = $row;
+				
 				$config =& JComponentHelper::getParams( 'com_members' );
 				
 				// Is this a content article or a member profile?
 				if (isset($row->catid)) {
 					// Content article
-					$title = $row->title;
-					$id = $row->created_by_alias;
-					$txt = $row->introtext;
+					$this->title = $row->title;
+					$this->id = $row->created_by_alias;
+					$this->txt = $row->introtext;
 					
 					$profile = new XProfile();
 					$profile->load( $id );
@@ -251,14 +258,14 @@ if (!class_exists('modFeaturedmember')) {
 						$profile = new XProfile();
 						$profile->load( $row->uidNumber );
 					}
-					$txt = $profile->get('bio');
+					$this->txt = $profile->get('bio');
 					
 					// Member profile
-					$title = $row->name;
+					$this->title = $row->name;
 					if (!trim($title)) {
 						$title = $row->givenName.' '.$row->surname;
 					}
-					$id = $row->uidNumber;
+					$this->id = $row->uidNumber;
 					
 					// Check if this has been saved in the feature history
 					if (!$fh->id) {
@@ -297,9 +304,9 @@ if (!class_exists('modFeaturedmember')) {
 							$ih->set('maxHeight', 50);
 							$ih->set('cropratio', '1:1');
 							$ih->set('outputName', $ih->createThumbName());
-							if (!$ih->process()) {
+							/*if (!$ih->process()) {
 								$html .= '<!-- Error: '. $ih->getError() .' -->';
-							}
+							}*/
 						}
 					}
 				}
@@ -313,41 +320,10 @@ if (!class_exists('modFeaturedmember')) {
 					// Build a thumbnail filename based off the picture name
 					$thumb = $this->thumb( $thumb );
 				}
-
-				$html .= '<div class="'.$cls.'">'."\n";
-				if ($filters['show'] == 'contributors') {
-					//$html .= '<h3><a href="'.JRoute::_('index.php?option=com_members&view=contributors').'">'.JText::_('Featured Profile').'</a></h3>'."\n";
-					$html .= '<h3>'.JText::_('Featured Profile').'</h3>'."\n";
-				} else {
-					//$html .= '<h3><a href="'.JRoute::_('index.php?option=com_members').'">'.JText::_('Featured Member').'</a></h3>'."\n";
-					$html .= '<h3>'.JText::_('Featured Member').'</h3>'."\n";
-				}
-				// Do we have a picture to show?
-				if (is_file(JPATH_ROOT.$thumb)) {
-					$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$id).'"><img width="50" height="50" src="'.$thumb.'" alt="" /></a></p>'."\n";
-				}
-				$html .= '<p><a href="'.JRoute::_('index.php?option=com_members&id='.$id).'">'.stripslashes($title).'</a>: '."\n";
-				if ($txt) {
-					$html .= $this->shortenText($this->encode_html(strip_tags($txt)), $txt_length, 0)."\n";
-				}
-				$html .= '</p>'."\n";
-				$html .= '</div>'."\n";
+				
+				$this->thumb = $thumb;
+				$this->filters = $filters;
 			}
-
-			// Output HTML
-			return $html;
-		}
-		
-		private function thumb( $thumb ) 
-		{
-			$image = explode('.',$thumb);
-			$n = count($image);
-			$image[$n-2] .= '_thumb';
-			$end = array_pop($image);
-			$image[] = $end;
-			$thumb = implode('.',$image);
-			
-			return $thumb;
 		}
 	}
 }
@@ -355,5 +331,6 @@ if (!class_exists('modFeaturedmember')) {
 //-------------------------------------------------------------
 
 $modfeaturedmember = new modFeaturedmember( $params );
+$modfeaturedmember->display();
 
 require( JModuleHelper::getLayoutPath('mod_featuredmember') );

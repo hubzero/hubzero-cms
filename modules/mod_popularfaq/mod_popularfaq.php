@@ -33,6 +33,13 @@ class modPopularFaq
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -51,56 +58,23 @@ class modPopularFaq
 
 	public function display()
 	{
-	    $juser    =& JFactory::getUser();
 		$database =& JFactory::getDBO();
 		$params   =& $this->params;
 		
 		$limit = intval( $params->get( 'limit' ) );
-		$moduleid = $params->get( 'moduleid' );
+		$this->moduleid = $params->get( 'moduleid' );
 		
-		/*$database->setQuery( "SELECT a.id, a.alias, a.title, a.state, a.access, a.created, a.modified, a.hits, b.alias AS section "
-			."\n FROM #__faq AS a LEFT JOIN #__faq_categories AS b ON b.id=a.section"
-			."\n WHERE a.state = 1"
-			."\n AND a.access <= ". $juser->get('aid') .""
-			."\n ORDER BY a.hits DESC"
-			."\n LIMIT ".$limit
-			);
-		$rows = $database->loadObjectList();*/
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'kb.class.php' );
-		$a = new KbArticle( $database );
-		$rows = $a->getArticles($limit, 'a.hits DESC');
 		
-		$html  = "\t".'<div id="'.$moduleid.'">'."\n";
-		if ($rows) {
-			$html .= "\t\t".'<ul class="articles">'."\n";
-			foreach ($rows as $row) 
-			{
-				if ($row->access <= $juser->get('aid')) {
-					//$link_on = JRoute::_('index.php?option=com_kb&section='.$row->section.'&article='. $row->alias, 1);
-					$link = 'index.php?option=com_kb&amp;section='.$row->section;
-					$link .= ($row->category) ? '&amp;category='.$row->category : '';
-					$link .= ($row->alias) ? '&amp;alias='. $row->alias : '&amp;alias='. $row->id;
-					
-					$link_on = JRoute::_($link);
-				} else {
-					$link_on = JRoute::_('index.php?option=com_hub&task=register');
-				}
-				$html .= "\t\t".' <li><a href="'. $link_on .'">'.stripslashes($row->title).'</a></li>'."\n";
-			}
-			$html .= "\t\t".'</ul>'."\n";
-		} else {
-			$html .= "\t\t".'<p>'.JText::_('NO_ARTICLES_FOUND').'</p>'."\n";
-		}
-		$html .= "\t".'</div>'."\n";
-
-		echo $html;
+		$a = new KbArticle( $database );
+		$this->rows = $a->getArticles($limit, 'a.hits DESC');
 	}
 }
 
 //-------------------------------------------------------------
 
-$modpopularfaq = new modPopularFaq();
-$modpopularfaq->params = $params;
+$modpopularfaq = new modPopularFaq( $params );
+$modpopularfaq->display();
 
 require( JModuleHelper::getLayoutPath('mod_popularfaq') );
 ?>
