@@ -64,7 +64,7 @@ class XMessageHelper extends JObject
 	
 	//-----------
 	
-	public function sendMessage( $type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='' ) 
+	public function sendMessage( $type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0 ) 
 	{
 		// Do we have a message?
 		if (!$message) {
@@ -89,6 +89,8 @@ class XMessageHelper extends JObject
 		$xmessage->created    = date( 'Y-m-d H:i:s', time() );
 		$xmessage->created_by = $juser->get('id');
 		$xmessage->component  = $component;
+		$xmessage->type       = $type;
+		$xmessage->group_id   = $group_id;
 		if (!$xmessage->store()) {
 			return $xmessage->getError();
 		}
@@ -171,7 +173,7 @@ class XMessage extends JTable
 	var $subject    = NULL;  // @var varchar(150)
 	var $component  = NULL;  // @var varchar(100)
 	var $type       = NULL;  // @var varchar(100)
-	//var $group_id   = NULL;  // @var int(11)
+	var $group_id   = NULL;  // @var int(11)
 	
 	//-----------
 	
@@ -213,14 +215,25 @@ class XMessage extends JTable
 	
 	//-----------
 	
-	private function buildQuery( $uid, $filters=array() ) 
+	private function buildQuery( $filters=array() ) 
 	{
-		$query  = "FROM $this->_tbl AS m, 
-					#__xmessage_recipient AS r,
-					#__users AS u  
-					WHERE r.uid=u.id 
-					AND r.mid=m.id 
-					AND m.created_by=".$uid;
+		if (isset($filters['group_id']) && $filters['group_id'] != 0) {
+			$query  = "FROM $this->_tbl AS m, 
+						#__users AS u  
+						WHERE m.created_by=u.id ";
+		} else {
+			$query  = "FROM $this->_tbl AS m, 
+						#__xmessage_recipient AS r,
+						#__users AS u  
+						WHERE r.uid=u.id 
+						AND r.mid=m.id ";
+		}
+		if (isset($filters['created_by']) && $filters['created_by'] != 0) {
+			$query .= " AND m.created_by=".$filters['created_by'];
+		}
+		if (isset($filters['group_id']) && $filters['group_id'] != 0) {
+			$query .= " AND m.group_id=".$filters['group_id'];
+		}
 		if (isset($filters['limit']) && $filters['limit'] != 0) {
 			$query .= " ORDER BY created DESC";
 			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
@@ -230,16 +243,13 @@ class XMessage extends JTable
 	
 	//-----------
 	
-	public function getSentMessages( $uid=null, $filters=array() ) 
+	public function getSentMessages( $filters=array() ) 
 	{
-		if (!$uid) {
-			$uid = $this->uid;
+		if (isset($filters['group_id']) && $filters['group_id'] != 0) {
+			$query = "SELECT m.*, u.name ".$this->buildQuery( $filters );
+		} else {
+			$query = "SELECT m.*, r.uid, u.name ".$this->buildQuery( $filters );
 		}
-		if (!$uid) {
-			return false;
-		}
-		
-		$query = "SELECT m.*, r.uid, u.name ".$this->buildQuery( $uid, $filters );
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -247,18 +257,11 @@ class XMessage extends JTable
 	
 	//-----------
 	
-	public function getSentMessagesCount( $uid=null, $filters=array() ) 
+	public function getSentMessagesCount( $filters=array() ) 
 	{
-		if (!$uid) {
-			$uid = $this->uid;
-		}
-		if (!$uid) {
-			return false;
-		}
-		
 		$filters['limit'] = 0;
 		
-		$query = "SELECT COUNT(*) ".$this->buildQuery( $uid, $filters );
+		$query = "SELECT COUNT(*) ".$this->buildQuery( $filters );
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();

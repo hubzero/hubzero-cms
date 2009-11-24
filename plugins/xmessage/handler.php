@@ -85,7 +85,7 @@ class plgXMessageHandler extends JPlugin
 	
 	//-----------
 	
-	public function onSendMessage( $type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='' ) 
+	public function onSendMessage( $type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0 ) 
 	{
 		ximport('xmessage');
 		
@@ -113,6 +113,7 @@ class plgXMessageHandler extends JPlugin
 		$xmessage->created_by = $juser->get('id');
 		$xmessage->component  = $component;
 		$xmessage->type       = $type;
+		$xmessage->group_id   = $group_id;
 		if (!$xmessage->store()) {
 			return $xmessage->getError();
 		}
@@ -144,7 +145,6 @@ class plgXMessageHandler extends JPlugin
 				$recipient->created = date( 'Y-m-d H:i:s', time() );
 				$recipient->expires = date( 'Y-m-d H:i:s', time() + (168 * 24 * 60 * 60) );
 				$recipient->actionid = (is_object($action)) ? $action->id : 0;
-				
 				
 				// Get the user's methods for being notified
 				$notify = new XMessageNotify( $database );

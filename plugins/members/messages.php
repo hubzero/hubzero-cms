@@ -83,7 +83,7 @@ class plgMembersMessages extends JPlugin
 		
 		// Get our database object
 		$database =& JFactory::getDBO();
-		
+
 		// Load some needed libraries
 		ximport('xmessage');
 		
@@ -109,7 +109,11 @@ class plgMembersMessages extends JPlugin
 				case 'emptytrash':    $arr['html'] = $this->emptytrash($database, $option, $member);    break;
 				case 'delete':        $arr['html'] = $this->delete($database, $option, $member);        break;
 				
+				case 'send':          $arr['html'] = $this->send($database, $option, $member);          break;
+				case 'new':           $arr['html'] = $this->create($database, $option, $member);        break;
+				
 				case 'view':          $arr['html'] = $this->view($database, $option, $member, $mid);    break;
+				case 'sent':          $arr['html'] = $this->sent($database, $option, $member);          break;
 				case 'settings':      $arr['html'] = $this->settings($database, $option, $member);      break;
 				case 'archive':       $arr['html'] = $this->archive($database, $option, $member);       break;
 				case 'trash':         $arr['html'] = $this->trash($database, $option, $member);         break;
@@ -117,7 +121,10 @@ class plgMembersMessages extends JPlugin
 				default: $arr['html'] = $this->inbox($database, $option, $member); break;
 			}
 		} else {
-			$arr['metadata'] = '<p class="messages"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages').'">'.JText::_('MESSAGES').'</a></p>'.n;
+			$recipient = new XMessageRecipient( $database );
+			$rows = $recipient->getUnreadMessages( $member->get('uidNumber'), 0 );
+			
+			$arr['metadata'] = '<p class="messages"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages').'">'.JText::sprintf('%s Unread Messages', count($rows)).'</a></p>'.n;
 		}
 
 		// Return data
@@ -137,6 +144,15 @@ class plgMembersMessages extends JPlugin
 		$html .= '><a class="box" href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages&task=inbox').'"><span>'.JText::_('MESSAGES_INBOX');
 		if (isset($counts['inbox'])) {
 			$html .= ' ('.$counts['inbox'].')';
+		}
+		$html .= '</span></a></li>'.n;
+		$html .= t.t.'<li';  
+	    if ($task == 'sent') {
+			$html .= ' class="active"';
+		}
+		$html .= '><a class="sent" href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages&task=sent').'"><span>'.JText::_('MESSAGES_SENT');
+		if (isset($counts['sent'])) {
+			$html .= ' ('.$counts['sent'].')';
 		}
 		$html .= '</span></a></li>'.n;
 		$html .= t.t.'<li';  
@@ -281,6 +297,7 @@ class plgMembersMessages extends JPlugin
 						$url = JRoute::_(stripslashes($xma->description));
 					}
 				}
+				
 				$sbjt .= t.t.t.'<tr class="'.$cls;
 				if ($row->actionid) {
 					$sbjt .= ' actionitem';
@@ -293,7 +310,12 @@ class plgMembersMessages extends JPlugin
 				}
 				$sbjt .= t.t.t.t.'<td class="sttus">'.$status.'</td>'.n;
 				$sbjt .= t.t.t.t.'<td><a '.$lnkcls.'href="'.$url.'">'.stripslashes($row->subject).'</a></td>'.n;
-				$sbjt .= t.t.t.t.'<td>'.$row->component.'</td>'.n;
+				if (substr($row->type, -8) == '_message') {
+					$u =& JUser::getInstance($row->created_by);
+					$sbjt .= t.t.t.t.'<td><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$u->get('id')).'">'.$u->get('name').'</a></td>'.n;
+				} else {
+					$sbjt .= t.t.t.t.'<td>System ('.$row->component.')</td>'.n;
+				}
 				$sbjt .= t.t.t.t.'<td>'.JHTML::_('date', $row->created, '%d %b, %Y %I:%M %p').'</td>'.n;
 				//$sbjt .= t.t.t.t.'<td>'.JHTML::_('date', $row->expires, '%d %b, %Y').'</td>'.n;
 				if ($row->actionid && ($row->whenseen == '' || $row->whenseen == '0000-00-00 00:00:00')) {
@@ -385,6 +407,7 @@ class plgMembersMessages extends JPlugin
 		$sbjt .= t.t.t.t.'<th scope="col"><input type="checkbox" name="msgall" id="msgall" value="all"  onclick="HUB.MembersMsg.checkAll(this, \'chkbox\');" /></th>'.n;
 		$sbjt .= t.t.t.t.'<th scope="col"> </th>'.n;
 		$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('Subject').'</th>'.n;
+		$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('From').'</th>'.n;
 		$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('Date Received').'</th>'.n;
 		//$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('Expires').'</th>'.n;
 		$sbjt .= t.t.t.t.'<th scope="col"> </th>'.n;
@@ -392,7 +415,7 @@ class plgMembersMessages extends JPlugin
 		$sbjt .= t.t.'</thead>'.n;
 		$sbjt .= t.t.'<tfoot>'.n;
 		$sbjt .= t.t.t.'<tr>'.n;
-		$sbjt .= t.t.t.t.'<td colspan="5">'.n;
+		$sbjt .= t.t.t.t.'<td colspan="6">'.n;
 		$pagenavhtml = $pageNav->getListFooter();
 		$pagenavhtml = str_replace('members/?','members/'.$member->get('uidNumber').'/messages/archive/?',$pagenavhtml);
 		$pagenavhtml = str_replace('action=archive','',$pagenavhtml);
@@ -429,6 +452,12 @@ class plgMembersMessages extends JPlugin
 				$sbjt .= t.t.t.t.'<td class="check"><input class="chkbox" type="checkbox" name="mid[]" id="msg'.$row->id.'" value="'.$row->id.'" /></td>'.n;
 				$sbjt .= t.t.t.t.'<td class="sttus">'.$status.'</td>'.n;
 				$sbjt .= t.t.t.t.'<td><a '.$lnkcls.'href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages'.a.'msg='.$row->id).'">'.stripslashes($row->subject).'</a></td>'.n;
+				if (substr($row->type, -8) == '_message') {
+					$u =& JUser::getInstance($row->created_by);
+					$sbjt .= t.t.t.t.'<td><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$u->get('id')).'">'.$u->get('name').'</a></td>'.n;
+				} else {
+					$sbjt .= t.t.t.t.'<td>System ('.$row->component.')</td>'.n;
+				}
 				$sbjt .= t.t.t.t.'<td>'.JHTML::_('date', $row->created, '%d %b, %Y').'</td>'.n;
 				//$sbjt .= t.t.t.t.'<td>'.JHTML::_('date', $row->expires, '%d %b, %Y').'</td>'.n;
 				$sbjt .= t.t.t.t.'<td><a class="trash" href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages'.a.'mid[]='.$row->id.a.'action=sendtotrash').'" title="'.JText::_('MESSAGES_TRASH').'">'.JText::_('MESSAGES_TRASH').'</a></td>'.n;
@@ -437,7 +466,7 @@ class plgMembersMessages extends JPlugin
 		} else {
 			$cls = (($cls == 'even') ? 'odd' : 'even');
 			$sbjt .= t.t.t.'<tr class="'.$cls.'">'.n;
-			$sbjt .= t.t.t.t.'<td colspan="4">'.JText::_('No messages found').'</td>'.n;
+			$sbjt .= t.t.t.t.'<td colspan="6">'.JText::_('No messages found').'</td>'.n;
 			$sbjt .= t.t.t.'</tr>'.n;
 		}
 		$sbjt .= t.t.'</tbody>'.n;
@@ -517,13 +546,14 @@ class plgMembersMessages extends JPlugin
 		$sbjt .= t.t.t.t.'<th scope="col"><input type="checkbox" name="msgall" id="msgall" value="all"  onclick="HUB.MembersMsg.checkAll(this, \'chkbox\');" /></th>'.n;
 		$sbjt .= t.t.t.t.'<th scope="col"> </th>'.n;
 		$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('Subject').'</th>'.n;
+		$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('From').'</th>'.n;
 		$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('Date Received').'</th>'.n;
 		//$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('Expires').'</th>'.n;
 		$sbjt .= t.t.t.'</tr>'.n;
 		$sbjt .= t.t.'</thead>'.n;
 		$sbjt .= t.t.'<tfoot>'.n;
 		$sbjt .= t.t.t.'<tr>'.n;
-		$sbjt .= t.t.t.t.'<td colspan="4">'.n;
+		$sbjt .= t.t.t.t.'<td colspan="5">'.n;
 		$pagenavhtml = $pageNav->getListFooter();
 		$pagenavhtml = str_replace('members/?','members/'.$member->get('uidNumber').'/messages/trash/?',$pagenavhtml);
 		$pagenavhtml = str_replace('action=trash','',$pagenavhtml);
@@ -560,6 +590,12 @@ class plgMembersMessages extends JPlugin
 				$sbjt .= t.t.t.t.'<td class="check"><input class="chkbox" type="checkbox" name="mid[]" id="msg'.$row->id.'" value="'.$row->id.'" /></td>'.n;
 				$sbjt .= t.t.t.t.'<td class="sttus">'.$status.'</td>'.n;
 				$sbjt .= t.t.t.t.'<td><a '.$lnkcls.'href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages'.a.'msg='.$row->id).'">'.stripslashes($row->subject).'</a></td>'.n;
+				if (substr($row->type, -8) == '_message') {
+					$u =& JUser::getInstance($row->created_by);
+					$sbjt .= t.t.t.t.'<td><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$u->get('id')).'">'.$u->get('name').'</a></td>'.n;
+				} else {
+					$sbjt .= t.t.t.t.'<td>System ('.$row->component.')</td>'.n;
+				}
 				$sbjt .= t.t.t.t.'<td>'.JHTML::_('date', $row->created, '%d %b, %Y').'</td>'.n;
 				//$sbjt .= t.t.t.t.'<td>'.JHTML::_('date', $row->expires, '%d %b, %Y').'</td>'.n;
 				$sbjt .= t.t.t.'</tr>'.n;
@@ -567,7 +603,7 @@ class plgMembersMessages extends JPlugin
 		} else {
 			$cls = (($cls == 'even') ? 'odd' : 'even');
 			$sbjt .= t.t.t.'<tr class="'.$cls.'">'.n;
-			$sbjt .= t.t.t.t.'<td colspan="4">'.JText::_('No messages found').'</td>'.n;
+			$sbjt .= t.t.t.t.'<td colspan="5">'.JText::_('No messages found').'</td>'.n;
 			$sbjt .= t.t.t.'</tr>'.n;
 		}
 		$sbjt .= t.t.'</tbody>'.n;
@@ -577,6 +613,142 @@ class plgMembersMessages extends JPlugin
 		$html  = MembersHtml::hed(3,'<a name="messages"></a>'.JText::_('MESSAGES')).n;
 		$html .= '<div class="withleft">'.n;
 		$html .= MembersHtml::aside( $this->subMenu($option, $member, 'trash') );
+		$html .= MembersHtml::subject($sbjt);
+		$html .= '</div>'.n;
+		
+		return $html;
+	}
+
+	//-----------
+	
+	public function sent($database, $option, $member) 
+	{
+		// Push some scripts to the template
+		$document =& JFactory::getDocument();
+		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages.js')) {
+			$document->addScript('plugins'.DS.'members'.DS.'messages.js');
+		}
+		
+		// Filters for returning results
+		$filters = array();
+		$filters['limit'] = JRequest::getInt('limit', 10);
+		$filters['start'] = JRequest::getInt('limitstart', 0);
+		//$filters['state'] = 1;
+		$filters['created_by'] = $member->get('uidNumber');
+		//$filter = JRequest::getVar('filter', '');
+		//$filters['filter'] = ($filter) ? 'com_'.$filter : '';
+		
+		$recipient = new XMessage( $database );
+		
+		$total = $recipient->getSentMessagesCount( $filters );
+		
+		$rows = $recipient->getSentMessages( $filters );
+
+		jimport('joomla.html.pagination');
+		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+
+		$xmc = new XMessageComponent( $database );
+		$components = $xmc->getComponents();
+
+		$cls = 'even';
+		
+		$sbjt  = '<form action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages'.a.'task=sent').'" method="post" id="hubForm" class="full">'.n;
+		/*$sbjt .= t.'<fieldset id="filters">'.n;
+		$sbjt .= t.t.'<input type="hidden" name="inaction" value="sent" />'.n;
+		$sbjt .= t.t.'To: <select class="option" name="filter">'.n;
+		$sbjt .= t.t.t.'<option value="">'.JText::_('All').'</option>'.n;
+		if ($components) {
+			foreach ($components as $component) 
+			{
+				$component = substr($component, 4);
+				$sbjt .= t.t.t.'<option value="'.$component.'"';
+				$sbjt .= ($component == $filter) ? ' selected="selected"' : '';
+				$sbjt .= '>'.$component.'</option>'.n;
+			}
+		}
+		$sbjt .= t.t.'</select> '.n;
+		$sbjt .= t.t.'<input class="option" type="submit" value="Filter" />'.n;
+		$sbjt .= t.'</fieldset>'.n;
+		$sbjt .= t.'<fieldset id="actions">'.n;
+		$sbjt .= t.t.'<select class="option" name="action">'.n;
+		$sbjt .= t.t.t.'<option value="">'.JText::_('MSG_WITH_SELECTED').'</option>'.n;
+		//$sbjt .= t.t.t.'<option value="sendtoinbox">'.JText::_('MSG_SEND_TO_INBOX').'</option>'.n;
+		//$sbjt .= t.t.t.'<option value="sendtotrash">'.JText::_('MSG_SEND_TO_TRASH').'</option>'.n;
+		$sbjt .= t.t.'</select> '.n;
+		$sbjt .= t.t.'<input class="option" type="submit" value="'.JText::_('MSG_APPLY').'" />'.n;
+		$sbjt .= t.'</fieldset>'.n;*/
+		$sbjt .= t.'<table class="data" summary="'.JText::_('TBL_SUMMARY_OVERVIEW').'">'.n;
+		$sbjt .= t.t.'<thead>'.n;
+		$sbjt .= t.t.t.'<tr>'.n;
+		//$sbjt .= t.t.t.t.'<th scope="col"><input type="checkbox" name="msgall" id="msgall" value="all"  onclick="HUB.MembersMsg.checkAll(this, \'chkbox\');" /></th>'.n;
+		//$sbjt .= t.t.t.t.'<th scope="col"> </th>'.n;
+		$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('Subject').'</th>'.n;
+		$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('To').'</th>'.n;
+		$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('Date Sent').'</th>'.n;
+		//$sbjt .= t.t.t.t.'<th scope="col">'.JText::_('Expires').'</th>'.n;
+		//$sbjt .= t.t.t.t.'<th scope="col"> </th>'.n;
+		$sbjt .= t.t.t.'</tr>'.n;
+		$sbjt .= t.t.'</thead>'.n;
+		$sbjt .= t.t.'<tfoot>'.n;
+		$sbjt .= t.t.t.'<tr>'.n;
+		$sbjt .= t.t.t.t.'<td colspan="3">'.n;
+		$pagenavhtml = $pageNav->getListFooter();
+		$pagenavhtml = str_replace('members/?','members/'.$member->get('uidNumber').'/messages/sent/?',$pagenavhtml);
+		$pagenavhtml = str_replace('action=sent','',$pagenavhtml);
+		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
+		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
+		$sbjt .= t.t.t.t.t.$pagenavhtml;
+		$sbjt .= t.t.t.t.'</td>'.n;
+		$sbjt .= t.t.t.'</tr>'.n;
+		$sbjt .= t.t.'</tfoot>'.n;
+		$sbjt .= t.t.'<tbody>'.n;
+		if ($rows) {
+			foreach ($rows as $row) 
+			{
+				/*if ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') {
+					$status = '<span class="read status"></span>';
+					$lnkcls = '';
+				} else {
+					$status = '<span class="unread status">*</span>';
+					$lnkcls = 'class="unread" ';
+				}*/
+				
+				if (substr($row->component,0,4) == 'com_') {
+					$row->component = substr($row->component,4);
+				}
+
+				if ($row->component == 'support') {
+					$fg = explode(' ',$row->subject);
+					$fh = array_pop($fg);
+					$row->subject = implode(' ',$fg);
+				}
+				
+				$cls = (($cls == 'even') ? 'odd' : 'even');
+				$sbjt .= t.t.t.'<tr class="'.$cls.'">'.n;
+				//$sbjt .= t.t.t.t.'<td class="check"><input class="chkbox" type="checkbox" name="mid[]" id="msg'.$row->id.'" value="'.$row->id.'" /></td>'.n;
+				//$sbjt .= t.t.t.t.'<td class="sttus">'.$status.'</td>'.n;
+				$sbjt .= t.t.t.t.'<td><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages'.a.'msg='.$row->id).'">'.stripslashes($row->subject).'</a></td>'.n;
+				//if (substr($row->type, -8) == '_message') {
+				//$u =& JUser::getInstance($row->created_by);
+				$sbjt .= t.t.t.t.'<td><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$row->uid).'">'.stripslashes($row->name).'</a></td>'.n;
+				$sbjt .= t.t.t.t.'<td>'.JHTML::_('date', $row->created, '%d %b, %Y').'</td>'.n;
+				//$sbjt .= t.t.t.t.'<td>'.JHTML::_('date', $row->expires, '%d %b, %Y').'</td>'.n;
+				//$sbjt .= t.t.t.t.'<td><a class="trash" href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages'.a.'mid[]='.$row->id.a.'action=sendtotrash').'" title="'.JText::_('MESSAGES_TRASH').'">'.JText::_('MESSAGES_TRASH').'</a></td>'.n;
+				$sbjt .= t.t.t.'</tr>'.n;
+			}
+		} else {
+			$cls = (($cls == 'even') ? 'odd' : 'even');
+			$sbjt .= t.t.t.'<tr class="'.$cls.'">'.n;
+			$sbjt .= t.t.t.t.'<td colspan="3">'.JText::_('No messages found').'</td>'.n;
+			$sbjt .= t.t.t.'</tr>'.n;
+		}
+		$sbjt .= t.t.'</tbody>'.n;
+		$sbjt .= t.'</table>'.n;
+		$sbjt .= '</form>'.n;
+		
+		$html  = MembersHtml::hed(3,'<a name="messages"></a>'.JText::_('MESSAGES')).n;
+		$html .= '<div class="withleft">'.n;
+		$html .= MembersHtml::aside( $this->subMenu($option, $member, 'sent') );
 		$html .= MembersHtml::subject($sbjt);
 		$html .= '</div>'.n;
 		
@@ -770,6 +942,10 @@ class plgMembersMessages extends JPlugin
 		$xmessage->message = nl2br($xmessage->message);
 		$xmessage->message = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$xmessage->message);
 		
+		if (substr($xmessage->component,0,4) == 'com_') {
+			$xmessage->component = substr($xmessage->component,4);
+		}
+		
 		$xseen = new XMessageSeen( $database );
 		$xseen->mid = $mid;
 		$xseen->uid = $member->get('uidNumber');
@@ -777,6 +953,13 @@ class plgMembersMessages extends JPlugin
 		if ($xseen->whenseen == '' || $xseen->whenseen == '0000-00-00 00:00:00' || $xseen->whenseen == NULL) {
 			$xseen->whenseen = date( 'Y-m-d H:i:s', time() );
 			$xseen->store( true );
+		}
+		
+		if (substr($xmessage->type, -8) == '_message') {
+			$u =& JUser::getInstance($xmessage->created_by);
+			$from = '<a href="'.JRoute::_('index.php?option='.$option.a.'id='.$u->get('id')).'">'.$u->get('name').'</a>'.n;
+		} else {
+			$from = 'System ('.$xmessage->component.')';
 		}
 		
 		$sbjt  = '<form action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages').'" method="post" id="hubForm" class="full">'.n;
@@ -813,6 +996,10 @@ class plgMembersMessages extends JPlugin
 		$sbjt .= t.t.t.'<tr>'.n;
 		$sbjt .= t.t.t.t.'<th>'.JText::_('Received').'</th>'.n;
 		$sbjt .= t.t.t.t.'<td>'.JHTML::_('date', $xmessage->created, '%d %b, %Y').'</td>'.n;
+		$sbjt .= t.t.t.'</tr>'.n;
+		$sbjt .= t.t.t.'<tr>'.n;
+		$sbjt .= t.t.t.t.'<th>'.JText::_('From').'</th>'.n;
+		$sbjt .= t.t.t.t.'<td>'.$from.'</td>'.n;
 		$sbjt .= t.t.t.'</tr>'.n;
 		$sbjt .= t.t.t.'<tr>'.n;
 		$sbjt .= t.t.t.t.'<th>'.JText::_('Subject').'</th>'.n;
@@ -975,12 +1162,6 @@ class plgMembersMessages extends JPlugin
 		
 		$html .= '<form action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages').'" method="post" id="hubForm" class="full">'.n;
 		$html .= t.'<input type="hidden" name="action" value="savesettings" />'.n;
-		
-		/*$html .= t.'<div class="aside">'.n;
-		$html .= t.t.'<p>'.JText::_('MSG_EXPLANATION').'</p>'.n;
-		$html .= t.'</div>'.n;
-		$html .= t.'<div class="subject">'.n;*/
-		
 		$html .= t.t.'<table class="settings" summary="User notification methods">'.n;
 		$html .= t.t.t.'<thead>'.n;
 		$html .= t.t.t.t.'<tr>'.n;
@@ -1119,5 +1300,75 @@ class plgMembersMessages extends JPlugin
 		
 		// Push through to the settings view
 		return $html;
+	}
+	
+	//-----------
+	
+	private function create($database, $option, $member) 
+	{
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'members',
+				'element'=>'messages',
+				'name'=>'create'
+			)
+		);
+		$view->option = $option;
+		$view->member = $member;
+		$view->user = JRequest::getInt( 'to', 0 );
+		$view->no_html = JRequest::getInt( 'no_html', 0 );
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		return $view->loadTemplate();
+	}
+	
+	//-----------
+	
+	public function send($database, $option, $member)
+	{
+		// Ensure the user is logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+		
+		// Incoming array of users to message
+		$mbrs = JRequest::getVar( 'users', array(0), 'post' );
+		
+		// Incoming message and subject
+		$subject = JText::_('MEMBER_SUBJECT_MESSAGE');
+		$message = JRequest::getVar( 'message', '' );
+		$no_html = JRequest::getInt( 'no_html', 0 );
+		
+		if (!$subject || !$message) {
+			return false;
+		}
+		
+		// Build the "from" data for the e-mail
+		$from = array();
+		$from['name']  = $member->get('name');
+		$from['email'] = $member->get('email');
+		
+		// Send the message
+		JPluginHelper::importPlugin( 'xmessage' );
+		$dispatcher =& JDispatcher::getInstance();
+		if (!$dispatcher->trigger( 'onSendMessage', array( 'member_message', $subject, $message, $from, $mbrs, $option ))) {
+			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED') );
+		}
+		
+		// Determine if we're returning HTML or not
+		// (if no - this is an AJAX call)
+		if (!$no_html) {
+			$html = '';
+			if ($this->getError()) {
+				$html .= MembersHtml::error( $this->getError() );
+			}
+			$html .= $this->inbox($database, $option, $member);
+
+			return $html;
+		}
 	}
 }
