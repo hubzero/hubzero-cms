@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_groups_forum' );
 
 class plgGroupsForum extends JPlugin
 {
-	function plgGroupsForum(&$subject, $config)
+	public function plgGroupsForum(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,13 +45,13 @@ class plgGroupsForum extends JPlugin
 	
 	//-----------
 	
-	function &onGroupAreas( $authorized )
+	public function &onGroupAreas( $authorized )
 	{
 		/*if (!$authorized) {
 			$areas = array();
 		} else {*/
 			$areas = array(
-				'forum' => JText::_('GROUPS_FORUM')
+				'forum' => JText::_('PLG_GROUPS_FORUM')
 			);
 		//}
 
@@ -60,7 +60,7 @@ class plgGroupsForum extends JPlugin
 
 	//-----------
 
-	function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $areas=null )
+	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $areas=null )
 	{
 		$return = 'html';
 
@@ -93,16 +93,19 @@ class plgGroupsForum extends JPlugin
 		
 		$this->group = $group;
 		$this->option = $option;
+		$this->name = substr($option,4,strlen($option));
 		$this->limitstart = $limitstart;
 		$this->limit = $limit;
 		$this->authorized = $authorized;
 		
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') {
-			$html = '';
+			// Set the page title
+			$document =& JFactory::getDocument();
+			$document->setTitle( JText::_(strtoupper($this->name)).': '.$this->group->get('description').': '.JText::_('PLG_GROUPS_FORUM') );
 			
 			if ($this->getError()) {
-				$html .= $this->getError();
+				$arr['html'] .= $this->getError();
 			}
 			
 			if (!$action) {
@@ -114,25 +117,23 @@ class plgGroupsForum extends JPlugin
 			
 			switch ($action) 
 			{
-				case 'newtopic':    $html .= $this->edittopic();   break;
-				case 'savetopic':   $html .= $this->savetopic();   break;
-				case 'deletetopic': $html .= $this->deletetopic(); break;
-				case 'edittopic':   $html .= $this->edittopic();   break;
-				case 'reply':       $html .= $this->reply();       break;
-				case 'savereply':   $html .= $this->savereply();   break;
-				case 'deletereply': $html .= $this->deletereply(); break;
-				case 'topic':       $html .= $this->topic();       break;
-				case 'topics':      $html .= $this->topics();      break;
+				case 'newtopic':    $arr['html'] .= $this->edittopic();   break;
+				case 'savetopic':   $arr['html'] .= $this->savetopic();   break;
+				case 'deletetopic': $arr['html'] .= $this->deletetopic(); break;
+				case 'edittopic':   $arr['html'] .= $this->edittopic();   break;
+				case 'reply':       $arr['html'] .= $this->reply();       break;
+				case 'savereply':   $arr['html'] .= $this->savereply();   break;
+				case 'deletereply': $arr['html'] .= $this->deletereply(); break;
+				case 'topic':       $arr['html'] .= $this->topic();       break;
+				case 'topics':      $arr['html'] .= $this->topics();      break;
 				
-				default: $html .= $this->topics(); break;
+				default: $arr['html'] .= $this->topics(); break;
 			}
-			
-			$arr['html'] = $html;
 		} else {
 			$database =& JFactory::getDBO();
 			
 			/*
-			// Get a count of the number of events
+			// Get a count of the number of topics
 			$forum = new XForum( $database );
 			$num = $forum->getCount();
 
@@ -181,8 +182,34 @@ class plgGroupsForum extends JPlugin
 			$rows = $forum->getRecords( $filters );
 
 			// Output HTML
-			$arr['metadata'] = '<a href="'.JRoute::_('index.php?option='.$option.a.'gid='.$group->get('cn').a.'active=forum').'">'.JText::sprintf('NUMBER_DISCUSSIONS',$num).'</a>'.n;
-			$arr['dashboard'] = $this->topicsHtml( $this->group, $forum, 0, $rows, null, $this->authorized, '', $this->getError() );
+			$arr['metadata'] = '<a href="'.JRoute::_('index.php?option='.$option.'&gid='.$group->get('cn').'&active=forum').'">'.JText::sprintf('PLG_GROUPS_FORUM_NUMBER_DISCUSSIONS',$num).'</a>';
+			//$arr['dashboard'] = $this->topicsHtml( $this->group, $forum, 0, $rows, null, $this->authorized, '', $this->getError() );
+			// Instantiate a vew
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'groups',
+					'element'=>'forum',
+					'name'=>'browse'
+				)
+			);
+
+			// Pass the view some info
+			$view->option = $this->option;
+			$view->group = $this->group;
+			$view->authorized = $this->authorized;
+			$view->total = 0;
+			$view->rows = $rows;
+			$view->search = '';
+			$view->pageNav = null;
+			$view->forum = $forum;
+			$view->limit = $filters['limit'];
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+
+			// Return the output
+			$arr['dashboard'] = $view->loadTemplate();
 		}
 
 		// Return the output
@@ -191,10 +218,8 @@ class plgGroupsForum extends JPlugin
 	
 	//-----------
 	
-	function topics() 
+	protected function topics() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$filters = array();
 		$filters['authorized'] = $this->authorized;
@@ -204,6 +229,7 @@ class plgGroupsForum extends JPlugin
 		$filters['search'] = JRequest::getVar('q', '');
 		
 		// Initiate a forum object
+		$database =& JFactory::getDBO();
 		$forum = new XForum( $database );
 		
 		// Get record count
@@ -216,28 +242,51 @@ class plgGroupsForum extends JPlugin
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
 		
-		// Output HTML
-		return $this->topicsHtml( $this->group, $forum, $total, $rows, $pageNav, $this->authorized, $filters['search'], $this->getError() );
+		// Instantiate a vew
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'groups',
+				'element'=>'forum',
+				'name'=>'browse'
+			)
+		);
+		
+		// Pass the view some info
+		$view->option = $this->option;
+		$view->group = $this->group;
+		$view->authorized = $this->authorized;
+		$view->total = $total;
+		$view->rows = $rows;
+		$view->search = $filters['search'];
+		$view->pageNav = $pageNav;
+		$view->forum = $forum;
+		$view->limit = $filters['limit'];
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Return the output
+		return $view->loadTemplate();
 	}
 	
 	//-----------
 	
-	function topic($id=0) 
+	protected function topic($id=0) 
 	{
-		$database =& JFactory::getDBO();
-
 		// Incoming
 		$filters = array();
 		$filters['authorized'] = $this->authorized;
 		$filters['limit']  = $this->limit;
 		$filters['start']  = $this->limitstart;
 		$filters['parent'] = ($id) ? $id : JRequest::getInt( 'topic', 0 );
-		
+
 		if ($filters['parent'] == 0) {
 			return $this->topics();
 		}
 		
 		// Initiate a forum object
+		$database =& JFactory::getDBO();
 		$forum = new XForum( $database );
 		
 		// Load the topic
@@ -259,16 +308,35 @@ class plgGroupsForum extends JPlugin
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
 		
-		// Output HTML
-		return $this->topicHtml( $this->group, $forum, $total, $rows, $pageNav, $this->authorized );
+		// Instantiate a vew
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'groups',
+				'element'=>'forum',
+				'name'=>'topic'
+			)
+		);
+		
+		// Pass the view some info
+		$view->option = $this->option;
+		$view->group = $this->group;
+		$view->authorized = $this->authorized;
+		$view->rows = $rows;
+		$view->forum = $forum;
+		$view->pageNav = $pageNav;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Return the output
+		return $view->loadTemplate();
 	}
 	
 	//-----------
 	
-	function deletetopic() 
+	protected function deletetopic() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$id = JRequest::getInt( 'topic', 0 );
 		if (!$id) {
@@ -276,23 +344,27 @@ class plgGroupsForum extends JPlugin
 		}
 		
 		// Initiate a forum object
+		$database =& JFactory::getDBO();
 		$forum = new XForum( $database );
 		
+		// Delete all replies on a topic
 		if (!$forum->deleteReplies( $id )) {
 			$this->setError( $forum->getError() );
 			return $this->topics();
 		}
 
+		// Delete the topic itself
 		if (!$forum->delete( $id )) {
 			$this->setError( $forum->getError() );
 		}
 		
+		// Return the topics list
 		return $this->topics();
 	}
 	
 	//-----------
 	
-	function edittopic()
+	protected function edittopic()
 	{
 		// Is the user logged in?
 		$juser =& JFactory::getUser();
@@ -316,12 +388,32 @@ class plgGroupsForum extends JPlugin
 			$row->comment = str_replace('<br />','',$row->comment);
 		}
 
-		return $this->topicForm( $this->group, $row, $this->option, $this->getError() );
+		// Instantiate a vew
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'groups',
+				'element'=>'forum',
+				'name'=>'reply'
+			)
+		);
+		
+		// Pass the view some info
+		$view->option = $this->option;
+		$view->group = $this->group;
+		$view->row = $row;
+		$view->authorized = $this->authorized;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Return the output
+		return $view->loadTemplate();
 	}
 	
 	//-----------
 	
-	function reply()
+	protected function reply()
 	{
 		// Is the user logged in?
 		$juser =& JFactory::getUser();
@@ -333,7 +425,7 @@ class plgGroupsForum extends JPlugin
 		// Incoming
 		$parent = JRequest::getInt( 'topic', 0 );
 		if (!$parent) {
-			$this->setError( JText::_('FORUM_MISSING_TOPIC') );
+			$this->setError( JText::_('PLG_GROUPS_FORUM_MISSING_TOPIC') );
 			return $this->topics();
 		}
 
@@ -344,12 +436,32 @@ class plgGroupsForum extends JPlugin
 		$row->created_by = $juser->get('id');
 		$row->parent = $parent;
 
-		return $this->topicForm( $this->group, $row, $this->option );
+		// Instantiate a vew
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'groups',
+				'element'=>'forum',
+				'name'=>'reply'
+			)
+		);
+		
+		// Pass the view some info
+		$view->option = $this->option;
+		$view->group = $this->group;
+		$view->row = $row;
+		$view->authorized = $this->authorized;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Return the output
+		return $view->loadTemplate();
 	}
 	
 	//-----------
 	
-	function savetopic() 
+	protected function savetopic() 
 	{
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
@@ -397,293 +509,10 @@ class plgGroupsForum extends JPlugin
 			return $this->topics();
 		}
 	}
-	
-	//-----------
-	
-	function topicsHtml( $group, $forum, $total, $rows, $pageNav, $authorized, $search='', $error='' ) 
-	{
-		$html  = '';
-		if ($error) {
-			$html .= GroupsHtml::error( $error );
-		}
-		$aside  = '<fieldset>'.n;
-		$aside .= t.'<label>'.n;
-		$aside .= t.t.JText::_('FORUM_SEARCH').n;
-		$aside .= t.t.'<input type="text" name="q" value="'.htmlentities($search, ENT_QUOTES).'" />'.n;
-		$aside .= t.'</label>'.n;
-		$aside .= t.'<input type="submit" value="'.JText::_('GO').'" />'.n;
-		$aside .= '</fieldset>'.n;
-		$aside .= '<span class="add"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum'.a.'task=newtopic').'">'.JText::_('NEW_TOPIC').'</a></span>'.n;
-		
-		$html .= '<table id="forum-list">'.n;
-		if ($pageNav) {
-			$html .= t.'<caption>'.$aside.'</caption>'.n;
-		}
-		$html .= t.'<thead>'.n;
-		$html .= t.t.'<tr>'.n;
-		$html .= t.t.t.'<th>'.JText::_('FORUM_TOPIC').'</th>'.n;
-		$html .= t.t.t.'<th>'.JText::_('FORUM_REPLIES').'</th>'.n;
-		$html .= t.t.t.'<th>'.JText::_('FORUM_AUTHOR').'</th>'.n;
-		//$html .= t.t.t.'<th>'.JText::_('FORUM_VIEWS').'</th>'.n;
-		$html .= t.t.t.'<th>'.JText::_('FORUM_LAST_POST').'</th>'.n;
-		if ($authorized == 'admin' || $authorized == 'manager') {
-			$html .= t.t.t.'<th colspan="2">'.JText::_('FORUM_CONTROLS').'</th>'.n;
-		}
-		$html .= t.t.'</tr>'.n;
-		$html .= t.'</thead>'.n;
-		$html .= t.'<tbody>'.n;
-		if ($rows) {
-			$cls = 'even';
-			
-			foreach ($rows as $row) 
-			{
-				$name = JText::_('UNKNOWN');
-				$xuser =& JUser::getInstance( $row->created_by );
-				if (is_object($xuser) && $xuser->get('name')) {
-					$name = $xuser->get('name');
-				}
-				
-				$lpname = '';
-				$lastpost = $forum->getLastPost( $row->id );
-				if ($lastpost && count($lastpost) > 0) {
-					$lastpost = $lastpost[0];
-					
-					$vuser =& JUser::getInstance( $lastpost->created_by );
-					if (is_object($vuser) && $vuser->get('name')) {
-						$lpname = $vuser->get('name');
-					}
-				}
-
-				$forumpages = new XForumPagination( $row->replies, 0, $this->limit, $row->id );
-				
-				$cls = (($cls == 'even') ? 'odd' : 'even');
-				
-				$html .= t.t.'<tr class="'.$cls.'">'.n;
-				$html .= t.t.t.'<td>';
-				$html .= ($row->sticky == 1) ? t.t.t.t.'<strong>'.JText::_('FORUM_STICKY').'</strong> ' : t.t.t.t.'';
-				$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum'.a.'topic='.$row->id).'">'.stripslashes($row->topic).'</a>'.n;
-				$html .= ($row->replies > $this->limit) ? t.t.t.t.'<br /><span class="forum-pages">('.$forumpages->getPagesLinks().')</span>'.n : '';
-				$html .= t.t.t.'</td>'.n;
-				$html .= t.t.t.'<td>'.$row->replies.'</td>'.n;
-				$html .= t.t.t.'<td><a href="'.JRoute::_('index.php?option=com_members'.a.'id='.$row->created_by).'">'.$name.'</a><br />';
-				$html .= '<span class="post-date"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum'.a.'topic='.$row->id).'">'.$row->created.'</a></span>';
-				$html .= '</td>'.n;
-				//$html .= t.t.t.'<td>'.$row->hits.'</th>'.n;
-				$html .= t.t.t.'<td>';
-				if ($lpname) {
-					$html .= '<a href="'.JRoute::_('index.php?option=com_members'.a.'id='.$lastpost->created_by).'">'.$lpname.'</a><br />';
-					$html .= '<span class="lastpost-date"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum'.a.'topic='.$row->id.'#c'.$lastpost->id).'">'.$lastpost->created.'</a></span>';
-				}
-				$html .= '</td>'.n;
-				if ($authorized == 'admin' || $authorized == 'manager') {
-					$html .= t.t.t.'<td><a class="delete" href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum'.a.'topic='.$row->id.a.'task=deletetopic').'" title="'.JText::_('FORUM_DELETE').'">'.JText::_('FORUM_DELETE').'</a></td>'.n;
-					$html .= t.t.t.'<td><a class="edit" href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum'.a.'topic='.$row->id.a.'task=edittopic').'" title="'.JText::_('FORUM_EDIT').'">'.JText::_('FORUM_EDIT').'</a></td>'.n;
-				}
-				$html .= t.t.'</tr>'.n;
-			}
-		} else {
-			$html .= t.t.'<tr class="odd">'.n;
-			$html .= t.t.t.'<td colspan="5">'.JText::_('FORUM_NO_TOPICS_FOUND').'</td>'.n;
-			$html .= t.t.'</tr>'.n;
-		}
-		$html .= t.'</tbody>'.n;
-		$html .= '</table>'.n;
-		
-		$out = '';
-		if ($pageNav) {
-			$html .= $pageNav->getListFooter();
-			
-			$out .= '<form action="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum').'" method="get">'.n;
-			//$out .= GroupsHtml::div( $aside, 'aside' );
-			//$out .= GroupsHtml::div( $html, 'subject' );
-		}
-		$out .= $html;
-		if ($pageNav) {
-			$out .= '</form>'.n;
-		}
-		
-		return $out;
-	}
-	
-	//-----------
-	
-	function topicHtml( $group, $forum, $total, $rows, $pageNav, $authorized ) 
-	{
-		$html  = '<h3>'.stripslashes($forum->topic).'</h3>'.n;
-		$html .= '<ol class="comments">'.n;
-		if ($rows) {
-			ximport('wiki.parser');
-
-			$p = new WikiParser( $group->get('cn'), $this->option, 'group'.DS.'forum', 'group', $group->get('gidNumber'), '' );
-			
-			$o = 'even';
-			
-			foreach ($rows as $row) 
-			{
-				$name = JText::_('UNKNOWN');
-				$xuser =& JUser::getInstance( $row->created_by );
-				if (is_object($xuser) && $xuser->get('name')) {
-					$name = $xuser->get('name');
-				}
-				
-				$comment = $p->parse( n.stripslashes($row->comment) );
-				
-				$o = ($o == 'odd') ? 'even' : 'odd';
-				
-				$html .= t.'<li class="comment '.$o.'" id="c'.$row->id.'">'.n;
-				$html .= t.t.'<a name="c'.$row->id.'"></a>'.n;
-				$html .= t.t.'<dl class="comment-details">'.n;
-				$html .= t.t.t.'<dt class="type"><span class="plaincomment"><span>'.JText::sprintf('COMMENT').'</span></span></dt>'.n;
-				// Last parameter is time offset - if not set, it will subtract/add hours based on UTC
-				$html .= t.t.t.'<dd class="date">'.JHTML::_('date',$row->created, '%d %b, %Y', 0).'</dd>'.n;
-				$html .= t.t.t.'<dd class="time">'.JHTML::_('date',$row->created, '%I:%M %p', 0).'</dd>'.n;
-				$html .= t.t.'</dl>'.n;
-				$html .= t.t.'<div class="cwrap">'.n;
-				$html .= t.t.t.'<p class="name"><strong><a href="'.JRoute::_('index.php?option=com_members'.a.'id='.$row->created_by).'">'.$name.'</a></strong> '.JText::_('SAID').':</p>'.n;
-				$html .= t.t.t.'<p>'.$comment.'</p>'.n;
-				$html .= t.t.'</div>'.n;
-				$html .= t.'</li>'.n;
-			}
-		} else {
-			$html .= t.'<li>'.n;
-			$html .= t.t.'<p>'.JText::_('FORUM_NO_REPLIES_FOUND').'</p>'.n;
-			$html .= t.'</li>'.n;
-		}
-		$html .= '</ol>'.n;
-		//$html .= '<p class="add"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum'.a.'task=reply'.a.'topic='.$forum->id).'">'.JText::_('REPLY').'</a></p>'.n;
-		$html .= $pageNav->getListFooter();
-		
-		$aside = '<p class="add"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum'.a.'task=newtopic').'">'.JText::_('NEW_TOPIC').'</a></p>'.n;
-		
-		$out  = '<form action="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum').'" method="get">'.n;
-		$out .= GroupsHtml::div( $aside, 'aside' );
-		$out .= GroupsHtml::div( $html, 'subject' );
-		$out .= '</form>'.n;
-		$out .= '<div class="clear"></div>'.n;
-		if ($authorized) {
-			$faside = '<p>Comments support <a href="'.JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting').'">Wiki Formatting</a>. Please keep comments polite and on topic. Offensive posts may be removed.</p>'.n;
-
-			$frm  = '<form action="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum').'" method="post" id="hubForm">'.n;
-			$frm .= t.'<fieldset>'.n;
-			$frm .= GroupsHtml::hed(4,'<a name="commentform"></a>'.JText::_('ADD_COMMENT')).n;
-			$frm .= t.t.'<label>'.n;
-			$frm .= t.t.t.'<input class="option" type="checkbox" name="anonymous" id="forum_anonymous" /> '.n;
-			$frm .= t.t.t.JText::_('FORUM_FORM_ANONYMOUS').n;
-			$frm .= t.t.'</label>'.n;
-			$frm .= t.t.'<label>'.n;
-			$frm .= t.t.t.JText::_('FORUM_FORM_COMMENTS').':'.n;
-			$frm .= t.t.t.'<textarea name="comment" id="forum_comments" rows="15" cols="35"></textarea>'.n;
-			$frm .= t.t.'</label>'.n;
-			$frm .= t.t.'<input type="hidden" name="option" value="'. $this->option .'" />'.n;
-			$frm .= t.t.'<input type="hidden" name="gid" value="'. $group->get('cn') .'" />'.n;
-			$frm .= t.t.'<input type="hidden" name="task" value="savetopic" />'.n;
-			$frm .= t.t.'<input type="hidden" name="parent" value="'.$forum->id.'" />'.n;
-			$frm .= t.t.'<input type="hidden" name="topic_id" value="" />'.n;
-			$frm .= t.t.'<input type="hidden" name="active" value="forum" />'.n;
-			$frm .= t.t.'<p class="submit"><input type="submit" value="'.JText::_('SUBMIT').'" /></p>'.n;
-			$frm .= t.'</fieldset>'.n;
-			$frm .= '</form>'.n;
-			
-			$rp  = GroupsHtml::div( $faside, 'aside' );
-			$rp .= GroupsHtml::div( $frm, 'subject' );
-			
-			$out .= '<hr />'.n;
-			$out .= GroupsHtml::div( $rp, 'section' );
-		}
-		
-		return $out;
-	}
 
 	//-----------
 	
-	public function topicForm( $group, $row, $option, $error='' ) 
-	{
-		if ($row->parent) {
-			$title = JText::_('ADD_REPLY_TO_TOPIC');
-		} else {
-			if ($row->id) {
-				$title = JText::_('EDIT_TOPIC');
-			} else {
-				$row->access = 4;
-				$title = JText::_('NEW_TOPIC');
-			}
-		}
-		
-		$html  = '<form action="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum').'" method="post" id="hubForm">'.n;
-		if ($error) {
-			$html .= GroupsHtml::error( $error );
-		}
-		$html .= t.'<div class="explaination">'.n;
-		if (!$row->parent && $row->id) {
-			//$html .= t.t.'<p><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum').'">All topics</a></p>'.n;
-			$html .= t.t.'<p class="add"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->get('cn').a.'active=forum'.a.'task=newtopic').'">'.JText::_('NEW_TOPIC').'</a></p>'.n;
-		}
-		$html .= t.t.'<p>Comments support <a href="'.JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting').'">Wiki Formatting</a>. Please keep comments polite and on topic. Offensive posts may be removed.</p>'.n;
-		$html .= t.'</div>'.n;
-		$html .= t.'<fieldset>'.n;
-		$html .= GroupsHtml::hed(3,'<a name="topicform"></a>'.$title).n;
-		
-		if ($row->parent) {
-			$html .= t.t.t.'<input type="hidden" name="sticky" id="forum_sticky" value="'. $row->sticky .'" />'.n;
-			$html .= t.t.t.'<input type="hidden" name="topic" id="forum_topic" value="'. htmlentities(stripslashes($row->topic), ENT_QUOTES) .'" />'.n;
-		} else {
-			if ($this->authorized == 'admin' || $this->authorized == 'manager') {
-				$html .= t.t.'<label>'.n;
-				$html .= t.t.t.'<input class="option" type="checkbox" name="sticky" id="forum_sticky"';
-				$html .= ($row->sticky == 1) ? ' checked="checked"' : '';
-				$html .= ' /> '.n;
-				$html .= t.t.t.JText::_('FORUM_FORM_STICKY').n;
-				$html .= t.t.'</label>'.n;	
-			} else {
-				$html .= t.t.t.'<input type="hidden" name="sticky" id="forum_sticky" value="'. $row->sticky .'" />'.n;
-			}
-			
-			$html .= t.t.'<label>'.n;
-			$html .= t.t.t.'<input class="option" type="checkbox" name="access" id="forum_access"';
-			$html .= ($row->access != 4) ? ' checked="checked"' : '';
-			$html .= ' /> '.n;
-			$html .= t.t.t.JText::_('FORUM_FORM_ACCESS').n;
-			$html .= t.t.'</label>'.n;
-			
-			$html .= t.t.'<label>'.n;
-			$html .= t.t.t.'<input class="option" type="checkbox" name="anonymous" id="forum_anonymous" /> '.n;
-			$html .= t.t.t.JText::_('FORUM_FORM_ANONYMOUS').n;
-			$html .= t.t.'</label>'.n;
-
-			$html .= t.t.'<label>'.n;
-			$html .= t.t.t.JText::_('FORUM_FORM_TOPIC').':'.n;
-			$html .= t.t.t.'<input type="text" name="topic" id="forum_topic" value="'. htmlentities(stripslashes($row->topic), ENT_QUOTES) .'" size="38" />'.n;
-			$html .= t.t.'</label>'.n;
-		}
-
-		$html .= t.t.'<label>'.n;
-		$html .= t.t.t.JText::_('FORUM_FORM_COMMENTS').':'.n;
-		$html .= t.t.t.'<textarea name="comment" id="forum_comments" rows="15" cols="35">'. stripslashes($row->comment) .'</textarea>'.n;
-		$html .= t.t.'</label>'.n;
-
-		$html .= t.t.'<input type="hidden" name="created" value="'. $row->created .'" />'.n;
-		$html .= t.t.'<input type="hidden" name="created_by" value="'. $row->created_by .'" />'.n;
-		$html .= t.t.'<input type="hidden" name="parent" value="'. $row->parent .'" />'.n;
-		$html .= t.t.'<input type="hidden" name="topic_id" value="'. $row->id .'" />'.n;
-		$html .= t.t.'<input type="hidden" name="group" value="'. $group->get('gidNumber') .'" />'.n;
-		
-		$html .= t.t.'<input type="hidden" name="option" value="'. $option .'" />'.n;
-		//$html .= t.t.'<input type="hidden" name="task" value="view" />'.n;
-		$html .= t.t.'<input type="hidden" name="gid" value="'. $group->get('cn') .'" />'.n;
-		$html .= t.t.'<input type="hidden" name="task" value="savetopic" />'.n;
-		$html .= t.t.'<input type="hidden" name="active" value="forum" />'.n;
-		
-		$html .= t.'</fieldset>'.n;
-		$html .= t.'<div class="clear"></div>'.n;
-		$html .= t.t.'<p class="submit"><input type="submit" value="'.JText::_('SUBMIT').'" /></p>'.n;
-		$html .= '</form>'.n;
-
-		return $html;
-	}
-
-	//-----------
-	
-	function onGroupDelete( $group ) 
+	public function onGroupDelete( $group ) 
 	{
 		ximport('xforum');
 		$database =& JFactory::getDBO();
@@ -711,13 +540,13 @@ class plgGroupsForum extends JPlugin
 	
 	//-----------
 	
-	function onGroupDeleteCount( $group ) 
+	public function onGroupDeleteCount( $group ) 
 	{
 	}
 	
 	//-----------
 	
-	function getForumIDs( $gid=NULL )
+	public function getForumIDs( $gid=NULL )
 	{
 		if (!$gid) {
 			return array();
