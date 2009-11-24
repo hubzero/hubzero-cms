@@ -171,6 +171,7 @@ class XMessage extends JTable
 	var $subject    = NULL;  // @var varchar(150)
 	var $component  = NULL;  // @var varchar(100)
 	var $type       = NULL;  // @var varchar(100)
+	//var $group_id   = NULL;  // @var int(11)
 	
 	//-----------
 	
@@ -208,6 +209,59 @@ class XMessage extends JTable
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
+	}
+	
+	//-----------
+	
+	private function buildQuery( $uid, $filters=array() ) 
+	{
+		$query  = "FROM $this->_tbl AS m, 
+					#__xmessage_recipient AS r,
+					#__users AS u  
+					WHERE r.uid=u.id 
+					AND r.mid=m.id 
+					AND m.created_by=".$uid;
+		if (isset($filters['limit']) && $filters['limit'] != 0) {
+			$query .= " ORDER BY created DESC";
+			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		}
+		return $query;
+	}
+	
+	//-----------
+	
+	public function getSentMessages( $uid=null, $filters=array() ) 
+	{
+		if (!$uid) {
+			$uid = $this->uid;
+		}
+		if (!$uid) {
+			return false;
+		}
+		
+		$query = "SELECT m.*, r.uid, u.name ".$this->buildQuery( $uid, $filters );
+
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
+	}
+	
+	//-----------
+	
+	public function getSentMessagesCount( $uid=null, $filters=array() ) 
+	{
+		if (!$uid) {
+			$uid = $this->uid;
+		}
+		if (!$uid) {
+			return false;
+		}
+		
+		$filters['limit'] = 0;
+		
+		$query = "SELECT COUNT(*) ".$this->buildQuery( $uid, $filters );
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadResult();
 	}
 }
 

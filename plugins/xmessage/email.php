@@ -58,6 +58,10 @@ class plgXMessageEmail extends JPlugin
 			return true;
 		}
 		
+		if ($user->get('emailConfirmed') <= 0) {
+			return false;
+		}
+		
 		$email = $user->get('email');
 		
 		if (!$email) {
