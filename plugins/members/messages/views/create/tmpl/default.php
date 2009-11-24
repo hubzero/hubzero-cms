@@ -27,6 +27,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $u =& JUser::getInstance($this->user);
 ?>
+<?php if ($this->getError()) { ?>
+<p class="error"><?php echo $this->getError(); ?></p>
+<?php } ?>
 <form action="<?php echo JRoute::_('index.php?option='.$option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 	<div class="explaination">
 		<p class="info"><?php echo JText::_('MEMBER_MESSAGE_EXPLANATION'); ?></p>
