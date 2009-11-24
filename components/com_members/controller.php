@@ -289,6 +289,7 @@ class MembersController extends JObject
 		
 		// Include some needed styles and scripts
 		$this->getStyles();
+		$this->getScripts();
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
@@ -437,6 +438,8 @@ class MembersController extends JObject
 
 	protected function changepassword() 
 	{
+		jimport( 'joomla.application.component.view');
+		
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
@@ -457,13 +460,11 @@ class MembersController extends JObject
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo '<div class="main section">'.n;
-			echo MembersHtml::warning( JText::_('MEMBERS_NOT_LOGGEDIN') );
-			echo XModuleHelper::renderModules('force_mod');
-			echo '</div><!-- / .main section -->'.n;
+			$view = new JView( array('name'=>'login') );
+			$view->title = $title;
+			$view->display();
 			return;
 		}
 		
@@ -473,25 +474,20 @@ class MembersController extends JObject
 		
 		// Ensure we have an ID
 		if (!$id) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
-			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::error( JText::_('MEMBERS_NO_ID') ), 'main section' );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
+
+			JError::raiseError( 404, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
 		
 		// Check authorization
 		$authorized = $this->_authorize( $id );
 		if (!$authorized) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::warning( JText::_('MEMBERS_NOT_AUTH') ), 'main section' );
+			JError::raiseError( 403, JText::_('MEMBERS_NOT_AUTH') );
 			return;
 		}
-		
-		// Include some needed styles and scripts
-		$this->getStyles();
 		
 		// Initiate profile class
 		$profile = new XProfile();
@@ -499,24 +495,25 @@ class MembersController extends JObject
 		
 		// Ensure we have a member
 		if (!$profile->get('name')) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::error( JText::_('MEMBERS_NOT_FOUND') ), 'main section' );
+			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
 		}
 		
+		// Include some needed styles and scripts
+		$this->getStyles();
+		
 		// Add to the pathway
-		$pathway->addItem( stripslashes($profile->get('name')), 'index.php?option='.$this->_option.a.'id='.$profile->get('uidNumber') );
-		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$profile->get('uidNumber').a.'task='.$this->_task );
+		$pathway->addItem( stripslashes($profile->get('name')), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber') );
+		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber').'&task='.$this->_task );
 		
 		// Load some needed libraries
 		ximport('xregistrationhelper');
 		ximport('xuserhelper');
 		
 		if (XUserHelper::isXDomainUser($juser->get('id'))) {
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::warning( 'MEMBERS_PASS_CHANGE_LINKED_ACCOUNT' ), 'main section' );
+			JError::raiseError( 403, JText::_('MEMBERS_PASS_CHANGE_LINKED_ACCOUNT') );
 			return;
 		}
 		
@@ -526,10 +523,18 @@ class MembersController extends JObject
 		$newpass  = JRequest::getVar('newpass', '', 'post');
 		$newpass2 = JRequest::getVar('newpass2', '', 'post');
 		
+		$view = new JView( array('name'=>'changepassword') );
+		$view->option = $this->_option;
+		$view->title = $title;
+		$view->profile = $profile;
+		$view->change = $change;
+		$view->oldpass = $oldpass;
+		$view->newpass = $newpass;
+		$view->newpass2 = $newpass2;
+		
 		// Blank form request (no data submitted)
 		if (empty($change))  {
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::changepassword($this->_option, $profile, false, false, false, false, $this->getError());
+			$view->display();
 			return;
 		}
 
@@ -544,8 +549,8 @@ class MembersController extends JObject
 		}
 
 		if ($this->getError()) {
-			echo MembersHtml::div( MembersHtml::hed(2, $title ), 'full', 'content-header');
-			echo MembersHtml::changepassword($this->_option, $profile, $change, $oldpass, $newpass, $newpass2, $this->getError());
+			$view->setError( $this->getError() );
+			$view->display();
 			return;
 		}
 
@@ -555,35 +560,25 @@ class MembersController extends JObject
 
 		// Save the changes
 		if (!$profile->update()) {
-			$this->setError( JText::_('MEMBERS_PASS_CHANGE_FAILED') );
-			
-			echo MembersHtml::div( MembersHtml::hed(2, $title ), 'full', 'content-header');
-			echo MembersHtml::changepassword($this->_option, $profile, $change, $oldpass, $newpass, $newpass2, $this->getError());
+			$view->setError( JText::_('MEMBERS_PASS_CHANGE_FAILED') );
+			$view->display();
 			return;
 		}
 
-		// Re-login user with new password...
-		/*$app =& JFactory::getApplication();
-		$app->logout();
-		$app->login(
-			array(
-				'username'=>$profile->get('username'), 
-				'password'=>$newpass
-			)
-		);*/
-
 		// Redirect user back to main account page
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'id='.$id);
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$id);
 	}
 	
 	//-----------
 
 	protected function raiselimit() 
 	{
+		jimport( 'joomla.application.component.view');
+		
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
-		
+
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
 		
@@ -600,32 +595,32 @@ class MembersController extends JObject
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo '<div class="main section">'.n;
-			echo MembersHtml::warning( JText::_('MEMBERS_NOT_LOGGEDIN') );
-			echo XModuleHelper::renderModules('force_mod');
-			echo '</div><!-- / .main section -->'.n;
+			$view = new JView( array('name'=>'login') );
+			$view->title = $title;
+			$view->display();
 			return;
 		}
 		
 		// Ensure we have an ID
 		if (!$id) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::error( JText::_('MEMBERS_NO_ID') ), 'main section' );
+			JError::raiseError( 404, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
 		
+		$view = new JView( array('name'=>'raiselimit') );
+		$view->option = $this->_option;
+		$view->title = $title;
+		
 		// Check authorization
-		$authorized = $this->_authorize( $id );
-		if (!$authorized) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
+		$view->authorized = $this->_authorize( $id );
+		if (!$view->authorized) {
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::warning( JText::_('MEMBERS_NOT_AUTH') ), 'main section' );
+			JError::raiseError( 403, JText::_('MEMBERS_NOT_AUTH') );
 			return;
 		}
 		
@@ -635,27 +630,20 @@ class MembersController extends JObject
 		// Initiate profile class
 		$profile = new XProfile();
 		$profile->load( $id );
-		
+
 		// Ensure we have a member
 		if (!$profile->get('name')) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::error( JText::_('MEMBERS_NOT_FOUND') ), 'main section' );
+			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
 		}
 		
-		// Reset the title now that we have a name
-		/*$title  = JText::_(strtoupper($this->_name));
-		$title .= ': '.stripslashes($profile->get('name'));
-		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
-		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );*/
+		$view->profile = $profile;
 		
 		// Add to the pathway
-		$pathway->addItem( stripslashes($profile->get('name')), 'index.php?option='.$this->_option.a.'id='.$profile->get('uidNumber') );
-		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$profile->get('uidNumber').a.'task='.$this->_task );
+		$pathway->addItem( stripslashes($profile->get('name')), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber') );
+		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber').'&task='.$this->_task );
 
 		// Incoming
 		$request = JRequest::getVar('request',null,'post');
@@ -675,13 +663,15 @@ class MembersController extends JObject
 					
 					$resourcemessage = 'session limit from '. $oldlimit .' to '. $newlimit .' sessions ';
 
-					if ($authorized == 'admin') {
+					if ($view->authorized == 'admin') {
 						$profile->set('jobsAllowed', $newlimit);
 						$profile->update();
 						
 						$resourcemessage = 'The session limit for [' . $profile->get('username') . '] has been raised from ' . $oldlimit . ' to ' . $newlimit . ' sessions.';
 					} else if ($request === null) {
-						MembersHtml::raiselimit($this->_option, $title, 'sessions', $authorized, $profile);
+						$view->resource = $k;
+						$view->setLayout('select');
+						$view->display();
 						return;
 					}
 				break;
@@ -692,13 +682,15 @@ class MembersController extends JObject
 
 					$resourcemessage = ' storage limit has been raised from '. $oldlimit .' to '. $newlimit .'.';
 
-					if ($authorized == 'admin') {
+					if ($view->authorized == 'admin') {
 						// $profile->set('quota', $newlimit);
 						// $profile->update();
 						
 						$resourcemessage = 'The storage limit for [' . $profile->get('username') . '] has been raised from '. $oldlimit .' to '. $newlimit .'.';
 					} else {
-						MembersHtml::raiselimit($this->_option, $title, 'storage', $authorized, $profile);
+						$view->resource = $k;
+						$view->setLayout('select');
+						$view->display();
 						return;
 					}
 				break;
@@ -709,20 +701,22 @@ class MembersController extends JObject
 
 					$resourcemessage = ' meeting limit has been raised from '. $oldlimit .' to '. $newlimit .'.';
 
-					if ($authorized == 'admin') {
+					if ($view->authorized == 'admin') {
 						// $profile->set('max_meetings', $newlimit);
 						// $profile->update();
 						
 						$resourcemessage = 'The meeting limit for [' . $profile->get('username') . '] has been raised from '. $oldlimit .' to '. $newlimit .'.';
 					} else {
-						MembersHtml::raiselimit($this->_option, $title, 'meetings', $authorized, $profile);
+						$view->resource = $k;
+						$view->setLayout('select');
+						$view->display();
 						return;
 					}
 				break;
 
 				default:
 					// Show limit selection form
-					MembersHtml::raiselimit($this->_option, $title, 'select', $authorized, $profile);
+					$view->display();
 					return;
 				break;
 			}
@@ -756,7 +750,7 @@ class MembersController extends JObject
 			}
 			$message .= "Click the following link to grant this request:\r\n";
 			
-			$sef = JRoute::_('index.php?option='.$this->_option.a.'id='.$profile->get('uidNumber').a.'task='.$this->_task);
+			$sef = JRoute::_('index.php?option='.$this->_option.'&id='.$profile->get('uidNumber').'&task='.$this->_task);
 			if (substr($sef,0,1) == '/') {
 				$sef = substr($sef,1,strlen($sef));
 			}
@@ -765,7 +759,7 @@ class MembersController extends JObject
 			$message .= $url . "\r\n\r\n";
 			$message .= "Click the following link to review this user's account:\r\n";
 			
-			$sef = JRoute::_('index.php?option='.$this->_option.a.'id='.$profile->get('uidNumber'));
+			$sef = JRoute::_('index.php?option='.$this->_option.'&id='.$profile->get('uidNumber'));
 			if (substr($sef,0,1) == '/') {
 				$sef = substr($sef,1,strlen($sef));
 			}
@@ -781,18 +775,24 @@ class MembersController extends JObject
 				return JError::raiseError(500, 'xHUB Internal Error: Error mailing resource request to site administrator(s).');
 			}
 			
-			// Output HTML
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( '<p class="passed">A request to raise your ' . $resourcemessage . ' has been e-mailed to the site administrators</p>', 'main section' );
+			// Output the view
+			$view->resourcemessage = $resourcemessage;
+			$view->setLayout('success');
+			$view->display();
 			return;
-		} else if ($authorized == 'admin' && !empty($resourcemessage)) {
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( '<p class="passed">' . $resourcemessage . '</p>', 'main section' );
+		} else if ($view->authorized == 'admin' && !empty($resourcemessage)) {
+			// Output the view
+			$view->resourcemessage = $resourcemessage;
+			$view->setLayout('success');
+			$view->display();
 			return;
 		}
 		
-		// Output HTML
-		MembersHtml::raiselimit($this->_option, $title, 'select', $authorized, $profile);
+		// Output the view
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -1188,6 +1188,8 @@ class MembersController extends JObject
 	
 	protected function activity()
 	{
+		jimport( 'joomla.application.component.view');
+		
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) );
@@ -1207,11 +1209,14 @@ class MembersController extends JObject
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
-			echo MembersHtml::div( MembersHtml::hed( 2, JText::_('Active Users and Guests') ), 'full', 'content-header' );
+			/*echo MembersHtml::div( MembersHtml::hed( 2, JText::_('Active Users and Guests') ), 'full', 'content-header' );
 			echo '<div class="main section">'.n;
 			echo MembersHtml::warning( JText::_('MEMBERS_NOT_LOGGEDIN') );
 			echo XModuleHelper::renderModules('force_mod');
-			echo '</div><!-- / .main section -->'.n;
+			echo '</div><!-- / .main section -->'.n;*/
+			$view = new JView( array('name'=>'login') );
+			$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
+			$view->display();
 			return;
 		}
 		if (!$juser->authorize($this->_option, 'manage')) {
@@ -1304,7 +1309,6 @@ class MembersController extends JObject
 		}
 		
 		// Output View
-		jimport( 'joomla.application.component.view');
 		$view = new JView( array('name'=>'activity') );
 		$view->title = JText::_('Active Users and Guests');
 		$view->option = $this->_option;
@@ -1320,6 +1324,8 @@ class MembersController extends JObject
 
 	protected function whois()
 	{
+		jimport( 'joomla.application.component.view');
+		
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) );
@@ -1330,7 +1336,7 @@ class MembersController extends JObject
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
 		}
-		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'task='.$this->_task);
+		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&task='.$this->_task);
 		
 		// Push some styles to the template
 		$this->getStyles();
@@ -1338,11 +1344,9 @@ class MembersController extends JObject
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
-			echo MembersHtml::div( MembersHtml::hed( 2, JText::_('Lookup User(s)') ), 'full', 'content-header' );
-			echo '<div class="main section">'.n;
-			echo MembersHtml::warning( JText::_('MEMBERS_NOT_LOGGEDIN') );
-			echo XModuleHelper::renderModules('force_mod');
-			echo '</div><!-- / .main section -->'.n;
+			$view = new JView( array('name'=>'login') );
+			$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
+			$view->display();
 			return;
 		}
 		if (!$juser->authorize($this->_option, 'manage')) {
@@ -1362,7 +1366,6 @@ class MembersController extends JObject
 			$search = $query;
 		}
 
-		jimport( 'joomla.application.component.view');
 		$view = new JView( array('name'=>'whois') );
 		$view->summaries = null;
 		$view->user = null;
@@ -1395,6 +1398,8 @@ class MembersController extends JObject
 		}
 		$view->display();
 	}
+	
+	//-----------
 	
 	private function _get_summarybyfilter($args) 
 	{
@@ -1629,6 +1634,8 @@ class MembersController extends JObject
 		}
 		return( $result );
 	}
+	
+	//-----------
 	
 	private function _like($k, $v) 
 	{
@@ -1872,16 +1879,6 @@ class MembersController extends JObject
 		// Check if they're a site admin (from Joomla)
 		if ($juser->authorize($this->_option, 'manage')) {
 			return 'admin';
-		}
-		
-		//$xuser =& XFactory::getUser();
-		$xuser = XProfile::getInstance();
-		if (is_object($xuser)) {
-			// Check if they're a site admin (from LDAP)
-			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-				return 'admin';
-			}
 		}
 
 		// Check if they're the member

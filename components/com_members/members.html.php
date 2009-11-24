@@ -213,16 +213,18 @@ class MembersHtml
 	
 	public function title( $profile, $authorized, $option ) 
 	{
+		$html = MembersHtml::div( MembersHtml::hed( 2, '<span class="fn">'.stripslashes($profile->get('name')).'</span>' ), '', 'content-header').n;
+		$html .= '<div id="content-header-extra">'.n;
+		$html .= t.'<ul id="useroptions">'.n;
 		if ($authorized) {
-			$html = MembersHtml::div( MembersHtml::hed( 2, '<span class="fn">'.stripslashes($profile->get('name')).'</span>' ), '', 'content-header').n;
-			$html .= '<div id="content-header-extra">'.n;
-			$html .= t.'<ul id="useroptions">'.n;
-			$html .= t.t.'<li class="last"><a class="edit-member" href="'.JRoute::_('index.php?option='.$option.a.'task=edit'.a.'id='. $profile->get('uidNumber')) .'">'.JText::_('Edit this profile').'</a></li>'.n;
-			$html .= t.'</ul>'.n;
-			$html .= '</div><!-- / #content-header-extra -->'.n;
-		} else {
-			$html = MembersHtml::div( MembersHtml::hed( 2, '<span class="fn">'.stripslashes($profile->get('name')).'</span>' ), 'full', 'content-header').n;
+			$html .= t.t.'<li><a class="edit-member" href="'.JRoute::_('index.php?option='.$option.a.'task=edit'.a.'id='. $profile->get('uidNumber')) .'">'.JText::_('Edit profile').'</a></li>'.n;
 		}
+		$juser =& JFactory::getUser();
+		if (!$juser->get('guest') && ($profile->get('uidNumber') != $juser->get('id'))) {
+			$html .= t.t.'<li class="last"><a class="message" href="'.JRoute::_('index.php?option='.$option.a.'id='. $juser->get('id').'&active=messages&task=new&to='.$profile->get('uidNumber')) .'">'.JText::_('Send Message').'</a></li>'.n;
+		}
+		$html .= t.'</ul>'.n;
+		$html .= '</div><!-- / #content-header-extra -->'.n;
 		
 		return $html;
 	}
@@ -698,189 +700,18 @@ class MembersHtml
 
 	public function view( $profile, $authorized, $option, $cats, $sections, $tab ) 
 	{
-		$html  = MembersHtml::title( $profile, $authorized, $option );
-		$html .= MembersHtml::tabs( $option, $profile->get('uidNumber'), $cats, $tab );
+		$no_html = JRequest::getInt( 'no_html', 0 );
+		
+		$html  = '';
+		if (!$no_html) {
+			$html .= MembersHtml::title( $profile, $authorized, $option );
+			$html .= MembersHtml::tabs( $option, $profile->get('uidNumber'), $cats, $tab );
+		}
 		$html .= MembersHtml::sections( $sections, $cats, $tab, 'hide', 'main' );
 		
 		return MembersHtml::div( $html, 'vcard' );
 	}
-
-	//-----------
 	
-	public function changepassword($option, $profile, $change, $oldpass, $newpass, $newpass2, $error='') 
-	{
-		$juser =& JFactory::getUser();
-		
-		$html  = '<div id="content-header-extra">'.n;
-		$html .= t.'<ul id="useroptions">'.n;
-		$html .= t.t.'<li class="last"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$juser->get('id')).'">'.JText::_('My Account').'</a></li>'.n;
-		$html .= t.'</ul>'.n;
-		$html .= '</div><!-- / #content-header-extra -->'.n;
-		$html .= '<div class="main section">'.n;
-		$html .= '<form action="'. JRoute::_('index.php?option='.$option.a.'id='.$juser->get('id').a.'task=changepassword') .'" method="post" id="hubForm">'.n;
-		
-		$html .= t.'<div class="explaination">'.n;
-		$html .= t.t.'<p>'.JText::_('MEMBERS_CHANGEPASSWORD_EXPLANATION').'</p>'.n;
-		$html .= t.'</div>'.n;
-		
-		$html .= t.'<fieldset>'.n;
-		if ($error) {
-			//$html .= MembersHtml::error( $error );
-		}
-		$html .= t.t.'<label';
-		$html .= ($change && (!$oldpass || XUserHelper::encrypt_password($oldpass) != $profile->get('userPassword'))) ? ' class="fieldWithErrors"' : '';
-		$html .= '>'.JText::_('MEMBER_FIELD_CURRENT_PASS').':'.n;
-		$html .= t.t.'<input name="oldpass" id="oldpass" type="password" value="" /></label>'.n;
-		$html .= ($change && !$oldpass)
-			  ? t.t.MembersHtml::error(JText::_('MEMBERS_PASS_BLANK')).n 
-			  : '';
-		$html .= ($change && $oldpass && XUserHelper::encrypt_password($oldpass) != $profile->get('userPassword'))
-			  ? t.t.MembersHtml::error(JText::_('MEMBERS_PASS_INCORRECT')).n 
-			  : '';
-
-		$html .= t.t.'<div class="group twoup">'.n;
-		$html .= t.t.t.'<label';
-		$html .= ($change && (!$newpass || $newpass != $newpass2)) ? ' class="fieldWithErrors"' : '';
-		$html .= '>'.JText::_('MEMBER_FIELD_NEW_PASS').':'.n;
-		$html .= t.t.t.'<input name="newpass" id="newpass" type="password" value="" />';
-		$html .= ($change && !$newpass) 
-			  ? MembersHtml::error(JText::_('MEMBERS_PASS_BLANK'), 'span') 
-			  : '';
-		$html .= '</label>'.n;
-
-		$html .= t.t.t.'<label';
-		$html .= ($change && (!$newpass2 || $newpass != $newpass2)) ? ' class="fieldWithErrors"' : '';
-		$html .= '>'.JText::_('MEMBER_FIELD_PASS_CONFIRM').':'.n;
-		$html .= t.t.t.'<input name="newpass2" id="newpass2" type="password" value="" />';
-		$html .= ($change && !$newpass2) 
-			  ? MembersHtml::error(JText::_('MEMBERS_PASS_MUST_CONFIRM'), 'span') 
-			  : '';
-		$html .= ($change && $newpass && $newpass2 && ($newpass != $newpass2)) 
-			  ? MembersHtml::error(JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH'), 'span') 
-			  : '';
-		$html .= '</label>'.n;
-		$html .= t.t.'</div>'.n;
-		$html .= t.'</fieldset><div class="clear"></div>'.n;
-		$html .= t.'<p class="submit"><input name="change" type="submit" value="'.JText::_('CHANGEPASSWORD').'" /></p>'.n;
-		$html .= '</form>'.n;
-		$html .= '</div><!-- / .main.section -->'.n;
-		
-		return $html;
-	}
-	
-	//-----------
-
-	public function raiselimit($option, $title, $resource, $authorized, $profile) 
-	{
-		$xhub =& XFactory::getHub();
-		$hubShortName = $xhub->getCfg('hubShortName');
-
-		$username     = $profile->get('username');
-		$jobs_allowed = $profile->get('jobsAllowed');
-		$quota        = 'unknown';
-		$max_meetings = 'unknown';
-
-		if ($authorized == 'admin') {
-			$submit_button = 'Increase';
-		} else {
-			$submit_button = 'Request Increase';
-		}
-
-		?>
-
-		<?php if ($resource != 'select') { ?>
-
-		<div id="content-header" class="full">
-			<h2><?php echo $title .': '. ucfirst($resource); ?></h2>
-		</div>
-		<div class="main section">
-
-			<form action="<?php echo JRoute::_('index.php?option='.$option.a.'id='.$profile->get('uidNumber').a.'task=raiselimit'); ?>" method="post" name="hubForm" id="hubForm">
-				<div class="explaination">
-					<p class="info">
-						When you have time, please leave some <a href="<?php echo JRoute::_('index.php?option=com_feedback'); ?>">feedback</a>. We would like to know a little more about how you are using <?php echo $hubShortName; ?>  so that we can make improvements for everyone.
-					</p>
-				</div>
-				<fieldset>
-					<p>
-						Please provide a short reason why you would like this increase in resources. Your 
-						request for additional resources will then be e-mailed to the site administrators 
-						who will grant your request or provide a reason why we are unable to meet your 
-						request at this time.
-					</p>
-					<label>
-						Reason for Increase:
-						<textarea name="request" id="request" rows="6" cols="32"></textarea>
-					</label>
-				</fieldset>
-				<div class="clear"></div>
-
-				<p class="submit">
-					<input type="submit" name="raiselimit[<?php echo $resource; ?>]" value="Submit Request" />
-				</p>
-			</form>
-		</div>
-
-		<?php } else { ?>
-
-		<div id="content-header" class="full">
-			<h2><?php echo $title; ?></h2>
-		</div>
-		<div class="main section">
-			<form action="<?php echo JRoute::_('index.php?option='.$option.a.'id='.$profile->get('uidNumber').a.'task=raiselimit'); ?>" method="post" name="hubForm" id="hubForm">
-				<div class="explaination">
-					<p class="info">
-						When you have time, please leave some <a href="<?php echo JRoute::_('index.php?option=com_feedback'); ?>">feedback</a>. We would like to know a little more about how you are using <?php echo $hubShortName; ?>  so that we can make improvements for everyone.
-					</p>
-				</div>
-				<fieldset>
-					<h3><?php echo $hubShortName; ?> Resources</h3>
-
-					<table summary="Form for requesting more resources">
-						<tbody>
-							<?php  if ($authorized == 'admin') { ?>
-							<tr>
-								<th>User Login:</th>
-								<td colspan="2">
-									<a href="/whois?username=<?php echo $username; ?>"><?php echo htmlentities($username,ENT_COMPAT,'UTF-8');?></a>
-									<input name="login" id="login" type="hidden" value="<?php echo htmlentities($username,ENT_COMPAT,'UTF-8');?>" />
-								</td>
-							</tr>
-							<?php } ?>
-							<tr>
-								<th>Maximum Concurrent Sessions:</th>
-								<td><?php echo $jobs_allowed; ?></td>
-								<td><span class="submit"><input type="submit" name="raiselimit[sessions]" id="raiselimitsessions" value="<?php echo $submit_button; ?>" /></span></td>
-							</tr>
-							<tr>
-								<th>Online Disk Storage Limit:</th>
-								<td><?php echo $quota; ?></td>
-								<td><span class="submit"><input type="submit" name="raiselimit[storage]" id="raiselimitstorage" value="<?php echo $submit_button; ?>" /></span></td>
-							</tr>
-							<tr>
-								<th>Maximum Online Meetings:</th>
-								<td><?php echo $max_meetings; ?></td>
-								<td><span class="submit"><input type="submit" name="raiselimit[meetings]" id="raiselimitmeetings" value="<?php echo $submit_button; ?>" /></span></td>
-							</tr>
-						</tbody>
-					</table>
-
-					<div class="help">
-						<h4>How do I get more resources?</h4>
-						<p>
-							Click "Increase" for the resource you wish to request more. Depending on the resource and your 
-							current limits, you will either be automatically granted more resources, asked to fill out some 
-							feedback on <?php echo $hubShortName; ?>, asked to review a resource for others, or asked to email support.
-						</p>
-					</div>
-				</fieldset>
-				<div class="clear"></div>
-			</form>
-		</div>
-
-		<?php }
-	}
-
 	//-----------
 	
 	public function edit( $authorized, $title, $profile, $option, $tags, $registration, $xregistration ) 
