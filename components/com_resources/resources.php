@@ -43,7 +43,6 @@ require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resou
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.author.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.license.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'resources.tags.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'resources.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'resources.extended.php' );
