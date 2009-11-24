@@ -39,7 +39,6 @@ include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contr
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.helper.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.toolgroup.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.author.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.ldap.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'contribtool.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
@@ -56,8 +55,6 @@ require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.D
 require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.tags.php' );
 
-
-ximport('account.acct_tools');
 ximport('textfilter');
 ximport('fileuploadutils');
 ximport('xmodule');

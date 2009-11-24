@@ -2,6 +2,7 @@
 /**
  * @package		HUBzero CMS
  * @author		Alissa Nedossekina <alisa@purdue.edu>
+ * @author		Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -36,10 +37,56 @@ class ContribtoolToolbar
 
 	public function _DEFAULT($enabled) 
 	{
-		$text = (!$enabled) ? ' <small><small style="color:red;">(component is disabled)</small></small>' : ' <small><small style="color:green;">(component is enabled)</small></small>';
-		JToolBarHelper::title( '<a href="index.php?option=com_contribtool">'.JText::_( 'Contribtool Manager' ).'</a>'.$text, 'addedit.png' );
+		$text = (!$enabled) ? ' <small><small style="color:red;">(component is disabled)</small></small>' : '';
+		JToolBarHelper::title( '<a href="index.php?option=com_contribtool">'.JText::_( 'Tool Manager' ).'</a>'.$text, 'addedit.png' );
 		JToolBarHelper::preferences('com_contribtool', '550');
 		JToolBarHelper::spacer();
+	}
+
+	public function _VIEWTOOLS($enabled) 
+	{
+		$text = (!$enabled) ? ' <small><small style="color:red;">(component is disabled)</small></small>' : '';
+		JToolBarHelper::title( '<a href="index.php?option=com_contribtool">'.JText::_( 'Tool Manager' ).'</a>'.$text, 'addedit.png' );
+		JToolBarHelper::preferences('com_contribtool', '550');
+		JToolBarHelper::spacer();
+	}
+
+	public function _VIEWTOOLVERSIONS($edit,$toolid = 0)
+	{
+          $text = ( $edit ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
+
+          JToolBarHelper::title( JText::_( 'Tool Versions' ), 'user.png' );
+
+		$bar =& JToolBar::getInstance('toolbar');
+		$bar->appendButton('Link','back','Tool Manager','index.php?option=com_contribtool');
+		$bar->appendButton('Link','edit','Edit Tool','index.php?option=com_contribtool&task=edit&toolid=' . $toolid);
+		JToolBarHelper::divider();
+          JToolBarHelper::editList();
+          JToolBarHelper::publish();
+          JToolBarHelper::unpublish();
+	}
+
+	public function _EDITTOOL($edit,$toolid=0)
+	{
+          $text = ( $edit ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
+
+          JToolBarHelper::title( JText::_( 'Tool' ).': <small><small>[ '. $text.' ]</small></small>', 'user.png' );
+		$bar =& JToolBar::getInstance('toolbar');
+		$bar->appendButton('Link','menus','Tool Versions','index.php?option=com_contribtool&task=view&toolid=' . $toolid);
+		JToolBarHelper::divider();
+          JToolBarHelper::apply();
+          JToolBarHelper::save();
+          JToolBarHelper::cancel();
+	}
+
+	public function _EDITTOOLVERSION($edit)
+	{
+          $text = ( $edit ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
+
+          JToolBarHelper::title( JText::_( 'Tool Version' ).': <small><small>[ '. $text.' ]</small></small>', 'user.png' );
+          JToolBarHelper::apply();
+          JToolBarHelper::save();
+          JToolBarHelper::cancel();
 	}
 }
 ?>

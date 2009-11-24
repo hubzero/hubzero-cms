@@ -68,36 +68,6 @@ class ContribtoolHtml
 	
 	//-----------
 	
-	public function summary($error, $option, $config, $update=0, $html = '')
-	{
-		if($error) {
-		$html .= ContribtoolHtml::error($error);
-		}
-		else {
-		$html .= '<p>This component is fully setup. There is currently no back-end functionality</p>';
-		}
-		$html .= '<p><a href="index.php?option='.$option.'&amp;task=setup">Re-run setup</a> | <a href="index.php?option='.$option.'&amp;task=setup&amp;update=1">Reset component parameters</a></p>';
-		echo $html;
-	}
-	
-	//-----------
-	
-	public function setup($option, $setup, $html = '')
-	{
-		$html = '<p>This component requires ';
-		if($setup==1) {
-			$html .= 'full database setup';
-		}
-		else {
-			$html .= 'partial database setup';
-		}
-		$html .= '</p>';
-		$html .= '<p><a href="index.php?option='.$option.'&amp;task=setup">Run setup</a> | <a href="index.php?option='.$option.'&amp;task=setup&amp;update=1">Reset component parameters</a></p>';		
-		echo $html;
-	}
-
-	//-----------
-	
 	public function shortenText($text, $chars=300, $p=1) 
 	{
 		$text = strip_tags($text);
@@ -118,5 +88,339 @@ class ContribtoolHtml
 
 		return $text;
 	}
+
+	public function browseTools( $rows, $pageNav, $option, $filters )
+	{
+          ?>
+          <script type="text/javascript">
+          function submitbutton(pressbutton) 
+          {
+               var form = document.getElementById('adminForm');
+               if (pressbutton == 'cancel') {
+                    submitform( pressbutton );
+                    return;
+               }
+               // do field validation
+               submitform( pressbutton );
+          }
+          </script>
+
+          <form action="index.php" method="post" name="adminForm" id="adminForm">
+               <fieldset id="filter">
+                         <?php echo JText::_('SEARCH'); ?>
+                         <select name="search_field">
+                              <option value="all"<?php if ($filters['search_field'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_SEARCH_ALL'); ?></option>
+                              <option value="id"<?php if ($filters['search_field'] == 'id') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_ID'); ?></option>
+                              <option value="toolname"<?php if ($filters['search_field'] == 'toolname') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_NAME'); ?></option>
+                              <option value="title"<?php if ($filters['search_field'] == 'title') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_TITLE'); ?></option>
+                         </select>
+                         for
+                         <input type="text" name="search" value="<?php echo $filters['search']; ?>" />
+
+
+                    <label>
+                         <?php echo JText::_('SORT_BY'); ?>:
+                         <select name="sortby">
+                              <option value="state_changed DESC"<?php if ($filters['sortby'] == 'state_changed DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_STATECHANGED_DESC'); ?></option>
+                              <option value="state_changed ASC"<?php if ($filters['sortby'] == 'state_changed ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_STATECHANGED_ASC'); ?></option>
+                              <option value="registered DESC"<?php if ($filters['sortby'] == 'registered DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_REGISTERED_DESC'); ?></option>
+                              <option value="registered ASC"<?php if ($filters['sortby'] == 'registered ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_REGISTERED_ASC'); ?></option>
+                              <option value="id DESC"<?php if ($filters['sortby'] == 'id DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_ID_DESC'); ?></option>
+                              <option value="id ASC"<?php if ($filters['sortby'] == 'id ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_ID_ASC'); ?></option>
+                              <option value="toolname ASC"<?php if ($filters['sortby'] == 'toolname ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_NAME_ASC'); ?></option>
+                              <option value="toolname DESC"<?php if ($filters['sortby'] == 'toolname DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_NAME_DESC'); ?></option>
+                              <option value="title ASC"<?php if ($filters['sortby'] == 'title ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_TITLE_ASC'); ?></option>
+                              <option value="title DESC"<?php if ($filters['sortby'] == 'title DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_TITLE_DESC'); ?></option>
+                              <option value="versions ASC"<?php if ($filters['sortby'] == 'versions DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_VERSIONS_ASC'); ?></option>
+                              <option value="versions DESC"<?php if ($filters['sortby'] == 'versions ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_VERSIONS_DESC'); ?></option>
+                         </select>
+                    </label>
+
+                    <input type="submit" value="<?php echo JText::_('GO'); ?>" />
+			</fieldset>
+
+				<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+                         <thead>
+                              <tr>
+                                   <th width="2%"><?php echo JText::_('#'); ?></th>
+                                   <th width="3%"></th>
+                                   <th><?php echo JText::_('TOOL_NAME'); ?></th>
+                                   <th><?php echo JText::_('TOOL_TITLE'); ?></th>
+                                   <th><?php echo JText::_('TOOL_STATE'); ?></th>
+                                   <th><?php echo JText::_('TOOL_REGISTERED'); ?></th>
+                                   <th><?php echo JText::_('TOOL_STATECHANGED'); ?></th>
+                                   <th><?php echo JText::_('TOOL_VERSIONS'); ?></th>
+                                   <th><?php echo JText::_('TOOL_ID'); ?></th>
+                              </tr>
+                         </thead>
+                         <tfoot>
+                              <tr>
+                                   <td colspan="7">
+                                        <?php echo $pageNav->getListFooter(); ?>
+                                   </td>
+                              </tr>
+                         </tfoot>
+                         <tbody>
+<?php
+		$k = 0;
+		for($i=0, $n=count($rows); $i < $n; $i++)
+		{
+			$row = &$rows[$i];
+?>
+               <tr class="<?php echo "row$k"; ?>">
+				<td><?php echo $i+1+$pageNav->limitstart;?></td>
+               	<td><input type="radio" name="id" id="cb<?php echo $i;?>" value="<?php echo $row['id'] ?>" onclick="isChecked(this.checked);" /></td>
+                    <td><a href="index.php?option=<?php echo $option ?>&amp;task=edit&amp;toolid=<? echo $row['id']; ?>"><?php echo stripslashes($row['toolname']); ?></a></td>
+				<td><?php echo $row['title']; ?></td>
+				<td><?php echo $row['state']; ?></td>
+				<td><?php echo $row['registered']; ?></td>
+				<td><?php echo $row['state_changed']; ?></td>
+                    <td><a href="index.php?option=<?php echo $option ?>&amp;task=view&amp;toolid=<? echo $row['id'];?>"><img src="/includes/js/ThemeOffice/mainmenu.png" border="0" /></a><?php echo " " . $row['versions']; ?></td>
+                    <td><?php echo $row['id']; ?></td>
+                </tr>
+<?php
+			$k = 1 - $k;
+		}
+?>
+					</tbody>
+				</table>
+                    <input type="hidden" name="option" value="<?php echo $option ?>" />
+                    <input type="hidden" name="task" value="view" />
+                    <input type="hidden" name="boxchecked" value="0" />
+          </form>
+<?php
+	}
+
+	public function editTool($data,$option)
+	{
+?>
+ 		<script type="text/javascript">
+          function submitbutton(pressbutton) 
+          {
+               var form = document.adminForm;
+               
+               if (pressbutton == 'cancel') {
+                    submitform( pressbutton );
+                    return;
+               }
+               
+               submitform( pressbutton );
+          }
+          </script>
+
+          <form action="index.php" method="post" name="adminForm">
+               <div class="col width-60">
+                    <fieldset class="adminform">
+                         <legend><?php echo JText::_('TOOL_DETAILS'); ?></legend>
+
+                         <input type="hidden" name="toolid" value="<?php echo $data['toolid'] ?>" />
+                         <input type="hidden" name="type" value="tool" />
+                         <input type="hidden" name="option" value="<?php echo $option; ?>" />
+                         <input type="hidden" name="task" value="save" />
+
+					<table class="admintable">
+					 <tbody>
+					  <tr>
+					    <td class="key"><label for="toolid"><?php echo JText::_('TOOL_ID'); ?>:</label></td>
+					    <td><?php echo $data['toolid'];?></td>
+					  </tr>
+					  <tr>
+					    <td class="key"><label for="toolname"><?php echo JText::_('TOOL_NAME'); ?>:</label></td>
+					    <td><?php echo $data['toolname'];?></td>
+					  </tr>
+					  <tr>
+					    <td class="key"><label for="tooltitle"><?php echo JText::_('TOOL_TITLE'); ?>:</label></td>
+					    <td><input type="text" name="tooltitle" id="tooltitle" value="<?php echo $data['title'];?>" size="50" /> </td>
+					  </tr>
+					 </tbody>
+					</table>
+				</fieldset>
+			</div>
+		</form>
+<?php
+	}
+
+	public function editToolVersion($data,$option)
+	{
+?>
+ 		<script type="text/javascript">
+          function submitbutton(pressbutton) 
+          {
+               var form = document.adminForm;
+               
+               if (pressbutton == 'cancel') {
+                    submitform( pressbutton );
+                    return;
+               }
+               
+               submitform( pressbutton );
+          }
+          </script>
+
+          <form action="index.php" method="post" name="adminForm">
+               <div class="col width-60">
+                    <fieldset class="adminform">
+                         <legend><?php echo JText::_('TOOL_VERSION_DETAILS'); ?></legend>
+
+                         <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
+                         <input type="hidden" name="toolid" value="<?php echo $data['toolid'] ?>" />
+                         <input type="hidden" name="type" value="toolversion" />
+                         <input type="hidden" name="option" value="<?php echo $option; ?>" />
+                         <input type="hidden" name="task" value="save" />
+
+					<table class="admintable">
+					 <tbody>
+					  <tr>
+					    <td class="key"><label for="command"><?php echo JText::_('TOOL_COMMAND'); ?>:</label></td>
+					    <td><input type="text" name="command" id="command" value="<?php echo $data['vnc_command'];?>" size="50" /> </td>
+					  </tr>
+					  <tr>
+					    <td class="key"><label for="timeout"><?php echo JText::_('TOOL_TIMEOUT'); ?>:</label></td>
+					    <td><input type="text" name="timeout" id="timeout" value="<?php echo $data['vnc_timeout'];?>" size="50" /> </td>
+					  </tr>
+					  <tr>
+					    <td class="key"><label for="hostreq"><?php echo JText::_('TOOL_HOSTREQ'); ?>:</label></td>
+					    <td><input type="text" name="hostreq" id="hostreq" value="<?php echo implode(',',$data['hostreq']);?>" size="50" /> </td>
+					  </tr>
+					 </tbody>
+				    	</table>
+				</fieldset>
+			</div>
+		</form>
+<?php
+	}
+
+	public function browseToolVersions( $data, $pageNav, $option, $filters )
+	{
+          ?>
+          <script type="text/javascript">
+          function submitbutton(pressbutton) 
+          {
+               var form = document.getElementById('adminForm');
+               if (pressbutton == 'cancel') {
+                    submitform( pressbutton );
+                    return;
+               }
+               // do field validation
+               submitform( pressbutton );
+          }
+          </script>
+
+    		<form action="index.php" method="post" name="adminForm2">
+
+		<table cellspacing="0" cellpadding="0" border="0" width="100%">
+		<tr>
+			<td valign="top">
+				<table class="adminform">
+				<tr>
+					<td width="5%">
+						<label for="name">Tool ID</label>
+					</td>
+					<td>
+						<?php echo $data['id'];?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="name">Name</label>
+					</td>
+					<td>
+						<?php echo $data['toolname'];?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="title">Title</label>
+					</td>
+					<td>
+						<?php echo $data['title'];?>
+					</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+		</table>
+
+		</form>
+
+          <form action="index.php" method="post" name="adminForm" id="adminForm">
+               <fieldset id="filter">
+                         <?php echo JText::_('SEARCH'); ?>
+                         <select name="search_field">
+                              <option value="id"<?php if ($filters['search_field'] == 'id') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOLID'); ?></option>
+                              <option value="toolname"<?php if ($filters['search_field'] == 'toolname') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOLNAME'); ?></option>
+                              <option value="title"<?php if ($filters['search_field'] == 'title') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOLTITLE'); ?></option>
+                         </select>
+                         for
+                         <input type="text" name="search" value="<?php echo $filters['search']; ?>" />
+
+
+                    <label>
+                         <?php echo JText::_('SORT_BY'); ?>:
+                         <select name="sortby">
+                              <option value="id DESC"<?php if ($filters['sortby'] == 'id DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_ID_DESC'); ?></option>
+                              <option value="id ASC"<?php if ($filters['sortby'] == 'id ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_ID_ASC'); ?></option>
+                              <option value="toolname_ASC"<?php if ($filters['sortby'] == 'toolname ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_NAME_ASC'); ?></option>
+                              <option value="toolname_DESC"<?php if ($filters['sortby'] == 'toolname DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_NAME_DESC'); ?></option>
+                              <option value="title ASC"<?php if ($filters['sortby'] == 'title ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_TITLE_ASC'); ?></option>
+                              <option value="title DESC"<?php if ($filters['sortby'] == 'title DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_TITLE_DESC'); ?></option>
+                              <option value="versions ASC"<?php if ($filters['sortby'] == 'versions DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_VERSIONS_ASC'); ?></option>
+                              <option value="versions DESC"<?php if ($filters['sortby'] == 'versions ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('TOOL_VERSIONS_DESC'); ?></option>
+                         </select>
+                    </label>
+
+                    <input type="submit" value="<?php echo JText::_('GO'); ?>" />
+			</fieldset>
+
+				<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+                         <thead>
+                              <tr>
+                                   <th width="2%"><?php echo JText::_('#'); ?></th>
+                                   <th width="3%"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $data['version'] );?>);" /></th>
+                                   <th><?php echo JText::_('TOOLINSTANCE'); ?></th>
+                                   <th><?php echo JText::_('TOOLVERSION'); ?></th>
+                                   <th><?php echo JText::_('TOOLREVISION'); ?></th>
+                                   <th><?php echo JText::_('TOOLSTATE'); ?></th>
+                                   <th><?php echo JText::_('TOOLID'); ?></th>
+                              </tr>
+                         </thead>
+                         <tfoot>
+                              <tr>
+                                   <td colspan="7">
+                                        <?php echo $pageNav->getListFooter(); ?>
+                                   </td>
+                              </tr>
+                         </tfoot>
+                         <tbody>
+<?php
+		$k = 0;
+		$rows = $data['version'];
+		for($i=0, $n=count($rows); $i < $n; $i++)
+		{
+			$row = &$rows[$i];
+?>
+               <tr class="<?php echo "row$k"; ?>">
+				<td><?php echo $i+1;?></td>
+               	<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row['id'] ?>" onclick="isChecked(this.checked);" /></td>
+                    <td><a href="index.php?option=<?php echo $option ?>&amp;task=edit&amp;toolid=<? echo $data['id'];?>&amp;id=<? echo $row['id']; ?>"><?php echo stripslashes($row['instance']); ?></a></td>
+                    <td><?php echo $row['version']; ?></td>
+                    <td><?php echo $row['revision']; ?></td>
+                    <td><?php echo $row['state']; ?></td>
+                    <td><?php echo $row['id']; ?></td>
+                </tr>
+<?php
+			$k = 1 - $k;
+		}
+?>
+					</tbody>
+				</table>
+                    <input type="hidden" name="option" value="<?php echo $option ?>" />
+                    <input type="hidden" name="toolid" value="<?php echo $data['id']; ?>" />
+                    <input type="hidden" name="task" value="view" />
+                    <input type="hidden" name="boxchecked" value="0" />
+          </form>
+<?php
+	}
 }
 ?>
+

@@ -94,6 +94,8 @@ class ToolAuthor extends  JTable
 	
 	public function getToolAuthors($version='', $rid=0, $toolname='', $revision='', $authors=array())
 	{
+		$juser = &JFactory::getUser();
+
 		if($version=='dev' && $rid) {
 			$query = "SELECT authorid as uidNumber FROM #__author_assoc WHERE subid= ".$rid." AND subtable='resources' ORDER BY ordering";
 			$this->_db->setQuery( $query );
@@ -111,12 +113,21 @@ class ToolAuthor extends  JTable
 					$query .= "JOIN #__tool_version as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname= '".$toolname."' AND v.state=1 ORDER BY v.revision DESC";
 				}
 			}
-			else if(intval($version)) {
+			else if(is_numeric($version)) {
 			$query .= "WHERE a.version_id= '".$version."' ORDER BY a.ordering";
 			}
 			else if($toolname && $revision) {
 			$query .= "WHERE a.toolname = '".$toolname."' AND a.revision = '".$revision."' ORDER BY a.ordering";
 			}
+			else if (is_object($version)) {
+			$query .= "WHERE a.version_id= '". $version->id ."' ORDER BY a.ordering";
+			}
+			else if (is_object($version[0])) {
+			$query .= "WHERE a.version_id= '". $version[0]->id ."' ORDER BY a.ordering";
+			}
+			else
+			    return null;
+
 			$this->_db->setQuery( $query );
 			$authors = $this->_db->loadObjectList();
 		}	

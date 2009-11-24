@@ -450,8 +450,8 @@ class ContribtoolHtml
 			$par .= '		<a href="'.$developer_url.$project_path.$status['toolname'].'">'.$developer_url.$project_path.$status['toolname'].'</a></p>'.n;
 			$par .= '		<p>'.JText::_('WHATSNEXT_FOLLOW_STEPS').':</p>'.n;
 			$par .= '		<ul>'.n;
-			$par .= '			<li><a href="'.$developer_url.'/projects/rappture/wiki/FAQ_UpDownloadSrc">'.JText::_('LEARN_MORE').'</a> '.JText::_('WHATSNEXT_ABOUT_UPLOADING').'</li>'.n;
-			$par .= '			<li>'.JText::_('LEARN_MORE').' '.JText::_('ABOUT').' '.JText::_('THE').' <a href="'.$developer_url.'/projects/rappture/wiki/whatIsRappture">Rappture toolkit</a>.</li>'.n;
+			$par .= '			<li><a href="http://rappture.org/wiki/FAQ_UpDownloadSrc">'.JText::_('LEARN_MORE').'</a> '.JText::_('WHATSNEXT_ABOUT_UPLOADING').'</li>'.n;
+			$par .= '			<li>'.JText::_('LEARN_MORE').' '.strtolower(JText::_('ABOUT')).' '.JText::_('THE').' <a href="http://rappture.org">Rappture toolkit</a>.</li>'.n;
 			$par .= '			<li>'.JText::_('WHATSNEXT_WHEN_READY').', <a href="'.$developer_url.$project_path.$status['toolname'].'/wiki/GettingStarted">'.JText::_('WHATSNEXT_FOLLOW_THESE_INSTRUCTIONS').'</a> '.JText::_('WHATSNEXT_TO_ACCESS_CODE').'.</li>'.n;
 			$par .= '		</ul>'.n;
 			$par .= '		<h2>'.JText::_('WHATSNEXT_WE_ARE_WAITING').'</h2>'.n;
@@ -880,7 +880,22 @@ class ContribtoolHtml
 	//-----------------------------------------------------
 
 	public function writeFinalizeVersion($status, $admin, $error, $option, $title) 
-	{	
+	{
+		/*
+			$status['toolid']
+			$status['version']
+			$status['toolname']
+			$status['membergroups']
+			$status['license']
+			$status['description']
+			$status['exec']
+			$status['code']
+			$status['wiki']
+			$status['vncGeometry']
+			$status['developers']
+			$status['authors']
+		*/
+
 		$editpath = JRoute::_('index.php?option='.$option.a.'task=edit'.a.'toolid='.$status['toolid']);
 		// get tool access text
 		$toolaccess = ContribtoolHtml::getToolAccess($status['exec'], $status['membergroups']);
@@ -908,7 +923,7 @@ class ContribtoolHtml
         <h4><?php echo JText::_('CONTRIBTOOL_FINAL_REVIEW'); ?>:</h4>         
        <form action="index.php" method="post" id="versionForm" name="versionForm">
                        <fieldset  class="versionfield">
-                       <div class="twocolumn left">
+                       <div class="two columns first">
                             <input type="hidden" name="option" value="<?php echo $option ?>" />   
                             <input type="hidden" name="task" value="finalizeversion" />
                             <input type="hidden" name="newstate" value="<?php echo ContribtoolHtml::getStatusNum('Approved') ?>" />
@@ -927,7 +942,7 @@ class ContribtoolHtml
                                     <p><a href="/tools/<?php echo $status['toolname']; ?>"><?php echo JText::_('PREVIEW_RES_PAGE'); ?></a></p>
                             </div>
                         </div>
-                        <div class="twocolumn right">
+                        <div class="two columns second">
                           <h4><?php echo JText::_('TOOL_LICENSE'); ?> <span class="actionlink">[
                           <a href="index.php?option=<?php echo $option ?>&amp;task=license&amp;toolid=<?php echo $status['toolid'] ?>&amp;action=confirm"><?php echo JText::_('EDIT'); ?></a>]</span></h4>
                           <pre style="white-space: pre-wrap;_white-space: pre;word-wrap: break-word;white-space: -moz-pre-wrap;height:300px;overflow:scroll;"><?php echo stripslashes($status['license']); ?></pre>           
@@ -978,7 +993,7 @@ class ContribtoolHtml
 		}
 		$license = ($status['license'] && !$open) ? $status['license'] : '' ;
 		?>
-		<div class="twocolumn left">
+		<div class="two columns first">
 	   <?php  if($error) echo '<p class="error">'.$error.'</p>'; ?>
 		<h4><?php echo $instruction ?></h4>
 		<form action="index.php" method="post" id="versionForm" name="versionForm">
@@ -1011,7 +1026,7 @@ class ContribtoolHtml
 					   </fieldset>                              				    
 		</form>    	
 		</div>
-			<div class="twocolumn right">
+			<div class="two columns second">
             	<h3><?php echo JText::_('CONTRIBTOOL_LICENSE_WHAT_OPTIONS'); ?></h3>
 				<p class="opensource"><?php echo '<strong>'.ucfirst(JText::_('OPEN_SOURCE')).'</strong><br />'.JText::_('CONTRIBTOOL_LICENSE_IF_YOU_CHOOSE').' <a href="http://www.opensource.org/" rel="external" title="Open Source Initiative">'.strtolower(JText::_('OPEN_SOURCE')).'</a>, '.JText::_('CONTRIBTOOL_LICENSE_OPEN_TXT'); ?></p>
 				<p class="error"><?php echo JText::_('CONTRIBTOOL_LICENSE_ATTENTION'); ?> </p>	
@@ -1023,8 +1038,31 @@ class ContribtoolHtml
 	
 	//------------
 
-	public function writeToolVersions($tools, $juser, $status, $admin, $error, $option, $action, $title) 
+	public function writeToolVersions($tools, $status, $admin, $error, $option, $action, $title) 
 	{
+		/*
+			$status['toolid']
+			$status['published']
+			$status['version']
+			$status['state']
+			$status['toolname']
+			$status['membergroups']
+			$status['resourceid']
+			$status['currentversion']
+			$tools[]->codeaccess
+			$tools[]->toolaccess
+			$tools[]->wikiaccess
+			$tools[]->doi
+			$tools[]->state
+			$tools[]->version
+			$tools[]->released
+			$tools[]->revision
+			$tools[]->title
+			$tools[]->description
+			$tools[]->authors
+		*/
+
+		$juser = &JFactory::getUser();
 	?>
     <div id="content-header">
 			<h2><?php echo $title; ?></h2>
@@ -1054,7 +1092,7 @@ class ContribtoolHtml
 		
 		
 	?> 
-		<div class="twocolumn left">	
+		<div class="two columns first">	
 		<?php 
 		if ($error) { echo ContribtoolHtml::error( $error ); }  
 		if($action != 'dev' && $status['state']!=ContribtoolHtml::getStatusNum('Published')) {
@@ -1146,7 +1184,7 @@ class ContribtoolHtml
 		}
 		?>
 		</div>
-		<div class="twocolumn right">
+		<div class="two columns second">
 			<h3><?php echo JText::_('CONTRIBTOOL_VERSION_WHY_NEED_NUMBER'); ?></h3>
 			<p><?php echo JText::_('CONTRIBTOOL_VERSION_WHY_NEED_NUMBER_ANSWER'); ?></p>
 			<h3><?php echo JText::_('CONTRIBTOOL_VERSION_HOW_DECIDE'); ?></h3>
@@ -1230,7 +1268,7 @@ class ContribtoolHtml
         <?php if(ContribtoolHtml::getNumofTools($status)) { echo '<p>'.ContribtoolHtml::getNumofTools($status).'.</p>'; }?>
        </div>
 
-            <div class="twocolumn left">
+            <div class="two columns first">
         	<div class="toolinfo<?php echo $statusClass; ?>"> 
      		<table id="toolstatus">
 					<tbody>
@@ -1335,13 +1373,7 @@ class ContribtoolHtml
                                     </fieldset>               		
                                 </form>
                             </div>
-                            <?php if($status['published']) { ?>
-                            <ul class="adminactions" style="padding-top:1em;">
-                             	<li class="item_w"><a href="<?php echo JRoute::_('index.php?option=com_wishlist'.a.'task=wishlist'.a.'category=resource'.a.'rid='.$status['resourceid']) ?>" title="<?php echo JText::_('View the Wish List for this tool');?>">Wishes (<?php echo $status['wishes']; ?>) </a></li>
-                                <li class="item_q"><a href="<?php echo JRoute::_('index.php?option=com_answers'.a.'task=search').'?tag=tool'.$status['toolname'] ?>" title="<?php echo JText::_('View questions on this tool');?>">Questions (<?php echo $status['questions']; ?>)</a></li>
-                                 <li class="item_s"><a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets').'?find=group:'.$status['devgroup'] ?>" title="<?php echo JText::_('View Support Tickets for this tool');?>">Support Tickets</a></li>
-                            </ul>
-                            	<?php } ?>		
+                           
                             </th>
 						</tr>                     
                             <?php if ($admin == 2) { ?>
@@ -1426,7 +1458,7 @@ class ContribtoolHtml
                 
             </div>
 		</div><!-- / .twocolumn left -->
-        <div class="twocolumn right">
+        <div class="two columns second">
 			<div id="whatsnext">
                 <h2 class="nextaction"><?php echo JText::_('WHAT_NEXT');?></h2>
                 <form action="index.php" method="post" id="statusForm">
