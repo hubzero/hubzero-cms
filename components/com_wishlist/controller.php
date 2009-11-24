@@ -2073,7 +2073,14 @@ class WishlistController extends JObject
 		
 		$wishlist = $objWishlist->get_wishlist($this->listid);
 		$wishlist->items = $objWish->get_wishes($this->listid, $filters, $this->_admin, $juser);
-	
+
+		$weight_e = 4;
+		$weight_i = 5;
+		$weight_f = 0.5;
+		$f_threshold = 5;
+		$co = 0.5;
+		$co_adv = 0.8;
+		$co_reg = 0.2;	
 		
 		
 		// do we give more weight to votes coming from advisory committee?
@@ -2283,7 +2290,8 @@ class WishlistController extends JObject
 				$attach->webpath = $xhub->getCfg('hubLongURL').$webpath;
 				$attach->uppath  = JPATH_ROOT.$webpath;
 				$attach->output  = 'email';
-				
+				$subject = JText::_(strtoupper($this->_name)).', '.JText::_('Comment posted on your wish').' #'.$wishid.' '.JText::_('by').' '.$name;
+
 				// email components	
 				$from = array();
 				$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
@@ -2360,6 +2368,7 @@ class WishlistController extends JObject
 							$this->setError( JText::_('Failed to message previous commentor.') );
 							echo WishlistHtml::alert( $this->_error );
 						}
+
 					}
 					
 				}
