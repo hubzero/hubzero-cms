@@ -25,6 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-echo $modnotices->display(); 
-
-?>
+if ($modnotices->publish) { ?>
+<div id="<?php echo $modnotices->moduleid; ?>" class="<?php echo $modnotices->alertlevel; ?>">
+	<p><?php echo stripslashes($modnotices->message); ?></p>
+</div>
+<?php } ?>

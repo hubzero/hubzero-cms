@@ -33,6 +33,13 @@ class modTopTags
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -58,41 +65,21 @@ class modTopTags
 		// Get some initial parameters
 		$params =& $this->params;
 		$numtags = $params->get( 'numtags', 25 );
-		$message = $params->get( 'message' );
-		$sortby  = $params->get( 'sortby' );
-		$morelnk = $params->get( 'morelnk' );
+		$this->message = $params->get( 'message' );
+		$this->sortby  = $params->get( 'sortby' );
+		$this->morelnk = $params->get( 'morelnk' );
 		
 		$obj = new TagsTag( $database );
 		
-		$tags = $obj->getTopTags( $numtags );
-
-		$tl = array();
-		if (count($tags) > 0) {
-			$html  = "\t\t\t".'<ol class="tags">'."\n";
-			foreach ($tags as $tag)
-			{
-				$tl[$tag->tag] = "\t\t\t".' <li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.$tag->raw_tag.'</a></li>'."\n";
-			}
-			if ($sortby == 'alphabeta') {
-				ksort($tl);
-			}
-			$html .= implode('',$tl);
-			$html .= "\t\t\t".'</ol>'."\n";
-			if ($morelnk) {
-				$html .= "\t\t\t".'<p class="more"><a href="'.JRoute::_('index.php?option=com_tags').'">'.JText::_('More &rsaquo;').'</a></p>'."\n";
-			}
-		} else {
-			$html = '<p>'.$message.'</p>';
-		}
-	
-		return $html;
+		$this->tags = $obj->getTopTags( $numtags );
 	}
 }
 
 //-------------------------------------------------------------
 
-$modtoptags = new modTopTags();
-$modtoptags->params = $params;
+$modtoptags = new modTopTags( $params );
+$modtoptags->display();
 
 require( JModuleHelper::getLayoutPath('mod_toptags') );
+
 ?>

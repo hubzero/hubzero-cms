@@ -38,6 +38,13 @@ class modMyMessages
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -60,68 +67,37 @@ class modMyMessages
 		$database =& JFactory::getDBO();
 		
 		$params =& $this->params;
-		$moduleclass = $params->get( 'moduleclass' );
+		$this->moduleclass = $params->get( 'moduleclass' );
 		$limit = intval( $params->get( 'limit' ) );
 		$limit = ($limit) ? $limit : 10;
 
+		$this->error = false;
+		
 		// Check for the existence of required tables that should be
 		// installed with the com_support component
 		$database->setQuery("SHOW TABLES");
 		$tables = $database->loadResultArray();
 		
 		if ($tables && array_search($database->_table_prefix.'xmessage', $tables)===false) {
-			// Support tickets table not found!
-			echo 'Required database table not found.';
-			return false;
-	    }
-
-		// Find the user's most recent support tickets
-		ximport('xmessage');
-		$recipient = new XMessageRecipient( $database );
-		$rows = $recipient->getUnreadMessages( $juser->get('id'), $limit );
-		
-		// Push the module CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_mymessages');
-		
-		// Build the HTML
-		$html  = '<div';
-		$html .= ($moduleclass) ? ' class="'.$moduleclass.'">'."\n" : '>'."\n";
-		//$html .= '<h4>New Messages</h4>'."\n";
-		//$html .= $this->_messagelist( $rows );
-		if (count($rows) <= 0) {
-			$html .= "\t".'<p>'.JText::_('NO_MESSAGES').'</p>'."\n";
+			// MEssages table not found!
+			$this->error = true;
 		} else {
-			$html .= "\t".'<ul class="expandedlist">'."\n";
-			foreach ($rows as $row)
-			{
-				if ($row->actionid) {
-					$cls = 'actionitem';
-				} else {
-					$cls = 'box';
-				}
-				$html .= "\t\t".'<li class="'.$cls.'">'."\n";
-				$html .= "\t\t\t".'<a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages'.a.'msg='.$row->id).'">'.stripslashes($row->subject).'</a>'."\n";
-				$html .= "\t\t\t".'<span><span>'.JHTML::_('date', $row->created, '%d %b, %Y %I:%M %p').'</span></span>'."\n";
-				$html .= "\t\t".'</li>';
-			}
-			$html .= "\t".'</ul>'."\n";
+			// Find the user's most recent support tickets
+			ximport('xmessage');
+			$recipient = new XMessageRecipient( $database );
+			$this->rows = $recipient->getUnreadMessages( $juser->get('id'), $limit );
+
+			// Push the module CSS to the template
+			ximport('xdocument');
+			XDocument::addModuleStyleSheet('mod_mymessages');
 		}
-		$html .= "\t".'<ul class="module-nav">'."\n";
-		$html .= "\t\t".'<li><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages').'">'.JText::_('ALL_MESSAGES').'</a></li>'."\n";
-		$html .= "\t\t".'<li><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=settings').'">'.JText::_('MESSAGE_SETTINGS').'</a></li>'."\n";
-		$html .= "\t".'</ul>'."\n";
-		$html .= '</div>'."\n";
-		
-		// Output the HTML
-		echo $html;
 	}
 }
 
 //-------------------------------------------------------------
 
-$modmymessages = new modMyMessages();
-$modmymessages->params = $params;
+$modmymessages = new modMyMessages( $params );
+$modmymessages->display();
 
 require( JModuleHelper::getLayoutPath('mod_mymessages') );
 ?>

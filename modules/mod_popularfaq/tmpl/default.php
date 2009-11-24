@@ -25,6 +25,32 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$modpopularfaq->display();
+$juser =& JFactory::getUser();
 
+$rows = $modpopularfaq->rows;
 ?>
+<div id="<?php echo $modpopularfaq->moduleid; ?>">
+<?php if ($rows) { ?>
+	<ul class="articles">
+<?php
+	foreach ($rows as $row) 
+	{
+		if ($row->access <= $juser->get('aid')) {
+			$link = 'index.php?option=com_kb&amp;section='.$row->section;
+			$link .= ($row->category) ? '&amp;category='.$row->category : '';
+			$link .= ($row->alias) ? '&amp;alias='. $row->alias : '&amp;alias='. $row->id;
+			
+			$link_on = JRoute::_($link);
+		} else {
+			$link_on = JRoute::_('index.php?option=com_hub&task=register');
+		}
+?>
+		<li><a href="<?php echo $link_on; ?>"><?php echo stripslashes($row->title); ?></a></li>
+<?php
+	}
+?>
+	</ul>
+<?php } else { ?>
+	<p><?php echo JText::_('MOD_POPULARFAQ_NO_ARTICLES_FOUND'); ?></p>
+<?php } ?>
+</div>

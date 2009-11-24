@@ -25,6 +25,53 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$modrecentquestions->display();
+$rows = $modrecentquestions->rows;
+if (count($rows) > 0) {
+	require_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'answers.tags.php' );
+	$database =& JFactory::getDBO();
+	$tagging = new AnswersTags( $database );
+	
+	ximport('Hubzero_View_Helper_Html');
+	
+	$html  = "\t\t".'<ul class="questions">'."\n";
+	foreach ($rows as $row) 
+	{
+		$name = JText::_('MOD_RECENTQUESTIONS_ANONYMOUS');
+		if ($row->anonymous == 0) {
+			$juser =& JUser::getInstance( $row->created_by );
+			if (is_object($juser)) {
+				$name = $juser->get('name');
+			}
+		}
 
+		$when = $modrecentquestions->timeAgo($modrecentquestions->mkt($row->created));
+		
+		$tags = $tagging->get_tag_cloud(0, 0, $row->id);
+		
+		$html .= "\t\t".' <li>'."\n";
+		if ($modrecentquestions->style == 'compact') {
+			$html .= "\t\t\t".'<a href="'. JRoute::_('index.php?option=com_answers&task=question&id='.$row->id) .'">'.$row->subject.'</a>'."\n";
+			$html .= '<span> - ';
+			$html .= ($row->rcount == 1) ? JText::sprintf('MOD_RECENTQUESTIONS_RESPONSE', $row->rcount) : JText::sprintf('MOD_RECENTQUESTIONS_RESPONSES', $row->rcount);
+			$html .= '</span>';
+		} else {
+			$html .= "\t\t\t".'<h4><a href="'. JRoute::_('index.php?option=com_answers&task=question&id='.$row->id) .'">'.$row->subject.'</a></h4>'."\n";
+			$html .= "\t\t\t".'<p class="snippet">';
+			if ($row->question) {
+				$html .= Hubzero_View_Helper_Html::shortenText($row->question, 100, 0);
+			}
+			$html .= '</p>'."\n";
+			$html .= "\t\t\t".'<p>'.JText::sprintf('MOD_RECENTQUESTIONS_ASKED_BY', $name).' - '.$when.' '.JText::_('MOD_RECENTQUESTIONS_AGO').' - ';
+			$html .= ($row->rcount == 1) ? JText::sprintf('MOD_RECENTQUESTIONS_RESPONSE', $row->rcount) : JText::sprintf('MOD_RECENTQUESTIONS_RESPONSES', $row->rcount);
+			$html .= '</p>'."\n";
+			$html .= "\t\t\t".'<p>'.JText::_('MOD_RECENTQUESTIONS_TAGS').':</p> '.$tags."\n";
+		}
+		$html .= "\t\t".' </li>'."\n";
+	}
+	$html .= "\t\t".'</ul>'."\n";
+} else {
+	$html  = "\t\t".'<p>'.JText::_('MOD_RECENTQUESTIONS_NO_RESULTS').'</p>'."\n";
+}
+
+echo $html;
 ?>

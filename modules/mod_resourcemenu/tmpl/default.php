@@ -24,7 +24,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-echo $modresourcemenu->html; 
-
 ?>
+<div id="<?php echo $modresourcemenu->moduleid; ?>" class="<?php echo $modresourcemenu->moduleclass; ?>">
+	<?php echo $modresourcemenu->html; ?>
+</div>

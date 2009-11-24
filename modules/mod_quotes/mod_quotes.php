@@ -27,13 +27,29 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class modQuotes
 {
-	private $params;
+	private $attributes = array();
 
 	//-----------
 
 	public function __construct( $params ) 
 	{
 		$this->params = $params;
+	}
+
+	//-----------
+
+	public function __set($property, $value)
+	{
+		$this->attributes[$property] = $value;
+	}
+	
+	//-----------
+	
+	public function __get($property)
+	{
+		if (isset($this->attributes[$property])) {
+			return $this->attributes[$property];
+		}
 	}
 
 	//-----------
@@ -52,55 +68,17 @@ class modQuotes
 		$filters['id'] = JRequest::getInt( 'quoteid', 0 );
 		$filters['notable_quotes'] = 1;
 
+		$this->filters = $filters;
+
 		// Get quotes
 		$sq = new SelectedQuotes( $database );
-		$quotes = $sq->getResults( $filters );
-		
-		$html = '';
-		
-		// Did we get any results?
-		if (count($quotes) > 0) {
-			// Yes - loop through and build the HTML
-			foreach ($quotes as $quote)
-			{
-				$quote->org = str_replace('<br>','<br />',$quote->org);
-
-				if (isset($filters['id']) && $filters['id'] != '') {
-					$html .= '<div class="breadcrumbs"><p><a href="/about/quotes" class="breadcrumbs">'.JText::_('NOTABLE_QUOTES').'</a> &rsaquo; <strong>';
-					$html .= stripslashes($quote->fullname).'</strong></p></div>'."\n\n";
-				}
-				$html .= '<blockquote cite="'.stripslashes($quote->fullname).'">'."\n";
-				if (isset($filters['id']) && $filters['id'] != '') {
-					$html .= "\t".'<p>'.stripslashes($quote->quote).'</p>'."\n";
-				} else {
-					$html .= "\t".'<p>'.stripslashes($quote->short_quote)."\n";
-					if ($quote->short_quote != $quote->quote) {
-						$html .= "\t".' &#8230; <a href="/about/quotes/?quoteid='.$quote->id.'" title="'.JText::sprintf('VIEW_QUOTE_BY',stripslashes($quote->fullname)).'">'.JText::_('MORE').'</a>';
-					}
-					$html .= '</p>'."\n";
-				}
-				$html .= '</blockquote>'."\n";
-				$html .= '<p class="cite">';
-				$html .= '<cite>'.stripslashes($quote->fullname).'</cite>';
-				$quote->org = stripslashes($quote->org);
-				$quote->org = str_replace('&amp;','&',$quote->org);
-				$quote->org = str_replace('&','&amp;',$quote->org);
-				$html .= '<br />'.$quote->org.'</p>'."\n\n";
-
-				$k = 1 - $k;
-			}
-		} else {
-			// No - show message
-			$html = '<p>'.JText::_('NO_QUOTES_FOUND').'</p>'."\n";
-		}
-
-		// Output HTML
-		echo $html;
+		$this->quotes = $sq->getResults( $filters );
 	}
 }
 
 //-------------------------------------------------------------
 
 $modquotes = new modQuotes( $params );
+$modquotes->display();
 
 require( JModuleHelper::getLayoutPath('mod_quotes') );

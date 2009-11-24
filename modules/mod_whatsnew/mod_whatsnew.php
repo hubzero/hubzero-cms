@@ -36,6 +36,13 @@ if (!class_exists('modWhatsNew')) {
 
 		//-----------
 
+		public function __construct( $params ) 
+		{
+			$this->params = $params;
+		}
+
+		//-----------
+
 		public function __set($property, $value)
 		{
 			$this->attributes[$property] = $value;
@@ -52,7 +59,7 @@ if (!class_exists('modWhatsNew')) {
 
 		//-----------
 
-		private function getAreas()
+		private function _getAreas()
 		{
 			// Do we already have an array of areas?
 			if (!isset($this->searchareas) || empty($this->searchareas)) {
@@ -81,40 +88,74 @@ if (!class_exists('modWhatsNew')) {
 			return $this->searchareas;
 		}
 
+		//-----------
+
+		public function formatTags($tags=array(), $num=3, $max=25)
+		{
+			$out = '';
+
+			if (count($tags) > 0) {
+				$out .= '<span class="taggi">'."\n";
+				$counter = 0;
+
+				for ($i=0; $i< count($tags); $i++) 
+				{
+					$counter = $counter + strlen(stripslashes($tags[$i]['raw_tag']));	
+					if ($counter > $max) {
+						$num = $num - 1;
+					}
+					if ($i < $num) {
+						// display tag
+						$out .= "\t".'<a href="'.JRoute::_('index.php?option=com_tags'.a.'tag='.$tags[$i]['tag']).'">'.stripslashes($tags[$i]['raw_tag']).'</a> '."\n";
+					}
+				}
+				if ($i > $num) {
+					$out .= ' (&#8230;)';
+				}
+				$out .= '</span>'."\n";
+			}
+
+			return $out;
+		}
+
+		//-----------
+
 		public function display()
 		{
-			$mainframe =& $this->mainframe;
 			$module    =& $this->module;
 
 			// Get some initial parameters
 			$params =& $this->params;
 			$count    = $params->get( 'count', 5 );
-			$feed     = $params->get( 'feed' );
-			$moduleid = $params->get( 'moduleid' );
-			$period   = $params->get( 'period', 'resources:month' );
-			$tagged   = $params->get( 'tagged', 0 );
+			$this->feed     = $params->get( 'feed' );
+			$this->moduleid = $params->get( 'moduleid' );
+			$this->period   = $params->get( 'period', 'resources:month' );
+			$this->tagged   = $params->get( 'tagged', 0 );
 
 			$database =& JFactory::getDBO();
 
-			// Build the feed link
-			$feedlink = JRoute::_('index.php?option=com_whatsnew&amp;task=feed.rss&amp;period='.$period);
-			if (substr($feedlink,0,5) == 'https') {
-				$feedlink = ltrim($feedlink, 'https');
-				$feedlink = 'http'.$feedlink;
+			// Build the feed link if necessary
+			if ($this->feed) {
+				$feedlink = JRoute::_('index.php?option=com_whatsnew&amp;task=feed.rss&amp;period='.$period);
+				if (substr($feedlink,0,5) == 'https') {
+					$feedlink = ltrim($feedlink, 'https');
+					$feedlink = 'http'.$feedlink;
+				}
+				if (substr($feedlink,0,1) == '/') {
+					$xhub =& XFactory::getHub();
+					$feedlink = $xhub->getCfg('hubLongURL').$feedlink;
+				}
+				$this->feedlink = $feedlink;
 			}
-			if (substr($feedlink,0,1) == '/') {
-				$xhub =& XFactory::getHub();
-				$feedlink = $xhub->getCfg('hubLongURL').$feedlink;
-			}
-
+			
 			// Get categories
-			$areas = $this->getAreas();
+			$areas = $this->_getAreas();
 
 			$area = '';
 
 			// Check the search string for a category prefix
-			if ($period != NULL) {
-				$searchstring = strtolower($period);
+			if ($this->period != NULL) {
+				$searchstring = strtolower($this->period);
 				foreach ($areas as $c=>$t) 
 				{
 					$regexp = "/" . $c . ":/";
@@ -143,8 +184,9 @@ if (!class_exists('modWhatsNew')) {
 						}
 					}
 				}
-				$period = trim( $searchstring );
+				$this->period = trim( $searchstring );
 			}
+			$this->area = $area;
 
 			// Get the active category
 			$activeareas = array();
@@ -157,7 +199,7 @@ if (!class_exists('modWhatsNew')) {
 			$dispatcher =& JDispatcher::getInstance();
 
 			// Process the keyword for exact time period
-			$p = new WhatsnewPeriod( $period );
+			$p = new WhatsnewPeriod( $this->period );
 			$p->process();
 
 			// Get the search results
@@ -180,70 +222,19 @@ if (!class_exists('modWhatsNew')) {
 					}
 				}
 			}
-
-			// Push the module CSS to the template
-			ximport('xdocument');
-			XDocument::addModuleStyleSheet('mod_whatsnew');
-
-			// Output HTML
-			$html  = '<div';
-			$html .= ($moduleid) ? ' id="'.$moduleid.'"' : '';
-			$html .= '>'."\n";
-
-			if ($feed) {
-				$html .= "\t".'<h3>' . $module->title;
-				$html .= ' <a class="newsfeed" href="'.$feedlink.'" title="'.JText::_('SUBSCRIBE').'">'.JText::_('NEWS_FEED').'</a>';
-				$html .= '</h3>'."\n";
-			}
-
-			if (!$tagged) {
-				if (count($rows) > 0) {
-					$count = 0;
-
-					/*if ($tagged) {
-						$html .= "\t".'<h4>'.JText::_('ALL').' '.ucfirst($area).'</h4>'."\n";
-					}*/
-					$html .= "\t".'<ul>'."\n";
-					foreach ($rows as $row)
-					{
-						if (empty($row)) {
-							continue;
-						}
-						$html .= "\t".' <li class="new">';
-						$html .= '<a href="'. JRoute::_($row->href) .'">'.stripslashes($row->title).'</a><br />';
-						$html .= '<span>'.JText::_('in').' ';
-						$html .= ($row->section) ? JText::_($row->area) : JText::_(strtoupper($row->section));
-						if ($row->publish_up) {
-							$html .= ', '.JHTML::_('date', $row->publish_up, ' %b %d, %Y');
-						}
-						$html .= '</span></li>'."\n";
-
-						$count++;
-						if ($count >= 6) {
-							break;
-						}
-					}
-					$html .= "\t".'</ul>'."\n";
-				} else {
-					$html .= "\t".'<p>'.JText::_('NO_RESULTS').'</p>'."\n";
-				}
-			} else {
+			
+			$this->rows = $rows;
+			$this->rows2 = null;
+			
+			if ($this->tagged) {
 				$juser =& JFactory::getUser();
 
 				include_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'members.tags.php' );
 				$mt = new MembersTags( $database );
 				$tags = $mt->get_tags_on_object($juser->get('id'), 0, 0, NULL, 0, 0);
-
-				//$html .= "\t".'<h4>'.JText::_('IN_MY_INTERESTS').'</h4>'."\n";
-				$html .= "\t".'<p class="category-header-details">'."\n";
-				if (count($tags) > 0) {
-					$html .= "\t\t".'<span class="configure">[<a href="'.JRoute::_('index.php?option=com_members'.a.'task=edit'.a.'id='.$juser->get('id')).'">'.JText::_('EDIT').'</a>]</span>'."\n";
-				} else {
-					$html .= "\t\t".'<span class="configure">[<a href="'.JRoute::_('index.php?option=com_members'.a.'task=edit'.a.'id='.$juser->get('id')).'">'.JText::_('ADD_INTERESTS').'</a>]</span>'."\n";
-				}
-				$html .= "\t\t".'<span class="q">'.JText::_('MY_INTERESTS').': '.$this->formatTags($tags).'</span>'."\n";
-				$html .= "\t".'</p>'.n;
-
+				
+				$this->tags = $tags;
+				
 				if (count($tags) > 0) {
 					$tagids = array();
 					foreach ($tags as $tag) 
@@ -271,83 +262,23 @@ if (!class_exists('modWhatsNew')) {
 							}
 						}
 					}
-
-					if (count($rows2) > 0) {
-						$count = 0;
-
-						$html .= "\t".'<ul class="expandedlist">'."\n";
-						foreach ($rows2 as $row2)
-						{
-							if (empty($row2)) {
-								continue;
-							}
-							$html .= "\t".' <li class="new">';
-							$html .= '<a href="'. JRoute::_($row2->href) .'">'.stripslashes($row2->title).'</a><br />';
-							$html .= '<span>'.JText::_('in').' ';
-							$html .= ($row2->section) ? JText::_($row2->area) : JText::_(strtoupper($row2->section));
-							if ($row2->publish_up) {
-								$html .= ', '.JHTML::_('date', $row2->publish_up, ' %b %d, %Y');
-							}
-							$html .= '</span></li>'."\n";
-
-							$count++;
-							if ($count >= 6) {
-								break;
-							}
-						}
-						$html .= "\t".'</ul>'."\n";
-				    	//$html .= "\t".'<p class="more"><a href="'.JRoute::_('index.php?option=com_whatsnew').'">'.JText::_('VIEW_MORE').'</a></p>'."\n";
-					} else {
-						$html .= "\t".'<p>'.JText::_('NO_RESULTS').'</p>'."\n";
-					}
-				} else {
-					$html .= "\t".'<p>'.JText::_('NO_RESULTS').'</p>'."\n";
+					
+					$this->rows2 = $rows2;
 				}
 			}
-			$html .= "\t".'<p class="more"><a href="'.JRoute::_('index.php?option=com_whatsnew&period='.$area.':'.$period).'">'.JText::_('VIEW_MORE').'</a></p>'."\n";
-			$html .= '</div>'."\n";
 
-			echo $html;
-		}
-
-		//-----------
-
-		private function formatTags($tags=array(), $num=3, $max=25)
-		{
-			$out = '';
-
-			if (count($tags) > 0) {
-				$out .= '<span class="taggi">'."\n";
-				$counter = 0;
-
-				for ($i=0; $i< count($tags); $i++) 
-				{
-					$counter = $counter + strlen(stripslashes($tags[$i]['raw_tag']));	
-					if ($counter > $max) {
-						$num = $num - 1;
-					}
-					if ($i < $num) {
-						// display tag
-						$out .= "\t".'<a href="'.JRoute::_('index.php?option=com_tags'.a.'tag='.$tags[$i]['tag']).'">'.stripslashes($tags[$i]['raw_tag']).'</a> '."\n";
-					}
-				}
-				if ($i > $num) {
-					$out .= ' (&#8230;)';
-				}
-				$out .= '</span>'."\n";
-			}
-
-			return $out;
+			// Push the module CSS to the template
+			ximport('xdocument');
+			XDocument::addModuleStyleSheet('mod_whatsnew');	
 		}
 	}
 }
 
 //-------------------------------------------------------------
 
-$modwhatsnew = new modWhatsNew();
-$modwhatsnew->params = $params;
-$modwhatsnew->mainframe = $mainframe;
+$modwhatsnew = new modWhatsNew( $params );
 $modwhatsnew->module = $module;
+$modwhatsnew->display();
 
 require( JModuleHelper::getLayoutPath('mod_whatsnew') );
 ?>

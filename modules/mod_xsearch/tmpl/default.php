@@ -25,6 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$modxsearch->display(); 
-
 ?>
+<form method="get" action="<?php echo JRoute::_('index.php?option=com_xsearch'); ?>" id="searchform"<?php if ($modxsearch->clasfx) { echo ' class="'.$modxsearch->clasfx.'"'; } ?>>
+	<fieldset>
+		<legend><?php echo $modxsearch->text; ?></legend>
+		<label for="searchword" id="searchword-label"><?php echo $modxsearch->text; ?></label>
+		<input type="text" name="searchword" id="searchword" size="<?php echo $modxsearch->width; ?>" value="<?php echo $modxsearch->text; ?>" />
+	</fieldset>
+</form>

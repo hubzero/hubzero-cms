@@ -25,6 +25,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-echo $modtoptags->display();
+$tags = $modtoptags->tags;
 
+$tl = array();
+if (count($tags) > 0) {
+	$html  = '<ol class="tags">'."\n";
+	foreach ($tags as $tag)
+	{
+		$tl[$tag->tag] = "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.$tag->raw_tag.'</a></li>'."\n";
+	}
+	if ($modtoptags->sortby == 'alphabeta') {
+		ksort($tl);
+	}
+	$html .= implode('',$tl);
+	$html .= '</ol>'."\n";
+	if ($modtoptags->morelnk) {
+		$html .= '<p class="more"><a href="'.JRoute::_('index.php?option=com_tags').'">'.JText::_('MOD_TOPTAGS_MORE').'</a></p>'."\n";
+	}
+} else {
+	$html  = '<p>'.$modtoptags->message.'</p>'."\n";
+}
+echo $html;
 ?>

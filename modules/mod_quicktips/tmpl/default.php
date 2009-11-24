@@ -25,6 +25,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-echo $modquicktips->display();
+$rows = $modquicktips->rows;
 
+$html = '';
+if ($rows) {
+	$html .= '<div class="'.$modquicktips->moduleclass_sfx.'">'."\n";
+	//$html .= '<h3>'.$module->title.'</h3>'."\n";
+	foreach ($rows as $row)
+	{
+		$html .= '<p>'.$row->introtext.'</p>'."\n";
+		$html .= '<p class="more"><a href="' .JRoute::_( 'index.php?option=com_content&task=view&id='. $row->id) .'">'.JText::_('MOD_QUICKTIPS_LEARN_MORE').'</a></p>'."\n";
+	}
+	$html .= '</div>'."\n";
+}
+echo $html;
 ?>

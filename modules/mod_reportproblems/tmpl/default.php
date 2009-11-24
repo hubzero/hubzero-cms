@@ -13,17 +13,29 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 					<fieldset class="reporter">
 						<label for="trLogin">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
-							<input type="text" name="reporter[login]" id="trLogin" value="<?php echo (!$modreportproblems->juser->get('guest')) ? $modreportproblems->juser->get('username') : ''; ?>" />
+<?php if (!$modreportproblems->juser->get('guest')) { ?>
+							<input type="hidden" name="reporter[login]" id="trLogin" value="<?php echo $modreportproblems->juser->get('username'); ?>" /><br /><span class="info-block"><?php echo $modreportproblems->juser->get('username'); ?></span>
+<?php } else { ?>
+							<input type="text" name="reporter[login]" id="trLogin" value="" />
+<?php } ?>
 						</label>
-				
+
 						<label for="trName">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_NAME'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-							<input type="text" name="reporter[name]" id="trName" value="<?php echo (!$modreportproblems->juser->get('guest')) ? $modreportproblems->juser->get('name') : ''; ?>" />
+<?php if (!$modreportproblems->juser->get('guest')) { ?>
+							<input type="hidden" name="reporter[name]" id="trName" value="<?php echo $modreportproblems->juser->get('name'); ?>" /><br /><span class="info-block"><?php echo $modreportproblems->juser->get('name'); ?></span>
+<?php } else { ?>
+							<input type="text" name="reporter[name]" id="trName" value="" />
+<?php } ?>
 						</label>
-				
+
 						<label for="trEmail">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_EMAIL'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-							<input type="text" name="reporter[email]" id="trEmail" value="<?php echo (!$modreportproblems->juser->get('guest')) ? $modreportproblems->juser->get('email') : ''; ?>" />
+<?php if (!$modreportproblems->juser->get('guest')) { ?>
+							<input type="hidden" name="reporter[email]" id="trEmail" value="<?php echo $modreportproblems->juser->get('email'); ?>" /><br /><span class="info-block"><?php echo $modreportproblems->juser->get('email'); ?></span>
+<?php } else { ?>
+							<input type="text" name="reporter[email]" id="trEmail" value="" />
+<?php } ?>
 						</label>
 <?php if (!$modreportproblems->verified) { ?>
 						<label for="trAnswer">

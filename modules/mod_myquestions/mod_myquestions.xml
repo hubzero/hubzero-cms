@@ -1,28 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
- Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- All rights reserved.
-
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License,
- Version 2 as published by the Free Software Foundation.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
-
-<install type="module" version="1.5">
+<?xml version="1.0" encoding="iso-8859-1"?>
+<install type="module" version="1.5.0">
 	<name>My Questions</name>
 	<author>snowwitje</author>
-	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<creationDate>Jan 2009</creationDate>
+	<copyright>(C) 2009 Network for Computational Nanotechnology</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>alisa@purdue.edu</authorEmail>
+	<authorUrl>alisa.nanohub.org</authorUrl>
+	<version>1</version>
 	<description>This module will display a list of questions submitted by the user, as well as those user can answer.</description>
 	<files>
 		<filename module="mod_myquestions">mod_myquestions.php</filename>
@@ -30,11 +15,10 @@
         	<filename>tmpl/index.html</filename>
         	<filename>tmpl/default.php</filename>
 		<filename>mod_myquestions.css</filename>
-		<filename>images/a_letter.gif</filename>
-	     <filename>images/q.gif</filename>
+		<filename>images/heart.png</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.mod_myquestions.ini</language>
+		<language tag="en-GB">en-GB.plg_mod_myquestions.ini</language>
 	</languages>
 	<params>
 		<param name="moduleclass" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />

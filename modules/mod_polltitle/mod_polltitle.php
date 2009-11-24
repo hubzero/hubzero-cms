@@ -33,6 +33,13 @@ class modPollTitle
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -56,23 +63,19 @@ class modPollTitle
 		$database =& JFactory::getDBO();
 		
 		$params =& $this->params;
-		$message = $params->get( 'message' );
+		$this->message = $params->get( 'message' );
 		
 		// Load the latest poll
 		$poll = new XPollPoll( $database );
 		$poll->getLatestPoll();
 
-		if ($poll->title) {
-			echo $poll->title;
-		} else {
-			echo $message;
-		}
+		$this->poll = $poll;
 	}
 }
 
 //-------------------------------------------------------------
 
-$modpolltitle = new modPollTitle();
-$modpolltitle->params = $params;
+$modpolltitle = new modPollTitle( $params );
+$modpolltitle->display();
 
 require( JModuleHelper::getLayoutPath('mod_polltitle') );

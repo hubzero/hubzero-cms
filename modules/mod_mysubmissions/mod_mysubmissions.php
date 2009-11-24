@@ -31,6 +31,13 @@ class modMySubmissions
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -49,21 +56,21 @@ class modMySubmissions
 	// Checks
 	//----------------------------------------------------------
 	
-	protected function step_type_check( $id )
+	public function step_type_check( $id )
 	{
 		// do nothing
 	}
 	
 	//-----------
 	
-	protected function step_compose_check( $id )
+	public function step_compose_check( $id )
 	{
 		return $id;
 	}
 
 	//-----------
 	
-	protected function step_attach_check( $id )
+	public function step_attach_check( $id )
 	{
 		if ($id) {
 			$database =& JFactory::getDBO();
@@ -77,7 +84,7 @@ class modMySubmissions
 
 	//-----------
 	
-	protected function step_authors_check( $id )
+	public function step_authors_check( $id )
 	{
 		if ($id) {
 			$database =& JFactory::getDBO();
@@ -92,7 +99,7 @@ class modMySubmissions
 	
 	//-----------
 	
-	protected function step_tags_check( $id )
+	public function step_tags_check( $id )
 	{
 		$database =& JFactory::getDBO();
 
@@ -108,16 +115,9 @@ class modMySubmissions
 	
 	//-----------
 
-	protected function step_review_check( $id ) 
+	public function step_review_check( $id ) 
 	{
 		return 0;
-	}
-
-	//-----------
-	
-	private function warning( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'.n;
 	}
 
 	//-----------
@@ -126,13 +126,13 @@ class modMySubmissions
 	{
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
-			return $this->warning( 'To contribute content, you must be logged in. Don\'t have an account yet? <a href="/register">Create an account</a>.' );
+			return false;
 		}
 		
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.type.php' );
 
-		$steps = array('Type','Compose','Attach','Authors','Tags','Review');
+		$this->steps = array('Type','Compose','Attach','Authors','Tags','Review');
 		
 		$database =& JFactory::getDBO();
 		
@@ -144,64 +144,19 @@ class modMySubmissions
 			LEFT JOIN ".$rt->getTableName()." AS t ON r.type=t.id 
 			WHERE r.published=2 AND r.standalone=1 AND r.type!=7 AND r.created_by=".$juser->get('id');
 	    $database->setQuery( $query );
-	    $rows = $database->loadObjectList();
-		
-		$html = ''; 
-		if (!empty($rows)) {
+	    $this->rows = $database->loadObjectList();
+	
+		if (!empty($this->rows)) {
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.assoc.php');
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.contributor.php');
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.tags.php' );
-			
-			$stepchecks = array();
-			$laststep = (count($steps) - 1);
-			
-			foreach ($rows as $row)
-			{
-				$html .= '<div class="submission">'."\n";
-				$html .= '<h4>'.stripslashes($row->title).' <a href="'.JRoute::_('index.php?option=com_contribute&step=1&id='.$row->id).'">'.JText::_('edit').'</a></h4>'."\n";
-				$html .= '<table summary="'.JText::_('A list of submissions in progress').'">'."\n";
-				$html .= "\t".'<tbody>'."\n";
-				$html .= "\t\t".'<tr>'."\n";
-				$html .= "\t\t\t".'<th>'.JText::_('Type:').'</th>'."\n";
-				$html .= "\t\t\t".'<td colspan="2">'.$row->typetitle.'</td>'."\n";
-				$html .= "\t\t".'</tr>'."\n";
-
-				for ($i=1, $n=count( $steps ); $i < $n; $i++) 
-				{
-					if ($i != $laststep) {
-						$check = 'step_'.$steps[$i].'_check';
-						$stepchecks[$steps[$i]] = $this->$check( $row->id );
-						
-						if ($stepchecks[$steps[$i]]) {
-							$completed = '<span class="yes">'.JText::_('completed').'</span>';
-						} else {
-							$completed = '<span class="no">'.JText::_('not completed').'</span>';
-						}
-
-						$html .= "\t\t".'<tr>'."\n";
-						$html .= "\t\t\t".'<th>'.$steps[$i].'</th>'."\n";
-						$html .= "\t\t\t".'<td>'.$completed.'</td>'."\n";
-						$html .= "\t\t\t".'<td><a href="'.JRoute::_('index.php?option=com_contribute&step='.$i.'&amp;id='.$row->id).'">'.JText::_('edit').'</a></td>';
-						$html .= "\t\t".'</tr>'."\n";
-					}
-				}
-				$html .= '</table>'."\n";
-				$html .= '<p class="discrd"><a href="'.JRoute::_('index.php?option=com_contribute&task=discard&id='.$row->id).'">'.JText::_('Delete').'</a></p>'."\n";
-				$html .= '<p class="review"><a href="'.JRoute::_('index.php?option=com_contribute&step='.$laststep.'&id='.$row->id).'">'.JText::_('Review &amp; Submit').'</a></p>'."\n";
-				$html .= '<div class="clear"></div>';
-				$html .= '</div>'."\n";
-			}
-		} else {
-			$html .= '<p>'.JText::_('No submissions in progress').'</p>'.n;
 		}
-		
-		return $html;
 	}
 }
 
 //-------------------------------------------------------------
 
-$modmysubmissions = new modMySubmissions();
-$modmysubmissions->params = $params;
+$modmysubmissions = new modMySubmissions( $params );
+$modmysubmissions->display();
 
 require( JModuleHelper::getLayoutPath('mod_mysubmissions') );

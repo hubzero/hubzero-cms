@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 if (!class_exists('modFeaturedquestion')) {
 	class modFeaturedquestion
 	{
-		private $params;
+		private $attributes = array();
 
 		//-----------
 
@@ -39,7 +39,23 @@ if (!class_exists('modFeaturedquestion')) {
 
 		//-----------
 
-		private function niceidformat($someid) 
+		public function __set($property, $value)
+		{
+			$this->attributes[$property] = $value;
+		}
+
+		//-----------
+
+		public function __get($property)
+		{
+			if (isset($this->attributes[$property])) {
+				return $this->attributes[$property];
+			}
+		}
+
+		//-----------
+
+		public function niceidformat($someid) 
 		{
 			while (strlen($someid) < 5) 
 			{
@@ -50,7 +66,7 @@ if (!class_exists('modFeaturedquestion')) {
 
 		//-----------
 
-		private function shortenText($text, $chars=300, $p=1) 
+		public function shortenText($text, $chars=300, $p=1) 
 		{
 			$text = strip_tags($text);
 			$text = trim($text);
@@ -75,7 +91,7 @@ if (!class_exists('modFeaturedquestion')) {
 
 		//-----------
 
-		private function encode_html($str, $quotes=1)
+		public function encode_html($str, $quotes=1)
 		{
 			$str = $this->ampersands($str);
 
@@ -94,7 +110,7 @@ if (!class_exists('modFeaturedquestion')) {
 
 		//-----------
 
-		private function ampersands( $str ) 
+		public function ampersands( $str ) 
 		{
 			$str = stripslashes($str);
 			$str = str_replace('&#','*-*', $str);
@@ -106,7 +122,7 @@ if (!class_exists('modFeaturedquestion')) {
 
 		//-----------
 
-		private function mkt($stime)
+		public function mkt($stime)
 		{
 			if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
 				$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
@@ -116,7 +132,7 @@ if (!class_exists('modFeaturedquestion')) {
 
 		//-----------
 
-		private function timeAgoo($timestamp)
+		public function timeAgoo($timestamp)
 		{
 			// Store the current time
 			$current_time = time();
@@ -152,7 +168,7 @@ if (!class_exists('modFeaturedquestion')) {
 
 			// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
 			if (($val >= 1) && (($current_time - $new_time) > 0)) {
-				$text .= modFeaturedquestion::timeAgoo($new_time);
+				$text .= $this->timeAgoo($new_time);
 			}
 
 			return $text;
@@ -160,7 +176,7 @@ if (!class_exists('modFeaturedquestion')) {
 
 		//-----------
 
-		private function timeAgo($timestamp) 
+		public function timeAgo($timestamp) 
 		{
 			$text = $this->timeAgoo($timestamp);
 
@@ -177,8 +193,10 @@ if (!class_exists('modFeaturedquestion')) {
 		{
 			ximport('featurehistory');
 			
+			$this->error = false;
 			if (!class_exists('FeatureHistory')) {
-				return JText::_('Error: Missing FeatureHistory class.');
+				$this->error = true;
+				return false;
 			}
 			
 			$database =& JFactory::getDBO();
@@ -188,8 +206,8 @@ if (!class_exists('modFeaturedquestion')) {
 			$filters = array();
 			$filters['limit'] = 1;
 			
-			$cls = trim($params->get( 'moduleclass_sfx' ));
-			$txt_length = trim($params->get( 'txt_length' ));
+			$this->cls = trim($params->get( 'moduleclass_sfx' ));
+			$this->txt_length = trim($params->get( 'txt_length' ));
 			
 			$start = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 00:00:00";
 			$end = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 23:59:59";
@@ -228,10 +246,10 @@ if (!class_exists('modFeaturedquestion')) {
 				}
 			}
 
-			$html = '';
-
 			// Did we have a result to display?
 			if ($row) {
+				$this->row = $row;
+				
 				$config =& JComponentHelper::getParams( 'com_answers' );
 					
 				// Check if this has been saved in the feature history
@@ -242,38 +260,10 @@ if (!class_exists('modFeaturedquestion')) {
 					$fh->store();
 				}
 				
-				$thumb = trim($params->get( 'defaultpic' ));
-				
-				$name = JText::_('ANONYMOUS');
-				if ($row->anonymous == 0) {
-					$juser =& JUser::getInstance( $row->created_by );
-					if (is_object($juser)) {
-						$name = $juser->get('name');
-					}
-				}
-				
-				$row->created = $this->mkt($row->created);
-				$when = $this->timeAgo($row->created);
-				
-				// Build the HTML
-				$html .= '<div class="'.$cls.'">'."\n";
-				//$html .= '<h3><a href="'.JRoute::_('index.php?option=com_answers').'">'.JText::_('Featured Question').'</a></h3>'."\n";
-				$html .= '<h3>'.JText::_('Featured Question').'</h3>'."\n";
-				if (is_file(JPATH_ROOT.$thumb)) {
-					$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$row->id).'"><img width="50" height="50" src="'.$thumb.'" alt="" /></a></p>'."\n";
-				}
-				$html .= '<p><a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$row->id).'">'.stripslashes($row->subject).'</a>'."\n";
-				if ($row->question) {
-					$html .= ': '.$this->shortenText($this->encode_html(strip_tags($row->question)), $txt_length, 0)."\n";
-				}
-				$html .= '<br /><span>'.JText::sprintf('ASKED_BY', $name).'</span> - <span>'.$when.' ago</span> - <span>';
-				$html .= ($row->rcount == 1) ? JText::sprintf('RESPONSE', $row->rcount) : JText::sprintf('RESPONSES', $row->rcount);
-				$html .= '</span></p>'."\n";
-				$html .= '</div>'."\n";
+				$this->thumb = trim($params->get( 'defaultpic' ));
+			} else {
+				$this->row = null;
 			}
-
-			// Output HTML
-			return $html;
 		}
 	}
 }
@@ -281,5 +271,6 @@ if (!class_exists('modFeaturedquestion')) {
 //-------------------------------------------------------------
 
 $modfeaturedquestion = new modFeaturedquestion( $params );
+$modfeaturedquestion->display();
 
 require( JModuleHelper::getLayoutPath('mod_featuredquestion') );

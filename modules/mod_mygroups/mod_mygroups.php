@@ -39,6 +39,13 @@ class modMyGroups
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -55,7 +62,7 @@ class modMyGroups
 
 	//-----------
 
-	private function getGroups($uid, $type='all')
+	private function _getGroups($uid, $type='all')
 	{
 		$db =& JFactory::getDBO();
 
@@ -97,7 +104,7 @@ class modMyGroups
 	
 	//-----------
 	
-	private function getStatus( $group ) 
+	public function getStatus( $group ) 
 	{
 		if ($group->manager) {
 			$status = 'manager';
@@ -124,19 +131,18 @@ class modMyGroups
 	public function display() 
 	{
 		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
 		
 		// Get the module parameters
 		$params =& $this->params;
-		$moduleclass = $params->get( 'moduleclass' );
+		$this->moduleclass = $params->get( 'moduleclass' );
 		$limit = intval( $params->get( 'limit' ) );
 		$limit = ($limit) ? $limit : 10;
 
 		// Get the user's groups
-		$applicants = $this->getGroups( $juser->get('id'), 'applicants' );
-		$invitees = $this->getGroups( $juser->get('id'), 'invitees' );
-		$members = $this->getGroups( $juser->get('id'), 'members' );
-		$managers = $this->getGroups( $juser->get('id'), 'managers' );
+		$applicants = $this->_getGroups( $juser->get('id'), 'applicants' );
+		$invitees   = $this->_getGroups( $juser->get('id'), 'invitees' );
+		$members    = $this->_getGroups( $juser->get('id'), 'members' );
+		$managers   = $this->_getGroups( $juser->get('id'), 'managers' );
 
 		$groups = array_merge($applicants, $invitees);
 		$managerids = array();
@@ -152,48 +158,19 @@ class modMyGroups
 			}
 		}
 		
+		$this->limit = $limit;
+		$this->groups = $groups;
+		
 		// Push the module CSS to the template
 		ximport('xdocument');
 		XDocument::addModuleStyleSheet('mod_mygroups');
-		
-		// Build the HTML
-		$html  = '<div';
-		$html .= ($moduleclass) ? ' class="'.$moduleclass.'">'."\n" : '>'."\n";
-		if ($groups && count($groups) > 0) {
-			$html .= "\t".'<ul class="compactlist">'."\n";
-			$i = 0;
-			foreach ($groups as $group)
-			{
-				if ($group->published && $i < $limit) {
-					$status = $this->getStatus( $group );
-
-					$html .= "\t\t".'<li class="group">'."\n";
-					$html .= "\t\t\t".'<a href="'.JRoute::_('index.php?option=com_groups&gid='.$group->cn).'">'.$group->description.'</a>'."\n";
-					$html .= "\t\t\t".'<span><span class="'.$status.' status">'.JText::_('GROUPS_STATUS_'.strtoupper($status)).'</span></span>'."\n";
-					$html .= "\t\t".'</li>';
-					$i++;
-				}
-			}
-			$html .= "\t".'</ul>'."\n";
-		} else {
-			$html .= "\t".'<p>'.JText::_('NO_GROUPS').'</p>'."\n";
-		}
-		$html .= "\t".'<ul class="module-nav">'."\n";
-		$html .= "\t\t".'<li><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=groups').'">'.JText::_('All My Groups').'</a></li>'."\n";
-		$html .= "\t\t".'<li><a href="'.JRoute::_('index.php?option=com_groups').'">'.JText::_('ALL_GROUPS').'</a></li>'."\n";
-		$html .= "\t\t".'<li><a href="'.JRoute::_('index.php?option=com_groups&task=new').'">'.JText::_('NEW_GROUP').'</a></li>'."\n";
-		$html .= "\t".'</ul>'."\n";
-		$html .= '</div>'."\n";
-		
-		// Output the HTML
-		return $html;
 	}
 }
 
 //-------------------------------------------------------------
 
-$modmygroups = new modMyGroups();
-$modmygroups->params = $params;
+$modmygroups = new modMyGroups( $params );
+$modmygroups->display();
 
 require( JModuleHelper::getLayoutPath('mod_mygroups') );
 ?>

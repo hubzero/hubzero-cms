@@ -31,6 +31,13 @@ class modQuickTips
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -49,14 +56,12 @@ class modQuickTips
 
 	public function display()
 	{
-		global $mainframe;
-		
 		$database =& JFactory::getDBO();
 		$params =& $this->params;
 
 		$catid = trim( $params->get( 'catid' ) );
 		$secid = trim( $params->get( 'secid' ) );
-		$moduleclass_sfx = $params->get( 'moduleclass_sfx' );
+		$this->moduleclass_sfx = $params->get( 'moduleclass_sfx' );
 		$method = trim( $params->get( 'method' ) );
 
 		$now = date( 'Y-m-d H:i:s', time() );
@@ -78,34 +83,14 @@ class modQuickTips
 				. ($secid ? "\n AND ( a.sectionid IN (". $secid .") )" : '')
 				. "\n ORDER BY $order LIMIT 1";
 		$database->setQuery($query);
-		$rows = $database->loadObjectList();
-
-		$html = '';
-		if ($rows) {
-			$html .= '<div class="'.$moduleclass_sfx.'">'."\n";
-			$html .= '<h3>'.$module->title.'</h3>'."\n";
-			foreach ($rows as $row)
-			{
-				$Itemid = $mainframe->getItemid( $row->id, 0, 0, '','','' );
-				if ($Itemid == NULL) {
-					$Itemid = '';
-				} else {
-					$Itemid = '&Itemid='.$Itemid;
-				}
-		
-				$html .= '<p>'.$row->introtext.'</p>'."\n";
-				$html .= '<p class="more"><a href="' .JRoute::_( 'index.php?option=com_content&task=view&id='. $row->id . $Itemid ) .'">'.JText::_('Learn more &rsaquo;').'</a></p>'."\n";
-			}
-			$html .= '</div>'."\n";
-		}
-		return $html;
+		$this->rows = $database->loadObjectList();
 	}
 }
 
 //-------------------------------------------------------------
 
-$modquicktips = new modQuickTips();
-$modquicktips->params = $params;
+$modquicktips = new modQuickTips( $params );
+$modquicktips->display();
 
 require( JModuleHelper::getLayoutPath('mod_quicktips') );
 ?>

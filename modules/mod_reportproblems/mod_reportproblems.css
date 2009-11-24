@@ -98,10 +98,17 @@
 		position: relative;
 		display: block;
 		}
-	#help-container label span {
+	#help-container label span.required,
+	#help-container label span.optional {
 		position: absolute;
 		top: 1.5em;
 		right: 0;
+		}
+	#help-container label span.info-block {
+		display: block;
+		border: 1px solid #555;
+		padding: 0.2em;
+		background-color: #333;
 		}
 	#help-container input, 
 	#help-container select, 

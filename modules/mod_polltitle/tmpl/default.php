@@ -25,6 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$modpolltitle->display(); 
-
+if ($modpolltitle->poll->title) {
+	echo stripslashes($modpolltitle->poll->title);
+} else {
+	echo stripslashes($modpolltitle->message);
+}
 ?>

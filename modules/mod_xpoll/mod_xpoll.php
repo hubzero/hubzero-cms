@@ -31,6 +31,13 @@ class modXPoll
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -54,7 +61,7 @@ class modXPoll
 		$database =& JFactory::getDBO();
 		
 		$params =& $this->params;
-		$formid = $params->get( 'formid' );
+		$this->formid = $params->get( 'formid' );
 
 		// Load the latest poll
 		$poll = new XPollPoll( $database );
@@ -62,59 +69,22 @@ class modXPoll
 
 		// Did we get a result from the database?
 		if ($poll->id && $poll->title) {
+			$this->poll = $poll;
+			
 			$xpdata = new XPollData( $database );
-			$options = $xpdata->getPollOptions( $poll->id, false );
+			$this->options = $xpdata->getPollOptions( $poll->id, false );
 			
 			// Push the module CSS to the template
 			ximport('xdocument');
 			XDocument::addModuleStyleSheet('mod_xpoll');
-			
-			$this->html( $poll, $options, $formid );
 		}
-	}
-	
-	//-----------
-
-	protected function html( &$poll, &$options, $formid ) 
-	{
-		$tabcnt = 0;
-		?>
-		<form id="<?php echo ($formid) ? $formid : 'xpoll'.rand(); ?>" method="post" action="<?php echo JRoute::_('index.php?option=com_xpoll'); ?>">
-			<fieldset>
-				<h4><?php echo $poll->title; ?></h4>
-				<ul class="poll">
-<?php
-		for ($i=0, $n=count( $options ); $i < $n; $i++) 
-		{ 
-?>
-				 <li>
-					<input type="radio" name="voteid" id="voteid<?php echo $options[$i]->id;?>" value="<?php echo $options[$i]->id;?>" alt="<?php echo $options[$i]->id;?>" />
-					<label for="voteid<?php echo $options[$i]->id;?>"><?php echo stripslashes($options[$i]->text); ?></label>
-				 </li>
-<?php
-			if ($tabcnt == 1) {
-				$tabcnt = 0;
-			} else {
-				$tabcnt++;
-			}
-		}
-?>
-				</ul>
-				<p><input type="submit" name="task_button" value="<?php echo JText::_('BUTTON_VOTE'); ?>" />&nbsp;&nbsp;
-				<a href="<?php echo JRoute::_("index.php?option=com_xpoll&amp;task=view&amp;id=$poll->id"); ?>"><?php echo JText::_('BUTTON_RESULTS'); ?></a></p>
-		
-				<input type="hidden" name="id" value="<?php echo $poll->id;?>" />
-				<input type="hidden" name="task" value="vote" />
-			</fieldset>
-		</form>
-		<?php
 	}
 }
 
 //-------------------------------------------------------------
 
-$modxpoll = new modXPoll();
-$modxpoll->params = $params;
+$modxpoll = new modXPoll( $params );
+$modxpoll->display();
 
 require( JModuleHelper::getLayoutPath('mod_xpoll') );
 ?>

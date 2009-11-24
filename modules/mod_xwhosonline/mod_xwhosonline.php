@@ -33,6 +33,13 @@ class modXWhosonline
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -54,95 +61,35 @@ class modXWhosonline
 		$database =& JFactory::getDBO();
 		
 		$params  =& $this->params;
-		$online  = $params->get( 'online' );
-		$users   = $params->get( 'users' );
+		$this->online = $params->get( 'online' );
+		$this->users  = $params->get( 'users' );
 		$moduleclass_sfx = $params->get( 'moduleclass_sfx' );
-		$content = '';
 
-		if ($online) {
+		$juser =& JFactory::getUser();
+		$this->admin = $juser->authorize('mod_xwhosonline', 'manage');
+
+		if ($this->online) {
 			$query1 = "SELECT COUNT(DISTINCT ip) AS guest_online FROM #__session WHERE guest=1 AND (usertype is NULL OR usertype='')";
 			$database->setQuery($query1);
-			$guest_array = $database->loadResult();
+			$this->guest_array = $database->loadResult();
 
 			$query2 = "SELECT COUNT(DISTINCT username) AS user_online FROM #__session WHERE guest=0 AND usertype <> 'administrator' AND usertype <> 'superadministrator'";
 			$database->setQuery($query2);
-			$user_array = $database->loadResult();
-
-			$admin = false;
-			if ($user_array<>0) {
-				//$xuser =& XFactory::getUser();
-				$juser =& JFactory::getUser();
-				$admin = $juser->authorize('mod_xwhosonline', 'manage');
-			}
-			if ($admin) {
-				$content .= '<a href="/users/">';
-			}
-
-			if ($guest_array<>0 && $user_array==0) {
-				if ($guest_array == 1) {
-					$content .= JText::_('MODXWHOSONLINE_WE_HAVE');
-					$content .= $guest_array.' '.JText::_('MODXWHOSONLINE_GUEST_COUNT');
-				} else {
-					$content .= JText::_('MODXWHOSONLINE_WE_HAVE');
-					$content .= $guest_array.' '.JText::_('MODXWHOSONLINE_GUESTS_COUNT');
-				}
-				$content .= JText::_('MODXWHOSONLINE_ONLINE');
-			}
-
-			if ($guest_array==0 && $user_array<>0) {
-				if ($user_array==1) {
-					$content .= JText::_('MODXWHOSONLINE_WE_HAVE');
-					$content .= $user_array.' '.JText::_('MODXWHOSONLINE_MEMBER_COUNT');
-				} else {
-					$content .= JText::_('MODXWHOSONLINE_WE_HAVE');
-					$content .= $user_array.' '.JText::_('MODXWHOSONLINE_MEMBERS_COUNT');
-				}
-				$content .= JText::_('MODXWHOSONLINE_ONLINE');
-			}
-
-			if ($guest_array<>0 && $user_array<>0) {
-				if ($guest_array==1) {
-					$content .= JText::_('MODXWHOSONLINE_WE_HAVE');
-					$content .= $guest_array.' '.JText::_('MODXWHOSONLINE_GUEST_COUNT');
-					$content .= JText::_('MODXWHOSONLINE_AND');
-				} else {
-					$content .= JText::_('MODXWHOSONLINE_WE_HAVE');
-					$content .= $guest_array.' '.JText::_('MODXWHOSONLINE_GUESTS_COUNT');
-					$content .= JText::_('MODXWHOSONLINE_AND');
-				}
-
-				if ($user_array==1) {
-					$content .= $user_array.' '.JText::_('MODXWHOSONLINE_MEMBER_COUNT');
-				} else {
-					$content .= $user_array.' '.JText::_('MODXWHOSONLINE_MEMBERS_COUNT');
-				}
-				$content .= JText::_('MODXWHOSONLINE_ONLINE');
-			}
-
-			if ($admin) {
-				$content .= '</a>';
-			}
+			$this->user_array = $database->loadResult();
+		} else {
+			$this->guest_array = null;
+			$this->user_array = null;
 		}
 
-		if ($users) {
+		if ($this->users) {
 			$query = "SELECT DISTINCT a.username"
 					."\n FROM #__session AS a"
 					."\n WHERE (a.guest=0)";
 			$database->setQuery($query);
-			$rows = $database->loadObjectList();
-			
-			$content .= '<ul>'."\n";
-			foreach ($rows as $row) 
-			{
-				$content .= '<li><strong>'. $row->username .'</strong></li>'."\n";
-			}
-			$content .= '</ul>'."\n";
-
-			if ($content == '') {
-				$content .= JText::_('MODXWHOSONLINE_NONE') ."\n";
-			}
+			$this->rows = $database->loadObjectList();
+		} else {
+			$this->rows = null;
 		}
-	    return $content;
 	}
 }
 
@@ -152,9 +99,8 @@ $jacl->addACL( 'mod_xwhosonline', 'manage', 'users', 'super administrator' );
 $jacl->addACL( 'mod_xwhosonline', 'manage', 'users', 'administrator' );
 $jacl->addACL( 'mod_xwhosonline', 'manage', 'users', 'manager' );
 
-$modxwhosonline = new modXWhosonline();
-$modxwhosonline->params = $params;
+$modxwhosonline = new modXWhosonline( $params );
+$modxwhosonline->display();
 
 require( JModuleHelper::getLayoutPath('mod_xwhosonline') );
 ?>
-
