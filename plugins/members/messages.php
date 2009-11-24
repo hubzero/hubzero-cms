@@ -90,6 +90,9 @@ class plgMembersMessages extends JPlugin
 		// Are we returning HTML?
 		if ($returnhtml) {
 			$task = JRequest::getVar('action','');
+			if (!$task) {
+				$task = JRequest::getVar('inaction','');
+			}
 			
 			$mid = JRequest::getInt('msg',0);
 			if ($mid) {
@@ -199,6 +202,7 @@ class plgMembersMessages extends JPlugin
 		
 		$sbjt  = '<form action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages').'" method="post" id="hubForm" class="full">'.n;
 		$sbjt .= t.'<fieldset id="filters">'.n;
+		$sbjt .= t.t.'<input type="hidden" name="inaction" value="inaction" />'.n;
 		$sbjt .= t.t.'From: <select class="option" name="filter">'.n;
 		$sbjt .= t.t.t.'<option value="">'.JText::_('All').'</option>'.n;
 		if ($components) {
@@ -240,6 +244,8 @@ class plgMembersMessages extends JPlugin
 		$pagenavhtml = $pageNav->getListFooter();
 		$pagenavhtml = str_replace('members/?','members/'.$member->get('uidNumber').'/messages/inbox/?',$pagenavhtml);
 		$pagenavhtml = str_replace('action=inbox','',$pagenavhtml);
+		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
+		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
 		$sbjt .= t.t.t.t.t.$pagenavhtml;
 		$sbjt .= t.t.t.t.'</td>'.n;
 		$sbjt .= t.t.t.'</tr>'.n;
@@ -348,8 +354,9 @@ class plgMembersMessages extends JPlugin
 
 		$cls = 'even';
 		
-		$sbjt  = '<form action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages').'" method="post" id="hubForm" class="full">'.n;
+		$sbjt  = '<form action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages'.a.'task=archive').'" method="post" id="hubForm" class="full">'.n;
 		$sbjt .= t.'<fieldset id="filters">'.n;
+		$sbjt .= t.t.'<input type="hidden" name="inaction" value="archive" />'.n;
 		$sbjt .= t.t.'From: <select class="option" name="filter">'.n;
 		$sbjt .= t.t.t.'<option value="">'.JText::_('All').'</option>'.n;
 		if ($components) {
@@ -389,6 +396,8 @@ class plgMembersMessages extends JPlugin
 		$pagenavhtml = $pageNav->getListFooter();
 		$pagenavhtml = str_replace('members/?','members/'.$member->get('uidNumber').'/messages/archive/?',$pagenavhtml);
 		$pagenavhtml = str_replace('action=archive','',$pagenavhtml);
+		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
+		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
 		$sbjt .= t.t.t.t.t.$pagenavhtml;
 		$sbjt .= t.t.t.t.'</td>'.n;
 		$sbjt .= t.t.t.'</tr>'.n;
@@ -404,6 +413,17 @@ class plgMembersMessages extends JPlugin
 					$status = '<span class="unread status">*</span>';
 					$lnkcls = 'class="unread" ';
 				}
+				
+				if (substr($row->component,0,4) == 'com_') {
+					$row->component = substr($row->component,4);
+				}
+
+				if ($row->component == 'support') {
+					$fg = explode(' ',$row->subject);
+					$fh = array_pop($fg);
+					$row->subject = implode(' ',$fg);
+				}
+				
 				$cls = (($cls == 'even') ? 'odd' : 'even');
 				$sbjt .= t.t.t.'<tr class="'.$cls.'">'.n;
 				$sbjt .= t.t.t.t.'<td class="check"><input class="chkbox" type="checkbox" name="mid[]" id="msg'.$row->id.'" value="'.$row->id.'" /></td>'.n;
@@ -465,8 +485,9 @@ class plgMembersMessages extends JPlugin
 
 		$cls = 'even';
 		
-		$sbjt  = '<form action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages').'" method="post" id="hubForm" class="full">'.n;
+		$sbjt  = '<form action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages'.a.'task=trash').'" method="post" id="hubForm" class="full">'.n;
 		$sbjt .= t.'<fieldset id="filters">'.n;
+		$sbjt .= t.t.'<input type="hidden" name="inaction" value="trash" />'.n;
 		$sbjt .= t.t.'From: <select class="option" name="filter">'.n;
 		$sbjt .= t.t.t.'<option value="">'.JText::_('All').'</option>'.n;
 		if ($components) {
@@ -506,6 +527,8 @@ class plgMembersMessages extends JPlugin
 		$pagenavhtml = $pageNav->getListFooter();
 		$pagenavhtml = str_replace('members/?','members/'.$member->get('uidNumber').'/messages/trash/?',$pagenavhtml);
 		$pagenavhtml = str_replace('action=trash','',$pagenavhtml);
+		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
+		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
 		$sbjt .= t.t.t.t.t.$pagenavhtml;
 		$sbjt .= t.t.t.t.'</td>'.n;
 		$sbjt .= t.t.t.'</tr>'.n;
@@ -521,6 +544,17 @@ class plgMembersMessages extends JPlugin
 					$status = '<span class="unread status">*</span>';
 					$lnkcls = 'class="unread" ';
 				}
+				
+				if (substr($row->component,0,4) == 'com_') {
+					$row->component = substr($row->component,4);
+				}
+
+				if ($row->component == 'support') {
+					$fg = explode(' ',$row->subject);
+					$fh = array_pop($fg);
+					$row->subject = implode(' ',$fg);
+				}
+				
 				$cls = (($cls == 'even') ? 'odd' : 'even');
 				$sbjt .= t.t.t.'<tr class="'.$cls.'">'.n;
 				$sbjt .= t.t.t.t.'<td class="check"><input class="chkbox" type="checkbox" name="mid[]" id="msg'.$row->id.'" value="'.$row->id.'" /></td>'.n;
@@ -617,6 +651,16 @@ class plgMembersMessages extends JPlugin
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
+				
+				$xseen = new XMessageSeen( $database );
+				$xseen->mid = $mid;
+				$xseen->uid = $member->get('uidNumber');
+				$xseen->loadRecord();
+				if ($xseen->whenseen == '' || $xseen->whenseen == '0000-00-00 00:00:00' || $xseen->whenseen == NULL) {
+					$xseen->whenseen = date( 'Y-m-d H:i:s', time() );
+					$xseen->store( true );
+				}
+				
 				$recipient->state = 2;
 				$recipient->expires = date( 'Y-m-d H:i:s', time()+(10*60*60*60) );
 				if (!$recipient->store()) {
@@ -718,7 +762,7 @@ class plgMembersMessages extends JPlugin
 		
 		$xmr = new XMessageRecipient( $database );
 		$xmr->loadRecord( $mid, $member->get('uidNumber') );
-		
+
 		$xmessage->message = str_replace("\n","\n ",$xmessage->message);
 		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 		$xmessage->message = preg_replace_callback("/$UrlPtrn/", array('plgMembersMessages','autolink'), $xmessage->message);

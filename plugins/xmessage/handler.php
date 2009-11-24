@@ -133,7 +133,7 @@ class plgXMessageHandler extends JPlugin
 			// Load plugins
 			//JPluginHelper::importPlugin( 'xmessage' );
 			$dispatcher =& JDispatcher::getInstance();
-			
+			ximport('xprofile');
 			// Loop through each recipient
 			foreach ($to as $uid) 
 			{
@@ -150,7 +150,12 @@ class plgXMessageHandler extends JPlugin
 				$notify = new XMessageNotify( $database );
 				$methods = $notify->getRecords( $uid, $type );
 
-				$user =& JUser::getInstance($uid);
+				//$user =& JUser::getInstance($uid);
+				$user = new XProfile();
+				$user->load( $uid );
+				if (!$user->get('username')) {
+					continue;
+				}
 				
 				// Do we have any methods?
 				if ($methods) {
