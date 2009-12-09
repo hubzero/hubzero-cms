@@ -25,25 +25,33 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
+abstract class CitationsDownloadAbstract
+{
+	protected $_mime = '';
+	protected $_extension = '';
+	
+	public function setMimeType($mime) 
+	{
+		$this->_mime = trim($mime);
+	}
+	
+	public function getMimeType() 
+	{
+		return $this->_mime;
+	}
+	
+	public function setExtension($ext) 
+	{
+		$this->_extension = trim($ext);
+	}
+	
+	public function getExtension() 
+	{
+		return $this->_extension;
+	}
+	
+	public function format() 
+	{
+		return '';
+	}
 }
-
-jimport('joomla.application.component.helper');
-
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'citations.class.php' );
-require_once( JPATH_COMPONENT.DS.'citations.format.php' );
-require_once( JPATH_COMPONENT.DS.'citations.html.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-
-// Instantiate controller
-$controller = new CitationsController();
-$controller->execute();
-$controller->redirect();
-
-?>
