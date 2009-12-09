@@ -25,57 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (!defined('n')) {
-	define('t',"\t");
-	define('n',"\n");
-	define('br','<br />');
-	define('sp','&#160;');
-	define('a','&amp;');
-}
-
-class CitationsHtml 
+abstract class CitationsFormatAbstract
 {
-	public function shortenText($text, $chars=300, $p=1) 
-	{
-		$text = strip_tags($text);
-		$text = trim($text);
-
-		if (strlen($text) > $chars) {
-			$text = $text.' ';
-			$text = substr($text,0,$chars);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' ...';
-		}
-		if ($text == '') {
-			$text = '...';
-		}
-		if ($p) {
-			$text = '<p>'.$text.'</p>';
-		}
-
-		return $text;
-	}
-
-	//-----------
-
-	public function select($name, $array, $value, $class='')
-	{
-		$out  = '<select name="'.$name.'" id="'.$name.'"';
-		$out .= ($class) ? ' class="'.$class.'">'.n : '>'.n;
-		foreach ($array as $avalue => $alabel) 
-		{
-			$selected = ($avalue == $value || $alabel == $value)
-					  ? ' selected="selected"'
-					  : '';
-			$out .= ' <option value="'.$avalue.'"'.$selected.'>'.$alabel.'</option>'.n;
-		}
-		$out .= '</select>'.n;
-		return $out;
-	}
-	
-	//-----------
-	
-	public function cleanUrl( $url ) 
+	public function cleanUrl($url) 
 	{
 		$url = stripslashes($url);
 		$url = str_replace('&amp;', '&', $url);
@@ -83,5 +35,38 @@ class CitationsHtml
 		
 		return $url;
 	}
+	
+	//-----------
+
+	public function keyExistsOrIsNotEmpty($key,$row)
+	{
+		if (isset($row->$key)) {
+			if ($row->$key != '' && $row->$key != '0') {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	
+	//-----------
+	
+	public function grammarCheck($html, $punct=',') 
+	{
+		if (substr($html,-1) == '"') {
+			$html = substr($html,0,strlen($html)-1).$punct.'"';
+		} else {
+			$html .= $punct;
+		}
+		return $html;
+	}
+	
+	//-----------
+	
+	public function format($row, $link='none')
+	{
+		return '';
+	}
 }
-?>

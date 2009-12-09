@@ -24,26 +24,15 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
-jimport('joomla.application.component.helper');
-
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'citations.class.php' );
-require_once( JPATH_COMPONENT.DS.'citations.format.php' );
-require_once( JPATH_COMPONENT.DS.'citations.html.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-
-// Instantiate controller
-$controller = new CitationsController();
-$controller->execute();
-$controller->redirect();
-
 ?>
+<div id="content-header" class="full">
+	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div class="main section">
+	<p class="warning"><?php echo JText::_('CITATIONS_NOT_LOGGEDIN'); ?></p>
+<?php
+ximport('xmodule');
+XModuleHelper::displayModules('force_mod');
+?>
+</div><!-- / .main section -->
