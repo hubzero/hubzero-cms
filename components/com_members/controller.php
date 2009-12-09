@@ -89,6 +89,8 @@ class MembersController extends JObject
 		return $task;
 	}
 	
+	//-----------
+	
 	private function getView()
 	{
 		$view = strtolower(JRequest::getVar('view', 'members'));
@@ -278,6 +280,9 @@ class MembersController extends JObject
 	protected function view() 
 	{
 		// Build the page title
+		if ($this->_task == 'saveaccess') {
+			$this->_task = 'view';
+		}
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
 		
@@ -299,8 +304,7 @@ class MembersController extends JObject
 		if (!$id) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::error( JText::_('MEMBERS_NO_ID') ), 'main section');
+			JError::raiseError( 404, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
 
@@ -315,8 +319,7 @@ class MembersController extends JObject
 		if (!$profile->get('name') && !$profile->get('surname')) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::error( JText::_('MEMBERS_NOT_FOUND') ), 'main section');
+			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
 		}
 
@@ -324,8 +327,7 @@ class MembersController extends JObject
 		if ($profile->get('public') != 1 && !$authorized) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::locked( JText::_('MEMBERS_NOT_PUBLIC') ), 'main section');
+			JError::raiseError( 403, JText::_('MEMBERS_NOT_PUBLIC') );
 			return;
 		}
 		
@@ -821,11 +823,11 @@ class MembersController extends JObject
 		if ($juser->get('guest')) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo '<div class="main section">'.n;
-			echo MembersHtml::warning( JText::_('MEMBERS_NOT_LOGGEDIN') );
-			echo XModuleHelper::renderModules('force_mod');
-			echo '</div><!-- / .main section -->'.n;
+			jimport('joomla.application.component.view');
+			
+			$view = new JView( array('name'=>'login') );
+			$view->title = $title;
+			$view->display();
 			return;
 		}
 		
@@ -833,8 +835,7 @@ class MembersController extends JObject
 		if (!$id) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::error( JText::_('MEMBERS_NO_ID') ), 'main section' );
+			JError::raiseError( 404, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
 		
@@ -843,8 +844,7 @@ class MembersController extends JObject
 		if (!$authorized) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::warning( JText::_('MEMBERS_NOT_AUTH') ), 'main section' );
+			JError::raiseError( 403, JText::_('MEMBERS_NOT_AUTH') );
 			return;
 		}
 		
@@ -862,8 +862,7 @@ class MembersController extends JObject
 		if (!$profile->get('name') && !$profile->get('surname')) {
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
 			
-			echo MembersHtml::div( MembersHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo MembersHtml::div( MembersHtml::error( JText::_('MEMBERS_NOT_FOUND') ), 'main section' );
+			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
 		}
 		
@@ -1668,6 +1667,12 @@ class MembersController extends JObject
 
 	protected function upload()
 	{
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+		
 		// Load the component config
 		$config = $this->config;
 		
@@ -1775,6 +1780,12 @@ class MembersController extends JObject
 
 	protected function deleteimg()
 	{
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+		
 		// Load the component config
 		$config = $this->config;
 		
