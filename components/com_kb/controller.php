@@ -25,12 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class KbController
+class KbController extends JObject
 {	
 	private $_name  = NULL;
 	private $_data  = array();
 	private $_task  = NULL;
-	private $_error = NULL;
 
 	//-----------
 	
@@ -79,41 +78,20 @@ class KbController
 	
 	public function execute()
 	{
-		$default = 'browse';
+		jimport('joomla.application.component.view');
 		
-		$task = strtolower(JRequest::getVar( 'task', $default ));
+		$this->database = JFactory::getDBO();
 		
-		$thisMethods = $this->get_protected_methods( get_class( $this ) );
-		if (!in_array($task, $thisMethods)) {
-			$task = $default;
-			if (!in_array($task, $thisMethods)) {
-				return JError::raiseError( 404, JText::_('Task ['.$task.'] not found') );
-			}
-		}
+		$this->_task = strtolower(JRequest::getVar( 'task', 'browse' ));
 		
-		$this->_task = $task;
-		$this->$task();
-	}
-	
-	//-----------
-	
-	private function get_protected_methods($className) 
-	{
-		$returnArray = array();
-
-		// Iterate through each method in the class
-		foreach (get_class_methods($className) as $method) 
+		switch ( $this->_task ) 
 		{
-			// Get a reflection object for the class method
-			$reflect = new ReflectionMethod($className, $method);
-			
-			if ($reflect->isProtected()) {
-				// The method is one we're looking for, push it onto the return array
-				array_push($returnArray,$method);
-			}
+			case 'category': $this->category(); break;
+			case 'browse':   $this->browse();   break;
+			case 'article':  $this->article();  break;
+
+			default: $this->browse(); break;
 		}
-		
-		return $returnArray;
 	}
 	
 	//-----------
@@ -125,15 +103,6 @@ class KbController
 			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
 		}
 	}
-
-	//-----------
-	
-	private function getStyles()
-	{
-	    // add the CSS to the template and set the page title
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
 	
 	//----------------------------------------------------------
 	// Views
@@ -141,34 +110,36 @@ class KbController
 
 	protected function browse() 
 	{
-		$database =& JFactory::getDBO();
-		
-		// Add the CSS to the template
-		$this->getStyles();
-		
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $this->_longname );
-		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( $this->_longname,'index.php?option='.$this->_option );
-		}
+		// Instantiate a new view
+		$view = new JView( array('name'=>'browse') );
 		
 		// Get all main categories for menu
-		$noauth = 1; //=! $mainframe->getCfg('shownoauth');
-		$c = new KbCategory( $database );
-		$categories = $c->getCategories( $noauth, 1 );
+		$c = new KbCategory( $this->database );
+		$view->categories = $c->getCategories( 1, 1 );
 
 		// Get the lists of popular and most recent articles
-		$a = new KbArticle( $database );
-		$articles = array();
-		$articles['top'] = $a->getArticles(5, 'a.hits DESC');
-		$articles['new'] = $a->getArticles(5, 'a.created DESC');
+		$a = new KbArticle( $this->database );
+		$view->articles = array();
+		$view->articles['top'] = $a->getArticles(5, 'a.hits DESC');
+		$view->articles['new'] = $a->getArticles(5, 'a.created DESC');
+
+		// Add the CSS to the template
+		$this->_getStyles();
+
+		// Set the pathway
+		$this->_buildPathway(null, null, null);
+
+		// Set the page title
+		$this->_buildTitle(null, null, null);
 
 		// Output HTML
-		echo KbHtml::browse($categories, $articles, $this->_option, $this->_longname);
+		$view->option = $this->_option;
+		$view->title = $this->_longname;
+		$view->catid = 0;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -183,60 +154,52 @@ class KbController
 			$this->browse();
 			return;
 		}
-
-		$database =& JFactory::getDBO();
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'category') );
 
 		// Get the category
-		$category = new KbCategory( $database );
-		$category->loadAlias( $alias );
+		$view->category = new KbCategory( $this->database );
+		$view->category->loadAlias( $alias );
 		
-		$section = new KbCategory( $database );
-		if ($category->section) {
-			$section->load( $category->section );
+		$view->section = new KbCategory( $this->database );
+		if ($view->category->section) {
+			$view->section->load( $view->category->section );
 			
-			$sect = $category->section;
-			$cat  = $category->id;
-			
-			$title = $this->_longname.': '.stripslashes($section->title).': '.stripslashes($category->title);
-			$url = 'index.php?option='.$this->_option.a.'section='.$section->alias.a.'category='.$category->alias;
+			$sect = $view->category->section;
+			$cat  = $view->category->id;
 		} else {
-			$sect = $category->id;
+			$sect = $view->category->id;
 			$cat  = 0;
-			
-			$title = $this->_longname.': '.stripslashes($category->title);
-			$url = 'index.php?option='.$this->_option.a.'section='. $category->alias;
 		}
-		
-		// Add the CSS to the template
-		$this->getStyles();
-		
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( $this->_longname,'index.php?option='.$this->_option );
-		}
-		if ($category->section) {
-			$pathway->addItem( stripslashes($section->title),'index.php?option='.$this->_option.a.'section='. $section->alias );
-		}
-		$pathway->addItem( stripslashes($category->title), $url );
 
 		// Get the list of articles for this category
-		$noauth = 1; //=! $mainframe->getCfg('shownoauth');
-		$kba = new KbArticle( $database );
-		$articles = $kba->getCategoryArticles( $noauth, $sect, $cat, $category->access );
+		$kba = new KbArticle( $this->database );
+		$view->articles = $kba->getCategoryArticles( 1, $sect, $cat, $view->category->access );
 		
 		// Get all main categories for menu
-		$categories = $category->getCategories( $noauth, 1 );
+		$view->categories = $view->category->getCategories( 1, 1 );
 		
 		// Get sub categories
-		$subcategories = $category->getCategories( $noauth, 1, $category->id );
+		$view->subcategories = $view->category->getCategories( 1, 1, $view->category->id );
+		
+		// Add the CSS to the template
+		$this->_getStyles();
+		
+		// Set the pathway
+		$this->_buildPathway($view->section, $view->category, null);
+		
+		// Set the page title
+		$this->_buildTitle($view->section, $view->category, null);
 		
 		// Output HTML
-		echo KbHtml::category( $section, $category, $categories, $subcategories, $articles, $category->id, $this->_option, $this->_longname );
+		$view->option = $this->_option;
+		$view->title = $this->_longname;
+		$view->catid = $sect;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -248,95 +211,154 @@ class KbController
 		$id = JRequest::getVar( 'id', '' );
 		
 		$this->helpful = '';
-
-		$database =& JFactory::getDBO();
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'article') );
 		
 		// Load the article
-		$content = new KbArticle( $database );
+		$view->article = new KbArticle( $this->database );
 
-		if (!empty($alias))
-			$content->loadAlias( $alias );
-		else if (!empty($id))
-			$content->load( $id );
-
-		if (!$content->id) {
-			echo KbHtml::error( JText::_('Article not found.') );
+		if (!empty($alias)) {
+			$view->article->loadAlias( $alias );
+		} else if (!empty($id)) {
+			$view->article->load( $id );
+		}
+	
+		if (!$view->article->id) {
+			JError::raiseError( 404, JText::_('Article not found.') );
 			return;
 		}
 		
-		$content->hit( $content->id );
+		$view->article->hit( $view->article->id );
 
 		// Is the user logged in?
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
 			// Did they click the helpful link?
-			$this->helpful( $content->id );
+			$this->_helpful( $view->article->id );
 		}
 		
 		// Load the category object
-		$section = new KbCategory( $database );
-		$section->load( $content->section );
+		$view->section = new KbCategory( $this->database );
+		$view->section->load( $view->article->section );
 		
 		// Load the category object
-		$category = new KbCategory( $database );
-		if ($content->category) {
-			$category->load( $content->category );
+		$view->category = new KbCategory( $this->database );
+		if ($view->article->category) {
+			$view->category->load( $view->article->category );
 		}
-		
-		// Add the CSS to the template
-		$this->getStyles();
-		
-		$title  = $this->_longname;
-		$title .= ': '.stripslashes($section->title);
-		$title .= ($category->title) ? ': '.stripslashes($category->title) : '';
-		$title .= ': '.stripslashes($content->title);
-		
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( $this->_longname,'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( stripslashes($section->title),'index.php?option='.$this->_option.a.'section='. $section->alias );
 		
 		// Get all main categories for menu
-		$noauth = 1; //=! $mainframe->getCfg('shownoauth');
-		$categories = $category->getCategories( $noauth, 1 );
+		$view->categories = $view->category->getCategories( 1, 1 );
 		
-		// Load item's parent category
-		// this will only happen if their parent is a sub-category
-		if ($content->category) {
-			$pathway->addItem( stripslashes($category->title),'index.php?option='.$this->_option.a.'section='. $section->alias.a.'category='. $category->alias );
-		}
-
-		$pathway->addItem( stripslashes($content->title),'index.php?option='.$this->_option.a.'section='. $section->alias.a.'category='. $category->alias.a.'article='. $content->alias );
+		// Add the CSS to the template
+		$this->_getStyles();
+		
+		// Set the pathway
+		$this->_buildPathway($view->section, $view->category, $view->article);
+		
+		// Set the page title
+		$this->_buildTitle($view->section, $view->category, $view->article);
 		
 		// Output HTML
-		echo KbHtml::article( $content, $section, $category, $categories, $content->id, $this->_option, $juser, $this->helpful, $this->_longname );
+		$view->option = $this->_option;
+		$view->title = $this->_longname;
+		$view->juser = $juser;
+		$view->helpful = $this->helpful;
+		$view->catid = $view->section->id;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//----------------------------------------------------------
-	// Misc Functions
+	// Private Functions
 	//----------------------------------------------------------
+	
+	private function _getStyles()
+	{
+	    // add the CSS to the template and set the page title
+		ximport('xdocument');
+		XDocument::addComponentStylesheet($this->_option);
+	}
+	
+	//-----------
 
-	private function helpful( $id )
+	private function _buildPathway($section=null, $category=null, $article=null) 
+	{
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(
+				JText::_('COMPONENT_LONG_NAME'),
+				'index.php?option='.$this->_option
+			);
+		}
+		if (is_object($section) && $section->alias) {
+			$pathway->addItem(
+				stripslashes($section->title),
+				'index.php?option='.$this->_option.'&section='.$section->alias
+			);
+		}
+		if (is_object($category) && $category->alias) {
+			$lnk  = 'index.php?option='.$this->_option;
+			$lnk .= (is_object($section) && $section->alias) ? '&section='.$section->alias : '';
+			$lnk .= '&category='.$category->alias;
+			
+			$pathway->addItem(
+				stripslashes($category->title),
+				$lnk
+			);
+		}
+		if (is_object($article) && $article->alias) {
+			$lnk = 'index.php?option='.$this->_option.'&section='.$section->alias;
+			if (is_object($category) && $category->alias) {
+				$lnk .= '&category='.$category->alias;
+			}
+			$lnk .= '&alias='.$article->alias;
+			
+			$pathway->addItem(
+				stripslashes($article->title),
+				$lnk
+			);
+		}
+	}
+	
+	//-----------
+	
+	private function _buildTitle($section=null, $category=null, $article=null) 
+	{
+		$title = JText::_('COMPONENT_LONG_NAME');
+		if (is_object($section)) {
+			$title .= ': '.stripslashes($section->title);
+		}
+		if (is_object($category)) {
+			$title .= ': '.stripslashes($category->title);
+		}
+		if (is_object($article)) {
+			$title .= ': '.stripslashes($article->title);
+		}
+		$document =& JFactory::getDocument();
+		$document->setTitle( $title );
+	}
+
+	//-----------
+
+	private function _helpful( $id )
 	{	
 		// Get the user's IP address
-		$ip = $this->ipAddress();
+		$ip = $this->_ipAddress();
 	
-		$database =& JFactory::getDBO();
-		
 		// See if a person from this IP has already voted
-		$h = new KbHelpful( $database );
+		$h = new KbHelpful( $this->database );
 		$result = $h->getHelpful( $id, $ip );
 		
 		if ($result) {
 			// Already voted
 			$this->helpful = ($result == 'yes') ? JText::_('HELPFUL') : JText::_('NOT_HELPFUL');
-			$this->_error = JText::_('USER_ALREADY_VOTED');
+			$this->setError( JText::_('USER_ALREADY_VOTED') );
 			return;
 		}
 	
@@ -346,7 +368,7 @@ class KbController
 		// Did they vote?
 		if ($helpful && ($helpful == 'yes' || $helpful == 'no')) {
 			// Load the resource
-			$row = new KbArticle( $database );
+			$row = new KbArticle( $this->database );
 			$row->load( $id );
 
 			// Record if it was helpful or not
@@ -357,7 +379,7 @@ class KbController
 			}
 
 			if (!$row->store()) {
-				$this->_error = $row->getError();
+				$this->setError( $row->getError() );
 				return;
 			}
 
@@ -370,11 +392,11 @@ class KbController
 
 			$h->bind( $params );
 			if (!$h->check()) {
-				$this->_error = $h->getError();
+				$this->setError( $h->getError() );
 				return;
 			}
 			if (!$h->store()) {
-				$this->_error = $h->getError();
+				$this->setError( $h->getError() );
 				return;
 			}
 
@@ -384,7 +406,7 @@ class KbController
 	
 	//-----------
 
-	private function server($index = '')
+	private function _server($index = '')
 	{		
 		if (!isset($_SERVER[$index])) {
 			return FALSE;
@@ -395,22 +417,22 @@ class KbController
 	
 	//-----------
 	
-	private function validIp($ip)
+	private function _validIp($ip)
 	{
 		return (!preg_match( "/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? false : true;
 	}
 	
 	//-----------
 
-	private function ipAddress()
+	private function _ipAddress()
 	{
-		if ($this->server('REMOTE_ADDR') AND $this->server('HTTP_CLIENT_IP')) {
+		if ($this->_server('REMOTE_ADDR') AND $this->_server('HTTP_CLIENT_IP')) {
 			 $ip_address = $_SERVER['HTTP_CLIENT_IP'];
-		} elseif ($this->server('REMOTE_ADDR')) {
+		} elseif ($this->_server('REMOTE_ADDR')) {
 			 $ip_address = $_SERVER['REMOTE_ADDR'];
-		} elseif ($this->server('HTTP_CLIENT_IP')) {
+		} elseif ($this->_server('HTTP_CLIENT_IP')) {
 			 $ip_address = $_SERVER['HTTP_CLIENT_IP'];
-		} elseif ($this->server('HTTP_X_FORWARDED_FOR')) {
+		} elseif ($this->_server('HTTP_X_FORWARDED_FOR')) {
 			 $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
 		}
 		
@@ -424,7 +446,7 @@ class KbController
 			$ip_address = end($x);
 		}
 		
-		if (!$this->validIp($ip_address)) {
+		if (!$this->_validIp($ip_address)) {
 			$ip_address = '0.0.0.0';
 		}
 				
