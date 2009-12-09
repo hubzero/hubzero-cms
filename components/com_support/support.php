@@ -29,17 +29,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $config = JFactory::getConfig();
 
-//if ($config->getValue('config.debug')) {
+if ($config->getValue('config.debug')) {
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
-//}
+}
 
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.config.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.ticket.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.comment.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.message.php' );
-//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.section.php' );
-//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.category.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.resolution.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.utils.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.attachment.php' );
