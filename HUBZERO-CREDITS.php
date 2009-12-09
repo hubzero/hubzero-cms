@@ -221,4 +221,19 @@ defined('_JEXEC') or die( 'Restricted access' );
  * @copyright   Copyright 2003 Tomasz Wegrzanowski
  * @file		plugins/xlibrary/xlibraries/wiki/math/math.php
  *
+ * Javascript - Flash Player Version Detection
+ *
+ * @package 	Javascript - Flash Player Version Detection
+ * @copyright	Copyright 2005-2007 Adobe Systems Incorporated.  All rights reserved.
+ * @file		modules/mod_slideshow/images/AC_RunActiveContent.js
+ *
+ * Flash - Tweener
+ *
+ * @package		Tweener
+ * @author		Zeh Fernando, Nate Chatellier, Arthur Debert
+ * @version		1.31.71
+ * @copyright	Copyright (c) 2006-2007 Zeh Fernando and Nate Chatellier
+ * @license		Licensed under the MIT License
+ * @link		http://code.google.com/p/tweener/
+ *
  */
