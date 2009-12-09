@@ -74,18 +74,13 @@ class TagsController extends JObject
 	
 	//-----------
 	
-	private function getTask()
-	{
-		$task = strtolower(JRequest::getVar('task', ''));
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-	
 	public function execute()
 	{	
-		switch ( $this->getTask() ) 
+		$this->database = JFactory::getDBO();
+		
+		$this->_task = strtolower(JRequest::getVar('task', ''));
+		
+		switch ( $this->_task ) 
 		{
 			case 'autocomplete': $this->autocomplete(); break;
 			case 'cancel': $this->cancel(); break;
@@ -95,11 +90,12 @@ class TagsController extends JObject
 			case 'delete': $this->delete(); break;
 			case 'view':   $this->view();   break;
 			case 'browse': $this->browse(); break;
-			case 'cloud':  $this->cloud();  break;
+			case 'cloud':  $this->intro();  break;
+			case 'intro':  $this->intro();  break;
 			case 'feed':   $this->feed();   break;
 			case 'feed.rss': $this->feed(); break;
 
-			default: $this->cloud(); break;
+			default: $this->intro(); break;
 		}
 	}
 	
@@ -113,148 +109,74 @@ class TagsController extends JObject
 		}
 	}
 
-	//-----------
-	
-	private function getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-
-	//-----------
-	
-	private function getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-		}
-	}
-
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 	
-	/*protected function intro()
+	protected function intro() 
 	{
-		// Build the page title
-		$title = JText::_(strtoupper($this->_name));
-		
-		// Write title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-		}
-
-		// Push some styles to the template
-		$this->getStyles();
-		
-		$database =& JFactory::getDBO();
-		
-
+		// Instantiate a new view
 		jimport( 'joomla.application.component.view');
 
-		// Output HTML
 		$view = new JView( array('name'=>'intro') );
-		$view->title = $title;
-		$view->groups = $popular;
+		$view->title = JText::_(strtoupper($this->_name));
+		$view->showsizes = 0;
 		$view->config = $this->config;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();
-	}*/
-	
-	//-----------
-	
-	protected function cloud() 
-	{
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)) );
-		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-		}
-		
-		// Push some styles to the template
-		$this->getStyles();
 		
 		// Set some variables
-		$min_font_size = 1;
-		$max_font_size = 1.8;
+		$view->min_font_size = 1;
+		$view->max_font_size = 1.8;
 		
 		// Check authorization
-		$authorized = $this->_authorize();
+		$view->authorized = $this->_authorize();
 		
 		// Find all tags
-		$database =& JFactory::getDBO();
-		$t = new TagsTag( $database );
-		//$tags = $t->getAllTags( $authorized );
-		$tags = $t->getTopTags( 100 );
+		$t = new TagsTag( $this->database );
+
+		$view->tags = $t->getTopTags( 100 );
 		
-		$newtags = $t->getRecentTags( 25 );
+		$view->newtags = $t->getRecentTags( 25 );
 		
 		// Load plugins
 		JPluginHelper::importPlugin('tags');
 		$dispatcher =& JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
-		$categories= array();
-		$tagpile = array();
-		/*$areas = $dispatcher->trigger( 'onTagAreas' );
-		foreach ($areas as $a) 
-		{
-			$tagpile[key($a)] = $t->getTopTags( 25, key($a) );
-			$categories[key($a)] = (is_array(end($a))) ? ucfirst(key($a)) : end($a);
-		}*/
+		$view->categories = array();
+		$view->tagpile = array();
 		
-		$retarr = array();
-		if ($tags) {
-			foreach ($tags as $tag)
+		if ($view->tags) {
+			$retarr = array();
+			foreach ($view->tags as $tag)
 			{
 				$retarr[$tag->raw_tag] = $tag->tcount;
 			}
 			ksort($retarr);
 
-			$max_qty = max(array_values($retarr));  // Get the max qty of tagged objects in the set
-			$min_qty = min(array_values($retarr));  // Get the min qty of tagged objects in the set
+			$view->max_qty = max(array_values($retarr));  // Get the max qty of tagged objects in the set
+			$view->min_qty = min(array_values($retarr));  // Get the min qty of tagged objects in the set
 		} else {
-			$max_qty = 0;
-			$min_qty = 0;
+			$view->max_qty = 0;
+			$view->min_qty = 0;
 		}
 
 		// For ever additional tagged object from min to max, we add $step to the font size.
-		$spread = $max_qty - $min_qty;
+		$spread = $view->max_qty - $view->min_qty;
 		if (0 == $spread) { // Divide by zero
 			$spread = 1;
 		}
-		$step = ($max_font_size - $min_font_size)/($spread);
+		$view->step = ($view->max_font_size - $view->min_font_size)/($spread);
+
+		// Set the page title
+		$this->_buildTitle(null);
+		
+		// Set the pathway
+		$this->_buildPathway(null);
+		
+		// Push some styles to the template
+		$this->_getStyles();
 
 		// Output HTML
-		//echo TagsHtml::cloud($this->_option, $tags, 0, $min_font_size, $max_font_size, $min_qty, $step, $tagpile, $categories, $newtags);
-		jimport( 'joomla.application.component.view');
-
-		// Output HTML
-		$view = new JView( array('name'=>'intro') );
-		$view->title = JText::_(strtoupper($this->_name));
-		$view->tags = $tags;
-		$view->showsizes = 0;
-		$view->min_font_size = $min_font_size;
-		$view->max_font_size = $max_font_size;
-		$view->min_qty = $min_qty;
-		$view->step = $step;
-		$view->tagpile = $tagpile;
-		$view->categories = $categories;
-		$view->newtags = $newtags;
-		$view->config = $this->config;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -265,15 +187,7 @@ class TagsController extends JObject
 
 	protected function view()
 	{
-		$database =& JFactory::getDBO();
-		
 		$title = JText::_(strtoupper($this->_name));
-		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-		}
 		
 		// Incoming
 		$tagstring = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
@@ -282,11 +196,7 @@ class TagsController extends JObject
 		
 		// Ensure we were passed a tag
 		if (!$tagstring && !$addtag) {
-			$document =& JFactory::getDocument();
-			$document->setTitle( $title );
-			
-			echo TagsHtml::div( TagsHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo TagsHtml::div( TagsHtml::error( JText::_('TAGS_NO_TAG') ), 'main section' );
+			JError::raiseError( 404, JText::_('TAGS_NO_TAG') );
 			return;
 		}
 		
@@ -304,7 +214,7 @@ class TagsController extends JObject
 		}
 
 		// Sanitize the tag
-		$t = new Tags( $database );
+		$t = new Tags( $this->database );
 		
 		$tags = array();
 		$added = array();
@@ -319,7 +229,7 @@ class TagsController extends JObject
 			$added[] = $tag;
 			
 			// Load the tag
-			$tagobj = new TagsTag( $database );
+			$tagobj = new TagsTag( $this->database );
 			$tagobj->loadTag( $tag );
 
 			// Ensure we loaded the tag's info from the database
@@ -330,11 +240,7 @@ class TagsController extends JObject
 
 		// Ensure we loaded the tag's info from the database
 		if (empty($tags)) {
-			$document =& JFactory::getDocument();
-			$document->setTitle( $title );
-			
-			echo TagsHtml::div( TagsHtml::hed( 2, $title ), 'full', 'content-header' );
-			echo TagsHtml::div( TagsHtml::error( JText::_('TAGS_NOT_FOUND') ), 'main section' );
+			JError::raiseError( 404, JText::_('TAGS_NOT_FOUND') );
 			return;
 		}
 	
@@ -354,13 +260,6 @@ class TagsController extends JObject
 			$tagstring[] = $tags[$i]->tag;
 			$title .= $tags[$i]->raw_tag.' ';
 		}
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		$pathway->addItem(implode(' + ',$tagname),'index.php?option='.$this->_option.a.'tag='.implode('+',$tagstring));
-		
-		// Push some styles to the template
-		$this->getStyles();
 		
 		// Load plugins
 		JPluginHelper::importPlugin('tags');
@@ -407,7 +306,7 @@ class TagsController extends JObject
 				$sort,
 				$activeareas)
 			);
-		
+
 		// Get the total results found (sum of all categories)
 		$i = 0;
 		$total = 0;
@@ -457,26 +356,59 @@ class TagsController extends JObject
 		
 		$related = null;
 		if (count($tags) == 1) {
-			//$related = $tags[0]->getRelatedTags();
+			$tagstring = $tags[0]->tag;
+		} else {
+			$tagstring = array();
+			foreach ($tags as $tag) 
+			{
+				$tagstring[] = $tag->tag;
+			}
+			$tagstring = implode('+',$tagstring);
 		}
 		
+		// Set the pathway
+		$this->_buildPathway($tags);
+
+		// Set the page title
+		$this->_buildTitle($tags);
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
 		// Output HTML
-		echo TagsHtml::view( $title, $authorized, $tags, $this->_option, $totals, $results, $cats, $active, $limitstart, $limit, $sort, $total, $related );
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'tag') );
+		$view->title = $title;
+		$view->authorized = $authorized;
+		$view->tags = $tags;
+		$view->option = $this->_option;
+		$view->totals = $totals;
+		$view->results = $results;
+		$view->cats = $cats;
+		$view->active = $active;
+		$view->limitstart = $limitstart;
+		$view->limit = $limit;
+		$view->sort = $sort;
+		$view->total = $total;
+		$view->tagstring = $tagstring;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
 
 	protected function autocomplete() 
 	{
-		$database =& JFactory::getDBO();
-		
 		$filters = array();
 		$filters['limit']  = 20;
 		$filters['start']  = 0;
 		$filters['search'] = trim(JRequest::getString( 'value', '' ));
 		
 		// Create a Tag object
-		$obj = new TagsTag( $database );
+		$obj = new TagsTag( $this->database );
 		
 		// Fetch results
 		$rows = $obj->getAutocomplete( $filters );
@@ -500,8 +432,7 @@ class TagsController extends JObject
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php');
 		
 		global $mainframe;
-		$database =& JFactory::getDBO();
-		
+
 		// Set the mime encoding for the document
 		$jdoc =& JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
@@ -524,7 +455,7 @@ class TagsController extends JObject
 		$tgs = explode(' ', $tagstring);
 		
 		// Sanitize the tag
-		$t = new Tags( $database );
+		$t = new Tags( $this->database );
 		
 		$tags = array();
 		foreach ($tgs as $tag) 
@@ -532,7 +463,7 @@ class TagsController extends JObject
 			$tag = $t->normalize_tag( $tag );
 			
 			// Load the tag
-			$tagobj = new TagsTag( $database );
+			$tagobj = new TagsTag( $this->database );
 			$tagobj->loadTag( $tag );
 
 			// Ensure we loaded the tag's info from the database
@@ -565,7 +496,7 @@ class TagsController extends JObject
 			{
 				$t[] = $tag->tag;
 			}
-			$url = JRoute::_('index.php?option='.$this->_option.a.'tag='.implode('+',$t));
+			$url = JRoute::_('index.php?option='.$this->_option.'&tag='.implode('+',$t));
 			$this->_redirect = str_replace('%20','+',$url);
 			return;
 		}
@@ -631,7 +562,7 @@ class TagsController extends JObject
 				@$date = ( $row->publis_up ? date( 'r', strtotime($row->publish_up) ) : '' );
 
 				if (isset($row->ranking) || isset($row->rating)) {
-					$resourceEx = new ResourceExtended($row->id, $database);
+					$resourceEx = new ResourceExtended($row->id, $this->database);
 					$resourceEx->getCitationsCount();
 					$resourceEx->getLastCitationDate();
 					$resourceEx->getContributors();
@@ -663,52 +594,52 @@ class TagsController extends JObject
 
 	protected function browse()
 	{
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)) .': '. JText::_(strtoupper($this->_task)) );
-		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-		}
-		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'task='.$this->_task);
-		
-		// Push some styles to the template
-		$this->getStyles();
+		// Instantiate a new view
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'browse') );
+		$view->option = $this->_option;
+		$view->title = JText::_(strtoupper($this->_name)) .': '. JText::_(strtoupper($this->_task));
 		
 		// Check that the user is authorized
-		/*if (!$this->_authorize()) {
-			JError::raiseWarning( 404, JText::_('ALERTNOTAUTH') );
-			return;
-		}*/
-		$authorized = $this->_authorize();
+		$view->authorized = $this->_authorize();
 		
 		// Get configuration
 		$config = JFactory::getConfig();
 		
 		// Incoming
-		$filters = array();
-		$filters['start']  = JRequest::getInt('limitstart', 0);
-		$filters['search'] = urldecode(JRequest::getString('search'));
+		$view->filters = array();
+		$view->filters['start']  = JRequest::getInt('limitstart', 0);
+		$view->filters['search'] = urldecode(JRequest::getString('search'));
 		
-		$database =& JFactory::getDBO();
-		$t = new TagsTag( $database );
+		$t = new TagsTag( $this->database );
 
 		// Record count
-		$total = $t->getCount( $filters );
+		$total = $t->getCount( $view->filters );
 		
-		$filters['limit']  = JRequest::getInt('limit', $config->getValue('config.list_limit'));
+		$view->filters['limit']  = JRequest::getInt('limit', $config->getValue('config.list_limit'));
 		
 		// Get records
-		$rows = $t->getRecords( $filters );
+		$view->rows = $t->getRecords( $view->filters );
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $total, $view->filters['start'], $view->filters['limit'] );
+
+		// Set the pathway
+		$this->_buildPathway();
+
+		// Set the page title
+		$this->_buildTitle();
+		
+		// Push some styles to the template
+		$this->_getStyles();
 
 		// Output HTML
-		echo TagsHtml::browse( $rows, $pageNav, $this->_option, $total, $filters, $authorized );
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -733,35 +664,37 @@ class TagsController extends JObject
 		
 		// Load a tag object if one doesn't already exist
 		if (!$tag) {
-			$database =& JFactory::getDBO();
-			
-			$tag = new TagsTag( $database );
+			$tag = new TagsTag( $this->database );
 			$tag->load( $id );
 		}
 		
+		// Set the pathway
+		$this->_buildPathway();
+
 		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) );
-		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-		}
-		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'task='.$this->_task);
+		$this->_buildTitle();
 		
 		// Push some styles to the template
-		$this->getStyles();
+		$this->_getStyles();
 		
 		// Output HTML
-		echo TagsHtml::edit( JText::_(ucfirst($this->_task)), $tag, $this->_option, $this->getError() );
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'edit') );
+		$view->option = $this->_option;
+		$view->title = JText::_(strtoupper($this->_name)) .': '. JText::_(strtoupper($this->_task));
+		$view->tag = $tag;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
 
 	protected function cancel()
 	{
-		$return = JRequest::getVar('return', 'index.php?option='.$this->_option.a.'task=browse', 'get');
+		$return = JRequest::getVar('return', 'index.php?option='.$this->_option.'&task=browse', 'get');
 		$this->_redirect = JRoute::_( $return );
 	}
 
@@ -769,9 +702,7 @@ class TagsController extends JObject
 
 	protected function save()
 	{
-		$database =& JFactory::getDBO();
-
-		$row = new TagsTag( $database );
+		$row = new TagsTag( $this->database );
 		if (!$row->bind( $_POST )) {
 			$this->setError( $row->getError() );
 			$this->edit($row);
@@ -806,8 +737,7 @@ class TagsController extends JObject
 			return;
 		}
 	
-		$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.a.'task=browse' );
-		//$this->_message = JText::_( 'TAG_SAVED' );
+		$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=browse' );
 	}
 
 	//-----------
@@ -828,7 +758,7 @@ class TagsController extends JObject
 		
 		// Make sure we have an ID
 		if (empty($ids)) {
-			$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.a.'task=browse' );
+			$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=browse' );
 			return;
 		}
 		
@@ -836,20 +766,17 @@ class TagsController extends JObject
 		JPluginHelper::importPlugin('tags');
 		$dispatcher =& JDispatcher::getInstance();
 		
-		$database =& JFactory::getDBO();
-		
 		foreach ($ids as $id) 
 		{
 			// Remove references to the tag
 			$dispatcher->trigger( 'onTagDelete', array($id) );
 			
 			// Remove the tag
-			$tag = new TagsTag( $database );
+			$tag = new TagsTag( $this->database );
 			$tag->delete( $id );
 		}
 	
-		$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.a.'task=browse' );
-		$this->_message = JText::_( 'TAG_REMOVED' );
+		$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=browse' );
 	}
 	
 	//----------------------------------------------------------
@@ -868,17 +795,83 @@ class TagsController extends JObject
 		if ($juser->authorize($this->_option, 'manage')) {
 			return true;
 		}
-	
-		// Check if they're a site admin (from LDAP)
-		$xuser =& XFactory::getUser();
-		if (is_object($xuser)) {
-			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-				return true;
-			}
-		}
 
 		return false;
+	}
+	
+	//-----------
+	
+	private function _getStyles() 
+	{
+		ximport('xdocument');
+		XDocument::addComponentStylesheet($this->_option);
+	}
+
+	//-----------
+	
+	private function _getScripts()
+	{
+		$document =& JFactory::getDocument();
+		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
+			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
+		}
+	}
+	
+	//-----------
+
+	private function _buildPathway($tags=null) 
+	{
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(
+				JText::_(strtoupper($this->_name)),
+				'index.php?option='.$this->_option
+			);
+		}
+		if ($this->_task != 'view') {
+			$pathway->addItem(
+				JText::_(strtoupper($this->_task)),
+				'index.php?option='.$this->_option.'&task='.$this->_task
+			);
+		}
+		if (is_array($tags) && count($tags) > 0) {
+			$t = array();
+			$l = array();
+			foreach ($tags as $tag) 
+			{
+				$t[] = stripslashes($tag->raw_tag);
+				$l[] = $tag->tag;
+			}
+			$title = implode(' + ',$t);
+			$lnk = implode('+',$l);
+			$pathway->addItem(
+				$title,
+				'index.php?option='.$this->_option.'&tag='.$lnk
+			);
+		}
+	}
+	
+	//-----------
+	
+	private function _buildTitle($tags=null) 
+	{
+		$title = JText::_(strtoupper($this->_name));
+		if ($this->_task != 'view') {
+			$title .= ': '.JText::_(strtoupper($this->_task));
+		}
+		if (is_array($tags) && count($tags) > 0) {
+			$title .= ': ';
+			$t = array();
+			foreach ($tags as $tag) 
+			{
+				$t[] = stripslashes($tag->raw_tag);
+			}
+			$title .= implode(' + ',$t);
+		}
+		$document =& JFactory::getDocument();
+		$document->setTitle( $title );
 	}
 }
 ?>
