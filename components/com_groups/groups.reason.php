@@ -39,14 +39,14 @@ class GroupsReason extends JTable
 	
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__xgroups_reasons', 'id', $db );
 	}
 	
 	//-----------
 	
-	function loadReason( $uid, $gid ) 
+	public function loadReason( $uid, $gid ) 
 	{
 		if ($uid === NULL || $gid === NULL) {
 			return false;
@@ -62,7 +62,7 @@ class GroupsReason extends JTable
 	
 	//-----------
 
-	function deleteReason( $uid, $gid ) 
+	public function deleteReason( $uid, $gid ) 
 	{
 		if ($uid === NULL || $gid === NULL) {
 			return false;
@@ -77,7 +77,7 @@ class GroupsReason extends JTable
 
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->gidNumber ) == '') {
 			$this->setError( JText::_('GROUPS_REASON_MUST_HAVE_GROUPID') );

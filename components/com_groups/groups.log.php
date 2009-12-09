@@ -41,14 +41,14 @@ class XGroupLog extends JTable
 	
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__xgroups_log', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->gid ) == '') {
 			$this->setError( JText::_('GROUPS_LOGS_MUST_HAVE_GROUP_ID') );
@@ -65,7 +65,7 @@ class XGroupLog extends JTable
 	
 	//-----------
 	
-	function getLogs( $gid=null, $limit=5 ) 
+	public function getLogs( $gid=null, $limit=5 ) 
 	{
 		if (!$gid) {
 			$gid = $this->gid;
@@ -85,7 +85,7 @@ class XGroupLog extends JTable
 	
 	//-----------
 	
-	function getLog( $gid=null, $which='first' ) 
+	public function getLog( $gid=null, $which='first' ) 
 	{
 		if (!$gid) {
 			$gid = $this->gid;
@@ -112,7 +112,7 @@ class XGroupLog extends JTable
 	
 	//-----------
 	
-	function deleteLogs( $gid=null ) 
+	public function deleteLogs( $gid=null ) 
 	{
 		if (!$gid) {
 			$gid = $this->gid;
@@ -130,7 +130,7 @@ class XGroupLog extends JTable
 	
 	//-----------
 	
-	function logCount( $gid=null, $action='' ) 
+	public function logCount( $gid=null, $action='' ) 
 	{
 		if (!$gid) {
 			$gid = $this->gid;

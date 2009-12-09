@@ -187,9 +187,17 @@ class GroupsController extends JObject
 			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
 		}
 		
+		$this->setError( JText::_('GROUPS_NOT_CONFIGURED') );
+		
+		jimport( 'joomla.application.component.view');
+
 		// Output HTML
-		echo GroupsHtml::div( GroupsHtml::hed( 2, JText::_(strtoupper($this->_name)) ), 'full', 'content-header');
-		echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NOT_CONFIGURED') ), 'main section');
+		$view = new JView( array('name'=>'error') );
+		$view->title = JText::_(strtoupper($this->_name));
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -198,12 +206,14 @@ class GroupsController extends JObject
 	{
 		$title = ($title) ? $title : JText::_(strtoupper($this->_name));
 		
-		$html  = GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-		$h  = GroupsHtml::warning( JText::_('GROUPS_NOT_LOGGEDIN') );
-		$h .= XModuleHelper::renderModules('force_mod');
-		$html .= GroupsHtml::div( $h, 'main section');
-		
-		echo $html;
+		jimport( 'joomla.application.component.view');
+
+		$view = new JView( array('name'=>'login') );
+		$view->title = $title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -317,14 +327,20 @@ class GroupsController extends JObject
 		}
 		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'task='.$this->_task);
 
-		// Are there any errors?
-		$errors = '';
-		if ($this->getError()) {
-			$errors = implode(n.'<br />',$this->getErrors());
-		}
+		jimport( 'joomla.application.component.view');
 
 		// Output HTML
-		echo GroupsHtml::browse( $this->_option, $groups, $authorized, $title, $pageNav, $filters, $errors );
+		$view = new JView( array('name'=>'browse') );
+		$view->title = $title;
+		$view->option = $this->_option;
+		$view->groups = $groups;
+		$view->authorized = $authorized;
+		$view->pageNav = $pageNav;
+		$view->filters = $filters;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -333,8 +349,7 @@ class GroupsController extends JObject
 	{
 		// Ensure we have a group to work with
 		if ($this->gid == '') {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_ID') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_ID') );
 			return;
 		}
 
@@ -345,8 +360,7 @@ class GroupsController extends JObject
 		
 		// Ensure we found the group info
 		if (!$group->get('gidNumber') && !$group->get('cn')) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_FOUND') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
 
@@ -446,6 +460,8 @@ class GroupsController extends JObject
 				array($tab))
 			);
 
+		jimport( 'joomla.application.component.view');
+		
 		$juser =& JFactory::getUser();
 		
 		// Show a login prompt if the group is restricted or private and the user isn't logged in
@@ -454,15 +470,30 @@ class GroupsController extends JObject
 		} else {
 			// Logged in user - does the user have authority to view this group?
 			if ($group->get('privacy') > 1 && !$authorized) {
-				echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-				echo GroupsHtml::div( GroupsHtml::error( JText::_('You must be a member of this group to view its content.') ), 'main section');
+				$view = new JView( array('name'=>'error') );
+				$view->title = $title;
+				$view->setError( JText::_('You must be a member of this group to view its content.') );
+				$view->display();
 				return;
 			}
 		}
 
 		// Add the default "About" section to the beginning of the lists
 		if ($tab == 'overview') {
-			$body = GroupsHtml::overview( $sections, $cats, $this->_option, $group, $juser->get('id'), $authorized, $ismember, $public_desc, $private_desc, $this->getError() );
+			$view = new JView( array('name'=>'view', 'layout'=>'overview') );
+			$view->option = $this->_option;
+			$view->group = $group;
+			$view->authorized = $authorized;
+			$view->cats = $cats;
+			$view->sections = $sections;
+			$view->ismember = $ismember;
+			$view->public_desc = $public_desc;
+			$view->private_desc = $private_desc;
+			$view->juser = $juser;
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$body = $view->loadTemplate();
 		} else {
 			$body = '';
 		}
@@ -474,7 +505,17 @@ class GroupsController extends JObject
 		array_unshift($sections, array('html'=>$body,'metadata'=>''));
 
 		// Output HTML
-		echo GroupsHtml::view( $group, $authorized, $this->_option, $cats, $sections, $tab );
+		$view = new JView( array('name'=>'view') );
+		$view->option = $this->_option;
+		$view->group = $group;
+		$view->authorized = $authorized;
+		$view->cats = $cats;
+		$view->sections = $sections;
+		$view->tab = $tab;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//----------------------------------------------------------
@@ -499,8 +540,7 @@ class GroupsController extends JObject
 
 		// Ensure we have a group to work with
 		if (!$this->gid) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_ID') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_ID') );
 			return;
 		}
 
@@ -510,8 +550,7 @@ class GroupsController extends JObject
 
 		// Ensure we found the group info
 		if (!$group) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_FOUND') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
 		
@@ -555,7 +594,17 @@ class GroupsController extends JObject
 			break;
 			case 1:
 				// Restricted membership - show a form for the user to explain why they should be a member
-				echo GroupsHtml::join( $this->_option, $title, $group );
+				jimport('joomla.application.component.view');
+
+				// Output HTML
+				$view = new JView( array('name'=>'join') );
+				$view->option = $this->_option;
+				$view->title = $title;
+				$view->group = $group;
+				if ($this->getError()) {
+					$view->setError( $this->getError() );
+				}
+				$view->display();
 			break;
 			case 0:
 			default:
@@ -586,8 +635,7 @@ class GroupsController extends JObject
 
 		// Ensure we have a group to work with
 		if (!$this->gid) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_ID') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_ID') );
 			return;
 		}
 		
@@ -597,8 +645,7 @@ class GroupsController extends JObject
 
 		// Ensure we found the group info
 		if (!$group) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_FOUND') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
 		
@@ -640,7 +687,6 @@ class GroupsController extends JObject
 		$message .= t.' '.JText::_('GROUP').': '. $group->get('description') .' ('.$group->get('cn').')'.r.n;
 		$message .= t.' '.JText::_('GROUPS_MEMBERSHIP_CANCELLED').':'.r.n;
 		$message .= t.t.$juser->get('name');
-		//$message .= ($xuser->get('org')) ? ' / '. $xuser->get('org') : '';
 		$message .= r.n;
 		$message .= t.t. $juser->get('username') .' ('. $juser->get('email') . ')'.r.n.r.n;
 		$message .= JText::_('GROUPS_USE_LINK_TO_REVIEW_MEMBERSHIPS').r.n;
@@ -666,26 +712,6 @@ class GroupsController extends JObject
 		$from['email'] = $jconfig->getValue('config.mailfrom');
 
 		// E-mail the administrator
-		/*if (!$this->email($emailadmin, $subject, $message, $from)) {
-			$success = false;
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_ADMIN_FAILED') );
-		}
-		
-		// Do we have manager e-mails?
-		if (count($emailmanagers) > 0) {
-			// We do, so e-mail them
-			foreach ($emailmanagers as $email) 
-			{
-				if (!$this->email($email, $subject, $message, $from)) {
-					$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') );
-				}
-			}
-		}
-		
-		ximport('xmessage');
-		if (!XMessageHelper::sendMessage( $type, $subject, $message, $from, $group->get('managers') )) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED').' '.$emailadmin );
-		}*/
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $message, $from, $group->get('managers'), $this->_option ))) {
@@ -719,8 +745,7 @@ class GroupsController extends JObject
 		}
 		// Ensure we have a group to work with
 		if (!$this->gid) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_ID') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_ID') );
 			return;
 		}
 		
@@ -730,8 +755,7 @@ class GroupsController extends JObject
 
 		// Ensure we found the group info
 		if (!$group) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_FOUND') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
 
@@ -837,24 +861,6 @@ class GroupsController extends JObject
 		$from['email'] = $jconfig->getValue('config.mailfrom');
 
 		// E-mail the administrator
-		/*if (!$this->email($emailadmin, $subject, $message, $from)) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_ADMIN_FAILED') );
-		}
-		
-		// Do we have manager e-mails?
-		if ($emailmanagers) {
-			// We do, so e-mail them
-			foreach ($emailmanagers as $email) 
-			{
-				if (!$this->email($email, $subject, $message, $from)) {
-					$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') );
-				}
-			}
-		}
-		ximport('xmessage');
-		if (!XMessageHelper::sendMessage( 'groups_requests_membership', $subject, $message, $from, $group->get('managers') )) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED').' '.$emailadmin );
-		}*/
 		if ($group->get('join_policy') == 1) {
 			$url = 'index.php?option='.$this->_option.a.'gid='.$group->get('cn').a.'active=members';
 			JPluginHelper::importPlugin( 'xmessage' );
@@ -890,8 +896,7 @@ class GroupsController extends JObject
 
 		// Ensure we have a group to work with
 		if (!$this->gid) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_ID') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_ID') );
 			return;
 		}
 		
@@ -901,8 +906,7 @@ class GroupsController extends JObject
 
 		// Ensure we found the group info
 		if (!$group) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_FOUND') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
 
@@ -937,7 +941,6 @@ class GroupsController extends JObject
 		$message .= t.' '.JText::_('GROUP').': '. $group->get('description') .' ('.$group->get('cn').')'.r.n;
 		$message .= t.' '.JText::_('GROUPS_MEMBERSHIP_ACCEPTED').': '.r.n;
 		$message .= t.t.$juser->get('name');
-		//$message .= ($xuser->get('org')) ? ' / '. $xuser->get('org') : '';
 		$message .= r.n;
 		$message .= t.t. $juser->get('username') .' ('. $juser->get('email') . ')'.r.n.r.n;
 		$message .= JText::_('GROUPS_USE_LINK_TO_REVIEW_MEMBERSHIPS').r.n;
@@ -960,27 +963,6 @@ class GroupsController extends JObject
 		$emailadmin = $jconfig->getValue('config.mailfrom');
 
 		// E-mail the administrator
-		/*if (!$this->email($emailadmin, $subject, $message, $from)) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_ADMIN_FAILED') );
-		}
-		
-		// Get the managers' e-mails
-		$emailmanagers = $group->getEmails('managers');
-		
-		// Do we have manager e-mails?
-		if ($emailmanagers) {
-			// We do, so e-mail them
-			foreach ($emailmanagers as $email) 
-			{
-				if (!$this->email($email, $subject, $message, $from)) {
-					$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') );
-				}
-			}
-		}
-		ximport('xmessage');
-		if (!XMessageHelper::sendMessage( 'groups_accepts_membership', $subject, $message, $from, $group->get('managers') )) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED').' '.$emailadmin );
-		}*/
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_accepts_membership', $subject, $message, $from, $group->get('managers'), $this->_option ))) {
@@ -1032,8 +1014,7 @@ class GroupsController extends JObject
 		if (!$authorized && $this->_task != 'new') {
 			$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'task='.$this->_task);
 			
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::warning( JText::_('GROUPS_NOT_AUTH') ), 'main section');
+			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
 
@@ -1045,8 +1026,7 @@ class GroupsController extends JObject
 			if (!$this->gid) {
 				$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'task='.$this->_task);
 				
-				echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-				echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_ID') ), 'main section');
+				JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_ID') );
 				return;
 			}
 
@@ -1056,9 +1036,8 @@ class GroupsController extends JObject
 			// Ensure we found the group info
 			if (!$group) {
 				$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'task='.$this->_task);
-				
-				echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-				echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_FOUND') ), 'main section');
+
+				JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 				return;
 			}
 			
@@ -1082,7 +1061,20 @@ class GroupsController extends JObject
 		$tags = $gt->get_tag_string( $group->get('gidNumber') );
 
 		// Output HTML
-		echo GroupsHtml::edit( $this->_option, $group, $this->_task, $title, $tags, '' );
+		//echo GroupsHtml::edit( $this->_option, $group, $this->_task, $title, $tags, '' );
+		jimport('joomla.application.component.view');
+
+		// Output HTML
+		$view = new JView( array('name'=>'edit') );
+		$view->option = $this->_option;
+		$view->title = $title;
+		$view->group = $group;
+		$view->tags = $tags;
+		$view->task = $this->_task;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -1097,15 +1089,13 @@ class GroupsController extends JObject
 		
 		// Check authorization
 		if ($authorized != 'admin') {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::warning( JText::_('GROUPS_NOT_AUTH') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
 
 		// Ensure we have a group to work with
 		if (!$this->gid) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_ID') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_ID') );
 			return;
 		}
 		
@@ -1115,8 +1105,7 @@ class GroupsController extends JObject
 
 		// Ensure we found the group info
 		if (!$group) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_FOUND') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
 		
@@ -1182,23 +1171,8 @@ class GroupsController extends JObject
 		$from = array();
 		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
 		$from['email'] = $jconfig->getValue('config.mailfrom');
-			
-		// Send e-mail to the administrator
-		/*if (!$this->email($emailadmin, $subject, $message, $from)) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_ADMIN_FAILED') );
-		}
 		
 		// Send e-mail to the group managers
-		foreach ($emails as $email) 
-		{
-			if (!$this->email($email, $subject, $message, $from)) {
-				$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED').' '.$email );
-			}
-		}
-		ximport('xmessage');
-		if (!XMessageHelper::sendMessage( 'groups_approved', $subject, $message, $from, $group->get('managers') )) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED').' '.$emailadmin );
-		}*/
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_approved', $subject, $message, $from, $group->get('managers'), $this->_option ))) {
@@ -1291,7 +1265,18 @@ class GroupsController extends JObject
 			$group->set('join_policy',$g_join_policy);
 			$group->set('cn',$g_cn);
 			
-			echo GroupsHtml::edit( $this->_option, $group, $this->_task, $title, $tags, $this->getErrors() );
+			jimport('joomla.application.component.view');
+
+			$view = new JView( array('name'=>'edit') );
+			$view->title = $title;
+			$view->option = $this->_option;
+			$view->group = $group;
+			$view->task = $this->_task;
+			$view->tags = $tags;
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
 			return;
 		}
 		
@@ -1335,7 +1320,18 @@ class GroupsController extends JObject
 			$group->set('join_policy',$g_join_policy);
 			$group->set('cn',$g_cn);
 			
-			echo GroupsHtml::edit( $this->_option, $group, $this->_task, $title, $tags, $this->getErrors() );
+			jimport('joomla.application.component.view');
+
+			$view = new JView( array('name'=>'edit') );
+			$view->title = $title;
+			$view->option = $this->_option;
+			$view->group = $group;
+			$view->task = $this->_task;
+			$view->tags = $tags;
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
 			return;
 		}
 		
@@ -1491,15 +1487,7 @@ class GroupsController extends JObject
 		$from = array();
 		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
 		$from['email'] = $jconfig->getValue('config.mailfrom');
-				
-		// E-mail the administrator
-		/*if (!$this->email($emailadmin, $subject, $message, $from)) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_ADMIN_FAILED').' '.$emailadmin );
-		}
-		ximport('xmessage');
-		if (!XMessageHelper::sendMessage( $type, $subject, $message, $from, $group->get('managers') )) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') );
-		}*/
+		
 		// Get plugins
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
@@ -1508,7 +1496,14 @@ class GroupsController extends JObject
 		}
 		
 		if ($this->getError()) {
-			echo GroupsHtml::error( $this->getError() );
+			jimport('joomla.application.component.view');
+
+			$view = new JView( array('name'=>'error') );
+			$view->title = $title;
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
 			return;
 		}
 		
@@ -1537,15 +1532,13 @@ class GroupsController extends JObject
 		// Check authorization
 		$authorized = $this->_authorize();
 		if (!$authorized) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::warning( JText::_('GROUPS_NOT_AUTH') ), 'main section');
+			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
 
 		// Ensure we have a group to work with
 		if (!$this->gid) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_ID') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_ID') );
 			return;
 		}
 
@@ -1555,8 +1548,7 @@ class GroupsController extends JObject
 		
 		// Ensure we found the group info
 		if (!$group) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_FOUND') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
 		
@@ -1588,9 +1580,20 @@ class GroupsController extends JObject
 			}
 			$pathway->addItem($gtitle,'index.php?option='.$this->_option.a.'gid='.$group->get('cn'));
 			$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'gid='.$group->get('cn').a.'task='.$this->_task);
-			
+				
+			jimport('joomla.application.component.view');
+
 			// Output HTML
-			echo GroupsHtml::invite($this->_option, $title, $group, $msg, $return, $this->getError());	
+			$view = new JView( array('name'=>'invite') );
+			$view->option = $this->_option;
+			$view->title = $title;
+			$view->group = $group;
+			$view->return = $return;
+			$view->msg = $msg;
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
 			return;
 		}
 		
@@ -1687,25 +1690,18 @@ class GroupsController extends JObject
 		}
 		$sef = $juri->base().$sef;
 
-		// Email group members
-		
-			// E-mail subject
-			$subject = JText::sprintf('GROUPS_SUBJECT_INVITE', $group->get('cn'));
+		// Message subject
+		$subject = JText::sprintf('GROUPS_SUBJECT_INVITE', $group->get('cn'));
 
-			// Build the e-mail message
-			$email  = JText::sprintf('GROUPS_USER_HAS_INVITED', $juser->get('name'), $group->get('description'), $jconfig->getValue('config.sitename')).r.n.r.n;
-
-			if ($msg) {
-				$email .= '====================='.r.n;
-				$email .= stripslashes($msg).r.n;
-				$email .= '====================='.r.n.r.n;
-			}
-
-			$email .= JText::sprintf('GROUPS_PLEASE_JOIN', $sef).r.n.r.n;
-
-			
-
-			$email .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $juser->get('name'), $juser->get('email')).r.n;
+		// Message body
+		$email  = JText::sprintf('GROUPS_USER_HAS_INVITED', $juser->get('name'), $group->get('description'), $jconfig->getValue('config.sitename')).r.n.r.n;
+		if ($msg) {
+			$email .= '====================='.r.n;
+			$email .= stripslashes($msg).r.n;
+			$email .= '====================='.r.n.r.n;
+		}
+		$email .= JText::sprintf('GROUPS_PLEASE_JOIN', $sef).r.n.r.n;
+		$email .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $juser->get('name'), $juser->get('email')).r.n;
 		
 		foreach ($inviteemails as $mbr) 
 		{
@@ -1719,12 +1715,14 @@ class GroupsController extends JObject
 			}
 		}
 		
+		// Send the message
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_invite', $subject, $email, $from, $invitees, $this->_option ))) {
 			$this->setError( JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED') );
 		}
 		
+		// Do we need to redirect?
 		if ($return == 'members') {
 			$xhub->redirect( JRoute::_('index.php?option='.$this->_option.a.'gid='. $group->get('cn').a.'active=members') );
 		}
@@ -1754,15 +1752,13 @@ class GroupsController extends JObject
 		// Check authorization
 		$authorized = $this->_authorize();
 		if (!$authorized) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::warning( JText::_('GROUPS_NOT_AUTH') ), 'main section');
+			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
 
 		// Ensure we have a group to work with
 		if (!$this->gid) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_ID') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_ID') );
 			return;
 		}
 
@@ -1772,8 +1768,7 @@ class GroupsController extends JObject
 		
 		// Ensure we found the group info
 		if (!$group) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( JText::_('GROUPS_NO_GROUP_FOUND') ), 'main section');
+			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
 
@@ -1821,8 +1816,19 @@ class GroupsController extends JObject
 			$pathway->addItem($gtitle,'index.php?option='.$this->_option.a.'gid='.$group->get('cn'));
 			$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'gid='.$group->get('cn').a.'task='.$this->_task);
 			
+			jimport('joomla.application.component.view');
+
 			// Output HTML
-			echo GroupsHtml::delete($this->_option, $title, $this->gid, $group, $log, $msg, $this->getError());	
+			$view = new JView( array('name'=>'delete') );
+			$view->option = $this->_option;
+			$view->title = $title;
+			$view->group = $group;
+			$view->log = $log;
+			$view->msg = $msg;
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
 			return;
 		}
 		
@@ -1876,43 +1882,27 @@ class GroupsController extends JObject
 		
 		// Delete group
 		if (!$group->delete()) {
-			echo GroupsHtml::div( GroupsHtml::hed( 2, $title ), 'full', 'content-header');
-			echo GroupsHtml::div( GroupsHtml::error( $group->getError() ), 'main section');
+			jimport('joomla.application.component.view');
+
+			$view = new JView( array('name'=>'error') );
+			$view->title = $title;
+			if ($group->getError()) {
+				$view->setError( $group->getError() );
+			}
+			$view->display();
 			return;
 		}
 		
 		// Get and set some vars
 		$date = date( 'Y-m-d H:i:s', time());
-		//$xuser =& XFactory::getUser();
-		$xhub =& XFactory::getHub();
+
+		//$xhub =& XFactory::getHub();
 		$jconfig =& JFactory::getConfig();
 		
 		// Build the "from" info for e-mails
 		$from = array();
 		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
 		$from['email'] = $jconfig->getValue('config.mailfrom');
-		
-		// Email group members
-		/*foreach ($members as $mbr) 
-		{
-			//$targetuser =& XUser::getInstance($mbr['login']);
-			$targetuser =& JUser::getInstance($mbr);
-			
-			if (is_object($targetuser)) {
-				// E-mail subject
-				$subject = JText::sprintf('GROUPS_SUBJECT_GROUP_DELETED', $group->get('cn'));
-
-				// Build the e-mail message
-				$email  = JText::sprintf('GROUPS_USER_HAS_DELETED_GROUP', $group->get('cn'), $juser->get('username')).r.n.r.n;
-				if ($msg) {
-					$email .= stripslashes($msg).r.n.r.n;
-				}
-				$email .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $juser->get('username'), $juser->get('email')).r.n;
-
-				// Send the e-mail
-				$this->email($targetuser->get('email'), $jconfig->getValue('config.sitename').' '.$subject, $email, $from);
-			}
-		}*/
 		
 		// E-mail subject
 		$subject = JText::sprintf('GROUPS_SUBJECT_GROUP_DELETED', $group->get('cn'));
@@ -1924,10 +1914,7 @@ class GroupsController extends JObject
 		}
 		$message .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $juser->get('username'), $juser->get('email')).r.n;
 		
-		/*ximport('xmessage');
-		if (!XMessageHelper::sendMessage( 'groups_deleted', $subject, $message, $from, $group->get('members') )) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED') );
-		}*/
+		// Send the message
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_deleted', $subject, $message, $from, $group->get('members'), $this->_option ))) {
@@ -1957,6 +1944,13 @@ class GroupsController extends JObject
 
 	protected function upload()
 	{
+		// Check if they're logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->media();
+			return;
+		}
+		
 		// Load the component config
 		$config = $this->config;
 		
@@ -2012,6 +2006,13 @@ class GroupsController extends JObject
 
 	protected function deletefolder() 
 	{
+		// Check if they're logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->media();
+			return;
+		}
+		
 		// Load the component config
 		$config = $this->config;
 		
@@ -2048,6 +2049,13 @@ class GroupsController extends JObject
 
 	protected function deletefile() 
 	{
+		// Check if they're logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->media();
+			return;
+		}
+		
 		// Load the component config
 		$config = $this->config;
 		
@@ -2104,7 +2112,16 @@ class GroupsController extends JObject
 		}
 		
 		// Output HTML
-		echo GroupsHtml::media($config, $listdir, $this->_option, $this->_name, $this->getError());
+		jimport('joomla.application.component.view');
+
+		$view = new JView( array('name'=>'edit', 'layout'=>'filebrowser') );
+		$view->option = $this->_option;
+		$view->config = $this->config;
+		$view->listdir = $listdir;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -2133,9 +2150,6 @@ class GroupsController extends JObject
  
 	protected function listfiles() 
 	{
-		$database =& JFactory::getDBO();
-		$config =& $this->config;
-		
 		// Incoming
 		$listdir = JRequest::getInt( 'listdir', 0, 'get' );
 		
@@ -2144,20 +2158,19 @@ class GroupsController extends JObject
 		}
 		
 		$path = JPATH_ROOT;
-		if (substr($config->get('uploadpath'), 0, 1) != DS) {
+		if (substr($this->config->get('uploadpath'), 0, 1) != DS) {
 			$path .= DS;
 		}
-		$path .= $config->get('uploadpath').DS.$listdir;
+		$path .= $this->config->get('uploadpath').DS.$listdir;
 
 		// Get the directory we'll be reading out of
 		$d = @dir($path);
 
-		$html = GroupsHtml::attachTop( $this->_option, $this->_name );
+		$images  = array();
+		$folders = array();
+		$docs    = array();
+		
 		if ($d) {
-			$images  = array();
-			$folders = array();
-			$docs    = array();
-	
 			// Loop through all files and separate them into arrays of images, folders, and other
 			while (false !== ($entry = $d->read())) 
 			{
@@ -2174,62 +2187,26 @@ class GroupsController extends JObject
 			}
 			$d->close();	
 
-			//$html .= GroupsHtml::imageStyle( $listdir );	
-
-			if (count($images) > 0 || count($folders) > 0 || count($docs) > 0) {	
-				ksort($images);
-				ksort($folders);
-				ksort($docs);
-
-				$html .= GroupsHtml::draw_table_header();
-
-				for ($i=0; $i<count($folders); $i++) 
-				{
-					$folder_name = key($folders);		
-					GroupsHtml::show_dir( DS.$folders[$folder_name], $folder_name, $listdir, $this->_option );
-					next($folders);
-				}
-				for ($i=0; $i<count($docs); $i++) 
-				{
-					$doc_name = key($docs);	
-					$iconfile = $config->get('iconpath').DS.substr($doc_name,-3).'.png';
-
-					if (file_exists(JPATH_ROOT.$iconfile))	{
-						$icon = $iconfile;
-					} else {
-						$icon = $config->get('iconpath').DS.'unknown.png';
-					}
-					
-					//$a = $attachment->getID($doc_name, $listdir);
-					
-					$html .= GroupsHtml::show_doc($this->_option, $docs[$doc_name], $listdir, $icon);
-					next($docs);
-				}
-				for ($i=0; $i<count($images); $i++) 
-				{
-					$image_name = key($images);
-					$iconfile = $config->get('iconpath').DS.substr($image_name,-3).'.png';
-					if (file_exists(JPATH_ROOT.$iconfile))	{
-						$icon = $iconfile;
-					} else {
-						$icon = $config->get('iconpath').DS.'unknown.png';
-					}
-
-					//$a = $attachment->getID($image_name, $listdir);
-
-					$html .= GroupsHtml::show_doc($this->_option, $images[$image_name], $listdir, $icon);
-					next($images);
-				}
-				
-				$html .= GroupsHtml::draw_table_footer();
-			} else {
-				$html .= GroupsHtml::draw_no_results();
-			}
+			ksort($images);
+			ksort($folders);
+			ksort($docs);
 		} else {
-			$html .= GroupsHtml::draw_no_results();
+			$this->setError( JText::sprintf('ERROR_MISSING_DIRECTORY', $path) );
 		}
-		$html .= GroupsHtml::attachBottom();
-		echo $html;
+
+		jimport('joomla.application.component.view');
+
+		$view = new JView( array('name'=>'edit', 'layout'=>'filelist') );
+		$view->option = $this->_option;
+		$view->docs = $docs;
+		$view->folders = $folders;
+		$view->images = $images;
+		$view->config = $this->config;
+		$view->listdir = $listdir;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//----------------------------------------------------------
@@ -2381,7 +2358,7 @@ class GroupsController extends JObject
 		$filters['search'] = trim(JRequest::getString( 'value', '' ));
 		
 		// Fetch results
-		$rows = $this->getAutocomplete( $filters );
+		$rows = $this->_getAutocomplete( $filters );
 
 		// Output search results in JSON format
 		$json = array();
@@ -2397,7 +2374,7 @@ class GroupsController extends JObject
 	
 	//-----------
 
-	private function getAutocomplete( $filters=array() ) 
+	private function _getAutocomplete( $filters=array() ) 
 	{
 		$database =& JFactory::getDBO();
 		
