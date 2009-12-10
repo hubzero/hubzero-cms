@@ -771,7 +771,6 @@ class XProfile extends JObject
 		foreach(XProfile::$_s_propertyattrmap as $property => $attribute)
 		{
 			$current = $this->get($property);
-		    if ($property == 'shadowExpire') { echo "<br>$property=$current<br>"; }
 
 			if ($current == array() || $current === null) 
 				$current = '';
