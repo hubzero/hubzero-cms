@@ -180,6 +180,7 @@ class plgMembersMessages extends JPlugin
 		$view->components = $components;
 		$view->rows = $rows;
 		$view->pagenavhtml = $pagenavhtml;
+		$view->filter = $filter;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -235,6 +236,7 @@ class plgMembersMessages extends JPlugin
 		$view->components = $components;
 		$view->rows = $rows;
 		$view->pagenavhtml = $pagenavhtml;
+		$view->filter = $filter;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -290,6 +292,7 @@ class plgMembersMessages extends JPlugin
 		$view->components = $components;
 		$view->rows = $rows;
 		$view->pagenavhtml = $pagenavhtml;
+		$view->filter = $filter;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}

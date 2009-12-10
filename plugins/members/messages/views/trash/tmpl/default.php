@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				{
 					$component = substr($component, 4);
 					$sbjt  = t.t.t.'<option value="'.$component.'"';
-					$sbjt .= ($component == $filter) ? ' selected="selected"' : '';
+					$sbjt .= ($component == $this->filter) ? ' selected="selected"' : '';
 					$sbjt .= '>'.$component.'</option>'.n;
 					echo $sbjt;
 				}
