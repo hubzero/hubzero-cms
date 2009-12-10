@@ -296,6 +296,7 @@ class GroupsController extends JObject
 		$g_access       = JRequest::getInt('access', 0, 'post' );
 		$g_join_policy  = JRequest::getInt('join_policy', 0, 'post' );
 		$g_gidNumber    = JRequest::getInt('gidNumber', 0, 'post' );
+		$g_type         = JRequest::getInt('type', 1, 'post' );
 		$g_public_desc  = trim(JRequest::getVar( 'public_desc', '', 'post' ));
 		$g_private_desc = trim(JRequest::getVar( 'private_desc', '', 'post' ));
 		$g_restrict_msg = trim(JRequest::getVar( 'restrict_msg', '', 'post' ));
@@ -348,8 +349,8 @@ class GroupsController extends JObject
 				
 		// Set the group changes and save
 		$group->set('cn', $g_cn );
+		$group->set('type', $g_type );
 		if ($isNew) {
-			$group->set('type', 1 );
 			$group->set('published', 1 );
 			
 			$group->add('managers',array($juser->get('id')));

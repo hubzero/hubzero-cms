@@ -32,7 +32,7 @@ class XGroupHelper
 {
 	function valid_cn($gid) 
 	{
-		if (eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $gid)) {
+		if (eregi("^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$", $gid)) {
 			if (is_numeric($gid) && intval($gid) == $gid && $gid >= 0) {
 				return false;
 			} else {
