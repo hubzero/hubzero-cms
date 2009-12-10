@@ -267,7 +267,7 @@ class MwHtml
 		 <tr>
 		  <td><img src="<?php echo $icon; ?>" alt="<?php echo $doc; ?>" width="16" height="16" /></td>
 		  <td width="100%" style="padding-left: 0;"><?php echo $doc; ?></td>
-		  <td><a href="index.php?option=com_mw&amp;task=deletefile&amp;delFile=<?php echo $doc; ?>&amp;listdir=<?php echo $listdir; ?>&amp;no_html=1" target="imgManager" style="border:none;" onclick="return deleteImage('<?php echo $doc; ?>');" title="<?php echo JText::_('DELETE_THIS'); ?>"><img src="components/<?php echo $option; ?>/images/trash.gif" width="15" height="15" style="border:none;" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
+		  <td><a href="index.php?option=com_mw&amp;task=deletefile&amp;delFile=<?php echo urlencode($doc); ?>&amp;listdir=<?php echo urlencode($listdir); ?>&amp;no_html=1" target="imgManager" style="border:none;" onclick="return deleteImage('<?php echo $doc; ?>');" title="<?php echo JText::_('Delete'); ?>"><img src="/components/<?php echo $option; ?>/images/trash.gif" width="15" height="15" style="border:none;" alt="<?php echo JText::_('Delete'); ?>" /></a></td>
 		 </tr>
 		<?php
 	}
@@ -395,11 +395,11 @@ class MwHtml
 		}
 		?>
 			<tr>
-				<td><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=listfiles').DS.'?no_html=1&amp;listdir='.$d; ?>"><img src="components/<?php echo $option; ?>/images/folder.gif" alt="<?php echo $dir; ?>" width="16" height="16" /></a></td>
-				<td width="100%" style="padding-left: 0;"><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=listfiles').DS.'?no_html=1&amp;listdir='.$d; ?>"><?php echo $dir; ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=listfiles').DS.'?no_html=1&amp;listdir='.$d; ?>"><img src="/components/<?php echo $option; ?>/images/folder.gif" alt="<?php echo $dir; ?>" width="16" height="16" /></a></td>
+				<td width="100%" style="padding-left: 0;"><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=listfiles').DS.'?no_html=1&amp;listdir='.urlencode($d); ?>"><?php echo $dir; ?></a></td>
 				<td>
 				<?php if($dir !='data' && $dir!='sessions') { ?>
-                <a href="index.php?option=<?php echo $option; ?>&amp;task=deletefolder&amp;delFolder=<?php echo $path; ?>&amp;listdir=<?php echo $listdir; ?>&amp;no_html=1" target="imgManager" onClick="return deleteFolder('<?php echo $dir; ?>', <?php echo $num_files; ?>);" title="<?php echo JText::_('Delete'); ?>"><img src="components/<?php echo $option; ?>/images/trash.gif" width="15" height="15" alt="<?php echo JText::_('Delete'); ?>" /></a>
+                <a href="index.php?option=<?php echo $option; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($path); ?>&amp;listdir=<?php echo urlencode($listdir); ?>&amp;no_html=1" target="imgManager" onClick="return deleteFolder('<?php echo $dir; ?>', <?php echo $num_files; ?>);" title="<?php echo JText::_('Delete'); ?>"><img src="components/<?php echo $option; ?>/images/trash.gif" width="15" height="15" alt="<?php echo JText::_('Delete'); ?>" /></a>
                 <?php } ?>
 				</td>
 			</tr>
