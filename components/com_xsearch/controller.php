@@ -315,6 +315,7 @@ class XSearchController
 				$lowerrow = strtolower( $row->itext );
 				
 				// Find first occurrence of a search word
+				$pos = 0;
 				foreach ($toks as $tok) 
 				{
 					$pos = strpos( $lowerrow, $tok );
