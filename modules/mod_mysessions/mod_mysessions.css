@@ -14,6 +14,10 @@
 	-- -- -- -- -- -- --
 
 */
+	div.draggable .expandedlist {
+		max-height: 300px;
+		overflow: auto;
+		}
 	div.draggable .expandedlist li.session {
 		position: relative;
 		background: url("images/application.png") 0.5em 0.7em no-repeat;
@@ -124,4 +128,47 @@
 		text-align: left;
 		text-indent: -9999px;
 		overflow: hidden;
+		}
+/* Admin view */
+	div.draggable .session_tab_panel {
+		display: none;
+		position: relative;
+		padding: 0;
+		margin: 0;
+		}
+	div.draggable .session_tab_panel.active {
+		display: block;
+		}
+	div.draggable .session_tab_titles {
+		list-style-image: none;
+		list-style-type: none;
+		margin: 0px;
+		padding: 4px 0 0 4px;
+		height: 24px;
+		background: #333;
+		}
+	div.draggable .session_tab_titles li {
+		float: left;
+		background-color: #656565;
+		padding: 4px 0 0 0;
+		margin-right: 1%;
+		cursor: pointer;
+		height: 20px;
+		width: 48%;
+		text-align: center;
+		color: #fff;
+		font-weight: bold;
+		background-image: none;
+		}
+	div.draggable .session_tab_titles li.active {
+		background-color: #fff;
+		color: #333;
+		}
+	div.draggable .emphasis .session_tab_titles li {
+		background-color: #555;
+		color: #ccc;
+		}
+	div.draggable .emphasis .session_tab_titles li.active {
+		background-color: #909090;
+		color: #fff;
 		}
