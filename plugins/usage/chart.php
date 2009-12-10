@@ -343,7 +343,7 @@ class plgUsageChart extends JPlugin
 
 	protected function outputData($option, $label, $db, $id, $period, $datetime) 
 	{
-		include_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'ofc'.DS.'php-ofc-library'.DS.'open-flash-chart.php' );
+		include_once( JPATH_ROOT.DS.'plugins'.DS.'usage'.DS.'chart'.DS.'ofc'.DS.'php-ofc-library'.DS.'open-flash-chart.php' );
 		
 		// ------
 		// Chart 1
@@ -442,9 +442,9 @@ class plgUsageChart extends JPlugin
 		
 		$js = '
 		window.addEvent("domready", function(){
-			swfobject.embedSWF("/components/com_usage/ofc/open-flash-chart.swf", "chart1", "600", "350", "9.0.0", "expressInstall.swf", {"get-data":"get_data_1"});
-			swfobject.embedSWF("/components/com_usage/ofc/open-flash-chart.swf", "chart2", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_2"});
-			swfobject.embedSWF("/components/com_usage/ofc/open-flash-chart.swf", "chart3", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_3"});
+			swfobject.embedSWF("/plugins/usage/chart/ofc/open-flash-chart.swf", "chart1", "600", "350", "9.0.0", "expressInstall.swf", {"get-data":"get_data_1"});
+			swfobject.embedSWF("/plugins/usage/chart/ofc/open-flash-chart.swf", "chart2", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_2"});
+			swfobject.embedSWF("/plugins/usage/chart/ofc/open-flash-chart.swf", "chart3", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_3"});
 		});
 		
 		var ig = '.(count($data['points']) - 1).';
@@ -468,8 +468,8 @@ class plgUsageChart extends JPlugin
 		{
 			ig = index;
 
-			swfobject.embedSWF("/components/com_usage/ofc/open-flash-chart.swf", "chart2", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_2"});
-			swfobject.embedSWF("/components/com_usage/ofc/open-flash-chart.swf", "chart3", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_3"});
+			swfobject.embedSWF("/plugins/usage/chart/ofc/open-flash-chart.swf", "chart2", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_2"});
+			swfobject.embedSWF("/plugins/usage/chart/ofc/open-flash-chart.swf", "chart3", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_3"});
 		}
 		
 		var data = new Array();
@@ -549,9 +549,9 @@ class plgUsageChart extends JPlugin
 		//$monthsReverse = $this->monthsReverse;
 
 		$document =& JFactory::getDocument();
-		if (is_file('components'.DS.$option.DS.'ofc'.DS.'js'.DS.'swfobject.js')) {
-			$document->addScript('components'.DS.$option.DS.'ofc'.DS.'js'.DS.'json'.DS.'json2.js');
-			$document->addScript('components'.DS.$option.DS.'ofc'.DS.'js'.DS.'swfobject.js');
+		if (is_file('plugins'.DS.'usage'.DS.'chart'.DS.'ofc'.DS.'js'.DS.'swfobject.js')) {
+			$document->addScript('plugins'.DS.'usage'.DS.'chart'.DS.'ofc'.DS.'js'.DS.'json'.DS.'json2.js');
+			$document->addScript('plugins'.DS.'usage'.DS.'chart'.DS.'ofc'.DS.'js'.DS.'swfobject.js');
 			//$document->addScriptDeclaration("window.addEvent('domready', HUB.Usage.loadOFC);");
 		}
 
