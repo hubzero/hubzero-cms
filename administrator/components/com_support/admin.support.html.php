@@ -909,7 +909,7 @@ class SupportHtml
 										$o .= t.'<option value="mc">'.JText::_('COMMENT_CUSTOM').'</option>'.n;
 										foreach ($lists['messages'] as $message)
 										{
-											$message->message = str_replace('"','&quot;',$message->message);
+											$message->message = str_replace('"','&quot;',stripslashes($message->message));
 											$message->message = str_replace('&quote;','&quot;',$message->message);
 											$message->message = str_replace('#XXX','#'.$row->id,$message->message);
 											$message->message = str_replace('{ticket#}','#'.$row->id,$message->message);
