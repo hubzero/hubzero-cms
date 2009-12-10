@@ -110,7 +110,7 @@ class SelectedQuotes extends JTable
 	
 	function getResults( $filters=array() ) 
 	{
-		$query  = "SELECT * ";
+		$query  = "SELECT DISTINCT * ";
 		$query .= $this->buildQuery( $filters );
 
 		$this->_db->setQuery( $query );
