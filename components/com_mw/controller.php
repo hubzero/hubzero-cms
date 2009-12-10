@@ -1260,7 +1260,7 @@ class MwController extends JObject
 		$listdir = JRequest::getVar( 'listdir', '' );
 
 		// Build the path
-		$path = $this->buildUploadPath( $listdir);
+		$path = $this->buildUploadPath($listdir);
 
 		$d = @dir($path);
 		
@@ -1418,8 +1418,15 @@ class MwController extends JObject
 
 	protected function deletefolder() 
 	{
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->listfiles();
+			return;
+		}
+		
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = JRequest::getVar( 'listdir', '' );
+		$listdir = urldecode(JRequest::getVar( 'listdir', '' ));
 		if (!$listdir) {
 			$this->setError( JText::_('Directory not found.') );
 			$this->media();
@@ -1429,7 +1436,7 @@ class MwController extends JObject
 		$path = $this->buildUploadPath( $listdir);
 		
 		// Incoming directory to delete
-		$folder = JRequest::getVar( 'delFolder', '' );
+		$folder = urldecode(JRequest::getVar( 'delFolder', '' ));
 		if (!$folder) {
 			$this->setError( JText::_('Directory not found.') );
 			$this->media();
@@ -1458,18 +1465,21 @@ class MwController extends JObject
 
 	protected function deletefile() 
 	{
-		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = JRequest::getVar( 'listdir', '' );
-		if (!$listdir) {
-			$this->setError( JText::_('Directory not found.') );
-			$this->media();
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->listfiles();
+			return;
 		}
+		
+		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
+		$listdir = urldecode(JRequest::getVar( 'listdir', '' ));
 		
 		// Build the path
 		$path = $this->buildUploadPath( $listdir );
 		
 		// Incoming file to delete
-		$file = JRequest::getVar( 'delFile', '' );
+		$file = urldecode(JRequest::getVar( 'delFile', '' ));
 		if (!$file) {
 			$this->setError( JText::_('File not found.') );
 			$this->media();
