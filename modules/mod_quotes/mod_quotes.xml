@@ -37,7 +37,7 @@
 			<option value="1">Yes</option>
 		</param>
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-		<param name="maxquotes" type="list" default="10" label="Maximum Number of Quotes" description="Define max number of quotes to display on the page">
+		<param name="maxquotes" type="list" default="" label="Maximum Number of Quotes" description="Define max number of quotes to display on the page">
 			<option value="1">1</option>
 			<option value="5">5</option>
 			<option value="10">10</option>
