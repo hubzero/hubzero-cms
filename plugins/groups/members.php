@@ -259,7 +259,7 @@ class plgGroupsMembers extends JPlugin
 	
 	private function approve() 
 	{
-		if ($this->authorized != 'manager' && $this->authorized == 'admin') {
+		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
 			return false;
 		}
 		
@@ -343,7 +343,7 @@ class plgGroupsMembers extends JPlugin
 	
 	private function promote() 
 	{
-		if ($this->authorized != 'manager' && $this->authorized == 'admin') {
+		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
 			return false;
 		}
 		
@@ -415,7 +415,7 @@ class plgGroupsMembers extends JPlugin
 	
 	private function demote() 
 	{
-		if ($this->authorized != 'manager' && $this->authorized == 'admin') {
+		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
 			return false;
 		}
 
@@ -525,7 +525,7 @@ class plgGroupsMembers extends JPlugin
 	
 	private function confirmremove() 
 	{
-		if ($this->authorized != 'manager' && $this->authorized == 'admin') {
+		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
 			return false;
 		}
 		

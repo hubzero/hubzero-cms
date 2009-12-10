@@ -108,15 +108,17 @@ if ($this->groupusers) {
 	// Some needed libraries
 	ximport('xprofile');
 	$juser =& JFactory::getUser();
-	
 	// Loop through the results
 	$html = '';
-	for ($i=$this->start, $n=$this->limit; $i < $n; $i++) 
+	if ($this->limit == 0) {
+		$this->limit = 500;
+	}
+	for ($i=0, $n=$this->limit; $i < $n; $i++) 
 	{
-		if ($i >= count($this->groupusers)) {
+		if (($i+$this->start) >= count($this->groupusers)) {
 			break;
 		}
-		$guser = $this->groupusers[$i];
+		$guser = $this->groupusers[($i+$this->start)];
 
 		$u = new XProfile();
 		$u->load( $guser );
@@ -233,7 +235,11 @@ if ($this->groupusers) {
 			</tbody>
 		</table>
 		
-		<?php echo $this->pageNav->getListFooter(); ?>
+		<?php 
+		$pn = $this->pageNav->getListFooter();
+		$pn = str_replace('groups/?','groups/'.$this->group->cn.'/members?',$pn);
+		echo $pn;
+		?>
 		
 		<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>" />
 		<input type="hidden" name="active" value="members" />
