@@ -31,6 +31,14 @@ $juser =& JFactory::getUser();
 <?php if ($modmysessions->error) { ?>
 	<p class="error"><?php echo JText::_('MOD_MYSESSIONS_NOT_CONFIGURED'); ?></p>
 <?php } else { ?>
+<?php if ($modmysessions->authorized) { ?>
+	<div id="mySessionsTabs">
+		<ul class="session_tab_titles">
+			<li title="mysessions" class="active">My Sessions</li>
+			<li title="allsessions">All Sessions</li>
+		</ul>
+		<div id="mysessions" class="session_tab_panel active">
+<?php } ?>
 	<ul class="expandedlist">
 <?php
 	// Iterate through the session list and create links for each.
@@ -78,7 +86,60 @@ $juser =& JFactory::getUser();
 	}
 ?>
 	</ul>
-</div>
+<?php if ($modmysessions->authorized) { ?>
+		</div><!-- / .mysessions -->
+		<div id="allsessions" class="session_tab_panel">
+	<ul class="expandedlist">
+<?php
+	// Iterate through the session list and create links for each.
+	$is_even  = 1;
+	$appcount = 0;
+	$sessions = $modmysessions->allsessions;
+	if (is_array($sessions)) {
+		foreach ($sessions as $app)
+		{
+			// If we're on a specific tool page, show sessions for that tool ONLY
+			if ($modmysessions->specapp && $app->appname != $modmysessions->specapp) {
+				continue;
+			}
+?>
+		<li class="<?php echo ($is_even) ? '' : 'even '; ?>session">
+			<a href="<?php echo JRoute::_('index.php?option=com_mw&task=view&sess='.$app->sessnum.'&tool='.$app->appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
+				<?php
+				echo $app->sessname;
+				if ($modmysessions->authorized === 'admin') {
+					echo '<br />('.$app->username.')';
+				}
+				?>
+			</a> 
+<?php if ($juser->get('username') == $app->username || $modmysessions->authorized === 'admin') { ?>
+			<a class="closetool" href="<?php echo JRoute::_('index.php?option=com_mw&task=stop&sess='.$app->sessnum.'&tool='.$app->appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_TERMINATE'); ?></a>
+<?php } else { ?>
+			<a class="disconnect" href="<?php echo JRoute::_('index.php?option=com_mw&task=unshare&sess='.$app->sessnum.'&tool='.$app->appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_DISCONNECT'); ?></a> <br /><?php echo JText::_('MOD_MYSESSIONS_OWNER').': '.$app->username; ?>
+<?php } ?>
+		</li>
+<?php
+			$appcount++;
+			$is_even ^= 1;
+		}
+	}
+	if ($appcount == 0) {
+		if (is_array($sessions)) {
+?>
+			<li class="session"><?php echo JText::_('MOD_MYSESSIONS_NONE'); ?></li>
+<?php
+		} else {
+?>
+			<li class="session"><?php echo JText::_('MOD_MYSESSIONS_MISSING_TABLE'); ?></li>
+<?php
+		}
+	}
+?>
+	</ul>
+		</div><!-- / .allsessions -->
+	</div><!-- / #mySessionsTabs -->
+<?php } ?>
+</div><!-- / .sessionlist -->
 <?php
 	// Get the disk usage
 	if ($modmysessions->show_storage) {

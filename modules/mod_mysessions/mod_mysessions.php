@@ -132,7 +132,10 @@ class modMySessions
 		}
 		
 		$ms = new MwSession( $mwdb );
-		$this->sessions = $ms->getRecords( $juser->get('username'), '', $this->authorized );
+		$this->sessions = $ms->getRecords( $juser->get('username'), '', false );
+		if ($this->authorized) {
+			$this->allsessions = $ms->getRecords( $juser->get('username'), '', $this->authorized );
+		}
 	
 		// Push the module CSS to the template
 		ximport('xdocument');
