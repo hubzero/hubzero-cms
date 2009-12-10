@@ -505,9 +505,19 @@ class GroupsHtml
 						<tr>
 						   <td class="key"><label for="firstname"><?php echo JText::_('GROUPS_ID'); ?>:</label></td>
 						   <td><?php echo $group->gidNumber; ?></td>
-						  </tr>  
+						  </tr>
+						<tr>
+						   <td class="key"><label for="type"><?php echo JText::_('TYPE'); ?>:</label></td>
+						   <td>
+						   	<select name="type">
+								<option value="1"<?php echo ($group->type == '1') ? ' selected="selected"' : ''; ?>>hub</option>
+								<option value="0"<?php echo ($group->type == '0') ? ' selected="selected"' : ''; ?>>system</option>
+								<option value="2"<?php echo ($group->type == '2') ? ' selected="selected"' : ''; ?>>project</option>
+							</select>
+						   </td>
+						  </tr>
 					<tr>
-					   <td class="key"><label for="firstname"><?php echo JText::_('GROUPS_CN'); ?>:</label></td>
+					   <td class="key"><label for="firstname"><?php echo JText::_('CN'); ?>:</label></td>
 					   <td><input type="text" name="cn" id="cn" value="<?php echo stripslashes($group->cn); ?>" size="50" /></td>
 					  </tr>
 					  <tr>
