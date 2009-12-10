@@ -153,6 +153,11 @@ class plgMembersContributions extends JPlugin
 		$html = '';
 		$metadata = '';
 		if ($returnhtml) {
+			$document =& JFactory::getDocument();
+			if (is_file(JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.js')) {
+				$document->addScript('components'.DS.'com_resources'.DS.'resources.js');
+			}
+			
 			$limit = ($limit == 0) ? 'all' : $limit;
 		
 			// Get the search results
