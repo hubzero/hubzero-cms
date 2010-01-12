@@ -807,7 +807,7 @@ class plgMembersMessages extends JPlugin
 		$mbrs = JRequest::getVar( 'users', array(0), 'post' );
 		
 		// Incoming message and subject
-		$subject = JText::_('MEMBER_SUBJECT_MESSAGE');
+		$subject = JRequest::getVar( 'subject', JText::_('MEMBER_SUBJECT_MESSAGE') );
 		$message = JRequest::getVar( 'message', '' );
 		$no_html = JRequest::getInt( 'no_html', 0 );
 		
