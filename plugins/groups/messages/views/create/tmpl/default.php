@@ -82,6 +82,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<strong><?php echo implode(', ',$names); ?></strong>
 				</label>
 				<label>
+					<?php echo JText::_('GROUP_MESSAGE_SUBJECT'); ?>
+					<input type="text" name="subject" id="msg-subject" value="<?php echo JText::_('PLG_GROUPS_MESSAGES_SUBJECT'); ?>" />
+				</label>
+				<label>
 					<?php echo JText::_('GROUP_MESSAGE'); ?>
 					<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
 				</label>

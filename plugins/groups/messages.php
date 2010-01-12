@@ -362,7 +362,7 @@ class plgGroupsMessages extends JPlugin
 		}
 		
 		// Incoming message and subject
-		$subject = JText::_('PLG_GROUPS_MESSAGES_SUBJECT');
+		$subject = JRequest::getVar( 'subject', JText::_('PLG_GROUPS_MESSAGES_SUBJECT') );
 		$message = JRequest::getVar( 'message', '' );
 		
 		// Ensure we have a message
@@ -405,6 +405,7 @@ class plgGroupsMessages extends JPlugin
 		
 		// Determine if we're returning HTML or not
 		// (if no - this is an AJAX call)
+		$no_html = JRequest::getInt( 'no_html', 0 );
 		if (!$no_html) {
 			$html = '';
 			if ($this->getError()) {

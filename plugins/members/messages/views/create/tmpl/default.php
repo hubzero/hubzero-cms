@@ -43,6 +43,10 @@ $u =& JUser::getInstance($this->user);
 			<strong><?php echo $u->get('name'); ?></strong>
 		</label>
 		<label>
+			<?php echo JText::_('MEMBER_MESSAGE_SUBJECT'); ?>
+			<input type="text" name="subject" id="msg-subject" value="<?php echo JText::_('MEMBER_SUBJECT_MESSAGE'); ?>" />
+		</label>
+		<label>
 			<?php echo JText::_('MEMBER_MESSAGE'); ?>
 			<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
 		</label>
