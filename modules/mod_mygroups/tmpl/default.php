@@ -49,7 +49,7 @@ $groups = $modmygroups->groups;
 ?>
 	</ul>
 <?php } else { ?>
-	<p><?php echo JText::_('NO_GROUPS'); ?></p>
+	<p><?php echo JText::_('MOD_MYGROUPS_NO_GROUPS'); ?></p>
 <?php } ?>
 
 	<ul class="module-nav">
