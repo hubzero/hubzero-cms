@@ -59,6 +59,23 @@ class XFactory
 		return $instances[0];
 	}
 
+	function &getProfile()
+	{
+		static $instances = null;
+
+		if (!is_object( $instances[0] ))
+		{
+			ximport('xprofile');
+			$juser =& JFactory::getUser();
+			$instances[0] =& XProfile::getInstance($juser->get('username'));
+
+			if (is_object($instances[0]))
+				return $instances[0];
+		}
+
+		return null;
+	}
+
 	function loadArrayList(&$arraylist, $namespace = null)
 	{
 		$config = &JFactory::getConfig();

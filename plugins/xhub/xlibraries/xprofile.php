@@ -1429,5 +1429,68 @@ class XProfile extends JObject
 		return $user;
 	}
 
+        function hasTransientUsername()
+        {
+                $parts = explode(':', $this->get('username'));
+
+                if ( count($parts) == 3 && intval($parts[0]) < 0 )
+                        return true;
+        }
+
+        function getTransientUsername()
+        {
+                $parts = explode(':', $this->get('username'));
+
+                if ( count($parts) == 3 && intval($parts[0]) < 0 )
+                        return pack("H*", $parts[1]);
+        }
+
+        function hasTransientEmail()
+        {
+                if (eregi( "\.localhost\.invalid$", $this->get('email')))
+                        return true;
+        }
+
+        function getTransientEmail()
+        {
+                if (eregi( "\.localhost\.invalid$", $this->get('email')))
+                {
+                        $parts = explode('@', $this->get('email'));
+                        $parts = explode('-', $parts[0]);
+                        return pack("H*", $parts[2]);
+                }
+        }
+
+        function loadRegistration(&$registration)
+        {
+                if (!is_object($registration))
+                        return false;
+
+                $keys = array('email', 'name', 'orgtype',
+                                'countryresident', 'countryorigin',
+                                'disability', 'hispanic', 'race',
+                                'phone', 'reason', 'edulevel',
+                                'role');
+
+                foreach($keys as $key)
+                        if ($registration->get($key) !== null)
+                                $this->set($key, $registration->get($key));
+
+		$this->set('username', $registration->get('login'));
+                $this->set('userPassword', $registration->get('password'));
+		$this->set('organization', $registration->get('org'));
+		$this->set('gender', $registration->get('sex'));
+		$this->set('nativeTribe', $registration->get('nativetribe'));
+		$this->set('url', $registration->get('web'));
+
+                if ($registration->get('mailPreferenceOption') !== null)
+                        $this->set('mailPreferenceOption', $registration->get('mailPreferenceOption') ? '2' : '0');
+
+                if ($registration->get('usageAgreement') !== null)
+                        $this->set('usageagreement', $registration->get('usageAgreement') ? true : false);
+
+                return true;
+        }
+
 }
 ?>

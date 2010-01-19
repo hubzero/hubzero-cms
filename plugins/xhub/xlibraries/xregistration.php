@@ -353,6 +353,53 @@ class XRegistration
 		$this->_checked = false;
 	}	
 
+	function loadProfile($xprofile = null)
+	{
+		$this->clear();
+		
+		if (!is_object($xprofile))
+			return;
+
+		$this->set('countryresident', $xprofile->get('countryresident'));
+		$this->set('countryorigin', $xprofile->get('countryorigin'));
+		$this->set('nativetribe', $xprofile->get('nativeTribe'));
+		$this->set('role', $xprofile->get('role'));
+		$this->set('edulevel', $xprofile->get('edulevel'));
+		$this->set('hispanic', $xprofile->get('hispanic'));
+		$this->set('disability', $xprofile->get('disability'));
+		$this->set('race', $xprofile->get('race'));
+		$this->set('login', $xprofile->get('username'));
+		$this->set('email', $xprofile->get('email'));
+		$this->set('confirmEmail', $xprofile->get('email'));
+		$this->set('web', $xprofile->get('url'));
+		$this->set('phone', $xprofile->get('phone'));
+		$this->set('name', $xprofile->get('name'));
+		$this->set('orgtype', $xprofile->get('orgtype'));
+		$this->set('org', $xprofile->get('organization'));
+		$this->set('orgtext', '');
+		$this->set('reason', $xprofile->get('reason'));
+		$this->set('reasontxt', '');
+		$this->set('password', null);
+		$this->set('confirmPassword', null);
+		$this->set('sex', $xprofile->get('gender'));
+		$this->set('usageAgreement', $xprofile->get('usageAgreement'));
+		$this->set('mailPreferenceOption', $xprofile->get('mailPreferenceOption'));
+
+		$parts = explode(':', $this->_registration['login'] );
+
+		if ( count($parts) == 3 && intval($parts[0]) < 0 )
+			$this->_encoded['login'] = pack("H*", $parts[1]);
+
+		if (eregi( "\.localhost\.invalid$", $this->_registration['email']))
+		{
+			$parts = explode('@', $this->_registration['email']);
+			$parts = explode('-', $parts[0]);
+			$this->_encoded['email'] = pack("H*", $parts[2]);
+		}
+
+		$this->_checked = false;
+	}	
+
 	function get($key)
 	{
 		//$this->logDebug("XRegistration::get($key)");
@@ -629,7 +676,7 @@ class XRegistration
 				if (count($bits) >= 1) {
 					$middleName = implode(' ',$bits);
 				}
-				if (!$surname || !$givenName) {
+				if (!$givenName) {
 					$this->_missing['name'] = 'Full Name';
 					$this->_invalid['name'] = 'Please provide a name.';
 				}
