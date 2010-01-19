@@ -139,14 +139,9 @@ class XRouter extends JRouter
 				}
 			}
 
-			$xuser = &XFactory::getUser();
+			$xprofile = &XFactory::getProfile();
 
-			//if ($xuser->get('guest'))
-			//{
-			//	$xlog->logDebug("xuser claims guest while juser claims not guest");
-			//}
-
-			if (($xuser->get('email_confirmed') != 1) && ($xuser->get('email_confirmed') != 3))
+			if (is_object($xprofile) && ($xprofile->get('emailConfirmed') != 1) && ($xprofile->get('emailConfirmed') != 3))
 			{
 				/*if ($vars['option'] == 'com_email') 
 				{
@@ -177,9 +172,6 @@ class XRouter extends JRouter
 
 				$this->setVars($vars);
 				JRequest::set($vars, 'get', true ); // overwrite existing
-
-				if ($xuser->get('guest'))
-					die('HUBzero User Session out of sync. This problem is currently being worked on. Try reloading this page to clear this condition.');
 
 				return $vars;
 			}

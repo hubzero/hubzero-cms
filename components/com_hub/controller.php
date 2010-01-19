@@ -611,7 +611,7 @@ class HubController extends JObject
 			$action = 'show';
 
 		$app      = &JFactory::getApplication();
-		$xuser    = &XFactory::getUser(); 
+		$xprofile = &XFactory::getProfile();
 		$xhub     = &XFactory::getHub();
 		$juser    = &JFactory::getUser();
 		$jsession = &JFactory::getSession();
@@ -629,23 +629,23 @@ class HubController extends JObject
 		if ($action == 'submit')
 			$xregistration->loadPOST();
 		else
-			$xregistration->loadXUser($xuser);
+			$xregistration->loadProfile($xprofile);
 
 		if (!$xregistration->check('update', $juser->get('id')))
 		{
 			if ($action == 'submit')
 			{
-				if ($xuser->hasTransientUsername())
+				if ($xprofile->hasTransientUsername())
 					$xregistration->_encoded['login'] = $xregistration->get('login');
 
-				if ($xuser->hasTransientEmail())
+				if ($xprofile->hasTransientEmail())
 					$xregistration->_encoded['email'] = $xregistration->get('email');
 			}
 
 			return $this->show_registration_form($xregistration, 'update');
 		}
 		
-		if (!$xuser->hasTransientUsername() && $xuser->get('login') != $xregistration->get('login'))
+		if (!$xprofile->hasTransientUsername() && $xprofile->get('username') != $xregistration->get('login'))
 			return JError::raiseError( '500', 'xHUB Internal Error: Registration form doesn\'t belong to current session.');
 		
 		$hubShortName    =  $xhub->getCfg('hubShortName');
@@ -654,49 +654,49 @@ class HubController extends JObject
 		$hubHomeDir      =  $xhub->getCfg('hubHomeDir');
 		$updateEmail     =  false;
 		
-		if ($xuser->get('home') == '')
-			$xuser->set('home', $hubHomeDir . '/' . $xuser->get('login'));
+		if ($xprofile->get('home') == '')
+			$xprofile->set('home', $hubHomeDir . '/' . $xprofile->get('login'));
 			
-		if ($xuser->get('jobs_allowed') == '')
-			$xuser->set('jobs_allowed', 3);
+		if ($xprofile->get('jobs_allowed') == '')
+			$xprofile->set('jobs_allowed', 3);
 			
-		if ($xuser->get('reg_ip') == '')
-			$xuser->set('reg_ip', $_SERVER['REMOTE_ADDR']);
+		if ($xprofile->get('reg_ip') == '')
+			$xprofile->set('reg_ip', $_SERVER['REMOTE_ADDR']);
 			
-		if ($xuser->get('reg_host') == '')
+		if ($xprofile->get('reg_host') == '')
 			if (isset($_SERVER['REMOTE_HOST']))
-			        $xuser->set('reg_host', $_SERVER['REMOTE_HOST']);
+			        $xprofile->set('reg_host', $_SERVER['REMOTE_HOST']);
 			        
-		if ($xuser->get('reg_date') == '')
-			$xuser->set('reg_date', date('Y-m-d H:i:s'));
+		if ($xprofile->get('reg_date') == '')
+			$xprofile->set('reg_date', date('Y-m-d H:i:s'));
 			
-		if ($xregistration->get('email') != $xuser->get('email'))
+		if ($xregistration->get('email') != $xprofile->get('email'))
 		{
-			if ($xuser->hasTransientEmail() && $xregistration->get('email') != $xuser->getTransientEmail())
-				$xuser->set('email_confirmed', '3');
+			if ($xprofile->hasTransientEmail() && $xregistration->get('email') != $xprofile->getTransientEmail())
+				$xprofile->set('email_confirmed', '3');
 			else
 			{
-				$xuser->set('email_confirmed', -rand(1, pow(2, 31)-1) );
+				$xprofile->set('email_confirmed', -rand(1, pow(2, 31)-1) );
 				$updateEmail = true;
 			}
 		}
 
-		if ($xregistration->get('login') != $xuser->get('login'))
+		if ($xregistration->get('login') != $xprofile->get('username'))
 		{
-			if ($xuser->hasTransientUsername())
-				$xuser->set('home', $hubHomeDir . '/' . $xregistration->get('login'));
+			if ($xprofile->hasTransientUsername())
+				$xprofile->set('home', $hubHomeDir . '/' . $xregistration->get('login'));
 		}
 
-		$xuser->loadRegistration($xregistration);
-		$xuser->update();
+		$xprofile->loadRegistration($xregistration);
+		$xprofile->update();
 
 		/* update juser table */
 		/* TODO: only update if changed */
 
-		$myjuser = JUser::getInstance($xuser->get('uid'));
-		$myjuser->set('username', $xuser->get('login'));
-		$myjuser->set('email', $xuser->get('email'));
-		$myjuser->set('name', $xuser->get('name'));
+		$myjuser = JUser::getInstance($xprofile->get('uidNumber'));
+		$myjuser->set('username', $xprofile->get('username'));
+		$myjuser->set('email', $xprofile->get('email'));
+		$myjuser->set('name', $xprofile->get('name'));
 		$myjuser->save();
 
 		/* update current session if appropriate */
@@ -706,15 +706,15 @@ class HubController extends JObject
 		if ($myjuser->get('id') == $juser->get('id'))
 		{
 			$sjuser = $jsession->get('user');
-			$sjuser->set('username', $xuser->get('login'));
-			$sjuser->set('email', $xuser->get('email'));
-			$sjuser->set('name', $xuser->get('name'));
+			$sjuser->set('username', $xprofile->get('username'));
+			$sjuser->set('email', $xprofile->get('email'));
+			$sjuser->set('name', $xprofile->get('name'));
 			$jsession->set('user', $sjuser);
 			
 			// Get the session object
 			$table = & JTable::getInstance('session');
 			$table->load( $jsession->getId() );
-			$table->username = $xuser->get('login');
+			$table->username = $xprofile->get('username');
 			$table->update();
 		}
 
@@ -732,17 +732,17 @@ class HubController extends JObject
 			$message .= 'Since you have changed your e-mail address you must click the following ';
 			$message .= "link to confirm your new email address and reactivate your account:\r\n";
 
-			//$message .= $hubLongURL . '/email/confirm/' . -$xuser->get('email_confirmed') . "\r\n\r\n";
-			$message .= $hubLongURL . JRoute::_('index.php?option='.$this->_option.a.'task=registration'.a.'view=confirm'.a.'confirm='. -$xuser->get('email_confirmed')) . "\r\n\r\n";
+			//$message .= $hubLongURL . '/email/confirm/' . -$xprofile->get('email_confirmed') . "\r\n\r\n";
+			$message .= $hubLongURL . JRoute::_('index.php?option='.$this->_option.a.'task=registration'.a.'view=confirm'.a.'confirm='. -$xprofile->get('email_confirmed')) . "\r\n\r\n";
 			$message .= 'Do not reply to this email.  Replying to this email will not confirm or activate ';
 			$message .= 'your account.' . "\r\n";
 
 			echo '<p>Thank you for updating your account. In order to continue to use ';
 			echo 'this account you must verify your new email address. ';
 
-			if (XHubHelper::send_email($xuser->get('email'), $subject, $message))
+			if (XHubHelper::send_email($xprofile->get('email'), $subject, $message))
 			{
-			        echo 'A confirmation email has been sent to \'' . $xuser->get('email');
+			        echo 'A confirmation email has been sent to \'' . $xprofile->get('email');
 			        echo '\'. You must click the link in ';
 			        echo 'that email to activate your account and begin using ' . $hubShortName;
 			        echo '.</p>';
@@ -750,7 +750,7 @@ class HubController extends JObject
 			else
 			{
 			        echo '</p><p class="error">We were unable to e-mail your account confirmation code. ';
-			        echo 'to ' . $xuser->get('email') . '. Please contact ';
+			        echo 'to ' . $xprofile->get('email') . '. Please contact ';
 			        echo 'support at ';
 			        echo $hubMonitorEmail . ' for assistance in (re)activating your account.</p>';
 			}
@@ -762,16 +762,16 @@ class HubController extends JObject
 		{
 			$subject = $hubShortName . ' Account Update';
 
-			$message = $xuser->get('name');
+			$message = $xprofile->get('name');
 
-			if ($xuser->get('org'))
-				$message .= ' / ' . $xuser->get('org');
+			if ($xprofile->get('organization'))
+				$message .= ' / ' . $xprofile->get('organization');
 
-			$message .= ' (' . $xuser->get('email') . ')';
-			$message .= 'has updated their account \'' . $xuser->get('login') . '\' on ' . $hubShortName;
+			$message .= ' (' . $xprofile->get('email') . ')';
+			$message .= 'has updated their account \'' . $xprofile->get('username') . '\' on ' . $hubShortName;
 			$message .= '.' . "\r\n\r\n";
 			$message .= 'Click the following link to review this user\'s account:' . "\r\n";
-			$message .= $hubLongURL . '/whois?username=' . $xuser->get('login') . "\r\n";
+			$message .= $hubLongURL . '/whois?username=' . $xprofile->get('username') . "\r\n";
 
 			XHubHelper::send_email($hubMonitorEmail, $subject, $message);
 		}

@@ -108,8 +108,6 @@ class plgUserXusers extends JPlugin
 	function onLoginUser($user, $options = array())
 	{
 		jimport('joomla.user.helper');
-		ximport('xuser');
-		ximport('xuserhelper');
 		
 		$authlog = XFactory::getAuthLogger();
 
@@ -203,69 +201,61 @@ class plgUserXusers extends JPlugin
 	function onAfterStoreUser($user, $isnew, $succes, $msg)
 	{
 		ximport('xuser');
+		ximport('xprofile');
 
 		$xhub =& XFactory::getHub();
 		$hubHomeDir = $xhub->getCfg('hubHomeDir');
 
-		$xuser = XUser::getInstance( $user['id'] );
+		$xprofile = XProfile::getInstance( $user['id'] );
 
-		if ($xuser === false)
+		if (!is_object($xprofile))
 		{
-			$xuser = new XUser();
-			$xuser->set('uid', $user['id']);
-			$xuser->set('password', $user['password']);
-			$xuser->set('home', $hubHomeDir . '/' . $user['username']);
-			$xuser->set('name', $user['name']);
-			$xuser->set('email', $user['email']);
-			$xuser->set('email_confirmed', '3');
-			$xuser->set('login', $user['username']);
-			$result = $xuser->create();
+			$xprofile = new XProfile();
+			$xprofile->set('uidNumber', $user['id']);
+			$xprofile->set('userPassword', $user['password']);
+			$xprofile->set('homeDirectory', $hubHomeDir . '/' . $user['username']);
+			$xprofile->set('name', $user['name']);
+			$xprofile->set('email', $user['email']);
+			$xprofile->set('emailConfirmed', '3');
+			$xprofile->set('username', $user['username']);
+			$result = $xprofile->create();
 
-			if ($result == 1) // user already existed!
+			if (!$result)
 			{
-				if ($user['username'][0] == '-') // temporary name, ok to delete it
-				{
-					XUserHelper::delete($user['username']);
-					$result = $xuser->create();
-				}
-			}
-
-			if ($result != 0)
-			{
-				return JError::raiseError('500', 'xHUB Internal Error: Unable to create XUser record');
+				return JError::raiseError('500', 'xHUB Internal Error: Unable to create XProfile record');
 			}
 		}
 		else
 		{
 			$update = false;
 			
-			if ($xuser->get('login') != $user['username'])
+			if ($xprofile->get('username') != $user['username'])
 			{
-				$xuser->set('login', $user['username']);
+				$xprofile->set('username', $user['username']);
 				$update = true;
 			}
 	
-			if ($xuser->get('name') != $user['name'])
+			if ($xprofile->get('name') != $user['name'])
 			{
-				$xuser->set('name', $user['name']);
+				$xprofile->set('name', $user['name']);
 				$update = true;
 			}
 	
-			if ($xuser->get('email') != $user['email'])
+			if ($xprofile->get('email') != $user['email'])
 			{
-				$xuser->set('email', $user['email']);
-				$xuser->set('email_confirmed', 0);
+				$xprofile->set('email', $user['email']);
+				$xprofile->set('email_confirmed', 0);
 				$update = true;
 			}
 
-			if ($xuser->get('email_confirmed') == '')
+			if ($xprofile->get('email_confirmed') == '')
 			{
-				$xuser->set('email_confirmed', '3');
+				$xprofile->set('email_confirmed', '3');
 				$update = true;
 			}
 
 			if ($update) {
-				$xuser->update();
+				$xprofile->update();
 			}
 		}
 	}
