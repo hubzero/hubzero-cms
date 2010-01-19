@@ -178,7 +178,7 @@ INSERT INTO `#__components` VALUES (52,'Registration','',0,50,'option=com_hub&ta
 INSERT INTO `#__components` VALUES (53,'Databases','',0,50,'option=com_hub&task=databases','Databases','com_hub',2,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (54,'Misc. Settings','',0,50,'option=com_hub&task=misc','Misc. Settings','com_hub',3,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (55,'Components','',0,50,'option=com_hub&task=components','Components','com_hub',4,'js/ThemeOffice/component.png',0,'',1);
-INSERT INTO `#__components` VALUES (56,'Middleware','option=com_mw',0,0,'option=com_mw','Middleware','com_mw',0,'js/ThemeOffice/component.png',0,'mw_on=1\nmwDBDriver=mysql\nmwDBHost=localhost\nmwDBPort=\nmwDBUsername=isi\nmwDBPassword=azsxy7u2\nmwDBDatabase=isi\nmwDBPrefix=\nstoragehost=\nshow_storage=0\n\n',1);
+INSERT INTO `#__components` VALUES (56,'Middleware','option=com_mw',0,0,'option=com_mw','Middleware','com_mw',0,'js/ThemeOffice/component.png',0,'mw_on=0\nmwDBDriver=mysql\nmwDBHost=localhost\nmwDBPort=\nmwDBUsername=\nmwDBPassword=\nmwDBDatabase=\nmwDBPrefix=\nstoragehost=\nshow_storage=0\n\n',1);
 INSERT INTO `#__components` VALUES (57,'Support','option=com_support',0,0,'option=com_support','Support','com_support',0,'js/ThemeOffice/component.png',0,'feed_summary=0\nseverities=critical,major,normal,minor,trivial\nwebpath=/site/tickets\nmaxAllowed=40000000\nfile_ext=jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz\ngroup=\n\n',1);
 INSERT INTO `#__components` VALUES (58,'Categories','',0,57,'option=com_support&task=categories','Categories','com_support',0,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (59,'Messages','',0,57,'option=com_support&task=messages','Messages','com_support',1,'js/ThemeOffice/component.png',0,'',1);
@@ -187,7 +187,7 @@ INSERT INTO `#__components` VALUES (61,'Sections','',0,57,'option=com_support&ta
 INSERT INTO `#__components` VALUES (62,'Tickets','',0,57,'option=com_support&task=tickets','Tickets','com_support',4,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (63,'WhatsNew','option=com_whatsnew',0,0,'','','com_whatsnew',0,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (64,'XPoll','option=com_xpoll',0,0,'option=com_xpoll','XPoll','com_xpoll',0,'js/ThemeOffice/component.png',0,'',1);
-INSERT INTO `#__components` VALUES (65,'Contribtool','option=com_contribtool',0,0,'option=com_contribtool','Contribtool','com_contribtool',0,'js/ThemeOffice/component.png',0,'contribtool_on=1\nadmingroup=apps\ndefault_mw=narwhal\ndefault_vnc=780x600\ndeveloper_url=https://isi.hubzero.org/\ndeveloper_site=isiForge\ndeveloper_email=\nproject_path=/tools/\ninvokescript_dir=/apps/\nadminscript_dir=/opt/hubzero/contribtool\ndev_suffix=_dev\ngroup_prefix=app-\ndemo_url=\ndoi_service=http://dir1.lib.purdue.edu:8080/axis/services/CreateHandleService?wsdl\nldap_save=1\nldap_read=0\nusedoi=0\nexec_pu=1\nscreenshot_edit=1\n\n',1);
+INSERT INTO `#__components` VALUES (65,'Contribtool','option=com_contribtool',0,0,'option=com_contribtool','Contribtool','com_contribtool',0,'js/ThemeOffice/component.png',0,'contribtool_on=0\nadmingroup=apps\ndefault_mw=narwhal\ndefault_vnc=780x600\ndeveloper_url=https://\ndeveloper_site=Forge\ndeveloper_email=\nproject_path=/tools/\ninvokescript_dir=/apps/\nadminscript_dir=/opt/hubzero/contribtool\ndev_suffix=_dev\ngroup_prefix=app-\ndemo_url=\ndoi_service=\nldap_save=1\nldap_read=0\nusedoi=0\nexec_pu=1\nscreenshot_edit=1\n\n',1);
 INSERT INTO `#__components` VALUES (66,'Knowledgebase','option=com_kb',0,0,'option=com_kb','Knowledgebase','com_kb',0,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (67,'Resources','option=com_resources',0,0,'option=com_resources','Resources','com_resources',0,'js/ThemeOffice/component.png',0,'autoapprove=1\nautoapproved_users=\ncc_license=1\nemail_when_approved=0\ndefaultpic=/components/com_resources/images/resource_thumb.gif\ntagstool=screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications\ntagsothr=bio,credits,citations,sponsoredby,references,publications\naccesses=Public,Registered,Special,Protected,Private\nwebpath=/site/resources\ntoolpath=/site/resources/tools\nuploadpath=/site/resources\nmaxAllowed=40000000\nfile_ext=jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz\ndoi=\naboutdoi=\nsupportedtag=\nsupportedlink=\nbrowsetags=on\nshow_authors=1\nshow_assocs=1\nshow_ranking=1\nshow_rating=1\nshow_date=3\nshow_metadata=1\nshow_citation=1\n\n',1);
 INSERT INTO `#__components` VALUES (68,'Types','',0,67,'option=com_resources&task=viewtypes','Types','com_resources',0,'js/ThemeOffice/component.png',0,'',1);
@@ -198,7 +198,7 @@ INSERT INTO `#__components` VALUES (72,'New Tag','',0,71,'option=com_tags&task=n
 INSERT INTO `#__components` VALUES (73,'Whois','option=com_whois',0,0,'','','com_whois',0,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (74,'XSearch','option=com_xsearch',0,0,'','','com_xsearch',0,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (75,'Tools','option=com_tools',0,0,'','','com_tools',0,'js/ThemeOffice/component.png',0,'',1);
-INSERT INTO `#__components` VALUES (76,'Members','option=com_members',0,0,'option=com_members','Members','com_members',0,'js/ThemeOffice/component.png',0,'defaultpic=/components/com_members/images/profile.gif\nwebpath=/site/members\nmaxAllowed=40000000\nfile_ext=jpg,jpeg,jpe,bmp,tif,tiff,png,gif\nprivacy=0\naccess_org=0\naccess_orgtype=0\naccess_email=2\naccess_url=0\naccess_phone=2\naccess_tags=0\naccess_bio=0\naccess_countryorigin=0\naccess_countryresident=0\naccess_gender=0\naccess_race=2\naccess_hispanic=2\naccess_disability=2\naccess_optin=2\n\n',1);
+INSERT INTO `#__components` VALUES (76,'Members','option=com_members',0,0,'option=com_members','Members','com_members',0,'js/ThemeOffice/component.png',0,'ldapProfileMirror=0,defaultpic=/components/com_members/images/profile.gif\nwebpath=/site/members\nmaxAllowed=40000000\nfile_ext=jpg,jpeg,jpe,bmp,tif,tiff,png,gif\nprivacy=0\naccess_org=0\naccess_orgtype=0\naccess_email=2\naccess_url=0\naccess_phone=2\naccess_tags=0\naccess_bio=0\naccess_countryorigin=0\naccess_countryresident=0\naccess_gender=0\naccess_race=2\naccess_hispanic=2\naccess_disability=2\naccess_optin=2\n\n',1);
 INSERT INTO `#__components` VALUES (77,'XFlash','option=com_xflash',0,0,'option=com_xflash','XFlash','com_xflash',0,'js/ThemeOffice/component.png',0,'num_featured=3\nuploadpath=/site/xflash\nmaxAllowed=40000000\nfile_ext=jpg,png,gif\niconpath=templates/azure/images/icons/16x16\n\n',1);
 INSERT INTO `#__components` VALUES (78,'Store','option=com_store',0,0,'option=com_store','Store','com_store',0,'js/ThemeOffice/component.png',0,'store_enabled=0\nwebpath=/site/store\nhubaddress_ln1=\nhubaddress_ln2=\nhubaddress_ln3=\nhubaddress_ln4=\nhubaddress_ln5=\nhubemail=\nhubphone=\nheadertext_ln1=\nheadertext_ln2=\nfootertext=\nreceipt_title=Your Order at HUB Store\nreceipt_note=Thank You for contributing to our HUB!\n\n',1);
 INSERT INTO `#__components` VALUES (79,'404 SEF','option=com_sef',0,0,'option=com_sef','404 SEF','com_sef',0,'js/ThemeOffice/component.png',0,'enabled=1\n\n',1);
@@ -1018,6 +1018,7 @@ CREATE TABLE IF NOT EXISTS `#__xforum` (
   `hits` int(11) default '0',
   `group` int(11) default '0',
   `access` tinyint(2) default '4',
+  `anonymous` tinyint(2) NULL DEFAULT '0',
   PRIMARY KEY  (`id`),
   FULLTEXT KEY `question` (`comment`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
@@ -1443,6 +1444,10 @@ CREATE TABLE IF NOT EXISTS `#__events` (
   `archived` tinyint(1) NOT NULL default '0',
   `access` int(11) unsigned NOT NULL default '0',
   `hits` int(11) NOT NULL default '0',
+  `registerby` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `params` text NULL,
+  `restricted` varchar(100) NULL,
+  `email` varchar(255) NULL,
   PRIMARY KEY  (`id`),
   FULLTEXT KEY `title` (`title`),
   FULLTEXT KEY `content` (`content`)
@@ -1466,6 +1471,56 @@ CREATE TABLE IF NOT EXISTS `#__events_categories` (
 CREATE TABLE IF NOT EXISTS `#__events_config` (
   `param` varchar(100) default NULL,
   `value` tinytext
+) TYPE=MyISAM CHARACTER SET `utf8`;
+
+CREATE TABLE #__events_pages ( 
+	id         	int(11) AUTO_INCREMENT NOT NULL,
+	event_id   	int(11) NULL DEFAULT '0',
+	alias      	varchar(100) NOT NULL,
+	title      	varchar(250) NOT NULL,
+	pagetext   	text NULL,
+	created    	datetime NULL DEFAULT '0000-00-00 00:00:00',
+	created_by 	int(11) NULL DEFAULT '0',
+	modified   	datetime NULL DEFAULT '0000-00-00 00:00:00',
+	modified_by	int(11) NULL DEFAULT '0',
+	ordering   	int(2) NULL DEFAULT '0',
+	params     	text NULL,
+	PRIMARY KEY(id)
+) TYPE=MyISAM CHARACTER SET `utf8`;
+
+CREATE TABLE #__events_respondent_race_rel ( 
+	respondent_id     	int(11) NULL,
+	race              	varchar(255) NULL,
+	tribal_affiliation	varchar(255) NULL 
+) TYPE=MyISAM CHARACTER SET `utf8`;
+
+CREATE TABLE #__events_respondents ( 
+	event_id            	int(11) NOT NULL DEFAULT '0',
+	registered          	timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	first_name          	varchar(50) NOT NULL,
+	last_name           	varchar(50) NOT NULL,
+	affiliation         	varchar(50) NULL,
+	title               	varchar(50) NULL,
+	city                	varchar(50) NULL,
+	state               	varchar(20) NULL,
+	zip                 	varchar(10) NULL,
+	country             	varchar(20) NULL,
+	telephone           	varchar(20) NULL,
+	fax                 	varchar(20) NULL,
+	email               	varchar(255) NULL,
+	website             	varchar(255) NULL,
+	position_description	varchar(50) NULL,
+	highest_degree      	varchar(10) NULL,
+	gender              	char(1) NULL,
+	disability_needs    	tinyint(4) NULL,
+	dietary_needs       	varchar(500) NULL,
+	attending_dinner    	tinyint(4) NULL,
+	abstract            	text NULL,
+	comment             	text NULL,
+	id                  	int(11) AUTO_INCREMENT NOT NULL,
+	arrival             	varchar(50) NULL,
+	departure           	varchar(50) NULL,
+	PRIMARY KEY(id)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
 # --------------------------------------------------------
@@ -1518,7 +1573,7 @@ CREATE TABLE IF NOT EXISTS `#__screenshots` (
 #
 CREATE TABLE IF NOT EXISTS `#__tool` (
   `id` int(10) NOT NULL auto_increment,
-  `toolname` varchar(15) NOT NULL default '',
+  `toolname` varchar(64) NOT NULL default '',
   `title` varchar(127) NOT NULL default '',
   `version` varchar(15) default NULL,
   `description` text,
@@ -1552,7 +1607,9 @@ CREATE TABLE IF NOT EXISTS `#__tool_authors` (
   `uid` int(11) NOT NULL default '0',
   `ordering` int(11) default '0',
   `version_id` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`toolname`,`revision`,`uid`)
+  `name` varchar(250) NULL,
+  `organization` varchar(250) NULL,
+  PRIMARY KEY  (`toolname`,`revision`,`uid`,`version_id`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
 # --------------------------------------------------------
@@ -1563,8 +1620,8 @@ CREATE TABLE IF NOT EXISTS `#__tool_authors` (
 CREATE TABLE IF NOT EXISTS `#__tool_groups` (
   `cn` varchar(255) NOT NULL default '',
   `toolid` int(11) NOT NULL default '0',
-  `role` tinyint(2) default '0',
-  PRIMARY KEY  (`cn`,`toolid`)
+  `role` tinyint(2) NOT NULL default '0',
+  PRIMARY KEY  (`cn`,`toolid`,`role`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
 # --------------------------------------------------------
@@ -1574,7 +1631,7 @@ CREATE TABLE IF NOT EXISTS `#__tool_groups` (
 #
 CREATE TABLE IF NOT EXISTS `#__tool_version` (
   `id` int(10) NOT NULL auto_increment,
-  `toolname` varchar(15) NOT NULL default '',
+  `toolname` varchar(64) NOT NULL default '',
   `instance` varchar(31) NOT NULL default '',
   `title` varchar(127) NOT NULL default '',
   `description` text,
@@ -1586,14 +1643,17 @@ CREATE TABLE IF NOT EXISTS `#__tool_version` (
   `wikiaccess` varchar(15) default NULL,
   `state` int(15) default NULL,
   `released_by` varchar(31) default NULL,
-  `released` datetime default '0000-00-00 00:00:00',
-  `unpublished` datetime default '0000-00-00 00:00:00',
+  `released` datetime NULL,
+  `unpublished` datetime NULL,
   `exportControl` varchar(16) NULL,
   `license` text,
   `vnc_geometry` varchar(31) default NULL,
+  `vnc_depth` int(11) NULL,
+  `vnc_timeout` int(11) NULL,
   `vnc_command` varchar(100) default NULL,
   `mw` varchar(31) default NULL,
   `toolid` int(11) default NULL,
+  `priority` int(11) NULL,
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
@@ -1609,6 +1669,26 @@ CREATE TABLE IF NOT EXISTS `#__tool_statusviews` (
   `viewed` datetime default '0000-00-00 00:00:00',
   `elapsed` int(11) default '500000',
   PRIMARY KEY  (`id`)
+) TYPE=MyISAM CHARACTER SET `utf8`;
+
+CREATE TABLE #__tool_version_alias ( 
+	tool_version_id	int(11) NOT NULL,
+	alias          	varchar(255) NOT NULL 
+) TYPE=MyISAM CHARACTER SET `utf8`;
+
+CREATE TABLE #__tool_version_hostreq ( 
+	tool_version_id	int(11) NOT NULL,
+	hostreq        	varchar(255) NOT NULL 
+) TYPE=MyISAM CHARACTER SET `utf8`;
+
+CREATE TABLE #__tool_version_middleware ( 
+	tool_version_id	int(11) NOT NULL,
+	middleware     	varchar(255) NOT NULL 
+) TYPE=MyISAM CHARACTER SET `utf8`;
+
+CREATE TABLE #__tool_version_tracperm ( 
+	tool_version_id	int(11) NOT NULL,
+	tracperm       	varchar(64) NOT NULL 
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
 # --------------------------------------------------------
@@ -1639,9 +1719,9 @@ TYPE=MyISAM CHARACTER SET `utf8`;
 # --------------------------------------------------------
 
 #
-# Table structure for `#__xgroup_tracperms`
+# Table structure for `#__xgroup_tracperm`
 #
-CREATE TABLE IF NOT EXISTS `#__xgroups_tracperms` ( 
+CREATE TABLE IF NOT EXISTS `#__xgroups_tracperm` ( 
 	group_id  	int(11) NOT NULL,
 	action    	varchar(255) NOT NULL,
 	project_id	int(11) NOT NULL,
@@ -2042,6 +2122,66 @@ CREATE TABLE IF NOT EXISTS `#__resource_types` (
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (1,'Online Presentations',27);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (2,'Workshops',27);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (3,'Publications',27);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (4,'Learning Modules',27);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (5,'Animations',27);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (6,'Courses',27);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (7,'Tools',27);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (8,'Simulation Tool Sets',-1);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (9,'Downloads',27);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (10,'Notes',27);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (11,'External Link',30);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (12,'Internal Link',30);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (13,'File',30);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (14,'Presentation Slides',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (15,'Quicktime',30);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (16,'Examples',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (17,'Exercises',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (18,'References',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (19,'Presentation (without audio)',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (20,'Presentation (with audio)',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (21,'Sub Type',0);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (22,'Research Seminars',21);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (23,'Troubleshooting',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (24,'How to ...',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (25,'Advanced Exercises',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (26,'Flash Paper',30);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (27,'Main Types',0);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (28,'Logical Type',0);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (29,'Group',0);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (30,'Type',0);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (31,'Series',27);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (32,'Breeze',30);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (33,'PDF',30);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (34,'Quiz',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (35,'PowerPoint',30);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (36,'Poster',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (37,'Media Player',30);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (38,'Package',30);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (39,'Teaching Materials',27);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (40,'Video Stream',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (41,'Video',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (44,'Nanotechnology',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (45,'Chemistry',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (46,'Semiconductors and Circuits',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (47,'Other Tools',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (48,'Tutorials',21);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (49,'Podcast (audio)',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (50,'Podcast (video)',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (51,'Homework Assignment',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (52,'MOS Capacitor Examples',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (53,'Dual Gate Examples',29);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (54,'Course Lectures',21);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (55,'Ph.D. Thesis',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (56,'Publication Preprint',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (57,'Handout',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (58,'Undergraduate Presentation',21);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (59,'Manual',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (60,'Software Download',28);
+INSERT IGNORE INTO `#__resource_types` (`id`, `type`, `category`) VALUES (61,'Exercise Solutions',29);
+
 # --------------------------------------------------------
 
 #
@@ -2092,6 +2232,8 @@ CREATE TABLE IF NOT EXISTS `#__author_assoc` (
   `authorid` int(11) NOT NULL default '0',
   `ordering` int(11) default NULL,
   `role` varchar(50) default NULL,
+  `name` varchar(255) default NULL,
+  `organization` varchar(255) default NULL,
   PRIMARY KEY  (`subtable`,`subid`,`authorid`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
@@ -2320,6 +2462,7 @@ CREATE TABLE IF NOT EXISTS `#__wishlist_owners` (
 	id      	int(11) AUTO_INCREMENT NOT NULL,
 	wishlist	int(11) NULL DEFAULT '0',
 	userid  	int(11) NOT NULL DEFAULT '0',
+        type		int(11) NULL DEFAULT '0',
 	PRIMARY KEY(id)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
@@ -2336,6 +2479,14 @@ CREATE TABLE IF NOT EXISTS `#__wishlist_vote` (
 	importance	int(3) NULL DEFAULT '0',
 	effort    	int(3) NULL DEFAULT '0',
 	due       	datetime NULL DEFAULT '0000-00-00 00:00:00',
+	PRIMARY KEY(id)
+) TYPE=MyISAM CHARACTER SET `utf8`;
+
+CREATE TABLE #__wish_attachments ( 
+	id         	int(11) AUTO_INCREMENT NOT NULL,
+	wish       	int(11) NOT NULL DEFAULT '0',
+	filename   	varchar(255) NULL,
+	description	varchar(255) NULL,
 	PRIMARY KEY(id)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
@@ -2704,7 +2855,7 @@ CREATE TABLE IF NOT EXISTS `#__xprofiles` (
 	`countryorigin` char(2) NOT NULL default '',
 	`gender` varchar(255) NOT NULL default '',
 	`url` varchar(255) NOT NULL default '',
-	`reason` varchar(255) NOT NULL default '',
+	`reason` text NOT NULL default '',
 	`mailPreferenceOption` int(11) NOT NULL default 0,
 	`usageAgreement` int(11) NOT NULL default 0,
 	`jobsAllowed` int(11) NOT NULL default 0,
@@ -2722,9 +2873,9 @@ CREATE TABLE IF NOT EXISTS `#__xprofiles` (
 	`picture` varchar(255) NOT NULL default '',
 	`vip` int(11) NOT NULL default 0,
 	`public` tinyint(2) NOT NULL default 0,
-	`params` text NOT NULL,
-	`note` text NOT NULL,
-	`shadowExpire` int(11) NOT NULL DEFAULT '0',
+	`params` text NOT NULL default '',
+	`note` text NOT NULL default '',
+	`shadowExpire` int(11) NULL,
 	PRIMARY KEY (`uidNumber`),
 	FULLTEXT KEY `author` (`givenName`,`surname`),
 	KEY (`username`)
@@ -3284,6 +3435,7 @@ CREATE TABLE IF NOT EXISTS `#__xmessage` (
   `subject` varchar(250) default NULL,
   `component` varchar(100) default NULL,
   `type` varchar(100) default NULL,
+  `group_id` int(11) NULL DEFAULT '0',
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
