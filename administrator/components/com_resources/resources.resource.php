@@ -362,7 +362,8 @@ class ResourcesResource extends JTable
 				if (!empty($phrases)) {
 					$exactphrase = addslashes('"'.$phrases[0].'"');
 					$query .= ", ("
-							. "  MATCH(r.introtext,r.fulltext) AGAINST ('$exactphrase' IN BOOLEAN MODE) + r.ranking +"
+							//. "  MATCH(r.introtext,r.fulltext) AGAINST ('$exactphrase' IN BOOLEAN MODE) + r.ranking +"
+							. "  MATCH(r.introtext,r.fulltext) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
 							. "  MATCH(au.givenName,au.surname) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
 							. "  MATCH(r.title) AGAINST ('$exactphrase' IN BOOLEAN MODE)"
 							. " ) AS relevance ";
@@ -383,10 +384,16 @@ class ResourcesResource extends JTable
 					$text2 = str_replace('+','',$text);
 
 					$query .= ", ("
-							. "  MATCH(r.introtext,r.fulltext) AGAINST ('+$text -\"$text2\"') + r.ranking +"
+							//. "  MATCH(r.introtext,r.fulltext) AGAINST ('+$text -\"$text2\"') + r.ranking +"
+							. "  MATCH(r.introtext,r.fulltext) AGAINST ('+$text -\"$text2\"') +"
 							. "  MATCH(au.givenName,au.surname) AGAINST ('+$text -\"$text2\"') +"
 							. "  MATCH(r.title) AGAINST ('+$text -\"$text2\"') + "
-							. "  CASE WHEN LOWER(r.title) LIKE '%$text2%' THEN 5 ELSE 0 END"
+							//. "  CASE WHEN LOWER(r.title) LIKE '%$text2%' THEN 5 ELSE 0 END +"
+							//. "  CASE WHEN (LOWER(r.title) LIKE '%$text2%' AND LOWER(r.title) NOT LIKE '%lecture%') THEN 10 ELSE 0 END +"
+							. "  CASE WHEN (LOWER(r.title) LIKE '%$text2%') THEN 10 ELSE 0 END +"
+							//. "  CASE WHEN (LOWER(r.title) LIKE '%$text2%' AND LOWER(r.title) NOT LIKE '%lecture%') THEN 10 ELSE 0 END"
+							. "  CASE WHEN (LOWER(r.title) LIKE '%$text2%' AND r.type=6) THEN 50 ELSE 0 END"
+							//. "  CASE WHEN (SELECT COUNT(*) FROM #__resource_assoc AS ras WHERE ras.child_id=r.id) > 0 THEN -95 ELSE 0 END"
 							. " ) AS relevance ";
 				}
 			}

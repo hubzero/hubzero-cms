@@ -105,7 +105,7 @@ class ResourcesHelper extends JObject
 	{
 		if (false) // @FIXME  quick hack to deal with influx of LDAP data in jos_tool_groups
 		{
-		$sql = "SELECT n.uidNumber AS id, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS org, t.*, NULL as role"
+		$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname,  n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, NULL as role"
 			 . "\n FROM #__tool_authors AS t, #__xprofiles AS n "
 			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='".$toolname."'"
 			 . "\n AND t.revision='".$revision."'"
@@ -113,7 +113,7 @@ class ResourcesHelper extends JObject
 		}
 		else
 		{
-		$sql = "SELECT n.uidNumber AS id, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS org, t.*, NULL as role"
+		$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, NULL as role"
 			 . "\n FROM #__tool_authors AS t, #__xprofiles AS n, #__tool_version AS v "
 			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='".$toolname."' AND v.id=t.version_id and v.state<>3"
 			 . "\n AND t.revision='".$revision."'"
@@ -121,6 +121,17 @@ class ResourcesHelper extends JObject
 		}
 		$this->_db->setQuery( $sql );
 		$cons = $this->_db->loadObjectList();
+		if ($cons) {
+			foreach ($cons as $k => $c) 
+			{
+				if (!$cons[$k]->name) {
+					$cons[$k]->name = $cons[$k]->xname;
+				}
+				if (trim($cons[$k]->org) == '') {
+					$cons[$k]->org = $cons[$k]->xorg;
+				}
+			}
+		}
 		$this->_contributors = $cons;
 	}
 	
@@ -128,21 +139,47 @@ class ResourcesHelper extends JObject
 
 	function getCons() 
 	{
-		$sql = "SELECT n.uidNumber AS id, n.name AS name, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS org, a.role"
+		/*$sql = "SELECT n.uidNumber AS id, n.name AS name, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS org, a.role"
 			 . "\n FROM #__xprofiles AS n"
 			 . "\n JOIN #__author_assoc AS a ON n.uidNumber=a.authorid"
 			 . "\n WHERE a.subtable = 'resources'"
 			 . "\n AND a.subid=". $this->_id 
-			 . "\n ORDER BY ordering, surname, givenName, middleName";
+			 . "\n ORDER BY ordering, surname, givenName, middleName";*/
+		$sql = "SELECT n.uidNumber AS id, 
+				a.name AS name, 
+				n.name AS xname,
+				n.givenName AS firstname, 
+				n.middleName AS middlename, 
+				n.surname AS lastname, 
+				a.organization AS org, 
+				n.organization AS xorg, 
+				a.role
+				FROM #__xprofiles AS n, 
+				#__author_assoc AS a 
+				WHERE n.uidNumber=a.authorid 
+				AND a.subtable='resources' 
+				AND a.subid=".$this->_id." 
+				ORDER BY ordering, surname, givenName, middleName";
 	
 		$this->_db->setQuery( $sql );
 		$cons = $this->_db->loadObjectList();
+		if ($cons) {
+			foreach ($cons as $k => $c) 
+			{
+				if (!$cons[$k]->name) {
+					$cons[$k]->name = $cons[$k]->xname;
+				}
+				if (trim($cons[$k]->org) == '') {
+					$cons[$k]->org = $cons[$k]->xorg;
+				}
+			}
+		}
 		$this->_contributors = $cons;
 	}
 	
 	//-----------
 
-	function getContributors($showorgs=false)
+	function getContributors($showorgs=false, $newstyle=0)
 	{
 		if (!isset($this->_contributors) && !$this->_contributors) {
 			$this->getCons();
@@ -153,11 +190,16 @@ class ResourcesHelper extends JObject
 			$html = '';
 			$names = array();
 			$orgs = array();
+			$i = 1;
+			$k = 0;
+			$orgsln = '';
+			$names_s = array();
+			$orgsln_s = '';
 			
 			foreach ($contributors as $contributor) 
 			{
 				// Build the user's name and link to their profile
-				if ($contributor->lastname || $contributor->firstname) {
+				/*if ($contributor->lastname || $contributor->firstname) {
 					$name = stripslashes($contributor->firstname) .' ';
 					if ($contributor->middlename != NULL) {
 						$name .= stripslashes($contributor->middlename) .' ';
@@ -165,25 +207,77 @@ class ResourcesHelper extends JObject
 					$name .= stripslashes($contributor->lastname);
 				} else {
 					$name = $contributor->name;
+				}*/
+				if ($contributor->name) {
+					$name = $contributor->name;
+				} else if ($contributor->lastname || $contributor->firstname) {
+					$name = stripslashes($contributor->firstname) .' ';
+					if ($contributor->middlename != NULL) {
+						$name .= stripslashes($contributor->middlename) .' ';
+					}
+					$name .= stripslashes($contributor->lastname);
+				} else {
+					$name = $contributor->xname;
 				}
+				if (!$contributor->org) {
+					$contributor->org = $contributor->xorg;
+				}
+				
 				$name = str_replace( '"', '&quot;', $name );
 				$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->id).'" rel="contributor" title="View the profile of '.$name.'">'.$name.'</a>';
 				$link .= ($contributor->role) ? ' ('.$contributor->role.')' : '';
 				
-				$names[] = $link;
-				$orgs[trim($contributor->org)][] = $link;
+				if($newstyle) {				
+					if(trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) {
+						$orgs[$i-1] = trim($contributor->org);
+						$orgsln 	.= $i. '. ' .trim($contributor->org).'; ';
+						$orgsln_s 	.= trim($contributor->org).' ';
+						$k = $i; 
+						$i++;
+						
+					}
+					else {
+						$k = array_search(trim($contributor->org), $orgs) + 1;
+					}
+					$link_s = $link;
+					$link .= '<sup>'. $k .'</sup>';
+					$names_s[] = $link_s;			
+					
+				}
+				else {
+					$orgs[trim($contributor->org)][] = $link;
+				}
+				
+				$names[] = $link;	
+				
+				
 			}
-			if ($showorgs) {
+			
+			if ($showorgs && !$newstyle) {
 				foreach ($orgs as $org=>$links) 
 				{
 					$orgs[$org] = implode( ', ', $links ).'<br />'.$org;
 				}
 				$html .= implode( '<br /><br />', $orgs );
-			} else {
+			} 
+			else if($newstyle) {
+				if (count($names) > 0) {
+					$html = '<p>'.ucfirst(JText::_('By')).' ';
+					$html .= count($orgs) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
+					$html .= '</p>';
+				}
+				if ($showorgs && count($orgs) > 0) {
+					$html .= '<p class="orgs">';
+					$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
+					$html .= '</p>';
+				}
+			}
+			else {
 				if (count($names) > 0) {
 					$html = implode( ', ', $names );
 				}
 			}
+			
 		} else {
 			$html = '';
 		}
@@ -315,7 +409,7 @@ class ResourcesHelper extends JObject
 	// Children, parents, etc.
 	//----------------------------------------------------------
 
-	function getChildren( $id='', $limit=0, $standalone='all' )
+	function getChildren( $id='', $limit=0, $standalone='all', $excludeFirstChild = 0 )
 	{
 		$children = '';
 		if (!$id) {
@@ -336,8 +430,8 @@ class ResourcesHelper extends JObject
 			default: $sql .= ""; break;
 		}
 		$sql .= "\n ORDER BY a.ordering, a.grouping";
-		if ($limit != 0) {
-			$sql .= " LIMIT ".$limit;
+		if ($limit != 0 or $excludeFirstChild) {
+			$sql .= $excludeFirstChild ? " LIMIT $excludeFirstChild, 100" : " LIMIT  ".$limit;
 		}
 		$this->_db->setQuery( $sql );
 		$children = $this->_db->loadObjectList();

@@ -19,22 +19,18 @@
 -->
 
 <install version="1.5" type="plugin" group="resources">
-	<name>Resource - Related</name>
-	<author>Shawn Rice</author>
+	<name>Resource - Supporting Documents</name>
+	<author>Alissa Nedossekina</author>
 	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
-	<description>Display related resources</description>
+	<description>Display supporting documents</description>
 	<files>
-		<filename plugin="related">related.php</filename>
+		<filename plugin="supportingdocs">supportingdocs.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_resources_related.ini</language>
+		<language tag="en-GB">en-GB.plg_resources_supportingdocs.ini</language>
 	</languages>
 	<params>
 		<param name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
-		<param name="miniview" type="radio" default="0" label="Minimal view" description="Determines detailed or minimal display of related items">
-			<option value="1">yes</option>
-			<option value="0">no</option>
-		</param>
 	</params>
 </install>

@@ -119,26 +119,26 @@ class plgResourcesQuestions extends JPlugin
 		$html = '';
 		if ($rtrn == 'all' || $rtrn == 'html') {
 			// Did we get results back?
-	
+			$title = JText::_('RECENT_QUESTIONS');
+			
+			$sbjt  = '<h3>'.n;
+			$sbjt .= ' <span><a href="/answers/question/new/?tag=tool:'.$resource->alias.'" class="add">'.JText::_('ASK_A_QUESTION_ABOUT_TOOL').'</a></span>'.$title.n;
+			$sbjt .= '</h3>'.n;
+			
 			if ($rows) {
 				
 				ximport('xdocument');
-				XDocument::addComponentStylesheet('com_answers');
-				
-				$title = JText::_('RECENT_QUESTIONS');
+				XDocument::addComponentStylesheet('com_answers');				
 				$limit = $this->_params->get('display_limit');
 				$limit = $limit ? $limit : 10;
 				if($count > 0 && ($count > $limit)) {
 				$tag = $resource->type== 7 ?  'tool'.$resource->alias : 'resource'.$resource->id;
-				$title.= ' <span>(<a href="'.JRoute::_('index.php?option=com_answers'.a.'task=search').'?tag='.$tag.'&sortby=withinplugin">'.JText::_('VIEW_ALL') .' '.$count.'</a>)</span>';
+				$title.= ' (<a href="'.JRoute::_('index.php?option=com_answers'.a.'task=search').'?tag='.$tag.'&sortby=withinplugin">'.JText::_('VIEW_ALL') .' '.$count.'</a>)';
 				}
 				else {
 				$title .= ' ('.$count.')';
 				}
-				$sbjt  = '<div class="answers_plugin">'.n;
-				$sbjt .= '<h3>'.$title.'</h3>'.n;
-				$sbjt .= '</div>'.n;
-
+						
 				// Loop through the results and build the HTML
 				$sbjt .= t.t.'<ul class="questions plugin">'.n;
 				
@@ -281,14 +281,17 @@ class plgResourcesQuestions extends JPlugin
 				
 				$sbjt .= t.t.'</ul>'.n;
 			} else {
-				$sbjt  = t.t.'<p>'.JText::_('NO_QUESTIONS_FOUND').'</p>'.n;
+				$sbjt .= t.t.'<p>'.JText::_('NO_QUESTIONS_FOUND').'</p>'.n;
 			}
 
+			/*
 			$html  = ResourcesHtml::hed(3,'<a name="questions"></a>'.JText::_('QUESTIONS_AND_ANSWERS')).n;
 			$html .= ResourcesHtml::aside(
 						'<p>'.JText::_('QUESTIONS_EXPLANATION').'</p>'.
 						'<p class="add"><a href="/answers/question/new/?tag=tool:'.$resource->alias.'">'.JText::_('ASK_A_QUESTION_ABOUT_TOOL').'</a></p>');
-			$html .= ResourcesHtml::subject($sbjt);
+			*/
+			$html .= $sbjt;
+			
 		}
 
 		$metadata = '';

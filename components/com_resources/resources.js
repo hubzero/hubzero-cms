@@ -147,6 +147,20 @@ HUB.Resources = {
 			});
 		}
 		
+		// Primary-document info pop-up
+		var primarydoc = $('primary-document');
+		var primarydocpop = $('primary-document_pop');
+		if (primarydoc && primarydocpop) {
+			primarydoc.addEvent('mouseover', function(e) {
+				//new Event(e).stop();
+				primarydocpop.style.display = "block";
+			});
+			
+			primarydoc.addEvent('mouseout', function(e) {
+				primarydocpop.style.display = "none";
+			});
+		}
+		
 		// Add to favorites
 		var fav = $('fav-this');
 		if (fav) {
@@ -238,6 +252,98 @@ HUB.Resources = {
 				}
 			}
 		}
+		
+			//------------------------
+		// screenshot thumbnail slider
+		//------------------------
+		
+		var target = $$('.showcase-pane')[0];
+        	
+		if($('showcase') && target) {	
+			var sidemargin = 4;
+  			var thumbwidth = 110;
+			var moveto = 0;
+			var active = 0;
+			var panels = 0;
+			
+			var next = $('showcase-next');
+			var prev = $('showcase-prev');
+			
+			thwidth = $$('.thumbima').length * sidemargin * 2 + $$('.thumbima').length * thumbwidth;
+			var win_width = $('showcase-window').offsetWidth;
+			
+			if(thwidth/win_width < 1) {
+						next.addClass('inactive');
+						prev.addClass('inactive');
+			}
+					
+			// go next		
+			if (next) {
+				next.addEvent('mouseover', function() {
+					//var win_width = $('showcase-window').getStyle('width').toInt();
+					var win_width = $('showcase-window').offsetWidth;
+					if(thwidth/win_width < 1) {
+						this.addClass('inactive');
+						prev.addClass('inactive');
+					}
+					else {
+						this.removeClass('inactive');
+						prev.removeClass('inactive');
+					}
+				});								
+				next.addEvent('click', function() {
+					var win_width = $('showcase-window').offsetWidth;
+					if(thwidth/win_width < 1) {
+					 	panels = 0;	
+					}
+					else {
+						panels = Math.round(thwidth/win_width);
+					}
+					
+					if(panels >= 1 && active < panels) {
+						active ++;
+						moveto -= win_width;
+								
+						var fx = new Fx.Styles(target, {duration: 600, wait: false});
+						 fx.start({
+							'left': [moveto]
+						});
+					}
+				});
+			}
+			
+			// go prev
+			if (prev) {
+				prev.addEvent('mouseover', function() {
+					var win_width = $('showcase-window').offsetWidth;
+					if(thwidth/win_width < 1) {
+						this.addClass('inactive');
+						next.addClass('inactive');
+					}
+					else {
+						this.removeClass('inactive');
+						next.removeClass('inactive');
+					}
+				});	
+				prev.addEvent('click', function() {
+					var win_width = $('showcase-window').offsetWidth;
+					var panels = Math.round(thwidth/win_width);	
+					
+					if(panels >= 1 && active > 0) {
+									
+						active --;
+						moveto += win_width;
+	
+						var fxright = new Fx.Styles(target, {duration: 600, wait: false});
+						 fxright.start({
+							'left': [moveto]
+						});
+					}
+				});
+			}
+		
+		}
+		
 		
 		//--------------
 		var vote = $$('.revvote');

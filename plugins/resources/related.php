@@ -55,10 +55,11 @@ class plgResourcesRelated extends JPlugin
 
 	//-----------
 
-	function onResourcesSub( $resource, $option )
+	function onResourcesSub( $resource, $option, $miniview = 0 )
 	{
 		$database =& JFactory::getDBO();
-
+		
+			
 		// Build the query that checks topic pages
 		/*$sql1 = "SELECT f.id, d.pageid, MAX(d.version), d.title, d.pagename AS alias, f.pagetext AS introtext, NULL AS type, NULL AS published, NULL AS publish_up, d.scope, d.rating, d.times_rated, d.ranking, 'Topic' AS section
 		FROM #__wiki_version AS f, 
@@ -112,11 +113,40 @@ class plgResourcesRelated extends JPlugin
 		$query = "SELECT k.* FROM (($sql1) UNION ($sql2)) AS k ORDER BY ranking DESC LIMIT 10";
 
 		// Execute the query
-		$database->setQuery( $query );
-		$related = $database->loadObjectList();
+		$database->setQuery( $sql1 );
+		$topics = $database->loadObjectList();
+		
+		$database->setQuery( $sql2 );
+		$resources = $database->loadObjectList();
+		
+		$rel = array();
+		if ($topics) {
+			foreach ($topics as $t) 
+			{
+				$rel[$t->ranking] = $t;
+			}
+		}
+		if ($resources) {
+			foreach ($resources as $r) 
+			{
+				$rel[$r->ranking] = $r;
+			}
+		}
+		
+		krsort($rel);
+		$i = 0;
+		$related = array();
+		foreach ($rel as $k=>$r) 
+		{
+			$i++;
+			if ($i == 11) {
+				break;
+			}
+			$related[] = $r;
+		}
 		
 		// Did we find any results?
-		if ($related) {
+		if ($related && !$miniview) {
 			$juser =& JFactory::getUser();
 
 			$sbjt  = '<table class="related-resources">'.n;
@@ -216,10 +246,59 @@ class plgResourcesRelated extends JPlugin
 			$sbjt  = '<p>'.JText::_('NO_RELATED_RESULTS_FOUND').'</p>'.n;
 		}
 		
+		
 		// Build the final HTML
-		$html  = ResourcesHtml::hed(3,'<a name="related"></a>'.JText::_('RELATED_HEADER')).n;
-		$html .= ResourcesHtml::aside('<p>'.JText::_('RELATED_EXPLANATION').'</p>');
-		$html .= ResourcesHtml::div( $sbjt, 'subject' );
+		if($miniview) {
+			$html  = '<div id="whatsrelated">'.n;
+			$html .= ResourcesHtml::hed(3, JText::_('RELATED_HEADER')).n;
+			if($related) {
+				$html .= t.'<ul>'.n;
+				foreach ($related as $line)
+				{
+					if ($line->section != 'Topic') {
+						// Get the SEF for the resource
+						if ($line->alias) {
+							$sef = JRoute::_('index.php?option=com_resources'.a.'alias='. $line->alias);
+						} else {
+							$sef = JRoute::_('index.php?option=com_resources'.a.'id='. $line->id);
+						}
+						$class = 'series';
+
+					}
+					else {
+						if ($line->group != '' && $line->scope != '') {
+							$sef = JRoute::_('index.php?option=com_groups&scope='.$line->scope.'&pagename='.$line->alias);
+						} else {
+							$sef = JRoute::_('index.php?option=com_topics&scope='.$line->scope.'&pagename='.$line->alias);
+						}
+						$class = 'wiki';
+					}
+					
+					// Encode some potentially troublesome characters
+					$line->title = ResourcesHtml::encode_html( $line->title );
+	
+					// Make sure we have an SEF, otherwise it's a querystring
+					if (strstr($sef,'option=')) {
+						$d = a;
+					} else {
+						$d = '?';
+					}
+					$html .= t.'<li class="'.$class.'">';
+					$html .= ($line->section == 'Series') ? JText::_('PART_OF').' ' : '';
+					$html .= '<a href="'.$sef.'" title="'.$line->title.'">'. $line->title . '</a></li>'.n;	
+				}
+				$html .= t.'</ul>'.n;
+			}
+			else {
+			$html .= '<p>'.JText::_('NO_RELATED_RESULTS_FOUND').'</p>'.n;
+			}
+			$html .= '</div>'.n;
+		}
+		else {	
+			$html  = ResourcesHtml::hed(3,'<a name="related"></a>'.JText::_('RELATED_HEADER')).n;
+			//$html .= ResourcesHtml::aside('<p>'.JText::_('RELATED_EXPLANATION').'</p>');
+			$html .= ResourcesHtml::div( $sbjt);
+		}
 
 		// Return the an array of content
 		$arr = array(

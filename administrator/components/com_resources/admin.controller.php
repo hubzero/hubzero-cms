@@ -779,9 +779,10 @@ class ResourcesController extends JObject
 			// Get groups
 			ximport('xgroup');
 			$filters = array();
+			$filters['authorized'] = 'admin';
 			$filters['fields'] = array('description','published','gidNumber','type');
 			$groups = XGroupHelper::get_groups('hub', false, $filters);
-			
+
 			// Build <select> of groups
 			$lists['groups'] = ResourcesHtml::selectGroup($groups, $row->group_owner);
 
@@ -793,7 +794,7 @@ class ResourcesController extends JObject
 
 			// Get all contributors linked to this resource
 			$ma = new MembersAssociation( $database );
-			$sql = "SELECT n.uidNumber AS id, n.givenName, n.middleName, n.surname, a.role  
+			$sql = "SELECT n.uidNumber AS id, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization  
 					FROM $mp->_tbl AS n, $ma->_tbl AS a  
 					WHERE a.subtable='resources'
 					AND a.subid=$row->id 
@@ -992,6 +993,8 @@ class ResourcesController extends JObject
 					$rc->authorid = $authorsNew[$i];
 					$rc->ordering = $i;
 					$rc->role = trim(JRequest::getVar( $authorsNew[$i].'_role', '' ));
+					$rc->name = trim(JRequest::getVar( $authorsNew[$i].'_name', '' ));
+					$rc->organization = trim(JRequest::getVar( $authorsNew[$i].'_organization', '' ));
 					if (in_array($authorsNew[$i], $authorsOld)) {
 						// Updating record
 						$rc->updateAssociation();

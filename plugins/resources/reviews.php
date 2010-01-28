@@ -258,7 +258,7 @@ class plgResourcesReviews extends JPlugin
 				}
 			}
 			
-			$out  = ResourcesHtml::hed(3,'<a name="reviews"></a>'.JText::_('REVIEWS')).n;
+			$out  = ResourcesHtml::hed(3,'<span><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$resource->id.a.'active=reviews'.a.'action=addreview#reviewform').'"  class="add">'.JText::_('WRITE_A_REVIEW').'</a></span><a name="reviews"></a>'.JText::_('REVIEWS')).n;
 			
 			// Did they perform an action?
 			// If so, they need to be logged in first.
@@ -271,11 +271,12 @@ class plgResourcesReviews extends JPlugin
 				$out = $html;
 			} else {
 				// Build the final HTML
-				$out .= ResourcesHtml::aside(
+				/*$out .= ResourcesHtml::aside(
 						'<p>'.JText::_('REVIEWS_EXPLANATION').'</p>'.
 						'<p class="add"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$resource->id.a.'active=reviews'.a.'action=addreview#reviewform').'">'.JText::_('WRITE_A_REVIEW').'</a></p>'
-					);
-				$out .= ResourcesHtml::subject($html);
+					);*/
+				//$out .= ResourcesHtml::subject($html
+				$out .= $html;
 			}
 		}
 		

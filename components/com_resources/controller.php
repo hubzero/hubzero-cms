@@ -581,6 +581,15 @@ class ResourcesController extends JObject
 		// Store the object in our registry
 		$this->activechild = $activechild;
 		
+		// record view?
+		/*
+		if(is_file(JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'item_pop.php')) {
+			ximport('item_pop');
+			$pop = new ItemPop( $database );
+			$pop->saveView ($id, 'resources');
+		}
+		*/	
+		
 		$no_html = JRequest::getInt( 'no_html', 0 );
 		if ($no_html) {
 			$resource = new ResourcesResource( $database );
@@ -674,6 +683,10 @@ class ResourcesController extends JObject
 		$this->getStyles();
 		$this->getScripts();
 		
+		// Get tabbed view styling 
+		ximport('xdocument');
+		XDocument::addComponentStylesheet($this->_option);
+		
 		// Version checks (tools only)
 		$alltools = array();
 		$thistool = '';
@@ -756,6 +769,7 @@ class ResourcesController extends JObject
 			// Get the sections
 			$sections = $dispatcher->trigger( 'onResources', array($resource, $this->_option, array($tab), 'all') );
 		}
+	
 		
 		$available = array('play');
 		foreach ($cats as $cat) 
@@ -788,72 +802,33 @@ class ResourcesController extends JObject
 			$usersgroups = array();
 		}
 		
-		$body = '';
-		if (strtolower($tab) == 'about') {
-			// Build the HTML of the "about" tab
-			$body = ResourcesHtml::about( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $thistool, $curtool, $alltools, $revision, $params, $attribs, $this->_option, $fsize );
-
-			// Course children
-			if ($resource->type == 6) {
-				$filters = array();
-				$filters['sortby'] = 'ordering';
-				$filters['limit'] = 0;
-				$filters['start'] = 0;
-				$filters['id']    = $resource->id;
-				
-				$schildren = $helper->getStandaloneChildren( $filters );
-
-				$body .= ResourcesHtml::writeResultsTable( $database, $resource, $schildren, $this->_option );
-			}
-
-			// Series/Workshop children
-			if ($resource->type == 31 || $resource->type == 2) {
-				// Incoming
-				$filters = array();
-				if ($resource->type == 2) {
-					$filters['sortby'] = JRequest::getVar( 'sortby', 'ordering' );
-				} else {
-					if ($this->config->get('show_ranking')) {
-						$filters['sortby'] = JRequest::getVar( 'sortby', 'ranking' );
-					} else {
-						$filters['sortby'] = JRequest::getVar( 'sortby', 'date' );
-					}
-				}
-				$filters['limit'] = JRequest::getInt( 'limit', 25 );
-				$filters['start'] = JRequest::getInt( 'limitstart', 0 );
-				$filters['id']    = $resource->id;
-
-				// Get a count of standalone children
-				$ccount = $helper->getStandaloneCount( $filters );
-
-				if ($ccount > 0) {
-					// Initiate paging for children
-					jimport('joomla.html.pagination');
-					$pageNav = new JPagination( $ccount, $filters['start'], $filters['limit'] );
-
-					// Get children
-					$children = $helper->getStandaloneChildren( $filters );
-
-					// Build the results
-					$body .= ResourcesHtml::browseChildrenForm( $this->_option, $resource, $filters, $pageNav, $database, $children, $authorized, $this->config );
-				}
-			}
-		}
+		$no_html = JRequest::getInt( 'no_html', 0 );
 		
-		// Some extra bits that can be displayed if NOT playing a learning module OR displaying tool version
-		if (!$thistool) {
+		$body = '';
+		// Build the HTML of the "about" tab
+		if ($resource->type == 7 && $resource->alias && !$no_html && strtolower($tab) == 'about') {	
+			// tool page is rendered via toolpage view
+			$body = ResourcesHtml::abouttool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $thistool, $curtool, $alltools, $revision, $params, $attribs, $this->_option, $fsize );
+		}
+		else if (strtolower($tab) == 'about') {
+			// non-tool view of about tab
+			$body = ResourcesHtml::aboutnontool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $params, $attribs, $this->_option, $fsize );
+
+			/*
 			// Trigger the functions that return the sub-areas we'll be using
 			$subcats = $dispatcher->trigger( 'onResourcesSubAreas', array($resource) );
-
+	
 			// Get the sub sections
 			$subsections = $dispatcher->trigger( 'onResourcesSub', array($resource, $this->_option) );
-
+	
 			// Build the HTML for the sub sections
 			$subs = ResourcesHtml::sections( $subsections, $subcats, 'about', '', '' );
 			if ($subs) {
 				$body .= '<hr />'.n;
 				$body .= $subs;
 			}
+			*/
+		
 		}
 		
 		// Add the default "About" section to the beginning of the lists
@@ -876,6 +851,15 @@ class ResourcesController extends JObject
 			$sections[] = array('html'=>$body,'metadata'=>'');
 			$tab = 'play';
 		}
+		
+		// Get filters (for series & workshops listing)
+		$filters = array();
+		$defaultsort = ($resource->type == 31) ? 'date' : 'ordering';
+		$defaultsort = ($resource->type == 31 && $this->config->get('show_ranking')) ? 'ranking' : $defaultsort;
+		$filters['sortby'] = JRequest::getVar( 'sortby', $defaultsort );
+		$filters['limit'] = JRequest::getInt( 'limit', 0 );
+		$filters['start'] = JRequest::getInt( 'limitstart', 0 );
+		$filters['id']    = $resource->id;
 
 		// Write title
 		$document =& JFactory::getDocument();
@@ -883,13 +867,38 @@ class ResourcesController extends JObject
 		
 		$pathway->addItem(stripslashes($resource->title),JRoute::_('index.php?option='.$this->_option.a.'id='.$resource->id));
 		
-		// Start building the final HTML
-		$html  = ResourcesHtml::title( $this->_option, $resource, $params, $authorized, $this->config );
-		$html .= ResourcesHtml::tabs( $this->_option, $resource->id, $cats, $tab, $resource->alias );
-		$html .= ResourcesHtml::sections( $sections, $cats, $tab, 'hide', 'main' );
+		jimport( 'joomla.application.component.view');
+		$view = ($resource->type == 7 && $resource->alias && !$no_html) ? new JView( array('name'=>'toolpage') ) : new JView( array('name'=>'nontoolpage') );
+		
+		$view->config = $this->config;
+		$view->option = $this->_option;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->resource = $resource;
+		$view->params = $params;
+		$view->authorized = $authorized;
+		$view->attribs = $attribs;
+		$view->fsize = $fsize;
+		$view->cats = $cats;
+		$view->tab = $tab;
+		$view->sections = $sections;
+		$view->database = $database;
+		$view->usersgroups = $usersgroups;
+		$view->helper = $helper;
+			
+		// tool-specific
+		if ($resource->type == 7 && $resource->alias) {				
+			$view->thistool = $thistool;
+			$view->curtool = $curtool;
+			$view->alltools = $alltools;			
+			$view->revision = $revision;
+		}
+		else {
+			$view->filters = $filters;
+		}
 
 		// Output HTML
-		$no_html = JRequest::getInt( 'no_html', 0 );
 		if ($no_html) {
 			$jconfig =& JFactory::getConfig();
 			$css = $jconfig->getValue('config.live_site').DS;
@@ -912,7 +921,10 @@ class ResourcesController extends JObject
 				head.appendChild(sheet);");
 			print( "document.write( \"". $html ."\" );" );
 		} else {
-			echo $html;
+			//echo $html;			
+			$view->display();
+			return;
+			
 		}
 	}
 
@@ -1006,7 +1018,7 @@ class ResourcesController extends JObject
 		$dtitle = $jconfig->getValue('config.sitename').' - '.ResourcesHtml::cleanText(stripslashes($resource->title));
 		$doc->title = trim(ResourcesHtml::shortenText(html_entity_decode($dtitle), 250, 0));
 		//$doc->description = JText::sprintf('RESOURCES_RSS_DESCRIPTION',$xhub->getCfg('hubShortName'));
-		$doc->description = html_entity_decode(ResourcesHtml::cleanText(stripslashes($resource->introtext)));
+		$doc->description = ResourcesHtml::encode_html(html_entity_decode(ResourcesHtml::cleanText(stripslashes($resource->introtext))));
 		$doc->copyright = JText::sprintf('RESOURCES_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		$doc->category = JText::_('RESOURCES_RSS_CATEGORY');
 		$doc->link = JRoute::_('index.php?option='.$this->_option.a.'id='.$resource->id);
@@ -1453,6 +1465,16 @@ class ResourcesController extends JObject
 		$xserver->filename($filename);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
+		
+		// record view?
+		/*
+		if(is_file(JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'item_pop.php')) {	
+			ximport('item_pop');
+			$pop = new ItemPop( $database );
+			$pop->saveView ($id, 'resources', $resource);			
+		}
+		*/
+		
 		$xserver->serve();
 
 		// Should only get here on error
@@ -1560,7 +1582,7 @@ class ResourcesController extends JObject
 	//----------------------------------------------------------
 	// Citations
 	//----------------------------------------------------------
-
+	
 	protected function citation()
 	{
 		$database =& JFactory::getDBO();
