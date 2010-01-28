@@ -51,7 +51,7 @@ class plgMembersMessages extends JPlugin
 			$areas = array();
 		} else {
 			$areas = array(
-				'messages' => JText::_('MESSAGES')
+				'messages' => JText::_('PLG_MEMBERS_MESSAGES')
 			);
 		}
 		return $areas;
@@ -124,7 +124,7 @@ class plgMembersMessages extends JPlugin
 			$recipient = new XMessageRecipient( $database );
 			$rows = $recipient->getUnreadMessages( $member->get('uidNumber'), 0 );
 			
-			$arr['metadata'] = '<p class="messages"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=messages').'">'.JText::sprintf('%s Unread Messages', count($rows)).'</a></p>'.n;
+			$arr['metadata'] = '<p class="messages"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=messages').'">'.JText::sprintf('PLG_MEMBERS_MESSAGES_UNREAD', count($rows)).'</a></p>'.n;
 		}
 
 		// Return data
@@ -137,8 +137,8 @@ class plgMembersMessages extends JPlugin
 	{
 		// Push some scripts to the template
 		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages.js')) {
-			$document->addScript('plugins'.DS.'members'.DS.'messages.js');
+		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages'.DS.'messages.js')) {
+			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
 		}
 		
 		// Filters for returning results
@@ -193,8 +193,8 @@ class plgMembersMessages extends JPlugin
 	{
 		// Push some scripts to the template
 		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages.js')) {
-			$document->addScript('plugins'.DS.'members'.DS.'messages.js');
+		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages'.DS.'messages.js')) {
+			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
 		}
 		
 		// Filters for returning results
@@ -249,8 +249,8 @@ class plgMembersMessages extends JPlugin
 	{
 		// Push some scripts to the template
 		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages.js')) {
-			$document->addScript('plugins'.DS.'members'.DS.'messages.js');
+		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages'.DS.'messages.js')) {
+			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
 		}
 		
 		// Filters for returning results
@@ -305,8 +305,8 @@ class plgMembersMessages extends JPlugin
 	{
 		// Push some scripts to the template
 		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages.js')) {
-			$document->addScript('plugins'.DS.'members'.DS.'messages.js');
+		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages'.DS.'messages.js')) {
+			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
 		}
 		
 		// Filters for returning results
@@ -520,7 +520,7 @@ class plgMembersMessages extends JPlugin
 			$u =& JUser::getInstance($xmessage->created_by);
 			$from = '<a href="'.JRoute::_('index.php?option='.$option.'&id='.$u->get('id')).'">'.$u->get('name').'</a>'.n;
 		} else {
-			$from = 'System ('.$xmessage->component.')';
+			$from = JText::sprintf('PLG_MEMBERS_MESSAGES_SYSTEM', $xmessage->component);
 		}
 		
 		ximport('Hubzero_Plugin_View');
@@ -606,8 +606,8 @@ class plgMembersMessages extends JPlugin
 	{
 		// Push some scripts to the template
 		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages.js')) {
-			$document->addScript('plugins'.DS.'members'.DS.'messages.js');
+		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'members'.DS.'messages'.DS.'messages.js')) {
+			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
 		}
 		
 		$xmc = new XMessageComponent( $database );
@@ -721,7 +721,7 @@ class plgMembersMessages extends JPlugin
 						}
 						// Save
 						if (!$notify->store()) {
-							$this->setError( JText::_('Unable to create XMessageNotify entry for:').' '.$notify->method );
+							$this->setError( JText::sprintf('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->method) );
 						}
 					}
 				}
@@ -761,7 +761,7 @@ class plgMembersMessages extends JPlugin
 				$notify->type = 'all';
 				$notify->priority = 1;
 				if (!$notify->store()) {
-					$this->setError( JText::_('Unable to create XMessageNotify entry for:').' '.$notify->method );
+					$this->setError( JText::sprintf('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->method) );
 				}
 			}
 		}
@@ -807,7 +807,7 @@ class plgMembersMessages extends JPlugin
 		$mbrs = JRequest::getVar( 'users', array(0), 'post' );
 		
 		// Incoming message and subject
-		$subject = JRequest::getVar( 'subject', JText::_('MEMBER_SUBJECT_MESSAGE') );
+		$subject = JRequest::getVar( 'subject', JText::_('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE') );
 		$message = JRequest::getVar( 'message', '' );
 		$no_html = JRequest::getInt( 'no_html', 0 );
 		
@@ -824,7 +824,7 @@ class plgMembersMessages extends JPlugin
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger( 'onSendMessage', array( 'member_message', $subject, $message, $from, $mbrs, $option ))) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED') );
+			$this->setError( JText::_('PLG_MEMBERS_MESSAGES_ERROR_MSG_USER_FAILED') );
 		}
 		
 		// Determine if we're returning HTML or not

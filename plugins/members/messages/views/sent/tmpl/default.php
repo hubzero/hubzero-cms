@@ -25,15 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<h3><a name="messages"></a><?php echo JText::_('MESSAGES'); ?></h3>
+<h3><a name="messages"></a><?php echo JText::_('PLG_MEMBERS_MESSAGES'); ?></h3>
 <div class="withleft">
 	<div class="aside">
 		<ul>
-			<li><a class="box" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=inbox'); ?>"><span><?php echo JText::_('MESSAGES_INBOX'); ?></span></a></li>
-			<li class="active"><a class="sent" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=sent'); ?>"><span><?php echo JText::_('MESSAGES_SENT'); ?></span></a></li>
-			<li><a class="archive" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=archive'); ?>"><span><?php echo JText::_('MESSAGES_ARCHIVE'); ?></span></a></li>
-			<li><a class="trash" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=trash'); ?>"><span><?php echo JText::_('MESSAGES_TRASH'); ?></span></a></li>
-			<li><a class="config" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=settings'); ?>"><span><?php echo JText::_('MESSAGES_SETTINGS'); ?></span></a></li>
+			<li><a class="box" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=inbox'); ?>"><span><?php echo JText::_('PLG_MEMBERS_MESSAGES_INBOX'); ?></span></a></li>
+			<li class="active"><a class="sent" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=sent'); ?>"><span><?php echo JText::_('PLG_MEMBERS_MESSAGES_SENT'); ?></span></a></li>
+			<li><a class="archive" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=archive'); ?>"><span><?php echo JText::_('PLG_MEMBERS_MESSAGES_ARCHIVE'); ?></span></a></li>
+			<li><a class="trash" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=trash'); ?>"><span><?php echo JText::_('PLG_MEMBERS_MESSAGES_TRASH'); ?></span></a></li>
+			<li><a class="config" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=settings'); ?>"><span><?php echo JText::_('PLG_MEMBERS_MESSAGES_SETTINGS'); ?></span></a></li>
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">
@@ -41,12 +41,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=sent'); ?>" method="post" id="hubForm" class="full">
-			<table class="data" summary="<?php echo JText::_('TBL_SUMMARY_OVERVIEW'); ?>">
+			<table class="data" summary="<?php echo JText::_('PLG_MEMBERS_MESSAGES_TBL_SUMMARY_OVERVIEW'); ?>">
 				<thead>
 					<tr>
-						<th scope="col"><?php echo JText::_('Subject'); ?></th>
-						<th scope="col"><?php echo JText::_('To'); ?></th>
-						<th scope="col"><?php echo JText::_('Date Sent'); ?></th>
+						<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
+						<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_TO'); ?></th>
+						<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_DATE_SENT'); ?></th>
 					</tr>
 				</thead>
 				<tfoot>
@@ -83,7 +83,7 @@ if ($this->rows) {
 	}
 } else { ?>
 					<tr class="odd">
-						<td colspan="3"><?php echo JText::_('No messages found'); ?></td>
+						<td colspan="3"><?php echo JText::_('PLG_MEMBERS_MESSAGES_NONE'); ?></td>
 					</tr>
 <?php } ?>
 				</tbody>
