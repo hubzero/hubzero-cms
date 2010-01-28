@@ -32,22 +32,22 @@ $u =& JUser::getInstance($this->user);
 <?php } ?>
 <form action="<?php echo JRoute::_('index.php?option='.$option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 	<div class="explaination">
-		<p class="info"><?php echo JText::_('MEMBER_MESSAGE_EXPLANATION'); ?></p>
+		<p class="info"><?php echo JText::_('PLG_MEMBERS_MESSAGES_EXPLANATION'); ?></p>
 	</div>
 	<fieldset>
-		<h3><?php echo JText::_('MEMBER_MESSAGE_MEMBERS'); ?></h3>
+		<h3><?php echo JText::_('PLG_MEMBERS_MESSAGES_SEND_MESSAGE'); ?></h3>
 
 		<label>
-			<?php echo JText::_('MEMBER_MESSAGE_USERS'); ?> 
+			<?php echo JText::_('PLG_MEMBERS_MESSAGES_TO'); ?> 
 			<input type="hidden" name="users[]" value="<?php echo $u->get('id'); ?>" />
 			<strong><?php echo $u->get('name'); ?></strong>
 		</label>
 		<label>
-			<?php echo JText::_('MEMBER_MESSAGE_SUBJECT'); ?>
-			<input type="text" name="subject" id="msg-subject" value="<?php echo JText::_('MEMBER_SUBJECT_MESSAGE'); ?>" />
+			<?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?>
+			<input type="text" name="subject" id="msg-subject" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE'); ?>" />
 		</label>
 		<label>
-			<?php echo JText::_('MEMBER_MESSAGE'); ?>
+			<?php echo JText::_('PLG_MEMBERS_MESSAGES_MESSAGE'); ?>
 			<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
 		</label>
 	</fieldset><div class="clear"></div>
@@ -58,6 +58,6 @@ $u =& JUser::getInstance($this->user);
 	<input type="hidden" name="action" value="send" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('MEMBER_MESSAGE_SEND'); ?>" />
+		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_SEND'); ?>" />
 	</p>
 </form>

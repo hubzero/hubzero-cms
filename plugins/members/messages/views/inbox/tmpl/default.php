@@ -25,15 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<h3><a name="messages"></a><?php echo JText::_('MESSAGES'); ?></h3>
+<h3><a name="messages"></a><?php echo JText::_('PLG_MEMBERS_MESSAGES'); ?></h3>
 <div class="withleft">
 	<div class="aside">
 		<ul>
-			<li class="active"><a class="box" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=inbox'); ?>"><span><?php echo JText::_('MESSAGES_INBOX'); ?></span></a></li>
-			<li><a class="sent" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=sent'); ?>"><span><?php echo JText::_('MESSAGES_SENT'); ?></span></a></li>
-			<li><a class="archive" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=archive'); ?>"><span><?php echo JText::_('MESSAGES_ARCHIVE'); ?></span></a></li>
-			<li><a class="trash" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=trash'); ?>"><span><?php echo JText::_('MESSAGES_TRASH'); ?></span></a></li>
-			<li><a class="config" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=settings'); ?>"><span><?php echo JText::_('MESSAGES_SETTINGS'); ?></span></a></li>
+			<li class="active"><a class="box" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=inbox'); ?>"><span><?php echo JText::_('PLG_MEMBERS_MESSAGES_INBOX'); ?></span></a></li>
+			<li><a class="sent" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=sent'); ?>"><span><?php echo JText::_('PLG_MEMBERS_MESSAGES_SENT'); ?></span></a></li>
+			<li><a class="archive" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=archive'); ?>"><span><?php echo JText::_('PLG_MEMBERS_MESSAGES_ARCHIVE'); ?></span></a></li>
+			<li><a class="trash" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=trash'); ?>"><span><?php echo JText::_('PLG_MEMBERS_MESSAGES_TRASH'); ?></span></a></li>
+			<li><a class="config" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=settings'); ?>"><span><?php echo JText::_('PLG_MEMBERS_MESSAGES_SETTINGS'); ?></span></a></li>
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">
@@ -42,10 +42,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post" id="hubForm" class="full">
 			<fieldset id="filters">
-				<input type="hidden" name="inaction" value="trash" />
-				<?php echo JText::_('From:'); ?> 
+				<input type="hidden" name="inaction" value="inbox" />
+				<?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?> 
 				<select class="option" name="filter">
-					<option value=""><?php echo JText::_('All'); ?></option>
+					<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_ALL'); ?></option>
 <?php
 			if ($this->components) {
 				foreach ($this->components as $component) 
@@ -59,25 +59,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 ?>
 				</select> 
-				<input class="option" type="submit" value="Filter" />
+				<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_FILTER'); ?>" />
 			</fieldset>
 			<fieldset id="actions">
 				<select class="option" name="action">
-					<option value=""><?php echo JText::_('MSG_WITH_SELECTED'); ?></option>
-					<option value="markasread"><?php echo JText::_('MSG_MARK_AS_READ'); ?></option>
-					<option value="sendtoarchive"><?php echo JText::_('MSG_SEND_TO_ARCHIVE'); ?></option>
-					<option value="sendtotrash"><?php echo JText::_('MSG_SEND_TO_TRASH'); ?></option>
+					<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_WITH_SELECTED'); ?></option>
+					<option value="markasread"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_READ'); ?></option>
+					<option value="sendtoarchive"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE'); ?></option>
+					<option value="sendtotrash"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_TRASH'); ?></option>
 				</select> 
-				<input class="option" type="submit" value="<?php echo JText::_('MSG_APPLY'); ?>" />
+				<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
 			</fieldset>
-			<table class="data" summary="<?php echo JText::_('TBL_SUMMARY_OVERVIEW'); ?>">
+			<table class="data" summary="<?php echo JText::_('PLG_MEMBERS_MESSAGES_TBL_SUMMARY_OVERVIEW'); ?>">
 				<thead>
 					<tr>
 						<th scope="col"><input type="checkbox" name="msgall" id="msgall" value="all"  onclick="HUB.MembersMsg.checkAll(this, 'chkbox');" /></th>
 						<th scope="col"> </th>
-						<th scope="col"><?php echo JText::_('Subject'); ?></th>
-						<th scope="col"><?php echo JText::_('From'); ?></th>
-						<th scope="col"><?php echo JText::_('Date Received'); ?></th>
+						<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
+						<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?></th>
+						<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_DATE_RECEIVED'); ?></th>
 						<th scope="col"> </th>
 					</tr>
 				</thead>
@@ -142,20 +142,20 @@ if (substr($row->type, -8) == '_message') {
 ?>
 						<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$u->get('id')); ?>"><?php echo $u->get('name'); ?></a></td>
 <?php } else { ?>
-						<td><?php echo JText::_('System'); ?> (<?php echo $row->component; ?>)</td>
+						<td><?php echo JText::sprintf('PLG_MEMBERS_MESSAGES_SYSTEM', $row->component); ?></td>
 <?php } ?>
 						<td><?php echo JHTML::_('date', $row->created, '%d %b, %Y'); ?></td>
 <?php if ($row->actionid && ($row->whenseen == '' || $row->whenseen == '0000-00-00 00:00:00')) { ?>
 						<td> </td>
 <?php } else { ?>
-						<td><a class="trash" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&mid[]='.$row->id.'&action=sendtotrash'); ?>" title="<?php echo JText::_('MESSAGES_TRASH'); ?>"><?php echo JText::_('MESSAGES_TRASH'); ?></a></td>
+						<td><a class="trash" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&mid[]='.$row->id.'&action=sendtotrash'); ?>" title="<?php echo JText::_('PLG_MEMBERS_MESSAGES_TRASH'); ?>"><?php echo JText::_('PLG_MEMBERS_MESSAGES_TRASH'); ?></a></td>
 <?php } ?>
 					</tr>
 <?php
 	}
 } else { ?>
 					<tr class="odd">
-						<td colspan="6"><?php echo JText::_('No messages found'); ?></td>
+						<td colspan="6"><?php echo JText::_('PLG_MEMBERS_MESSAGES_NONE'); ?></td>
 					</tr>
 <?php } ?>
 				</tbody>
