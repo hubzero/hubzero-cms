@@ -31,7 +31,7 @@ HUB.Members = {
 	initialize: function() {
 		if (typeof(SqueezeBoxHub) != "undefined") {
 			if (!SqueezeBoxHub) {
-				SqueezeBoxHub.initialize({ size: {x: 300, y: 330} });
+				SqueezeBoxHub.initialize({ size: {x: 300, y: 375} });
 			}
 			
 			// Modal boxes for presentations
@@ -46,7 +46,7 @@ HUB.Members = {
 
 					SqueezeBoxHub.fromElement(el,{
 						handler: 'url', 
-						size: {x: 300, y: 330}, 
+						size: {x: 300, y: 375}, 
 						ajaxOptions: {
 							method: 'get',
 							onComplete: function() {

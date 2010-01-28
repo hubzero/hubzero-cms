@@ -104,5 +104,10 @@
 			<option value="1">Registered users</option>
 			<option value="2">Private</option>
 		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="employeraccess" type="list" default="0" label="Allow Employer Access" description="Determine whether to show resume on a private profile to subscribed employers (if Jobs Component is active)">
+			<option value="0">Disallow</option>
+			<option value="1">Allow</option>
+		</param>
 	</params>
 </config>
