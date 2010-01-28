@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_members_topics' );
 
 class plgMembersTopics extends JPlugin
 {
-	function plgMembersTopics(&$subject, $config)
+	public function plgMembersTopics(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,17 +45,17 @@ class plgMembersTopics extends JPlugin
 	
 	//-----------
 
-	function &onMembersContributionsAreas( $authorized )
+	public function &onMembersContributionsAreas( $authorized )
 	{
 		$areas = array(
-			'topics' => JText::_('TOPICS')
+			'topics' => JText::_('PLG_MEMBERS_TOPICS')
 		);
 		return $areas;
 	}
 
 	//-----------
 
-	function onMembersContributionsCount( $authorized ) 
+	public function onMembersContributionsCount( $authorized ) 
 	{
 		$query  = "SELECT COUNT(*) FROM #__wiki_page AS w WHERE (w.created_by=m.uidNumber OR w.authors LIKE '%m.username%')";
 		if (!$authorized) {
@@ -66,7 +66,7 @@ class plgMembersTopics extends JPlugin
 
 	//-----------
 
-	function onMembersContributions( $member, $option, $authorized, $limit=0, $limitstart=0, $sort, $areas=null )
+	public function onMembersContributions( $member, $option, $authorized, $limit=0, $limitstart=0, $sort, $areas=null )
 	{
 		$database =& JFactory::getDBO();
 
@@ -121,6 +121,8 @@ class plgMembersTopics extends JPlugin
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
+				ximport('Hubzero_View_Helper_Html');
+				
 				foreach ($rows as $key => $row) 
 				{
 					if ($row->area != '' && $row->category != '') {
@@ -138,40 +140,40 @@ class plgMembersTopics extends JPlugin
 	
 	//-----------
 	
-	function out( $row, $authorized=false ) 
+	public function out( $row, $authorized=false ) 
 	{
 		$database =& JFactory::getDBO();
 
-		$html  = t.'<li class="resource">'.n;
-		$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
-		$html .= t.t.'<p class="details">';
+		$html  = "\t".'<li class="resource">'."\n";
+		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
+		$html .= "\t\t".'<p class="details">';
 		if ($row->area != '' && $row->category != '') {
-			$html .= JText::_('GROUP_WIKI').': '.$row->area;
+			$html .= JText::_('PLG_MEMBERS_TOPICS_GROUP_WIKI').': '.$row->area;
 		} else {
 			$html .= JText::_(strtoupper($row->section));
 		}
-		$html .= '</p>'.n;
+		$html .= '</p>'."\n";
 		if ($row->text) {
 			if ($row->access == 1 && !$authorized) {
-				$html .= t.t.MembersHtml::warning(JText::_('WIKI_NOT_AUTHORIZED')).n;
+				$html .= "\t\t".Hubzero_View_Helper_Html::warning(JText::_('PLG_MEMBERS_TOPICS_NOT_AUTHORIZED'))."\n";
 			} else {
-				$html .= t.t.MembersHtml::shortenText(stripslashes($row->text)).n;
+				$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(stripslashes($row->text))."\n";
 			}
 		}
-		$html .= t.'</li>'.n;
+		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
 	
 	//-----------
 	
-	function &onMembersFavoritesAreas( $authorized )
+	public function &onMembersFavoritesAreas( $authorized )
 	{
 		return $this->onMembersContributionsAreas( $authorized );
 	}
 
 	//-----------
 
-	function onMembersFavorites( $member, $option, $authorized, $limit=0, $limitstart=0, $areas=null )
+	public function onMembersFavorites( $member, $option, $authorized, $limit=0, $limitstart=0, $areas=null )
 	{
 		$database =& JFactory::getDBO();
 
@@ -225,6 +227,8 @@ class plgMembersTopics extends JPlugin
 			$rows = $database->loadObjectList();
 
 			if ($rows) {
+				ximport('Hubzero_View_Helper_Html');
+				
 				foreach ($rows as $key => $row) 
 				{
 					if ($row->group != '' && $row->scope != '') {

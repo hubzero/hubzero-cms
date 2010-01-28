@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_members_points' );
 
 class plgMembersPoints extends JPlugin
 {
-	function plgMembersPoints(&$subject, $config)
+	public function plgMembersPoints(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,13 +45,13 @@ class plgMembersPoints extends JPlugin
 	
 	//-----------
 	
-	function &onMembersAreas( $authorized )
+	public function &onMembersAreas( $authorized )
 	{
 		if (!$authorized) {
 			$areas = array();
 		} else {
 			$areas = array(
-				'points' => JText::_('POINTS')
+				'points' => JText::_('PLG_MEMBERS_POINTS')
 			);
 		}
 
@@ -60,7 +60,7 @@ class plgMembersPoints extends JPlugin
 
 	//-----------
 
-	function onMembers( $member, $option, $authorized, $areas )
+	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
 		$returnmeta = true;
@@ -78,97 +78,55 @@ class plgMembersPoints extends JPlugin
 			$returnmeta = false;
 		}
 		
+		$arr = array(
+			'html'=>'',
+			'metadata'=>''
+		);
+		
 		$database =& JFactory::getDBO();
 		$tables = $database->getTableList();
 		$table = $database->_table_prefix.'users_points';
 		
 		if (!in_array($table,$tables)) {
-			$arr['html'] = MembersHtml::error( JText::_('Required database table not found.') );
+			ximport('Hubzero_View_Helper_Html');
+			$arr['html'] = Hubzero_View_Helper_Html::error( JText::_('PLG_MEMBERS_POINTS_ERROR_MISSING_TABLE') );
 			return $arr;
 		}
 
 		ximport('bankaccount');
 
-		$BTL  = new BankTeller( $database, $member->get('uidNumber') );
-		$sum  = $BTL->summary();
-		$hist = $BTL->history(0);
-		
-		
-		$credit 	= $BTL->credit_summary();
-		$funds 		= $sum - $credit;			
-		$funds 		= ($funds > 0) ? $funds : '0';
+		$BTL = new BankTeller( $database, $member->get('uidNumber') );
 
 		// Build the final HTML
-		$out = '';
 		if ($returnhtml) {
-			$out  = MembersHtml::hed(3,'<a name="points"></a>'.JText::_('POINTS')).n;
-			$out .= MembersHtml::aside(
-					'<p id="point-balance"><span>'.JText::_('YOU_HAVE').' </span> '.$sum.'<small> '.strtolower(JText::_('POINTS')).'</small>'.
-					'<br /><small style="font-size:70%; font-weight:normal">( '.$funds.' '.strtolower(JText::_('available to spend')).' )</small></p>'.
-					'<p class="help"><strong>'.JText::_('HOW_ARE_POINTS_AWARDED').'</strong><br />'.JText::_('POINTS_AWARDED_EXPLANATION').'</p>'
-				);
-			$out .= MembersHtml::subject( $this->history($hist) );
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'members',
+					'element'=>'points',
+					'name'=>'history'
+				)
+			);
+
+			$view->sum = $BTL->summary();
+
+			$view->credit = $BTL->credit_summary();
+			$funds = $view->sum - $view->credit;
+
+			$view->funds = ($funds > 0) ? $funds : 0;
+			$view->hist = $BTL->history(0);
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			
+			$arr['html'] = $view->loadTemplate();
 		}
 		
 		// Build the HTML meant for the "about" tab's metadata overview
-		$metadata = '';
 		if ($returnmeta) {
-			$metadata  = '<p class="points"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=points').'">'.JText::sprintf('NUMBER_POINTS',$sum).'</a></p>'.n;
+			$arr['metadata'] = '<p class="points"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=points').'">'.JText::sprintf('PLG_MEMBERS_POINTS_NUMBER_POINTS',$BTL->summary()).'</a></p>'."\n";
 		}
-		
-		$arr = array(
-				'html'=>$out,
-				'metadata'=>$metadata
-			);
 
 		return $arr;
-	}
-	
-	//-----------
-
-	function history($hist)
-	{
-		$cls = 'even';
-		
-		$html  = '<table class="transactions" summary="'.JText::_('TRANSACTIONS_TBL_SUMMARY').'">'.n;
-		$html .= t.'<caption>'.JText::_('TRANSACTIONS_TBL_CAPTION').'</caption>'.n;
-		$html .= t.'<thead>'.n;
-		$html .= t.t.'<tr>'.n;
-		$html .= t.t.t.'<th scope="col">'.JText::_('TRANSACTIONS_TBL_TH_DATE').'</th>'.n;
-		$html .= t.t.t.'<th scope="col">'.JText::_('TRANSACTIONS_TBL_TH_DESCRIPTION').'</th>'.n;
-		$html .= t.t.t.'<th scope="col">'.JText::_('TRANSACTIONS_TBL_TH_TYPE').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('TRANSACTIONS_TBL_TH_AMOUNT').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('TRANSACTIONS_TBL_TH_BALANCE').'</th>'.n;
-		$html .= t.t.'</tr>'.n;
-		$html .= t.'</thead>'.n;
-		$html .= t.'<tbody>'.n;
-		if ($hist) {
-			foreach ($hist as $item)
-			{
-				$cls = (($cls == 'even') ? 'odd' : 'even');
-				$html .= t.t.'<tr class="'.$cls.'">'.n;
-				$html .= t.t.t.'<td>'.JHTML::_('date',$item->created, '%d %b, %Y').'</td>'.n;
-				$html .= t.t.t.'<td>'.$item->description.'</td>'.n;
-				$html .= t.t.t.'<td>'.$item->type.'</td>'.n;
-				if ($item->type == 'withdraw') {
-					$html .= t.t.t.'<td class="numerical-data"><span class="withdraw">-'.$item->amount.'</span></td>'.n;
-				} elseif ($item->type == 'hold') {
-					$html .= t.t.t.'<td class="numerical-data"><span class="hold">('.$item->amount.')</span></td>'.n;
-				} else {
-					$html .= t.t.t.'<td class="numerical-data"><span class="deposit">+'.$item->amount.'</span></td>'.n;
-				}
-				$html .= t.t.t.'<td class="numerical-data">'.$item->balance.'</td>'.n;
-				$html .= t.t.'</tr>'.n;
-			}
-		} else {
-			$cls = (($cls == 'even') ? 'odd' : 'even');
-			$html .= t.t.'<tr class="'.$cls.'">'.n;
-			$html .= t.t.t.'<td colspan="5">'.JText::_('NO_TRANSACTIONS').'</td>'.n;
-			$html .= t.t.'</tr>'.n;
-		}
-		$html .= t.'</tbody>'.n;
-		$html .= '</table>'.n;
-
-		return $html;
 	}
 }
