@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="resources">
+	<name>Members - Resume</name>
+	<author>snowwitje</author>
+	<creationDate>August 2009</creationDate>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>alisa@purdue.edu</authorEmail>
+	<authorUrl>nanohub.org</authorUrl>
+	<version>1.5</version>
+	<description>Display user uploaded resume(s)</description>
+	<files>
+		<filename plugin="resumes">resume.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_members_resume.ini</language>
+	</languages>
+	<params>
+		<param name="limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+	</params>
+</install>
