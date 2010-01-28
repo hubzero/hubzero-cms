@@ -38,7 +38,7 @@ class plgTagsTopics extends JPlugin
 	
 	//-----------
 	
-	function plgTagsTopics(&$subject, $config)
+	public function plgTagsTopics(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -49,20 +49,18 @@ class plgTagsTopics extends JPlugin
 
 	//-----------
 
-	function onTagAreas()
+	public function onTagAreas()
 	{
 		$areas = array(
-			'topics' => JText::_('Topics')
+			'topics' => JText::_('PLG_TAGS_TOPICS')
 		);
 		return $areas;
 	}
 	
 	//-----------
 
-	function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
+	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onTagAreas() ) && !array_intersect( $areas, array_keys( $this->onTagAreas() ) )) {
@@ -74,6 +72,8 @@ class plgTagsTopics extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag) 
@@ -134,7 +134,7 @@ class plgTagsTopics extends JPlugin
 	
 	//-----------
 
-	function _authorize() 
+	private function _authorize() 
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
@@ -143,13 +143,13 @@ class plgTagsTopics extends JPlugin
 		}
 		
 		// Check if they're a site admin (from LDAP)
-		$xuser =& XFactory::getUser();
+		/*$xuser =& XFactory::getUser();
 		if (is_object($xuser)) {
 			$app =& JFactory::getApplication();
 			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
 				return 'admin';
 			}
-		}
+		}*/
 		
 		return true;
 	}

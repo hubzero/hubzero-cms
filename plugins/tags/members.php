@@ -38,7 +38,7 @@ class plgTagsMembers extends JPlugin
 	
 	//-----------
 	
-	function plgTagsMembers(&$subject, $config)
+	public function plgTagsMembers(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -49,23 +49,18 @@ class plgTagsMembers extends JPlugin
 
 	//-----------
 
-	function onTagAreas()
+	public function onTagAreas()
 	{
 		$areas = array(
-			'members' => JText::_('Members')
+			'members' => JText::_('PLG_TAGS_MEMBERS')
 		);
 		return $areas;
 	}
 	
 	//-----------
 
-	function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
+	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
-		//$document =& JFactory::getDocument();
-		//$document->addStyleSheet('components'.DS.'com_answers'.DS.'answers.css', 'text/css', 'screen');
-
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onTagAreas() ) && !array_intersect( $areas, array_keys( $this->onTagAreas() ) )) {
@@ -77,6 +72,8 @@ class plgTagsMembers extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
+
+		$database =& JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag) 
@@ -134,7 +131,7 @@ class plgTagsMembers extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	function documents() 
+	public function documents() 
 	{
 		ximport('xdocument');
 		XDocument::addComponentStylesheet('com_members');
@@ -142,14 +139,14 @@ class plgTagsMembers extends JPlugin
 	
 	//-----------
 	
-	/*function before()
+	/*public function before()
 	{
 		// ...
 	}*/
 	
 	//-----------
 	
-	function out( $row )
+	public function out( $row )
 	{
 		$config =& JComponentHelper::getParams( 'com_members' );
 		
@@ -184,25 +181,22 @@ class plgTagsMembers extends JPlugin
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
 		
-		$html  = t.'<li class="member">'.n;
+		$html  = "\t".'<li class="member">'."\n";
 		if (is_file(JPATH_ROOT.$thumb)) {
-			$html .= t.t.'<p class="photo"><img width="50" height="50" src="'.$thumb.'" alt="" /></p>'.n;
+			$html .= "\t\t".'<p class="photo"><img width="50" height="50" src="'.$thumb.'" alt="" /></p>'."\n";
 		}
-		$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
-		if ($row->organization) {
-			//$html .= '<p class="details">'.stripslashes($row->organization).'</p>'.n;
-		}
+		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 		if ($row->text) {
-			$html .= t.t.TagsHtml::shortenText(TagsHtml::encode_html(strip_tags($row->text)), 200).n;
+			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)), 200)."\n";
 		}
-		$html .= t.t.'<p class="href">'.$juri->base().$row->href.'</p>'.n;
-		$html .= t.'</li>'.n;
+		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
+		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
 	
 	//-----------
 
-	function niceidformat($someid) 
+	public function niceidformat($someid) 
 	{
 		while (strlen($someid) < 5) 
 		{
@@ -213,7 +207,7 @@ class plgTagsMembers extends JPlugin
 	
 	//-----------
 	
-	/*function after()
+	/*public function after()
 	{
 		// ...
 	}*/

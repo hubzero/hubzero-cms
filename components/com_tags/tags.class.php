@@ -146,7 +146,7 @@ class Tags
 
 		if (!$id) {
 			// Then see if a raw tag in this form exists.
-			$sql = "SELECT id FROM $this->_tag_tbl WHERE raw_tag='$tag' LIMIT 1";
+			$sql = "SELECT id FROM $this->_tag_tbl WHERE raw_tag=".$this->_db->Quote(addslashes($tag))." LIMIT 1";
 			$this->_db->setQuery( $sql );
 			$id = $this->_db->loadResult();
 		}
@@ -154,7 +154,7 @@ class Tags
 			$tag_id = $id;
 		} else {
 			// Add new tag! 
-			$sql = "INSERT INTO $this->_tag_tbl (id, tag, raw_tag, alias, description, admin) VALUES ('','$normalized_tag', '$tag', '', '', 0)";
+			$sql = "INSERT INTO $this->_tag_tbl (id, tag, raw_tag, alias, description, admin) VALUES ('','$normalized_tag', ".$this->_db->Quote(addslashes($tag)).", '', '', 0)";
 			$this->_db->setQuery( $sql );
 			if (!$this->_db->query()) {
 				$err = $this->_db->getErrorMsg();
@@ -301,7 +301,7 @@ class Tags
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT id FROM $this->_tag_tbl WHERE raw_tag='$tag' LIMIT 1" );
+		$this->_db->setQuery( "SELECT id FROM $this->_tag_tbl WHERE raw_tag=".$this->_db->Quote($tag, false)." LIMIT 1" );
 		return $this->_db->loadResult();
 	}
 	

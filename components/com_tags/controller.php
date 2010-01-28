@@ -79,7 +79,7 @@ class TagsController extends JObject
 		$this->database = JFactory::getDBO();
 		
 		$this->_task = strtolower(JRequest::getVar('task', ''));
-		
+
 		switch ( $this->_task ) 
 		{
 			case 'autocomplete': $this->autocomplete(); break;
@@ -116,10 +116,8 @@ class TagsController extends JObject
 	protected function intro() 
 	{
 		// Instantiate a new view
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'intro') );
-		$view->title = JText::_(strtoupper($this->_name));
+		$view->title = JText::_(strtoupper($this->_option));
 		$view->showsizes = 0;
 		$view->config = $this->config;
 		
@@ -187,7 +185,7 @@ class TagsController extends JObject
 
 	protected function view()
 	{
-		$title = JText::_(strtoupper($this->_name));
+		$title = JText::_(strtoupper($this->_option));
 		
 		// Incoming
 		$tagstring = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
@@ -196,7 +194,7 @@ class TagsController extends JObject
 		
 		// Ensure we were passed a tag
 		if (!$tagstring && !$addtag) {
-			JError::raiseError( 404, JText::_('TAGS_NO_TAG') );
+			JError::raiseError( 404, JText::_('COM_TAGS_NO_TAG') );
 			return;
 		}
 		
@@ -240,7 +238,7 @@ class TagsController extends JObject
 
 		// Ensure we loaded the tag's info from the database
 		if (empty($tags)) {
-			JError::raiseError( 404, JText::_('TAGS_NOT_FOUND') );
+			JError::raiseError( 404, JText::_('COM_TAGS_NOT_FOUND') );
 			return;
 		}
 	
@@ -376,8 +374,6 @@ class TagsController extends JObject
 		$this->_getStyles();
 		
 		// Output HTML
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'tag') );
 		$view->title = $title;
 		$view->authorized = $authorized;
@@ -447,7 +443,7 @@ class TagsController extends JObject
 		
 		// Ensure we were passed a tag
 		if (!$tagstring) {
-			echo TagsHtml::error( JText::_('TAGS_NO_TAG') );
+			echo TagsHtml::error( JText::_('COM_TAGS_NO_TAG') );
 			return;
 		}
 		
@@ -527,7 +523,7 @@ class TagsController extends JObject
 		}
 
 		// Build some basic RSS document information
-		$title = JText::_(strtoupper($this->_name)) .': ';
+		$title = JText::_(strtoupper($this->_option)) .': ';
 		for ($i=0, $n=count( $tags ); $i < $n; $i++) 
 		{
 			if ($i > 0) {
@@ -539,9 +535,9 @@ class TagsController extends JObject
 		$title .= ': '.$area;
 		
 		$doc->title = $jconfig->getValue('config.sitename').' - '.$title;
-		$doc->description = JText::sprintf('TAGS_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'), $title);
-		$doc->copyright = JText::sprintf('TAGS_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category = JText::_('TAGS_RSS_CATEGORY');
+		$doc->description = JText::sprintf('COM_TAGS_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'), $title);
+		$doc->copyright = JText::sprintf('COM_TAGS_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category = JText::_('COM_TAGS_RSS_CATEGORY');
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
@@ -595,11 +591,9 @@ class TagsController extends JObject
 	protected function browse()
 	{
 		// Instantiate a new view
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'browse') );
 		$view->option = $this->_option;
-		$view->title = JText::_(strtoupper($this->_name)) .': '. JText::_(strtoupper($this->_task));
+		$view->title = JText::_(strtoupper($this->_option)) .': '. JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
 		
 		// Check that the user is authorized
 		$view->authorized = $this->_authorize();
@@ -678,11 +672,9 @@ class TagsController extends JObject
 		$this->_getStyles();
 		
 		// Output HTML
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'edit') );
 		$view->option = $this->_option;
-		$view->title = JText::_(strtoupper($this->_name)) .': '. JText::_(strtoupper($this->_task));
+		$view->title = JText::_(strtoupper($this->_option)) .': '. JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
 		$view->tag = $tag;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -724,7 +716,7 @@ class TagsController extends JObject
 		// Make sure the tag doesn't already exist
 		if (!$row->id) {
 			if ($row->checkExistence()) {
-				$this->setError( JText::_( 'TAG_EXIST' ) );
+				$this->setError( JText::_( 'COM_TAGS_TAG_EXIST' ) );
 				$this->edit($row);
 				return;
 			}
@@ -826,13 +818,13 @@ class TagsController extends JObject
 		
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)),
+				JText::_(strtoupper($this->_option)),
 				'index.php?option='.$this->_option
 			);
 		}
-		if ($this->_task != 'view') {
+		if ($this->_task && $this->_task != 'view') {
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)),
+				JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
 				'index.php?option='.$this->_option.'&task='.$this->_task
 			);
 		}
@@ -857,9 +849,9 @@ class TagsController extends JObject
 	
 	private function _buildTitle($tags=null) 
 	{
-		$title = JText::_(strtoupper($this->_name));
-		if ($this->_task != 'view') {
-			$title .= ': '.JText::_(strtoupper($this->_task));
+		$title = JText::_(strtoupper($this->_option));
+		if ($this->_task && $this->_task != 'view') {
+			$title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
 		}
 		if (is_array($tags) && count($tags) > 0) {
 			$title .= ': ';

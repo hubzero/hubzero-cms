@@ -38,7 +38,7 @@ class plgTagsEvents extends JPlugin
 	
 	//-----------
 	
-	function plgTagsEvents(&$subject, $config)
+	public function plgTagsEvents(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -49,20 +49,18 @@ class plgTagsEvents extends JPlugin
 
 	//-----------
 
-	function onTagAreas() 
+	public function onTagAreas() 
 	{
 		$areas = array(
-			'events' => JText::_('EVENTS')
+			'events' => JText::_('PLG_TAGS_EVENTS')
 		);
 		return $areas;
 	}
 
 	//-----------
 
-	function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
+	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onTagAreas() ) && !array_intersect( $areas, array_keys( $this->onTagAreas() ) )) {
 				return array();
@@ -73,6 +71,8 @@ class plgTagsEvents extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag) 
@@ -140,7 +140,7 @@ class plgTagsEvents extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	function documents() 
+	public function documents() 
 	{
 		ximport('xdocument');
 		XDocument::addComponentStylesheet('com_events');
@@ -148,28 +148,28 @@ class plgTagsEvents extends JPlugin
 	
 	//-----------
 	
-	/*function before()
+	/*public function before()
 	{
 		// ...
 	}*/
 	
 	//-----------
 	
-	function out( $row )
+	public function out( $row )
 	{
 		$month = JHTML::_('date', $row->publish_up, '%b');
 		$day = JHTML::_('date', $row->publish_up, '%d');
 		$year = JHTML::_('date', $row->publish_up, '%Y');
 		
 		// Start building the HTML
-		$html  = t.'<li class="event">'.n;
-		$html .= t.t.'<p class="event-date"><span class="month">'.$month.'</span> <span class="day">'.$day.'</span> <span class="year">'.$year.'</span></p>'.n;
-		$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
+		$html  = "\t".'<li class="event">'."\n";
+		$html .= "\t\t".'<p class="event-date"><span class="month">'.$month.'</span> <span class="day">'.$day.'</span> <span class="year">'.$year.'</span></p>'."\n";
+		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 		if ($row->text) {
 			$row->text = str_replace('[[BR]]', '', $row->text);
-			$html .= t.t.TagsHtml::shortenText(TagsHtml::encode_html(strip_tags($row->text)), 200).n;
+			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)), 200)."\n";
 		}
-		$html .= t.'</li>'.n;
+		$html .= "\t".'</li>'."\n";
 		
 		// Return output
 		return $html;
@@ -177,7 +177,7 @@ class plgTagsEvents extends JPlugin
 	
 	//-----------
 	
-	/*function after()
+	/*public function after()
 	{
 		// ...
 	}*/

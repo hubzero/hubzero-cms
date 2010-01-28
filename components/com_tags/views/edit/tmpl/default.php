@@ -36,29 +36,29 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div class="main section">
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
-			<p><?php echo JText::_('NORMALIZED_TAG_EXPLANATION'); ?></p>
+			<p><?php echo JText::_('COM_TAGS_NORMALIZED_TAG_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('DETAILS'); ?></h3>
+			<h3><?php echo JText::_('COM_TAGS_DETAILS'); ?></h3>
 
 			<label>
-				<?php echo JText::_('TAG'); ?>
+				<?php echo JText::_('COM_TAGS_TAG'); ?>
 				<input type="text" name="raw_tag" value="<?php echo htmlentities(stripslashes($this->tag->raw_tag),ENT_COMPAT,'UTF-8'); ?>" size="38" />
 			</label>
 
 			<label>
-				<?php echo JText::_('COL_ALIAS'); ?>
+				<?php echo JText::_('COM_TAGS_COL_ALIAS'); ?>
 				<input type="text" name="alias" value="<?php echo htmlentities(stripslashes($this->tag->alias),ENT_COMPAT,'UTF-8'); ?>" size="38" />
 			</label>
 
 			<label>
 				<input class="option" type="checkbox" name="minor_edit" value="1" /> 
-				<strong><?php echo JText::_('ADMINISTRATION'); ?></strong>
+				<strong><?php echo JText::_('COM_TAGS_ADMINISTRATION'); ?></strong>
 			</label>
-			<p class="hint"><?php echo JText::_('ADMINISTRATION_EXPLANATION'); ?></p>
+			<p class="hint"><?php echo JText::_('COM_TAGS_ADMINISTRATION_EXPLANATION'); ?></p>
 	
 			<label>
-				<?php echo JText::_('DESCRIPTION'); ?>
+				<?php echo JText::_('COM_TAGS_DESCRIPTION'); ?>
 				<textarea name="description" rows="10" cols="35"><?php echo stripslashes($this->tag->description); ?></textarea>
 			</label>
 
@@ -67,6 +67,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="save" />
 		</fieldset>
-		<p class="submit"><input type="submit" value="<?php echo JText::_('SUBMIT'); ?>" /></p>
+		<p class="submit"><input type="submit" value="<?php echo JText::_('COM_TAGS_SUBMIT'); ?>" /></p>
 	</form>
 </div><!-- / .main section -->

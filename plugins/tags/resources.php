@@ -40,7 +40,7 @@ class plgTagsResources extends JPlugin
 	
 	//-----------
 	
-	function plgTagsResources(&$subject, $config)
+	public function plgTagsResources(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -54,7 +54,7 @@ class plgTagsResources extends JPlugin
 	
 	//-----------
 
-	function onTagAreas()
+	public function onTagAreas()
 	{
 		$areas = $this->_areas;
 		if (is_array($areas)) {
@@ -92,10 +92,8 @@ class plgTagsResources extends JPlugin
 	
 	//-----------
 	
-	function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
+	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ) && $limit) {
 			$ars = $this->onTagAreas();
@@ -110,6 +108,8 @@ class plgTagsResources extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag) 
@@ -220,9 +220,31 @@ class plgTagsResources extends JPlugin
 		}
 	}
 
+	//----------------------------------------------------------
+	// Optional custom functions
+	// uncomment to use
+	//----------------------------------------------------------
+
+	public function documents() 
+	{
+		// Push some CSS and JS to the tmeplate that may be needed
+		ximport('xdocument');
+		XDocument::addComponentStylesheet('com_resources');
+
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
+		ximport('resourcestats');
+	}
+
+	//-----------
+	
+	/*public function before()
+	{
+		// ...
+	}*/
+
 	//-----------
 
-	function out( $row ) 
+	public function out( $row ) 
 	{
 		$database =& JFactory::getDBO();
 		
@@ -254,8 +276,8 @@ class plgTagsResources extends JPlugin
 		}
 
 		// Start building the HTML
-		$html  = t.'<li class="resource">'.n;
-		$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
+		$html  = "\t".'<li class="resource">'."\n";
+		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 		if ($params->get('show_ranking')) {
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
@@ -269,89 +291,63 @@ class plgTagsResources extends JPlugin
 			
 			$row->ranking = round($row->ranking, 1);
 			
-			$html .= t.t.'<div class="metadata">'.n;
-			$html .= plgTagsResources::ranking( $row->ranking, $statshtml, $row->id, '' );
-			$html .= t.t.'</div>'.n;
+			$html .= "\t\t".'<div class="metadata">'."\n";
+			$r = (10*$row->ranking);
+			if (intval($r) < 10) {
+				$r = '0'.$r;
+			}
+			$html .= "\t\t\t".'<dl class="rankinfo">'."\n";
+			$html .= "\t\t\t\t".'<dt class="ranking"><span class="rank-'.$r.'">'.JText::_('PLG_TAGS_RESOURCES_THIS_HAS').'</span> '.number_format($row->ranking,1).' '.JText::_('PLG_TAGS_RESOURCES_RANKING').'</dt>'."\n";
+			$html .= "\t\t\t\t".'<dd>'."\n";
+			$html .= "\t\t\t\t\t".'<p>'.JText::_('PLG_TAGS_RESOURCES_RANKING_EXPLANATION').'</p>'."\n";
+			$html .= "\t\t\t\t\t".'<div>'."\n";
+			$html .= $statshtml;
+			$html .= "\t\t\t\t\t".'</div>'."\n";
+			$html .= "\t\t\t\t".'</dd>'."\n";
+			$html .= "\t\t\t".'</dl>'."\n";
+			$html .= "\t\t".'</div>'."\n";
 		} elseif ($params->get('show_rating')) {
-			$html .= t.t.'<div class="metadata">'.n;
-			$html .= t.t.t.'<p class="rating"><span class="avgrating'.plgTagsResources::getRatingClass( $row->rating ).'"><span>'.JText::sprintf('RESOURCES_OUT_OF_5_STARS',$row->rating).'</span>&nbsp;</span></p>'.n;
-			$html .= t.t.'</div>'.n;
+			switch ($row->rating) 
+			{
+				case 0.5: $class = ' half-stars';      break;
+				case 1:   $class = ' one-stars';       break;
+				case 1.5: $class = ' onehalf-stars';   break;
+				case 2:   $class = ' two-stars';       break;
+				case 2.5: $class = ' twohalf-stars';   break;
+				case 3:   $class = ' three-stars';     break;
+				case 3.5: $class = ' threehalf-stars'; break;
+				case 4:   $class = ' four-stars';      break;
+				case 4.5: $class = ' fourhalf-stars';  break;
+				case 5:   $class = ' five-stars';      break;
+				case 0:
+				default:  $class = ' no-stars';      break;
+			}
+
+			$html .= "\t\t".'<div class="metadata">'."\n";
+			$html .= "\t\t\t".'<p class="rating"><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_TAGS_RESOURCES_OUT_OF_5_STARS',$row->rating).'</span>&nbsp;</span></p>'."\n";
+			$html .= "\t\t".'</div>'."\n";
 		}
-		$html .= t.t.'<p class="details">'.$thedate.' <span>|</span> '.$row->area;
+		$html .= "\t\t".'<p class="details">'.$thedate.' <span>|</span> '.$row->area;
 		if ($helper->contributors) {
-			$html .= ' <span>|</span>  Contributor(s): '.$helper->contributors;
+			$html .= ' <span>|</span>  '.JText::_('PLG_TAGS_RESOURCES_CONTRIBUTORS').' '.$helper->contributors;
 		}
-		$html .= '</p>'.n;
+		$html .= '</p>'."\n";
 		if ($row->itext) {
-			$html .= t.t.TagsHtml::shortenText(TagsHtml::encode_html(strip_tags($row->itext)), 200).n;
+			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->itext)), 200)."\n";
 		} else if ($row->ftext) {
-			$html .= t.t.TagsHtml::shortenText(TagsHtml::encode_html(strip_tags($row->ftext)), 200).n;
+			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200)."\n";
 		}
-		$html .= t.t.'<p class="href">'.$juri->base().$row->href.'</p>'.n;
-		$html .= t.'</li>'.n;
+		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
+		$html .= "\t".'</li>'."\n";
 		
 		// Return output
 		return $html;
 	}
 
 	//-----------
-
-	function ranking( $rank, $stats, $id, $sef='' )
-	{
-		$r = (10*$rank);
-		if (intval($r) < 10) {
-			$r = '0'.$r;
-		}
-		if (!$sef) {
-			$sef = JRoute::_('index.php?option=com_resources'.a.'id='.$id);
-		}
-
-		$html  = '<dl class="rankinfo">'.n;
-		$html .= ' <dt class="ranking"><span class="rank-'.$r.'">This resource has a</span> '.number_format($rank,1).' Ranking</dt>'.n;
-		$html .= ' <dd>'.n;
-		$html .= t.'<p>'.n;
-		$html .= t.t.'Ranking is calculated from a formula comprised of <a href="'.$sef.'?#reviews">user reviews</a> ';
-		$html .= 'and usage statistics. <a href="/about/ranking/">Learn more &rsaquo;</a>'.n;
-		$html .= t.'</p>'.n;
-		$html .= t.'<div>'.n;
-		$html .= $stats;
-		$html .= t.'</div>'.n;
-		$html .= ' </dd>'.n;
-		$html .= '</dl>'.n;
-		return $html;
-	}
-
-	//-----------
 	
-	function getRatingClass($rating=0)
+	/*public function after()
 	{
-		switch ($rating) 
-		{
-			case 0.5: $class = ' half-stars';      break;
-			case 1:   $class = ' one-stars';       break;
-			case 1.5: $class = ' onehalf-stars';   break;
-			case 2:   $class = ' two-stars';       break;
-			case 2.5: $class = ' twohalf-stars';   break;
-			case 3:   $class = ' three-stars';     break;
-			case 3.5: $class = ' threehalf-stars'; break;
-			case 4:   $class = ' four-stars';      break;
-			case 4.5: $class = ' fourhalf-stars';  break;
-			case 5:   $class = ' five-stars';      break;
-			case 0:
-			default:  $class = ' no-stars';      break;
-		}
-		return $class;
-	}
-
-	//-----------
-
-	function documents() 
-	{
-		// Push some CSS and JS to the tmeplate that may be needed
-		ximport('xdocument');
-		XDocument::addComponentStylesheet('com_resources');
-
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
-		ximport('resourcestats');
-	}
+		// ...
+	}*/
 }
