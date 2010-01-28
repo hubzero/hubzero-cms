@@ -15,7 +15,7 @@ HUB.Plugins.GroupsMembers = {
 	initialize: function() {
 		if (typeof(SqueezeBoxHub) != "undefined") {
 			if (!SqueezeBoxHub) {
-				SqueezeBoxHub.initialize({ size: {x: 300, y: 330} });
+				SqueezeBoxHub.initialize({ size: {x: 300, y: 375} });
 			}
 			
 			$$('a.message').each(function(el) {
@@ -29,7 +29,7 @@ HUB.Plugins.GroupsMembers = {
 
 					SqueezeBoxHub.fromElement(el,{
 						handler: 'url', 
-						size: {x: 300, y: 330}, 
+						size: {x: 300, y: 375}, 
 						ajaxOptions: {
 							method: 'get',
 							onComplete: function() {

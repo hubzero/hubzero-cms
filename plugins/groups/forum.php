@@ -47,14 +47,9 @@ class plgGroupsForum extends JPlugin
 	
 	public function &onGroupAreas( $authorized )
 	{
-		/*if (!$authorized) {
-			$areas = array();
-		} else {*/
-			$areas = array(
-				'forum' => JText::_('PLG_GROUPS_FORUM')
-			);
-		//}
-
+		$areas = array(
+			'forum' => JText::_('PLG_GROUPS_FORUM')
+		);
 		return $areas;
 	}
 
@@ -519,7 +514,7 @@ class plgGroupsForum extends JPlugin
 		
 		$results = $this->getForumIDs( $group->get('cn') );
 
-		$log = 'Events: ';
+		$log = JText::_('PLG_GROUPS_FORUM').': ';
 		if ($results && count($results) > 0) {
 			// Initiate a forum object
 			$forum = new XForum( $database );
@@ -529,10 +524,10 @@ class plgGroupsForum extends JPlugin
 				$forum->deleteReplies( $result->id );
 				$forum->delete( $result->id );
 			
-				$log .= $result->id.' '.n;
+				$log .= $result->id.' '."\n";
 			}
 		} else {
-			$log .= 'none'.n;
+			$log .= JText::_('PLG_GROUPS_FORUM_NO_RESULTS')."\n";
 		}
 		
 		return $log;

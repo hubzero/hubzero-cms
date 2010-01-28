@@ -30,9 +30,10 @@ defined('JPATH_BASE') or die();
 
 class XGroupHelper
 {
-	function valid_cn($gid) 
+	function valid_cn($gid, $admin=false) 
 	{
-		if (eregi("^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$", $gid)) {
+		if (($admin && eregi("^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$", $gid)) ||
+		(!$admin && eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $gid))) {
 			if (is_numeric($gid) && intval($gid) == $gid && $gid >= 0) {
 				return false;
 			} else {
