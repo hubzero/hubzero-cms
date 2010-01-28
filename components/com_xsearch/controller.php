@@ -27,12 +27,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-class XSearchController
+class XSearchController extends JObject
 {
 	private $_name  = NULL;
 	private $_data  = array();
 	private $_task  = NULL;
-	private $_error = NULL;
 	
 	//-----------
 	
@@ -98,10 +97,11 @@ class XSearchController
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_('COM_XSEARCH_TITLE') );
 		
+		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_('COM_XSEARCH_TITLE'),'index.php?option='.$this->_option);
+			$pathway->addItem(JText::_('COM_XSEARCH_TITLE'),'index.php?option=com_search');
 		}
 		
 		// Add some needed CSS and JS to the template
@@ -114,10 +114,16 @@ class XSearchController
 		// Get the search string
 		$keyword = urldecode(JRequest::getString('searchword'));
 		$keyword = trim($keyword);
-		
+
 		// Do we have a search string?
 		if (!$keyword) {
-			echo XSearchHtml::noKeyword( $keyword, $this->_option );
+			$view = new JView( array('name'=>'nokeyword') );
+			$view->title = JText::_('COM_XSEARCH_TITLE');
+			$view->option = 'com_search';
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
 			return;
 		}
 
@@ -129,7 +135,7 @@ class XSearchController
 		$limitstart = JRequest::getInt('limitstart', 0);
 		
 		// Get categories
-		$areas = $this->getAreas();
+		$areas = $this->_getAreas();
 		
 		// Was there a category passed in the querystring?
 		$area = trim(JRequest::getWord('category', ''));
@@ -218,8 +224,6 @@ class XSearchController
 			$database =& JFactory::getDBO();
 			$database->setQuery( $query );
 			$results = array($database->loadObjectList());
-			//echo '<!-- '.$query.' -->';
-			//$results = array();
 		} else {
 			$results = $dispatcher->trigger( 'onXSearch', array(
 					$searchquery,
@@ -230,7 +234,7 @@ class XSearchController
 		}
 
 		// Highlight the search word in the text
-		$results = $this->highlight( $searchquery, $results );
+		$results = $this->_highlight( $searchquery, $results );
 
 		// Get the total results found (sum of all categories)
 		$i = 0;
@@ -280,12 +284,26 @@ class XSearchController
 		}
 		
 		// Output HTML
-		echo XSearchHtml::display( $keyword, $totals, $results, $cats, $active, $this->_option, $limitstart, $limit, $total );
+		$view = new JView( array('name'=>'results') );
+		$view->title = JText::_('COM_XSEARCH_TITLE');
+		$view->option = 'com_search';
+		$view->keyword = $keyword;
+		$view->totals = $totals;
+		$view->total = $total;
+		$view->results = $results;
+		$view->cats = $cats;
+		$view->active = $active;
+		$view->start = $limitstart;
+		$view->limit = $limit;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
 
-	private function highlight( $searchquery, $results )
+	private function _highlight( $searchquery, $results )
 	{
 		// Get all the search words and phrases to highlight
 		$toks = $searchquery->searchTokens;
@@ -311,11 +329,10 @@ class XSearchController
 				$row =& $results[$i][$k];
 				
 				// Clean the text up a bit first
-				$row->itext = XSearchHtml::purifyText( $row->itext );
+				$row->itext = Hubzero_View_Helper_Html::purifyText( $row->itext );
 				$lowerrow = strtolower( $row->itext );
 				
 				// Find first occurrence of a search word
-				$pos = 0;
 				foreach ($toks as $tok) 
 				{
 					$pos = strpos( $lowerrow, $tok );
@@ -347,7 +364,7 @@ class XSearchController
 
 	//-----------
 
-	private function getAreas()
+	private function _getAreas()
 	{
 		// Do we already have an array of areas?
 		if (!isset($this->searchareas) || empty($this->searchareas)) {

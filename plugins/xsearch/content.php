@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_xsearch_content' );
 
 class plgXSearchContent extends JPlugin
 {
-	function plgXSearchContent(&$subject, $config)
+	public function plgXSearchContent(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,20 +45,18 @@ class plgXSearchContent extends JPlugin
 	
 	//-----------
 	
-	function &onXSearchAreas()
+	public function &onXSearchAreas()
 	{
 		$areas = array(
-			'content' => JTEXT::_('ARTICLES')
+			'content' => JTEXT::_('PLG_XSEARCH_ARTICLES')
 		);
 		return $areas;
 	}
 	
 	//-----------
 	
-	function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
+	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onXSearchAreas() ) && !array_intersect( $areas, array_keys( $this->onXSearchAreas() ) )) {
 				return array();
@@ -70,6 +68,8 @@ class plgXSearchContent extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
+
+		$database =& JFactory::getDBO();
 
 		// Build the query
 		$c_count = " SELECT count(DISTINCT c.id)";
@@ -152,21 +152,21 @@ class plgXSearchContent extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	/*function documents() 
+	/*public function documents() 
 	{
 		// ...
 	}
 	
 	//-----------
 	
-	function before()
+	public function before()
 	{
 		// ...
 	}*/
 	
 	//-----------
 	
-	function out( $row, $keyword )
+	public function out( $row, $keyword )
 	{
 		if (strstr( $row->href, 'index.php' )) {
 			$path = '';
@@ -191,15 +191,15 @@ class plgXSearchContent extends JPlugin
 		}
 		
 		// Start building the HTML
-		$html  = t.'<li>'.n;
-		$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
+		$html  = "\t".'<li>'."\n";
+		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 		if ($row->itext) {
-			$html .= t.t.'<p>&#133; '.stripslashes($row->itext).' &#133;</p>'.n;
+			$html .= "\t\t".'<p>&#133; '.stripslashes($row->itext).' &#133;</p>'."\n";
 		} else if ($row->ftext) {
-			$html .= t.t.'<p>&#133; '.stripslashes($row->ftext).' &#133;</p>'.n;
+			$html .= "\t\t".'<p>&#133; '.stripslashes($row->ftext).' &#133;</p>'."\n";
 		}
-		$html .= t.t.'<p class="href">'.$juri->base().$row->href.'</p>'.n;
-		$html .= t.'</li>'.n;
+		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
+		$html .= "\t".'</li>'."\n";
 		
 		// Return output
 		return $html;
@@ -207,7 +207,7 @@ class plgXSearchContent extends JPlugin
 	
 	//-----------
 	
-	/*function after()
+	/*public function after()
 	{
 		// ...
 	}*/

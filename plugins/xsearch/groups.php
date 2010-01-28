@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_xsearch_groups' );
 
 class plgXSearchGroups extends JPlugin
 {
-	function plgXSearchGroups(&$subject, $config)
+	public function plgXSearchGroups(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,20 +45,18 @@ class plgXSearchGroups extends JPlugin
 	
 	//-----------
 	
-	function &onXSearchAreas()
+	public function &onXSearchAreas()
 	{
 		$areas = array(
-			'groups' => JText::_('GROUPS')
+			'groups' => JText::_('PLG_XSEARCH_GROUPS')
 		);
 		return $areas;
 	}
 	
 	//-----------
 
-	function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
+	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onXSearchAreas() ) && !array_intersect( $areas, array_keys( $this->onXSearchAreas() ) )) {
 				return array();
@@ -70,6 +68,8 @@ class plgXSearchGroups extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
 
 		// An array for all the words and phrases
 		$words = $searchquery->searchTokens;
@@ -131,7 +131,7 @@ class plgXSearchGroups extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	/*function documents() 
+	/*public function documents() 
 	{
 		ximport('xdocument');
 		XDocument::addComponentStylesheet('com_groups');
@@ -139,58 +139,21 @@ class plgXSearchGroups extends JPlugin
 
 	//-----------
 
-	function before()
+	public function before()
 	{
 		// ...
 	}
 
 	//-----------
 
-	function out( $row, $keyword )
+	public function out( $row, $keyword )
 	{
-		$config =& JComponentHelper::getParams( 'com_groups' );
-		
-		if ($row->picture) {
-			$thumb  = $config->get('webpath');
-			if (substr($thumb, 0, 1) != DS) {
-				$thumb = DS.$thumb;
-			}
-			if (substr($thumb, -1, 1) == DS) {
-				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
-			}
-			$thumb .= DS.plgXSearchMembers::niceidformat($row->id).DS.$row->picture;
-		} else {
-			$thumb = $config->get('defaultpic');
-			if (substr($thumb, 0, 1) != DS) {
-				$thumb = DS.$thumb;
-			}
-		}
-		
-		$image = explode('.',$thumb);
-		$n = count($image);
-		$image[$n-2] .= '_thumb';
-		$end = array_pop($image);
-		$image[] = $end;
-		$thumb = implode('.',$image);
-		
-		$html  = t.'<li class="member">'.n;
-		if (is_file(JPATH_ROOT.$thumb)) {
-			$html .= t.t.'<p class="photo"><img width="50" height="50" src="'.$thumb.'" alt="" /></p>'.n;
-		}
-		$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
-		if ($row->organization) {
-			//$html .= '<p class="details">'.stripslashes($row->organization).'</p>'.n;
-		}
-		if ($row->text) {
-			$html .= t.t.'<p>&#133; '.stripslashes($row->text).' &#133;</p>'.n;
-		}
-		$html .= t.'</li>'.n;
-		return $html;
-	}*/
+		// ...
+	}
 
 	//-----------
 
-	/*function after()
+	public function after()
 	{
 		// ...
 	}*/

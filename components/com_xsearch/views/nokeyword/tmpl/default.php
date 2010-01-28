@@ -24,25 +24,26 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+?>
+<div id="content-header" class="full">
+	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
 
-//----------------------------------------------------------
-
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
-jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
-ximport('Hubzero_View_Helper_Html');
-
-require_once( JPATH_COMPONENT.DS.'xsearch.stemmer.php' );
-require_once( JPATH_COMPONENT.DS.'xsearch.phrase.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-
-// Instantiate controller
-$controller = new XSearchController();
-$controller->execute();
-$controller->redirect();
+<div class="main section">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="get">
+		<div class="aside">
+			<fieldset>
+				<legend><?php echo JText::_('COM_XSEARCH_SEARCH'); ?></legend>
+				<label>
+					<?php echo JText::_('COM_XSEARCH_KEYWORDS'); ?>
+					<input type="text" name="searchword" size="25" value="" />
+				</label>
+				<input type="submit" value="<?php echo JText::_('COM_XSEARCH_SEARCH_AGAIN'); ?>" />
+			</fieldset>
+		</div><!-- / .aside -->
+		<div class="subject">
+			<p class="error"><?php echo JText::_('COM_XSEARCH_NO_KEYWORD'); ?></p>
+		</div><!-- / .subject -->
+		<div class="clear"></div>
+	</form>
+</div><!-- / .main section -->
