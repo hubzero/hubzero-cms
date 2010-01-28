@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_xsearch_tags' );
 
 class plgXSearchTags extends JPlugin
 {
-	function plgXSearchTags(&$subject, $config)
+	public function plgXSearchTags(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,21 +45,18 @@ class plgXSearchTags extends JPlugin
 	
 	//-----------
 	
-	function &onXSearchAreas() 
+	public function &onXSearchAreas() 
 	{
 		$areas = array(
-			'tags' => JText::_('TAGS')
+			'tags' => JText::_('PLG_XSEARCH_TAGS')
 		);
 		return $areas;
 	}
 
 	//-----------
 
-	function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
+	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
-		$database =& JFactory::getDBO();
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.class.php');
-
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onXSearchAreas() ) && !array_intersect( $areas, array_keys( $this->onXSearchAreas() ) )) {
 				return array();
@@ -70,6 +67,9 @@ class plgXSearchTags extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
+		include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.class.php');
 
 		$tagging = new Tags();
 
@@ -134,28 +134,28 @@ class plgXSearchTags extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	/*function documents() 
+	/*public function documents() 
 	{
 		// ...
 	}
 
 	//-----------
 
-	function before()
+	public function before()
 	{
 		// ...
 	}
 
 	//-----------
 
-	function out()
+	public function out()
 	{
 		// ...
 	}
 
 	//-----------
 
-	function after()
+	public function after()
 	{
 		// ...
 	}*/

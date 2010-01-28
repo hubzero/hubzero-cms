@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_xsearch_members' );
 
 class plgXSearchMembers extends JPlugin
 {
-	function plgXSearchMembers(&$subject, $config)
+	public function plgXSearchMembers(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,20 +45,18 @@ class plgXSearchMembers extends JPlugin
 	
 	//-----------
 	
-	function &onXSearchAreas()
+	public function &onXSearchAreas()
 	{
 		$areas = array(
-			'members' => JText::_('MEMBERS')
+			'members' => JText::_('PLG_XSEARCH_MEMBERS')
 		);
 		return $areas;
 	}
 	
 	//-----------
 
-	function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
+	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onXSearchAreas() ) && !array_intersect( $areas, array_keys( $this->onXSearchAreas() ) )) {
 				return array();
@@ -70,6 +68,8 @@ class plgXSearchMembers extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
 
 		// An array for all the words and phrases
 		$words = $searchquery->searchTokens;
@@ -134,7 +134,7 @@ class plgXSearchMembers extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	function documents() 
+	public function documents() 
 	{
 		ximport('xdocument');
 		XDocument::addComponentStylesheet('com_members');
@@ -142,14 +142,14 @@ class plgXSearchMembers extends JPlugin
 
 	//-----------
 
-	/*function before()
+	/*public function before()
 	{
 		// ...
 	}*/
 
 	//-----------
 
-	function out( $row, $keyword )
+	public function out( $row, $keyword )
 	{
 		$config =& JComponentHelper::getParams( 'com_members' );
 		
@@ -182,28 +182,27 @@ class plgXSearchMembers extends JPlugin
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
 		
-		$html  = t.'<li class="member">'.n;
+		$html  = "\t".'<li class="member">'."\n";
 		if (is_file(JPATH_ROOT.$thumb)) {
 			$p = $thumb;
 		} else if (is_file(JPATH_ROOT.$dfthumb)) {
 			$p = $dfthumb;
 		}
 		if ($p) {
-			$html .= t.t.'<p class="photo"><img width="50" height="50" src="'.$p.'" alt="" /></p>'.n;
+			$html .= "\t\t".'<p class="photo"><img width="50" height="50" src="'.$p.'" alt="" /></p>'."\n";
 		}
-		$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
-		if ($row->area) {
-			//$html .= '<p class="details">'.stripslashes($row->organization).'</p>'.n;
+		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
+		if ($row->itext) {
+			$html .= "\t\t".'<p>&#133; '.stripslashes($row->itext).' &#133;</p>'."\n";
 		}
-		//if ($row->text) {
-			$html .= t.t.'<p>&#133; '.stripslashes($row->itext).' &#133;</p>'.n;
-			$html .= t.t.'<p class="href">'.$juri->base().$row->href.'</p>'.n;
-		//}
-		$html .= t.'</li>'.n;
+		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
+		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
 	
-	function thumbit($thumb) 
+	//-----------
+	
+	public function thumbit($thumb) 
 	{
 		$image = explode('.',$thumb);
 		$n = count($image);
@@ -217,7 +216,7 @@ class plgXSearchMembers extends JPlugin
 	
 	//-----------
 
-	function niceidformat($someid) 
+	public function niceidformat($someid) 
 	{
 		while (strlen($someid) < 5) 
 		{
@@ -228,7 +227,7 @@ class plgXSearchMembers extends JPlugin
 
 	//-----------
 
-	/*function after()
+	/*public function after()
 	{
 		// ...
 	}*/

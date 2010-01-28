@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_xsearch_topics' );
 
 class plgXSearchTopics extends JPlugin
 {
-	function plgXSearchTopics(&$subject, $config)
+	public function plgXSearchTopics(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,20 +45,18 @@ class plgXSearchTopics extends JPlugin
 	
 	//-----------
 	
-	function &onXSearchAreas() 
+	public function &onXSearchAreas() 
 	{
 		$areas = array(
-			'topics' => JText::_('TOPICS')
+			'topics' => JText::_('PLG_XSEARCH_TOPICS')
 		);
 		return $areas;
 	}
 
 	//-----------
 
-	function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
+	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onXSearchAreas() ) && !array_intersect( $areas, array_keys( $this->onXSearchAreas() ) )) {
 				return array();
@@ -70,6 +68,8 @@ class plgXSearchTopics extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
 		
 		ximport('wiki.page');
 		
@@ -119,7 +119,7 @@ class plgXSearchTopics extends JPlugin
 
 	//-----------
 
-	function _authorize() 
+	private function _authorize() 
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
@@ -128,13 +128,13 @@ class plgXSearchTopics extends JPlugin
 		}
 		
 		// Check if they're a site admin (from LDAP)
-		$xuser =& XFactory::getUser();
+		/*$xuser =& XFactory::getUser();
 		if (is_object($xuser)) {
 			$app =& JFactory::getApplication();
 			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
 				return 'admin';
 			}
-		}
+		}*/
 		
 		return true;
 	}
@@ -144,21 +144,21 @@ class plgXSearchTopics extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	/*function documents() 
+	/*public function documents() 
 	{
 		// ...
 	}
 
 	//-----------
 
-	function before()
+	public function before()
 	{
 		// ...
 	}*/
 
 	//-----------
 
-	function out( $row, $keyword ) 
+	public function out( $row, $keyword ) 
 	{
 		if (strstr( $row->href, 'index.php' )) {
 			if ($row->area != '' && $row->category != '') {
@@ -172,30 +172,26 @@ class plgXSearchTopics extends JPlugin
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
 			
-		$html  = t.'<li class="topic">'.n;
-		$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
-		$html .= t.t.'<p class="details">';
+		$html  = "\t".'<li class="topic">'."\n";
+		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
+		$html .= "\t\t".'<p class="details">';
 		if ($row->area != '' && $row->category != '') {
-			$html .= JText::_('GROUP_WIKI').': '.$row->area;
+			$html .= JText::_('PLG_XSEARCH_GROUP_WIKI').': '.$row->area;
 		} else {
 			$html .= JText::_(strtoupper($row->section));
 		}
-		$html .= '</p>'.n;
+		$html .= '</p>'."\n";
 		if ($row->itext) {
-			//if ($row->access == 1 && !$authorized) {
-			//	$html .= t.t.XSearchHtml::warning(JText::_('WIKI_NOT_AUTHORIZED')).n;
-			//} else {
-			$html .= t.t.'<p>&#133; '.stripslashes($row->itext).' &#133;</p>'.n;
-			//}
+			$html .= "\t\t".'<p>&#133; '.stripslashes($row->itext).' &#133;</p>'."\n";
 		}
-		$html .= t.t.'<p class="href">'.$juri->base().$row->href.'</p>'.n;
-		$html .= t.'</li>'.n;
+		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
+		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
 
 	//-----------
 
-	/*function after()
+	/*public function after()
 	{
 		// ...
 	}*/

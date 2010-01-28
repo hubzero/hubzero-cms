@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_xsearch_events' );
 
 class plgXSearchEvents extends JPlugin
 {
-	function plgXSearchEvents(&$subject, $config)
+	public function plgXSearchEvents(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,20 +45,18 @@ class plgXSearchEvents extends JPlugin
 	
 	//-----------
 
-	function &onXSearchAreas() 
+	public function &onXSearchAreas() 
 	{
 		$areas = array(
-			'events' => JText::_('EVENTS')
+			'events' => JText::_('PLG_XSEARCH_EVENTS')
 		);
 		return $areas;
 	}
 
 	//-----------
 
-	function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
+	public function onXSearch( $searchquery, $limit=0, $limitstart=0, $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onXSearchAreas() ) && !array_intersect( $areas, array_keys( $this->onXSearchAreas() ) )) {
 				return array();
@@ -70,6 +68,8 @@ class plgXSearchEvents extends JPlugin
 		if (empty($t)) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
 
 		// Build the query
 		$e_count = "SELECT count(DISTINCT e.id)";
@@ -138,7 +138,7 @@ class plgXSearchEvents extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	function documents() 
+	public function documents() 
 	{
 		ximport('xdocument');
 		XDocument::addComponentStylesheet('com_events');
@@ -146,14 +146,14 @@ class plgXSearchEvents extends JPlugin
 	
 	//-----------
 	
-	/*function before()
+	/*public function before()
 	{
 		// ...
 	}*/
 	
 	//-----------
 	
-	function out( $row, $keyword )
+	public function out( $row, $keyword )
 	{
 		$month = JHTML::_('date', $row->publish_up, '%b');
 		$day = JHTML::_('date', $row->publish_up, '%d');
@@ -170,15 +170,15 @@ class plgXSearchEvents extends JPlugin
 		}
 		
 		// Start building the HTML
-		$html  = t.'<li class="event">'.n;
-		$html .= t.t.'<p class="event-date"><span class="month">'.$month.'</span> <span class="day">'.$day.'</span> <span class="year">'.$year.'</span></p>'.n;
-		$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
+		$html  = "\t".'<li class="event">'."\n";
+		$html .= "\t\t".'<p class="event-date"><span class="month">'.$month.'</span> <span class="day">'.$day.'</span> <span class="year">'.$year.'</span></p>'."\n";
+		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 		if ($row->itext) {
 			$row->itext = str_replace('[[BR]]', '', $row->itext);
-			$html .= t.t.'<p>&#133; '.stripslashes($row->itext).' &#133;</p>'.n;
+			$html .= "\t\t".'<p>&#133; '.stripslashes($row->itext).' &#133;</p>'."\n";
 		}
-		$html .= t.t.'<p class="href">'.$juri->base().$row->href.'</p>'.n;
-		$html .= t.'</li>'.n;
+		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
+		$html .= "\t".'</li>'."\n";
 		
 		// Return output
 		return $html;
@@ -186,7 +186,7 @@ class plgXSearchEvents extends JPlugin
 	
 	//-----------
 	
-	/*function after()
+	/*public function after()
 	{
 		// ...
 	}*/
