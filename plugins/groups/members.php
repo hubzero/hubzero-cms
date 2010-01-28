@@ -191,7 +191,7 @@ class plgGroupsMembers extends JPlugin
 				if ($this->getError()) {
 					$view->setError( $this->getError() );
 				}
-				
+
 				$arr['html'] = $view->loadTemplate();
 			}
 		} else {
@@ -295,9 +295,9 @@ class plgGroupsMembers extends JPlugin
 				$reason->deleteReason( $targetuser->get('username'), $this->group->get('cn') );
 					
 				// Are they approved for membership?
-				$admchange .= t.t.$targetuser->get('name').r.n;
-				$admchange .= t.t. $targetuser->get('username') .' ('. $targetuser->get('email') .')';
-				$admchange .= (count($mbrs) > 1) ? r.n : '';
+				$admchange .= "\t\t".$targetuser->get('name')."\r\n";
+				$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
+				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 					
 				// They user is not already a member, so we can go ahead and add them
 				$users[] = $uid;
@@ -372,9 +372,9 @@ class plgGroupsMembers extends JPlugin
 					continue;
 				}
 				
-				$admchange .= t.t.$targetuser->get('name').r.n;
-				$admchange .= t.t.$targetuser->get('username') .' ('. $targetuser->get('email') .')';
-				$admchange .= (count($mbrs) > 1) ? r.n : '';
+				$admchange .= "\t\t".$targetuser->get('name')."\r\n";
+				$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
+				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 				
 				// They user is not already a manager, so we can go ahead and add them
 				$users[] = $uid;
@@ -445,9 +445,9 @@ class plgGroupsMembers extends JPlugin
 				
 			// Ensure we found an account
 			if (is_object($targetuser)) {
-				$admchange .= t.t.$targetuser->get('name').r.n;
-				$admchange .= t.t. $targetuser->get('username') .' ('. $targetuser->get('email') .')';
-				$admchange .= (count($mbrs) > 1) ? r.n : '';
+				$admchange .= "\t\t".$targetuser->get('name')."\r\n";
+				$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
+				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 				
 				$users[] = $targetuser->get('id');
 			} else {
@@ -535,15 +535,6 @@ class plgGroupsMembers extends JPlugin
 		// Get all the group's managers
 		$members = $this->group->get('members');
 		
-		// Get a count of the number of managers
-		$nummanagers = count($managers);
-		
-		// Only admins can demote the last manager
-		if ($this->authorized != 'admin' && $nummanagers <= 1) {
-			$this->setError( JText::_('PLG_GROUPS_MESSAGES_ERROR_LAST_MANAGER') );
-			return;
-		}
-		
 		// Set a flag for emailing any changes made
 		$admchange = '';
 		$users_mem = array();
@@ -552,6 +543,15 @@ class plgGroupsMembers extends JPlugin
 		// Incoming array of users to demote
 		$mbrs = JRequest::getVar( 'users', array(0) );
 
+		// Figure out how many managers are being deleted
+		$intersect = array_intersect($managers, $mbrs);
+		
+		// Only admins can demote the last manager
+		if ($this->authorized != 'admin' && (count($managers) == 1 && count($intersect) > 0)) {
+			$this->setError( JText::_('PLG_GROUPS_MESSAGES_ERROR_LAST_MANAGER') );
+			return;
+		}
+
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
@@ -559,9 +559,9 @@ class plgGroupsMembers extends JPlugin
 			
 			// Ensure we found an account
 			if (is_object($targetuser)) {
-				$admchange .= t.t.$targetuser->get('name').r.n;
-				$admchange .= t.t.$targetuser->get('username') .' ('. $targetuser->get('email') .')';
-				$admchange .= (count($mbrs) > 1) ? r.n : '';
+				$admchange .= "\t\t".$targetuser->get('name')."\r\n";
+				$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
+				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 				
 				$uid = $targetuser->get('id');
 				
@@ -687,9 +687,9 @@ class plgGroupsMembers extends JPlugin
 				
 			// Ensure we found an account
 			if (is_object($targetuser)) {
-				$admchange .= t.t.$targetuser->get('name').r.n;
-				$admchange .= t.t. $targetuser->get('username') .' ('. $targetuser->get('email') .')';
-				$admchange .= (count($mbrs) > 1) ? r.n : '';
+				$admchange .= "\t\t".$targetuser->get('name')."\r\n";
+				$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
+				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 				
 				// Remove record of reason wanting to join group
 				$reason = new GroupsReason( $database );
@@ -790,9 +790,9 @@ class plgGroupsMembers extends JPlugin
 				
 			// Ensure we found an account
 			if (is_object($targetuser)) {
-				$admchange .= t.t.$targetuser->get('name').r.n;
-				$admchange .= t.t. $targetuser->get('username') .' ('. $targetuser->get('email') .')';
-				$admchange .= (count($mbrs) > 1) ? r.n : '';
+				$admchange .= "\t\t".$targetuser->get('name')."\r\n";
+				$admchange .= "\t\t".$targetuser->get('username') .' ('. $targetuser->get('email') .')';
+				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 				
 				// Add them to the array of users to cancel invitations
 				$users[] = $targetuser->get('id');

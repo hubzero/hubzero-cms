@@ -29,13 +29,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
 JPlugin::loadLanguage( 'plg_groups_wishlist' );
-JPlugin::loadLanguage( 'com_wishlist' );
 	
 //-----------
 
 class plgGroupsWishlist extends JPlugin
 {
-	function plgGroupsWishlist(&$subject, $config)
+	public function plgGroupsWishlist(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -51,29 +50,22 @@ class plgGroupsWishlist extends JPlugin
 	
 	//-----------
 	
-	function &onGroupAreas( $authorized ) 
+	public function &onGroupAreas( $authorized ) 
 	{
-		
-		//if (!$authorized) {
-			//$areas = array();
-		//} else {
-			$areas = array(
-				'wishlist' => JText::_('Wishlist')
-			);
-		//}
-		
+		$areas = array(
+			'wishlist' => JText::_('PLG_GROUPS_WISHLIST')
+		);
 		return $areas;
 	}
 
 	//-----------
 
-	function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $areas=null)
+	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $areas=null)
 	{
 		$return = 'html';
 		$active = 'wishlist';
 		
 		// Check if our area is in the array of areas we want to return results for
-		
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onGroupAreas( $authorized ) ) 
 			&& !array_intersect( $areas, array_keys( $this->onGroupAreas( $authorized ) ) )) {
@@ -93,7 +85,7 @@ class plgGroupsWishlist extends JPlugin
 		if ($juser->get('guest')) {
 			if ($return == 'html') {
 				ximport('xmodule');
-				$arr['html']  = GroupsHtml::warning( JText::_('GROUPS_LOGIN_NOTICE') );
+				$arr['html']  = Hubzero_View_Helper_Html::warning( JText::_('GROUPS_LOGIN_NOTICE') );
 				$arr['html'] .= XModuleHelper::renderModules('force_mod');
 			}
 			return $arr;
@@ -102,63 +94,54 @@ class plgGroupsWishlist extends JPlugin
 		// Return no data if the user is not authorized
 		if (!$authorized || ($authorized != 'admin' && $authorized != 'manager' && $authorized != 'member')) {
 			if ($return == 'html') {
-				$arr['html'] = GroupsHtml::warning( JText::_('You are not authorized to view this content.') );
+				$arr['html'] = Hubzero_View_Helper_Html::warning( JText::_('PLG_GROUPS_WISHLIST_NOTAUTH') );
 			}
 			return $arr;
 		}
 		
-		$database =& JFactory::getDBO();
-		$juser 	  =& JFactory::getUser();
-		
-		$option = 'com_wishlist';
-		$category = 'group';
-		
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.wishlist.php' );
-		//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.config.php' );
-		require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'wishlist.html.php' );
-		require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-		
-		include_once( JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'xcomment.php' );
-		
-		WishlistController::setVar('_option', $option);
-		WishlistController::authorize_admin();
-		
-		WishlistController::setVar('category', $category);
-		WishlistController::setVar('refid', $group->get('gidNumber'));
-		WishlistController::setVar('_task', 'wishlist');
-		WishlistController::setVar('_error', 0);
-		WishlistController::setVar('config', $this->config);
-		WishlistController::setVar('plugin', 1);
-		WishlistController::setVar('limit', $this->_params->get('limit'));
-		
-		//$banking = (isset($this->config->parameters['banking']) && $this->config->parameters['banking']==1 ) ? 1: 0;
-		WishlistController::setVar('banking', 0);  // do not use banking for personal wishlists	
-	
-		// Build the final HTML
-		$out = '';
-		
-		//$items = WishlistController::getVar('wishcount');
-		//$id = WishlistController::getVar('listid');
-	
 		if ($return == 'html') {
-			$out = WishlistController::wishlist();
+			JPlugin::loadLanguage( 'com_wishlist' );
+			
+			$database =& JFactory::getDBO();
+			$juser 	  =& JFactory::getUser();
+
+			$option = 'com_wishlist';
+			$category = 'group';
+
+			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.wishlist.php' );
+			//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.config.php' );
+			require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'wishlist.html.php' );
+			require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
+
+			include_once( JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'xcomment.php' );
+
+			WishlistController::setVar('_option', $option);
+			WishlistController::authorize_admin();
+
+			WishlistController::setVar('category', $category);
+			WishlistController::setVar('refid', $group->get('gidNumber'));
+			WishlistController::setVar('_task', 'wishlist');
+			WishlistController::setVar('_error', 0);
+			WishlistController::setVar('config', $this->config);
+			WishlistController::setVar('plugin', 1);
+			WishlistController::setVar('limit', $this->_params->get('limit'));
+
+			//$banking = (isset($this->config->parameters['banking']) && $this->config->parameters['banking']==1 ) ? 1: 0;
+			WishlistController::setVar('banking', 0);  // do not use banking for personal wishlists	
+
+			// Build the final HTML
+
+			//$items = WishlistController::getVar('wishcount');
+			//$id = WishlistController::getVar('listid');
+			
+			$arr['html'] = WishlistController::wishlist();
 		}
 
-		// Build the HTML meant for the "profile" tab's metadata overview
-		$metadata = '';
+		// Build the HTML meant for the "overview" tab's metadata overview
 		if ($return == 'metadata') {
-			//$metadata  = '<p class="wishlist"><a href="'.JRoute::_('index.php?option=com_members'.a.'id='.$member->get('uidNumber').a.'active=wishlist').'">'.JText::sprintf('NUM_WISHES',$items);
-			//$metadata .= '</a></p>'.n;
+			//$arr['metadata']  = '<p class="wishlist"><a href="'.JRoute::_('index.php?option=com_groups&gid='.$group->get('cn').'&active=wishlist').'">'.JText::sprintf('PLG_GROUPS_WISHLIST_NUMBER_WISHES',$items).'</a></p>'."\n";
 		}
-
-		$arr = array(
-				'html'=>$out,
-				'metadata'=>$metadata
-			);
 
 		return $arr;
 	}
-	
-	//-------------------
 }
-

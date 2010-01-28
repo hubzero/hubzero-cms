@@ -334,7 +334,9 @@ class GroupsController extends JObject
 		}
 		
 		// Ensure the data passed is valid
-		if (!XGroupHelper::valid_cn($g_cn)) {
+		//if (!XGroupHelper::valid_cn($g_cn, true)) {
+		if (($g_type == 1 && !XGroupHelper::valid_cn($g_cn, false)) 
+		 || ($g_type != 1 && !XGroupHelper::valid_cn($g_cn, true))) {
 			$this->setError( JText::_('GROUPS_ERROR_INVALID_ID') );
 		}
 		if ($isNew && XGroupHelper::groups_exists($g_cn)) {

@@ -57,7 +57,7 @@ class plgGroupsResources extends JPlugin
 	public function &onGroupAreas( $authorized )
 	{
 		$areas = array(
-			'resources' => JText::_('GROUPS_RESOURCES')
+			'resources' => JText::_('PLG_GROUPS_RESOURCES')
 		);
 		return $areas;
 	}
@@ -202,109 +202,65 @@ class plgGroupsResources extends JPlugin
 		switch ($return) 
 		{
 			case 'html':
-				$arr['html'] = $this->display( $authorized, $totals, $results, $cats, $active, $option, $limitstart, $limit, $total, $group, $sort, $access );
+				// Instantiate a vew
+				ximport('Hubzero_Plugin_View');
+				$view = new Hubzero_Plugin_View(
+					array(
+						'folder'=>'groups',
+						'element'=>'resources',
+						'name'=>'results'
+					)
+				);
+
+				// Pass the view some info
+				$view->option = $option;
+				$view->group = $group;
+				$view->authorized = $authorized;
+				$view->totals = $totals;
+				$view->results = $results;
+				$view->cats = $cats;
+				$view->active = $active;
+				$view->limitstart = $limitstart;
+				$view->limit = $limit;
+				$view->total = $total;
+				$view->sort = $sort;
+				$view->access = $access;
+				if ($this->getError()) {
+					$view->setError( $this->getError() );
+				}
+
+				// Return the output
+				$arr['html'] = $view->loadTemplate();
 			break;
 			
 			case 'metadata':
-				$arr['metadata'] = '<a href="'.JRoute::_('index.php?option='.$option.a.'gid='.$group->cn.a.'active=resources').'">'.JText::sprintf('NUMBER_RESOURCES',$total).'</a>'.n;
-				$arr['dashboard'] = $this->dashboard( $group, $results[0], $authorized, $config );
+				$arr['metadata'] = '<a href="'.JRoute::_('index.php?option='.$option.'&gid='.$group->cn.'&active=resources').'">'.JText::sprintf('PLG_GROUPS_RESOURCES_NUMBER_RESOURCES',$total).'</a>'."\n";
+				
+				// Instantiate a vew
+				ximport('Hubzero_Plugin_View');
+				$view = new Hubzero_Plugin_View(
+					array(
+						'folder'=>'groups',
+						'element'=>'resources',
+						'name'=>'dashboard'
+					)
+				);
+
+				// Pass the view some info
+				$view->option = $option;
+				$view->group = $group;
+				$view->authorized = $authorized;
+				$view->config = $config;
+				$view->results = $results[0];
+				if ($this->getError()) {
+					$view->setError( $this->getError() );
+				}
+				$arr['dashboard'] = $view->loadTemplate();
 			break;
 		}
 		
 		// Return the output
 		return $arr;
-	}
-
-	//-----------
-
-	private function dashboard( $group, $results, $authorized, $config ) 
-	{
-		// Did we find any results?
-		if ($results) {
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.review.php' );
-			
-			$this->documents();
-			
-			$database =& JFactory::getDBO();
-			$juser =& JFactory::getUser();
-
-			$html  = '<table class="related-resources" summary="'.JText::_('RESOURCES_DASHBOARD_SUMMARY').'">'.n;
-			$html .= t.'<tbody>'.n; 
-			foreach ($results as $line)
-			{
-				$class = ResourcesHtml::getRatingClass( $line->rating );
-
-				$helper = new ResourcesHelper( $line->id, $database );
-				$helper->getContributors();
-
-				// If the user is logged in, get their rating for this resource
-				if (!$juser->get('guest')) {
-					$mr = new ResourcesReview( $database );
-					$myrating = $mr->loadUserRating( $line->id, $juser->get('id') );
-				} else {
-					$myrating = 0;
-				}
-				$myclass = ResourcesHtml::getRatingClass( $myrating );
-
-				// Encode some potentially troublesome characters
-				$line->title = ResourcesHtml::encode_html( $line->title );
-
-				// Make sure we have an SEF, otherwise it's a querystring
-				if (strstr($line->href,'option=')) {
-					$d = a;
-				} else {
-					$d = '?';
-				}
-
-				$html .= t.t.'<tr>'.n; 
-				if ($config->get('show_ranking')) {
-					// Format the ranking
-					$line->ranking = round($line->ranking, 1);
-					$r = (10*$line->ranking);
-					if (intval($r) < 10) {
-						$r = '0'.$r;
-					}
-					
-					$html .= t.t.t.'<td class="ranking">'.number_format($line->ranking,1).' <span class="rank-'.$r.'">'.JText::_('RESOURCES_RANKING').'</span></td>'.n;
-				} elseif ($config->get('show_rating')) {
-					$html .= t.t.t.'<td class="rating"><span class="avgrating'.$class.'"><span>'.JText::sprintf('RESOURCES_OUT_OF_5_STARS',$line->rating).'</span>&nbsp;</span></td>'.n;
-				}
-				$html .= t.t.t.'<td>';
-				$html .= '<a href="'.$line->href.'" class="fixedResourceTip" title="DOM:rsrce'.$line->id.'">'. $line->title . '</a>'.n;
-				$html .= t.t.'<div style="display:none;" id="rsrce'.$line->id.'">'.n;
-				$html .= t.t.t.ResourcesHtml::hed(4,$line->title).n;
-				$html .= t.t.t.'<div>'.n;
-				$html .= t.t.t.t.'<table>'.n;
-				$html .= ResourcesHtml::tableRow(JText::_('RESOURCES_TYPE'),$line->section);
-				if ($helper->contributors) {
-					$html .= ResourcesHtml::tableRow(JText::_('RESOURCES_CONTRIBUTORS'),$helper->contributors);
-				}
-				$html .= ResourcesHtml::tableRow(JText::_('RESOURCES_DATE'),JHTML::_('date',$line->publish_up, '%d %b, %Y'));
-				$html .= ResourcesHtml::tableRow(JText::_('RESOURCES_AVG_RATING'),'<span class="avgrating'.$class.'"><span>'.JText::sprintf('RESOURCES_OUT_OF_5_STARS',$line->rating).'</span>&nbsp;</span> ('.$line->times_rated.')');
-				$starz  = t.t.t.t.t.'<ul class="starsz'.$myclass.'">'.n;
-				$starz .= t.t.t.t.t.' <li class="str1"><a href="'.$line->href.$d.'task=addreview'.a.'myrating=1#reviewform" title="'.JText::_('RESOURCES_RATING_POOR').'">'.JText::_('RESOURCES_RATING_1_STAR').'</a></li>'.n;
-				$starz .= t.t.t.t.t.' <li class="str2"><a href="'.$line->href.$d.'task=addreview'.a.'myrating=2#reviewform" title="'.JText::_('RESOURCES_RATING_FAIR').'">'.JText::_('RESOURCES_RATING_2_STARS').'</a></li>'.n;
-				$starz .= t.t.t.t.t.' <li class="str3"><a href="'.$line->href.$d.'task=addreview'.a.'myrating=3#reviewform" title="'.JText::_('RESOURCES_RATING_GOOD').'">'.JText::_('RESOURCES_RATING_3_STARS').'</a></li>'.n;
-				$starz .= t.t.t.t.t.' <li class="str4"><a href="'.$line->href.$d.'task=addreview'.a.'myrating=4#reviewform" title="'.JText::_('RESOURCES_RATING_VERY_GOOD').'">'.JText::_('RESOURCES_RATING_4_STARS').'</a></li>'.n;
-				$starz .= t.t.t.t.t.' <li class="str5"><a href="'.$line->href.$d.'task=addreview'.a.'myrating=5#reviewform" title="'.JText::_('RESOURCES_RATING_EXCELLENT').'">'.JText::_('RESOURCES_RATING_5_STARS').'</a></li>'.n;
-				$starz .= t.t.t.t.t.'</ul>'.n;
-				$html .= ResourcesHtml::tableRow(JText::_('RESOURCES_RATE_THIS'),$starz);
-				$html .= t.t.t.t.'</table>';
-				$html .= t.t.t.'</div>'.n;
-				$html .= t.t.t.ResourcesHtml::shortenText( $line->itext ).n;
-				$html .= t.t.'</div>'.n;
-				$html .= '</td>'.n;
-				$html .= t.t.t.'<td class="type">'.$line->area.'</td>'.n;
-				$html .= t.t.'</tr>'.n;
-			}
-			$html .= t.'</tbody>'.n;
-			$html .= '</table>'.n;
-		} else {
-			$html  = '<p>'.JText::_('NO_RESOURCES_FOUND').'</p>'.n;
-		}
-		
-		return $html;
 	}
 
 	//-----------
@@ -315,7 +271,7 @@ class plgGroupsResources extends JPlugin
 		$ids = $this->getResourceIDs( $group->get('cn') );
 		
 		// Start the log text
-		$log = JText::_('GROUPS_RESOURCES_LOG').': ';
+		$log = JText::_('PLG_GROUPS_RESOURCES_LOG').': ';
 		if (count($ids) > 0) {
 			$database =& JFactory::getDBO();
 			
@@ -330,10 +286,10 @@ class plgGroupsResources extends JPlugin
 				$rr->store();
 				
 				// Add the page ID to the log
-				$log .= $id->id.' '.n;
+				$log .= $id->id.' '."\n";
 			}
 		} else {
-			$log .= JText::_('NONE').n;
+			$log .= JText::_('PLG_GROUPS_RESOURCES_NONE')."\n";
 		}
 		
 		// Return the log
@@ -344,7 +300,7 @@ class plgGroupsResources extends JPlugin
 	
 	public function onGroupDeleteCount( $group ) 
 	{
-		return JText::_('GROUPS_RESOURCES_LOG').': '.count( $this->getResourceIDs( $group->get('cn') ));
+		return JText::_('PLG_GROUPS_RESOURCES_LOG').': '.count( $this->getResourceIDs( $group->get('cn') ));
 	}
 
 	//-----------
@@ -404,8 +360,6 @@ class plgGroupsResources extends JPlugin
 	
 	public function getResources( $group, $authorized, $limit=0, $limitstart=0, $sort='date', $access='all', $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ) && $limit) {
 			$ars = $this->getResourcesAreas();
@@ -420,6 +374,8 @@ class plgGroupsResources extends JPlugin
 		if (!$group->get('cn')) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
 
 		// Instantiate some needed objects
 		$rr = new ResourcesResource( $database );
@@ -531,309 +487,30 @@ class plgGroupsResources extends JPlugin
 		}
 	}
 	
-	//-----------
-	
-	public function categories( $cats, $active, $total, $sef, $sort, $access, $authorized ) 
+	//----------------------------------------------------------
+	// Optional custom functions
+	// uncomment to use
+	//----------------------------------------------------------
+
+	public function documents() 
 	{
-		if (strstr( $sef, 'index' )) {
-			$sef .= a;
-		} else {
-			$sef .= '?';
-		}
-
-		// Add the "all" category
-		//$all = array('category'=>'','title'=>JText::_('ALL_RESOURCES_CATEGORIES'),'total'=>$total);
+		// Push some CSS and JS to the tmeplate that may be needed
+	 	$document =& JFactory::getDocument();
+		$document->addScript('components'.DS.'com_resources'.DS.'resources.js');
 		
-		//array_unshift($cats, $all);
+		ximport('xdocument');
+		XDocument::addComponentStylesheet('com_resources');
 
-		// An array for storing all the links we make
-		$links = array();
-
-		// Loop through each category
-		foreach ($cats as $cat) 
-		{
-			// Only show categories that have returned search results
-			if ($cat['total'] > 0) {
-				// Is this the active category?
-				$a = '';
-				if ($cat['category'] == $active) {
-					$a = ' class="active"';
-				}
-				// If we have a specific category, prepend it to the search term
-				$blob = '';
-				if ($cat['category']) {
-					$blob = $cat['category'];
-				}
-				// Build the HTML
-				$l = t.'<li'.$a.'><a href="'.$sef.'area='. urlencode(stripslashes($blob)) .'">' . $cat['title'] . ' ('.$cat['total'].')</a>';
-				// Are there sub-categories?
-				if (isset($cat['_sub']) && is_array($cat['_sub'])) {
-					// An array for storing the HTML we make
-					$k = array();
-					// Loop through each sub-category
-					foreach ($cat['_sub'] as $subcat) 
-					{
-						// Only show sub-categories that returned search results
-						if ($subcat['total'] > 0) {
-							// Is this the active category?
-							$a = '';
-							if ($subcat['category'] == $active) {
-								$a = ' class="active"';
-							}
-							// If we have a specific category, prepend it to the search term
-							$blob = '';
-							if ($subcat['category']) {
-								$blob = $subcat['category'];
-							}
-							// Build the HTML
-							$k[] = t.t.t.'<li'.$a.'><a href="'.$sef.'area='. urlencode(stripslashes($blob)) .'">' . $subcat['title'] . ' ('.$subcat['total'].')</a></li>';
-						}
-					}
-					// Do we actually have any links?
-					// NOTE: this method prevents returning empty list tags "<ul></ul>"
-					if (count($k) > 0) {
-						$l .= t.t.'<ul>'.n;
-						$l .= implode( n, $k );
-						$l .= t.t.'</ul>'.n;
-					}
-				}
-				$l .= '</li>';
-				$links[] = $l;
-			}
-		}
-	
-			$html  = '<fieldset>'.n;
-			$html .= t.'<label>'.n;
-			$html .= t.t.JText::_('RESOURCES_SORT_BY').n;
-			$html .= t.t.'<select name="sort">'.n;
-			$config =& JComponentHelper::getParams( 'com_resources' );
-			if ($config->get('show_ranking')) {
-				$html .= t.t.t.'<option value="ranking"';
-				if ($sort == 'ranking') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('RESOURCES_SORT_BY_RANKING').'</option>'.n;
-			} else {
-				$html .= t.t.t.'<option value="rating"';
-				if ($sort == 'rating') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('RESOURCES_SORT_BY_RATING').'</option>'.n;
-			}
-			$html .= t.t.t.'<option value="date"';
-			if ($sort == 'date') {
-				$html .= ' selected="selected"';
-			}
-			$html .= '>'.JText::_('RESOURCES_SORT_BY_DATE').'</option>'.n;
-			$html .= t.t.t.'<option value="title"';
-			if ($sort == 'title') {
-				$html .= ' selected="selected"';
-			}
-			$html .= '>'.JText::_('RESOURCES_SORT_BY_TITLE').'</option>'.n;
-			$html .= t.t.'</select>'.n;
-			$html .= t.'</label>'.n;
-			$html .= t.'<label>'.n;
-			$html .= t.t.JText::_('RESOURCES_ACCESS').n;
-			$html .= t.t.'<select name="access">'.n;
-			$html .= t.t.t.'<option value="all"';
-			if ($access == 'all') {
-				$html .= ' selected="selected"';
-			}
-			$html .= '>'.JText::_('RESOURCES_ACCESS_ALL').'</option>'.n;
-			$html .= t.t.t.'<option value="public"';
-			if ($access == 'public') {
-				$html .= ' selected="selected"';
-			}
-			$html .= '>'.JText::_('RESOURCES_ACCESS_PUBLIC').'</option>'.n;
-			$html .= t.t.t.'<option value="protected"';
-			if ($access == 'protected') {
-				$html .= ' selected="selected"';
-			}
-			$html .= '>'.JText::_('RESOURCES_ACCESS_PROTECTED').'</option>'.n;
-			if ($authorized) {
-				$html .= t.t.t.'<option value="private"';
-				if ($access == 'private') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('RESOURCES_ACCESS_PRIVATE').'</option>'.n;
-			}
-			$html .= t.t.'</select>'.n;
-			$html .= t.'</label>'.n;
-			//$html .= t.'<input type="hidden" value="'.$active.'" />'.n;
-			$html .= t.'<input type="submit" value="'.JText::_('GO').'" />'.n;
-			$html .= '</fieldset>'.n;
-		// Do we actually have any links?
-		// NOTE: this method prevents returning empty list tags "<ul></ul>"
-		if (count($links) > 0) {
-			// Yes - output the necessary HTML
-			$html .= '<ul class="sub-nav">'.n;
-			$html .= implode( n, $links );
-			$html .= '</ul>'.n;
-		}
-			$html .= '<p class="add"><a href="'.JRoute::_('index.php?option=com_contribute&task=start').'">'.JText::_('START_A_CONTRIBUTION').'</a></p>'.n;
-		//} else {
-			// No - nothing to output
-			//$html = '';
-		//}
-		$html .= t.'<input type="hidden" name="area" value="'.$active.'" />'.n;
-
-		return $html;
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
+		ximport('resourcestats');
 	}
 	
 	//-----------
 	
-	public function display( $authorized, $totals, $results, $cats, $active, $option, $start=0, $limit=0, $total, $group, $sort, $access ) 
+	/*public function before()
 	{
-		$sef = JRoute::_('index.php?option='.$option.a.'gid='.$group->get('cn').a.'active=resources');
-		
-		$html  = GroupsHtml::hed(3,'<a name="resources"></a>'.JText::_('RESOURCES')).n;
-		$html .= '<form method="get" action="'.$sef.'">'.n;
-		$html .= GroupsHtml::div( 
-					$this->categories( $cats, $active, $total, $sef, $sort, $access, $authorized ), 
-					'aside'
-				);
-		
-		$html .= '<div class="subject">'.n;
-		
-		$foundresults = false;
-		$dopaging = false;
-	
-		$k = 0;
-		foreach ($results as $category)
-		{
-			$amt = count($category);
-			
-			if ($amt > 0) {
-				$foundresults = true;
-				
-				$name  = $cats[$k]['title'];
-				$total = $cats[$k]['total'];
-				$divid = 'search'.$cats[$k]['category'];
-				
-				// Is this category the active category?
-				if (!$active || $active == $cats[$k]['category']) {
-					// It is - get some needed info
-					$name  = $cats[$k]['title'];
-					$total = $cats[$k]['total'];
-					$divid = 'search'.$cats[$k]['category'];
-					
-					if ($active == $cats[$k]['category']) {
-						$dopaging = true;
-					}
-				} else {
-					// It is not - does this category have sub-categories?
-					if (isset($cats[$k]['_sub']) && is_array($cats[$k]['_sub'])) {
-						// It does - loop through them and see if one is the active category
-						foreach ($cats[$k]['_sub'] as $sub) 
-						{
-							if ($active == $sub['category']) {
-								// Found an active category
-								$name  = $sub['title'];
-								$total = $sub['total'];
-								$divid = 'search'.$sub['category'];
-								
-								$dopaging = true;
-								break;
-							}
-						}
-					}
-				}
-				
-				$num  = $total .' result';
-				$num .= ($total > 1) ? 's' : '';
-			
-				// A function for category specific items that may be needed
-				// Check if a function exist (using old style plugins)
-				$f = 'plgGroups'.ucfirst($cats[$k]['category']).'Doc';
-				if (function_exists($f)) {
-					$f();
-				}
-				// Check if a method exist (using JPlugin style)
-				$obj = 'plgGroups'.ucfirst($cats[$k]['category']);
-				if (method_exists($obj, 'documents')) {
-					$html .= call_user_func( array($obj,'documents') );
-				}
-			
-				// Build the category HTML
-				$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">'.$name.' <small>'.$num.'</small></h4>'.n;
-				$html .= '<div class="category-wrap" id="'.$divid.'">'.n;
-				
-				// Does this category have custom output?
-				// Check if a function exist (using old style plugins)
-				$func = 'plgGroups'.ucfirst($cats[$k]['category']).'Before';
-				if (function_exists($func)) {
-					$html .= $func();
-				}
-				// Check if a method exist (using JPlugin style)
-				$obj = 'plgGroups'.ucfirst($cats[$k]['category']);
-				if (method_exists($obj, 'before')) {
-					$html .= call_user_func( array($obj,'before') );
-				}
-				
-				$html .= '<ol class="search results">'.n;			
-				foreach ($category as $row) 
-				{
-					$row->href = str_replace('&amp;', '&', $row->href);
-					$row->href = str_replace('&', '&amp;', $row->href);
-					
-					// Does this category have a unique output display?
-					$func = 'plgGroups'.ucfirst($row->section).'Out';
-					// Check if a method exist (using JPlugin style)
-					$obj = 'plgGroups'.ucfirst($cats[$k]['category']);
-					
-					if (function_exists($func)) {
-						$html .= $func( $row, $authorized );
-					} elseif (method_exists($obj, 'out')) {
-						$html .= call_user_func( array($obj,'out'), $row, $authorized );
-					} else {
-						$html .= t.'<li>'.n;
-						$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
-						if ($row->text) {
-							$html .= t.t.GroupsHtml::shortenText(stripslashes($row->text)).n;
-						}
-						$html .= t.'</li>'.n;
-					}
-				}
-				$html .= '</ol>'.n;
-				// Initiate paging if we we're displaying an active category
-				if ($dopaging) {
-					jimport('joomla.html.pagination');
-					$pageNav = new JPagination( $total, $start, $limit );
-
-					$pf = $pageNav->getListFooter();
-					
-					$nm = str_replace('com_','',$option);
-
-					$pf = str_replace($nm.'/?',$nm.'/'.$group->get('cn').'/'.$active.'/?',$pf);
-					$html .= $pf;
-				} else {
-					$html .= '<p class="moreresults">'.JText::sprintf('NUMBER_RESOURCES_SHOWN', $amt);
-					// Ad a "more" link if necessary
-					if ($totals[$k] > 5) {
-						$qs = 'area='.urlencode(strToLower($cats[$k]['category']));
-						$seff = JRoute::_('index.php?option='.$option.a.'gid='.$group->get('cn').a.'active=resources');
-						if (strstr( $seff, 'index' )) {
-							$seff .= a.$qs;
-						} else {
-							$seff .= '?'.$qs;
-						}
-						$html .= ' | <a href="'.$seff.'">'.JText::_('MORE_RESOURCES').'</a>';
-					}
-				}
-				$html .= '</p>'.n.n;
-				$html .= '</div><!-- / #'.$divid.' -->'.n;
-			}
-			$k++;
-		}
-		if (!$foundresults) {
-			$html .= GroupsHtml::warning( JText::_('NO_RESOURCES_FOUND') );
-		}
-		$html .= '</div><!-- / .subject -->'.n;
-		$html .= GroupsHtml::div('','clear').n;
-		$html .= '</form>'.n;
-		
-		return $html;
-	}
+		// ...
+	}*/
 	
 	//-----------
 
@@ -868,14 +545,14 @@ class plgGroupsResources extends JPlugin
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
 
-		$html  = t.'<li class="resource">'.n;
-		$html .= t.t.'<p class="';
+		$html  = "\t".'<li class="resource">'."\n";
+		$html .= "\t\t".'<p class="';
 		if ($row->access == 4) {
 			$html .= 'private ';
 		} elseif ($row->access == 3) {
 			$html .= 'protected ';
 		}
-		$html .= 'title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
+		$html .= 'title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 			
 		if ($params->get('show_ranking')) {
 			$RE->getCitationsCount();
@@ -890,84 +567,62 @@ class plgGroupsResources extends JPlugin
 			
 			$row->ranking = round($row->ranking, 1);
 			
-			$html .= t.t.'<div class="metadata">'.n;
-			$html .= plgGroupsResources::ranking( $row->ranking, $statshtml, $row->id, $row->href );
-			$html .= t.t.'</div>'.n;
+			$html .= "\t\t".'<div class="metadata">'."\n";
+			$r = (10*$row->ranking);
+			if (intval($r) < 10) {
+				$r = '0'.$r;
+			}
+			$html .= "\t\t\t".'<dl class="rankinfo">'."\n";
+			$html .= "\t\t\t\t".'<dt class="ranking"><span class="rank-'.$r.'">'.JText::_('PLG_GROUPS_RESOURCES_THIS_HAS').'</span> '.number_format($row->ranking,1).' '.JText::_('PLG_GROUPS_RESOURCES_RANKING').'</dt>'."\n";
+			$html .= "\t\t\t\t".'<dd>'."\n";
+			$html .= "\t\t\t\t\t".'<p>'.JText::_('PLG_GROUPS_RESOURCES_RANKING_EXPLANATION').'</p>'."\n";
+			$html .= "\t\t\t\t\t".'<div>'."\n";
+			$html .= $statshtml;
+			$html .= "\t\t\t\t\t".'</div>'."\n";
+			$html .= "\t\t\t\t".'</dd>'."\n";
+			$html .= "\t\t\t".'</dl>'."\n";
+			$html .= "\t\t".'</div>'."\n";
 		} elseif ($params->get('show_rating')) {
-			$html .= t.t.'<div class="metadata">'.n;
-			$html .= t.t.t.'<p class="rating"><span class="avgrating'.plgGroupsResources::getRatingClass( $row->rating ).'"><span>'.JText::sprintf('RESOURCES_OUT_OF_5_STARS',$row->rating).'</span>&nbsp;</span></p>'.n;
-			$html .= t.t.'</div>'.n;
+			switch ($row->rating) 
+			{
+				case 0.5: $class = ' half-stars';      break;
+				case 1:   $class = ' one-stars';       break;
+				case 1.5: $class = ' onehalf-stars';   break;
+				case 2:   $class = ' two-stars';       break;
+				case 2.5: $class = ' twohalf-stars';   break;
+				case 3:   $class = ' three-stars';     break;
+				case 3.5: $class = ' threehalf-stars'; break;
+				case 4:   $class = ' four-stars';      break;
+				case 4.5: $class = ' fourhalf-stars';  break;
+				case 5:   $class = ' five-stars';      break;
+				case 0:
+				default:  $class = ' no-stars';      break;
+			}
+			
+			$html .= "\t\t".'<div class="metadata">'."\n";
+			$html .= "\t\t\t".'<p class="rating"><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',$row->rating).'</span>&nbsp;</span></p>'."\n";
+			$html .= "\t\t".'</div>'."\n";
 		}
 
-		$html .= t.t.'<p class="details">'.$thedate.' <span>|</span> '.$row->area;
+		$html .= "\t\t".'<p class="details">'.$thedate.' <span>|</span> '.$row->area;
 		if ($RE->contributors) {
-			$html .= ' <span>|</span> '.JText::_('CONTRIBUTORS').': '.$RE->contributors;
+			$html .= ' <span>|</span> '.JText::_('PLG_GROUPS_RESOURCES_CONTRIBUTORS').': '.$RE->contributors;
 		}
-		$html .= '</p>'.n;
+		$html .= '</p>'."\n";
 		if ($row->itext) {
-			$html .= t.t.GroupsHtml::shortenText(stripslashes($row->itext)).n;
+			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->itext)), 200)."\n";
 		} else if ($row->ftext) {
-			$html .= t.t.GroupsHtml::shortenText(stripslashes($row->ftext)).n;
+			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200)."\n";
 		}
-		$html .= t.t.'<p class="href">'.$juri->base().$row->href.'</p>'.n;
-		$html .= t.'</li>'.n;
-		return $html;
-	}
-
-	//-----------
-
-	public function ranking( $rank, $stats, $id, $sef='' )
-	{
-		$r = (10*$rank);
-		if (intval($r) < 10) {
-			$r = '0'.$r;
-		}
-
-		$html  = '<dl class="rankinfo">'.n;
-		$html .= ' <dt class="ranking"><span class="rank-'.$r.'">'.JText::_('THIS_RESOURCE_HAS').'</span> '.number_format($rank,1).' '.JText::_('RANKING').'</dt>'.n;
-		$html .= ' <dd>'.n;
-		$html .= t.'<p>'.n;
-		$html .= t.t.JText::_('RANKING_EXPLANATION').n;
-		$html .= t.'</p>'.n;
-		$html .= t.'<div>'.n;
-		$html .= $stats;
-		$html .= t.'</div>'.n;
-		$html .= ' </dd>'.n;
-		$html .= '</dl>'.n;
+		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
+		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
 
 	//-----------
 	
-	public function getRatingClass($rating=0)
+	/*public function after()
 	{
-		switch ($rating) 
-		{
-			case 0.5: $class = ' half-stars';      break;
-			case 1:   $class = ' one-stars';       break;
-			case 1.5: $class = ' onehalf-stars';   break;
-			case 2:   $class = ' two-stars';       break;
-			case 2.5: $class = ' twohalf-stars';   break;
-			case 3:   $class = ' three-stars';     break;
-			case 3.5: $class = ' threehalf-stars'; break;
-			case 4:   $class = ' four-stars';      break;
-			case 4.5: $class = ' fourhalf-stars';  break;
-			case 5:   $class = ' five-stars';      break;
-			case 0:
-			default:  $class = ' no-stars';      break;
-		}
-		return $class;
-	}
-
-	//-----------
-
-	public function documents() 
-	{
-		// Push some CSS and JS to the tmeplate that may be needed
-		ximport('xdocument');
-		XDocument::addComponentStylesheet('com_resources');
-
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
-		ximport('resourcestats');
-	}
+		// ...
+	}*/
 }

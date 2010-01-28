@@ -549,7 +549,7 @@ class GroupsController extends JObject
 		$group->select( $this->gid );
 
 		// Ensure we found the group info
-		if (!$group) {
+		if (!$group || !$group->get('gidNumber')) {
 			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
@@ -644,7 +644,7 @@ class GroupsController extends JObject
 		$group->select( $this->gid );
 
 		// Ensure we found the group info
-		if (!$group) {
+		if (!$group || !$group->get('gidNumber')) {
 			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
@@ -754,7 +754,7 @@ class GroupsController extends JObject
 		$group->select( $this->gid );
 
 		// Ensure we found the group info
-		if (!$group) {
+		if (!$group || !$group->get('gidNumber')) {
 			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
@@ -905,7 +905,7 @@ class GroupsController extends JObject
 		$group->select( $this->gid );
 
 		// Ensure we found the group info
-		if (!$group) {
+		if (!$group || !$group->get('gidNumber')) {
 			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
@@ -1104,7 +1104,7 @@ class GroupsController extends JObject
 		$group->select( $this->gid );
 
 		// Ensure we found the group info
-		if (!$group) {
+		if (!$group || !$group->get('gidNumber')) {
 			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
@@ -1547,7 +1547,7 @@ class GroupsController extends JObject
 		$group->select( $this->gid );
 		
 		// Ensure we found the group info
-		if (!$group) {
+		if (!$group || !$group->get('gidNumber')) {
 			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
@@ -1767,7 +1767,7 @@ class GroupsController extends JObject
 		$group->select( $this->gid );
 		
 		// Ensure we found the group info
-		if (!$group) {
+		if (!$group || !$group->get('gidNumber')) {
 			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
@@ -1880,6 +1880,10 @@ class GroupsController extends JObject
 			}
 		}
 		
+		$gidNumber = $group->get('gidNumber');
+		$gcn = $group->get('cn');
+		$members = $group->get('members');
+		
 		// Delete group
 		if (!$group->delete()) {
 			jimport('joomla.application.component.view');
@@ -1905,10 +1909,10 @@ class GroupsController extends JObject
 		$from['email'] = $jconfig->getValue('config.mailfrom');
 		
 		// E-mail subject
-		$subject = JText::sprintf('GROUPS_SUBJECT_GROUP_DELETED', $group->get('cn'));
+		$subject = JText::sprintf('GROUPS_SUBJECT_GROUP_DELETED', $gcn);
 
 		// Build the e-mail message
-		$message  = JText::sprintf('GROUPS_USER_HAS_DELETED_GROUP', $group->get('cn'), $juser->get('username')).r.n.r.n;
+		$message  = JText::sprintf('GROUPS_USER_HAS_DELETED_GROUP', $gcn, $juser->get('username')).r.n.r.n;
 		if ($msg) {
 			$message .= stripslashes($msg).r.n.r.n;
 		}
@@ -1917,14 +1921,14 @@ class GroupsController extends JObject
 		// Send the message
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
-		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_deleted', $subject, $message, $from, $group->get('members'), $this->_option ))) {
+		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_deleted', $subject, $message, $from, $members, $this->_option ))) {
 			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED') );
 		}
 		
 		// Log the deletion
 		$database =& JFactory::getDBO();
 		$xlog = new XGroupLog( $database );
-		$xlog->gid = $group->get('gidNumber');
+		$xlog->gid = $gidNumber;
 		$xlog->uid = $juser->get('id');
 		$xlog->timestamp = date( 'Y-m-d H:i:s', time() );
 		$xlog->action = 'group_deleted';
@@ -2190,8 +2194,8 @@ class GroupsController extends JObject
 			ksort($images);
 			ksort($folders);
 			ksort($docs);
-		} else {
-			$this->setError( JText::sprintf('ERROR_MISSING_DIRECTORY', $path) );
+		//} else {
+		//	$this->setError( JText::sprintf('ERROR_MISSING_DIRECTORY', $path) );
 		}
 
 		jimport('joomla.application.component.view');
