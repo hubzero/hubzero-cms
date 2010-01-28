@@ -38,7 +38,7 @@ class plgTagsGroups extends JPlugin
 	
 	//-----------
 	
-	function plgTagsGroups(&$subject, $config)
+	public function plgTagsGroups(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -49,20 +49,18 @@ class plgTagsGroups extends JPlugin
 
 	//-----------
 
-	function onTagAreas()
+	public function onTagAreas()
 	{
 		$areas = array(
-			'groups' => JText::_('Groups')
+			'groups' => JText::_('PLG_TAGS_GROUPS')
 		);
 		return $areas;
 	}
 	
 	//-----------
 
-	function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
+	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onTagAreas() ) && !array_intersect( $areas, array_keys( $this->onTagAreas() ) )) {
@@ -74,6 +72,8 @@ class plgTagsGroups extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag) 
@@ -128,28 +128,28 @@ class plgTagsGroups extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	/*function documents() 
+	/*public function documents() 
 	{
 		// ...
 	}
 	
 	//-----------
 	
-	function before()
+	public function before()
 	{
 		// ...
 	}
 	
 	//-----------
 	
-	function out()
+	public function out()
 	{
 		// ...
 	}
 	
 	//-----------
 	
-	function after()
+	public function after()
 	{
 		// ...
 	}*/

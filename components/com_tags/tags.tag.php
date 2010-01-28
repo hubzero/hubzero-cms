@@ -40,14 +40,14 @@ class TagsTag extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__tags', 'id', $db );
 	}
 	
 	//-----------
 	
-	function loadTag( $oid=NULL ) 
+	public function loadTag( $oid=NULL ) 
 	{
 		if ($oid === NULL) {
 			return false;
@@ -61,7 +61,7 @@ class TagsTag extends JTable
 	
 	//-----------
 	
-	function checkExistence() 
+	public function checkExistence() 
 	{
 		// First see if a normalized tag in this form exists.
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE tag='$this->tag' LIMIT 1" );
@@ -81,7 +81,7 @@ class TagsTag extends JTable
 	
 	//-----------
 	
-	function getUsage( $oid=NULL ) 
+	public function getUsage( $oid=NULL ) 
 	{
 		if (!$oid) {
 			$oid = $this->id;
@@ -96,7 +96,7 @@ class TagsTag extends JTable
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->raw_tag ) == '') {
 			$this->setError( JText::_('You must enter a tag.') );
@@ -107,7 +107,7 @@ class TagsTag extends JTable
 	
 	//-----------
 	
-	function buildQuery($filters) 
+	public function buildQuery($filters) 
 	{
 		$filter = '';
 		if (isset($filters['by'])) {
@@ -146,7 +146,7 @@ class TagsTag extends JTable
 	
 	//-----------
 	
-	function getCount( $filters=array() ) 
+	public function getCount( $filters=array() ) 
 	{
 		$filters['limit'] = 0;
 		$filters['count'] = true;
@@ -157,7 +157,7 @@ class TagsTag extends JTable
 	
 	//-----------
 	
-	function getRecords( $filters=array() ) 
+	public function getRecords( $filters=array() ) 
 	{
 		$this->_db->setQuery( $this->buildQuery( $filters ) );
 		return $this->_db->loadObjectList();
@@ -165,7 +165,7 @@ class TagsTag extends JTable
 
 	//-----------
 	
-	function getAutocomplete( $filters=array() ) 
+	public function getAutocomplete( $filters=array() ) 
 	{
 		$query = "SELECT t.id, t.tag, t.raw_tag 
 					FROM $this->_tbl AS t 
@@ -178,7 +178,7 @@ class TagsTag extends JTable
 
 	//-----------
 	
-	function getAllTags( $authorized=false ) 
+	public function getAllTags( $authorized=false ) 
 	{
 		if (!$authorized) {
 			$filter = "WHERE admin=0 ";
@@ -197,7 +197,7 @@ class TagsTag extends JTable
 	
 	//-----------
 	
-	function getTopTags( $limit=25, $tbl='', $order='tcount DESC' ) 
+	public function getTopTags( $limit=25, $tbl='', $order='tcount DESC' ) 
 	{
 		$tj = new TagsObject( $this->_db );
 		
@@ -214,7 +214,7 @@ class TagsTag extends JTable
 	
 	//-----------
 	
-	function getRecentTags( $limit=25, $order='taggedon DESC' ) 
+	public function getRecentTags( $limit=25, $order='taggedon DESC' ) 
 	{
 		$tj = new TagsObject( $this->_db );
 
@@ -230,7 +230,7 @@ class TagsTag extends JTable
 	
 	//-----------
 	
-	function getRelatedTags( $id=null, $limit=25 ) 
+	public function getRelatedTags( $id=null, $limit=25 ) 
 	{
 		if (!$id) {
 			$id = $this->id;
@@ -272,14 +272,14 @@ class TagsObject extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__tags_object', 'id', $db );
 	}
 	
 	//-----------
 	
-	function deleteObjects( $tagid=null ) 
+	public function deleteObjects( $tagid=null ) 
 	{
 		if (!$tagid) {
 			$tagid = $this->tagid;
@@ -298,7 +298,7 @@ class TagsObject extends JTable
 	
 	//-----------
 	
-	function getCount( $tagid=null ) 
+	public function getCount( $tagid=null ) 
 	{
 		if (!$tagid) {
 			$tagid = $this->tagid;
@@ -329,14 +329,14 @@ class TagsGroup extends JTable
 	
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__tags_group', 'id', $db );
 	}
 
 	//-----------
 	
-	function getCount() 
+	public function getCount() 
 	{
 		$query = "SELECT COUNT(*) 
 					FROM $this->_tbl AS tg,
@@ -351,7 +351,7 @@ class TagsGroup extends JTable
 		
 	//-----------
 	
-	function getRecords() 
+	public function getRecords() 
 	{
 		$query = "SELECT tg.id, t.tag, g.cn, g.description, tg.tagid, tg.groupid, tg.priority 
 					FROM $this->_tbl AS tg,
@@ -366,7 +366,7 @@ class TagsGroup extends JTable
 	
 	//-----------
 	
-	function getNeighbor( $move ) 
+	public function getNeighbor( $move ) 
 	{
 		switch ($move) 
 		{
@@ -379,7 +379,6 @@ class TagsGroup extends JTable
 				break;
 		}
 		$this->_db->setQuery( $sql );
-		//return $this->_db->loadObject( $this );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
 		} else {

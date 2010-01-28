@@ -34,23 +34,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="aside">
 			<fieldset>
 				<label>
-					<?php echo JText::_('SEARCH_TAGS'); ?>
+					<?php echo JText::_('COM_TAGS_SEARCH_TAGS'); ?>
 					<input type="text" name="search" value="<?php echo $this->filters['search']; ?>" />
 				</label>
-				<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+				<input type="submit" value="<?php echo JText::_('COM_TAGS_GO'); ?>" />
 			</fieldset>
-			<p class="help"><strong><?php echo JText::_('TAGS_WHATS_AN_ALIAS'); ?></strong><br /><?php echo JText::_('TAGS_ALIAS_EXPLANATION'); ?></p>
+			<p class="help"><strong><?php echo JText::_('COM_TAGS_WHATS_AN_ALIAS'); ?></strong><br /><?php echo JText::_('COM_TAGS_ALIAS_EXPLANATION'); ?></p>
 		</div><!-- / .aside -->
 		<div class="subject">
-			<table id="taglist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+			<table id="taglist" summary="<?php echo JText::_('COM_TAGS_TABLE_SUMMARY'); ?>">
 				<thead>
 					<tr>
 <?php if ($this->authorized) { ?>
-						<th colspan="2"><?php echo JText::_('COL_ACTION'); ?></th>
+						<th colspan="2"><?php echo JText::_('COM_TAGS_COL_ACTION'); ?></th>
 <?php } ?>
-						<th><?php echo JText::_('TAG'); ?></th>
-						<th><?php echo JText::_('COL_ALIAS'); ?></th>
-						<th><?php echo JText::_('COL_NUMBER_TAGGED'); ?></th>
+						<th><?php echo JText::_('COM_TAGS_TAG'); ?></th>
+						<th><?php echo JText::_('COM_TAGS_COL_ALIAS'); ?></th>
+						<th><?php echo JText::_('COM_TAGS_COL_NUMBER_TAGGED'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -72,8 +72,8 @@ if ($this->rows) {
 ?>
 					<tr class="<?php echo $cls; ?>">
 <?php if ($this->authorized) { ?>
-						<td><a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&id[]='.$row->id); ?>"><?php echo JText::_('DELETE_TAG'); ?></a></td>
-						<td><a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$row->id); ?>" title="<?php echo JText::_('EDIT_TAG'); ?> &quot;<?php echo stripslashes($row->raw_tag); ?>&quot;"><?php echo JText::_('EDIT'); ?></a></td>
+						<td><a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&id[]='.$row->id); ?>"><?php echo JText::_('COM_TAGS_DELETE_TAG'); ?></a></td>
+						<td><a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$row->id); ?>" title="<?php echo JText::_('COM_TAGS_EDIT_TAG'); ?> &quot;<?php echo stripslashes($row->raw_tag); ?>&quot;"><?php echo JText::_('COM_TAGS_EDIT'); ?></a></td>
 <?php } ?>
 						<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$row->tag); ?>"><?php echo stripslashes($row->raw_tag); ?></a></td>
 						<td><?php echo $row->alias; ?></td>

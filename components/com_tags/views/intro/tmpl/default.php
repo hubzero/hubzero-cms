@@ -37,19 +37,19 @@ $step = $this->step;
 
 <div id="introduction" class="section">
 	<div class="aside">
-		<h3>Questions?</h3>
+		<h3><?php echo JText::_('COM_TAGS_QUESTIONS'); ?></h3>
 		<ul>
-			<li><a href="/kb/tags/faq">Tags FAQ</a></li>
+			<li><a href="/kb/tags/faq"><?php echo JText::_('COM_TAGS_FAQ'); ?></a></li>
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">
 		<div class="two columns first">
-			<h3>What are tags?</h3>
-			<p>Tags are like keywords or category labels. Tags help you find content, events, and members which have something in common or similar interests. Tags can be added to groups, your profile, resources, wiki pages, and events.</p>
+			<h3><?php echo JText::_('COM_TAGS_WHAT_ARE_TAGS'); ?></h3>
+			<p><?php echo JText::_('COM_TAGS_WHAT_ARE_TAGS_EXPLANATION'); ?></p>
 		</div>
 		<div class="two columns second">
-			<h3>How do tags work?</h3>
-			<p>When creating or editing content, your profile, groups, etc. you can add or remove tags as you wish. If a tag doesn't already exist, simply typing it in a "Tags" form field will create it and make it available for everyone to use.</p>
+			<h3><?php echo JText::_('COM_TAGS_HOW_DO_TAGS_WORK'); ?></h3>
+			<p><?php echo JText::_('COM_TAGS_HOW_DO_TAGS_WORK_EXPLANATION'); ?></p>
 		</div>
 		<div class="clear"></div>
 	</div><!-- / .subject -->
@@ -59,29 +59,29 @@ $step = $this->step;
 <div class="section">
 	
 	<div class="four columns first">
-		<h2>Find a tag</h2>
+		<h2><?php echo JText::_('COM_TAGS_FIND_A_TAG'); ?></h2>
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option='.$option.a.'task=browse'); ?>" method="get" class="search">
+			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
 						<input type="text" name="search" value="" />
-						<input type="submit" value="Search" />
+						<input type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
 					</p>
 				</fieldset>
 			</form>
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=browse'); ?>">Browse the list of available tags</a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>"><?php echo JText::_('COM_TAGS_BROWSE_LIST'); ?></a></p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->
 	<div class="clear"></div>
 
 	<div class="four columns first">
-		<h2>Recently Used</h2>
+		<h2><?php echo JText::_('COM_TAGS_RECENTLY_USED'); ?></h2>
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="block">
@@ -89,7 +89,7 @@ $step = $this->step;
 $newtags = $this->newtags;
 $html = '';
 if ($newtags) {
-	$html .= '<ol class="tags">'.n;
+	$html .= '<ol class="tags">'."\n";
 	$tl = array();
 	foreach ($newtags as $newtag)
 	{
@@ -101,16 +101,16 @@ if ($newtags) {
 		if ($showsizes == 1) {
 			$size = $min_font_size + ($newtag->tcount - $min_qty) * $step;
 			$size = ($size > $max_font_size) ? $max_font_size : $size;
-			$tl[$newtag->tag] = t.'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option='.$option.a.'tag='.$newtag->tag).'">'.stripslashes($newtag->raw_tag).'</a></span></li>'.n;
+			$tl[$newtag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$newtag->tag).'">'.stripslashes($newtag->raw_tag).'</a></span></li>'."\n";
 		} else {
-			$tl[$newtag->tag] = t.'<li'.$class.'><a href="'.JRoute::_('index.php?option='.$option.a.'tag='.$newtag->tag).'">'.stripslashes($newtag->raw_tag).'</a></li>'.n;
+			$tl[$newtag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$newtag->tag).'">'.stripslashes($newtag->raw_tag).'</a></li>'."\n";
 		}
 	}
 	ksort($tl);
 	$html .= implode('',$tl);
-	$html .= '</ol>'.n;
+	$html .= '</ol>'."\n";
 } else {
-	$html  = TagsHtml::warning( JText::_('NO_TAGS') ).n;
+	$html  = TagsHtml::warning( JText::_('COM_TAGS_NO_TAGS') )."\n";
 }
 echo $html;
 ?>
@@ -119,7 +119,7 @@ echo $html;
 	<div class="clear"></div>
 
 	<div class="four columns first">
-		<h2>Top 100</h2>
+		<h2><?php echo JText::_('COM_TAGS_TOP_100'); ?></h2>
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="block">
@@ -127,7 +127,7 @@ echo $html;
 $tags = $this->tags;
 $html = '';
 if ($tags) {
-	$html .= '<ol class="tags">'.n;
+	$html .= '<ol class="tags">'."\n";
 	$tll = array();
 	foreach ($tags as $tag)
 	{
@@ -139,16 +139,16 @@ if ($tags) {
 		if ($showsizes == 1) {
 			$size = $min_font_size + ($tag->tcount - $min_qty) * $step;
 			$size = ($size > $max_font_size) ? $max_font_size : $size;
-			$tll[$tag->tag] = t.'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option='.$option.a.'tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></span></li>'.n;
+			$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></span></li>'."\n";
 		} else {
-			$tll[$tag->tag] = t.'<li'.$class.'><a href="'.JRoute::_('index.php?option='.$option.a.'tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></li>'.n;
+			$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option='.$option.'&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></li>'."\n";
 		}
 	}
 	ksort($tll);
 	$html .= implode('',$tll);
-	$html .= '</ol>'.n;
+	$html .= '</ol>'."\n";
 } else {
-	$html  = TagsHtml::warning( JText::_('NO_TAGS') ).n;
+	$html  = Hubzero_View_Helper_Html::warning( JText::_('COM_TAGS_NO_TAGS') )."\n";
 }
 echo $html;
 ?>

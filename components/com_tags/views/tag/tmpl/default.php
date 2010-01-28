@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="tag" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('MORE_TAGS'); ?></a></li>
+		<li class="last"><a class="tag" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('COM_TAGS_MORE_TAGS'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -40,9 +40,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 if (count($this->tags) == 1) {
 	$tagobj = $this->tags[0];
 	if ($tagobj->description != '') {
-		$tagobj->description = TagsHtml::ampersands($tagobj->description);
+		$tagobj->description = Hubzero_View_Helper_Html::xhtml($tagobj->description);
 ?>
-		<h3><?php echo JText::_('DESCRIPTION'); ?></h3>
+		<h3><?php echo JText::_('COM_TAGS_DESCRIPTION'); ?></h3>
 		<div class="tag-description">
 			<?php echo $tagobj->description; ?>
 			<div class="clear"></div>
@@ -54,18 +54,18 @@ if (count($this->tags) == 1) {
 	<div class="aside">
 		<fieldset>
 			<label>
-				<?php echo JText::_('SORT_BY'); ?>
+				<?php echo JText::_('COM_TAGS_SORT_BY'); ?>
 				<select name="sort">
-					<option value=""<?php if ($this->sort == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('OPT_SELECT'); ?></option>
-					<option value="title"<?php if ($this->sort == 'title') { echo ' selected="selected"'; } ?>><?php echo JText::_('OPT_TITLE'); ?></option>
-					<option value="date"<?php if ($this->sort == 'date') { echo ' selected="selected"'; } ?>><?php echo JText::_('OPT_DATE'); ?></option>
+					<option value=""<?php if ($this->sort == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TAGS_OPT_SELECT'); ?></option>
+					<option value="title"<?php if ($this->sort == 'title') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TAGS_OPT_TITLE'); ?></option>
+					<option value="date"<?php if ($this->sort == 'date') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TAGS_OPT_DATE'); ?></option>
 				</select>
 			</label>
-			<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+			<input type="submit" value="<?php echo JText::_('COM_TAGS_GO'); ?>" />
 		</fieldset>
 		<?php
 		// Add the "all" category
-		$all = array('category'=>'','title'=>JText::_('ALL_CATEGORIES'),'total'=>$this->total);
+		$all = array('category'=>'','title'=>JText::_('COM_TAGS_ALL_CATEGORIES'),'total'=>$this->total);
 		$cats = $this->cats;
 		array_unshift($cats, $all);
 
@@ -99,7 +99,7 @@ if (count($this->tags) == 1) {
 				}
 				
 				// Build the HTML
-				$l = t.'<li'.$a.'><a href="'.$sef.'">' . $cat['title'] . ' ('.$cat['total'].')</a>';
+				$l = "\t".'<li'.$a.'><a href="'.$sef.'">' . $cat['title'] . ' ('.$cat['total'].')</a>';
 				// Are there sub-categories?
 				if (isset($cat['_sub']) && is_array($cat['_sub'])) {
 					// An array for storing the HTML we make
@@ -128,15 +128,15 @@ if (count($this->tags) == 1) {
 							// Build the HTML
 							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob));
 							$sef = str_replace('%20','+',$sef);
-							$k[] = t.t.t.'<li'.$a.'><a href="'.$sef.'">' . $subcat['title'] . ' ('.$subcat['total'].')</a></li>';
+							$k[] = "\t\t\t".'<li'.$a.'><a href="'.$sef.'">' . $subcat['title'] . ' ('.$subcat['total'].')</a></li>';
 						}
 					}
 					// Do we actually have any links?
 					// NOTE: this method prevents returning empty list tags "<ul></ul>"
 					if (count($k) > 0) {
-						$l .= t.t.'<ul>'.n;
-						$l .= implode( n, $k );
-						$l .= t.t.'</ul>'.n;
+						$l .= "\t\t".'<ul>'."\n";
+						$l .= implode( "\n", $k );
+						$l .= "\t\t".'</ul>'."\n";
 					}
 				}
 				$l .= '</li>';
@@ -147,14 +147,14 @@ if (count($this->tags) == 1) {
 		// NOTE: this method prevents returning empty list tags "<ul></ul>"
 		if (count($links) > 0) {
 			// Yes - output the necessary HTML
-			$html  = '<ul class="sub-nav">'.n;
-			$html .= implode( n, $links );
-			$html .= '</ul>'.n;
+			$html  = '<ul class="sub-nav">'."\n";
+			$html .= implode( "\n", $links );
+			$html .= '</ul>'."\n";
 		} else {
 			// No - nothing to output
 			$html = '';
 		}
-		$html .= t.'<input type="hidden" name="area" value="'.$this->active.'" />'.n;
+		$html .= "\t".'<input type="hidden" name="area" value="'.$this->active.'" />'."\n";
 
 		echo $html;
 		?>
@@ -209,7 +209,7 @@ foreach ($this->results as $category)
 		}
 		
 		$num  = $total .' ';
-		$num .= ($total > 1) ? JText::_('RESULTS') : JText::_('RESULT');
+		$num .= ($total > 1) ? JText::_('COM_TAGS_RESULTS') : JText::_('COM_TAGS_RESULT');
 	
 		// A function for category specific items that may be needed
 		$f = 'plgTags'.ucfirst($cats[$k]['category']).'Doc';
@@ -232,9 +232,9 @@ foreach ($this->results as $category)
 		$feed = str_replace('https:://','http://',$feed);
 	
 		// Build the category HTML
-		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">'.$name.' <small>'.$num.' (<a class="feed" href="'.$feed.'">'.JText::_('feed').'</a>)</small></h4>'.n;
-		$html .= '<div class="category-wrap" id="'.$divid.'">'.n;
-		$html .= '<ol class="search results">'.n;			
+		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">'.$name.' <small>'.$num.' (<a class="feed" href="'.$feed.'">'.JText::_('COM_TAGS_FEED').'</a>)</small></h4>'."\n";
+		$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
+		$html .= '<ol class="search results">'."\n";			
 		foreach ($category as $row) 
 		{
 			$row->href = str_replace('&amp;', '&', $row->href);
@@ -257,17 +257,17 @@ foreach ($this->results as $category)
 					$row->href = substr($row->href,1,strlen($row->href));
 				}
 				
-				$html .= t.'<li>'.n;
-				$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.TagsHtml::encode_html($row->title).'</a></p>'.n;
+				$html .= "\t".'<li>'."\n";
+				$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.Hubzero_View_Helper_Html::purifyText($row->title).'</a></p>'."\n";
 				if ($row->text) {
 					$row->text = strip_tags($row->text);
-					$html .= t.t.TagsHtml::shortenText(TagsHtml::encode_html($row->text), 200).n;
+					$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText($row->text), 200)."\n";
 				}
-				$html .= t.t.'<p class="href">'.$juri->base().$row->href.'</p>'.n;
-				$html .= t.'</li>'.n;
+				$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
+				$html .= "\t".'</li>'."\n";
 			}
 		}
-		$html .= '</ol>'.n;
+		$html .= '</ol>'."\n";
 		// Initiate paging if we we're displaying an active category
 		if ($dopaging) {
 			jimport('joomla.html.pagination');
@@ -282,7 +282,7 @@ foreach ($this->results as $category)
 			$pf = str_replace('%20','+',$pf);
 			$html .= $pf;
 		} else {
-			$html .= '<p class="moreresults">'.JText::sprintf('TOTAL_RESULTS_FOUND',$amt);
+			$html .= '<p class="moreresults">'.JText::sprintf('COM_TAGS_TOTAL_RESULTS_FOUND',$amt);
 			// Add a "more" link if necessary
 			$ttl = 0;
 			if (is_array($this->totals[$k])) {
@@ -295,16 +295,16 @@ foreach ($this->results as $category)
 			}
 			if ($ttl > 5) {
 				$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. urlencode(stripslashes($cats[$k]['category'])));
-				$html .= ' | <a href="'.$sef.'">'.JText::_('SEE_MORE_RESULTS').'</a>';
+				$html .= ' | <a href="'.$sef.'">'.JText::_('COM_TAGS_SEE_MORE_RESULTS').'</a>';
 			}
 		}
-		$html .= '</p>'.n.n;
-		$html .= '</div><!-- / #'.$divid.' -->'.n;
+		$html .= '</p>'."\n\n";
+		$html .= '</div><!-- / #'.$divid.' -->'."\n";
 	}
 	$k++;
 }
 if (!$foundresults) {
-	$html .= TagsHtml::warning( JText::_('NO_RESULTS') );
+	$html .= Hubzero_View_Helper_Html::warning( JText::_('COM_TAGS_NO_RESULTS') );
 }
 echo $html;
 ?>

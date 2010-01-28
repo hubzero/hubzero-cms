@@ -38,7 +38,7 @@ class plgTagsAnswers extends JPlugin
 	
 	//-----------
 	
-	function plgTagsAnswers(&$subject, $config)
+	public function plgTagsAnswers(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -49,23 +49,18 @@ class plgTagsAnswers extends JPlugin
 
 	//-----------
 	
-	function onTagAreas()
+	public function onTagAreas()
 	{
 		$areas = array(
-			'answers' => JText::_('Questions &amp; Answers')
+			'answers' => JText::_('PLG_TAGS_ANSWERS')
 		);
 		return $areas;
 	}
 	
 	//-----------
 
-	function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
+	public function onTagView( $tags, $limit=0, $limitstart=0, $sort='', $areas=null )
 	{
-		$database =& JFactory::getDBO();
-
-		//$document =& JFactory::getDocument();
-		//$document->addStyleSheet('components'.DS.'com_answers'.DS.'answers.css', 'text/css', 'screen');
-
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onTagAreas() ) && !array_intersect( $areas, array_keys( $this->onTagAreas() ) )) {
@@ -77,6 +72,8 @@ class plgTagsAnswers extends JPlugin
 		if (empty($tags)) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag) 
@@ -142,9 +139,26 @@ class plgTagsAnswers extends JPlugin
 		}
 	}
 	
+	//----------------------------------------------------------
+	// Optional custom functions
+	// uncomment to use
+	//----------------------------------------------------------
+
+	/*public function documents() 
+	{
+		// ...
+	}
+	
+	//-----------
+	
+	public function before()
+	{
+		// ...
+	}*/
+	
 	//-----------
 
-	function out( $row ) 
+	public function out( $row ) 
 	{
 		if (strstr( $row->href, 'index.php' )) {
 			$row->href = JRoute::_($row->href);
@@ -154,21 +168,28 @@ class plgTagsAnswers extends JPlugin
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
 		
-		$html  = t.'<li class="resource">'.n;
-		$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
-		$html .= t.t.'<p class="details">';
+		$html  = "\t".'<li class="resource">'."\n";
+		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
+		$html .= "\t\t".'<p class="details">';
 		if ($row->state == 1) {
-			$html .= 'Closed';
+			$html .= JText::_('PLG_TAGS_ANSWERS_OPEN');
 		} else {
-			$html .= 'Open';
+			$html .= JText::_('PLG_TAGS_ANSWERS_CLOSED');
 		}
-		$html .= ' <span>|</span> Responses: '.$row->rcount .'</p>'.n;
+		$html .= ' <span>|</span> '.JText::_('PLG_TAGS_ANSWERS_RESPONSES').' '.$row->rcount .'</p>'."\n";
 		if ($row->text) {
-			$row->text = strip_tags($row->text);
-			$html .= t.t.TagsHtml::shortenText(TagsHtml::encode_html($row->text), 200).n;
+			//$row->text = strip_tags($row->text);
+			$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)), 200)."\n";
 		}
-		$html .= t.t.'<p class="href">'.$juri->base().$row->href.'</p>'.n;
-		$html .= t.'</li>'.n;
+		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
+		$html .= "\t".'</li>'."\n";
 		return $html;
 	}
+	
+	//-----------
+	
+	/*public function after()
+	{
+		// ...
+	}*/
 }
