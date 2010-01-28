@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_tags_support' );
 
 class plgTagsSupport extends JPlugin
 {
-	function plgTagsSupport(&$subject, $config)
+	public function plgTagsSupport(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,13 +45,13 @@ class plgTagsSupport extends JPlugin
 
 	//-----------
 
-	/*function onTagAreas()
+	/*public function onTagAreas()
 	{
 	}
 	
 	//-----------
 
-	function onTagView( $tag, $limit=0, $limitstart=0, $areas=null )
+	public function onTagView( $tag, $limit=0, $limitstart=0, $areas=null )
 	{
 	}*/
 }

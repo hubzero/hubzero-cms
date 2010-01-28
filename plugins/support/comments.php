@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_support_comments' );
 
 class plgSupportComments extends JPlugin
 {
-	function plgSupportComments(&$subject, $config)
+	public function plgSupportComments(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,7 +45,7 @@ class plgSupportComments extends JPlugin
 	
 	//-----------
 	
-	function getReportedItem($refid, $category, $parent) 
+	public function getReportedItem($refid, $category, $parent) 
 	{
 		if ($category != 'comment') {
 			return null;
@@ -58,17 +58,16 @@ class plgSupportComments extends JPlugin
 		
 		$database =& JFactory::getDBO();
 		$database->setQuery( $query );
-		//return $database->loadObjectList();
 		$rows = $database->loadObjectList();
 		if ($rows) {
 			foreach ($rows as $key => $row) 
 			{
-				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_resources'.a.'id='.$parent.a.'active=reviews') : '';
+				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_resources&id='.$parent.'&active=reviews') : '';
 				if ($rows[$key]->parent_category == 'answercomment') {
-					$rows[$key]->href = JRoute::_('index.php?option=com_answers'.a.'task=question'.a.'id='.$parent);
+					$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id='.$parent);
 				}
 				if ($rows[$key]->parent_category == 'wishcomment') {
-					$rows[$key]->href = JRoute::_('index.php?option=com_wishlist'.a.'task=wish'.a.'wishid='.$parent);
+					$rows[$key]->href = JRoute::_('index.php?option=com_wishlist&task=wish&wishid='.$parent);
 				}
 			}
 		}
