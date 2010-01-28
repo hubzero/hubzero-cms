@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_whatsnew_kb' );
 
 class plgWhatsnewKb extends JPlugin
 {
-	function plgWhatsnewKb(&$subject, $config)
+	public function plgWhatsnewKb(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,20 +45,18 @@ class plgWhatsnewKb extends JPlugin
 	
 	//-----------
 	
-	function &onWhatsnewAreas() 
+	public function &onWhatsnewAreas() 
 	{
 		$areas = array(
-			'kb' => JText::_('KB')
+			'kb' => JText::_('PLG_WHATSNEW_KB')
 		);
 		return $areas;
 	}
 
 	//-----------
 
-	function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
+	public function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
 	{
-		$database =& JFactory::getDBO();
-
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onWhatsnewAreas() ) && !array_intersect( $areas, array_keys( $this->onWhatsnewAreas() ) )) {
 				return array();
@@ -69,6 +67,8 @@ class plgWhatsnewKb extends JPlugin
 		if (!is_object($period)) {
 			return array();
 		}
+		
+		$database =& JFactory::getDBO();
 
 		// Build the query
 		$f_count = "SELECT COUNT(*)";
@@ -109,28 +109,28 @@ class plgWhatsnewKb extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	/*function documents() 
+	/*public function documents() 
 	{
 		// ...
 	}
 	
 	//-----------
 	
-	function before()
+	public function before()
 	{
 		// ...
 	}
 	
 	//-----------
 	
-	function out()
+	public function out()
 	{
 		// ...
 	}
 	
 	//-----------
 	
-	function after()
+	public function after()
 	{
 		// ...
 	}*/

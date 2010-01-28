@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_whatsnew_topics' );
 
 class plgWhatsnewTopics extends JPlugin
 {
-	function plgWhatsnewTopics(&$subject, $config)
+	public function plgWhatsnewTopics(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,20 +45,18 @@ class plgWhatsnewTopics extends JPlugin
 	
 	//-----------
 	
-	function onWhatsnewAreas() 
+	public function onWhatsnewAreas() 
 	{
 		$areas = array(
-			'topics' => JText::_('TOPICS')
+			'topics' => JText::_('PLG_WHATSNEW_TOPICS')
 		);
 		return $areas;
 	}
 
 	//-----------
 
-	function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
+	public function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
 	{
-		$database =& JFactory::getDBO();
-
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onWhatsnewAreas() ) && !array_intersect( $areas, array_keys( $this->onWhatsnewAreas() ) )) {
 				return array();
@@ -69,6 +67,8 @@ class plgWhatsnewTopics extends JPlugin
 		if (!is_object($period)) {
 			return array();
 		}
+
+		$database =& JFactory::getDBO();
 
 		ximport('wiki.page');
 		
@@ -118,7 +118,7 @@ class plgWhatsnewTopics extends JPlugin
 	
 	//-----------
 	
-	function usersGroups($groups)
+	private function _usersGroups($groups)
 	{
 		$arr = array();
 		if (!empty($groups)) {
@@ -132,7 +132,7 @@ class plgWhatsnewTopics extends JPlugin
 	
 	//-----------
 
-	function _authorize() 
+	private function _authorize() 
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
@@ -154,7 +154,7 @@ class plgWhatsnewTopics extends JPlugin
 	
 	//-----------
 	
-	function onWhatsnewQuery($period, $limit, $start, $get='count') 
+	public function onWhatsnewQuery($period, $limit, $start, $get='count') 
 	{
 		$f_count = "SELECT COUNT(*) ";
 		$f_fields = "SELECT f.id, f.pagetext AS text, 'topics' AS section, NULL AS subection, CONCAT('index.php?option=com_topics&scope=', d.scope) AS href, d.title, d.pagename, d.created ";
@@ -164,7 +164,7 @@ class plgWhatsnewTopics extends JPlugin
 		if (!$juser->get('guest')) {
 			$xuser =& XFactory::getUser();
 			$xgroups = $xuser->get('groups');
-			$rgroups = $this->usersGroups($xgroups);
+			$rgroups = $this->_usersGroups($xgroups);
 			if (!empty($rgroups)) {
 				$rgroups = implode("','",$rgroups);
 				$r_where .= "AND (w.access=0 OR w.group IN ('". $rgroups ."'))";
@@ -209,28 +209,28 @@ class plgWhatsnewTopics extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	/*function documents() 
+	/*public function documents() 
 	{
 		// ...
 	}
 
 	//-----------
 
-	function before()
+	public function before()
 	{
 		// ...
 	}
 
 	//-----------
 
-	function out()
+	public function out()
 	{
 		// ...
 	}
 
 	//-----------
 
-	function after()
+	public function after()
 	{
 		// ...
 	}*/
