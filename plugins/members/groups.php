@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_members_groups' );
 
 class plgMembersGroups extends JPlugin
 {
-	function plgMembersGroups(&$subject, $config)
+	public function plgMembersGroups(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,13 +45,13 @@ class plgMembersGroups extends JPlugin
 	
 	//-----------
 	
-	function &onMembersAreas( $authorized )
+	public function &onMembersAreas( $authorized )
 	{
 		if (!$authorized) {
 			$areas = array();
 		} else {
 			$areas = array(
-				'groups' => JText::_('GROUPS')
+				'groups' => JText::_('PLG_MEMBERS_GROUPS')
 			);
 		}
 
@@ -60,7 +60,7 @@ class plgMembersGroups extends JPlugin
 
 	//-----------
 
-	function onMembers( $member, $option, $authorized, $areas )
+	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
 		$returnmeta = true;
@@ -78,13 +78,21 @@ class plgMembersGroups extends JPlugin
 			$returnmeta = false;
 		}
 
-		$database =& JFactory::getDBO();
+		$arr = array(
+			'html'=>'',
+			'metadata'=>''
+		);
+
+		ximport('xuserhelper');
+		$applicants = XUserHelper::getGroups( $member->get('uidNumber'), 'applicants', 1 );
+		$invitees = XUserHelper::getGroups( $member->get('uidNumber'), 'invitees', 1 );
+		$members = XUserHelper::getGroups( $member->get('uidNumber'), 'members', 1 );
+		$managers = XUserHelper::getGroups( $member->get('uidNumber'), 'managers', 1 );
 		
-		//$groups = $this->getGroups( $member->get('uidNumber'), 'all' );
-		$applicants = $this->getGroups( $member->get('uidNumber'), 'applicants' );
-		$invitees = $this->getGroups( $member->get('uidNumber'), 'invitees' );
-		$members = $this->getGroups( $member->get('uidNumber'), 'members' );
-		$managers = $this->getGroups( $member->get('uidNumber'), 'managers' );
+		$applicants = (is_array($applicants)) ? $applicants : array();
+		$invitees = (is_array($invitees)) ? $invitees : array();
+		$members = (is_array($members)) ? $members : array();
+		$managers = (is_array($managers)) ? $managers : array();
 		
 		$groups = array_merge($applicants, $invitees);
 		$managerids = array();
@@ -99,179 +107,32 @@ class plgMembersGroups extends JPlugin
 				$groups[] = $mem;
 			}
 		}
-		
 
 		// Build the final HTML
-		$out = '';
 		if ($returnhtml) {
-			$out  = MembersHtml::hed(3,'<a name="groups"></a>'.JText::_('GROUPS')).n;
-			$out .= MembersHtml::aside(
-						'<ul class="sub-nav">'.
-						t.'<li><a href="'.JRoute::_('index.php?option=com_groups').'">'.JText::_('ALL_GROUPS').'</a></li>'.
-						t.'<li><a href="'.JRoute::_('index.php?option=com_groups&task=new').'">'.JText::_('CREATE_GROUP').'</a></li>'.
-						'</ul>'.
-						'<p class="help"><strong>'.JText::_('WHAT_ARE_GROUPS').'</strong><br />'.JText::_('GROUPS_EXPLANATION').'</p>'
-					);
-			$out .= MembersHtml::subject( $this->summary($authorized,$groups,'com_groups') );
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'members',
+					'element'=>'groups',
+					'name'=>'summary'
+				)
+			);
+			$view->authorized = $authorized;
+			$view->groups = $groups;
+			$view->option = 'com_groups';
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			
+			$arr['html'] = $view->loadTemplate();
 		}
 
 		// Build the HTML meant for the "profile" tab's metadata overview
-		$metadata = '';
 		if ($returnmeta) {
-			$metadata  = '<p class="groups"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=groups').'">'.JText::sprintf('NUMBER_GROUPS',count($groups)).'</a></p>'.n;
+			$arr['metadata'] = '<p class="groups"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=groups').'">'.JText::sprintf('PLG_MEMBERS_GROUPS_NUMBER_GROUPS',count($groups)).'</a></p>'."\n";
 		}
-
-		$arr = array(
-				'html'=>$out,
-				'metadata'=>$metadata
-			);
 
 		return $arr;
-	}
-
-	//-----------
-
-	public function summary($is_manager, $groups, $option)
-	{
-		$html  = t.'<table id="grouplist" summary="'.JText::_('GROUPS_TBL_SUMMARY').'">'.n;
-		//$html .= t.t.'<caption>'.JText::_('GROUPS_TBL_CAPTION').'</caption>'.n;
-		$html .= t.t.'<thead>'.n;
-		$html .= t.t.t.'<tr>'.n;
-		$html .= t.t.t.t.'<th scope="col">'.JText::_('GROUPS_TBL_TH_NAME').'</th>'.n;
-		$html .= t.t.t.t.'<th scope="col">'.JText::_('GROUPS_TBL_TH_STATUS').'</th>'.n;
-		$html .= t.t.t.t.'<th scope="col">'.JText::_('GROUPS_TBL_TH_OPTION').'</th>'.n;
-		$html .= t.t.t.'</tr>'.n;
-		$html .= t.t.'</thead>'.n;
-		$html .= t.t.'<tbody>'.n;
-		$i = 1;
-		$cls = 'even';
-		if ($groups) {
-			foreach ($groups as $group) 
-			{
-				$cls = (($cls == 'even') ? 'odd' : 'even');
-				$html .= t.t.t.'<tr class="'.$cls.'">'.n;
-				$html .= t.t.t.t.'<td>';
-				$html .= '<a href="'. JRoute::_('index.php?option=com_groups&gid='. $group->cn).'">'. htmlentities($group->description) .'</a>';
-				$html .= '</td>'.n;
-				/*$html .= t.t.t.t.'<td>';
-				if ($group->manager && $group->published) {
-					$html .= '<span class="manager status">'.JText::_('GROUP_MANAGER').'</span>';
-					$html .= '</td>'.n;
-					$html .= t.t.t.t.'<td>';
-					$html .= '<a href="'.JRoute::_('index.php?option=com_groups&gid='. $group->cn.'&active=members') .'">'.JText::_('MANAGE_GROUP').'</a>';
-					$html .= ' <a href="'.JRoute::_('index.php?option=com_groups&gid='. $group->cn.'&task=edit') .'">'.JText::_('EDIT_GROUP').'</a>';
-					$html .= ' <a href="'.JRoute::_('index.php?option=com_groups&gid='. $group->cn.'&task=delete') .'">'.JText::_('DELETE_GROUP').'</a>';
-				} else {
-					if (!$group['confirmed']) {
-						$html .= JText::_('GROUP_PENDING');
-						$html .= '</td>'.n;
-						$html .= t.t.t.t.'<td>';
-					} else {
-						if ($group['regconfirmed']) {
-							$html .= '<span class="approved">'.JText::_('GROUP_MEMBER').'</span>';
-							$html .= '</td>'.n;
-							$html .= t.t.t.t.'<td>';
-							$html .= '<a href="'.JRoute::_('index.php?option=com_groups&gid='. $group->cn.'&task=cancel') .'">'.JText::_('CANCEL_MEMBERSHIP').'</a>';
-						} else {
-							$html .= '<span class="pending">'.JText::_('GROUP_MEMBER_PENDING').'</span>';
-							$html .= '</td>'.n;
-							$html .= t.t.t.t.'<td>';
-							$html .= '<a href="'.JRoute::_('index.php?option=com_groups&gid='. $group->cn.'&task=cancel') .'">'.JText::_('CANCEL_MEMBERSHIP').'</a>';
-						}
-					}
-				}
-				$html .= '</td>'.n;*/
-				$html .= t.t.t.t.'<td>';
-				if ($group->manager && $group->published) {
-					$html .= '<span class="manager status">'.JText::_('GROUPS_STATUS_MANAGER').'</span>';
-					$opt  = '<a href="'.JRoute::_('index.php?option='.$option.a.'gid='.$group->cn.a.'active=members') .'">'.JText::_('GROUPS_ACTION_MANAGE').'</a>';
-					$opt .= ' <a href="'.JRoute::_('index.php?option='.$option.a.'gid='.$group->cn.a.'task=edit') .'">'.JText::_('GROUPS_ACTION_EDIT').'</a>';
-					$opt .= ' <a href="'.JRoute::_('index.php?option='.$option.a.'gid='.$group->cn.a.'task=delete') .'">'.JText::_('GROUPS_ACTION_DELETE').'</a>';
-				} else {
-					if (!$group->published) {
-						$html .= JText::_('GROUPS_STATUS_NEW_GROUP');
-					} else {
-						if ($group->registered) {
-							if ($group->regconfirmed) {
-								$html .= '<span class="member status">'.JText::_('GROUPS_STATUS_APPROVED').'</span>';
-								$opt = '<a href="'.JRoute::_('index.php?option='.$option.a.'gid='.$group->cn.a.'task=cancel') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
-							} else {
-								$html .= '<span class="pending status">'.JText::_('GROUPS_STATUS_PENDING').'</span>';
-								$opt = '<a href="'.JRoute::_('index.php?option='.$option.a.'gid='.$group->cn.a.'task=cancel') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
-							}
-						} else {
-							if ($group->regconfirmed) {
-								$html .= '<span class="invitee status">'.JText::_('GROUPS_STATUS_INVITED').'</span>';
-								$opt  = '<a href="'.JRoute::_('index.php?option='.$option.a.'gid='.$group->cn.a.'task=accept') .'">'.JText::_('GROUPS_ACTION_ACCEPT').'</a>';
-								$opt .= ' <a href="'.JRoute::_('index.php?option='.$option.a.'gid='.$group->cn.a.'task=cancel') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
-							} else {
-								$html .= '<span class="status"> </span>';
-								$opt = '';
-							}
-						}
-					}
-				}
-				$html .= '</td>'.n;
-				$html .= t.t.t.t.'<td>'.$opt.'</td>';
-				$html .= t.t.t.'</tr>'.n;
-				$i++;
-			}
-			if ($i == 1) {
-				$cls = (($cls == 'even') ? 'odd' : 'even');
-				$html .= t.t.t.'<tr class="'.$cls.'">'.n;
-				$html .= t.t.t.t.'<td colspan="3">'.JText::_('NO_GROUP_MEMBERSHIPS').'</td>'.n;
-				$html .= t.t.t.'</tr>'.n;
-			}
-		} else {
-			$cls = (($cls == 'even') ? 'odd' : 'even');
-			$html .= t.t.t.'<tr class="'.$cls.'">'.n;
-			$html .= t.t.t.t.'<td colspan="3">'.JText::_('NO_GROUPS').'</td>'.n;
-			$html .= t.t.t.'</tr>'.n;
-		}
-		$html .= t.t.'</tbody>'.n;
-		$html .= t.'</table>'.n;
-		
-		return $html;
-	}
-	
-	//-----------
-	
-	private function getGroups($uid, $type='all')
-	{
-		$db =& JFactory::getDBO();
-
-		// Get all groups the user is a member of
-		$query1 = "SELECT g.published, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_applicants AS m WHERE g.type='1' AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query2 = "SELECT g.published, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_members AS m WHERE g.type='1' AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query3 = "SELECT g.published, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__xgroups AS g, #__xgroups_managers AS m WHERE g.type='1' AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query4 = "SELECT g.published, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_invitees AS m WHERE g.type='1' AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		
-		switch ($type) 
-		{
-			case 'all':
-				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 )";
-			break;
-			case 'applicants':
-				$query = $query1;
-			break;
-			case 'members':
-				$query = $query2;
-			break;
-			case 'managers':
-				$query = $query3;
-			break;
-			case 'invitees':
-				$query = $query4;
-			break;
-		}
-		
-		$db->setQuery($query);
-
-		$result = $db->loadObjectList();
-
-		if (empty($result))
-			return array();
-
-		return $result;
 	}
 }

@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_members_favorites' );
 
 class plgMembersFavorites extends JPlugin
 {
-	function plgMembersFavorites(&$subject, $config)
+	public function plgMembersFavorites(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,17 +45,17 @@ class plgMembersFavorites extends JPlugin
 	
 	//-----------
 	
-	function &onMembersAreas( $authorized )
+	public function &onMembersAreas( $authorized )
 	{
 		$areas = array(
-			'favorites' => JText::_('FAVORITES')
+			'favorites' => JText::_('PLG_MEMBERS_FAVORITES')
 		);
 		return $areas;
 	}
 
 	//-----------
 
-	function onMembers( $member, $option, $authorized, $areas )
+	public function onMembers( $member, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
 		
@@ -147,9 +147,12 @@ class plgMembersFavorites extends JPlugin
 			$i++;
 		}
 
+		$arr = array(
+			'html'=>'',
+			'metadata'=>''
+		);
+
 		// Build the HTML
-		$html = '';
-		$metadata = '';
 		if ($returnhtml) {
 			$limit = ($limit == 0) ? 'all' : $limit;
 			
@@ -170,271 +173,44 @@ class plgMembersFavorites extends JPlugin
 				$active = '';
 			}
 			
-			$html = $this->display( $authorized, $totals, $results, $cats, $active, $option, $limitstart, $limit, $total, $member );
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'members',
+					'element'=>'favorites',
+					'name'=>'display'
+				)
+			);
+			$view->authorized = $authorized;
+			$view->totals = $totals;
+			$view->results = $results;
+			$view->cats = $cats;
+			$view->active = $active;
+			$view->option = $option;
+			$view->start = $limitstart;
+			$view->limit = $limit;
+			$view->total = $total;
+			$view->member = $member;
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			
+			$arr['html'] = $view->loadTemplate();
 		} else {
 			// Build the metadata
-			$metadata = $this->metadata( $cats, $option, $member );
-		}
+			$html = '';
 
-		$arr = array(
-				'html'=>$html,
-				'metadata'=>$metadata
-			);
+			// Loop through each category
+			foreach ($cats as $cat) 
+			{
+				if ($cat['total'] > 0) {
+					$html .= '<p class="'.strtolower($cat['title']).'"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=favorites').'">'.$cat['total'].' '.JText::_('PLG_MEMBERS_FAVORITE').' '.strtolower($cat['title']).'</a></p>'.n;
+				}
+			}
+			
+			$arr['metadata'] = $html;
+		}
 
 		return $arr;
-	}
-	
-	//-----------
-
-	public function metadata( $cats, $option, $member ) 
-	{
-		$sef = JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=favorites');
-		
-		$html = '';
-		
-		// Loop through each category
-		foreach ($cats as $cat) 
-		{
-			if ($cat['total'] > 0) {
-				$html .= '<p class="'.strtolower($cat['title']).'"><a href="'.$sef.'">'.$cat['total'].' '.JText::_('Favorite').' '.strtolower($cat['title']).'</a></p>'.n;
-			}
-		}
-		
-		return $html;
-	}
-	
-	//-----------
-	
-	public function categories( $cats, $active, $total, $sef ) 
-	{
-		if (strstr( $sef, 'index' )) {
-			$sef .= a;
-		} else {
-			$sef .= '?';
-		}
-
-		// Add the "all" category
-		$all = array('category'=>'','title'=>JText::_('ALL_FAVORITES_CATEGORIES'),'total'=>$total);
-		
-		array_unshift($cats, $all);
-
-		// An array for storing all the links we make
-		$links = array();
-
-		// Loop through each category
-		foreach ($cats as $cat) 
-		{
-			// Only show categories that have returned search results
-			if ($cat['total'] > 0) {
-				// Is this the active category?
-				$a = '';
-				if ($cat['category'] == $active) {
-					$a = ' class="active"';
-				}
-				// If we have a specific category, prepend it to the search term
-				$blob = '';
-				if ($cat['category']) {
-					$blob = $cat['category'];
-				}
-				// Build the HTML
-				$l = t.'<li'.$a.'><a href="'.$sef.'area='. urlencode(stripslashes($blob)) .'">' . $cat['title'] . ' ('.$cat['total'].')</a>';
-				// Are there sub-categories?
-				if (isset($cat['_sub']) && is_array($cat['_sub'])) {
-					// An array for storing the HTML we make
-					$k = array();
-					// Loop through each sub-category
-					foreach ($cat['_sub'] as $subcat) 
-					{
-						// Only show sub-categories that returned search results
-						if ($subcat['total'] > 0) {
-							// Is this the active category?
-							$a = '';
-							if ($subcat['category'] == $active) {
-								$a = ' class="active"';
-							}
-							// If we have a specific category, prepend it to the search term
-							$blob = '';
-							if ($subcat['category']) {
-								$blob = $subcat['category'];
-							}
-							// Build the HTML
-							$k[] = t.t.t.'<li'.$a.'><a href="'.$sef.'area='. urlencode(stripslashes($blob)) .'">' . $subcat['title'] . ' ('.$subcat['total'].')</a></li>';
-						}
-					}
-					// Do we actually have any links?
-					// NOTE: this method prevents returning empty list tags "<ul></ul>"
-					if (count($k) > 0) {
-						$l .= t.t.'<ul>'.n;
-						$l .= implode( n, $k );
-						$l .= t.t.'</ul>'.n;
-					}
-				}
-				$l .= '</li>';
-				$links[] = $l;
-			}
-		}
-		// Do we actually have any links?
-		// NOTE: this method prevents returning empty list tags "<ul></ul>"
-		if (count($links) > 0) {
-			// Yes - output the necessary HTML
-			$html  = '<ul class="sub-nav">'.n;
-			$html .= implode( n, $links );
-			$html .= '</ul>'.n;
-		} else {
-			// No - nothing to output
-			$html = '';
-		}
-		$html .= t.'<input type="hidden" name="category" value="'.$active.'" />'.n;
-
-		return $html;
-	}
-	
-	//-----------
-	
-	public function display( $authorized, $totals, $results, $cats, $active, $option, $start=0, $limit=0, $total, $member ) 
-	{
-		$sef = JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=favorites');
-		
-		$html  = MembersHtml::hed(3,'<a name="favorites"></a>'.JText::_('FAVORITES')).n;
-		$html .= MembersHtml::div( 
-					$this->categories( $cats, $active, $total, $sef ), 
-					'aside'
-				);
-		
-		$html .= '<div class="subject">'.n;
-		
-		$foundresults = false;
-		$dopaging = false;
-	
-		$k = 0;
-		foreach ($results as $category)
-		{
-			$amt = count($category);
-			
-			if ($amt > 0) {
-				$foundresults = true;
-				
-				$name  = $cats[$k]['title'];
-				$total = $cats[$k]['total'];
-				$divid = 'search'.$cats[$k]['category'];
-				
-				// Is this category the active category?
-				if (!$active || $active == $cats[$k]['category']) {
-					// It is - get some needed info
-					$name  = $cats[$k]['title'];
-					$total = $cats[$k]['total'];
-					$divid = 'search'.$cats[$k]['category'];
-					
-					if ($active == $cats[$k]['category']) {
-						$dopaging = true;
-					}
-				} else {
-					// It is not - does this category have sub-categories?
-					if (isset($cats[$k]['_sub']) && is_array($cats[$k]['_sub'])) {
-						// It does - loop through them and see if one is the active category
-						foreach ($cats[$k]['_sub'] as $sub) 
-						{
-							if ($active == $sub['category']) {
-								// Found an active category
-								$name  = $sub['title'];
-								$total = $sub['total'];
-								$divid = 'search'.$sub['category'];
-								
-								$dopaging = true;
-								break;
-							}
-						}
-					}
-				}
-				
-				$num  = $total .' result';
-				$num .= ($total > 1) ? 's' : '';
-			
-				// A function for category specific items that may be needed
-				// Check if a function exist (using old style plugins)
-				$f = 'plgMembers'.ucfirst($cats[$k]['category']).'Doc';
-				if (function_exists($f)) {
-					$f();
-				}
-				// Check if a method exist (using JPlugin style)
-				$obj = 'plgMembers'.ucfirst($cats[$k]['category']);
-				if (method_exists($obj, 'documents')) {
-					$html .= call_user_func( array($obj,'documents') );
-				}
-			
-				// Build the category HTML
-				$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">'.$name.' <small>'.$num.'</small></h4>'.n;
-				$html .= '<div class="category-wrap" id="'.$divid.'">'.n;
-				
-				// Does this category have custom output?
-				// Check if a function exist (using old style plugins)
-				$func = 'plgMembers'.ucfirst($cats[$k]['category']).'Before';
-				if (function_exists($func)) {
-					$html .= $func();
-				}
-				// Check if a method exist (using JPlugin style)
-				$obj = 'plgMembers'.ucfirst($cats[$k]['category']);
-				if (method_exists($obj, 'before')) {
-					$html .= call_user_func( array($obj,'before') );
-				}
-				
-				$html .= '<ol class="search results">'.n;			
-				foreach ($category as $row) 
-				{
-					$row->href = str_replace('&amp;', '&', $row->href);
-					$row->href = str_replace('&', '&amp;', $row->href);
-					
-					// Does this category have a unique output display?
-					$func = 'plgMembers'.ucfirst($row->section).'Out';
-					// Check if a method exist (using JPlugin style)
-					$obj = 'plgMembers'.ucfirst($cats[$k]['category']);
-					
-					if (function_exists($func)) {
-						$html .= $func( $row, $authorized );
-					} elseif (method_exists($obj, 'out')) {
-						$html .= call_user_func( array($obj,'out'), $row, $authorized );
-					} else {
-						$html .= t.'<li>'.n;
-						$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
-						if ($row->text) {
-							$html .= t.t.MembersHtml::shortenText(stripslashes($row->text)).n;
-						}
-						$html .= t.'</li>'.n;
-					}
-				}
-				$html .= '</ol>'.n;
-				// Initiate paging if we we're displaying an active category
-				if ($dopaging) {
-					jimport('joomla.html.pagination');
-					$pageNav = new JPagination( $total, $start, $limit );
-
-					$html .= $pageNav->getListFooter();
-				} else {
-					$html .= '<p class="moreresults">'.JText::sprintf('NUMBER_FAVORITES_SHOWN', $amt);
-					// Ad a "more" link if necessary
-					//if ($totals[$k] > 5) {
-					if ($cats[$k]['total'] > 5) {
-						$qs = 'area='.urlencode(strToLower($cats[$k]['category']));
-						$seff = JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=favorites');
-						if (strstr( $seff, 'index' )) {
-							$seff .= a.$qs;
-						} else {
-							$seff .= '?'.$qs;
-						}
-						$html .= ' | <a href="'.$seff.'">'.JText::_('MORE_FAVORITES').'</a>';
-					}
-				}
-				$html .= '</p>'.n.n;
-				$html .= '</div><!-- / #'.$divid.' -->'.n;
-			}
-			$k++;
-		}
-		if (!$foundresults) {
-			$html .= MembersHtml::warning( JText::_('NO_FAVORITES') );
-		}
-		$html .= '</div><!-- / .subject -->'.n;
-		$html .= MembersHtml::div('','clear').n;
-		
-		return $html;
 	}
 }
