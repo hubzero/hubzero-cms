@@ -76,10 +76,11 @@ HUB.Resources = {
 			role += ' selected="selected"';
 		}
 		role += '>editor</option></select>';
+		role += '<input type="hidden" name="'+ selectedId +'_name" value="" />';
 
 		// create the LI element and attach it to the UL
 		var newlistitem = new Element('li',{'id': 'author_' + selectedId}).setHTML(
-				'<span class="handle">DRAG HERE</span><span id="n_a_' + selectedId + '">' + selectedText + '</span> [ <a href="#" onclick="HUB.Resources.removeAuthor(this);return false;" title="Remove this contributor">remove</a> ]<br />Affiliation: <input type="text" name="attrib[' + selectedId + ']" value="" />'+
+				'<span class="handle">DRAG HERE</span><span id="n_a_' + selectedId + '">' + selectedText + '</span> [ <a href="#" onclick="HUB.Resources.removeAuthor(this);return false;" title="Remove this contributor">remove</a> ]<br />Affiliation: <input type="text" name="'+ selectedId +'_organization" value="" />'+
 				role
 			);
 

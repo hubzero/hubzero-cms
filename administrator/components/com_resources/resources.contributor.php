@@ -36,6 +36,8 @@ class ResourcesContributor extends JTable
 	var $authorid = NULL;  // @var int(11) Primary Key
 	var $ordering = NULL;  // @var int(11)
 	var $role     = NULL;  // @var varchar(50)
+	var $name     = NULL;  // @var varchar(255)
+	var $organization = NULL;  // @var varchar(255)
 
 	//-----------
 
@@ -135,7 +137,7 @@ class ResourcesContributor extends JTable
 	function createAssociation() 
 	{
 		//$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering) VALUES('$this->subtable', $this->subid, $this->authorid, $this->ordering)";
-		$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering, role) VALUES('$this->subtable', $this->subid, $this->authorid, $this->ordering, '$this->role')";
+		$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering, role, name, organization) VALUES('$this->subtable', $this->subid, $this->authorid, $this->ordering, '$this->role', '$this->name', '$this->organization')";
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );
@@ -149,7 +151,7 @@ class ResourcesContributor extends JTable
 	function updateAssociation() 
 	{
 		//$query = "UPDATE $this->_tbl SET ordering=$this->ordering WHERE subtable='$this->subtable' AND subid=$this->subid AND authorid=$this->authorid";
-		$query = "UPDATE $this->_tbl SET ordering=$this->ordering, role='$this->role' WHERE subtable='$this->subtable' AND subid=$this->subid AND authorid=$this->authorid";
+		$query = "UPDATE $this->_tbl SET ordering=$this->ordering, role='$this->role', name='$this->name', organization='$this->organization' WHERE subtable='$this->subtable' AND subid=$this->subid AND authorid=$this->authorid";
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
 			$this->setError( $this->_db->getErrorMsg() );

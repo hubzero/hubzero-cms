@@ -109,7 +109,7 @@ class plgResourcesVersions extends JPlugin
 
 					$sbjt .= t.t.'<tr class="'.$cls.'">'.n;
 					$sbjt .= t.t.t.'<td>';
-					$sbjt .= ($v->version) ? $v->version : 'N/A';
+					$sbjt .= ($v->version) ? '<a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$resource->id).'?rev='.$v->revision.'">'.$v->version.'</a>' : 'N/A';
 					$sbjt .= '</td>'.n;
 					$sbjt .= t.t.t.'<td>';
 					$sbjt .= ($v->released && $v->released!='0000-00-00 00:00:00') ? JHTML::_('date',$v->released, '%d %b %Y') : 'N/A';
@@ -130,20 +130,14 @@ class plgResourcesVersions extends JPlugin
 				$sbjt  = t.t.'<p>'.JText::_('NO_VERIONS_FOUND').'</p>'.n;
 			}
 
+
+			//$html .= ResourcesHtml::aside('<p>'.JText::_('VERSIONS_EXPLANATION').'</p>');
 			$html  = ResourcesHtml::hed(3,'<a name="versions"></a>'.JText::_('VERSIONS')).n;
-			$html .= ResourcesHtml::aside('<p>'.JText::_('VERSIONS_EXPLANATION').'</p>');
-			$html .= ResourcesHtml::subject($sbjt);
+			$html .= $sbjt;
 		}
 
 		$metadata = '';
 		if ($rtrn == 'all' || $rtrn == 'metadata') {
-			/*$metadata  = '<p class="question"><a href="'.$resource->sef.'?active=questions">';
-			if (count($rows) == 1) {
-				$metadata .= JText::sprintf('NUM_QUESTION',count($rows));
-			} else {
-				$metadata .= JText::sprintf('NUM_QUESTIONS',count($rows));
-			}
-			$metadata .= '</a> (<a href="/answers/question/new/?tag=tool:'.$resource->alias.'">'.JText::_('ASK_A_QUESTION').'</a>)</p>'.n;*/
 			$metadata = '';
 		}
 		

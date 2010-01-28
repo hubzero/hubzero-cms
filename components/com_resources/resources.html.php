@@ -363,7 +363,7 @@ class ResourcesHtml
 	
 	//-----------
 	
-	public function screenshots($id, $created, $upath, $wpath, $versionid=0, $sinfo=array(), $path='' )
+	public function screenshots($id, $created, $upath, $wpath, $versionid=0, $sinfo=array(), $slidebar=0, $path='' )
 	{
 		$path = ResourcesHtml::build_path( $created, $id, '' );
 		//$path = DS.ResourcesHtml::niceidformat( $id );
@@ -448,32 +448,50 @@ class ResourcesHtml
 		for ($i=0, $n=count( $images ); $i < $n; $i++) 
 		{
 			$tn = ResourcesHtml::thumbnail($images[$i]['img']);
+			$els .=  ($slidebar && $i==0 ) ? '<div class="showcase-pane">'.n : '';
 			
 			if (is_file(JPATH_ROOT.$upath.$path.DS.$tn)) {
-			
+							
+				
 				if (strtolower(end($images[$i]['type'])) == 'swf') {
-					$g++;
+					$g++;					
 					$title = (isset($images[$i]['title']) && $images[$i]['title']!='' ) ? $images[$i]['title'] : JText::_('DEMO').' #'.$g;
-					$els .= ' <li><a class="popup" href="'.$wpath.$path.DS.$images[$i]['img'].'" title="'.$title.'">';
-					$els .= '<img src="'.$wpath.$path.DS.$tn.'" alt="'.$title.'" /></a></li>'.n;
+					$els .= $slidebar ? '' : '<li>';
+					$els .= ' <a class="popup" href="'.$wpath.$path.DS.$images[$i]['img'].'" title="'.$title.'">';
+					$els .= '<img src="'.$wpath.$path.DS.$tn.'" alt="'.$title.'" class="thumbima" /></a>';
+					$els .= $slidebar ? '' : '</li>'.n;
+	
 				} else {
 					$k++;
 					$title = (isset($images[$i]['title']) && $images[$i]['title']!='' )  ? $images[$i]['title']: JText::_('SCREENSHOT').' #'.$k;
-					$els .= ' <li><a rel="lightbox" href="'.$wpath.$path.DS.$images[$i]['img'].'" title="'.$title.'">';
-					$els .= '<img src="'.$wpath.$path.DS.$tn.'" alt="'.$title.'" /></a></li>'.n;
+					$els .= $slidebar ? '' : '<li>';
+					$els .= ' <a rel="lightbox" href="'.$wpath.$path.DS.$images[$i]['img'].'" title="'.$title.'">';
+					$els .= '<img src="'.$wpath.$path.DS.$tn.'" alt="'.$title.'" class="thumbima" /></a>';
+					$els .= $slidebar ? '' : '</li>'.n;
+	
 				}
+				
 			}
+			$els .=  ($slidebar && $i == ($n - 1)) ? '</div>'.n : '';
 		}
 		
 		if ($els) {
-			$html .= '<ul class="screenshots">'.n;
+			
+			$html .= $slidebar ? '<div id="showcase">'.n : '';
+			$html .= $slidebar ? '  <div id="showcase-prev" ></div>'.n : '';
+			$html .= $slidebar ? '  <div id="showcase-window">'.n : '';							
+			$html .= $slidebar ? '' : '<ul class="screenshots">'.n;
 			$html .= $els;
-			$html .= '</ul>'.n;
+			$html .= $slidebar ? '' : '</ul>'.n;
+			$html .= $slidebar ? '  </div>'.n : '';
+			$html .= $slidebar ? '  <div id="showcase-next" ></div>'.n : '';	
+			$html .= $slidebar ? '</div>'.n : '';	
 		}
 		
 		
 		return $html;
 	}
+	
 	
 	//-----------
 	
@@ -792,7 +810,7 @@ class ResourcesHtml
 			}
 		}
 		$html .= t.'</ul>'.n;
-		$html .= t.'<div class="clear"></div>'.n;
+		//$html .= t.'<div class="clear"></div>'.n;
 		$html .= '</div><!-- / #sub-menu -->'.n;
 		
 		return $html;
@@ -800,7 +818,7 @@ class ResourcesHtml
 	
 	//-----------
 	
-	public function title( $option, $resource, $params, $show_edit, $config=null ) 
+	public function title( $option, $resource, $params, $show_edit, $config=null, $show_posted=1 ) 
 	{
 		switch ($resource->published) 
 		{
@@ -829,9 +847,12 @@ class ResourcesHtml
 		$typenorm = strtolower($typenorm);
 		
 		$html  = ResourcesHtml::hed(2,$txt).n;
-		$html .= '<p>'.JText::_('POSTED').' ';
-		$html .= ($thedate) ? JHTML::_('date', $thedate, '%d %b %Y').' ' : '';
-		$html .= JText::_('IN').' <a href="'.JRoute::_('index.php?option='.$option.a.'type='.$typenorm).'">'.$resource->getTypeTitle().'</a></p>'.n;
+		
+		if($show_posted) {
+			$html .= '<p>'.JText::_('POSTED').' ';
+			$html .= ($thedate) ? JHTML::_('date', $thedate, '%d %b %Y').' ' : '';
+			$html .= JText::_('IN').' <a href="'.JRoute::_('index.php?option='.$option.a.'type='.$typenorm).'">'.$resource->getTypeTitle().'</a></p>'.n;
+		}
 		
 		/*$supported = null;
 		if ($resource->type == 7) {
@@ -946,6 +967,460 @@ class ResourcesHtml
 		}
 		
 		return $html;
+	}
+	
+	//-----------
+	
+	public function citationCOins($cite, $resource, $config, $helper)
+	{
+		
+		$html = '';
+		
+		$html = '<span ';
+		$html.= ' class="Z3988"';
+		$html.= ' title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal';
+		$html.= isset($resource->doi) 
+		? '&amp;rft_id=info%3Adoi%2F'.urlencode($config->get('doi').'r'.$resource->id.'.'.$resource->doi) 
+		: '&amp;rfr_id=info%3Asid%2Fnanohub.org%3AnanoHUB';
+		//$html.= '&amp;rfr_id=info%3Asid%2Fnanohub.org%3AnanoHUB';
+		$html.= '&amp;rft.genre=article';
+		$html.= '&amp;rft.atitle='.urlencode($cite->title);
+		$html.= '&amp;rft.date='.urlencode($cite->year);
+		
+		if (isset($resource->revision) && $resource->revision!='dev') {
+			$helper->getToolAuthors($resource->alias, $resource->revision);			
+		}
+		else {
+			$helper->getCons();			
+		}
+		$author_array = $helper->_contributors;
+
+		if($author_array) {
+		
+			for ($i = 0; $i < count($author_array); $i++) {
+				if ($author_array[$i]->lastname || $author_array[$i]->firstname) {
+					$name = stripslashes($author_array[$i]->firstname) .' ';
+					if ($author_array[$i]->middlename != NULL) {
+						$name .= stripslashes($author_array[$i]->middlename) .' ';
+					}
+					$name .= stripslashes($author_array[$i]->lastname);
+				} else {
+					$name = $author_array[$i]->name;
+				}
+				
+				if($i==0) {
+					$lastname = $author_array[$i]->lastname ? $author_array[$i]->lastname : $author_array[$i]->name;
+					$firstname = $author_array[$i]->firstname ? $author_array[$i]->firstname : $author_array[$i]->name;
+					$html.= '&amp;rft.aulast='.urlencode($lastname).'&amp;rft.aufirst='.urlencode($firstname);
+				}
+				//$html.= '&amp;rft.au='.urlencode($name);
+			}
+			
+		}
+		
+		$html.= '"></span>'.n;
+		
+		return $html;
+	}
+	
+	//-----------
+		
+	public function aboutnontool( $database, $show_edit, $usersgroups, $resource, $helper, $config, $sections, $params, $attribs, $option, $fsize ) 
+	{
+		$xhub =& XFactory::getHub();
+		$helper->getChildren();
+		
+		$url = 'index.php?option='.$option.a.'id='.$resource->id;
+		$sef = JRoute::_($url);
+		
+		// Set the display date
+		switch ($params->get('show_date')) 
+		{
+			case 0: $thedate = ''; break;
+			case 1: $thedate = $resource->created;    break;
+			case 2: $thedate = $resource->modified;   break;
+			case 3: $thedate = $resource->publish_up; break;
+		}
+		
+		// Prepare/parse text
+		$introtext = stripslashes($resource->introtext);
+		$maintext  = ($resource->fulltext) 
+				   ? stripslashes($resource->fulltext) 
+				   : stripslashes($resource->introtext);
+
+		$maintext = stripslashes($maintext);
+
+		if ($introtext) {
+			$document =& JFactory::getDocument();
+			$document->setDescription(ResourcesHtml::encode_html(strip_tags($introtext)));
+		}
+
+		// Parse for <nb: > tags
+		$type = new ResourcesType( $database );
+		$type->load( $resource->type );
+		
+		$fields = array();
+		if (trim($type->customFields) != '') {
+			$fs = explode("\n", trim($type->customFields));
+			foreach ($fs as $f) 
+			{
+				$fields[] = explode('=', $f);
+			}
+		} else {
+			$flds = $config->get('tagstool');
+			$flds = explode(',',$flds);
+			foreach ($flds as $fld) 
+			{
+				$fields[] = array($fld, $fld, 'textarea', 0);
+			}
+		}
+		
+		if (!empty($fields)) {
+			for ($i=0, $n=count( $fields ); $i < $n; $i++) 
+			{
+				// Explore the text and pull out all matches
+				array_push($fields[$i], ResourcesHtml::parseTag($maintext, $fields[$i][0]));
+				
+				// Clean the original text of any matches
+				$maintext = str_replace('<nb:'.$fields[$i][0].'>'.end($fields[$i]).'</nb:'.$fields[$i][0].'>','',$maintext);
+			}
+			$maintext = trim($maintext);
+		}
+		
+		$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
+		$maintext = str_replace('&amp;','&',$maintext);
+		$maintext = str_replace('&','&amp;',$maintext);
+		$maintext = str_replace('<blink>','',$maintext);
+		$maintext = str_replace('</blink>','',$maintext);
+	
+		$html  = '<div class="subject abouttab">'.n;		
+		$html .= t.'<table class="resource" summary="'.JText::_('RESOURCE_TBL_SUMMARY').'">'.n;
+		$html .= t.t.'<tbody>'.n;
+				
+		// Check how much we can display
+		if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) || $show_edit=0)) {
+			// Protected - only show the introtext
+			$html .= ResourcesHtml::tableRow('',$introtext);
+		} else {
+			$html .= ResourcesHtml::tableRow( JText::_('ABSTRACT'), $maintext );
+			
+			$citations = '';
+			foreach ($fields as $field) 
+			{
+				if (end($field) != NULL) {
+					if ($field[0] == 'citations') {
+						$citations = end($field);
+					} else {
+						$html .= ResourcesHtml::tableRow( $field[1], end($field) );
+					}
+				}
+			}
+			
+			if ($params->get('show_citation')) {
+				// Citation instructions
+				$helper->getUnlinkedContributors();
+
+				// Build our citation object
+				$cite = new stdClass();
+				$cite->title = $resource->title;
+				$cite->year = JHTML::_('date', $thedate, '%Y');
+				$juri =& JURI::getInstance();
+				if (substr($sef,0,1) == '/') {
+					$sef = substr($sef,1,strlen($sef));
+				}
+				$cite->location = $juri->base().$sef;
+				$cite->date = date( "Y-m-d H:i:s" );			
+				$cite->url = '';
+				$cite->type = '';
+				$cite->author = $helper->ul_contributors;
+
+				$citeinstruct  = ResourcesHtml::citation( $option, $cite, $resource->id, $citations, $resource->type );
+				$citeinstruct .= ResourcesHtml::citationCOins($cite, $resource, $config, $helper);
+				$html .= ResourcesHtml::tableRow( '<a name="citethis"></a>'.JText::_('CITE_THIS'), $citeinstruct );
+			}
+		}
+		// If the resource had a specific event date/time
+		if ($attribs->get( 'timeof', '' )) {
+			if (substr($attribs->get( 'timeof', '' ), -8, 8) == '00:00:00') {
+				$exp = '%B %d, %Y';
+			} else {
+				$exp = '%I:%M %p, %B %d, %Y';
+			}
+			$seminar_time = ($attribs->get( 'timeof', '' ) != '0000-00-00 00:00:00' || $attribs->get( 'timeof', '' ) != '') 
+						  ? JHTML::_('date', $attribs->get( 'timeof', '' ), $exp) 
+						  : '';
+			$html .= ResourcesHtml::tableRow( JText::_('TIME'),$seminar_time);
+		}
+		// If the resource had a specific location
+		if ($attribs->get( 'location', '' )) {
+			$html .= ResourcesHtml::tableRow( JText::_('LOCATION'),$attribs->get( 'location', '' ));
+		}
+		// Tags
+		if ($params->get('show_assocs')) {
+			$helper->getTagCloud( $show_edit );
+
+			$juser =& JFactory::getUser();
+			$frm = '';
+			if (!$juser->get('guest') && !isset($resource->tagform)) {
+				$rt = new ResourcesTags($database);
+				$usertags = $rt->get_tag_string( $resource->id, 0, 0, $juser->get('id'), 0, 0 );
+					
+				$document =& JFactory::getDocument();
+				$document->setMetaData('keywords',$rt->get_tag_string( $resource->id, 0, 0, null, 0, 0 ));
+					
+				JPluginHelper::importPlugin( 'tageditor' );
+				$dispatcher =& JDispatcher::getInstance();
+
+				$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$usertags,'')) );
+					
+				$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option='.$option.a.'id='.$resource->id).'">'.n;
+				$frm .= t.'<fieldset>'.n;
+				$frm .= t.t.'<label class="tag">'.n;
+				$frm .= t.t.t.JText::_('Your tags').': '.n;
+				if (count($tf) > 0) {
+					$frm .= $tf[0];
+				} else {
+					$frm .= t.t.t.'<input type="text" name="tags" id="tags-men" size="30" value="'. $usertags .'" />'.n;
+				}
+				$frm .= t.t.'</label>'.n;
+				$frm .= t.t.'<input type="submit" value="'.JText::_('SAVE').'"/>'.n;
+				$frm .= t.t.'<input type="hidden" name="task" value="savetags" />'.n;
+				$frm .= t.'</fieldset>'.n;
+				$frm .= '</form>'.n;
+			}
+
+			if ($helper->tagCloud) {
+				$html .= ResourcesHtml::tableRow( JText::_('TAGS'),$helper->tagCloud.$frm);
+			}
+		}
+
+		$html .= t.' </tbody>'.n;
+		$html .= t.'</table>'.n;
+		$html .= '</div><!-- / .subject -->'.n;
+		$html .= '<div class="clear"></div>'.n;
+		$html .= '<input type="hidden" name="rid" id="rid" value="'.$resource->id.'" />'.n;
+		
+		return $html;
+	}
+
+	
+	
+	//-----------
+	
+	public function abouttool( $database, $show_edit, $usersgroups, $resource, $helper, $config, $sections, $thistool, $curtool, $alltools, $revision, $params, $attribs, $option, $fsize ) 
+	{
+		$xhub =& XFactory::getHub();
+		
+		if (!$thistool) {
+			$helper->getChildren();
+		}
+		
+		if ($resource->alias) {
+			$url = 'index.php?option='.$option.a.'alias='.$resource->alias;
+		} else {
+			$url = 'index.php?option='.$option.a.'id='.$resource->id;
+		}
+		$sef = JRoute::_($url);
+		
+		// Set the display date
+		switch ($params->get('show_date')) 
+		{
+			case 0: $thedate = ''; break;
+			case 1: $thedate = $resource->created;    break;
+			case 2: $thedate = $resource->modified;   break;
+			case 3: $thedate = $resource->publish_up; break;
+		}
+		
+		// Prepare/parse text
+		$introtext = stripslashes($resource->introtext);
+		$maintext  = ($resource->fulltext) 
+				   ? stripslashes($resource->fulltext) 
+				   : stripslashes($resource->introtext);
+
+		$maintext = stripslashes($maintext);
+
+		if ($introtext) {
+			$document =& JFactory::getDocument();
+			$document->setDescription(ResourcesHtml::encode_html(strip_tags($introtext)));
+		}
+
+		// Parse for <nb: > tags
+		$type = new ResourcesType( $database );
+		$type->load( $resource->type );
+		
+		$fields = array();
+		if (trim($type->customFields) != '') {
+			$fs = explode("\n", trim($type->customFields));
+			foreach ($fs as $f) 
+			{
+				$fields[] = explode('=', $f);
+			}
+		} else {
+			$flds = $config->get('tagstool');
+			$flds = explode(',',$flds);
+			foreach ($flds as $fld) 
+			{
+				$fields[] = array($fld, $fld, 'textarea', 0);
+			}
+		}
+		
+		if (!empty($fields)) {
+			for ($i=0, $n=count( $fields ); $i < $n; $i++) 
+			{
+				// Explore the text and pull out all matches
+				array_push($fields[$i], ResourcesHtml::parseTag($maintext, $fields[$i][0]));
+				
+				// Clean the original text of any matches
+				$maintext = str_replace('<nb:'.$fields[$i][0].'>'.end($fields[$i]).'</nb:'.$fields[$i][0].'>','',$maintext);
+			}
+			$maintext = trim($maintext);
+		}
+		
+		$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
+		$maintext = str_replace('&amp;','&',$maintext);
+		$maintext = str_replace('&','&amp;',$maintext);
+		$maintext = str_replace('<blink>','',$maintext);
+		$maintext = str_replace('</blink>','',$maintext);
+		
+		if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) {
+				// Do nothing
+		} else {
+				// Get the wiki parser and parse the full description
+				ximport('wiki.parser');
+				$p = new WikiParser( $resource->title, $option, 'resources'.DS.$resource->id, 'resources', $resource->id, $config->get('uploadpath'));
+				$maintext = $p->parse( n.stripslashes($maintext) );
+		}
+		
+		$html  = '<div class="subject abouttab">'.n;
+		
+		// Screenshots
+		$ss = new ResourceScreenshot($database);			
+		$shots = ResourcesHtml::screenshots($resource->id, $resource->created, $config->get('uploadpath'), $config->get('uploadpath'), $resource->versionid, $ss->getScreenshots($resource->id, $resource->versionid), 1);	
+		if($shots) {
+			$html .= ' <div class="sscontainer">'.n;					
+			$html .= $shots;
+			$html .= ' </div><!-- / .sscontainer -->'.n;
+		}
+	
+		$html .= t.'<table class="resource" summary="'.JText::_('RESOURCE_TBL_SUMMARY').'">'.n;
+		$html .= t.t.'<tbody>'.n;
+		
+		// Check how much we can display
+		if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) || $show_edit=0)) {
+			// Protected - only show the introtext
+			$html .= ResourcesHtml::tableRow('',$introtext);
+		} else {
+		
+			$html .= ResourcesHtml::tableRow( JText::_('DESCRIPTION'), $maintext );
+			
+			$citations = '';
+			foreach ($fields as $field) 
+			{
+				if (end($field) != NULL) {
+					if ($field[0] == 'citations') {
+						$citations = end($field);
+					} else {
+						$html .= ResourcesHtml::tableRow( $field[1], end($field) );
+					}
+				}
+			}
+		
+			if ($params->get('show_citation')) {
+				// Citation instructions
+				$helper->getUnlinkedContributors();
+
+				// Build our citation object
+				$cite = new stdClass();
+				$cite->title = $resource->title;
+				$cite->year = JHTML::_('date', $thedate, '%Y');
+				if ($alltools && $resource->doi) {
+					$cite->location = ' <a href="'.$config->get('aboutdoi').'" title="'.JText::_('ABOUT_DOI').'">DOI</a>: '.$config->get('doi').'r'.$resource->id.'.'.$resource->doi;
+					$cite->date = '';
+				} else {
+					$juri =& JURI::getInstance();
+					if (substr($sef,0,1) == '/') {
+						$sef = substr($sef,1,strlen($sef));
+					}
+					$cite->location = $juri->base().$sef;
+					$cite->date = date( "Y-m-d H:i:s" );
+				}			
+				$cite->url = '';
+				$cite->type = '';
+				$cite->author = $helper->ul_contributors;
+				
+				$helper->getUnlinkedContributors();
+
+				$citeinstruct  = ResourcesHtml::citation( $option, $cite, $resource->id, $citations, $resource->type, $revision );
+				$citeinstruct .= ResourcesHtml::citationCOins($cite, $resource, $config, $helper);
+				$html .= ResourcesHtml::tableRow( '<a name="citethis"></a>'.JText::_('CITE_THIS'), $citeinstruct );
+				
+			}
+		}
+		// If the resource had a specific event date/time
+		if ($attribs->get( 'timeof', '' )) {
+			if (substr($attribs->get( 'timeof', '' ), -8, 8) == '00:00:00') {
+				$exp = '%B %d, %Y';
+			} else {
+				$exp = '%I:%M %p, %B %d, %Y';
+			}
+			$seminar_time = ($attribs->get( 'timeof', '' ) != '0000-00-00 00:00:00' || $attribs->get( 'timeof', '' ) != '') 
+						  ? JHTML::_('date', $attribs->get( 'timeof', '' ), $exp) 
+						  : '';
+			$html .= ResourcesHtml::tableRow( JText::_('TIME'),$seminar_time);
+		}
+		// If the resource had a specific location
+		if ($attribs->get( 'location', '' )) {
+			$html .= ResourcesHtml::tableRow( JText::_('LOCATION'),$attribs->get( 'location', '' ));
+		}
+		// Tags
+		if (!$thistool && $revision!='dev') {
+			if ($params->get('show_assocs')) {
+				$helper->getTagCloud( $show_edit );
+
+				$juser =& JFactory::getUser();
+				$frm = '';
+				if (!$juser->get('guest') && !isset($resource->tagform)) {
+					$rt = new ResourcesTags($database);
+					$usertags = $rt->get_tag_string( $resource->id, 0, 0, $juser->get('id'), 0, 0 );
+					
+					$document =& JFactory::getDocument();
+					$document->setMetaData('keywords',$rt->get_tag_string( $resource->id, 0, 0, null, 0, 0 ));
+					
+					JPluginHelper::importPlugin( 'tageditor' );
+					$dispatcher =& JDispatcher::getInstance();
+
+					$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$usertags,'')) );
+					
+					$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option='.$option.a.'id='.$resource->id).'">'.n;
+					$frm .= t.'<fieldset>'.n;
+					$frm .= t.t.'<label class="tag">'.n;
+					$frm .= t.t.t.JText::_('Your tags').': '.n;
+					if (count($tf) > 0) {
+						$frm .= $tf[0];
+					} else {
+						//$frm .= t.t.t.'<textarea name="tags" id="tags-men" rows="6" cols="35">'. $usertags .'</textarea>'.n;
+						$frm .= t.t.t.'<input type="text" name="tags" id="tags-men" size="30" value="'. $usertags .'" />'.n;
+					}
+					$frm .= t.t.'</label>'.n;
+					$frm .= t.t.'<input type="submit" value="'.JText::_('SAVE').'"/>'.n;
+					$frm .= t.t.'<input type="hidden" name="task" value="savetags" />'.n;
+					$frm .= t.'</fieldset>'.n;
+					$frm .= '</form>'.n;
+				}
+
+				if ($helper->tagCloud) {
+					$html .= ResourcesHtml::tableRow( JText::_('TAGS'),$helper->tagCloud.$frm);
+				}
+			}
+		}
+		$html .= t.' </tbody>'.n;
+		$html .= t.'</table>'.n;
+		$html .= '</div><!-- / .subject -->'.n;
+		$html .= '<div class="clear"></div>'.n;
+		$html .= '<input type="hidden" name="rid" id="rid" value="'.$resource->id.'" />'.n;
+		
+		return $html;
+		
 	}
 	
 	//-----------
@@ -1568,6 +2043,9 @@ class ResourcesHtml
 						} else {
 							switch ($child->type)
 							{
+								case 70:
+									$liclass = ' class="guide"';
+									break;
 								case 12:
 									$liclass = ' class="html"';
 									break;
@@ -1590,17 +2068,28 @@ class ResourcesHtml
 							}*/
 						}
 						
+						
+						
 						$child->title = str_replace( '"', '&quot;', $child->title );
 						$child->title = str_replace( '&amp;', '&', $child->title );
 						$child->title = str_replace( '&', '&amp;', $child->title );
 						$child->title = str_replace( '&amp;quot;', '&quot;', $child->title );
 						
-						$out .= ' <li'.$liclass.'><a'.$class.' href="'.$url.'" title="'.stripslashes($child->title).'">'.$title.'</a>';
+						// user guide 
+						$guide = 0;
+						if(strtolower($title) !=  preg_replace('/user guide/', '', strtolower($title))) {
+							$liclass = ' class="guide"';
+							$guide = 1;
+						}
+						
+						$out .= ' <li'.$liclass.'>';
+						$out .= ' '. ResourcesHtml::getFileAttribs( $child->path, $base, $fsize );
+						$out .= '<a'.$class.' href="'.$url.'" title="'.stripslashes($child->title).'">'.$title.'</a>';
 						//if ($child->logicaltype == 49 || $child->logicaltype == 50) {
 						//	$out .= ' <a class="help" href="/podcast/" title="Learn more about podcast">What\'s this?</a>';
 						//}
 						//if($child->type == 13 || $child->type == 15 || $child->type == 33) {
-							$out .= ' '. ResourcesHtml::getFileAttribs( $child->path, $base, $fsize );
+							
 						//}
 						$out .= '</li>'.n;
 					}
@@ -1780,17 +2269,20 @@ class ResourcesHtml
 					}
 					
 	
-					if (isset($resource->revision) && $resource->toolpublished or !isset($resource->revision)) { // dev or published tool
+					if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) { // dev or published tool
 						//if ($juser->get('guest')) { 
 							// Not logged-in = show message
 							//$html .= ResourcesHtml::primaryButton('launchtool disabled', $lurl, 'Launch Tool');
 							//$html .= ResourcesHtml::warning( 'You must <a href="'.JRoute::_('index.php?option=com_login').'">log in</a> before you can run this tool.' ).n;
 						//} else {
-							$html .= ResourcesHtml::primaryButton('launchtool', $lurl, JText::_('Launch Tool') );
+							$pop = ($juser->get('guest')) ? ResourcesHtml::warning(JText::_('You must login before you can run this tool.')) : '';
+							$pop = ($resource->revision =='dev') ? ResourcesHtml::warning(JText::_('Warning: This tool version is under development and may not be run until it is installed.')) : $pop;
+							$html .= ResourcesHtml::primaryButton('launchtool', $lurl, JText::_('Launch Tool'), '', '', '', 0, $pop );
 						//}
 					} else { // tool unpublished
-						//$html .= ResourcesHtml::primaryButtonDisabled('link_disabled', '', 'Launch Tool', '', '', '', true);
-						$html .= ResourcesHtml::warning( 'This tool version is unpublished and cannot be run. If you would like to have this version staged for you, you can put a request through <a href="'.JRoute::_("index.php?option=com_feedback&task=report").'">support</a>.' ).n;
+						$pop   = ResourcesHtml::warning(JText::_('This tool version is unpublished and cannot be run. If you would like to have this version staged, you can put a request through HUB Support.'));
+						$html .= ResourcesHtml::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
+						//$html .= ResourcesHtml::warning( $pop ).n;
 					}
 				break;
 			
@@ -1804,6 +2296,11 @@ class ResourcesHtml
 			case 31:
 			case 2:
 				// do nothing
+				$mesg  = JText::_('View').' ';
+				$mesg .= $resource->type == 6 ? 'Course Lectures' : '';
+				$mesg .= $resource->type == 2 ? 'Workshop ' : '';
+				$mesg .= $resource->type == 6 ? '' : 'Series';
+				$html .= ResourcesHtml::primaryButton('download', JRoute::_('index.php?option=com_resources'.a.'id='.$resource->id).'#series', $mesg, '', $mesg, '');
 			break;
 						
 			default:
@@ -1848,8 +2345,9 @@ class ResourcesHtml
 				// IF (not a simulator) THEN show the first child as the primary button
 				if ($firstChild->access==1 && $juser->get('guest')) { 
 					// first child is for registered users only and the visitor is not logged in
-					$html .= ResourcesHtml::primaryButton($class.' disabled', JRoute::_('index.php?option=com_login'), $mesg);
-					$html .= t.'<p class="warning" style="clear: none;">You must <a href="'.JRoute::_('index.php?option=com_login').'">log in</a> before you can download.</p>'.n;
+					$pop  = '<p class="warning">This resource requires you to log in before you can proceed with the download.</p>'.n;
+					$html .= ResourcesHtml::primaryButton($class.' disabled', JRoute::_('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
+					//$html .= t.'<p class="warning" style="clear: none;">You must <a href="'.JRoute::_('index.php?option=com_login').'">log in</a> before you can download.</p>'.n;
 				} else {
 					$child_params =& new JParameter( $firstChild->params );
 					$link_action = $child_params->get( 'link_action', '' );
@@ -1896,15 +2394,24 @@ class ResourcesHtml
 	
 	//-----------
 
-	public function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false)
+	public function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
 	{
 		$title = htmlentities($title, ENT_QUOTES);
+		$out = '';
 		
 		if ($disabled) {
-			return t.'<p id="primary-document"><span class="'.$class.'" >'.$msg.'</span></p>'.n;
+			$out .= t.'<p id="primary-document"><span class="'.$class.'" >'.$msg.'</span></p>'.n;
 		} else {
-			return t.'<p id="primary-document"><a class="'.$class.'" href="'.$href.'" title="'.$title.'" '.$action.'>'.$msg.'</a>'.$xtra.'</p>'.n;
+			$out .= t.'<p id="primary-document"><a class="'.$class.'" href="'.$href.'" title="'.$title.'" '.$action.'>'.$msg;
+			$out .= $xtra ? $xtra : '';
+			$out .= '</a></p>'.n;
 		}
+		
+		if($pop) {
+			$out .= t.'<div id="primary-document_pop"><div>'.$pop.'</div></div>'.n;
+		}
+		
+		return $out;
 	}
 
 	//-----------
@@ -2033,6 +2540,8 @@ class ResourcesHtml
 				$html .= '</li>'.n;
 			}
 			$html .= '</ul>'.n;
+		} else {
+			$html .= '<p>[ none ]</p>';
 		}
 		
 		return $html;
@@ -2136,7 +2645,7 @@ class ResourcesHtml
 			} else if ($line->fulltext) {
 				$html .= t.t.ResourcesHtml::shortenText( stripslashes($line->fulltext) ).n;
 			}
-			$html .= t.t.'<div class="clear"></div>'.n;
+			//$html .= t.t.'<div class="clear"></div>'.n;
 			$html .= t.'</li>'.n;
 		}
 		$html .= '</ol>'.n;
@@ -2152,7 +2661,8 @@ class ResourcesHtml
 		
 		$xhub =& XFactory::getHub();
 		
-		$html  = '<table class="child-listing" summary="'.JText::_('A table of resources associated to this resource').'">'.n;
+		$html  = t.'<a name="series"></a>'.n;
+		$html .= '<table class="child-listing" summary="'.JText::_('A table of resources associated to this resource').'">'.n;
 		//$html .= t.'<caption>'.n;
 		//$html .= t.t.'<a class="feed" id="resource-audio-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a> '.n;
 		//$html .= t.t.'<a class="feed" id="resource-video-feed" href="'. $xhub->getCfg('hubLongURL') .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a>'.n;
@@ -2210,6 +2720,7 @@ class ResourcesHtml
 					
 					$grandchild->path = ResourcesHtml::processPath($option, $grandchild, $child->id);
 					
+					
 					switch ($grandchild->type) 
 					{
 						case 37:
@@ -2217,7 +2728,7 @@ class ResourcesHtml
 							$videoi .= (!$videoi) ? '<a href="'.$grandchild->path.'">'.JText::_('View').'</a>' : '';
 							break;
 						case 32:
-							$breeze .= (!$breeze) ? '<a class="breeze" href="'.$grandchild->path.'" title="'.htmlentities(stripslashes($grandchild->title)).'">'.JText::_('View').'</a>' : '';
+							$breeze .= (!$breeze) ? '<a class="breeze" href="'.$grandchild->path.'&amp;no_html=1" title="'.htmlentities(stripslashes($grandchild->title)).'">'.JText::_('View').'</a>' : '';
 							break;
 						case 33:
 						default:
@@ -2439,7 +2950,9 @@ class ResourcesHtml
 			$url = 'index.php?option='.$option.a.'id='.$resource->id;
 		}
 		
-		$html  = ResourcesHtml::hed(3, JText::_('In This Series') );
+		
+		$html  = t.'<a name="series"></a>'.n;
+		$html .= ResourcesHtml::hed(3, JText::_('In This Series') );
 		
 		$html .= '<form method="get" action="'.JRoute::_($url).'">'.n;
 		$html .= t.'<div class="aside">'.n;
@@ -2462,6 +2975,7 @@ class ResourcesHtml
 		$paging = str_replace('?','?sortby='.$filters['sortby'].'&',$paging);
 		$paging = str_replace('&&','&',$paging);
 		$paging = str_replace('&amp;&amp;','&amp;',$paging);
+		$html .= t.'<div class="clear"></div><!-- / .clear -->'.n;
 		$html .= $paging;
 		$html .= t.'</div><!-- / .subject -->'.n;
 		$html .= t.'<div class="clear"></div><!-- / .clear -->'.n;

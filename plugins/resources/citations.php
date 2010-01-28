@@ -135,14 +135,17 @@ class plgResourcesCitations extends JPlugin
 				$sbjt = '<p>'.JText::_('NO_CITATIONS_FOUND').'</p>'.n;
 			}
 
-			$html  = ResourcesHtml::hed(3,'<a name="citations"></a>'.JText::_('CITATIONS')).n;
+			$html  = ResourcesHtml::hed(3,'<a name="citations"></a>'.JText::_('CITATIONS').'<span><a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$resource->id.a.'active=citations#nonaffiliated').'">Non-affiliated ('.$numnon.')</a>  |  <a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$resource->id.a.'active=citations#affiliated').'">Affiliated ('.$numaff.')</a></span>').n;
+			/*
 			$html .= ResourcesHtml::aside(
 						'<p>The following are publications that have cited this resource, separated by their affiliation to the site or its parent organization.</p>'
 						.'<ul><li><a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$resource->id.a.'active=citations#nonaffiliated').'">Non-affiliated ('.$numnon.')</a></li>'
 						.'<li><a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$resource->id.a.'active=citations#affiliated').'">Affiliated ('.$numaff.')</a></li></ul>'
 						//'<p><a href="'.sefRelToAbs('index.php?option='.$option.a.'task=addcitation'.a.'id='.$id.'#citationform').'" class="add">Add a citation</a></p>'
 					);
-			$html .= ResourcesHtml::subject($sbjt);
+					*/
+			//$html .= ResourcesHtml::subject($sbjt);
+			$html .= $sbjt;
 		}
 
 		$metadata = '';

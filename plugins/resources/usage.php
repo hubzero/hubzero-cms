@@ -301,8 +301,8 @@ class plgResourcesUsage extends JPlugin
 			$html  = ResourcesHtml::hed(3,'<a name="usage"></a>'.JText::_('USAGE')).n;
 			$html .= $this->navlinks($period, $dthis, $option, $resource);
 			$html .= '<form method="get" action="'.$url.'">'.n;
-			$html .= ResourcesHtml::aside($aside);
-			$html .= ResourcesHtml::subject($sbjt);
+			$html .= ResourcesHtml::div($aside, 'timeperiod');
+			$html .= ResourcesHtml::div($sbjt);
 			$html .= '</form>'.n;
 		}
 

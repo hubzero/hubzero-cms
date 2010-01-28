@@ -308,16 +308,23 @@ class ResourcesHtml
 		if ($authnames != NULL) {
 			foreach ($authnames as $authname) 
 			{
-				$name = $authname->givenName .' ';
-				if ($authname->middleName != null) {
-					$name .= $authname->middleName .' ';
+				if ($authname->name) {
+					$name = $authname->name;
+				} else {
+					$name = $authname->givenName .' ';
+					if ($authname->middleName != null) {
+						$name .= $authname->middleName .' ';
+					}
+					$name .= $authname->surname;
 				}
-				$name .= $authname->surname.' ('.$authname->id.') [ <a href="#" onclick="HUB.Resources.removeAuthor(this);return false;">'.JText::_('remove').'</a> ]';
 			
 				$authIDs[] = $authname->id;
-			
-				$html .= t.'<li id="author_'.$authname->id.'"><span class="handle">'.JText::_('DRAG HERE').'</span> '. $name;
-				$html .= '<br />'.JText::_('Affiliation').': <input type="text" name="attrib['.$authname->id.']" value="'. $attribs->get( $authname->id, '' ) .'" />';
+				
+				$org = ($authname->organization) ? htmlentities($authname->organization,ENT_COMPAT,'UTF-8') : $attribs->get( $authname->id, '' );
+				
+				$html .= t.'<li id="author_'.$authname->id.'"><span class="handle">'.JText::_('DRAG HERE').'</span> '. $name .' ('.$authname->id.') [ <a href="#" onclick="HUB.Resources.removeAuthor(this);return false;">'.JText::_('remove').'</a> ]';
+				//$html .= '<br />'.JText::_('Affiliation').': <input type="text" name="attrib['.$authname->id.']" value="'. $attribs->get( $authname->id, '' ) .'" />';
+				$html .= '<br />'.JText::_('Affiliation').': <input type="text" name="'.$authname->id.'_organization" value="'. $org .'" />';
 				$html .= t.t.'<select name="'.$authname->id.'_role">'.n;
 				$html .= t.t.t.'<option value="">Role...</option>'.n;
 				$html .= t.t.t.'<option value="submitter"';
@@ -327,6 +334,8 @@ class ResourcesHtml
 				$html .= ($authname->role == 'editor') ? ' selected="selected"' : '';
 				$html .= '>editor</option>'.n;
 				$html .= t.t.'</select>'.n;
+				$html .= '<input type="hidden" name="'.$authname->id.'_name" value="'. htmlentities($name,ENT_COMPAT,'UTF-8') .'" />';
+				//$html .= '<input type="hidden" name="'.$authname->id.'_organization" value="'. htmlentities($authname->organization,ENT_COMPAT,'UTF-8') .'" />';
 				$html .= '</li>'.n;
 			}
 		}
@@ -405,7 +414,7 @@ class ResourcesHtml
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="8"><?php echo $pageNav->getListFooter(); ?></td>
+						<td colspan="9"><?php echo $pageNav->getListFooter(); ?></td>
 					</tr>
 				</tfoot>
 				<tbody>
