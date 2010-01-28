@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_support_resources' );
 
 class plgSupportResources extends JPlugin
 {
-	function plgSupportResources(&$subject, $config)
+	public function plgSupportResources(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,32 +45,31 @@ class plgSupportResources extends JPlugin
 	
 	//-----------
 	
-	function getReportedItem($refid, $category, $parent) 
+	public function getReportedItem($refid, $category, $parent) 
 	{
 		if ($category != 'review' && $category != 'reviewcomment') {
 			return null;
 		}
 		
 		if ($category == 'review') {
-			$query  = "SELECT rr.id, rr.comment as text, rr.user_id as author, NULL as subject";
-			$query .= ", 'review' as parent_category, rr.anonymous as anon";
-			$query .= " FROM #__resource_ratings AS rr";
-			$query .= " WHERE rr.id=".$refid;
+			$query  = "SELECT rr.id, rr.comment as text, rr.user_id as author, 
+						NULL as subject, 'review' as parent_category, rr.anonymous as anon 
+						FROM #__resource_ratings AS rr 
+						WHERE rr.id=".$refid;
 		} else if ($category == 'reviewcomment') {
-			$query  = "SELECT rr.id, rr.comment as text, rr.added_by as author, NULL as subject";
-			$query .= ", rr.category as parent_category, rr.anonymous as anon";
-			$query .= " FROM #__comments AS rr";
-			$query .= " WHERE rr.id=".$refid;
+			$query  = "SELECT rr.id, rr.comment as text, rr.added_by as author, 
+						NULL as subject, rr.category as parent_category, rr.anonymous as anon 
+						FROM #__comments AS rr 
+						WHERE rr.id=".$refid;
 		}
 
 		$database =& JFactory::getDBO();
 		$database->setQuery( $query );
-		//return $database->loadObjectList();
 		$rows = $database->loadObjectList();
 		if ($rows) {
 			foreach ($rows as $key => $row) 
 			{
-				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_resources'.a.'id='.$parent.a.'active=reviews') : '';
+				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_resources&id='.$parent.'&active=reviews') : '';
 			}
 		}
 		return $rows;
@@ -78,7 +77,7 @@ class plgSupportResources extends JPlugin
 	
 	//-----------
 	
-	function getParentId( $parentid, $category ) 
+	public function getParentId( $parentid, $category ) 
 	{
 		ximport('xcomment');
 		
@@ -114,7 +113,7 @@ class plgSupportResources extends JPlugin
 	
 	//-----------
 	
-	function parent($parentid) 
+	public function parent($parentid) 
 	{
 		$database =& JFactory::getDBO();
 		$parent = new XComment( $database );
@@ -125,7 +124,7 @@ class plgSupportResources extends JPlugin
 	
 	//-----------
 	
-	function getTitle($category, $parentid) 
+	public function getTitle($category, $parentid) 
 	{
 		if ($category != 'review' && $category != 'reviewcomment') {
 			return null;
@@ -145,7 +144,7 @@ class plgSupportResources extends JPlugin
 	
 	//-----------
 	
-	function deleteReportedItem($referenceid, $parentid, $category, $message) 
+	public function deleteReportedItem($referenceid, $parentid, $category, $message) 
 	{
 		if ($category != 'review' && $category != 'reviewcomment') {
 			return null;
@@ -168,7 +167,7 @@ class plgSupportResources extends JPlugin
 				$resource->load( $parentid );
 				$resource->calculateRating();
 				if (!$resource->store()) {
-					echo ReportAbuseHtml::alert( $resource->getError() );
+					echo SupportHtml::alert( $resource->getError() );
 					exit();
 				}
 				
@@ -182,7 +181,7 @@ class plgSupportResources extends JPlugin
 				$comment->load( $referenceid );
 				$comment->state = 2;
 				if (!$comment->store()) {
-					echo ReportAbuseHtml::alert( $comment->getError() );
+					echo SupportHtml::alert( $comment->getError() );
 					exit();
 				}
 				

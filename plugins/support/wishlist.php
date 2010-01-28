@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_support_wishlist' );
 
 class plgSupportWishlist extends JPlugin
 {
-	function plgSupportWishlist(&$subject, $config)
+	public function plgSupportWishlist(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,7 +45,7 @@ class plgSupportWishlist extends JPlugin
 	
 	//-----------
 	
-	function getReportedItem($refid, $category, $parent) 
+	public function getReportedItem($refid, $category, $parent) 
 	{
 		if ($category != 'wish' && $category != 'wishcomment') {
 			return null;
@@ -70,9 +70,9 @@ class plgSupportWishlist extends JPlugin
 			foreach ($rows as $key => $row) 
 			{
 			
-				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_wishlist'.a.'task=wishlist'.a.'id='.$parent) : '';
+				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_wishlist&task=wishlist&id='.$parent) : '';
 				if ($rows[$key]->parent_category == 'wishcomment') {
-					$rows[$key]->href = JRoute::_('index.php?option=com_wishlist'.a.'task=wish'.a.'wishid='.$parent);
+					$rows[$key]->href = JRoute::_('index.php?option=com_wishlist&task=wish&wishid='.$parent);
 				}
 			}
 		}
@@ -81,7 +81,7 @@ class plgSupportWishlist extends JPlugin
 	
 	//-----------
 	
-	function getParentId( $parentid, $category ) 
+	public function getParentId( $parentid, $category ) 
 	{
 		ximport('xcomment');
 		
@@ -117,7 +117,7 @@ class plgSupportWishlist extends JPlugin
 	
 	//-----------
 	
-	function parent($parentid) 
+	public function parent($parentid) 
 	{
 		$database =& JFactory::getDBO();
 		$parent = new XComment( $database );
@@ -128,7 +128,7 @@ class plgSupportWishlist extends JPlugin
 	
 	//-----------
 	
-	function getTitle($category, $parentid) 
+	public function getTitle($category, $parentid) 
 	{
 		if ($category != 'wish' && $category != 'wishcomment') {
 			return null;
@@ -148,7 +148,7 @@ class plgSupportWishlist extends JPlugin
 	
 	//-----------
 	
-	function deleteReportedItem($referenceid, $parentid, $category, $message) 
+	public function deleteReportedItem($referenceid, $parentid, $category, $message) 
 	{
 		if ($category != 'wish' && $category != 'wishcomment') {
 			return null;

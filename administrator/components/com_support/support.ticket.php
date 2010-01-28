@@ -114,7 +114,11 @@ class SupportTicket extends JTable
 			$filter .= " AND category='".$filters['category']."'";
 		}
 		if (isset($filters['owner']) && $filters['owner'] != '') {
-			$filter .= " AND (owner='".$filters['owner']."'";
+			if ($filters['owner'] == 'none') {
+				$filter .= " AND ((owner='' OR owner IS NULL)";
+			} else {
+				$filter .= " AND (owner='".$filters['owner']."'";
+			}
 			if (!isset($filters['reportedby']) || $filters['reportedby'] == '') {
 				$filter .= ")";
 			}

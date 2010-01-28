@@ -404,7 +404,7 @@ class SupportHtml
 						</tr>
 						<tr>
 							<th>owner:</th>
-							<td>me, [username]</td>
+							<td>me, none, [username]</td>
 						</tr>
 						<tr>
 							<th>severity:</th>
@@ -433,6 +433,7 @@ class SupportHtml
 						<option value=""<?php if ($filters['_show'] == '') { echo ' selected="selected"'; } ?>>--</option>
 						<option value="status:new"<?php if ($filters['_show'] == 'status:new') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_NEW'); ?></option>
 						<option value="status:open"<?php if ($filters['_show'] == 'status:open') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_OPEN'); ?></option>
+						<option value="owner:none"<?php if ($filters['_show'] == 'owner:none') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_UNASSIGNED'); ?></option>
 						<option value="status:waiting"<?php if ($filters['_show'] == 'status:waiting') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_WAITING'); ?></option>
 						<option value="status:closed"<?php if ($filters['_show'] == 'status:closed') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_CLOSED'); ?></option>
 						<option value="status:all"<?php if ($filters['_show'] == 'status:all') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_ALL'); ?></option>

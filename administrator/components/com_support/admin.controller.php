@@ -347,9 +347,13 @@ class SupportController
 				break;
 				case 'owner':
 				case 'reportedby':
-					if (isset($pieces[1]) && $pieces[1] == 'me') {
-						$juser =& JFactory::getUser();
-						$pieces[1] = $juser->get('username');
+					if (isset($pieces[1])) {
+						if ($pieces[1] == 'me') {
+							$juser =& JFactory::getUser();
+							$pieces[1] = $juser->get('username');
+						} else if ($pieces[1] == 'none') {
+							$pieces[1] = 'none';
+						}
 					}
 				break;
 				case 'severity':

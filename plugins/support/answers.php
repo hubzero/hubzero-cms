@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_support_answers' );
 
 class plgSupportAnswers extends JPlugin
 {
-	function plgSupportAnswers(&$subject, $config)
+	public function plgSupportAnswers(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,7 +45,7 @@ class plgSupportAnswers extends JPlugin
 	
 	//-----------
 	
-	function getReportedItem($refid, $category, $parent) 
+	public function getReportedItem($refid, $category, $parent) 
 	{
 		if ($category != 'answer' && $category != 'question' && $category != 'answercomment') {
 			return null;
@@ -78,10 +78,10 @@ class plgSupportAnswers extends JPlugin
 				switch ($category) 
 				{
 					case 'answer':
-						$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_answers'.a.'task=question'.a.'id='.$parent) : '';
+						$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_answers&task=question&id='.$parent) : '';
 					break;
 					case 'question':
-						$rows[$key]->href = JRoute::_('index.php?option=com_answers'.a.'task=question'.a.'id='.$rows[$key]->id);
+						$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id='.$rows[$key]->id);
 					break;
 				}
 			}
@@ -91,7 +91,7 @@ class plgSupportAnswers extends JPlugin
 	
 	//-----------
 	
-	function getParentId( $parentid, $category ) 
+	public function getParentId( $parentid, $category ) 
 	{
 		ximport('xcomment');
 		
@@ -131,7 +131,7 @@ class plgSupportAnswers extends JPlugin
 	
 	//-----------
 	
-	function parent($parentid) 
+	public function parent($parentid) 
 	{
 		$database =& JFactory::getDBO();
 		$parent = new XComment( $database );
@@ -142,7 +142,7 @@ class plgSupportAnswers extends JPlugin
 	
 	//-----------
 	
-	function getTitle($category, $parentid) 
+	public function getTitle($category, $parentid) 
 	{
 		if ($category != 'answer' && $category != 'question' && $category != 'answercomment') {
 			return null;
@@ -166,7 +166,7 @@ class plgSupportAnswers extends JPlugin
 	
 	//-----------
 	
-	function deleteReportedItem($referenceid, $parentid, $category, $message) 
+	public function deleteReportedItem($referenceid, $parentid, $category, $message) 
 	{
 		if ($category != 'answer' && $category != 'question' && $category != 'answercomment') {
 			return null;
@@ -261,47 +261,42 @@ class plgSupportAnswers extends JPlugin
 									$hub  = array('email' => $admin_email, 'name' => $from);
 
 									$mes  = 'You are receiving this email because you responded to a question, which has been removed by the site administrator. ';
-									$mes .= 'As a result, no points for this question will be awarded. We appologize for inconvenience.'.r.n;
-									$mes .= '----------------------------'.r.n.r.n;
-									$mes .= 'QUESTION: '.$referenceid.r.n;
+									$mes .= 'As a result, no points for this question will be awarded. We appologize for inconvenience.'."\r\n";
+									$mes .= '----------------------------'."\r\n\r\n";
+									$mes .= 'QUESTION: '.$referenceid."\r\n";
 
 									SupportUtils::send_email($hub, $zuser->get('email'), $sub, $mes);
 							 	}
 							}
 						}
-						
-						
-					
-						
 					}
 					
 					// get id of asker
-						$database->setQuery( "SELECT created_by FROM #__answers_questions WHERE id=".$parentid );
-						$asker = $database->loadResult();
+					$database->setQuery( "SELECT created_by FROM #__answers_questions WHERE id=".$parentid );
+					$asker = $database->loadResult();
 						
-						if($asker) {
-							$quser =& XUser::getInstance( $asker );
-							if(is_object($quser)) {
+					if ($asker) {
+						$quser =& XUser::getInstance( $asker );
+						if (is_object($quser)) {
 							$asker_id = $quser->get('uid');
-							}
-							
-							if(isset($asker_id) ) {
-								// Remove hold 
-								$sql = "DELETE FROM #__users_transactions WHERE category='answers' AND type='hold' AND referenceid=".$parentid." AND uid='".$asker_id."'";
-								$database->setQuery( $sql);
-								if (!$database->query()) {
-									echo ReportAbuseHtml::alert( $database->getErrorMsg() );
-									exit;
-								}
-									
-								// Make credit adjustment
-								$BTL_Q = new BankTeller( $database, $asker_id );
-								$credit = $BTL_Q->credit_summary();
-								$adjusted = $credit - $reward;
-								$BTL_Q->credit_adjustment($adjusted);		
-							}
 						}
-						
+							
+						if (isset($asker_id) ) {
+							// Remove hold 
+							$sql = "DELETE FROM #__users_transactions WHERE category='answers' AND type='hold' AND referenceid=".$parentid." AND uid='".$asker_id."'";
+							$database->setQuery( $sql);
+							if (!$database->query()) {
+								echo ReportAbuseHtml::alert( $database->getErrorMsg() );
+								exit;
+							}
+									
+							// Make credit adjustment
+							$BTL_Q = new BankTeller( $database, $asker_id );
+							$credit = $BTL_Q->credit_summary();
+							$adjusted = $credit - $reward;
+							$BTL_Q->credit_adjustment($adjusted);		
+						}
+					}
 				}
 				
 				$message .= JText::sprintf('This is to notify you that your question #%s was removed from the site due to granted complaint received from a user.', $parentid);
@@ -327,7 +322,7 @@ class plgSupportAnswers extends JPlugin
 	
 	//-----------
 	
-	function get_reward($id)
+	public function get_reward($id)
 	{
 		$database =& JFactory::getDBO();
 		
