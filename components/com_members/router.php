@@ -72,7 +72,7 @@ function membersParseRoute($segments)
 		}
 	}
 	if (isset($segments[1])) {
-		if ($segments[1] == 'edit' || $segments[1] == 'changepassword' || $segments[1] == 'raiselimit'  || $segments[1] == 'cancel') {
+		if ($segments[1] == 'edit' || $segments[1] == 'changepassword' || $segments[1] == 'raiselimit' || $segments[1] == 'cancel' || $segments[1] == 'deleteimg') {
 			$vars['task'] = $segments[1];
 		} else {
 			$vars['active'] = $segments[1];

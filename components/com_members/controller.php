@@ -314,6 +314,15 @@ class MembersController extends JObject
 		// Get the member's info
 		$profile = new XProfile();
 		$profile->load( $id );
+		
+		// Check subscription to Employer Services
+		if($this->config->get('employeraccess') && $tab == 'resume') {
+			JPluginHelper::importPlugin( 'members', 'resume' );
+			$dispatcher =& JDispatcher::getInstance();
+			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
+			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;		
+			$authorized = $emp ? 1 : $authorized;
+		}		
 
 		// Ensure we have a member
 		if (!$profile->get('name') && !$profile->get('surname')) {
