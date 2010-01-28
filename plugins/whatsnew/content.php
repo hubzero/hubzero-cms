@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_whatsnew_content' );
 
 class plgWhatsnewContent extends JPlugin
 {
-	function plgWhatsnewContent(&$subject, $config)
+	public function plgWhatsnewContent(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,20 +45,18 @@ class plgWhatsnewContent extends JPlugin
 	
 	//-----------
 	
-	function &onWhatsnewAreas()
+	public function &onWhatsnewAreas()
 	{
 		$areas = array(
-			'content' => JText::_('CONTENT')
+			'content' => JText::_('PLG_WHATSNEW_CONTENT')
 		);
 		return $areas;
 	}
 	
 	//-----------
 	
-	function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
+	public function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
 	{
-		$database =& JFactory::getDBO();
-
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onWhatsnewAreas() ) && !array_intersect( $areas, array_keys( $this->onWhatsnewAreas() ) )) {
 				return array();
@@ -69,6 +67,8 @@ class plgWhatsnewContent extends JPlugin
 		if (!is_object($period)) {
 			return array();
 		}
+
+		$database =& JFactory::getDBO();
 
 		// Build the query
 		$c_count = " SELECT count(DISTINCT c.id)";
@@ -132,28 +132,28 @@ class plgWhatsnewContent extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	/*function documents() 
+	/*public function documents() 
 	{
 		// ...
 	}
 	
 	//-----------
 	
-	function before()
+	public function before()
 	{
 		// ...
 	}
 	
 	//-----------
 	
-	function out()
+	public function out()
 	{
 		// ...
 	}
 	
 	//-----------
 	
-	function after()
+	public function after()
 	{
 		// ...
 	}*/

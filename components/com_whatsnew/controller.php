@@ -181,7 +181,7 @@ class WhatsnewController extends JObject
 			);
 		
 		$limit = ($limit == 0) ? 'all' : $limit;
-		
+
 		// Get the search results
 		$results = $dispatcher->trigger( 'onWhatsnew', array(
 				$p, 
@@ -239,17 +239,56 @@ class WhatsnewController extends JObject
 		
 		// Set the page title
 		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)).': '.WhatsnewHtml::jtext($period) );
+		$document->setTitle( JText::_(strtoupper($this->_option)).': '.$this->_jtext($period) );
 		
+		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+			$pathway->addItem(JText::_(strtoupper($this->_option)),'index.php?option='.$this->_option);
 		}
-		$pathway->addItem(WhatsnewHtml::jtext($period),'index.php?option='.$this->_option.a.'period='.$period);
+		$pathway->addItem($this->_jtext($period),'index.php?option='.$this->_option.'&period='.$period);
 		
 		// Output HTML
-		echo WhatsnewHtml::display( $period, $totals, $results, $cats, $active, $this->_option, $start, $limit, $total );
+		//echo WhatsnewHtml::display( $period, $totals, $results, $cats, $active, $this->_option, $start, $limit, $total );
+		
+		// Build some options for the time period <select>
+		$periodlist = array();
+		$periodlist[] = JHTMLSelect::option('week',JText::_('COM_WHATSNEW_OPT_WEEK'));
+		$periodlist[] = JHTMLSelect::option('month',JText::_('COM_WHATSNEW_OPT_MONTH'));
+		$periodlist[] = JHTMLSelect::option('quarter',JText::_('COM_WHATSNEW_OPT_QUARTER'));
+		$periodlist[] = JHTMLSelect::option('year',JText::_('COM_WHATSNEW_OPT_YEAR'));
+	
+		$thisyear = strftime("%Y",time());
+		for ($y = $thisyear; $y >= 2002; $y--) 
+		{
+			if (time() >= strtotime('10/1/'.$y)) {
+				$periodlist[] = JHTMLSelect::option($y, JText::_('COM_WHATSNEW_OPT_FISCAL_YEAR').' '.$y);
+			}
+		}
+		for ($y = $thisyear; $y >= 2002; $y--) 
+		{
+			if (time() >= strtotime('01/01/'.$y)) {
+				$periodlist[] = JHTMLSelect::option('c_'.$y, JText::_('COM_WHATSNEW_OPT_CALENDAR_YEAR').' '.$y);
+			}
+		}
+		
+		$view = new JView( array('name'=>'results') );
+		$view->title = JText::_(strtoupper($this->_option)).': '.$this->_jtext($period);
+		$view->option = $this->_option;
+		$view->period = $period;
+		$view->periodlist = $periodlist;
+		$view->totals = $totals;
+		$view->total = $total;
+		$view->results = $results;
+		$view->cats = $cats;
+		$view->active = $active;
+		$view->start = $start;
+		$view->limit = $limit;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -356,11 +395,11 @@ class WhatsnewController extends JObject
 		}
 
 		// Build some basic RSS document information
-		$doc->title = $jconfig->getValue('config.sitename').' - '.JText::_('WHATSNEW_RSS_TITLE').': '.$period;
+		$doc->title = $jconfig->getValue('config.sitename').' - '.JText::_('COM_WHATSNEW_RSS_TITLE').': '.$period;
 		$doc->title .= ($area) ? ': '.$area : '';
-		$doc->description = JText::sprintf('WHATSNEW_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'));
-		$doc->copyright = JText::sprintf('WHATSNEW_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category = JText::_('WHATSNEW_RSS_CATEGORY');
+		$doc->description = JText::sprintf('COM_WHATSNEW_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'));
+		$doc->copyright = JText::sprintf('COM_WHATSNEW_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category = JText::_('COM_WHATSNEW_RSS_CATEGORY');
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
@@ -383,7 +422,7 @@ class WhatsnewController extends JObject
 				$link = JRoute::_($row->href);
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(WhatsnewHtml::cleanText(stripslashes($row->text)));
+				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)));
 				$author = '';
 				@$date = ( $row->publis_up ? date( 'r', strtotime($row->publish_up) ) : '' );
 
@@ -427,6 +466,38 @@ class WhatsnewController extends JObject
 	//----------------------------------------------------------
 	// Private functions
 	//----------------------------------------------------------
+	
+	private function _jtext($period) 
+	{
+		switch ($period)
+		{
+			case 'week':    return JText::_('COM_WHATSNEW_OPT_WEEK');    break;
+			case 'month':   return JText::_('COM_WHATSNEW_OPT_MONTH');   break;
+			case 'quarter': return JText::_('COM_WHATSNEW_OPT_QUARTER'); break;
+			case 'year':    return JText::_('COM_WHATSNEW_OPT_YEAR');    break;
+			default:
+				$thisyear = strftime("%Y",time());
+				for ($y = $thisyear; $y >= 2002; $y--) 
+				{
+					if (time() >= strtotime('10/1/'.$y)) {
+						if ($y == $period) {
+							return JText::_('COM_WHATSNEW_OPT_FISCAL_YEAR').' '.$y;
+						}
+					}
+				}
+				for ($y = $thisyear; $y >= 2002; $y--) 
+				{
+					if (time() >= strtotime('01/01/'.$y)) {
+						if ('c_'.$y == $period) {
+							return JText::_('COM_WHATSNEW_OPT_CALENDAR_YEAR').' '.$y;
+						}
+					}
+				}
+			break;
+		}
+	}
+	
+	//-----------
 	
 	private function _getStyles($option='') 
 	{

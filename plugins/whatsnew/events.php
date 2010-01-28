@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_whatsnew_events' );
 
 class plgWhatsnewEvents extends JPlugin
 {
-	function plgWhatsnewEvents(&$subject, $config)
+	public function plgWhatsnewEvents(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,20 +45,18 @@ class plgWhatsnewEvents extends JPlugin
 	
 	//-----------
 
-	function &onWhatsnewAreas() 
+	public function &onWhatsnewAreas() 
 	{
 		$areas = array(
-			'events' => JText::_('EVENTS')
+			'events' => JText::_('PLG_WHATSNEW_EVENTS')
 		);
 		return $areas;
 	}
 
 	//-----------
 
-	function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
+	public function onWhatsnew( $period, $limit=0, $limitstart=0, $areas=null, $tagids=array() )
 	{
-		$database =& JFactory::getDBO();
-
 		if (is_array( $areas ) && $limit) {
 			if (!array_intersect( $areas, $this->onWhatsnewAreas() ) && !array_intersect( $areas, array_keys( $this->onWhatsnewAreas() ) )) {
 				return array();
@@ -69,6 +67,8 @@ class plgWhatsnewEvents extends JPlugin
 		if (!is_object($period)) {
 			return array();
 		}
+
+		$database =& JFactory::getDBO();
 
 		// Build the query
 		$e_count = "SELECT count(DISTINCT e.id)";
@@ -115,7 +115,7 @@ class plgWhatsnewEvents extends JPlugin
 	// uncomment to use
 	//----------------------------------------------------------
 
-	function documents() 
+	public function documents() 
 	{
 		ximport('xdocument');
 		XDocument::addComponentStylesheet('com_events');
@@ -123,14 +123,14 @@ class plgWhatsnewEvents extends JPlugin
 	
 	//-----------
 	
-	/*function before()
+	/*public function before()
 	{
 		// ...
 	}*/
 	
 	//-----------
 	
-	function out( $row, $period )
+	public function out( $row, $period )
 	{
 		$month = JHTML::_('date', $row->publish_up, '%b');
 		$day = JHTML::_('date', $row->publish_up, '%d');
@@ -145,15 +145,15 @@ class plgWhatsnewEvents extends JPlugin
 		}
 		
 		// Start building the HTML
-		$html  = t.'<li class="event">'.n;
-		$html .= t.t.'<p class="event-date"><span class="month">'.$month.'</span> <span class="day">'.$day.'</span> <span class="year">'.$year.'</span></p>'.n;
-		$html .= t.t.'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'.n;
+		$html  = "\t".'<li class="event">'."\n";
+		$html .= "\t\t".'<p class="event-date"><span class="month">'.$month.'</span> <span class="day">'.$day.'</span> <span class="year">'.$year.'</span></p>'."\n";
+		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 		if ($row->itext) {
 			$row->itext = str_replace('[[BR]]', '', $row->itext);
-			$html .= t.t.'<p>&#133; '.WhatsnewHtml::cleanText(stripslashes($row->itext),200).'</p>'.n;
+			$html .= "\t\t".'<p>&#133; '.WhatsnewHtml::cleanText(stripslashes($row->itext),200).'</p>'."\n";
 		}
-		$html .= t.t.'<p class="href">'.$juri->base().$row->href.'</p>'.n;
-		$html .= t.'</li>'.n;
+		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
+		$html .= "\t".'</li>'."\n";
 		
 		// Return output
 		return $html;
@@ -161,7 +161,7 @@ class plgWhatsnewEvents extends JPlugin
 	
 	//-----------
 	
-	/*function after()
+	/*public function after()
 	{
 		// ...
 	}*/
