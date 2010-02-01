@@ -71,7 +71,7 @@ class plgMembersResume extends JPlugin
 	
 	//-----------
 
-	function isEmployer ( $member='', $authorized)
+	function isEmployer ( $member='', $authorized = '')
 	{		
 		$juser 	  =& JFactory::getUser();
 		$database =& JFactory::getDBO();
@@ -546,7 +546,8 @@ class plgMembersResume extends JPlugin
 			else {
 				$out .='<a class="resume" href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume'.a.'action=download').'"> ';
 				$out .= $title;
-				$out .= '</a>'.' <span class="filename">('.$resume->filename.')</span>';
+				$out .= '</a>';
+				//$out .= ' <span class="filename">('.$resume->filename.')</span>';
 			}
 				
 			$out .= '</td>'.n;
@@ -684,7 +685,7 @@ class plgMembersResume extends JPlugin
 	public function build_path( $uid ) 
 	{		
 		// Get the configured upload path
-		$base_path = $this->_params->get('uploadpath');
+		$base_path = $this->_params->get('webpath');
 		if ($base_path) {
 			// Make sure the path doesn't end with a slash
 			if (substr($base_path, -1) == DS) { 
@@ -699,6 +700,7 @@ class plgMembersResume extends JPlugin
 			$base_path = DS.'site'.DS.'members';
 		}
 		
+		ximport('fileuploadutils');
 		$dir  = FileUploadUtils::niceidformat( $uid );
 		
 		$listdir = $base_path.DS.$dir;
@@ -741,6 +743,12 @@ class plgMembersResume extends JPlugin
 		$title = JRequest::getVar( 'title', '' );
 		$default_title = $member->get('firstname') ? $member->get('firstname').' '.$member->get('lastname').' '.ucfirst(JText::_('Resume')) : $member->get('name').' '.ucfirst(JText::_('Resume'));
 		$path = JPATH_ROOT.$path;
+		
+		// Replace file title with user name		
+		$file_ext      = substr($file['name'], strripos($file['name'], '.'));
+		$file['name'] = $member->get('firstname') ? $member->get('firstname').' '.$member->get('lastname').' '.ucfirst(JText::_('Resume')) : $member->get('name').' '.ucfirst(JText::_('Resume'));
+		$file['name'] .= $file_ext;
+		
 		
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
@@ -981,7 +989,9 @@ class plgMembersResume extends JPlugin
 			return;
 		}	
 		
-		$default_title = $member->get('firstname') ? $member->get('firstname').' '.$member->get('lastname').' '.ucfirst(JText::_('Resume')) : $member->get('name').' '.ucfirst(JText::_('Resume'));	
+		// Use user name as file name
+		$default_title = $member->get('firstname') ? $member->get('firstname').' '.$member->get('lastname').' '.ucfirst(JText::_('Resume')) : $member->get('name').' '.ucfirst(JText::_('Resume'));
+		$default_title .= substr($resume->filename, strripos($resume->filename, '.'));;	
 		
 		// Initiate a new content server and serve up the file
 		$xserver = new XContentServer();
