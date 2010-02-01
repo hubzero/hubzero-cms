@@ -68,7 +68,7 @@ class ToolsModelTools extends JModel
 			$query = "SELECT v.id, v.instance, v.toolname, v.title, MAX(v.revision), v.toolaccess, v.codeaccess, v.state 
 						FROM #__tool_version as v 
 						WHERE v.toolname IN ('".$aliases."') 
-						AND state='1' 
+						AND (state='1' OR state='3')
 						GROUP BY toolname
 						ORDER BY v.toolname ASC";
 			$database->setQuery( $query );
