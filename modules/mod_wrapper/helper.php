@@ -39,7 +39,7 @@ class modWrapperHelper
 				$url = 'http://'.$url;
 			}
 			else {
-				$url = $url;
+				//$url = $url;
 			}
 		}
 

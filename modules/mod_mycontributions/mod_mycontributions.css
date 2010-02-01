@@ -16,6 +16,34 @@
 */
 
 /* Contribution status */
+
+	div.draggable .compactlist li.draft {
+		background: url("images/draft.gif") 0.7em 1em  no-repeat;
+		}
+	
+	div.draggable .compactlist li.published {
+		background: url("images/check.gif") 0.7em 1em  no-repeat;
+		}
+	div.draggable .compactlist li.pending {
+		background: url("images/pending.gif") 0.7em 1em  no-repeat;
+		}
+	div.draggable .compactlist li span.under {
+		font-size: x-small;
+		display:block;
+		margin:0;
+		}
+	div.draggable .compactlist li span.under span, div.draggable .compactlist li span.extra span {
+		font-size: x-small;
+		display:block;
+		margin:0;
+		display: inline;
+		position: relative;
+		top: 0;
+		right: 0;
+		}
+		
+	/*-------------------------------*/		
+
 	div.draggable .expandedlist li.draft {
 		background: url("images/draft.gif") 0.7em 1em  no-repeat;
 		}
@@ -26,20 +54,18 @@
 		background: url("images/pending.gif") 0.7em 1em  no-repeat;
 		}
  
-	div.draggable .expandedlist li span.extra {
+	div.draggable .compactlist li span.extra {
 		float: right;
 		width: 140px;
 		margin: 0;
-		margin-left: -2em;
 		padding: 0;
-		margin-top: -3em;
 		vertical-align: middle;
 		/*border-left: 1px solid #ccc;*/
 		padding-left: 0.5em;
 		margin-right: -1em;
 		text-align: right;
 	}
-	div.draggable .expandedlist li span.item_new {
+	div.draggable .compactlist li span.item_new {
 		color:#FF0000;
 		background: url("images/attention.gif") center right no-repeat;
 		text-transform: uppercase;
@@ -52,8 +78,8 @@
 		padding-right: 8px;
 	}
 	
-	div.draggable .expandedlist li span.status_installed a,
-	div.draggable .expandedlist li span.status_created a  {
+	div.draggable .compactlist li span.status_installed a,
+	div.draggable .compactlist li span.status_created a  {
 		color: #FF0000;
 		background: url("images/attention.gif") right no-repeat;
 		padding-right: 8px;
@@ -61,26 +87,26 @@
 		font-weight: bold;
 		border: none;
 	}
-	div.draggable .expandedlist li span.status_published a {
+	div.draggable .compactlist li span.status_published a {
 		color: #009900;
 		font-weight: bold;
 		border: none;
 	}
-	div.draggable .expandedlist li span.status_registered a,
-	div.draggable .expandedlist li span.status_approved a, 
-	div.draggable .expandedlist li span.status_uploaded a, 
-	div.draggable .expandedlist li span.status_updated a, 	
-	div.draggable .expandedlist li span.status_abandoned a,
-	div.draggable .expandedlist li span.status_retired a {
+	div.draggable .compactlist li span.status_registered a,
+	div.draggable .compactlist li span.status_approved a, 
+	div.draggable .compactlist li span.status_uploaded a, 
+	div.draggable .compactlist li span.status_updated a, 	
+	div.draggable .compactlist li span.status_abandoned a,
+	div.draggable .compactlist li span.status_retired a {
 		color: #666666;
 		font-weight: bold;
 		border: none;
 	}
 	
-	div.draggable .expandedlist li span.item_q, 
-	div.draggable .expandedlist li span.item_w, 
-	div.draggable .expandedlist li span.item_s, 
-	div.draggable .expandedlist li span.item_empty {
+	div.draggable .compactlist li span.item_q, 
+	div.draggable .compactlist li span.item_w, 
+	div.draggable .compactlist li span.item_s, 
+	div.draggable .compactlist li span.item_empty {
 		margin: 0 0 0 0;
 		border: none;
 		float: left;
@@ -90,26 +116,26 @@
 		display: block;		
 		
 	}
-	div.draggable .expandedlist li span.item_q a:hover, 
-	div.draggable .expandedlist li span.item_w a:hover, 
-	div.draggable .expandedlist li span.item_s a:hover {
+	div.draggable .compactlist li span.item_q a:hover, 
+	div.draggable .compactlist li span.item_w a:hover, 
+	div.draggable .compactlist li span.item_s a:hover {
 		border: none;
 		background-position: 0 -19px;
 	}
-	div.draggable .expandedlist li span.item_q a {
+	div.draggable .compactlist li span.item_q a {
 		background: url("images/qanda.gif") 0 0 no-repeat;
 		padding-left: 17px;
 	}
-	div.draggable .expandedlist li span.item_w a {
+	div.draggable .compactlist li span.item_w a {
 		background: url("images/wishlist.gif") 0 0 no-repeat;
 		padding-left: 17px;
 	}
-	div.draggable .expandedlist li span.item_s a {
+	div.draggable .compactlist li span.item_s a {
 		background: url("images/warning.gif") 0 0 no-repeat;
 		padding-left: 17px;
 	}
 	
-	div.draggable .expandedlist li span.hasitems a {
+	div.draggable .compactlist li span.hasitems a {
 	 	background-position:-30px 0;
 		color:#FF0000;
 	}

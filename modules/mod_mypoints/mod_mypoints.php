@@ -28,72 +28,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 //-------------------------------------------------------------
 // Joomla module
 // "My Points"
-//    This module displays a point total and latest transations 
+//    This module displays a point total and latest transactions 
 //-------------------------------------------------------------
 
-class modMyPoints
-{
-	private $attributes = array();
-
-	//-----------
-
-	public function __construct( $params ) 
-	{
-		$this->params = $params;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->attributes[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
-		}
-	}
-
-	//-----------
-	
-	public function display() 
-	{
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
-		
-		$params =& $this->params;
-		$this->moduleclass = $params->get( 'moduleclass' );
-		$limit = intval( $params->get( 'limit' ) );
-		$limit = ($limit) ? $limit : 10;
-		$this->limit = $limit;
-		$this->error = false;
-		
-		// Check for the existence of required tables that should be
-		// installed with the com_support component
-		$database->setQuery("SHOW TABLES");
-		$tables = $database->loadResultArray();
-		
-		if ($tables && array_search($database->_table_prefix.'users_points', $tables)===false) {
-			// MEssages table not found!
-			$this->error = true;
-		} else {
-			// Find the user's most recent support tickets
-			ximport('bankaccount');
-
-			$BTL  = new BankTeller( $database, $juser->get('id') );
-			$this->summary = $BTL->summary();
-			$this->history = $BTL->history($limit);
-
-			// Push the module CSS to the template
-			ximport('xdocument');
-			XDocument::addModuleStyleSheet('mod_mypoints');
-		}
-	}
-}
+// Include the logic only once
+require_once (dirname(__FILE__).DS.'helper.php');
 
 //-------------------------------------------------------------
 

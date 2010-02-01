@@ -27,71 +27,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-class modXWhosonline 
-{
-	private $attributes = array();
-
-	//-----------
-
-	public function __construct( $params ) 
-	{
-		$this->params = $params;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->attributes[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
-		}
-	}
-
-	//-----------
-
-	public function display() 
-	{
-		$database =& JFactory::getDBO();
-		
-		$params  =& $this->params;
-		$this->online = $params->get( 'online' );
-		$this->users  = $params->get( 'users' );
-		$moduleclass_sfx = $params->get( 'moduleclass_sfx' );
-
-		$juser =& JFactory::getUser();
-		$this->admin = $juser->authorize('mod_xwhosonline', 'manage');
-
-		if ($this->online) {
-			$query1 = "SELECT COUNT(DISTINCT ip) AS guest_online FROM #__session WHERE guest=1 AND (usertype is NULL OR usertype='')";
-			$database->setQuery($query1);
-			$this->guest_array = $database->loadResult();
-
-			$query2 = "SELECT COUNT(DISTINCT username) AS user_online FROM #__session WHERE guest=0 AND usertype <> 'administrator' AND usertype <> 'superadministrator'";
-			$database->setQuery($query2);
-			$this->user_array = $database->loadResult();
-		} else {
-			$this->guest_array = null;
-			$this->user_array = null;
-		}
-
-		if ($this->users) {
-			$query = "SELECT DISTINCT a.username"
-					."\n FROM #__session AS a"
-					."\n WHERE (a.guest=0)";
-			$database->setQuery($query);
-			$this->rows = $database->loadObjectList();
-		} else {
-			$this->rows = null;
-		}
-	}
-}
+// Include the logic only once
+require_once (dirname(__FILE__).DS.'helper.php');
 
 // Editor usertype check
 $jacl =& JFactory::getACL();

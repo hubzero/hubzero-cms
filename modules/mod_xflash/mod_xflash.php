@@ -28,49 +28,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 header ("Cache-Control: cache, must-revalidate");
 header ("Pragma: public");
 
-class modXFlash
-{
-	private $params;
-
-	//-----------
-
-	public function __construct( $params ) 
-	{
-		$this->params = $params;
-	}
-
-	//-----------
-	
-	public function display() 
-	{
-		$params =& $this->params;
-		$noflash_link = $params->get('noflash_link');
-
-		ximport('xdocument');
-		
-		$dynamic = ($params->get('dynamic')) ? $params->get('dynamic') : 0 ;
-
-		if($dynamic) {
-			$noflashfile = $params->get('noflash_path');
-			$swffile = $params->get('banner_path');
-		}
-		else {
-			$noflashfile = XDocument::getModuleImage('mod_xflash','noflash.jpg');
-			$swffile = rtrim( XDocument::getModuleImage('mod_xflash', 'flashrotation.swf'), '.swf');
-		}
-
-		$document =& JFactory::getDocument();
-		//$document->addScript(JURI::base().'modules/mod_xflash/mod_xflash.js');
-		$document->addScript('modules/mod_xflash/mod_xflash.js');
-		$document->addScriptDeclaration('HUB.ModXflash.admin="0"; HUB.ModXflash.src="'.$swffile.'";');
-
-?>
-			<div id="xflash-container">
-				<?php if ($noflash_link) { ?><a href="<?php echo $noflash_link; ?>"><?php } ?><img src="<? echo $noflashfile; ?>" width="600" height="230" id="noflashimg" alt="" /><?php if ($noflash_link) { ?></a><?php } ?>
-			</div>
-<?php
-	}
-}
+// Include the logic only once
+require_once (dirname(__FILE__).DS.'helper.php');
 
 //-------------------------------------------------------------
 

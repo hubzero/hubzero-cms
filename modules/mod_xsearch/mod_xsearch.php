@@ -25,43 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class modXSearch
-{
-	private $attributes = array();
-
-	//-----------
-
-	public function __construct( $params ) 
-	{
-		$this->params = $params;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->attributes[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
-		}
-	}
-
-	//-----------
-	
-	public function display()
-	{
-		$params =& $this->params;
-		$this->width  = intval( $params->get( 'width', 20 ) );
-		$this->text   = $params->get( 'text', JText::_('SEARCH_BOX') );
-		$this->clasfx = $params->get( 'moduleclass_sfx' );
-	}
-}
+// Include the logic only once
+require_once (dirname(__FILE__).DS.'helper.php');
 
 //-------------------------------------------------------------
 

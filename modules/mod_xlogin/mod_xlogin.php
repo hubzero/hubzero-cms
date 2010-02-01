@@ -29,77 +29,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('misc_func');
 
-class modXLogin 
-{
-	var $_objects = array();
-	var $debug = 0;
-
-	//-----------
-
-	function setObject($name, &$object)
-	{
-		$this->_objects[$name] =& $object;
-	}
-
-	//-----------
-
-	function &getObject($name)
-	{
-		return $this->_objects[$name];
-	}
-
-	function display()
-	{
-		$xhub = &XFactory::getHub();
-
-		if ( !isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off' )
-		{
-			$xhub->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ); 
-			die('insecure connection and redirection failed');
-		}
-
-		$plugins = JPluginHelper::getPlugin('xauthentication');
-
-		$realms = array();
-
-		foreach ($plugins as $plugin)
-		{
-			$params = new JParameter($plugin->params);
-
-			$realm = $params->get('domain');
-
-			if (empty($realm))
-				$realm = $plugin->name;
-
-			if (!in_array($realm, $realms))
-				$realms[$plugin->name] = $realm;
-		}
-
-		if (count($realms) == 0) 
-			return JError::raiseError( '500', 'xHUB Configuration Error: No XAuthentication Plugins Enabled.'); 
-
-		$hubShortName = $xhub->getCfg('hubShortName');
-
-		$return = base64_decode( JRequest::getVar('return', '', 'method', 'base64') );
-
-		if(empty($return)) 
-			$return = JRequest::getVar( 'REQUEST_URI', null, 'server' );
-
-		if ($return == '/login')
-			$return = '/';
-
-		if (count($realms) == 1) 
-		{
-			$realmName = current($realms);
-			$realm = key($realms);
-			include $xhub->getComponentViewFilename('com_hub', 'login');
-		}
-		else
-			include $xhub->getComponentViewFilename('com_hub', 'realm');
-	}
-}
+// Include the logic only once
+require_once (dirname(__FILE__).DS.'helper.php');
 
 $modxlogin = new modXLogin();
 $modxlogin->setObject('params', $params);
+
 require( JModuleHelper::getLayoutPath('mod_xlogin') );
 ?>
