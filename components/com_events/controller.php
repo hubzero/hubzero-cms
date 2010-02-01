@@ -187,20 +187,21 @@ class EventsController extends JObject
 				//$month = $pmonth;
 			}
 		}
-		
+
 		// Find the date of the last event
 		$row = $ee->getLast();
 		if ($row) {
+			$thisyear = strftime("%Y", time()+($this->offset*60*60));
 			$fyear = substr($row,0,4);
 			$fmonth = substr($row,4,2);
-			if ($year > $fyear) {
-				$year = $fyear;
+			if ($year > $fyear && $year > $thisyear) {
+				$year = ($fyear > $thisyear) ? $fyear : $thisyear;
 			}
 			if ($month > $fmonth) {
 				//$month = $fmonth;
 			}
 		}
-		
+
 		$this->year  = $year;
 		$this->month = $month;
 		$this->day   = $day;
