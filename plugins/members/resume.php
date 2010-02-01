@@ -1006,12 +1006,10 @@ class plgMembersResume extends JPlugin
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 		$xserver->saveas(stripslashes($resume->title));
-		$xserver->serve_attachment($file, stripslashes($default_title), false); // @TODO fix byte range support
-		$xserver->serve();	
+		$result = $xserver->serve_attachment($file, stripslashes($default_title), false); // @TODO fix byte range support
 
-		// Should only get here on error
-		JError::raiseError( 404, JText::_('SERVER_ERROR') );
-		return;
+ 		if (!$result)
+               JError::raiseError( 404, JText::_('SERVER_ERROR') );
 	}
 		
 	//-------------------
