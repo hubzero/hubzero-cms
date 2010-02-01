@@ -119,17 +119,17 @@ class XRouter extends JRouter
 						return $vars;
 				}
 
-				if ($vars['option'] == 'com_myaccount')
+				/*if ($vars['option'] == 'com_myaccount')
 				{
 					if ($vars['task'] == 'register')
 						return $vars;
-				}
+				}*/
 
 				if ($uri->getPath() != 'legal/terms')
 				{
 					$vars = array();
-					$vars['option'] = 'com_hub';
-					$vars['view'] = 'registration';
+					$vars['option'] = 'com_register';
+					//$vars['view'] = 'registration';
 					$vars['task'] = 'update';
 					$vars['act'] = '';
 				
@@ -153,8 +153,8 @@ class XRouter extends JRouter
 				if ($vars['option'] == 'com_hub')
 				{
 					if (!empty($vars['task']))
-					if ( ($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm') )
-						return $vars;
+					//if ( ($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm') )
+					//	return $vars;
 					if ( ($vars['task'] == 'logout') )
 						return $vars;
 				}
@@ -163,11 +163,17 @@ class XRouter extends JRouter
 					if ( ($vars['task'] == 'logout') )
 						return $vars;
 				}
+				else if ($vars['option'] == 'com_register')
+				{
+					if (!empty($vars['task']))
+						if ( ($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm') )
+							return $vars;
+				}
 
 				$vars = array();
 				//$vars['option'] = 'com_email';
-				$vars['option'] = 'com_hub';
-				$vars['view'] = 'registration';
+				$vars['option'] = 'com_register';
+				//$vars['view'] = 'registration';
 				$vars['task'] = 'unconfirmed';
 
 				$this->setVars($vars);
@@ -333,7 +339,8 @@ class XRouter extends JRouter
 			{
 				$vars['option'] = 'com_hub';
 			}
-			else if ($route == 'register' || substr($route, 0, strlen('registration')) == 'registration' || $route == 'lostusername' || $route == 'lostpassword')
+			//else if ($route == 'register' || substr($route, 0, strlen('registration')) == 'registration' || $route == 'lostusername' || $route == 'lostpassword')
+			else if ($route == 'lostusername' || $route == 'lostpassword')
 			{
 				$vars['option'] = 'com_hub';
 			}
