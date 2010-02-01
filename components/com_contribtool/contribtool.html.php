@@ -561,12 +561,13 @@ class ContribtoolHtml
 	public function writeApproval($active_stage) 
 	{
 	
-		$stages = array(JText::_('CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('CONTRIBTOOL_STEP_CONFIRM_LICENSE'),JText::_('CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
+		//$stages = array(JText::_('CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('CONTRIBTOOL_STEP_APPEND_NOTES'), JText::_('CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
+		$stages = array(JText::_('CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
 		$key = array_keys($stages, $active_stage);
-		
+	
 		$html = "\t\t".'<div class="clear"></div>'."\n";
 		$html .= "\t\t".'<ol id="steps">'."\n";
-		$html .= "\t\t".' <li style="font-size: 1em;text-transform: uppercase;color: #666;">'.JText::_('CONTRIBTOOL_APPROVE_PUBLICATION').':</li>'."\n";
+		$html .= "\t\t".' <li>'.JText::_('CONTRIBTOOL_APPROVE_PUBLICATION').':</li>'."\n";
 		
 		for ($i=0, $n=count( $stages ); $i < $n; $i++) 
 			{
@@ -576,7 +577,7 @@ class ContribtoolHtml
 					$html .= ' class="active"';
 					
 				} 
-				if ($i< $key) {				
+				else if (count($key) == 0 or $i > $key[0]) {				
 					$html .= ' class="future"';
 				}
 	
@@ -617,12 +618,7 @@ class ContribtoolHtml
 					$html .= ' class="active"';
 					
 				} 
-				/*
-				if ($i< $key) {				
-					$html .= ' class="future"';
-				}
-				*/
-	
+		
 				$html .= '>';
 				if($version=='dev' && $i!=$key && ($i+1)!= count( $stages )){
 				$html .='<a href="'.JRoute::_('index.php?option=com_contribtool&amp;task=start&amp;step='.($i+1).'&amp;rid='.$rid).'">'.$stages[$i].'</a>';
@@ -688,7 +684,11 @@ class ContribtoolHtml
 				$html .= ' class="active"';
 					
 			} 
-			if ($i< $key[0]) {				
+			/*if ($i< $key[0]) {				
+				$html .= ' class="future"';
+			}*/
+			
+			else if (count($key) == 0 or $i > $key[0]) {				
 				$html .= ' class="future"';
 			}
 	
@@ -914,7 +914,7 @@ class ContribtoolHtml
                    <li class="last"><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=create'); ?>" class="add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
              </ul>
           </div><!-- / #content-header-extra -->
-        
+         <div class="main section">   
         <?php
 		
 		// write header
@@ -939,19 +939,63 @@ class ContribtoolHtml
                                     <p><span class="heading"><?php echo JText::_('SCREEN_SIZE'); ?>: </span><span class="desc"> <?php echo $status['vncGeometry']; ?></span></p>
                                     <p><span class="heading"><?php echo JText::_('DEVELOPERS'); ?>: </span><span class="desc"> <?php echo ContribToolHtml::getDevTeam($status['developers']); ?></span></p>
                                     <p><span class="heading"><?php echo JText::_('AUTHORS'); ?>: </span><span class="desc"> <?php echo ContribToolHtml::getDevTeam($status['authors']); ?></span></p>
-                                    <p><a href="/tools/<?php echo $status['toolname']; ?>"><?php echo JText::_('PREVIEW_RES_PAGE'); ?></a></p>
+                                    <p><a href="/tools/<?php echo $status['toolname'].'?rev=dev'; ?>"><?php echo JText::_('PREVIEW_RES_PAGE'); ?></a></p>
                             </div>
                         </div>
                         <div class="two columns second">
                           <h4><?php echo JText::_('TOOL_LICENSE'); ?> <span class="actionlink">[
                           <a href="index.php?option=<?php echo $option ?>&amp;task=license&amp;toolid=<?php echo $status['toolid'] ?>&amp;action=confirm"><?php echo JText::_('EDIT'); ?></a>]</span></h4>
-                          <pre style="white-space: pre-wrap;_white-space: pre;word-wrap: break-word;white-space: -moz-pre-wrap;height:300px;overflow:scroll;"><?php echo stripslashes($status['license']); ?></pre>           
+                          <pre class="licensetxt"><?php echo stripslashes($status['license']); ?></pre>           
                         </div>
                         <div class="moveon"><input type="submit"  value="<?php echo JText::_('APPROVE_THIS_TOOL'); ?>" /></div>  
                        </fieldset>
         </form>  
 		<div class="clear"></div>
+        </div>
     <?php		
+	}
+	
+	//------------
+
+	public function writeNotesArea($notes, $option, $type='', $edititem = 0, $addnew = 1) 
+	{
+	
+		$out ='';
+		$i = 0;	
+		if(count($notes) > 0 ) {
+			$out .= '<ul class="features">'.n;
+			for ($i=0, $n=count( $notes ); $i < $n; $i++) {
+				$note = $notes[$i];
+				$out .= ' <li>'.n;
+				$out .= '  <span><span>'.JText::_('EDIT').'</span></span>'.n;
+				$out .= $note->note;
+				$out .= ' </li>'.n;
+			}
+			$out .= '</ul>'.n;
+		}
+		
+		if ($addnew) {
+			$out .= ContribtoolHtml::addNoteArea($i, $option, $type);
+		}
+        
+		return $out;   
+	
+	}
+	
+	//------------
+
+	public function addNoteArea($i, $option, $type = 'item') 
+	{	
+		$out  = ''; 
+	 	$out .= '<label>'.n;
+		$out .= ' <span class="selectgroup editnote">'.n;
+		$out .= '   <textarea name="'.$type.'[]" id="'.$type.$i.'"  rows="6" cols="35"></textarea>'.n;
+        $out .= '   <span class="extras"><span></span></span>'.n;
+        $out .= ' </span>'.n;
+		$out .= '</label>'.n;
+		
+		return $out;
+	
 	}
 	
 	//------------
@@ -984,7 +1028,7 @@ class ContribtoolHtml
                    <li class="last"><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=create'); ?>" class="add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
              </ul>
           </div><!-- / #content-header-extra -->
-        
+         <div class="main section">   
         <?php
 		
 		$templates = ContribtoolHtml::formSelect('templates', 'templates',  $licenseChoices, $license_choice['template'],'shifted','');
@@ -1001,11 +1045,11 @@ class ContribtoolHtml
 						   <label><?php echo JText::_('CODE_ACCESS'); ?>: </label>
 							<?php echo $choices ?>
 							<div id="lic_cl"><?php echo JText::_('LICENSE'); ?>:</div>
-							 <div style="margin-top:2em;" >
-								<textarea name="license" cols="50" rows="15" id="license" style="width:100%;"><?php echo stripslashes($license_choice['text']); ?></textarea>
+							 <div class="licinput" >
+								<textarea name="license" cols="50" rows="15" id="license"><?php echo stripslashes($license_choice['text']); ?></textarea>
 									 <?php if($licenses) {
 										foreach ($licenses as $l) {
-											echo '<input type="hidden" name="'.$l->name.'" id="'.$l->name.'" value="'.stripslashes($l->text).'" /> '.n; } 
+											echo '<input type="hidden" name="'.$l->name.'" id="'.$l->name.'" value="'.stripslashes(htmlentities($l->text)).'" /> '.n; } 
 									 } ?>
 							<input type="hidden" name="option" value="<?php echo $option ?>" />   
 							<input type="hidden" name="task" value="savelicense" />
@@ -1013,13 +1057,13 @@ class ContribtoolHtml
 							<input type="hidden" name="newstate" value="<?php echo $newstate ?>" />
 							<input type="hidden" name="action" value="<?php echo $action ?>" />
 							<input type="hidden" name="id" value="<?php echo $status['toolid'] ?>" />
-							<input type="hidden" name="toolname" value="<?php echo $toolname ?>" />
+							<input type="hidden" name="toolname" value="<?php echo $status['toolname'] ?>" />
 							</div>  
 							<div id="lic" >
 							<label><?php echo JText::_('LICENSE_TEMPLATE'); ?>: </label>
 							<?php echo $templates ?>
 							</div>     
-							<div id="legendnotes"><p style="padding-bottom:2em;border-bottom:1px solid #ccc;margin-bottom:0.5em;"><?php echo JText::_('LICENSE_TEMPLATE_TIP'); ?>:
+							<div id="legendnotes"><p><?php echo JText::_('LICENSE_TEMPLATE_TIP'); ?>:
 							<br />[<?php echo JText::_('YEAR'); ?>]<br />[<?php echo JText::_('OWNER'); ?>]<br />[<?php echo JText::_('ORGANIZATION'); ?>]<br />[<?php echo strtoupper(JText::_('ONE_LINE_DESCRIPTION')); ?>]<br />[<?php echo JText::_('URL'); ?>]</p>
 							<label><input type="checkbox" name="authorize" value="1" /> <?php echo JText::_('LICENSE_CERTIFY').' <strong>'.JText::_('OPEN_SOURCE').'</strong> '.JText::_('LICENSE_UNDER_SPECIFIED'); ?></label></div> 
 							<div class="moveon"><input type="submit"  value="<?php echo $submitlabel ?>" /></div>                             
@@ -1033,6 +1077,7 @@ class ContribtoolHtml
 				<p class="closedsource"> <strong><?php echo ucfirst(JText::_('CLOSED_SOURCE')); ?>  </strong><br /><?php echo JText::_('CONTRIBTOOL_LICENSE_CLOSED_TXT'); ?> </p>           
 			</div>
 			<div class="clear"></div>
+            </div>
 		<?php
 	}
 	
@@ -1073,7 +1118,7 @@ class ContribtoolHtml
 				<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=create'); ?>" class="add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 			</ul>
 		</div><!-- / #content-header-extra -->
-        
+     <div class="main section">   
      <?php 
 		($status['published'] != 1 && !$status['version']) ?  $hint = '1.0' :$hint = '' ; // if tool is under dev and no version was specified before
 		$statuspath = JRoute::_('index.php?option='.$option.a.'task=status'.a.'toolid='.$status['toolid']);
@@ -1092,7 +1137,7 @@ class ContribtoolHtml
 		
 		
 	?> 
-		<div class="two columns first">	
+        <div class="two columns first">	
 		<?php 
 		if ($error) { echo ContribtoolHtml::error( $error ); }  
 		if($action != 'dev' && $status['state']!=ContribtoolHtml::getStatusNum('Published')) {
@@ -1193,6 +1238,7 @@ class ContribtoolHtml
 			<p><?php echo JText::_('CONTRIBTOOL_VERSION_HOW_DECIDE_ANSWER_THREE'); ?></p>
 		</div>
 		<div class="clear"></div>
+</div>
 		<?php
 	
 	}	
@@ -1257,7 +1303,7 @@ class ContribtoolHtml
 				<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=create'); ?>" class="add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 			</ul>
 		</div><!-- / #content-header-extra -->
-		
+		<div class="main section">  
 		<?php
 			if(ContribtoolHtml::toolActive($status['state'])) {
 				ContribtoolHtml::writeStates($state, $statuspath);
@@ -1474,6 +1520,7 @@ class ContribtoolHtml
             </div>
         </div>
         <div class="clear"></div>
+        </div>
         <?php 			   	
 	  	} //end if no error
     }
@@ -1753,7 +1800,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			</div>
 			<fieldset>
 				<h3><?php echo JText::_('ATTACH_ATTACHMENTS'); ?></h3>
-				<iframe width="100%" height="200" border="0" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $option; ?>&amp;task=attach&amp;rid=<?php echo $rid; ?>&amp;no_html=1&amp;type=7&amp;allowupload=<?php echo $allowupload; ?>"></iframe>				
+				<iframe width="100%" height="200" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $option; ?>&amp;task=attach&amp;rid=<?php echo $rid; ?>&amp;no_html=1&amp;type=7&amp;allowupload=<?php echo $allowupload; ?>"></iframe>				
 			</fieldset><div class="clear"></div>
             <div class="explaination">
 				<h4><?php echo JText::_('ATTACH_WHAT_ARE_SCREENSHOTS'); ?></h4>
@@ -1762,7 +1809,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			</div>
 			<fieldset>
 				<h3><?php echo JText::_('ATTACH_SCREENSHOTS'); ?></h3>
-				<iframe width="100%" height="400" border="0" frameborder="0" name="screens" id="screens" src="index.php?option=<?php echo $option; ?>&amp;task=screenshots&amp;rid=<?php echo $rid; ?>&amp;no_html=1&amp;version=<?php echo $version; ?>"></iframe>				
+				<iframe width="100%" height="400" frameborder="0" name="screens" id="screens" src="index.php?option=<?php echo $option; ?>&amp;task=screenshots&amp;rid=<?php echo $rid; ?>&amp;no_html=1&amp;version=<?php echo $version; ?>"></iframe>				
 			</fieldset><div class="clear"></div>
 		<?php
 	}
@@ -1779,7 +1826,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			<fieldset>
 				<h3><?php echo JText::_('AUTHORS_AUTHORS'); ?></h3>
 
-				<iframe width="100%" height="400" border="0" frameborder="0" name="authors" id="authors" src="index2.php?option=<?php echo $option; ?>&amp;task=authors&amp;rid=<?php echo $rid; ?>&amp;no_html=1&amp;version=<?php echo $version ?>"></iframe>
+				<iframe width="100%" height="400" frameborder="0" name="authors" id="authors" src="index2.php?option=<?php echo $option; ?>&amp;task=authors&amp;rid=<?php echo $rid; ?>&amp;no_html=1&amp;version=<?php echo $version ?>"></iframe>
             
 			</fieldset><div class="clear"></div>
 		<?php
