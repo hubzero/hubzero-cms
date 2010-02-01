@@ -73,21 +73,14 @@ class XPollController extends JObject
 			return $this->_data[$property];
 		}
 	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$task = JRequest::getVar( 'task', 'latest' );
-		$this->_task = $task;
-		return $task;
-	}
 	
 	//-----------
 	
 	public function execute()
 	{
-		switch ($this->getTask()) 
+		$this->_task = JRequest::getVar( 'task', 'latest' );
+		
+		switch ($this->_task) 
 		{
 			case 'latest': $this->latest(); break;
 			case 'vote':   $this->vote();   break;
@@ -109,7 +102,7 @@ class XPollController extends JObject
 	
 	//-----------
 	
-	private function getStyles() 
+	private function _getStyles() 
 	{
 		ximport('xdocument');
 		XDocument::addComponentStylesheet($this->_option);
@@ -117,12 +110,54 @@ class XPollController extends JObject
 
 	//-----------
 	
-	private function getScripts()
+	private function _getScripts()
 	{
 		$document =& JFactory::getDocument();
 		if (is_file('components'.DS.$this->_option.DS.$this->_name.'.js')) {
 			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
 		}
+	}
+	
+	//-----------
+
+	private function _buildPathway($poll=null) 
+	{
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option)),
+				'index.php?option='.$this->_option
+			);
+		}
+		if ($this->_task && $this->_task != 'view') {
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+				'index.php?option='.$this->_option.'&task='.$this->_task
+			);
+		}
+		if (is_object($poll)) {
+			$pathway->addItem(
+				stripslashes($poll->title),
+				'index.php?option='.$this->_option.'&task=view&id='.$poll->id
+			);
+		}
+	}
+	
+	//-----------
+	
+	private function _buildTitle($poll=null) 
+	{
+		$this->_title = JText::_(strtoupper($this->_option));
+		if ($this->_task && $this->_task != 'view') {
+			$this->_title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+		}
+		if (is_object($poll)) {
+			$this->_title .= ': '.stripslashes($poll->title);
+		}
+		$document =& JFactory::getDocument();
+		$document->setTitle( $this->_title );
 	}
 	
 	//----------------------------------------------------------
@@ -135,19 +170,8 @@ class XPollController extends JObject
 		$redirect = 1;
 		
 		// Instantiate a view
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'vote') );
 		$view->option = $this->_option;
-
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_option)));
-
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_option)),'index.php?option='.$this->_option);
-		}
 
 		// Incoming poll ID
 		$uid = JRequest::getInt( 'id', 0 );
@@ -188,12 +212,12 @@ class XPollController extends JObject
 		$vote->load( $voteid );
 		$vote->hits++;
 		if (!$vote->check()) {
-			echo XPollHtml::alert( $vote->getError() );
-			exit();
+			JError::raiseError( 500, $vote->getError() );
+			return;
 		}
 		if (!$vote->store()) {
-			echo XPollHtml::alert( $vote->getError() );
-			exit();
+			JError::raiseError( 500, $vote->getError() );
+			return;
 		}
 		
 		// Increase the total vote count for the poll
@@ -211,20 +235,25 @@ class XPollController extends JObject
 		$xpdate->poll_id = $poll->id;
 		$xpdate->voter_ip = $ip;
 		if (!$xpdate->check()) {
-			echo XPollHtml::alert( $xpdate->getError() );
-			exit();
+			JError::raiseError( 500, $vote->getError() );
+			return;
 		}
 		if (!$xpdate->store()) {
-			echo XPollHtml::alert( $xpdate->getError() );
-			exit();
+			JError::raiseError( 500, $vote->getError() );
+			return;
 		}
 		
 		// Choose the action
 		if ($redirect) {
-			$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=view&id='. $uid );
+			$this->_redirect = JRoute::_( 'index.php?option='.$this->_option.'&task=view&id='.$uid );
 		} else {
-			$pathway->addItem(stripslashes($poll->title),'index.php?option='.$this->_option.'&task=view&id='.$uid);
+			// Set the title
+			$this->_buildTitle($poll);
+
+			// Set the pathway
+			$this->_buildPathway($poll);
 			
+			// Display the poll
 			$view->display();
 		}
 	}
@@ -236,17 +265,11 @@ class XPollController extends JObject
 		$database =& JFactory::getDBO();
 		
 		// Instantiate a view
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'view') );
 		$view->option = $this->_option;
 		
 		// Incoming
 		$uid = JRequest::getInt( 'id', 0 );
-
-		// Push some needed styles and javascript to the template
-		$this->getStyles();
-		$this->getScripts();
 
 		// Load the poll
 		$poll = new XPollPoll( $database );
@@ -259,8 +282,8 @@ class XPollController extends JObject
 			return;
 		}
 
-		$first_vote = '';
-		$last_vote  = '';
+		$view->first_vote = '';
+		$view->last_vote  = '';
 
 		// Check if there is a poll corresponding to id and if poll is published
 		if (isset($poll->id) && $poll->id != '' && $poll->published == 1) {
@@ -274,35 +297,29 @@ class XPollController extends JObject
 			$dates = $xpdate->getMinMaxDates( $poll->id );
 
 			if (isset($dates[0]->mindate)) {
-				$first_vote = JHTML::_( 'date', $dates[0]->mindate, JText::_('COM_XPOLL_DATE_FORMAT_LC2') );
-				$last_vote  = JHTML::_( 'date', $dates[0]->maxdate, JText::_('COM_XPOLL_DATE_FORMAT_LC2') );
+				$view->first_vote = JHTML::_( 'date', $dates[0]->mindate, JText::_('COM_XPOLL_DATE_FORMAT_LC2') );
+				$view->last_vote  = JHTML::_( 'date', $dates[0]->maxdate, JText::_('COM_XPOLL_DATE_FORMAT_LC2') );
 			}
 			
 			// Get the poll data
 			$xpdata = new XPollData( $database );
-			$votes = $xpdata->getPollData( $poll->id );
+			$view->votes = $xpdata->getPollData( $poll->id );
 		}
 	
 		// Get all published polls
-		$polls = $poll->getAllPolls();
+		$view->polls = $poll->getAllPolls();
+		
+		// Push some needed styles and javascript to the template
+		$this->_getStyles();
+		$this->_getScripts();
 		
 		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_option)).': '.$poll->title);
+		$this->_buildTitle($poll);
 
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_option)),'index.php?option='.$this->_option);
-		}
-		$pathway->addItem(stripslashes($poll->title),'index.php?option='.$this->_option.'&task=view&id='.$uid);
+		// Set the pathway
+		$this->_buildPathway($poll);
 
-		
 		$view->poll = $poll;
-		$view->polls = $polls;
-		$view->votes = $votes;
-		$view->first_vote = $first_vote;
-		$view->last_vote = $last_vote;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -315,37 +332,29 @@ class XPollController extends JObject
 	{
 		$database =& JFactory::getDBO();
 
+		// Instantiate a new view
+		$view = new JView( array('name'=>'latest') );
+		$view->option = $this->_option;
+
 		// Load the latest poll
-		$poll = new XPollPoll( $database );
-		$poll->getLatestPoll();
+		$view->poll = new XPollPoll( $database );
+		$view->poll->getLatestPoll();
 
 		// Did we get a result from the database?
-		if ($poll->id && $poll->title) {
+		if ($view->poll->id && $view->poll->title) {
 			$xpdata = new XPollData( $database );
-			$options = $xpdata->getPollOptions( $poll->id, false );
+			$view->options = $xpdata->getPollOptions( $view->poll->id, false );
 		} else {
-			$options = array();
+			$view->options = array();
 		}
 		
 		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_option)).': '.JText::_('COM_XPOLL_LATEST') );
-		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_option)),'index.php?option='.$this->_option);
-		}
-		$pathway->addItem(JText::_('COM_XPOLL_LATEST'),'index.php?option='.$this->_option.'&task=latest');
-		
-		// Output HTML
-		jimport( 'joomla.application.component.view');
+		$this->_buildTitle();
+
+		// Set the pathway
+		$this->_buildPathway();
 
 		// Output HTML
-		$view = new JView( array('name'=>'latest') );
-		$view->option = $this->_option;
-		$view->poll = $poll;
-		$view->options = $options;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
