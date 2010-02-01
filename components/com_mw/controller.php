@@ -259,7 +259,11 @@ class MwController extends JObject
 		$juser =& JFactory::getUser();
 		
 		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
+		/*$title  = JText::_(strtoupper($this->_name));
+		$title .= ': '.JText::_('MW_QUOTA_EXCEEDED');*/
+		$title  = JText::_('Members');
+		$title .= ': '.JText::_('View');
+		$title .= ': '.stripslashes($juser->get('name'));
 		$title .= ': '.JText::_('MW_QUOTA_EXCEEDED');
 		
 		// Set the page title
@@ -269,9 +273,14 @@ class MwController extends JObject
 		// Set the pathway
 		$japp =& JFactory::getApplication();
 		$pathway =& $japp->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
+		/*if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
+		$pathway->addItem( JText::_('MW_QUOTA_EXCEEDED'), 'index.php?option='.$this->_option.'&task='.$this->_task );*/
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem( JText::_('Members'), 'index.php?option=com_members' );
+		}
+		$pathway->addItem( stripslashes($juser->get('name')), 'index.php?option=com_members&id='.$juser->get('id') );
 		$pathway->addItem( JText::_('MW_QUOTA_EXCEEDED'), 'index.php?option='.$this->_option.'&task='.$this->_task );
 		
 		// Check if the user is an admin.
@@ -301,8 +310,14 @@ class MwController extends JObject
 	
 	protected function storage( $exceeded=false )
 	{
+		$juser =& JFactory::getUser();
+		
 		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
+		/*$title  = JText::_(strtoupper($this->_name));
+		$title .= ': '.JText::_('MW_STORAGE_MANAGEMENT');*/
+		$title  = JText::_('Members');
+		$title .= ': '.JText::_('View');
+		$title .= ': '.stripslashes($juser->get('name'));
 		$title .= ': '.JText::_('MW_STORAGE_MANAGEMENT');
 		
 		// Set the page title
@@ -313,8 +328,11 @@ class MwController extends JObject
 		$japp =& JFactory::getApplication();
 		$pathway =& $japp->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+			//$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+			$pathway->addItem( JText::_('Members'), 'index.php?option=com_members' );
 		}
+		//$pathway->addItem( JText::_('MW_STORAGE_MANAGEMENT'), 'index.php?option='.$this->_option.'&task=storage' );
+		$pathway->addItem( stripslashes($juser->get('name')), 'index.php?option=com_members&id='.$juser->get('id') );
 		$pathway->addItem( JText::_('MW_STORAGE_MANAGEMENT'), 'index.php?option='.$this->_option.'&task=storage' );
 		
 		// Output from purging
@@ -325,6 +343,7 @@ class MwController extends JObject
 		if ($this->config->get('show_storage')) {
 			$this->getDiskUsage();
 			$percentage = $this->percent;
+			$this->_redirect = '';
 		}
 		
 		// Instantiate the view
@@ -393,6 +412,7 @@ class MwController extends JObject
 		// Get the caption/session title
 		$tv->loadFromInstance( $app['name'] );
 		$app['caption'] = stripslashes($tv->title);
+		$app['title'] = stripslashes($tv->title);
 
 		// Check if they have access to run this tool
 		$hasaccess = $this->_getToolAccess($app['name']);
@@ -647,6 +667,10 @@ class MwController extends JObject
 		$parent_toolname = $tv->getToolname($row->appname);
 		$toolname = ($parent_toolname) ? $parent_toolname : $row->appname;
 
+		// Get the tool's name
+		$tv->loadFromInstance( $row->appname );
+		$app['title'] = stripslashes($tv->title);
+
 		// Ensure we found an active session
 		if (!$row->sesstoken) {
 			echo MwHtml::error( JText::_('MW_ERROR_SESSION_NOT_FOUND').': '.$app['sess'].'. '.JText::_('MW_SESSION_NOT_FOUND_EXPLANATION') );
@@ -698,9 +722,14 @@ class MwController extends JObject
 	private function session( $app, $authorized, $output, $toolname ) 
 	{
 		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
+		/*$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
-		$title .= ($app['caption']) ? ': '.$app['caption'] : $app['name'];
+		$title .= ($app['caption']) ? ': '.$app['caption'] : $app['name'];*/
+		$title  = JText::_('Tools');
+		$title .= ($app['title']) ? ': '.$app['title'] : ': '.$app['name'];
+		$title .= ': '.JText::_('Session');
+		$title .= ($app['caption']) ? ': '.$app['sess'].' "'.$app['caption'].'"' : ': '.$app['sess'];
+		
 		
 		// Set the page title
 		$document =& JFactory::getDocument();
@@ -709,13 +738,17 @@ class MwController extends JObject
 		$japp =& JFactory::getApplication();
 		$pathway =& $japp->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+			//$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+			$pathway->addItem( JText::_('Tools'), 'index.php?option=com_tools' );
 		}
+		$t = ($app['caption']) ? $app['sess'].' "'.$app['caption'].'"' : $app['sess'];
+		$pathway->addItem( $app['title'], 'index.php?option=com_resources'.a.'alias='.$toolname );
 		if ($this->_task) {
-			$pathway->addItem( JText::_(strtoupper('view')), 'index.php?option='.$this->_option.a.'task=view'.a.'sess='.$app['sess'] );
+			//$pathway->addItem( JText::_(strtoupper('view')), 'index.php?option='.$this->_option.a.'task=view'.a.'sess='.$app['sess'] );
+			$pathway->addItem( JText::_('Session: '.$t), 'index.php?option='.$this->_option.a.'task=view'.a.'sess='.$app['sess'] );
 		}
-		$t = ($app['caption']) ? $app['caption'] : $app['name'];
-		$pathway->addItem( $t, 'index.php?option='.$this->_option.a.'task=view'.a.'sess='.$app['sess'] );
+		//$t = ($app['caption']) ? $app['caption'] : $app['name'];
+		//$pathway->addItem( $t, 'index.php?option='.$this->_option.a.'task=view'.a.'sess='.$app['sess'] );
 		
 		// Get plugins
 		JPluginHelper::importPlugin( 'mw' );
@@ -1069,6 +1102,7 @@ class MwController extends JObject
 	}
 	
 	//-----------
+	
 	private function _getToolExportControl($exportcontrol)
 	{
 		$xlog =& XFactory::getLogger();
@@ -1104,7 +1138,8 @@ class MwController extends JObject
         $xlog->logDebug("mw::_getToolExportControl($exportcontrol) PASSED");
 		return true;
 	}
-
+	
+	//-----------
 
 	private function _getToolAccess($tool, $login='') 
 	{
@@ -1156,7 +1191,6 @@ class MwController extends JObject
 		}
 
 		// Check if the user is in any groups for this app
-
 		$ingroup = false;
 		$groups = array();
 		$indevgroup = false;
