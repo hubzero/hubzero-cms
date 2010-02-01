@@ -353,15 +353,20 @@ class XUserHelper
 		return $getemailusers;
 	}
 
-	function getGroups($uid, $type='all')
+	function getGroups($uid, $type='all', $cat=null)
 	{
 		$db =& JFactory::getDBO();
+		
+		$g = '';
+		if ($cat) {
+			$g = "g.type='".$cat."' AND";
+		}
 
 		// Get all groups the user is a member of
-		$query1 = "SELECT g.cn, g.description, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_applicants AS m WHERE m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query2 = "SELECT g.cn, g.description, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_members AS m WHERE m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query3 = "SELECT g.cn, g.description, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__xgroups AS g, #__xgroups_managers AS m WHERE m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query4 = "SELECT g.cn, g.description, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_invitees AS m WHERE m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query1 = "SELECT g.published, g.cn, g.description, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_applicants AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query2 = "SELECT g.published, g.cn, g.description, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_members AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query3 = "SELECT g.published, g.cn, g.description, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__xgroups AS g, #__xgroups_managers AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query4 = "SELECT g.published, g.cn, g.description, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_invitees AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
 		
 		switch ($type) 
 		{
