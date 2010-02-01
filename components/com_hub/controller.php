@@ -581,7 +581,7 @@ class HubController extends JObject
 
 		echo HubHtml::div( HubHtml::hed(2, JText::_('User Created by Proxy')), 'full', 'content-header' );
 		echo '<div class="main section">'.n;
-		echo '<p>This proxy account has been created successfully. You may add to the text below, but you MUST ';
+		echo '<p class="passed">This proxy account has been created successfully. You may add to the text below, but you MUST ';
 		echo 'send an email including all of this text to the new user at ' . $target_xuser->get('email') . ':</p>';
 		echo '<blockquote><pre>';
 		echo 'An account has been created on your behalf at ' . $hubShortName . ' by ';
@@ -596,6 +596,7 @@ class HubController extends JObject
 		//echo $hubLongURL . '/password/change' . "\r\n\r\n";
 		echo $hubLongURL . JRoute::_('index.php?option=com_members'.a.'id='.$target_juser->get('id').a.'task=changepassword') . "\r\n\r\n";
 		echo '</pre></blockquote>';
+		echo '<p>New user\'s profile page: <a href="'.JRoute::_('index.php?option=com_members'.a.'id='.$target_juser->get('id')).'">'.$target_juser->get('name').' ('.$target_juser->get('username').')</a></p>'.n;
 		echo '</div><!-- / .main section -->'.n;
 	}
 	
