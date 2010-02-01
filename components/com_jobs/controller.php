@@ -190,6 +190,9 @@ class JobsController extends JObject
 			case 'subscribe':  		$this->subscribe();    	break;
 			case 'confirm':  		$this->confirm();    	break;
 			case 'cancel':  		$this->cancel();    	break;
+			
+			// batch resume download
+			case 'batch':  			$this->batch();    		break;
 						
 			// Should only be called via AJAX
 			case 'plugin':     $this->plugin();     break;
@@ -216,9 +219,7 @@ class JobsController extends JObject
 	{
 		if(!$plugin) {		
 			// Set the page title
-			$title = JText::_(strtoupper($this->_name));
-			$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
-			
+			$title = $this->startTitle();
 			$document =& JFactory::getDocument();
 			$document->setTitle( $title.' - '.JText::_('LOGIN') );
 			
@@ -330,9 +331,7 @@ class JobsController extends JObject
 		JobsController::getStyles();
 		
 		// Set the page title
-		$title = JText::_(strtoupper($this->_name));
-		$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
-		
+		$title = $this->startTitle();
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
 		
@@ -389,6 +388,139 @@ class JobsController extends JObject
 	}
 	
 	//-----------------------------
+	// Batch resume download
+	//-----------------------------
+
+	public function batch()
+	{
+		$database =& JFactory::getDBO();
+		$juser 	  =& JFactory::getUser();
+		
+		// Login required
+		if ($juser->get('guest')) {
+			if($this->allowsubscriptions) { $this->intro_employer(); }
+			else {	$this->login();	}
+			return;
+		}
+		
+		// Check authorization
+		if(!$this->_admin && !$this->_emp ) {
+			if($this->allowsubscriptions) { $this->intro_employer(); }
+			else {	$this->subscribe();	}
+			return;
+		}
+		
+		// Incoming
+		$pile 	= JRequest::getVar( 'pile', 'all' );
+		
+		$archive = $this->archiveResumes ($pile);
+		
+		if($archive) {
+			// Initiate a new content server and serve up the file
+			ximport('xserver');
+			jimport('joomla.filesystem.file');
+			$xserver = new XContentServer();
+			$xserver->filename($archive['path']);
+			
+			$xserver->disposition('attachment');
+			$xserver->acceptranges(false); // @TODO fix byte range support
+			$xserver->saveas(JText::_('Resume Batch'));
+			$result = $xserver->serve_attachment($archive['path'], $archive['name'], false); // @TODO fix byte range support
+			
+			// Delete downloaded zip			
+			JFile::delete($archive['path']);		
+		
+			if (!$result)
+               JError::raiseError( 404, JText::_('SERVER_ERROR') );
+			
+		}	
+		else {
+			$this->_msg = JobsHtml::error(JText::_('Sorry, this didn\'t work -:( Please try again.'));
+			$this->dashboard();
+		}
+	
+	}
+	
+	//-----------------------------
+	// Create resume archive
+	//-----------------------------
+
+	private function archiveResumes($pile = 'all')
+	{
+
+		$database =& JFactory::getDBO();
+		$juser 	  =& JFactory::getUser();
+		
+		// Get available resume files
+		$resume = new Resume ($database);
+		$files 	= $resume->getResumeFiles($pile, $juser->get('id'));
+		$batch  = array();
+		
+		if(count($files) > 0) {
+			require_once( JPATH_ROOT.DS.'administrator'.DS.'includes'.DS.'pcl'.DS.'pclzip.lib.php' );
+			if (!extension_loaded('zlib')) {
+				echo JobsHtml::alert( JText::_('Operation failed. Missing required PHP library.') );
+				exit();
+			}
+			
+			// Get Members plugins
+			JPluginHelper::importPlugin( 'members', 'resume' );
+			$dispatcher =& JDispatcher::getInstance();
+			
+			$pile .= $pile == 'shortlisted' ? '_'.$juser->get('id') : '';
+			$zipname = JText::_('Resumes').'_'.$pile.'.zip';
+			
+			$mconfig =& JComponentHelper::getParams( 'com_members' );
+			$base_path = $mconfig->get('webpath');
+			
+			if ($base_path) {
+				// Make sure the path doesn't end with a slash
+				if (substr($base_path, -1) == DS) { 
+					$base_path = substr($base_path, 0, strlen($base_path) - 1);
+				}
+				// Ensure the path starts with a slash
+				if (substr($base_path, 0, 1) != DS) { 
+					$base_path = DS.$base_path;
+				}
+			}
+			
+			$archive = new PclZip(JPATH_ROOT.$base_path.DS.$zipname);
+			$rfiles  = '';
+			$i = 0;
+			
+			// Go through file names and get full paths
+			foreach($files as $avalue => $alabel) {
+				$i++;
+				$apath =  $dispatcher->trigger( 'build_path', array($avalue) );
+				$path  = is_array($apath) ? $apath[0] : '';		
+				$file = $path ? JPATH_ROOT.$path.DS.$alabel : '';
+				$rfiles .= $file;
+				$rfiles .= $i == count($files) ? '' : ',';
+			}
+			
+			  $v_list = $archive->create($rfiles,
+                             PCLZIP_OPT_REMOVE_ALL_PATH);
+			  if ($v_list == 0) {
+				echo JobsHtml::alert("Error : ".$archive->errorInfo(true));
+				exit();
+			  }
+			  else {
+			  	$archive = array();
+				$archive['path'] = JPATH_ROOT.$base_path.DS.$zipname;
+				$archive['name'] = $zipname;		  
+			  	return $archive;
+			  } 
+		
+		}
+		return false;
+		/*else {
+			echo JobsHtml::alert( JText::_('Could not locate any resume files for batch download') );
+			exit();
+		}*/
+		
+	}
+	
+	//-----------------------------
 	// List of candidates
 	//-----------------------------
 
@@ -400,20 +532,13 @@ class JobsController extends JObject
 		
 		// Login required
 		if ($juser->get('guest')) {
-			if($this->allowsubscriptions) {
-			$this->intro_employer();
-			
-			}
-			else {
-			$this->login();
-			}
+			if($this->allowsubscriptions) { $this->intro_employer(); }
+			else {	$this->login();	}
 			return;
 		}
 		
 		// Set the page title
-		$title = JText::_(strtoupper($this->_name));
-		$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
-		
+		$title = $this->startTitle();		
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title.': '.JText::_('Browse Resumes') );
 				
@@ -571,9 +696,7 @@ class JobsController extends JObject
 			JobsController::getStyles();
 		
 			// Set the page title
-			$title = JText::_(strtoupper($this->_name));
-			$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
-		
+			$title = $this->startTitle();
 			$document =& JFactory::getDocument();
 			$document->setTitle( $title );
 		
@@ -796,12 +919,14 @@ class JobsController extends JObject
 		
 		$msg = $subid ? JText::_('Your subscription has been processed.') : JText::_('Your subscription has been accepted. Thank you!');
 		if($units) {
-		$msg .= $autoapprove && !$total ? ' '.JText::_('You have access to employer services for the next').' '.$subscription->units.' '.JText::_('month(s)') : ' '.JText::_('We will contact you soon regarding activation of your subscription request.');
-		$this->_msg = JobsHtml::passed($msg);
+			$msg .= $autoapprove && !$total ? ' '.JText::_('You have access to employer services for the next').' '.$subscription->units.' '.JText::_('month(s)') : ' '.JText::_('We will contact you soon regarding activation of your subscription request.');
+			$this->_msg = $msg;
 		}
 		
-		
-		$this->dashboard();
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=dashboard'.a.'msg='.$this->_msg);
+		return;
+		//$this->dashboard();
+		//return;
 		
 	}	
 	
@@ -820,6 +945,10 @@ class JobsController extends JObject
 			return;
 		}
 		
+		// Incoming message
+		$msg = $this->_msg ? $this->_msg : JRequest::getVar( 'msg', '' );		
+		$msg = !$this->_msg  && $msg ? JobsHtml::passed($msg) : $msg;
+		
 		$uid 	= JRequest::getInt( 'uid', $juser->get('id') );		
 		if($uid && $juser->get('id') != $uid && !$this->_admin) {
 			// not authorized
@@ -827,7 +956,9 @@ class JobsController extends JObject
 			return;
 		}
 		$uid = $uid ? $uid : $juser->get('id');
-		$admin = $this->_admin && !$this->_emp ? 1 : 0;
+		$admin = $this->_admin && !$this->_emp && $juser->get('id') == $uid ? 1 : 0;
+		
+		// Make sure we have special admin subscription
 		if($admin) {
 			$this->authorize_employer(1);
 		}
@@ -849,6 +980,10 @@ class JobsController extends JObject
 		}	
 		else if($admin) {
 			$employer->id = 1;
+		}
+		else if(!isset($employer->id)) {
+			JError::raiseError( 404, JText::_('Employer information not found.') );
+			return;
 		}
 		
 		// do we have a subscription already?
@@ -876,12 +1011,11 @@ class JobsController extends JObject
 		
 		// Get job postings
 		$job = new Job ( $database );
-		$myjobs = $job->get_my_openings($juser->get('id'), 0, $admin);
-		$activejobs = $job->countMyActiveOpenings ($juser->get('id'), 1, $admin);
+		$myjobs = $job->get_my_openings($uid, 0, $admin);
+		$activejobs = $job->countMyActiveOpenings ($uid, 1, $admin);
 		
 		// Set the page title
-		$title = JText::_(strtoupper($this->_name));
-		$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
+		$title = $this->startTitle();
 		$subtitle = JText::_('Employer Dashboard');
 		
 		$document =& JFactory::getDocument();
@@ -904,7 +1038,7 @@ class JobsController extends JObject
 		$view->title = $title.': '.$subtitle;
 		$view->config = $this->config;
 		$view->updated = 0;
-		$view->msg = $this->_msg;
+		$view->msg = $msg;
 		$view->myjobs = $myjobs;
 		$view->activejobs = $activejobs;
 		$view->subscription = $subscription;
@@ -921,8 +1055,6 @@ class JobsController extends JObject
 			$view->setError( $this->getError() );
 		}
 		$view->display();
-		
-		
 		
 	}
 	//-----------------------------
@@ -953,8 +1085,7 @@ class JobsController extends JObject
 		ximport( 'subscriptions' );
 		
 		// Set the page title
-		$title = JText::_(strtoupper($this->_name));
-		$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
+		$title = $this->startTitle();
 		$subtitle = $this->_task == 'subscribe' ? JText::_('Edit Subscription') : JText::_('Subscribe as Employer');
 		
 		$document =& JFactory::getDocument();
@@ -1109,8 +1240,7 @@ maxads=3'
 	protected function intro_employer() 
 	{
 		// Set the page title
-		$title = JText::_(strtoupper($this->_name));
-		$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
+		$title = $this->startTitle();
 		$subtitle = $this->_task== 'resumes' ? JText::_('Browse Resumes') : JText::_('Post a Job');
 		
 		$document =& JFactory::getDocument();
@@ -1242,8 +1372,7 @@ maxads=3'
 		}
 		
 		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
+		$title = $this->startTitle();
 		$document =& JFactory::getDocument();
 		
 		// Add the CSS to the template
@@ -1280,13 +1409,7 @@ maxads=3'
 		$document->setTitle( $title.': '.$subtitle);
 		$pathway->addItem( $job->title, 'index.php?option='.$this->_option.a.'task=job'.a.'id='.$job->id  );
 		$pathway->addItem( $subtitle, 'index.php?option='.$this->_option.a.'task=apply'.a.'id='.$job->id  );
-		
-		/*
-		if($ja->loadApplication ($juser->get('id'), $id)) {
-			//echo JobsHtml::error (JText::_('You have previously applied to this job.'));
-			//return;			
-		}	*/	
-		
+
 		$js = new JobSeeker ( $database );
 		$seeker = $js->getSeeker($juser->get('id'), $juser->get('id'));
 		$seeker = count($seeker) > 0 ? $seeker[0] : NULL;
@@ -1331,8 +1454,7 @@ maxads=3'
 		$job = $obj->get_opening ($id, $juser->get('id'), $admin);
 						
 		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
+		$title = $this->startTitle();
 		$document =& JFactory::getDocument();
 		
 		// Add the CSS to the template
@@ -1918,7 +2040,7 @@ maxads=3'
 		$filters = $this->getFilters (0, 0, 0);
 		$text = 'filterby='.$filters['filterby'].'&amp;match=1&amp;search='.$filters['search'].'&amp;category='.$filters['category'].'&amp;type='.$filters['type'].'&amp;sortby=';
 		
-		if ($category == 'job' && isset($_POST["performsearch"])) {
+		if ($category == 'job' && isset($_GET["performsearch"])) {
 				$text .= $filters['sortby'];
 				if (!$p->loadPrefs($juser->get('id'), $category)) {
 					$p = new Prefs($database);
@@ -2123,6 +2245,15 @@ maxads=3'
 		$text = preg_replace( '/&quot;/', ' ', $text );
 		$text = strip_tags( $text );
 		return $text;
+	}
+	
+	//------------
+	
+	public function startTitle($title = '')
+	{
+		$title = JText::_(strtoupper($this->_name));
+		$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
+		return $title;
 	}
 	
 	//------------	

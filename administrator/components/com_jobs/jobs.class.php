@@ -598,7 +598,7 @@ class JobAdmin extends JTable
 		$result = $this->_db->loadObjectList();
 		if($result) {
 			foreach($result as $r) {
-				$admins[] = $result->uid;
+				$admins[] = $r->uid;
 			}
 		}
 		
@@ -752,7 +752,31 @@ class Resume extends JTable
 		return true;
 	 
 	 }
-	 	
+	 
+	 //----------
+	 
+	 public function getResumeFiles ($pile = 'all', $uid = 0) {
+	 		 
+		 $query  = "SELECT DISTINCT r.uid, r.filename FROM $this->_tbl AS r ";
+		 $query .= "JOIN #__jobs_seekers AS s ON s.uid=r.uid ";
+		 $query .= 	($pile == 'shortlisted' && $uid)  ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=".$uid." AND s.uid != '".$uid."' AND s.uid=r.uid AND W.category='resume' " : "";	
+		  $query .= 	($pile == 'applied' && $uid)  ? " LEFT JOIN #__jobs_openings AS J ON J.employerid='$uid' JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 " : "";	
+		 $query .= "WHERE s.active=1 AND r.main=1 ";
+		 
+		 $files = array();
+		
+		 $this->_db->setQuery( $query );
+		 $result = $this->_db->loadObjectList();
+		 
+		 if($result) {
+			foreach($result as $r) {
+				$files[$r->uid] = $r->filename;
+			}
+		 }
+		 
+		 return $files;
+			 
+	 }
 	
 }
 //----------------------------------------------------------
@@ -1265,7 +1289,8 @@ class JobSeeker extends JTable
 		
 		$query .= "FROM #__xprofiles AS x JOIN #__jobs_seekers AS s ON s.uid=x.uidNumber JOIN #__jobs_resumes AS r ON r.uid=s.uid  ";	
 		$query .= 	$filters['filterby'] == 'shortlisted' ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=".$uid." AND s.uid != '".$uid."' AND s.uid=r.uid AND W.category='resume' " : "";
-		$query .= 	$filters['filterby'] == 'applied' ? " LEFT JOIN #__jobs_openings AS J ON J.employerid='$uid' JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1  " : "";
+		$empid = $admin ? 1 : $uid;
+		$query .= 	$filters['filterby'] == 'applied' ? " LEFT JOIN #__jobs_openings AS J ON J.employerid='$empid' JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1  " : "";
 		$query .= "WHERE s.active=1 AND r.main=1 ";
 		
 		switch ($filters['filterby']) 
