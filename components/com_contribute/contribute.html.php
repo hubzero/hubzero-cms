@@ -330,7 +330,7 @@ foreach ($fields as $field)
 				<label>
 					<?php echo stripslashes($field[1]); ?>: <?php echo ($field[3] == 1) ? '<span class="required">'.JText::_('REQUIRED').'</span>': ''; ?>
 					<?php if ($field[2] == 'text') { ?>
-					<input type="text" name="<?php echo 'nbtag['.$field[0].']'; ?>" cols="50" rows="6"><?php echo htmlentities(stripslashes($tagcontent), ENT_QUOTES); ?></textarea>
+					<input type="text" name="<?php echo 'nbtag['.$field[0].']'; ?>"><?php echo htmlentities(stripslashes($tagcontent), ENT_QUOTES); ?></input>
 					<?php } else { ?>
 					<textarea name="<?php echo 'nbtag['.$field[0].']'; ?>" cols="50" rows="6"><?php echo htmlentities(stripslashes($tagcontent)); ?></textarea>
 					<?php } ?>
@@ -373,7 +373,7 @@ foreach ($fields as $field)
 			</div>
 			<fieldset>
 				<h3><?php echo JText::_('ATTACH_ATTACHMENTS'); ?></h3>
-				<iframe width="100%" height="280" border="0" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $option; ?>&amp;task=attach&amp;id=<?php echo $id; ?>&amp;no_html=1&amp;type=<?php echo $type; ?>"></iframe>
+				<iframe width="100%" height="280" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $option; ?>&amp;task=attach&amp;id=<?php echo $id; ?>&amp;no_html=1&amp;type=<?php echo $type; ?>"></iframe>
 				<input type="hidden" name="option" value="<?php echo $option; ?>" />
 				<input type="hidden" name="task" value="<?php echo $task; ?>" />
 				<input type="hidden" name="step" value="<?php echo $step; ?>" />
@@ -426,7 +426,7 @@ foreach ($fields as $field)
 			</div>
 			<fieldset>
 				<h3><?php echo JText::_('AUTHORS_AUTHORS'); ?></h3>
-				<iframe width="100%" height="400" border="0" frameborder="0" name="authors" id="authors" src="index2.php?option=<?php echo $option; ?>&amp;task=authors&amp;id=<?php echo $id; ?>&amp;no_html=1"></iframe>
+				<iframe width="100%" height="400" frameborder="0" name="authors" id="authors" src="index2.php?option=<?php echo $option; ?>&amp;task=authors&amp;id=<?php echo $id; ?>&amp;no_html=1"></iframe>
 				<input type="hidden" name="option" value="<?php echo $option; ?>" />
 				<input type="hidden" name="task" value="<?php echo $task; ?>" />
 				<input type="hidden" name="step" value="<?php echo $step; ?>" />

@@ -1279,7 +1279,7 @@ class ContributeController extends JObject
 			
 			// Check the file type
 			$row->type = $this->_getChildType($file['name']);
-			
+
 			// If it's a package (ZIP, etc) ...
 			if ($row->type == 38) {
 				/*jimport('joomla.filesystem.archive');
@@ -1309,6 +1309,18 @@ class ContributeController extends JObject
 						if (substr($list[$i]['filename'], strlen($list[$i]['filename']) - 10, strlen($list[$i]['filename'])) == 'viewer.swf') {
 							$isbreeze = $list[$i]['filename'];
 							break;
+						}
+						//$this->setError( substr($list[$i]['filename'], strlen($list[$i]['filename']), -4).' '.substr($file['name'], strlen($file['name']), -4) );
+					}
+					if (!$isbreeze) {
+						for ($i=0; $i<sizeof($list); $i++) 
+						{
+							if (strtolower(substr($list[$i]['filename'], -3)) == 'swf' 
+							 && substr($list[$i]['filename'], strlen($list[$i]['filename']), -4) == substr($file['name'], strlen($file['name']), -4)) {
+								$isbreeze = $list[$i]['filename'];
+								break;
+							}
+							//$this->setError( substr($list[$i]['filename'], strlen($list[$i]['filename']), -4).' '.substr($file['name'], strlen($file['name']), -4) );
 						}
 					}
 
@@ -1678,7 +1690,7 @@ class ContributeController extends JObject
 		// Get the last child in the ordering
 		$order = $rc->getLastOrder( $id, 'resources' );
 		$order = $order + 1; // new items are always last
-
+		
 		// Was there an ID? (this will come from the author <select>)
 		if ($authid) {
 			// Check if they're already linked to this resource
@@ -1687,20 +1699,24 @@ class ContributeController extends JObject
 				$this->setError( JText::sprintf('USER_IS_ALREADY_AUTHOR', $authid) );
 			} else {
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
-				$xuser =& JUser::getInstance( $authid );
+				//$xuser =& JUser::getInstance( $authid );
+				$xuser = new XProfile();
+				$xuser->load( $authid );
 				if ($xuser) {
-					$this->_author_check($xuser);
+					$this->_author_check($authid);
 
 					// New record
 					$rc->authorid = $authid;
 					$rc->ordering = $order;
+					$rc->name = $xuser->get('name');
+					$rc->organization = $xuser->get('organization');
 					$rc->createAssociation();
 
 					$order++;
 				}
 			}
 		}
-			
+		$xuser = null;
 		// Do we have new authors?
 		if ($authorsNewstr) {
 			// Turn the string into an array of usernames
@@ -1741,13 +1757,16 @@ class ContributeController extends JObject
 					continue;
 				}
 				
-				$this->_author_check($xuser);
+				$this->_author_check($xuser->get('id'));
 				
 				// New record
+				$xprofile = XProfile::getInstance($xuser->get('id'));
 				$rcc->subtable = 'resources';
 				$rcc->subid = $id;
 				$rcc->authorid = $uid;
 				$rcc->ordering = $order;
+				$rcc->name = $xprofile->get('name');
+				$rcc->organization = $xprofile->get('organization');
 				$rcc->createAssociation();
 				
 				$order++;
@@ -1762,9 +1781,9 @@ class ContributeController extends JObject
 
 	//-----------
 
-	private function _author_check($xuser)
+	private function _author_check($id)
 	{
-		$xprofile = XProfile::getInstance($xuser->get('id'));
+		$xprofile = XProfile::getInstance($id);
 		if ($xprofile->get('givenName') == '' && $xprofile->get('middleName') == '' && $xprofile->get('surname') == '') {
 			$bits = explode(' ', $xuser->get('name'));
 			$xprofile->set('surname', array_pop($bits));
