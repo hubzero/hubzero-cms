@@ -1677,8 +1677,10 @@ class Hubzero_Tool
 	static public function validateLicense($license, $code, &$err)
 	{
         preg_replace( '/\[([^]]+)\]/', ' ', $license['text'], -1, $bingo );
-
-        if(!$license['text']) {
+		
+		$result = 0;
+        
+		if(!$license['text']) {
             $err = JText::_('ERR_LICENSE_EMPTY') ;
         }
         else if ($bingo) {
@@ -1806,7 +1808,7 @@ class Hubzero_Tool
                 ."JOIN #__tool_groups AS g ON f.id=g.toolid AND g.cn=CONCAT('app-',f.toolname) AND g.role=1 "
                 ."JOIN #__xgroups AS xg ON g.cn=xg.cn ";
         if(!$admin) {
-        $query .="JOIN #__xgroups_managers AS m ON xg.gidNumber=m.gidNumber ";
+        $query .="JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
         }
         $query .= "$filter"
                 . "\n ORDER BY $sortby";
