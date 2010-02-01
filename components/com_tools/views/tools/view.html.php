@@ -33,27 +33,34 @@ jimport( 'joomla.application.component.view');
 
 class ToolsViewTools extends JView
 {
-    function display($tpl = null)
-    {
-    	ximport('xdocument');
-
-    	$xhub  = & XFactory::getHub();
-    	$model = & $this->getModel();
-
-	$forgeName = $xhub->getCfg('forgeName');
-	$forgeURL = $xhub->getCfg('forgeURL');
-	$hubShortName = $xhub->getCfg('hubShortName');
-	$hubShortURL = $xhub->getCfg('hubShortURL');
-	$hubLongURL = $xhub->getCfg('hubLongURL');
-        $appTools = $model->getApplicationTools();
-	$image = XDocument::getComponentImage('com_projects', 'forge.png', 1);
-        $this->assignRef( 'forgeName', $forgeName );
-	$this->assignRef( 'forgeURL', $forgeURL);
-	$this->assignRef( 'hubShortURL', $hubShortURL );
-	$this->assignRef( 'hubLongURL', $hubLongURL );
-	$this->assignRef( 'hubShortName', $hubShortName );
-	$this->assignRef( 'appTools', $appTools);
-	$this->assignRef( 'image', $image);
+	function display($tpl = null)
+	{
+		ximport('xdocument');
+		
+		$xhub  = & XFactory::getHub();
+		$model = & $this->getModel();
+		
+		// Get some vars to fill in text
+		$forgeName = $xhub->getCfg('forgeName');
+		$forgeURL = $xhub->getCfg('forgeURL');
+		$hubShortName = $xhub->getCfg('hubShortName');
+		$hubShortURL = $xhub->getCfg('hubShortURL');
+		$hubLongURL = $xhub->getCfg('hubLongURL');
+		
+		// Get the tool list
+		$appTools = $model->getApplicationTools();
+		
+		// Get the forge image
+		$image = XDocument::getComponentImage('com_projects', 'forge.png', 1);
+		
+		$this->assignRef( 'forgeName', $forgeName );
+		$this->assignRef( 'forgeURL', $forgeURL);
+		$this->assignRef( 'hubShortURL', $hubShortURL );
+		$this->assignRef( 'hubLongURL', $hubLongURL );
+		$this->assignRef( 'hubShortName', $hubShortName );
+		$this->assignRef( 'appTools', $appTools);
+		$this->assignRef( 'image', $image);
+		
         parent::display($tpl);
     }
 }

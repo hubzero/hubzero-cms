@@ -35,6 +35,24 @@ class ToolsController extends JController
 	private $_task  = NULL;
 
 */
+	//-----------
+
+	private function _getStyles($option='') 
+	{
+		ximport('xdocument');
+		$option = ($option) ? $option : $this->_option;
+		XDocument::addComponentStylesheet($option);
+	}
+
+	//-----------
+
+	private function _getScripts()
+	{
+		$document =& JFactory::getDocument();
+		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
+			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
+		}
+	}
 	/**
 	 * Method to display the view
 	 *
@@ -43,6 +61,8 @@ class ToolsController extends JController
 
 	function display()
 	{
+		$this->_getStyles('com_tools');
+		
 		parent::display();
 	}
 

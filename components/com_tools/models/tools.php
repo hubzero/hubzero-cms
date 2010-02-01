@@ -38,26 +38,45 @@ jimport( 'joomla.application.component.model' );
  * Tools Model
  */
 
- class ToolsModelTools extends JModel
- {
-    function getApplicationTools()
-    {
-    	$dh = opendir('/opt/trac/tools');
-	$result = array();
-
-	while(($file = readdir($dh)) !== false) {
-		if (is_dir('/opt/trac/tools/' . $file)) {
-			if (strncmp($file,'.', 1) != 0)
-				$result[] = $file;
+class ToolsModelTools extends JModel
+{
+	function getApplicationTools()
+	{
+		$dh = opendir('/opt/trac/tools');
+		$result = array();
+		
+		while (($file = readdir($dh)) !== false) 
+		{
+			if (is_dir('/opt/trac/tools/' . $file)) {
+				if (strncmp($file,'.', 1) != 0) {
+					$result[] = $file;
+				}
+			}
 		}
+		
+		closedir($dh);
+		
+		sort($result);
+		
+		if (count($result) > 0) {
+			$aliases = implode("','",$result);
+			
+			$database =& JFactory::getDBO();
+			//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
+			//$tv = new ToolVersion( $database );
+			
+			$query = "SELECT v.id, v.instance, v.toolname, v.title, MAX(v.revision), v.toolaccess, v.codeaccess, v.state 
+						FROM #__tool_version as v 
+						WHERE v.toolname IN ('".$aliases."') 
+						AND state='1' 
+						GROUP BY toolname
+						ORDER BY v.toolname ASC";
+			$database->setQuery( $query );
+			return $database->loadObjectList();
+		}
+		
+		return $result;
 	}
-	
-	closedir($dh);
-
-	sort($result);
-
-	return $result;
-    }
 }
 
 ?>
