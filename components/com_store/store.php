@@ -38,6 +38,7 @@ $config = JFactory::getConfig();
 ximport( 'bankaccount' );
 ximport('xuser');
 ximport('textfilter');
+ximport('misc_func');
 
 
 require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'store.class.php' );
