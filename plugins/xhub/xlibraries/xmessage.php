@@ -231,6 +231,12 @@ class XMessage extends JTable
 		if (isset($filters['created_by']) && $filters['created_by'] != 0) {
 			$query .= " AND m.created_by=".$filters['created_by'];
 		}
+		if (isset($filters['daily_limit']) && $filters['daily_limit'] != 0) {
+			$start = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 00:00:00";
+			$end = date('Y-m-d', mktime(0,0,0,date('m'),date('d'), date('Y')))." 23:59:59";
+			
+			$query .= " AND m.created >= '$start' AND m.created <= '$end'";
+		}
 		if (isset($filters['group_id']) && $filters['group_id'] != 0) {
 			$query .= " AND m.group_id=".$filters['group_id'];
 		}
