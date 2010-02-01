@@ -78,17 +78,17 @@ class XContentServer
 
 	function serve()
 	{
-		XContentServer::serve_file($this->_filename, $this->_saveas, $this->_disposition, $this->_acceptranges);
+		return XContentServer::serve_file($this->_filename, $this->_saveas, $this->_disposition, $this->_acceptranges);
 	}
 
 	function serve_attachment($filename, $saveas = null, $acceptranges = true)
 	{
-		XContentServer::serve_file($filename, $saveas, 'attachment', $acceptranges);
+		return XContentServer::serve_file($filename, $saveas, 'attachment', $acceptranges);
 	}
 
 	function serve_inline($filename, $acceptranges = true)
 	{
-		XContentServer::serve_file($filename, null, 'inline', $acceptranges);
+		return XContentServer::serve_file($filename, null, 'inline', $acceptranges);
 	}
 
 	function serve_file($filename, $saveas=null, $disposition='inline', $acceptranges=true)
@@ -96,7 +96,7 @@ class XContentServer
 		$fp = fopen($filename,"rb");
 
 		if ($fp == false)
-			return;
+			return false;
 
 		$fileinfo = pathinfo($filename);
 
@@ -219,7 +219,7 @@ class XContentServer
 		//output the content
 
 		//unset magic quotes; otherwise, file contents will be modified
-	        $old_magic_quotes = get_magic_quotes_runtime();
+	    $old_magic_quotes = get_magic_quotes_runtime();
 
 		if ($old_magic_quotes)
 			set_magic_quotes_runtime(0);
@@ -271,7 +271,7 @@ class XContentServer
 		if ($old_magic_quotes)
 			set_magic_quotes_runtime(1);
 
-		exit;
+		return true;
 	}
 }
 

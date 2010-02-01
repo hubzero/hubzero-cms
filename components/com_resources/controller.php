@@ -1475,10 +1475,12 @@ class ResourcesController extends JObject
 		}
 		*/
 		
-		$xserver->serve();
+		if (!$xserver->serve())
+		{
+			// Should only get here on error
+			JError::raiseError( 404, JText::_('SERVER_ERROR') );
+		}
 
-		// Should only get here on error
-		JError::raiseError( 404, JText::_('SERVER_ERROR') );
 		return;
 	}
 
@@ -1532,10 +1534,8 @@ class ResourcesController extends JObject
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 		$xserver->saveas($tarname);
-		$xserver->serve_attachment($tarpath . $tarname, $tarname, false); // @TODO fix byte range support
-		
-		// Should only get here on error
-		JError::raiseError( 404, JText::_('SERVER_ERROR') );
+		if (!$xserver->serve_attachment($tarpath . $tarname, $tarname, false)) // @TODO fix byte range support
+			JError::raiseError( 404, JText::_('SERVER_ERROR') );
 		return;
 	}
 	
