@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_tageditor_autocompleter' );
 
 class plgTageditorAutocompleter extends JPlugin
 {
-	function plgTageditorAutocompleter(&$subject, $config)
+	public function plgTageditorAutocompleter(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,7 +45,7 @@ class plgTageditorAutocompleter extends JPlugin
 	
 	//-----------
 	
-	function onTagsEdit( $atts ) 
+	public function onTagsEdit( $atts ) 
 	{
 		$name  = $atts[0];
 		$id    = (isset($atts[1])) ? $atts[1] : 'actags';
