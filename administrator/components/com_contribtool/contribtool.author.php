@@ -36,6 +36,8 @@ class ToolAuthor extends  JTable
 	var $uid      	   	   = NULL;  // @var int (11)
 	var $ordering     	   = NULL;  // @var int (11)
 	var $version_id        = NULL;  // @var int (11)
+	var $name        	   = NULL;  // @var varchar(250)
+	var $organization      = NULL;  // @var varchar(250)
 	
 	
 	//-----------
@@ -140,6 +142,7 @@ class ToolAuthor extends  JTable
 		if (!$rid) {
 			return false;
 		}
+		ximport('xprofile');
 		
 		if($authors) { $authors = ContribtoolHelper::transform($authors, 'uidNumber'); }
 
@@ -183,17 +186,20 @@ class ToolAuthor extends  JTable
 				// Check if they're already linked to this resource
 				$rc->loadAssociation( $authid, $rid, 'resources' );
 				if (!$rc->authorid) {
-					$xuser =& JUser::getInstance( $authid );
+					//$xuser =& JUser::getInstance( $authid );
+					$xuser = new XProfile();
+					$xuser->load( $authid );
+				
 					if ($xuser) {
-						$this->_author_check($xuser);
-	
+						$this->_author_check($authid);
+						
 						// New record
 						$rc->authorid = $authid;
 						$rc->ordering = $order;
-						if($rc->createAssociation()) {
-							return false;
-						}
-	
+						$rc->name = $xuser->get('name');
+						$rc->organization = $xuser->get('organization');
+						$rc->createAssociation();
+		
 						$order++;
 					}
 				}			
@@ -203,10 +209,15 @@ class ToolAuthor extends  JTable
 			// new version is being published, transfer data from author_assoc
 			$i=0;
 			foreach($dev_authors as $authid) {
-				$xuser =& JUser::getInstance( $authid );
+				$xuser = new XProfile();
+				$xuser->load( $authid );
+				
 				if($xuser) {
-					$this->_author_check($xuser);
-					$query = "INSERT INTO #__tool_authors (toolname, revision, uid, ordering, version_id) VALUES ('".$toolname."','".$revision."','".$authid."','".$i."', '".$version."')";
+					$this->_author_check($authid);
+					$name 	  		= $xuser->get('name');
+					$organization	= $xuser->get('organization');
+					
+					$query = "INSERT INTO #__tool_authors (toolname, revision, uid, ordering, version_id, name, organization) VALUES ('".$toolname."','".$revision."','".$authid."','".$i."', '".$version."', '".$name."', '".$organization."')";
 					$this->_db->setQuery( $query );
 					if(!$this->_db->query()) {
 						return false;
@@ -220,25 +231,20 @@ class ToolAuthor extends  JTable
 	}
 	//-----------
 
-	public function _author_check($xuser)
+	private function _author_check($id)
 	{
-		if (is_object($xuser)) {
-			$xprofile =& XProfile::getInstance($xuser->get('id'));
-			if (is_object($xprofile)) {
-				if ($xprofile->get('givenName') == '' && $xprofile->get('middleName') == '' && $xprofile->get('surname') == '') {
-					$bits = explode(' ', $xuser->get('name'));
-					$xprofile->set('surname', array_pop($bits));
-					if (count($bits) >= 1) {
-						$xprofile->set('givenName', array_shift($bits));
-					}
-					if (count($bits) >= 1) {
-						$xprofile->set('middleName', implode(' ',$bits));
-					}
-				}
+		$xprofile = XProfile::getInstance($id);
+		if ($xprofile->get('givenName') == '' && $xprofile->get('middleName') == '' && $xprofile->get('surname') == '') {
+			$bits = explode(' ', $xuser->get('name'));
+			$xprofile->set('surname', array_pop($bits));
+			if (count($bits) >= 1) {
+				$xprofile->set('givenName', array_shift($bits));
+			}
+			if (count($bits) >= 1) {
+				$xprofile->set('middleName', implode(' ',$bits));
 			}
 		}
 	}
-
 	
 	//-----------
 

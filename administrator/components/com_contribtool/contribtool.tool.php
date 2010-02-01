@@ -126,7 +126,7 @@ class Tool extends JTable
 				."JOIN #__tool_groups AS g ON f.id=g.toolid AND g.cn=CONCAT('app-',f.toolname) AND g.role=1 "
 				."JOIN #__xgroups AS xg ON g.cn=xg.cn ";
 		if(!$admin) {
-		$query .="JOIN #__xgroups_managers AS m ON xg.gidNumber=m.gidNumber ";
+		$query .="JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
 		}	
 		$query .= "$filter"
 				. "\n ORDER BY $sortby";

@@ -185,9 +185,14 @@ class ContribtoolController extends JObject
 		case 'versions':		$this->version();				break;
 		case 'saveversion': 	$this->save();  				break;
 		case 'finalizeversion': $this->save();  				break;
+		
 		// licensing
 		case 'license':			$this->license();				break;
 		case 'savelicense': 	$this->save();  				break;
+		
+		// release notes
+		case 'releasenotes':	$this->releasenotes();			break;
+		case 'savenotes': 		$this->save();  				break;
 
 		// resource page editing functions
 		case 'start':   	 	$this->edit_resource();			break;
@@ -235,7 +240,7 @@ class ContribtoolController extends JObject
 	}
 	
 	//-----------
-
+	/*
 	public function testdoi()
 	{
 		// temp test function for doi handle creation
@@ -251,6 +256,7 @@ class ContribtoolController extends JObject
 		$objDOI->deleteDOIHandle($url, $handle, $doiservice);
 		
 	}
+	*/
 
 	//----------------------------------------------------------
 	// Views
@@ -277,7 +283,6 @@ class ContribtoolController extends JObject
 		XModuleHelper::displayModules('force_mod');
 	
 	}
-
 
 	//-----------
 
@@ -326,18 +331,6 @@ class ContribtoolController extends JObject
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
 		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		if (count($pathway->getPathWay()) <= 1) {
-			$pathway->addItem( JText::_('STATUS').' '.JText::_('FOR').' '.$status['toolname'], 'index.php?option='.$this->_option.a.'task=status'.a.'toolid='.$this->_toolid );
-			if($this->_action!='confirm') {
-			$pathway->addItem( JText::_('TASK_VERSIONS'), 'index.php?option='.$this->_option.a.'task=versions'.a.'toolid='.$this->_toolid );
-			}
-		}
-
 		$status = array();
 		$hzt = Hubzero_Tool::getInstance($this->_toolid);
 		$hztv_dev = $hzt->getRevision('development');
@@ -351,6 +344,18 @@ class ContribtoolController extends JObject
         $status['resourceid'] = Hubzero_Tool::getResourceId($this->_toolid);
         $status['currentrevision'] = $hztv_current->revision;
         $status['currentversion'] = $hztv_current->version;
+		
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+		}
+		if (count($pathway->getPathWay()) <= 1) {
+			$pathway->addItem( JText::_('STATUS').' '.JText::_('FOR').' '.$status['toolname'], 'index.php?option='.$this->_option.a.'task=status'.a.'toolid='.$this->_toolid );
+			if($this->_action!='confirm') {
+			$pathway->addItem( JText::_('TASK_VERSIONS'), 'index.php?option='.$this->_option.a.'task=versions'.a.'toolid='.$this->_toolid );
+			}
+		}
 
 		echo ContribtoolHtml::writeToolVersions($versions, $status, $this->_admin, $this->_error, $this->_option, $this->_action, $title);
 
@@ -415,6 +420,137 @@ class ContribtoolController extends JObject
 		}
 		
 		echo ContribtoolHtml::writeFinalizeVersion($status, $this->_admin, $this->_error, $this->_option, $title);
+
+	}
+	
+	//-----------
+
+	protected function releasenotes()
+	{
+		$database =& JFactory::getDBO();
+		$juser =& JFactory::getUser();
+
+		// get admin priviliges
+		$this->authorize_admin();
+		
+		// get vars
+		if (!$this->_toolid) {
+			$this->_toolid = JRequest::getInt( 'toolid', 0 );
+		}
+		if (!$this->_action) {
+			$this->_action = JRequest::getVar( 'action', 'dev');
+		}
+		if (!$this->_error) {
+			$this->_error = JRequest::getVar( 'error', '');
+		}
+		if (!$this->_version) {
+			$this->_version = JRequest::getVar( 'version', 'dev');
+		}
+				
+		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
+		
+		// check access rights
+		if($this->check_access($this->_toolid, $juser, $this->_admin) ) {
+
+			// Create a Tool object
+			$obj = new Tool( $database );
+
+			// Get resource id
+			$rid = $obj->getResourceId($this->_toolid);
+									
+			// create a Tool Version object
+			$objV = new ToolVersion( $database );
+			
+			// Which version are we working with?
+			$vid = $objV->getVersionProperty ($this->_toolid, $this->_version, 'id');
+						
+			//Get  version information
+			$version = $objV->getVersionInfo($vid);
+			
+			// Get latest release date
+			$latestrelease = $objV->getVersionProperty ($this->_toolid, 'current', 'released');
+
+			if(!$version) {
+				JError::raiseError( 404, JText::_('ERR_STATUS_CANNOT_FIND') );
+				return;
+			}
+		}
+		else {
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return;
+		}
+		
+		// get saved release notes for this version
+		$objR = new ReleaseNote ( $database );
+		$bugfixes = $objR->getNotes($vid, '', 'category', 'DESC', 'note','bugfix');
+		$features = $objR->getNotes($vid, '', 'category', 'DESC', 'note','feature');
+				
+		// get related wishes
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'wishlist.wishlist.php' );
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'controller.php' );
+		
+		$objWishlist = new Wishlist( $database );
+		$objWish = new Wish( $database );
+		$listid = $objWishlist->get_wishlistID($rid, 'resource');
+		
+		$filters = array();
+		$filters['limit']    	= 0;
+		$filters['start']    	= 0;
+		$filters['filterby'] 	= '';
+		$filters['sortby']   	= 'date';
+		$filters['timelimit']   = $latestrelease;
+		$filters['versionid']   = $vid;
+		
+		$wishes = $objWish->get_wishes($listid, $filters, 1, $juser, 0);
+	
+		// get related tickets
+		
+		
+		// add the CSS to the template and set the page title
+		$this->getStyles();
+		$this->getScripts();
+		
+		// Set the page title
+		$title  = JText::_(strtoupper($this->_name)).': ';
+		$title .= ($this->_action=='confirm') ? JText::_('CONTRIBTOOL_APPROVE_TOOL') : JText::_('CONTRIBTOOL_STEP_APPEND_NOTES');
+		$document =& JFactory::getDocument();
+		$document->setTitle( $title );
+		
+		// Breadcrumbs navigation
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+		}
+		if (count($pathway->getPathWay()) <= 1) {
+			$pathway->addItem( JText::_('STATUS').' '.JText::_('FOR').' '.$version[0]->toolname, 'index.php?option='.$this->_option.a.'task=status'.a.'toolid='.$this->_toolid );
+			if($this->_action!='confirm') {
+			$pathway->addItem( JText::_('TASK_RELEASE_NOTES'), 'index.php?option='.$this->_option.a.'task=license'.a.'toolid='.$this->_toolid );
+			}
+		}
+		
+		// Output view
+		
+		jimport( 'joomla.application.component.view');
+		$view 			= new JView( array('name'=>'releasenotes') );
+		$view->title 	= $title;
+		$view->config 	= $this->config;
+		$view->option 	= $this->_option;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->error 	= $this->_error;
+		$view->action 	= $this->_action;
+		$view->toolid 	= $this->_toolid;
+		
+		$view->version 	= $this->_version;
+		$view->versioninfo 	= $version[0];
+		$view->wishes 	= $wishes;
+		$view->bugfixes	= $bugfixes;
+		$view->features	= $features;
+		
+		$view->display();
+		return;
 
 	}
 
@@ -944,7 +1080,7 @@ class ContribtoolController extends JObject
 					{
 						$hzg = Hubzero_Group::getInstance($gid);
 					}
-					$hzg->add('members',$tool['developers']);
+					$hzg->set('members',$tool['developers']);
 					$hztv->add('owner',$hzg->cn);
 
                     // store/update member groups
@@ -965,6 +1101,9 @@ class ContribtoolController extends JObject
 					if (empty($rid))
 					{
 						$rid = $this->createResPage($this->_toolid, $tool);
+						// save authors by default
+						$objA = new ToolAuthor( $database);
+						if(!$id) { $objA->saveAuthors($tool['developers'], 'dev', $rid, '', $tool['toolname'] ); }
 					}
 
 					$status = $hztv->toArray();
@@ -1112,6 +1251,7 @@ class ContribtoolController extends JObject
 								return; 												
 							}
 							else { 
+								//$this->releasenotes();
 								$this->finalize_version();
 								return;
 							}	
@@ -1120,6 +1260,23 @@ class ContribtoolController extends JObject
 						$this->license (); // display license page with error
 						return;
 					}	
+								
+				break;
+				
+				// save release notes 
+				case 'savenotes':
+					
+					if($this->_action != 'confirm') {
+						$this->_msg = JText::_('Release notes saved.');
+						$this->_task = 'status';
+						$this->status(); 
+						return; 												
+					}
+					else { 
+						$this->finalize_version();
+						return;
+					}	
+					
 								
 				break;
 				
@@ -1355,7 +1512,7 @@ class ContribtoolController extends JObject
 		$summary = '';
 		// see what changed
 		if($oldstuff != $newstuff) {
-			if ($oldstuff['toolname'] != $newstuff['toolname']) {
+			if (isset($oldstuff['toolname']) && isset($newstuff['toolname']) && $oldstuff['toolname'] != $newstuff['toolname']) {
 				$changelog[] = '<li><strong>'.JText::_('TOOLNAME').'</strong> '.JText::_('TICKET_CHANGED_FROM')
 				.' <em>'.$oldstuff['toolname'].'</em> '.JText::_('TO').' <em>'.$newstuff['toolname'].'</em></li>';
 			}
@@ -1402,13 +1559,13 @@ class ContribtoolController extends JObject
 				$summary .= $summary=='' ? '' : ', ';
 				$summary .= strtolower(JText::_('WIKI_ACCESS'));
 			}
-			if ($oldstuff['vncGeometry'] != $newstuff['vncGeometry']) {
+			if (isset($oldstuff['vncGeometry']) && isset($newstuff['vncGeometry']) && $oldstuff['vncGeometry'] != $newstuff['vncGeometry']) {
 				$changelog[] = '<li><strong>'.JText::_('VNC_GEOMETRY').'</strong> '.JText::_('TICKET_CHANGED_FROM')
 				.' <em>'.$oldstuff['vncGeometry'].'</em> to <em>'.$newstuff['vncGeometry'].'</em></li>';
 				$summary .= $summary=='' ? '' : ', ';
 				$summary .= strtolower(JText::_('VNC_GEOMETRY'));
 			}
-			if ($oldstuff['developers'] != $newstuff['developers']) {
+			if (isset($oldstuff['developers']) && isset($newstuff['developers']) && $oldstuff['developers'] != $newstuff['developers']) {
 				$changelog[] = '<li><strong>'.JText::_('DEVELOPMENT_TEAM').'</strong> '.JText::_('TICKET_CHANGED_FROM')
 				.' <em>'.implode(',',$oldstuff['developers']) .'</em> '.JText::_('TO').' <em>'.implode(',',$newstuff['developers']).'</em></li>';
 				$summary .= $summary=='' ? '' : ', ';
@@ -4000,14 +4157,16 @@ class ContribtoolController extends JObject
 				$this->setError( JText::sprintf('USER_IS_ALREADY_AUTHOR', $authid) );
 			} else {
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
-				$xuser =& JUser::getInstance( $authid );
+				$xuser = new XProfile();
+				$xuser->load( $authid );
 				if ($xuser) {
-					$this->_author_check($xuser);
+					$this->_author_check($authid);
 
 					// New record
 					$rc->authorid = $authid;
 					$rc->ordering = $order;
-					$rc->role = '';
+					$rc->name = $xuser->get('name');
+					$rc->organization = $xuser->get('organization');
 					$rc->createAssociation();
 
 					$order++;
@@ -4055,14 +4214,16 @@ class ContribtoolController extends JObject
 					continue;
 				}
 				
-				$this->_author_check($xuser);
+				$this->_author_check($uid);
 				
 				// New record
+				$xprofile = XProfile::getInstance($xuser->get('id'));
 				$rcc->subtable = 'resources';
 				$rcc->subid = $id;
 				$rcc->authorid = $uid;
 				$rcc->ordering = $order;
-				$rcc->role = '';
+				$rcc->name = $xprofile->get('name');
+				$rcc->organization = $xprofile->get('organization');
 				$rcc->createAssociation();
 				
 				$order++;
@@ -4077,9 +4238,9 @@ class ContribtoolController extends JObject
 
 	//-----------
 
-	private function _author_check($xuser)
+	private function _author_check($id)
 	{
-		$xprofile = XProfile::getInstance($xuser->get('id'));
+		$xprofile = XProfile::getInstance($id);
 		if ($xprofile->get('givenName') == '' && $xprofile->get('middleName') == '' && $xprofile->get('surname') == '') {
 			$bits = explode(' ', $xuser->get('name'));
 			$xprofile->set('surname', array_pop($bits));
