@@ -111,4 +111,42 @@ class Hubzero_View_Helper_Html
 
 		return $text;
 	}
+	
+	//-----------
+
+	public function purifyText( &$text ) 
+	{
+		$text = stripslashes($text);
+		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
+		$text = preg_replace( '/{.+?}/', '', $text );
+		$text = preg_replace( "'<script[^>]*>.*?</script>'si", '', $text );
+		$text = preg_replace( '/<a\s+.*?href="([^"]+)"[^>]*>([^<]+)<\/a>/is', '\2', $text );
+		$text = preg_replace( '/<!--.+?-->/', '', $text );
+		$text = preg_replace( '/&nbsp;/', ' ', $text );
+		$text = preg_replace( '/&amp;/', ' ', $text );
+		$text = preg_replace( '/&quot;/', ' ', $text );
+		$text = str_replace("\n",' ',$text);
+		$text = str_replace("\r",' ',$text);
+		$text = str_replace("\t",' ',$text);
+		$text = strip_tags( $text );
+		return $text;
+	}
+	
+	//-----------
+	
+	public function str_highlight($text, $needles)
+	{
+		$highlight = '<span class="highlight">\1</span>';
+	
+		$pattern = '#(?!<.*?)(%s)(?![^<>]*?>)#i';
+		$sl_pattern = '#<a\s(?:.*?)>(%s)</a>#i';
+
+		foreach ($needles as $needle) 
+		{
+			$needle = preg_quote($needle);
+			$regex = sprintf($pattern, $needle);
+			$text = preg_replace($regex, $highlight, $text);
+		}
+		return $text;
+	}
 }
