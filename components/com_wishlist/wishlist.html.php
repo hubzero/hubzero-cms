@@ -433,8 +433,8 @@ class WishlistHtml
 			$title .= ' ('.count($wishlist->items).')';
 			}
 		
-			$html .= '<h3>'.$title.n;
-			$html .= '   <span><a class="add" href="'.JRoute::_('index.php?option='.$option.a.'task=add'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">'.JText::_('ADD_NEW_WISH').'</a></span>'.n;
+			$html .= '<h3>'.n;
+			$html .= '   <span><a class="add" href="'.JRoute::_('index.php?option='.$option.a.'task=add'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">'.JText::_('ADD_NEW_WISH').'</a></span>'.$title.n;
 			$html .= '</h3>'.n;
 		  }	
 		  
@@ -682,7 +682,7 @@ class WishlistHtml
 			}
 			else {
 				if($filters['filterby']=="all" && !$filters['tag']) {
-				$html .= t.t.t.'<p class="noresults">'.JText::_('There are currently no wishes on this list. Be the first to make a suggestion for improvement.').'</p>'.n;
+				$html .= t.t.t.'<p>'.JText::_('There are currently no wishes on this list. Be the first to make a suggestion for improvement.').'</p>'.n;
 				}
 				else {
 				$html .= t.t.t.'<p class="noresults">'.JText::_('There are currently no wishes on this list based on your search selection.').'</p>'.n;
@@ -788,6 +788,15 @@ class WishlistHtml
            // $html .='<span class="'.strtolower($status).'">'.strtoupper($status).'</span>'.n;
            // $html .= ($item->status == 1 && $item->granted!='0000-00-00 00:00:00') ? strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, '%d %b, %y') : '';          
 			$html .='</div><!-- / #content-header -->'.n;
+			
+			
+			if($item->saved==3 && !$error) {
+			$html  .= WishlistHtml::passed(JText::_('New wish successfully posted. Thank you!')).n;
+			}
+			
+			if($item->saved==2 && !$error && $admin) {
+			$html  .= WishlistHtml::passed(JText::_('Changes to the wish successfully saved.')).n;
+			}
 			
 			// Navigation
 			$html .= '<div id="content-header-extra">'.n;
@@ -1089,8 +1098,15 @@ class WishlistHtml
 					if($item->assigned && $item->assigned!=$juser->get('id') ) {
 					$html .= ' <span class="forbidden"> - '.JText::_('This wish can be granted only by the person to whom it is assigned').n;
 					}
-					else if($wishlist->category=='resource' ) {
+					else if($wishlist->category=='resource' && isset($item->versions)) {
 					$html .= t.t.t.'<label class="doubletab">'.n;
+					$html .= JText::_('in').' '.n;
+					$html .= t.t.t.'	  <select name="vid" id="vid">'.n;
+					foreach($item->versions as $v) {
+					$v_label = $v->state == 3 ? JText::_('Next tool release') : JText::_('Version').' '.$v->version.' ('.JText::_('revision').' '.$v->revision.')';
+					$html .= t.t.t.'	  <option value="'.$v->id.'">'.$v_label.'</option>'.n;
+					}
+					$html .= t.t.t.'	  </select>'.n;
 					$html .= t.t.t.'	  </label>'.n;
 					}
 					$html .= t.t.t.'	  </label>'.n;

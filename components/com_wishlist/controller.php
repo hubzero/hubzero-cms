@@ -340,7 +340,7 @@ class WishlistController extends JObject
 			$this->listid = isset($this->listid) ? $this->listid : $id;
 			
 			// get admin priviliges
-			WishlistController::authorize_admin($this->listid);
+			WishlistController::authorize_admin($wishlist->id);
 			$filters = WishlistController::getFilters($this->_admin);
 			
 			// who are list owners?
@@ -484,6 +484,7 @@ class WishlistController extends JObject
 		$action     = JRequest::getVar( 'action', '');
 		$com   		= JRequest::getInt( 'com', 0, 'get' );
 		$canedit 	= false;
+		$saved  	= JRequest::getInt( 'saved', 0 );
 		
 			
 		if ($this->wishid && !$wishid) {
@@ -656,7 +657,8 @@ class WishlistController extends JObject
 			$plan = $plan ? $plan[0] : '';
 			
 			// Record action
-			$wish->action = $action;
+			$wish->action = $action;			
+			$wish->saved = $saved;
 			
 			// Get tags on this wish
 			$tagging = new WishTags( $database );
@@ -1138,7 +1140,7 @@ class WishlistController extends JObject
 		$this->authorize_admin($listid);
 		
 		// this is a private list, can't add to it
-		if(!$wishlist->public && $this->_admin) {	
+		if(!$wishlist->public && !$this->_admin) {	
 			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 			return;
 		}		
@@ -1282,12 +1284,17 @@ class WishlistController extends JObject
 			exit();
 		}
 		
-		//if($tags) {
-			// Add the tags
-			$tagging = new WishTags( $database );
-			$tagging->tag_object($juser->get('id'), $row->id, $tags, 1, 1);
-		//}
+		// get (new) wish id
+		if (!$row->id) {
+			$row->checkin();
+		}
+		$id = $row->id;
 		
+		// Add/change the tags
+		$tagging = new WishTags( $database );
+		$tagging->tag_object($juser->get('id'), $row->id, $tags, 1, 1);
+
+		// Get wish list info
 		$objWishlist = new Wishlist ( $database );			
 		$wishlist = $objWishlist->get_wishlist($listid);
 	
@@ -1337,27 +1344,23 @@ class WishlistController extends JObject
 					$dispatcher =& JDispatcher::getInstance();
 					
 					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_new_wish', $subject, $message, $from, $owners['individuals'], $this->_option ))) {
-								$this->setError( JText::_('Failed to message wish list owners.') );
-								echo WishlistHtml::alert( $this->_error );
-					}
-					
-		}
-		
+						$this->setError( JText::_('Failed to message wish list owners.') );
+						echo WishlistHtml::alert( $this->_error );
+					}					
+		}		
 	
-		if($reward && $this->banking) {
-			
+		if($reward && $this->banking) {		
 			// put the  amount on hold
 			$BTL = new BankTeller( $database, $juser->get('id') );
 			$BTL->hold($reward, JText::_('BANKING_HOLD').' #'.$row->id.' '.JText::_('for').' '.$wishlist->title, 'wish', $row->id);
 		}
-		
-				
+					
 		$saved = $wishid ? 2 : 3;
 		
 		// go back to wishlist
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid).'?saved='.$saved;		
-		//$this->listid = $listid;
-		//$this->wishlist();
+		//$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid).'?saved='.$saved;
+		$this->_redirect =JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$id).'?saved='.$saved;			
+		
 	}
 	
 	//-----------
