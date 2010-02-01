@@ -139,11 +139,15 @@ function plgContentXHubTagsInclude($options)
 		$filename = 'templates/' . $template . '/html/' . $component[2] . '/' . $file[2];
 		if (!file_exists(JPATH_SITE . DS . $filename))
 			$filename  = 'components/' . $component[2] . '/' . $file[2];
-		$filename = JURI::base() . $filename;
+		$filename = DS.$filename;
+		//$filename = JURI::base() . $filename;
 	}
 	else
 	{
-		$filename = JURI::base(). "templates/$template/";
+		//$filename = JURI::base(). "templates/$template/";
+		// Removed JURI::base() because it would add http:// to files even 
+		// when the site is https:// thus causing warnings in browsers
+		$filename = "/templates/$template/";
 		if ($type[2] == 'script')
 			$filename .= 'js/';
 		else
