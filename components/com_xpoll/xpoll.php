@@ -34,6 +34,8 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
+jimport( 'joomla.application.component.view');
+
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'xpoll.class.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
