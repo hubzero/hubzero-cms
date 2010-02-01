@@ -86,7 +86,7 @@ function _compareusers($mode = 0)
 	
 			for($j = 0; $j < $value['count']; $j++)
 			{
-				if (in_array($key,array('objectClass','structuralObjectClass','entryUUID','entryCSN','modifiersName','subschemaSubentry','hasSubordinates','creatorsName','entryDN')))
+				if (in_array($key,array('member','objectClass','structuralObjectClass','entryUUID','entryCSN','modifiersName','subschemaSubentry','hasSubordinates','creatorsName','entryDN')))
 					continue; // don't care about these
 						
 				if ($key == 'createTimestamp')
@@ -410,7 +410,7 @@ function _compareusers($mode = 0)
 									$rowhtml .= "<td>MISMATCH</td></tr>";
 							}
 						}
-						else if (in_array($key,array('member','disability','hispanic','role','race','edulevel','host','admin','manager')))
+						else if (in_array($key,array('member2','disability','hispanic','role','race','edulevel','host','admin','manager')))
 						{
 							if ($key == 'member')
 							{
