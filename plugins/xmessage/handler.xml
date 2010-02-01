@@ -24,4 +24,8 @@
 	<files>
 		<filename plugin="handler">handler.php</filename>
 	</files>
+	<params>
+		<param name="time_limit" type="text" size="15" default="30" label="Time Limit (seconds)" description="The waiting period, in seconds, between non-system messages"/>
+		<param name="daily_limit" type="text" size="10" default="100" label="Daily Limit" description="The daily limit that non-system messages can be sent"/>
+	</params>
 </install>

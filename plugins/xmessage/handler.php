@@ -32,9 +32,13 @@ jimport('joomla.event.plugin');
 
 class plgXMessageHandler extends JPlugin
 {
-	public function plgXMessageHandler(& $subject) 
+	public function plgXMessageHandler(&$subject, $config) 
 	{
-		parent::__construct($subject, NULL);
+		parent::__construct($subject, $config);
+		
+		// load plugin parameters
+		$this->_plugin = JPluginHelper::getPlugin( 'xmessage', 'handler' );
+		$this->_params = new JParameter( $this->_plugin->params );
 	}
 
 	//-----------
@@ -94,6 +98,46 @@ class plgXMessageHandler extends JPlugin
 			return false;
 		}
 		
+		$database =& JFactory::getDBO();
+		$juser =& JFactory::getUser();
+		
+		// Create the message object
+		$xmessage = new XMessage( $database );
+		
+		if ($type == 'member_message') {
+			$time_limit = intval($this->_params->get('time_limit', 30));
+			$daily_limit = intval($this->_params->get('daily_limit', 100));
+
+			// First, let's see if they've surpassed their daily limit for sending messages
+			$filters = array();
+			$filters['created_by'] = $juser->get('id');
+			$filters['daily_limit'] = $daily_limit;
+			
+			$number_sent = $xmessage->getSentMessagesCount( $filters );
+			
+			if ($number_sent >= $daily_limit) {
+				return false;
+			}
+			
+			// Next, we see if they've passed the time limit for sending consecutive messages
+			$filters['limit'] = 1;
+			$filters['start'] = 0;
+			$sent = $xmessage->getSentMessages( $filters );
+			if (count($sent) > 0) {
+				$last_sent = $sent[0];
+				
+				$last_time = 0;
+				if ($last_sent->created && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $last_sent->created, $regs )) {
+					$last_time = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+				}
+				$time_difference = (time() + $time_limit) - $last_time;
+				
+				if ($time_difference < $time_limit) {
+					return false;
+				}
+			}
+		}
+		
 		// Do we have a subject line? If not, create it from the message
 		if (!$subject && $message) {
 			$subject = substr($message, 0, 70);
@@ -102,11 +146,7 @@ class plgXMessageHandler extends JPlugin
 			}
 		}
 		
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
-		
-		// Create the message object and store it in the database
-		$xmessage = new XMessage( $database );
+		// Store the message in the database
 		$xmessage->subject    = $subject;
 		$xmessage->message    = $message;
 		$xmessage->created    = date( 'Y-m-d H:i:s', time() );
