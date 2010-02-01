@@ -24,6 +24,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$modslideshow->display();
 ?>
+			<div id="xflash-container">
+				<!-- Image slideshow -->
+               <?php if ($modslideshow->noflash_link) { ?><a href="<?php echo $modslideshow->noflash_link; ?>"><?php } ?><img src="<? echo $modslideshow->noflash_file; ?>" width="<? echo $modslideshow->width; ?>" height="<? echo $modslideshow->height; ?>" id="noflashimg" alt="" /><?php if ($modslideshow->noflash_link) { ?></a><?php } ?>
+			</div>

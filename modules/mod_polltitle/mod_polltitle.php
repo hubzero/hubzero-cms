@@ -27,51 +27,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //-------------------------------------------------------------
 
-class modPollTitle 
-{
-	private $attributes = array();
-
-	//-----------
-
-	public function __construct( $params ) 
-	{
-		$this->params = $params;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->attributes[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
-		}
-	}
-
-	//-----------
-	
-	public function display()
-	{
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'xpoll.class.php' );
-		
-		$database =& JFactory::getDBO();
-		
-		$params =& $this->params;
-		$this->message = $params->get( 'message' );
-		
-		// Load the latest poll
-		$poll = new XPollPoll( $database );
-		$poll->getLatestPoll();
-
-		$this->poll = $poll;
-	}
-}
+// Include the logic only once
+require_once (dirname(__FILE__).DS.'helper.php');
 
 //-------------------------------------------------------------
 

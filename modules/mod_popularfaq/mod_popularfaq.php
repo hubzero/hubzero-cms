@@ -27,49 +27,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //-------------------------------------------------------------
 
-class modPopularFaq
-{
-	private $attributes = array();
-
-	//-----------
-
-	public function __construct( $params ) 
-	{
-		$this->params = $params;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->attributes[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
-		}
-	}
-
-	//-----------
-
-	public function display()
-	{
-		$database =& JFactory::getDBO();
-		$params   =& $this->params;
-		
-		$limit = intval( $params->get( 'limit' ) );
-		$this->moduleid = $params->get( 'moduleid' );
-		
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'kb.class.php' );
-		
-		$a = new KbArticle( $database );
-		$this->rows = $a->getArticles($limit, 'a.hits DESC');
-	}
-}
+// Include the logic only once
+require_once (dirname(__FILE__).DS.'helper.php');
 
 //-------------------------------------------------------------
 

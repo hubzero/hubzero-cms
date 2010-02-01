@@ -25,56 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class modQuotes
-{
-	private $attributes = array();
-
-	//-----------
-
-	public function __construct( $params ) 
-	{
-		$this->params = $params;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->attributes[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
-		}
-	}
-
-	//-----------
-	
-	public function display() 
-	{
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_feedback'.DS.'selectedquotes.class.php' );
-		
-		$database =& JFactory::getDBO();
-		
-		$params =& $this->params;
-		
-		//Get the admin configured settings
-		$filters = array();
-		$filters['limit'] = trim($params->get( 'maxquotes'));
-		$filters['id'] = JRequest::getInt( 'quoteid', 0 );
-		$filters['notable_quotes'] = 1;
-
-		$this->filters = $filters;
-
-		// Get quotes
-		$sq = new SelectedQuotes( $database );
-		$this->quotes = $sq->getResults( $filters );
-	}
-}
+// Include the logic only once
+require_once (dirname(__FILE__).DS.'helper.php');
 
 //-------------------------------------------------------------
 

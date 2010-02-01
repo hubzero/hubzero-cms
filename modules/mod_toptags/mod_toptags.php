@@ -27,53 +27,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //-------------------------------------------------------------
 
-class modTopTags
-{
-	private $attributes = array();
-
-	//-----------
-
-	public function __construct( $params ) 
-	{
-		$this->params = $params;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->attributes[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->attributes[$property])) {
-			return $this->attributes[$property];
-		}
-	}
-
-	//-----------
-
-	public function display()
-	{
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
-		
-		$database =& JFactory::getDBO();
-		
-		// Get some initial parameters
-		$params =& $this->params;
-		$numtags = $params->get( 'numtags', 25 );
-		$this->message = $params->get( 'message' );
-		$this->sortby  = $params->get( 'sortby' );
-		$this->morelnk = $params->get( 'morelnk' );
-		
-		$obj = new TagsTag( $database );
-		
-		$this->tags = $obj->getTopTags( $numtags );
-	}
-}
+// Include the logic only once
+require_once (dirname(__FILE__).DS.'helper.php');
 
 //-------------------------------------------------------------
 
@@ -81,5 +36,4 @@ $modtoptags = new modTopTags( $params );
 $modtoptags->display();
 
 require( JModuleHelper::getLayoutPath('mod_toptags') );
-
 ?>
