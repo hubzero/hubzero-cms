@@ -200,7 +200,6 @@ class plgUserXusers extends JPlugin
 	 */
 	function onAfterStoreUser($user, $isnew, $succes, $msg)
 	{
-		ximport('xuser');
 		ximport('xprofile');
 
 		$xhub =& XFactory::getHub();

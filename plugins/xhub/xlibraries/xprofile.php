@@ -1487,7 +1487,7 @@ class XProfile extends JObject
                         $this->set('mailPreferenceOption', $registration->get('mailPreferenceOption') ? '2' : '0');
 
                 if ($registration->get('usageAgreement') !== null)
-                        $this->set('usageagreement', $registration->get('usageAgreement') ? true : false);
+                        $this->set('usageAgreement', $registration->get('usageAgreement') ? true : false);
 
                 return true;
         }
