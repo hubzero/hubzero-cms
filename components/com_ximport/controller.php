@@ -440,7 +440,7 @@ class XImportController extends JObject
 	{
 		ximport('xgroup');
 
-		$list = XGroupHelper::_ldap_get_groups('all',$format);
+		$list = XGroupHelper::_ldap_get_groups('all');
 
 		foreach($list as $group)
 		{
