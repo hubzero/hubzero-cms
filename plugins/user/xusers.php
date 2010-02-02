@@ -211,6 +211,8 @@ class plgUserXusers extends JPlugin
 		if (!is_object($xprofile))
 		{
 			$xprofile = new XProfile();
+			$xprofile->set('gidNumber', '3000');
+			$xprofile->set('gid','public');
 			$xprofile->set('uidNumber', $user['id']);
 			$xprofile->set('userPassword', $user['password']);
 			$xprofile->set('homeDirectory', $hubHomeDir . '/' . $user['username']);
