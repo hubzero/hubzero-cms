@@ -186,18 +186,17 @@ class ToolAuthor extends  JTable
 				// Check if they're already linked to this resource
 				$rc->loadAssociation( $authid, $rid, 'resources' );
 				if (!$rc->authorid) {
-					//$xuser =& JUser::getInstance( $authid );
-					$xuser = new XProfile();
-					$xuser->load( $authid );
+					$xprofile = new XProfile();
+					$xprofile->load( $authid );
 				
-					if ($xuser) {
+					if ($xprofile) {
 						$this->_author_check($authid);
 						
 						// New record
 						$rc->authorid = $authid;
 						$rc->ordering = $order;
-						$rc->name = $xuser->get('name');
-						$rc->organization = $xuser->get('organization');
+						$rc->name = $xprofile->get('name');
+						$rc->organization = $xprofile->get('organization');
 						$rc->createAssociation();
 		
 						$order++;
@@ -209,13 +208,13 @@ class ToolAuthor extends  JTable
 			// new version is being published, transfer data from author_assoc
 			$i=0;
 			foreach($dev_authors as $authid) {
-				$xuser = new XProfile();
-				$xuser->load( $authid );
+				$xprofile = new XProfile();
+				$xprofile->load( $authid );
 				
-				if($xuser) {
+				if($xprofile) {
 					$this->_author_check($authid);
-					$name 	  		= $xuser->get('name');
-					$organization	= $xuser->get('organization');
+					$name 	  		= $xprofile->get('name');
+					$organization	= $xprofile->get('organization');
 					
 					$query = "INSERT INTO #__tool_authors (toolname, revision, uid, ordering, version_id, name, organization) VALUES ('".$toolname."','".$revision."','".$authid."','".$i."', '".$version."', '".$name."', '".$organization."')";
 					$this->_db->setQuery( $query );
@@ -235,7 +234,7 @@ class ToolAuthor extends  JTable
 	{
 		$xprofile = XProfile::getInstance($id);
 		if ($xprofile->get('givenName') == '' && $xprofile->get('middleName') == '' && $xprofile->get('surname') == '') {
-			$bits = explode(' ', $xuser->get('name'));
+			$bits = explode(' ', $xprofile->get('name'));
 			$xprofile->set('surname', array_pop($bits));
 			if (count($bits) >= 1) {
 				$xprofile->set('givenName', array_shift($bits));
