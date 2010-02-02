@@ -150,7 +150,54 @@ UPDATE `#__categories` AS category, `#__sections` AS section SET category.sectio
 UPDATE `#__categories` AS category, `#__sections` AS section SET category.section=section.id WHERE category.alias='presenters' AND category.section='0' AND section.alias='presenters';
 
 # HUBBASIC HOME PAGE (id=1)
-INSERT INTO `#__content` (`id`, `title`, `alias`, `title_alias`, `introtext`, `fulltext`, `state`, `mask`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, `access`, `metadata`) VALUES (1,'Home','home','','<div class=\"fourcolumn first\">\r\n				<h3><a href=\"/resources/tools\">Tools</a></h3>\r\n				<p class=\"tool\">We offer a wide variety of simulation tools available for use right in your browser! No installing or configurtion needed. <a href=\"/resources/tools\">More ...</a></p>\r\n<h3>Collaboration</h3>\r\n				<ul>\r\n				 <li class=\"group\"><a href=\"/groups\">User Groups</a><br />Share with your colleagues</li>\r\n				 <li class=\"webmeetings\"><a href=\"/collaboration\">Collaboration</a><br />Other ways to collaborate</li>\r\n				</ul>\r\n			</div>\r\n			<div class=\"fourcolumn second\">\r\n				<h3><a href=\"/resources\">Resources</a></h3>\r\n				<ul>\r\n					<li class=\"animation\"><a href=\"/resources/animations/\">Animations</a></li>\r\n					<li class=\"course\"><a href=\"/resources/courses/\">Courses</a></li>\r\n					<li class=\"download\"><a href=\"/resources/downloads/\">Downloads</a></li> \r\n					<li class=\"learningmodule\"><a href=\"/resources/learningmodules/\">Learning Modules</a></li>\r\n					<li class=\"note\"><a href=\"/resources/notes/\">Notes</a></li>\r\n					<li class=\"presentation\"><a href=\"/resources/onlinepresentations/\">Online Presentations</a></li>\r\n					<li class=\"publication\"><a href=\"/resources/publications/\">Publications</a></li>\r\n					<li class=\"series\"><a href=\"/resources/series/\">Series</a></li>\r\n					<li class=\"teachingmaterial\"><a href=\"/resources/teachingmaterials/\">Teaching Materials</a></li>\r\n					<li class=\"workshop\"><a href=\"/resources/workshops/\">Workshops</a></li>\r\n				</ul>\r\n			</div>\r\n			<div class=\"fourcolumn third\">\r\n				<h3><a href=\"/tags\">Tags</a></h3>\r\n				<p class=\"tag\">A tag is like a subject, keyword, or category. You can find content related to a particular subject by clicking a tag.</p>\r\n				<ol class=\"tags\">\r\n				 <li><a href=\"/tags/courselecture\">course lecture</a></li>\r\n				 <li><a href=\"/tags/cyberinfrastructure\">cyberinfrastructure</a></li>\r\n				 <li><a href=\"/tags/experiments\">experiments</a></li>\r\n				 <li><a href=\"/tags/researchseminar\">research seminar</a></li>\r\n				</ol>\r\n			</div>\r\n			<div class=\"fourcolumn fourth\">\r\n				<h3><a href=\"/contribute\">Contribute</a></h3>\r\n				<ul>\r\n					<li class=\"contribute\"><a href=\"/contribute\">Contribute Content</a><br />Upload your own materials</li>\r\n					<li class=\"feedback\"><a href=\"/feedback\">Give us Feedback</a><br />Success story? Suggestions?</li>\r\n					<li class=\"poll\"><a href=\"/feedback/poll\">Take a Poll</a><br />{xhub:module position=\"polltitle\"}</li>\r\n					<li class=\"contact\"><a href=\"/about/contact\">Contact Us</a><br />How to get ahold of us</li>\r\n				</ul>\r\n			</div>\r\n\r\n<div class=\"clear\" style=\"border-top: 1px solid #e4e4e4;\">\r\n</div>\r\n<div class=\"threecolumn farleft\">  \r\n{xhub:module position=\"frontLeft\" style=\"-2\"}\r\n</div>\r\n<div class=\"threecolumn middle\">   \r\n    {xhub:module position=\"frontRight\" style=\"-1\"}  \r\n</div>\r\n<div class=\"threecolumn farright\"> \r\n    {xhub:module position=\"feature\" style=\"-2\"}  \r\n</div>\r\n<div class=\"clear\">\r\n</div>','',1,0,NOW(),62,'','0000-00-00 00:00:00',0,0,'0000-00-00 00:00:00',NOW(),'0000-00-00 00:00:00','','','pageclass_sfx=\nshow_title=0\nlink_titles=\nshow_intro=1\nshow_section=0\nlink_section=0\nshow_category=0\nlink_category=0\nshow_vote=\nshow_author=0\nshow_create_date=0\nshow_modify_date=0\nshow_pdf_icon=0\nshow_print_icon=0\nshow_email_icon=0\nlanguage=\nkeyref=\nreadmore=',0,0,0,'','',0,'robots=\nauthor=');
+INSERT INTO `#__content` (`id`, `title`, `alias`, `title_alias`, `introtext`, `fulltext`, `state`, `mask`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, `access`, `metadata`) VALUES (1,'Home','home','','<div class="four columns first">
+<h3><a href="resources/tools">Tools</a></h3>
+<p class="tool">We offer a wide variety of simulation tools available for use right in your browser! No installing or configurtion needed. <a href="resources/tools">More ...</a></p>
+<h3>Collaboration</h3>
+<ul>
+<li class="group"><a href="groups">User Groups</a><br />Share with your colleagues</li>
+<li class="webmeetings"><a href="collaboration">Collaboration</a><br />Other ways to collaborate</li>
+</ul>
+</div>
+<div class="four columns second">
+<h3><a href="resources">Resources</a></h3>
+<ul>
+<li class="animation"><a href="resources/animations/">Animations</a></li>
+<li class="course"><a href="resources/courses/">Courses</a></li>
+<li class="download"><a href="resources/downloads/">Downloads</a></li>
+<li class="learningmodule"><a href="resources/learningmodules/">Learning Modules</a></li>
+<li class="note"><a href="resources/notes/">Notes</a></li>
+<li class="presentation"><a href="resources/onlinepresentations/">Online Presentations</a></li>
+<li class="publication"><a href="resources/publications/">Publications</a></li>
+<li class="series"><a href="resources/series/">Series</a></li>
+<li class="teachingmaterial"><a href="resources/teachingmaterials/">Teaching Materials</a></li>
+<li class="workshop"><a href="resources/workshops/">Workshops</a></li>
+</ul>
+</div>
+<div class="four columns third">
+<h3><a href="tags">Tags</a></h3>
+<p class="tag">A tag is like a subject, keyword, or category. You can find content related to a particular subject by clicking a tag.</p>
+<ol class="tags">
+<li><a href="tags/courselecture">course lecture</a></li>
+<li><a href="tags/cyberinfrastructure">cyberinfrastructure</a></li>
+<li><a href="tags/experiments">experiments</a></li>
+<li><a href="tags/researchseminar">research seminar</a></li>
+</ol></div>
+<div class="four columns fourth">
+<h3><a href="contribute">Contribute</a></h3>
+<ul>
+<li class="contribute"><a href="contribute">Contribute Content</a><br />Upload your own materials</li>
+<li class="feedback"><a href="feedback">Give us Feedback</a><br />Success story? Suggestions?</li>
+<li class="poll"><a href="feedback/poll">Take a Poll</a><br />{xhub:module position="polltitle"}</li>
+<li class="contact"><a href="about/contact">Contact Us</a><br />How to get ahold of us</li>
+</ul>
+</div>
+<div class="clear"></div>
+<div class="three columns first">{xhub:module position="frontLeft" style="-2"}</div>
+<div class="three columns second">{xhub:module position="frontRight" style="-1"}</div>
+<div class="three columns third">{xhub:module position="feature" style="-2"}</div>','',1,0,NOW(),62,'','0000-00-00 00:00:00',0,0,'0000-00-00 00:00:00',NOW(),'0000-00-00 00:00:00','','','pageclass_sfx=\nshow_title=0\nlink_titles=\nshow_intro=1\nshow_section=0\nlink_section=0\nshow_category=0\nlink_category=0\nshow_vote=\nshow_author=0\nshow_create_date=0\nshow_modify_date=0\nshow_pdf_icon=0\nshow_print_icon=0\nshow_email_icon=0\nlanguage=\nkeyref=\nreadmore=',0,0,0,'','',0,'robots=\nauthor=');`
+
+
 
 # HUBBASIC DEFAULT ARTICLE CONTENT (section=about)
 INSERT INTO `#__content` (`title`, `alias`, `title_alias`, `introtext`, `fulltext`, `state`, `mask`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, `access`, `metadata`) VALUES ('Our Cyberinfrastructure','hubzero','','<p>\r\n<img src=\"{xhub:templatedir}/images/hubzero-logo.png\" align=\"right\"/>\r\nOur web site is powered by the <a href=\"http://www.hubzero.org\">HUBzero</a>\r\nsoftware developed at <a href=\"http://www.purdue.edu\">Purdue University</a>.\r\nHUBzero was specifically designed to help a scientific community share\r\nresources and work together with one another.  Users can upload their own\r\ncontent--including tutorials, courses, publications, and animations--and\r\nshare them with the rest of the community.  But each hub is more than\r\njust a repository of information.  It is a place where researchers and\r\neducators can share data and simulation tools online.  Users can launch\r\nsimulations and post-process results with an ordinary web browser--without\r\nhaving to download, compile, or install any code.  The tools they access\r\nare not just web forms, but powerful graphical tools that support visualization\r\nand comparison of results.\r\n</p>\r\n<h3>How Does a Hub Differ From a Web Site?</h3>\r\n<p>\r\nAt its core, a hub is a web site built with many familiar open source\r\npackages--the Linux operating system, an Apache web server, a MySQL\r\ndatabase, PHP web scripting, and the Joomla content management\r\nsystem.  The HUBzero software builds upon that infrastructure to create\r\nan environment in which researchers, educators, and students can access\r\nsimulation tools and share information.  Specifically, we define a \"hub\"\r\nas a web-based collaboration environment with the following features:\r\n<ul>\r\n	<li>Interactive simulation tools, hosted on the hub cluster and delivered to your browser</li>\r\n	<li>Simulation tool development area, including source code control and bug tracking</li>\r\n	<li>Animated presentations delivered in a light-weight, Flash-based format</li>\r\n	<li>Mechanism for uploading and sharing resources</li>\r\n	<li>5-star ratings and user feedback for resources</li>\r\n	<li>User support area, with question-and-answer forum</li>\r\n	<li>Statistics about users and usage patterns</li>\r\n</ul>\r\n</p><p>\r\nYou can use this software to <a href=\"http://www.hubzero.org/getstarted\">start a hub</a> for your own scientific community.  Visit <a href=\"http://www.hubzero.org\">HUBzero.org</a> to learn more!\r\n</p>','',1,0,NOW(),62,'','0000-00-00 00:00:00',0,0,'0000-00-00 00:00:00',NOW(),'0000-00-00 00:00:00','','','show_title=1\nlink_titles=\nshow_intro=1\nshow_section=0\nlink_section=0\nshow_category=0\nlink_category=0\nshow_vote=\nshow_author=0\nshow_create_date=0\nshow_modify_date=0\nshow_pdf_icon=0\nshow_print_icon=0\nshow_email_icon=0\nlanguage=\nkeyref=\nreadmore=',2,0,1,'','',0,'robots=\nauthor=');
