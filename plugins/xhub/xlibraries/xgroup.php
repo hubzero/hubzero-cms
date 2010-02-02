@@ -25,9 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
-
 class XGroupHelper
 {
 	function valid_cn($gid, $admin=false) 
@@ -202,6 +199,9 @@ class XGroupHelper
         
 		$groupentry = ldap_search($conn, $ldap_base_dn, $ldap_search_str, $reqattr, 0, 0, 0, 3);
         
+		if (!$groupentry)
+			return false;
+
 		$entry = ldap_first_entry($conn, $groupentry);
         
 		while($entry) 
