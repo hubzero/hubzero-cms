@@ -469,7 +469,7 @@ class RegisterController extends JObject
 		// Instantiate a new registration object
 		$xregistration = new XRegistration();
 
-		$xuser    =& XFactory::getUser(); 
+		$xprofile    =& XFactory::getProfile(); 
 		$xhub     =& XFactory::getHub();
 		$jsession =& JFactory::getSession();
 
@@ -479,16 +479,16 @@ class RegisterController extends JObject
 			$xregistration->loadPOST();
 		} else {
 			// Load data from the user object
-			$xregistration->loadXUser($xuser);
+			$xregistration->loadProfile($xprofile);
 		}
 		
 		if (!$xregistration->check('update', $juser->get('id'))) {
 			// Check submitted data
 			if ($action == 'submit') {
-				if ($xuser->hasTransientUsername()) {
+				if ($xprofile->hasTransientUsername()) {
 					$xregistration->_encoded['login'] = $xregistration->get('login');
 				}
-				if ($xuser->hasTransientEmail()) {
+				if ($xprofile->hasTransientEmail()) {
 					$xregistration->_encoded['email'] = $xregistration->get('email');
 				}
 			}
@@ -497,7 +497,7 @@ class RegisterController extends JObject
 			return $this->_show_registration_form($xregistration, 'update');
 		}
 		
-		if (!$xuser->hasTransientUsername() && $xuser->get('login') != $xregistration->get('login')) {
+		if (!$xprofile->hasTransientUsername() && $xprofile->get('username') != $xregistration->get('login')) {
 			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_REGISTRATION_FORM_SESSION_MISMATCH'));
 		}
 		
@@ -505,52 +505,52 @@ class RegisterController extends JObject
 		$hubHomeDir      = $xhub->getCfg('hubHomeDir');
 		$updateEmail     = false;
 		
-		if ($xuser->get('home') == '') {
-			$xuser->set('home', $hubHomeDir . '/' . $xuser->get('login'));
+		if ($xprofile->get('homeDirectory') == '') {
+			$xprofile->set('homeDirectory', $hubHomeDir . '/' . $xprofile->get('username'));
 		}
 		
-		if ($xuser->get('jobs_allowed') == '') {
-			$xuser->set('jobs_allowed', 3);
+		if ($xprofile->get('jobsAllowed') == '') {
+			$xprofile->set('jobsAllowed', 3);
 		}
 		
-		if ($xuser->get('reg_ip') == '') {
-			$xuser->set('reg_ip', $_SERVER['REMOTE_ADDR']);
+		if ($xprofile->get('regIP') == '') {
+			$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
 		}
 		
-		if ($xuser->get('reg_host') == '') {
+		if ($xprofile->get('regHost') == '') {
 			if (isset($_SERVER['REMOTE_HOST'])) {
-				$xuser->set('reg_host', $_SERVER['REMOTE_HOST']);
+				$xprofile->set('regHost', $_SERVER['REMOTE_HOST']);
 			}
 		}
 		
-		if ($xuser->get('reg_date') == '') {
-			$xuser->set('reg_date', date('Y-m-d H:i:s'));
+		if ($xprofile->get('registerDate') == '') {
+			$xprofile->set('registerDate', date('Y-m-d H:i:s'));
 		}
 		
-		if ($xregistration->get('email') != $xuser->get('email')) {
-			if ($xuser->hasTransientEmail() && $xregistration->get('email') != $xuser->getTransientEmail()) {
-				$xuser->set('email_confirmed', '3');
+		if ($xregistration->get('email') != $xprofile->get('email')) {
+			if ($xprofile->hasTransientEmail() && $xregistration->get('email') != $xprofile->getTransientEmail()) {
+				$xprofile->set('emailConfirmed', '3');
 			} else {
-				$xuser->set('email_confirmed', -rand(1, pow(2, 31)-1) );
+				$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1) );
 				$updateEmail = true;
 			}
 		}
 		
-		if ($xregistration->get('login') != $xuser->get('login')) {
-			if ($xuser->hasTransientUsername()) {
-				$xuser->set('home', $hubHomeDir . '/' . $xregistration->get('login'));
+		if ($xregistration->get('login') != $xprofile->get('username')) {
+			if ($xprofile->hasTransientUsername()) {
+				$xprofile->set('homeDirectory', $hubHomeDir . '/' . $xregistration->get('login'));
 			}
 		}
 
-		$xuser->loadRegistration($xregistration);
-		$xuser->update();
+		$xprofile->loadRegistration($xregistration);
+		$xprofile->update();
 
 		// Update juser table
 		// TODO: only update if changed
-		$myjuser = JUser::getInstance($xuser->get('uid'));
-		$myjuser->set('username', $xuser->get('login'));
-		$myjuser->set('email', $xuser->get('email'));
-		$myjuser->set('name', $xuser->get('name'));
+		$myjuser = JUser::getInstance($xprofile->get('uidNumber'));
+		$myjuser->set('username', $xprofile->get('username'));
+		$myjuser->set('email', $xprofile->get('email'));
+		$myjuser->set('name', $xprofile->get('name'));
 		$myjuser->save();
 
 		// Update current session if appropriate
@@ -558,15 +558,15 @@ class RegisterController extends JObject
 		// TODO: only update if changed
 		if ($myjuser->get('id') == $juser->get('id')) {
 			$sjuser = $jsession->get('user');
-			$sjuser->set('username', $xuser->get('login'));
-			$sjuser->set('email', $xuser->get('email'));
-			$sjuser->set('name', $xuser->get('name'));
+			$sjuser->set('username', $xprofile->get('username'));
+			$sjuser->set('email', $xprofile->get('email'));
+			$sjuser->set('name', $xprofile->get('name'));
 			$jsession->set('user', $sjuser);
 			
 			// Get the session object
 			$table = & JTable::getInstance('session');
 			$table->load( $jsession->getId() );
-			$table->username = $xuser->get('login');
+			$table->username = $xprofile->get('username');
 			$table->update();
 		}
 
@@ -579,12 +579,12 @@ class RegisterController extends JObject
 			$eview = new JView( array('name'=>'emails','layout'=>'update') );
 			$eview->option = $this->_option;
 			$eview->hubShortName = $this->jconfig->getValue('config.sitename');
-			$eview->xuser = $xuser;
+			$eview->xprofile = $xprofile;
 			$eview->baseURL = $this->baseURL;
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
-			if (!XHubHelper::send_email($xuser->get('email'), $subject, $message)) {
+			if (!XHubHelper::send_email($xprofile->get('username'), $subject, $message)) {
 				$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION',$hubMonitorEmail));
 			}
 		}
@@ -596,7 +596,7 @@ class RegisterController extends JObject
 			$eaview = new JView( array('name'=>'emails','layout'=>'adminupdate') );
 			$eaview->option = $this->_option;
 			$eaview->hubShortName = $this->jconfig->getValue('config.sitename');
-			$eaview->xuser = $target_xuser;
+			$eaview->xprofile  = $xprofile;
 			$eaview->baseURL = $this->baseURL;
 			$message = $eaview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
@@ -613,7 +613,7 @@ class RegisterController extends JObject
 			$view->option = $this->_option;
 			$view->title = JText::_('COM_REGISTER_UPDATE');
 			$view->hubShortName = $this->jconfig->getValue('config.sitename');
-			$view->xuser = $xuser;
+			$view->xprofile = $xprofile;
 			$view->self = true;
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
