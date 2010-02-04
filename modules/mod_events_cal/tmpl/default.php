@@ -25,6 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-echo $modeventscalendar->display(); 
-
+if ($modeventscalendar->error) { ?>
+	<p class="error"><?php echo $modeventscalendar->error; ?></p>
+<?php 
+} else {
+	echo $modeventscalendar->content; 
+} 
 ?>

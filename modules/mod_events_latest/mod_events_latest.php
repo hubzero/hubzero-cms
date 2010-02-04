@@ -30,8 +30,8 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 //-------------------------------------------------------------
 
-$modeventslatest = new modEventsLatest();
-$modeventslatest->params = $params;
+$modeventslatest = new modEventsLatest($params);
+$modeventslatest->display();
 
 require( JModuleHelper::getLayoutPath('mod_events_latest') );
 ?>

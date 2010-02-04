@@ -30,8 +30,8 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 //-------------------------------------------------------------
 
-$modeventscalendar = new modEventsCalendar();
-$modeventscalendar->params = $params;
+$modeventscalendar = new modEventsCalendar($params);
+$modeventscalendar->display();
 
 require( JModuleHelper::getLayoutPath('mod_events_cal') );
 ?>

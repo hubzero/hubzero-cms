@@ -31,6 +31,13 @@ class modEventsCalendar
 
 	//-----------
 
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
 	public function __set($property, $value)
 	{
 		$this->attributes[$property] = $value;
@@ -58,22 +65,20 @@ class modEventsCalendar
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'events.date.php');
 			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'events.repeat.php');
 		} else { 
-			return JText::_('EVENTS_COMPONENT_REQUIRED');   
+			$this->error = JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
+			return;
 		}
 		
-		// Get the module parameters
-		$params =& $this->params;
-		
 		// Display last month?
-		$displayLastMonth = $params->get( 'display_last_month' );
+		$displayLastMonth = $this->params->get( 'display_last_month' );
 		switch ($displayLastMonth)
 		{
 			case 'YES_stop':
-				$disp_lastMonthDays = abs(intval( $params->get( 'display_last_month_days' ) ));
+				$disp_lastMonthDays = abs(intval( $this->params->get( 'display_last_month_days' ) ));
 				$disp_lastMonth = 1;
 				break;
 			case 'YES_stop_events':
-				$disp_lastMonthDays = abs(intval( $params->get( 'display_last_month_days' ) ));
+				$disp_lastMonthDays = abs(intval( $this->params->get( 'display_last_month_days' ) ));
 				$disp_lastMonth = 2;
 				break;
 			case 'ALWAYS':
@@ -92,15 +97,15 @@ class modEventsCalendar
 		}
 
 		// Display next month?
-		$displayNextMonth = $params->get( 'display_next_month' );
+		$displayNextMonth = $this->params->get( 'display_next_month' );
 		switch ($displayNextMonth) 
 		{
 			case 'YES_stop':
-				$disp_nextMonthDays = abs(intval( $params->get( 'display_next_month_days' ) ));
+				$disp_nextMonthDays = abs(intval( $this->params->get( 'display_next_month_days' ) ));
 				$disp_nextMonth = 1;
 				break;
 			case 'YES_stop_events':
-				$disp_nextMonthDays = abs(intval( $params->get( 'display_next_month_days' ) ));
+				$disp_nextMonthDays = abs(intval( $this->params->get( 'display_next_month_days' ) ));
 				$disp_nextMonth = 2;
 				break;
 			case 'ALWAYS':
@@ -123,7 +128,7 @@ class modEventsCalendar
 		$timeWithOffset = time() + ($config->getValue('config.offset')*60*60);
 
 		// Get the start day
-		$startday = $params->get( 'start_day' );
+		$startday = $this->params->get( 'start_day' );
 		if (!defined('_CAL_CONF_STARDAY')) {
 			define('_CAL_CONF_STARDAY',$startday);
 		}
@@ -144,7 +149,7 @@ class modEventsCalendar
 				JText::_('EVENTS_CAL_LANG_SATURDAYSHORT')
 			);
 
-		$content = '';
+		$this->content = '';
 
 		// Display a calendar. Want to show 1,2, or 3 calendars optionally
 		// depending upon module parameters. (IE. Last Month, This Month, or Next Month)
@@ -155,29 +160,27 @@ class modEventsCalendar
 		// Display last month?
 		if ($disp_lastMonth && (!$disp_lastMonthDays || $thisDayOfMonth <= $disp_lastMonthDays)) {
 			// Build last month calendar
-			$content .= $this->calendar($timeWithOffset, $startday, mktime(0,0,0,date("n")-1,1,date("Y")), JText::_('_CAL_LANG_LAST_MONTH'), $day_name, $disp_lastMonth == 2);
+			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0,0,0,date("n")-1,1,date("Y")), JText::_('_CAL_LANG_LAST_MONTH'), $day_name, $disp_lastMonth == 2);
 		}
 		
 		// Build this month
-		$content .= $this->calendar($timeWithOffset, $startday, mktime(0,0,0,date("n"),1,date("Y")), JText::_('EVENTS_CAL_LANG_THIS_MONTH'), $day_name);
+		$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0,0,0,date("n"),1,date("Y")), JText::_('EVENTS_CAL_LANG_THIS_MONTH'), $day_name);
 		
 		// Display next month?
 		if ($disp_nextMonth && (!$disp_nextMonthDays || $daysLeftInMonth <= $disp_nextMonthDays)) {
 			// Build next month calendar
-			$content .= $this->calendar($timeWithOffset, $startday, mktime(0,0,0,date("n")+1,1,date("Y")), JText::_('_CAL_LANG_NEXT_MONTH'), $day_name, $disp_nextMonth == 2);
+			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0,0,0,date("n")+1,1,date("Y")), JText::_('_CAL_LANG_NEXT_MONTH'), $day_name, $disp_nextMonth == 2);
 		}
 		
-		return $content;
+		ximport('xdocument');
+		XDocument::addModuleStyleSheet('mod_events_cal');
 	}
 	
 	//-----------
 	
-	public function calendar( $timeWithOffset, $startday, $time, $linkString, &$day_name, $monthMustHaveEvent=false )
+	private function _calendar( $timeWithOffset, $startday, $time, $linkString, &$day_name, $monthMustHaveEvent=false )
 	{
 		$database =& JFactory::getDBO();
-
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_events_cal');
 
 		$juser =& JFactory::getUser();
 		$gid = $juser->get('gid');
