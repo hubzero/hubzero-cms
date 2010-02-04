@@ -42,7 +42,7 @@ class MwModApp
 	var $public;     // is this tool public?
 	var $revision;   // what license is in use?
 	
-	function MwModApp($n,$c,$d,$m,$s,$o,$num,$p,$r, $tn) 
+	public function __construct($n,$c,$d,$m,$s,$o,$num,$p,$r, $tn) 
 	{
 		$this->name       = $n;
 		$this->caption    = $c;
@@ -198,7 +198,8 @@ class modToolList
 					$toolname = $tool->toolname ? $tool->toolname : $tool->name;
 				
 					// from sep 28-07 version (svn revision) number is supplied at the end of the invoke command
-					$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
+					//$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
+					$url = 'index.php?option=com_tools&task=invoke&app='.$tool->toolname.'&version='.$tool->revision;
 					
 					// Build the HTML
 					$html .= "\t\t".' <li id="'.$tool->name.'"';
@@ -212,7 +213,7 @@ class modToolList
 					$html .= '>'."\n";
 					
 					// Tool info link
-					$html .= "\t\t\t".' <a href="tools/'.$tool->toolname.'/" class="tooltips" title="'.$tool->caption.' :: '.$tool->desc.'">'.$tool->caption.'</a>'."\n";
+					$html .= "\t\t\t".' <a href="/tools/'.$tool->toolname.'" class="tooltips" title="'.$tool->caption.' :: '.$tool->desc.'">'.$tool->caption.'</a>'."\n";
 					
 					// Only add the "favorites" button to the all tools list
 					if ($type == 'all') {

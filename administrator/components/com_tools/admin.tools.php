@@ -27,26 +27,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-$config = JFactory::getConfig();
+error_reporting(E_ALL);
+@ini_set('display_errors','1');
 
-//if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-//}
+// Include scripts
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.tools.html.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tools.config.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'mw.class.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'mw.utils.php' );
 
-jimport('joomla.application.component.view');
-
-require_once( JPATH_COMPONENT.DS.'mw.html.php' );
-require_once( JPATH_COMPONENT.DS.'mw.class.php' );
-require_once( JPATH_COMPONENT.DS.'mw.utils.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
-// Instantiate controller
+// Initiate controller
 $controller = new ToolsController();
 $controller->execute();
 $controller->redirect();
