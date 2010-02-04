@@ -52,9 +52,12 @@ $juser =& JFactory::getUser();
 			if ($modmysessions->specapp && $app->appname != $modmysessions->specapp) {
 				continue;
 			}
+			$bits = explode('_',$app->appname);
+			$bit = (count($bits) > 1) ? array_pop($bits) : '';
+			$appname = implode('_',$bits);
 ?>
 		<li class="<?php echo ($is_even) ? '' : 'even '; ?>session">
-			<a href="<?php echo JRoute::_('index.php?option=com_mw&task=view&sess='.$app->sessnum.'&tool='.$app->appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
 				<?php
 				echo $app->sessname;
 				if ($modmysessions->authorized === 'admin') {
@@ -63,9 +66,9 @@ $juser =& JFactory::getUser();
 				?>
 			</a> 
 <?php if ($juser->get('username') == $app->username || $modmysessions->authorized === 'admin') { ?>
-			<a class="closetool" href="<?php echo JRoute::_('index.php?option=com_mw&task=stop&sess='.$app->sessnum.'&tool='.$app->appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_TERMINATE'); ?></a>
+			<a class="closetool" href="<?php echo JRoute::_('index.php?option=com_tools&task=stop&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_TERMINATE'); ?></a>
 <?php } else { ?>
-			<a class="disconnect" href="<?php echo JRoute::_('index.php?option=com_mw&task=unshare&sess='.$app->sessnum.'&tool='.$app->appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_DISCONNECT'); ?></a> <br /><?php echo JText::_('MOD_MYSESSIONS_OWNER').': '.$app->username; ?>
+			<a class="disconnect" href="<?php echo JRoute::_('index.php?option=com_tools&task=unshare&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_DISCONNECT'); ?></a> <br /><?php echo JText::_('MOD_MYSESSIONS_OWNER').': '.$app->username; ?>
 <?php } ?>
 		</li>
 <?php
@@ -102,9 +105,13 @@ $juser =& JFactory::getUser();
 			if ($modmysessions->specapp && $app->appname != $modmysessions->specapp) {
 				continue;
 			}
+			
+			$bits = explode('_',$app->appname);
+			$bit = (count($bits) > 1) ? array_pop($bits) : '';
+			$appname = implode('_',$bits);
 ?>
 		<li class="<?php echo ($is_even) ? '' : 'even '; ?>session">
-			<a href="<?php echo JRoute::_('index.php?option=com_mw&task=view&sess='.$app->sessnum.'&tool='.$app->appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
 				<?php
 				echo $app->sessname;
 				if ($modmysessions->authorized === 'admin') {
@@ -113,9 +120,9 @@ $juser =& JFactory::getUser();
 				?>
 			</a> 
 <?php if ($juser->get('username') == $app->username || $modmysessions->authorized === 'admin') { ?>
-			<a class="closetool" href="<?php echo JRoute::_('index.php?option=com_mw&task=stop&sess='.$app->sessnum.'&tool='.$app->appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_TERMINATE'); ?></a>
+			<a class="closetool" href="<?php echo JRoute::_('index.php?option=com_tools&task=stop&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_TERMINATE'); ?></a>
 <?php } else { ?>
-			<a class="disconnect" href="<?php echo JRoute::_('index.php?option=com_mw&task=unshare&sess='.$app->sessnum.'&tool='.$app->appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_DISCONNECT'); ?></a> <br /><?php echo JText::_('MOD_MYSESSIONS_OWNER').': '.$app->username; ?>
+			<a class="disconnect" href="<?php echo JRoute::_('index.php?option=com_tools&task=unshare&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_DISCONNECT'); ?></a> <br /><?php echo JText::_('MOD_MYSESSIONS_OWNER').': '.$app->username; ?>
 <?php } ?>
 		</li>
 <?php
@@ -166,7 +173,7 @@ $juser =& JFactory::getUser();
 			$document->addScript('modules/mod_mysessions/mod_mysessions.js');
 ?>
 <dl id="diskusage">
-	<dt><?php echo JText::_('MOD_MYSESSIONS_STORAGE'); ?> (<a href="<?php echo JRoute::_('index.php?option=com_mw&task=storage'); ?>"><?php echo JText::_('MOD_MYSESSIONS_MANAGE'); ?></a>)</dt>
+	<dt><?php echo JText::_('MOD_MYSESSIONS_STORAGE'); ?> (<a href="<?php echo JRoute::_('index.php?option=com_tools&task=storage'); ?>"><?php echo JText::_('MOD_MYSESSIONS_MANAGE'); ?></a>)</dt>
 	<dd id="du-amount"><div style="width:<?php echo $amount; ?>%;"><strong>&nbsp;</strong><span><?php echo $amount; ?>%</span></div></dd>
 <?php if ($percent == 100) { ?>
 	<dd id="du-msg"><p class="warning"><?php echo JText::_('MOD_MYSESSIONS_MAXIMUM_STORAGE'); ?></p></dd>
