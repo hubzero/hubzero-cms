@@ -74,41 +74,11 @@ class FeaturesController extends JObject
 	
 	//-----------
 	
-	private function getTask()
-	{
-		$task = JRequest::getVar( 'task', '' );
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-	
 	public function execute()
 	{
-		// Load the component config
-		/*$component =& JComponentHelper::getComponent( $this->_option );
-		if (!trim($component->params)) {
-			$path = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'config.xml';
-			if (!is_file($path)) {
-				$path = '';
-			}
-			$jconfig =& new JParameter( $component->params, $path );
-			$data = $jconfig->renderToArray();
-			$c = array();
-			foreach ($data as $d=>$info) 
-			{
-				if ($d != '@spacer') {
-					$c[] = $d.'='.$info[4];
-				}
-			}
-			$g = implode(n,$c);
-			$config =& new JParameter( $g );
-		} else {
-			$config =& JComponentHelper::getParams( $this->_option );
-		}
-		$this->config = $config;*/
+		$this->_task = JRequest::getVar( 'task', '' );
 		
-		switch ( $this->getTask() ) 
+		switch ($this->_task) 
 		{
 			case 'delete': $this->delete(); break;
 			case 'add':    $this->edit();   break;
@@ -133,7 +103,7 @@ class FeaturesController extends JObject
 
 	//-----------
 	
-	private function getStyles() 
+	private function _getStyles() 
 	{
 		ximport('xdocument');
 		XDocument::addComponentStylesheet($this->_option);
@@ -141,7 +111,7 @@ class FeaturesController extends JObject
 
 	//-----------
 	
-	private function getScripts()
+	private function _getScripts()
 	{
 		$document =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
@@ -153,45 +123,67 @@ class FeaturesController extends JObject
 	// Views
 	//----------------------------------------------------------
 
+	protected function login() 
+	{
+		$view = new JView( array('name'=>'login') );
+		$view->title = JText::_(strtoupper($this->_option)).': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
+
 	protected function browse()
 	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'browse') );
+		$view->title = JText::_(strtoupper($this->_option));
+		$view->option = $this->_option;
+		
 		// Incoming
-		$filters = array();
-		$filters['limit']  = JRequest::getInt( 'limit', 25, 'request' );
-		$filters['start']  = JRequest::getInt( 'limitstart', 0, 'get' );
-		$filters['type']   = JRequest::getVar( 'type', '' );
+		$view->filters = array();
+		$view->filters['limit']  = JRequest::getInt( 'limit', 25, 'request' );
+		$view->filters['start']  = JRequest::getInt( 'limitstart', 0, 'get' );
+		$view->filters['type']   = JRequest::getVar( 'type', '' );
 		
-		$authorized = $this->_authorize();
+		// Check if the user is authorized to make changes
+		$view->authorized = $this->_authorize();
 		
+		// Instantiate a FeaturesHistory object
 		$database =& JFactory::getDBO();
-		
 		$obj = new FeaturesHistory( $database );
 		
 		// Get a record count
-		$total = $obj->getCount( $filters, $authorized );
+		$view->total = $obj->getCount( $view->filters, $view->authorized );
 
 		// Get records
-		$rows = $obj->getRecords( $filters, $authorized );
+		$view->rows = $obj->getRecords( $view->filters, $view->authorized );
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 		
 		// Push some styles to the template
-		$this->getStyles();
+		$this->_getStyles();
 		
 		// Set the page title
 		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)) );
+		$document->setTitle(JText::_(strtoupper($this->_option)));
 		
+		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+			$pathway->addItem(JText::_(strtoupper($this->_option)),'index.php?option='.$this->_option);
 		}
 
 		// Output HTML
-		echo FeaturesHtml::browse( $database, $rows, $pageNav, $this->_option, $filters, $authorized );
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -205,55 +197,73 @@ class FeaturesController extends JObject
 	
 	protected function edit() 
 	{
-		$database =& JFactory::getDBO();
-		
-		// Push some styles to the template
-		$this->getStyles();
-		
-		// Set the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+		// Check if they are authorized to make changes
+		if (!$this->_authorize()) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			return;
 		}
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'edit') );
+		$view->title = JText::_(strtoupper($this->_option)).': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+		$view->option = $this->_option;
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
 		
 		// Load the object
-		$row = new FeaturesHistory( $database );
-		$row->load( $id );
+		$database =& JFactory::getDBO();
+		$view->row = new FeaturesHistory( $database );
+		$view->row->load( $id );
 		
-		if ($row->note == 'tools') {
-			$row->tbl = 'tools';
-		} else if ($row->note == 'nontools') {
-			$row->tbl = 'resources';
+		if ($view->row->note == 'tools') {
+			$view->row->tbl = 'tools';
+		} else if ($view->row->note == 'nontools') {
+			$view->row->tbl = 'resources';
 		}
 		
-		if (!$row->featured) {
-			$row->featured = date("Y").'-'.date("m").'-'.date("d").' 00:00:00';
+		if (!$view->row->featured) {
+			$view->row->featured = date("Y").'-'.date("m").'-'.date("d").' 00:00:00';
 		}
+		
+		// Set the page title
+		$document =& JFactory::getDocument();
+		$document->setTitle(JText::_(strtoupper($this->_option)).': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)));
+		
+		// Set the pathway
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(JText::_(strtoupper($this->_option)),'index.php?option='.$this->_option);
+		}
+		
+		// Push some styles to the template
+		$this->_getStyles();
 		
 		// Output HTML
-		echo FeaturesHtml::edit( $this->_option, $row, $title );
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
 	
 	protected function save() 
 	{
+		// Check if they are authorized to make changes
+		if (!$this->_authorize()) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			return;
+		}
+		
 		$database =& JFactory::getDBO();
 		
 		// Instantiate an object and bind the incoming data
 		$row = new FeaturesHistory( $database );
 		if (!$row->bind( $_POST )) {
-			echo FeaturesHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		if ($row->tbl == 'tools') {
@@ -266,14 +276,14 @@ class FeaturesController extends JObject
 		
 		// Check content
 		if (!$row->check()) {
-			echo FeaturesHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo FeaturesHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Redirect
@@ -284,6 +294,12 @@ class FeaturesController extends JObject
 	
 	protected function delete() 
 	{
+		// Check if they are authorized to make changes
+		if (!$this->_authorize()) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			return;
+		}
+		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
 		
@@ -312,16 +328,6 @@ class FeaturesController extends JObject
 		// Check if they're a site admin (from Joomla)
 		if ($juser->authorize($this->_option, 'manage')) {
 			return true;
-		}
-		
-		//$xuser =& XFactory::getUser();
-		$xuser = XProfile::getInstance();
-		if (is_object($xuser)) {
-			// Check if they're a site admin (from LDAP)
-			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-				return true;
-			}
 		}
 
 		return false;

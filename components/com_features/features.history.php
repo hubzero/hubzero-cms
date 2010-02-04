@@ -35,14 +35,14 @@ class FeaturesHistory extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__feature_history', 'id', $db );
 	}
 	
 	//-----------
 	
-	function loadActive( $start, $tbl='', $note='' ) 
+	public function loadActive( $start, $tbl='', $note='' ) 
 	{
 		$query  = "SELECT * FROM $this->_tbl WHERE featured='$start' AND tbl='$tbl'";
 		$query .= ($note) ? " AND note='$note'" : '';
@@ -57,7 +57,7 @@ class FeaturesHistory extends JTable
 	
 	//-----------
 	
-	function loadObject( $objectid, $tbl='' ) 
+	public function loadObject( $objectid, $tbl='' ) 
 	{
 		$query = "SELECT * FROM $this->_tbl WHERE objectid='$objectid' AND tbl='$tbl'";
 		$this->_db->setQuery( $query );
@@ -71,7 +71,7 @@ class FeaturesHistory extends JTable
 	
 	//-----------
 	
-	function getCount( $filters=array(), $authorized=false ) 
+	public function getCount( $filters=array(), $authorized=false ) 
 	{
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->buildQuery( $filters, $authorized );
@@ -82,7 +82,7 @@ class FeaturesHistory extends JTable
 	
 	//-----------
 	
-	function getRecords( $filters=array(), $authorized=false ) 
+	public function getRecords( $filters=array(), $authorized=false ) 
 	{
 		$query  = "SELECT *";
 		$query .= $this->buildQuery( $filters, $authorized );
@@ -96,7 +96,7 @@ class FeaturesHistory extends JTable
 	
 	//-----------
 	
-	function buildQuery($filters=array(), $authorized=false) 
+	public function buildQuery($filters=array(), $authorized=false) 
 	{
 		$juser =& JFactory::getUser();
 		
