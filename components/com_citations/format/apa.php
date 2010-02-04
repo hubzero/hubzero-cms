@@ -29,9 +29,9 @@ include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'format'.DS.'abstr
 
 class CitationsFormatAPA extends CitationsFormatAbstract
 {
-	public function format($row, $link='none')
+	public function format($row, $link='none', $highlight='')
 	{
-		$html = t.'<p>';
+		$html = "\t".'<p>';
 		if ($this->keyExistsOrIsNotEmpty('author',$row)) {
 			//$xuser =& XFactory::getUser();
 			
@@ -81,7 +81,7 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 			if (!$row->url) {
 				$html .= ', "'.stripslashes($row->title);
 			} else {
-				$html .= ', "<a href="'.$this->cleanUrl($row->url).'">'.stripslashes($row->title).'</a>';
+				$html .= ', "<a href="'.$this->cleanUrl($row->url).'">'.Hubzero_View_Helper_Html::str_highlight(stripslashes($row->title), array($highlight)).'</a>';
 			}
 		}
 		if ($this->keyExistsOrIsNotEmpty('journal',$row) 
@@ -91,7 +91,7 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 		}
 		$html .= '"';
 		if ($this->keyExistsOrIsNotEmpty('journal',$row)) {
-			$html .= ' <i>'.stripslashes($row->journal).'</i>';
+			$html .= ' <i>'.Hubzero_View_Helper_Html::str_highlight(stripslashes($row->journal), array($highlight)).'</i>';
 		} elseif ($this->keyExistsOrIsNotEmpty('booktitle',$row)) {
 			$html .= ' <i>'.stripslashes($row->booktitle).'</i>';
 		}
@@ -163,7 +163,7 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 			$html .= ' (DOI: '.$row->doi.')';
 		}
 		$html  = $this->grammarCheck( $html, '.' );
-		$html .= '</p>'.n;
+		$html .= '</p>'."\n";
 
 		return $html;
 	}

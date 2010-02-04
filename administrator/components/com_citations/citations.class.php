@@ -124,7 +124,7 @@ class CitationsCitation extends JTable
 				$query .= " AND r.year='".$filter['year']."'";
 			}
 			if (isset($filter['search']) && $filter['search']!='') {
-				$query .= ($filter['search']) ? " AND r.title LIKE '%".$filter['search']."%'" : "";
+				$query .= ($filter['search']) ? " AND (LOWER(r.title) LIKE '%".strtolower($filter['search'])."%' OR LOWER(r.journal) LIKE '%".strtolower($filter['search'])."%')" : "";
 			}
 		}
 
@@ -169,8 +169,8 @@ class CitationsCitation extends JTable
 			if (isset($filter['year']) && is_numeric($filter['year']) && $filter['year'] > 0) {
 				$query .= " AND r.year='".$filter['year']."'";
 			}
-			if (isset($filter['search'])) {
-				$query .= ($filter['search']) ? " AND r.title LIKE '%".$filter['search']."%'" : "";
+			if (isset($filter['search']) && $filter['search']!='') {
+				$query .= ($filter['search']) ? " AND (LOWER(r.title) LIKE '%".strtolower($filter['search'])."%' OR LOWER(r.journal) LIKE '%".strtolower($filter['search'])."%')" : "";
 			}
 		}
 		$query .= " ORDER BY ".$filter['sort'];

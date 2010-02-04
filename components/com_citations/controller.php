@@ -213,7 +213,7 @@ class CitationsController extends JObject
 		$view->filters['type']   = JRequest::getVar( 'type', '' );
 		$view->filters['filter'] = JRequest::getVar( 'filter', '' );
 		$view->filters['year']   = JRequest::getInt( 'year', 0 );
-		$view->filters['sort']   = JRequest::getVar( 'sortby', 'created DESC' );
+		$view->filters['sort']   = JRequest::getVar( 'sort', 'created DESC' );
 		$view->filters['search'] = JRequest::getVar( 'search', '' );
 
 		$view->filters['type']   = ($view->filters['type'] == 'all')   ? '' : $view->filters['type'];

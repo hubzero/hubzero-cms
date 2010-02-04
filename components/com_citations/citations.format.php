@@ -71,7 +71,7 @@ class CitationsFormat
 		return (isset($this->_formatter[$format])) ? $this->_formatter[$format] : NULL;
 	}
 	
-	public function formatReference($reference=null) 
+	public function formatReference($reference=null, $highlight=null) 
 	{
 		if (!$reference) {
 			$reference = $this->getReference();
@@ -108,6 +108,8 @@ class CitationsFormat
 			$this->setFormatter($formatter, $format);
 		}
 		
-		return $formatter->format($reference);
+		ximport('Hubzero_View_Helper_Html');
+		
+		return $formatter->format($reference, 'none', $highlight);
 	}
 }
