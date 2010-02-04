@@ -68,7 +68,6 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="custom_format_str" type="text" default="" label="Custom format" description="Allows a customized specification of the desired event fields and format to be used to display the event in the module" />
 		<param name="char_limit" type="text" default="150" label="Character limit" description="Character limit if displaying any content" />
 	</params>
 	<params group="advanced">
