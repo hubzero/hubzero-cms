@@ -27,27 +27,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-$config = JFactory::getConfig();
+require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
 
-//if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-//}
+//-----------
 
-jimport('joomla.application.component.view');
-
-require_once( JPATH_COMPONENT.DS.'mw.html.php' );
-require_once( JPATH_COMPONENT.DS.'mw.class.php' );
-require_once( JPATH_COMPONENT.DS.'mw.utils.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
-// Instantiate controller
-$controller = new ToolsController();
-$controller->execute();
-$controller->redirect();
+switch ($task) 
+{
+	case 'add':  ToolsToolbar::_CANCEL(); break;
+	case 'new':  ToolsToolbar::_CANCEL(); break;
+	case 'edit': ToolsToolbar::_CANCEL(); break;
+	
+	default: ToolsToolbar::_DEFAULT(); break;
+}
 ?>

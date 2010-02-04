@@ -26,28 +26,35 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
+// Meetings configuration
+//----------------------------------------------------------
 
-$config = JFactory::getConfig();
-
-//if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-//}
-
-jimport('joomla.application.component.view');
-
-require_once( JPATH_COMPONENT.DS.'mw.html.php' );
-require_once( JPATH_COMPONENT.DS.'mw.class.php' );
-require_once( JPATH_COMPONENT.DS.'mw.utils.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
-// Instantiate controller
-$controller = new ToolsController();
-$controller->execute();
-$controller->redirect();
+class ToolsConfig
+{
+	public $paramaters = array();
+	
+	//-----------
+	
+	public function __construct( $option )
+	{
+		$database =& JFactory::getDBO();
+		
+		$database->setQuery( "SELECT params FROM #__components WHERE `option`='".$option."' AND parent=0 LIMIT 1" );
+		$parameters = $database->loadResult();
+		
+		$params = array();
+		if ($parameters) {
+			$ps = explode(n,$parameters);
+			foreach ($ps as $p) 
+			{
+				$m = explode('=',$p);
+				if (trim($m[0])) {
+					$params[$m[0]] = (isset($m[1])) ? $m[1] : '';
+				}
+			}
+		}
+		
+		$this->parameters = $params;
+	}
+}
 ?>

@@ -26,28 +26,23 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
+// Class for toolbar generation
+//----------------------------------------------------------
 
-$config = JFactory::getConfig();
+class ToolsToolbar
+{
+	public function _CANCEL() 
+	{
+		JToolBarHelper::title( JText::_( 'Middleware' ).': <small><small>[ New ]</small></small>', 'user.png' );
+		JToolBarHelper::cancel();
+	}
 
-//if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-//}
-
-jimport('joomla.application.component.view');
-
-require_once( JPATH_COMPONENT.DS.'mw.html.php' );
-require_once( JPATH_COMPONENT.DS.'mw.class.php' );
-require_once( JPATH_COMPONENT.DS.'mw.utils.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
-// Instantiate controller
-$controller = new ToolsController();
-$controller->execute();
-$controller->redirect();
+	//-----------
+	
+	public function _DEFAULT() 
+	{
+		JToolBarHelper::title( JText::_( 'Middleware' ), 'user.png' );
+		JToolBarHelper::preferences('com_tools', '550');
+	}
+}
 ?>

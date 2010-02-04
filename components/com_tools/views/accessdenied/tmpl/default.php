@@ -24,30 +24,19 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-
-$config = JFactory::getConfig();
-
-//if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-//}
-
-jimport('joomla.application.component.view');
-
-require_once( JPATH_COMPONENT.DS.'mw.html.php' );
-require_once( JPATH_COMPONENT.DS.'mw.class.php' );
-require_once( JPATH_COMPONENT.DS.'mw.utils.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
-// Instantiate controller
-$controller = new ToolsController();
-$controller->execute();
-$controller->redirect();
 ?>
+<div id="error-wrap">
+	<div id="error-box" class="code-403">
+		<h2><?php echo JText::_('COM_TOOLS_ACCESSDENIED'); ?></h2>
+<?php if ($this->getError()) { ?>
+		<p class="error-reasons"><?php echo $this->getError(); ?></p>
+<?php } ?>
+
+		<p>The majority of tools are Open Source and freely available to the public. However, this particular tool has restricted access.</p>
+		<h3>How do I fix this?</h3>
+		<ul>
+			<li>If you feel that you should be able to access this tool, please <a href="<?php echo JRoute::_('index.php?option=com_feedback&task=report_problems'); ?>">contact us</a>, and we will check the permissions on your account.</li>
+			<li>You might also try <a href="<?php echo JRoute::_('index.php?option=com_tools'); ?>">browsing through other tools</a> on this site, to see if there is another freely available tool that would work just as well for you.</li>
+		</ul>
+	</div><!-- / #error-box -->
+</div><!-- / #error-wrap -->
