@@ -453,7 +453,8 @@ class JobsController extends JObject
 		
 		// Get available resume files
 		$resume = new Resume ($database);
-		$files 	= $resume->getResumeFiles($pile, $juser->get('id'));
+		$admin  = $this->_admin && !$this->_emp ? 1 : 0;
+		$files 	= $resume->getResumeFiles($pile, $juser->get('id'), $admin);
 		$batch  = array();
 		
 		if(count($files) > 0) {
@@ -467,7 +468,7 @@ class JobsController extends JObject
 			JPluginHelper::importPlugin( 'members', 'resume' );
 			$dispatcher =& JDispatcher::getInstance();
 			
-			$pile .= $pile == 'shortlisted' ? '_'.$juser->get('id') : '';
+			$pile .= $pile != 'all' ? '_'.$juser->get('id') : '';
 			$zipname = JText::_('Resumes').'_'.$pile.'.zip';
 			
 			$mconfig =& JComponentHelper::getParams( 'com_members' );
@@ -578,7 +579,7 @@ class JobsController extends JObject
 			$admin = $this->_admin && !$this->_emp ? 1 : 0;
 			$seekers = $js->getSeekers ($filters, $juser->get('id'), 0, $admin );
 		
-			$total = $js->countSeekers ($filters, $juser->get('id'));
+			$total = $js->countSeekers ($filters, $juser->get('id'), 0, $admin);
 			
 			// Initiate paging 
 			jimport('joomla.html.pagination');

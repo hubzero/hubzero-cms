@@ -92,9 +92,9 @@ defined('_JEXEC') or die( 'Restricted access' );
         <span class="sub-heading"><?php echo JText::_('Total pool'); ?></span>
         <p><span class="view"><?php echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=resumes').'" class="cancelit">[ '.JText::_( 'view' ).' ]</a>'; ?></span><?php echo $this->stats['total_resumes']; ?> </p>
         <span class="sub-heading"><?php echo JText::_('Shortlisted'); ?></span>
-        <p><span class="view"><?php if($this->stats['shortlisted'] > 0) { echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=batch').'?pile=shortlisted" class="cancelit">[ '.JText::_( 'download all' ).' ]</a> &nbsp;&nbsp;&nbsp;'; } echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted" class="cancelit">[ '.JText::_( 'view' ).' ]</a>'; ?></span><?php echo $this->stats['shortlisted']; ?></p>       
+        <p><span class="view"><?php if($this->stats['shortlisted'] > 0) { echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=batch').'?pile=shortlisted" class="cancelit">[ '.JText::_( 'download' ).' ]</a> &nbsp;&nbsp;&nbsp;'; } echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted" class="cancelit">[ '.JText::_( 'view' ).' ]</a>'; ?></span><?php echo $this->stats['shortlisted']; ?></p>       
         <span class="sub-heading"><?php echo JText::_('Applied to your ad(s)'); ?></span>
-        <p><span class="view"><?php echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=applied" class="cancelit">[ '.JText::_( 'view' ).' ]</a>'; ?></span><?php echo $this->stats['applied']; ?></p>
+        <p><span class="view"><?php if($this->stats['applied'] > 0) { echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=batch').'?pile=applied" class="cancelit">[ '.JText::_( 'download' ).' ]</a> &nbsp;&nbsp;&nbsp;'; } echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=applied" class="cancelit">[ '.JText::_( 'view' ).' ]</a>'; ?></span><?php echo $this->stats['applied']; ?></p>
         <div class="spacer"></div>
         <h4><span><?php echo JText::_('Manage Job Ads').' ('.count($this->myjobs).')'; ?></span></h4>
        
