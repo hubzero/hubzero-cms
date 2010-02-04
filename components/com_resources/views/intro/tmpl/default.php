@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=browse'); ?>">Browse the list of available resources</a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">Browse the list of available resources</a></p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->
@@ -89,9 +89,9 @@ if ($categories) {
 ?>
 		<div class="three columns <?php echo $clm; ?>">
 			<div class="<?php echo $cls; ?>">
-				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'type='.$normalized); ?>"><?php echo stripslashes($category->type); ?></a></h3>
+				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$normalized); ?>"><?php echo stripslashes($category->type); ?></a></h3>
 				<p><?php echo stripslashes($category->description); ?></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'type='.$normalized); ?>">Browse &rsaquo;</a>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$normalized); ?>">Browse &rsaquo;</a></p>
 			</div>
 		</div><!-- / .three columns <?php echo $clm; ?> -->
 <?php

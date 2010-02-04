@@ -2260,12 +2260,12 @@ class ResourcesHtml
 						
 							$sess = $resource->tool ? $resource->tool : $resource->alias.'_r'.$resource->revision;
 							$v = (!isset($resource->revision) or $resource->revision=='dev') ?  'test' : $resource->revision;
-							$lurl = 'index.php?option=com_mw'.a.'task=invoke'.a.'sess='.$sess.a.'version='.$v;
+							$lurl = 'index.php?option=com_tools&app='.$resource->alias.'&task=invoke&version='.$v;
 						} elseif (!isset($resource->revision) or $resource->revision=='dev') { // serve dev version
-							$lurl = 'index.php?option=com_mw'.a.'task=invoke'.a.'sess='.$resource->alias.'_dev'.a.'version=test';
+							$lurl = 'index.php?option=com_tools&app='.$resource->alias.'&task=invoke&version=dev';
 						}
 					} else {
-						$lurl = 'index.php?option=com_mw'.a.'task=invoke'.a.'sess='.$resource->alias;
+						$lurl = 'index.php?option=com_tools&task=invoke&app='.$resource->alias;
 					}
 					
 	
