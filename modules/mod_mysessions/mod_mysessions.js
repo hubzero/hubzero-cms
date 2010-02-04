@@ -93,7 +93,7 @@ HUB.Mod_MySessions = {
 	diskMonitor: function() {
 		if ($('diskusage')) {
 			function fetch() {			
-				new Ajax('index.php?option=com_mw&task=diskusage&no_html=1&msgs=1',{
+				new Ajax('index.php?option=com_tools&task=diskusage&no_html=1&msgs=1',{
 					'method' : 'get',
 					'update' : $('diskusage')
 				}).request();
