@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @author		Shawn Rice <zooley@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -25,35 +25,40 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$hubShortName = $xhub->getCfg('hubShortName');
+$fieldclass = '';
+if ($this->getError()) {
+	$fieldclass = ' class="fieldWithErrors"';
+}
 
-	$fieldclass = '';
-	if ($this->getError()) {
-		$fieldclass = ' class="fieldWithErrors"';
-	}
+$jconfig =& JFactory::getConfig();
 ?>
-
 <div id="content-header" class="full">
 	<h2>Lost Username</h2>
 </div>
 <div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task); ?>" method="post" name="hubForm" id="hubForm">
+<?php if ($this->passed) { ?>
+	<p class="passed">Your account information has been emailed to you at "<?php echo htmlentities($this->email,ENT_COMPAT,'UTF-8'); ?>". Please check your email for details on how to login.</p>
+<?php } else { ?>
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.$this->task); ?>" method="post" name="hubForm" id="hubForm">
 		<div class="explaination">
 			<p class="info">
-				If you already know your username, and only need your password reset, <a href="<?php echo JRoute::_('index.php?option='.$this->_option.'&task=lostpassword'); ?>">go here now</a>.
+				If you already know your username, and only need your password reset, <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=lostpassword'); ?>">go here now</a>.
 			</p>
 		</div>
 		<fieldset>
 			<h3>Recover Username(s)</h3>
+			
 			<label<?php echo $fieldclass; ?>>
 				Registered E-mail:
-				<input name="email" id="email" type="text" size="36" value="<?php echo htmlentities($email,ENT_COMPAT,'UTF-8'); ?>" />
+				<input name="email" id="email" type="text" size="36" value="<?php echo htmlentities($this->email,ENT_COMPAT,'UTF-8'); ?>" />
 			</label>
-			<?php if ($this->getError()) { ?> <p class="error"><?php echo $this->getError(); ?></p> <?php } ?>
+<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo $this->getError(); ?></p>
+<?php } ?>
 			
 			<p>
 				Enter your email address and we will look up <strong>all</strong> accounts you have on 
-				<?php echo $hubShortName; ?> and email you the login username information for all of them.
+				<?php echo $jconfig->getValue('config.sitename'); ?> and email you the login username information for all of them.
 			</p>
 			<div class="help">
 			<h4>What if I have also lost my password?</h4>
@@ -79,10 +84,11 @@ $hubShortName = $xhub->getCfg('hubShortName');
 		</fieldset>
 		<div class="clear"></div>
 		
-		<input type="hidden" name="option" value="<?php echo $this->_option; ?>" />
-		<input type="hidden" name="view" value="<?php echo $this->_task; ?>" />
-		<input type="hidden" name="task" value="<?php echo $this->_task; ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="view" value="<?php echo $this->task; ?>" />
+		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 		
 		<p class="submit"><input type="submit" name="resend" value="Send Email with Account Username" /></p>
 	</form>
-</div>
+<?php } ?>
+</div><!-- / .main section -->
