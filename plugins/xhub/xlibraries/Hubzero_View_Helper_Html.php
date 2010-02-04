@@ -149,4 +149,18 @@ class Hubzero_View_Helper_Html
 		}
 		return $text;
 	}
+	
+	//-----------
+	
+	public function ampReplace( $text )
+	{
+		$text = str_replace( '&&', '*--*', $text );
+		$text = str_replace( '&#', '*-*', $text );
+		$text = str_replace( '&amp;', '&', $text );
+		$text = preg_replace( '|&(?![\w]+;)|', '&amp;', $text );
+		$text = str_replace( '*-*', '&#', $text );
+		$text = str_replace( '*--*', '&&', $text );
+
+		return $text;
+	}
 }
