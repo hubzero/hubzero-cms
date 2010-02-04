@@ -24,31 +24,17 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
-jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
-
-require_once( JPATH_COMPONENT.DS.'features.history.php' );
-require_once( JPATH_COMPONENT.DS.'features.html.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-ximport('Hubzero_View_Helper_Html');
-
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
-// Instantiate controller
-$controller = new FeaturesController();
-$controller->execute();
-$controller->redirect();
 ?>
+<div id="content-header" class="full">
+	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div class="main section">
+<?php if ($this->getError()) { ?>
+	<p class="warning"><?php echo $this->getError(); ?></p>
+<?php } ?>
+<?php
+ximport('xmodule');
+XModuleHelper::displayModules('force_mod');
+?>
+</div><!-- / .main section -->
