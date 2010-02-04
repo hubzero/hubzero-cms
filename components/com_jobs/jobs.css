@@ -64,7 +64,7 @@
 		border-top:1px solid #ccc;
 		padding:0.2em 0;
 		border-bottom:1px solid #ccc;
-		background: url("images/i.gif") 0 50% no-repeat; padding-left:16px;
+		background: url("images/i.gif") 0 top no-repeat; padding-left:16px;
 	}
 	.activead {
 		border-top:1px solid #3a8227;
@@ -372,22 +372,20 @@
 	
 /* Resume List */
 	#candidates {
-		padding:0; margin:0; list-style:none; border-top:4px solid #e3e3e3;
+		padding:0; margin:0.5em 0 0 0; list-style:none; border-top:4px solid #e3e3e3;
 	}
 	#candidates li {
 		background:#FFF;
-	}
-	
+	}	
 	#candidates li.applic {
 		margin-top:1em;
-	}
-	
+		color: #000;
+	}	
 	#candidates li.applicbot {
-		border-bottom: 1px solid #ccc;
+		border-bottom: 2px solid #f0decb;
 		margin-bottom:1em;
 		padding-bottom:1em;
-	}
-	
+	}	
 	h4 {
 		margin-bottom:0.5em;
 	}
@@ -497,7 +495,7 @@
 	.current  h3 {
 		color: #a35807;
 	}
-	.process_steps h3 span {
+	.process_steps h3 span, .countc {
 		background: #eef3fc;
 		border:1px solid #cccccc;
 		-moz-border-radius-topright: 15px;
@@ -508,7 +506,12 @@
 		-webkit-border-bottom-right-radius: 15px;
 		-webkit-border-bottom-left-radius: 15px;
 		-webkit-border-top-left-radius: 15px;
-
+	}
+	.countc {
+		padding:0.2em 0.5em 0.2em 0.5em;
+		color: #a35807;
+		background: #feefdf;
+		border:1px solid #a8753f;
 	}
 	.current  h3 span {
 		color: #a35807;

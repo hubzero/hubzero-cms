@@ -164,12 +164,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 		
 		JPluginHelper::importPlugin( 'members','resume' );
 		$dispatcher =& JDispatcher::getInstance();
+		$k = 1;
 		for ($i=0, $n=count( $job->applications ); $i < $n; $i++) {	
-			if($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {
-				$k = 1;
+			if($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {				
 				$applied = ($job->applications[$i]->applied !='0000-00-00 00:00:00') ? JHTML::_('date',$job->applications[$i]->applied, '%d %b %Y') : 'N/A';
 				$html  .= t.'<li class="applic">'.n;
-				$html  .= t.($k).') '.$job->applications[$i]->seeker->name.' '.JText::_('applied on').' '.$applied.n;
+				$html  .= t.'<span class="countc">'.$k.'</span> '.$job->applications[$i]->seeker->name.' '.JText::_('applied on').' '.$applied.n;
 				$html  .= $job->applications[$i]->cover ? '<blockquote>'.trim(stripslashes($job->applications[$i]->cover)).'</blockquote>' : '';
 				$html  .= t.'</li>'.n;
 			
