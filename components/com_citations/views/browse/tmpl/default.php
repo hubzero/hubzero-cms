@@ -66,7 +66,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				
 				<label>
 					<?php echo JText::_('SORT_BY'); ?>
-					<?php echo CitationsHtml::select('sortby',$this->sorts,$this->filters['sort']); ?>
+					<?php echo CitationsHtml::select('sort',$this->sorts,$this->filters['sort']); ?>
 				</label>
 				
 				<label>
@@ -85,23 +85,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$formatter = new CitationsFormat;
 		$formatter->setFormat($this->format);
 		
-		$html = '<ul class="citations results">'.n;
+		$html = '<ul class="citations results">'."\n";
 		foreach ($this->citations as $cite) 
 		{
 			// Get the associations
 			$assoc = new CitationsAssociation( $this->database );
 			$assocs = $assoc->getRecords( array('cid'=>$cite->id) );
 			
-			$html .= ' <li>'.n;
+			$html .= ' <li>'."\n";
 			//$html .= CitationsFormatter::formatReference( $cite, $cite->url );
-			$html .= $formatter->formatReference($cite);
-			$html .= t.'<p class="details">'.n;
-			$html .= t.t.'<a href="'.JRoute::_('index.php?option='.$this->option.'&task=download&id='.$cite->id.'&format=bibtex&no_html=1').'" title="'.JText::_('DOWNLOAD_BIBTEX').'">BibTex</a> <span>|</span> '.n;
-			$html .= t.t.'<a href="'.JRoute::_('index.php?option='.$this->option.'&task=download&id='.$cite->id.'&format=endnote&no_html=1').'" title="'.JText::_('DOWNLOAD_ENDNOTE').'">EndNote</a>'.n;
+			$html .= $formatter->formatReference($cite, $this->filters['search']);
+			$html .= "\t".'<p class="details">'."\n";
+			$html .= "\t\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&task=download&id='.$cite->id.'&format=bibtex&no_html=1').'" title="'.JText::_('DOWNLOAD_BIBTEX').'">BibTex</a> <span>|</span> '."\n";
+			$html .= "\t\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&task=download&id='.$cite->id.'&format=endnote&no_html=1').'" title="'.JText::_('DOWNLOAD_ENDNOTE').'">EndNote</a>'."\n";
 			if (count($assocs) > 0 || $cite->eprint) {
 				if (count($assocs) > 0) {
 					if (count($assocs) > 1) {
-						$html .= t.t.' <span>|</span> '.JText::_('RESOURCES_CITED').': '.n;
+						$html .= "\t\t".' <span>|</span> '.JText::_('RESOURCES_CITED').': '."\n";
 						$k = 0;
 						$rrs = array();
 						foreach ($assocs as $rid) 
@@ -115,29 +115,34 @@ defined('_JEXEC') or die( 'Restricted access' );
 								}
 							}
 						}
-						$html .= t.t.implode(', ',$rrs).n;
+						$html .= "\t\t".implode(', ',$rrs)."\n";
 					} else {
 						if ($assocs[0]->table == 'resource') {
 							$this->database->setQuery( "SELECT published FROM #__resources WHERE id=".$assocs[0]->oid );
 							$state = $this->database->loadResult();
 							if ($state == 1) {
-								$html .= t.t.' <span>|</span> <a href="'.JRoute::_('index.php?option=com_resources&id='.$assocs[0]->oid).'">'.JText::_('RESOURCE_CITED').'</a>'.n;
+								$html .= "\t\t".' <span>|</span> <a href="'.JRoute::_('index.php?option=com_resources&id='.$assocs[0]->oid).'">'.JText::_('RESOURCE_CITED').'</a>'."\n";
 							}
 						}
 					}
 				}
 				if ($cite->eprint) {
-					$html .= t.t.' <span>|</span> <a href="'.CitationsHtml::cleanUrl($cite->eprint).'">'.JText::_('ELECTRONIC_PAPER').'</a>'.n;
+					$html .= "\t\t".' <span>|</span> <a href="'.Hubzero_View_Helper_Html::ampReplace($cite->eprint).'">'.JText::_('ELECTRONIC_PAPER').'</a>'."\n";
 				}
 			}
-			$html .= t.'</p>'.n;
-			$html .= ' </li>'.n;
+			$html .= "\t".'</p>'."\n";
+			$html .= ' </li>'."\n";
 		}
-		$html .= '</ul>'.n;
+		$html .= '</ul>'."\n";
 		echo $html;
 		
+		$qs = '';
+		foreach ($this->filters as $key=>$value) 
+		{
+			$qs .= ($key != 'limit' && $key != 'start') ? $key.'='.$value.'&' : '';
+		}
 		$paging = $this->pageNav->getListFooter();
-		$paging = str_replace('citations/?','citations/browse?',$paging);
+		$paging = str_replace('citations/?','citations/browse?'.$qs,$paging);
 		echo $paging;
 	} else {
 ?>

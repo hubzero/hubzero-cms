@@ -35,6 +35,7 @@ if ($config->getValue('config.debug')) {
 }
 
 jimport('joomla.application.component.helper');
+//ximport('Hubzero_View_Helper_Html');
 
 require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'citations.class.php' );
 require_once( JPATH_COMPONENT.DS.'citations.format.php' );

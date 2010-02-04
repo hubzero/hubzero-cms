@@ -25,14 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (!defined('n')) {
-	define('t',"\t");
-	define('n',"\n");
-	define('br','<br />');
-	define('sp','&#160;');
-	define('a','&amp;');
-}
-
 class CitationsFormatter 
 {
 	public function cleanUrl($url) 
@@ -73,11 +65,13 @@ class CitationsFormatter
 	
 	//-----------
 	
-	public function formatReference(&$row, $link='none')
+	public function formatReference(&$row, $link='none', $highlight='')
 	{
-		$html = t.'<p>';
+		ximport('Hubzero_View_Helper_Html');
+		
+		$html = "\t".'<p>';
 		if (CitationsFormatter::keyExistsOrIsNotEmpty('author',$row)) {
-			$xuser =& XFactory::getUser();
+			$xuser =& JFactory::getUser();
 			
 			$auths = explode(';',$row->author);
 			$a = array();
@@ -90,18 +84,18 @@ class CitationsFormatter
 					if (is_numeric($matches[0])) {
 						$aid = $matches[0];
 					} else {
-						$zuser =& XUser::getInstance( trim($matches[0]) );
+						$zuser =& JUser::getInstance( trim($matches[0]) );
 						if (is_object($zuser)) {
-							$aid = $zuser->get('uid');
+							$aid = $zuser->get('id');
 						}
 					}
 					$auth = preg_replace( '/{{(.*?)}}/s', '', $auth );
 					if ($aid) {
 						$app =& JFactory::getApplication();
 						if (is_object($xuser) && in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-							$a[] = '<a href="index.php?option=com_whois'.a.'query=uidNumber%3D'.$aid.'">'.trim($auth).'</a>';
+							$a[] = '<a href="index.php?option=com_whois&query=uidNumber%3D'.$aid.'">'.trim($auth).'</a>';
 						} else {
-							$a[] = '<a href="'.JRoute::_('index.php?option=com_members'.a.'id='.$aid).'">'.trim($auth).'</a>';
+							$a[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$aid).'">'.trim($auth).'</a>';
 						}
 					} else {
 						$a[] = trim($auth);
@@ -125,7 +119,7 @@ class CitationsFormatter
 			if (!$row->url) {
 				$html .= ', "'.stripslashes($row->title);
 			} else {
-				$html .= ', "<a href="'.CitationsFormatter::cleanUrl($row->url).'">'.stripslashes($row->title).'</a>';
+				$html .= ', "<a href="'.CitationsFormatter::cleanUrl($row->url).'">'.Hubzero_View_Helper_Html::str_highlight(stripslashes($row->title),array($highlight)).'</a>';
 			}
 		}
 		if (CitationsFormatter::keyExistsOrIsNotEmpty('journal',$row) 
@@ -135,7 +129,7 @@ class CitationsFormatter
 		}
 		$html .= '"';
 		if (CitationsFormatter::keyExistsOrIsNotEmpty('journal',$row)) {
-			$html .= ' <i>'.stripslashes($row->journal).'</i>';
+			$html .= ' <i>'.Hubzero_View_Helper_Html::str_highlight(stripslashes($row->journal),array($highlight)).'</i>';
 		} elseif (CitationsFormatter::keyExistsOrIsNotEmpty('booktitle',$row)) {
 			$html .= ' <i>'.stripslashes($row->booktitle).'</i>';
 		}
@@ -207,7 +201,7 @@ class CitationsFormatter
 			$html .= ' ('.JText::_('DOI').': '.$row->doi.')';
 		}
 		$html  = CitationsFormatter::grammarCheck( $html, '.' );
-		$html .= '</p>'.n;
+		$html .= '</p>'."\n";
 
 		return $html;
 	}

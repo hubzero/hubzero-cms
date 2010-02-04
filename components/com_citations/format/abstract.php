@@ -65,7 +65,7 @@ abstract class CitationsFormatAbstract
 	
 	//-----------
 	
-	public function format($row, $link='none')
+	public function format($row, $link='none', $highlight='')
 	{
 		return '';
 	}
