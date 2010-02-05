@@ -1593,7 +1593,8 @@ CREATE TABLE IF NOT EXISTS `#__tool` (
   `ticketid` int(15) default NULL,
   `state_changed` datetime default '0000-00-00 00:00:00',
   `revision` int(11) default NULL,
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `toolname` (`toolname`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
 # --------------------------------------------------------
@@ -1607,8 +1608,8 @@ CREATE TABLE IF NOT EXISTS `#__tool_authors` (
   `uid` int(11) NOT NULL default '0',
   `ordering` int(11) default '0',
   `version_id` int(11) NOT NULL default '0',
-  `name` varchar(250) NULL,
-  `organization` varchar(250) NULL,
+  `name` varchar(255) NULL,
+  `organization` varchar(255) NULL,
   PRIMARY KEY  (`toolname`,`revision`,`uid`,`version_id`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
@@ -1654,7 +1655,8 @@ CREATE TABLE IF NOT EXISTS `#__tool_version` (
   `mw` varchar(31) default NULL,
   `toolid` int(11) default NULL,
   `priority` int(11) NULL,
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `toolname` (`toolname`,`instance`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
 # --------------------------------------------------------
@@ -1678,17 +1680,20 @@ CREATE TABLE #__tool_version_alias (
 
 CREATE TABLE #__tool_version_hostreq ( 
 	tool_version_id	int(11) NOT NULL,
-	hostreq        	varchar(255) NOT NULL 
+	hostreq        	varchar(255) NOT NULL,
+	UNIQUE KEY `toolid` (`tool_version_id`,`hostreq`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
 CREATE TABLE #__tool_version_middleware ( 
 	tool_version_id	int(11) NOT NULL,
-	middleware     	varchar(255) NOT NULL 
+	middleware     	varchar(255) NOT NULL,
+	UNIQUE KEY `toolid` (`tool_version_id`,`middleware`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
 CREATE TABLE #__tool_version_tracperm ( 
 	tool_version_id	int(11) NOT NULL,
-	tracperm       	varchar(64) NOT NULL 
+	tracperm       	varchar(64) NOT NULL, 
+	UNIQUE KEY `toolid` (`tool_version_id`,`tracperm`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
 # --------------------------------------------------------
@@ -2392,6 +2397,7 @@ CREATE TABLE IF NOT EXISTS `#__wishlist` (
 	state      	int(3) NOT NULL DEFAULT '0',
 	public     	int(3) NOT NULL DEFAULT '1',
 	description	varchar(255) NULL,
+	type		int(11) NULL DEFAULT '0',
 	PRIMARY KEY(id)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
 
@@ -3509,3 +3515,178 @@ CREATE TABLE IF NOT EXISTS `#__xmessage_seen` (
   KEY `mid` (`mid`),
   KEY `uid` (`uid`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
+
+CREATE TABLE `#__users_points_subscriptions` (
+  `id` int(11) NOT NULL auto_increment,
+  `uid` int(11) NOT NULL default '0',
+  `serviceid` int(11) NOT NULL default '0',
+  `units` int(11) NOT NULL default '1',
+  `status` int(11) NOT NULL default '0',
+  `pendingunits` int(11) default '0',
+  `pendingpayment` float(6,2) default '0.00',
+  `totalpaid` float(6,2) default '0.00',
+  `installment` int(11) default '0',
+  `contact` varchar(20) default '',
+  `code` varchar(10) default '',
+  `usepoints` tinyint(2) default '0',
+  `notes` text,
+  `added` datetime NOT NULL,
+  `updated` datetime default NULL,
+  `expires` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__users_points_services` (
+  `id` int(11) NOT NULL auto_increment,
+  `title` varchar(250) NOT NULL default '',
+  `category` varchar(50) NOT NULL default '',
+  `alias` varchar(50) NOT NULL default '',
+  `description` varchar(255) NOT NULL default '',
+  `unitprice` float(6,2) default '0.00',
+  `pointsprice` int(11) default '0',
+  `currency` varchar(50) default 'points',
+  `maxunits` int(11) default '0',
+  `minunits` int(11) default '0',
+  `unitsize` int(11) default '0',
+  `status` int(11) default '0',
+  `restricted` int(11) NULL default '0',
+  `ordering` int(11) NULL default '0',
+  `params` text,
+  `unitmeasure` varchar(200) NOT NULL default '',
+  `changed` datetime default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `alias` (`alias`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__jobs_types` (
+  `id` int(11) NOT NULL auto_increment,
+  `category` varchar(150) NOT NULL default '',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+INSERT INTO `#__jobs_types` (`id`,`category`) VALUES ('1','Full-time');
+INSERT INTO `#__jobs_types` (`id`,`category`) VALUES ('2','Part-time');
+INSERT INTO `#__jobs_types` (`id`,`category`) VALUES ('3','Contract');
+INSERT INTO `#__jobs_types` (`id`,`category`) VALUES ('4','Internship');
+INSERT INTO `#__jobs_types` (`id`,`category`) VALUES ('5','Temporary');
+
+CREATE TABLE `#__jobs_stats` (
+  `id` int(11) NOT NULL auto_increment,
+  `itemid` int(11) NOT NULL,
+  `category` varchar(11) NOT NULL default '',
+  `total_viewed` int(11) default '0',
+  `total_shared` int(11) default '0',
+  `viewed_today` int(11) default '0',
+  `lastviewed` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__jobs_shortlist` (
+  `id` int(11) NOT NULL auto_increment,
+  `emp` int(11) NOT NULL default '0',
+  `seeker` int(11) NOT NULL default '0',
+  `category` varchar(11) NOT NULL default 'resume',
+  `jobid` int(11) default '0',
+  `added` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__jobs_seekers` (
+  `id` int(11) NOT NULL auto_increment,
+  `uid` int(11) NOT NULL default '0',
+  `active` int(11) NOT NULL default '0',
+  `lookingfor` varchar(255) default '',
+  `tagline` varchar(255) default '',
+  `linkedin` varchar(255) NULL,
+  `url` varchar(255) NULL,
+  `updated` datetime NULL DEFAULT '0000-00-00 00:00:00",
+  `sought_cid` int(11) default '0',
+  `sought_type` int(11) default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__jobs_resumes` (
+  `id` int(11) NOT NULL auto_increment,
+  `uid` int(11) NOT NULL default '0',\
+  `created` datetime NOT NULL default '0000-00-00 00:00:00',
+  `title` varchar(100) default NULL,
+  `filename` varchar(100) default NULL,
+  `main` tinyint(2) default '1',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__jobs_prefs` (
+  `id` int(11) NOT NULL auto_increment,
+  `uid` int(10) NOT NULL default '0',
+  `category` varchar(20) NOT NULL default 'resume',
+  `filters` text,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__jobs_openings` (
+  `id` int(11) NOT NULL auto_increment,
+  `cid` int(11) default '0',
+  `employerid` int(11) NOT NULL default '0',
+  `code` int(11) NOT NULL default '0',
+  `title` varchar(200) NOT NULL default '',
+  `companyName` varchar(200) NOT NULL default '',
+  `companyLocation` varchar(200) default '',
+  `companyLocationCountry` varchar(100) default '',
+  `companyWebsite` varchar(200) default '',
+  `description` text,
+  `addedBy` int(11) NOT NULL default '0',
+  `editedBy` int(11) default '0',
+  `added` datetime NOT NULL default '0000-00-00 00:00:00',
+  `edited` datetime default '0000-00-00 00:00:00',
+  `status` int(3) NOT NULL default '0',
+  `type` int(3) NOT NULL default '0',
+  `closedate` datetime default '0000-00-00 00:00:00',
+  `opendate` datetime default '0000-00-00 00:00:00',
+  `startdate` datetime default '0000-00-00 00:00:00',
+  `applyExternalUrl` varchar(250) default '',
+  `applyInternal` int(3) default '0',
+  `contactName` varchar(100) default '',
+  `contactEmail` varchar(100) default '',
+  `contactPhone` varchar(100) default '',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__jobs_employers` (
+  `id` int(11) NOT NULL auto_increment,
+  `uid` int(11) NOT NULL default '0',
+  `added` datetime NOT NULL default '0000-00-00 00:00:00',
+  `subscriptionid` int(11) NOT NULL default '0',
+  `companyName` varchar(250) default '',
+  `companyLocation` varchar(250) default '',
+  `companyWebsite` varchar(250) default '',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__jobs_categories` (
+  `id` int(11) NOT NULL auto_increment,
+  `category` varchar(150) NOT NULL default '',
+  `ordernum` int(11) NOT NULL default '0',
+  `description` varchar(255) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__jobs_applications` (
+  `id` int(11) NOT NULL auto_increment,
+  `jid` int(11) NOT NULL default '0',
+  `uid` int(11) NOT NULL default '0',
+  `applied` datetime NOT NULL default '0000-00-00 00:00:00',
+  `withdrawn` datetime default '0000-00-00 00:00:00',
+  `cover` text,
+  `resumeid` int(11) default '0',
+  `status` int(11) default '1',
+  `reason` varchar(255) default '',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__jobs_admins` (
+  `id` int(11) NOT NULL auto_increment,
+  `jid` int(11) NOT NULL default '0',
+  `uid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
