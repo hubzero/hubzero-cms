@@ -1150,7 +1150,7 @@
 	.aside .flagged { 
 		color: #CC0000;
 		}
-/* Two Columns */
+/* Two Columns 
 	.twocolumn {
 		margin: 1em 0;
 		border: none;
@@ -1171,7 +1171,7 @@
 		padding: 0 0 0 2%;
 		padding-bottom: 2em;
 		}
-/* Three Columns */
+/* Three Columns 
 	.threecolumn {
 		margin: 1em 0 1em 0;
 		border: none;
@@ -1223,7 +1223,7 @@
 		width: 25.5%;
 		border-color: #E7DFD8;
 		}
-/* Four Columns */
+/* Four Columns 
 	.fourcolumn {
 		margin: 0 0 1em 0;
 		margin-left: -1px;
@@ -1263,7 +1263,84 @@
 		margin-left: 0;
 		padding-left: 0;
 		font-size: 90%;
-	}
+		}*/
+/*---------------------------------------------------------------
+	Flexible Columns
+---------------------------------------------------------------*/
+	.columns {
+		margin: 0;
+		padding: 0;
+		border: none;
+		float: left;
+		text-align: left;
+		}
+/* Two Columns */
+	.two {
+		width: 48%;
+		}
+	.two.first {
+		padding: 0 2% 0 0;
+		}
+	.two.second {
+		padding: 0 0 0 2%;
+		}
+/* Three Columns */
+	.three {
+		width: 31.5%;
+		}
+	.three.first {
+		padding: 0 1.25% 0 0;
+		}
+	.three.second {
+		padding: 0 1.25% 0 1.25%;
+		}
+	.three.third {
+		padding: 0 0 0 1.25%;
+		}
+	.three.first.second {
+		padding: 0 1.25% 0 0;
+		width: 64.5%;
+		}
+	.three.second.third {
+		padding: 0 0 0 1.25%;
+		width: 64.5%;
+		}
+/* Four Columns */
+	.four {
+		width: 23%;
+		}
+	.four.first {
+		padding: 0 1.25% 0 0;
+		}
+	.four.second {
+		padding: 0 1.25% 0 1.25%;
+		}
+	.four.third {
+		padding: 0 1.25% 0 1.25%;
+		}
+	.four.fourth {
+		padding: 0 0 0 1.25%;
+		}
+	.four.first.second {
+		padding: 0 1.25% 0 0;
+		width: 48.5%;
+		}
+	.four.second.third {
+		padding: 0 1.25% 0 1.25%;
+		width: 48.5%;
+		}
+	.four.third.fourth {
+		padding: 0 0 0 1.25%;
+		width: 48.5%;
+		}
+	.four.first.second.third {
+		padding: 0 1.25% 0 0;
+		width: 74%;
+		}
+	.four.second.third.fourth {
+		padding: 0 0 0 1.25%;
+		width: 74%;
+		}	
 	.fourcolumn .animation { padding-left: 23px; background: url("../images/icons/fc-animation.gif") 0 0.2em no-repeat; }
 	.fourcolumn .download { padding-left: 23px; background: url("../images/icons/fc-download.gif") 0 0.2em no-repeat; }
 	.fourcolumn .course { padding-left: 23px; background: url("../images/icons/fc-course.gif") 0 0.2em no-repeat; }
@@ -1609,6 +1686,22 @@
 		color: #999;
 		font-size: 90%;
 		}
+	.subject #hubForm fieldset {
+		float: none;
+		width: auto;
+		margin: 0;
+		padding-bottom: 0;
+		background: #dfdfdf;
+		border-color: #bbb;
+		color: #555;
+		}
+	.subject #hubForm fieldset fieldset {
+		padding: 0 1em 1em 1em;
+		margin-top: 1em;
+		}
+	.subject #hubForm .submit {
+		margin-right: 0;
+		}
 /*---------------------------------------------------------------
 	Intro Page
 ---------------------------------------------------------------*/
@@ -1688,12 +1781,14 @@
 		padding: 0;
 		color: #ccc;
 		background-image: none;
+		list-style: none;
 		}
 	.list-footer li {
 		float: left;
 		margin: 0;
 		padding: 0 0.4em;
 		background-image: none;
+		list-style: none;
 		}
 	.list-footer .counter {
 		float: right;
@@ -1701,6 +1796,7 @@
 		color: #333;
 		}
 	.list-footer .page { 
+		padding: 0 0.3em;
 		}
 	.list-footer .limit {
 		padding-right: 1em;
@@ -1936,17 +2032,17 @@
 	.avgrating span {
 		display: none;
 		}
-	.none      { background: url("../images/stars/stars.gif") 0 0 no-repeat; }
-	.half      { background: url("../images/stars/stars.gif") 0 -40px no-repeat; }
-	.one       { background: url("../images/stars/stars.gif") 0 -80px no-repeat; }
-	.onehalf   { background: url("../images/stars/stars.gif") 0 -120px no-repeat; }
-	.two       { background: url("../images/stars/stars.gif") 0 -160px no-repeat; }
-	.twohalf   { background: url("../images/stars/stars.gif") 0 -200px no-repeat; }
-	.three     { background: url("../images/stars/stars.gif") 0 -240px no-repeat; }
-	.threehalf { background: url("../images/stars/stars.gif") 0 -280px no-repeat; }
-	.four      { background: url("../images/stars/stars.gif") 0 -320px no-repeat; }
-	.fourhalf  { background: url("../images/stars/stars.gif") 0 -360px no-repeat; }
-	.five      { background: url("../images/stars/stars.gif") 0 -400px no-repeat; }
+	.no-star        { background: url("../images/stars/stars.gif") 0 0 no-repeat; }
+	.half-star      { background: url("../images/stars/stars.gif") 0 -40px no-repeat; }
+	.one-star       { background: url("../images/stars/stars.gif") 0 -80px no-repeat; }
+	.onehalf-star   { background: url("../images/stars/stars.gif") 0 -120px no-repeat; }
+	.two-star       { background: url("../images/stars/stars.gif") 0 -160px no-repeat; }
+	.twohalf-star   { background: url("../images/stars/stars.gif") 0 -200px no-repeat; }
+	.three-star     { background: url("../images/stars/stars.gif") 0 -240px no-repeat; }
+	.threehalf-star { background: url("../images/stars/stars.gif") 0 -280px no-repeat; }
+	.four-star      { background: url("../images/stars/stars.gif") 0 -320px no-repeat; }
+	.fourhalf-star  { background: url("../images/stars/stars.gif") 0 -360px no-repeat; }
+	.five-star      { background: url("../images/stars/stars.gif") 0 -400px no-repeat; }
 /*---------------------------------------------------------------
 	Primary button for an action
 ---------------------------------------------------------------*/	
@@ -2129,6 +2225,7 @@
 		padding: 0;
 		height: 27px;
 		background: url("../images/useroptions-background.gif") 0 0 no-repeat;
+		font-size: 90%;
 		}
 	#useroptions a {
 		border: none;
@@ -2327,3 +2424,7 @@
 		letter-spacing: 1px;
 		color: #777;
 		}
+#hubForm table input,
+#hubForm table select {
+	width: auto;
+	}
