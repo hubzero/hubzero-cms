@@ -1,12 +1,3 @@
-/**
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
- */
-
 /*
 
 	-- -- -- -- -- -- --
@@ -15,14 +6,13 @@
 
 */
 
-/* Sections */
-	.aside {
+	.com_xpoll .aside {
 		padding-top: 1em;
 		}
-	.main .subject {
-		padding: 2em 0 0 0;
-		}
 /* Results data table */
+	.pollresults {
+		margin: 1em 0;
+		}
 	.pollresults thead th {
 		padding: 0;
 		background: #F5F7F2;

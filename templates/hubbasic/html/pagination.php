@@ -1,29 +1,18 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @version		$Id: pagination.php 9764 2007-12-30 07:48:11Z ircmaxell $
+ * @package		Joomla
+ * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @license		GNU/GPL, see LICENSE.php
+ * Joomla! is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// no direct access
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * This is a file to add template specific chrome to pagination rendering.
@@ -83,10 +72,86 @@ function pagination_list_footer($list)
 	$html .= ($list['total'] > $list['limit']) ? ($list['limitstart'] + $list['limit']) : $list['total'];
 	$html .= ' '.JText::_('of').' '.$list['total'].'</li>'."\n";
 	$html .= "\t".'<li class="limit">'.JText::_('Display Num').' '.$list['limitfield'].'</li>'."\n";
-	$html .= $list['pageslinks'];
+	//$html .= $list['pageslinks'];
+	$html .= pagination_list_render2($list, $list['pageslinks']);
 	$html .= '</ul>'."\n";
 	$html .= '<input type="hidden" name="limitstart" value="'.$list['limitstart'].'" />'."\n";
 
+	return $html;
+}
+
+function pagination_list_render2($list, $pages) 
+{
+	$pages = explode("\n",$pages);
+	
+	$link = '';
+	if (count($pages) > 1) {
+		$html  = $pages[0]."\n";
+		$html .= $pages[1]."\n";
+		
+		if (strstr( $pages[2], 'href' )) { 
+			$link = $pages[2];
+		} else {
+			$link = $pages[3];
+		}
+		$link = str_replace('<li class="page"><strong><a href="', '', $link);
+		$link = str_replace('</a></strong></li>', '', $link);
+		$bits = explode('"', $link);
+		$link = trim($bits[0]);
+
+		$link = preg_replace('/limitstart=[0-9]+/i',"",$link);
+		$link = preg_replace('/start=[0-9]+/i',"",$link);
+		$link = preg_replace('/limit=[0-9]+/i',"",$link);
+		$link = str_replace('?&amp;','?',$link);
+	} else {
+		$html  = "\t".'<li class="start">'.JText::_('Start').'</li>'."\n";
+		$html .= "\t".'<li class="prev">'.JText::_('Prev').'</li>'."\n";
+	}
+	
+	$displayed_pages = 10;
+	$total_pages = ($list['limit'] > 0) ? ceil( $list['total'] / $list['limit'] ) : 1;
+	$this_page = ($list['limit'] > 0) ? ceil( ($list['limitstart']+1) / $list['limit'] ) : $list['limitstart']+1;
+	
+	$pager_middle = ceil($displayed_pages / 2);
+	$start_loop = $this_page - $pager_middle + 1;
+	$stop_loop = $this_page + $displayed_pages - $pager_middle;
+	$i = $start_loop;
+	if ($stop_loop > $total_pages) {
+		$i = $i + ($total_pages - $stop_loop);
+		$stop_loop = $total_pages;
+	}
+	if ($i <= 0) {
+		$stop_loop = $stop_loop + (1 - $i);
+		$i = 1;
+	}
+
+	if ($i > 1) {
+		$html .= "\t".'<li class="page">...</li>'."\n";
+	}
+	
+	for (; $i <= $stop_loop && $i <= $total_pages; $i++) 
+	{
+		$page = ($i - 1) * $list['limit'];
+		if ($i == $this_page) {
+			$html .= "\t".'<li class="page"><strong>'. $i .'</strong></li>'."\n";
+		} else {
+			$html .= "\t".'<li class="page"><a href="'.$link.'limit='.$list['limit'].'&amp;limitstart='. $page  .'">'. $i .'</a></li>'."\n";
+		}
+	}
+	
+	if (($i - 1) < $total_pages) {
+		$html .= "\t".'<li class="page">...</li>'."\n";
+	}
+	if (count($pages) > 1) {
+		$b = array_pop($pages);
+		$c = array_pop($pages);
+		$html .= end($pages)."\n";
+		$html .= $c."\n";
+	} else {
+		$html .= "\t".'<li class="next">'.JText::_('Next').'</li>'."\n";
+		$html .= "\t".'<li class="end">'.JText::_('End').'</li>'."\n";
+	}
+	
 	return $html;
 }
 
@@ -95,7 +160,7 @@ function pagination_list_render($list)
 	// Initialize variables
 	$html  = "\t".'<li class="start">'.$list['start']['data'].'</li>'."\n";
 	$html .= "\t".'<li class="prev">'.$list['previous']['data'].'</li>'."\n";
-
+	
 	foreach ( $list['pages'] as $page )
 	{
 		$html .= "\t".'<li class="page">';
@@ -110,7 +175,7 @@ function pagination_list_render($list)
 		}
 		$html .= '</li>'."\n";
 	}
-
+	
 	$html .= "\t".'<li class="next">'.$list['next']['data'].'</li>'."\n";
 	$html .= "\t".'<li class="end">'.$list['end']['data'].'</li>'."\n";
 	
@@ -140,15 +205,22 @@ function pagination_item_active(&$item)
 		if ($item->link) {
 			$bits = explode('?',$item->link);
 			if (!strstr( $url, 'index.php' )) {
-				if (substr($url, (strlen($url) - 1), strlen($url)) != '/') {
+				/*if (substr($url, (strlen($url) - 1), strlen($url)) != '/') {
 					$url .= '/';
+				}*/
+				if ($url != trim(end($bits))) {
+					$item->link = $url.'?'.end($bits);
 				}
-				$item->link = $url.'?'.end($bits);
 			} else {
-				$item->link = $url.'&'.end($bits);
+				$item->link = $url.'&amp;'.end($bits);
 			}
 			if (!strstr( $item->link, 'limit' )) {
-				$item->link .= '&limit='.$limit;
+				if (strstr( $item->link, '?' )) {
+					$item->link .= '&amp;';
+				} else {
+					$item->link .= '?';
+				}
+				$item->link .= 'limit='.$limit;
 			}
 		}
 		return '<a href="'.$item->link.'" title="'.$item->text.'">'.$item->text.'</a>';
