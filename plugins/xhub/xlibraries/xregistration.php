@@ -669,13 +669,9 @@ class XRegistration
 				$this->_invalid['name'] = 'Please provide a name.';
 			} else {
 				$bits = explode(' ',$registration['name']);
+				$givenName = array_shift($bits);
 				$surname = array_pop($bits);
-				if (count($bits) >= 1) {
-					$givenName = array_shift($bits);
-				}
-				if (count($bits) >= 1) {
-					$middleName = implode(' ',$bits);
-				}
+				$middleName = implode(' ',$bits);
 				if (!$givenName) {
 					$this->_missing['name'] = 'Full Name';
 					$this->_invalid['name'] = 'Please provide a name.';

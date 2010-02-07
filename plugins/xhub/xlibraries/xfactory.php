@@ -73,7 +73,7 @@ class XFactory
 				return $instances[0];
 		}
 
-		return null;
+		return $instances[0];
 	}
 
 	function loadArrayList(&$arraylist, $namespace = null)
