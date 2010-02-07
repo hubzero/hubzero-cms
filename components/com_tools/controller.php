@@ -507,7 +507,7 @@ class ToolsController extends JObject
 		$app['name']    = str_replace(':','-',$app['name']);
 		$app['number']  = 0;
 		$app['version'] = JRequest::getVar( 'version', 'default' );
-		if ($app['version'] != 'default' && $app['name'] != 'workspace') {
+		if ($app['version'] != 'default') {
 			$app['name'] = ($app['version'] == 'dev') ? $app['name'].'_'.$app['version'] : $app['name'].'_r'.$app['version'];
 		}
 		// Get the user's IP address
@@ -919,11 +919,6 @@ class ToolsController extends JObject
 		
 		// Trigger the functions that return the areas we'll be using
 		$cats = $dispatcher->trigger( 'onMwAreas', array($authorized) );
-		
-		$workspaces = array('workspace','workspace-med','workspace-big');
-		if (in_array($toolname,$workspaces)) {
-			$toolname = 'workspace';
-		}
 		
 		// Get the sections
 		$sections = $dispatcher->trigger( 'onMw', array($toolname, $this->_option, $authorized, array($tab)) );
@@ -1355,8 +1350,8 @@ class ToolsController extends JObject
 			$juser =& JFactory::getUser();
 			$login = $juser->get('username');
 			if ($login == '') {
-                $xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED null user check");
-			    return false;
+				$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED null user check");
+			    	return false;
 			}
 		}
 		
