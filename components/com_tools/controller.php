@@ -486,6 +486,8 @@ class ToolsController extends JObject
 
 	protected function invoke()
 	{
+		ximport('Hubzero_Ldap');
+
 		// Check that the user is logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
@@ -575,8 +577,14 @@ class ToolsController extends JObject
 		$appcount = $ms->getCount( $juser->get('username') );
 
 		// Find out how many sessions the user is ALLOWED to run.
-		$xuser =& XFactory::getUser();
-		$remain = $xuser->get('jobs_allowed') - $appcount;
+		$xprofile =& XFactory::getProfile();
+		$remain = $xprofile->get('jobsAllowed') - $appcount;
+
+		if (!Hubzero_Ldap::user_exists($xprofile->get('username')))
+		{
+		       $xlog->logDebug("mw::invoke create ldap user for this account");
+		       $xprofile->create('ldap');
+		}
 
 		// Have they reached their session quota?
 		if ($remain <= 0) {
@@ -1267,12 +1275,11 @@ class ToolsController extends JObject
 			return 'admin';
 		}
 		
-		//$xuser =& XFactory::getUser();
-		$xuser = XProfile::getInstance();
-		if (is_object($xuser)) {
+		$xprofile = &XFactory::getProfile();
+		if (is_object($xprofile)) {
 			// Check if they're a site admin (from LDAP)
 			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
+			if (in_array(strtolower($app->getCfg('sitename')), $xprofile->get('admin'))) {
 				return 'admin';
 			}
 		}
@@ -1327,7 +1334,6 @@ class ToolsController extends JObject
 
 	private function _getToolAccess($tool, $login='') 
 	{
-		ximport('xuserhelper');
 		ximport('xgeoutils');
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.toolgroup.php' );

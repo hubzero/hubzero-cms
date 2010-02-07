@@ -364,6 +364,7 @@ class MwController extends JObject
 
 	protected function invoke()
 	{
+		ximport('Hubzero_Ldap');
 		// Needed objects
 		$juser =& JFactory::getUser();
 		$xhub =& XFactory::getHub();
@@ -443,8 +444,14 @@ class MwController extends JObject
 		$appcount = $ms->getCount( $juser->get('username') );
 
 		// Find out how many sessions the user is ALLOWED to run.
-		$xuser =& XFactory::getUser();
-		$remain = $xuser->get('jobs_allowed') - $appcount;
+		$xprofile =& XFactory::getProfile();
+		$remain = $xprofile->get('jobsAllowed') - $appcount;
+
+		if (!Hubzero_Ldap::user_exists($xprofile->get('username')))
+		{
+			$xlog->logDebug("mw::invoke create ldap user for this account");
+			$xprofile->create('ldap');
+		}
 
 		// Have they reached their session quota?
 		if ($remain <= 0) {

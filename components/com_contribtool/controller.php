@@ -1045,6 +1045,7 @@ class ContribtoolController extends JObject
 					$hztv->toolaccess = $tool['exec'];
 					$hztv->codeaccess = $tool['code'];
 					$hztv->wikiaccess = $tool['wiki'];
+					$hztv->vnc_command =  $invokedir.DS.$toolname.DS.'dev'.DS.'middleware'.DS.'invoke -T dev';
 					$hztv->vnc_geometry = $tool['vncGeometry'];
 					$hztv->exportControl = $exportmap[$tool['exec']];
 					$hztv->state = 3;
@@ -1972,11 +1973,7 @@ class ContribtoolController extends JObject
 	{
 		$token = md5(uniqid());
 		$xhub   =& XFactory::getHub();
-		$scriptdir = isset($this->config->parameters['adminscript_dir']) ? $this->config->parameters['adminscript_dir'] : DS.'apps'.DS.'bin';
-		if ($scriptdir{0} != "/")
-		{
-			$scriptdir = JPATH_COMPONENT . DS . $scriptdir;
-		}
+		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 
 		$fname = '/tmp/license'.$toolname.$token.'txt';
 		$handle = fopen($fname, "w");
@@ -2042,11 +2039,7 @@ class ContribtoolController extends JObject
 		$database =& JFactory::getDBO();
 		$xhub   =& XFactory::getHub();
 		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
-		$scriptdir = isset($this->config->parameters['adminscript_dir']) ? $this->config->parameters['adminscript_dir'] : DS.'apps'.DS.'bin';
-		if ($scriptdir{0} != "/")
-		{
-			$scriptdir = JPATH_COMPONENT . DS . $scriptdir;
-		}
+		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 		
 		// Create a Tool object
 		$obj = new Tool( $database );
@@ -2101,11 +2094,8 @@ class ContribtoolController extends JObject
 		$database =& JFactory::getDBO();
 		$xhub   =& XFactory::getHub();
 		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
-		$scriptdir = isset($this->config->parameters['adminscript_dir']) ? $this->config->parameters['adminscript_dir'] : DS.'apps'.DS.'bin';
-		if ($scriptdir{0} != "/")
-		{
-			$scriptdir = JPATH_COMPONENT . DS . $scriptdir;
-		}
+		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
+
 		//$tarball_path = $this->rconfig->get('uploadpath');
 		$tarball_path = $this->config->parameters['sourcecodePath'];
 		
@@ -2197,7 +2187,7 @@ class ContribtoolController extends JObject
 			// Print out results or errors
 			foreach($rawoutput as $line)
 			{
-				$msg .= '<br /> * '.$line;
+				$msg = '<br /> * '.$line;
 				$output['msg'] .= $msg;
 			}
 		
