@@ -465,7 +465,7 @@ INSERT INTO `#__plugins` VALUES (85,'Whatsnew - Resources','resources','whatsnew
 INSERT INTO `#__plugins` VALUES (86,'Whatsnew - Content','content','whatsnew',0,0,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (87,'Whatsnew - Events','events','whatsnew',0,1,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (88,'Whatsnew - Knowledge Base','kb','whatsnew',0,2,1,0,0,0,'0000-00-00 00:00:00','');
-INSERT INTO `#__plugins` VALUES (89,'xHUB Authentication - Site','hzldap','xauthentication',0,0,1,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES (89,'xHUB Authentication - Site','hzldap','xauthentication',0,0,1,0,0,0,'0000-00-00 00:00:00','domain=Hub Account');
 INSERT INTO `#__plugins` VALUES (90,'xHUB - Libraries','xlibrary','xhub',0,0,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (91,'XMessage - RSS','rss','xmessage',0,4,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (92,'XMessage - Internal','internal','xmessage',0,5,1,0,0,0,'0000-00-00 00:00:00','');
