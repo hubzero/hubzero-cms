@@ -1329,6 +1329,7 @@ class ToolsController extends JObject
 
 	private function _getToolAccess($tool, $login='') 
 	{
+		ximport('xuserhelper');
 		ximport('xgeoutils');
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.toolgroup.php' );
