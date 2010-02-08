@@ -187,7 +187,7 @@ INSERT INTO `#__components` VALUES (61,'Sections','',0,57,'option=com_support&ta
 INSERT INTO `#__components` VALUES (62,'Tickets','',0,57,'option=com_support&task=tickets','Tickets','com_support',4,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (63,'WhatsNew','option=com_whatsnew',0,0,'','','com_whatsnew',0,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (64,'XPoll','option=com_xpoll',0,0,'option=com_xpoll','XPoll','com_xpoll',0,'js/ThemeOffice/component.png',0,'',1);
-INSERT INTO `#__components` VALUES (65,'Contribtool','option=com_contribtool',0,0,'option=com_contribtool','Contribtool','com_contribtool',0,'js/ThemeOffice/component.png',0,'contribtool_on=0\nadmingroup=apps\ndefault_mw=narwhal\ndefault_vnc=780x600\ndeveloper_url=https://\ndeveloper_site=Forge\ndeveloper_email=\nproject_path=/tools/\ninvokescript_dir=/apps/\nadminscript_dir=/opt/hubzero/contribtool\ndev_suffix=_dev\ngroup_prefix=app-\ndemo_url=\ndoi_service=\nldap_save=1\nldap_read=0\nusedoi=0\nexec_pu=1\nscreenshot_edit=1\n\n',1);
+INSERT INTO `#__components` VALUES (65,'Contribtool','option=com_contribtool',0,0,'option=com_contribtool','Contribtool','com_contribtool',0,'js/ThemeOffice/component.png',0,'contribtool_on=0\nadmingroup=\ndefault_mw=narwhal\ndefault_vnc=780x600\ndeveloper_url=https://\ndeveloper_site=Forge\ndeveloper_email=\nproject_path=/tools/\ninvokescript_dir=/apps/\nadminscript_dir=/opt/hubzero/contribtool\ndev_suffix=_dev\ngroup_prefix=app-\ndemo_url=\ndoi_service=\nldap_save=1\nldap_read=0\nusedoi=0\nexec_pu=1\nscreenshot_edit=1\n\n',1);
 INSERT INTO `#__components` VALUES (66,'Knowledgebase','option=com_kb',0,0,'option=com_kb','Knowledgebase','com_kb',0,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (67,'Resources','option=com_resources',0,0,'option=com_resources','Resources','com_resources',0,'js/ThemeOffice/component.png',0,'autoapprove=1\nautoapproved_users=\ncc_license=1\nemail_when_approved=0\ndefaultpic=/components/com_resources/images/resource_thumb.gif\ntagstool=screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications\ntagsothr=bio,credits,citations,sponsoredby,references,publications\naccesses=Public,Registered,Special,Protected,Private\nwebpath=/site/resources\ntoolpath=/site/resources/tools\nuploadpath=/site/resources\nmaxAllowed=40000000\nfile_ext=jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz\ndoi=\naboutdoi=\nsupportedtag=\nsupportedlink=\nbrowsetags=on\nshow_authors=1\nshow_assocs=1\nshow_ranking=1\nshow_rating=1\nshow_date=3\nshow_metadata=1\nshow_citation=1\n\n',1);
 INSERT INTO `#__components` VALUES (68,'Types','',0,67,'option=com_resources&task=viewtypes','Types','com_resources',0,'js/ThemeOffice/component.png',0,'',1);
@@ -3177,6 +3177,13 @@ CREATE TABLE IF NOT EXISTS `hosttype` (
   `description` varchar(255) NOT NULL default '',
   PRIMARY KEY (`name`)
 ) TYPE=MyISAM CHARACTER SET `utf8`;
+
+
+INSERT INTO `hosttype` VALUES ('workspace','1','Workspace host');
+INSERT INTO `hosttype` VALUES ('fileserver','2','Fileserver host');
+INSERT INTO `hosttype` VALUES ('pubnet','4','Public host');
+INSERT INTO `hosttype` VALUES ('sessions','8','Normal jobs');
+INSERT INTO `hosttype` VALUES ('openvz','16','OpenVZ');
 
 # --------------------------------------------------------
 
