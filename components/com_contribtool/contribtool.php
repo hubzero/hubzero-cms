@@ -59,7 +59,6 @@ ximport('textfilter');
 ximport('fileuploadutils');
 ximport('xmodule');
 ximport('xgroup');
-ximport('xuser');
 ximport('misc_func');
 ximport('xuserhelper');
 

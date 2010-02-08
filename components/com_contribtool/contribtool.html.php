@@ -324,9 +324,9 @@ class ContribtoolHtml
 		if(count($members)>0) {
 			foreach($members as $member) {
 				$uid = ($obj) ? $member->uidNumber  : $member ;			
-				$xuser =& XUser::getInstance ( $uid );
-				if (is_object($xuser)) {
-							$login = $xuser->get('login');
+				$juser =& JUser::getInstance ( $uid );
+				if (is_object($juser)) {
+							$login = $juser->get('username');
 				} else {
 					$login = JText::_('UNKNOWN'); 
 				}	
@@ -1202,7 +1202,7 @@ class ContribtoolHtml
 			   <td><?php if($t->state!=3) { echo $t->released ? JHTML::_('date', $t->released, '%d %b. %Y') : 'N/A'; } else { echo '<span class="yes">'.JText::_('UNDER_DEVELOPMENT').'</span>'; } ?></td>
 			   <td><?php if($t->state!=3 or ($t->state==3 && $t->revision != $status['currentrevision'])) { echo $t->revision; } else { echo '-'; } ?></td>
 			   <td><span class="<?php echo ($t->state=='1' ? 'toolpublished' : 'toolunpublished'); ?>"></span></td> 
-                <td><?php if ($t->state=='1' && $admin==2) { echo '<span class="actionlink"><a href="'.JRoute::_('index.php?option='.$option.a.'task=edit'.a.'toolid='.$status['toolid']).'?editversion=current">'.JText::_('EDIT') .'</a></span>'; } else if ($t->state==3) { echo '<span class="actionlink"><a href="'.JRoute::_('index.php?option='.$option.a.'task=edit'.a.'toolid='.$status['toolid']).'?editversion=dev">'.JText::_('EDIT') .'</a></span>'; } ?></td>	             			
+                <td><?php if ($t->state=='1' && $admin) { echo '<span class="actionlink"><a href="'.JRoute::_('index.php?option='.$option.a.'task=edit'.a.'toolid='.$status['toolid']).'?editversion=current">'.JText::_('EDIT') .'</a></span>'; } else if ($t->state==3) { echo '<span class="actionlink"><a href="'.JRoute::_('index.php?option='.$option.a.'task=edit'.a.'toolid='.$status['toolid']).'?editversion=dev">'.JText::_('EDIT') .'</a></span>'; } ?></td>	             			
 			  </tr>
               <tr id="configure_<?php echo $i; ?>" class="config hide">
                <td id="conftdone_<?php echo $i; ?>"></td>
@@ -1422,7 +1422,7 @@ class ContribtoolHtml
                            
                             </th>
 						</tr>                     
-                            <?php if ($admin == 2) { ?>
+                            <?php if ($admin) { ?>
          		 		<tr>
 							<th colspan="2" class="toolinfo_hed"><?php echo JText::_('ADMIN_CONTROLS');?></th>
 						</tr>

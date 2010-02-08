@@ -642,7 +642,6 @@ class ContribtoolController extends JObject
 	protected function summary ()
 	{
 		$database 	=& JFactory::getDBO();
-		$xuser 		=& XFactory::getUser();
 		$juser     	=& JFactory::getUser();
 
 		// get admin priviliges
@@ -689,7 +688,7 @@ class ContribtoolController extends JObject
 
 	protected function status()
 	{
-		$xuser 	   	=& XFactory::getUser();
+		$xprofile    	=& XFactory::getProfile();
 		$juser     	=& JFactory::getUser();
 		$database 	=& JFactory::getDBO();
 		$xhub      	=& XFactory::getHub();
@@ -804,7 +803,7 @@ class ContribtoolController extends JObject
 			$pathway->addItem( JText::_(strtoupper($this->_task)).' '.JText::_('FOR').' '.$status['toolname'], 'index.php?option='.$this->_option.a.'task=status'.a.'toolid='.$this->_toolid );
 		}
 
-		echo ContribtoolHtml::writeToolStatus($status, $xuser, $this->_admin, $this->_error, $this->_option, $this->_msg, $title, $this->config);
+		echo ContribtoolHtml::writeToolStatus($status, $xprofile, $this->_admin, $this->_error, $this->_option, $this->_msg, $title, $this->config);
 	}
 
 	//-----------
@@ -860,7 +859,6 @@ class ContribtoolController extends JObject
 	protected function edit()
 	{
 		$database =& JFactory::getDBO();
-		$xuser 	  =& XFactory::getUser();
 		$juser    =& JFactory::getUser();
 		$xhub      =& XFactory::getHub();
 
@@ -924,7 +922,6 @@ class ContribtoolController extends JObject
 	protected function save()
 	{
 		$database 	=& JFactory::getDBO();
-		$xuser 		=& XFactory::getUser();
 		$juser 	   	=& JFactory::getUser();
 		$xlog       = &XFactory::getLogger();
 		$task  	    = $this->_task;
@@ -940,6 +937,7 @@ class ContribtoolController extends JObject
 		$group_prefix       = isset($this->config->parameters['group_prefix']) ? $this->config->parameters['group_prefix'] : 'app-';
 		$dev_suffix       	= isset($this->config->parameters['dev_suffix']) ? $this->config->parameters['dev_suffix'] : '_dev';
 		$invokedir 			= isset($this->config->parameters['invokescript_dir']) ? $this->config->parameters['invokescript_dir'] : DS.'apps';
+		$invokedir = rtrim($invokedir,"\\/");
 
 		if (!$this->_error) {
 			$this->_error = '';
@@ -1142,7 +1140,7 @@ class ContribtoolController extends JObject
 				// finalize and publish new version of a tool
 				case 'publishtool':
 					
-					if($this->_admin!=2) { // needs to be admin
+					if(!$this->_admin) { // needs to be admin
 						JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 						return; 
 					}
@@ -1155,7 +1153,7 @@ class ContribtoolController extends JObject
 				// run installtool script
 				case 'installtool':
 				
-					if($this->_admin!=2) { // needs to be admin
+					if(!$this->_admin) { // needs to be admin
 						JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 						return; 
 					}
@@ -1166,7 +1164,7 @@ class ContribtoolController extends JObject
 				
 				// run addRepo script
 				case 'createtool':
-					if($this->_admin!=2) { // needs to be admin
+					if(!$this->_admin) { // needs to be admin
 						JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 						return; 
 					}
@@ -1179,7 +1177,7 @@ class ContribtoolController extends JObject
 				//retire tool
 				case 'retiretool':
 				
-					if($this->_admin!=2) { // needs to be admin
+					if(!$this->_admin) { // needs to be admin
 						JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 						return; 
 					}
@@ -1409,7 +1407,10 @@ class ContribtoolController extends JObject
 		
 		// Get admins
 		$admins = array();
-		$admingroup = isset($this->config->parameters['admingroup']) ? trim($this->config->parameters['admingroup']) : 'apps';
+		if ($this->_admin) {
+			$admins[] = $juser->get('username');
+		}
+		//$admingroup = isset($this->config->parameters['admingroup']) ? trim($this->config->parameters['admingroup']) : null;
 		$group = new XGroup();
 		$group->select( $admingroup);
 		$members = $group->get('members');
@@ -1417,7 +1418,7 @@ class ContribtoolController extends JObject
 		$members = array_merge($members, $managers);
 		if($members) {
 			foreach($members as $member) {
-				$muser =& XUser::getInstance( $member );
+				$muser =& XProfile::getInstance( $member );
 					if (is_object($muser)) {
 							$admins[] = $member;
 					}
@@ -1440,7 +1441,7 @@ class ContribtoolController extends JObject
 			case 2:    
 			$action = 'contribtool_status_changed';    
 			$headline = $summary;
-			//$users = $this->_admin==2 ? $team : $admins; 
+			//$users = $this->_admin ? $team : $admins; 
 			//if(!$inteam) {						
 				//$users[] = $juser->get('id'); // cc person who made the change if not in team
 			//}    
@@ -1449,7 +1450,7 @@ class ContribtoolController extends JObject
 			case 3:    
 			$action = 'contribtool_new_message';    	
 			$headline = JText::_('new message');
-			//$users = $this->_admin==2 && $access != 1 ? $team : $admins;  
+			//$users = $this->_admin && $access != 1 ? $team : $admins;  
 			break;
 			
 			case 4:    
@@ -2278,7 +2279,7 @@ class ContribtoolController extends JObject
 		$usedoi = isset($this->config->parameters['usedoi']) ? $this->config->parameters['usedoi'] : 0;
 		$doiprefix = $doiprefix ? $doiprefix : strtolower($hubShortName).'-r';
 		$invokedir = isset($this->config->parameters['invokescript_dir']) ? $this->config->parameters['invokescript_dir'] : DS.'apps';
-
+		$invokedir = rtrim($invokedir,"\\/");
 		$output = array('class'=>'passed', 'msg'=>JText::_('NOTICE_SUCCESS_TOOL_PUBLISHED'), 'pass'=>'', 'fail'=>'');
 		
 		$xlog->logDebug("publish(): checkpoint 2:$result");
@@ -4147,16 +4148,16 @@ class ContribtoolController extends JObject
 				$this->setError( JText::sprintf('USER_IS_ALREADY_AUTHOR', $authid) );
 			} else {
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
-				$xuser = new XProfile();
-				$xuser->load( $authid );
-				if ($xuser) {
+				$xprofile = new XProfile();
+				$xprofile->load( $authid );
+				if ($xprofile) {
 					$this->_author_check($authid);
 
 					// New record
 					$rc->authorid = $authid;
 					$rc->ordering = $order;
-					$rc->name = $xuser->get('name');
-					$rc->organization = $xuser->get('organization');
+					$rc->name = $xprofile->get('name');
+					$rc->organization = $xprofile->get('organization');
 					$rc->createAssociation();
 
 					$order++;
@@ -4183,13 +4184,13 @@ class ContribtoolController extends JObject
 					continue;
 				}
 				
-				$xuser =& JUser::getInstance( $uid );
-				if (!is_object($xuser)) {
+				$juser =& JUser::getInstance( $uid );
+				if (!is_object($juser)) {
 					$this->setError( JText::sprintf('UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
 					continue;
 				}
 
-				$uid = $xuser->get('id');
+				$uid = $juser->get('id');
 		
 				if (!$uid) {
 					$this->setError( JText::sprintf('UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
@@ -4207,7 +4208,7 @@ class ContribtoolController extends JObject
 				$this->_author_check($uid);
 				
 				// New record
-				$xprofile = XProfile::getInstance($xuser->get('id'));
+				$xprofile = XProfile::getInstance($juser->get('id'));
 				$rcc->subtable = 'resources';
 				$rcc->subid = $id;
 				$rcc->authorid = $uid;
@@ -4232,7 +4233,7 @@ class ContribtoolController extends JObject
 	{
 		$xprofile = XProfile::getInstance($id);
 		if ($xprofile->get('givenName') == '' && $xprofile->get('middleName') == '' && $xprofile->get('surname') == '') {
-			$bits = explode(' ', $xuser->get('name'));
+			$bits = explode(' ', $xprofile->get('name'));
 			$xprofile->set('surname', array_pop($bits));
 			if (count($bits) >= 1) {
 				$xprofile->set('givenName', array_shift($bits));
@@ -4412,10 +4413,8 @@ class ContribtoolController extends JObject
 		$obj = new Tool( $database );
 
 		// allow to view if admin
-		if($admin==2) { return true; }
+		if($admin) { return true; }
 		
-		if($admin==1 && $allow_siteadmins) { return true; }
-
 		// check if user in tool dev team
 		$developers = $obj->getToolDevelopers($toolid);
 		if($developers) {
@@ -4500,24 +4499,14 @@ class ContribtoolController extends JObject
 	
 	private function authorize_admin($admin = 0, $groups=array())
 	{
+		// if no admin group is defined, allow superadmin to act as admin
+		// otherwise superadmins can only act if they are also a member of the component admin group
 
-		// Check if they're a site admin (from LDAP)
-		$xuser =& XFactory::getUser();
-		if (is_object($xuser)) {
-			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-				$admin = 1;
-			}
-		}
+		$admingroup = isset($this->config->parameters['admingroup']) ? trim($this->config->parameters['admingroup']) : false;
 
 		$juser =& JFactory::getUser();
-		// Check if they're a site admin (from Joomla)
-		if ($juser->authorize($this->_option, 'manage')) {
-			$admin = 1;
-		}
 
 		// Was a specific group set in the config?
-		$admingroup = isset($this->config->parameters['admingroup']) ? trim($this->config->parameters['admingroup']) : 'apps';
 		if ($admingroup) {
 
 			// Check if they're a member of admin group
@@ -4535,7 +4524,14 @@ class ContribtoolController extends JObject
 			}
 
 		}
-		$this->_groups = $groups;
+		else {
+			// Check if they're a site admin (from Joomla)
+			if ($juser->authorize($this->_option, 'manage')) {
+				$admin = 1;
+			}
+		}
+
+		$this->_groups = $groups; // @FIXME: this doesn't appear to be used
 		$this->_admin = $admin;
 	}
 	
