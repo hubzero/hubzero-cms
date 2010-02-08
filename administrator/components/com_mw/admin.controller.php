@@ -366,7 +366,8 @@ class MwController
 		$hosttype = @$_GET['hosttype'];
 		$status = @$_GET['status'];
 		$item = @$_GET['item'];
-		
+		$hostname = trim($hostname);
+
 		$filter_hostname = @$_GET['filter_hostname'];
 		$filter_hosttype = @$_GET['filter_hosttype'];
 		
