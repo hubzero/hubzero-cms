@@ -3599,7 +3599,7 @@ CREATE TABLE `#__jobs_seekers` (
   `tagline` varchar(255) default '',
   `linkedin` varchar(255) NULL,
   `url` varchar(255) NULL,
-  `updated` datetime NULL DEFAULT '0000-00-00 00:00:00",
+  `updated` datetime NULL DEFAULT '0000-00-00 00:00:00',
   `sought_cid` int(11) default '0',
   `sought_type` int(11) default '0',
   PRIMARY KEY  (`id`)
@@ -3607,7 +3607,7 @@ CREATE TABLE `#__jobs_seekers` (
 
 CREATE TABLE `#__jobs_resumes` (
   `id` int(11) NOT NULL auto_increment,
-  `uid` int(11) NOT NULL default '0',\
+  `uid` int(11) NOT NULL default '0',
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
   `title` varchar(100) default NULL,
   `filename` varchar(100) default NULL,
