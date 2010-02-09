@@ -91,10 +91,8 @@ class plgResourcesWishlist extends JPlugin
 		$category = 'resource';
 		
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.wishlist.php' );
-		//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.config.php' );
 		require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'wishlist.html.php' );
-		require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-		
+		require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );	
 		include_once( JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'xcomment.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
 		
@@ -112,17 +110,21 @@ class plgResourcesWishlist extends JPlugin
 		$banking = (isset($this->config->parameters['banking']) && $this->config->parameters['banking']==1 ) ? 1: 0;
 		WishlistController::setVar('banking', $banking);
 		
-		//$obj = new Wishlist( $database );
-		//$id = $obj->get_wishlistID($resource->id, $category);
-		//$objWish = new Wish( $database );
-		//$filters = WishlistController::getFilters(0);
-		//$items = $objWish->get_wishes($id, $filters, 0, $juser);
-		
-	
-		$html = WishlistController::wishlist();
-		
-		$items = WishlistController::getVar('wishcount');
-		$id = WishlistController::getVar('listid');
+		if($rtrn != 'metadata') {
+			$html 	= WishlistController::wishlist();	
+			$items 	= WishlistController::getVar('wishcount');
+			$id 	= WishlistController::getVar('listid');
+		}
+		else {
+			$obj = new Wishlist( $database );
+			$id = $obj->get_wishlistID($resource->id, $category);
+			$objWish = new Wish( $database );
+			$filters = WishlistController::getFilters(0);
+			$admin 	= WishlistController::getVar('_admin');
+			$items = $objWish->get_count ($id, $filters, $admin);
+			
+			$html = '';
+		}
 		
 		
 		// Build the HTML meant for the "about" tab's metadata overview
