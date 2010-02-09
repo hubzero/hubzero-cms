@@ -1144,7 +1144,7 @@ class MembersController extends JObject
 		// Email message
 		$message  = "This email is to confirm the email address for the ".$xhub->getCfg('hubShortName')." account: $login.\r\n\r\n";
 		$message .= "Click the following link to confirm your email address and activate your account.\r\n\r\n";
-		$message .= $xhub->getCfg('hubLongURL') .DS. 'registration/confirm/' . -$confirm . "\r\n";
+		$message .= $xhub->getCfg('hubLongURL') .DS. 'register/confirm/' . -$confirm . "\r\n";
 
 		// Send the email
 		if (XHubHelper::send_email($email, $subject, $message)) {
