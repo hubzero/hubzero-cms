@@ -99,13 +99,12 @@ class modToolList
 		$toollist = array();
 		
 		// Create a Tool object
-		$database 	=& JFactory::getDBO();
+		$database =& JFactory::getDBO();
 	
 		if (is_array($lst)) {
 			$tools = array();
 			// Check if the list is empty or not
 			if (!empty($lst)) {
-			
 				ksort($lst);
 				// Get info for tools in the list
 				foreach ($lst as $item) 
@@ -138,7 +137,7 @@ class modToolList
 		}
 		
 		$toolnames = array();
-		
+
 		// Turn it into an App array.
 		foreach ($tools as $tool) 
 		{
