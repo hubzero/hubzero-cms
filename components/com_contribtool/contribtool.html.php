@@ -426,7 +426,7 @@ class ContribtoolHtml
 		
 		// set common paths
 		$statuspath =  JRoute::_('index.php?option='.$option.a.'task=status'.a.'toolid='.$status['toolid']);
-		$testpath = 'index.php?option=com_tools'.a.'task=invoke&app='.$status['toolname'].a.'version=dev';
+		$testpath = 'index.php?option=com_tools'.a.'task=invoke&app='.$status['toolname'].a.'version=test';
 		
 		$step3 = ($status['resource_modified'] == '1') 
 					? '<li class="complete"> '.JText::_('TODO_MAKE_RES_PAGE').'. 
@@ -1279,7 +1279,7 @@ class ContribtoolHtml
 		$cancelpath =  JRoute::_('index.php?option='.$option.a.'task=cancel'.a.'toolid='.$status['toolid']);
 		$licensepath = JRoute::_('index.php?option='.$option.a.'task=license'.a.'toolid='.$status['toolid']);
 		$ticketpath = JRoute::_('index.php?option=com_support'.a.'task=ticket'.a.'id='.$status['ticketid']);
-		$testpath = 'index.php?option=com_tools'.a.'task=invoke&app='.$status['toolname'].a.'version=dev';
+		$testpath = 'index.php?option=com_tools'.a.'task=invoke&app='.$status['toolname'].a.'version=test';
 		
 		// get configs
 		$xhub 			=& XFactory::getHub();

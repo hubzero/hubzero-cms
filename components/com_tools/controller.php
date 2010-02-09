@@ -507,9 +507,7 @@ class ToolsController extends JObject
 		$app['name']    = str_replace(':','-',$app['name']);
 		$app['number']  = 0;
 		$app['version'] = JRequest::getVar( 'version', 'default' );
-		if ($app['version'] != 'default') {
-			$app['name'] = ($app['version'] == 'dev') ? $app['name'].'_'.$app['version'] : $app['name'].'_r'.$app['version'];
-		}
+		
 		// Get the user's IP address
 		$ip = JRequest::getVar( 'REMOTE_ADDR', '', 'server' );
 
@@ -526,6 +524,22 @@ class ToolsController extends JObject
 		$database =& JFactory::getDBO();
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
 		$tv = new ToolVersion( $database );
+		
+		switch ($app['version'])
+		{
+			case 1:
+			case 'default':
+				$app['name'] = $tv->getCurrentVersionProperty($app['name'], 'instance');
+			break;
+			case 'test':
+			case 'dev':
+				$app['name'] = $app['name'].'_dev';
+			break;
+			default:
+				$app['name'] = $app['name'].'_r'.$app['version'];
+			break;
+		}
+		
 		$parent_toolname = $tv->getToolname($app['name']);
 		$toolname = ($parent_toolname) ? $parent_toolname : $app['name'];
 		
@@ -624,7 +638,8 @@ class ToolsController extends JObject
 		$app['username'] = $juser->get('username');
 		
 		// Build and display the HTML
-		$this->session( $app, $authorized, $output, $toolname );
+		//$this->session( $app, $authorized, $output, $toolname );
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess);
 	}
 
 	//-----------
