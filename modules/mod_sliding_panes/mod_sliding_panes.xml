@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="module" version="1.5">
+	<name>Sliding Panes</name>
+	<author>Shawn Rice</author>
+	<creationDate>Jan 2010</creationDate>
+	<copyright>(C) 2000 - 2004 Miro International Pty Ltd</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>nanohub.org</authorUrl>
+	<version>1.5.0</version>
+	<description>Rotate through panes of content</description>
+	<files>
+		<filename module="mod_sliding_panes">mod_sliding_panes.php</filename>
+		<filename>mod_sliding_panes.js</filename>
+		<filename>images/pane-prev.png</filename>
+		<filename>images/pane-next.png</filename>
+		<filename>images/pane-pause.png</filename>
+		<filename>index.html</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
+	</files>
+	<params>
+		<param name="catid" type="category" default="0" label="Category" description="A content category" />
+		<param name="container" type="text" default="" label="Content Container" description="A CSS ID for a content container" />
+		<param name="rotate" type="radio" default="1" label="Auto-Rotate" description="Select whether to have pane rotation automatically animated">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+	</params>
+</install>
