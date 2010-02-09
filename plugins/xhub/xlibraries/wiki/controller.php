@@ -447,14 +447,14 @@ class WikiController extends JObject
 		}
 		
 		$revision->summary = '';
-		
+
 		// Are we previewing?
 		if (is_object($this->preview)) {
 			// Yes - get the preview so we can parse it and display
 			$preview = $this->preview;
 			
 			// Parse the HTML
-			$p = new WikiParser( $pagetitle, $this->_option, $this->scope, $this->pagename, $this->page->id );
+			$p = new WikiParser( $pagetitle, $this->_option, $this->scope, $this->pagename, $this->page->id, '', $this->_group );
 			$preview->pagehtml = $p->parse( $preview->pagetext );
 			
 			$revision->pagetext   = $preview->pagetext;
