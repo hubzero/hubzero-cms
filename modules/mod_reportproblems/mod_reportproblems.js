@@ -69,6 +69,8 @@ if (!HUB) {
 	var HUB = {
 		Modules: {}
 	};
+} else if (!HUB.Modules) {
+	HUB.Modules = {};
 }
 
 //----------------------------------------------------------
