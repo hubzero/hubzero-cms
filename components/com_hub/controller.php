@@ -427,6 +427,7 @@ class HubController extends JObject
 	private function send_account_recovery($email)
 	{
 		ximport('xuser');
+		ximport('xuserhelper');
 		ximport('xhubhelper');
 		
 		$xhub =& XFactory::getHub();
