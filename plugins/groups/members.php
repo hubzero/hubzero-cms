@@ -267,7 +267,12 @@ class plgGroupsMembers extends JPlugin
 		
 		// Set a flag for emailing any changes made
 		$admchange = '';
+		
+		// Note: we use two different lists to avoid situations where the user is already a member but somehow an applicant too.
+		// Recording the list of applicants for removal separate allows for removing the duplicate entry from the applicants list
+		// without trying to add them to the members list (which they already belong to).
 		$users = array();
+		$applicants = array();
 		
 		// Get all normal members (non-managers) of this group
 		$members = $this->group->get('members');
@@ -283,6 +288,9 @@ class plgGroupsMembers extends JPlugin
 			// Ensure we found an account
 			if (is_object($targetuser)) {
 				$uid = $targetuser->get('id');
+				
+				// The list of applicants to remove from the applicant list
+				$applicants[] = $uid;
 				
 				// Loop through existing members and make sure the user isn't already a member
 				if (in_array($uid,$members)) {
@@ -310,7 +318,7 @@ class plgGroupsMembers extends JPlugin
 		}
 		
 		// Remove users from applicants list
-		$this->group->remove('applicants',$users);
+		$this->group->remove('applicants',$applicants);
 		
 		// Add users to members list
 		$this->group->add('members',$users);
