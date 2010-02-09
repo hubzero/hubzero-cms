@@ -71,8 +71,8 @@ class CitationsFormatter
 		
 		$html = "\t".'<p>';
 		if (CitationsFormatter::keyExistsOrIsNotEmpty('author',$row)) {
-			$xuser =& JFactory::getUser();
-			
+			$xprofile =& XFactory::getProfile();
+			$app   =& JFactory::getApplication();
 			$auths = explode(';',$row->author);
 			$a = array();
 			foreach ($auths as $auth) 
@@ -92,7 +92,7 @@ class CitationsFormatter
 					$auth = preg_replace( '/{{(.*?)}}/s', '', $auth );
 					if ($aid) {
 						$app =& JFactory::getApplication();
-						if (is_object($xuser) && in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
+						if (is_object($xprofile) && in_array(strtolower($app->getCfg('sitename')), $xprofile->get('admin'))) {
 							$a[] = '<a href="index.php?option=com_whois&query=uidNumber%3D'.$aid.'">'.trim($auth).'</a>';
 						} else {
 							$a[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$aid).'">'.trim($auth).'</a>';
