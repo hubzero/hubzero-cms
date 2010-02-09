@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
+ * @author		Shawn Rice <zooley@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -24,24 +24,17 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
-jimport('joomla.application.component.view');
-
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'quotes.class.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-ximport('Hubzero_View_Helper_Html');
-
-// Instantiate controller
-$controller = new FeedbackController();
-$controller->execute();
-$controller->redirect();
 ?>
+<div id="content-header" class="full">
+	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div class="main section">
+<?php if ($this->getError()) { ?>
+	<p class="warning"><?php echo $this->getError(); ?></p>
+<?php } ?>
+<?php
+ximport('xmodule');
+XModuleHelper::displayModules('force_mod');
+?>
+</div><!-- / .main section -->
