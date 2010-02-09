@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
+ * @author		Shawn Rice <zooley@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -24,24 +24,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
-jimport('joomla.application.component.view');
-
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'quotes.class.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-ximport('Hubzero_View_Helper_Html');
-
-// Instantiate controller
-$controller = new FeedbackController();
-$controller->execute();
-$controller->redirect();
 ?>
+<div>
+	<p><?php echo JText::_('COM_FEEDBACK_ERROR_PROCESSING_FORM'); ?></p>
+	<p><a href="javascript:HUB.ReportProblem.reshowForm();" title="<?php echo JText::_('COM_FEEDBACK_EDIT_REPORT'); ?>"><?php echo JText::_('COM_FEEDBACK_EDIT_REPORT'); ?></a></p>
+</div>
+<h3><?php echo JText::_('COM_FEEDBACK_ERROR'); ?></h3>
+<p><?php echo JText::_('COM_FEEDBACK_ERROR_PROCESSING_DESCRIPTION'); ?></p>
