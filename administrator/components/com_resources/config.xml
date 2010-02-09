@@ -55,6 +55,8 @@
 			<option value="off">Off</option>
 		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="google_id" type="text" menu="hide" default="" label="Google Analytics ID" description="Unique Google Analytics ID (e.g. UA-8810725-2) used to track iTunes/podcast usage. " />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of contributors">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
@@ -82,6 +84,11 @@
 			<option value="1">Show</option>
 		</param>
 		<param name="show_citation" type="list" default="1" label="Citation" description="Show example/instructions for citing this resource">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level for this resource">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
