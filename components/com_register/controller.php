@@ -86,8 +86,8 @@ class RegisterController extends JObject
 		}
 
 		$this->_task = strtolower(JRequest::getVar( 'task', '' ));
-		$act = strtolower(JRequest::getVar( 'act', '' ));
-		
+		$act = strtolower(JRequest::getVar( 'act', '', 'post' ));
+
 		switch ($this->_task) 
 		{
 			// Account creation/updating
@@ -134,7 +134,7 @@ class RegisterController extends JObject
 		if ($juser->get('guest')) {
 			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_GUEST_SESSION_EDITING'));
 		}
-		
+
 		$xuser =& XFactory::getUser();
 		$xhub  =& XFactory::getHub();
 		$jsession =& JFactory::getSession();
@@ -226,6 +226,7 @@ class RegisterController extends JObject
 		}
 
 		$target_xuser->loadRegistration($xregistration);
+
 		$target_xuser->update();
 
 		if ($self) {
@@ -606,6 +607,10 @@ class RegisterController extends JObject
 
 		if (!$updateEmail) {
 			// Redirect
+			$hconfig = &JComponentHelper::getParams('com_hub');
+		    $r = $hconfig->get('LoginReturn');
+		    $return = ($r) ? $r : '/myhub';
+			$xhub->redirect($return); // @TODO not sure where it is meant to redirect to offhand. but the code below causes a redirect loop
 			$xhub->redirect($_SERVER['REQUEST_URI']);
 		} else {
 			// Instantiate a new view
