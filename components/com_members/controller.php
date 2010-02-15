@@ -73,30 +73,6 @@ class MembersController extends JObject
 			return $this->_data[$property];
 		}
 	}
-
-	//-----------
-	
-	private function getTask()
-	{
-		$task = strtolower(JRequest::getVar('task', ''));
-		
-		$id = JRequest::getInt( 'id', 0 );
-		if ($id && !$task) {
-			$task = 'view';
-		}
-
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-	
-	private function getView()
-	{
-		$view = strtolower(JRequest::getVar('view', 'members'));
-		$this->_view = $view;
-		return $view;
-	}
 	
 	//-----------
 	
@@ -111,9 +87,19 @@ class MembersController extends JObject
 		}
 		$this->config = $config;
 
-		$this->getView();
+		// Get the view
+		$this->_view = strtolower(JRequest::getVar('view', 'members'));
+		
+		// Get The task
+		$this->_task = strtolower(JRequest::getVar('task', ''));
+		
+		$id = JRequest::getInt( 'id', 0 );
+		if ($id && !$this->_task) {
+			$this->_task = 'view';
+		}
 
-		switch ( $this->getTask() ) 
+		// Execute the task
+		switch ($this->_task) 
 		{
 			case 'upload':     $this->upload();     break;
 			case 'deleteimg':  $this->deleteimg();  break;
@@ -181,8 +167,6 @@ class MembersController extends JObject
 		}
 		
 		// Instantiate the view
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'abort') );
 		$view->option = $this->_option;
 		if ($this->getError()) {
@@ -258,8 +242,6 @@ class MembersController extends JObject
 		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
 	
 		// Instantiate the view
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'browse') );
 		$view->option = $this->_option;
 		$view->title = $title;
@@ -302,7 +284,7 @@ class MembersController extends JObject
 
 		// Ensure we have an ID
 		if (!$id) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&task='.$this->_task );
 			
 			JError::raiseError( 404, JText::_('MEMBERS_NO_ID') );
 			return;
@@ -326,7 +308,7 @@ class MembersController extends JObject
 
 		// Ensure we have a member
 		if (!$profile->get('name') && !$profile->get('surname')) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&task='.$this->_task );
 			
 			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
@@ -334,7 +316,7 @@ class MembersController extends JObject
 
 		// Check if the profile is public/private and the user has access
 		if ($profile->get('public') != 1 && !$authorized) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&task='.$this->_task );
 			
 			JError::raiseError( 403, JText::_('MEMBERS_NOT_PUBLIC') );
 			return;
@@ -426,7 +408,18 @@ class MembersController extends JObject
 			$registration->Reason = $this->registrationField('registrationReason','HHHH','edit');
 			$registration->OptIn = $this->registrationField('registrationOptIn','HHHH','edit');
 
-			$body = MembersHtml::profile( $sections, $this->_option, $title, $profile, $authorized, $params, $registration );
+			$pview = new JView( array('name'=>'view', 'layout'=>'profile') );
+			$pview->option = $this->_option;
+			$pview->title = $title;
+			$pview->authorized = $authorized;
+			$pview->sections = $sections;
+			$pview->params = $params;
+			$pview->registration = $registration;
+			$pview->profile = $profile;
+			if ($this->getError()) {
+				$pview->setError( $this->getError() );
+			}
+			$body = $pview->loadTemplate();
 		}
 		
 		$cat = array();
@@ -439,18 +432,27 @@ class MembersController extends JObject
 		$document->setTitle( $title.': '.stripslashes($profile->get('name')) );
 		
 		// Set the pathway
-		$pathway->addItem( stripslashes($profile->get('name')), 'index.php?option='.$this->_option.a.'id='.$profile->get('uidNumber') );
+		$pathway->addItem( stripslashes($profile->get('name')), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber') );
 
 		// Output HTML
-		echo MembersHtml::view( $profile, $authorized, $this->_option, $cats, $sections, $tab );
+		$view = new JView( array('name'=>'view') );
+		$view->option = $this->_option;
+		$view->title = $title;
+		$view->authorized = $authorized;
+		$view->cats = $cats;
+		$view->sections = $sections;
+		$view->tab = $tab;
+		$view->profile = $profile;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
 
 	protected function changepassword() 
 	{
-		jimport( 'joomla.application.component.view');
-		
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
@@ -584,8 +586,6 @@ class MembersController extends JObject
 
 	protected function raiselimit() 
 	{
-		jimport( 'joomla.application.component.view');
-		
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
@@ -830,9 +830,7 @@ class MembersController extends JObject
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
-			
-			jimport('joomla.application.component.view');
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
 			
 			$view = new JView( array('name'=>'login') );
 			$view->title = $title;
@@ -842,7 +840,7 @@ class MembersController extends JObject
 		
 		// Ensure we have an ID
 		if (!$id) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
 			
 			JError::raiseError( 404, JText::_('MEMBERS_NO_ID') );
 			return;
@@ -851,7 +849,7 @@ class MembersController extends JObject
 		// Check authorization
 		$authorized = $this->_authorize( $id );
 		if (!$authorized) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
 			
 			JError::raiseError( 403, JText::_('MEMBERS_NOT_AUTH') );
 			return;
@@ -869,7 +867,7 @@ class MembersController extends JObject
 
 		// Ensure we have a member
 		if (!$profile->get('name') && !$profile->get('surname')) {
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$id.a.'task='.$this->_task );
+			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$id.'&task='.$this->_task );
 			
 			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
@@ -919,7 +917,18 @@ class MembersController extends JObject
 		$registration->TOU = $this->registrationField('registrationTOU','HHHH',$this->_task);
 
 		// Ouput HTML
-		echo MembersHtml::edit( $authorized, $title, $profile, $this->_option, $tags, $registration, $xregistration );
+		$view = new JView( array('name'=>'edit') );
+		$view->option = $this->_option;
+		$view->title = $title;
+		$view->authorized = $authorized;
+		$view->profile = $profile;
+		$view->tags = $tags;
+		$view->registration = $registration;
+		$view->xregistration = $xregistration;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -968,6 +977,12 @@ class MembersController extends JObject
 	
 	protected function save() 
 	{
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+		
 		ximport('xhubhelper');
 		ximport('xregistration');
 		ximport('xregistrationhelper');
@@ -977,7 +992,7 @@ class MembersController extends JObject
 		
 		// Do we have an ID?
 		if (!$id) {
-			echo MembersHtml::error( JText::_('MEMBERS_NO_ID') );
+			JError::raiseError( 500, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
 
@@ -988,7 +1003,6 @@ class MembersController extends JObject
 		// Load the profile
 		$profile = new XProfile();
 		$profile->load( $id );
-		
 		$oldemail = $profile->get('email');
 		
 		$profile->set('givenName', trim($n['first']));
@@ -1087,7 +1101,7 @@ class MembersController extends JObject
 
 		// Save the changes
 		if (!$profile->update()) {
-			JError::raiseWarning('', $profile->getError() );
+			JError::raiseError(500, $profile->getError() );
 			return false;
 		}
 		
@@ -1111,7 +1125,7 @@ class MembersController extends JObject
 			}
 			if ($name != trim($jname) || $email != trim($jemail)) {
 				if (!$juser->save()) {
-					JError::raiseWarning('', JText::_( $juser->getError() ));
+					JError::raiseError(500, JText::_( $juser->getError() ));
 					return false;
 				}
 			}
@@ -1133,19 +1147,21 @@ class MembersController extends JObject
 	
 	private function send_confirmation_code($login, $email, $confirm) 
 	{
-		$xhub =& XFactory::getHub();
-		
-		// Get a new confirmation code
-		//$confirm = XRegistrationHelper::genemailconfirm();
+		$jconfig =& JFactory::getConfig();
 
 		// Email subject
-		$subject  = $xhub->getCfg('hubShortName') .' account email confirmation';
+		$subject = $jconfig->getValue('config.sitename') .' account email confirmation';
 		
 		// Email message
-		$message  = "This email is to confirm the email address for the ".$xhub->getCfg('hubShortName')." account: $login.\r\n\r\n";
-		$message .= "Click the following link to confirm your email address and activate your account.\r\n\r\n";
-		$message .= $xhub->getCfg('hubLongURL') .DS. 'register/confirm/' . -$confirm . "\r\n";
-
+		$eview = new JView( array('name'=>'emails','layout'=>'confirm') );
+		$eview->option = $this->_option;
+		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->login = $login;
+		$eview->confirm = $confirm;
+		$eview->baseURL = $juri->base();
+		$message = $eview->loadTemplate();
+		$message = str_replace("\n", "\r\n", $message);
+		
 		// Send the email
 		if (XHubHelper::send_email($email, $subject, $message)) {
 			$msg = 'A confirmation email has been sent to "'. htmlentities($email,ENT_COMPAT,'UTF-8') .'". You must click the link in that email to re-activate your account.';
@@ -1160,12 +1176,18 @@ class MembersController extends JObject
 	
 	protected function saveaccess() 
 	{
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+		
 		// Incoming user ID
 		$id = JRequest::getInt( 'id', 0 );
 		
 		// Do we have an ID?
 		if (!$id) {
-			echo MembersHtml::error( JText::_('MEMBERS_NO_ID') );
+			JError::raiseError( 500, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
 		
@@ -1196,8 +1218,6 @@ class MembersController extends JObject
 	
 	protected function activity()
 	{
-		jimport( 'joomla.application.component.view');
-		
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) );
@@ -1208,7 +1228,7 @@ class MembersController extends JObject
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
 		}
-		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.a.'task='.$this->_task);
+		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&task='.$this->_task);
 		
 		// Push some styles to the template
 		$this->getStyles();
@@ -1217,11 +1237,6 @@ class MembersController extends JObject
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
-			/*echo MembersHtml::div( MembersHtml::hed( 2, JText::_('Active Users and Guests') ), 'full', 'content-header' );
-			echo '<div class="main section">'.n;
-			echo MembersHtml::warning( JText::_('MEMBERS_NOT_LOGGEDIN') );
-			echo XModuleHelper::renderModules('force_mod');
-			echo '</div><!-- / .main section -->'.n;*/
 			$view = new JView( array('name'=>'login') );
 			$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
 			$view->display();
@@ -1251,14 +1266,14 @@ class MembersController extends JObject
 			{
 				if ($prevuser != $row->username) {
 					if ($user) {
-						//$xlog->logDebug("com_whois::activity($prevuser)");
-						$xuser =& XUser::getInstance($prevuser);
+						$xprofile = new XProfile();
+						$xprofile->load($prevuser);
+						
 						$users[$prevuser] = $user;
-						$users[$prevuser]['name'] = $xuser->get('name');
-						$users[$prevuser]['org'] = $xuser->get('org');
-						$users[$prevuser]['orgtype'] = $xuser->get('orgtype');
-						//$users[$prevuser]['countryresident'] = getcountry($xuser->get('countryresident'));
-						$users[$prevuser]['countryresident'] = $xuser->get('countryresident');
+						$users[$prevuser]['name'] = $xprofile->get('name');
+						$users[$prevuser]['org'] = $xprofile->get('org');
+						$users[$prevuser]['orgtype'] = $xprofile->get('orgtype');
+						$users[$prevuser]['countryresident'] = $xprofile->get('countryresident');
 					}
 					$prevuser = $row->username;
 					$user = array();
@@ -1266,40 +1281,18 @@ class MembersController extends JObject
 				array_push($user, array('host' => $row->host, 'ip' => $row->ip, 'idle' => $row->idle));
 			}
 			if ($user) {
-				//$xlog->logDebug("com_whois::activity($prevuser)");
-				$xuser =& XUser::getInstance($prevuser);
+				$xprofile = new XProfile();
+				$xprofile->load($prevuser);
+				
 				$users[$prevuser] = $user;
-				$users[$prevuser]['name'] = $xuser->get('name');
-				$users[$prevuser]['org'] = $xuser->get('org');
-				$users[$prevuser]['orgtype'] = $xuser->get('orgtype');
-				//$users[$prevuser]['countryresident'] = getcountry($xuser->get('countryresident'));
-				$users[$prevuser]['countryresident'] = $xuser->get('countryresident');
+				$users[$prevuser]['name'] = $xprofile->get('name');
+				$users[$prevuser]['org'] = $xprofile->get('org');
+				$users[$prevuser]['orgtype'] = $xprofile->get('orgtype');
+				$users[$prevuser]['countryresident'] = $xprofile->get('countryresident');
 			}
 		}
-
-		/*$ds = array();
-		
-		$ipdbo =& WhoisUtils::getIPDBO();
-		if ($ipdbo) {
-			$ipdbo->setQuery( "SELECT domain FROM domainfilter" );
-			$domains = $ipdbo->loadObjectList();
-			if ($domains) {
-				foreach ($domains as $domain)
-				{
-					$ds[] = $domain->domain;
-				}
-			}
-		}
-		
-		$ds = implode("','",$ds);*/
 		
 		$guests = array();
-		/*
-		$sql = "SELECT x.host, x.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
-				FROM #__session AS s, #__xsession AS x 
-				WHERE s.username = '' AND s.session_id=x.session_id AND x.domain NOT IN ('$ds')
-				ORDER BY host DESC, ip, idle DESC";
-		*/
 		$sql = "SELECT x.host, x.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
 				FROM #__session AS s, #__xsession AS x 
 				WHERE s.username = '' AND s.session_id=x.session_id
@@ -1332,8 +1325,6 @@ class MembersController extends JObject
 
 	protected function whois()
 	{
-		jimport( 'joomla.application.component.view');
-		
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) );
@@ -1487,29 +1478,15 @@ class MembersController extends JObject
 				;
 			}
 			else if (preg_match("/^proxyUidNumber\s*(\!?\-?\+?=)\s*([^\s]+)/i", $subs[$i], $match)) {
-				//$thisresult = 'proxyUidNumber';
 				if ($match[1] == "=") {
-					//$thisresult .= '=';
 					$result[] = $this->_like('proxyUidNumber', $match[2]);
 				}
 				elseif ($match[1] == "-=") {
-					//$thisresult .= '<=';
 					$result[] = "proxyUidNumber <= '".$match[2]."'";
 				}
 				elseif ($match[1] == "+=") {
-					//$thisresult .= '>=';
 					$result[] = "proxyUidNumber >= '".$match[2]."'";
 				}
-				/*if ($match[1] == "!=") {
-					$thisresult .= '=';
-				}*/
-				//$thisresult .= $match[2];
-				/*if ($match[1] == "!=") {
-					$result[] = "!(" . $thisresult . ")";
-				}
-				else {*/
-					//$result[] = $thisresult;
-				//}
 			}
 			else if (preg_match("/^proxyConfirmed\s*(\!?=)\s*([^\s]+)/i", $subs[$i], $match)) {
 				$thisresult = null;
@@ -1568,37 +1545,18 @@ class MembersController extends JObject
 				else {
 					$thisresult .= "'".$match[2]."'";
 				}
-				/*if ($match[1] == "!=") {
-					$result[] = "!(" . $thisresult . ")";
-				}
-				else {*/
-					$result[] = $thisresult;
-				//}
+				$result[] = $thisresult;
 			}
 			else if (preg_match("/^uidNumber\s*(\!?\-?\+?=)\s*([^\s]+)/i", $subs[$i], $match)) {
-				//$thisresult = 'uidNumber';
 				if ($match[1] == "=") {
-					//$thisresult .= '=';
 					$result[] = $this->_like('uidNumber', $match[2]);
 				}
 				elseif ($match[1] == "-=") {
-					//$thisresult .= '<=';
 					$result[] = "uidNumber <= '".$match[2]."'";
 				}
 				elseif ($match[1] == "+=") {
-					//$thisresult .= '>=';
 					$result[] = "uidNumber >= '".$match[2]."'";
 				}
-				/*if ($match[1] == "!=") {
-					$thisresult .= '=';
-				}*/
-				//$thisresult .=  '\''.$match[2] .'\'';
-				/*if ($match[1] == "!=") {
-					$result[] = "!(" . $thisresult . ")";
-				}
-				else {*/
-					//$result[] = $thisresult;
-				//}
 			}
 			else if (preg_match("/^uid\s*=\s*([^\s]+)/i", $subs[$i], $match)) {
 				$result[] = $this->_like('username', $match[1]);
@@ -1864,24 +1822,31 @@ class MembersController extends JObject
 		// Load the component config
 		$config = $this->config;
 		
-		// Get the app
-		$app =& JFactory::getApplication();
-		
 		// Incoming
 		if (!$id) {
 			$id = JRequest::getInt( 'id', 0, 'get' );
 		}
-
-		$file = ($file) 
-			  ? $file 
-			  : JRequest::getVar( 'file', '', 'get' );
+		if (!$file) {
+			$file = JRequest::getVar( 'file', '', 'get' );
+		}
 		
 		// Build the file path
 		$dir = FileUploadUtils::niceidformat( $id );
 		$path = JPATH_ROOT.DS.$config->get('webpath').DS.$dir;
 		
 		// Output HTML
-		MembersHtml::writeImage( $app, $this->_option, $config->get('webpath'), $config->get('defaultpic'), $dir, $file, $path, $id, $this->getErrors() );
+		$view = new JView( array('name'=>'edit', 'layout'=>'filebrowser') );
+		$view->option = $this->_option;
+		$view->webpath = $config->get('webpath');
+		$view->default_picture = $config->get('defaultpic');
+		$view->path = $dir;
+		$view->file = $file;
+		$view->file_path = $path;
+		$view->id = $id;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//----------------------------------------------------------

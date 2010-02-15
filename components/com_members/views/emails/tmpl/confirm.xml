@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Change Password Layout">
+	<layout title="Standard Confirmation Email Layout">
 		<message>
-			<![CDATA[STANDARD CHANGE PASSWORD LAYOUT DESC]]>
+			<![CDATA[STANDARD CONFIRMATION EMAIL LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Change Password Layout</name>
-		<description>STANDARD CHANGE PASSWORD LAYOUT DESC</description>
+		<name>Standard Confirmation Email Layout</name>
+		<description>STANDARD CONFIRMATION EMAIL LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

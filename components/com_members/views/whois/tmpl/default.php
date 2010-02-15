@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="explaination">
 			<div class="info">
 				<h4><?php echo JText::_('Administrative Options'); ?></h4>
-				<p><a href="/hub/registration/proxycreate"><?php echo JText::_('Proxy Create New User'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option=com_register&task=proxycreate')?>"><?php echo JText::_('Proxy Create New User'); ?></a></p>
 			</div>
 		</div>
 		
