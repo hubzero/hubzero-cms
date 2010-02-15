@@ -85,7 +85,19 @@ $folders = $this->folders;
 for ($i=0; $i<count($folders); $i++) 
 {
 	$folder_name = key($folders);
-	$num_files = GroupsHtml::num_files( JPATH_ROOT.DS.$folders[$folder_name] );
+
+	$num_files = 0;
+	if (is_dir(JPATH_ROOT.DS.$folders[$folder_name])) {
+		$d = @dir(JPATH_ROOT.DS.$folders[$folder_name]);
+
+		while (false !== ($entry = $d->read()))
+		{
+			if (substr($entry,0,1) != '.') {
+				$num_files++;
+			}
+		}
+		$d->close();
+	}
 	
 	if ($listdir == '/') {
 		$listdir = '';

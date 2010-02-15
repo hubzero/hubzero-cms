@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
+ * @author		Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -25,32 +25,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+$juri =& JURI::getInstance();
 
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
+$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn'));
+if (substr($sef,0,1) == '/') {
+	$sef = substr($sef,1,strlen($sef));
 }
 
-jimport('joomla.application.component.view');
-ximport('Hubzero_View_Helper_Html');
-ximport('xgroup');
-ximport('xuserhelper');
+$message  = JText::sprintf('GROUPS_USER_HAS_DELETED_GROUP', $this->gcn, $this->juser->get('username'))."\n\n";
+if ($this->msg) {
+	$message .= stripslashes($this->msg)."\n\n";
+}
+$message .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $this->juser->get('username'), $this->juser->get('email'))."\n";
+$message .= $juri->base().$sef."\n";
 
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'groups.tags.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'groups.log.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'groups.reason.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
-// Instantiate controller
-$controller = new GroupsController();
-$controller->execute();
-$controller->redirect();
+echo $message;
 ?>

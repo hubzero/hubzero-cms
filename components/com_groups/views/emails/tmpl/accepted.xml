@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Groups Join Layout">
+	<layout title="Standard Groups Accepted Message Layout">
 		<message>
-			<![CDATA[STANDARD GROUPS JOIN LAYOUT DESC]]>
+			<![CDATA[STANDARD GROUPS ACCEPTED MESSAGE LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Groups Join Layout</name>
-		<description>STANDARD GROUPS JOIN LAYOUT DESC</description>
+		<name>Standard Groups Accepted Message Layout</name>
+		<description>STANDARD GROUPS ACCEPTED MESSAGE LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

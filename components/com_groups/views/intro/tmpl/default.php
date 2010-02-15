@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="group" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=new'); ?>">Create User Group</a></li>
+		<li class="last"><a class="group" href="<?php echo JRoute::_('index.php?option='.$option.'&task=new'); ?>">Create User Group</a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -65,7 +65,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option='.$option.a.'task=browse'); ?>" method="get" class="search">
+			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
 						<input type="text" name="search" value="" />
@@ -79,7 +79,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=browse'); ?>">Browse the list of available groups</a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>">Browse the list of available groups</a></p>
 				<p>A list of all public and restricted groups. Private groups are not listed.</p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
@@ -110,19 +110,19 @@ if ($groups) {
 		
 		$public_desc = '(No public description available.)';
 		if ($group->public_desc) {
-			$public_desc = $p->parse( n.stripslashes($group->public_desc) );
+			$public_desc = $p->parse( "\n".stripslashes($group->public_desc) );
 			$public_desc = strip_tags($public_desc);
 			$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 			$public_desc = preg_replace("/$UrlPtrn/", '', $public_desc);
-			$public_desc = GroupsHtml::shortenText($public_desc, 300, 0);
+			$public_desc = Hubzero_View_Helper_Html::shortenText($public_desc, 300, 0);
 		}
 ?>
 	<div class="four columns <?php echo $cls; ?>">
 		<div class="group">
-			<h3><a href="<?php echo JRoute::_('index.php?option='.$option.a.'gid='.$group->cn); ?>"><?php echo stripslashes($group->description); ?></a></h3>
+			<h3><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$group->cn); ?>"><?php echo stripslashes($group->description); ?></a></h3>
 			<!-- <p><?php echo $group->members; ?> Members</p> -->
 			<p><?php echo $public_desc; ?></p>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$option.a.'gid='.$group->cn); ?>">Learn more &rsaquo;</a></p>
+			<p><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$group->cn); ?>">Learn more &rsaquo;</a></p>
 		</div>
 	</div><!-- / .four columns second -->
 <?php

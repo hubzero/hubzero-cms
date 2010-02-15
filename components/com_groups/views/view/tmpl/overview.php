@@ -93,13 +93,13 @@ switch ($this->group->get('join_policy'))
 	case 3:
 		if ($isApplicant || $this->ismember) {
 			if ($this->ismember == 'invitee') {
-				$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$this->group->get('cn').a.'task=accept').'">'.JText::_('GROUPS_ACCEPT_INVITE').'</a></p>'.n;
+				$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT_INVITE').'</a></p>'."\n";
 			} else {
-				$aside .= '<p id="group-status" class="'.$cls.'"><span>You are a </span>'.$cls.'</p>'.n;
+				$aside .= '<p id="group-status" class="'.$cls.'"><span>You are a </span>'.$cls.'</p>'."\n";
 				if ($this->ismember == 'manager' && count($this->group->get('managers')) == 1) {
 					$aside .= '';
 				} else {
-					$aside .= '<p id="group-cancel" class="'.$cls.'"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$this->group->get('cn').a.'task=cancel') .'">'.JText::_('GROUPS_ACTION_CANCEL_MEMBERSHIP').'</a></p>'.n;
+					$aside .= '<p id="group-cancel" class="'.$cls.'"><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=cancel') .'">'.JText::_('GROUPS_ACTION_CANCEL_MEMBERSHIP').'</a></p>'."\n";
 				}
 			}
 		}
@@ -107,14 +107,14 @@ switch ($this->group->get('join_policy'))
 	
 	case 2:
 		if ($this->ismember == 'invitee') {
-			$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$this->group->get('cn').a.'task=accept').'">'.JText::_('GROUPS_ACCEPT_INVITE').'</a></p>'.n;
+			$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT_INVITE').'</a></p>'."\n";
 		} else {
 			if ($isApplicant || $this->ismember == 'manager' || $this->ismember == 'member') {
-				$aside .= '<p id="group-status" class="'.$cls.'"><span>You are a </span>'.$cls.'</p>'.n;
+				$aside .= '<p id="group-status" class="'.$cls.'"><span>You are a </span>'.$cls.'</p>'."\n";
 				if ($this->ismember == 'manager' && count($this->group->get('managers')) == 1) {
 					$aside .= '';
 				} else {
-					$aside .= '<p id="group-cancel" class="'.$cls.'"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$this->group->get('cn').a.'task=cancel') .'">'.JText::_('GROUPS_ACTION_CANCEL_MEMBERSHIP').'</a></p>'.n;
+					$aside .= '<p id="group-cancel" class="'.$cls.'"><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=cancel') .'">'.JText::_('GROUPS_ACTION_CANCEL_MEMBERSHIP').'</a></p>'."\n";
 				}
 			}
 		}
@@ -123,17 +123,17 @@ switch ($this->group->get('join_policy'))
 	case 1:
 		if ($isApplicant || $this->ismember) {
 			if ($this->ismember == 'invitee') {
-				$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$this->group->get('cn').a.'task=accept').'">'.JText::_('GROUPS_ACCEPT_INVITE').'</a></p>'.n;
+				$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT_INVITE').'</a></p>'."\n";
 			} else {
-				$aside .= '<p id="group-status" class="'.$cls.'"><span>You are a </span>'.$cls.'</p>'.n;
+				$aside .= '<p id="group-status" class="'.$cls.'"><span>You are a </span>'.$cls.'</p>'."\n";
 				if ($this->ismember == 'manager' && count($this->group->get('managers')) == 1) {
-					$aside .= ''.n;
+					$aside .= ''."\n";
 				} else {
-					$aside .= '<p id="group-cancel" class="'.$cls.'"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$this->group->get('cn').a.'task=cancel') .'">'.JText::_('GROUPS_ACTION_CANCEL_MEMBERSHIP').'</a></p>'.n;
+					$aside .= '<p id="group-cancel" class="'.$cls.'"><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=cancel') .'">'.JText::_('GROUPS_ACTION_CANCEL_MEMBERSHIP').'</a></p>'."\n";
 				}
 			}
 		} else {
-			$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$this->group->get('cn').a.'task=join').'">'.JText::_('GROUPS_REQUEST_MEMBERSHIP_TO_GROUP').'</a></p>'.n;
+			$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=join').'">'.JText::_('GROUPS_REQUEST_MEMBERSHIP_TO_GROUP').'</a></p>'."\n";
 		}
 	break;
 	
@@ -141,17 +141,17 @@ switch ($this->group->get('join_policy'))
 	default:
 		if ($isApplicant || $this->ismember) {
 			if ($this->ismember == 'invitee') {
-				$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$this->group->get('cn').a.'task=accept').'">'.JText::_('GROUPS_ACCEPT_INVITE').'</a></p>'.n;
+				$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT_INVITE').'</a></p>'."\n";
 			} else {
-				$aside .= '<p id="group-status" class="'.$cls.'"><span>You are a </span>'.$cls.'</p>'.n;
+				$aside .= '<p id="group-status" class="'.$cls.'"><span>You are a </span>'.$cls.'</p>'."\n";
 				if ($this->ismember == 'manager' && count($this->group->get('managers')) == 1) {
-					$aside .= ''.n;
+					$aside .= ''."\n";
 				} else {
-					$aside .= '<p id="group-cancel" class="'.$cls.'"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$this->group->get('cn').a.'task=cancel') .'">'.JText::_('GROUPS_ACTION_CANCEL_MEMBERSHIP').'</a></p>'.n;
+					$aside .= '<p id="group-cancel" class="'.$cls.'"><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=cancel') .'">'.JText::_('GROUPS_ACTION_CANCEL_MEMBERSHIP').'</a></p>'."\n";
 				}
 			}
 		} else {
-			$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$this->group->get('cn').a.'task=join').'">'.JText::_('GROUPS_JOIN_GROUP').'</a></p>'.n;
+			$aside .= '<p id="primary-document"><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=join').'">'.JText::_('GROUPS_JOIN_GROUP').'</a></p>'."\n";
 		}
 	break;
 }
@@ -234,14 +234,14 @@ foreach ($this->sections as $section)
 	if (isset($section['metadata']) && $section['metadata'] != '') {
 		$name = key($this->cats[$k]);
 		
-		$html .= '<div class="dashboard">'.n;
-		$html .= '<h4 class="dash-header">'.JText::_(strtoupper($this->cats[$k][$name]).'_DASHBOARD').' <small>'.$section['metadata'].'</small></h4>'.n;
+		$html .= '<div class="dashboard">'."\n";
+		$html .= '<h4 class="dash-header">'.JText::_(strtoupper($this->cats[$k][$name]).'_DASHBOARD').' <small>'.$section['metadata'].'</small></h4>'."\n";
 		$html .= $section['dashboard'];
-		$html .= '</div>'.n;
+		$html .= '</div>'."\n";
 	}
 	$k++;
 }
-$html .= GroupsHtml::div('', 'clear');
+$html .= '<div class="clear"></div>';
 echo $html;
 ?>
 	</div><!-- / .subject -->
