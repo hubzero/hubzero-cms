@@ -29,29 +29,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $config = JFactory::getConfig();
 
-//if ($config->getValue('config.debug')) {
+if ($config->getValue('config.debug')) {
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
-//}
+}
 
+jimport('joomla.application.component.view');
 
-ximport( 'bankaccount' );
-ximport('xuser');
-ximport('textfilter');
-ximport('misc_func');
-
+ximport('Hubzero_View_Helper_Html');
+ximport('bankaccount');
+ximport('xgeoutils');
+ximport('xprofile');
 
 require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'store.class.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'store.config.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'store.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
+// Editor usertype check
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
 
 // Instantiate controller
 $controller = new StoreController();
-$controller->mainframe = $mainframe;
 $controller->execute();
 $controller->redirect();
-
-
 ?>

@@ -25,12 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class StoreController
+class StoreController extends JObject
 {	
 	private $_name  = NULL;
 	private $_data  = array();
 	private $_task  = NULL;
-	private $_error = NULL;
 
 	//-----------
 	
@@ -71,46 +70,43 @@ class StoreController
 	
 	public function __get($property)
 	{
-		if(isset($this->_data[$property])) {
+		if (isset($this->_data[$property])) {
 			return $this->_data[$property];
 		}
-	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$task = JRequest::getVar( 'task', '', 'post' );
-		if (!$task) {
-			$task = JRequest::getVar( 'task', '', 'get' );
-		}
-		$this->_task = $task;
-		return $task;
 	}
 	
 	//-----------
 	
 	public function execute()
 	{
-	
-		$config = new StoreConfig($this->_option);
+		// Check if the store is enabled or not
+		//$this->config = new StoreConfig($this->_option);
+		$component =& JComponentHelper::getComponent( $this->_option );
+		if (!trim($component->params)) {
+			return $this->abort();
+		} else {
+			$config =& JComponentHelper::getParams( $this->_option );
+		}
 		$this->config = $config;
-		$store_enabled = (isset($this->config->parameters['store_enabled'])) ? $this->config->parameters['store_enabled'] : 0;
 		
-		
-		if(!$store_enabled) {
-			// redirect to home page
+		if (!$this->config->get('store_enabled')) {
+			// Redirect to home page
 			$this->_redirect = '/';
-			$this->redirect();		
+			return;
 		}
 		
-		switch( $this->getTask() ) 
+		$this->_task = JRequest::getVar( 'task', '', 'post' );
+		if (!$this->_task) {
+			$this->_task = JRequest::getVar( 'task', '', 'get' );
+		}
+		
+		switch ($this->_task) 
 		{
-			case 'cart':        $this->cart();        		break;
-			case 'checkout':    $this->checkout();    		break;
-			case 'process':     $this->process_order();     break;
-			case 'finalize':    $this->finalize_order();    break;
-			case 'accept':      $this->accept();      		break;
+			case 'cart':     $this->cart();           break;
+			case 'checkout': $this->checkout();       break;
+			case 'process':  $this->process();  break;
+			case 'finalize': $this->finalize(); break;
+			case 'accept':   $this->accept();         break;
 			
 			default: $this->storefront(); break;
 		}
@@ -125,40 +121,12 @@ class StoreController
 			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
 		}
 	}
-	
-	//-----------
 
-	protected function login($msg) 
-	{
-		// Set the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
-		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		$japp =& JFactory::getApplication();
-		$pathway =& $japp->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
-		
-		echo StoreHtml::div( StoreHtml::hed( 2, $title ), 'full', 'content-header' );
-		echo '<div class="main section">'.n;
-		if ($msg) {
-			echo StoreHtml::warning( $msg );
-		}
-		ximport('xmodule');
-		XModuleHelper::displayModules('force_mod');
-		echo '</div><!-- / .main section -->'.n;
-	}
-
-	
 	//----------------------------------------------------------
-	// Views
+	// Private functions
 	//----------------------------------------------------------
 
-	private function getStyles($option='') 
+	private function _getStyles($option='') 
 	{
 		ximport('xdocument');
 		if ($option) {
@@ -169,7 +137,8 @@ class StoreController
 	}
 	
 	//-----------
-	private function getScripts($option='',$name='')
+	
+	private function _getScripts($option='',$name='')
 	{
 		$document =& JFactory::getDocument();
 		if ($option) {
@@ -178,7 +147,6 @@ class StoreController
 				$document->addScript('components'.DS.'com_'.$option.DS.$name.'.js');
 			}
 		} else {
-			
 			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
 				$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
 			}
@@ -186,672 +154,609 @@ class StoreController
 	}
 	
 	//-----------
-
-	private function storefront() 
+	
+	private function _buildPathway() 
 	{
-		$database 		=& JFactory::getDBO();
-		$xhub 			=& XFactory::getHub();
-		$hubShortName 	= $xhub->getCfg('hubShortName');
-			
-		
-		$filters = array();
-		$filters['limit']    = JRequest::getInt( 'limit', 25 );
-		$filters['start']    = JRequest::getInt( 'limitstart', 0 );
-		$filters['sortby']   = JRequest::getVar( 'sortby', '' );
-			
-		// Set the page title
-		$title = $hubShortName.' '.JText::_(strtoupper($this->_name)).': '.JText::_('STOREFRONT');
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		// add the CSS to the template and set the page title
-		$this->getStyles();
-		$this->getScripts();
-		$this->getScripts("resources");
-		
-		// get the most recent store items
-		$obj = new Store($database);
-		$items = $obj->getItems( 'retrieve', $filters, $this->config);
-		$itemlist = StoreHtml::htmlItemList( $items, $this->_option, $this->infolink);
-		
-		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
+		
 		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option)),
+				'index.php?option='.$this->_option
+			);
 		}
-
-		// output HTML
-		echo StoreHtml::introduction($title, $itemlist, $featured ='', $this->_option, $filters, $this->infolink);
-	}
-
-	//-----------
-	private function cart() 
-	{
-		$database 		=& JFactory::getDBO();
-		$xhub 			=& XFactory::getHub();
-		$juser 			=& JFactory::getUser();
-		$hubShortName 	= $xhub->getCfg('hubShortName');
-		$now    		= date( 'Y-m-d H:i:s', time() );
-		$cartitems 		= array();
-		$cost			= 0;
-		$msg			= '';
-
-		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
-		$banking =  $upconfig->get('bankAccounts');
-			
-		// incoming
-		$action = JRequest::getVar( 'action', '');
-		$id 	= JRequest::getInt( 'item', 0 );
-		//$purchasetype = $this->getPurchaseType(JRequest::getInt( 'type', 1));
-		
-		// Set the page title
-		$title = $hubShortName.' '.JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-			
-		// check if item exists
-		if($id) {
-			$objStore = new Store( $database );
-			$iteminfo = $objStore->getInfo($id);
-			if(!$iteminfo) {
-				$id = 0;
-			}
-			else {
-				$purchasetype = $this->getPurchaseType($iteminfo[0]->type);
-			}
-		}
-			
-		if(!$banking) { // if economy functions are unavailable
-			echo StoreHtml::div( StoreHtml::hed(2, $title), 'full', 'content-header' );
-			echo StoreHtml::div( StoreHtml::warning('MSG_STORE_CLOSED'), 'main section' );
-			return;
-		}
-			
-		// Need to login to view cart
-		if ($juser->get('guest')) {
-			return $this->login(JText::_('MSG_LOGIN_TO_CART'));
-		}
-		
-		// Get cart object
-		$item = new Cart( $database );
-				
-		if($action) {
-			switch ($action)
+		if ($this->_task) {
+			switch ($this->_task) 
 			{
-				case 'add': 
-					// check if item is already there, then update quantity or save new
-					$found = $item->checkCartItem( $id, $juser->get('id'));		
-			
-					if(!$found && $id) {					
-						$item->itemid = $id;
-						$item->uid 	= $juser->get('id');
-						$item->type = $purchasetype;
-						$item->added = $now;
-						$item->quantity = 1;
-						$item->selections = '';
-	
-						// store new content
-						if (!$item->store()) {
-							echo StoreHtml::alert( $item->getError() );
-							exit();
-						}
-						else {
-							$msg = JText::_('MSG_ADDED_TO_CART');
-						}	
-					}
-					  
-					    
+				case 'finalize':
+					$pathway->addItem( 
+						JText::_(strtoupper($this->_option).'_CART'), 
+						'index.php?option='.$this->_option.'&task=cart' 
+					);
+					$pathway->addItem( 
+						JText::_(strtoupper($this->_option).'_CHECKOUT'), 
+						'index.php?option='.$this->_option.'&task=checkout' 
+					);
+					$pathway->addItem(
+						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+						'index.php?option='.$this->_option.'&task='.$this->_task
+					);
 				break;
-				
-				case 'update': 
-					// update quantaties and selections					
-					$item->saveCart(array_map('trim',$_POST), $juser->get('id'));
-					      
+				case 'process':
+					$pathway->addItem( 
+						JText::_(strtoupper($this->_option).'_CART'), 
+						'index.php?option='.$this->_option.'&task=cart' 
+					);
 				break;
-				
-				case 'remove': 
-					// update quantaties and selections
-					if($id) {
-					$item->deleteCartItem($id, $juser->get('id'));	
-					}			
-					      
-				break;
-				
-				case 'empty': 
-					// empty all
-					$item->deleteCartItem('', $juser->get('id'), 'all');
-					 		
-				break;
-				
-				default:  
-				// do nothing      		
+				default:
+					$pathway->addItem(
+						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+						'index.php?option='.$this->_option.'&task='.$this->_task
+					);
 				break;
 			}
-			
 		}
-		
-		// check available user funds		
-		$BTL 		= new BankTeller( $database, $juser->get('id') );
-		$balance 	= $BTL->summary();
-		$credit 	= $BTL->credit_summary();
-		$funds 		= $balance - $credit;			
-		$funds 		= ($funds > 0) ? $funds : '0';
-	
-		// calculate total
-		$cost = $item->getCartItems($juser->get('id'), 'cost');
-		
-		// get cart items		
-		$items = $item->getCartItems($juser->get('id'));
-		$cartitems = StoreHtml::htmlCartList( $items, $this->_option, $funds, $cost, $this->infolink);
-		
-		// add the CSS to the template and set the page title
-		$this->getStyles();
-		$this->getScripts();
-		
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
-		
-		// output HTML
-		echo StoreHtml::cart($title, $cartitems, $this->_option, $funds, $cost, $msg, $this->infolink, $juser);
-		
 	}
+	
 	//-----------
 	
-	private function checkout() 
+	private function _buildTitle() 
 	{
-		$database =& JFactory::getDBO();
-		$juser 			=& JFactory::getUser();
-		$xuser 			=& XFactory::getUser();
-		$xhub 			=& XFactory::getHub();
-		$hubShortName 	= $xhub->getCfg('hubShortName');
-		
-	
-		// Check authorization
-		if ($juser->get('guest')) {
-			return $this->login(JText::_('MSG_LOGIN_CHECKOUT'));
+		$this->_title = JText::_(strtoupper($this->_option));
+		if ($this->_task) {
+			$this->_title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
 		}
-		
-		// Get cart object
-		$item = new Cart( $database );
-			
-		// update quantaties and selections					
-		$item->saveCart(array_map('trim',$_POST), $juser->get('id'));
-		
-		// calculate total
-		$cost = $item->getCartItems($juser->get('id'), 'cost');
-		
-		// check available user funds		
-		$BTL 		= new BankTeller( $database, $juser->get('id'));
-		$balance 	= $BTL->summary();
-		$credit 	= $BTL->credit_summary();
-		$funds 		= $balance - $credit;			
-		($funds > 0) ? $funds : '0';
-		
-		// output HTML
-		if($cost > $funds) {
-			$this->cart(); 
-			return;
-		}
-		
-		// get cart items		
-		$items = $item->getCartItems($juser->get('id'));
-		
-		// clean-up unavailable items
-		$item->deleteUnavail($juser->get('id'), $items);
-				
-		// updated item list		
-		$items = $item->getCartItems($juser->get('id'));
-		
-		// Set the page title
-		$title = $hubShortName.' '.JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
 		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		// add the CSS to the template and set the page title
-		$this->getStyles();
-		$this->getScripts();
-		
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( JText::_('CART'), 'index.php?option='.$this->_option.a.'task=cart' );
-		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
-		
-		echo StoreHtml::checkout($title, $items, $this->_option, $funds, $cost,  $xuser, array() ,'', $this->infolink);
-		
+		$document->setTitle( $this->_title );
 	}
-
-	//----------------------------------------------------------
-	// Processors
-	//----------------------------------------------------------
-	private function finalize_order() 
-	{
-		$database =& JFactory::getDBO();
-		$xuser 			=& XFactory::getUser();
-		$juser 			=& JFactory::getUser();
-		$xhub 			=& XFactory::getHub();
-		$hubShortName 	= $xhub->getCfg('hubShortName');
-		$success		= 1;
-		$error			= 0;
-		$msg			= '';
-		$now    		= date( 'Y-m-d H:i:s', time() );
-		$email 			= 1;  // turn on/off
-		
-		// Check authorization
-		if ($juser->get('guest')) {
-			return $this->login();
-		}
-		
-		// Get cart object
-		$item = new Cart( $database );
-		
-		// calculate total
-		$cost = $item->getCartItems($juser->get('id'),'cost');
-		
-				
-		// check available user funds		
-		$BTL 		= new BankTeller( $database, $xuser->get('uid') );
-		$balance 	= $BTL->summary();
-		$credit 	= $BTL->credit_summary();
-		$funds 		= $balance - $credit;			
-		($funds > 0) ? $funds : '0';
-		
-		// get cart items		
-		$items = $item->getCartItems($juser->get('id'));
-		
-		if(!$items) { // if user clicked on back button in browser
-			$this->cart();
-			return;
-		}
-				
-		// get shipping info 
-		$shipping = array_map('trim',$_POST);
 	
-		// make sure email address is valid
-		$validemail = $this->check_validEmail($shipping['email']);
-		$email = ($validemail) ? $shipping['email'] : $xuser->get('email');
-		//$country = htmlentities(getcountry($shipping['country']));
-		$country = $shipping['country'];
-			
-			// format posted info
-			$details  = JText::_('SHIP_TO').':'.r.n;
-			$details .= $shipping['name'] .r.n;
-			$details .= $this->purifyText($shipping['address']).r.n;
-			$details .= JText::_('COUNTRY').': '. $country.r.n;			
-			$details .= '----------------------------------------------------------'.r.n;
-			$details .= JText::_('CONTACT').': '.r.n;
-			if($shipping['phone']) {
-			$details .= $shipping['phone'] .r.n;
-			}
-			$details .= $email .r.n;
-			$details .= '----------------------------------------------------------'.r.n;
-			$details .= JText::_('DETAILS').': ';
-			$details .= ($shipping['comments']) ? r.n.($this->purifyText($shipping['comments'])) : 'N/A';
-			
-			
-			// register a new order
-			$order 				= new Order( $database );
-			$order->uid 		= $xuser->get('uid');
-			//$order->type 		= 'merchandise';
-			$order->total		= $cost;
-			$order->status 		= '0'; // order placed
-			$order->ordered 	= $now;
-			$order->email 		= $email;
-			$order->details 	= $details;
-			
-			// store new content
-			if (!$order->store()) {
-				echo StoreHtml::alert( $order->getError() );
-				exit();
-			}
-		
-			// get order id
-			$objO = new Order($database);
-			$orderid = $objO->getOrderID($juser->get('id'), $now);
-			
-			if($orderid) {
-			// transfer cart items to order
-				foreach($items as $item) {
-					$orderitem 				= new OrderItem( $database );
-					$orderitem->uid 		= $juser->get('id');
-					$orderitem->oid 		= $orderid;
-					$orderitem->itemid 		= $item->itemid;
-					$orderitem->price 		= $item->price;
-					$orderitem->quantity	= $item->quantity;
-					$orderitem->selections 	= $item->selections;
-										
-					// save order item
-					if (!$orderitem->store()) {
-						echo StoreHtml::alert( $orderitem->getError() );
-						exit();
-					}
-					// delete item from cart
-				
-					$sql = "DELETE FROM #__cart WHERE itemid='".$item->itemid."' AND type='merchandise' AND uid=".$xuser->get('uid');
-					$database->setQuery( $sql);
-					if (!$database->query()) {
-						echo "<script> alert('".$database->getErrorMsg()."'); window.history.go(-1); </script>\n";
-						exit;
-					}
-				}
-				
-				// put the purchase amount on hold
-				$BTL = new BankTeller( $database, $xuser->get('uid') );
-				$BTL->hold($order->total, JText::_('BANKING_HOLD'), 'store', $orderid);
-				
-				// send confirmation email
-				
-				//if($email) {
-					$admin_email = $xhub->getCfg('hubSupportEmail');
-					$subject     = JText::_(strtoupper($this->_name)).': '.JText::_('ORDER').' #'.$orderid;
-					$from        = $hubShortName.' '.JText::_(strtoupper($this->_name));
-					$hub         = array('email' => $admin_email, 'name' => $from);
-					
-					// compose email message
-					$emailbody  = JText::_('THANKYOU').' '.JText::_('IN_THE').' '.$hubShortName.' '.JText::_(strtolower($this->_name)).'!'.r.n.r.n;
-					$emailbody .= JText::_('EMAIL_KEEP').r.n;
-					$emailbody .= '----------------------------------------------------------'.r.n;
-					$emailbody .= '	'.JText::_('ORDER').' '. JText::_('NUM').': '. $orderid .r.n;
-					$emailbody .= ' '.JText::_('ORDER').' '.JText::_('TOTAL').': '. $cost.' '.JText::_('POINTS').r.n;
-					$emailbody .= ' '.JText::_('PLACED').' '. JHTML::_('date', $now, '%d %b, %Y').r.n;
-					$emailbody .= ' '.JText::_('STATUS').': '.JText::_('RECEIVED').r.n;
-					$emailbody .= '----------------------------------------------------------'.r.n;
-					$emailbody .= $details.r.n;
-					$emailbody .= '----------------------------------------------------------'.r.n.r.n;
-					$emailbody .= JText::_('EMAIL_ORDER_PROCESSED').'. ';
-					$emailbody .= JText::_('EMAIL_QUESTIONS').'.'.r.n.r.n;
-					$emailbody .= JText::_('EMAIL_THANKYOU').r.n;
-														
-					//$this->send_email($hub, $email, $subject, $emailbody);
-					//ximport('xhubhelper');
-					//XHubHelper::send_email($email, $subject, $emailbody);
-				//}
-				JPluginHelper::importPlugin( 'xmessage' );
-				$dispatcher =& JDispatcher::getInstance();
-				if (!$dispatcher->trigger( 'onSendMessage', array( 'store_notifications', $subject, $emailbody, $hub, array($juser->get('id')), $this->_option ))) {
-					$this->setError( JText::_('Failed to message users.') );
-				}
-			}
-			
-		
-		// Set the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::_('THANKYOU');
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		// add the CSS to the template
-		$this->getStyles();
-		$this->getScripts();
-		
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( JText::_('CART'), 'index.php?option='.$this->_option.a.'task=cart' );
-		$pathway->addItem( JText::_('CHECKOUT'), 'index.php?option='.$this->_option.a.'task=checkout' );
-		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
-			
-		// output HTML			
-		echo StoreHtml::order_completed($this->_option, $orderid, $this->infolink, $title);
-		
-		
-	}
-	//------------
-	private function process_order() 
-	{
-		// process order, user yet has to finalize it
-		$database 		=& JFactory::getDBO();
-		$juser 			=& JFactory::getUser();
-		$xuser 			=& XFactory::getUser();
-		$xhub 			=& XFactory::getHub();
-		$hubShortName 	= $xhub->getCfg('hubShortName');
-		$success		= 1;
-		$error			= 0;
-		$now    		= date( 'Y-m-d H:i:s', time() );
-		$action 		= JRequest::getVar( 'action', '');
-		
-		// Check authorization
-		if ($juser->get('guest')) {
-			return $this->login();
-		}
-		
-		// Get cart object
-		$item = new Cart( $database );
-		
-		// calculate total
-		$cost = $item->getCartItems($juser->get('id'),'cost');
-		
-		if(!$cost) {
-			$error = JText::_('ERR_EMPTY_ORDER');
-			$success = 0;
-		}
-		
-		// check available user funds		
-		$BTL 		= new BankTeller( $database, $juser->get('id') );
-		$balance 	= $BTL->summary();
-		$credit 	= $BTL->credit_summary();
-		$funds 		= $balance - $credit;			
-		($funds > 0) ? $funds : '0';
-		
-		if($cost > $funds) { 
-			$error = JText::_('MSG_NO_FUNDS');
-			$success = 0;
-		}
-		
-		// get cart items		
-		$items = $item->getCartItems($juser->get('id'));
-				
-		// get shipping info 
-		$shipping = array_map('trim',$_POST);
-			//if($shipping['name'] && $shipping['address1'] && $shipping['city'] && $shipping['country']  && $shipping['postal']) {
-			if($shipping['name'] && $shipping['address'] && $shipping['country']) {
-				$success = 1;
-			}
-			else {
-				$error	 = JText::_('ERR_BLANK_FIELDS');
-				$success = 0;
-			}
-			
-		// Set the page title
-		$title = $hubShortName.' '.JText::_(strtoupper($this->_name)).': '.JText::_('VERIFY_ORDER');
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		// add the CSS to the template
-		$this->getStyles();
-		$this->getScripts();
-	
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( JText::_('CART'), 'index.php?option='.$this->_option.a.'task=cart' );
-		//$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
-	
-		if($success && $action!='change') {
-			// output HTML			
-			echo StoreHtml::finalize($title, $items, $this->_option, $funds, $cost, $xuser, $shipping, $this->infolink);
-		
-		} 
-		else {
-			echo StoreHtml::checkout($hubShortName.' '.JText::_(strtoupper($this->_name)).': '.JText::_('CHECKOUT'), $items, $this->_option, $funds, $cost, $xuser, $shipping, $error, $this->infolink);
-		}
-		
-	}
 	//-----------
 	
-	public function getPurchaseType($num) {
-		switch ( $num ) 
+	private function _getPurchaseType($num) 
+	{
+		switch ($num) 
 		{
-			case '1':         $out=JText::_('MERCHANDISE');     break;
-			case '2':         $out=JText::_('SERVICE');      	break;
-			
-			default: 		  $out=JText::_('MERCHANDISE');		break;
+			case '1': $out = JText::_('COM_STORE_MERCHANDISE'); break;
+			case '2': $out = JText::_('COM_STORE_SERVICE');     break;
+			default:  $out = JText::_('COM_STORE_MERCHANDISE'); break;
 			
 		}
 		return $out;
 	}
-	
-	//-----------
-
-	private function send_email($hub, $email, $subject, $message) 
-	{
-		if ($hub) {
-			$xhub 			=& XFactory::getHub();
-			$contact_email = $hub['email'];
-			$contact_name  = $hub['name'];
-
-			$args = "-f '" . $contact_email . "'";
-			$headers  = "MIME-Version: 1.0\n";
-			$headers .= "Content-type: text/plain; charset=utf-8\n";
-			$headers .= 'From: ' . $contact_name .' <'. $contact_email . ">\n";
-			$headers .= 'Reply-To: ' . $contact_name .' <'. $contact_email . ">\n";
-			$headers .= "X-Priority: 3\n";
-			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: '. $xhub->getCfg('hubShortName') .n;
-			if (mail($email, $subject, $message, $headers, $args)) {
-				return(1);
-			}
-		}
-		return(0);
-	}
 
 	//-----------
 
-	private function check_validEmail($email) 
+	private function _checkValidEmail($email) 
 	{
-		if(eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
+		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
 			return(1);
 		} else {
 			return(0);
 		}
 	}
 
-
-	//----------------------------------------------------------
-	// Misc Functions
-	//----------------------------------------------------------
-	
-	//-----------
-
-	private function purifyText( &$text ) 
-	{
-		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
-		$text = preg_replace( '/{.+?}/', '', $text );
-		$text = preg_replace( "'<script[^>]*>.*?</script>'si", '', $text );
-		$text = preg_replace( '/<a\s+.*?href="([^"]+)"[^>]*>([^<]+)<\/a>/is', '\2', $text );
-		$text = preg_replace( '/<!--.+?-->/', '', $text );
-		$text = preg_replace( '/&nbsp;/', ' ', $text );
-		$text = strip_tags( $text );
-
-		return $text;
-	}
-	
-	
-	//-----------
-
-	public function mkt($stime)
-	{
-		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
-		}
-		return $stime;
-	}
-	
 	//-----------
 	
-	public function timeAgoo($timestamp)
-	{
-		// Store the current time
-		$current_time = time();
-		
-		// Determine the difference, between the time now and the timestamp
-		$difference = $current_time - $timestamp;
-		
-		// Set the periods of time
-		$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
-		
-		// Set the number of seconds per period
-		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-		
-		// Determine which period we should use, based on the number of seconds lapsed.
-		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
-		// Go from decades backwards to seconds
-		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
-		
-		// Ensure the script has found a match
-		if ($val < 0) $val = 0;
-		
-		// Determine the minor value, to recurse through
-		$new_time = $current_time - ($difference % $lengths[$val]);
-		
-		// Set the current value to be floored
-		$number = floor($number);
-		
-		// If required create a plural
-		if($number != 1) $periods[$val].= "s";
-		
-		// Return text
-		$text = sprintf("%d %s ", $number, $periods[$val]);
-		
-		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
-		if (($val >= 1) && (($current_time - $new_time) > 0)){
-			$text .= StoreController::TimeAgoo($new_time);
-		}
-		
-		return $text;
-	}
-	
-	//-----------
-	
-	public function timeAgo($timestamp) 
-	{
-		$text =  StoreController::timeAgoo($timestamp);
-		
-		$parts = explode(' ',$text);
-
-		$text  = $parts[0].' '.$parts[1];
-		//$text .= ($parts[2]) ? ' '.$parts[2].' '.$parts[3] : '';
-		return $text;
-	}
-	//-----------
-	private function authorize() 
+	private function _authorize() 
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			return false;
 		}
-	
-		// Check if they're a site admin (from LDAP)
-		$xuser =& XFactory::getUser();
-		if (is_object($xuser)) {
-			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-				return true;
-			}
-		}
 		
 		// Check if they're a site admin (from Joomla)
 		if ($juser->authorize($this->_option, 'manage')) {
 			return true;
 		}
-		
 
 		return false;
+	}
+	
+	//----------------------------------------------------------
+	// Views
+	//----------------------------------------------------------
+
+	protected function login() 
+	{
+		$view = new JView( array('name'=>'login') );
+		$view->title = $this->_title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+
+	//-----------
+
+	protected function storefront() 
+	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'storefront') );
+		$view->option = $this->_option;
+		
+		// Incoming
+		$view->filters = array();
+		$view->filters['limit']  = JRequest::getInt( 'limit', 25 );
+		$view->filters['start']  = JRequest::getInt( 'limitstart', 0 );
+		$view->filters['sortby'] = JRequest::getVar( 'sortby', '' );
+		
+		// Get the most recent store items
+		$database =& JFactory::getDBO();
+		$obj = new Store($database);
+		$view->rows = $obj->getItems('retrieve', $view->filters, $this->config);
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		//$this->_getScripts("resources");
+		
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+
+		// Output HTML
+		$view->title = $this->_title;
+		$view->infolink = $this->infolink;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+
+	//-----------
+	
+	protected function cart() 
+	{
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+
+		// Need to login to view cart
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->login();
+			return;
+		}
+
+		// Instantiate a new view
+		$view = new JView( array('name'=>'cart') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->infolink = $this->infolink;
+		$view->msg = '';
+
+		// Check if economy functions are unavailable
+		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		if (!$upconfig->get('bankAccounts')) {
+			$view->setError( JText::_('COM_STORE_MSG_STORE_CLOSED') );
+			$view->display();
+			return;
+		}
+		
+		$database =& JFactory::getDBO();
+			
+		// Incoming
+		$view->action = JRequest::getVar( 'action', '');
+		$view->id = JRequest::getInt( 'item', 0 );
+
+		// Check if item exists
+		$purchasetype = '';
+		if ($view->id) {
+			$objStore = new Store( $database );
+			$iteminfo = $objStore->getInfo($view->id);
+			if (!$iteminfo) {
+				$view->id = 0;
+			} else {
+				$purchasetype = $this->_getPurchaseType($iteminfo[0]->type);
+			}
+		}
+
+		// Get cart object
+		$item = new Cart( $database );
+				
+		switch ($view->action)
+		{
+			case 'add': 
+				// Check if item is already there, then update quantity or save new
+				$found = $item->checkCartItem($view->id, $juser->get('id'));		
+		
+				if (!$found && $view->id) {					
+					$item->itemid = $view->id;
+					$item->uid = $juser->get('id');
+					$item->type = $purchasetype;
+					$item->added = date( 'Y-m-d H:i:s', time() );
+					$item->quantity = 1;
+					$item->selections = '';
+
+					// store new content
+					if (!$item->store()) {
+						JError::raiseError( 500, $item->getError() );
+						return;
+					}
+					
+					$view->msg = JText::_('MSG_ADDED_TO_CART');	
+				}
+			break;
+			
+			case 'update': 
+				// Update quantaties and selections					
+				$item->saveCart(array_map('trim',$_POST), $juser->get('id'));
+			break;
+			
+			case 'remove': 
+				// Update quantaties and selections
+				if ($view->id) {
+					$item->deleteCartItem($view->id, $juser->get('id'));	
+				}			
+			break;
+			
+			case 'empty': 
+				// Empty all
+				$item->deleteCartItem('', $juser->get('id'), 'all');
+			break;
+			
+			default:  
+				// Do nothing      		
+			break;
+		}
+		
+		// Check available user funds		
+		$BTL = new BankTeller( $database, $juser->get('id') );
+		$balance = $BTL->summary();
+		$credit  = $BTL->credit_summary();
+		$funds   = $balance - $credit;			
+		$view->funds = ($funds > 0) ? $funds : 0;
+	
+		// Calculate total
+		$view->cost = $item->getCartItems($juser->get('id'), 'cost');
+		
+		// Get cart items		
+		$view->rows = $item->getCartItems($juser->get('id'));
+
+		// Output HTML
+		$view->juser = $juser;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
+	
+	protected function checkout() 
+	{
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+		
+		// Check authorization
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->login();
+			return;
+		}
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'checkout') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->infolink = $this->infolink;
+		$view->final = false;
+		
+		$database =& JFactory::getDBO();
+		
+		// Get cart object
+		$item = new Cart( $database );
+			
+		// Update quantaties and selections					
+		$item->saveCart(array_map('trim',$_POST), $juser->get('id'));
+		
+		// Calculate total
+		$view->cost = $item->getCartItems($juser->get('id'), 'cost');
+		
+		// Check available user funds		
+		$BTL = new BankTeller($database, $juser->get('id'));
+		$balance = $BTL->summary();
+		$credit  = $BTL->credit_summary();
+		$funds   = $balance - $credit;			
+		$view->funds = ($funds > 0) ? $funds : '0';
+		
+		if ($view->cost > $view->funds) {
+			$this->cart(); 
+			return;
+		}
+		
+		// Get cart items		
+		$view->items = $item->getCartItems($juser->get('id'));
+		
+		// Clean-up unavailable items
+		$item->deleteUnavail($juser->get('id'), $view->items);
+				
+		// Updated item list		
+		$view->items = $item->getCartItems($juser->get('id'));
+		
+		// Output HTML
+		$view->juser = $juser;
+		$view->xprofile = new XProfile;
+		$view->xprofile->load( $juser->get('id') );
+		$view->posted = array();
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+
+	//----------------------------------------------------------
+	// Processors
+	//----------------------------------------------------------
+	
+	protected function finalize() 
+	{
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+		
+		// Check authorization
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->login();
+			return;
+		}
+		
+		$database =& JFactory::getDBO();
+
+		$now = date( 'Y-m-d H:i:s', time() );
+		
+		// Get cart object
+		$item = new Cart( $database );
+		
+		// Calculate total
+		$cost = $item->getCartItems($juser->get('id'),'cost');
+		
+		// Check available user funds		
+		$BTL = new BankTeller( $database, $juser->get('id') );
+		$balance = $BTL->summary();
+		$credit = $BTL->credit_summary();
+		$funds = $balance - $credit;			
+		$funds = ($funds > 0) ? $funds : '0';
+		
+		// Get cart items		
+		$items = $item->getCartItems($juser->get('id'));
+		if (!$items) {
+			$this->cart();
+			return;
+		}
+				
+		// Get shipping info 
+		$shipping = array_map('trim',$_POST);
+	
+		// make sure email address is valid
+		$validemail = $this->_checkValidEmail($shipping['email']);
+		$email = ($validemail) ? $shipping['email'] : $juser->get('email');
+			
+		// Format posted info
+		$details  = JText::_('COM_STORE_SHIP_TO').':'."\r\n";
+		$details .= $shipping['name'] ."\r\n";
+		$details .= Hubzero_View_Helper_Html::purifyText($shipping['address'])."\r\n";
+		$details .= JText::_('COM_STORE_COUNTRY').': '. $shipping['country']."\r\n";			
+		$details .= '----------------------------------------------------------'."\r\n";
+		$details .= JText::_('COM_STORE_CONTACT').': '."\r\n";
+		if ($shipping['phone']) {
+			$details .= $shipping['phone'] ."\r\n";
+		}
+		$details .= $email ."\r\n";
+		$details .= '----------------------------------------------------------'."\r\n";
+		$details .= JText::_('COM_STORE_DETAILS').': ';
+		$details .= ($shipping['comments']) ? "\r\n".(Hubzero_View_Helper_Html::purifyText($shipping['comments'])) : 'N/A';
+			
+		// Register a new order
+		$order = new Order($database);
+		$order->uid     = $juser->get('id');
+		$order->total   = $cost;
+		$order->status  = '0'; // order placed
+		$order->ordered = $now;
+		$order->email   = $email;
+		$order->details = $details;
+		
+		// Store new content
+		if (!$order->store()) {
+			JError::raiseError( 500, $order->getError() );
+			return;
+		}
+		
+		// Get order ID
+		$objO = new Order($database);
+		$orderid = $objO->getOrderID($juser->get('id'), $now);
+			
+		if ($orderid) {
+			// Transfer cart items to order
+			foreach ($items as $itm) 
+			{
+				$orderitem = new OrderItem( $database );
+				$orderitem->uid        = $juser->get('id');
+				$orderitem->oid        = $orderid;
+				$orderitem->itemid     = $itm->itemid;
+				$orderitem->price      = $itm->price;
+				$orderitem->quantity   = $itm->quantity;
+				$orderitem->selections = $itm->selections;
+									
+				// Save order item
+				if (!$orderitem->store()) {
+					JError::raiseError( 500, $orderitem->getError() );
+					return;
+				}
+				
+				// Delete item from cart
+				if (!$item->deleteItem($itm->itemid, $juser->get('id'))) {
+					JError::raiseError( 500, $item->getError() );
+					return;
+				}
+			}
+			
+			// Put the purchase amount on hold
+			$BTL = new BankTeller( $database, $juser->get('id') );
+			$BTL->hold($order->total, JText::_('COM_STORE_BANKING_HOLD'), 'store', $orderid);
+			
+			$jconfig =& JFactory::getConfig();
+			
+			// Compose confirmation "from"
+			$hub = array(
+				'email' => $jconfig->getValue('config.mailfrom'), 
+				'name' => $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_option))
+			);
+			
+			// Compose confirmation subject
+			$subject = JText::_(strtoupper($this->_name)).': '.JText::_('COM_STORE_ORDER').' #'.$orderid;
+				
+			// Compose confirmation message
+			$eview = new JView( array('name'=>'emails','layout'=>'confirmation') );
+			$eview->option = $this->_option;
+			$eview->hubShortName = $jconfig->getValue('config.sitename');
+			$eview->orderid = $orderid;
+			$eview->cost = $cost;
+			$eview->now = $now;
+			$eview->details = $details;
+			$message = $eview->loadTemplate();
+			$message = str_replace("\n", "\r\n", $message);
+			
+			// Send confirmation
+			JPluginHelper::importPlugin( 'xmessage' );
+			$dispatcher =& JDispatcher::getInstance();
+			if (!$dispatcher->trigger( 'onSendMessage', array( 'store_notifications', $subject, $message, $hub, array($juser->get('id')), $this->_option ))) {
+				$this->setError( JText::_('COM_STORE_ERROR_MESSAGE_FAILED') );
+			}
+		}
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'completed') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->infolink = $this->infolink;
+		
+		// Output HTML
+		$view->juser = $juser;
+		$view->orderid = $orderid;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//------------
+	
+	protected function process() 
+	{
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+		
+		// Check authorization
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->login();
+			return;
+		}
+		
+		$database =& JFactory::getDBO();
+		
+		// Get cart object
+		$item = new Cart( $database );
+		
+		// Calculate total
+		$cost = $item->getCartItems($juser->get('id'),'cost');
+		
+		if (!$cost) {
+			$this->setError( JText::_('COM_STORE_ERR_EMPTY_ORDER') );
+		}
+		
+		// Check available user funds		
+		$BTL = new BankTeller( $database, $juser->get('id') );
+		$balance = $BTL->summary();
+		$credit = $BTL->credit_summary();
+		$funds = $balance - $credit;			
+		$funds = ($funds > 0) ? $funds : '0';
+		
+		if ($cost > $funds) { 
+			$this->setError( JText::_('COM_STORE_MSG_NO_FUNDS') );
+		}
+		
+		// Get cart items		
+		$items = $item->getCartItems($juser->get('id'));
+				
+		// Get shipping info 
+		$posted = array_map('trim',$_POST);
+
+		if (!$posted['name'] || !$posted['address'] || !$posted['country']) {
+			$this->setError( JText::_('COM_STORE_ERR_BLANK_FIELDS') );
+		}
+		
+		// Incoming
+		$action = JRequest::getVar( 'action', '');
+		
+		// Output HTML
+		if (!$this->getError() && $action != 'change') {
+			// Instantiate a new view
+			$view = new JView( array('name'=>'finalize') );
+			$view->final = true;
+		} else {
+			// Instantiate a new view
+			$view = new JView( array('name'=>'checkout') );
+			$view->final = false;
+		}
+		
+		// Output HTML
+		$view->cost = $cost;
+		$view->funds = $funds;
+		$view->items = $items;
+		$view->posted = $posted;
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->infolink = $this->infolink;
+		$view->juser = $juser;
+		$view->xprofile = new XProfile;
+		$view->xprofile->load( $juser->get('id') );
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 }
 ?>
