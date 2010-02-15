@@ -132,20 +132,20 @@ if ($this->groups) {
 				default: $policy = '<span class="open join-policy">'.JText::_('Open').'</span>'; break;
 			}
 			
-			$html .= t.t.t.t.'<tr class="'.$cls.'">'.n;
-			$html .= t.t.t.t.t.'<td><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->cn) .'"';
+			$html .= "\t\t\t\t".'<tr class="'.$cls.'">'."\n";
+			$html .= "\t\t\t\t\t".'<td><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn) .'"';
 			if (trim($group->public_desc) != '') {
-				$html .= ' class="tooltips" title="Description :: '.GroupsHtml::shortenText(stripslashes($group->public_desc),100,0).'"';
+				$html .= ' class="tooltips" title="Description :: '.Hubzero_View_Helper_Html::shortenText(stripslashes($group->public_desc),100,0).'"';
 			}
-			$html .= '>'. htmlentities($group->description) .'</a></td>'.n;
-			$html .= t.t.t.t.t.'<td>'.$policy.'</td>'.n;
+			$html .= '>'. htmlentities($group->description) .'</a></td>'."\n";
+			$html .= "\t\t\t\t\t".'<td>'.$policy.'</td>'."\n";
 			if ($this->authorized) {
-				$html .= t.t.t.t.t.'<td>';
+				$html .= "\t\t\t\t\t".'<td>';
 				if ($group->manager && $group->published) {
 					$html .= '<span class="manager status">'.JText::_('GROUPS_STATUS_MANAGER').'</span>';
-					$opt  = '<a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->cn.a.'active=members') .'">'.JText::_('GROUPS_ACTION_MANAGE').'</a>';
-					$opt .= ' <a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->cn.a.'task=edit') .'">'.JText::_('GROUPS_ACTION_EDIT').'</a>';
-					$opt .= ' <a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->cn.a.'task=delete') .'">'.JText::_('GROUPS_ACTION_DELETE').'</a>';
+					$opt  = '<a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&active=members') .'">'.JText::_('GROUPS_ACTION_MANAGE').'</a>';
+					$opt .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=edit') .'">'.JText::_('GROUPS_ACTION_EDIT').'</a>';
+					$opt .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=delete') .'">'.JText::_('GROUPS_ACTION_DELETE').'</a>';
 				} else {
 					if (!$group->published) {
 						$html .= JText::_('GROUPS_STATUS_NEW_GROUP');
@@ -153,16 +153,16 @@ if ($this->groups) {
 						if ($group->registered) {
 							if ($group->regconfirmed) {
 								$html .= '<span class="member status">'.JText::_('GROUPS_STATUS_APPROVED').'</span>';
-								$opt = '<a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->cn.a.'task=cancel'.a.'return=browse') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
+								$opt = '<a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=cancel&return=browse') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
 							} else {
 								$html .= '<span class="pending status">'.JText::_('GROUPS_STATUS_PENDING').'</span>';
-								$opt = '<a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->cn.a.'task=cancel'.a.'return=browse') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
+								$opt = '<a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=cancel&return=browse') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
 							}
 						} else {
 							if ($group->regconfirmed) {
 								$html .= '<span class="invitee status">'.JText::_('GROUPS_STATUS_INVITED').'</span>';
-								$opt  = '<a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->cn.a.'task=accept'.a.'return=browse') .'">'.JText::_('GROUPS_ACTION_ACCEPT').'</a>';
-								$opt .= ' <a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='.$group->cn.a.'task=cancel'.a.'return=browse') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
+								$opt  = '<a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=accept&return=browse') .'">'.JText::_('GROUPS_ACTION_ACCEPT').'</a>';
+								$opt .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=cancel&return=browse') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
 							} else {
 								$html .= '<span class="status"> </span>';
 								$opt = '';
@@ -170,23 +170,23 @@ if ($this->groups) {
 						}
 					}
 				}
-				$html .= '</td>'.n;
-				$html .= t.t.t.t.t.'<td>'.$opt.'</td>'.n;
+				$html .= '</td>'."\n";
+				$html .= "\t\t\t\t\t".'<td>'.$opt.'</td>'."\n";
 			} else {
-				$html .= t.t.t.t.t.'<td>&nbsp;</td>'.n;
-				$html .= t.t.t.t.t.'<td>&nbsp;</td>'.n;
+				$html .= "\t\t\t\t\t".'<td>&nbsp;</td>'."\n";
+				$html .= "\t\t\t\t\t".'<td>&nbsp;</td>'."\n";
 			}
-			$html .= t.t.t.t.'</tr>'.n;
+			$html .= "\t\t\t\t".'</tr>'."\n";
 		} else {
 			if (isset($group->cn) && $group->cn) {
-				$html .= t.t.t.t.'<tr class="'.$cls.'">'.n;
-				$html .= t.t.t.t.t.'<td><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='. $group->cn) .'">'. htmlentities($group->description) .'</a></td>'.n;
-				$html .= t.t.t.t.t.'<td>&nbsp;</td>'.n;
+				$html .= "\t\t\t\t".'<tr class="'.$cls.'">'."\n";
+				$html .= "\t\t\t\t\t".'<td><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='. $group->cn) .'">'. htmlentities($group->description) .'</a></td>'."\n";
+				$html .= "\t\t\t\t\t".'<td>&nbsp;</td>'."\n";
 				if ($this->authorized) {
-					$html .= t.t.t.t.t.'<td>&nbsp;</td>'.n;
-					$html .= t.t.t.t.t.'<td>&nbsp;</td>'.n;
+					$html .= "\t\t\t\t\t".'<td>&nbsp;</td>'."\n";
+					$html .= "\t\t\t\t\t".'<td>&nbsp;</td>'."\n";
 				}
-				$html .= t.t.t.t.'</tr>'.n;
+				$html .= "\t\t\t\t".'</tr>'."\n";
 			}
 		}
 	}
