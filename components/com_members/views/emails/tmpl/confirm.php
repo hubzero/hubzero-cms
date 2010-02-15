@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
+ * @author		Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -24,34 +24,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
-jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
-
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'members.class.php' );
-include_once( JPATH_COMPONENT.DS.'members.imghandler.php' );
-include_once( JPATH_COMPONENT.DS.'members.tags.php' );
-include_once( JPATH_COMPONENT.DS.'members.html.php' );
-include_once( JPATH_COMPONENT.DS.'controller.php' );
-ximport('fileuploadutils');
-ximport('xprofile');
-ximport('Hubzero_View_Helper_Html');
-
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-
-// Instantiate controller
-$controller = new MembersController();
-$controller->execute();
-$controller->redirect();
 ?>
+This email is to confirm the email address for the <?php echo $this->hubShortName; ?> account: <?php echo $this->login; ?>.
+
+Click the following link to confirm your email address and activate your <?php echo $this->hubShortName; ?> account.
+
+<?php echo $this->baseURL . JRoute::_('index.php?option=com_register&task=confirm&confirm='. -$this->confirm); ?>

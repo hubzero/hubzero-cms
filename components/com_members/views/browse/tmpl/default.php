@@ -221,7 +221,7 @@ if (count($this->rows) > 0) {
 ?>
 					<tr class="<?php echo $cls; ?>">
 						<td class="<?php echo $prvt; ?>"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$id); ?>"><?php echo $name; ?></a></td>
-						<td><?php echo MembersHtml::xhtml(stripslashes($row->organization)); ?></td>
+						<td><?php echo Hubzero_View_Helper_Html::xhtml(stripslashes($row->organization)); ?></td>
 						<td><?php echo implode(', ',$tt); ?></td>
 					</tr>
 <?php
@@ -240,10 +240,9 @@ if (count($this->rows) > 0) {
 	$pn = str_replace('?','?'.$f,$pn);
 	$pn = str_replace('&amp;&amp;','&amp;',$pn);
 	echo $pn;
-} else {
-	echo MembersHtml::warning( JText::_('NO_MEMBERS_FOUND') ).n;
-}
-?>
+} else { ?>
+	<p class="warning"><?php echo JText::_('NO_MEMBERS_FOUND'); ?></p>
+<?php } ?>
 		</div><!-- / .subject -->
 	</form>
 </div><!-- / .main section -->

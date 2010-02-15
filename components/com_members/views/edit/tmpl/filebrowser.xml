@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Change Password Layout">
+	<layout title="Standard Image Upload Layout">
 		<message>
-			<![CDATA[STANDARD CHANGE PASSWORD LAYOUT DESC]]>
+			<![CDATA[STANDARD IMAGE UPLOAD LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Change Password Layout</name>
-		<description>STANDARD CHANGE PASSWORD LAYOUT DESC</description>
+		<name>Standard Image Upload Layout</name>
+		<description>STANDARD IMAGE UPLOAD LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

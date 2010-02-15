@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Change Password Layout">
+	<layout title="Standard Edit Profile Layout">
 		<message>
-			<![CDATA[STANDARD CHANGE PASSWORD LAYOUT DESC]]>
+			<![CDATA[STANDARD EDIT PROFILE LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Change Password Layout</name>
-		<description>STANDARD CHANGE PASSWORD LAYOUT DESC</description>
+		<name>Standard Edit Profile Layout</name>
+		<description>STANDARD EDIT PROFILE LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>
