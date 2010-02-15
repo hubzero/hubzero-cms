@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
+ * @author		Shawn Rice <zooley@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -24,45 +24,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-function StoreBuildRoute(&$query)
-{
-	$segments = array();
-	
-	if (!empty($query['task'])) {
-		$segments[] = $query['task'];
-		unset($query['task']);
-	}
-	if (!empty($query['action'])) {
-		$segments[] = $query['action'];
-		unset($query['action']);
-	}
-	if (!empty($query['item'])) {
-		$segments[] = $query['item'];
-		unset($query['item']);
-	}
-	
-	return $segments;
-}
-
-function StoreParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments[0])) {
-		return $vars;
-	}
-	
-	if (isset($segments[0])) {
-		$vars['task'] = $segments[0];
-	}
-	if (isset($segments[1])) {
-		$vars['action'] = $segments[1];
-	}
-	if (isset($segments[2])) {
-		$vars['item'] = $segments[2];
-	}
-	
-	return $vars;
-}
 ?>
+<div id="content-header" class="full">
+	<h2><?php echo $this->title; ?></h2>
+</div>
+
+<div class="main section">
+	<p class="final_summary">
+		<?php echo JText::_('COM_STORE_ORDER_NUMBER'); ?>: <strong><?php echo $this->orderid; ?></strong><br />
+		<?php echo JText::_('COM_STORE_THANKYOU_MSG'); ?><br />
+		<a href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('COM_STORE_CONTINUE'); ?></a>.
+	</p>
+	<div class="clear"></div>
+</div><!-- / .main section -->

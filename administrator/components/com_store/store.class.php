@@ -29,7 +29,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Shopping cart database class
 //----------------------------------------------------------
 
-class Cart extends  JTable 
+class Cart extends JTable 
 {
 	var $id         = NULL;  // @var int(11) Primary key
 	var $uid    	= NULL;  // @var int(11)
@@ -39,36 +39,38 @@ class Cart extends  JTable
 	var $added  	= NULL;  // @var datetime
 	var $selections = NULL;  // @var text
 	
-	function __construct( &$db ) 
+	//------------
+	
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__cart', 'id', $db );
 	}
 	
 	//------------
 	
-	function checkCartItem( $id=null, $uid) 
+	public function checkCartItem( $id=null, $uid) 
 	{
+		if ($id == null or $uid == null) {
+			return false;
+		}
 	
-	if ($id == null or $uid == null) {
-		return false;
+		$sql = "SELECT id, quantity FROM $this->_tbl WHERE itemid='".$id."' AND uid=".$uid;
+		$this->_db->setQuery( $sql );
+		return $this->_db->loadObjectList();
 	}
 	
-	$sql = "SELECT id, quantity FROM $this->_tbl WHERE itemid='".$id."' AND uid=".$uid;
-	$this->_db->setQuery( $sql );
-	return $this->_db->loadObjectList();	
-	
-	}
 	//-----------
+	
 	public function getCartItems($uid, $rtrn='')
 	{
 		$total = 0;
 		if ($uid == null) {
-		return false;
+			return false;
 		}
 		
 		// clean-up items with zero quantity
 		$sql = "DELETE FROM $this->_tbl WHERE quantity=0";
-		$this->_db->setQuery( $sql);
+		$this->_db->setQuery($sql);
 		$this->_db->query();
 		
 		$query  = "SELECT B.quantity, B.itemid, B.uid, B.added, B.selections, a.title, a.price, a.available, a.params, a.type, a.category ";		
@@ -78,12 +80,12 @@ class Cart extends  JTable
 		$this->_db->setQuery( $query);
 		$result = $this->_db->loadObjectList();
 		
-		if($result) {
-			foreach ($result as $r) {
-			
+		if ($result) {
+			foreach ($result as $r) 
+			{
 				$price = $r->price * $r->quantity;
-				if($r->available) {
-				$total = $total + $price;
+				if ($r->available) {
+					$total = $total + $price;
 				}
 				
 				$params 	 		=& new JParameter( $r->params );
@@ -100,29 +102,30 @@ class Cart extends  JTable
 				$r->colors 			= str_replace(" ","",$r->colors);				
 				$r->selectedcolor   = trim($selections->get( 'color', '' ));
 				$r->colors    		= split(',',$r->colors);
-				
 			}
 		}
 		
-		if($rtrn) {
-		$result = $total; // total cost of items in cart
+		if ($rtrn) {
+			$result = $total; // total cost of items in cart
 		}
 		
 		return $result;
 	}
 
 	//-----------
+	
 	public function saveCart( $posteditems, $uid)
 	{		
 		if ($uid == null) {
-		return false;
+			return false;
 		}
 		
 		// get current cart items
-		$items =  $this->getCartItems($uid);
-		if($items) {
-			foreach($items as $item) {	
-				if($item->type!=2) { // not service	
+		$items = $this->getCartItems($uid);
+		if ($items) {
+			foreach ($items as $item) 
+			{	
+				if ($item->type!=2) { // not service	
 					$size 			= (isset($item->selectedsize)) ? $item->selectedsize : '';
 					$color 			= (isset($item->color)) ? $item->color : '';
 					$sizechoice 	= (isset($posteditems['size'.$item->itemid])) ? $posteditems['size'.$item->itemid] : $size;
@@ -143,45 +146,63 @@ class Cart extends  JTable
 					$this->_db->setQuery( $query);
 					$this->_db->query();
 				}
-							
 			}	
 		}
-		
 	}
+	
 	//-----------
-	public function deleteCartItem($id, $uid, $all=0) {
-		
+	
+	public function deleteCartItem($id, $uid, $all=0) 
+	{
 		$sql = "DELETE FROM $this->_tbl WHERE uid='".$uid."'  ";
-		if(!$all && $id) {
-		$sql.= "AND itemid='".$id."' ";
+		if (!$all && $id) {
+			$sql.= "AND itemid='".$id."' ";
 		}
 
 		$this->_db->setQuery( $sql);
 		$this->_db->query();
-					
 	}
 	
 	//-----------
+	
 	public function deleteUnavail( $uid, $items)
 	{		
 		if ($uid == null) {
-		return false;
+			return false;
 		}
-		if(count($items) > 0) {
-			foreach($items as $i) {
-				if($i->available==0) {
+		if (count($items) > 0) {
+			foreach ($items as $i) 
+			{
+				if ($i->available==0) {
 					$sql = "DELETE FROM $this->_tbl WHERE itemid=".$i->itemid." AND uid=".$uid;
 					$this->_db->setQuery( $sql);
 					$this->_db->query();
 				}	
 			}
 		}
-		
 	}
 	
+	//-----------
+	
+	public function deleteItem($itemid=null, $uid=null, $type='merchandise') 
+	{
+		if ($itemid == null) {
+			return false;
+		}
+		if ($uid == null) {
+			return false;
+		}
+		
+		$sql = "DELETE FROM $this->_tbl WHERE itemid='$itemid' AND type='$type' AND uid=$uid";
+		$this->_db->setQuery($sql);
+		if (!$this->_db->query()) {
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+		return true;
+	}
 }
 
-//-----------
 
 class Store extends  JTable 
 {
@@ -200,10 +221,11 @@ class Store extends  JTable
 	
 	//-----------
 	
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__store', 'id', $db );
 	}
+	
 	//-----------
 	
 	public function getInfo( $id)
@@ -221,12 +243,11 @@ class Store extends  JTable
 	
 	public function getItems( $rtrn='count', $filters, $config)
 	{
-	
 		// build body of query
 		$query  = "FROM $this->_tbl AS C WHERE ";
 		
-		if(isset($filters['filterby'])) {
-			switch($filters['filterby'])
+		if (isset($filters['filterby'])) {
+			switch ($filters['filterby'])
 			{
 				case 'all': 
 					$query .= "1=1";
@@ -241,8 +262,7 @@ class Store extends  JTable
 					$query .= "C.published=1";
 					break;
 			}
-		}
-		else {
+		} else {
 			$query .= "C.published=1";
 		}
 	
@@ -256,17 +276,14 @@ class Store extends  JTable
 			default:       	  	$query .= " ORDER BY C.featured DESC, C.id DESC"; break; // featured and newest first
 		}
 		
-		
-	
 		// build count query (select only ID)
 		$query_count  = "SELECT count(*) ";
 	
 		// build fetch query
 		$query_fetch  = "SELECT C.id, C.title, C.description, C.price, C.created, C.available, C.params, C.special, C.featured, C.category, C.type, C.published ";
 		$query_fetch .= $query;
-		if($filters['limit'] && $filters['start']) {
-		$query_fetch .= " LIMIT " . $start . ", " . $limit;
-		
+		if ($filters['limit'] && $filters['start']) {
+			$query_fetch .= " LIMIT " . $start . ", " . $limit;
 		}
 
 		// execute query
@@ -277,14 +294,14 @@ class Store extends  JTable
 		} else {
 			$this->_db->setQuery( $query_fetch );
 			$result = $this->_db->loadObjectList();
-			if($result) {
+			if ($result) {
 				for ($i=0; $i < count($result); $i++) 
 				{
 					$row = &$result[$i];
 					//$row->created = StoreController::mkt($row->created);
 					//$row->when = StoreController::timeAgo($row->created);
 					
-					$row->webpath 	= $config->parameters['webpath'];
+					$row->webpath 	= $config->get('webpath');
 					$row->root 		= JPATH_ROOT;
 					
 					// Get parameters
@@ -297,10 +314,8 @@ class Store extends  JTable
 
 		return $result;
 	}
-	
 }
 
-//-----------
 
 class Order extends JTable 
 {
@@ -315,13 +330,13 @@ class Order extends JTable
 	var $status_changed  	= NULL;  // @var datetime
 	var $notes  			= NULL;  // @var text
 	
-	
+	//----------
 	// order status:
 	// 0 - 'placed (newly received)'
 	// 1 - 'processed' (account debited)
 	// 2 - 'cancelled'
 	
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__orders', 'id', $db );
 	}
@@ -331,10 +346,10 @@ class Order extends JTable
 	public function getOrderID( $uid, $ordered)
 	{	
 		if ($uid == null) {
-		return false;
+			return false;
 		}
 		if ($ordered == null) {
-		return false;
+			return false;
 		}
 		
 		$sql = "SELECT id FROM $this->_tbl WHERE uid='".$uid."' AND ordered='".$ordered."' ";
@@ -346,9 +361,7 @@ class Order extends JTable
 	
 	public function getOrders( $rtrn='count', $filters)
 	{
-	
-		
-		switch($filters['filterby'])
+		switch ($filters['filterby'])
 		{
 			case 'all': 
 				$where = "1=1";
@@ -365,7 +378,6 @@ class Order extends JTable
 				break;
 		}
 		
-
 		// build count query (select only ID)
 		$query_count  = "SELECT count(*) FROM $this->_tbl AS m WHERE ".$where;
 	
@@ -375,9 +387,8 @@ class Order extends JTable
 			. "\n WHERE ".$where
 			. "\n ORDER BY ".$filters['sortby'];
 		
-		if($filters['limit'] && $filters['start']) {
-		$query_fetch .= " LIMIT " . $start . ", " . $limit;
-		
+		if ($filters['limit'] && $filters['start']) {
+			$query_fetch .= " LIMIT " . $start . ", " . $limit;
 		}
 
 		// execute query
@@ -392,11 +403,8 @@ class Order extends JTable
 
 		return $result;
 	}
-	
-	
 }
 
-//-----------
 
 class OrderItem extends JTable 
 {
@@ -406,19 +414,22 @@ class OrderItem extends JTable
 	var $itemid     = NULL;  // @var int(11)
 	var $price    	= NULL;  // @var int(11)
 	var $quantity   = NULL;  // @var int(11)
-	var $selections     = NULL;  // @var text
+	var $selections = NULL;  // @var text
 	
-	function __construct( &$db ) 
+	//----------
+	
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__order_items', 'id', $db );
 	}
 	
 	//----------
-	function getOrderItems($oid) {
 	
-	if ($oid == null) {
-		return false;
-	}
+	public function getOrderItems($oid) 
+	{
+		if ($oid == null) {
+			return false;
+		}
 		$sql = "SELECT r.*, s.*"
 				. "\n FROM #__order_items AS r"
 				. "\n LEFT JOIN #__store AS s ON s.id=r.itemid "
@@ -426,10 +437,5 @@ class OrderItem extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
 }
-
-//-----------
-
-
 ?>

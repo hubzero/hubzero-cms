@@ -155,7 +155,7 @@ class StoreController
 		$database =& JFactory::getDBO();// paging limits
 		// Get configuration
 		$config = JFactory::getConfig();
-		$store_enabled = (isset($this->config->parameters['store_enabled'])) ? $this->config->parameters['store_enabled'] : 0;
+		$store_enabled = (isset($this->config->get('store_enabled'))) ? $this->config->get('store_enabled') : 0;
 		
 		// Get cart object
 		$objOrder = new Order( $database );
@@ -310,20 +310,20 @@ class StoreController
 		
 		$pdf=new PDF();
 		$hubaddress = array();
-		$hubaddress[] = isset($this->config->parameters['hubaddress_ln1']) ? $this->config->parameters['hubaddress_ln1'] : '' ;
-		$hubaddress[] = isset($this->config->parameters['hubaddress_ln2']) ? $this->config->parameters['hubaddress_ln2'] : '' ;
-		$hubaddress[] = isset($this->config->parameters['hubaddress_ln3']) ? $this->config->parameters['hubaddress_ln3'] : '' ;
-		$hubaddress[] = isset($this->config->parameters['hubaddress_ln4']) ? $this->config->parameters['hubaddress_ln4'] : '' ;
-		$hubaddress[] = isset($this->config->parameters['hubaddress_ln5']) ? $this->config->parameters['hubaddress_ln5'] : '' ;
-		$hubaddress[] = isset($this->config->parameters['hubemail']) ? $this->config->parameters['hubemail'] : '' ;
-		$hubaddress[] = isset($this->config->parameters['hubphone']) ? $this->config->parameters['hubphone'] : '' ;
+		$hubaddress[] = isset($this->config->get('hubaddress_ln1')) ? $this->config->get('hubaddress_ln1') : '' ;
+		$hubaddress[] = isset($this->config->get('hubaddress_ln2')) ? $this->config->get('hubaddress_ln2') : '' ;
+		$hubaddress[] = isset($this->config->get('hubaddress_ln3')) ? $this->config->get('hubaddress_ln3') : '' ;
+		$hubaddress[] = isset($this->config->get('hubaddress_ln4')) ? $this->config->get('hubaddress_ln4') : '' ;
+		$hubaddress[] = isset($this->config->get('hubaddress_ln5')) ? $this->config->get('hubaddress_ln5') : '' ;
+		$hubaddress[] = isset($this->config->get('hubemail')) ? $this->config->get('hubemail') : '' ;
+		$hubaddress[] = isset($this->config->get('hubphone')) ? $this->config->get('hubphone') : '' ;
 		$pdf->hubaddress = $hubaddress;
 		$pdf->url = $xhub->getCfg('hubLongURL').DS.'store';
-		$pdf->headertext_ln1 = isset($this->config->parameters['headertext_ln1']) ? $this->config->parameters['headertext_ln1'] : '' ;
-		$pdf->headertext_ln2 = isset($this->config->parameters['headertext_ln2']) ? $this->config->parameters['headertext_ln2'] : $hubname ;
-		$pdf->footertext = isset($this->config->parameters['footertext']) ? $this->config->parameters['footertext'] : 'Thank you for contributions to our HUB!' ;
-		$pdf->receipt_title = isset($this->config->parameters['receipt_title']) ? $this->config->parameters['receipt_title'] : 'Your Order' ;
-		$pdf->receipt_note = isset($this->config->parameters['receipt_note']) ? $this->config->parameters['receipt_note'] : '' ;
+		$pdf->headertext_ln1 = isset($this->config->get('headertext_ln1')) ? $this->config->get('headertext_ln1') : '' ;
+		$pdf->headertext_ln2 = isset($this->config->get('headertext_ln2')) ? $this->config->get('headertext_ln2') : $hubname ;
+		$pdf->footertext = isset($this->config->get('footertext')) ? $this->config->get('footertext') : 'Thank you for contributions to our HUB!' ;
+		$pdf->receipt_title = isset($this->config->get('receipt_title')) ? $this->config->get('receipt_title') : 'Your Order' ;
+		$pdf->receipt_note = isset($this->config->get('receipt_note')) ? $this->config->get('receipt_note') : '' ;
 		$pdf->AliasNbPages();
 		$pdf->AddPage();
 		

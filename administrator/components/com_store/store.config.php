@@ -45,7 +45,7 @@ class StoreConfig
 		
 		$params = array();
 		if ($parameters) {
-			$ps = explode(n,$parameters);
+			$ps = explode("\n",$parameters);
 			foreach ($ps as $p) 
 			{
 				$m = explode('=',$p);
