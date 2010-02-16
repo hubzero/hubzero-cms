@@ -60,7 +60,7 @@ class UserpointsHTML
 		for ($i=0, $n=count( $rows ); $i < $n; $i++) 
 		{
 			$row = &$rows[$i];
-			$wuser =& XUser::getInstance( $row->uid );
+			$wuser =& XProfile::getInstance( $row->uid );
 			if (is_object($wuser)) {
 				$name = $wuser->get('name');
 			} else {

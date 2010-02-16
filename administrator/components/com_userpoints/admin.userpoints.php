@@ -37,7 +37,7 @@ jimport('joomla.application.component.helper');
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.userpoints.html.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
 
-ximport('xuser');
+ximport('xprofile');
 ximport('textfilter');
 ximport('bankaccount');
 
