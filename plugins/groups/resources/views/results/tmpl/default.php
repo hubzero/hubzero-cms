@@ -82,7 +82,7 @@ foreach ($this->cats as $cat)
 			$blob = $cat['category'];
 		}
 		// Build the HTML
-		$l = t.'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=resources&area='. urlencode(stripslashes($blob))) .'">' . $cat['title'] . ' ('.$cat['total'].')</a>';
+		$l = "\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=resources&area='. urlencode(stripslashes($blob))) .'">' . $cat['title'] . ' ('.$cat['total'].')</a>';
 		// Are there sub-categories?
 		if (isset($cat['_sub']) && is_array($cat['_sub'])) {
 			// An array for storing the HTML we make
@@ -209,7 +209,7 @@ foreach ($this->results as $category)
 			$html .= call_user_func( array($obj,'before') );
 		}
 		
-		$html .= '<ol class="search results">'.n;			
+		$html .= '<ol class="search results">'."\n";			
 		foreach ($category as $row) 
 		{
 			$row->href = str_replace('&amp;', '&', $row->href);
