@@ -940,9 +940,9 @@ class ContributeController extends JObject
 		// Send e-mail
 		foreach ($contributors as $contributor)
 		{
-			$xuser = JUser::getInstance( $contributor->id );
-			if (is_object($xuser)) {
-				if ($xuser->get('email')) {
+			$juser = JUser::getInstance( $contributor->id );
+			if (is_object($juser)) {
+				if ($juser->get('email')) {
 					//$this->send_email($from, $email, $subject, $message);
 				}
 			}
@@ -1699,24 +1699,24 @@ class ContributeController extends JObject
 				$this->setError( JText::sprintf('USER_IS_ALREADY_AUTHOR', $authid) );
 			} else {
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
-				//$xuser =& JUser::getInstance( $authid );
-				$xuser = new XProfile();
-				$xuser->load( $authid );
-				if ($xuser) {
+				//$juser =& JUser::getInstance( $authid );
+				$xprofile = new XProfile();
+				$xprofile->load( $authid );
+				if ($xprofile) {
 					$this->_author_check($authid);
 
 					// New record
 					$rc->authorid = $authid;
 					$rc->ordering = $order;
-					$rc->name = $xuser->get('name');
-					$rc->organization = $xuser->get('organization');
+					$rc->name = $xprofile->get('name');
+					$rc->organization = $xprofile->get('organization');
 					$rc->createAssociation();
 
 					$order++;
 				}
 			}
 		}
-		$xuser = null;
+		$xprofile = null;
 		// Do we have new authors?
 		if ($authorsNewstr) {
 			// Turn the string into an array of usernames
@@ -1736,13 +1736,13 @@ class ContributeController extends JObject
 					continue;
 				}
 				
-				$xuser =& JUser::getInstance( $uid );
-				if (!is_object($xuser)) {
+				$juser =& JUser::getInstance( $uid );
+				if (!is_object($juser)) {
 					$this->setError( JText::sprintf('UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
 					continue;
 				}
 
-				$uid = $xuser->get('id');
+				$uid = $juser->get('id');
 		
 				if (!$uid) {
 					$this->setError( JText::sprintf('UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
@@ -1757,10 +1757,10 @@ class ContributeController extends JObject
 					continue;
 				}
 				
-				$this->_author_check($xuser->get('id'));
+				$this->_author_check($juser->get('id'));
 				
 				// New record
-				$xprofile = XProfile::getInstance($xuser->get('id'));
+				$xprofile = XProfile::getInstance($juser->get('id'));
 				$rcc->subtable = 'resources';
 				$rcc->subid = $id;
 				$rcc->authorid = $uid;
@@ -1785,7 +1785,7 @@ class ContributeController extends JObject
 	{
 		$xprofile = XProfile::getInstance($id);
 		if ($xprofile->get('givenName') == '' && $xprofile->get('middleName') == '' && $xprofile->get('surname') == '') {
-			$bits = explode(' ', $xuser->get('name'));
+			$bits = explode(' ', $xprofile->get('name'));
 			$xprofile->set('surname', array_pop($bits));
 			if (count($bits) >= 1) {
 				$xprofile->set('givenName', array_shift($bits));
