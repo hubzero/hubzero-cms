@@ -449,11 +449,11 @@ class EventsHtml
 	{	
 		$editor =& JFactory::getEditor();
 		
-		ximport('xuser');
-		$xuserc =& XUser::getInstance( $row->created_by );
-		$xuserm =& XUser::getInstance( $row->modified_by );
-		$userm = is_object($xuserm) ? $xuserm->get('name') : '';
-		$userc = is_object($xuserc) ? $xuserc->get('name') : '';
+		ximport('xprofile');
+		$xprofilec =& XProfile::getInstance( $row->created_by );
+		$xprofilem =& XProfile::getInstance( $row->modified_by );
+		$userm = is_object($xprofilem) ? $xprofilem->get('name') : '';
+		$userc = is_object($xprofilec) ? $xprofilec->get('name') : '';
 		
 		$params =& new JParameter( $row->params, JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'events.xml' );
 		?>
