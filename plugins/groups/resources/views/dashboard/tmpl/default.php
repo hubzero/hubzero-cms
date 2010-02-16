@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->results) {
 	ximport('Hubzero_View_Helper_Html');
-	//include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
+
 	include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.review.php' );
 	
 	plgGroupsResources::documents();
