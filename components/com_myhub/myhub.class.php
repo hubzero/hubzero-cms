@@ -37,14 +37,14 @@ class MyhubPrefs extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__myhub', 'uid', $db );
 	}
 	
 	//-----------
 
-	function check() 
+	public function check() 
 	{
 		if (!$this->uid) {
 			$this->setError( JText::_('ERROR_NO_USER_ID') );
@@ -56,7 +56,7 @@ class MyhubPrefs extends JTable
 	
 	//-----------
 	
-	function create() 
+	public function create() 
 	{
 		$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
 		if (!$ret) {
@@ -69,7 +69,7 @@ class MyhubPrefs extends JTable
 	
 	//-----------
 	
-	function getPrefs( $module=NULL ) 
+	public function getPrefs( $module=NULL ) 
 	{
 		if (!$module) {
 			return false;
@@ -100,14 +100,14 @@ class MyhubParams extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__myhub_params', 'uid', $db );
 	}
 	
 	//-----------
 
-	function check() 
+	public function check() 
 	{
 		if (!$this->uid) {
 			$this->setError( JText::_('ERROR_NO_USER_ID') );
@@ -124,7 +124,7 @@ class MyhubParams extends JTable
 
 	//-----------
 	
-	function loadParams( $uid=NULL, $mid=NULL ) 
+	public function loadParams( $uid=NULL, $mid=NULL ) 
 	{
 		if ($uid === NULL) {
 			return false;
@@ -144,7 +144,7 @@ class MyhubParams extends JTable
 	
 	//-----------
 
-	function storeParams( $new=false ) 
+	public function storeParams( $new=false ) 
 	{
 		if (!$new) {
 			$this->_db->setQuery( "UPDATE $this->_tbl SET params='$this->params' WHERE uid=".$this->uid." AND mid=".$this->mid);
@@ -171,7 +171,7 @@ class MyhubParams extends JTable
 	
 	//-----------
 	
-	function loadModule( $uid=NULL, $mid=NULL ) 
+	public function loadModule( $uid=NULL, $mid=NULL ) 
 	{
 		if ($uid === NULL) {
 			return false;
