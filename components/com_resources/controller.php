@@ -1862,15 +1862,6 @@ class ResourcesController extends JObject
 			return true;
 		}
 		
-		// Check if they're a site admin (from LDAP)
-		$xuser =& XFactory::getUser();
-		if (is_object($xuser)) {
-			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-				return true;
-			}
-		}
-		
 		// Check if they're the resource creator
 		$resource = $this->resource;
 		if (is_object($resource) && $resource->created_by == $juser->get('id')) {
@@ -1899,15 +1890,6 @@ class ResourcesController extends JObject
 				return false;
 			}
 
-			// Check if they're a site admin (from LDAP)
-			$xuser =& XFactory::getUser();
-			if (is_object($xuser)) {
-				$app =& JFactory::getApplication();
-				if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-					return false;
-				}
-			}
-			
 			ximport('xuserhelper');
 			$xgroups = XUserHelper::getGroups($juser->get('id'), 'all');
 			// Get the groups the user has access to
