@@ -1410,7 +1410,7 @@ class ContribtoolController extends JObject
 		if ($this->_admin) {
 			$admins[] = $juser->get('username');
 		}
-		//$admingroup = isset($this->config->parameters['admingroup']) ? trim($this->config->parameters['admingroup']) : null;
+		$admingroup = isset($this->config->parameters['admingroup']) ? trim($this->config->parameters['admingroup']) : null;
 		$group = new XGroup();
 		$group->select( $admingroup);
 		$members = $group->get('members');
