@@ -1480,6 +1480,8 @@ class ResourcesController extends JObject
 			// Should only get here on error
 			JError::raiseError( 404, JText::_('SERVER_ERROR') );
 		}
+		else
+			exit;
 
 		return;
 	}
@@ -1536,6 +1538,9 @@ class ResourcesController extends JObject
 		$xserver->saveas($tarname);
 		if (!$xserver->serve_attachment($tarpath . $tarname, $tarname, false)) // @TODO fix byte range support
 			JError::raiseError( 404, JText::_('SERVER_ERROR') );
+		else
+			exit;
+
 		return;
 	}
 	
