@@ -64,10 +64,10 @@ class EventsRespondent extends JTable
 	{
 		$dbh =& JFactory::getDBO();
 		if (is_array($resp_id)) {
-			$dbh->setQuery('SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') AS identification FROM #__workshops_respondent_race_rel WHERE respondent_id IN ('. implode(', ', array_map('intval', $resp_id)) . ') GROUP BY respondent_id');
+			$dbh->setQuery('SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') AS identification FROM #__events_respondent_race_rel WHERE respondent_id IN ('. implode(', ', array_map('intval', $resp_id)) . ') GROUP BY respondent_id');
 			return $dbh->loadAssocList('respondent_id');
 		} else {
-			$dbh->setQuery('SELECT group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') FROM #__workshops_respondent_race_rel WHERE respondent_id = '.intval($resp_id).' GROUP BY respondent_id');
+			$dbh->setQuery('SELECT group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') FROM #__events_respondent_race_rel WHERE respondent_id = '.intval($resp_id).' GROUP BY respondent_id');
 			return $dbh->loadResult();
 		}
 	}
@@ -98,7 +98,7 @@ class EventsRespondent extends JTable
 	
 	public function __construct($filters)
 	{
-		parent::__construct('#__workshops_respondents', 'id', JFactory::getDBO());
+		parent::__construct('#__events_respondents', 'id', JFactory::getDBO());
 
 		if (array_key_exists('sortby', $filters)) {
 			if (preg_match('/(registered|name|special|id)(?:\ (ASC|DESC))?/', $filters['sortby'], $match)) {
