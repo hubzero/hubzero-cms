@@ -120,10 +120,10 @@ class modLatestusage
 			$this->sims = 0;
 		}
 		
-		$database->setQuery( "SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1" );
+		$database->setQuery( "SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1 AND access!=1 AND access!=4" );
 		$this->resources = $database->loadResult();
 		
-		$database->setQuery( "SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1 AND type=7" );
+		$database->setQuery( "SELECT COUNT(*) FROM #__resources WHERE standalone=1 AND published=1 AND access!=1 AND access!=4 AND type=7" );
 		$this->tools = $database->loadResult();
 	}
 }
