@@ -431,8 +431,9 @@ class JobsController extends JObject
 			JFile::delete($archive['path']);		
 		
 			if (!$result)
-               JError::raiseError( 404, JText::_('SERVER_ERROR') );
-			
+            	JError::raiseError( 404, JText::_('SERVER_ERROR') );
+			else
+				exit;
 		}	
 		else {
 			$this->_msg = JobsHtml::error(JText::_('Sorry, this didn\'t work -:( Please try again.'));
