@@ -736,11 +736,11 @@ class SupportController extends JObject
 					$email_owner = JRequest::getInt( 'email_owner', 0 );
 					if ($email_owner == 1) {
 						if ($row->owner) {
-							$xuser =& JUser::getInstance($row->owner);
-							if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($xuser->get('id')), $this->_option ))) {
+							$juser =& JUser::getInstance($row->owner);
+							if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option ))) {
 								$this->setError( JText::_('Failed to message ticket owner.') );
 							} else {
-								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_OWNER').' - '.$xuser->get('email').'</li>';
+								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_OWNER').' - '.$juser->get('email').'</li>';
 							}
 						}
 					}
@@ -756,11 +756,11 @@ class SupportController extends JObject
 							// Is this a username or email address?
 							if (!strstr( $acc, '@' )) {
 								// Username - load the user
-								$xuser =& JUser::getInstance( strtolower($acc) );
+								$juser =& JUser::getInstance( strtolower($acc) );
 								// Did we find an account?
-								if (is_object($xuser)) {
+								if (is_object($juser)) {
 									// Get the user's email address
-									if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($xuser->get('id')), $this->_option ))) {
+									if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option ))) {
 										$this->setError( JText::_('Failed to message ticket owner.') );
 									}
 									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$acc.'</li>';
@@ -889,9 +889,9 @@ class SupportController extends JObject
 				}
 				
 				// get user's infor from login
-				$xuser =& XUser::getInstance( $row->login );
-				$row->name  = $xuser->get('name');
-				$row->email = $xuser->get('email');
+				$juser =& JUser::getInstance( $row->login );
+				$row->name  = $juser->get('name');
+				$row->email = $juser->get('email');
 			}
 		}
 			

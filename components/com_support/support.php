@@ -47,7 +47,6 @@ require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'support.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
 ximport('textfilter');
-ximport('xuser');
 
 $jacl =& JFactory::getACL();
 $jacl->addACL( $option, 'manage', 'users', 'super administrator' );
