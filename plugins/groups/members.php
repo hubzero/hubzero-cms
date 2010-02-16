@@ -83,7 +83,7 @@ class plgGroupsMembers extends JPlugin
 		if ($juser->get('guest')) {
 			if ($return == 'html') {
 				ximport('xmodule');
-				$arr['html']  = GroupsHtml::warning( JText::_('GROUPS_LOGIN_NOTICE') );
+				$arr['html']  = '<p class="warning">'. JText::_('GROUPS_LOGIN_NOTICE') . '</p>';
 				$arr['html'] .= XModuleHelper::renderModules('force_mod');
 			}
 			return $arr;
@@ -92,7 +92,7 @@ class plgGroupsMembers extends JPlugin
 		// Return no data if the user is not authorized
 		if (!$authorized || ($authorized != 'admin' && $authorized != 'manager' && $authorized != 'member')) {
 			if ($return == 'html') {
-				$arr['html'] = GroupsHtml::warning( JText::_('PLG_GROUPS_MESSAGES_ERROR_NOT_AUTHORIZED') );
+				$arr['html'] = '<p class="warning">'. JText::_('PLG_GROUPS_MESSAGES_ERROR_NOT_AUTHORIZED') . '</p>';
 			}
 			return $arr;
 		}
