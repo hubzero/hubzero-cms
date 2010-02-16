@@ -370,7 +370,8 @@ class RegisterController extends JObject
 		$xhub  =& XFactory::getHub();
 		
 		// Get some settings
-		$this->jconfig =& JFactory::getConfig();
+		$jconfig =& JFactory::getConfig();
+		$this->jconfig = $jconfig;
 		//$this->baseURL      = $xhub->getCfg('hubLongURL');
 		$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
 		$hubHomeDir      = $xhub->getCfg('hubHomeDir');
