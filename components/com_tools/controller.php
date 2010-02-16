@@ -512,7 +512,7 @@ class ToolsController extends JObject
 		$ip = JRequest::getVar( 'REMOTE_ADDR', '', 'server' );
 
 		$xlog->logDebug("mw::invoke URL: $url : " . $app['name'] . " by " . $juser->get('username') . " from " . $ip);
-		$xlog->logDebug("mw::invoke REFERER:" . $_SERVER['HTTP_REFERER']);
+		$xlog->logDebug("mw::invoke REFERER:" . (array_key_exists('HTTP_REFERER',$_SERVER)) ? $_SERVER['HTTP_REFERER'] : 'none');
 
 		// Make sure we have an app to invoke
 		if (trim($app['name']) == '') {
@@ -774,7 +774,7 @@ class ToolsController extends JObject
 			$ms->load( $sess, $juser->get('username') );
 
 			if (!$ms->sesstoken) {
-				JError::raiseError( 500, JText::_('MW_ERROR_SESSION_NOT_FOUND').': '.$sess );
+				JError::raiseError( 500, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND').': '.$sess );
 				return;
 			}
 		} else {
@@ -828,6 +828,11 @@ class ToolsController extends JObject
 		
 		$ms = new MwSession( $mwdb );
 		$row = $ms->loadSession( $app['sess'], $authorized );
+
+		if (!is_object($row) || !$row->appname) {
+			JError::raiseError( 500, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND').': '.$app['sess'] );
+			return;
+		}
 
 		if (strstr($row->appname,'_')) {
 			$bits = explode('_',$row->appname);

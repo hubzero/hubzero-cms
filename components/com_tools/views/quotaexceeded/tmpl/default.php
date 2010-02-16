@@ -55,16 +55,16 @@ if ($this->sessions) {
 		$cls = ($cls == 'odd') ? 'even' : 'odd';
 ?>	
 			<tr class="<?php echo $cls; ?>">
-				<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view&sess='.$session->sessnum); ?>" title="<?php echo JText::_('COM_TOOLS_RESUME_TITLE'); ?>"><?php echo $session->sessname; ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=session&app='.$session->appname.'&sess='.$session->sessnum); ?>" title="<?php echo JText::_('COM_TOOLS_RESUME_TITLE'); ?>"><?php echo $session->sessname; ?></a></td>
 <?php if ($this->authorized === 'admin') { ?>
 				<td><?php echo $session->username; ?></td>
 <?php } ?>
 				<td><?php echo $session->start; ?></td>
 				<td><?php echo $session->accesstime; ?></td>
 <?php if ($juser->get('username') == $session->username || $this->authorized === 'admin') { ?>
-				<td><a class="close" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=stop&sess='.$session->sessnum); ?>" title="<?php echo JText::_('COM_TOOLS_TERMINATE_TITLE'); ?>"><?php echo JText::_('COM_TOOLS_TERMINATE'); ?></a></td>
+				<td><a class="close" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=stop&app='.$session->appname.'&sess='.$session->sessnum); ?>" title="<?php echo JText::_('COM_TOOLS_TERMINATE_TITLE'); ?>"><?php echo JText::_('COM_TOOLS_TERMINATE'); ?></a></td>
 <?php } else { ?>
-				<td><a class="disconnect" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=unshare&sess='.$session->sessnum); ?>" title="<?php echo JText::_('COM_TOOLS_DISCONNECT_TITLE'); ?>"><?php echo JText::_('COM_TOOLS_DISCONNECT'); ?></a> <br /><?php echo JText::_('MY_SESSIONS_OWNER').': '.$session->username; ?></td>
+				<td><a class="disconnect" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=unshare&app='.$session->appname.'&sess='.$session->sessnum); ?>" title="<?php echo JText::_('COM_TOOLS_DISCONNECT_TITLE'); ?>"><?php echo JText::_('COM_TOOLS_DISCONNECT'); ?></a> <br /><?php echo JText::_('COM_TOOLS_MY_SESSIONS_OWNER').': '.$session->username; ?></td>
 <?php } ?>
 			</tr>
 <?php
