@@ -72,36 +72,27 @@ class AnswersController extends JObject
 			return $this->_data[$property];
 		}
 	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$task = JRequest::getVar( 'task', '' );
-		$this->_task = $task;
-		return $task;
-	}
 	
 	//-----------
 	
 	public function execute()
 	{
-		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
-		$banking = $upconfig->get('bankAccounts');
-		$this->banking = $banking;
+		$upconfig =& JComponentHelper::getParams('com_userpoints');
+		$this->banking = $upconfig->get('bankAccounts');
 		
-		if ($banking) {
-			ximport( 'bankaccount' );
+		if ($this->banking) {
+			ximport('bankaccount');
 		}
 		
 		// Get the component parameters
-		$aconfig = new AnswersConfig( $this->_option );
-		$this->config = $aconfig;
-		$this->infolink =  (isset($this->config->parameters['infolink'])) ? $this->config->parameters['infolink'] : '/kb/points/';
-		$this->showcomments =  (isset($this->config->parameters['showcomments'])) ? $this->config->parameters['showcomments'] : '1';
+		$this->config = new AnswersConfig( $this->_option );
+		$this->infolink = (isset($this->config->parameters['infolink'])) ? $this->config->parameters['infolink'] : '/kb/points/';
+		$this->showcomments = (isset($this->config->parameters['showcomments'])) ? $this->config->parameters['showcomments'] : '1';
+		
+		$task = JRequest::getVar( 'task', '' );
+		$this->_task = $task;
 	
-	
-		switch ( $this->getTask() ) 
+		switch ( $this->_task ) 
 		{
 			case 'new':         $this->create();      break;
 			case 'savea':       $this->savea();       break;
@@ -136,7 +127,7 @@ class AnswersController extends JObject
 	
 	//-----------
 
-	private function getStyles($option='', $css='')
+	private function _getStyles($option='', $css='')
 	{
 		ximport('xdocument');
 		if ($option) {
@@ -146,10 +137,51 @@ class AnswersController extends JObject
 		}
 	}
 
+	//-----------
+
+	private function _buildPathway($question=null) 
+	{
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option)),
+				'index.php?option='.$this->_option
+			);
+		}
+		if ($this->_task && $this->_task != 'view') {
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+				'index.php?option='.$this->_option.'&task='.$this->_task
+			);
+		}
+		if (is_object($question)) {
+			$pathway->addItem( 
+				Hubzero_View_Helper_Html::shortenText(stripslashes($question->subject), 50, 0), 
+				'index.php?option='.$this->_option.'&task=question&id='.$question->id 
+			);
+		}
+	}
 	
 	//-----------
 	
-	private function getScripts($option='',$name='')
+	private function _buildTitle($question=null) 
+	{
+		$this->_title = JText::_(strtoupper($this->_option));
+		if ($this->_task && $this->_task != 'view') {
+			$this->_title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+		}
+		if (is_object($question)) {
+			$this->_title .= ': '.Hubzero_View_Helper_Html::shortenText(stripslashes($question->subject), 50, 0);
+		}
+		$document =& JFactory::getDocument();
+		$document->setTitle( $this->_title );
+	}
+	
+	//-----------
+	
+	private function _getScripts($option='',$name='')
 	{
 		$document =& JFactory::getDocument();
 		
@@ -169,54 +201,41 @@ class AnswersController extends JObject
 	// Views
 	//----------------------------------------------------------
 
-	protected function login($msg='') 
+	protected function login() 
 	{
 		// Set the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::_('LOGIN');
+		$this->_buildTitle();
 		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
+		// Set the pathway
+		$this->_buildPathway();
 		
-		$japp =& JFactory::getApplication();
-		$pathway =& $japp->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+		// Instantiate a view
+		$view = new JView( array('name'=>'login') );
+		$view->title = JText::_(strtoupper($this->_option)).': '.JText::_('COM_ANSWERS_LOGIN');
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-		
-		echo AnswersHtml::div( AnswersHtml::hed( 2, $title ), 'full', 'content-header' );
-		echo '<div class="main section">'.n;
-		if ($msg) {
-			echo AnswersHtml::warning( $msg );
-		}
-		ximport('xmodule');
-		XModuleHelper::displayModules('force_mod');
-		echo '</div><!-- / .main section -->'.n;
-	
+		$view->display();
 	}
-	
 
 	//-----------
 
 	protected function start() 
 	{		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'start') );
+		$view->option = $this->_option;
+		$view->infolink = $this->infolink;
+		$view->banking = $this->banking;
+		
 		// Incoming
-		$filters = array();
-		$filters['limit']    = JRequest::getInt( 'limit', 25 );
-		$filters['start']    = JRequest::getInt( 'limitstart', 0 );
-		$filters['tag']      = JRequest::getVar( 'tag', '' );
-		$filters['q']        = JRequest::getVar( 'q', '' );
-		$filters['filterby'] = JRequest::getVar( 'filterby', '' );
-		$filters['sortby']   = JRequest::getVar( 'sortby', 'rewards' );
-		
-		// Add the CSS to the template
-		$this->getStyles();
-		
-		// Set the page title
-		$title  = JText::_(strtoupper($this->_name));
-		$title .= ($this->_task) ? ': '. JText::_(strtoupper($this->_task)) : '';
-		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
+		$view->filters = array();
+		$view->filters['limit']    = JRequest::getInt( 'limit', 25 );
+		$view->filters['start']    = JRequest::getInt( 'limitstart', 0 );
+		$view->filters['tag']      = JRequest::getVar( 'tag', '' );
+		$view->filters['q']        = JRequest::getVar( 'q', '' );
+		$view->filters['filterby'] = JRequest::getVar( 'filterby', '' );
+		$view->filters['sortby']   = JRequest::getVar( 'sortby', 'rewards' );
 
 		$database =& JFactory::getDBO();
 		
@@ -224,21 +243,21 @@ class AnswersController extends JObject
 		//$BT = new BankTransaction( $database );
 		
 		// Get a record count
-		$total = $aq->getCount( $filters );
+		$view->total = $aq->getCount( $filters );
 		
 		// Get records
-		$results = $aq->getResults( $filters );
+		$view->results = $aq->getResults( $filters );
 		
 		// Did we get any results?
-		if (count($results) > 0) {
+		if (count($view->results) > 0) {
 			// Do some processing on the results
-			for ($i=0; $i < count($results); $i++) 
+			for ($i=0; $i < count($view->results); $i++) 
 			{
-				$row =& $results[$i];
-				$row->created = $this->mkt($row->created);
-				$row->when = $this->timeAgo($row->created);
+				$row =& $view->results[$i];
+				$row->created = Hubzero_View_Helper_Html::mkt($row->created);
+				$row->when = Hubzero_View_Helper_Html::timeAgo($row->created);
 				$row->points = $row->points ? $row->points : 0;
-				$row->reports = $this->get_reports($row->id, 'question');
+				$row->reports = $this->_getReports($row->id, 'question');
 	
 				// Get tags on this question
 				$tagging = new AnswersTags( $database );
@@ -248,65 +267,63 @@ class AnswersController extends JObject
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
+		// Add the CSS to the template
+		$this->_getStyles();
+		
+		// Set the page title
+		$this->_buildTitle();
+		
 		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
+		$this->_buildPathway();
 
 		// Output HTML
-		echo AnswersHtml::introduction($title, $results, $pageNav, $this->_option, $filters, $this->infolink, $this->banking);
+		$view->title = $this->_title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
 	
 	private function savereply()
 	{
-		$database =& JFactory::getDBO();
-		$juser 	  =& JFactory::getUser();
-		
+		// Is the user logged in?
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->setError( JText::_('COM_ANSWERS_LOGIN_TO_COMMENT') );
+			$this->login();
+			return;
+		}
+
 		// Incoming
-		$id      	= JRequest::getInt( 'referenceid', 0 );
-		$rid 	 	= JRequest::getInt( 'rid', 0 );
-		$ajax    	= JRequest::getInt( 'ajax', 0 );
-		$category	= JRequest::getVar( 'category', '' );
-		$when 		= date( 'Y-m-d H:i:s');
+		$id       = JRequest::getInt( 'referenceid', 0 );
+		$rid      = JRequest::getInt( 'rid', 0 );
+		$ajax     = JRequest::getInt( 'ajax', 0 );
+		$category = JRequest::getVar( 'category', '' );
+		$when     = date( 'Y-m-d H:i:s');
 		
-		// trim and addslashes all posted items
+		// Trim and addslashes all posted items
 		$_POST = array_map('trim',$_POST);
 		
 		if (!$id && !$ajax) {
-		
-			$title  = JText::_(strtoupper($this->_name));
-			//$title .= ($this->_task) ? ': '. JText::_(strtoupper($this->_task)) : '';
-			// cannot proceed
-			$document =& JFactory::getDocument();
-			$document->setTitle( $title );
-			
-			echo AnswersHtml::hed(2, $title);
-			echo AnswersHtml::error( JText::_('No Question ID found.') );
-			return;
-		}
-		
-		// is the user logged in?
-		if ($juser->get('guest')) {
-			$msg = 'Please login to post a comment';
-			$this->login($msg);
+			JError::raiseError( 500, JText::_('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND') );
 			return;
 		}
 		
 		if ($id && $category) {
+			$database =& JFactory::getDBO();
+			
 			$row = new XComment( $database );
 			if (!$row->bind( $_POST )) {
-				echo AnswersHtml::alert( $row->getError() );
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 			
 			// Perform some text cleaning, etc.
-			$row->comment   = $this->purifyText($row->comment);
+			$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
 			$row->comment   = nl2br($row->comment);
 			$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 			$row->added   	= $when;
@@ -315,13 +332,13 @@ class AnswersController extends JObject
 			
 			// Check for missing (required) fields
 			if (!$row->check()) {
-				echo AnswersHtml::alert( $row->getError() );
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 			// Save the data
 			if (!$row->store()) {
-				echo AnswersHtml::alert( $row->getError() );
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 		}
 	
@@ -331,245 +348,232 @@ class AnswersController extends JObject
 	//-----------
 	
 	private function reply()
-	{	
-		$database =& JFactory::getDBO();
+	{
+		// Is the user logged in?
 		$juser =& JFactory::getUser();
-		
-		// Retrieve a review or comment ID and category
-		$id 	 = JRequest::getInt( 'id', 0 );
-		$refid 	 = JRequest::getInt( 'refid', 0 );
-		$cat 	 = JRequest::getVar( 'category', '' );
-		
-		// is the user logged in?
 		if ($juser->get('guest')) {
-			$msg = 'Please login to post a comment';
-			$this->login($msg);
+			$this->setError( JText::_('COM_ANSWERS_LOGIN_TO_COMMENT') );
+			$this->login();
 			return;
 		}
+		
+		// Retrieve a review or comment ID and category
+		$id    = JRequest::getInt( 'id', 0 );
+		$refid = JRequest::getInt( 'refid', 0 );
+		$cat   = JRequest::getVar( 'category', '' );
 		
 		// Do we have an ID?
 		if (!$id) {
-			// cannot proceed
+			// Cannot proceed
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
+		
 		// Do we have a category?
 		if (!$cat) {
-			// cannot proceed
+			// Cannot proceed
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id);
 			return;
 		}
 		
-			
 		// Store the comment object in our registry
 		$this->category = $cat;
 		$this->referenceid = $refid;
 		$this->qid = $id;
-		$this->question();
-		//$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id);	
+		$this->question();	
 	}
 	
 	//-----------
 	
 	private function rateitem()
-	{		
-		$database =& JFactory::getDBO();
+	{
+		// Is the user logged in?
 		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->login( JText::_('COM_ANSWERS_PLEASE_LOGIN_TO_VOTE') );
+			return;
+		}
 		
+		// Incoming
+		$id   = JRequest::getInt( 'refid', 0 );
+		$ajax = JRequest::getInt( 'ajax', 0 );
+		$cat  = JRequest::getVar( 'category', '' );
+		$vote = JRequest::getVar( 'vote', '' );
+		$ip   = $this->_ip_address();
 		
-		$id 	 = JRequest::getInt( 'refid', 0 );
-		$ajax 	 = JRequest::getInt( 'ajax', 0 );
-		$cat 	 = JRequest::getVar( 'category', '' );
-		$vote 	 = JRequest::getVar( 'vote', '' );
-		$ip 	 = $this->ip_address();
-		
-		
-		if(!$id) {
+		if (!$id) {
 			// cannot proceed		
 			return;
 		}
 		
-		// is the user logged in?
-		if ($juser->get('guest')) {
-			$this->login( JText::_('PLEASE_LOGIN_TO_VOTE') );
-			return;
-		}
-		else {
-			// load answer
-			$row = new AnswersResponse( $database );
-			$row->load( $id );
-			$qid = $row->qid;
+		$database =& JFactory::getDBO();
+		
+		// load answer
+		$row = new AnswersResponse( $database );
+		$row->load( $id );
+		$qid = $row->qid;
 			
-			$al = new AnswersLog( $database );
-			$voted = $al->checkVote( $id, $ip);
+		$al = new AnswersLog( $database );
+		$voted = $al->checkVote($id, $ip);
 	
-			
-			if(!$voted && $vote && $row->created_by != $juser->get('username')) {
-							
-				// record if it was helpful or not
-				if ($vote == 'yes'){
-					$row->helpful++;
-				} elseif($vote == 'no') {
-					$row->nothelpful++;
-				}
+		if (!$voted && $vote && $row->created_by != $juser->get('username')) {
+			// record if it was helpful or not
+			if ($vote == 'yes') {
+				$row->helpful++;
+			} elseif ($vote == 'no') {
+				$row->nothelpful++;
+			}
 				
-				if (!$row->store()) {
-					$this->_error = $row->getError();
+			if (!$row->store()) {
+				$this->setError( $row->getError() );
+				return;
+			}
+				
+			// Record user's vote (old way)
+			$al->rid = $row->id;
+			$al->ip = $ip;
+			$al->helpful = $vote;
+			if (!$al->check()) {
+				$this->setError( $al->getError() );
+				return;
+			}
+			if (!$al->store()) {
+				$this->setError( $al->getError() );
+				return;
+			}
+				
+			// Record user's vote (new way)
+			if ($cat) {
+				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'vote.class.php' );
+				$v = new Vote( $database );
+				$v->referenceid = $row->id;
+				$v->category = $cat;
+				$v->voter = $juser->get('id');
+				$v->ip = $ip;
+				$v->voted = date( 'Y-m-d H:i:s', time() );
+				$v->helpful = $vote;
+				if (!$v->check()) {
+					$this->setError( $v->getError() );
 					return;
 				}
-				
-				// Record user's vote (old way)
-				$al->rid = $row->id;
-				$al->ip = $ip;
-				$al->helpful = $vote;
-				if (!$al->check()) {
-					$this->setError( $al->getError() );
+				if (!$v->store()) {
+					$this->setError( $v->getError() );
 					return;
-				}
-				if (!$al->store()) {
-					$this->setError( $al->getError() );
-					return;
-				}
-				
-				// Record user's vote (new way)
-				if($cat) {
-					require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'vote.class.php' );
-					$v = new Vote( $database );
-					$v->referenceid = $row->id;
-					$v->category = $cat;
-					$v->voter = $juser->get('id');
-					$v->ip = $ip;
-					$v->voted = date( 'Y-m-d H:i:s', time() );
-					$v->helpful = $vote;
-					if (!$v->check()) {
-						$this->setError( $v->getError() );
-						return;
-					}
-					if (!$v->store()) {
-						$this->setError( $v->getError() );
-						return;
-					}
 				}
 			}
+		}
 						
-			// update display
-			if ($ajax) {
-				$response = $row->getResponse( $id, $ip);
-				echo AnswersHtml::rateitem($response[0], $juser, $this->_option, $qid);
-			} else {				
-				$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$qid);
+		// update display
+		if ($ajax) {
+			$response = $row->getResponse($id, $ip);
+
+			$view = new JView( array('name'=>'rateitem') );
+			$view->option = $this->_option;
+			$view->item = $response[0];
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
 			}
+			$view->display();
+		} else {				
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$qid);
 		}
 	}
 	
-	
-
-
 	//-----------
 
 	protected function myquestions() 
 	{
-		$database =& JFactory::getDBO();
+		// Is the user logged in?
 		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->setError( JText::_('COM_ANSWERS_LOGIN_TO_VIEW_QUESTIONS') );
+			$this->login();
+			return;
+		}
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'search') );
+		$view->option = $this->_option;
+		$view->infolink = $this->infolink;
+		$view->banking = $this->banking;
+		$view->task = $this->_task;
 		
 		// Incoming
-		$filters = array();
-		$filters['limit']    = JRequest::getInt( 'limit', 25 );
-		$filters['start']    = JRequest::getInt( 'limitstart', 0 );
-		$filters['tag']      = JRequest::getVar( 'tag', '' );
-		$filters['q']        = JRequest::getVar( 'q', '' );
-		$filters['filterby'] = JRequest::getVar( 'filterby', 'all' );
-		$filters['sortby']   = JRequest::getVar( 'sortby', 'rewards' );
-		$filters['interest'] = JRequest::getVar( 'interest', 0 );
-		$filters['assigned'] = JRequest::getVar( 'assigned', 0 );
-		$filters['interest'] = ($filters['assigned'] == 1) ? 0 : $filters['interest']; 
+		$view->filters = array();
+		$view->filters['limit']    = JRequest::getInt( 'limit', 25 );
+		$view->filters['start']    = JRequest::getInt( 'limitstart', 0 );
+		$view->filters['tag']      = JRequest::getVar( 'tag', '' );
+		$view->filters['q']        = JRequest::getVar( 'q', '' );
+		$view->filters['filterby'] = JRequest::getVar( 'filterby', 'all' );
+		$view->filters['sortby']   = JRequest::getVar( 'sortby', 'rewards' );
+		$view->filters['interest'] = JRequest::getVar( 'interest', 0 );
+		$view->filters['assigned'] = JRequest::getVar( 'assigned', 0 );
+		$view->filters['interest'] = ($view->filters['assigned'] == 1) ? 0 : $view->filters['interest']; 
 		
-		// is the user logged in?
-		if ($juser->get('guest')) {
-			$msg = 'Please login to view your questions';
-			$this->login($msg);
-			return;
-		}	
+		$database =& JFactory::getDBO();
 			
 		// Get questions of interest
-		if($filters['interest']) {
-			
+		if ($view->filters['interest']) {
 			require_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'members.tags.php' );
 			
 			// Get tags of interest
 			$mt = new MembersTags( $database );
 			$mytags  = $mt->get_tag_string( $juser->get('id') );
 
-			//$filters['tag'] = ($filters['tag'] && strstr(strtolower($mytags), strtolower($filters['tag']))) ? $filters['tag'] : $mytags;
-			$filters['tag'] = ($filters['tag']) ? $filters['tag'] : $mytags;
+			$view->filters['tag'] = ($view->filters['tag']) ? $view->filters['tag'] : $mytags;
 			
-			if(!$filters['tag']) {
-				$filters['filterby']   = 'none';
+			if (!$view->filters['tag']) {
+				$view->filters['filterby']   = 'none';
 			}		
-			$filters['mine'] = 0;
+			$view->filters['mine'] = 0;
 		} 
 		
 		// Get assigned questions
-		if($filters['assigned']) {
-			
+		if ($view->filters['assigned']) {
 			require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.author.php' );
 			
-			// what tools did this user contribute?
+			// What tools did this user contribute?
 			$TA = new ToolAuthor($database); 
 			$tools = $TA->getToolContributions($juser->get('id'));
 			$mytooltags = '';
-			if($tools) {
-				foreach($tools as $tool) {
+			if ($tools) {
+				foreach ($tools as $tool) 
+				{
 					$mytooltags .= 'tool'.$tool->toolname.',';
 				}
 			}
 			
-			//$filters['tag'] = ($filters['tag'] && preg_match( "/".$filters['tag']."/", $mytooltags)) ? $filters['tag'] : $mytooltags;
-			$filters['tag'] = ($filters['tag']) ? $filters['tag'] : $mytooltags;
-			
-			if(!$filters['tag']) {
-				$filters['filterby']   = 'none';
-			}	
-			
+			$view->filters['tag'] = ($view->filters['tag']) ? $view->filters['tag'] : $mytooltags;
+			if (!$view->filters['tag']) {
+				$view->filters['filterby'] = 'none';
+			}
 				
-			$filters['mine'] = 0;
+			$view->filters['mine'] = 0;
 		}
-		
 		 
-		if(!$filters['assigned'] && !$filters['interest']) {
-		
-			$filters['mine'] = 1;
+		if (!$view->filters['assigned'] && !$view->filters['interest']) {
+			$view->filters['mine'] = 1;
 		}
-		
-		// Add the CSS to the template
-		$this->getStyles();
-		
-		// Set the page title
-		$title  = JText::_(strtoupper($this->_name));
-		$title .= ($this->_task) ? ': '. JText::_(strtoupper($this->_task)) : '';
-		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
+		$view->filters['mine'] = 1;
+
 		$aq = new AnswersQuestion( $database );
-		//$BT = new BankTransaction( $database );
-				
-		// Get records
-		$results = $aq->getResults( $filters );
-		
+
 		// Get a record count
-		$total = $aq->getCount( $filters );
+		$view->total = $aq->getCount( $view->filters );
+		
+		// Get records
+		$view->results = $aq->getResults( $view->filters );
 		
 		// Did we get any results?
-		if (count($results) > 0) {
+		if (count($view->results) > 0) {
 			// Do some processing on the results
-			for ($i=0; $i < count($results); $i++) 
+			for ($i=0; $i < count($view->results); $i++) 
 			{
-				$row =& $results[$i];
-				$row->created = $this->mkt($row->created);
-				$row->when = $this->timeAgo($row->created);
+				$row =& $view->results[$i];
+				$row->created = Hubzero_View_Helper_Html::mkt($row->created);
+				$row->when = Hubzero_View_Helper_Html::timeAgo($row->created);
 				$row->points = $row->points ? $row->points : 0;
-				$row->reports = $this->get_reports($row->id, 'question');
+				$row->reports = $this->_getReports($row->id, 'question');
 	
 				// Get tags on this question
 				$tagging = new AnswersTags( $database );
@@ -579,67 +583,66 @@ class AnswersController extends JObject
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
+		// Add the CSS to the template
+		$this->_getStyles();
 		
-		$filters['mine'] = 1;
+		// Set the page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
 
 		// Output HTML
-		echo AnswersHtml::search($title, $results, $pageNav, $this->_option, $filters, $this->infolink, $this->banking, $this->_task);
+		$view->title = $this->_title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
 
-	private function search()
+	protected function search()
 	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'search') );
+		$view->option = $this->_option;
+		$view->infolink = $this->infolink;
+		$view->banking = $this->banking;
+		$view->task = $this->_task;
+		
 		// Incoming
-		$filters = array();
-		$filters['limit']    = JRequest::getInt( 'limit', 25 );
-		$filters['start']    = JRequest::getInt( 'limitstart', 0 );
-		$filters['tag']      = JRequest::getVar( 'tags', '' );
-		$filters['tag']      = $filters['tag'] ? $filters['tag'] : JRequest::getVar( 'tag', '' );
-		$filters['q']        = JRequest::getVar( 'q', '' );
-		$filters['filterby'] = JRequest::getVar( 'filterby', '' );
-		$filters['sortby']   = JRequest::getVar( 'sortby', 'rewards' );
+		$view->filters = array();
+		$view->filters['limit']    = JRequest::getInt( 'limit', 25 );
+		$view->filters['start']    = JRequest::getInt( 'limitstart', 0 );
+		$view->filters['tag']      = JRequest::getVar( 'tags', '' );
+		$view->filters['tag']      = ($view->filters['tag']) ? $view->filters['tag'] : JRequest::getVar( 'tag', '' );
+		$view->filters['q']        = JRequest::getVar( 'q', '' );
+		$view->filters['filterby'] = JRequest::getVar( 'filterby', '' );
+		$view->filters['sortby']   = JRequest::getVar( 'sortby', 'rewards' );
 		
-		// Add the CSS to the template
-		$this->getStyles();
-		
-		// Set the page title
-		$title  = JText::_(strtoupper($this->_name));
-		$title .= ($this->_task) ? ': '. JText::_(strtoupper($this->_task)) : '';
-		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-
+		// Instantiate a Questions object
 		$database =& JFactory::getDBO();
-		
 		$aq = new AnswersQuestion( $database );
-		//$BT = new BankTransaction( $database );
 		
 		// Get a record count
-		$total = $aq->getCount( $filters );
+		$view->total = $aq->getCount( $view->filters );
 		
 		// Get records
-		$results = $aq->getResults( $filters );
+		$view->results = $aq->getResults( $view->filters );
 		
 		// Did we get any results?
-		if (count($results) > 0) {
+		if (count($view->results) > 0) {
 			// Do some processing on the results
-			for ($i=0; $i < count($results); $i++) 
+			for ($i=0; $i < count($view->results); $i++) 
 			{
-				$row =& $results[$i];
-				$row->created = $this->mkt($row->created);
-				$row->when = $this->timeAgo($row->created);
-				$row->points = $row->points ? $row->points : 0;
-				$row->reports = $this->get_reports($row->id, 'question');
+				$row =& $view->results[$i];
+				$row->created = Hubzero_View_Helper_Html::mkt($row->created);
+				$row->when = Hubzero_View_Helper_Html::timeAgo($row->created);
+				$row->points = ($row->points) ? $row->points : 0;
+				$row->reports = $this->_getReports($row->id, 'question');
 	
 				// Get tags on this question
 				$tagging = new AnswersTags( $database );
@@ -649,77 +652,77 @@ class AnswersController extends JObject
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
+		// Add the CSS to the template
+		$this->_getStyles();
+		
+		// Set the page title
+		$this->_buildTitle();
+		
 		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
+		$this->_buildPathway();
 
 		// Output HTML
-		echo AnswersHtml::search($title, $results, $pageNav, $this->_option, $filters, $this->infolink, $this->banking, $this->_task);
+		$view->title = $this->_title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
-	
 	
 	//-----------
 
 	protected function question()
 	{
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'question') );
+		$view->option = $this->_option;
+		$view->infolink = $this->infolink;
+		$view->banking = $this->banking;
 		
 		// Incoming
-		$id      = JRequest::getInt( 'id', 0 );
-		$note	 = $this->note(JRequest::getInt( 'note', 0));
-		$vote	 = JRequest::getVar( 'vote', 0 );
+		$id   = JRequest::getInt( 'id', 0 );
+		$note = $this->_note(JRequest::getInt( 'note', 0));
+		$vote = JRequest::getVar( 'vote', 0 );
 		
 		if (isset($this->qid)) {
 			$id = $this->qid;
-		} 
-		
-	
-		if ( $this->_task=='reply') {
-			$addcomment = & new XComment( $database );
-			$addcomment->referenceid = $this->referenceid;
-			$addcomment->category = $this->category;
-				
-		} else {
-			$addcomment = NULL;
 		}
-		
-		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
 				
 		// Ensure we have an ID to work with
 		if (!$id) {
-			$document =& JFactory::getDocument();
-			$document->setTitle( $title );
-			
-			echo AnswersHtml::hed(2, $title);
-			echo AnswersHtml::error( JText::_('No Question ID found.') );
+			JError::raiseError( 404, JText::_('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND') );
 			return;
 		}
 		
+		$juser =& JFactory::getUser();
+		$database =& JFactory::getDBO();
 		
-		// did they vote for the question?
+		if ($this->_task == 'reply') {
+			$addcomment = new XComment( $database );
+			$addcomment->referenceid = $this->referenceid;
+			$addcomment->category = $this->category;
+		} else {
+			$addcomment = NULL;
+		}
+
+		// Did they vote for the question?
 		if ($vote) {
 			// Login required
 			if ($juser->get('guest')) {
-				$msg = 'You need to login to recommend a question.';
-				$this->login($msg);
+				$this->setError( JText::_('COM_ANSWERS_LOGIN_TO_RECOMMEND_QUESTION') );
+				$this->login();
 				return;
 			} else {
-				$this->vote( &$database, $id);
+				$this->vote($database, $id);
 			}
 		}
 		
 		// Load the question
-		$question = new AnswersQuestion( $database );
-		$BT = new BankTransaction( $database);
-		$question->load( $id );
+		$question = new AnswersQuestion($database);
+		$BT = new BankTransaction($database);
+		$question->load($id);
 		
 		// Check if question with this ID exists
 		if (!$question->check()) {
@@ -738,27 +741,14 @@ class AnswersController extends JObject
 		
 		// Check if person voted
 		$voted = 0;
+		$ip = '';
 		if (!$juser->get('guest')) {
-			$voted = $this->get_vote($id);
+			$voted = $this->_getVote($id);
+			$ip = $this->_ip_address();
 		}
 		
 		// Check for abuse reports
-		$question->reports = $this->get_reports($id, 'question');	
-			
-		// Add the CSS to the template
-		$this->getStyles();
-		$this->getScripts();
-		
-		// Thumbs voting CSS & JS
-		$this->getStyles($this->_option, 'vote.css');
-		$this->getScripts($this->_option, 'vote');
-		
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title.': '.$question->subject );
-
-		// Get the user's IP
-		$ip = (!$juser->get('guest')) ? $this->ip_address() : '';
+		$question->reports = $this->_getReports($id, 'question');
 				
 		// Get responses
 		$ar = new AnswersResponse( $database );
@@ -769,7 +759,6 @@ class AnswersController extends JObject
 			$AE = new AnswersEconomy( $database );
 			$question->marketvalue = round($AE->calculate_marketvalue($id, 'maxaward'));
 			$question->maxaward = round(2* $question->marketvalue/3 + $reward);
-			//$question->maxaward    = ($responses && count($responses) > 1) ? round($question->marketvalue/3 + $reward) : round(2* $question->marketvalue/3 + $reward);
 		}
 		
 		// Determines if we're using abuse reports or not
@@ -787,49 +776,70 @@ class AnswersController extends JObject
 		if ($responses && $reply && $abuse) {
 			foreach ($responses as $response) 
 			{
-				$response->replies = $this->getComments($response, 'answer', 0);
-				$response->reports = $this->get_reports($response->id, 'answer');
+				$response->replies = $this->_getComments($response, 'answer', 0);
+				$response->reports = $this->_getReports($response->id, 'answer');
 			}
 		}
 		
-		$title .= ($question) ? ': '. AnswersHtml::shortenText(stripslashes($question->subject), 50, 0) : '';
-
+		// Add the CSS to the template
+		$this->_getStyles();
+		$this->_getStyles($this->_option, 'vote.css');
+		
+		// Add the Javascript to the template
+		$this->_getScripts();
+		$this->_getScripts($this->_option, 'vote');
+		
+		// Set the page title
+		$this->_buildTitle($question);
 		
 		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( stripslashes($question->subject), 'index.php?option='.$this->_option.a.'task=question'.a.'id='.$question->id );
-		
+		$this->_buildPathway($question);
+
 		// Output HTML
-		echo AnswersHtml::question( $juser, $question, $responses, $id, $this->_option, $tags, 0, $reward, $voted, $note, $this->infolink, $this->banking, $title, $addcomment, $this->showcomments);
+		$view->title = $this->_title;
+		$view->juser = $juser;
+		$view->question = $question;
+		$view->responses = $responses;
+		$view->id = $id;
+		$view->tags = $tags;
+		$view->responding = 0;
+		$view->reward = $reward;
+		$view->voted = $voted;
+		$view->note = $note;
+		$view->addcomment = $addcomment;
+		$view->showcomments = $this->showcomments;
+		$view->abuse = $abuse;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
 
 	protected function answer()
 	{
-		$database 	=& JFactory::getDBO();
-		$juser 		=& JFactory::getUser();
-		$document =& JFactory::getDocument();
+		$juser =& JFactory::getUser();
 		
 		$responding = ($this->_task == 'delete')   ? 4 : 1;		
-		if($this->_task == 'math') { $responding= 6; }
-		$note	 	= $this->note(JRequest::getInt( 'note', 0));
-		$ip = (!$juser->get('guest')) ? $this->ip_address() : '';
-		$id 		= JRequest::getInt( 'id', 0 );
-		
+		if ($this->_task == 'math') { 
+			$responding= 6;
+		}
+		$note = $this->_note(JRequest::getInt( 'note', 0));
+		$ip = (!$juser->get('guest')) ? $this->_ip_address() : '';
+		$id = JRequest::getInt( 'id', 0 );
 		
 		// Login required
 		if ($juser->get('guest') && $this->_task != 'math') {
-				$msg = ($responding == 4) ? '' : JText::_('PLEASE_LOGIN_TO_ANSWER');
-				$this->login($msg);
-				return;
-		}	
-			
-				
+			if ($responding != 4) {
+				$this->setError( JText::_('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER') );
+			}
+			$this->login();
+			return;
+		}
+		
+		$database =& JFactory::getDBO();
+		
 		// Load the question
 		$question = new AnswersQuestion( $database );
 		$BT = new BankTransaction( $database );
@@ -840,18 +850,13 @@ class AnswersController extends JObject
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
-		
-		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		$title .= ($question) ? ': '. AnswersHtml::shortenText(stripslashes($question->subject), 50, 0) : '';
-		$document->setTitle( $title);
-	
+
 		// check if user is attempting to answer his own answer
 		if ($question->created_by == $juser->get('username') && $responding==1) {
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id).'?note=6';
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=6');
 			return;
 		} else if ($question->created_by != $juser->get('username') && $responding==4) {
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id).'?note=7';
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=7');
 			return;
 		}
 		
@@ -860,17 +865,16 @@ class AnswersController extends JObject
 		$tags = $tagging->get_tags_on_object($id, 0, 0, 0);
 
 		// Check reward value of the question 
-		
 		if ($this->banking) {
 			$reward = $BT->getAmount( 'answers', 'hold', $id );
 		}
 		$reward = $reward ? $reward : 0;
 	
 		// Check number of votes
-		$voted = $this->get_vote($id);
+		$voted = $this->_getVote($id);
 			
 		// Check for abuse reports
-		$question->reports = $this->get_reports($id, 'question');	
+		$question->reports = $this->_getReports($id, 'question');	
 		
 		// Get responses
 		$ar = new AnswersResponse( $database );
@@ -891,8 +895,8 @@ class AnswersController extends JObject
 		if ($responses && $reply && $abuse) {
 			foreach ($responses as $response) 
 			{
-				$response->replies = $this->getComments($response, 'answer', 0);
-				$response->reports = $this->get_reports($response->id, 'answer');
+				$response->replies = $this->_getComments($response, 'answer', 0);
+				$response->reports = $this->_getReports($response->id, 'answer');
 			}
 		}
 		
@@ -901,7 +905,6 @@ class AnswersController extends JObject
 			$AE = new AnswersEconomy( $database );
 			$question->marketvalue = round($AE->calculate_marketvalue($id, 'maxaward'));
 			$question->maxaward = round(2* $question->marketvalue/3 + $reward);
-			//$question->maxaward    = ($responses && count($responses) > 1) ? round($question->marketvalue/3 + $reward) : round(2* $question->marketvalue/3 + $reward);
 		}
 		
 		if (isset($this->comment)) {
@@ -910,55 +913,70 @@ class AnswersController extends JObject
 			$addcomment = NULL;
 		}
 		
-		if ($question->state == 0) {
-			// Add the CSS to the template and set the page title
-			$this->getStyles();
-			// Thumbs voting CSS
-			$this->getStyles($this->_option, 'vote.css');
-			
-			// Set the pathway
-			$app =& JFactory::getApplication();
-			$pathway =& $app->getPathway();
-			if (count($pathway->getPathWay()) <= 0) {
-				$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-			}
-			$pathway->addItem( stripslashes($question->subject), 'index.php?option='.$this->_option.a.'task=question'.a.'id='.$question->id );
-			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task.a.'id='.$question->id );
-			
-			// Output HTML
-			echo AnswersHtml::question( $juser, $question, $responses, $id, $this->_option, $tags, $responding, $reward, $voted, $note, $this->infolink, $this->banking, $title, $addcomment, $this->showcomments);
-		} else {
+		if ($question->state != 0) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id);
+			return;
 		}
+			
+		// Add the CSS to the template
+		$this->_getStyles();
+		$this->_getStyles($this->_option, 'vote.css');
+
+		// Add the Javascript to the template
+		$this->_getScripts();
+		$this->_getScripts($this->_option, 'vote');
+
+		// Set the page title
+		$this->_buildTitle($question);
+
+		// Set the pathway
+		$this->_buildPathway($question);
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'question') );
+		$view->option = $this->_option;
+		$view->infolink = $this->infolink;
+		$view->banking = $this->banking;
+		$view->title = $this->_title;
+		$view->juser = $juser;
+		$view->responses = $responses;
+		$view->question = $question;
+		$view->id = $id;
+		$view->tags = $tags;
+		$view->reward = $reward;
+		$view->voted = $voted;
+		$view->note = $note;
+		$view->showcomments = $this->showcomments;
+		$view->responding = $responding;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
 
 	protected function create()
 	{
-		$juser =& JFactory::getUser();
-		
-		// Incoming
-		$tag = JRequest::getVar( 'tag', '' );
-		
 		// Login required
+		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			$this->login();
 			return;
 		}
-
-		// Add the CSS to the template
-		$this->getStyles();
 		
-		// Set the page title
-		$title  = JText::_(strtoupper($this->_name));
-		$title .= ($this->_task) ? ': '. JText::_(strtoupper($this->_task)) : '';
+		// Instantiate a new view
+		$view = new JView( array('name'=>'create') );
+		$view->option = $this->_option;
+		$view->infolink = $this->infolink;
+		$view->banking = $this->banking;
+		$view->task = $this->_task;
 		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
+		// Incoming
+		$view->tag = JRequest::getVar( 'tag', '' );
 		
 		// Is banking turned on?
-		$funds = 0;
+		$view->funds = 0;
 		if ($this->banking) {
 			$database =& JFactory::getDBO();
 			
@@ -966,33 +984,37 @@ class AnswersController extends JObject
 			$balance = $BTL->summary();
 			$credit  = $BTL->credit_summary();
 			$funds   = $balance - $credit;			
-			$funds   = ($funds > 0) ? $funds : '0';
+			$view->funds = ($funds > 0) ? $funds : 0;
 		} 
 		
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		//$pathway->addItem( JText::_('QUESTION'), 'index.php?option='.$this->_option.a.'task='.$this->_task );
-		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task='.$this->_task );
+		// Add the CSS to the template
+		$this->_getStyles();
 		
+		// Set the page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+
 		// Output HTML
-		echo AnswersHtml::create( $this->_option, $funds, $this->infolink, $this->banking, $tag, $title );
+		$view->title = $this->_title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//----------------------------------------------------------
 	// Retrievers
 	//----------------------------------------------------------
 
-	private function get_vote($id)
+	private function _getVote($id)
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		
 		// Get the user's IP address
-		$ip = $this->ip_address();
+		$ip = $this->_ip_address();
 				
 		// See if a person from this IP has already voted in the last week
 		$aql = new AnswersQuestionsLog( $database );
@@ -1003,7 +1025,7 @@ class AnswersController extends JObject
 	
 	//-----------
 	
-	private function get_reports($id, $cat)
+	private function _getReports($id, $cat)
 	{
 		$database =& JFactory::getDBO();
 		
@@ -1021,7 +1043,7 @@ class AnswersController extends JObject
 	
 	//-----------
 	
-	private function getComments($item, $category, $level, $abuse=true)
+	private function _getComments($item, $category, $level, $abuse=true)
 	{
 		$database =& JFactory::getDBO();
 		
@@ -1033,26 +1055,23 @@ class AnswersController extends JObject
 		if ($comments) {
 			foreach ($comments as $comment) 
 			{
-				$comment->replies = $this->getComments($comment, 'answercomment', $level, $abuse);
+				$comment->replies = $this->_getComments($comment, 'answercomment', $level, $abuse);
 				if ($abuse) {
-					$comment->reports = $this->get_reports($comment->id, 'answercomment');
+					$comment->reports = $this->_getReports($comment->id, 'answercomment');
 				}
 			}
 		}
 		return $comments;
 	}
 
-
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
 	
-	private function saveq()
+	protected function saveq()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
-		
 		// Login required
+		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			$this->login();
 			return;
@@ -1060,7 +1079,6 @@ class AnswersController extends JObject
 
 		// trim and addslashes all posted items
 		$_POST = array_map('trim',$_POST);
-			
 		
 		// Incoming
 		$tags  = JRequest::getVar( 'tags', '' );
@@ -1071,27 +1089,28 @@ class AnswersController extends JObject
 		if ($reward) {
 			// Is it an actual number?
 			if (!is_numeric($reward)) {
-				echo AnswersHtml::alert( JText::_('Please make sure the reward is a numeric value') );
-				exit();
+				JError::raiseError( 500, JText::_('COM_ANSWERS_REWARD_MUST_BE_NUMERIC') );
+				return;
 			}
 			// Are they offering more than they can afford?
 			if ($reward > $funds) {
-				echo AnswersHtml::alert( JText::_('You do not have sufficient funds to set this reward amount') );
-				exit();
+				JError::raiseError( 500, JText::_('COM_ANSWERS_INSUFFICIENT_FUNDS') );
+				return;
 			}
 		}
 		
 		// Ensure the user added a tag
 		if (!$tags) {
-			echo AnswersHtml::alert( JText::_('Question must have at least one tag') );
-			exit();
+			JError::raiseError( 500, JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG') );
+			return;
 		}
 		
 		// Initiate class and bind posted items to database fields
+		$database =& JFactory::getDBO();
 		$row = new AnswersQuestion( $database );
 		if (!$row->bind( $_POST )) {
-			echo AnswersHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		$row->subject    = TextFilter::cleanXss($row->subject);
@@ -1107,45 +1126,40 @@ class AnswersController extends JObject
 		
 		// Check content
 		if (!$row->check()) {
-			echo AnswersHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo AnswersHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Hold the reward for this question if we're banking
 		if ($reward && $this->banking) {
 			$BTL = new BankTeller( $database, $juser->get('id') );
-			$BTL->hold($reward, JText::_('Hold reward amount for best answer'), 'answers', $row->id);	
+			$BTL->hold($reward, JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->id);	
 		}
 		
 		// Add the tags
 		$tagging = new AnswersTags( $database );
 		$tagging->tag_object($juser->get('id'), $row->id, $tags, 1, 0);
 		
-		
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$row->id).'?note=5';
-			
+		// Redirect to the question
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$row->id.'&note=5');
 	}
 	
 	//-----------
 	
-	private function savea()
+	protected function savea()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
-		
 		// Login required
+		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			$this->login();
 			return;
 		}
-		
-		$xuser =& XFactory::getUser();
 		
 		// Incoming
 		$id = JRequest::getInt( 'qid', 0 );
@@ -1154,10 +1168,11 @@ class AnswersController extends JObject
 		$_POST = array_map('trim',$_POST);
 	
 		// Initiate class and bind posted items to database fields
+		$database =& JFactory::getDBO();
 		$row = new AnswersResponse( $database );
 		if (!$row->bind( $_POST )) {
-			echo AnswersHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		$row->answer     = TextFilter::cleanXss($row->answer);
@@ -1168,106 +1183,85 @@ class AnswersController extends JObject
 
 		// Check content
 		if (!$row->check()) {
-			echo AnswersHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo AnswersHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Load the question
 		$question = new AnswersQuestion( $database );
 		$question->load( $id );
 		
-		// Determine if this question has e-mail notifications activated
-		/*if ($question->email) {
-			$zuser =& XUser::getInstance( $question->created_by );
-			$addy = '';
-			if (is_object($zuser)) {
-				$addy = $zuser->get('email');
-			}
-			if ($addy && $this->check_validEmail($addy)) {*/
-				$juri =& JURI::getInstance();
-				$jconfig =& JFactory::getConfig();
-				
-				$sef = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id);
-				if (!strstr($sef,'http')) {
-					if (substr($sef,0,1) == '/') {
-						$sef = substr($sef,1,strlen($sef));
-					}
-					$url = $juri->base().$sef;
-				}
-				
-				$admin_email = $jconfig->getValue('config.mailfrom');
-				$subject     = $jconfig->getValue('config.sitename').' '.JText::_('ANSWERS').', '.JText::_('QUESTION').' #'.$question->id.' '.JText::_('RESPONSE');
-				$from        = $jconfig->getValue('config.sitename').' '.JText::_('ANSWERS');
-				$hub         = array('email' => $admin_email, 'name' => $from);
-			
-				$message  = '----------------------------'.r.n;
-				$message .= strtoupper(JText::_('QUESTION')).': '.$question->id.r.n;
-				$message .= strtoupper(JText::_('SUMMARY')).': '.$question->subject.r.n;
-				$message .= strtoupper(JText::_('CREATED')).': '.$question->created.r.n;
-				$message .= '----------------------------'.r.n.r.n;
-				$message .= 'A response has been posted to Question #'.$row->id.' by: ';
-				$message .= ($row->anonymous) ? 'Anonymous'.r.n : $juser->get('name').r.n;
-				$message .= 'Response created: '.$row->created.r.n;
-				$message .= 'Response: '.r.n.r.n;
-				$message .= '"'.$row->answer.'"'.r.n;
-				$message .= 'To view the full question and responses, go to '.$url.r.n.r.n;
-			
-				/*$this->send_email($hub, $addy, $subject, $message);
-			}
-		}*/
-		$zuser =& JUser::getInstance( $question->created_by );
+		$jconfig =& JFactory::getConfig();
 		
-		/*ximport('xmessage');
-		if (!XMessageHelper::sendMessage( 'answers_reply_submitted', $subject, $message, $hub, array($zuser->get('id')) )) {
-			$this->setError( JText::_('Failed to message user.') );
-		}*/
+		// Build the "from" info
+		$hub = array(
+			'email' => $jconfig->getValue('config.mailfrom'), 
+			'name' => $jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_ANSWERS')
+		);
+		
+		// Build the message subject
+		$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_ANSWERS').', '.JText::_('COM_ANSWERS_QUESTION').' #'.$question->id.' '.JText::_('COM_ANSWERS_RESPONSE');
+		
+		// Build the message	
+		$eview = new JView( array('name'=>'emails','layout'=>'response') );
+		$eview->option = $this->_option;
+		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->juser = $juser;
+		$eview->question = $question;
+		$eview->row = $row;
+		$eview->id = $id;
+		$message = $eview->loadTemplate();
+		$message = str_replace("\n", "\r\n", $message);
+
+		$user =& JUser::getInstance( $question->created_by );
+		
+		// Send the message
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
-		if (!$dispatcher->trigger( 'onSendMessage', array( 'answers_reply_submitted', $subject, $message, $hub, array($zuser->get('id')), $this->_option, $question->id, $sef))) {
-			$this->setError( JText::_('Failed to message user.') );
-		}
+		/*if (!$dispatcher->trigger( 'onSendMessage', array( 'answers_reply_submitted', $subject, $message, $hub, array($user->get('id')), $this->_option, $question->id, JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id)))) {
+			$this->setError( JText::_('COM_ANSWERS_MESSAGE_FAILED') );
+		}*/
 		
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id).'?note=4';
-		
+		// Redirect to the question
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=4');
 	}
 	
 	//-----------
 	
-	private function delete_q()
+	protected function delete_q()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
-		$xuser =& JFactory::getUser();
-		
-		// Incoming
-		$id = JRequest::getInt( 'qid', 0 );
-		$ip = (!$juser->get('guest')) ? $this->ip_address() : '';
-
-		$BT = new BankTransaction( $database );
-		$reward = $BT->getAmount( 'answers', 'hold', $id );
-		$email = 0;
-		
 		// Login required
+		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			$this->login();
 			return;
 		}
+		
+		$database =& JFactory::getDBO();
+		
+		// Incoming
+		$id = JRequest::getInt( 'qid', 0 );
+		$ip = (!$juser->get('guest')) ? $this->_ip_address() : '';
+
+		$BT = new BankTransaction( $database );
+		$reward = $BT->getAmount( 'answers', 'hold', $id );
+		$email = 0;
 		
 		$question = new AnswersQuestion( $database );
 		$question->load( $id );
 		
 		// Check if user is authorized to delete
 		if ($question->created_by != $juser->get('username')) {
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id).'?note=3';
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=3');
 			return;
-		} else if ($question->state==1) {
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id).'?note=2';
+		} else if ($question->state == 1) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=2');
 			return;
 		}
 		
@@ -1276,8 +1270,8 @@ class AnswersController extends JObject
 			
 		// Store new content
 		if (!$question->store()) {
-			echo AnswersHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Get all the answers for this question
@@ -1285,60 +1279,47 @@ class AnswersController extends JObject
 		$responses = $ar->getRecords( array('ip'=>$ip,'qid'=>$id) );
 		
 		if ($reward && $this->banking) {
-			
 			if ($responses) {
 				$jconfig =& JFactory::getConfig();
 				
 				$users = array();
 				foreach ($responses as $r) 
 				{
-					$zuser =& XUser::getInstance( $r->created_by );
-					if (!is_object($zuser))  {
+					$user =& JUser::getInstance( $r->created_by );
+					if (!is_object($user))  {
 						continue;
 					}
-					/*if ($this->check_validEmail($zuser->get('email')) && $email) {
-						$admin_email = $jconfig->getValue('config.mailfrom');
-						$subject     = $jconfig->getValue('config.sitename').' '.JText::_('ANSWERS').', '.JText::_('QUESTION').' #'.$id.' '.JText::_('WAS_REMOVED');
-						$from        = $jconfig->getValue('config.sitename').' '.JText::_('ANSWERS');
-						$hub         = array('email' => $admin_email, 'name' => $from);
-							
-						$message  = JText::_('EMAIL_Q_REMOVED');
-						$message .= JText::_('EMAIL_Q_REMOVED_NO_POINTS').r.n;
-						$message .= '----------------------------'.r.n.r.n;
-						$message .= strtoupper(JText::_('QUESTION')).': '.$id.r.n;
-						$message .= strtoupper(JText::_('SUMMARY')).': '.$question->subject.r.n;
-						$message .= '----------------------------'.r.n.r.n;
-								
-						$this->send_email($hub, $zuser->get('email'), $subject, $message);
-					}*/
-					$users[] = $zuser->get('id');
+					$users[] = $user->get('id');
 				}
 				
-				$admin_email = $jconfig->getValue('config.mailfrom');
-				$subject     = $jconfig->getValue('config.sitename').' '.JText::_('ANSWERS').', '.JText::_('QUESTION').' #'.$id.' '.JText::_('WAS_REMOVED');
-				$from        = $jconfig->getValue('config.sitename').' '.JText::_('ANSWERS');
-				$hub         = array('email' => $admin_email, 'name' => $from);
-					
-				$message  = JText::_('EMAIL_Q_REMOVED');
-				$message .= JText::_('EMAIL_Q_REMOVED_NO_POINTS').r.n;
-				$message .= '----------------------------'.r.n.r.n;
-				$message .= strtoupper(JText::_('QUESTION')).': '.$id.r.n;
-				$message .= strtoupper(JText::_('SUMMARY')).': '.$question->subject.r.n;
-				$message .= '----------------------------'.r.n.r.n;
+				// Build the "from" info
+				$hub = array(
+					'email' => $jconfig->getValue('config.mailfrom'), 
+					'name' => $jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_ANSWERS')
+				);
 				
-				/*ximport('xmessage');
-				if (!XMessageHelper::sendMessage( 'answers_question_deleted', $subject, $message, $hub, $users )) {
-					$this->setError( JText::_('Failed to message users.') );
-				}*/
+				// Build the message subject
+				$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_ANSWERS').', '.JText::_('COM_ANSWERS_QUESTION').' #'.$id.' '.JText::_('COM_ANSWERS_WAS_REMOVED');
+				
+				// Build the message	
+				$eview = new JView( array('name'=>'emails','layout'=>'removed') );
+				$eview->option = $this->_option;
+				$eview->hubShortName = $jconfig->getValue('config.sitename');
+				$eview->juser = $juser;
+				$eview->question = $question;
+				$eview->id = $id;
+				$message = $eview->loadTemplate();
+				$message = str_replace("\n", "\r\n", $message);
+				
+				// Send the message
 				JPluginHelper::importPlugin( 'xmessage' );
 				$dispatcher =& JDispatcher::getInstance();
-				if (!$dispatcher->trigger( 'onSendMessage', array( 'answers_question_deleted', $subject, $message, $hub, $users, $this->_option ))) {
-					$this->setError( JText::_('Failed to message user.') );
-				}
+				/*if (!$dispatcher->trigger( 'onSendMessage', array( 'answers_question_deleted', $subject, $message, $hub, $users, $this->_option ))) {
+					$this->setError( JText::_('COM_ANSWERS_MESSAGE_FAILED') );
+				}*/
 			}
 			
 			// Remove hold
-			//$BT = new BankTransaction( $database );
 			$BT->deleteRecords( 'answers', 'hold', $id );
 					
 			// Make credit adjustment
@@ -1352,33 +1333,29 @@ class AnswersController extends JObject
 		$tagging = new AnswersTags( $database );
 		$tagging->remove_all_tags($id);
 		
-		// get all the answers for this question		
+		// Get all the answers for this question		
 		if ($responses) {
 			$al = new AnswersLog( $database );
 			foreach ($responses as $answer)
 			{
-				// delete votes
+				// Delete votes
 				$al->deleteLog( $answer->id );
 				
-				// delete response
-				$ar->deleteResponse($answer->id);
+				// Delete response
+				$ar->deleteResponse( $answer->id );
 			}
 		}
-				
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id).'?note=1';
 		
+		// Redirect to the question
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=1');	
 	}
-	
 
 	//-----------
 	
-	private function accept()
+	protected function accept()
 	{
-		$database =& JFactory::getDBO();
-		
-		$juser =& JFactory::getUser();
-		
 		// Login required
+		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			$this->login();
 			return;
@@ -1387,6 +1364,8 @@ class AnswersController extends JObject
 		// Incoming
 		$id  = JRequest::getInt( 'id', 0 );
 		$rid = JRequest::getInt( 'rid', 0 );
+		
+		$database =& JFactory::getDBO();
 		
 		// Load and mark the answer as THE accepted answer
 		$answer = new AnswersResponse( $database );
@@ -1409,7 +1388,7 @@ class AnswersController extends JObject
 		$question->state = 1;
 		$question->reward = 0; // Uncheck reward label
 		
-		$zuser =& JUser::getInstance( $question->created_by );
+		$user =& JUser::getInstance( $question->created_by );
 		
 		// Check changes
 		if (!$question->check()) {
@@ -1432,24 +1411,25 @@ class AnswersController extends JObject
 		$dispatcher =& JDispatcher::getInstance();
 		
 		// Call the plugin
-		if (!$dispatcher->trigger( 'onTakeAction', array( 'answers_reply_submitted', array($zuser->get('id')), $this->_option, $question->id ))) {
-			$this->setError( JText::_('Failed to remove alert.')  );
-		}
+		/*if (!$dispatcher->trigger( 'onTakeAction', array( 'answers_reply_submitted', array($user->get('id')), $this->_option, $question->id ))) {
+			$this->setError( JText::_('COM_ANSWERS_ACTION_FAILED')  );
+		}*/
 
-	
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id).'?note=10';	
-	
+		// Redirect to the question
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=10');	
 	}
+	
 	//-----------
 	
-	private function vote( &$database, $id)
+	protected function vote($database, $id)
 	{
-		$ip = $this->ip_address();
-		$juser =& JFactory::getUser();
-			
+		$ip = $this->_ip_address();
+		
 		// Login required
+		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
-			$this->login( JText::_('PLEASE_LOGIN_TO_VOTE') );
+			$this->setError( JText::_('COM_ANSWERS_PLEASE_LOGIN_TO_VOTE') );
+			$this->login();
 			return;
 		}
 			
@@ -1458,7 +1438,7 @@ class AnswersController extends JObject
 		$voted = $al->checkVote( $id, $ip );
 	
 		if ($voted) {	
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id).'?note=8';
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=8');
 			return;
 		}
 				
@@ -1468,8 +1448,8 @@ class AnswersController extends JObject
 		$this->qid = $id;
 		
 		// check if user is rating his own question
-		if($row->created_by == $juser->get('username')) {
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id).'?note=9';
+		if ($row->created_by == $juser->get('username')) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=9');
 			return;
 		}
 		
@@ -1477,7 +1457,7 @@ class AnswersController extends JObject
 		$row->helpful++;
 		
 		if (!$row->store()) {
-			$this->_error = $row->getError();
+			$this->setError( $row->getError() );
 			return;
 		}
 		
@@ -1497,16 +1477,13 @@ class AnswersController extends JObject
 			$this->setError( $al->getError() );
 			return;
 		}
-			
 	}
 	
-
 	//----------------------------------------------------------
 	// Misc Functions
 	//----------------------------------------------------------
 
-
-	private function server($index = '')
+	private function _server($index = '')
 	{		
 		if (!isset($_SERVER[$index])) {
 			return FALSE;
@@ -1517,22 +1494,22 @@ class AnswersController extends JObject
 	
 	//-----------
 	
-	private function valid_ip($ip)
+	private function _valid_ip($ip)
 	{
 		return (!preg_match( "/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? FALSE : TRUE;
 	}
 	
 	//-----------
 
-	private function ip_address()
+	private function _ip_address()
 	{
-		if ($this->server('REMOTE_ADDR') AND $this->server('HTTP_CLIENT_IP')) {
+		if ($this->_server('REMOTE_ADDR') AND $this->_server('HTTP_CLIENT_IP')) {
 			$ip_address = $_SERVER['HTTP_CLIENT_IP'];
-		} elseif ($this->server('REMOTE_ADDR')) {
+		} elseif ($this->_server('REMOTE_ADDR')) {
 			$ip_address = $_SERVER['REMOTE_ADDR'];
-		} elseif ($this->server('HTTP_CLIENT_IP')) {
+		} elseif ($this->_server('HTTP_CLIENT_IP')) {
 			$ip_address = $_SERVER['HTTP_CLIENT_IP'];
-		} elseif ($this->server('HTTP_X_FORWARDED_FOR')) {
+		} elseif ($this->_server('HTTP_X_FORWARDED_FOR')) {
 			$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
 		}
 		
@@ -1546,78 +1523,11 @@ class AnswersController extends JObject
 			$ip_address = end($x);
 		}
 		
-		if (!$this->valid_ip($ip_address)) {
+		if (!$this->_valid_ip($ip_address)) {
 			$ip_address = '0.0.0.0';
 		}
 				
 		return $ip_address;
-	}
-	
-	//-----------
-
-	public function mkt($stime)
-	{
-		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
-		}
-		return $stime;
-	}
-	
-	//-----------
-	
-	public function timeAgoo($timestamp)
-	{
-		// Store the current time
-		$current_time = time();
-		
-		// Determine the difference, between the time now and the timestamp
-		$difference = $current_time - $timestamp;
-		
-		// Set the periods of time
-		$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
-		
-		// Set the number of seconds per period
-		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-		
-		// Determine which period we should use, based on the number of seconds lapsed.
-		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
-		// Go from decades backwards to seconds
-		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
-		
-		// Ensure the script has found a match
-		if ($val < 0) $val = 0;
-		
-		// Determine the minor value, to recurse through
-		$new_time = $current_time - ($difference % $lengths[$val]);
-		
-		// Set the current value to be floored
-		$number = floor($number);
-		
-		// If required create a plural
-		if ($number != 1) $periods[$val].= "s";
-		
-		// Return text
-		$text = sprintf("%d %s ", $number, $periods[$val]);
-		
-		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
-		if (($val >= 1) && (($current_time - $new_time) > 0)){
-			$text .= AnswersController::TimeAgoo($new_time);
-		}
-		
-		return $text;
-	}
-	
-	//-----------
-	
-	public function timeAgo($timestamp) 
-	{
-		$text = $this->timeAgoo($timestamp);
-		
-		$parts = explode(' ',$text);
-
-		$text  = $parts[0].' '.$parts[1];
-		//$text .= ($parts[2]) ? ' '.$parts[2].' '.$parts[3] : '';
-		return $text;
 	}
 	
 	//-----------
@@ -1634,170 +1544,51 @@ class AnswersController extends JObject
 		if ($juser->authorize($this->_option, 'manage')) {
 			return 'admin';
 		}
-	
-		// Check if they're a site admin (from LDAP)
-		$xuser =& XFactory::getUser();
-		if (is_object($xuser)) {
-			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-				return 'admin';
-			}
-		}
 
 		return false;
 	}
 	
 	//-----------
-
-	private function send_email($from, $email, $subject, $message) 
-	{
-		if ($from) {
-			$args = "-f '" . $contact_email . "'";
-			$headers  = "MIME-Version: 1.0\n";
-			$headers .= "Content-type: text/plain; charset=utf-8\n";
-			$headers .= 'From: ' . $from['name'] .' <'. $from['email'] . ">\n";
-			$headers .= 'Reply-To: ' . $from['name'] .' <'. $from['email'] . ">\n";
-			$headers .= "X-Priority: 3\n";
-			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: '. $from['name'] .n;
-			if (mail($email, $subject, $message, $headers, $args)) {
-				return(1);
-			}
-		}
-		return(0);
-	}
-
-	//-----------
-
-	private function check_validEmail($email) 
-	{
-		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
-			return(1);
-		} else {
-			return(0);
-		}
-	}
 	
-	//-----------
-	
-	private function note($type, $note=array('msg'=>'','class'=>'warning')) 
+	private function _note($type, $note=array('msg'=>'','class'=>'warning')) 
 	{
 		switch ($type) 
 		{
 			case '1' :  // question was removed
-				$note['msg'] = JText::_('NOTICE_QUESTION_REMOVED');
+				$note['msg'] = JText::_('COM_ANSWERS_NOTICE_QUESTION_REMOVED');
 				$note['class'] = 'info';
 			break;
 			case '2' : // can't delete a closed question
-				$note['msg'] = JText::_('WARNING_CANT_DELETE_CLOSED');
+				$note['msg'] = JText::_('COM_ANSWERS_WARNING_CANT_DELETE_CLOSED');
 			break;
 			case '3' : // not authorized to delete question
-				$note['msg'] = JText::_('WARNING_CANT_DELETE');
+				$note['msg'] = JText::_('COM_ANSWERS_WARNING_CANT_DELETE');
 			break;
 			case '4' : // answer posted
-				$note['msg'] = JText::_('NOTICE_POSTED_THANKS');
+				$note['msg'] = JText::_('COM_ANSWERS_NOTICE_POSTED_THANKS');
 				$note['class'] = 'passed';
 			break;
 			case '5' : // question posted
-				$note['msg'] = JText::_('NOTICE_QUESTION_POSTED_THANKS');
+				$note['msg'] = JText::_('COM_ANSWERS_NOTICE_QUESTION_POSTED_THANKS');
 				$note['class'] = 'passed';
 			break;
 			case '6' : // can't answer own question
-				$note['msg'] = JText::_('NOTICE_CANT_ANSWER_OWN_QUESTION');
+				$note['msg'] = JText::_('COM_ANSWERS_NOTICE_CANT_ANSWER_OWN_QUESTION');
 			break;
 			case '7' : // can't delete question
-				$note['msg'] = JText::_('NOTICE_CANNOT_DELETE');
+				$note['msg'] = JText::_('COM_ANSWERS_NOTICE_CANNOT_DELETE');
 			break;
 			case '8' : // can't vote again
-				$note['msg'] = JText::_('NOTICE_ALREADY_VOTED_FOR_QUESTION');
+				$note['msg'] = JText::_('COM_ANSWERS_NOTICE_ALREADY_VOTED_FOR_QUESTION');
 			break;
 			case '9' : // can't vote for own question
-				$note['msg'] = JText::_('NOTICE_RECOMMEND_OWN_QUESTION');
+				$note['msg'] = JText::_('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION');
 			break;
 			case '10' : // answer accepted
-				$note['msg'] = JText::_('NOTICE_QUESTION_CLOSED');
+				$note['msg'] = JText::_('COM_ANSWERS_NOTICE_QUESTION_CLOSED');
 			break;
 		}
 		return $note;
-	}
-
-	//-----------
-	
-	private function purifyText( &$text ) 
-	{
-		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
-		$text = preg_replace( '/{.+?}/', '', $text );
-		$text = preg_replace( "'<script[^>]*>.*?</script>'si", '', $text );
-		$text = preg_replace( '/<a\s+.*?href="([^"]+)"[^>]*>([^<]+)<\/a>/is', '\2', $text );
-		$text = preg_replace( '/<!--.+?-->/', '', $text );
-		$text = preg_replace( '/&nbsp;/', ' ', $text );
-		$text = preg_replace( '/&amp;/', ' ', $text );
-		$text = preg_replace( '/&quot;/', ' ', $text );
-		$text = strip_tags( $text );
-		return $text;
-	}
-	
-	//-----------
-
-	private function getInterests($cloud=0)
-	{
-		$database =& JFactory::getDBO();
-		$juser 	 =& JFactory::getUser();
-		
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'members.tags.php' );
-		
-		// Get tags of interest
-		$mt = new MembersTags( $database );
-		if($cloud) {
-			$tags = $mt->get_tag_cloud(0,0,$juser->get('id') );
-		} else {
-			$tags = $mt->get_tag_string( $juser->get('id') );
-		}
-		
-		return $tags;	
-	
-	}
-	//-----------
-
-	public function formatTags($string='', $num=3, $max=25)
-	{
-		
-		$out = '';
-		$tags = split(',',$string);
-
-		if(count($tags) > 0) {
-			$out .= '<span class="taggi">'."\n";
-			$counter = 0;
-			
-			for($i=0; $i< count($tags); $i++) {
-				$counter = $counter + strlen(stripslashes($tags[$i]));	
-				if($counter > $max) {
-					$num = $num - 1;
-				}
-				if($i < $num) {
-					// display tag
-					$normalized = $this->normalize_tag($tags[$i]);
-					$out .= "\t".'<a href="'.JRoute::_('index.php?option=com_tags&amp;tag='.$normalized).'">'.stripslashes($tags[$i]).'</a> '."\n";
-				}
-				
-			}
-			if($i > $num) {
-				$out .= ' (&#8230;)';
-			}
-			$out .= '</span>'."\n";
-		}
-		
-		return $out;
-	
-	}
-	//-----------
-	
-	public function normalize_tag($tag) 
-	{		
-			$normalized_valid_chars = 'a-zA-Z0-9';
-			$normalized_tag = preg_replace("/[^$normalized_valid_chars]/", "", $tag);
-			return strtolower($normalized_tag);
-		
 	}
 }
 ?>

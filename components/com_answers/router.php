@@ -33,8 +33,7 @@ function AnswersBuildRoute(&$query)
 		if ($query['task'] == 'new') {
 			$segments[] = 'question';
 			$segments[] = 'new';
-		}
-		else {
+		} else {
         	$segments[] = $query['task'];
         }
 		unset($query['task']);
@@ -57,94 +56,80 @@ function AnswersParseRoute($segments)
     // Count route segments
     $count = count($segments);
 
-	if (empty($segments[0]))
+	if (empty($segments[0])) {
 		return $vars;
+	}
 
-    if ($segments[0] == 'question')
-    {
-		if (empty($segments[1]))
-			return $vars;
-
-		$vars['task'] = 'question';
-
-		if ($segments[1] == 'new') {
-			$vars['task'] = 'new';
-			return $vars;
-		}
-
-        $vars['id'] = $segments[1];
-        return $vars;
-    }
-
-    if ($segments[0] == 'tags')
-    {
-		$vars['task'] = 'tags';
-        $vars['tag'] = $segments[1];
-        return $vars;
-    }
-
-	if ($segments[0] == 'myquestions')
+    switch ($segments[0])
 	{
-		$vars['task'] = 'myquestions';
-		return $vars;
-	}
+		case 'question':
+			if (empty($segments[1])) {
+				return $vars;
+			}
 
-	if ($segments[0] == 'search')
-	{
-		$vars['task'] = 'search';
-		return $vars;
-	}
+			$vars['task'] = 'question';
 
-	if ($segments[0] == 'answer')
-	{	
-		$vars['task'] = 'answer';
-		$vars['id'] = $segments[1];
-		return $vars;
-	}
-	
-	if ($segments[0] == 'delete')
-	{	
-		$vars['task'] = 'delete';
-		$vars['id'] = $segments[1];
-		return $vars;
-	}
-	if ($segments[0] == 'delete_q')
-	{	
-		$vars['task'] = 'delete_q';
-		$vars['id'] = $segments[1];
-		return $vars;
-	}
-	if ($segments[0] == 'rateitem')
-	{	
-		$vars['task'] = 'rateitem';
-		return $vars;
-	}
-	if ($segments[0] == 'reply')
-	{	
-		$vars['task'] = 'reply';
-		$vars['id'] = $segments[1];
-		return $vars;
-	}
-	if ($segments[0] == 'math')
-	{	
-		$vars['task'] = 'math';
-		$vars['id'] = $segments[1];
-		return $vars;
-	}
-	if ($segments[0] == 'savereply')
-	{	
-		$vars['task'] = 'reply';
-		return $vars;
-	}
-	if ($segments[0] == 'accept')
-	{	
-		$vars['task'] = 'accept';
-		$vars['id'] = $segments[1];
-		$vars['rid'] = $segments[2];
-		return $vars;
+			if ($segments[1] == 'new') {
+				$vars['task'] = 'new';
+				return $vars;
+			}
+
+	        $vars['id'] = $segments[1];
+		break;
+		
+		case 'tags':
+			$vars['task'] = 'tags';
+        	$vars['tag'] = $segments[1];
+		break;
+		
+		case 'myquestions':
+			$vars['task'] = 'myquestions';
+		break;
+		
+		case 'search':
+			$vars['task'] = 'search';
+		break;
+
+		case 'answer':
+			$vars['task'] = 'answer';
+			$vars['id'] = $segments[1];
+		break;
+		
+		case 'delete':
+			$vars['task'] = 'delete';
+			$vars['id'] = $segments[1];
+		break;
+		
+		case 'delete_q': 
+			$vars['task'] = 'delete_q';
+			$vars['id'] = $segments[1];
+		break;
+
+		case 'rateitem':
+			$vars['task'] = 'rateitem';
+		break;
+
+		case 'reply':
+			$vars['task'] = 'reply';
+			$vars['id'] = $segments[1];
+		break;
+		
+		case 'math':
+			$vars['task'] = 'math';
+			$vars['id'] = $segments[1];
+		break;
+		
+		case 'savereply':
+			$vars['task'] = 'reply';
+		break;
+		
+		case 'accept':
+			$vars['task'] = 'accept';
+			$vars['id'] = $segments[1];
+			$vars['rid'] = $segments[2];
+		break;
 	}
 
     return $vars;
 }
-
 ?>

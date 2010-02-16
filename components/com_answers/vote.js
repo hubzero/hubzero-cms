@@ -28,15 +28,12 @@ if (!HUB) {
 //----------------------------------------------------------
 HUB.Vote = {
 	initialize: function() {
-				
 		//------------------------
 		// review ratings
 		//------------------------
 		var vhints 		=  $$('.votinghints');
 		var thumbsvote  =  $$('.thumbsvote');
-		if(vhints) {
-			
-			
+		if (vhints) {
 			for (i = 0; i < thumbsvote.length; i++) 
 			{
 				thumbsvote[i].onmouseover=function() {
@@ -55,17 +52,16 @@ HUB.Vote = {
 		}
 		
 		//--------------
+		
 		var vote = $$('.revvote');
-		if(vote) {
-	
+		if (vote) {
 			for (i = 0; i < vote.length; i++) 
 			{
 				vote[i].onclick=function() {
 					pn = $(this.parentNode.parentNode.parentNode);
-					if($(this.parentNode).hasClass('gooditem')) {
+					if ($(this.parentNode).hasClass('gooditem')) {
 						var s = 'yes';
-					}
-					else {
+					} else {
 						var s = 'no';
 					}
 								
@@ -76,13 +72,10 @@ HUB.Vote = {
 					var id = $(this.parentNode.parentNode.parentNode).getProperty('id').replace(itemlabel+'_','');
 					
 					var myAjax1 = new Ajax('index2.php?option='+cat+'&no_html=1&task=rateitem&refid='+id+'&ajax=1&vote='+s,{update:pn}).request();
-									
 				}
-				
 			}
 		}
-		
-},
+	},
 
 	setZindex: function(el) {
 		var LIs = el.parentNode.parentNode.parentNode.getElementsByTagName('li');
