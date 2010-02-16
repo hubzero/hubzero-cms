@@ -554,12 +554,10 @@ class EventsHtml
 			if ($page->alias != '') {
 				$html .= (trim($page->pagetext)) ? stripslashes($page->pagetext) : WorkshopsHtml::warning( JText::_('No information available.') );
 			} else {
-				//ximport('xuser');
-				//$xuser = XUser::getInstance( $row->created_by );
-				$xuser =& JUser::getInstance( $row->created_by );
+				$juser =& JUser::getInstance( $row->created_by );
 
-				if (is_object($xuser)) {
-					$name = $xuser->get('name');
+				if (is_object($juser)) {
+					$name = $juser->get('name');
 				} else {
 					$name = JText::_('EVENTS_CAL_LANG_UNKOWN');
 				}
@@ -1786,15 +1784,13 @@ class EventsHtml
 	{
 		$agenda_viewmail = _CAL_CONF_MAILVIEW;
 		if ($userid) {
-			//ximport('xuser');
-			//$xuser =& XUser::getInstance( $userid );
-			$xuser =& JUser::getInstance( $userid );
+			$juser =& JUser::getInstance( $userid );
 			
-			if ($xuser) {
-				if (($xuser->get('email')) && ($agenda_viewmail=='YES')) {
-					$contactlink = '<a href="mailto:'.$xuser->get('email').'">'.$xuser->get('name').'</a>';
+			if ($juser) {
+				if (($juser->get('email')) && ($agenda_viewmail=='YES')) {
+					$contactlink = '<a href="mailto:'.$juser->get('email').'">'.$juser->get('name').'</a>';
 				} else {
-					$contactlink = $xuser->get('username');
+					$contactlink = $juser->get('username');
 				}
 			}
 		} else {
