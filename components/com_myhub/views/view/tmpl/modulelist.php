@@ -25,31 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
+if ($this->modules) {
+	$html  = '<ul>'."\n";
+	foreach ($this->modules as $module)
+	{
+		 $html .= "\t".'<li><label for="_add_m_'.$module->id.'">'.$module->title.'</label> <input type="button" value="'.JText::_('COM_MYHUB_BUTTON_ADD').'" id="_add_m_'.$module->id.'" onclick="HUB.Myhub.addModule(\''.$module->id.'\');return false;" /></li>'."\n";
+	}
+	$html .= '</ul>'."\n";
+} else {
+	$html  = '<p class="warning">'.JText::_('COM_MYHUB_NO_MODULES').'</p>'."\n";
 }
-
-if (!defined("n")) {
-	define('n',"\n");
-	define('t',"\t");
-	define('r',"\r");
-	define("br","<br />");
-	define("sp","&#160;");
-	define("a","&amp;");
-}
-
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'myhub.class.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-jimport('joomla.application.module.helper');
-jimport('joomla.application.component.view');
-
-// Instantiate controller
-$controller = new MyhubController();
-$controller->execute();
-$controller->redirect();
+echo $html;
 ?>

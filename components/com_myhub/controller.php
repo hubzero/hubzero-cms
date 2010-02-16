@@ -71,23 +71,6 @@ class MyhubController extends JObject
 			return $this->_data[$property];
 		}
 	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$task = JRequest::getVar( 'task', '' );
-		
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
-			$task = '';
-		} else {
-			$task = ($task) ? $task : 'view';
-		}
-		
-		$this->_task = $task;
-		return $task;
-	}
 	
 	//-----------
 	
@@ -99,7 +82,16 @@ class MyhubController extends JObject
 		
 		$this->num_default = 6;
 		
-		switch ($this->getTask()) 
+		$this->_task = JRequest::getVar( 'task', '' );
+		
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->_task = '';
+		} else {
+			$this->_task = ($this->_task) ? $this->_task : 'view';
+		}
+		
+		switch ($this->_task) 
 		{
 			case 'refresh':    $this->refresh();    break;
 			case 'rebuild':    $this->rebuild();    break;
@@ -123,6 +115,46 @@ class MyhubController extends JObject
 		}
 	}
 
+	//-----------
+
+	private function _buildPathway($question=null) 
+	{
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option)),
+				'index.php?option='.$this->_option
+			);
+		}
+		if ($this->_act && $this->_act == 'customize') {
+			$pathway->addItem(
+				JText::_('COM_MYHUB_PERSONALIZE'),
+				'index.php?option='.$this->_option.'&act=customize'
+			);
+		}
+	}
+	
+	//-----------
+	
+	private function _buildTitle($question=null) 
+	{
+		$juser =& JFactory::getUser();
+		$jconfig =& JFactory::getConfig();
+		
+		$this->_title = JText::sprintf(strtoupper($this->_option).'_TITLE',$jconfig->getValue('config.sitename'));
+		if (!$juser->get('guest')) {
+			$this->_title .= ': '.$juser->get('name');
+		}
+		if ($this->_act && $this->_act == 'customize') {
+			$this->_title .= ': '.JText::_('COM_MYHUB_PERSONALIZE');
+		}
+
+		$document =& JFactory::getDocument();
+		$document->setTitle( $this->_title );
+	}
+
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
@@ -130,23 +162,19 @@ class MyhubController extends JObject
 	// Display a login form
 	protected function restricted()
 	{
-		ximport('xmodule');
-		
-		$jconfig =& JFactory::getConfig();
-		$juser =& JFactory::getUser();
+		// Set the page title
+		$this->_buildTitle();
 		
 		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-		}
+		$this->_buildPathway();
 		
-		// Output HTML
-		echo MyhubHtml::writeTitle( $jconfig->getValue('config.sitename'), $juser->get('name'), 'full' );
-		echo '<div class="main section">'.n;
-		XModuleHelper::displayModules('force_mod');
-		echo '</div><!-- / .main section -->'.n;
+		// Instantiate a view
+		$view = new JView( array('name'=>'login') );
+		$view->title = JText::_(strtoupper($this->_option)).': '.JText::_('COM_MYHUB_LOGIN');
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -184,29 +212,25 @@ class MyhubController extends JObject
 		XDocument::addComponentStylesheet($this->_option);
 		
 		// Add the Javascript if in "personalize" mode
-		$act = JRequest::getVar( 'act', '' );
-	    if ($act == 'customize') {
+		$this->_act = JRequest::getVar( 'act', '' );
+	    if ($this->_act == 'customize') {
 			$document =& JFactory::getDocument();
 			$document->addScript('components'.DS.$this->_option.DS.'xsortables.js');
 			$document->addScript('components'.DS.$this->_option.DS.'myhub.js');
 		}
 		
+		// Set the title
+		$this->_buildTitle();
+		
 		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-		}
-		if ($act == 'customize') {
-			$pathway->addItem(JText::_('PERSONALIZE'),'index.php?option='.$this->_option.a.'act=customize');
-		}
+		$this->_buildPathway();
 		
 		// Load the current logged-in user
 		$juser =& JFactory::getUser();
 		
 		// Make sure we actually loaded someone
 		if ($juser->get('guest')) {
-			echo MyhubHtml::error( JText::_('ERROR_NO_USER') );
+			JError::raiseError( 404, JText::_('COM_MY_HUB_ERROR_NO_USER') );
 			return;
 		}
 		
@@ -221,7 +245,7 @@ class MyhubController extends JObject
 			// Create a default set of preferences
 			$myhub->uid = $juser->get('id');
 			$myhub->prefs = $this->getDefaultModules();
-			if ($act == 'customize' && $this->config->get('allow_customization') != 1) {
+			if ($this->_act == 'customize' && $this->config->get('allow_customization') != 1) {
 				if (!$myhub->check()) {
 					$this->setError( $myhub->getError() );
 				}
@@ -250,54 +274,34 @@ class MyhubController extends JObject
 			$allmods = array_merge($allmods, $mymods[$i]);
 		}
 
-		$jconfig =& JFactory::getConfig();
-
 		// The number of columns
 		$cols = 3;
 
-		// Build HTML
-		$html  = MyhubHtml::writeTitle( $jconfig->getValue('config.sitename'), $juser->get('name') );
-		if (!$this->config->get('allow_customization')) {
-			$html .= MyhubHtml::writeOptions( $this->_option, $act );
-		}
-		$html .= '<div class="main section">'.n;
-		$html .= '<table id="droppables">'.n;
-		$html .= t.'<tbody>'.n;
-		$html .= t.t.'<tr>'.n;
+		// Instantiate a view
+		$view = new JView( array('name'=>'view') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->act = $this->_act;
+		$view->config = $this->config;
+		$view->usermods = $usermods;
+		$view->juser = $juser;
 		
-		// Initialize customization abilities
-		if ($act == 'customize' && $this->config->get('allow_customization') != 1) {
-			$availmods = $this->getUnusedModules($allmods);
-		
-			// Get the control panel
-			$html .= t.t.t.'<td id="modules-dock">'.n;
-			$html .= MyhubHtml::controlpanel($this->_option, $availmods, $usermods, $juser->get('id'));
-			$html .= t.t.t.'</td>'.n;
-			//$html .= t.t.t.'<td>'.n;
+		if ($this->_act == 'customize' && $this->config->get('allow_customization') != 1) {
+			$view->availmods = $this->getUnusedModules($allmods);
 		} else {
-			$html .= '<input type="hidden" name="uid" id="uid" value="'.$juser->get('id').'" />'.n;
+			$view->availmods = null;
 		}
-
-		// Loop through each column and output modules assigned to each one
-		for ( $c = 0; $c < $cols; $c++ ) 
+		
+		$view->columns = array();
+		for ($c = 0; $c < $cols; $c++) 
 		{
-			$html .= t.t.t.'<td class="sortable" id="sortcol_'.$c.'">'.n;
-			$html .= $this->output_modules($mymods[$c], $juser->get('id'), $act);
-			$html .= t.t.t.'</td>'.n;
+			$view->columns[$c] = $this->output_modules($mymods[$c], $juser->get('id'), $this->_act);
 		}
-		//$html .= '<div class="clear"></div>'.n;
-	
-		// Add the end of our table if in customize mode
-		/*if ($act == 'customize') {
-			$html .= t.t.t.'</td>'.n;
-		}*/
-		$html .= t.t.'</tr>'.n;
-		$html .= t.'</tbody>'.n;
-		$html .= '</table>'.n;
 		
-		$html .= '</div><!-- / .main section -->'.n;
-		
-		echo $html;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//----------------------------------------------------------
@@ -321,9 +325,10 @@ class MyhubController extends JObject
 			$allmods = array_merge($allmods, $ids[$i]);
 		}
 
-		$modules = $this->getUnusedModules($allmods);
-		
-		echo MyhubHtml::moduleList( $modules );
+		// Instantiate a view
+		$view = new JView( array('name'=>'view','layout'=>'modulelist') );
+		$view->modules = $this->getUnusedModules($allmods);
+		$view->display();
 	}
 
 	//-----------
@@ -401,7 +406,8 @@ class MyhubController extends JObject
 
 	protected function getmodule( $extras=false, $act='' ) 
 	{
-		$database =& JFactory::getDBO();
+		// Instantiate a view
+		$view = new JView( array('name'=>'view','layout'=>'modulecontainer') );
 		
 		// Incoming
 		$mid = JRequest::getInt( 'id', 0 );
@@ -409,9 +415,12 @@ class MyhubController extends JObject
 		
 		// Make sure we have a module ID to load
 		if (!$mid) {
-			echo MyhubHtml::error( JText::_('ERROR_NO_MOD_ID') );
+			$view->setError( JText::_('COM_MYHUB_ERROR_NO_MOD_ID') );
+			$view->display();
 			return;
 		}
+		
+		$database =& JFactory::getDBO();
 		
 		// Get the module from the database
 		$myparams = new MyhubParams( $database );
@@ -429,10 +438,17 @@ class MyhubController extends JObject
 			$rendered = false; //$this->render( $params, $mainframe->getPath( 'mod0_xml', $module->module ), 'module' );
 		}
 		
-		//$module->user = 0;
-
-		// Is it a custom module (i.e., HTML)?
-		echo MyhubHtml::moduleContainer( $module, $params, $rendered, false, $extras, $database, $this->_option, $this->config, $act );
+		// Output the module
+		$view->module = $module;
+		$view->params = $params;
+		$view->container = false;
+		$view->extras = $extras;
+		$view->database = $database;
+		$view->option = $this->_option;
+		$view->act = $act;
+		$view->config = $this->config;
+		$view->rendered = $rendered;
+		$view->display();
 	}
 	
 	//-----------
@@ -491,7 +507,18 @@ class MyhubController extends JObject
 					$rendered = false; //$this->render( $params, $mainframe->getPath( 'mod0_xml', $module->module ), 'module' );
 				}
 
-				$html .= MyhubHtml::moduleContainer( $module, $params, $rendered, true, true, $database, $this->_option, $this->config, $act );
+				// Instantiate a view
+				$view = new JView( array('name'=>'view','layout'=>'modulecontainer') );
+				$view->module = $module;
+				$view->params = $params;
+				$view->container = true;
+				$view->extras = true;
+				$view->database = $database;
+				$view->option = $this->_option;
+				$view->act = $act;
+				$view->config = $this->config;
+				$view->rendered = $rendered;
+				$html .= $view->loadTemplate();
 			}
 		}
 		

@@ -24,32 +24,17 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
-if (!defined("n")) {
-	define('n',"\n");
-	define('t',"\t");
-	define('r',"\r");
-	define("br","<br />");
-	define("sp","&#160;");
-	define("a","&amp;");
-}
-
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'myhub.class.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-jimport('joomla.application.module.helper');
-jimport('joomla.application.component.view');
-
-// Instantiate controller
-$controller = new MyhubController();
-$controller->execute();
-$controller->redirect();
 ?>
+<div id="content-header" class="full">
+	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div class="main section">
+<?php if ($this->getError()) { ?>
+	<p class="warning"><?php echo $this->getError(); ?></p>
+<?php } ?>
+<?php
+ximport('xmodule');
+XModuleHelper::displayModules('force_mod');
+?>
+</div><!-- / .main section -->
