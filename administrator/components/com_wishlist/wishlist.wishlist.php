@@ -841,10 +841,6 @@ class WishlistOwner extends JTable
 			$cons = $obj->getCons($wishlist->referenceid);
 			if($cons) {
 				foreach($cons as $con) {
-					/*$xuser =& JUser::getInstance( $con->id );
-					if (is_object($xuser)) {
-						$owners[] = $xuser->get('id');
-					}*/
 					$owners[] = $con->id;										
 				}
 			}
@@ -866,10 +862,6 @@ class WishlistOwner extends JTable
 				$members = array_merge($members, $managers);
 				if($members) {
 					foreach($members as $member) {
-						/*$muser =& JUser::getInstance( $member );
-						if (is_object($muser)) {
-							$owners[] = $member;
-						}*/
 						$owners[] = $member;
 					}
 				}
@@ -912,10 +904,6 @@ class WishlistOwner extends JTable
 				$results =  $this->_db->loadObjectList();
 				if($results) {
 					foreach($results as $result) {
-						/*$wwuser =& JUser::getInstance( $result->userid );
-						if (is_object($wwuser)) {
-							$advisory[] = $wwuser->get('id');
-						}*/					
 						$advisory[] = $result->userid;
 					}
 				}
