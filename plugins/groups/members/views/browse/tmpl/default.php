@@ -166,9 +166,9 @@ if ($this->groupusers) {
 			$cls .= ' me';
 		}
 		
-		$html .= t.t.t.'<tr class="'.$cls.'">'.n;
-		$html .= t.t.t.t.'<td class="photo"><img width="50" height="50" src="'.$p.'" alt="Photo for '.htmlentities($u->get('name'),ENT_COMPAT,'UTF-8').'" /></td>'.n;
-		$html .= t.t.t.t.'<td>';
+		$html .= "\t\t\t".'<tr class="'.$cls.'">'."\n";
+		$html .= "\t\t\t\t".'<td class="photo"><img width="50" height="50" src="'.$p.'" alt="Photo for '.htmlentities($u->get('name'),ENT_COMPAT,'UTF-8').'" /></td>'."\n";
+		$html .= "\t\t\t\t".'<td>';
 		$html .= '<span class="name"><a href="'.JRoute::_('index.php?option=com_members&id='.$u->get('uidNumber')).'">'.$u->get('name').'</a></span> <span class="status">'.$status.'</span><br />';
 		if ($u->get('organization')) {
 			$html .= '<span class="organization">'.$u->get('organization').'</span><br />';
@@ -184,47 +184,47 @@ if ($this->groupusers) {
 		} else {
 			//$html .= '<span class="activity">Activity: </span>';
 		}
-		$html .= '</td>'.n;
+		$html .= '</td>'."\n";
 		if ($this->authorized == 'manager' || $this->authorized == 'admin') {
 			switch ($this->filter)
 			{
 				case 'invitees':
-					$html .= t.t.t.t.'<td class="remove-member"><a class="cancel tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=cancel&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'.n;
-					$html .= t.t.t.t.'<td class="approve-member"> </td>'.n;
+					$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=cancel&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
+					$html .= "\t\t\t\t".'<td class="approve-member"> </td>'."\n";
 				break;
 				case 'pending':
-					$html .= t.t.t.t.'<td class="decline-member"><a class="decline tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=deny&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DECLINE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_DENY').'</a></td>'.n;
-					$html .= t.t.t.t.'<td class="approve-member"><a class="approve tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=approve&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_APPROVE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_APPROVE').'</a></td>'.n;
+					$html .= "\t\t\t\t".'<td class="decline-member"><a class="decline tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=deny&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DECLINE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_DENY').'</a></td>'."\n";
+					$html .= "\t\t\t\t".'<td class="approve-member"><a class="approve tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=approve&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_APPROVE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_APPROVE').'</a></td>'."\n";
 				break;
 				case 'managers':
 				case 'members':
 				default:
 					if (!in_array($guser,$this->managers) || (in_array($guser,$this->managers) && count($this->managers) > 1)) {
-						$html .= t.t.t.t.'<td class="remove-member"><a class="remove tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=remove&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_REMOVE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_REMOVE').'</a></td>'.n;
+						$html .= "\t\t\t\t".'<td class="remove-member"><a class="remove tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=remove&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_REMOVE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_REMOVE').'</a></td>'."\n";
 					} else {
-						$html .= t.t.t.t.'<td class="remove-member"> </td>'.n;
+						$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
 					}
 					if (in_array($guser,$this->managers)) {
 						if ($this->authorized == 'admin' || count($this->managers) > 1) {
-							$html .= t.t.t.t.'<td class="demote-member"><a class="demote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=demote&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DEMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_DEMOTE').'</a></td>'.n;
+							$html .= "\t\t\t\t".'<td class="demote-member"><a class="demote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=demote&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DEMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_DEMOTE').'</a></td>'."\n";
 						} else {
-							$html .= t.t.t.t.'<td class="demote-member"> </td>'.n;
+							$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
 						}
 					} else {
-						$html .= t.t.t.t.'<td class="promote-member"><a class="promote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=promote&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_PROMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_PROMOTE').'</a></td>'.n;
+						$html .= "\t\t\t\t".'<td class="promote-member"><a class="promote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=promote&users[]='.$guser).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_PROMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_PROMOTE').'</a></td>'."\n";
 					}
 				break;
 			}
 		} else {
-			$html .= t.t.t.t.'<td class="remove-member"> </td>'.n;
-			$html .= t.t.t.t.'<td class="demote-member"> </td>'.n;
+			$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
+			$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
 		}
 		if ($juser->get('id') == $u->get('uidNumber')) {
-			$html .= t.t.t.t.'<td class="message-member"> </td>'.n;
+			$html .= "\t\t\t\t".'<td class="message-member"> </td>'."\n";
 		} else {
-			$html .= t.t.t.t.'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]='.$guser).'" title="Message :: Send a message to '.htmlentities($u->get('name'),ENT_COMPAT,'UTF-8').'">'.JText::_('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>'.n;
+			$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]='.$guser).'" title="Message :: Send a message to '.htmlentities($u->get('name'),ENT_COMPAT,'UTF-8').'">'.JText::_('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>'."\n";
 		}
-		$html .= t.t.t.'</tr>'.n;
+		$html .= "\t\t\t".'</tr>'."\n";
 	}
 	echo $html;
 } else { ?>
