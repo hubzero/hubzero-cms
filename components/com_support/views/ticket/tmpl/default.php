@@ -312,12 +312,15 @@ if ($this->comments) {
 							$hi = array();
 							$o  = '<select name="messages" id="messages">'.n;
 							$o .= t.'<option value="mc">'.JText::_('COMMENT_CUSTOM').'</option>'.n;
+							$jconfig =& JFactory::getConfig();
 							foreach ($this->lists['messages'] as $message)
 							{
 								$message->message = str_replace('"','&quot;',$message->message);
 								$message->message = str_replace('&quote;','&quot;',$message->message);
 								$message->message = str_replace('#XXX','#'.$this->row->id,$message->message);
 								$message->message = str_replace('{ticket#}','#'.$this->row->id,$message->message);
+								$message->message = str_replace('{sitename}',$jconfig->getValue('config.sitename'),$message->message);
+								$message->message = str_replace('{siteemail}',$jconfig->getValue('config.mailfrom'),$message->message);
 
 								$o .= t.'<option value="m'.$message->id.'">'.stripslashes($message->title).'</option>'."\n";
 
