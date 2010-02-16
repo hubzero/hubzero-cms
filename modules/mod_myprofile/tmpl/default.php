@@ -44,7 +44,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div id="myprofile-bio">
 <?php if ($modmyprofile->profile->get('bio')) {
 	$p = new WikiParser( $modmyprofile->profile->get('name'), 'com_members', 'members'.DS.'profile', 'member' );
-	echo $p->parse( n.stripslashes($modmyprofile->profile->get('bio')) );
+	echo $p->parse( "\n".stripslashes($modmyprofile->profile->get('bio')) );
 } else { 
 	echo JText::_('MOD_MYPROFILE_NO_BIO');
 } ?>
