@@ -100,13 +100,13 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	?>
 	<?php
-	$xuser = null;
+	$xprofile = null;
 	if ($this->user) {
-		$xuser = new XProfile();
-		$xuser->load( $this->user );
+		$xprofile = new XProfile();
+		$xprofile->load( $this->user );
 	}
-	if (is_object($xuser)) {
-		if (($xuser->get('emailConfirmed') != 1) && ($xuser->get('emailConfirmed') != 3)) {
+	if (is_object($xprofile)) {
+		if (($xprofile->get('emailConfirmed') != 1) && ($xprofile->get('emailConfirmed') != 3)) {
 			echo '<p class="warning">This account will not be activated until they confirm receipt of email at the address listed below.</p>';
 		}
 	?>
@@ -115,20 +115,20 @@ defined('_JEXEC') or die('Restricted access');
 		<tbody>
 			<tr class="odd">
 				<th>Full Name:</th>
-				<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$xuser->get('uidNumber')); ?>"><?php echo $xuser->get('name'); ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$xprofile->get('uidNumber')); ?>"><?php echo $xprofile->get('name'); ?></a></td>
 			</tr>
 			<tr class="even">
 				<th>Username:</th>
-				<td><?php echo $xuser->get('username') .' ('. $xuser->get('uidNumber').')'; ?></td>
+				<td><?php echo $xprofile->get('username') .' ('. $xprofile->get('uidNumber').')'; ?></td>
 			</tr>
 			<tr class="odd">
 				<th>Organization or School:</th>
-				<td><?php echo $xuser->get('organization'); ?></td>
+				<td><?php echo $xprofile->get('organization'); ?></td>
 			</tr>
 			<tr class="even">
 				<th>Employment Status:</th>
 				<td><?php
-				switch ($xuser->get('orgtype'))
+				switch ($xprofile->get('orgtype'))
 				{
 					case '':
 						echo 'n/a';
@@ -163,24 +163,24 @@ defined('_JEXEC') or die('Restricted access');
 						echo JText::_('Retired / Unemployed');
 						break;
 					default:
-						echo $xuser->get('orgtype');
+						echo $xprofile->get('orgtype');
 						break;
 				}
 				?></td>
 			</tr>
 			<tr class="odd">
 				<th>E-mail:</th>
-				<td><?php echo $xuser->get('email');
-				if ($xuser->get('emailConfirmed') == 1) {
+				<td><?php echo $xprofile->get('email');
+				if ($xprofile->get('emailConfirmed') == 1) {
 					echo '<br />(confirmed)';
-				} elseif ($xuser->get('emailConfirmed') == 2) {
+				} elseif ($xprofile->get('emailConfirmed') == 2) {
 					echo '<br />(grandfathered account)';
-				} elseif ($xuser->get('emailConfirmed') == 3) {
+				} elseif ($xprofile->get('emailConfirmed') == 3) {
 					echo '<br />(domain supplied email)';
-				} elseif ($xuser->get('emailConfirmed') < 0) {
-					if ($xuser->get('email')) {
+				} elseif ($xprofile->get('emailConfirmed') < 0) {
+					if ($xprofile->get('email')) {
 						echo '<br /><span style="color: red;">(awaiting confirmation)</span>';
-						echo '<br />[code: ' . -$xuser->get('emailConfirmed') . ']';
+						echo '<br />[code: ' . -$xprofile->get('emailConfirmed') . ']';
 					} else {
 						echo '<br /><span style="color: red;">(no email address on file)</span>';
 					}
@@ -192,7 +192,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr class="even">
 				<th>Contact Me:</th>
 				<td><?php
-				if ($xuser->get('mailPreferenceOption') != 0) {
+				if ($xprofile->get('mailPreferenceOption') != 0) {
 					echo 'Yes, I wish to receive newsletters and other updates by e-mail.';
 				} else {
 					echo 'No, I do not wish to receive newsletters and other updates by e-mail.';
@@ -202,7 +202,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr class="odd">
 				<th>Host Access:</th>
 				<td><?php
-				$hosts = $xuser->get('host');
+				$hosts = $xprofile->get('host');
 				$count = (!empty($hosts)) ? count($hosts) : 0;
 				for ($i = 0;$i < $count; $i++) 
 				{
@@ -212,49 +212,49 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr class="even">
 				<th>Jobs Allowed:</th>
-				<td><?php echo $xuser->get('jobsAllowed'); ?></td>
+				<td><?php echo $xprofile->get('jobsAllowed'); ?></td>
 			</tr>
 			<tr class="odd">
 				<th>Citizenship:</th>
-				<td><?php echo $xuser->get('countryorigin'); ?></td>
+				<td><?php echo $xprofile->get('countryorigin'); ?></td>
 			</tr>
 			<tr class="even">
 				<th>Residence:</th>
-				<td><?php echo $xuser->get('countryresident'); ?></td>
+				<td><?php echo $xprofile->get('countryresident'); ?></td>
 			</tr>
 			<tr class="odd">
 				<th>Sex:</th>
-				<td><?php echo MembersHtml::propercase_singleresponse($xuser->get('gender')); ?></td>
+				<td><?php echo MembersHtml::propercase_singleresponse($xprofile->get('gender')); ?></td>
 			</tr>
 			<tr class="even">
 				<th>Racial Background:</th>
-				<td><?php echo MembersHtml::propercase_multiresponse($xuser->get('race')); ?></td>
+				<td><?php echo MembersHtml::propercase_multiresponse($xprofile->get('race')); ?></td>
 			</tr>
 			<tr class="odd">
 				<th>Hispanic Heritage:</th>
-				<td><?php echo MembersHtml::propercase_multiresponse($xuser->get('hispanic')); ?></td>
+				<td><?php echo MembersHtml::propercase_multiresponse($xprofile->get('hispanic')); ?></td>
 			</tr>
 			<tr class="even">
 				<th>Disability:</th>
-				<td><?php echo MembersHtml::propercase_multiresponse($xuser->get('disability')); ?></td>
+				<td><?php echo MembersHtml::propercase_multiresponse($xprofile->get('disability')); ?></td>
 			</tr>
 			<tr class="odd">
 				<th>Telephone:</th>
-				<td><?php echo $xuser->get('phone'); ?></td>
+				<td><?php echo $xprofile->get('phone'); ?></td>
 			</tr>
 			<tr class="even">
 				<th>Home Directory:</th>
-				<td><?php echo $xuser->get('homeDirectory'); ?></td>
+				<td><?php echo $xprofile->get('homeDirectory'); ?></td>
 			</tr>
 			<tr class="odd">
 				<th>Reason for Account:</th>
-				<td><?php echo $xuser->get('reason'); ?></td>
+				<td><?php echo $xprofile->get('reason'); ?></td>
 			</tr>
 			<tr class="even">
 				<th>Created from Host:<br />(IP Address)</th>
 				<td><?php 
-				$reg_host = $xuser->get('regHost');
-				$reg_ip   = $xuser->get('regIP');
+				$reg_host = $xprofile->get('regHost');
+				$reg_ip   = $xprofile->get('regIP');
 				$reg_host = (empty($reg_host)) ? "n/a" : $reg_host;
 				$reg_ip   = (empty($reg_ip)) ? "n/a" : $reg_ip;
 				
@@ -264,9 +264,8 @@ defined('_JEXEC') or die('Restricted access');
 			<tr class="odd">
 				<th>Proxy Created By:</th>
 				<td><?php
-				$proxy = $xuser->get('proxyUidNumber');
+				$proxy = $xprofile->get('proxyUidNumber');
 				if ($proxy) {
-					//$proxyuser =& XUser::getInstance($proxy);
 					$proxyuser = new XProfile();
 					$proxyuser->load( $proxy );
 					if (!empty($proxyuser)) {
@@ -282,8 +281,8 @@ defined('_JEXEC') or die('Restricted access');
 			<tr class="even">
 				<th>Created On:</th>
 				<td><?php
-				if ($xuser->get('registerDate')) {
-					echo str_replace('  ', '&nbsp;&nbsp;', date("F j, Y  g:ia", MembersHtml::date2epoch($xuser->get('registerDate'))));
+				if ($xprofile->get('registerDate')) {
+					echo str_replace('  ', '&nbsp;&nbsp;', date("F j, Y  g:ia", MembersHtml::date2epoch($xprofile->get('registerDate'))));
 				} else {
 					echo 'n/a';
 				}
@@ -292,8 +291,8 @@ defined('_JEXEC') or die('Restricted access');
 			<tr class="odd">
 				<th>Last Modified On:</th>
 				<td><?php
-				if ($xuser->get('modifiedDate')) {
-					echo str_replace('  ', '&nbsp;&nbsp;', date("F j, Y  g:ia", MembersHtml::date2epoch($xuser->get('modifiedDate'))));
+				if ($xprofile->get('modifiedDate')) {
+					echo str_replace('  ', '&nbsp;&nbsp;', date("F j, Y  g:ia", MembersHtml::date2epoch($xprofile->get('modifiedDate'))));
 				} else {
 					echo 'n/a';
 				}
