@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<?php } ?>
 	<p class="passed">
 		Your password has been reset to a new password successfully.
-		Your new password has been emailed to you at "<?php echo htmlentities($this->xuser->get('email'),ENT_COMPAT,'UTF-8'); ?>". If you do not receive it or have any questions, please contact administrators at <a href="mailto:<?php echo htmlentities($this->jconfig->getValue('config.mailfrom'),ENT_COMPAT,'UTF-8'); ?>"><?php echo htmlentities($this->jconfig->getValue('config.mailfrom'),ENT_COMPAT,'UTF-8'); ?></a>.
+		Your new password has been emailed to you at "<?php echo htmlentities($this->xprofile->get('email'),ENT_COMPAT,'UTF-8'); ?>". If you do not receive it or have any questions, please contact administrators at <a href="mailto:<?php echo htmlentities($this->jconfig->getValue('config.mailfrom'),ENT_COMPAT,'UTF-8'); ?>"><?php echo htmlentities($this->jconfig->getValue('config.mailfrom'),ENT_COMPAT,'UTF-8'); ?></a>.
 	</p>
 <?php 
 } else { 
