@@ -271,7 +271,10 @@ class XContentServer
 		if ($old_magic_quotes)
 			set_magic_quotes_runtime(1);
 
+		ob_start(); // restart buffering so we can throw away any extraneous output after this point
+
 		return true;
+
 	}
 }
 
