@@ -224,7 +224,7 @@ class KbHtml
 
 	//-----------
 	
-	public function articles( &$database, &$rows, &$pageNav, $option, $filterby, $out, $id, $mtask ) 
+	public function articles( &$database, &$rows, &$pageNav, $option, $filterby, $out, $id, $mtask, $cid=0 ) 
 	{
 		?>
 		<script type="text/javascript">
@@ -319,7 +319,7 @@ class KbHtml
 			<input type="hidden" name="option" value="<?php echo $option ?>" />
 			<input type="hidden" name="task" value="<?php echo $mtask ?>" />
 			<input type="hidden" name="boxchecked" value="0" />
-			<input type="hidden" name="cid" value="<?php echo $filters['cid']; ?>" />
+			<input type="hidden" name="cid" value="<?php echo $cid; ?>" />
 		</form>
 
 		<p><?php echo JText::_('PUBLISH_KEY'); ?></p>

@@ -215,7 +215,7 @@ class KbController
 		}
 
 		// Output HTML
-		KbHtml::articles( $database, $rows, $pageNav, $this->_option, $filters['filterby'], $out, $filters['id'], $this->_task );
+		KbHtml::articles( $database, $rows, $pageNav, $this->_option, $filters['filterby'], $out, $filters['id'], $this->_task, $filters['cid'] );
 	}
 
 	//-----------
