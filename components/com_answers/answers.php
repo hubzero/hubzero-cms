@@ -34,16 +34,15 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
+jimport('joomla.application.component.view');
+ximport('Hubzero_View_Helper_Html');
+
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.reportabuse.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'answers.class.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'answers.config.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'answers.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'answers.tags.php' );
-//include_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'abusereport.class.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-ximport('xuser');
 ximport('textfilter');
-ximport('bankaccount');
 ximport('xcomment');
 
 $jacl =& JFactory::getACL();
