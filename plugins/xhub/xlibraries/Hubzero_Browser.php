@@ -36,7 +36,7 @@ class Hubzero_Browser
 	public function __construct($sagent=null) 
 	{
 		if (!$sagent) {
-			$sagent = $_SERVER['HTTP_USER_AGENT'];
+			$sagent = (!empty($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
 			$this->_user_agent = $sagent;
 		}
 		
@@ -264,8 +264,8 @@ class Hubzero_Browser
 		}
 
 		// pack the os data array for return to main function
-		$this->_os = ($os) ? $os : 'unknown';
-		$this->_os_version = ($os_version) ? $os_version : '';
+		$this->_os = (!empty($os)) ? $os : 'unknown';
+		$this->_os_version = (!empty($os_version)) ? $os_version : '';
 		$this->_browser = ($browser) ? $browser : 'unknown';
 		$this->_browser_version = ($browser_ver) ? $browser_ver : '';
 	}
