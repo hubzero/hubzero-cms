@@ -33,7 +33,6 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 	{
 		$html = "\t".'<p>';
 		if ($this->keyExistsOrIsNotEmpty('author',$row)) {
-			//$xuser =& XFactory::getUser();
 			
 			$auths = explode(';',$row->author);
 			$a = array();
@@ -54,11 +53,7 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 					$auth = preg_replace( '/{{(.*?)}}/s', '', $auth );
 					if ($aid) {
 						$app =& JFactory::getApplication();
-						/*if (is_object($xuser) && in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-							$a[] = '<a href="/members/whois?query=id%3D'.$aid.'">'.trim($auth).'</a>';
-						} else {*/
 							$a[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$aid).'">'.trim($auth).'</a>';
-						//}
 					} else {
 						$a[] = trim($auth);
 					}
