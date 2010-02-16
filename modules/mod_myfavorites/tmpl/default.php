@@ -75,26 +75,26 @@ if ($modmyfavorites->error) {
 			}
 
 			// Build the category HTML
-			$html .= '<h4 class="fav-header" id="rel-'.$divid.'">'.$name.' <span>'.JText::sprintf('MOD_MYFAVORITES_RESULTS',$total).'</span></h4>'.n;
-			$html .= '<div class="category-wrap" id="'.$divid.'">'.n;
-			$html .= '<ol class="compactlist">'.n;			
+			$html .= '<h4 class="fav-header" id="rel-'.$divid.'">'.$name.' <span>'.JText::sprintf('MOD_MYFAVORITES_RESULTS',$total).'</span></h4>'."\n";
+			$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
+			$html .= '<ol class="compactlist">'."\n";			
 			foreach ($category as $row) 
 			{
 				$row->href = str_replace('&amp;', '&', $row->href);
 				$row->href = str_replace('&', '&amp;', $row->href);
 
-				$html .= t.'<li class="favorite">'.n;
-				$html .= t.t.'<a href="'.$row->href.'">'.stripslashes($row->title).'</a>'.n;
-				$html .= t.'</li>'.n;
+				$html .= "\t".'<li class="favorite">'."\n";
+				$html .= "\t\t".'<a href="'.$row->href.'">'.stripslashes($row->title).'</a>'."\n";
+				$html .= "\t".'</li>'."\n";
 			}
-			$html .= '</ol>'.n;
+			$html .= '</ol>'."\n";
 
 			// Add a "more" link if necessary
 			if ($cats[$k]['total'] > 5) {
 				$qs = 'area='.urlencode(strToLower($cats[$k]['category']));
 				$seff = JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=favorites');
 				if (strstr( $seff, 'index' )) {
-					$seff .= a.$qs;
+					$seff .= '&amp;'.$qs;
 				} else {
 					$seff .= '?'.$qs;
 				}
@@ -103,7 +103,7 @@ if ($modmyfavorites->error) {
 				$html .= ' | <a href="'.$seff.'">'.JText::_('MOD_MYFAVORITES_MORE_FAVORITES').'</a>';
 				$html .= '</p>';
 			}
-			$html .= '</div><!-- / #'.$divid.' -->'.n;
+			$html .= '</div><!-- / #'.$divid.' -->'."\n";
 		}
 		$k++;
 	}
