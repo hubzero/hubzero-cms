@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_resources_supportingdocs' );
 
 class plgResourcesSupportingDocs extends JPlugin
 {
-	function plgResourcesSupportingDocs(&$subject, $config)
+	public function plgResourcesSupportingDocs(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,15 +45,12 @@ class plgResourcesSupportingDocs extends JPlugin
 	
 	//-----------
 	
-	function &onResourcesAreas( $resource, $archive = 0 ) 
+	public function &onResourcesAreas( $resource, $archive = 0 ) 
 	{
 		
-		if($archive) {
+		if ($archive) {
 			$areas = array();			
-		}	
-			
-		//else if ($resource->type !=8 && $resource->type != 31 && $resource->type != 2 && $resource->type != 6 ) {
-		else if ($resource->type !=8) {
+		} else if ($resource->type !=8) {
 			$areas = array(
 				'supportingdocs' => JText::_('Supporting Documents')
 			);
@@ -66,7 +63,7 @@ class plgResourcesSupportingDocs extends JPlugin
 
 	//-----------
 
-	function onResources( $resource, $option, $areas, $rtrn='all' )
+	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
@@ -90,38 +87,72 @@ class plgResourcesSupportingDocs extends JPlugin
 		$live_site = $xhub->getCfg('hubLongURL');
 		
 		switch ($resource->type)
-			{
-				case 7:
-					$dls = ResourcesHtml::writeChildren( $config, $option, $database, $resource, $helper->children, '', '', '', $resource->id, $fsize=0 );									
-				break;
-					
-				case 4:					
-					$dls = ResourcesHtml::writeDownloads( $database, $resource->id, $option, $config, $fsize=0 );
-				break;
-					
-				case 8:
-					// show no docs
-				break;
+		{
+			case 7:
+				$dls = ResourcesHtml::writeChildren( $config, $option, $database, $resource, $helper->children, '', '', '', $resource->id, $fsize=0 );									
+			break;
 				
-				case 6:
-				case 31:
-				case 2:					
-					$helper->getChildren( $resource->id, 0, 'no' );
-					$children = $helper->children;
-					$dls = ResourcesHtml::writeChildren( $config, $option, $database, $resource, $children, $live_site, '', '', $resource->id, $fsize=0 );
-				break;
-					
-				default:
-					$dls = ResourcesHtml::writeChildren( $config, $option, $database, $resource, $helper->children, '', '', '', $resource->id, $fsize=0 );
-				break;
-          }
+			case 4:
+				$dls = '';
+
+				$database->setQuery( "SELECT r.path, r.type, r.title, r.access, r.id, r.standalone, a.* FROM #__resources AS r, #__resource_assoc AS a WHERE a.parent_id=".$resource->id." AND r.id=a.child_id AND r.access=1 ORDER BY a.ordering" );
+				if ($database->query()) {
+					$downloads = $database->loadObjectList();
+				}
+				$base = $config->get('uploadpath');
+				if ($downloads) {
+					$dls .= '<ul>'."\n";
+					foreach ($downloads as $download)
+					{
+						$ftype = '';
+						$liclass = '';
+						$file_name_arr = explode('.',$download->path);
+						$ftype = end($file_name_arr);
+						$ftype = (strlen($ftype) > 3) ? substr($ftype, 0, 3): $ftype;
+
+						if ($download->type == 12) {
+							$liclass = ' class="html"';
+						} else {
+							$liclass = ' class="'.$ftype.'"';
+						}
+
+						$url = ResourcesHtml::processPath($option, $download, $resource->id);
+
+						$dls .= "\t".'<li'.$liclass.'><a href="'.$url.'">'.$download->title.'</a> ';
+						$dls .= ResourcesHtml::getFileAttribs( $download->path, $base, 0 );
+						$dls .= '</li>'."\n";
+					}
+					$dls .= '</ul>'."\n";
+				} else {
+					$dls .= '<p>[ none ]</p>';
+				}
+			break;
+				
+			case 8:
+				// show no docs
+			break;
+			
+			case 6:
+			case 31:
+			case 2:					
+				$helper->getChildren( $resource->id, 0, 'no' );
+				$children = $helper->children;
+				$dls = ResourcesHtml::writeChildren( $config, $option, $database, $resource, $children, $live_site, '', '', $resource->id, $fsize=0 );
+			break;
+				
+			default:
+				$dls = ResourcesHtml::writeChildren( $config, $option, $database, $resource, $helper->children, '', '', '', $resource->id, $fsize=0 );
+			break;
+		}
 		
-		$html = '';
-		$html .= ResourcesHtml::supportingDocuments($dls, 1);
+		$html  = '<div class="supportingdocs">'."\n";
+		$html .= '<h3>'.JText::_('SUPPORTING_DOCUMENTS').'</h3>'."\n";
+		$html .= $dls;
+		$html .= '</div><!-- / .supportingdocs -->'."\n";
 
 		$arr = array(
-				'html'=>$html,
-				'metadata'=>''
+			'html'=>$html,
+			'metadata'=>''
 		);
 
 		return $arr;
