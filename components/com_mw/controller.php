@@ -1090,16 +1090,6 @@ class MwController extends JObject
 			return 'admin';
 		}
 		
-		//$xuser =& XFactory::getUser();
-		$xuser = XProfile::getInstance();
-		if (is_object($xuser)) {
-			// Check if they're a site admin (from LDAP)
-			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-				return 'admin';
-			}
-		}
-
 		// Check if they're the member
 		if ($juser->get('id') == $uid) {
 			return true;
