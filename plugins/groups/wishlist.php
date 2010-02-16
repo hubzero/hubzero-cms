@@ -81,6 +81,8 @@ class plgGroupsWishlist extends JPlugin
 			'dashboard'=>''
 		);
 		
+		ximport('Hubzero_View_Helper_Html');
+		
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			if ($return == 'html') {
