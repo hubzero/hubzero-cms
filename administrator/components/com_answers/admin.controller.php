@@ -486,7 +486,7 @@ class AnswersController extends JObject
 	protected function delete_question() 
 	{
 		$database =& JFactory::getDBO();
-		$xuser 		=& XFactory::getUser();
+		$xprofile 		=& XFactory::getProfile();
 
 		$ids = JRequest::getVar( 'id', array(0) );
 		if (!is_array( $ids )) {
@@ -517,11 +517,11 @@ class AnswersController extends JObject
 				$reward = $BT->getAmount( 'answers', 'hold', $id );
 				$BT->deleteRecords( 'answers', 'hold', $id );
 				
-				$xuser =& XUser::getInstance( $aq->created_by );
+				$xprofile =& XProfile::getInstance( $aq->created_by );
 				
 				// Make credit adjustment
-				if(is_object($xuser)) {
-				$BTL = new BankTeller( $database, $xuser->get('uid') );
+				if(is_object($xprofile)) {
+				$BTL = new BankTeller( $database, $xprofile->get('uidNumber') );
 				$credit = $BTL->credit_summary();
 				$adjusted = $credit - $reward;
 				$BTL->credit_adjustment($adjusted);
@@ -600,7 +600,7 @@ class AnswersController extends JObject
 			
 			if ($publish == '1') {
 				
-				$xuser =& XUser::getInstance( $aq->created_by );
+				$xprofile =& XProfile::getInstance( $aq->created_by );
 				
 				if ($this->banking) {
 					// Remove hold
@@ -611,8 +611,8 @@ class AnswersController extends JObject
 					
 					
 					// Make credit adjustment
-					if(is_object($xuser)) {
-					$BTL = new BankTeller( $database, $xuser->get('uid') );
+					if(is_object($xprofile)) {
+					$BTL = new BankTeller( $database, $xprofile->get('uidNumber') );
 					$credit = $BTL->credit_summary();
 					$adjusted = $credit - $reward;
 					$BTL->credit_adjustment($adjusted);
@@ -625,7 +625,7 @@ class AnswersController extends JObject
 				$dispatcher =& JDispatcher::getInstance();
 				
 				// Call the plugin
-				if (!$dispatcher->trigger( 'onTakeAction', array( 'answers_reply_submitted', array($xuser->get('uid')), $this->_option, $id ))) {
+				if (!$dispatcher->trigger( 'onTakeAction', array( 'answers_reply_submitted', array($xprofile->get('uidNumber')), $this->_option, $id ))) {
 					$this->setError( JText::_('Failed to remove alert.')  );
 				}
 			

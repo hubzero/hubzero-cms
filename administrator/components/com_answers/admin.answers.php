@@ -43,7 +43,7 @@ include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.
 
 ximport('textfilter');
 ximport( 'bankaccount' );
-ximport('xuser');
+ximport('xprofile');
 
 // initiate controller
 $controller = new AnswersController();
