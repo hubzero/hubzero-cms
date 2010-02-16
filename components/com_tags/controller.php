@@ -443,7 +443,7 @@ class TagsController extends JObject
 		
 		// Ensure we were passed a tag
 		if (!$tagstring) {
-			echo TagsHtml::error( JText::_('COM_TAGS_NO_TAG') );
+			JError::raiseError( 404, JText::_('COM_TAGS_NO_TAG') );
 			return;
 		}
 		
@@ -553,7 +553,7 @@ class TagsController extends JObject
 				//$link = JRoute::_($row->href);
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(TagsHtml::cleanText(stripslashes($row->text)));
+				$description = html_entity_decode(Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)),300,0));
 				$author = '';
 				@$date = ( $row->publis_up ? date( 'r', strtotime($row->publish_up) ) : '' );
 
