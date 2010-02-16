@@ -1462,7 +1462,6 @@ class XGroup extends JObject
 	{
 		$errmsg = '';
 		$query = null;
-		$xuser = null;
 		$db    = null;
 
 		$xhub = &XFactory::getHub();
@@ -1477,8 +1476,6 @@ class XGroup extends JObject
 			return false;
 		}
 
-		$xuser =& XFactory::getUser();
-		
 		$errmsg = '';
 
 		$db = & JFactory::getDBO();
@@ -1534,12 +1531,13 @@ class XGroup extends JObject
 	
 	public function getEmails($key='managers') 
 	{
+		ximport('xprofile');
 		$emails = array();
 		$users = $this->get($key);
 		if ($users) {
 			foreach ($users as $user) 
 			{
-				$u =& XUser::getInstance($user);
+				$u =& XProfile::getInstance($user);
 				if (is_object($u)) {
 					$emails[] = $u->get('email');
 				}
