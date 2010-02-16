@@ -71,12 +71,12 @@ if (!$modwhatsnew->tagged) {
 
 	$html .= "\t".'<p class="category-header-details">'."\n";
 	if (count($modwhatsnew->tags) > 0) {
-		$html .= "\t\t".'<span class="configure">[<a href="'.JRoute::_('index.php?option=com_members'.a.'task=edit'.a.'id='.$juser->get('id')).'">'.JText::_('MOD_WHATSNEW_EDIT').'</a>]</span>'."\n";
+		$html .= "\t\t".'<span class="configure">[<a href="'.JRoute::_('index.php?option=com_members&task=edit&id='.$juser->get('id')).'">'.JText::_('MOD_WHATSNEW_EDIT').'</a>]</span>'."\n";
 	} else {
-		$html .= "\t\t".'<span class="configure">[<a href="'.JRoute::_('index.php?option=com_members'.a.'task=edit'.a.'id='.$juser->get('id')).'">'.JText::_('MOD_WHATSNEW_ADD_INTERESTS').'</a>]</span>'."\n";
+		$html .= "\t\t".'<span class="configure">[<a href="'.JRoute::_('index.php?option=com_members&task=edit&id='.$juser->get('id')).'">'.JText::_('MOD_WHATSNEW_ADD_INTERESTS').'</a>]</span>'."\n";
 	}
 	$html .= "\t\t".'<span class="q">'.JText::_('MOD_WHATSNEW_MY_INTERESTS').': '.$modwhatsnew->formatTags($modwhatsnew->tags).'</span>'."\n";
-	$html .= "\t".'</p>'.n;
+	$html .= "\t".'</p>'."\n";
 
 	if (count($rows2) > 0) {
 		$count = 0;
