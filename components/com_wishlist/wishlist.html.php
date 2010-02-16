@@ -593,7 +593,7 @@ class WishlistHtml
 				$name = JText::_('ANONYMOUS');
 				if ($item->anonymous != 1) {
 						$name = JText::_('UNKNOWN');
-						$ruser =& XUser::getInstance($item->proposed_by);
+						$ruser =& XProfile::getInstance($item->proposed_by);
 						if (is_object($ruser)) {
 							$name = $ruser->get('name');
 						}
@@ -612,7 +612,7 @@ class WishlistHtml
 				if($admin && $admin != 3) {
 						// what is owner login?
 						$assigned = JText::_('UNKNOWN');
-						$auser =& XUser::getInstance($item->assigned);
+						$auser =& XProfile::getInstance($item->assigned);
 						if (is_object($auser)) {
 							$assigned = $auser->get('name');
 						}
@@ -717,7 +717,7 @@ class WishlistHtml
 		$name = JText::_('ANONYMOUS');
 		if ($item->anonymous != 1) {
 			$name = JText::_('UNKNOWN');
-			$ruser =& XUser::getInstance($item->proposed_by);
+			$ruser =& XProfile::getInstance($item->proposed_by);
 			if (is_object($ruser)) {
 				$name = $ruser->get('name');
 			}
@@ -725,7 +725,7 @@ class WishlistHtml
 		
 		if($admin) {
 			$assigned = JText::_('UNKNOWN');
-			$auser =& XUser::getInstance($item->assigned);
+			$auser =& XProfile::getInstance($item->assigned);
 			if (is_object($auser)) {
 				$assigned = $auser->get('name');
 			}
@@ -738,7 +738,7 @@ class WishlistHtml
 			
 			// who granted the wish?
 			$granted_by = JText::_('UNKNOWN');
-			$guser =& XUser::getInstance($item->granted_by);
+			$guser =& XProfile::getInstance($item->granted_by);
 			if (is_object($guser)) {
 				$granted_by = $guser->get('name');
 			}
@@ -1424,9 +1424,9 @@ class WishlistHtml
 						$html .=t.t.t.'</p>'.n;
 						}
 						
-						$xuser =& XUser::getInstance ( $plan->created_by );
-						if (is_object($xuser)) {
-							$login = $xuser->get('login');
+						$xprofile =& XProfile::getInstance ( $plan->created_by );
+						if (is_object($xprofile)) {
+							$login = $xprofile->get('username');
 						} else {
 							$login = JText::_('UNKNOWN'); 
 						}
@@ -1597,11 +1597,11 @@ class WishlistHtml
 			for ($i=0, $n=count( $wishlist->owners ); $i < $n; $i++) {
 				
 				if(!in_array($wishlist->owners[$i], $allmembers)) {
-				$kuser =& XUser::getInstance ( $wishlist->owners[$i]);
+				$kuser =& XProfile::getInstance ( $wishlist->owners[$i]);
 				$html .= t.' 			<tr>'.n;
 				$html .= t.' 			 <td>'.$k.'.</td>'.n;
 				$html .= t.' 			 <td>'.$kuser->get('name').'</td>'.n;
-				$html .= t.' 			 <td>'.$kuser->get('login').'</td>'.n;
+				$html .= t.' 			 <td>'.$kuser->get('username').'</td>'.n;
 				$html .= t.' 			 <td>';
 				$html .= ($n> 1 && !in_array($wishlist->owners[$i], $wishlist->nativeowners))  ? '<a href="'.JRoute::_('index.php?option='.$option.a.'task=savesettings').'?listid='.$wishlist->id.a.'action=delete'.a.'user='.$wishlist->owners[$i].'" class="delete">'.JText::_('remove').'</a>' : '' ;
 				$html .= t.'			 </td>'.n;
@@ -1648,11 +1648,11 @@ class WishlistHtml
 			for ($i=0, $n=count( $wishlist->advisory ); $i < $n; $i++) {
 				
 				if(!in_array($wishlist->advisory[$i], $allmembers)) {
-				$quser =& XUser::getInstance ( $wishlist->advisory[$i]);
+				$quser =& XProfile::getInstance ( $wishlist->advisory[$i]);
 				$html .= t.' 			<tr>'.n;
 				$html .= t.' 			 <td>'.$k.'.</td>'.n;
 				$html .= t.' 			 <td>'.$quser->get('name').'</td>'.n;
-				$html .= t.' 			 <td>'.$quser->get('login').'</td>'.n;
+				$html .= t.' 			 <td>'.$quser->get('username').'</td>'.n;
 				$html .= t.' 			 <td>';
 				$html .=  '<a href="'.JRoute::_('index.php?option='.$option.a.'task=savesettings').'?listid='.$wishlist->id.a.'action=delete'.a.'user='.$wishlist->advisory[$i].'" class="delete">'.JText::_('remove').'</a>' ;
 				$html .= t.'			 </td>'.n;
@@ -1764,7 +1764,7 @@ class WishlistHtml
 		$name = JText::_('ANONYMOUS');
 		if ($reply->anonymous != 1) {
 			$name = JText::_('UNKNOWN');
-			$ruser =& XUser::getInstance($reply->added_by);
+			$ruser =& XProfile::getInstance($reply->added_by);
 			if (is_object($ruser)) {
 				$name = $ruser->get('name');
 			}
@@ -1969,9 +1969,9 @@ class WishlistHtml
 			// what is submitter name?
 			if($task=='editwish') {
 				$login  = JText::_('UNKNOWN');
-				$ruser =& XUser::getInstance($wish->proposed_by);
+				$ruser =& XProfile::getInstance($wish->proposed_by);
 				if (is_object($ruser)) {
-					$login = $ruser->get('login');
+					$login = $ruser->get('username');
 				}
 			}
 			

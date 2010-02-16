@@ -849,10 +849,10 @@ class WishlistController extends JObject
 					
 				$name = JText::_('UNKNOWN');
 				$login = JText::_('UNKNOWN');
-				$ruser =& XUser::getInstance($objWish->proposed_by);
+				$ruser =& XProfile::getInstance($objWish->proposed_by);
 				if (is_object($ruser)) {
 					$name = $ruser->get('name');
-					$login = $ruser->get('login');
+					$login = $ruser->get('username');
 				}
 				if($objWish->anonymous) {
 					$name = JText::_('ANONYMOUS');
@@ -1241,9 +1241,9 @@ class WishlistController extends JObject
 		// If we are editing
 		$by = JRequest::getVar( 'by', '', 'post' );
 		if($by) {
-			$ruser =& XUser::getInstance($by);
+			$ruser =& XProfile::getInstance($by);
 			if (is_object($ruser)) {
-				$row->proposed_by = $ruser->get('uid');
+				$row->proposed_by = $ruser->get('uidNumber');
 			}
 			else {
 				echo WishlistHtml::alert( JText::_('The username of the wish author appears to be invalid.') );
@@ -1308,10 +1308,10 @@ class WishlistController extends JObject
 					
 					$name = JText::_('UNKNOWN');
 					$login = JText::_('UNKNOWN');
-					$ruser =& XUser::getInstance($row->proposed_by);
+					$ruser =& XProfile::getInstance($row->proposed_by);
 					if (is_object($ruser)) {
 						$name = $ruser->get('name');
-						$login = $ruser->get('login');
+						$login = $ruser->get('username');
 					}
 					
 					if($row->anonymous) {
@@ -1483,10 +1483,10 @@ class WishlistController extends JObject
 					
 					$name = JText::_('UNKNOWN');
 					$login = JText::_('UNKNOWN');
-					$ruser =& XUser::getInstance($objWish->proposed_by);
+					$ruser =& XProfile::getInstance($objWish->proposed_by);
 					if (is_object($ruser)) {
 						$name = $ruser->get('name');
-						$login = $ruser->get('login');
+						$login = $ruser->get('username');
 					}
 					if($objWish->anonymous) {
 						$name = JText::_('ANONYMOUS');
@@ -1748,10 +1748,10 @@ class WishlistController extends JObject
 					
 					$name = JText::_('UNKNOWN');
 					$login = JText::_('UNKNOWN');
-					$ruser =& XUser::getInstance($objWish->proposed_by);
+					$ruser =& XProfile::getInstance($objWish->proposed_by);
 					if (is_object($ruser)) {
 						$name = $ruser->get('name');
-						$login = $ruser->get('login');
+						$login = $ruser->get('username');
 					}
 					
 					if($objWish->anonymous) {
@@ -2278,10 +2278,10 @@ class WishlistController extends JObject
 					
 				$name = JText::_('UNKNOWN');
 				$login = JText::_('UNKNOWN');
-				$ruser =& XUser::getInstance($row->added_by);
+				$ruser =& XProfile::getInstance($row->added_by);
 				if (is_object($ruser)) {
 					$name = $ruser->get('name');
-					$login = $ruser->get('login');
+					$login = $ruser->get('username');
 				}
 				if($row->anonymous) {
 					$name = JText::_('ANONYMOUS');
@@ -2669,16 +2669,6 @@ class WishlistController extends JObject
 	
 	public function authorize_admin($listid = 0, $admin = 0)
 	{
-
-		// Check if they're a site admin (from LDAP)
-		$xuser =& XFactory::getUser();
-		if (is_object($xuser)) {
-			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-				$admin = 1;
-			}
-		}
-
 		$juser =& JFactory::getUser();
 		// Check if they're a site admin (from Joomla)
 		if ($juser->authorize($this->_option, 'manage')) {
