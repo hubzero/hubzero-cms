@@ -69,6 +69,7 @@ class plgMwQuestions extends JPlugin
 		// Did we get results back?
 		if ($rows) {
 			ximport('xdocument');
+			ximport('xprofile');
 			XDocument::addComponentStylesheet('com_answers');
 
 			// Loop through the results and build the HTML
@@ -76,8 +77,8 @@ class plgMwQuestions extends JPlugin
 			foreach ($rows as $row) 
 			{
 				if ($row->anonymous == 0) {
-					$xuser =& XUser::getInstance( $row->created_by );
-					$name = $xuser->get('name');
+					$xprofile =& XProfile::getInstance( $row->created_by );
+					$name = $xprofile->get('name');
 				} else {
 					$name = JText::_('ANONYMOUS');
 				}
