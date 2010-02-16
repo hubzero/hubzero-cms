@@ -39,7 +39,6 @@ require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'jobs.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'jobs.class.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'jobs.config.php' );
-ximport('xuser');
 ximport('bankaccount');
 ximport('misc_func');
 

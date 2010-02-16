@@ -1993,15 +1993,6 @@ maxads=3'
 	{
 		$juser =& JFactory::getUser();
 		if(!$juser->get('guest')) {
-			// Check if they're a site admin (from LDAP)
-			$xuser =& XFactory::getUser();
-			if (is_object($xuser)) {
-				$app =& JFactory::getApplication();
-				if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-					$admin = 1;
-				}
-			}
-				
 			// Check if they're a site admin (from Joomla)
 			if ($juser->authorize($this->_option, 'manage')) {
 				$admin = 1;
