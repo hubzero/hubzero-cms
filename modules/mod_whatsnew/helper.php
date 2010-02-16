@@ -101,7 +101,7 @@ class modWhatsNew
 				}
 				if ($i < $num) {
 					// display tag
-					$out .= "\t".'<a href="'.JRoute::_('index.php?option=com_tags'.a.'tag='.$tags[$i]['tag']).'">'.stripslashes($tags[$i]['raw_tag']).'</a> '."\n";
+					$out .= "\t".'<a href="'.JRoute::_('index.php?option=com_tags&tag='.$tags[$i]['tag']).'">'.stripslashes($tags[$i]['raw_tag']).'</a> '."\n";
 				}
 			}
 			if ($i > $num) {
