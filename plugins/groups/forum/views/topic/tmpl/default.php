@@ -53,7 +53,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					}
 				}
 				
-				$comment = $p->parse( n.stripslashes($row->comment) );
+				$comment = $p->parse( "\n".stripslashes($row->comment) );
 				
 				$o = ($o == 'odd') ? 'even' : 'odd';
 ?>
