@@ -759,7 +759,7 @@ class XRegistration
 			if (!empty($registration['phone']) && !XRegistrationHelper::validphone($registration['phone']))
 				$this->_invalid['phone'] = 'Invalid phone number. You may be using characters that are not allowed.';
 
-		if (($registrationEmployment == REG_REQUIRED) || ($juser->get('username') == 'nkissebe2'))
+		if ($registrationEmployment == REG_REQUIRED)
 		{
 			if (empty($registration['orgtype']))
 			{
