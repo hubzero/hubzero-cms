@@ -215,7 +215,7 @@ class ContributeHtml
 						{
 							if ($type->contributable == 1) {
 								if ($type->id == 7) {
-									$url = '/contribute/tools/register/';
+									$url = '/contribute/tools/register';
 								} else {
 									$url = JRoute::_('index.php?option='.$option.a.'step='.$step.a.'type='.$type->id);
 								}
