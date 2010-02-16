@@ -150,7 +150,7 @@ class plgWhatsnewEvents extends JPlugin
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 		if ($row->itext) {
 			$row->itext = str_replace('[[BR]]', '', $row->itext);
-			$html .= "\t\t".'<p>&#133; '.WhatsnewHtml::cleanText(stripslashes($row->itext),200).'</p>'."\n";
+			$html .= "\t\t".'<p>'.Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->itext)),200,0).'</p>'."\n";
 		}
 		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 		$html .= "\t".'</li>'."\n";
