@@ -34,10 +34,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 if ($this->report && !$this->getError()) {
 	$name = JText::_('ANONYMOUS');
 	if ($this->report->anon == 0) {
-		$xuser =& JUser::getInstance($this->report->author);
+		$juser =& JUser::getInstance($this->report->author);
 		$name = JText::_('UNKNOWN');
-		if (is_object($xuser)) {
-			$name = $xuser->get('name');
+		if (is_object($juser)) {
+			$name = $juser->get('name');
 		}
 	}
 ?>
