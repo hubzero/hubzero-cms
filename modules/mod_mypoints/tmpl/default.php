@@ -54,19 +54,19 @@ if ($modmypoints->error) {
 	foreach ($history as $item)
 	{
 		$cls = (($cls == 'even') ? 'odd' : 'even');
-		$html  = t.t.'<tr class="'.$cls.'">'.n;
-		$html .= t.t.t.'<td>'.JHTML::_('date',$item->created, '%d %b, %Y').'</td>'.n;
-		//$html .= t.t.t.'<td>'.$item->description.'</td>'.n;
-		$html .= t.t.t.'<td>'.$item->type.'</td>'.n;
+		$html  = "\t\t".'<tr class="'.$cls.'">'."\n";
+		$html .= "\t\t\t".'<td>'.JHTML::_('date',$item->created, '%d %b, %Y').'</td>'."\n";
+		//$html .= "\t\t\t".'<td>'.$item->description.'</td>'."\n";
+		$html .= "\t\t\t".'<td>'.$item->type.'</td>'."\n";
 		if ($item->type == 'withdraw') {
-			$html .= t.t.t.'<td class="numerical-data"><span class="withdraw">-'.$item->amount.'</span></td>'.n;
+			$html .= "\t\t\t".'<td class="numerical-data"><span class="withdraw">-'.$item->amount.'</span></td>'."\n";
 		} elseif ($item->type == 'hold') {
-			$html .= t.t.t.'<td class="numerical-data"><span class="hold">('.$item->amount.')</span></td>'.n;
+			$html .= "\t\t\t".'<td class="numerical-data"><span class="hold">('.$item->amount.')</span></td>'."\n";
 		} else {
-			$html .= t.t.t.'<td class="numerical-data"><span class="deposit">+'.$item->amount.'</span></td>'.n;
+			$html .= "\t\t\t".'<td class="numerical-data"><span class="deposit">+'.$item->amount.'</span></td>'."\n";
 		}
-		$html .= t.t.t.'<td class="numerical-data">'.$item->balance.'</td>'.n;
-		$html .= t.t.'</tr>'.n;
+		$html .= "\t\t\t".'<td class="numerical-data">'.$item->balance.'</td>'."\n";
+		$html .= "\t\t".'</tr>'."\n";
 		echo $html;
 	}
 ?>
