@@ -46,7 +46,7 @@ require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin
 require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'store.config.php' );
 ximport('textfilter');
 ximport('misc_func');
-ximport('xuser');
+ximport('xprofile');
 
 // Instantiate controller
 $controller = new StoreController();

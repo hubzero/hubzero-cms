@@ -193,8 +193,8 @@ class StoreController
 				}
 				$o->itemtitles = $items;
 				
-				$xuser =& XUser::getInstance($o->uid);
-				$o->author = $xuser->get('login');
+				$xprofile =& XProfile::getInstance($o->uid);
+				$o->author = $xprofile->get('username');
 			}
 		
 		}
@@ -300,7 +300,7 @@ class StoreController
 					}
 				}
 		
-		$customer =& XUser::getInstance($row->uid);
+		$customer =& XProfile::getInstance($row->uid);
 		
 		}
 		
@@ -387,7 +387,7 @@ class StoreController
 						
 					}
 				}
-			$customer =& XUser::getInstance($row->uid);
+			$customer =& XProfile::getInstance($row->uid);
 			
 			// check available user funds		
 			$BTL 		= new BankTeller( $database, $row->uid);
@@ -469,8 +469,8 @@ class StoreController
 			$row->total = $cost;
 			
 			// get user bank account
-			$xuser =& XUser::getInstance( $row->uid );
-			$BTL_Q = new BankTeller( $database, $xuser->get('uid') );
+			$xprofile =& XProfile::getInstance( $row->uid );
+			$BTL_Q = new BankTeller( $database, $xprofile->get('uidNumber') );
 			
 			// start email message
 			$emailbody .= JText::_('THANKYOU').' '.JText::_('IN_THE').' '.$hubShortName.' '.JText::_('STORE').'!'.r.n.r.n;

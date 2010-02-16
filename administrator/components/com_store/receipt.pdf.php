@@ -144,7 +144,7 @@ class PDF extends FPDF
 		//$this->SetY(40);
 		$this->Ln(5);
 		$this->SetFont('Helvetica','',8);
-		$this->Cell(0,5,$customer->get('name').' ('.$customer->get('login').')',0,2);
+		$this->Cell(0,5,$customer->get('name').' ('.$customer->get('username').')',0,2);
 		$this->Cell(0,5,$customer->get('email'),0,2);
 		$this->Ln(5);
 		$this->SetFont('Helvetica','B',8);

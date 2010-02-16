@@ -380,7 +380,7 @@ class StoreHTML
 				  </tr>
                   <tr>
 				   <td class="key"><label><?php echo JText::_('PROFILE_INFO'); ?>:</label></td>
-				   <td><?php echo JText::_('LOGIN'); ?>: 		<?php echo $customer->get('login') ?> <br />
+				   <td><?php echo JText::_('LOGIN'); ?>: 		<?php echo $customer->get('username') ?> <br />
 	 				   <?php echo JText::_('NAME'); ?>:  		<?php echo $customer->get('name') ?> <br />
     				   <?php echo JText::_('EMAIL'); ?>: 		<?php echo $customer->get('email') ?>
                    </td>
