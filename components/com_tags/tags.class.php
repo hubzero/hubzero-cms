@@ -88,6 +88,7 @@ class Tags
 			ORDER BY t.raw_tag ASC
 			$limit_sql
 			";
+
 		$this->_db->setQuery( $sql );
 		$rs = $this->_db->loadObjectList();
 
@@ -185,9 +186,9 @@ class Tags
 		$tagArray  = $this->_parse_tags($tag_string);   // array of normalized tags
 		$tagArray2 = $this->_parse_tags($tag_string,1); // array of normalized => raw tags
 		if ($admin == 1) {
-			$oldTags = $this->get_tags_on_object($object_id, 0, 0, 0, 0); // tags currently assigned to an object
+			$oldTags = $this->get_tags_on_object($object_id, 0, 0, 0, 0, 1); // tags currently assigned to an object
 		} else {
-			$oldTags = $this->get_tags_on_object($object_id, 0, 0, $tagger_id, 0); // tags currently assigned to an object
+			$oldTags = $this->get_tags_on_object($object_id, 0, 0, $tagger_id, 0, 0); // tags currently assigned to an object
 		}
 
 		$preserveTags = array();
