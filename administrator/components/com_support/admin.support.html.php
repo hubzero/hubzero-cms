@@ -908,12 +908,15 @@ class SupportHtml
 										$hi = array();
 										$o  = '<select name="messages" id="messages" onchange="getMessage();">'.n;
 										$o .= t.'<option value="mc">'.JText::_('COMMENT_CUSTOM').'</option>'.n;
+										$jconfig =& JFactory::getConfig();
 										foreach ($lists['messages'] as $message)
 										{
 											$message->message = str_replace('"','&quot;',stripslashes($message->message));
 											$message->message = str_replace('&quote;','&quot;',$message->message);
 											$message->message = str_replace('#XXX','#'.$row->id,$message->message);
 											$message->message = str_replace('{ticket#}','#'.$row->id,$message->message);
+											$message->message = str_replace('{sitename}',$jconfig->getValue('config.sitename'),$message->message);
+											$message->message = str_replace('{siteemail}',$jconfig->getValue('config.mailfrom'),$message->message);
 
 											$o .= t.'<option value="m'.$message->id.'">'.$message->title.'</option>'."\n";
 
