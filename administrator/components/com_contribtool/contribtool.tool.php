@@ -176,11 +176,8 @@ class Tool extends JTable
 		$sql .= " LIMIT ".$filters['start'].",".$filters['limit'];
 				
 		}
-//	var_dump($sql);	
 		$this->_db->setQuery( $sql );
-		$xlog = &XFactory::getLogger();
 		$result = $this->_db->loadObjectList();
-		$xlog->logDebug($sql);
 		return $result;
 	}
 
