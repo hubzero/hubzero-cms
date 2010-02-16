@@ -138,7 +138,7 @@ $database = new database( $mosConfig_host, $mosConfig_user, $mosConfig_password,
 $database->debug( $mosConfig_debug );
 */
 
-ximport('xuser');
+ximport('xprofile');
 ximport('textfilter');
 ximport('bankaccount');
 

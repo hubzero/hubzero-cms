@@ -451,7 +451,7 @@ class UserpointsController extends JObject
 		$database 		=& JFactory::getDBO();
 		$msg 			= '';
 		$duplicate 		= 0;
-		$xuser 			=& XFactory::getUser();
+		$xprofile 			=& XFactory::getProfile();
 		
 		$ref 				= JRequest::getInt ('ref', 0, 'post');
 		$category 			= JRequest::getVar('com', 'general','post') ? JRequest::getVar('com') : 'general';
@@ -478,7 +478,7 @@ class UserpointsController extends JObject
 				$users 		= array_unique($users); // get rid of duplicates
 				foreach($users as $user) {
 							
-					$validuser = XUser::getInstance($user);
+					$validuser = XProfile::getInstance($user);
 			
 					if($user && $validuser) {
 						$BTL = new BankTeller( $database, $user );
