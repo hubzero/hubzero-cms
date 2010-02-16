@@ -34,7 +34,7 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
-ximport('xuser');
+ximport('xprofile');
 ximport('textfilter');
 ximport('xgroup');
 ximport('xuserhelper');
