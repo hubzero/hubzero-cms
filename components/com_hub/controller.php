@@ -426,7 +426,7 @@ class HubController extends JObject
 
 	private function send_account_recovery($email)
 	{
-		ximport('xuser');
+		ximport('xprofile');
 		ximport('xuserhelper');
 		ximport('xhubhelper');
 		
@@ -456,10 +456,9 @@ class HubController extends JObject
 		$message .= " registered to this address:\r\n";
 		foreach ($emailusers as $emailuser) 
 		{
-			$xuser =& XUser::getInstance($emailuser);
-			$emailuserobj = $xuser->getuser();
+			$xprofile =& XProfile::getInstance($emailuser);
 
-			$message .= "\t" . $xuser->get('login') . "\t(" . $xuser->get('name') . ")\r\n";
+			$message .= "\t" . $xprofile->get('login') . "\t(" . $xprofile->get('name') . ")\r\n";
 		}
 		$message .= "\r\n";
 		$message .= "You may login to " . $hubShortName . " using ";
@@ -504,7 +503,7 @@ class HubController extends JObject
 		ximport('xhubhelper');
 		ximport('xprofile');
 		
-		$xuser =& XFactory::getUser();
+		$xprofile =& XFactory::getProfile();
 
 		$this->_view = $this->_task;
 
@@ -527,7 +526,7 @@ class HubController extends JObject
 		$view->passed = false;
 
 		// Check if the user *can* reset their password
-		if ( is_object($xuser) && (XUserHelper::isXDomainUser($xuser->get('uid'))) ) {
+		if ( is_object($xprofile) && (XUserHelper::isXDomainUser($xprofile->get('uidNumber'))) ) {
 			$view->setError( JText::_('This is a linked account. To retrieve your password you must do so using the procedures available where the account your are linked to is managed.') );
 			$view->display();
 			return;
@@ -541,12 +540,12 @@ class HubController extends JObject
 		// Was the form submitted?
 		if ($view->reset) {
 			// Attempt to load a user with the given username
-			$xuser =& XUser::getInstance($view->login);
+			$xprofile =& XProfile::getInstance($view->login);
 
 			// Ensure we have a user with this login and e-mail
-			if (!is_object($xuser)) {
+			if (!is_object($xprofile)) {
 				$this->setError( JText::_('No account could be located matching this login. Please be sure to list your information exactly as originally specified.'));
-			} elseif ($xuser->get('email') != $view->email) {
+			} elseif ($xprofile->get('email') != $view->email) {
 				$this->setError( JText::_('Incorrect email address for this login. Please be sure to list your information exactly as originally specified.'));
 			}
 
@@ -561,7 +560,7 @@ class HubController extends JObject
 
 			// Initiate profile class
 			$profile = new XProfile();
-			$profile->load( $xuser->get('uid') );
+			$profile->load( $xprofile->get('uidNumber') );
 			$profile->set('userPassword', XUserHelper::encrypt_password($newpass));
 
 			if (!$profile->update()) {
@@ -581,7 +580,7 @@ class HubController extends JObject
 			$subject = $jconfig->getValue('config.sitename') . " Account Password Reset";
 
 			// Build the Admin email message
-			$sef = JRoute::_('index.php?option=com_members&id='.$xuser->get('uid'));
+			$sef = JRoute::_('index.php?option=com_members&id='.$xprofile->get('uidNumber'));
 			if (substr($sef,0,1) == '/') {
 				$sef = substr($sef,1,strlen($sef));
 			}
@@ -592,7 +591,7 @@ class HubController extends JObject
 			$admmessage .= $url . "\r\n";
 
 			// Build the email message
-			$sef = JRoute::_('index.php?option=com_members&id='.$xuser->get('uid').'&task=changepassword');
+			$sef = JRoute::_('index.php?option=com_members&id='.$xprofile->get('uidNumber').'&task=changepassword');
 			if (substr($sef,0,1) == '/') {
 				$sef = substr($sef,1,strlen($sef));
 			}
@@ -616,11 +615,11 @@ class HubController extends JObject
 			}
 
 			// E-mail the user
-			if (!XHubHelper::send_email($xuser->get('email'), $subject, $usrmessage)) {
-				$this->setError(JText::_("There was an error emailing '" . htmlentities($xuser->get('email'),ENT_COMPAT,'UTF-8') . "' your new password."));
+			if (!XHubHelper::send_email($xprofile->get('email'), $subject, $usrmessage)) {
+				$this->setError(JText::_("There was an error emailing '" . htmlentities($xprofile->get('email'),ENT_COMPAT,'UTF-8') . "' your new password."));
 			}
 
-			$view->xuser = $xuser;
+			$view->xprofile = $xprofile;
 			$view->jconfig = $jconfig;
 			$view->passed = true;
 		}
