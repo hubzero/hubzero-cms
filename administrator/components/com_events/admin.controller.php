@@ -77,7 +77,7 @@ class EventsController
 	
 	private function getTask()
 	{
-		$task = JRequest::getString('task', '');
+		$task = strtolower(JRequest::getString('task', ''));
 		$this->_task = $task;
 		return $task;
 	}
