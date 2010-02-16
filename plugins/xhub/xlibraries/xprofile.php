@@ -1476,12 +1476,23 @@ class XProfile extends JObject
                         if ($registration->get($key) !== null)
                                 $this->set($key, $registration->get($key));
 
-		$this->set('username', $registration->get('login'));
-                $this->set('userPassword', $registration->get('password'));
-		$this->set('organization', $registration->get('org'));
-		$this->set('gender', $registration->get('sex'));
-		$this->set('nativeTribe', $registration->get('nativetribe'));
-		$this->set('url', $registration->get('web'));
+                if ($registration->get('login') !== null)
+					$this->set('username', $registration->get('login'));
+
+                if ($registration->get('password') !== null)
+                	$this->set('userPassword', $registration->get('password'));
+
+                if ($registration->get('org') !== null)
+					$this->set('organization', $registration->get('org'));
+
+                if ($registration->get('sex') !== null)
+					$this->set('gender', $registration->get('sex'));
+
+                if ($registration->get('nativetribe') !== null)
+					$this->set('nativeTribe', $registration->get('nativetribe'));
+
+                if ($registration->get('web') !== null)
+					$this->set('url', $registration->get('web'));
 
                 if ($registration->get('mailPreferenceOption') !== null)
                         $this->set('mailPreferenceOption', $registration->get('mailPreferenceOption') ? '2' : '0');
