@@ -215,6 +215,8 @@ class plgUserXusers extends JPlugin
 			$xprofile->set('uidNumber', $user['id']);
 			$xprofile->set('userPassword', $user['password']);
 			$xprofile->set('homeDirectory', $hubHomeDir . '/' . $user['username']);
+			$xprofile->set('loginShell','/bin/bash');
+			$xprofile->set('ftpShell','/usr/lib/sftp-server');
 			$xprofile->set('name', $user['name']);
 			$xprofile->set('email', $user['email']);
 			$xprofile->set('emailConfirmed', '3');
