@@ -48,7 +48,7 @@ class plgUsageDomains extends JPlugin
 	public function onUsageAreas()
 	{
 		$areas = array(
-			'domains' => JText::_('USAGE_DOMAINS')
+			'domains' => JText::_('PLG_USAGE_DOMAINS')
 		);
 		return $areas;
 	}

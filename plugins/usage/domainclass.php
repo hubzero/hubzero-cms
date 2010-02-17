@@ -48,7 +48,7 @@ class plgUsageDomainclass extends JPlugin
 	public function onUsageAreas()
 	{
 		$areas = array(
-			'domainclass' => JText::_('USAGE_DOMAINCLASS')
+			'domainclass' => JText::_('PLG_USAGE_DOMAINCLASS')
 		);
 		return $areas;
 	}
@@ -173,49 +173,49 @@ class plgUsageDomainclass extends JPlugin
 			$cls = 'even';
 
 			// Print class list table...
-			$html .= '<table summary="'.$classname.'">'.n;
-			$html .= t.'<caption>Table '.$t.': '.$classname.'</caption>'.n;
-			$html .= t.'<thead>'.n;
-			$html .= t.t.'<tr>'.n;
+			$html .= '<table summary="'.$classname.'">'."\n";
+			$html .= "\t".'<caption>Table '.$t.': '.$classname.'</caption>'."\n";
+			$html .= "\t".'<thead>'."\n";
+			$html .= "\t\t".'<tr>'."\n";
 			for ($pidx = 0; $pidx < count($period); $pidx++) 
 			{
-				$html .= '<th colspan="3" scope="colgroup">'. $period[$pidx]["name"] .'</th>'.n;
+				$html .= '<th colspan="3" scope="colgroup">'. $period[$pidx]["name"] .'</th>'."\n";
 			}
-			$html .= t.t.'</tr>'.n;
-			$html .= t.'</thead>'.n;
-			$html .= t.'<tbody>'.n;
-			$html .= t.t.'<tr class="summary">'.n;
+			$html .= "\t\t".'</tr>'."\n";
+			$html .= "\t".'</thead>'."\n";
+			$html .= "\t".'<tbody>'."\n";
+			$html .= "\t\t".'<tr class="summary">'."\n";
 			for ($pidx = 0; $pidx < count($period); $pidx++) 
 			{
 				$tdcls = ($pidx != 1) ? ' class="group"' : '';
-				$html .= t.t.t.'<th'.$tdcls.' scope="row">'. $classlist[$pidx][0][0] .'</th>'.n;
-				$html .= t.t.t.'<td'.$tdcls.'>'. $classlist[$pidx][0][2] .'</td>'.n;
-				$html .= t.t.t.'<td'.$tdcls.'>'. $classlist[$pidx][0][3] .'</td>'.n;
+				$html .= "\t\t\t".'<th'.$tdcls.' scope="row">'. $classlist[$pidx][0][0] .'</th>'."\n";
+				$html .= "\t\t\t".'<td'.$tdcls.'>'. $classlist[$pidx][0][2] .'</td>'."\n";
+				$html .= "\t\t\t".'<td'.$tdcls.'>'. $classlist[$pidx][0][3] .'</td>'."\n";
 			}
-			$html .= t.t.'</tr>'.n;
+			$html .= "\t\t".'</tr>'."\n";
 			for ($i = 1; $i < $maxrank; $i++) 
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 
-				$html .= t.t.'<tr class="'. $cls .'">'.n;
+				$html .= "\t\t".'<tr class="'. $cls .'">'."\n";
 				for ($pidx = 0; $pidx < count($period); $pidx++) 
 				{
 					$tdcls = ($pidx != 1) ? ' class="group"' : '';
-					$html .= t.t.t.'<th'.$tdcls.' scope="row">';
+					$html .= "\t\t\t".'<th'.$tdcls.' scope="row">';
 					$html .= (isset($classlist[$pidx][$i][0])) ? $classlist[$pidx][$i][0] : '';
-					$html .= '</th>'.n;
-					$html .= t.t.t.'<td'.$tdcls.'>';
+					$html .= '</th>'."\n";
+					$html .= "\t\t\t".'<td'.$tdcls.'>';
 					$html .= (isset($classlist[$pidx][$i][2])) ? $classlist[$pidx][$i][2] : '';
-					$html .= '</td>'.n;
-					$html .= t.t.t.'<td'.$tdcls.'>';
+					$html .= '</td>'."\n";
+					$html .= "\t\t\t".'<td'.$tdcls.'>';
 					$html .= (isset($classlist[$pidx][$i][3])) ? $classlist[$pidx][$i][3] : '';
-					$html .= '</td>'.n;
+					$html .= '</td>'."\n";
 
 				}
-				$html .= t.t.'</tr>'.n;
+				$html .= "\t\t".'</tr>'."\n";
 			}
-			$html .= t.'</tbody>'.n;
-			$html .= '</table>'.n;
+			$html .= "\t".'</tbody>'."\n";
+			$html .= '</table>'."\n";
 		}
 		return $html;
 	}

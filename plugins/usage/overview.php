@@ -48,7 +48,7 @@ class plgUsageOverview extends JPlugin
 	public function onUsageAreas()
 	{
 		$areas = array(
-			'overview' => JText::_('USAGE_OVERVIEW')
+			'overview' => JText::_('PLG_USAGE_OVERVIEW')
 		);
 		return $areas;
 	}
@@ -57,7 +57,7 @@ class plgUsageOverview extends JPlugin
 	//  Strip Usage GET variables  //
 	//-----------------------------//
 	
-	private function usageurlstrip($url) 
+	private function _usageurlstrip($url) 
 	{
 	   	$pvar = strpos($url, "period=");
 	    if ($pvar) {
@@ -72,7 +72,7 @@ class plgUsageOverview extends JPlugin
 	//  for the date passed to it, FALSE otherwise.
 	//-------------------------------------------------
 	
-	private function check_for_data(&$db, $yearmonth, $period) 
+	private function _check_for_data(&$db, $yearmonth, $period) 
 	{
 	   	$sql = "SELECT COUNT(datetime) FROM totalvals WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%' AND period = '" . mysql_escape_string($period) . "'";
 		$db->setQuery( $sql );
@@ -86,7 +86,7 @@ class plgUsageOverview extends JPlugin
 	
 	//-----------
 
-	private function print_user_row(&$db, $id, $period, $datetime) 
+	private function _print_user_row(&$db, $id, $period, $datetime) 
 	{
 		$html = '';
 		
@@ -102,16 +102,18 @@ class plgUsageOverview extends JPlugin
 				if ($i == 1) {
 					$cls = ' class="highlight"';
 				}
-				$html .= t.t.t.'<td'.$cls.'>'.trim($this->fmt_result($row->value,$row->valfmt)).'</td>'.n;
+				$html .= "\t\t\t".'<td'.$cls.'>'.trim($this->_fmt_result($row->value,$row->valfmt)).'</td>'."\n";
 			}
 		}
 		if ($i == 1) {
-			$html .= $this->empty_rows(10);
+			$html .= $this->_empty_rows(10);
 		}
 		return $html;
 	}
 	
-	private function getSparkline($db, $id, $period, $datetime) 
+	//-----------
+	
+	private function _getSparkline($db, $id, $period, $datetime) 
 	{
 		$sparkline = '';
 		
@@ -140,13 +142,13 @@ class plgUsageOverview extends JPlugin
 			$highest = array_pop($vals);
 
 			// Generate the sparkline	
-			$sparkline .= '<span class="sparkline">'.n;
+			$sparkline .= '<span class="sparkline">'."\n";
 			foreach ($results as $result) 
 			{
 				$height = round(($result->value / $highest)*100);
-				$sparkline .= t.'<span class="index"><span class="count" style="height: '.$height.'%;" title="'.JHTML::_('date', $result->datetime, '%d %b. %Y').': '.trim($this->fmt_result($result->value,$result->valfmt)).'">'.trim($this->fmt_result($result->value,$result->valfmt)).'</span> </span>'.n;
+				$sparkline .= "\t".'<span class="index"><span class="count" style="height: '.$height.'%;" title="'.JHTML::_('date', $result->datetime, '%d %b. %Y').': '.trim($this->_fmt_result($result->value,$result->valfmt)).'">'.trim($this->_fmt_result($result->value,$result->valfmt)).'</span> </span>'."\n";
 			}
-			$sparkline .= '</span>'.n;
+			$sparkline .= '</span>'."\n";
 		}
 		
 		return $sparkline;
@@ -154,21 +156,21 @@ class plgUsageOverview extends JPlugin
 	
 	//-----------
 	
-	private function empty_rows($n) 
+	private function _empty_rows($n) 
 	{
 		$html = '';
 		$i = 0;
 		for ($i=0, $n; $i < $n; $i++) 
 		{
 			$cls = ($i >= 5) ? ' class="group"' : '';
-			$html .= t.t.t.'<td'.$cls.'>-</td>'.n;
+			$html .= "\t\t\t".'<td'.$cls.'>-</td>'."\n";
 		}
 		return $html;
 	}
 	
 	//-----------
 
-	private function fmt_result($value, $fmt) 
+	private function _fmt_result($value, $fmt) 
 	{
 		$valfmt[0]='-'; // blank. for future use
 		$valfmt[1]=' '; // no units
@@ -200,37 +202,37 @@ class plgUsageOverview extends JPlugin
 
 	//-----------
 
-	private function navlinks($option, $task, $period='prior12') 
+	private function _navlinks($option, $task, $period='prior12') 
 	{
-		$html  = '<div id="sub-sub-menu">'.n;
-		$html .= t.'<ul>'.n;
-		$html .= t.t.'<li';    
+		$html  = '<div id="sub-sub-menu">'."\n";
+		$html .= "\t".'<ul>'."\n";
+		$html .= "\t\t".'<li';    
 		if ($period == 'prior12') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period=prior12').'"><span>'.JText::_('USAGE_PERIOD_PRIOR12').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=prior12').'"><span>'.JText::_('PLG_USAGE_PERIOD_PRIOR12').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 	    if ($period == 'month') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period=month').'"><span>'.JText::_('USAGE_PERIOD_MONTH').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=month').'"><span>'.JText::_('PLG_USAGE_PERIOD_MONTH').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 	    if ($period == 'qtr') {
 			$html .= ' class="active"';
 		}
-	    $html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period=qtr').'"><span>'.JText::_('USAGE_PERIOD_QTR').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+	    $html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=qtr').'"><span>'.JText::_('PLG_USAGE_PERIOD_QTR').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 		if ($period == 'year') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period=year').'"><span>'.JText::_('USAGE_PERIOD_YEAR').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=year').'"><span>'.JText::_('PLG_USAGE_PERIOD_YEAR').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 		if ($period == 'fiscal') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period=fiscal').'"><span>'.JText::_('USAGE_PERIOD_FISCAL').'</span></a></li>'.n;
-		$html .= t.'</ul>'.n;
-		$html .= '</div>'.n;
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=fiscal').'"><span>'.JText::_('PLG_USAGE_PERIOD_FISCAL').'</span></a></li>'."\n";
+		$html .= "\t".'</ul>'."\n";
+		$html .= '</div>'."\n";
 
 	    return $html;
 	}
@@ -296,14 +298,14 @@ class plgUsageOverview extends JPlugin
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		$pathway->addItem(JText::_('USAGE_PERIOD_'.strtoupper($period)),'index.php?option='.$option.a.'task='.$task.a.'period='.$period);
+		$pathway->addItem(JText::_('PLG_USAGE_PERIOD_'.strtoupper($period)),'index.php?option='.$option.a.'task='.$task.a.'period='.$period);
 
 		// Build the HTML
-		$html  = $this->navlinks($option, $task, $period);
-		$html .= '<form method="post" action="'. JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period='.$period) .'">'.n;
-		$html .= t.'<fieldset class="filters"><label>'.JText::_('USAGE_SHOW_DATA_FOR').': ';
+		$html  = $this->_navlinks($option, $task, $period);
+		$html .= '<form method="post" action="'. JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period='.$period) .'">'."\n";
+		$html .= "\t".'<fieldset class="filters"><label>'.JText::_('PLG_USAGE_SHOW_DATA_FOR').': ';
 		
-		$html .= '<select name="selectedPeriod">'.n;
+		$html .= '<select name="selectedPeriod">'."\n";
 		switch ($period) 
 		{
 			case '12':
@@ -323,7 +325,7 @@ class plgUsageOverview extends JPlugin
 							$nextmonth = $arrayMonths[floor(array_search($month, $arrayMonths))+1];
 						}
 						$value = $i . '-' . $key;
-						if ($this->check_for_data($db, $value, 12)) {
+						if ($this->_check_for_data($db, $value, 12)) {
 							$html .= '<option value="'. $value .'"';
 							if ($value == $selectedPeriod) {
 								$html .= ' selected="selected"';
@@ -334,7 +336,7 @@ class plgUsageOverview extends JPlugin
 							} else {
 								$html .= $i - 1;
 							}
-						   	$html .= ' - '. $month .' '. $i .'</option>'.n;
+						   	$html .= ' - '. $month .' '. $i .'</option>'."\n";
 						}
 					}
 				}
@@ -350,12 +352,12 @@ class plgUsageOverview extends JPlugin
 					foreach ($monthsReverse as $key => $month) 
 					{
 						$value = $i . '-' . $key;
-						if ($this->check_for_data($db, $value, 1)) {
+						if ($this->_check_for_data($db, $value, 1)) {
 							$html .= '<option value="'. $value .'"';
 							if ($value == $selectedPeriod) {
 								$html .= ' selected="selected"';
 							}
-							$html .= '>'. $month .' '. $i .'</option>'.n;
+							$html .= '>'. $month .' '. $i .'</option>'."\n";
 						}
 					}
 				}
@@ -370,7 +372,7 @@ class plgUsageOverview extends JPlugin
 				foreach ($monthsReverse as $key => $month) 
 				{
 					$value = $cur_year . '-' . $key;
-					if (!$qtd_found && $this->check_for_data($db, $value, 3)) {
+					if (!$qtd_found && $this->_check_for_data($db, $value, 3)) {
 						$html .= '<option value="'. $value .'"';
 						if ($value == $selectedPeriod) {
 							$html .= ' selected="selected"';
@@ -389,7 +391,7 @@ class plgUsageOverview extends JPlugin
 							$key = 9;
 							$html .= 'Oct';
 						}
-						$html .= ' '. $cur_year .' - '. $month .' '. $cur_year .'</option>'.n;
+						$html .= ' '. $cur_year .' - '. $month .' '. $cur_year .'</option>'."\n";
 						$qtd_found = 1;
 					}
 				}
@@ -403,7 +405,7 @@ class plgUsageOverview extends JPlugin
 							$qtd_found = 0;
 						}
 						$value = $j . '-' . sprintf("%02d", $i);
-						if ($this->check_for_data($db, $value, 3)) {
+						if ($this->_check_for_data($db, $value, 3)) {
 							$html .= '<option value="'. $value .'"';
 							if ($value == $selectedPeriod) {
 								$html .= ' selected="selected"';
@@ -428,7 +430,7 @@ class plgUsageOverview extends JPlugin
 							} else {
 								$html .= 'Dec';
 							}
-							$html .= ' '. $j .'</option>'.n;
+							$html .= ' '. $j .'</option>'."\n";
 						}
 					}
 				}
@@ -444,7 +446,7 @@ class plgUsageOverview extends JPlugin
 				foreach ($monthsReverse as $key => $month) 
 				{
 					$value = $cur_year . '-' . $key;
-					if (!$ytd_found && $this->check_for_data($db, $value, 0)) {
+					if (!$ytd_found && $this->_check_for_data($db, $value, 0)) {
 						$html .= '<option value="'. $value .'"';
 						if ($value == $selectedPeriod) {
 							$html .= ' selected="selected"';
@@ -457,21 +459,21 @@ class plgUsageOverview extends JPlugin
 							$html .= $cur_year - 1;
 							$full_year = $cur_year - 1;
 						}
-						$html .= ' - '. $month .' '. $cur_year .'</option>'.n;
+						$html .= ' - '. $month .' '. $cur_year .'</option>'."\n";
 						$ytd_found = 1;
 					}
 				}
 				for ($i = $full_year; $i >= $year_data_start; $i--) 
 				{
 					$value = $i . '-09';
-					if ($this->check_for_data($db, $value, 0)) {
+					if ($this->_check_for_data($db, $value, 0)) {
 						$html .= '<option value="'. $value .'"';
 						if ($value == $selectedPeriod) {
 							$html .= ' selected="selected"';
 						}
 						$html .= '>Oct ';
 						$html .= $i - 1;
-						$html .= ' - Sep '. $i .'</option>'.n;
+						$html .= ' - Sep '. $i .'</option>'."\n";
 					}
 				}
 			break;
@@ -485,56 +487,56 @@ class plgUsageOverview extends JPlugin
 				foreach ($monthsReverse as $key => $month) 
 				{
 					$value = $cur_year . '-' . $key;
-					if (!$ytd_found && $this->check_for_data($db, $value, 0)) {
+					if (!$ytd_found && $this->_check_for_data($db, $value, 0)) {
 						$html .= '<option value="'. $value .'"';
 						if ($value == $selectedPeriod) {
 							$html .= ' selected="selected"';
 						}
-						$html .= '>Jan - '. $month .' '. $cur_year .'</option>'.n;
+						$html .= '>Jan - '. $month .' '. $cur_year .'</option>'."\n";
 						$ytd_found = 1;
 					}
 				}
 				for ($i = $cur_year - 1; $i >= $year_data_start; $i--) 
 				{
 					$value = $i . '-12';
-					if ($this->check_for_data($db, $value, 0)) {
+					if ($this->_check_for_data($db, $value, 0)) {
 						$html .= '<option value="'. $value .'"';
 						if ($value == $selectedPeriod) {
 							$html .= ' selected="selected"';
 						}
-						$html .= '>Jan - Dec '. $i .'</option>'.n;
+						$html .= '>Jan - Dec '. $i .'</option>'."\n";
 					}
 				}
 			break;
 		}
-		$html .= '</select></label> <input type="submit" value="'.JText::_('USAGE_VIEW').'" /></fieldset>'.n;
-		$html .= '</form>'.n;
+		$html .= '</select></label> <input type="submit" value="'.JText::_('PLG_USAGE_VIEW').'" /></fieldset>'."\n";
+		$html .= '</form>'."\n";
 
 		//--------------------------------
 
-		$html .= '<table summary="'.JText::_('A break-down of site visitors.').'">'.n;
-		$html .= t.'<caption>'.JText::_('Table 1: User statistics').'</caption>'.n;
-		$html .= t.'<thead>'.n;
-		$html .= t.t.'<tr>'.n;
-		$html .= t.t.t.'<th scope="col" rowspan="2" colspan="2">'.JText::_('Users').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" rowspan="2" class="numerical-data">'.JText::_('Totals').'</th>'.n;
-		$html .= t.t.t.'<th scope="colgroup" colspan="5">'.JText::_('Residence').'</th>'.n;
-		$html .= t.t.t.'<th scope="colgroup" colspan="5">'.JText::_('Organization').'</th>'.n;
-		$html .= t.t.'</tr>'.n;
-		$html .= t.t.'<tr>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('Identified').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('US').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('Asia').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('Europe').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('Other').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="group numerical-data">'.JText::_('Identified').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="group numerical-data" abbr="'.JText::_('Education').'">'.JText::_('Edu.').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="group numerical-data" abbr="'.JText::_('Industry').'">'.JText::_('Ind.').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="group numerical-data" abbr="'.JText::_('Government').'">'.JText::_('Gov.').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="group numerical-data">'.JText::_('Other').'</th>'.n;
-		$html .= t.t.'</tr>'.n;
-		$html .= t.'</thead>'.n;
-		$html .= t.'<tbody>'.n;
+		$html .= '<table summary="'.JText::_('A break-down of site visitors.').'">'."\n";
+		$html .= "\t".'<caption>'.JText::_('Table 1: User statistics').'</caption>'."\n";
+		$html .= "\t".'<thead>'."\n";
+		$html .= "\t\t".'<tr>'."\n";
+		$html .= "\t\t\t".'<th scope="col" rowspan="2" colspan="2">'.JText::_('Users').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" rowspan="2" class="numerical-data">'.JText::_('Totals').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="colgroup" colspan="5">'.JText::_('Residence').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="colgroup" colspan="5">'.JText::_('Organization').'</th>'."\n";
+		$html .= "\t\t".'</tr>'."\n";
+		$html .= "\t\t".'<tr>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('Identified').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('US').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('Asia').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('Europe').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('Other').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="group numerical-data">'.JText::_('Identified').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="group numerical-data" abbr="'.JText::_('Education').'">'.JText::_('Edu.').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="group numerical-data" abbr="'.JText::_('Industry').'">'.JText::_('Ind.').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="group numerical-data" abbr="'.JText::_('Government').'">'.JText::_('Gov.').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="group numerical-data">'.JText::_('Other').'</th>'."\n";
+		$html .= "\t\t".'</tr>'."\n";
+		$html .= "\t".'</thead>'."\n";
+		$html .= "\t".'<tbody>'."\n";
 		$sql = "SELECT id, label, plot FROM summary_user WHERE id IN (1,2,3,4,5) ORDER BY id";
 		$db->setQuery( $sql );
 		$results = $db->loadObjectList();
@@ -550,40 +552,40 @@ class plgUsageOverview extends JPlugin
 				
 				$label = preg_replace('/\{(.*)\}/','<sup><a href="#fn\\1">\\1</a></sup>',$row->label);
 				
-				$sparkline = $this->getSparkline($db, $row->id, $period, $datetime);
+				$sparkline = $this->_getSparkline($db, $row->id, $period, $datetime);
 				
-				$html .= t.t.'<tr class="'.$cls.'">'.n;
-				$html .= t.t.t.'<th scope="row">'.trim($label).'</th>'.n;
+				$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
+				$html .= "\t\t\t".'<th scope="row">'.trim($label).'</th>'."\n";
 				if ($row->plot == '1') {
 					$img = $config->get('charts_path').DS.substr($datetime,0,7)."-".$period."-u".$row->id;
 					if (is_file(JPATH_ROOT.DS.$img.'.gif')) {
-						$html .= t.t.t.'<td><a href="'.$img.'.gif" title="DOM:users1'.$i.'" class="fixedImgTip" rel="external"><img src="'.$img.'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users1'.$i.'"><img src="'.$img.'.gif" alt="" /></div></td>'.n;
+						$html .= "\t\t\t".'<td><a href="'.$img.'.gif" title="DOM:users1'.$i.'" class="fixedImgTip" rel="external"><img src="'.$img.'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users1'.$i.'"><img src="'.$img.'.gif" alt="" /></div></td>'."\n";
 					} else if (isset($sparkline)) {
-						$html .= t.t.t.'<td>'.$sparkline.'</td>'.n;
+						$html .= "\t\t\t".'<td>'.$sparkline.'</td>'."\n";
 					} else {
-						$html .= t.t.t.'<td>&nbsp;</td>'.n;
+						$html .= "\t\t\t".'<td>&nbsp;</td>'."\n";
 					}
 				} else if (isset($sparkline)) {
-					$html .= t.t.t.'<td>'.$sparkline.'</td>'.n;
+					$html .= "\t\t\t".'<td>'.$sparkline.'</td>'."\n";
 				} else {
-					$html .= t.t.t.'<td>&nbsp;</td>'.n;
+					$html .= "\t\t\t".'<td>&nbsp;</td>'."\n";
 				}
-				$html .= $this->print_user_row($db, $row->id, $period, $datetime);
-				$html .= t.t.'</tr>'.n;
+				$html .= $this->_print_user_row($db, $row->id, $period, $datetime);
+				$html .= "\t\t".'</tr>'."\n";
 				$i++;
 	       	}
 		} else {
-			$html .= t.t.'<tr class="odd">'.n;
-			$html .= t.t.t.'<td colspan="13" class="textual-data">'.JText::_('No data found.').'</td>'.n;
-			$html .= t.t.'</tr>'.n;
+			$html .= "\t\t".'<tr class="odd">'."\n";
+			$html .= "\t\t\t".'<td colspan="13" class="textual-data">'.JText::_('No data found.').'</td>'."\n";
+			$html .= "\t\t".'</tr>'."\n";
 		}
-		$html .= t.'</tbody>'.n;
-		$html .= '</table>'.n;
+		$html .= "\t".'</tbody>'."\n";
+		$html .= '</table>'."\n";
 
 		// Start simulation Usage
-		$html .= '<table summary="'.JText::_('Simulation Usage').'">'.n;
-		$html .= t.'<caption>'.JText::_('Table 2: Simulation Usage').'</caption>'.n;
-		$html .= t.'<tbody>'.n;
+		$html .= '<table summary="'.JText::_('Simulation Usage').'">'."\n";
+		$html .= "\t".'<caption>'.JText::_('Table 2: Simulation Usage').'</caption>'."\n";
+		$html .= "\t".'<tbody>'."\n";
 		$sql = "SELECT a.label,b.value,b.valfmt,a.plot,a.id FROM summary_simusage AS a, summary_simusage_vals AS b WHERE a.id=b.rowid AND b.period = '".$period."' AND b.datetime = '".$datetime."' ORDER BY a.id";
 		$db->setQuery( $sql );
 		$results = $db->loadObjectList();
@@ -595,41 +597,41 @@ class plgUsageOverview extends JPlugin
 
 				$label = preg_replace('/\{(.*)\}/','<sup><a href="#fn\\1">\\1</a></sup>',$row->label);
 				
-				//$sparkline = $this->getSparkline($db, $row->id, $period, $datetime);
+				//$sparkline = $this->_getSparkline($db, $row->id, $period, $datetime);
 				
-				$html .= t.t.'<tr class="'.$cls.'">'.n;
-				$html .= t.t.t.'<th scope="row">'.trim($label).'</th>'.n;
-				$html .= t.t.t.'<td>'. $this->fmt_result($row->value,$row->valfmt) .'</td>'.n;
+				$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
+				$html .= "\t\t\t".'<th scope="row">'.trim($label).'</th>'."\n";
+				$html .= "\t\t\t".'<td>'. $this->_fmt_result($row->value,$row->valfmt) .'</td>'."\n";
 				if ($row->plot == '1') {
 					$img = $config->get('charts_path').DS.substr($datetime,0,7)."-".$period."-s".$row->id;
 					if (is_file(JPATH_ROOT.DS.$img.'.gif')) {
-						$html .= t.t.t.'<td><a href="'.$img.'.gif" title="DOM:sim'.$i.'" class="fixedImgTip" rel="external"><img src="'.$img.'thumb.gif" alt="" /></a><br /><div style="display:none;" id="sim'.$i.'"><img src="'.$img.'.gif" alt="" /></div></td>'.n;
+						$html .= "\t\t\t".'<td><a href="'.$img.'.gif" title="DOM:sim'.$i.'" class="fixedImgTip" rel="external"><img src="'.$img.'thumb.gif" alt="" /></a><br /><div style="display:none;" id="sim'.$i.'"><img src="'.$img.'.gif" alt="" /></div></td>'."\n";
 					//} else if (isset($sparkline)) {
-					//	$html .= t.t.t.'<td>'.$sparkline.'</td>'.n;
+					//	$html .= "\t\t\t".'<td>'.$sparkline.'</td>'."\n";
 					} else {
-						$html .= t.t.t.'<td>&nbsp;</td>'.n;
+						$html .= "\t\t\t".'<td>&nbsp;</td>'."\n";
 					}
 				//} else if (isset($sparkline)) {
-				//	$html .= t.t.t.'<td>'.$sparkline.'</td>'.n;
+				//	$html .= "\t\t\t".'<td>'.$sparkline.'</td>'."\n";
 				} else {
-					$html .= t.t.t.'<td>&nbsp;</td>'.n;
+					$html .= "\t\t\t".'<td>&nbsp;</td>'."\n";
 				}
-				$html .= t.t.'</tr>'.n;
+				$html .= "\t\t".'</tr>'."\n";
 				
 				$i++;
 	       	}
 		} else {
-			$html .= t.t.'<tr class="odd">'.n;
-			$html .= t.t.t.'<td colspan="2" class="textual-data">'.JText::_('No data found.').'</td>'.n;
-			$html .= t.t.'</tr>'.n;
+			$html .= "\t\t".'<tr class="odd">'."\n";
+			$html .= "\t\t\t".'<td colspan="2" class="textual-data">'.JText::_('No data found.').'</td>'."\n";
+			$html .= "\t\t".'</tr>'."\n";
 		}
-		$html .= t.'</tbody>'.n;
-		$html .= '</table>'.n;
+		$html .= "\t".'</tbody>'."\n";
+		$html .= '</table>'."\n";
 
 		// Start miscellaneous
-		$html .= '<table summary="'.JText::_('Miscellaneous Statistics').'">'.n;
-		$html .= t.'<caption>'.JText::_('Table 3: Miscellaneous Statistics').'</caption>'.n;
-		$html .= t.'<tbody>'.n;
+		$html .= '<table summary="'.JText::_('Miscellaneous Statistics').'">'."\n";
+		$html .= "\t".'<caption>'.JText::_('Table 3: Miscellaneous Statistics').'</caption>'."\n";
+		$html .= "\t".'<tbody>'."\n";
 		$sql = "SELECT a.label,b.value,b.valfmt FROM summary_misc AS a, summary_misc_vals AS b WHERE a.id=b.rowid AND b.period = '".$period."' AND b.datetime = '".$datetime."' ORDER BY a.id";
 		$db->setQuery( $sql );
 		$results = $db->loadObjectList();
@@ -643,34 +645,34 @@ class plgUsageOverview extends JPlugin
 				//$label = str_replace('}','</sup>',$label);
 				$label = preg_replace('/\{(.*)\}/','<sup><a href="#fn\\1">\\1</a></sup>',$row->label);
 				
-				$html .= t.t.'<tr class="'.$cls.'">'.n;
-				$html .= t.t.t.'<th scope="row">'.trim($label).'</th>'.n;
-				$html .= t.t.t.'<td>'. $this->fmt_result($row->value, $row->valfmt) .'</td>'.n;
-				$html .= t.t.'</tr>'.n;
+				$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
+				$html .= "\t\t\t".'<th scope="row">'.trim($label).'</th>'."\n";
+				$html .= "\t\t\t".'<td>'. $this->_fmt_result($row->value, $row->valfmt) .'</td>'."\n";
+				$html .= "\t\t".'</tr>'."\n";
 	       	}
 		} else {
-			$html .= t.t.'<tr class="odd">'.n;
-			$html .= t.t.t.'<td colspan="2" class="textual-data">'.JText::_('No data found.').'</td>'.n;
-			$html .= t.t.'</tr>'.n;
+			$html .= "\t\t".'<tr class="odd">'."\n";
+			$html .= "\t\t\t".'<td colspan="2" class="textual-data">'.JText::_('No data found.').'</td>'."\n";
+			$html .= "\t\t".'</tr>'."\n";
 		}
-		$html .= t.'</tbody>'.n;
-		$html .= '</table>'.n;
+		$html .= "\t".'</tbody>'."\n";
+		$html .= '</table>'."\n";
 		
 		
 		// "and more" Usage
-		$html .= '<table summary="'.JText::_('&quot;and more&quot; Usage').'">'.n;
-		$html .= t.'<caption>'.JText::_('Table 4: &quot;and more&quot; Usage').'</caption>'.n;
-		$html .= t.'<thead>'.n;
-		$html .= t.t.'<tr>'.n;
-		$html .= t.t.t.'<th scope="col" rowspan="2">'.JText::_('Type').'</th>'.n;
-		$html .= t.t.t.'<th scope="colgroup" colspan="2">'.JText::_('Users').'</th>'.n;
-		$html .= t.t.'</tr>'.n;
-		$html .= t.t.'<tr>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('Interactive').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('Download').'</th>'.n;
-		$html .= t.t.'</tr>'.n;
-		$html .= t.'</thead>'.n;
-		$html .= t.'<tbody>'.n;
+		$html .= '<table summary="'.JText::_('&quot;and more&quot; Usage').'">'."\n";
+		$html .= "\t".'<caption>'.JText::_('Table 4: &quot;and more&quot; Usage').'</caption>'."\n";
+		$html .= "\t".'<thead>'."\n";
+		$html .= "\t\t".'<tr>'."\n";
+		$html .= "\t\t\t".'<th scope="col" rowspan="2">'.JText::_('Type').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="colgroup" colspan="2">'.JText::_('Users').'</th>'."\n";
+		$html .= "\t\t".'</tr>'."\n";
+		$html .= "\t\t".'<tr>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('Interactive').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('Download').'</th>'."\n";
+		$html .= "\t\t".'</tr>'."\n";
+		$html .= "\t".'</thead>'."\n";
+		$html .= "\t".'<tbody>'."\n";
 		$id = 1;
 		$trows = '';
 		$cls = 'even';
@@ -688,18 +690,18 @@ class plgUsageOverview extends JPlugin
 					
 					$col = $row->colid;
 					if ($col == 1) {
-	               		$value1 = $this->fmt_result($row->value,$row->valfmt);
+	               		$value1 = $this->_fmt_result($row->value,$row->valfmt);
 	                } else if ($col == 2) {
-	                	$value2 = $this->fmt_result($row->value,$row->valfmt);
+	                	$value2 = $this->_fmt_result($row->value,$row->valfmt);
 	                }
 	            }
 	            $cls = ($cls == 'even') ? 'odd' : 'even';
 
-				$trows .= t.t.'<tr class="'.$cls.'">'.n;
-	            $trows .= t.t.t.'<th scope="row">'.trim($label).'</th>'.n;
-	            $trows .= t.t.t.'<td>'.$value1.'</td>'.n;
-	            $trows .= t.t.t.'<td>'.$value2.'</td>'.n;
-	            $trows .= t.t.'</tr>'.n;
+				$trows .= "\t\t".'<tr class="'.$cls.'">'."\n";
+	            $trows .= "\t\t\t".'<th scope="row">'.trim($label).'</th>'."\n";
+	            $trows .= "\t\t\t".'<td>'.$value1.'</td>'."\n";
+	            $trows .= "\t\t\t".'<td>'.$value2.'</td>'."\n";
+	            $trows .= "\t\t".'</tr>'."\n";
 		    }
 		    $id++;
 		}
@@ -718,35 +720,35 @@ class plgUsageOverview extends JPlugin
 					
 					$col = $row->colid;
 	                if ($col == 1) {
-	                	$value1 = $this->fmt_result($row->value,$row->valfmt);
+	                	$value1 = $this->_fmt_result($row->value,$row->valfmt);
 	                } else if ($col == 2) {
-	                	$value2 = $this->fmt_result($row->value,$row->valfmt);
+	                	$value2 = $this->_fmt_result($row->value,$row->valfmt);
 	                }
 	            }
 	            $cls = ($cls == 'even') ? 'odd' : 'even';
 
-				$trows .= t.t.'<tr class="'.$cls.'">'.n;
-	            $trows .= t.t.t.'<th scope="row">'.trim($label).'</th>'.n;
-	            $trows .= t.t.t.'<td>'.$value1.'</td>'.n;
-	            $trows .= t.t.t.'<td>'.$value2.'</td>'.n;
-	            $trows .= t.t.'</tr>'.n;
+				$trows .= "\t\t".'<tr class="'.$cls.'">'."\n";
+	            $trows .= "\t\t\t".'<th scope="row">'.trim($label).'</th>'."\n";
+	            $trows .= "\t\t\t".'<td>'.$value1.'</td>'."\n";
+	            $trows .= "\t\t\t".'<td>'.$value2.'</td>'."\n";
+	            $trows .= "\t\t".'</tr>'."\n";
 			}
 		    $id++;
 		}
 		if ($trows) {
 			$html .= $trows;
 		} else {
-			$html .= t.t.'<tr class="odd">'.n;
-			$html .= t.t.t.'<td colspan="3" class="textual-data">'.JText::_('No data found.').'</td>'.n;
-			$html .= t.t.'</tr>'.n;
+			$html .= "\t\t".'<tr class="odd">'."\n";
+			$html .= "\t\t\t".'<td colspan="3" class="textual-data">'.JText::_('No data found.').'</td>'."\n";
+			$html .= "\t\t".'</tr>'."\n";
 		}
-		$html .= t.'</tbody>'.n;
-		$html .= '</table>'.n;
+		$html .= "\t".'</tbody>'."\n";
+		$html .= '</table>'."\n";
 
 		// Collaboration Usage
-		$html .= '<table summary="'.JText::_('Collaboration Usage').'">'.n;
-		$html .= t.'<caption>'.JText::_('Table 5: Collaboration Usage').'</caption>'.n;
-		$html .= t.'<tbody>'.n;
+		$html .= '<table summary="'.JText::_('Collaboration Usage').'">'."\n";
+		$html .= "\t".'<caption>'.JText::_('Table 5: Collaboration Usage').'</caption>'."\n";
+		$html .= "\t".'<tbody>'."\n";
 		$sql = "SELECT a.label,b.value,b.valfmt FROM summary_collab AS a, summary_collab_vals AS b WHERE a.id=b.rowid AND b.period = '".$period."' AND b.datetime = '".$datetime."' ORDER BY a.id";
 		$db->setQuery( $sql );
 		$results = $db->loadObjectList();
@@ -760,43 +762,43 @@ class plgUsageOverview extends JPlugin
 				//$label = str_replace('}','</sup>',$label);
 				$label = preg_replace('/\{(.*)\}/','<sup><a href="#fn\\1">\\1</a></sup>',$row->label);
 				
-	       		$html .= t.t.'<tr class="'.$cls.'">'.n;
-	            $html .= t.t.t.'<th scope="row">'.trim($label).'</th>'.n;
-	            $html .= t.t.t.'<td>'. $this->fmt_result($row->value,$row->valfmt) .'</td>'.n;
-	            $html .= t.t.'</tr>'.n;
+	       		$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
+	            $html .= "\t\t\t".'<th scope="row">'.trim($label).'</th>'."\n";
+	            $html .= "\t\t\t".'<td>'. $this->_fmt_result($row->value,$row->valfmt) .'</td>'."\n";
+	            $html .= "\t\t".'</tr>'."\n";
 			}
 		} else {
-			$html .= t.t.'<tr class="odd">'.n;
-			$html .= t.t.t.'<td colspan="2" class="textual-data">'.JText::_('No data found.').'</td>'.n;
-			$html .= t.t.'</tr>'.n;
+			$html .= "\t\t".'<tr class="odd">'."\n";
+			$html .= "\t\t\t".'<td colspan="2" class="textual-data">'.JText::_('No data found.').'</td>'."\n";
+			$html .= "\t\t".'</tr>'."\n";
 		}
-		$html .= t.'</tbody>'.n;
-		$html .= '</table>'.n;
+		$html .= "\t".'</tbody>'."\n";
+		$html .= '</table>'."\n";
 
 
-		$html .= '<table summary="'.JText::_('User statistics by registered/unregistered').'">'.n;
-		$html .= t.'<caption><a name="tot"></a>'.JText::_('Table 6: User statistics by registered/unregistered').'</caption>'.n;
-		$html .= t.'<thead>'.n;
-		$html .= t.t.'<tr>'.n;
-		$html .= t.t.t.'<th scope="col" rowspan="2" colspan="2">'.JText::_('Users').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" rowspan="2" class="numerical-data">'.JText::_('Totals').'</th>'.n;
-		$html .= t.t.t.'<th scope="colgroup" colspan="5">'.JText::_('Residence').'</th>'.n;
-		$html .= t.t.t.'<th scope="colgroup" colspan="5">'.JText::_('Organization').'</th>'.n;
-		$html .= t.t.'</tr>'.n;
-		$html .= t.t.'<tr>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('Identified').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('US').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('Asia').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('Europe').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="numerical-data">'.JText::_('Other').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="group numerical-data">'.JText::_('Identified').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="group numerical-data" abbr="'.JText::_('Education').'">'.JText::_('Edu.').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="group numerical-data" abbr="'.JText::_('Industry').'">'.JText::_('Ind.').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="group numerical-data" abbr="'.JText::_('Government').'">'.JText::_('Gov.').'</th>'.n;
-		$html .= t.t.t.'<th scope="col" class="group numerical-data">'.JText::_('Other').'</th>'.n;
-		$html .= t.t.'</tr>'.n;
-		$html .= t.'</thead>'.n;
-		$html .= t.'<tbody>'.n;
+		$html .= '<table summary="'.JText::_('User statistics by registered/unregistered').'">'."\n";
+		$html .= "\t".'<caption><a name="tot"></a>'.JText::_('Table 6: User statistics by registered/unregistered').'</caption>'."\n";
+		$html .= "\t".'<thead>'."\n";
+		$html .= "\t\t".'<tr>'."\n";
+		$html .= "\t\t\t".'<th scope="col" rowspan="2" colspan="2">'.JText::_('Users').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" rowspan="2" class="numerical-data">'.JText::_('Totals').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="colgroup" colspan="5">'.JText::_('Residence').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="colgroup" colspan="5">'.JText::_('Organization').'</th>'."\n";
+		$html .= "\t\t".'</tr>'."\n";
+		$html .= "\t\t".'<tr>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('Identified').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('US').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('Asia').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('Europe').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('Other').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="group numerical-data">'.JText::_('Identified').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="group numerical-data" abbr="'.JText::_('Education').'">'.JText::_('Edu.').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="group numerical-data" abbr="'.JText::_('Industry').'">'.JText::_('Ind.').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="group numerical-data" abbr="'.JText::_('Government').'">'.JText::_('Gov.').'</th>'."\n";
+		$html .= "\t\t\t".'<th scope="col" class="group numerical-data">'.JText::_('Other').'</th>'."\n";
+		$html .= "\t\t".'</tr>'."\n";
+		$html .= "\t".'</thead>'."\n";
+		$html .= "\t".'<tbody>'."\n";
 		$sql = "SELECT id, label, plot FROM summary_user WHERE id IN (1,6,7,8) ORDER BY id";
 		$db->setQuery( $sql );
 		$results = $db->loadObjectList();
@@ -814,54 +816,54 @@ class plgUsageOverview extends JPlugin
 					$cls = 'summary';
 				}
 				
-				$sparkline = $this->getSparkline($db, $row->id, $period, $datetime);
+				$sparkline = $this->_getSparkline($db, $row->id, $period, $datetime);
 				
-				$html .= t.t.'<tr class="'.$cls.'">'.n;
-				$html .= t.t.t.'<th scope="row">'.trim($label).'</th>'.n;
+				$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
+				$html .= "\t\t\t".'<th scope="row">'.trim($label).'</th>'."\n";
 				if ($row->plot == '1') {
 					$img = $config->get('charts_path').DS.substr($datetime,0,7)."-".$period."-u".$row->id;
 					if (is_file(JPATH_ROOT.DS.$img.'.gif')) {
-						$html .= t.t.t.'<td><a href="'.$img.'.gif" title="DOM:users2'.$i.'" class="fixedImgTip" rel="external"><img src="'.$img.'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users2'.$i.'"><img src="'.$img.'.gif" alt="" /></div></td>'.n;
+						$html .= "\t\t\t".'<td><a href="'.$img.'.gif" title="DOM:users2'.$i.'" class="fixedImgTip" rel="external"><img src="'.$img.'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users2'.$i.'"><img src="'.$img.'.gif" alt="" /></div></td>'."\n";
 					} else if (isset($sparkline)) {
-						$html .= t.t.t.'<td>'.$sparkline.'</td>'.n;
+						$html .= "\t\t\t".'<td>'.$sparkline.'</td>'."\n";
 					} else {
-						$html .= t.t.t.'<td>&nbsp;</td>'.n;
+						$html .= "\t\t\t".'<td>&nbsp;</td>'."\n";
 					}
 				} else if (isset($sparkline)) {
-					$html .= t.t.t.'<td>'.$sparkline.'</td>'.n;
+					$html .= "\t\t\t".'<td>'.$sparkline.'</td>'."\n";
 				} else {
-					$html .= t.t.t.'<td>&nbsp;</td>';
+					$html .= "\t\t\t".'<td>&nbsp;</td>';
 				}
-				$html .= $this->print_user_row($db,$row->id,$period,$datetime);
-				$html .= t.t.'</tr>'.n;
+				$html .= $this->_print_user_row($db,$row->id,$period,$datetime);
+				$html .= "\t\t".'</tr>'."\n";
 				$i++;
 			}
 		} else {
-			$html .= t.t.'<tr class="odd">'.n;
-			$html .= t.t.t.'<td colspan="13" class="textual-data">'.JText::_('No data found.').'</td>'.n;
-			$html .= t.t.'</tr>'.n;
+			$html .= "\t\t".'<tr class="odd">'."\n";
+			$html .= "\t\t\t".'<td colspan="13" class="textual-data">'.JText::_('No data found.').'</td>'."\n";
+			$html .= "\t\t".'</tr>'."\n";
 		}
-		$html .= t.'</tbody>'.n;
-		$html .= '</table>'.n;
+		$html .= "\t".'</tbody>'."\n";
+		$html .= '</table>'."\n";
 
-		$html .= '<div class="footnotes">'.n;
-		$html .= t.'<hr />'.n;
-		$html .= t.'<ol>'.n;
-		$html .= t.t.'<li id="fn1"><a name="fn1"></a>Sum of Registered Users<sup><a href="#fn2">2</a></sup>, Unregistered Interactive Users<sup><a href="#fn3">3</a></sup> and Unregistered Download Users<sup><a href="#fn4">4</a></sup></li>'.n;									
-		$html .= t.t.'<li id="fn2"><a name="fn2"></a>Number of Users that logged in. User registration assigns a unique login to each individual user.</li>'.n;
-		$html .= t.t.'<li id="fn3"><a name="fn3"></a>Number of Unregistered Users, identified by unique hosts/IPs, that had an active Session <sup><a href="#fn10">10</a></sup> without logging in. Does not include known web bots/crawlers.</li>'.n;
-		$html .= t.t.'<li id="fn4"><a name="fn4"></a>Number of Unregistered users, identified by unique hosts/IPs, that had an active session of less than 15 minutes without logging in and downloaded a non-interactive resource such as PDF or podcast. Does not include web bots/crawlers.</li>'.n;	
-		$html .= t.t.'<li id="fn5"><a name="fn5"></a>Number of Registered Users<sup><a href="#fn2">2</a></sup> that ran one or more simulation runs.</li>'.n;
-		$html .= t.t.'<li id="fn6"><a name="fn6"></a>All Unregistered Users, identified by unique hosts/IPs, that had an active Session <sup><a href="#fn10">10</a></sup>. Does not include known web bots/crawlers.</li>'.n;
-		$html .= t.t.'<li id="fn7"><a name="fn7"></a>All Unregistered users, identified by unique hosts/IPs that downloaded a non-interactive resource such as PDF or podcast. Does not include known web bots/crawlers.</li>'.n;					
-		$html .= t.t.'<li id="fn8"><a name="fn8"></a>Sum of Simulation Users <sup><a href="#fn5">5</a></sup> + Unregistered Interactive Users <sup><a href="#fn3">3</a></sup> including web bots/crawlers.</li>'.n;
-		$html .= t.t.'<li id="fn9"><a name="fn9"></a>Number of Simulation users that returned after a gap of 3 months.</li>'.n;						
-		$html .= t.t.'<li id="fn10"><a name="fn10"></a>Begins when an IP is active on the site for at least 15 minutes. Ends when inactive for more than 30 minutes, including time spent viewing videos.</li>'.n;
-		$html .= t.t.'<li id="fn11"><a name="fn11"></a> - </li>'.n;
-		$html .= t.t.'<li id="fn12"><a name="fn12"></a>Based on MIT OCW metric of Visits: A visit is activity by a unique visitor delimitated by a 30 minute absence from the site on either side of the activity.<br />These visits correspond to unique visitors <sup><a href="#fn11">11</a></sup>. Does not include known web bots/crawlers</li>'.n;
-		$html .= t.t.'<li id="fn13"><a name="fn13"></a>Number of Simulation sessions that were shared between 2 or more users.</li>'.n;
-		$html .= t.'</ol>'.n;
-		$html .= '</div><!-- / .footnotes -->'.n;
+		$html .= '<div class="footnotes">'."\n";
+		$html .= "\t".'<hr />'."\n";
+		$html .= "\t".'<ol>'."\n";
+		$html .= "\t\t".'<li id="fn1"><a name="fn1"></a>Sum of Registered Users<sup><a href="#fn2">2</a></sup>, Unregistered Interactive Users<sup><a href="#fn3">3</a></sup> and Unregistered Download Users<sup><a href="#fn4">4</a></sup></li>'."\n";									
+		$html .= "\t\t".'<li id="fn2"><a name="fn2"></a>Number of Users that logged in. User registration assigns a unique login to each individual user.</li>'."\n";
+		$html .= "\t\t".'<li id="fn3"><a name="fn3"></a>Number of Unregistered Users, identified by unique hosts/IPs, that had an active Session <sup><a href="#fn10">10</a></sup> without logging in. Does not include known web bots/crawlers.</li>'."\n";
+		$html .= "\t\t".'<li id="fn4"><a name="fn4"></a>Number of Unregistered users, identified by unique hosts/IPs, that had an active session of less than 15 minutes without logging in and downloaded a non-interactive resource such as PDF or podcast. Does not include web bots/crawlers.</li>'."\n";	
+		$html .= "\t\t".'<li id="fn5"><a name="fn5"></a>Number of Registered Users<sup><a href="#fn2">2</a></sup> that ran one or more simulation runs.</li>'."\n";
+		$html .= "\t\t".'<li id="fn6"><a name="fn6"></a>All Unregistered Users, identified by unique hosts/IPs, that had an active Session <sup><a href="#fn10">10</a></sup>. Does not include known web bots/crawlers.</li>'."\n";
+		$html .= "\t\t".'<li id="fn7"><a name="fn7"></a>All Unregistered users, identified by unique hosts/IPs that downloaded a non-interactive resource such as PDF or podcast. Does not include known web bots/crawlers.</li>'."\n";					
+		$html .= "\t\t".'<li id="fn8"><a name="fn8"></a>Sum of Simulation Users <sup><a href="#fn5">5</a></sup> + Unregistered Interactive Users <sup><a href="#fn3">3</a></sup> including web bots/crawlers.</li>'."\n";
+		$html .= "\t\t".'<li id="fn9"><a name="fn9"></a>Number of Simulation users that returned after a gap of 3 months.</li>'."\n";						
+		$html .= "\t\t".'<li id="fn10"><a name="fn10"></a>Begins when an IP is active on the site for at least 15 minutes. Ends when inactive for more than 30 minutes, including time spent viewing videos.</li>'."\n";
+		$html .= "\t\t".'<li id="fn11"><a name="fn11"></a> - </li>'."\n";
+		$html .= "\t\t".'<li id="fn12"><a name="fn12"></a>Based on MIT OCW metric of Visits: A visit is activity by a unique visitor delimitated by a 30 minute absence from the site on either side of the activity.<br />These visits correspond to unique visitors <sup><a href="#fn11">11</a></sup>. Does not include known web bots/crawlers</li>'."\n";
+		$html .= "\t\t".'<li id="fn13"><a name="fn13"></a>Number of Simulation sessions that were shared between 2 or more users.</li>'."\n";
+		$html .= "\t".'</ol>'."\n";
+		$html .= '</div><!-- / .footnotes -->'."\n";
 
 		return $html;
 	}
