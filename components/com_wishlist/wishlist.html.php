@@ -410,6 +410,7 @@ class WishlistHtml
 	
 	public function wishlist( $wishlist, $title, $option, $task, $admin, $error, $filters, $juser, $pageNav, $abuse) 
 	{
+		ximport('xprofile');
 	
 		$html = '';		
 		$xhub =& XFactory::getHub();
