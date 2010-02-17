@@ -27,7 +27,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-ximport('xuser');
 ximport('xuserhelper');
 
 ximport('wiki.config');

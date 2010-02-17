@@ -760,11 +760,11 @@ class ResourcesEconomy extends JObject
 		$points = round($con->ranking);
 		
 		// Get qualifying users
-		$xuser =& XUser::getInstance( $con->authorid );
+		$juser =& JUser::getInstance( $con->authorid );
 		
 		// Reward review author
-		if (is_object($xuser)) {
-			$BTL = new BankTeller( $this->_db , $xuser->get('uid') );
+		if (is_object($juser)) {
+			$BTL = new BankTeller( $this->_db , $juser->get('id') );
 		
 			if (intval($points) > 0) {
 				$msg = ($type=='royalty') ? 'Royalty payment for your resource contributions' : '';	
@@ -853,11 +853,11 @@ class ReviewsEconomy extends JObject
 		$points = $this->calculate_marketvalue($review, $type);
 		
 		// Get qualifying users
-		$xuser =& XUser::getInstance( $review->author );
+		$juser =& JUser::getInstance( $review->author );
 		
 		// Reward review author
-		if (is_object($xuser)) {
-			$BTL = new BankTeller( $this->_db , $xuser->get('uid') );
+		if (is_object($juser)) {
+			$BTL = new BankTeller( $this->_db , $juser->get('id') );
 		
 			if (intval($points) > 0) {
 				$msg = ($type=='royalty') ? 'Royalty payment for posting a review on resource #'.$review->rid : 'Commission for posting a review on resource #'.$review->rid;	
@@ -961,7 +961,7 @@ class AnswersEconomy extends JObject
 	
 	public function distribute_points($qid, $Q_owner, $BA_owner, $type)
 	{
-		$xuser =& XFactory::getUser();
+		$juser =& JFactory::getUser();
 		
 		if ($qid === NULL) {
 			$qid = $this->qid;
@@ -980,8 +980,8 @@ class AnswersEconomy extends JObject
 		$A_owner_share  = 0;
 		
 		// Get qualifying users
-		$xuser =& XUser::getInstance( $Q_owner );
-		$ba_user =& XUser::getInstance( $BA_owner );	
+		$juser =& JUser::getInstance( $Q_owner );
+		$ba_user =& JUser::getInstance( $BA_owner );	
 			
 		// Calculate commissions for other answers
 		$ar = new AnswersResponse( $this->_db );
@@ -1014,8 +1014,8 @@ class AnswersEconomy extends JObject
 		}
 			
 		// Reward asker
-		if (is_object($xuser)) {
-			$BTL_Q = new BankTeller( $this->_db , $xuser->get('uid') );
+		if (is_object($juser)) {
+			$BTL_Q = new BankTeller( $this->_db , $juser->get('id') );
 			//$BTL_Q->deposit($Q_owner_share, 'Commission for posting a question', $cat, $qid);
 			// Separate comission and reward payment
 			// Remove credit
@@ -1037,16 +1037,16 @@ class AnswersEconomy extends JObject
 		if (count($eligible) > 0) {
 			foreach ($eligible as $e) 
 			{
-				$auser =& XUser::getInstance( $e );
-				if (is_object($auser) && is_object($ba_user) && $ba_user->get('uid') != $auser->get('uid')) {
-					$BTL_A = new BankTeller( $this->_db , $auser->get('uid') );
+				$auser =& JUser::getInstance( $e );
+				if (is_object($auser) && is_object($ba_user) && $ba_user->get('id') != $auser->get('id')) {
+					$BTL_A = new BankTeller( $this->_db , $auser->get('id') );
 					if (intval($A_owner_share) > 0) {
 						$A_owner_share_msg = ($type=='royalty') ? 'Royalty payment for answering question #'.$qid : 'Answered question #'.$qid.' that was recently closed';
 						$BTL_A->deposit($A_owner_share, $A_owner_share_msg , $cat, $qid);
 					}	
 				}
 				// is best answer eligible for extra points?
-				if (is_object($auser) && is_object($ba_user) && ($ba_user->get('uid') == $auser->get('uid'))) {
+				if (is_object($auser) && is_object($ba_user) && ($ba_user->get('id') == $auser->get('id'))) {
 					$ba_extra = 1;
 				}
 			}
@@ -1054,7 +1054,7 @@ class AnswersEconomy extends JObject
 		
 		// Reward best answer
 		if (is_object($ba_user)) {
-			$BTL_BA = new BankTeller( $this->_db , $ba_user->get('uid') );
+			$BTL_BA = new BankTeller( $this->_db , $ba_user->get('id') );
 			
 			if (isset($ba_extra)) { 
 				$BA_owner_share += $A_owner_share; 

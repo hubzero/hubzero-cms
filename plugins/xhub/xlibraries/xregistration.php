@@ -93,7 +93,7 @@ class XRegistration
 		//
 		// note that a value of null means the field doesn't exist
 		// we use this to detect when to delete data when
-		// merging registrations with xuser data
+		// merging registrations with profile data
 		//
 		// TODO: more cleanup
 
