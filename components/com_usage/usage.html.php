@@ -37,21 +37,21 @@ class UsageHtml
 {
 	public function error($msg, $tag='p')
 	{
-		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
+		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
 	
 	//-----------
 	
 	public function warning($msg, $tag='p')
 	{
-		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'.n;
+		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
 	
 	//-----------
 	
 	public function help( $msg, $tag='p' )
 	{
-		return '<'.$tag.' class="help">'.$msg.'</'.$tag.'>'.n;
+		return '<'.$tag.' class="help">'.$msg.'</'.$tag.'>'."\n";
 	}	
 	//-----------
 	
@@ -74,8 +74,8 @@ class UsageHtml
 		$html  = '<div';
 		$html .= ($cls) ? ' class="'.$cls.'"' : '';
 		$html .= ($id) ? ' id="'.$id.'"' : '';
-		$html .= '>'.n;
-		$html .= $txt.n;
+		$html .= '>'."\n";
+		$html .= $txt."\n";
 		$html .= '</div><!-- / ';
 		if ($id) {
 			$html .= '#'.$id;
@@ -83,7 +83,7 @@ class UsageHtml
 		if ($cls) {
 			$html .= '.'.$cls;
 		}
-		$html .= ' -->'.n;
+		$html .= ' -->'."\n";
 		return $html;
 	}
 	
@@ -91,16 +91,16 @@ class UsageHtml
 
 	public function form( $options, $option, $task='' )
 	{
-		$html  = '<form method="post" action="'. JRoute::_('index.php?option='.$option.a.'task='.$task) .'">'.n;
-		$html .= t.'<fieldset class="filters">'.n;
-		$html .= t.t.'<label>'.n;
-		$html .= t.t.t.JText::_('USAGE_SHOW_DATA_FOR').': '.n;
-		$html .= t.t.t.'<select name="selectedPeriod" id="selectedPeriod">'.n;
+		$html  = '<form method="post" action="'. JRoute::_('index.php?option='.$option.'&task='.$task) .'">'."\n";
+		$html .= "\t".'<fieldset class="filters">'."\n";
+		$html .= "\t\t".'<label>'."\n";
+		$html .= "\t\t\t".JText::_('USAGE_SHOW_DATA_FOR').': '."\n";
+		$html .= "\t\t\t".'<select name="selectedPeriod" id="selectedPeriod">'."\n";
 		$html .= $options;
-		$html .= t.t.t.'</select>'.n;
-		$html .= t.t.'</label> <input type="submit" value="'.JText::_('USAGE_VIEW').'" />'.n;
-		$html .= t.'</fieldset>'.n;
-		$html .= '</form>'.n;
+		$html .= "\t\t\t".'</select>'."\n";
+		$html .= "\t\t".'</label> <input type="submit" value="'.JText::_('USAGE_VIEW').'" />'."\n";
+		$html .= "\t".'</fieldset>'."\n";
+		$html .= '</form>'."\n";
 		
 		return $html;
 	}
@@ -120,7 +120,7 @@ class UsageHtml
 					if ($value == $enddate) {
 						$o .= ' selected="selected"';
 					}
-					$o .= '>'. $month .' '. $i .'</option>'.n;
+					$o .= '>'. $month .' '. $i .'</option>'."\n";
 				}
 			}
 		}
@@ -132,40 +132,40 @@ class UsageHtml
 
 	public function navlinks( $page=0, $option ) 
 	{
-		$html  = '<div id="sub-menu">'.n;
-		$html .= t.'<ul>'.n;
-		$html .= t.t.'<li';
+		$html  = '<div id="sub-menu">'."\n";
+		$html .= "\t".'<ul>'."\n";
+		$html .= "\t\t".'<li';
 		if ($page == 1) {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task=overview').'"><span>'.JText::_('USAGE_OVERVIEW').'</span></a></li>'.n;
-		$html .= t.t.'<li';
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task=overview').'"><span>'.JText::_('USAGE_OVERVIEW').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';
 		if ($page == 6) {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task=domainclass').'"><span>'.JText::_('USAGE_DOMAINCLASS').'</span></a></li>'.n;
-		$html .= t.t.'<li';
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task=domainclass').'"><span>'.JText::_('USAGE_DOMAINCLASS').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';
 		if ($page == 7) {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task=region').'"><span>'.JText::_('USAGE_REGION').'</span></a></li>'.n;
-		$html .= t.t.'<li';
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task=region').'"><span>'.JText::_('USAGE_REGION').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';
 		if ($page == 2) {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task=tools').'"><span>'.JText::_('USAGE_TOOLS').'</span></a></li>'.n;
-		$html .= t.t.'<li';
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task=tools').'"><span>'.JText::_('USAGE_TOOLS').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';
 		if ($page == 4) {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task=domains').'"><span>'.JText::_('USAGE_DOMAINS').'</span></a></li>'.n;
-		$html .= t.t.'<li';
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task=domains').'"><span>'.JText::_('USAGE_DOMAINS').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';
 		if ($page == 5) {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task=partners').'"><span>'.JText::_('USAGE_PARTNERS').'</span></a></li>'.n;
-		$html .= t.'</ul>'.n;
-		$html .= '</div>'.n;
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task=partners').'"><span>'.JText::_('USAGE_PARTNERS').'</span></a></li>'."\n";
+		$html .= "\t".'</ul>'."\n";
+		$html .= '</div>'."\n";
 		
 		return $html;
 	}
@@ -206,16 +206,11 @@ class UsageHtml
 	
 	//-----------
 	
-	public function view( $option, $cats, $sections, $tab, $title, $no_html=1 ) 
+	/*public function view( $option, $cats, $sections, $tab, $title, $no_html=1 ) 
 	{
 		$html = '';
 		if (!$no_html) {
-			$html .= UsageHtml::div( UsageHtml::hed(2, $title), 'full', 'content-header' ).n;
-			/*$html .= '<div id="content-header-extra">'.n;
-			$html .= t.'<ul id="useroptions">'.n;
-			$html .= t.t.'<li class="last"><a class="group" href="'.JRoute::_('index.php?option='.$option).'">'.JText::_('GROUPS_ALL_GROUPS').'</a></li>'.n;
-			$html .= t.'</ul>'.n;
-			$html .= '</div><!-- / #content-header-extra -->'.n;*/
+			$html .= UsageHtml::div( UsageHtml::hed(2, $title), 'full', 'content-header' )."\n";
 			$html .= UsageHtml::tabs( $option, $cats, $tab );
 		}
 		$html .= UsageHtml::sections( $sections, $cats, $tab, 'hide', 'main' );
@@ -227,24 +222,24 @@ class UsageHtml
 	
 	public function tabs( $option, $cats, $active='overview' ) 
 	{
-		$html  = '<div id="sub-menu">'.n;
-		$html .= t.'<ul>'.n;
+		$html  = '<div id="sub-menu">'."\n";
+		$html .= t.'<ul>'."\n";
 		$i = 1;
 		$cs = array();
 		foreach ($cats as $cat)
 		{
 			$name = key($cat);
 			if ($cat[$name] != '') {
-				$html .= t.t.'<li id="sm-'.$i.'"';
+				$html .= "\t\t".'<li id="sm-'.$i.'"';
 				$html .= (strtolower($name) == $active) ? ' class="active"' : '';
-				$html .= '><a class="tab" rel="'.$name.'" href="'.JRoute::_('index.php?option='.$option.a.'task='.$name).'"><span>'.$cat[$name].'</span></a></li>'.n;
+				$html .= '><a class="tab" rel="'.$name.'" href="'.JRoute::_('index.php?option='.$option.a.'task='.$name).'"><span>'.$cat[$name].'</span></a></li>'."\n";
 				$i++;
 				$cs[] = $name;
 			}
 		}
-		$html .= t.'</ul>'.n;
-		$html .= t.'<div class="clear"></div>'.n;
-		$html .= '</div><!-- / #sub-menu -->'.n;
+		$html .= t.'</ul>'."\n";
+		$html .= t.'<div class="clear"></div>'."\n";
+		$html .= '</div><!-- / #sub-menu -->'."\n";
 		
 		if (!in_array($active, $cs)) {
 			return '';
@@ -277,6 +272,6 @@ class UsageHtml
 		}
 		
 		return $html;
-	}
+	}*/
 }
 ?>
