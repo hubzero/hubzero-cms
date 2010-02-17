@@ -29,14 +29,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $config = JFactory::getConfig();
 
-//if ($config->getValue('config.debug')) {
+if ($config->getValue('config.debug')) {
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
-//}
+}
 
 jimport('joomla.application.component.view');
 
-require_once( JPATH_COMPONENT.DS.'mw.html.php' );
 require_once( JPATH_COMPONENT.DS.'mw.class.php' );
 require_once( JPATH_COMPONENT.DS.'mw.utils.php' );
 require_once( JPATH_COMPONENT.DS.'controller.php' );

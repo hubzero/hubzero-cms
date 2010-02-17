@@ -34,10 +34,7 @@ $jconfig =& JFactory::getConfig();
 
 <div id="content-header-extra">
 <?php 
-echo $this->monitor; //MwHtml::writeMonitor($this->percentage, '', 0, 0, 0, 0);
-if ($this->percentage >= 100) {
-	//echo MwHTML::storageQuotaWarning($this->percentage);
-}
+echo $this->monitor;
 ?>
 </div><!-- / #content-header-extra -->
 

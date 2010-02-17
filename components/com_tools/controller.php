@@ -945,7 +945,7 @@ class ToolsController extends JObject
 		// Add the default "Profile" section to the beginning of the lists
 		/*$body = '';
 		if ($tab == 'session') {
-			$body = $view->loadTemplate(); //MwHtml::session( $app['sess'], $output, $this->_option, $app, $toolname, $authorized, $this->config );
+			$body = $view->loadTemplate();
 		}*/
 		
 		$cat = array();
