@@ -1077,7 +1077,7 @@ class SupportController
 								$emails[] = $row->email;
 								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
 							}*/
-							if (is_object($suzer) && $zuser->get('id')) {
+							if (is_object($zuser) && $zuser->get('id')) {
 								$type = 'support_reply_submitted';
 								if ($row->status == 1) {
 									$element = $row->id;
