@@ -31,16 +31,7 @@ $juser =& JFactory::getUser();
 	<h2 class="session-title item:name id:<?php echo $this->app['sess']; ?>"><?php echo $this->app['caption']; ?></h2>
 </div><!-- / #content-header -->
 
-<?php if ($this->config->get('show_storage')) { ?>
-<div id="content-header-extra">
-<?php
-	echo MwHtml::writeMonitor($this->app['percent']);
-	if ($this->app['percent'] >= 100) {
-		echo MwHTML::storageQuotaWarning($this->app['remaining']);
-	}
-?>
-</div><!-- / #content-header-extra -->
-<?php } ?>
+
 
 <div id="sub-menu">
 	<ul>
