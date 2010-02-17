@@ -97,9 +97,9 @@ class ContribtoolHelper
 	public function getLogins($uids, $logins = array()) {
 		if(is_array($uids)) {
 			foreach ($uids as $uid) {
-				$xuser =& JUser::getInstance( $uid );
-				if($xuser) {
-					$logins[] = $xuser->get('username');
+				$juser =& JUser::getInstance( $uid );
+				if($juser) {
+					$logins[] = $juser->get('username');
 				}
 			}
 		}	
@@ -111,19 +111,19 @@ class ContribtoolHelper
 		$juser =& JFactory::getUser();
 		$when 	   = date( 'Y-m-d H:i:s', time() );
 
-		$sql = "SELECT * FROM #__tool_statusviews WHERE ticketid='".$ticketid."' AND uid=".$xuser->get('uid');
+		$sql = "SELECT * FROM #__tool_statusviews WHERE ticketid='".$ticketid."' AND uid=".$juser->get('id');
 			$database->setQuery( $sql );
 			$found = $database->loadObjectList();
 			if($found) {
 				$elapsed = strtotime($when) - strtotime($found[0]->viewed);
-				$database->setQuery( "UPDATE #__tool_statusviews SET viewed='".$when."', elapsed='".$elapsed."' WHERE ticketid='".$ticketid."' AND uid=".$xuser->get('uid'));
+				$database->setQuery( "UPDATE #__tool_statusviews SET viewed='".$when."', elapsed='".$elapsed."' WHERE ticketid='".$ticketid."' AND uid=".$juser->get('id'));
 					if (!$database->query()) {
 						echo "<script type=\"text/javascript\"> alert('".$database->getErrorMsg()."');</script>\n";
 						exit;
 					}
 			}
 			else {
-				$database->setQuery( "INSERT INTO #__tool_statusviews (uid, ticketid, viewed, elapsed) VALUES (".$xuser->get('uid').", '".$ticketid."', '".$when."', '500000')");
+				$database->setQuery( "INSERT INTO #__tool_statusviews (uid, ticketid, viewed, elapsed) VALUES (".$juser->get('id').", '".$ticketid."', '".$when."', '500000')");
 					if (!$database->query()) {
 						echo "<script type=\"text/javascript\"> alert('".$database->getErrorMsg()."');</script>\n";
 						exit;

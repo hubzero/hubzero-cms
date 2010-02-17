@@ -47,9 +47,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 				$name = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 				if (!$row->anonymous) {
-					$xuser =& JUser::getInstance( $row->created_by );
-					if (is_object($xuser) && $xuser->get('name')) {
-						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+					$juser =& JUser::getInstance( $row->created_by );
+					if (is_object($juser) && $juser->get('name')) {
+						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by).'">'.stripslashes($juser->get('name')).'</a>';
 					}
 				}
 				

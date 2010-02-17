@@ -95,15 +95,6 @@ class plgResourcesReviews extends JPlugin
 				if ($juser->authorize($option, 'manage')) {
 					$admin = true;
 				}
-
-				// Check if they're a site admin (from LDAP)
-				$xuser =& XFactory::getUser();
-				if (is_object($xuser)) {
-					$app =& JFactory::getApplication();
-					if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-						$admin = true;
-					}
-				}
 				
 				$voting = $this->_params->get('voting');
 				if ($voting) {
@@ -148,7 +139,7 @@ class plgResourcesReviews extends JPlugin
 					$name = JText::_('REVIEWS_ANONYMOUS');
 					if ($review->anonymous != 1) {
 						$name = JText::_('REVIEWS_UNKNOWN');
-						$ruser =& XUser::getInstance($review->user_id);
+						$ruser =& JUser::getInstance($review->user_id);
 						if (is_object($ruser)) {
 							$name = $ruser->get('name');
 						}
@@ -201,7 +192,7 @@ class plgResourcesReviews extends JPlugin
 						}*/
 						
 						//$html .= t.t.t.'<p id="review_'.$review->id.'" class="condensed">';
-						//$html .= $this->ratereview($review, $juser, $xuser, $option, $resource->id);					
+						//$html .= $this->ratereview($review, $juser, $juser, $option, $resource->id);					
 						//$html .= t.t.t.'</p>'.n;
 						
 						if ((($abuse || $reply) && $review->comment) || $admin) {
@@ -419,7 +410,7 @@ class plgResourcesReviews extends JPlugin
 		$name = JText::_('REVIEWS_ANONYMOUS');
 		if ($reply->anonymous != 1) {
 			$name = JText::_('REVIEWS_UNKNOWN');
-			$ruser =& XUser::getInstance($reply->added_by);
+			$ruser =& JUser::getInstance($reply->added_by);
 			if (is_object($ruser)) {
 				$name = $ruser->get('name');
 			}

@@ -102,9 +102,9 @@ class modMySessions
 		// Check if the user is an admin.
 		$this->authorized = false;
 		
-		$xuser =& XFactory::getUser();
-		if (is_object($xuser)) {
-			if (in_array('middleware', $xuser->get('admin'))) {
+		$xprofile =& XFactory::getProfile();
+		if (is_object($xprofile)) {
+			if (in_array('middleware', $xprofile->get('admin'))) {
 				$this->authorized = 'admin';
 			}
 		}

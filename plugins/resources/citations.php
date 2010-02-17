@@ -67,8 +67,6 @@ class plgResourcesCitations extends JPlugin
 		
 		$database =& JFactory::getDBO();
 
-		$xuser =& XFactory::getUser();
-
 		// Get a needed library
 		include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'citations.class.php');
 
@@ -103,9 +101,6 @@ class plgResourcesCitations extends JPlugin
 							$item .= t.t.t.' <span>|</span> <a href="'.stripslashes($cite->eprint).'">'.JText::_('ELECTRONIC_PAPER').'</a>'.n;
 						}
 					}
-					//if ($xuser->get('uid') == $cite->uid) {
-					//	$html .= t.t.t.' <span>|</span> <a class="edit button" href="'.sefRelToAbs('index.php?option='.$option.a.'id='.$resource->id.a.'task=editcitation#citationform').'" title="Edit your citation">edit</a>'.n;
-					//}
 					$item .= t.t.'</p>'.n;
 					$item .= t.'</li>'.n;
 

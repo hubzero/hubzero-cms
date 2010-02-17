@@ -1073,10 +1073,10 @@ class ResourcesController extends JObject
 			// Send e-mail
 			/*foreach ($contributors as $contributor)
 			{
-				$xuser = JUser::getInstance( $contributor->id );
-				if (is_object($xuser)) {
-					if ($xuser->get('email')) {
-						$this->send_email($from, $xuser->get('email'), $subject, $message);
+				$juser = JUser::getInstance( $contributor->id );
+				if (is_object($juser)) {
+					if ($juser->get('email')) {
+						$this->send_email($from, $juser->get('email'), $subject, $message);
 					}
 				}
 			}*/

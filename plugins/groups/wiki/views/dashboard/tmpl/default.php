@@ -34,9 +34,9 @@ if ($this->rows) {
 	foreach ($this->rows as $row)
 	{
 		$name = JText::_('WIKI_AUTHOR_UNKNOWN');
-		$xuser =& JUser::getInstance( $row->created_by );
-		if (is_object($xuser) && $xuser->get('name')) {
-			$name = $xuser->get('name');
+		$juser =& JUser::getInstance( $row->created_by );
+		if (is_object($juser) && $juser->get('name')) {
+			$name = $juser->get('name');
 		}
 		
 		if ($row->version > 1) {

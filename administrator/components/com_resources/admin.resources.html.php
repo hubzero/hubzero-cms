@@ -896,11 +896,11 @@ class ResourcesHtml
 		if (intval( $row->created ) <> 0) {
 			$thedate = JHTML::_('date', $row->created );
 		}
-		$xuser =& XUser::getInstance($row->user_id);
+		$juser =& JUser::getInstance($row->user_id);
 ?>
 		  <tr>
 		   <th>User:</th>
-		   <td><?php echo $xuser->get('name'); ?></td>
+		   <td><?php echo $juser->get('name'); ?></td>
 		  </tr>
 		  <tr>
 		   <th>Rating:</th>

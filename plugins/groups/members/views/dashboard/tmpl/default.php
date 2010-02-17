@@ -34,10 +34,10 @@ if ($this->logs) {
 		$name = JText::_('UNKNOWN');
 		//$username = JText::_('UNKNOWN');
 		
-		$xuser =& JUser::getInstance( $log->actorid );
-		if (is_object($xuser) && $xuser->get('name')) {
-			$name = $xuser->get('name');
-			//$username = $xuser->get('username');
+		$juser =& JUser::getInstance( $log->actorid );
+		if (is_object($juser) && $juser->get('name')) {
+			$name = $juser->get('name');
+			//$username = $juser->get('username');
 		}
 		
 		$info = '';

@@ -193,10 +193,10 @@ class ToolGroup extends  JTable
 		
 		if(count($members) > 0) {
 			 foreach($members as $member) {
-			 	$xuser =& XUser::getInstance ($member);
-			 	if(is_object($xuser)) {
-					if($id) { $teamlist[$i]->uidNumber = $xuser->get('uid'); }
-					else { $teamlist[$i] = $xuser->get('uid'); }
+			 	$juser =& JUser::getInstance ($member);
+			 	if(is_object($juser)) {
+					if($id) { $teamlist[$i]->uidNumber = $juser->get('id'); }
+					else { $teamlist[$i] = $juser->get('id'); }
 					$i++;
 				}
 				else {

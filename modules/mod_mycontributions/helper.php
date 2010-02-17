@@ -260,10 +260,10 @@ class modMyContributions
 	public function display()
 	{
 		// Get the user's profile from LDAP...
-		$xuser =& XFactory::getUser();
+		$xprofile =& XFactory::getProfile();
 		$juser =& JFactory::getUser();
-		$session_quota = $xuser->get('jobs_allowed');
-		$administrator = in_array('middleware', $xuser->get('admin'));
+		$session_quota = $xuser->get('jobsAllowed');
+		$administrator = in_array('middleware', $xprofileu->get('admin'));
 		
 		// show tool contributions separately?
 		$show_tools = intval( $this->params->get( 'show_tools' ) );

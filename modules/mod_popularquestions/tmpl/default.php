@@ -40,9 +40,9 @@ if (count($rows) > 0) {
 	{
 		$name = JText::_('MOD_POPULARQUESTIONS_ANONYMOUS');
 		if ($row->anonymous == 0) {
-			$xuser =& XUser::getInstance( $row->created_by );
-			if (is_object($xuser)) {
-				$name = $xuser->get('name');
+			$juser =& JUser::getInstance( $row->created_by );
+			if (is_object($juser)) {
+				$name = $juser->get('name');
 			}
 		}
 		
