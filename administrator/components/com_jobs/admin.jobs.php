@@ -39,7 +39,7 @@ include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'jobs.class.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.jobs.html.php' );
 
-ximport('xuser');
+ximport('xprofile');
 ximport('bankaccount');
 ximport('misc_func');
 

@@ -53,7 +53,7 @@ require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
 ximport('textfilter');
 ximport('misc_func');
-ximport('xuser');
+ximport('xprofile');
 
 // Instantiate controller
 $controller = new SupportController();

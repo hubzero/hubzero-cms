@@ -274,15 +274,15 @@ class plgUserXusers extends JPlugin
 	 */
 	function onAfterDeleteUser($user, $succes, $msg)
 	{
-		ximport('xuser');
+		ximport('xprofile');
 		ximport('xuserhelper');
 
 		XUserHelper::deleteXDomainUserId($user['id']);
 
-		$xuser = XUser::getInstance($user['id']);
+		$xprofile = XProfile::getInstance($user['id']);
 
-		if (is_object($xuser))
-			$xuser->deactivate();
+		if (is_object($xprofile))
+			$xprofile->deactivate();
 
 		return true;
 	}

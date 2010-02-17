@@ -127,15 +127,6 @@ class plgXSearchTopics extends JPlugin
 			return false;
 		}
 		
-		// Check if they're a site admin (from LDAP)
-		/*$xuser =& XFactory::getUser();
-		if (is_object($xuser)) {
-			$app =& JFactory::getApplication();
-			if (in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin'))) {
-				return 'admin';
-			}
-		}*/
-		
 		return true;
 	}
 

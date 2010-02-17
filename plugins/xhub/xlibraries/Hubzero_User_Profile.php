@@ -873,7 +873,7 @@ class Hubzero_User_Profile
         return true;
     }
 
-    public function update($storage = null)
+    public function update2($storage = null)
     {
         if (!empty($storage) && !in_array($storage, array('mysql', 'ldap')))
         {

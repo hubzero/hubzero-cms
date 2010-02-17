@@ -60,7 +60,7 @@ ximport('textfilter');
 ximport('fileuploadutils');
 ximport('xmodule');
 ximport('xgroup');
-ximport('xuser');
+ximport('xprofile');
 ximport('misc_func');
 ximport('xuserhelper');
 

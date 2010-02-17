@@ -128,9 +128,9 @@ if (!$contributions) {
 			
 			// get author login
 			$author_login = JText::_('MOD_MYCONTRIBUTIONS_UNKNOWN');
-			$author =& XUser::getInstance( $contributions[$i]->created_by );
+			$author =& JUser::getInstance( $contributions[$i]->created_by );
 			if (is_object($author)) {
-				$author_login = $author->get('login');
+				$author_login = $author->get('username');
 			}
 			$href = '/contribute/?step=1&amp;id='.$contributions[$i]->id;
 			

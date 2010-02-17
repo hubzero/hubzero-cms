@@ -24,7 +24,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
+?>
 <table cellspacing="36" cellpadding="0" border="0">
  <tr valign="top">
   <td width="20%">

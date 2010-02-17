@@ -79,7 +79,7 @@ class plgResourcesQuestions extends JPlugin
 		// Are we banking?
 		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
 		$banking = $upconfig->get('bankAccounts');		
-		$xuser =& XFactory::getUser();
+		$juser =& JFactory::getUser();
 		
 		// Info aboit points link
 		$aconfig =& JComponentHelper::getParams( 'com_answers' );
@@ -147,9 +147,9 @@ class plgResourcesQuestions extends JPlugin
 				{
 					if ($row->anonymous == 0) {
 						$name = JText::_('UNKNOWN');
-						$xuser =& XUser::getInstance( $row->created_by );
-						if (is_object($xuser)) {
-							$name = $xuser->get('name');
+						$juser =& JUser::getInstance( $row->created_by );
+						if (is_object($juser)) {
+							$name = $juser->get('name');
 						}
 					} else {
 						$name = JText::_('ANONYMOUS');
@@ -203,9 +203,9 @@ class plgResourcesQuestions extends JPlugin
 					// author name
 					$name = JText::_('ANONYMOUS');
 					if ($row->anonymous == 0) {
-						$xuser =& XUser::getInstance( $row->created_by );
-						if (is_object($xuser)) {
-							$name = $xuser->get('name');
+						$juser =& J`User::getInstance( $row->created_by );
+						if (is_object($juser)) {
+							$name = $juser->get('name');
 						} else {
 							$name = JText::_('Unknown');
 						}

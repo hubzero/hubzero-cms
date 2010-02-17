@@ -174,7 +174,6 @@ class plgSupportAnswers extends JPlugin
 		
 		$database =& JFactory::getDBO();
 		$juser 	  =& JFactory::getUser();
-		$xuser 	  =& XFactory::getUser();
 		
 		switch ($category)
 		{
@@ -250,7 +249,7 @@ class plgSupportAnswers extends JPlugin
 					if ($responders) {
 						foreach ($responders as $r) 
 						{
-							$zuser =& XUser::getInstance( $r );
+							$zuser =& JUser::getInstance( $r );
 							if (is_object($zuser)) {
 								if (SupportUtils::check_validEmail($zuser->get('email')) && $email) {
 									$xhub =& XFactory::getHub();
@@ -276,9 +275,9 @@ class plgSupportAnswers extends JPlugin
 					$asker = $database->loadResult();
 						
 					if ($asker) {
-						$quser =& XUser::getInstance( $asker );
+						$quser =& JUser::getInstance( $asker );
 						if (is_object($quser)) {
-							$asker_id = $quser->get('uid');
+							$asker_id = $quser->get('id');
 						}
 							
 						if (isset($asker_id) ) {

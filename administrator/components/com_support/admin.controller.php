@@ -506,14 +506,14 @@ class SupportController
 			//$row->next = $row->getTicketId('next', $filters, 'admin');
 		} else {
 			// Creating a new ticket
-			$xuser =& XFactory::getUser();
+			$juser =& JFactory::getUser();
 			
 			$row->severity = 'normal';
 			$row->status   = 0;
 			$row->created  = date( 'Y-m-d H:i:s', time() );
 			$row->login    = $juser->get('username');
-			$row->name     = $xuser->get('name');
-			$row->email    = $xuser->get('email');
+			$row->name     = $juser->get('name');
+			$row->email    = $juser->get('email');
 			$row->cookies  = 1;
 			
 			list( $os, $os_version, $browser, $browser_ver ) = SupportUtils::check_browserOs($_SERVER['HTTP_USER_AGENT']);
@@ -1103,16 +1103,12 @@ class SupportController
 					$email_owner = JRequest::getInt( 'email_owner', 0 );
 					if ($email_owner == 1) {
 						if ($row->owner) {
-							//$xuser =& XUser::getInstance( $row->owner );
-							$xuser =& JUser::getInstance($row->owner);
-							//if ($xuser && $xuser->get('email') != $row->email) { 
-								//$emails[] = $xuser->get('email');
-							//}
-							//if (!XMessageHelper::sendMessage( 'support_reply_assigned', $subject, $message, $from, array($xuser->get('id')) )) {
-							if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($xuser->get('id')), $this->_option ))) {
+							$juser =& JUser::getInstance($row->owner);
+							
+							if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option ))) {
 								$this->setError( JText::_('Failed to message ticket owner.') );
 							} else {
-								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_OWNER').' - '.$xuser->get('email').'</li>';
+								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_OWNER').' - '.$juser->get('email').'</li>';
 							}
 						}
 					}
@@ -1128,13 +1124,13 @@ class SupportController
 							// Is this a username or email address?
 							if (!strstr( $acc, '@' )) {
 								// Username - load the user
-								$xuser =& JUser::getInstance( strtolower($acc) );
+								$juser =& JUser::getInstance( strtolower($acc) );
 								// Did we find an account?
-								if (is_object($xuser)) {
+								if (is_object($juser)) {
 									// Get the user's email address
-									//$acc = $xuser->get('email');
-									//if (!XMessageHelper::sendMessage( 'support_reply_assigned', $subject, $message, $from, array($xuser->get('id')) )) {
-									if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($xuser->get('id')), $this->_option ))) {
+									//$acc = $juser->get('email');
+									//if (!XMessageHelper::sendMessage( 'support_reply_assigned', $subject, $message, $from, array($juser->get('id')) )) {
+									if (!$dispatcher->trigger( 'onSendMessage', array( 'support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option ))) {
 										$this->setError( JText::_('Failed to message ticket owner.') );
 									}
 									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$acc.'</li>';

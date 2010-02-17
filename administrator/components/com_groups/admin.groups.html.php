@@ -308,7 +308,6 @@ class GroupsHtml
 			foreach ($groupusers as $guser) 
 			{
 				$u =& JUser::getInstance($guser);
-				//$u =& XUser::getInstance($guser);
 				if (!is_object($u)) {
 					continue;
 				}

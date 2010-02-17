@@ -234,7 +234,6 @@ class ResourcesResource extends JTable
 		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '".$now."') ";
 		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '".$now."') AND ";
 		if (!$juser->get('guest')) {
-			//$xgroups = $xuser->get('groups');
 			ximport('xuserhelper');
 			$xgroups = XUserHelper::getGroups($juser->get('id'), 'all');
 			if ($xgroups != '') {
