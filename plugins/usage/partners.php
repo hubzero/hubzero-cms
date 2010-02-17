@@ -48,7 +48,7 @@ class plgUsagePartners extends JPlugin
 	public function onUsageAreas()
 	{
 		$areas = array(
-			'partners' => JText::_('USAGE_PARTNERS')
+			'partners' => JText::_('PLG_USAGE_PARTNERS')
 		);
 		return $areas;
 	}
