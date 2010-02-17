@@ -203,7 +203,7 @@ class plgResourcesQuestions extends JPlugin
 					// author name
 					$name = JText::_('ANONYMOUS');
 					if ($row->anonymous == 0) {
-						$juser =& J`User::getInstance( $row->created_by );
+						$juser =& JUser::getInstance( $row->created_by );
 						if (is_object($juser)) {
 							$name = $juser->get('name');
 						} else {
