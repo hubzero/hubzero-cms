@@ -48,7 +48,7 @@ class plgUsageTools extends JPlugin
 	public function onUsageAreas()
 	{
 		$areas = array(
-			'tools' => JText::_('USAGE_TOOLs')
+			'tools' => JText::_('PLG_USAGE_TOOLs')
 		);
 		return $areas;
 	}
@@ -64,14 +64,14 @@ class plgUsageTools extends JPlugin
 		$results = $database->loadObjectList();
 		
 		$cls = 'even';
-		$html .= t.'<thead>'.n;
-		$html .= t.t.'<tr>'.n;
-		$html .= t.t.t.'<th class="numerical-data">'.JText::_('#').'</th>'.n;
-		$html .= t.t.t.'<th>'.JText::_('Tool').'</th>'.n;
-		$html .= t.t.t.'<th class="numerical-data">'.JText::_('Value').'</th>'.n;
-		$html .= t.t.t.'<th class="numerical-data">'.JText::_('Percent').'</th>'.n;
-		$html .= t.t.'</tr>'.n;
-		$html .= t.'</thead>'.n;
+		$html .= "\t".'<thead>'."\n";
+		$html .= "\t\t".'<tr>'."\n";
+		$html .= "\t\t\t".'<th class="numerical-data">'.JText::_('#').'</th>'."\n";
+		$html .= "\t\t\t".'<th>'.JText::_('Tool').'</th>'."\n";
+		$html .= "\t\t\t".'<th class="numerical-data">'.JText::_('Value').'</th>'."\n";
+		$html .= "\t\t\t".'<th class="numerical-data">'.JText::_('Percent').'</th>'."\n";
+		$html .= "\t\t".'</tr>'."\n";
+		$html .= "\t".'</thead>'."\n";
 		
 		if ($results) {
 			foreach ($results as $row)
@@ -84,14 +84,14 @@ class plgUsageTools extends JPlugin
 					} else {
 						$value = number_format($row->value);
 					}
-					$html .= t.'<tfoot>'.n;
-					$html .= t.t.'<tr class="summary">'.n;
-					$html .= t.t.t.'<th colspan="2" class="numerical-data">'.$row->name.'</th>'.n;
-					$html .= t.t.t.'<th class="numerical-data">'.$value.'</th>'.n;
-					$html .= t.t.t.'<th class="numerical-data">'.round((($row->value/$total)*100),2).'%</th>'.n;
-					$html .= t.t.'</tr>'.n;
-					$html .= t.'</tfoot>'.n;
-					$html .= t.'<tbody>'.n;
+					$html .= "\t".'<tfoot>'."\n";
+					$html .= "\t\t".'<tr class="summary">'."\n";
+					$html .= "\t\t\t".'<th colspan="2" class="numerical-data">'.$row->name.'</th>'."\n";
+					$html .= "\t\t\t".'<th class="numerical-data">'.$value.'</th>'."\n";
+					$html .= "\t\t\t".'<th class="numerical-data">'.round((($row->value/$total)*100),2).'%</th>'."\n";
+					$html .= "\t\t".'</tr>'."\n";
+					$html .= "\t".'</tfoot>'."\n";
+					$html .= "\t".'<tbody>'."\n";
 				} else {
 					$name = preg_split('/ ~ /',$row->name);
 					if ($s_top == "6" || $s_top == "7" || $s_top == "8") {
@@ -99,21 +99,21 @@ class plgUsageTools extends JPlugin
 					} else {
 						$value = number_format($row->value);
 					}
-					$html .= t.t.'<tr class="'.$cls.'">'.n;
-					$html .= t.t.t.'<td>'.$row->rank.'</td>'.n;
-					$html .= t.t.t.'<td class="textual-data"><a href="'.JRoute::_('index.php?option='.$this->_option.a.'task=tools'.a.'id='.$name[0].a.'period='.$period).'">'.$name[1].'</a></td>'.n;
-					$html .= t.t.t.'<td>'.$value.'</td>'.n;
-					$html .= t.t.t.'<td>'.round((($row->value/$total)*100),2).'%</td>'.n;
-					$html .= t.t.'</tr>'.n;
+					$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
+					$html .= "\t\t\t".'<td>'.$row->rank.'</td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data"><a href="'.JRoute::_('index.php?option='.$this->_option.'&task=tools&id='.$name[0].'&period='.$period).'">'.$name[1].'</a></td>'."\n";
+					$html .= "\t\t\t".'<td>'.$value.'</td>'."\n";
+					$html .= "\t\t\t".'<td>'.round((($row->value/$total)*100),2).'%</td>'."\n";
+					$html .= "\t\t".'</tr>'."\n";
 				}
 			}
 		} else {
-			$html .= t.'<tbody>'.n;
-			$html .= t.t.'<tr class="odd">'.n;
-			$html .= t.t.t.'<td colspan="4">Data being generated. Please check back soon.</td>'.n;
-			$html .= t.t.'</tr>'.n;
+			$html .= "\t".'<tbody>'."\n";
+			$html .= "\t\t".'<tr class="odd">'."\n";
+			$html .= "\t\t\t".'<td colspan="4">Data being generated. Please check back soon.</td>'."\n";
+			$html .= "\t\t".'</tr>'."\n";
 		}
-		$html .= t.'</tbody>'.n;
+		$html .= "\t".'</tbody>'."\n";
 		
 		return $html;
 	}
@@ -131,34 +131,34 @@ class plgUsageTools extends JPlugin
 		
 		if ($results) {
 			$cls = 'even';
-			$html .= t.'<thead>'.n;
-			$html .= t.t.'<tr>'.n;
-			$html .= t.t.t.'<th class="numerical-data">'.JText::_('#').'</th>'.n;
-			$html .= t.t.t.'<th>'.JText::_('Tool').'</th>'.n;
-			$html .= t.t.t.'<th class="numerical-data">'.JText::_('Ranking').'</th>'.n;
-			$html .= t.t.'</tr>'.n;
-			$html .= t.'</thead>'.n;
-			$html .= t.'<tbody>'.n;
+			$html .= "\t".'<thead>'."\n";
+			$html .= "\t\t".'<tr>'."\n";
+			$html .= "\t\t\t".'<th class="numerical-data">'.JText::_('#').'</th>'."\n";
+			$html .= "\t\t\t".'<th>'.JText::_('Tool').'</th>'."\n";
+			$html .= "\t\t\t".'<th class="numerical-data">'.JText::_('Ranking').'</th>'."\n";
+			$html .= "\t\t".'</tr>'."\n";
+			$html .= "\t".'</thead>'."\n";
+			$html .= "\t".'<tbody>'."\n";
 			foreach ($results as $row) 
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				$ranking = round($row->ranking,2);
 				if ($row->published == "1") {
-					$html .= t.t.'<tr class="'.$cls.'">'.n;
-					$html .= t.t.t.'<td>'.$count.'</td>'.n;
-					$html .= t.t.t.'<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$row->id.a.'active=usage').'">'.$row->title.'</a></td>'.n;
-					$html .= t.t.t.'<td>'.$ranking.'</td>'.n;
-					$html .= t.t.'</tr>'.n;
+					$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
+					$html .= "\t\t\t".'<td>'.$count.'</td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources&id='.$row->id.'&active=usage').'">'.$row->title.'</a></td>'."\n";
+					$html .= "\t\t\t".'<td>'.$ranking.'</td>'."\n";
+					$html .= "\t\t".'</tr>'."\n";
 				} else {
-					$html .= t.t.'<tr class="'.$cls.'">'.n;
-					$html .= t.t.t.'<td>'.$count.'</td>'.n;
-					$html .= t.t.t.'<td class="textual-data">'.$row->title.'</td>'.n;
-					$html .= t.t.t.'<td>'.$ranking.'</td>'.n;
-					$html .= t.t.'</tr>'.n;
+					$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
+					$html .= "\t\t\t".'<td>'.$count.'</td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data">'.$row->title.'</td>'."\n";
+					$html .= "\t\t\t".'<td>'.$ranking.'</td>'."\n";
+					$html .= "\t\t".'</tr>'."\n";
 				}
 				$count++;
 			}
-			$html .= t.'</tbody>'.n;
+			$html .= "\t".'</tbody>'."\n";
 		}
 		
 		return $html;
@@ -174,21 +174,21 @@ class plgUsageTools extends JPlugin
 		$database->setQuery( $sql );
 		$result = $database->loadResult();
 		
-		$html .= t.'<thead>'.n;
-		$html .= t.t.'<tr>'.n;
-		$html .= t.t.t.'<th class="numerical-data">'.JText::_('#').'</th>'.n;
-		$html .= t.t.t.'<th>'.JText::_('Tool').'</th>'.n;
-		$html .= t.t.t.'<th class="numerical-data">'.JText::_('Citations').'</th>'.n;
-		$html .= t.t.'</tr>'.n;
-		$html .= t.'</thead>'.n;
+		$html .= "\t".'<thead>'."\n";
+		$html .= "\t\t".'<tr>'."\n";
+		$html .= "\t\t\t".'<th class="numerical-data">'.JText::_('#').'</th>'."\n";
+		$html .= "\t\t\t".'<th>'.JText::_('Tool').'</th>'."\n";
+		$html .= "\t\t\t".'<th class="numerical-data">'.JText::_('Citations').'</th>'."\n";
+		$html .= "\t\t".'</tr>'."\n";
+		$html .= "\t".'</thead>'."\n";
 		
 		if ($result) {
-			$html .= t.'<tfoot>'.n;
-			$html .= t.t.'<tr class="summary">'.n;
-			$html .= t.t.t.'<th colspan="2" class="numerical-data">'.JText::_('Total Tools Citations').'</th>'.n;
-			$html .= t.t.t.'<td class="numerical-data">'.$result.'</td>'.n;
-			$html .= t.t.'</tr>'.n;
-			$html .= t.'</tfoot>'.n;
+			$html .= "\t".'<tfoot>'."\n";
+			$html .= "\t\t".'<tr class="summary">'."\n";
+			$html .= "\t\t\t".'<th colspan="2" class="numerical-data">'.JText::_('Total Tools Citations').'</th>'."\n";
+			$html .= "\t\t\t".'<td class="numerical-data">'.$result.'</td>'."\n";
+			$html .= "\t\t".'</tr>'."\n";
+			$html .= "\t".'</tfoot>'."\n";
 		}
 		
 		$count = 1;
@@ -198,27 +198,27 @@ class plgUsageTools extends JPlugin
 		
 		if ($results) {
 			$cls = 'even';
-			$html .= t.'<tbody>'.n;
+			$html .= "\t".'<tbody>'."\n";
 			foreach ($results as $row) 
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				
 				if ($row->published == "1") {
-					$html .= t.t.'<tr class="'.$cls.'">'.n;
-					$html .= t.t.t.'<td>'.$count.'</td>'.n;
-					$html .= t.t.t.'<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$row->id.a.'active=usage').'">'.stripslashes($row->title).'</a></td>';
-					$html .= t.t.t.'<td>'.$row->citations.'</td>'.n;
-					$html .= t.t.'</tr>'.n;
+					$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
+					$html .= "\t\t\t".'<td>'.$count.'</td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources&id='.$row->id.'&active=usage').'">'.stripslashes($row->title).'</a></td>';
+					$html .= "\t\t\t".'<td>'.$row->citations.'</td>'."\n";
+					$html .= "\t\t".'</tr>'."\n";
 				} else {
-					$html .= t.t.'<tr class="'.$cls.'">'.n;
-					$html .= t.t.t.'<td>'.$count.'</td>'.n;
-					$html .= t.t.t.'<td class="textual-data">'.stripslashes($row->title).'</td>';
-					$html .= t.t.t.'<td>'.$row->citations.'</td>'.n;
-					$html .= t.t.'</tr>'.n;
+					$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
+					$html .= "\t\t\t".'<td>'.$count.'</td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data">'.stripslashes($row->title).'</td>';
+					$html .= "\t\t\t".'<td>'.$row->citations.'</td>'."\n";
+					$html .= "\t\t".'</tr>'."\n";
 				}
 				$count++;
 	    	}
-			$html .= t.'</tbody>'.n;
+			$html .= "\t".'</tbody>'."\n";
 		}
 		
 		return $html;
@@ -251,7 +251,7 @@ class plgUsageTools extends JPlugin
 		$cur_month = floor(date("n"));
 		$year_data_start = 2000;
 
-		$html = '<select name="dthis">'.n;
+		$html = '<select name="dthis">'."\n";
 		switch ($period) 
 		{
 			case '3':
@@ -278,7 +278,7 @@ class plgUsageTools extends JPlugin
 							$key = 9;
 							$html .= 'Oct';
 						}
-						$html .= ' ' . $cur_year . ' - ' . $month . ' ' . $cur_year . '</option>'.n;
+						$html .= ' ' . $cur_year . ' - ' . $month . ' ' . $cur_year . '</option>'."\n";
 						$qtd_found = 1;
 					}
 				}
@@ -308,7 +308,7 @@ class plgUsageTools extends JPlugin
 								case 9:  $html .= 'Sep'; break;
 								default: $html .= 'Dec'; break;
 							}
-							$html .= ' ' . $j . '</option>'.n;
+							$html .= ' ' . $j . '</option>'."\n";
 						}
 					}
 				}
@@ -337,7 +337,7 @@ class plgUsageTools extends JPlugin
 							} else {
 								$html .= $i - 1;
 							}
-						   	$html .= ' - ' . $month . ' ' . $i . '</option>'.n;
+						   	$html .= ' - ' . $month . ' ' . $i . '</option>'."\n";
 						}
 					}
 				}
@@ -355,7 +355,7 @@ class plgUsageTools extends JPlugin
 							if ($value == $dthis) {
 								$html .= ' selected="selected"';
 							}
-							$html .= '>' . $month . ' ' . $i . '</option>'.n;
+							$html .= '>' . $month . ' ' . $i . '</option>'."\n";
 						}
 					}
 				}
@@ -371,7 +371,7 @@ class plgUsageTools extends JPlugin
 						if ($value == $dthis) {
 							$html .= ' selected="selected"';
 						}
-						$html .= '>Jan - ' . $month . ' ' . $cur_year . '</option>'.n;
+						$html .= '>Jan - ' . $month . ' ' . $cur_year . '</option>'."\n";
 						$ytd_found = 1;
 					}
 				}
@@ -383,7 +383,7 @@ class plgUsageTools extends JPlugin
 						if ($value == $dthis) {
 							$html .= ' selected="selected"';
 						}
-						$html .= '>Jan - Dec ' . $i . '</option>'.n;
+						$html .= '>Jan - Dec ' . $i . '</option>'."\n";
 					}
 				}
 			break;
@@ -406,7 +406,7 @@ class plgUsageTools extends JPlugin
 							$html .= $cur_year - 1;
 							$full_year = $cur_year - 1;
 						}
-						$html .= ' - ' . $month . ' ' . $cur_year . '</option>'.n;
+						$html .= ' - ' . $month . ' ' . $cur_year . '</option>'."\n";
 						$ytd_found = 1;
 					}
 				}
@@ -420,12 +420,12 @@ class plgUsageTools extends JPlugin
 						}
 						$html .= '>Oct ';
 						$html .= $i - 1;
-						$html .= ' - Sep ' . $i . '</option>'.n;
+						$html .= ' - Sep ' . $i . '</option>'."\n";
 					}
 				}
 			break;
 		}
-		$html .= '</select>'.n;
+		$html .= '</select>'."\n";
 		
 		return $html;
 	}
@@ -454,40 +454,40 @@ class plgUsageTools extends JPlugin
 
 	private function navlinks($period='12',$top='') 
 	{
-		$html  = '<div id="sub-sub-menu">'.n;
-		$html .= t.'<ul>'.n;
-		$html .= t.t.'<li';    
+		$html  = '<div id="sub-sub-menu">'."\n";
+		$html .= "\t".'<ul>'."\n";
+		$html .= "\t\t".'<li';    
 		if ($period == 'prior12' || $period == '12') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.a.'task='.$this->_task.a.'period=12'.a.'top='.$top).'"><span>'.JText::_('USAGE_PERIOD_PRIOR12').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period=12&top='.$top).'"><span>'.JText::_('PLG_USAGE_PERIOD_PRIOR12').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 	    if ($period == 'month' || $period == '1') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.a.'task='.$this->_task.a.'period=1'.a.'top='.$top).'"><span>'.JText::_('USAGE_PERIOD_MONTH').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period=1&top='.$top).'"><span>'.JText::_('PLG_USAGE_PERIOD_MONTH').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 	    if ($period == 'qtr' || $period == '3') {
 			$html .= ' class="active"';
 		}
-	    $html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.a.'task='.$this->_task.a.'period=3'.a.'top='.$top).'"><span>'.JText::_('USAGE_PERIOD_QTR').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+	    $html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period=3&top='.$top).'"><span>'.JText::_('PLG_USAGE_PERIOD_QTR').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 		if ($period == 'year' || $period == '0') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.a.'task='.$this->_task.a.'period=0'.a.'top='.$top).'"><span>'.JText::_('USAGE_PERIOD_YEAR').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period=0&top='.$top).'"><span>'.JText::_('PLG_USAGE_PERIOD_YEAR').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 		if ($period == 'fiscal' || $period == '13') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.a.'task='.$this->_task.a.'period=13'.a.'top='.$top).'"><span>'.JText::_('USAGE_PERIOD_FISCAL').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period=13&top='.$top).'"><span>'.JText::_('PLG_USAGE_PERIOD_FISCAL').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 		if ($period == '14') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.a.'task='.$this->_task.a.'period=14'.a.'top='.$top).'"><span>'.JText::_('USAGE_PERIOD_OVERALL').'</span></a></li>'.n;
-		$html .= t.'</ul>'.n;
-		$html .= '</div>'.n;
+		$html .= '><a href="'.JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period=14&top='.$top).'"><span>'.JText::_('PLG_USAGE_PERIOD_OVERALL').'</span></a></li>'."\n";
+		$html .= "\t".'</ul>'."\n";
+		$html .= '</div>'."\n";
 
 	    return $html;
 	}
@@ -510,7 +510,7 @@ class plgUsageTools extends JPlugin
 		$tables = $database->getTableList();
 		$table = $database->_table_prefix.'stats_tops';
 		if (!in_array($table,$tables)) {
-			return UsageHtml::error( JText::_('Error: Required database table not found.') );
+			return '<p class="error">'. JText::_('Error: Required database table not found.') .'</p>';
 		}
 		
 		// Set some vars
@@ -524,11 +524,11 @@ class plgUsageTools extends JPlugin
 
 		// Build the HTML
 		$html  = $this->navlinks($period, $s_top);
-		$html .= '<form method="post" action="'. JRoute::_('index.php?option='.$this->_option.a.'task='.$this->_task.a.'period='.$period) .'">'.n;
-		$html .= t.'<fieldset class="filters">'.n;
-		$html .= t.t.'<label>'.n;
-		$html .= t.t.t.JText::_('USAGE_SHOW_DATA_FOR').': '.n;
-		$html .= t.t.t.'<select name="top">'.n;
+		$html .= '<form method="post" action="'. JRoute::_('index.php?option='.$this->_option.'&task='.$this->_task.'&period='.$period) .'">'."\n";
+		$html .= "\t".'<fieldset class="filters">'."\n";
+		$html .= "\t\t".'<label>'."\n";
+		$html .= "\t\t\t".JText::_('PLG_USAGE_SHOW_DATA_FOR').': '."\n";
+		$html .= "\t\t\t".'<select name="top">'."\n";
 
 		$sql = "SELECT DISTINCT id, name FROM #__stats_tops ORDER BY id"; 
 		$database->setQuery( $sql );
@@ -540,23 +540,23 @@ class plgUsageTools extends JPlugin
 				$data[$top]['id'] = $row->id;
 				$data[$top]['name'] = $row->name;
 				if ($s_top == $top) {
-					$html .= t.t.t.t.'<option value="'. $data[$top]['id'].'" selected="selected">'. htmlentities($data[$top]['name']) .'</option>'.n;
+					$html .= "\t\t\t\t".'<option value="'. $data[$top]['id'].'" selected="selected">'. htmlentities($data[$top]['name']) .'</option>'."\n";
 				} else {
-					$html .= t.t.t.t.'<option value="'. $data[$top]['id'].'">'. htmlentities($data[$top]['name']) .'</option>'.n;
+					$html .= "\t\t\t\t".'<option value="'. $data[$top]['id'].'">'. htmlentities($data[$top]['name']) .'</option>'."\n";
 				}
 			}
 		}
 		
-		$html .= t.t.t.'</select>'.n;
-		$html .= t.t.'</label> '.n;
+		$html .= "\t\t\t".'</select>'."\n";
+		$html .= "\t\t".'</label> '."\n";
 		$html .= $this->drop_down_dates($database, $period, $s_top, $dthis).' ';
-		$html .= t.t.'<input type="submit" value="'.JText::_('USAGE_VIEW').'" />'.n;
-		$html .= t.'</fieldset>'.n;
-		$html .= '</form>'.n;
+		$html .= "\t\t".'<input type="submit" value="'.JText::_('PLG_USAGE_VIEW').'" />'."\n";
+		$html .= "\t".'</fieldset>'."\n";
+		$html .= '</form>'."\n";
 
 		if ($s_top) {
-			$html .= '<table summary="'.$data[$s_top]['name'].'">'.n;
-			$html .= t.'<caption>'.$data[$s_top]['name'].'</caption>'.n;
+			$html .= '<table summary="'.$data[$s_top]['name'].'">'."\n";
+			$html .= "\t".'<caption>'.$data[$s_top]['name'].'</caption>'."\n";
 			if ($s_top == '9') {
 				$html .= $this->gettopcited_tools($database);
 			} else if ($s_top == "1") {
@@ -564,9 +564,9 @@ class plgUsageTools extends JPlugin
 			} else {
 				$html .= $this->gettoplist($database, $period, $dthis, $s_top);
 			}
-			$html .= '</table>'.n;
+			$html .= '</table>'."\n";
 		} else {
-			$html .= '<p>'.JText::_('Please make a selection to view data.').'</p>'.n;
+			$html .= '<p>'.JText::_('Please make a selection to view data.').'</p>'."\n";
 		}
 		
 		return $html;

@@ -33,7 +33,6 @@ error_reporting(E_ALL);
 // Include scripts
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.tools.html.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tools.config.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'mw.class.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'mw.utils.php' );
 

@@ -31,7 +31,29 @@ $juser =& JFactory::getUser();
 	<h2 class="session-title item:name id:<?php echo $this->app['sess']; ?>"><?php echo $this->app['caption']; ?></h2>
 </div><!-- / #content-header -->
 
-
+<?php if ($this->config->get('show_storage')) { ?>
+<div id="content-header-extra">
+<?php
+	$view = new JView( array('name'=>'monitor') );
+	$view->option = $this->option;
+	$view->amt = $this->app['percent'];
+	$view->du = NULL; 
+	$view->percent = 0; 
+	$view->msgs = 0;
+	$view->ajax = 0;
+	$view->writelink = 1;
+	$view->display();
+	
+	if ($this->app['percent'] >= 100 && isset($this->app['remaining'])) {
+		$view = new JView( array('name'=>'monitor','layout'=>'warning') );
+		$view->sec = $this->app['remaining'];
+		$view->padHours = false; 
+		$view->option = $this->option;
+		$view->display();
+	}
+?>
+</div><!-- / #content-header-extra -->
+<?php } ?>
 
 <div id="sub-menu">
 	<ul>
@@ -142,7 +164,7 @@ foreach ($this->sections as $section)
 		if (key($this->cats[$k+1]) != $this->tab) {
 			$cls = 'hide ';
 		}
-		echo MwHtml::div( $section['html'], $cls.'main section', key($this->cats[$k+1]).'-section' );
+		echo '<div class="'.$cls.'main section" id="'.key($this->cats[$k+1]).'-section">'. $section['html'].'</div><!-- / #'.key($this->cats[$k+1]).'-section -->'."\n";
 	}
 	$k++;
 }

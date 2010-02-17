@@ -37,7 +37,7 @@ class ToolsHtml
 {
 	public function error( $msg, $tag='p' )
 	{
-		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
+		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
 	
 	//-----------
@@ -53,7 +53,7 @@ class ToolsHtml
 	{
 		$html  = '<input type="hidden" name="'.$name.'" value="'.$value.'"';
 		$html .= ($id) ? ' id="'.$id.'"' : '';
-		$html .= ' />'.n;
+		$html .= ' />'."\n";
 		return $html;
 	}
 
@@ -61,7 +61,7 @@ class ToolsHtml
 
 	public function sInput($name, $value='')
 	{
-		return '<input type="submit" name="'.$name.'" value="'.$value.'" />'.n;
+		return '<input type="submit" name="'.$name.'" value="'.$value.'" />'."\n";
 	}
 
 	//-----------
@@ -70,7 +70,7 @@ class ToolsHtml
 	{
 		$html  = '   <td';
 		$html .= ($attribs) ? ' '.$attribs : '';
-		$html .= '>'.$content.'</td>'.n;
+		$html .= '>'.$content.'</td>'."\n";
 		return $html;
 	}
 	
@@ -107,7 +107,7 @@ class ToolsHtml
 	
 	public function listedit( $list, $hidden ) 
 	{
-		$html = '<ul class="ntools">'.n;
+		$html = '<ul class="ntools">'."\n";
 		foreach ($list as $key => $value) 
 		{
 			$html .= ' <li>';
@@ -139,9 +139,9 @@ class ToolsHtml
 			if ($value != '0') { 
 				$html .= '</b>'; 
 			}
-			$html .= '</li>'.n;
+			$html .= '</li>'."\n";
 		}
-		$html .= '</ul>'.n;
+		$html .= '</ul>'."\n";
 		return $html;
 	}
 
@@ -151,24 +151,24 @@ class ToolsHtml
 
 	public function table( $rows, $header, $middle, $trailer, $tail_row ) 
 	{
-		$html  = '<table>'.n;
-		$html .= '  <tr>'.n; 
+		$html  = '<table>'."\n";
+		$html .= '  <tr>'."\n"; 
 		$html .= $header(); 
-		$html .= '  </tr>'.n;
-		$html .= ' <tbody>'.n; 
+		$html .= '  </tr>'."\n";
+		$html .= ' <tbody>'."\n"; 
 		for($i=0; $i < count($rows); $i++) 
 		{
-			$html .= '  <tr>'.n;
+			$html .= '  <tr>'."\n";
 			$html .= $middle($rows[$i]); 
-			$html .= '  </tr>'.n;
+			$html .= '  </tr>'."\n";
 		}
 		if ($tail_row != '') {
-			$html .= '  <tr>'.n;
+			$html .= '  <tr>'."\n";
 			$html .= $trailer($tail_row); 
-			$html .= '  </tr>'.n;
+			$html .= '  </tr>'."\n";
 		}
-		$html .= ' </tbody>'.n; 
-		$html .= '</table>'.n;
+		$html .= ' </tbody>'."\n"; 
+		$html .= '</table>'."\n";
 		return $html;
 	}
 	
@@ -176,20 +176,20 @@ class ToolsHtml
 	
 	public function updateform($table, $bit, $refs, &$row, $option)
 	{
-		$html  = '<tr>'.n;
-		$html .= '<form name="update_'.$table.'" method="get" action="index.php">'.n;
+		$html  = '<tr>'."\n";
+		$html .= '<form name="update_'.$table.'" method="get" action="index.php">'."\n";
 		$html .= t.ToolsHtml::hInput('option',$option);
 		$html .= t.ToolsHtml::hInput('admin',1);
 		$html .= t.ToolsHtml::hInput('table',$table);
 		$html .= t.ToolsHtml::hInput('op','update');
 		$html .= t.ToolsHtml::hInput('filter_'.$table,$row->name);
-		$html .= '<td><input type="text" name="name" size="10" value="'.$row->name.'" />'.n;
-		$html .= '<td> '.$bit.n;
-		$html .= '<td><input type="text" name="description" size="20" value="'.$row->description.'" />'.n;
-		$html .= '<td> '.$refs.n;
-		$html .= '<td><input type="submit" name="update" value="Update" />'.n;
-		$html .= '<form>'.n;
-		$html .= '</tr>'.n;
+		$html .= '<td><input type="text" name="name" size="10" value="'.$row->name.'" />'."\n";
+		$html .= '<td> '.$bit."\n";
+		$html .= '<td><input type="text" name="description" size="20" value="'.$row->description.'" />'."\n";
+		$html .= '<td> '.$refs."\n";
+		$html .= '<td><input type="submit" name="update" value="Update" />'."\n";
+		$html .= '<form>'."\n";
+		$html .= '</tr>'."\n";
 		
 		return $html;
 	}
@@ -198,14 +198,14 @@ class ToolsHtml
 
 	public function tableHeader($headers)
 	{
-		$html  = ' <thead>'.n;
-		$html .= '  <tr>'.n;
+		$html  = ' <thead>'."\n";
+		$html .= '  <tr>'."\n";
 		for ($i=0, $n=count( $headers ); $i < $n; $i++) 
 		{
-			$html .= '   <th>'.$headers[$i].'</th>'.n;
+			$html .= '   <th>'.$headers[$i].'</th>'."\n";
 		}
-		$html .= '  </tr>'.n;
-		$html .= ' </thead>'.n;
+		$html .= '  </tr>'."\n";
+		$html .= ' </thead>'."\n";
 		return $html;
 	}
 	
@@ -213,38 +213,15 @@ class ToolsHtml
 	
 	public function delete_button($name, $table, $value, $option)
 	{
-		$html  = '<form name="delete_'.$value.'" method="get" action="index.php">'.n;
+		$html  = '<form name="delete_'.$value.'" method="get" action="index.php">'."\n";
 		$html .= t.ToolsHtml::hInput('option',$option);
 		$html .= t.ToolsHtml::hInput('admin',1);
 		$html .= t.ToolsHtml::hInput('table',$table);
 		$html .= t.ToolsHtml::hInput('op','delete');
 		$html .= t.ToolsHtml::hInput($name,$value);
-		$html .= t.'<input type="submit" name="delete" value="Delete" />'.n;
-		$html .= '</form>'.n;
+		$html .= t.'<input type="submit" name="delete" value="Delete" />'."\n";
+		$html .= '</form>'."\n";
 		return $html;
-	}
-
-	//-----------
-	
-	public function shortenText($text, $chars=300, $p=1) 
-	{
-		$text = strip_tags($text);
-		$text = trim($text);
-
-		if (strlen($text) > $chars) {
-			$text = $text.' ';
-			$text = substr($text,0,$chars);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' ...';
-		}
-		if ($text == '') {
-			$text = '...';
-		}
-		if ($p) {
-			$text = '<p>'.$text.'</p>';
-		}
-
-		return $text;
 	}
 }
 ?>
