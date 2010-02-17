@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_mw_resource' );
 
 class plgMwResource extends JPlugin
 {
-	function plgMwResource(&$subject, $config)
+	public function plgMwResource(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,7 +45,7 @@ class plgMwResource extends JPlugin
 	
 	//-----------
 	
-	function &onMwAreas( $authorized )
+	public function &onMwAreas( $authorized )
 	{
 		$areas = array(
 				'about' => JText::_('ABOUT')
@@ -56,7 +56,7 @@ class plgMwResource extends JPlugin
 
 	//-----------
 
-	function onMw( $toolname, $option, $authorized, $areas )
+	public function onMw( $toolname, $option, $authorized, $areas )
 	{
 		$returnhtml = true;
 
@@ -77,7 +77,7 @@ class plgMwResource extends JPlugin
 			$resource->loadAlias( $toolname );
 	
 			// Build the HTML
-			$arr['html']  = MwHtml::hed(3,'<a name="about"></a>'.JText::_('ABOUT')).n;
+			$arr['html']  = '<h3><a name="about"></a>'.JText::_('ABOUT').'</h3>'."\n";
 			$arr['html'] .= $this->about( $resource, $database, 'com_resources' );
 		}
 		
@@ -87,11 +87,11 @@ class plgMwResource extends JPlugin
 	
 	//-----------
 
-	function about( $resource, $database, $option ) 
+	public function about( $resource, $database, $option ) 
 	{
 		// Make sure we got a result from the database
 		if (!$resource) {
-			return MwHtml::error( JText::_('Resource not found.') );
+			return '<p class="error">'. JText::_('Resource not found.') .'</p>';
 		}
 		
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.type.php');
@@ -198,7 +198,7 @@ class plgMwResource extends JPlugin
 	
 	//-----------
 	
-	function _getUsersGroups($groups)
+	public function _getUsersGroups($groups)
 	{
 		$arr = array();
 		if (!empty($groups)) {
