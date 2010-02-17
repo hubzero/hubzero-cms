@@ -87,7 +87,7 @@ class ToolsController extends JObject
 		// Check if middleware is enabled
 		if (!$this->config->get('mw_on') && $this->_task != 'image' && $this->_task != 'css') {
 			// Redirect to home page
-			$this->_redirect = '/home/';
+			$this->_redirect = '/home';
 			return;
 		}
 		
@@ -594,8 +594,7 @@ class ToolsController extends JObject
 		$xprofile =& XFactory::getProfile();
 		$remain = $xprofile->get('jobsAllowed') - $appcount;
 
-		if (!Hubzero_Ldap::user_exists($xprofile->get('username')))
-		{
+		if (!Hubzero_Ldap::user_exists($xprofile->get('username'))) {
 		       $xlog->logDebug("mw::invoke create ldap user for this account");
 		       $xprofile->create('ldap');
 		}

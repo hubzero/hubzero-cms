@@ -343,7 +343,7 @@ HUB.Mw = {
 
 	// Helper function called by applet when the VNC server exits.
 	serverExit: function() {
-		window.location = "/myhub/";
+		window.location = "/myhub";
 	},
 
 	// Helper function called by applet to explain signed applets.

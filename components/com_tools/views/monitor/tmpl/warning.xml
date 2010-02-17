@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Tool Session Layout">
+	<layout title="Standard Tool Session Monitor Warning Layout">
 		<message>
-			<![CDATA[STANDARD TOOL SESSION DESC]]>
+			<![CDATA[STANDARD TOOL SESSION MONITOR WARNING DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Tool Session Layout</name>
-		<description>STANDARD TOOL SESSION DESC</description>
+		<name>Standard Tool Session Monitor Warning Layout</name>
+		<description>STANDARD TOOL SESSION MONITOR WARNING DESC</description>
 		<params>
 		</params>
 	</state>
