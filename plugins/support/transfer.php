@@ -183,9 +183,9 @@ class plgSupportTransfer extends JPlugin
 		}
 		
 		// if no author can be found, use current administrator
-		$author = & XUser::getInstance($author);
+		$author = & Juser::getInstance($author);
 		if (!is_object($author)) {
-			$author = & XUser::getInstance($juser->get('id'));
+			$author = & JUser::getInstance($juser->get('id'));
 		}
 		
 		$today = date( 'Y-m-d H:i:s', time() );
@@ -198,7 +198,7 @@ class plgSupportTransfer extends JPlugin
 				$newrow = new SupportTicket( $database );
 				$newrow->status    = 0;
 				$newrow->created   = $today;
-				$newrow->login     = $author->get('login');
+				$newrow->login     = $author->get('username');
 				$newrow->severity  = 'normal';
 				$newrow->summary   = $subject;
 				$newrow->report    = ($body) ? $body : $subject;
@@ -217,7 +217,7 @@ class plgSupportTransfer extends JPlugin
 				$newrow->subject    = $subject;
 				$newrow->question   = $body;
 				$newrow->created    = $today;
-				$newrow->created_by = $author->get('login');
+				$newrow->created_by = $author->get('username');
 				$newrow->state      = 0;
 				$newrow->anonymous  = $anonymous;
 			break;
@@ -227,7 +227,7 @@ class plgSupportTransfer extends JPlugin
 				$newrow->subject     = $subject;
 				$newrow->about    	 = $body;
 				$newrow->proposed    = $today;
-				$newrow->proposed_by = $author->get('uid');
+				$newrow->proposed_by = $author->get('id');
 				$newrow->status      = 0;
 				$newrow->anonymous   = $anonymous;
 
@@ -296,14 +296,14 @@ class plgSupportTransfer extends JPlugin
 					
 					case 'question':
 						$BT = new BankTransaction( $database );
-						$reward = $BT->getAmount( 'answers', 'hold', $from_id, $author->get('uid')  );
+						$reward = $BT->getAmount( 'answers', 'hold', $from_id, $author->get('id')  );
 						
 						// Remove hold
 						if ($reward) {
 							$BT->deleteRecords( 'answers', 'hold', $from_id );
 									
 							// Make credit adjustment
-							$BTL_Q = new BankTeller( $database, $author->get('uid') );
+							$BTL_Q = new BankTeller( $database, $author->get('id') );
 							$credit = $BTL_Q->credit_summary();
 							$adjusted = $credit - $reward;
 							$BTL_Q->credit_adjustment($adjusted);

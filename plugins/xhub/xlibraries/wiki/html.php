@@ -278,10 +278,10 @@ class WikiHtml
 			
 			$author = 'Unknown';
 			$ausername = '';
-			$auser =& XUser::getInstance($page->created_by);
+			$auser =& JUser::getInstance($page->created_by);
 			if (is_object($auser)) {
 				$author = $auser->get('name');
-				$ausername = $auser->get('login');
+				$ausername = $auser->get('username');
 			}
 			
 			$auths = array();
@@ -289,9 +289,9 @@ class WikiHtml
 			foreach ($authors as $auth) 
 			{
 				if ($auth != $ausername && trim($auth) != '') {
-					$zuser =& XUser::getInstance($auth);
+					$zuser =& JUser::getInstance($auth);
 					if (is_object($zuser) && $zuser->get('name') != '') {
-						$auths[] = '<a href="'.JRoute::_('index.php?option=com_members'.a.'id='.$zuser->get('uid')).'">'.$zuser->get('name').'</a>';
+						$auths[] = '<a href="'.JRoute::_('index.php?option=com_members'.a.'id='.$zuser->get('id')).'">'.$zuser->get('name').'</a>';
 					}
 				}
 			}
@@ -303,9 +303,9 @@ class WikiHtml
 				foreach ($contributors as $contributor) 
 				{
 					if ($contributor != $page->created_by) {
-						$zuser =& XUser::getInstance($contributor);
+						$zuser =& JUser::getInstance($contributor);
 						if (is_object($zuser)) {
-							if (!in_array($zuser->get('login'),$authors)) {
+							if (!in_array($zuser->get('username'),$authors)) {
 								$cons[] = '<a href="'.JRoute::_('index.php?option=com_contributors'.a.'id='.$contributor).'">'.$zuser->get('name').'</a>';
 							}
 						}
@@ -810,7 +810,7 @@ class WikiHtml
 					$author = JText::_('WIKI_AUTHOR_ANONYMOUS');;
 				} else {
 					$author = JText::_('WIKI_AUTHOR_UNKNOWN');
-					$cuser =& XUser::getInstance($comment->created_by);
+					$cuser =& JUser::getInstance($comment->created_by);
 					if (is_object($cuser)) {
 						$author = $cuser->get('name');
 					}
@@ -1019,9 +1019,9 @@ class WikiHtml
 			}
 			
 			$xname = JText::_('WIKI_AUTHOR_UNKNOWN');
-			$xuser =& XUser::getInstance( $revision->created_by );
-			if (is_object($xuser)) {
-				$xname = $xuser->get('name');
+			$juser =& JUser::getInstance( $revision->created_by );
+			if (is_object($juser)) {
+				$xname = $juser->get('name');
 			}
 			
 			if ($revision->summary) {
@@ -1111,13 +1111,13 @@ class WikiHtml
 		}*/
 		
 		$orauthor = JText::_('Unknown');
-		$oruser =& XUser::getInstance($or->created_by);
+		$oruser =& JUser::getInstance($or->created_by);
 		if (is_object($oruser)) {
 			$orauthor = $oruser->get('name');
 		}
 		
 		$drauthor = JText::_('Unknown');
-		$druser =& XUser::getInstance($dr->created_by);
+		$druser =& JUser::getInstance($dr->created_by);
 		if (is_object($druser)) {
 			$drauthor = $druser->get('name');
 		}

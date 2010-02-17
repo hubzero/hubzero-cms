@@ -381,7 +381,7 @@ class WikiController extends JObject
 				$autharray = array();
 				foreach ($auths as $auth)
 				{
-					$zuser =& XUser::getInstance( trim($auth) );
+					$zuser =& JUser::getInstance( trim($auth) );
 					if (is_object($zuser)) {
 						$autharray[] = $zuser->get('username');
 					}
@@ -1746,7 +1746,7 @@ class WikiController extends JObject
 			switch ($language) 
 			{
 				case 'french':
-					$RE[] = "/(?<= |${sep}|^)([À])([[:upper:]][[:lower:]])/";
+					$RE[] = "/(?<= |${sep}|^)([ï¿½])([[:upper:]][[:lower:]])/";
 					break;
 				case 'english':
 				default:
