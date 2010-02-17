@@ -25,26 +25,54 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+if (!$this->no_html) { ?>
+<div id="content-header" class="full">
+	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
 
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
+<div id="sub-menu">
+	<ul>
+<?php
+if ($this->cats) {
+	$i = 1;
+	$cs = array();
+	foreach ($this->cats as $cat)
+	{
+		$name = key($cat);
+		if ($cat[$name] != '') {
+?>
+		<li id="sm-<?php echo $i; ?>"<?php if (strtolower($name) == $this->task) { echo ' class="active"'; } ?>><a class="tab" rel="<?php echo $name; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task='.$name); ?>"><span><?php echo $cat[$name]; ?></span></a></li>
+<?php
+			$i++;
+			$cs[] = $name;
+		}
+	}
 }
+?>
+	</ul>
+	<div class="clear"></div>
+</div><!-- / #sub-menu -->
+<?php } ?>
 
-jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
-ximport('Hubzero_View_Helper_Html');
-
-// Include scripts
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'usage.helper.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'usage.html.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-
-// Instantiate controller
-$controller = new UsageController();
-$controller->execute();
-$controller->redirect();
+<?php
+$h = 'hide';
+$c = 'main';
+if ($this->sections) {
+	$k = 0;
+	foreach ($this->sections as $section) 
+	{
+		if ($section != '') {
+			$cls  = ($c) ? $c.' ' : '';
+			if (key($this->cats[$k]) != $this->task) {
+				$cls .= ($h) ? $h.' ' : '';
+			}
+?>
+<div class="<?php echo $cls; ?>section" id="statistics">
+	<?php echo $section; ?>
+</div><!-- / #statistics.<?php echo $cls; ?>section -->
+<?php
+		}
+		$k++;
+	}
+}
 ?>

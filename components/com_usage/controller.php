@@ -73,24 +73,15 @@ class UsageController extends JObject
 			return $this->_data[$property];
 		}
 	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$task = JRequest::getVar( 'task', 'overview' );
-		$this->_task = $task;
-		return $task;
-	}
 	
 	//-----------
 	
 	public function execute()
 	{
-		$this->getTask();
+		$this->_task = JRequest::getVar( 'task', 'overview' );
 
 		if ($this->getError()) {
-			echo UsageHTML::error($this->getError());
+			JError::raiseError( 500, $this->getError() );
 		} else {
 			$this->view();
 		}
@@ -108,7 +99,7 @@ class UsageController extends JObject
 	
 	//-----------
 	
-	private function getStyles() 
+	private function _getStyles() 
 	{
 		ximport('xdocument');
 		XDocument::addComponentStylesheet($this->_option);
@@ -116,7 +107,7 @@ class UsageController extends JObject
 
 	//-----------
 	
-	private function getScripts()
+	private function _getScripts()
 	{
 		$document =& JFactory::getDocument();
 		if (is_file('components'.DS.$this->_option.DS.$this->_name.'.js')) {
@@ -152,52 +143,41 @@ class UsageController extends JObject
 		$no_html = JRequest::getVar('no_html',0);
 		
 		// Push some scripts and styles to the tmeplate
-		$this->getStyles();
-		$this->getScripts();
-		
-		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-		}
+		$this->_getStyles();
+		$this->_getScripts();
 		
 		// Establish a connection to the usage database
 		$udb =& UsageHelper::getUDBO();
 		if (!is_object($udb)) {
-			$html  = UsageHtml::div( UsageHtml::hed(2, JText::_(strtoupper($this->_name)).': '.JText::_('USAGE_'.strtoupper($this->_task))), 'full', 'content-header');
-			$html .= UsageHtml::div( UsageHtml::error( JText::_('Unable to connect to usage database.') ), 'main section' );
-			echo $html;
+			JError::raiseError( 500, JText::_('COM_USAGE_ERROR_CONNECTING_TO_DATABASE') );
 			return;
 		}
+		
+		$view = new JView( array('name'=>'results') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->no_html = $no_html;
 		
 		// Get plugins
 		JPluginHelper::importPlugin( 'usage' );
 		$dispatcher =& JDispatcher::getInstance();
 		
 		// Trigger the functions that return the areas we'll be using
-		$cats = $dispatcher->trigger( 'onUsageAreas', array() );
-		
-		// Build the page title
-		$title .= ($this->_task) ? ': '.JText::_('USAGE_'.strtoupper($this->_task)) : '';
-		
-		// Set the page title
-		$document->setTitle( $title );
+		$view->cats = $dispatcher->trigger( 'onUsageAreas', array() );
 		
 		// Set the pathway
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(JText::_(strtoupper($this->_option)),'index.php?option='.$this->_option);
+		}
+		
 		if ($this->_task) {
-			$pathway->addItem(JText::_('USAGE_'.strtoupper($this->_task)),'index.php?option='.$this->_option.a.'task='.$this->_task);
+			$pathway->addItem(JText::_('PLG_'.strtoupper($this->_name).'_'.strtoupper($this->_task)),'index.php?option='.$this->_option.'&task='.$this->_task);
 		}
 		
 		// Get the sections
-		$sections = $dispatcher->trigger( 'onUsageDisplay', array(
+		$view->sections = $dispatcher->trigger( 'onUsageDisplay', array(
 				$this->_option, 
 				$this->_task, 
 				$udb, 
@@ -207,8 +187,20 @@ class UsageController extends JObject
 			)
 		);
 		
+		// Build the page title
+		$title  = JText::_(strtoupper($this->_option));
+		$title .= ($this->_task) ? ': '.JText::_('PLG_'.strtoupper($this->_name).'_'.strtoupper($this->_task)) : '';
+		
+		// Set the page title
+		$document =& JFactory::getDocument();
+		$document->setTitle( $title );
+		
 		// Output HTML
-		echo UsageHtml::view( $this->_option, $cats, $sections, $this->_task, $title, $no_html );
+		$view->title = $title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 }
 ?>

@@ -195,42 +195,42 @@ class UsageHelper
 			$cls = 'even';
 
 			// Print top list table...
-			$html .= '<table summary="">'.n;
-			$html .= t.'<caption>Table '.$t.': '.$topname.'</caption>'.n;
-			$html .= t.'<thead>'.n;
-			$html .= t.t.'<tr>'.n;
+			$html .= '<table summary="">'."\n";
+			$html .= "\t".'<caption>Table '.$t.': '.$topname.'</caption>'."\n";
+			$html .= "\t".'<thead>'."\n";
+			$html .= "\t\t".'<tr>'."\n";
 			for ($pidx = 0; $pidx < count($period); $pidx++) 
 			{
-				$html .= t.t.t.'<th colspan="3" scope="colgroup">'. $period[$pidx]["name"] .'</th>'.n;
+				$html .= "\t\t\t".'<th colspan="3" scope="colgroup">'. $period[$pidx]["name"] .'</th>'."\n";
 			}
-			$html .= t.t.'</tr>'.n;
-			$html .= t.'</thead>'.n;
-			$html .= t.'<tbody>'.n;
-			$html .= t.t.'<tr class="summary">'.n;
+			$html .= "\t\t".'</tr>'."\n";
+			$html .= "\t".'</thead>'."\n";
+			$html .= "\t".'<tbody>'."\n";
+			$html .= "\t\t".'<tr class="summary">'."\n";
 			for ($pidx = 0; $pidx < count($period); $pidx++) 
 			{
 				$tdcls = ($pidx != 1) ? ' class="group"' : '';
 				
-				$html .= t.t.t.'<th'.$tdcls.' scope="row">'. $toplist[$pidx][0][0] .'</th>'.n;
-				$html .= t.t.t.'<td'.$tdcls.'>'. $toplist[$pidx][0][2] .'</td>'.n;
-				$html .= t.t.t.'<td'.$tdcls.'>'. $toplist[$pidx][0][3] .'</td>'.n;
+				$html .= "\t\t\t".'<th'.$tdcls.' scope="row">'. $toplist[$pidx][0][0] .'</th>'."\n";
+				$html .= "\t\t\t".'<td'.$tdcls.'>'. $toplist[$pidx][0][2] .'</td>'."\n";
+				$html .= "\t\t\t".'<td'.$tdcls.'>'. $toplist[$pidx][0][3] .'</td>'."\n";
 			}
-			$html .= t.t.'</tr>'.n;
+			$html .= "\t\t".'</tr>'."\n";
 			for ($i = 1; $i < $rank; $i++) 
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
-				$html .= t.t.'<tr class="'. $cls .'">'.n;
+				$html .= "\t\t".'<tr class="'. $cls .'">'."\n";
 				for ($pidx = 0; $pidx < count($period); $pidx++) 
 				{
 					$tdcls = ($pidx != 1) ? ' class="group"' : '';
-					$html .= t.t.t.'<th'.$tdcls.' scope="row">'. $toplist[$pidx][$i][0] .'</th>'.n;
-					$html .= t.t.t.'<td'.$tdcls.'>'. $toplist[$pidx][$i][2] .'</td>'.n;
-					$html .= t.t.t.'<td'.$tdcls.'>'. $toplist[$pidx][$i][3] .'</td>'.n;
+					$html .= "\t\t\t".'<th'.$tdcls.' scope="row">'. $toplist[$pidx][$i][0] .'</th>'."\n";
+					$html .= "\t\t\t".'<td'.$tdcls.'>'. $toplist[$pidx][$i][2] .'</td>'."\n";
+					$html .= "\t\t\t".'<td'.$tdcls.'>'. $toplist[$pidx][$i][3] .'</td>'."\n";
 				}
-				$html .= t.t.'</tr>'.n;
+				$html .= "\t\t".'</tr>'."\n";
 			}
-			$html .= t.'</tbody>'.n;
-			$html .= '</table>'.n;
+			$html .= "\t".'</tbody>'."\n";
+			$html .= '</table>'."\n";
 		}
 		return $html;
 	}
@@ -546,6 +546,40 @@ class UsageHelper
 	public function seldate_valuedescsort(&$arr) 
 	{
 		return(usort($arr, "arraykeyeddesccmp"));
+	}
+	
+	//-----------
+	
+	public function valformat($value, $format) 
+	{
+		if ($format == 1) {
+			return(number_format($value));
+		} elseif ($format == 2 || $format == 3) {
+			if ($format == 2) {
+				$min = round($value / 60);
+			} else {
+				$min = floor($value / 60);
+				$sec = $value - ($min * 60);
+			}
+			$hr = floor($min / 60);
+			$min -= ($hr * 60);
+			$day = floor($hr / 24);
+			$hr -= ($day * 24);
+			if ($day == 1) {
+				$day = "1 ".JText::_('USAGE_DAY').", ";
+			} elseif ($day > 1) {
+				$day = number_format($day) . ' '.JText::_('USAGE_DAYS').', ';
+			} else {
+				$day = "";
+			}
+			if ($format == 2) {
+				return(sprintf("%s%d:%02d", $day, $hr, $min));
+			} else {
+				return(sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec));
+			}
+		} else {
+			return($value);
+		}
 	}
 }
 ?>
