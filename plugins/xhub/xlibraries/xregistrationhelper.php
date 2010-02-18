@@ -143,7 +143,7 @@ class XRegistrationHelper
 		$result = include 'components/com_myaccount/recovery.html.php';
 	}
 
-	function raiselimits_form($resource, $admin, $target_xuser)
+	function raiselimits_form($resource, $admin, $target_xprofile)
 	{
 		$result = include 'components/com_myaccount/raiselimits.html.php';
 	}

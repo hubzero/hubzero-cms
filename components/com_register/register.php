@@ -39,7 +39,7 @@ jimport('joomla.application.component.view');
 
 ximport('xregistration');
 ximport('xregistrationhelper');
-ximport('xuser');
+ximport('xprofile');
 ximport('xuserhelper');
 ximport('xhubhelper');
 require_once( JPATH_COMPONENT.DS.'controller.php' );
