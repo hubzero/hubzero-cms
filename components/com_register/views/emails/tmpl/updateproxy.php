@@ -28,6 +28,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 An administrative process has updated your account on <?php echo $this->hubShortName; ?>!
 
 This process has changed your registered e-mail address. You must click the following link to confirm that you received this e-mail at the new address and reactivate your account:
-<?php echo $this->baseURL . JRoute::_('index.php?option='.$this->option.'&task=confirm&confirm='. -$this->xuser->get('email_confirmed')); ?>
+<?php echo $this->baseURL . JRoute::_('index.php?option='.$this->option.'&task=confirm&confirm='. -$this->xprofile->get('emailConfirmed')); ?>
 
 Do not reply to this email.  Replying to this email will not confirm or activate your account.

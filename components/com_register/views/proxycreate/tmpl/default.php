@@ -35,15 +35,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 	<p class="passed">
 		This proxy account has been created successfully. You may add to the text below, but you MUST 
-		send an email including all of this text to the new user at <?php echo $this->target_xuser->get('email'); ?>:
+		send an email including all of this text to the new user at <?php echo $this->target_xprofile->get('email'); ?>:
 	</p>
 	<blockquote>
-<pre>An account has been created on your behalf at <?php echo $this->hubShortName; ?> by <?php echo $this->xuser->get('name'); ?>.
+<pre>An account has been created on your behalf at <?php echo $this->hubShortName; ?> by <?php echo $this->xprofile->get('name'); ?>.
 
 Your initial new account username is: <?php echo $this->target_juser->get('username'); ?>
-Your initial new account password is: <?php echo $this->target_xuser->get('proxy_password'); ?>
+Your initial new account password is: <?php echo $this->target_xprofile->get('proxy_password'); ?>
 You must click the following link to confirm your email address and activate your account:
-<?php echo $this->hubLongURL . JRoute::_('index.php?option='.$this->option.'&task=registration&view=confirm&confirm='. -$this->target_xuser->get('email_confirmed')); ?>
+<?php echo $this->hubLongURL . JRoute::_('index.php?option='.$this->option.'&task=registration&view=confirm&confirm='. -$this->target_xprofile->get('emailConfirmed')); ?>
 
 (Do not reply to this email.  Replying to this email  will not confirm or activate your account.)
 
