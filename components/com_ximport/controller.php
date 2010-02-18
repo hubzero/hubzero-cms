@@ -439,8 +439,9 @@ class XImportController extends JObject
 	function importgroups()
 	{
 		ximport('xgroup');
+		ximport('Hubzero_Group');
 
-		$list = XGroupHelper::_ldap_get_groups('all');
+		$list = Hubzero_Group::_ldap_get_groups('all');
 
 		foreach($list as $group)
 		{

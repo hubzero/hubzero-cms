@@ -115,6 +115,22 @@ class XProfileHelper
 			$profile->delete('ldap');
 		}
 	}
+	
+	public function find_by_email($email)
+	{
+		$db = &JFactory::getDBO();
+		
+		$query = "SELECT username FROM #__xprofiles WHERE email=" . $db->Quote($email);
+		
+		$db->setQuery($query);
+
+		$result = $db->loadResultArray();
+		
+		if (empty($result))
+			return false;
+			
+		return $result;
+	}
 }
 
 

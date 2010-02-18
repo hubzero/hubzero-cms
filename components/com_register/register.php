@@ -41,6 +41,7 @@ ximport('xregistration');
 ximport('xregistrationhelper');
 ximport('xprofile');
 ximport('xuserhelper');
+ximport('xprofilehelper');
 ximport('xhubhelper');
 require_once( JPATH_COMPONENT.DS.'controller.php' );
 

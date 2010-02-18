@@ -115,7 +115,7 @@ if (!defined("n")) {
 		$html .= '<form action="'. JRoute::_('index.php?option='.$this->option.'&task='.$this->task) .'" method="post" id="hubForm">'.n;
 	}
 	
-	$emailusers = XUserHelper::getemailusers($this->registration['email']);
+	$emailusers = XProfileHelper::find_by_email($this->registration['email']);
 
 	if ( ($this->task == 'create' || $this->task == 'proxycreate') && $emailusers) {
 		$html .= '<div class="error">'.n;
