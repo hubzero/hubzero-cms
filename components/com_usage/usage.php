@@ -40,7 +40,6 @@ ximport('Hubzero_View_Helper_Html');
 
 // Include scripts
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'usage.helper.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'usage.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
 // Instantiate controller
