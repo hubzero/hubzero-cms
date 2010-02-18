@@ -1882,7 +1882,6 @@ class ResourcesController extends JObject
 	
 	private function checkGroupAccess($resource)
 	{	
-		//$juser =& XFactory::getUser();
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
 			// Check if they're a site admin (from Joomla)

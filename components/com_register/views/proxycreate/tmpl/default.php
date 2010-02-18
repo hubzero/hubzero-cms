@@ -41,7 +41,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <pre>An account has been created on your behalf at <?php echo $this->hubShortName; ?> by <?php echo $this->xprofile->get('name'); ?>.
 
 Your initial new account username is: <?php echo $this->target_juser->get('username'); ?>
-Your initial new account password is: <?php echo $this->target_xprofile->get('proxy_password'); ?>
+Your initial new account password is: <?php echo $this->target_xprofile->get('proxyPassword'); ?>
 You must click the following link to confirm your email address and activate your account:
 <?php echo $this->hubLongURL . JRoute::_('index.php?option='.$this->option.'&task=registration&view=confirm&confirm='. -$this->target_xprofile->get('emailConfirmed')); ?>
 

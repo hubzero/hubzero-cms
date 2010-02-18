@@ -282,7 +282,7 @@ class Hubzero_Group
         $attr['gid'] = $this->cn;
         $attr['gidNumber'] = $this->gidNumber;
         $attr['cn'] = $this->cn;
-var_dump($dn);
+
         if (!ldap_add($conn, $dn, $attr) && @ldap_errno($conn) != 68)
         {
             return false;

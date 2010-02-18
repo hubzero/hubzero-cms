@@ -306,53 +306,6 @@ class XRegistration
 		$this->_checked = false;
 	}
 
-	function loadXUser($xuser = null)
-	{
-		$this->clear();
-		
-		if (!is_object($xuser))
-			return;
-
-		$this->set('countryresident', $xuser->get('countryresident'));
-		$this->set('countryorigin', $xuser->get('countryorigin'));
-		$this->set('nativetribe', $xuser->get('nativetribe'));
-		$this->set('role', $xuser->get('role'));
-		$this->set('edulevel', $xuser->get('edulevel'));
-		$this->set('hispanic', $xuser->get('hispanic'));
-		$this->set('disability', $xuser->get('disability'));
-		$this->set('race', $xuser->get('race'));
-		$this->set('login', $xuser->get('login'));
-		$this->set('email', $xuser->get('email'));
-		$this->set('confirmEmail', $xuser->get('email'));
-		$this->set('web', $xuser->get('web'));
-		$this->set('phone', $xuser->get('phone'));
-		$this->set('name', $xuser->get('name'));
-		$this->set('orgtype', $xuser->get('orgtype'));
-		$this->set('org', $xuser->get('org'));
-		$this->set('orgtext', '');
-		$this->set('reason', $xuser->get('reason'));
-		$this->set('reasontxt', '');
-		$this->set('password', null);
-		$this->set('confirmPassword', null);
-		$this->set('sex', $xuser->get('sex'));
-		$this->set('usageAgreement', $xuser->get('usageagreement'));
-		$this->set('mailPreferenceOption', $xuser->get('mailPreferenceOption'));
-
-		$parts = explode(':', $this->_registration['login'] );
-
-		if ( count($parts) == 3 && intval($parts[0]) < 0 )
-			$this->_encoded['login'] = pack("H*", $parts[1]);
-
-		if (eregi( "\.localhost\.invalid$", $this->_registration['email']))
-		{
-			$parts = explode('@', $this->_registration['email']);
-			$parts = explode('-', $parts[0]);
-			$this->_encoded['email'] = pack("H*", $parts[2]);
-		}
-
-		$this->_checked = false;
-	}	
-
 	function loadProfile($xprofile = null)
 	{
 		$this->clear();
@@ -460,32 +413,6 @@ class XRegistration
 			case 'U': return(REG_READONLY);
 			default : return(REG_HIDE);
 		}
-	}
-	
-	function validateUsername($username = '')
-	{
-		$username = trim($username);
-		
-		if ( trim($username) == '')
-			return false;
-
-		if (eregi( "[\<|\>|\"|\'|\%|\;|\(|\)|\&]", $username) || strlen(utf8_decode($username )) < 2)
-			return false;
-
-		if (eregi( "[\s]", $username))
-			return false;
-
-		if ($username[0] == '-')
-			return false;
-
-		if (eregi( "[\:]", $username))
-			return false;
-	
- 		XUserHelper::xuser_exists($username);
-	}
-
-	function uniqueUsername($username)
-	{
 	}
 
 	/**

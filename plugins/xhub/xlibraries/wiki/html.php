@@ -181,45 +181,6 @@ class WikiHtml
 
 	//-----------
 
-	public function groupcheck() 
-	{
-		$xgroups = '';
-		$juser =& JFactory::getUser();
-		if (!$juser->get('guest')) {
-			$xuser =& XFactory::getUser();
-			if (is_object($xuser)) {
-				$xgroups = $xuser->get('groups');
-			}
-			if ($xgroups != '') {
-				$usersgroups = WikiHtml::_getUsersGroups($xgroups);
-				if (in_array('topics_beta', $usersgroups)) {
-					return true;
-				}
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-	
-	//-----------
-
-	public function _getUsersGroups($groups)
-	{
-		$arr = array();
-		if (!empty($groups)) 
-		foreach ($groups as $group)
-		{
-			if ($group['regconfirmed'] == 1) {
-				$arr[] = $group['gid'];
-			}
-		}
-		return $arr;
-	}
-	
-	//-----------
-
 	public function tagCloud($tags)
 	{
 		if (count($tags) > 0) {
