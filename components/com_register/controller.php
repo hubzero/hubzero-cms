@@ -696,7 +696,7 @@ class RegisterController extends JObject
 
 			// Did we successfully create an account?
 			if ($result) {
-				$xprofle->loadRegistration($xregistration);
+				$xprofile->loadRegistration($xregistration);
 				$xprofile->set('homeDirectory', $hubHomeDir . '/' . $xprofile->get('username'));
 				$xprofile->set('jobsAllowed', 3);
 				$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
