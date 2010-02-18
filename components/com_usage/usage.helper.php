@@ -132,7 +132,7 @@ class UsageHelper
 				if ($results) {
 					foreach ($results as $row)
 					{
-						$formattedval = UsageHtml::valformat($row->value, $valfmt);
+						$formattedval = UsageHelper::valformat($row->value, $valfmt);
 						if (strstr($formattedval, "day") !== FALSE) {
 							$chopchar = strrpos($formattedval, ",");
 							if ($chopchar !== FALSE) {
@@ -168,7 +168,7 @@ class UsageHelper
 								array_push($toplistset, array("n/a", 0, "n/a", "n/a"));
 								$rank++;
 							}
-							$formattedval = UsageHtml::valformat($row->value, $valfmt);
+							$formattedval = UsageHelper::valformat($row->value, $valfmt);
 							if (strstr($formattedval, "day") !== FALSE) {
 								$chopchar = strrpos($formattedval, ",");
 								if ($chopchar !== FALSE) {
@@ -566,9 +566,9 @@ class UsageHelper
 			$day = floor($hr / 24);
 			$hr -= ($day * 24);
 			if ($day == 1) {
-				$day = "1 ".JText::_('USAGE_DAY').", ";
+				$day = "1 ".JText::_('COM_USAGE_DAY').", ";
 			} elseif ($day > 1) {
-				$day = number_format($day) . ' '.JText::_('USAGE_DAYS').', ';
+				$day = number_format($day) . ' '.JText::_('COM_USAGE_DAYS').', ';
 			} else {
 				$day = "";
 			}
@@ -580,6 +580,28 @@ class UsageHelper
 		} else {
 			return($value);
 		}
+	}
+	
+	//-----------
+	
+	public function options( &$db, $enddate, $thisyear, $monthsReverse, $func='' )
+	{
+		$o = '';
+		for ($i = $thisyear; $i >= 2004; $i--) 
+		{
+			foreach ($monthsReverse as $key => $month) 
+			{
+				$value = $i . '-' . $key;
+				if (UsageHelper::$func($db, $value) ) {
+					$o .= '<option value="'. $value .'"';
+					if ($value == $enddate) {
+						$o .= ' selected="selected"';
+					}
+					$o .= '>'. $month .' '. $i .'</option>'."\n";
+				}
+			}
+		}
+		return $o;
 	}
 }
 ?>
