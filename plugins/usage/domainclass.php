@@ -235,10 +235,19 @@ class plgUsageDomainclass extends JPlugin
 		// Set some vars
 		$thisyear = date("Y");
 		
-		$o = UsageHtml::options( $db, $enddate, $thisyear, $monthsReverse, 'check_for_classdata' );
+		$o = UsageHelper::options( $db, $enddate, $thisyear, $monthsReverse, 'check_for_classdata' );
 
 		// Build HTML
-		$html  = UsageHtml::form( $o, $option, $task );
+		$html  = '<form method="post" action="'. JRoute::_('index.php?option='.$option.'&task='.$task) .'">'."\n";
+		$html .= "\t".'<fieldset class="filters">'."\n";
+		$html .= "\t\t".'<label>'."\n";
+		$html .= "\t\t\t".JText::_('PLG_USAGE_SHOW_DATA_FOR').': '."\n";
+		$html .= "\t\t\t".'<select name="selectedPeriod" id="selectedPeriod">'."\n";
+		$html .= $o;
+		$html .= "\t\t\t".'</select>'."\n";
+		$html .= "\t\t".'</label> <input type="submit" value="'.JText::_('PLG_USAGE_VIEW').'" />'."\n";
+		$html .= "\t".'</fieldset>'."\n";
+		$html .= '</form>'."\n";
 		$html .= $this->classlist($db, 8, 1, $enddate);
 		$html .= $this->classlist($db, 9, 2, $enddate);
 		$html .= $this->classlist($db, 10, 3, $enddate);
