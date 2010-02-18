@@ -225,13 +225,6 @@ class XUserHelper
 		return true;
 	}
 
-	function xuser_exists($login)
-	{
-		$xuid = XUserHelper::getUserId($login);
-
-		return ($xuid !== false);
-	}
-
 	function getUserId($username)
 	{
 		$xhub =& XFactory::getHub();

@@ -409,8 +409,8 @@ class RegisterController extends JObject
 			}
 			$target_xprofile->set('password', $xregistration->get('password'));
 			$target_xprofile->set('registerDate', date('Y-m-d H:i:s'));
-			$target_xprofile->set('proxy_uid', $juser->get('id'));
-			$target_xprofile->set('proxy_password', $xregistration->get('password'));
+			$target_xprofile->set('proxyUidNumber', $juser->get('id'));
+			$target_xprofile->set('proxyPassword', $xregistration->get('password'));
 			
 			// Update the account
 			$result = $target_xprofile->update();

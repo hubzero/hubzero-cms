@@ -247,13 +247,13 @@ class plgUserXusers extends JPlugin
 			if ($xprofile->get('email') != $user['email'])
 			{
 				$xprofile->set('email', $user['email']);
-				$xprofile->set('email_confirmed', 0);
+				$xprofile->set('emailConfirmed', 0);
 				$update = true;
 			}
 
-			if ($xprofile->get('email_confirmed') == '')
+			if ($xprofile->get('emailConfirmed') == '')
 			{
-				$xprofile->set('email_confirmed', '3');
+				$xprofile->set('emailConfirmed', '3');
 				$update = true;
 			}
 

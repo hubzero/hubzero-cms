@@ -117,20 +117,6 @@ class plgWhatsnewTopics extends JPlugin
 	}
 	
 	//-----------
-	
-	private function _usersGroups($groups)
-	{
-		$arr = array();
-		if (!empty($groups)) {
-			foreach ($groups as $group)
-			{
-				$arr[] = $group['gid'];
-			}
-			return $arr;
-		}
-	}
-	
-	//-----------
 
 	private function _authorize() 
 	{
@@ -141,58 +127,6 @@ class plgWhatsnewTopics extends JPlugin
 		}
 		
 		return true;
-	}
-	
-	//-----------
-	
-	public function onWhatsnewQuery($period, $limit, $start, $get='count') 
-	{
-		$f_count = "SELECT COUNT(*) ";
-		$f_fields = "SELECT f.id, f.pagetext AS text, 'topics' AS section, NULL AS subection, CONCAT('index.php?option=com_topics&scope=', d.scope) AS href, d.title, d.pagename, d.created ";
-
-		$r_where = "";
-		$juser =& JFactory::getUser();
-		if (!$juser->get('guest')) {
-			$xuser =& XFactory::getUser();
-			$xgroups = $xuser->get('groups');
-			$rgroups = $this->_usersGroups($xgroups);
-			if (!empty($rgroups)) {
-				$rgroups = implode("','",$rgroups);
-				$r_where .= "AND (w.access=0 OR w.group IN ('". $rgroups ."'))";
-			} else {
-				$r_where .= "AND w.access=0";
-			}
-		} else {
-			$r_where .= "AND w.access=0";
-		}
-		if ($juser->authorize('com_whatsnew', 'manage')) {
-			$r_where = "";
-		}
-		
-		$f_from = "FROM #__wiki_version AS f, 
-					(
-						SELECT v.pageid, w.title, w.pagename, w.scope, MAX(v.version) AS version, v.created
-						FROM #__wiki_page AS w, #__wiki_version AS v
-						WHERE w.id=v.pageid AND v.approved=1 AND v.created > '$period->cStartDate' AND v.created < '$period->cEndDate' $r_where
-						GROUP BY pagename
-					) AS d
-				WHERE f.version=d.version 
-				AND f.pageid=d.pageid ";
-		$order_by = "ORDER BY created DESC, title LIMIT $start,$limit";
-		
-		switch ($get) 
-		{
-			case 'count':
-				$query = $f_count . $f_from;
-				break;
-			case 'records':
-				$query = $f_fields . $f_from . $order_by;
-				break;
-			default:
-				$query = $f_fields . $f_from;
-				break;
-		}
-		return $query;
 	}
 	
 	//----------------------------------------------------------

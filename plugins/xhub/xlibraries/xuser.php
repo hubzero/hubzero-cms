@@ -516,12 +516,12 @@ class XUser extends JObject
 		$entry['loginShell'] = '/bin/bash';
 		$entry['ftpShell'] = '/usr/lib/sftp-server';
 
-		$xuser = XFactory::getUser();
+		$juser = JFactory::getUser();
 		
-		if (!$xuser->get('guest'))
+		if (!$juser->get('guest'))
 		{
-			if (strlen($xuser->get('uid')) > 0)
-				$entry['proxyUidNumber'] = $xuser->get('uid');
+			if (strlen($juser->get('id')) > 0)
+				$entry['proxyUidNumber'] = $juser->get('id');
 			
 			if (strlen($this->get('password')) > 0)
 				$entry['proxyPassword'] = $this->get('password');

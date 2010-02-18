@@ -1271,7 +1271,7 @@ class MembersController extends JObject
 						
 						$users[$prevuser] = $user;
 						$users[$prevuser]['name'] = $xprofile->get('name');
-						$users[$prevuser]['org'] = $xprofile->get('org');
+						$users[$prevuser]['org'] = $xprofile->get('orginization');
 						$users[$prevuser]['orgtype'] = $xprofile->get('orgtype');
 						$users[$prevuser]['countryresident'] = $xprofile->get('countryresident');
 					}
@@ -1286,7 +1286,7 @@ class MembersController extends JObject
 				
 				$users[$prevuser] = $user;
 				$users[$prevuser]['name'] = $xprofile->get('name');
-				$users[$prevuser]['org'] = $xprofile->get('org');
+				$users[$prevuser]['org'] = $xprofile->get('orginization');
 				$users[$prevuser]['orgtype'] = $xprofile->get('orgtype');
 				$users[$prevuser]['countryresident'] = $xprofile->get('countryresident');
 			}

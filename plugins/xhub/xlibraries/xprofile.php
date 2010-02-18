@@ -1409,26 +1409,6 @@ class XProfile extends JObject
 		return true;
 	}
 
-	public function getuser()
-	{
-		static $_propertyxusermap = array('username' => 'login', 'name' => 'name', 'uidNumber' => 'uid', 
-			'homeDirectory' => 'home', 'email' => 'email', 'registerDate' => 'reg_date', 
-			'userPassword' => 'encryp_password', 'orgtype' => 'orgtype', 'organization' => 'org', 
-			'countryresident' => 'countryresident', 'countryorigin' => 'countryorigin', 'gender' => 'sex', 
-			'url' => 'web', 'reason' => 'reason', 'mailPreferenceOption' => 'mailPreferenceOption',
-			'usageAgreement' => 'usageagreement', 'jobsAllowed' => 'jobs_allowed', 'modifiedDate' => 'mod_date', 
-			'emailConfirmed' => 'email_confirmed', 'regIP' => 'reg_ip', 'regHost' => 'reg_host', 
-			'nativeTribe' => 'nativetribe', 'phone' => 'phone', 'proxyUidNumber' => 'proxy_uid', 
-			'proxyPassword' => 'proxy_password', 'disability' => 'disability', 'hispanic' => 'hispanic', 
-			'race' => 'race', 'admin' => 'admin', 'host' => 'host', 'edulevel' => 'edulevel', 'role' => 'role', 
-			'_password' => 'password');
-
-		foreach($_propertyxusermap as $property => $xproperty)
-			$user[$xproperty] = $this->get($property);
-
-		return $user;
-	}
-
         function hasTransientUsername()
         {
                 $parts = explode(':', $this->get('username'));
