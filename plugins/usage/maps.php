@@ -268,15 +268,9 @@ class plgUsageMaps extends JPlugin
 		$pathway =& $app->getPathway();
 		$pathway->addItem(JText::_('PLG_USAGE_MAPS_'.strtoupper($type)),'index.php?option='.$option.'&task='.$task.'&type='.$type);
 
-		$xhub =& XFactory::getHub();
-
-		//$html  = UsageHtml::div( UsageHtml::hed(2, JText::_('USAGE').': '.JText::_('PLG_USAGE_MAPS_'.strtoupper($type))), '', 'content-header');
-		//$html .= UsageHtml::div( '<p><a class="map" href="'.JRoute::_('index.php?option='.$option.a.'task='.$task.a.'type='.$type).'">'.JText::_('Reset map').'</a></p>', '', 'content-header-extra');
-		//$html .= '<div class="main section">'.n;
 		$html  = '<h3>'.JText::_('PLG_USAGE_MAPS_'.strtoupper($type)).'</h3>'."\n";
 		$html .= '<p><a class="map" href="'.JRoute::_('index.php?option='.$option.'&task=maps&type='.$type).'">'.JText::_('Reset map').'</a></p>';
 		$html .= '<iframe src="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&type='.$type.'&no_html=1&lat='.$lat.'&long='.$long.'&zoom='.$zoom).'" width="100%" height="600px" scrolling="no" frameborder="0"></iframe>'."\n";
-		//$html .= '</div>'.n;
 		
 		return $html;
 	}

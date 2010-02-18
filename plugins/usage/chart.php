@@ -48,7 +48,7 @@ class plgUsageChart extends JPlugin
 	public function onUsageAreas()
 	{
 		$areas = array(
-			'chart' => '' //JText::_('USAGE_CHART')
+			'chart' => '' //JText::_('PLG_USAGE_CHART')
 		);
 		return $areas;
 	}
@@ -306,35 +306,35 @@ class plgUsageChart extends JPlugin
 
 	private function navlinks($option, $task, $period='prior12') 
 	{
-		$html  = '<div id="sub-sub-menu">'.n;
-		$html .= t.'<ul>'.n;
-		$html .= t.t.'<li';    
+		$html  = '<div id="sub-sub-menu">'."\n";
+		$html .= "\t".'<ul>'."\n";
+		$html .= "\t\t".'<li';    
 		if ($period == 'prior12') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period=prior12').'"><span>'.JText::_('USAGE_PERIOD_PRIOR12').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=prior12').'"><span>'.JText::_('USAGE_PERIOD_PRIOR12').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 	    if ($period == 'month') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period=month').'"><span>'.JText::_('USAGE_PERIOD_MONTH').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=month').'"><span>'.JText::_('USAGE_PERIOD_MONTH').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 	    if ($period == 'qtr') {
 			$html .= ' class="active"';
 		}
-	    $html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period=qtr').'"><span>'.JText::_('USAGE_PERIOD_QTR').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+	    $html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=qtr').'"><span>'.JText::_('USAGE_PERIOD_QTR').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 		if ($period == 'year') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period=year').'"><span>'.JText::_('USAGE_PERIOD_YEAR').'</span></a></li>'.n;
-		$html .= t.t.'<li';  
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=year').'"><span>'.JText::_('USAGE_PERIOD_YEAR').'</span></a></li>'."\n";
+		$html .= "\t\t".'<li';  
 		if ($period == 'fiscal') {
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period=fiscal').'"><span>'.JText::_('USAGE_PERIOD_FISCAL').'</span></a></li>'.n;
-		$html .= t.'</ul>'.n;
-		$html .= '</div>'.n;
+		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&task='.$task.'&period=fiscal').'"><span>'.JText::_('USAGE_PERIOD_FISCAL').'</span></a></li>'."\n";
+		$html .= "\t".'</ul>'."\n";
+		$html .= '</div>'."\n";
 
 	    return $html;
 	}
@@ -343,7 +343,7 @@ class plgUsageChart extends JPlugin
 
 	protected function outputData($option, $label, $db, $id, $period, $datetime) 
 	{
-		include_once( JPATH_ROOT.DS.'plugins'.DS.'usage'.DS.'chart'.DS.'ofc'.DS.'php-ofc-library'.DS.'open-flash-chart.php' );
+		include_once( JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'ofc'.DS.'php-ofc-library'.DS.'open-flash-chart.php' );
 		
 		// ------
 		// Chart 1
@@ -442,9 +442,9 @@ class plgUsageChart extends JPlugin
 		
 		$js = '
 		window.addEvent("domready", function(){
-			swfobject.embedSWF("/plugins/usage/chart/ofc/open-flash-chart.swf", "chart1", "600", "350", "9.0.0", "expressInstall.swf", {"get-data":"get_data_1"});
-			swfobject.embedSWF("/plugins/usage/chart/ofc/open-flash-chart.swf", "chart2", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_2"});
-			swfobject.embedSWF("/plugins/usage/chart/ofc/open-flash-chart.swf", "chart3", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_3"});
+			swfobject.embedSWF("/plugins/xhub/xlibraries/ofc/open-flash-chart.swf", "chart1", "600", "350", "9.0.0", "expressInstall.swf", {"get-data":"get_data_1"});
+			swfobject.embedSWF("/plugins/xhub/xlibraries/ofc/open-flash-chart.swf", "chart2", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_2"});
+			swfobject.embedSWF("/plugins/xhub/xlibraries/ofc/open-flash-chart.swf", "chart3", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_3"});
 		});
 		
 		var ig = '.(count($data['points']) - 1).';
@@ -468,8 +468,8 @@ class plgUsageChart extends JPlugin
 		{
 			ig = index;
 
-			swfobject.embedSWF("/plugins/usage/chart/ofc/open-flash-chart.swf", "chart2", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_2"});
-			swfobject.embedSWF("/plugins/usage/chart/ofc/open-flash-chart.swf", "chart3", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_3"});
+			swfobject.embedSWF("/plugins/xhub/xlibraries/ofc/open-flash-chart.swf", "chart2", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_2"});
+			swfobject.embedSWF("/plugins/xhub/xlibraries/ofc/open-flash-chart.swf", "chart3", "300", "300", "9.0.0", "expressInstall.swf", {"get-data":"get_data_3"});
 		}
 		
 		var data = new Array();
@@ -481,8 +481,8 @@ class plgUsageChart extends JPlugin
 		$n = count($data['points']);
 		for ($i = 0; $n > $i; $i++) 
 		{
-			$js .= 'data[1]['.$i.'] = '.$piecharts1[$i]->toPrettyString().';'.n;
-			$js .= 'data[2]['.$i.'] = '.$piecharts2[$i]->toPrettyString().';'.n;
+			$js .= 'data[1]['.$i.'] = '.$piecharts1[$i]->toPrettyString().';'."\n";
+			$js .= 'data[2]['.$i.'] = '.$piecharts2[$i]->toPrettyString().';'."\n";
 		}
 		
 		$document =& JFactory::getDocument();
@@ -549,34 +549,34 @@ class plgUsageChart extends JPlugin
 		//$monthsReverse = $this->monthsReverse;
 
 		$document =& JFactory::getDocument();
-		if (is_file('plugins'.DS.'usage'.DS.'chart'.DS.'ofc'.DS.'js'.DS.'swfobject.js')) {
-			$document->addScript('plugins'.DS.'usage'.DS.'chart'.DS.'ofc'.DS.'js'.DS.'json'.DS.'json2.js');
-			$document->addScript('plugins'.DS.'usage'.DS.'chart'.DS.'ofc'.DS.'js'.DS.'swfobject.js');
+		if (is_file('plugins'.DS.'xhub'.DS.'xlibraries'.DS.'ofc'.DS.'js'.DS.'swfobject.js')) {
+			$document->addScript('plugins'.DS.'xhub'.DS.'xlibraries'.DS.'ofc'.DS.'js'.DS.'json'.DS.'json2.js');
+			$document->addScript('plugins'.DS.'xhub'.DS.'xlibraries'.DS.'ofc'.DS.'js'.DS.'swfobject.js');
 			//$document->addScriptDeclaration("window.addEvent('domready', HUB.Usage.loadOFC);");
 		}
 
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		$pathway->addItem(JText::_('USAGE_PERIOD_'.strtoupper($period)),'index.php?option='.$option.a.'task='.$task.a.'period='.$period);
+		$pathway->addItem(JText::_('USAGE_PERIOD_'.strtoupper($period)),'index.php?option='.$option.'&task='.$task.'&period='.$period);
 
 		// Build the HTML
-		//$html  = '<div id="content-header">'.n;
-		//$html .= UsageHtml::hed(2, JText::_(strtoupper($this->_name)).': '.JText::_('USAGE_'.strtoupper($task)));
-		//$html .= '</div><!-- / #content-header -->'.n;
-		//$html .= UsageHtml::div( '<p><a class="map" href="'.JRoute::_('index.php?option='.$option.a.'task=maps'.a.'type=online').'">Unique Locations of Users</a></p>', '', 'content-header-extra' );
-		//$html .= UsageHtml::navlinks(0, $option);
+		//$html  = '<div id="content-header">'."\n";
+		//$html .= '<h2>'.JText::_(strtoupper($this->_name)).': '.JText::_('USAGE_'.strtoupper($task)).'</h2>';
+		//$html .= '</div><!-- / #content-header -->'."\n";
+		//$html .= '<div id="content-header-extra"><p><a class="map" href="'.JRoute::_('index.php?option='.$option.'&task=maps&type=online').'">Unique Locations of Users</a></p></div>';
+
 		$html  = $this->navlinks($option, $task, $period);
-		//$html .= '<div class="main section overview" id="statistics">'.n;
+		//$html .= '<div class="main section overview" id="statistics">'."\n";
 		
-		//$html .= '<form method="post" action="'. JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period='.$period) .'">'.n;
+		//$html .= '<form method="post" action="'. JRoute::_('index.php?option='.$option.'&task='.$task.'&period='.$period) .'">'."\n";
 		//$html .= t.'<fieldset class="filters"><label>'.JText::_('USAGE_SHOW_DATA_FOR').': ';
-		$html .= '<div class="aside">'.n;
-		$html .= t.'<p class="help">'.JText::_('Click a data point to see the breakdowns by residence and organization below.').'</p>'.n;
-		$html .= '</div><!-- / .aside -->'.n;
-		$html .= '<div class="subject">'.n;
-		$html .= '<input type="hidden" name="period" id="period" value="'.$period.'" />'.n;
-		//$html .= '<select name="selectedPeriod">'.n;
+		$html .= '<div class="aside">'."\n";
+		$html .= "\t".'<p class="help">'.JText::_('Click a data point to see the breakdowns by residence and organization below.').'</p>'."\n";
+		$html .= '</div><!-- / .aside -->'."\n";
+		$html .= '<div class="subject">'."\n";
+		$html .= '<input type="hidden" name="period" id="period" value="'.$period.'" />'."\n";
+		//$html .= '<select name="selectedPeriod">'."\n";
 		switch ($period) 
 		{
 			case '12':
@@ -607,7 +607,7 @@ class plgUsageChart extends JPlugin
 							} else {
 								$html .= $i - 1;
 							}
-						   	$html .= ' - '. $month .' '. $i .'</option>'.n;
+						   	$html .= ' - '. $month .' '. $i .'</option>'."\n";
 						}
 					}
 				}*/
@@ -628,7 +628,7 @@ class plgUsageChart extends JPlugin
 							if ($value == $selectedPeriod) {
 								$html .= ' selected="selected"';
 							}
-							$html .= '>'. $month .' '. $i .'</option>'.n;
+							$html .= '>'. $month .' '. $i .'</option>'."\n";
 						}
 					}
 				}*/
@@ -662,7 +662,7 @@ class plgUsageChart extends JPlugin
 							$key = 9;
 							$html .= 'Oct';
 						}
-						$html .= ' '. $cur_year .' - '. $month .' '. $cur_year .'</option>'.n;
+						$html .= ' '. $cur_year .' - '. $month .' '. $cur_year .'</option>'."\n";
 						$qtd_found = 1;
 					}
 				}
@@ -701,7 +701,7 @@ class plgUsageChart extends JPlugin
 							} else {
 								$html .= 'Dec';
 							}
-							$html .= ' '. $j .'</option>'.n;
+							$html .= ' '. $j .'</option>'."\n";
 						}
 					}
 				}*/
@@ -729,7 +729,7 @@ class plgUsageChart extends JPlugin
 							$html .= $cur_year - 1;
 							$full_year = $cur_year - 1;
 						}
-						$html .= ' - '. $month .' '. $cur_year .'</option>'.n;
+						$html .= ' - '. $month .' '. $cur_year .'</option>'."\n";
 						$ytd_found = 1;
 					}
 				}
@@ -743,7 +743,7 @@ class plgUsageChart extends JPlugin
 						}
 						$html .= '>Oct ';
 						$html .= $i - 1;
-						$html .= ' - Sep '. $i .'</option>'.n;
+						$html .= ' - Sep '. $i .'</option>'."\n";
 					}
 				}*/
 			break;
@@ -762,7 +762,7 @@ class plgUsageChart extends JPlugin
 						if ($value == $selectedPeriod) {
 							$html .= ' selected="selected"';
 						}
-						$html .= '>Jan - '. $month .' '. $cur_year .'</option>'.n;
+						$html .= '>Jan - '. $month .' '. $cur_year .'</option>'."\n";
 						$ytd_found = 1;
 					}
 				}
@@ -774,19 +774,19 @@ class plgUsageChart extends JPlugin
 						if ($value == $selectedPeriod) {
 							$html .= ' selected="selected"';
 						}
-						$html .= '>Jan - Dec '. $i .'</option>'.n;
+						$html .= '>Jan - Dec '. $i .'</option>'."\n";
 					}
 				}*/
 			break;
 		}
-		/*$html .= '</select></label> <input type="submit" value="'.JText::_('USAGE_VIEW').'" /></fieldset>'.n;
-		$html .= '</form>'.n;*/
+		/*$html .= '</select></label> <input type="submit" value="'.JText::_('USAGE_VIEW').'" /></fieldset>'."\n";
+		$html .= '</form>'."\n";*/
 		
 		//--------------------------------
 
-		$html .= '<div id="chart1"></div><br />'.n;
-		$html .= '<div id="chart2"></div>'.n;
-		$html .= '<div id="chart3"></div>'.n;
+		$html .= '<div id="chart1"></div><br />'."\n";
+		$html .= '<div id="chart2"></div>'."\n";
+		$html .= '<div id="chart3"></div>'."\n";
 
 		//$no_html = JRequest::getInt('no_html', 0);
 		//if ($no_html) {
@@ -799,8 +799,8 @@ class plgUsageChart extends JPlugin
 				$this->outputData($option, $results[0]->label, $db, $results[0]->id, $period, $datetime);
 			}
 		//}
-		$html .= '</div><!-- / .subject -->'.n;
-		//$html .= '</div><!-- / .main section -->'.n;
+		$html .= '</div><!-- / .subject -->'."\n";
+		//$html .= '</div><!-- / .main section -->'."\n";
 		
 		return $html;
 	}
