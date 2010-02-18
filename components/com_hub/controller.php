@@ -428,6 +428,7 @@ class HubController extends JObject
 	{
 		ximport('xprofile');
 		ximport('xuserhelper');
+		ximport('xprofilehelper');
 		ximport('xhubhelper');
 		
 		$xhub =& XFactory::getHub();
@@ -437,8 +438,8 @@ class HubController extends JObject
 		$hubHomeDir = $xhub->getCfg('hubHomeDir');
 
 		// Attempt to load an account with this email address
-		$emailusers = XUserHelper::getemailusers($email);
-
+		$emailusers = XProfileHelper::find_by_email($email);
+		
 		if (empty($emailusers)) {
 			return JError::raiseError(403, 'Request Invalid: Error locating an account with the email address [' . $email . '].');
 		}

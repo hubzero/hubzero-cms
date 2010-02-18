@@ -197,6 +197,23 @@ class XUser extends JObject
 		return true;
 	}
 
+	function delete($login)
+	{
+		$xhub =& XFactory::getHub();
+		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
+		$ldapconn =& XFactory::getPLDC();
+
+		if (!$ldapconn || $login === null || $login === false)
+			return false;
+
+		$dn = "uid=" . $login . ",ou=users," . $hubLDAPBaseDN;
+
+		$result = @ldap_delete($ldapconn, $dn);
+
+		return $result;
+
+	}
+	
 	function load($login = null)
 	{
 		//$this->logDebug("XUser::load($login)");

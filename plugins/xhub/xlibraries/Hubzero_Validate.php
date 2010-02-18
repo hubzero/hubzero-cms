@@ -52,5 +52,73 @@ class Hubzero_Validate
 	{
 		return (is_numeric($x) && intval($x) == $x && $x < 0);
 	}
+	
+	static function is_reserved_username($x)
+	{
+		$reserved_users = array(
+			"adm",
+			"alfred",
+			"apache",
+			"backup",
+			"bin",
+			"canna",
+			"condor",
+			"condor-util",
+			"daemon",
+			"debian-exim",
+			"exim",
+			"ftp",
+			"games",
+			"ganglia",
+			"gnats",
+			"gopher",
+			"halt",
+			"ibrix",
+			"invigosh",
+			"irc",
+			"ldap",
+			"list",
+			"lp",
+			"mail",
+			"mailnull",
+			"man",
+			"nagios",
+			"nanohub",
+			"netdump",
+			"news",
+			"nfsnobody",
+			"noaccess",
+			"nobody",
+			"nscd",
+			"ntp",
+			"operator",
+			"openldap",
+			"pcap",
+			"postgres",
+			"proxy",
+			"pvm",
+			"root",
+			"rpc",
+			"rpcuser",
+			"rpm",
+			"sag",
+			"shutdown",
+			"smmsp",
+			"sshd",
+			"statd",
+			"sync",
+			"sys",
+			"uucp",
+			"vcsa",
+			"www",
+			"www-data",
+			 "xfs"
+			);
+
+		if (in_array(strtolower($x), $reserved_users))
+			return true;
+
+		return false;
+	}
 
 }

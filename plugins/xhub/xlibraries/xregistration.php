@@ -435,8 +435,7 @@ class XRegistration
 	{
 		ximport('xuserhelper');
 		ximport('xregistrationhelper');
-
-
+		ximport('Hubzero_Validate');
 
 		$juser =& JFactory::getUser();
 		
@@ -534,10 +533,14 @@ class XRegistration
 			if ($uid && $uid != $id)
 				$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
 
-			$uid = XUserHelper::getUserId($login);
-
-			if ($uid && $uid != $id)
+			if (Hubzero_Validate::is_reserved_username($login))
 				$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
+				
+			$puser = posix_getpwnam($login);
+			
+			if (!empty($puser))
+				$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
+			
 		}
 
 		if ($registrationPassword == REG_REQUIRED)
