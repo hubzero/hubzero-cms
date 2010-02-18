@@ -288,6 +288,50 @@ function _compareusers($mode = 0)
 								}
 							}
 						}
+						else if ($key == 'orgtype')
+						{
+						    $dbvalue = $profile->get('orgtype');
+							if ($dbvalue != $value[$j])
+							{
+								$showrow = true;
+					            $rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
+								$rowhtml .= "<td>$key</td><td>" . $dbvalue . "</td>" . "<td>" . $value[$j];
+								if (empty($dbvalue))
+								{
+									$profile->set('orgtype',$value[$j]);
+									$profile->update('mysql');
+									$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
+								}
+								else 
+								{
+									$profile->set('orgtype',$dbvalue);
+									$profile->update('ldap');
+									$rowhtml .= "</td><td>SYNCD TO MYSQL</td></tr>";
+								}
+							}
+						}
+						else if ($key == 'emailConfirmed')
+						{
+						    $dbvalue = $profile->get('emailConfirmed');
+							if ($dbvalue != $value[$j])
+							{
+								$showrow = true;
+					            $rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
+								$rowhtml .= "<td>$key</td><td>" . $dbvalue . "</td>" . "<td>" . $value[$j];
+								if (empty($dbvalue))
+								{
+									$profile->set('emailConfirmed',$value[$j]);
+									$profile->update('mysql');
+									$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
+								}
+								else 
+								{
+									$profile->set('emailConfirmed',$dbvalue);
+									$profile->update('mysql');
+									$rowhtml .= "</td><td>SYNCD TO LDAP</td></tr>";
+								}
+							}
+						}
 						else if ($key == 'sn')
 						{
 						   	$dbvalue = $profile->get('name');
@@ -371,7 +415,7 @@ function _compareusers($mode = 0)
 						{
 							if ($profile->get('email') != $value[$j])
 							{
-								die('mail mismatch');
+								echo('mail mismatch');
 							}
 						}
 						else if ($key == 'shadowExpire')
@@ -481,7 +525,7 @@ function _compareusers($mode = 0)
 							}
 							}
 						}
-						else if (in_array($key,array('regHost','homeDirectory','ftpShell','jobsAllowed','emailConfirmed','loginShell','gidNumber','uidNumber','userPassword','gid','sex','countryresident','countryorigin','mailPreferenceOption','orgtype','url','nativeTribe','proxyUidNumber','proxyPassword')))
+						else if (in_array($key,array('regHost','homeDirectory','ftpShell','jobsAllowed','loginShell','gidNumber','uidNumber','userPassword','gid','sex','countryresident','countryorigin','mailPreferenceOption','url','nativeTribe','proxyUidNumber','proxyPassword')))
 						{
 							if ($j > 0)
 								die('unexpected multivalue');
@@ -492,7 +536,7 @@ function _compareusers($mode = 0)
 								$showrow = true;
 					               $rowhtml .= "<tr><td>" . $attributes['uidNumber'][0] . "</td>";
 								$rowhtml .= "<td>$key</td><td>" . $dbvalue . "</td>" . "<td>" . $value[$j] . "</td>";
-								if (in_array($key,array('url','regIP','countryresident','countryorigin','orgtype')))
+								if (in_array($key,array('url','regIP','countryresident','countryorigin','userPassword')))
 								{
 									if (empty($dbvalue))
 									{
@@ -520,7 +564,6 @@ function _compareusers($mode = 0)
 						}
 						else
 						{
-							var_dump($profile);
 							echo "$key: " . $value[$j] . "<br>";
 						}
 					}
