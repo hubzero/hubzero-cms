@@ -38,7 +38,7 @@ if ($this->msg) {
 	$message .= stripslashes($this->msg)."\n";
 	$message .= '====================='."\n\n";
 }
-$message .= JText::sprintf('GROUPS_PLEASE_JOIN', $sef)."\n\n";
+$message .= JText::sprintf('GROUPS_PLEASE_JOIN', $juri->base().$sef)."\n\n";
 $message .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $this->juser->get('name'), $this->juser->get('email'))."\n";
 //$message .= $juri->base().$sef."\n";
 
