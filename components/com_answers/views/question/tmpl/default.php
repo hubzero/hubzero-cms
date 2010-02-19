@@ -216,7 +216,7 @@ if ($this->note['msg'] != '') {
 	<div class="main section">
 		<div class="subject">
 			<p class="error"><?php echo JText::_('COM_ANSWERS_NOTICE_CONFIRM_DELETE'); ?></p>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete_q&qid='.$$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?></a> | <a  href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$question->id); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a></p>
+			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete_q&qid='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?></a> | <a  href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a></p>
 		</div><!-- / .subject -->
 		<div class="clear"></div>
 	</div><!-- / .section -->
