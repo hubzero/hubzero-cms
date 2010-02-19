@@ -73,13 +73,15 @@ class ToolGroup extends  JTable
 	
 	public function saveGroup($toolid=NULL, $devgroup, $members, $exist)
 	{
+		ximport('Hubzero_Group');
+		
 		if (!$toolid or !$devgroup) {
 			return false;
 		}
 		
 		$members = ContribtoolHelper::transform($members, 'uidNumber');
 		$group = new XGroup();
-		if(XGroupHelper::groups_exists($devgroup)) {
+		if(Hubzero_Group::exists($devgroup)) {
 			$group->select($devgroup);		
 			$existing_members = ContribtoolHelper::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
 			$to_delete = array_diff($existing_members, $members);			
@@ -94,7 +96,7 @@ class ToolGroup extends  JTable
 			$group->set('cn', $devgroup );
 		}		
 		
-		if(XGroupHelper::groups_exists($devgroup))	{
+		if(Hubzero_Group::exists($devgroup))	{
 			$group->_lists['add']['managers'] = $members;
 			$group->_lists['add']['members'] = $members;
 			$group->update();
@@ -115,6 +117,7 @@ class ToolGroup extends  JTable
 	public function saveMemberGroups($toolid=NULL, $newgroups, $editversion='dev', $membergroups=array())
 	{
 		ximport('Hubzero_Tool');
+		ximport('Hubzero_Group');
 
 		if (!$toolid) {
 			return false;
@@ -135,7 +138,7 @@ class ToolGroup extends  JTable
 		
 		if(count($newgroups) > 0) {
 			foreach($newgroups as $newgroup) {
-				if(XGroupHelper::groups_exists($newgroup) && !in_array($newgroup, $membergroups)) {
+				if(Hubzero_Group::exists($newgroup) && !in_array($newgroup, $membergroups)) {
 					// create an entry in tool_groups table
 					$this->save($newgroup, $toolid, '0');
 				
@@ -150,9 +153,10 @@ class ToolGroup extends  JTable
 	
 	//-----------
 	
-	public function writeMemberGroups($new, $id, $database, &$err='') {
-	
-		$grouphelper = new XGroupHelper();
+	public function writeMemberGroups($new, $id, $database, &$err='') 
+	{
+		ximport('Hubzero_Group');
+		
 		$toolhelper = new ContribtoolHelper();
 		
 		$groups 	= is_array($new) ? $new : $toolhelper->makeArray($new);
@@ -162,7 +166,7 @@ class ToolGroup extends  JTable
 		
 		if(count($groups) > 0) {
 			 foreach($groups as $group) {
-			 	if($grouphelper->groups_exists($group)) {
+			 	if(Hubzero_Group::exists($group)) {
 					if($id) { $grouplist[$i]->cn = $group; }
 					else { $grouplist[$i] = $group; }
 					$i++;

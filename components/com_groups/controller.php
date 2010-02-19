@@ -1115,6 +1115,8 @@ class GroupsController extends JObject
 	
 	protected function save() 
 	{	
+		ximport('Hubzero_Group');
+		
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
@@ -1210,10 +1212,10 @@ class GroupsController extends JObject
 		if ($g_cn == 'new' || $g_cn == 'browse') {
 			$this->setError( JText::_('GROUPS_ERROR_INVALID_ID') );
 		}
-		if (!XGroupHelper::valid_cn($g_cn)) {
+		if (!$this->valid_cn($g_cn)) {
 			$this->setError( JText::_('GROUPS_ERROR_INVALID_ID') );
 		}
-		if ($isNew && XGroupHelper::groups_exists($g_cn)) {
+		if ($isNew && Hubzero_Group::exists($g_cn)) {
 			$this->setError( JText::_('GROUPS_ERROR_GROUP_ALREADY_EXIST') );
 		}
 		
@@ -1247,6 +1249,7 @@ class GroupsController extends JObject
 			$group->set('cn',$g_cn);
 			
 			$view = new JView( array('name'=>'edit') );
+			$view->valid_cn = $this->valid_cn($g_cn);
 			$view->title = $title;
 			$view->option = $this->_option;
 			$view->group = $group;
@@ -2227,6 +2230,19 @@ class GroupsController extends JObject
 
 		$database->setQuery( $query );
 		return $database->loadObjectList();
+	}
+	
+    function valid_cn($gid) 
+	{
+		if (eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $gid)) {
+			if (is_numeric($gid) && intval($gid) == $gid && $gid >= 0) {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return false;
+		}
 	}
 }
 ?>

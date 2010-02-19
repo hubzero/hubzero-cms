@@ -26,53 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 class XGroupHelper
-{
-	function valid_cn($gid, $admin=false) 
-	{
-		if (($admin && eregi("^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$", $gid)) ||
-		(!$admin && eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $gid))) {
-			if (is_numeric($gid) && intval($gid) == $gid && $gid >= 0) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
-			return false;
-		}
-	}
-	
-	function valid_description($name) 
-	{
-		if (eregi("^[ \,\.\/0-9a-zA-Z-]+$", $name)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	function groups_exists($group)
-	{
-		$db = &JFactory::getDBO();
-
-		if (empty($group))
-			return false;
-
-		if (is_numeric($group))
-			$query = 'SELECT gidNumber FROM #__xgroups WHERE gidNumber=' . $db->Quote($group);
-		else
-			$query = 'SELECT gidNumber FROM #__xgroups WHERE cn=' . $db->Quote($group);
-			
-		$db->setQuery($query);
-		
-		if (!$db->query())
-			return false;
-
-		if ($db->loadResult() > 0)
-			return true;
-
-		return false;
-	}
-
+{	
 	function get_groups($type='hub', $asGidNumbers=true, $filters=array())
 	{
 		$db = &JFactory::getDBO();

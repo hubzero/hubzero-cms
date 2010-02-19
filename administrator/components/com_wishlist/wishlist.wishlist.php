@@ -605,8 +605,10 @@ class WishlistOwnerGroup extends JTable
 	
 	 
 	//----------
-	 public function get_owner_groups($listid, $controlgroup='', $wishlist='', $native=0, $groups = array()) {
-		
+	 public function get_owner_groups($listid, $controlgroup='', $wishlist='', $native=0, $groups = array()) 
+	 {
+		ximport('Hubzero_Group');
+			
 		if ($listid === NULL) {
 			return false;
 		}
@@ -628,7 +630,7 @@ class WishlistOwnerGroup extends JTable
 		
 		
 		// if primary list, add all site admins
-		if($controlgroup && XGroupHelper::groups_exists($controlgroup) && $wishlist->category=='general') {
+		if($controlgroup && Hubzero_Group::exists($controlgroup) && $wishlist->category=='general') {
 			$instance = new XGroup($controlgroup);
 			$groups[] = $instance->get('gidNumber');
 		}
@@ -650,7 +652,7 @@ class WishlistOwnerGroup extends JTable
 			
 			if($wishgroups) {
 				foreach ($wishgroups as $wg) {
-					if(XGroupHelper::groups_exists($wg->groupid)) {
+					if(Hubzero_Group::exists($wg->groupid)) {
 						$groups[]=$wg->groupid;
 					}				
 				}
@@ -664,7 +666,9 @@ class WishlistOwnerGroup extends JTable
 	 }
 	 
 	 //----------
-	 public function delete_owner_group($listid, $groupid, $admingroup) {
+	 public function delete_owner_group($listid, $groupid, $admingroup) 
+	 {
+	 	ximport('Hubzero_Group');
 
 		if ($listid === NULL or $groupid === NULL) {
 			return false;
@@ -674,7 +678,7 @@ class WishlistOwnerGroup extends JTable
 		ximport('xgroup');	
 		
 		// cannot delete "native" owners (e.g. tool dev group)
-		if(XGroupHelper::groups_exists($groupid) && !in_array($groupid, $nativegroups, true)) {
+		if(Hubzero_Group::exists($groupid) && !in_array($groupid, $nativegroups, true)) {
 				
 				$query = "DELETE FROM $this->_tbl WHERE wishlist='". $listid."' AND groupid='".$groupid."'";
 				$this->_db->setQuery( $query );

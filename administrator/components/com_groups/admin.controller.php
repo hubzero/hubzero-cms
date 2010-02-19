@@ -286,6 +286,8 @@ class GroupsController extends JObject
 	
 	protected function save() 
 	{
+		ximport('Hubzero_Group');
+		
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		
@@ -334,12 +336,10 @@ class GroupsController extends JObject
 		}
 		
 		// Ensure the data passed is valid
-		//if (!XGroupHelper::valid_cn($g_cn, true)) {
-		if (($g_type == 1 && !XGroupHelper::valid_cn($g_cn, false)) 
-		 || ($g_type != 1 && !XGroupHelper::valid_cn($g_cn, true))) {
+		if (!$this->valid_cn($g_cn, $g_type)) {
 			$this->setError( JText::_('GROUPS_ERROR_INVALID_ID') );
 		}
-		if ($isNew && XGroupHelper::groups_exists($g_cn)) {
+		if ($isNew && Hubzero_Group::exists($g_cn)) {
 			$this->setError( JText::_('GROUPS_ERROR_GROUP_ALREADY_EXIST') );
 		}
 		
@@ -857,6 +857,27 @@ class GroupsController extends JObject
 
 		// Save changes
 		$this->group->update();
+	}
+	
+	function valid_cn($name, $type) 
+	{
+		if ($type == 1) {
+			$admin = false;
+		}
+		else {
+			$admin = true;
+		}
+		
+		if (($admin && eregi("^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$", $name)) ||
+		(!$admin && eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $name))) {
+			if (is_numeric($name) && intval($name) == $name && $name >= 0) {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return false;
+		}
 	}
 }
 ?>

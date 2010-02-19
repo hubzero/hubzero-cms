@@ -248,6 +248,8 @@ class WishlistController extends JObject
 
 	public function wishlist()
 	{
+		ximport('Hubzero_Group');
+		
 		$database =& JFactory::getDBO();
 		$juser 	  =& JFactory::getUser();	
 		$abuse = WishlistController::useAbuse();
@@ -310,7 +312,7 @@ class WishlistController extends JObject
 			else if(!$id && $cat == 'group') {
 				
 				// create private list for group
-				if(XGroupHelper::groups_exists($refid)) {
+				if(Hubzero_Group::exists($refid)) {
 					$group = new XGroup();
 					$group->select($refid);	
 					$id = $obj->createlist($cat, $refid, 0, $group->cn.' '.JText::_('Group'));
@@ -1575,6 +1577,8 @@ class WishlistController extends JObject
 	
 	public function movewish()
 	{
+		ximport('Hubzero_Group');
+		
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		
@@ -1631,7 +1635,7 @@ class WishlistController extends JObject
 			// Get group id from cn
 			if($category == 'group') {
 				$group = new XGroup();
-					if(XGroupHelper::groups_exists($cn)) {
+					if(Hubzero_Group::exists($cn)) {
 						$group->select($cn);
 						$refid = $group->gidNumber;
 					}
@@ -1662,7 +1666,7 @@ class WishlistController extends JObject
 			else if($category == 'group' && !$newlist) {
 			
 				// create private list for group
-				if(XGroupHelper::groups_exists($refid)) {
+				if(Hubzero_Group::exists($refid)) {
 						$group = new XGroup();
 						$group->select($refid);	
 						$newlist = $obj->createlist($cat, $refid, 0, $group->cn.' '.JText::_('Group'));

@@ -72,7 +72,7 @@ $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->
 <?php if ($this->task == 'save' && !$this->group->get('cn')) { ?>
 			<p class="error"><?php echo JText::_('GROUPS_ERROR_PROVIDE_ID'); ?></p>
 <?php } ?>
-<?php if ($this->task == 'save' && $this->group->get('cn') && !XGroupHelper::valid_cn($this->group->get('cn'))) { ?>
+<?php if ($this->task == 'save' && $this->group->get('cn') && !$this->valid_cn) { ?>
 			<p class="error"><?php echo JText::_('GROUPS_ERROR_INVALID_ID'); ?></p>
 <?php } ?>
 
