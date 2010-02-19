@@ -241,4 +241,82 @@ class Hubzero_View_Helper_Html
 		}
 		return $someid;
 	}
+	
+	//-----------
+	
+	public function getFileAttribs( $path, $base_path='' )
+	{
+		// Return nothing if no path provided
+		if (!$path) {
+			return '';
+		}
+		
+		if ($base_path) {
+			// Strip any trailing slash
+			if (substr($base_path, -1) == DS) { 
+				$base_path = substr($base_path, 0, strlen($base_path) - 1);
+			}
+			// Ensure a starting slash
+			if (substr($base_path, 0, 1) != DS) { 
+				$base_path = DS.$base_path;
+			}
+		}
+		
+		// Ensure a starting slash
+		if (substr($path, 0, 1) != DS) { 
+			$path = DS.$path;
+		}
+		if (substr($path, 0, strlen($base_path)) == $base_path) {
+			// Do nothing
+		} else {
+			$path = $base_path.$path;
+		}
+		$path = JPATH_ROOT.$path;
+
+		$file_name_arr = explode(DS,$path);
+	    $type = end($file_name_arr);
+	
+		$fs = '';
+		
+		// Get the file size if the file exist
+		if (file_exists( $path )) {
+			$fs = filesize( $path );
+		}
+		
+		$html  = '<span class="caption">('.$type;
+		if ($fs) {
+			switch ($type)
+			{
+				case 'HTM':
+				case 'HTML':
+				case 'PHP':
+				case 'ASF':
+				case 'SWF': $fs = ''; break;
+				default: 
+					$fs = Hubzero_View_Helper_Html::formatSize($fs); 
+					break;
+			}
+		
+			$html .= ($fs) ? ', '.$fs : '';
+		}
+		$html .= ')</span>';
+		
+		return $html;
+	}
+	
+	//-----------
+
+	public function formatSize($file_size) 
+	{
+		if ($file_size >= 1073741824) {
+			$file_size = round($file_size / 1073741824 * 100) / 100 . ' <abbr title="gigabytes">Gb</abbr>';
+		} elseif ($file_size >= 1048576) {
+			$file_size = round($file_size / 1048576 * 100) / 100 . ' <abbr title="megabytes">Mb</abbr>';
+		} elseif ($file_size >= 1024) {
+			$file_size = round($file_size / 1024 * 100) / 100 . ' <abbr title="kilobytes">Kb</abbr>';
+		} else {
+			$file_size = $file_size . ' <abbr title="bytes">b</abbr>';
+		}
+		return $file_size;
+	}
 }
