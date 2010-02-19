@@ -139,8 +139,8 @@ class XContentServer
 
 			preg_match("/^\s*(\d*)\s*-\s*(\d*)\s*$/", $range, $match);
 
-  			$first=$match[1];
-  			$last=$match[2];
+  			$first=isset($match[1]) ? $match[1] : '';
+  			$last=isset($match[2])  ? $match[2] : '';
 
 			if ($first!='') // byte-range-set
 			{
