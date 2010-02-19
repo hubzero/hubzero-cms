@@ -538,9 +538,8 @@ class XRegistration
 				
 			$puser = posix_getpwnam($login);
 			
-			if (!empty($puser))
+			 if (!empty($puser) && $uid && $uid != $puser['uid'])
 				$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
-			
 		}
 
 		if ($registrationPassword == REG_REQUIRED)
