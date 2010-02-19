@@ -1280,7 +1280,7 @@ class ResourcesHtml
 					<tbody>
 						<tr>
 							<td class="key"><label for="title">Title:</label></td>
-							<td colspan="3"><input type="text" name="title" id="title" size="60" maxlength="250" value="<?php echo htmlentities(stripslashes($row->title), ENT_QUOTES); ?>" /></td>
+							<td colspan="3"><input type="text" name="title" id="title" size="60" maxlength="250" value="<?php echo htmlentities(stripslashes($row->title), ENT_COMPAT, 'UTF-8', ENT_QUOTES); ?>" /></td>
 						</tr>
 						<tr>
 							<td class="key"><label>Type:</label></td>
@@ -1328,7 +1328,7 @@ class ResourcesHtml
 								<label>Intro Text:</label><br />
 								<?php
 								$editor =& JFactory::getEditor();
-								echo $editor->display('introtext', stripslashes($row->introtext), '100%', '100px', '45', '10', false);
+								echo $editor->display('introtext', htmlentities(stripslashes($row->introtext), ENT_COMPAT, 'UTF-8'), '100%', '100px', '45', '10', false);
 								?>
 							</td>
 						</tr>
@@ -1336,7 +1336,7 @@ class ResourcesHtml
 							<td>
 								<label>Main Text: (optional)</label><br />
 								<?php
-								echo $editor->display('fulltext', stripslashes($row->fulltext), '100%', '300px', '45', '10', false);
+								echo $editor->display('fulltext', htmlentities(stripslashes($row->fulltext), ENT_COMPAT, 'UTF-8'), '100%', '300px', '45', '10', false);
 								?>
 							</td>
 						</tr>
@@ -1367,7 +1367,7 @@ class ResourcesHtml
 								<input type="text" name="<?php echo 'nbtag['.$field[0].']'; ?>" cols="50" rows="6"><?php echo stripslashes($tagcontent); ?></textarea>
 							<?php
 							} else {
-								echo $editor->display('nbtag['.$field[0].']', stripslashes($tagcontent), '100%', '100px', '45', '10', false);
+								echo $editor->display('nbtag['.$field[0].']', htmlentities(stripslashes($tagcontent), ENT_COMPAT, 'UTF-8'), '100%', '100px', '45', '10', false);
 							} 
 							?>
 						</td>
