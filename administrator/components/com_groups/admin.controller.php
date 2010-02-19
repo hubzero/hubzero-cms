@@ -177,7 +177,7 @@ class GroupsController extends JObject
 		// Get a list of all groups
 		$rows = null;
 		if ($total > 0) {
-			$rows = Hubzero_Group::find($filters['type']);
+			$rows = Hubzero_Group::find($filters);
 		}
 
 		// Initiate paging
