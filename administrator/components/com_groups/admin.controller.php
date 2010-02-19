@@ -149,6 +149,7 @@ class GroupsController extends JObject
 	
 	protected function browse()
 	{
+		ximport('Hubzero_Group');
 		$app =& JFactory::getApplication();
 		$database =& JFactory::getDBO();
 		
@@ -164,19 +165,19 @@ class GroupsController extends JObject
 		$filters['limit'] = 'all';
 		$filters['fields'] = array('COUNT(*)');
 		$filters['authorized'] = 'admin';
-		
+
 		// Get a record count
-		$total = XGroupHelper::get_groups($filters['type'], false, $filters);
+		$total = Hubzero_Group::find($filters);
 
 		// Filters for returning results
 		$filters['limit']  = $app->getUserStateFromRequest($this->_option.'.browse.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 		$filters['start']  = $app->getUserStateFromRequest($this->_option.'.browse.limitstart', 'limitstart', 0, 'int');
-		$filters['fields'] = array('description','published','gidNumber','type');
+		$filters['fields'] = array('cn','description','published','gidNumber','type');
 
 		// Get a list of all groups
 		$rows = null;
 		if ($total > 0) {
-			$rows = XGroupHelper::get_groups($filters['type'], false, $filters);
+			$rows = Hubzero_Group::find($filters['type']);
 		}
 
 		// Initiate paging

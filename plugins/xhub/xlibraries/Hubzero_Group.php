@@ -1227,119 +1227,123 @@ class Hubzero_Group
 		
 		return $list;
 	}
-	
+
 	static public function exists($group, $storage = 'mysql')
 	{
 		$db = &JFactory::getDBO();
-
+		
 		if (empty($group))
 			return false;
-
+		
 		if (is_numeric($group))
 			$query = 'SELECT gidNumber FROM #__xgroups WHERE gidNumber=' . $db->Quote($group);
 		else
 			$query = 'SELECT gidNumber FROM #__xgroups WHERE cn=' . $db->Quote($group);
-			
+		
 		$db->setQuery($query);
 		
 		if (!$db->query())
 			return false;
-
+		
 		if ($db->loadResult() > 0)
 			return true;
-
+		
 		return false;
 	}
-	
-	function get_groups($type='hub', $asGidNumbers=true, $filters=array())
+
+	function find($filters = array())
 	{
 		$db = &JFactory::getDBO();
-
-		if (!in_array($type, array('system','hub','project','all','0','1','2')))
+		
+		$type = !empty($filters['type']) ? $filters['type'] : 'all';
+		
+		if (!in_array($type, array('system', 'hub', 'project', 'all', '0', '1', '2')))
 			return false;
-
+		
 		if ($type == 'all')
 			$where_clause = '';
-		else
-		{
+		else {
 			if ($type == 'system')
 				$type = '0';
 			elseif ($type == 'hub')
 				$type = '1';
 			elseif ($type == 'project')
 				$type = '2';
-
+			
 			$where_clause = 'WHERE type=' . $db->Quote($type);
 		}
 		
 		if (isset($filters['search']) && $filters['search'] != '') {
 			if ($where_clause != '') {
 				$where_clause .= " AND";
-			} else {
+			}
+			else {
 				$where_clause = "WHERE";
 			}
-			$where_clause .= " (LOWER(description) LIKE '%".$filters['search']."%' OR LOWER(cn) LIKE '%".$filters['search']."%')";
+			$where_clause .= " (LOWER(description) LIKE '%" . $filters['search'] . "%' OR LOWER(cn) LIKE '%" . $filters['search'] .
+				 "%')";
 		}
 		
 		if (isset($filters['index']) && $filters['index'] != '') {
 			if ($where_clause != '') {
 				$where_clause .= " AND";
-			} else {
+			}
+			else {
 				$where_clause = "WHERE";
 			}
-			$where_clause .= " (LOWER(description) LIKE '".$filters['index']."%') ";
+			$where_clause .= " (LOWER(description) LIKE '" . $filters['index'] . "%') ";
 		}
-
+		
 		if (isset($filters['authorized']) && $filters['authorized']) {
 			if ($filters['authorized'] === 'admin') {
 				$where_clause .= "";
-			} else {
+			}
+			else {
 				if ($where_clause != '') {
 					$where_clause .= " AND";
-				} else {
+				}
+				else {
 					$where_clause .= "WHERE";
 				}
 				$where_clause .= " privacy<=1";
 			}
-		} else {
+		}
+		else {
 			if ($where_clause != '') {
 				$where_clause .= " AND";
-			} else {
+			}
+			else {
 				$where_clause .= "WHERE";
 			}
 			$where_clause .= " privacy=0";
 		}
-
-		if ($asGidNumbers) {
-			$filters['fields'][] = 'gidNumber';
-		} else {
-			if (!in_array('COUNT(*)',$filters['fields'])) {
-				$filters['fields'][] = 'cn';
-			}
-		}
 		
-		$field = implode(',',$filters['fields']);
+		if (empty($filters['fields']))
+			$filters['fields'][] = 'cn';
+		
+		$field = implode(',', $filters['fields']);
 		
 		$query = "SELECT $field FROM #__xgroups $where_clause";
 		if (isset($filters['sortby']) && $filters['sortby'] != '') {
-			$query .= " ORDER BY ".$filters['sortby'];
+			$query .= " ORDER BY " . $filters['sortby'];
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 'all') {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 		$query .= ";";
-
+		
 		$db->setQuery($query);
-
-		if (!in_array('COUNT(*)',$filters['fields'])) {
+		
+		if (!in_array('COUNT(*)', $filters['fields'])) {
 			$result = $db->loadObjectList();
-		} else {
+		}
+		else {
 			$result = $db->loadResult();
 		}
 		
 		if (empty($result))
 			return false;
-
+		
 		return $result;
 	}
 }
