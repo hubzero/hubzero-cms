@@ -25,120 +25,192 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$xhub =& XFactory::getHub();
-$hubShortName = $xhub->getCfg('hubShortName');
-
-$imagedir = DS.'components'.DS.$option.DS.'images'.DS;
+$database =& JFactory::getDBO();
+$juser =& JFactory::getUser();
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</div><!-- / #content-header -->
 
-<div class="main section">
-<div class="threecolumn leftmiddle">
-	<?php echo ($this->getError()) ? $this->getError() : ''; ?>
-	
-	<div id="startcontributing">
-		<p id="startbutton"><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=start'); ?>">Start a contribution &rsaquo;</a></p>
-		<p>
-			Become a contributor and share your work with the <?php echo $hubShortName; ?> community! Contributing content is easy. Our step-by-step 
-			forms will guide you through the process.
-		</p>
+<div id="introduction" class="section">
+	<div class="aside">
+		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=start'); ?>">Get Started &rsaquo;</a></p>
+	</div><!-- / .aside -->
+	<div class="subject">
+		<div class="two columns first">
+			<h3>Present your work!</h3>
+			<p>Become a contributor and share your work with the community! Contributing content is easy. Our step-by-step forms will guide you through the process.</p>
+		</div>
+		<div class="two columns second">
+			<h3>What do I need?</h3>
+			<p>The submission process will guide you through step-by-step, but for more detailed instructions on what can be submitted and how, please see the list of submission types below.</p>
+		</div>
 		<div class="clear"></div>
-	</div>
-	
-	<h3>Shared infrastructure</h3>
-	<p>
-		The <?php echo $hubShortName; ?> is shared infrastructure to help individuals in the community collaborate and disseminate the results of their 
-		work. Individuals, research groups, and even major research centers can disseminate their work by uploading it to the <?php echo $hubShortName; ?>.
-	</p>
-	
-	<h4>Contribute content</h4>
-	<p>
-		There are several different types of content hosted on the <?php echo $hubShortName; ?>. The following links tell you how to prepare and submit
-		materials for each type:
-	</p>
-	
-	<ul>
-		<li><a href="/contribute/animations">Animations</a></li>
-		<li><a href="/contribute/downloads">Downloads</a></li>
-		<li><a href="/contribute/publications">Publications</a></li>
-		<li><a href="/contribute/presentations">Online Presentations</a></li>
-		<li><a href="/contribute/teachingmaterials">Teaching Materials</a></li>
-		<li><a href="/contribute/tools">Simulation Tools</a></li>
-	</ul>
-	
-	<h4>Present your work</h4>
-	<p>
-		Your contributions will become part of the <?php echo $hubShortName; ?> and your colleagues and general <?php echo $hubShortName; ?> users will be able to locate 
-		them there.
-	</p>
-	
-	<h4>Intellectual Property Considerations</h4>
-	<p>
-		All materials contributed must have clearly defined rights and privileges. Online presentations and
-		instructional material are normally licensed under <a href="legal/cc/" title="Learn more about Creative Commons">Creative Commons 2.5</a>. 
-		Read <a href="legal/licensing/">more details</a> about our licensing policies.
-	</p>
+	</div><!-- / .subject -->
+	<div class="clear"></div>
+</div><!-- / #introduction.section -->
 
-	<h4>Questions about contributing?</h4>
-	<p>
-		We hope that our self-service upload process is intuitive and easy to use. If you encounter any problems during the 
-		upload process or need assistance of any kind, please <a href="feedback/report_problems/">file a trouble report</a>.
-	</p>
+<div class="section">
 
-	<h2>What can I contribute?</h2>
+<?php if (!$juser->get('guest')) { ?>
+	<div class="four columns first">
+		<h2>In Progress</h2>
+	</div><!-- / .four columns first -->
+	<div class="four columns second third fourth">
+<?php
+		if ($this->submissions) {
+?>
+		<table id="submissions" summary="Contributions in progress">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th colspan="3">Associations</th>
+					<th colspan="2">Status</th>
+				</tr>
+			</thead>
+			<tbody>
+<?php
+			$ra = new ResourcesAssoc( $database );
+			$rc = new ResourcesContributor( $database );
+			$rt = new ResourcesTags( $database );
+			$cls = 'even';
+			foreach ($this->submissions as $submission) 
+			{
+				$cls = ($cls == 'even') ? 'odd' : 'even';
+				
+				switch ($submission->published)
+				{
+					case 1: $state = 'published';  break;  // published
+					case 2: $state = 'draft';      break;  // draft
+					case 3: $state = 'pending';    break;  // pending
+				}
+				
+				$attachments = $ra->getCount( $submission->id );
+			
+				$authors = $rc->getCount( $submission->id, 'resources' );
+				
+				$tags = $rt->getTags( $submission->id );
+?>
+				<tr class="<?php echo $cls; ?>">
+					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=1&id='.$submission->id); ?>"><?php } ?><?php echo stripslashes($submission->title); ?><?php if ($submission->published == 2) { ?></a><?php } ?><br /><span class="type"><?php echo $submission->typetitle; ?></span></td>
+					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=2&id='.$submission->id); ?>"><?php } ?><?php echo count($attachments); ?> attachment(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
+					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=3&id='.$submission->id); ?>"><?php } ?><?php echo count($authors); ?> author(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
+					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=4&id='.$submission->id); ?>"><?php } ?><?php echo count($tags); ?> tag(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
+					<td>
+						<span class="<?php echo $state; ?> status"><?php echo $state; ?></span>
+						<?php if ($submission->published == 2) { ?>
+						<br /><a class="review" href="<?php echo JRoute::_('index.php?option=com_contribute&step=5&id='.$submission->id); ?>"><?php echo JText::_('Review &amp; Submit &rsaquo;'); ?></a>
+						<?php } elseif ($submission->published == 3) { ?>
+						<br /><a class="review" href="<?php echo JRoute::_('index.php?option=com_contribute&task=retract&id='.$submission->id); ?>"><?php echo JText::_('&lsaquo; Retract'); ?></a>
+						<?php } ?>
+					</td>
+					<td><a class="delete" href="<?php echo JRoute::_('index.php?option=com_contribute&task=discard&id='.$submission->id); ?>" title="<?php echo JText::_('Delete'); ?>"><?php echo JText::_('Delete'); ?></a></td>
+				</tr>
+<?php
+			}
+?>
+			</tbody>
+		</table>
+<?php
+		} else {
+?>
+		<p class="info">
+			<strong>You currently have no contributions in progress.</strong><br /><br />
+			Once you've started a new contribution, you can proceed at your leisure. Stop half-way through and watch a presentation, go to lunch, even close the browser and come back a different day! Your contribution will be waiting just as you left it, ready to continue at any time.
+		</p>
+<?php 
+		} 
+?>
+	</div><!-- / .four columns second third fourth -->
+<?php } ?>
 
-	<div class="withimages">
-		<h3><a href="/contribute/tools/">Tools</a></h3>
-		<img src="<?php echo $imagedir; ?>contribute-tool.jpg" alt="" />
-		<p>A simulation tool is software that allows users to run a specific type of calculation. Most of these tools are 
-		built with our <a href="http://www.rappture.org">Rappture toolkit</a>, so they have a consistent, user-friendly interface.</p>
-					
-		<h3><a href="/contribute/presentations/">Online Presentations</a></h3>
-		<img src="<?php echo $imagedir; ?>contribute-presentation.jpg" alt="" />
-		<p>An Online Presentation can be a research seminar,
-		a graduate or undergraduate level seminar, or lectures for a complete class. An online presentation consists of an abstract, 
-		short bio about the author, presentation slides (PDF, PPT, etc.) as well as a voiced presentation (Macromedia Breeze).</p>
+	<div class="four columns first">
+		<h2>Before starting</h2>
+	</div><!-- / .four columns first -->
+	<div class="four columns second third fourth">
+		<div class="two columns first">
+			<h3>Intellectual Property Considerations</h3>
+			<p>All materials contributed must have <strong>clearly defined rights and privileges</strong>. Online presentations and instructional material are normally licensed under <a href="/legal/cc/" title="Learn more about Creative Commons">Creative Commons 3</a>. Read <a href="/legal/licensing/">more details</a> about our licensing policies.</p>
+		</div>
+		<div class="two columns second">
+			<h3>Questions or concerns?</h3>
+			<p>We hope that our self-service upload process is intuitive and easy to use. If you encounter any problems during the upload process or need assistance of any kind, please <a href="/feedback/report_problems/">file a trouble report</a>.</p>
+		</div>
+	</div><!-- / .four columns second third fourth -->
+	<div class="clear"></div>
 	
-		<h3><a href="/contribute/teachingmaterials/">Teaching Materials</a></h3>
-		<img src="<?php echo $imagedir; ?>contribute-teachingmaterial.jpg" alt="" />
-		<p>Teaching Materials are supplementary materials that don't quite fit into any of the previous categories, such
-		as homework assignments, study notes, guides, etc.</p>
-
-		<h3><a href="/contribute/animations/">Animations</a></h3>
-		<img src="<?php echo $imagedir; ?>contribute-animation.jpg" alt="" />
-		<p>An animation is a short (usually <a href="http://www.adobe.com/products/flashplayer/">Flash</a>-based) video 
-		that illustrates a concept. Browse through <a href="resources/animations/">available animations</a> in our resources section.</p>
+<?php
+$categories = $this->categories;
+if ($categories) {
+?>
+	<div class="four columns first">
+		<h2>What can I contribute?</h2>
+		<!-- <p>If you have a contribution that does not seem to fit one of these categories, please contact our <a href="/support">support</a> for further assistance.</p> -->
+	</div><!-- / .four columns first -->
+	<div class="four columns second third fourth">
+<?php
+	$i = 0;
+	$clm = '';
+	/*if (count($categories)%3!=0) { 
+	    ;
+	}*/
+	foreach ($categories as $category) 
+	{
+		if ($category->contributable != 1) {
+			continue;
+		}
 		
-		<h3><a href="/contribute/publications/">Publications</a></h3>
-		<img src="<?php echo $imagedir; ?>contribute-publication.jpg" alt="" />
-		<p>A Publication is a paper you have written that has been published in some manner. The topic of the paper 
-		should be relevant to the community and may even include references from the <?php echo $hubShortName; ?>.</p>
-		<p><i>NOTE:</i> Please don't upload any publication if the copyright is owned by a publisher without explicit 
-		permission from the publisher. However, if you have a preprint or an unpublished work, it can be uploaded here 
-		to help explain the details for a related tool, or as a reference for an online lecture.</p>
-
-		<h3><a href="/contribute/downloads/">Downloads</a></h3>
-		<img src="<?php echo $imagedir; ?>contribute-download.jpg" alt="" />
-		<p>A download is a type of resource that users can download and use on their own computer. It could be source 
-		code for a tool you developed or a set of data files.</p>
-	</div>
-</div>
-<div class="threecolumn farright">
-	<div id="submissions">
-		<h3>Submissions in progress:</h3>
-		<?php
-		$module = JModuleHelper::getModule('mod_mysubmissions');
-		echo JModuleHelper::renderModule($module);
+		$i++;
+		switch ($clm) 
+		{
+			case 'second': $clm = 'third'; break;
+			case 'first': $clm = 'second'; break;
+			case '':
+			default: $clm = 'first'; break;
+		}
+		
+		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $category->type);
+		$normalized = strtolower($normalized);
+		
+		if (substr($normalized, -3) == 'ies') {
+			$cls = $normalized;
+		} else {
+			$cls = substr($normalized, 0, -1);
+		}
+?>
+		<div class="three columns <?php echo $clm; ?>">
+			<div class="<?php echo $cls; ?>">
+				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$normalized); ?>"><?php echo stripslashes($category->type); ?></a></h3>
+				<p><?php echo stripslashes($category->description); ?></p>
+				<p><a href="/contribute/<?php echo $normalized; ?>">Learn more &rsaquo;</a></p>
+			</div>
+		</div><!-- / .three columns <?php echo $clm; ?> -->
+<?php
+		if ($clm == 'third') {
+			echo '<div class="clear"></div>';
+			$clm = '';
+			$i = 0;
+		}
+	}
+	if ($i == 1) {
 		?>
-	</div>
-	<div class="whatisthis">
-		<h4>What's this?</h4>
-		<p>Once you've started a new contribution, you can proceed at your leisure. Stop half-way through and 
-		watch a presentation, go to lunch, even close the browser and come back a different day! Your 
-		contribution will be waiting just as you left it, ready to continue at any time.</p>
-	</div>
-</div>
-<div class="clear"></div>
-</div>
+		<div class="three columns second">
+			<p> </p>
+		</div><!-- / .three columns second -->
+		<?php
+	}
+	if ($i == 1 || $i == 2) {
+		?>
+		<div class="three columns third">
+			<p> </p>
+		</div><!-- / .three columns third -->
+		<?php
+	}
+?>
+	</div><!-- / .four columns second third fourth -->
+	<div class="clear"></div>
+<?php
+}
+?>
+
+</div><!-- / .section -->

@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Contribute Resources Layout">
+	<layout title="Standard Submit Contribution Thanks Layout">
 		<message>
-			<![CDATA[STANDARD CONTRIBUTE RESOURCES LAYOUT DESC]]>
+			<![CDATA[STANDARD SUBMIT CONTRIBUTION THANKS DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Contribute Resources Layout</name>
-		<description>STANDARD CONTRIBUTE RESOURCES LAYOUT DESC</description>
+		<name>Standard Submit Contribution Thanks Layout</name>
+		<description>STANDARD SUBMIT CONTRIBUTION THANKS DESC</description>
 		<params>
 		</params>
 	</state>

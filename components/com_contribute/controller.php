@@ -71,26 +71,6 @@ class ContributeController extends JObject
 			return $this->_data[$property];
 		}
 	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$juser =& JFactory::getUser();
-
-		$task = JRequest::getVar( 'task', '' );
-		$step = JRequest::getInt( 'step', 0 );
-		if ($step && !$task) {
-			$task = 'start';
-		}
-		if ($juser->get('guest')) {
-			$task = ($task) ? 'login':'';
-		}
-		$this->_task = $task;
-		$this->step = $step;
-		
-		return $task;
-	}
 	
 	//-----------
 	
@@ -102,17 +82,31 @@ class ContributeController extends JObject
 		$config =& JComponentHelper::getParams( 'com_resources' );
 		$this->config = $config;
 
-		// Push some styles and scrips to the template
-		$this->getStyles();
-		$this->getScripts();
-
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+		// Get the task at hand
+		$this->_task = JRequest::getVar( 'task', '' );
+		$this->step = JRequest::getInt( 'step', 0 );
+		if ($this->step && !$this->_task) {
+			$this->_task = 'start';
 		}
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->_task = ($this->_task) ? 'login' : '';
+		}
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
 
-		switch ( $this->getTask() ) 
+		// Build the title
+		$this->_buildTitle();
+		
+		// Build the pathway
+		$this->_buildPathway();
+
+		// Execute the task
+		switch ($this->_task) 
 		{
 			case 'rename':       $this->attach_rename();  break;
 			case 'saveattach':   $this->attach_save();    break;
@@ -154,7 +148,7 @@ class ContributeController extends JObject
 
 	//-----------
 	
-	private function getStyles( $option='' ) 
+	private function _getStyles( $option='' ) 
 	{
 		$option = ($option) ? $option : $this->_option;
 		ximport('xdocument');
@@ -163,12 +157,55 @@ class ContributeController extends JObject
 	
 	//-----------
 	
-	private function getScripts()
+	private function _getScripts()
 	{
 		$document =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
 			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
 		}
+	}
+	
+	//-----------
+
+	private function _buildPathway() 
+	{
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option)),
+				'index.php?option='.$this->_option
+			);
+		}
+		if ($this->_task) {
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+				'index.php?option='.$this->_option.'&task='.$this->_task
+			);
+		}
+		if ($this->step) {
+			$pathway->addItem(
+				JText::sprintf('COM_CONTRIBUTE_STEP_NUMBER', $this->step).': '.JText::_('COM_CONTRIBUTE_STEP_'.strtoupper($this->steps[$this->step])),
+				'index.php?option='.$this->_option.'&task='.$this->_task.'&step='.$this->step
+			);
+		}
+	}
+	
+	//-----------
+	
+	private function _buildTitle() 
+	{
+		$this->_title = JText::_(strtoupper($this->_option));
+		if ($this->_task) {
+			$this->_title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+		}
+		if ($this->step) {
+			$this->_title .= ': '.JText::sprintf('COM_CONTRIBUTE_STEP_NUMBER', $this->step).': '.JText::_('COM_CONTRIBUTE_STEP_'.strtoupper($this->steps[$this->step]));
+		}
+
+		$document =& JFactory::getDocument();
+		$document->setTitle( $this->_title );
 	}
 	
 	//----------------------------------------------------------
@@ -177,38 +214,24 @@ class ContributeController extends JObject
 
 	protected function login()
 	{
-		// Build the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::_('LOGIN');
-		
-		// Write title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		// Output HTML
-		echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-		echo '<div class="main section">'.n;
-		echo ContributeHtml::warning( JText::_('CONTRIBUTE_NOT_LOGGEDIN') );
-		ximport('xmodule');
-		XModuleHelper::displayModules('force_mod');
-		echo '</div><!-- / .main section -->'.n;
+		// Instantiate a view
+		$view = new JView( array('name'=>'login') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
 
 	protected function intro()
 	{
-		// Build the page title
-		$title = JText::_(strtoupper($this->_name));
-		
-		// Write title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-
-		jimport( 'joomla.application.component.view');
-
 		// Output HTML
 		$view = new JView( array('name'=>'summary') );
-		$view->title = $title;
+		$view->option = $this->_option;
+		$view->title = $this->_title;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -275,22 +298,22 @@ class ContributeController extends JObject
 		$step = $this->step;
 		$step++;
 		
-		// Build the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::_('GETTING_STARTED');
-		
-		// Write title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
+		// Get available resource types
 		$database =& JFactory::getDBO();
 		$rt = new ResourcesType( $database );
 		$types = $rt->getMajorTypes();
 		
 		// Output HTML
-		echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-		echo '<div class="main section">'.n;
-		ContributeHtml::stepType( $this->_option, $step, $types );
-		echo '</div><!-- / .main section -->'.n;
+		$view = new JView( array('name'=>'steps','layout'=>'type') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->step = $step;
+		$view->steps = $this->steps;
+		$view->types = $types;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -315,19 +338,23 @@ class ContributeController extends JObject
 			$row->published = 2;
 		}
 		
-		// Build the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::sprintf('STEP_NUMBER', $step).': '.JText::_('STEP_'.strtoupper($this->steps[$step]));
-		
-		// Write title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
 		// Output HTML
-		echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-		echo '<div class="main section">'.n;
-		ContributeHtml::writeSteps( $this->steps, $this->progress, $this->_option, $step, $id );
-		ContributeHtml::stepCompose( $database, $this->_option, 'start', $row, $this->config, $next_step );
-		echo '</div><!-- / .main section -->'.n;
+		$view = new JView( array('name'=>'steps','layout'=>'compose') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->step = $step;
+		$view->steps = $this->steps;
+		$view->row = $row;
+		$view->config = $this->config;
+		$view->next_step = $next_step;
+		$view->database = $database;
+		$view->id = $id;
+		$view->progress = $this->progress;
+		$view->task = 'start';
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -337,22 +364,12 @@ class ContributeController extends JObject
 		$step = $this->step;
 		$next_step = $step+1;
 		
-		// Build the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::sprintf('STEP_NUMBER', $step).': '.JText::_('STEP_'.strtoupper($this->steps[$step]));
-		
-		// Write title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		
 		// Ensure we have an ID to work with
 		if (!$id) {
-			echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-			echo '<div class="main section">'.n;
-			echo ContributeHtml::error( JText::_('CONTRIBUTE_NO_ID') );
-			echo '</div><!-- / .main section -->'.n;
+			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
 		
@@ -362,11 +379,22 @@ class ContributeController extends JObject
 		$row->load( $id );
 		
 		// Output HTML
-		echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-		echo '<div class="main section">'.n;
-		ContributeHtml::writeSteps( $this->steps, $this->progress, $this->_option, $step, $id );
-		ContributeHtml::stepAttach( $this->_option, 'start', $id, $row->type, $next_step );
-		echo '</div><!-- / .main section -->'.n;
+		$view = new JView( array('name'=>'steps','layout'=>'attach') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->step = $step;
+		$view->steps = $this->steps;
+		$view->row = $row;
+		$view->config = $this->config;
+		$view->next_step = $next_step;
+		$view->database = $database;
+		$view->id = $id;
+		$view->progress = $this->progress;
+		$view->task = 'start';
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -376,22 +404,12 @@ class ContributeController extends JObject
 		$step = $this->_data['step'];
 		$next_step = $step+1;
 		
-		// Build the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::sprintf('STEP_NUMBER', $step).': '.JText::_('STEP_'.strtoupper($this->steps[$step]));
-		
-		// Write title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		
 		// Ensure we have an ID to work with
 		if (!$id) {
-			echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-			echo '<div class="main section">'.n;
-			echo ContributeHtml::error( JText::_('CONTRIBUTE_NO_ID') );
-			echo '</div><!-- / .main section -->'.n;
+			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
 		
@@ -400,11 +418,6 @@ class ContributeController extends JObject
 		$row = new ResourcesResource( $database );
 		$row->load( $id );
 		
-		$accesses = array('Public','Registered','Special','Protected','Private');
-		
-		$lists = array();
-		$lists['access'] = ContributeHtml::selectAccess($accesses, $row->access);
-		
 		// Get groups
 		$juser =& JFactory::getUser();
 
@@ -412,14 +425,23 @@ class ContributeController extends JObject
 			
 		$groups = XUserHelper::getGroups( $juser->get('id'), 'members' );
 		
-		// build <select> of groups
-		$lists['groups'] = ContributeHtml::selectGroup($groups, $row->group_owner);
-
-		echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-		echo '<div class="main section">'.n;
-		ContributeHtml::writeSteps( $this->steps, $this->progress, $this->_option, $step, $id );
-		ContributeHtml::stepAuthors( $this->_option, 'start', $id, $next_step, $lists );
-		echo '</div><!-- / .main section -->'.n;
+		// Output HTML
+		$view = new JView( array('name'=>'steps','layout'=>'authors') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->step = $step;
+		$view->steps = $this->steps;
+		$view->row = $row;
+		$view->groups = $groups;
+		$view->next_step = $next_step;
+		$view->database = $database;
+		$view->id = $id;
+		$view->progress = $this->progress;
+		$view->task = 'start';
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -429,22 +451,12 @@ class ContributeController extends JObject
 		$step = $this->step;
 		$next_step = $step+1;
 		
-		// Build the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::sprintf('STEP_NUMBER', $step).': '.JText::_('STEP_'.strtoupper($this->steps[$step]));
-		
-		// Write title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		
 		// Ensure we have an ID to work with
 		if (!$id) {
-			echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-			echo '<div class="main section">'.n;
-			echo ContributeHtml::error( JText::_('CONTRIBUTE_NO_ID') );
-			echo '</div><!-- / .main section -->'.n;
+			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
 		
@@ -528,11 +540,23 @@ class ContributeController extends JObject
 		$tags = implode( ', ', $mytagarray );
 
 		// Output HTML
-		echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-		echo '<div class="main section">'.n;
-		ContributeHtml::writeSteps( $this->steps, $this->progress, $this->_option, $step, $id );
-		ContributeHtml::stepTags( $this->_option, 'start', $id, $tags, '', $next_step, $tagfa, $fats );
-		echo '</div><!-- / .main section -->'.n;
+		$view = new JView( array('name'=>'steps','layout'=>'tags') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->step = $step;
+		$view->steps = $this->steps;
+		$view->tags = $tags;
+		$view->tagfa = $tagfa;
+		$view->fats = $fats;
+		$view->next_step = $next_step;
+		$view->database = $database;
+		$view->id = $id;
+		$view->progress = $this->progress;
+		$view->task = 'start';
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -542,27 +566,17 @@ class ContributeController extends JObject
 		$step = $this->step;
 		$next_step = $step+1;
 		
-		// Build the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::sprintf('STEP_NUMBER', $step).': '.JText::_('STEP_'.strtoupper($this->steps[$step]));
-		
-		// Write title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		
 		// Ensure we have an ID to work with
 		if (!$id) {
-			echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-			echo '<div class="main section">'.n;
-			echo ContributeHtml::error( JText::_('CONTRIBUTE_NO_ID') );
-			echo '</div><!-- / .main section -->'.n;
+			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
 		
 		// Push some needed styles to the tmeplate
-		$this->getStyles('com_resources');
+		$this->_getStyles('com_resources');
 		
 		// Get some needed libraries
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
@@ -583,14 +597,23 @@ class ContributeController extends JObject
 		}
 
 		// Output HTML
-		echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-		echo '<div class="main section">'.n;
-		ContributeHtml::writeSteps( $this->steps, $this->progress, $this->_option, $step, $id );
+		$view = new JView( array('name'=>'steps','layout'=>'review') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->step = $step;
+		$view->steps = $this->steps;
+		$view->usersgroups = $usersgroups;
+		$view->config = $this->config;
+		$view->resource = $resource;
+		$view->next_step = $next_step;
+		$view->database = $database;
+		$view->id = $id;
+		$view->progress = $this->progress;
+		$view->task = 'submit';
 		if ($this->getError()) {
-			echo ContributeHtml::error($this->getError());
+			$view->setError( $this->getError() );
 		}
-		ContributeHtml::stepReview( $database, $this->_option, $this->progress, 'submit', $id, $resource, $next_step, $this->config, $usersgroups );
-		echo '</div><!-- / .main section -->'.n;
+		$view->display();
 	}
 	
 	//-----------
@@ -628,8 +651,8 @@ class ContributeController extends JObject
 		// Initiate extended database class
 		$row = new ResourcesResource( $database );
 		if (!$row->bind( $_POST )) {
-			echo ContributeHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		$isNew = $row->id < 1;
 
@@ -648,14 +671,6 @@ class ContributeController extends JObject
 		$row->modified_by = $juser->get('id');
 
 		// Get custom areas, add wrapper tags, and compile into fulltext
-		/*$nbtag = $_POST['nbtag'];
-		$nbtag = array_map('trim',$nbtag);
-		foreach ($nbtag as $tagname=>$tagcontent)
-		{
-			if ($tagcontent != '') {
-				$row->fulltext .= '<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>';
-			}
-		}*/
 		$type = new ResourcesType( $database );
 		$type->load( $row->type );
 		
@@ -684,34 +699,34 @@ class ContributeController extends JObject
 		foreach ($nbtag as $tagname=>$tagcontent)
 		{
 			if ($tagcontent != '') {
-				$row->fulltext .= n.'<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>'.n;
+				$row->fulltext .= "\n".'<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>'."\n";
 			} else {
 				foreach ($fields as $f) 
 				{
 					if ($f[0] == $tagname && end($f) == 1) {
-						echo ContributeHtml::alert( JText::sprintf('CONTRIBUTE_REQUIRED_FIELD_CHECK', $f[1]) );
-						exit();
+						JError::raiseError( 500, JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $f[1]) );
+						return;
 					}
 				}
 			}
 		}
 
 		// Strip any scripting there may be
-		$row->fulltext   = $this->txt_clean($row->fulltext);
-		$row->fulltext   = $this->txt_autop($row->fulltext,1);
-		$row->footertext = $this->txt_clean($row->footertext);
-		$row->introtext  = $this->txt_shorten($row->fulltext);
+		$row->fulltext   = $this->_txtClean($row->fulltext);
+		$row->fulltext   = $this->_txtAutoP($row->fulltext,1);
+		$row->footertext = $this->_txtClean($row->footertext);
+		$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltext, 500, 0);
 
 		// Check content
 		if (!$row->check()) {
-			echo ContributeHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo ContributeHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Checkin the resource
@@ -763,14 +778,14 @@ class ContributeController extends JObject
 		
 		// Check content
 		if (!$row->check()) {
-			echo ContributeHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo ContributeHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 	}
 
@@ -803,22 +818,12 @@ class ContributeController extends JObject
 
 	protected function submit()
 	{
-		// Build the page title
-		$title = JText::_(strtoupper($this->_name)).': '.JText::_('SUBMIT');
-
-		// Write title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		
 		// Ensure we have an ID to work with
 		if (!$id) {
-			echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-			echo '<div class="main section">'.n;
-			echo ContributeHtml::error( JText::_('CONTRIBUTE_NO_ID') );
-			echo '</div><!-- / .main section -->'.n;
+			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
 	
@@ -836,7 +841,7 @@ class ContributeController extends JObject
 		// Check if a newly submitted resource was authorized to be published
 		$authorized = JRequest::getInt( 'authorization', 0 );
 		if (!$authorized && !$published) {
-			$this->setError( JText::_('CONTRIBUTION_NOT_AUTHORIZED') );
+			$this->setError( JText::_('COM_CONTRIBUTE_CONTRIBUTION_NOT_AUTHORIZED') );
 			$this->check_progress($id);
 			$this->step_review();
 			return;
@@ -871,7 +876,7 @@ class ContributeController extends JObject
 			$contributors = $helper->_contributors;
 
 			if (!$contributors || count($contributors) <= 0) {
-				$this->setError( JText::_('CONTRIBUTION_HAS_NO_AUTHORS') );
+				$this->setError( JText::_('COM_CONTRIBUTE_CONTRIBUTION_HAS_NO_AUTHORS') );
 				$this->check_progress($id);
 				$this->step_review();
 				return;
@@ -923,36 +928,42 @@ class ContributeController extends JObject
 			return;
 		}
 
-		$jconfig =& JFactory::getConfig();
+		/*$jconfig =& JFactory::getConfig();
 		
 		// E-mail "from" info
 		$from = array();
 		$from['email'] = $jconfig->getValue('config.mailfrom');
-		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('SUBMISSIONS');
+		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('COM_CONTRIBUTE_SUBMISSIONS');
 		
 		// E-mail subject
-		$subject = $jconfig->getValue('config.sitename').' '.JText::_('EMAIL_SUBJECT');
+		$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_CONTRIBUTE_EMAIL_SUBJECT');
 		
 		// E-mail message
-		$message  = JText::sprintf('EMAIL_MESSAGE', $jconfig->getValue('config.live_site'))."\r\n";
+		$message  = JText::sprintf('COM_CONTRIBUTE_EMAIL_MESSAGE', $jconfig->getValue('config.live_site'))."\r\n";
 		$message .= JRoute::_('index.php?option=com_resources&id='.$id);
 
 		// Send e-mail
+		ximport('xhubhelper');
 		foreach ($contributors as $contributor)
 		{
 			$juser = JUser::getInstance( $contributor->id );
 			if (is_object($juser)) {
 				if ($juser->get('email')) {
-					//$this->send_email($from, $email, $subject, $message);
+					XHubHelper::send_email($from, $email, $subject, $message);
 				}
 			}
-		}
+		}*/
 		
 		// Output HTML
-		echo ContributeHtml::div( ContributeHtml::hed(2, JText::_('SUBMIT')), 'full', 'content-header').n;
-		echo '<div class="main section">'.n;
-		ContributeHtml::thanks( $this->_option, $this->config, $resource );
-		echo '</div><!-- / .main section -->'.n;
+		$view = new JView( array('name'=>'thanks') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->config = $this->config;
+		$view->resource = $resource;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -991,19 +1002,19 @@ class ContributeController extends JObject
 				$row->load( $id );
 				$row->typetitle = $row->getTypeTitle(0);
 
-				// Build the page title
-				$title = JText::_(strtoupper($this->_name)).': '.JText::_('DELETE');
-
-				// Write title
-				$document =& JFactory::getDocument();
-				$document->setTitle( $title );
-
 				// Output HTML
-				echo ContributeHtml::div( ContributeHtml::hed(2, $title), 'full', 'content-header').n;
-				echo '<div class="main section">'.n;
-				ContributeHtml::writeSteps( $steps, $progress, $this->_option, 'discard', $id );
-				ContributeHtml::delete( $row, $this->_option );
-				echo '</div><!-- / .main section -->'.n;
+				$view = new JView( array('name'=>'delete') );
+				$view->option = $this->_option;
+				$view->title = $this->_title;
+				$view->step = 'discard';
+				$view->row = $row;
+				$view->steps = $steps;
+				$view->id = $id;
+				$view->progress = $progress;
+				if ($this->getError()) {
+					$view->setError( $this->getError() );
+				}
+				$view->display();
 			break;
 			
 			case 2:
@@ -1026,13 +1037,13 @@ class ContributeController extends JObject
 				if ($resource->published == 1) {
 					// It was, so we can only mark it as "deleted"
 					if (!$this->markRemovedContribution( $id )) {
-						echo ContributeHtml::error( $this->getError() );
+						JError::raiseError( 500, $this->getError() );
 						return;
 					}
 				} else {
 					// It wasn't. Attempt to delete the resource
 					if (!$this->deleteContribution( $id )) {
-						echo ContributeHtml::error( $this->getError() );
+						JError::raiseError( 500, $this->getError() );
 						return;
 					}
 				}
@@ -1051,7 +1062,7 @@ class ContributeController extends JObject
 		
 		// Make sure we have a record to pull
 		if (!$id) {
-			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			return false;
 		}
 		
@@ -1076,7 +1087,7 @@ class ContributeController extends JObject
 	{
 		// Make sure we have a record to pull
 		if (!$id) {
-			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			return false;
 		}
 		
@@ -1108,7 +1119,7 @@ class ContributeController extends JObject
 					$listdir = $child->path;
 				} else {
 					// No stored path, derive from created date		
-					$listdir = ContributeHtml::build_path( $child->created, $child->id, '' );
+					$listdir = $this->_buildPathFromDate( $child->created, $child->id, '' );
 				}
 
 				// Build the path
@@ -1116,11 +1127,11 @@ class ContributeController extends JObject
 
 				// Check if the folder even exists
 				if (!is_dir($path) or !$path) { 
-					$this->setError( JText::_('DIRECTORY_NOT_FOUND') ); 
+					$this->setError( JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND') ); 
 				} else {
 					// Attempt to delete the folder
 					if (!JFolder::delete($path)) {
-						$this->setError( JText::_('UNABLE_TO_DELETE_DIRECTORY') );
+						$this->setError( JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY') );
 					}
 				}
 
@@ -1137,7 +1148,7 @@ class ContributeController extends JObject
 			$listdir = $row->path;
 		} else {
 			// No stored path, derive from created date		
-			$listdir = ContributeHtml::build_path( $row->created, $id, '' );
+			$listdir = $this->_buildPathFromDate( $row->created, $id, '' );
 		}
 		
 		// Build the path
@@ -1145,11 +1156,11 @@ class ContributeController extends JObject
 
 		// Check if the folder even exists
 		if (!is_dir($path) or !$path) { 
-			$this->setError( JText::_('DIRECTORY_NOT_FOUND') ); 
+			$this->setError( JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND') ); 
 		} else {
 			// Attempt to delete the folder
 			if (!JFolder::delete($path)) {
-				$this->setError( JText::_('UNABLE_TO_DELETE_DIRECTORY') );
+				$this->setError( JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY') );
 			}
 		}
 		
@@ -1202,19 +1213,18 @@ class ContributeController extends JObject
 		if ($juser->get('guest')) {
 			return false;
 		}
-		$database =& JFactory::getDBO();
 
 		// Incoming
 		$pid = JRequest::getInt( 'pid', 0 );
 		if (!$pid) {
-			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			$this->attachments( $pid );
 		}
 
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 		if (!$file['name']) {
-			$this->setError( JText::_('CONTRIBUTE_NO_FILE') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_FILE') );
 			$this->attachments( $pid );
 			return;
 		}
@@ -1223,6 +1233,8 @@ class ContributeController extends JObject
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
+
+		$database =& JFactory::getDBO();
 
 		// Instantiate a new resource object
 		$row = new ResourcesResource( $database );
@@ -1258,14 +1270,14 @@ class ContributeController extends JObject
 		}
 		
 		// Build the path
-		$listdir = ContributeHtml::build_path( $row->created, $row->id, '' );
+		$listdir = $this->_buildPathFromDate( $row->created, $row->id, '' );
 		$path = $this->_buildUploadPath( $listdir, '' );
 
 		// Make sure the upload path exist
 		if (!is_dir( $path )) {
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create( $path, 0777 )) {
-				$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
+				$this->setError( JText::_('COM_CONTRIBUTE_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				$this->attachments( $pid );
 				return;
 			}
@@ -1273,7 +1285,7 @@ class ContributeController extends JObject
 
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
-			$this->setError( JText::_('ERROR_UPLOADING') );
+			$this->setError( JText::_('COM_CONTRIBUTE_ERROR_UPLOADING') );
 		} else {
 			// File was uploaded
 			
@@ -1291,7 +1303,7 @@ class ContributeController extends JObject
 				require_once( JPATH_ROOT.DS.'administrator'.DS.'includes'.DS.'pcl'.DS.'pclzip.lib.php' );
 		
 				if (!extension_loaded('zlib')) {
-					$this->setError( JText::_('ZLIB_PACKAGE_REQUIRED') );
+					$this->setError( JText::_('COM_CONTRIBUTE_ZLIB_PACKAGE_REQUIRED') );
 				} else {
 					// Check the table of contents and look for a Breeze viewer.swf file
 					$isbreeze = 0;
@@ -1329,7 +1341,7 @@ class ContributeController extends JObject
 						// unzip the file
 						$do = $zip->extract($path);
 						if (!$do) {
-							$this->setError( JText::_( 'UNABLE_TO_EXTRACT_PACKAGE' ) );
+							$this->setError( JText::_( 'COM_CONTRIBUTE_UNABLE_TO_EXTRACT_PACKAGE' ) );
 						} else {
 							$row->path = $listdir.DS.$isbreeze;
 
@@ -1397,14 +1409,14 @@ class ContributeController extends JObject
 		// Incoming parent ID
 		$pid = JRequest::getInt( 'pid', 0 );
 		if (!$pid) {
-			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			$this->attachments( $pid );
 		}
 		
 		// Incoming child ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
-			$this->setError( JText::_('CONTRIBUTE_NO_CHILD_ID') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_CHILD_ID') );
 			$this->attachments( $pid );
 		}
 		
@@ -1420,7 +1432,7 @@ class ContributeController extends JObject
 			$listdir = $row->path;
 		} else {
 			// No stored path, derive from created date		
-			$listdir = ContributeHtml::build_path( $row->created, $id, '' );
+			$listdir = $this->_buildPathFromDate( $row->created, $id, '' );
 		}
 		
 		// Build the path
@@ -1428,11 +1440,11 @@ class ContributeController extends JObject
 
 		// Check if the file even exists
 		if (!is_file($path) or !$path) { 
-			$this->setError( JText::_('FILE_NOT_FOUND') ); 
+			$this->setError( JText::_('COM_CONTRIBUTE_FILE_NOT_FOUND') ); 
 		} else {
 			// Attempt to delete the file
 			if (!JFile::delete($path)) {
-				$this->setError( JText::_('UNABLE_TO_DELETE_FILE') );
+				$this->setError( JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_FILE') );
 			}
 		}
 		
@@ -1449,7 +1461,7 @@ class ContributeController extends JObject
 			$g = array_pop($bits);
 			foreach ($bits as $bit) 
 			{
-				if ($bit == '/' || $bit == $year || $bit == $month || $bit == Contributehtml::niceidformat($id)) {
+				if ($bit == '/' || $bit == $year || $bit == $month || $bit == Hubzero_View_Helper_Html::niceidformat($id)) {
 					$b .= ($bit != '/') ? DS.$bit : '';
 				} else if ($bit != '/') {
 					$p[] = $bit;
@@ -1463,12 +1475,11 @@ class ContributeController extends JObject
 
 					// Check if the folder even exists
 					if (!is_dir($npath) or !$npath) { 
-						$this->setError( JText::_('DIRECTORY_NOT_FOUND') ); 
+						$this->setError( JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND') ); 
 					} else {
 						// Attempt to delete the folder
 						if (!JFolder::delete($npath)) {
-						//if (!$this->delete_dir($npath)) {
-							$this->setError( JText::_('UNABLE_TO_DELETE_DIRECTORY') );
+							$this->setError( JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY') );
 						}
 					}
 				}
@@ -1504,7 +1515,7 @@ class ContributeController extends JObject
 		
 		// Ensure we have an ID to work with
 		if (!$id) {
-			echo ContributeHtml::error( JText::_('CONTRIBUTE_NO_ID') );
+			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
 		
@@ -1514,13 +1525,17 @@ class ContributeController extends JObject
 		$helper = new ResourcesHelper( $id, $database );
 		$helper->getChildren();
 		
-		// Get the app
-		$app =& JFactory::getApplication();
-		
 		// Output HTML
-		ContributeHtml::pageTop( $this->_option, $app );
-		ContributeHtml::attachments( $this->_option, $id, '', $helper->children, $this->config, $this->getError() );
-		ContributeHtml::pageBottom();
+		$view = new JView( array('name'=>'steps','layout'=>'attachments') );
+		$view->option = $this->_option;
+		$view->config = $this->config;
+		$view->children = $helper->children;
+		$view->path = '';
+		$view->id = $id;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -1601,27 +1616,27 @@ class ContributeController extends JObject
 
 	protected function reorder_attach() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		$pid = JRequest::getInt( 'pid', 0 );
 
 		// Ensure we have an ID to work with
 		if (!$id) {
-			$this->setError( JText::_('CONTRIBUTE_NO_CHILD_ID') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_CHILD_ID') );
 			$this->attachments( $pid );
 			return;
 		}
 		
 		// Ensure we have a parent ID to work with
 		if (!$pid) {
-			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			$this->attachments( $pid );
 			return;
 		}
 
 		$move = substr($this->_task, 0, (strlen($this->_task) - 1));
+
+		$database =& JFactory::getDBO();
 
 		// Get the element moving down - item 1
 		$resource1 = new ResourcesAssoc( $database );
@@ -1669,7 +1684,7 @@ class ContributeController extends JObject
 		// Incoming resource ID
 		$id = JRequest::getInt( 'pid', 0 );
 		if (!$id) {
-			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			$this->authors( $id );
 			return;
 		}
@@ -1696,7 +1711,7 @@ class ContributeController extends JObject
 			// Check if they're already linked to this resource
 			$rc->loadAssociation( $authid, $id, 'resources' );
 			if ($rc->authorid) {
-				$this->setError( JText::sprintf('USER_IS_ALREADY_AUTHOR', $authid) );
+				$this->setError( JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $authid) );
 			} else {
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
 				//$juser =& JUser::getInstance( $authid );
@@ -1732,20 +1747,20 @@ class ContributeController extends JObject
 				// Find the user's account info
 				$uid = JUserHelper::getUserId($cid);
 				if (!$uid) {
-					$this->setError( JText::sprintf('UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
+					$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
 					continue;
 				}
 				
 				$juser =& JUser::getInstance( $uid );
 				if (!is_object($juser)) {
-					$this->setError( JText::sprintf('UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
+					$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
 					continue;
 				}
 
 				$uid = $juser->get('id');
 		
 				if (!$uid) {
-					$this->setError( JText::sprintf('UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
+					$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
 					continue;
 				}
 				
@@ -1753,7 +1768,7 @@ class ContributeController extends JObject
 				$rcc = new ResourcesContributor( $database );
 				$rcc->loadAssociation( $uid, $id, 'resources' );
 				if ($rcc->authorid) {
-					$this->setError( JText::sprintf('USER_IS_ALREADY_AUTHOR', $cid) );
+					$this->setError( JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid) );
 					continue;
 				}
 				
@@ -1806,7 +1821,7 @@ class ContributeController extends JObject
 		
 		// Ensure we have a resource ID ($pid) to work with
 		if (!$pid) {
-			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			$this->authors();
 			return;
 		}
@@ -1829,27 +1844,27 @@ class ContributeController extends JObject
 
 	protected function reorder_author() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		$pid = JRequest::getInt( 'pid', 0 );
 
 		// Ensure we have an ID to work with
 		if (!$id) {
-			$this->setError( JText::_('CONTRIBUTE_NO_CHILD_ID') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_CHILD_ID') );
 			$this->authors( $pid );
 			return;
 		}
 		
 		// Ensure we have a parent ID to work with
 		if (!$pid) {
-			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
 			$this->authors( $pid );
 			return;
 		}
 
 		$move = substr($this->_task, 0, (strlen($this->_task) - 1));
+
+		$database =& JFactory::getDBO();
 
 		// Get the element moving down - item 1
 		$author1 = new ResourcesContributor( $database );
@@ -1901,7 +1916,7 @@ class ContributeController extends JObject
 		
 		// Ensure we have an ID to work with
 		if (!$id) {
-			echo ContributeHtml::error( JText::_('No resource ID found') );
+			JError::raiseError( 500, JText::_('COM_CONTRIBUTE_NO_ID') );
 			return;
 		}
 		
@@ -1929,13 +1944,17 @@ class ContributeController extends JObject
 		// Get all members
 		$rows = $mp->getRecords( $filters, false );
 
-		// Get the app
-		$app =& JFactory::getApplication();
-	
 		// Output HTML
-		ContributeHtml::pageTop( $this->_option, $app );
-		ContributeHtml::contributors( $id, $rows, $helper->_contributors, $this->_option, $this->getError() );
-		ContributeHtml::pageBottom();
+		$view = new JView( array('name'=>'steps','layout'=>'authorslist') );
+		$view->option = $this->_option;
+		$view->config = $this->config;
+		$view->contributors = $helper->_contributors;
+		$view->rows = $rows;
+		$view->id = $id;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//----------------------------------------------------------
@@ -2019,80 +2038,19 @@ class ContributeController extends JObject
 	// Misc
 	//----------------------------------------------------------
 
-	private function send_email($from, $email, $subject, $message) 
-	{
-		if ($from) {
-		    	$xhub = &XFactory::getHub();
-			$contact_email = $from['email'];
-			$contact_name  = $from['name'];
-
-			$args = "-f '" . $contact_email . "'";
-			$headers  = "MIME-Version: 1.0\n";
-			$headers .= "Content-type: text/plain; charset=utf-8\n";
-			$headers .= 'From: ' . $contact_name .' <'. $contact_email . ">\n";
-			$headers .= 'Reply-To: ' . $contact_name .' <'. $contact_email . ">\n";
-			$headers .= "X-Priority: 3\n";
-			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: ' . $xhub->getCfg('hubShortName') . "\n";
-			if (mail($email, $subject, $message, $headers, $args)) {
-				return(1);
-			}
-		}
-		return(0);
-	}
-
-	//-----------
-
-	private function formSelect($name, $array, $value='', $class='')
-	{
-		$out  = '<select name="'.$name.'" id="'.$name.'"';
-		$out .= ($class) ? ' class="'.$class.'">'.n : '>'.n;
-		foreach ($array as $avalue => $alabel) 
-		{
-			$selected = ($avalue == $value || $alabel == $value)
-					  ? ' selected="selected"'
-					  : '';
-			$out .= t.' <option value="'.$avalue.'"'.$selected.'>'.$alabel.'</option>'.n;
-		}
-		$out .= '</select>'.n;
-		return $out;
-	}
-
-	//-----------
-
-	public function txt_shorten($text, $chars=500) 
-	{
-		$text = strip_tags($text);
-		$text = trim($text);
-		
-		if (strlen($text) > $chars) {
-			$text = $text.' ';
-			$text = substr($text,0,$chars);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' ...';
-		}
-
-		return $text;
-	}
-
-	//-----------
-
-	public function txt_clean( &$text ) 
+	private function _txtClean( &$text ) 
 	{
 		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
 		$text = preg_replace( '/{.+?}/', '', $text );
 		$text = preg_replace( "'<style[^>]*>.*?</style>'si", '', $text );
 		$text = preg_replace( "'<script[^>]*>.*?</script>'si", '', $text );
-		//$text = preg_replace( '/<a\s+.*?href="([^"]+)"[^>]*>([^<]+)<\/a>/is', '\2', $text );
 		$text = preg_replace( '/<!--.+?-->/', '', $text );
-		//$text = nl2br( $text );
-		//$text = str_replace( '<br>', '<br />', $text );
 		return $text;
 	}
 
 	//-----------
 
-	public function txt_autop($pee, $br = 1) 
+	private function _txtAutoP($pee, $br = 1) 
 	{
 		// converts paragraphs of text into xhtml
 		$pee = $pee . "\n"; // just to make things a little easier, pad the end
@@ -2118,7 +2076,7 @@ class ContributeController extends JObject
 
 	//-----------
 	
-	public function txt_unpee($pee)
+	public function _txtUnpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
 		$pee = str_replace('</p><p>', '', $pee);
@@ -2127,6 +2085,27 @@ class ContributeController extends JObject
 		$pee = str_replace('<br />', '', $pee);
 		$pee = trim($pee);
 		return $pee; 
+	}
+	
+	//-----------
+	
+	private function _buildPathFromDate( $date, $id, $base='' )
+	{
+		if ($date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs )) {
+			$date = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		}
+		if ($date) {
+			$dir_year  = date('Y', $date);
+			$dir_month = date('m', $date);
+		} else {
+			$dir_year  = date('Y');
+			$dir_month = date('m');
+		}
+		$dir_id = Hubzero_View_Helper_Html::niceidformat( $id );
+		
+		$path = $base.DS.$dir_year.DS.$dir_month.DS.$dir_id;
+	
+		return $path;
 	}
 }
 ?>

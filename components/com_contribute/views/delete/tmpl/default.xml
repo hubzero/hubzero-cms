@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Contribute Resources Layout">
+	<layout title="Standard Delete Contribution Layout">
 		<message>
-			<![CDATA[STANDARD CONTRIBUTE RESOURCES LAYOUT DESC]]>
+			<![CDATA[STANDARD DELETE CONTRIBUTION DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Contribute Resources Layout</name>
-		<description>STANDARD CONTRIBUTE RESOURCES LAYOUT DESC</description>
+		<name>Standard Delete Contribution Layout</name>
+		<description>STANDARD DELETE CONTRIBUTION DESC</description>
 		<params>
 		</params>
 	</state>

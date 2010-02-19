@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Contribute Resources Layout">
+	<layout title="Standard Contribute Step Default Layout">
 		<message>
-			<![CDATA[STANDARD CONTRIBUTE RESOURCES LAYOUT DESC]]>
+			<![CDATA[STANDARD CONTRIBUTE STEP DEFAULT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Contribute Resources Layout</name>
-		<description>STANDARD CONTRIBUTE RESOURCES LAYOUT DESC</description>
+		<name>Standard Contribute Step Default Layout</name>
+		<description>STANDARD CONTRIBUTE STEP DEFAULT DESC</description>
 		<params>
 		</params>
 	</state>
