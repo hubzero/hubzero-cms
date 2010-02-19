@@ -1174,60 +1174,6 @@ class Hubzero_Group
 		return true;
 	}
 
-	public function _ldap_get_groups($type = 'hub', $asGidNumbers = true)
-	{
-		$conn = & XFactory::getPLDC();
-		$xhub = &XFactory::getHub();
-		
-		if (!$conn || !$xhub)
-			return false;
-		
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-		
-		$ldap_base_dn = "ou=groups," . $hubLDAPBaseDN;
-		
-		if ($type == 'system' || $type == '0') /* system=true, or system and closed not set */
-           	$ldap_search_str = "(&(objectClass=posixGroup) (| (system=TRUE) (& (!(system=*)) (!(closed=*)) ) ))";
-		elseif ($type == 'hub' || $type == '1') /* system=false and closed=false or not set, or system not set and closed=false */
-           	$ldap_search_str = "(&(objectClass=posixGroup) (| (&(system=FALSE) (|(closed=FALSE) (!(closed=*)) ) ) (& (!(system=*))(closed=FALSE)) ))";
-		elseif ($type == 'project' || $type == '2') /* closed = true and system = false or not set */
-           	$ldap_search_str = "(&(objectClass=posixGroup)(closed=TRUE)(|(system=FALSE)(!(system=*))))";
-		elseif ($type == 'all') /* all groups */
-           	$ldap_search_str = "(&(objectClass=posixGroup)(gid=*))";
-		else /* same as hub by default */
-			$ldap_search_str = "(&(objectClass=posixGroup) (| (&(system=FALSE) (|(closed=FALSE) (!(closed=*)) ) ) (& (!(system=*))(closed=FALSE)) ))";
-		
-		$getgroups = array();
-		
-		$reqattr = array();
-		$reqattr[] = 'cn';
-		$reqattr[] = 'gidNumber';
-		$group = array();
-		
-		$groupentry = ldap_search($conn, $ldap_base_dn, $ldap_search_str, $reqattr, 0, 0, 0, 3);
-		
-		if (!$groupentry)
-			return false;
-		
-		$entry = ldap_first_entry($conn, $groupentry);
-		
-		while ($entry) {
-			$attr = ldap_get_attributes($conn, $entry);
-			
-			if ($asGidNumbers)
-				$list[] = (isset($attr[$reqattr[1]][0])) ? $attr[$reqattr[1]][0] : null;
-			else
-				$list[] = (isset($attr[$reqattr[0]][0])) ? $attr[$reqattr[0]][0] : null;
-			
-			$entry = ldap_next_entry($conn, $entry);
-		}
-		
-		if (empty($list))
-			return array();
-		
-		return $list;
-	}
-
 	static public function exists($group, $storage = 'mysql')
 	{
 		$db = &JFactory::getDBO();
@@ -1251,7 +1197,7 @@ class Hubzero_Group
 		return false;
 	}
 
-	function find($filters = array())
+	static function find($filters = array())
 	{
 		$db = &JFactory::getDBO();
 		

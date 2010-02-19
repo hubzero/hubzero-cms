@@ -711,6 +711,8 @@ class MembersController extends JObject
 
 	protected function group( $id=0 )
 	{
+		ximport('Hubzero_Group');
+		
 		// Get the app
 		$app =& JFactory::getApplication();
 		
@@ -725,12 +727,12 @@ class MembersController extends JObject
 		$filters['limit'] = 'all';
 		$filters['search'] = '';
 		$filters['limit'] = 'all';
-		$filters['fields'] = array('description','published','gidNumber','type');
+		$filters['fields'] = array('cn','description','published','gidNumber','type');
 		
 		ximport('xgroup');
 		
 		// Get a list of all groups
-		$rows = XGroupHelper::get_groups($filters['type'], false, $filters);
+		$rows = Hubzero_Group::find($filters);
 		
 		// Output HTML
 		MembersHtml::writeGroups( $app, $this->_option, $id, $rows, $this->getErrors() );

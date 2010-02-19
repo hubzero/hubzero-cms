@@ -252,6 +252,8 @@ class GroupsController extends JObject
 
 	protected function browse()
 	{
+		ximport('Hubzero_Group');
+		
 		// Check if they're logged in	
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
@@ -276,16 +278,16 @@ class GroupsController extends JObject
 		$filters['index']  = JRequest::getVar('index', '');
 		
 		// Get a record count
-		$total = XGroupHelper::get_groups($filters['type'], false, $filters);
+		$total = Hubzero_Group::find($filters);
 
 		// Filters for returning results
 		$filters['limit']  = JRequest::getInt('limit', 25);
 		$filters['limit']  = ($filters['limit']) ? $filters['limit'] : 'all';
 		$filters['start']  = JRequest::getInt('limitstart', 0);
-		$filters['fields'] = array('description','published','gidNumber','type','public_desc','join_policy');
+		$filters['fields'] = array('cn','description','published','gidNumber','type','public_desc','join_policy');
 
 		// Get a list of all groups
-		$groups = XGroupHelper::get_groups($filters['type'], false, $filters);
+		$groups = Hubzero_Group::find($filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');

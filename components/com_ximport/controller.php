@@ -436,31 +436,31 @@ class XImportController extends JObject
                 mysql_free_result( $result );
         }
 
+	function importgroup($group)
+	{
+        $xgroup = new XGroup();
+		$xgroup->_ldap_load($group);
+        $members    = $xgroup->_ldap_get_members('members',false);
+        $applicants = $xgroup->_ldap_get_members('applicants',false);
+        $managers   = $xgroup->_ldap_get_members('managers',false);
+        $xgroup->add('members', $members);
+        $xgroup->add('members', $managers);
+        $xgroup->add('applicants', $applicants);
+        $xgroup->add('managers', $managers);
+		$result = $xgroup->save();
+
+		if ($result === false)
+			echo "Error importing group " . $group . "<br>";
+		else
+			echo "Imported group " . $group . "<br>";
+	}
+        
 	function importgroups()
 	{
 		ximport('xgroup');
 		ximport('Hubzero_Group');
-
-		$list = Hubzero_Group::_ldap_get_groups('all');
-
-		foreach($list as $group)
-		{
-		        $xgroup = new XGroup();
-			$xgroup->_ldap_load($group);
-		        $members    = $xgroup->_ldap_get_members('members',false);
-		        $applicants = $xgroup->_ldap_get_members('applicants',false);
-		        $managers   = $xgroup->_ldap_get_members('managers',false);
-		        $xgroup->add('members', $members);
-		        $xgroup->add('members', $managers);
-		        $xgroup->add('applicants', $applicants);
-		        $xgroup->add('managers', $managers);
-			$result = $xgroup->save();
-
-			if ($result === false)
-				echo "Error importing group " . $group . "<br>";
-			else
-				echo "Imported group " . $group . "<br>";
-		}
+		
+		Hubzero_Group::iterate(array('XImportController','importgroup'),'ldap');
 	}
 
 	function showusers()
