@@ -77,12 +77,12 @@ class Job extends JTable
 	public function check() 
 	{
 		if (trim( $this->title ) == '') {
-			$this->setError( JText::_('The job posting must have a position title.') );
+			$this->setError( JText::_('ERROR_MISSING_JOB_TITLE') );
 			return false;
 		}
 		
 		if (trim( $this->companyName ) == '') {
-			$this->setError( JText::_('The job posting must have an employer name.') );
+			$this->setError( JText::_('ERROR_MISSING_EMPLOYER_NAME') );
 			return false;
 		}
 
@@ -90,7 +90,8 @@ class Job extends JTable
 	}
 	 //----------
 	 
-	 public function get_my_openings ($uid = NULL, $current = 0, $admin = 0, $active = 0) {
+	 public function get_my_openings ($uid = NULL, $current = 0, $admin = 0, $active = 0) 
+	 {
 	 	if ($uid === NULL) {
 			$juser =& JFactory::getUser();
 			$uid = $juser->get('id');
@@ -107,12 +108,12 @@ class Job extends JTable
 		$sql.= " ORDER BY j.status ASC";
 		
 		$this->_db->setQuery( $sql );
-		return $this->_db->loadObjectList();
-	 
+		return $this->_db->loadObjectList();	 
 	 }
 	 //----------
 	 
-	 public function countMyActiveOpenings ($uid = NULL, $onlypublished = 0, $admin = 0) {
+	 public function countMyActiveOpenings ($uid = NULL, $onlypublished = 0, $admin = 0) 
+	 {
 	 	if ($uid === NULL) {
 			$juser =& JFactory::getUser();
 			$uid = $juser->get('id');
@@ -128,15 +129,13 @@ class Job extends JTable
 		$sql.= $admin ? "\n AND j.employerid=1 " : "\n AND j.employerid='$uid' ";
 		
 		$this->_db->setQuery( $sql );
-		return $this->_db->loadResult();
-	 
+		return $this->_db->loadResult();	 
 	 }
-	 
-	 
+	 	 
 	 //----------
 	 
-	 public function get_openings ($filters, $uid = 0, $admin = 0) {
-	
+	 public function get_openings ($filters, $uid = 0, $admin = 0, $subscription = '') 
+	 {	
 		$defaultsort = isset($filters['defaultsort']) && $filters['defaultsort'] == 'type' ? 'type' : 'category';
 		$category = isset($filters['category']) ? $filters['category'] : 'all';
 		$now = date( 'Y-m-d H:i:s', time() );
@@ -167,8 +166,7 @@ class Job extends JTable
 									break;
 				default: 			$sort .= $defaultsort=='type' ? 'j.type ASC, j.status ASC, j.opendate DESC' : 'c.ordernum ASC, j.status ASC, j.opendate DESC ';
 									break; 
-		}
-		
+		}		
 	
 		$sql = "SELECT DISTINCT j.id, j.*, c.category AS categoryname, c.category IS NULL AS isnull, j.type=0 as typenull, ";
 		$sql.= $admin ? "s.expires IS NULL AS inactive,  " : ' NULL AS inactive, ';
@@ -215,8 +213,7 @@ class Job extends JTable
 			}
 			else {
 				$sql .= "\n , (SELECT 0 ) AS keywords ";
-			}			
-			
+			}						
 		}
 		else {
 			$sql.= "\n , (SELECT 0 ) AS keywords ";
@@ -234,16 +231,10 @@ class Job extends JTable
 		if($category!='all') {
 		$sql.= "\n AND j.cid='".$category."'";
 		}
-		
-		
-		// list  filtering
-		switch ($filters['filterby']) 
-			{
-											
-				default: 			$sql .= ' AND 1=1';
-									break; 
+		if($subscription) {
+		$sql.= "\n AND s.code='".$subscription."'";
 		}
-		
+	
 		$sql.= " ORDER BY ". $sort;
 		
 		if(isset ($filters['limit']) && $filters['limit']!=0) {
@@ -253,11 +244,25 @@ class Job extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	 }
-	 
+	 //--------
+	
+	function loadJob( $code=NULL )
+	{		
+		if ($code === NULL) {
+			return false;
+		}
+
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE code='$code' LIMIT 1" );
+		if($result = $this->_db->loadAssoc()) {
+			return $this->bind( $result );
+		} else {
+		 return false;
+		}
+	}			 
 	  //----------
 	 
-	 public function delete_opening ($jid) {
-	 	
+	 public function delete_opening ($jid) 
+	 {	
 		if ($jid === NULL) {
 			$jid == $this->id;
 		}
@@ -271,15 +276,14 @@ class Job extends JTable
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
-		return true;
-	 
+		return true;	 
 	 }
 	 
 	 //----------
 	 
-	 public function get_opening ($jid, $uid = 0, $admin = 0) {
-	 	
-		if ($jid === NULL) {
+	 public function get_opening ($jid = 0, $uid = 0, $admin = 0, $jobcode = '') 
+	 {	
+		if ($jid === NULL && $jobcode == '') {
 			return false;
 		}
 		
@@ -306,9 +310,6 @@ class Job extends JTable
 		}
 		$sql.= "\n (SELECT t.category FROM #__jobs_types AS t WHERE t.id=j.type) AS typename ";		
 		$sql.= "\n FROM #__jobs_openings AS j";
-		//$sql.= "\n JOIN #__jobs_categories AS c ON c.id=j.cid ";
-		
-		// make sure the employer profile is active
 		$sql .= $admin ? "\n LEFT JOIN #__jobs_employers AS e ON e.uid=j.employerid " : "\n JOIN #__jobs_employers AS e ON e.uid=j.employerid ";
 		$sql .= "LEFT JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
 		$sql .= "AND s.status=1 AND s.expires > '".$now."' WHERE ";
@@ -317,23 +318,23 @@ class Job extends JTable
 		$sql .= " j.status != 2 ";
 		}
 		else if($uid) {
-		$sql.= "\n  (j.status=1 OR (j.status != 1 AND j.status!=2 AND j.employerid = '$uid')) ";
+		$sql .= "\n  (j.status=1 OR (j.status != 1 AND j.status!=2 AND j.employerid = '$uid')) ";
 		}
 		else {
 		$sql .= " j.status = 1 ";
 		}
-		
+		if($jid) {
 		$sql.= "\n AND j.id='$jid'";
+		}
+		else if($jobcode) {
+		$sql.= "\n AND j.code='$jobcode'";
+		}
 		
 		$this->_db->setQuery( $sql );
-		$result = $this->_db->loadObjectList();
-		
-		$result = $result ? $result[0] : NULL;
-		
-		return $result;		
-	 	
-	 }
-	
+		$result = $this->_db->loadObjectList();		
+		$result = $result ? $result[0] : NULL;		
+		return $result;			 	
+	 }	
 }
 //----------------------------------------------------------
 // Job Admin class
@@ -363,8 +364,7 @@ class Employer extends JTable
 		 return false;
 		}
 		
-		$now = date( 'Y-m-d H:i:s', time() );
-			
+		$now = date( 'Y-m-d H:i:s', time() );			
 		$query  = "SELECT e.id ";
 		$query .= "FROM #__jobs_employers AS e  ";
 		if(!$admin) {
@@ -381,15 +381,13 @@ class Employer extends JTable
 		}
 		else {
 			return false;
-		}
-		
+		}		
 	}
 		
 	//--------
 	
 	function loadEmployer( $uid=NULL )
-	{
-		
+	{		
 		if ($uid === NULL) {
 			return false;
 		}
@@ -400,9 +398,35 @@ class Employer extends JTable
 		} else {
 		 return false;
 		}
-	}
+	}	
+	//--------
 	
-		
+	function getEmployer( $uid = NULL, $subscriptioncode = NULL )
+	{		
+		if ($uid === NULL or $subscriptioncode === NULL) {
+			return false;
+		}
+		$query  = "SELECT * ";
+		$query .= "FROM #__jobs_employers AS e  ";
+		if($subscriptioncode == 'admin') {
+			$query .= "WHERE e.uid = 1";
+		}
+		else if($subscriptioncode) {
+			$query .= "JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
+			$query .= "WHERE s.code='$subscriptioncode'";
+		}
+		else if($uid) {
+			$query .= "WHERE e.uid = '".$uid."'";
+		}
+		$this->_db->setQuery( $query);
+		$result = $this->_db->loadObjectList();
+		if($result) {
+			return $result[0];
+		}
+		else {
+			return false;
+		}
+	}					
 }
 
 //----------------------------------------------------------
@@ -442,8 +466,7 @@ class JobCategory extends JTable
 			}
 		}
 		
-		return $cats;
-		
+		return $cats;		
 	}
 	
 	//-----------
@@ -461,8 +484,7 @@ class JobCategory extends JTable
 		$query  = "SELECT category ";
 		$query .= "FROM #__jobs_categories WHERE id='".$id."'  ";
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();
-		
+		return $this->_db->loadResult();		
 	}
 	
 	//-----------
@@ -479,13 +501,9 @@ class JobCategory extends JTable
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
-		return true;
-		
-	}
-		
-		
+		return true;		
+	}		
 }
-
 
 //----------------------------------------------------------
 // Job Category class
@@ -518,8 +536,7 @@ class JobType extends JTable
 			}
 		}
 		
-		return $types;
-		
+		return $types;		
 	}
 	
 	//-----------
@@ -537,11 +554,8 @@ class JobType extends JTable
 		$query  = "SELECT category ";
 		$query .= "FROM #__jobs_types WHERE id='".$id."'  ";
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();
-		
-	}
-		
-		
+		return $this->_db->loadResult();		
+	}		
 }
 
 //----------------------------------------------------------
@@ -577,8 +591,7 @@ class JobAdmin extends JTable
 		}
 		else {
 			return false;
-		}
-		
+		}		
 	}
 	
 	//-----------
@@ -602,11 +615,8 @@ class JobAdmin extends JTable
 			}
 		}
 		
-		return $admins;
-		
+		return $admins;		
 	}
-	
-
 }
 
 //----------------------------------------------------------
@@ -633,8 +643,8 @@ class JobApplication extends JTable
 	
 	//----------
 	 
-	public function getApplications ($jobid) {
-	 	
+	public function getApplications ($jobid) 
+	{	 	
 		if ($jobid === NULL) {
 			return false;
 		}
@@ -645,28 +655,29 @@ class JobApplication extends JTable
 		$sql.= " ORDER BY a.applied DESC";
 		
 		$this->_db->setQuery( $sql );
-		return $this->_db->loadObjectList();
-	 
+		return $this->_db->loadObjectList();	 
 	}
 	
 	//--------
 	
-	function loadApplication ( $uid = NULL, $job = NULL )
-	{
-		
-		if ($uid === NULL or $job === NULL) {
+	function loadApplication ( $uid = NULL, $jid = NULL, $jobcode = NULL )
+	{		
+		if ($uid === NULL or ($jid === NULL && $jobcode === NULL)) {
 			return false;
 		}
-
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE uid='$uid' AND jid='$job' LIMIT 1" );
+		
+		$query  = "SELECT * FROM $this->_tbl as A ";
+		$query .= $jid ? "" : " JOIN #__jobs_openings as J ON J.id=A.jid ";
+		$query .= " WHERE A.uid='$uid' ";
+		$query .=  $jid ? "AND A.jid='$jid' " : "AND J.code='$jobcode' ";
+		$query .= " LIMIT 1";
+		$this->_db->setQuery( $query );
 		if($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
 		} else {
 		 return false;
 		}
-	}
-	
-	
+	}	
 }
 
 //----------------------------------------------------------
@@ -693,12 +704,12 @@ class Resume extends JTable
 	public function check() 
 	{
 		if (intval( $this->uid ) == 0) {
-			$this->setError( JText::_('Missing a valid user id.') );
+			$this->setError( JText::_('ERROR_MISSING_UID') );
 			return false;
 		}
 		
 		if (trim( $this->filename ) == '') {
-			$this->setError( JText::_('Missing file name.') );
+			$this->setError( JText::_('ERROR_MISSING_FILENAME') );
 			return false;
 		}
 
@@ -741,7 +752,6 @@ class Resume extends JTable
 		if ($id === NULL) {
 			return false;
 		}
-
 		
 		$query  = "DELETE FROM $this->_tbl WHERE id=".$id;		
 		$this->_db->setQuery( $query );
@@ -749,8 +759,7 @@ class Resume extends JTable
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
-		return true;
-	 
+		return true;	 
 	 }
 	 
 	 //----------
@@ -776,10 +785,8 @@ class Resume extends JTable
 		 }
 		 
 		 $files = array_unique($files);
-		 return $files;
-			 
-	 }
-	
+		 return $files;			 
+	 }	
 }
 //----------------------------------------------------------
 // Prefs class
@@ -801,7 +808,6 @@ class Prefs extends JTable
 	
 	function loadPrefs ( $uid, $category = 'resume' )
 	{
-
 		if ($uid === NULL) {
 			return false;
 		}
@@ -814,8 +820,6 @@ class Prefs extends JTable
 		 return false;
 		}
 	}
-	
-
 }
 
 //----------------------------------------------------------
@@ -842,12 +846,12 @@ class Shortlist extends JTable
 	public function check() 
 	{
 		if (intval( $this->emp) == 0) {
-			$this->setError( JText::_('Missing a valid user id for employer.') );
+			$this->setError( JText::_('ERROR_MISSING_EMPLOYER_ID') );
 			return false;
 		}
 		
 		if (trim( $this->seeker ) == 0) {
-			$this->setError( JText::_('Missing a valid user id for job seeker.') );
+			$this->setError( JText::_('ERROR_MISSING_JOB_SEEKER_ID') );
 			return false;
 		}
 
@@ -857,7 +861,6 @@ class Shortlist extends JTable
 	
 	function loadEntry ( $emp, $seeker, $category = 'resume' )
 	{
-
 		if ($emp === NULL or $seeker === NULL) {
 			return false;
 		}
@@ -869,9 +872,7 @@ class Shortlist extends JTable
 		} else {
 		 return false;
 		}
-	}
-	
-	
+	}	
 }
 
 //----------------------------------------------------------
@@ -893,8 +894,7 @@ class JobStats extends JTable
 	{
 		parent::__construct( '#__jobs_stats', 'id', $db );
 	}
-	
-	
+		
 	//-----------
 	
 	public function check() 
@@ -916,7 +916,6 @@ class JobStats extends JTable
 	
 	function loadStat ( $itemid = NULL, $category = NULL, $type = "viewed")
 	{
-
 		if ($itemid === NULL or $category === NULL) {
 			return false;
 		}
@@ -978,8 +977,7 @@ class JobStats extends JTable
 			$stats['shortlisted'] = $row->countShortlistedBy($itemid);
 		}
 		
-		return $stats;
-	
+		return $stats;	
 	}
 	
 	//--------------
@@ -1010,8 +1008,7 @@ class JobStats extends JTable
 		}
 		else {
 		$query .= " 1=1 ";
-		}	
-		
+		}			
 		$query .= "GROUP BY itemid, category ";		
 		$query .= "ORDER BY times DESC ";
 		$query .= "LIMIT 1";
@@ -1020,8 +1017,7 @@ class JobStats extends JTable
 		$result =  $this->_db->loadResult();
 		
 		$result = $result ? $result : 0;
-		return $result;
-		
+		return $result;		
 	}
 	
 	//--------------
@@ -1070,10 +1066,8 @@ class JobStats extends JTable
 			else {
 				// clean-up views older than 30 days
 				$this->cleanup();
-			}
-			
-		}		
-	
+			}			
+		}			
 	}
 	
 	//--------------
@@ -1094,11 +1088,7 @@ class JobStats extends JTable
 		}
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE itemid ='$itemid' AND category ='$category'");
 		$this->_db->query();
-	}
-	
-	
-	
-	
+	}	
 }
 
 //----------------------------------------------------------
@@ -1129,7 +1119,7 @@ class JobSeeker extends JTable
 	public function check() 
 	{
 		if (intval( $this->uid ) == 0) {
-			$this->setError( JText::_('Missing a valid user id.') );
+			$this->setError( JText::_('ERROR_MISSING_UID') );
 			return false;
 		}
 
@@ -1169,11 +1159,9 @@ class JobSeeker extends JTable
 		}
 		
 		$this->_db->setQuery( "SELECT COUNT(*) FROM #__jobs_shortlist AS W WHERE W.seeker=".$uid."" );
-		return $this->_db->loadResult();
-		
+		return $this->_db->loadResult();		
 	}
-	
-	
+		
 	//--------
 	
 	function countSeekers( $filters, $uid=0, $excludeme = 0, $admin = 0)
@@ -1191,15 +1179,13 @@ class JobSeeker extends JTable
 		}
 		
 		$array = array_unique($array);
-		return count($array);
-		
+		return count($array);		
 	}
 	
 	//--------
 	
 	function getSeekers( $filters, $uid=0, $excludeme = 0, $admin = 0, $count = 0)
-	{
-		
+	{		
 		$query  = "SELECT DISTINCT x.name, x.countryresident, r.title, r.filename, r.created, ";
 		$query .= "s.uid, s.lookingfor, s.tagline, s.sought_cid, s.sought_type, s.updated, s.linkedin, s.url ";
 		$empid = $admin ? 1 : $uid;
@@ -1303,11 +1289,8 @@ class JobSeeker extends JTable
 				}
 			}
 			$seekers = array_values($seekers);
-		}
-		
-		
-		return $seekers;
-	
+		}		
+		return $seekers;	
 	}
 	//--------
 	
@@ -1330,12 +1313,7 @@ class JobSeeker extends JTable
 		$query .= "WHERE s.active=1 AND r.main=1 AND s.uid='".$uid."' LIMIT 1";
 		
 		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
-	
-	}
-	
-	
+		return $this->_db->loadObjectList();	
+	}	
 }
-
-
 ?>

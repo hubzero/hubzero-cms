@@ -86,36 +86,7 @@ class JobsController extends JObject
 			return $this->_data[$property];
 		}
 	}
-	//-----------
 
-	public function getStyles($option='', $css='')
-	{
-		ximport('xdocument');
-		if ($option) {
-			XDocument::addComponentStylesheet($option, $css);
-		} else {
-			XDocument::addComponentStylesheet($this->_option);
-		}
-
-	}
-	//-----------
-	
-	public function getScripts($option='',$name='')
-	{
-		$document =& JFactory::getDocument();
-		
-		if ($option) {
-			$name = ($name) ? $name : $option;
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$option.DS.$name.'.js')) {
-				$document->addScript('components'.DS.$option.DS.$name.'.js');
-			}
-		} else {
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-			}
-		}
-	}
-	
 	//-----------
 
 	public function getTask()
@@ -132,34 +103,39 @@ class JobsController extends JObject
 	//-----------
 	
 	public function execute()
-	{
-			
-		// Get the component parameters
-		$config = new JobsConfig( $this->_option );
+	{			
+		// Load the component config
+		$component =& JComponentHelper::getComponent( $this->_option );
+		if (!trim($component->params)) {
+			return $this->abort();
+		} else {
+			$config =& JComponentHelper::getParams( $this->_option );
+		}
 		$this->config = $config;
 		
-		// are we using banking functions?
-		$xhub =& XFactory::getHub();
-		$banking = $xhub->getCfg('hubBankAccounts');
-		$this->banking = ($banking && isset($this->config->parameters['banking']) && $this->config->parameters['banking']==1 ) ? 1: 0 ;
-		
-		if ($banking) {
-			ximport( 'bankaccount' );
+		if (!$this->config->get('component_enabled')) {
+			// Redirect to home page
+			$this->_redirect = '/';
+			return;
 		}
 		
-		$this->industry = isset($this->config->parameters['industry']) ? $this->config->parameters['industry'] : '';
-		$this->allowsubscriptions = isset($this->config->parameters['allowsubscriptions']) ? $this->config->parameters['allowsubscriptions'] : 1;
+		$this->_banking 			= $this->config->get('banking') ? $this->config->get('banking') : 0;
+		$this->_industry 			= $this->config->get('industry') ? $this->config->get('industry') : '';
+		$this->_allowsubscriptions 	= $this->config->get('allowsubscriptions') ? $this->config->get('allowsubscriptions') : 1;
 		
 		// Get admin priviliges
 		JobsController::authorize_admin();
 		
 		// Get employer priviliges
-		if($this->allowsubscriptions) {
+		if($this->_allowsubscriptions) {
 			JobsController::authorize_employer();	
 		}
 		else {
 			$this->_emp = 0;
-		}		
+		}
+		
+		// Set component administrator priviliges
+		$this->_masteradmin  = $this->_admin && !$this->_emp ? 1 : 0;		
 			
 		switch( $this->getTask() ) 
 		{
@@ -185,17 +161,15 @@ class JobsController extends JObject
 			case 'editjob':     	$this->editjob();    	break;			
 			case 'shortlist':  		$this->shortlist();    	break;
 			case 'dashboard':  		$this->dashboard();    	break;
+			case 'batch':  			$this->batch();    		break;
 			
 			// subscription management
 			case 'subscribe':  		$this->subscribe();    	break;
 			case 'confirm':  		$this->confirm();    	break;
 			case 'cancel':  		$this->cancel();    	break;
 			
-			// batch resume download
-			case 'batch':  			$this->batch();    		break;
-						
 			// Should only be called via AJAX
-			case 'plugin':     $this->plugin();     break;
+			case 'plugin':     		$this->plugin();     break;
 
 			default: $this->view(); break;
 		}
@@ -210,34 +184,138 @@ class JobsController extends JObject
 			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
 		}
 	}
+	//----------------------------------------------------------
+	// Private functions
+	//----------------------------------------------------------
+
+	public function _getStyles($option='', $css='')
+	{
+		ximport('xdocument');
+		if ($option) {
+			XDocument::addComponentStylesheet($option, $css);
+		} else {
+			XDocument::addComponentStylesheet($this->_option);
+		}
+
+	}
+	//-----------
+	
+	public function _getScripts($option='',$name='')
+	{
+		$document =& JFactory::getDocument();
+		
+		if ($option) {
+			$name = ($name) ? $name : $option;
+			if (is_file(JPATH_ROOT.DS.'components'.DS.$option.DS.$name.'.js')) {
+				$document->addScript('components'.DS.$option.DS.$name.'.js');
+			}
+		} else {
+			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
+			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
+			}
+		}
+	}
+	
+	//------------
+	
+	public function _buildTitle()
+	{
+		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title.= $this->_industry ? ' '.JText::_('IN').' '.$this->_industry : '';
+		if($this->_subtitle) {
+			$this->_title .= ': '.$this->_subtitle;
+		}
+		else if ($this->_task && $this->_task != 'all' && $this->_task != 'view') {
+			$this->_title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+		}
+		$document =& JFactory::getDocument();
+		$document->setTitle( $this->_title );
+	}
+	//-----------
+	
+	private function _buildPathway() 
+	{
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		
+		$comtitle = JText::_(strtoupper($this->_option));
+		$comtitle.= $this->_industry ? ' '.JText::_('IN').' '.$this->_industry : '';
+		
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(
+				$comtitle,
+				'index.php?option='.$this->_option
+			);
+		}
+		if ($this->_task) {
+			switch ($this->_task) 
+			{
+				case 'browse':
+					$pathway->addItem( 
+						JText::_(strtoupper($this->_option).'_BROWSE'), 
+						'index.php?option='.$this->_option.a.'task=browse' 
+					);
+				break;
+				case 'all':
+					if(!$this->_allowsubscriptions) {
+					$pathway->addItem( 
+						JText::_(strtoupper($this->_option).'_BROWSE'), 
+						'index.php?option='.$this->_option.a.'task=browse' 
+					);
+					}
+				break;
+				case 'view':
+				case 'cancel':
+				case 'saveapp':
+				case 'savejob':
+				case 'confirmjob':
+				case 'reopen':
+				case 'remove':
+				case 'confirm':
+				case 'withdraw':
+					// nothing
+				break;
+				case 'apply':
+					$pathway->addItem( $this->_jobtitle, 'index.php?option='.$this->_option.a.'task=job'.a.'code='.$this->_jobcode  );
+					$pathway->addItem( JText::_(strtoupper($this->_option).'_APPLY'),
+					 'index.php?option='.$this->_option.a.'task=apply'.a.'code='.$this->_jobcode  );
+				break;
+				case 'editapp':
+					$pathway->addItem( $this->_jobtitle, 'index.php?option='.$this->_option.a.'task=job'.a.'code='.$this->_jobcode  );
+					$pathway->addItem( JText::_(strtoupper($this->_option).'_EDITAPP'),
+					 'index.php?option='.$this->_option.a.'task=apply'.a.'code='.$this->_jobcode  );
+				break;
+				case 'job':
+					$pathway->addItem( $this->_jobtitle, 'index.php?option='.$this->_option.a.'task=job'.a.'code='.$this->_jobcode  );
+				break;
+				case 'editjob':
+					$pathway->addItem( $this->_jobtitle, 'index.php?option='.$this->_option.a.'task=job'.a.'code='.$this->_jobcode  );
+					$pathway->addItem( JText::_(strtoupper($this->_option).'_EDITJOB'),
+					 'index.php?option='.$this->_option.a.'task=editjob'.a.'code='.$this->_jobcode );
+				break;
+				default:
+					$pathway->addItem(
+						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+						'index.php?option='.$this->_option.'&task='.$this->_task
+					);
+				break;
+			}
+		}
+	}
 	
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 
-	public function login($msg='', $plugin=0) 
+	public function login() 
 	{
-		if(!$plugin) {		
-			// Set the page title
-			$title = $this->startTitle();
-			$document =& JFactory::getDocument();
-			$document->setTitle( $title.' - '.JText::_('LOGIN') );
-			
-			$japp =& JFactory::getApplication();
-			$pathway =& $japp->getPathway();
-			
-			$pathway->addItem( $title, 'index.php?option='.$this->_option );
-			$pathway->addItem( JText::_('LOGIN'), 'index.php?option='.$this->_option.a.'task='.$this->_task );		
+		$view = new JView( array('name'=>'login') );
+		$view->title = $this->_title;
+		$view->msg   = $this->_msg;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-			
-		echo JobsHtml::div( JobsHtml::hed( 2, $title.': '.JText::_('LOGIN') ), 'full', 'content-header' );
-		echo '<div class="main section">'.n;
-		if ($msg) {
-			echo JobsHtml::warning( $msg );
-		}
-		ximport('xmodule');
-		XModuleHelper::displayModules('force_mod');
-		echo '</div><!-- / .main section -->'.n;	
+		$view->display();
 	}
 	
 	//-----------
@@ -250,7 +328,7 @@ class JobsController extends JObject
 		
 		// Ensure we have a trigger
 		if (!$trigger) {
-			echo JobsHtml::error( JText::_('RESOURCES_NO_TRIGGER_FOUND') );
+			echo Hubzero_View_Helper_Html::error( JText::_('ERROR_NO_TRIGGER_FOUND') );
 			return;
 		}
 		
@@ -272,6 +350,7 @@ class JobsController extends JObject
 
 	public function shortlist()
 	{
+		// Shortlisted user
 		$oid  = JRequest::getInt( 'oid', 0 );
 		
 		// Get Members plugins
@@ -283,30 +362,44 @@ class JobsController extends JObject
 		
 		// Go back to the page
 		$referer = JRequest::getVar( 'HTTP_REFERER', NULL, 'server' ); // What page they came from
-		$this->_redirect = $referer;
-	
+		$this->_redirect = $referer;	
 	}
 
-	
 	//-----------------------------
 	// Introductory page/ Jobs list
 	//-----------------------------
 
 	public function view()
 	{
-
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+				
 		$database =& JFactory::getDBO();
 		$juser 	  =& JFactory::getUser();
+		
+		// Do we need to list only jobs from a specified employer?
+		$subscriptioncode = JRequest::getVar( 'employer', '' );
+		$employer = new Employer ( $database );
+		$thisemployer = $subscriptioncode ? $employer->getEmployer(0, $subscriptioncode) : '';
 		
 		// get action
 		$action  = JRequest::getVar( 'action', '' );
 		if($action == 'login' && $juser->get('guest')) {
-			$msg = JText::_('Please login to view extra options');
-			$this->login($msg);
+			$this->_msg = JText::_('MSG_PLEASE_LOGIN_OPTIONS');
+			$this->login();
 			return;
 		}
 		
-		if(!$juser->get('guest') && ($this->_task == 'browse' or !$this->allowsubscriptions )) {	
+		if(!$juser->get('guest') && ($this->_task == 'browse' or !$this->_allowsubscriptions )) {	
 			// save incoming prefs
 			$this->updatePrefs($database, $juser, 'job');
 				
@@ -315,211 +408,54 @@ class JobsController extends JObject
 		}
 		
 		// Get filters
-		$filters = JobsController::getFilters($this->_admin, 0 , 1 , 1);
+		$filters = $this->getFilters($this->_admin, 0 , 1 , 1);
 		
 		// Get data
 		$obj = new Job( $database );
-		$filters['sortby'] = $this->_task != 'browse' ? 'opendate' : $filters['sortby'] ;
-		$filters['limit'] = $this->_task != 'browse' ? 10 : $filters['limit'] ;
-		$jobs = ($this->_task != 'browse' && $this->allowsubscriptions) ? $obj->get_openings ($filters, $juser->get('id'), 0) : $obj->get_openings ($filters, $juser->get('id'), $this->_admin);
+		
+		// Get jobs
+		$adminoptions = ($this->_task != 'browse' && $this->_allowsubscriptions)  ? 0 : $this->_admin;
+		$jobs = $obj->get_openings ($filters, $juser->get('id'), $adminoptions, $subscriptioncode);
 		
 		// Initiate paging 
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( count($jobs), $filters['start'], $filters['limit'] );
-				
-		// Add the CSS to the template
-		JobsController::getStyles();
-		
-		// Set the page title
-		$title = $this->startTitle();
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		jimport( 'joomla.application.component.view');
-		
-		// Set breadcrumbs
-		$japp =& JFactory::getApplication();
-		$pathway =& $japp->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( $title, 'index.php?option='.$this->_option );
-		}
-		if($this->_task == 'browse' or !$this->allowsubscriptions) {
-			$pathway->addItem( JText::_('Browse'), 'index.php?option='.$this->_option.a.'task=browse'  );
-		}
+		$pageNav = new JPagination( count($jobs), $filters['start'], $filters['limit'] );			
 		
 		// Output HTML
-		$view = ($this->_task == 'browse' or !$this->allowsubscriptions) ? new JView( array('name'=>'jobs') ) : new JView( array('name'=>'intro') );
-		$view->title = $title;
-		$view->config = $this->config;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
+		if($this->_task != 'browse' && $this->_allowsubscriptions) {
+			// Component introduction
+			$view = new JView( array('name'=>'intro') );
+			$view->title = $this->_title;
+			$view->config = $this->config;
+			$view->option = $this->_option;
+			$view->emp = $this->_emp;
+			$view->guest = $juser->get('guest');
+			$view->admin = $this->_admin;
+			$view->masteradmin = $this->_masteradmin;
+			$view->pageNav = $pageNav;
+			$view->allowsubscriptions = $this->_allowsubscriptions;
+			$view->msg = $this->_msg;
+			$view->display();
 		}
+		// Jobs list
+		$view = new JView( array('name'=>'jobs') );
+		$view->title = $this->_title;
+		$view->config = $this->config;
 		$view->option = $this->_option;
 		$view->emp = $this->_emp;
+		$view->guest = $juser->get('guest');
 		$view->admin = $this->_admin;
+		$view->masteradmin = $this->_masteradmin;
 		$view->pageNav = $pageNav;
-		$view->allowsubscriptions = $this->allowsubscriptions;
-		
-		if($this->_task == 'browse' or !$this->allowsubscriptions) {
-			$view->jobs = $jobs;
-			$view->mini = 0;
-			$view->database = $database;
-			$view->filters = $filters;
-			$view->display();
-			return;
-		}
-		
-		// Output intro	
-		$view->msg = '';
-		$view->display();
-		
-		// show recent jobs
-		$view = new JView( array('name'=>'jobs') );
-		$view->config = $this->config;
+		$view->allowsubscriptions = $this->_allowsubscriptions;
 		$view->jobs = $jobs;
-		$view->mini = 1;
-		$view->admin = $this->_admin;
+		$view->mini = ($this->_task == 'browse' or !$this->_allowsubscriptions) ? 0 : 1;
 		$view->database = $database;
 		$view->filters = $filters;
-		$view->emp = $this->_emp;
-		$view->option = $this->_option;
-		$view->allowsubscriptions = $this->allowsubscriptions;
-		$view->display();					
-	}
-	
-	//-----------------------------
-	// Batch resume download
-	//-----------------------------
-
-	public function batch()
-	{
-		$database =& JFactory::getDBO();
-		$juser 	  =& JFactory::getUser();
-		
-		// Login required
-		if ($juser->get('guest')) {
-			if($this->allowsubscriptions) { $this->intro_employer(); }
-			else {	$this->login();	}
-			return;
-		}
-		
-		// Check authorization
-		if(!$this->_admin && !$this->_emp ) {
-			if($this->allowsubscriptions) { $this->intro_employer(); }
-			else {	$this->subscribe();	}
-			return;
-		}
-		
-		// Incoming
-		$pile 	= JRequest::getVar( 'pile', 'all' );
-		
-		$archive = $this->archiveResumes ($pile);
-		
-		if($archive) {
-			// Initiate a new content server and serve up the file
-			ximport('xserver');
-			jimport('joomla.filesystem.file');
-			$xserver = new XContentServer();
-			$xserver->filename($archive['path']);
-			
-			$xserver->disposition('attachment');
-			$xserver->acceptranges(false); // @TODO fix byte range support
-			$xserver->saveas(JText::_('Resume Batch'));
-			$result = $xserver->serve_attachment($archive['path'], $archive['name'], false); // @TODO fix byte range support
-			
-			// Delete downloaded zip			
-			JFile::delete($archive['path']);		
-		
-			if (!$result)
-            	JError::raiseError( 404, JText::_('SERVER_ERROR') );
-			else
-				exit;
-		}	
-		else {
-			$this->_msg = JobsHtml::error(JText::_('Sorry, this didn\'t work -:( Please try again.'));
-			$this->dashboard();
-		}
-	
-	}
-	
-	//-----------------------------
-	// Create resume archive
-	//-----------------------------
-
-	private function archiveResumes($pile = 'all')
-	{
-
-		$database =& JFactory::getDBO();
-		$juser 	  =& JFactory::getUser();
-		
-		// Get available resume files
-		$resume = new Resume ($database);
-		$admin  = $this->_admin && !$this->_emp ? 1 : 0;
-		$files 	= $resume->getResumeFiles($pile, $juser->get('id'), $admin);
-		$batch  = array();
-		
-		if(count($files) > 0) {
-			require_once( JPATH_ROOT.DS.'administrator'.DS.'includes'.DS.'pcl'.DS.'pclzip.lib.php' );
-			if (!extension_loaded('zlib')) {
-				echo JobsHtml::alert( JText::_('Operation failed. Missing required PHP library.') );
-				exit();
-			}
-			
-			// Get Members plugins
-			JPluginHelper::importPlugin( 'members', 'resume' );
-			$dispatcher =& JDispatcher::getInstance();
-			
-			$pile .= $pile != 'all' ? '_'.$juser->get('id') : '';
-			$zipname = JText::_('Resumes').'_'.$pile.'.zip';
-			
-			$mconfig =& JComponentHelper::getParams( 'com_members' );
-			$base_path = $mconfig->get('webpath');
-			
-			if ($base_path) {
-				// Make sure the path doesn't end with a slash
-				if (substr($base_path, -1) == DS) { 
-					$base_path = substr($base_path, 0, strlen($base_path) - 1);
-				}
-				// Ensure the path starts with a slash
-				if (substr($base_path, 0, 1) != DS) { 
-					$base_path = DS.$base_path;
-				}
-			}
-			
-			$archive = new PclZip(JPATH_ROOT.$base_path.DS.$zipname);
-			$rfiles  = '';
-			$i = 0;
-			
-			// Go through file names and get full paths
-			foreach($files as $avalue => $alabel) {
-				$i++;
-				$apath =  $dispatcher->trigger( 'build_path', array($avalue) );
-				$path  = is_array($apath) ? $apath[0] : '';		
-				$file = $path ? JPATH_ROOT.$path.DS.$alabel : '';
-				$rfiles .= $file;
-				$rfiles .= $i == count($files) ? '' : ',';
-			}
-			
-			  $v_list = $archive->create($rfiles,
-                             PCLZIP_OPT_REMOVE_ALL_PATH);
-			  if ($v_list == 0) {
-				echo JobsHtml::alert("Error : ".$archive->errorInfo(true));
-				exit();
-			  }
-			  else {
-			  	$archive = array();
-				$archive['path'] = JPATH_ROOT.$base_path.DS.$zipname;
-				$archive['name'] = $zipname;		  
-			  	return $archive;
-			  } 
-		
-		}
-		return false;
-		/*else {
-			echo JobsHtml::alert( JText::_('Could not locate any resume files for batch download') );
-			exit();
-		}*/
-		
+		$view->subscriptioncode = $subscriptioncode;
+		$view->thisemployer = $thisemployer;
+		$view->display();
+		return;				
 	}
 	
 	//-----------------------------
@@ -528,34 +464,29 @@ class JobsController extends JObject
 
 	public function resumes()
 	{
-
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		
 		$database =& JFactory::getDBO();
 		$juser 	  =& JFactory::getUser();
 		
 		// Login required
 		if ($juser->get('guest')) {
-			if($this->allowsubscriptions) { $this->intro_employer(); }
+			if($this->_allowsubscriptions) { $this->intro_employer(); }
 			else {	$this->login();	}
 			return;
 		}
-		
-		// Set the page title
-		$title = $this->startTitle();		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title.': '.JText::_('Browse Resumes') );
-				
-		// Add the CSS to the template
-		JobsController::getStyles();
-		JobsController::getScripts();	
 					
 		if($this->_admin or $this->_emp ) {
+			// Set page title
+			$this->_buildTitle();
 		
-			$japp =& JFactory::getApplication();
-			$pathway =& $japp->getPathway();
-			
-			$pathway->addItem( $title, 'index.php?option='.$this->_option );
-			$pathway->addItem( JText::_('Browse Resumes'), 'index.php?option='.$this->_option.a.'task='.$this->_task );			
-				
+			// Set the pathway
+			$this->_buildPathway();	
+					
 			// save incoming prefs
 			$this->updatePrefs($database, $juser);
 			
@@ -568,72 +499,66 @@ class JobsController extends JObject
 			// get job types
 			$jt = new JobType ( $database );		
 			$types = $jt->getTypes();
-			$types[0] = JText::_('Any type');
+			$types[0] = JText::_('TYPE_ANY');
 				
 			// get job categories
 			$jc = new JobCategory ( $database );
 			$cats = $jc->getCats();
-			$cats[0] = JText::_('Any category');
+			$cats[0] = JText::_('CATEGORY_ANY');
 	
 			// get users with resumes
 			$js = new JobSeeker ( $database );
-			$admin = $this->_admin && !$this->_emp ? 1 : 0;
-			$seekers = $js->getSeekers ($filters, $juser->get('id'), 0, $admin );
-		
-			$total = $js->countSeekers ($filters, $juser->get('id'), 0, $admin);
+			$seekers = $js->getSeekers ($filters, $juser->get('id'), 0, $this->_masteradmin );		
+			$total   = $js->countSeekers ($filters, $juser->get('id'), 0, $this->_masteradmin);
 			
 			// Initiate paging 
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
 						
-			// display list of users with resumes
-			jimport( 'joomla.application.component.view');
-			
-			$view 			= new JView( array('name'=>'resumes') );
-			$view->config 	= $this->config;
-			$view->admin 	= $this->_admin;			
-			$view->title 	= $title.': '.JText::_('Browse Resumes');
-			$view->seekers 	= $seekers;
-			$view->pageNav 	= $pageNav;
-			$view->cats 	= $cats;
-			$view->types 	= $types;		
-			$view->filters 	= $filters;
-			$view->emp 		= $this->_emp;
-			$view->option 	= $this->_option;
-			$view->display();		
-			
+			// Output HTML
+			$view 				= new JView( array('name'=>'resumes') );
+			$view->config 		= $this->config;
+			$view->admin 		= $this->_admin;
+			$view->masteradmin 	= $this->_masteradmin;			
+			$view->title 		= $this->_title;
+			$view->seekers 		= $seekers;
+			$view->pageNav 		= $pageNav;
+			$view->cats 		= $cats;
+			$view->types 		= $types;		
+			$view->filters 		= $filters;
+			$view->emp 			= $this->_emp;
+			$view->option 		= $this->_option;
+			$view->display();					
 		}
-		else if($this->allowsubscriptions) {
-			// have to subscribe first
+		else if($this->_allowsubscriptions) {
 			
+			// need to subscribe first
 			$employer = new Employer ( $database );
 			if ($employer->loadEmployer($juser->get('id'))) {
-				ximport( 'subscriptions' );
+				
 				//do we have a pending subscription?
 				$subscription = new Subscription($database);
 				if($subscription->loadSubscription ($employer->subscriptionid, $juser->get('id'), '', $status=array(0))) {
-					$this->_msg = JobsHtml::warning(JText::_('Your subscription is pending approval. Access to Employer Services will be granted once the subscription is approved.'));
+					$this->_msg_warning = JText::_('WARNING_SUBSCRIPTION_PENDING');
 					$this->dashboard();
 					return;
 				}
 			}
-			
-		
+					
 			// send to subscription page
-			$this->subscribe();
-		
+			$this->_task = 'newsubscribe';
+			$this->subscribe();		
 		}	
 		else {
 			$this->view();
 		}			
-		
 	}
 	
 	//-----------------------------
-	// Subscription cancellation
+	// Subscription form
 	//-----------------------------
 	
-	protected function cancel() 
+	protected function subscribe() 
 	{
 		$database =& JFactory::getDBO();
 		$juser 	  =& JFactory::getUser();
@@ -644,9 +569,9 @@ class JobsController extends JObject
 			return;
 		}
 		
-		$uid 	= JRequest::getInt( 'uid', $juser->get('id') );	
+		// are we viewing other person's subscription? (admins only)
+		$uid = JRequest::getInt( 'uid', 0 );		
 		
-		// non-admins can only cancel their own subscription	
 		if($uid && $juser->get('id') != $uid && !$this->_admin) {
 			// not authorized
 			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
@@ -654,84 +579,76 @@ class JobsController extends JObject
 		}
 		$uid = $uid ? $uid : $juser->get('id');
 		
-		ximport( 'subscriptions' );
+		// Set page title
+		$this->_buildTitle();
+
+		// Set the pathway
+		$this->_buildPathway();
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		
+		// Get the member's info
+		$profile = new XProfile();
+		$profile->load( $uid );
 		
 		// load Employer
 		$employer = new Employer ( $database );
 		if (!$employer->loadEmployer($uid)) {
-			JError::raiseError( 404, JText::_('Employer profile not found. ') );
-			return;
+			$employer 					= new Employer ( $database );
+			$employer->uid 				= $uid;
+			$employer->subscriptionid 	= 0;
+			$employer->companyName 		= $profile->get('organization');
+			$employer->companyLocation 	= $profile->get('countryresident');
+			$employer->companyWebsite 	= $profile->get('url');
 		}
-		
-		// load subscription to cancel
+										
+		// do we have an active subscription already?
 		$subscription = new Subscription($database);
-		if(!$subscription->load ($employer->subscriptionid)) {
-			JError::raiseError( 404, JText::_('Subscription not found. ') );
-			return;
+		if(!$subscription->loadSubscription ($employer->subscriptionid, '', '', $status=array( 0, 1))) {
+			$subscription = new Subscription($database);
+			$subscription->uid = $uid;
+			$subscription->serviceid = 0;
+		}		
+		
+		// get subscription options
+		$objS = new Service($database);
+		$specialgroup = $this->config->get('specialgroup')  ? $this->config->get('specialgroup') : '';	
+		$services = $objS->getServices('jobs', 1, 1, 'ordering', 'ASC', $specialgroup);
+		
+		if(!$services) {
+			// setup with default info
+			$this->setupServices();
 		}
 		
-		// get service
-		$service = new Service($database);
+		// check available user funds (if paying with points)
+		$BTL 		= new BankTeller( $database, $subscription->uid);
+		$balance 	= $BTL->summary();			
+		$credit  	= $BTL->credit_summary();
+		$funds   	= $balance;			
+		$funds   	= ($funds > 0) ? $funds : '0';
 		
-		if(!$service->loadService ('', $subscription->serviceid)) {
-			JError::raiseError( 404, JText::_('Service not found. ') );
-			return;
+		// Output HTML
+		$view = new JView( array('name'=>'subscribe') );
+		$view->title = $this->_title;
+		$view->config = $this->config;
+		$view->subscription = $subscription;
+		$view->allowsubscriptions = $this->_allowsubscriptions;
+		$view->employer = $employer;
+		$view->services = $services;
+		$view->funds = $funds;
+		$view->uid = $uid;
+		$view->emp = $this->_emp;
+		$view->admin = $this->_admin;
+		$view->task = $this->_task;
+		$view->option = $this->_option;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-		
-		$refund 	  = 0;
-		$unitsleft 	  = $subscription->getRemaining('unit', $subscription, $service->maxunits, $service->unitsize);
-		
-		// get cost per unit (to compute required refund)	
-		$refund = ($subscription->totalpaid > 0 && $unitsleft > 0 && ($subscription->totalpaid - $unitsleft * $unitcost) > 0 ) ? $unitsleft * $prevunitcost : 0;
-					
-		// cancel previous subscription & issue a refund if applicable
-		if($subscription->cancelSubscription($employer->subscriptionid, $refund, $unitsleft)) {
-		
-			// Get filters
-			$filters = JobsController::getFilters($this->_admin);
-		
-			// Get data
-			$obj = new Job( $database );
-			$jobs = $obj->get_openings ($filters, $juser->get('id'), $this->_admin);
-		
-			// Add the CSS to the template
-			JobsController::getStyles();
-		
-			// Set the page title
-			$title = $this->startTitle();
-			$document =& JFactory::getDocument();
-			$document->setTitle( $title );
-		
-			// Set breadcrumbs
-			$japp =& JFactory::getApplication();
-			$pathway =& $japp->getPathway();
-			if (count($pathway->getPathWay()) <= 0) {
-				$pathway->addItem( $title, 'index.php?option='.$this->_option );
-			}
-		
-			jimport( 'joomla.application.component.view');
-		
-			// Output HTML
-			$view = new JView( array('name'=>'intro') );
-			$view->title = $title;
-			$view->config = $this->config;
-			$view->jobs = $jobs;
-			$view->emp = 0;
-			$view->admin = $this->_admin;
-			$view->allowsubscriptions = $this->allowsubscriptions;
-			$view->msg = JText::_('Your subscription has been successfully cancelled.');
-			$view->option = $this->_option;
-			if ($this->getError()) {
-				$view->setError( $this->getError() );
-			}
-			$view->display();
-			
-			return;
-		}
-		
-		$this->view();
-					
-		
+		$view->display();	
 	}
 	
 	//-----------------------------
@@ -757,10 +674,7 @@ class JobsController extends JObject
 		}
 		$uid = $uid ? $uid : $juser->get('id');
 		
-		ximport( 'subscriptions' );
-		
 		// Get the member's info
-		ximport('xprofile');
 		$profile = new XProfile();
 		$profile->load( $uid );
 		
@@ -778,9 +692,9 @@ class JobsController extends JObject
 		
 		$subid = $employer->subscriptionid ? $employer->subscriptionid : $subid;
 		
-		$employer->companyName = JRequest::getVar( 'companyName', $profile->get('organization') );
-		$employer->companyLocation = JRequest::getVar( 'companyLocation', $profile->get('countryresident') );
-		$employer->companyWebsite =  JRequest::getVar( 'companyWebsite', $profile->get('url') );		
+		$employer->companyName 		= JRequest::getVar( 'companyName', $profile->get('organization') );
+		$employer->companyLocation 	= JRequest::getVar( 'companyLocation', $profile->get('countryresident') );
+		$employer->companyWebsite 	=  JRequest::getVar( 'companyWebsite', $profile->get('url') );		
 	
 		// do we have a subscription already?
 		$subscription = new Subscription($database);
@@ -793,16 +707,16 @@ class JobsController extends JObject
 		$service = new Service($database);
 		
 		if(!$serviceid or !$service->loadService ('', $serviceid)) {
-			echo JobsHtml::alert( JText::_('Cannot proceed without selection of subscription service') );
-			exit();
+			JError::raiseError( 500, JText::_('ERROR_SUBSCRIPTION_CHOOSE_SERVICE') );
+			return;
 		}
 			
-		$units 	= JRequest::getInt( 'units_'.$serviceid, 0 );
-		$contact = JRequest::getVar( 'contact', '' );
-		$total 	= $service->unitprice * $units;
-		$now = date( 'Y-m-d H:i:s', time() );
-		$new = 0;
-		$credit = 0;
+		$units 		= JRequest::getInt( 'units_'.$serviceid, 0 );
+		$contact 	= JRequest::getVar( 'contact', '' );
+		$total 		= $service->unitprice * $units;
+		$now 		= date( 'Y-m-d H:i:s', time() );
+		$new 		= 0;
+		$credit 	= 0;
 		
 		// we got an order
 		if ($units) {
@@ -812,8 +726,8 @@ class JobsController extends JObject
 			
 			if($total && !$contact) {
 				// need contact info with payment
-				echo JobsHtml::alert( JText::_('Cannot proceed without a valid contact phone number.') );
-				exit();
+				JError::raiseError( 500, JText::_('ERROR_SUBSCRIPTION_NO_PHONE') );
+				return;
 			}
 			
 			$newunitcost  = $service->unitprice;
@@ -845,13 +759,11 @@ class JobsController extends JObject
 					
 					// enroll in new service
 					$subscription = new Subscription($database);
-					$new = 1;
-					
+					$new = 1;					
 				}
 				
 				// extending?
-				else if($subscription->expires > $now) {
-					
+				else if($subscription->expires > $now) {				
 					$subscription->status = $autoapprove && !$total ? 1 : $subscription->status;
 					$subscription->status = $subscription->status == 2 ? 1 : $subscription->status;										
 					$subscription->units = $autoapprove && !$total ? $subscription->units + $units : $subscription->units;
@@ -865,8 +777,7 @@ class JobsController extends JObject
 					// expired - treat like new
 					$new = 1;
 					$subscription->updated = $now;				
-				}
-					
+				}					
 			}
 			else {
 				// this is a new subscription
@@ -885,8 +796,7 @@ class JobsController extends JObject
 				$subscription->pendingpayment = $subscription->pendingpayment < 0 ? 0 : $subscription->pendingpayment;
 				$subscription->expires = $autoapprove && !$total ? $newexprire : NULL;				
 		}
-		
-			
+					
 		// save subscription information
 		if($units or $contact != $subscription->contact or !$subid or $serviceid != $subscription->serviceid ) {
 			$subscription->contact = $contact;
@@ -896,47 +806,42 @@ class JobsController extends JObject
 			if(!$subscription->id) {
 				// get unique code
 				$subscription->code = $subscription->generateCode();
-			}
-			
+			}			
 			if (!$subscription->check()) {
-				echo JobsHtml::alert( $subscription->getError() );
-				exit();
+				JError::raiseError( 500, $subscription->getError() );
+				return;
 			}
 			if (!$subscription->store()) {
-				echo JobsHtml::alert( $subscription->getError() );
-				exit();
+				JError::raiseError( 500, $subscription->getError() );
+				return;
 			}
 			if (!$subscription->id) {
 				$subscription->checkin();
-			}
-	
+			}	
 		}
 		
 		// save employer information		
 		$employer->subscriptionid = $subscription->id;
 		if (!$employer->store()) {
-			echo JobsHtml::alert( $employer->getError() );
-			exit();
+			JError::raiseError( 500, $employer->getError() );
+			return;
 		}
 		
-		$msg = $subid ? JText::_('Your subscription has been processed.') : JText::_('Your subscription has been accepted. Thank you!');
+		$this->_msg = $subid ? JText::_('MSG_SUBSCRIPTION_PROCESSED') : JText::_('MSG_SUBSCRIPTION_ACCEPTED');
 		if($units) {
-			$msg .= $autoapprove && !$total ? ' '.JText::_('You have access to employer services for the next').' '.$subscription->units.' '.JText::_('month(s)') : ' '.JText::_('We will contact you soon regarding activation of your subscription request.');
-			$this->_msg = $msg;
+			$this->_msg .= $autoapprove && !$total 
+					? ' '.JText::_('MSG_SUBSCRIPTION_YOU_HAVE_ACCESS').' '.$subscription->units.' '.JText::_('MONTHS') 
+					: ' '.JText::_('MSG_SUBSCRIPTION_WE_WILL_CONTACT');
 		}
 		
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=dashboard'.a.'msg='.$this->_msg);
-		return;
-		//$this->dashboard();
-		//return;
-		
+		return;		
 	}	
-	
 	//-----------------------------
-	// Dashboard
+	// Subscription cancellation
 	//-----------------------------
 	
-	protected function dashboard() 
+	protected function cancel() 
 	{
 		$database =& JFactory::getDBO();
 		$juser 	  =& JFactory::getUser();
@@ -947,9 +852,71 @@ class JobsController extends JObject
 			return;
 		}
 		
+		$uid 	= JRequest::getInt( 'uid', $juser->get('id') );	
+		
+		// non-admins can only cancel their own subscription	
+		if($uid && $juser->get('id') != $uid && !$this->_admin) {
+			// not authorized
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return;
+		}
+		$uid = $uid ? $uid : $juser->get('id');
+		
+		// load Employer
+		$employer = new Employer ( $database );
+		if (!$employer->loadEmployer($uid)) {
+			JError::raiseError( 404, JText::_('ERROR_EMPLOYER_NOT_FOUND') );
+			return;
+		}
+		
+		// load subscription to cancel
+		$subscription = new Subscription($database);
+		if(!$subscription->load ($employer->subscriptionid)) {
+			JError::raiseError( 404, JText::_('ERROR_SUBSCRIPTION_NOT_FOUND') );
+			return;
+		}
+		
+		// get service
+		$service = new Service($database);		
+		if(!$service->loadService ('', $subscription->serviceid)) {
+			JError::raiseError( 404, JText::_('ERROR_SERVICE_NOT_FOUND') );
+			return;
+		}
+		
+		$refund 	  = 0;
+		$unitsleft 	  = $subscription->getRemaining('unit', $subscription, $service->maxunits, $service->unitsize);
+		
+		// get cost per unit (to compute required refund)	
+		$refund = ($subscription->totalpaid > 0 && $unitsleft > 0 && ($subscription->totalpaid - $unitsleft * $unitcost) > 0 ) ? $unitsleft * $prevunitcost : 0;
+					
+		// cancel previous subscription & issue a refund if applicable
+		if($subscription->cancelSubscription($employer->subscriptionid, $refund, $unitsleft)) {
+		
+			$this->_msg 	= JText::_('MSG_SUBSCRIPTION_CANCELLED');
+			$this->view();		
+			
+			return;
+		}		
+		$this->view();		
+	}
+	
+	//-----------------------------
+	// Dashboard
+	//-----------------------------
+	
+	protected function dashboard() 
+	{	
+		$database =& JFactory::getDBO();
+		$juser 	  =& JFactory::getUser();
+		
+		// Login required
+		if ($juser->get('guest')) {
+			$this->intro_employer();
+			return;
+		}
+		
 		// Incoming message
-		$msg = $this->_msg ? $this->_msg : JRequest::getVar( 'msg', '' );		
-		$msg = !$this->_msg  && $msg ? JobsHtml::passed($msg) : $msg;
+		$this->_msg_passed = $this->_msg_passed ? $this->_msg_passed : JRequest::getVar( 'msg', '' );		
 		
 		$uid 	= JRequest::getInt( 'uid', $juser->get('id') );		
 		if($uid && $juser->get('id') != $uid && !$this->_admin) {
@@ -966,17 +933,15 @@ class JobsController extends JObject
 		}
 		
 		// Get the member's info
-		ximport('xprofile');
 		$profile = new XProfile();
 		$profile->load( $uid );
-					
-		ximport( 'subscriptions' );
-		
+
 		// load Employer
 		$employer = new Employer ( $database );
 		
 		if (!$employer->loadEmployer($uid) && !$this->_admin) {
 			// send to subscription page
+			$this->_task = 'newsubscribe';
 			$this->subscribe();
 			return;
 		}	
@@ -984,7 +949,7 @@ class JobsController extends JObject
 			$employer->id = 1;
 		}
 		else if(!isset($employer->id)) {
-			JError::raiseError( 404, JText::_('Employer information not found.') );
+			JError::raiseError( 404, JText::_('ERROR_EMPLOYER_NOT_FOUND') );
 			return;
 		}
 		
@@ -992,6 +957,7 @@ class JobsController extends JObject
 		$subscription = new Subscription($database);
 		if(!$subscription->load ($employer->subscriptionid) && !$this->_admin) {
 			// send to subscription page
+			$this->_task = 'newsubscribe';
 			$this->subscribe();
 			return;
 		}
@@ -999,7 +965,7 @@ class JobsController extends JObject
 		$service = new Service($database);
 		
 		if(!$service->loadService ('', $subscription->serviceid) && !$this->_admin) {
-			JError::raiseError( 404, JText::_('Subscription service not found.') );
+			JError::raiseError( 404, JText::_('ERROR_SERVICE_NOT_FOUND') );
 			return;
 		}
 		else {
@@ -1012,157 +978,1009 @@ class JobsController extends JObject
 		$stats = $jobstats->getStats($uid, 'employer', $admin);
 		
 		// Get job postings
-		$job = new Job ( $database );
-		$myjobs = $job->get_my_openings($uid, 0, $admin);
+		$job 		= new Job ( $database );
+		$myjobs 	= $job->get_my_openings($uid, 0, $admin);
 		$activejobs = $job->countMyActiveOpenings ($uid, 1, $admin);
 		
-		// Set the page title
-		$title = $this->startTitle();
-		$subtitle = JText::_('Employer Dashboard');
+		// Push some styles to the template
+		$this->_getStyles();
 		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title.': '.$subtitle );
+		// Push some scripts to the template
+		$this->_getScripts();
 		
-		$japp =& JFactory::getApplication();
-		$pathway =& $japp->getPathway();
+		// Set page title
+		$this->_buildTitle();
 		
-		$pathway->addItem( $title, 'index.php?option='.$this->_option );
-		$pathway->addItem( $subtitle, 'index.php?option='.$this->_option.a.'task=dashboard' );
-		
-		// Add the CSS to the template
-		JobsController::getStyles();
-		JobsController::getScripts();
-		
-		jimport( 'joomla.application.component.view');
-		
+		// Set the pathway
+		$this->_buildPathway();
+				
 		// Output HTML
 		$view =  new JView( array('name'=>'dashboard') );
-		$view->title = $title.': '.$subtitle;
+		$view->title = $this->_title;
 		$view->config = $this->config;
+		$view->admin = $this->_admin;
+		$view->masteradmin = $this->_masteradmin;
+		$view->emp = 1;
+		$view->task = $this->_task;
+		$view->option = $this->_option;
 		$view->updated = 0;
-		$view->msg = $msg;
+		$view->msg_passed = $this->_msg_passed;
+		$view->msg_warning = $this->_msg_warning;
 		$view->myjobs = $myjobs;
 		$view->activejobs = $activejobs;
 		$view->subscription = $subscription;
-		$view->employer = $employer;
-		$view->admin = $this->_admin;
+		$view->employer = $employer;		
 		$view->service = $service;
 		$view->login = $profile->get('username');
 		$view->uid = $uid;
 		$view->stats = $stats;
-		$view->emp = 1;
-		$view->task = $this->_task;
-		$view->option = $this->_option;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
 		$view->display();
 		
 	}
-	//-----------------------------
-	// Subscription form
-	//-----------------------------
+
+	//----------------------------------------------------------
+	// Intro screen for employers before they login
+	//----------------------------------------------------------
 	
-	protected function subscribe() 
+	protected function intro_employer() 
+	{
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+				
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Output HTML
+		$view = new JView( array('name'=>'introemp') );
+		$view->title = $this->_title;
+		$view->config = $this->config;
+		$view->task = $this->_task;
+		$view->option = $this->_option;
+		$view->banking = $this->_banking;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+			
+		return;			
+	}
+		
+	//----------------------------------------------------------
+	// Link to Add Resume (goes to profile "Resume" tab)
+	//----------------------------------------------------------
+	
+	public function addresume()
+	{
+		$juser    =& JFactory::getUser();
+		
+		// Login required
+		if ($juser->get('guest')) {
+			$this->_msg = JText::_('MSG_LOGIN_RESUME');
+			$this->login();
+		}
+		else {
+			$this->_redirect = JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=resume');
+			return;
+		}	
+	}
+	
+	//----------------------------------------------------------
+	// Apply to a job
+	//----------------------------------------------------------
+	
+	public function apply()
+	{		
+		$database =& JFactory::getDBO();
+		$juser    =& JFactory::getUser();
+		
+		// Incoming
+		$code 	= JRequest::getVar( 'code', '' );
+		
+		// Login required
+		if ($juser->get('guest')) {
+			$this->_msg = JText::_('MSG_LOGIN_APPLY');
+			$this->login();
+			return;
+		}
+		
+		$ja = new JobApplication ( $database );
+		
+		// if application already exists, load it to edit
+		if($ja->loadApplication ($juser->get('id'), 0, $code) && $ja->status != 2) {
+			$this->_task = 'editapp';
+		}
+		
+		if($this->_task != 'editapp') {
+			$ja->cover = '';
+		}
+		
+		// Set page title
+		$this->_buildTitle();
+				
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		$job = new Job ( $database );
+		if(!$job->loadJob($code)) {
+			// Set the pathway
+			$app =& JFactory::getApplication();
+			$pathway =& $app->getPathway();
+			if (count($pathway->getPathWay()) <= 0) {
+				$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+			}
+			
+			// Error view
+			$this->setError( JText::_('ERROR_JOB_INACTIVE') );
+			$view = new JView( array('name'=>'error') );
+			$view->title = JText::_(strtoupper($this->_name));
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
+			return;
+		}
+		
+		// Set the pathway
+		$this->_jobcode = $job->code;
+		$this->_jobtitle = $job->title;
+		$this->_buildPathway();
+		
+		$js = new JobSeeker ( $database );
+		$seeker = $js->getSeeker($juser->get('id'), $juser->get('id'));
+		$seeker = count($seeker) > 0 ? $seeker[0] : NULL;
+		
+		// Output HTML
+		$view = new JView( array('name'=>'apply') );
+		$view->title = $this->_title;
+		$view->config = $this->config;
+		$view->emp = $this->_emp;
+		$view->job = $job;
+		$view->seeker = $seeker;
+		$view->admin = $this->_admin;
+		$view->masteradmin = $this->_masteradmin;
+		$view->error = $this->_error;
+		$view->application = $ja;
+		$view->task = $this->_task;
+		$view->option = $this->_option;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();				
+	}
+		//----------------------------------------------------------
+	// Save job application
+	//----------------------------------------------------------
+	
+	public function saveapp()
 	{
 		$database =& JFactory::getDBO();
-		$juser 	  =& JFactory::getUser();
+		$juser    =& JFactory::getUser();
 		
+		// Incoming job id
+		$code 	= JRequest::getVar( 'code', '' );
+		$appid 	= JRequest::getInt( 'appid', 0, 'post' );
+		
+		if(!$code) {
+			$this->view();
+			return;
+		}
+		
+		$this->_msg_passed 	= $this->_task == 'withdraw' ? JText::_('MSG_APPLICATION_WITHDRAWN') : JText::_('MSG_APPLICATION_ACCEPTED');
+		$this->_msg_passed  = $appid ? JText::_('MSG_APPLICATION_EDITS_ACCEPTED') : $this->_msg_passed;
+		
+		// Login required
+		if ($juser->get('guest')) {
+			$this->_msg = JText::_('MSG_LOGIN_SAVE_APPLICATION');
+			$this->login();
+			return;
+		}
+		
+		$job = new Job ( $database );
+		$ja = new JobApplication ( $database );
+		$now = date( 'Y-m-d H:i:s', time() );
+		
+		if(!$job->loadJob($code)) {
+			$this->setError(JText::_('ERROR_APPLICATION_ERROR'));
+		}
+		else if(!$ja->loadApplication ($juser->get('id'), 0, $code) && $this->_task == 'withdraw') {
+			$this->setError(JText::_('ERROR_WITHDRAW_ERROR'));
+		}
+		else  
+		{			
+			if($this->_task == 'withdraw') {
+				$ja->withdrawn 	= $now;
+				$ja->status 	= 2;
+				$ja->reason 	= JRequest::getVar( 'reason', '' );
+			}
+			else {
+				// Save new information
+				$ja->bind( $_POST );
+				$ja->applied = $appid ? $ja->applied : $now;
+				$ja->status 	=	1;
+			}
+				
+			if (!$ja->store()) {
+				JError::raiseError( 500, $ja->getError() );
+				return;
+			}
+		}
+		
+		// return to the job posting
+		$this->_jobcode 	= $job->code;		
+		$this->job();
+		return;			
+	}
+	
+	//----------------------------------------------------------
+	// Job posting
+	//----------------------------------------------------------
+	
+	public function job()
+	{
+		$database =& JFactory::getDBO();
+		$juser    =& JFactory::getUser();
+		
+		// Incoming
+		$code 	  = JRequest::getVar( 'code', '' );
+		$code 	  = !$code && $this->_jobcode ? $this->_jobcode : $code;
+			
+		$obj = new Job ( $database );
+		$job = $obj->get_opening (0, $juser->get('id'), $this->_masteradmin, $code);
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		
+		if(!$job) {
+			$this->setError( JText::_('ERROR_JOB_INACTIVE') );
+			
+			// Set the pathway
+			$app =& JFactory::getApplication();
+			$pathway =& $app->getPathway();
+			if (count($pathway->getPathWay()) <= 0) {
+				$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+			}
+		
+			// Output HTML
+			$view = new JView( array('name'=>'error') );
+			$view->title = JText::_(strtoupper($this->_name));
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
+			return;	
+		}
+		
+		if($juser->get('id') == $job->employerid && !$this->_emp && !$this->_masteradmin) {
+			// check validity of subscription
+			$this->_msg_warning = JText::_('WARNING_SUBSCRIPTION_INVALID');
+			$this->dashboard();
+			return;
+		}
+		
+		// Set the pathway
+		$this->_jobid = $job->id;
+		$this->_jobtitle = $job->title;
+		$this->_buildPathway();
+		
+		if($juser->get('guest') && $job->status != 1) {
+			// Not authorized
+			$error = JText::_('ERROR_NOT_AUTHORIZED_JOB_VIEW');
+			$error.= $juser->get('guest') ? ' '.JText::_('WARNING_LOGIN_REQUIRED'): '';
+			$this->setError( $error);
+		
+			// Output HTML
+			$view = new JView( array('name'=>'error') );
+			$view->title = JText::_(strtoupper($this->_name));
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
+			return;	
+		}
+		if($job->status != 1 && !$this->_admin && (!$this->_emp && $juser->get('id') != $job->employerid )) {
+			// Not authorized
+			JError::raiseError( 403, JText::_('ERROR_NOT_AUTHORIZED_JOB_VIEW') );
+			return;
+		}				
+			
+		// Set page title
+		$this->_subtitle = $job->status==4 ? JText::_('ACTION_PREVIEW_AD').' '.$job->code : $job->title;
+		$this->_buildTitle();
+			
+		// Get category & type names
+		$jt = new JobType ( $database );
+		$jc = new JobCategory ( $database );
+		$job->type = $jt->getType($job->type);
+		$job->cat = $jc->getCat($job->cid);
+		
+		// Get applications
+		$ja = new JobApplication ( $database );
+		$job->applications = ($this->_admin or ($this->_emp && $juser->get('id') == $job->employerid ) ) ? $ja->getApplications ($job->id) : array();
+		
+		// Get profile info of applicants
+		$job->withdrawnlist = array();
+		if(count($job->applications) > 0 ) {
+			$js = new JobSeeker ( $database );
+			foreach ($job->applications as $ap) {			
+				$seeker = $js->getSeeker($ap->uid, $job->employerid);
+				$ap->seeker = (!$seeker or count($seeker)==0) ? NULL : $seeker[0];
+				
+				if($ap->status == 2) {
+					$job->withdrawnlist[] = $ap;
+				}
+			}
+		}
+		
+		// Output HTML
+		$view = new JView( array('name'=>'job') );
+		$view->title = $this->_title;
+		$view->config = $this->config;
+		$view->emp = $this->_emp;
+		$view->job = $job;
+		$view->msg_warning = $this->_msg_warning;
+		$view->msg_passed = $this->_msg_passed;
+		$view->admin = $this->_admin;
+		$view->masteradmin = $this->_masteradmin;
+		$view->allowsubscriptions = $this->_allowsubscriptions;
+		$view->error = $this->_error;
+		$view->task = $this->_task;
+		$view->option = $this->_option;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();				
+	}
+	
+	//----------------------------------------------------------
+	// Save job
+	//----------------------------------------------------------
+	
+	public function savejob()
+	{
+		$database =& JFactory::getDBO();
+		$juser    =& JFactory::getUser();
+		
+		// Incoming
+		$code 		= JRequest::getVar( 'code', '' );
+		$employerid = JRequest::getInt( 'employerid', 0 );
+		$min = ($this->_task == 'confirmjob' or $this->_task == 'unpublish' or $this->_task == 'reopen' or $this->_task == 'remove') ? 1 : 0;
+		$code = !$code && $this->_jobcode ? $this->_jobcode : $code;
+			
 		// Login required
 		if ($juser->get('guest')) {
 			$this->intro_employer();
 			return;
 		}
 		
-		// are we viewing other person's subscription? (admins only)
-		$uid 	= JRequest::getInt( 'uid', 0 );		
+		// Do we need admin approval for job publications?
+		$autoapprove = $this->config->get('autoapprove')  ? $this->config->get('autoapprove') : 1;	
 		
-		if($uid && $juser->get('id') != $uid && !$this->_admin) {
-			// not authorized
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+		$job = new Job ( $database );
+		$jobadmin = new JobAdmin ( $database );
+		$employer = new Employer ( $database );
+				
+		if($code) {
+		
+			if(!$job->loadJob($code)) {
+				JError::raiseError( 404, JText::_('ERROR_JOB_NOT_FOUND') );
+				return;
+			}
+		
+			// check if user is authorized to edit		
+			if($this->_admin or $jobadmin->isAdmin($juser->get('id'), $job->id) or $juser->get('id') == $job->employerid) {		
+				// we are editing
+				$code = $job->code;
+			}
+			else {
+				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+				return;
+			}
+			
+			$job->editedBy = $juser->get('id');
+			$job->edited = date('Y-m-d H:i:s');
+						
+		} else {
+			$job->added = date('Y-m-d H:i:s');
+			$job->addedBy = $juser->get('id');
+		}
+				
+		$employerid = $code ? $job->employerid : $employerid;
+		$job->employerid = $employerid;
+		
+		// load Employer
+		if (!$employer->loadEmployer($employerid)) {
+			JError::raiseError( 404, JText::_('ERROR_EMPLOYER_NOT_FOUND') );
 			return;
 		}
-		$uid = $uid ? $uid : $juser->get('id');
 		
-		ximport( 'subscriptions' );
+		// check validity of subscription
+		if($juser->get('id') == $job->employerid && !$this->_emp && !$this->_masteradmin) {
+			$this->_msg_warning = JText::_('WARNING_SUBSCRIPTION_INVALID');
+			$this->dashboard();
+			return;
+		}
 		
-		// Set the page title
-		$title = $this->startTitle();
-		$subtitle = $this->_task == 'subscribe' ? JText::_('Edit Subscription') : JText::_('Subscribe as Employer');
+		if(!$min) {		
+			$job->description   	= rtrim(stripslashes($_POST['description']));
+			$job->title   			= rtrim(stripslashes($_POST['title']));
+			$job->companyName   	= rtrim(stripslashes($_POST['companyName']));
+			$job->companyLocation   = rtrim(stripslashes($_POST['companyLocation']));
+			
+			// missing required information
+			if(!$job->description or !$job->title or !$job->companyName or !$job->companyLocation) {
+				$job->bind( $_POST );
+				$this->_job 	= $job;
+				$this->_jobcode = $code;
+				$this->setError(JText::_('ERROR_MISSING_INFORMATION'));
+				$this->editjob();
+				return;
+			}
+		}
 		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title.': '.$subtitle );
+		$job->companyLocationCountry = $job->companyLocationCountry ? $job->companyLocationCountry : JText::_('JOBS_DEFAULT_COUNTRY') ;
 		
-		$japp =& JFactory::getApplication();
-		$pathway =& $japp->getPathway();
+		// Save new information
+		if(!$min) {	
+			$job->bind( $_POST );
+		}
+		else if ($job->status==4 && $this->_task == 'confirmjob') {
+			
+			// make sure we aren't over quota			
+			$allowed_ads = $this->_masteradmin && $employerid==1 ? 1 : $this->checkQuota ($job, $juser, $database);
+			
+			if($allowed_ads <=0 ) {
+				$this->setError(JText::_('ERROR_JOB_CANT_PUBLISH_OVER_LIMIT'));
+			}
+			else {					
+				// confirm 
+				$job->status 	= !$autoapprove && !$this->_masteradmin ? 0 : 1;			
+				$job->opendate 	= !$autoapprove && !$this->_masteradmin ? '' : date('Y-m-d H:i:s'); // set open date as of now, if confirming new ad publication
+				$this->_msg_passed 	= !$autoapprove && !$this->_masteradmin ? JText::_('MSG_SUCCESS_JOB_PENDING_APPROVAL') : JText::_('MSG_SUCCESS_JOB_POSTED');
+			}
+		}
+		else if ($job->status==1 && $this->_task == 'unpublish') {
+			$job->status = 3;
+			$this->_msg_warning = JText::_('MSG_JOB_UNPUBLISHED');
+		}		
+		else if ($job->status==3 && $this->_task == 'reopen') {
+			// make sure we aren't over quota			
+			$allowed_ads = $this->_masteradmin && $employerid==1 ? 1 : $this->checkQuota ($job, $juser, $database);
+			
+			if($allowed_ads <= 0 ) {
+				$this->setError(JText::_('ERROR_JOB_CANT_REOPEN_OVER_LIMIT'));
+			}
+			else {						
+				$job->status = 1;
+				$this->_msg_passed = JText::_('MSG_JOB_REOPENED');
+			}
+		}
+		else if ($this->_task == 'remove') {
+			$job->status = 2;	
+		}
 		
-		$pathway->addItem( $title, 'index.php?option='.$this->_option );
-		$pathway->addItem( $subtitle, 'index.php?option='.$this->_option.a.'task='.$this->_task );
+		// get unique number code for this new job posting
+		if(!$code) {
+			$subscription = new Subscription($database);
+			$code = $subscription->generateCode(8, 8, 0, 1, 0);
+			$job->code = $code;
+		}		
+				
+		if (!$job->store()) {
+			JError::raiseError( 500, $job->getError() );
+			return;
+		}
+		if (!$job->id) {
+			$job->checkin();
+		}
 		
-		// Add the CSS to the template
-		JobsController::getStyles();
-		JobsController::getScripts();
+		if ($this->_task == 'remove') {
+			$this->_msg_passed = JText::_('MSG_JOB_REMOVED');
+			$this->dashboard();
+			return;			
+		}
+		
+		$this->_jobcode = $job->code;
+		$this->job();		
+	}
+
+	//----------------------------------------------------------
+	// Add/edit job form
+	//----------------------------------------------------------
+	
+	public function editjob()
+	{
+		$database 	=& JFactory::getDBO();
+		$juser    	=& JFactory::getUser();
+		$jconfig 	=& JFactory::getConfig();
+
+		// Incoming
+		$code 	= JRequest::getVar( 'code', '' );
+		$empid  = $this->_admin ? 1 : $juser->get('id');		
+		$code = !$code && $this->_jobcode ? $this->_jobcode : $code;
+		
+		// Login required
+		if ($juser->get('guest')) {
+			if($this->_allowsubscriptions) { $this->intro_employer();	}
+			else { $this->login(); }
+			return;
+		}
+					
+		$job = new Job ( $database );
+		$jobadmin = new JobAdmin ( $database );
+		$employer = new Employer ( $database );
+		
+		if(!$this->_emp && !$this->_admin) {
+			// need to subscribe first
+			$employer = new Employer ( $database );
+			if ($employer->loadEmployer($empid)) {
+
+				//do we have a pending subscription?
+				$subscription = new Subscription($database);
+				if($subscription->loadSubscription ($employer->subscriptionid, $juser->get('id'), '', $status=array(0))) {
+					$this->_msg_warning = JText::_('WARNING_SUBSCRIPTION_PENDING');
+					$this->dashboard();
+					return;
+				}
+			}
+				
+			// send to subscription page
+			$this->_task = 'newsubscribe';
+			$this->subscribe();
+			return;
+		}
+		
+		if($code) {
+			if(!$job->loadJob($code)) {
+				JError::raiseError( 404, JText::_('ERROR_JOB_NOT_FOUND') );
+				return;
+			}		
+			// check if user is authorized to edit		
+			if($this->_admin or $jobadmin->isAdmin($juser->get('id'), $job->id) or $juser->get('id') == $job->employerid) {		
+				// we are editing
+				$code = $job->code;
+			}
+			else {
+				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+				return;
+			}						
+		}
+		
+		// display with errors
+		if($this->_job) {
+			$job = $this->_job;
+		}
+			
+		$uid = $code ? $job->employerid : $juser->get('id');				
+		$job->admins = $code ? $jobadmin->getAdmins($job->id) : array($juser->get('id')); 
 		
 		// Get the member's info
-		ximport('xprofile');
 		$profile = new XProfile();
 		$profile->load( $uid );
 		
 		// load Employer
-		$employer = new Employer ( $database );
-		if (!$employer->loadEmployer($uid)) {
-			$employer = new Employer ( $database );
-			$employer->uid = $uid;
-			$employer->subscriptionid = 0;
-			$employer->companyName = $profile->get('organization');
-			$employer->companyLocation = $profile->get('countryresident');
-			$employer->companyWebsite =  $profile->get('url');
+		if (!$employer->loadEmployer($uid) && !$this->_admin) {
+			JError::raiseError( 404, JText::_('ERROR_EMPLOYER_NOT_FOUND') );
+			return;
 		}
-										
-		// do we have an active subscription already?
-		$subscription = new Subscription($database);
-		if(!$subscription->loadSubscription ($employer->subscriptionid, '', '', $status=array( 0, 1))) {
-			$subscription = new Subscription($database);
-			$subscription->uid = $uid;
-			$subscription->serviceid = 0;
-		}		
-		
-		// get subscription options
-		$objS = new Service($database);
-		$specialgroup = isset($this->config->parameters['specialgroup'])  ? $this->config->parameters['specialgroup'] : '';	
-		$services = $objS->getServices('jobs', 1, 1, 'ordering', 'ASC', $specialgroup);
-		
-		if(!$services) {
-			// setup with default info
-			$this->setupServices();
+		else if(!$employer->id && $this->_admin) {
+			$employer->uid = 1;
+			$employer->subscriptionid = 1;
+			$employer->companyName 		= $jconfig->getValue('config.sitename');
+			$employer->companyLocation  = '';
+			$employer->companyWebsite   = $jconfig->getValue('config.live_site');
+			$uid = 1; // site admin
 		}
+
+		// Push some styles to the template
+		$this->_getStyles();
 		
-		// check available user funds (if paying with points)
-		$BTL 		= new BankTeller( $database, $subscription->uid);
-		$balance 	= $BTL->summary();			
-		$credit  	= $BTL->credit_summary();
-		$funds   	= $balance;			
-		$funds   	= ($funds > 0) ? $funds : '0';
+		// Push some scripts to the template
+		$this->_getScripts();
+			
+		$jt = new JobType ( $database );
+		$jc = new JobCategory ( $database );
+		
+		// get job types			
+		$types = $jt->getTypes();
+		$types[0] = JText::_('TYPE_ANY');
 				
-		jimport( 'joomla.application.component.view');
+		// get job categories
+		$cats = $jc->getCats();
+		$cats[0] = JText::_('CATEGORY_NO_SPECIFIC');
+		
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_jobid = $job->id;
+		$this->_jobtitle = $job->title;
+		$this->_buildPathway();
 		
 		// Output HTML
-		$view = new JView( array('name'=>'subscribe') );
-		$view->title = $title.': '.$subtitle;
+		$view = new JView( array('name'=>'editjob') );
+		$view->title = $this->_title;
 		$view->config = $this->config;
-		$view->subscription = $subscription;
-		$view->employer = $employer;
-		$view->services = $services;
-		$view->funds = $funds;
 		$view->uid = $uid;
+		$view->profile = $profile;
 		$view->emp = $this->_emp;
+		$view->job = $job;
+		$view->jobid = $job->id;
+		$view->types = $types;
+		$view->cats = $cats;
+		$view->employer = $employer;
+		$view->admin = $this->_admin;
+		$view->masteradmin = $this->_masteradmin;
+		$view->error = $this->_error;
 		$view->task = $this->_task;
 		$view->option = $this->_option;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
-		$view->display();
+		$view->display();		
+	}
+
+	//----------------------------------------------------------
+	// Authorizations
+	//----------------------------------------------------------
 	
+	public function authorize_employer($admin = 0)
+	{		
+		$database =& JFactory::getDBO();
+		$juser    =& JFactory::getUser();
+		
+		$emp = 0;
+		
+		$employer = new Employer ( $database );
+		if($admin) {
+			$adminemp = $employer->isEmployer($juser->get('id'), 1);
+			if(!$adminemp) {
+				// will require setup only once
+				$subscription = new Subscription($database);
+				$subscription->status = 1;
+				$subscription->uid = 1;
+				$subscription->units = 72;
+				$subscription->serviceid = 1; 
+				$subscription->expires = date("Y-m-d",strtotime("+ 72 months"));
+				$subscription->added = date( 'Y-m-d H:i:s', time() );	
+				
+				if (!$subscription->store()) {
+					JError::raiseError( 500, $subscription->getError() );
+					return;
+				}
+				
+				if (!$subscription->id) {
+					$subscription->checkin();
+				}
+				
+				// make sure we have dummy admin employer account
+				$jconfig 	=& JFactory::getConfig();
+				$employer->uid = 1;
+				$employer->subscriptionid = $subscription->id;
+				$employer->companyName 		= $jconfig->getValue('config.sitename');
+				$employer->companyLocation  = '';
+				$employer->companyWebsite   = $jconfig->getValue('config.live_site');
+				
+				// save employer information		
+				if (!$employer->store()) {
+					JError::raiseError( 500, $employer->getError() );
+					return;
+				}				
+			}
+		}
+		else {
+			$emp = $employer->isEmployer($juser->get('id'));
+		}
+		
+		$this->_emp = $emp;
+	}
+	
+	//------------
+	
+	public function authorize_admin($admin = 0)
+	{
+		$juser =& JFactory::getUser();
+		if(!$juser->get('guest')) {
+			
+			// Check if they're a site admin (from Joomla)
+			if ($juser->authorize($this->_option, 'manage')) {
+				$admin = 1;
+			}
+			
+			// check if they belong to a dedicated admin group
+			$admingroup = $this->config->get('admingroup') ? $this->config->get('admingroup') : '' ;
+			if($admingroup) {
+				ximport('xgroup');
+				ximport('xuserhelper');
+				
+				$ugs = XUserHelper::getGroups( $juser->get('id') );
+				if ($ugs && count($ugs) > 0) {
+					foreach ($ugs as $ug) 
+					{
+						if ($ug->cn == $admingroup) {
+							$admin = 1;
+						}
+					}
+				}
+			}		
+		}
+		$this->_admin = $admin;
+	}
+	
+	//----------------------------------------------------------
+	// Search Preferences
+	//----------------------------------------------------------
+	
+	public function updatePrefs($database, $juser, $category = 'resume')
+	{		
+		$saveprefs  = JRequest::getInt( 'saveprefs', 0, 'post');
+		
+		$p = new Prefs($database);
+		
+		$filters = $this->getFilters (0, 0, 0);
+		$text = 'filterby='.$filters['filterby'].'&amp;match=1&amp;search='.$filters['search'].'&amp;category='.$filters['category'].'&amp;type='.$filters['type'].'&amp;sortby=';
+		
+		if ($category == 'job' && isset($_GET["performsearch"])) {
+				$text .= $filters['sortby'];
+				if (!$p->loadPrefs($juser->get('id'), $category)) {
+					$p = new Prefs($database);
+					$p->uid = $juser->get('id');
+					$p->category = $category;
+				}
+				$p->filters = $text;
+				
+				// Store content
+				if (!$p->store()) {
+					JError::raiseError( 500, $p->getError() );
+					return;
+				}				
+		}
+		else {
+		
+			if($saveprefs && isset($_POST["performsearch"])) {
+				
+				if (!$p->loadPrefs($juser->get('id'), $category)) {
+					$p = new Prefs($database);
+					$p->uid = $juser->get('id');
+					$p->category = $category;
+					$text .= 'bestmatch';
+				}
+				else {
+					$text .= $filters['sortby'];
+				}
+				
+				$p->filters = $text;
+				
+				// Store content
+				if (!$p->store()) {
+					JError::raiseError( 500, $p->getError() );
+					return;
+				}
+			}
+			else if ($p->loadPrefs($juser->get('id'), $category) && isset($_POST["performsearch"]))  {
+				// delete prefs
+				$p->delete();
+			}
+		}		
+	}
+	
+	//-----------
+	
+	public function getPrefs($database, $juser, $category = 'resume')
+	{		
+		$p = new Prefs($database);
+		if($p->loadPrefs($juser->get('id'), $category)) {
+						
+			if(isset($p->filters) && $p->filters) {
+				// get individual filters
+				$col = explode("&amp;",$p->filters);
+		
+				if(count($col > 0 )) {
+					foreach ($col as $c) {
+						$nuk = explode("=",$c);
+						
+						// set filter variables
+						$this->setVar ($nuk[0], $nuk[1]);
+					}
+				}							
+			}
+		}			
+	}
+	
+	//----------------------------------------------------------
+	// Search filters
+	//----------------------------------------------------------
+	
+	public function getFilters($admin=0, $emp = 0, $checkstored = 1, $jobs = 0)
+	{	
+		// Query filters defaults
+		$filters = array();
+		
+		// jobs filters
+		if($jobs) {
+			$filters['sortby'] 	 =  $this->getVar("sortby") && $checkstored ? $this->getVar("sortby") : trim(JRequest::getVar( 'sortby', 'category' ));
+			$filters['category'] = $this->getVar("category") && $checkstored ? $this->getVar("category") : JRequest::getInt( 'category',  'all');
+		}
+		else {		
+			$filters['sortby'] = $this->getVar("sortby") && $checkstored ? $this->getVar("sortby") : trim(JRequest::getVar( 'sortby', 'lastupdate' ));				
+			$filters['category'] = $this->getVar("category") && $checkstored ? $this->getVar("category") : JRequest::getInt( 'category',  0);
+		}
+		
+		$filters['type'] 	 = $this->getVar("type") && $checkstored ? $this->getVar("type") : JRequest::getInt( 'type',  0);
+		$filters['search'] = $this->getVar("search") && $checkstored ? $this->getVar("search") : trim(JRequest::getVar( 'q', '' ));
+		$filters['filterby'] = trim(JRequest::getVar( 'filterby', 'all' ));	
+		
+		// did we get stored prefs?
+		$filters['match'] = $this->getVar("match") && $checkstored ? $this->getVar("match") : JRequest::getInt( 'match', 0 );
+
+		// Paging vars
+		$filters['limit'] = JRequest::getInt( 'limit', 25 );
+		$filters['start'] = JRequest::getInt( 'limitstart', 0, 'get' );
+		
+		// Task-specific
+		$filters['sortby'] = $this->_task != 'browse' ? 'opendate' : $filters['sortby'] ;
+		$filters['limit'] = $this->_task != 'browse' ? 10 : $filters['limit'] ;
+		
+		// admins and employers
+		$filters['admin'] = $admin;
+		$filters['emp'] = $emp;
+			
+		// Return the array
+		return $filters;
+	}
+	//-----------------------------
+	// Batch resume download
+	//-----------------------------
+
+	public function batch()
+	{
+		$database =& JFactory::getDBO();
+		$juser 	  =& JFactory::getUser();
+		
+		// Login required
+		if ($juser->get('guest')) {
+			if($this->_allowsubscriptions) { $this->intro_employer(); }
+			else {	$this->login();	}
+			return;
+		}
+		
+		// Check authorization
+		if(!$this->_admin && !$this->_emp ) {
+			if($this->_allowsubscriptions) { $this->intro_employer(); }
+			else {	$this->_task = 'newsubscribe'; $this->subscribe();	}
+			return;
+		}
+		
+		// Incoming
+		$pile 	= JRequest::getVar( 'pile', 'all' );
+		
+		// Zip the requested resumes
+		$archive = $this->archiveResumes ($pile);
+		
+		if($archive) {
+			// Initiate a new content server and serve up the file
+			ximport('xserver');
+			jimport('joomla.filesystem.file');
+			$xserver = new XContentServer();
+			$xserver->filename($archive['path']);
+			
+			$xserver->disposition('attachment');
+			$xserver->acceptranges(false);
+			$xserver->saveas(JText::_('JOBS_RESUME_BATCH=Resume Batch'));
+			$result = $xserver->serve_attachment($archive['path'], $archive['name'], false);
+			
+			// Delete downloaded zip			
+			JFile::delete($archive['path']);		
+		
+			if (!$result)
+            	JError::raiseError( 404, JText::_('ERROR_ARCHIVE_FAILED') );
+			else
+				exit;
+		}	
+		else {
+			$this->setError(JText::_('ERROR_ARCHIVE_FAILED'));
+			$this->dashboard();
+		}	
+	}
+	
+	//-----------------------------
+	// Create resume archive
+	//-----------------------------
+
+	private function archiveResumes($pile = 'all')
+	{
+		$database =& JFactory::getDBO();
+		$juser 	  =& JFactory::getUser();
+		
+		// Get available resume files
+		$resume = new Resume ($database);
+		$files 	= $resume->getResumeFiles($pile, $juser->get('id'), $this->_masteradmin);
+		$batch  = array();
+		
+		if(count($files) > 0) {
+			require_once( JPATH_ROOT.DS.'administrator'.DS.'includes'.DS.'pcl'.DS.'pclzip.lib.php' );
+			if (!extension_loaded('zlib')) {
+				JError::raiseError( 500, JText::_('ERROR_MISSING_PHP_LIBRARY') );
+				return;
+			}
+			
+			// Get Members plugins
+			JPluginHelper::importPlugin( 'members', 'resume' );
+			$dispatcher =& JDispatcher::getInstance();
+			
+			$pile .= $pile != 'all' ? '_'.$juser->get('id') : '';
+			$zipname = JText::_('Resumes').'_'.$pile.'.zip';
+			
+			$mconfig =& JComponentHelper::getParams( 'com_members' );
+			$base_path = $mconfig->get('webpath');
+			
+			if ($base_path) {
+				// Make sure the path doesn't end with a slash
+				if (substr($base_path, -1) == DS) { 
+					$base_path = substr($base_path, 0, strlen($base_path) - 1);
+				}
+				// Ensure the path starts with a slash
+				if (substr($base_path, 0, 1) != DS) { 
+					$base_path = DS.$base_path;
+				}
+			}
+			
+			$archive = new PclZip(JPATH_ROOT.$base_path.DS.$zipname);
+			$rfiles  = '';
+			$i = 0;
+			// Go through file names and get full paths
+			foreach($files as $avalue => $alabel) {
+				$i++;
+				$apath =  $dispatcher->trigger( 'build_path', array($avalue) );
+				$path  = is_array($apath) ? $apath[0] : '';		
+				$file = $path ? JPATH_ROOT.$path.DS.$alabel : '';
+				$rfiles .= $file;
+				$rfiles .= $i == count($files) ? '' : ',';
+			}
+			
+			  $v_list = $archive->create($rfiles,
+                             PCLZIP_OPT_REMOVE_ALL_PATH);
+			  if ($v_list == 0) {
+			  	JError::raiseError( 500, $archive->errorInfo(true) );
+				return;
+			  }
+			  else {
+			  	$archive = array();
+				$archive['path'] = JPATH_ROOT.$base_path.DS.$zipname;
+				$archive['name'] = $zipname;		  
+			  	return $archive;
+			  } 		
+		}
+		return false;
+	}
+	
+	//----------------------------------------------------------
+	// Check job ad quota depending on subscription
+	//----------------------------------------------------------
+	
+	public function checkQuota ($job, $juser, $database)
+	{
+		// make sure we aren't over quota
+		$service = new Service($database);	
+		$servicename = $service->getUserService($juser->get('id'));
+		if(!$service->loadService($servicename)) {
+			return 0;			
+		}
+		else {
+			$this->getServiceParams (&$service);
+			$maxads = $service->maxads > 0 ? $service->maxads : 1;
+			$activejobs = $job->countMyActiveOpenings ($juser->get('id'), 1);
+			$allowed_ads = $maxads - $activejobs;
+			return $allowed_ads;
+		}		
 	}
 	
 	//----------------------------------------------------------
@@ -1171,7 +1989,6 @@ class JobsController extends JObject
 	
 	protected function setupServices() 
 	{
-		ximport( 'subscriptions' );
 		$database =& JFactory::getDBO();
 		
 		$objS = new Service($database);
@@ -1231,480 +2048,7 @@ maxads=3'
 		if (!$objS->store()) {
 			$this->_error = $objS->getError();
 			return false;
-		}
-		
-	}
-	
-	//----------------------------------------------------------
-	// Intro screen for employers before they login
-	//----------------------------------------------------------
-	
-	protected function intro_employer() 
-	{
-		// Set the page title
-		$title = $this->startTitle();
-		$subtitle = $this->_task== 'resumes' ? JText::_('Browse Resumes') : JText::_('Post a Job');
-		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title.': '.$subtitle );
-		
-		$japp =& JFactory::getApplication();
-		$pathway =& $japp->getPathway();
-		
-		$pathway->addItem( $title, 'index.php?option='.$this->_option );
-		$pathway->addItem( $subtitle, 'index.php?option='.$this->_option.a.'task='.$this->_task );
-				
-		// Add the CSS to the template
-		JobsController::getStyles();
-		
-		jimport( 'joomla.application.component.view');
-		
-		// Output HTML
-		$view = new JView( array('name'=>'introemp') );
-		$view->title = $title.': '.$subtitle;
-		$view->config = $this->config;
-		$view->task = $this->_task;
-		$view->option = $this->_option;
-		$view->banking = $this->_banking;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();
-			
-		return;		
-	
-	}
-		
-	//----------------------------------------------------------
-	// Link to Add Resume (goes to profile "Resume" tab)
-	//----------------------------------------------------------
-	
-	public function addresume()
-	{
-		$juser    =& JFactory::getUser();
-		
-		// Login required
-		if ($juser->get('guest')) {
-			$msg = JText::_('Please login to post or access your resume');
-			$this->login($msg);
-		}
-		else {
-			$this->_redirect = JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=resume');
-			return;
-		}
-	
-	}
-	
-	//----------------------------------------------------------
-	// Save job application
-	//----------------------------------------------------------
-	
-	public function saveapp()
-	{
-		$database =& JFactory::getDBO();
-		$juser    =& JFactory::getUser();
-		
-		// Incoming job id
-		$id 	  = JRequest::getInt( 'jid', 0 );
-		$appid 	  = JRequest::getInt( 'appid', 0, 'post' );
-		$msg 	  = $this->_task == 'withdraw' ? JobsHtml::passed (JText::_('Your application has been withdrawn per your request.')) : JobsHtml::passed (JText::_('Thank you for applying to this job. The employer may contact you directly via information you provided in your resume. Good luck with your job search!'));
-		$msg  	  = $appid ? JobsHtml::passed (JText::_('Your application has been updated. Thank you!')) : $msg;
-		
-		// Login required
-		if ($juser->get('guest')) {
-			$this->login(JText::_('Please login to save job aplication.'));
-			return;
-		}
-		
-		$job = new Job ( $database );
-		$ja = new JobApplication ( $database );
-		$now = date( 'Y-m-d H:i:s', time() );
-		
-		if(!$job->load($id)) {
-			$msg = JobsHtml::error (JText::_('Sorry, there was an error with your application. Please try again.'));
-		}
-		else if(!$ja->loadApplication ($juser->get('id'), $id) && $this->_task == 'withdraw') {
-			$msg = JobsHtml::error (JText::_('Sorry, there was an error withdrawing your application. Please try again.'));
-		}
-		else  
-		{			
-			if($this->_task == 'withdraw') {
-				$ja->withdrawn 	= $now;
-				$ja->status 	= 2;
-				$ja->reason 	= JRequest::getVar( 'reason', '' );
-			}
-			else {
-				// Save new information
-				$ja->bind( $_POST );
-				$ja->applied = $appid ? $ja->applied : $now;
-				$ja->status 	=	1;
-			}
-				
-			if (!$ja->store()) {
-				echo JobsHtml::alert( $ja->getError() );
-				exit();
-			}
-		}
-		
-		$this->jobid 	= $id;
-		$this->_msg 	= $msg;
-		
-		// return to the job posting
-		$this->job();
-		return;	
-		
-	}
-	
-	//----------------------------------------------------------
-	// Apply to a job
-	//----------------------------------------------------------
-	
-	public function apply()
-	{
-		$database =& JFactory::getDBO();
-		$juser    =& JFactory::getUser();
-		
-		// Incoming
-		$id 	  = JRequest::getInt( 'id', 0 );
-		
-		// Login required
-		if ($juser->get('guest')) {
-			$this->login(JText::_('Please login to apply to this job ad.'));
-			return;
-		}
-		
-		// Build the page title
-		$title = $this->startTitle();
-		$document =& JFactory::getDocument();
-		
-		// Add the CSS to the template
-		JobsController::getStyles();
-		
-		// Set breadcrumbs
-		$japp =& JFactory::getApplication();
-		$pathway =& $japp->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( $title, 'index.php?option='.$this->_option );
-		}
-		
-		$job = new Job ( $database );
-		if(!$job->load($id)) {
-			$document->setTitle( $title.': '.JText::_('Apply'));
-			echo JobsHtml::error (JText::_('Sorry, job posting not active.'));
-			return;	
-		}
-					
-		$ja = new JobApplication ( $database );
-		
-		// if application already exists, load it to edit
-		if($ja->loadApplication ($juser->get('id'), $id) && $ja->status != 2) {
-			$this->_task = 'editapp';
-		}
-		
-		if($this->_task != 'editapp') {
-			$ja->cover = '';
-		}
-		
-		$subtitle = $this->_task=='editapp' ? JText::_('Edit Application') : JText::_('Apply');
-		
-		// Set the page title
-		$document->setTitle( $title.': '.$subtitle);
-		$pathway->addItem( $job->title, 'index.php?option='.$this->_option.a.'task=job'.a.'id='.$job->id  );
-		$pathway->addItem( $subtitle, 'index.php?option='.$this->_option.a.'task=apply'.a.'id='.$job->id  );
-
-		$js = new JobSeeker ( $database );
-		$seeker = $js->getSeeker($juser->get('id'), $juser->get('id'));
-		$seeker = count($seeker) > 0 ? $seeker[0] : NULL;
-	
-		jimport( 'joomla.application.component.view');
-		
-		// Output HTML
-		$view = new JView( array('name'=>'apply') );
-		$view->title = $title.': '.$subtitle;
-		$view->config = $this->config;
-		$view->emp = $this->_emp;
-		$view->job = $job;
-		$view->seeker = $seeker;
-		$view->admin = $this->_admin;
-		$view->error = $this->_error;
-		$view->application = $ja;
-		$view->task = $this->_task;
-		$view->option = $this->_option;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();
-				
-	}
-	
-	//----------------------------------------------------------
-	// Job posting
-	//----------------------------------------------------------
-	
-	public function job()
-	{
-		$database =& JFactory::getDBO();
-		$juser    =& JFactory::getUser();
-		
-		// Incoming
-		$id 	  = JRequest::getInt( 'id', 0 );
-		$id 	  = !$id && $this->jobid ? $this->jobid : $id;
-		$msg  	  = $this->_msg ? $this->_msg : '';
-		
-		$obj = new Job ( $database );
-		$admin = $this->_admin && !$this->_emp ? 1 : 0;
-		$job = $obj->get_opening ($id, $juser->get('id'), $admin);
-						
-		// Build the page title
-		$title = $this->startTitle();
-		$document =& JFactory::getDocument();
-		
-		// Add the CSS to the template
-		JobsController::getStyles();
-		JobsController::getScripts();
-		
-		// Set breadcrumbs
-		$japp =& JFactory::getApplication();
-		$pathway =& $japp->getPathway();
-		
-		if(!$job) {
-			$pathway->addItem( $title, 'index.php?option='.$this->_option );
-			$document->setTitle( $title.': '.JText::_('Job Posting'));
-			echo JobsHtml::div( JobsHtml::hed( 2, $title.': '.JText::_('Job Posting')), 'full', 'content-header' );
-			echo JobsHtml::error (JText::_('Sorry, job posting not active or does not exist.'));
-			return;	
-		}
-		
-		if($juser->get('guest') && $job->status != 1) {
-			// not autorized
-			echo JobsHtml::div( JobsHtml::hed( 2, $title.': '.JText::_('Job Posting').' '.$job->code), 'full', 'content-header' );
-			$error = JText::_('Sorry, you are not authorized to view this job posting.');
-			$error.= $juser->get('guest') ? ' '.JText::_('You may need to login to the site first, to view this restricted ad.'): '';
-			echo JobsHtml::error ($error);
-			return;	
-		}
-		if($job->status != 1 && !$this->_admin && (!$this->_emp && $juser->get('id') != $job->employerid )) {
-			// not autorized
-			echo JobsHtml::div( JobsHtml::hed( 2, $title.': '.JText::_('Job Posting').' '.$job->code), 'full', 'content-header' );
-			$error = JText::_('Sorry, you are not authorized to view this job posting. It is possible that the employer has taken this posting down.');
-			echo JobsHtml::error ($error);
-			return;	
 		}		
-
-		if($juser->get('id') == $job->employerid && !$this->_emp && !$admin) {
-			// check validity of subscription
-			$this->_msg = JobsHtml::warning(JText::_('Cannot proceed without a valid subscription. Your subscription is pending approval or expired.'));
-			$this->dashboard();
-			return;
-		}
-			
-		$subtitle = $job->status==4 ? JText::_('Preview Ad').' '.$job->code : $job->title;
-		
-		// Set the page title
-		$document->setTitle( $title.': '.$subtitle);
-		
-		$pathway->addItem( $title, 'index.php?option='.$this->_option );
-		if ($job->id) {
-		$pathway->addItem( $job->title, 'index.php?option='.$this->_option.a.'task=job'.a.'id='.$job->id  );
-		}
-		
-		$jt = new JobType ( $database );
-		$jc = new JobCategory ( $database );
-		$job->type = $jt->getType($job->type);
-		$job->cat = $jc->getCat($job->cid);
-		
-		$ja = new JobApplication ( $database );
-		$job->applications = ($this->_admin or ($this->_emp && $juser->get('id') == $job->employerid ) ) ? $ja->getApplications ($job->id) : array();
-		
-		// get profile info
-		$job->withdrawnlist = array();
-		if(count($job->applications) > 0 ) {
-			$js = new JobSeeker ( $database );
-			foreach ($job->applications as $ap) {			
-				$seeker = $js->getSeeker($ap->uid, $job->employerid);
-				$ap->seeker = (!$seeker or count($seeker)==0) ? NULL : $seeker[0];
-				
-				if($ap->status == 2) {
-					$job->withdrawnlist[] = $ap;
-				}
-			}
-		}
-				
-		jimport( 'joomla.application.component.view');
-		
-		// Output HTML
-		$view = new JView( array('name'=>'job') );
-		$view->title = $title.': '.$subtitle;
-		$view->config = $this->config;
-		$view->emp = $this->_emp;
-		$view->job = $job;
-		$view->msg = $msg;
-		$view->admin = $this->_admin;
-		$view->error = $this->_error;
-		$view->task = $this->_task;
-		$view->option = $this->_option;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();
-				
-	}
-	
-	//----------------------------------------------------------
-	// Save job
-	//----------------------------------------------------------
-	
-	public function savejob()
-	{
-		$database =& JFactory::getDBO();
-		$juser    =& JFactory::getUser();
-		
-		// Incoming
-		$id 		= JRequest::getInt( 'id', 0 );
-		$employerid = JRequest::getInt( 'employerid', 0 );
-		$min = ($this->_task == 'confirmjob' or $this->_task == 'unpublish' or $this->_task == 'reopen' or $this->_task == 'remove') ? 1 : 0;
-		
-		// so that we don't make another entry
-		$id = !$id && $this->jobid ? $this->jobid : $id;
-			
-		// Login required
-		if ($juser->get('guest')) {
-			$this->intro_employer();
-			return;
-		}
-		
-		// Do we need admin approval for job publications?
-		$autoapprove = isset($this->config->parameters['autoapprove'])  ? $this->config->parameters['autoapprove'] : 1;	
-		
-		$job = new Job ( $database );
-		$jobadmin = new JobAdmin ( $database );
-		$employer = new Employer ( $database );
-		
-		$admin = $this->_admin && !$this->_emp ? 1 : 0;
-				
-		if($id) {
-		
-			if(!$job->load($id)) {
-				JError::raiseError( 404, JText::_('Error: job not found.') );
-				return;
-			}
-		
-			// check if user is authorized to edit		
-			if($this->_admin or $jobadmin->isAdmin($juser->get('id'), $id) or $juser->get('id') == $job->employerid) {		
-				// we are editing
-				$id = $job->id;
-			}
-			else {
-				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
-				return;
-			}
-			
-			$job->editedBy = $juser->get('id');
-			$job->edited = date('Y-m-d H:i:s');
-						
-		} else {
-			$job->added = date('Y-m-d H:i:s');
-			$job->addedBy = $juser->get('id');
-		}
-		
-		
-		$employerid = $id ? $job->employerid : $employerid;
-		$job->employerid = $employerid;
-		
-		// load Employer
-		if (!$employer->loadEmployer($employerid)) {
-			JError::raiseError( 404, JText::_('Employer information not found.') );
-			return;
-		}
-		
-		ximport( 'subscriptions' );
-		if($juser->get('id') == $job->employerid && !$this->_emp && !$admin) {
-			// check validity of subscription
-			$this->_msg = JobsHtml::warning(JText::_('Cannot proceed without a valid subscription. Your subscription is pending approval or expired.'));
-			$this->dashboard();
-			return;
-		}
-		
-		if(!$min) {		
-			$job->description   	= rtrim(stripslashes($_POST['description']));
-			$job->title   			= rtrim(stripslashes($_POST['title']));
-			$job->companyName   	= rtrim(stripslashes($_POST['companyName']));
-			$job->companyLocation   = rtrim(stripslashes($_POST['companyLocation']));
-			
-			// missing required information
-			if(!$job->description or !$job->title or !$job->companyName or !$job->companyLocation) {
-				$job->bind( $_POST );
-				$this->job = $job;
-				$this->jobid = $id;
-				$this->_error = JobsHtml::error(JText::_('Missing some required information. Please ensure all required fields are filled in.'));
-				$this->editjob();
-				return;
-				//echo JobsHtml::alert( JText::_('Missing some required information. Please ensure all required fields are filled in.') );
-				//exit();
-			}
-		}
-		
-		$job->companyLocationCountry = $job->companyLocationCountry ? $job->companyLocationCountry : 'United States' ;
-		
-		// Save new information
-		if(!$min) {	
-			$job->bind( $_POST );
-		}
-		else if ($job->status==4 && $this->_task == 'confirmjob') {
-			
-			// make sure we aren't over quota			
-			$allowed_ads = $admin && $employerid==1 ? 1 : $this->checkQuota ($job, $juser, $database);
-			
-			if($allowed_ads <=0 ) {
-				$this->_msg = JobsHtml::error (JText::_('Sorry, cannot publish this position due to the limit of active ads allowed with your employer subscription service. '));
-			}
-			else {					
-				// confirm 
-				$job->status 	= !$autoapprove && !$admin ? 0 : 1;			
-				$job->opendate 	= !$autoapprove && !$admin ? '' : date('Y-m-d H:i:s'); // set open date as of now, if confirming new ad publication
-				$this->_msg 	= !$autoapprove && !$admin 
-									? JobsHtml::passed (JText::_('Your job ad is now being reviewed by administrators and will be published as soon as it it approved.')) 
-									: JobsHtml::passed (JText::_('Your job ad has been successfully posted'));
-			}
-		}
-		else if ($job->status==1 && $this->_task == 'unpublish') {
-			$job->status = 3;
-			$this->_msg = JobsHtml::warning (JText::_('Your job ad has been unpublished.'));
-		}
-		
-		else if ($job->status==3 && $this->_task == 'reopen') {
-			// make sure we aren't over quota			
-			$allowed_ads = $admin && $employerid==1 ? 1 : $this->checkQuota ($job, $juser, $database);
-			
-			if($allowed_ads <= 0 ) {
-				$this->_msg = JobsHtml::error (JText::_('Sorry, cannot re-open this position due to the limit of active ads allowed with your employer subscription service.'));
-			}
-			else {						
-				$job->status = 1;
-				$this->_msg = JobsHtml::warning (JText::_('Your job posting has been re-opened.'));
-			}
-		}
-		else if ($this->_task == 'remove') {
-			$job->status = 2;	
-		}
-		
-		// get unique number code for this new job posting
-		if(!$id) {
-			$subscription = new Subscription($database);
-			$code = $subscription->generateCode(8, 8, 0, 1, 0);
-			$job->code = $code;
-		}		
-				
-		if (!$job->store()) {
-			echo JobsHtml::alert( $job->getError() );
-			exit();
-		}
-		if (!$job->id) {
-			$job->checkin();
-		}
-		
-		$this->jobid = $job->id;
-		$this->job();		
 	}
 	
 	//----------------------------------------------------------
@@ -1712,543 +2056,10 @@ maxads=3'
 	//----------------------------------------------------------
 	
 	public function getServiceParams (&$service)
-	{
-		
+	{		
 		$params 			=& new JParameter( $service->params );
 		$service->maxads  	= $params->get( 'maxads', '' );
-		$service->maxads 	= intval(str_replace(" ","",$service->maxads));				
-		
-	}
-	
-	//----------------------------------------------------------
-	// Check job ad quota depending on subscription
-	//----------------------------------------------------------
-	
-	public function checkQuota ($job, $juser, $database)
-	{
-		// make sure we aren't over quota
-		ximport( 'subscriptions' );
-		$service = new Service($database);	
-		$servicename = $service->getUserService($juser->get('id'));
-		if(!$service->loadService($servicename)) {
-			return 0;			
-		}
-		else {
-			$this->getServiceParams (&$service);
-			$maxads = $service->maxads > 0 ? $service->maxads : 1;
-			$activejobs = $job->countMyActiveOpenings ($juser->get('id'), 1);
-			$allowed_ads = $maxads - $activejobs;
-			return $allowed_ads;
-		}
-		
-	}
-	
-	//----------------------------------------------------------
-	// Add/edit job form
-	//----------------------------------------------------------
-	
-	public function editjob()
-	{
-		$database 	=& JFactory::getDBO();
-		$juser    	=& JFactory::getUser();
-		$jconfig 	=& JFactory::getConfig();
-
-		// Incoming
-		$id 	= JRequest::getInt( 'id', 0 );
-		$empid  = $this->_admin ? 1 : $juser->get('id');
-		
-		$id = !$id && $this->jobid ? $this->jobid : $id;		
-		
-		// Login required
-		if ($juser->get('guest')) {
-			if($this->allowsubscriptions) {
-			$this->intro_employer();
-			
-			}
-			else {
-			$this->login();
-			}
-			return;
-		}
-					
-		$job = new Job ( $database );
-		$jobadmin = new JobAdmin ( $database );
-		$employer = new Employer ( $database );
-		ximport( 'subscriptions' );
-		
-		if(!$this->_emp && !$this->_admin) {
-			// need to subscribe first
-
-			$employer = new Employer ( $database );
-			if ($employer->loadEmployer($empid)) {
-
-				//do we have a pending subscription?
-				$subscription = new Subscription($database);
-				if($subscription->loadSubscription ($employer->subscriptionid, $juser->get('id'), '', $status=array(0))) {
-					$this->_msg = JobsHtml::warning(JText::_('Your subscription is pending approval. Access to Employer Services will be granted once the subscription is approved.'));
-					$this->dashboard();
-					return;
-				}
-			}
-				
-			// send to subscription page
-			$this->subscribe();
-			return;
-		}
-		
-		if($id) {
-		
-			if(!$job->load($id)) {
-				JError::raiseError( 404, JText::_('Error: job not found.') );
-				return;
-			}
-		
-			// check if user is authorized to edit		
-			if($this->_admin or $jobadmin->isAdmin($juser->get('id'), $id) or $juser->get('id') == $job->employerid) {		
-				// we are editing
-				$id = $job->id;
-			}
-			else {
-				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
-				return;
-			}			
-			
-		}
-		
-		// display with errors
-		if($this->job) {
-			$job = $this->job;
-		}
-	
-		
-		$uid = $id ? $job->employerid : $juser->get('id');
-				
-		$job->admins = $id ? $jobadmin->getAdmins($id) : array($juser->get('id')); 
-		
-		// How many active jobs does the user manage?
-		//$activejobs = $job->countMyActiveOpenings ($juser->get('id'), 1);
-		
-		// Get the member's info
-		ximport('xprofile');
-		$profile = new XProfile();
-		$profile->load( $uid );
-		
-		// load Employer
-		if (!$employer->loadEmployer($uid) && !$this->_admin) {
-			JError::raiseError( 404, JText::_('Employer information not found.') );
-			return;
-		}
-		else if(!$employer->id && $this->_admin) {
-			// site admin
-			$employer->uid = 1;
-			$employer->subscriptionid = 1;
-			$employer->companyName 		= $jconfig->getValue('config.sitename');
-			$employer->companyLocation  = '';
-			$employer->companyWebsite   = $jconfig->getValue('config.live_site');
-			$uid = 1; // site admin
-		}
-		
-		// check level of service
-		/*
-		if(!$id) {
-			$objS = new Service($database);	
-			$maxads = isset($this->config->parameters['maxads']) && intval($this->config->parameters['maxads']) > 0  ? $this->config->parameters['maxads'] : 3;	
-			$service = $objS->getUserService($juser->get('id'));
-			$allowed_ads = $service == 'employer_basic' ? 1 - $activejobs : $maxads - $activejobs;
-			
-			if($allowed_ads <=0 ) {
-				$this->dashboard();
-				return;
-			}					
-		}*/
-				
-		// Add the CSS to the template
-		$this->getStyles();
-		$this->getScripts();
-			
-		$jt = new JobType ( $database );
-		$jc = new JobCategory ( $database );
-		
-		// get job types			
-		$types = $jt->getTypes();
-		$types[0] = JText::_('Any type');
-				
-		// get job categories
-		$cats = $jc->getCats();
-		$cats[0] = JText::_('No specific category');
-		
-		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		$subtitle = $this->_task=='addjob' ? JText::_('TASK_ADD_JOB') : JText::_('TASK_EDIT_JOB');
-					
-		$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
-		
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title.': '.$subtitle);
-		
-		// Set breadcrumbs
-		$japp =& JFactory::getApplication();
-		$pathway =& $japp->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( $title, 'index.php?option='.$this->_option );
-		}
-		if($this->_task == 'addjob') {
-		$pathway->addItem( JText::_('TASK_ADD_JOB'), 'index.php?option='.$this->_option.a.'task=addjob'  );
-		}
-		else if ($id) {
-		$pathway->addItem( $job->title, 'index.php?option='.$this->_option.a.'task=job'.a.'id='.$job->id  );		
-		$pathway->addItem( JText::_('TASK_EDIT_JOB'), 'index.php?option='.$this->_option.a.'task=editjob'.a.'id='.$job->id  );
-		}
-		
-		jimport( 'joomla.application.component.view');
-		
-		// Output HTML
-		$view = new JView( array('name'=>'editjob') );
-		$view->title = $title.': '.$subtitle;
-		$view->config = $this->config;
-		$view->uid = $uid;
-		$view->profile = $profile;
-		$view->emp = $this->_emp;
-		$view->job = $job;
-		$view->jobid = $id;
-		$view->types = $types;
-		$view->cats = $cats;
-		$view->employer = $employer;
-		$view->admin = $this->_admin;
-		$view->error = $this->_error;
-		$view->task = $this->_task;
-		$view->option = $this->_option;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();
-						
-		//echo JobsHtml::editjob ( $title.': '.$subtitle, $id, $job, $otherjobs, $this->_error, $this->_option, $this->_admin, $this->_task, $juser) ;
-		
-	}
-
-	//----------------------------------------------------------
-	// Authorizations
-	//----------------------------------------------------------
-	
-	public function authorize_employer($admin = 0)
-	{
-		
-		$database =& JFactory::getDBO();
-		$juser    =& JFactory::getUser();
-		
-		$emp = 0;
-		
-		$employer = new Employer ( $database );
-		if($admin) {
-			$adminemp = $employer->isEmployer($juser->get('id'), 1);
-			if(!$adminemp) {
-				// will require setup only once
-				ximport( 'subscriptions' );
-				$subscription = new Subscription($database);
-				$subscription->status = 1;
-				$subscription->uid = 1;
-				$subscription->units = 72;
-				$subscription->serviceid = 1; 
-				$subscription->expires = $newexprire = date("Y-m-d",strtotime("+ 72 months"));
-				$subscription->added = date( 'Y-m-d H:i:s', time() );	
-				
-				if (!$subscription->store()) {
-				echo JobsHtml::alert( $subscription->getError() );
-				exit();
-				}
-				
-				if (!$subscription->id) {
-				$subscription->checkin();
-				}
-				
-				// make sure we have dummy admin employer account
-				$jconfig 	=& JFactory::getConfig();
-				$employer->uid = 1;
-				$employer->subscriptionid = $subscription->id;
-				$employer->companyName 		= $jconfig->getValue('config.sitename');
-				$employer->companyLocation  = '';
-				$employer->companyWebsite   = $jconfig->getValue('config.live_site');
-				
-				// save employer information		
-				if (!$employer->store()) {
-					echo JobsHtml::alert( $employer->getError() );
-					exit();
-				}
-				
-				
-			}
-		}
-		else {
-			$emp = $employer->isEmployer($juser->get('id'));
-		}
-		
-		$this->_emp = $emp;
-	}
-	
-	//------------
-	
-	public function authorize_admin($admin = 0)
-	{
-		$juser =& JFactory::getUser();
-		if(!$juser->get('guest')) {
-			// Check if they're a site admin (from Joomla)
-			if ($juser->authorize($this->_option, 'manage')) {
-				$admin = 1;
-			}
-			
-			// check if they belong to a dedicated admin group
-			$admingroup = (isset($this->config->parameters['admingroup']) && $this->config->parameters['admingroup'] != '' ) ? $this->config->parameters['admingroup'] : '' ;
-			if($admingroup) {
-				ximport('xgroup');
-				ximport('xuserhelper');
-				
-				$ugs = XUserHelper::getGroups( $juser->get('id') );
-				if ($ugs && count($ugs) > 0) {
-					foreach ($ugs as $ug) 
-					{
-						if ($ug->cn == $admingroup) {
-							$admin = 1;
-						}
-					}
-				}
-			}
-		
-		}
-		$this->_admin = $admin;
-	}
-	
-	//----------------------------------------------------------
-	// Search preferences
-	//----------------------------------------------------------
-	
-	public function updatePrefs($database, $juser, $category = 'resume')
-	{
-		
-		$saveprefs  = JRequest::getInt( 'saveprefs', 0, 'post');
-		
-		$p = new Prefs($database);
-		
-		$filters = $this->getFilters (0, 0, 0);
-		$text = 'filterby='.$filters['filterby'].'&amp;match=1&amp;search='.$filters['search'].'&amp;category='.$filters['category'].'&amp;type='.$filters['type'].'&amp;sortby=';
-		
-		if ($category == 'job' && isset($_GET["performsearch"])) {
-				$text .= $filters['sortby'];
-				if (!$p->loadPrefs($juser->get('id'), $category)) {
-					$p = new Prefs($database);
-					$p->uid = $juser->get('id');
-					$p->category = $category;
-				}
-				$p->filters = $text;
-				
-				// Store content
-				if (!$p->store()) {
-					echo JobsHtml::alert( $p->getError() );
-					exit();
-				}
-				
-		}
-		else {
-		
-			if($saveprefs && isset($_POST["performsearch"])) {
-				
-				if (!$p->loadPrefs($juser->get('id'), $category)) {
-					$p = new Prefs($database);
-					$p->uid = $juser->get('id');
-					$p->category = $category;
-					$text .= 'bestmatch';
-				}
-				else {
-					$text .= $filters['sortby'];
-				}
-				
-				$p->filters = $text;
-				
-				// Store content
-				if (!$p->store()) {
-					echo JobsHtml::alert( $p->getError() );
-					exit();
-				}
-			}
-			else if ($p->loadPrefs($juser->get('id'), $category) && isset($_POST["performsearch"]))  {
-				// delete prefs
-				$p->delete();
-			}
-		}
-		
-	}
-	
-	//-----------
-	
-	public function getPrefs($database, $juser, $category = 'resume')
-	{
-		
-		$p = new Prefs($database);
-		if($p->loadPrefs($juser->get('id'), $category)) {
-						
-			if(isset($p->filters) && $p->filters) {
-				// get individual filters
-				$col = explode("&amp;",$p->filters);
-		
-				if(count($col > 0 )) {
-					foreach ($col as $c) {
-						$nuk = explode("=",$c);
-						
-						// set filter variables
-						$this->setVar ($nuk[0], $nuk[1]);
-					}
-				}
-							
-			}
-		}	
-		
-	}
-	
-	//----------------------------------------------------------
-	// Search filters
-	//----------------------------------------------------------
-	
-	public function getFilters($admin=0, $emp = 0, $checkstored = 1, $jobs = 0)
-	{
-		
-		// Query filters defaults
-		$filters = array();
-		
-		// jobs filters
-		if($jobs) {
-		$filters['sortby'] 	 =  $this->getVar("sortby") && $checkstored ? $this->getVar("sortby") : trim(JRequest::getVar( 'sortby', 'category' ));
-		$filters['category'] = $this->getVar("category") && $checkstored ? $this->getVar("category") : JRequest::getInt( 'category',  'all');
-		}
-		else {		
-		$filters['sortby'] = $this->getVar("sortby") && $checkstored ? $this->getVar("sortby") : trim(JRequest::getVar( 'sortby', 'lastupdate' ));				
-		$filters['category'] = $this->getVar("category") && $checkstored ? $this->getVar("category") : JRequest::getInt( 'category',  0);
-		}
-		
-		$filters['type'] 	 = $this->getVar("type") && $checkstored ? $this->getVar("type") : JRequest::getInt( 'type',  0);
-		$filters['search'] = $this->getVar("search") && $checkstored ? $this->getVar("search") : trim(JRequest::getVar( 'q', '' ));
-		$filters['filterby'] = trim(JRequest::getVar( 'filterby', 'all' ));	
-		
-		// did we get stored prefs?
-		$filters['match'] = $this->getVar("match") && $checkstored ? $this->getVar("match") : JRequest::getInt( 'match', 0 );
-
-		// Paging vars
-		$filters['limit'] = JRequest::getInt( 'limit', 25 );
-		$filters['start'] = JRequest::getInt( 'limitstart', 0, 'get' );
-		
-		// admins and employers
-		$filters['admin'] = $admin;
-		$filters['emp'] = $emp;
-			
-		// Return the array
-		return $filters;
-	}
-	
-		//----------------------------------------------------------
-	// Misc
-	//----------------------------------------------------------
-
-	public function server($index = '')
-	{		
-		if (!isset($_SERVER[$index])) {
-			return FALSE;
-		}
-		
-		return $_SERVER[$index];
+		$service->maxads 	= intval(str_replace(" ","",$service->maxads));						
 	}	
-
-	//-----------
-
-	public function mkt($stime)
-	{
-		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
-		}
-		return $stime;
-	}
-	
-	//-----------
-	
-	public function timeAgoo($timestamp)
-	{
-		// Store the current time
-		$current_time = time();
-		
-		// Determine the difference, between the time now and the timestamp
-		$difference = $current_time - $timestamp;
-		
-		// Set the periods of time
-		$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
-		
-		// Set the number of seconds per period
-		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-		
-		// Determine which period we should use, based on the number of seconds lapsed.
-		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
-		// Go from decades backwards to seconds
-		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
-		
-		// Ensure the script has found a match
-		if ($val < 0) $val = 0;
-		
-		// Determine the minor value, to recurse through
-		$new_time = $current_time - ($difference % $lengths[$val]);
-		
-		// Set the current value to be floored
-		$number = floor($number);
-		
-		// If required create a plural
-		if($number != 1) $periods[$val].= "s";
-		
-		// Return text
-		$text = sprintf("%d %s ", $number, $periods[$val]);
-		
-		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
-		if (($val >= 1) && (($current_time - $new_time) > 0)){
-			$text .= JobsController::TimeAgoo($new_time);
-		}
-		
-		return $text;
-	}
-	
-	//-----------
-	
-	public function timeAgo($timestamp) 
-	{
-		$text = $this->timeAgoo($timestamp);
-		
-		$parts = explode(' ',$text);
-
-		$text  = $parts[0].' '.$parts[1];
-		//$text .= ($parts[2]) ? ' '.$parts[2].' '.$parts[3] : '';
-		return $text;
-	}
-
-	//------------
-	
-	public function purifyText( &$text ) 
-	{
-		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
-		$text = preg_replace( '/{.+?}/', '', $text );
-		$text = preg_replace( "'<script[^>]*>.*?</script>'si", '', $text );
-		$text = preg_replace( '/<a\s+.*?href="([^"]+)"[^>]*>([^<]+)<\/a>/is', '\2', $text );
-		$text = preg_replace( '/<!--.+?-->/', '', $text );
-		$text = preg_replace( '/&nbsp;/', ' ', $text );
-		$text = preg_replace( '/&amp;/', ' ', $text );
-		$text = preg_replace( '/&quot;/', ' ', $text );
-		$text = strip_tags( $text );
-		return $text;
-	}
-	
-	//------------
-	
-	public function startTitle($title = '')
-	{
-		$title = JText::_(strtoupper($this->_name));
-		$title.= $this->industry ? ' '.JText::_('IN').' '.$this->industry : '';
-		return $title;
-	}
-	
-	//------------	
 }
 ?>
