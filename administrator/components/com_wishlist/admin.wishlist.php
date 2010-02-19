@@ -36,7 +36,7 @@ jimport('joomla.application.component.helper');
 
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.config.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
-
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'wish.tags.php' );
 
 // Initiate controller
 $controller = new WishlistController();
