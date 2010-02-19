@@ -35,12 +35,18 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
+jimport('joomla.application.component.view');
+
+ximport('Hubzero_View_Helper_Html');
+ximport('bankaccount');
+ximport('xgeoutils');
+ximport('xprofile');
+ximport('subscriptions' );
+
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'jobs.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'jobs.class.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'jobs.config.php' );
-ximport('bankaccount');
-ximport('misc_func');
 
 $jacl =& JFactory::getACL();
 $jacl->addACL( $option, 'manage', 'users', 'super administrator' );

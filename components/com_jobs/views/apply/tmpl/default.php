@@ -33,8 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	
 	$job = $this->job;
 	$seeker = $this->seeker;
-	$application = $this->application;
-	
+	$application = $this->application;	
 	$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;	
 	
 ?>
@@ -44,56 +43,60 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
     <ul id="useroptions">
-<?php if($this->emp) {  ?>
-    	<li><a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('Employer Dashboard'); ?></a></li>
-        <li><a class="shortlist" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('Candidate Shortlist'); ?></a></li>  
- <?php } else { ?>  
- 		<li class="alljobs"><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=browse'); ?>"><?php echo JText::_('All Jobs'); ?></a></li>
- <?php } ?>  
-	</ul>
+    <?php if($juser->get('guest')) { ?> 
+    	<li><?php echo JText::_('PLEASE').' <a href="'.JRoute::_('index.php?option='.$option.a.'task=view').'?action=login">'.JText::_('ACTION_LOGIN').'</a> '.JText::_('ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
+    <?php } else if($this->emp && $this->allowsubscriptions) {  ?>
+    	<li><a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+        <li><a class="shortlist" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('JOBS_SHORTLIST'); ?></a></li>
+    <?php } else if($this->admin) { ?>
+    	<li><?php echo JText::_('NOTICE_YOU_ARE_ADMIN'); ?>
+        	<a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('JOBS_ADMIN_DASHBOARD'); ?></a></li>
+	<?php } else { ?>  
+    	<li><a class="alljobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=browse'); ?>"><?php echo JText::_('JOBS_ALL_JOBS'); ?></a></li>
+    <?php } ?>  
+</ul>
 </div><!-- / #content-header-extra -->
 <?php
-		if(!$seeker) {
-		 echo JobsHtml::Warning (JText::_('To apply to this posting through').' '.$hubShortName.' '.JText::_('you need to upload your current resume and create a job seeker profile.'));
-		 echo '<p><a href="'. JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=resume').'" class="add">'.JText::_('Create a job seeker profile').'</a></p>';
-		 return;
-		}
-		
+	if (!$seeker) { ?>
+		<p class="warning"><?php echo JText::_('APPLY_TO_APPLY').' '.$hubShortName.' '.JText::_('APPLY_NEED_RESUME') ?></p>
+        <p>
+			<?php echo '<a href="'. JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=resume').'" class="add">'.JText::_('ACTION_CREATE_PROFILE').'</a>'; ?>
+        </p>
+	<?php 
+	return; 
+	}		
 		$html = '';
 		
 		$job->title = trim(stripslashes($job->title));
+		$appid = $application->status!=2 ? $application->id : 0;
 		$html .= '<div class="main section">'.n;
 		
 		if((!$this->admin && $juser->get('id') == $job->employerid) or ($this->admin && $job->employerid == 1) ) {
-		 $html .= t.JobsHtml::Warning (JText::_('Do you know you are applying to your own job posting? That\'s OK, people do more weird things.')).n;
+		 $html .= t.'<p class="warning">'.JText::_('APPLY_WARNING_OWN_AD').'</p>'.n;
 		}
 				
-		$html .= t.'<div id="applyinfo">'.n;
-	
-		// display job info
+		$html .= t.'<div id="applyinfo">'.n;	
 		$html .= t.t.'<h3>'.$job->title.' - ';
 		$html .= preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="'.$job->companyWebsite.'">'.$job->companyName.'</a>' : $job->companyName;
-		$html .= ', '.$job->companyLocation.', '.$job->companyLocationCountry.'<span>'.JText::_('Reference code').': '.$job->code.'</span></h3>'.n;
+		$html .= ', '.$job->companyLocation.', '.$job->companyLocationCountry.'<span>'.JText::_('JOB_REFERENCE_CODE').': '.$job->code.'</span></h3>'.n;
 		$html .= t.'</div>'.n;
-		
-		$appid = $application->status!=2 ? $application->id : 0;
-		
+				
 		// message to employer
 		$html .= t.t.' <form id="hubForm" method="post" action="index.php?option='.$this->option.'">'.n;
 		$html .= t.t.t.'<fieldset>'.n;
 		$html .= t.t.t.'	  <input type="hidden"  name="task" value="saveapp" />'.n;
+		$html .= t.t.t.'	  <input type="hidden" id="code" name="code" value="'.$job->code.'" />'.n;	
 		$html .= t.t.t.'	  <input type="hidden" id="jid" name="jid" value="'.$job->id.'" />'.n;	
 		$html .= t.t.t.'	  <input type="hidden" id="appid" name="appid" value="'.$appid.'" />'.n;	
 		$html .= t.t.t.'	  <input type="hidden" id="uid" name="uid" value="'.$juser->get('id').'" />'.n;	
-		$html .= t.t.t.'	  <h3>'.JText::_('Message to Employer').' <span class="opt">('.JText::_('optional').')</span></h3>'.n;
+		$html .= t.t.t.'	  <h3>'.JText::_('APPLY_MSG_TO_EMPLOYER').' <span class="opt">('.JText::_('OPTIONAL').')</span></h3>'.n;
 		$html .= t.t.t.'	  <label>'.n;
 		$html .= t.t.t.'	  <textarea name="cover" id="cover" rows="10" cols="15">'.$application->cover.'</textarea>'.n;
 		$html .= t.t.t.'	  </label>'.n;
 		$html .= t.t.t.'</fieldset>'.n;
 		$html .= t.t.t.'<div class="explaination">'.n;
-		$html .= t.t.t.t.'<p>'.JText::_('Use this form to include a cover letter to the employer (optional) with your application. Your current resume and job seeker profile information will be included by default. You can change information in your profile at any time.').'</p>'.n;
-		$html .= t.t.t.'</div>'.n;	
-	
+		$html .= t.t.t.t.'<p>'.JText::_('APPLY_HINT_COVER_LETTER').'</p>'.n;
+		$html .= t.t.t.'</div>'.n;		
 		$html .= t.t.t.' <div class="clear"></div>'.n; 	
 		
 		$html .= t.t.t.' <div class="subject custom">'.n; 	
@@ -107,21 +110,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= $out[0];
 			}
 		}
-		$html .= t.t.t.'</div>'.n;	
-		
+		$html .= t.t.t.'</div>'.n;			
 		$html .= t.'<p class="submit"><input type="submit" name="submit" value="';
-		$html .= $this->task=='editapp' ? JText::_('Save changes to application') : JText::_('Apply to this Job');
+		$html .= $this->task=='editapp' ? JText::_('ACTION_SAVE_CHANGES_APPLICATION') : JText::_('ACTION_APPLY_THIS_JOB');
 		$html .= '" />';
 		$html .= '<span class="cancelaction">';
 		$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.a.'task=job'.a.'id='.$job->id).'">';
 		$html .= JText::_('CANCEL').'</a></span></p>'.n;
-		
 		$html .= t.t.t.' </form>'.n;
-	
-	
 		$html .= '</div>'.n;
-				
-		
 		
 		echo $html;
  ?>

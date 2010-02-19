@@ -42,7 +42,15 @@ function JobsBuildRoute(&$query)
         unset($query['id']);
     }
 	
-		
+	if (!empty($query['code'])) {
+        $segments[] = $query['code'];
+        unset($query['code']);
+    }
+	
+	if (!empty($query['employer'])) {
+        $segments[] = $query['employer'];
+        unset($query['employer']);
+    }
     return $segments;
 }
 
@@ -59,32 +67,22 @@ function JobsParseRoute($segments)
 		return $vars;
 	}
 
-    if (intval($segments[0]) && empty($segments[1]))
-    {
-		// we have a specific list id requested
-		$vars['task'] = 'job';
-        $vars['id'] = $segments[0];
-        return $vars;
-    }
-	else if(!intval($segments[0]) && empty($segments[1])) {
+    if(!intval($segments[0]) && empty($segments[1])) {
 		// some general task
 		$vars['task'] = $segments[0];
 		return $vars;
 	}
 	
-
  	if (!empty($segments[1]))
-    {
-		
+    {		
 			if($segments[0]=='job') {
 				$vars['task'] = 'job';
-				$vars['id'] = $segments[1];
+				$vars['code'] = $segments[1];
 				return $vars;
-			}
-			
+			}			
 			else if($segments[0]=='editjob') {
 				$vars['task'] = 'editjob';
-				$vars['id'] = $segments[1];
+				$vars['code'] = $segments[1];
 				return $vars;
 			}
 			else if($segments[0]=='editresume') {
@@ -94,43 +92,46 @@ function JobsParseRoute($segments)
 			}
 			else if($segments[0]=='apply') {
 				$vars['task'] = 'apply';
-				$vars['id'] = $segments[1];
+				$vars['code'] = $segments[1];
 				return $vars;
 			}
 			else if($segments[0]=='editapp') {
 				$vars['task'] = 'editapp';
-				$vars['id'] = $segments[1];
+				$vars['code'] = $segments[1];
 				return $vars;
 			}
 			else if($segments[0]=='withdraw') {
 				$vars['task'] = 'withdraw';
+				$vars['code'] = $segments[1];
 				return $vars;
 			}
 			else if($segments[0]=='confirmjob') {
 				$vars['task'] = 'confirmjob';
-				$vars['id'] = $segments[1];
+				$vars['code'] = $segments[1];
 				return $vars;
 			}
 			else if($segments[0]=='unpublish') {
 				$vars['task'] = 'unpublish';
-				$vars['id'] = $segments[1];
+				$vars['code'] = $segments[1];
 				return $vars;
 			}
 			else if($segments[0]=='reopen') {
 				$vars['task'] = 'reopen';
-				$vars['id'] = $segments[1];
+				$vars['code'] = $segments[1];
 				return $vars;
 			}
 			else if($segments[0]=='remove') {
 				$vars['task'] = 'remove';
-				$vars['id'] = $segments[1];
+				$vars['code'] = $segments[1];
 				return $vars;
-			}
-			
-		
+			}	
+			else if($segments[0]=='browse' or $segments[0]=='all') {
+				$vars['task'] = 'browse';
+				$vars['employer'] = $segments[1];
+				return $vars;
+			}		
     }
 	    
     return $vars;
 }
-
 ?>

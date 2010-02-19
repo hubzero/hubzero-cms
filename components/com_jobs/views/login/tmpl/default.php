@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
+ * @author		Shawn Rice <zooley@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -22,29 +22,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-
-//----------------------------------------------------------
-
-error_reporting(E_ALL);
-@ini_set('display_errors','1');
-
-jimport('joomla.application.component.helper');
-
-// Include scripts
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'jobs.config.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'jobs.class.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.jobs.html.php' );
-
-ximport('xuser');
-ximport('bankaccount');
-ximport('misc_func');
-
-// Initiate controller
-$controller = new JobsController();
-$controller->execute();
-$controller->redirect();
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 ?>
+<div id="content-header" class="full">
+	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div class="main section">
+<?php if ($this->getError()) { ?>
+	<p class="warning"><?php echo $this->getError(); ?></p>
+<?php } ?>
+<?php if ($this->msg) { ?>
+	<p class="warning"><?php echo $this->msg; ?></p>
+<?php } ?>
+<?php
+ximport('xmodule');
+XModuleHelper::displayModules('force_mod');
+?>
+</div><!-- / .main section -->

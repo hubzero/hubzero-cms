@@ -36,67 +36,6 @@ if (!defined('n')) {
 
 class JobsHtml 
 {
-	public function error( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
-	}
-	
-	//-----------
-
-	public function warning( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'.n;
-	}
-
-	//-----------
-
-	public function info( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="info">'.$msg.'</'.$tag.'>'.n;
-	}
-
-	//-----------
-
-	public function passed( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="passed">'.$msg.'</'.$tag.'>'.n;
-	}
-	
-	//-----------
-	
-	public function alert( $msg )
-	{
-		return '<script type="text/javascript"> alert(\''.$msg.'\'); window.history.go(-1); </script>'.n;
-	}
-	
-	//-----------
-
-	public function statusmsg ( $msg, $subclass, $tag='p' )
-	{
-		return '<'.$tag.' class="statusmsg '.$subclass.'">'.$msg.'</'.$tag.'>'.n;
-	}
-	
-	//-----------
-
-	public function tableRow($h,$c='', $e, $class='')
-	{
-		$html  = t.'  <tr';
-		if($class) {
-		$html .= t.'  class="'.$class.'"';
-		}
-		$html .= '>'.n;
-		$html .= t.'   <th>'.$h.'</th>'.n;
-		$html .= t.'   <td>';
-		//$html .= ($c) ? $c : '&nbsp;';
-		$html .= $c;
-		$html .= '</td>'.n;
-		$html .= t.'   <td>';
-		$html .= ($e) ? $e : '&nbsp;';
-		$html .= '</td>'.n;
-		$html .= t.'  </tr>'.n;
-		
-		return $html;
-	}
 	//-----------
 
 	public function txt_unpee($pee)
@@ -109,46 +48,6 @@ class JobsHtml
 		$pee = trim($pee);
 		return $pee;
 	}
-
-	//-----------
-	
-	public function hed($level, $txt)
-	{
-		return '<h'.$level.'>'.$txt.'</h'.$level.'>';
-	}
-	
-	//-----------
-
-	public function div($txt, $cls='', $id='')
-	{
-		$html  = '<div';
-		$html .= ($cls) ? ' class="'.$cls.'"' : '';
-		$html .= ($id) ? ' id="'.$id.'"' : '';
-		$html .= '>'.n;
-		$html .= $txt.n;
-		$html .= '</div><!-- / ';
-		if ($id) {
-			$html .= '#'.$id;
-		}
-		if ($cls) {
-			$html .= '.'.$cls;
-		}
-		$html .= ' -->'.n;
-		return $html;
-	}
-	//-----------
-	
-	public function aside($txt, $id='')
-	{
-		return JobsHTML::div($txt, 'aside', $id);
-	}
-	
-	//-----------
-	
-	public function subject($txt, $id='')
-	{
-		return JobsHtml ::div($txt, 'subject', $id);
-	}
 	
 	//-----------
 	
@@ -156,23 +55,23 @@ class JobsHtml
 	{
 		$html =  '<div class="confirmwrap">'.n;
 		$html.=  t.'<div class="confirmscreen">'.n;
-		$html.=  t.'<p class="warning">'.JText::_('Are you sure you want to').' ';
+		$html.=  t.'<p class="warning">'.JText::_('CONFIRM_ARE_YOU_SURE').' ';
 		if($action=='cancelsubscription') {
-			$html.=  JText::_('cancel this subscription');
+			$html.= strtolower(JText::_('SUBSCRIPTION_CANCEL_THIS'));
 		} 
 		else if($action=='withdrawapp') {
-			$html.=  JText::_('withdraw your application');
+			$html.=  JText::_('APPLICATION_WITHDRAW');
 		} 
 		else {
-			$html.= JText::_('perform this action'); 
+			$html.= JText::_('ACTION_PERFORM_THIS'); 
 		}
-		$yes = JText::_('YES');
-		$yes.= $action=='cancelsubscription' ? ', '.JText::_('cancel it') : '';
-		$yes.= $action=='withdrawapp' ? ', '.JText::_('withdraw') : '';
+		$yes = strtoupper(JText::_('YES'));
+		$yes.= $action=='cancelsubscription' ? ', '.JText::_('ACTION_CANCEL_IT') : '';
+		$yes.= $action=='withdrawapp' ? ', '.JText::_('ACTION_WITHDRAW') : '';
 		
-		$no = JText::_('NO');
-		$no.= $action=='cancelsubscription' ? ', '.JText::_('do not cancel') : '';
-		$no.= $action=='withdrawapp' ? ', '.JText::_('do not withdraw') : '';
+		$no = strtoupper(JText::_('NO'));
+		$no.= $action=='cancelsubscription' ? ', '.JText::_('ACTION_DO_NOT_CANCEL') : '';
+		$no.= $action=='withdrawapp' ? ', '.JText::_('ACTION_DO_NOT_WITHDRAW') : '';
 		
 		$html.= '?</p>'.n;
 		$html.=  t.'<p><span class="yes"><a href="'.$actionurl.'">'.$yes.'</a></span> <span class="no"><a href="'.$returnurl.'">'.$no.'</a></span></p>';
@@ -198,75 +97,12 @@ class JobsHtml
 		$out .= '</select>'.n;
 		return $out;
 	}
-	
-	//-----------
-	
-	public function browseForm_Jobs($option, $filters, $admin, $totalnote)
-	{
-		$sortbys = array('category'=>JText::_('CATEGORY'),'opendate'=>JText::_('Posted Date'),'type'=>JText::_('TYPE'));
-		$filterbys = array('all'=>JText::_('ALL'),'open'=>JText::_('ACTIVE'),'closed'=>JText::_('EXPIRED'));
-		
-		$html  = '<div class="jobs_controls">'.n;
-		//$html .= t.'<form method="get" action="'.JRoute::_('index.php?option='.$option.a.'task=browse').'">'.n;
-		$html .= t.t.'<fieldset>'.n;
-		$html .= t.t.t.'<label> '.JText::_('Search by keywords').':<span class="questionmark tooltips" title="Keywords Search :: Use skill and action keywords separated by commas, e.g. XML, web, MBA etc."></span> '.n;
-		$html .= t.t.t.'<input type="text" name="q" value="'.$filters['search'].'" />'.n;
-		$html .= t.t.t.'</label> '.n;
-		$html .= t.t.t.'&nbsp;&nbsp;<label>'.JText::_('SORTBY').':'.n;
-		$html .= JobsHtml::formSelect('sortby', $sortbys, $filters['sortby'], '', '');
-		$html .= t.t.t.'</label>'.n;
-		$html .= t.t.t.'<input type="submit" value="'.JText::_('GO').'" />'.n;
-		$html .= t.t.t.'<input type="hidden" name="limitstart" value="0" />'.n;
-		$html .= t.t.t.'<input type="hidden" name="performsearch" value="1" />'.n;
-		$html .= t.t.'</fieldset>'.n;
-		$html .= t.t.t.'<div class="note_total">'.$totalnote.'</div>'.n;
-		//$html .= t.'</form>'.n;		
-		$html .= '</div>'.n;
-		
-		
-		return $html;
-	}
-		
-	//-----------
-
-	public function shortenText($text, $chars=300, $p=1) 
-	{
-		$text = strip_tags($text);
-		$text = trim($text);
-
-		if (strlen($text) > $chars) {
-			$text = $text.' ';
-			$text = substr($text,0,$chars);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' &#8230;';
-		}
-		
-		if ($text == '') {
-			$text = '&#8230;';
-		}
-		
-		if ($p) {
-			$text = '<p>'.$text.'</p>';
-		}
-
-		return $text;
-	}
-	
 	//------------
 	public function wikiHelp() 
 	{	
 		$out  = '<table class="wiki-reference" summary="Wiki Syntax Reference">'.n;
 		$out .= '<caption>Wiki Syntax Reference</caption>'.n;
 		$out .= '	<tbody>'.n;
-		/*$out .= '		<tr>'.n;
-		$out .= '			<td> = heading =</td>'.n;
-		$out .= '			<td><h1>heading</h1></td>'.n;
-		$out .= '		</tr>'.n;
-		$out .= '		<tr>'.n;
-		$out .= '			<td> == subheading ==</td>'.n;
-		$out .= '			<td><h2>subheading</h2></td>'.n;
-		$out .= '		</tr>'.n;
-		*/
 		$out .= '		<tr>'.n;
 		$out .= '			<td>\'\'\'bold\'\'\'</td>'.n;
 		$out .= '			<td><b>bold</b></td>'.n;
@@ -300,6 +136,5 @@ class JobsHtml
 		
 		return $out;
 	}
-
 }
 ?>

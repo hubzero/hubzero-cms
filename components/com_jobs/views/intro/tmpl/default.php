@@ -24,18 +24,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-	/* Intro */
-	
+	/* Intro */	
 	$xhub =& XFactory::getHub();
 	$hubShortName = $xhub->getCfg('hubShortName');
-	$juser 	  =& JFactory::getUser();
 	
-	// get some configs
-	$infolink = isset($this->config->parameters['infolink']) && $this->config->parameters['infolink']!=''  ? $this->config->parameters['infolink'] : 'kb/jobs';
-	$premium_infolink = isset($this->config->parameters['premium_infolink']) && $this->config->parameters['premium_infolink'] != ''  ? $this->config->parameters['_premium_infolink'] : '';
-	$allowsubscriptions = $this->allowsubscriptions;
-	$promoline = isset($this->config->parameters['promoline']) ? $this->config->parameters['promoline'] : '';
-
+	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
+	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : '';
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -43,36 +37,38 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
     <ul id="useroptions">
-    <?php if($juser->get('guest')) { ?> 
-    	<li><?php echo JText::_('Please').' <a href="'.JRoute::_('index.php?option='.$option.a.'task=view').'?action=login">'.JText::_('Login').'</a> '.JText::_('to view extra options'); ?></li>
-    <?php } else if($this->emp && $allowsubscriptions) {  ?>
-    	<li><a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('Employer Dashboard'); ?></a></li>
-        <li><a class="shortlist" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('Candidate Shortlist'); ?></a></li>
+    <?php if($this->guest) { ?> 
+    	<li><?php echo JText::_('PLEASE').' <a href="'.JRoute::_('index.php?option='.$option.a.'task=view').'?action=login">'.JText::_('ACTION_LOGIN').'</a> '.JText::_('ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
+    <?php } else if($this->emp && $this->allowsubscriptions) {  ?>
+    	<li><a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+        <li><a class="shortlist" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('JOBS_SHORTLIST'); ?></a></li>
     <?php } else if($this->admin) { ?>
-    	<li><a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('Administrator Dashboard'); ?></a></li>
+    	<li><?php echo JText::_('NOTICE_YOU_ARE_ADMIN'); ?>
+        	<a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('JOBS_ADMIN_DASHBOARD'); ?></a></li>
 	<?php } else { ?>  
-    	<li><a class="myresume" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addresume'); ?>"><?php echo JText::_('My Resume'); ?></a></li>
+    	<li><a class="myresume" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addresume'); ?>"><?php echo JText::_('JOBS_MY_RESUME'); ?></a></li>
     <?php } ?>  
 </ul>
 </div><!-- / #content-header-extra -->
+<?php if($this->msg) { ?>
+	<p class="help"><?php echo $this->msg; ?></p>
+<?php } ?>  
 
-<?php if($this->msg) { echo '<p class="help">'.$this->msg.'</p>';  } ?>
-
-<?php if($allowsubscriptions) { ?>
+<?php if($this->allowsubscriptions) { ?>
 <div id="introduction" class="section">
 	<div class="aside">
-		<h3><?php echo JText::_('Questions?'); ?></h3>
+		<h3><?php echo JText::_('JOBS_QUESTIONS_LINK'); ?></h3>
 		<p><?php echo '<a href="'.$infolink.'">'.JText::_('LEARN_MORE').'</a> '.JText::_('ABOUT_THE_PROCESS'); ?></p>
 	</div><!-- / .aside -->
 	<div class="subject">
 		<div class="three columns first">
-			<p class="intronote"><?php echo JText::_('Enjoy a wide community exposure for your resume and job ads on ').$hubShortName.'. '.JText::_('Services for job seekers are FREE.'); if($premium_infolink) { echo (' '.JText::_('Employers are required to subscribe to').' <a href="'.$premium_infolink.'" class="premium" title="'.JText::_('WHAT_IS_PREMIUM').'">'.JText::_('PREMIUM_SERVICES').'</a>.'); } else { echo ' '.JText::_('Employers are required to subscribe to Employer Services.'); } ?></p>
+			<p class="intronote"><?php echo JText::_('TIP_ENJOY_COMMUNITY_EXPOSURE').' '.$hubShortName.'. '.JText::_('TIP_SERVICES_FREE'); echo ' '.JText::_('TIP_EMPLOYERS_SUBSCRIPTION_REQUIRED'); ?></p>
 		</div>
 		<div class="three columns second">
 			<h3><?php echo JText::_('EMPLOYERS'); ?></h3>           
 			<ul>
-            	<li><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes'); ?>"><?php echo JText::_('BROWSE_RESUMES'); ?></a></li>
-				<li><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addjob'); ?>"><?php echo JText::_('POST_JOB'); ?></a></li>                
+            	<li><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes'); ?>"><?php echo JText::_('ACTION_BROWSE_RESUMES'); ?></a></li>
+				<li><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addjob'); ?>"><?php echo JText::_('ACTION_POST_JOB'); ?></a></li>                
 			</ul>
              <?php if($promoline) { ?> 
             <p class="promo"><?php echo $promoline; ?></p>   
@@ -82,8 +78,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<h3><?php echo JText::_('SEEKERS'); ?></h3>
            
 			<ul>
-           		<li><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=browse'); ?>"><?php echo JText::_('Browse Jobs'); ?></a></li>
-				<li><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addresume'); ?>"><?php echo JText::_('POST_RESUME'); ?></a></li>
+           		<li><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=browse'); ?>"><?php echo JText::_('ACTION_BROWSE_JOBS'); ?></a></li>
+				<li><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addresume'); ?>"><?php echo JText::_('ACTION_POST_RESUME'); ?></a></li>
 			</ul>
 		</div>
 		<div class="clear"></div>
@@ -91,4 +87,3 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 <?php } ?>
-

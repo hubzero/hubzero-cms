@@ -169,8 +169,7 @@ class Subscription extends JTable
 		$sql  = "SELECT u.*, s.id as serviceid, s.title, s.category, s.unitprice, s.pointsprice, s.currency, s.unitsize, s.unitmeasure, s.minunits, s.maxunits, e.companyLocation, e.companyName, e.companyWebsite ";
 		$sql .= " FROM $this->_tbl AS u JOIN #__users_points_services as s ON s.id=u.serviceid ";
 		$sql .= " JOIN #__jobs_employers as e ON e.uid=u.uid ";
-		$sql .= " WHERE u.id='$id' ";
-		
+		$sql .= " WHERE u.id='$id' ";		
 
 		$this->_db->setQuery( $sql );
 		$result = $this->_db->loadObjectList();
@@ -221,8 +220,7 @@ class Subscription extends JTable
 	
 	 //-----------
 	function generateCode ($minlength = 6, $maxlength = 6, $usespecial = 0, $usenumbers = 1, $useletters = 1 )
-	{
-	
+	{	
 		$key = '';
 		$charset = '';
 		if ($useletters) $charset .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -249,8 +247,7 @@ class Subscription extends JTable
 		$starttime = $subscription->added;
 		$lastunit = 0;
 		$today = date('Y-m-d H:i:s', time() - (24 * 60 * 60));
-		
-				
+						
 		for($i = 0; $i < $maxunits; $i++) {
 			$starttime = date('Y-m-d', strtotime("+".$unitsize."month", strtotime($starttime)));
 			$limits[$i] = $starttime;
@@ -263,22 +260,10 @@ class Subscription extends JTable
 				$remaining= $subscription->units - $lastunit;
 				$refund = $remaining > 0 ? $remaining : 0;
 				return ($remaining);			
-			}
-			
+			}			
 		  } 
-		}
-
-	
+		}	
 	}
-	
-	//-----------
-	
-	function postPayment ($subid, $units, $amount, $usepoints=0)
-	{
-	
-	
-	}
-	
 }
 
 //----------------------------------------------------------
@@ -393,8 +378,7 @@ class Service extends JTable
 			}
 		}
 		
-		return $services;
-		
+		return $services;		
 	}
 	
 	//-----------
@@ -411,8 +395,7 @@ class Service extends JTable
 		else {
 		$this->_db->setQuery( "SELECT unitprice FROM $this->_tbl WHERE id='$id'" );
 		}
-		return $this->_db->loadResult();
-		
+		return $this->_db->loadResult();		
 	}
 	
 	//--------
@@ -433,14 +416,7 @@ class Service extends JTable
 		$query .= " ORDER BY y.id DESC LIMIT 1 ";
 
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();
-	
+		return $this->_db->loadResult();	
 	}
-	
-
 }
-
-
-
-
 ?>

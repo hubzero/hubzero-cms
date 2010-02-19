@@ -32,17 +32,14 @@ HUB.Jobs = {
 		var default_tagline = 'Why should I be hired? (optional but highly recommended)';
 		var default_lookingfor = 'Briefly describe your career goals (optional but highly recommended)';
 		
-		// cancel confirm form
-	
-		if($('showconfirm') && $$('.confirmwrap')[0]) {	
-			
+		// cancel confirm form	
+		if($('showconfirm') && $$('.confirmwrap')[0]) {				
 			$('showconfirm').addEvent('click', function(e) {
-					e = new Event(e).stop();
-					$$('.confirmwrap')[0].style.display = 'block';					   
+				e = new Event(e).stop();
+				$$('.confirmwrap')[0].style.display = 'block';					   
 			});		   
 		}
-		
-		
+				
 		// subscription form
 		if($('subForm')) {	
 			var frm = document.getElementById('hubForm');
@@ -52,77 +49,53 @@ HUB.Jobs = {
 			
 			if(services) {
 				var sel = 0;
-				services.each(function(item) {
-								
-					
+				services.each(function(item) {													
 					if (item.checked) {
-						$('plan_'+ item.value).style.display = 'block';	
-						
+						$('plan_'+ item.value).style.display = 'block';							
 					}
 					else {
 						$('plan_'+ item.value).style.display = 'none';	
 					}
 					
-					$('units_' + item.value).addEvent('change', function() {
-																		 
+					$('units_' + item.value).addEvent('change', function() {																	 
 						var unitprice = $('price_' + item.value).value;
 						var newprice = unitprice * $('units_' + item.value).value;
 						$('injecttotal_' + item.value).innerHTML = 	newprice.toFixed(2);
-						//sel = item.value;
-						
 					});	
 					
-					item.addEvent('click', function(){
-						
+					item.addEvent('click', function(){					
 						HUB.Jobs.hideDetails();
-						$('plan_'+ item.value).style.display = 'block';	
-					
-					});				
-					
-			   });				
-				 			   
+						$('plan_'+ item.value).style.display = 'block';					
+					});									
+			   });								 			   
 			}
 						
 			// display total price calculation
 			$$('.totalprice').each(function(item) {	
-					item.style.display = 'block';					
-			});
-			
-			
-		}
-		
-		
+				item.style.display = 'block';					
+			});			
+		}		
 		
 		// save to shortlist
-		if($$('.favvit')) {	
-	
-			if ($$('.favvit').length > 0) {
-				
-				
+		if($$('.favvit')) {		
+			if ($$('.favvit').length > 0) {				
 				$$('.favvit').each(function(item) {		
 					item.addEvent('click', function(e) {	
 						e = new Event(e).stop();
-						
-						
 						var oid = $(item.parentNode).getProperty('id').replace('o','');						
 						var profilebox = $(item.parentNode.parentNode.parentNode);
 							
 						new Ajax('index.php?option=com_jobs&task=plugin&trigger=onMembersShortlist&no_html=1&oid='+oid,{
 							method : 'get',
 							update : $(profilebox)
-						}).request();
-						
-						
-					});						  
-												  
+						}).request();						
+					});						  												  
 				});								  
 			}
 		}
 			
 		// editing seeker info
-		if($('tagline-men')) {
-			
-		
+		if($('tagline-men')) {		
 			HUB.Jobs.setCounter($('tagline-men'), $('counter_number_tagline') );
 			
 			if($('tagline-men').value=='') {
@@ -135,16 +108,14 @@ HUB.Jobs = {
 					if($('tagline-men').value == default_tagline)	 {
 						$('tagline-men').value = '';
 						$('tagline-men').setStyle('color', '#000');
-					}
-										   
+					}										   
 			});	
 			
 			$('tagline-men').addEvent('keyup', function(e) {					
 					HUB.Jobs.setCounter($('tagline-men'), $('counter_number_tagline') );
 			});	
 		}
-		
-		
+				
 		if($('lookingfor-men')) {		
 				
 			HUB.Jobs.setCounter($('lookingfor-men'), $('counter_number_lookingfor') );
@@ -159,8 +130,7 @@ HUB.Jobs = {
 					if($('lookingfor-men').value == default_lookingfor)	 {
 						$('lookingfor-men').value = '';
 						$('lookingfor-men').setStyle('color', '#000');
-					}
-										   
+					}										   
 			});	
 			
 			$('lookingfor-men').addEvent('keyup', function(e) {					
@@ -171,35 +141,27 @@ HUB.Jobs = {
 		
 		// submit form - cleanup default values
 		
-		if($('prefsForm')) {	
-		
+		if($('prefsForm')) {			
 			$('prefsForm').addEvent('submit', function(){
-						if($('lookingfor-men').value=='' || $('lookingfor-men').value==default_lookingfor) {
-							//alert("Please describe both yourself and your career goals.");
-							//window.history.go(-1);
-							$('lookingfor-men').value = '';
-							
-						}
-						if( $('tagline-men').value =='' || $('tagline-men').value == default_tagline) {
-							$('tagline-men').value = '';
-						}
+				if($('lookingfor-men').value=='' || $('lookingfor-men').value==default_lookingfor) {
+					$('lookingfor-men').value = '';
+				}
+				if( $('tagline-men').value =='' || $('tagline-men').value == default_tagline) {
+					$('tagline-men').value = '';
+				}
 			});	
 		}
-		
-		
+			
 		// show chars counter
-		if($$('.counter')) {	
-		
+		if($$('.counter')) {			
 			for (i = 0; i < $$('.counter').length; i++) {
 				$$('.counter')[i].style.display = "block";
 			}
-		}	
-		
+		}			
 	},
 	
 	hideDetails: function() {
-			$$('.subdetails').each(function(item) {
-											
+			$$('.subdetails').each(function(item) {											
 				item.style.display = 'none';								
 			});
 	},
@@ -215,7 +177,6 @@ HUB.Jobs = {
 			}
 			numel.innerHTML = remaining_chars;
 			
-
 			if(remaining_chars <= 10){
 			$(numel.parentNode).setStyle('color', '#CC0000');
 			} else {
@@ -224,10 +185,8 @@ HUB.Jobs = {
 			
 			if (remaining_chars == 0) {
 				el.setProperty('value', el.getProperty('value').substr(0,maxchars));
-			}
-			
+			}			
 	}
 }
 
 window.addEvent('domready', HUB.Jobs.initialize);
-
