@@ -778,10 +778,12 @@ class ResourcesController extends JObject
 		if ($row->standalone == 1) {
 			// Get groups
 			ximport('xgroup');
+			ximport('Hubzero_Group');
 			$filters = array();
 			$filters['authorized'] = 'admin';
-			$filters['fields'] = array('description','published','gidNumber','type');
-			$groups = XGroupHelper::get_groups('hub', false, $filters);
+			$filters['fields'] = array('cn','description','published','gidNumber','type');
+			$filters['type'] = 'hub';
+			$groups = Hubzero_Group::find($filters);
 
 			// Build <select> of groups
 			$lists['groups'] = ResourcesHtml::selectGroup($groups, $row->group_owner);

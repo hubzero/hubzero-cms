@@ -4477,6 +4477,8 @@ class ContribtoolController extends JObject
 
 	private function getGroups( $groups )
 	{
+		ximport('Hubzero_Group');
+		
 		$juser =& JFactory::getUser();
 
 		if (!$juser->get('guest')) {
@@ -4485,8 +4487,6 @@ class ContribtoolController extends JObject
 
 			for ($i = 0; $i < count($ugs); $i++)
 			{
-				$public = XGroupHelper::get_groups('hub', false);
-
 				$groups[$i]->cn  = $ugs[$i]->cn;
 				$groups[$i]->description = $ugs[$i]->description;
 			}
