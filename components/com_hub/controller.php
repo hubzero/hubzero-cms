@@ -428,7 +428,7 @@ class HubController extends JObject
 	{
 		ximport('xprofile');
 		ximport('xuserhelper');
-		ximport('xprofilehelper');
+		ximport('xprofile');
 		ximport('xhubhelper');
 		
 		$xhub =& XFactory::getHub();
