@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_resources_versions' );
 
 class plgResourcesVersions extends JPlugin
 {
-	function plgResourcesVersions(&$subject, $config)
+	public function plgResourcesVersions(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,13 +45,13 @@ class plgResourcesVersions extends JPlugin
 	
 	//-----------
 	
-	function &onResourcesAreas( $resource ) 
+	public function &onResourcesAreas( $resource ) 
 	{
 		if ($resource->type != 7) {
 			$areas = array();
 		} else {
 			$areas = array(
-				'versions' => JText::_('VERSIONS')
+				'versions' => JText::_('PLG_RESOURCES_VERSIONS')
 			);
 		}
 		return $areas;
@@ -59,8 +59,13 @@ class plgResourcesVersions extends JPlugin
 
 	//-----------
 
-	function onResources( $resource, $option, $areas, $rtrn='all' )
+	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
+		$arr = array(
+			'html'=>'',
+			'metadata'=>''
+		);
+		
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
 			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) ) 
@@ -71,81 +76,41 @@ class plgResourcesVersions extends JPlugin
 		
 		// Display only for tools
 		if ($resource->type != 7) {
-			return array('html'=>'','metadata'=>'');
+			return $arr;
 		}
 
 		$database =& JFactory::getDBO();
 
-		$html = '';
 		if ($rtrn == 'all' || $rtrn == 'html') {
 			$tv = new ToolVersion( $database );
 			$rows = $tv->getVersions( $resource->alias );
 
-			// Did we get results back?
-			if ($rows) {
-				//$xhub =& XFactory::getHub();
-				//$hubDOIpath = $xhub->getCfg('hubDOIpath');
-				$config =& JComponentHelper::getParams( $option );
-				$hubDOIpath = $config->get('doi');
-
-				$cls = 'even';
-
-				// Loop through the results and build the HTML
-				$sbjt  = '<table class="resource-versions" summary="'.JText::_('VERSIONS_TBL_SUMMARY').'">'.n;
-				$sbjt .= t.'<thead>'.n;
-				$sbjt .= t.t.'<tr>'.n;
-				$sbjt .= t.t.t.'<th>'.JText::_('VERSION').'</th>'.n;
-				$sbjt .= t.t.t.'<th>'.JText::_('RELEASED').'</th>'.n;
-				$sbjt .= t.t.t.'<th>'.JText::_('DOI_HANDLE').'</th>'.n;
-				$sbjt .= t.t.t.'<th>'.JText::_('PUBLISHED').'</th>'.n;
-				$sbjt .= t.t.'</tr>'.n;
-				$sbjt .= t.'</thead>'.n;
-				$sbjt .= t.'<tbody>'.n;
-				foreach ($rows as $v) 
-				{
-					$handle = ($v->doi) ? $hubDOIpath.'r'.$resource->id.'.'.$v->doi : '' ;
-
-					$cls = (($cls == 'even') ? 'odd' : 'even');
-
-					$sbjt .= t.t.'<tr class="'.$cls.'">'.n;
-					$sbjt .= t.t.t.'<td>';
-					$sbjt .= ($v->version) ? '<a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$resource->id).'?rev='.$v->revision.'">'.$v->version.'</a>' : 'N/A';
-					$sbjt .= '</td>'.n;
-					$sbjt .= t.t.t.'<td>';
-					$sbjt .= ($v->released && $v->released!='0000-00-00 00:00:00') ? JHTML::_('date',$v->released, '%d %b %Y') : 'N/A';
-					$sbjt .= '</td>'.n;
-					$sbjt .= t.t.t.'<td>';
-					$sbjt .= ($handle) ? '<a href="http://hdl.handle.net/'.$handle.'">'.$handle.'</a>' : 'N/A';
-					$sbjt .= '</td>'.n;
-					$sbjt .= t.t.t.'<td><span class="';
-					$sbjt .= ($v->state=='1') ? 'toolpublished' : 'toolunpublished';
-					$sbjt .= '">';
-					$sbjt .= ($v->state=='1') ? JText::_('YES') : JText::_('NO');
-					$sbjt .= '</span></td>'.n;
-					$sbjt .= t.t.'</tr>'.n;
-				}
-				$sbjt .= t.'</tbody>'.n;
-				$sbjt .= '</table>'.n;
-			} else {
-				$sbjt  = t.t.'<p>'.JText::_('NO_VERIONS_FOUND').'</p>'.n;
-			}
-
-
-			//$html .= ResourcesHtml::aside('<p>'.JText::_('VERSIONS_EXPLANATION').'</p>');
-			$html  = ResourcesHtml::hed(3,'<a name="versions"></a>'.JText::_('VERSIONS')).n;
-			$html .= $sbjt;
-		}
-
-		$metadata = '';
-		if ($rtrn == 'all' || $rtrn == 'metadata') {
-			$metadata = '';
-		}
-		
-		$arr = array(
-				'html'=>$html,
-				'metadata'=>$metadata
+			// Instantiate a view
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'resources',
+					'element'=>'versions',
+					'name'=>'browse'
+				)
 			);
 
+			// Pass the view some info
+			$view->option = $option;
+			$view->resource = $resource;
+			$view->rows = $rows;
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+
+			// Return the output
+			$arr['html'] = $view->loadTemplate();
+		}
+
+		if ($rtrn == 'all' || $rtrn == 'metadata') {
+			$arr['metadata'] = '';
+		}
+		
 		return $arr;
 	}
 }
