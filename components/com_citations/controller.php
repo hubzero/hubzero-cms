@@ -168,8 +168,6 @@ class CitationsController extends JObject
 		$this->_buildPathway();
 		
 		// Instantiate a new view
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'intro') );
 		$view->title = JText::_(strtoupper($this->_name));
 		
@@ -197,8 +195,6 @@ class CitationsController extends JObject
 	protected function browse()
 	{
 		// Instantiate a new view
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'browse') );
 		$view->title = JText::_(strtoupper($this->_name));
 		$view->option = $this->_option;
@@ -269,8 +265,6 @@ class CitationsController extends JObject
 	
 	protected function login() 
 	{
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'login') );
 		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
 		if ($this->getError()) {
@@ -310,8 +304,6 @@ class CitationsController extends JObject
 		}
 		
 		// Instantiate a new view
-		jimport( 'joomla.application.component.view');
-
 		$view = new JView( array('name'=>'edit') );
 		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
 		$view->option = $this->_option;
