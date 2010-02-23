@@ -32,15 +32,16 @@ if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 
-$message  = JText::sprintf('GROUPS_USER_HAS_INVITED', $this->juser->get('name'), $this->group->get('description'), $this->hubShortName)."\n\n";
+$message  = JText::sprintf('GROUPS_USER_HAS_INVITED', $this->juser->get('name'), $this->hubShortName)."\n\n";
+$message .= JText::_('GROUPS_GROUP').': '.$this->group->get('description')."\n";
+$message .= $juri->base().$sef."\n\n";
 if ($this->msg) {
 	$message .= '====================='."\n";
 	$message .= stripslashes($this->msg)."\n";
 	$message .= '====================='."\n\n";
 }
-$message .= JText::sprintf('GROUPS_PLEASE_JOIN', $juri->base().$sef)."\n\n";
+$message .= JText::_('GROUPS_PLEASE_JOIN')."\n\n";
 $message .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $this->juser->get('name'), $this->juser->get('email'))."\n";
-//$message .= $juri->base().$sef."\n";
 
 echo $message;
 ?>
