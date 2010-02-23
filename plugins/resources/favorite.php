@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_resources_favorite' );
 
 class plgResourcesFavorite extends JPlugin
 {
-	function plgResourcesFavorite(&$subject, $config)
+	public function plgResourcesFavorite(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,7 +45,7 @@ class plgResourcesFavorite extends JPlugin
 
 	//-----------
 
-	function &onResourcesAreas( $resource ) 
+	public function &onResourcesAreas( $resource ) 
 	{
 		$areas = array();
 		return $areas;
@@ -53,7 +53,7 @@ class plgResourcesFavorite extends JPlugin
 
 	//-----------
 
-	function onResources( $resource, $option, $areas, $rtrn='all' )
+	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
@@ -89,21 +89,23 @@ class plgResourcesFavorite extends JPlugin
 				$fav = new XFavorite( $database );
 				$fav->loadFavorite( $juser->get('id'), $resource->id, 'resources' );
 				if (!$fav->id) {
-					$txt = JText::_('FAVORITE_THIS');
+					$txt = JText::_('PLG_RESOURCES_FAVORITES_FAVORITE_THIS');
 					$cls = '';
 				} else {
-					$txt = JText::_('UNFAVORITE_THIS');
+					$txt = JText::_('PLG_RESOURCES_FAVORITES_UNFAVORITE_THIS');
 					$cls = 'faved';
 				}
 				
-				$arr['metadata'] = '<p class="favorite"><a id="fav-this" class="'.$cls.'" href="'.JRoute::_('index.php?option='.$option.a.'id='.$resource->id.a.'action=favorite').'">'.$txt.'</a></p>'.n;
+				$arr['metadata'] = '<p class="favorite"><a id="fav-this" class="'.$cls.'" href="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id.'&action=favorite').'">'.$txt.'</a></p>';
 			}
 		}
 
 		return $arr;
 	}
 	
-	function onResourcesFavorite( $option ) 
+	//-----------
+	
+	public function onResourcesFavorite( $option ) 
 	{
 		$rid = JRequest::getInt( 'rid', 0 );
 		
@@ -112,7 +114,9 @@ class plgResourcesFavorite extends JPlugin
 		}
 	}
 	
-	function fav( $oid ) 
+	//-----------
+	
+	public function fav( $oid ) 
 	{
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
@@ -131,11 +135,11 @@ class plgResourcesFavorite extends JPlugin
 				$fav->check();
 				$fav->store();
 				
-				echo JText::_('UNFAVORITE_THIS');
+				echo JText::_('PLG_RESOURCES_FAVORITES_UNFAVORITE_THIS');
 			} else {
 				$fav->delete();
 				
-				echo JText::_('FAVORITE_THIS');
+				echo JText::_('PLG_RESOURCES_FAVORITES_FAVORITE_THIS');
 			}
 		}
 	}
