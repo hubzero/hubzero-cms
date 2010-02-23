@@ -31,7 +31,7 @@ $lat = 20;
 $long = 0;
 $zoom = 2;
 
-$dataurl = JRoute::_('index.php?option='.$option.a.'task='.$task.a.'type='.$type.a.'no_html=1'.a.'data=online');
+$dataurl = JRoute::_('index.php?option='.$option.'&task='.$task.'&type='.$type.'&no_html=1&data=online');
 $dataurl = str_replace('&amp;','&',$dataurl);
 
 $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -63,11 +63,11 @@ $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	}
 	
 	function getMarkers() 
-	{'.n;
+	{'."\n";
 	if ($mappath) {
-		$html .= 'var urlstr=\''.$mappath.'/whoisonline.xml\';'.n;
+		$html .= 'var urlstr=\''.$mappath.'/whoisonline.xml\';'."\n";
 	} else {
-		$html .= 'var urlstr="'.$dataurl.'";'.n;
+		$html .= 'var urlstr="'.$dataurl.'";'."\n";
 	}
 $html .= '		var request = GXmlHttp.create();
         request.open(\'GET\', urlstr , true); // request XML from PHP with AJAX call

@@ -139,14 +139,14 @@ class plgUsageMaps extends JPlugin
 				$db->setQuery( $query );
 				$rows = $db->loadObjectList();
 				
-				$html .= '<locations>'.n;
+				$html .= '<locations>'."\n";
 				if ($rows) {
 					foreach ($rows as $row) 
 					{
-						$html .= '<location lat="'.$row->ipLATITUDE.'" lng="'.$row->ipLONGITUDE.'" hits="'.$row->totalhits.'"/>'.n;
+						$html .= '<location lat="'.$row->ipLATITUDE.'" lng="'.$row->ipLONGITUDE.'" hits="'.$row->totalhits.'"/>'."\n";
 					}
 				}
-				$html .= '</locations>'.n;
+				$html .= '</locations>'."\n";
 			break;
 			
 			case 'markers':
@@ -166,18 +166,18 @@ class plgUsageMaps extends JPlugin
 				$db->setQuery( $query );
 				$rows = $db->loadObjectList();
 
-				$html .= '<markers>'.n;
+				$html .= '<markers>'."\n";
 				if ($rows) {
 					foreach ($rows as $row) 
 					{
-						$html .= '<marker lat="'.$row->ipLAT.'" lng="'.$row->ipLONG.'" type="'.$row->ips.'"/>'.n;
+						$html .= '<marker lat="'.$row->ipLAT.'" lng="'.$row->ipLONG.'" type="'.$row->ips.'"/>'."\n";
 					}
 				}
-				$html .= '</markers>'.n;
+				$html .= '</markers>'."\n";
 			break;
 			
 			case 'online':
-				$html .= '<markers>'.n;
+				$html .= '<markers>'."\n";
 				$query = "SELECT DISTINCT ipLATITUDE, ipLONGITUDE, ipCITY, ipREGION, countrySHORT FROM #__xsession WHERE ipLATITUDE <> '' GROUP BY ipLATITUDE, ipLONGITUDE";
 				
 				$db->setQuery( $query );
@@ -194,10 +194,10 @@ class plgUsageMaps extends JPlugin
 						$info = $this->get_hosts($db, $location);
 						$bot = $this->checkbot($db, $location);
 						
-						$html .= '<marker lat="'.$location['lat'].'" lng="'.$location['lng'].'" info = "'.$city.'_hr_'.$info.'" bot = "'.$bot.'"/>'.n;
+						$html .= '<marker lat="'.$location['lat'].'" lng="'.$location['lng'].'" info = "'.$city.'_hr_'.$info.'" bot = "'.$bot.'"/>'."\n";
 					}
 				}
-				$html .= '</markers>'.n;
+				$html .= '</markers>'."\n";
 			break;
 		}
 		
