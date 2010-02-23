@@ -32,5 +32,6 @@
 	</languages>
 	<params>
 		<param name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+		<param name="format" type="text" size="10" default="APA" label="Format" description="Format to display items in"/>
 	</params>
 </install>
