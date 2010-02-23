@@ -34,6 +34,9 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
+jimport('joomla.application.component.view');
+ximport('Hubzero_View_Helper_Html');
+
 require_once(JPATH_COMPONENT.DS.'events.html.php');
 require_once(JPATH_COMPONENT.DS.'events.class.php');
 require_once(JPATH_COMPONENT.DS.'events.date.php');

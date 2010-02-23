@@ -30,7 +30,6 @@ class EventsController extends JObject
 	private $_name  = NULL;
 	private $_data  = array();
 	private $_task  = NULL;
-	private $_error = NULL;
 
 	//-----------
 	
@@ -75,23 +74,15 @@ class EventsController extends JObject
 
 	//-----------
 	
-	private function getTask()
-	{
-		$task = JRequest::getString('task', $this->config->getCfg('startview'));
-		$task = ($this->_task) ? $this->_task : $task;
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-	
 	public function execute()
 	{
-		$this->setup();
+		$this->_setup();
 		
-		$this->getStyles();
+		$this->_getStyles();
 
-		switch ($this->getTask()) 
+		$this->_task = ($this->_task) ? $this->_task : JRequest::getString('task', $this->config->getCfg('startview'));
+
+		switch ($this->_task) 
 		{
 			case 'delete':   $this->delete();   break;
 			case 'add':      $this->edit();     break;
@@ -121,7 +112,7 @@ class EventsController extends JObject
 
 	//-----------
 	
-	private function getStyles() 
+	private function _getStyles() 
 	{
 		ximport('xdocument');
 		XDocument::addComponentStylesheet($this->_option);
@@ -129,7 +120,7 @@ class EventsController extends JObject
 
 	//-----------
 	
-	private function getScripts()
+	private function _getScripts()
 	{
 		$document =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'js'.DS.$this->_name.'.js')) {
@@ -137,12 +128,146 @@ class EventsController extends JObject
 			$document->addScript('components'.DS.$this->_option.DS.'js'.DS.$this->_name.'.js');
 		}
 	}
+	
+	//-----------
+
+	private function _buildPathway() 
+	{
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(
+				JText::_(strtoupper($this->_name)),
+				'index.php?option='.$this->_option
+			);
+		}
+		switch ($this->_task) 
+		{
+			case 'year':
+				if ($this->year) {
+					$pathway->addItem( 
+						$this->year, 
+						'index.php?option='.$this->_option.'&year='.$this->year
+					);
+				}
+			break;
+			case 'month':
+				if ($this->year) {
+					$pathway->addItem( 
+						$this->year, 
+						'index.php?option='.$this->_option.'&year='.$this->year
+					);
+				}
+				if ($this->month) {
+					$pathway->addItem( 
+						$this->month, 
+						'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month
+					);
+				}
+			break;
+			case 'day':
+				if ($this->year) {
+					$pathway->addItem( 
+						$this->year, 
+						'index.php?option='.$this->_option.'&year='.$this->year
+					);
+				}
+				if ($this->month) {
+					$pathway->addItem( 
+						$this->month, 
+						'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month
+					);
+				}
+				if ($this->day) {
+					$pathway->addItem( 
+						$this->day, 
+						'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day
+					);
+				}
+			break;
+			case 'week':
+				if ($this->year) {
+					$pathway->addItem( 
+						$this->year, 
+						'index.php?option='.$this->_option.'&year='.$this->year
+					);
+				}
+				if ($this->month) {
+					$pathway->addItem( 
+						$this->month, 
+						'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month
+					);
+				}
+				if ($this->day) {
+					$pathway->addItem( 
+						$this->day, 
+						'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day
+					);
+				}
+				$pathway->addItem( 
+					JText::sprintf('EVENTS_WEEK_OF',$this->day), 
+					'index.php?option='.$this->_option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day.'&task=week'
+				);
+			break;
+		}
+	}
+	
+	//-----------
+	
+	private function _buildTitle() 
+	{
+		$this->_title = JText::_(strtoupper($this->_name));
+		switch ($this->_task) 
+		{
+			case 'year':
+				if ($this->year) {
+					$this->_title .= ': '.$this->year;
+				}
+			break;
+			case 'month':
+				if ($this->year) {
+					$this->_title .= ': '.$this->year;
+				}
+				if ($this->month) {
+					$this->_title .= '/'.$this->month;
+				}
+			break;
+			case 'day':
+				if ($this->year) {
+					$this->_title .= ': '.$this->year;
+				}
+				if ($this->month) {
+					$this->_title .= '/'.$this->month;
+				}
+				if ($this->day) {
+					$this->_title .= '/'.$this->day;
+				}
+			break;
+			case 'week':
+				if ($this->year) {
+					$this->_title .= ': '.$this->year;
+				}
+				if ($this->month) {
+					$this->_title .= '/'.$this->month;
+				}
+				if ($this->day) {
+					$this->_title .= '/'.$this->day;
+				}
+				if ($this->_task && $this->_task == 'week') {
+					$this->_title .= ': '.JText::sprintf('EVENTS_WEEK_OF',$this->day);
+				}
+			break;
+		}
+		$document =& JFactory::getDocument();
+		$document->setTitle( $this->_title );
+	}
 
 	//----------------------------------------------------------
 	// Checks (private)
 	//----------------------------------------------------------
 
-	private function setup()
+	private function _setup()
 	{
 		$database =& JFactory::getDBO();
 		
@@ -227,18 +352,6 @@ class EventsController extends JObject
 		$offset = $this->offset;
 		$option = $this->_option;
 		$gid    = $this->gid;
-        
-		/*
-		// Get configuration
-		$jconfig =& JFactory::getConfig();
-		
-		$filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'), 'int');
-		$filters['start'] = JRequest::getInt('limitstart', 0);
-		
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
-		*/
 		
 		// Set some filters
 		$filters = array();
@@ -253,25 +366,36 @@ class EventsController extends JObject
 		// Everyone has access unless restricted to admins in the configuration
 		$authorized = true;
 		if ($this->config->getCfg('adminlevel')) {
-			$authorized = $this->authorize();
+			$authorized = $this->_authorize();
 		}
 		
 		// Get a list of categories
-		$categories = $this->getCategories();
+		$categories = $this->_getCategories();
 		
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)).': '.$year );
+		// Build the page title
+		$this->_buildTitle();
 		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( $year, 'index.php?option='.$this->_option.a.'year='.$year );
+		// Build the pathway
+		$this->_buildPathway();
 		
 		// Output HMTL
-		echo EventsHtml::byYear($rows, $option, $year, $month, $day, $authorized, $this->config->getCfg('fields'), $this->category, $categories);
+		$view = new JView( array('name'=>'browse','layout'=>'year') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->task = $this->_task;
+		$view->year = $year;
+		$view->month = $month;
+		$view->day = $day;
+		$view->rows = $rows;
+		$view->authorized = $authorized;
+		$view->fields = $this->config->getCfg('fields');
+		$view->category = $this->category;
+		$view->categories = $categories;
+		$view->offset = $offset;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -306,26 +430,36 @@ class EventsController extends JObject
 		// Everyone has access unless restricted to admins in the configuration
 		$authorized = true;
 		if ($this->config->getCfg('adminlevel')) {
-			$authorized = $this->authorize();
+			$authorized = $this->_authorize();
 		}
 		
 		// Get a list of categories
-		$categories = $this->getCategories();
+		$categories = $this->_getCategories();
 
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)).': '.$year.'/'.$month );
-
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( $year, 'index.php?option='.$this->_option.a.'year='.$year );
-		$pathway->addItem( $month, 'index.php?option='.$this->_option.a.'year='.$year.a.'month='.$month );
+		// Build the page title
+		$this->_buildTitle();
+		
+		// Build the pathway
+		$this->_buildPathway();
 
 		// Output HTML
-		echo EventsHtml::byMonth($rows, $option, $year, $month, $day, $offset, $authorized, $this->config->getCfg('fields'), $this->category, $categories);
+		$view = new JView( array('name'=>'browse','layout'=>'month') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->task = $this->_task;
+		$view->year = $year;
+		$view->month = $month;
+		$view->day = $day;
+		$view->rows = $rows;
+		$view->authorized = $authorized;
+		$view->fields = $this->config->getCfg('fields');
+		$view->category = $this->category;
+		$view->categories = $categories;
+		$view->offset = $offset;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -340,23 +474,6 @@ class EventsController extends JObject
 		$year   = intval($this->year);
 		$month  = intval($this->month);
 		$day    = intval($this->day);
-       
-		/* 
-		$startday = $this->config->getCfg('starday');
-		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
-		if ($numday == -1) {
-			$numday = 6;
-		}
-		$week_start = mktime(0, 0, 0, $month, ($day - $numday), $year );
-		$week_end   = $week_start + ( 3600 * 24 * 6 );
-		$startdate  = date( "Y-m-d 00:00:00", $week_start );
-		$enddate    = date( "Y-m-d 23:59:59", $week_end );
-		
-		$filters['startdate'] = $startdate;
-		$filters['enddate'] = $enddate;
-		
-		$ee->getEvents( 'week', $filters );
-		*/
 		
 		$startday = _CAL_CONF_STARDAY;
 		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
@@ -375,7 +492,7 @@ class EventsController extends JObject
 		
 		$this_currentdate = $this_date;
 		
-		$categories = $this->getCategories();
+		$categories = $this->_getCategories();
 		
 		$filters = array();
 		$filters['gid'] = $this->gid;
@@ -383,7 +500,7 @@ class EventsController extends JObject
 		
 		$ee = new EventsEvent( $database );
 		
-		$html = '';
+		$rows = array();
 		for ($d = 0; $d < 7; $d++) 
 		{
 			if ($d > 0) {
@@ -396,32 +513,44 @@ class EventsController extends JObject
 
 			$filters['select_date'] = sprintf( "%4d-%02d-%02d", $week['year'], $week['month'], $week['day'] );
 			
-			$rows = $ee->getEvents( 'day', $filters );
-			
-			$html .= EventsHtml::forWeek($rows, $offset, $option, $week, $this->config->getCfg('fields'), $categories);
+			$rows[$d] = array();
+			$rows[$d]['events'] = $ee->getEvents( 'day', $filters );
+			$rows[$d]['week'] = $week;
 		}
 
 		// Everyone has access unless restricted to admins in the configuration
 		$authorized = true;
 		if ($this->config->getCfg('adminlevel')) {
-			$authorized = $this->authorize();
+			$authorized = $this->_authorize();
 		}
 		
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)).': '.$year.'/'.$month.'/'.$day );
+		// Build the page title
+		$this->_buildTitle();
 		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+		// Build the pathway
+		$this->_buildPathway();
+		
+		// Output HTML;
+		$view = new JView( array('name'=>'browse','layout'=>'week') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->task = $this->_task;
+		$view->year = $year;
+		$view->month = $month;
+		$view->day = $day;
+		$view->rows = $rows;
+		$view->authorized = $authorized;
+		$view->fields = $this->config->getCfg('fields');
+		$view->category = $this->category;
+		$view->categories = $categories;
+		$view->offset = $offset;
+		$view->startdate = $sdt;
+		$view->enddate = $edt;
+		$view->week = $week;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-		$pathway->addItem( $year, 'index.php?option='.$this->_option.a.'year='.$year );
-		$pathway->addItem( $month, 'index.php?option='.$this->_option.a.'year='.$year.a.'month='.$month );
-		$pathway->addItem( JText::_('Week of').' '.$day, 'index.php?option='.$this->_option.a.'year='.$year.a.'month='.$month.a.'day='.$day.a.'task=week' );
-		
-		// Output HTML
-		echo EventsHtml::byWeek($offset, $option, $year, $month, $day, $sdt, $edt, $html, $authorized, $this->category, $categories);
+		$view->display();
 	}
 
 	//-----------
@@ -438,7 +567,6 @@ class EventsController extends JObject
 		$option = $this->_option;
 		
 		// Get the events for this day
-		//$rows = $this->getByDay(sprintf( "%4d-%02d-%02d", $year, $month, $day ));
 		$filters = array();
 		$filters['gid'] = $this->gid;
 		$filters['select_date'] = sprintf( "%4d-%02d-%02d", $year, $month, $day );
@@ -462,27 +590,36 @@ class EventsController extends JObject
 		// Everyone has access unless restricted to admins in the configuration
 		$authorized = true;
 		if ($this->config->getCfg('adminlevel')) {
-			$authorized = $this->authorize();
+			$authorized = $this->_authorize();
 		}
 		
 		// Get a list of categories
-		$categories = $this->getCategories();
+		$categories = $this->_getCategories();
 
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)).': '.$year.'/'.$month.'/'.$day );
-
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( $year, 'index.php?option='.$this->_option.a.'year='.$year );
-		$pathway->addItem( $month, 'index.php?option='.$this->_option.a.'year='.$year.a.'month='.$month );
-		$pathway->addItem( $day, 'index.php?option='.$this->_option.a.'year='.$year.a.'month='.$month.a.'day='.$day );
+		// Build the page title
+		$this->_buildTitle();
+		
+		// Build the pathway
+		$this->_buildPathway();
 
 		// Output HTML
-		echo EventsHtml::byDay($events, $offset, $option, $year, $month, $day, $authorized, $this->config->getCfg('fields'), $categories);
+		$view = new JView( array('name'=>'browse','layout'=>'day') );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		$view->task = $this->_task;
+		$view->year = $year;
+		$view->month = $month;
+		$view->day = $day;
+		$view->rows = $events;
+		$view->authorized = $authorized;
+		$view->fields = $this->config->getCfg('fields');
+		$view->category = $this->category;
+		$view->categories = $categories;
+		$view->offset = $offset;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -490,7 +627,6 @@ class EventsController extends JObject
 	protected function details() 
 	{
 		$database =& JFactory::getDBO();
-		$document =& JFactory::getDocument();
 		
 		// Get some needed info
 		$offset = $this->offset;
@@ -506,158 +642,168 @@ class EventsController extends JObject
 		$row = new EventsEvent( $database );
 		$row->load( $id );
 		
-		if ($row) {
-			$event_up = new EventsDate( $row->publish_up );
-			$row->start_date = EventsHtml::getDateFormat($event_up->year,$event_up->month,$event_up->day,0);
-			$row->start_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES') 
-							 ? $event_up->get12hrTime() 
-							 : $event_up->get24hrTime();
-			
-			$event_down = new EventsDate( $row->publish_down );
-			$row->stop_date = EventsHtml::getDateFormat($event_down->year,$event_down->month,$event_down->day,0);
-			$row->stop_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES') 
-							? $event_down->get12hrTime() 
-							: $event_down->get24hrTime();
-			
-			// Kludge for overnight events, advance the displayed stop_date by 1 day when an overnighter is detected
-			if ($row->stop_time < $row->start_time) {
-				$event_down->addDays(1);
-			}
-			
-			// Parse http and mailto
-			$alphadigit = "([a-z]|[A-Z]|[0-9])";
-
-			// Adresse
-			$row->adresse_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i","<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->adresse_info);
-			$row->adresse_info = preg_replace("/(http:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"http://$2$5$8\">$1$2$5$8</a>", $row->adresse_info); 
-		
-			// Contact
-			$row->contact_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i","<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->contact_info);
-			$row->contact_info = preg_replace("/(http:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"http://$2$5$8\">$1$2$5$8</a>", $row->contact_info); 
-
-			// Images - replace the {mosimage} plugins in both text areas
-			if ($row->images) {
-				$row->images = explode("\n", $row->images);
-				$images = array();
-				
-				foreach ($row->images as $img) 
-				{
-					$temp = explode( '|', trim( $img ) );
-					if (!isset($temp[1]))
-						$temp[1] = "left";
-
-					if (!isset($temp[2]))
-						$temp[2] = "Image";
-
-					if (!isset($temp[3]))
-						$temp[3] = "0";
-
-					$images[] = '<img src="./images/stories/'.$temp[0].'" style="float:'.$temp[1].';" alt="'.$temp[2].'" />';
-				}
-
-				$text = explode( '{mosimage}', $row->content );
-
-				$row->content = $text[0];
-
-				for ($i=0, $n=count( $text )-1; $i < $n; $i++) 
-				{
-					if (isset( $images[$i] )) {
-						$row->content .= $images[$i];
-					}
-					if (isset( $text[$i+1] )) {
-						$row->content .= $text[$i+1];
-					}
-				}
-				unset( $text );
-			} 
-			
-			$row->content = nl2br(trim($row->content));
-			$row->content = str_replace("[[BR]]",'<br />',$row->content);
-			$row->content = str_replace(" * ",'<br />&nbsp;&bull;&nbsp;',$row->content);
-			$row->content = stripslashes($row->content);
-			
-			$fields = $this->config->getCfg('fields');
-			if (!empty($fields)) {
-				for ($i=0, $n=count( $fields ); $i < $n; $i++) 
-				{
-					// Explore the text and pull out all matches
-					array_push($fields[$i], $this->parseTag($row->content, $fields[$i][0]));
-					
-					// Clean the original text of any matches
-					$row->content = str_replace('<ef:'.$fields[$i][0].'>'.end($fields[$i]).'</ef:'.$fields[$i][0].'>','',$row->content);
-				}
-				$row->content = trim($row->content);
-			}
-			
-			$bits = explode('-',$row->publish_up);
-			$eyear = $bits[0];
-			$emonth = $bits[1];
-			$edbits = explode(' ',$bits[2]);
-			$eday = $edbits[0];
-			
-			// Everyone has access unless restricted to admins in the configuration
-			//$authorized = true;
-			//if ($this->config->getCfg('adminlevel')) {
-				$authorized = $this->authorize($row->created_by_alias);
-			//}
-			
-			$auth = true;
-			if ($this->config->getCfg('adminlevel')) {
-				$auth = $this->authorize();
-			}
-
-			// Get a list of categories
-			$categories = $this->getCategories();
-			
-			// Get tags on this event
-			$rt = new EventsTags( $database );
-			$tags = $rt->get_tag_cloud(0, 0, $row->id);
-			
-			// Set the page title
-			$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)).': '.$row->title );
-			
-			// Set the pathway
-			$app =& JFactory::getApplication();
-			$pathway =& $app->getPathway();
-			if (count($pathway->getPathWay()) <= 0) {
-				$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-			}
-			$pathway->addItem( $eyear, 'index.php?option='.$this->_option.a.'year='.$eyear );
-			$pathway->addItem( $emonth, 'index.php?option='.$this->_option.a.'year='.$eyear.a.'month='.$emonth );
-			$pathway->addItem( $eday, 'index.php?option='.$this->_option.a.'year='.$eyear.a.'month='.$emonth.a.'day='.$eday );
-			$pathway->addItem( stripslashes($row->title), 'index.php?option='.$this->_option.a.'task=details'.a.'id='.$row->id );
-			
-			//------
-			
-			// Incoming
-			$alias = JRequest::getVar( 'page', '' );
-			
-			// Load the current page
-			$page = new EventsPage( $database );
-			if ($alias) {
-				$page->loadFromAlias( $alias, $row->id );
-			}
-
-			// Get the pages for this workshop
-			$pages = $page->loadPages( $row->id );
-			
-			if ($alias) {
-				$pathway->addItem(stripslashes($page->title),'index.php?option='.$this->_option.a.'task=details'.a.'id='.$row->id.a.'page='.$page->alias);
-			}
-			//------
-			
-			// Build the HTML
-			$html = EventsHtml::details($row, $offset, $option, $eyear, $emonth, $eday, $authorized, $fields, $this->config, $categories, $tags, $auth, $page, $pages);
-		} else {
-			// Set the page title
-			$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)) );
-			
-			// Warning message
-			$html = EventsHtml::warning( JText::_('EVENTS_CAL_LANG_NO_EVENTFOR').' '.JText::_('EVENTS_CAL_LANG_THIS_DAY') );
+		// Ensure we have an event
+		if (!$row) {
+			JError::raiseError( 404, JText::_('EVENTS_CAL_LANG_NO_EVENTFOR').' '.JText::_('EVENTS_CAL_LANG_THIS_DAY') );
+			return;
 		}
 		
-		// Output HTML
-		echo $html;
+		$event_up = new EventsDate( $row->publish_up );
+		$row->start_date = EventsHtml::getDateFormat($event_up->year,$event_up->month,$event_up->day,0);
+		$row->start_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES') 
+						 ? $event_up->get12hrTime() 
+						 : $event_up->get24hrTime();
+		
+		$event_down = new EventsDate( $row->publish_down );
+		$row->stop_date = EventsHtml::getDateFormat($event_down->year,$event_down->month,$event_down->day,0);
+		$row->stop_time = (defined('_CAL_USE_STD_TIME') && _CAL_USE_STD_TIME == 'YES') 
+						? $event_down->get12hrTime() 
+						: $event_down->get24hrTime();
+		
+		// Kludge for overnight events, advance the displayed stop_date by 1 day when an overnighter is detected
+		if ($row->stop_time < $row->start_time) {
+			$event_down->addDays(1);
+		}
+		
+		// Parse http and mailto
+		$alphadigit = "([a-z]|[A-Z]|[0-9])";
+
+		// Adresse
+		$row->adresse_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i","<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->adresse_info);
+		$row->adresse_info = preg_replace("/(http:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"http://$2$5$8\">$1$2$5$8</a>", $row->adresse_info); 
+	
+		// Contact
+		$row->contact_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i","<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->contact_info);
+		$row->contact_info = preg_replace("/(http:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"http://$2$5$8\">$1$2$5$8</a>", $row->contact_info); 
+
+		// Images - replace the {mosimage} plugins in both text areas
+		if ($row->images) {
+			$row->images = explode("\n", $row->images);
+			$images = array();
+			
+			foreach ($row->images as $img) 
+			{
+				$temp = explode( '|', trim( $img ) );
+				if (!isset($temp[1]))
+					$temp[1] = "left";
+
+				if (!isset($temp[2]))
+					$temp[2] = "Image";
+
+				if (!isset($temp[3]))
+					$temp[3] = "0";
+
+				$images[] = '<img src="./images/stories/'.$temp[0].'" style="float:'.$temp[1].';" alt="'.$temp[2].'" />';
+			}
+
+			$text = explode( '{mosimage}', $row->content );
+
+			$row->content = $text[0];
+
+			for ($i=0, $n=count( $text )-1; $i < $n; $i++) 
+			{
+				if (isset( $images[$i] )) {
+					$row->content .= $images[$i];
+				}
+				if (isset( $text[$i+1] )) {
+					$row->content .= $text[$i+1];
+				}
+			}
+			unset( $text );
+		} 
+		
+		$row->content = nl2br(trim($row->content));
+		$row->content = str_replace("[[BR]]",'<br />',$row->content);
+		$row->content = str_replace(" * ",'<br />&nbsp;&bull;&nbsp;',$row->content);
+		$row->content = stripslashes($row->content);
+		
+		$fields = $this->config->getCfg('fields');
+		if (!empty($fields)) {
+			for ($i=0, $n=count( $fields ); $i < $n; $i++) 
+			{
+				// Explore the text and pull out all matches
+				array_push($fields[$i], $this->parseTag($row->content, $fields[$i][0]));
+				
+				// Clean the original text of any matches
+				$row->content = str_replace('<ef:'.$fields[$i][0].'>'.end($fields[$i]).'</ef:'.$fields[$i][0].'>','',$row->content);
+			}
+			$row->content = trim($row->content);
+		}
+		
+		$bits = explode('-',$row->publish_up);
+		$eyear = $bits[0];
+		$emonth = $bits[1];
+		$edbits = explode(' ',$bits[2]);
+		$eday = $edbits[0];
+		
+		// Everyone has access unless restricted to admins in the configuration
+		$authorized = $this->_authorize($row->created_by_alias);
+		
+		$auth = true;
+		if ($this->config->getCfg('adminlevel')) {
+			$auth = $this->_authorize();
+		}
+
+		// Get a list of categories
+		$categories = $this->_getCategories();
+		
+		// Get tags on this event
+		$rt = new EventsTags( $database );
+		$tags = $rt->get_tag_cloud(0, 0, $row->id);
+		
+		// Set the page title
+		$document =& JFactory::getDocument();
+		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)).': '.stripslashes($row->title) );
+		
+		// Set the pathway
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+		}
+		$pathway->addItem( $eyear, 'index.php?option='.$this->_option.'&year='.$eyear );
+		$pathway->addItem( $emonth, 'index.php?option='.$this->_option.'&year='.$eyear.'&month='.$emonth );
+		$pathway->addItem( $eday, 'index.php?option='.$this->_option.'&year='.$eyear.'&month='.$emonth.'&day='.$eday );
+		$pathway->addItem( stripslashes($row->title), 'index.php?option='.$this->_option.'&task=details&id='.$row->id );
+		
+		// Incoming
+		$alias = JRequest::getVar( 'page', '' );
+		
+		// Load the current page
+		$page = new EventsPage( $database );
+		if ($alias) {
+			$page->loadFromAlias( $alias, $row->id );
+		}
+
+		// Get the pages for this workshop
+		$pages = $page->loadPages( $row->id );
+		
+		if ($alias) {
+			$pathway->addItem(stripslashes($page->title),'index.php?option='.$this->_option.'&task=details&id='.$row->id.'&page='.$page->alias);
+		}
+		
+		// Build the HTML
+		$view = new JView( array('name'=>'details') );
+		$view->option = $this->_option;
+		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_name).'_'.strtoupper($this->_task));
+		$view->task = $this->_task;
+		$view->year = $eyear;
+		$view->month = $emonth;
+		$view->day = $eday;
+		$view->row = $row;
+		$view->authorized = $authorized;
+		$view->fields = $fields;
+		$view->config = $this->config;
+		$view->categories = $categories;
+		$view->offset = $offset;
+		$view->tags = $tags;
+		$view->auth = $auth;
+		$view->page = $page;
+		$view->pages = $pages;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -695,7 +841,7 @@ class EventsController extends JObject
 		
 		$auth = true;
 		if ($this->config->getCfg('adminlevel')) {
-			$auth = $this->authorize();
+			$auth = $this->_authorize();
 		}
 		
 		$bits = explode('-',$event->publish_up);
@@ -704,11 +850,8 @@ class EventsController extends JObject
 		$edbits = explode(' ',$bits[2]);
 		$eday = $edbits[0];
 		
-		// Push some styles to the template
-		$this->getStyles();
-		
 		// Set the page title
-		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)).': '.stripslashes($event->title) );
+		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_('EVENTS_REGISTER').': '.stripslashes($event->title) );
 		
 		// Set the pathway
 		$app =& JFactory::getApplication();
@@ -716,11 +859,11 @@ class EventsController extends JObject
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
-		$pathway->addItem( $eyear, 'index.php?option='.$this->_option.a.'year='.$eyear );
-		$pathway->addItem( $emonth, 'index.php?option='.$this->_option.a.'year='.$eyear.a.'month='.$emonth );
-		$pathway->addItem( $eday, 'index.php?option='.$this->_option.a.'year='.$eyear.a.'month='.$emonth.a.'day='.$eday );
-		$pathway->addItem( stripslashes($event->title), 'index.php?option='.$this->_option.a.'task=details'.a.'id='.$event->id );
-		$pathway->addItem( JText::_('Register'),'index.php?option='.$this->_option.a.'task=details'.a.'id='.$event->id.a.'page=register');
+		$pathway->addItem( $eyear, 'index.php?option='.$this->_option.'&year='.$eyear );
+		$pathway->addItem( $emonth, 'index.php?option='.$this->_option.'&year='.$eyear.'&month='.$emonth );
+		$pathway->addItem( $eday, 'index.php?option='.$this->_option.'&year='.$eyear.'&month='.$emonth.'&day='.$eday );
+		$pathway->addItem( stripslashes($event->title), 'index.php?option='.$this->_option.'&task=details&id='.$event->id );
+		$pathway->addItem( JText::_('EVENTS_REGISTER'),'index.php?option='.$this->_option.'&task=details&id='.$event->id.'&page=register');
 		
 		$page = new EventsPage( $database );
 		$page->alias = $this->_task;
@@ -729,7 +872,7 @@ class EventsController extends JObject
 		$pages = $page->loadPages( $event->id );
 		
 		// Check if registration is still open
-		$registerby = $this->_mkt($event->registerby);
+		$registerby = Hubzero_View_Helper_Html::mkt($event->registerby);
 		$now = time();
 		
 		$register = array();
@@ -746,31 +889,51 @@ class EventsController extends JObject
 			$register['website'] = $profile->get('url');
 		}
 		
+		// Is the registration open?
 		if ($registerby >= $now) {
 			// Is the registration restricted?
 			if ($event->restricted) {
 				$passwrd = JRequest::getVar('passwrd', '', 'post');
 				
 				if ($event->restricted == $passwrd) {
-					EventsHtml::register( $this->_option, $event, $year, $month, $day, $page, $pages, $register, null, null, $auth );
+					// Instantiate a view
+					$view = new JView( array('name'=>'register') );
+					$view->state = 'open';
 				} else {
-					echo EventsHtml::restricted( $this->_option, $event, $year, $month, $day, $page, $pages, $auth );
+					// Instantiate a view
+					$view = new JView( array('name'=>'register','layout'=>'restricted') );
+					$view->state = 'restricted';
 				}
 			} else {
-				EventsHtml::register( $this->_option, $event, $year, $month, $day, $page, $pages, $register, null, null, $auth );
+				// Instantiate a view
+				$view = new JView( array('name'=>'register') );
+				$view->state = 'open';
 			}
 		} else {
-			echo EventsHtml::closed( $this->_option, $event, $year, $month, $day, $page, $pages, $auth );
+			// Instantiate a view
+			$view = new JView( array('name'=>'register','layout'=>'closed') );
+			$view->state = 'closed';
 		}
-	}
-	//-----------
-	
-	private function _mkt($stime)
-	{
-		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		
+		// Output HTML
+		$view->option = $this->_option;
+		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_('EVENTS_REGISTER');
+		$view->task = $this->_task;
+		$view->year = $year;
+		$view->month = $month;
+		$view->day = $day;
+		$view->offset = $offset;
+		$view->event = $event;
+		$view->authorized = $auth;
+		$view->page = $page;
+		$view->pages = $pages;
+		$view->register = $register;
+		$view->arrival = null;
+		$view->departure = null;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-		return $stime;
+		$view->display();
 	}
 
 	//-----------
@@ -809,7 +972,7 @@ class EventsController extends JObject
 		
 		$auth = true;
 		if ($this->config->getCfg('adminlevel')) {
-			$auth = $this->authorize();
+			$auth = $this->_authorize();
 		}
 		
 		$bits = explode('-',$event->publish_up);
@@ -824,11 +987,8 @@ class EventsController extends JObject
 		// Get the pages for this workshop
 		$pages = $page->loadPages( $event->id );
 		
-		// Push some styles to the template
-		$this->getStyles();
-		
 		// Set the page title
-		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)).': '.stripslashes($event->title) );
+		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_('EVENTS_REGISTER').': '.stripslashes($event->title) );
 		
 		// Set the pathway
 		$app =& JFactory::getApplication();
@@ -836,11 +996,11 @@ class EventsController extends JObject
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
-		$pathway->addItem( $eyear, 'index.php?option='.$this->_option.a.'year='.$eyear );
-		$pathway->addItem( $emonth, 'index.php?option='.$this->_option.a.'year='.$eyear.a.'month='.$emonth );
-		$pathway->addItem( $eday, 'index.php?option='.$this->_option.a.'year='.$eyear.a.'month='.$emonth.a.'day='.$eday );
-		$pathway->addItem( stripslashes($event->title), 'index.php?option='.$this->_option.a.'task=details'.a.'id='.$event->id );
-		$pathway->addItem( JText::_('Register'),'index.php?option='.$this->_option.a.'task=details'.a.'id='.$event->id.a.'page=register');
+		$pathway->addItem( $eyear, 'index.php?option='.$this->_option.'&year='.$eyear );
+		$pathway->addItem( $emonth, 'index.php?option='.$this->_option.'&year='.$eyear.'&month='.$emonth );
+		$pathway->addItem( $eday, 'index.php?option='.$this->_option.'&year='.$eyear.'&month='.$emonth.'&day='.$eday );
+		$pathway->addItem( stripslashes($event->title), 'index.php?option='.$this->_option.'&task=details&id='.$event->id );
+		$pathway->addItem( JText::_('EVENTS_REGISTER'),'index.php?option='.$this->_option.'&task=details&id='.$event->id.'&page=register');
 		
 		// Incoming
 		$register   = JRequest::getVar('register', NULL, 'post');
@@ -854,130 +1014,82 @@ class EventsController extends JObject
 
 		if ($register) {
 			$register = array_map('trim', $register);
-			$register = array_map(array('EventsController','purifyText'), $register);
+			$register = array_map(array('Hubzero_View_Helper_Html','purifyText'), $register);
 			
-			$validemail = $this->check_validEmail($register['email']);
+			$validemail = $this->_validEmail($register['email']);
 		}
 		if ($arrival) {
 			$arrival = array_map('trim', $arrival);
-			$arrival = array_map(array('EventsController','purifyText'), $arrival);
+			$arrival = array_map(array('Hubzero_View_Helper_Html','purifyText'), $arrival);
 		}
 		if ($departure) {
 			$departure = array_map('trim', $departure);
-			$departure = array_map(array('EventsController','purifyText'), $departure);
+			$departure = array_map(array('Hubzero_View_Helper_Html','purifyText'), $departure);
 		}
 		if ($dietary) {
 			$dietary = array_map('trim', $dietary);
-			$dietary = array_map(array('EventsController','purifyText'), $dietary);
+			$dietary = array_map(array('Hubzero_View_Helper_Html','purifyText'), $dietary);
 		}
-
-		$xhub =& XFactory::getHub();
-
-		$email   = $event->email;
-		$subject = 'Event Registration ('.$event->id.')';
-		$from    = $xhub->getCfg('hubShortName').' Event Registration';
-		$hub     = array('email' => $register['email'], 'name' => $from);
 	
 		if ($register['firstname'] && $register['lastname'] && $register['affiliation'] && ($validemail == 1)) {
+			$jconfig =& JFactory::getConfig();
 
-			$message  = 'Name: '. $register['firstname'].' '.$register['lastname'] .r.n;
-			$message .= 'Title: '. $register['title'] .r.n;
-			$message .= 'Affiliation: '. $register['affiliation'] .r.n;
-			$message .= 'Email: '. $register['email'] .r.n;
-			$message .= 'Website: '. $register['website'] .r.n;
-			$message .= 'Telephone: '. $register['telephone'] .r.n;
-			$message .= 'Fax: '. $register['fax'] .r.n.r.n;
-		
-			$message .= 'City: '. $register['city'] .r.n;
-			$message .= 'State/Province: '. $register['state'] .r.n;
-			$message .= 'Zip/Postal Code: '. $register['postalcode'] .r.n;
-			$message .= 'Country: '. $register['country'] .r.n.r.n;
+			$email = $event->email;
+			$subject = JText::_('EVENTS_EVENT_REGISTRATION').' ('.$event->id.')';
+			$hub = array(
+				'email' => $register['email'], 
+				'name' => $jconfig->getValue('config.sitename').' '.JText::_('EVENTS_EVENT_REGISTRATION')
+			);
 			
-			if (isset($register['position']) || isset($register['position_other'])) {
-				$message .= 'Current position: ';
-				$message .= ($register['position']) ? $register['position'] : $register['position_other'];
-				$message .= r.n.r.n;
-			}
-			if (isset($register['degree'])) {
-				$message .= 'Highest degree earned: '. $register['degree'] .r.n.r.n;
-			}
-			if (isset($register['sex'])) {
-				$message .= 'Gender: '. $register['sex'] .r.n.r.n;
-			}
-			if ($race) {
-				//$message .= 'Race: '.implode(', ',$race) .r.n.r.n;
-				$message .= 'Race: ';
-				foreach ($race as $r=>$t) 
-				{
-					$message .= ($r != 'nativetribe') ? $r.', ' : '';
-				}
-				if ($race['nativetribe'] != '') {
-					$message .= $race['nativetribe'];
-				}
-				$message .= r.n.r.n;
-			}
-			
-			if ($disability) {
-				$message .= '[X] I have auxiliary aids or services due to a disability. Please contact me.'.r.n.r.n;
-			} else {
-				$message .= '[ ] I have auxiliary aids or services due to a disability. Please contact me.'.r.n.r.n;
-			}
-			if (isset($dietary['needs']) || (isset($dietary['specific']) && $dietary['specific'] != '')) {
-				$message .= '[X] I have specific dietary needs.'.r.n.r.n;
-				$message .= '    Specific: '.$dietary['specific'].r.n.r.n;
-			} else {
-				$message .= '[ ] I have specific dietary needs.'.r.n.r.n;
-			}
-			
-			if ($arrival) {
-				$message .= '=== Arrival ==='.r.n;
-				$message .= 'Arrival Day: '. $arrival['day'] .r.n;
-				$message .= 'Arrival Time: '. $arrival['time'] .r.n.r.n;
-			}
-			if ($departure) {
-				$message .= '=== Departure ==='.r.n;
-				$message .= 'Departure Day: '. $departure['day'] .r.n;
-				$message .= 'Departure Time: '. $departure['time'] .r.n.r.n;
-			}
-			
-			/*if (!empty($bos)) {
-				$message .= 'Break Out Session(s): '.r.n;
-				for ($i=0, $n=count( $bos ); $i < $n; $i++) 
-				{
-					$message .= '  '.$bos[$i].r.n;
-				}
-				$message .= r.n;
-			}*/
-			if ($dinner) {
-				$message .= '[x] Attending dinner.'.r.n.r.n;
-			} else {
-				$message .= '[ ] Attending dinner.'.r.n.r.n;
-			}
-			
-			if (isset($register['additional'])) {
-				$message .= 'Additional: '. $register['additional'] .r.n.r.n;
-			}
-			
-			if (isset($register['comments'])) {
-				$message .= 'Comments: '. $register['comments'] .r.n.r.n;
-			}
+			$eview = new JView( array('name'=>'register','layout'=>'email') );
+			$eview->option = $this->_option;
+			$eview->hubShortName = $jconfig->getValue('config.sitename');
+			$eview->register = $register;
+			$eview->race = $race;
+			$eview->dietary = $dietary;
+			$eview->disability = $disability;
+			$eview->arrival = $arrival;
+			$eview->departure = $departure;
+			$eview->dinner = $dinner;
+			$eview->bos = $bos;
+			$message = $eview->loadTemplate();
+			$message = str_replace("\n", "\r\n", $message);
 				
-			$this->send_email($hub, $email, $subject, $message);
+			$this->_sendEmail($hub, $email, $subject, $message);
 
-			$this->log($register);
+			$this->_log($register);
 
-			echo EventsHtml::thanks( $this->_option, $event, $year, $month, $day, $auth, $page, $pages );
+			$view = new JView( array('name'=>'register','layout'=>'thanks') );
 		} else {
-			echo EventsHtml::register( $this->_option, $event, $year, $month, $day, $page, $pages, $register, $arrival, $departure, $auth, true);
+			$view = new JView( array('name'=>'register') );
 		}
+		$view->state = 'open';
+		$view->option = $this->_option;
+		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_('EVENTS_REGISTER');
+		$view->task = $this->_task;
+		$view->year = $year;
+		$view->month = $month;
+		$view->day = $day;
+		$view->offset = $offset;
+		$view->event = $event;
+		$view->authorized = $auth;
+		$view->page = $page;
+		$view->pages = $pages;
+		$view->register = $register;
+		$view->arrival = $arrival;
+		$view->departure = $departure;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
 	
-	private function log($reg)
+	private function _log($reg)
 	{
-		$dbh =& JFactory::getDBO();
-		$dbh->setQuery(
+		$database =& JFactory::getDBO();
+		$database->setQuery(
 			'INSERT INTO #__events_respondents(
 				event_id,
 				first_name, last_name, affiliation, title, city, state, zip, country, telephone, fax, email,
@@ -986,30 +1098,32 @@ class EventsController extends JObject
 			)
 			VALUES ('.
 				$this->event->id . ', '.
-				$this->getValueString($dbh, $reg, array(
+				$this->_getValueString($database, $reg, array(
 					'firstname', 'lastname', 'affiliation', 'title', 'city', 'state', 'postalcode', 'country', 'telephone', 'fax', 'email',
 					'website', 'position', 'degree', 'gender', 'arrival', 'departure', 'disability', 
 					'dietary', 'dinner', 'additional', 'comments'
 				)).
 			')'
 		);
-		$dbh->query();
+		$database->query();
 		$races = JRequest::getVar('race', NULL, 'post');
-		if (!is_null($races) && (!isset($races['refused']) || !$races['refused']))
-		{
-			$resp_id = $dbh->insertid();
-			foreach (array('nativeamerican', 'asian', 'black', 'hawaiian', 'white', 'hispanic') as $race)
-				if (array_key_exists($race, $races) && $races[$race])
-					$dbh->execute(
+		if (!is_null($races) && (!isset($races['refused']) || !$races['refused'])) {
+			$resp_id = $database->insertid();
+			foreach (array('nativeamerican', 'asian', 'black', 'hawaiian', 'white', 'hispanic') as $race) 
+			{
+				if (array_key_exists($race, $races) && $races[$race]) {
+					$database->execute(
 						'INSERT INTO #__events_respondent_race_rel(respondent_id, race, tribal_affiliation) 
-						VALUES ('.$resp_id.', \''.$race.'\', '.($race == 'nativeamerican' ? $dbh->quote($races['nativetribe']) : 'NULL').')'
+						VALUES ('.$resp_id.', \''.$race.'\', '.($race == 'nativeamerican' ? $database->quote($races['nativetribe']) : 'NULL').')'
 					);
+				}
+			}
 		}
 	}
 
 	//-----------
 
-	private function getValueString(&$dbh, $reg, $values)
+	private function _getValueString(&$database, $reg, $values)
 	{
 		$rv = array();
 		foreach ($values as $val)
@@ -1018,7 +1132,7 @@ class EventsController extends JObject
 			{
 				case 'position':
 					$rv[] = ((isset($reg['position']) || isset($reg['position_other'])) && ($reg['position'] || $reg['position_other'])) 
-						? $dbh->quote(
+						? $database->quote(
 							$reg['position'] ? $reg['position'] : $reg['position_other']
 						) 
 						: 'NULL';
@@ -1034,12 +1148,12 @@ class EventsController extends JObject
 				break;
 				case 'dietary':
 					$rv[] = (($dietary = JRequest::getVar('dietary', NULL, 'post'))) 
-						? $dbh->quote($dietary['specific']) 
+						? $database->quote($dietary['specific']) 
 						: 'NULL';
 				break;
 				case 'arrival': case 'departure':
 					$rv[] = ($date = JRequest::getVar($val, NULL, 'post')) 
-						? $dbh->quote($date['day'] . ' ' . $date['time'])
+						? $database->quote($date['day'] . ' ' . $date['time'])
 						: 'NULL';
 				break;
 				case 'disability':
@@ -1047,7 +1161,7 @@ class EventsController extends JObject
 					$rv[] = ($disability) ? '1' : '0';
 				break;
 				default:
-					$rv[] = array_key_exists($val, $reg) && isset($reg[$val]) ? $dbh->quote($reg[$val]) : 'NULL';
+					$rv[] = array_key_exists($val, $reg) && isset($reg[$val]) ? $database->quote($reg[$val]) : 'NULL';
 			}
 		}
 		return implode($rv, ',');
@@ -1055,66 +1169,14 @@ class EventsController extends JObject
 
 	//-----------
 
-	private function send_email(&$hub, $email, $subject, $message) 
+	protected function login()
 	{
-		if ($hub) {
-		     $xhub = &XFactory::getHub();
-			$contact_email = $hub['email'];
-			$contact_name  = $hub['name'];
-
-			$args = "-f '" . $contact_email . "'";
-			$headers  = "MIME-Version: 1.0\n";
-			$headers .= "Content-type: text/plain; charset=iso-8859-1\n";
-			$headers .= 'From: ' . $contact_name .' <'. $contact_email . ">\n";
-			$headers .= 'Reply-To: ' . $contact_name .' <'. $contact_email . ">\n";
-			$headers .= "X-Priority: 3\n";
-			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: '.  $xhub->getCfg('hubShortName') .n;
-			if (mail($email, $subject, $message, $headers, $args)) {
-				return(1);
-			}
+		$view = new JView( array('name'=>'login') );
+		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-		return(0);
-	}
-
-	//-----------
-
-	private function check_validEmail($email) 
-	{
-		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
-			return(1);
-		} else {
-			return(0);
-		}
-	}
-
-	//-----------
-	
-	private function purifyText( &$text ) 
-	{
-		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
-		$text = preg_replace( '/{.+?}/', '', $text );
-		$text = preg_replace( "'<script[^>]*>.*?</script>'si", '', $text );
-		$text = preg_replace( '/<a\s+.*?href="([^"]+)"[^>]*>([^<]+)<\/a>/is', '\2', $text );
-		$text = preg_replace( '/<!--.+?-->/', '', $text );
-		$text = preg_replace( '/&nbsp;/', ' ', $text );
-		$text = strip_tags( $text );
-
-		return $text;
-	}
-
-	//-----------
-
-	private function login()
-	{
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_('EVENTS_CAL_LANG_CAL_TITLE').': '.JText::_('EVENTS_CAL_LANG_ADD_TITLE') );
-		
-		echo EventsHtml::div( EventsHtml::hed( 2, JText::_('EVENTS_CAL_LANG_CAL_TITLE') ), 'full', 'content-header');
-		echo '<div class="main section">'.n;
-		ximport('xmodule');
-		XModuleHelper::displayModules('force_mod');
-		echo '</div><!-- / .main section -->'.n;
+		$view->display();
 	}
 
 	//-----------
@@ -1130,18 +1192,11 @@ class EventsController extends JObject
 			if (count($pathway->getPathWay()) <= 0) {
 				$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 			}
-			$pathway->addItem( JText::_('EVENTS_CAL_LANG_ADD_TITLE'), 'index.php?option='.$this->_option.a.'task=add' );
+			$pathway->addItem( JText::_('EVENTS_CAL_LANG_ADD_TITLE'), 'index.php?option='.$this->_option.'&task=add' );
 			
 			$this->login();
 			return;
 		}
-	
-		// Check if they have edit access
-		/*if ($this->config->getCfg('adminlevel') && !$this->authorize()) {
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
-			$this->_message = JText::_('EVENTS_CAL_LANG_NOPERMISSION');
-			return;
-		}*/
 		
 		// Get the database connection
 		$database =& JFactory::getDBO();
@@ -1151,12 +1206,12 @@ class EventsController extends JObject
 		$document->addStyleSheet('components'.DS.$this->_option.DS.'calendar.css');
 		
 		// Push some scripts to the template
-		$this->getScripts();
+		$this->_getScripts();
 		
 		// We need at least one category before we can proceed
 		$cat = new EventsCategory( $database );
 		if ($cat->getCategoryCount( $this->_option ) < 1) {
-			echo EventsHtml::error( JText::_('EVENTS_LANG_NEED_CATEGORY') );
+			JError::raiseError( 500, JText::_('EVENTS_LANG_NEED_CATEGORY') );
 			return;
 		}
 		
@@ -1174,10 +1229,9 @@ class EventsController extends JObject
 			// Yes - edit mode
 			
 			// Are they authorized to make edits?
-			if (!$this->authorize($row->created_by)) {
+			if (!$this->_authorize($row->created_by)) {
 				// Not authorized - redirect
 				$this->_redirect = JRoute::_('index.php?option='.$this->_option);
-				$this->_message = JText::_('EVENTS_CAL_LANG_NOPERMISSION');
 				return;
 			}
 			
@@ -1207,14 +1261,13 @@ class EventsController extends JObject
 				}
 			}
 			$arr = array(
-				JHTML::_('select.option', 0, JText::_( 'no' ), 'value', 'text'),
-				JHTML::_('select.option', 1, JText::_( 'yes' ), 'value', 'text'),
+				JHTML::_('select.option', 0, strtolower(JText::_( 'EVENTS_NO' )), 'value', 'text'),
+				JHTML::_('select.option', 1, strtolower(JText::_( 'EVENTS_YES' )), 'value', 'text'),
 			);
 
 			$lists['state'] = JHTML::_('select.genericlist', $arr, 'state', '', 'value', 'text', $row->state, false, false );
 		} else {
 			// No ID - we're creating a new event
-			
 			$year  = $this->year;
 			$month = $this->month;
 			$day   = $this->day;
@@ -1230,8 +1283,7 @@ class EventsController extends JObject
 				$stop_publish = strftime( "%Y-%m-%d", time()+($offset*60*60) );  //date( "Y-m-d" );
 				$registerby_date = strftime( "%Y-%m-%d", time()+($offset*60*60) );  //date( "Y-m-d" );
 			}
-			//$row = new EventsEvent( $database );
-			
+
 			// If user hits refresh, try to maintain event form state
 			$row->bind( $_POST );
 			$row->reccurday_month = -1;
@@ -1317,24 +1369,41 @@ class EventsController extends JObject
 		$rt = new EventsTags( $database );
 		$lists['tags'] = $rt->get_tag_string($row->id, 0, 0, NULL, 0, 1);
 		
+		// Set the title
+		$document =& JFactory::getDocument();
+		$document->setTitle( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_name).'_'.strtoupper($this->_task)) );
+		
+		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 		}
-		$p = 'index.php?option='.$this->_option.a.'task='.$this->_task;
+		$p = 'index.php?option='.$this->_option.'&task='.$this->_task;
 		if ($row->id) {
-			$p .= a.'id='.$row->id;
+			$p .= '&id='.$row->id;
 		}
-		$pathway->addItem( JText::_(strtoupper($this->_task)), $p );
+		$pathway->addItem( JText::_(strtoupper($this->_name).'_'.strtoupper($this->_task)), $p );
 		if ($row->id) {
-			$pathway->addItem( stripslashes($row->title), 'index.php?option='.$this->_option.a.'task=details'.a.'id='.$row->id );
+			$pathway->addItem( stripslashes($row->title), 'index.php?option='.$this->_option.'&task=details&id='.$row->id );
 		}
-		
-		$admin = $this->authorize();
 		
 		// Output HTML
-		EventsHtml::edit( $row, $fields, $times, $lists, $this->_option, $this->gid, $this->_task, $this->config, $admin, $this->_error );
+		$view = new JView( array('name'=>'edit') );
+		$view->option = $this->_option;
+		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_name).'_'.strtoupper($this->_task));
+		$view->task = $this->_task;
+		$view->config = $this->config;
+		$view->row = $row;
+		$view->fields = $fields;
+		$view->times = $times;
+		$view->lists = $lists;
+		$view->gid = $this->gid;
+		$view->admin = $this->_authorize();
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//----------------------------------------------------------
@@ -1343,8 +1412,14 @@ class EventsController extends JObject
 	
 	protected function delete()
 	{
-		$database =& JFactory::getDBO();
+		// Check if they are logged in
 		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->login();
+			return;
+		}
+		
+		$database =& JFactory::getDBO();
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
@@ -1359,9 +1434,8 @@ class EventsController extends JObject
 		$event = new EventsEvent( $database );
 		$event->load( $id );
 		
-		if (!$this->authorize($event->created_by)) {
+		if (!$this->_authorize($event->created_by)) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
-			$this->_message = JText::_('EVENTS_CAL_LANG_NOPERMISSION');
 			return;
 		}
 		
@@ -1385,38 +1459,41 @@ class EventsController extends JObject
 		$category->updateCount( $event->catid );
 		
 		// Get the HUB configuration
-		$xhub =& XFactory::getHub();
+		//$xhub =& XFactory::getHub();
 		$jconfig =& JFactory::getConfig();
 		
 		// E-mail subject line
-		$subject  = '['.$jconfig->getValue('config.sitename').' '.JText::_('EVENTS').'] - '.JText::_('EVENT_DELETED');
+		$subject  = '['.$jconfig->getValue('config.sitename').' '.JText::_('EVENTS').'] - '.JText::_('EVENTS_EVENT_DELETED');
 		
 		// Build the message to be e-mailed
-		$message  = ''.r.n;
-		$message .= JText::sprintf('EVENTS_CAL_LANG_ACT_DELETED_BY', $juser->get('name'), $juser->get('login'));
-		$message .= ''.r.n;
-		$message .= ''.r.n;
-		$message .= JText::_('EVENTS_CAL_LANG_EVENT_TITLE').': '.stripslashes($event->title).r.n;
-		$message .= JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION').': '.stripslashes($event->content).r.n;
-		$message .= ''.r.n;
+		$eview = new JView( array('name'=>'emails','layout'=>'deleted') );
+		$eview->option = $this->_option;
+		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->juser = $juser;
+		$eview->event = $event;
+		$message = $eview->loadTemplate();
+		$message = str_replace("\n", "\r\n", $message);
 		
 		// Send the e-mail
-		$this->sendMail($jconfig->getValue('config.sitename'), $xhub->getCfg('hubMonitorEmail'), $subject, $message);
+		$this->_sendMail($jconfig->getValue('config.sitename'), $jconfig->getValue('config.mailfrom'), $subject, $message);
 		
 		// Go back to the default front page
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option);
-		$this->_message = JText::_('EVENTS_CAL_LANG_ACT_DELETED');
 	}
 
 	//-----------
 
 	protected function save() 
 	{
-		$database =& JFactory::getDBO();
+		// Check if they are logged in
 		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->login();
+			return;
+		}
 		
-		//$access = $this->access;
-		//$is_event_editor = $this->is_event_editor;
+		$database =& JFactory::getDBO();
+		
 		$offset = $this->offset;
 		
 		// Incoming
@@ -1424,8 +1501,6 @@ class EventsController extends JObject
 		$start_pm   = JRequest::getInt( 'start_pm', 0, 'post' );
 		$end_time   = JRequest::getVar( 'end_time', '17:00', 'post' );
 		$end_pm     = JRequest::getInt( 'end_pm', 0, 'post' );
-		//$registerby_time = JRequest::getVar( 'registerby_time', '00:00', 'post' );
-		//$registerby_pm   = JRequest::getInt( 'registerby_pm', 0, 'post' );
 		
 		$reccurweekdays = JRequest::getVar( 'reccurweekdays', array(), 'post' );
 		$reccurweeks    = JRequest::getVar( 'reccurweeks', array(), 'post' );
@@ -1435,8 +1510,8 @@ class EventsController extends JObject
 		// Bind the posted data to an event object
 		$row = new EventsEvent( $database );
 		if (!$row->bind( $_POST )) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// New entry or existing?
@@ -1464,12 +1539,10 @@ class EventsController extends JObject
 		
 		$row->title = htmlentities($row->title);
 
-		//$row->content = JRequest::getVar( 'econtent', '', 'post' );
 		$row->content = $_POST['econtent'];
-		$row->content = $this->clean($row->content);
+		$row->content = $this->_clean($row->content);
 	
 		// Get the custom fields defined in the events configuration
-		//$fields = JRequest::getVar( 'fields', array(), 'post' );
 		if (isset($_POST['fields'])) {
 			$fields = $_POST['fields'];
 			$fields = array_map('trim',$fields);
@@ -1479,13 +1552,13 @@ class EventsController extends JObject
 			foreach ($fields as $param=>$value)
 			{
 				if (trim($value) != '') {
-					$row->content .= '<ef:'.$param.'>'.$this->clean($value).'</ef:'.$param.'>';
+					$row->content .= '<ef:'.$param.'>'.$this->_clean($value).'</ef:'.$param.'>';
 				} else {
 					foreach ($fs as $f) 
 					{
 						if ($f[0] == $param && end($f) == 1) {
-							echo EventsHtml::alert( JText::sprintf('EVENTS_REQUIRED_FIELD_CHECK', $f[1]) );
-							exit();
+							JError::raiseError( 500, JText::sprintf('EVENTS_REQUIRED_FIELD_CHECK', $f[1]) );
+							return;
 						}
 					}
 				}
@@ -1493,13 +1566,13 @@ class EventsController extends JObject
 		}
 	
 		// Clean adresse
-		$row->adresse_info = $this->clean($row->adresse_info);
+		$row->adresse_info = $this->_clean($row->adresse_info);
 	
 		// Clean contact
-		$row->contact_info = $this->clean($row->contact_info);
+		$row->contact_info = $this->_clean($row->contact_info);
 	
 		// Clean extra
-		$row->extra_info = $this->clean($row->extra_info);
+		$row->extra_info = $this->_clean($row->extra_info);
 	
 		// Prepend http:// to URLs without it
 		if ($row->extra_info != NULL) {
@@ -1529,15 +1602,6 @@ class EventsController extends JObject
 			if ($hrs < 10) $hrs = '0'.$hrs;
 			if ($mins < 10) $mins = '0'.$mins;
 			$end_time = $hrs.':'.$mins;
-			
-			/*list($hrs,$mins) = explode(':', $registerby_time);
-			$hrs = intval($hrs);
-			$mins = intval($mins);
-			if ($hrs!= 12 && $registerby_pm) $hrs += 12;
-			else if ($hrs == 12 && !$registerby_pm) $hrs = 0;
-			if ($hrs < 10) $hrs = '0'.$hrs;
-			if ($mins < 10) $mins = '0'.$mins;
-			$registerby_time = $hrs.':'.$mins;*/
 		}
 		
 		if ($row->publish_up) {
@@ -1553,13 +1617,6 @@ class EventsController extends JObject
 		} else {
 			$row->publish_down = strftime( "%Y-%m-%d 23:59:59", time()+($offset*60*60));
 		}
-		
-		/*if ($row->registerby) {
-			$publishtime = $row->registerby.' '.$registerby_time.':00';
-			$row->registerby = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime));
-		} else {
-			$row->registerby = strftime( "%Y-%m-%d 23:59:59", time()+($offset*60*60));
-		}*/
         
 		if ($row->publish_up <> $row->publish_down) {
 			$row->reccurtype = intval( $row->reccurtype );
@@ -1614,14 +1671,14 @@ class EventsController extends JObject
 	
 		if (!$row->check()) {
 			// Set the error message
-			$this->_error = $row->getError();
+			$this->setError($row->getError());
 			// Fall through to the edit view
 			$this->edit($row);
 			return;
 		}
 		if (!$row->store()) {
 			// Set the error message
-			$this->_error = $row->getError();
+			$this->setError($row->getError());
 			// Fall through to the edit view
 			$this->edit($row);
 			return;
@@ -1635,51 +1692,72 @@ class EventsController extends JObject
 		$rt = new EventsTags( $database );
 		$rt->tag_object($juser->get('id'), $row->id, $tags, 1, 0);
 		
-		$xhub =& XFactory::getHub();
-		
 		$jconfig =& JFactory::getConfig();
-		
-		$juri =& JURI::getInstance();
-		$sef = JRoute::_('index.php?option='.$this->_option.'&task=details&id='.$row->id);
-		if (substr($sef,0,1) == '/') {
-			$sef = substr($sef,1,strlen($sef));
-		}
-		$sef = $juri->base().$sef;
 		
 		// Build the message to be e-mailed
 		if ($state == 'add') {
-			$msg = JText::_('EVENTS_CAL_LANG_ACT_ADDED');
+			$subject  = '['.$jconfig->getValue('config.sitename').' '.JText::_('EVENTS_CAL_LANG_CAL_TITLE').'] - '.JText::_('EVENTS_CAL_LANG_MAIL_ADDED');
 
-			$subject  = '['.$jconfig->getValue('config.sitename').' '.JText::_('EVENTS_CAL_LANG_CAL_TITLE').'] - '.JText::_('EVENTS_CAL_LANG_MAIL_ADDED');
-			$message  = ''.r.n;
-			$message .= JText::sprintf('EVENTS_CAL_LANG_ACT_ADDED_BY', $juser->get('name'), $juser->get('username'));
+			$eview = new JView( array('name'=>'emails','layout'=>'created') );
 		} else {
-			$msg = JText::_('EVENTS_CAL_LANG_ACT_MODIFIED');
-		
 			$subject  = '['.$jconfig->getValue('config.sitename').' '.JText::_('EVENTS_CAL_LANG_CAL_TITLE').'] - '.JText::_('EVENTS_CAL_LANG_MAIL_ADDED');
-			$message  = ''.r.n;
-			$message .= JText::sprintf('EVENTS_CAL_LANG_ACT_MODIFIED_BY', $juser->get('name'), $juser->get('username'));
+
+			$eview = new JView( array('name'=>'emails','layout'=>'edited') );
 		}
-		$message .= ''.r.n;
-		$message .= ''.r.n;
-		$message .= JText::_('EVENTS_CAL_LANG_EVENT_TITLE').': '.stripslashes($row->title).r.n.r.n;
-		$message .= JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION').': '.stripslashes($row->content).r.n;
-		$message .= ''.r.n;
-		$message .= $sef;
+		$eview->option = $this->_option;
+		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->juser = $juser;
+		$eview->row = $row;
+		$message = $eview->loadTemplate();
+		$message = str_replace("\n", "\r\n", $message);
 		
 		// Send the e-mail
-		$this->sendMail($jconfig->getValue('config.sitename'), $xhub->getCfg('hubMonitorEmail'), $subject, $message);
+		$this->_sendMail($jconfig->getValue('config.sitename'), $jconfig->getValue('config.mailfrom'), $subject, $message);
 		
 		// Redirect to the details page for the event we just created
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=details&id='.$row->id);
-		$this->_message = $msg;
 	}
 	
 	//----------------------------------------------------------
 	// Private functions
 	//----------------------------------------------------------
 
-	private function getCategories() 
+	private function _sendEmail(&$hub, $email, $subject, $message) 
+	{
+		if ($hub) {
+			$jconfig =& JFactory::getConfig();
+			$contact_email = $hub['email'];
+			$contact_name  = $hub['name'];
+
+			$args = "-f '" . $contact_email . "'";
+			$headers  = "MIME-Version: 1.0\n";
+			$headers .= "Content-type: text/plain; charset=iso-8859-1\n";
+			$headers .= 'From: ' . $contact_name .' <'. $contact_email . ">\n";
+			$headers .= 'Reply-To: ' . $contact_name .' <'. $contact_email . ">\n";
+			$headers .= "X-Priority: 3\n";
+			$headers .= "X-MSMail-Priority: High\n";
+			$headers .= 'X-Mailer: '.  $jconfig->getValue('config.sitename') ."\n";
+			if (mail($email, $subject, $message, $headers, $args)) {
+				return(1);
+			}
+		}
+		return(0);
+	}
+
+	//-----------
+
+	private function _validEmail($email) 
+	{
+		if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
+			return(1);
+		} else {
+			return(0);
+		}
+	}
+	
+	//-----------
+
+	private function _getCategories() 
 	{
 		$database =& JFactory::getDBO();
 		
@@ -1714,7 +1792,7 @@ class EventsController extends JObject
 	
 	//-----------
 
-	private function clean($string) 
+	private function _clean($string) 
 	{
 		if (get_magic_quotes_gpc()) {
 			$string = stripslashes($string);
@@ -1758,9 +1836,9 @@ class EventsController extends JObject
 
 	//-----------
 
-	private function sendMail($name, $email, $subject, $message) 
+	private function _sendMail($name, $email, $subject, $message) 
 	{
-		$name .= ' '.JText::_('ADMINISTRATOR');
+		$name .= ' '.JText::_('EVENTS_ADMINISTRATOR');
 		
 		$headers  = "";
 		$headers .= "MIME-Version: 1.0\r\n";
@@ -1775,7 +1853,7 @@ class EventsController extends JObject
 	
 	//-----------
 
-	private function authorize($id='')
+	private function _authorize($id='')
 	{
 		$juser =& JFactory::getUser();
 		
