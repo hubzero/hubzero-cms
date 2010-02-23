@@ -1,0 +1,102 @@
+<?php
+/**
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ *
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+
+$params =& new JParameter( $this->event->params );
+?>
+<div id="content-header">
+	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<?php if ($this->authorized) { ?>
+<div id="content-header-extra">
+	<ul id="useroptions">
+		<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
+	</ul>
+</div><!-- / #content-header-extra -->
+<?php } ?>
+
+<div id="sub-menu">
+	<ul>
+		<li<?php if ($this->task == 'year') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&year='.$this->year); ?>"><span><?php echo JText::_('EVENTS_CAL_LANG_REP_YEAR'); ?></span></a></li>
+		<li<?php if ($this->task == 'month') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month); ?>"><span><?php echo JText::_('EVENTS_CAL_LANG_REP_MONTH'); ?></span></a></li>
+		<li<?php if ($this->task == 'week') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day.'&task=week'); ?>"><span><?php echo JText::_('EVENTS_CAL_LANG_REP_WEEK'); ?></span></a></li>
+		<li<?php if ($this->task == 'day') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day); ?>"><span><?php echo JText::_('EVENTS_CAL_LANG_REP_DAY'); ?></span></a></li>
+	</ul>
+	<div class="clear"></div>
+</div><!-- / #sub-menu -->
+
+<div class="main section noaside">
+	<h3><?php echo stripslashes($this->event->title); ?></h3>
+<?php
+		$html  = '<div id="sub-sub-menu">'."\n";
+		$html .= '<ul>'."\n";
+		$html .= "\t".'<li';
+		if ($this->page->alias == '') {
+			$html .= ' class="active"';
+		}
+		$html .= '><a class="tab" href="'. JRoute::_('index.php?option='.$this->option.'&task=details&id='.$this->event->id) .'"><span>'.JText::_('EVENTS_OVERVIEW').'</span></a></li>'."\n";
+		if ($this->pages) {
+			foreach ($this->pages as $p) 
+			{
+				$html .= "\t".'<li';
+				if ($this->page->alias == $p->alias) {
+					$html .= ' class="active"';
+				}
+				$html .= '><a class="tab" href="'. JRoute::_('index.php?option='.$this->option.'&task=details&id='.$this->event->id.'&page='.$p->alias) .'"><span>'.trim(stripslashes($p->title)).'</span></a></li>'."\n";
+			}
+		}
+		$html .= "\t".'<li';
+		if ($this->page->alias == 'register') {
+			$html .= ' class="active"';
+		}
+		$html .= '><a class="tab" href="'. JRoute::_('index.php?option='.$this->option.'&task=details&id='.$this->event->id.'&page=register') .'"><span>'.JText::_('EVENTS_REGISTER').'</span></a></li>'."\n";
+		$html .= '</ul>'."\n";
+		$html .= '<div class="clear"></div>'."\n";
+		$html .= '</div>'."\n";
+		echo $html;
+?>
+<?php if ($this->getError()) { ?>
+	<p class="error"><?php echo $this->getError(); ?></p>
+<?php } ?>
+	<form method="post" action="index.php" id="hubForm">
+		<div class="explaination">
+			<p><?php echo JText::_('EVENTS_PROVIDE_PASSWORD'); ?></p>
+		</div>
+		<fieldset>
+			<h3><?php echo JText::_('EVENTS_LIMITED_REGISTRATION'); ?></h3>
+			<label>
+				<?php echo JText::_('EVENTS_PASSWORD'); ?>
+				<input type="password" name="passwrd" />
+			</label>
+			<input type="hidden" name="id" value="<?php echo $this->event->id; ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="task" value="register" />
+		</fieldset>
+		<div class="clear"></div>
+		<p class="submit"><input type="submit" value="<?php echo JText::_('EVENTS_SUBMIT'); ?>" /></p>
+	</form>
+</div><!-- / .main section -->

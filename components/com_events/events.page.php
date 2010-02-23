@@ -181,5 +181,4 @@ class EventsPage extends JTable
 		return $this->_db->loadObjectList();
 	}
 }
-
 ?>

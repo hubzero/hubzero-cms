@@ -61,8 +61,9 @@ function EventsParseRoute($segments)
 {
 	$vars = array();
 
-	if (empty($segments))
+	if (empty($segments)) {
 		return $vars;
+	}
 
 	if (is_numeric($segments[0])) {
 		$vars['year'] = $segments[0];
