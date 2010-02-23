@@ -1568,7 +1568,8 @@ class MembersController extends JObject
 				$result[] = $this->_like('username', $match[1]);
 			}
 			else if (preg_match("/^(em|m)ail\s*=\s*([^\s]+)/i", $subs[$i], $match)) {
-				$result[] = 'email=\''. $match[2] .'\'';
+				//$result[] = 'email=\''. $match[2] .'\'';
+				$result[] = $this->_like('email', $match[2]);
 			}
 			else if (preg_match("/^name\s*=\s*([^\s]+)/i", $subs[$i], $match)) {
 				$result[] = $this->_like('name', $match[1]);
