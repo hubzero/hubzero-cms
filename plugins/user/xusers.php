@@ -213,7 +213,7 @@ class plgUserXusers extends JPlugin
 			$xprofile->set('gidNumber', '3000');
 			$xprofile->set('gid','public');
 			$xprofile->set('uidNumber', $user['id']);
-			$xprofile->set('userPassword', $user['password']);
+			$xprofile->set('password', $user['password']);
 			$xprofile->set('homeDirectory', $hubHomeDir . '/' . $user['username']);
 			$xprofile->set('loginShell','/bin/bash');
 			$xprofile->set('ftpShell','/usr/lib/sftp-server');
@@ -282,7 +282,7 @@ class plgUserXusers extends JPlugin
 		$xprofile = XProfile::getInstance($user['id']);
 
 		if (is_object($xprofile))
-			$xprofile->deactivate();
+			$xprofile->delete();
 
 		return true;
 	}

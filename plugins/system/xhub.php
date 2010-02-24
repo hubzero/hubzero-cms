@@ -119,17 +119,15 @@ class XRouter extends JRouter
 						return $vars;
 				}
 
-				/*if ($vars['option'] == 'com_myaccount')
+				if ($vars['option'] == 'com_register') // register component can be accessed with incomplete registration
 				{
-					if ($vars['task'] == 'register')
 						return $vars;
-				}*/
+				}
 
 				if ($uri->getPath() != 'legal/terms')
 				{
 					$vars = array();
 					$vars['option'] = 'com_register';
-					//$vars['view'] = 'registration';
 					$vars['task'] = 'update';
 					$vars['act'] = '';
 				

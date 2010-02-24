@@ -607,11 +607,6 @@ class RegisterController extends JObject
 		}
 
 		if (!$updateEmail) {
-			// Redirect
-			$hconfig = &JComponentHelper::getParams('com_hub');
-		    $r = $hconfig->get('LoginReturn');
-		    $return = ($r) ? $r : '/myhub';
-			$xhub->redirect($return); // @TODO not sure where it is meant to redirect to offhand. but the code below causes a redirect loop
 			$xhub->redirect($_SERVER['REQUEST_URI']);
 		} else {
 			// Instantiate a new view
@@ -1346,6 +1341,8 @@ class RegisterController extends JObject
 	
 	protected function confirm()
 	{
+		$xhub = &XFactory::getHub();
+
 		// Add the CSS to the template
 		$this->_getStyles();
 
@@ -1392,14 +1389,19 @@ class RegisterController extends JObject
 				$profile->setParam('return','');
 			}
 			$profile->set('emailConfirmed', 1);
-			if ($profile->update()) {	
+			if (!$profile->update()) {	
 				$this->setError( JText::_('COM_REGISTER_ERROR_CONFIRMING') );
 			}
 			
 			// Redirect
-			if ($myreturn) {
-				$xhub->redirect($myreturn);
-			}
+            if (empty($myreturn)) {
+                $hconfig = &JComponentHelper::getParams('com_hub');
+                $r = $hconfig->get('LoginReturn');
+                $myreturn = ($r) ? $r : JRoute::_('index.php?option=com_myhub');
+            }
+
+	        $xhub->redirect($myreturn);
+
 		} else {
 			$this->setError(JText::_('COM_REGISTER_ERROR_INVALID_CONFIRMATION'));
 		}
