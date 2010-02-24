@@ -1479,7 +1479,7 @@ class XProfile extends JObject
 					$this->set('username', $registration->get('login'));
 
                 if ($registration->get('password') !== null)
-                	$this->set('userPassword', $registration->get('password'));
+                	$this->set('password', $registration->get('password'));
 
                 if ($registration->get('org') !== null)
 					$this->set('organization', $registration->get('org'));
