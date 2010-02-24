@@ -495,20 +495,25 @@ class Hubzero_Tool_Version
         return $hztv;
     }
 
-    public function createInstance($name)
+    public function createInstance($toolname,$instance)
     {
-        if (empty($name))
+        if (empty($toolname))
         {
             return false;
         }
 
-        $instance = new Hubzero_Tool_Version();
-
-        $instance->instance = $name;
-
-        if ($instance->create())
+        if (empty($instance))
         {
-            return $instance;
+            return false;
+        }
+
+        $newinstance = new Hubzero_Tool_Version();
+		$newinstance->toolname = $toolname;
+        $newinstance->instance = $instance;
+
+        if ($newinstance->create())
+        {
+            return $newinstance;
         }
 
         return false;
@@ -563,7 +568,7 @@ class Hubzero_Tool_Version
         else
         {
             $query = "INSERT INTO #__tool_version (toolname,instance) VALUES ( " .
-                $db->Quote($this->instance) . "," . $db->Quote($this->toolname) . ");";
+                $db->Quote($this->toolname) . "," . $db->Quote($this->instance) . ");";
 
             $db->setQuery($query);
 

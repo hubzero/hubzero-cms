@@ -207,7 +207,7 @@ class Hubzero_Tool
             {
                 if (!empty($member))
                 {
-                    $result['member'][$key] = "tool=$member,ou=toolnames," . $hubLDAPBaseDN;
+                    $result['member'][$key] = "tool=$member,ou=tools," . $hubLDAPBaseDN;
                 }
             }
 
@@ -789,11 +789,11 @@ class Hubzero_Tool
 
                 if ($property == 'version')
                 {
-                    $query = "INSERT IGNORE INTO $aux_table (toolid,toolname,instance) VALUES ";
+                    $query = "INSERT INTO $aux_table (toolid,toolname,instance) VALUES ";
                 }
                 else
                 {
-                    $query = "REPLACE INTO $aux_table (tool_id, " . $property . ") VALUES ";
+                    $query = "INSERT IGNORE INTO $aux_table (toolid,toolname," . $property . ") VALUES ";
                 }
                 $order = 1;
 
@@ -810,6 +810,11 @@ class Hubzero_Tool
                         "," . $db->Quote($value) . ')';
 
                     $order ++;
+                }
+
+                if ($property == 'version')
+                {
+                    $query .= " ON DUPLICATE KEY UPDATE instance=VALUES(instance);";
                 }
 
                 $db->setQuery($query);
