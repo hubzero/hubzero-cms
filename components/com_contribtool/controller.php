@@ -1031,7 +1031,7 @@ class ContribtoolController extends JObject
 				if ($editversion=='dev')
 				{
 					if ($hztv === false)
-						$hztv = Hubzero_Tool_Version::createInstance($toolname.$dev_suffix);
+						$hztv = Hubzero_Tool_Version::createInstance($toolname,$toolname.$dev_suffix);
 
 					$oldstatus = $hztv->toArray();
 					$oldstatus['toolstate'] = $hzt->state;
@@ -1049,6 +1049,7 @@ class ContribtoolController extends JObject
 					$hztv->state = 3;
 					$hztv->instance = $toolname.$dev_suffix;
 					$hztv->mw = isset($this->config->parameters['default_mw']) ? $this->config->parameters['default_mw'] : 'narwhal';
+					$hzt->add('version',$hztv->instance);
 				}
 				else
 				{
@@ -1064,6 +1065,7 @@ class ContribtoolController extends JObject
 						$hztv->wikiaccess = $tool['wiki'];
 						$hztv->vnc_geometry = $tool['vncGeometry'];
 						$hztv->exportControl = $exportmap[$tool['exec']];
+						$hzt->add('version',$hztv->instance);
 					}
 				}
 
@@ -1080,6 +1082,17 @@ class ContribtoolController extends JObject
 						$hzg = Hubzero_Group::getInstance($gid);
 					}
 					$hzg->set('members',$tool['developers']);
+					$hzg->add('tracperm','WIKI_ADMIN');
+					$hzg->add('tracperm','MILESTONE_ADMIN');
+					$hzg->add('tracperm','BROWSER_VIEW');
+					$hzg->add('tracperm','LOG_VIEW');
+					$hzg->add('tracperm','FILE_VIEW');
+					$hzg->add('tracperm','CHANGESET_VIEW');
+					$hzg->add('tracperm','ROADMAP_VIEW');
+					$hzg->add('tracperm','TIMELINE_VIEW');
+					$hzg->add('tracperm','SEARCH_VIEW');
+					$hztv->add('owner',$hzg->cn);
+					$hztv->add('owner','apps');
 					$hztv->add('owner',$hzg->cn);
 
                     // store/update member groups
@@ -2370,7 +2383,6 @@ class ContribtoolController extends JObject
 					}
 				}
 				else {
-				print_r($err);
 					if(ereg('HANDLE ALREADY EXISTS',$err) && !$bingo) {
 						$output['fail'] .= '<br />* '.JText::_('ERR_DOI_ALREADY_EXISTS_COMPLAIN');
 						
@@ -2426,7 +2438,7 @@ class ContribtoolController extends JObject
 				'wikiaccess'=>$status['wiki'], 'vnc_geometry'=>$status['vncGeometry'], 'vnc_command'=>$invoke, 'mw'=>$status['mw'], 
 				'released'=>$now, 'released_by'=>$juser->get('username'), 'license'=>$status['license'], 'fulltext'=>$status['fulltext']);
 			
-			$new_hztv = Hubzero_Tool_Version::createInstance($newtool);
+			$new_hztv = Hubzero_Tool_Version::createInstance($status['toolname'],$newtool);
 			$new_hztv->toolname = $status['toolname'];
 			$new_hztv->instance = $newtool;
 			$new_hztv->toolid = $this->_toolid;
@@ -2456,6 +2468,8 @@ class ContribtoolController extends JObject
 			{
 				// update tool entry
 				$hzt = Hubzero_Tool::getInstance($this->_toolid);
+                $hzt->add('version',$new_hztv->instance);
+                $hzt->update();
 				if($hzt->published!=1) {
 					$hzt->published = 1;
 					// save tool info
