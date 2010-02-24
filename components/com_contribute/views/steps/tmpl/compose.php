@@ -38,7 +38,7 @@ if (trim($type->customFields) != '') {
 		$fields[] = explode('=', $f);
 	}
 } else {
-	$flds = $config->get('tagstool');
+	$flds = $this->config->get('tagstool');
 	$flds = explode(',',$flds);
 	foreach ($flds as $fld) 
 	{

@@ -110,7 +110,7 @@ if ($newtags) {
 	$html .= implode('',$tl);
 	$html .= '</ol>'."\n";
 } else {
-	$html  = TagsHtml::warning( JText::_('COM_TAGS_NO_TAGS') )."\n";
+	$html  = Hubzero_View_Helper_Html::warning( JText::_('COM_TAGS_NO_TAGS') )."\n";
 }
 echo $html;
 ?>

@@ -34,7 +34,7 @@ $juser =& JFactory::getUser();
 
 <div id="introduction" class="section">
 	<div class="aside">
-		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=start'); ?>">Get Started &rsaquo;</a></p>
+		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=start'); ?>">Get Started &rsaquo;</a></p>
 	</div><!-- / .aside -->
 	<div class="subject">
 		<div class="two columns first">
