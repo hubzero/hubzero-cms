@@ -118,6 +118,9 @@ class XProfileHelper
 	
 	public function find_by_email($email)
 	{
+		if (empty($email))
+			return false;
+
 		$db = &JFactory::getDBO();
 		
 		$query = "SELECT username FROM #__xprofiles WHERE email=" . $db->Quote($email);
