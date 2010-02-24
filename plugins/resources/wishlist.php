@@ -35,7 +35,7 @@ JPlugin::loadLanguage( 'com_wishlist' );
 
 class plgResourcesWishlist extends JPlugin
 {
-	function plgResourcesWishlist(&$subject, $config)
+	public function plgResourcesWishlist(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -51,12 +51,11 @@ class plgResourcesWishlist extends JPlugin
 	
 	//-----------
 	
-	function &onResourcesAreas( $resource ) 
+	public function &onResourcesAreas( $resource ) 
 	{
 		if ($resource->type != 7) {
 			$areas = array();
 		} else {
-			
 			$areas = array(
 				'wishlist' => JText::_('Wishlist')
 			);
@@ -67,8 +66,13 @@ class plgResourcesWishlist extends JPlugin
 
 	//-----------
 
-	function onResources( $resource, $option, $areas, $rtrn='all' )
+	public function onResources( $resource, $option, $areas, $rtrn='all' )
 	{
+		$arr = array(
+			'html'=>'',
+			'metadata'=>''
+		);
+		
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
 			if (!array_intersect( $areas, $this->onResourcesAreas( $resource ) ) 
@@ -78,14 +82,12 @@ class plgResourcesWishlist extends JPlugin
 		}
 		
 		// Display only for tools
-		
 		if ($resource->type != 7) {
-			return array('html'=>'','metadata'=>'');
+			return $arr;
 		}
-		
 
 		$database =& JFactory::getDBO();
-		$juser 	  =& JFactory::getUser();
+		$juser =& JFactory::getUser();
 		
 		$option = 'com_wishlist';
 		$category = 'resource';
@@ -110,38 +112,25 @@ class plgResourcesWishlist extends JPlugin
 		$banking = (isset($this->config->parameters['banking']) && $this->config->parameters['banking']==1 ) ? 1: 0;
 		WishlistController::setVar('banking', $banking);
 		
-		if($rtrn != 'metadata') {
-			$html 	= WishlistController::wishlist();	
-			$items 	= WishlistController::getVar('wishcount');
-			$id 	= WishlistController::getVar('listid');
-		}
-		else {
+		if ($rtrn != 'metadata') {
+			$arr['html'] = WishlistController::wishlist();	
+			$items = WishlistController::getVar('wishcount');
+			$id    = WishlistController::getVar('listid');
+		} else {
 			$obj = new Wishlist( $database );
 			$id = $obj->get_wishlistID($resource->id, $category);
 			$objWish = new Wish( $database );
 			$filters = WishlistController::getFilters(0);
 			$admin 	= WishlistController::getVar('_admin');
-			$items = $objWish->get_count ($id, $filters, $admin);
-			
-			$html = '';
+			$items = $objWish->get_count($id, $filters, $admin);
 		}
-		
 		
 		// Build the HTML meant for the "about" tab's metadata overview
-		$metadata = '';
-			if ($rtrn == 'all' || $rtrn == 'metadata') {
-				$metadata  = '<p class="wishlist"><a href="'.JRoute::_('index.php?option=com_resources'.a.'id='.$resource->id.a.'active=wishlist').'">'.JText::sprintf('NUM_WISHES',$items);
-				$metadata .= '</a> (<a href="'.JRoute::_('index.php?option='.$option.a.'id='.$id.a.'task=add').'">'.JText::_('Add a new wish').'</a>)</p>'.n;
+		if ($rtrn == 'all' || $rtrn == 'metadata') {
+			$arr['metadata']  = '<p class="wishlist"><a href="'.JRoute::_('index.php?option=com_resources&id='.$resource->id.'&active=wishlist').'">'.JText::sprintf('NUM_WISHES',$items).'</a> ';
+			$arr['metadata'] .= '(<a href="'.JRoute::_('index.php?option='.$option.'&id='.$id.'&task=add').'">'.JText::_('Add a new wish').'</a>)</p>';
 		}
-		
-		$arr = array(
-				'html'=>$html,
-				'metadata'=>$metadata
-			);
 
 		return $arr;
 	}
-	
-	//-------------------
 }
-

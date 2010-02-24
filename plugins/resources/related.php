@@ -34,7 +34,7 @@ JPlugin::loadLanguage( 'plg_resources_related' );
 
 class plgResourcesRelated extends JPlugin
 {
-	function plgResourcesRelated(&$subject, $config)
+	public function plgResourcesRelated(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -45,34 +45,26 @@ class plgResourcesRelated extends JPlugin
 	
 	//-----------
 	
-	function &onResourcesSubAreas( $resource )
+	public function &onResourcesSubAreas( $resource )
 	{
 		$areas = array(
-			'related' => JText::_('RELATED')
+			'related' => JText::_('PLG_RESOURCES_RELATED')
 		);
 		return $areas;
 	}
 
 	//-----------
 
-	function onResourcesSub( $resource, $option, $miniview = 0 )
+	public function onResourcesSub( $resource, $option, $miniview=0 )
 	{
+		$arr = array(
+			'html'=>'',
+			'metadata'=>''
+		);
+			
 		$database =& JFactory::getDBO();
 		
-			
 		// Build the query that checks topic pages
-		/*$sql1 = "SELECT f.id, d.pageid, MAX(d.version), d.title, d.pagename AS alias, f.pagetext AS introtext, NULL AS type, NULL AS published, NULL AS publish_up, d.scope, d.rating, d.times_rated, d.ranking, 'Topic' AS section
-		FROM #__wiki_version AS f, 
-			(
-				SELECT v.pageid, w.title, w.pagename, w.scope, w.rating, w.times_rated, w.ranking, MAX(v.version) AS version
-				FROM #__wiki_page AS w, #__wiki_version AS v
-				WHERE w.id=v.pageid AND v.approved=1 
-				GROUP BY pageid
-			) AS d
-		WHERE f.version=d.version 
-		AND f.pageid=d.pageid AND (f.pagetext LIKE '%[[Resource(".$resource->id.")]]%' OR f.pagetext LIKE '%[[Resource(".$resource->id.",%' OR f.pagetext LIKE '%[/resources/".$resource->id." %'";
-		$sql1 .= ($resource->alias) ? " OR f.pagetext LIKE '%[[Resource(".$resource->alias."%') " : ") ";
-		$sql1 .= "GROUP BY pageid ORDER BY ranking DESC, title";*/
 		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext, NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section, w.`group`  
 				FROM #__wiki_page AS w, #__wiki_version AS v
 				WHERE w.id=v.pageid AND v.approved=1 AND (v.pagetext LIKE '%[[Resource(".$resource->id.")]]%' OR v.pagetext LIKE '%[[Resource(".$resource->id.",%' OR v.pagetext LIKE '%[/resources/".$resource->id." %'";
@@ -145,167 +137,41 @@ class plgResourcesRelated extends JPlugin
 			$related[] = $r;
 		}
 		
-		// Did we find any results?
-		if ($related && !$miniview) {
-			$juser =& JFactory::getUser();
-
-			$sbjt  = '<table class="related-resources">'.n;
-			$sbjt .= t.'<tbody>'.n; 
-			foreach ($related as $line)
-			{
-				if ($line->section != 'Topic') {
-					$class = ResourcesHtml::getRatingClass( $line->rating );
-
-					$resourceEx = new ResourceExtended( $line->id, $database );
-					$resourceEx->getContributors();
-
-					// If the user is logged in, get their rating for this resource
-					if (!$juser->get('guest')) {
-						$mr = new ResourcesReview( $database );
-						$myrating = $mr->loadUserRating( $line->id, $juser->get('id') );
-					} else {
-						$myrating = 0;
-					}
-					$myclass = ResourcesHtml::getRatingClass( $myrating );
-
-					// Get the SEF for the resource
-					if ($line->alias) {
-						$sef = JRoute::_('index.php?option=com_resources'.a.'alias='. $line->alias);
-					} else {
-						$sef = JRoute::_('index.php?option=com_resources'.a.'id='. $line->id);
-					}
-				} else {
-					if ($line->group != '' && $line->scope != '') {
-						$sef = JRoute::_('index.php?option=com_groups&scope='.$line->scope.'&pagename='.$line->alias);
-					} else {
-						$sef = JRoute::_('index.php?option=com_topics&scope='.$line->scope.'&pagename='.$line->alias);
-					}
-					//$sef = JRoute::_('index.php?option=com_topics'.a.'scope='.$line->scope.a.'pagename='. $line->alias);
-				}
-
-				// Encode some potentially troublesome characters
-				$line->title = ResourcesHtml::encode_html( $line->title );
-
-				// Make sure we have an SEF, otherwise it's a querystring
-				if (strstr($sef,'option=')) {
-					$d = a;
-				} else {
-					$d = '?';
-				}
-
-				// Format the ranking
-				$line->ranking = round($line->ranking, 1);
-				$r = (10*$line->ranking);
-				if (intval($r) < 10) {
-					$r = '0'.$r;
-				}
-
-				$sbjt .= t.t.'<tr>'.n; 
-				$sbjt .= t.t.t.'<td class="ranking">'.number_format($line->ranking,1).' <span class="rank-'.$r.'">'.JText::_('RELATED_RANKING').'</span></td>'.n;
-				$sbjt .= t.t.t.'<td>';
-				//if ($line->section != 'Topic' && $show_edit == 1) {
-				//	$html .= ResourcesHtml::adminIcon( $line->id, $line->published, $show_edit, 0, 'edit', $line->type);
-				//}
-				if ($line->section != 'Topic') {
-					$sbjt .= JText::_('PART_OF').' ';
-					$sbjt .= '<a href="'.$sef.'" class="fixedResourceTip" title="DOM:rsrce'.$line->id.'">'. $line->title . '</a>'.n;
-					$sbjt .= t.t.'<div style="display:none;" id="rsrce'.$line->id.'">'.n;
-					$sbjt .= t.t.t.ResourcesHtml::hed(4,$line->title).n;
-					$sbjt .= t.t.t.'<div>'.n;
-					$sbjt .= t.t.t.t.'<table>'.n;
-					$sbjt .= t.t.t.t.t.'<tbody>'.n;
-					$sbjt .= ResourcesHtml::tableRow(JText::_('RELATED_TYPE'),$line->section);
-					if ($resourceEx->contributors) {
-						$sbjt .= ResourcesHtml::tableRow(JText::_('RELATED_CONTRIBUTORS'),$resourceEx->contributors);
-					}
-					$sbjt .= ResourcesHtml::tableRow(JText::_('RELATED_DATE'),JHTML::_('date',$line->publish_up, '%d %b, %Y'));
-					$sbjt .= ResourcesHtml::tableRow(JText::_('RELATED_AVG_RATING'),'<span class="avgrating'.$class.'"><span>'.JText::sprintf('OUT_OF_5_STARS',$line->rating).'</span>&nbsp;</span> ('.$line->times_rated.')');
-					$starz  = t.t.t.t.t.'<ul class="starsz'.$myclass.'">'.n;
-					$starz .= t.t.t.t.t.' <li class="str1"><a href="'.$sef.'/reviews'.$d.'action=addreview'.a.'myrating=1#reviewform" title="'.JText::_('RATING_POOR').'">'.JText::_('RATING_1_STAR').'</a></li>'.n;
-					$starz .= t.t.t.t.t.' <li class="str2"><a href="'.$sef.'/reviews'.$d.'action=addreview'.a.'myrating=2#reviewform" title="'.JText::_('RATING_FAIR').'">'.JText::_('RATING_2_STARS').'</a></li>'.n;
-					$starz .= t.t.t.t.t.' <li class="str3"><a href="'.$sef.'/reviews'.$d.'action=addreview'.a.'myrating=3#reviewform" title="'.JText::_('RATING_GOOD').'">'.JText::_('RATING_3_STARS').'</a></li>'.n;
-					$starz .= t.t.t.t.t.' <li class="str4"><a href="'.$sef.'/reviews'.$d.'action=addreview'.a.'myrating=4#reviewform" title="'.JText::_('RATING_VERY_GOOD').'">'.JText::_('RATING_4_STARS').'</a></li>'.n;
-					$starz .= t.t.t.t.t.' <li class="str5"><a href="'.$sef.'/reviews'.$d.'action=addreview'.a.'myrating=5#reviewform" title="'.JText::_('RATING_EXCELLENT').'">'.JText::_('RATING_5_STARS').'</a></li>'.n;
-					$starz .= t.t.t.t.t.'</ul>'.n;
-					$sbjt .= ResourcesHtml::tableRow(JText::_('RELATED_RATE_THIS'),$starz);
-					$sbjt .= t.t.t.t.t.'</tbody>'.n;
-					$sbjt .= t.t.t.t.'</table>'.n;
-					$sbjt .= t.t.t.'</div>'.n;
-					$sbjt .= t.t.t.ResourcesHtml::shortenText( $line->introtext ).n;
-					$sbjt .= t.t.'</div>'.n;
-				} else {
-					$sbjt .= '<a href="'.$sef.'" title="'.$line->title.'">'. $line->title . '</a>'.n;
-				}
-				$sbjt .= '</td>'.n;
-				$sbjt .= t.t.t.'<td class="type">'.$line->section.'</td>'.n;
-				$sbjt .= t.t.'</tr>'.n;
-			}
-			$sbjt .= t.'</tbody>'.n;
-			$sbjt .= '</table>'.n;
+		ximport('Hubzero_View_Helper_Html');
+		
+		// Instantiate a view
+		ximport('Hubzero_Plugin_View');
+		if ($miniview) {
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'resources',
+					'element'=>'related',
+					'name'=>'browse',
+					'layout'=>'mini'
+				)
+			);
 		} else {
-			$sbjt  = '<p>'.JText::_('NO_RELATED_RESULTS_FOUND').'</p>'.n;
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'resources',
+					'element'=>'related',
+					'name'=>'browse'
+				)
+			);
 		}
-		
-		
-		// Build the final HTML
-		if($miniview) {
-			$html  = '<div id="whatsrelated">'.n;
-			$html .= ResourcesHtml::hed(3, JText::_('RELATED_HEADER')).n;
-			if($related) {
-				$html .= t.'<ul>'.n;
-				foreach ($related as $line)
-				{
-					if ($line->section != 'Topic') {
-						// Get the SEF for the resource
-						if ($line->alias) {
-							$sef = JRoute::_('index.php?option=com_resources'.a.'alias='. $line->alias);
-						} else {
-							$sef = JRoute::_('index.php?option=com_resources'.a.'id='. $line->id);
-						}
-						$class = 'series';
 
-					}
-					else {
-						if ($line->group != '' && $line->scope != '') {
-							$sef = JRoute::_('index.php?option=com_groups&scope='.$line->scope.'&pagename='.$line->alias);
-						} else {
-							$sef = JRoute::_('index.php?option=com_topics&scope='.$line->scope.'&pagename='.$line->alias);
-						}
-						$class = 'wiki';
-					}
-					
-					// Encode some potentially troublesome characters
-					$line->title = ResourcesHtml::encode_html( $line->title );
-	
-					// Make sure we have an SEF, otherwise it's a querystring
-					if (strstr($sef,'option=')) {
-						$d = a;
-					} else {
-						$d = '?';
-					}
-					$html .= t.'<li class="'.$class.'">';
-					$html .= ($line->section == 'Series') ? JText::_('PART_OF').' ' : '';
-					$html .= '<a href="'.$sef.'" title="'.$line->title.'">'. $line->title . '</a></li>'.n;	
-				}
-				$html .= t.'</ul>'.n;
-			}
-			else {
-			$html .= '<p>'.JText::_('NO_RELATED_RESULTS_FOUND').'</p>'.n;
-			}
-			$html .= '</div>'.n;
+		// Pass the view some info
+		$view->option = $option;
+		$view->resource = $resource;
+		$view->related = $related;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-		else {	
-			$html  = ResourcesHtml::hed(3,'<a name="related"></a>'.JText::_('RELATED_HEADER')).n;
-			//$html .= ResourcesHtml::aside('<p>'.JText::_('RELATED_EXPLANATION').'</p>');
-			$html .= ResourcesHtml::div( $sbjt);
-		}
+
+		// Return the output
+		$arr['html'] = $view->loadTemplate();
 
 		// Return the an array of content
-		$arr = array(
-				'html'=>$html,
-				'metadata'=>''
-			);
-
 		return $arr;
 	}
 }
