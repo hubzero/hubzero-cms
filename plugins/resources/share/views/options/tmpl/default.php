@@ -98,7 +98,7 @@ if ($this->_params->get('share_technorati')) {
 // Delicious
 if ($this->_params->get('share_delicious')) {
 	$inline    = "\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=share&sharewith=delicious');
-	$inline   .= '" title="'.JText::sprintf('PLG_RESOURCES_SHARE_ON','Delicious').'" class="share_delicious popup" rel="external"">&nbsp;'."\n";
+	$inline   .= '" title="'.JText::sprintf('PLG_RESOURCES_SHARE_ON','Delicious').'" class="share_delicious popup" rel="external">&nbsp;'."\n";
 
 	$metadata .= ($i < $limit) ? $inline.'</a>' :'';
 	$popup 	  .= '<li class="';
@@ -133,7 +133,7 @@ $metadata .= "\t\t\t".JText::_('PLG_RESOURCES_SHARE_RESOURCE')."\n";
 $metadata .= "\t\t".'</p>'."\n";
 $metadata .= "\t\t".'<div>'."\n";
 $metadata .= $popup;
-$metadata .= "\t\t".'<div class="clear"></div>'."\n";		
+//$metadata .= "\t\t".'<div class="clear"></div>'."\n";		
 $metadata .= "\t\t".'</div>'."\n";
 $metadata .= "\t".'</dd>'."\n";
 $metadata .= '</dl>'."\n";
