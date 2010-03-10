@@ -1,0 +1,16 @@
+/*
+
+	-- -- -- -- -- -- --
+	com_citations CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Sections */
+	.section {
+		padding: 0;
+		border-bottom: 1px solid #EFEFEF;
+		}
+	.main {
+		border-bottom: none;
+		}

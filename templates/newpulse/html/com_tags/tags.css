@@ -1,0 +1,39 @@
+/*
+
+	-- -- -- -- -- -- --
+	com_tags CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Sections */
+	.section {
+		padding: 0;
+		border-bottom: 1px solid #EFEFEF;
+		}
+	.main {
+		border-bottom: none;
+		}
+/* Item listing */
+	.search {
+		margin: 0 1em 0.5em 1em;
+		border: none;
+		}
+	.results .resource { 
+		}
+	.results .resource .title {
+		margin-right: 220px;
+		}
+	.results .stats { 
+		margin: -1.5em 0 0 0;
+		float: right;
+		width: 190px;
+		background: none;
+		}
+	.results .resource .stats p,
+	.stats p { 
+		color: #999; 
+		font-size: 90%;
+		margin: 0 0 0.5em 0;
+		padding: 0;
+		}

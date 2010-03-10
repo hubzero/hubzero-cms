@@ -1,0 +1,50 @@
+body {
+  background: white;
+  margin: 0px;
+  padding: 0;
+  color: #000;
+  font: 12px/17px "Trebuchet MS", Arial, Helvetica, Verdana, sans-serif;
+  min-width: 500px;
+}
+h1 {
+  font-size: 2em;
+  color: #666;
+}
+#main {
+  background: white;
+  padding: 4px 4px 4px 12px;
+}
+#description {
+  padding: 0px;
+}
+#warning {
+  margin: 0 12px 1em 12px;
+  padding: 10px 10px 10px 30px;
+  border: 1px solid #EFEAC2;
+  color: #CC6633;
+  background: #FFFDEF url("../../stolas/images/icons/warning.gif") 10px 10px no-repeat;
+}
+#logo {
+   padding: 0;
+   height: 101px;
+   position: relative;
+   background: #FFFFFF url("../images/bg_nav.gif") 0 0 repeat-x;
+}
+#logo h1 {
+                margin: 0;
+                padding: 0;
+}
+#logo h1 a {
+ 		background: url("../images/logos/hpc2.gif") left center no-repeat;
+                width: 693px;
+                height: 101px;
+                display: block;
+                position:absolute;
+                top:0;
+                left:50px;
+                text-indent: -555em;
+                border: none;
+                margin: 0;
+                padding: 0;
+}
+

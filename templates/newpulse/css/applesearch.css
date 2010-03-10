@@ -1,0 +1,47 @@
+/*---------------------------------------------------------------
+	Applesearch
+---------------------------------------------------------------*/
+	#searchform {
+		position: absolute;
+		top: 0px;
+		right: 45px;
+		padding: 8px 0 9px 0;
+		width: auto;
+		}
+	#searchform fieldset {
+		background: url("../images/applesearch/srch_l.png") 0 0 no-repeat;
+		padding: 0 0 0 19px;
+		margin: 0;
+		height: 19px;
+		width: auto;
+		}
+	#endcap {
+		margin: 0;
+		padding: 0;
+		background: url('../images/applesearch/srch_r.png') 0 0 no-repeat;
+		float: left;
+		width: 19px;
+		height: 19px;
+		}
+	#endcap.close {
+		background-position: 0 -19px;
+		}
+	#searchform label { 
+		color: #999; 
+		display: none;
+		}
+	#searchform input {
+		background: transparent url('../images/applesearch/srch_bg.gif') 0 0 repeat-x;
+		float: left;
+		border: none;
+		height: 19px; 
+		width: 176px;
+		padding: 3px 0 0 0;
+		margin: 0 0 3px 0;
+		font: 11px/13px arial;
+		color: #000;
+		}
+	#searchform input#submitquery { 
+		display: none;
+		visibility: hidden;
+		}

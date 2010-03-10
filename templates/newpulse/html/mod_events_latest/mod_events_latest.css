@@ -1,0 +1,52 @@
+/*
+
+	-- -- -- -- -- -- --
+	mod_events_latest CSS
+	-- -- -- -- -- -- --
+
+*/
+	table.latest_events_tbl {
+		margin: 0.5em 0;
+		border: none;
+		}
+	table.latest_events_tbl tr.odd,
+	table.latest_events_tbl tr.even {
+		background: transparent;
+		}
+	table.latest_events_tbl td {
+		border: none;
+		}
+	table.latest_events_tbl .event-date {
+		padding: 0.5em 0 1em 0;
+		}
+	.event-date {
+	    text-align: center;
+		}
+	.event-date span {
+	    display: block;
+	    float: left;
+	    width: 100%;
+		}
+	.event-date span.month {
+	    background: #60c541;
+	    border: 1px solid #60c541;
+	    color: #fff;
+	    text-transform: uppercase;
+	    line-height: 1.1em;
+		font-size: 85%;
+		font-weight: bold;
+	    text-align: center;
+		}
+	.announcement .event-date span.month {
+		background: #14418c;
+		border: 1px solid #14418c;
+		}
+	.event-date span.day {
+	    background: #fff;
+	    border: 1px solid #ccc;
+	    border-top: none;
+	    color: #000;
+	    line-height: 1.4em;
+	    font-weight: bold;
+	    letter-spacing: -0.1em;
+		}

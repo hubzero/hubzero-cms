@@ -1,0 +1,70 @@
+body {
+  background: white;
+  margin: 0px;
+  padding: 0;
+  color: #000;
+  font: 12px/17px "Trebuchet MS", Arial, Helvetica, Verdana, sans-serif;
+  min-width: 500px;
+}
+h1 {
+  font-size: 2em;
+  color: #666;
+}
+.incntl input {
+  width: 97%;
+  margin: 4px 4px 4px 4px;
+}
+.incntl textarea {
+  width: 97%;
+  margin: 0px 8px 8px 8px;
+}
+.incntl {
+  width: 100%;
+}
+#main {
+  background: white;
+  padding: 10px 20px 20px 20px;
+}
+#description {
+  padding: 4px;
+}
+#input {
+  margin: 12px 0px 12px 0px;
+  border: thin solid #d9d9d9;
+}
+#input #heading {
+  padding: 4px;
+  background: #d9d9d9;
+}
+#input #options {
+  margin: 2px 0px 4px 0px;
+}
+#submit {
+  background: #d9d9d9;
+  margin: 20px 0px 0px 0px;
+  padding: 4px;
+}
+#logo {
+   padding: 0;
+   height: 101px;
+   position: relative;
+   background: #FFFFFF url("../images/bg_nav.gif") 0 0 repeat-x;
+}
+#logo h1 {
+                margin: 0;
+                padding: 0;
+}
+#logo h1 a {
+                background: url("../images/logos/hpc2.gif") left center no-repeat;
+                width: 693px;
+                height: 101px;
+                display: block;
+                position:absolute;
+                top:0;
+                left:50px;
+                text-indent: -555em;
+                border: none;
+                margin: 0;
+                padding: 0;
+}
+

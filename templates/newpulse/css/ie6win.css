@@ -1,0 +1,258 @@
+/*
+
+	-- -- -- -- -- -- --
+	IE 6 Windows hacks
+	-- -- -- -- -- -- --
+
+*/
+
+	table,
+	td,
+	th,
+	caption {
+		font-size: 1em;
+		}
+	#help-container fieldset.reporter {
+		width: 42%;
+		}
+	#help-container .submit {
+		margin: 0.5em 0 0 0;
+		}
+	#content h2 {
+		width: 99%;
+		}
+	#hubForm fieldset {
+		position:relative;
+		}
+	#hubForm .group {
+		padding: 1.5em 0 1.5em 0;
+		}
+	#hubForm .hint {
+		border: 1px solid #f4f0ea;
+	}
+	#hubForm .hint a {
+		border: 1px solid #f4f0ea;
+		margin: 0;
+		padding: 0;
+	}
+/* Unset some PNG images IE 6 can't display correctly */
+	#header h1,
+	#wrap,
+	#footer {
+		background-image: none;
+		}
+/* Add the filter so the PNG logo will look right */
+	#header h1 a {
+		background: none;
+		filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/templates/hubbasic/images/logos/yourhub.png', sizingMethod='crop');
+		}
+/* Toolbar */
+	#toolbar {
+		background: url("../images/toolbar-bg-loggedout.gif") 0 0 no-repeat;
+		}
+	#toolbar li#username { 
+		float: none;
+		margin: 0;
+		}
+	#toolbar li#login a, 
+	#toolbar li#logout a { 
+		background: url("../images/toolbar-button.gif") 0 0 no-repeat;
+		}
+	#toolbar li#register a,
+	#toolbar li#myaccount a { 
+		background: url("../images/toolbar-button.gif") right top no-repeat;
+		}
+/* Navigation */
+	#nav li {
+		white-space: nowrap;
+		width: 1%;
+		}
+	#nav a {
+		display: inline-block;
+		}
+	#sub-menu li a,
+	#sub-menu li a:hover,
+	#sub-menu li.active a {
+		width: 1%;
+		}
+	#sub-menu li.active a:hover {
+		background: url("../images/tabs.gif") right -76px no-repeat;
+		}
+	#sub-menu li.active a:hover span {
+		background: url("../images/tabs.gif") 0 -76px no-repeat;
+		}
+/* Columns */
+	#content {
+		height: 500px;
+		}
+	#welcome ul li {
+		width: 38%;
+		}
+/* Overlay */
+	#overlay {
+		position: absolute;
+		background-color: #000;
+		filter: alpha(opacity=70);
+		height: 100%;
+		width: 100%;
+		}
+/* Extras */
+	.extras ul li span {
+		float: none;
+		display: inline-block;
+		}
+	.extras ul li .type {
+		float: none;
+		position: absolute;
+		right: 82px;
+		}
+	.relProd { display: inline; }
+	.primary .extras ul li .type {
+		right: 317px;
+		}
+/* Balloons */
+	.popcontent h4 { 
+		width: 300px;
+		padding: 16px 21px 5px 21px;
+		background: transparent;
+		background-image: none;
+		filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/templates/hubbasic/images/balloon_top.png', sizingMethod='crop');
+		}
+	.popcontent h5,
+	.popcontent p,
+	.popcontent div {
+		width: 294px;
+		padding-right: 38px;
+		background: transparent url("../images/blank.gif") 0 0 no-repeat;
+		filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/templates/hubbasic/images/balloon_mid.png', sizingMethod='scale');
+		}
+	.popcontent th { width: 9em; }
+	.popcontent .bottom {
+		background: transparent;
+		background-image: none;
+		filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/templates/hubbasic/images/balloon_bot.png', sizingMethod='crop');
+		}
+	.popcontent a {
+		position:relative;
+		}
+	.extras ul li .popcontent td .avgrating {
+		text-indent: 0;
+		}
+	.extras ul li .popcontent td .avgrating span {
+		display: none;
+		}
+/* Applesearch */
+	#searchform {
+		width: 214px;
+		padding-bottom: 3px;
+		}
+	#searchform div {
+		width: auto;
+		}
+	#searchform fieldset {
+		background: none;
+		width: 195px;
+		filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/templates/hubbasic/images/applesearch/srch_l.png', sizingMethod='crop');
+		}
+	#searchform input {
+		width: 170px;
+		}
+	#endcap {
+		background: none;
+		filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/templates/hubbasic/images/applesearch/srch_r.png', sizingMethod='crop');
+		}
+	#endcap.close {
+		background: none;
+		filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/templates/hubbasic/images/applesearch/srch_r_x.png', sizingMethod='crop');
+		}
+/* Resources */
+	.resources .metadata,
+	.search .metadata { 
+		margin: -0.7em 0 0 0;
+		float: none;
+		text-align: right;
+		width: auto;
+		}
+	.resources .metadata dl,
+	.search .metadata dl {
+		width: 190px;
+		text-align: left;
+		}
+	.com_resources .results {
+		margin-top: 0;
+		padding-top: 0;
+		}
+/* MyHUB */
+	.modcontrols {
+		margin: -2em 0 1em 0;
+		padding: 0;
+		position:inherit;
+		}
+	#cpnl li input {
+		margin-top: -0.4em;
+		}
+	.edimodl {
+		line-height: 1em;
+		}
+	.delmodl {
+		display: inline-block;
+		}
+	#myhub-table ul.sortable {
+		position: static;
+	}
+	table .sortcolumn {
+		width: 32%;
+		}
+	ul.sortable li .sessionlist li {
+		padding: 0.6em;
+		}
+	ul.sortable li .sessionlist li a {
+		position: relative;
+		}
+	ul.sortable li .sessionlist ul {
+		position: relative;
+		}
+/* Misc */
+	.category-header small {
+		right: 300px;
+		}
+	.results li.resource {
+		width: auto;
+		}
+	.results .metadata { 
+		position: relative;
+		}
+	.subject table {
+		width: 98%;
+		}
+/* Events */
+	#content ul.events li {
+		background-image: none;
+		border-top: 1px solid #ddd;
+		}
+	.ecalendar .today {
+		width: 13%;
+		}
+	.ecalendar caption a:hover,
+	.datenav a:hover {
+		background-position: 0 -15px;
+		}
+	#content ul.events div.ewrap { 
+		height: 6em;
+		}
+/* Members */
+	#profile-section h3,
+	#contributions-section h3,
+	#usage-section h3,
+	#groups-section h3,
+	#points-section h3 {
+		display: none;
+		}
+/* XPolls */
+	.pollresults {
+		width: 98%;
+		}
+/* KB */
+	.withleft .threecolumn {
+		width: 30%;
+		}
