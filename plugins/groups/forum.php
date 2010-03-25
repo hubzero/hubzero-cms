@@ -84,7 +84,8 @@ class plgGroupsForum extends JPlugin
 			return $arr;
 		}
 		
-		ximport('xforum');
+		//ximport('xforum');
+		include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'forum'.DS.'forum.class.php');
 		
 		$this->group = $group;
 		$this->option = $option;
@@ -509,7 +510,8 @@ class plgGroupsForum extends JPlugin
 	
 	public function onGroupDelete( $group ) 
 	{
-		ximport('xforum');
+		//ximport('xforum');
+		include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'forum'.DS.'forum.class.php');
 		$database =& JFactory::getDBO();
 		
 		$results = $this->getForumIDs( $group->get('cn') );
