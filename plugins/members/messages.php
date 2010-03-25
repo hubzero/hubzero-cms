@@ -365,6 +365,15 @@ class plgMembersMessages extends JPlugin
 				if (!$recipient->store()) {
 					$this->setError( $recipient->getError() );
 				}
+				
+				$xseen = new XMessageSeen( $database );
+				$xseen->mid = $mid;
+				$xseen->uid = $member->get('uidNumber');
+				$xseen->loadRecord();
+				if ($xseen->whenseen == '' || $xseen->whenseen == '0000-00-00 00:00:00' || $xseen->whenseen == NULL) {
+					$xseen->whenseen = date( 'Y-m-d H:i:s', time() );
+					$xseen->store( true );
+				}
 			}
 		}
 		
