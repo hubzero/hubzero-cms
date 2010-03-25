@@ -55,26 +55,65 @@ class plgResourcesRecommendations extends JPlugin
 
 	//-----------
 
-	public function onResourcesSub( $resource, $option )
+	public function onResourcesSub( $resource, $option, $miniview=0 )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-			
+		
+		// Check if they are logged in
+		//$juser =& JFactory::getUser();
+		//if ($juser->get('guest')) {
+		//	return $arr;
+		//}
+		
+		// Check if they're a site admin (from Joomla)
+		//if (!$juser->authorize($option, 'manage')) {
+		//	return $arr;
+		//}
+		
+		// Get some needed libraries
+		include_once(JPATH_ROOT.DS.'plugins'.DS.'resources'.DS.'recommendations'.DS.'resources.recommendation.php');
+		
+		// Set some filters for returning results
+		$filters = array();
+		$filters['id'] = $resource->id;
+		$filters['threshold'] = $this->_params->get('threshold');
+		$filters['threshold'] = ($filters['threshold']) ? $filters['threshold'] : '0.21';
+		$filters['limit'] = $this->_params->get('display_limit');
+		$filters['limit'] = ($filters['limit']) ? $filters['limit'] : 10;
+		
+		// Get recommendations
+		$database =& JFactory::getDBO();
+		$r = new ResourcesRecommendation($database);
+		$results = $r->getResults($filters);
+		
 		// Instantiate a view
 		ximport('Hubzero_Plugin_View');
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'=>'resources',
-				'element'=>'recommendations',
-				'name'=>'browse'
-			)
-		);
+		if ($miniview) {
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'resources',
+					'element'=>'recommendations',
+					'name'=>'browse',
+					'layout'=>'mini'
+				)
+			);
+		} else {
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'resources',
+					'element'=>'recommendations',
+					'name'=>'browse'
+				)
+			);
+		}
 
 		// Pass the view some info
 		$view->option = $option;
 		$view->resource = $resource;
+		$view->results = $results;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -83,116 +122,5 @@ class plgResourcesRecommendations extends JPlugin
 		$arr['html'] = $view->loadTemplate();
 
 		return $arr;
-	}
-	
-	//-----------
-	
-	public function onResourcesRecoms( $option )
-	{
-		$arr = array(
-			'html'=>'',
-			'metadata'=>''
-		);
-		
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
-
-		$rid = JRequest::getInt( 'rid', 0 );
-
-		// Is the user logged-in or were we *not* passed a UID?
-		if (!$juser->get('guest')) {
-			// Yes, get their ID
-			$uid = $juser->get('id');
-		} else {
-			// No, check if we were passed an ID
-			// If not, then use the default
-			$uid = 21000;
-		}
-
-		// Build the keyword list from the resource's tags
-		$resourceEx = new ResourceExtended($rid, $database);
-		$resourceEx->getTagsForEditing();
-		$keywords = $resourceEx->tagsForEditing;
-
-		// Get the recommendations
-		$recoms = $this->_getRecommendations( $uid, $keywords );
-
-		// Instantiate a view
-		ximport('Hubzero_Plugin_View');
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'=>'resources',
-				'element'=>'recommendations',
-				'name'=>'browse',
-				'layout'=>'ajax'
-			)
-		);
-
-		// Pass the view some info
-		$view->option = $option;
-		$view->lines = $recoms;
-		$view->rid = $rid;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-
-		// Return the output
-		$arr['html'] = $view->loadTemplate();
-
-		return $arr;
-	}
-	
-	//-----------
-
-	private function _getRecommendations($uid, $keywords) 
-	{
-		// Import the NuSOAP library - needed for talkign to web services
-		ximport('nusoap.lib.nusoap');
-
-		// Retrieve some plugin parameters
-		$proxyhost     = $this->_params->get('host', '');
-		$proxyport     = $this->_params->get('port', '');
-		$proxyusername = $this->_params->get('username', '');
-		$proxypassword = $this->_params->get('password', '');
-		$proxyclient   = $this->_params->get('webservice', '');
-		$display_limit = $this->_params->get('display_limit', '');
-
-		// Instantiate the NuSOAP Client
-		$client = new nusoap_client($proxyclient, 'wsdl', $proxyhost, $proxyport, $proxyusername, $proxypassword);
-		$err = $client->getError();
-		if ($err) {
-			$this->setError( JText::_('PLG_RESOURCES_RECOMMENDATIONS_CONSTRUCTOR_ERROR').' '. $err );
-			return false;
-		}
-		
-		// Take a string of comma-separted heywords and turn it into an array
-		$kywrds = array();
-		$keywords = explode(',',$keywords);
-		foreach ($keywords as $keyword) 
-		{
-			$kywrds[] = trim($keyword);
-		}
-
-		// Set the array of parameters we'll be passing to the web service
-		$param = array('arg0'=>$uid,'arg1'=>$kywrds,'arg2'=>$display_limit);
-
-		$result = $client->call('getRecommendationDTOs', $param, '', '', false, true);
-
-		// Check for a fault
-		if ($client->fault) {
-			$this->setError( JText::_('PLG_RESOURCES_RECOMMENDATIONS_WEBSERVICE_FAULT').' '.$result['faultString'] );
-			return false;
-		} else {
-			// Check for errors
-			$err = $client->getError();
-			if ($err) {
-				// Return the error
-				$this->setError( JText::_('PLG_RESOURCES_RECOMMENDATIONS_WEBSERVICE_ERROR').' '. $err );
-				return false;
-			} else {
-				// Return the result
-				return $result;
-			}
-		}
 	}
 }
