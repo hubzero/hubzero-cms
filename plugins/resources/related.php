@@ -98,44 +98,24 @@ class plgResourcesRelated extends JPlugin
 			 . "\n FROM #__resource_types AS rt, #__resources AS r"
 			 . "\n JOIN #__resource_assoc AS a ON r.id=a.parent_id"
 			 . "\n LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
-			 . "\n WHERE r.published=1 AND a.child_id=".$resource->id." AND r.type=rt.id AND r.type!=8"
-			 . "\n ORDER BY r.ranking LIMIT 10";
+			 . "\n WHERE r.published=1 AND a.child_id=".$resource->id." AND r.type=rt.id AND r.type!=8 ";
+		if (!$juser->get('guest')) {
+			if ($juser->authorize('com_resources', 'manage') || $juser->authorize('com_groups', 'manage')) {
+				$sql2 .= '';
+			} else {
+				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND (r.group IN ($g) OR r.created_by='".$juser->get('id')."'))) ";
+			}
+		} else {
+			$sql2 .= "AND r.access=0 ";
+		}
+		$sql2 .= "ORDER BY r.ranking LIMIT 10";
 
 		// Build the final query
 		$query = "SELECT k.* FROM (($sql1) UNION ($sql2)) AS k ORDER BY ranking DESC LIMIT 10";
 
 		// Execute the query
-		$database->setQuery( $sql1 );
-		$topics = $database->loadObjectList();
-		
-		$database->setQuery( $sql2 );
-		$resources = $database->loadObjectList();
-		
-		$rel = array();
-		if ($topics) {
-			foreach ($topics as $t) 
-			{
-				$rel[$t->ranking] = $t;
-			}
-		}
-		if ($resources) {
-			foreach ($resources as $r) 
-			{
-				$rel[$r->ranking] = $r;
-			}
-		}
-		
-		krsort($rel);
-		$i = 0;
-		$related = array();
-		foreach ($rel as $k=>$r) 
-		{
-			$i++;
-			if ($i == 11) {
-				break;
-			}
-			$related[] = $r;
-		}
+		$database->setQuery( $query );
+		$related = $database->loadObjectList();
 		
 		ximport('Hubzero_View_Helper_Html');
 		

@@ -1,0 +1,217 @@
+<?php
+/**
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ *
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+
+$html = '';
+switch ($this->level)
+{
+	case 1:
+		$tags = $this->bits['tags'];
+		$tg = $this->bits['tg'];
+		$tg2 = $this->bits['tg2'];
+		$type = $this->bits['type'];
+		$id = $this->bits['id'];
+		$d = 0;
+		
+		if ($tg2) {
+			$html .= '<h3>'.JText::_('COM_RESOURCES_TAG').' + '.$tg2.'</h3>';
+		} else {
+			$html .= '<h3>'.JText::_('COM_RESOURCES_TAG').'</h3>';
+		}
+		$html .= '<ul id="ultags">';
+		if (!$tg2) {
+			$html .= '<li><a id="col1_all" class="';
+			if ($tg == '') {
+				$html .= 'open';
+			}
+			$html .= '" href="javascript:HUB.TagBrowser.nextLevel(\''.$type.'\',\'\',\'\',2,\'col1_all\',\''.$id.'\');">[ All ]</a></li>';
+		}
+		$lis = '';
+		$i = 0;
+		foreach ($tags as $tag)
+		{
+			$i++;
+			$li  = '<li';
+			if ($this->bits['supportedtag'] && $tag->tag == $this->bits['supportedtag']) {
+				$li .= ' class="supported"';
+				$i = 0;
+			}
+			$li .= '><a id="col1_'.$tag->tag.'" class="';
+			if ($tg == $tag->tag) { 
+				$li .= 'open'; 
+				$d = $i;
+			}
+
+			$li .= '" href="javascript:HUB.TagBrowser.nextLevel(\''.$type.'\',\''.$tag->tag.'\',\''.$tg2.'\',2,\'col1_'.$tag->tag.'\',\''.$id.'\');">'.stripslashes($tag->raw_tag).' ('.$tag->ucount.')</a></li>';
+			
+			if ($this->bits['supportedtag'] && $tag->tag == $this->bits['supportedtag']) {
+				$html .= $li;
+			} else {
+				$lis .= $li;
+			}
+		}
+		if ($tg == '') {
+			$tg = 'all';
+		}
+		$html .= $lis;
+		$html .= '</ul><input type="hidden" name="atg" id="atg" value="'.$tg.'" /><input type="hidden" name="d" id="d" value="'.$d.'" />';
+	break;
+	
+	case 2:			
+		$tools = $this->bits['tools'];
+		$typetitle = $this->bits['typetitle'];
+		$type = $this->bits['type'];
+		$rt = $this->bits['rt'];
+		$params = $this->bits['params'];
+		$filters = $this->bits['filters'];
+		
+		$sortbys = array(
+			'date'=>JText::_('COM_RESOURCES_SORT_BY').' '.JText::_('COM_RESOURCES_DATE'),
+			'title'=>JText::_('COM_RESOURCES_SORT_BY').' '.JText::_('COM_RESOURCES_TITLE'),
+			'ranking'=>JText::_('COM_RESOURCES_SORT_BY').' '.JText::_('COM_RESOURCES_RANKING')
+		);
+		if ($type == 7) {
+			$sortbys['users'] = JText::_('COM_RESOURCES_SORT_BY').' '.JText::_('COM_RESOURCES_USERS');
+			$sortbys['jobs'] = JText::_('COM_RESOURCES_SORT_BY').' '.JText::_('COM_RESOURCES_JOBS');
+		}
+		
+		$html .= '<h3>'.JText::_('COM_RESOURCES').' '.ResourcesHtml::formSelect('sortby', $sortbys, $this->bits['sortby'], '" onchange="javascript:HUB.TagBrowser.changeSort();"').'</h3>';
+		$html .= '<ul id="ulitems">';
+		if ($tools && count($tools) > 0) {
+			//$database =& JFactory::getDBO();
+			foreach ($tools as $tool)
+			{
+				$tool->title = Hubzero_View_Helper_Html::shortenText($tool->title, 40, 0);
+				
+				$supported = null;
+				if ($this->bits['supportedtag']) {
+					if (in_array($tool->id, $this->bits['supportedtagusage'])) {
+						$supported = true;
+					}
+					//$supported = $rt->checkTagUsage( $this->bits['supportedtag'], $tool->id );
+				}
+				
+				$html .= '<li ';
+				if ($this->bits['supportedtag'] && ($this->bits['tag'] == $this->bits['supportedtag'] || $supported)) {
+					$html .= 'class="supported" ';
+				}
+				$html .= '><a id="col2_'.$tool->id.'" href="javascript:HUB.TagBrowser.nextLevel(\''.$type.'\',\''.$tool->id.'\',\'\',3,\'col2_'.$tool->id.'\',\'\');">'.stripslashes($tool->title).'</a></li>';
+			}
+		} else {
+			$html .= '<li><span>'.JText::_('COM_RESOURCES_NO_RESULTS').'</span></li>';
+		}
+		$html .= '</ul>';
+		if ($type == 7 && $params->get('show_ranking')) {
+			$this->bits['filter'] = is_array ($this->bits['filter']) ? $this->bits['filter'] : array();
+			if(!empty($filters)) {
+				$html .= '<div id="filteroptions">';
+				$html .= ' <div>'.JText::_('Show:');			
+				foreach ($filters as $avalue => $alabel) 
+				{
+					$html .= ' <label class="skill_'.$avalue.'"><input type="checkbox" class="option" name="filter" value="'.$avalue.'" onchange="javascript:HUB.TagBrowser.changeSort();" ';
+					$html .= in_array($avalue, $this->bits['filter']) ? 'checked="checked"' : '';
+					$html .= ' /> '.$alabel.'</label>';
+				}
+				if($params->get('audiencelink')) {
+					$html .= ' <span>'.JText::_('COM_RESOURCES_WHATS_THIS').' <a href="'.$params->get('audiencelink').'">'.JText::_('About audience levels').' &rsaquo;</a></span>';
+				}
+				$html .= ' </div>';
+				$html .= '</div>';
+			}
+		}
+	break;
+	
+	case 3:
+		$resource = $this->bits['resource'];
+		$helper = $this->bits['helper'];
+		$sef = $this->bits['sef'];
+		$sections = $this->bits['sections'];
+		$primary_child = (isset($this->bits['primary_child'])) ? $this->bits['primary_child'] : '';
+		$params = $this->bits['params'];
+		$rt = $this->bits['rt'];
+		$config = $this->bits['config'];
+	
+		$statshtml = '';
+		if ($params->get('show_ranking')) {
+			$helper->getLastCitationDate();
+			
+			$database =& JFactory::getDBO();
+			
+			if ($resource->type == 7) {
+				$stats = new ToolStats($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
+			} else {
+				$stats = new AndmoreStats($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
+			}
+
+			$statshtml = $stats->display();
+		}
+		
+		$html .= '<h3>'.JText::_('COM_RESOURCES_INFO').'</h3>';
+		$html .= '<ul id="ulinfo">';
+		$html .= '<li>';
+		$html .= '<h4><a href="'.$sef.'">'.Hubzero_View_Helper_Html::xhtml(stripslashes($resource->title)).'</a></h4>';
+		$html .= '<p>'.Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 400, 0).' &nbsp; <a href="'.$sef.'">'.JText::_('COM_RESOURCES_LEARN_MORE').'</a></p>';
+
+		if ($helper->firstChild || $resource->type == 7) {
+			$html .= $primary_child;
+		}
+		
+		$supported = null;
+		if ($this->bits['supportedtag']) {
+			$supported = $rt->checkTagUsage( $this->bits['supportedtag'], $resource->id );
+		}
+		$xtra = '';
+		
+		if ($params->get('show_audience')) {
+			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resources.audience.php');
+			$ra = new ResourceAudience( $database );
+			$audience = $ra->getAudience($resource->id, 0, 1, 4);					
+			$xtra .= ResourcesHtml::showSkillLevel($audience, 0, 4, $params->get('audiencelink'));
+		}
+		if ($this->bits['supportedtag'] && $supported) {
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php');
+			$tag = new TagsTag( $database );
+			$tag->loadTag($config->get('supportedtag'));
+
+			$sl = $config->get('supportedlink');
+			if ($sl) {
+				$link = $sl;
+			} else {
+				$link = JRoute::_('index.php?option=com_tags&tag='.$tag->tag);
+			}
+
+			$xtra .= '<p class="supported"><a href="'.$link.'">'.$tag->raw_tag.'</a></p>';
+		}
+		
+		if ($params->get('show_metadata')) {
+			$html .= ResourcesHtml::metadata($params, $resource->ranking, $statshtml, $resource->id, $sections, $xtra);
+		}
+		$html .= '<input type="hidden" name="rid" id="rid" value="'.$resource->id.'" /></li>';
+		$html .= '</ul><script type="text/javascript">HUB.Base.popups();HUB.Base.launchTool();</script>';
+	break;
+}
+echo $html;
+?>

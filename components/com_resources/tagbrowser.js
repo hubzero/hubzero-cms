@@ -92,7 +92,16 @@ HUB.TagBrowser = {
 		if ($('sortby')) {
 			sortby = $('sortby').value;
 		}
-		var url = HUB.TagBrowser.baseURI+'&type='+type+'&level='+level+'&input='+input+'&input2='+input2+'&id='+rid+'&sortby='+sortby;
+		var filterby = '';
+		var frm = document.getElementById('tagBrowserForm');
+		if (frm && frm.filter) {
+			for(var i=0; i < frm.filter.length; i++){
+				if(frm.filter[i].checked) {
+					filterby += '&filter[]='+frm.filter[i].value;
+				}
+			}
+		}
+		var url = HUB.TagBrowser.baseURI+'&type='+type+'&level='+level+'&input='+input+'&input2='+input2+'&id='+rid+'&sortby='+sortby+filterby;
 		if(browser.isFirefox ==false && browser.isCamino==false && browser.isMozilla) {
 			var ev = false;
 		} else {
