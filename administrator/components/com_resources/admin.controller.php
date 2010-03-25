@@ -783,6 +783,7 @@ class ResourcesController extends JObject
 			$filters['authorized'] = 'admin';
 			$filters['fields'] = array('cn','description','published','gidNumber','type');
 			$filters['type'] = 'hub';
+			$filters['sortby'] = 'description';
 			$groups = Hubzero_Group::find($filters);
 
 			// Build <select> of groups

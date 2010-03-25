@@ -147,6 +147,24 @@ HUB.Resources = {
 			});
 		}
 		
+		// Audience info pop-up
+		var explainscale = $$('.explainscale');
+		if (explainscale) {
+			var ex = metadata.getElement('.explainscale');		
+			$$('.usagescale').each(function(item) {
+					
+					item.addEvent('mouseover', function() {					
+						ex.addClass('active');
+					});
+			});
+			$$('.usagescale').each(function(item) {
+				
+					item.addEvent('mouseout', function() {					
+						ex.removeClass('active');
+					});
+			});
+		}
+		
 		// Primary-document info pop-up
 		var primarydoc = $('primary-document');
 		var primarydocpop = $('primary-document_pop');
