@@ -80,9 +80,11 @@ class TagsHtml
 				</tfoot>
 				<tbody>
 <?php
-		JPluginHelper::importPlugin('tags');
-		$dispatcher =& JDispatcher::getInstance();
-
+		//JPluginHelper::importPlugin('tags');
+		//$dispatcher =& JDispatcher::getInstance();
+		$database =& JFactory::getDBO();
+		$to = new TagsObject( $database );
+		
 		$k = 0;
 		for ($i=0, $n=count( $rows ); $i < $n; $i++) 
 		{
@@ -93,12 +95,13 @@ class TagsHtml
 				$check = '<span class="check">'.strToLower( JText::_('ADMIN') ).'</span>';
 			}
 			
-			$totals = $dispatcher->trigger( 'onTagCount', array($row->id) );
+			/*$totals = $dispatcher->trigger( 'onTagCount', array($row->id) );
 			$total = 0;
 			foreach ($totals as $t) 
 			{
 				$total = $total + $t;
-			}
+			}*/
+			$total = $to->getCount( $row->id );
 ?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
@@ -106,7 +109,7 @@ class TagsHtml
 						<td><a href="index.php?option=<?php echo $option ?>&amp;task=edit&amp;id=<?php echo $row->id;?>"><?php echo stripslashes($row->tag); ?></a></td>
 						<td><a href="index.php?option=<?php echo $option ?>&amp;task=edit&amp;id=<?php echo $row->id;?>"><?php echo stripslashes($row->alias); ?></a></td>
 						<td><?php echo $check; ?></td>
-						<td><?php echo $row->total; ?></td>
+						<td><?php echo $total; ?></td>
 					</tr>
 <?php
 			$k = 1 - $k;
@@ -195,7 +198,6 @@ class TagsHtml
 		<?php
 	}
 
-
 	//-----------
 	
 	public function merge( $option, $ids, $rows, $step, $tags ) 
@@ -269,6 +271,83 @@ class TagsHtml
 			<input type="hidden" name="option" value="<?php echo $option; ?>" />
 			<input type="hidden" name="step" value="<?php echo $step; ?>" />
 			<input type="hidden" name="task" value="merge" />
+		</form>
+		<?php
+	}
+	
+	//-----------
+	
+	public function pierce( $option, $ids, $rows, $step, $tags ) 
+	{
+		?>
+		<script type="text/javascript">
+		function submitbutton(pressbutton) 
+		{
+			var form = document.adminForm;
+
+			if (pressbutton == 'cancel') {
+				submitform( pressbutton );
+				return;
+			}
+
+			submitform( pressbutton );
+		}
+		</script>
+
+		<form action="index.php" method="post" name="adminForm" class="editform">
+			<p><?php echo JText::_('PIERCED_EXPLANATION'); ?></p>
+			
+			<div class="col width-50">
+				<fieldset class="adminform">
+					<legend><?php echo JText::_('PIERCING'); ?></legend>
+					
+					<ul>
+					<?php
+					foreach ($tags as $tag) 
+					{
+						echo '<li>'.$tag->raw_tag.' ('.$tag->tag.' - '.$tag->total.')</li>'."\n";
+					}
+					?>
+					</ul>
+				</fieldset>
+			</div>
+			<div class="col width-50">
+				<fieldset class="adminform">
+					<legend><?php echo JText::_('PIERCE_TO'); ?></legend>
+					
+					<table class="admintable">
+						<tbody>
+							<tr>
+								<td class="key"><label for="existingtag"><?php echo JText::_('EXISTING_TAG'); ?>:</label></td>
+								<td>
+									<select name="existingtag" id="existingtag">
+										<option value=""><?php echo JText::_('OPT_SELECT'); ?></option>
+										<?php
+										foreach ($rows as $row)
+										{
+											echo '<option value="'.$row->id.'">'.$row->raw_tag.'</option>'."\n";
+										}
+										?>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2"><?php echo JText::_('OR'); ?></td>
+							</tr>
+							<tr>
+								<td class="key"><label for="newtag"><?php echo JText::_('NEW_TAG'); ?>:</label></td>
+								<td><input type="text" name="newtag" id="newtag" size="25" value="" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+			</div>
+			<div class="clr"></div>
+
+			<input type="hidden" name="ids" value="<?php echo $ids; ?>" />
+			<input type="hidden" name="option" value="<?php echo $option; ?>" />
+			<input type="hidden" name="step" value="<?php echo $step; ?>" />
+			<input type="hidden" name="task" value="pierce" />
 		</form>
 		<?php
 	}
