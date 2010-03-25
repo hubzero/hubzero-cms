@@ -27,6 +27,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $database =& JFactory::getDBO();
 $juser =& JFactory::getUser();
+
+$submissions = null;
+if (!$juser->get('guest')) {
+	$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, 
+						AA.subtable, R.created, R.created_by, R.published, R.publish_up, R.standalone, 
+						R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
+	$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
+	$query .= "LEFT JOIN #__resource_types AS t ON R.logical_type=t.id ";
+	$query .= "WHERE AA.authorid = ". $juser->get('id') ." ";
+	$query .= "AND R.id = AA.subid ";
+	$query .= "AND AA.subtable = 'resources' ";
+	$query .= "AND R.standalone=1 AND R.type=rt.id AND (R.published=2 OR R.published=3) AND R.type!=7 ";
+	$query .= "ORDER BY published ASC, title ASC";
+
+	$database->setQuery($query);
+	$submissions = $database->loadObjectList();
+}
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -58,7 +75,7 @@ $juser =& JFactory::getUser();
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 <?php
-		if ($this->submissions) {
+		if ($submissions) {
 ?>
 		<table id="submissions" summary="Contributions in progress">
 			<thead>
@@ -74,7 +91,7 @@ $juser =& JFactory::getUser();
 			$rc = new ResourcesContributor( $database );
 			$rt = new ResourcesTags( $database );
 			$cls = 'even';
-			foreach ($this->submissions as $submission) 
+			foreach ($submissions as $submission) 
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				
@@ -140,7 +157,8 @@ $juser =& JFactory::getUser();
 	<div class="clear"></div>
 	
 <?php
-$categories = $this->categories;
+$t = new ResourcesType( $database );
+$categories = $t->getMajorTypes();
 if ($categories) {
 ?>
 	<div class="four columns first">
