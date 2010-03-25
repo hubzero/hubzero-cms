@@ -99,10 +99,11 @@ class modFeaturedresource
 	public function display() 
 	{
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
-		ximport('featurehistory');
+		//ximport('featurehistory');
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'features.history.php' );
 		
 		$this->error = false;
-		if (!class_exists('FeatureHistory')) {
+		if (!class_exists('FeaturesHistory')) {
 			$this->error = true;
 			return false;
 		}
@@ -129,7 +130,7 @@ class modFeaturedresource
 
 		$row = null;
 		
-		$fh = new FeatureHistory( $database );
+		$fh = new FeaturesHistory( $database );
 
 		// Is a specific content category set?
 		if ($catid) {

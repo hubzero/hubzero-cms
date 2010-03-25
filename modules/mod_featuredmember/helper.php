@@ -117,11 +117,12 @@ class modFeaturedmember
 
 	public function display() 
 	{
-		ximport('featurehistory');
+		//ximport('featurehistory');
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'features.history.php' );
 		ximport('xprofile');
 		
 		$this->error = false;
-		if (!class_exists('FeatureHistory')) {
+		if (!class_exists('FeaturesHistory')) {
 			$this->error = true;
 			return false;
 		}
@@ -145,7 +146,7 @@ class modFeaturedmember
 		
 		$row = null;
 		
-		$fh = new FeatureHistory( $database );
+		$fh = new FeaturesHistory( $database );
 		
 		// Is a specific content category set?
 		if ($catid) {
