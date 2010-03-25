@@ -37,14 +37,14 @@ class SupportCategory extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__support_categories', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->category ) == '') {
 			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
@@ -56,7 +56,7 @@ class SupportCategory extends JTable
 	
 	//-----------
 	
-	function getCategories( $section=NULL ) 
+	public function getCategories( $section=NULL ) 
 	{
 		if ($section !== NULL) {
 			$section = ($section) ? $section : 1;
@@ -71,7 +71,7 @@ class SupportCategory extends JTable
 	
 	//-----------
 	
-	function buildQuery( $filters=array() ) 
+	public function buildQuery( $filters=array() ) 
 	{
 		$query = " FROM $this->_tbl AS c, #__support_sections AS s"
 				. " WHERE c.section=s.id";
@@ -87,7 +87,7 @@ class SupportCategory extends JTable
 	
 	//-----------
 	
-	function getCount( $filters=array() ) 
+	public function getCount( $filters=array() ) 
 	{
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->buildQuery( $filters );
@@ -97,7 +97,7 @@ class SupportCategory extends JTable
 	
 	//-----------
 	
-	function getRecords( $filters=array() )
+	public function getRecords( $filters=array() )
 	{
 		$filters['order'] = 'section, category';
 		

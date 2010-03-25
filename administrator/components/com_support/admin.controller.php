@@ -27,12 +27,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-class SupportController
+class SupportController extends JObject
 {	
 	private $_name  = NULL;
 	private $_data  = array();
 	private $_task  = NULL;
-	private $_error = NULL;
 
 	//-----------
 	
@@ -516,9 +515,12 @@ class SupportController
 			$row->email    = $juser->get('email');
 			$row->cookies  = 1;
 			
-			list( $os, $os_version, $browser, $browser_ver ) = SupportUtils::check_browserOs($_SERVER['HTTP_USER_AGENT']);
-			$row->os = $os.' '.$os_version;
-			$row->browser = $browser.' '.$browser_ver;
+			ximport('Hubzero_Browser');
+			$browser = new Hubzero_Browser();
+
+			$row->os = $browser->getOs().' '.$browser->getOsVersion();
+			$row->browser = $browser->getBrowser().' '.$browser->getBrowserVersion();
+			
 			$row->uas = $_SERVER['HTTP_USER_AGENT'];
 			
 			$row->ip = (getenv('HTTP_X_FORWARDED_FOR'))
@@ -883,14 +885,6 @@ class SupportController
 		//$bits = explode(':',$row->category);
 		//$row->category = end($bits);
 		//$row->section = $bits[0];
-	
-		// Code cleaner for xhtml transitional compliance
-		/*$row->summary = htmlspecialchars_decode($row->summary);
-		$row->summary = TextFilter::cleanXss($row->summary);
-		
-		$row->report  = htmlspecialchars_decode($row->report);
-		$row->report  = TextFilter::cleanXss($row->report);
-		$row->report  = str_replace( '<br>', '<br />', $row->report );*/
 		
 		// Set the status of the ticket
 		if ($row->resolved) {
@@ -1003,7 +997,7 @@ class SupportController
 			$rowc->comment    = nl2br($comment);
 			$rowc->comment    = str_replace( '<br>', '<br />', $rowc->comment );
 			$rowc->created    = date( 'Y-m-d H:i:s', time() );
-			$rowc->created_by = JRequest::getVar( 'username', '' ); //$juser->get('username');
+			$rowc->created_by = JRequest::getVar( 'username', '' );
 			$rowc->changelog  = $log;
 			$rowc->access     = JRequest::getInt( 'access', 0 );
 
@@ -1021,22 +1015,23 @@ class SupportController
 				// Only do the following if a comment was posted
 				// otherwise, we're only recording a changelog
 				if ($comment) {
-					$xhub =& XFactory::getHub();
+					$juri =& JURI::getInstance();
+					$jconfig =& JFactory::getConfig();
 					
 					// Parse comments for attachments
 					$attach = new SupportAttachment( $database );
-					$attach->webpath = $xhub->getCfg('hubLongURL').$this->config->parameters['webpath'].DS.$id;
+					$attach->webpath = $juri->base().$this->config->parameters['webpath'].DS.$id;
 					$attach->uppath  = JPATH_ROOT.$this->config->parameters['webpath'].DS.$id;
 					$attach->output  = 'email';
 
 					// Build e-mail components
-					$admin_email = $xhub->getCfg('hubSupportEmail');
+					$admin_email = $jconfig->getValue('config.mailfrom');
 					
 					$subject = ucfirst($this->_name).', Ticket #'.$row->id.' comment '.md5($row->id);
 					
 					$from = array();
-					$from['name']  = $xhub->getCfg('hubShortName').' '.ucfirst($this->_name);
-					$from['email'] = $xhub->getCfg('hubSupportEmail');
+					$from['name']  = $jconfig->getValue('config.sitename').' '.ucfirst($this->_name);
+					$from['email'] = $jconfig->getValue('config.mailfrom');
 		
 					$message  = '----------------------------'.r.n;
 					$message .= strtoupper(JText::_('TICKET')).': '.$row->id.r.n;
@@ -1049,19 +1044,21 @@ class SupportController
 					$message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created.r.n.r.n;
 					$message .= $attach->parse($comment).r.n.r.n;
 
-					$xhub =& XFactory::getHub();
-					$message .= $xhub->getcfg('hubLongURL').DS.'index.php?option='.$this->_option.'&task=ticket&id='. $row->id.r.n;
+					$sef = JRoute::_('index.php?option='.$this->_option.'&task=ticket&id='. $row->id);
+					if (substr($sef,0,1) == '/') {
+						$sef = substr($sef,1,strlen($sef));
+					}
+					$base = $juri->base();
+					if (substr($base,-14) == 'administrator/') {
+						$base = substr($base,0,strlen($base)-14);
+					}
+					$message .= $base.$sef.r.n;
 						
 					// An array for all the addresses to be e-mailed
 					$emails = array();
 					$emaillog = array();
 					
 					// Send e-mail to admin?
-					/*$email_admin = JRequest::getInt( 'email_admin', 0 );
-					if ($email_admin == 1) {
-						$emails[] = $admin_email;
-						$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_ADMIN').' - '.$admin_email.'</li>';
-					}*/
 					JPluginHelper::importPlugin( 'xmessage' );
 					$dispatcher =& JDispatcher::getInstance();
 					
@@ -1553,7 +1550,7 @@ class SupportController
 			exit();
 		}
 		
-		$xhub =& XFactory::getHub();
+		$jconfig =& JFactory::getConfig();
 		
 		// Notify item owner
 		if ($email) {			
@@ -1561,17 +1558,17 @@ class SupportController
 			
 			// Email "from" info
 			$from = array();
-			$from['name']  = $xhub->getCfg('hubShortName').' '.JText::_('SUPPORT');
-			$from['email'] = $xhub->getCfg('hubSupportEmail');
+			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('SUPPORT');
+			$from['email'] = $jconfig->getValue('config.mailfrom');
 			
 			// Email subject
-			$subject = JText::sprintf('REPORT_ABUSE_EMAIL_SUBJECT',$xhub->getCfg('hubShortName'));
+			$subject = JText::sprintf('REPORT_ABUSE_EMAIL_SUBJECT',$jconfig->getValue('config.sitename'));
 			
 			// Build the email message
-			if($note) {
-			$message .= '---------------------------'.r.n;
-			$message .= $note;
-			$message .= '---------------------------'.r.n;
+			if ($note) {
+				$message .= '---------------------------'.r.n;
+				$message .= $note;
+				$message .= '---------------------------'.r.n;
 			}
 			$message .= r.n;
 			$message .= JText::_('YOUR_POSTING').': '.r.n;
@@ -1712,7 +1709,7 @@ class SupportController
 		$result = $upload->upload_file_no_validation();
 		
 		if (!$result) {
-			$this->_error = JText::_('ERROR_UPLOADING').' '.$upload->err;
+			$this->setError(JText::_('ERROR_UPLOADING').' '.$upload->err);
 			
 			return '';
 		} else {
@@ -1724,10 +1721,10 @@ class SupportController
 			$row = new SupportAttachment( $database );
 			$row->bind( array('id'=>0,'ticket'=>$listdir,'filename'=>$upload->file_name,'description'=>$description) );
 			if (!$row->check()) {
-				$this->_error = $row->getError();
+				$this->setError($row->getError());
 			}
 			if (!$row->store()) {
-				$this->_error = $row->getError();
+				$this->setError($row->getError());
 			}
 			if (!$row->id) {
 				$row->getID();

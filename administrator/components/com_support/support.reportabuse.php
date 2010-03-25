@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
-// Answers question database class
+// Report Abuse database class
 //----------------------------------------------------------
 
 class ReportAbuse extends JTable 
@@ -40,12 +40,16 @@ class ReportAbuse extends JTable
 	var $category		= NULL;  // @var varchar(50)
 	var $subject		= NULL;  // @var varchar(150)
 	
-	function __construct( &$db )
+	//-----------
+	
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__abuse_reports', 'id', $db );
 	}
 	
-	function check() 
+	//-----------
+	
+	public function check() 
 	{
 		if (trim( $this->report ) == '' && trim( $this->subject ) == JText::_('OTHER')) {
 			$this->setError( JText::_('Please describe the issue.') );
@@ -54,7 +58,9 @@ class ReportAbuse extends JTable
 		return true;
 	}
 	
-	function buildQuery( $filters=array() ) 
+	//-----------
+	
+	public function buildQuery( $filters=array() ) 
 	{
 		$query = " FROM $this->_tbl AS a WHERE";
 					
@@ -76,9 +82,10 @@ class ReportAbuse extends JTable
 		return $query;
 	}
 	
-	function getCount( $filters=array() ) 
+	//-----------
+	
+	public function getCount( $filters=array() ) 
 	{
-		//$query = "SELECT COUNT(*) FROM $this->_tbl AS a WHERE a.referenceid='".$filters['id']."' AND a.category='".$filters['category']."' AND a.state=0";
 		$filters['sortby'] = '';
 		
 		$query  = "SELECT COUNT(*)";
@@ -88,7 +95,9 @@ class ReportAbuse extends JTable
 		return $this->_db->loadResult();
 	}
 	
-	function getRecords( $filters=array() ) 
+	//-----------
+	
+	public function getRecords( $filters=array() ) 
 	{
 		$query  = "SELECT *";
 		$query .= $this->buildQuery( $filters );
@@ -97,5 +106,4 @@ class ReportAbuse extends JTable
 		return $this->_db->loadObjectList();
 	}
 }
-
 ?>

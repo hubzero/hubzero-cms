@@ -52,7 +52,6 @@ include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'suppo
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.support.html.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
 ximport('textfilter');
-ximport('misc_func');
 ximport('xprofile');
 
 // Instantiate controller
