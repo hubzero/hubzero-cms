@@ -721,7 +721,6 @@ class AnswersController extends JObject
 		
 		// Load the question
 		$question = new AnswersQuestion($database);
-		$BT = new BankTransaction($database);
 		$question->load($id);
 		
 		// Check if question with this ID exists
@@ -736,6 +735,7 @@ class AnswersController extends JObject
 		// Check reward value of the question 
 		$reward = 0;
 		if ($this->banking) {
+			$BT = new BankTransaction($database);
 			$reward = $BT->getAmount( 'answers', 'hold', $id );
 		}
 		
