@@ -77,7 +77,7 @@ class MacrolistMacro extends WikiMacro
 
 				//$m[$macroname] = $macro->description();
 				$macroname = substr($macroname, 0, (strlen($macroname) - 5));
-				$txt .= '<dt><code>&#91;&#91;'.$macroname.'(args)&#93;&#93;</code></dt><dd>'.$macro->description().'</dd>'.n;
+				$txt .= '<dt><a name="'.strtolower($macroname).'"></a><code>&#91;&#91;'.$macroname.'(args)&#93;&#93;</code></dt><dd>'.$macro->description().'</dd>'.n;
 			}
 		}
 		$txt .= '</dl>'.n;

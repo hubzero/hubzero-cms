@@ -431,13 +431,13 @@ class WikiController extends JObject
 		
 		// Check authorization
 		$authorized = $this->checkAuthorization();
-		
+
 		// Check if the page is locked and the user is authorized
-		/*if ($this->page->state == 1 && $authorized !== 'admin') {
+		if ($this->page->state == 1 && $authorized !== 'admin') {
 			echo WikiHtml::div(WikiHtml::hed( 2, $pagetitle ), 'full', 'content-header');
 			echo WikiHtml::warning( JText::_('WIKI_WARNING_NOT_AUTH') );
 			return;
-		}*/
+		}
 
 		// Check if the page is group restricted and the user is authorized
 		if ($this->page->group != '' && $this->page->access != 0 && !$authorized) {
@@ -554,6 +554,7 @@ class WikiController extends JObject
 			$page->times_rated = 0;
 			$page->access = JRequest::getInt( 'access', 0, 'post' );
 			$page->group = trim(JRequest::getVar( 'group', '', 'post' ));
+			$page->state = JRequest::getInt( 'state', 0, 'post' );
 			
 			$old = new WikiPageRevision( $database );
 		} else {
@@ -585,6 +586,7 @@ class WikiController extends JObject
 			// Get group access controls
 			$page->access = JRequest::getInt( 'access', 0, 'post' );
 			$page->group = trim(JRequest::getVar( 'group', '', 'post' ));
+			$page->state = JRequest::getInt( 'state', 0, 'post' );
 		}
 
 		// Check content
@@ -1660,7 +1662,7 @@ class WikiController extends JObject
 						if ($usergroups && count($usergroups) > 0) {
 							foreach ($usergroups as $ug) 
 							{
-								if ($ug->cn == $this->page->group && $ug->regconfirmed) {
+								if ($ug->cn == $this->page->group && $ug->registered && $ug->regconfirmed) {
 									// They are a member. Return true.
 									return true;
 								}
@@ -1684,7 +1686,7 @@ class WikiController extends JObject
 						if ($usergroups && count($usergroups) > 0) {
 							foreach ($usergroups as $ug) 
 							{
-								if ($ug->cn == $this->page->group && $ug->regconfirmed) {
+								if ($ug->cn == $this->page->group && $ug->registered && $ug->regconfirmed) {
 									// They are a member. Return true.
 									return true;
 								}

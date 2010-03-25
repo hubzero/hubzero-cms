@@ -307,8 +307,9 @@ class WikiHtml
 				$aside .= WikiHtml::div( WikiHtml::hed(3,JText::_('WIKI_PAGE_TABLE_OF_CONTENTS')).$output['toc'], 'article-toc' );
 			}
 			$aside .= WikiHtml::div( WikiHtml::hed(3,JText::_('WIKI_PAGE_TAGS')).WikiHtml::tagcloud( $tags ), 'article-tags' );
-
-			$output['text'] .= '<p class="timestamp">'.JText::_('WIKI_PAGE_LAST_MODIFIED').' '.JHTML::_('date',$revision->created, '%d %b, %Y').'</p>';
+			
+			$first = $page->getRevision(1);
+			$output['text'] .= '<p class="timestamp">'.JText::_('WIKI_PAGE_CREATED').' '.JHTML::_('date',$first->created, '%d %b %Y').', '.JText::_('WIKI_PAGE_LAST_MODIFIED').' '.JHTML::_('date',$revision->created, '%d %b %Y').'</p>';
 
 			$c2  = WikiHtml::div( $aside, 'aside' );
 			$c2 .= WikiHtml::subject( $output['text'] );
@@ -474,7 +475,8 @@ class WikiHtml
 		}
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>To change the page name (the portion used for URLs), go <a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=renamepage').'">here</a>.</p>'.n;
-		$html .= t.t.'<p>To include an image, use the <a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename=Help:WikiMacros').'">image macro</a>. For example: "The following diagram illustrates my point: [[Image(diagram.jpg)]]"</p>'.n;
+		$html .= t.t.'<p><a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename=Help:WikiMacros#image').'">[[Image(filename.jpg)]]</a> to include an image.</p>'.n;
+		$html .= t.t.'<p><a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename=Help:WikiMacros#file').'">[[File(filename.pdf)]]</a> to include a file.</p>'.n;
 		if ($sub) {
 			//$src = 'index.php?option='.$option.a.'no_html=1'.a.'active=wiki'.a.'task=media'.a.'listdir='. $lid;
 			//$src = JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=media'.a.'listdir='.$lid.a.'no_html=1');
@@ -502,7 +504,7 @@ class WikiHtml
 		$html .= t.t.t.'<ul id="wiki-toolbar" class="hidden"></ul>'.n;
 		$html .= t.t.t.'<textarea name="pagetext" id="pagetext" rows="40" cols="35">'. $revision->pagetext .'</textarea>'.n;
 		$html .= t.t.'</label>'.n;
-		$html .= t.t.'<p class="ta-right hint">See <a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename=Help:WikiFormatting').'">Help: Wiki Formatting</a> for help on editing content.</p>'.n;
+		$html .= t.t.'<p class="ta-right hint">See <a class="popup" href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename=Help:WikiFormatting').'">Help: Wiki Formatting</a> for help on editing content.</p>'.n;
 		$mode = $params->get( 'mode', 'wiki' );
 		if ($authorized) {
 			$cls = '';
