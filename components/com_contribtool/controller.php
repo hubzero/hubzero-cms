@@ -28,6 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_Tool_Version');
 ximport('Hubzero_Tool');
 ximport('Hubzero_Group');
+ximport('Hubzero_Trac_Project');
 
 class ContribtoolController extends JObject
 {
@@ -919,6 +920,31 @@ class ContribtoolController extends JObject
 	// Process
 	//----------------------------------------------------------
 
+	protected function setTracAccess($toolname, $codeaccess, $wikiaccess)
+	{
+		$hztrac = Hubzero_Trac_Project::find_or_create('app:' . $toolname);
+
+		if (!$hztrac) {
+			return false;
+		}
+
+		if ($codeaccess == '@OPEN') {
+			$hztrac->add_user_permission(0,array('BROWSER_VIEW','LOG_VIEW','FILE_VIEW'));
+		}
+		elseif ($codeaccess == '@DEV') {
+			$hztrac->remove_user_permission(0,array('BROWSER_VIEW','LOG_VIEW','FILE_VIEW'));
+		}
+
+		if ($wikiaccess == '@OPEN') {
+			$hztrac->add_user_permission(0,array('WIKI_VIEW','MILESTONE_VIEW','ROADMAP_VIEW','SEARCH_VIEW'));
+		}
+		elseif ($wikiaccess == '@DEV') {
+			$hztrac->remove_user_permission(0,array('WIKI_VIEW','MILESTONE_VIEW','ROADMAP_VIEW','SEARCH_VIEW'));
+		}
+
+		return true;
+	}
+
 	protected function save()
 	{
 		$database 	=& JFactory::getDBO();
@@ -1069,6 +1095,8 @@ class ContribtoolController extends JObject
 					}
 				}
 
+				$this->setTracAccess($toolname,$hztv->codeaccess,$hztv->wikiaccess);
+
 				if (!$this->_error) 
 				{
 					// create/update developers group
@@ -1082,15 +1110,13 @@ class ContribtoolController extends JObject
 						$hzg = Hubzero_Group::getInstance($gid);
 					}
 					$hzg->set('members',$tool['developers']);
-					$hzg->add('tracperm','WIKI_ADMIN');
-					$hzg->add('tracperm','MILESTONE_ADMIN');
-					$hzg->add('tracperm','BROWSER_VIEW');
-					$hzg->add('tracperm','LOG_VIEW');
-					$hzg->add('tracperm','FILE_VIEW');
-					$hzg->add('tracperm','CHANGESET_VIEW');
-					$hzg->add('tracperm','ROADMAP_VIEW');
-					$hzg->add('tracperm','TIMELINE_VIEW');
-					$hzg->add('tracperm','SEARCH_VIEW');
+					$hztrac = Hubzero_Trac_Project::find_or_create('app:' . $toolname);
+					$hztrac->add_group_permission('apps', array('WIKI_ADMIN','MILESTONE_ADMIN',
+								'BROWSER_VIEW','LOG_VIEW','FILE_VIEW','CHANGESET_VIEW','ROADMAP_VIEW',
+								'TIMELINE_VIEW','SEARCH_VIEW'));
+					$hztrac->add_group_permission($hzg->cn, array('WIKI_ADMIN','MILESTONE_ADMIN',
+								'BROWSER_VIEW','LOG_VIEW','FILE_VIEW','CHANGESET_VIEW','ROADMAP_VIEW',
+								'TIMELINE_VIEW','SEARCH_VIEW'));
 					$hztv->add('owner',$hzg->cn);
 					$hztv->add('owner','apps');
 					$hztv->add('owner',$hzg->cn);
@@ -1255,7 +1281,9 @@ class ContribtoolController extends JObject
 							
 							// save version info
 							$hztv->update();
-							
+
+							$this->setTracAccess($hztv->toolname,$hztv->codeaccess,null);
+
 							if($this->_action != 'confirm') {
 								$this->_msg = JText::_('NOTICE_CHANGE_LICENSE_SAVED');
 								$this->_task = 'status';
@@ -2046,6 +2074,8 @@ class ContribtoolController extends JObject
 
 	protected function installTool(&$output)
 	{
+		ximport('Hubzero_Tool_Version');
+
 		if(!$this->_toolid) {
 			return false;
 		}
@@ -2068,11 +2098,11 @@ class ContribtoolController extends JObject
 				 // extract revision number
 				$rev = explode("installed revision: ", $output['msg']);
 				if(isset($rev[1]) && intval($rev[1])) {
-					$objV = new ToolVersion( $database );
-					$objV->revision = intval($rev[1]);
-					if (!$objV->save($this->_toolid, 'dev')) {
+					$hztv = Hubzero_Tool_VersionHelper::getDevelopmentToolVersion($this->_toolid);
+					$hztv->revision = intval($rev[1]);
+					if (!$hztv->update()) {
 						$output['class'] = 'error';
-						$output['msg'] .= '<br />* '.$objV->getError();
+						$output['msg'] .= '<br />* '."Error saving revision update to installed tool";
 						return false;
 					}
 					else {
@@ -2458,7 +2488,11 @@ class ContribtoolController extends JObject
 			$new_hztv->license = $status['license'];
 			$new_hztv->fulltext = $status['fulltext'];
 			$new_hztv->exportControl = $exportmap[$status['exec']];
-			
+			$new_hztv->owner = $hztv_dev->owner;
+			$new_hztv->member = $hztv_dev->member;
+			foreach($status['developers'] as $d)
+				$new_hztv->add('author',$d->uidNumber);
+
 			if (!$new_hztv->update())
 			{
 				$output['fail'] .= '<br />* ';
@@ -2466,6 +2500,8 @@ class ContribtoolController extends JObject
 			}
 			else 
 			{
+				$this->setTracAccess($new_hztv->toolname,$new_hztv->codeaccess,$new_hztv->wikiaccess);
+
 				// update tool entry
 				$hzt = Hubzero_Tool::getInstance($this->_toolid);
                 $hzt->add('version',$new_hztv->instance);
@@ -2538,6 +2574,8 @@ class ContribtoolController extends JObject
 
 	protected function edit_resource()
 	{
+		ximport('Hubzero_Tool_Version');
+
 		$database 	=& JFactory::getDBO();
 		$juser  	=& JFactory::getUser();
 		$xhub      	=& XFactory::getHub();
@@ -2580,7 +2618,8 @@ class ContribtoolController extends JObject
 		
 		// process first step
 		if($nextstep==3 && isset($_POST['nbtag'])) {
-				
+		    $hztv = Hubzero_Tool_VersionHelper::getToolRevision($this->_toolid, $version);
+			
 			$objV = new ToolVersion ($database);
 			if (!$objV->bind( $_POST )) {
 					$this->_error=$objV->getError();
@@ -2606,16 +2645,21 @@ class ContribtoolController extends JObject
 					$status['fulltext'] .= '<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>';
 				}
 			}
-		
 						
-			$objV->fulltext   = $status['fulltext'];
-			$objV->description  = $this->txt_shorten(JRequest::getVar( 'description', $status['description'], 'post'));
-			$objV->title  = $this->txt_shorten(JRequest::getVar( 'title', $status['title'], 'post'));
+			$hztv->fulltext = $objV->fulltext   = $status['fulltext'];
+			$hztv->description = $objV->description  = $this->txt_shorten(JRequest::getVar( 'description', $status['description'], 'post'));
+			$hztv->title = $objV->title  = $this->txt_shorten(JRequest::getVar( 'title', $status['title'], 'post'));
 
+			if (!$hztv->update()) {
+				$this->_error = "Error updating tool tables.";
+				return;
+			} else {
+			/*
 			if (!$objV->save($this->_toolid, $version) ) {
 				$this->_error=$objV->getError();
 				return;
 			} else {
+			*/
 				// get updated tool status
 				$obj->getToolStatus($this->_toolid, $this->_option, $status, $version, $ldap);
 					
