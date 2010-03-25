@@ -200,15 +200,22 @@ class modToolList
 					//$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
 					$url = 'index.php?option=com_tools&task=invoke&app='.$tool->toolname.'&version='.$tool->revision;
 					
+					$cls = '';
 					// Build the HTML
 					$html .= "\t\t".' <li id="'.$tool->name.'"';
 					// If we're in the 'all tools' pane ...
 					if ($type == 'all') {
 						// Highlight tools on the user's favorites list
 						if (in_array($tool->name,$favs)) {
-							$html .= ' class="favd"';
+							$cls = 'favd';
 						}
 					}
+					if ($this->supportedtag) {
+						if (in_array($tool->toolname, $this->supportedtagusage)) {
+							$cls .= ($cls) ? ' supported' : 'supported';
+						}
+					}
+					$html .= ($cls) ? ' class="'.$cls.'"' : '';
 					$html .= '>'."\n";
 					
 					// Tool info link
@@ -249,7 +256,17 @@ class modToolList
 		// This should only happen on AJAX requests
 		$this->fav = JRequest::getVar( 'fav', '' );
 		$this->no_html = JRequest::getVar( 'no_html', 0 );
-
+		
+		$rconfig = JComponentHelper::getParams( 'com_resources' );
+		$this->supportedtag = $rconfig->get('supportedtag');
+		
+		$database =& JFactory::getDBO();
+		if ($this->supportedtag) {
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.tags.php' );
+			$this->rt = new ResourcesTags( $database );
+			$this->supportedtagusage = $this->rt->getTagUsage( $this->supportedtag, 'alias' );
+		}
+		
 		if ($this->fav || $this->no_html) {
 			// We have a string of tools! This means we're updating the
 			// favorite tools pane of the module via AJAX
@@ -269,7 +286,6 @@ class modToolList
 			XDocument::addModuleStyleSheet('mod_mytools');
 			
 			// Get a list of recent tools
-			$database =& JFactory::getDBO();
 			$rt = new RecentTool( $database );
 			$rows = $rt->getRecords( $juser->get('id') );
 
