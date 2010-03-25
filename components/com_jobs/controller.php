@@ -1082,29 +1082,8 @@ class JobsController extends JObject
 		// Incoming
 		$code 	= JRequest::getVar( 'code', '' );
 		
-		// Login required
-		if ($juser->get('guest')) {
-			$this->_msg = JText::_('MSG_LOGIN_APPLY');
-			$this->login();
-			return;
-		}
-		
-		$ja = new JobApplication ( $database );
-		
-		// if application already exists, load it to edit
-		if($ja->loadApplication ($juser->get('id'), 0, $code) && $ja->status != 2) {
-			$this->_task = 'editapp';
-		}
-		
-		if($this->_task != 'editapp') {
-			$ja->cover = '';
-		}
-		
 		// Set page title
 		$this->_buildTitle();
-				
-		// Push some styles to the template
-		$this->_getStyles();
 		
 		$job = new Job ( $database );
 		if(!$job->loadJob($code)) {
@@ -1130,6 +1109,27 @@ class JobsController extends JObject
 		$this->_jobcode = $job->code;
 		$this->_jobtitle = $job->title;
 		$this->_buildPathway();
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Login required
+		if ($juser->get('guest')) {
+			$this->_msg = JText::_('MSG_LOGIN_APPLY');
+			$this->login();
+			return;
+		}
+		
+		$ja = new JobApplication ( $database );
+		
+		// if application already exists, load it to edit
+		if($ja->loadApplication ($juser->get('id'), 0, $code) && $ja->status != 2) {
+			$this->_task = 'editapp';
+		}
+		
+		if($this->_task != 'editapp') {
+			$ja->cover = '';
+		}						
 		
 		$js = new JobSeeker ( $database );
 		$seeker = $js->getSeeker($juser->get('id'), $juser->get('id'));
