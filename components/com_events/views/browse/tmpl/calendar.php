@@ -44,7 +44,7 @@ $day_name = array(
 	JText::_('EVENTS_CAL_LANG_SATURDAYSHORT')
 );
 
-$time  = mktime(0, 0, 0, $this->month, 1, intval($this->year) );
+$time  = mktime(0, 0, 0, intval($this->month), 1, intval($this->year) );
 $ptime = mktime(0, 0, 0, ($this->month-1), 1, intval($this->year) );
 $ntime = mktime(0, 0, 0, ($this->month+1), 1, intval($this->year) );
 

@@ -32,12 +32,16 @@ HUB.Events = {
 	initialize: function() {
 		HUB.Events.form = $('hubForm');
 		
-		myCal1 = new Calendar({ publish_up: 'Y-m-d' }, { direction: 1, tweak: {x: 6, y: 0}, onHideComplete:function(){ 
-				$('publish_down').value = $('publish_up').value;
-				//myCal2 = new Calendar({ publish_down: 'Y-m-d' }, { direction: 1, tweak: {x: 6, y: 0} });
-			}
-		});
-		myCal2 = new Calendar({ publish_down: 'Y-m-d' }, { direction: 1, tweak: {x: 6, y: 0} });
+		if ($('event-id') && $('event-id').value != '0') {
+			myCal1 = new Calendar({ publish_up: 'Y-m-d' }, { direction: 0, tweak: {x: 6, y: 0} });
+			myCal2 = new Calendar({ publish_down: 'Y-m-d' }, { direction: 0, tweak: {x: 6, y: 0} });
+		} else {
+			myCal1 = new Calendar({ publish_up: 'Y-m-d' }, { direction: 1, tweak: {x: 6, y: 0}, onHideComplete:function(){ 
+					$('publish_down').value = $('publish_up').value;
+				}
+			});
+			myCal2 = new Calendar({ publish_down: 'Y-m-d' }, { direction: 1, tweak: {x: 6, y: 0} });
+		}
 		
 		$('reccurtype0').onclick = function() {HUB.Events.checkDisable()};
 		$('reccurtype1').onclick = function() {HUB.Events.checkDisable()};
