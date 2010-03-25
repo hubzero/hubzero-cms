@@ -161,7 +161,7 @@ class MwSession extends JTable
 		
 		$query = "SELECT COUNT(*) FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 				  ON v.sessnum = s.sessnum 
-				  WHERE v.viewuser='".$username."' $a
+				  WHERE v.viewuser='".$username."' AND s.username='".$username."' $a
 				  ORDER BY s.start";
 		
 		$this->_db->setQuery( $query );

@@ -40,7 +40,7 @@ jimport( 'joomla.application.component.model' );
 
 class ToolsModelTools extends JModel
 {
-	function getApplicationTools()
+	public function getApplicationTools()
 	{
 		$dh = opendir('/opt/trac/tools');
 		$result = array();
@@ -64,11 +64,11 @@ class ToolsModelTools extends JModel
 			$database =& JFactory::getDBO();
 			//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
 			//$tv = new ToolVersion( $database );
-			
-			$query = "SELECT v.id, v.instance, v.toolname, v.title, MAX(v.revision), v.toolaccess, v.codeaccess, v.state 
-						FROM #__tool_version as v 
-						WHERE v.toolname IN ('".$aliases."') 
-						AND (state='1' OR state='3')
+			//AND (state='1' OR state='3')
+			$query = "SELECT v.id, v.instance, v.toolname, v.title, MAX(v.revision), v.toolaccess, v.codeaccess, v.state, t.state AS tool_state 
+						FROM #__tool as t, #__tool_version as v 
+						WHERE v.toolname IN ('".$aliases."') AND t.id=v.toolid
+						AND (v.state='1' OR v.state='3')
 						GROUP BY toolname
 						ORDER BY v.toolname ASC";
 			$database->setQuery( $query );
@@ -78,5 +78,4 @@ class ToolsModelTools extends JModel
 		return $result;
 	}
 }
-
 ?>
