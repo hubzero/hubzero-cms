@@ -632,7 +632,7 @@ class FeedbackController extends JObject
 		$reporter = array_map('trim', $_POST['reporter']);
 		$problem  = array_map('trim', $_POST['problem']);
 		$reporter = array_map(array('Hubzero_View_Helper_Html','purifyText'), $reporter);
-		$problem  = array_map(array('Hubzero_View_Helper_Html','purifyText'), $problem);
+		//$problem  = array_map(array('Hubzero_View_Helper_Html','purifyText'), $problem);
 	
 		// Make sure email address is valid
 		$validemail = $this->_check_validEmail($reporter['email']);
