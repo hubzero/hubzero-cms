@@ -218,10 +218,9 @@ class Wish extends JTable
 		}
 				
 		$sql = $fullinfo 
-				? "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, " 
+				? "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, xp.name AS authorname, " 
 				: "SELECT ws.id, ws.wishlist, ws.proposed, ws.granted, ws.granted_vid, ws.status ";
-		//$sql .= ($filters['tag']) ? " TA.tag, COUNT(DISTINCT TA.tag) AS uniques, " : " ";		
-		
+			
 		if($fullinfo) {
 			if($uid) {
 			$sql.= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=".$uid.") AS ranked,";
@@ -229,20 +228,40 @@ class Wish extends JTable
 			else {
 			$sql.= "\n NULL AS ranked,";
 			} 
+			// Get votes
 			$sql.= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=ws.id) AS positive, ";
 			$sql.= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
 			$sql.= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
+			
 			if($filters['sortby'] == 'latestcomment') {
-			$sql.= "\n (SELECT MAX(CC.added) FROM #__comments AS CC WHERE ws.id=CC.referenceid AND (CC.category='wish' OR CC.category='wishcomment')  GROUP BY CC.referenceid) AS latestcomment, ";
+			$sql.= "\n (SELECT MAX(CC.added) FROM #__comments AS CC WHERE CC.referenceid=ws.id AND (CC.category='wish' OR CC.category='wishcomment')  GROUP BY CC.referenceid) AS latestcomment, ";
 			}
+			
+			// Get xprofile info
+			$sql.= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.granted_by ) as grantedby, ";
+			$sql.= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.assigned ) as assignedto, ";
+			
+			// Get comments count
+			$sql.= "\n (SELECT count(*) FROM #__comments AS CC WHERE CC.referenceid=ws.id AND CC.state=0 AND CC.category='wish') AS comments, ";
+			$sql.= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wish' WHERE CC.state=0 AND CC.category='wishcomment' AND C2.referenceid=ws.id) AS commentreplies, ";
+			$sql.= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wishcomment' JOIN #__comments AS C3 ON C3.id=C2.referenceid AND C3.category='wish'  WHERE CC.state=0 AND CC.category='wishcomment' AND C3.referenceid=ws.id) AS replyreplies, ";
+			$sql.= "\n (SELECT comments + commentreplies + replyreplies) AS numreplies, ";
+			
+			// Get abouse reports count
+			$sql.= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
+			
+			// Get averages
 			$sql.= "\n (SELECT AVG(m.importance) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_imp, ";
 			$sql.= "\n (SELECT AVG(m.effort) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id AND m.effort!=6) AS average_effort, ";	
+			
+			// Get bonus
 			$sql.= "\n (SELECT SUM(amount) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonus, ";
 			$sql.= "\n (SELECT COUNT(DISTINCT uid) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonusgivenby ";
 		}		
 		$sql.= "\n FROM #__wishlist_item AS ws";
 		
 		if($fullinfo) {			
+			$sql.= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
 			$sql.= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='".$uid."' ";
 			$sql.= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='".$uid."' ";
 			if($filters['tag']) {
@@ -322,11 +341,7 @@ class Wish extends JTable
 	
 		}
 		
-		$sql.= " ORDER BY ". $sort;
-		
-		//if(isset ($filters['limit']) && $filters['limit']!=0) {
-		//$sql.= " LIMIT ". $filters['limit'];
-		//}
+		$sql.= "\n ORDER BY ". $sort;
 		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : ""; 
 	
 		$this->_db->setQuery( $sql );
@@ -357,34 +372,44 @@ class Wish extends JTable
 	 
 	 //----------
 	 
-	 public function get_wish ($wishid, $juser='', $deleted=0) {
+	 public function get_wish ($wishid = 0, $uid = 0, $refid = 0, $cat = '', $deleted = 0) {
 	 
 	 	if ($wishid === NULL) {
 			return false;
 		}
-		if (is_object($juser)) {
-			$uid = $juser->get('id');
-		}
-		else {
-			$uid = 0;
-		}
 	
-		$sql = "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, ";
+		$sql = "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, xp.name AS authorname, ";
 		if($uid) {
 		$sql.= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=".$uid.") AS ranked,";
 		} 
 		$sql.= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=ws.id) AS positive, ";
 		$sql.= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
 		
+		// Get xprofile info
+		$sql.= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.granted_by ) as grantedby, ";
+		$sql.= "\n (SELECT xp.name FROM #__xprofiles AS xp WHERE xp.uidNumber=ws.assigned ) as assignedto, ";
+			
+		// Get comments count
+		$sql.= "\n (SELECT count(*) FROM #__comments AS CC WHERE CC.referenceid=ws.id AND CC.state=0 AND CC.category='wish') AS comments, ";
+		$sql.= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wish' WHERE CC.state=0 AND CC.category='wishcomment' AND C2.referenceid=ws.id) AS commentreplies, ";
+		$sql.= "\n (SELECT count(*) FROM #__comments AS CC JOIN #__comments AS C2 ON C2.id=CC.referenceid AND C2.category='wishcomment' JOIN #__comments AS C3 ON C3.id=C2.referenceid AND C3.category='wish'  WHERE CC.state=0 AND CC.category='wishcomment' AND C3.referenceid=ws.id) AS replyreplies, ";
+		$sql.= "\n (SELECT comments + commentreplies + replyreplies) AS numreplies, ";
+		
+		// Get abouse reports count
+		$sql.= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
+		
 		$sql.= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
 		$sql.= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id AND m.effort=6) AS num_skipped_votes, "; // did anyone skip effort selection?
 		$sql.= "\n (SELECT AVG(m.importance) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_imp, ";
 		$sql.= "\n (SELECT AVG(m.effort) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id AND m.effort!=6) AS average_effort, ";	
-		//$sql.= "\n (SELECT m.due FROM #__wishlist_vote AS m WHERE m.wishid=ws.id ORDER BY m.due DESC LIMIT 1) AS average_due, ";
 		$sql.= "\n (SELECT SUM(amount) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonus, ";
 		$sql.= "\n (SELECT COUNT(DISTINCT uid) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonusgivenby ";	
 			
 		$sql.= "\n FROM #__wishlist_item AS ws";
+		if($refid && $cat) {
+		$sql.= "\n JOIN #__wishlist AS W ON W.id=ws.wishlist AND W.referenceid='$refid' AND W.category='$cat' ";
+		}
+		$sql.= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
 		$sql.= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='".$uid."' ";
 		$sql.= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='".$uid."' ";
 		$sql.= "\n WHERE ws.id='".$wishid."' ";
@@ -394,11 +419,11 @@ class Wish extends JTable
 	
 		$this->_db->setQuery( $sql );
 		$res = $this->_db->loadObjectList();
-		$wish = ($res) ? $res[0] : array();
-		
+		$wish = ($res) ? $res[0] : array();		
 		
 		return $wish;
 	 }
+	 
 	 //----------
 	 // Does the wish exist on this list?
 	 public function check_wish ($wishid, $listid) {
@@ -411,8 +436,7 @@ class Wish extends JTable
 		$query .= "FROM #__wishlist_item  ";
 		$query .= "WHERE id = '".$wishid."' AND wishlist='".$listid."' LIMIT 1";
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();
-	 
+		return $this->_db->loadResult();	 
 	 }
 	 
 	 //----------
@@ -492,8 +516,7 @@ class Wish extends JTable
 		$query .= ($which == 'prev') ? " ORDER BY ws.id DESC " : " ORDER BY ws.id ASC ";
 		$query .= " LIMIT 1";
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();
-	 	
+		return $this->_db->loadResult();	 	
 	 }
 	 
 	 //----------
@@ -510,8 +533,6 @@ class Wish extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	 }
-	
-	
 }
 //----------------------------------------------------------
 // Wishlist Implementation Plan class
@@ -544,9 +565,10 @@ class WishlistPlan extends JTable
 		 return false;
 		}
 		
-		$query  = "SELECT * ";
-		$query .= "FROM #__wishlist_implementation  ";
-		$query .= "WHERE wishid = '".$wishid."' ORDER BY created DESC LIMIT 1";
+		$query  = "SELECT *, xp.name AS authorname ";
+		$query .= "FROM #__wishlist_implementation AS p  ";
+		$query .= "JOIN #__xprofiles AS xp ON xp.uidNumber=p.created_by ";
+		$query .= "WHERE p.wishid = '".$wishid."' ORDER BY p.created DESC LIMIT 1";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
@@ -581,10 +603,7 @@ class WishlistPlan extends JTable
 		$this->_db->setQuery( $query );
 		$this->_db->query();
 		
-	}
-	
-	
-	
+	}	
 }
 
 //----------------------------------------------------------
@@ -602,8 +621,7 @@ class WishlistOwnerGroup extends JTable
 	{
 		parent::__construct( '#__wishlist_ownergroups', 'id', $db );
 	}
-	
-	 
+		 
 	//----------
 	 public function get_owner_groups($listid, $controlgroup='', $wishlist='', $native=0, $groups = array()) 
 	 {
@@ -627,20 +645,21 @@ class WishlistOwnerGroup extends JTable
 			$toolgroup = $obj->getToolDevGroup ($wishlist->referenceid);
 			if($toolgroup) { $groups[] = $toolgroup; }
 		}
-		
-		
+				
 		// if primary list, add all site admins
-		if($controlgroup && Hubzero_Group::exists($controlgroup) && $wishlist->category=='general') {
+		if($controlgroup && $wishlist->category=='general') {
 			$instance = new XGroup($controlgroup);
-			$groups[] = $instance->get('gidNumber');
+			$gid = $instance->get('gidNumber');
+			if($gid) {
+			$groups[] = $gid;
+			}
 		}
 		
 		// if private group list, add the group
 		if($wishlist->category == 'group') {
 			$groups[] = $wishlist->referenceid;
 		}
-	
-		
+			
 		// get groups assigned to this wishlist
 		if(!$native) {
 			$sql = "SELECT o.groupid"
@@ -661,8 +680,7 @@ class WishlistOwnerGroup extends JTable
 		
 		$groups = array_unique($groups);
 		sort($groups);
-		return $groups;
-	 
+		return $groups;	 
 	 }
 	 
 	 //----------
@@ -679,13 +697,10 @@ class WishlistOwnerGroup extends JTable
 		
 		// cannot delete "native" owners (e.g. tool dev group)
 		if(Hubzero_Group::exists($groupid) && !in_array($groupid, $nativegroups, true)) {
-				
-				$query = "DELETE FROM $this->_tbl WHERE wishlist='". $listid."' AND groupid='".$groupid."'";
-				$this->_db->setQuery( $query );
-				$this->_db->query();
-		}
-		
-		
+			$query = "DELETE FROM $this->_tbl WHERE wishlist='". $listid."' AND groupid='".$groupid."'";
+			$this->_db->setQuery( $query );
+			$this->_db->query();
+		}		
 	}
 	//----------
 	 public function save_owner_groups($listid, $admingroup, $newgroups = array()) {
@@ -699,26 +714,21 @@ class WishlistOwnerGroup extends JTable
 			
 		if(count($newgroups) > 0)  {
 			foreach($newgroups as $ng) {
-				
-					$instance = new XGroup($ng);
-					$gid = $instance->get('gidNumber');
-					if ($gid && !in_array($gid, $groups, true)) {
+				$instance = new XGroup($ng);
+				$gid = $instance->get('gidNumber');
+				if ($gid && !in_array($gid, $groups, true)) {
+					$this->id = 0;
+					$this->groupid = $gid;
+					$this->wishlist = $listid;
 						
-						$this->id = 0;
-						$this->groupid = $gid;
-						$this->wishlist = $listid;
-						
-						if (!$this->store()) {
+					if (!$this->store()) {
 						$this->setError( JText::_('Failed to add a user.') );
 						return false;
-						}
 					}
-			
+				}			
 			}
-		}
-		
-	}
-	
+		}		
+	}	
 }
 
 //----------------------------------------------------------
@@ -750,13 +760,10 @@ class WishlistOwner extends JTable
 		
 		// cannot delete "native" owner (e.g. resource contributor)
 		if(is_object($quser) && !in_array($quser->get('id'), $nativeowners, true)) {
-				
-				$query = "DELETE FROM $this->_tbl WHERE wishlist='". $listid."' AND userid='".$uid."'";
-				$this->_db->setQuery( $query );
-				$this->_db->query();
-		}
-		
-		
+			$query = "DELETE FROM $this->_tbl WHERE wishlist='". $listid."' AND userid='".$uid."'";
+			$this->_db->setQuery( $query );
+			$this->_db->query();
+		}		
 	}
 	
 	//----------
@@ -767,59 +774,49 @@ class WishlistOwner extends JTable
 		}
 		
 		$owners = $this->get_owners($listid, $admingroup);
-	
-		
+			
 		if(count($newowners) > 0)  {
 			foreach($newowners as $no) {
-				
-					$quser =& JUser::getInstance( $no );
-					if (is_object($quser) && !in_array($quser->get('id'), $owners['individuals'], true) && !in_array($quser->get('id'), $owners['advisory'], true)) {
+				$quser =& JUser::getInstance( $no );
+				if (is_object($quser) && !in_array($quser->get('id'), $owners['individuals'], true) && !in_array($quser->get('id'), $owners['advisory'], true)) {
+					$this->id = 0;
+					$this->userid = $quser->get('id');
+					$this->wishlist = $listid;
+					$this->type = $type;
 						
-						$this->id = 0;
-						$this->userid = $quser->get('id');
-						$this->wishlist = $listid;
-						$this->type = $type;
-						
-						if (!$this->store()) {
+					if (!$this->store()) {
 						$this->setError( JText::_('Failed to add a user.') );
 						return false;
-						}
-						else {
-							// send email to added user
+					}
+					else {
+						// send email to added user
+						$xhub =& XFactory::getHub();
+						$jconfig =& JFactory::getConfig();
+						$admin_email = $jconfig->getValue('config.mailfrom');
 							
-							$xhub =& XFactory::getHub();
-							$jconfig =& JFactory::getConfig();
-							$admin_email = $jconfig->getValue('config.mailfrom');
+						$kind = $type==2 ? JText::_('member of Advisory Committee') : JText::_('list administrator');
+						$subject = JText::_('Wish List').', '.JText::_('You have been added as a').' '.$kind.' '.JText::_('FOR').' '.JText::_('Wish List').' #'.$listid;
 							
-							$kind = $type==2 ? JText::_('member of Advisory Committee') : JText::_('list administrator');
-						
-							$subject = JText::_('Wish List').', '.JText::_('You have been added as a').' '.$kind.' '.JText::_('FOR').' '.JText::_('Wish List').' #'.$listid;
+						$from = array();
+						$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('Wish List');
+						$from['email'] = $jconfig->getValue('config.mailfrom');
 							
-							$from = array();
-							$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('Wish List');
-							$from['email'] = $jconfig->getValue('config.mailfrom');
+						$message  = $subject.'. ';
+						$message .= r.n.r.n;
+						$message .= '----------------------------'.r.n;
+						$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option=com_wishlist'.a.'id='.$listid);
+					    $message .= JText::_('Please go to').' '.$url.' '.JText::_('to view the wish list and rank new wishes.');
 							
-							$message  = $subject.'. ';
-							$message .= r.n.r.n;
-							$message .= '----------------------------'.r.n;
-							$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option=com_wishlist'.a.'id='.$listid);
-					        $message .= JText::_('Please go to').' '.$url.' '.JText::_('to view the wish list and rank new wishes.');
-							
-							JPluginHelper::importPlugin( 'xmessage' );
-							$dispatcher =& JDispatcher::getInstance();
-					
-							if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_new_owner', $subject, $message, $from, array($quser->get('id')), 'com_wishlist'))) {
+						JPluginHelper::importPlugin( 'xmessage' );
+						$dispatcher =& JDispatcher::getInstance();
+						if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_new_owner', $subject, $message, $from, array($quser->get('id')), 'com_wishlist'))) {
 								$this->setError( JText::_('Failed to message new wish list owner.') );
-							}
-							
 						}
 					}
-			
+				}			
 			}
-		}
-		
-	}
-	
+		}		
+	}	
 	
 	//----------
 	 public function get_owners($listid, $admingroup, $wishlist='', $native=0, $wishid=0, $owners = array()) {
@@ -837,8 +834,7 @@ class WishlistOwner extends JTable
 		// if private user list, add the user
 		if($wishlist->category == 'user') {
 			$owners[] = $wishlist->referenceid;
-		}
-	
+		}	
 			
 		// if resource, get contributors
 		if($wishlist->category=='resource' &&  $wishlist->resource->type!='7') {
@@ -848,8 +844,7 @@ class WishlistOwner extends JTable
 					$owners[] = $con->id;										
 				}
 			}
-		}
-		
+		}		
 		
 		// get groups		
 		$groups = $objG->get_owner_groups($listid, $admingroup, $wishlist, $native);
@@ -860,9 +855,6 @@ class WishlistOwner extends JTable
 				$group->select( $g);
 				$members = $group->get('members');
 				$managers = $group->get('managers');
-				if($wishlist->category=='group') {
-				$managers = $group->get('invitees');
-				}
 				$members = array_merge($members, $managers);
 				if($members) {
 					foreach($members as $member) {
@@ -882,10 +874,6 @@ class WishlistOwner extends JTable
 			$results =  $this->_db->loadObjectList();
 			if($results) {
 				foreach($results as $result) {
-					/*$wuser =& JUser::getInstance( $result->userid );
-					if (is_object($wuser)) {
-						$owners[] = $wuser->get('id');
-					}*/
 					$owners[] = $result->userid;										
 				}
 			}
@@ -912,11 +900,7 @@ class WishlistOwner extends JTable
 					}
 				}
 		}
-		
-		
-		
-		
-		
+				
 		// find out those who voted - for distribution of points
 		if($wishid) {
 			$activeowners = array();
@@ -947,11 +931,8 @@ class WishlistOwner extends JTable
 		$collect['groups'] = $groups;
 		$collect['advisory'] = $advisory;
 		
-		return $collect;
-	 
-	 }
-		
-	
+		return $collect;	 
+	 }	
 }
 //----------------------------------------------------------
 // Wish Ranking class
@@ -1241,6 +1222,12 @@ class Wishlist extends JTable
 	{
 		
 		if($id===NULL && $refid===0 && $cat===NULL) {
+			return false;
+		}
+		if($id && !intval($id)) {
+			return false;
+		}
+		if($refid && !intval($refid)) {
 			return false;
 		}
 		
