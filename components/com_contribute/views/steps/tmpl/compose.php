@@ -117,7 +117,7 @@ foreach ($fields as $field)
 			<label>
 				<?php echo stripslashes($field[1]); ?>: <?php echo ($field[3] == 1) ? '<span class="required">'.JText::_('COM_CONTRIBUTE_REQUIRED').'</span>': ''; ?>
 				<?php if ($field[2] == 'text') { ?>
-				<input type="text" name="<?php echo 'nbtag['.$field[0].']'; ?>"><?php echo htmlentities(stripslashes($tagcontent), ENT_QUOTES); ?></input>
+				<input type="text" name="<?php echo 'nbtag['.$field[0].']'; ?>" value="<?php echo htmlentities(stripslashes($tagcontent), ENT_QUOTES, ENT_COMPAT,'UTF-8'); ?>" />
 				<?php } else { ?>
 				<textarea name="<?php echo 'nbtag['.$field[0].']'; ?>" cols="50" rows="6"><?php echo htmlentities(stripslashes($tagcontent)); ?></textarea>
 				<?php } ?>

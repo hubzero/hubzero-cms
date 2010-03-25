@@ -92,7 +92,7 @@ class ContributeController extends JObject
 		if ($juser->get('guest')) {
 			$this->_task = ($this->_task) ? 'login' : '';
 		}
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
 		
@@ -320,6 +320,13 @@ class ContributeController extends JObject
 	
 	protected function step_compose()
 	{
+		$xhub = XFactory::getHub();
+
+		$type = JRequest::getVar( 'type', '' );
+
+		if ($type == '7')
+			$xhub->redirect(JRoute::_('index.php?option=com_contribtool&task=create'));
+
 		$step = $this->step;
 		$next_step = $step+1;
 		
@@ -712,11 +719,13 @@ class ContributeController extends JObject
 		}
 
 		// Strip any scripting there may be
-		$row->fulltext   = $this->_txtClean($row->fulltext);
-		$row->fulltext   = $this->_txtAutoP($row->fulltext,1);
-		$row->footertext = $this->_txtClean($row->footertext);
-		$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltext, 500, 0);
-
+		if (trim($row->fulltext)) {
+			$row->fulltext   = $this->_txtClean($row->fulltext);
+			$row->fulltext   = $this->_txtAutoP($row->fulltext,1);
+			$row->footertext = $this->_txtClean($row->footertext);
+			$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltext, 500, 0);
+		}
+		
 		// Check content
 		if (!$row->check()) {
 			JError::raiseError( 500, $row->getError() );
