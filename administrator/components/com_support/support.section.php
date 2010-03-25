@@ -36,14 +36,14 @@ class SupportSection extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__support_sections', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->section ) == '') {
 			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
@@ -55,7 +55,7 @@ class SupportSection extends JTable
 	
 	//-----------
 	
-	function getSections() 
+	public function getSections() 
 	{
 		$this->_db->setQuery( "SELECT id, section AS txt FROM $this->_tbl ORDER BY id");
 		return $this->_db->loadObjectList();
@@ -63,7 +63,7 @@ class SupportSection extends JTable
 
 	//-----------
 
-	function buildQuery( $filters=array() ) 
+	public function buildQuery( $filters=array() ) 
 	{
 		$query = " FROM $this->_tbl"
 				. " ORDER BY section";
@@ -76,7 +76,7 @@ class SupportSection extends JTable
 	
 	//-----------
 	
-	function getCount( $filters=array() ) 
+	public function getCount( $filters=array() ) 
 	{
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->buildQuery( $filters );
@@ -86,7 +86,7 @@ class SupportSection extends JTable
 	
 	//-----------
 	
-	function getRecords( $filters=array() )
+	public function getRecords( $filters=array() )
 	{
 		$query  = "SELECT id, section";
 		$query .= $this->buildQuery( $filters );

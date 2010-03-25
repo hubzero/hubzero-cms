@@ -38,14 +38,14 @@ class SupportAttachment extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__support_attachments', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if ($this->ticket == NULL) {
 			$this->setError( JText::_('SUPPORT_ERROR_NO_TICKET_ID') );
@@ -61,7 +61,7 @@ class SupportAttachment extends JTable
 	
 	//-----------
 	
-	function getID() 
+	public function getID() 
 	{
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE filename='".$this->filename."' AND description='".$this->description."' AND ticket=".$this->ticket );
 		$id = $this->_db->loadResult();
@@ -70,7 +70,7 @@ class SupportAttachment extends JTable
 	
 	//-----------
 
-	function parse($text)
+	public function parse($text)
 	{
 		$f = '/\{attachment#[0-9]*\}/sU';
 		return preg_replace_callback($f, array(&$this,'getAttachment'), $text);
@@ -78,7 +78,7 @@ class SupportAttachment extends JTable
 	
 	//-----------
 	
-	function getAttachment($matches)
+	public function getAttachment($matches)
 	{
 		$match = $matches[0];
 		$tokens = split('#',$match);
@@ -113,7 +113,7 @@ class SupportAttachment extends JTable
 	
 	//-----------
 	
-	function deleteAttachment( $filename, $ticket ) 
+	public function deleteAttachment( $filename, $ticket ) 
 	{
 		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE filename='".$filename."' AND ticket=".$ticket );
 		if (!$this->_db->query()) {
@@ -124,7 +124,7 @@ class SupportAttachment extends JTable
 	
 	//-----------
 	
-	function loadAttachment($filename=NULL, $ticket=NULL)
+	public function loadAttachment($filename=NULL, $ticket=NULL)
 	{
 		if ($filename === NULL) {
 			return false;

@@ -41,14 +41,14 @@ class SupportComment extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__support_comments', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->comment ) == '' && trim( $this->changelog ) == '') {
 			$this->setError( JText::_('SUPPORT_ERROR_BLANK_COMMENT') );
@@ -60,7 +60,7 @@ class SupportComment extends JTable
 	
 	//-----------
 	
-	function getComments( $authorized, $ticket=NULL ) 
+	public function getComments( $authorized, $ticket=NULL ) 
 	{
 		if (!$ticket) {
 			$ticket = $this->_ticket;
@@ -78,7 +78,7 @@ class SupportComment extends JTable
 	
 	//-----------
 	
-	function countComments( $authorized, $ticket=NULL ) 
+	public function countComments( $authorized, $ticket=NULL ) 
 	{
 		if (!$ticket) {
 			$ticket = $this->_ticket;
@@ -94,7 +94,7 @@ class SupportComment extends JTable
 	
 	//-----------
 	
-	function newestComment( $authorized, $ticket=NULL ) 
+	public function newestComment( $authorized, $ticket=NULL ) 
 	{
 		if (!$ticket) {
 			$ticket = $this->_ticket;
@@ -110,7 +110,7 @@ class SupportComment extends JTable
 	
 	//-----------
 	
-	function deleteComments( $ticket=NULL ) 
+	public function deleteComments( $ticket=NULL ) 
 	{
 		if ($ticket === NULL) {
 			$ticket = $this->ticket;

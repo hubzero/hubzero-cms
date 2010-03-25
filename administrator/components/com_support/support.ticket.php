@@ -57,14 +57,14 @@ class SupportTicket extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__support_tickets', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (!$this->id && trim( $this->report ) == '') {
 			$this->setError( JText::_('SUPPORt_ERROR_BLANK_REPORT') );
@@ -76,7 +76,7 @@ class SupportTicket extends JTable
 	
 	//-----------
 	
-	function buildQuery( $filters, $admin ) 
+	public function buildQuery( $filters, $admin ) 
 	{
 		//$juser =& JFactory::getUser();
 		
@@ -231,7 +231,7 @@ class SupportTicket extends JTable
 	
 	//-----------
 	
-	function getTicketsCount( $filters=array(), $admin=false ) 
+	public function getTicketsCount( $filters=array(), $admin=false ) 
 	{
 		$filter = $this->buildQuery( $filters, $admin );
 		
@@ -243,7 +243,7 @@ class SupportTicket extends JTable
 	
 	//-----------
 	
-	function getTickets( $filters=array(), $admin=false ) 
+	public function getTickets( $filters=array(), $admin=false ) 
 	{
 		$filter = $this->buildQuery( $filters, $admin );
 		
@@ -262,7 +262,7 @@ class SupportTicket extends JTable
 	
 	//-----------
 	
-	function getTicketId($which, $filters, $authorized)
+	public function getTicketId($which, $filters, $authorized)
 	{
 		$filter = $this->buildQuery( $filters, $authorized );
 		

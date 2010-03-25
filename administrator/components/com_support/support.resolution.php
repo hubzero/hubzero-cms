@@ -37,14 +37,14 @@ class SupportResolution extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__support_resolutions', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->alias ) == '' || trim( $this->title ) == '') {
 			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
@@ -56,7 +56,7 @@ class SupportResolution extends JTable
 	
 	//-----------
 	
-	function getResolutions() 
+	public function getResolutions() 
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl ORDER BY title");
 		return $this->_db->loadObjectList();
@@ -64,7 +64,7 @@ class SupportResolution extends JTable
 	
 	//-----------
 	
-	function buildQuery( $filters=array() ) 
+	public function buildQuery( $filters=array() ) 
 	{
 		$query = " FROM $this->_tbl";
 		if (isset($filters['order']) && $filters['order'] != '') {
@@ -79,7 +79,7 @@ class SupportResolution extends JTable
 	
 	//-----------
 	
-	function getCount( $filters=array() ) 
+	public function getCount( $filters=array() ) 
 	{
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->buildQuery( $filters );
@@ -89,7 +89,7 @@ class SupportResolution extends JTable
 	
 	//-----------
 	
-	function getRecords( $filters=array() )
+	public function getRecords( $filters=array() )
 	{
 		$filters['order'] = 'title, alias';
 		

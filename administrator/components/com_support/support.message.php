@@ -37,14 +37,14 @@ class SupportMessage extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__support_messages', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->message ) == '') {
 			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
@@ -56,7 +56,7 @@ class SupportMessage extends JTable
 	
 	//-----------
 	
-	function getMessages() 
+	public function getMessages() 
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl ORDER BY id");
 		return $this->_db->loadObjectList();
@@ -64,7 +64,7 @@ class SupportMessage extends JTable
 	
 	//-----------
 	
-	function buildQuery( $filters=array() ) 
+	public function buildQuery( $filters=array() ) 
 	{
 		$query = " FROM $this->_tbl"
 				. " ORDER BY id";
@@ -77,7 +77,7 @@ class SupportMessage extends JTable
 	
 	//-----------
 	
-	function getCount( $filters=array() ) 
+	public function getCount( $filters=array() ) 
 	{
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->buildQuery( $filters );
@@ -87,7 +87,7 @@ class SupportMessage extends JTable
 	
 	//-----------
 	
-	function getRecords( $filters=array() )
+	public function getRecords( $filters=array() )
 	{
 		$query  = "SELECT id, title";
 		$query .= $this->buildQuery( $filters );
