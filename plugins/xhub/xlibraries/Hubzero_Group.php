@@ -45,9 +45,8 @@ class Hubzero_Group
 	private $managers = array();
 	private $applicants = array();
 	private $invitees = array();
-	private $tracperm = array();
 	
-	private $_list_keys = array('members', 'managers', 'applicants', 'invitees', 'tracperm');
+	private $_list_keys = array('members', 'managers', 'applicants', 'invitees');
 	private $_lists = array('add'=>array('managers'=>array(), 'applicants'=>array(), 'members'=>array(), 'invitees'=>array()), 
 		'delete'=>array('managers'=>array(), 'applicants'=>array(), 'members'=>array(), 'invitees'=>array()));
 	
@@ -55,7 +54,7 @@ class Hubzero_Group
 	private $_updateAll = false;
 	
 	static $_propertyattrmap = array('gidNumber'=>'gidNumber', 'cn'=>'cn', 'description'=>'description', 'published'=>'public', 
-		'access'=>'privacy', 'tracperm'=>'tracperm', 'members'=>'member', 'managers'=>'owner', 'applicants'=>'applicant');
+		'access'=>'privacy', 'members'=>'member', 'managers'=>'owner', 'applicants'=>'applicant');
 	
 	private $_updatedkeys = array();
 
@@ -516,14 +515,12 @@ class Hubzero_Group
 		$this->__unset('invitees');
 		$this->__unset('applicants');
 		$this->__unset('managers');
-		$this->__unset('tracperm');
 		
 		if (!$lazyloading) {
 			$this->__get('members');
 			$this->__get('invitees');
 			$this->__get('applicants');
 			$this->__get('managers');
-			$this->__get('tracperm');
 		}
 		
 		$this->_updatedkeys = array();
@@ -757,10 +754,7 @@ class Hubzero_Group
 			}
 			
 			if (is_array($list) && count($list) > 0) {
-				if ($property == 'tracperm') {
-					$query = "REPLACE INTO $aux_table (group_id, action) VALUES $tlist;";
-				}
-				else if (in_array($property, array('members', 'managers', 'applicants', 'invitees'))) {
+				if (in_array($property, array('members', 'managers', 'applicants', 'invitees'))) {
 					$query = "REPLACE INTO $aux_table (gidNumber,uidNumber) SELECT " . $db->Quote($this->gidNumber) . ",id FROM #__users WHERE " .
 						 " username IN ($ulist);";
 				}
@@ -774,18 +768,12 @@ class Hubzero_Group
 			}
 			
 			if (!is_array($list) || count($list) == 0) {
-				if ($property == 'tracperm') {
-					$query = "DELETE FROM $aux_table WHERE group_id=" . $db->Quote($this->gidNumber) . ";";
-				}
-				else if (in_array($property, array('members', 'managers', 'applicants', 'invitees'))) {
+				if (in_array($property, array('members', 'managers', 'applicants', 'invitees'))) {
 					$query = "DELETE FROM $aux_table WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";";
 				}
 			}
 			else {
-				if ($property == 'tracperm') {
-					$query = "DELETE FROM $aux_table WHERE group_id=" . $db->Quote($this->gidNumber) . " AND action NOT IN ($ulist);";
-				}
-				else if (in_array($property, array('members', 'managers', 'applicants', 'invitees'))) {
+				if (in_array($property, array('members', 'managers', 'applicants', 'invitees'))) {
 					$query = "DELETE m FROM #__xgroups_$property AS m, #__users AS u WHERE " . " m.gidNumber=" . $db->Quote($this->gidNumber) .
 						 " AND m.uidNumber=u.id AND u.username NOT IN (" . $ulist . ");";
 				}
@@ -911,8 +899,6 @@ class Hubzero_Group
 		$db->query();
 		$db->setQuery("DELETE FROM #__xgroups_members WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM #__xgroups_tracperm WHERE group_id=" . $db->Quote($this->gidNumber) . ";");
-		$db->query();
 		
 		return true;
 	}
@@ -979,13 +965,7 @@ class Hubzero_Group
 				$db = &JFactory::getDBO();
 				
 				if (is_object($db)) {
-					if (in_array($property, array('tracperm'))) {
-						$aux_table = "#__xgroups_tracperm";
-						
-						$query = "SELECT action FROM $aux_table AS aux WHERE aux.group_id=" . $db->Quote($this->gidNumber) . " ORDER BY action" .
-							 " ASC;";
-					}
-					else if (in_array($property, array('members', 'applicants', 'managers', 'invitees'))) {
+					if (in_array($property, array('members', 'applicants', 'managers', 'invitees'))) {
 						$aux_table = "#__xgroups_" . $property;
 						$query = "SELECT u.username FROM $aux_table AS aux,#__users AS u " . " WHERE u.id=aux.uidNumber AND " .
 							 " aux.gidNumber=" . $db->Quote($this->gidNumber) . " ORDER BY uidNumber ASC;";
