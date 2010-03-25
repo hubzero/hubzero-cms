@@ -39,7 +39,10 @@
 		margin: 0;
 		padding: 0.6em 3em 0.6em 0.7em;
 		position: relative;
-		background-image: none;
+		}
+	.sortable .tab_panel li.supported {
+		background-position: 0.5em 0.7em;
+		padding-left: 2em;
 		}
 	.sortable .tab_panel p {
 		margin: 0.5em;
