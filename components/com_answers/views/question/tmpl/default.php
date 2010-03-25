@@ -88,7 +88,7 @@ $votes = ($this->question->helpful) ? $this->question->helpful: '0';
 <?php } ?>
 			</p>
 <?php if ($this->reward > 0 && $this->question->state == 0 && $this->banking) { ?>
-			<p class="intro"><?php echo JText::_('COM_ANSWERS_BONUS'); ?>: <span class="pointvalue"><a href="<?php $this->infolink; ?>" title="<?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?>"><?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?></a><?php echo JText::sprintf('COM_ANSWERS_NUMBER_POINTS', $this->reward); ?></span></p>
+			<p class="intro"><?php echo JText::_('COM_ANSWERS_BONUS'); ?>: <span class="pointvalue"><a href="<?php echo $this->infolink; ?>" title="<?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?>"><?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?></a><?php echo JText::sprintf('COM_ANSWERS_NUMBER_POINTS', $this->reward); ?></span></p>
 <?php } ?>
 <?php if (isset($this->question->maxaward) && $this->question->state == 0 && $this->banking) { ?>
 			<p class="youcanearn">
