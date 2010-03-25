@@ -41,6 +41,20 @@ if (!defined("n")) {
 
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
 	}
+	
+	//-----------
+	
+	function obfuscate( $email )
+	{
+		$length = strlen($email);
+		$obfuscatedEmail = '';
+		for ($i = 0; $i < $length; $i++) 
+		{
+			$obfuscatedEmail .= '&#'. ord($email[$i]) .';';
+		}
+		
+		return $obfuscatedEmail;
+	}
 
 	//-----------
 
@@ -310,12 +324,13 @@ if (!defined("n")) {
 		
 			if ($this->registrationEmail != REG_HIDE)
 			{
+				$jconfig =& JFactory::getConfig();
 				if ($this->task == 'proxycreate') {
-					$html .= t.t.registration_warning('Important! The user <strong>must</strong> confirm receipt of confirmation e-mail in order to complete registration.');
+					$html .= t.t.registration_warning('Important! The user <strong>must</strong> confirm receipt of confirmation e-mail from '.obfuscate($jconfig->getValue('config.mailfrom')).' in order to complete registration.');
 				} else if ($this->task == 'create') {
-					$html .= t.t.registration_warning('Important! You <strong>must</strong> confirm receipt of confirmation e-mail in order to complete registration.');
+					$html .= t.t.registration_warning('Important! You <strong>must</strong> confirm receipt of confirmation e-mail from '.obfuscate($jconfig->getValue('config.mailfrom')).' in order to complete registration.');
 				} else {
-					$html .= t.t.registration_warning('Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail in order to re-activate your account.');
+					$html .= t.t.registration_warning('Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from '.obfuscate($jconfig->getValue('config.mailfrom')).' in order to re-activate your account.');
 				}
 			}
 		}
