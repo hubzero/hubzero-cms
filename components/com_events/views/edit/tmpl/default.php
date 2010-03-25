@@ -231,6 +231,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<input type="hidden" name="created_by_alias" value="<?php echo $this->row->created_by_alias; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="save" />
-		<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+		<input type="hidden" name="id" id="event-id" value="<?php echo $this->row->id; ?>" />
 	</form>
 </div>
