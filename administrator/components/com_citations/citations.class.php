@@ -31,44 +31,50 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class CitationsCitation extends JTable
 {
-	var $id             = NULL;  // @var int(11) Primary key
-	var $uid            = NULL;  // @var varchar(200)
-	var $affiliated     = NULL;  // @var int(3)
-	var $fundedby       = NULL;  // @var int(3)
-	var $created        = NULL;  // @var datetime
-	var $address        = NULL;  // @var varchar(250)
-	var $author         = NULL;  // @var varchar(250)
-	var $booktitle      = NULL;  // @var varchar(250)
-	var $chapter        = NULL;  // @var varchar(250)
-	var $cite           = NULL;  // @var varchar(250)
-	var $edition        = NULL;  // @var varchar(250)
-	var $editor         = NULL;  // @var varchar(250)
-	var $eprint         = NULL;  // @var varchar(250)
-	var $howpublished   = NULL;  // @var varchar(250)
-	var $institution    = NULL;  // @var varchar(250)
-	var $isbn           = NULL;  // @var varchar(50)
-	var $journal        = NULL;  // @var varchar(250)
-	var $key            = NULL;  // @var varchar(250)
-	var $location       = NULL;  // @var varchar(250)
-	var $month          = NULL;  // @var int(2)
-	var $note           = NULL;  // @var text
-	var $number         = NULL;  // @var int(11)
-	var $organization   = NULL;  // @var varchar(250)
-	var $pages          = NULL;  // @var varchar(250)
-	var $publisher      = NULL;  // @var varchar(250)
-	var $school         = NULL;  // @var varchar(250)
-	var $series         = NULL;  // @var varchar(250)
-	var $title          = NULL;  // @var varchar(250)
-	var $type           = NULL;  // @var varchar(250)
-	var $url            = NULL;  // @var varchar(250)
-	var $volume         = NULL;  // @var int(11)
-	var $year           = NULL;  // @var int(4)
-	var $doi            = NULL;  // @var varchar(50)
-	var $ref_type       = NULL;  // @var varchar(50)
-	var $date_submit    = NULL;  // @var datetime(0000-00-00 00:00:00)
-	var $date_accept    = NULL;  // @var datetime(0000-00-00 00:00:00)
-	var $date_publish   = NULL;  // @var datetime(0000-00-00 00:00:00)
-	
+	var $id             	= NULL;  // @var int(11) Primary key
+	var $uid            	= NULL;  // @var varchar(200)
+	var $affiliated     	= NULL;  // @var int(3)
+	var $fundedby       	= NULL;  // @var int(3)
+	var $created        	= NULL;  // @var datetime
+	var $address        	= NULL;  // @var varchar(250)
+	var $author         	= NULL;  // @var varchar(250)
+	var $booktitle      	= NULL;  // @var varchar(250)
+	var $chapter        	= NULL;  // @var varchar(250)
+	var $cite           	= NULL;  // @var varchar(250)
+	var $edition        	= NULL;  // @var varchar(250)
+	var $editor         	= NULL;  // @var varchar(250)
+	var $eprint         	= NULL;  // @var varchar(250)
+	var $howpublished   	= NULL;  // @var varchar(250)
+	var $institution    	= NULL;  // @var varchar(250)
+	var $isbn           	= NULL;  // @var varchar(50)
+	var $journal        	= NULL;  // @var varchar(250)
+	var $key            	= NULL;  // @var varchar(250)
+	var $location       	= NULL;  // @var varchar(250)
+	var $month          	= NULL;  // @var int(2)
+	var $note           	= NULL;  // @var text
+	var $number         	= NULL;  // @var int(11)
+	var $organization   	= NULL;  // @var varchar(250)
+	var $pages          	= NULL;  // @var varchar(250)
+	var $publisher      	= NULL;  // @var varchar(250)
+	var $school         	= NULL;  // @var varchar(250)
+	var $series         	= NULL;  // @var varchar(250)
+	var $title          	= NULL;  // @var varchar(250)
+	var $type           	= NULL;  // @var varchar(250)
+	var $url            	= NULL;  // @var varchar(250)
+	var $volume         	= NULL;  // @var int(11)
+	var $year           	= NULL;  // @var int(4)
+	var $doi            	= NULL;  // @var varchar(50)
+	var $ref_type       	= NULL;  // @var varchar(50)
+	var $date_submit    	= NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $date_accept    	= NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $date_publish   	= NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $software_use   	= NULL;  // @var int(3)
+    var	$res_edu 			= NULL;  // @var int(3)
+	var $exp_list_exp_data  = NULL;  // @var int(3)
+ 	var $exp_data       	= NULL;  // @var int(3)
+ 	var $notes          	= NULL;  // @var text
+	var $published      	= NULL;  // @var int(3)
+
 	//-----------
 
 	function __construct( &$db ) 
@@ -94,7 +100,7 @@ class CitationsCitation extends JTable
 		$query = "SELECT count(*) FROM $this->_tbl AS r";
 		if ($admin) {
 			if (isset($filter['search'])) {
-				$query .= "\n WHERE (r.title LIKE '%".$filter['search']."%'";
+				$query .= "\n WHERE r.published=1 AND (r.title LIKE '%".$filter['search']."%'";
 				$query .= "\n OR r.author LIKE '%".$filter['search']."%'";
 				if (is_numeric($filter['search'])) {
 					$query .= "\n OR r.id=".$filter['search'];
@@ -102,7 +108,7 @@ class CitationsCitation extends JTable
 				$query .= ")";
 			}
 		} else {
-			$query .= " WHERE r.id!=0";
+			$query .= " WHERE r.published=1 AND r.id!=0";
 			if (isset($filter['type']) && $filter['type']!='') {
 				$query .= " AND r.type='".$filter['type']."'";
 			}
@@ -140,7 +146,7 @@ class CitationsCitation extends JTable
 		$query .= " FROM $this->_tbl AS r";
 		if ($admin) {
 			if (isset($filter['search'])) {
-				$query .= "\n WHERE (r.title LIKE '%".$filter['search']."%'";
+				$query .= "\n WHERE r.published=1 AND (r.title LIKE '%".$filter['search']."%'";
 				$query .= "\n OR r.author LIKE '%".$filter['search']."%'";
 				if (is_numeric($filter['search'])) {
 					$query .= "\n OR r.id=".$filter['search'];
@@ -148,7 +154,7 @@ class CitationsCitation extends JTable
 				$query .= ")";
 			}
 		} else {
-			$query .= " WHERE r.id!=''";
+			$query .= " WHERE r.published=1 AND r.id!=''";
 			if (isset($filter['type']) && $filter['type']!= '') {
 				$query .= " AND r.type='".$filter['type']."'";
 			}
@@ -192,10 +198,10 @@ class CitationsCitation extends JTable
 		{
 			$stats[$i] = array();
 			
-			$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE year='".$i."' AND affiliated=1" );
+			$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year='".$i."' AND affiliated=1" );
 			$stats[$i]['affiliate'] = $this->_db->loadResult();
 			
-			$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE year='".$i."' AND affiliated=0" );
+			$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year='".$i."' AND affiliated=0" );
 			$stats[$i]['non-affiliate'] = $this->_db->loadResult();
 		}
 		
@@ -210,7 +216,7 @@ class CitationsCitation extends JTable
 		
 		$sql = "SELECT c.*"
 			 . "\n FROM $this->_tbl AS c, $ca->_tbl AS a"
-			 . "\n WHERE a.table='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id"
+			 . "\n WHERE c.published=1 AND a.table='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id"
 			 . "\n ORDER BY affiliated ASC, year DESC";
 	
 		$this->_db->setQuery( $sql );
@@ -225,7 +231,7 @@ class CitationsCitation extends JTable
 		
 		$sql = "SELECT c.created "
 			 . "\n FROM $this->_tbl AS c, $ca->_tbl AS a"
-			 . "\n WHERE a.table='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id"
+			 . "\n WHERE c.published=1 AND a.table='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id"
 			 . "\n ORDER BY created DESC LIMIT 1";
 	
 		$this->_db->setQuery( $sql );
@@ -286,7 +292,7 @@ class CitationsAssociation extends JTable
 			$ands[] = "r.table='".$filters['table']."'";
 		}
 		if (count($ands) > 0) {
-			$query .= " WHERE ";
+			$query .= " WHERE r.published=1 ";
 			$query .= implode(" AND ", $ands);
 		}
 		if (isset($filters['sort']) && $filters['sort'] != '') {

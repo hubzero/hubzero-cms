@@ -213,7 +213,16 @@ class Structures_BibTex
             'phdthesis',
             'proceedings',
             'techreport',
-            'unpublished'
+            'unpublished',
+			'xarchive',
+			'magazine',
+			'patent appl',
+			'book',
+			'chapter',
+			'notes',
+			'letter',
+			'manuscript'
+
         );
         $this->authorstring = 'VON LAST JR, FIRST';
     }

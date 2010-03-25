@@ -103,7 +103,14 @@ class CitationsController extends JObject
 			'phdthesis'=>JText::_('PHDTHESIS'),
 			'proceedings'=>JText::_('PROCEEDINGS'),
 			'techreport'=>JText::_('TECHREPORT'),
-			'unpublished'=>JText::_('UNPUBLISHED')
+			'unpublished'=>JText::_('UNPUBLISHED'),
+			'patent appl'=>JText::_('PATENT'),
+			'chapter'=>JText::_('CHAPTER'),
+			'notes'=>JText::_('NOTES'),
+			'letter'=>JText::_('LETTER'),
+			'xarchive'=>JText::_('XARCHIVE'),
+			'manuscript'=>JText::_('MANUSCRIPT')
+
 		);
 		
 		$this->_task = strtolower(JRequest::getVar('task', ''));

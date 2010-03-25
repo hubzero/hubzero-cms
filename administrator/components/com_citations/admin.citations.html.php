@@ -170,8 +170,8 @@ class CitationsHtml
 	
 	public function edit( $row, $assocs, $option ) 
 	{
-		$types = array('article','book','booklet','conference','inbook','incollection','inproceedings','magazine','manual','mastersthesis','misc','phdthesis','proceedings','techreport','unpublished');
-		
+		$types = array('article','book','booklet','conference','inbook','incollection','inproceedings','magazine','manual','mastersthesis','misc','phdthesis','proceedings','techreport','unpublished','patent appl','chapter','notes','letter','manuscript');
+
 		jimport('joomla.html.editor');
 		$editor =& JEditor::getInstance();
 		
