@@ -29,6 +29,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 switch ($task) 
 {
+	case 'pierce':   TagsToolbar::_Pierce();    break;
 	case 'merge':    TagsToolbar::_Merge();     break;
 	case 'add':      TagsToolbar::_Edit(0);     break;
 	case 'edit':     TagsToolbar::_Edit(1);     break;
@@ -48,12 +49,20 @@ class TagsToolbar
 		JToolBarHelper::title( JText::_( 'TAGS' ), 'addedit.png' );
 		JToolBarHelper::preferences('com_tags', '550');
 		JToolBarHelper::spacer();
+		JToolBarHelper::custom( 'pierce', 'copy', '', JText::_('PIERCE'), false );
 		JToolBarHelper::custom( 'merge', 'forward', '', JText::_('MERGE'), false );
 		JToolBarHelper::spacer();
 		JToolBarHelper::addNew();
 		JToolBarHelper::deleteList();
 	}
 
+	public function _Pierce() 
+	{
+		JToolBarHelper::title( JText::_( 'TAGS' ).': <small><small>[ '.JText::_('PIERCE').' ]</small></small>', 'addedit.png' );
+		JToolBarHelper::save('pierce');
+		JToolBarHelper::cancel();
+	}
+	
 	public function _Merge() 
 	{
 		JToolBarHelper::title( JText::_( 'TAGS' ).': <small><small>[ '.JText::_('MERGE').' ]</small></small>', 'addedit.png' );

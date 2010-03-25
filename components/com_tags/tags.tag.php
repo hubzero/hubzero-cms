@@ -310,6 +310,60 @@ class TagsObject extends JTable
 		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE tagid='$tagid'" );
 		return $this->_db->loadResult();
 	}
+	
+	//-----------
+	
+	public function moveObjects( $oldtagid=null, $newtagid=null ) 
+	{
+		if (!$oldtagid) {
+			$oldtagid = $this->tagid;
+		}
+		if (!$oldtagid) {
+			return false;
+		}
+		if (!$newtagid) {
+			return false;
+		}
+
+		$this->_db->setQuery( "UPDATE $this->_tbl SET tagid='$newtagid' WHERE tagid='$oldtagid'" );
+		if (!$this->_db->query()) {
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+		return true;
+	}
+	
+	//-----------
+	
+	public function copyObjects( $oldtagid=null, $newtagid=null ) 
+	{
+		if (!$oldtagid) {
+			$oldtagid = $this->tagid;
+		}
+		if (!$oldtagid) {
+			return false;
+		}
+		if (!$newtagid) {
+			return false;
+		}
+
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE tagid='$oldtagid'" );
+		$rows = $this->_db->loadObjectList();
+		if ($rows) {
+			foreach ($rows as $row) 
+			{
+				$to = new TagsObject($this->_db);
+				$to->objectid = $row->objectid;
+				$to->tagid    = $newtagid;
+				$to->strength = $row->strength;
+				$to->taggerid = $row->taggerid;
+				$to->taggedon = $row->taggedon;
+				$to->tbl = $row->tbl;
+				$to->store();
+			}
+		}
+		return true;
+	}
 }
 
 /*

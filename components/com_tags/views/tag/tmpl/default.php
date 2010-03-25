@@ -36,6 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring); ?>" method="get">
 <?php
 if (count($this->tags) == 1) {
 	$tagobj = $this->tags[0];
@@ -310,4 +311,5 @@ echo $html;
 ?>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
+	</form>
 </div><!-- / .main section -->

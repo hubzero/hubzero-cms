@@ -264,7 +264,15 @@ var TextboxList = new Class({
 			'events': {
 				'click': function(e) { e = new Event(e).stop(); },
 				'focus': function(e) { if(! this.isSelfEvent('focus')) this.focus(li, true); }.bind(this),
-				'blur': function() { if(! this.isSelfEvent('blur')) this.blur(true); }.bind(this),
+				'blur': function() { 
+					//if(! this.isSelfEvent('blur')) this.blur(true); 
+					v = el.getProperty('value').clean().replace(/,/g, '');
+					//if (v != '' && this.element.getProperty('value') == '') {
+					if (v != '') {
+						el.setProperty('value','');
+						return this.add(v);
+					}
+				}.bind(this),
 				'keydown': function(e) { this.store('lastvalue', this.value).store('lastcaret', this.getCaretPosition()); },
 				'keypress': function(e) { // keyup failed in Safari (?!)
 					e = new Event(e);

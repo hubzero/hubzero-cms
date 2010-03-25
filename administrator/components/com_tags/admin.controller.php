@@ -95,6 +95,7 @@ class TagsController extends JObject
 			case 'save':   $this->save();   break;
 			case 'remove': $this->remove(); break;
 			case 'merge':  $this->merge();  break;
+			case 'pierce': $this->pierce();  break;
 			case 'browse': $this->browse(); break;
 			
 			default: $this->browse(); break;
@@ -288,16 +289,13 @@ class TagsController extends JObject
 			return;
 		}
 		
-		// Load the tag plugins
-		JPluginHelper::importPlugin('tags');
-		$dispatcher =& JDispatcher::getInstance();
-		
 		$idstr = implode(',',$ids);
 		
 		switch ($step)
 		{
 			case 1:
 				$tags = array();
+				$to = new TagsObject( $database );
 				
 				// Loop through the IDs of the tags we want to merge
 				foreach ($ids as $id) 
@@ -307,13 +305,7 @@ class TagsController extends JObject
 					$tag->load( $id );
 					
 					// Get the total number of items associated with this tag
-					$totals = $dispatcher->trigger( 'onTagCount', array($id) );
-					$total = 0;
-					foreach ($totals as $t) 
-					{
-						$total = $total + $t;
-					}
-					$tag->total = $total;
+					$tag->total = $to->getCount( $id );
 					
 					// Add the tag object to an array
 					$tags[] = $tag;
@@ -321,7 +313,7 @@ class TagsController extends JObject
 				
 				// Get all tags
 				$t = new TagsTag( $database );
-				$rows = $t->getAllTags();
+				$rows = $t->getAllTags(true);
 				
 				TagsHtml::merge( $this->_option, $idstr, $rows, 2, $tags );
 			break;
@@ -355,13 +347,15 @@ class TagsController extends JObject
 					$mtag = $tag_exist;
 				}
 				
+				$to = new TagsObject( $database );
+				
 				foreach ($ids as $id)
 				{
 					if ($mtag != $id) {
 						// Get all the associations to this tag
 						// Loop through the associations and link them to a different tag
-						$dispatcher->trigger( 'onTagMove', array($id, $mtag) );
-				
+						$to->moveObjects($id, $mtag);
+						
 						// Delete the tag
 						$tag = new TagsTag( $database );
 						$tag->delete( $id );
@@ -370,6 +364,103 @@ class TagsController extends JObject
 				
 				$this->_redirect = 'index.php?option='.$this->_option;
 				$this->_message = JText::_( 'TAGS_MERGED' );
+			break;
+		}
+	}
+	
+	//-----------
+
+	protected function pierce()
+	{
+		$database =& JFactory::getDBO();
+	
+		// Incoming
+		$ids  = JRequest::getVar('id', array());
+		$step = JRequest::getInt('step', 1);
+		$step = ($step) ? $step : 1;
+		
+		if (!is_array($ids)) {
+			$ids = array(0);
+		}
+		
+		// Make sure we have some IDs to work with
+		if ($step == 1 && (!$ids || count($ids) < 1)) {
+			$this->_redirect = 'index.php?option='.$this->_option;
+			return;
+		}
+		
+		$idstr = implode(',',$ids);
+		
+		switch ($step)
+		{
+			case 1:
+				$to = new TagsObject( $database );
+			
+				$tags = array();
+				
+				// Loop through the IDs of the tags we want to merge
+				foreach ($ids as $id) 
+				{
+					// Load the tag's info
+					$tag = new TagsTag( $database );
+					$tag->load( $id );
+					
+					// Get the total number of items associated with this tag
+					$tag->total = $to->getCount( $id );
+					
+					// Add the tag object to an array
+					$tags[] = $tag;
+				}
+				
+				// Get all tags
+				$t = new TagsTag( $database );
+				$rows = $t->getAllTags(true);
+				
+				TagsHtml::pierce( $this->_option, $idstr, $rows, 2, $tags );
+			break;
+			
+			case 2:
+				// Get the string of tag IDs we plan to merge
+				$ind = JRequest::getVar('ids', '', 'post');
+				if ($ind) {
+					$ids = explode(',',$ind);
+				} else {
+					$ids = array();
+				}
+				
+				// Incoming
+				$tag_exist = JRequest::getInt('existingtag', 0, 'post');
+				$tag_new   = JRequest::getVar('newtag', '', 'post');
+				
+				// Are we merging tags into a totally new tag?
+				if ($tag_new) {
+					// Yes, we are
+					$_POST['raw_tag'] = $tag_new;
+					$_POST['alias'] = '';
+					$_POST['description'] = '';
+					
+					$this->save(0);
+					
+					$tagging = new Tags( $database );
+					$mtag = $tagging->get_raw_tag_id($tag_new);
+				} else {
+					// No, we're merging into an existing tag
+					$mtag = $tag_exist;
+				}
+				
+				$to = new TagsObject( $database );
+				
+				foreach ($ids as $id)
+				{
+					if ($mtag != $id) {
+						// Get all the associations to this tag
+						// Loop through the associations and link them to a different tag
+						$to->copyObjects($id, $mtag);
+					}
+				}
+				
+				$this->_redirect = 'index.php?option='.$this->_option;
+				$this->_message = JText::_( 'TAGS_COPIED' );
 			break;
 		}
 	}
