@@ -29,7 +29,7 @@ jimport('joomla.document.document');
 
 class XDocument
 {
-	function addComponentStylesheet($component, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
+	public function addComponentStylesheet($component, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
 	{
 		global $mainframe;
 
@@ -55,7 +55,7 @@ class XDocument
 		    $jdocument->addStyleSheet($componentcss, $type, $media, $attribs);
 	}
 
-	function getComponentImage($component, $image)
+	public function getComponentImage($component, $image)
 	{
 		global $mainframe;
 
@@ -71,7 +71,7 @@ class XDocument
 			return $componentimage;
 	}
 
-	function getComponentStylesheet($component, $stylesheet)
+	public function getComponentStylesheet($component, $stylesheet)
 	{
 		global $mainframe;
 
@@ -87,7 +87,7 @@ class XDocument
 			return $componentimage;
 	}
 
-	function getModuleImage($module, $image)
+	public function getModuleImage($module, $image)
 	{
 		global $mainframe;
 
@@ -103,7 +103,7 @@ class XDocument
 			return $moduleimage;
 	}
 
-	function getHubImage($image)
+	public function getHubImage($image)
 	{
 		global $mainframe;
 
@@ -119,7 +119,7 @@ class XDocument
 			return $hubimage;
 	}
 
-	function addModuleStyleSheet($module, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
+	public function addModuleStyleSheet($module, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
 	{
 		global $mainframe;
 
@@ -143,6 +143,31 @@ class XDocument
         	}
 		else
 		    $jdocument->addStyleSheet($modulecss, $type, $media, $attribs);
+	}
+	
+	public function addPluginStyleSheet($plugin_group, $plugin, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array(), $augment = false)
+	{
+		global $mainframe;
+
+		$jdocument = &JFactory::getDocument();
+
+		$template  = $mainframe->getTemplate();
+		
+		if (empty($stylesheet)) {
+			$stylesheet = $plugin . '.css';
+		}
+		$templatecss = DS . "templates" . DS . $template . DS . "html" . DS . 'plg_'.$plugin_group.'_'.$plugin . DS . $stylesheet;
+
+		$plugincss = DS . "plugins" . DS . $plugin_group . DS . $plugin . DS . $stylesheet;
+
+		if (file_exists(JPATH_SITE . $templatecss)) {
+			if ($augment) {
+				$this->addStyleSheet($plugincss, $type, $media, $attribs);
+			}
+			$jdocument->addStyleSheet($templatecss, $type, $media, $attribs);
+        } else {
+			$jdocument->addStyleSheet($plugincss, $type, $media, $attribs);
+		}
 	}
 }
 
