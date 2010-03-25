@@ -1482,12 +1482,16 @@ class GroupsController extends JObject
 		$applicants = $group->get('applicants');
 
 		// Explod the string of logins/e-mails into an array
-		$la = explode(',',$logins);
+		if (strstr($logins,',')) {
+			$la = explode(',',$logins);
+		} else {
+			$la = array($logins);
+		}
 		foreach ($la as $l) 
 		{
 			// Trim up the content
 			$l = trim($l);
-			
+
 			// Check if it's an e-mail address
 			if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $l)) {
 				// Try to find an account that might match this e-mail
@@ -1496,7 +1500,7 @@ class GroupsController extends JObject
 				if (!$database->query()) {
 					$this->setError( $database->getErrorMsg() );
 				}
-				
+
 				// If we found an ID, add it to the invitees list
 				if ($uid) {
 					$invitees[] = $uid;
@@ -1506,7 +1510,7 @@ class GroupsController extends JObject
 			} else {
 				// Retrieve user's account info
 				$user = JUser::getInstance($l);
-				
+
 				// Ensure we found an account
 				if (is_object($user)) {
 					$uid = $user->get('id');
