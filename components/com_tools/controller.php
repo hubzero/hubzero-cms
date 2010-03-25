@@ -402,12 +402,16 @@ class ToolsController extends JObject
 		
 		// Get the user's sessions
 		$ms = new MwSession( $mwdb );
-		$sessions = $ms->getRecords( $juser->get('username'), '', $authorized );
+		$sessions = $ms->getRecords( $juser->get('username'), '', false );
 		
 		// Instantiate the view
 		$view = new JView( array('name'=>'quotaexceeded') );
 		$view->option = $this->_option;
 		$view->sessions = $sessions;
+		if ($authorized) {
+			$view->allsessions = $ms->getRecords( $juser->get('username'), '', $authorized );
+		}
+		$view->active = JRequest::getVar( 'active', '' );
 		$view->authorized = $authorized;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );

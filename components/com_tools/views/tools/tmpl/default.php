@@ -44,7 +44,12 @@ $cls = 'even';
 	<div class="aside">
 		<h3>Help</h3>
 		<ul>
+<?php
+$juser =& JFactory::getUser();
+if ($juser->get('guest')) {
+?>
 			<li><a href="/register">Sign up for free!</a></li>
+<?php } ?>
 			<li><a href="http://subversion.tigris.org/" rel="external">Learn about Subversion</a></li>
 		</ul>
 	</div><!-- / .aside -->
@@ -84,11 +89,13 @@ if (count($this->appTools) > 0) {
 	
 	foreach ($this->appTools as $project) 
 	{
-		if ($project->codeaccess == '@OPEN') {
-			$status = 'open source';
-		} else {
-			$status = 'closed source';
-		}
+		//if ($project->state == 1 || $project->state == 3) {
+		if ($project->tool_state != 8) {
+			if ($project->codeaccess == '@OPEN') {
+				$status = 'open source';
+			} else {
+				$status = 'closed source';
+			}
 ?>
 				<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 					<?php /*<td><a href="<?php echo $this->forgeURL;?>/tools/<?php echo $project;?>/wiki"><?php echo $project;?></a></td>*/ ?>
@@ -97,6 +104,7 @@ if (count($this->appTools) > 0) {
 					<td><span class="<?php echo $status; ?>-code"><?php echo $status; ?></span></td>
 				</tr>
 <?php
+		}
 	}
 } else {
 ?>
