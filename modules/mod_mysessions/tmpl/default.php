@@ -55,8 +55,20 @@ $juser =& JFactory::getUser();
 			$bits = explode('_',$app->appname);
 			$bit = (count($bits) > 1) ? array_pop($bits) : '';
 			$appname = implode('_',$bits);
+			
+			$cls = ($is_even) ? '' : 'even ';
+			
+			if ($modmysessions->supportedtag) {
+				if ($modmysessions->rt->checkTagUsage( $modmysessions->supportedtag, 0, $appname )) {
+					$cls .= 'supported';
+				} else {
+					$cls .= 'session';
+				}
+			} else {
+				$cls .= 'session';
+			}
 ?>
-		<li class="<?php echo ($is_even) ? '' : 'even '; ?>session">
+		<li class="<?php echo $cls; ?>">
 			<a href="<?php echo JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
 				<?php
 				echo $app->sessname;

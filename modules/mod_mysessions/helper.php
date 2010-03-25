@@ -126,6 +126,15 @@ class modMySessions
 		if ($this->authorized) {
 			$this->allsessions = $ms->getRecords( $juser->get('username'), '', $this->authorized );
 		}
+		
+		$rconfig = JComponentHelper::getParams( 'com_resources' );
+		$this->supportedtag = $rconfig->get('supportedtag');
+		
+		$database =& JFactory::getDBO();
+		if ($this->supportedtag) {
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.tags.php' );
+			$this->rt = new ResourcesTags( $database );
+		}
 	
 		// Push the module CSS to the template
 		ximport('xdocument');

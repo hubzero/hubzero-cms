@@ -18,8 +18,10 @@
 		max-height: 300px;
 		overflow: auto;
 		}
-	div.draggable .expandedlist li.session {
+	div.draggable .expandedlist li {
 		position: relative;
+		}
+	div.draggable .expandedlist li.session {
 		background: url("images/application.png") 0.5em 0.7em no-repeat;
 		}
 	div.draggable .expandedlist li.shared {
