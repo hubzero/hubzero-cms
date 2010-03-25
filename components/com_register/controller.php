@@ -1393,19 +1393,25 @@ class RegisterController extends JObject
 				$this->setError( JText::_('COM_REGISTER_ERROR_CONFIRMING') );
 			}
 			
+			$hconfig = &JComponentHelper::getParams('com_hub');
+			
+			// Override any other return settings if $return is explicitly set
+			$return = $hconfig->get('ConfirmationReturn');
+			if ($return) {
+				$myreturn = $return;
+			}
+			
 			// Redirect
             if (empty($myreturn)) {
-                $hconfig = &JComponentHelper::getParams('com_hub');
                 $r = $hconfig->get('LoginReturn');
                 $myreturn = ($r) ? $r : JRoute::_('index.php?option=com_myhub');
             }
 
 	        $xhub->redirect($myreturn);
-
 		} else {
 			$this->setError(JText::_('COM_REGISTER_ERROR_INVALID_CONFIRMATION'));
 		}
-		
+
 		// Instantiate a new view
 		$view = new JView( array('name'=>'confirm') );
 		$view->option = $this->_option;

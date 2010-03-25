@@ -21,6 +21,7 @@
 <config>
 	<params>
 		<param name="LoginReturn" type="text" menu="hide" default="" label="Login Return URL" description="Redirect here after login..." />
+		<param name="ConfirmationReturn" type="text" menu="hide" default="" label="Confirmation Return URL" description="Redirect here after confirming email..." />
 		<param name="registrationUsername"  type="text" menu="hide" default="RRUU" label="Username" description="" />
 		<param name="registrationPassword"  type="text" menu="hide" default="RRUU" label="Password" description="" />
 		<param name="registrationConfirmPassword"  type="text" menu="hide" default="RRUU" label="Password Confirmation" description="" />
