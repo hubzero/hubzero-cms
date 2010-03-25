@@ -56,11 +56,15 @@ class XComment extends JTable
 		return true;
 	}
 	
-	function getResults( $filters=array() ) 
+	function getResults( $filters=array(), $get_profile_name = 0, $get_abuse_reports = 0 ) 
 	{
-		$query = "SELECT c.* 
-				FROM $this->_tbl AS c 
-				WHERE c.referenceid=".$filters['id']." AND category='".$filters['category']."' AND state!=2 ORDER BY c.added ASC";
+		$query = "SELECT c.* ";
+		$query.= $get_profile_name ? ", xp.name AS authorname " : "";
+		$query.= $get_abuse_reports ? ", (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=c.id AND RR.state=0 AND RR.category='wishcomment') AS reports " : "";
+		$query.= "FROM $this->_tbl AS c ";
+		$query.= $get_profile_name ? "JOIN #__xprofiles AS xp ON xp.uidNumber=c.added_by " : "";
+		$query.= "WHERE c.referenceid=".$filters['id']." AND c.category='".$filters['category']."' AND c.state!=2 ";
+		$query.= "ORDER BY c.added ASC";
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
