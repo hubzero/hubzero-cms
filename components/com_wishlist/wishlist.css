@@ -9,32 +9,26 @@
 
 /* Wishlist */
 	
-
 	#wishlist {
 		padding:0; margin:0; list-style:none; border-top:2px solid #e3e3e3; margin-top:1em;
 	}
 	#wishlist li {
 		background-color:none;
-	
-	}
-	
+		background-image: none;
+	}	
 	#wishlist td, #wishlist li {
 		padding: 1em 1em 0.5em 1em; margin:0; border-bottom:1px solid #e4e4e4;
-	}
-	
+	}	
 	#wishlist p, .wishcontentarea p, .wishcontentarea h3 {
 	  	margin-left:1.6em;
 	}
-
 	.grantedwish, #wishitem .grantedwish {
 		background-color: #f5f5f5;
-	}
-	
+	}	
 	#wishlist .private {
 		background: #fffbf0 url("images/privatewish.gif") 0 35px no-repeat; 
 		z-index:300;
 	}
-	
 	.wishranked {
 		float:right;
 	}
@@ -1084,6 +1078,9 @@
 		font-weight:normal;
 		font-size:small;
 	}
+	.nobreak {
+		white-space:nowrap;
+	}
 	
 /*---------------------------------------------------------------
 	Hacks
@@ -1135,4 +1132,3 @@
 		position:relative;
 		overflow:visible;
 	}
-	

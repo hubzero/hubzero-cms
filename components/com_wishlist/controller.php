@@ -85,36 +85,7 @@ class WishlistController extends JObject
 			return $this->_data[$property];
 		}
 	}
-	//-----------
 
-	public function getStyles($option='', $css='')
-	{
-		ximport('xdocument');
-		if ($option) {
-			XDocument::addComponentStylesheet($option, $css);
-		} else {
-			XDocument::addComponentStylesheet($this->_option);
-		}
-
-	}
-	//-----------
-	
-	public function getScripts($option='',$name='')
-	{
-		$document =& JFactory::getDocument();
-		
-		if ($option) {
-			$name = ($name) ? $name : $option;
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$option.DS.$name.'.js')) {
-				$document->addScript('components'.DS.$option.DS.$name.'.js');
-			}
-		} else {
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-			}
-		}
-	}
-	
 	//-----------
 
 	public function getTask()
@@ -131,11 +102,15 @@ class WishlistController extends JObject
 	//-----------
 	
 	public function execute()
-	{
-			
-		// Get the component parameters
-		$wconfig = new WishlistConfig( $this->_option );
-		$this->config = $wconfig;
+	{			
+		// Load the component config
+		$component =& JComponentHelper::getComponent( $this->_option );
+		if (!trim($component->params)) {
+			return $this->abort();
+		} else {
+			$config =& JComponentHelper::getParams( $this->_option );
+		}
+		$this->config = $config;
 		
 		$database =& JFactory::getDBO();
 		$objWishlist = new Wishlist ( $database );
@@ -146,24 +121,23 @@ class WishlistController extends JObject
 			$this->mainlist = $objWishlist->createlist('general', 1);	
 		}
 		
-		$this->admingroup = isset($this->config->parameters['group']) ? trim($this->config->parameters['group']) : 'hubadmin';
+		$this->admingroup = $this->config->get('group') ? $this->config->get('group') : 'hubadmin';
 		
 		// are we using banking functions?
 		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
 		$banking =  $upconfig->get('bankAccounts');
-		$this->banking = ($banking && isset($this->config->parameters['banking']) && $this->config->parameters['banking']==1 ) ? 1: 0 ;
+		$this->banking = $this->config->get('banking') && $banking ? $this->config->get('banking') : 0;
 		
 		if ($banking) {
 			ximport( 'bankaccount' );
-		}
-		
+		}	
 			
 		switch( $this->getTask() ) 
 		{
 			case 'wishlist':    $this->wishlist();      break;
 			case 'settings':    $this->settings();  	break;
 			case 'savesettings':$this->savesettings(); 	break;
-			case 'newlist':     $this->createlist();    break;
+			//case 'newlist':     $this->createlist();    break;
 			case 'search':      $this->wishlist();    	break;
 			
 			case 'wish':     	$this->wish();    		break;
@@ -204,44 +178,148 @@ class WishlistController extends JObject
 			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
 		}
 	}
+	
+	//----------------------------------------------------------
+	// Private functions
+	//----------------------------------------------------------
 
+	public function _getStyles($option='', $css='')
+	{
+		ximport('xdocument');
+		if ($option) {
+			XDocument::addComponentStylesheet($option, $css);
+		} else {
+			XDocument::addComponentStylesheet($this->_option);
+		}
+
+	}
+	//-----------
+	
+	public function _getScripts($option='',$name='')
+	{
+		$document =& JFactory::getDocument();
+		
+		if ($option) {
+			$name = ($name) ? $name : $option;
+			if (is_file(JPATH_ROOT.DS.'components'.DS.$option.DS.$name.'.js')) {
+				$document->addScript('components'.DS.$option.DS.$name.'.js');
+			}
+		} else {
+			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
+			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
+			}
+		}
+	}
+	
+	//------------
+	
+	public function _buildTitle()
+	{
+		$this->_title = JText::_(strtoupper($this->_option));
+		if($this->_subtitle) {
+			$this->_title .= ' - '.$this->_subtitle;
+		}
+		else if ($this->_task) {
+			$this->_title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+		}
+		$document =& JFactory::getDocument();
+		$document->setTitle( $this->_title );
+	}
+	//-----------
+	
+	private function _buildPathway($wishlist) 
+	{
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		
+		$comtitle = JText::_(strtoupper($this->_option));
+		$comtitle.= $this->_list_title ? ' - '.$this->_list_title : '';
+		
+		if (count($pathway->getPathWay()) <= 0) {
+			$this->startPath ($wishlist, $comtitle, $pathway);
+		}
+		if ($this->_task) {
+			switch ($this->_task) 
+			{
+				case 'wish':
+					$pathway->addItem( 
+						$this->_wishtitle, 
+						$this->_wishpath 
+					);
+				break;				
+				case 'add':
+				case 'editwish':
+					$pathway->addItem( 
+						$this->_taskname, 
+						$this->_taskpath 
+					);
+				break;
+				case 'settings':
+					$pathway->addItem( 
+						JText::_(strtoupper($this->_task)), 
+						'index.php?option='.$this->_option.a.'task=settings'.a.'id='.$this->_listid 
+					);
+				break;
+				case 'view':
+				case 'cancel':
+				case 'reply':
+				case 'rateitem':
+				case 'savereply':
+				case 'savevote':
+				case 'saveplan':
+				case 'movewish':
+				case 'editprivacy':
+				case 'grantwish':
+				case 'deletewish':
+				case 'withdraw':
+				case 'addbonus':
+				case 'wishlist':
+					// nothing
+				break;
+
+				default:
+					$pathway->addItem(
+						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+						'index.php?option='.$this->_option.'&task='.$this->_task
+					);
+				break;
+			}
+		}
+	}
+	//------------
+	
+	public function startPath ($wishlist, $title, $pathway) {
+				
+		// build return path to resource
+		if(isset($wishlist->resource) && isset($wishlist->resource->typetitle)) {
+				$normalized_valid_chars = 'a-zA-Z0-9';
+				$typenorm = preg_replace("/[^$normalized_valid_chars]/", "", $wishlist->resource->typetitle);
+				$typenorm = strtolower($typenorm);
+				
+				$pathway->addItem( JText::_('Resources'), 'index.php?option=com_resources' );
+				$pathway->addItem( ucfirst(JText::_($wishlist->resource->typetitle)), JRoute::_('index.php?option=com_resources'.a.'type='.$typenorm));
+				$pathway->addItem(stripslashes($wishlist->resource->title),JRoute::_('index.php?option=com_resources'.a.'id='.$wishlist->referenceid));
+				$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid );
+				
+		}
+		else {
+			$pathway->addItem( $title, 'index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid );
+		}		
+	}
 	
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 
-	protected function login($msg='') 
+	public function login() 
 	{
-		// Set the page title
-		$title = JText::_(strtoupper($this->_name));
-		
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
-		
-		$japp =& JFactory::getApplication();
-		$pathway =& $japp->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
+		$view = new JView( array('name'=>'login') );
+		$view->title = $this->_title;
+		$view->msg   = $this->_msg;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-			
-		echo WishlistHtml::div( WishlistHtml::hed( 2, $title ), 'full', 'content-header' );
-		echo '<div class="main section">'.n;
-		if ($msg) {
-			echo WishlistHtml::warning( $msg );
-		}
-		ximport('xmodule');
-		XModuleHelper::displayModules('force_mod');
-		echo '</div><!-- / .main section -->'.n;
-	
-	}
-	
-	//-----------
-
-	public function all()
-	{
-
-		////////////// TBD ///////////////		
-		
+		$view->display();
 	}
 	
 	//-----------
@@ -252,34 +330,25 @@ class WishlistController extends JObject
 		
 		$database =& JFactory::getDBO();
 		$juser 	  =& JFactory::getUser();	
-		$abuse = WishlistController::useAbuse();
-		
+			
 		// Incoming
-		$id = JRequest::getInt( 'id', 0 );
+		$id 	= JRequest::getInt( 'id', 0 );
 		$refid  = JRequest::getInt( 'rid', 0 );
 		$cat   	= JRequest::getVar( 'category', '' );
 		$saved  = JRequest::getInt( 'saved', 0 );
 		
 		// are we viewing this from within a plugin?
 		$plugin = (isset($this->plugin) && $this->plugin!='') ? $this->plugin : '';
-		$id = $plugin ? 0 : $id; 
+		$id = ($this->listid && !$id)  ? $this->listid : $id;
+					
+		$obj = new Wishlist( $database );	
 			
-		
-		$obj = new Wishlist( $database );
-		
-		if(!$plugin) {	
-			if ($this->listid && !$id) {
-				$id = $this->listid;
-			}
-		}
-		
 		if ($this->category && $this->refid && !$id) {
-				$cat = $this->category;
-				$refid = $this->refid;
+			$cat = $this->category;
+			$refid = $this->refid;
 		}
 		
-		// what wishlist categories are we allowed to have?
-		$cats   = $this->config->parameters['categories'];
+		$cats   = $this->config->get('categories');
 		$cats   = $cats ? $cats : 'general, resource';
 		if($cat && !preg_replace("/".$cat."/", "", $cats) && !$plugin) {
 			// oups, this looks like a wrong URL
@@ -287,6 +356,7 @@ class WishlistController extends JObject
 			return;
 		}
 		
+		// Create a new list
 		if(!$id && $refid) {
 			
 			$id = $obj->get_wishlistID($refid, $cat);
@@ -298,16 +368,14 @@ class WishlistController extends JObject
 					$resource->load ($refid);					
 					
 					if($resource->title && $resource->standalone == 1  && $resource->published == 1) {
-						//$type = $resource->getTypeTitle($resource->type);
-						//$type = $type ? substr($type,0,strlen($type) - 1) : JText::_('resource') ;
-						$rtitle = ($resource->type=='7'  && isset($resource->alias)) ? JText::_('Tool').' '.$resource->alias : JText::_('Resource ID').' '.$resource->id;
+						$rtitle = ($resource->type=='7'  && isset($resource->alias)) ? JText::_('WISHLIST_NAME_RESOURCE_TOOL').' '.$resource->alias : JText::_('WISHLIST_NAME_RESOURCE_ID').' '.$resource->id;
 						$id = $obj->createlist($cat, $refid, 1, $rtitle, $resource->title);
 					}
 			}
 			
 			else if(!$id && $cat == 'user') {
 				// create private list for user
-				$id = $obj->createlist($cat, $refid, 0, JText::_('My Wish List'));
+				$id = $obj->createlist($cat, $refid, 0, JText::_('WISHLIST_NAME_MY_WISHLIST'));
 			}	
 			else if(!$id && $cat == 'group') {
 				
@@ -315,23 +383,20 @@ class WishlistController extends JObject
 				if(Hubzero_Group::exists($refid)) {
 					$group = new XGroup();
 					$group->select($refid);	
-					$id = $obj->createlist($cat, $refid, 0, $group->cn.' '.JText::_('Group'));
+					$id = $obj->createlist($cat, $refid, 0, $group->cn.' '.JText::_('WISHLIST_NAME_GROUP'));
 				}
-			}			
-			
+			}						
 		}
 		
 		// cannot find this list
-		if(!$id && !$plugin) {
-			//JError::raiseError( 404, JText::_('List doesn\'t exist') );
+		if(!$id) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
 						
+		// get wishlist data
 		$wishlist = $obj->get_wishlist($id, $refid, $cat);
-		$total = 0;
-		
-		
+				
 		if(!$wishlist) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
@@ -342,132 +407,90 @@ class WishlistController extends JObject
 			$this->listid = isset($this->listid) ? $this->listid : $id;
 			
 			// get admin priviliges
-			WishlistController::authorize_admin($wishlist->id);
-			$filters = WishlistController::getFilters($this->_admin);
+			WishlistController::authorize_admin();
 			
+			// Add the CSS to the template
+			WishlistController::_getStyles();
+			
+			// Thumbs voting CSS & JS
+			WishlistController::_getStyles('com_answers', 'vote.css');
+			
+			// Push some scripts to the template
+			WishlistController::_getScripts();
+				
 			// who are list owners?
 			$objOwner = new WishlistOwner( $database );
 			$objG 	  = new WishlistOwnerGroup( $database );
-			if($plugin) {
-				$this->admingroup = isset($this->config->parameters['group']) ? trim($this->config->parameters['group']) : 'hubadmin';
-			}
 			$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist);
 			$wishlist->owners = $owners['individuals'];
 			$wishlist->groups = $owners['groups'];
 			$wishlist->advisory = $owners['advisory'];
 			
+			// Authorize list owners
+			if(!$juser->get('guest')) {
+				if(in_array($juser->get('id'), $wishlist->owners)) {
+					$this->_admin = 2;
+				}
+				else if(in_array($juser->get('id'), $wishlist->advisory)) {
+					$this->_admin = 3;
+				}
+			}
+			
+			// Set page title
+			$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
+			$this->_subtitle = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
+			$this->_buildTitle();
+				
+			// Set the pathway
+			$this->_buildPathway($wishlist);
+						
 			// need to log in to private list
 			if(!$wishlist->public && $juser->get('guest')) {			
-				$msg = JText::_('This private wish list requires a login.');
 				if(!$plugin) {
-					WishlistController::login($msg);
+					$this->_msg = JText::_('WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
+					$this->login();
 				}
 				else {
-					return WishlistHtml::warning( JText::_('You are not authorized to view this page.'));
+					// not authorized
+					JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+					return;
 				}
 				return;
 			}
-						
-			// get individual wishes
-			$objWish = new Wish( $database );
-			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $this->_admin, $juser);
+			
+			// Get list filters
+			$filters = WishlistController::getFilters($this->_admin);
 			$filters['limit'] = (isset($this->limit)) ? $this->limit : $filters['limit'];
-	
-			$total = $objWish->get_count($wishlist->id, $filters, $this->_admin, $juser);
-
-			
-			// Get info on individual wishes			
-			if($wishlist->items) {
-			
-				foreach ($wishlist->items as $item) {
-					
-					// Get comments and abuse reports
-					$item->replies = WishlistController::getComments($item->id, $item->id, 'wish', 0, $abuse=false, $wishlist->owners, $this->_admin, $skipattachments=1);
-					$item->reports = WishlistController::getAbuseReports($item->id, 'wish');	
-					
-					// Do some text cleanup
-					$item->subject = stripslashes($item->subject);
-					$item->subject = str_replace('&quote;','&quot;',$item->subject);
-					$item->subject = htmlspecialchars($item->subject);
-					
-					// Turn off bonuses is banking is off			
-					if(!$this->banking) {
-						$item->bonus = 0;
-					}
-					
-					
-					$item->urgent = 0;	
-					// Do we have a due date?
-					if($item->due != '0000-00-00 00:00:00') {
 						
-						$delivery = WishlistHtml::convertTime ($item->average_effort);
-						if($item->due < $delivery['warning']) {
-							$item->urgent = 1;
-						}
-						if($item->due < $delivery['immediate']) {
-							$item->urgent = 2;
-						}																	
-					}					
-				}				
-			}
+			// Get individual wishes
+			$objWish = new Wish( $database );
+			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $this->_admin, $juser);	
+			$total = $objWish->get_count($wishlist->id, $filters, $this->_admin, $juser);
 			
 			$wishlist->saved = $saved;
-			$wishlist->plugin = $plugin;
 			$wishlist->banking = $this->banking ? $this->banking : 0;
-			$wishlist->banking = $wishlist->category=='user' ? 0 : $this->banking; // do not allow points for individual wish lists
-			
-			$refid = $wishlist->referenceid;
-			$cat   = $wishlist->category;
-	
-			// record number of items for plugin display
-			if($plugin) {
-				$this->wishcount = $total;
-			}
-
+			$wishlist->banking = $wishlist->category=='user' ? 0 : $this->banking; // do not allow points for individual wish lists		
 		}
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
 		
-		
-		// Add the CSS to the template
-		WishlistController::getStyles();
-		if(!$plugin) {
-		WishlistController::getScripts();
+		$view = new JView( array('name'=>'wishlist' , 'base_path' => JPATH_ROOT.DS.'components'.DS.$this->_option) );
+		$view->title = $this->_title;
+		$view->config = $this->config;
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->admin = $this->_admin;
+		$view->juser = $juser;
+		$view->pageNav = $pageNav;
+		$view->wishlist = $wishlist;
+		$view->filters = $filters;
+		$view->abuse = true;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-		
-		// Thumbs voting CSS & JS
-		WishlistController::getStyles('com_answers', 'vote.css');
-		//if(!$plugin) {
-		//WishlistController::getScripts('com_answers', 'vote');
-		//}		
-				
-		// Set the pathway
-		if(!$plugin) {
-		
-			// Build the page title
-			$title  = JText::_(strtoupper($this->_name));
-			if($wishlist->public or (!$wishlist->public && $this->_admin==2)) {	
-				$title .= ': '.$wishlist->title;
-			}	
-			
-			// Set the page title
-			$document =& JFactory::getDocument();
-			$document->setTitle( $title);
-			
-			$app =& JFactory::getApplication();
-			$pathway =& $app->getPathway();
-			$this->startPath ($wishlist, $title, $pathway);	
-		}
-		
-		if(!$plugin) {		
-		echo WishlistHtml::wishlist( $wishlist, $title, $this->_option, $this->_task, $this->_admin, $this->_error, $filters, $juser, $pageNav, $abuse);
-		}
-		else {
-		return WishlistHtml::wishlist( $wishlist, JText::_('Wishlist'), $this->_option, $this->_task, $this->_admin, $this->_error, $filters, $juser, $pageNav, $abuse);
-		}
-		
+		$view->display();
 	}
 	
 	//-----------
@@ -476,9 +499,7 @@ class WishlistController extends JObject
 	{
 		$database   =& JFactory::getDBO();
 		$juser 		=& JFactory::getUser();
-	
-		
-		$abuse 		= $this->useAbuse();
+			
 		$wishid  	= JRequest::getInt( 'wishid', 0 );
 		$id  		= JRequest::getInt( 'id', 0 );
 		$refid  	= JRequest::getInt( 'rid', 0 );
@@ -487,82 +508,103 @@ class WishlistController extends JObject
 		$com   		= JRequest::getInt( 'com', 0, 'get' );
 		$canedit 	= false;
 		$saved  	= JRequest::getInt( 'saved', 0 );
+				
+		$wishid = $this->wishid && !$wishid ? $this->wishid : $wishid;
 		
-			
-		if ($this->wishid && !$wishid) {
-			$wishid = $this->wishid;
-		}
-		
-		if(!$wishid) {
-			JError::raiseError( 404, JText::_('Wish not found.') );
-			return;
-		}
-		
-		if($juser->get('guest') && $action) {
-				$msg = ($action=="addbonus") ? JText::_('Please login to add a bonus for fulfilling this wish.') : '';
-				$this->login($msg);
-				return;
-		}
-						
+		// Get data			
 		$obj = new Wishlist( $database );
 		$objWish = new Wish( $database );
-		
-		// Get wish info
-		$wish = $objWish->get_wish ($wishid, $juser);
+		$wish = $objWish->get_wish ($wishid, $juser->get('id'), $refid, $cat);
 		
 		if(!$wish) {
-			// wish not found
-			JError::raiseError( 404, JText::_('Wish not found.') );
+			JError::raiseError( 404, JText::_('ERROR_WISH_NOT_FOUND') );
 			return;
 		}	
 		
-		// Check if wish is on the right list
-		$listid = $wish->wishlist;	
-		$id = ($id or ($refid && $cat)) ? $id : $listid; 
-		$wishlist = $obj->get_wishlist($id, $refid, $cat);
-		if(!$wishlist or !$objWish->check_wish ($wishid, $wishlist->id) ) {
-			JError::raiseError( 404, JText::_('Wish not found on the requested wish list.') );
+		// Get wishlist info
+		$wishlist = $obj->get_wishlist($wish->wishlist, $refid, $cat);
+		if(!$wishlist) {
+			JError::raiseError( 404, JText::_('ERROR_WISHLIST_NOT_FOUND') );
 			return;
 		}
 		else {	
 		
 			// get admin priviliges
-			$this->authorize_admin($wishlist->id);	
+			$this->authorize_admin();	
 			
 			// who are list owners?
 			$objOwner = new WishlistOwner( $database );
 			$objG 	  = new WishlistOwnerGroup( $database );
 			$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist);
-			$wishlist->owners = $owners['individuals'];
+			$wishlist->owners 	= $owners['individuals'];
 			$wishlist->advisory = $owners['advisory'];
-			$wishlist->groups = $owners['groups'];
-					
+			$wishlist->groups 	= $owners['groups'];
+			
+			// Set page title
+			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias)) 
+							? 'tool "'. $wishlist->resource->alias.'"'
+							: $wishlist->title;
+			if(!$wishlist->public && !$this->_admin) {	$this->_list_title = ''; }
+			$this->_buildTitle();
+		
+			// Set the pathway
+			$this->_wishpath  = 'index.php?option='.$this->_option.a.'task=wish'.a.'category='.$cat.a.'rid='.$refid.a.'wishid='.$wishid;
+			$this->_wishtitle = Hubzero_View_Helper_Html::shortenText($wish->subject, 80, 0);
+			$this->_buildPathway($wishlist);
+			
+			// Push some styles to the template
+			$this->_getStyles();
+			$this->_getStyles('com_answers', 'vote.css');
+			$this->_getStyles('com_events', 'calendar.css');
+			
+			// Push some scripts to the template
+			$this->_getScripts();
+						
+			// Go through some access checks
+			if($juser->get('guest') && $action) {
+				$this->_msg = ($action=="addbonus") ? JText::_('MSG_LOGIN_TO_ADD_POINTS') : '';
+				$this->login();
+				return;
+			}
+			
 			if(!$wishlist->public && $juser->get('guest')) {
 				// need to log in to private list
-				$msg = 'This private wish list requires a login.';
-				$this->login($msg);
+				$this->_msg = JText::_('WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
+				$this->login();
 				return;
 			}
 			
 			if($wish->private && $juser->get('guest')) {
 				// need to log in to view private wish
-				$msg = 'Please login to view this private wish.';
+				$this->_msg = 'WARNING_LOGIN_PRIVATE_WISH';
 				$this->login($msg);
 				return;
 			}
 			
-			if($wish->private && !$this->_admin) {
-				// need to be admin to view private wish
-				return WishlistHtml::warning( JText::_('You are not authorized to view this page.'));
+			// Authorize list owners
+			if(!$juser->get('guest')) {
+				if(in_array($juser->get('id'), $wishlist->owners)) {
+					$this->_admin = 2;
+				}
+				else if(in_array($juser->get('id'), $wishlist->advisory)) {
+					$this->_admin = 3;
+				}
 			}
 			
+			if($wish->private && !$this->_admin) {
+				// need to be admin to view private wish
+				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+				return;
+			}		
+			
+			// Get list filters		
 			$filters = WishlistController::getFilters($this->_admin);
 			
 			// Get the next and previous wishes
-			$wish->prev = $objWish->getWishId('prev', $wishid, $listid, $this->_admin, $juser->get('id'), $filters);
-			$wish->next = $objWish->getWishId('next', $wishid, $listid, $this->_admin, $juser->get('id'), $filters);
+			$wish->prev = $objWish->getWishId('prev', $wishid, $wish->wishlist, $this->_admin, $juser->get('id'), $filters);
+			$wish->next = $objWish->getWishId('next', $wishid, $wish->wishlist, $this->_admin, $juser->get('id'), $filters);
 			
-			// Update average value for importance
+			// Update average value for importance (this is tricky is MySQL)
 			$votesplit = isset($this->config->parameters['votesplit']) ? trim($this->config->parameters['votesplit']) : 0;
 			if(count($wishlist->advisory) > 0 && $votesplit) {
 				$objR = new WishRank ( $database );
@@ -592,10 +634,9 @@ class WishlistController extends JObject
 				}
 			}
 				
-			// Get comments, abuse reports
-			$wish->replies = $this->getComments($wishid, $wishid, 'wish', 0, $abuse, $wishlist->owners, $this->_admin);
-			$wish->reports = $this->getAbuseReports($wishid, 'wish');
-			
+			// Get comments
+			$wish->replies = $this->getComments($wishid, $wishid, 'wish', 0, $abuse = true, $wishlist->owners, $this->_admin);
+					
 			// Do some text cleanup
 			$wish->subject = stripslashes($wish->subject);
 			$wish->subject = str_replace('&quote;','&quot;',$wish->subject);
@@ -605,11 +646,7 @@ class WishlistController extends JObject
 			$wish->about = str_replace('&quote;','&quot;',$wish->about);
 			if (!strstr( $wish->about, '</p>' ) && !strstr( $wish->about, '<pre class="wiki">' )) {
 				$wish->about = str_replace("<br />","",$wish->about);
-				//$wish->about = htmlentities($wish->about);
 				$wish->about = nl2br($wish->about);
-				//$wish->about = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$wish->about);
-				//$wish->about = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$wish->about);
-				//$wish->about = utf8_decode($wish->about);
 			}
 			
 			// Build owners drop-down for assigning wishes
@@ -617,9 +654,8 @@ class WishlistController extends JObject
 									
 			// Do we have a due date?
 			$wish->urgent = 0;
-			if($wish->due != '0000-00-00 00:00:00') {
-						
-				$delivery = WishlistHtml::convertTime ($wish->average_effort);
+			if($wish->due != '0000-00-00 00:00:00') {						
+				$delivery = $this->convertTime ($wish->average_effort);
 				if($wish->due < $delivery['warning']) {
 					$wish->urgent = 1;
 				}
@@ -627,9 +663,9 @@ class WishlistController extends JObject
 					$wish->urgent = 2;
 				}						
 			}
-			
-			if($action == 'addbonus' && $this->banking) {
-				// check available user funds		
+
+			// check available user funds	
+			if($action == 'addbonus' && $this->banking) {	
 				$BTL 		= new BankTeller( $database, $juser->get('id') );
 				$balance 	= $BTL->summary();
 				$credit 	= $BTL->credit_summary();
@@ -638,10 +674,9 @@ class WishlistController extends JObject
 				$wish->funds = $funds;
 			}		
 			
-			if($action == 'move') {
-				
+			if($action == 'move') {				
 				// what wishlist categories are we allowed to have?
-				$cats   = $this->config->parameters['categories'];
+				$cats   = $this->config->get('categories');
 				$cats   = $cats ? $cats : 'general, resource';
 				$wish->cats = $cats;
 				
@@ -649,64 +684,32 @@ class WishlistController extends JObject
 					$group = new XGroup();
 					$group->select($wishlist->referenceid);
 					$wishlist->cn = $group->cn;
-				}
-				
+				}				
 			}
 			
 			// Get implementation plan
 			$objPlan = new WishlistPlan( $database );
 			$plan = $objPlan->getPlan($wishid);
-			$plan = $plan ? $plan[0] : '';
+			$wish->plan = $plan ? $plan[0] : '';
 			
-			// Record action
+			// Record some extra actions
 			$wish->action = $action;			
 			$wish->saved = $saved;
+			$wish->com = $com;
 			
 			// Get tags on this wish
 			$tagging = new WishTags( $database );
 			$wish->tags = $tagging->get_tags_on_object($wish->id, 0, 0, 0);
-			
-			$wish->com = $com;		
+					
 			$refid = $wishlist->referenceid;
 			$cat   = $wishlist->category;			
 		}
 		
 		if (isset($this->comment)) {
-			$addcomment =& $this->comment;
-			
+			$addcomment =& $this->comment;			
 		} else {
 			$addcomment = NULL;
 		}		
-		
-		// Add the CSS to the template
-		$this->getStyles();
-		$this->getScripts();
-		
-		// Thumbs voting CSS & JS
-		$this->getStyles('com_answers', 'vote.css');
-		//$this->getScripts('com_answers', 'vote');
-		
-		// calendar styling
-		$this->getStyles('com_events', 'calendar.css');
-
-		
-		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		if(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias)) {
-			$subtitle = 'tool "'. $wishlist->resource->alias.'"';	
-		}
-		else {
-			$subtitle = $wishlist->title;
-		}
-		if($wishlist->public or (!$wishlist->public && $this->_admin==2)) {	
-			$title .= ': '.$subtitle;
-		}
-		
-		$extratitle	= WishlistHtml::shortenText($wish->subject, 80, 0);
-				
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title);
 		
 		if ( $this->_task=='reply') {
 			$addcomment = & new XComment( $database );
@@ -717,178 +720,30 @@ class WishlistController extends JObject
 			$addcomment = NULL;
 		}
 		
-		// Turn off bonuses is banking is off			
-		$wishlist->banking = $this->banking ? $this->banking : 0;
-		$wishlist->banking = $wishlist->category=='user' ? 0 : $this->banking; // do not allow points for individual wish lists
+		// Turn on/off banking	
+		$wishlist->banking = $wishlist->category=='user' ? 0 : $this->banking;
 		
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		$this->startPath ($wishlist, $title, $pathway);	
-		$pathway->addItem( $extratitle, 'index.php?option='.$this->_option.a.'task=wish'.a.'category='.$cat.a.'rid='.$refid.a.'wishid='.$wishid );
-		
-		$title  = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
-						
-		echo WishlistHtml::wish( $wishlist, $wish,  $title, $this->_option, $this->_task,  $this->_error, $this->_admin, $juser, $addcomment, $plan, $filters, $abuse);
-	
-	}
-	
-	
-	//----------------------------------------------------------
-	// Manage Plan
-	//----------------------------------------------------------
-	
-	public function saveplan() {
-	
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
-		
-		$wishid  = JRequest::getInt( 'wishid', 0 );
-		
-		// Make sure we have wish id
-		if(!$wishid) {
-			JError::raiseError( 404, JText::_('Wish not found.') );
-			return;
+		$view = new JView( array('name'=>'wish') );
+		$view->title = $this->_title;
+		$view->config = $this->config;
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->admin = $this->_admin;
+		$view->juser = $juser;
+		$view->wishlist = $wishlist;
+		$view->wish = $wish;
+		$view->addcomment = $addcomment;
+		$view->filters = $filters;
+		$view->abuse = true;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-						
-		$obj = new Wishlist( $database );
-		$objWish = new Wish( $database );
-		$objWish->load($wishid);
-		
-		if(!$objWish->load($wishid)) {
-			JError::raiseError( 404, JText::_('Wish not found.') );
-			return;
-		}	
-		
-		$wishlist = $obj->get_wishlist($objWish->wishlist);	
-		
-		$pageid = JRequest::getInt( 'pageid', 0, 'post' );
-		$create_revision = JRequest::getInt( 'create_revision', 0, 'post' );
-				
-		// Initiate extended database class
-		$page = new WishlistPlan( $database );
-		if (!$pageid) {
-			// New page - save it to the database			
-			$old = new WishlistPlan( $database );
-			
-		} else {
-			// Existing page - load it up
-			$page->load( $pageid );
+		$view->display();	
+	}	
 
-			// Get the revision before changes
-			$old = $page;
-		}
-		
-		$page->version = JRequest::getInt( 'version', 1, 'post' );
-		
-		
-		if($create_revision) {
-			$page = new WishlistPlan( $database );
-			$page->version = $old->version + 1;
-		}
-
-		$page->wishid = $wishid;
-		$page->created_by = JRequest::getInt( 'created_by', $juser->get('id'), 'post' );
-		$page->created = date( 'Y-m-d H:i:s', time());
-		$page->approved = 1;
-		$page->pagetext   = rtrim($_POST['pagetext']);
-		
-		// Stripslashes just to make sure
-		$old->pagetext = rtrim(stripslashes($old->pagetext));
-		$page->pagetext = rtrim(stripslashes($page->pagetext));
-		
-		// Compare against previous revision
-		// We don't want to create a whole new revision if just the tags were changed
-		if ($old->pagetext != $page->pagetext or (!$create_revision && $pageid)) {
-				
-			// Transform the wikitext to HTML
-			ximport('wiki.parser');
-			$p = new WikiParser( $objWish->id, $this->_option, 'wishlist'.DS.$wishlist->id, $objWish->id );
-			$page->pagehtml = $p->parse( $page->pagetext );
-				
-			// Store content
-			if (!$page->store()) {
-				echo WishlistHtml::alert( $page->getError() );
-				exit();
-			}
-		}		
-		
-		// do we have a due date?
-		$isdue  = JRequest::getInt( 'isdue', 0 );
-		$due    = JRequest::getVar( 'publish_up', '' );
-	
-		if($due) {
-			$publishtime = $due.' 00:00:00';
-			$due = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime)); 
-		}
-		
-		//is this wish assigned to anyone?
-		$assignedto = JRequest::getInt( 'assigned', 0 );
-		
-		$new_assignee = ($assignedto && $objWish->assigned != $assignedto) ? 1 : 0;
-		
-		$objWish->due = ($due ) ? $due : '0000-00-00 00:00:00';
-	    $objWish->assigned = ($assignedto ) ? $assignedto : 0;
-
-		// store our due date
-		if (!$objWish->store()) {
-			echo WishlistHtml::alert( $objWish->getError() );
-			exit();
-		}
-		
-		else if ($new_assignee) {
-				// Build e-mail components
-				$xhub =& XFactory::getHub();
-				$jconfig =& JFactory::getConfig();
-				$admin_email = $jconfig->getValue('config.mailfrom');
-									
-				// to wish assignee
-				$subject = JText::_(strtoupper($this->_name)).', '.JText::_('Wish').' #'.$wishid.' '.JText::_('has been assigned to you');
-					
-				$from = array();
-				$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
-				$from['email'] = $jconfig->getValue('config.mailfrom');
-					
-				$name = JText::_('UNKNOWN');
-				$login = JText::_('UNKNOWN');
-				$ruser =& XProfile::getInstance($objWish->proposed_by);
-				if (is_object($ruser)) {
-					$name = $ruser->get('name');
-					$login = $ruser->get('username');
-				}
-				if($objWish->anonymous) {
-					$name = JText::_('ANONYMOUS');
-				}
-		
-				$message  = '----------------------------'.r.n;
-				$message .= JText::_('WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
-				$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
-				$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
-				$message .= ' '.JText::_('BY').' '.$name.' ';
-				$message .= $objWish->anonymous ? '' : '('.$login.')';
-				$message .= r.n.r.n;
-					
-				$message .= '----------------------------'.r.n;
-				$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
-				$message  .= JText::_('GO_TO').' '.$url.' '.JText::_('to view your assigned wish').'.';	
-				
-				JPluginHelper::importPlugin( 'xmessage' );
-				$dispatcher =& JDispatcher::getInstance();
-				
-				if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_wish_assigned', $subject, $message, $from, array($objWish->assigned), $this->_option ))) {
-					$this->setError( JText::_('Failed to message wish assignee.') );
-					echo WishlistHtml::alert( $this->_error );
-				}
-		}
-		
-		
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid).'#plan';	
-	}
-	
 	//----------------------------------------------------------
 	// Manage List
-	//----------------------------------------------------------
-			
+	//----------------------------------------------------------			
 	
 	public function savesettings() {
 	
@@ -897,8 +752,7 @@ class WishlistController extends JObject
 		
 		$listid  = JRequest::getInt( 'listid', 0);
 		$action  = JRequest::getVar( 'action', '');
-		
-		
+				
 		// Make sure we have list id
 		if(!$listid) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
@@ -936,16 +790,15 @@ class WishlistController extends JObject
 			
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid).'?saved=1';
 			return;
-		}
-			
+		}			
 		
 		$_POST = array_map('trim',$_POST);
 		
 		$obj->load($listid);
 		
 		if (!$obj->bind( $_POST )) {
-			echo WishlistHtml::alert( $obj->getError() );
-			exit();
+			JError::raiseError( 500, $obj->getError() );
+			return;
 		}
 		$obj->description  = rtrim(stripslashes($obj->description));
 		$obj->description  = TextFilter::cleanXss($obj->description);
@@ -953,39 +806,37 @@ class WishlistController extends JObject
 	
 		// check content
 		if (!$obj->check()) {
-			echo WishlistHtml::alert( $obj->getError() );
-			exit();
+			JError::raiseError( 500, $obj->getError() );
+			return;
 		}
 
 		// store new content
 		if (!$obj->store()) {
-			echo WishlistHtml::alert( $obj->getError() );
-			exit();
+			JError::raiseError( 500, $obj->getError() );
+			return;
 		}
 		
 		// Save new owners
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.helper.php' );
-		$newowners = ContribtoolHelper::makeArray(rtrim($_POST['newowners']));
-		$newgroups = ContribtoolHelper::makeArray(rtrim($_POST['newgroups']));
+		$newowners = $this->makeArray(rtrim($_POST['newowners']));
+		$newgroups = $this->makeArray(rtrim($_POST['newgroups']));
 		
 		$allow_advisory = isset($this->config->parameters['allow_advisory']) ? $this->config->parameters['allow_advisory'] : 0;
-		$newadvisory = $allow_advisory ? ContribtoolHelper::makeArray(rtrim($_POST['newadvisory'])) : array();
+		$newadvisory = $allow_advisory ? $this->makeArray(rtrim($_POST['newadvisory'])) : array();
 		
 		if(!empty($newowners)) {
-		$objOwner->save_owners($listid, $this->config, $newowners );
+			$objOwner->save_owners($listid, $this->config, $newowners );
 		}
 		if(!empty($newadvisory)) {
-		$objOwner->save_owners($listid, $this->config, $newadvisory, 2 );
+			$objOwner->save_owners($listid, $this->config, $newadvisory, 2 );
 		}
 		if(!empty($newgroups)) {
-		$objG->save_owner_groups($listid, $this->config, $newgroups);
+			$objG->save_owner_groups($listid, $this->config, $newgroups);
 		}
 		
 		// update priority on all wishes
 		$this->listid = $listid;
 		$this->rank($listid);
-		
-		
+				
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid).'?saved=1';
 	}
 	
@@ -997,32 +848,40 @@ class WishlistController extends JObject
 		$juser =& JFactory::getUser();
 		
 		// get list id
-		$id  	= JRequest::getInt( 'id', 0 );
+		$id  = JRequest::getInt( 'id', 0 );
 		
-		// Login required
-		if ($juser->get('guest')) {
-			$msg = 'Please login to view manage list settings.';
-			$this->login($msg);
-			return;
-		}
-				
 		$obj = new Wishlist( $database );
 		$wishlist = $obj->get_wishlist($id);
 		
 		if(!$wishlist) {
 			// list not found
-			JError::raiseError( 404, JText::_('Wish list not found.') );
+			JError::raiseError( 404, JText::_('ERROR_WISHLIST_NOT_FOUND') );
 			return;
 		}
 		
-		// get admin priviliges
-		$this->authorize_admin($id);
+		// Push some styles to the template
+		$this->_getStyles();
 		
-		// only admins are allowed to change list settings
-		if(!$this->_admin) {	
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+		// Push some scripts to the template
+		$this->_getScripts();
+		
+		// Set page title
+		$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias)) 
+						? 'tool "'. $wishlist->resource->alias.'"'
+						: $wishlist->title;
+		if(!$wishlist->public && !$this->_admin) {	$this->_list_title = ''; }
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_listid = $id;
+		$this->_buildPathway($wishlist);
+		
+		// Login required
+		if ($juser->get('guest')) {
+			$this->_msg = JText::_('WARNING_LOGIN_MANAGE_SETTINGS');
+			$this->login();
 			return;
-		}	
+		}
 		
 		// who are list owners?
 		$objOwner = new WishlistOwner( $database );
@@ -1032,42 +891,198 @@ class WishlistController extends JObject
 		$wishlist->groups = $owners['groups'];
 		$wishlist->advisory = $owners['advisory'];
 		
+		// get admin priviliges
+		$this->authorize_admin();
+		
+		// Authorize list owners
+		if(!$juser->get('guest')) {
+			if(in_array($juser->get('id'), $wishlist->owners)) {
+				$this->_admin = 2;
+			}
+			else if(in_array($juser->get('id'), $wishlist->advisory)) {
+				$this->_admin = 3;
+			}
+		}
+		
 		$nativeowners = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist, 1);
 		$wishlist->nativeowners = $nativeowners['individuals'];
 		$wishlist->nativegroups = $nativeowners['groups'];
 		
 		$wishlist->allow_advisory = isset($this->config->parameters['allow_advisory']) ? $this->config->parameters['allow_advisory'] : 0;
-			
-		// Add the CSS to the template
-		$this->getStyles();
-		$this->getScripts();
+
+		$view = new JView( array('name'=>'settings') );
+		$view->title = $this->_title;
+		$view->option = $this->_option;
+		$view->admin = $this->_admin;
+		$view->juser = $juser;
+		$view->wishlist = $wishlist;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}		
+		$view->display();		
+	}
 		
-		// Thumbs voting CSS & JS
-		$this->getStyles('com_answers', 'vote.css');
-		$this->getScripts('com_answers', 'vote');
+	//----------------------------------------------------------
+	// Manage Plan
+	//----------------------------------------------------------
+	
+	public function saveplan() {
+	
+		$database =& JFactory::getDBO();
+		$juser =& JFactory::getUser();
 		
-		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		if($wishlist->public or (!$wishlist->public && $this->_admin==2)) {	
-				$title .= ': '.$wishlist->title;
+		$wishid  = JRequest::getInt( 'wishid', 0 );
+		
+		// Make sure we have wish id
+		if(!$wishid) {
+			JError::raiseError( 404, JText::_('ERROR_WISH_NOT_FOUND') );
+			return;
+		}
+						
+		$obj = new Wishlist( $database );
+		$objWish = new Wish( $database );
+		$objWish->load($wishid);
+		
+		if(!$objWish->load($wishid)) {
+			JError::raiseError( 404, JText::_('ERROR_WISH_NOT_FOUND') );
+			return;
 		}	
+		
+		$wishlist = $obj->get_wishlist($objWish->wishlist);	
+		
+		// Login required
+		if ($juser->get('guest')) {
+			// Set page title
+			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias)) 
+						? 'tool "'. $wishlist->resource->alias.'"'
+						: $wishlist->title;
+			if(!$wishlist->public && !$this->_admin) {	$this->_list_title = ''; }
+			$this->_buildTitle();
 				
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title.' - '.JText::_(strtoupper($this->_task)));
+			// Set the pathway
+			$this->_buildPathway($wishlist);
+			$this->login();
+			return;
+		}	
 		
-		
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		$this->startPath ($wishlist, $title, $pathway);	
-		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'task=settings'.a.'id='.$id );
+		$pageid = JRequest::getInt( 'pageid', 0, 'post' );
+		$create_revision = JRequest::getInt( 'create_revision', 0, 'post' );
+				
+		// Initiate extended database class
+		$page = new WishlistPlan( $database );
+		if (!$pageid) {
+			// New page - save it to the database			
+			$old = new WishlistPlan( $database );
 			
+		} else {
+			// Existing page - load it up
+			$page->load( $pageid );
+
+			// Get the revision before changes
+			$old = $page;
+		}
 		
-		echo WishlistHtml::settings( $wishlist,JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task)), $this->_option, $this->_error, $this->_admin, $juser);
+		$page->version = JRequest::getInt( 'version', 1, 'post' );
+				
+		if($create_revision) {
+			$page = new WishlistPlan( $database );
+			$page->version = $old->version + 1;
+		}
+
+		$page->wishid = $wishid;
+		$page->created_by = JRequest::getInt( 'created_by', $juser->get('id'), 'post' );
+		$page->created = date( 'Y-m-d H:i:s', time());
+		$page->approved = 1;
+		$page->pagetext   = rtrim($_POST['pagetext']);
 		
+		// Stripslashes just to make sure
+		$old->pagetext = rtrim(stripslashes($old->pagetext));
+		$page->pagetext = rtrim(stripslashes($page->pagetext));
+		
+		// Compare against previous revision
+		// We don't want to create a whole new revision if just the tags were changed
+		if ($old->pagetext != $page->pagetext or (!$create_revision && $pageid)) {
+				
+			// Transform the wikitext to HTML
+			ximport('wiki.parser');
+			$p = new WikiParser( $objWish->id, $this->_option, 'wishlist'.DS.$wishlist->id, $objWish->id );
+			$page->pagehtml = $p->parse( $page->pagetext );
+				
+			// Store content
+			if (!$page->store()) {
+				JError::raiseError( 500, $page->getError() );
+				return;
+			}
+		}		
+		
+		// do we have a due date?
+		$isdue  = JRequest::getInt( 'isdue', 0 );
+		$due    = JRequest::getVar( 'publish_up', '' );
+	
+		if($due) {
+			$publishtime = $due.' 00:00:00';
+			$due = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime)); 
+		}
+		
+		//is this wish assigned to anyone?
+		$assignedto = JRequest::getInt( 'assigned', 0 );
+		
+		$new_assignee = ($assignedto && $objWish->assigned != $assignedto) ? 1 : 0;
+		
+		$objWish->due = ($due ) ? $due : '0000-00-00 00:00:00';
+	    $objWish->assigned = ($assignedto ) ? $assignedto : 0;
+
+		// store our due date
+		if (!$objWish->store()) {
+			JError::raiseError( 500, $objWish->getError() );
+			return;
+		}
+		
+		else if ($new_assignee) {
+				// Build e-mail components
+				$xhub =& XFactory::getHub();
+				$jconfig =& JFactory::getConfig();
+				$admin_email = $jconfig->getValue('config.mailfrom');
+									
+				// to wish assignee
+				$subject = JText::_(strtoupper($this->_name)).', '.JText::_('WISH').' #'.$wishid.' '.JText::_('MSG_HAS_BEEN_ASSIGNED_TO_YOU');
+					
+				$from = array();
+				$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
+				$from['email'] = $jconfig->getValue('config.mailfrom');
+					
+				$name = JText::_('UNKNOWN');
+				$login = JText::_('UNKNOWN');
+				$ruser =& XProfile::getInstance($objWish->proposed_by);
+				if (is_object($ruser)) {
+					$name = $ruser->get('name');
+					$login = $ruser->get('username');
+				}
+				if($objWish->anonymous) {
+					$name = JText::_('ANONYMOUS');
+				}
+		
+				$message  = '----------------------------'.r.n;
+				$message .= JText::_('WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
+				$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
+				$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
+				$message .= ' '.JText::_('BY').' '.$name.' ';
+				$message .= $objWish->anonymous ? '' : '('.$login.')';
+				$message .= r.n.r.n;
+					
+				$message .= '----------------------------'.r.n;
+				$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
+				$message  .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_ASSIGNED_WISH').'.';	
+				
+				JPluginHelper::importPlugin( 'xmessage' );
+				$dispatcher =& JDispatcher::getInstance();
+				
+				if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_wish_assigned', $subject, $message, $from, array($objWish->assigned), $this->_option ))) {
+					$this->setError( JText::_('ERROR_FAILED_MSG_ASSIGNEE') );
+				}
+		}
+				
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid).'#plan';	
 	}
 
 	//----------------------------------------------------------
@@ -1084,20 +1099,18 @@ class WishlistController extends JObject
 		$refid		= JRequest::getInt( 'rid', 0 );
 		$category 	= JRequest::getVar( 'category', '' );
 		
+		// Push some styles to the template
+		$this->_getStyles();
 		
-		// Login required
-		if ($juser->get('guest')) {
-			$msg = 'Please login to add a wish.';
-			$this->login($msg);
-			return;
-		}
-		
+		// Push some scripts to the template
+		$this->_getScripts();
+				
 		$objWishlist = new Wishlist ( $database );
 		$wish = new Wish ( $database );
 		
 		if(!$listid && $refid) {
 			if(!$category) {
-				JError::raiseError( 404, JText::_('Cannot locate a wishlist') );
+				JError::raiseError( 404, JText::_('ERROR_WISHLIST_NOT_FOUND') );
 				return;
 			}
 			else {
@@ -1112,20 +1125,19 @@ class WishlistController extends JObject
 					
 					if($resource->title && $resource->standalone == 1) {
 						$listid = $objWishlist->createlist($cat, $refid, 1, $resource->title);
-					}
-				
-			}
-			
+					}				
+			}			
 		}
+		
 		if($wishid) {
 			// we are editing
 			$wish->load($wishid);
 			$listid = $wish->wishlist;
 		}
 		
-		// cannot add a wish to a non-found list
+		// cannot add a wish to a non-existing list
 		if(!$listid) {
-			JError::raiseError( 404, JText::_('Cannot locate a wishlist') );
+			JError::raiseError( 404, JText::_('ERROR_WISHLIST_NOT_FOUND') );
 			return;
 		}
 		else {		
@@ -1134,10 +1146,30 @@ class WishlistController extends JObject
 		
 		// list not found - seems to be an incorrect id
 		if(!$wishlist) {
-			JError::raiseError( 404, JText::_('Cannot locate a wishlist') );
+			JError::raiseError( 404, JText::_('ERROR_WISHLIST_NOT_FOUND') );
 			return;
 		}
 		
+		// Set page title
+		$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
+		$this->_buildTitle();
+				
+		// Set the pathway
+		$this->_taskpath = $wishid 
+							? 'index.php?option='.$this->_option.a.'task=editwish'.a.'category='.$category.a.'rid='.$refid.a.'wishid='.$wishid
+							: 'index.php?option='.$this->_option.a.'task=add'.a.'category='.$category.a.'rid='.$refid;
+		$this->_taskname = $wishid
+							? JText::_('COM_WISHLIST_EDITWISH')
+							: JText::_('COM_WISHLIST_ADD');
+		$this->_buildPathway($wishlist);	
+		
+		// Login required
+		if ($juser->get('guest')) {
+			$this->_msg = JText::_('WARNING_WISHLIST_LOGIN_TO_ADD');
+			$this->login();
+			return;
+		}
+					
 		// get admin priviliges
 		$this->authorize_admin($listid);
 		
@@ -1147,12 +1179,13 @@ class WishlistController extends JObject
 			return;
 		}		
 
-			if(!$wishid) {
+		// Get some defaults
+		if(!$wishid) {
 			$wish->proposed_by 	= $juser->get('id');
 			$wish->status = 0;
 			$wish->anonymous  = 0;
 			$wish->private = 0;
-			}
+		}
 		
 		 // do not allow points for individual wish lists
 		$this->banking = $wishlist->category=='user' ? 0 : $this->banking;
@@ -1160,8 +1193,6 @@ class WishlistController extends JObject
 		// Is banking turned on?
 		$funds = 0;
 		if ($this->banking) {
-			$database =& JFactory::getDBO();
-			
 			$BTL = new BankTeller( $database, $juser->get('id') );
 			$balance = $BTL->summary();
 			$credit  = $BTL->credit_summary();
@@ -1169,45 +1200,31 @@ class WishlistController extends JObject
 			$funds   = ($funds > 0) ? $funds : '0';				
 		}
 		
+		// Get URL to page explaining virtual economy
 		$aconfig =& JComponentHelper::getParams( 'com_answers' );
 		$infolink = $aconfig->get('infolink') ? $aconfig->get('infolink') : '/kb/points/'; 
 		
 		// Get tags on this wish
 		$tagging = new WishTags( $database );
-		$wish->tags = $wishid ? $tagging->get_tag_string($wishid, 0, 0, NULL, 0, 1) : JRequest::getVar( 'tag', '' );
+		$wish->tags = $wishid ? $tagging->get_tag_string($wishid, 0, 0, NULL, 0, 1) : JRequest::getVar( 'tag', '' );			
 		
-		
-		// Add the CSS to the template
-		$this->getStyles();
-		$this->getScripts();
-		
-		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		if($wishlist->public or (!$wishlist->public && $this->_admin==2)) {	
-				$title .= ': '.$wishlist->title;
-		}	
-				
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title.' - '.JText::_(strtoupper($this->_task)));	
-		
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		$this->startPath ($wishlist, $title, $pathway);	
-		if(!$wishid) {
-		$pathway->addItem( JText::_('TASK_ADD'), 'index.php?option='.$this->_option.a.'task=add'.a.'category='.$category.a.'rid='.$refid  );
+		// Output HTML
+		$view = new JView( array('name'=>'editwish' ));
+		$view->title = $this->_title;
+		$view->config = $this->config;
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->admin = $this->_admin;
+		$view->juser = $juser;
+		$view->wishlist = $wishlist;
+		$view->wish = $wish;
+		$view->infolink = $infolink;
+		$view->funds = $funds;
+		$view->banking = $this->banking;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-		else {
-		$pathway->addItem( JText::_('Edit Wish'), 'index.php?option='.$this->_option.a.'task=editwish'.a.'category='.$category.a.'rid='.$refid.a.'wishid='.$wishid );
-		}
-		
-		$task = $this->_task == 'editwish' ? $this->_task : 'TASK_ADD';
-				
-		echo WishlistHtml::wish_form( JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($task)), $wishlist, $wish, $this->_error, $this->_option, $this->_task, $this->_admin, $funds, $this->banking, $infolink);
-		
+		$view->display();	
 	}
 	
 	//--------------
@@ -1225,8 +1242,8 @@ class WishlistController extends JObject
 		
 		// Login required
 		if ($juser->get('guest')) {
-			$msg = 'Please login to add a wish.';
-			$this->login($msg);
+			$this->_msg = JText::_('WARNING_WISHLIST_LOGIN_TO_ADD');
+			$this->login();
 			return;
 		}
 		
@@ -1236,54 +1253,67 @@ class WishlistController extends JObject
 		// initiate class and bind posted items to database fields
 		$row = new Wish ( $database );
 		if (!$row->bind( $_POST )) {
-			echo WishlistHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// If we are editing
 		$by = JRequest::getVar( 'by', '', 'post' );
 		if($by) {
-			$ruser =& XProfile::getInstance($by);
+			$ruser =& JUser::getInstance($by);
 			if (is_object($ruser)) {
-				$row->proposed_by = $ruser->get('uidNumber');
+				$row->proposed_by = $ruser->get('id');
 			}
 			else {
-				echo WishlistHtml::alert( JText::_('The username of the wish author appears to be invalid.') );
-				exit();
-			}
-			
+				$this->setError( JText::_('ERROR_INVALID_USER_NAME') );
+			}			
 		}
 		
 		// If offering a reward, do some checks
 		if ($reward) {
 			// Is it an actual number?
 			if (!is_numeric($reward)) {
-				echo WishlistHtml::alert( JText::_('ERROR_INVALID_AMOUNT') );
-				exit();
+				$this->setError( JText::_('ERROR_INVALID_AMOUNT') );
 			}
 			// Are they offering more than they can afford?
 			if ($reward > $funds) {
-				echo WishlistHtml::alert( JText::_('ERROR_NO_FUNDS') );
-				exit();
+				$this->setError( JText::_('ERROR_NO_FUNDS') );
 			}
+		}
+		
+		// Error view
+		if($this->getError()) {
+			// Set the pathway
+			$app =& JFactory::getApplication();
+			$pathway =& $app->getPathway();
+			if (count($pathway->getPathWay()) <= 0) {
+				$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+			}
+				
+			$view = new JView( array('name'=>'error') );
+			$view->title = JText::_(strtoupper($this->_name));
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
+			return;				
 		}
 				
 		$row->anonymous 	= JRequest::getInt( 'anonymous', 0 );
 		$row->private	    = JRequest::getInt( 'private', 0 );
 		$row->about     	= TextFilter::cleanXss($row->about);
-		//$row->about     	= nl2br($row->about);
 		$row->proposed    	= ($wishid) ? $row->proposed : date( 'Y-m-d H:i:s', time() );
 
 		// check content
 		if (!$row->check()) {
-			echo WishlistHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// store new content
 		if (!$row->store()) {
-			echo WishlistHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// get (new) wish id
@@ -1299,70 +1329,66 @@ class WishlistController extends JObject
 		// Get wish list info
 		$objWishlist = new Wishlist ( $database );			
 		$wishlist = $objWishlist->get_wishlist($listid);
-	
-		
+			
 		// send message about a new wish
 		if(!$wishid) {
-					// Build e-mail components
-					$xhub =& XFactory::getHub();
-					$jconfig =& JFactory::getConfig();
-					$admin_email = $jconfig->getValue('config.mailfrom');
+			// Build e-mail components
+			$xhub =& XFactory::getHub();
+			$jconfig =& JFactory::getConfig();
+			$admin_email = $jconfig->getValue('config.mailfrom');
 					
-					$name = JText::_('UNKNOWN');
-					$login = JText::_('UNKNOWN');
-					$ruser =& XProfile::getInstance($row->proposed_by);
-					if (is_object($ruser)) {
-						$name = $ruser->get('name');
-						$login = $ruser->get('username');
-					}
+			// Get author name
+			$name 	= JText::_('UNKNOWN');
+			$login 	= JText::_('UNKNOWN');			
+			if($row->anonymous) {
+				$name = JText::_('ANONYMOUS');
+			}
+			else {
+				$ruser 	=& JUser::getInstance($row->proposed_by);
+				if (is_object($ruser)) {
+					$name = $ruser->get('name');
+					$login = $ruser->get('username');
+				}
+			}
 					
-					if($row->anonymous) {
-						$name = JText::_('ANONYMOUS');
-					}
-					
-					$subject = JText::_(strtoupper($this->_name)).', '.JText::_('NEW_WISH').' '.JText::_('FOR').' '.$wishlist->title.' '.JText::_('from').' '.$name;
-					
-					$from = array();
-					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
-					$from['email'] = $jconfig->getValue('config.mailfrom');
+			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('NEW_WISH').' '.JText::_('FOR').' '.$wishlist->title.' '.JText::_('from').' '.$name;
+			$from = array();
+			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
+			$from['email'] = $jconfig->getValue('config.mailfrom');
 										
-					// get list owners
-					$objOwner = new WishlistOwner( $database );
-					$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist);					
+			// get list owners
+			$objOwner = new WishlistOwner( $database );
+			$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist);					
 		
-					$message  = '----------------------------'.r.n;
-					$message .= JText::_('WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
-					$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($row->subject).r.n;
-					$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$row->proposed, '%d %b, %Y');
-					$message .= ' '.JText::_('BY').' '.$name.' ';
-					$message .= $row->anonymous ? '' : '('.$login.')';
-					$message .= r.n.r.n;
+			$message  = '----------------------------'.r.n;
+			$message .= JText::_('WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
+			$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($row->subject).r.n;
+			$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$row->proposed, '%d %b, %Y');
+			$message .= ' '.JText::_('BY').' '.$name.' ';
+			$message .= $row->anonymous ? '' : '('.$login.')';
+			$message .= r.n.r.n;
 					
-					$message .= '----------------------------'.r.n;
-					$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$row->id);
-					$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
+			$message .= '----------------------------'.r.n;
+			$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$row->id);
+			$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
 					
-					JPluginHelper::importPlugin( 'xmessage' );
-					$dispatcher =& JDispatcher::getInstance();
+			JPluginHelper::importPlugin( 'xmessage' );
+			$dispatcher =& JDispatcher::getInstance();
 					
-					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_new_wish', $subject, $message, $from, $owners['individuals'], $this->_option ))) {
-						$this->setError( JText::_('Failed to message wish list owners.') );
-						echo WishlistHtml::alert( $this->_error );
-					}					
+			if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_new_wish', $subject, $message, $from, $owners['individuals'], $this->_option ))) {
+				$this->setError( JText::_('ERROR_FAILED_MESSAGE_OWNERS') );
+			}					
 		}		
 	
 		if($reward && $this->banking) {		
 			// put the  amount on hold
 			$BTL = new BankTeller( $database, $juser->get('id') );
-			$BTL->hold($reward, JText::_('BANKING_HOLD').' #'.$row->id.' '.JText::_('for').' '.$wishlist->title, 'wish', $row->id);
+			$BTL->hold($reward, JText::_('BANKING_HOLD').' #'.$row->id.' '.JText::_('FOR').' '.$wishlist->title, 'wish', $row->id);
 		}
 					
 		$saved = $wishid ? 2 : 3;
 		
-		// go back to wishlist
-		//$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid).'?saved='.$saved;
-		$this->_redirect =JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$id).'?saved='.$saved;			
-		
+		$this->_redirect =JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$id).'?saved='.$saved;							
 	}
 	
 	//-----------
@@ -1378,27 +1404,39 @@ class WishlistController extends JObject
 		$cat   	= JRequest::getVar( 'category', '' );
 		$status = JRequest::getVar( 'status', '' );
 		$vid 	= JRequest::getInt( 'vid', 0 );
-		
-		// Login required
-		if ($juser->get('guest')) {
-			$this->login();
-			return;
-		}
-				
+			
 		$obj = new Wishlist( $database );
 		$objWish = new Wish( $database );
 		
 		if(!$wishid) {
-			JError::raiseError( 404, JText::_('Could not find a wish to take action.') );
+			JError::raiseError( 404, JText::_('ERROR_WISH_NOT_FOUND') );
 			return;
 		}
 		// Check if wish exists on this list
 		$wishlist = $obj->get_wishlist($id, $refid, $cat);
-		if(!$wishlist or !$objWish->check_wish ($wishid, $wishlist->id) ) {
-			JError::raiseError( 404, JText::_('Wish not found on the requested wish list.') );
+			
+		if(!$wishlist) {
+			JError::raiseError( 404, JText::_('ERROR_WISHLIST_NOT_FOUND') );
 			return;
 		}
 		else {	
+			// load wish
+			$objWish->load($wishid);
+			$changed = 0;		
+				
+			// Login required
+			if ($juser->get('guest')) {
+				// Set page title
+				$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
+				$this->_buildTitle();
+						
+				// Set the pathway
+				$this->_taskpath  = 'index.php?option='.$this->_option.a.'task=editwish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid;
+				$this->_taskname = JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+				$this->_buildPathway($wishlist);
+				$this->login();
+				return;
+			}
 		
 			// get admin priviliges
 			$this->authorize_admin($wishlist->id);
@@ -1408,18 +1446,12 @@ class WishlistController extends JObject
 				return;
 			}
 			
-			// load wish
-			$objWish->load($wishid);
-			$changed = 0;		
-		
-			if($this->_task == 'editprivacy') {
-				
+			if($this->_task == 'editprivacy') {				
 				$private 	= JRequest::getInt( 'private', 0, 'get' );
 				if($objWish->private != $private) {
 					$objWish->private = $private;
 					$changed = 1;
-				}
-				
+				}				
 			}
 			if($this->_task == 'editwish' && $status) {
 				$former_status = $objWish->status;
@@ -1454,7 +1486,7 @@ class WishlistController extends JObject
 					$objWish->granted_by = $juser->get('id'); 
 					$objWish->granted_vid= $vid ? $vid : 0;
 					
-					$wish = $objWish->get_wish ($wishid);
+					$wish = $objWish->get_wish ($wishid, $juser->get('id'));
 					$objWish->points = $wish->bonus;
 					
 					if($this->banking) {
@@ -1477,7 +1509,7 @@ class WishlistController extends JObject
 					$subject1 = JText::_(strtoupper($this->_name)).', '.JText::_('YOUR_WISH').' #'.$wishid.' is '.$status;
 					
 					// to wish assignee
-					$subject2 = JText::_(strtoupper($this->_name)).', '.JText::_('Wish').' #'.$wishid.' '.JText::_('has been assigned to you');
+					$subject2 = JText::_(strtoupper($this->_name)).', '.JText::_('WISH').' #'.$wishid.' '.JText::_('HAS_BEEN').' '.JText::_('MSG_ASSIGNED_TO_YOU');
 					
 					$from = array();
 					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
@@ -1508,70 +1540,44 @@ class WishlistController extends JObject
 					$message .= JText::_('YOUR_WISH').' '.JText::_('HAS_BEEN').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'.r.n;
 					}
 					else {
-					$message .= JText::_('The status of this wish changed to').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'.r.n;
+					$message .= JText::_('MSG_WISH_STATUS_CHANGED_TO').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'.r.n;
 					}
 					$url = $xhub->getCfg('hubLongURL').JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$cat.a.'rid='.$refid.a.'wishid='.$wishid);
 					$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_WISH').'.';
-					$as_mes  .= JText::_('GO_TO').' '.$url.' '.JText::_('to view your assigned wish').'.';				
-					
-				}
-				
+					$as_mes  .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_ASSIGNED_WISH').'.';									
+				}				
 			}
 			
 			// no status change, only information
-			else if($this->_task == 'editwish') {			
-				
+			else if($this->_task == 'editwish') {							
 				$this->addwish($wishid);
 				return;
 			}
 			
-			/*
-			if($this->_task == 'grantwish') {
-				
-				$objWish->status = 1;
-				$objWish->granted = date( 'Y-m-d H:i:s', time() );
-				$objWish->granted_by = $juser->get('id');
-				$changed = 1;
-				
-				if($this->banking) {
-					// Distribute bonus and earned points
-					$WE = new WishlistEconomy( $database );			
-					$WE->distribute_points($wishid);
-				}			
-			
-			}*/
-			
 			if($changed) {
 				// save changes
 				if (!$objWish->store()) {
-					echo WishlistHtml::alert( $objWish->getError() );
-					exit();
+					JError::raiseError( 500, $objWish->getError() );
+					return;
 				}
 				else if ($this->_task == 'editwish') {
 					JPluginHelper::importPlugin( 'xmessage' );
 					$dispatcher =& JDispatcher::getInstance();
 					
 					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_status_changed', $subject1, $message, $from, array($objWish->proposed_by), $this->_option ))) {
-								$this->setError( JText::_('Failed to message wish author.') );
-								echo WishlistHtml::alert( $this->_error );
+								$this->setError( JText::_('ERROR_FAILED_MSG_AUTHOR') );
 					}
 					
 					if($objWish->assigned && $objWish->proposed_by != $objWish->assigned && $status=='accepted') {
 						if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_wish_assigned', $subject2, $as_mes, $from, array($objWish->assigned), $this->_option ))) {
-								$this->setError( JText::_('Failed to message wish assignee.') );
-								echo WishlistHtml::alert( $this->_error );
+								$this->setError( JText::_('ERROR_FAILED_MSG_ASSIGNEE') );
 						}
-					}
-					
+					}					
 				}
-			}	
-			
-		
+			}			
 		}
 	
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$cat.a.'rid='.$refid.a.'wishid='.$wishid);	
-		
-		
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$cat.a.'rid='.$refid.a.'wishid='.$wishid);			
 	}
 	//-----------
 	
@@ -1597,25 +1603,24 @@ class WishlistController extends JObject
 		
 		// missing wish id 
 		if(!$wishid) {
-			echo WishlistHtml::alert( JText::_('Missing wish id'));
-			exit();
+			JError::raiseError( 404, JText::_('ERROR_WISH_NOT_FOUND') );
+			return;
 		}
 		// missing or invalid resource ID
 		if($category == 'resource' && (!$refid or !intval($refid))) {
-			echo WishlistHtml::alert( JText::_('Please specify a valid resource ID'));
-			exit();
+			JError::raiseError( 404, JText::_('ERROR_INVALID_RESOURCE_ID') );
+			return;
 		}
 		else if($category == 'general' ) {			
 			$refid = 1; // default to main wish list
 		}
 		else if ($category == 'group' && !$cn) {
-			echo WishlistHtml::alert( JText::_('Please specify a valid group name'));
-			exit();
+			JError::raiseError( 404, JText::_('ERROR_INVALID_GROUP_CN') );
+			return;
 		}
 		
 		if($category=='question' or $category=='ticket') {
-			// move to a question or a ticket
-			
+			// move to a question or a ticket			
 			JPluginHelper::importPlugin( 'support' , 'transfer');
 			$dispatcher =& JDispatcher::getInstance();
 			
@@ -1624,25 +1629,23 @@ class WishlistController extends JObject
 					$wishid,
 					$category,
 					$options)
-			);
-				
+			);				
 		}
-		else {
-		
+		else {	// moving to another list	
 			$objWishlist = new Wishlist ( $database );
 			$objWish = new Wish( $database );
 			
 			// Get group id from cn
 			if($category == 'group') {
 				$group = new XGroup();
-					if(Hubzero_Group::exists($cn)) {
-						$group->select($cn);
-						$refid = $group->gidNumber;
-					}
-					else {
-						echo WishlistHtml::alert( JText::_('Group with this name does not exist'));
-						exit();
-					}
+				if(Hubzero_Group::exists($cn)) {
+					$group->select($cn);
+					$refid = $group->gidNumber;
+				}
+				else {
+					JError::raiseError( 404, JText::_('ERROR_INVALID_GROUP_CN') );
+					return;
+				}
 			}
 			
 			// Where do we put this wish?
@@ -1650,34 +1653,30 @@ class WishlistController extends JObject
 			
 			// Create wishlist for resource if doesn't exist 
 			if ($category == 'resource' && !$newlist) {
-						// check if resources exists and get  title
-						$resource = new ResourcesResource( $database );
-						$resource->load ($refid);
+				// check if resources exists and get  title
+				$resource = new ResourcesResource( $database );
+				$resource->load ($refid);
 						
-						if($resource->title && $resource->standalone == 1) {
-							$newlist = $objWishlist->createlist($category, $refid, 1, $resource->title);
-						}
-						else {
-							echo WishlistHtml::alert( JText::_('Resource with specified ID was not found or not accessible.'));
-							exit();
-						}
-					
+				if($resource->title && $resource->standalone == 1) {
+					$newlist = $objWishlist->createlist($category, $refid, 1, $resource->title);
+				}
+				else {
+					JError::raiseError( 404, JText::_('ERROR_RESOURCE_ID_NOT_FOUND') );
+					return;
+				}					
 			}
-			else if($category == 'group' && !$newlist) {
-			
+			else if($category == 'group' && !$newlist) {			
 				// create private list for group
 				if(Hubzero_Group::exists($refid)) {
-						$group = new XGroup();
-						$group->select($refid);	
-						$newlist = $obj->createlist($cat, $refid, 0, $group->cn.' '.JText::_('Group'));
-				}
-				
+					$group = new XGroup();
+					$group->select($refid);	
+					$newlist = $obj->createlist($cat, $refid, 0, $group->cn.' '.JText::_('GROUP'));
+				}				
 			}
-		
-			
+					
 			// cannot add a wish to a non-found list
 			if(!$newlist) {
-				JError::raiseError( 404, JText::_('Cannot locate a wishlist') );
+				JError::raiseError( 404, JText::_('ERROR_WISHLIST_NOT_FOUND') );
 				return;
 			}
 			else if($listid != $newlist) {		
@@ -1695,10 +1694,10 @@ class WishlistController extends JObject
 				}
 				
 				if (!$objWish->store()) {
-					$this->_error = JText::_('Failed to move the wish.');
+					JError::raiseError( 500, JText::_('ERROR_WISH_MOVE_FAILED') );
+					return;
 				}
 				else {
-				
 					// also delete all previous owner votes for this wish
 					$objR = new WishRank( $database );
 					$objR->remove_vote($wishid);
@@ -1709,8 +1708,7 @@ class WishlistController extends JObject
 						$plan->deletePlan($wishid);
 					}
 					// delete comments if option chosen
-					if(!$options['keepcomments']) {
-						
+					if(!$options['keepcomments']) {						
 						$reply = new XComment( $database );
 						$comments1 = $reply->getResults( array('id'=>$wishid, 'category'=>'wish') );
 						if (count($comments1) > 0) {
@@ -1762,8 +1760,8 @@ class WishlistController extends JObject
 						$name = JText::_('ANONYMOUS');
 					}
 					
-					$subject1 = JText::_(strtoupper($this->_name)).', '.JText::_('NEW_WISH').' '.JText::_('FOR').' '.$newtitle.' '.JText::_('from').' '.$name.' - transferred';
-					$subject2 = JText::_(strtoupper($this->_name)).', '.JText::_('Your wish').' #'.$wishid.' '.JText::_('has been transferred to a different wish list');
+					$subject1 = JText::_(strtoupper($this->_name)).', '.JText::_('NEW_WISH').' '.JText::_('FOR').' '.$newtitle.' '.JText::_('FROM').' '.$name.' - '.JText::_('TRANSFERRED');
+					$subject2 = JText::_(strtoupper($this->_name)).', '.JText::_('YOUR_WISH').' #'.$wishid.' '.JText::_('WISH_TRANSFERRED_TO_DIFFERENT_LIST');
 					
 					$from = array();
 					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
@@ -1779,7 +1777,7 @@ class WishlistController extends JObject
 					$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
 					$message .= ' '.JText::_('BY').' '.$name.' ';
 					$message .= $objWish->anonymous ? '' : '('.$login.')'.r.n;
-					$message .= JText::_('Transferred from Wish List ').' "'.$oldtitle.'"';
+					$message .= JText::_('WISH_TRANSFERRED_FROM_WISHLIST').' "'.$oldtitle.'"';
 					$message .= r.n.r.n;
 					
 					$message .= '----------------------------'.r.n;
@@ -1790,18 +1788,13 @@ class WishlistController extends JObject
 					$dispatcher =& JDispatcher::getInstance();
 					
 					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_new_wish', $subject1, $message, $from, $owners['individuals'], $this->_option ))) {
-								$this->setError( JText::_('Failed to message wish list owners.') );
-								echo WishlistHtml::alert( $this->_error );
+						$this->setError( JText::_('ERROR_FAILED_MESSAGE_OWNERS') );
 					}
 					
 					if (!$dispatcher->trigger( 'onSendMessage', array( 'support_item_transferred', $subject2, $message, $from, array($objWish->proposed_by), $this->_option ))) {
-								$this->setError( JText::_('Failed to message wish author.') );
-								echo WishlistHtml::alert( $this->_error );
-					}
-					
-				
-				}
-				
+						$this->setError( JText::_('ERROR_FAILED_MSG_AUTHOR') );
+					}				
+				}				
 			}
 			
 			if($listid == $newlist) {
@@ -1810,14 +1803,12 @@ class WishlistController extends JObject
 			}
 		
 		} // end if move within Wish List component 
-		
-		
-		
+				
 		// go back to wishlist		
 		$this->listid = $listid;
-		$this->wishlist();
-		
+		$this->wishlist();		
 	}
+	
 	//-----------
 	
 	public function addbonus()
@@ -1829,17 +1820,36 @@ class WishlistController extends JObject
 		$wishid = JRequest::getInt( 'wish', 0 );
 		$amount = JRequest::getInt( 'amount', 0 );
 		
-		// Login required
-		if ($juser->get('guest')) {
-			$this->login();
+		// missing wish id 
+		if(!$wishid or !$listid) {
+			JError::raiseError( 404, JText::_('ERROR_WISH_NOT_FOUND') );
 			return;
 		}
 		
-		// missing wish id 
-		if(!$wishid) {
-			echo WishlistHtml::alert( JText::_('Missing wish id'));
-			exit();
+		$objWishlist = new Wishlist ( $database );
+		$objWish = new Wish( $database );
+		
+		$wishlist = $objWishlist->get_wishlist($listid);
+		
+		if(!$wishlist) {
+			JError::raiseError( 404, JText::_('ERROR_WISHLIST_NOT_FOUND') );
+			return;
 		}
+		
+		// Login required
+		if ($juser->get('guest')) {
+			// Set page title
+			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias)) 
+						? 'tool "'. $wishlist->resource->alias.'"'
+						: $wishlist->title;
+			if(!$wishlist->public && !$this->_admin) {	$this->_list_title = ''; }
+			$this->_buildTitle();
+				
+			// Set the pathway
+			$this->_buildPathway($wishlist);
+			$this->login();
+			return;
+		}	
 		
 		// check available user funds		
 		$BTL 		= new BankTeller( $database, $juser->get('id') );
@@ -1850,28 +1860,22 @@ class WishlistController extends JObject
 		
 		// missing amount
 		if($amount == 0) {
-			echo WishlistHtml::alert( JText::_('ERROR_INVALID_AMOUNT'));
-			exit();
+			JError::raiseError( 500, JText::_('ERROR_INVALID_AMOUNT') );
+			return;
 		}
 		if($amount < 0) {
-			echo WishlistHtml::alert( JText::_('Cannot accept a negative amount.'));
-			exit();
+			JError::raiseError( 500, JText::_('ERROR_NEGATIVE_BONUS') );
+			return;	
 		}
-		else if($amount > $funds ) {			
-			echo WishlistHtml::alert( JText::_('ERROR_NO_FUNDS'));
-			exit();
+		else if($amount > $funds ) {
+			JError::raiseError( 500, JText::_('ERROR_NO_FUNDS') );
+			return;	
 		}
-		
-		$objWishlist = new Wishlist ( $database );
-		$objWish = new Wish( $database );
-		
-		$wishlist = $objWishlist->get_wishlist($listid);
 		
 		// put the  amount on hold
 		$BTL = new BankTeller( $database, $juser->get('id') );
-		$BTL->hold($amount, JText::_('BANKING_HOLD').' #'.$wishid.' '.JText::_('for').' '.$wishlist->title, 'wish', $wishid);
-		
-	
+		$BTL->hold($amount, JText::_('BANKING_HOLD').' #'.$wishid.' '.JText::_('FOR').' '.$wishlist->title, 'wish', $wishid);
+			
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
 		
 	}
@@ -1892,17 +1896,31 @@ class WishlistController extends JObject
 		$objWish = new Wish( $database );
 		
 		if(!$wishid) {
-			JError::raiseError( 404, JText::_('Could not find a wish to delete.') );
+			JError::raiseError( 404, JText::_('ERROR_WISH_NOT_FOUND') );
 			return;
 		}
 				
 		// Check if wish exists on this list
 		$wishlist = $obj->get_wishlist($id, $refid, $cat);
-		if(!$wishlist or !$objWish->check_wish ($wishid, $wishlist->id) ) {
-			JError::raiseError( 404, JText::_('Wish not found on the requested wish list.') );
+		if(!$wishlist) {
+			JError::raiseError( 404, JText::_('ERROR_WISH_NOT_FOUND_ON_LIST') );
 			return;
 		}
-		else {	
+		else {		
+			// Login required
+			if ($juser->get('guest')) {
+				// Set page title
+				$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias)) 
+							? 'tool "'. $wishlist->resource->alias.'"'
+							: $wishlist->title;
+				if(!$wishlist->public && !$this->_admin) {	$this->_list_title = ''; }
+				$this->_buildTitle();
+				
+				// Set the pathway
+				$this->_buildPathway($wishlist);
+				$this->login();
+				return;
+			}	
 		
 			// get admin priviliges
 			$this->authorize_admin($wishlist->id);
@@ -1919,8 +1937,7 @@ class WishlistController extends JObject
 				// also delete all votes for this wish
 				$objR = new WishRank( $database );
 				
-				if($objR->remove_vote($wishid)) {
-				
+				if($objR->remove_vote($wishid)) {				
 					// re-calculate rankings of remaining wishes
 					$this->listid = $wishlist->id;
 					$this->rank($wishlist->id);
@@ -1930,13 +1947,11 @@ class WishlistController extends JObject
 				if($this->banking) {
 					$WE = new WishlistEconomy( $database );			
 					$WE->cleanupBonus($wishid);
-				}	
-				
+				}					
 			}
 			else {
-				$this->_error = JText::_('Failed to delete the wish.');
-			}
-		
+				$this->_error = JText::_('ERROR_WISH_DELETE_FAILED');
+			}		
 		}
 		
 		// go back to the wishlist
@@ -1954,7 +1969,6 @@ class WishlistController extends JObject
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		
-		//$listid 	= JRequest::getInt( 'id', 0 );
 		$refid		= JRequest::getInt( 'rid', 0 );
 		$category 	= JRequest::getVar( 'category', '' );
 		$wishid 	= JRequest::getInt( 'wishid', 0 );
@@ -1974,59 +1988,64 @@ class WishlistController extends JObject
 		
 		// cannot rank a wish if list/wish is not found
 		if(!$listid or !$wishid) {
-			JError::raiseError( 404, JText::_('Cannot locate a wish or a wish list') );
+			JError::raiseError( 404, JText::_('ERROR_WISHLIST_NOT_FOUND') );
 			return;
 		}	
 		
 		$wishlist = $objWishlist->get_wishlist($listid);
-		$item = $objWish->get_wish ($wishid, $juser);
+		$item = $objWish->get_wish ($wishid, $juser->get('id'));
 		
 		// cannot proceed if wish id is not found
 		if(!$wishlist or !$item) {
-			JError::raiseError( 404, JText::_('Cannot locate a wish or a wish list') );
+			JError::raiseError( 404, JText::_('ERROR_WISHLIST_NOT_FOUND') );
 			return;
 		}	
 		
 		// is this wish on correct list?
 		if($listid != $wishlist->id){
-			JError::raiseError( 404, JText::_('Wish not found on requested wish list') );
+			JError::raiseError( 404, JText::_('ERROR_WISH_NOT_FOUND_ON_LIST') );
 			return;
 		}
 		
 		// Login required
 		if ($juser->get('guest')) {
-			$msg = 'Please login to rank a wish.';
-			$this->login($msg);
+			// Set page title
+			$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias)) 
+						? 'tool "'. $wishlist->resource->alias.'"'
+						: $wishlist->title;
+			if(!$wishlist->public && !$this->_admin) {	$this->_list_title = ''; }
+			$this->_buildTitle();
+			
+			// Set the pathway
+			$this->_buildPathway($wishlist);
+			$this->_msg = JText::_('WARNING_LOGIN_TO_RANK') ;
+			$this->login();
 			return;
 		}
 		
 		// get admin priviliges
-		$this->authorize_admin($listid);
-	
+		$this->authorize_admin($listid);	
 		
 		// Need to be list admin
 		if (!$this->_admin) {
-			JError::raiseError( 404, JText::_('Action not authorized.') );
+			JError::raiseError( 404, JText::_('ALERTNOTAUTH_ACTION') );
 			return;
 		}
 		
 		// did user make selections?
 		if (!$effort or !$importance) {
-			echo WishlistHtml::alert( 'Please make selections first' );
-			exit();
+			JError::raiseError( 500, JText::_('ERROR_MAKE_SELECTION') );
+			return;
 		}
-		
-		
+				
 		// is the wish ranked already?
 		if(isset($item->ranked) && !$item->ranked) {
 			$objR->wishid = $wishid;
-			$objR->userid = $juser->get('id');
-			
+			$objR->userid = $juser->get('id');			
 		}
 		else {
 			// edit rating
-			$objR->load_vote($juser->get('id'), $wishid);
-			
+			$objR->load_vote($juser->get('id'), $wishid);			
 		}
 		
 		$objR->voted = date( 'Y-m-d H:i:s', time() );
@@ -2035,14 +2054,13 @@ class WishlistController extends JObject
 		
 		// Check content
 		if (!$objR->check()) {
-			echo WishlistHtml::alert( $objR->getError() );
-			exit();
+			JError::raiseError( 500, $objR->getError() );
+			return;
 		}
-
 		// Store new content
 		if (!$objR->store()) {
-			echo WishlistHtml::alert( $objR->getError() );
-			exit();
+			JError::raiseError( 500, $objR->getError() );
+			return;
 		}
 		else {
 			// update priority on all wishes
@@ -2057,13 +2075,11 @@ class WishlistController extends JObject
 	//-----------
 
 	public function rank($listid)
-	{
-	
+	{	
 		if(!$this->listid) {
 		 $this->listid = $listid;
 		}
-		
-		
+				
 		// get admin priviliges
 		$this->authorize_admin($this->listid);
 				
@@ -2088,8 +2104,7 @@ class WishlistController extends JObject
 		$co = 0.5;
 		$co_adv = 0.8;
 		$co_reg = 0.2;	
-		
-		
+				
 		// do we give more weight to votes coming from advisory committee?
 		$votesplit = isset($this->config->parameters['votesplit']) ? trim($this->config->parameters['votesplit']) : 0;	
 		
@@ -2157,8 +2172,7 @@ class WishlistController extends JObject
 					$certainty = $co + $num/count($voters);
 					
 					$ranking += ($imp * $weight_i) * $certainty;
-					$ranking += ($eff * $weight_e) * $certainty;
-					
+					$ranking += ($eff * $weight_e) * $certainty;					
 				} 
 				
 				// determine weight of community feedback
@@ -2170,9 +2184,6 @@ class WishlistController extends JObject
 					$ranking += ($item->positive * $weight_f);
 					$ranking -= ($item->negative * $weight_f);
 					
-					//echo $item->id.' - '.$ranking.' -------';
-			     
-											
 				// Do not allow negative ranking
 				$ranking = ($ranking < 0) ? 0 : $ranking;
 				
@@ -2181,23 +2192,16 @@ class WishlistController extends JObject
 				$row = new Wish ( $database );
 				$row->load($item->id);
 				$row->ranking = $ranking;
-
 		
 				// store new content
 				if (!$row->store()) {
-					echo WishlistHtml::alert( $row->getError() );
-					exit();
-				}
-				
-				
-			}
-			
-		}
-	
+					JError::raiseError( 500, $row->getError() );
+					return;
+				}				
+			}			
+		}	
 	}
 	
-	
-
 	//----------------------------------------------------------
 	// Comments and Ratings
 	//----------------------------------------------------------
@@ -2223,32 +2227,51 @@ class WishlistController extends JObject
 		// trim and addslashes all posted items
 		$_POST = array_map('trim',$_POST);
 		
+		if(!$wishlist) {
+			JError::raiseError( 404, JText::_('ERROR_WISHLIST_NOT_FOUND') );
+			return;
+		}
+		
+		// Set page title
+		$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias)) 
+					? 'tool "'. $wishlist->resource->alias.'"'
+					: $wishlist->title;
+		if(!$wishlist->public && !$this->_admin) {	$this->_list_title = ''; }
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway($wishlist);
+		
 		if (!$id && !$ajax) {
 			// cannot proceed
-			$document =& JFactory::getDocument();
-			$document->setTitle( $title );
-			
-			echo WishlistHtml::hed(2, $title);
-			echo WishlistHtml::error( JText::_('No Wish ID found.') );
-			return;
+			$this->setError( JText::_('ERROR_WISH_NOT_FOUND') );
+		
+			// Output HTML
+			$view = new JView( array('name'=>'error') );
+			$view->title = JText::_(strtoupper($this->_name));
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
+			return;	
 		}
 		
 		// is the user logged in?
 		if ($juser->get('guest')) {
-			$msg = 'Please login to post a comment';
-			$this->login($msg);
+			$this->_msg = JText::_('WARNING_LOGIN_TO_ADD_COMMENT');
+			$this->login();
 			return;
 		}
 		
 		if ($id && $category) {
 			$row = new XComment( $database );
 			if (!$row->bind( $_POST )) {
-				echo WishlistHtml::alert( $row->getError() );
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 			
 			// Perform some text cleaning, etc.
-			$row->comment	= $row->comment=='Enter your comments...' ? '' : $row->comment;
+			$row->comment	= $row->comment == JText::_('COM_WISHLIST_ENTER_COMMENTS') ? '' : $row->comment;
 			$row->comment   = $this->purifyText($row->comment);
 			$attachment 	= $this->upload( $wishid);
 			$row->comment  .= ($attachment) ? n.$attachment : '';			
@@ -2262,13 +2285,13 @@ class WishlistController extends JObject
 		
 			// Check for missing (required) fields
 			if (!$row->check()) {
-				echo WishlistHtml::alert( $row->getError() );
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 			// Save the data
 			if (!$row->store()) {
-				echo WishlistHtml::alert( $row->getError() );
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 			else {
 				// Send notofications
@@ -2297,7 +2320,7 @@ class WishlistController extends JObject
 				$attach->webpath = $xhub->getCfg('hubLongURL').$webpath;
 				$attach->uppath  = JPATH_ROOT.$webpath;
 				$attach->output  = 'email';
-				$subject = JText::_(strtoupper($this->_name)).', '.JText::_('Comment posted on your wish').' #'.$wishid.' '.JText::_('by').' '.$name;
+				$subject = JText::_(strtoupper($this->_name)).', '.JText::_('MSG_COMENT_POSTED_YOUR_WISH').' #'.$wishid.' '.JText::_('BY').' '.$name;
 
 				// email components	
 				$from = array();
@@ -2305,24 +2328,24 @@ class WishlistController extends JObject
 				$from['email'] = $jconfig->getValue('config.mailfrom');
 				
 				// for the wish owner
-				$subject1 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('commented on your wish').' #'.$wishid;
+				$subject1 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('MSG_COMMENTED_YOUR_WISH').' #'.$wishid;
 				
 				// for the person to whom wish is assigned
-				$subject2 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('commented on wish').' #'.$wishid.' '.JText::_('assigned to you');
+				$subject2 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('MSG_COMMENTED_ON_WISH').' #'.$wishid.' '.JText::_('MSG_ASSIGNED_TO_YOU');
 				
 				// for original commentor 
-				$subject3 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('replied to your comment on wish').' #'.$wishid;
+				$subject3 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('MSG_REPLIED_YOUR_COMMENT').' #'.$wishid;
 				
 				// for others included in the conversation thread.
-				$subject4 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('commented after you on wish').' #'.$wishid;
+				$subject4 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('MSG_COMMENTED_AFTER_YOU').' #'.$wishid;
 				
 					
 				$message  = JText::_('WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
 				$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
 				$message .= '----------------------------'.r.n;
-				$message .= JText::_('Comment by').' '.$name.' ';
+				$message .= JText::_('MSG_COMMENT_BY').' '.$name.' ';
 				$message .= $row->anonymous ? '' : '('.$login.')';
-				$message .= ' '.JText::_('posted on').' '.JHTML::_('date',$row->added, '%d %b, %Y').':'.r.n;
+				$message .= ' '.JText::_('MSG_POSTED_ON').' '.JHTML::_('date',$row->added, '%d %b, %Y').':'.r.n;
 				$message .= $attach->parse($row->comment).r.n.r.n;
 				$message .= r.n;
 					
@@ -2343,8 +2366,7 @@ class WishlistController extends JObject
 					
 					// send message to wish owner
 					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_comment_posted', $subject1, $message, $from, array($objWish->proposed_by), $this->_option ))) {
-						$this->setError( JText::_('Failed to message wish author.') );
-						echo WishlistHtml::alert( $this->_error );
+						$this->setError( JText::_('ERROR_FAILED_MSG_AUTHOR') );
 					}
 					
 				} // -- end send to wish author
@@ -2355,8 +2377,7 @@ class WishlistController extends JObject
 				
 					// send message to person to who wish is assigned
 					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_comment_posted', $subject2, $message, $from, array($objWish->assigned), $this->_option ))) {
-						$this->setError( JText::_('Failed to message the person to whom wish is assigned.') );
-						echo WishlistHtml::alert( $this->_error );
+						$this->setError( JText::_('ERROR_FAILED_MSG_ASSIGNEE') );
 					}
 				
 				} // -- end send message to person to who wish is assigned
@@ -2372,12 +2393,9 @@ class WishlistController extends JObject
 					
 						$contacted[] = 	$parent->added_by;
 						if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_comment_thread', $subject3, $message, $from, array($parent->added_by), $this->_option ))) {
-							$this->setError( JText::_('Failed to message previous commentor.') );
-							echo WishlistHtml::alert( $this->_error );
+							$this->setError( JText::_('ERROR_FAILED_MSG_COMMENTOR') );
 						}
-
-					}
-					
+					}					
 				}
 				
 				// get all users who commented
@@ -2386,11 +2404,9 @@ class WishlistController extends JObject
 						
 				if(count($comm) > 0 ) {
 					if (!$dispatcher->trigger( 'onSendMessage', array( 'wishlist_comment_thread', $subject4, $message, $from, $comm, $this->_option ))) {
-							$this->setError( JText::_('Failed to message previous commentor.') );
-							echo WishlistHtml::alert( $this->_error );
+							$this->setError( JText::_('ERROR_FAILED_MSG_COMMENTOR') );
 					}
-				}
-				
+				}				
 							
 			} // -- end if success
 			
@@ -2403,41 +2419,36 @@ class WishlistController extends JObject
 	
 	public function reply()
 	{	
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database 	=& JFactory::getDBO();
+		$juser 		=& JFactory::getUser();
 		
 		// Retrieve a review or comment ID and category
-		$listid 	 = JRequest::getInt( 'id', 0 );
+		$listid  = JRequest::getInt( 'id', 0 );
 		$wishid  = JRequest::getInt( 'wishid', 0 );
 		$rid 	 = JRequest::getInt( 'refid', 0 );
 		$cat 	 = JRequest::getVar( 'cat', '' );
-		$page 	 = JRequest::getVar( 'page', 1 );
-	
+		//$page 	 = JRequest::getVar( 'page', 1 );
 		
 		// is the user logged in?
 		if ($juser->get('guest')) {
-			$msg = 'Please login to post a comment';
-			$this->login($msg);
-			return;
-		}
+			// Get wishlist info
+			$obj = new Wishlist( $database );	
+			$wishlist = $obj->get_wishlist($listid, $rid, $cat);	
 		
-		// Do we have an ID?
-		if (!$wishid) {
-			// cannot proceed
+			// Set page title
+			$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
+			$this->_buildTitle();
+					
+			// Set the pathway
+			$this->_buildPathway($wishlist);	
+			$this->_msg = JText::_('WARNING_LOGIN_TO_ADD_COMMENT');
+			$this->login();
 			return;
 		}
-		// Do we have a category?
-		if (!$cat) {
-			// cannot proceed
-			return;
-		}
-		
 
 		$this->referenceid = $rid;
 		$this->cat = $cat;
-		$this->wishid = $wishid;
-		//$this->listid = $id;
-			
+		$this->wishid = $wishid;			
 		$this->wish();	
 	}
 	
@@ -2448,80 +2459,92 @@ class WishlistController extends JObject
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		
-		
+		// Incoming		
 		$id 	 = JRequest::getInt( 'refid', 0 );
 		$ajax 	 = JRequest::getInt( 'ajax', 0 );
 		$page 	 = JRequest::getVar( 'page', 'wishlist' );
 		$cat 	 = 'wish';
 		$vote 	 = JRequest::getVar( 'vote', '' );
 		$ip 	 = $this->ip_address();
-				
-		
+						
 		if(!$id) {
 			// cannot proceed		
 			return;
 		}
 		
-		// is the user logged in?
+		// load wish
+		$row = new Wish( $database );
+		$row->load( $id );
+			
+		$objWishlist = new Wishlist( $database );
+		$listid = $row->wishlist;
+		$wishlist = $objWishlist->get_wishlist($listid);
+		
+		// Login required
 		if ($juser->get('guest')) {
-			$this->login( JText::_('Please login to vote') );
+			// Set page title
+			$this->_list_title = ($wishlist->public or (!$wishlist->public && $this->_admin==2)) ? $wishlist->title : '';
+			$this->_buildTitle();
+					
+			// Set the pathway
+			$this->_buildPathway($wishlist);	
+				
+			$this->_msg = JText::_('WARNING_WISHLIST_LOGIN_TO_RATE');
+			$this->login();
 			return;
 		}
-		else {
-		
-			// load wish
-			$row = new Wish( $database );
-			$row->load( $id );
 			
-			$objWishlist = new Wishlist( $database );
-			$listid = $row->wishlist;
-			$wishlist = $objWishlist->get_wishlist($listid);
-			
-			$this->authorize_admin($listid);	
-			$filters = WishlistController::getFilters($this->_admin);	
+		$this->authorize_admin($listid);	
+		$filters = WishlistController::getFilters($this->_admin);	
 					
-			$voted = $row->get_vote ($id, $cat, $juser->get('id'));
+		$voted = $row->get_vote ($id, $cat, $juser->get('id'));
 					
-			if(!$voted && $row->proposed_by != $juser->get('id') && $row->status==0) {
+		if(!$voted && $row->proposed_by != $juser->get('id') && $row->status==0) {
 							
-				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'vote.class.php' );
-				$v = new Vote( $database );
-				$v->referenceid = $id;
-				$v->category = $cat;
-				$v->voter = $juser->get('id');
-				$v->ip = $ip;
-				$v->voted = date( 'Y-m-d H:i:s', time() );
-				$v->helpful = $vote;
-				if (!$v->check()) {
-					$this->setError( $v->getError() );
-					return;
-				}
-				if (!$v->store()) {
-					$this->setError( $v->getError() );
-					return;
-				}
-				else {
-					// update priority on all wishes
-					$this->listid = $listid;
-					$this->rank($listid);
-				}
+			require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'vote.class.php' );
+			$v = new Vote( $database );
+			$v->referenceid = $id;
+			$v->category = $cat;
+			$v->voter = $juser->get('id');
+			$v->ip = $ip;
+			$v->voted = date( 'Y-m-d H:i:s', time() );
+			$v->helpful = $vote;
+			if (!$v->check()) {
+				$this->setError( $v->getError() );
+				return;
 			}
-						
-			// update display
-			if($ajax) {
-				$wish = $row->get_wish ($id, $juser);
-				echo WishlistHtml::rateitem($wish, $juser, $this->_option, $listid);
+			if (!$v->store()) {
+				$this->setError( $v->getError() );
+				return;
 			}
 			else {
-				if($page == 'wishlist') {
-					$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']);
-				}
-				else {
-					$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$id.a.'filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']);
-				}
+				// update priority on all wishes
+				$this->listid = $listid;
+				$this->rank($listid);
 			}
+		}						
+		
+		// update display
+		if($ajax) {
+				$wish = $row->get_wish ($id, $juser->get('id'));
+				$view = new JView( array('name'=>'rateitem') );
+				$view->option = $this->option;
+				$view->item = $wish;
+				$view->listid = $listid;
+				$view->plugin = 0;
+				$view->admin = $this->_admin;
+				$view->page = 'wishlist';
+				$view->filters = $filters;
+				$view->display();		
 		}
-			
+		else {
+			if($page == 'wishlist') {
+				$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']);
+			}
+			else {
+				$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$id.a.'filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']);
+			}
+		}			
 	}
 	
 	//----------------------------------------------------------
@@ -2551,8 +2574,7 @@ class WishlistController extends JObject
 				}
 		}
 		
-		return $webpath;
-		
+		return $webpath;		
 	}
 	
 	//----------------
@@ -2566,7 +2588,7 @@ class WishlistController extends JObject
 			$hc = new XComment( $database );
 			$authors = array();
 			
-			$comments = $hc->getResults( array('id'=>$itemid, 'category'=>$category) );
+			$comments = $hc->getResults( array('id'=>$itemid, 'category'=>$category), 1 , 1 );
 		
 			if ($comments) {
 			
@@ -2602,15 +2624,10 @@ class WishlistController extends JObject
 					} 
 				
 					$comment->replies = WishlistController::getComments($parentid, $comment->id, 'wishcomment', $level, $abuse, $owners, $admin, $skipattachments, $getauthors);
-					if ($abuse) {
-						$comment->reports = WishlistController::getAbuseReports($comment->id, 'wishcomment');
-					}
-					
 					$comment->admin = 0;
 					if(in_array($comment->added_by, $owners)) {
 						$comment->admin = 1;  // this is a comment by list owner
-					}
-					
+					}					
 				}
 			}
 			
@@ -2619,26 +2636,6 @@ class WishlistController extends JObject
 		}
 		
 		return $comments;
-	}
-		
-	//-----------
-		
-	public function getAbuseReports($item, $category)
-	{
-		$database =& JFactory::getDBO();
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.reportabuse.php' );
-		$ra = new ReportAbuse( $database );
-		return $ra->getCount( array('id'=>$item, 'category'=>$category) );
-	}
-	//-----------
-		
-	public function getBonus($id) {
-		$database =& JFactory::getDBO();
-		$BT = new BankTransaction( $database);
-		$bonus = $BT->getTransactions( 'wish', 'hold', $id );
-		$bonus = $bonus ? array('sum'=>$bonus[0]->sum, 'num'=>$bonus[0]->total) : array('sum'=>0, 'num'=>0);
-		
-		return $bonus;
 	}
 		
 	//-----------
@@ -2680,14 +2677,14 @@ class WishlistController extends JObject
 		}
 		
 		if($listid) {
-		$admingroup = isset($this->config->parameters['group']) ? trim($this->config->parameters['group']) : 'hubadmin';
-		
-		// Get list administrators
-		$database =& JFactory::getDBO();
-		$objOwner = new WishlistOwner( $database );
-		$owners = $objOwner->get_owners($listid,  $admingroup );
-		$managers =  $owners['individuals'];
-		$advisory =  $owners['advisory'];
+			$admingroup = isset($this->config->parameters['group']) ? trim($this->config->parameters['group']) : 'hubadmin';
+			
+			// Get list administrators
+			$database =& JFactory::getDBO();
+			$objOwner = new WishlistOwner( $database );
+			$owners = $objOwner->get_owners($listid,  $admingroup );
+			$managers =  $owners['individuals'];
+			$advisory =  $owners['advisory'];
 				
 			if(!$juser->get('guest')) {
 				if(in_array($juser->get('id'), $managers)) {
@@ -2700,7 +2697,6 @@ class WishlistController extends JObject
 			}
 		}
 		
-
 		$this->_admin = $admin;
 	}
 	
@@ -2746,107 +2742,12 @@ class WishlistController extends JObject
 	// Misc
 	//----------------------------------------------------------
 
-	public function startPath ($wishlist, $title, $pathway) {
-		
-		
-		// build return path to resource
-		if(isset($wishlist->resource) && isset($wishlist->resource->typetitle)) {
-				$normalized_valid_chars = 'a-zA-Z0-9';
-				$typenorm = preg_replace("/[^$normalized_valid_chars]/", "", $wishlist->resource->typetitle);
-				$typenorm = strtolower($typenorm);
-				
-				$pathway->addItem( JText::_('Resources'), 'index.php?option=com_resources' );
-				$pathway->addItem( ucfirst(JText::_($wishlist->resource->typetitle)), JRoute::_('index.php?option=com_resources'.a.'type='.$typenorm));
-				$pathway->addItem(stripslashes($wishlist->resource->title),JRoute::_('index.php?option=com_resources'.a.'id='.$wishlist->referenceid));
-				$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid );
-				
-		}
-		else {
-			$pathway->addItem( $title, 'index.php?option='.$this->_option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid );
-		}
-		
-	}
-	
-	//-------------
-
-	public function send_email($hub, $email, $subject, $message) 
-	{
-		if ($hub) {
-			$contact_email = $hub['email'];
-			$contact_name  = $hub['name'];
-
-			$args = "-f '" . $contact_email . "'";
-			$headers  = "MIME-Version: 1.0\n";
-			$headers .= "Content-type: text/plain; charset=iso-8859-1\n";
-			$headers .= 'From: ' . $contact_name .' <'. $contact_email . ">\n";
-			$headers .= 'Reply-To: ' . $contact_name .' <'. $contact_email . ">\n";
-			$headers .= "X-Priority: 3\n";
-			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: '. $hub['name'] .n;
-			if (mail($email, $subject, $message, $headers, $args)) {
-				return(1);
-			}
-		}
-		return(0);
-	}
-
-	//-----------
-
-	public function check_validEmail($email) 
-	{
-		if(eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $email)) {
-			return(1);
-		} else {
-			return(0);
-		}
-	}
-
-	//-----------
-
-	public function server($index = '')
-	{		
-		if (!isset($_SERVER[$index])) {
-			return FALSE;
-		}
-		
-		return $_SERVER[$index];
-	}
-	
-
-	//-----------
-
 	public function mkt($stime)
 	{
 		if ($stime && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $stime, $regs )) {
 			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
 		}
 		return $stime;
-	}
-	
-	//-----------
-	function useAbuse ($abuse = 0) 
-	{
-		/*if (is_file(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.reportabuse.php')) {
-			$abuse = 1;
-		}
-				
-		return $abuse;
-		*/
-		return 1;
-	}
-	
-	//-----------
-	
-	function useComments ($reply = 0) 
-	{
-		/*
-		if (is_file(JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'xcomment.php')) {
-			$reply = 1;
-		}
-		
-		return $reply;
-		*/
-		return 1;
 	}
 	
 	//-----------
@@ -2905,6 +2806,17 @@ class WishlistController extends JObject
 		//$text .= ($parts[2]) ? ' '.$parts[2].' '.$parts[3] : '';
 		return $text;
 	}
+	
+	//-----------
+
+	public function server($index = '')
+	{		
+		if (!isset($_SERVER[$index])) {
+			return FALSE;
+		}
+		
+		return $_SERVER[$index];
+	}
 
 	//-----------
 	
@@ -2958,6 +2870,30 @@ class WishlistController extends JObject
 		$text = preg_replace( '/&quot;/', ' ', $text );
 		$text = strip_tags( $text );
 		return $text;
+	}
+	
+	//------------
+	
+	public function makeArray($string='') 
+	{			
+		$string		= ereg_replace(' ',',',$string);		
+		$arr 		= split(',',$string);
+		$arr 		= $this->cleanArray($arr); 
+		$arr 		= array_unique($arr);
+		
+		return $arr;
+	}
+	
+	//-----------
+
+	public function cleanArray($array) {
+        
+		foreach ($array as $key => $value) {
+			$value = trim($value);
+            if ($value == "") unset($array[$key]);
+        }
+        
+		return $array;
 	}
 	
 	//------------
@@ -3042,14 +2978,14 @@ class WishlistController extends JObject
 	{
 		
 		if (!$listdir) {
-			$this->setError( JText::_('SUPPORT_NO_UPLOAD_DIRECTORY') );
+			$this->setError( JText::_('ERROR_NO_UPLOAD_DIRECTORY') );
 			return '';
 		}
 		
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 		if (!$file['name']) {
-			//$this->setError( JText::_('SUPPORT_NO_FILE') );
+			$this->setError( JText::_('ERROR_NO_FILE') );
 			return '';
 		}
 		
@@ -3070,7 +3006,6 @@ class WishlistController extends JObject
 			return '';
 		} else {
 			// File was uploaded
-			// Create database entry
 			$description = htmlspecialchars($description);
 			
 			$database =& JFactory::getDBO();
@@ -3090,9 +3025,42 @@ class WishlistController extends JObject
 		}
 	}
 	
+	//-----------
 	
+	public function convertTime ($rawnum,  $due=array())
+	{
+		$rawnum = round($rawnum);
+		$today = date( 'Y-m-d H:i:s');
 	
-
-	
+		switch( $rawnum ) 
+			{
+				case '0':    
+							 $due['immediate'] = date('Y-m-d H:i:s', time() + (62 * 24 * 60 * 60)); 		
+							 $due['warning'] = date('Y-m-d H:i:s', time() + (120 * 24 * 60 * 60));
+							 break; // 2 months	
+										
+				case '1':    $due['immediate']= date('Y-m-d H:i:s', time() + (14 * 24 * 60 * 60)); 
+							 $due['warning'] = date('Y-m-d H:i:s', time() + (32 * 24 * 60 * 60));   	
+							 break; // 2 weeks
+							 
+				case '2':    $due['immediate'] = date('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60));
+							 $due['warning'] = date('Y-m-d H:i:s', time() + (14 * 24 * 60 * 60));   	
+							 break; // 1 week
+							 
+				case '3':    $due['immediate'] = date('Y-m-d H:i:s', time() + (2 * 24 * 60 * 60)); 
+							 $due['warning'] = date('Y-m-d H:i:s', time() + (6 * 24 * 60 * 60));  	
+							 break; // 2 days
+							 
+				case '4':    $due['immediate'] = date('Y-m-d H:i:s', time() + (24 * 60 * 60));
+							 $due['warning'] = date('Y-m-d H:i:s', time() + (2 * 24 * 60 * 60));  			
+							 break; // 1 day
+							 
+				case '5':    $due['immediate'] = date('Y-m-d H:i:s', time() + (24 * 60 * 60));  
+							 $due['warning'] = date('Y-m-d H:i:s', time() + (2 * 24 * 60 * 60)); 			
+							 break; // 4 hours
+		}
+			
+		return $due;	
+	}
 }
 ?>

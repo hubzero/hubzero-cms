@@ -39,7 +39,9 @@ ximport('textfilter');
 ximport('xgroup');
 ximport('xuserhelper');
 ximport('xmodule');
-//ximport( 'bankaccount' );
+ximport('Hubzero_View_Helper_Html');
+
+jimport('joomla.application.component.view');
 
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.wishlist.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.config.php' );
