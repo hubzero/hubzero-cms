@@ -72,7 +72,13 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 				$doc .= "%0 Patent\r\n";
 				if ($row->booktitle) $doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
 				break; // patent
-			
+			case 'xarchive':
+			case 'magazine':
+			case 'patent appl':
+			case 'chapter':
+			case 'notes':
+			case 'letter':
+			case 'manuscript':
 			case 'booklet':
 			case 'manual':
 			case 'misc':
