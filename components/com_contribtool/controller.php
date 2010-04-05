@@ -113,11 +113,11 @@ class ContribtoolController extends JObject
 		if ($option) {
 			$name = ($name) ? $name : $option;
 			if (is_file(JPATH_ROOT.DS.'components'.DS.'com_'.$option.DS.$name.'.js')) {
-				$document->addScript('components'.DS.'com_'.$option.DS.$name.'.js');
+				$document->addScript('/components'.DS.'com_'.$option.DS.$name.'.js');
 			}
 		} else {
 			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-				$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
+				$document->addScript('/components'.DS.$this->_option.DS.$this->_name.'.js');
 			}
 		}
 	}
