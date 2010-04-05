@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 	
 			<label>
 				<input type="text" name="query" size="30" value="<?php echo $this->query; ?>" />
-				<span class="hint">[ (name|email|username|uidNumber|emailConfirmed|proxyConfirmed|proxyUidNumber) (=|-=|+=|!=) ] value [,...]</span>
+				<span class="hint">[ (name|email|username|uidNumber|emailConfirmed|...) (=|-=|+=|!=) ] value [,...]</span>
 			</label>
 			<input type="hidden" name="task" value="whois" />
 			<input type="hidden" name="option" value="com_members" />
