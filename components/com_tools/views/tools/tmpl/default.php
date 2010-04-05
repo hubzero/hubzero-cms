@@ -109,7 +109,7 @@ if (count($this->appTools) > 0) {
 } else {
 ?>
 				<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
-					<td>No tools found.</td>
+					<td colspan="3">No tools found.</td>
 				</tr>
 <?php
 }
