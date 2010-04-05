@@ -145,10 +145,9 @@ class ResourcesTags extends Tags
 		if ($tag || $tag2) {
 			$query  = "SELECT C.id, TA.tag, COUNT(DISTINCT TA.tag) AS uniques, ";
 			if ($type == 7) {
-			$query.= "TV.title ";
-			}
-			else {
-			$query.= "C.title ";
+				$query.= "TV.title ";
+			} else {
+				$query.= "C.title ";
 			}
 			switch ($sortby) 
 			{
@@ -162,7 +161,7 @@ class ResourcesTags extends Tags
 			$query .= "FROM #__resources AS C ";
 			if ($type == 7) {
 				$query .= " JOIN #__tool AS TL ON C.alias=TL.toolname JOIN #__tool_version as TV on TV.toolid=TL.id AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolid=TL.id AND TV.state=1 GROUP BY TV.toolid) ";
-				if(!empty($filterby)) {
+				if (!empty($filterby)) {
 					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
 				}
 			}
@@ -174,10 +173,9 @@ class ResourcesTags extends Tags
 		} else {
 			$query  = "SELECT C.id,  ";
 			if ($type == 7) {
-			$query.= "TV.title ";
-			}
-			else {
-			$query.= "C.title ";
+				$query.= "TV.title ";
+			} else {
+				$query.= "C.title ";
 			}
 			switch ($sortby) 
 			{
@@ -191,7 +189,7 @@ class ResourcesTags extends Tags
 			$query .= "FROM #__resources AS C ";
 			if ($type == 7) {
 				$query .= " JOIN #__tool AS TL ON C.alias=TL.toolname JOIN #__tool_version as TV on TV.toolid=TL.id AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolid=TL.id AND TV.state=1 GROUP BY TV.toolid) ";
-				if(!empty($filterby)) {
+				if (!empty($filterby)) {
 					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
 				}
 			}
@@ -206,13 +204,20 @@ class ResourcesTags extends Tags
 			$query .= "AND C.type=".$type." ";
 		}
 		
-		if(!empty($filterby) && $type == 7) {
-			$fquery = " AND (";
-			for ($i=0, $n=count( $filterby ); $i < $n; $i++) {
+		if (!empty($filterby) && $type == 7) {
+			$fquery = " AND ((";
+			for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
+			{
 				$fquery .= " TTA.".$filterby[$i]." = '1'";
 				$fquery .= ($i + 1) == $n ? "" : " OR ";
 			}
-			$fquery .= ") ";
+			$fquery .= ") OR (";
+			for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
+			{
+				$fquery .= " TTA.".$filterby[$i]." IS NULL";
+				$fquery .= ($i + 1) == $n ? "" : " OR ";
+			}
+			$fquery .= "))";
 			$query .= $fquery;
 		}
 		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '".$now."') ";
@@ -252,7 +257,7 @@ class ResourcesTags extends Tags
 			break;
 		}
 		$query .= " ORDER BY ".$sort.", publish_up";
-		//echo $query;
+		//echo '<!-- '.$query.' -->';
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
