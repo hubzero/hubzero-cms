@@ -4,11 +4,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		<div id="help-container">
 			<h1><?php echo JText::_('MOD_REPORTPROBLEMS_SUPPORT'); ?></h1>
 
-			<div class="threecolumn farleft">
+			<div class="three columns first">
 				<h2><?php echo JText::_('MOD_REPORTPROBLEMS_TROUBLE_REPORT'); ?></h2>
 				<?php echo JText::_('MOD_REPORTPROBLEMS_EXPLANATION'); ?>
-			</div><!-- / .threecolumn farleft -->
-			<div class="threecolumn middleright">
+			</div><!-- / .three columns first -->
+			<div class="three columns second third">
 				<form method="post" action="index.php" id="troublereport">
 					<fieldset class="reporter">
 						<label for="trLogin">
@@ -75,7 +75,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				</div>
 				<div id="trSuccess">
 				</div>
-			</div><!-- / .threecolumn middleright -->
+			</div><!-- / .three columns second third -->
 			<div class="clear"></div>
 		</div><!-- / #help-container -->
 	</div><!-- / #help-pane -->
