@@ -1,0 +1,112 @@
+/*---------------------------------------------------------------
+	Intro Page
+---------------------------------------------------------------*/
+/* Flaxible columns */
+	#content .three,
+	#content .four {
+		border-top: 1px solid #e0e0d7;
+		}
+	#content .firstset .four, 
+	#content .firstset .three {
+		border: none;
+		margin: 0;
+		}
+	#content .first h2 { 
+		font-weight: normal;
+		margin: 0;
+		padding: 0.5em 0 0 0;
+		line-height: 1em;
+		border: none;
+		border-top: 2px solid #e0e0d7;
+		}	
+	#content .columns h3 { 
+		color: #000; 
+		margin-top: 1em;
+		padding-top: 0em;
+		border: none;
+		text-transform: uppercase;
+		}
+	#content .columns h3 a { 
+		color: #000; 
+		border-bottom: none;
+		}
+	#content ul {
+		list-style: none;
+		margin-left: 0;
+		}
+	#content .four {
+		margin-bottom: 2em;
+		}
+	#content .firstset .four {
+		margin-bottom: 0;
+		}
+	#content .four .three {
+		margin-top: -1px;
+		margin-bottom: 2em;
+		}
+/* Banner area */
+	#home-splash { 
+		margin: 0;
+		padding: 0 45px;
+		height: 230px;
+		background: #ddd url("../images/nav-shadow-bottom.png") 0 0 repeat-x;
+		}
+	#features {
+		margin: 0;
+		padding: 0;
+		width: 600px;
+		height: 230px;
+		float: left;
+		color: #aaa;
+		border: none;
+		}
+	#features a,
+	#features img {
+		border: none;
+		}
+	#welcome {
+		margin: 0 0 0 600px;
+		padding: 0 0 0 15px;
+		height: 230px;
+		}
+	#welcome h2,
+	#welcome h3 { 
+		margin: 0;
+		padding: 0.5em 0 0 0;
+		border: none;
+		}
+	#welcome p {
+		margin: 0;
+		padding: 1em 0;
+		}
+	#welcome ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		}
+	#welcome ul li {
+		margin: 0 10px 0 0;
+		padding: 0 0 0 23px;
+		display: block;
+		float: left;
+		width: 40%;
+		height: 26px;
+		}
+	#welcome ul li a {
+		display: block;
+		margin: 0;
+		padding: 4px 0 0 0;
+		border: none;
+		height: 22px;
+		font-weight: bold;
+		font-size: 90%;
+		}
+	#welcome ul li a:hover {
+		color: #ff6600;
+		border: none;
+		}
+	#news li { 
+		margin: 0;
+		padding: 8px 0 8px 20px;
+		background: url("../images/bullets/newspaper.gif") 0 10px no-repeat;
+		}

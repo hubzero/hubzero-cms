@@ -34,12 +34,11 @@ $juser =& JFactory::getUser();
  <head>
 <jdoc:include type="head" />
 <link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/print.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/dummy.css" id="dummy_css" />
 <!--[if lte IE 7]>
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/ie7win.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/ie7.css" />
 <![endif]-->
 <!--[if lte IE 6]>
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/ie6win.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/ie6.css" />
 <![endif]-->
  </head>
  
@@ -51,9 +50,16 @@ $juser =& JFactory::getUser();
 		<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
 <?php
 if (!$juser->get('guest')) {
-	echo "\t\t\t".'<li id="logout"><a href="/logout" title="Logout"><span>Logout</span></a></li>'."\n";
-	echo "\t\t\t".'<li id="myaccount"><a href="/members/'.$juser->get('id').'" title="Logout"><span>My Account</span></a></li>'."\n";
-	echo "\t\t\t".'<li id="username">'.$juser->get('name').' ('.$juser->get('username').')</li>'."\n";
+	// Find the user's most recent support tickets
+	ximport('xmessage');
+	$database =& JFactory::getDBO();
+	$recipient = new XMessageRecipient( $database );
+	$rows = $recipient->getUnreadMessages( $juser->get('id'), 0 );
+	
+	echo "\t\t\t".'<li id="logout"><a href="/logout"><span>Logout</span></a></li>'."\n";
+	echo "\t\t\t".'<li id="myaccount"><a href="/members/'.$juser->get('id').'"><span>My Account</span></a></li>'."\n";
+	echo "\t\t\t".'<li id="username"><a href="/members/'.$juser->get('id').'"><span>'.$juser->get('name').' ('.$juser->get('username').')</span></a></li>'."\n";
+	echo "\t\t\t".'<li id="usermessages"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox').'">'.count($rows).' New Message(s)</a></li>'."\n";
 } else {
 	echo "\t\t\t".'<li id="login"><a href="/login" title="Login">Login</a></li>'."\n";
 	echo "\t\t\t".'<li id="register"><a href="/register" title="Sign up for a free account">Register</a></li>'."\n";
@@ -152,7 +158,6 @@ if (!$juser->get('guest')) {
  </body>
 </html>
 <?php
-$xhub =& XFactory::getHub();
 $title = $this->getTitle();
-$this->setTitle( $xhub->getCfg('hubShortName').' - '.$title );
+$this->setTitle( $config->getValue('config.sitename').' - '.$title );
 ?>
