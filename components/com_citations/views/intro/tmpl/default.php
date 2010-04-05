@@ -34,7 +34,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="aside">
 		<h3>Help</h3>
 		<ul>
-			<li><a href="/kb/citations/faq">Citations FAQ</a></li>
 			<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=add'); ?>">Submit a citation</a></li>
 		</ul>
 	</div><!-- / .aside -->

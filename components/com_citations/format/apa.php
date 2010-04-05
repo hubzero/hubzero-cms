@@ -158,6 +158,7 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 			$html .= ' (DOI: '.$row->doi.')';
 		}
 		$html  = $this->grammarCheck( $html, '.' );
+		$html .= ($row->search_string) ? ' Cited by: <a rel="external" href="'.$row->search_string.'">'.$row->sec_cnt.'</a>' : ' Cited by: '.$row->sec_cnt;
 		$html .= '</p>'."\n";
 
 		return $html;
