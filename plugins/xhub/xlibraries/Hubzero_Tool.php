@@ -1705,6 +1705,9 @@ class Hubzero_Tool
     static public function getMyTools()
     {
 		$db = &JFactory::getDBO();
+		// Tool list should be able to just use the tool table to determine what can be run
+		// If the resulting list is wrong then we need to fix that data in the table
+		/*
         $sql = "SELECT r.alias, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
                 FROM #__resources AS r, #__tool_version AS v    
                 WHERE r.published=1 
@@ -1714,7 +1717,12 @@ class Hubzero_Tool
                 AND r.alias=v.toolname 
                 AND v.state=1
                 ORDER BY v.title, v.toolname, v.revision DESC";
-
+		*/
+		$sql = "SELECT v.toolname, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
+		                FROM #__tool_version AS v    
+		                WHERE
+		                v.state=1 AND v.mw='narwhal'
+		                ORDER BY v.title, v.toolname, v.revision DESC";
         $db->setQuery( $sql );
         return $db->loadObjectList();
 
