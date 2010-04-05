@@ -109,6 +109,9 @@ class plgWhatsnewTopics extends JPlugin
 						$rows[$key]->href = JRoute::_('index.php?option=com_topics&scope='.$row->category.'&pagename='.$row->alias);
 					}
 					$rows[$key]->text = $rows[$key]->itext;
+					if ($row->title == '') {
+						$rows[$key]->title = $rows[$key]->alias;
+					}
 				}
 			}
 

@@ -136,7 +136,7 @@ echo $html;
 $jconfig =& JFactory::getConfig();
 $juri =& JURI::getInstance();
 $foundresults = false;
-$dopaging = true;
+$dopaging = false;
 $html = '';
 $k = 1;
 
