@@ -660,7 +660,7 @@ class SupportController extends JObject
 			
 				// Only do the following if a comment was posted
 				// otherwise, we're only recording a changelog
-				if ($comment) {
+				if ($comment || $row->owner != $old->owner) {
 					$xhub =& XFactory::getHub();
 					$jconfig =& JFactory::getConfig();
 					
@@ -688,6 +688,13 @@ class SupportController extends JObject
 					$message .= '----------------------------'.r.n.r.n;
 					$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by.r.n;
 					$message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created.r.n.r.n;
+					if ($row->owner != $old->owner) {
+						if ($old->owner == '') {
+							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'.r.n.r.n;
+						} else {
+							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_CHANGED_FROM').' "'.$old->owner.'" to "'.$row->owner.'"'.r.n.r.n;
+						}
+					}
 					$message .= $attach->parse($comment).r.n.r.n;
 
 					$juri =& JURI::getInstance();
