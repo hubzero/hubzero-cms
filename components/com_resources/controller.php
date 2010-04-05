@@ -1474,7 +1474,7 @@ class ResourcesController extends JObject
 		}
 		
 		// Check if the resource is "private" and the user is allowed to view it
-		if ($resource->access == 4 || !$resource->standalone) {
+		if ($resource->access == 4 || $resource->access == 3 || !$resource->standalone) {
 			if ($this->checkGroupAccess($resource)) {
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 				return;
@@ -1978,7 +1978,7 @@ class ResourcesController extends JObject
 		
 		// Make sure they have the proper group access
 		$restricted = false;
-		if ($resource->access == 4) {
+		if ($resource->access == 4 || $resource->access == 3) {
 			// Are they logged in?
 			if ($juser->get('guest')) {
 				// Not logged in
@@ -1994,7 +1994,7 @@ class ResourcesController extends JObject
 			}
 		}
 		if (!$resource->standalone) {
-			if ($p && $p->access == 4 && count($common) < 1) {
+			if ($p && ($p->access == 4 || $p->access == 3) && count($common) < 1) {
 				$restricted = true;
 			}
 		}
