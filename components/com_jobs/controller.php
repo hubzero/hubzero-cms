@@ -1826,7 +1826,7 @@ class JobsController extends JObject
 		$filters['start'] = JRequest::getInt( 'limitstart', 0, 'get' );
 		
 		// Task-specific
-		$filters['sortby'] = $this->_task != 'browse' ? 'opendate' : $filters['sortby'] ;
+		//$filters['sortby'] = $this->_task != 'browse' ? 'opendate' : $filters['sortby'] ;
 		$filters['limit'] = $this->_task != 'browse' ? 10 : $filters['limit'] ;
 		
 		// admins and employers
