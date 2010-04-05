@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: sysinfo_config.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: sysinfo_config.php 12694 2009-09-11 21:03:02Z ian $
  */
 // No direct access
 defined('_JEXEC') or die('Restricted access');
@@ -32,29 +32,29 @@ defined('_JEXEC') or die('Restricted access');
 			$cf = file( JPATH_CONFIGURATION . '/configuration.php' );
 			$config_output = array();
 			foreach ($cf as $k => $v) {
-				if (eregi( 'var \$host', $v)) {
+				if (preg_match( '#var \$host#i', $v)) {
 					$cf[$k] = 'var $host = \'xxxxxx\'';
-				} else if (eregi( 'var \$user', $v)) {
+				} else if (preg_match( '#var \$user#i', $v)) {
 					$cf[$k] = 'var $user = \'xxxxxx\'';
-				} else if (eregi( 'var \$password', $v)) {
+				} else if (preg_match( '#var \$password#i', $v)) {
 					$cf[$k] = 'var $password = \'xxxxxx\'';
-				} else if (eregi( 'var \$db ', $v)) {
+				} else if (preg_match( '#var \$db#i', $v)) {
 					$cf[$k] = 'var $db = \'xxxxxx\'';
-				} else if (eregi( 'var \$ftp_user ', $v)) {
+				} else if (preg_match( '#var \$ftp_user#i', $v)) {
 					$cf[$k] = 'var $ftp_user = \'xxxxxx\'';
-				} else if (eregi( 'var \$ftp_pass ', $v)) {
+				} else if (preg_match( '#var \$ftp_pass#i', $v)) {
 					$cf[$k] = 'var $ftp_pass = \'xxxxxx\'';
-				} else if (eregi( 'var \$smtpuser ', $v)) {
+				} else if (preg_match( '#var \$smtpuser#i', $v)) {
 					$cf[$k] = 'var $smtpuser = \'xxxxxx\'';
-				} else if (eregi( 'var \$smtppass ', $v)) {
+				} else if (preg_match( '#var \$smtppass#i', $v)) {
 					$cf[$k] = 'var $smtppass = \'xxxxxx\'';
-				} else if (eregi( '<?php', $v)) {
+				} else if (preg_match( '#<\?php#i', $v)) {
 					$cf[$k] = '';
-				} else if (eregi( '\?>', $v)) {
+				} else if (preg_match( '#\?>#i', $v)) {
 					$cf[$k] = '';
-				} else if (eregi( '}', $v)) {
+				} else if (preg_match( '#\}#i', $v)) {
 					$cf[$k] = '';
-				} else if (eregi( 'class JConfig {', $v)) {
+				} else if (preg_match( '#class JConfig \{#i', $v)) {
 					$cf[$k] = '';
 				}
 				$cf[$k]		= str_replace('var ','',$cf[$k]);

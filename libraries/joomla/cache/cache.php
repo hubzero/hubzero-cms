@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: cache.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: cache.php 12694 2009-09-11 21:03:02Z ian $
  * @package		Joomla.Framework
  * @subpackage	Cache
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -140,7 +140,7 @@ class JCache extends JObject
 				require_once(dirname(__FILE__).DS.'storage'.DS.$name.'.php');
 			}
 
-			if(call_user_func_array( array( trim($class), 'test' ), null)) {
+			if(call_user_func_array( array( trim($class), 'test' ), array())) {
 				$names[] = $name;
 			}
 		}

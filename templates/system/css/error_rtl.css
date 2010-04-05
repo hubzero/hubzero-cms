@@ -1,0 +1,17 @@
+/**
+ * CSS Document for error page
+ * @version $Id: error_rtl.css 10387 2009-10-28 10:59:16Z infograf $
+ * @package Joomla
+ * @copyright Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
+ * @license GNU/GPL, see LICENSE.php
+ * Joomla! is free software and parts of it may contain or be derived from the
+ * GNU General Public License or other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+
+
+body { 	direction:rtl;}
+
+#errorboxbody {	text-align: right;}
+
+#techinfo {	text-align: right;}

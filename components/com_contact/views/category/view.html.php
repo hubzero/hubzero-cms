@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 11665 2009-03-08 20:30:23Z willebil $
+ * @version		$Id: view.html.php 13339 2009-10-27 02:27:05Z ian $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -76,7 +76,7 @@ class ContactViewCategory extends JView
 		{
 			$contact =& $contacts[$i];
 
-			$contact->link = JRoute::_('index.php?option=com_contact&view=contact&id='.$contact->slug.'&catid='.$contact->catslug);
+			$contact->link = JRoute::_('index.php?option=com_contact&view=contact&id='.$contact->slug.'&catid='.$contact->catslug, false);
 			if ($pparams->get('show_email', 0) == 1) {
 				$contact->email_to = trim($contact->email_to);
 				if (!empty($contact->email_to) && JMailHelper::isEmailAddress($contact->email_to)) {

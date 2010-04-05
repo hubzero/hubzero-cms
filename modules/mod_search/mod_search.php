@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mod_search.php 10855 2008-08-29 22:47:34Z willebil $
+* @version		$Id: mod_search.php 13338 2009-10-27 02:15:55Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -30,4 +30,5 @@ $moduleclass_sfx = $params->get('moduleclass_sfx', '');
 if ($imagebutton) {
     $img = modSearchHelper::getSearchImage( $button_text );
 }
+$mitemid = $set_Itemid > 0 ? $set_Itemid : JRequest::getInt('Itemid');
 require(JModuleHelper::getLayoutPath('mod_search'));

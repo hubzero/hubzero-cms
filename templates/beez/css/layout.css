@@ -1,5 +1,5 @@
 /**
- * @version $Id: layout.css 10387 2008-06-03 10:59:16Z pasamio $
+ * @version $Id: layout.css 13293 2009-10-24 00:43:16Z ian $
  * @author Design & Accessible Team ( Angie Radtke  )
  * @package Joomla
  * @subpackage Accessible-Template-Beez
@@ -1464,4 +1464,10 @@ margin: 10px 0 10px 0;
 background:#f5f5f5;
 padding:5px;
 border:solid 1px #eee
+}
+
+/* image link default alignment */
+
+a img {
+vertical-align: bottom;
 }

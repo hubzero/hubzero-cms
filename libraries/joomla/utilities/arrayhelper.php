@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: arrayhelper.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: arrayhelper.php 13341 2009-10-27 03:03:54Z ian $
  * @package		Joomla.Framework
  * @subpackage	Utilities
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -11,7 +11,7 @@
  * source software licenses. See COPYRIGHT.php for copyright notices and
  * details.
  */
-
+defined('JPATH_BASE') or die();
 /**
  * JArrayHelper is an array utility class for doing all sorts of odds and ends with arrays.
  *

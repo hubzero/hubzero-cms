@@ -3,7 +3,7 @@
  * patError error object used by the patFormsError manager as error messages
  * container for precise error management.
  *
- *	$Id: patError.php 10381 2008-06-01 03:35:53Z pasamio $
+ *	$Id: patError.php 12694 2009-09-11 21:03:02Z ian $
  *
  * @access		public
  * @package		patError
@@ -13,7 +13,7 @@
  * patError error object used by the patFormsError manager as error messages
  * container for precise error management.
  *
- * $Id: patError.php 10381 2008-06-01 03:35:53Z pasamio $
+ * $Id: patError.php 12694 2009-09-11 21:03:02Z ian $
  *
  * @access		public
  * @package		patError
@@ -257,7 +257,7 @@ class patError
     	if ($formatted && is_array( $this->backtrace )) {
     		$result = '';
     		foreach( debug_backtrace() as $back) {
-			    if (!eregi( 'patErrorManager.php', $back['file'])) {
+			    if (!preg_match( '#patErrorManager.php#i', $back['file'])) {
 				    $result .= '<br />'.$back['file'].':'.$back['line'];
 				}
 			}

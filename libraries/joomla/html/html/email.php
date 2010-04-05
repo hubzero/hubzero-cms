@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: email.php 11236 2008-11-02 02:44:35Z ian $
+* @version		$Id: email.php 13341 2009-10-27 03:03:54Z ian $
 * @package		Joomla.Framework
 * @subpackage	HTML
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -11,7 +11,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
-
+defined('JPATH_BASE') or die();
 /**
  * Utility class for cloaking email adresses
  *
@@ -27,7 +27,7 @@ class JHTMLEmail
 	*
  	* By default replaces an email with a mailto link with email cloacked
 	*/
-	function cloak( $mail, $mailto=1, $text='', $email=1 )
+	function cloak( $mail, $mailto=1, $text='', $email=1, $prefix='mailto:', $suffix='', $attribs='' )
 	{
 		// convert text
 		$mail 			= JHTMLEmail::_convertEncoding( $mail );
@@ -36,10 +36,14 @@ class JHTMLEmail
 		$mail_parts		= explode( '.', $mail[1] );
 		// random number
 		$rand			= rand( 1, 100000 );
+        // obfuscate prefix
+        $prefix = JHTMLEmail::_convertEncoding( $prefix );
 
 		$replacement 	= "\n <script language='JavaScript' type='text/javascript'>";
 		$replacement 	.= "\n <!--";
-		$replacement 	.= "\n var prefix = '&#109;a' + 'i&#108;' + '&#116;o';";
+		$replacement 	.= "\n var prefix = '$prefix';";
+        $replacement    .= "\n var suffix = '$suffix';";
+        $replacement    .= "\n var attribs = '$attribs';";
 		$replacement 	.= "\n var path = 'hr' + 'ef' + '=';";
 		$replacement 	.= "\n var addy". $rand ." = '". @$mail[0] ."' + '&#64;';";
 		$replacement 	.= "\n addy". $rand ." = addy". $rand ." + '". implode( "' + '&#46;' + '", $mail_parts ) ."';";
@@ -57,11 +61,11 @@ class JHTMLEmail
 				} else {
 					$replacement 	.= "\n var addy_text". $rand ." = '". $text ."';";
 				}
-				$replacement 	.= "\n document.write( '<a ' + path + '\'' + prefix + ':' + addy". $rand ." + '\'>' );";
+				$replacement 	.= "\n document.write( '<a ' + path + '\'' + prefix + addy". $rand ." + suffix + '\'' + attribs + '>' );";
 				$replacement 	.= "\n document.write( addy_text". $rand ." );";
 				$replacement 	.= "\n document.write( '<\/a>' );";
 			} else {
-				$replacement 	.= "\n document.write( '<a ' + path + '\'' + prefix + ':' + addy". $rand ." + '\'>' );";
+				$replacement 	.= "\n document.write( '<a ' + path + '\'' + prefix + addy". $rand ." + suffix + '\'' + attribs + '>' );";
 				$replacement 	.= "\n document.write( addy". $rand ." );";
 				$replacement 	.= "\n document.write( '<\/a>' );";
 			}
@@ -69,7 +73,7 @@ class JHTMLEmail
 			$replacement 	.= "\n document.write( addy". $rand ." );";
 		}
 		$replacement 	.= "\n //-->";
-		$replacement 	.= '\n </script> ';
+		$replacement 	.= "\n </script> ";
 
 		// XHTML compliance `No Javascript` text handling
 		$replacement 	.= "<script language='JavaScript' type='text/javascript'>";
@@ -100,4 +104,5 @@ class JHTMLEmail
 		return $text;
 	}
 }
+
 

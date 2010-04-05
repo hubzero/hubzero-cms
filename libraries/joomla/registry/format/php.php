@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: php.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: php.php 12849 2009-09-25 16:47:54Z ian $
  * @package		Joomla.Framework
  * @subpackage	Registry
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -41,7 +41,7 @@ class JRegistryFormatPHP extends JRegistryFormat {
 		foreach (get_object_vars( $object ) as $k => $v)
 		{
 			if (is_scalar($v)) {
-				$vars .= "\tvar $". $k . " = '" . addslashes($v) . "';\n";
+				$vars .= "\tvar $". $k . " = '" . addcslashes($v, '\\\'') . "';\n";
 			} elseif (is_array($v)) {
 				$vars .= "\tvar $". $k . " = " . $this->_getArrayString($v) . ";\n";
 			}

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 12584 2009-07-30 17:46:47Z ian $
+* @version		$Id: CHANGELOG.php 13426 2009-11-04 16:36:00Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -17,7 +17,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 1. Copyright and disclaimer
 ---------------------------
 This application is opensource software released under the GPL.  Please
-see source code and the LICENSE file
+see source code and the LICENSE file.
 
 
 2. Changelog
@@ -36,6 +36,98 @@ $ -> Language fix or change
 ^ -> Change
 - -> Removed
 ! -> Note
+
+-------------------- 1.5.15 Stable Release [05-November-2009] ------------------
+04-Nov-2009 Ian MacLennan
+ # [#17475] Fixed missing = in patch (parse error)
+
+03-Nov-2009 Ian MacLennan
+ # [#18050] Reverting router change.
+
+29-Oct-2009 Ian MacLennan
+ # [#18537] error.php rtl issue
+
+28-Oct-2009 Ian MacLennan
+ ^ Updated CREDITS.php
+ ^ Updated installation language pack
+ ^ Updated help sites
+ # [#16445] SEF rewrites href urls in editor textarea
+
+27-Oct-2009 Ian MacLennan
+ # [#16914] Default style for admin backend does not specify text color of input fields.
+ # [#16609] templates/system/css/template.css not found when using templates/system/component
+ # [#18493] UTF problems with HTML entities in pathway.
+ # [#18518] Change in mod_search.ini
+ # [#18522] Correct version info site/admin for core languages
+ # [#18481] Emailcloak on image
+ # [#18430] com_content fails to pass an article reference to onAfterDisplayTitle event handler
+ $ Added new installer language packs
+
+26-Oct-2009 Ian MacLennan
+ # [#18245] Implementing templates feature in tinymce
+ # [#15780] Search result list uses always the Itemid of the default Menu-item
+ # [#17110] Section/Category List - Table width issue in IE8
+ # [#17470] Archive filters don't work with cache on + com_content cache optimization
+ # [#17475] Cache unused by core components
+ # [#18050] SEF category links lead to article not found
+ # [#18080] Core - Missing JEXEC Check
+ # [#18142] utf8_accents_to_ascii() does nothing
+
+23-Oct-2009 Ian MacLennan
+ # [#11578] Email cloaking does not work properly with non-ASCII characters
+ # [#16804] Linked image in Beez template jumps in IE8
+ # [#17259] html not allowed in user confirmation message
+ # [#17430] Image Title attribute field has different names
+ # [#17964] Email cloaking. Syntax error in email.php. Patch included.
+ # [#18246] Tinymce sql correction
+ # [#18310] Email cloak breaks emails used in scripts
+ # [#18343] & in page title breaks RSS feed
+ # [#18349] Missing com_media strings
+ # [#18353] Information leak - anybody can see installed extensions versions
+ # Upgrade to Mootool 1.12
+
+
+19-Oct-2009 Ian MacLennan
+ # [#18297] Setting ftp fields to not autocomplete
+ # [#16927] Router fatal error then Itemid is null
+ # [#18240] Menu item is not opened to new window
+ $ [#18124] String for JPagination missing in en-GB.ini
+ # [#18070] Error in Ja_purity and IE8
+ # [#17692] Email Cloaking on an image
+ $ [#17618] Localisation of pagination
+ $ [#17577] Adding Ulaanbaatar in timezones
+ # [#17559] Change to Beez Template to make it more generic
+ # [#17231] mod_newsflash doesn't honour alternative read more text
+ # [#17215] Missing <blockquote> button in TinyMCE 3
+ 
+25-Sept-2009 Ian MacLennan
+ # [#16484] Password field changed in configuration.php by Administration > Global Configuration
+ # [#16804] Linked image in Beez template jumps in IE8
+
+18-Sept-2009 Ian MacLennan
+ # [#16982] Fixed issue with editor.css files
+
+17-Sept-2009 Ian MacLennan
+ # [#16982] TinyMCE Configuration Error
+ # [#17057] TinyMCE strips some image html
+ # [#17379] Tinymce 3.2.4.1 generates different html breaking caption.js and messing with content filtering
+ # [#17121] TinyMCE Extended Valid Elements dont work anymore
+ # [#17043] Multiply instances of TinyMCE on the page
+ # [#17367] Cannot add or edit content items
+ # [#17356] Firefox inline spell check doesn't work in 1.5.12 / TinyMCE - suggested fix
+ $ [#17332] TinyMCE Language file omission for Toggle Editor button
+ # [#17438] TinyMCE Libary Upgrade - International Users Beware - big changes to language files
+
+16-Sept-2009 Ian MacLennan
+ # [#18010] Captions don't align properly if image alignment is not set.
+ # [#18008] Additional PHP 5.3 Issues
+
+11-Sept-2009 Ian MacLennan
+ # [#17150] Patch to solve PHP 5.3 issues
+ # [#17432] Missing spinner.gif
+ # [#17337] Media manager popup is broken in Windows
+ # [#16919] Results of search - unnecessary quotation marks
+ # [#16086] Unique menu names now disallow underscores
 
 -------------------- 1.5.14 Stable Release [30-July-2009] ------------------
 

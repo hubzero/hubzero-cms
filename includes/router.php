@@ -145,7 +145,9 @@ class JRouterSite extends JRouter
 		if(count($this->getVars()) == 1)
 		{
 			$item = $menu->getItem($this->getVar('Itemid'));
-			$vars = $vars + $item->query;
+			if($item !== NULL && is_array($item->query)) {
+				$vars = $vars + $item->query;
+			}
 		}
 
 		// Set the active menu item

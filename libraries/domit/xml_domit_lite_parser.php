@@ -1746,7 +1746,7 @@ class DOMIT_Lite_Parser {
 		//parse out whitespace -  (XML_OPTION_SKIP_WHITE = 1 does not
 		//seem to work consistently across versions of PHP and Expat
 		if (!$this->xmlDoc->preserveWhitespace) {
-			$xmlText = eregi_replace('>' . "[[:space:]]+" . '<' , '><', $xmlText);
+			$xmlText = preg_replace('#>' . "[[:space:]]+" . '<#i' , '><', $xmlText);
 		}
 
 		$success = xml_parse($parser, $xmlText);

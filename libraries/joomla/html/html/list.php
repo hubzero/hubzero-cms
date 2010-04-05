@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: list.php 12348 2009-06-24 13:34:12Z ian $
+* @version		$Id: list.php 12694 2009-09-11 21:03:02Z ian $
 * @package		Joomla.Framework
 * @subpackage		HTML
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -60,7 +60,7 @@ class JHTMLList
 		$imageFiles = JFolder::files( JPATH_SITE.DS.$directory );
 		$images 	= array(  JHTML::_('select.option',  '', '- '. JText::_( 'Select Image' ) .' -' ) );
 		foreach ( $imageFiles as $file ) {
-		   if ( eregi( $extensions, $file ) ) {
+		   if ( preg_match( "#$extensions#i", $file ) ) {
 				$images[] = JHTML::_('select.option',  $file );
 			}
 		}

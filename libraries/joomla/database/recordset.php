@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: recordset.php 11074 2008-10-13 04:54:12Z ian $
+* @version		$Id: recordset.php 13341 2009-10-27 03:03:54Z ian $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -11,7 +11,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
-
+defined('JPATH_BASE') or die();
 /**
  * Simple Record Set object to allow our database connector to be used with
  * ADODB driven 3rd party libraries

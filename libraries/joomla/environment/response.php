@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: response.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: response.php 13341 2009-10-27 03:03:54Z ian $
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -15,6 +15,7 @@
 /**
  * Create the response global object
  */
+defined('JPATH_BASE') or die();
 $GLOBALS['_JRESPONSE'] = new stdClass();
 $GLOBALS['_JRESPONSE']->cachable = false;
 $GLOBALS['_JRESPONSE']->headers  = array();

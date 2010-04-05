@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version		$Id: helper.php 11954 2009-06-01 19:33:58Z ian $
+ * @version		$Id: helper.php 12694 2009-09-11 21:03:02Z ian $
  * @package		Joomla
  * @subpackage	Installation
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -699,7 +699,7 @@ class JInstallationHelper
 			return JText::_('WARNUPLOADFAILURE');
 		}
 
-		if( !eregi('.sql$', $sqlFile['name']) )
+		if( !preg_match('#\.sql$#i', $sqlFile['name']) )
 		{
 			$archive = JPATH_SITE.DS.'tmp'.DS.$sqlFile['name'];
 		}
