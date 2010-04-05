@@ -172,7 +172,20 @@ class FeedbackController extends JObject
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-
+	
+	public function login() 
+	{
+		$view = new JView( array('name'=>'login') );
+		$view->title = $this->_title;
+		$view->msg   = $this->_msg;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
+	
 	protected function main() 
 	{
 		$database =& JFactory::getDBO();
@@ -236,6 +249,12 @@ class FeedbackController extends JObject
 		
 		// Push some styles to the template
 		$this->_getStyles();
+		
+		if($juser->get('guest')) {
+			$this->_msg = JText::_('To submit a success story, you need to be logged in. Please login using the form below:');
+			$this->login();
+			return;
+		}
 		
 		// Output HTML
 		$view = new JView( array('name'=>'story') );

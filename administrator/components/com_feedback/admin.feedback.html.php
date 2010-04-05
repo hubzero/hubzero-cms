@@ -200,8 +200,12 @@ class FeedbackHtml
 		
 		if ($type != 'regular') {
 			$short_quote = stripslashes($row->short_quote);
+			$miniquote = stripslashes($row->miniquote);
 			if (!$short_quote) {
 				$short_quote =  substr(stripslashes($row->quote), 0, 270);
+			}
+			if (!$miniquote) {
+				$miniquote =  substr(stripslashes($short_quote), 0, 150);
 			}
 
 			if (strlen ($short_quote)>=271) {
@@ -309,6 +313,13 @@ class FeedbackHtml
 								<input type="hidden" name="contact_ok" id="contact_ok" value="1" />
 								<p><?php echo JText::_('FEEDBACK_SHORT_QUOTE_NOTE'); ?></p>
 								<?php echo $editor->display('short_quote', $short_quote, '360px', '200px', '40', '10'); ?>
+							</td>
+						</tr>
+                        <tr>
+							<td class="key" valign="top"><label for="miniquote"><?php echo JText::_('Mini Quote'); ?>:</label></td>
+							<td>
+								<input type="text" name="miniquote" id="miniquote" value="<?php echo $miniquote; ?>"  size="150" />
+								<p><?php echo JText::_('Mini quote is limited to 150 characters to appear on frontpage random quote module'); ?></p>
 							</td>
 						</tr>
 <?php } ?>

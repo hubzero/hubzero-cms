@@ -35,6 +35,7 @@ class SelectedQuotes extends JTable
 	var $userid	    		= NULL;  // @var int(11)
 	var $fullname   		= NULL;  // @var string
 	var $org	    		= NULL;  // @var string
+	var $miniquote     		= NULL;  // @var varchar 150
 	var $short_quote     	= NULL;  // @var text
 	var $quote      		= NULL;  // @var text
 	var $picture    		= NULL;  // @var string
@@ -65,11 +66,7 @@ class SelectedQuotes extends JTable
 	function buildQuery( $filters ) 
 	{
 		$query = "FROM $this->_tbl ";
-		if ((isset($filters['search']) && $filters['search'] != '') 
-		 || (isset($filters['id']) && $filters['id'] != 0)
-		 || (isset($filters['notable_quotes']) && $filters['notable_quotes'] != '')) {
-			$query .= "WHERE";
-		}
+		$query .= "WHERE 1=1 ";
 		if (isset($filters['search']) && $filters['search'] != '' ) {
 			$words = explode(' ', $filters['search']);
 			$sqlsearch = "";
@@ -77,10 +74,16 @@ class SelectedQuotes extends JTable
 			{
 				$sqlsearch .= " (LOWER(fullname) LIKE '%$word%') OR";
 			}
-			$query .= substr($sqlsearch, 0, -3);
+			$query .= ' AND '.substr($sqlsearch, 0, -3);
 		}
-		if (isset($filters['notable_quotes'])) {
-			$query .= " notable_quotes=".$filters['notable_quotes'];
+		if (isset($filters['notable_quotes']) && $filters['notable_quotes']==1) {
+			$query .= " AND notable_quotes=".$filters['notable_quotes'];
+		}
+		if (isset($filters['flash_rotation']) && $filters['flash_rotation']==1) {
+			$query .= " AND flash_rotation=".$filters['flash_rotation'];
+		}
+		if (isset($filters['miniquote']) && $filters['miniquote']==1) {
+			$query .= " AND miniquote!=''";
 		}
 		if (isset($filters['id']) && $filters['id'] != 0 ) {
 			$query .= " AND id=".$filters['id'];
