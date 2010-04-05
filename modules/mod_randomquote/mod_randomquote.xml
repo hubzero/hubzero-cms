@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<install type="module" version="1.5.0">
+	<name>Random Quote</name>
+	<author>Alissa Nedossekina</author>
+	<creationDate>Mar 2010</creationDate>
+	<copyright>(C) 2010 HUBzero</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>alisa@purdue.edu</authorEmail>
+	<authorUrl>www.nanohub.org</authorUrl>
+	<version>1.5.0</version>
+	<description>Module to display random featured quote</description>
+	<files>
+		<filename module="mod_randomquote">mod_randomquote.php</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>mod_randomquote.xml</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.mod_randomquote.ini</language>
+	</languages>
+	<params>
+		<param name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
+		<param name="quotepool" type="radio" default="flash_rotation" label="Quotes Pool" description="Select which quotes to pull from">
+			<option value="flash_rotation">Selected for Rotation</option>
+			<option value="notable_quotes">Selected for NQ Page</option>
+			<option value="">All</option>
+		</param>
+		<param name="show_author" type="radio" default="1" label="Show author name" description="Select whether to show author name">
+			<option value="1">Show</option>
+			<option value="0">Hide</option>
+		</param>
+		<param name="show_all_link" type="radio" default="1" label="Show link to all quotes" description="Select whether to show link to all quotes">
+			<option value="1">Show</option>
+			<option value="0">Hide</option>
+		</param>
+		<param name="quotesrc" type="radio" default="miniquote" label="Quote source" description="Select whether to show data from miniquote or short quote column">
+			<option value="miniquote">Mini-quote</option>
+			<option value="short_quote">Short quote</option>
+		</param>
+		<param name="charlimit" type="text" default="150" label="Character limit" description="Limit of quote characters" />
+	</params>
+	<params group="advanced">
+		<param name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
+			<option value="1">Use global</option>
+			<option value="0">No caching</option>
+		</param>
+		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
+	</params>
+</install>
