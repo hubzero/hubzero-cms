@@ -419,7 +419,7 @@ if (!class_exists('modSpotlight')) {
 				}				
 				
 				$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$row->uidNumber).'"><img width="30" height="30" src="'.$thumb.'" alt="" /></a></span>'."\n";
-				$out .= '<a href="'. JRoute::_('index.php?option=com_members&id='.$row->uidNumber).'">'.$title.'</a>, '.$row->organization."\n";
+				$out .= '<span class="spotlight-item"><a href="'. JRoute::_('index.php?option=com_members&id='.$row->uidNumber).'">'.$title.'</a></span>, '.$row->organization."\n";
 				$numcontributions = $this->countContributions( $row->uidNumber, $database );
 				$ave_ranking = $this->getAverageRanking( $row->uidNumber, $database);
 				$out .= ' - '.JText::_('Contributions').': '.$numcontributions.'; '.JText::_('Average resource ranking').': '.round($ave_ranking, 2).''."\n";
@@ -432,7 +432,7 @@ if (!class_exists('modSpotlight')) {
 				}
 				$thumb = trim($this->params->get( 'default_topicpic' ));
 				$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_topics&pagename='.$row->pagename).'"><img width="30" height="30" src="'.$thumb.'" alt="" /></a></span>'."\n";
-				$out .= '<a href="'.JRoute::_('index.php?option=com_topics&pagename='.$row->pagename).'">'.stripslashes($row->title).'</a> ';
+				$out .= '<span class="spotlight-item"><a href="'.JRoute::_('index.php?option=com_topics&pagename='.$row->pagename).'">'.stripslashes($row->title).'</a></span> ';
 				$out .=  ' - '.JText::_('in').' <a href="'.JRoute::_('index.php?option=com_topics').'">'.JText::_('Topics').'</a>'."\n";
 				$out .= '<div class="clear"></div>'."\n";
 			}
@@ -450,11 +450,11 @@ if (!class_exists('modSpotlight')) {
 						$name = $juser->get('name');
 					}
 				}
-				$when = Hubzero_View_Helper_Html::timeAgo(Hubzero_View_Helper_Html::mkt($row->created)).' '.JText::_('ago');
+				//$when = Hubzero_View_Helper_Html::timeAgo(Hubzero_View_Helper_Html::mkt($row->created)).' '.JText::_('ago');
 				
 				$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$row->id).'"><img width="30" height="30" src="'.$thumb.'" alt="" /></a></span>'."\n";
-				$out .= '<a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$row->id).'">'.stripslashes($row->subject).'</a> ';
-				$out .=  ' - '.JText::_('asked by').' '.$name.' '.$when.', '.JText::_('in').' <a href="'.JRoute::_('index.php?option=com_answers').'">'.JText::_('Answers').'</a>'."\n";
+				$out .= '<span class="spotlight-item"><a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$row->id).'">'.stripslashes($row->subject).'</a></span> ';
+				$out .=  ' - '.JText::_('asked by').' '.$name.', '.JText::_('in').' <a href="'.JRoute::_('index.php?option=com_answers').'">'.JText::_('Answers').'</a>'."\n";
 				$out .= '<div class="clear"></div>'."\n";
 			}
 			// resources
@@ -515,9 +515,9 @@ if (!class_exists('modSpotlight')) {
 				
 				// resources
 				$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_resources&id='.$row->id).'"><img width="30" height="30" src="'.$thumb.'" alt="" /></a></span>'."\n";
-				$out .= '<a href="'.JRoute::_('index.php?option=com_resources&id='.$row->id).'">';
+				$out .= '<span class="spotlight-item"><a href="'.JRoute::_('index.php?option=com_resources&id='.$row->id).'">';
 				$out .= $titlecut ? Hubzero_View_Helper_Html::shortenText(($row->title), $titlecut, 0) : $row->title;
-				$out .= '</a>';
+				$out .= '</a></span>';
 				if($row->type == 7 && $remaining > 30) {
 					// Show bit of description for tools
 					if ($row->introtext) {
