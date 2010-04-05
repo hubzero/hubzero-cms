@@ -263,6 +263,9 @@ class FeedbackController extends JObject
 				exit();
 			}
 			
+			$rowselected->notable_quotes = $notable_quotes;
+			$rowselected->flash_rotation = $flash_rotation;
+			
 			// Use new id if already exists under selected quotes
 			if ($this->type == 'regular') {
 				$rowselected->id = 0;
@@ -275,6 +278,12 @@ class FeedbackController extends JObject
 			$rowselected->short_quote = ($rowselected->short_quote) ? $rowselected->short_quote : substr($rowselected->quote, 0, 270);
 			if (strlen($rowselected->short_quote)>=271) {
 				$rowselected->short_quote .= '...';
+			}
+			
+			// Trim the text to create a mini quote
+			$rowselected->miniquote = ($rowselected->miniquote) ? $rowselected->miniquote : substr($rowselected->short_quote, 0, 150);
+			if (strlen($rowselected->miniquote)>=147) {
+				$rowselected->miniquote .= '...';
 			}
 			
 			// Store new content
