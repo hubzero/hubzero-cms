@@ -83,7 +83,7 @@ class MathRenderer
 		// Please see math/README for more information.
 
 		// Location of the texvc binary
-		$b = '/usr/bin'; // dirname( __FILE__ );
+		$b = '/usr/lib/hubzero/bin'; // dirname( __FILE__ );
 		$texvc = $b.DS.'texvc';
 
 		if ($this->mode == MW_MATH_SOURCE) {
