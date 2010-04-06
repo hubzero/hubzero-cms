@@ -17,6 +17,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <head>
 	<title><?php echo $this->error->code ?> - <?php echo $this->title; ?></title>
 	<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/error.css" type="text/css" />
+	<?php if($this->direction == 'rtl') : ?>
+	<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/error_rtl.css" type="text/css" />
+	<?php endif; ?>
 </head>
 <body>
 	<div align="center">

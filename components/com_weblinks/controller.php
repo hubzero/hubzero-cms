@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: controller.php 13339 2009-10-27 02:27:05Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -45,7 +45,15 @@ class WeblinksController extends JController
 			$model =& $this->getModel('weblink');
 			$model->hit();
 		}
-
-		parent::display();
+		
+		// View caching logic -- simple... are we logged in?
+		$user = &JFactory::getUser();
+		$view = JRequest::getVar('view');
+		$viewcache = JRequest::getVar('viewcache', '1', 'POST', 'INT');
+		if ($user->get('id') || ($view == 'category' && $viewcache == 0)) {
+			parent::display(false);
+		} else {
+			parent::display(true);
+		}
 	}
 }

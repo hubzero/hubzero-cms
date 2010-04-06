@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 11679 2009-03-08 20:50:06Z willebil $
+ * @version		$Id: controller.php 13426 2009-11-04 16:36:00Z ian $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -69,7 +69,19 @@ class ContactController extends JController
 
 		// Display the view
 		$view->assign('error', $this->getError());
-		$view->display();
+		
+		// View caching logic -- simple... are we logged in?
+		$user = &JFactory::getUser();
+		$viewnow = JRequest::getVar('view');
+		$viewcache = JRequest::getVar('viewcache','1','POST','INT');
+		
+		if ($user->get('id') || ($viewnow == 'category' && $viewcache == 0)) {
+			$view->display();
+		} else {
+			$option = JRequest::getCmd('option');
+			$cache =& JFactory::getCache($option, 'view');
+			$cache->get($view, 'display');
+		}
 	}
 
 	/**

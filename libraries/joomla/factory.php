@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: factory.php 12389 2009-07-01 00:34:45Z ian $
+ * @version		$Id: factory.php 13341 2009-10-27 03:03:54Z ian $
  * @package		Joomla.Framework
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
-
+defined('JPATH_BASE') or die();
 /**
  * Joomla Framework Factory class
  *

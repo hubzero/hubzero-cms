@@ -15,7 +15,7 @@ MooTools Credits:
 */
 
 var MooTools = {
-	version: '1.11'
+	version: '1.12'
 };
 
 /* Section: Core Functions */
@@ -286,7 +286,7 @@ document.head = document.getElementsByTagName('head')[0];
 /*
 Class: window
 	Some properties are attached to the window object by the browser detection.
-
+	
 Note:
 	browser detection is entirely object-based. We dont sniff.
 
@@ -304,7 +304,7 @@ Properties:
 window.xpath = !!(document.evaluate);
 if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
 else if (document.childNodes && !document.all && !navigator.taintEnabled) window.webkit = window[window.xpath ? 'webkit420' : 'webkit419'] = true;
-else if (document.getBoxObjectFor != null) window.gecko = true;
+else if (document.getBoxObjectFor != null || window.mozInnerScreenX != null) window.gecko = true;
 
 /*compatibility*/
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: content.php 11371 2008-12-30 01:31:50Z ian $
+ * @version		$Id: content.php 12697 2009-09-12 02:10:36Z ian $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -178,7 +178,7 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 	{
 		$query = 'SELECT id, a.title AS title, a.created AS created, a.metadesc, a.metakey, '
 		. ' CONCAT(a.introtext, a.fulltext) AS text,'
-		. ' "2" as browsernav, "'. $db->Quote(JText::_('Uncategorised Content')) .'" AS section'
+		. ' "2" as browsernav, "'. $db->getEscaped(JText::_('Uncategorised Content')) .'" AS section'
 		. ' FROM #__content AS a'
 		. ' WHERE ('.$where.')'
 		. ' AND a.state = 1'

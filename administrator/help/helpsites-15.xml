@@ -8,5 +8,7 @@
     <site tag="de-DE" url="http://hilfe.jgerman.de"> German -hilfe.jgerman.de</site>
     <site tag="nl-NL" url="http://help.joomlacommunity.eu"> Dutch(NL) - help.joomlacommunity.eu</site>
     <site tag="ca-ES" url="http://www.joomla.cat"> Catalan - joomla.cat</site>
+	<site tag="fr-FR" url="http://help.joomla.fr"> French - Joomla.fr</site>
+	<site tag="fa-IR" url="http://joomfa.org"> Farsi - Joomfa.org</site>
 </sites>
 </joshelp>

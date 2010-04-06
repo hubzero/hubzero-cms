@@ -5,8 +5,10 @@ input.system-openid, input.com-system-openid {
    background-position: 0 50%;
    color: #000;
    padding-left: 18px;
+   
 }
 
+body {color: #000}
 /* System Messages */
 #system-message    { margin-bottom: 10px; padding: 0;}
 #system-message dt { font-weight: bold; }

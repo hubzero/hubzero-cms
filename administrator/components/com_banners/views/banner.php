@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 11655 2009-03-08 20:04:17Z willebil $
+ * @version		$Id: banner.php 12694 2009-09-11 21:03:02Z ian $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -432,7 +432,7 @@ class BannersViewBanner
 									<param name="movie" value="../images/banners/<?php echo $row->imageurl; ?>"><embed src="../images/banners/<?php echo $row->imageurl; ?>" loop="false" pluginspage="http://www.macromedia.com/go/get/flashplayer" type="application/x-shockwave-flash"  width="<?php echo $lists['width'];?>" height="<?php echo $lists['height'];?>"></embed>
 								</object>
 								<?php
-							} elseif (eregi("gif|jpg|png", $row->imageurl)) {
+							} elseif (preg_match("#gif|jpg|png#i", $row->imageurl)) {
 								?>
 								<img src="../images/banners/<?php echo $row->imageurl; ?>" name="imagelib" />
 								<?php

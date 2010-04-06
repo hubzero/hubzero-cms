@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: rss.php 11806 2009-05-10 00:28:51Z kdevine $
+ * @version		$Id: rss.php 13310 2009-10-24 04:09:35Z ian $
  * @package		Joomla.Framework
  * @subpackage	Document
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -55,7 +55,7 @@ class JDocumentRendererRSS extends JDocumentRenderer
 		$feed = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
 		$feed.= "	<channel>\n";
 		$feed.= "		<title>".$data->title."</title>\n";
-		$feed.= "		<description>".$data->description."</description>\n";
+		$feed.= "		<description>".htmlspecialchars($data->description)."</description>\n";
 		$feed.= "		<link>".str_replace(' ','%20',$url.$data->link)."</link>\n";
 		$feed.= "		<lastBuildDate>".htmlspecialchars($now->toRFC822(), ENT_COMPAT, 'UTF-8')."</lastBuildDate>\n";
 		$feed.= "		<generator>".$data->getGenerator()."</generator>\n";

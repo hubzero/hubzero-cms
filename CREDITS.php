@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: CREDITS.php 12356 2009-06-24 18:20:14Z ian $
+ * @version		$Id: CREDITS.php 13370 2009-10-28 14:48:04Z ian $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -66,10 +66,9 @@ Andy Wallace
 
 Translation contributors:
 -------------------------
-Translation contributors:
--------------------------
 Albanian (sp-AL) - Blendi Kraja
 Arabic Algeria (ar-DZ) - Saber Bousba
+Azeri (az-AZ) - Azeri Translation Team - Mahmud and Yusif
 Basque (eu-ES) - Basque Translation Team (Basque Language School of Santurtzi) - Abel Camacho, Pedro Lonbide
 Belarusian (be-BY) - Dennis Hermacki
 Bengali (bn-BD) – Kamal Sikder
@@ -80,6 +79,7 @@ Chinese Traditional (zh-TW) - Traditional Chinese Translation Team - Eddy Chang
 Croatian (hr-HR) - Croatian Translation Team - Klaudia B.
 Czech (cs-CZ) - Czech Translation Team - Svatopluk Vit
 Danish (da-DK) - Danish Translation Team - Ronny Buelund, Mikael Winther, Ole Bang Ottosen
+Dari (Afghanistan) (fa-AF) - Dari (Afghanistan) Translation Team - Daud Nigaresh
 Dutch (nl-NL) - Dutch Translation Team - Vancanneyt Sander, Marijke Stuivenberg
 English (en-US) -  US English Translation Team - Jennifer Marriott
 Esperanto (eo-XX) - Esperanto Translation Team - Cindy McKee, Fabien Tschudy
@@ -93,14 +93,17 @@ Hebrew (he-IL) - Joomla!Hebrew - Mati (MtK) Kochen
 Hindi-Devanagari (hi-IN) - IndicJoomla! Team - Vishal Pahuja
 Hungarian (hu-HU) - Magyar Joomla! Felhasznalok Nemzetkozi Egyesulete - Jozsef Tamas Herczeg, Annamaria Ban
 Icelandic (is-IS) - Joomlis! Icelandic Joomla Community [joomlis.net] - Magnús Guðlaugsson
+Indonesian (id-ID) - Indonesian (Bahasa Indonesia) Translation Community - Andy Sikumbang
 Italian (it-IT) - Italian Translation Team - Stefania Gaianigo, Alessandro Rossi
 Japanese (ja-JP) - Japanese Translation Team - Noriaki Koide, Hiroko Hirano
+Khmer (Cambodia) (km-KH) - Khmer (Cambodia) Translation Team - Heng Sovann
 Laotian (lo-LA) - Joomla LaiLao Team (LaoOpenSource) - Akarawuth Tamrareang , Viengsakhone phanthanousy , Outhai Saioudom
 Latvian (lv-LV) - Joomla Latvian Team - Edgars Piruška, Iveta Rītiņa-Namiķe, Ingars Stepkāns
 Lithuanian (lt-LT) - Lithuanian Translation Team - Stasys Svabas
 Mongolian (mn-MN) - Mongolian Translation Team, Altansukh T.
 Montenegrin (sr-ME) - Montenegrin Translation Team (joomlamontenegro.com) - Miljan Vujosevic, Dragan Djordjevic
 Norwegian bokmål (nb-NO) - Joomla! i Norge - Jens-Christian Skibakk, Rune Rasmussen
+Pashto (Afghanistan) (ps-AF) - Pashto (Afghanistan) Translation Team - Daud Nigaresh
 Persian/Farsi (fa-IR) - Joomfa Team(Joomla Farsi) - M.Alavi nik, Hamid abolhasani,Amin bagheri,Sayyed Saeed farzad,Sayyed ahmad sayyedi,Vahid Hosein Khani,Omid pileh var
 Polish - Poland (pl-PL) - Polskie Centrum Joomla! - Michał Sobkowiak, Stefan Wajda
 Portuguese Brazilian (pt-BR) - Joomla! Brasil - Fabricio Elias Costa (FaBMak)
@@ -111,12 +114,14 @@ Serbian (sr-RS) - Joomla! Serbia team - Marko Milenovic
 Sindhi (sd-PK) - Raheel H. Kaghzi, Shafiq-ur-rehman Khatri
 Sinhala (si-LK) - Rashan Anushka
 Slovak (sk-SK) - Slovak Translation Team - Karol Cejka, Viliam Kmec, Alexander Horvath, Marek Sabo
+Slovenian (sl-SI) - Slovenian Translation Team - Borut Planinc
 Spanish (es-ES) - Joomla!'s Spanish Community Translation Team - Javier Galasse
 Swedish (sv-SE) - Swedish Translation Team (SvenskJoomla!) - Sune Hultman, Christer Gerhardsson
-Syriac (sy-IQ) - Pauls! Dinka
+Syriac (sy-IQ) - East Syriac Translation (Syriac Joomla) - Pauls Dinka
+Tagalog (Philippines) (tl-PH) - Tagalog (Philippines) Translation Community - Aristedes Royo
 Tamil (ta-LK) - Sri Lanka -UoM, LK, sarves
 Thai (th-TH) - Joomla LaiThai Team (JoomlaCorner) - Akarawuth Tamrareang , Supachai Teasakul, Pisan Chueachatchai
-Turkish (tr-TR) - Joomla! Turkiye - Ümit Kenan Gönüllü, Uğur Uygur
+Turkish (tr-TR) - Joomla! Turkiye - Ümit Kenan Gönüllü
 Ukrainian (uk-UA) - Ukrainian Translation Team - Denys Nosov
 Urdu Pakistan (ur-PK) - Basim
 Vietnamese (vi-VN) - Việt Nam Translation Team - Viet Hoang Vu

@@ -127,7 +127,7 @@ if (!$error && isset ($_REQUEST["fn"])) {
 
 	// Recognize GZip filename
 
-	if (eregi("\.gz$", $_REQUEST["fn"]))
+	if (preg_match("#\.gz$#i", $_REQUEST["fn"]))
 		$gzipmode = true;
 	else
 		$gzipmode = false;
@@ -155,7 +155,7 @@ if (!$error && isset ($_REQUEST["fn"])) {
 // *******************************************************************************************
 // START IMPORT SESSION HERE
 // *******************************************************************************************
-if (!$error && isset ($_REQUEST["start"]) && isset ($_REQUEST["foffset"]) && eregi("(\.(sql|gz|csv))$", $_REQUEST["fn"])) {
+if (!$error && isset ($_REQUEST["start"]) && isset ($_REQUEST["foffset"]) && preg_match("#(\.(sql|gz|csv))$#i", $_REQUEST["fn"])) {
 
 	// Check start and foffset are numeric values
 

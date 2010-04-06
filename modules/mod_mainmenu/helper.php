@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 11799 2009-05-06 02:15:50Z ian $
+* @version		$Id: helper.php 12694 2009-09-11 21:03:02Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -28,7 +28,7 @@ jimport('joomla.utilities.simplexml');
  */
 class modMainMenuHelper
 {
-	function buildXML(&$params)
+	function buildXML($params)
 	{
 		$menu = new JMenuTree($params);
 		$items = &JSite::getMenu();

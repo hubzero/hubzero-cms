@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: database.php 11137 2008-10-15 19:47:01Z kdevine $
+* @version		$Id: database.php 12694 2009-09-11 21:03:02Z ian $
 * @package		Joomla.Framework
 * @subpackage	Database
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -959,7 +959,7 @@ class JDatabase extends JObject
 
 		$query = trim( $query );
 		$this->setQuery( $query );
-		if (eregi( '^select', $query )) {
+		if (preg_match('#^select#i', $query )) {
 			$result = $this->loadRowList();
 			return new JRecordSet( $result );
 		} else {

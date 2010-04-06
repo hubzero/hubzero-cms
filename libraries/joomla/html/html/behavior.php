@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: behavior.php 11683 2009-03-08 20:55:17Z willebil $
+* @version		$Id: behavior.php 13341 2009-10-27 03:03:54Z ian $
 * @package		Joomla.Framework
 * @subpackage	HTML
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -11,7 +11,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
-
+defined('JPATH_BASE') or die();
 /**
  * Utility class for javascript behaviors
  *

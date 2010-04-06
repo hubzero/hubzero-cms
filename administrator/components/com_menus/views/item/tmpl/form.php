@@ -144,6 +144,7 @@ function submitbutton(pressbutton) {
 								<?php echo JHTML::_('list.accesslevel',  $this->item ); ?>
 							</td>
 						</tr>
+						<?php if ($this->item->type != "menulink") : ?>
 						<tr>
 							<td class="key" valign="top" align="right">
 								<?php echo JText::_( 'On Click, Open in' ); ?>:
@@ -152,6 +153,7 @@ function submitbutton(pressbutton) {
 								<?php echo MenusHelper::Target( $this->item ); ?>
 							</td>
 						</tr>
+						<?php endif; ?>
 					</table>
 				</fieldset>
 			</td>

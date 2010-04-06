@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: user.php 11223 2008-10-29 03:10:37Z pasamio $
+* @version		$Id: user.php 12694 2009-09-11 21:03:02Z ian $
 * @package		Joomla.Framework
 * @subpackage	Table
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -148,7 +148,7 @@ class JTableUser extends JTable
 			return false;
 		}
 
-		if (eregi( "[<>\"'%;()&]", $this->username) || strlen(utf8_decode($this->username )) < 2) {
+		if (preg_match( "#[<>\"'%;()&]#i", $this->username) || strlen(utf8_decode($this->username )) < 2) {
 			$this->setError( JText::sprintf( 'VALID_AZ09', JText::_( 'Username' ), 2 ) );
 			return false;
 		}

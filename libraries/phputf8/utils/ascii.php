@@ -1,68 +1,10 @@
 <?php
 /**
 * Tools to help with ASCII in UTF-8
-* @version $Id: ascii.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version $Id: ascii.php 13342 2009-10-27 03:25:58Z ian $
 * @package utf8
 * @subpackage ascii
 */
-
-//---------------------------------------------------------------
-/**
-* UTF-8 lookup table for lower case accented letters
-* This lookuptable defines replacements for accented characters from the ASCII-7
-* range. This are lower case letters only.
-* @author Andreas Gohr <andi@splitbrain.org>
-* @see utf8_deaccent()
-* @package utf8
-* @subpackage ascii
-*/
-$GLOBALS['UTF8_LOWER_ACCENTS'] = array(
-    'Ã ' => 'a', 'Ã´' => 'o', 'Ä�?' => 'd', 'á¸Ÿ' => 'f', 'Ã«' => 'e', 'Å¡' => 's', 'Æ¡' => 'o',
-    'ÃŸ' => 'ss', 'Äƒ' => 'a', 'Å™' => 'r', 'È›' => 't', 'Åˆ' => 'n', 'Ä�?' => 'a', 'Ä·' => 'k',
-    'Å�?' => 's', 'á»³' => 'y', 'Å†' => 'n', 'Äº' => 'l', 'Ä§' => 'h', 'á¹—' => 'p', 'Ã³' => 'o',
-    'Ãº' => 'u', 'Ä›' => 'e', 'Ã©' => 'e', 'Ã§' => 'c', 'áº�?' => 'w', 'Ä‹' => 'c', 'Ãµ' => 'o',
-    'á¹¡' => 's', 'Ã¸' => 'o', 'Ä£' => 'g', 'Å§' => 't', 'È™' => 's', 'Ä—' => 'e', 'Ä‰' => 'c',
-    'Å›' => 's', 'Ã®' => 'i', 'Å±' => 'u', 'Ä‡' => 'c', 'Ä™' => 'e', 'Åµ' => 'w', 'á¹«' => 't',
-    'Å«' => 'u', 'Ä�?' => 'c', 'Ã¶' => 'oe', 'Ã¨' => 'e', 'Å·' => 'y', 'Ä…' => 'a', 'Å‚' => 'l',
-    'Å³' => 'u', 'Å¯' => 'u', 'ÅŸ' => 's', 'ÄŸ' => 'g', 'Ä¼' => 'l', 'Æ’' => 'f', 'Å¾' => 'z',
-    'áºƒ' => 'w', 'á¸ƒ' => 'b', 'Ã¥' => 'a', 'Ã¬' => 'i', 'Ã¯' => 'i', 'á¸‹' => 'd', 'Å¥' => 't',
-    'Å—' => 'r', 'Ã¤' => 'ae', 'Ã­' => 'i', 'Å•' => 'r', 'Ãª' => 'e', 'Ã¼' => 'ue', 'Ã²' => 'o',
-    'Ä“' => 'e', 'Ã±' => 'n', 'Å„' => 'n', 'Ä¥' => 'h', 'Ä�?' => 'g', 'Ä‘' => 'd', 'Äµ' => 'j',
-    'Ã¿' => 'y', 'Å©' => 'u', 'Å­' => 'u', 'Æ°' => 'u', 'Å£' => 't', 'Ã½' => 'y', 'Å‘' => 'o',
-    'Ã¢' => 'a', 'Ä¾' => 'l', 'áº…' => 'w', 'Å¼' => 'z', 'Ä«' => 'i', 'Ã£' => 'a', 'Ä¡' => 'g',
-    'á¹�?' => 'm', 'Å�?' => 'o', 'Ä©' => 'i', 'Ã¹' => 'u', 'Ä¯' => 'i', 'Åº' => 'z', 'Ã¡' => 'a',
-    'Ã»' => 'u', 'Ã¾' => 'th', 'Ã°' => 'dh', 'Ã¦' => 'ae', 'Âµ' => 'u',
-);
-
-
-//---------------------------------------------------------------
-/**
-* UTF-8 lookup table for upper case accented letters
-* This lookuptable defines replacements for accented characters from the ASCII-7
-* range. This are upper case letters only.
-* @author Andreas Gohr <andi@splitbrain.org>
-* @see utf8_deaccent()
-* @package utf8
-* @subpackage ascii
- */
-
-$GLOBALS['UTF8_UPPER_ACCENTS'] = array(
-    'Ã ' => 'A', 'Ã´' => 'O', 'Ä�?' => 'D', 'á¸Ÿ' => 'F', 'Ã«' => 'E', 'Å¡' => 'S', 'Æ¡' => 'O',
-    'ÃŸ' => 'Ss', 'Äƒ' => 'A', 'Å™' => 'R', 'È›' => 'T', 'Åˆ' => 'N', 'Ä�?' => 'A', 'Ä·' => 'K',
-    'Å�?' => 'S', 'á»³' => 'Y', 'Å†' => 'N', 'Äº' => 'L', 'Ä§' => 'H', 'á¹—' => 'P', 'Ã³' => 'O',
-    'Ãº' => 'U', 'Ä›' => 'E', 'Ã©' => 'E', 'Ã§' => 'C', 'áº�?' => 'W', 'Ä‹' => 'C', 'Ãµ' => 'O',
-    'á¹¡' => 'S', 'Ã¸' => 'O', 'Ä£' => 'G', 'Å§' => 'T', 'È™' => 'S', 'Ä—' => 'E', 'Ä‰' => 'C',
-    'Å›' => 'S', 'Ã®' => 'I', 'Å±' => 'U', 'Ä‡' => 'C', 'Ä™' => 'E', 'Åµ' => 'W', 'á¹«' => 'T',
-    'Å«' => 'U', 'Ä�?' => 'C', 'Ã¶' => 'Oe', 'Ã¨' => 'E', 'Å·' => 'Y', 'Ä…' => 'A', 'Å‚' => 'L',
-    'Å³' => 'U', 'Å¯' => 'U', 'ÅŸ' => 'S', 'ÄŸ' => 'G', 'Ä¼' => 'L', 'Æ’' => 'F', 'Å¾' => 'Z',
-    'áºƒ' => 'W', 'á¸ƒ' => 'B', 'Ã¥' => 'A', 'Ã¬' => 'I', 'Ã¯' => 'I', 'á¸‹' => 'D', 'Å¥' => 'T',
-    'Å—' => 'R', 'Ã¤' => 'Ae', 'Ã­' => 'I', 'Å•' => 'R', 'Ãª' => 'E', 'Ã¼' => 'Ue', 'Ã²' => 'O',
-    'Ä“' => 'E', 'Ã±' => 'N', 'Å„' => 'N', 'Ä¥' => 'H', 'Ä�?' => 'G', 'Ä‘' => 'D', 'Äµ' => 'J',
-    'Ã¿' => 'Y', 'Å©' => 'U', 'Å­' => 'U', 'Æ°' => 'U', 'Å£' => 'T', 'Ã½' => 'Y', 'Å‘' => 'O',
-    'Ã¢' => 'A', 'Ä¾' => 'L', 'áº…' => 'W', 'Å¼' => 'Z', 'Ä«' => 'I', 'Ã£' => 'A', 'Ä¡' => 'G',
-    'á¹�?' => 'M', 'Å�?' => 'O', 'Ä©' => 'I', 'Ã¹' => 'U', 'Ä¯' => 'I', 'Åº' => 'Z', 'Ã¡' => 'A',
-    'Ã»' => 'U', 'Ãž' => 'Th', 'Ã�?' => 'Dh', 'Ã†' => 'Ae',
-);
 
 //--------------------------------------------------------------------
 /**
@@ -72,16 +14,14 @@ $GLOBALS['UTF8_UPPER_ACCENTS'] = array(
 * benefits by using the native PHP equivalent if it's just ASCII e.g.;
 *
 * <code>
-* <?php
 * if ( utf8_is_ascii($someString) ) {
 *     // It's just ASCII - use the native PHP version
 *     $someString = strtolower($someString);
 * } else {
 *     $someString = utf8_strtolower($someString);
 * }
-* ?>
 * </code>
-*
+* 
 * @param string
 * @return boolean TRUE if it's all ASCII
 * @package utf8
@@ -89,11 +29,8 @@ $GLOBALS['UTF8_UPPER_ACCENTS'] = array(
 * @see utf8_is_ascii_ctrl
 */
 function utf8_is_ascii($str) {
-    if ( strlen($str) > 0 ) {
-        // Search for any bytes which are outside the ASCII range...
-        return (preg_match('/[^\x00-\x7F]/',$str) !== 1);
-    }
-    return FALSE;
+    // Search for any bytes which are outside the ASCII range...
+    return (preg_match('/(?:[^\x00-\x7F])/',$str) !== 1);
 }
 
 //--------------------------------------------------------------------
@@ -101,7 +38,7 @@ function utf8_is_ascii($str) {
 * Tests whether a string contains only 7bit ASCII bytes with device
 * control codes omitted. The device control codes can be found on the
 * second table here: http://www.w3schools.com/tags/ref_ascii.asp
-*
+* 
 * @param string
 * @return boolean TRUE if it's all ASCII without device control codes
 * @package utf8
@@ -145,10 +82,35 @@ function utf8_strip_non_ascii($str) {
 
 //--------------------------------------------------------------------
 /**
+* Strip out device control codes in the ASCII range
+* which are not permitted in XML. Note that this leaves
+* multi-byte characters untouched - it only removes device
+* control codes
+* @see http://hsivonen.iki.fi/producing-xml/#controlchar
+* @param string
+* @return string control codes removed
+*/
+function utf8_strip_ascii_ctrl($str) {
+    ob_start();
+    while ( preg_match(
+        '/^([^\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+)|([\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+)/S',
+            $str, $matches) ) {
+        if ( !isset($matches[2]) ) {
+            echo $matches[0];
+        }
+        $str = substr($str, strlen($matches[0]));
+    }
+    $result = ob_get_contents();
+    ob_end_clean();
+    return $result;
+}
+
+//--------------------------------------------------------------------
+/**
 * Strip out all non 7bit ASCII bytes and ASCII device control codes.
 * For a list of ASCII device control codes see the 2nd table here:
 * http://www.w3schools.com/tags/ref_ascii.asp
-*
+* 
 * @param string
 * @return boolean TRUE if it's all ASCII
 * @package utf8
@@ -179,6 +141,11 @@ function utf8_strip_non_ascii_ctrl($str) {
 * through utf8_strip_non_ascii to clean out any other non-ASCII chars
 * Use the optional parameter to just deaccent lower ($case = -1) or upper ($case = 1)
 * letters. Default is to deaccent both cases ($case = 0)
+*
+* For a more complete implementation of transliteration, see the utf8_to_ascii package
+* available from the phputf8 project downloads:
+* http://prdownloads.sourceforge.net/phputf8
+*
 * @param string UTF-8 string
 * @param int (optional) -1 lowercase only, +1 uppercase only, 1 both cases
 * @param string UTF-8 with accented characters replaced by ASCII chars
@@ -188,25 +155,66 @@ function utf8_strip_non_ascii_ctrl($str) {
 * @subpackage ascii
 */
 function utf8_accents_to_ascii( $str, $case=0 ){
-
-	  if($case <= 0){
-        global $UTF8_LOWER_ACCENTS;
-        $string = str_replace(
+    
+    static $UTF8_LOWER_ACCENTS = NULL;
+    static $UTF8_UPPER_ACCENTS = NULL;
+    
+    if($case <= 0){
+        
+        if ( is_null($UTF8_LOWER_ACCENTS) ) {
+            $UTF8_LOWER_ACCENTS = array(
+  'à' => 'a', 'ô' => 'o', 'ď' => 'd', 'ḟ' => 'f', 'ë' => 'e', 'š' => 's', 'ơ' => 'o',
+  'ß' => 'ss', 'ă' => 'a', 'ř' => 'r', 'ț' => 't', 'ň' => 'n', 'ā' => 'a', 'ķ' => 'k',
+  'ŝ' => 's', 'ỳ' => 'y', 'ņ' => 'n', 'ĺ' => 'l', 'ħ' => 'h', 'ṗ' => 'p', 'ó' => 'o',
+  'ú' => 'u', 'ě' => 'e', 'é' => 'e', 'ç' => 'c', 'ẁ' => 'w', 'ċ' => 'c', 'õ' => 'o',
+  'ṡ' => 's', 'ø' => 'o', 'ģ' => 'g', 'ŧ' => 't', 'ș' => 's', 'ė' => 'e', 'ĉ' => 'c',
+  'ś' => 's', 'î' => 'i', 'ű' => 'u', 'ć' => 'c', 'ę' => 'e', 'ŵ' => 'w', 'ṫ' => 't',
+  'ū' => 'u', 'č' => 'c', 'ö' => 'oe', 'è' => 'e', 'ŷ' => 'y', 'ą' => 'a', 'ł' => 'l',
+  'ų' => 'u', 'ů' => 'u', 'ş' => 's', 'ğ' => 'g', 'ļ' => 'l', 'ƒ' => 'f', 'ž' => 'z',
+  'ẃ' => 'w', 'ḃ' => 'b', 'å' => 'a', 'ì' => 'i', 'ï' => 'i', 'ḋ' => 'd', 'ť' => 't',
+  'ŗ' => 'r', 'ä' => 'ae', 'í' => 'i', 'ŕ' => 'r', 'ê' => 'e', 'ü' => 'ue', 'ò' => 'o',
+  'ē' => 'e', 'ñ' => 'n', 'ń' => 'n', 'ĥ' => 'h', 'ĝ' => 'g', 'đ' => 'd', 'ĵ' => 'j',
+  'ÿ' => 'y', 'ũ' => 'u', 'ŭ' => 'u', 'ư' => 'u', 'ţ' => 't', 'ý' => 'y', 'ő' => 'o',
+  'â' => 'a', 'ľ' => 'l', 'ẅ' => 'w', 'ż' => 'z', 'ī' => 'i', 'ã' => 'a', 'ġ' => 'g',
+  'ṁ' => 'm', 'ō' => 'o', 'ĩ' => 'i', 'ù' => 'u', 'į' => 'i', 'ź' => 'z', 'á' => 'a',
+  'û' => 'u', 'þ' => 'th', 'ð' => 'dh', 'æ' => 'ae', 'µ' => 'u', 'ĕ' => 'e', 
+            );
+        }
+        
+        $str = str_replace(
                 array_keys($UTF8_LOWER_ACCENTS),
                 array_values($UTF8_LOWER_ACCENTS),
                 $str
             );
     }
-
+    
     if($case >= 0){
-        global $UTF8_UPPER_ACCENTS;
-        $string = str_replace(
+        if ( is_null($UTF8_UPPER_ACCENTS) ) {
+            $UTF8_UPPER_ACCENTS = array(
+  'À' => 'A', 'Ô' => 'O', 'Ď' => 'D', 'Ḟ' => 'F', 'Ë' => 'E', 'Š' => 'S', 'Ơ' => 'O',
+  'Ă' => 'A', 'Ř' => 'R', 'Ț' => 'T', 'Ň' => 'N', 'Ā' => 'A', 'Ķ' => 'K',
+  'Ŝ' => 'S', 'Ỳ' => 'Y', 'Ņ' => 'N', 'Ĺ' => 'L', 'Ħ' => 'H', 'Ṗ' => 'P', 'Ó' => 'O',
+  'Ú' => 'U', 'Ě' => 'E', 'É' => 'E', 'Ç' => 'C', 'Ẁ' => 'W', 'Ċ' => 'C', 'Õ' => 'O',
+  'Ṡ' => 'S', 'Ø' => 'O', 'Ģ' => 'G', 'Ŧ' => 'T', 'Ș' => 'S', 'Ė' => 'E', 'Ĉ' => 'C',
+  'Ś' => 'S', 'Î' => 'I', 'Ű' => 'U', 'Ć' => 'C', 'Ę' => 'E', 'Ŵ' => 'W', 'Ṫ' => 'T',
+  'Ū' => 'U', 'Č' => 'C', 'Ö' => 'Oe', 'È' => 'E', 'Ŷ' => 'Y', 'Ą' => 'A', 'Ł' => 'L',
+  'Ų' => 'U', 'Ů' => 'U', 'Ş' => 'S', 'Ğ' => 'G', 'Ļ' => 'L', 'Ƒ' => 'F', 'Ž' => 'Z',
+  'Ẃ' => 'W', 'Ḃ' => 'B', 'Å' => 'A', 'Ì' => 'I', 'Ï' => 'I', 'Ḋ' => 'D', 'Ť' => 'T',
+  'Ŗ' => 'R', 'Ä' => 'Ae', 'Í' => 'I', 'Ŕ' => 'R', 'Ê' => 'E', 'Ü' => 'Ue', 'Ò' => 'O',
+  'Ē' => 'E', 'Ñ' => 'N', 'Ń' => 'N', 'Ĥ' => 'H', 'Ĝ' => 'G', 'Đ' => 'D', 'Ĵ' => 'J',
+  'Ÿ' => 'Y', 'Ũ' => 'U', 'Ŭ' => 'U', 'Ư' => 'U', 'Ţ' => 'T', 'Ý' => 'Y', 'Ő' => 'O',
+  'Â' => 'A', 'Ľ' => 'L', 'Ẅ' => 'W', 'Ż' => 'Z', 'Ī' => 'I', 'Ã' => 'A', 'Ġ' => 'G',
+  'Ṁ' => 'M', 'Ō' => 'O', 'Ĩ' => 'I', 'Ù' => 'U', 'Į' => 'I', 'Ź' => 'Z', 'Á' => 'A',
+  'Û' => 'U', 'Þ' => 'Th', 'Ð' => 'Dh', 'Æ' => 'Ae', 'Ĕ' => 'E',
+            );
+        }
+        $str = str_replace(
                 array_keys($UTF8_UPPER_ACCENTS),
                 array_values($UTF8_UPPER_ACCENTS),
                 $str
             );
     }
-
+    
     return $str;
-
+    
 }
