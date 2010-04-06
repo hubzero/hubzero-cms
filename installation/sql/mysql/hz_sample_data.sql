@@ -50,6 +50,7 @@ DELETE FROM `hosttype`;
 # :.,$s/'mmc'/'admin'/g
 # :.,$s/2010-\d\d-\d\d \d\d:\d\d:\d\d/NOW()/g
 # :.,$s/^INSERT INTO `jos_/INSERT INTO `#__/g
+# change #__events unpublish date back to 2010-04-13 (or later?)
 
 INSERT INTO `#__templates_menu` (`template`, `menuid`, `client_id`) VALUES ('hubbasic',0,0);
 INSERT INTO `#__templates_menu` (`template`, `menuid`, `client_id`) VALUES ('khepri',0,1);
@@ -209,7 +210,7 @@ INSERT INTO `#__xpolls` (`id`, `title`, `voters`, `checked_out`, `checked_out_ti
 
 INSERT INTO `#__xpoll_menu` (`pollid`, `menuid`) VALUES (1,0);
 
-INSERT INTO `#__events` (`id`, `sid`, `catid`, `title`, `content`, `adresse_info`, `contact_info`, `extra_info`, `color_bar`, `useCatColor`, `state`, `mask`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `images`, `reccurtype`, `reccurday`, `reccurweekdays`, `reccurweeks`, `approved`, `announcement`, `ordering`, `archived`, `access`, `hits`, `registerby`, `params`, `restricted`, `email`) VALUES (1,0,9,'HUBzero Released as Open Source','The HUBzero platform that was used to create this site was released as open source during the HUBbub 2010 Workshop.\r\n\r\nIf you\'d like to remove this example event from your calendar, see the instructions at http://hubzero.org/documentation/0.9.0/managers/components.events.','','','http://hubzero.org','',0,1,0,'NOW()',62,'admin','NOW()',62,0,'0000-00-00 00:00:00','NOW()','NOW()','',0,'','','',1,0,0,0,0,0,'0000-00-00 00:00:00',NULL,'','');
+INSERT INTO `#__events` (`id`, `sid`, `catid`, `title`, `content`, `adresse_info`, `contact_info`, `extra_info`, `color_bar`, `useCatColor`, `state`, `mask`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `images`, `reccurtype`, `reccurday`, `reccurweekdays`, `reccurweeks`, `approved`, `announcement`, `ordering`, `archived`, `access`, `hits`, `registerby`, `params`, `restricted`, `email`) VALUES (1,0,9,'HUBzero Released as Open Source','The HUBzero platform that was used to create this site was released as open source during the HUBbub 2010 Workshop.\r\n\r\nIf you\'d like to remove this example event from your calendar, see the instructions at http://hubzero.org/documentation/0.9.0/managers/components.events.','','','http://hubzero.org','',0,1,0,'NOW()',62,'admin','NOW()',62,0,'0000-00-00 00:00:00','NOW()','2010-04-13','',0,'','','',1,0,0,0,0,0,'0000-00-00 00:00:00',NULL,'','');
 
 INSERT INTO `#__events_config` (`param`, `value`) VALUES ('adminmail','');
 INSERT INTO `#__events_config` (`param`, `value`) VALUES ('adminlevel','0');
