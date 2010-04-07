@@ -150,10 +150,6 @@ class ToolsController
 		
 		switch ($table) 
 		{
-			case 'app': 
-				$html .= '<h3>The app table</h3>'.n;
-				$html .= $this->app_display();
-				break;
 			case 'host': 
 				$html .= '<h3>The host table</h3>'.n;
 				$html .= $this->host_display('');
@@ -162,26 +158,16 @@ class ToolsController
 				$html .= '<h3>The hosttype table</h3>'.n;
 				$html .= $this->type_display();
 				break;
-			case 'usertype': 
-				$html .= '<h3>The usertype table</h3>'.n;
-				$html .= $this->type_display();
-				break;
 			default:
 				$html .= '<h3>Select a table to administer:</h3>'.n;
 				$html .= '<ul>'.n;
 				
-				$vars = array('table' => 'app','op' => '');
-				$html .= ' <li>'.ToolsHtml::admlink('app',$vars,'Modify app table', $this->_option).'</li>'.n;
-			
 				$vars['table'] = 'host';
 				$html .= ' <li>'.ToolsHtml::admlink('host',$vars,'Modify host table', $this->_option).'</li>'.n;
 			
 				$vars['table'] = 'hosttype';
 				$html .= ' <li>'.ToolsHtml::admlink('hosttype',$vars,'Modify hosttype table', $this->_option).'</li>'.n;
 			
-				//$vars['table'] = 'usertype';
-				//$html .= ' <li>'.ToolsHtml::admlink('usertype',$vars,'Modify usertype table', $this->_option).'</li>'.n;
-				
 				$html .= '</ul>'.n;
 			break;
 		}
@@ -470,318 +456,6 @@ class ToolsController
 	}
 
 	//----------------------------------------------------------
-	// App
-	//----------------------------------------------------------
-
-	private function app_edit(&$row) 
-	{
-		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
-
-		$html  = '  <tr>'.n;
-		$html .= t.'<form name="insert_app" method="GET" action="index.php">'.n;
-		$html .= t.ToolsHtml::hInput('option',$this->_option);
-		$html .= t.ToolsHtml::hInput('admin',1);
-		$html .= t.ToolsHtml::hInput('table','app');
-		$html .= t.ToolsHtml::hInput('op','update');
-		$html .= t.ToolsHtml::hInput('filter_appname',$row->appname);
-		$html .= '   <td><input type="text" name="appname" size="10" value="'.$row->appname.'" /></td>'.n;
-		$html .= '   <td><input type="text" name="geometry" size="7" value="'.$row->geometry.'" /></td>'.n;
-		$html .= '   <td><input type="text" name="depth" size="3" value="'.$row->depth.'" /></td>'.n;
-		$html .= '   <td><select multiple name="hostreq[]">'.n;
-		$query = "SELECT * FROM hosttype ORDER BY value";
-		$mwdb->setQuery( $query );
-		$result = $mwdb->loadObjectList();
-		$list = array();
-		for($i=0; $i<count($result); $i++) 
-		{
-			$r = $result[$i];
-			if ((int)$r->value & (int)$row->hostreq) {
-				$html .= '    <option selected="selected" value="'.$r->name.'">'.$r->name.'</option>'.n;
-			} else {
-				$html .= '    <option value="'.$r->name.'">'.$r->name.'</option>'.n;
-			}
-		}
-		$html .= '</select></td>'.n;
-		$html .= '<td>&nbsp;</td>'.n;
-		//$html .= '   <td><select multiple name="userreq[]">'.n;
-		//$query = "SELECT * FROM ".$tbl.".usertype ORDER BY value";
-		//$mwdb->setQuery( $query );
-		//$result = $mwdb->loadObjectList();
-		//$list = array();
-		//for($i=0; $i<count($result); $i++) 
-		//{
-		//	$r = $result[$i];
-		//	if ((int)$r->value & (int)$row->userreq) {
-		//		$html .= '    <option selected="selected" value="'.$r->name.'">'.$r->name.'</option>'.n;
-		//	} else {
-		//		$html .= '    <option value="'.$r->name.'">'.$r->name.'</option>'.n;
-		//	}
-		//}
-		//$html .= '</select></td>'.n;
-		$html .= '   <td><input type="text" name="timeout" size="5" value="'.$row->timeout.'" /></td>'.n;
-		$html .= '   <td><input type="text" name="command" value="'.$row->command.'" /></td>'.n;
-		$html .= '   <td><input type="text" name="description" value="'.$row->description.'" /></td>'.n;
-		$html .= '   <td><input type="submit" name="insert" value="Update" /></td>'.n;
-		$html .= t.'<form>'.n;
-		$html .= '  </tr>'.n;
-		return $html;
-	}
-
-	//----------------------------------------------------------
-	
-	private function app_body(&$row) 
-	{
-		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
-
-		$appname     = $row->appname;
-		$geometry    = $row->geometry;
-		$depth       = $row->depth;
-		$hostreq     = $row->hostreq;
-		$userreq     = $row->userreq;
-		$timeout     = $row->timeout;
-		$command     = $row->command;
-		$description = $row->description;
-
-		$vars = array('table' => 'app',
-					  'filter_appname' => $appname,
-					  'op' => 'edit');
-		
-		$html  = ToolsHtml::td( ToolsHtml::admlink($appname,$vars,"Edit $appname", $this->_option) );
-		$html .= ToolsHtml::td( ToolsHtml::admlink($geometry,$vars,"Edit $appname", $this->_option) );
-		$html .= ToolsHtml::td( ToolsHtml::admlink($depth,$vars,"Edit $appname", $this->_option) );
-
-		// HostReq
-		$query = "SELECT * FROM hosttype ORDER BY value";
-		$mwdb->setQuery( $query );
-		$result = $mwdb->loadObjectList();
-		$list = array();
-		for($ui=0; $ui<count($result); $ui++) 
-		{
-			$row = $result[$ui];
-			$val = (int)$row->value & (int)$hostreq;
-			$list[$row->name] = $val;
-		}
-		$hidden = array('option'  => $this->_option,
-						'admin'   => '1',
-						'table'   => 'app',
-						'appname' => $appname,
-						'op'      => 'toggle_hostreq');
-
-		$html .= ToolsHtml::td( ToolsHtml::listedit($list, $hidden) );
-
-		// UserReq
-		$query = "SELECT * FROM usertype ORDER BY value";
-		$mwdb->setQuery( $query );
-		$result = $mwdb->loadObjectList();
-		$list = array();
-		for($ui=0; $ui<count($result); $ui++) 
-		{
-			$row = $result[$ui];
-			$val = (int)$row->value & (int)$userreq;
-			$list[$row->name] = $val;
-		}
-		$hidden = array('option'  => $this->_option,
-						'admin'   => '1',
-						'table'   => 'app',
-						'appname' => $appname,
-						'op'      => 'toggle_userreq' );
-
-		$html .= ToolsHtml::td( ToolsHtml::listedit($list, $hidden) );
-		$html .= ToolsHtml::td( ToolsHtml::admlink($timeout,$vars,"Edit $appname", $this->_option) );
-		$html .= ToolsHtml::td( ToolsHtml::admlink($command,$vars,"Edit $appname", $this->_option) );
-		$html .= ToolsHtml::td( ToolsHtml::admlink($description,$vars,"Edit $appname", $this->_option) );
-
-		// And a button to delete the whole thing.
-		$html .= ToolsHtml::td( ToolsHtml::delete_button('appname', 'app', $appname, $this->_option) );
-		$html .= '  </tr>'."\n";
-		
-		return $html;
-	}
-
-	//----------------------------------------------------------
-
-	private function app_display() 
-	{
-		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
-
-		$op       = (isset($_GET['op'])) ? $_GET['op'] : '';
-		$item     = (isset($_GET['item'])) ? $_GET['item'] : '';
-		$appname  = (isset($_GET['appname'])) ? $_GET['appname'] : '';
-		$geometry = (isset($_GET['geometry'])) ? $_GET['geometry'] : '';
-		$depth    = (isset($_GET['depth'])) ? $_GET['depth'] : '';
-		$hostreq  = (isset($_GET['hostreq'])) ? $_GET['hostreq'] : '';
-		$userreq  = (isset($_GET['userreq'])) ? $_GET['userreq'] : '';
-		$timeout  = (isset($_GET['timeout'])) ? $_GET['timeout'] : '';
-		$command  = (isset($_GET['command'])) ? $_GET['command'] : '';
-		$description = (isset($_GET['description'])) ? $_GET['description'] : '';
-
-		$filter_appname  = (isset($_GET['filter_appname'])) ? $_GET['filter_appname'] : '';
-		$filter_hosttype = (isset($_GET['filter_hosttype'])) ? $_GET['filter_hosttype'] : '';
-		$filter_usertype = (isset($_GET['filter_usertype'])) ? $_GET['filter_usertype'] : '';
-
-		$headers = array('Appname','Geometry','Depth','HostReq','UserReq','Timeout','Command','Description','Action');
-
-		switch($op) 
-		{
-			case 'edit':
-				$query = "SELECT * FROM app WHERE appname='$filter_appname'";
-				$mwdb->setQuery($query);
-				$result = $mwdb->query();
-				$rows = $mwdb->loadObjectList();
-				return $this->table(array(),$headers,'','app_edit',$rows[0]);
-				break;
-
-			case 'toggle_hostreq':
-				echo "<p><b>Toggle hostreq $item in app $appname</b></p>\n";
-				$query = "SELECT @value:=value FROM hosttype WHERE name='$item';
-						  UPDATE app SET hostreq = hostreq ^ @value WHERE appname='$appname'";
-				$mwdb->setQuery($query);
-				if (defined('_JEXEC')) {
-					$result = $mwdb->queryBatch();
-				} else {
-					$result = $mwdb->query_batch();
-				}
-				break;
-			
-			case 'toggle_userreq':
-				echo "<p><b>Toggle userreq $item in app $appname</b></p>\n";
-				$query = "SELECT @value:=value FROM usertype WHERE name='$item';
-						  UPDATE app SET userreq = userreq ^ @value WHERE appname='$appname'";
-				$mwdb->setQuery($query);
-				if (defined('_JEXEC')) {
-					$result = $mwdb->queryBatch();
-				} else {
-					$result = $mwdb->query_batch();
-				}
-				break;
-			
-			case 'update':
-				if ($appname == '') {
-					echo ToolsHtml::error('You must specify an appname.');
-				} else {
-					$harr = array();
-					foreach($hostreq as $name => $value) 
-					{
-						$harr[$value] = 1;
-					}
-					$h = 0;
-					$query = "SELECT name,value FROM hosttype";
-					$mwdb->setQuery($query);
-					$count = $mwdb->query();
-					$rows = $mwdb->loadObjectList();
-
-					for($i=0; $i < count($rows); $i++) 
-					{
-						$row = $rows[$i];
-						if (isset($harr[$row->name])) {
-							$h += $row->value;
-						}
-					}
-
-					$uarr = array();
-					foreach($userreq as $name => $value) 
-					{
-						$uarr[$value] = 1;
-					}
-					$u = 0;
-					$query = "SELECT name,value FROM usertype";
-					$mwdb->setQuery($query);
-					$count = $mwdb->query();
-					$rows = $mwdb->loadObjectList();
-
-					for($i=0; $i < count($rows); $i++) 
-					{
-						$row = $rows[$i];
-						if (isset($uarr[$row->name])) {
-							$u += $row->value;
-						}
-					}
-
-					$query = "SELECT count(*) FROM host WHERE hostname='$hostname'";
-					$mwdb->setQuery($query);
-					$result = $mwdb->query();
-					$count = $mwdb->loadResult();
-					if ($filter_appname != '') {
-						$query = "UPDATE app SET appname='$appname',
-                			  geometry='$geometry', depth=$depth, hostreq=$h, userreq=$u,
-                			  timeout=$timeout, command='$command', description='$description'
-               				   WHERE appname='$filter_appname'";
-					} else {
-						$query = "INSERT INTO
-                			  app(appname,geometry,depth,hostreq,userreq,timeout,command,description) 
-							  VALUES('$appname','$geometry','$depth',$h,$u,$timeout,'$command','$description')";
-					}
-					$mwdb->setQuery($query);
-					$result = $mwdb->query();
-					//$this->check_mysql($mwdb,$result,$query);
-				}
-				break;
-			
-			case 'delete':
-				$query = "DELETE FROM app WHERE appname='$appname'";
-				$mwdb->setQuery($query);
-				$result = $mwdb->query();
-				break;
-		}
-
-		// Form the query and display the app table.
-		if ($filter_appname != '') {
-			echo "<p>Filtering on appname $filter_appname</p>\n";
-			
-			$query = "SELECT * FROM app WHERE appname='$appname_filter'";
-		} else if ($filter_hosttype != '') {
-			echo "<p>Filtering on hosttype $filter_hosttype</p>\n";
-			
-			$query = "SELECT value FROM hosttype WHERE name='$filter_hosttype'";
-			$mwdb->setQuery($query);
-			if (defined('_JEXEC')) {
-				$result = $mwdb->queryBatch();
-			} else {
-				$result = $mwdb->query_batch();
-			}
-			//$this->check_mysql($mwdb,$result,$query);
-			$rows = $mwdb->loadObjectList();
-			$row = $rows[0];
-			$query = "SELECT * FROM app WHERE hostreq & $row->value != 0 ORDER BY appname";
-		} else if ($filter_usertype != '') {
-			echo "<p>Filtering on usertype $filter_usertype</p>\n";
-			
-			$query = "SELECT value FROM usertype WHERE name='$filter_usertype'";
-			$mwdb->setQuery($query);
-			if (defined('_JEXEC')) {
-				$result = $mwdb->queryBatch();
-			} else {
-				$result = $mwdb->query_batch();
-			}
-			//$this->check_mysql($mwdb,$result,$query);
-			$rows = $mwdb->loadObjectList();
-			$row = $rows[0];
-			$query = "SELECT * FROM app WHERE userreq & $row->value != 0 ORDER BY appname";
-		} else {
-			$query = "SELECT * FROM app ORDER BY appname"; 
-		}
-		$mwdb->setQuery($query);
-		if (defined('_JEXEC')) {
-			$result = $mwdb->queryBatch();
-		} else {
-			$result = $mwdb->query_batch();
-		}
-		//$this->check_mysql($mwdb,$result,$query);
-		$rows = $mwdb->loadObjectList();
-		/*for($i=0; $i<count($rows); $i++) 
-		{
-			$row = $rows[$i];
-			echo "$row->name<br />\n";
-		}*/
-		$tail_row = new MiddlewareApp('','640x480','16',-1,-1,86400,'<command>','<edit this>');
-
-		return $this->table( $rows, $headers, 'app_body', 'app_edit', $tail_row );
-	}
-
-	//----------------------------------------------------------
 	// 'type' table entries.
 	//----------------------------------------------------------
 	
@@ -797,16 +471,12 @@ class ToolsController
 		$item  = @$_GET['item'];
 		$description = @$_GET['description'];
 		$filter_hosttype = @$_GET['filter_hosttype'];
-		$filter_usertype = @$_GET['filter_usertype'];
 
 		$headers = array('Name','Bit#','Description','References','Action');
 
 		if ($op == 'users') {
 			if ($table == 'hosttype') {
 				$this->host_display();
-				$this->app_display();
-			} elseif ($table == 'usertype') {
-				$this->app_display();
 			}
 			return;
 		}
@@ -822,7 +492,7 @@ class ToolsController
 				if ($table == 'hosttype') {
 					return $this->table(array(),$headers,'','hosttype_edit',$rows[0]);
 				} else {
-					return $this->table(array(),$headers,'','usertype_edit',$rows[0]);
+					return;
 				}
 				break;
 
@@ -837,8 +507,8 @@ class ToolsController
 				if ($name == '') {
 					echo ToolsHtml::error('You must specify a valid name.');
 				} else {
-					if (($table == 'hosttype' && $filter_hosttype != '') ||
-						($table == 'usertype' && $filter_usertype != '')) {
+					if (($table == 'hosttype' && $filter_hosttype != '') 
+						) {
 						$query = "UPDATE $table SET name='$name', description='$description' WHERE name='$filter_hosttype'";
 						$mwdb->setQuery( $query );
 						$result = $mwdb->query();
@@ -886,7 +556,7 @@ class ToolsController
 		if ($table == 'hosttype') {
 			return $this->table($rows,$headers,'hosttype_body','hosttype_edit',new Hosttype('',-1,''));
 		} else {
-			return $this->table($rows,$headers,'usertype_body','usertype_edit',new Hosttype('',-1,''));
+			return;
 		}
 	}
 	
@@ -904,12 +574,6 @@ class ToolsController
 		$elts = $mwdb->loadObjectList();
 		$elt  = $elts[0];
 		$refs = $elt->count;
-
-		$query = "SELECT count(*) AS count FROM app WHERE hostreq & $value != 0";
-		$mwdb->setQuery( $query );
-		$elts = $mwdb->loadObjectList();
-		$elt  = $elts[0];
-		$refs = $refs + $elt->count;
 
 		return $refs;
 	}
@@ -977,86 +641,6 @@ class ToolsController
 		return $html;
 	}
 
-	//----------------------------------------------------------
-	// Usertype
-	//----------------------------------------------------------
-
-	private function usertype_refs( $value ) 
-	{
-		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
-		
-		$query = "SELECT count(*) as count from app where userreq & $value != 0";
-		$mwdb->setQuery( $query );
-		$elts = $mwdb->loadObjectList();
-		$elt  = $elts[0];
-		$refs = $elt->count;
-		return $refs;
-	}
-
-	//----------------------------------------------------------
-
-	private function usertype_edit( $row ) 
-	{
-		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
-		
-		if ($row->value > 0) {
-			$bit  = log($row->value)/log(2);
-			$refs = $this->usertype_refs($row->value);
-		} else {
-			$bit  = '';
-			$refs = '';
-		}
-
-		return ToolsHtml::updateform('usertype', $bit, $refs, &$row, $this->_option);
-	}
-
-	//----------------------------------------------------------
-
-	private function usertype_body( $row ) 
-	{
-		// Get the middleware database
-		$mwdb =& MwUtils::getMWDBO();
-
-		if ($row->value > 0) {
-			$bit = log($row->value)/log(2);
-		} else {
-			$bit = '';
-		}
-
-		$vars = array('table' => 'usertype',
-					  'op' => 'edit',
-					  'item' => "$row->name",
-					  'filter_usertype' => "$row->name");
-		
-		$refs = $this->usertype_refs($row->value);
-		
-		$html  = '  <tr>'."\n";
-		$html .= ToolsHtml::td( ToolsHtml::admlink($row->name,$vars,"Edit $row->name", $this->_option) );
-		$html .= ToolsHtml::td( $bit );
-		$html .= ToolsHtml::td( ToolsHtml::admlink($row->description,$vars,"Edit $row->name", $this->_option) );
-		$html .= ToolsHtml::td( $refs );
-		$html .= '   <td>'.n;
-		$html .= t.'<form name="'.$row->name.' users" method="get" action="index.php">'.n;
-		$html .= t.ToolsHtml::hInput('option',$this->_option);
-		$html .= t.ToolsHtml::hInput('admin',1);
-		$html .= t.ToolsHtml::hInput('table','usertype');
-		$html .= t.ToolsHtml::hInput('item',$row->name);
-		if ($refs > 0) {
-			$html .= t.ToolsHtml::hInput('op','users');
-			$html .= t.ToolsHtml::hInput('filter_usertype',$row->name);
-			$html .= t.ToolsHtml::sInput('users','Show Uses');
-		} else {
-			$html .= t.ToolsHtml::hInput('op','delete');
-			$html .= t.ToolsHtml::sInput('delete','Delete');
-		}
-		$html .= t.'</form>'.n;
-		$html .= '   </td>'.n;
-		$html .= '  </tr>'.n;
-		return $html;
-	}
-	
 	//-----------
 
 	protected function cancel()
