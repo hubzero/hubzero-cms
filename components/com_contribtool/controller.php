@@ -2046,8 +2046,8 @@ class ContribtoolController extends JObject
 		$xhub   =& XFactory::getHub();
 		$database =& JFactory::getDBO();
 		$pw 	= $xhub->getCfg('hubLDAPSearchUserPW');
-		$scriptdir = isset($this->config->parameters['addrepo_dir']) ? $this->config->parameters['addrepo_dir'] : DS.'opt'.DS.'addrepo';
-		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
+		$scriptdir = '/usr/lib/hubzero/addreo';
+		$ldap = 0;
 		
 		// Create a Tool object
 		$obj = new Tool( $database );
