@@ -1758,99 +1758,6 @@ CREATE TABLE IF NOT EXISTS `#__tool_licenses` (
 # --------------------------------------------------------
 
 #
-# Table structure for `#__element_urls`
-#
-CREATE TABLE IF NOT EXISTS element_urls (
-   `elementid` int(11) NOT NULL,
-   `url` varchar(240) UNIQUE NOT NULL
-) TYPE=MyISAM CHARACTER SET `utf8`;
-
-# --------------------------------------------------------
-
-#
-# Table structure for `#__elements`
-#
-CREATE TABLE IF NOT EXISTS elements (
-   `id` int(11) UNIQUE AUTO_INCREMENT NOT NULL,
-   `type` int(11) NOT NULL,
-   `title` varchar(255) UNIQUE NOT NULL,
-   `url` varchar(255) NOT NULL,
-   `resourceid` int(11) UNIQUE
-) TYPE=MyISAM CHARACTER SET `utf8`;
-
-# --------------------------------------------------------
-
-#
-# Table structure for `#__element_hierarchy`
-#
-CREATE TABLE IF NOT EXISTS element_hierarchy (
-   `id` int(11) NOT NULL,
-   `parentid` int(11) NOT NULL
-) TYPE=MyISAM CHARACTER SET `utf8`;
-
-# --------------------------------------------------------
-
-#
-# Table structure for `#__element_categories`
-#
-CREATE TABLE IF NOT EXISTS  element_categories (
-   `type` int(11) UNIQUE AUTO_INCREMENT NOT NULL,
-   `label` varchar(100) NOT NULL
-) TYPE=MyISAM CHARACTER SET `utf8`;
-
-# --------------------------------------------------------
-
-#
-# Table structure for `#__element_types`
-#
-CREATE TABLE IF NOT EXISTS element_types (
-   `type` int(11) UNIQUE AUTO_INCREMENT NOT NULL,
-   `label` varchar(100) NOT NULL,
-   `categoryid` int(11)
-) TYPE=MyISAM CHARACTER SET `utf8`;
-
-# --------------------------------------------------------
-
-#
-# Table structure for `#__element_rollup_pages`
-#
-CREATE TABLE IF NOT EXISTS element_rollup_pages (
-   `id` int(11) UNIQUE AUTO_INCREMENT NOT NULL,
-   `elementid` int NOT NULL,
-   `year` smallint NOT NULL,
-   `month` smallint NOT NULL,
-   `pageviews` int,
-   `for` char(1)
-) TYPE=MyISAM CHARACTER SET `utf8`;
-
-# --------------------------------------------------------
-
-#
-# Table structure for `#__element_rollup_users`
-#
-CREATE TABLE IF NOT EXISTS element_rollup_users (
-   `rollupid` int NOT NULL,
-   `year` smallint NOT NULL,
-   `month` smallint NOT NULL,
-   `period` smallint NOT NULL,
-   `count` int,
-   `exact` boolean,
-   `category` varchar(4) NOT NULL
-) TYPE=MyISAM CHARACTER SET `utf8`;
-
-# --------------------------------------------------------
-
-#
-# Table structure for `#__element_rollup_user_categories`
-#
-CREATE TABLE IF NOT EXISTS element_rollup_user_categories (
-   `code` varchar(4) UNIQUE NOT NULL,
-   `label` varchar(100) NOT NULL
-) TYPE=MyISAM CHARACTER SET `utf8`;
-
-# --------------------------------------------------------
-
-#
 # Table structure for `ipusers`
 #
 CREATE TABLE IF NOT EXISTS ipusers (
@@ -3700,3 +3607,26 @@ CREATE TABLE `#__jobs_admins` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `#__trac_project` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__trac_user_permission` (
+  `id` int(11) NOT NULL auto_increment,
+  `user_id` int(11) default NULL,
+  `action` varchar(255) default NULL,
+  `trac_project_id` int(11) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `trac_action` USING BTREE (`user_id`,`action`,`trac_project_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ CREATE TABLE `#__trac_group_permission` (
+  `id` int(11) NOT NULL auto_increment,
+  `group_id` int(11) NOT NULL,
+  `action` varchar(255) NOT NULL,
+  `trac_project_id` int(11) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `trac_action` USING BTREE (`group_id`,`action`,`trac_project_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
