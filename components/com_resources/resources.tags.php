@@ -159,16 +159,19 @@ class ResourcesTags extends Tags
 				break;
 			}
 			$query .= "FROM #__resources AS C ";
-			if ($type == 7) {
-				$query .= " JOIN #__tool AS TL ON C.alias=TL.toolname JOIN #__tool_version as TV on TV.toolid=TL.id AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolid=TL.id AND TV.state=1 GROUP BY TV.toolid) ";
-				if (!empty($filterby)) {
-					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
-				}
-			}
-			//$query .= "LEFT JOIN #__resource_stats AS s ON s.resid=C.id AND s.period=12 ";
 			if ($id) {
 				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
 			}
+			if ($type == 7) {
+				//$query .= " JOIN #__tool AS TL ON C.alias=TL.toolname JOIN #__tool_version as TV on TV.toolid=TL.id AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolid=TL.id AND TV.state=1 GROUP BY TV.toolid) ";
+				if (!empty($filterby)) {
+					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
+				}
+				$query .= ", #__tool_version as TV ";
+			}
+			/*if ($id) {
+				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
+			}*/
 			$query .= ", $this->_obj_tbl AS RTA INNER JOIN #__tags AS TA ON (RTA.tagid = TA.id) ";
 		} else {
 			$query  = "SELECT C.id,  ";
@@ -187,15 +190,14 @@ class ResourcesTags extends Tags
 				break;
 			}
 			$query .= "FROM #__resources AS C ";
+			if ($id) {
+				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
+			}
 			if ($type == 7) {
-				$query .= " JOIN #__tool AS TL ON C.alias=TL.toolname JOIN #__tool_version as TV on TV.toolid=TL.id AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolid=TL.id AND TV.state=1 GROUP BY TV.toolid) ";
 				if (!empty($filterby)) {
 					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
 				}
-			}
-			//$query .= "LEFT JOIN #__resource_stats AS s ON s.resid=C.id AND s.period=12 ";
-			if ($id) {
-				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
+				$query .= ", #__tool_version as TV ";
 			}
 		}
 		
@@ -203,7 +205,9 @@ class ResourcesTags extends Tags
 		if ($type) {
 			$query .= "AND C.type=".$type." ";
 		}
-		
+		if ($type == 7) {
+			$query .= " AND TV.toolname=C.alias AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolname=C.alias AND TV.state=1 GROUP BY TV.toolid) ";
+		}
 		if (!empty($filterby) && $type == 7) {
 			$fquery = " AND ((";
 			for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
@@ -259,7 +263,29 @@ class ResourcesTags extends Tags
 		$query .= " ORDER BY ".$sort.", publish_up";
 		//echo '<!-- '.$query.' -->';
 		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
+		$rows = $this->_db->loadObjectList();
+		
+		/*if ($rows) {
+			if (!empty($filterby) && $type == 7) {
+				$results = array();
+				foreach ($rows as $key => $row)
+				{
+					$inc = false;
+					for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
+					{
+						if (isset($row->$filterby[$i]) && $row->$filterby[$i] == 1) {
+							$inc = true;
+						}
+					}
+					if ($inc) {
+						$results[] = $row;
+					}
+				}
+				$rows = $results;
+			}
+		}*/
+		
+		return $rows;
 	}
 	
 	//-----------
