@@ -59,13 +59,6 @@
   </Quotes>
   <Resources>
  	<Resource>
- 		<rid>1497</rid>
- 		<alias>biomoca</alias>
- 		<rTitle>BioMOCA</rTitle>
- 		<category>tools</category>
- 		<tagline>Transport Monte Carlo simulation</tagline>
- 		<body>The BioMOCA code has progressed steadily to become a flexible tool for investigation of ionic transport that can be used as a complement of more expensive Molecular Dynamics simulations.</body>
- 		<ima>biomoca.jpg</ima>
  	</Resource>
   </Resources>
  </flashdata>
