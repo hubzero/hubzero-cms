@@ -107,7 +107,8 @@ class JobsController extends JObject
 		// Load the component config
 		$component =& JComponentHelper::getComponent( $this->_option );
 		if (!trim($component->params)) {
-			return $this->abort();
+			$this->_redirect = '/';
+			return;
 		} else {
 			$config =& JComponentHelper::getParams( $this->_option );
 		}
