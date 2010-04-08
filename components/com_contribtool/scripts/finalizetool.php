@@ -379,8 +379,8 @@ if {![file exists $invokescript]} {
     puts "== WARNING: Missing middleware/invoke script."
     if {[catch {
         set fid [open $invokescript w]
-        puts $fid "#!/bin/bash"
-        puts $fid "/apps/rappture/invoke_app $@ -t $project"
+        puts $fid "#!/bin/sh\n"
+        puts $fid "/apps/rappture/invoke_app \"$@\" -t $project"
         close $fid
         file attributes $invokescript -permissions ugo+rx
     } result] == 0} {
