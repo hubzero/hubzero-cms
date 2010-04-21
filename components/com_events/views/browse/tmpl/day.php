@@ -109,7 +109,7 @@ if (count($this->rows) > 0) {
 			<ul class="events">
 				<li>
 					<dl class="event-details">
-						<dt><?php echo JHTML::_('date',$his->year.'-'.$this->month.'-'.$this->day.' 00:00:00', '%d %b, %Y'); ?></dt>
+						<dt><?php echo JHTML::_('date',$this->year.'-'.$this->month.'-'.$this->day.' 00:00:00', '%d %b, %Y'); ?></dt>
 					</dl>
 					<div class="ewrap">
 						<ul class="events">
