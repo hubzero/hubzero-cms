@@ -390,10 +390,18 @@ class SupportController extends JObject
 		$view->comments = $sc->getComments( $view->authorized, $view->row->id );
 
 		// Parse comment text for attachment tags
-		$xhub =& XFactory::getHub();
+		$juri =& JURI::getInstance();
+		
+		$webpath = str_replace('//','/',$juri->base().$this->config->parameters['webpath'].DS.$id);
+		if (isset( $_SERVER['HTTPS'] )) {
+			$webpath = str_replace('http:','https:',$webpath);
+		}
+		if (!strstr( $webpath, '://' )) {
+			$webpath = str_replace(':/','://',$webpath);
+		}
 		
 		$attach = new SupportAttachment( $this->database );
-		$attach->webpath = $xhub->getCfg('hubLongURL').$this->config->parameters['webpath'].DS.$id;
+		$attach->webpath = $webpath;
 		$attach->uppath  = JPATH_ROOT.$this->config->parameters['webpath'].DS.$id;
 		$attach->output  = 'web';
 		for ($i=0; $i < count($view->comments); $i++) 
