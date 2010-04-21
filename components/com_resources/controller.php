@@ -894,7 +894,7 @@ class ResourcesController extends JObject
 		// Build the HTML of the "about" tab
 		if ($resource->type == 7 && $resource->alias && !$no_html && strtolower($tab) == 'about') {	
 			// Tool page view
-			$body = ResourcesHtml::abouttool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $thistool, $curtool, $alltools, $revision, $params, $attribs, $this->_option, $fsize );
+			$body = ResourcesHtml::abouttool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $thistool, $curtool, $alltools, $resource->revision, $params, $attribs, $this->_option, $fsize );
 		} else if (strtolower($tab) == 'about') {
 			// Default view of about tab
 			$body = ResourcesHtml::aboutnontool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $params, $attribs, $this->_option, $fsize );
