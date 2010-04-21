@@ -147,7 +147,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			// Get the associations
 			$assoc = new CitationsAssociation( $this->database );
 			$assocs = $assoc->getRecords( array('cid'=>$cite->id) );
-			
+
 			$html .= ' <li>'."\n";
 			//$html .= CitationsFormatter::formatReference( $cite, $cite->url );
 			$html .= $formatter->formatReference($cite, $this->filters['search']);

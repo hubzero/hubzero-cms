@@ -135,8 +135,8 @@ class CitationsCitation extends JTable
 		$query = "";
 		if ($admin) {
 			if (isset($filter['search'])) {
-				$query .= " WHERE r.published=1 AND (r.title LIKE '%".$filter['search']."%'";
-				$query .= " OR r.author LIKE '%".$filter['search']."%'";
+				$query .= " WHERE r.published=1 AND (r.title LIKE '%".strtolower($filter['search'])."%'";
+				$query .= " OR LOWER(r.author) LIKE '%".strtolower($filter['search'])."%'";
 				if (is_numeric($filter['search'])) {
 					$query .= " OR r.id=".$filter['search'];
 				}
@@ -165,7 +165,11 @@ class CitationsCitation extends JTable
 				$query .= " AND r.year='".$filter['year']."'";
 			}
 			if (isset($filter['search']) && $filter['search']!='') {
-				$query .= ($filter['search']) ? " AND (LOWER(r.title) LIKE '%".strtolower($filter['search'])."%' OR LOWER(r.journal) LIKE '%".strtolower($filter['search'])."%')" : "";
+				$query .= ($filter['search']) 
+						? " AND (LOWER(r.title) LIKE '%".strtolower($filter['search'])."%' 
+							OR LOWER(r.journal) LIKE '%".strtolower($filter['search'])."%' 
+							OR LOWER(r.author) LIKE '%".strtolower($filter['search'])."%')" 
+						: "";
 			}
 			if (isset($filter['reftype'])) {
 				if ((isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1)
@@ -391,11 +395,12 @@ class CitationsCitation extends JTable
 	{
 		$ca = new CitationsAssociation( $this->_db );
 		
-		$sql = "SELECT c.*"
-			 . "\n FROM $this->_tbl AS c, $ca->_tbl AS a"
-			 . "\n WHERE c.published=1 AND a.table='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id"
-			 . "\n ORDER BY affiliated ASC, year DESC";
-	
+		$sql = "SELECT DISTINCT c.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string 
+				FROM $this->_tbl AS c 
+				LEFT JOIN #__citations_secondary as CS ON c.id=CS.cid, $ca->_tbl AS a 
+				WHERE c.published=1 AND a.table='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id 
+				ORDER BY affiliated ASC, year DESC";
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
@@ -453,6 +458,7 @@ class CitationsAssociation extends JTable
 	{
 		$query = "";
 		
+		$ands = array();
 		if (isset($filters['cid']) && $filters['cid'] != 0) {
 			$ands[] = "r.cid='".$filters['cid']."'";
 		}
@@ -469,7 +475,8 @@ class CitationsAssociation extends JTable
 			$ands[] = "r.table='".$filters['table']."'";
 		}
 		if (count($ands) > 0) {
-			$query .= " WHERE r.published=1 ";
+			//$query .= " WHERE r.published=1 AND ";
+			$query .= " WHERE ";
 			$query .= implode(" AND ", $ands);
 		}
 		if (isset($filters['sort']) && $filters['sort'] != '') {
@@ -497,7 +504,7 @@ class CitationsAssociation extends JTable
 	public function getRecords( $filters=array() ) 
 	{
 		$query  = "SELECT * FROM $this->_tbl AS r" . $this->buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
