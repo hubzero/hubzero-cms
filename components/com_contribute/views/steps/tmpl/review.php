@@ -44,7 +44,7 @@ $params->merge( $rparams );
 <?php
 
 if ($this->progress['submitted'] == 1) {
-	if ($params->get('license') == 'cc') {
+	if (substr($params->get('license'), 0, 2) == 'cc') {
 		/*?>
 		<p>This resource is licensed under the <a class="popup" href="legal/cc/">Creative Commons 2.5</a> license recommended by <?php echo $hubShortName; ?>. 
 		The <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/2.5/">license terms</a> support 
