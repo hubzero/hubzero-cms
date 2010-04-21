@@ -908,6 +908,9 @@ class ResourcesHtml
 					$cite->url = '';
 					$cite->type = '';
 					$cite->author = $helper->ul_contributors;
+					if ($resource->doi) {
+						$cite->doi = $config->get('doi').'r'.$resource->id.'.'.$resource->doi;
+					}
 					
 					if ($params->get('show_citation') == 2) {
 						$citations = '';
@@ -1059,8 +1062,7 @@ class ResourcesHtml
 		}
 		
 		$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
-		$maintext = str_replace('&amp;','&',$maintext);
-		$maintext = str_replace('&','&amp;',$maintext);
+		$maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
 		$maintext = str_replace('<blink>','',$maintext);
 		$maintext = str_replace('</blink>','',$maintext);
 		
@@ -1130,6 +1132,9 @@ class ResourcesHtml
 					$cite->url = '';
 					$cite->type = '';
 					$cite->author = $helper->ul_contributors;
+					if ($revision != 'dev' && $resource->doi) {
+						$cite->doi = $config->get('doi').'r'.$resource->id.'.'.$resource->doi;
+					}
 					
 					if ($params->get('show_citation') == 2) {
 						$citations = '';
@@ -1303,8 +1308,7 @@ class ResourcesHtml
 		// Clean out any extra whitespace
 		$maintext = trim($maintext);*/
 		$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
-		$maintext = str_replace('&amp;','&',$maintext);
-		$maintext = str_replace('&','&amp;',$maintext);
+		$maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
 		$maintext = str_replace('<blink>','',$maintext);
 		$maintext = str_replace('</blink>','',$maintext);
 		
