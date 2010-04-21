@@ -70,6 +70,12 @@ class XForum extends JTable
 		if (isset($filters['parent']) && $filters['parent'] != 0) {
 			$query .= "c.parent=".$filters['parent']." OR c.id=".$filters['parent']." ORDER BY c.created ASC";
 		} else {
+			if (isset($filters['state'])) {
+				$query .= "c.state=".$filters['state']." AND ";
+			}
+			if (isset($filters['sticky']) && $filters['sticky'] != 0) {
+				$query .= "c.sticky=".$filters['sticky']." AND ";
+			}
 			if (isset($filters['group']) && $filters['group'] != 0) {
 				$query .= "c.group=".$filters['group']." AND ";
 			}
