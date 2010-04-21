@@ -81,8 +81,8 @@ class plgResourcesSupportingDocs extends JPlugin
 		
 		// Initiate a resource helper class
 		$helper = new ResourcesHelper( $resource->id, $database );
-		$excludeFirstChild = $resource->type == 7 ? 0 : 1;
-		$helper->getChildren( $resource->id, 0, 'all', $excludeFirstChild );
+		//$excludeFirstChild = $resource->type == 7 ? 0 : 1;
+		$helper->getChildren( $resource->id, 0, 'all', 0 );
 		
 		$config =& JComponentHelper::getParams( $option );
 
