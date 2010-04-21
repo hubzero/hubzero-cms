@@ -33,31 +33,25 @@
 		float:right;
 	}
 	.wish_outstanding  {
-		/*background: url("images/wish_open.gif") right no-repeat; padding:0.1em;*/
 		background: url("images/wishbone.png") right no-repeat; padding:0.1em;
 		margin:0;
 	}
 	.wish_granted {
-		/*background: url("images/wish_granted.gif") right no-repeat; padding:0.1em;*/
 		background: url("images/wishbone_granted.png") right no-repeat; padding:0.1em;
 		margin:0;
 	}
 	.wish_unranked {
-		/*background: url("images/wish_new.gif") right no-repeat; padding:0.1em;*/
 		background: url("images/wishbone_new.png") right no-repeat; padding:0.1em;
 		margin:0;
 	}
 	.wish_urgent {
-		/*background: url("images/wish_urgent.gif") right no-repeat; padding:0.1em;*/
 		background: url("images/wishbone_urgent.png") right no-repeat; padding:0.1em;
 		margin:0;
 	}
 	.wish_burning {
-		/*background: url("images/wish_burning.gif") right no-repeat; padding:0.1em;*/
 		background: url("images/wishbone_burning.png") right no-repeat; padding:0.1em;
 		margin:0;
-	}
-	
+	}	
 	.open, .pending, .pending a, .rejected, .rejected a, .wishranking span.rejected {
 		color:#FF0000;
 		background:#fcf5f5;
@@ -84,8 +78,7 @@
 	}
 	
 	/*---------------------------*/
-	/* wish item */
-	
+	/* wish item */	
 	
 	#wishitem {
 		background: url("images/bg_overview.gif") bottom repeat-x; 
@@ -94,17 +87,14 @@
 		border-top:2px solid #e3e3e3;
 		border-bottom:2px solid #e3e3e3;
 		text-align:left;
-		padding-left:0.5em;
-		
-	}
-	
+		padding-left:0.5em;		
+	}	
 	.privatewish {
 		background: url("images/privatewish.gif") 0 0 no-repeat; margin-bottom:-0.5em; margin-top:-0.5em;padding-top:0.5em;padding-bottom:0.5em;
 	}
 	.wishcontent {
 		color:#444; display:block; margin-top:-0.8em; margin-left:0; overflow:visible; position:relative; margin-right:3em;
-	}
-	
+	}	
 	#wishitem h3 {
 		margin:0;
 		padding-left:42px;
@@ -126,37 +116,13 @@
 		color:#999999;
 		background:#FCFFFF;
 		font-weight:normal;
-	}
-	#topstatusbar span {
-		
-	}
-	.noborder {
-		border:none;
-	}
-	
+	}	
 	#wishitem h3.wish_outstanding {
 		background-position: 10px 0;
 	}
 	.wishcontentarea p {
 		padding-left:22px;
 	}
-	/*
-	.regview p {
-		padding-left:0;
-	}
-	
-	#wishitem .regview h3 {
-		margin-top:1em;
-		margin-bottom:1em;
-		font-size:100%;
-		color:#333;
-		font-weight:600;
-		background-position: left;
-	}
-	#wishitem .regview h3.wish_granted {
-		background-position: -35px 0; padding-left:35px;
-	}*/
-	
 	.wishranking {
 		float:left;
 		width:120px;
@@ -175,10 +141,16 @@
 		display:block;
 		color:#666666;
 	}
-	.wishlist_return
-	{ background: url("images/wishbone.png") 0 0  no-repeat; padding: 0 0 1em 2em; }
+	.wishlist_return { background: url("images/wishbone.png") 0 0  no-repeat; padding: 0 0 1em 2em; }
 	.wishlist_controls {
-		border:none; background:#f6fcf3; color:#666666;border-top:1px solid #dedede; border-bottom:1px solid #dedede; margin:1em 0 0 0; padding:0.5em; position: relative;
+		border:none; 
+		background:#f6fcf3; 
+		color:#666666;
+		border-top:1px solid #dedede; 
+		border-bottom:1px solid #dedede; 
+		margin:1em 0 0 0; 
+		padding:0.5em; 
+		position: relative;
 	}
 	fieldset .wishlist_controls {
 	 	width:inherit;
@@ -191,19 +163,15 @@
 	a.rankit {
 		color:red;
 		border-bottom-color:#FF3333;
-	}
-	
+	}	
 	.votingarea, .rankingarea, .consensusarea {
 		margin: 0 0 0 0;
 		border: none;
 		float: left;
-		/*width: 30.5%;	*/
 		width:25%;	
 		padding: 0 2% 0 0;
 		text-align: left;
-		display:block;
-		
-		
+		display:block;		
 	}
 	.rankingarea label {	
 		display:block;
@@ -241,15 +209,13 @@
 	}
 	.votingarea {
 		width:38%;
-	}
-	
+	}	
 	.narrow .votingarea {
 		width:45%;
 	}
 	.narrow .consensusarea {
 		width:35%;
-	}
-	
+	}	
 	.wishranking span.priority_number {
 		font-weight:bold;
 		display:inline;
@@ -258,11 +224,9 @@
 	.wishlist_controls .spacious {
 	 	margin-left:1em;
 	  	margin-right:1em;
-	}
-	
+	}	
 	a.wishtitle {
-		font-weight:500;
-		
+		font-weight:500;		
 	}
 	.wishranked {
 		float:right;
@@ -276,14 +240,11 @@
 		margin-bottom:0;
 		width:480px;
 		border-left:1px solid #dedede;
-		text-align:center;
-		
+		text-align:center;		
 	}
 	.narrow {
 		width:360px;
-	}
-	
-	
+	}	
 	.wishpriority {
 		display: block;
 		color:#000000;
@@ -296,8 +257,7 @@
 		font-weight:normal;
 		color:#666666;
 		size:x-small;
-	}
-	
+	}	
 	.wishranked h4 {
 		color:#999999;
 	}
@@ -306,7 +266,6 @@
 		margin-bottom:0;
 		padding:0;
 	}
-
 	#section-comments h3 a.expand, #section-plan h3 a.expand {
 		background:  url("../com_contribtool/images/showcontrols.gif") -3px 3px no-repeat; border:0;
 		padding:0 0.5em 0 0.5em;
@@ -319,12 +278,10 @@
 		margin-bottom:0.5em;
 		padding-bottom:0.3em;
 		border-bottom:2px solid #dedede;		
-	}
-	
+	}	
 	.collapsed {
 		display:none;
-	}
-	
+	}	
 	.wishpriority span.due a {
 		margin-left:1em;
 		color:#000;
@@ -348,9 +305,10 @@
 		position:absolute;
 		display:block;
 	}
-
 	.wishcontentarea {
-		float:left;margin-right:-3em;width:50%;
+		float:left;
+		margin-right:-4em; 
+		width:45%;
 	}
 	.regview {
 		width:60%;
@@ -367,13 +325,12 @@
 		margin-top:2em;
 	}
 	.com_wishlist .votinghints span {
-			width:200px !important;	
-			
+		width:200px !important;				
 	}
 	.com_wishlist .votinghints span a {
-			font-size:x-small !important;
-			padding-bottom:0.1em !important;
-			padding-top:0.1em !important;
+		font-size:x-small !important;
+		padding-bottom:0.1em !important;
+		padding-top:0.1em !important;
 	}
 	.proposed {
 		font-size:80%;margin:0;color:#666666;margin-top:-1em;padding:0.3em;margin-right:1em;
@@ -393,14 +350,12 @@
 		margin-bottom:0;
 		padding-bottom:0;
 	}
-
 	.mini h3 {
 		font-size:1em;
 	}
 	span.mini {
 		font-size:90%;
-	}
-	
+	}	
 	.or {
 		padding: 0 1em 0 1em; font-style:italic;
 	}
@@ -409,8 +364,7 @@
 		background:#f0f7f1;
 		border-top:1px dashed #6f8d72;
 		border-bottom:1px dashed #6f8d72;
-		margin-top:1em;
-		
+		margin-top:1em;		
 	}
 	.plannote {
 		float:right;
@@ -430,18 +384,17 @@
 		padding-left: 0;
 		background: transparent;
 		position: relative; 
-		}
+	}
 	ol.comments > li {
 		clear: left;
 		margin: 0;
 		padding: 0 0 1em 105px;
 		min-height: 8em;
-		}
+	}
 	#wishlist  ol li, #wishlist li {
 		padding-left:90px;
 		padding-top:2em;
 	}
-
 	#wishlist > li {
 		border-bottom: 2px solid #dedede;
 		min-height: 4em;	
@@ -457,13 +410,12 @@
 		padding-left:  90px;
 		margin-left:0;
 		border-top: 1px dotted #ccc;
-		}
+	}
 	#wishlist ol, ol.comments {
 		margin:0;
 		margin-top: 1em;
 		margin-bottom: 0;
-		}
-	
+	}	
 	.com_wishlist ol.comments dl.comment-details,  #wishlist dl.comment-details {
 	    float: left;
 	    margin: 1em 0 1em -90px !important;
@@ -472,25 +424,22 @@
 	    color: #777;
 	    font-size: 11px;
 	    text-align: right;
-		}
-	#wishlist dl.comment-details {
-	  
+	}
+	#wishlist dl.comment-details {	  
 	    margin: -1em 20px 1em -45px !important;
 	    padding: 0;
-		width: 45px;
-	  	
-		}
+		width: 45px;  	
+	}
 	ol.pass2 dl.comment-details {
 		margin-top:0;
-		}
+	}
 	ol.comments dl.comment-details dt, #wishlist  dl.comment-details dt {
 		font-weight: bold;
 		color: #777;
 		margin: 0;
 		text-align: right;
-		padding: 3px 0 1em 0;
-	
-		}
+		padding: 3px 0 1em 0;	
+	}
 	ol.comments dl.comment-details dt span, #wishlist dl.comment-details dt span {
 		margin: 0;
 		padding: 0;
@@ -499,41 +448,38 @@
 		height: 15px;
 		overflow: hidden;
 		text-indent: -55em;
-		
-		}
-	#wishlist dl.comment-details dt span {
-		
+	}
+	#wishlist dl.comment-details dt span {		
 		width: 45px;
-		}
-
+	}
 	ol.comments dl.comment-details dt span span {
 		display: none;
-		}
+	}
 	#wishlist .name {
 		color: #777;
 		font-size: 12px;
-		}
+	}
 	ol.comments li.author dl.comment-details dt a,
 	ol.comments li.author dl.comment-details dt a:link,
 	ol.comments li.author dl.comment-details dt a:visited,
 	ol.comments li.author dl.comment-details dt a:active {
 		color:  #FF54AC;
-		}
+	}
 	ol.comments li.author dl.comment-details dt a:hover {
 		color: #ff6600;
-		}
+	}
 	ol.comments li dl.comment-details dt a.comment-counter:link,
 	ol.comments li dl.comment-details dt a.comment-counter:visited,
 	ol.comments li dl.comment-details dt a.comment-counter:active {
 		color: #999 !important;
-		}
+	}
 	ol.comments li dl.comment-details dt a.comment-counter:hover {
 		color: #ff6600 !important;
-		}
+	}
 	ol.comments li p.comment-content-object-link {
 		font-style: italic;
 		color: #999;
-		}
+	}
 	.plaincomment {
 		background: url("images/comment.gif") right top no-repeat;
 	}
@@ -553,8 +499,7 @@
 		margin:0;
 		margin-left:-0.2em;
 		padding:0.2em;
-		
-		}
+	}
 	.comwrap {
 		margin-left:2em;
 	}
@@ -565,7 +510,7 @@
 		margin-right: 1em;
 		font-size:90%;
 		color: #888;
-		}
+	}
 	.com_wishlist .comment-options a:hover {
 		border-bottom:1px solid #333;
 		color:#333;
@@ -577,7 +522,7 @@
 	.addcomment label {
 		display: block;
 		margin:0.8em 0;
-		}
+	}
 	.addcomment div label {
 		display:inline;
 	}
@@ -589,7 +534,7 @@
 		margin-left: 2em;
 		background:#f8f7f7;
 		border:1px solid #f0efef;
-		}
+	}
 	.addcomment {
 		background:#f8f7f7;
 		border:1px solid #f0efef;
@@ -617,8 +562,7 @@
 		color:#333333;
 		padding:0.2em;
 		font-size:x-small;
-	}
-	
+	}	
 	.say_yes, .say_no {
 		padding: 0 0.5em 0 0.5em;
 		font-size:80%;
@@ -627,8 +571,7 @@
 	}
 	.say_yes {
 		background:#e3f3e4;
-		border:1px solid #268d2d;
-		
+		border:1px solid #268d2d;		
 	}
 	.say_no {
 		background:#f6e8e8;
@@ -691,14 +634,10 @@
 		color:#666666;
 		font-style:italic;
 		font-size:x-small;
-	}
-	
-	
+	}	
 	.adjust {
-		margin-top:-1em;
-	
-	}
-	
+		margin-top:-1em;	
+	}	
 	.note_total {
 		font-size:x-small;
 		color:#666666;
@@ -723,18 +662,16 @@
 	}
 
 /*---------------------------------------------------------------
-	Bonuses
----------------------------------------------------------------*/
-	
+	Ranking section
+---------------------------------------------------------------*/	
 	.ensemble_left {
 		float:left;
-		width:55%;
+		width:48%;
 		margin-left:-2em;
 		margin-top:0;
 		position:relative;
 	 	overflow:visible;
-		margin-right:-2em;	
-		
+		margin-right:-4em;			
 	}
 	.ensemble_right {
 		float:right;
@@ -743,8 +680,7 @@
 		margin-left:-3em;
 		position:relative;
 	 	overflow:visible;			
-	}
-	
+	}	
 	.thumbsvote {
 	 	position:relative;
 	 	overflow:visible;	
@@ -754,14 +690,11 @@
 		position:relative;
 		left:-100px;
 		margin-right:-2em;
-	}
-	
+	}	
 	.com_wishlist .votingarea .thumbsvote {
-	
 		float:none !important;
 		margin:0.5em 0 0 0 !important;
 		padding:0 !important;
-
 	}
 	.assign_bonus {
 		float:right; 
@@ -773,14 +706,12 @@
 		width:60px;	
 		position:relative;
 		overflow:visible;	
-	}
-	
+	}	
 	.bonus_note {
 		position:absolute;
 		right:40px;
 		overflow:visible;
-		margin-top:-1.3em;
-	
+		margin-top:-1.3em;	
 	}
 	.addbonus, .takeaction, .moveitem {	
 		margin: 1.5em 0;
@@ -806,19 +737,16 @@
 		border-bottom: 2px solid #EFEAC2;
 		width:55%;
 		margin: 0.5em 0 1.5em 0;
-		padding-bottom:0.5em;
-		
+		padding-bottom:0.5em;		
 	}
 	.addbonus h4, .takeaction h4 {
 		color:#000;
-	}
-	
+	}	
 	.addbonus .aside_note, .takeaction .aside_note {
 		color:#9c7d66;
 		margin:0;
 		width:35%;
-	}
-	
+	}	
 	.help .aside_note {
 		margin:0;
 		width:35%;
@@ -827,7 +755,6 @@
 		background: url("images/moneybag.png") 0 0 no-repeat;
 		margin: 0;
 		padding-left: 0;
-		/*padding-bottom:30px;*/
 		padding-top:28px;
 		padding-right:15px;
 		padding-left:2px;
@@ -837,7 +764,7 @@
 		font-weight:bold;
 		position:relative;
 		overflow:visible;	
-		}
+	}
 	.nobonus, .bonus_inactive {
 		background: url("images/moneybag_empty.png") 0 0 no-repeat;
 		margin: 0;
@@ -852,7 +779,7 @@
 		font-weight:bold;
 		position:relative;
 		overflow:visible;	
-		}
+	}
 	.bonus_inactive {
 		opacity:0.5;filter:alpha(opacity=50);
 		font-size:x-small;
@@ -870,13 +797,7 @@
 		border: none;
 		position:relative;
 		overflow:visible;	
-		}
-	/*
-	.nobonus:hover, .newbonus:hover {
-		background: url("images/moneybag_add.png") 0 0 no-repeat;
-		border: none;
-		padding-left:63px;
-	}*/
+	}
 	.price  {
 		color: #000;
 		text-transform: lowercase;
@@ -907,8 +828,6 @@
 		color:#FF0000;
 	}
 	
-
-	
 /*---------------------------------------------------------------
 	Action links
 ---------------------------------------------------------------*/
@@ -918,80 +837,80 @@
 		font-size: inherit;	
 		border: none;
 		margin: 0;
-		}
+	}
 	.abuse:hover {
 		background-position: 0 -20px;
-		}
+	}
 	.deletewish {
 		background: url("images/delete.gif") 0 0 no-repeat;
 		padding-left: 15px;
 		font-size: inherit;	
 		border: none;
 		margin: 0;
-		}
+	}
 	.deletewish:hover {
 		background-position: 0 -20px;
-		}
+	}
 	.transfer {
 		background: url("images/transfer.gif") 0 0 no-repeat;
 		padding-left: 15px;
 		font-size: inherit;	
 		border: none;
 		margin: 0;
-		}
+	}
 	.transfer:hover {
 		background-position: 0 -20px;
-		}
+	}
 	.grant {
 		background: url("images/grant.gif") 0 0 no-repeat;
 		padding-left: 15px;
 		font-size: inherit;	
 		border: none;
 		margin: 0;
-		}
+	}
 	.grant:hover {
 		background-position: 0 -20px;
-		}
+	}
 	.changestatus {
 		background: url("images/pin.gif") 0 0 no-repeat;
 		padding-left: 15px;
 		font-size: inherit;	
 		border: none;
 		margin: 0;
-		}
+	}
 	.changestatus:hover {
 		background-position: 0 -20px;
-		}
+	}
 	.editwish {
 		background: url("images/edit.gif") 0 0 no-repeat;
 		padding-left: 16px;
 		font-size: inherit;	
 		border: none;
 		margin: 0;
-		}
+	}
 	.editwish:hover {
 		background-position: 0 -20px;
-		}
+	}
 	.makeprivate {
 		background: url("images/private.gif") 0 0 no-repeat;
 		padding-left: 18px;
 		font-size: inherit;	
 		border: none;
 		margin: 0;
-		}
+	}
 	.makeprivate:hover {
 		background-position: 0 -20px;
-		}
+	}
 	.makepublic {
 		background: url("images/nonprivate.gif") 0 0 no-repeat;
 		padding-left: 18px;
 		font-size: inherit;	
 		border: none;
 		margin: 0;
-		}
+	}
 	.makepublic:hover {
 		background-position: 0 -20px;
-		}
+	}
 	
 /*---------------------------------------------------------------
 	Ranking
@@ -1013,9 +932,6 @@
 		left:70px;
 		font-weight:bold;
 	}
-	a.editopinion {
-		
-	}
 	.editopinion a:hover {
 		border:none;
 		color:#000000;
@@ -1030,21 +946,20 @@
 		font-size: inherit;	
 		border: none;
 		margin: 0;
-		}
+	}
 	.showreplyform:hover, .rep:hover {
 		background-position: 0 -20px;
-		}
+	}
 		
 /*---------------------------------------------------------------
 	Tags
 ---------------------------------------------------------------*/	
-
 	#wishitem .tags {
 		margin: -1.7em 0 0 3em;
-		}
+	}
 	#wishitem .tags li {
 		border: none;
-		}
+	}
 	#wishitem .tagcontainer {
 		position:relative;
 		color:#666666;
@@ -1055,7 +970,6 @@
 /*---------------------------------------------------------------
 	Nav
 ---------------------------------------------------------------*/	
-
 	.config {
 		background: transparent url("images/cog.png") 0 0 no-repeat; padding-left: 20px;padding-bottom:0.2em; 
 	}
@@ -1071,7 +985,7 @@
 	}
 	#wishlist-section h3 {
 		display: block;
-		}
+	}
 	.section h3 span {
 		display:inline;
 		float:right;
@@ -1081,7 +995,9 @@
 	.nobreak {
 		white-space:nowrap;
 	}
-	
+	.noborder {
+		border:none;
+	}	
 /*---------------------------------------------------------------
 	Hacks
 ---------------------------------------------------------------*/		
@@ -1097,15 +1013,13 @@
 	
 	}
 	/* IE 6 Hacks */
-	* html ol.comments dl.comment-details { margin: 1em 20px 2em -50px; }
-	
+	* html ol.comments dl.comment-details { margin: 1em 20px 2em -50px; }	
 	* html ol.comments  li {
 		clear: left;
 		margin: 0;
 		padding: 0 0 1em 105px;
 		min-height: 8em;
-		}
-	
+		}	
 	* html .com_wishlist ol.comments dl.comment-details {
 	    float: left;
 	    margin: 1em 0 1em -60px !important;
@@ -1113,10 +1027,8 @@
 	    width: 100px;
 	    color: #777;
 	    font-size: 11px;
-	    text-align: right;
-		
-	}
-	
+	    text-align: right;		
+	}	
 	* html .wish_outstanding, * html .wish_granted,  * html .wish_unranked, * html .wish_urgent, * html .wish_burning {
 		background:none;
 	}
