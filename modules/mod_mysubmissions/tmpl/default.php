@@ -74,7 +74,7 @@ if ($juser->get('guest')) {
 			$html .= '</div>'."\n";
 		}
 	} else {
-		$html .= '<p>'.JText::_('MOD_MYSUBMISSIONS_NONE').'</p>'.n;
+		$html .= '<p>'.JText::_('MOD_MYSUBMISSIONS_NONE').'</p>'."\n";
 	}
 
 	echo $html;
