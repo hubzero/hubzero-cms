@@ -198,7 +198,7 @@ if ($categories) {
 ?>
 		<div class="three columns <?php echo $clm; ?>">
 			<div class="<?php echo $cls; ?>">
-				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$normalized); ?>"><?php echo stripslashes($category->type); ?></a></h3>
+				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&step=1&type='.$category->id); ?>"><?php echo stripslashes($category->type); ?></a></h3>
 				<p><?php echo stripslashes($category->description); ?></p>
 				<p><a href="/contribute/<?php echo $normalized; ?>">Learn more &rsaquo;</a></p>
 			</div>
