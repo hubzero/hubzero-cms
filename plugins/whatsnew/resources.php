@@ -319,7 +319,6 @@ class plgWhatsnewResources extends JPlugin
 				case 0:
 				default:  $class = ' no-stars';      break;
 			}
-			return $class;
 			
 			$html .= "\t\t".'<div class="metadata">'."\n";
 			$html .= "\t\t\t".'<p class="rating"><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_WHATSNEW_RESOURCES_OUT_OF_5_STARS',$row->rating).'</span>&nbsp;</span></p>'."\n";
