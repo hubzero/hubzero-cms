@@ -1337,5 +1337,20 @@ class XGroup extends JObject
 		}
 		return $emails;
 	}
+	
+	public function search($tbl='', $q='') 
+	{
+		if (!in_array($tbl, array('applicants','members','managers','invitees')))
+			return false;
+
+		$table = '#__xgroups_' . $tbl;
+		
+		$db = & JFactory::getDBO();
+		
+		$query = "SELECT u.id FROM $table AS t,#__users AS u WHERE t.gidNumber=" . $db->Quote($this->gidNumber) . " AND u.id=t.uidNumber AND LOWER(u.name) LIKE '%".strtolower($q)."%';";
+
+		$db->setQuery($query);
+		return $db->loadResultArray();
+	}
 }
 ?>
