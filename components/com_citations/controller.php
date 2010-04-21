@@ -213,7 +213,7 @@ class CitationsController extends JObject
 		
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']  = JRequest::getInt( 'limit', 25, 'request' );
+		$view->filters['limit']  = JRequest::getInt( 'limit', 50, 'request' );
 		$view->filters['start']  = JRequest::getInt( 'limitstart', 0, 'get' );
 		$view->filters['type']   = JRequest::getVar( 'type', '' );
 		$view->filters['filter'] = JRequest::getVar( 'filter', '' );
