@@ -20,7 +20,7 @@
 
 <config>
 	<params>
-		<param name="autoapprove" type="radio" default="1" label="Auto-approve" description="Automatically approve new submissions">
+		<param name="autoapprove" type="radio" default="0" label="Auto-approve" description="Automatically approve new submissions">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
