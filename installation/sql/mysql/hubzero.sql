@@ -3160,7 +3160,7 @@ CREATE TABLE IF NOT EXISTS `session` (
 # Table structure for `sessionlog`
 #
 CREATE TABLE IF NOT EXISTS `sessionlog` (
-  `sessnum` bigint(20) unsigned NOT NULL auto_increment,
+  `sessnum` bigint(20) unsigned NOT NULL,
   `username` varchar(32) NOT NULL default '',
   `remoteip` varchar(40) NOT NULL default '',
   `remotehost` varchar(40) NOT NULL default '',
