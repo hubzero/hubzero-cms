@@ -580,3 +580,21 @@ INSERT INTO `hosttype` (`name`, `value`, `description`) VALUES ('pubnet',4,'Publ
 INSERT INTO `hosttype` (`name`, `value`, `description`) VALUES ('sessions',8,'Normal jobs');
 INSERT INTO `hosttype` (`name`, `value`, `description`) VALUES ('openvz',16,'OpenVZ');
 
+INSERT IGNORE INTO `#__support_messages` (`id`,`title`,`message`)
+VALUES
+	(1,'First Contact (no further information needed)','Thank you for using {sitename}, and for reporting this problem.  Your request has been forwarded to a member of our team, and it is being tracked as ticket {ticket#} in our system.  We will keep you informed as we make progress in resolving this issue.\r\n\r\nThanks again for your support!\r\n--the {sitename} team'),
+	(2,'First Contact (more information is needed)','Thank you for using {sitename}, and for reporting this problem.  Your request has been forwarded to a member of our team, and it is being tracked as ticket {ticket#} in our system.\r\n\r\nIn order to resolve this issue, we need some more information:\r\n\r\nXXXXXXX  Input questions here XXXXXX\r\n\r\nPlease reply back to {siteemail} with the requested information. If we haven\\\'t heard back from you in 48 hours, we\\\'ll assume that you are no longer experiencing the problem, or that you\\\'ve worked around it, and we\\\'ll consider the matter closed.  You can reopen the matter at any time by sending email or by submitting another problem report on our web site.\r\n\r\nThanks again for your support!\r\n--the {sitename} team'),
+	(3,'Final Contact (closing ticket)','We haven\\\'t heard back from you so we\\\'ll assume that you are no\r\nlonger experiencing the problem, or that you\\\'ve worked around it, and we\\\'ll consider the matter closed.  You can reopen the matter at any time by sending email or by submitting another problem report on our web site.\r\n\r\nThanks again for your support!\r\n--the {sitename} team'),
+	(4,'Ticket Resolved','Thank you for using {sitename}, and for reporting this problem.  We believe that your issue (ticket {ticket#} in our system) has been resolved. If you continue to have problems please let us know.\r\n\r\nThank you for helping us to improve {sitename}!\r\n--the {sitename} team'),
+	(5,'Reply to tickets that have been in the queue for a while','Thank you for using {sitename}.  We apologize for not responding to your request sooner.  We have received more support requests than we can handle, and we are working hard to improve our help-desk support.\r\n\r\nYour request was concerning XXXXXXXXXXXXX.  \r\n\r\nMany problems have been fixed since your message.  Is this still a problem for you now?  Is there any more information you could give us about this? Please reply back to {siteemail} with any additional information. If we haven\\\'t heard back from you in 48 hours, we\\\'ll assume that you are no longer experiencing the problem, or that it is no longer an issue for you, and we\\\'ll consider the matter closed.  You can reopen the matter at any time by sending email or by submitting another problem report on our web site.\r\n\r\nThanks again for your support!\r\n--the {sitename} team');
+
+INSERT IGNORE INTO `#__support_resolutions` (`id`,`title`,`alias`)
+VALUES
+	(1,'Fixed','fixed'),
+	(2,'Invalid','invalid'),
+	(3,'Won\\\'t fix','wontfix'),
+	(4,'Duplicate','duplicate'),
+	(5,'Works for me','worksforme'),
+	(6,'Transferred','transferred'),
+	(7,'Answered','answered');
+
