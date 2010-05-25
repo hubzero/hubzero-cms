@@ -795,7 +795,7 @@ class SupportHtml
 					</tbody>
 				</table>
 				<input type="hidden" name="section" value="1" />
-				<input type="hidden" name="uas" value="<?php echo $_SERVER['HTTP_USER_AGENT']; ?>" />
+				<input type="hidden" name="uas" value="<?php echo JRequest::getVar('HTTP_USER_AGENT','','server'); ?>" />
 				<input type="hidden" name="severity" value="normal" />
 <?php } else { ?>
 				<fieldset class="adminform">

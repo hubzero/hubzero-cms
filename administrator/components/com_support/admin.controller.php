@@ -529,12 +529,12 @@ class SupportController extends JObject
 			$row->os = $browser->getOs().' '.$browser->getOsVersion();
 			$row->browser = $browser->getBrowser().' '.$browser->getBrowserVersion();
 			
-			$row->uas = $_SERVER['HTTP_USER_AGENT'];
+			$row->uas = JRequest::getVar('HTTP_USER_AGENT','','server');
 			
 			$row->ip = (getenv('HTTP_X_FORWARDED_FOR'))
 		    		 ? getenv('HTTP_X_FORWARDED_FOR')
 					 : getenv('REMOTE_ADDR');
-			$row->hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+			$row->hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 			$row->section = 1;
 			
 			$comments = array();
@@ -934,7 +934,7 @@ class SupportController extends JObject
 		// Save the tags
 		$tags = JRequest::getVar( 'tags', '', 'post' );
 
-		$st->tag_object( $juser->get('id'), $row->id, $tags, 0, false );
+		$st->tag_object( $juser->get('id'), $row->id, $tags, 0, true );
 		
 		// We must have a ticket ID before we can do anything else
 		if ($id) {
