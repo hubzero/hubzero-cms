@@ -161,6 +161,7 @@ class FeedbackHtml
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="boxchecked" value="0" />
 			<input type="hidden" name="type" value="<?php echo $type ?>" />
+			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 <?php
 	}
@@ -183,6 +184,7 @@ class FeedbackHtml
 				
 				<input type="hidden" name="option" value="<?php echo $option ?>" />
 				<input type="hidden" name="task" value="edit" />
+				<?php echo JHTML::_( 'form.token' ); ?>
 			</fieldset>
 		</form>
 		<?php
@@ -349,7 +351,7 @@ class FeedbackHtml
 				$file = end($pics);
 ?>
 			<input type="hidden" name="picture" value="<?php echo $row->picture; ?>" />
-			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index3.php?option=com_feedback&amp;task=img&amp;file=<?php echo $file; ?>&amp;id=<?php echo $row->userid; ?>"></iframe>
+			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=com_feedback&amp;no_html=1&amp;task=img&amp;file=<?php echo $file; ?>&amp;id=<?php echo $row->userid; ?>&amp;qid=<?php echo $row->id; ?>"></iframe>
 <?php
 			} else {
 				echo '<p class="alert">'.JText::_('FEEDBACK_MUST_BE_SAVED_BEFORE_PICTURE').'</p>';
@@ -358,13 +360,14 @@ class FeedbackHtml
 				</fieldset>
 			</div>
 			<div class="clr"></div>
+			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 		<?php
 	}
 	
 	//-----------
 	
-	public function writeImage( $app, $option, $webpath, $defaultpic, $path, $file, $file_path, $id, $errors=array() )
+	public function writeImage( $app, $option, $webpath, $defaultpic, $path, $file, $file_path, $id, $qid, $errors=array() )
 	{
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -390,7 +393,7 @@ class FeedbackHtml
 	</script>
  </head>
  <body>
-   <form action="index2.php" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+   <form action="index.php" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
 	<table class="formed">
 	 <thead>
 	  <tr>
@@ -403,6 +406,7 @@ class FeedbackHtml
 	    <input type="hidden" name="option" value="<?php echo $option; ?>" />
 		<input type="hidden" name="no_html" value="1" />
 		<input type="hidden" name="id" value="<?php echo $id; ?>" />
+		<input type="hidden" name="qid" value="<?php echo $qid; ?>" />
 		<input type="hidden" name="task" value="upload" />
 		
 		<input type="file" name="upload" id="upload" size="17" />&nbsp;&nbsp;&nbsp;
@@ -426,9 +430,9 @@ class FeedbackHtml
 <?php
 	$k = 0;
 
-	if ($file && file_exists( $file_path.DS.$file )) {
-		$this_size = filesize($file_path.DS.$file);
-		list($width, $height, $type, $attr) = getimagesize($file_path.DS.$file);
+	if ($file && file_exists( JPATH_ROOT.$file_path.DS.$file )) {
+		$this_size = filesize(JPATH_ROOT.$file_path.DS.$file);
+		list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT.$file_path.DS.$file);
 ?>
 	  <tr>
 	   <td rowspan="6">
@@ -452,7 +456,7 @@ class FeedbackHtml
 	  </tr>
 	  <tr>
 	   <td><input type="hidden" name="currentfile" value="<?php echo $file; ?>" /></td>
-	   <td><a href="index3.php?option=<?php echo $option; ?>&amp;task=deleteimg&amp;file=<?php echo $file; ?>&amp;id=<?php echo $id; ?>">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+	   <td><a href="index.php?option=<?php echo $option; ?>&amp;no_html=1&amp;task=deleteimg&amp;qid=<?php echo $qid; ?>&amp;id=<?php echo $id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
 	  </tr>
 <?php } else { ?>
 	  <tr>
@@ -462,6 +466,7 @@ class FeedbackHtml
 <?php } ?>
 	 </tbody>
 	</table>
+	<?php echo JHTML::_( 'form.token' ); ?>
    </form>
  </body>
 </html>
