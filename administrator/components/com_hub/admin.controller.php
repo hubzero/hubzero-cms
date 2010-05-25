@@ -320,6 +320,9 @@ class HubController extends JObject
 	
 	protected function saveReg() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$settings = JRequest::getVar( 'settings', array(), 'post' );
 
 		if (!is_array($settings) || empty($settings)) {
@@ -447,6 +450,9 @@ class HubController extends JObject
 
 	protected function save( $redirect=1 )
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$arr =& $this->loadConfiguration();
 		
 		$name = JRequest::getVar( 'editname', 0, 'post' );
@@ -477,6 +483,9 @@ class HubController extends JObject
 
 	protected function delete()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$modified = false;
 
 		$arr =& $this->loadConfiguration();
@@ -533,6 +542,9 @@ class HubController extends JObject
 	
 	protected function savecom()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$database =& JFactory::getDBO();
 		
 		// Incoming component ID
@@ -638,6 +650,9 @@ class HubController extends JObject
 	
 	protected function saveorg() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$database =& JFactory::getDBO();
 		
 		// Load the tag object and bind the incoming data to it
@@ -668,14 +683,17 @@ class HubController extends JObject
 
 	protected function removeorg() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming
-		$ids = JRequest::getVar( 'ids', array() );
+		$ids = JRequest::getVar( 'id', array() );
 
 		// Get the single ID we're working with
 		if (!is_array($ids)) {
 			$ids = array();
 		}
-		
+
 		// Do we have any IDs?
 		if (!empty($ids)) {
 			$database =& JFactory::getDBO();

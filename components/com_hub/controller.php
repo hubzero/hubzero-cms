@@ -459,7 +459,7 @@ class HubController extends JObject
 		{
 			$xprofile =& XProfile::getInstance($emailuser);
 
-			$message .= "\t" . $xprofile->get('login') . "\t(" . $xprofile->get('name') . ")\r\n";
+			$message .= "\t" . $xprofile->get('username') . "\t(" . $xprofile->get('name') . ")\r\n";
 		}
 		$message .= "\r\n";
 		$message .= "You may login to " . $hubShortName . " using ";
@@ -483,7 +483,7 @@ class HubController extends JObject
 			$message = "A user has recovered account login information for the email address:\r\n";
 			$message .= "\t" . $email . "\r\n\r\n";
 			$message .= "Click the following link to look up this user's account(s):\r\n";
-			$message .= $hubLongURL . '/whois/?email=' . $email . "\r\n";
+			$message .= $hubLongURL . '/members/whois/?email=' . $email . "\r\n";
 			
 			// Send the admin email
 			XHubHelper::send_email($hubMonitorEmail, $subject, $message);
