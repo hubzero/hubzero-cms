@@ -90,11 +90,9 @@ class AnswersToolbar
 	public function _DEFAULT() 
 	{
 		JToolBarHelper::title( JText::_( 'Answers Manager' ), 'addedit.png' );
-		//JToolBarHelper::publishList();
-		//JToolBarHelper::unpublishList();
+		JToolBarHelper::preferences('com_answers', '550');
 		JToolBarHelper::spacer();
 		JToolBarHelper::addNew( 'newq', 'New Question');
-		//JToolBarHelper::editList();
 		JToolBarHelper::deleteList( '', 'remove', 'Delete Question' );
 		
 	}

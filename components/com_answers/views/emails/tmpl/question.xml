@@ -18,9 +18,16 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
-<config>
-	<params>
-		<param name="infolink" type="text" menu="hide" default="/kb/points" label="About points" description="Link to page explaining the point system" />
-		<param name="notify_users" label="Users notified on every activity" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be notified whenever a new question/answer is posted." />
-	</params>
-</config>
+<metadata>
+	<layout title="Standard Question Posted Message Layout">
+		<message>
+			<![CDATA[STANDARD QUESTION ANSWERED MESSAGE LAYOUT DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>Standard Question Posted Message Layout</name>
+		<description>STANDARD QUESTION POSTED MESSAGE LAYOUT DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

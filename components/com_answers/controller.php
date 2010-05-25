@@ -150,13 +150,13 @@ class AnswersController extends JObject
 				'index.php?option='.$this->_option
 			);
 		}
-		if ($this->_task && $this->_task != 'view') {
+		if ($this->_task && ($this->_task == 'new' or $this->_task == 'myquestions' or $this->_task == 'search' )) {
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
 				'index.php?option='.$this->_option.'&task='.$this->_task
 			);
 		}
-		if (is_object($question)) {
+		if (is_object($question) && $question->subject != '') {
 			$pathway->addItem( 
 				Hubzero_View_Helper_Html::shortenText(stripslashes($question->subject), 50, 0), 
 				'index.php?option='.$this->_option.'&task=question&id='.$question->id 
@@ -172,7 +172,7 @@ class AnswersController extends JObject
 		if ($this->_task && $this->_task != 'view') {
 			$this->_title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
 		}
-		if (is_object($question)) {
+		if (is_object($question) && $question->subject != '') {
 			$this->_title .= ': '.Hubzero_View_Helper_Html::shortenText(stripslashes($question->subject), 50, 0);
 		}
 		$document =& JFactory::getDocument();
@@ -842,7 +842,9 @@ class AnswersController extends JObject
 		
 		// Load the question
 		$question = new AnswersQuestion( $database );
-		$BT = new BankTransaction( $database );
+		if ($this->banking) {
+			$BT = new BankTransaction( $database );
+		}
 		$question->load( $id );
 		
 		// check if question with this id exists
@@ -865,10 +867,10 @@ class AnswersController extends JObject
 		$tags = $tagging->get_tags_on_object($id, 0, 0, 0);
 
 		// Check reward value of the question 
+		$reward = 0;
 		if ($this->banking) {
 			$reward = $BT->getAmount( 'answers', 'hold', $id );
 		}
-		$reward = $reward ? $reward : 0;
 	
 		// Check number of votes
 		$voted = $this->_getVote($id);
@@ -1101,7 +1103,8 @@ class AnswersController extends JObject
 		
 		// Ensure the user added a tag
 		if (!$tags) {
-			JError::raiseError( 500, JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG') );
+			//JError::raiseError( 500, JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG') );
+			echo "<script type=\"text/javascript\"> alert('".JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG')."'); window.history.go(-1); </script>\n";
 			return;
 		}
 		
@@ -1135,6 +1138,8 @@ class AnswersController extends JObject
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
+		// Checkin question
+		$row->checkin();
 
 		// Hold the reward for this question if we're banking
 		if ($reward && $this->banking) {
@@ -1145,6 +1150,54 @@ class AnswersController extends JObject
 		// Add the tags
 		$tagging = new AnswersTags( $database );
 		$tagging->tag_object($juser->get('id'), $row->id, $tags, 1, 0);
+		
+		// Send a message about the new question to authorized users (specified admins or related content authors)
+		//-------
+		$jconfig =& JFactory::getConfig();
+		$hub = array(
+			'email' => $jconfig->getValue('config.mailfrom'), 
+			'name' => $jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_ANSWERS')
+		);
+		
+		// Build the message subject
+		$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_ANSWERS').', '.JText::_('COM_ANSWERS_NEW_QUESTION_POSTED');
+		
+		// Build the message	
+		$eview = new JView( array('name'=>'emails','layout'=>'question') );
+		$eview->option = $this->_option;
+		$eview->hubShortName = $jconfig->getValue('config.sitename');
+		$eview->juser = $juser;
+		$eview->row = $row;
+		$eview->id = $row->id ? $row->id : 0;
+		$message = $eview->loadTemplate();
+		$message = str_replace("\n", "\r\n", $message);
+		
+		$apu = (isset($this->config->parameters['notify_users'])) ? $this->config->parameters['notify_users'] : '';
+		$apu = explode(',', $apu);
+		$apu = array_map('trim',$apu);
+		$receivers = array();
+		
+		if(!empty($apu)) {
+			foreach($apu as $u) {
+				$user =& JUser::getInstance( $u );
+				if($user) {
+					$receivers[] = $user->get('id');
+				}
+			}
+			$receivers = array_unique($receivers);
+		}
+		
+		if(!empty($receivers)) {
+			// Send the message
+			JPluginHelper::importPlugin( 'xmessage' );
+			$dispatcher =& JDispatcher::getInstance();
+			if (!$dispatcher->trigger( 'onSendMessage', array( 'new_question_admin', $subject, $message, $hub, $receivers, $this->_option))) {
+				$this->setError( JText::_('COM_ANSWERS_MESSAGE_FAILED') );
+			}
+		}
+	
+		//-------
+		// end of send message
 		
 		// Redirect to the question
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$row->id.'&note=5');
@@ -1220,13 +1273,40 @@ class AnswersController extends JObject
 		$message = str_replace("\n", "\r\n", $message);
 
 		$user =& JUser::getInstance( $question->created_by );
+		$authorid = $user->get('id');
+		
+		$apu = (isset($this->config->parameters['notify_users'])) ? $this->config->parameters['notify_users'] : '';
+		$apu = explode(',', $apu);
+		$apu = array_map('trim',$apu);
+		$receivers = array();
+			
+		if(!empty($apu)) {
+			foreach($apu as $u) {
+				$user =& JUser::getInstance( $u );
+				if($user) {
+					$receivers[] = $user->get('id');
+				}
+			}
+			$receivers = array_unique($receivers);
+		}
 		
 		// Send the message
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
-		/*if (!$dispatcher->trigger( 'onSendMessage', array( 'answers_reply_submitted', $subject, $message, $hub, array($user->get('id')), $this->_option, $question->id, JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id)))) {
+		/*if (!$dispatcher->trigger( 'onSendMessage', array( 'answers_reply_submitted', $subject, $message, $hub, array($authorid), $this->_option, $question->id, JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id)))) {
 			$this->setError( JText::_('COM_ANSWERS_MESSAGE_FAILED') );
 		}*/
+		if(!in_array($authorid, $receivers)) {
+			if (!$dispatcher->trigger( 'onSendMessage', array( 'answers_reply_submitted', $subject, $message, $hub, array($authorid), $this->_option))) {
+			$this->setError( JText::_('COM_ANSWERS_MESSAGE_FAILED') );
+			}
+		}
+		
+		if(!empty($receivers)) {
+			if (!$dispatcher->trigger( 'onSendMessage', array( 'new_answer_admin', $subject, $message, $hub, $receivers, $this->_option))) {
+				$this->setError( JText::_('COM_ANSWERS_MESSAGE_FAILED') );
+			}
+		}
 		
 		// Redirect to the question
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=4');
@@ -1248,9 +1328,12 @@ class AnswersController extends JObject
 		// Incoming
 		$id = JRequest::getInt( 'qid', 0 );
 		$ip = (!$juser->get('guest')) ? $this->_ip_address() : '';
-
-		$BT = new BankTransaction( $database );
-		$reward = $BT->getAmount( 'answers', 'hold', $id );
+	
+		$reward = 0;
+		if ($this->banking) {
+			$BT = new BankTransaction( $database );
+			$reward = $BT->getAmount( 'answers', 'hold', $id );
+		}
 		$email = 0;
 		
 		$question = new AnswersQuestion( $database );
@@ -1314,9 +1397,9 @@ class AnswersController extends JObject
 				// Send the message
 				JPluginHelper::importPlugin( 'xmessage' );
 				$dispatcher =& JDispatcher::getInstance();
-				/*if (!$dispatcher->trigger( 'onSendMessage', array( 'answers_question_deleted', $subject, $message, $hub, $users, $this->_option ))) {
+				if (!$dispatcher->trigger( 'onSendMessage', array( 'answers_question_deleted', $subject, $message, $hub, $users, $this->_option ))) {
 					$this->setError( JText::_('COM_ANSWERS_MESSAGE_FAILED') );
-				}*/
+				}
 			}
 			
 			// Remove hold
@@ -1411,9 +1494,9 @@ class AnswersController extends JObject
 		$dispatcher =& JDispatcher::getInstance();
 		
 		// Call the plugin
-		/*if (!$dispatcher->trigger( 'onTakeAction', array( 'answers_reply_submitted', array($user->get('id')), $this->_option, $question->id ))) {
+		if (!$dispatcher->trigger( 'onTakeAction', array( 'answers_reply_submitted', array($user->get('id')), $this->_option, $question->id ))) {
 			$this->setError( JText::_('COM_ANSWERS_ACTION_FAILED')  );
-		}*/
+		}
 
 		// Redirect to the question
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=question&id='.$id.'&note=10');	
