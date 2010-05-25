@@ -3016,6 +3016,19 @@ class ContribtoolController extends JObject
 			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
 			$this->attachments( $pid );
 		}
+		
+		// get admin priviliges
+		$this->authorize_admin();
+		
+		// get tool object 		
+		$obj = new Tool($database);
+		$this->_toolid = $obj->getToolIdFromResource($pid);
+		
+		// make sure user is authorized to go further
+		if(!$this->check_access($this->_toolid, $juser, $this->_admin) ) { 
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return; 
+		}
 
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
@@ -3045,6 +3058,7 @@ class ContribtoolController extends JObject
 		$row->publish_up = date( 'Y-m-d H:i:s' );
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone = 0;
+		$row->path = ''; // make sure no path is specified just yet
 
 		// Check content
 		if (!$row->check()) {
@@ -3082,59 +3096,9 @@ class ContribtoolController extends JObject
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
 			$this->setError( JText::_('ERROR_UPLOADING') );
 		} else {
-			// File was uploaded
-			
+			// File was uploaded			
 			// Check the file type
 			$row->type = $this->_getChildType($file['name']);
-			
-			// If it's a package (ZIP, etc) ...
-			if ($row->type == 38) {
-				/*jimport('joomla.filesystem.archive');
-				
-				// Extract the files
-				if (!JArchive::extract( $file_to_unzip, $path )) {
-					$this->setError( JText::_('Could not extract package.') );
-				}*/
-				require_once( JPATH_ROOT.DS.'administrator'.DS.'includes'.DS.'pcl'.DS.'pclzip.lib.php' );
-		
-				if (!extension_loaded('zlib')) {
-					$this->setError( JText::_('ZLIB_PACKAGE_REQUIRED') );
-				} else {
-					// Check the table of contents and look for a Breeze viewer.swf file
-					$isbreeze = 0;
-					
-					$zip = new PclZip( $path.DS.$file['name'] );
-						
-					$file_to_unzip = preg_replace('/(.+)\..*$/', '$1', $path.DS.$file['name']);
-					
-					if (($list = $zip->listContent()) == 0) {
-						die('Error: '.$zip->errorInfo(true));
-					}
-					
-					for ($i=0; $i<sizeof($list); $i++) 
-					{
-						if (substr($list[$i]['filename'], strlen($list[$i]['filename']) - 10, strlen($list[$i]['filename'])) == 'viewer.swf') {
-							$isbreeze = $list[$i]['filename'];
-							break;
-						}
-					}
-
-					// It IS a breeze presentation
-					if ($isbreeze) {
-						// unzip the file
-						$do = $zip->extract($file_path);
-						if (!$do) {
-							$this->setError( JText::_( 'UNABLE_TO_EXTRACT_PACKAGE' ) );
-						} else {
-							$row->path = $listdir.DS.$isbreeze;
-
-							@unlink( $path.DS.$file['name'] );
-						}
-						$row->type = $this->_getChildType($row->path);
-						$row->title = $isbreeze;
-					}
-				}
-			}
 		}
 		
 		if (!$row->path) {
@@ -3183,12 +3147,26 @@ class ContribtoolController extends JObject
 	protected function attach_delete() 
 	{
 		$database =& JFactory::getDBO();
+		$juser =& JFactory::getUser();
 		
 		// Incoming parent ID
 		$pid = JRequest::getInt( 'pid', 0 );
 		if (!$pid) {
 			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
 			$this->attachments( $pid );
+		}
+		
+		// get admin priviliges
+		$this->authorize_admin();
+		
+		// get tool object 		
+		$obj = new Tool($database);
+		$this->_toolid = $obj->getToolIdFromResource($pid);
+		
+		// make sure user is authorized to go further
+		if(!$this->check_access($this->_toolid, $juser, $this->_admin) ) { 
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return; 
 		}
 		
 		// Incoming child ID
@@ -3204,14 +3182,15 @@ class ContribtoolController extends JObject
 		$row = new ResourcesResource( $database );
 		$row->load( $id );
 		
-		// Get path and delete directories
-		if ($row->path != '') {
-			$listdir = $row->path;
-		} else {
-			// No stored path, derive from created date
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );		
-			$listdir = ResourcesHtml::build_path( $row->created, $id, '' );
+		// Check for stored file
+		if ($row->path == '') {
+			$this->setError( JText::_('Error: file path not found.') );
+			$this->attachments( $pid );
 		}
+		
+		// Get resource path
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );		
+		$listdir = ResourcesHtml::build_path( $row->created, $id, '');
 		
 		// Build the path
 		$path = $this->_buildUploadPath( $listdir, '' );
@@ -3224,14 +3203,14 @@ class ContribtoolController extends JObject
 			if (!JFolder::delete($path)) {
 				$this->setError( JText::_('UNABLE_TO_DELETE_DIRECTORY') );
 			}
+			
+			// Delete associations to the resource
+			$row->deleteExistence();
+		
+			// Delete resource
+			$row->delete();
 		}
 		
-		// Delete associations to the resource
-		$row->deleteExistence();
-	
-		// Delete resource
-		$row->delete();
-
 		// Push through to the attachments view
 		$this->attachments( $pid );
 	}
@@ -3280,6 +3259,7 @@ class ContribtoolController extends JObject
 	protected function ss_reorder() 
 	{
 		$database =& JFactory::getDBO();
+		$juser =& JFactory::getUser();
 		
 		// Incoming parent ID
 		$pid = JRequest::getInt( 'pid', 0 );
@@ -3289,6 +3269,19 @@ class ContribtoolController extends JObject
 			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
 			$this->screenshots( $pid, $version );
 			return;
+		}
+		
+		// get admin priviliges
+		$this->authorize_admin();
+		
+		// get tool object 		
+		$obj = new Tool($database);
+		$this->_toolid = $obj->getToolIdFromResource($pid);
+		
+		// make sure user is authorized to go further
+		if(!$this->check_access($this->_toolid, $juser, $this->_admin) ) { 
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return; 
 		}
 		
 		// Get version id	
@@ -3309,8 +3302,7 @@ class ContribtoolController extends JObject
 		
 		$neworder_toleft = ($order_toleft != 0) ? $order_toleft - 1 : 0;
 		$neworder_toright = $order_toright + 1;
-		
-		
+				
 		// Instantiate a new screenshot object
 		$ss = new ResourceScreenshot($database);
 		$shot1 = $ss->getScreenshot($file_toright, $pid, $vid);
@@ -4247,13 +4239,6 @@ class ContribtoolController extends JObject
 					$this->setError( JText::sprintf('UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
 					continue;
 				}
-
-				$uid = $juser->get('id');
-		
-				if (!$uid) {
-					$this->setError( JText::sprintf('UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
-					continue;
-				}
 				
 				// Check if they're already linked to this resource
 				$rcc = new ResourcesContributor( $database );
@@ -4266,7 +4251,8 @@ class ContribtoolController extends JObject
 				$this->_author_check($uid);
 				
 				// New record
-				$xprofile = XProfile::getInstance($juser->get('id'));
+				$xprofile = new XProfile();
+				$xprofile->load( $uid );
 				$rcc->subtable = 'resources';
 				$rcc->subid = $id;
 				$rcc->authorid = $uid;
