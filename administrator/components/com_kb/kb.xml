@@ -26,18 +26,18 @@
 	<description>Manage a knowledgebase</description>
 	<files>
 		<filename>router.php</filename>
-	    	<filename>controller.php</filename>
+	    <filename>controller.php</filename>
 		<filename>kb.css</filename>
 		<filename>kb.php</filename>
 		<filename>kb.html.php</filename>
 		<filename>images/arrow.gif</filename>
 		<filename>images/minus_small.gif</filename>
 		<filename>images/plus_small.gif</filename>
-        	<filename>index.html</filename>
+		<filename>index.html</filename>
 	</files>
-        <languages>
-                <language tag="en-GB">en-GB.com_kb.ini</language>
-        </languages>
+	<languages>
+		<language tag="en-GB">en-GB.com_kb.ini</language>
+	</languages>
 	<install>
 	    <sql>
 	        <file charset="utf8" driver="mysql">install.sql</file>
@@ -56,17 +56,27 @@
 	<administration>
 		<menu>Knowledgebase</menu>
 		<files>
-		    <filename>admin.controller.php</filename>
-			<filename>admin.kb.html.php</filename>
-			<filename>admin.kb.php</filename>
-			<filename>kb.class.php</filename>
-			<filename>toolbar.kb.php</filename>
-			<filename>toolbar.kb.html.php</filename>
+		    <filename>controller.php</filename>
+			<filename>kb.html.php</filename>
+			<filename>kb.php</filename>
+			<filename>tables/kb.article.php</filename>
+			<filename>tables/kb.category.php</filename>
+			<filename>tables/kb.helpful.php</filename>
+			<filename>views/article/tmpl/default.php</filename>
+			<filename>views/article/tmpl/default.xml</filename>
+			<filename>views/articles/tmpl/default.php</filename>
+			<filename>views/articles/tmpl/default.xml</filename>
+			<filename>views/categories/tmpl/default.php</filename>
+			<filename>views/categories/tmpl/default.xml</filename>
+			<filename>views/category/tmpl/default.php</filename>
+			<filename>views/category/tmpl/default.xml</filename>
+			<filename>views/category/tmpl/delete.php</filename>
+			<filename>views/category/tmpl/delete.xml</filename>
 		</files>
-                <languages folder="admin">
-                        <language tag="en-GB">en-GB.com_kb.ini</language>
-                        <language tag="en-GB">en-GB.com_kb.menu.ini</language>
-                </languages>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_kb.ini</language>
+			<language tag="en-GB">en-GB.com_kb.menu.ini</language>
+		</languages>
 	</administration>
     <params>
         <param name="pageclass_sfx" type="text" size="20" default="" label="Page Class" description="A css class for the page, this allows individual page styling" />

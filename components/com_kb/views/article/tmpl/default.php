@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$cls = '';
 				}
 
-				$html .= "\t".'<li'.$cls.'><a href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.KbHtml::xhtml($row->title).'</a></li>'."\n";
+				$html .= "\t".'<li'.$cls.'><a href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.Hubzero_View_Helper_Html::xhtml($row->title).'</a></li>'."\n";
 			}
 		}
 		$html .= '</ul>'."\n";

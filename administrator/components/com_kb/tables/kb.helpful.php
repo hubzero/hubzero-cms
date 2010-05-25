@@ -25,48 +25,59 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (!defined("n")) {
-	define("t","\t");
-	define("n","\n");
-	define("br","<br />");
-	define("sp","&#160;");
-	define("a","&amp;");
-}
 
-class KbHtml 
+class KbHelpful extends JTable 
 {
-	public function xhtml( $text ) 
+	var $id      = NULL;  // @var int(11) Primary key
+	var $fid     = NULL;  // @var int(11)
+	var $ip      = NULL;  // @var varchar(15)
+	var $helpful = NULL;  // @var varchar(10)
+	
+	//-----------
+	
+	public function __construct( &$db )
 	{
-		$text = stripslashes($text);
-		$text = strip_tags($text);
-		$text = str_replace('&amp;', '&', $text);
-		$text = str_replace('&', '&amp;', $text);
-		$text = str_replace('&amp;quot;', '&quot;', $text);
-		$text = str_replace('&amp;lt;', '&lt;', $text);
-		$text = str_replace('&amp;gt;', '&gt;', $text);
-		
-		return $text;
+		parent::__construct( '#__faq_helpful_log', 'id', $db );
 	}
 	
 	//-----------
-
-	public function shortenText($text, $chars=300, $p=1) 
+	
+	public function check() 
 	{
-		$text = strip_tags($text);
-		$text = trim($text);
-
-		if (strlen($text) > $chars) {
-			$text = $text.' ';
-			$text = substr($text,0,$chars);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' ...';
+		if (trim( $this->fid ) == '') {
+			$this->_error = JText::_('KB_ERROR_MISSING_ARTICLE_ID');
+			return false;
 		}
-		
-		if ($p) {
-			$text = '<p>'.$text.'</p>';
+		return true;
+	}
+	
+	//-----------
+	
+	public function getHelpful( $fid=NULL, $ip=NULL )
+	{
+		if ($fid == NULL) {
+			$fid = $this->fid;
 		}
-
-		return $text;
+		if ($ip == NULL) {
+			$ip = $this->ip;
+		}
+		$this->_db->setQuery( "SELECT helpful FROM $this->_tbl WHERE fid =".$fid." AND ip='".$ip."'" );
+		return $this->_db->loadResult();
+	}
+	
+	//-----------
+	
+	public function deleteHelpful( $fid=NULL ) 
+	{
+		if ($fid == NULL) {
+			$fid = $this->fid;
+		}
+		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE fid=".$fid );
+		if ($this->_db->query()) {
+			return true;
+		} else {
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
 	}
 }
-?>

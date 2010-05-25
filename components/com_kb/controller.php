@@ -25,63 +25,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class KbController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-		
-		$this->_longname = JText::_('COMPONENT_LONG_NAME');
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+class KbController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		jimport('joomla.application.component.view');
-		
-		$this->database = JFactory::getDBO();
-		
+		$this->_longname = JText::_('COMPONENT_LONG_NAME');
+
 		$this->_task = strtolower(JRequest::getVar( 'task', 'browse' ));
 		
 		switch ( $this->_task ) 
@@ -93,17 +44,7 @@ class KbController extends JObject
 			default: $this->browse(); break;
 		}
 	}
-	
-	//-----------
 
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
-		}
-	}
-	
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
@@ -275,17 +216,8 @@ class KbController extends JObject
 	//----------------------------------------------------------
 	// Private Functions
 	//----------------------------------------------------------
-	
-	private function _getStyles()
-	{
-	    // add the CSS to the template and set the page title
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-	
-	//-----------
 
-	private function _buildPathway($section=null, $category=null, $article=null) 
+	protected function _buildPathway($section=null, $category=null, $article=null) 
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -328,13 +260,13 @@ class KbController extends JObject
 	
 	//-----------
 	
-	private function _buildTitle($section=null, $category=null, $article=null) 
+	protected function _buildTitle($section=null, $category=null, $article=null) 
 	{
 		$title = JText::_('COMPONENT_LONG_NAME');
-		if (is_object($section)) {
+		if (is_object($section) && $section->title != '') {
 			$title .= ': '.stripslashes($section->title);
 		}
-		if (is_object($category)) {
+		if (is_object($category) && $category->title != '') {
 			$title .= ': '.stripslashes($category->title);
 		}
 		if (is_object($article)) {
@@ -453,4 +385,3 @@ class KbController extends JObject
 		return $ip_address;
 	}
 }
-?>
