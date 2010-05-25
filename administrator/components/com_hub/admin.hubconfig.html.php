@@ -174,6 +174,7 @@ class HubConfigHTML
 				
 				<input type="hidden" name="option" value="com_hub" />
 				<input type="hidden" name="task" value="savesite" />
+				<?php echo JHTML::_( 'form.token' ); ?>
 			</form>
 	<?php
 	}
@@ -226,6 +227,7 @@ class HubConfigHTML
 				
 				<input type="hidden" name="option" value="com_hub" />
 				<input type="hidden" name="task" value="savedb" />
+				<?php echo JHTML::_( 'form.token' ); ?>
 			</form>
 	<?php
 	}
@@ -326,6 +328,7 @@ class HubConfigHTML
 					</table>
 					<input type="hidden" name="option" value="com_hub" />
 					<input type="hidden" name="task" value="savereg" />
+					<?php echo JHTML::_( 'form.token' ); ?>
 				</fieldset>
 			</form>
 	<?php
@@ -392,6 +395,7 @@ class HubConfigHTML
 
 			<input type="hidden" name="option" value="<?php echo $option; ?>" />
 			<input type="hidden" name="task" value="savecom" />
+			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 	<?php
 	}
@@ -461,12 +465,11 @@ class HubConfigHTML
 			</table>
 		    <p style="text-align:center;">Note: These variable settings can be overridden with the file <span style="text-decoration:underline;">hubconfiguration-local.php</span></p>
 			
-	
 			<input type="hidden" name="option" value="com_hub" />
 			<input type="hidden" name="task" value="<?php echo $mtask; ?>" />
 			<input type="hidden" name="boxchecked" value="0" />
+			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
-		<br>
 <?php
 	}
 	
@@ -524,6 +527,7 @@ class HubConfigHTML
 				<input type="hidden" name="option" value="com_hub" />
 				<input type="hidden" name="task" value="save" />
 			</fieldset>
+			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 	    <p style="text-align:center;">Note: These variable settings can be overridden with the file <span style="text-decoration:underline;">hubconfiguration-local.php</span></p>
 <?php
@@ -594,6 +598,7 @@ class HubConfigHTML
 				<input type="hidden" name="option" value="<?php echo $option ?>" />
 				<input type="hidden" name="task" value="orgs" />
 				<input type="hidden" name="boxchecked" value="0" />
+				<?php echo JHTML::_( 'form.token' ); ?>
 			</form>
 	<?php
 	}
@@ -639,8 +644,8 @@ class HubConfigHTML
 					</tbody>
 				</table>
 			</fieldset>
+			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 		<?php
 	}
 }
-?>
