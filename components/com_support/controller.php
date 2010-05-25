@@ -587,7 +587,7 @@ class SupportController extends JObject
 		// Save the tags
 		$tags = trim(JRequest::getVar( 'tags', '', 'post' ));
 		if ($tags) {
-			$st->tag_object( $juser->get('id'), $row->id, $tags, 0, false );
+			$st->tag_object( $juser->get('id'), $row->id, $tags, 0, true );
 		}
 
 		// We must have a ticket ID before we can do anything else

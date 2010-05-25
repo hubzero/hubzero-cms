@@ -182,7 +182,7 @@ class SupportTicket extends JTable
 						( SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.login, f.name, f.email, f.type, f.section, f.group 
 							FROM $this->_tbl AS f ";
 			if (isset($filters['tag']) && $filters['tag'] != '') {
-				$from .= ", #__support_tags AS st, #__tags as t ";
+				$from .= ", #__tags_object AS st, #__tags as t ";
 			}
 			if (isset($filters['search']) && $filters['search'] != '') {
 				$from .= "WHERE ";
@@ -204,7 +204,7 @@ class SupportTicket extends JTable
 				} else {
 					$from .= " AND ";
 				}
-				$from .= "st.ticketid=f.id AND st.tagid=t.id AND t.tag='".$filters['tag']."'";
+				$from .= "st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='".$filters['tag']."'";
 			}
 			$from .= ") UNION (
 				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.login, g.name, g.email, g.type, g.section, g.group
@@ -217,10 +217,10 @@ class SupportTicket extends JTable
 		} else {
 			$from = "$this->_tbl AS f";
 			if (isset($filters['tag']) && $filters['tag'] != '') {
-				$from .= ", #__support_tags AS st, #__tags as t";
+				$from .= ", #__tags_object AS st, #__tags as t";
 			}
 			if (isset($filters['tag']) && $filters['tag'] != '') {
-				$filter .= " AND st.ticketid=f.id AND st.tagid=t.id AND t.tag='".$filters['tag']."'";
+				$filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='".$filters['tag']."'";
 			}
 		}
 		

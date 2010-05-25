@@ -241,7 +241,16 @@ if ($this->comments) {
 				<div class="group">
 					<label>
 						<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
+<?php 
+JPluginHelper::importPlugin( 'tageditor' );
+$dispatcher =& JDispatcher::getInstance();
+$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->lists['tags'],'')) );
+
+if (count($tf) > 0) {
+	echo $tf[0];
+} else { ?>
 						<input type="text" name="tags" id="tags" value="<?php echo $this->lists['tags']; ?>" size="35" />
+<?php } ?>
 					</label>
 					<label>
 						<?php echo JText::_('COMMENT_SEVERITY'); ?>:
@@ -250,6 +259,7 @@ if ($this->comments) {
 				</div>
 				<div class="clear"></div>
 <?php } ?>
+<?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
 				<div class="group threeup">
 					<label>
 						<?php echo JText::_('COMMENT_GROUP'); 
@@ -265,7 +275,7 @@ if ($this->comments) {
 						<?php echo JText::_('COMMENT_OWNER'); ?>:
 						<?php echo $this->lists['owner']; ?>
 					</label>
-
+<?php } ?>
 					<label>
 						<?php echo JText::_('COMMENT_STATUS'); ?>:
 						<?php 
@@ -300,9 +310,10 @@ if ($this->comments) {
 						echo $html;
 						?>
 					</label>
+<?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
 				</div>
 				<div class="clear"></div>
-
+<?php } ?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_COMMENTS'); ?>:</legend>
 <?php if ($this->authorized) { ?>
