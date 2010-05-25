@@ -445,6 +445,7 @@ class FeedbackController extends JObject
 		$row->quote = Hubzero_View_Helper_Html::purifyText($row->quote);
 		$row->quote = str_replace( '<br>', '<br />', $row->quote );
 		$row->date  = date( 'Y-m-d H:i:s', time() );
+		$row->picture = basename($row->picture);
 		
 		// Check content
 		if (!$row->check()) {
@@ -528,7 +529,7 @@ class FeedbackController extends JObject
 			
 			// Get user's IP and domain
 			$ip = $this->_ip_address();
-			$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+			$hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 			
 			// Quick spam filter
 			$spam = $this->_detect_spam($suggestion['idea'], $ip);
@@ -568,7 +569,7 @@ class FeedbackController extends JObject
 			XHubHelper::send_email($admin, $subject, $message);
 			
 			// Get their browser and OS
-			list( $os, $os_version, $browser, $browser_ver ) = $this->_browsercheck($_SERVER['HTTP_USER_AGENT']);
+			list( $os, $os_version, $browser, $browser_ver ) = $this->_browsercheck(JRequest::getVar('HTTP_USER_AGENT','','server'));
 		
 			// Create new support ticket
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.ticket.php' );
@@ -590,9 +591,9 @@ class FeedbackController extends JObject
 			$data['browser']   = $browser .' '. $browser_ver;
 			$data['ip']        = $ip;
 			$data['hostname']  = $hostname;
-			$data['uas']       = $_SERVER['HTTP_USER_AGENT'];
+			$data['uas']       = JRequest::getVar('HTTP_USER_AGENT','','server');
 			$data['referrer']  = NULL;
-			$data['cookies']   = (!empty($_COOKIE['sessioncookie'])) ? 1 : 0;
+			$data['cookies']   = (JRequest::getVar('sessioncookie','','cookie')) ? 1 : 0;
 			$data['instances'] = 1;
 			$data['section']   = 1;
 			
@@ -690,7 +691,7 @@ class FeedbackController extends JObject
 		
 		// Get the user's IP
 		$ip = $this->_ip_address();
-		$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+		$hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 			
 		// Are the logged in?
 		if ($juser->get('guest')) {
@@ -778,9 +779,9 @@ class FeedbackController extends JObject
 		$data['browser']   = $problem['browser'] .' '. $problem['browserver'];
 		$data['ip']        = $ip;
 		$data['hostname']  = $hostname;
-		$data['uas']       = $_SERVER['HTTP_USER_AGENT'];
+		$data['uas']       = JRequest::getVar('HTTP_USER_AGENT','','server');
 		$data['referrer']  = $problem['referer'];
-		$data['cookies']   = (!empty($_COOKIE['sessioncookie'])) ? 1 : 0;
+		$data['cookies']   = (JRequest::getVar('sessioncookie','','cookie')) ? 1 : 0;
 		$data['instances'] = 1;
 		$data['section']   = 1;
 		$data['group']     = $group;
@@ -821,9 +822,9 @@ class FeedbackController extends JObject
 		$message .= JText::_('COM_FEEDBACK_REGION').': '.$source_city.', '.$source_region.', '.$source_country ."\r\n\r\n";
 		$message .= JText::_('COM_FEEDBACK_OS').': '. $problem['os'] .' '. $problem['osver'] ."\r\n";
 		$message .= JText::_('COM_FEEDBACK_BROWSER').': '. $problem['browser'] .' '. $problem['browserver'] ."\r\n";
-		$message .= JText::_('COM_FEEDBACK_UAS').': '. $_SERVER['HTTP_USER_AGENT'] ."\r\n";
+		$message .= JText::_('COM_FEEDBACK_UAS').': '. JRequest::getVar('HTTP_USER_AGENT','','server') ."\r\n";
 		$message .= JText::_('COM_FEEDBACK_COOKIES').': ';
-		$message .= (!empty($_COOKIE['sessioncookie'])) ? JText::_('COM_FEEDBACK_COOKIES_ENABLED')."\r\n" : JText::_('COM_FEEDBACK_COOKIES_DISABLED')."\r\n";
+		$message .= (JRequest::getVar('sessioncookie','','cookie')) ? JText::_('COM_FEEDBACK_COOKIES_ENABLED')."\r\n" : JText::_('COM_FEEDBACK_COOKIES_DISABLED')."\r\n";
 		$message .= JText::_('COM_FEEDBACK_REFERRER').': '. $problem['referer'] ."\r\n";
 		$message .= ($problem['tool']) ? JText::_('COM_FEEDBACK_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
 		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. stripslashes($problem['long']) ."\r\n";
@@ -953,6 +954,13 @@ class FeedbackController extends JObject
 
 	protected function upload()
 	{
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->setError( JText::_('COM_FEEDBACK_NOTAUTH') );
+			$this->img( '', 0 );
+			return;
+		}
+		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
@@ -1025,11 +1033,25 @@ class FeedbackController extends JObject
 
 	protected function delete()
 	{
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->setError( JText::_('COM_FEEDBACK_NOTAUTH') );
+			$this->img( '', 0 );
+			return;
+		}
+		
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
 			$this->setError( JText::_('COM_FEEDBACK_NO_ID') );
 			$this->img( '', $id );
+			return;
+		}
+		
+		if ($juser->get('id') != $id) {
+			$this->setError( JText::_('COM_FEEDBACK_NOTAUTH') );
+			$this->img( '', $juser->get('id') );
+			return;
 		}
 		
 		// Incoming file
@@ -1037,7 +1059,10 @@ class FeedbackController extends JObject
 		if (!$file) {
 			$this->setError( JText::_('COM_FEEDBACK_NO_FILE') );
 			$this->img( '', $id );
+			return;
 		}
+		
+		$file = basename($file);
 		
 		// Build the file path
 		ximport('fileuploadutils');
@@ -1059,6 +1084,7 @@ class FeedbackController extends JObject
 			if (!JFile::delete($path.DS.$file)) {
 				$this->setError( JText::_('COM_FEEDBACK_UNABLE_TO_DELETE_FILE') );
 				$this->img( $file, $id );
+				return;
 			}
 
 			$file = '';
@@ -1118,7 +1144,7 @@ class FeedbackController extends JObject
 		$user['org']   = '';
 		$user['email'] = '';
 		$user['uid']   = '';
-		
+
 		if (!$juser->get('guest')) {
 			ximport('xprofile');
 			
@@ -1241,7 +1267,7 @@ class FeedbackController extends JObject
 			return FALSE;
 		}
 		
-		return $_SERVER[$index];
+		return TRUE;
 	}
 	
 	//-----------
@@ -1256,13 +1282,13 @@ class FeedbackController extends JObject
 	private function _ip_address()
 	{
 		if ($this->_server('REMOTE_ADDR') AND $this->_server('HTTP_CLIENT_IP')) {
-			 $ip_address = $_SERVER['HTTP_CLIENT_IP'];
+			 $ip_address = JRequest::getVar('HTTP_CLIENT_IP','','server');
 		} elseif ($this->_server('REMOTE_ADDR')) {
-			 $ip_address = $_SERVER['REMOTE_ADDR'];
+			 $ip_address = JRequest::getVar('REMOTE_ADDR','','server');
 		} elseif ($this->_server('HTTP_CLIENT_IP')) {
-			 $ip_address = $_SERVER['HTTP_CLIENT_IP'];
+			 $ip_address = JRequest::getVar('HTTP_CLIENT_IP','','server');
 		} elseif ($this->_server('HTTP_X_FORWARDED_FOR')) {
-			 $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			 $ip_address = JRequest::getVar('HTTP_X_FORWARDED_FOR','','server');
 		}
 		
 		if ($ip_address === FALSE) {

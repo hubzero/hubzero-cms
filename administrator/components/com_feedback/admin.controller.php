@@ -219,6 +219,9 @@ class FeedbackController extends JObject
 	
 	protected function save() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$database =& JFactory::getDBO();
 	
 		// Incoming
@@ -238,6 +241,8 @@ class FeedbackController extends JObject
 	
 			// Code cleaner for xhtml transitional compliance
 			$row->quote = str_replace( '<br>', '<br />', $row->quote );
+	
+			$row->picture = basename($bits);
 	
 			// Check new content
 			if (!$row->check()) {
@@ -273,6 +278,8 @@ class FeedbackController extends JObject
 
 			// Code cleaner for xhtml transitional compliance
 			$rowselected->quote = str_replace( '<br>', '<br />', $rowselected->quote );
+			
+			$rowselected->picture = basename($rowselected->picture);
 			
 			// Trim the text to create a short quote
 			$rowselected->short_quote = ($rowselected->short_quote) ? $rowselected->short_quote : substr($rowselected->quote, 0, 270);
@@ -310,6 +317,9 @@ class FeedbackController extends JObject
 
 	protected function remove() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 	
@@ -353,6 +363,9 @@ class FeedbackController extends JObject
 
 	public function upload()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Load the component config
 		$config = $this->config;
 
@@ -398,15 +411,22 @@ class FeedbackController extends JObject
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
 		
+		$qid = JRequest::getInt( 'qid', 0 );
+		
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
 			$this->setError( JText::_('ERROR_UPLOADING') );
 			$file = $curfile;
 		} else {
-			// Do we have an old file we're replacing?
-			$curfile = JRequest::getVar( 'currentfile', '' );
+			$database =& JFactory::getDBO();
+			$row = new FeedbackQuotes( $database );
+			$row->load( $qid );
 			
-			if ($curfile != '') {
+			// Do we have an old file we're replacing?
+			//$curfile = JRequest::getVar( 'currentfile', '' );
+			$curfile = $row->picture;
+			
+			if ($curfile != '' && $curfile != $file['name']) {
 				// Yes - remove it
 				if (file_exists($path.DS.$curfile)) {
 					if (!JFile::delete($path.DS.$curfile)) {
@@ -418,16 +438,24 @@ class FeedbackController extends JObject
 			}
 
 			$file = $file['name'];
+			
+			$row->picture = $file;
+			if (!$row->store()) {
+				$this->setError( $row->getError() );
+			}
 		}
 
 		// Push through to the image view
-		$this->img( $file, $id );
+		$this->img( $file, $id, $qid );
 	}
 
 	//-----------
 
 	protected function deleteimg()
 	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or jexit( 'Invalid Token' );
+		
 		// Load the component config
 		$config = $this->config;
 		
@@ -438,11 +466,17 @@ class FeedbackController extends JObject
 			$this->img( '', $id );
 		}
 		
+		$qid = JRequest::getInt( 'qid', 0 );
+		$database =& JFactory::getDBO();
+		$row = new FeedbackQuotes( $database );
+		$row->load( $qid );
+
 		// Incoming file
-		$file = JRequest::getVar( 'file', '' );
-		if (!$file) {
+		//$file = JRequest::getVar( 'file', '' );
+		if (!$row->picture) {
 			$this->setError( JText::_('FEEDBACK_NO_FILE') );
 			$this->img( '', $id );
+			return;
 		}
 		
 		// Build the file path
@@ -457,26 +491,29 @@ class FeedbackController extends JObject
 		}
 		$path .= $config->get('uploadpath').DS.$dir;
 
-		if (!file_exists($path.DS.$file) or !$file) { 
+		if (!file_exists($path.DS.$row->picture) or !$row->picture) { 
 			$this->setError( JText::_('FILE_NOT_FOUND') ); 
 		} else {
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path.DS.$file)) {
+			if (!JFile::delete($path.DS.$row->picture)) {
 				$this->setError( JText::_('UNABLE_TO_DELETE_FILE') );
 				$this->img( $file, $id );
 			}
 
-			$file = '';
+			$row->picture = '';
+			if (!$row->store()) {
+				$this->setError( $row->getError() );
+			}
 		}
 	
 		// Push through to the image view
-		$this->img( $file, $id );
+		$this->img( $row->picture, $id, $qid );
 	}
 
 	//-----------
 
-	protected function img( $file='', $id=0 )
+	protected function img( $file='', $id=0, $qid=0 )
 	{
 		// Load the component config
 		$config = $this->config;
@@ -499,7 +536,10 @@ class FeedbackController extends JObject
 		// Build the directory path
 		$path = $config->get('uploadpath').DS.$dir;
 
-		FeedbackHtml::writeImage( $app, $this->_option, $config->get('uploadpath'), $config->get('defaultpic'), $dir, $file, $path, $id, $this->getErrors() );
+		if (!$qid) {
+			$qid = JRequest::getInt( 'qid', 0 );
+		}
+		
+		FeedbackHtml::writeImage( $app, $this->_option, $config->get('uploadpath'), $config->get('defaultpic'), $dir, $file, $path, $id, $qid, $this->getErrors() );
 	}
 }
-?>
