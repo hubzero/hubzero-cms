@@ -25,68 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class KbController
+ximport('Hubzero_Controller');
+
+class KbController extends Hubzero_Controller
 {	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-	private $_error = NULL;
-
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$task = strtolower(JRequest::getVar('task', '','request'));
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-	
 	public function execute()
 	{
-		switch ($this->getTask()) 
+		$this->_task = strtolower(JRequest::getVar('task', '', 'request'));
+		
+		switch ($this->_task) 
 		{
 			// Articles
 			case 'resethits':        $this->resethits();      break;
@@ -120,16 +67,6 @@ class KbController
 		}
 	}
 	
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-	
 	//----------------------------------------------------------
 	// Collection functions
 	//----------------------------------------------------------
@@ -139,35 +76,45 @@ class KbController
 		$app =& JFactory::getApplication();
 		$database =& JFactory::getDBO();
 		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'categories') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Incoming
-		$filters = array();
-		$filters['id'] = JRequest::getInt( 'id', 0 );
-		if (!$filters['id']) {
-			$filters['id'] = JRequest::getInt( 'cid', 0 );
+		$view->filters = array();
+		$view->filters['id'] = JRequest::getInt( 'id', 0 );
+		if (!$view->filters['id']) {
+			$view->filters['id'] = JRequest::getInt( 'cid', 0 );
 		}
-		$filters['filterby'] = JRequest::getVar( 'filterby', 'm.id' );
+		$view->filters['filterby'] = JRequest::getVar( 'filterby', 'm.id' );
 		
 		// Get configuration
 		$config = JFactory::getConfig();
 		
 		// Get paging variables
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start'] = JRequest::getInt('limitstart', 0);
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 
 		$c = new KbCategory( $database );
 		
 		// Get record count
-		$total = $c->getCategoriesCount( $filters );
+		$view->total = $c->getCategoriesCount( $view->filters );
 
 		// Get records
-		$rows = $c->getCategoriesAll( $filters );
+		$view->rows = $c->getCategoriesAll( $view->filters );
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
-
-		// Output HTML
-		KbHtml::categories( $database, $rows, $pageNav, $this->_option, $filters['filterby'], $filters['id'], $this->_task );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -177,45 +124,48 @@ class KbController
 		$app =& JFactory::getApplication();
 		$database =& JFactory::getDBO();
 
+		// Instantiate a new view
+		$view = new JView( array('name'=>'articles') );
+		$view->option = $this->_option;
+
 		// Incoming
-		$filters = array();
-		$filters['cid'] = JRequest::getInt( 'cid', 0 );
-		$filters['id'] = JRequest::getInt( 'id', 0 );
+		$view->filters = array();
+		$view->filters['cid'] = JRequest::getInt( 'cid', 0 );
+		$view->filters['id'] = JRequest::getInt( 'id', 0 );
 
 		// Get configuration
 		$config = JFactory::getConfig();
 		
 		// Get paging variables
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start'] = JRequest::getInt('limitstart', 0);
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 	
 		// Paging filter
-		$filters['filterby'] = JRequest::getVar( 'filterby', 'm.id' );
+		$view->filters['filterby'] = JRequest::getVar( 'filterby', 'm.id' );
 		
 		$a = new KbArticle( $database );
 		
 		// Get record count
-		$total = $a->getArticlesCount( $filters );
+		$view->total = $a->getArticlesCount( $view->filters );
 
 		// Get records
-		$rows = $a->getArticlesAll( $filters );
+		$view->rows = $a->getArticlesAll( $view->filters );
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 	
 		// Get the sections
 		$row = new KbCategory( $database );
-		$sections = $row->getAllSections();
+		$view->sections = $row->getAllSections();
 		
-		if ($filters['cid']) {
-			$out = KbHtml::sectionSelect( $sections, $filters['cid'], 'id' );
-		} else {
-			$out = KbHtml::sectionSelect( $sections, $filters['id'], 'id' );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-
-		// Output HTML
-		KbHtml::articles( $database, $rows, $pageNav, $this->_option, $filters['filterby'], $out, $filters['id'], $this->_task, $filters['cid'] );
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -225,36 +175,47 @@ class KbController
 		$app =& JFactory::getApplication();
 		$database =& JFactory::getDBO();
 		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'articles') );
+		$view->option = $this->_option;
+		
 		// Incoming
-		$filters = array();
-		$filters['orphans'] = true;
+		$view->filters = array();
+		$view->filters['orphans'] = true;
 
 		// Get configuration
 		$config = JFactory::getConfig();
 		
 		// Get paging variables
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start'] = JRequest::getInt('limitstart', 0);
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 	
 		// Paging filter
-		$filters['filterby'] = JRequest::getVar( 'filterby', 'm.id' );
+		$view->filters['filterby'] = JRequest::getVar( 'filterby', 'm.id' );
 		
 		$a = new KbArticle( $database );
 		
 		// Get record count
-		$total = $a->getArticlesCount( $filters );
+		$view->total = $a->getArticlesCount( $view->filters );
 		
 		// Get records
-		$rows = $a->getArticlesAll( $filters );
+		$view->rows = $a->getArticlesAll( $view->filters );
 	
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 	
-		$out = JText::_('NONE');
+		//$out = JText::_('NONE');
 
 		// Output HTML
-		KbHtml::articles( $database, $rows, $pageNav, $this->_option, $filters['filterby'], $out, -1, $this->_task );
+		//KbHtml::articles( $database, $rows, $pageNav, $this->_option, $filters['filterby'], $out, -1, $this->_task );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -288,7 +249,10 @@ class KbController
 			return;
 		}
 
-		//$created_by_id = $row->created_by;
+		// Instantiate a new view
+		$view = new JView( array('name'=>'article') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		if ($id) {
 			// Editing existing
@@ -303,9 +267,6 @@ class KbController
 			$query = "SELECT name from #__users WHERE id=".$row->modified_by;
 			$database->setQuery( $query );
 			$row->modified_by = $database->loadResult();
-		
-			//$row->introtext = KbHtml::unpee($row->introtext);
-			//$row->fulltext  = KbHtml::unpee($row->fulltext);
 		} else {
 			// Creating new
 			$row->title       = '';
@@ -325,29 +286,23 @@ class KbController
 			$row->nothelpful  = 0;
 			$row->alias       = '';
 		}
-	
+		$view->row = $row;
+		
 		$c = new KbCategory( $database );
 		
 		// Get the sections
-		$sections = $c->getAllSections();
+		$view->sections = $c->getAllSections();
 		
 		// Get the sections
-		$categories = $c->getAllCategories();
+		$view->categories = $c->getAllCategories();
 
-		// Build the <select> list for sections
-		$lists['sections'] = KbHtml::sectionSelect( $sections, $row->section, 'section' );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
 		
-		// Build the <select> list for categories
-		$lists['categories'] = KbHtml::sectionSelect( $categories, $row->category, 'category' );
-
-		// Build list of users
-		$lists['created_by'] = JHTML::_('list.users', 'created_by', $row->created_by, 0, '', 'name', 1);
-		
-		// Build the <select> list for the group access
-		$lists['access'] = JHTML::_('list.accesslevel', $row);
-
-		// Output HTML
-		KbHtml::editFaqForm( $row, $lists, $params, $juser->get('id'), $this->_option );
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -357,30 +312,33 @@ class KbController
 		$database =& JFactory::getDBO();
         $juser =& JFactory::getUser();
 
+		// Instantiate a new view
+		$view = new JView( array('name'=>'category') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+
 		// Incoming
-		$ids  = JRequest::getVar( 'id', array(0) );
-		$task = JRequest::getVar( 'task', '' );
-		$cid  = JRequest::getInt( 'cid', 0 );
+		$ids = JRequest::getVar( 'id', array(0) );
+		$view->cid = JRequest::getInt( 'cid', 0 );
 	
 		if (is_array($ids) && !empty($ids)) {
 			$id = $ids[0];
 		}
 	
 		// Load category
-		$row = new KbCategory( $database );
-		$row->load( $id );
+		$view->row = new KbCategory( $database );
+		$view->row->load( $id );
 
 		// Get the sections
-		$sections = $row->getAllSections();
+		$view->sections = $row->getAllSections();
 		
-		// Build the <select> for sections
-		$lists['categories'] = KbHtml::sectionSelect( $sections, $row->section, 'section' );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
 		
-		// Build the html select list for the group access
-		$lists['access'] = JHTML::_('list.accesslevel', $row);
-		
-		// Output HTML
-		KbHtml::editCatForm( $row, $lists, $juser->get('id'), $this->_option, $cid );
+		// Output the HTML
+		$view->display();
 	}
 
 	//----------------------------------------------------------
@@ -402,10 +360,8 @@ class KbController
 			echo KbHtml::alert( $row->getError() );
 			exit();
 		}
-		$isNew = false;
+
 		if ($row->id < 1) {
-			$isNew = true;
-			
 			// New entry
 			$row->created    = $row->created ? $row->created : date( "Y-m-d H:i:s" );
 			$row->created_by = $row->created_by ? $row->created_by : $juser->get('id');
@@ -423,14 +379,6 @@ class KbController
 			$row->alias = preg_replace("/[^$normalized_valid_chars]/", "", $row->alias);
 			$row->alias = strtolower($row->alias);
 		}
-
-		// Code cleaner for xhtml transitional compliance
-		$row->introtext = trim($row->introtext);
-		$row->fulltext  = trim($row->fulltext);
-		//$row->introtext = ($row->introtext) ? KbHtml::autop($row->introtext) : '';
-		//$row->fulltext  = KbHtml::autop($row->fulltext);
-		$row->introtext = trim($row->introtext);
-		$row->fulltext  = trim($row->fulltext);
 
 		// Check content
 		if (!$row->check()) {
@@ -476,9 +424,6 @@ class KbController
 			$row->alias = preg_replace("/[^$normalized_valid_chars]/", "", $row->alias);
 			$row->alias = strtolower($row->alias);
 		}
-
-		// Trim up whitespace
-		$row->description = trim($row->description);
 
 		// Check content
 		if (!$row->check()) {
@@ -554,8 +499,19 @@ class KbController
 					$id = $ids[0];
 				}
 				
-				// Output HTML
-				KbHtml::deleteOptions( $id, $this->_option, 'deletecat' );
+				// Instantiate a new view
+				$view = new JView( array('name'=>'category', 'layout'=>'delete') );
+				$view->option = $this->_option;
+				$view->task = $this->_task;
+				$view->id = $id;
+				
+				// Set any errors
+				if ($this->getError()) {
+					$view->setError( $this->getError() );
+				}
+
+				// Output the HTML
+				$view->display();
 			break;
 			
 			case 2:
@@ -648,11 +604,11 @@ class KbController
 		
 		// Check and store the changes
 		if (!$row->check()) {
-			echo $row->getError();
+			echo KbHtml::alert( $row->getError() );
 			return;
 		}
 		if (!$row->store()) {
-			echo $row->getError();
+			echo KbHtml::alert( $row->getError() );
 			return;
 		}
 
@@ -762,8 +718,8 @@ class KbController
 	
 		// Make sure we have an ID to work with
 		if (!$id) {
-			echo KbHtml::alert( JText::_('KB_NO_ID') );
-			return;
+			echo KbHtml::alert( JText::_('KB_NO_ID') ); 
+			exit;
 		}
 		
 		// Load and reset the article's hits
@@ -795,8 +751,8 @@ class KbController
 		
 		// Make sure we have an ID to work with
 		if (!$id) {
-			echo KbHtml::alert( JText::_('KB_NO_ID') );
-			return;
+			echo KbHtml::alert( JText::_('KB_NO_ID') ); 
+			exit;
 		}
 	
 		// Load and reset the article's ratings
@@ -821,4 +777,3 @@ class KbController
 		$this->_redirect .= ($cid) ? '&task=category&cid='.$cid : '';
 	}
 }
-?>

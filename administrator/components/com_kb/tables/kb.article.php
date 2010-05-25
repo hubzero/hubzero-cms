@@ -25,9 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-// KnowledgeBase database class
-//----------------------------------------------------------
 
 class KbArticle extends JTable 
 {
@@ -53,17 +50,17 @@ class KbArticle extends JTable
 	
 	//-----------
 	
-	function __construct( &$db )
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__faq', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->title ) == '') {
-			$this->_error = JText::_('KB_ERROR_EMPTY_TITLE');
+			$this->setError( JText::_('KB_ERROR_EMPTY_TITLE') );
 			return false;
 		}
 		return true;
@@ -71,7 +68,7 @@ class KbArticle extends JTable
 	
 	//-----------
 	
-	function loadAlias( $oid=NULL, $cat=NULL ) 
+	public function loadAlias( $oid=NULL, $cat=NULL ) 
 	{
 		if (empty($oid)) {
 			return false;
@@ -89,7 +86,7 @@ class KbArticle extends JTable
 	
 	//-----------
 	
-	function getCategoryArticles($noauth, $section, $category, $access) 
+	public function getCategoryArticles($noauth, $section, $category, $access) 
 	{
 		$juser =& JFactory::getUser();
 		
@@ -106,7 +103,7 @@ class KbArticle extends JTable
 	
 	//-----------
 	
-	function getArticles($limit, $order)
+	public function getArticles($limit, $order)
 	{
 		$juser =& JFactory::getUser();
 		
@@ -124,7 +121,7 @@ class KbArticle extends JTable
 	
 	//-----------
 	
-	function getCollection( $cid=NULL )
+	public function getCollection( $cid=NULL )
 	{
 		if ($cid == NULL) {
 			$cid = $this->category;
@@ -138,7 +135,7 @@ class KbArticle extends JTable
 	
 	//-----------
 	
-	function getArticlesCount( $filters=array() ) 
+	public function getArticlesCount( $filters=array() ) 
 	{
 		if (isset($filters['cid']) && $filters['cid']) {
 			$where = "m.section=".$filters['cid']." AND m.category=".$filters['id'];
@@ -161,7 +158,7 @@ class KbArticle extends JTable
 	
 	//-----------
 	
-	function getArticlesAll( $filters=array() ) 
+	public function getArticlesAll( $filters=array() ) 
 	{
 		if (isset($filters['cid']) && $filters['cid']) {
 			$where = "m.section=".$filters['cid']." AND m.category=".$filters['id'];
@@ -192,7 +189,7 @@ class KbArticle extends JTable
 	
 	//-----------
 	
-	function deleteSef( $option, $id=NULL ) 
+	public function deleteSef( $option, $id=NULL ) 
 	{
 		if ($id == NULL) {
 			$id = $this->id;
@@ -201,209 +198,8 @@ class KbArticle extends JTable
 		if ($this->_db->query()) {
 			return true;
 		} else {
-			$this->_error = $this->_db->getErrorMsg();
-			return false;
-		}
-	}
-}
-
-
-class KbCategory extends JTable 
-{
-	var $id           = NULL;  // @var int(11) Primary key
-	var $title        = NULL;  // @var varchar(250)
-	var $description  = NULL;  // @var text
-	var $section      = NULL;  // @var int(1)
-	var $state        = NULL;  // @var int(3)
-	var $access       = NULL;  // @var int(3)
-	var $alias        = NULL;  // @var varchar(200)
-	
-	//-----------
-	
-	function __construct( &$db )
-	{
-		parent::__construct( '#__faq_categories', 'id', $db );
-	}
-	
-	//-----------
-	
-	function check() 
-	{
-		if (trim( $this->title ) == '') {
-			$this->_error = JText::_('KB_ERROR_EMPTY_TITLE');
-			return false;
-		}
-		return true;
-	}
-	
-	//-----------
-	
-	function loadAlias( $oid=NULL ) 
-	{
-		if (empty($oid)) {
-			return false;
-		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias='$oid'" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
 	}
-	
-	//-----------
-	
-	function getCategories( $noauth, $empty_cat=0, $catid=0 )
-	{
-        $juser =& JFactory::getUser();
-
-		if ($empty_cat) {
-			$empty = '';
-		} else {
-			$empty = "\n HAVING COUNT( b.id ) > 0";
-		}
-		
-		if ($catid) {
-			$sect = "b.category";
-		} else {
-			$sect = "b.section";
-		}
-		
-		$query = "SELECT a.*, COUNT( b.id ) AS numitems"
-				. " FROM $this->_tbl AS a"
-				. " LEFT JOIN #__faq AS b ON ".$sect." = a.id AND b.state=1 AND b.access=0"
-				. " WHERE a.state=1 AND a.section=".$catid
-				. ( $noauth ? " AND a.access <= '". $juser->get('aid') ."'" : '' )
-				. " GROUP BY a.id"
-				. $empty
-				. " ORDER BY a.title";
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
-	}
-	
-	//-----------
-	
-	function deleteSef( $option, $id=NULL ) 
-	{
-		if ($id == NULL) {
-			$id = $this->id;
-		}
-		$this->_db->setQuery( "DELETE FROM #__redirection WHERE newurl='index.php?option=".$option."&task=category&id=".$id."'" );
-		if ($this->_db->query()) {
-			return true;
-		} else {
-			$this->_error = $this->_db->getErrorMsg();
-			return false;
-		}
-	}
-	
-	//-----------
-	
-	function getAllSections() 
-	{
-		$this->_db->setQuery( "SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section=0 ORDER BY m.title" );
-		return $this->_db->loadObjectList();
-	}
-	
-	//-----------
-	
-	function getAllCategories() 
-	{
-		$this->_db->setQuery( "SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section!=0 ORDER BY m.title" );
-		return $this->_db->loadObjectList();
-	}
-	
-	//-----------
-	
-	function getCategoriesCount( $filters=array() ) 
-	{
-		$query  = "SELECT count(*) FROM $this->_tbl WHERE section=";
-		$query .= (isset($filters['id'])) ? $filters['id'] : "0";
-		
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
-	}
-	
-	//-----------
-	
-	function getCategoriesAll( $filters=array() ) 
-	{
-		if (isset($filters['id']) && $filters['id']) {
-			$sect = $filters['id'];
-			$sfield = "category";
-		} else {
-			$sect = 0;
-			$sfield = "section";
-		}
-		
-		$query = "SELECT m.id, m.title, m.section, m.state, m.access, m.alias, g.name AS groupname, 
-				(SELECT count(*) FROM #__faq AS fa WHERE fa.".$sfield."=m.id) AS total, 
-				(SELECT count(*) FROM $this->_tbl AS fc WHERE fc.section=m.id) AS cats"
-			. " FROM #__faq_categories AS m"
-			. " LEFT JOIN #__groups AS g ON g.id = m.access"
-			. " WHERE m.section=".$sect
-			. " ORDER BY ".$filters['filterby']
-			. " LIMIT ".$filters['start'].",".$filters['limit'];
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
-	}
 }
-
-
-class KbHelpful extends JTable 
-{
-	var $id      = NULL;  // @var int(11) Primary key
-	var $fid     = NULL;  // @var int(11)
-	var $ip      = NULL;  // @var varchar(15)
-	var $helpful = NULL;  // @var varchar(10)
-	
-	//-----------
-	
-	function __construct( &$db )
-	{
-		parent::__construct( '#__faq_helpful_log', 'id', $db );
-	}
-	
-	//-----------
-	
-	function check() 
-	{
-		if (trim( $this->fid ) == '') {
-			$this->_error = JText::_('KB_ERROR_MISSING_ARTICLE_ID');
-			return false;
-		}
-		return true;
-	}
-	
-	//-----------
-	
-	function getHelpful( $fid=NULL, $ip=NULL )
-	{
-		if ($fid == NULL) {
-			$fid = $this->fid;
-		}
-		if ($ip == NULL) {
-			$ip = $this->ip;
-		}
-		$this->_db->setQuery( "SELECT helpful FROM $this->_tbl WHERE fid =".$fid." AND ip='".$ip."'" );
-		return $this->_db->loadResult();
-	}
-	
-	//-----------
-	
-	function deleteHelpful( $fid=NULL ) 
-	{
-		if ($fid == NULL) {
-			$fid = $this->fid;
-		}
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE fid=".$fid );
-		if ($this->_db->query()) {
-			return true;
-		} else {
-			$this->_error = $this->_db->getErrorMsg();
-			return false;
-		}
-	}
-}
-?>

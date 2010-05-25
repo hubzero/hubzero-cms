@@ -36,13 +36,23 @@ $jacl->addACL( $option, 'admin', 'users', 'super administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'manager' );
 
+// Authorization check
+$user = & JFactory::getUser();
+if (!$user->authorize( 'com_contact', 'manage' )) {
+	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+}
+
+
+jimport('joomla.application.component.view');
+
 // Include scripts
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'kb.class.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.kb.html.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'kb.article.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'kb.category.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'kb.helpful.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'kb.html.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
 
 // Initiate controller
 $controller = new KbController();
 $controller->execute();
 $controller->redirect();
-?>

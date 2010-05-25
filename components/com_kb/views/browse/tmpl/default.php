@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$cls = '';
 				}
 
-				$html .= "\t".'<li'.$cls.'><a href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.KbHtml::xhtml($row->title).'</a></li>'."\n";
+				$html .= "\t".'<li'.$cls.'><a href="'.JRoute::_('index.php?option='.$this->option.'&section='.$row->alias).'">'.Hubzero_View_Helper_Html::xhtml($row->title).'</a></li>'."\n";
 			}
 		}
 		$html .= '</ul>'."\n";
@@ -77,7 +77,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= ' ('.$row->numitems.')';
 				if ($row->description) {
 					$html .= '<br />';
-					$html .= KbHtml::xhtml(KbHtml::shortenText($row->description, 100, 0));
+					$html .= Hubzero_View_Helper_Html::xhtml(Hubzero_View_Helper_Html::shortenText($row->description, 100, 0));
 				}
 				$html .= '</p>'."\n";
 				$html .= "\t\t".'</div><!-- / .three columns '.$cls.' -->'."\n";
