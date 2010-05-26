@@ -602,25 +602,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 							foreach ($item->replies as $reply) 
 							{
 								$o = ($o == 'odd') ? 'even' : 'odd';
-		
-								// Comment
-								$html .= '<li class="comment '.$o;
-								if ($this->abuse && $reply->reports > 0) {
-									$html .= ' abusive';
+								if($reply->state==4) {
+									// comment removed by author
+									$html .= '<li class="comment '.$o.' comment-removed">'.JText::_('COMMENT_REMOVED_BY_AUTHOR');
 								}
-								$html .= '" id="c'.$reply->id.'r">';
-		
-								$view = new JView( array('name'=>'wish', 'layout'=>'comment') );
-								$view->option = $option;
-								$view->reply = $reply;
-								$view->juser = $juser;
-								$view->listid = $wishlist->id;
-								$view->wishid = $item->id;
-								$view->wishauthor = $item->proposed_by;
-								$view->level = 1;
-								$view->abuse = $abuse;
-								$view->addcomment = $addcomment;
-								$html .= $view->loadTemplate();
+								else {
+									// Comment
+									$html .= '<li class="comment '.$o;
+									if ($this->abuse && $reply->reports > 0) {
+										$html .= ' abusive';
+									}
+									$html .= '" id="c'.$reply->id.'r">';
+			
+									$view = new JView( array('name'=>'wish', 'layout'=>'comment') );
+									$view->option = $option;
+									$view->reply = $reply;
+									$view->juser = $juser;
+									$view->listid = $wishlist->id;
+									$view->wishid = $item->id;
+									$view->wishauthor = $item->proposed_by;
+									$view->level = 1;
+									$view->abuse = $abuse;
+									$view->addcomment = $addcomment;
+									$html .= $view->loadTemplate();
+								}
 								
 								// Another level? 
 								if (count($reply->replies) > 0) {
@@ -628,24 +633,29 @@ defined('_JEXEC') or die( 'Restricted access' );
 									foreach ($reply->replies as $r) 
 									{
 										$o = ($o == 'odd') ? 'even' : 'odd';
-		
-										$html .= '<li class="comment '.$o;
-										if ($this->abuse && $r->reports > 0) {
-											$html .= ' abusive';
+										if($r->state==4) {
+											// comment removed by author
+											$html .= '<li class="comment '.$o.' comment-removed">'.JText::_('COMMENT_REMOVED_BY_AUTHOR');
 										}
-										$html .= '" id="c'.$r->id.'r">';
-										
-										$view = new JView( array('name'=>'wish', 'layout'=>'comment') );
-										$view->option = $option;
-										$view->reply = $r;
-										$view->juser = $juser;
-										$view->listid = $wishlist->id;
-										$view->wishid = $item->id;
-										$view->wishauthor = $item->proposed_by;
-										$view->level = 2;
-										$view->abuse = $abuse;
-										$view->addcomment = $addcomment;
-										$html .= $view->loadTemplate();
+										else {
+											$html .= '<li class="comment '.$o;
+											if ($this->abuse && $r->reports > 0) {
+												$html .= ' abusive';
+											}
+											$html .= '" id="c'.$r->id.'r">';
+											
+											$view = new JView( array('name'=>'wish', 'layout'=>'comment') );
+											$view->option = $option;
+											$view->reply = $r;
+											$view->juser = $juser;
+											$view->listid = $wishlist->id;
+											$view->wishid = $item->id;
+											$view->wishauthor = $item->proposed_by;
+											$view->level = 2;
+											$view->abuse = $abuse;
+											$view->addcomment = $addcomment;
+											$html .= $view->loadTemplate();
+										}
 		
 										// Yet another level?? 
 										if (count($r->replies) > 0) {
@@ -653,24 +663,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 											foreach ($r->replies as $rr) 
 											{
 												$o = ($o == 'odd') ? 'even' : 'odd';
-		
-												$html .= t.'<li class="comment '.$o;
-												if ($this->abuse && $rr->reports > 0) {
-													$html .= ' abusive';
+												if($rr->state==4) {
+													// comment removed by author
+													$html .= '<li class="comment '.$o.' comment-removed">'.JText::_('COMMENT_REMOVED_BY_AUTHOR');
+													$html .= '</li>';
 												}
-												$html .= '" id="c'.$rr->id.'r">';
-												$view = new JView( array('name'=>'wish', 'layout'=>'comment') );
-												$view->option = $option;
-												$view->reply = $rr;
-												$view->juser = $juser;
-												$view->listid = $wishlist->id;
-												$view->wishid = $item->id;
-												$view->wishauthor = $item->proposed_by;
-												$view->level = 3;
-												$view->abuse = $abuse;
-												$view->addcomment = $addcomment;
-												$html .= $view->loadTemplate();
-												$html .= '</li>';
+												else {
+													$html .= t.'<li class="comment '.$o;
+													if ($this->abuse && $rr->reports > 0) {
+														$html .= ' abusive';
+													}
+													$html .= '" id="c'.$rr->id.'r">';
+													$view = new JView( array('name'=>'wish', 'layout'=>'comment') );
+													$view->option = $option;
+													$view->reply = $rr;
+													$view->juser = $juser;
+													$view->listid = $wishlist->id;
+													$view->wishid = $item->id;
+													$view->wishauthor = $item->proposed_by;
+													$view->level = 3;
+													$view->abuse = $abuse;
+													$view->addcomment = $addcomment;
+													$html .= $view->loadTemplate();
+													$html .= '</li>';
+												}
 											}
 											$html .= '</ol><!-- end pass4 -->';
 										}

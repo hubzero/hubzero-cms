@@ -56,7 +56,7 @@ if (!$this->juser->get('guest')) {
                              <div>
                             	<label>
                                		 <?php echo JText::_('ACTION_ATTACH_FILE'); ?>
-									<input type="file" name="upload" id="upload" />								
+									<input type="file" name="upload"  />								
 								</label>
                                 <label>
                                		 <?php echo JText::_('ACTION_ATTACH_FILE_DESC'); ?>
