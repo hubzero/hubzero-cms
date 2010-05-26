@@ -86,19 +86,6 @@ class JobsController extends JObject
 			return $this->_data[$property];
 		}
 	}
-
-	//-----------
-
-	public function getTask()
-	{
-		$task = JRequest::getVar( 'task', '', 'post' );
-		if (!$task) {
-			$task = JRequest::getVar( 'task', '', 'get' );
-		}
-		$this->_task = $task;
-
-		return $task;
-	}
 	
 	//-----------
 	
@@ -136,9 +123,12 @@ class JobsController extends JObject
 		}
 		
 		// Set component administrator priviliges
-		$this->_masteradmin  = $this->_admin && !$this->_emp ? 1 : 0;		
+		$this->_masteradmin  = $this->_admin && !$this->_emp ? 1 : 0;	
+		
+		$task = JRequest::getVar( 'task', '' );
+		$this->_task = $task;	
 			
-		switch( $this->getTask() ) 
+		switch( $this->_task ) 
 		{
 			case 'browse':    		$this->view();    		break;
 			case 'job':    			$this->job();    		break;
@@ -170,9 +160,9 @@ class JobsController extends JObject
 			case 'cancel':  		$this->cancel();    	break;
 			
 			// Should only be called via AJAX
-			case 'plugin':     		$this->plugin();     break;
+			case 'plugin':     		$this->plugin();     	break;
 
-			default: $this->view(); break;
+			default: $this->_task = 'view';  $this->view();  break;
 		}
 	}
 
@@ -1828,7 +1818,7 @@ class JobsController extends JObject
 		
 		// Task-specific
 		//$filters['sortby'] = $this->_task != 'browse' ? 'opendate' : $filters['sortby'] ;
-		$filters['limit'] = $this->_task != 'browse' ? 10 : $filters['limit'] ;
+		//$filters['limit'] = $this->_task != 'browse' ? 10 : $filters['limit'] ;
 		
 		// admins and employers
 		$filters['admin'] = $admin;
