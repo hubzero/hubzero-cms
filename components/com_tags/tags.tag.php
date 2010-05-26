@@ -197,16 +197,23 @@ class TagsTag extends JTable
 	
 	//-----------
 	
-	public function getTopTags( $limit=25, $tbl='', $order='tcount DESC' ) 
+	public function getTopTags( $limit=25, $tbl='', $order='tcount DESC', $exclude_private = 1) 
 	{
 		$tj = new TagsObject( $this->_db );
 		
-		$sql = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, COUNT(tj.tagid) AS tcount 
-				FROM ".$tj->getTableName()." AS tj, $this->_tbl AS t 
-				WHERE t.id=tj.tagid AND t.admin=0 
-				GROUP BY tagid 
-				ORDER BY $order 
-				LIMIT $limit";
+		$sql = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
+		$sql.= "FROM $this->_tbl AS t  ";
+		$sql.= "JOIN ".$tj->getTableName()." AS tj ON t.id=tj.tagid ";
+		if($exclude_private) {
+			$sql.= " LEFT JOIN #__resources AS R ON R.id=tj.objectid AND tj.tbl='resources' ";
+			$sql.= " LEFT JOIN #__wiki_page AS P ON P.id=tj.objectid AND tj.tbl='wiki' ";
+			$sql.= " LEFT JOIN #__xprofiles AS XP ON XP.uidNumber=tj.objectid AND tj.tbl='xprofiles' ";
+		}
+		$sql.= "WHERE t.id=tj.tagid AND t.admin=0 ";
+		$sql.= ($exclude_private) ? " AND ((tj.tbl='resources' AND R.access!=4) OR (tj.tbl='wiki' AND P.access=0) OR (tj.tbl='xprofiles' AND XP.public=0) OR (tj.tbl!='xprofiles' AND tj.tbl!='wiki' AND tj.tbl!='resources' AND tj.tbl!='wishlist' AND tj.tbl!='support') ) " : ""; 
+		$sql.= "GROUP BY tagid "; 
+		$sql.= "ORDER BY $order ";
+		$sql.= "LIMIT $limit";
 
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();

@@ -192,8 +192,10 @@ class TagsController extends JObject
 		
 		$addtag = trim(JRequest::getVar('addtag', ''));
 		
+		//$search = trim(JRequest::getVar('tags', ''));
+		
 		// Ensure we were passed a tag
-		if (!$tagstring && !$addtag) {
+		if (!$tagstring && !$addtag && !$search) {
 			JError::raiseError( 404, JText::_('COM_TAGS_NO_TAG') );
 			return;
 		}
@@ -205,6 +207,19 @@ class TagsController extends JObject
 		} else {
 			$tgs = array();
 		}
+		/*if ($search) {
+			// Break the string into individual tags
+			$stgs = explode(',', $search);
+			$stgs = array_map('trim',$stgs);
+		} else {
+			$stgs = array();
+		}
+		foreach ($stgs as $stg) 
+		{
+			if (!in_array($stg,$tgs)) {
+				$tgs[] = $stg;
+			}
+		}*/
 		
 		// See if we're adding any tags to the search list
 		if ($addtag && !in_array($addtag,$tgs)) {
@@ -388,6 +403,7 @@ class TagsController extends JObject
 		$view->sort = $sort;
 		$view->total = $total;
 		$view->tagstring = $tagstring;
+		$view->search = implode(', ',$tgs);
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
