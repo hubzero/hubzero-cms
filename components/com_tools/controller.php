@@ -642,7 +642,9 @@ class ToolsController extends JObject
 		
 		// Build and display the HTML
 		//$this->session( $app, $authorized, $output, $toolname );
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess);
+		//$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess);
+		$xhub =& XFactory::getHub();
+		$xhub->redirect( JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess) );
 	}
 
 	//-----------

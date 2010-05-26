@@ -306,7 +306,7 @@ class ToolsController
 		$mwdb =& MwUtils::getMWDBO();
 		
 		$html  = '  <tr>'.n;
-		$html .= t.'<form name="insert_host" method="GET" action="index.php">'.n;
+		$html .= t.'<form name="insert_host" method="get" action="index.php">'.n;
 		$html .= t.ToolsHtml::hInput('option',$this->_option);
 		$html .= t.ToolsHtml::hInput('admin',1);
 		$html .= t.ToolsHtml::hInput('table','host');
@@ -347,14 +347,14 @@ class ToolsController
 		$mwdb =& MwUtils::getMWDBO();
 		
 		$headers = array('Hostname','Provisions','Status','Uses','Action');
-		$op = @$_GET['op'];
-		$hostname = @$_GET['hostname'];
-		$hosttype = @$_GET['hosttype'];
-		$status = @$_GET['status'];
-		$item = @$_GET['item'];
+		$op = JRequest::getVar( 'op', '', 'get' );
+		$hostname = JRequest::getVar( 'hostname', '', 'get' );
+		$hosttype = JRequest::getVar( 'hosttype', '', 'get' );
+		$status = JRequest::getVar( 'status', '', 'get' );
+		$item = JRequest::getVar( 'item', '', 'get' );
 		
-		$filter_hostname = @$_GET['filter_hostname'];
-		$filter_hosttype = @$_GET['filter_hosttype'];
+		$filter_hostname = JRequest::getVar( 'filter_hostname', '', 'get' );
+		$filter_hosttype = JRequest::getVar( 'filter_hosttype', '', 'get' );
 		
 		switch($op)
 		{
@@ -456,6 +456,19 @@ class ToolsController
 	}
 
 	//----------------------------------------------------------
+		$op       = JRequest::getVar( 'op', '', 'get' );
+		$item     = JRequest::getVar( 'item', '', 'get' );
+		$appname  = JRequest::getVar( 'appname', '', 'get' );
+		$geometry = JRequest::getVar( 'geometry', '', 'get' );
+		$depth    = JRequest::getVar( 'depth', '', 'get' );
+		$hostreq  = JRequest::getVar( 'hostreq', '', 'get' );
+		$userreq  = JRequest::getVar( 'userreq', '', 'get' );
+		$timeout  = JRequest::getVar( 'timeout', '', 'get' );
+		$command  = JRequest::getVar( 'command', '', 'get' );
+		$description = JRequest::getVar( 'description', '', 'get' );
+		$filter_appname  = JRequest::getVar( 'filter_appname', '', 'get' );
+		$filter_hosttype = JRequest::getVar( 'filter_hosttype', '', 'get' );
+		$filter_usertype = JRequest::getVar( 'filter_usertype', '', 'get' );
 	// 'type' table entries.
 	//----------------------------------------------------------
 	
@@ -464,13 +477,14 @@ class ToolsController
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
 
-		$op    = @$_GET['op'];
-		$table = @$_GET['table'];
-		$name  = @$_GET['name'];
-		$value = @$_GET['value'];
-		$item  = @$_GET['item'];
-		$description = @$_GET['description'];
-		$filter_hosttype = @$_GET['filter_hosttype'];
+		$op    = JRequest::getVar( 'op', '', 'get' );
+		$table = JRequest::getVar( 'table', '', 'get' );
+		$name  = JRequest::getVar( 'name', '', 'get' );
+		$value = JRequest::getVar( 'value', '', 'get' );
+		$item  = JRequest::getVar( 'item', '', 'get' );
+		$description = JRequest::getVar( 'description', '', 'get' );
+		$filter_hosttype = JRequest::getVar( 'filter_hosttype', '', 'get' );
+		$filter_usertype = JRequest::getVar( 'filter_usertype', '', 'get' );
 
 		$headers = array('Name','Bit#','Description','References','Action');
 
