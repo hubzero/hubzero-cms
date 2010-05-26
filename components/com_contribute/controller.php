@@ -128,6 +128,7 @@ class ContributeController extends JObject
 			case 'delete':  $this->delete(); break;
 			case 'cancel':  $this->delete(); break;
 			case 'discard': $this->delete(); break;
+			case 'retract': $this->retract(); break;
 			
 			case 'start':   $this->steps();  break;
 			case 'login':   $this->login();  break;
@@ -1061,6 +1062,37 @@ class ContributeController extends JObject
 				$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			break;
 		}
+	}
+	
+	//-----------
+	
+	protected function retract() 
+	{
+		// Incoming
+		$id = JRequest::getInt( 'id', 0 );
+		
+		// Ensure we have an ID to work with
+		if (!$id) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			return;
+		}
+		
+		$database =& JFactory::getDBO();
+		
+		// Load the resource
+		$resource = new ResourcesResource( $database );
+		$resource->load( $id );
+		
+		// Check if it's in pending status
+		if ($resource->published == 3) {
+			// Set it back to "draft" status
+			$resource->published = 2;
+			// Save changes
+			$resource->store();
+		}
+		
+		// Redirect
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 	}
 	
 	//-----------
