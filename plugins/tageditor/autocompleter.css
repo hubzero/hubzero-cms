@@ -66,6 +66,11 @@
 		outline: 0;
 		padding: 3px 0 2px 0;
 		} /* no left/right padding here please */
+	#hubForm .aside ul.textboxlist-holder li.bit-input input,
+	.aside ul.textboxlist-holder li.bit-input input {
+		/*width: 30px;*/
+		/* was giving really tiny selection drop-down box */
+		}
 	#hubForm ul.textboxlist-holder li.bit-input input.smallinput,
 	ul.textboxlist-holder li.bit-input input.smallinput { 
 		width: 1px;
