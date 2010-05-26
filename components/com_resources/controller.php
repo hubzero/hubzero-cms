@@ -828,7 +828,7 @@ class ResourcesController extends JObject
 		}
 
 		// Record the hit
-		//$resource->hit( $id );
+		$resource->hit( $id );
 		
 		// Initiate a resource helper class
 		$helper = new ResourcesHelper( $resource->id, $database );

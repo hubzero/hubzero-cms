@@ -30,7 +30,7 @@ HUB.TagBrowser = {
 	//isIE: false,
 	col1active: '',
 	col2active: '',
-	baseURI: 'index2.php?option=com_resources&task=browser&no_html=1',
+	baseURI: 'index.php?option=com_resources&task=browser&no_html=1',
 
 	detect: function() {
 		// simplify things
@@ -70,7 +70,7 @@ HUB.TagBrowser = {
 	nextLevel: function(type, input, input2, level, id, rid) {
 		var browser = new HUB.TagBrowser.detect();
 		if(level == 2) {
-			if(HUB.TagBrowser.col2active!='') {
+			if(HUB.TagBrowser.col2active!='' && $(HUB.TagBrowser.col2active)) {
 				//var prevactive = $(HUB.TagBrowser.col2active);
 				$(HUB.TagBrowser.col2active).removeClass('open');
 			}
@@ -141,11 +141,12 @@ HUB.TagBrowser = {
 		if ($('d')) {
 			atg = $('atg').value;
 			d = $('d').value;
-			
-			objDiv = $("ultags");
-			dist = $("col1_"+atg).offsetHeight;
-			objDiv.scrollTop = ((dist * d) - dist);
-			clearTimeout(HUB.TagBrowser.sc);
+			if ($("col1_"+atg)) {
+				objDiv = $("ultags");
+				dist = $("col1_"+atg).offsetHeight;
+				objDiv.scrollTop = ((dist * d) - dist);
+				clearTimeout(HUB.TagBrowser.sc);
+			}
 		}
 	},
 
