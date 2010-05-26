@@ -236,23 +236,23 @@ class CitationsHtml
 							</tr>
 							<tr>
 								<td class="key"><label for="author"><?php echo JText::_('AUTHORS'); ?>:</label></td>
-								<td colspan="3"><input type="text" name="author" id="author" size="30" value="<?php echo $row->author; ?>" /></td>
+								<td colspan="3"><input type="text" name="author" id="author" size="30" value="<?php echo htmlentities($row->author,ENT_COMPAT,'UTF-8'); ?>" /></td>
 							</tr>
 							<tr>
 								<td class="key"><label for="editor"><?php echo JText::_('EDITORS'); ?>:</label></td>
-								<td colspan="3"><input type="text" name="editor" id="editor" size="30" maxlength="250" value="<?php echo $row->editor; ?>" /></td>
+								<td colspan="3"><input type="text" name="editor" id="editor" size="30" maxlength="250" value="<?php echo htmlentities($row->editor,ENT_COMPAT,'UTF-8'); ?>" /></td>
 							</tr>
 							<tr>
 								<td class="key"><label for="title"><?php echo JText::_('TITLE_CHAPTER'); ?>:</label></td>
-								<td colspan="3"><input type="text" name="title" id="title" size="30" maxlength="250" value="<?php echo $row->title; ?>" /></td>
+								<td colspan="3"><input type="text" name="title" id="title" size="30" maxlength="250" value="<?php echo htmlentities($row->title,ENT_COMPAT,'UTF-8'); ?>" /></td>
 							</tr>
 							<tr>
 								<td class="key"><label for="booktitle"><?php echo JText::_('BOOK_TITLE'); ?>:</label></td>
-								<td colspan="3"><input type="text" name="booktitle" id="booktitle" size="30" maxlength="250" value="<?php echo $row->booktitle; ?>" /></td>
+								<td colspan="3"><input type="text" name="booktitle" id="booktitle" size="30" maxlength="250" value="<?php echo htmlentities($row->booktitle,ENT_COMPAT,'UTF-8'); ?>" /></td>
 							</tr>
 							<tr>
 								<td class="key"><label for="journal"><?php echo JText::_('JOURNAL'); ?>:</label></td>
-								<td colspan="3"><input type="text" name="journal" id="journal" size="30" maxlength="250" value="<?php echo $row->journal; ?>" /></td>
+								<td colspan="3"><input type="text" name="journal" id="journal" size="30" maxlength="250" value="<?php echo htmlentities($row->journal,ENT_COMPAT,'UTF-8'); ?>" /></td>
 							</tr>
 							<tr>
 								<td class="key"><label for="volume"><?php echo JText::_('VOLUME'); ?>:</label></td>
