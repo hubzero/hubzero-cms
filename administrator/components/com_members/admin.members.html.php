@@ -152,6 +152,7 @@ class MembersHtml
 				<input type="hidden" name="option" value="<?php echo $option ?>" />
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="boxchecked" value="0" />
+				<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 <?php
 	}
@@ -183,6 +184,7 @@ class MembersHtml
 				<p><?php echo JText::_('ADD_CONTRIBUTOR_EXPLANATION'); ?></p>
 				<input type="hidden" name="option" value="<?php echo $option ?>" />
 				<input type="hidden" name="task" value="edit" />
+				<?php echo JHTML::_( 'form.token' ); ?>
 			</fieldset>
 		</form>
 <?php
@@ -466,10 +468,10 @@ class MembersHtml
 					else
 					     $html .= t.t.t.t.'<td> <label><input type="checkbox" name="shadowExpire" id="shadowExpire" value="1"/></label></td>';
 					$html .= t.t.t.'</tr>'.n;
-					$html .= t.t.t.'<tr class="even">'.n;
-					$html .= t.t.t.t.'<td class="key">'.JText::_('COL_PASSWORD').'</td>'.n;
-					$html .= t.t.t.t.'<td><a href="/password/lost">'.JText::_('RESET_PASSWORD').'</a></td>'.n;
-					$html .= t.t.t.'</tr>'.n;
+					//$html .= t.t.t.'<tr class="even">'.n;
+					//$html .= t.t.t.t.'<td class="key">'.JText::_('COL_PASSWORD').'</td>'.n;
+					//$html .= t.t.t.t.'<td><a href="/password/lost">'.JText::_('RESET_PASSWORD').'</a></td>'.n;
+					//$html .= t.t.t.'</tr>'.n;
 					$html .= t.t.t.'<tr class="odd">'.n;
 					$html .= t.t.t.t.'<td class="key">'.JText::_('COL_JOBS_ALLOWED').'</td>'.n;
 					$html .= t.t.t.t.'<td><input type="text" name="profile[jobsAllowed]" id="jobsAllowed" value="'.$profile->get('jobsAllowed').'" size="10" /></td>'.n;
@@ -605,6 +607,7 @@ class MembersHtml
 				</fieldset>
 			</div>
 			<div class="clr"></div>
+			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 		<?php
 	}
@@ -686,7 +689,7 @@ class MembersHtml
 	  </tr>
 	  <tr>
 	   <td><input type="hidden" name="currentfile" value="<?php echo $file; ?>" /></td>
-	   <td><a href="index3.php?option=<?php echo $option; ?>&amp;task=deleteimg&amp;file=<?php echo $file; ?>&amp;id=<?php echo $id; ?>">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+	   <td><a href="index3.php?option=<?php echo $option; ?>&amp;task=deleteimg&amp;file=<?php echo $file; ?>&amp;id=<?php echo $id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
 	  </tr>
 <?php } else { ?>
 	  <tr>
@@ -696,6 +699,7 @@ class MembersHtml
 <?php } ?>
 	 </tbody>
 	</table>
+	<?php echo JHTML::_( 'form.token' ); ?>
    </form>
  </body>
 </html>
@@ -808,6 +812,7 @@ class MembersHtml
 		?>
 			</tbody>
 		</table>
+		<?php echo JHTML::_( 'form.token' ); ?>
 	</form>
  </body>
 </html>
@@ -858,7 +863,7 @@ class MembersHtml
 				?>
 				<tr>
 					<td class="paramlist_key"><?php echo $row; ?></td>
-					<td class="paramlist_value"><a href="index.php?option=<?php echo $option; ?>&amp;no_html=1&amp;task=deletehost&amp;host=<?php echo $row; ?>&amp;id=<?php echo $id; ?>"><?php echo JText::_('DELETE'); ?></a></td>
+					<td class="paramlist_value"><a href="index.php?option=<?php echo $option; ?>&amp;no_html=1&amp;task=deletehost&amp;host=<?php echo $row; ?>&amp;id=<?php echo $id; ?>&amp;<?php echo JUtility::getToken(); ?>=1"><?php echo JText::_('DELETE'); ?></a></td>
 				</tr>
 				<?php
 			}
@@ -866,6 +871,7 @@ class MembersHtml
 		?>
 			</tbody>
 		</table>
+		<?php echo JHTML::_( 'form.token' ); ?>
 	</form>
  </body>
 </html>
@@ -916,7 +922,7 @@ class MembersHtml
 					?>
 					<tr>
 						<td class="paramlist_key"><?php echo $row; ?></td>
-						<td class="paramlist_value"><a href="index.php?option=<?php echo $option; ?>&amp;no_html=1&amp;task=deletemanager&amp;manager=<?php echo $row; ?>&amp;id=<?php echo $id; ?>"><?php echo JText::_('DELETE'); ?></a></td>
+						<td class="paramlist_value"><a href="index.php?option=<?php echo $option; ?>&amp;no_html=1&amp;task=deletemanager&amp;manager=<?php echo $row; ?>&amp;id=<?php echo $id; ?>&amp;<?php echo JUtility::getToken(); ?>=1"><?php echo JText::_('DELETE'); ?></a></td>
 					</tr>
 					<?php
 				}
@@ -924,6 +930,7 @@ class MembersHtml
 			?>
 				</tbody>
 			</table>
+			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 	 </body>
 	</html>
