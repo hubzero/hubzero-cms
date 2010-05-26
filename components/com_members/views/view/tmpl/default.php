@@ -25,6 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$juser =& JFactory::getUser();
 $no_html = JRequest::getInt( 'no_html', 0 );
 ?>
 <div class="vcard">
@@ -35,10 +36,9 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 	<div id="content-header-extra">
 		<ul id="useroptions">
 <?php if ($this->authorized) { ?>
-			<li><a class="edit-member" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='. $this->profile->get('uidNumber')); ?>"><?php echo JText::_('Edit profile'); ?></a></li>
+			<li<?php if ($juser->get('guest') || ($this->profile->get('uidNumber') == $juser->get('id'))) { echo ' class="last"'; } ?>><a class="edit-member" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='. $this->profile->get('uidNumber')); ?>"><?php echo JText::_('Edit profile'); ?></a></li>
 <?php 
 	} 
-	$juser =& JFactory::getUser();
 	if (!$juser->get('guest') && ($this->profile->get('uidNumber') != $juser->get('id'))) {
 ?>
 			<li class="last"><a class="message" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='. $juser->get('id').'&active=messages&task=new&to='.$this->profile->get('uidNumber')); ?>"><?php echo JText::_('Send Message'); ?></a></li>

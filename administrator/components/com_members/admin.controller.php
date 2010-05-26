@@ -202,6 +202,9 @@ class MembersController extends JObject
 	
 	protected function save($redirect=1) 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming user ID
 		$id = JRequest::getInt( 'id', 0, 'post' );
 		
@@ -408,6 +411,9 @@ class MembersController extends JObject
 
 	protected function remove() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Load the component config
 		$config = $this->config;
 		
@@ -465,6 +471,9 @@ class MembersController extends JObject
 
 	protected function upload()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Load the component config
 		$config = $this->config;
 		
@@ -572,6 +581,9 @@ class MembersController extends JObject
 
 	protected function deleteimg()
 	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or jexit( 'Invalid Token' );
+		
 		// Load the component config
 		$config = $this->config;
 		
@@ -668,6 +680,9 @@ class MembersController extends JObject
 
 	protected function addgroup()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
@@ -744,6 +759,9 @@ class MembersController extends JObject
 	
 	protected function addhost()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
@@ -779,6 +797,9 @@ class MembersController extends JObject
 	
 	protected function deletehost()
 	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or jexit( 'Invalid Token' );
+		
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
@@ -844,6 +865,9 @@ class MembersController extends JObject
 	
 	protected function addmanager()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
@@ -879,6 +903,9 @@ class MembersController extends JObject
 	
 	protected function deletemanager()
 	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or jexit( 'Invalid Token' );
+		
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {

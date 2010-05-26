@@ -306,7 +306,7 @@ class MembersController extends JObject
 		$profile->load( $id );
 		
 		// Check subscription to Employer Services
-		if($this->config->get('employeraccess') && $tab == 'resume') {
+		if ($this->config->get('employeraccess') && $tab == 'resume') {
 			JPluginHelper::importPlugin( 'members', 'resume' );
 			$dispatcher =& JDispatcher::getInstance();
 			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
@@ -1156,7 +1156,8 @@ class MembersController extends JObject
 	private function send_confirmation_code($login, $email, $confirm) 
 	{
 		$jconfig =& JFactory::getConfig();
-
+		$juri = JURI::getInstance();
+		
 		// Email subject
 		$subject = $jconfig->getValue('config.sitename') .' account email confirmation';
 		
