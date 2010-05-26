@@ -658,7 +658,7 @@ class plgUsageOverview extends JPlugin
 		$html .= "\t".'</tbody>'."\n";
 		$html .= '</table>'."\n";
 		
-		
+	/*	
 		// "and more" Usage
 		$html .= '<table summary="'.JText::_('&quot;and more&quot; Usage').'">'."\n";
 		$html .= "\t".'<caption>'.JText::_('Table 4: &quot;and more&quot; Usage').'</caption>'."\n";
@@ -744,6 +744,7 @@ class plgUsageOverview extends JPlugin
 		}
 		$html .= "\t".'</tbody>'."\n";
 		$html .= '</table>'."\n";
+*/
 
 		// Collaboration Usage
 		$html .= '<table summary="'.JText::_('Collaboration Usage').'">'."\n";
