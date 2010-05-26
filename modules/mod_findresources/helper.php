@@ -25,12 +25,48 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+class modFindResources
+{
+	private $attributes = array();
 
-//-------------------------------------------------------------
+	//-----------
 
-$modfindresources = new modFindResources( $params );
-$modfindresources->display();
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
 
-require( JModuleHelper::getLayoutPath('mod_findresources') );
+	//-----------
+
+	public function __set($property, $value)
+	{
+		$this->attributes[$property] = $value;
+	}
+
+	//-----------
+
+	public function __get($property)
+	{
+		if (isset($this->attributes[$property])) {
+			return $this->attributes[$property];
+		}
+	}
+	
+	//-----------
+
+	public function display() 
+	{
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.type.php');
+			
+		$database =& JFactory::getDBO();
+					
+		$obj = new TagsTag( $database );
+			
+		$this->tags = $obj->getTopTags( $this->params->get( 'numtags', 25 ) );
+			
+		// Get major types
+		$t = new ResourcesType( $database );
+		$this->categories = $t->getMajorTypes();
+	}
+}
