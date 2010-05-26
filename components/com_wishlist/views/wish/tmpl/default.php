@@ -51,10 +51,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$name = $item->authorname;
 			}
 			
-			$assigned = ($item->assigned && ($admin==2 or $admin==1)) ? JText::_('assigned to').' <a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?filterby='.$filters['filterby'].a.'action=editplan#plan">'.$item->assignedto.'</a>' : '';	
+			$assigned = ($item->assigned && ($admin==2 or $admin==1)) ? JText::_('assigned to').' <a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag'].a.'action=editplan#plan">'.$item->assignedto.'</a>' : '';	
 			
 			if(!$assigned && ($admin==2 or $admin==1) && $item->status==0) {
-			$assigned = '<a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?filterby='.$filters['filterby'].a.'action=editplan#plan">'.JText::_('unassigned').'</a>';
+			$assigned = '<a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag'].a.'action=editplan#plan">'.JText::_('unassigned').'</a>';
 			}
 				
 			$item->status = ($item->accepted==1 && $item->status==0) ? 6 : $item->status;
@@ -111,16 +111,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= t.'<ul id="useroptions">'.n;				
 				$html .= t.t.'<li>'.n;
 				if($item->prev) {
-					$html .= t.t.t.'<a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->prev.a.'filterby='.$filters['filterby'].'"><span>&lsaquo; '.JText::_('PREV').'</span></a>'.n;
+					$html .= t.t.t.'<a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->prev.a.'filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag'].'"><span>&lsaquo; '.JText::_('PREV').'</span></a>'.n;
 				} else {
 					$html .=t.t.t.'<span>&lsaquo; '.JText::_('PREV').'</span>'.n;
 				}
 				$html .= t.t.'</li>'.n;
 				
-				$html .= t.t.'<li><a href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'filterby='.$filters['filterby']).'" ><span>'.JText::_('All').'</span></a></li>'.n;
+				$html .= t.t.'<li><a href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag']).'" ><span>'.JText::_('All').'</span></a></li>'.n;
 				$html .= t.t.'<li class="last">';
 				if($item->next) {
-					$html .= t.t.t.'<a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->next.a.'filterby='.$filters['filterby'].'"><span>'.JText::_('NEXT').' &rsaquo;</span></a>'.n;
+					$html .= t.t.t.'<a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->next.a.'filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$filters['tag'].'"><span>'.JText::_('NEXT').' &rsaquo;</span></a>'.n;
 				}
 				else {
 					$html .=t.t.t.'<span>'.JText::_('NEXT').' &rsaquo; </span>'.n;
