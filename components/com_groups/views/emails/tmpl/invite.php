@@ -40,6 +40,11 @@ if ($this->msg) {
 	$message .= stripslashes($this->msg)."\n";
 	$message .= '====================='."\n\n";
 }
+$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept');
+if (substr($sef,0,1) == '/') {
+	$sef = substr($sef,1,strlen($sef));
+}
+$message .= $juri->base().$sef."\n\n";
 $message .= JText::_('GROUPS_PLEASE_JOIN')."\n\n";
 $message .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $this->juser->get('name'), $this->juser->get('email'))."\n";
 
