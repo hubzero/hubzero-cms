@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+	<name>Blog</name>
+	<author>HUBzero</author>
+	<creationDate>11/22/2009</creationDate>
+	<copyright>(C) 2010 Purdue University</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<version>1.0</version>
+	<description>Manage A Blog</description>
+	<files>
+		<filename>router.php</filename>
+	    <filename>controller.php</filename>
+		<filename>blog.xml</filename>
+		<filename>blog.php</filename>
+		<filename>tables/blog.entry.php</filename>
+		<filename>tables/blog.comment.php</filename>
+		<filename>views/entries/tmpl/default.php</filename>
+		<filename>views/entry/tmpl/default.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_blog.ini</language>
+	</languages>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file charset="utf8" driver="mysql">uninstall.sql</file>
+		</sql>
+	</uninstall>
+	<install>
+	</install>
+	<installfile>
+		<filename></filename>
+	</installfile>
+	<uninstallfile>
+		<filename></filename>
+	</uninstallfile>
+	<administration>
+		<menu>Blog</menu>
+		<files>
+		    <filename>controller.php</filename>
+			<filename>blog.php</filename>
+			<filename>views/entries/tmpl/default.php</filename>
+			<filename>views/edit/tmpl/default.php</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_blog.ini</language>
+			<language tag="en-GB">en-GB.com_blog.menu.ini</language>
+		</languages>
+	</administration>
+	<params>
+		<param name="pageclass_sfx" type="text" size="20" default="" label="Page Class" description="A css class for the page, this allows individual page styling" />
+	</params>
+</install>
