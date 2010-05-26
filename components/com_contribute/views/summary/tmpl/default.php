@@ -118,7 +118,7 @@ if (!$juser->get('guest')) {
 						<?php if ($submission->published == 2) { ?>
 						<br /><a class="review" href="<?php echo JRoute::_('index.php?option=com_contribute&step=5&id='.$submission->id); ?>"><?php echo JText::_('Review &amp; Submit &rsaquo;'); ?></a>
 						<?php } elseif ($submission->published == 3) { ?>
-						<br /><a class="review" href="<?php echo JRoute::_('index.php?option=com_contribute&task=retract&id='.$submission->id); ?>"><?php echo JText::_('&lsaquo; Retract'); ?></a>
+						<br /><a class="retract" href="<?php echo JRoute::_('index.php?option=com_contribute&task=retract&id='.$submission->id); ?>"><?php echo JText::_('&lsaquo; Retract'); ?></a>
 						<?php } ?>
 					</td>
 					<td><a class="delete" href="<?php echo JRoute::_('index.php?option=com_contribute&task=discard&id='.$submission->id); ?>" title="<?php echo JText::_('Delete'); ?>"><?php echo JText::_('Delete'); ?></a></td>
