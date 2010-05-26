@@ -685,7 +685,7 @@ class GroupsController extends JObject
 		// E-mail the administrator
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
-		if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $message, $from, $group->get('managers'), $this->_option ))) {
+		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_cancelled_me', $subject, $message, $from, $group->get('managers'), $this->_option ))) {
 			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED').' '.$emailadmin );
 		}
 
