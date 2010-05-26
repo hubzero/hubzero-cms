@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring); ?>" method="get">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view'); //.'&tag='.$this->tagstring); ?>" method="get">
 <?php
 if (count($this->tags) == 1) {
 	$tagobj = $this->tags[0];
@@ -54,6 +54,20 @@ if (count($this->tags) == 1) {
 ?>
 	<div class="aside">
 		<fieldset>
+<?php
+JPluginHelper::importPlugin( 'tageditor' );
+$dispatcher =& JDispatcher::getInstance();
+$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tag','actags','',$this->search,'')) );
+?>
+			<label>
+				<?php echo JText::_('COM_TAGS_SEARCH_WITH_TAGS'); ?>
+<?php if (count($tf) > 0) {
+			echo $tf[0];
+} else { ?>
+				<input type="text" name="tag" value="<?php echo $this->search; ?>" />
+<?php } ?>
+			</label>
+			
 			<label>
 				<?php echo JText::_('COM_TAGS_SORT_BY'); ?>
 				<select name="sort">
