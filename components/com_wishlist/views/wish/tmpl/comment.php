@@ -59,13 +59,16 @@ $commenttype = $this->reply->admin && $this->reply->anonymous != 1 ? 'admincomme
 		if (!$this->juser->get('guest')) {
 			echo 'class="showreplyform" href="javascript:void(0);"';
 		} else {
-			echo 'href="'.JRoute::_('index.php?option='.$this->option.a.'task=reply'.a.'cat=wishcomment'.a.'id='.$this->listid.a.'refid='.$this->reply->id.a.'wishid='.$this->wishid).'" ';
+			echo 'class="rep" href="'.JRoute::_('index.php?option='.$this->option.a.'task=reply'.a.'cat=wishcomment'.a.'id='.$this->listid.a.'refid='.$this->reply->id.a.'wishid='.$this->wishid).'" ';
 		}
-		echo '" class="rep" id="rep_'.$this->reply->id.'">'.JText::_('REPLY').'</a>';
+		echo ' id="rep_'.$this->reply->id.'">'.JText::_('REPLY').'</a>';
 	}
 ?>
 	<?php if ($this->abuse) { ?>
 		<span class="abuse"><a href="<?php echo JRoute::_('index.php?option=com_support'.a.'task=reportabuse'.a.'category=comment'.a.'id='.$this->reply->id.a.'parent='.$this->wishid); ?>"><?php echo JText::_('REPORT_ABUSE'); ?></a></span> 
+	<?php } ?>
+    <?php if ($this->juser->get('id') == $this->reply->added_by ) { ?>
+		<span class="deletewish"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=deletereply'.a.'replyid='.$this->reply->id); ?>"><?php echo JText::_('DELETE_COMMENT'); ?></a></span> 
 	<?php } ?>
 	</p>
 <?php 

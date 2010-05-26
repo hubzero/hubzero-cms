@@ -391,6 +391,13 @@
 		padding: 0 0 1em 105px;
 		min-height: 8em;
 	}
+	ol.comments > li.comment-removed { 
+		min-height: 1em;
+		padding-top: 0.5em;
+		padding-left: 115px;
+		color: #999999;
+		background: url("images/comment.gif") 25px center no-repeat;
+	}
 	#wishlist  ol li, #wishlist li {
 		padding-left:90px;
 		padding-top:2em;

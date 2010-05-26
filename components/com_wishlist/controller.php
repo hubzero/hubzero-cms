@@ -159,6 +159,7 @@ class WishlistController extends JObject
 			case 'savevote':    $this->savevote();      break;
 			case 'savereply':   $this->savereply();   	break;
 			case 'reply':      	$this->reply();  	  	break;	
+			case 'deletereply': $this->deletereply();   break;
 			
 			// Autocompleter - called via AJAX
 			case 'autocomplete': $this->autocomplete(); break;
@@ -2413,6 +2414,42 @@ class WishlistController extends JObject
 		} // -- end if id & category
 	
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
+	}
+	
+	//----------------
+	
+	public function deletereply()
+	{
+		$database =& JFactory::getDBO();
+		$juser 	  =& JFactory::getUser();
+		
+		// Incoming
+		$replyid = JRequest::getInt( 'replyid', 0 );
+		
+		$row = new XComment( $database );
+		
+		// Do we have a reply ID?
+		if (!$replyid or !$row->load($replyid)) {
+			$this->setError( JText::_('ERROR_REPLY_NOT_FOUND') );
+			return;
+		}
+		if($row->added_by == $juser->get('id')) {
+			// Delete the comment
+			$row->state = 4;
+			
+			if (!$row->store()) {
+				JError::raiseError( 500, $row->getError() );
+				return;
+			}			
+		}
+		else {
+			$this->setError( JText::_('ERROR_CANNOT_DELETE_REPLY') );
+			return;
+		}
+			
+		// Go back to the page
+		$referer = JRequest::getVar( 'HTTP_REFERER', NULL, 'server' ); // What page they came from
+		$this->_redirect = $referer;
 	}
 	
 	//-----------
