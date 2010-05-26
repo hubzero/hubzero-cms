@@ -57,6 +57,33 @@ class plgResourcesReviews extends JPlugin
 		);
 		return $areas;
 	}
+	
+	//-----------
+
+	public function onResourcesRateItem( $option )
+	{
+		$id = JRequest::getInt( 'rid', 0 );
+		
+		$arr = array(
+			'html'=>'',
+			'metadata'=>''
+		);
+		
+		ximport('Hubzero_View_Helper_Html');
+		ximport('Hubzero_Plugin_View');
+		
+		$database =& JFactory::getDBO();
+		$resource = new ResourcesResource($database);
+		$resource->load( $id );
+		
+		$h = new PlgResourcesReviewsHelper();
+		$h->resource = $resource;
+		$h->option = $option;
+		$h->_option = $option;
+		$h->execute();
+		
+		return $arr;
+	}
 
 	//-----------
 

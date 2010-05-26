@@ -32,7 +32,7 @@ $nclass = (isset($this->item->vote) && $this->item->vote=="no") ? 'no' : 'zero';
 $this->item->helpful = ($this->item->helpful > 0) ? '+'.$this->item->helpful: '&nbsp;&nbsp;'.$this->item->helpful;
 $this->item->nothelpful = ($this->item->nothelpful > 0) ? '-'.$this->item->nothelpful: '&nbsp;&nbsp;'.$this->item->nothelpful;
 ?>
-<span class="thumbsvote">
+<span class="thumbsvote" id="rev<?php echo $this->item->id; ?>_<?php echo $this->rid; ?>">
 	<span class="<?php echo $pclass; ?>"><?php echo $this->item->helpful; ?></span>
 <?php if ($juser->get('guest')) { ?>
 		<span class="gooditem r_disabled"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=yes'); ?>" >&nbsp;</a></span>

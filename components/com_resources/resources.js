@@ -382,8 +382,9 @@ HUB.Resources = {
 	
 					var rid = $(this.parentNode.parentNode).getProperty('id').replace('rev'+id+'_','');	
 					//var myAjax1 = new Ajax('index.php?option=com_resources&task=reviews&id='+rid+'&no_html=1&action=rateitem&refid='+id+'&ajax=1&vote='+s,{update:pn}).request();
-					//alert('/resources/'+rid+'/reviews/?no_html=1&action=rateitem&refid='+id+'&ajax=1&vote='+s);
-					new Ajax('/resources/'+rid+'/reviews/?no_html=1&action=rateitem&refid='+id+'&ajax=1&vote='+s,{
+
+					new Ajax('index.php?option=com_resources&task=plugin&trigger=onResourcesRateItem&action=rateitem&no_html=1&rid='+id+'&refid='+id+'&ajax=1&vote='+s,{
+					//new Ajax('/resources/'+rid+'/reviews/?no_html=1&action=rateitem&refid='+id+'&ajax=1&vote='+s,{
 						'method' : 'get',
 						'update' : $(pn)
 					}).request();				

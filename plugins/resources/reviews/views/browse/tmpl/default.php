@@ -137,6 +137,7 @@ if ($this->reviews) {
 					);
 					$view->option = $this->option;
 					$view->item = $review;
+					$view->rid = $this->resource->id;
 					$html .= $view->loadTemplate();
 					
 					$html .= "\t\t".'</p>'."\n";
