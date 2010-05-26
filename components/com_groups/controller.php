@@ -1504,9 +1504,10 @@ class GroupsController extends JObject
 				// If we found an ID, add it to the invitees list
 				if ($uid) {
 					$invitees[] = $uid;
+				} else {
+					$inviteemails[] = $l;
+					//$registeredemails[] = $l;
 				}
-				$inviteemails[] = $l;
-				$registeredemails[] = $l;
 			} else {
 				// Retrieve user's account info
 				$user = JUser::getInstance($l);
@@ -1520,8 +1521,8 @@ class GroupsController extends JObject
 							$mems[] = $uid;
 						} else {
 							$invitees[] = $uid;
-							$inviteemails[] = $user->get('email');
-							$registeredemails[] = $user->get('email');
+							//$inviteemails[] = $user->get('email');
+							//$registeredemails[] = $user->get('email');
 						}
 					}
 				}
@@ -1569,6 +1570,8 @@ class GroupsController extends JObject
 		$eview->msg = $msg;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
+		
+		$juri = JURI::getInstance();
 		
 		foreach ($inviteemails as $mbr) 
 		{
