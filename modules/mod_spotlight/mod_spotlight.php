@@ -421,8 +421,9 @@ if (!class_exists('modSpotlight')) {
 				$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$row->uidNumber).'"><img width="30" height="30" src="'.$thumb.'" alt="" /></a></span>'."\n";
 				$out .= '<span class="spotlight-item"><a href="'. JRoute::_('index.php?option=com_members&id='.$row->uidNumber).'">'.$title.'</a></span>, '.$row->organization."\n";
 				$numcontributions = $this->countContributions( $row->uidNumber, $database );
-				$ave_ranking = $this->getAverageRanking( $row->uidNumber, $database);
-				$out .= ' - '.JText::_('Contributions').': '.$numcontributions.'; '.JText::_('Average resource ranking').': '.round($ave_ranking, 2).''."\n";
+				//$ave_ranking = $this->getAverageRanking( $row->uidNumber, $database);
+				$out .= ' - '.JText::_('Contributions').':&nbsp;'.$numcontributions.''."\n";
+				//$out .= ' - '.JText::_('Contributions').': '.$numcontributions.'; '.JText::_('Average resource ranking').': '.round($ave_ranking, 2).''."\n";
 				$out .= '<div class="clear"></div>'."\n";			
 			}
 			// topics
