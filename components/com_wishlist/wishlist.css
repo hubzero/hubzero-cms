@@ -396,7 +396,7 @@
 		padding-top: 0.5em;
 		padding-left: 115px;
 		color: #999999;
-		background: url("images/comment.gif") 25px center no-repeat;
+		background: url("images/comment_removed.gif") 25px center no-repeat;
 	}
 	#wishlist  ol li, #wishlist li {
 		padding-left:90px;
