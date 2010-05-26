@@ -219,15 +219,19 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			}
 			$config = new WikiConfig( $configs );
 
-			$path = JPATH_ROOT.$config->filepath.DS.$this->pageid.DS.$filename;
+			$path  = JPATH_ROOT.$config->filepath;
+			$path .= ($this->pageid) ? DS.$this->pageid : '';
+			$path .= DS.$filename;
 			
-			$link = $config->filepath.DS.$this->pageid.DS.$filename;
-			$href = ($href) ? $href : $config->filepath.DS.$this->pageid.DS.$filename;
+			$link  = $config->filepath;
+			$link .= ($this->pageid) ? DS.$this->pageid : '';
+			$link .= DS.$filename;
+			$href = ($href) ? $href : $link;
 		}
 		
 		
 		if (!is_file($path)) {
-			return '(Image('.$content.') failed - File not found)';
+			return '(Image('.$content.') failed - File not found)<!-- '.$path.' -->';
 		}
 		
 		

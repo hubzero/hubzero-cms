@@ -350,7 +350,7 @@ class WikiHtml
 			return $html;
 		}
 		
-		$html .= '<form action="index.php" method="post" id="hubForm">'.n;
+		$html .= '<form action="/index.php" method="post" id="hubForm">'.n;
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('WIKI_DELETE_PAGE_EXPLANATION').'</p>'.n;
 		$html .= t.'</div>'.n;
@@ -394,7 +394,7 @@ class WikiHtml
 			return $html;
 		}
 		
-		$html .= '<form action="index.php" method="post" id="hubForm">'.n;
+		$html .= '<form action="/index.php" method="post" id="hubForm">'.n;
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('WIKI_PAGENAME_EXPLANATION').'</p>'.n;
 		$html .= t.'</div>'.n;
@@ -463,10 +463,10 @@ class WikiHtml
 			$html .= $preview->pagehtml;
 			$html .= t.t.'</div><!-- / .subject -->'.n;
 			$html .= t.'</div><!-- / .section -->'.n;
-			$html .= '</div>'.n;
+			$html .= '</div><div class="clear"></div>'.n;
 		}
 		
-		$html .= '<form action="index.php" method="post" id="hubForm">'.n;
+		$html .= '<form action="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope).'" method="post" id="hubForm">'.n;
 		if ($page->id) {
 			$lid = $page->id;
 		} else {
@@ -855,7 +855,7 @@ class WikiHtml
 	{
 		$app =& JFactory::getApplication();
 		
-		$html  = '<form action="index.php" method="post" id="hubForm" class="full">'.n;
+		$html  = '<form action="'.JRoute::_('index.php?option='.$option.a.'scope='.$scope).'" method="post" id="hubForm" class="full">'.n;
 		$html .= t.'<fieldset>'.n;
 		$html .= WikiHtml::hed(3,'<a name="commentform"></a>'.JText::_('WIKI_ADD_COMMENT'));
 		$html .= t.t.'<fieldset>'.n;
@@ -1004,7 +1004,7 @@ class WikiHtml
 		$html .= t.'</tbody>'.n;
 		$html .= '</table>'.n;
 		
-		$f  = '<form action="index.php" method="post">'.n;
+		$f  = '<form action="/index.php" method="post">'.n;
 		$f .= WikiHtml::aside( '<p><input type="submit" value="'.JText::_('WIKI_HISTORY_COMPARE').'" /></p>' );
 		$f .= WikiHtml::subject( $html );
 		$f .= t.t.'<input type="hidden" name="pagename" value="'. $page->pagename .'" />'.n;
@@ -1142,10 +1142,10 @@ class WikiHtml
 	{
 
 		$html  = WikiHtml::attachTop( $option, $name );
-		$html .= '<form action="index.php" id="adminForm" method="post" enctype="multipart/form-data">'.n;
+		$html .= '<form action="/index.php" id="adminForm" method="post" enctype="multipart/form-data">'.n;
 		$html .= t.'<fieldset>'.n;
 		$html .= t.t.'<div id="themanager" class="manager">'.n;
-		$html .= t.t.t.'<iframe style="border:1px solid #eee;margin-top: 0;" src="index.php?option='. $option .a.'no_html=1'.a.'task=list'.a.'listdir='. $listdir .'" name="imgManager" id="imgManager" width="98%" height="180"></iframe>'.n;
+		$html .= t.t.t.'<iframe style="border:1px solid #eee;margin-top: 0;" src="/index.php?option='. $option .a.'no_html=1'.a.'task=list'.a.'listdir='. $listdir .'" name="imgManager" id="imgManager" width="98%" height="180"></iframe>'.n;
 		$html .= t.t.'</div>'.n;
 		$html .= t.'</fieldset>'.n;
 			
