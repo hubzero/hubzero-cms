@@ -65,6 +65,9 @@ function membersParseRoute($segments)
 	if (isset($segments[0])) {
 		if ($segments[0] == 'whois' || $segments[0] == 'activity') {
 			$vars['task'] = $segments[0];
+		} elseif ($segments[0] == 'vips') {
+			$vars['task'] = 'browse';
+			$vars['show'] = 'vips';
 		} elseif ($segments[0]{0} == 'n') {
 			$vars['id'] = '-' . substr($segments[0],1);
 		} else {
