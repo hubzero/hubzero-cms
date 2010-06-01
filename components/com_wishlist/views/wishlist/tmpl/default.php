@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
+ * @author		Alissa Nedossekina <alisa@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -37,6 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$juser = $this->juser;
 		$pageNav = $this->pageNav;
 		$abuse = $this->abuse;
+		$database = $this->database;
 	
 		$html = '';		
 		$xhub =& XFactory::getHub();
@@ -97,7 +98,72 @@ defined('_JEXEC') or die( 'Restricted access' );
 			
 			// Display wishlist description
 			$html .= t.'<div class="aside">'.n;			
-			$html .= WishlistHtml::browseForm($option, $filters, $admin, $wishlist->id, count($wishlist->items), $wishlist, $pageNav);
+			//$html .= WishlistHtml::browseForm($option, $filters, $admin, $wishlist->id, count($wishlist->items), $wishlist, $pageNav);
+			$sortbys = array();
+			if($admin) {
+				$sortbys['ranking']=JText::_('RANKING');
+			}
+			$sortbys['date'] = JText::_('DATE');
+			$sortbys['feedback'] = JText::_('FEEDBACK');
+			
+			if($wishlist->banking) {
+				$sortbys['bonus']=JText::_('BONUS_AND_POPULARITY');
+			}
+			$filterbys = array('all'=>JText::_('ALL_WISHES_ON_THIS_LIST'),'open'=>JText::_('ACTIVE'),'granted'=>JText::_('GRANTED'), 'accepted'=>JText::_('WISH_STATUS_ACCEPTED'), 'rejected'=>JText::_('WISH_STATUS_REJECTED'));
+			
+			if($admin == 1 or $admin == 2) { // a few extra options
+				$filterbys['private'] = JText::_('PRIVATE');
+				$filterbys['public'] = JText::_('PUBLIC');
+				if($admin == 2) {
+					$filterbys['mine'] = JText::_('MSG_ASSIGNED_TO_ME');
+				}
+			}
+
+			$html .= t.t.'<fieldset>'.n;
+			$html .= t.t.'<label class="tagdisplay">'.JText::_('WISH_FIND_BY_TAGS').': '.n;
+	
+			JPluginHelper::importPlugin( 'tageditor' );
+			$dispatcher =& JDispatcher::getInstance();	
+			$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$filters['tag'],'')) );
+				
+			if (count($tf) > 0) {
+				$html .= $tf[0];
+			} else {
+				$html .= t.t.t.'<input type="text" name="tags" id="tags-men" value="'.$filters['tag'].'" />'.n;
+			}
+			$html .= '</label>';
+			// get popular tags
+			if($wishlist->category=='general') {
+				require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
+				$obj = new TagsTag( $database );
+				$tags = $obj->getTopTags( 5, 'wishlist', 'tcount DESC', 0 );
+				
+				if ($tags) {
+					$html .= '<p>'.JText::_('WISHLIST_POPULAR_TAGS').'</p>'."\n";
+					$html .= '<ol class="tags">'."\n";
+					$tll = array();
+					foreach ($tags as $tag)
+					{
+						$class = ($tag->admin == 1) ? ' class="admin"' : '';
+				
+						$tag->raw_tag = str_replace( '&amp;', '&', $tag->raw_tag );
+						$tag->raw_tag = str_replace( '&', '&amp;', $tag->raw_tag );
+						$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'filterby='.$filters['filterby'].a.'sortby='.$filters['sortby'].a.'tags='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></li>'."\n";				
+					}
+					ksort($tll);
+					$html .= implode('',$tll);
+					$html .= '</ol><br />'."\n";
+				}
+			}
+			$html .= t.t.t.'<label >'.JText::_('SHOW').': '.n;
+			$html .= WishlistHtml::formSelect('filterby', $filterbys, $filters['filterby'], '', '');
+			$html .= t.t.t.'</label>'.n;		
+			$html .= t.t.t.' &nbsp; <label> '.JText::_('SORTBY').':'.n;
+			$html .= WishlistHtml::formSelect('sortby', $sortbys, $filters['sortby'], '', '');
+			$html .= t.t.t.'</label>'.n;
+			$html .= t.t.'<input type="hidden" name="newsearch" value="1" />'.n;
+			$html .= t.t.t.'<input type="submit" value="'.JText::_('GO').'" />'.n;
+			$html .= t.t.'</fieldset>'.n;
 							
 			if(isset($wishlist->resource) && $wishlist->category== 'resource') {
 				$html .= t.t.'<p>'.JText::_('THIS_LIST_IS_FOR').' ';
@@ -144,7 +210,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$html .=$filters['start'] + count($wishlist->items);
 					$html .=' out of '.$pageNav->total;
 				}
-				$html .= ' '.strtolower(JText::_('WISHES')).'</p>'.n;
+				$html .= ' '.strtolower(JText::_('WISHES'));
+				$html .= $filters['tag'] != '' ? ' '.JText::_('WISHES_TAGGED_WITH').' <span class="tagname">'.$filters['tag'].'</span>.' : '.';
+				if($this->config->get('show_percentage_granted') && $filters['filterby']=='all') {
+					$html .= ' '.JText::_('PERCENT_GRANTED_WISHES').': '.$wishlist->granted_percentage.'% '.JText::_('FROM_TOTAL').'.';
+				}
+				$html .= '</p>'.n;
 			
 				$html  .= t.'<ul id="wishlist">'.n;
 				$y = 1;			

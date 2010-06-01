@@ -182,6 +182,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$item->about = trim(stripslashes($item->about));
 						$item->about = preg_replace('/<br\\s*?\/??>/i', "", $item->about);
 						$item->about = htmlspecialchars(WishlistHtml::txt_unpee($item->about));
+						$item->about = str_replace("\n",'<br />',$item->about);
 						$html .= t.t.t.'<p>'.$item->about.'</p>'.n;
 					}
 				
