@@ -468,6 +468,13 @@ class WishlistController extends JObject
 			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $this->_admin, $juser);	
 			$total = $objWish->get_count($wishlist->id, $filters, $this->_admin, $juser);
 			
+			// Get count of granted wishes
+			$sp_filters = $filters;
+			$sp_filters['filterby'] = 'granted';
+			$wishlist->granted_count = $objWish->get_count($wishlist->id, $sp_filters, $this->_admin, $juser);
+			$wishlist->granted_percentage = $total > 0 && $wishlist->granted_count > 0 ?  round(($wishlist->granted_count/$total) * 100, 0 ) : 0;
+			
+			// Some extras
 			$wishlist->saved = $saved;
 			$wishlist->banking = $this->banking ? $this->banking : 0;
 			$wishlist->banking = $wishlist->category=='user' ? 0 : $this->banking; // do not allow points for individual wish lists		
@@ -487,6 +494,7 @@ class WishlistController extends JObject
 		$view->pageNav = $pageNav;
 		$view->wishlist = $wishlist;
 		$view->filters = $filters;
+		$view->database = $database;
 		$view->abuse = true;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );

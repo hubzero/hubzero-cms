@@ -35,5 +35,9 @@
 			<option value="1">80/20</option>
 		</param>
 		<param name="webpath" type="text" menu="hide" default="/site/wishlist" label="Web path for storing attachments" description="Specify directory for attachment storage" />
+		 <param name="show_percentage_granted" type="radio" default="0" label="Show percentage granted?" description="Allow/Disallow diplay of percentage of granted wishes in selection">
+			<option value="1">yes</option>
+			<option value="0">no</option>
+		</param>
 	</params>
 </config>
