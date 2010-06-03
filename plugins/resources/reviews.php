@@ -52,9 +52,13 @@ class plgResourcesReviews extends JPlugin
 	
 	public function &onResourcesAreas( $resource )
 	{
-		$areas = array(
-			'reviews' => JText::_('PLG_RESOURCES_REVIEWS')
-		);
+		if ($resource->_type->_params->get('plg_reviews')) {
+			$areas = array(
+				'reviews' => JText::_('PLG_RESOURCES_REVIEWS')
+			);
+		} else {
+			$areas = array();
+		}
 		return $areas;
 	}
 	

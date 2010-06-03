@@ -1081,6 +1081,39 @@ class ResourcesHtml
 					</tbody>
 				</table>
 			</fieldset>
+			<fieldset class="adminform">
+				<legend><?php echo JText::_('Plugins'); ?></legend>
+				
+				<table class="admintable">
+					<thead>
+						<tr>
+							<th><?php echo JText::_('Plugin'); ?></th>
+							<th colspan="2"><?php echo JText::_('Active'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php 
+					
+					$params = new JParameter( $row->params );
+					
+					$database =& JFactory::getDBO();
+					$database->setQuery( "SELECT * FROM #__plugins WHERE folder='resources'" );
+					$plugins = $database->loadObjectList();
+
+					foreach ($plugins as $plugin)
+					{
+						?>
+						<tr>
+							<td><?php echo stripslashes($plugin->name); ?></td>
+							<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
+							<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
+						</tr>
+						<?php
+					}
+					?>
+					</tbody>
+				</table>
+			</fieldset>
 		</form>
 		<?php
 	}

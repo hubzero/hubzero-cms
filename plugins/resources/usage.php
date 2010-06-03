@@ -47,12 +47,12 @@ class plgResourcesUsage extends JPlugin
 	
 	public function &onResourcesAreas( $resource ) 
 	{
-		if ($resource->type != 7) {
-			$areas = array();
-		} else {
+		if ($resource->_type->_params->get('plg_usage')) {
 			$areas = array(
 				'usage' => JText::_('PLG_RESOURCES_USAGE')
 			);
+		} else {
+			$areas = array();
 		}
 		return $areas;
 	}

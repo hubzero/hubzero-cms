@@ -47,9 +47,13 @@ class plgResourcesCitations extends JPlugin
 	
 	public function &onResourcesAreas( $resource )
 	{
-		$areas = array(
-			'citations' => JText::_('PLG_RESOURCES_CITATIONS')
-		);
+		if ($resource->_type->_params->get('plg_citations')) {
+			$areas = array(
+				'citations' => JText::_('PLG_RESOURCES_CITATIONS')
+			);
+		} else {
+			$areas = array();
+		}
 		return $areas;
 	}
 
@@ -73,7 +77,10 @@ class plgResourcesCitations extends JPlugin
 		$database =& JFactory::getDBO();
 
 		// Get a needed library
-		include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'citations.class.php');
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'citation.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'association.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'author.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'secondary.php' );
 
 		// Get reviews for this resource
 		$c = new CitationsCitation( $database );

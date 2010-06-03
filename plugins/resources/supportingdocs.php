@@ -49,12 +49,12 @@ class plgResourcesSupportingDocs extends JPlugin
 	{
 		if ($archive) {
 			$areas = array();			
-		} else if ($resource->type !=8) {
+		} else if ($resource->_type->_params->get('plg_supportingdocs')) {
 			$areas = array(
 				'supportingdocs' => JText::_('PLG_RESOURCES_SUPPORTINGDOCS')
 			);
 		} else {
-			$areas = array();			
+			$areas = array();
 		}
 		
 		return $areas;
