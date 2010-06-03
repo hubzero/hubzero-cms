@@ -545,6 +545,10 @@ class ResourcesController extends JObject
 				$params->merge( $rparams );
 				$bits['params'] = $params;
 				
+				$resource->_type = new ResourcesType( $database );
+				$resource->_type->load($resource->type);
+				$resource->_type->_params = new JParameter( $resource->_type->params );
+				
 				// Version checks (tools only)
 				if ($resource->type == 7 && $resource->alias) {
 					$tables = $database->getTableList();
@@ -848,6 +852,10 @@ class ResourcesController extends JObject
 		
 		$sections = array();
 		$cats = array();
+		
+		$resource->_type = new ResourcesType( $database );
+		$resource->_type->load($resource->type);
+		$resource->_type->_params = new JParameter( $resource->_type->params );
 		
 		// We need to do this here because we need some stats info to pass to the body
 		if (!$thistool) {

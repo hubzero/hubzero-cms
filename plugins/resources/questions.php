@@ -47,12 +47,12 @@ class plgResourcesQuestions extends JPlugin
 	
 	public function &onResourcesAreas( $resource ) 
 	{
-		if ($resource->type != 7) {
-			$areas = array();
-		} else {
+		if ($resource->_type->_params->get('plg_questions')) {
 			$areas = array(
 				'questions' => JText::_('PLG_RESOURCES_QUESTIONS')
 			);
+		} else {
+			$areas = array();
 		}
 		return $areas;
 	}

@@ -52,13 +52,12 @@ class plgResourcesWishlist extends JPlugin
 	
 	function &onResourcesAreas( $resource ) 
 	{
-		if ($resource->type != 7) {
-			$areas = array();
-		} else {
-			
+		if ($resource->_type->_params->get('plg_wishlist')) {
 			$areas = array(
 				'wishlist' => JText::_('Wishlist')
 			);
+		} else {
+			$areas = array();
 		}
 		
 		return $areas;

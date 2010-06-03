@@ -47,12 +47,12 @@ class plgResourcesVersions extends JPlugin
 	
 	public function &onResourcesAreas( $resource ) 
 	{
-		if ($resource->type != 7) {
-			$areas = array();
-		} else {
+		if ($resource->_type->_params->get('plg_versions')) {
 			$areas = array(
 				'versions' => JText::_('PLG_RESOURCES_VERSIONS')
 			);
+		} else {
+			$areas = array();
 		}
 		return $areas;
 	}

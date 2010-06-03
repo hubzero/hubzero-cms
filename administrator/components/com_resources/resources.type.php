@@ -37,6 +37,7 @@ class ResourcesType extends JTable
 	var $description = NULL;  // @var text
 	var $contributable = NULL;  // @var int(2)
 	var $customFields = NULL;  // @var text
+	var $params = NULL;  // @var text
 	
 	//-----------
 	
