@@ -1,29 +1,6 @@
 <?php
-/**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 //----------------------------------------------------------
 // Extended database class
@@ -31,27 +8,29 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class SelectedQuotes extends JTable 
 {
-	var $id         		= NULL;  // @var int(11) Primary key
-	var $userid	    		= NULL;  // @var int(11)
-	var $fullname   		= NULL;  // @var string
-	var $org	    		= NULL;  // @var string
-	var $miniquote     		= NULL;  // @var varchar 150
-	var $short_quote     	= NULL;  // @var text
-	var $quote      		= NULL;  // @var text
-	var $picture    		= NULL;  // @var string
-	var $date	    		= NULL;  // @var datetime	
-	var $flash_rotation 	= NULL;  // @var int(1)
-	var $notable_quotes 	= NULL;  // @var int(1)
-	var $notes 				= NULL;	 // @var string
+	var $id             = NULL;  // @var int(11) Primary key
+	var $userid         = NULL;  // @var int(11)
+	var $fullname       = NULL;  // @var string
+	var $org            = NULL;  // @var string
+	var $miniquote      = NULL;  // @var text
+	var $short_quote    = NULL;  // @var text
+	var $quote          = NULL;  // @var text
+	var $picture        = NULL;  // @var string
+	var $date           = NULL;  // @var datetime	
+	var $flash_rotation = NULL;  // @var int(1)
+	var $notable_quotes = NULL;  // @var int(1)
+	var $notes          = NULL;	 // @var string
 
-	function __construct( &$db ) 
+	//-----------
+	
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__selected_quotes', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->quote ) == '') {
 			$this->setError( JText::_('Quote must contain text.') );
@@ -63,8 +42,37 @@ class SelectedQuotes extends JTable
 	
 	//-----------
 	
-	function buildQuery( $filters ) 
+	public function buildQuery( $filters ) 
 	{
+		/*$query = "FROM $this->_tbl ";
+		if ((isset($filters['search']) && $filters['search'] != '') 
+		 || (isset($filters['id']) && $filters['id'] != 0)
+		 || (isset($filters['notable_quotes']) && $filters['notable_quotes'] != '')) {
+			$query .= "WHERE";
+		}
+		if (isset($filters['search']) && $filters['search'] != '' ) {
+			$words = explode(' ', $filters['search']);
+			$sqlsearch = "";
+			foreach ($words as $word) 
+			{
+				$sqlsearch .= " (LOWER(fullname) LIKE '%$word%') OR";
+			}
+			$query .= substr($sqlsearch, 0, -3);
+		}
+		if (isset($filters['notable_quotes']) && $filters['notable_quotes']) {
+			$query .= " notable_quotes=".$filters['notable_quotes'];
+		}
+		if (isset($filters['id']) && $filters['id'] != 0 ) {
+			$query .= " AND id=".$filters['id'];
+		}
+		if ($filters['sortby'] == '') {
+			$filters['sortby'] = 'date';
+		}
+		$query .= "\n ORDER BY ".$filters['sortby']." DESC";
+		if (isset($filters['limit']) && $filters['limit'] > 0) {
+			$query .= " LIMIT ".$filters['limit'];
+		}
+		return $query;*/
 		$query = "FROM $this->_tbl ";
 		$query .= "WHERE 1=1 ";
 		if (isset($filters['search']) && $filters['search'] != '' ) {
@@ -100,10 +108,9 @@ class SelectedQuotes extends JTable
 	
 	//-----------
 	
-	function getCount( $filters=array() ) 
+	public function getCount( $filters=array() ) 
 	{
-		$query  = "SELECT COUNT(*) ";
-		$query .= $this->buildQuery( $filters );
+		$query  = "SELECT COUNT(*) ".$this->buildQuery( $filters );
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -111,18 +118,17 @@ class SelectedQuotes extends JTable
 	
 	//-----------
 	
-	function getResults( $filters=array() ) 
+	public function getResults( $filters=array() ) 
 	{
-		$query  = "SELECT DISTINCT * ";
-		$query .= $this->buildQuery( $filters );
-
+		$query  = "SELECT * ".$this->buildQuery( $filters );
+		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
 	
 	//-----------
 	
-	function deletePicture( $config=null )
+	public function deletePicture( $config=null )
 	{
 		// Load the component config
 		if (!$config) {
@@ -166,9 +172,3 @@ class SelectedQuotes extends JTable
 		return true;
 	}
 }
-
-
-class mosSelectedQuotes extends SelectedQuotes 
-{	
-}
-?>
