@@ -25,55 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class CitationsController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-
-	//-----------
-
+class CitationsController extends Hubzero_Controller
+{
 	public function execute()
 	{
 		$default = 'browse';
@@ -92,51 +47,49 @@ class CitationsController extends JObject
 		$this->$task();
 	}
 
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 
 	public function browse()
 	{
-		$app =& JFactory::getApplication();
-		$database =& JFactory::getDBO();
-
-		// Get filters
-		$filter = array();
-		$filters['search'] = urldecode($app->getUserStateFromRequest($this->_option.'.search', 'search', ''));
-		$filters['sort']   = $app->getUserStateFromRequest($this->_option.'.sort', 'sort', 'created DESC');
-
 		// Get configuration
 		$config = JFactory::getConfig();
-		
-		// Get paging variables
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start'] = $app->getUserStateFromRequest($this->_option.'.limitstart', 'limitstart', 0, 'int');
+		$app =& JFactory::getApplication();
 
-		$obj = new CitationsCitation( $database );
+		// Instantiate a new view
+		$view = new JView( array('name'=>'citations') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+
+		// Get filters
+		$view->filters = array();
+		$view->filters['search'] = urldecode($app->getUserStateFromRequest($this->_option.'.search', 'search', ''));
+		$view->filters['sort']   = $app->getUserStateFromRequest($this->_option.'.sort', 'sort', 'created DESC');
+
+		// Get paging variables
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = $app->getUserStateFromRequest($this->_option.'.limitstart', 'limitstart', 0, 'int');
+
+		$obj = new CitationsCitation( $this->database );
 		
 		// Get a record count
-		$total = $obj->getCount( $filters );
+		$view->total = $obj->getCount( $view->filters );
 
 		// Get records
-		$rows = $obj->getRecords( $filters );
+		$view->rows = $obj->getRecords( $view->filters );
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		CitationsHtml::browse( $rows, $pageNav, $this->_option, $filters, $this->_task );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -150,6 +103,11 @@ class CitationsController extends JObject
 	
 	private function edit()
 	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'citation') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Incoming - expecting an array id[]=4232
 		$id = JRequest::getVar( 'id', array() );
 		
@@ -160,61 +118,74 @@ class CitationsController extends JObject
 			$id = 0;
 		}
 		
-		$database =& JFactory::getDBO();
-		
 		// Load the object
-		$row = new CitationsCitation( $database );
-		$row->load( $id );
+		$view->row = new CitationsCitation( $this->database );
+		$view->row->load( $id );
 		
 		// Load the associations object
-		$assoc = new CitationsAssociation( $database );
+		$assoc = new CitationsAssociation( $this->database );
 		
 		// No ID, so we're creating a new entry
 		// Set the ID of the creator
 		if (!$id) {
 			$juser =& JFactory::getUser();
-			$row->uid = $juser->get('id');
+			$view->row->uid = $juser->get('id');
 			
 			// It's new - no associations to get
-			$assocs = array();
+			$view->assocs = array();
 		} else {
 			// Get the associations
-			$assocs = $assoc->getRecords( array('cid'=>$id) );
+			$view->assocs = $assoc->getRecords( array('cid'=>$id) );
 		}
 		
-		// Output HTML
-		CitationsHtml::edit( $row, $assocs, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
 	
 	private function stats() 
 	{
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'stats') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Load the object
-		$row = new CitationsCitation( $database );
-		$stats = $row->getStats();
+		$row = new CitationsCitation( $this->database );
+		$view->stats = $row->getStats();
 		
-		// Output HTML
-		CitationsHtml::stats( $stats, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//----------------------------------------------------------
 	// Processors
 	//----------------------------------------------------------
 	
-	private function save()
+	protected function save()
 	{
-		$database =& JFactory::getDBO();
-	
-		//$_POST = array_map('trim',$_POST);
-
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
+		$citation = JRequest::getVar('citation', array(), 'post');
+		$citation = array_map('trim', $citation);
+		
 		// Bind incoming data to object
-		$row = new CitationsCitation( $database );
-		if (!$row->bind( $_POST )) {
-			echo CitationsHtml::alert( $row->getError() );
-			exit();
+		$row = new CitationsCitation( $this->database );
+		if (!$row->bind( $citation )) {
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 	
 		// New entry so set the created date
@@ -222,23 +193,20 @@ class CitationsController extends JObject
 			$row->created = date( 'Y-m-d H:i:s', time() );
 		}
 		
-		// Field named 'uri' due to conflict with existing 'url' variable
-		$row->url = JRequest::getVar( 'uri', '', 'post' );
-		
 		// Check content for missing required data
 		if (!$row->check()) {
-			echo CitationsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo CitationsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Incoming associations
-		$arr = JRequest::getVar( 'assocs', array() );
+		$arr = JRequest::getVar( 'assocs', array(), 'post' );
 		
 		$ignored = array();
 		
@@ -247,33 +215,33 @@ class CitationsController extends JObject
 			$a = array_map('trim',$a);
 
 			// Initiate extended database class
-			$assoc = new CitationsAssociation( $database );
+			$assoc = new CitationsAssociation( $this->database );
 			
 			if (!$this->_isempty($a, $ignored)) {
 				$a['cid'] = $row->id;
 			
 				// bind the data
 				if (!$assoc->bind( $a )) {
-					echo CitationsHtml::alert( $assoc->getError() );
-					exit();
+					JError::raiseError( 500, $assoc->getError() );
+					return;
 				}
 		
 				// Check content
 				if (!$assoc->check()) {
-					echo CitationsHtml::alert( $assoc->getError() );
-					exit();
+					JError::raiseError( 500, $assoc->getError() );
+					return;
 				}
 
 				// Store new content
 				if (!$assoc->store()) {
-					echo CitationsHtml::alert( $assoc->getError() );
-					exit();
+					JError::raiseError( 500, $assoc->getError() );
+					return;
 				}
-			} elseif ($this->_isempty($a, $ignored) && !empty($a['id'])) {
+			} elseif ($this->_isEmpty($a, $ignored) && !empty($a['id'])) {
 				// Delete the row
 				if (!$assoc->delete( $a['id'] )) {
-					echo CitationsHtml::alert( $assoc->getError() );
-					exit();
+					JError::raiseError( 500, $assoc->getError() );
+					return;
 				}
 			}
 		}
@@ -285,7 +253,7 @@ class CitationsController extends JObject
 
 	//-----------
 	
-	private function _isempty($b, $ignored=array())
+	private function _isEmpty($b, $ignored=array())
 	{
 		foreach ($ignored as $ignore)
 		{
@@ -309,7 +277,7 @@ class CitationsController extends JObject
 
 	//-----------
 	
-	private function remove()
+	protected function remove()
 	{
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar('id', array());
@@ -319,12 +287,10 @@ class CitationsController extends JObject
 
 		// Make sure we have IDs to work with
 		if (count($ids) > 0) {
-			$database =& JFactory::getDBO();
-			
 			// Loop through the IDs and delete the citation
-			$citation = new CitationsCitation( $database );
-			$assoc = new CitationsAssociation( $database );
-			$author = new CitationsAuthor( $database );
+			$citation = new CitationsCitation( $this->database );
+			$assoc = new CitationsAssociation( $this->database );
+			$author = new CitationsAuthor( $this->database );
 			foreach ($ids as $id) 
 			{
 				// Fetch and delete all the associations to this citation
@@ -345,14 +311,12 @@ class CitationsController extends JObject
 				$citation->delete( $id );
 			}
 			
-			$msg = 'CITATION_REMOVED';
+			$this->_message = JText::_('CITATION_REMOVED');
 		} else {
-			$msg = 'NO_SELECTION';
+			$this->_message = JText::_('NO_SELECTION');
 		}
 		
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
-		$this->_message = JText::_( $msg );
 	}
 }
-?>

@@ -27,15 +27,28 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
+error_reporting(E_ALL);
+@ini_set('display_errors','1');
 
-//-----------
-
-switch ($task) 
-{
-	case 'edit': CitationsToolbar::_EDIT(1); break;
-	case 'add':  CitationsToolbar::_EDIT(0);  break;
-	
-	default: CitationsToolbar::_DEFAULT(); break;
+// Ensure user has access to this function
+$jacl =& JFactory::getacl();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
+ 
+// Authorization check
+$user = & JFactory::getUser();
+if (!$user->authorize( $option, 'manage' )) {
+	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
 }
-?>
+
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'citation.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'association.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'author.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'secondary.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
+
+// Initiate controller
+$controller = new CitationsController();
+$controller->execute();
+$controller->redirect();
