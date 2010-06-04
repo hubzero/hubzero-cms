@@ -190,7 +190,8 @@ class modFeaturedmember
 			// No - so we need to display a member
 			
 			// Load some needed libraries
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'members.class.php' );
+			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
+			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
 			
 			// Check the feature history for today's feature
 			$fh->loadActive($start, 'profiles');
