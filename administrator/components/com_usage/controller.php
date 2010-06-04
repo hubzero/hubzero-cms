@@ -25,23 +25,47 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-error_reporting(E_ALL);
-@ini_set('display_errors','1');
+class UsageController extends Hubzero_Controller
+{
+	public function execute()
+	{
+		$this->_task = JRequest::getVar( 'task', '' );
+		
+		switch ($this->_task) 
+		{
+			case 'browse': $this->browse(); break;
+			
+			default: $this->browse(); break;
+		}
+	}
 
-// Set access levels
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'admin', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
+	//----------------------------------------------------------
+	// Views
+	//----------------------------------------------------------
 
-// Include scripts
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.usage.html.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
+	protected function browse() 
+	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'browse') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
+	}
 
-// Initiate controller
-$controller = new UsageController();
-$controller->execute();
-$controller->redirect();
-?>
+	//-----------
+
+	protected function cancel() 
+	{
+		// Redirect
+		$this->_redirect = 'index.php?option='. $this->_option;
+	}
+}

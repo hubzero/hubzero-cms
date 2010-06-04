@@ -27,12 +27,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
+error_reporting(E_ALL);
+@ini_set('display_errors','1');
 
-//-----------
+// Set access levels
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
 
-switch ($task) 
-{
-	default: UsageToolbar::_DEFAULT(); break;
+// Authorization check
+$user = & JFactory::getUser();
+if (!$user->authorize( $option, 'manage' )) {
+	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
 }
-?>
+
+// Include scripts
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php' );
+
+// Initiate controller
+$controller = new UsageController();
+$controller->execute();
+$controller->redirect();
