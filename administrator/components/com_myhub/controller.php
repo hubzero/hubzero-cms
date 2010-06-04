@@ -25,64 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-class MyhubController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
-	private function getTask() 
-	{
-		$task = strtolower(JRequest::getVar('task', '', 'default'));
-		$this->_task = $task;
-		return $task;
-	}
-	
+class MyhubController extends Hubzero_Controller
+{
 	public function execute()
 	{
 		// Get the component parameters
@@ -90,7 +36,9 @@ class MyhubController extends JObject
 		$this->config = $config;
 		$this->num_default = 6;
 		
-		switch ($this->getTask()) 
+		$this->_task = strtolower(JRequest::getVar('task', '', 'default'));
+		
+		switch ($this->_task) 
 		{
 			case 'select':    $this->select();    break;
 			case 'push':      $this->push();      break;
@@ -105,39 +53,34 @@ class MyhubController extends JObject
 		}
 	}
 
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-
 	//----------------------------------------------------------
 	//  Views
 	//----------------------------------------------------------
 
 	protected function select()
 	{
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'select') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
+		// Include a needed file
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'database'.DS.'table'.DS.'module.php' );
-		$jmodule = new JTableModule( $database );
+		$jmodule = new JTableModule( $this->database );
 		
 		$position = ($this->config->get('position')) ? $this->config->get('position') : 'myhub';
 		
 		// Select all available modules
-		$query = "SELECT m.id, m.title 
-					FROM ".$jmodule->getTableName()." AS m 
-					WHERE m.position='$position'";
-					
-		$database->setQuery( $query );
-		$modules = $database->loadObjectList();
+		$this->database->setQuery( "SELECT m.id, m.title FROM ".$jmodule->getTableName()." AS m WHERE m.position='$position'" );
+		$view->modules = $this->database->loadObjectList();
 		
-		// Output HTML
-		MyhubHtml::select( $this->_option, $modules );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
@@ -151,14 +94,12 @@ class MyhubController extends JObject
 		
 		// Ensure we have a module
 		if (!$module) {
-			echo MyhubHtml::alert('Error: no module selected');
+			echo "<script type=\"text/javascript\"> alert('".JText::_('Error: no module selected')."'); window.history.go(-1); </script>\n";
 			return;
 		}
 		
-		$database =& JFactory::getDBO();
-		
 		// Get all entries that do NOT have the selected module
-		$mp = new MyhubPrefs( $database );
+		$mp = new MyhubPrefs( $this->database );
 		$rows = $mp->getPrefs( $module );
 		
 		// Did we get any results?
@@ -178,7 +119,7 @@ class MyhubController extends JObject
 				$prefs = implode(';',$bits);
 				
 				// Save the updated prefs
-				$myhub = new MyhubPrefs( $database );
+				$myhub = new MyhubPrefs( $this->database );
 				$myhub->uid = $row->uid;
 				$myhub->prefs = $prefs;
 				if (!$myhub->check()) {
@@ -207,18 +148,15 @@ class MyhubController extends JObject
 	    if ($this->_task == 'customize') {
 			$document =& JFactory::getDocument();
 			$document->addScript('/components'.DS.$this->_option.DS.'xsortables.js');
-			$document->addScript('/administrator/components'.DS.$this->_option.DS.'admin.myhub.js');
+			$document->addScript('/administrator/components'.DS.$this->_option.DS.'myhub.js');
 		}
-		
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
-		
+
 		// Select user's list of modules from database
-		$myhub = new MyhubPrefs( $database );
-		$myhub->load( $juser->get('id') );
+		$myhub = new MyhubPrefs( $this->database );
+		$myhub->load( $this->juser->get('id') );
 		
 		// Create a default set of preferences
-		$myhub->uid = $juser->get('id');
+		$myhub->uid = $this->juser->get('id');
 		$myhub->prefs = $this->getDefaultModules();
 	
 		// Splits string into columns
@@ -246,40 +184,27 @@ class MyhubController extends JObject
 		$cols = 3;
 
 		// Build HTML
-		//$html  = MyhubHtml::writeOptions( $this->_option, $this->_task );
-		$html  = '<div class="main section">'.n;
-		if ($this->_task != 'customize') {
-			$html .= '<form action="index.php?option='.$this->_option.'" method="post" name="adminForm" id="cpnlc">'.n;
-			$html .= t.'<input type="hidden" name="task" value="" />'.n;
-			$html .= '</form>'.n;
-		}
-		$html .= '<table id="droppables">'.n;
-		$html .= t.'<tbody>'.n;
-		$html .= t.t.'<tr>'.n;
+		// Instantiate a new view
+		$view = new JView( array('name'=>'manage') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->juser = $this->juser;
 		
-		// Initialize customization abilities
+		$view->cols = $cols;
+		$view->mymods = $mymods;
+		$view->allmods = $allmods;
+		$view->usermods = $usermods;
 		if ($this->_task == 'customize') {
-			$availmods = $this->getUnusedModules($allmods);
-		
-			// Get the control panel
-			$html .= t.t.t.'<td id="modules-dock" style="vertical-align: top;">'.n;
-			$html .= MyhubHtml::controlpanel($this->_option, $availmods, $usermods, $juser->get('id'));
-			$html .= t.t.t.'</td>'.n;
+			$view->availmods = $this->getUnusedModules($allmods);
 		}
-		// Loop through each column and output modules assigned to each one
-		for ( $c = 0; $c < $cols; $c++ ) 
-		{
-			$html .= t.t.t.'<td class="sortable" id="sortcol_'.$c.'">'.n;
-			$html .= $this->output_modules($mymods[$c], $juser->get('id'), $this->_task);
-			$html .= t.t.t.'</td>'.n;
-		}
-		$html .= t.t.'</tr>'.n;
-		$html .= t.'</tbody>'.n;
-		$html .= '</table>'.n;
-		$html .= '<input type="hidden" name="uid" id="uid" value="'.$juser->get('id').'" />'.n;
-		$html .= '</div><!-- / .main section -->'.n;
 		
-		echo $html;
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//----------------------------------------------------------
@@ -305,7 +230,9 @@ class MyhubController extends JObject
 
 		$modules = $this->getUnusedModules($allmods);
 		
-		echo MyhubHtml::moduleList( $modules );
+		$view = new JView( array('name'=>'manage', 'layout'=>'list') );
+		$view->modules = $modules;
+		$view->display();
 	}
 
 	//-----------
@@ -339,10 +266,9 @@ class MyhubController extends JObject
 			$component->params = implode("\n",$p);
 		}
 		
-		$database =& JFactory::getDBO();
-		$database->setQuery( "UPDATE #__components SET params='".$component->params."' WHERE `parent`=0 AND `option`='".$this->_option."'");
-		if ($database->query()) {
-			$this->setError( $database->getErrorMsg() );
+		$this->database->setQuery( "UPDATE #__components SET params='".$component->params."' WHERE `parent`=0 AND `option`='".$this->_option."'");
+		if ($this->database->query()) {
+			$this->setError( $this->database->getErrorMsg() );
 		}
 	
 		$this->_redirect = 'index.php?option='.$this->_option;
@@ -359,20 +285,18 @@ class MyhubController extends JObject
 
 	protected function getmodule( $extras=false, $act='' ) 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$mid = JRequest::getInt( 'id', 0 );
 		$uid = JRequest::getInt( 'uid', 0 );
 		
 		// Make sure we have a module ID to load
 		if (!$mid) {
-			echo MyhubHtml::error( JText::_('ERROR_NO_MOD_ID') );
+			echo JText::_('ERROR_NO_MOD_ID');
 			return;
 		}
 		
 		// Get the module from the database
-		$myparams = new MyhubParams( $database );
+		$myparams = new MyhubParams( $this->database );
 		$module = $myparams->loadModule( $uid, $mid );
 
 		// If the user has special prefs, load them.
@@ -390,7 +314,15 @@ class MyhubController extends JObject
 		//$module->user = 0;
 
 		// Is it a custom module (i.e., HTML)?
-		echo MyhubHtml::moduleContainer( $module, $params, $rendered, false, $extras, $database, $this->_option, $act );
+		$view = new JView( array('name'=>'manage', 'layout'=>'container') );
+		$view->option = $this->_option;
+		$view->module = $module;
+		$view->params = $params;
+		$view->rendered = $rendered;
+		$view->extras = $extras;
+		$view->act = $act;
+		$view->container = false;
+		$view->display();
 	}
 	
 	//-----------
@@ -414,7 +346,7 @@ class MyhubController extends JObject
 	// outputs a group of modules, each contained in a list item
 	//----------------------------------------------------------
 
-	protected function output_modules($mods, $uid, $act='') 
+	public function outputModules($mods, $uid, $act='') 
 	{
 		$database =& JFactory::getDBO();
 		
@@ -449,7 +381,15 @@ class MyhubController extends JObject
 					$rendered = false; //$this->render( $params, $mainframe->getPath( 'mod0_xml', $module->module ), 'module' );
 				}
 
-				$html .= MyhubHtml::moduleContainer( $module, $params, $rendered, true, true, $database, $this->_option, $act );
+				$view = new JView( array('name'=>'manage', 'layout'=>'container') );
+				$view->option = 'com_myhub';
+				$view->module = $module;
+				$view->params = $params;
+				$view->rendered = $rendered;
+				$view->extras = true;
+				$view->act = $act;
+				$view->container = true;
+				$html .= $view->loadTemplate();
 			}
 		}
 		
@@ -462,11 +402,8 @@ class MyhubController extends JObject
 
 	private function getUnusedModules($mods)
 	{
-		$database =& JFactory::getDBO();
-	
-		//jimport('joomla.database.table.module');
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'database'.DS.'table'.DS.'module.php' );
-		$jmodule = new JTableModule( $database );
+		$jmodule = new JTableModule( $this->database );
 	
 		$position = ($this->config->get('position')) ? $this->config->get('position') : 'myhub';
 	
@@ -482,8 +419,8 @@ class MyhubController extends JObject
 		$query .= $querym;
 		$query .= ") ORDER BY ordering";
 
-		$database->setQuery( $query );
-		$modules = $database->loadObjectList();
+		$this->database->setQuery( $query );
+		$modules = $this->database->loadObjectList();
 	
 		return $modules;
 	}
@@ -497,19 +434,17 @@ class MyhubController extends JObject
 		if ($this->config->get('defaults')) {
 			$string = $this->config->get('defaults');
 		} else {
-			$database =& JFactory::getDBO();
-			
 			$position = ($this->config->get('position')) ? $this->config->get('position') : 'myhub';
 			
 			include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'database'.DS.'table'.DS.'module.php' );
-			$jmodule = new JTableModule( $database );
+			$jmodule = new JTableModule( $this->database );
 			
 			$query = "SELECT m.id 
 						FROM ".$jmodule->getTableName()." AS m 
 						WHERE m.position='".$position."' AND m.published='1' AND m.client_id='0' 
 						ORDER BY m.ordering LIMIT ".$this->num_default;
-			$database->setQuery( $query );
-			$modules = $database->loadObjectList();
+			$this->database->setQuery( $query );
+			$modules = $this->database->loadObjectList();
 
 			if ($modules) {
 				$i = 0;
@@ -531,4 +466,3 @@ class MyhubController extends JObject
 		return $string;
 	}
 }
-?>
