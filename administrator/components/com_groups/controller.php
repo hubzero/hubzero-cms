@@ -25,73 +25,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-class GroupsController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
-	private function getTask()
-	{
-		$task = strtolower(JRequest::getVar('task', '','request'));
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-	
+class GroupsController extends Hubzero_Controller
+{
 	public function execute()
 	{
 		// Load the component config
 		$config =& JComponentHelper::getParams( $this->_option );
 		$this->config = $config;
 		
-		switch ( $this->getTask() ) 
+		$this->_task = strtolower(JRequest::getVar('task', '','request'));
+		
+		switch ($this->_task) 
 		{
 			case 'promote':  $this->promote();  break;
 			case 'remove':   $this->remove();   break;
@@ -110,37 +56,6 @@ class GroupsController extends JObject
 			
 			default: $this->browse(); break;
 		}
-		
-		$database =& JFactory::getDBO();
-		$tables = $database->getTableList();
-		
-		$table = $database->_table_prefix.'xgroups_log';
-		if (!in_array($table,$tables)) {
-			$database->setQuery( "CREATE TABLE `#__xgroups_log` (
-			  `id` int(11) NOT NULL auto_increment,
-			  `gid` int(11) NOT NULL default '0',
-			  `timestamp` datetime NOT NULL default '0000-00-00 00:00:00',
-			  `uid` int(11) default '0',
-			  `action` varchar(50) default NULL,
-			  `comments` text,
-			  `actorid` int(11) default '0',
-			  PRIMARY KEY  (`id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;" );
-			if (!$database->query()) {
-				echo $database->getErrorMsg();
-				return false;
-			}
-		}
-	}
-
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
 	}
 
 	//----------------------------------------------------------
@@ -149,58 +64,63 @@ class GroupsController extends JObject
 	
 	protected function browse()
 	{
-		ximport('Hubzero_Group');
-		$app =& JFactory::getApplication();
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'groups') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Get configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 		
 		// Incoming
-		$filters = array();
-		$filters['type']   = JRequest::getVar( 'type', 'all' );
-		$filters['search'] = urldecode(trim($app->getUserStateFromRequest($this->_option.'.browse.search', 'search', '')));
+		$view->filters = array();
+		$view->filters['type']   = JRequest::getVar( 'type', 'all' );
+		$view->filters['search'] = urldecode(trim($app->getUserStateFromRequest($this->_option.'.browse.search', 'search', '')));
 		
 		// Filters for getting a result count
-		$filters['limit'] = 'all';
-		$filters['fields'] = array('COUNT(*)');
-		$filters['authorized'] = 'admin';
+		$view->filters['limit'] = 'all';
+		$view->filters['fields'] = array('COUNT(*)');
+		$view->filters['authorized'] = 'admin';
 
 		// Get a record count
-		$total = Hubzero_Group::find($filters);
+		$view->total = Hubzero_Group::find($view->filters);
 
 		// Filters for returning results
-		$filters['limit']  = $app->getUserStateFromRequest($this->_option.'.browse.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start']  = $app->getUserStateFromRequest($this->_option.'.browse.limitstart', 'limitstart', 0, 'int');
-		$filters['fields'] = array('cn','description','published','gidNumber','type');
+		$view->filters['limit']  = $app->getUserStateFromRequest($this->_option.'.browse.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start']  = $app->getUserStateFromRequest($this->_option.'.browse.limitstart', 'limitstart', 0, 'int');
+		$view->filters['fields'] = array('cn','description','published','gidNumber','type');
 
 		// Get a list of all groups
-		$rows = null;
-		if ($total > 0) {
-			$rows = Hubzero_Group::find($filters);
+		$view->rows = null;
+		if ($view->total > 0) {
+			$view->rows = Hubzero_Group::find($view->filters);
 		}
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		GroupsHtml::browse( $rows, $this->_option, $filters, $pageNav );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
 
 	protected function manage()
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$gid = JRequest::getVar('gid','');
 
 		// Ensure we have a group ID
 		if (!$gid) {
-			echo MembersHtml::alert( JText::_('GROUPS_MISSING_ID') );
-			exit();
+			JError::raiseError( 500, JText::_('GROUPS_MISSING_ID') );
+			return;
 		}
 		
 		// Load the group page
@@ -237,6 +157,7 @@ class GroupsController extends JObject
 		$members  = $group->get('members');
 		$managers = $group->get('managers');
 
+		// Get a members list without the managers
 		$memberss = array();
 		foreach ($members as $m) 
 		{
@@ -247,7 +168,25 @@ class GroupsController extends JObject
 
 		// Output HTML
 		if ($out == '') {
-			GroupsHtml::manage( GroupsHtml::members($database, $this->_option, $group, $invitees, $pending, $managers, $memberss, 'admin'), $group, $this->getError() );
+			// Instantiate a new view
+			$view = new JView( array('name'=>'manage') );
+			$view->option = $this->_option;
+			$view->task = $this->_task;
+			
+			$view->group = $group;
+			$view->invitees = $invitees;
+			$view->pending  = $pending;
+			$view->members  = $memberss;
+			$view->managers = $managers;
+			$view->authorized = 'admin';
+			
+			// Set any errors
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+
+			// Output the HTML
+			$view->display();
 		} else {
 			echo $out;
 		}
@@ -264,8 +203,6 @@ class GroupsController extends JObject
 
 	protected function edit() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$ids = JRequest::getVar( 'id', array() );
 		
@@ -275,41 +212,41 @@ class GroupsController extends JObject
 		} else {
 			$id = '';
 		}
-		
-		$group = new XGroup();
-		$group->select( $id );
 
-		// Ouput HTML
-		GroupsHtml::edit( $group, $this->_option );
+		// Instantiate a new view
+		$view = new JView( array('name'=>'group') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		$view->group = new XGroup();
+		$view->group->select( $id );
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 	
 	protected function save() 
 	{
-		ximport('Hubzero_Group');
-		
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Incoming
-		$g_cn           = strtolower(trim(JRequest::getVar( 'cn', '', 'post' )));
-		$g_description  = trim(JRequest::getVar( 'description', JText::_('NONE'), 'post' ));
-		$g_privacy      = JRequest::getInt('privacy', 0, 'post' );
-		$g_access       = JRequest::getInt('access', 0, 'post' );
-		$g_join_policy  = JRequest::getInt('join_policy', 0, 'post' );
-		$g_gidNumber    = JRequest::getInt('gidNumber', 0, 'post' );
-		$g_type         = JRequest::getInt('type', 1, 'post' );
-		$g_public_desc  = trim(JRequest::getVar( 'public_desc', '', 'post' ));
-		$g_private_desc = trim(JRequest::getVar( 'private_desc', '', 'post' ));
-		$g_restrict_msg = trim(JRequest::getVar( 'restrict_msg', '', 'post' ));
+		$g = JRequest::getVar( 'group', array(), 'post' );
+		$g = array_map('trim', $g);
 		
 		// Instantiate an XGroup object
 		$group = new XGroup();
 		
 		// Is this a new entry or updating?
 		$isNew = false;
-		if (!$g_gidNumber) {
+		if (!$g['gidNumber']) {
 			$isNew = true;
 			
 			// Set the task - if anything fails and we re-enter edit mode 
@@ -319,53 +256,79 @@ class GroupsController extends JObject
 			$this->_task = 'edit';
 			
 			// Load the group
-			$group->select( $g_gidNumber );
+			$group->select( $g['gidNumber'] );
 		}
 
 		// Check for any missing info
-		if (!$g_cn) {
+		if (!$g['cn']) {
 			$this->setError( JText::_('GROUPS_ERROR_MISSING_INFORMATION').': '.JText::_('GROUPS_ID') );
 		}
-		if (!$g_description) {
+		if (!$g['description']) {
 			$this->setError( JText::_('GROUPS_ERROR_MISSING_INFORMATION').': '.JText::_('GROUPS_TITLE') );
 		}
 		
 		// Push back into edit mode if any errors
 		if ($this->getError()) {
-			echo GroupsHtml::edit( $group, $this->_option, $this->getErrors() );
+			// Instantiate a new view
+			$view = new JView( array('name'=>'group') );
+			$view->option = $this->_option;
+			$view->task = $this->_task;
+			$view->group = $group;
+
+			// Set any errors
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+
+			// Output the HTML
+			$view->display();
 			return;
 		}
 		
+		$g['cn'] = strtolower($g['cn']);
+		
 		// Ensure the data passed is valid
-		if (!$this->valid_cn($g_cn, $g_type)) {
+		if (!$this->_validCn($g['cn'], $g['type'])) {
 			$this->setError( JText::_('GROUPS_ERROR_INVALID_ID') );
 		}
-		if ($isNew && Hubzero_Group::exists($g_cn)) {
+		if ($isNew && Hubzero_Group::exists($g['cn'])) {
 			$this->setError( JText::_('GROUPS_ERROR_GROUP_ALREADY_EXIST') );
 		}
 		
 		// Push back into edit mode if any errors
 		if ($this->getError()) {
-			echo GroupsHtml::edit( $group, $this->_option, $this->getErrors() );
+			// Instantiate a new view
+			$view = new JView( array('name'=>'group') );
+			$view->option = $this->_option;
+			$view->task = $this->_task;
+			$view->group = $group;
+
+			// Set any errors
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+
+			// Output the HTML
+			$view->display();
 			return;
 		}
 				
 		// Set the group changes and save
-		$group->set('cn', $g_cn );
-		$group->set('type', $g_type );
+		$group->set('cn', $g['cn']);
+		$group->set('type', $g['type']);
 		if ($isNew) {
 			$group->set('published', 1 );
 			
-			$group->add('managers',array($juser->get('id')));
-			$group->add('members',array($juser->get('id')));
+			$group->add('managers',array($this->juser->get('id')));
+			$group->add('members',array($this->juser->get('id')));
 		}
-		$group->set('description', $g_description );
-		$group->set('privacy', $g_privacy );
-		$group->set('access', $g_access );
-		$group->set('join_policy', $g_join_policy );
-		$group->set('public_desc', $g_public_desc );
-		$group->set('private_desc', $g_private_desc );
-		$group->set('restrict_msg',$g_restrict_msg);
+		$group->set('description', $g['description']);
+		$group->set('privacy', $g['privacy']);
+		$group->set('access', $g['access']);
+		$group->set('join_policy', $g['join_policy']);
+		$group->set('public_desc', $g['public_desc']);
+		$group->set('private_desc', $g['private_desc']);
+		$group->set('restrict_msg', $g['restrict_msg']);
 		$group->save();
 
 		// Output messsage and redirect
@@ -377,6 +340,9 @@ class GroupsController extends JObject
 	
 	protected function delete() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming
 		$ids = JRequest::getVar( 'id', array() );
 
@@ -441,7 +407,7 @@ class GroupsController extends JObject
 
 				// Delete group
 				if (!$group->delete()) {
-					echo GroupsHtml::alert( $group->getError() );
+					JError::raiseError( 500, $group->getError() );
 					return;
 				}
 			}
@@ -465,7 +431,8 @@ class GroupsController extends JObject
 
 	private function addusers() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Set a flag for emailing any changes made
 		$users = array();
@@ -534,7 +501,8 @@ class GroupsController extends JObject
 
 	private function accept() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Set a flag for emailing any changes made
 		$users = array();
@@ -561,7 +529,7 @@ class GroupsController extends JObject
 				}
 				
 				// Remove record of reason wanting to join group
-				//$reason = new GroupsReason( $database );
+				//$reason = new GroupsReason( $this->database );
 				//$reason->deleteReason( $targetuser->get('username'), $this->group->get('cn') );
 					
 				// They user is not already a member, so we can go ahead and add them
@@ -585,7 +553,8 @@ class GroupsController extends JObject
 
 	private function approve() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Set a flag for emailing any changes made
 		$users = array();
@@ -612,7 +581,7 @@ class GroupsController extends JObject
 				}
 				
 				// Remove record of reason wanting to join group
-				$reason = new GroupsReason( $database );
+				$reason = new GroupsReason( $this->database );
 				$reason->deleteReason( $targetuser->get('username'), $this->group->get('cn') );
 					
 				// They user is not already a member, so we can go ahead and add them
@@ -636,6 +605,9 @@ class GroupsController extends JObject
 	
 	private function promote() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$users = array();
 		
 		// Get all managers of this group
@@ -677,6 +649,9 @@ class GroupsController extends JObject
 	
 	private function demote() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$authorized = $this->authorized;
 		
 		// Get all managers of this group
@@ -726,6 +701,9 @@ class GroupsController extends JObject
 	
 	private function remove() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$authorized = $this->authorized;
 
 		// Get all the group's managers
@@ -789,6 +767,9 @@ class GroupsController extends JObject
 	
 	private function uninvite() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$authorized = $this->authorized;
 		
 		$users = array();
@@ -827,7 +808,8 @@ class GroupsController extends JObject
 	
 	private function deny() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// An array for the users we're going to deny
 		$users = array();
@@ -843,7 +825,7 @@ class GroupsController extends JObject
 			// Ensure we found an account
 			if (is_object($targetuser)) {
 				// Remove record of reason wanting to join group
-				$reason = new GroupsReason( $database );
+				$reason = new GroupsReason( $this->database );
 				$reason->deleteReason( $targetuser->get('username'), $this->group->get('cn') );
 
 				// Add them to the array of users to deny
@@ -860,17 +842,18 @@ class GroupsController extends JObject
 		$this->group->update();
 	}
 	
-	function valid_cn($name, $type) 
+	//-----------
+	
+	private function _validCn($name, $type) 
 	{
 		if ($type == 1) {
 			$admin = false;
-		}
-		else {
+		} else {
 			$admin = true;
 		}
 		
-		if (($admin && eregi("^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$", $name)) ||
-		(!$admin && eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $name))) {
+		if (($admin && eregi("^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$", $name)) 
+		 || (!$admin && eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $name))) {
 			if (is_numeric($name) && intval($name) == $name && $name >= 0) {
 				return false;
 			} else {
@@ -881,4 +864,3 @@ class GroupsController extends JObject
 		}
 	}
 }
-?>
