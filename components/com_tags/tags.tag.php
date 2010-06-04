@@ -210,7 +210,12 @@ class TagsTag extends JTable
 			$sql.= " LEFT JOIN #__xprofiles AS XP ON XP.uidNumber=tj.objectid AND tj.tbl='xprofiles' ";
 		}
 		$sql.= "WHERE t.id=tj.tagid AND t.admin=0 ";
-		$sql.= ($exclude_private) ? " AND ((tj.tbl='resources' AND R.access!=4) OR (tj.tbl='wiki' AND P.access=0) OR (tj.tbl='xprofiles' AND XP.public=0) OR (tj.tbl!='xprofiles' AND tj.tbl!='wiki' AND tj.tbl!='resources' AND tj.tbl!='wishlist' AND tj.tbl!='support') ) " : ""; 
+		if($tbl) {
+		$sql.= "AND tj.tbl='".$tbl."' ";
+		}
+		else {
+			$sql.= ($exclude_private) ? " AND ((tj.tbl='resources' AND R.access!=4) OR (tj.tbl='wiki' AND P.access=0) OR (tj.tbl='xprofiles' AND XP.public=0) OR (tj.tbl!='xprofiles' AND tj.tbl!='wiki' AND tj.tbl!='resources' AND tj.tbl!='wishlist' AND tj.tbl!='support') ) " : ""; 
+		}
 		$sql.= "GROUP BY tagid "; 
 		$sql.= "ORDER BY $order ";
 		$sql.= "LIMIT $limit";

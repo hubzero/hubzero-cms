@@ -25,70 +25,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-class TagsController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$task = JRequest::getVar( 'task', '' );
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-	
+class TagsController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		switch ($this->getTask()) 
+		$this->_task = JRequest::getVar( 'task', '' );
+		
+		switch ($this->_task) 
 		{
+			case 'new':    $this->add();    break;
 			case 'add':    $this->add();    break;
 			case 'edit':   $this->edit();   break;
 			case 'cancel': $this->cancel(); break;
@@ -102,51 +49,49 @@ class TagsController extends JObject
 		}
 	}
 
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-	
 	//----------------------------------------------------------
 	// Tag functions
 	//----------------------------------------------------------
 
 	protected function browse()
 	{
-		$app =& JFactory::getApplication();
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'tags') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Get configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 		
 		// Incoming
-		$filters = array();
-		$filters['limit']  = $app->getUserStateFromRequest($this->_option.'.browse.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start']  = $app->getUserStateFromRequest($this->_option.'.browse.limitstart', 'limitstart', 0, 'int');
-		$filters['search'] = urldecode(trim($app->getUserStateFromRequest($this->_option.'.browse.search','search', '')));
-		$filters['by']     = trim($app->getUserStateFromRequest($this->_option.'.browse.by', 'filterby', 'all'));
+		$view->filters = array();
+		$view->filters['limit']  = $app->getUserStateFromRequest($this->_option.'.browse.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start']  = $app->getUserStateFromRequest($this->_option.'.browse.limitstart', 'limitstart', 0, 'int');
+		$view->filters['search'] = urldecode(trim($app->getUserStateFromRequest($this->_option.'.browse.search','search', '')));
+		$view->filters['by']     = trim($app->getUserStateFromRequest($this->_option.'.browse.by', 'filterby', 'all'));
 		
-		$t = new TagsTag( $database );
+		$t = new TagsTag( $this->database );
 
 		// Record count
-		$total = $t->getCount( $filters );
+		$view->total = $t->getCount( $view->filters );
 		
-		$filters['limit'] = ($filters['limit'] == 0) ? 'all' : $filters['limit'];
+		$view->filters['limit'] = ($view->filters['limit'] == 0) ? 'all' : $view->filters['limit'];
 		
 		// Get records
-		$rows = $t->getRecords( $filters );
+		$view->rows = $t->getRecords( $view->filters );
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		TagsHTML::browse( $rows, $pageNav, $this->_option, 'tags', $filters );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -160,24 +105,29 @@ class TagsController extends JObject
 
 	protected function edit($tag=NULL)
 	{
-		$database =& JFactory::getDBO();
-	
+		// Instantiate a new view
+		$view = new JView( array('name'=>'tag') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
 	
 		// Load a tag object if one doesn't already exist
 		if (!$tag) {
-			$tag = new TagsTag( $database );
+			$tag = new TagsTag( $this->database );
 			$tag->load( $id );
-			
-			if ($id) {
-				$action = 'Edit';
-			} else {
-				$action = 'Add';
-			}
 		}
-
-		TagsHTML::edit( $database, $tag, $this->_option, $this->getError() );
+		
+		$view->tag = $tag;
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -191,9 +141,10 @@ class TagsController extends JObject
 	
 	protected function save()
 	{
-		$database =& JFactory::getDBO();
-
-		$row = new TagsTag( $database );
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
+		$row = new TagsTag( $this->database );
 		if (!$row->bind( $_POST )) {
 			$this->setError( $row->getError() );
 			$this->edit($row);
@@ -237,7 +188,8 @@ class TagsController extends JObject
 
 	protected function remove()
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
@@ -260,7 +212,7 @@ class TagsController extends JObject
 			$dispatcher->trigger( 'onTagDelete', array($id) );
 			
 			// Remove the tag
-			$tag = new TagsTag( $database );
+			$tag = new TagsTag( $this->database );
 			$tag->delete( $id );
 		}
 	
@@ -272,8 +224,6 @@ class TagsController extends JObject
 
 	protected function merge()
 	{
-		$database =& JFactory::getDBO();
-	
 		// Incoming
 		$ids  = JRequest::getVar('id', array());
 		$step = JRequest::getInt('step', 1);
@@ -294,31 +244,46 @@ class TagsController extends JObject
 		switch ($step)
 		{
 			case 1:
-				$tags = array();
-				$to = new TagsObject( $database );
+				// Instantiate a new view
+				$view = new JView( array('name'=>'merge') );
+				$view->option = $this->_option;
+				$view->task = $this->_task;
+				$view->step = 2;
+				$view->idstr = $idstr;
+				$view->tags = array();
+				$to = new TagsObject( $this->database );
 				
 				// Loop through the IDs of the tags we want to merge
 				foreach ($ids as $id) 
 				{
 					// Load the tag's info
-					$tag = new TagsTag( $database );
+					$tag = new TagsTag( $this->database );
 					$tag->load( $id );
 					
 					// Get the total number of items associated with this tag
 					$tag->total = $to->getCount( $id );
 					
 					// Add the tag object to an array
-					$tags[] = $tag;
+					$view->tags[] = $tag;
 				}
 				
 				// Get all tags
-				$t = new TagsTag( $database );
-				$rows = $t->getAllTags(true);
+				$t = new TagsTag( $this->database );
+				$view->rows = $t->getAllTags(true);
 				
-				TagsHtml::merge( $this->_option, $idstr, $rows, 2, $tags );
+				// Set any errors
+				if ($this->getError()) {
+					$view->setError( $this->getError() );
+				}
+
+				// Output the HTML
+				$view->display();
 			break;
 			
 			case 2:
+				// Check for request forgeries
+				JRequest::checkToken() or jexit( 'Invalid Token' );
+			
 				// Get the string of tag IDs we plan to merge
 				$ind = JRequest::getVar('ids', '', 'post');
 				if ($ind) {
@@ -340,14 +305,14 @@ class TagsController extends JObject
 					
 					$this->save(0);
 					
-					$tagging = new Tags( $database );
+					$tagging = new Tags( $this->database );
 					$mtag = $tagging->get_raw_tag_id($tag_new);
 				} else {
 					// No, we're merging into an existing tag
 					$mtag = $tag_exist;
 				}
 				
-				$to = new TagsObject( $database );
+				$to = new TagsObject( $this->database );
 				
 				foreach ($ids as $id)
 				{
@@ -357,7 +322,7 @@ class TagsController extends JObject
 						$to->moveObjects($id, $mtag);
 						
 						// Delete the tag
-						$tag = new TagsTag( $database );
+						$tag = new TagsTag( $this->database );
 						$tag->delete( $id );
 					}
 				}
@@ -372,8 +337,6 @@ class TagsController extends JObject
 
 	protected function pierce()
 	{
-		$database =& JFactory::getDBO();
-	
 		// Incoming
 		$ids  = JRequest::getVar('id', array());
 		$step = JRequest::getInt('step', 1);
@@ -394,32 +357,45 @@ class TagsController extends JObject
 		switch ($step)
 		{
 			case 1:
-				$to = new TagsObject( $database );
-			
-				$tags = array();
-				
+				// Instantiate a new view
+				$view = new JView( array('name'=>'pierce') );
+				$view->option = $this->_option;
+				$view->task = $this->_task;
+				$view->step = 2;
+				$view->idstr = $idstr;
+				$view->tags = array();
+				$to = new TagsObject( $this->database );
 				// Loop through the IDs of the tags we want to merge
 				foreach ($ids as $id) 
 				{
 					// Load the tag's info
-					$tag = new TagsTag( $database );
+					$tag = new TagsTag( $this->database );
 					$tag->load( $id );
 					
 					// Get the total number of items associated with this tag
 					$tag->total = $to->getCount( $id );
 					
 					// Add the tag object to an array
-					$tags[] = $tag;
+					$view->tags[] = $tag;
 				}
 				
 				// Get all tags
-				$t = new TagsTag( $database );
-				$rows = $t->getAllTags(true);
+				$t = new TagsTag( $this->database );
+				$view->rows = $t->getAllTags(true);
 				
-				TagsHtml::pierce( $this->_option, $idstr, $rows, 2, $tags );
+				// Set any errors
+				if ($this->getError()) {
+					$view->setError( $this->getError() );
+				}
+
+				// Output the HTML
+				$view->display();
 			break;
 			
 			case 2:
+				// Check for request forgeries
+				JRequest::checkToken() or jexit( 'Invalid Token' );
+				
 				// Get the string of tag IDs we plan to merge
 				$ind = JRequest::getVar('ids', '', 'post');
 				if ($ind) {
@@ -441,14 +417,14 @@ class TagsController extends JObject
 					
 					$this->save(0);
 					
-					$tagging = new Tags( $database );
+					$tagging = new Tags( $this->database );
 					$mtag = $tagging->get_raw_tag_id($tag_new);
 				} else {
 					// No, we're merging into an existing tag
 					$mtag = $tag_exist;
 				}
 				
-				$to = new TagsObject( $database );
+				$to = new TagsObject( $this->database );
 				
 				foreach ($ids as $id)
 				{
@@ -465,4 +441,3 @@ class TagsController extends JObject
 		}
 	}
 }
-?>
