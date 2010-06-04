@@ -27,17 +27,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
+error_reporting(E_ALL);
+@ini_set('display_errors','1');
 
-//-----------
+// Set access levels
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
 
-switch ($task) 
-{
-	case 'manage': GroupsToolbar::_MANAGE(); break;
-	case 'add':    GroupsToolbar::_EDIT(0);  break;
-	case 'new':    GroupsToolbar::_EDIT(0);  break;
-	case 'edit':   GroupsToolbar::_EDIT(1);  break;
-	
-	default: GroupsToolbar::_DEFAULT(); break;
+// Authorization check
+$user = & JFactory::getUser();
+if (!$user->authorize( $option, 'manage' )) {
+	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
 }
-?>
+
+// Include scripts
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'groups.log.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'groups.reason.php' );
+ximport('xgroup');
+ximport('xuserhelper');
+ximport('Hubzero_Group');
+
+// Initiate controller
+$controller = new GroupsController();
+$controller->execute();
+$controller->redirect();
