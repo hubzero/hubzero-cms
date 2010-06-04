@@ -280,7 +280,8 @@ class plgMembersResume extends JPlugin
 	{	
 		// do we have a thumb image for the user?
 		require_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'members.imghandler.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'members.class.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
 		ximport('fileuploadutils');
 						
 		$profile = new XProfile();
