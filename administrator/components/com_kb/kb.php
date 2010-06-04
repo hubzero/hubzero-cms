@@ -32,24 +32,21 @@ error_reporting(E_ALL);
 
 // Set access levels
 $jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'admin', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'manager' );
 
 // Authorization check
 $user = & JFactory::getUser();
-if (!$user->authorize( 'com_contact', 'manage' )) {
+if (!$user->authorize( $option, 'manage' )) {
 	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
 }
 
-
-jimport('joomla.application.component.view');
-
 // Include scripts
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'kb.article.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'kb.category.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'kb.helpful.php' );
-require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'kb.html.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'article.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'category.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'helpful.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
 require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
 
 // Initiate controller

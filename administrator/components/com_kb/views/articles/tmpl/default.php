@@ -110,6 +110,8 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="task" value="<?php echo $this->task ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="cid" value="<?php echo $this->filters['cid']; ?>" />
+
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 <p><?php echo JText::_('PUBLISH_KEY'); ?></p>
