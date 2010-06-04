@@ -552,7 +552,7 @@ class StoreController extends JObject
 		
 		// Get cart items		
 		$items = $item->getCartItems($juser->get('id'));
-		if (!$items) {
+		if (!$items or $cost > $funds ) {
 			$this->cart();
 			return;
 		}
