@@ -1969,7 +1969,8 @@ class ContributeController extends JObject
 		$helper->getCons();
 		
 		// Get a list of all existing contributors
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'members.class.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
 		
 		// Initiate a members object
 		$mp = new MembersProfile( $database );
