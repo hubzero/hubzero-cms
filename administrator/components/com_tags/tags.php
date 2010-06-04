@@ -30,9 +30,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
+// Set access levels
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
+
+// Authorization check
+$user = & JFactory::getUser();
+if (!$user->authorize( $option, 'manage' )) {
+	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+}
+
 // Include scripts
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.tags.html.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tags.tag.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tags.class.php' );
 
@@ -40,4 +51,3 @@ require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tags.class.php' );
 $controller = new TagsController();
 $controller->execute();
 $controller->redirect();
-?>
