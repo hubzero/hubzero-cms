@@ -29,7 +29,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
-<div class="main section">
+<div class="main section loginform">
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
