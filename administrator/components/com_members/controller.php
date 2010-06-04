@@ -25,57 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-class MembersController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+class MembersController extends Hubzero_Controller
+{
 	public function execute()
 	{
 		// Load the component config
@@ -98,72 +51,81 @@ class MembersController extends JObject
 		$this->$task();
 	}
 
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-
 	//----------------------------------------------------------
 	//  Views
 	//----------------------------------------------------------
 	
 	protected function browse()
 	{
-		$app =& JFactory::getApplication();
-		$database =& JFactory::getDBO();
-		
-		// Get filters
-		$filters = array();
-		//$filters['search'] = urldecode(JRequest::getString('search'));
-		$filters['search'] = urldecode($app->getUserStateFromRequest($this->_option.'.search', 'search', ''));
-		//$filters['search_field'] = urldecode(JRequest::getString('search_field', 'name'));
-		$filters['search_field'] = urldecode($app->getUserStateFromRequest($this->_option.'.search_field', 'search_field', 'name'));
-		//$filters['sortby'] = JRequest::getVar( 'sortby', 'surname' );
-		$filters['sortby'] = $app->getUserStateFromRequest($this->_option.'.sortby', 'sortby', 'surname');
-		$filters['show']   = '';
-		$filters['scope']  = '';
-		$filters['authorized'] = true;
+		// Instantiate a new view
+		$view = new JView( array('name'=>'members') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Get configuration
 		$config = JFactory::getConfig();
+		$app =& JFactory::getApplication();
+		
+		// Get filters
+		$view->filters = array();
+		$view->filters['search'] = urldecode($app->getUserStateFromRequest($this->_option.'.search', 'search', ''));
+		$view->filters['search_field'] = urldecode($app->getUserStateFromRequest($this->_option.'.search_field', 'search_field', 'name'));
+		$view->filters['sortby'] = $app->getUserStateFromRequest($this->_option.'.sortby', 'sortby', 'surname');
+		$view->filters['show']   = '';
+		$view->filters['scope']  = '';
+		$view->filters['authorized'] = true;
 		
 		// Get paging variables
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start'] = JRequest::getInt('limitstart', 0);
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 
-		$obj = new MembersProfile( $database );
+		$obj = new MembersProfile( $this->database );
 
 		// Get a record count
-		$total = $obj->getCount( $filters, true );
+		$view->total = $obj->getCount( $view->filters, true );
 		
 		// Get records
-		$rows = $obj->getRecords( $filters, true );
+		$view->rows = $obj->getRecords( $view->filters, true );
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		MembersHtml::browse( $rows, $pageNav, $this->_option, $filters );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function add()
 	{
-		MembersHtml::add( $this->_option );
+		// Instantiate a new view
+		$view = new JView( array('name'=>'add') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function edit($id=0) 
 	{
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'member') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		if (!$id) {
 			// Incoming
@@ -178,17 +140,22 @@ class MembersController extends JObject
 		}
 		
 		// Initiate database class and load info
-		$profile = new XProfile();
-		$profile->load( $id );
+		$view->profile = new XProfile();
+		$view->profile->load( $id );
 		
 		// Get the user's interests (tags)
 		include_once( JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'members.tags.php' );
 		
-		$mt = new MembersTags( $database );
-		$tags = $mt->get_tag_string( $id );
+		$mt = new MembersTags( $this->database );
+		$view->tags = $mt->get_tag_string( $id );
 		
-		// Ouput HTML
-		MembersHtml::edit( $profile, $this->_option, $tags );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -210,7 +177,7 @@ class MembersController extends JObject
 		
 		// Do we have an ID?
 		if (!$id) {
-			echo MembersHtml::error( JText::_('MEMBERS_NO_ID') );
+			JError::raiseError( 500, JText::_('MEMBERS_NO_ID') );
 			return;
 		}
 		
@@ -250,18 +217,18 @@ class MembersController extends JObject
 		
 		$ec = JRequest::getInt( 'emailConfirmed', 0, 'post' );
 		if ($ec) {
-				$profile->set('emailConfirmed', 1);
+			$profile->set('emailConfirmed', 1);
 		} else {
 			ximport('xregistrationhelper');
 			$confirm = XRegistrationHelper::genemailconfirm();
 			$profile->set('emailConfirmed', $confirm);
 		}
 		$se = JRequest::getInt( 'shadowExpire', 0, 'post' );
-		if ($se) 
+		if ($se) {
 		    $profile->set('shadowExpire','1');
-		else
+		} else {
 		    $profile->set('shadowExpire', null);
-		
+		}
 		if (isset($p['email'])) {
 			$profile->set('email', trim($p['email']));
 		}
@@ -271,9 +238,9 @@ class MembersController extends JObject
 			$profile->set('mailPreferenceOption', 0);
 		}
 		
-		if (!empty($p['gender']))
+		if (!empty($p['gender'])) {
 			$profile->set('gender', trim($p['gender']));
-		
+		}
 		/*if (is_array($p['disability'])) {
 			$dises = $p['disability'];
 			$disabilities = array();
@@ -288,17 +255,19 @@ class MembersController extends JObject
 			$profile->set('disability',array($p['disability']));
 		}*/
 
-		if (!empty($p['disability']))
-		if ($p['disability'] == 'yes') {
-			if (!is_array($p['disabilities'])) {
-				$p['disabilities'] = array();
+		if (!empty($p['disability'])) {
+			if ($p['disability'] == 'yes') {
+				if (!is_array($p['disabilities'])) {
+					$p['disabilities'] = array();
+				}
+				if (count($p['disabilities']) == 1 && isset($p['disabilities']['other']) && empty($p['disabilities']['other'])) {
+					$profile->set('disability',array('no'));
+				} else {
+					$profile->set('disability',$p['disabilities']);
+				}
+			} else {
+				$profile->set('disability',array($p['disability']));
 			}
-			if (count($p['disabilities']) == 1 && isset($p['disabilities']['other']) && empty($p['disabilities']['other']))
-				$profile->set('disability',array('no'));
-			else
-				$profile->set('disability',$p['disabilities']);
-		} else {
-			$profile->set('disability',array($p['disability']));
 		}
 		
 		/*if (is_array($p['hispanic'])) {
@@ -314,17 +283,19 @@ class MembersController extends JObject
 		} else {
 			$profile->set('hispanic',array($p['hispanic']));
 		}*/
-		if (!empty($p['hispanic']))
-		if ($p['hispanic'] == 'yes') {
-			if (!is_array($p['hispanics'])) {
-				$p['hispanics'] = array();
+		if (!empty($p['hispanic'])) {
+			if ($p['hispanic'] == 'yes') {
+				if (!is_array($p['hispanics'])) {
+					$p['hispanics'] = array();
+				}
+				if (count($p['hispanics']) == 1 && isset($p['hispanics']['other']) && empty($p['hispanics']['other'])) {
+					$profile->set('hispanic', array('no'));
+				} else {
+					$profile->set('hispanic',$p['hispanics']);
+				}
+			} else {
+				$profile->set('hispanic',array($p['hispanic']));
 			}
-			if (count($p['hispanics']) == 1 && isset($p['hispanics']['other']) && empty($p['hispanics']['other']))
-				$profile->set('hispanic', array('no'));
-			else
-				$profile->set('hispanic',$p['hispanics']);
-		} else {
-			$profile->set('hispanic',array($p['hispanic']));
 		}
 		
 		if (isset($p['race']) && is_array($p['race'])) {
@@ -352,8 +323,7 @@ class MembersController extends JObject
 		// Process tags
 		include_once( JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'members.tags.php' );
 		
-		$database =& JFactory::getDBO();
-		$mt = new MembersTags( $database );
+		$mt = new MembersTags( $this->database );
 		$mt->tag_object($id, $id, $tags, 1, 1);
 		
 		// Make sure certain changes make it back to the Joomla user table
@@ -427,13 +397,11 @@ class MembersController extends JObject
 		
 		// Do we have any IDs?
 		if (!empty($ids)) {
-			$database =& JFactory::getDBO();
-		
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id) 
 			{
 				// Delete any associated pictures
-				$dir  = FileUploadUtils::niceidformat( $id );
+				$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 				$path = JPATH_ROOT.DS.$config->get('webpath').DS.$dir;
 				if (!file_exists($path.DS.$file) or !$file) { 
 					$this->setError( JText::_('FILE_NOT_FOUND') ); 
@@ -442,7 +410,7 @@ class MembersController extends JObject
 				}
 				
 				// Remove any contribution associations
-				$assoc = new MembersAssociation( $database );
+				$assoc = new MembersAssociation( $this->database );
 				$assoc->authorid = $id;
 				$assoc->deleteAssociations();
 				
@@ -494,7 +462,7 @@ class MembersController extends JObject
 		}
 		
 		// Build upload path
-		$dir  = FileUploadUtils::niceidformat( $id );
+		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
 		if (substr($config->get('webpath'), 0, 1) != DS) {
 			$path .= DS;
@@ -604,7 +572,7 @@ class MembersController extends JObject
 		}
 		
 		// Build the file path
-		$dir  = FileUploadUtils::niceidformat( $id );
+		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
 		if (substr($config->get('webpath'), 0, 1) != DS) {
 			$path .= DS;
@@ -651,29 +619,42 @@ class MembersController extends JObject
 
 	protected function img( $file='', $id=0 )
 	{
-		// Load the component config
-		$config = $this->config;
+		// Instantiate a new view
+		$view = new JView( array('name'=>'member', 'layout'=>'image') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
-		// Get the app
-		$app =& JFactory::getApplication();
+		// Load the component config
+		$view->config = $this->config;
 		
 		// Incoming
 		if (!$id) {
-			$id = JRequest::getInt( 'id', 0, 'get' );
+			$view->id = JRequest::getInt( 'id', 0 );
+		} else {
+			$view->id = $id;
 		}
-		$file = ($file) 
-			  ? $file 
-			  : JRequest::getVar( 'file', '', 'get' );
+		
+		if (!$file) {
+			$view->file = JRequest::getVar( 'file', '' );
+		} else {
+			$view->file = $file;
+		}
 		
 		// Build the file path
-		$dir = FileUploadUtils::niceidformat( $id );
-		$path = JPATH_ROOT;
-		if (substr($config->get('webpath'), 0, 1) != DS) {
-			$path .= DS;
+		$view->dir = Hubzero_View_Helper_Html::niceidformat( $id );
+		$view->path = JPATH_ROOT;
+		if (substr($this->config->get('webpath'), 0, 1) != DS) {
+			$view->path .= DS;
 		}
-		$path .= $config->get('webpath').DS.$dir;
+		$view->path .= $this->config->get('webpath').DS.$view->dir;
 		
-		MembersHtml::writeImage( $app, $this->_option, $config->get('webpath'), $config->get('defaultpic'), $dir, $file, $path, $id, $this->getErrors() );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
@@ -726,14 +707,19 @@ class MembersController extends JObject
 
 	protected function group( $id=0 )
 	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'member', 'layout'=>'groups') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		ximport('Hubzero_Group');
-		
-		// Get the app
-		$app =& JFactory::getApplication();
-		
+		ximport('xgroup');
+
 		// Incoming
 		if (!$id) {
-			$id = JRequest::getInt( 'id', 0, 'get' );
+			$view->id = JRequest::getInt( 'id', 0 );
+		} else {
+			$view->id = $id;
 		}
 		
 		// Get a list of all groups
@@ -744,13 +730,16 @@ class MembersController extends JObject
 		$filters['limit'] = 'all';
 		$filters['fields'] = array('cn','description','published','gidNumber','type');
 		
-		ximport('xgroup');
-		
 		// Get a list of all groups
-		$rows = Hubzero_Group::find($filters);
+		$view->rows = Hubzero_Group::find($filters);
+
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
 		
-		// Output HTML
-		MembersHtml::writeGroups( $app, $this->_option, $id, $rows, $this->getErrors() );
+		// Output the HTML
+		$view->display();
 	}
 	
 	//----------------------------------------------------------
@@ -841,22 +830,31 @@ class MembersController extends JObject
 
 	protected function hosts( $profile=null )
 	{
-		// Get the app
-		$app =& JFactory::getApplication();
-		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'member', 'layout'=>'hosts') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+	
 		// Incoming
 		if (!$profile) {
-			$id = JRequest::getInt( 'id', 0, 'get' );
+			$id = JRequest::getInt('id', 0, 'get');
 			
 			$profile = new XProfile();
 			$profile->load( $id );
 		}
 		
 		// Get a list of all hosts
-		$rows = $profile->get( 'host' );
+		$view->rows = $profile->get('host');
 		
-		// Output HTML
-		MembersHtml::writeHosts( $app, $this->_option, $profile->get('uidNumber'), $rows, $this->getErrors() );
+		$view->id = $profile->get('uidNumber');
+
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//----------------------------------------------------------
@@ -947,8 +945,10 @@ class MembersController extends JObject
 
 	protected function managers( $profile=null )
 	{
-		// Get the app
-		$app =& JFactory::getApplication();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'member', 'layout'=>'managers') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Incoming
 		if (!$profile) {
@@ -959,10 +959,16 @@ class MembersController extends JObject
 		}
 		
 		// Get a list of all hosts
-		$rows = $profile->get( 'manager' );
+		$view->rows = $profile->get('manager');
 		
-		// Output HTML
-		MembersHtml::writeManagers( $app, $this->_option, $profile->get('uidNumber'), $rows, $this->getErrors() );
+		$view->id = $profile->get('uidNumber');
+
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 }
-?>

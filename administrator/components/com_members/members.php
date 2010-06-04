@@ -32,16 +32,22 @@ error_reporting(E_ALL);
 
 // Set access levels
 $jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'admin', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'manager' );
 
+// Authorization check
+$user = & JFactory::getUser();
+if (!$user->authorize( $option, 'manage' )) {
+	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+}
+
 // Include scripts
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'members.imghandler.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.members.html.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'members.class.php' );
-ximport('fileuploadutils');
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'profile.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'association.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
+ximport('Hubzero_View_Helper_Html');
 ximport('misc_func');
 ximport('xprofile');
 
@@ -49,4 +55,3 @@ ximport('xprofile');
 $controller = new MembersController();
 $controller->execute();
 $controller->redirect();
-?>

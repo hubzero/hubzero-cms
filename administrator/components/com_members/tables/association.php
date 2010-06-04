@@ -25,19 +25,52 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
 
-require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
-
-//-----------
-
-switch ($task) 
+class MembersAssociation extends JTable 
 {
-	case 'add':   MembersToolbar::_CANCEL(); break;
-	case 'new':   MembersToolbar::_CANCEL(); break;
-	case 'edit':  MembersToolbar::_EDIT(1);  break;
-	case 'apply': MembersToolbar::_EDIT(1);  break;
+	var $subtable = NULL;  // @var varchar(50) Primary Key
+	var $subid    = NULL;  // @var int(11) Primary Key
+	var $authorid = NULL;  // @var int(11) Primary Key
+	var $ordering = NULL;  // @var int(11)
+	var $role     = NULL;  // @var varchar(50)
+
+	//-----------
+
+	public function __construct( &$db ) 
+	{
+		parent::__construct( '#__author_assoc', 'authorid', $db );
+	}
 	
-	default: MembersToolbar::_DEFAULT(); break;
+	//-----------
+	
+	public function check() 
+	{
+		if (!$this->authorid) {
+			$this->setError( JText::_('Must have an author ID.') );
+			return false;
+		}
+		
+		if (!$this->subid) {
+			$this->setError( JText::_('Must have an item ID.') );
+			return false;
+		}
+
+		return true;
+	}
+	
+	//-----------
+	
+	public function deleteAssociations( $id=NULL ) 
+	{
+		if (!$id) {
+			$id = $this->authorid;
+		}
+		
+		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE authorid='".$id."'" );
+		if (!$this->_db->query()) {
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+		return true;
+	}
 }
-?>
