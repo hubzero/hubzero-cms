@@ -36,7 +36,8 @@ if ($config->getValue('config.debug')) {
 
 jimport('joomla.application.component.view');
 
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'quotes.class.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'quotes.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'selectedquotes.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 ximport('Hubzero_View_Helper_Html');
 

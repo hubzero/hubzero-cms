@@ -1,33 +1,6 @@
 <?php
-/**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Extended database class
-//----------------------------------------------------------
+// No direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class FeedbackQuotes extends JTable 
 {
@@ -44,14 +17,14 @@ class FeedbackQuotes extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__feedback', 'id', $db );
 	}
 	
 	//-----------
 	
-	function check() 
+	public function check() 
 	{
 		if (trim( $this->quote ) == '') {
 			$this->setError( JText::_('Quote must contain text.') );
@@ -63,7 +36,7 @@ class FeedbackQuotes extends JTable
 	
 	//-----------
 	
-	function buildQuery( $filters ) 
+	public function buildQuery( $filters ) 
 	{
 		$query = "FROM $this->_tbl ";
 		if ((isset($filters['search']) && $filters['search'] != '') 
@@ -91,10 +64,9 @@ class FeedbackQuotes extends JTable
 	
 	//-----------
 	
-	function getCount( $filters=array() ) 
+	public function getCount( $filters=array() ) 
 	{
-		$query  = "SELECT COUNT(*) ";
-		$query .= $this->buildQuery( $filters );
+		$query = "SELECT COUNT(*) ".$this->buildQuery( $filters );
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -102,10 +74,9 @@ class FeedbackQuotes extends JTable
 	
 	//-----------
 	
-	function getResults( $filters=array() ) 
+	public function getResults( $filters=array() ) 
 	{
-		$query  = "SELECT * ";
-		$query .= $this->buildQuery( $filters );
+		$query  = "SELECT * ".$this->buildQuery( $filters );
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -113,7 +84,7 @@ class FeedbackQuotes extends JTable
 	
 	//-----------
 	
-	function deletePicture( $config=null )
+	public function deletePicture( $config=null )
 	{
 		// Load the component config
 		if (!$config) {
@@ -157,9 +128,3 @@ class FeedbackQuotes extends JTable
 		return true;
 	}
 }
-
-
-class mosQuotes extends FeedbackQuotes 
-{
-}
-?>

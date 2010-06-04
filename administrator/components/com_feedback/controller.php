@@ -25,78 +25,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-class FeedbackController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$task = strtolower(JRequest::getVar('task', '','request'));
-		$type = JRequest::getVar( 'type', '', 'post' );
-		if (!$type) {
-			$type = JRequest::getVar( 'type', 'regular', 'get' );
-		}
-		$this->_task = $task;
-		$this->type = $type;
-		return $task;
-	}
-	
-	//-----------
-	
-	public function display()
+class FeedbackController extends Hubzero_Controller
+{
+	public function execute()
 	{
 		// Load the component config
 		$config =& JComponentHelper::getParams( $this->_option );
 		$this->config = $config;
 		
-		switch ( $this->getTask() ) 
+		$this->_task = strtolower(JRequest::getVar('task', '','request'));
+		$this->type = JRequest::getVar( 'type', '', 'post' );
+		if (!$this->type) {
+			$this->type = JRequest::getVar( 'type', 'regular', 'get' );
+		}
+		
+		switch ($this->_task) 
 		{
 			case 'new':       $this->edit();      break;
 			case 'add':       $this->edit();      break;
@@ -112,78 +57,93 @@ class FeedbackController extends JObject
 		}
 	}
 
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 
 	protected function quotes()
 	{
-		$app =& JFactory::getApplication();
-		$database =& JFactory::getDBO();
-
+		// Instantiate a new view
+		$view = new JView( array('name'=>'quotes') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->type = $this->type;
+		
 		// Get site configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$filters = array();
-		$filters['search'] = urldecode(JRequest::getString('search'));
-		$filters['sortby'] = JRequest::getVar( 'sortby', 'date' );
-		$filters['start']  = JRequest::getInt('limitstart', 0);
-		$filters['limit']  = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters = array();
+		$view->filters['search'] = urldecode(JRequest::getString('search'));
+		$view->filters['sortby'] = JRequest::getVar( 'sortby', 'date' );
+		$view->filters['start']  = JRequest::getInt('limitstart', 0);
+		$view->filters['limit']  = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 
 		if ($this->type == 'regular') {
-			$obj = new FeedbackQuotes( $database );
+			$obj = new FeedbackQuotes( $this->database );
 		} else {
-			$obj = new SelectedQuotes( $database );
+			$obj = new SelectedQuotes( $this->database );
 		}
 		
 		// Get a record count
-		$total = $obj->getCount( $filters );
+		$view->total = $obj->getCount( $view->filters );
 		
 		// Get records
-		$rows = $obj->getResults( $filters );
+		$view->rows = $obj->getResults( $view->filters );
 
 		// Initiate paging class
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// output HTML
-		FeedbackHtml::quotes( $rows, $pageNav, $this->_option, $filters, $this->type );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function create()
 	{
-		FeedbackHtml::create( $this->_option );
+		// Instantiate a new view
+		$view = new JView( array('name'=>'create') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->type = $this->type;
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function edit() 
 	{
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'quote') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->type = $this->type;
 
 		// Incoming ID
 		$id = JRequest::getInt( 'id', 0 );
 
 		// Initiate database class and load info
 		if ($this->type == 'regular') {
-			$row = new FeedbackQuotes( $database );
+			$view->row = new FeedbackQuotes( $this->database );
 		} else {
-			$row = new SelectedQuotes( $database );
+			$view->row = new SelectedQuotes( $this->database );
 		}
-		$row->load( $id );
+		$view->row->load( $id );
 
 		$username = trim(JRequest::getVar( 'username', '' ));
 		if ($username) {
@@ -192,25 +152,27 @@ class FeedbackController extends JObject
 			$profile = new XProfile();
 			$profile->load( $username );
 
-			$row->fullname = $profile->get('name');
-			$row->org      = $profile->get('organization');
-			$row->userid   = $profile->get('uidNumber');
+			$view->row->fullname = $profile->get('name');
+			$view->row->org      = $profile->get('organization');
+			$view->row->userid   = $profile->get('uidNumber');
 		}
 		
-		if ($id) {
-			$action = JText::_('Edit');
-		} else {
-			$action = JText::_('New');
-			$row->date = date( 'Y-m-d H:i:s');
+		if (!$id) {
+			$view->row->date = date( 'Y-m-d H:i:s');
 		}
 		
 		if ($this->type == 'regular') {
-			$row->notable_quotes = 0;
-			$row->flash_rotation = 0;
+			$view->row->notable_quotes = 0;
+			$view->row->flash_rotation = 0;
 		}
 
-		// Ouput HTML
-		FeedbackHtml::edit( $row, $action, $this->_option, $this->type );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//----------------------------------------------------------
@@ -222,8 +184,6 @@ class FeedbackController extends JObject
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
-		$database =& JFactory::getDBO();
-	
 		// Incoming
 		$replacequote   = JRequest::getInt( 'replacequote', 0 );
 		$notable_quotes = JRequest::getInt( 'notable_quotes', 0 );
@@ -233,10 +193,10 @@ class FeedbackController extends JObject
 			// Replace original quote
 
 			// Initiate class and bind posted items to database fields
-			$row = new FeedbackQuotes( $database );
+			$row = new FeedbackQuotes( $this->database );
 			if (!$row->bind($_POST)) {
-				echo FeedbackHtml::alert( $row->getError() );
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 	
 			// Code cleaner for xhtml transitional compliance
@@ -246,26 +206,25 @@ class FeedbackController extends JObject
 	
 			// Check new content
 			if (!$row->check()) {
-				echo FeedbackHtml::alert( $row->getError() );
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 			
 			// Store new content
 			if (!$row->store()) {
-				echo FeedbackHtml::alert( $row->getError() );
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 	
-			$msg = JText::sprintf('FEEDBACK_QUOTE_SAVED',  $row->fullname);
+			$this->_message = JText::sprintf('FEEDBACK_QUOTE_SAVED',  $row->fullname);
 		}
-
 
 		if ($this->type == 'selected' || $notable_quotes || $flash_rotation) {
 			// Initiate class and bind posted items to database fields
-			$rowselected = new SelectedQuotes( $database );
+			$rowselected = new SelectedQuotes( $this->database );
 			if (!$rowselected->bind($_POST)) {
-				echo FeedbackHtml::alert( $rowselected->getError() );
-				exit();
+				JError::raiseError( 500, $rowselected->getError() );
+				return;
 			}
 			
 			$rowselected->notable_quotes = $notable_quotes;
@@ -295,22 +254,21 @@ class FeedbackController extends JObject
 			
 			// Store new content
 			if (!$rowselected->store()) {
-				echo FeedbackHtml::alert( $rowselected->getError() );
-				exit();
+				JError::raiseError( 500, $rowselected->getError() );
+				return;
 			}
 
-			$msg = '';
+			$this->_message = '';
 		}
 	
 		if ($flash_rotation) {
-			$msg .= JText::_('FEEDBACK_QUOTE_SELECTED_FOR_ROTATION');
+			$this->_message .= JText::_('FEEDBACK_QUOTE_SELECTED_FOR_ROTATION');
 		}
 		if ($notable_quotes) {
-			$msg .= JText::_('FEEDBACK_QUOTE_SELECTED_FOR_QUOTES');
+			$this->_message .= JText::_('FEEDBACK_QUOTE_SELECTED_FOR_QUOTES');
 		}
 		
 		$this->_redirect = 'index.php?option='.$this->_option.'&type='.$this->type;
-		$this->_message = $msg;
 	}
 	
 	//-----------
@@ -325,17 +283,15 @@ class FeedbackController extends JObject
 	
 		// Check for an ID
 		if (!$id) {
-			echo FeedbackHtml::alert( JText::_('FEEDBACK_SELECT_QUOTE_TO_DELETE') );
-			exit;
+			JError::raiseError( 500, JText::_('FEEDBACK_SELECT_QUOTE_TO_DELETE') );
+			return;
 		}
-
-		$database =& JFactory::getDBO();
 
 		// Load the quote
 		if ($this->type == 'regular') {
-			$row = new FeedbackQuotes( $database );
+			$row = new FeedbackQuotes( $this->database );
 		} else {
-			$row = new SelectedQuotes( $database );
+			$row = new SelectedQuotes( $this->database );
 		}
 		$row->load( $id );
 		
@@ -386,8 +342,8 @@ class FeedbackController extends JObject
 		}
 		
 		// Build upload path
-		ximport('fileuploadutils');
-		$dir  = FileUploadUtils::niceidformat( $id );
+		ximport('Hubzero_View_Helper_Html');
+		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
 		if (substr($config->get('uploadpath'), 0, 1) != DS) {
 			$path .= DS;
@@ -418,8 +374,7 @@ class FeedbackController extends JObject
 			$this->setError( JText::_('ERROR_UPLOADING') );
 			$file = $curfile;
 		} else {
-			$database =& JFactory::getDBO();
-			$row = new FeedbackQuotes( $database );
+			$row = new FeedbackQuotes( $this->database );
 			$row->load( $qid );
 			
 			// Do we have an old file we're replacing?
@@ -467,8 +422,8 @@ class FeedbackController extends JObject
 		}
 		
 		$qid = JRequest::getInt( 'qid', 0 );
-		$database =& JFactory::getDBO();
-		$row = new FeedbackQuotes( $database );
+
+		$row = new FeedbackQuotes( $this->database );
 		$row->load( $qid );
 
 		// Incoming file
@@ -480,8 +435,8 @@ class FeedbackController extends JObject
 		}
 		
 		// Build the file path
-		ximport('fileuploadutils');
-		$dir  = FileUploadUtils::niceidformat( $id );
+		ximport('Hubzero_View_Helper_Html');
+		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
 		if (substr($config->get('uploadpath'), 0, 1) != DS) {
 			$path .= DS;
@@ -515,31 +470,47 @@ class FeedbackController extends JObject
 
 	protected function img( $file='', $id=0, $qid=0 )
 	{
-		// Load the component config
-		$config = $this->config;
+		// Instantiate a new view
+		$view = new JView( array('name'=>'quote', 'layout'=>'image') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->type = $this->type;
 		
-		// Get the app
-		$app =& JFactory::getApplication();
+		// Load the component config
+		$view->config = $this->config;
 		
 		// Do have an ID or do we need to get one?
 		if (!$id) {
-			$id = JRequest::getInt( 'id', 0 );
+			$view->id = JRequest::getInt( 'id', 0 );
+		} else {
+			$view->id = $id;
 		}
-		ximport('fileuploadutils');
-		$dir = FileUploadUtils::niceidformat( $id );
+		
+		ximport('Hubzero_View_Helper_Html');
+		$view->dir = Hubzero_View_Helper_Html::niceidformat( $id );
 		
 		// Do we have a file or do we need to get one?
-		$file = ($file) 
-			  ? $file 
-			  : JRequest::getVar( 'file', '' );
+		if (!$file) {
+			$view->file = JRequest::getVar( 'file', '' );
+		} else {
+			$view->file = $file;
+		}
 			  
 		// Build the directory path
-		$path = $config->get('uploadpath').DS.$dir;
+		$view->path = $this->config->get('uploadpath').DS.$view->dir;
 
 		if (!$qid) {
-			$qid = JRequest::getInt( 'qid', 0 );
+			$view->qid = JRequest::getInt( 'qid', 0 );
+		} else {
+			$view->qid = $qid;
 		}
 		
-		FeedbackHtml::writeImage( $app, $this->_option, $config->get('uploadpath'), $config->get('defaultpic'), $dir, $file, $path, $id, $qid, $this->getErrors() );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 }
