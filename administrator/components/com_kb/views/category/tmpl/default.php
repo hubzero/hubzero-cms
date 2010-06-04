@@ -97,4 +97,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="savecat" />
+	
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

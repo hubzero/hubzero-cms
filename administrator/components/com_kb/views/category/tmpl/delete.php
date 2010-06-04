@@ -39,4 +39,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>">
+	
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

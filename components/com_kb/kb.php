@@ -37,9 +37,9 @@ if ($config->getValue('config.debug')) {
 jimport('joomla.application.component.helper');
 ximport('Hubzero_View_Helper_Html');
 
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'kb.article.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'kb.category.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'kb.helpful.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'article.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'category.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'helpful.php' );
 require_once( JPATH_COMPONENT.DS.'controller.php' );
 
 // Instantiate controller
