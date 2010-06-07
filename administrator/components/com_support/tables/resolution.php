@@ -99,4 +99,3 @@ class SupportResolution extends JTable
 		return $this->_db->loadObjectList();
 	}
 }
-?>

@@ -136,4 +136,3 @@ class SupportAttachment extends JTable
 		return $this->_db->loadObject( $this );
 	}
 }
-?>

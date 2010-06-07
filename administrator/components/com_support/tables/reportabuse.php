@@ -26,60 +26,57 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
-// Extended database class
+// Report Abuse database class
 //----------------------------------------------------------
 
-class SupportCategory extends JTable 
+class ReportAbuse extends JTable 
 {
-	var $id       = NULL;  // @var int(11) Primary key
-	var $category = NULL;  // @var varchar(50)
-	var $section  = NULL;  // @var int(11)
-
+	var $id         	= NULL;  // @var int(11) Primary key
+	var $report   		= NULL;  // @var text
+	var $created    	= NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $created_by 	= NULL;  // @var int(11)
+	var $state      	= NULL;  // @var int(3)
+	var $referenceid    = NULL;  // @var int(11)
+	var $category		= NULL;  // @var varchar(50)
+	var $subject		= NULL;  // @var varchar(150)
+	
 	//-----------
-
-	public function __construct( &$db ) 
+	
+	public function __construct( &$db )
 	{
-		parent::__construct( '#__support_categories', 'id', $db );
+		parent::__construct( '#__abuse_reports', 'id', $db );
 	}
 	
 	//-----------
 	
 	public function check() 
 	{
-		if (trim( $this->category ) == '') {
-			$this->setError( JText::_('SUPPORT_ERROR_BLANK_FIELD') );
+		if (trim( $this->report ) == '' && trim( $this->subject ) == JText::_('OTHER')) {
+			$this->setError( JText::_('Please describe the issue.') );
 			return false;
 		}
-
 		return true;
-	}
-	
-	//-----------
-	
-	public function getCategories( $section=NULL ) 
-	{
-		if ($section !== NULL) {
-			$section = ($section) ? $section : 1;
-			$where = "WHERE section=$section";
-		} else {
-			$where = "";
-		}
-		
-		$this->_db->setQuery( "SELECT category AS id, category AS txt FROM $this->_tbl $where ORDER BY category");
-		return $this->_db->loadObjectList();
 	}
 	
 	//-----------
 	
 	public function buildQuery( $filters=array() ) 
 	{
-		$query = " FROM $this->_tbl AS c, #__support_sections AS s"
-				. " WHERE c.section=s.id";
-		if (isset($filters['order']) && $filters['order'] != '') {
-			$query .= " ORDER BY ".$filters['order'];
+		$query = " FROM $this->_tbl AS a WHERE";
+					
+		if (isset($filters['state']) && $filters['state'] == 1) {
+			$query .= " a.state=1";
+		} else {
+			$query .= " a.state=0";
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['id']) && $filters['id'] != '') {
+			$query .= " AND a.referenceid='".$filters['id']."'";
+		}
+		if (isset($filters['category']) && $filters['category'] != '') {
+			$query .= " AND a.category='".$filters['category']."'";
+		}
+		if (isset($filters['sortby']) && $filters['sortby'] != '') {
+			$query .= " ORDER BY ".$filters['sortby']." LIMIT ".$filters['start'].",".$filters['limit'];
 		}
 		
 		return $query;
@@ -89,22 +86,23 @@ class SupportCategory extends JTable
 	
 	public function getCount( $filters=array() ) 
 	{
+		$filters['sortby'] = '';
+		
 		$query  = "SELECT COUNT(*)";
 		$query .= $this->buildQuery( $filters );
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
 	
 	//-----------
 	
-	public function getRecords( $filters=array() )
+	public function getRecords( $filters=array() ) 
 	{
-		$filters['order'] = 'section, category';
-		
-		$query  = "SELECT c.id, c.category, s.section";
+		$query  = "SELECT *";
 		$query .= $this->buildQuery( $filters );
+		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
 }
-?>
