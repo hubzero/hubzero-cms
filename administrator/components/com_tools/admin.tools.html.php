@@ -94,7 +94,7 @@ class ToolsHtml
 			$url = 'index.php?option='.$option;
 			foreach ($vars as $k => $v) 
 			{
-				$url .= '&'.$k.'='.$v;
+				$url .= ($option != $v) ? '&'.$k.'='.$v : '';
 			}
 			$html .= '<a href="'.$url.'" title="'.$text.'">'.$name.'</a>';
 		}
