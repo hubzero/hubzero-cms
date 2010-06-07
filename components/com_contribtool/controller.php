@@ -1803,8 +1803,8 @@ class ContribtoolController extends JObject
 
 		// include support scripts
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_support'.DS.'support.tags.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.ticket.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.comment.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'comment.php' );
 
 		$st = new SupportTags( $database );
 		$row = new SupportTicket( $database );
