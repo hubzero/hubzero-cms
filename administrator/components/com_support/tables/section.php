@@ -94,4 +94,3 @@ class SupportSection extends JTable
 		return $this->_db->loadObjectList();
 	}
 }
-?>

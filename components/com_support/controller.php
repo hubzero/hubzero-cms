@@ -77,7 +77,7 @@ class SupportController extends JObject
 	public function execute()
 	{
 		// Get the component parameters
-		$this->config = new SupportConfig( $this->_option );
+		$this->config = JComponentHelper::getParams( $this->_option );
 
 		$this->database = JFactory::getDBO();
 
@@ -392,7 +392,7 @@ class SupportController extends JObject
 		// Parse comment text for attachment tags
 		$juri =& JURI::getInstance();
 		
-		$webpath = str_replace('//','/',$juri->base().$this->config->parameters['webpath'].DS.$id);
+		$webpath = str_replace('//','/',$juri->base().$this->config->get('webpath').DS.$id);
 		if (isset( $_SERVER['HTTPS'] )) {
 			$webpath = str_replace('http:','https:',$webpath);
 		}
@@ -402,7 +402,7 @@ class SupportController extends JObject
 		
 		$attach = new SupportAttachment( $this->database );
 		$attach->webpath = $webpath;
-		$attach->uppath  = JPATH_ROOT.$this->config->parameters['webpath'].DS.$id;
+		$attach->uppath  = JPATH_ROOT.$this->config->get('webpath').DS.$id;
 		$attach->output  = 'web';
 		for ($i=0; $i < count($view->comments); $i++) 
 		{
@@ -418,7 +418,7 @@ class SupportController extends JObject
 		}
 		
 		// Get severities
-		$view->lists['severities'] = $this->config->getSeverities();
+		$view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
 		
 		// Populate the list of assignees based on if the ticket belongs to a group or not
 		if (trim($view->row->group)) {
@@ -674,8 +674,8 @@ class SupportController extends JObject
 					
 					// Parse comments for attachments
 					$attach = new SupportAttachment( $this->database );
-					$attach->webpath = $xhub->getCfg('hubLongURL').$this->config->parameters['webpath'].DS.$id;
-					$attach->uppath  = JPATH_ROOT.$this->config->parameters['webpath'].DS.$id;
+					$attach->webpath = $xhub->getCfg('hubLongURL').$this->config->get('webpath').DS.$id;
+					$attach->uppath  = JPATH_ROOT.$this->config->get('webpath').DS.$id;
 					$attach->output  = 'email';
 
 					// Build e-mail components
@@ -784,7 +784,7 @@ class SupportController extends JObject
 									continue;
 								}
 							// Make sure it's a valid e-mail address
-							} else if (SupportUtils::check_validEmail($acc)) {
+							} else if (SupportUtilities::checkValidEmail($acc)) {
 								$emails[] = $acc;
 								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$acc.'</li>';
 							}
@@ -794,7 +794,7 @@ class SupportController extends JObject
 					// Send an e-mail to each address
 					foreach ($emails as $email)
 					{
-						SupportUtils::send_email($email, $subject, $message, $from);
+						SupportUtilities::sendEmail($email, $subject, $message, $from);
 					}
 					
 					// Were there any changes?
@@ -1180,8 +1180,8 @@ class SupportController extends JObject
 			
 			foreach ($tos as $to) 
 			{
-				if (SupportUtils::check_validEmail($to)) {
-					if (!SupportUtils::send_email($from, $to, $subject, $message)) {
+				if (SupportUtilities::checkValidEmail($to)) {
+					if (!SupportUtilities::sendEmail($from, $to, $subject, $message)) {
 						$this->setError( JText::sprintf('ERROR_FAILED_TO_SEND_EMAIL',$to) );
 					}
 				}
@@ -1408,7 +1408,7 @@ class SupportController extends JObject
 		$description = JRequest::getVar( 'description', '' );
 		
 		// Construct our file path
-		$path = JPATH_ROOT.$this->config->parameters['webpath'].DS.$listdir;
+		$path = JPATH_ROOT.$this->config->get('webpath').DS.$listdir;
 		
 		// Build the path if it doesn't exist
 		if (!is_dir( $path )) {
@@ -1467,7 +1467,7 @@ class SupportController extends JObject
 		}
 		
 		// Was a specific group set in the config?
-		$group = trim($this->config->parameters['group']);
+		$group = trim($this->config->get('group'));
 		if ($group or $toolgroup) {
 			ximport('xgroup');
 			ximport('xuserhelper');
@@ -1490,4 +1490,3 @@ class SupportController extends JObject
 		return false;
 	}
 }
-?>

@@ -25,73 +25,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-class SupportController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$task = JRequest::getVar( 'task', '' );
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-	
+class SupportController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		// Get the component parameters
-		$sconfig = new SupportConfig( $this->_option );
-		$this->config = $sconfig;
+		// Get the component config
+		$config =& JComponentHelper::getParams( $this->_option );
+		$this->config = $config;
 		
-		switch ($this->getTask()) 
+		$this->_task = JRequest::getVar( 'task', '' );
+		
+		switch ($this->_task) 
 		{
 			// Media/file handler
 			case 'upload':     $this->upload();     break;
@@ -156,300 +102,199 @@ class SupportController extends JObject
 		}
 	}
 	
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
-		}
-	}
-	
 	//----------------------------------------------------------
 	//  Views
 	//----------------------------------------------------------
 
-	/*protected function categories()
+	protected function categories()
 	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'categories') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Get configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 		
 		// Get paging variables
-		$filter = array();
-		$filters['limit'] = JRequest::getInt('limit', $config->getValue('config.list_limit'));
-		$filters['start'] = JRequest::getInt('limitstart', 0);
+		$view->filters = array();
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.categories.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = $app->getUserStateFromRequest($this->_option.'.categories.limitstart', 'limitstart', 0, 'int');
 		
-		$database =& JFactory::getDBO();
-
-		$obj = new SupportCategory( $database );
+		$obj = new SupportCategory( $this->database );
 		
 		// Record count
-		$total = $obj->getCount( $filters );
+		$view->total = $obj->getCount( $view->filters );
 		
 		// Fetch results
-		$rows = $obj->getRecords( $filters );
+		$view->rows = $obj->getRecords( $view->filters );
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		SupportHtml::categories( $rows, $pageNav, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
 
 	protected function sections()
 	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'sections') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Get configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 		
 		// Get paging variables
-		$filter = array();
-		$filters['limit'] = JRequest::getInt('limit', $config->getValue('config.list_limit'));
-		$filters['start'] = JRequest::getInt('limitstart', 0);
+		$view->filters = array();
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.sections.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = $app->getUserStateFromRequest($this->_option.'.sections.limitstart', 'limitstart', 0, 'int');
 
-		$database =& JFactory::getDBO();
-
-		$obj = new SupportSection( $database );
+		$obj = new SupportSection( $this->database );
 		
 		// Record count
-		$total = $obj->getCount( $filters );
+		$view->total = $obj->getCount( $view->filters );
 		
 		// Fetch results
-		$rows = $obj->getRecords( $filters );
+		$view->rows = $obj->getRecords( $view->filters );
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		SupportHtml::sections( $rows, $pageNav, $this->_option );
-	}*/
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
+	}
 
 	//-----------
 
 	protected function resolutions()
 	{
-		$app =& JFactory::getApplication();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'resolutions') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Get configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 		
 		// Get paging variables
-		$filter = array();
-		//$filters['limit'] = JRequest::getInt('limit', $config->getValue('config.list_limit'));
-		//$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.resolutions.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start'] = $app->getUserStateFromRequest($this->_option.'.resolutions.limitstart', 'limitstart', 0, 'int');
+		$view->filters = array();
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.resolutions.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = $app->getUserStateFromRequest($this->_option.'.resolutions.limitstart', 'limitstart', 0, 'int');
 
-		$database =& JFactory::getDBO();
-
-		$obj = new SupportResolution( $database );
+		$obj = new SupportResolution( $this->database );
 		
 		// Record count
-		$total = $obj->getCount( $filters );
+		$view->total = $obj->getCount( $view->filters );
 		
 		// Fetch results
-		$rows = $obj->getRecords( $filters );
+		$view->rows = $obj->getRecords( $view->filters );
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		SupportHtml::resolutions( $rows, $pageNav, $this->_option );
-	}
-
-	//-----------
-
-	private function getFilters()
-	{
-		$app =& JFactory::getApplication();
-		$config = JFactory::getConfig();
-		
-		// Query filters defaults
-		$filters = array();
-		$filters['search'] = '';
-		$filters['status'] = 'open';
-		$filters['type'] = 0;
-		$filters['owner'] = '';
-		$filters['reportedby'] = '';
-		$filters['severity'] = 'normal';
-		//$filters['sort'] = trim(JRequest::getVar( 'filter_order', 'created' ));
-		//$filters['sortdir'] = trim(JRequest::getVar( 'filter_order_Dir', 'DESC' ));
-		$filters['severity'] = '';
-		//$filters['section'] = 0;
-		//$filters['category'] = '';
-		$filters['sort'] = trim($app->getUserStateFromRequest($this->_option.'.tickets.sort', 'filter_order', 'created'));
-		$filters['sortdir'] = trim($app->getUserStateFromRequest($this->_option.'.tickets.sortdir', 'filter_order_Dir', 'DESC'));
-		
-		// Paging vars
-		//$filters['limit'] = JRequest::getVar( 'limit', 25 );
-		//$filters['start'] = JRequest::getInt( 'limitstart', 0 );
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.tickets.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start'] = $app->getUserStateFromRequest($this->_option.'.tickets.limitstart', 'limitstart', 0, 'int');
-		
-		// Incoming
-		//$filters['_find'] = urldecode(trim(JRequest::getVar( 'find', '' )));
-		//$filters['_show'] = urldecode(trim(JRequest::getVar( 'show', '' )));
-		$filters['_find'] = urldecode(trim($app->getUserStateFromRequest($this->_option.'.tickets.find', 'find', '')));
-		$filters['_show'] = urldecode(trim($app->getUserStateFromRequest($this->_option.'.tickets.show', 'show', '')));
-		
-		// Break it apart so we can get our filters
-		// Starting string hsould look like "filter:option filter:option"
-		if ($filters['_find'] != '') {
-			$chunks = explode(' ', $filters['_find']);
-			$filters['_show'] = '';
-		} else {
-			$chunks = explode(' ', $filters['_show']);
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
 		
-		// Loop through each chunk (filter:option)
-		foreach ($chunks as $chunk) 
-		{
-			// Break each chunk into its pieces (filter, option)
-			$pieces = explode(':', $chunk);
-			
-			// Find matching filters and ensure the vaule provided is valid
-			switch ($pieces[0])
-			{
-				case 'q':
-					$pieces[0] = 'search';
-					if (isset($pieces[1])) {
-						// Queries must be in quotes. If they're not, we ignore it
-						if ((substr($pieces[1], 0, 1) == '"' 
-						|| substr($pieces[1], 0, 1) == "'") 
-						&& (substr($pieces[1], -1) == '"' 
-						|| substr($pieces[1], -1) == "'")) {
-							$pieces[1] = substr($pieces[1], 1, -1);  // Remove any surrounding quotes
-						}
-					} else {
-						$pieces[1] = $filters[$pieces[0]];
-					}
-				break;
-				case 'status':
-					$allowed = array('open','closed','all','waiting','new');
-					if (!in_array($pieces[1],$allowed)) {
-						$pieces[1] = $filters[$pieces[0]];
-					}
-				break;
-				case 'type':
-					$allowed = array('submitted'=>0,'automatic'=>1,'none'=>2,'tool'=>3);
-					if (in_array($pieces[1],$allowed)) {
-						//$pieces[1] = ($pieces[1] == $allowed[0]) ? 0 : 1;
-						$pieces[1] = $allowed[$pieces[1]];
-					} else {
-						$pieces[1] = 0;
-					}
-				break;
-				case 'owner':
-				case 'reportedby':
-					if (isset($pieces[1])) {
-						if ($pieces[1] == 'me') {
-							$juser =& JFactory::getUser();
-							$pieces[1] = $juser->get('username');
-						} else if ($pieces[1] == 'none') {
-							$pieces[1] = 'none';
-						}
-					}
-				break;
-				case 'severity':
-					$allowed = array('critical', 'major', 'normal', 'minor', 'trivial');
-					if (!in_array($pieces[1],$allowed)) {
-						$pieces[1] = $filters[$pieces[0]];
-					}
-				break;
-			}
-			
-			$filters[$pieces[0]] = (isset($pieces[1])) ? $pieces[1] : '';
-		}
-
-		// Check if we have a section:category
-		/*$secat = trim(JRequest::getVar( 'category', '' ));
-		if ($secat) {
-			// Break it apart to get the individual pieces
-			$bits = explode(':',$filters['category']);
-			$filters['category'] = end($bits);
-			$filters['section'] = $bits[0];
-		}*/
-
-		// Return the array
-		return $filters;
-	}
-
-	//-----------
-
-	private function getStyles() 
-	{
-		$document =& JFactory::getDocument();
-		$document->addStyleSheet('components'.DS.$this->_option.DS.'admin.'.$this->_name.'.css');
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function tickets()
 	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'tickets') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Push some styles to the template
-		$this->getStyles();
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet('components'.DS.$this->_option.DS.$this->_name.'.css');
 
 		// Get filters
-		$filters = $this->getFilters();
+		$view->filters = SupportUtilities::getFilters();
 
-		// Get configuration
-		//$config = JFactory::getConfig();
-
-		$database =& JFactory::getDBO();
-
-		$obj = new SupportTicket( $database );
+		$obj = new SupportTicket( $this->database );
 		
 		// Record count
-		$total = $obj->getTicketsCount( $filters, true );
+		$view->total = $obj->getTicketsCount( $view->filters, true );
 		
 		// Fetch results
-		$rows = $obj->getTickets( $filters, true );
+		$view->rows = $obj->getTickets( $view->filters, true );
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		SupportHtml::tickets( $database, $rows, $pageNav, $this->_option, $filters );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function messages()
 	{
-		$app =& JFactory::getApplication();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'messages') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Get configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 		
 		// Get paging variables
-		$filter = array();
-		//$filters['limit'] = JRequest::getInt('limit', $config->getValue('config.list_limit'));
-		//$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.messages.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start'] = $app->getUserStateFromRequest($this->_option.'.messages.limitstart', 'limitstart', 0, 'int');
+		$view->filter = array();
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.messages.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = $app->getUserStateFromRequest($this->_option.'.messages.limitstart', 'limitstart', 0, 'int');
 
-		$database =& JFactory::getDBO();
-
-		$obj = new SupportMessage( $database );
+		$obj = new SupportMessage( $this->database );
 		
 		// Record count
-		$total = $obj->getCount( $filters );
+		$view->total = $obj->getCount( $view->filters );
 		
 		// Fetch results
-		$rows = $obj->getRecords( $filters );
+		$view->rows = $obj->getRecords( $view->filters );
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// output HTML
-		SupportHtml::messages( $rows, $pageNav, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -463,31 +308,29 @@ class SupportController extends JObject
 
 	protected function edit() 
 	{
-	    $juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
-		
 		// Push some styles to the template
-		$this->getStyles();
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet('components'.DS.$this->_option.DS.$this->_name.'.css');
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		
-		$filters = $this->getFilters();
+		$filters = SupportUtilities::getFilters();
 
 		// Initiate database class and load info
-		$row = new SupportTicket( $database );
+		$row = new SupportTicket( $this->database );
 		$row->load( $id );
 
 		if ($id) {
 			// Editing an existing ticket
 
 			// Get comments
-			$sc = new SupportComment( $database );
+			$sc = new SupportComment( $this->database );
 			$comments = $sc->getComments( 'admin', $row->id );
 			
 			// Parse comment text for attachment tags
 			$juri =& JURI::getInstance();
-			$webpath = str_replace('/administrator/','/',$juri->base().$this->config->parameters['webpath'].DS.$id);
+			$webpath = str_replace('/administrator/','/',$juri->base().$this->config->get('webpath').DS.$id);
 			$webpath = str_replace('//','/',$webpath);
 			if (isset( $_SERVER['HTTPS'] )) {
 				$webpath = str_replace('http:','https:',$webpath);
@@ -496,9 +339,9 @@ class SupportController extends JObject
 				$webpath = str_replace(':/','://',$webpath);
 			}
 
-			$attach = new SupportAttachment( $database );
+			$attach = new SupportAttachment( $this->database );
 			$attach->webpath = $webpath;
-			$attach->uppath  = JPATH_ROOT.$this->config->parameters['webpath'].DS.$id;
+			$attach->uppath  = JPATH_ROOT.$this->config->get('webpath').DS.$id;
 			$attach->output  = 'web';
 			for ($i=0; $i < count($comments); $i++) 
 			{
@@ -507,20 +350,14 @@ class SupportController extends JObject
 			}
 			
 			$row->statustext = SupportHtml::getStatus($row->status);
-			
-			// Get the next and previous support tickets
-			//$row->prev = $row->getTicketId('prev', $filters, 'admin');
-			//$row->next = $row->getTicketId('next', $filters, 'admin');
 		} else {
 			// Creating a new ticket
-			$juser =& JFactory::getUser();
-			
 			$row->severity = 'normal';
 			$row->status   = 0;
 			$row->created  = date( 'Y-m-d H:i:s', time() );
-			$row->login    = $juser->get('username');
-			$row->name     = $juser->get('name');
-			$row->email    = $juser->get('email');
+			$row->login    = $this->juser->get('username');
+			$row->name     = $this->juser->get('name');
+			$row->email    = $this->juser->get('email');
 			$row->cookies  = 1;
 			
 			ximport('Hubzero_Browser');
@@ -545,10 +382,8 @@ class SupportController extends JObject
 		$row->summary = str_replace('&quote;','&quot;',$row->summary);
 		$row->summary = htmlentities($row->summary, ENT_COMPAT, 'UTF-8');
 		
-		//$row->report  = stripslashes($row->report);
 		$row->report  = html_entity_decode(stripslashes($row->report), ENT_COMPAT, 'UTF-8');
 		$row->report  = str_replace('&quote;','&quot;',$row->report);
-		//$row->report  = htmlspecialchars($row->report);
 		$row->report  = str_replace("<br />","",$row->report);
 		$row->report  = htmlentities($row->report, ENT_COMPAT, 'UTF-8');
 		$row->report  = nl2br($row->report);
@@ -558,30 +393,30 @@ class SupportController extends JObject
 		$lists = array();
 		
 		// Get resolutions
-		$sr = new SupportResolution( $database );
+		$sr = new SupportResolution( $this->database );
 		$lists['resolutions'] = $sr->getResolutions();
 		
 		// Get messages
-		$sm = new SupportMessage( $database );
+		$sm = new SupportMessage( $this->database );
 		$lists['messages'] = $sm->getMessages();
 
 		// Get sections
-		//$ss = new SupportSection( $database );
+		//$ss = new SupportSection( $this->database );
 		//$lists['sections'] = $ss->getSections();
 		
 		// Get categories
-		//$sa = new SupportCategory( $database );
+		//$sa = new SupportCategory( $this->database );
 		//$lists['categories'] = $sa->getCategories( $row->section );
 		
 		// Get Tags
-		$st = new SupportTags( $database );
+		$st = new SupportTags( $this->database );
 		$lists['tags'] = $st->get_tag_string( $row->id, 0, 0, NULL, 0, 1 );
 		$lists['tagcloud'] = $st->get_tag_cloud( 3, 1, $row->id );
 		
 		// Get severities
-		$lists['severities'] = $this->config->getSeverities();
+		$lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
 		
-		//$group = trim($this->config->parameters['group']);
+		//$group = trim($this->config->get('group'));
 		$group = trim($row->group);
 		if ($group) {
 			$lists['owner'] = $this->userSelectGroup( 'owner', $row->owner, 1, '', $group );
@@ -589,130 +424,156 @@ class SupportController extends JObject
 			$lists['owner'] = $this->userSelect( 'owner', $row->owner, 1 );
 		}
 		
-		// Ouput HTML
-		SupportHtml::editTicket( $database, $row, $this->_option, $lists, $comments, $filters );
+		// Instantiate a new view
+		$view = new JView( array('name'=>'ticket') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		$view->row = $row;
+		$view->lists = $lists;
+		$view->comments = $comments;
+		$view->filters = $filters;
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
 
-	/*protected function editcat() 
+	protected function editcat() 
 	{
-		$database =& JFactory::getDBO();
-		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'category') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+	
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
 		// Initiate database class and load info
-		$row = new SupportCategory( $database );
-		$row->load( $id );
+		$view->row = new SupportCategory( $this->database );
+		$view->row->load( $id );
 
 		// Set action
-		if ($id) {
-			$action = JText::_('EDIT');
-		} else {
-			$action = JText::_('NEW');
-			$row->category = '';
-			$row->section = 1;
+		if (!$id) {
+			$view->row->category = '';
+			$view->row->section = 1;
 		}
 		
 		// Get support sections
-		$ss = new SupportSection( $database );
-		$sections = $ss->getSections();
+		$ss = new SupportSection( $this->database );
+		$view->sections = $ss->getSections();
 
-		// Ouput HTML
-		SupportHtml::editCategory( $row, $action, $this->_option, $sections );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function editsec() 
 	{
-		$database =& JFactory::getDBO();
-		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'section') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+	
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
 		// Initiate database class and load info
-		$row = new SupportSection( $database );
-		$row->load( $id );
+		$view->row = new SupportSection( $this->database );
+		$view->row->load( $id );
 
 		// Set action
-		if ($id) {
-			$action = JText::_('EDIT');
-		} else {
-			$action = JText::_('NEW');
-			$row->section = '';
+		if (!$id) {
+			$view->row->section = '';
 		}
 
-		// Ouput HTML
-		SupportHtml::editSection( $row, $action, $this->_option );
-	}*/
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
+	}
 
 	//-----------
 
 	protected function editres() 
 	{
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'resolution') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
 		// Initiate database class and load info
-		$row = new SupportResolution( $database );
-		$row->load( $id );
+		$view->row = new SupportResolution( $this->database );
+		$view->row->load( $id );
 
-		// Set action
-		if ($id) {
-			$action = JText::_('EDIT');
-		} else {
-			$action = JText::_('NEW');
-			$row->section = '';
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-
-		// Ouput HTML
-		SupportHtml::editResolution( $row, $action, $this->_option );
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function editmsg() 
 	{
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'message') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
 		// Initiate database class and load info
-		$row = new SupportMessage( $database );
-		$row->load( $id );
+		$view->row = new SupportMessage( $this->database );
+		$view->row->load( $id );
 
-		// Set action
-		if ($id) {
-			$action = JText::_('EDIT');
-		} else {
-			$action = JText::_('NEW');
-			$row->title   = '';
-			$row->message = '';
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-
-		// Ouput HTML
-		SupportHtml::editMessage( $row, $action, $this->_option );
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function savemsg() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 	
 		// Trim and addslashes all posted items
-		$_POST = array_map('trim',$_POST);
+		$msg = JRequest::getVar('msg', array(), 'post');
+		$msg = array_map('trim',$msg);
 	
 		// Initiate class and bind posted items to database fields
-		$row = new SupportMessage( $database );
-		if (!$row->bind( $_POST )) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+		$row = new SupportMessage( $this->database );
+		if (!$row->bind( $msg )) {
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 	
 		// Code cleaner for xhtml transitional compliance
@@ -721,14 +582,14 @@ class SupportController extends JObject
 		
 		// Check content
 		if (!$row->check()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Output messsage and redirect
@@ -738,18 +599,20 @@ class SupportController extends JObject
 
 	//-----------
 
-	/*protected function savecat() 
+	protected function savecat() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 	
 		// Trim and addslashes all posted items
-		$_POST = array_map('trim',$_POST);
+		$cat = JRequest::getVar('cat', array(), 'post');
+		$cat = array_map('trim',$cat);
 	
 		// Initiate class and bind posted items to database fields
-		$row = new SupportCategory( $database );
-		if (!$row->bind( $_POST )) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+		$row = new SupportCategory( $this->database );
+		if (!$row->bind( $cat )) {
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 	
 		// Code cleaner for xhtml transitional compliance
@@ -757,14 +620,14 @@ class SupportController extends JObject
 		
 		// Check content
 		if (!$row->check()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Output messsage and redirect
@@ -776,16 +639,18 @@ class SupportController extends JObject
 
 	protected function savesec() 
 	{
-		$database =& JFactory::getDBO();
-	
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Trim and addslashes all posted items
-		$_POST = array_map('trim',$_POST);
+		$sec = JRequest::getVar('sec', array(), 'post');
+		$sec = array_map('trim',$sec);
 	
 		// Initiate class and bind posted items to database fields
-		$row = new SupportSection( $database );
-		if (!$row->bind( $_POST )) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+		$row = new SupportSection( $this->database );
+		if (!$row->bind( $sec )) {
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 	
 		// Code cleaner for xhtml transitional compliance
@@ -793,35 +658,37 @@ class SupportController extends JObject
 		
 		// Check content
 		if (!$row->check()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=sections';
 		$this->_message = JText::_('SECTION_SUCCESSFULLY_SAVED');
-	}*/
+	}
 	
 	//-----------
 
 	protected function saveres() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 	
 		// Trim and addslashes all posted items
-		$_POST = array_map('trim',$_POST);
+		$res = JRequest::getVar('res', array(), 'post');
+		$res = array_map('trim',$res);
 	
 		// Initiate class and bind posted items to database fields
-		$row = new SupportResolution( $database );
-		if (!$row->bind( $_POST )) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+		$row = new SupportResolution( $this->database );
+		if (!$row->bind( $res )) {
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 	
 		// Code cleaner for xhtml transitional compliance
@@ -833,14 +700,14 @@ class SupportController extends JObject
 		
 		// Check content
 		if (!$row->check()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Output messsage and redirect
@@ -852,18 +719,18 @@ class SupportController extends JObject
 
 	protected function save() 
 	{
-	    $juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
 		// Instantiate the tagging class - we'll need this a few times
-		$st = new SupportTags( $database );
+		$st = new SupportTags( $this->database );
 		
 		// Load the old ticket so we can compare for the changelog
 		if ($id) {
-			$old = new SupportTicket( $database );
+			$old = new SupportTicket( $this->database );
 			$old->load( $id );
 			
 			// Get Tags
@@ -874,10 +741,10 @@ class SupportController extends JObject
 		$_POST = array_map('trim',$_POST);
 	
 		// Initiate class and bind posted items to database fields
-		$row = new SupportTicket( $database );
+		$row = new SupportTicket( $this->database );
 		if (!$row->bind( $_POST )) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		if (!$row->id && !trim($row->summary)) {
@@ -919,14 +786,14 @@ class SupportController extends JObject
 
 		// Check content
 		if (!$row->check()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		$row->load( $id );
@@ -934,7 +801,7 @@ class SupportController extends JObject
 		// Save the tags
 		$tags = JRequest::getVar( 'tags', '', 'post' );
 
-		$st->tag_object( $juser->get('id'), $row->id, $tags, 0, true );
+		$st->tag_object( $this->juser->get('id'), $row->id, $tags, 0, true );
 		
 		// We must have a ticket ID before we can do anything else
 		if ($id) {
@@ -991,16 +858,16 @@ class SupportController extends JObject
 			}
 
 			// Were there any changes?
-			$log = implode(n,$changelog);
+			$log = implode("\n",$changelog);
 			if ($log != '') {
-				$log = '<ul class="changelog">'.n.$log.'</ul>'.n;
+				$log = '<ul class="changelog">'."\n".$log.'</ul>'."\n";
 			}
 			
 			$attachment = $this->upload( $row->id );
-			$comment .= ($attachment) ? n.n.$attachment : '';
+			$comment .= ($attachment) ? "\n\n".$attachment : '';
 			
 			// Create a new support comment object and populate it
-			$rowc = new SupportComment( $database );
+			$rowc = new SupportComment( $this->database );
 			$rowc->ticket     = $id;
 			$rowc->comment    = nl2br($comment);
 			$rowc->comment    = str_replace( '<br>', '<br />', $rowc->comment );
@@ -1016,8 +883,8 @@ class SupportController extends JObject
 				}
 				// Save the data
 				if (!$rowc->store()) {
-					echo SupportHtml::alert( $rowc->getError() );
-					exit();
+					JError::raiseError( 500, $rowc->getError() );
+					return;
 				}
 			
 				// Only do the following if a comment was posted or ticket was reassigned
@@ -1027,9 +894,9 @@ class SupportController extends JObject
 					$jconfig =& JFactory::getConfig();
 					
 					// Parse comments for attachments
-					$attach = new SupportAttachment( $database );
-					$attach->webpath = $juri->base().$this->config->parameters['webpath'].DS.$id;
-					$attach->uppath  = JPATH_ROOT.$this->config->parameters['webpath'].DS.$id;
+					$attach = new SupportAttachment( $this->database );
+					$attach->webpath = $juri->base().$this->config->get('webpath').DS.$id;
+					$attach->uppath  = JPATH_ROOT.$this->config->get('webpath').DS.$id;
 					$attach->output  = 'email';
 
 					// Build e-mail components
@@ -1041,23 +908,23 @@ class SupportController extends JObject
 					$from['name']  = $jconfig->getValue('config.sitename').' '.ucfirst($this->_name);
 					$from['email'] = $jconfig->getValue('config.mailfrom');
 		
-					$message  = '----------------------------'.r.n;
-					$message .= strtoupper(JText::_('TICKET')).': '.$row->id.r.n;
-					$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary).r.n;
-					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created.r.n;
+					$message  = '----------------------------'."\r\n";
+					$message .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
+					$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
+					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
 					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name;
-					$message .= ($row->login) ? ' ('.$row->login.')'.r.n : r.n;
-					$message .= '----------------------------'.r.n.r.n;
-					$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by.r.n;
-					$message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created.r.n.r.n;
+					$message .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
+					$message .= '----------------------------'."\r\n\r\n";
+					$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
+					$message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";
 					if ($row->owner != $old->owner) {
 						if ($old->owner == '') {
-							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'.r.n.r.n;
+							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'."\r\n\r\n";
 						} else {
-							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_CHANGED_FROM').' "'.$old->owner.'" to "'.$row->owner.'"'.r.n.r.n;
+							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_CHANGED_FROM').' "'.$old->owner.'" to "'.$row->owner.'"'."\r\n\r\n";
 						}
 					}
-					$message .= $attach->parse($comment).r.n.r.n;
+					$message .= $attach->parse($comment)."\r\n\r\n";
 
 					$sef = JRoute::_('index.php?option='.$this->_option.'&task=ticket&id='. $row->id);
 					if (substr($sef,0,1) == '/') {
@@ -1067,7 +934,7 @@ class SupportController extends JObject
 					if (substr($base,-14) == 'administrator/') {
 						$base = substr($base,0,strlen($base)-14);
 					}
-					$message .= $base.$sef.r.n;
+					$message .= $base.$sef."\r\n";
 						
 					// An array for all the addresses to be e-mailed
 					$emails = array();
@@ -1085,7 +952,7 @@ class SupportController extends JObject
 						if ($rowc->access != 1) {
 							$zuser =& JUser::getInstance($row->login);
 							// Make sure there even IS an e-mail and it's valid
-							/*if ($row->email && SupportUtils::check_validEmail($row->email)) {
+							/*if ($row->email && SupportUtilities::check_validEmail($row->email)) {
 								$emails[] = $row->email;
 								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
 							}*/
@@ -1093,7 +960,7 @@ class SupportController extends JObject
 								$type = 'support_reply_submitted';
 								if ($row->status == 1) {
 									$element = $row->id;
-									$description = 'index.php?option='.$this->_option.a.'task=ticket'.a.'id='.$row->id;
+									$description = 'index.php?option='.$this->_option.'&task=ticket&id='.$row->id;
 								} else {
 									$element = null;
 									$description = '';
@@ -1151,7 +1018,7 @@ class SupportController extends JObject
 									continue;
 								}
 							// Make sure it's a valid e-mail address
-							} elseif (SupportUtils::check_validEmail($acc)) {
+							} elseif (SupportUtilities::checkValidEmail($acc)) {
 								$emails[] = $acc;
 								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$acc.'</li>';
 							}
@@ -1161,18 +1028,18 @@ class SupportController extends JObject
 					// Send an e-mail to each address
 					foreach ($emails as $email)
 					{
-						SupportUtils::send_email($email, $subject, $message, $from);
+						SupportUtilities::sendEmail($email, $subject, $message, $from);
 					}
 					
 					// Were there any changes?
-					$elog = implode(n,$emaillog);
+					$elog = implode("\n",$emaillog);
 					if ($elog != '') {
-						$rowc->changelog .= '<ul class="emaillog">'.n.$elog.'</ul>'.n;
+						$rowc->changelog .= '<ul class="emaillog">'."\n".$elog.'</ul>'.n;
 						
 						// Save the data
 						if (!$rowc->store()) {
-							echo SupportHtml::alert( $rowc->getError() );
-							exit();
+							JError::raiseError( 500, $rowc->getError() );
+							return;
 						}
 					}
 				}
@@ -1191,6 +1058,9 @@ class SupportController extends JObject
 
 	protected function remove() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
 		if (!is_array( $ids )) {
@@ -1203,20 +1073,18 @@ class SupportController extends JObject
 			exit;
 		}
 		
-		$database =& JFactory::getDBO();
-		
 		foreach ($ids as $id) 
 		{
 			// Delete tags
-			$tags = new SupportTags( $database );
+			$tags = new SupportTags( $this->database );
 			$tags->remove_all_tags( $id );
 			
 			// Delete comments
-			$comment = new SupportComment( $database );
+			$comment = new SupportComment( $this->database );
 			$comment->deleteComments( $id );
 			
 			// Delete ticket
-			$ticket = new SupportTicket( $database );
+			$ticket = new SupportTicket( $this->database );
 			$ticket->delete( $id );
 		}
 		
@@ -1229,6 +1097,9 @@ class SupportController extends JObject
 
 	protected function deletemsg() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
 		if (!is_array( $ids )) {
@@ -1241,12 +1112,10 @@ class SupportController extends JObject
 			exit;
 		}
 		
-		$database =& JFactory::getDBO();
-		
 		foreach ($ids as $id) 
 		{
 			// Delete message
-			$msg = new SupportMessage( $database );
+			$msg = new SupportMessage( $this->database );
 			$msg->delete( $id );
 		}
 		
@@ -1257,8 +1126,11 @@ class SupportController extends JObject
 	
 	//-----------
 
-	/*protected function deletecat() 
+	protected function deletecat() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
 		if (!is_array( $ids )) {
@@ -1271,12 +1143,10 @@ class SupportController extends JObject
 			exit;
 		}
 		
-		$database =& JFactory::getDBO();
-		
 		foreach ($ids as $id) 
 		{
 			// Delete message
-			$cat = new SupportCategory( $database );
+			$cat = new SupportCategory( $this->database );
 			$cat->delete( $id );
 		}
 		
@@ -1297,7 +1167,7 @@ class SupportController extends JObject
 	protected function cancelcat() 
 	{
 		$this->cancel('categories');
-	}*/
+	}
 	
 	//-----------
 	
@@ -1349,43 +1219,55 @@ class SupportController extends JObject
 
 	protected function abusereports()
 	{
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'support.reportabuse.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'tables'.DS.'reportabuse.php' );
 		
-		$database =& JFactory::getDBO();
-	
+		// Instantiate a new view
+		$view = new JView( array('name'=>'reports') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Get configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 	
 		// Incoming
-		$filters = array();
-		$filters['limit']  = JRequest::getInt( 'limit', $config->getValue('config.list_limit') );
-		$filters['start']  = JRequest::getInt( 'limitstart', 0 );
-		$filters['state']  = JRequest::getInt( 'state', 0 );
-		$filters['sortby'] = JRequest::getVar( 'sortby', 'a.created DESC' );
+		$view->filters = array();
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.reports.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = $app->getUserStateFromRequest($this->_option.'.reports.limitstart', 'limitstart', 0, 'int');
+		$view->filters['state']  = JRequest::getInt( 'state', 0 );
+		$view->filters['sortby'] = JRequest::getVar( 'sortby', 'a.created DESC' );
 		
-		$ra = new ReportAbuse( $database );
+		$ra = new ReportAbuse( $this->database );
 		
 		// Get record count
-		$total = $ra->getCount( $filters );
+		$view->total = $ra->getCount( $view->filters );
 		
 		// Get records
-		$reports = $ra->getRecords( $filters );
+		$view->rows = $ra->getRecords( $view->filters );
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		SupportHtml::abusereports( $database, $reports, $pageNav, $this->_option, $filters );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
 
 	protected function abusereport()
 	{
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'support.reportabuse.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'tables'.DS.'reportabuse.php' );
 		
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'report') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
@@ -1398,7 +1280,7 @@ class SupportController extends JObject
 		}
 		
 		// Load the report
-		$report = new ReportAbuse( $database );
+		$report = new ReportAbuse( $this->database );
 		$report->load( $id );
 		
 		// Load plugins
@@ -1457,17 +1339,28 @@ class SupportController extends JObject
 			}
 		}
 
-		// Output HTML
-		SupportHtml::abusereport( $report, $reported, $this->_option, $parentid, $title );
+		$view->report = $report;
+		$view->reported = $reported;
+		$view->parentid = $parentid;
+		$view->title = $title;
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function releasereport() 
 	{
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'support.reportabuse.php' );
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
-		$database =& JFactory::getDBO();
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'tables'.DS.'reportabuse.php' );
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
@@ -1479,12 +1372,12 @@ class SupportController extends JObject
 		}
 		
 		// Load the report
-		$report = new ReportAbuse( $database );
+		$report = new ReportAbuse( $this->database );
 		$report->load( $id );
 		$report->state = 1;
 		if (!$report->store()) {
-			echo SupportHtml::alert( $report->getError() );
-			exit();
+			JError::raiseError( 500, $report->getError() );
+			return;
 		}
 		
 		// Redirect
@@ -1496,7 +1389,10 @@ class SupportController extends JObject
 
 	protected function deletereport() 
 	{
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'support.reportabuse.php' );
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'tables'.DS.'reportabuse.php' );
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
@@ -1508,15 +1404,13 @@ class SupportController extends JObject
 			return;
 		}
 
-		$database =& JFactory::getDBO();
-		
 		$email     = 1; // Turn off/on
 		$gratitude = 1; // Turn off/on
 		$message   = '';
 		$note   = JRequest::getVar( 'note', '' );
 
 		// Load the report
-		$report = new ReportAbuse( $database );
+		$report = new ReportAbuse( $this->database );
 		$report->load( $id );
 
 		// Load plugins
@@ -1561,8 +1455,8 @@ class SupportController extends JObject
 		// Mark abuse report as deleted	
 		$report->state = 2;
 		if (!$report->store()) {
-			echo SupportHtml::alert( $report->getError() );
-			exit();
+			JError::raiseError( 500, $report->getError() );
+			return;
 		}
 		
 		$jconfig =& JFactory::getConfig();
@@ -1581,19 +1475,19 @@ class SupportController extends JObject
 			
 			// Build the email message
 			if ($note) {
-				$message .= '---------------------------'.r.n;
+				$message .= '---------------------------'."\r\n";
 				$message .= $note;
-				$message .= '---------------------------'.r.n;
+				$message .= '---------------------------'."\r\n";
 			}
-			$message .= r.n;
-			$message .= JText::_('YOUR_POSTING').': '.r.n;
-			$message .= $reported->text.r.n;
-			$message .= '---------------------------'.r.n;
+			$message .= "\r\n";
+			$message .= JText::_('YOUR_POSTING').': '."\r\n";
+			$message .= $reported->text."\r\n";
+			$message .= '---------------------------'."\r\n";
 			$message .= JText::_('PLEASE_CONTACT_SUPPORT');
 
 			// Send the email
-			if (SupportUtils::check_validEmail($juser->get('email'))) {
-				SupportUtils::send_email($from, $juser->get('email'), $subject, $message);
+			if (SupportUtilities::checkValidEmail($juser->get('email'))) {
+				SupportUtilities::sendEmail($from, $juser->get('email'), $subject, $message);
 			}
 		}
 		
@@ -1605,12 +1499,12 @@ class SupportController extends JObject
 		if ($banking && $gratitude) {
 			ximport('bankaccount');
 			
-			$BC = new BankConfig( $database );
+			$BC = new BankConfig( $this->database );
 			$ar = $BC->get('abusereport');  // How many points?
 			if ($ar) {
 				$ruser =& JUser::getInstance( $report->created_by );
 				if (is_object($ruser) && $ruser->get('id')) {
-					$BTL = new BankTeller( $database, $ruser->get('id') );
+					$BTL = new BankTeller( $this->database, $ruser->get('id') );
 					$BTL->deposit($ar, JText::_('ACKNOWLEDGMENT_FOR_VALID_REPORT'), 'abusereport', $id);
 				}
 			}
@@ -1702,7 +1596,7 @@ class SupportController extends JObject
 		}
 
 		// Construct our file path
-		$file_path = JPATH_ROOT.$this->config->parameters['webpath'].DS.$listdir;
+		$file_path = JPATH_ROOT.$this->config->get('webpath').DS.$listdir;
 
 		ximport('fileupload');
 		ximport('fileuploadutils');
@@ -1718,8 +1612,8 @@ class SupportController extends JObject
 		$upload->temp_file_name = trim($_FILES['upload']['tmp_name']);
 		$upload->file_name      = trim(strtolower($_FILES['upload']['name']));
 		$upload->file_name      = str_replace(' ', '_', $upload->file_name);
-		$upload->ext_array      = explode(',',$this->config->parameters['file_ext']);
-		$upload->max_file_size  = $this->config->parameters['maxAllowed'];
+		$upload->ext_array      = explode(',',$this->config->get('file_ext'));
+		$upload->max_file_size  = $this->config->get('maxAllowed');
 		
 		$result = $upload->upload_file_no_validation();
 		
@@ -1732,8 +1626,7 @@ class SupportController extends JObject
 			// Create database entry
 			$description = htmlspecialchars($description);
 			
-			$database =& JFactory::getDBO();
-			$row = new SupportAttachment( $database );
+			$row = new SupportAttachment( $this->database );
 			$row->bind( array('id'=>0,'ticket'=>$listdir,'filename'=>$upload->file_name,'description'=>$description) );
 			if (!$row->check()) {
 				$this->setError($row->getError());
@@ -1757,31 +1650,40 @@ class SupportController extends JObject
 	{
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
 		
-		$database =& JFactory::getDBO();
-	
+		// Instantiate a new view
+		$view = new JView( array('name'=>'taggroups') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Get configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 	
 		// Incoming
-		$filters = array();
-		$filters['limit']  = JRequest::getInt( 'limit', $config->getValue('config.list_limit') );
-		$filters['start']  = JRequest::getInt( 'limitstart', 0 );
-		$filters['sortby'] = JRequest::getVar( 'sortby', 'priority ASC' );
+		$view->filters = array();
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.taggroups.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = $app->getUserStateFromRequest($this->_option.'.taggroups.limitstart', 'limitstart', 0, 'int');
+		$view->filters['sortby'] = JRequest::getVar( 'sortby', 'priority ASC' );
 		
-		$tg = new TagsGroup( $database );
+		$tg = new TagsGroup( $this->database );
 		
 		// Get record count
-		$total = $tg->getCount();
+		$view->total = $tg->getCount();
 		
 		// Get records
-		$rows = $tg->getRecords();
+		$view->rows = $tg->getRecords();
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		SupportHtml::taggroup( $rows, $pageNav, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
@@ -1791,53 +1693,57 @@ class SupportController extends JObject
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
 		ximport('xgroup');
 		
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'taggroup') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
 		// Initiate database class and load info
-		$row = new TagsGroup( $database );
-		$row->load( $id );
+		$view->row = new TagsGroup( $this->database );
+		$view->row->load( $id );
 
-		$tag = new TagsTag( $database );
-		$tag->load( $row->tagid );
+		$view->tag = new TagsTag( $this->database );
+		$view->tag->load( $view->row->tagid );
 
-		$group = new XGroup();
-		$group->select( $row->groupid );
+		$view->group = new XGroup();
+		$view->group->select( $view->row->groupid );
 
-		// Set action
-		if ($id) {
-			$action = JText::_('EDIT');
-		} else {
-			$action = JText::_('NEW');
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
-
-		// Ouput HTML
-		SupportHtml::edittg( $row, $tag, $group, $action, $this->_option );
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function savetg() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
 		ximport('xgroup');
 		
-		$database =& JFactory::getDBO();
-	
+		$taggroup = JRequest::getVar('taggroup', array(), 'post');
+		
 		// Initiate class and bind posted items to database fields
-		$row = new TagsGroup( $database );
-		if (!$row->bind( $_POST )) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+		$row = new TagsGroup( $this->database );
+		if (!$row->bind( $taggroup )) {
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 	
 		// Incoming tag
-		$tag = trim(JRequest::getVar( 'tag', '' ));
+		$tag = trim(JRequest::getVar( 'tag', '', 'post' ));
 		
 		// Attempt to load the tag
-		$ttag = new TagsTag( $database );
+		$ttag = new TagsTag( $this->database );
 		$ttag->loadTag( $tag );
 		
 		// Set the group ID
@@ -1846,7 +1752,7 @@ class SupportController extends JObject
 		}
 		
 		// Incoming group
-		$group = trim(JRequest::getVar( 'group', '' ));
+		$group = trim(JRequest::getVar( 'group', '', 'post' ));
 		
 		// Attempt to load the group
 		$xgroup = new XGroup();
@@ -1859,14 +1765,14 @@ class SupportController extends JObject
 		
 		// Check content
 		if (!$row->check()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo SupportHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Output messsage and redirect
@@ -1878,6 +1784,9 @@ class SupportController extends JObject
 
 	protected function deletetg() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
 		
 		// Incoming
@@ -1892,8 +1801,7 @@ class SupportController extends JObject
 			exit;
 		}
 		
-		$database =& JFactory::getDBO();
-		$tg = new TagsGroup( $database );
+		$tg = new TagsGroup( $this->database );
 		foreach ($ids as $id) 
 		{
 			// Delete entry
@@ -1916,9 +1824,10 @@ class SupportController extends JObject
 
 	protected function reorder() 
 	{
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
-		$database =& JFactory::getDBO();
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
 		
 		// Incoming
 		$id = JRequest::getVar( 'id', array() );
@@ -1926,12 +1835,12 @@ class SupportController extends JObject
 
 		// Ensure we have an ID to work with
 		if (!$id) {
-			echo SupportHtml::alert( JText::_('No entry ID found.') );
-			exit;
+			JError::raiseError( 500, JText::_('No entry ID found.') );
+			return;
 		}
 
 		// Get the element moving down - item 1
-		$tg1 = new TagsGroup( $database );
+		$tg1 = new TagsGroup( $this->database );
 		$tg1->load( $id );
 
 		// Get the element directly after it in ordering - item 2
@@ -1967,4 +1876,3 @@ class SupportController extends JObject
 		$this->_redirect = 'index.php?option='. $this->_option .'&task=taggroup';
 	}
 }
-?>

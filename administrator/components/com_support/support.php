@@ -36,21 +36,22 @@ $jacl->addACL( $option, 'manage', 'users', 'super administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'manager' );
 
+// Authorization check
+$user = & JFactory::getUser();
+if (!$user->authorize( $option, 'manage' )) {
+	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+}
+
 // Include scripts
-//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.section.php' );
-//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.category.php' );
-
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'ticket.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'comment.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'message.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'resolution.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'attachment.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'utilities.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php' );
 include_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'support.tags.php' );
-
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.config.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.ticket.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.comment.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.message.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.resolution.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.utils.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'support.attachment.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.support.html.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
 ximport('textfilter');
 ximport('xprofile');
 
@@ -58,4 +59,3 @@ ximport('xprofile');
 $controller = new SupportController();
 $controller->execute();
 $controller->redirect();
-?>
