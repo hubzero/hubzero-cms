@@ -572,7 +572,7 @@ class FeedbackController extends JObject
 			list( $os, $os_version, $browser, $browser_ver ) = $this->_browsercheck(JRequest::getVar('HTTP_USER_AGENT','','server'));
 		
 			// Create new support ticket
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.ticket.php' );
+			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
 			
 			$data = array();
 			$data['id']        = NULL;
@@ -645,7 +645,7 @@ class FeedbackController extends JObject
 
 	protected function sendreport() 
 	{
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.ticket.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
 
 		// Incoming
 		$no_html  = JRequest::getInt( 'no_html', 0 );
