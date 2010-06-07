@@ -62,9 +62,9 @@ class modPopularFaq
 		$limit = intval( $params->get( 'limit' ) );
 		$this->moduleid = $params->get( 'moduleid' );
 		
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'kb.article.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'kb.category.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'kb.helpful.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'article.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'category.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'helpful.php' );
 		
 		$a = new KbArticle( $database );
 		$this->rows = $a->getArticles($limit, 'a.hits DESC');
