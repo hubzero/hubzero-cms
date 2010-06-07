@@ -57,3 +57,4 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 $controller = new SupportController();
 $controller->execute();
 $controller->redirect();
+?>

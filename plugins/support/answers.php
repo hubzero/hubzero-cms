@@ -251,7 +251,7 @@ class plgSupportAnswers extends JPlugin
 						{
 							$zuser =& JUser::getInstance( $r );
 							if (is_object($zuser)) {
-								if (SupportUtils::check_validEmail($zuser->get('email')) && $email) {
+								if (SupportUtilities::checkValidEmail($zuser->get('email')) && $email) {
 									$xhub =& XFactory::getHub();
 									
 									$admin_email = $xhub->getCfg('hubSupportEmail');
@@ -264,7 +264,7 @@ class plgSupportAnswers extends JPlugin
 									$mes .= '----------------------------'."\r\n\r\n";
 									$mes .= 'QUESTION: '.$referenceid."\r\n";
 
-									SupportUtils::send_email($hub, $zuser->get('email'), $sub, $mes);
+									SupportUtilities::sendEmail($hub, $zuser->get('email'), $sub, $mes);
 							 	}
 							}
 						}
