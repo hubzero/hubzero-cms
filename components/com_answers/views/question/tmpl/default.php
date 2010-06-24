@@ -71,7 +71,8 @@ $votes = ($this->question->helpful) ? $this->question->helpful: '0';
 <?php } else { ?>
 	<h3><?php echo JText::_('COM_ANSWERS_CLOSED_QUESTION'); ?></h3>
 <?php } ?>
-
+<?php if ($this->question->state == 2 or $this->id==0) {  // show nothing 
+} else { ?>
 	<div class="aside">
 <?php if ($this->question->state == 0 && $this->responding!=1 && $reports == 0) { ?>
 		<p id="primary-document" ><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=answer&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
@@ -88,7 +89,7 @@ $votes = ($this->question->helpful) ? $this->question->helpful: '0';
 <?php } ?>
 			</p>
 <?php if ($this->reward > 0 && $this->question->state == 0 && $this->banking) { ?>
-			<p class="intro"><?php echo JText::_('COM_ANSWERS_BONUS'); ?>: <span class="pointvalue"><a href="<?php $this->infolink; ?>" title="<?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?>"><?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?></a><?php echo JText::sprintf('COM_ANSWERS_NUMBER_POINTS', $this->reward); ?></span></p>
+			<p class="intro"><?php echo JText::_('COM_ANSWERS_BONUS'); ?>: <span class="pointvalue"><a href="<?php echo $this->infolink; ?>" title="<?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?>"><?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?></a><?php echo JText::sprintf('COM_ANSWERS_NUMBER_POINTS', $this->reward); ?></span></p>
 <?php } ?>
 <?php if (isset($this->question->maxaward) && $this->question->state == 0 && $this->banking) { ?>
 			<p class="youcanearn">
@@ -180,7 +181,7 @@ if ($this->note['msg'] != '') {
 		<div class="clear"></div>
 	</div><!-- / .subject -->
 
-	<h3><?php echo JText::_('COM_ANSWERS_YOUR_ANSWER'); ?>
+	<h3><?php echo JText::_('COM_ANSWERS_YOUR_ANSWER'); ?></h3>
 	<div class="main section">
 		<form action="index.php" method="post" id="hubForm">
 			<div class="aside">
@@ -208,7 +209,6 @@ if ($this->note['msg'] != '') {
 		</form>
 	</div><!-- / .section -->
 	<div class="clear"></div>
-</div><!-- / .main section -->
 <?php } else if ($this->responding == 4 && $this->question->state == 0 && $reports == 0) { // delete question ?>
 		</div><!-- / #questionwrap -->
 		<div class="clear"></div>
@@ -462,3 +462,4 @@ $view->display();
 	</div><!-- / .subject -->
 <?php } ?>
 </div><!-- / .main section -->
+<?php } ?>

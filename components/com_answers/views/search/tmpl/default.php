@@ -127,7 +127,7 @@ if (count($tf) > 0) {
 			<input type="submit" value="<?php echo JText::_('COM_ANSWERS_GO'); ?>" />
 		</fieldset>
 <?php } ?>
-		<p><?php echo JText::_('COM_ANSWERS_CANT_FIND_ANSWER'); ?> <a href="<?php echo JRoute::_('index.php?option=com_kb'); ?>"><?php echo JText::_('COM_ANSWERS_KNOWLEDGE_BASE'); ?></a> <?php echo JText::_('COM_ANSWERS_OR_BY').' '.JText::_('COM_ANSWERS_SEARCH').'? '.JText::_('COM_ANSWERS_ASK_YOUR_FELLOW').' '.$jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_MEMBERS'); ?>!</p>
+		<p><?php echo JText::_('COM_ANSWERS_CANT_FIND_ANSWER'); ?> <a href="<?php echo '/kb'; //JRoute::_('index.php?option=com_kb'); ?>"><?php echo JText::_('COM_ANSWERS_KNOWLEDGE_BASE'); ?></a> <?php echo JText::_('COM_ANSWERS_OR_BY').' '.JText::_('COM_ANSWERS_SEARCH').'? '.JText::_('COM_ANSWERS_ASK_YOUR_FELLOW').' '.$jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_MEMBERS'); ?>!</p>
 <?php if ($this->banking) { ?>
 		<p><?php echo JText::_('COM_ANSWERS_START_EARNING').' '.$jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_COMMUNITY'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('COM_ANSWERS_EARN_MORE'); ?></a>.</p>
 <?php } ?>		
@@ -202,7 +202,7 @@ if (count($tf) > 0) {
 		</ul>
 		<?php echo $this->pageNav->getListFooter(); ?>
 <?php } else { ?>
-	<?php if(($filters['filterby']=="all" or !$filters['filterby']) && !$filters['tag'] && !$filters['q']) { ?>
+	<?php if ($this->filters['filterby'] == 'all' && !$this->filters['tag'] && !$this->filters['q']) { ?>
 		<p class="noresults"><?php echo JText::_('COM_ANSWERS_NO_RESULTS'); ?></p>
 	<?php } else { ?>
 		<p class="noresults"><?php echo JText::_('There are currently no questions based on your search selection.'); ?></p>

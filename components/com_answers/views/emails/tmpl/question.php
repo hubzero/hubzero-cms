@@ -35,12 +35,14 @@ if (!strstr($sef,'http')) {
 }
 $message  = JText::_('COM_ANSWERS_EMAIL_AUTO_RENERATED')."\n";
 $message .= '----------------------------'."\n";
-$message  = JText::_('COM_ANSWERS_EMAIL_Q_REMOVED');
-$message .= JText::_('COM_ANSWERS_EMAIL_Q_REMOVED_NO_POINTS')."\n";
+$message .= strtoupper(JText::_('COM_ANSWERS_QUESTION')).' #'.$this->row->id."\n";
+$message .= strtoupper(JText::_('COM_ANSWERS_SUMMARY')).': '.$this->row->subject."\n";
+$message .= strtoupper(JText::_('COM_ANSWERS_CREATED')).': '.$this->row->created."\n";
 $message .= '----------------------------'."\n\n";
-$message .= strtoupper(JText::_('COM_ANSWERS_QUESTION')).': '.$this->id."\n";
-$message .= strtoupper(JText::_('COM_ANSWERS_SUMMARY')).': '.$this->question->subject."\n";
-$message .= '----------------------------'."\n\n";
+$message .= 'A new question #'.$this->row->id.' has been posted by: ';
+$message .= ($this->row->anonymous) ? 'Anonymous'."\n" : $this->juser->get('name')."\n\n";
+$message .= 'To view the full question and take actions, go to: '."\n";
+$message .= $juri->base().$sef."\n";
 
 echo $message;
 ?>
