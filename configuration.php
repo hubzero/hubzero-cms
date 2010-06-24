@@ -10,6 +10,7 @@ class JConfig {
 	var $sef_rewrite = '1';
 	var $sef_suffix = '0';
 	var $feed_limit = '20';
+	var $feed_email = 'author';
 	var $secret = '8rceHwSz4vuDNXhX';
 	var $gzip = '0';
 	var $error_reporting = '-1';
@@ -39,6 +40,8 @@ class JConfig {
 	var $fromname = 'NEEShub';
 	var $sendmail = '/usr/sbin/sendmail';
 	var $smtpauth = '0';
+	var $smtpsecure = 'none';
+	var $smtpport = '25';
 	var $smtpuser = '';
 	var $smtppass = '';
 	var $smtphost = 'localhost';
@@ -50,6 +53,14 @@ class JConfig {
 	var $sitename = 'NEEShub';
 	var $MetaDesc = 'Joomla! - the dynamic portal engine and content management system';
 	var $MetaKeys = 'joomla, Joomla';
+	var $ldap_primary = '';
+	var $ldap_secondary = '';
+	var $ldap_basedn = '';
+	var $ldap_searchdn = '';
+	var $ldap_searchpw = '';
+	var $ldap_managerdn = '';
+	var $ldap_managerpw = '';
+	var $ldap_tls = '';
 	var $offline_message = 'This site is down for maintenance. Please check back again soon.';
 }
 ?>
