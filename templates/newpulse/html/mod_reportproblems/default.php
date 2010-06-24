@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				<form method="post" action="index.php" id="troublereport">
 					<fieldset class="reporter">
 						<label for="trLogin">
-							nanoHUB.org <?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
+							NEEShub <?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
 							<input type="text" name="reporter[login]" id="trLogin" value="<?php echo (!$modreportproblems->juser->get('guest')) ? $modreportproblems->juser->get('username') : ''; ?>" />
 						</label>
 				

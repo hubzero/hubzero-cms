@@ -477,7 +477,7 @@
 		position:absolute;
 		width:auto;
 		left:0;
-		top:30px;
+		top:40px;
 		}
 	#toolbar li#username span {
 		color: #7e7e7e;
@@ -908,7 +908,7 @@
 		background: #fff;
 		}
 
-	
+
 /*---------------------------------------------------------------
 	Content
 ---------------------------------------------------------------*/
@@ -1832,7 +1832,10 @@
 	.subject #hubForm .submit {
 		margin-right: 0;
 		}
-
+	#hubForm table input,
+	#hubForm table select {
+		width: auto;
+		}
 /*---------------------------------------------------------------
 	Paging
 ---------------------------------------------------------------*/
@@ -2013,6 +2016,141 @@
 		z-index: 888;
 		text-align: center;
 		display: none;
+		}
+/* Squeezebox */
+	.body-overlayed embed, 
+	.body-overlayed object, 
+	.body-overlayed select {
+		visibility: hidden;
+		}
+	#sbox-window embed, 
+	#sbox-window object, 
+	#sbox-window select {
+		visibility:	visible;
+		}
+	#sbox-overlay {
+		position: absolute;
+		background-color: #000;
+		}
+	#sbox-window {
+		position: absolute;
+		background-color: #000;
+		text-align: left;
+		overflow: visible;
+		padding: 10px;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		}
+	#sbox-btn-close {
+		position: absolute;
+		width: 30px;
+		height: 30px;
+		right: -15px;
+		top: -15px;
+		background: url("../images/closebox.png") no-repeat top left;
+		border: none;
+		}
+	#sbox-resizehandle {
+		position: absolute;
+		width: 30px;
+		height: 30px;
+		right: -15px;
+		bottom: -15px;
+		background: url("../images/resizebox.png") no-repeat top left;
+		border: none;
+		cursor: se-resize;
+		}
+	#sbox-newwindow {
+		position: absolute;
+		width: 30px;
+		height: 30px;
+		right: 25px;
+		bottom: -15px;
+		background: url("../images/newwindowbox.png") no-repeat top left;
+		border: none;
+		cursor: pointer;
+		}
+	.sbox-loading #sbox-content {
+		background-image: url("../images/anim/spinner.gif");
+		background-repeat: no-repeat;
+		background-position: center;
+		}
+	#sbox-content {
+		clear: both;
+		overflow: auto;
+		background-color: #fff;
+		height:	100%;
+		width: 100%;
+		}
+	.sbox-content-image#sbox-content {
+		overflow: visible;
+		}
+	#sbox-image {
+		display: block;
+		}
+	.sbox-content-image img {
+		display: block;
+		}
+	.sbox-content-iframe#sbox-content {
+		overflow: visible;
+		}
+	/* AJAX message box */
+	#sbox-content {
+		background-color: #f0f0f0;
+		}
+	#sbox-content .explaination,
+	#sbox-content .aside {
+		display: none;
+		}
+	#sbox-content .main,
+	#sbox-content .subject,
+	#sbox-content .mian .subject,
+	#sbox-content .withleft,
+	#sbox-content form#hubForm {
+		margin: 0;
+		padding: 0;
+		border: none;
+		height: auto;
+		}
+	#sbox-content fieldset {
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		border: none;
+		background-color: transparent;
+		}
+	#sbox-content fieldset h3,
+	#sbox-content .full fieldset h3 {
+		margin: 0;
+		padding: 0.5em 1em;
+		width: auto;
+		position: inherit;
+		display: block;
+		background: #a2a2a2 url("../images/gray-fade.gif") 0 0 repeat-x;
+		border-bottom: 1px solid #757575;
+		color: #555;
+		text-shadow: 0px 1px 0px #e5e5ee;
+		}
+	#sbox-content fieldset label {
+		margin: 0;
+		padding: 0.5em 1em;
+		border-bottom: 1px solid #ccc;
+		display: block;
+		}
+	#sbox-content fieldset input, 
+	#sbox-content fieldset select, 
+	#sbox-content fieldset textarea {
+		margin-top: 0.25em;
+		width: 100%;
+		}
+	#sbox-content fieldset label textarea#msg-message {
+		margin-bottom: 0.5em;
+		height: 175px;
+		}
+	#sbox-content .submit {
+		margin: 0;
+		padding: 0.5em 1em;
+		text-align: center;
 		}
 /*---------------------------------------------------------------
 	Tooltips
@@ -2756,3 +2894,17 @@
 	div.news .date {
 		padding: 0;
 		}
+
+	#mainwrap { /*NEES*/
+		min-width:1150px;
+	}		
+		
+		
+	#uc { /*NEES*/
+		background-color:#FF5277;
+		text-align:center;
+		font-size: 1.5em;
+		color:white;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}

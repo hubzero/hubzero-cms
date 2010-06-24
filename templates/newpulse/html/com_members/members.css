@@ -49,6 +49,9 @@
 .full fieldset#filters {
 	float: right;
 }
+#messages-section {
+	border: 1px solid #fff;
+}
 #messages-section .subject {
 	padding-top: 1em;
 }

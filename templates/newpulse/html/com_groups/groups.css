@@ -842,6 +842,9 @@
 	#forum-list {
 		margin: 1em 0;
 		}
+	#forum-section {
+		border: 1px solid #fff;
+		}
 	#forum-section .subject h3 {
 		display: block;
 		}
@@ -940,4 +943,300 @@
 	#forum-list td span a:hover {
 		color: #333;
 		border-bottom: 1px solid #333;
+		}
+/* Sub tabs */
+	#sub-sub-menu {
+		height: 1.75em;
+		padding: 0;
+		margin: 1em 0 0 0;
+		background: none;
+		border: none;
+		}
+	#sub-sub-menu ul:after {
+		content: "."; 
+		display: block; 
+		height: 0; 
+		clear: left; 
+		visibility: hidden;
+		}
+	#sub-sub-menu ul {
+		background: none;
+		border: none;
+		height: auto;
+		padding: 0;
+		margin: 0 0 -1px 0;
+		}
+	#sub-sub-menu li {
+		padding: 0;
+		float: left;
+		display: block;
+		margin: 0;
+		background-image: none;
+		}
+	#sub-sub-menu li a {
+		background: #eee;
+		padding: 0.4em 1em;
+		line-height: 1em;
+		border: 1px solid #ccc;
+		color: #999;
+		/* Rounded corners */
+		-moz-border-radius-topright: 5px;
+		-moz-border-radius-topleft: 5px;
+		-webkit-border-top-right-radius: 5px;
+		-webkit-border-top-left-radius: 5px;
+		-khtml-border-radius-topright: 5px;	
+		-khtml-border-radius-topleft: 5px;
+		border-top-right-radius: 5px;
+		border-top-left-radius: 5px;
+		}
+	#sub-sub-menu li a:hover {
+		color: #fff;
+		background-color: #999;
+		border-color: #333;
+		}
+	#sub-sub-menu li a span {
+		background: none;
+		height: auto;
+		padding: 0;
+		}
+	#sub-sub-menu li.active a {
+		color: #333;
+		background-color: #fff;
+		border-color: #ccc;
+		border-bottom: 1px solid #fff;
+		}
+/* Members list */
+	#members-list {
+		margin: 0.5em 0 1em 0;
+		border-top: none;
+		border-bottom: 2px solid #ddd;
+		}
+	#members-list thead td { 
+		border: none;
+		}
+	#members-list thead td.message-member {
+		padding: 1em 0.8em 0 0;
+		}
+	#members-list thead,
+	#members-list thead tr,
+	#members-list tbody {
+		border: none;
+		}
+	#members-list tbody td {
+		padding-top: 1em;
+		padding-bottom: 1em;
+		border-bottom: 1px solid #eee;
+		}
+	#members-list tbody tr.odd,
+	#members-list tbody tr.even {
+		background-color: transparent;
+		}
+	#members-list td.photo {
+		width: 50px;
+		}
+	#members-list .activity {
+		color: #aaa;
+		font-size: 85%;
+		}
+	#members-list .name {
+		font-weight: bold;
+		}
+	#members-list .demote-member,
+	#members-list .promote-member,
+	#members-list .remove-member,
+	#members-list .message-member,
+	#members-list .decline-member,
+	#members-list .approve-member {
+		text-align: right;
+		width: 16px;
+		}
+	#members-list .me {
+		background-color: #f6f6f1;
+		}
+	#members-list thead td {
+		padding: 0;
+		border-bottom: 1px solid #ccc;
+		height: 1.75em;
+		}
+	#members-list thead td #sub-sub-menu2 {
+		margin-bottom: -1px;
+		}
+	.promote,
+	.demote,
+	.remove,
+	.message,
+	.approve,
+	.decline,
+	.cancel {
+		margin: 0;
+		padding: 0;
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		text-indent: 555em;
+		float: right;
+		}
+	.promote:hover,
+	.demote:hover,
+	.remove:hover,
+	.message:hover,
+	.approve:hover,
+	.decline:hover,
+	.cancel:hover {
+		border: none;
+		}
+	#members-list span.status {
+		display: none;
+		}
+	#members-list .manager span.status,
+	#members-list .pending span.status,
+	#members-list .invitee span.status {
+		font-size: 10px;
+		border: 1px solid #ff1177;
+		padding: 0.2em 0.5em;
+		background-color: #ff1177;
+		color: #fff;
+		text-transform: uppercase;
+		margin-left: 1em;
+		float: right;
+		display: block;
+		line-height: 10px;
+		letter-spacing: 0.1em;
+		/* Rounded corners */
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-khtml-border-radius: 10px;
+		border-radius: 10px;
+		}
+	#members-list .pending span.status {
+		background-color: #AA3300;
+		border-color: #AA3300;
+		}
+	#members-list .invitee span.status {
+		background-color: #ccc;
+		border-color: #ccc;
+		}
+	.promote { background: url("../../images/icons/arrow_up.png") 0 0 no-repeat; }
+	.demote { background: url("../../images/icons/arrow_down.png") 0 0 no-repeat; }
+	.remove { background: url("../../images/icons/delete.png") 0 0 no-repeat; }
+	.message { background: url("../../images/icons/email_go.png") 0 0 no-repeat; }
+	.approve { background: url("../../images/icons/accept.png") 0 0 no-repeat; }
+	.cancel,
+	.decline { background: url("../../images/icons/delete.png") 0 0 no-repeat; }
+/*---------------------------------------------------------------
+	Messages tab
+---------------------------------------------------------------*/
+/* Message lists */
+	#messages-section {
+		border: 1px solid #fff;
+	}
+	#messages-section .subject {
+		padding-top: 1em;
+		}
+	#sbox-content #messages-section .subject {
+		padding: 0;
+		}
+	#messages-section .subject table.data {
+		margin-top: 1em;
+		border-bottom: none;
+		}
+	#messages-section .subject table.data td {
+		border: none;
+		}
+	#messages-section .subject table.data td .trash {
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		text-indent: -55em;
+		margin: 0;
+		padding: 0;
+		border: none;
+		}
+	#messages-section .subject table.data tfoot td {
+		border-top: 2px solid #dfdfdf;
+		border-bottom: none;
+		}
+	#messages-section .subject #hubForm {
+		border: none;
+		}
+	#messages-section table,
+	#messages-section table thead td,
+	#messages-section table thead th {
+		border-color: #ccc;
+		}
+	#messages-section table tbody td,
+	#messages-section table tbody th {
+		border-color: #ddd;
+		}
+	#messages-section table tbody tr.odd {
+		background-color: #f4f7fb; 
+		}
+/* Side menu */
+	#messages-section .aside li {
+		border: none;
+		margin: 0;
+		padding: 0;
+		}
+	#messages-section .aside li a {
+		margin: 0;
+		font-size: 100%;
+		text-transform: none;
+		letter-spacing: 0px;
+		border-top: 1px solid #fff;
+		border-right: 1px solid #ccc;
+		border-bottom: 1px solid #fff;
+		}
+	#messages-section .aside li a.sent {
+		background: #F5F5F5 url("../../images/icons/box.png") 5px 50% no-repeat; padding-left: 25px;
+		}
+	#messages-section .aside li a.new-message {
+		background: #F5F5F5 url("../../images/icons/email_go.png") 5px 50% no-repeat; padding-left: 25px;
+		}
+	#messages-section .aside li.active a {
+		background-color: #fff;
+		border-top: 1px solid #ccc;
+		border-right: 1px solid #fff;
+		border-bottom: 1px solid #ccc;
+		font-weight: bold;
+		}
+	#messages-section .aside li a:hover {
+		background-color: #333;
+		}
+	textarea#msg-message {
+		margin-bottom: 1em;
+		}
+	.com_groups .main .full fieldset h3 {
+		display: none;
+		}
+/* Message table */
+	.profile {
+		margin-top: 1em;
+		border: none;
+		background: transparent;
+		}
+	.profile th, 
+	.profile td {
+		padding-bottom: 25px;
+		border-top: 1px solid #e5e5e5;
+		border-bottom: none;
+		}
+	.profile th {
+		text-align: right;
+		color: #999;
+		white-space: nowrap;
+		}
+	.profile td {
+		padding-right: 1.5em;
+		}
+	.profile ul {
+		margin-left: 1.5em;
+		list-style: disc;
+		}
+	.profile td p {
+		margin: 1em 0;
+		}
+	.profile td p:first-child {
+		margin-top: 0;
 		}

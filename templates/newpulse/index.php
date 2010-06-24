@@ -19,6 +19,10 @@ $juser =& JFactory::getUser();
 <![endif]-->
 <?php if ($this->countModules( 'banner or welcome' )) { ?>
 <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/newpulse/css/home.css" id="home_css" />
+
+<link rel="shortcut icon" href="favicon.ico" >
+   <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
+
 <?php } ?>
 
  </head>
@@ -49,9 +53,14 @@ if (!$juser->get('guest')) {
 	echo "\t\t\t".'<li id="register"><a href="/register" title="Sign up for a free account">Register</a></li>'."\n";
 }
 echo "\t\t\t".'<li id="aboutsite"><a href="/about" title="About NEES"><span>About NEES</span></a></li>'."\n";
+echo "\t\t\t".'<li id="feedback"><a href="/sitemap" title="Sitemap"><span>Sitemap</span></a></li>'."\n";
 echo "\t\t\t".'<li id="feedback"><a href="/feedback" title="Feedback"><span>Feedback</span></a></li>'."\n";
+
 ?>
+<br><font color="red" size="4"><span>&nbsp;&nbsp;&nbsp;<strong>SITE UNDER CONSTRUCTION</strong></span></font></br>
 		</ul>
+		
+
 		
 		<jdoc:include type="modules" name="search" />
 <?php if ($this->countModules( 'helppane' )) : ?>
@@ -60,6 +69,7 @@ echo "\t\t\t".'<li id="feedback"><a href="/feedback" title="Feedback"><span>Feed
  	 </div>
 	</div><!-- / #header -->
 	
+
 	<div id="nav">
 		<h2>Navigation</h2>
 		<jdoc:include type="modules" name="user3" />
