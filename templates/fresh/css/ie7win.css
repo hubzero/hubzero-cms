@@ -1,0 +1,156 @@
+/*
+
+	-- -- -- -- -- -- --
+	IE 7 Windows hacks
+	-- -- -- -- -- -- --
+
+*/
+	.extras ul li span,
+	.extras ul li a {
+		float: none;
+		display: inline-block;
+		}
+	.extras ul li .type {
+		float: none;
+		position: absolute;
+		right: 0px;
+		}
+	.extras ul li .about { 
+		display: inline; 
+		margin: 0; 
+		padding: 0; 
+		font-size: 90%;
+		}
+	.relProd { 
+		display: inline; 
+		}
+	#reviews .avgrating span { 
+		display: block; 
+		}
+	#reviews li div { 
+		margin-top: -3em; 
+		}
+	/*.innerwrap {
+		float: left;
+		}*/
+	#footer .policy a {
+		display: inline-block;
+		}
+	
+	.fourcolumn {
+		padding: 0; /* IE seems to go crazy when percents are used for padding or margin */
+		width: 25%;
+		}
+	.fourcolumn p {
+		margin: 1em;
+		}
+	.fourcolumn .tags {
+		margin: 0 1em;
+		}
+	#content {
+		min-height: 320px;
+		}
+	#content .fourcolumn h3,
+	#content .fourcolumn ul {
+		margin: 0 1em;
+		}
+	
+	#news ul {
+		margin-left: 4%;
+		}
+	#news li { 
+		padding: 8px 0 8px 8px;
+		}
+	
+	#mod-whatsnew ul {
+		margin-left: 4%;
+		}
+	#mod-whatsnew li {
+		padding: 0 0 0 20px;
+		}
+	#hubForm fieldset {
+		padding: 0 2% 1.75em 22%;
+		width: 45%; }
+	#hubForm .group {
+		margin: 0;
+		padding: 0 0 1.5em 0;
+		left: 0em;
+		}
+	#hubForm .group label {
+		margin: 0;
+		width: 49.5%;
+		}
+	#hubForm .group label input {
+		width: 90%;
+		margin: 0;
+		}
+	#hubForm .group label:first-child {
+		margin: 0;
+		}
+	#hubForm .warning,
+	#hubForm .error {
+		margin: 0;
+		display: inline-block;
+		}
+	#hubForm .group .hint {
+		margin: 0;
+		}
+	.columns {
+		border: 1px solid #f2f2f2;
+		}
+	.controls {
+		position: absolute;
+		top: 80px;
+		right: 45px;
+		float: none; /* float: right; works but has some strange affects, so position it absolutely */
+		}
+	.withleft .aside li a {
+		background-position: 1em 1.6em;
+		}
+	.withleft .aside li.active a {
+		background-position: 1.2em 1.6em;
+		}
+	#afterclear {
+		display: block;
+		height: 0px;
+		overflow: hidden;
+		visibility:hidden;
+		}
+/* Events */
+	.ecalendar .today {
+		width: 13%;
+		}
+	.ecalendar caption a:hover,
+	.datenav a:hover {
+		background-position: 0 -15px;
+		}
+/* KB */
+	.withleft .threecolumn {
+		width: 30%;
+		}
+/* MyHub */
+	table .sortcolumn { 
+		width: 32%;
+		}
+/* Members */
+	.main .subject {
+		padding-top: 2em;
+		}
+	.subject .category-header {
+		margin-top: 0;
+		}
+/* XSearch */
+	.com_xsearch .main .subject,
+	.com_tags .main .subject {
+		padding-top: 1em;
+		}
+/* MW */
+	#app-options {
+		top: 30px;
+		right: 0;
+		}
+/* Resources */
+	.com_resources .main .subject {
+		margin-top: 0;
+		padding-top: 0;bordeR: 1px solid #c00;
+		}

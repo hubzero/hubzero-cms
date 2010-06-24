@@ -1,0 +1,42 @@
+/*
+
+	-- -- -- -- -- -- --
+	com_kb CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	#fixwrap { 
+		float: left;
+		width: 100%;
+		}
+	.firstheader {
+		margin-top: 1em;
+		margin-bottom: 1em;
+		}
+	.threecolumn {
+		border: none;
+		margin-top: 0;
+		}
+/* Helpful/not helpful buttons */
+	.helpful {
+		color: #999;
+		margin-top: 1.5em;
+		border: 3px double #eee;
+		height: 1.6em;
+		padding: 0 0.2em;
+		}
+	.helpful span {
+		float: left;
+		margin-right: 1.5em;
+		}
+	.helpful strong.no {
+		background: url("minus_small.gif") 0 50% no-repeat;
+		color: #999;
+		padding-left: 13px;
+		}
+	.helpful strong.yes {
+		color: #999;
+		padding-left: 13px;
+		background: url("plus_small.gif") 0 50% no-repeat;
+		}

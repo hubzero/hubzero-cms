@@ -1,0 +1,257 @@
+/*
+
+	-- -- -- -- -- -- --
+	com_mw CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Columns */
+	.section {
+		/*border: none;*/
+		}
+	.section>h3 {
+		display: none;
+		}
+	#content-header h2 {
+		cursor: pointer;
+		}
+	#content-header form {
+		margin: 0 0 0 15px;
+		padding: 1.5em 0 1em;
+		}
+	
+	/* Storage Management */
+	.aside {
+		width: 350px;
+		}
+	.main .subject {
+		width:60%;
+	}
+	#purgeForm {
+		border: 1px solid #EFEAC2; 
+		background: #FFFDEF; 
+		padding:1em;
+	}
+	.main h3 {
+		margin-top:0;
+		margin-bottom:1em;
+	}
+	.or {
+		margin-left:3em;
+		margin-right:3em;
+		color:#666666;
+		font-style:italic;
+	}
+	.filebrowser {
+		margin:2em 0 0 0;
+		padding:0;
+	}
+	#filelist {
+		background:#FFF;
+	}
+	
+	#small-page {
+		background:#FFF;
+	}
+	#small-page #filepath {
+		list-style: none;
+		margin:0.5em;
+	}
+	#small-page #filepath li {
+		display:inline;
+		margin:0;
+		padding:0.3em;		
+	}
+	#small-page #filepath li.home a, #small-page #filepath li.home span {
+		background: url("images/home.gif") 0 0 no-repeat; padding-left:25px; padding-top:0.2em; padding-bottom:0.2em;
+	}
+	#small-page #filepath li.folder a, #small-page #filepath li.folder span {
+		background: url("images/folder.gif") 0 0 no-repeat; padding-left:20px; 
+	}
+	#small-page #filepath li.arrow {
+		margin:0;
+		padding:0;
+	}
+	#small-page #filepath li span {
+		font-weight:bold;
+	}
+	
+/* Session options */
+	#app-options {
+		list-style: none;
+		margin: 1em 0 0 0;
+		padding: 5px 0 0 0;
+		position: absolute;
+		top: 86px;
+		right: 50px;
+		}
+	#app-options li {
+		margin: 0;
+		padding: 0 0.7em;
+		display: inline;
+		border-right: 1px dotted #666;
+		background-image: none;
+		}
+	#app-options a { 
+		color: #333;
+		border: none;
+		}
+	#app-options .app-close {
+		text-align: right;
+		border: none;
+		}
+	#app-options .app-close a {
+		border: none;
+		margin: 0;
+		line-height: 14px;
+		height: 14px;
+		padding: 0 0 0 20px;
+		background: url("images/close-light.gif") 0 0 no-repeat;
+		}
+	#app-options .app-close>a { 
+		width: auto;
+		}
+	#app-options .app-close a:hover {
+		background-position: 0 -24px;
+		color: #c00;
+		border: none;
+		}
+	#app-options li a:hover { 
+		color: #c00 !important;
+		}
+/* App wrap */
+	#app-wrap {
+		border: 1px solid #ccc;
+		padding: 0 0 10px 0;
+		margin: 1em 0 1em 0;
+		position: relative;
+		overflow: hidden;
+		width: 100%;
+		}
+	#app-wrap #resize {
+		margin: 0;
+		padding: 0;
+		height: 17px;
+		width: 295px;
+		text-align:right;
+		font-size:9px;
+		line-height: 9px;
+		display:block;
+		color: #333;
+		background: none;
+		position:absolute;
+		right:-1px;
+		bottom:0;
+		}
+	#app-wrap #resize img { 
+		vertical-align: bottom;
+		cursor: se-resize;
+		margin-left: 3px;
+		}
+	#app-wrap #positions {
+		margin: 0 2px 0 0;
+		padding: 0 0 0 0;
+		color: #333;
+		}
+	#app-wrap #resize input {
+		font-size:9px;
+		margin: 0; padding: 0;
+		}
+	#app-wrap>#resize {
+		right:0;
+		}
+/* Share form */
+	#app-share {
+		margin: 0;
+		padding: 0.5em;
+		background: #f4f4f4;
+		}
+	#app-share label,
+	#app-share span {
+		margin-right: 1em;
+		}
+/* Misc. */
+	#powered-by {
+		color: #999;
+		font-size: 90%;
+		}
+	#theapp {
+		margin: 10px;
+		padding: 0;
+		}
+	.ntools { 
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		}
+	.ntools li { 
+		margin: 0;
+		padding: 0;
+		}
+	#connectingTool { 
+		text-align: center;
+		font-size: 1.5em;
+		width: 15em;
+		margin: 0 auto;
+		padding: 3em 0 0 0;
+		}
+	.hide,
+	.hidden { 
+		display: none;
+		}
+	/*.innerwrap {
+		position: relative;
+		}*/
+/* disk usage */
+	#diskusage { 
+        margin: 0;
+        padding: 7px 0 0 0;
+    	}
+    #diskusage dt { 
+        /*position: relative; /* IE is dumb *
+        clear: both;
+        display: block; 
+        float: left; 
+        width: 104px;
+        height: 20px; 
+        line-height: 20px;
+        margin-right: 17px;*/
+		color: #999;
+        text-align: left;
+    	}
+    #diskusage #du-amount { 
+        position: relative; /* IE is dumb */
+        display: block;                 
+        float: left;
+		width: 214px;
+        height: 20px; 
+        margin: 0 0 15px; 
+		background: #777;
+     	}
+	#diskusage #du-amount span {
+		position: absolute;
+		top: 0;
+		left: 0;
+		line-height: 1.5em;
+		color: #fff;
+		text-indent: 7px;
+		}
+    #diskusage #du-amount div { 
+        position: relative;
+		background: #ccc; 
+        height: 20px; 
+        width: 75%; 
+        text-align:right; 
+     	}
+    #diskusage #du-amount div strong { 
+        position: absolute; 
+        right: -5px; 
+        top: -2px; 
+        display: block;  
+        height: 24px; 
+        width: 9px; 
+        text-align: left;
+        text-indent: -9999px; 
+        overflow: hidden;
+     	}
