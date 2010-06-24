@@ -254,8 +254,15 @@ class ContribtoolController extends JObject
 
 		$tooltitle = JRequest::getString('tooltitle',null,'post');
 
+		$hide = JRequest::getString('toolhide',null,'post');
+
 		if (is_null($tooltitle))
 			die('no tooltitle returned by form');
+
+		if ($hide && $hzt->state < 100)
+			$hzt->state += 100;
+		else if (!$hide && $hzt->state >= 100)
+			$hzt->state -= 100;
 
 		$hzt->title = $tooltitle;
 		$hzt->update();
@@ -321,7 +328,7 @@ class ContribtoolController extends JObject
 		$data['toolid'] = $hzt->id;
 		$data['toolname'] = $hzt->toolname;
 		$data['title'] = $hzt->title;
-
+                $data['hide'] = $hzt->state >= '100' ? '1' : '0';
 		ContribtoolHtml::editTool($data, $this->_option);
 	}
 

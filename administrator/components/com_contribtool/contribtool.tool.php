@@ -105,7 +105,7 @@ class Tool extends JTable
 				case 'mine':     	$filter .= " AND f.registered_by='".$juser->get('username')."' ";		break;
 				case 'published': 	$filter .= " AND f.published='1' AND f.state!='9' "; 					break;
 				case 'dev': 		$filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' "; 	break;
-				case 'all':      	$filter .= " ";                          								break;
+				case 'all':      	$filter .= " AND f.state < '100'";                          								break;
 			}
 		if(isset($filters['search']) && $filters['search'] != '') {
 			$search = $filters['search'];
@@ -320,7 +320,7 @@ class Tool extends JTable
 		/*$query .= ", (SELECT COUNT(*) FROM #__support_comments AS sc LEFT JOIN #__tool_statusviews AS v ON v.ticketid=sc.ticket WHERE sc.ticket=t.ticketid AND
 		 (UNIX_TIMESTAMP(sc.created)-UNIX_TIMESTAMP(t.state_changed))>=10 AND sc.access=0 AND sc.comment!='' AND sc.created_by!='".$juser->get('username')."'
 		 AND (UNIX_TIMESTAMP(v.viewed)-UNIX_TIMESTAMP(sc.created))<= v.elapsed AND v.uid=".$juser->get('id').") AS comments ";*/
-		$query .= ", (SELECT COUNT(*) FROM #__tool) AS ntools ";
+		$query .= ", (SELECT COUNT(*) FROM #__tool) AS ntools";
 		$query .= ", (SELECT COUNT(*) FROM #__tool WHERE published=0 AND state!='9' AND state!='8') AS ntoolsdev ";
 		$query .= ", (SELECT COUNT(*) FROM #__tool WHERE published=1) AS ntoolspublished ";
 		$query .= "FROM #__tool as t LEFT JOIN #__resources as r ON r.alias = t.toolname ";

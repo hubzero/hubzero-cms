@@ -232,6 +232,10 @@ class ContribtoolHtml
 					    <td class="key"><label for="tooltitle"><?php echo JText::_('TOOL_TITLE'); ?>:</label></td>
 					    <td><input type="text" name="tooltitle" id="tooltitle" value="<?php echo $data['title'];?>" size="50" /> </td>
 					  </tr>
+					  <tr>
+					    <td class="key"><label for="toolhide"><?php echo JText::_('TOOL_HIDE'); ?>:</label></td>
+					    <td><input type="checkbox" name="toolhide" id="toolhide" value="1" <?php echo $data['hide']?"checked":"";?> size="50" /> </td>
+					  </tr>
 					 </tbody>
 					</table>
 				</fieldset>

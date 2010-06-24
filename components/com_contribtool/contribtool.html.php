@@ -250,7 +250,6 @@ class ContribtoolHtml
 	//-----------
 		
 	public function getStatusClass($statusNum, &$statusClass) {
-		
 		switch($statusNum) 
 		{
 			case 7: 	$statusClass = '_closed';		break;
@@ -1622,7 +1621,7 @@ class ContribtoolHtml
 			$lastchange = ($row->state_changed!='0000-00-00 00:00:00') ? ContribtoolHtml::timeAgo($row->state_changed) : ContribtoolHtml::timeAgo($row->registered);
 			$title = ($row->version) ? $row->title.' v'.$row->version : $row->title;
 			ContribtoolHtml::getStatusName($row->state, $status);
-					
+			if ($row->state < 100) {			
 ?>
 							<tr  class="<?php echo strtolower($status) ; if(!$admin) { echo ('_user'); }?>">
 								<td><?php echo $row->id; ?></td>
@@ -1642,6 +1641,7 @@ class ContribtoolHtml
 								
 							</tr>
 <?php
+			}
 			$k = 1 - $k;
 		}
 ?>
