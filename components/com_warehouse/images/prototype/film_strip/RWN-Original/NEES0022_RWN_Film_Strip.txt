@@ -1,0 +1,39 @@
+NEES-0022 (Non-rectangular Walls under Multi-directional Loading)
+University of Minnesota
+
+NEES-0022 Changes
+
+-------------------------------------------------------------------
+
+Experiment RWN
+
+5-RWN.jpg
+Description: RWN, drift levels of 0.2%.
+
+6-RWN.jpg
+Description: RWN, drift levels of 0.3%.
+
+7-RWN.jpg
+Description: RWN, drift levels of 0.5%.
+
+8-RWN.jpg
+Description: RWN, drift levels of 0.75%.
+
+9-RWN.jpg
+Description: RWN, drift levels of 1.0%.
+
+10-RWN.jpg
+Description: RWN, drift levels of 1.5% in the No. 5 & 6 BE in tension direction w/ 1.0% in the No. 9 BE in tension direction.
+
+11-RWN.jpg
+Description: RWN, drift levels of 2.0% in the No. 5 & 6 BE in tension direction w/ 1.0% in the No. 9 BE in tension direction.
+
+12-RWN.jpg
+Description: RWN, drift levels of 2.5% in the No. 5 & 6 BE in tension, loading ramp maximum prior to buckling.
+
+13-RWN.jpg
+Description: RWN, buckling of the No. 5 & 6 boundary element following 2.5% drift in the No. 5 & 6 BE in tensino direction, 2% dirft in the No. 9 BE in tension direction.
+
+14-RWN.jpg
+Description: RWN following all loading applied to the test structure.
+

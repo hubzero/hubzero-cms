@@ -1,0 +1,139 @@
+<?php 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+?>
+
+<p>Sensor List</p>
+
+<p><a href="/warehouse/experiment/28/project/22">Return</a></p>
+
+<div style="border: 1px solid rgb(102, 102, 102); overflow: auto; width: 90%; padding: 0px; margin: 0px;">
+  <table cellpadding="1" cellspacing="1" style="width:100%;border-bottom:0px;border-top:0px;">
+    <tr valign="top" style="background: #CCCCCC;">
+      <td class="columnHead" style="width:25%;">Sensor ID</td>
+      <td class="columnHead" style="width:25%;">Type</td>
+      <td class="columnHead" style="width:25%;">Orientation</td>
+      <td class="columnHead" style="width:25%;">XYZ Coordinates</td>
+    </tr>
+    <tr valign="top" style="background: #EFEFEF;">
+      <td>LV90L</td>
+      <td>LVDT</td>
+      <td>Down</td>
+      <td>90.00 in, - , 11.50 in</td>
+    </tr>
+    <tr valign="top" style="">
+      <td>LV90S</td>
+      <td>LVDT</td>
+      <td>Down</td>
+      <td>90.00 in, - , 5.75 in</td>
+    </tr>
+    <tr valign="top" style="background: #EFEFEF;">
+      <td>LV69S</td>
+      <td>LVDT</td>
+      <td>East</td>
+      <td>70.50 in, - , 5.25 in</td>
+    </tr>
+    <tr valign="top" style="">
+      <td>LV53S</td>
+      <td>LVDT</td>
+      <td>East</td>
+      <td>52.25 in, - , 5.00 in</td>
+    </tr>
+    <tr valign="top" style="background: #EFEFEF;">
+      <td>LV37L</td>
+      <td>LVDT</td>
+      <td>East</td>
+      <td>35.50 in, - , 11.00 in</td>
+    </tr>
+    <tr valign="top" style="">
+      <td>LV37S</td>
+      <td>LVDT</td>
+      <td>East</td>
+      <td>37.50 in, - , 5.25 in</td>
+    </tr>
+    <tr valign="top" style="background: #EFEFEF;">
+      <td>LV21L</td>
+      <td>LVDT</td>
+      <td>East</td>
+      <td>19.50 in, - , 10.50 in</td>
+    </tr>
+    <tr valign="top" style="">
+      <td>LV21S</td>
+      <td>LVDT</td>
+      <td>East</td>
+      <td>21.25 in, - , 5.25 in</td>
+    </tr>
+    <tr valign="top" style="background: #EFEFEF;">
+      <td>LV0L</td>
+      <td>LVDT</td>
+      <td>Down</td>
+      <td>0.00 in, - , 11.25 in</td>
+    </tr>
+    <tr valign="top" style="">
+      <td>LV0S</td>
+      <td>LVDT</td>
+      <td>Down</td>
+      <td>0.00 in, - , 5.50 in</td>
+    </tr>
+    <tr valign="top" style="background: #EFEFEF;">
+      <td>LVBRN</td>
+      <td>LVDT</td>
+      <td>Down</td>
+      <td></td>
+    </tr>
+    <tr valign="top" style="">
+      <td>LVBRS</td>
+      <td>LVDT</td>
+      <td>Down</td>
+      <td></td>
+    </tr>
+    <tr valign="top" style="background: #EFEFEF;">
+      <td>LVBS</td>
+      <td>LVDT</td>
+      <td>North</td>
+      <td></td>
+    </tr>
+    <tr valign="top" style="">
+      <td>LVLS</td>
+      <td>LVDT</td>
+      <td>Down</td>
+      <td></td>
+    </tr>
+    <tr valign="top" style="background: #EFEFEF;">
+      <td>Bar1</td>
+      <td>LVDT</td>
+      <td>West</td>
+      <td>1.18 in, - , 0.50 in</td>
+    </tr>
+    <tr valign="top" style="">
+      <td>Bar2</td>
+      <td>LVDT</td>
+      <td>West</td>
+      <td>4.56 in, - , 0.50 in</td>
+    </tr>
+    <tr valign="top" style="background: #EFEFEF;">
+      <td>Bar3</td>
+      <td>LVDT</td>
+      <td>North</td>
+      <td>88.25 in, - , 0.50 in</td>
+    </tr>
+    <tr valign="top" style="">
+      <td>Bar4</td>
+      <td>LVDT</td>
+      <td>East</td>
+      <td>67.31 in, - , 0.50 in</td>
+    </tr>
+    <tr valign="top" style="background: #EFEFEF;">
+      <td>A4_DISPL</td>
+      <td>Actuator</td>
+      <td>South</td>
+      <td></td>
+    </tr>
+    <tr valign="top" style="">
+      <td>A4_FORCE</td>
+      <td>Actuator</td>
+      <td>South</td>
+      <td></td>
+    </tr>
+  </table>
+</div>  

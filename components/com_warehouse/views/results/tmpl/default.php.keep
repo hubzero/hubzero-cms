@@ -1,0 +1,78 @@
+<?php 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+?>
+
+<?php 
+  $document =& JFactory::getDocument();
+  $document->addStyleSheet($this->baseurl."/templates/newpulse/css/main.css",'text/css');
+  $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
+  //$document->addScript($this->baseurl."/components/com_curate/js/ajax.js", 'text/javascript');
+?>
+
+
+<div class="innerwrap>
+  <div class="content-header">
+	<h2 class="contentheading">NEES Project Warehouse</h2>
+  </div>
+  
+  <div id="warehouseWindow" style="padding-top:20px;">
+    <div id="treeBrowser" style="float:left;width:20%;">
+      <?php echo $this->mod_treebrowser; ?>
+    </div>
+    
+    <div id="overview_section" class="main section" style="width:80%;float:left;">
+  
+    <?php echo $this->strTabs; ?>
+    <form id="frmResults" style="margin:0px;padding:0px;">
+	  <input type="hidden" name="task" value="find"/>
+	  <input type="hidden" name="keywords" value="<?php echo $_REQUEST[Search::KEYWORDS]; ?>"/>
+        <div id="project-list" class="subject-full">
+          <?php 
+            $oProjectArray = unserialize($_SESSION[Search::RESULTS]);        
+            foreach($oProjectArray as $oProject){
+          	  $iProjectId = $oProject->getId();
+        	  $strTitle = $oProject->getTitle();
+        	  $strStartDate = $oProject->getStartDate();
+        	  $oDescriptionClob = StringHelper::neat_trim($oProject->getDescription(), 250);
+          ?>
+            <div id="Project" style="width:100%;">
+              <div id="ProjectInfo" style="float:left;width:90%;"
+                <a href="/warehouse/project/<?php echo $iProjectId; ?>" style="font-size: 15px;"><?php echo $strTitle; ?></a>
+                <p style="color: #666666"><?php echo $strStartDate; ?></p>
+                <p><?php echo $oDescriptionClob; ?></p>
+                <p><a href="/warehouse/project/<?php echo $iProjectId; ?>" style="color: green;"><?php echo $_SERVER['SERVER_NAME']; ?>/warehouse/project/<?php echo $iProjectId; ?></a></p>
+              </div>
+              <div align="right" id="thumbnail">
+                <?php //echo $oProject->getProjectThumbnailHTML(); ?>
+                [Thumbnail]
+              </div>
+              <div class="clear"></div>
+            </div>
+            <hr class="dashes"/>
+            <br>
+          <?php 
+            }
+          ?>
+      
+          <p><?php //print_r($oProjectArray); ?></p>
+          <?php 
+            $lim   = $mainframe->getUserStateFromRequest("$option.limit", 'limit', 25, 'int'); //I guess getUserStateFromRequest is for session or different reasons
+		    $lim0  = JRequest::getVar('limitstart', 0, '', 'int');
+            $iResultsCount = $_REQUEST[Search::COUNT];
+          
+            jimport('joomla.html.pagination');
+		    $pageNav = new JPagination( $iResultsCount, $lim0, $lim );
+		  
+		    echo $pageNav->getListFooter();
+		  ?>
+        </div>
+      </form>
+    </div>
+    <div class="clear"></div>
+  </div>
+  
+</div>
+</form>
+
+

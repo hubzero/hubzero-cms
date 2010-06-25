@@ -1,0 +1,38 @@
+NEES-0022 (Non-rectangular Walls under Multi-directional Loading)
+University of Minnesota
+
+NEES-0022 Changes
+
+-------------------------------------------------------------------
+
+Experiment NTW2
+
+4-NTW2.jpg
+Description: Second story web of NTW2 at end of elastic loading cycles.
+
+5-NTW2.jpg
+Description: First story flange of NTW2 after web failure.
+
+6-NTW2.jpg
+Description: Second story flange of NTW2 after web failure.
+
+7-NTW2.jpg
+Description: First story web of NTW2 after web failure.
+
+8-NTW2.jpg
+Description: Second story web of NTW2 after web failure.
+
+9-NTW2.jpg
+Description: First story flange of NTW2 after flange failure.
+
+10-NTW2.jpg
+Description: Second story flange of NTW2 after flange failure.
+
+11-NTW2.jpg
+Description: First story web of NTW2 after flange failure.
+
+12-NTW2.jpg
+Description: Second story web of NTW2 after flange failure.
+
+13-NTW2.jpg
+Description: Web tip after removal of loose concrete.

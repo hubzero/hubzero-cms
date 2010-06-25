@@ -1,0 +1,69 @@
+<?php 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+?>
+
+<?php 
+  $document =& JFactory::getDocument();
+  $document->addStyleSheet($this->baseurl."/templates/newpulse/css/main.css",'text/css');
+  $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
+  //$document->addScript($this->baseurl."/components/com_curate/js/ajax.js", 'text/javascript');
+?>
+
+<div class="innerwrap>
+  <div class="content-header">
+	<h2 class="contentheading">NEES Project Warehouse</h2>
+  </div>
+  
+  <div id="warehouseWindow" style="padding-top:20px;">
+    <div id="treeBrowser" style="float:left;width:20%;">
+      <?php echo $this->mod_treebrowser; ?>
+    </div>
+    <div id="overview_section" class="main section" style="width:80%;float:left;">
+      <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
+      <div id="title" style="padding-bottom:1em;">
+        <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
+      </div>
+  
+      <?php echo $this->strTabs; ?>
+      <div class="aside">
+        <p><?php //echo $oProject->getProjectThumbnailHTML(); ?> [Thumbail]</p>
+      
+        <p>[Stats]</p>
+      
+        <p>[Curation]</p>
+      </div>
+      <div class="subject">
+        <div id="members" style="padding-top:1em;">
+          <table id="members-list" cellpadding="1" cellspacing="1" style="border-bottom:0px;border-top:0px;">
+            <tr class="odd me">
+				<td class="photo"><img width="50" height="50" alt="Photo for Gemez Marshall" src="/components/com_members/images/profile_thumb.gif"></td>
+				<td><span class="name"><a href="/members/1078">Gemez Marshall</a></span> <span class="status">Member</span><br></td>
+				<td class="remove-member"><a href="/collaborate/groups/neesit/members?task=remove&amp;users[0]=1078" class="remove tooltips">Remove</a></td>
+				<td class="promote-member"><a href="/collaborate/groups/neesit/members?task=promote&amp;users[0]=1078" class="promote tooltips">Promote</a></td>
+				<td class="message-member"> </td>
+			</tr>
+			<tr class="even manager">
+				<td class="photo"><img width="50" height="50" alt="Photo for Gregory P Rodgers" src="/components/com_members/images/profile_thumb.gif"></td>
+				<td><span class="name"><a href="/members/1080">Gregory P Rodgers</a></span> <span class="status">Managers</span><br></td>
+				<td class="remove-member"> </td>
+				<td class="demote-member"><a href="/collaborate/groups/neesit/members?task=demote&amp;users[0]=1080" class="demote tooltips">Demote</a></td>
+				<td class="message-member"><a href="http://neeshub2.hubzero.org/collaborate/groups/neesit/messages?task=new&amp;users[0]=1080&amp;no_html=1" class="message tooltips">Message</a></td>
+			</tr>
+			<tr class="even">
+				<td class="photo"><img width="50" height="50" alt="Photo for David Benham" src="/components/com_members/images/profile_thumb.gif"></td>
+				<td><span class="name"><a href="/members/1082">David Benham</a></span> <span class="status">Member</span><br></td>
+				<td class="remove-member"><a href="/collaborate/groups/neesit/members?task=remove&amp;users[0]=1082" class="remove tooltips">Remove</a></td>
+				<td class="promote-member"><a href="/collaborate/groups/neesit/members?task=promote&amp;users[0]=1082" class="promote tooltips">Promote</a></td>
+				<td class="message-member"><a href="http://neeshub2.hubzero.org/collaborate/groups/neesit/messages?task=new&amp;users[0]=1082&amp;no_html=1" class="message tooltips">Message</a></td>
+			</tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>  
+</div>
+
+
+

@@ -1,0 +1,41 @@
+NEES-0022 (Non-rectangular Walls under Multi-directional Loading)
+University of Minnesota
+
+NEES-0022 Changes
+
+-------------------------------------------------------------------
+
+Experiment NTW1
+
+16-NTW1.jpg
+Description: Fourth story web of NTW1 after web failure.
+
+17-NTW1.jpg
+Description: First story flange of NTW1 after flange failure.
+
+18-NTW1.jpg
+Description: Second story flange of NTW1 after flange failure.
+
+19-NTW1.jpg
+Description: Third story flange of NTW1 after flange failure.
+
+20-NTW1.jpg
+Description: Fourth story flange of NTW1 after flange failure.
+
+21-NTW1.jpg
+Description: First story web of NTW1 after flange failure.
+
+22-NTW1.jpg
+Description: Second story web of NTW1 after flange failure.
+
+23-NTW1.jpg
+Description: Third story web of NTW1 after flange failure.
+
+24-NTW1.jpg
+Description: Fourth story web of NTW1 after flange failure.
+
+25-NTW1.jpg
+Description: Damage to confining hoops near foundation block.
+
+26-NTW1.jpg
+Description: Web tip after removal of loose concrete.

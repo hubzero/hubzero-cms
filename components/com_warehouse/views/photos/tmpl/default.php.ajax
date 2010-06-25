@@ -1,0 +1,12 @@
+<?php 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+?>
+
+<p><a href="/warehouse/experiment/<?php echo $this->experimentId; ?>/project/<?php echo $this->projectId; ?>">Return</a></p>
+
+<?php 
+$oPhotoDataFileArray = unserialize($_REQUEST[DataFilePeer::TABLE_NAME]);
+echo sizeof($oPhotoDataFileArray);
+?>
+

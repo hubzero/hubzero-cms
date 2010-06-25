@@ -1,0 +1,7 @@
+<script>
+  var oOverviewDiv = document.getElementById("overview_section");
+  var strCurrentWidth = oOverviewDiv.style.width;
+  var iCurrentWidth = strCurrentWidth.substring(0,strCurrentWidth.length-1);
+  var iProjectInfoWidth = (iCurrentWidth/100) * screen.width;
+  alert("project width: "+iProjectInfoWidth+", "+screen.width);
+</script>
