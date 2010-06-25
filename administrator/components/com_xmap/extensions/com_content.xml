@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Id: com_content.xml 106 2010-04-18 14:40:53Z guilleva $ -->
+<install type="xmap_ext" version="1.5.0">
+    <name>Content Plugin</name>
+    <author>Guillermo Vargas</author>
+	<creationDate>26/02/2008</creationDate>
+    <copyright>GNU GPL</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <authorEmail>guille@vargas.co.cr</authorEmail>
+    <authorUrl>joomla.vargas.co.cr</authorUrl>
+    <version>1.5.0</version>
+    <description>Plugin for Joomla's categories/articles</description>
+    <files>
+            <filename xmap_ext="com_content">com_content.php</filename>
+    </files>
+    <params>
+        <param name="expand_categories" type="list" default="1" label="Expand Categories" description="Expand Content Categories">
+            <option value="0">Never</option>
+            <option value="1">Always</option>
+            <option value="2">In XML Sitemap Only</option>
+            <option value="3">In Site Sitemap Only</option>
+		</param>
+        <param name="expand_sections" type="list" default="1" label="Expand Sections" description="Expand Content Sections">
+            <option value="0">Never</option>
+            <option value="1">Always</option>
+            <option value="2">In XML Sitemap Only</option>
+            <option value="3">In Site Sitemap Only</option>
+		</param>
+        <param name="articles_order" type="list" default="menu" label="Articles order" description="In which order do you want the articles?">
+            <option value="menu">Use menu item ordering setting</option>
+            <option value="order">Custom ordering</option>
+            <option value="alpha">Title Ascendant</option>
+            <option value="ralpha">Title Descendant</option>
+            <option value="date">Creation date Ascendant</option>
+            <option value="rdate">Creation date Descendant</option>
+            <option value="hits">Hits Ascendant</option>
+            <option value="rhits">Hits Descendant</option>
+        </param>
+        <param name="add_pagebreaks" type="list" default="1" label="Add pagebreaks?" description="If yes, will include the sub-pages of the article into the sitemap.">
+            <option value="0">Never</option>
+            <option value="1">Always</option>
+            <option value="2">In XML Sitemap Only</option>
+            <option value="3">In Site Sitemap Only</option>
+        </param>
+        <param name="add_images" type="list" default="0" label="Add images?" description="If yes, will parse the content of the article searching for images and add them to the sitemap. Valid Only for XML sitamap (Google Sitemap) ">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </param>
+        <param name="max_images" type="text" default="1000" label="Max images" description="The maximun number of images to include per article. 1000 images is the maximun allowed by Google" />
+        <param name="show_unauth" type="list" default="0" label="Show Unauthorized Links" description="If yes, will show links to content to registered content even if you are not logged in.  The user will need to login to see the item in full.">
+            <option value="0">Never</option>
+            <option value="1">Always</option>
+            <option value="2">In XML Sitemap Only</option>
+            <option value="3">In Site Sitemap Only</option>
+        </param>
+		<param name="max_art" type="text" default="0" label="Max. Articles per Category" description="Maximum number of articles per category to include in the sitemap (0 for no limit)." />
+		<param name="max_art_age" type="text" default="0" label="Max. Article's Age in days" description="The maximun number of days that an article must have to be included in the sitemap. (0 for no limit).  If this is 0 or greater than 3, then Xmap will use 3 days as the max limit for the Google News Sitemp." />
+		<param name="@spacer" type="spacer" default="" label="XML Sitemap" description="Options for the XML sitemap only" />
+        <param name="cat_priority" type="list" default="-1" label="Category Priority" description="Set the priority for the categories">
+            <option value="-1">Use Parent Menu Settings</option>
+            <option value="0.0">0.0</option>
+            <option value="0.1">0.1</option>
+            <option value="0.2">0.2</option>
+            <option value="0.3">0.3</option>
+            <option value="0.4">0.4</option>
+            <option value="0.5">0.5</option>
+            <option value="0.6">0.6</option>
+            <option value="0.7">0.7</option>
+            <option value="0.8">0.8</option>
+            <option value="0.9">0.9</option>
+            <option value="1">1</option>
+        </param>
+        <param name="cat_changefreq" type="list" default="-1" label="Category Change frequency" description="Set the chage frequency for the categories">
+            <option value="-1">Use Parent Menu Settings</option>
+            <option value="always">Always</option>
+            <option value="hourly">Hourly</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+            <option value="never">Never</option>
+        </param>
+        <param name="art_priority" type="list" default="-1" label="Article Priority" description="Set the priority for articles">
+            <option value="-1">Use Parent Menu Settings</option>
+            <option value="0.0">0.0</option>
+            <option value="0.1">0.1</option>
+            <option value="0.2">0.2</option>
+            <option value="0.3">0.3</option>
+            <option value="0.4">0.4</option>
+            <option value="0.5">0.5</option>
+            <option value="0.6">0.6</option>
+            <option value="0.7">0.7</option>
+            <option value="0.8">0.8</option>
+            <option value="0.9">0.9</option>
+            <option value="1">1</option>
+        </param>
+        <param name="art_changefreq" type="list" default="-1" label="Article Change frequency" description="Set the chage frequency for articles">
+            <option value="-1">Use Parent Menu Settings</option>
+            <option value="always">Always</option>
+            <option value="hourly">Hourly</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+            <option value="never">Never</option>
+        </param>
+        <param name="@spacer" type="spacer" default="" label="News Sitemap" description="Options for the Google News sitemap only" />
+        <param name="keywords" type="list" default="1" label="News Keywords" description="Which keywords should we use for Google News">
+            <option value="metakey">Article's Metakeys</option>
+            <option value="category">Catetegory Title</option>
+            <option value="both">Article's Metakeys + Category Title</option>
+            <option value="none">None</option>
+		</param>
+    </params>
+</install>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Id: com_agora.xml 52 2009-10-24 22:35:11Z guilleva $ -->
+<install type="xmap_ext" version="1.5.0">
+        <name>Agora Plugin</name>
+        <author>Guillermo Vargas</author>
+        <creationDate>July 2009</creationDate>
+        <copyright>GNU GPL</copyright>
+        <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+        <authorEmail>guille@vargas.co.cr</authorEmail>
+        <authorUrl>joomla.vargas.co.cr</authorUrl>
+        <version>1.0.0</version>
+        <description>Plugin for Agora component</description>
+        <files>
+                <filename xmap_ext="com_agora">com_agora.php</filename>
+        </files>
+        <params>
+                <param name="include_forums" type="list" default="1" label="Show Forums" description="Should we include forums into the sitemap?">
+                        <option value="0">Never</option>
+                        <option value="1">Always</option>
+                        <option value="2">In XML Sitemap Only</option>
+                        <option value="3">In Site Sitemap Only</option>
+		</param>
+                <param name="include_topics" type="list" default="1" label="Show Topics" description="Should we include topics into the sitemap?">
+                        <option value="0">Never</option>
+                        <option value="1">Always</option>
+                        <option value="2">In XML Sitemap Only</option>
+                        <option value="3">In Site Sitemap Only</option>
+		</param>
+                <param name="max_topics" type="text" default="" label="Max topics" description="Max number of topics per forum to include on sitemap (Leave empty for no limit)" />
+                <param name="max_age" type="text" default="" label="Newest than" description="Only show topics newest than this number of days (Leave it blank to ignore this option)" />
+		<param name="@spacer" type="spacer" default="" label="XML Sitemap" description="Options for the XML sitemap only" />
+                <param name="cat_priority" type="list" default="-1" label="Category Priority" description="Set the priority for the categories">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="0.0">0.0</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.2">0.2</option>
+                        <option value="0.3">0.3</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.9">0.9</option>
+                        <option value="1">1</option>
+                </param>
+                <param name="cat_changefreq" type="list" default="-1" label="Category Change frequency" description="Set the chage frequency for the categories">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="always">Always</option>
+                        <option value="hourly">Hourly</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                        <option value="never">Never</option>
+                </param>
+                <param name="forum_priority" type="list" default="-1" label="Forum Priority" description="Set the priority for the forums">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="0.0">0.0</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.2">0.2</option>
+                        <option value="0.3">0.3</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.9">0.9</option>
+                        <option value="1">1</option>
+                </param>
+                <param name="forum_changefreq" type="list" default="-1" label="Forum Change frequency" description="Set the chage frequency for the forums">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="always">Always</option>
+                        <option value="hourly">Hourly</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                        <option value="never">Never</option>
+		</param>
+                <param name="topic_priority" type="list" default="-1" label="Topic Priority" description="Set the priority for the topics">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="0.0">0.0</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.2">0.2</option>
+                        <option value="0.3">0.3</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.9">0.9</option>
+                        <option value="1">1</option>
+                </param>
+                <param name="topic_changefreq" type="list" default="-1" label="Topic Change frequency" description="Set the chage frequency for the topics">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="always">Always</option>
+                        <option value="hourly">Hourly</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                        <option value="never">Never</option>
+                </param>
+        </params>
+</install>

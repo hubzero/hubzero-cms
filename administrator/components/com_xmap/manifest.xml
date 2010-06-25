@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: manifest.xml 109 2010-04-20 22:24:37Z guilleva $ -->
+<install method="upgrade" version="1.5" type="component">
+  <name>Xmap</name>
+  <creationDate>2010/04/20</creationDate>
+  <author>Guillermo Vargas</author>
+  <copyright>This component is released under the GNU/GPL License</copyright>
+  <authorEmail>guille@vargas.co.cr</authorEmail>
+  <authorUrl>http://joomla.vargas.co.cr</authorUrl>
+  <version>1.2.7</version>
+  <license>GNU/GPL</license>
+  <description>Xmap - Sitemap Generator for Joomla!</description>
+  <install />
+  <uninstall />
+  <installfile>install.xmap.php</installfile>
+  <uninstallfile>uninstall.xmap.php</uninstallfile>
+	<url addpath="/administrator/components/com_xmap/elements">
+		<param name="sitemap" type="sitemap" default="0" label="Select Site Map" description="A Site Map" />
+	</url>
+  <files folder="front">
+	<filename>xmap.xml.php</filename>
+	<filename>xmap.html.php</filename>
+	<filename>xmap.php</filename>
+	<filename>gss.xsl</filename>
+	<filename>gssadmin.xsl</filename>
+	<filename>metadata.xml</filename>
+	<filename>index.html</filename>
+	<folder>css</folder>
+	<folder>cache</folder>
+  </files>
+  <images folder="front">
+  	<folder>images</folder>
+  </images>
+  <administration>
+		<menu>Xmap</menu>
+		<files folder="admin">
+			<filename>admin.xmap.php</filename>
+			<filename>admin.xmap.html.php</filename>
+			<filename>toolbar.xmap.php</filename>
+			<filename>toolbar.xmap.html.php</filename>
+			<filename>index.html</filename>
+			<filename>admin.js</filename>
+			<filename>admin.css</filename>
+			<filename>ajaxResponse.php</filename>
+			<folder>elements</folder>
+			<folder>classes</folder>
+			<folder>language</folder>
+			<folder>extensions</folder>
+		</files>
+		<images folder="admin">
+				<folder>images</folder>
+		</images>
+	</administration>
+</install>

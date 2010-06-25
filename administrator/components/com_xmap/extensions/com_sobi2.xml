@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Id: com_sobi2.xml 86 2010-01-03 06:20:10Z guilleva $ -->
+<install type="xmap_ext" version="1.5">
+        <name>SOBI2 Plugin</name>
+        <author>Guillermo Vargas</author>
+        <creationDate>February 2008</creationDate>
+        <copyright>GNU GPL</copyright>
+        <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+        <authorEmail>guille@vargas.co.cr</authorEmail>
+        <authorUrl>joomla.vargas.co.cr</authorUrl>
+        <version>1.5.1</version>
+        <description>Plugin for SOBI2 component</description>
+        <files>
+                <filename xmap_ext="com_sobi2">com_sobi2.php</filename>
+        </files>
+        <params>
+                <param name="include_entries" type="list" default="1" label="Show Entries" description="Should we include entries into the sitemap?">
+                        <option value="0">Never</option>
+                        <option value="1">Always</option>
+                        <option value="2">In XML Sitemap Only</option>
+                        <option value="3">In HTML Sitemap Only</option>
+		</param>
+                <param name="max_entries" type="text" default="" label="Max entries per cat." description="Max number of entries per category to include on sitemap (Leave empty for no limit)" />
+                <param name="max_age" type="text" default="" label="Newest than" description="Only show entries newest than this number of days (Leave it blank to ignore this option)" />
+                <param name="entries_order" type="list" default="a.ordering" label="Entries Order" description="How should the items be ordered in the sitemap?">
+                        <option value="a.ordering">Default</option>
+                        <option value="a.visits">Number of visits</option>
+                        <option value="a.hits">Number of hits</option>
+                        <option value="a.publish_up">Publish up date</option>
+                        <option value="a.last_update">Last modification date</option>
+		</param>
+                <param name="entries_orderdir" type="list" default="DESC" label="Order direction" description="How should the items be ordered in the sitemap?">
+                        <option value="ASC">Ascendant</option>
+                        <option value="DESC">Descendant</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="XML Sitemap" description="Options for the XML sitemap only" />
+                <param name="cat_priority" type="list" default="-1" label="Category Priority" description="Set the priority for the categories">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="0.0">0.0</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.2">0.2</option>
+                        <option value="0.3">0.3</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.9">0.9</option>
+                        <option value="1">1</option>
+                </param>
+                <param name="cat_changefreq" type="list" default="weekly" label="Category Change frequency" description="Set the chage frequency for the categories">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="always">Always</option>
+                        <option value="hourly">Hourly</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                        <option value="never">Never</option>
+                </param>
+                <param name="entry_priority" type="list" default="-1" label="Entries Priority" description="Set the priority for the entries">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="0.0">0.0</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.2">0.2</option>
+                        <option value="0.3">0.3</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.9">0.9</option>
+                        <option value="1">1</option>
+                </param>
+                <param name="entry_changefreq" type="list" default="weekly" label="Entries Change frequency" description="Set the chage frequency for the entris">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="always">Always</option>
+                        <option value="hourly">Hourly</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                        <option value="never">Never</option>
+                </param>
+        </params>
+</install>

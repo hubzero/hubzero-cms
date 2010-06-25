@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<name>Xmap</name>
+	<author>Guillermo Vargas</author>
+	<creationDate>July 2008</creationDate>
+	<copyright>This component is released under the GNU/GPL License</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>guille@vargas.co.cr</authorEmail>
+	<authorUrl>joomla.vargas.co.cr</authorUrl>
+	<version>1.2</version>
+	<description><![CDATA[<p />Xmap. The sitemap generator for Joomla!.]]></description>
+	<files>
+	</files>
+	<url addpath="/administrator/components/com_xmap/elements">
+		<param name="sitemap" type="sitemap" default="0" label="Select Site Map" description="A Site Map" />
+	</url>
+	<params>
+	</params>
+</metadata>

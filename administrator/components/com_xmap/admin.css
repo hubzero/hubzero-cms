@@ -1,0 +1,329 @@
+.adminForm label {
+	white-space: nowrap;
+}
+.adminForm {
+	table-layout: auto;
+	text-align: left;
+}
+.adminForm td, .adminForm tr {
+	vertical-align: middle;
+}
+.adminlist th {
+	white-space: nowrap;
+}
+.sitemaps {
+	width: 6200px;
+	text-align: left;
+	z-index: 1;
+	float: left;
+}
+#sitemapsouter {
+	width: 600px;
+	text-align: left;
+	z-index: 1;
+	float: left;
+}
+.plugin {
+	width: 500px;
+	margin: 5px;
+}
+.plugin div.pluginname {
+	width: auto;
+	float: left;
+	padding: 0px 5px 0px 5px;
+}
+.plugin div.pluginversion {
+	width: auto;
+	float: left;
+	margin-right: 5px;
+}
+
+.titlebar {
+	text-align:center;
+}
+
+div.published .titlebar div.tl {
+	background-color: #0060BF;
+	color: #FFFFFF;
+	margin: 0px auto;
+}
+
+div.unpublished .titlebar div.tl {
+	background-color: #CCCCCC;
+	color: #000000;
+	margin: 0px auto;
+}
+
+.titlebar .tl1 {
+	height: 1px;
+	width: 494px;
+}
+
+.titlebar .tl2 {
+	height: 1px;
+	width: 496px;
+}
+
+.titlebar .tl3 {
+	height: 1px;
+	width: 498px;
+}
+
+.published .insidebox {
+	border: 1px solid #0060BF;
+	padding: 3px;
+}
+
+.unpublished .insidebox {
+	border: 1px solid #CCCCCC;
+	padding: 3px;
+} 
+
+.plugin .plugintaskbar  {
+	padding: 3px;
+	border-top: 1px solid #CCCCCC;
+}
+.plugin .plugintaskbar a {
+	display:inline;	
+	margin:5px;	
+}
+.sitemap {
+	background: url(images/bor_top.gif) top repeat-x;
+	margin-top: 5px;
+	width: 530px;
+	height: auto;
+	text-align: left;
+	z-index: 5;
+}
+.sitemap div.tr {
+	background: url(images/bor_tr.gif) top right no-repeat;
+	width: 100%;
+	height: 25px;
+}
+.sitemap div.tm {
+	width: 100%;
+	height: 25px;
+}
+.sitemap div.smname {
+	width: auto;
+	float: left;
+	padding: 5px 0px 0px 10px;
+	font-size: 14px;
+	color: #53A0DF;
+	font-weight: bold;
+}
+.sitemap div.mr {
+	background: url(images/bor_right.gif) right repeat-y;
+	width: 100%;
+}
+.sitemap div.mm {
+	background: url(images/bor_left.gif) top left repeat-y;
+	padding: 0px 10px 0px 10px;
+	width: auto;
+}
+.sitemap div.tl {
+	background: url(images/bor_tl.gif) top left no-repeat;
+	width: 100%;
+	height: 25px;
+}
+
+.sitemap div.br {
+	background: url(images/bor_br.gif) bottom right no-repeat;
+	width: 100%;
+	height: 25px;
+}
+.sitemap div.bm {
+	background: url(images/bor_bot.gif) bottom repeat-x;
+	width: 100%;
+	height: 25px;
+}
+.sitemap div.bl {
+	background: url(images/bor_bl.gif) bottom left no-repeat;
+	width: 100%;
+	height: 25px;
+}
+
+.sitemap div.optionsbut {
+	background: url(images/options.gif) top right no-repeat;
+	height: 23px;
+	float: right;
+	cursor: pointer;
+	padding:0px 25px 0px 0px;
+}
+.sitemap div.optionsbut span {
+	background: url(images/optionsbg.gif) top left repeat-x;
+	display: block;
+	float:left;
+	height: 20px;
+	margin: 4px 0px 0px 0px;
+	padding: 3px 5px 0px 10px;
+	vertical-align: middle;
+	color:#53A0DF;
+}
+.sitemap div.divimgdefault {
+	width: auto;
+	height: auto;
+	float: left;
+	margin-left: 20px;
+}
+div#optionsmenu {
+	position: absolute;
+	background-color: #EEEEEE;
+	border: 1px solid #CCCCCC;
+	width: auto;
+	z-index: 10;
+}
+div#optionsmenu div {
+	margin: 0px;
+	padding: 3px 10px 3px 10px;
+	cursor: pointer;
+}
+div#optionsmenu div:hover {
+	background-color: #CCCCCC;
+}
+.sitemap div.menulistouter {
+	float: left;
+}
+.sitemap div.menulist span {
+	padding: 5px;
+	display: block;
+}
+.sitemap div.menulist {
+	width: 200px;
+	padding: 0px;
+	border: 1px solid #CCCCCC;
+}
+.sitemap div.menulist:hover {
+	border: 1px solid #CCCCCC;
+}
+.sitemap div.menulist div {
+	width: 200px;
+	padding: 0px;
+	overflow: hidden;
+	cursor: pointer;
+}
+.sitemap div.menulist div.menuoptionhover {
+	background-color: #EEEEEE;
+}
+div .spacer {
+	width: 100%;
+	clear: both;
+	height: 1px;
+}
+div#divoptions {
+	position: absolute;
+	background-color: #EEEEEE;
+	cursor: pointer;
+	z-index: 10;
+}
+div#divoptions .menuoption {
+	width: auto;
+	float: left;
+	padding: 0px;
+	margin-left: 5px;
+	font-size: 10px;
+}
+div#divoptions .menuoption:hover {
+	text-decoration: underline;
+	color: #53A0DF;
+}
+div.settings {
+	position: absolute;
+	z-index: 4;
+	background-color: #FFFFFF;
+	border: 8px solid  #000000;
+	width: 650px;
+	height: auto;
+	margin: auto;
+	text-align: left;
+}
+div.settingssitemap {
+	width: 650px;
+	height: auto;
+	max-height: 500px;
+	overflow: auto;
+}
+div.settingsplugin {
+	width: 500px;
+	height: auto;
+}
+div.settingsmenu {
+	width: 400px;
+	height: auto;
+}
+div#divbg {
+	text-align: center;
+	position: absolute;
+	z-index: 2;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+}
+div.settingstop {
+	background-color: #CCCCCC;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+div.settingstop div.settingstoptool {
+	float: right;
+}
+div.add_menu_link {
+	cursor: pointer;
+	width: auto;
+	float: left;
+	padding:5px;
+}
+div.add_menu_link:hover{
+	text-decoration:underline;
+}
+span.plussign{
+	display:block;
+	border: 1px solid #000000;
+	color: #000000;
+	width:10px;
+	height:13px;
+	float:left;
+	padding-left:2px;
+	margin-right:2px;
+}
+div.sitemapinfo {
+	float: left;
+	width: auto;
+	margin-left: 30px;
+}
+div.sitemapinfo div {
+	border: 1px solid  #CCCCCC;
+	margin-bottom: 3px;
+}
+div.sitemapinfo div {
+	text-align: center;
+}
+div.menulistdrop {
+	background-color: #EEEEEE;
+	border: 1px solid  #CCCCCC;
+	position: absolute;
+	z-index: 10;
+}
+div.menulistoption {
+	cursor: pointer;
+	text-decoration: underline;
+	width: auto;
+	float: left;
+	margin-right: 10px;
+}
+div#divloading {
+	background-color: #9F0909;
+	color: #FFFFFF;
+	width: auto;
+	position: absolute;
+	font-weight: bold;
+	padding: 5px;;
+	right: 5px;
+	z-index: 300;
+}
+
+.tool-tip{
+	z-index: 300;
+}

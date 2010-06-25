@@ -1,0 +1,32 @@
+/* list-style: pos1 pos2 po3;
+ *    parameter:
+ *               pos1: none | disc | circle | square
+ *               pos2: inside | outside
+ *               pos3: none | url('arrow.gif')
+ * more info under: http://www.w3schools.com/css/css_list.asp
+ */
+
+.xmap ul {
+	display		: block;
+	list-style	: none;
+	margin		: 0;
+	padding		: 0;
+       }
+.xmap ul li {
+	margin		: 2;
+	padding		: 0;
+	background	: transparent;
+}
+.xmap a img {
+	border		: none;
+}
+.xmap ul.level_0 ul {
+	list-style	: inside square;
+	padding		: 0;
+}
+.xmap ul.level_1 li {
+	padding		: 0 0 0 3em;
+}
+.xmap .active {
+	font-style	: italic;
+}

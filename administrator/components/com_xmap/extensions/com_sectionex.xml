@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Id: com_sectionex.xml 52 2009-10-24 22:35:11Z guilleva $ -->
+<install type="xmap_ext" version="1.5.0">
+        <name>SectionEx Plugin</name>
+        <author>Guillermo Vargas</author>
+	<creationDate>26/06/2008</creationDate>
+        <copyright>GNU GPL</copyright>
+        <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+        <authorEmail>guille@vargas.co.cr</authorEmail>
+        <authorUrl>joomla.vargas.co.cr</authorUrl>
+        <version>1.0.2</version>
+        <description>Plugin for SectionEx component</description>
+        <files>
+                <filename xmap_ext="com_sectionex">com_sectionex.php</filename>
+        </files>
+        <params>
+                <param name="expand_categories" type="list" default="1" label="Expand Categories" description="Expand Content Categories">
+                        <option value="0">Never</option>
+                        <option value="1">Always</option>
+                        <option value="2">In XML Sitemap Only</option>
+                        <option value="3">In Site Sitemap Only</option>
+		</param>
+                <param name="expand_sections" type="list" default="1" label="Expand Sections" description="Expand Content Sections">
+                        <option value="0">Never</option>
+                        <option value="1">Always</option>
+                        <option value="2">In XML Sitemap Only</option>
+                        <option value="3">In Site Sitemap Only</option>
+		</param>
+                <param name="show_unauth" type="list" default="0" label="Show Unauthorized Links" description="If yes, will show links to content to registered content even if you are not logged in.  The user will need to login to see the item in full.">
+                        <option value="0">Never</option>
+                        <option value="1">Always</option>
+                        <option value="2">In XML Sitemap Only</option>
+                        <option value="3">In Site Sitemap Only</option>
+                </param>
+		<param name="@spacer" type="spacer" default="" label="XML Sitemap" description="Options for the XML sitemap only" />
+                <param name="cat_priority" type="list" default="-1" label="Category Priority" description="Set the priority for the categories">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="0.0">0.0</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.2">0.2</option>
+                        <option value="0.3">0.3</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.9">0.9</option>
+                        <option value="1">1</option>
+                </param>
+                <param name="cat_changefreq" type="list" default="-1" label="Category Change frequency" description="Set the chage frequency for the categories">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="always">Always</option>
+                        <option value="hourly">Hourly</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                        <option value="never">Never</option>
+                </param>
+                <param name="art_priority" type="list" default="-1" label="Article Priority" description="Set the priority for articles">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="0.0">0.0</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.2">0.2</option>
+                        <option value="0.3">0.3</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.9">0.9</option>
+                        <option value="1">1</option>
+                </param>
+                <param name="art_changefreq" type="list" default="-1" label="Article Change frequency" description="Set the chage frequency for articles">
+                        <option value="-1">Use Parent Menu Settings</option>
+                        <option value="always">Always</option>
+                        <option value="hourly">Hourly</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                        <option value="never">Never</option>
+                </param>
+        </params>
+</install>

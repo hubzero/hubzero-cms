@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Id: com_jomres.xml 52 2009-10-24 22:35:11Z guilleva $ -->
+<install type="xmap_ext" version="1.5.0">
+        <name>Jomres Plugin</name>
+        <author>Hazel Wilson</author>
+        <creationDate>December 2008</creationDate>
+        <copyright>GNU GPL</copyright>
+        <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+        <authorEmail>hazel@highlandvision.com</authorEmail>
+        <authorUrl>highlandvision.com</authorUrl>
+        <version>1.0</version>
+        <description>Plugin for Jomres component</description>
+        <files>
+            <filename xmap_ext="com_jomres">com_jomres.php</filename>
+        </files>
+        <params>
+			<param name="@spacer" type="spacer" default="" label="XML Sitemap" description="Options for the XML sitemap only" />
+			<param name="priority" type="list" default="0.5" label="Priority" description="Set the priority">
+					<option value="-1">Use Parent Menu Settings</option>
+					<option value="0.0">0.0</option>
+					<option value="0.1">0.1</option>
+					<option value="0.2">0.2</option>
+					<option value="0.3">0.3</option>
+					<option value="0.4">0.4</option>
+					<option value="0.5">0.5</option>
+					<option value="0.6">0.6</option>
+					<option value="0.7">0.7</option>
+					<option value="0.8">0.8</option>
+					<option value="0.9">0.9</option>
+					<option value="1">1</option>
+			</param>
+			<param name="changefreq" type="list" default="weekly" label="Change frequency" description="Set the change frequency">
+					<option value="-1">Use Parent Menu Settings</option>
+					<option value="always">Always</option>
+					<option value="hourly">Hourly</option>
+					<option value="daily">Daily</option>
+					<option value="weekly">Weekly</option>
+					<option value="monthly">Monthly</option>
+					<option value="yearly">Yearly</option>
+					<option value="never">Never</option>
+			</param>
+        </params>
+</install>
