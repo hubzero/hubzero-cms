@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install type="component" version="1.5.0">
+ <name>Curate</name>
+ <!-- The following elements are optional and free of formatting constraints -->
+ <creationDate>March 26, 2010</creationDate>
+ <author>Gemez Marshall</author>
+ <authorEmail>gemezm@purdue.edu</authorEmail>
+ <authorUrl>neeshub.org</authorUrl>
+ <copyright>Copyright Info</copyright>
+ <license>License Info</license>
+ <!--  The version string is recorded in the components table -->
+ <version>0.0.1</version>
+ <!-- The description is optional and defaults to the name -->
+ <description>Project Curation for neeshub.org</description>
+ 
+ <!-- Site Main File Copy Section -->
+ <!-- Note the folder attribute: This attribute describes the folder
+      to copy FROM in the package to install therefore files copied
+      in this section are copied from /site/ in the package -->
+ <files folder="site">
+  <filename>controller.php</filename>
+  <filename>curate.php</filename>
+  <filename>index.html</filename>
+  <filename>models/search.php</filename>
+  <filename>views/index.html</filename>
+  <filename>views/search/index.html</filename>
+  <filename>views/search/view.html.php</filename>
+  <filename>views/search/tmpl/default.php</filename>
+  <filename>views/search/tmpl/index.html</filename>
+ </files>
+ 
+ <administration>
+  <!-- Administration Menu Section -->
+  <menu>Project Warehouse</menu>
+ 
+  <!-- Administration Main File Copy Section -->
+  <files folder="admin">
+   <filename>controller.php</filename>
+   <filename>curate.php</filename>
+   <filename>index.html</filename>
+   <filename>views/index.html</filename>
+   <filename>views/project/index.html</filename>
+   <filename>views/project/view.html.php</filename>
+   <filename>views/project/tmpl/default.php</filename>
+   <filename>views/project/tmpl/index.html</filename>
+  </files>
+  
+ </administration>
+</install>

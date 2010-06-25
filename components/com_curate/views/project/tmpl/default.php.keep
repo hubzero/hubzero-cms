@@ -1,0 +1,159 @@
+
+<?php 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+?>
+
+<?php 
+  $document =& JFactory::getDocument();
+  $document->addStyleSheet($this->baseurl."/templates/newpulse/css/main.css",'text/css');
+  $document->addStyleSheet($this->baseurl."/components/com_curate/css/curate.css",'text/css');
+  $document->addScript($this->baseurl."/components/com_curate/js/ajax.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_curate/js/curate.js", 'text/javascript');
+?>
+
+<div class="contentpaneopen heading">
+  <div class="content-header">
+	<h2 class="contentheading">NEES Data Curation</h2>
+  </div>
+  <p class="buttonheadings">
+    <a href="javascript:void(0);" onClick="javascript: history.go(-1);">Return</a>
+  </p>
+</div>
+
+<?php 
+  $oProjectArray = $this->projectArray;
+?>
+
+<form id="frmProjects" action="/curate?task=project" method="post">
+  <input type="hidden" id="curatedProjectId" name="curatedProjectId" value="<?php echo $oProjectArray['CURATED_ID']; ?>"/>
+  <input type="hidden" id="projectId" name="projectId" value="<?php echo $oProjectArray['PROJID']; ?>"/>
+  <div id="introduction" class="section">
+    <div style="font-size:16px;"><?php echo $oProjectArray['PROJECT_TITLE']; ?></div>
+    <p id="projectShortTitle"><?php echo $this->shortTitleAjax; ?></p>
+    <p id="projectDescription"><?php echo $this->descriptionAjax; ?></p>
+    <div id="projectInfo" style="100%">
+      <div id="projectName" class="projectInfoColumn">
+        <?php echo $this->curationNameAjax; ?>
+      </div>
+      <div id="projectObjectType" class="projectInfoColumn">
+        <?php echo $this->curationObjectTypeAjax; ?>
+      </div>
+      <div id="projectVersion" class="projectInfoColumn">
+	    <?php echo $this->versionAjax; ?>
+      </div>
+      <div class="clear projectInfoBottomSpace"></div>
+      <div id="projectStartDate" class="projectInfoColumn">
+        <?php echo $this->startDateAjax; ?>
+      </div>
+      <div id="projectCurated" class="projectInfoColumn">
+        <?php echo $this->curatedDateAjax; ?>
+      </div>
+      <div id="projectCurationState" class="projectInfoColumn">
+        <?php echo $this->curationStateAjax; ?>
+      </div>
+      <div class="clear projectInfoBottomSpace"></div>
+      <div id="projectId" class="projectInfoColumn">
+        Project ID: <?php echo $oProjectArray['PROJID']; ?>
+      </div>
+      <div id="projectContactName" class="projectInfoColumn">
+        <?php echo $this->contactNameAjax; ?>
+      </div>
+      <div id="projectITContact" class="projectInfoColumn">
+        <?php echo $this->itContactAjax; ?>
+      </div>
+      <div class="clear projectInfoBottomSpace"></div>
+      <div id="projectVisibility" class="projectInfoColumn">
+        <?php echo $this->visibilityAjax; ?>
+      </div>
+      <div id="projectStatus" class="projectInfoColumn">
+        <?php echo $this->statusAjax; ?>
+      </div>
+      <div id="projectLink" class="projectInfoColumn">
+        <?php echo $this->linkAjax; ?>
+      </div>
+    </div>
+  </div>
+
+  <?php 
+    $oProjectDocumentArray = $this->projectDocumentArray;    
+  ?>
+
+  <div class="main section">
+    <span style="font-size:14px;color:#666666">Documents</span>  
+    <div style="margin-top:30px;overflow:auto;height:300px;">
+      <table summary="A list of project documents" id="grouplist">
+        
+        <?php
+// 		  echo CurateHtml::getHeaders();
+        
+          $nKey = 0;
+          
+          #display rows from query.
+    	  foreach ($oProjectDocumentArray as $nKey => $oDocument) {
+    	  	  if($nKey%14===0)echo CurateHtml::getHeaders();
+    	  	  
+    	      $sClass="even";
+    	      if($nKey%2===0)$sClass="odd";
+    	    ?>
+    	      <tr class="<?php echo $sClass ?>">
+    	        <td></td>
+    	        <td align="center">
+    	          <input type="checkbox" 
+    	          		 id="cbxCurateSelect<?php echo $nKey;?>" 
+    	          		 name="cbxCurateSelect[]" 
+    	          		 value="<?php echo $nKey."#".$oDocument["OBJECT_ID"];?>"
+    	          		 onClick="setCurateSelect(<?php echo $nKey;?>);"/>
+    	        </td>
+    	        <td align="center">
+    	          <input type="checkbox" id="cbxCurateDone<?php echo $nKey;?>" 
+    	          		 name="cbxCuratDone<?php echo $nKey;?>" 
+    	          		 value="<?php if($oDocument["OBJECT_STATUS"]==="Complete"){echo "1";}else{echo "0";} ?>" 
+    	          		 <?php if($oDocument["OBJECT_STATUS"]==="Complete") echo "checked"; ?>
+    	          		 onClick="setCurationDone(<?php echo $nKey;?>);" 
+    	          		 disabled/>
+    	        </td>
+    	        <td nowrap="" class="spreadsheetInput"><?php echo $oDocument["PATH"] ?></td>
+    	        <td nowrap="" class="spreadsheetInput"><?php echo $oDocument["NAME"] ?></td>
+    	        <td nowrap="" class="spreadsheetInput"><input type="text" id="txtDocumentTitle<?php echo $nKey;?>" name="strDocumentTitle<?php echo $nKey;?>" value="<?php echo $oDocument["TITLE"] ?>" class="spreadsheetInput" disabled></td>
+    	        <td nowrap="" class="spreadsheetInput"><input type="text" id="txtDocumentDescription<?php echo $nKey;?>" name="strDocumentDescription<?php echo $nKey;?>" value="<?php echo $oDocument["DESCRIPTION"] ?>" class="spreadsheetInput" disabled></td>
+    	        <td class="spreadsheetInput"><?php echo $oDocument["OBJECT_TYPE"] ?></td>
+    	        <td class="spreadsheetInput"><?php echo $oDocument["EXTENTION"] ?></td>
+    	      </tr>
+    	    <?
+     	  }
+     	  
+     	  $oCuratedObjectTypeArray = $this->curatedObjectTypeArray;
+     	  
+     	  $nStop = $nKey + 3;
+     	  while($nKey < $nStop){
+     	  	++$nKey;
+     	  	
+     	  	$sClass="even";
+    	    if($nKey%2===0)$sClass="odd";
+    	    
+    	    ?>
+    	      <tr class="<?php echo $sClass ?>">
+    	        <td></td>
+    	        <td align="center"><input type="checkbox" id="cbxCurateSelect<?php echo $nKey;?>" name="cbxCurateSelect[]" value=""/></td>
+    	        <td align="center"><input type="checkbox" id="cbxCurateDone<?php echo $nKey;?>" name="cbxCuratDone<?php echo $nKey;?>" value="0" onClick="setCurationDone('cbxCurateDone<?php echo $nKey;?>');" disabled/></td>
+    	        <td nowrap="" class="spreadsheetInput"><input type="text" id="txtDocumentPath<?php echo $nKey;?>" name="strDocumentPath<?php echo $nKey;?>" value="" class="spreadsheetInput" disabled/></td>
+    	        <td nowrap="" class="spreadsheetInput"><input type="text" id="txtDocumentName<?php echo $nKey;?>" name="strDocumentName<?php echo $nKey;?>" value="" class="spreadsheetInput" onBlur="setExtension('txtDocumentName<?php echo $nKey;?>', 'txtDocumentExt<?php echo $nKey;?>');" disabled/></td>
+    	        <td nowrap="" class="spreadsheetInput"><input type="text" id="txtDocumentTitle<?php echo $nKey;?>" name="strDocumentTitle<?php echo $nKey;?>" value="" class="spreadsheetInput" disabled/></td>
+    	        <td nowrap="" class="spreadsheetInput"><input type="text" id="txtDocumentDescription<?php echo $nKey;?>" name="strDocumentDescription<?php echo $nKey;?>" value="" class="spreadsheetInput" disabled/></td>
+    	        <td class="spreadsheetInput"><?php  echo CurateHtml::getCurationObjectTypesAsHtml($oCuratedObjectTypeArray, $nKey); ?></td>
+    	        <td class="spreadsheetInput"><input type="text" id="txtDocumentExt<?php echo $nKey;?>" name="sDocumentExt<?php echo $nKey;?>" value="" class="spreadsheetInput" size="4" diabled/></td>
+    	      </tr>
+    	    <?
+     	  }
+     	  
+  	    ?>
+      </table>
+    </div>
+    
+    <div id="buttons" align="right" style="margin-top:30px;">
+      <input type="button" id="btnDownload" value="Download" onClick="document.getElementById('frmProjects').action='#';document.getElementById('frmProjects').submit();" style="margin-right:15px;"/>
+      <input type="button" id="btnSubmit" value="Submit" onClick="document.getElementById('frmProjects').submit();"/>
+    </div>
+  </div>
+</form>

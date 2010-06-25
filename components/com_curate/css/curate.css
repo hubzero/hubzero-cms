@@ -1,0 +1,303 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_contribute CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* My Submissions */
+	#submissions {
+		background-color: #F0F0F0;
+		border: 1px solid #D8D8D8;
+		padding: 1em;
+		}
+	#submissions h3 {
+		color: #000;
+		margin: 0;
+		}
+	.submission {
+		padding: 1em;
+		}
+	.submission th,
+	.submission td {
+		background: #fff;
+		padding: 0.2em 0.5em 0.2em 0.5em;
+		}
+	.submission th {
+		text-align: right;
+		}
+	#submissions .submission .review {
+		margin: 0;
+		height: 19px;
+		padding: 0;
+		float: right;
+		}
+	#submissions .submission .discrd {
+		margin: 0 0 0 10px;
+		padding: 0;
+		height: 19px;
+		width: 19px;
+		border: none;
+		text-align: right;
+		float: right;
+		}
+	#submissions .submission .review a { 
+		margin: 0;
+		padding: 2px 0 0 0;
+		display: block;
+		width: 129px;
+		height: 17px;
+		overflow: hidden;
+		text-align: center;
+		text-decoration: none;
+		color: #000;
+		border: none;
+		background: url("images/btn_review.gif") 0 0 no-repeat;
+		}
+	#submissions .submission .discrd a { 
+		margin: 0;
+		padding: 0;
+		display: block;
+		width: 19px;
+		height: 19px;
+		overflow: hidden;
+		border: none;
+		background: url("images/btn_discard.gif") 0 0 no-repeat;
+		text-indent: -555em;
+		text-align: left;
+		}
+	#submissions .submission .review a:hover,
+	#submissions .submission .discrd a:hover {
+		border: none;
+		background-position: 0 -19px;
+		color:#fff;
+		}
+	#submissions .submission .clear {
+		margin: 0;
+		padding: 0;
+		clear: both;
+		}
+	.whatisthis { 
+		margin: 1em;
+		padding: 10px 0 0 50px;
+		background: url("images/bigarrow-up.gif") 0 0 no-repeat;
+		}
+	.whatisthis h4 { 
+		margin: 0 0 -0.7em 0;
+		padding: 0;
+		}
+/* Start button */
+	#startcontributing { 
+		margin: 0 0 3em 0;
+		padding: 0 0 2em 0;
+		border-bottom: 1px solid #E5E5E5;
+		}
+	#startcontributing p {
+		padding-left: 14em;
+		}
+	#startcontributing #startbutton { 
+		margin: 0; 
+		padding: 0; 
+		float: left; 
+		height: 3em; 
+		}
+	#startcontributing #startbutton a {
+		margin: 0;
+		padding: 0.7em 1em;
+		display: block;
+		color: #fff;
+		border: 3px double #999;
+		font-weight: bold;
+		background: #333; 
+		}
+	#startcontributing #startbutton a:hover {
+		color: #fff;
+		border: 3px double #fff;
+		background: #e7792c;
+		}
+/* Steps list */
+	#steps {
+		margin: 1em 0 2em 0;
+		padding: 0;
+		list-style: none;
+		}
+	#steps li {
+		margin: 0 2em 0 0;
+		padding: 0 0 0.6em 0;
+		display: inline;
+		border: none;
+		color: #bbb;
+		font-size: 1.2em;
+		font-weight: normal;
+		}
+	#steps li.active {
+		color: #333;
+		background: #fff;
+		font-weight: bold;
+		}
+	#steps li.completed a {
+		color: green;
+		border-bottom: 1px solid green;
+		background: #fff;
+		}
+	#steps li span,
+	#steps li#start a,
+	#steps li#trash a { 
+		text-transform: uppercase;
+		font-size: 0.8em;
+		color: #999;
+		border-bottom: 1px solid #ddd;
+		}
+	#steps li#trash {
+		/*float: right;
+		margin: 0 30% 0 0;*/
+		position: absolute;
+		right: 15px;
+		}
+/* Attachment/Contributor reordering */
+	.order {
+		display: block;
+		width: 11px;
+		height: 9px;
+		text-indent: 50px;
+		border: none;
+		padding: 9px 0 0 11px;
+		overflow: hidden;
+		}
+	.order {
+		padding: 0;
+		}
+	.up {
+		background: url("images/order_up.gif") 0 0 no-repeat;
+		}
+	.down {
+		background: url("images/order_down.gif") 0 0 no-repeat;
+		}
+	.order:hover {
+		border: none;
+		background-position: 0 -9px;
+		}
+/* Iframed views */
+	#small-page {
+		padding-top: 2em;
+		background: #f3f1ed;
+		}
+	#small-page table {
+		background: #fff;
+		}
+	#small-page table a {
+		border: none;
+		}
+	#authors-form label {
+		display: block;
+		margin-bottom: 0.5em;
+		}
+	#authors-form .submit {
+		}
+/* Preview */
+	#preview-header {
+		margin: 0;
+		padding: 0.2em 0.5em;
+		font-size: 1em;
+		background: #f3f3f3;
+		color: #999;
+		}
+	#preview-pane {
+		padding: 1em;
+		border: 5px solid #f3f3f3;
+		}
+	.withimages img {
+		float: left;
+		}
+	.withimages h3,
+	.withimages p {
+		margin-left: 200px;
+		}
+	td .caption {
+		margin-left: 25px;
+		font-size: 90%;
+		color: #999;
+		}
+	.hidden {
+		display: none;
+		}
+	.editable {
+		margin: 0;
+		padding: 0;
+		}
+	td .caption {
+		margin-left: 0;
+		padding-left: 0;
+		display: block;
+		}
+	#small-page .list td {
+		background-position: 0.2em 0.5em;
+		}
+/* IE 6 Hacks */
+	* html #steps li#trash {
+		float: right;
+		margin: 0 26% 0 0;
+		margin-top: -1.2em;
+		}
+		
+		.spreadsheetInput{
+		  font-size:11px;
+		}
+		
+		#introduction {
+		margin: 0 -15px 3em -15px;
+		padding: 25px 15px 25px 120px;
+		background: #fbf8ea url("../../../../components/com_groups/images/groups-large.gif") 30px 25px no-repeat;
+		border-top: 2px solid #e7dac4;
+		border-bottom: 2px solid #e7dac4;
+		color: #7c7266;
+		}
+	#introduction .aside,
+	#introduction .subject {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		background: transparent;
+		border: none;
+		}
+	#introduction h3 {
+		margin-top: 0;
+		color: #7c7266;
+		}
+	#introduction .columns {
+		border: none;
+		}
+	#introduction ul,
+	#introduction li {
+		list-style: none;
+		margin: 1em 0;
+		padding: 0;
+		}
+	#introduction li {
+		margin: 0;
+		padding: 0 0 0 15px;
+		background: transparent url("../../images/bullets/arrow.gif") 0 50% no-repeat;
+		}
+	.projectInfoColumn{
+		float:left; 
+		width:33%;
+	    }
+	.projectInfoBottomSpace{
+		padding-bottom:10px;
+		}
+	.curationAside{
+		float:right;
+		padding-top: 1em;
+		width:214px;
+		}	    	
