@@ -25,82 +25,26 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class EventsController
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-	private $_error = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if(isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-
-	//-----------
-	
-	private function getTask()
-	{
-		$task = strtolower(JRequest::getString('task', ''));
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-	
+class EventsController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		$database =& JFactory::getDBO();
-		$config = new EventsConfigs( $database );
+		$config = new EventsConfigs( $this->database );
 		$config->load();
 		$this->config = $config;
 		
-		$tables = $database->getTableList();
-		$table = $database->_table_prefix.'events_respondent_race_rel';
+		$tables = $this->database->getTableList();
+		$table = $this->database->_table_prefix.'events_respondent_race_rel';
 		if (!in_array($table,$tables)) {
-			$database->setQuery( "CREATE TABLE `#__events_respondent_race_rel` (
+			$this->database->setQuery( "CREATE TABLE `#__events_respondent_race_rel` (
 			  `respondent_id` int(11) default NULL,
 			  `race` varchar(255) default NULL,
 			  `tribal_affiliation` varchar(255) default NULL
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;" );
-			if (!$database->query()) {
-				echo $database->getErrorMsg();
+			if (!$this->database->query()) {
+				echo $this->database->getErrorMsg();
 				return false;
 			}
 		}
@@ -108,7 +52,9 @@ class EventsController
 		define( '_CAL_CONF_STARDAY', $config->getCfg('starday'));
 		define( '_CAL_CONF_DEFCOLOR', $config->getCfg('navbarcolor'));
 		
-		switch ( $this->getTask() ) 
+		$this->_task = strtolower(JRequest::getString('task', ''));
+		
+		switch ($this->_task) 
 		{
 			// Category management
 			case 'cats':         $this->cats();         break;
@@ -161,24 +107,6 @@ class EventsController
 	}
 	
 	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-
-	//-----------
-	
-	private function getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-
-	//-----------
 	
 	private function getScripts()
 	{
@@ -195,57 +123,67 @@ class EventsController
 	
 	protected function events() 
 	{
-		$app =& JFactory::getApplication();
-		$database =& JFactory::getDBO();
-
+		// Instantiate a new view
+		$view = new JView( array('name'=>'events') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Get configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 		
 		// Incoming
-		$filters = array();
-		$filters['limit']  = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start']  = JRequest::getVar('limitstart', 0, '', 'int');
-		$filters['search'] = urldecode(JRequest::getString('search'));
-		$filters['catid']  = JRequest::getVar('catid', 0, '', 'int');
+		$view->filters = array();
+		$view->filters['limit']  = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start']  = JRequest::getVar('limitstart', 0, '', 'int');
+		$view->filters['search'] = urldecode(JRequest::getString('search'));
+		$view->filters['catid']  = JRequest::getVar('catid', 0, '', 'int');
 		
-		$ee = new EventsEvent( $database );
+		$ee = new EventsEvent( $this->database );
 		
 		// Get a record count
-		$total = $ee->getCount( $filters );
+		$view->total = $ee->getCount( $view->filters );
 		
 		// Get records
-		$rows = $ee->getRecords( $filters );
+		$view->rows = $ee->getRecords( $view->filters );
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
 		// Get list of categories
 		$categories[] = JHTML::_('select.option', '0', '- '.JText::_('EVENTS_CAL_LANG_EVENT_ALLCAT'), 'value', 'text' );
-		$database->setQuery( "SELECT id AS value, title AS text FROM #__categories WHERE section='$this->_option' ORDER BY ordering" );
-		$categories = array_merge( $categories, $database->loadObjectList() );
+		$this->database->setQuery( "SELECT id AS value, title AS text FROM #__categories WHERE section='$this->_option' ORDER BY ordering" );
+		$categories = array_merge( $categories, $this->database->loadObjectList() );
 
-		$clist = JHTML::_('select.genericlist', $categories, 'catid', 'class="inputbox"','value', 'text', $filters['catid'], false, false );
+		$view->clist = JHTML::_('select.genericlist', $categories, 'catid', 'class="inputbox"','value', 'text', $view->filters['catid'], false, false );
 		
-		// Output HTML
-		EventsHtml::events( $rows, $clist, $filters['search'], $pageNav, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
 	
 	protected function edit() 
 	{
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'event') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->config = $this->config;
 		
 		$config = JFactory::getConfig();
 		$offset = $config->getValue('config.offset');
 
-	    $juser =& JFactory::getUser();
-		
 		// We need at least one category before we can proceed
-		$cat = new EventsCategory( $database );
+		$cat = new EventsCategory( $this->database );
 		if ($cat->getCategoryCount( $this->_option ) < 1) {
-			echo EventsHtml::error( JText::_('EVENTS_LANG_NEED_CATEGORY') );
+			JError::raiseError( 500, JText::_('EVENTS_LANG_NEED_CATEGORY') );
 			return;
 		}
 		
@@ -253,83 +191,83 @@ class EventsController
 		$id = JRequest::getInt( 'id', 0, 'request' );
 		
 		// Load the event object
-		$row = new EventsEvent( $database );
-		$row->load( $id );
+		$view->row = new EventsEvent( $this->database );
+		$view->row->load( $id );
 
 		// Fail if checked out not by 'me'
-		if ($row->checked_out && $row->checked_out <> $juser->get('id')) {
-			$this->_redirect = 'index.php?option='.$option;
+		if ($view->row->checked_out && $view->row->checked_out <> $this->juser->get('id')) {
+			$this->_redirect = 'index.php?option='.$this->_option;
 			$this->_message = JText::_('EVENTS_CAL_LANG_WARN_CHECKEDOUT');
 		}
 
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('..'.DS.'components'.DS.$this->_option.DS.'calendar.css');
 
-		if ($row->id) {
-			$row->checkout( $juser->get('id') );
+		if ($view->row->id) {
+			$view->row->checkout( $this->juser->get('id') );
 
-			if (trim( $row->images )) {
-				$row->images = explode( "\n", $row->images );
+			if (trim( $view->row->images )) {
+				$view->row->images = explode( "\n", $view->row->images );
 			} else {
-				$row->images = array();
+				$view->row->images = array();
 			}
 
-			if (trim( $row->publish_down ) == '0000-00-00 00:00:00') {
-				$row->publish_down = JText::_('EVENTS_CAL_LANG_NEVER');
+			if (trim( $view->row->publish_down ) == '0000-00-00 00:00:00') {
+				$view->row->publish_down = JText::_('EVENTS_CAL_LANG_NEVER');
 			}
 			
-			$event_up = new EventsDate( $row->publish_up );
+			$event_up = new EventsDate( $view->row->publish_up );
 			$start_publish = sprintf( "%4d-%02d-%02d",$event_up->year,$event_up->month,$event_up->day);
 			$start_time = $event_up->hour .':'. $event_up->minute;
 			
-			$event_down = new EventsDate( $row->publish_down );
+			$event_down = new EventsDate( $view->row->publish_down );
 			$stop_publish = sprintf( "%4d-%02d-%02d",$event_down->year,$event_down->month,$event_down->day);
 			$end_time = $event_down->hour .':'. $event_down->minute;
 
-			$row->reccurday_month = 99;
-			$row->reccurday_week = 99;
-			$row->reccurday_year = 99;
+			$view->row->reccurday_month = 99;
+			$view->row->reccurday_week = 99;
+			$view->row->reccurday_year = 99;
 			
-			if ($row->reccurday <> '') {
-				if ($row->reccurtype == 1) {
-					$row->reccurday_week = $row->reccurday;
-				} elseif ($row->reccurtype == 3) {
-					$row->reccurday_month = $row->reccurday;
-				} elseif ($row->reccurtype == 5) {
-					$row->reccurday_year = $row->reccurday;
+			if ($view->row->reccurday <> '') {
+				if ($view->row->reccurtype == 1) {
+					$view->row->reccurday_week = $view->row->reccurday;
+				} elseif ($view->row->reccurtype == 3) {
+					$view->row->reccurday_month = $view->row->reccurday;
+				} elseif ($view->row->reccurtype == 5) {
+					$view->row->reccurday_year = $view->row->reccurday;
 				}
 			}
 		} else {
-			$row->state = 0;
-			$row->images = array();
+			$view->row->state = 0;
+			$view->row->images = array();
 			$start_publish = strftime( "%Y-%m-%d", time()+($offset*60*60) );
 			$stop_publish = strftime( "%Y-%m-%d", time()+($offset*60*60) );
 			$start_time = "08:00";
 	        $end_time = "17:00";
-			$row->color_bar = EventsHtml::getColorBar(null,'');
+			$view->row->color_bar = EventsHtml::getColorBar(null,'');
 
-			$row->reccurday_month = -1;
-			$row->reccurday_week = -1;
-			$row->reccurday_year = -1;
+			$view->row->reccurday_month = -1;
+			$view->row->reccurday_week = -1;
+			$view->row->reccurday_year = -1;
 		}
 
 		// Get list of groups
-		$database->setQuery( "SELECT id AS value, name AS text FROM #__groups ORDER BY id" );
-		$groups = $database->loadObjectList();
+		$this->database->setQuery( "SELECT id AS value, name AS text FROM #__groups ORDER BY id" );
+		$groups = $this->database->loadObjectList();
 
 		// Build the html select list
-		$glist = JHTML::_('select.genericlist', $groups, 'access', 'class="inputbox"','value', 'text', intval( $row->access ), false, false );
+		$view->glist = JHTML::_('select.genericlist', $groups, 'access', 'class="inputbox"','value', 'text', intval( $view->row->access ), false, false );
 
-		$fields = $this->config->getCfg('fields');
-		if (!empty($fields)) {
-			for ($i=0, $n=count( $fields ); $i < $n; $i++) 
+		$view->fields = $this->config->getCfg('fields');
+		if (!empty($view->fields)) {
+			for ($i=0, $n=count( $view->fields ); $i < $n; $i++) 
 			{
 				// explore the text and pull out all matches
-				array_push($fields[$i], $this->parseTag($row->content, $fields[$i][0]));
+				array_push($view->fields[$i], $this->parseTag($view->row->content, $view->fields[$i][0]));
 				// clean the original text of any matches
-				$row->content = str_replace('<ef:'.$fields[$i][0].'>'.end($fields[$i]).'</ef:'.$fields[$i][0].'>','',$row->content);
+				$view->row->content = str_replace('<ef:'.$view->fields[$i][0].'>'.end($view->fields[$i]).'</ef:'.$view->fields[$i][0].'>','',$view->row->content);
 			}
-			$row->content = trim($row->content);
+			$view->row->content = trim($view->row->content);
 		}
 
 		list($start_hrs, $start_mins) = explode(':',$start_time);
@@ -354,20 +292,27 @@ class EventsController
 		if (strlen($end_hrs) == 1) $end_hrs = '0'.$end_hrs;
 		$end_time = $end_hrs .':'. $end_mins;
 
-		$times = array();
-		$times['start_publish'] = $start_publish;
-		$times['start_time'] = $start_time;
-		$times['start_pm'] = $start_pm;
-		$times['stop_publish'] = $stop_publish;
-		$times['end_time'] = $end_time;
-		$times['end_pm'] = $end_pm;
+		$view->times = array();
+		$view->times['start_publish'] = $start_publish;
+		$view->times['start_time'] = $start_time;
+		$view->times['start_pm'] = $start_pm;
+		$view->times['stop_publish'] = $stop_publish;
+		$view->times['end_time'] = $end_time;
+		$view->times['end_pm'] = $end_pm;
 		
 		// Get tags on this event
-		$rt = new EventsTags( $database );
-		$tags = $rt->get_tag_string($row->id, 0, 0, NULL, 0, 1);
+		$rt = new EventsTags( $this->database );
+		$view->tags = $rt->get_tag_string($view->row->id, 0, 0, NULL, 0, 1);
 		
 		// Output HTML
-		EventsHtml::edit( $row, $this->config, $fields, $glist, $times, $juser->get('id'), $this->_option, $tags );
+		//EventsHtml::edit( $row, $this->config, $fields, $glist, $times, $juser->get('id'), $this->_option, $tags );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
@@ -389,13 +334,11 @@ class EventsController
 	
 	protected function cancel() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		
 		// Check in the event
-		$event = new EventsEvent( $database );
+		$event = new EventsEvent( $this->database );
 		$event->load( $id );
 		$event->checkin();
 		
@@ -407,8 +350,9 @@ class EventsController
 	
 	protected function save() 
 	{
-		$database =& JFactory::getDBO();
-		
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
 		$config = JFactory::getConfig();
 		$offset = $config->getValue('config.offset');
 
@@ -427,10 +371,10 @@ class EventsController
 		$reccurday_year  = JRequest::getVar( 'reccurday_year', '', 'post' );
 
 		// Bind the posted data to an event object
-		$row = new EventsEvent( $database );
+		$row = new EventsEvent( $this->database );
 		if (!$row->bind( $_POST )) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// New entry or existing?
@@ -595,12 +539,12 @@ class EventsController
 		}
 
 		if (!$row->check()) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		if (!$row->store()) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		$row->checkin();
 		
@@ -608,7 +552,7 @@ class EventsController
 		$tags = JRequest::getVar( 'tags', '', 'post' );
 		
 		// Save the tags
-		$rt = new EventsTags( $database );
+		$rt = new EventsTags( $this->database );
 		$rt->tag_object($juser->get('id'), $row->id, $tags, 1, 0);
 		
 		// Redirect
@@ -664,8 +608,6 @@ class EventsController
 	
 	protected function publish() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
@@ -679,7 +621,7 @@ class EventsController
 		}
 		
 		// Instantiate an event object
-		$event = new EventsEvent( $database );
+		$event = new EventsEvent( $this->database );
 		
 		// Loop through the IDs and publish the event
 		foreach ($ids as $id) 
@@ -696,8 +638,6 @@ class EventsController
 	
 	protected function unpublish() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
@@ -711,7 +651,7 @@ class EventsController
 		}
 		
 		// Instantiate an event object
-		$event = new EventsEvent( $database );
+		$event = new EventsEvent( $this->database );
 		
 		// Loop through the IDs and unpublish the event
 		foreach ($ids as $id) 
@@ -728,8 +668,6 @@ class EventsController
 	
 	protected function setType() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
@@ -757,11 +695,12 @@ class EventsController
 		foreach ($ids as $id) 
 		{	
 			// Instantiate an event object
-			$event = new EventsEvent( $database );
+			$event = new EventsEvent( $this->database );
 			$event->load( $id );
 			$event->announcement = $v;
 			if (!$event->store()) {
-				echo 'Error: '.$event->getError();
+				JError::raiseError( 500, $event->getError() );
+				return;
 			}
 		}
 		
@@ -773,8 +712,6 @@ class EventsController
 	
 	protected function remove() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
@@ -788,17 +725,16 @@ class EventsController
 		}
 		
 		// Instantiate an event object
-		$event = new EventsEvent( $database );
+		$event = new EventsEvent( $this->database );
 		
 		// Instantiate an event tags object
-		$rt = new EventsTags( $database );
+		$rt = new EventsTags( $this->database );
 		
 		// Instantiate a page object
-		$ep = new EventsPage( $database );
+		$ep = new EventsPage( $this->database );
 		
 		// Instantiate a respondent object
 		$er = new EventsRespondent( array() );
-		
 		
 		// Loop through the IDs and unpublish the event
 		foreach ($ids as $id) 
@@ -827,16 +763,24 @@ class EventsController
 	
 	protected function configure() 
 	{
-		// Output HTML
-		EventsHtml::configure($this->_option, $this->config);
+		$view = new JView( array('name'=>'configure') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->config = $this->config;
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
 	
 	protected function saveconfig() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Get the configuration
 		$config = JRequest::getVar('config', array(), 'post');
 		foreach ($config as $n=>$v) 
@@ -845,20 +789,20 @@ class EventsController
 			$box['param'] = $n;
 			$box['value'] = $v;
 			
-			$row = new EventsConfig( $database );
+			$row = new EventsConfig( $this->database );
 			if (!$row->bind( $box )) {
-				echo EventsHtml::alert( $row->getError() );
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 			// Check content
 			if (!$row->check()) {
-				echo EventsHtml::alert( $row->getError() );
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 			// Store content
 			if (!$row->store()) {
-				echo EventsHtml::alert( $row->getError().' '.$row->param.' '.$row->value );
-				exit();
+				JError::raiseError( 500, $row->getError().' '.$row->param.' '.$row->value );
+				return;
 			}
 		}
 		
@@ -886,20 +830,20 @@ class EventsController
 		}
 		$box['value'] = $field;
 		
-		$row = new EventsConfig( $database );
+		$row = new EventsConfig( $this->database );
 		if (!$row->bind( $box )) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		// Check content
 		if (!$row->check()) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		// Store content
 		if (!$row->store()) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Redirect
@@ -923,46 +867,53 @@ class EventsController
 
 	protected function cats() 
 	{
+		$view = new JView( array('name'=>'categories') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		$view->section = $this->_option;
+
 		$app =& JFactory::getApplication();
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
-
-		$section = $this->_option;
-
 		$config = JFactory::getConfig();
 		
 		// Incoming
 		$limit = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
 
-		$section_name = '';
-		if (intval( $section ) > 0) {
+		$view->section_name = '';
+		if (intval( $view->section ) > 0) {
 			$table = 'content';
 
-			$database->setQuery( "SELECT name FROM #__sections WHERE id='$section'" );
-			$section_name = $database->loadResult();
-			echo $database->getErrorMsg();
-			$section_name .= ' Section';
-		} else if (strpos( $section, 'com_' ) === 0) {
-			$table = substr( $section, 4 );
+			$this->database->setQuery( "SELECT name FROM #__sections WHERE id='$view->section'" );
+			$view->section_name = $this->database->loadResult();
+			if ($this->database->getErrorNum()) {
+				JError::raiseError( 500, $this->database->getErrorMsg() );
+				return;
+			}
+			$view->section_name .= ' Section';
+		} else if (strpos( $view->section, 'com_' ) === 0) {
+			$table = substr( $view->section, 4 );
 
-			$database->setQuery( "SELECT name FROM #__components WHERE link='option=$section'" );
-			$section_name = $database->loadResult();
-			echo $database->getErrorMsg();
+			$this->database->setQuery( "SELECT name FROM #__components WHERE link='option=$view->section'" );
+			$view->section_name = $this->database->loadResult();
+			if ($this->database->getErrorNum()) {
+				JError::raiseError( 500, $this->database->getErrorMsg() );
+				return;
+			}
 		} else {
-			$table = $section;
+			$table = $view->section;
 		}
 
 		// Get the total number of records
-		$database->setQuery( "SELECT count(*) FROM #__categories WHERE section='$section'" );
-		$total = $database->loadResult();
-		if ($database->getErrorNum()) {
-			echo $database->stderr();
-			return false;
+		$this->database->setQuery( "SELECT count(*) FROM #__categories WHERE section='$view->section'" );
+		$total = $this->database->loadResult();
+		if ($this->database->getErrorNum()) {
+			JError::raiseError( 500, $this->database->stderr() );
+			return;
 		}
 
 		// dmcd may 22/04  added #__events_categories table to fetch category color property
-		$database->setQuery( "SELECT  c.*, g.name AS groupname, u.name AS editor, cc.color AS color, "
+		$this->database->setQuery( "SELECT  c.*, g.name AS groupname, u.name AS editor, cc.color AS color, "
 		. "COUNT(DISTINCT s2.checked_out) AS checked_out, COUNT(DISTINCT s1.id) AS num"
 		. "\nFROM #__categories AS c"
 		. "\nLEFT JOIN #__users AS u ON u.id = c.checked_out"
@@ -970,61 +921,67 @@ class EventsController
 		. "\nLEFT JOIN #__$table AS s1 ON s1.catid = c.id"
 		. "\nLEFT JOIN #__$table AS s2 ON s2.catid = c.id AND s2.checked_out > 0"
 		. "\nLEFT JOIN #__${table}_categories AS cc ON cc.id = c.id"
-		. "\nWHERE section='$section'"
+		. "\nWHERE section='$view->section'"
 		. "\nGROUP BY c.id"
 		. "\nORDER BY c.ordering, c.name"
 		. "\nLIMIT $limitstart,$limit"
 		);
 
 		// Execute query
-		$rows = $database->loadObjectList();
-		if ($database->getErrorNum()) {
-			echo $database->stderr();
-			return false;
+		$view->rows = $this->database->loadObjectList();
+		if ($this->database->getErrorNum()) {
+			JError::raiseError( 500, $this->database->stderr() );
+			return;
 		}
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $limitstart, $limit );
+		$view->pageNav = new JPagination( $this->total, $limitstart, $limit );
 		
-		// Output HTML
-		EventsHtml::cats( $this->_option, $rows, $section, $section_name, $juser->get('id'), $pageNav );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function editcat() 
 	{
-		$database =& JFactory::getDBO();
-	    $juser =& JFactory::getUser();
+		$view = new JView( array('name'=>'category') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
 		// Load the category
-		$row = new EventsCategory( $database );
-		$row->load( $id );
+		$view->row = new EventsCategory( $this->database );
+		$view->row->load( $id );
 
 		// Fail if checked out not by 'me'
-		if ($row->checked_out && $row->checked_out <> $juser->get('id')) {
+		if ($view->row->checked_out && $view->row->checked_out <> $this->juser->get('id')) {
 			$this->_redirect = 'index.php?option='.$this->_option.'&task=cats';
 			$this->_message = JText::_('EVENTS_CAL_LANG_CATEGORY_CHECKEDOUT');
 			return;
 		}
 
-		if ($row->id) {
+		if ($view->row->id) {
 			// Existing record
-			$row->checkout( $juser->get('id') );
+			$view->row->checkout( $this->juser->get('id') );
 		} else {
 			// New record
-			$row->section = $this->_option;
-			$row->color = '';
+			$view->row->section = $this->_option;
+			$view->row->color = '';
 		}
 
 		// Make order list
 		$order = array();
 		
-		$max = intval( $row->getCategoryCount() ) + 1;
+		$max = intval( $view->row->getCategoryCount() ) + 1;
 		for ($i=1; $i < $max; $i++) 
 		{
 			$order[] = JHTML::_('select.option', $i, $i, 'value', 'text' );
@@ -1033,7 +990,7 @@ class EventsController
 		$ipos[] = JHTML::_('select.option', 'left', JText::_('left'), 'value', 'text' );
 		$ipos[] = JHTML::_('select.option', 'right', JText::_('right'), 'value', 'text' );
 
-		$iposlist = JHTML::_('select.genericlist', $ipos, 'image_position', 'class="inputbox" size="1"','value', 'text', $row->image_position ? $row->image_position : 'left', false, false );
+		$view->iposlist = JHTML::_('select.genericlist', $ipos, 'image_position', 'class="inputbox" size="1"','value', 'text', $view->row->image_position ? $view->row->image_position : 'left', false, false );
 
 		$imgFiles = $this->readDirectory( JPATH_ROOT.DS.'images'.DS.'stories' );
 		$images = array( JHTML::_('select.option', '', JText::_('Select Image'), 'value', 'text') );
@@ -1044,20 +1001,25 @@ class EventsController
 			}
 		}
 
-		$imagelist = JHTML::_('select.genericlist', $images, 'image', 'class="inputbox" size="1"'
+		$view->imagelist = JHTML::_('select.genericlist', $images, 'image', 'class="inputbox" size="1"'
 		. " onchange=\"javascript:if (document.forms[0].image.options[selectedIndex].value!='') {document.imagelib.src='../images/stories/' + document.forms[0].image.options[selectedIndex].value} else {document.imagelib.src='../images/M_images/blank.png'}\"",
-		'value', 'text', $row->image, false, false );
+		'value', 'text', $view->row->image, false, false );
 
-		$orderlist = JHTML::_('select.genericlist', $order, 'ordering', 'class="inputbox" size="1"','value', 'text', $row->ordering, false, false );
+		$view->orderlist = JHTML::_('select.genericlist', $order, 'ordering', 'class="inputbox" size="1"','value', 'text', $view->row->ordering, false, false );
 
 		// Get list of groups
-		$database->setQuery( "SELECT id AS value, name AS text FROM #__groups ORDER BY id" );
-		$groups = $database->loadObjectList();
+		$this->database->setQuery( "SELECT id AS value, name AS text FROM #__groups ORDER BY id" );
+		$view->groups = $this->database->loadObjectList();
 
-		$glist = JHTML::_('select.genericlist', $groups, 'access', 'class="inputbox" size="1"','value', 'text', intval( $row->access ), false, false );
+		$view->glist = JHTML::_('select.genericlist', $view->groups, 'access', 'class="inputbox" size="1"','value', 'text', intval( $view->row->access ), false, false );
 
-		// Output HTML
-		EventsHtml::editcat( $this->_option, $row, $imagelist, $iposlist, $orderlist, $glist, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -1068,8 +1030,8 @@ class EventsController
 
 		// Get the files and folders
 		jimport('joomla.filesystem.folder');
-		$files		= JFolder::files($path, $filter, $recurse, $fullpath);
-		$folders	= JFolder::folders($path, $filter, $recurse, $fullpath);
+		$files   = JFolder::files($path, $filter, $recurse, $fullpath);
+		$folders = JFolder::folders($path, $filter, $recurse, $fullpath);
 		// Merge files and folders into one array
 		$arr = array_merge($files, $folders);
 		// Sort them all
@@ -1081,40 +1043,41 @@ class EventsController
 
 	protected function savecat() 
 	{
-		$database =& JFactory::getDBO();
-
-		$row = new EventsCategory( $database );
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
+		$row = new EventsCategory( $this->database );
 		if (!$row->bind( $_POST )) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		if (!$row->check()) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		if (!$row->store()) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		$row->checkin();
 		//$row->updateOrder( "section='$row->section'" );
 
 		if ($oldtitle = JRequest::getVar('oldtitle', null, 'post')) {
 			if ($oldtitle != $row->title) {
-				$database->setQuery( "UPDATE #__menu SET name='$row->title' WHERE name='$oldtitle' AND type='content_category'" );
-				$database->query();
+				$this->database->setQuery( "UPDATE #__menu SET name='$row->title' WHERE name='$oldtitle' AND type='content_category'" );
+				$this->database->query();
 			}
 		}
 
 		// Update Section Count
 		if ($row->section != 'com_weblinks') {
-			$database->setQuery( "UPDATE #__sections SET count=count+1 WHERE id = '$row->section'");
+			$this->database->setQuery( "UPDATE #__sections SET count=count+1 WHERE id = '$row->section'");
 		}
 
-		if (!$database->query()) {
-			echo EventsHtml::alert( $database->getErrorMsg() );
-			exit();
+		if (!$this->database->query()) {
+			JError::raiseError( 500, $this->database->getErrorMsg() );
+			return;
 		}
 		
 		// Redirect
@@ -1125,10 +1088,8 @@ class EventsController
 
 	protected function cancelcat() 
 	{
-		$database =& JFactory::getDBO();
-
 		// Checkin the category
-		$row = new EventsCategory( $database );
+		$row = new EventsCategory( $this->database );
 		$row->bind( $_POST );
 		$row->checkin();
 		
@@ -1140,7 +1101,8 @@ class EventsController
 	
 	protected function publishcat() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Incoming
 		$ids = JRequest::getVar('id', array());
@@ -1155,7 +1117,7 @@ class EventsController
 		}
 		
 		// Instantiate a category object
-		$event = new EventsCategory( $database );
+		$event = new EventsCategory( $this->database );
 		
 		// Loop through the IDs and publish the category
 		foreach ($ids as $id) 
@@ -1172,7 +1134,8 @@ class EventsController
 	
 	protected function unpublishcat() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Incoming
 		$ids = JRequest::getVar('id', array());
@@ -1187,7 +1150,7 @@ class EventsController
 		}
 		
 		// Instantiate a category object
-		$event = new EventsCategory( $database );
+		$event = new EventsCategory( $this->database );
 		
 		// Loop through the IDs and unpublish the category
 		foreach ($ids as $id) 
@@ -1204,13 +1167,14 @@ class EventsController
 	
 	protected function orderup() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 
 		// Load the category, reorder, save
-		$row = new EventsCategory( $database );
+		$row = new EventsCategory( $this->database );
 		$row->load( $id );
 		$row->move( -1, "section='$row->section'" );
 		
@@ -1222,13 +1186,14 @@ class EventsController
 	
 	protected function orderdown() 
 	{
-		$database =& JFactory::getDBO();
-
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		
 		// Load the category, reorder, save
-		$row = new EventsCategory( $database );
+		$row = new EventsCategory( $this->database );
 		$row->load( $id );
 		$row->move( 1, "section='$row->section'" );
 		
@@ -1240,7 +1205,8 @@ class EventsController
 	
 	protected function removecat() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Incoming
 		$ids = JRequest::getVar('id', array());
@@ -1260,7 +1226,7 @@ class EventsController
 			foreach ($ids as $id) 
 			{
 				// Load the category
-				$cat = new EventsCategory( $database );
+				$cat = new EventsCategory( $this->database );
 				$cat->load( $id );
 				// Check its count of items in it
 				if ($cat->count > 0) {
@@ -1291,14 +1257,57 @@ class EventsController
 	
 	protected function viewrespondent()
 	{
-		EventsHtml::viewrespondent(new EventsRespondent(array('respondent_id' => JRequest::getInt('id', 0))));
+		$view = new JView( array('name'=>'respondent') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		$view->resp = new EventsRespondent(array('respondent_id' => JRequest::getInt('id', 0)));
+
+		// Incoming
+		$ids = JRequest::getInt('event_id', 0);
+		$id = $ids[0];
+		
+		$view->event = new EventsEvent( $this->database );
+		$view->event->load( $id );
+
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
 
 	protected function viewlist()
 	{
-		EventsHtml::viewlist($this->getRespondents(), $this->_option);
+		$view = new JView( array('name'=>'respondents') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		$view->resp = $this->getRespondents();
+		
+		// Incoming
+		$ids = JRequest::getVar('id', array(0));
+		$id = $ids[0];
+		
+		if (!$id) {
+			$this->_redirect = 'index.php?option='.$this->_option;
+			return;
+		}
+		
+		$view->event = new EventsEvent( $this->database );
+		$view->event->load( $id );
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
@@ -1332,6 +1341,9 @@ class EventsController
 
 	protected function removerespondent() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming
 		$workshop = JRequest::getInt( 'workshop', 0 );
 		$ids = JRequest::getVar( 'rid', array() );
@@ -1343,8 +1355,6 @@ class EventsController
 		
 		// Do we have any IDs?
 		if (!empty($ids)) {
-			$database =& JFactory::getDBO();
-		
 			$r = new EventsRespondent( array() );
 			
 			// Loop through each ID and delete the necessary items
@@ -1372,39 +1382,44 @@ class EventsController
 			return;
 		}
 
-		$app =& JFactory::getApplication();
-		$database =& JFactory::getDBO();
-
-		// Get filters
-		$filters = array();
-		$filters['event_id'] = $ids[0];
-		$filters['search'] = urldecode(JRequest::getString('search'));
-
+		$view = new JView( array('name'=>'pages') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Get configuration
 		$config = JFactory::getConfig();
-		
-		// Get paging variables
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.pages.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['limit'] = ($filters['limit']) ? $filters['limit'] : 25;
-		$filters['start'] = JRequest::getInt('limitstart', 0);
+		$app =& JFactory::getApplication();
 
-		$obj = new EventsPage( $database );
+		// Get filters
+		$view->filters = array();
+		$view->filters['event_id'] = $ids[0];
+		$view->filters['search'] = urldecode(JRequest::getString('search'));
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.pages.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['limit'] = ($view->filters['limit']) ? $view->filters['limit'] : 25;
+		$view->filters['start'] = JRequest::getInt('limitstart', 0);
+
+		$obj = new EventsPage( $this->database );
 		
 		// Get a record count
-		$total = $obj->getCount( $filters );
+		$view->total = $obj->getCount( $view->filters );
 		
 		// Get records
-		$rows = $obj->getRecords( $filters );
+		$view->rows = $obj->getRecords( $view->filters );
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		$event = new EventsEvent( $database );
-		$event->load( $ids[0] );
+		$view->event = new EventsEvent( $this->database );
+		$view->event->load( $ids[0] );
 
-		// Output HTML
-		EventsHtml::pages( $rows, $pageNav, $this->_option, $filters, $event );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
@@ -1425,7 +1440,9 @@ class EventsController
 
 	protected function editpage($eid=null) 
 	{
-		$database =& JFactory::getDBO();
+		$view = new JView( array('name'=>'page') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Incoming
 		$eid = ($eid) ? $eid : JRequest::getInt( 'event', 0 );
@@ -1439,27 +1456,33 @@ class EventsController
 		}
 		
 		// Initiate database class and load info
-		$page = new EventsPage( $database );
-		$page->load( $id );
+		$view->page = new EventsPage( $this->database );
+		$view->page->load( $id );
 		
-		$event = new EventsEvent( $database );
-		$event->load( $eid );
+		$view->event = new EventsEvent( $this->database );
+		$view->event->load( $eid );
 		
-		// Ouput HTML
-		EventsHtml::editpage( $page, $event, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 	
 	protected function savepage() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Bind incoming data to object
-		$row = new EventsPage( $database );
+		$row = new EventsPage( $this->database );
 		if (!$row->bind( $_POST )) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		if (!$row->alias) {
@@ -1483,14 +1506,14 @@ class EventsController
 		
 		// Check content for missing required data
 		if (!$row->check()) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo EventsHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
 		// Redirect
@@ -1502,9 +1525,12 @@ class EventsController
 
 	protected function removepage() 
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		// Incoming
 		$event = JRequest::getInt( 'event', 0 );
-		$ids = JRequest::getVar( 'ids', array() );
+		$ids = JRequest::getVar( 'id', array(0) );
 
 		// Get the single ID we're working with
 		if (!is_array($ids)) {
@@ -1513,9 +1539,7 @@ class EventsController
 		
 		// Do we have any IDs?
 		if (!empty($ids)) {
-			$database =& JFactory::getDBO();
-		
-			$page = new EventsPage( $database );
+			$page = new EventsPage( $this->database );
 			
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id) 
@@ -1548,7 +1572,8 @@ class EventsController
 	
 	protected function reorderpage() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Incoming
 		$id = JRequest::getVar( 'id', array() );
@@ -1568,7 +1593,7 @@ class EventsController
 		}
 
 		// Get the element moving down - item 1
-		$page1 = new EventsPage( $database );
+		$page1 = new EventsPage( $this->database );
 		$page1->load( $id );
 
 		// Get the element directly after it in ordering - item 2
@@ -1608,9 +1633,8 @@ class EventsController
 
 	protected function cancelpage()
 	{
-		$workshop = JRequest::getInt( 'workshop', 0 );
+		$workshop = JRequest::getInt( 'event', 0 );
 		
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=pages&id[]='.$workshop;
 	}
 }
-?>
