@@ -96,7 +96,8 @@ class JApplication extends JObject
 
 		//create the session if a session name is passed
 		if($config['session'] !== false) {
-			$this->_createSession(JUtility::getHash($config['session_name']));
+			//$this->_createSession(JUtility::getHash($config['session_name']));
+			$this->_createSession($config['session_name']);
 		}
 
 		$this->set( 'requestTime', gmdate('Y-m-d H:i') );
