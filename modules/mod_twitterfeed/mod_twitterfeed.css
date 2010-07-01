@@ -1,0 +1,38 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_twitterfeed
+	-- -- -- -- -- -- --
+
+*/
+
+.twitterfeed {}
+.twitterfeed li { 
+	padding: 10px; 
+	background-color: #efefef; 
+	border-radius: 5px; 
+	-webkit-border-radius: 5px; 
+	-moz-border-radius: 5px; 
+	}
+.twitterfeed li .title { 
+	display: block; 
+	}
+.twitterfeed li .date { 
+	font-size: 10px; 
+	color: #bababa;
+	}
+.twitterfeed li a.viewstatus { 
+	float: right; 
+	}
+.twitterbird {
+	float: right;
+	}
