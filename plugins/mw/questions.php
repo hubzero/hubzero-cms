@@ -60,10 +60,13 @@ class plgMwQuestions extends JPlugin
 		$database =& JFactory::getDBO();
 
 		// Get a needed library
-		include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'answers.class.php');
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
 
 		// Get all the questions for this tool
-		$a = new mosAnswersQuestion( $database );
+		$a = new AnswersQuestion( $database );
 		$rows = $a->getQuestionsByTag( 'tool:'.$toolname );
 
 		// Did we get results back?
