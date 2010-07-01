@@ -82,7 +82,10 @@ class plgResourcesQuestions extends JPlugin
 		$database =& JFactory::getDBO();
 
 		// Get a needed library
-		include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'answers.class.php');
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
 
 		// Get all the questions for this tool
 		$a = new AnswersQuestion( $database );
@@ -99,7 +102,7 @@ class plgResourcesQuestions extends JPlugin
 		
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') {
-			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.reportabuse.php');
+			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php');
 			
 			// Are we banking?
 			$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
