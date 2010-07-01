@@ -27,22 +27,27 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
+error_reporting(E_ALL);
+@ini_set('display_errors','1');
 
-//-----------
+// Ensure user has access to this function
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
 
-switch ($task) 
-{
-	case 'info': SefToolbar::_INFO();  break;
-	case 'edit': SefToolbar::_EDIT(1); break;
-	case 'add':  SefToolbar::_EDIT(0); break;
-	case 'new':  SefToolbar::_EDIT(0); break;
-	default:
-		if (@$_GET['section'] == 'config') {
-			SefToolbar::_EDITCONFIG();
-		} else {
-			SefToolbar::_DEFAULT();
-		}
-	break;
+// Authorization check
+$user = & JFactory::getUser();
+if (!$user->authorize( $option, 'manage' )) {
+	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
 }
-?>
+
+// Include scripts
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'entry.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php' );
+
+// Initiate controller
+$controller = new SefController();
+$controller->execute();
+$controller->redirect();

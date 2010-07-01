@@ -25,77 +25,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-class SefController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$task = JRequest::getVar( 'task', '' );
-		$section = JRequest::getVar( 'section', '' );
-		if ($section) {
-			$task = $section;
-		}
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-	
+class SefController extends Hubzero_Controller
+{
 	public function execute()
 	{
 		// Load the component config
 		$config =& JComponentHelper::getParams( $this->_option );
 		$this->config = $config;
 		
-		switch ($this->getTask()) 
+		$this->_task = JRequest::getVar( 'task', '' );
+		$section = JRequest::getVar( 'section', '' );
+		if ($section) {
+			$this->_task = $section;
+		}
+		
+		switch ($this->_task) 
 		{
 			case 'config': $this->config(); break;
 			case 'saveconfig': $this->saveconfig(); break;
@@ -112,48 +58,52 @@ class SefController extends JObject
 			default: $this->browse(); break;
 		}
 	}
-	
-	//-----------
 
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-	
 	//----------------------------------------------------------
 	// Tag functions
 	//----------------------------------------------------------
 	
 	protected function info() 
 	{
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'readme.inc' );
+		// Instantiate a new view
+		$view = new JView( array('name'=>'info') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
 	
 	protected function browse()
 	{
-		$database =& JFactory::getDBO();
-		$app =& JFactory::getApplication();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'entries') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Get Joomla configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 		
 		// Incoming
-		$filters = array();
-		$filters['limit']      = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start']      = $app->getUserStateFromRequest($this->_option.'.limitstart', 'limitstart', 0, 'int');
-		$filters['catid']      = $app->getUserStateFromRequest($this->_option.'.catid', 'catid', 0, 'int');
-		$filters['ViewModeId'] = $app->getUserStateFromRequest($this->_option.'.viewmode', 'viewmode', 0, 'int');
-		$filters['SortById']   = $app->getUserStateFromRequest($this->_option.'.sortby', 'sortby', 0, 'int');
+		$view->filters = array();
+		$view->filters['limit']      = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start']      = $app->getUserStateFromRequest($this->_option.'.limitstart', 'limitstart', 0, 'int');
+		$view->filters['catid']      = $app->getUserStateFromRequest($this->_option.'.catid', 'catid', 0, 'int');
+		$view->filters['ViewModeId'] = $app->getUserStateFromRequest($this->_option.'.viewmode', 'viewmode', 0, 'int');
+		$view->filters['SortById']   = $app->getUserStateFromRequest($this->_option.'.sortby', 'sortby', 0, 'int');
 		
 		// Determine the mode
-		$is404mode = false;
-		if ($filters['ViewModeId'] == 1) {
-			$is404mode = true;
+		$view->is404mode = false;
+		if ($view->filters['ViewModeId'] == 1) {
+			$view->is404mode = true;
 		}
 
 		$lists = array();
@@ -164,36 +114,41 @@ class SefController extends JObject
 		$viewmode[] = JHTML::_('select.option', '1', JText::_('Show 404 Log'), 'value', 'text');
 		$viewmode[] = JHTML::_('select.option', '2', JText::_('Show Custom Redirects'), 'value', 'text');
 		
-		$lists['viewmode'] = JHTML::_('select.genericlist', $viewmode, 'viewmode', '', 'value', 'text', $filters['ViewModeId'], false, false );  	
+		$view->lists['viewmode'] = JHTML::_('select.genericlist', $viewmode, 'viewmode', '', 'value', 'text', $view->filters['ViewModeId'], false, false );  	
 
 		// Make the select list for the filter
 		$orderby = array();
 		$orderby[] = JHTML::_('select.option', '0', JText::_('SEF Url (asc)'), 'value', 'text');
 		$orderby[] = JHTML::_('select.option', '1', JText::_('SEF Url (desc)'), 'value', 'text');
-		if ($is404mode != true) {
+		if ($view->is404mode != true) {
   			$orderby[] = JHTML::_('select.option', '2', JText::_('Real Url (asc)'), 'value', 'text');
 			$orderby[] = JHTML::_('select.option', '3', JText::_('Real Url (desc)'), 'value', 'text');
 		}
 		$orderby[] = JHTML::_('select.option', '4', JText::_('Hits (asc)'), 'value', 'text');
 		$orderby[] = JHTML::_('select.option', '5', JText::_('Hits (desc)'), 'value', 'text');
 
-		$lists['sortby'] = JHTML::_('select.genericlist', $orderby, 'sortby', '', 'value', 'text', $filters['SortById'], false, false );
+		$view->lists['sortby'] = JHTML::_('select.genericlist', $orderby, 'sortby', '', 'value', 'text', $view->filters['SortById'], false, false );
 		
 		// Instantiate a new SefEntry
-		$s = new SefEntry( $database );
+		$s = new SefEntry( $this->database );
 
 		// Record count
-		$total = $s->getCount( $filters );
+		$view->total = $s->getCount( $view->filters );
 		
 		// Get records
-		$rows = $s->getRecords( $filters );
+		$view->rows = $s->getRecords( $view->filters );
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		SefHtml::browse( $rows, $lists, $pageNav, $this->_option, $is404mode );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -207,8 +162,11 @@ class SefController extends JObject
 
 	protected function edit($row=null)
 	{
-		$database =& JFactory::getDBO();
-	
+		// Instantiate a new view
+		$view = new JView( array('name'=>'entry') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Load a tag object if one doesn't already exist
 		if (!$row) {
 			// Incoming
@@ -219,17 +177,24 @@ class SefController extends JObject
 
 			$id = (!empty($ids)) ? $ids[0] : 0;
 			
-			$row = new SefEntry( $database );
-			$row->load( $id );
+			$view->row = new SefEntry( $this->database );
+			$view->row->load( $id );
 
 			if (!$id) {
 				// do stuff for new records
-				$row->dateadd = date("Y-m-d");
+				$view->row->dateadd = date("Y-m-d");
 			}
+		} else {
+			$view->row = $row;
 		}
 
-		// Output HTML
-		SefHtml::edit( $row, $this->_option, $this->getError() );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -243,10 +208,11 @@ class SefController extends JObject
 	
 	protected function save()
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Load the tag object and bind the incoming data to it
-		$row = new SefEntry( $database );
+		$row = new SefEntry( $this->database );
 		if (!$row->bind( $_POST )) {
 			$this->setError( $row->getError() );
 			$this->edit($row);
@@ -280,7 +246,8 @@ class SefController extends JObject
 
 	protected function remove()
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		$ids = JRequest::getVar('id', array());
 		if (!is_array( $ids )) {
@@ -294,7 +261,7 @@ class SefController extends JObject
 		}
 		
 		// Load some needed objects
-		$sef = new SefEntry( $database );
+		$sef = new SefEntry( $this->database );
 		
 		foreach ($ids as $id) 
 		{
@@ -307,4 +274,4 @@ class SefController extends JObject
 		$this->_message = JText::_( 'SEF removed' );
 	}
 }
-?>
+
