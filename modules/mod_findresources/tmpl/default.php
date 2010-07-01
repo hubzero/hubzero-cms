@@ -25,63 +25,59 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-		$tags = $modfindresources->tags;
-		$categories = $modfindresources->categories;
+$tags = $modfindresources->tags;
+$categories = $modfindresources->categories;
+			
+// search
+$html  = '<form action="/xsearch/" method="get" class="search">'."\n";
+$html .= ' <fieldset>'."\n";
+$html .= '  <p>'."\n";
+$html .= '   <input type="text" name="searchword" value="" />'."\n";
+$html .= '   <input type="hidden" name="category" value="resources" />'."\n";
+$html .= '   <input type="submit" value="'.JText::_('Search').'" />'."\n";
+$html .= '  </p>'."\n";
+$html .= ' </fieldset>'."\n";
+$html .= '</form>'."\n";
+
+$tl = array();
+if (count($tags) > 0) {
+	$html .= '<ol class="tags">'."\n";
+	$html .= "\t".'<li>'.JText::_('Popular Tags:').'</li>'."\n";
+	foreach ($tags as $tag)
+	{
+		$tl[$tag->tag] = "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></li>'."\n";
+	}
+	$html .= implode('',$tl);	
+	$html .= "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags').'" class="showmore">'.JText::_('More').' &rsaquo;</a></li>'."\n";
+	$html .= '</ol>'."\n";
+} else {
+	$html .= '<p>'.JText::_('No tags found.').'</p>'."\n";
+}
+
+if (count($categories) > 0) {
+	$html  .= '<p>'."\n";
+	$i = 0;
+	foreach ($categories as $category) 
+	{
+		$i++;
+		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $category->type);
+		$normalized = strtolower($normalized);
 		
-		// Start output
-		$html = '';
-			
-		// search
-			$html  .= '<form action="/xsearch/" method="get" class="search">'."\n";
-			$html  .= ' <fieldset>'."\n";
-			$html  .= '  <p>'."\n";
-			$html  .= '   <input type="text" name="searchword" value="" />'."\n";
-			$html  .= '   <input type="hidden" name="category" value="resources" />'."\n";
-			$html  .= '   <input type="submit" value="Search" />'."\n";
-			$html  .= '  </p>'."\n";
-			$html  .= ' </fieldset>'."\n";
-			$html  .= '</form>'."\n";
-			
-			$tl = array();
-			if (count($tags) > 0) {
-				$html  .= '<ol class="tags">'."\n";
-				$html  .= '    <li>'.JText::_('Popular Tags:').'</li>'."\n";
-				foreach ($tags as $tag)
-				{
-					$tl[$tag->tag] = "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></li>'."\n";
-				}
-				$html .= implode('',$tl);	
-				$html .= '<li><a href="/tags/" class="showmore">'.JText::_('More').' &rsaquo;</a></li>'."\n";
-				$html .= '</ol>'."\n";
-			} else {
-				$html  .= '<p>'.JText::_('No tags found.').'</p>'."\n";
-			}
-			
-			if (count($categories) > 0) {
-				$html  .= '<p>'."\n";
-				$i = 0;
-				foreach ($categories as $category) 
-				{
-					$i++;
-					$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $category->type);
-					$normalized = strtolower($normalized);
-					
-					if (substr($normalized, -3) == 'ies') {
-						$cls = $normalized;
-					} else {
-						$cls = substr($normalized, 0, -1);
-					}
-					$html  .= '<a href="'.JRoute::_('index.php?option=com_resources'.'&type='.$normalized).'">'.stripslashes($category->type).'</a>';
-					$html  .= $i == count($categories) ? '...' : ', ';
-					$html  .= "\n";
-				}
-				$html  .= '<a href="/resources" class="showmore">All Categores &rsaquo;</a>';
-				$html  .= '</p>'."\n";
-			}
-			
-			$html  .= '<div class="uploadcontent">'."\n";
-			$html  .= ' <h4>Upload your own content! <span><a href="/contribute" class="contributelink">Get started &rsaquo;</a></span></h4>'."\n";
-			$html  .= '</div>'."\n";
-			
-			echo $html;	
-?>
+		if (substr($normalized, -3) == 'ies') {
+			$cls = $normalized;
+		} else {
+			$cls = substr($normalized, 0, -1);
+		}
+		$html  .= '<a href="'.JRoute::_('index.php?option=com_resources&type='.$normalized).'">'.stripslashes($category->type).'</a>';
+		$html  .= $i == count($categories) ? '...' : ', ';
+		$html  .= "\n";
+	}
+	$html  .= '<a href="'.JRoute::_('index.php?option=com_resources').'" class="showmore">'.JText::_('All Categores &rsaquo;').'</a>';
+	$html  .= '</p>'."\n";
+}
+
+$html  .= '<div class="uploadcontent">'."\n";
+$html  .= "\t".'<h4>'.JText::_('Upload your own content!').' <span><a href="'.JRoute::_('index.php?option=com_contribute').'" class="contributelink">'.JText::_('Get started &rsaquo;').'</a></span></h4>'."\n";
+$html  .= '</div>'."\n";
+
+echo $html;
