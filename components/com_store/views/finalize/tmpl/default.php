@@ -50,13 +50,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="hidden" name="email" value="<?php echo (isset($this->posted['email'])) ? htmlentities($this->posted['email'],ENT_COMPAT,'UTF-8') : $this->juser->get('email'); ?>" />
 				<input type="hidden" name="comments" value="<?php echo (isset($this->posted['comments'])) ? htmlentities($this->posted['comments'],ENT_COMPAT,'UTF-8') : ''; ?>" />
 				
-				<h3><?php echo JText::_('COM_STORE_ORDER_WILL_SHIP'); ?></h3>
-				
-				<pre>
-					<?php echo (isset($this->posted['name'])) ? htmlentities($this->posted['name'],ENT_COMPAT,'UTF-8') : htmlentities($this->juser->get('name'),ENT_COMPAT,'UTF-8'); ?>
-					<?php echo (isset($this->posted['address'])) ? htmlentities($this->posted['address'],ENT_COMPAT,'UTF-8') : ''; ?>
-					<?php echo (isset($this->posted['country'])) ? htmlentities($this->posted['country'],ENT_COMPAT,'UTF-8') : htmlentities(GeoUtils::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8'); ?>
-				</pre>
+				<h3><?php echo JText::_('COM_STORE_ORDER_WILL_SHIP'); ?></h3>				
+				 <pre><?php echo (isset($this->posted['name'])) ? htmlentities($this->posted['name'],ENT_COMPAT,'UTF-8') : htmlentities($this->juser->get('name'),ENT_COMPAT,'UTF-8'); ?>
+				 
+<?php echo (isset($this->posted['address'])) ? htmlentities($this->posted['address'],ENT_COMPAT,'UTF-8') : ''; ?>
+
+<?php echo (isset($this->posted['country'])) ? htmlentities($this->posted['country'],ENT_COMPAT,'UTF-8') : htmlentities(GeoUtils::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8'); ?></pre>				
 				<p><a class="actionlink" href="javascript:void(0);" id="change_address"><?php echo JText::_('COM_STORE_CHANGE_ADDRESS'); ?></a></p>
 			</fieldset>
 			<fieldset>
@@ -70,14 +69,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 				</p>
 			</fieldset>
-<?php if (isset($this->posted['comments'])) { ?>
+<?php if (isset($this->posted['comments']) && $this->posted['comments'] != '') { ?>
 			<fieldset>
 				<h3><?php echo JText::_('COM_STORE_ADDITIONAL_COMMENTS'); ?></h3>
 				<p><?php echo $this->posted['comments']; ?></p>
 			</fieldset>
 <?php } ?>
 			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=cart&action=empty'); ?>" class="actionlink"><?php echo JText::_('COM_STORE_CANCEL_ORDER'); ?></a></p>
-
 			<div class="clear"></div>
 			<p class="process"><input type="submit" class="button finalize_order" value="finalize" /></p>
 		</form>

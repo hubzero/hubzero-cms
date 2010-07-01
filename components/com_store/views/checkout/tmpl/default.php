@@ -87,7 +87,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				
 				<label>
 					<?php echo JText::_('COM_STORE_DETAILS'); ?>
-					<textarea name="comments" rows="10" cols="50"><?php echo (isset($this->posted['comments'])) ? $$this->posted['comments'] : ''; ?></textarea>
+					<textarea name="comments" rows="10" cols="50"><?php echo (isset($this->posted['comments'])) ? $this->posted['comments'] : ''; ?></textarea>
 				</label>
 			</fieldset>
 			<p class="process"><input type="submit" class="button process_order" value="process" /></p>
