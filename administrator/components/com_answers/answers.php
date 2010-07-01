@@ -35,19 +35,24 @@ $jacl->addACL( $option, 'manage', 'users', 'super administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'manager' );
 
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'answers.tags.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'answers.class.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.answers.html.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.reportabuse.php' );
+// Authorization check
+$user = & JFactory::getUser();
+if (!$user->authorize( 'com_contact', 'manage' )) {
+	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+}
 
-ximport('textfilter');
-ximport( 'bankaccount' );
-ximport('xprofile');
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'answers.tags.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'question.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'response.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'log.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'questionslog.php' );
+require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
+
+ximport('Hubzero_Environment');
 
 // initiate controller
 $controller = new AnswersController();
-$controller->mainframe = $mainframe;
 $controller->execute();
 $controller->redirect();
-?>
