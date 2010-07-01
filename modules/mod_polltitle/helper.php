@@ -56,7 +56,10 @@ class modPollTitle
 	
 	public function display()
 	{
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'xpoll.class.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'poll.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'data.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'date.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_xpoll'.DS.'tables'.DS.'menu.php' );
 		
 		$database =& JFactory::getDBO();
 		
