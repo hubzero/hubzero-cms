@@ -36,6 +36,8 @@ class XForum extends JTable
 	var $comment    = NULL;  // @var text
 	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
 	var $created_by = NULL;  // @var int(11)
+	var $modified   = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $modified_by = NULL;  // @var int(11)
 	var $state      = NULL;  // @var int(2)
 	var $sticky     = NULL;  // @var int(2)
 	var $parent     = NULL;  // @var int(11)
