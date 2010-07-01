@@ -862,7 +862,7 @@ if (!defined("n")) {
 			}
 	
 			$html .= t.t.'<fieldset'.$fieldclass.'>'.n;
-			$html .= t.t.t.'<legend>Hispanic or Latino (<a class="popup 700x500" href="/components/com_myaccount/raceethnic.html">more information</a>) ';
+			$html .= t.t.t.'<legend>Hispanic or Latino (<a class="popup 700x500" href="/register/raceethnic">more information</a>) ';
 	
 			$html .= $required;
 			$html .= '</legend>'.n;
@@ -919,7 +919,7 @@ if (!defined("n")) {
 				$this->registration['race'] = array(trim($this->registration['race']));
 
 			$html .= t.t.'<fieldset'.$fieldclass.'>'.n;
-			$html .= t.t.t.'<legend>U.S. Citizens and Permanent Residents Only (<a class="popup 675x678" href="/components/com_myaccount/raceethnic.html">more information</a>) '.$required.'</legend>'.n;
+			$html .= t.t.t.'<legend>U.S. Citizens and Permanent Residents Only (<a class="popup 675x678" href="/register/raceethnic">more information</a>) '.$required.'</legend>'.n;
 			$html .= t.t.t.'<p class="hint">'.JText::_('Select one or more that apply.').'</p>'.n;
 			
 			$html .= t.t.t.'<label><input type="checkbox" class="option" name="racenativeamerican" id="racenativeamerican" value="nativeamerican" ';
