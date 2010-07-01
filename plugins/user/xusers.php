@@ -126,6 +126,7 @@ class plgUserXusers extends JPlugin
 			if ($instance === false)
 			{
 				$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . 'login_failed');
+				apache_note('auth','failed');
 
 				return JError::raiseError('SOME_ERROR_CODE', 'xHUB Internal Error: JUser record unavailable');
 			}
@@ -141,6 +142,7 @@ class plgUserXusers extends JPlugin
 			if ($instance === false)
 			{
 				$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . 'login_failed');
+				apache_note('auth','failed');
 
 				return JError::raiseError('SOME_ERROR_CODE', 'xHUB Internal Error: JUser record unavailable');
 			}
@@ -163,6 +165,7 @@ class plgUserXusers extends JPlugin
 		}
 
 		$authlog->logAuth( $instance->get('id') . ' [' . $instance->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
+		apache_note('auth','login');
 
 		// drop a hub cookie
 
@@ -292,7 +295,7 @@ class plgUserXusers extends JPlugin
 	{
 		$authlog = XFactory::getAuthLogger();
 		$authlog->logAuth( $user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
-
+		apache_note('auth','logout');
 		return true;
 	}
 }
