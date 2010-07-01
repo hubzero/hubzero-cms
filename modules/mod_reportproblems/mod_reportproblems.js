@@ -122,7 +122,6 @@ if (typeof(Fx) === 'undefined') {
 			var fa = new Fx.Slider(this.pane, {
 				duration: 800,
 				onComplete: function(){
-					alert(this.el.style.display);
 					if (this.open == true) { 
 						this.open = false; 
 						this.container.setStyle('visibility','hidden');
@@ -132,6 +131,17 @@ if (typeof(Fx) === 'undefined') {
 					}
 				}
 			});
+			
+			var res = new Element('div', {
+				id: 'help-btn-close',
+				alt: 'Close',
+				title: 'Close',
+				events: {
+					'click': function(event) {
+						fa.toggle();
+					}
+				}
+			}).injectInside(this.pane);
 
 			this.tab = $('tab');
 			if (this.tab) {
@@ -153,6 +163,11 @@ if (typeof(Fx) === 'undefined') {
 
 				this.frm = $(this.options.formId);
 				if (this.frm) {
+					var d = document.createElement('DIV');
+					d.innerHTML = '<iframe src="about:blank" id="upload_target" name="upload_target" style="width:0px;height:0px;border:0px solid #fff;"></iframe>';
+					document.body.appendChild(d);
+					
+					this.frm.target = 'upload_target';
 					this.frm.addEvent('submit', function(e) {
 						new Event(e).stop();
 						this.validateFields();
@@ -165,6 +180,7 @@ if (typeof(Fx) === 'undefined') {
 
 		hideTimer: function() {
 			this.loader.hide();
+			this.success.innerHTML = document.getElementById('upload_target').contentWindow.document.getElementById('report-response').innerHTML;
 			this.success.setStyles({
 				'display':'block',
 				'height':this.baseheight
@@ -189,12 +205,14 @@ if (typeof(Fx) === 'undefined') {
 				'height':this.baseheight
 			});
 			success = this.success;
-			this.frm.send({
+			//AIM.submit(this.frm, {'onStart' : startCallback, 'onComplete' : completeCallback});
+			/*this.frm.send({
 				update: success,
 				onComplete: function() {
 					HUB.ReportProblem.hideTimer();
 				}
-	        });
+	        });*/
+			this.frm.submit();
 		},
 
 		validateFields: function() {

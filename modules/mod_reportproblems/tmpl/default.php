@@ -5,11 +5,31 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			<h1><?php echo JText::_('MOD_REPORTPROBLEMS_SUPPORT'); ?></h1>
 
 			<div class="three columns first">
-				<h2><?php echo JText::_('MOD_REPORTPROBLEMS_TROUBLE_REPORT'); ?></h2>
-				<?php echo JText::_('MOD_REPORTPROBLEMS_EXPLANATION'); ?>
+				<h2><?php echo JText::_('Support Options'); ?></h2>
+				<ul>
+					<li class="help-kb">
+						<h3><a href="<?php echo JRoute::_('index.php?option=com_kb'); ?>"><?php echo JText::_('Knowledge Base'); ?></a></h3>
+						<p><?php echo JText::_('Find information on common issues.'); ?></p>
+					</li>
+					<li class="help-qa">
+						<h3><a href="<?php echo JRoute::_('index.php?option=com_answers'); ?>"><?php echo JText::_('Ask the Community'); ?></a></h3>
+						<p><?php echo JText::_('Ask questions and find answers from other users.'); ?></p>
+					</li>
+					<li class="help-wish">
+						<h3><a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('Wish List'); ?></a></h3>
+						<p><?php echo JText::_('Suggest a new site feature or improvement.'); ?></p>
+					</li>
+					<li class="help-tickets">
+						<h3><a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>"><?php echo JText::_('Support Tickets'); ?></a></h3>
+						<p><?php echo JText::_('Check on status of your tickets.'); ?></p>
+					</li>
+				</ul>
 			</div><!-- / .three columns first -->
 			<div class="three columns second third">
-				<form method="post" action="index.php" id="troublereport">
+				<h2>
+					<?php echo JText::_('Submit a Support Ticket'); ?>
+				</h2>
+				<form method="post" action="index.php" id="troublereport" enctype="multipart/form-data">
 					<fieldset class="reporter">
 						<label for="trLogin">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
@@ -39,18 +59,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 						</label>
 <?php if (!$modreportproblems->verified) { ?>
 						<label for="trAnswer">
+							Anti-spam check: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span><br />
 							<?php echo JText::sprintf('MOD_REPORTPROBLEMS_MATH_CAPTCHA', $modreportproblems->problem['operand1'], $modreportproblems->problem['operand2']); ?>
-							<input type="text" name="answer" id="trAnswer" value="" class="option" size="3" /></label><span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span><br />
-							<a href="/kb/misc/why_the_math_question"><?php echo JText::_('MOD_REPORTPROBLEMS_WHY_CAPTCHA'); ?></a>
-
+							<input type="text" name="answer" id="trAnswer" value="" class="option" size="3" />
+						</label>
 <?php } ?>
 					</fieldset>
 					<fieldset>
 						<label for="trProblem">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_PROBLEM'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-							<textarea name="problem[long]" id="trProblem" <?php if (!$modreportproblems->verified) { echo 'class="long" '; } ?>rows="10" cols="40"></textarea>
+							<textarea name="problem[long]" id="trProblem" <?php //if (!$modreportproblems->verified) { echo 'class="long" '; } ?>rows="10" cols="40"></textarea>
 						</label>
-
+						
+						<label>
+							<?php echo JText::_('Attach a screenshot'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
+							<input type="file" name="upload" id="trUpload" />
+						</label>
+						
 						<input type="hidden" name="problem[topic]" value="???" />
 						<input type="hidden" name="problem[short]" value="" />
 						<input type="hidden" name="problem[referer]" value="<?php echo $modreportproblems->referrer; ?>" />
