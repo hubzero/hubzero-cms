@@ -105,17 +105,15 @@ class Hubzero_Controller extends JObject
 
 	//-----------
 	
-	protected function _getScripts($script='')
+	protected function _getScripts($script='', $option='')
 	{
 		$document =& JFactory::getDocument();
-		if ($script) {
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$script.'.js')) {
-				$document->addScript('components'.DS.$this->_option.DS.$script.'.js');
-			}
-		} else {
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-				$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-			}
+		
+		$option = ($option) ? $option : $this->_option;
+		$script = ($script) ? $script : $this->_name;
+
+		if (is_file(JPATH_ROOT.DS.'components'.DS.$option.DS.$script.'.js')) {
+			$document->addScript('components'.DS.$option.DS.$script.'.js');
 		}
 	}
 	
