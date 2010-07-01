@@ -68,7 +68,7 @@ class ResourcesHelper extends JObject
 	// Contributors
 	//----------------------------------------------------------
 
-	function getUnlinkedContributors() 
+	function getUnlinkedContributors($incSubmitter=false) 
 	{
 		if (!isset($this->_contributors)) {
 			$this->getCons();
@@ -80,6 +80,9 @@ class ResourcesHelper extends JObject
 			$names = array();
 			foreach ($contributors as $contributor) 
 			{
+				if ($incSubmitter == false && $contributor->role == 'submitter') {
+					continue;
+				}
 				if ($contributor->lastname || $contributor->firstname) {
 					$name = stripslashes($contributor->firstname) .' ';
 					if ($contributor->middlename != NULL) {
