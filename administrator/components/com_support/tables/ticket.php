@@ -277,4 +277,168 @@ class SupportTicket extends JTable
 		$this->_db->setQuery( "SELECT id FROM $filter ORDER BY ".$filters['sortby']." LIMIT 1" );
 		return $this->_db->loadResult();
 	}
+	
+	//-----------
+	
+	public function getCountOfTicketsOpened($type=0, $year='', $month='01', $day='01', $group=null) 
+	{
+		$year = ($year) ? $year : date("Y");
+		
+		$sql = "SELECT count(*) 
+				FROM $this->_tbl 
+				WHERE report!='' 
+				AND type='$type'";
+		if (!$group) {
+			$sql .= " AND (`group`='' OR `group` IS NULL)";
+		} else {
+			$sql .= " AND `group`='$group'";
+		}
+		$sql .= " AND created>='".$year."-".$month."-".$day." 00:00:00'";
+		
+		$this->_db->setQuery( $sql );
+		return $this->_db->loadResult();
+	}
+	
+	//-----------
+	
+	public function getCountOfTicketsClosed($type=0, $year='', $month='01', $day='01', $username=null, $group=null) 
+	{
+		$year = ($year) ? $year : date("Y");
+		
+		$sql = "SELECT COUNT(DISTINCT k.ticket) 
+				FROM #__support_comments AS k, $this->_tbl AS f
+				WHERE f.report!='' 
+				AND f.type='$type' 
+				AND f.status=2 
+				AND k.ticket=f.id 
+				AND k.created>='".$year."-".$month."-".$day." 00:00:00'";
+		if (!$group) {
+			$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
+		} else {
+			$sql .= " AND f.`group`='$group'";
+		}
+		if ($username) {
+			$sql .= " AND k.created_by='".$username."'";
+		}
+		
+		$this->_db->setQuery( $sql );
+		return $this->_db->loadResult();
+	}
+	
+	//-----------
+	
+	public function getCountOfOpenTickets($type=0, $unassigned=false, $group=null) 
+	{
+		$sql = "SELECT count(*) 
+				FROM $this->_tbl 
+				WHERE report!='' 
+				AND type='$type' 
+				AND (status=0 OR status=1)";
+		if (!$group) {
+			$sql .= " AND (`group`='' OR `group` IS NULL)";
+		} else {
+			$sql .= " AND `group`='$group'";
+		}
+		if ($unassigned) {
+			$sql .= " AND (owner IS NULL OR owner='') AND (resolved IS NULL OR resolved='')";
+		}
+		
+		$this->_db->setQuery( $sql );
+		return $this->_db->loadResult();
+	}
+	
+	//-----------
+	
+	public function getCountOfTicketsClosedInMonth($type=0, $year='', $month='01', $group=null) 
+	{
+		$year = ($year) ? $year : date("Y");
+		
+		$nextyear = (intval($month) == 12) ? $year+1 : $year;
+		$nextmonth = (intval($month) == 12) ? '01' : sprintf( "%02d",intval($month)+1);
+		
+		$sql = "SELECT COUNT(DISTINCT k.ticket) 
+				FROM #__support_comments AS k, $this->_tbl AS f
+				WHERE f.report!='' 
+				AND f.type='$type' 
+				AND f.status=2 
+				AND k.ticket=f.id 
+				AND k.created>='".$year."-".$month."-01 00:00:00' 
+				AND k.created<'".$nextyear."-".$nextmonth."-01 00:00:00'";
+		if (!$group) {
+			$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
+		} else {
+			$sql .= " AND f.`group`='$group'";
+		}
+			
+		$this->_db->setQuery( $sql );
+		return $this->_db->loadResult();
+	}
+	
+	//-----------
+	
+	public function getCountOfTicketsOpenedInMonth($type=0, $year='', $month='01', $group=null) 
+	{
+		$year = ($year) ? $year : date("Y");
+		
+		$nextyear = (intval($month) == 12) ? $year+1 : $year;
+		$nextmonth = (intval($month) == 12) ? '01' : sprintf( "%02d",intval($month)+1);
+		
+		$sql = "SELECT count(*) 
+				FROM $this->_tbl 
+				WHERE report!='' 
+				AND type=".$type." 
+				AND created>='".$year."-".$month."-01 00:00:00' 
+				AND created<'".$nextyear."-".$nextmonth."-01 00:00:00'";
+		if (!$group) {
+			$sql .= " AND (`group`='' OR `group` IS NULL)";
+		} else {
+			$sql .= " AND `group`='$group'";
+		}
+			
+		$this->_db->setQuery( $sql );
+		return $this->_db->loadResult();
+	}
+	
+	public function getAverageLifeOfTicket($type=0, $year='', $group=null) 
+	{
+		$year = ($year) ? $year : date("Y");
+		
+		$sql = "SELECT k.ticket, UNIX_TIMESTAMP(f.created) AS t_created, UNIX_TIMESTAMP(MAX(k.created)) AS c_created
+				FROM #__support_comments AS k, $this->_tbl AS f
+				WHERE f.report!='' 
+				AND f.type='$type' 
+				AND f.status=2 
+				AND k.ticket=f.id 
+				AND f.created>='".$year."-01-01 00:00:00'";
+		if (!$group) {
+			$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
+		} else {
+			$sql .= " AND f.`group`='$group'";
+		}
+		$sql .= " GROUP BY k.ticket";
+		$this->_db->setQuery( $sql );
+		$times = $this->_db->loadObjectList();
+		
+		$lifetime = array();
+		
+		if ($times) {
+			$count = 0;
+			$lt = 0;
+			foreach ($times as $tim) 
+			{
+				$lt += $tim->c_created - $tim->t_created;
+				$count++;
+			}
+			$difference = ($lt / $count);
+			if ($difference < 0) $difference = 0;
+
+			$days = floor($difference/60/60/24);
+			$hours = floor(($difference - $days*60*60*24)/60/60);
+			$minutes = floor(($difference - $days*60*60*24 - $hours*60*60)/60);
+			
+			$lifetime = array($days, $hours, $minutes);
+		}
+		
+		return $lifetime;
+	}
 }
