@@ -198,6 +198,7 @@ class MembersProfile extends JTable
 		}
 
 		$query  = $select."FROM $this->_tbl AS m";
+		//$query .= " LEFT JOIN #__users AS u ON u.id=m.uidNumber";
 		if (isset($filters['sortby']) && $filters['sortby'] == "RAND()") {
 			$query .= " LEFT JOIN #__xprofiles_bio AS b ON b.uidNumber=m.uidNumber";
 		}
@@ -252,7 +253,7 @@ class MembersProfile extends JTable
 			$filters['authorized'] = true;
 		}
 		
-		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, m.organization, m.vip, m.public, m.picture, ";
+		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, m.organization, m.email, m.vip, m.public, m.picture, NULL AS lastvisitDate, ";
 		$query .= "CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' AND m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&bnsp;' THEN
 		   CONCAT(m.surname, ', ', m.givenName, COALESCE(CONCAT(' ', m.middleName), ''))
 		ELSE

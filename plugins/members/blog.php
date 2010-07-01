@@ -291,7 +291,7 @@ class plgMembersBlog extends JPlugin
 			}
 
 			$view->row = new BlogEntry($this->database);
-			$view->row->loadAlias($alias, 'member');
+			$view->row->loadAlias($alias, 'member', $this->member->get('uidNumber'));
 		}
 		
 		if (!$view->row->id) {

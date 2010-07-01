@@ -14,6 +14,7 @@ if ($juser->authorize( 'com_members', 'admin' )) {
 	JToolBarHelper::deleteList();
 }
 
+include_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'html'.DS.'html'.DS.'grid.php');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -42,20 +43,6 @@ function submitbutton(pressbutton)
 			for 
 			<input type="text" name="search" value="<?php echo $this->filters['search']; ?>" />
 		
-	
-		<label>
-			<?php echo JText::_('SORT_BY'); ?>:
-			<select name="sortby">
-				<option value="uidNumber DESC"<?php if ($this->filters['sortby'] == 'uidNumber DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID DESC'); ?></option>
-				<option value="uidNumber ASC"<?php if ($this->filters['sortby'] == 'uidNumber ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID ASC'); ?></option>
-				<option value="username ASC"<?php if ($this->filters['sortby'] == 'username ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('USERNAME'); ?></option>
-				<option value="surname"<?php if ($this->filters['sortby'] == 'surname') { echo ' selected="selected"'; } ?>><?php echo JText::_('LAST_NAME'); ?></option>
-				<option value="givenName"<?php if ($this->filters['sortby'] == 'givenName') { echo ' selected="selected"'; } ?>><?php echo JText::_('FIRST_NAME'); ?></option>
-				<option value="org"<?php if ($this->filters['sortby'] == 'org') { echo ' selected="selected"'; } ?>><?php echo JText::_('ORGANIZATION'); ?></option>
-				<option value="total DESC"<?php if ($this->filters['sortby'] == 'total DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('NUMBER_OF_CONTRIBUTIONS'); ?></option>
-			</select>
-		</label>
-		
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
 
@@ -63,12 +50,13 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JText::_('ID'); ?></th>
-				<th><?php echo JText::_('NAME'); ?></th>
-				<th><?php echo JText::_('USERNAME'); ?></th>
-				<th><?php echo JText::_('ORGANIZATION'); ?></th>
-				<th><?php echo JText::_('VIP'); ?></th>
-				<th><?php echo JText::_('NUMBER_OF_CONTRIBUTIONS'); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'ID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'Name', 'surname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'Username', 'username', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'Organization', 'org', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'E-Mail', 'email', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', '# of contributions', 'rcount', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<!-- <th><?php echo JHTML::_('grid.sort', 'Last Visit', 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th> -->
 			</tr>
 		</thead>
 		<tfoot>
@@ -95,6 +83,12 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$row->middleName = implode(' ',$bits);
 		}
 	}
+	
+	if (!$row->lastvisitDate || $row->lastvisitDate == "0000-00-00 00:00:00") {
+		$lvisit = JText::_( 'Never' );
+	} else {
+		$lvisit	= $row->lastvisitDate; //= JHTML::_('date',  $row->lastvisitDate, JText::_('DATE_FORMAT_LC4'));
+	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->uidNumber ?>" onclick="isChecked(this.checked);" /></td>
@@ -102,8 +96,9 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<? echo $row->uidNumber; ?>"><?php echo stripslashes($row->surname).', '.stripslashes($row->givenName).' '.stripslashes($row->middleName); ?></a></td>
 				<td><?php echo $row->username; ?></td>
 				<td><?php echo ($row->organization) ? stripslashes($row->organization) : '&nbsp;';?></td>
-				<td><?php echo ($row->vip == 1) ? '<span class="check">'.JText::_('YES').'</span>' : '&nbsp;'; ?></td>
+				<td><a href="mailto:<?php echo $row->email; ?>"><?php echo $row->email; ?></a></td>
 				<td><?php echo $row->rcount; ?></td>
+				<!-- <td><?php echo $lvisit; ?></td> -->
 			</tr>
 <?php
 	$k = 1 - $k;
@@ -115,5 +110,8 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
