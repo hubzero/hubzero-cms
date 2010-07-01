@@ -178,7 +178,7 @@ if ($this->comments) {
 		}
 ?>
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $comment->id; ?>">
-			<a name="#c<?php echo $comment->id; ?>"></a>
+			<a name="c<?php echo $comment->id; ?>"></a>
 			<p class="comment-member-photo">
 				<img src="<?php echo BlogHelperMember::getMemberPhoto($xuser, $comment->anonymous); ?>" alt="" />
 			</p>

@@ -70,10 +70,14 @@ class MembersController extends Hubzero_Controller
 		$view->filters = array();
 		$view->filters['search'] = urldecode($app->getUserStateFromRequest($this->_option.'.search', 'search', ''));
 		$view->filters['search_field'] = urldecode($app->getUserStateFromRequest($this->_option.'.search_field', 'search_field', 'name'));
-		$view->filters['sortby'] = $app->getUserStateFromRequest($this->_option.'.sortby', 'sortby', 'surname');
+		//$view->filters['sortby'] = $app->getUserStateFromRequest($this->_option.'.sortby', 'sortby', 'surname');
+		$view->filters['sort']     = trim($app->getUserStateFromRequest($this->_option.'.sort', 'filter_order', 'surname'));
+		$view->filters['sort_Dir'] = trim($app->getUserStateFromRequest($this->_option.'.sortdir', 'filter_order_Dir', 'ASC'));
 		$view->filters['show']   = '';
 		$view->filters['scope']  = '';
 		$view->filters['authorized'] = true;
+		
+		$view->filters['sortby'] = $view->filters['sort'].' '.$view->filters['sort_Dir'];
 		
 		// Get paging variables
 		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
