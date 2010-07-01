@@ -159,7 +159,13 @@ class plgSupportWishlist extends JPlugin
 		switch ($category)
 		{
 			case 'wish': 
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'wishlist.wishlist.php' );
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php' );
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.plan.php' );
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.php' );
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.group.php' );
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.php' );
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.rank.php' );
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.attachment.php' );
 					
 				// Delete the wish
 				$wish = new Wish( $database );
@@ -179,7 +185,7 @@ class plgSupportWishlist extends JPlugin
 				$comment->load( $referenceid );
 				$comment->state = 2;
 				if (!$comment->store()) {
-					echo ReportAbuseHtml::alert( $comment->getError() );
+					echo SupportHtml::alert( $comment->getError() );
 					exit();
 				}
 				

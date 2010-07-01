@@ -96,7 +96,9 @@ class SupportController extends Hubzero_Controller
 			case 'save':       $this->save();       break;
 			case 'remove':     $this->remove();     break;
 			case 'cancel':     $this->cancel();     break;
-			case 'tickets':    $this->tickets();     break;
+			case 'tickets':    $this->tickets();    break;
+			
+			case 'stats':      $this->stats();      break;
 			
 			default: $this->tickets(); break;
 		}
@@ -105,6 +107,119 @@ class SupportController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Views
 	//----------------------------------------------------------
+
+	protected function stats() 
+	{
+		// Push some styles to the template
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet('components'.DS.$this->_option.DS.$this->_name.'.css');
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'stats') );
+		$view->option = $this->_option;
+		$view->title = JText::_(strtoupper($this->_name));
+		
+		$type = JRequest::getVar('type', 'submitted');
+		$view->type = ($type == 'automatic') ? 1 : 0;
+		
+		$view->group = JRequest::getVar('group', '');
+		
+		// Set up some dates
+		$jconfig =& JFactory::getConfig();
+		$this->offset = $jconfig->getValue('config.offset');
+		
+		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
+		$month = strftime("%m", time()+($this->offset*60*60));
+		$day   = strftime("%d", time()+($this->offset*60*60));
+		if ($day<="9"&ereg("(^[1-9]{1})",$day)) {
+			$day = "0$day";
+		}
+		if ($month<="9"&ereg("(^[1-9]{1})",$month)) {
+			$month = "0$month";
+		}
+		
+		$startday = 0;
+		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
+		if ($numday == -1) {
+			$numday = 6;
+		} 
+		$week_start = mktime(0, 0, 0, $month, ($day - $numday), $year );
+		$week = strftime("%d", $week_start );
+		
+		$view->year = $year;
+		$view->opened = array();
+		$view->closed = array();
+		
+		$st = new SupportTicket( $this->database );
+		
+		// Get opened ticket information
+		$view->opened['year'] = $st->getCountOfTicketsOpened($view->type, $year, '01', '01', $view->group);
+		
+		$view->opened['month'] = $st->getCountOfTicketsOpened($view->type, $year, $month, '01', $view->group);
+		
+		$view->opened['week'] = $st->getCountOfTicketsOpened($view->type, $year, $month, $week, $view->group);
+		
+		// Currently open tickets
+		$view->opened['open'] = $st->getCountOfOpenTickets($view->type, false, $view->group);
+		
+		// Currently unassigned tickets
+		$view->opened['unassigned'] = $st->getCountOfOpenTickets($view->type, true, $view->group);
+		
+		// Get closed ticket information
+		$view->closed['year'] = $st->getCountOfTicketsClosed($view->type, $year, '01', '01', null, $view->group);
+		
+		$view->closed['month'] = $st->getCountOfTicketsClosed($view->type, $year, $month, '01', null, $view->group);
+		
+		$view->closed['week'] = $st->getCountOfTicketsClosed($view->type, $year, $month, $week, null, $view->group);
+		
+		// Users
+		$query = "SELECT a.username, a.name, a.id"
+			. "\n FROM #__users AS a"
+			. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
+			. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = aro.id"	// map aro to group
+			. "\n INNER JOIN #__core_acl_aro_groups AS g ON g.id = gm.group_id"
+			. "\n WHERE a.block = '0' AND g.id=25"
+			. "\n ORDER BY a.name";
+		$this->database->setQuery( $query );
+		$view->users = $this->database->loadObjectList();
+		if ($view->users) {
+			foreach ($view->users as $user) 
+			{
+				$user->closed = array();
+				
+				// Get closed ticket information
+				$user->closed['year'] = $st->getCountOfTicketsClosed($view->type, $year, '01', '01', $user->username, $view->group);
+
+				$user->closed['month'] = $st->getCountOfTicketsClosed($view->type, $year, $month, '01', $user->username, $view->group);
+
+				$user->closed['week'] = $st->getCountOfTicketsClosed($view->type, $year, $month, $week, $user->username, $view->group);
+			}
+		}
+		
+		// Get avgerage lifetime
+		$view->lifetime = $st->getAverageLifeOfTicket($view->type, $year, $view->group);
+		
+		// Tickets over time
+		$view->closedmonths = array();
+		for ($i = 1; $i <= 12; $i++) 
+		{
+			$view->closedmonths[$i] = $st->getCountOfTicketsClosedInMonth($view->type, $year, sprintf( "%02d",$i), $view->group);
+		}
+		
+		$view->openedmonths = array();
+		for ($i = 1; $i <= 12; $i++) 
+		{
+			$view->openedmonths[$i] = $st->getCountOfTicketsOpenedInMonth($view->type, $year, sprintf( "%02d",$i), $view->group);
+		}
+		
+		// Output HTML
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
 
 	protected function categories()
 	{
@@ -389,6 +504,10 @@ class SupportController extends Hubzero_Controller
 		$row->report  = nl2br($row->report);
 		$row->report  = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
 		$row->report  = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
+		
+		if ($id) {
+			$row->report = $attach->parse($row->report);
+		}
 		
 		$lists = array();
 		
@@ -815,6 +934,13 @@ class SupportController extends Hubzero_Controller
 					$row->resolved = '';
 					$row->store();
 				}
+				// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
+				$ccreated_by = JRequest::getVar( 'username', '' );
+				if ($row->status == 1 && $ccreated_by == $row->login) {
+					$row->status = 0;
+					$row->resolved = '';
+					$row->store();
+				}
 			}
 			
 			// Compare fields to find out what has changed for this ticket
@@ -926,7 +1052,8 @@ class SupportController extends Hubzero_Controller
 					}
 					$message .= $attach->parse($comment)."\r\n\r\n";
 
-					$sef = JRoute::_('index.php?option='.$this->_option.'&task=ticket&id='. $row->id);
+					//$sef = JRoute::_('index.php?option='.$this->_option.'&task=ticket&id='. $row->id);
+					$sef = $this->_name.'/ticket/'. $row->id;
 					if (substr($sef,0,1) == '/') {
 						$sef = substr($sef,1,strlen($sef));
 					}
@@ -952,10 +1079,6 @@ class SupportController extends Hubzero_Controller
 						if ($rowc->access != 1) {
 							$zuser =& JUser::getInstance($row->login);
 							// Make sure there even IS an e-mail and it's valid
-							/*if ($row->email && SupportUtilities::check_validEmail($row->email)) {
-								$emails[] = $row->email;
-								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
-							}*/
 							if (is_object($zuser) && $zuser->get('id')) {
 								$type = 'support_reply_submitted';
 								if ($row->status == 1) {
@@ -974,6 +1097,9 @@ class SupportController extends Hubzero_Controller
 								} else {
 									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
 								}
+							} else if ($row->email && SupportUtilities::check_validEmail($row->email)) {
+								$emails[] = $row->email;
+								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
 							}
 						}
 					}
@@ -1034,7 +1160,7 @@ class SupportController extends Hubzero_Controller
 					// Were there any changes?
 					$elog = implode("\n",$emaillog);
 					if ($elog != '') {
-						$rowc->changelog .= '<ul class="emaillog">'."\n".$elog.'</ul>'.n;
+						$rowc->changelog .= '<ul class="emaillog">'."\n".$elog.'</ul>'."\n";
 						
 						// Save the data
 						if (!$rowc->store()) {

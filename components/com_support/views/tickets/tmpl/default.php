@@ -36,6 +36,9 @@ if ($this->filters['_show'] != '') {
 </div><!-- / #content-header -->
 <div id="content-header-extra">
 	<ul id="useroptions">
+<?php if ($this->authorized == 'admin') { ?>
+		<li><a class="stats" href="/support/stats"><?php echo JText::_('Stats'); ?></a></li>
+<?php } ?>
 		<li class="last"><a class="new-ticket" href="/feedback/report_problems/"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
@@ -201,7 +204,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<tr class="<?php echo ($row->status == 2) ? 'closed' : $row->severity; ?>">
 						<td><?php echo $row->id; ?></td>
 						<td>
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=ticket&id='.$row->id); echo ($fstring != '') ? '?find='.$fstring : ''; ?>" title="<?php echo $row->report; ?>"><?php echo htmlentities(stripslashes($row->summary),ENT_QUOTES); ?></a>
+							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=ticket&id='.$row->id); echo ($fstring != '') ? '?find='.$fstring : ''; ?>" title="<?php echo $row->report; ?>"><?php echo stripslashes($row->summary); ?></a>
 							<span class="reporter">by <?php echo $row->name; echo ($row->login) ? ' (<a href="'.$lnk.'">'.$row->login.'</a>)' : ''; ?>, <?php echo JText::_('TAGS'); ?>: <span class="tags"><?php echo $tags; ?></span></span>
 						</td>
 						<td style="white-space: nowrap;"><span class="<?php echo $status; ?> status"><?php echo ($row->status == 2) ? '&radic; ' : ''; echo $status; echo ($row->status == 2) ? ' ('.$row->resolved.')' : ''; ?></span></td>

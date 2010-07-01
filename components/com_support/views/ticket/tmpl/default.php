@@ -93,7 +93,7 @@ if ($this->comments) {
 	<div class="subject">
 		<?php 
 		if ($this->row->summary) {
-			echo '<h4>'.$this->row->summary.'</h4>'.n;
+			echo '<h4>'.$this->row->summary.'</h4>'."\n";
 		}
 		?>
 		<blockquote cite="<?php echo ($this->row->login) ? $this->row->login : $this->row->name; ?>">
@@ -228,6 +228,7 @@ if ($this->comments) {
 			<h4><?php echo JText::_('COMMENT_FORM'); ?></h4>
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+				<input type="hidden" name="ticket[id]" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="option" value="<?php echo $option; ?>" />
 				<input type="hidden" name="task" value="save" />
 				<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
@@ -254,7 +255,7 @@ if (count($tf) > 0) {
 					</label>
 					<label>
 						<?php echo JText::_('COMMENT_SEVERITY'); ?>:
-						<?php echo SupportHtml::selectArray('severity',$this->lists['severities'],$this->row->severity); ?>
+						<?php echo SupportHtml::selectArray('ticket[severity]',$this->lists['severities'],$this->row->severity); ?>
 					</label>
 				</div>
 				<div class="clear"></div>
@@ -268,7 +269,7 @@ if (count($tf) > 0) {
 						$document->addScript('components'.DS.'com_support'.DS.'autocompleter.js');
 						$document->addStyleSheet('components'.DS.'com_support'.DS.'autocompleter.css');
 						?>:
-						<input type="text" name="group" value="<?php echo $this->row->group; ?>" id="acgroup" value="" autocomplete="off" />
+						<input type="text" name="ticket[group]" value="<?php echo $this->row->group; ?>" id="acgroup" value="" autocomplete="off" />
 					</label>
 
 					<label>
@@ -278,9 +279,9 @@ if (count($tf) > 0) {
 <?php } ?>
 					<label>
 						<?php echo JText::_('COMMENT_STATUS'); ?>:
+						<select name="ticket[resolved]" id="status">
 						<?php 
-						$html  = '<select name="resolved" id="status">'.n;
-						$html .= t.'<option value=""';
+						$html  = t.'<option value=""';
 						if ($this->row->status == 0 || $this->row->resolved == '') {
 							$html .= ' selected="selected"';
 						}
@@ -306,9 +307,9 @@ if (count($tf) > 0) {
 							}
 						}
 						$html .= t.'</optgroup>'.n;
-						$html .= '</select>'.n;
 						echo $html;
 						?>
+						</select>
 					</label>
 <?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
 				</div>
@@ -329,7 +330,7 @@ if (count($tf) > 0) {
 								$message->message = str_replace('"','&quot;',$message->message);
 								$message->message = str_replace('&quote;','&quot;',$message->message);
 								$message->message = str_replace('#XXX','#'.$this->row->id,$message->message);
-								$message->message = str_replace('{ticket#}','#'.$this->row->id,$message->message);
+								$message->message = str_replace('{ticket#}',$this->row->id,$message->message);
 								$message->message = str_replace('{sitename}',$jconfig->getValue('config.sitename'),$message->message);
 								$message->message = str_replace('{siteemail}',$jconfig->getValue('config.mailfrom'),$message->message);
 
@@ -388,6 +389,9 @@ if (count($tf) > 0) {
 						<input type="text" name="cc" value="" size="38" />
 					</label>
 				</fieldset>
+<?php } else { ?>
+					<input type="hidden" name="email_submitter" id="email_submitter" value="1" />
+					<input type="hidden" name="email_owner" id="email_owner" value="1" />
 <?php } ?>
 				<p class="submit"><input type="submit" value="<?php echo JText::_('SUBMIT_COMMENT'); ?>" /></p>
 			</fieldset>

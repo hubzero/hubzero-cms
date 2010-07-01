@@ -88,24 +88,33 @@ function supportParseRoute($segments)
 		$vars['route'] = 'support';
 	}
 	else*/
-	if ($segments[0] == 'report_problems') {
-	    $vars['option'] = 'com_feedback';
-	    $vars['task'] = 'report';
-	}
-	else if ($segments[0] == 'tickets') {
-		if (isset($segments[1])) {
-			$vars['task'] = 'feed';
-			$vars['no_html'] = 1;
-			$_GET['no_html'] = 1;
-		} else {
-			$vars['task'] = 'tickets';
-		}
-	}
-	else if ($segments[0] == 'ticket' || $segments[0] == 'delete' || $segments[0] == 'reportabuse') {
-		$vars['task'] = $segments[0];
+	switch ($segments[0])
+	{
+		case 'report_problems':
+	    	$vars['option'] = 'com_feedback';
+	    	$vars['task'] = 'report';
+		break;
+		
+		case 'tickets':
+			if (isset($segments[1])) {
+				$vars['task'] = 'feed';
+				$vars['no_html'] = 1;
+				$_GET['no_html'] = 1;
+			} else {
+				$vars['task'] = 'tickets';
+			}
+		break;
+		
+		case 'ticket':
+		case 'delete':
+		case 'reportabuse':
+		default:
+			$vars['task'] = $segments[0];
 
-		if (!empty($segments[1]))
-			$vars['id'] = $segments[1];
+			if (!empty($segments[1])) {
+				$vars['id'] = $segments[1];
+			}
+		break;
 	}
 
 	return $vars;

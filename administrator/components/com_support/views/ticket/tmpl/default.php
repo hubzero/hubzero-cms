@@ -262,7 +262,13 @@ if ($this->filters['_show'] != '') {
 						<td width="33%">
 							<label>
 								<?php echo JText::_('COMMENT_GROUP'); ?>:<br />
-								<input type="text" name="group" id="group" value="<?php echo $this->row->group; ?>" size="30" />
+								<?php
+								$document =& JFactory::getDocument();
+								$document->addScript(DS.'components'.DS.'com_support'.DS.'observer.js');
+								$document->addScript(DS.'components'.DS.'com_support'.DS.'autocompleter.js');
+								$document->addStyleSheet(DS.'components'.DS.'com_support'.DS.'autocompleter.css');
+								?>
+								<input type="text" name="group" value="<?php echo $this->row->group; ?>" id="acgroup" value="" size="30" autocomplete="off" />
 							</label>
 						</td>
 						<td width="33%">
@@ -328,7 +334,7 @@ if ($this->filters['_show'] != '') {
 									$message->message = str_replace('"','&quot;',stripslashes($message->message));
 									$message->message = str_replace('&quote;','&quot;',$message->message);
 									$message->message = str_replace('#XXX','#'.$this->row->id,$message->message);
-									$message->message = str_replace('{ticket#}','#'.$this->row->id,$message->message);
+									$message->message = str_replace('{ticket#}',$this->row->id,$message->message);
 									$message->message = str_replace('{sitename}',$jconfig->getValue('config.sitename'),$message->message);
 									$message->message = str_replace('{siteemail}',$jconfig->getValue('config.mailfrom'),$message->message);
 
