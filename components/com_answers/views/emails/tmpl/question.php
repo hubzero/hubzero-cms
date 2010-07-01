@@ -33,7 +33,7 @@ if (!strstr($sef,'http')) {
 		$sef = substr($sef,1,strlen($sef));
 	}
 }
-$message  = JText::_('COM_ANSWERS_EMAIL_AUTO_RENERATED')."\n";
+$message  = JText::_('COM_ANSWERS_EMAIL_AUTO_GENERATED')."\n";
 $message .= '----------------------------'."\n";
 $message .= strtoupper(JText::_('COM_ANSWERS_QUESTION')).' #'.$this->row->id."\n";
 $message .= strtoupper(JText::_('COM_ANSWERS_SUMMARY')).': '.$this->row->subject."\n";
