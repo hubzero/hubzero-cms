@@ -25,24 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-
-error_reporting(E_ALL);
-@ini_set('display_errors','1');
-
-// Set access levels
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'admin', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
-// Include scripts
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'sef.class.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.sef.html.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'admin.controller.php' );
-
-// Initiate controller
-$controller = new SefController();
-$controller->execute();
-$controller->redirect();
-?>
+class SefHtml 
+{
+	public function alert( $msg )
+	{
+		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
+	}
+}
