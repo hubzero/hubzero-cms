@@ -55,32 +55,11 @@ $juser =& JFactory::getUser();
 </div><!-- / #content-header-extra -->
 <?php } ?>
 
-<div id="sub-menu">
-	<ul>
-<?php
-$i = 1;
-foreach ($this->cats as $cat)
-{
-	$name = key($cat);
-	if ($name != '' && $cat[$name] != '') {
-?>
-		<li id="sm-<?php echo $i; ?>"<?php echo (strtolower($name) == $this->tab) ? ' class="active"' : ''; ?>><a class="tab" rel="<?php echo $name; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view&sess='.$this->app['sess'].'&active='.$name); ?>"><span><?php echo $cat[$name]; ?></span></a></li>
-<?php
-		$i++;	
-	}
-}
-?>
-	</ul>
-	<div class="clear"></div>
-</div><!-- / #sub-menu -->
-
 <div class="main section" id="session-section">
+
+<div id="app-wrap">
 <?php if ($this->app['sess']) { ?>
-	<ul id="app-options">
-		<li><a href="javascript:document.theapp.refresh()">Refresh Window</a></li>
-		<li><a href="javascript:document.theapp.popout()">Popout</a></li>
-		<li class="app-close"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app['sess']); ?>" title="Terminate this session"><span>Close</span></a></li>
-	</ul>
+	<a id="app-btn-close" href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app['sess']); ?>" title="Terminate this session"><span>Close</span></a>
 <?php } ?>
 	
 	<noscript>
@@ -96,20 +75,23 @@ if (!$this->app['sess']) {
 	echo '<p class="error"><strong>'.JText::_('ERROR').'</strong><br /> '.implode('<br />', $this->output).'</p>';
 } else {
 	$k = 0;
-	$html = '';
+	$html = '<div id="app-content">'."\n";
 	foreach ($this->output as $line) 
 	{
-		if (strpos($line,"id='theapp'")) {
-			$html .= '<div id="app-wrap">'."\n";
+		if (strpos($line,'<div id="app-wrap">')) {
+			continue;
 		}
-		$html .= $line."\n";
-		if (strpos($line,"</applet>") && $k==0) {
-			$html .= '</div><div class="clear"></div>'."\n";
+		if (strpos($line,"</div>") && $k==0) {
 			$k++;
+			continue;
+		} else {
+			$html .= $line."\n";
 		}
 	}
+	$html .= '</div><!-- / #app-content -->'."\n";
 	echo $html;
 ?>
+</div><!-- #app-wrap -->
 
 	<form name="share" id="app-share" method="get" action="index.php">
 		<fieldset>
@@ -154,18 +136,3 @@ if (!$this->app['sess']) {
 
 	<p id="powered-by">Powered by <a href="https://nanohub.org/about/middleware/#Maxwell" rel="external">Maxwell&#146;s D&#xE6;mon</a>.</p>
 </div><!-- / .main section #session-section -->
-
-<?php
-$k = 0;
-foreach ($this->sections as $section) 
-{
-	if ($section['html'] != '') {
-		$cls  = '';
-		if (key($this->cats[$k+1]) != $this->tab) {
-			$cls = 'hide ';
-		}
-		echo '<div class="'.$cls.'main section" id="'.key($this->cats[$k+1]).'-section">'. $section['html'].'</div><!-- / #'.key($this->cats[$k+1]).'-section -->'."\n";
-	}
-	$k++;
-}
-?>
