@@ -2359,11 +2359,13 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			{
 				$out .= ' <tr>'.n;
 				// build name
-				$out .= '  <td width="100%">'. stripslashes($contributor->firstname) .' ';
+				$out .= '  <td width="100%">';
+				$name = stripslashes($contributor->firstname) .' ';
 				if ($contributor->middlename != NULL) {
-					$out .= stripslashes($contributor->middlename) .' ';
+					$name .= stripslashes($contributor->middlename) .' ';
 				}
-				$out .= stripslashes($contributor->lastname);
+				$name .= stripslashes($contributor->lastname);
+				$out .= $contributor->name ? $contributor->name : $name;
 				$out .= ' <span class="caption">('.$contributor->org.')</span></td>'.n;
 				// build order-up/down icons
 				if($version=='dev') {
