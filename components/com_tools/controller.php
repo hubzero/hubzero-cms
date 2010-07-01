@@ -910,7 +910,7 @@ class ToolsController extends JObject
 		/*$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
 		$title .= ($app['caption']) ? ': '.$app['caption'] : $app['name'];*/
-		$title  = JText::_('Tools');
+		$title  = JText::_('Resources').': '.JText::_('Tools');
 		$title .= ($app['title']) ? ': '.$app['title'] : ': '.$app['name'];
 		$title .= ': '.JText::_('Session');
 		$title .= ($app['caption']) ? ': '.$app['sess'].' "'.$app['caption'].'"' : ': '.$app['sess'];
@@ -924,8 +924,9 @@ class ToolsController extends JObject
 		$pathway =& $japp->getPathway();
 		if (count($pathway->getPathWay()) <= 0) {
 			//$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-			$pathway->addItem( JText::_('Tools'), 'index.php?option=com_tools' );
+			$pathway->addItem( JText::_('Resources'), 'index.php?option=com_resources' );
 		}
+		$pathway->addItem( JText::_('Tools'), 'index.php?option=com_resources&type=tools' );
 		$t = ($app['caption']) ? $app['sess'].' "'.$app['caption'].'"' : $app['sess'];
 		$pathway->addItem( $app['title'], 'index.php?option='.$this->_option.'&app='.$toolname );
 		if ($this->_task) {
@@ -934,40 +935,13 @@ class ToolsController extends JObject
 		}
 		//$t = ($app['caption']) ? $app['caption'] : $app['name'];
 		//$pathway->addItem( $t, 'index.php?option='.$this->_option.a.'task=view'.a.'sess='.$app['sess'] );
-		
-		// Get plugins
-		JPluginHelper::importPlugin( 'mw' );
-		$dispatcher =& JDispatcher::getInstance();
-		
-		// Get the active tab (section)
-		$tab = JRequest::getVar( 'active', 'session' );
-		
-		// Trigger the functions that return the areas we'll be using
-		$cats = $dispatcher->trigger( 'onMwAreas', array($authorized) );
-		
-		// Get the sections
-		$sections = $dispatcher->trigger( 'onMw', array($toolname, $this->_option, $authorized, array($tab)) );
-		
-		// Add the default "Profile" section to the beginning of the lists
-		/*$body = '';
-		if ($tab == 'session') {
-			$body = $view->loadTemplate();
-		}*/
-		
-		$cat = array();
-		$cat['session'] = JText::_('COM_TOOLS_SESSION');
-		array_unshift($cats, $cat);
-		//array_unshift($sections, array('html'=>$body,'metadata'=>''));
 
 		// Instantiate the view
 		$view = new JView( array('name'=>'session') );
 		$view->option = $this->_option;
 		$view->app = $app;
 		$view->authorized = $authorized;
-		$view->cats = $cats;
-		$view->sections = $sections;
 		$view->config = $this->config;
-		$view->tab = $tab;
 		$view->output = $output;
 		$view->toolname = $toolname;
 		if ($app['sess']) {
@@ -1695,7 +1669,7 @@ class ToolsController extends JObject
 		$path = $this->buildUploadPath( $listdir );
 		
 		// Incoming file to delete
-		$file = urldecode(JRequest::getVar( 'delFile', '' ));
+		$file = urldecode(JRequest::getVar( 'file', '' ));
 		if (!$file) {
 			$this->setError( JText::_('File not found.') );
 			$this->listfiles();

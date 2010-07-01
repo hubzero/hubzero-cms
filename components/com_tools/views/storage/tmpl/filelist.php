@@ -128,7 +128,7 @@ for ($i=0; $i<count($folders); $i++)
 							<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&no_html=1&amp;listdir='.$d); ?>"><img src="/components/<?php echo $this->option; ?>/images/folder.gif" alt="<?php echo $folder_name; ?>" width="16" height="16" /></td>
 							<td width="100%"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&no_html=1&listdir='.urlencode($d)); ?>"><?php echo $dir; ?></a></td>
 <?php if ($dir != '/data' && $dir != '/sessions') { ?>
-							<td><a href="index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;no_html=1" target="imgManager" onclick="return deleteFolder('<?php echo $dir; ?>', <?php echo $num_files; ?>);" title="<?php echo JText::_('Delete'); ?>"><img src="components/<?php echo $this->option; ?>/images/trash.gif" width="15" height="15" alt="<?php echo JText::_('Delete'); ?>" /></a></td>
+							<td><a href="index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;no_html=1" target="filer" onclick="return deleteFolder('<?php echo $dir; ?>', <?php echo $num_files; ?>);" title="<?php echo JText::_('Delete'); ?>"><img src="components/<?php echo $this->option; ?>/images/trash.gif" width="15" height="15" alt="<?php echo JText::_('Delete'); ?>" /></a></td>
 <?php } else { ?>
 							<td> </td>
 <?php } ?>
