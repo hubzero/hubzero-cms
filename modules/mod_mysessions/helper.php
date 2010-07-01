@@ -124,6 +124,10 @@ class modMySessions
 		$ms = new MwSession( $mwdb );
 		$this->sessions = $ms->getRecords( $juser->get('username'), '', false );
 		if ($this->authorized) {
+			// Add the JavaScript that does the AJAX magic to the template
+			$document =& JFactory::getDocument();
+			$document->addScript('/modules/mod_mysessions/mod_mysessions.js');
+				
 			$this->allsessions = $ms->getRecords( $juser->get('username'), '', $this->authorized );
 		}
 		
