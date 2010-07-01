@@ -71,8 +71,8 @@ var MyToolsTabs = new Class({
 	},
 	
 	toggle: function(lnk) {
-		var li = lnk.parentNode;
-		if(li.hasClass('favd')) {
+		var li = $(lnk.parentNode);
+		if (li.hasClass('favd')) {
 			li.removeClass('favd');
 		} else {
 			li.addClass('favd');
@@ -89,7 +89,7 @@ var MyToolsTabs = new Class({
 		}
 		var fs = f.join(',');
 		var uid = $('uid').value;
-		var id = this.el.parentNode.parentNode.parentNode.getProperty('id').replace('mod_','');
+		var id = $(this.el.parentNode.parentNode.parentNode).getProperty('id').replace('mod_','');
 
 		var myAjax2 = new Ajax('index2.php?option=com_myhub&no_html=1&task=saveparams&id='+id+'&uid='+uid+'&params[myhub_favs]='+fs).request();
 		var myAjax2 = new Ajax('index2.php?option=com_myhub&no_html=1&task=refresh&id='+id+'&uid='+uid+'&fav='+fs,{update:'favtools'}).request();
