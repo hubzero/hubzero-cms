@@ -27,22 +27,27 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
+error_reporting(E_ALL);
+@ini_set('display_errors','1');
 
-switch ($task)
-{
-	case 'site':         HubToolbar::_SITE();         break;
-	case 'registration': HubToolbar::_REGISTRATION(); break;
-	case 'databases':    HubToolbar::_DATABASES();    break;
-	case 'misc':         HubToolbar::_MISC();         break;
-	case 'components':   HubToolbar::_COMPONENTS();   break;
-	case 'new':          HubToolbar::_EDIT(0);        break;
-	case 'edit':         HubToolbar::_EDIT(1);        break;
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
 
-	case 'addorg':  HubToolbar::_EDIT_ORG(0); break;
-	case 'editorg': HubToolbar::_EDIT_ORG(1); break;
-	case 'orgs':    HubToolbar::_ORGS();      break;
-
-	default: HubToolbar::_SITE(); break;
+// Ensure user has access to this function
+$juser =& JFactory::getUser();
+if (!$juser->authorize($option, 'manage')) {
+	$app =& JFactory::getApplication();
+	$app->redirect( 'index.php' );
 }
-?>
+
+// Include scripts
+include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'database'.DS.'table'.DS.'component.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'xorganization.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php' );
+
+// Initiate controller
+$controller = new HubController();
+$controller->execute();
+$controller->redirect();

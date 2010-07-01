@@ -25,72 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class HubController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
-	private function getTask()
-	{
-		$task = Jrequest::getVar( 'task', '' );
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-	
+class HubController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		// Load the component
-		$database =& JFactory::getDBO();
-		$component = new JTableComponent( $database );
-		$component->loadByOption( $this->_option );
+		$this->_task = Jrequest::getVar( 'task', '' );
 		
-		switch ( $this->getTask() ) 
+		switch ($this->_task) 
 		{
 			case 'save':       $this->save();      break;
 			case 'remove':     $this->delete();    break;
@@ -120,10 +63,14 @@ class HubController extends JObject
 			default: $this->settings(); break;
 		}
 		
-		$database->setQuery( "SELECT COUNT(*) FROM #__components WHERE `option`='".$component->option."' AND parent=".$component->id );
-		$menuitems = $database->loadResult();
+		// Load the component
+		/*$component = new JTableComponent( $this->database );
+		$component->loadByOption( $this->_option );
+		
+		$this->database->setQuery( "SELECT COUNT(*) FROM #__components WHERE `option`='".$component->option."' AND parent=".$component->id );
+		$menuitems = $this->database->loadResult();
 		if (!$menuitems) {
-			$menusite = new JTableComponent( $database );
+			$menusite = new JTableComponent( $this->database );
 			$menusite->name = 'Site';
 			$menusite->parent = $component->id;
 			$menusite->admin_menu_link = 'option='.$this->_option.'&task=site';
@@ -132,7 +79,7 @@ class HubController extends JObject
 			$menusite->ordering = 1;
 			$menusite->store();
 			
-			$menureg = new JTableComponent( $database );
+			$menureg = new JTableComponent( $this->database );
 			$menureg->name = 'Registration';
 			$menureg->parent = $component->id;
 			$menureg->admin_menu_link = 'option='.$this->_option.'&task=registration';
@@ -141,7 +88,7 @@ class HubController extends JObject
 			$menureg->ordering = 2;
 			$menureg->store();
 			
-			$menudat = new JTableComponent( $database );
+			$menudat = new JTableComponent( $this->database );
 			$menudat->name = 'Databases';
 			$menudat->parent = $component->id;
 			$menudat->admin_menu_link = 'option='.$this->_option.'&task=databases';
@@ -150,7 +97,7 @@ class HubController extends JObject
 			$menudat->ordering = 3;
 			$menudat->store();
 			
-			$menumis = new JTableComponent( $database );
+			$menumis = new JTableComponent( $this->database );
 			$menumis->name = 'Misc. Settings';
 			$menumis->parent = $component->id;
 			$menumis->admin_menu_link = 'option='.$this->_option.'&task=misc';
@@ -159,7 +106,7 @@ class HubController extends JObject
 			$menumis->ordering = 4;
 			$menumis->store();
 			
-			$menucom = new JTableComponent( $database );
+			$menucom = new JTableComponent( $this->database );
 			$menucom->name = 'Components';
 			$menucom->parent = $component->id;
 			$menucom->admin_menu_link = 'option='.$this->_option.'&task=components';
@@ -168,7 +115,7 @@ class HubController extends JObject
 			$menucom->ordering = 5;
 			$menucom->store();
 			
-			$menucom = new JTableComponent( $database );
+			$menucom = new JTableComponent( $this->database );
 			$menucom->name = 'Organizations';
 			$menucom->parent = $component->id;
 			$menucom->admin_menu_link = 'option='.$this->_option.'&task=orgs';
@@ -176,17 +123,7 @@ class HubController extends JObject
 			$menucom->option = $this->_option;
 			$menucom->ordering = 6;
 			$menucom->store();
-		}
-	}
-
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
+		}*/
 	}
 	
 	//----------------------------------------------------------
@@ -225,6 +162,9 @@ class HubController extends JObject
 		fwrite($handle, "<?php\nclass HubConfig {\n");
 		foreach ($arr as $key => $value ) 
 		{
+			if (strstr($value, "'")) {
+				$value = addslashes($value);
+			}
 			fwrite($handle, '    var $' . $key . " = '" . $value . "';\n");
 		}
 		fwrite($handle, "}\n?>\n");
@@ -240,7 +180,6 @@ class HubController extends JObject
 		switch ($this->_task) 
 		{
 			case 'registration': 
-				//$config =& JComponentHelper::getParams( $this->_option );
 				$a = array();
 				$component =& JComponentHelper::getComponent( $this->_option );
 				$params = trim($component->params);
@@ -275,12 +214,29 @@ class HubController extends JObject
 				    $a['registrationTOU'] = 'RHRH';
 				}
 				
-				HubConfigHTML::registration( $a );
-				break;
-			case 'databases': HubConfigHTML::databases( $arr ); break;
+				$view = new JView( array('name'=>'registration') );
+				$view->a = $a;
+			break;
+			case 'databases': 
+				$view = new JView( array('name'=>'databases') );
+			break;
 			case 'site':
-			default: HubConfigHTML::site( $arr ); break;
+			default: 
+				$view = new JView( array('name'=>'site') );
+			break;
 		}
+
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->arr = $arr;
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
@@ -317,6 +273,8 @@ class HubController extends JObject
 		$this->_redirect = 'index.php?option='.$this->_option.'&task='.$task;
 		$this->_message = JText::_('Configuration saved');
 	}
+	
+	//-----------
 	
 	protected function saveReg() 
 	{
@@ -369,12 +327,14 @@ class HubController extends JObject
 
 	protected function misc()
 	{
-		global $mainframe;
-		
+		$view = new JView( array('name'=>'misc') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+
 		$f = array('hubShortName','hubShortURL','hubLongURL','hubSupportEmail','hubMonitorEmail','hubHomeDir');
 		
 		$arr =& $this->loadConfiguration();
-		$arrr = array();
+		$view->rows = array();
 		foreach ($arr as $field => $value) 
 		{
 			if ((substr($field, 0, strlen('registration')) != 'registration')
@@ -385,25 +345,31 @@ class HubController extends JObject
 			 && (substr($field, 0, strlen('hubFocusArea')) != 'hubFocusArea')
 			 && (substr($field, 0, strlen('hubLoginReturn')) != 'hubLoginReturn')
 			 && !in_array($field,$f)) {
-				$arrr[$field] = $value;
+				$view->rows[$field] = $value;
 			}
 		}
 		
 		// Get Joomla configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 		
 		// Get paging variables
-		$limit = $mainframe->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$limit = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 		$start = JRequest::getInt('limitstart', 0);
 		
-		$total = count($arrr);
+		$total = count($view->rows);
 
 		// initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $start, $limit );
+		$view->pageNav = new JPagination( $total, $start, $limit );
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
 
-		// output HTML
-		HubConfigHTML::misc( $arrr, $pageNav, 'tags');
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -411,6 +377,10 @@ class HubController extends JObject
 	protected function edit()
 	{
 		$arr =& $this->loadConfiguration();
+		
+		$view = new JView( array('name'=>'configuration') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		$name = JRequest::getVar( 'name', 0 );
 
@@ -429,14 +399,24 @@ class HubController extends JObject
 		}
 		
 		if (empty($name)) {
-			HubConfigHTML::edit();
+			$view->name = null;
+			$view->value = null;
 		} else {
 			if (!array_key_exists($name, $arr)) {
 				$arr[$name] = null;
 			}
 			
-			HubConfigHTML::edit( $name, $arr[$name] );
+			$view->name = $name;
+			$view->value = $arr[$name];
 		}
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
@@ -517,11 +497,16 @@ class HubController extends JObject
 		// Get the list of components
 		$arr =& $this->loadConfiguration();
 		
-		$components = (isset($arr['hubComponentList'])) ? $arr['hubComponentList'] : '';
+		$components = (isset($arr['hubComponentList'])) ? $arr['hubComponentList'] : 'com_answers,com_blog,com_citations,com_contribtool,com_events,com_feedback,com_groups,com_meetings,com_members,com_resources,com_support,com_tags,com_tools,com_userpoints,com_wishlist';
 		$components = explode(',',$components);
 		$components = array_map('trim',$components);
 
 		sort($components);
+		
+		$view = new JView( array('name'=>'components') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->components = $components;
 		
 		// Get the active component
 		$com = JRequest::getVar( 'component', '' );
@@ -530,12 +515,18 @@ class HubController extends JObject
 		}
 		
 		// Load the component
-		$database =& JFactory::getDBO();
-		$component = new JTableComponent( $database );
-		$component->loadByOption( $com );
+		$view->component = new JTableComponent( $this->database );
+		$view->component->loadByOption( $com );
 		
-		// Output HTML
-		HubConfigHTML::components( $components, $this->_option, $component, $this->_message );
+		$view->msg = $this->_message;
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
@@ -545,13 +536,11 @@ class HubController extends JObject
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
-		$database =& JFactory::getDBO();
-		
 		// Incoming component ID
 		$id = JRequest::getInt( 'id', 0, 'post' );
 		
 		// Load the component
-		$component = new JTableComponent( $database );
+		$component = new JTableComponent( $this->database );
 		$component->load( $id );
 		
 		// Incoming parameters
@@ -583,36 +572,42 @@ class HubController extends JObject
 	
 	protected function orgs()
 	{
-		$app =& JFactory::getApplication();
-		$database =& JFactory::getDBO();
-		
-		// Get filters
-		$filters = array();
-		//$filters['search'] = urldecode(JRequest::getString('search'));
-		$filters['search'] = urldecode($app->getUserStateFromRequest($this->_option.'.orgsearch', 'search', ''));
-		$filters['show']   = '';
-		
+		$view = new JView( array('name'=>'organizations') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+
 		// Get configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 		
+		// Get filters
+		$view->filters = array();
+		$view->filters['search'] = urldecode($app->getUserStateFromRequest($this->_option.'.orgsearch', 'search', ''));
+		$view->filters['show']   = '';
+		
 		// Get paging variables
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start'] = JRequest::getInt('limitstart', 0);
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 
-		$obj = new XOrganization( $database );
+		$obj = new XOrganization( $this->database );
 
 		// Get a record count
-		$total = $obj->getCount( $filters );
+		$view->total = $obj->getCount( $view->filters );
 		
 		// Get records
-		$rows = $obj->getRecords( $filters );
+		$view->rows = $obj->getRecords( $view->filters );
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		HubConfigHTML::orgs( $rows, $pageNav, $this->_option, $filters );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
@@ -626,7 +621,9 @@ class HubController extends JObject
 
 	protected function editorg() 
 	{
-		$database =& JFactory::getDBO();
+		$view = new JView( array('name'=>'organization') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Incoming
 		$ids = JRequest::getVar( 'id', array() );
@@ -639,11 +636,16 @@ class HubController extends JObject
 		}
 		
 		// Initiate database class and load info
-		$org = new XOrganization( $database );
-		$org->load( $id );
+		$view->org = new XOrganization( $this->database );
+		$view->org->load( $id );
 		
-		// Ouput HTML
-		HubConfigHTML::editorg( $org, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
@@ -653,24 +655,22 @@ class HubController extends JObject
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
-		$database =& JFactory::getDBO();
-		
 		// Load the tag object and bind the incoming data to it
-		$row = new XOrganization( $database );
+		$row = new XOrganization( $this->database );
 		if (!$row->bind( $_POST )) {
-			echo HubConfigHTML::alert( $row->getError() );
+			JError::raiseError( 500, $row->getError() );
 			return;
 		}
 
 		// Check content
 		if (!$row->check()) {
-			echo HubConfigHTML::alert( $row->getError() );
+			JError::raiseError( 500, $row->getError() );
 			return;
 		}
 
 		// Store new content
 		if (!$row->store()) {
-			echo HubConfigHTML::alert( $row->getError() );
+			JError::raiseError( 500, $row->getError() );
 			return;
 		}
 	
@@ -696,9 +696,7 @@ class HubController extends JObject
 
 		// Do we have any IDs?
 		if (!empty($ids)) {
-			$database =& JFactory::getDBO();
-			
-			$org = new XOrganization( $database );
+			$org = new XOrganization( $this->database );
 			
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id) 
@@ -720,4 +718,3 @@ class HubController extends JObject
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=orgs';
 	}
 }
-?>
