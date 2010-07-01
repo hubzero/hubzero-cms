@@ -373,7 +373,7 @@ class FeedbackController extends JObject
 		
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'report') );
 		$view->title = $this->_title;
@@ -645,6 +645,7 @@ class FeedbackController extends JObject
 
 	protected function sendreport() 
 	{
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'attachment.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
 
 		// Incoming
@@ -805,12 +806,28 @@ class FeedbackController extends JObject
 			$row->getId();
 		}
 		
+		$sconfig = JComponentHelper::getParams( 'com_support' );
+		$attachment = $this->_uploadAttachment( $row->id, $sconfig );
+		$row->report .= ($attachment) ? "\n\n".$attachment : '';
+		
+		// Save the data
+		if (!$row->store()) {
+			$this->setError( $row->getError() );
+		}
+		
 		// Get some email settings
 		$jconfig =& JFactory::getConfig();
 		$admin   = $jconfig->getValue('config.mailfrom');
 		$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_FEEDBACK_SUPPORT').', '.JText::sprintf('COM_FEEDBACK_TICKET_NUMBER',$row->id);
 		$from    = $jconfig->getValue('config.sitename').' web-robot';
 		$hub     = array('email' => $reporter['email'], 'name' => $from);
+		
+		// Parse comments for attachments
+		$xhub =& XFactory::getHub();
+		$attach = new SupportAttachment( $database );
+		$attach->webpath = $xhub->getCfg('hubLongURL').$sconfig->get('webpath').DS.$row->id;
+		$attach->uppath  = JPATH_ROOT.$sconfig->get('webpath').DS.$row->id;
+		$attach->output  = 'email';
 		
 		// Generate e-mail message
 		$message  = (!$juser->get('guest')) ? JText::_('COM_FEEDBACK_VERIFIED_USER')."\r\n\r\n" : '';
@@ -827,7 +844,7 @@ class FeedbackController extends JObject
 		$message .= (JRequest::getVar('sessioncookie','','cookie')) ? JText::_('COM_FEEDBACK_COOKIES_ENABLED')."\r\n" : JText::_('COM_FEEDBACK_COOKIES_DISABLED')."\r\n";
 		$message .= JText::_('COM_FEEDBACK_REFERRER').': '. $problem['referer'] ."\r\n";
 		$message .= ($problem['tool']) ? JText::_('COM_FEEDBACK_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
-		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. stripslashes($problem['long']) ."\r\n";
+		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($row->report)) ."\r\n";
 
 		// Send e-mail
 		ximport('xhubhelper');
@@ -844,6 +861,69 @@ class FeedbackController extends JObject
 			$view->setError( $this->getError() );
 		}
 		$view->display();
+	}
+
+	private function _uploadAttachment( $listdir, $sconfig )
+	{
+		if (!$listdir) {
+			$this->setError( JText::_('SUPPORT_NO_UPLOAD_DIRECTORY') );
+			return '';
+		}
+		
+		// Incoming file
+		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
+		if (!$file['name']) {
+			return '';
+		}
+		
+		// Incoming
+		$description = ''; //JRequest::getVar( 'description', '' );
+		
+		// Construct our file path
+		$path = JPATH_ROOT.$sconfig->get('webpath').DS.$listdir;
+		
+		// Build the path if it doesn't exist
+		if (!is_dir( $path )) {
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create( $path, 0777 )) {
+				$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
+				return '';
+			}
+		}
+
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = str_replace(' ','_',$file['name']);
+		$ext = strtolower(JFile::getExt($file['name']));
+		if (!in_array($ext, array('jpg','jpeg','jpe','png','bmp','gif'))) {
+			return '';
+		}
+
+		// Perform the upload
+		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
+			$this->setError( JText::_('ERROR_UPLOADING') );
+			return '';
+		} else {
+			// File was uploaded
+			// Create database entry
+			$description = htmlspecialchars($description);
+			
+			$database =& JFactory::getDBO();
+			$row = new SupportAttachment( $database );
+			$row->bind( array('id'=>0,'ticket'=>$listdir,'filename'=>$file['name'],'description'=>$description) );
+			if (!$row->check()) {
+				$this->setError( $row->getError() );
+			}
+			if (!$row->store()) {
+				$this->setError( $row->getError() );
+			}
+			if (!$row->id) {
+				$row->getID();
+			}
+			
+			return '{attachment#'.$row->id.'}';
+		}
 	}
 
 	//-----------
