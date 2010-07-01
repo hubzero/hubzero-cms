@@ -91,7 +91,13 @@ class plgResourcesWishlist extends JPlugin
 		$html	= '';		
 		
 		// Include some classes & scripts
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.wishlist.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.plan.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.owner.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.owner.group.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wish.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wish.rank.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wish.attachment.php' );
 		ximport('Hubzero_View_Helper_Html');
 		require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 		//require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'wishlist.html.php' );

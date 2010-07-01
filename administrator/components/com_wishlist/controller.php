@@ -25,20 +25,41 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-// Class for toolbar generation
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-class WishlistToolbar
+class WishlistController extends Hubzero_Controller
 {
-	
-	//-----------
-
-	public function _DEFAULT() 
+	public function execute()
 	{
-		JToolBarHelper::title( '<a href="index.php?option=com_wishlist">'.JText::_( 'Wishlist Manager' ).'</a>', 'addedit.png' );
-		JToolBarHelper::preferences('com_wishlist', '550');
-		JToolBarHelper::spacer();
+		// Load the component config
+		$config =& JComponentHelper::getParams( $this->_option );
+		$this->config = $config;
+		
+		$this->_task = JRequest::getVar( 'task', '' );
+		
+		switch ($this->_task) 
+		{
+			default: $this->wishes(); break;
+		}
+	}	
+	
+	//----------------------------------------------------------
+	// Views
+	//----------------------------------------------------------
+
+	public function wishes()
+	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'wishes') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 }
-?>
