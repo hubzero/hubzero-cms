@@ -50,7 +50,7 @@ if ($modmycontributions->show_tools && $tools) {
 				$html .= (!$modmycontributions->show_wishes) ? '<span class="item_empty ">&nbsp;</span>' : '';
 				$html .= (!$modmycontributions->show_tickets) ? '<span class="item_empty ">&nbsp;</span>' : '';
 				if ($modmycontributions->show_questions) {
-					$html .= t.t.t.'<span class="item_q"><a href="'.JRoute::_('index.php?option=com_answers&task=myquestions').'?filterby=open&assigned=1&tag=tool'.$tools[$i]->toolname.'" ';
+					$html .= t.t.t.'<span class="item_q"><a href="'.JRoute::_('index.php?option=com_answers&task=myquestions').'?filterby=open&amp;assigned=1&amp;tag=tool'.$tools[$i]->toolname.'" ';
 					$html .= ' title="';
 					if ($tools[$i]->q == 1) {
 						$html .= JText::sprintf('MOD_MYCONTRIBUTIONS_NUM_QUESTION', $tools[$i]->q, $tools[$i]->q_new);
@@ -58,9 +58,9 @@ if ($modmycontributions->show_tools && $tools) {
 						$html .= JText::sprintf('MOD_MYCONTRIBUTIONS_NUM_QUESTIONS', $tools[$i]->q, $tools[$i]->q_new);
 					}
 					$html .= '">'.$tools[$i]->q.'</a>';
-					if ($tools[$i]->q_new > 0) {
+					/*if ($tools[$i]->q_new > 0) {
 						$html .='<br /><span class="item_new">+ '.$tools[$i]->q_new.'</span>';
-					}
+					}*/
 					$html .= '</span>'."\n";
 				} else {
 					$html .= t.t.t.'<span class="item_empty">&nbsp;</span>';
@@ -74,9 +74,10 @@ if ($modmycontributions->show_tools && $tools) {
 						$html .= JText::sprintf('MOD_MYCONTRIBUTIONS_NUM_WISHES', $tools[$i]->w, $tools[$i]->w_new);
 					}
 					$html .= '">'.$tools[$i]->w.'</a>';
+					/*
 					if ($tools[$i]->w_new > 0) {
 						$html .='<br /><span class="item_new">+ '.$tools[$i]->w_new.'</span>';
-					}						
+					} */						
 					$html .='</span>'."\n";
 				}
 				if ($modmycontributions->show_tickets) {
@@ -88,9 +89,10 @@ if ($modmycontributions->show_tools && $tools) {
 						$html .= JText::sprintf('MOD_MYCONTRIBUTIONS_NUM_TICKETS', $tools[$i]->s, $tools[$i]->s_new);
 					}
 					$html .= '">'.$tools[$i]->s.'</a></span>'."\n";
+					/*
 					if ($tools[$i]->s_new > 0) {
 						$html .='<br /><span class="item_new">+ '.$tools[$i]->s_new.'</span>';
-					}
+					} */
 					$html .= t.t.'</span>'."\n";
 				}
 			}
