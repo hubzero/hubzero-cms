@@ -181,8 +181,8 @@ $juser =& JFactory::getUser();
 			$amount  = ($percent > 100) ? 100 : $percent;
 
 			// Add the JavaScript file that will do the AJAX magic
-			$document =& JFactory::getDocument();
-			$document->addScript('modules/mod_mysessions/mod_mysessions.js');
+			//$document =& JFactory::getDocument();
+			//$document->addScript('modules/mod_mysessions/mod_mysessions.js');
 ?>
 <dl id="diskusage">
 	<dt><?php echo JText::_('MOD_MYSESSIONS_STORAGE'); ?> (<a href="<?php echo JRoute::_('index.php?option=com_tools&task=storage'); ?>"><?php echo JText::_('MOD_MYSESSIONS_MANAGE'); ?></a>)</dt>
