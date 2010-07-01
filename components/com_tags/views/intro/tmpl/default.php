@@ -59,22 +59,31 @@ $step = $this->step;
 <div class="section">
 	
 	<div class="four columns first">
-		<h2><?php echo JText::_('COM_TAGS_FIND_A_TAG'); ?></h2>
+		<h2><?php echo JText::_('COM_TAGS_FIND_CONTENT_WITH_TAG'); ?></h2>
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>" method="get" class="search">
+			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=view'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
-						<input type="text" name="search" value="" />
+						<?php 
+						JPluginHelper::importPlugin( 'tageditor' );
+						$dispatcher =& JDispatcher::getInstance();
+						$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tag','actags','','','')) );
+						
+						if (count($tf) > 0) {
+							echo $tf[0];
+						} else { ?>
+							<input type="text" name="tag" value="" />
+						<?php } ?>
 						<input type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
 					</p>
 				</fieldset>
 			</form>
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
-			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>"><?php echo JText::_('COM_TAGS_BROWSE_LIST'); ?></a></p>
+			<div>
+				<p>Using more than one tag will perform an "AND" operation. For example, if you enter "circuits" and "devices", it will find all content tagged with <strong>both</strong> tags.</p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->
@@ -153,6 +162,28 @@ if ($tags) {
 echo $html;
 ?>
 		</div><!-- / .block -->
+	</div><!-- / .four columns second third fourth -->
+	<div class="clear"></div>
+
+	<div class="four columns first">
+		<h2><?php echo JText::_('COM_TAGS_FIND_A_TAG'); ?></h2>
+	</div><!-- / .four columns first -->
+	<div class="four columns second third fourth">
+		<div class="two columns first">
+			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>" method="get" class="search">
+				<fieldset>
+					<p>
+						<input type="text" name="search" value="" />
+						<input type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
+					</p>
+				</fieldset>
+			</form>
+		</div><!-- / .two columns first -->
+		<div class="two columns second">
+			<div class="browse">
+				<p><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>"><?php echo JText::_('COM_TAGS_BROWSE_LIST'); ?></a></p>
+			</div><!-- / .browse -->
+		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->
 	<div class="clear"></div>
 

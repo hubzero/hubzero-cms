@@ -234,7 +234,7 @@ class TagsController extends Hubzero_Controller
 		}
 		
 		// Make sure we have some IDs to work with
-		if ($step == 1 && (!$ids || count($ids) < 2)) {
+		if ($step == 1 && (!$ids || count($ids) < 1)) {
 			$this->_redirect = 'index.php?option='.$this->_option;
 			return;
 		}
@@ -313,7 +313,7 @@ class TagsController extends Hubzero_Controller
 				}
 				
 				$to = new TagsObject( $this->database );
-				
+
 				foreach ($ids as $id)
 				{
 					if ($mtag != $id) {

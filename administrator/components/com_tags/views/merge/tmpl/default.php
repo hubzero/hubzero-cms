@@ -58,6 +58,9 @@ function submitbutton(pressbutton)
 							</select>
 						</td>
 					</tr>
+<?php
+	if (count($this->tags) > 1) {
+?>
 					<tr>
 						<td colspan="2"><?php echo JText::_('OR'); ?></td>
 					</tr>
@@ -67,11 +70,20 @@ function submitbutton(pressbutton)
 					</tr>
 				</tbody>
 			</table>
+<?php
+	} else {
+?>
+				</tbody>
+			</table>
+			<input type="hidden" name="newtag" id="newtag" value="" />
+<?php
+	}
+?>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
 
-	<input type="hidden" name="ids" value="<?php echo $this->ids; ?>" />
+	<input type="hidden" name="ids" value="<?php echo $this->idstr; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
 	<input type="hidden" name="task" value="merge" />
