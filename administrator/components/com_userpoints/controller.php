@@ -25,76 +25,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-class UserpointsController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-	
-	//-----------
-	
-	
-	public function __construct( $config=array() )
+class UserpointsController extends Hubzero_Controller
+{
+	public function execute()
 	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	//-----------
-	
-	private function getTask()
-	{
-		$task = JRequest::getVar( 'task', '' );
-		$this->_task = $task;
-		return $task;
-	}
-		
-	//-----------
-	
-	function execute( )
-	{
-		
 		// Load the component config
 		$config =& JComponentHelper::getParams( $this->_option );
 		$this->config = $config;
 		
-		switch ( $this->getTask() ) 
+		$this->_task = JRequest::getVar( 'task', '' );
+		
+		switch ($this->_task) 
 		{
 			case 'config':     			$this->config();    	break;
-			case 'saveconfig': 			$this->save_config(); 	break;
+			case 'saveconfig': 			$this->saveconfig(); 	break;
 			
 			case 'user':       			$this->edit();      	break;
 			case 'save':       			$this->save();      	break;
@@ -108,32 +54,19 @@ class UserpointsController extends JObject
 		}
 	}
 
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
-		}
-	}
-
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 
-	public function summary( )
+	public function summary()
 	{
-		$database =& JFactory::getDBO();
-		
 		// Get top earners
-		$database->setQuery( "SELECT * FROM #__users_points ORDER BY earnings DESC, balance DESC LIMIT 15" );
-		$users = $database->loadObjectList();
+		$this->database->setQuery( "SELECT * FROM #__users_points ORDER BY earnings DESC, balance DESC LIMIT 15" );
+		$users = $this->database->loadObjectList();
 		
 		$stats = array();
-		$BT  = new BankTransaction( $database);
+		$BT = new BankTransaction($this->database);
 	
-		
 		$thismonth = date( 'Y-m');
 		$lastmonth = date('Y-m', time() - (32 * 24 * 60 * 60));
 		
@@ -149,7 +82,6 @@ class UserpointsController extends JObject
 			'lastmonthtran'=>$BT->getTotals( '', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2 ),
 			'avg'=>round($BT->getTotals( '', 'deposit', '', 0, '', '', 1, '', $calc=1 )));
 			
-			
 		// Get overall earnings on Answers
 		$stats[]= array(
 			'memo'=>'Earnings: Answers',
@@ -161,7 +93,6 @@ class UserpointsController extends JObject
 			'thismonthtran'=>$BT->getTotals( 'answers', 'deposit', '', 0, '', '', 1, $thismonth, $calc=2 ),
 			'lastmonthtran'=>$BT->getTotals( 'answers', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2 ),
 			'avg'=>round($BT->getTotals( 'answers', 'deposit', '', 0, '', '', 1, '', $calc=1 )));
-	
 			
 		// Get overall earnings on Wishes
 		$stats[]= array(
@@ -174,7 +105,6 @@ class UserpointsController extends JObject
 			'thismonthtran'=>$BT->getTotals( 'wish', 'deposit', '', 0, '', '', 1, $thismonth, $calc=2 ),
 			'lastmonthtran'=>$BT->getTotals( 'wish', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2 ),
 			'avg'=>round($BT->getTotals( 'wish', 'deposit', '', 0, '', '', 1, '', $calc=1 )));
-	
 		
 		// Get overall spending
 		$stats[]= array(
@@ -272,69 +202,89 @@ class UserpointsController extends JObject
 			'lastmonthtran'=>$BT->getTotals( 'resource', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2 ),
 			'avg'=>round($BT->getTotals( 'resource', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1 )));
 		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'summary') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
+		$view->stats = $stats;
+		$view->rows = $users;
 		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
 		
-		UserpointsHTML::users( $users, $this->_option, $stats);		
-		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
-	public function edit( )
+	public function edit()
 	{
-		$database =& JFactory::getDBO();
-	
-		$uid = JRequest::getInt ('uid', 0 );
+		$uid = JRequest::getInt('uid', 0 );
 		
-		if($uid) {
-			$row = new BankAccount( $database );
-			$row->load_uid( $uid );
+		if ($uid) {
+			// Instantiate a new view
+			$view = new JView( array('name'=>'edit') );
+			$view->option = $this->_option;
+			$view->task = $this->_task;
+			
+			$view->row = new BankAccount( $this->database );
+			$view->row->load_uid( $uid );
 
-			if(!$row->balance) {
-				$row->uid = $uid;
-				$row->balance = 0;
-				$row->earnings = 0;
+			if (!$view->row->balance) {
+				$view->row->uid = $uid;
+				$view->row->balance = 0;
+				$view->row->earnings = 0;
 			}
 			
-			$database->setQuery( "SELECT * FROM #__users_transactions WHERE uid=".$uid." ORDER BY created DESC, id DESC" );
-			$history = $database->loadObjectList();
-		
-			UserpointsHTML::edit( $database, $row, $this->_option, $history );
+			$this->database->setQuery( "SELECT * FROM #__users_transactions WHERE uid=".$uid." ORDER BY created DESC, id DESC" );
+			$view->history = $this->database->loadObjectList();
 		} else {
-			UserpointsHTML::find( $this->_option );
+			// Instantiate a new view
+			$view = new JView( array('name'=>'edit', 'layout'=>'find') );
+			$view->option = $this->_option;
+			$view->task = $this->_task;
 		}
-	}
-
-	//-----------
-
-	public function cancel( )
-	{
-
-		$url  = 'index.php?option='.$this->_option;
-		$this->_redirect = $url;
 		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
-	public function save( )
+	public function cancel()
 	{
-		$database =& JFactory::getDBO();
+		$this->_redirect = 'index.php?option='.$this->_option;
+	}
 
+	//-----------
+
+	public function save()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$id = JRequest::getInt( 'id', 0 );
 
-		$row = new BankAccount( $database );
+		$row = new BankAccount( $this->database );
 		if (!$row->bind( $_POST )) {
-			echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		$row->uid = intval($row->uid);
 		$row->balance = intval($row->balance);
 		$row->earnings = intval($row->earnings);
 
-		if(isset($_POST['amount']) && intval($_POST['amount'])>0 && intval($_POST['amount'])) {
+		if (isset($_POST['amount']) && intval($_POST['amount'])>0 && intval($_POST['amount'])) {
 			$data = array();
 			$data['uid'] = $row->uid;
 			$data['type'] = JRequest::getVar( 'type', '' );
@@ -343,7 +293,7 @@ class UserpointsController extends JObject
 			$data['description'] = JRequest::getVar( 'description', 'Reason unspecified', 'post' );
 			$data['created'] = date( 'Y-m-d H:i:s', time() );
 
-			switch($data['type'])
+			switch ($data['type'])
 			{
 				case 'withdraw':
 					$row->balance  -= $data['amount'];
@@ -360,129 +310,148 @@ class UserpointsController extends JObject
 
 			$data['balance'] = $row->balance;
 		
-			$BT = new BankTransaction( $database );
-			if($data['description']=='') { $data['description'] = 'Reason unspecified'; }
-			if($data['category']=='') { $data['category'] = 'general'; }
+			$BT = new BankTransaction( $this->database );
+			if ($data['description']=='') { 
+				$data['description'] = 'Reason unspecified';
+			}
+			if ($data['category']=='') { 
+				$data['category'] = 'general';
+			}
 			
 			if (!$BT->bind( $data )) {
-				echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 			if (!$BT->check()) {
-				echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 			if (!$BT->store()) {
-				echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-				exit();
+				JError::raiseError( 500, $row->getError() );
+				return;
 			}
 		}
 
 		if (!$row->check()) {
-			echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 
 		if (!$row->store()) {
-			echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		
-		$this->_redirect = 'index2.php?option='.$this->_option.'&task=edit&uid='.$row->uid ;
-		$this->_message = 'User info saved';
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=edit&uid='.$row->uid ;
+		$this->_message = JText::_('User info saved');
 	}
 
 	//-----------
 
-	public function config( )
+	public function config()
 	{
-		$database =& JFactory::getDBO();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'config') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
-		$database->setQuery( "SELECT * FROM #__users_points_config" );
-		$params = $database->loadObjectList();
+		$this->database->setQuery( "SELECT * FROM #__users_points_config" );
+		$view->params = $this->database->loadObjectList();
 		
-		UserpointsHTML::config( $params, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+
+		// Output the HTML
+		$view->display();
 	}
 	
 	//-----------
 	
-	public function save_config( ) 
+	public function saveconfig() 
 	{
-		$database =& JFactory::getDBO();
-
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$points = JRequest::getVar( 'points', array() );
 		$descriptions = JRequest::getVar( 'description', array() );
 		$aliases = JRequest::getVar( 'alias', array() );
 
-		$query = 'DELETE FROM #__users_points_config';
-		$database->setQuery( $query );
-		$database->query();
+		$this->database->setQuery( 'DELETE FROM #__users_points_config' );
+		$this->database->query();
 		
-
 		for ($i=0; $i < count($points); $i++)
 		{
 	    	$point = intval($points[$i]);
 	    	$description = $descriptions[$i];
 			$alias = $aliases[$i];
 			if ($point != '') {
-			    $id = intval( $i);
-			    $query = "INSERT INTO #__users_points_config VALUES ($id,'$description','$alias', '$point')";
-				$database->setQuery( $query );
-				$database->query();
-				
+			    $id = intval($i);
+
+				$this->database->setQuery( "INSERT INTO #__users_points_config VALUES ($id,'$description','$alias', '$point')" );
+				$this->database->query();
 			}
 		}
 
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=config';
 		$this->_message = JText::_('Config Saved');
-		
 	}
+	
 	//------------
 	
 	public function batch()
 	{		
-		UserpointsHTML::batch( $this->_option );
+		// Instantiate a new view
+		$view = new JView( array('name'=>'batch') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+
+		// Output the HTML
+		$view->display();
 	}
 	
 	//------------
 	
 	public function process_batch()
 	{
-		$database 		=& JFactory::getDBO();
-		$msg 			= '';
-		$duplicate 		= 0;
-		$xprofile 			=& XFactory::getProfile();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
-		$ref 				= JRequest::getInt ('ref', 0, 'post');
+		$duplicate = 0;
+		
+		$ref 				= JRequest::getInt('ref', 0, 'post');
 		$category 			= JRequest::getVar('com', 'general','post') ? JRequest::getVar('com') : 'general';
-		$action 		    = JRequest::getVar ('action', 'batch','post') ?  JRequest::getVar ('action') : 'batch';
-		$users 				= JRequest::getVar ( 'users', '' );
+		$action 		    = JRequest::getVar('action', 'batch','post') ?  JRequest::getVar('action') : 'batch';
+		$users 				= JRequest::getVar( 'users', '' );
 		$data['type'] 		= JRequest::getVar( 'type', '' );
 		$data['amount'] 	= JRequest::getInt( 'amount', 0 );
 		$data['description'] = JRequest::getVar( 'description', '' );
 		$when				= date( 'Y-m-d H:i:s', time() );
 
-			
 		// make sure this function was not already run
-		$MH = new MarketHistory( $database );
+		$MH = new MarketHistory( $this->database );
 		$duplicate = $MH->getRecord($ref, $action, $category, '', $data['description']);
 		
-		if($data['amount'] && $data['description'] && $users) {
-					
-			if(!$duplicate) { // run only once
-			
-				
+		if ($data['amount'] && $data['description'] && $users) {	
+			if (!$duplicate) { // run only once
 				// get array of affected users
-				$users 		= str_replace(" ",",",$users);		
-				$users 		= split(',',$users);
-				$users 		= array_unique($users); // get rid of duplicates
-				foreach($users as $user) {
-							
+				$users = str_replace(" ",",",$users);		
+				$users = split(',',$users);
+				$users = array_unique($users); // get rid of duplicates
+				
+				foreach ($users as $user) 
+				{
 					$validuser = XProfile::getInstance($user);
 			
-					if($user && $validuser) {
-						$BTL = new BankTeller( $database, $user );
-						switch($data['type'])
+					if ($user && $validuser) {
+						$BTL = new BankTeller( $this->database, $user );
+						switch ($data['type'])
 						{
 							case 'withdraw':
 								$BTL->withdraw($data['amount'], $data['description'], $category, $ref);
@@ -495,7 +464,7 @@ class UserpointsController extends JObject
 				}
 					
 				// Save log
-				$MH = new MarketHistory( $database );
+				$MH = new MarketHistory( $this->database );
 				$data['itemid']       = $ref;
 				$data['date']         = date("Y-m-d H:i:s");
 				$data['market_value'] = $data['amount'];
@@ -511,22 +480,17 @@ class UserpointsController extends JObject
 					$err = $MH->getError();
 				}
 				
-				$msg = 'Batch transaction was processed successfully.';
-			
-			}
-			else {
-			$msg = 'This batch transaction was already processed earlier. Use a different identifier if you need to run it again.';
+				$this->_message = 'Batch transaction was processed successfully.';
+			} else {
+				$this->_message = 'This batch transaction was already processed earlier. Use a different identifier if you need to run it again.';
 			}		
+		} else {
+			$this->_message = 'Could not process. Some required fields are missing.';
 		}
-		else {
-			$msg = 'Could not process. Some required fields are missing.';
-		}
-	
-		
+
 		// show output if run manually						
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=batch';
-		$this->_message = JText::_($msg);
-			
+		$this->_message = JText::_($this->_message);
 	}
 	
 	//--------------------------------------------------------
@@ -535,16 +499,12 @@ class UserpointsController extends JObject
 	
 	public function royalty()
 	{
-		$database 	=& JFactory::getDBO();
-		$auto  		= JRequest::getInt ('auto', 1);
-		$msg 		= '';
-		$action 	= 'royalty';
+		$auto = JRequest::getInt('auto', 1);
+		$action = 'royalty';
 			
-		if(!$auto) { 
-			$juser 	=& JFactory::getUser();
-			$who 	= $juser->get('id');
-		}
-		else {
+		if (!$auto) { 
+			$who = $this->juser->get('id');
+		} else {
 			$who = 0;
 		}
 		
@@ -552,34 +512,33 @@ class UserpointsController extends JObject
 		$curmonth = date("F");
 		$curyear = date("Y-m");
 		$ref = 	strtotime($curyear);
-		$msg = 'Royalties on Answers for '.$curyear.' were distributed successfully.';
+		$this->_message = 'Royalties on Answers for '.$curyear.' were distributed successfully.';
 		$rmsg = 'Royalties on Reviews for '.$curyear.' were distributed successfully.';
 		$resmsg = 'Royalties on Resources for '.$curyear.' were distributed successfully.';
 
-				
 		// Make sure we distribute royalties only once/ month
-		$MH = new MarketHistory( $database );
-		$royaltyAnswers = $MH->getRecord('', $action, 'answers', $curyear, $msg);
+		$MH = new MarketHistory( $this->database );
+		$royaltyAnswers = $MH->getRecord('', $action, 'answers', $curyear, $this->_message);
 		$royaltyReviews = $MH->getRecord('', $action, 'reviews', $curyear, $rmsg);
 		$royaltyResources = $MH->getRecord('', $action, 'resources', $curyear, $resmsg);
 		
-		$AE = new AnswersEconomy( $database );
+		$AE = new AnswersEconomy( $this->database );
 		$accumulated = 0;
 		
 		// Get Royalties on Answers		
-		if(!$royaltyAnswers) { 
+		if (!$royaltyAnswers) { 
 			$rows = $AE->getQuestions();
 			
-			if($rows) {
-				foreach($rows as $r) {			
-					$AE->distribute_points ($r->id, $r->q_owner, $r->a_owner, $action);
+			if ($rows) {
+				foreach ($rows as $r) 
+				{			
+					$AE->distribute_points($r->id, $r->q_owner, $r->a_owner, $action);
 					$accumulated = $accumulated + $AE->calculate_marketvalue($r->id, $action);
 				}
 				
-				
 				// make a record of royalty payment
-				if(intval($accumulated) > 0) {
-					$MH = new MarketHistory( $database  );
+				if (intval($accumulated) > 0) {
+					$MH = new MarketHistory( $this->database  );
 					$data['itemid']       = $ref;
 					$data['date']         = date("Y-m-d H:i:s");
 					$data['market_value'] = $accumulated;
@@ -595,24 +554,17 @@ class UserpointsController extends JObject
 						$err = $MH->getError();
 					}
 				}
-		
+			} else {
+				$this->_message = 'There were no questions eligible for royalty payment. ';
 			}
-			else {
-				$msg = 'There were no questions eligible for royalty payment. ';
-			}
-			
-			
-		}
-		else {
-			$msg = 'Royalties on Answers for '.$curyear.' were previously distributed. ';
-			//if($auto) { return 0; }
+		} else {
+			$this->_message = 'Royalties on Answers for '.$curyear.' were previously distributed. ';
 		}
 		
 		// Get Royalties on Resource Reviews
-		if(!$royaltyReviews) { 
-			
+		if (!$royaltyReviews) { 
 			// get eligible 
-			$RE = new ReviewsEconomy( $database );
+			$RE = new ReviewsEconomy( $this->database );
 			$reviews = $RE->getReviews();
 			
 			// do we have ratings on reviews enabled?
@@ -620,107 +572,86 @@ class UserpointsController extends JObject
 			$plparam = new JParameter( $param->params );
 			$voting = $plparam->get('voting');
 				
-			$accumulated = 0;		
-			if($reviews && $voting) {
-				
-				foreach($reviews as $r) {			
-						$RE->distribute_points ($r, $action);
-						$accumulated = $accumulated + $RE->calculate_marketvalue($r, $action);
+			$accumulated = 0;
+			if ($reviews && $voting) {
+				foreach ($reviews as $r) 
+				{			
+					$RE->distribute_points($r, $action);
+					$accumulated = $accumulated + $RE->calculate_marketvalue($r, $action);
 				}
 				
-				$msg .= $rmsg;
-			}
-			else {
-				$msg .= 'There were no reviews eligible for royalty payment. ';
+				$this->_message .= $rmsg;
+			} else {
+				$this->_message .= 'There were no reviews eligible for royalty payment. ';
 			}
 			
 			// make a record of royalty payment
-			if(intval($accumulated) > 0) {
+			if (intval($accumulated) > 0) {
+				$MH = new MarketHistory( $this->database );
+				$data['itemid']       = $ref;
+				$data['date']         = date("Y-m-d H:i:s");
+				$data['market_value'] = $accumulated;
+				$data['category']     = 'reviews';	
+				$data['action']       = $action;
+				$data['log']          = $rmsg;
 				
-					$MH = new MarketHistory( $database  );
-					$data['itemid']       = $ref;
-					$data['date']         = date("Y-m-d H:i:s");
-					$data['market_value'] = $accumulated;
-					$data['category']     = 'reviews';	
-					$data['action']       = $action;
-					$data['log']          = $rmsg;
-					
-					if (!$MH->bind( $data )) {
-						$err = $MH->getError();
-					}
-					
-					if (!$MH->store()) {
-						$err = $MH->getError();
-					}
-					
-					
+				if (!$MH->bind( $data )) {
+					$err = $MH->getError();
+				}
+				
+				if (!$MH->store()) {
+					$err = $MH->getError();
+				}
 			}
-			
-		}
-		else {
-			$msg .= 'Royalties on Reviews for '.$curyear.' were previously distributed. ';
-			//if($auto) { return 0; }
+		} else {
+			$this->_message .= 'Royalties on Reviews for '.$curyear.' were previously distributed. ';
 		}
 		
 		// Get Royalties on Resources
-		if(!$royaltyResources) { 
+		if (!$royaltyResources) { 
 			// get eligible 
-			$ResE = new ResourcesEconomy( $database );
+			$ResE = new ResourcesEconomy( $this->database );
 			$cons = $ResE->getCons();
 				
 			$accumulated = 0;		
-			if($cons) {
-				
-				foreach($cons as $con) {			
-						$ResE->distribute_points ($con, $action);
-						$accumulated = $accumulated + $con->ranking;
+			if ($cons) {
+				foreach ($cons as $con) 
+				{			
+					$ResE->distribute_points($con, $action);
+					$accumulated = $accumulated + $con->ranking;
 				}
 				
-				$msg .= $resmsg;
-			}
-			else {
-				$msg .= 'There were no resources eligible for royalty payment. ';
+				$this->_message .= $resmsg;
+			} else {
+				$this->_message .= 'There were no resources eligible for royalty payment. ';
 			}
 			
 			// make a record of royalty payment
-			if(intval($accumulated) > 0) {
+			if (intval($accumulated) > 0) {
+				$MH = new MarketHistory( $this->database );
+				$data['itemid']       = $ref;
+				$data['date']         = date("Y-m-d H:i:s");
+				$data['market_value'] = $accumulated;
+				$data['category']     = 'resources';	
+				$data['action']       = $action;
+				$data['log']          = $resmsg;
 				
-					$MH = new MarketHistory( $database  );
-					$data['itemid']       = $ref;
-					$data['date']         = date("Y-m-d H:i:s");
-					$data['market_value'] = $accumulated;
-					$data['category']     = 'resources';	
-					$data['action']       = $action;
-					$data['log']          = $resmsg;
-					
-					if (!$MH->bind( $data )) {
-						$err = $MH->getError();
-					}
-					
-					if (!$MH->store()) {
-						$err = $MH->getError();
-					}
-					
-					
+				if (!$MH->bind( $data )) {
+					$err = $MH->getError();
+				}
+				
+				if (!$MH->store()) {
+					$err = $MH->getError();
+				}
 			}
-			
-			
-		}
-		else {
-			$msg .= 'Royalties on Resources for '.$curyear.' were previously distributed. ';
-			//if($auto) { return 0; }
+		} else {
+			$this->_message .= 'Royalties on Resources for '.$curyear.' were previously distributed. ';
 		}
 		
-		
-		if(!$auto) {
+		if (!$auto) {
 			// show output if run manually						
 			$this->_redirect = 'index.php?option='.$this->_option;
-			$this->_message = JText::_($msg);
+			$this->_message = JText::_($this->_message);
 		}
-		
-				
 	}
-	//------------
-	
 }
-?>
