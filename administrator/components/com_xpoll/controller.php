@@ -25,72 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-class XPollController
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-	private $_error = NULL;
-	
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		//Set the controller name
-		if (empty( $this->_name ))
-		{
-			if (isset($config['name']))  {
-				$this->_name = $config['name'];
-			}
-			else
-			{
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		$this->_option = 'com_'.$this->_name;
-	}
-	
-	//-----------
-	
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-		
-	//-----------
-	
-	private function getTask()
-	{
-		$task = JRequest::getVar( 'task', '' );
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//-----------
-
+class XPollController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		switch ( $this->getTask() ) 
+		$this->_task = JRequest::getVar( 'task', '' );
+		
+		switch ($this->_task)
 		{
 			case 'add':       $this->edit();     break;
 			case 'edit':      $this->edit();     break;
@@ -107,16 +50,6 @@ class XPollController
 			default: $this->browse(); break;
 		}
 	}
-
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
 	
 	//----------------------------------------------------------
 	// Views
@@ -124,39 +57,49 @@ class XPollController
 
 	protected function browse() 
 	{
-		$database =& JFactory::getDBO();
-		$app =& JFactory::getApplication();
-
+		// Instantiate a new view
+		$view = new JView( array('name'=>'polls') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
 		// Get configuration
+		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$filters = array();
-		$filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$filters['start'] = JRequest::getInt('limitstart', 0);
+		$view->filters = array();
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['start'] = $app->getUserStateFromRequest($this->_option.'.limitstart', 'limitstart', 0, 'int');
 
-		$p = new XPollPoll( $database );
+		$p = new XPollPoll( $this->database );
 		
 		// Get a record count
-		$total = $p->getCount( $filters );
+		$view->total = $p->getCount( $view->filters );
 		
 		// Retrieve all the records
-		$rows = $p->getRecords( $filters );
+		$view->rows = $p->getRecords( $view->filters );
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
-		// Output HTML
-		XPollHtml::browse( $rows, $pageNav, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function edit() 
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'poll') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
 		
 		// Incoming (expecting an array)
 		$cid = JRequest::getVar( 'cid', array(0) );
@@ -166,74 +109,83 @@ class XPollController
 		$uid = $cid[0];
 
 		// Load the poll
-		$row = new XPollPoll( $database );
-		$row->load( $uid );
+		$view->row = new XPollPoll( $this->database );
+		$view->row->load( $uid );
 
 		// Fail if not checked out by 'me'
-		if ($row->checked_out && $row->checked_out <> $juser->get('id')) {
+		if ($view->row->checked_out && $view->row->checked_out <> $this->juser->get('id')) {
 			$this->_redirect = 'index.php?option='. $this->_option;
 			$this->_message = JText::_( 'XPOLL_ERROR_CHECKED_OUT' );
 			return;
 		}
 
-		$options = array();
-
 		// Are we editing existing or creating new?
 		if ($uid) {
 			// Editing existing
 			// Check it out
-			$row->checkout( $juser->get('id') );
+			$view->row->checkout( $this->juser->get('id') );
 			
 			// Load the poll's options
-			$xpdata = new XPollData( $database );
-			$options = $xpdata->getPollOptions( $uid, true );
+			$xpdata = new XPollData( $this->database );
+			$view->options = $xpdata->getPollOptions( $uid, true );
 		} else {
 			// Creating new
 			// Set the log time to the default
-			$row->lag = 3600*24;
+			$view->row->lag = 3600*24;
+			$view->options = array();
 		}
 
 		// Get selected pages
 		if ($uid) {
-			$xpmenu = new XPollMenu( $database );
-			$lookup = $xpmenu->getMenuIds( $row->id );
+			$xpmenu = new XPollMenu( $this->database );
+			$lookup = $xpmenu->getMenuIds( $view->row->id );
 		} else {
 			$lookup = array( JHTML::_('select.option', 0, JText::_('ALL'), 'value', 'text') );
 		}
 
 		// Build the html select list
-		$lists = array();
-		//$lists['select'] = mosAdminMenus::MenuLinks( $lookup, 1, 1 );
+		$view->lists = array();
+
 		$soptions = JHTML::_('menu.linkoptions', $lookup, NULL, 1);
 		if (empty( $lookup )) {
 			$lookup = array( JHTML::_('select.option',  -1 ) );
 		}
-		$lists['select'] = JHTML::_('select.genericlist', $soptions, 'selections[]', 'class="inputbox" size="15" multiple="multiple"', 'value', 'text', $lookup, 'selections' );
+		$view->lists['select'] = JHTML::_('select.genericlist', $soptions, 'selections[]', 'class="inputbox" size="15" multiple="multiple"', 'value', 'text', $lookup, 'selections' );
 
-		// Output HTML
-		XPollHtml::edit( $row, $options, $lists, $this->_option );
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
 	}
 
 	//-----------
 
 	protected function save() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		// Incoming
+		$p = JRequest::getVar( 'poll', array(), 'post' );
+		$p = array_map('trim', $p);
 
 		// Save the poll parent information
-		$row = new XPollPoll( $database );
-		if (!$row->bind( $_POST )) {
-			echo XPollHtml::alert( $row->getError() );
-			exit();
+		$row = new XPollPoll( $this->database );
+		if (!$row->bind( $p )) {
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		$isNew = ($row->id == 0);
 		if (!$row->check()) {
-			echo XPollHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		if (!$row->store()) {
-			echo XPollHtml::alert( $row->getError() );
-			exit();
+			JError::raiseError( 500, $row->getError() );
+			return;
 		}
 		$row->checkin();
 		
@@ -248,25 +200,25 @@ class XPollController
 			}
 		
 			if (trim($text) != '') {
-				$xpdata = new XPollData( $database );
+				$xpdata = new XPollData( $this->database );
 				if (!$isNew) {
 					$xpdata->id = $i;
 				}
 				$xpdata->pollid = $row->id;
 				$xpdata->text = trim($text);
 				if (!$xpdata->check()) {
-					echo XPollHtml::alert( $xpdata->getError() );
-					exit();
+					JError::raiseError( 500, $xpdata->getError() );
+					return;
 				}
 				if (!$xpdata->store()) {
-					echo XPollHtml::alert( $xpdata->getError() );
-					exit();
+					JError::raiseError( 500, $xpdata->getError() );
+					return;
 				}
 			}
 		}
 
 		// Remove old menu entries for this poll
-		$xpmenu = new XPollMenu( $database );
+		$xpmenu = new XPollMenu( $this->database );
 		$xpmenu->deleteEntries( $row->id );
 		
 		// Update the menu visibility
@@ -285,7 +237,8 @@ class XPollController
 
 	protected function resetit()
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken('get') or jexit( 'Invalid Token' );
 		
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar( 'cid', array(0) );
@@ -300,28 +253,27 @@ class XPollController
 		}
 
 		// Loop through the IDs
-		$juser =& JFactory::getUser();
-		$xpdate = new XPollDate( $database );
+		$xpdate = new XPollDate( $this->database );
 		foreach ($ids as $id) 
 		{
 			// Load the poll
-			$row = new XPollPoll( $database );
+			$row = new XPollPoll( $this->database );
 			$row->load( $id );
 			
 			// Only alter items not checked out or checked out by 'me'
-			if ($row->checked_out == 0 || $row->checked_out == $juser->get('id')) {
+			if ($row->checked_out == 0 || $row->checked_out == $this->juser->get('id')) {
 				// Delete the Date entries
 				$xpdate->deleteEntries( $id );
 				
 				// Reset voters to 0 and save
 				$row->voters = 0;
 				if (!$row->check()) {
-					echo XPollHtml::alert( $row->getError() );
-					exit();
+					JError::raiseError( 500, $row->getError() );
+					return;
 				}
 				if (!$row->store()) {
-					echo XPollHtml::alert( $row->getError() );
-					exit();
+					JError::raiseError( 500, $row->getError() );
+					return;
 				}
 				$row->checkin( $id );
 			}
@@ -335,7 +287,8 @@ class XPollController
 
 	protected function remove() 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Incoming (expecting an array)
 		$ids = JRequest::getVar( 'cid', array(0) );
@@ -343,30 +296,29 @@ class XPollController
 			$ids = array(0);
 		}
 
-		$msg = '';
 		// Make sure we have IDs to work with
 		if (count($ids) > 0) {
-			$poll = new XPollPoll( $database );
+			$poll = new XPollPoll( $this->database );
 			
 			// Loop through the array of IDs and delete
 			foreach ($ids as $id) 
 			{
 				if (!$poll->delete( $id )) {
-					$msg .= $poll->getError();
+					$this->_message .= $poll->getError();
 				}
 			}
 		}
 		
 		// Redirect
 		$this->_redirect = 'index.php?option='. $this->_option;
-		$this->_message = $msg;
 	}
 
 	//-----------
 
 	protected function publish( $publish=1 ) 
 	{
-		$database =& JFactory::getDBO();
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar( 'cid', array(0) );
@@ -384,26 +336,24 @@ class XPollController
 			exit;
 		}
 
-		$juser =& JFactory::getUser();
-		
 		// Loop through the IDs
 		foreach ($ids as $id) 
 		{
 			// Load the poll
-			$row = new XPollPoll( $database );
+			$row = new XPollPoll( $this->database );
 			$row->load( $id );
 			
 			// Only alter items not checked out or checked out by 'me'
-			if ($row->checked_out == 0 || $row->checked_out == $juser->get('id')) {
+			if ($row->checked_out == 0 || $row->checked_out == $this->juser->get('id')) {
 				// Reset voters to 0 and save
 				$row->published = $publish;
 				if (!$row->check()) {
-					echo XPollHtml::alert( $row->getError() );
-					exit();
+					JError::raiseError( 500, $row->getError() );
+					return;
 				}
 				if (!$row->store()) {
-					echo XPollHtml::alert( $row->getError() );
-					exit();
+					JError::raiseError( 500, $row->getError() );
+					return;
 				}
 				$row->checkin( $id );
 			}
@@ -417,8 +367,9 @@ class XPollController
 
 	protected function open( $open=1 ) 
 	{
-		$database =& JFactory::getDBO();
-
+		// Check for request forgeries
+		JRequest::checkToken('get') or jexit( 'Invalid Token' );
+		
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar( 'cid', array(0) );
 		if (!is_array( $ids )) {
@@ -435,26 +386,24 @@ class XPollController
 			exit;
 		}
 		
-		$juser =& JFactory::getUser();
-		
 		// Loop through the IDs
 		foreach ($ids as $id) 
 		{
 			// Load the poll
-			$row = new XPollPoll( $database );
+			$row = new XPollPoll( $this->database );
 			$row->load( $id );
 			
 			// Only alter items not checked out or checked out by 'me'
-			if ($row->checked_out == 0 || $row->checked_out == $juser->get('id')) {
+			if ($row->checked_out == 0 || $row->checked_out == $this->juser->get('id')) {
 				// Reset voters to 0 and save
 				$row->open = $open;
 				if (!$row->check()) {
-					echo XPollHtml::alert( $row->getError() );
-					exit();
+					JError::raiseError( 500, $row->getError() );
+					return;
 				}
 				if (!$row->store()) {
-					echo XPollHtml::alert( $row->getError() );
-					exit();
+					JError::raiseError( 500, $row->getError() );
+					return;
 				}
 				$row->checkin( $id );
 			}
@@ -468,15 +417,14 @@ class XPollController
 
 	protected function cancel() 
 	{
-		$database =& JFactory::getDBO();
+		$p = JRequest::getVar( 'poll', array(), 'post' );
 		
 		// Check the poll in
-		$row = new XPollPoll( $database );
-		$row->bind( $_POST );
+		$row = new XPollPoll( $this->database );
+		$row->bind( $p );
 		$row->checkin();
 		
 		// Redirect
 		$this->_redirect = 'index.php?option='. $this->_option;
 	}
 }
-?>

@@ -25,31 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-// Class for toolbar generation
-//----------------------------------------------------------
 
-class XPollToolbar 
+class XPollHtml 
 {
-	public function _EDIT( $edit ) 
+	public function alert( $msg )
 	{
-		$text = ( $edit ? JText::_( 'EDIT_XPOLL' ) : JText::_( 'NEW_XPOLL' ) );
-		
-		JToolBarHelper::title( JText::_( 'XPOLL_MANAGER' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
-		JToolBarHelper::save();
-		JToolBarHelper::cancel();
-	}
-	
-	//-----------
-	
-	public function _DEFAULT() 
-	{
-		JToolBarHelper::title( JText::_( 'XPOLL_MANAGER' ), 'addedit.png' );
-		JToolBarHelper::publishList();
-		JToolBarHelper::unpublishList();
-		JToolBarHelper::addNew();
-		JToolBarHelper::editList();
-		JToolBarHelper::deleteList();
+		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 }
-?>

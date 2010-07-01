@@ -39,14 +39,14 @@ class XPollPoll extends JTable
 
 	//-----------
 
-	function __construct( &$db ) 
+	public function __construct( &$db ) 
 	{
 		parent::__construct( '#__xpolls', 'id', $db );
 	}
 
 	//-----------
 
-	function check() 
+	public function check() 
 	{
 		// Check for valid name
 		if (trim( $this->title ) == '') {
@@ -79,7 +79,7 @@ class XPollPoll extends JTable
 
 	//-----------
 
-	function delete( $oid=NULL ) 
+	public function delete( $oid=NULL ) 
 	{
 		$k = $this->_tbl_key;
 		if ($oid) {
@@ -110,7 +110,7 @@ class XPollPoll extends JTable
 	
 	//-----------
 	
-	function getAllPolls() 
+	public function getAllPolls() 
 	{
 		$query = "SELECT id, title FROM $this->_tbl WHERE published=1 ORDER BY id";
 		$this->_db->setQuery( $query );
@@ -119,7 +119,7 @@ class XPollPoll extends JTable
 	
 	//-----------
 	
-	function getLatestPoll() 
+	public function getLatestPoll() 
 	{
 		$Itemid = 1;
 		
@@ -139,7 +139,7 @@ class XPollPoll extends JTable
 	
 	//-----------
 	
-	function increaseVoteCount( $poll_id=NULL ) 
+	public function increaseVoteCount( $poll_id=NULL ) 
 	{
 		if ($poll_id == NULL) {
 			$poll_id = $this->id;
@@ -154,7 +154,7 @@ class XPollPoll extends JTable
 	
 	//-----------
 	
-	function buildQuery( $filters=array() ) 
+	public function buildQuery( $filters=array() ) 
 	{
 		$query = " FROM $this->_tbl AS m";
 
@@ -163,7 +163,7 @@ class XPollPoll extends JTable
 	
 	//-----------
 	
-	function getCount( $filters ) 
+	public function getCount( $filters ) 
 	{
 		$query  = "SELECT COUNT(m.id)";
 		$query .= $this->buildquery( $filters );
@@ -174,7 +174,7 @@ class XPollPoll extends JTable
 	
 	//-----------
 	
-	function getRecords( $filters ) 
+	public function getRecords( $filters ) 
 	{
 		$query = "SELECT m.*, u.name AS editor, COUNT(d.id) AS numoptions";
 		$query .= $this->buildquery( $filters );
@@ -187,217 +187,3 @@ class XPollPoll extends JTable
 		return $this->_db->loadObjectList();
 	}
 }
-
-
-class XPollData extends JTable 
-{
-	var $id     = NULL; // @var int(11) Primary key
-	var $pollid = NULL; // @var int(11)
-	var $text   = NULL; // @var text
-	var $hits   = NULL; // @var int(11)
-
-	//-----------
-
-	function __construct( &$db ) 
-	{
-		parent::__construct( '#__xpoll_data', 'id', $db );
-	}
-
-	//-----------
-
-	function check() 
-	{
-		// Check for pollid
-		if ($this->pollid == '') {
-			$this->setError( JText::_('XPOLL_ERROR_MISSING_POLL_ID') );
-			return false;
-		}
-
-		// Sanitise some data
-		if (!get_magic_quotes_gpc()) {
-			$row->text = addslashes( $row->text );
-		}
-
-		return true;
-	}
-	
-	//-----------
-	
-	function getPollData( $poll_id=NULL ) 
-	{
-		if ($poll_id == NULL) {
-			$poll_id = $this->pollid;
-		}
-		$query = "SELECT a.id, a.text, count( DISTINCT b.id ) AS hits, count( DISTINCT b.id )/COUNT( DISTINCT a.id )*100.0 AS percent"
-			. "\n FROM #__xpoll_data AS a"
-			. "\n LEFT JOIN #__xpoll_date AS b ON b.vote_id = a.id"
-			. "\n WHERE a.pollid = $poll_id"
-			. "\n AND a.text != ''"
-			. "\n GROUP BY a.id"
-			. "\n ORDER BY a.id"
-			;
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
-	}
-	
-	//-----------
-	
-	function getPollOptions( $poll_id=NULL, $blanks=false ) 
-	{
-		if ($poll_id == NULL) {
-			$poll_id = $this->pollid;
-		}
-		$query = "SELECT id, text FROM $this->_tbl"
-				. " WHERE pollid='$poll_id'";
-		if (!$blanks) {
-			$query .= " AND text <> ''";
-		}
-		$query .= " ORDER BY id";
-				
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
-	}
-}
-
-
-class XPollDate extends JTable 
-{
-	var $id       = NULL; // @var int(11) Primary key
-	var $date     = NULL; // @var datetime(0000-00-00 00:00:00)
-	var $vote_id  = NULL; // @var int(11)
-	var $poll_id  = NULL; // @var int(11)
-	var $voter_ip = NULL; // @var varchar(50)
-
-	//-----------
-
-	function __construct( &$db ) 
-	{
-		parent::__construct( '#__xpoll_date', 'id', $db );
-	}
-	
-	//-----------
-
-	function check() 
-	{
-		// Check for pollid
-		if ($this->vote_id == '') {
-			$this->setError( JText::_('XPOLL_ERROR_MISSING_VOTE_ID') );
-			return false;
-		}
-		
-		// Check for pollid
-		if ($this->poll_id == '') {
-			$this->setError( JText::_('XPOLL_ERROR_MISSING_POLL_ID') );
-			return false;
-		}
-
-		return true;
-	}
-	
-	//-----------
-	
-	function getMinMaxDates( $poll_id=NULL ) 
-	{
-		if ($poll_id == NULL) {
-			$poll_id = $this->poll_id;
-		}
-		$query = "SELECT MIN(date) AS mindate, MAX(date) AS maxdate"
-				." FROM $this->_tbl"
-				." WHERE poll_id='$poll_id'";
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
-	}
-	
-	//-----------
-	
-	function deleteEntries( $poll_id=NULL ) 
-	{
-		if ($poll_id == NULL) {
-			$poll_id = $this->poll_id;
-		}
-		
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE poll_id='$poll_id'" );
-		if (!$this->_db->query()) {
-			echo $this->_db->getErrorMsg();
-			exit();
-		}
-	}
-}
-
-
-class XPollMenu extends JTable 
-{
-	var $pollid  = NULL; // @var int(11)
-	var $menuid  = NULL; // @var int(11)
-
-	//-----------
-
-	function XPollMenu( &$db ) 
-	{
-		parent::__construct( '#__xpoll_menu', 'pollid', $db );
-	}
-	
-	//-----------
-
-	function check() 
-	{
-		// Check for pollid
-		if ($this->menuid == '') {
-			$this->setError( JText::_('XPOLL_ERROR_MISSING_MENU_ID') );
-			return false;
-		}
-		
-		// Check for pollid
-		if ($this->pollid == '') {
-			$this->setError( JText::_('XPOLL_ERROR_MISSING_POLL_ID') );
-			return false;
-		}
-
-		return true;
-	}
-	
-	//-----------
-	
-	function deleteEntries( $poll_id=NULL ) 
-	{
-		if ($poll_id == NULL) {
-			$poll_id = $this->pollid;
-		}
-		
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE pollid='$poll_id'" );
-		if (!$this->_db->query()) {
-			echo $this->_db->getErrorMsg();
-			exit();
-		}
-	}
-	
-	//-----------
-	
-	function insertEntry( $poll_id=NULL, $menu_id=NULL ) 
-	{
-		if ($poll_id == NULL) {
-			$poll_id = $this->pollid;
-		}
-		if ($menu_id == NULL) {
-			$menu_id = $this->menuid;
-		}
-		
-		$this->_db->setQuery( "INSERT INTO $this->_tbl (pollid, menuid) VALUES ($poll_id, $menu_id)" );
-		if (!$this->_db->query()) {
-			echo $this->_db->getErrorMsg();
-			//exit();
-		}
-	}
-	
-	//-----------
-	
-	function getMenuIds( $poll_id=NULL ) 
-	{
-		if ($poll_id == NULL) {
-			$poll_id = $this->pollid;
-		}
-		$this->_db->setQuery( "SELECT menuid AS value FROM $this->_tbl WHERE pollid='$poll_id'" );
-		return $this->_db->loadObjectList();
-	}
-}
-?>
