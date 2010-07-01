@@ -107,6 +107,7 @@ class RegisterController extends JObject
 			case 'confirm':     $this->confirm();     break;
 			case 'unconfirmed': $this->unconfirmed(); break;
 			
+			case 'raceethnic': $this->raceethnic(); break;
 			//case 'login': $this->login($act); break;
 			//case 'realm': $this->realm($act); break;
 			
@@ -962,6 +963,31 @@ class RegisterController extends JObject
 		
 		// Instantiate a new view
 		$view = new JView( array('name'=>'select') );
+		$view->option = $this->_option;
+		$view->title = JText::_('COM_REGISTER_SELECT_METHOD');
+		$view->hubShortName = $this->jconfig->getValue('config.sitename');
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	protected function raceethnic() 
+	{
+		// Add the CSS to the template
+		$this->_getStyles();
+
+		// Add some Javascript to the template
+		$this->_getScripts();
+
+		// Set the pathway
+		$this->_buildPathway();
+
+		// Set the page title
+		$this->_buildTitle();
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'registration', 'layout'=>'raceethnic') );
 		$view->option = $this->_option;
 		$view->title = JText::_('COM_REGISTER_SELECT_METHOD');
 		$view->hubShortName = $this->jconfig->getValue('config.sitename');
