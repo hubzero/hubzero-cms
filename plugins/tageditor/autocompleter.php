@@ -54,10 +54,10 @@ class plgTageditorAutocompleter extends JPlugin
 		$size  = (isset($atts[4])) ? $atts[4] : '';
 
 		$document =& JFactory::getDocument();
-		$document->addScript('plugins'.DS.'tageditor'.DS.'textboxlist.js');
-		$document->addScript('plugins'.DS.'tageditor'.DS.'observer.js');
-		$document->addScript('plugins'.DS.'tageditor'.DS.'autocompleter.js');
-		$document->addStyleSheet('plugins'.DS.'tageditor'.DS.'autocompleter.css');
+		$document->addScript(DS.'plugins'.DS.'tageditor'.DS.'textboxlist.js');
+		$document->addScript(DS.'plugins'.DS.'tageditor'.DS.'observer.js');
+		$document->addScript(DS.'plugins'.DS.'tageditor'.DS.'autocompleter.js');
+		$document->addStyleSheet(DS.'plugins'.DS.'tageditor'.DS.'autocompleter.css');
 
 		$html  = '<input type="text" name="'.$name.'"';
 		$html .= ($id)    ? ' id="'.$id.'"'       : '';
