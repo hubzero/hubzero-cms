@@ -24,32 +24,38 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$juser =& JFactory::getUser();
 ?>
+<div class="below">
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum'); ?>" method="post">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
+	<h3><?php echo stripslashes($this->forum->topic); ?></h3>
 	<div class="aside">
 		<p class="add"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&task=newtopic'); ?>"><?php echo JText::_('PLG_GROUPS_FORUM_NEW_TOPIC'); ?></a></p>
 	</div><!-- / .aside -->
 	<div class="subject">
-		<h3><?php echo stripslashes($this->forum->topic); ?></h3>
 		<ol class="comments">
 <?php
 		if ($this->rows) {
 			ximport('wiki.parser');
+			ximport('xprofile');
 
 			$p = new WikiParser( $this->group->get('cn'), $this->option, 'group'.DS.'forum', 'group', $this->group->get('gidNumber'), '' );
 			
 			$o = 'even';
-			
+			$k = 0;
 			foreach ($this->rows as $row) 
 			{
 				$name = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 				if (!$row->anonymous) {
-					$juser =& JUser::getInstance( $row->created_by );
-					if (is_object($juser) && $juser->get('name')) {
-						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by).'">'.stripslashes($juser->get('name')).'</a>';
+					//$juser =& JUser::getInstance( $row->created_by );
+					$huser = new XProfile();
+					$huser->load( $row->created_by );
+					if (is_object($huser) && $huser->get('name')) {
+						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by).'">'.stripslashes($huser->get('name')).'</a>';
 					}
 				}
 				
@@ -57,19 +63,46 @@ defined('_JEXEC') or die( 'Restricted access' );
 				
 				$o = ($o == 'odd') ? 'even' : 'odd';
 ?>
-			<li class="comment <?php echo $o; ?>" id="c<?php echo $row->id; ?>">
+			<li class="comment <?php echo $o; if ($k == 0) { echo ' author'; } ?>" id="c<?php echo $row->id; ?>">
 				<a name="c<?php echo $row->id; ?>"></a>
-				<dl class="comment-details">
-					<dt class="type"><span class="plaincomment"><span><?php echo JText::_('PLG_GROUPS_FORUM_COMMENT'); ?></span></span></dt>
-					<dd class="date"><?php echo JHTML::_('date',$row->created, '%d %b, %Y', 0); ?></dd>
-					<dd class="time"><?php echo JHTML::_('date',$row->created, '%I:%M %p', 0); ?></dd>
-				</dl>
-				<div class="cwrap">
-					<p class="name"><strong><?php echo $name; ?></strong> <?php echo JText::_('PLG_GROUPS_FORUM_SAID'); ?>:</p>
-					<p><?php echo $comment; ?></p>
+				<p class="comment-member-photo">
+					<img src="<?php echo ForumHelper::getMemberPhoto($huser, $row->anonymous); ?>" alt="" />
+				</p>
+				<div class="comment-content">
+					<p class="comment-title">
+						<strong><?php echo $name; ?></strong> 
+						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&topic='.$this->forum->id.'#c'.$row->id); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_PERMALINK'); ?>">@ 
+							<span class="time"><?php echo JHTML::_('date',$row->created, '%I:%M %p', 0); ?></span> on 
+							<span class="date"><?php echo JHTML::_('date',$row->created, '%d %b, %Y', 0); ?></span>
+<?php if ($row->modified && $row->modified != '0000-00-00 00:00:00') { ?>
+							&mdash; <?php echo JText::_('Edited @'); ?>
+							<span class="time"><?php echo JHTML::_('date',$row->modified, '%I:%M %p', 0); ?></span> on 
+							<span class="date"><?php echo JHTML::_('date',$row->modified, '%d %b, %Y', 0); ?></span>
+<?php } ?>
+						</a>
+					</p>
+					<?php echo $comment; ?>
+<?php if ($this->authorized == 'admin' || $this->authorized == 'manager' || $juser->get('id') == $row->created_by) { ?>
+					<p class="comment-options">
+<?php if ($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
+						<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&topic='.$row->id.'&task=deletetopic'); ?>">Delete</a> | 
+<?php } ?>
+						<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&topic='.$row->id.'&task=edittopic'); ?>">Edit</a>
+					</p>
+<?php } ?>
 				</div>
+				<?php /*if ($k == 0) { ?>
+				<ol class="comments">
+				<?php } else if ($k == (count($this->rows) - 1)) { ?>
+					</li>
+				</ol>
+			</li>
+				<?php } else { ?>
+			</li>
+				<?php }*/ ?>
 			</li>
 <?php
+				$k++;
 			}
 		} else {
 ?>
@@ -85,30 +118,94 @@ defined('_JEXEC') or die( 'Restricted access' );
 </form>
 
 <div class="clear"></div>
-<hr />
+
+<h3><a name="commentform"></a><?php echo JText::_('PLG_GROUPS_FORUM_ADD_COMMENT'); ?></h3>
 
 <div class="aside">
-	<p>Comments support <a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki Formatting</a>. Please keep comments polite and on topic. Offensive posts may be removed.</p>
+	<table class="wiki-reference" summary="Wiki Syntax Reference">
+		<caption>Wiki Syntax Reference</caption>
+		<tbody>
+			<tr>
+				<td>'''bold'''</td>
+				<td><b>bold</b></td>
+			</tr>
+			<tr>
+				<td>''italic''</td>
+				<td><i>italic</i></td>
+			</tr>
+			<tr>
+				<td>__underline__</td>
+				<td><span style="text-decoration:underline;">underline</span></td>
+			</tr>
+			<tr>
+				<td>{{{monospace}}}</td>
+				<td><code>monospace</code></td>
+			</tr>
+			<tr>
+				<td>~~strike-through~~</td>
+				<td><del>strike-through</del></td>
+			</tr>
+			<tr>
+				<td>^superscript^</td>
+				<td><sup>superscript</sup></td>
+			</tr>
+			<tr>
+				<td>,,subscript,,</td>
+				<td><sub>subscript</sub></td>
+			</tr>
+		</tbody>
+	</table>
 </div><!-- / .aside -->
 <div class="subject">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum'); ?>" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum'); ?>" method="post" id="commentform">
+		<p class="comment-member-photo">
+<?php
+			if (!$juser->get('guest')) {
+				$jxuser = new XProfile();
+				$jxuser->load( $juser->get('id') );
+				$thumb = ForumHelper::getMemberPhoto($jxuser, 0);
+			} else {
+				$config =& JComponentHelper::getParams( 'com_members' );
+				$thumb = $config->get('defaultpic');
+				if (substr($thumb, 0, 1) != DS) {
+					$thumb = DS.$dfthumb;
+				}
+				$thumb = ForumHelper::thumbit($thumb);
+			}
+?>
+			<img src="<?php echo $thumb; ?>" alt="" />
+		</p>
 		<fieldset>
-			<h4><a name="commentform"></a><?php echo JText::_('PLG_GROUPS_FORUM_ADD_COMMENT'); ?></h4>
-			<label>
-				<input class="option" type="checkbox" name="anonymous" id="forum_anonymous" value="1" /> 
-				<?php echo JText::_('PLG_GROUPS_FORUM_FORM_ANONYMOUS'); ?>
-			</label>
 			<label>
 				<?php echo JText::_('PLG_GROUPS_FORUM_FORM_COMMENTS'); ?>
-				<textarea name="comment" id="forum_comments" rows="15" cols="35"></textarea>
+				<textarea name="topic[comment]" id="forum_comments" rows="15" cols="35"></textarea>
 			</label>
+			
+			<label id="comment-anonymous-label">
+				<input class="option" type="checkbox" name="topic[anonymous]" id="forum_anonymous" value="1" /> 
+				<?php echo JText::_('PLG_GROUPS_FORUM_FORM_ANONYMOUS'); ?>
+			</label>
+			
+			<p class="submit">
+				<input type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
+			</p>
+			
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
 			<input type="hidden" name="task" value="savetopic" />
-			<input type="hidden" name="parent" value="<?php echo $this->forum->id; ?>" />
-			<input type="hidden" name="topic_id" value="" />
+			<input type="hidden" name="topic[parent]" value="<?php echo $this->forum->id; ?>" />
+			<input type="hidden" name="topic[id]" value="" />
 			<input type="hidden" name="active" value="forum" />
-			<p class="submit"><input type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SUBMIT'); ?>" /></p>
+			
+			<div class="sidenote">
+				<p>
+					<strong>Please keep comments polite and on topic. Offensive posts may be removed.</strong>
+				</p>
+				<p>
+					Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="#">Wiki syntax</a> is supported.
+				</p>
+			</div>
 		</fieldset>
 	</form>
 </div><!-- / .subject -->
+</div>
