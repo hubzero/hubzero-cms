@@ -375,12 +375,12 @@ class GroupsController extends Hubzero_Controller
 
 				// Start log
 				$log  = JText::_('GROUPS_SUBJECT_GROUP_DELETED');
-				$log .= JText::_('GROUPS_TITLE').': '.$group->get('description').n;
-				$log .= JText::_('GROUPS_ID').': '.$group->get('cn').n;
-				$log .= JText::_('GROUPS_PRIVACY').': '.$group->get('access').n;
-				$log .= JText::_('GROUPS_PUBLIC_TEXT').': '.stripslashes($group->get('public_desc')) .n;
-				$log .= JText::_('GROUPS_PRIVATE_TEXT').': '.stripslashes($group->get('private_desc')) .n;
-				$log .= JText::_('GROUPS_RESTRICTED_MESSAGE').': '.stripslashes($group->get('restrict_msg'))  .n;
+				$log .= JText::_('GROUPS_TITLE').': '.$group->get('description')."\n";
+				$log .= JText::_('GROUPS_ID').': '.$group->get('cn')."\n";
+				$log .= JText::_('GROUPS_PRIVACY').': '.$group->get('access')."\n";
+				$log .= JText::_('GROUPS_PUBLIC_TEXT').': '.stripslashes($group->get('public_desc')) ."\n";
+				$log .= JText::_('GROUPS_PRIVATE_TEXT').': '.stripslashes($group->get('private_desc')) ."\n";
+				$log .= JText::_('GROUPS_RESTRICTED_MESSAGE').': '.stripslashes($group->get('restrict_msg'))."\n";
 
 				// Log ids of group members
 				if ($groupusers) {
@@ -389,14 +389,14 @@ class GroupsController extends Hubzero_Controller
 					{
 						$log .= $gu.' ';
 					}
-					$log .= '' .n;
+					$log .= '' ."\n";
 				}
 				$log .= JText::_('GROUPS_MANAGERS').': ';
 				foreach ($groupmanagers as $gm) 
 				{
 					$log .= $gm.' ';
 				}
-				$log .= '' .n;
+				$log .= '' ."\n";
 
 				// Trigger the functions that delete associated content
 				// Should return logs of what was deleted

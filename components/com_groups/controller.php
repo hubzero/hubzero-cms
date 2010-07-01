@@ -1347,12 +1347,27 @@ class GroupsController extends JObject
 			}
 			
 			$log->action = 'group_created';
+			
+			// Get plugins
+			JPluginHelper::importPlugin( 'groups' );
+			$dispatcher =& JDispatcher::getInstance();
+			
+			// Trigger the functions that delete associated content
+			// Should return logs of what was deleted
+			$logs = $dispatcher->trigger( 'onGroupNew', array($group) );
+			if (count($logs) > 0) {
+				$log->comments .= implode('',$logs);
+			}
 		} else {
 			$log->action = 'group_edited';
 		}
 		
 		if (!$log->store()) {
 			$this->setError( $log->getError() );
+		}
+		
+		if ($isNew) {
+			
 		}
 		
 		// Get the administrator e-mail
@@ -1650,6 +1665,7 @@ class GroupsController extends JObject
 		
 		// Get number of group members
 		$members = $group->get('members');
+		$managers = $group->get('managers');
 
 		// Get plugins
 		JPluginHelper::importPlugin( 'groups' );
@@ -1710,16 +1726,16 @@ class GroupsController extends JObject
 		$log .= JText::_('GROUPS_RESTRICTED_MESSAGE').': '.stripslashes($group->get('restrict_msg'))."\n";
 		
 		// Log ids of group members
-		if ($groupusers) {
+		if ($members) {
 			$log .= JText::_('GROUPS_MEMBERS').': ';
-			foreach ($groupusers as $gu) 
+			foreach ($members as $gu) 
 			{
 				$log .= $gu.' ';
 			}
 			$log .= '' ."\n";
 		}
 		$log .= JText::_('GROUPS_MANAGERS').': ';
-		foreach ($groupmanagers as $gm) 
+		foreach ($managers as $gm) 
 		{
 			$log .= $gm.' ';
 		}
@@ -1750,7 +1766,7 @@ class GroupsController extends JObject
 		
 		$gidNumber = $group->get('gidNumber');
 		$gcn = $group->get('cn');
-		$members = $group->get('members');
+		//$members = $group->get('members');
 		
 		// Delete group
 		if (!$group->delete()) {
@@ -1784,6 +1800,7 @@ class GroupsController extends JObject
 		$eview->juser = $juser;
 		$eview->gcn = $gcn;
 		$eview->msg = $msg;
+		$eview->group = $group;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 		
