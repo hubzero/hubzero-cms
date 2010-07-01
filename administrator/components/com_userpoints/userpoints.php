@@ -26,42 +26,29 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
-// Class for toolbar generation
-//----------------------------------------------------------
 
-class UserPointsToolbar
-{
-	public function MENU_User()
-	{
-		JToolBarHelper::title( JText::_( 'Manage Points' ), 'addedit.png' );
-	}
+error_reporting(E_ALL);
+@ini_set('display_errors','1');
 
-	//-----------
-	
-	public function MENU_Config()
-	{
-		JToolBarHelper::title( JText::_( 'Manage Points' ), 'addedit.png' );
-		JToolBarHelper::save( 'saveconfig', 'Save Configuration' );
-		JToolBarHelper::cancel();
-	}
+// Set access levels
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
 
-	//-----------
-	
-	public function MENU_Edit()
-	{
-		JToolBarHelper::title( JText::_( 'Manage Points' ), 'addedit.png' );
-		//JToolBarHelper::save();
-		//JToolBarHelper::cancel();
-	}
-
-	//-----------
-	public function MENU_Default()
-	{
-		JToolBarHelper::title( JText::_( 'Manage Points' ), 'addedit.png' );
-		JToolBarHelper::preferences('com_userpoints', '550');
-	}
-
-	//-----------
-
+// Authorization check
+$user = & JFactory::getUser();
+if (!$user->authorize( $option, 'manage' )) {
+	$mainframe->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
 }
-?>
+
+// Include scripts
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php' );
+ximport('xprofile');
+ximport('textfilter');
+ximport('bankaccount');
+
+// Initiate controller
+$controller = new UserpointsController();
+$controller->execute();
+$controller->redirect();

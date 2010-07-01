@@ -142,7 +142,7 @@ ximport('xprofile');
 ximport('textfilter');
 ximport('bankaccount');
 
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_userpoints'.DS.'admin.controller.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_userpoints'.DS.'controller.php' );
 
 echo "_______________________________________________\n";
 echo date(DATE_RFC822)."\n";
