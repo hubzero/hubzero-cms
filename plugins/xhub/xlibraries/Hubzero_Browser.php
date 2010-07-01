@@ -36,7 +36,7 @@ class Hubzero_Browser
 	public function __construct($sagent=null) 
 	{
 		if (!$sagent) {
-			$sagent = (!empty($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
+			$sagent = JRequest::getVar('HTTP_USER_AGENT','','server');
 			$this->_user_agent = $sagent;
 		}
 		
