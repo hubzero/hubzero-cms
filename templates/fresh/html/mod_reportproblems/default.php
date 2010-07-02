@@ -5,7 +5,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 	<div id="help-pane">
 		<div id="help-container">
-			<p id="closethis"><?php echo JText::_('Close this'); ?></p>
 			<h1><?php echo JText::_('MOD_REPORTPROBLEMS_SUPPORT'); ?></h1>
 
 			<div class="threecolumn farleft">
@@ -26,7 +25,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				</ul>	
 			</div><!-- / .threecolumn farleft -->
 			<div class="threecolumn middleright">
-				<h2><?php echo JText::_('Submit a Support Ticket'); ?></h2>
+				<h2><?php echo JText::_('Submit a Support Ticket'); ?><span id="closethis"><?php echo JText::_('Close this'); ?></span></h2>
 				<form method="post" action="index.php" id="troublereport">
 					<fieldset class="reporter">
 						<label for="trLogin">

@@ -160,16 +160,24 @@
 	}
 	#closethis {
 		float: right;
-		padding: 1em;
-		color: #FFFFFF;
-		margin-bottom: -3em;
-		margin-top: 0;
-		margin-right: -2em;
+		padding: 0.5em 1em 0.5em 1em;
+		color: #e7c333;
+		margin: 0;
+		margin-bottom: 0.5em;
+		margin-top: -1em;
+		margin-right: -1em;
 		cursor: pointer;
 		text-decoration: underline;
+		height: 20px;
+		font-weight: normal;
+		font-size: 85%;
+	}
+	#help-container h3 #closethis {
+		font-weight: normal;
+		font-size: 75%;
 	}
 	#closethis:hover {
-		color: #e7c333;
+		color: #ffffff;
 	}
 	#trSuccess strong,
 	#trSuccess h3 {
