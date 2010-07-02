@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+    <name>Warehouse Tags</name>
+    <author>Gemez Marshall</author>
+    <version>0.0.1</version>
+    <creationDate>04/05/2010</creationDate>
+    <description>Show the tags for a given project object.</description>
+	<files>
+		<filename>mod_warehousetags.xml</filename>
+		<filename module="mod_warehousetags">mod_warehousetags.php</filename>
+		<filename>index.html</filename>
+        	<filename>helper.php</filename>
+        	<filename>tmpl/default.php</filename>
+        	<filename>tmpl/index.html</filename>
+	</files>
+	<params>
+    </params>
+</install>
