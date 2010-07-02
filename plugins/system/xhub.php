@@ -343,7 +343,7 @@ class XRouter extends JRouter
 				$vars['option'] = 'com_hub';
 			}
 			else if (substr($route, 0, 6) == 'search')
-				$vars['option'] = 'com_xsearch';
+				$vars['option'] = 'com_ysearch';
 		}
 
 		// Set the active menu item
