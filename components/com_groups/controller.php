@@ -1347,6 +1347,17 @@ class GroupsController extends JObject
 			}
 			
 			$log->action = 'group_created';
+			
+			// Get plugins
+			JPluginHelper::importPlugin( 'groups' );
+			$dispatcher =& JDispatcher::getInstance();
+			
+			// Trigger the functions that delete associated content
+			// Should return logs of what was deleted
+			$logs = $dispatcher->trigger( 'onGroupNew', array($group) );
+			if (count($logs) > 0) {
+				$log->comments .= implode('',$logs);
+			}
 		} else {
 			$log->action = 'group_edited';
 		}
