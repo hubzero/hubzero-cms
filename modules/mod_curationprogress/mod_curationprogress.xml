@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+    <name>Curation Progress</name>
+    <author>Tanzima Zerin Islam</author>
+    <version>1.5.0</version>
+    <creationDate>04/11/2010</creationDate>
+    <description>Show the curation status of a project.</description>
+	<files>
+		
+		<filename module="mod_curationprogress">mod_curationprogress.php</filename>
+		<filename>index.html</filename>
+        <filename>helper.php</filename>
+        <filename>CurationProgress.php</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
+	</files>
+	<params>
+    </params>
+</install>
