@@ -871,6 +871,9 @@ class WishlistHtml
 			$html .= '>'.$item->subject.'</h3>'.n;
 			
 			if($item->about) {
+				$item->about = trim(stripslashes($item->about));
+				$item->about = preg_replace('/<br\\s*?\/??>/i', "", $item->about);
+				$item->about = htmlspecialchars(WishlistHtml::txt_unpee($item->about));
 				$html .= t.t.t.'<p>'.$item->about.'</p>'.n;
 			}
 			
