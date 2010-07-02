@@ -38,7 +38,7 @@ class ToolsViewImage extends JView
     	ximport('xdocument');
 
     	$xhub  = & XFactory::getHub();
-	$image = JPATH_SITE . XDocument::getComponentImage('com_projects', 'forge.png', 1);
+	$image = JPATH_SITE . XDocument::getComponentImage('com_tools', 'forge.png', 1);
 
 	if (is_readable($image)) {
 		ob_clean();
