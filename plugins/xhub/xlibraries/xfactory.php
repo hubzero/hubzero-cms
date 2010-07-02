@@ -31,6 +31,35 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class XFactory
 {
+
+        function &getUser()
+        {
+                static $instances = null;
+
+                //$xlog = &XFactory::getLogger();
+
+                if (!is_object( $instances[0] ))
+                {
+                        ximport('xuser');
+
+                        $instances[0] =& XUser::getInstance();
+
+                        if (!is_object($instances[0]))
+                        {
+                                //$xlog->logDebug("getUser(): getInstance() claims guest.");
+                                $instance = new XUser();
+                                $instance->set('guest',true);
+                                return $instance;
+                        }
+
+                        //$xlog->logDebug("getUser(): returning xuser " . $instances[0]->get('login'));
+                }
+                //else
+                        //$xlog->logDebug("getUser(): returning cached xuser " . $instances[0]->get('login'));
+
+                return $instances[0];
+        }
+
 	function &getProfile()
 	{
 		static $instances = null;
