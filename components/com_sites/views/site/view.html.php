@@ -79,7 +79,7 @@ class sitesViewSite extends JView
 		if($historyDF) $historyDataFileArr[] = $historyDF;
         
                 $this->assignRef('introDataFileArr', $introDataFileArr);
-                 $this->assignRef('descDataFileArr', $descDataFileArr);
+                $this->assignRef('descDataFileArr', $descDataFileArr);
 		$this->assignRef('historyDataFileArr', $historyDataFileArr); 
 		        
 		// See if current logged in user should be presented an edit button
