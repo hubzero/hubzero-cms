@@ -466,10 +466,10 @@ class MembersHtml
 					else
 					     $html .= t.t.t.t.'<td> <label><input type="checkbox" name="shadowExpire" id="shadowExpire" value="1"/></label></td>';
 					$html .= t.t.t.'</tr>'.n;
-					$html .= t.t.t.'<tr class="even">'.n;
-					$html .= t.t.t.t.'<td class="key">'.JText::_('COL_PASSWORD').'</td>'.n;
-					$html .= t.t.t.t.'<td><a href="/password/lost">'.JText::_('RESET_PASSWORD').'</a></td>'.n;
-					$html .= t.t.t.'</tr>'.n;
+					//$html .= t.t.t.'<tr class="even">'.n;
+					//$html .= t.t.t.t.'<td class="key">'.JText::_('COL_PASSWORD').'</td>'.n;
+					//$html .= t.t.t.t.'<td><a href="/password/lost">'.JText::_('RESET_PASSWORD').'</a></td>'.n;
+					//$html .= t.t.t.'</tr>'.n;
 					$html .= t.t.t.'<tr class="odd">'.n;
 					$html .= t.t.t.t.'<td class="key">'.JText::_('COL_JOBS_ALLOWED').'</td>'.n;
 					$html .= t.t.t.t.'<td><input type="text" name="profile[jobsAllowed]" id="jobsAllowed" value="'.$profile->get('jobsAllowed').'" size="10" /></td>'.n;
