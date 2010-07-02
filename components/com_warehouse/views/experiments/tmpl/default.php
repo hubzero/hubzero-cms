@@ -8,11 +8,12 @@ defined('_JEXEC') or die( 'Restricted access' );
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addScript($this->baseurl."/components/com_warehouse/js/ajax.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_warehouse/js/warehouse.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/resources.js", 'text/javascript');
 ?>
 
 <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
  
-<div class="innerwrap>
+<div class="innerwrap">
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
@@ -32,7 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	    <input type="hidden" name="task" value="find"/>
 	    <input type="hidden" name="keywords" value="<?php echo $_REQUEST[Search::KEYWORDS]; ?>"/>
         <div id="experiment-list" class="subject-full">
-          <?php 
+          <?php
+            /* @var $oExperiment Experiment */
+            /* @var $oIndeedDataFile DataFile */
             $oExperimentArray = unserialize($_REQUEST[Experiments::EXPERIMENT_LIST]);        
             foreach($oExperimentArray as $iExperimentIndex=>$oExperiment){
           	  $iExperimentId = $oExperiment->getId();
@@ -41,6 +44,14 @@ defined('_JEXEC') or die( 'Restricted access' );
         	  $oDescriptionClob = StringHelper::neat_trim($oExperiment->getDescription(), 250);
         	  $strName = $oExperiment->getName();
         	  $strThumbnail = $oExperiment->getExperimentThumbnailHTML();
+
+                  //added on July 1,2010.  Users want to see the "Main" inDEED file in experiment list
+                  $oIndeedDataFileArray = $oExperiment->getExperimentIndeedFile("inDEED",
+                                                                                $oExperiment->getProjectId(),
+                                                                                $oExperiment->getId());
+                  if(!empty($oIndeedDataFileArray)){
+                    $oIndeedDataFile = end($oIndeedDataFileArray);
+                  }
           ?>
             <div id="Experiment<?php echo $iExperimentId; ?>" style="width:100%;">
               <div id="ExperimentInfo<?php echo $iExperimentId; ?>" style="float:left;width:90%;">
@@ -50,11 +61,12 @@ defined('_JEXEC') or die( 'Restricted access' );
                     <td><a href="/warehouse/experiment/<?php echo $iExperimentId; ?>/project/<?php echo $this->projid ?>" style="font-size: 15px;"><?php echo $strTitle; ?></a></td>
                   </tr>
                   <tr>  
-                    <td><b>Start Date:</td>
+                    <td><b>Start Date:</b></td>
                     <td><span style="color: #666666"><?php echo $strStartDate; ?></span></td>
-                  </tr>  
-                    <td><b>Description:</td>
-                	<td width="85%"><?php echo $oDescriptionClob; ?></td>
+                  </tr>
+                  <tr>
+                    <td><b>Description:</b></td>
+                    <td width="85%"><?php echo $oDescriptionClob; ?></td>
                   </tr>
                 </table>	
               </div>
@@ -62,7 +74,14 @@ defined('_JEXEC') or die( 'Restricted access' );
                 <?php 
                   if( strlen($strThumbnail) > 0 ){
                     echo $strThumbnail;
-                  } 
+                  }
+
+                  //display inDEED file below thumbnail.
+                  if($oIndeedDataFile){
+                    $strIndeedPath = $oIndeedDataFile->getPath();
+                    $strIndeedName = $oIndeedDataFile->getName();
+                    echo "<a href='/indeed?task=process&list=$strIndeedPath/$strIndeedName'>Launch Data File</a>";
+                  }
                 ?>
               </div>
               <div class="clear"></div>
@@ -94,6 +113,5 @@ defined('_JEXEC') or die( 'Restricted access' );
   </div>
   
 </div>
-</form>
 
 

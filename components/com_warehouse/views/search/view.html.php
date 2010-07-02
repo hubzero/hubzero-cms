@@ -21,6 +21,10 @@ class WarehouseViewSearch extends JView{
 	$this->assignRef( "mod_treebrowser", ComponentHtml::getModule("mod_treebrowser") );
 	$this->assignRef( "mod_warehousepopularsearches", ComponentHtml::getModule("mod_warehousepopularsearches") );
 	
+	JFactory::getApplication()->getPathway()->addItem("Project Warehouse","/warehouse");
+	
+	//echo "search...".sizeof(JFactory::getApplication()->getPathway())."<br>";
+	
     parent::display($tpl);
   }
   

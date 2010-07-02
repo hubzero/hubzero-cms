@@ -20,7 +20,7 @@ class WarehouseModelBase extends JModel{
   function __construct(){
 	parent::__construct();
 	
-	$this->m_oTabArray = array("Project", "Experiments", "Team Members", "More");
+	$this->m_oTabArray = array("Project", "Experiments", "Data", "Team Members", "More");
 	$this->m_oSearchTabArray = array("Featured", "Search");
 	$this->m_oSearchResultsTabArray = array("Results");
 	$this->m_oTreeTabArray = array("Projects");
@@ -63,6 +63,14 @@ class WarehouseModelBase extends JModel{
    */
   public function getTabs($p_strOption, $p_iId, $p_strTabArray, $p_strActive){
   	return TabHtml::getTabs( $p_strOption, $p_iId, $p_strTabArray, $p_strActive );
+  }
+  
+  /**
+   * 
+   * @return strTabs in html format
+   */
+  public function getSubTabs($p_strOption, $p_iId, $p_strTabArray, $p_strActive){
+  	return TabHtml::getSubTabs( $p_strOption, $p_iId, $p_strTabArray, $p_strActive );
   }
   
   /**

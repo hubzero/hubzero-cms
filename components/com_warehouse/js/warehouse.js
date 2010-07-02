@@ -1,3 +1,14 @@
+function getDataDropDownByEntity(p_strElementId, p_strAlias, p_strTargetId){
+  var iEntityIndex = document.getElementById(p_strElementId).selectedIndex;
+  var strEntityText = document.getElementById(p_strElementId).options[iEntityIndex].text;
+  var iEntityId = document.getElementById(p_strElementId).options[iEntityIndex].value;
+  
+  if(iEntityId != ""){
+	var strUrl = p_strAlias+'/'+iEntityId+'?format=ajax'; 
+    getMootools(strUrl, p_strTargetId);
+  }
+}
+
 function getTrialInfo(p_strElementId, p_strAlias, p_strTargetId){
   var iTrialIndex = document.getElementById(p_strElementId).selectedIndex;
   var strTrialText = document.getElementById(p_strElementId).options[iTrialIndex].text;
@@ -83,4 +94,17 @@ function validateFileBrowser(p_strFormId, p_strCheckboxId, p_iNumberOfCheckboxes
   }else{
 	alert("Please select a folder or file.");
   }	  
+}
+
+function submitDataForm(p_strFormId, p_strAction){
+  var bValid = true;
+  if(p_strAction.length == 0){
+	 bValid = false;
+	 alert("Data search form error.");
+  }
+  
+  if(bValid){
+    document.getElementById(p_strFormId).action=p_strAction;
+    document.getElementById(p_strFormId).submit();
+  }
 }

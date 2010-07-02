@@ -8,7 +8,7 @@ defined('_JEXEC') or die( 'Restricted access' );
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
 ?>
 
-<div class="innerwrap>
+<div class="innerwrap">
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
@@ -29,22 +29,46 @@ defined('_JEXEC') or die( 'Restricted access' );
       </div>
       <div class="subject">
         <div id="members" style="padding-top:1em;">
-          <table id="members-list" cellpadding="1" cellspacing="1" style="border-bottom:0px;border-top:0px;">
-            <?php 
+          <table id="members-list" cellpadding="1" cellspacing="1">
+            <thead>
+              <th></th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Email</th>
+              <th>Permissions</th>
+              <th></th>
+            </thead>
+
+            <?php
               $oMembersArray = $_REQUEST[PersonPeer::TABLE_NAME];
-              foreach($oMembersArray as $oMember){?>
-                <tr>
-                  <td class="photo" width="60"><img width="50" height="50" alt="Photo for <?php echo $oMember['FIRST_NAME'] ." ". $oMember['LAST_NAME']; ?>" src="/components/com_members/images/profile_thumb.gif"></td>
-				  <td><span class="name"><a href="#/members/<?php echo $oMember['ID']; ?>"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></a></span><BR><span class="status"><?php echo $oMember['ROLE']; ?></span><br></td>
-				  <td class="remove-member"><!-- <a href="/collaborate/groups/neesit/members?task=remove&amp;users[0]=1078" class="remove tooltips">Remove</a> --></td>
-				  <td class="promote-member"><!-- <a href="/collaborate/groups/neesit/members?task=promote&amp;users[0]=1078" class="promote tooltips">Promote</a>--></div></td>
-				  <td class="message-member"> </td>
-                </tr>	
-              <?php 
+              foreach($oMembersArray as $iIndex=>$oMember){
+                $strBgColor = "odd";
+                if($iIndex%2===0){
+                  $strBgColor = "even";
+                }
+              ?>
+                <tr class="<?php echo $strBgColor; ?>">
+                  <td class="photo" width="60"><img width="50" height="50" alt="Photo for <?php echo $oMember['FIRST_NAME'] ." ". $oMember['LAST_NAME']; ?>" src="<?php echo $oMember['PICTURE']; ?>"></td>
+                  <?php if($oMember['LINK']){ ?>
+                    <td><span class="name"><a href="/members/<?php echo $oMember['HUB_ID']; ?>"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></a></span></td>
+                  <?php }else{ ?>
+                    <td><span class="name"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></span></td>
+                  <?php } ?>
+                  <td><?php echo $oMember['ROLE']; ?></td>
+                  <td><?php echo $oMember['EMAIL']; ?></td>
+                  <td><?php echo $oMember['PERMISSIONS']; ?></td>
+                  <td></td>
+                </tr>
+              <?php
               }
             ?>
           </table>
         </div>
+
+        <div id="membersFooter" class="topSpace20">
+            <?php echo $this->pagination; ?>
+        </div>
+          
       </div>
       
       <div id="membersFooter">

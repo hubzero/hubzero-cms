@@ -3,89 +3,87 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php $oDataFileArray = unserialize($_REQUEST[DataFilePeer::TABLE_NAME]); ?>
-
-<?php if ($this->referer == "repetition"){ ?>
-  <a href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a>
-<?php }else{ ?>
-<form id="frmData" action="/warehouse/download" method="post">
-<a id="hideDataLink" href="javascript:void(0);" onClick="javascript:document.getElementById('showDataLink').style.display='';document.getElementById('projectDocs').style.display='none';document.getElementById('hideDataLink').style.display='none';">Hide</a> <a id="showDataLink" style='display:none' href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a>
-<div style="border: 1px solid rgb(102, 102, 102); overflow: auto; width: 100%; padding: 0px; margin: 0px;" id="projectDocs">
-  <table cellpadding="1" cellspacing="1" style="width:100%;border-bottom:0px;border-top:0px;font-size:11px;">
-    <tr valign="top" style="background: #CCCCCC;">
-      <td colspan="6" style="font-size:11px;"><b>Current Path:</b>&nbsp;&nbsp;<?php echo $this->strCurrentPath; ?></td>
-    </tr>
-    <tr style="background: #EFEFEF;">
-      <th style="font-weight:bold;"></th>
-      <th style="font-weight:bold;"></th>
-      <th style="font-weight:bold;">Name</th>
-      <th style="font-weight:bold;">Timestamp</th>
-      <th style="font-weight:bold;">Application</th>
-      <th style="font-weight:bold;"></th>
-    </tr>
-    <tr valign="top">
-      <?php if(!StringHelper::endsWith($this->strCurrentPath, ".groups")): ?>
-        <td colspan="6"><a onclick="getMootools('/warehouse/data?path=<?php echo $this->strBackPath; ?>&format=ajax','dataList');" href="javascript:void(0);">...go back</a></td>
-      <?php else: ?>
-        <td colspan="6"></td>
-      <?php endif; ?>
-    </tr>
-    <?php if ( !empty($oDataFileArray) ): ?>
+<?php 
+  $document =& JFactory::getDocument();
+  $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
+  $document->addStyleSheet($this->baseurl."/components/com_projecteditor/css/projecteditor.css",'text/css');
+  $document->addStyleSheet($this->baseurl."/templates/fresh/html/com_groups/groups.css",'text/css');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/ajax.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/warehouse.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/resources.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_projecteditor/js/tips.js", 'text/javascript');
+?>
+<form id="frmData" method="get">
+<div class="innerwrap">
+  <div class="content-header">
+	<h2 class="contentheading">NEES Project Warehouse</h2>
+  </div>
+  
+  <div id="warehouseWindow" style="padding-top:20px;">
+    <div id="treeBrowser" style="float:left;width:20%;"></div>
     
-      <?php foreach($oDataFileArray as $iIndex => $oDataFile){ 
-    		$strRowBackgroundColor = "";
-    		if($iIndex %2 === 0){
-    		  $strRowBackgroundColor = "#EFEFEF;";	
-    		}
-    		
-    		$strLink = $this->strCurrentPath."/".$oDataFile->getName();
-    		$strDirLink = $this->strCurrentPath."/".$oDataFile->getName();
-            $strFileLink = str_replace("/nees/home/",  "",  $strDirLink);
-            $strFileLink = str_replace(".groups",  "",  $strFileLink);
-      ?>
-        <tr style="background: <?php echo $strRowBackgroundColor; ?>">
-          <td><input type="checkbox" id="cbxDataFile<?php echo $iIndex;?>" name="cbxDataFile[]" value="<?php echo $oDataFile->getId(); ?>"/></td>
-          <td>
-            <?php if( $oDataFile->getDirectory()==1 ): ?>
-              <input type="image" src="/components/com_warehouse/images/icons/folder.gif" onClick="#">
-            <?php endif; ?>
-          </td>
-          <td>
-            <?php if($oDataFile->getDirectory()==1): ?>
-              <a href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=<?php echo $strDirLink; ?>&format=ajax','dataList');"><?php echo $oDataFile->getName(); ?></a>
-            <?php else: ?>
-              <a href="/data/get/<?php echo $strFileLink; ?>" target="data_file"><?php echo $oDataFile->getName(); ?></a>
-            <?php endif; ?>
-          </td>
-          <td><?php echo $oDataFile->getCreated(); ?></td>
-          <td>
-            <?php 
-              $strToolLink = "";
-              
-              $strOpeningTool = $oDataFile->getOpeningTool();
-              if(strlen($strOpeningTool)!=0){
-              	switch($strOpeningTool){
-              	  case 'inDEED':
-              		$strToolLink = "<a href='/indeed?task=process&list=".$strLink."'>".$strOpeningTool."</a>";	
-              	  break;
-                }
-              }
-              
-              echo $strToolLink;
-            ?>
-          </td>
-          <td></td>
-        </tr>
-      <?php }?>
-      <tr>
-        <td colspan="6"><input type="button" onClick="validateFileBrowser('frmData', 'cbxDataFile', <?php echo sizeof($oDataFileArray); ?>);" value="Download" /></td>
-      </tr>
-    <?php else: ?>
-      <tr style="background: #EFEFEF;">
-        <td colspan="6" align="center">0 files found.</td>
-      </tr>
-    <?php endif; ?>  
-  </table>
+    <div id="overview_section" class="main section" style="width:100%;float:left;">
+      <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
+      <div id="title" style="padding-bottom:1em;">
+        <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
+      </div>
+  
+      <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
+      <?php echo $this->strTabs; ?>
+      
+      <div class="aside">
+        <fieldset>
+			<label>
+				Sort by	<select name="sortby">
+					<option selected="selected" value="description ASC">Title</option>
+					<option value="cn ASC">Alias</option>
+				</select>
+			</label>
+			<label>
+				Search:	<input type="text" value="" name="search">
+			</label>
+			<input type="button" onClick="submitDataForm('frmData', '');" value="GO">
+		</fieldset>
+      </div>
+      
+      <div class="subject">
+        <div id="about" style="padding-top:1em;">
+          <p style="margin-bottom:30px;" class="information">Details of each experiment may be found in the <a href="/warehouse/experiments/<?php echo $oProject->getId(); ?>">Experiments</a> tab.</p>
+        
+          <?php echo $this->strSubTabs; ?>
+          
+          <div style="margin-top:20px; margin-bottom:10px;">
+            <div id="tools" style="float:left">
+              <?php echo $this->strToolArray; ?>
+            </div>
+            
+            <div id="filter" style="float:left; right: 0pt; position: absolute; margin-right:235px;">
+              <div id="experiments" style="float:left; margin-right:10px;">
+                <?php echo $this->strExperimentDropDown; ?>
+              </div>
+              <div id="trials" style="float:left; margin-right:10px;">
+                <?php echo $this->strTrialDropDown; ?>
+              </div>
+              <div id="repetitions" style="float:left;">
+                <?php echo $this->strRepetitionDropDown; ?>
+              </div>
+              <div class="clear"></div>
+            </div>
+            
+            <div class="clear"></div>
+          </div>
+          
+          <?php echo $this->strDataFileArray; ?>
+          
+          <?php echo $this->pagination; ?>
+        </div>
+      </div>
+      
+    </div>
+    <div class="clear"></div>
+    
+  </div>  
 </div>
 </form>
-<?php } ?>
+
+

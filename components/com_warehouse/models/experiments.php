@@ -25,7 +25,7 @@ class WarehouseModelExperiments extends WarehouseModelBase{
    *
    */
   public function findByProject($p_oProjectId, $p_strOrderby = null) {
-  	return ExperimentPeer::findByProject($p_oProjectId, $p_strOrderby);
+    return ExperimentPeer::findByProject($p_oProjectId, $p_strOrderby);
   }	
   
   /**

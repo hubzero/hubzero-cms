@@ -44,6 +44,8 @@ require_once 'lib/data/TrialPeer.php';
 require_once 'lib/data/ExperimentFacilityPeer.php';
 require_once 'lib/data/EquipmentPeer.php';
 require_once 'lib/data/SpecimenPeer.php';
+
+ximport('xprofile');
  
 // Require specific controller if requested
 if($controller = JRequest::getVar('controller')) {

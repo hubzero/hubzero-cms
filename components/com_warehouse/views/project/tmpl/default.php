@@ -11,9 +11,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
 
-<div class="innerwrap>
+<div class="innerwrap">
   <div class="content-header">
-	<h2 class="contentheading">NEES Project Warehouse</h2>
+    <h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
   
   <div id="warehouseWindow" style="padding-top:20px;">
@@ -25,19 +25,28 @@ defined('_JEXEC') or die( 'Restricted access' );
     
     <div id="overview_section" class="main section" style="width:100%;float:left;">      
       <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
+
+      <?php
+        if(strlen($this->projectCreated) > 0){?>
+           <div class="information"><?php echo $this->projectCreated; ?></div>
+        <?php
+        }
+
+      ?>
+
       <?php echo $this->strTabs; ?>
       
       <div class="aside">
         <p style="font-size:11px;color:#999999" align="center">
           <?php 
-			$oProjectImageDataFile = unserialize($_REQUEST["oProjectImage"]);
-			if($oProjectImageDataFile!=null){ 
-			  $strDirLink = $oProjectImageDataFile[0]->getPath()."/".$oProjectImageDataFile[0]->getName();
+            $oProjectImageDataFile = unserialize($_REQUEST["oProjectImage"]);
+            if($oProjectImageDataFile!=null){
+              $strDirLink = $oProjectImageDataFile[0]->getPath()."/".$oProjectImageDataFile[0]->getName();
               $strFileLink = str_replace("/nees/home/",  "",  $strDirLink);
               $strFileLink = str_replace(".groups",  "",  $strFileLink);
             ?>
-			  <img src="/data/get/<?php echo $strFileLink; ?>"/><?php echo $oProjectImageDataFile[0]->getDescription(); ?>
-			<?php }
+              <img src="/data/get/<?php echo $strFileLink; ?>"/><?php echo $oProjectImageDataFile[0]->getDescription(); ?>
+            <?php }
           ?>
         </p>
       
@@ -54,12 +63,12 @@ defined('_JEXEC') or die( 'Restricted access' );
         </div>
         
         <div class="whatisthis">
-		  <h4>What's this?</h4>
-		  <p>
-		    Once the curator starts working with your submission, monitor the object's progress by reading 
-		    the curation history.
-		  </p>
-		</div>
+          <h4>What's this?</h4>
+          <p>
+            Once the curator starts working with your submission, monitor the object's progress by reading
+            the curation history.
+          </p>
+        </div>
       </div>
       <div class="subject">
         <div id="about" style="padding-top:1em;">
@@ -84,10 +93,11 @@ defined('_JEXEC') or die( 'Restricted access' );
                       <?php 
                         if($iFacilityIndex < sizeof($oProjectFacilityOrganizationArray)-1){
                       	  echo ",</span> "; 
-                        }
-                      }
+                        }?>
+                      </span>
+                <?php
+                    }
                   }
-                  
                 ?>
               </td>
             </tr>

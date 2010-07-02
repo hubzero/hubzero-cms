@@ -16,9 +16,16 @@ class WarehouseViewMaterials extends JView{
   	$iExperimentId = JRequest::getVar("experimentId");
   	$this->assignRef("experimentId", $iExperimentId);
   	
-	//get the materials
+  	$iMaterialId = JRequest::getVar("materialId", 0);
+  	$this->assignRef("materialId", $iMaterialId);
+  	
+  	//get the materials
     $oMaterialsModel =& $this->getModel();
     
+    $oMaterialArray = $oMaterialsModel->findMaterialsByExperiment($iExperimentId);
+  	$strMaterialHtml = $oMaterialsModel->findMaterialsByExperimentHTML($oMaterialArray, $iProjectId, $iExperimentId, $iMaterialId);
+  	$this->assignRef("materialInfo", $strMaterialHtml);
+  	
     parent::display($tpl);
   }//end display
   

@@ -8,16 +8,24 @@ jimport( 'joomla.application.component.view');
 class WarehouseViewProject extends JView{
 	
   function display($tpl = null){
-  	$iProjectId = JRequest::getVar("id");
-	$oProject = ProjectPeer::retrieveByPK($iProjectId);
-	
-	$strDisplayDescription = $this->getDisplayDescription($oProject);
-	$oProject->setDescription($strDisplayDescription);
-	
-	$_REQUEST[Search::SELECTED] = serialize($oProject);
-	
-	$oProjectModel =& $this->getModel();
-	$strPIs = $this->getPIandCoPIs($oProjectModel, $oProject, 1, array("Principal Investigator", "Co-PI"));
+    $iProjectId = JRequest::getVar("id");
+    $oProject = ProjectPeer::retrieveByPK($iProjectId);
+
+    $strProjectCreated = "";
+    if(isset($_REQUEST["created"])){
+      $strGroupCn = str_replace("-",  "_",  $oProject->getName());
+      $strGroupCn = strtolower(trim($strGroupCn));
+      $strProjectCreated = "Your new project has a NEEShub group.  Click <a href='/collaborate/groups/$strGroupCn'>here</a> for more information.";
+    }
+    $this->assignRef("projectCreated", $strProjectCreated);
+
+    $strDisplayDescription = $this->getDisplayDescription($oProject);
+    $oProject->setDescription($strDisplayDescription);
+
+    $_REQUEST[Search::SELECTED] = serialize($oProject);
+
+    $oProjectModel =& $this->getModel();
+    $strPIs = $this->getPIandCoPIs($oProjectModel, $oProject, 1, array("Principal Investigator", "Co-PI"));
     $this->assignRef( "strPIandCoPIs", $strPIs );
     $this->assignRef( "strDates", $this->getDates($oProject) );
     $this->assignRef( "strFundingOrg", $this->getFunding($oProject) );
@@ -27,57 +35,57 @@ class WarehouseViewProject extends JView{
     
     //get the tabs to display on the page
     $strTabArray = $oProjectModel->getTabArray();
-	$strTabHtml = $oProjectModel->getTabs( "warehouse", $iProjectId, $strTabArray, "project" );
-	$this->assignRef( "strTabs", $strTabHtml );
-	
-	$oProjectImageDataFile = $oProjectModel->getProjectImage($iProjectId);
-	$_REQUEST["oProjectImage"] = serialize($oProjectImageDataFile);
-	
-	$oFacilityOrganizationArray = $oProjectModel->findProjectFacility($iProjectId);
-	$_REQUEST["oFacility"] = serialize($oFacilityOrganizationArray);
-		
-	//get the list of equipment for the project
-	$oEquipmentArray = $oProjectModel->findProjectEquipment($iProjectId);
-	$_REQUEST[EquipmentPeer::TABLE_NAME] = serialize($oEquipmentArray);
-	
-	$oUser =& JFactory::getUser();
-	$oPublicationArray = $oProjectModel->findProjectPublications($oUser->id, $oProject->getName(), 3);
-	$this->assignRef( "publications", $oPublicationArray );
-	
-	$iPublicationCount = $oProjectModel->findProjectPublicationCount($oUser->id, $oProject->getName(), 3);
-	$this->assignRef( "publicationCount", $iPublicationCount );
-	
-	$oToolArray = $oProjectModel->findTools($oProject->getId());
-	$this->assignRef( "tools", $oToolArray );
-	
-	//TODO: for new docs module
-	$strCurrentPath = "/nees/home/".$oProject->getName().".groups";
-	JRequest::setVar('path', $strCurrentPath);
-	
-	//removed tree from display as of NEEScore meeting on 4/8/10
-	$this->assignRef( "mod_curationprogress", ComponentHtml::getModule("mod_curationprogress") );
-	//$this->assignRef( "mod_warehousedocs", ComponentHtml::getModule("mod_warehousedocs") );
-	$this->assignRef( "mod_warehousetags", ComponentHtml::getModule("mod_warehousetags") );
-	
-	$bSearch = false;
-	if(isset($_SESSION[Search::KEYWORDS]))$bSearch = true;
-	if(isset($_SESSION[Search::SEARCH_TYPE]))$bSearch = true;
-	if(isset($_SESSION[Search::FUNDING_TYPE]))$bSearch = true;
-	if(isset($_SESSION[Search::MEMBER]))$bSearch = true;
-	if(isset($_SESSION[Search::START_DATE]))$bSearch = true;
-	if(isset($_SESSION[Search::END_DATE]))$bSearch = true;
-	
-	//set the breadcrumbs
-	JFactory::getApplication()->getPathway()->addItem("Project Warehouse","/warehouse");
-	if($bSearch){
-	  JFactory::getApplication()->getPathway()->addItem("Results","/warehouse/find?keywords=".$_SESSION[Search::KEYWORDS]
-																. "&type=".$_SESSION[Search::SEARCH_TYPE]
-																. "&funding=".$_SESSION[Search::FUNDING_TYPE]
-																. "&member=".$_SESSION[Search::MEMBER]
-																. "&startdate=".$_SESSION[Search::START_DATE]
-																. "&startdate=".$_SESSION[Search::END_DATE]);
-	}
-	JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"javascript:void(0)");
+    $strTabHtml = $oProjectModel->getTabs( "warehouse", $iProjectId, $strTabArray, "project" );
+    $this->assignRef( "strTabs", $strTabHtml );
+
+    $oProjectImageDataFile = $oProjectModel->getProjectImage($iProjectId);
+    $_REQUEST["oProjectImage"] = serialize($oProjectImageDataFile);
+
+    $oFacilityOrganizationArray = $oProjectModel->findProjectFacility($iProjectId);
+    $_REQUEST["oFacility"] = serialize($oFacilityOrganizationArray);
+
+    //get the list of equipment for the project
+    $oEquipmentArray = $oProjectModel->findProjectEquipment($iProjectId);
+    $_REQUEST[EquipmentPeer::TABLE_NAME] = serialize($oEquipmentArray);
+
+    $oUser =& JFactory::getUser();
+    $oPublicationArray = $oProjectModel->findProjectPublications($oUser->id, $oProject->getName(), 3);
+    $this->assignRef( "publications", $oPublicationArray );
+
+    $iPublicationCount = $oProjectModel->findProjectPublicationCount($oUser->id, $oProject->getName(), 3);
+    $this->assignRef( "publicationCount", $iPublicationCount );
+
+    $oToolArray = $oProjectModel->findTools($oProject->getId());
+    $this->assignRef( "tools", $oToolArray );
+
+    //TODO: for new docs module
+    $strCurrentPath = "/nees/home/".$oProject->getName().".groups";
+    JRequest::setVar('path', $strCurrentPath);
+
+    //removed tree from display as of NEEScore meeting on 4/8/10
+    $this->assignRef( "mod_curationprogress", ComponentHtml::getModule("mod_curationprogress") );
+    //$this->assignRef( "mod_warehousedocs", ComponentHtml::getModule("mod_warehousedocs") );
+    $this->assignRef( "mod_warehousetags", ComponentHtml::getModule("mod_warehousetags") );
+
+    $bSearch = false;
+    if(isset($_SESSION[Search::KEYWORDS]))$bSearch = true;
+    if(isset($_SESSION[Search::SEARCH_TYPE]))$bSearch = true;
+    if(isset($_SESSION[Search::FUNDING_TYPE]))$bSearch = true;
+    if(isset($_SESSION[Search::MEMBER]))$bSearch = true;
+    if(isset($_SESSION[Search::START_DATE]))$bSearch = true;
+    if(isset($_SESSION[Search::END_DATE]))$bSearch = true;
+
+    //set the breadcrumbs
+    JFactory::getApplication()->getPathway()->addItem("Project Warehouse","/warehouse");
+    if($bSearch){
+      JFactory::getApplication()->getPathway()->addItem("Results","/warehouse/find?keywords=".$_SESSION[Search::KEYWORDS]
+                                                                                                                            . "&type=".$_SESSION[Search::SEARCH_TYPE]
+                                                                                                                            . "&funding=".$_SESSION[Search::FUNDING_TYPE]
+                                                                                                                            . "&member=".$_SESSION[Search::MEMBER]
+                                                                                                                            . "&startdate=".$_SESSION[Search::START_DATE]
+                                                                                                                            . "&startdate=".$_SESSION[Search::END_DATE]);
+    }
+    JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"javascript:void(0)");
     
     parent::display($tpl);
   }//end display
@@ -87,27 +95,43 @@ class WarehouseViewProject extends JView{
    * @return comma seperated string of names
    */
   private function getPIandCoPIs($p_oProjectModel, $p_oProject, $p_iEntityId, $p_strRoleArray){
-  	$oPersonResultSet = PersonPeer::findMembersByRoleForEntity($p_oProject->getId(), $p_iEntityId, $p_strRoleArray);
+  	$profile = new XProfile();
+  	
+    $oPersonResultSet = PersonPeer::findMembersByRoleForEntity($p_oProject->getId(), $p_iEntityId, $p_strRoleArray);
     $strPIs = "";
-	while($oPersonResultSet->next()) {
+    while($oPersonResultSet->next()) {
 //	  print "Last login: " . $rs->getTimestamp(2, "m/d/y H:i:s");
 
-	  $strFirstName = $oPersonResultSet->getString('FIRST_NAME');
-	  $strLastName = $oPersonResultSet->getString('LAST_NAME');
-	  $strUsername = $oPersonResultSet->getString('USER_NAME');
-	  $oHubUser = $p_oProjectModel->getMysqlUserByUsername($strUsername);
-	  if($oHubUser){
-	    $strPIs = $strPIs .= <<< ENDHTML
-              <a href="/members/$oHubUser->id">$strFirstName $strLastName</a>, 
+      $strFirstName = ucfirst($oPersonResultSet->getString('FIRST_NAME'));
+      $strLastName = ucfirst($oPersonResultSet->getString('LAST_NAME'));
+      $strUsername = $oPersonResultSet->getString('USER_NAME');
+
+      //use the oracle username to find the hub (mysql) user.
+      $oHubUser = $p_oProjectModel->getMysqlUserByUsername($strUsername);
+
+      //see if user exists
+      if($oHubUser){
+            $profile->load( $oHubUser->id );
+
+            //if the user's profile is public, provide link
+            if($profile->get('public') == 1){
+          $strPIs .= <<< ENDHTML
+          <a href="/members/$oHubUser->id">$strFirstName $strLastName</a>,
 ENDHTML;
-	  }else{
-	  	$strPIs = $strPIs .= $strFirstName ." ". $strLastName .", ";
-	  }
-	}
-	//remove the last comma
-	$iIndexLastComma = strrpos($strPIs, ",");
-	$strPIs = substr($strPIs, 0, $iIndexLastComma);
-	return $strPIs;
+        }else{
+          //the user's profile isn't public.  list name
+          $strPIs .= $strFirstName ." ". $strLastName .", ";
+        }
+      }else{
+            //user hasn't registered in hub.
+            $strPIs .= $strFirstName ." ". $strLastName .", ";
+      }
+    }
+
+    //remove the last comma
+    $iIndexLastComma = strrpos($strPIs, ",");
+    $strPIs = substr($strPIs, 0, $iIndexLastComma);
+    return $strPIs;
   }
   
   /**
@@ -172,7 +196,7 @@ ENDHTML;
   }
   
   private function getDisplayDescription($p_oProject){
-  	$oDescriptionClob = $p_oProject->getDescription();
+    $oDescriptionClob = $p_oProject->getDescription();
     $strReturnDescription = "";
     if(strlen($oDescriptionClob) > 300){
       $strShortDescription = StringHelper::neat_trim($oDescriptionClob, 250);

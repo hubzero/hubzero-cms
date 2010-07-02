@@ -13,7 +13,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
  
-<div class="innerwrap>
+<div class="innerwrap">
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
@@ -110,7 +110,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		                while($iMaterialIndex < 3){
 		              	  $oMaterial = $oMaterialArray[$iMaterialIndex];
 		              	  echo $oMaterial->getName();   
-		              	  ?> <!--(<a href="#">view</a>)--><?php 
+		              	  ?> (<a href="javascript:void(0);" onClick="getMootools('/warehouse/materials/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>/detail/<?php echo $oMaterial->getId(); ?>?format=ajax', 'experimentInfo');">view</a>)<?php 
 		              		
 		              	  if( $iMaterialIndex < (sizeof($oMaterialArray)-1) ){
 						    ?><br><?php
@@ -119,7 +119,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		                }
 		              
 		                if(sizeof($oMaterialArray) > 3){
-		              	  ?><!--<a href="#">more...</a><br><br>--><?php
+		              	  ?><a href="javascript:void(0);" onClick="getMootools('/warehouse/materials/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>?format=ajax', 'experimentInfo');">more...</a><br><br><?php
 		                }
 		              }
 		            ?>
@@ -198,7 +198,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			                 }
 			         	   }
 						 ?>
-						 <div id="dataList"><a href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a></div>
+						 <div id="dataList"><a href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a></div>
 			          </td>
 			        </tr>
 			        <tr id="photos">

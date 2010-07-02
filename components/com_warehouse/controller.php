@@ -18,6 +18,8 @@ class WarehouseController extends JController{
 	$this->registerTask( 'find' , 'findProjects' );
 	$this->registerTask( 'get' , 'getFile' );
 	$this->registerTask( 'download' , 'download' );
+	$this->registerTask( 'trialdropdown' , 'getTrialDropDown' );
+	$this->registerTask( 'repetitiondropdown' , 'getRepetitionDropDown' );
   }	
 	
   /**
@@ -116,6 +118,29 @@ class WarehouseController extends JController{
   	$ext = $oModel->downloadTarBall();
   }
   
+  function getTrialDropDown(){
+  	$iProjectId = JRequest::getVar("projid");
+  	$iExperimentId = JRequest::getVar("expid");
+  	 
+  	$oModel =& $this->getModel('Data');
+  	$strTrialArray = $oModel->findDistinctTrials($iProjectId, $iExperimentId);
+  	//print_r($strTrialArray);
+  	echo $oModel->findDistinctTrialsHTML($strTrialArray, $iProjectId, $iExperimentId);
+  	
+  	//$s = $iProjectId."/".$iExperimentId;
+  	//echo $s;
+  	//echo "hello";
+  }
+  
+  function getRepetitionDropDown(){
+  	$iProjectId = JRequest::getVar("projid");
+  	$iExperimentId = JRequest::getVar("expid");
+  	$iTrialId = JRequest::getVar("trialid");
+  	 
+  	$oModel =& $this->getModel('Data');
+  	$strRepetitionArray = $oModel->findDistinctRepetitions($iProjectId, $iExperimentId, $iTrialId);
+  	echo $oModel->findDistinctRepetitionsHTML($strRepetitionArray);
+  }
 }
 
 ?>
