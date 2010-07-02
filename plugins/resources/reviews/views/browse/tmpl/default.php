@@ -27,6 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $database =& JFactory::getDBO();
 $juser =& JFactory::getUser();
+$html = '';
 ?>
 <h3>
 	<a name="reviews"></a>
