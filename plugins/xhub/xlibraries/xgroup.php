@@ -178,16 +178,6 @@ class XGroup extends JObject
         	$attr['gid'] = $this->cn;
         	$attr['gidNumber'] = $this->gidNumber;
         	$attr['cn'] = $this->cn;
-          $attr["tracperm"] = array();
-          $attr["tracperm"][0] = "WIKI_ADMIN";
-          $attr["tracperm"][1] = "MILESTONE_ADMIN";
-          $attr["tracperm"][2] = "BROWSER_VIEW";
-          $attr["tracperm"][3] = "LOG_VIEW";
-          $attr["tracperm"][4] = "FILE_VIEW";
-          $attr["tracperm"][5] = "CHANGESET_VIEW";
-          $attr["tracperm"][6] = "ROADMAP_VIEW";
-          $attr["tracperm"][7] = "TIMELINE_VIEW";
-          $attr["tracperm"][8] = "SEARCH_VIEW";
 
 		if (!empty($this->description))
 		{
@@ -1346,6 +1336,21 @@ class XGroup extends JObject
 			}
 		}
 		return $emails;
+	}
+	
+	public function search($tbl='', $q='') 
+	{
+		if (!in_array($tbl, array('applicants','members','managers','invitees')))
+			return false;
+
+		$table = '#__xgroups_' . $tbl;
+		
+		$db = & JFactory::getDBO();
+		
+		$query = "SELECT u.id FROM $table AS t,#__users AS u WHERE t.gidNumber=" . $db->Quote($this->gidNumber) . " AND u.id=t.uidNumber AND LOWER(u.name) LIKE '%".strtolower($q)."%';";
+
+		$db->setQuery($query);
+		return $db->loadResultArray();
 	}
 }
 ?>
