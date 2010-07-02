@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+    <name>Warehouse Film Strip</name>
+    <author>Gemez Marshall</author>
+    <version>1.0.0</version>
+    <creationDate>05/26/2010</creationDate>
+    <description>Show selected photos for an experiment.</description>
+	<files>
+		<filename>mod_warehousefilmstrip.xml</filename>
+		<filename module="mod_warehousefilmstrip">mod_warehousefilmstrip.php</filename>
+		<filename>index.html</filename>
+        	<filename>helper.php</filename>
+        	<filename>tmpl/default.php</filename>
+        	<filename>tmpl/index.html</filename>
+	</files>
+	<params>
+    </params>
+</install>
