@@ -715,6 +715,22 @@ class RegisterController extends JObject
 					}
 				}
 			}
+
+
+			// NeesHub p1 - Insert jos_neesprofile row for extended NEES profile info
+			$neesprofile = new XNeesProfile();
+			$neesprofile->set('uid', $target_juser->get('id'));
+			$neesprofile->set('NeesAffiliation', $xregistration->get('neesaffiliation'));
+			
+			if($neesprofile->create() == false)
+			{
+				echo HubHtml::error( 
+						'There was an error creating the NEES account info for the account [' . $xregistration->get('login') . ']. '.
+						'Please contact support at '. $hubMonitorEmail . ' for assistance in creating your account.'
+					);
+			        return;
+			}
+			// end neeshub
 			
 			// Did we successfully create/update an account?
 			if (!$result) {

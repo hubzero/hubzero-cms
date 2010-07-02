@@ -42,6 +42,8 @@ ximport('xregistrationhelper');
 ximport('xprofile');
 ximport('xuserhelper');
 ximport('xhubhelper');
+ximport('xneesprofile');
+
 require_once( JPATH_COMPONENT.DS.'controller.php' );
 
 // Instantiate controller

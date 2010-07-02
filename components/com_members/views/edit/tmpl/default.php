@@ -189,7 +189,32 @@ if ($this->registration->Phone != REG_HIDE) {
 	$html .= "\t\t".'</label>'."\n";
 }
 
+
 $html .= "\t".'</fieldset><div class="clear"></div>'."\n";
+
+
+// NEES section
+		
+// load need profile info
+$juser =& JFactory::getUser();
+$id = $juser->get('id');
+
+//$neesprofileinfo = new XNeesProfile();
+//$neesprofileinfo->set("uid", $id);
+//$neesprofileinfo->load();
+//$neesprofileinfo->check();
+		
+// display edit form, bind
+$html .= XNeesProfileHtml::getNeesProfile($id, 
+	$this->neesprofileinfo->get('NeesAffiliation'),
+	$this->neesprofileinfo->get('UserCategory'),
+	$this->neesprofileinfo->get('NeesRelationship'),
+	$this->neesprofileinfo->get('ReceiveMaterials'),
+	$this->neesprofileinfo);
+		
+// end NEES
+
+
 $html .= "\t".'<fieldset>'."\n";
 $html .= "\t\t".'<h3>'.JText::_('Personal Information').'</h3>'."\n";
 
@@ -416,17 +441,21 @@ if ($this->registration->Citizenship != REG_HIDE
 		$html .= "\t\t".'<fieldset'.$fieldclass.'>';
 		$html .= "\t\t\t".'<legend>'.JText::_('Do you Currently Live in the <abbr title="United States">US</abbr>?').$required.'</legend>'."\n";
 		$html .= $message;
-		$html .= "\t\t\t".'<label><input type="radio" class="option" name="cresident_us" id="cresident_usyes" value="yes"';
+		// NEES js onclick addition below
+		$html .= "\t\t\t".'<label><input type="radio" class="option" onclick="currentlyLiveInUsCheck()" name="cresident_us" id="cresident_usyes" value="yes"';
 		if (strcasecmp($countryresident,'US') == 0) {
 			$html .= ' checked="checked"';
 		}
 		$html .= ' /> '.JText::_('Yes').'</label>'."\n";
-		$html .= "\t\t\t\t".'<label><input type="radio" class="option" name="cresident_us" id="cresident_usno" value="no"';
+		// NEES js onclick addition below
+		$html .= "\t\t\t\t".'<label><input type="radio" class="option" onclick="currentlyLiveInUsCheck()" name="cresident_us" id="cresident_usno" value="no"';
 		if (!empty($countryresident) && strcasecmp($countryresident,'US') != 0) {
 			$html .= ' checked="checked"';
 		}
 		$html .= ' /> '.JText::_('No').'</label>'."\n";
 		$html .= "\t\t\t\t".'<label>'.JText::_('Currently Living in').':'."\n";
+
+		
 		$html .= "\t\t\t\t".'<select name="cresident" id="cresident">'."\n";
 		if (!$countryresident || strcasecmp($countryresident,'US') == 0) {
 			$html .= "\t\t\t"."\t\t".' <option value="">'.JText::_('(select from list)').'</option>'."\n";
@@ -442,6 +471,13 @@ if ($this->registration->Citizenship != REG_HIDE
 			}
 		}
 		$html .= "\t\t\t\t".'</select></label>'."\n";
+		
+		// NEES state info
+		$html .= t.t.t.t.'<label>'.JText::_('State of Residence').':'.n;
+		$html .= XNeesProfileHtml::stateddl($this->neesprofileinfo->get('UsState'));
+		$html .= t.t.t.t.'<label>'.n;
+		
+		
 		$html .= "\t\t".'</fieldset>'."\n";
 	}
 	
@@ -506,7 +542,10 @@ if ($this->registration->Citizenship != REG_HIDE
 			$html .= ' checked="checked"';
 		}
 		$html .= ' /> '.JText::_('Yes').'</label>'."\n";
-		$html .= "\t\t\t".'<fieldset>'."\n";
+		
+		/*
+		 * NEES Comment out
+		 *$html .= "\t\t\t".'<fieldset>'."\n";
 		$html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilityblind" id="disabilityblind" ';
 		if (in_array('blind', $disabilities)) {
 			$html .= 'checked="checked" ';
@@ -535,6 +574,8 @@ if ($this->registration->Citizenship != REG_HIDE
 		$html .= "\t\t\t\t".'<label>'.JText::_('Other (please specify)').':'."\n";
 		$html .= "\t\t\t\t".'<input name="disabilityother" id="disabilityother" type="text" value="'. htmlentities($disabilityother,ENT_COMPAT,'UTF-8') .'" /></label>'."\n";
 		$html .= "\t\t\t".'</fieldset>'."\n";
+		
+		*/
 		$html .= "\t\t\t".'<label><input type="radio" class="option" name="disability" id="disabilityno" value="no"';
 		if (in_array('no', $disabilities)) {
 			$html .= ' checked="checked"';
@@ -544,6 +585,9 @@ if ($this->registration->Citizenship != REG_HIDE
 		if (in_array('refused', $disabilities)) {
 			$html .= ' checked="checked"';
 		}
+		
+		
+		
 		$html .= '> '.JText::_('Do not wish to reveal').'</label>'."\n";
 		$html .= "\t\t".'</fieldset>'."\n";
 	}
@@ -638,8 +682,8 @@ if ($this->registration->Citizenship != REG_HIDE
 			$html .= 'checked="checked" ';
 		}
 		$html .= '/> '.JText::_('American Indian or Alaska Native').'</label>'."\n";
-		$html .= "\t\t\t".'<label class="indent">'.JText::_('Tribal Affiliation(s)').':'."\n";
-		$html .= "\t\t\t".'<input name="profile[nativetribe]" id="racenativetribe" type="text" value="'. htmlentities($this->profile->get('nativeTribe'),ENT_COMPAT,'UTF-8') .'" /></label>'."\n";
+		//$html .= "\t\t\t".'<label class="indent">'.JText::_('Tribal Affiliation(s)').':'."\n";
+		//$html .= "\t\t\t".'<input name="profile[nativetribe]" id="racenativetribe" type="text" value="'. htmlentities($this->profile->get('nativeTribe'),ENT_COMPAT,'UTF-8') .'" /></label>'."\n";
 		$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceasian" id="raceasian" ';
 		if (in_array('asian', $race)) {
 			$html .= 'checked="checked" ';

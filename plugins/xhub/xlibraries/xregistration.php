@@ -85,6 +85,8 @@ class XRegistration
 		$this->_registration['sex'] = null;
 		$this->_registration['usageAgreement'] = null;
 		$this->_registration['mailPreferenceOption'] = null;
+		$this->_registration['neesaffiliation'] = null; // NEES
+
 	}
 
 	function loadPost()
@@ -121,6 +123,10 @@ class XRegistration
 		$racewhite_p = JRequest::getVar('racewhite', null, 'post');
 		$racerefused_p = JRequest::getVar('racerefused', null, 'post');
 		$interests_p = JRequest::getVar('interests',null,'post');
+
+		// Nees P1
+		$neesaffiliation_p = JRequest::getVar('neesaffiliation',null,'post');
+
 
 		//if ($coriginus_p === null) { // field not on form
 		if ($coriginus_p || $corigin_p) { // field not on form
@@ -289,6 +295,10 @@ class XRegistration
 		$this->_registration['usageAgreement'] = JRequest::getVar('usageAgreement', null, 'post');
 		$this->_registration['mailPreferenceOption'] = JRequest::getVar('mailPreferenceOption', null, 'post');
 		$this->_registration['sex'] = JRequest::getVar('sex', null, 'post');
+
+		// NEES
+		$this->_registration['neesaffiliation'] = JRequest::getVar('nees_affiliation', null, 'post');
+
 
 		if ($this->_registration['sex'] !== null)
 			if ($this->_registration['sex'] == 'unspecified')

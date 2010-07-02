@@ -46,6 +46,10 @@ ximport('fileuploadutils');
 ximport('xprofile');
 ximport('Hubzero_View_Helper_Html');
 
+// NEES
+ximport('xneesprofile');
+
+
 $jacl =& JFactory::getACL();
 $jacl->addACL( $option, 'manage', 'users', 'super administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'administrator' );

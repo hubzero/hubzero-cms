@@ -808,7 +808,7 @@ class MembersController extends JObject
 	
 	//-----------
 
-	protected function edit($xregistration=null, $profile=null)
+	protected function edit($xregistration=null, $profile=null, $xneesprofile=null)
 	{
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
@@ -916,6 +916,17 @@ class MembersController extends JObject
 		$registration->OptIn = $this->registrationField('registrationOptIn','HHHH',$this->_task);
 		$registration->TOU = $this->registrationField('registrationTOU','HHHH',$this->_task);
 
+
+		// Get extended NEES profile information
+		// If this is null, then we know we are doing plain edit, load from DB
+		// If not, then we know we were directed from failed form validate (missing fields, etc)
+		if ($xneesprofile == null) {
+			$xneesprofile = new XNeesProfile();
+			$xneesprofile->set('uid',$id);
+			$xneesprofile->load();
+		}
+
+
 		// Ouput HTML
 		$view = new JView( array('name'=>'edit') );
 		$view->option = $this->_option;
@@ -925,6 +936,7 @@ class MembersController extends JObject
 		$view->tags = $tags;
 		$view->registration = $registration;
 		$view->xregistration = $xregistration;
+		$view->neesprofileinfo = $xneesprofile; // NEES
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -977,6 +989,7 @@ class MembersController extends JObject
 	
 	protected function save() 
 	{
+		
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
@@ -986,6 +999,7 @@ class MembersController extends JObject
 		ximport('xhubhelper');
 		ximport('xregistration');
 		ximport('xregistrationhelper');
+		ximport('xneesprofile'); // NEES
 
 		// Incoming user ID
 		$id = JRequest::getInt( 'id', 0, 'post' );
@@ -1089,17 +1103,38 @@ class MembersController extends JObject
 		if (!is_null($xregistration->_registration['mailPreferenceOption']))
 			$profile->set('mailPreferenceOption',$xregistration->_registration['mailPreferenceOption']);
 
-		// Check that required fields were filled in properly
-		if (!$xregistration->check('edit', $profile->get('uidNumber'))) {
+
+		// NEES profile load from form 
+		$xneesprofile = new XNeesProfile();
+		$xneesprofile->set('uid', $id);
+		$xneesprofile->loadPost();
+		
+		// Check that required fields were filled in properly (NEES addition)
+		// Note temp sotrage is necessary cause if we did both checks in the if statement,
+		// boolean or inside the if would short circuit and not fire both checks 
+		$regformvalid = $xregistration->check('edit', $profile->get('uidNumber'));
+		$neesSectionValid = $xneesprofile->check();
+		
+		if (!$regformvalid || !$neesSectionValid) {
+			
 			$this->_task = 'edit';
-			$this->edit( $xregistration, $profile );
+			$this->edit( $xregistration, $profile, $xneesprofile );
 			return;
 		}
+
+
+		// Check that required fields were filled in properly (Old version, pre NEES update)
+		//if (!$xregistration->check('edit', $profile->get('uidNumber'))) {
+		//	$this->_task = 'edit';
+		//	$this->edit( $xregistration, $profile );
+		//	return;
+		//}
 		
 		// Set the last modified datetime
 		$profile->set('modifiedDate', date( 'Y-m-d H:i:s', time() ));
 
 		// Save the changes
+		// Comment out by Dave, 4/19/2010 10am to debug my code despite getting an LDAP error here that stopped execution
 		if (!$profile->update()) {
 			JError::raiseError(500, $profile->getError() );
 			return false;
@@ -1130,6 +1165,10 @@ class MembersController extends JObject
 				}
 			}
 		}
+
+
+		// NEES - If we get here, we know we're fine updating (required fields are present)
+		$xneesprofile->update();
 		
 		// Send a new confirmation code AFTER we've successfully saved the changes to the e-mail address
 		if ($email != $oldemail) {
