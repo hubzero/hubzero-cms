@@ -86,19 +86,6 @@ class JobsController extends JObject
 			return $this->_data[$property];
 		}
 	}
-
-	//-----------
-
-	public function getTask()
-	{
-		$task = JRequest::getVar( 'task', '', 'post' );
-		if (!$task) {
-			$task = JRequest::getVar( 'task', '', 'get' );
-		}
-		$this->_task = $task;
-
-		return $task;
-	}
 	
 	//-----------
 	
@@ -107,7 +94,8 @@ class JobsController extends JObject
 		// Load the component config
 		$component =& JComponentHelper::getComponent( $this->_option );
 		if (!trim($component->params)) {
-			return $this->abort();
+			$this->_redirect = '/';
+			return;
 		} else {
 			$config =& JComponentHelper::getParams( $this->_option );
 		}
@@ -135,9 +123,12 @@ class JobsController extends JObject
 		}
 		
 		// Set component administrator priviliges
-		$this->_masteradmin  = $this->_admin && !$this->_emp ? 1 : 0;		
+		$this->_masteradmin  = $this->_admin && !$this->_emp ? 1 : 0;	
+		
+		$task = JRequest::getVar( 'task', '' );
+		$this->_task = $task;	
 			
-		switch( $this->getTask() ) 
+		switch( $this->_task ) 
 		{
 			case 'browse':    		$this->view();    		break;
 			case 'job':    			$this->job();    		break;
@@ -169,9 +160,9 @@ class JobsController extends JObject
 			case 'cancel':  		$this->cancel();    	break;
 			
 			// Should only be called via AJAX
-			case 'plugin':     		$this->plugin();     break;
+			case 'plugin':     		$this->plugin();     	break;
 
-			default: $this->view(); break;
+			default: $this->_task = 'view';  $this->view();  break;
 		}
 	}
 
@@ -1082,29 +1073,8 @@ class JobsController extends JObject
 		// Incoming
 		$code 	= JRequest::getVar( 'code', '' );
 		
-		// Login required
-		if ($juser->get('guest')) {
-			$this->_msg = JText::_('MSG_LOGIN_APPLY');
-			$this->login();
-			return;
-		}
-		
-		$ja = new JobApplication ( $database );
-		
-		// if application already exists, load it to edit
-		if($ja->loadApplication ($juser->get('id'), 0, $code) && $ja->status != 2) {
-			$this->_task = 'editapp';
-		}
-		
-		if($this->_task != 'editapp') {
-			$ja->cover = '';
-		}
-		
 		// Set page title
 		$this->_buildTitle();
-				
-		// Push some styles to the template
-		$this->_getStyles();
 		
 		$job = new Job ( $database );
 		if(!$job->loadJob($code)) {
@@ -1130,6 +1100,27 @@ class JobsController extends JObject
 		$this->_jobcode = $job->code;
 		$this->_jobtitle = $job->title;
 		$this->_buildPathway();
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Login required
+		if ($juser->get('guest')) {
+			$this->_msg = JText::_('MSG_LOGIN_APPLY');
+			$this->login();
+			return;
+		}
+		
+		$ja = new JobApplication ( $database );
+		
+		// if application already exists, load it to edit
+		if($ja->loadApplication ($juser->get('id'), 0, $code) && $ja->status != 2) {
+			$this->_task = 'editapp';
+		}
+		
+		if($this->_task != 'editapp') {
+			$ja->cover = '';
+		}						
 		
 		$js = new JobSeeker ( $database );
 		$seeker = $js->getSeeker($juser->get('id'), $juser->get('id'));
@@ -1826,8 +1817,8 @@ class JobsController extends JObject
 		$filters['start'] = JRequest::getInt( 'limitstart', 0, 'get' );
 		
 		// Task-specific
-		$filters['sortby'] = $this->_task != 'browse' ? 'opendate' : $filters['sortby'] ;
-		$filters['limit'] = $this->_task != 'browse' ? 10 : $filters['limit'] ;
+		//$filters['sortby'] = $this->_task != 'browse' ? 'opendate' : $filters['sortby'] ;
+		//$filters['limit'] = $this->_task != 'browse' ? 10 : $filters['limit'] ;
 		
 		// admins and employers
 		$filters['admin'] = $admin;
