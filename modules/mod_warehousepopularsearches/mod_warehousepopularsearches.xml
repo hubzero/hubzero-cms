@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+    <name>Warehouse Popular Searches</name>
+    <author>Gemez Marshall</author>
+    <version>1.0.0</version>
+    <creationDate>05/22/2010</creationDate>
+    <description>Show the top ten searches.</description>
+	<files>
+		<filename>mod_warehousepopularsearches.xml</filename>
+		<filename module="mod_warehousepopularsearches">mod_warehousepopularsearches.php</filename>
+		<filename>index.html</filename>
+        	<filename>helper.php</filename>
+        	<filename>tmpl/default.php</filename>
+        	<filename>tmpl/index.html</filename>
+	</files>
+	<params>
+    </params>
+</install>
