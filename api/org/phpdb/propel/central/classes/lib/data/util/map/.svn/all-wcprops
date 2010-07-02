@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/13219/central/trunk/lib/data/util/map
+END
+LogDetailMapBuilder.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/13219/central/trunk/lib/data/util/map/LogDetailMapBuilder.php
+END
+UIStringMapBuilder.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/13219/central/trunk/lib/data/util/map/UIStringMapBuilder.php
+END
+LogEntryMapBuilder.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/13219/central/trunk/lib/data/util/map/LogEntryMapBuilder.php
+END

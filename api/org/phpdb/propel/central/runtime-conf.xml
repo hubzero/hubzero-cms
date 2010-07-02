@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<config>
+ <log>
+  <type>file</type>
+  <name>/www/neeshub/logs/propel.log</name>
+  <ident>propel-central</ident>
+  <level>7</level>
+ </log>
+ <propel>
+  <datasources default="central">
+   <datasource id="NEEScentral"> <!-- this ID must match <database name=""> in schema.xml -->
+    <adapter>oracle</adapter> <!-- sqlite, mysql, myssql, oracle, or pgsql -->
+    <connection>
+     <phptype>oracle</phptype>
+     <database></database> 
+     <hostspec>ORCLDEV</hostspec>
+     <username>gemezm</username>
+     <password>gemezm</password>
+     
+     <!--   
+     <hostspec>ORCLSTG</hostspec>
+     <username>central</username>
+     <password>bees4nees</password>
+      -->
+     
+     <!-- 
+     <url>oracle://devdb.neeshub.org:1521/orcldev.neeshub.org</url>
+     <database>oracle</database>
+     -->
+    </connection>
+   </datasource>
+  </datasources>
+ </propel>
+</config>
+

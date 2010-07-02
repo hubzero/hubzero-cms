@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/13219/central/trunk/lib/data/util/om
+END
+BaseLogEntryPeer.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/13219/central/trunk/lib/data/util/om/BaseLogEntryPeer.php
+END
+BaseLogDetailPeer.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/13219/central/trunk/lib/data/util/om/BaseLogDetailPeer.php
+END
+BaseUIStringPeer.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/13219/central/trunk/lib/data/util/om/BaseUIStringPeer.php
+END
+BaseLogEntry.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/13219/central/trunk/lib/data/util/om/BaseLogEntry.php
+END
+BaseLogDetail.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/13219/central/trunk/lib/data/util/om/BaseLogDetail.php
+END
+BaseUIString.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/13219/central/trunk/lib/data/util/om/BaseUIString.php
+END

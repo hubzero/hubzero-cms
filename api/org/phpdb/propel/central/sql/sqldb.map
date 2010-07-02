@@ -1,0 +1,6 @@
+# Sqlfile -> Database map
+lib.data.schema.sql=NEEScentral
+lib.data.curation.schema.sql=NEEScentral
+lib.security.schema.sql=NEEScentral
+lib.data.tsunami.schema.sql=NEEScentral
+lib.data.util.schema.sql=NEEScentral
