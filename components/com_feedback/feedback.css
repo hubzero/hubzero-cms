@@ -12,7 +12,7 @@
 	-- -- -- -- -- -- --
 	com_feedback CSS
 	-- -- -- -- -- -- --
-
+	
 */
 
 	iframe {
@@ -31,7 +31,19 @@
 		border: none;
 		}
 		
-/* Supporting styles missing from main.css
+/* Supporting styles missing from main.css */
+
+/* For the options to Poll */
+
+ul{
+margin: 1em 0 1em 0em;
+list-style:none;
+}
+
+.introtext{
+   margin-top:5px;
+}
+	
 
 /* Four Columns */
 	.columns {
