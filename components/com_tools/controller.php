@@ -273,7 +273,7 @@ class ToolsController extends JObject
 		
 		// Get the forge image
 		ximport('xdocument');
-		$image = XDocument::getComponentImage('com_projects', 'forge.png', 1);
+		$image = XDocument::getComponentImage('com_tools', 'forge.png', 1);
 		
 		// Instantiate the view
 		$view = new JView( array('name'=>'tools') );
@@ -297,7 +297,7 @@ class ToolsController extends JObject
 	protected function image() 
 	{
 		ximport('xdocument');
-		$image = JPATH_SITE . XDocument::getComponentImage('com_projects', 'forge.png', 1);
+		$image = JPATH_SITE . XDocument::getComponentImage('com_tools', 'forge.png', 1);
 
 		if (is_readable($image)) {
 			ob_clean();
