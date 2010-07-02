@@ -54,6 +54,7 @@
 	}
 	
 	.extracontent .animation { padding-left: 23px; background: url("../../images/home/fc-animation.gif") 0 0em no-repeat; }
+	.extracontent .video { padding-left: 23px; background: url("../../images/home/fc-animation.gif") 0 0em no-repeat; }
 	.extracontent .download { padding-left: 23px; background: url("../../images/home/fc-download.gif") 0 0em no-repeat; }
 	.extracontent .course { padding-left: 23px; background: url("../../images/home/fc-course.gif") 0 0em no-repeat; }
 	.extracontent .learningmodule { padding-left: 23px; background: url("../../images/home/fc-learningmodule.gif") 0 0em no-repeat; }
@@ -65,6 +66,10 @@
 	.extracontent .series { padding-left: 23px; background: url("../../images/home/fc-series.gif") 0 2px no-repeat; }
 	.extracontent .workshop { padding-left: 23px; background: url("../../images/home/fc-workshop.gif") 0 0em no-repeat; }
 	.extracontent .wiki { padding-left: 23px; background: url("../../images/home/fc-wiki.gif") 0 2px no-repeat; }
+	
+	.extracontent .citation { padding-left: 23px; background: url("../../images/home/fc-publication.gif") 0 0em no-repeat; }
+	
+	
 	
 /*---------------------------------------------------------------
 	Screenshot slider
