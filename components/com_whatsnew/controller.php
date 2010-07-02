@@ -416,7 +416,7 @@ class WhatsnewController extends JObject
 					// tests to see if itemid has already been included - this occurs for typed content items
 					if (!strstr( $row->href, 'Itemid' )) {
 						$temp = explode( 'id=', $row->href );
-						$row->href = $row->href.a.'Itemid='.$mainframe->getItemid($temp[1]);
+						$row->href = $row->href.'&Itemid='.$mainframe->getItemid($temp[1]);
 					}
 				}
 				$link = JRoute::_($row->href);
@@ -424,7 +424,7 @@ class WhatsnewController extends JObject
 				// Strip html from feed item description text
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($row->text)));
 				$author = '';
-				@$date = ( $row->publis_up ? date( 'r', strtotime($row->publish_up) ) : '' );
+				@$date = ( $row->publish_up ? date( 'r', strtotime($row->publish_up) ) : '' );
 
 				if (isset($row->ranking) || isset($row->rating)) {
 					$resourceEx = new ResourceExtended($row->id, $database);
