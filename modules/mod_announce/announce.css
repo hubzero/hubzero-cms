@@ -1,0 +1,24 @@
+.announcement-archive-link, .announcement-admin-link
+{
+	text-align: right;
+}
+div.announcements
+{
+	border-top: 5px solid #ddd;
+	padding-bottom: 30px;
+}
+div.announcements h4
+{
+	color: #666;
+	border-bottom: 1px solid #fff;
+	margin-top: 8px;
+	margin-left: 1em;
+}
+.new-announcement-indicator
+{
+	color: #f66;
+	text-transform: lowercase;
+	margin-left: 5px;
+	font-weight: bold;
+	font-size: x-small;
+}

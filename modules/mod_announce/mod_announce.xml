@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<mosinstall type="module" version="4.5.1">
+	<name>Announce</name>
+	<version>4.5.1</version>
+	<description>Manage announcements</description>
+	<files>
+		<filename module="mod_announce">mod_announce.php</filename>
+		<filename>announce.css</filename>
+		<filename>modelannounce.php</filename>
+		<filename>index.html</filename>
+		<filename>tmpl/default.php</filename>
+	</files>
+	<params>
+		<param name="new_period" type="text" default="1 week" label="Length of time to mark entries as 'New'" description="Textual description, like '2 months' or '1 day'. Leave blank to disable."></param>
+		<param name="max_front_page" type="text" default="15" label="Maximum entries to show on the front page" />
+		<param name="min_front_page" type="text" default="15" label="Minimum entries to show on the front page" description="For example, with a minimum set to 15, if only 10 items qualify as current according to their timestamp, the 5 most-recently archived items will be shown to fill out the list" />
+	</params>
+</mosinstall>
