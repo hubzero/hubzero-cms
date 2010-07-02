@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="component" version="1.5">
+	<name>Announce</name>
+	<version>1.5</version>
+	<description>Archive and administration component of the announce module</description>
+	<files folder="site">
+		<filename>announce.php</filename>
+		<filename>tmpl/default.php</filename>
+	</files>
+	<administration>
+	    <menu>Announce</menu>
+	    <files folder="admin">
+	    	<filename>announce.php</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/edit.php</filename>
+	   	</files>
+	</administration>
+</install>
