@@ -1,0 +1,126 @@
+<?php
+/**
+ * Router file for the facility component 
+ * 
+ * @package		NEEShub 
+ * @author		David Benham (dbenham@purdue.edu)
+ * @copyright	Copyright 2010 by NEESCommIT
+ */
+
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+
+function sitesBuildRoute(&$query)
+{
+	$segments = array();
+
+	if(isset($query['view']))
+    {
+    	$segments[] = $query['view'];
+        unset( $query['view'] );
+    }
+	
+	if(isset($query['id']))
+    {
+    	$segments[] = $query['id'];
+        unset( $query['id'] );
+    }
+
+    // Special handlign for this view, it has two IDs, plus lets clean up query a bit more
+    if($segments[0] == 'editcontactrolesandpermissions')
+    {	
+    	$segments[0] = 'edit-contact-roles-permissions'; // slightly cleaner
+//    	$segments[] = $query['personid'];	
+//        unset( $query['personid'] );
+    }
+    
+    return $segments;
+}
+
+function sitesParseRoute($segments)
+{
+	$vars = array();
+
+	if (empty($segments)) // the view all facilities page, none selected
+	{
+	    $vars['view'] = 'sites';
+	}
+	else // we're looking at a view under the facility
+	{	
+		switch($segments[0])
+	    {
+	    	case 'site':
+	    		$vars['view'] = 'site';
+	        	$vars['id'] = $segments[1];
+	            break;
+	    	case 'sites':
+	    		$vars['view'] = 'sites';
+	        	break;
+            case 'sitesmap':
+	        	$vars['view'] = 'sites';
+	            break;
+	        case 'contact':
+	            $vars['view'] = 'contact';
+	        	$vars['id'] = $segments[1];
+	            break;
+	        case 'staff':
+	            $vars['view'] = 'staff';
+	        	$vars['id'] = $segments[1];
+	            break;
+	        case 'majorequipment':
+	            $vars['view'] = 'majorequipment';
+	        	$vars['id'] = $segments[1];
+	            break;
+	        case 'equipment':
+	            $vars['view'] = 'equipment';
+	        	$vars['id'] = $segments[1];
+	            break;
+            case 'sensors':
+	            $vars['view'] = 'sensors';
+	        	$vars['id'] = $segments[1];
+	            break;
+            case 'sensor':
+	            $vars['view'] = 'sensor';
+	        	$vars['id'] = $segments[1];
+	            break;
+            case 'sensormodel':
+	            $vars['view'] = 'sensormodel';
+	        	$vars['id'] = $segments[1];
+	            break;
+            case 'training-certification':
+	            $vars['view'] = 'trainingandcertification';
+	        	$vars['id'] = $segments[1];
+	            break;
+	        case 'education-outreach':
+	            $vars['view'] = 'educationandoutreach';
+	        	$vars['id'] = $segments[1];
+	            break;
+	        case 'edit-site':
+	            $vars['view'] = 'editsite';
+	        	$vars['id'] = $segments[1];
+	            break;
+	        case 'edit-contact-roles-permissions':
+	            $vars['view'] = 'editcontactrolesandpermissions';
+	        	$vars['id'] = $segments[1];
+	        	//$vars['personid'] = $segments[2];
+	            break;
+	            
+	    
+	    }
+	}
+    return $vars;
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
