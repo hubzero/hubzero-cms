@@ -51,7 +51,7 @@ class ToolsViewTools extends JView
 		$appTools = $model->getApplicationTools();
 		
 		// Get the forge image
-		$image = XDocument::getComponentImage('com_projects', 'forge.png', 1);
+		$image = XDocument::getComponentImage('com_tools', 'forge.png', 1);
 		
 		$this->assignRef( 'forgeName', $forgeName );
 		$this->assignRef( 'forgeURL', $forgeURL);
