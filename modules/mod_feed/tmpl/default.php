@@ -76,6 +76,8 @@ if( $feed != false )
 					// item description
 					$text = $currItem->get_description();
 					$text = str_replace('&apos;', "'", $text);
+					ximport('Hubzero_View_Helper_Html');
+					$text = Hubzero_View_Helper_Html::purifyText($text);
 
 					// word limit check
 					if ($words)
