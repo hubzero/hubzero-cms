@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<params>
+		<param name="grouopIDs" type="textarea" default="" label="Comma delimited GroupIDs for mailing list groups" description="Enter the groupIDs. NOTE: Groups must have open membership to allow joining through this module." rows="2" cols="32">
+		</param>		
+	</params>
+</config>
