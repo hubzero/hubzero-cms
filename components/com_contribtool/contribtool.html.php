@@ -458,7 +458,7 @@ class ContribtoolHtml
 			$par .= '		<ul>'.n;
 			$par .= '			<li class="todo"><span id="Uploaded"><a href="javascript:void(0);" class="flip" >'.JText::_('WHATSNEXT_CREATED_CODE_UPLOADED').'</a></span></li>'.n;
 			$par .= '		</ul>'.n;
-			$step2 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_UPLOAD').' <span id="Uploaded_"><a href="javascript:void(0);'.$statuspath.'" class="flip" >'.JText::_('WHATSNEXT_DONE').'</a></span></li>';
+			$step2 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_UPLOAD_COMMIT_FINAL_CODE').' <span id="Uploaded_"><a href="javascript:void(0);'.$statuspath.'" class="flip" >'.JText::_('WHATSNEXT_DONE').'</a></span> <br /><a href="'.$developer_url.$project_path.$status['toolname'].'/wiki/GettingStarted">'.JText::_('WHATSNEXT_UPLOAD_HOW_DO_I_DO_THIS').'</a></li>';
 			$step4 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';
 		break; 
 			
@@ -548,10 +548,10 @@ class ContribtoolHtml
 			 $html .= '		</ul>'.n; 
 			 }
 			 
-			 $html .= '<p style="margin-top:5em;border-top:1px solid #ccc;"> '.JText::_('WHATSNEXT_CONFUSED').' '.JText::_('VIEW').' <a href="contribute/tools">'.JText::_('RESOURCES').'</a> '.JText::_('EXPLAINING_CONTRIBUTION').'.</p>'.n;
-			 $html .= '		</div>'.n;
-			 $html .= '	  </div>'.n;
-			 $html .= '<div class="clear"></div>'.n;
+			// $html .= '<p style="margin-top:5em;border-top:1px solid #ccc;"> '.JText::_('WHATSNEXT_CONFUSED').' '.JText::_('VIEW').' <a href="contribute/tools">'.JText::_('RESOURCES').'</a> '.JText::_('EXPLAINING_CONTRIBUTION').'.</p>'.n;
+			// $html .= '		</div>'.n;
+			// $html .= '	  </div>'.n;
+			 //$html .= '<div class="clear"></div>'.n;
 			 return $html;			
 	}
 		
@@ -2359,11 +2359,13 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			{
 				$out .= ' <tr>'.n;
 				// build name
-				$out .= '  <td width="100%">'. stripslashes($contributor->firstname) .' ';
+				$out .= '  <td width="100%">';
+				$name = stripslashes($contributor->firstname) .' ';
 				if ($contributor->middlename != NULL) {
-					$out .= stripslashes($contributor->middlename) .' ';
+					$name .= stripslashes($contributor->middlename) .' ';
 				}
-				$out .= stripslashes($contributor->lastname);
+				$name .= stripslashes($contributor->lastname);
+				$out .= $contributor->name ? $contributor->name : $name;
 				$out .= ' <span class="caption">('.$contributor->org.')</span></td>'.n;
 				// build order-up/down icons
 				if($version=='dev') {

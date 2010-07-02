@@ -44,10 +44,10 @@ $params->merge( $rparams );
 <?php
 
 if ($this->progress['submitted'] == 1) {
-	if ($params->get('license') == 'cc') {
+	if (substr($params->get('license'), 0, 2) == 'cc') {
 		/*?>
-		<p>This resource is licensed under the <a class="popup" href="legal/cc/">Creative Commons 2.5</a> license recommended by <?php echo $hubShortName; ?>. 
-		The <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/2.5/">license terms</a> support 
+		<p>This resource is licensed under the <a class="popup" href="legal/cc/">Creative Commons 3.0</a> license recommended by <?php echo $hubShortName; ?>. 
+		The <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license terms</a> support 
 		non-commercial use, require attribution, and require sharing derivative works under the same license.</p>
 		<?php*/
 	} else {
@@ -60,8 +60,8 @@ if ($this->progress['submitted'] == 1) {
 			<fieldset>
 				<h3>Licensing</h3>
 				<label><input class="option" type="checkbox" name="license" value="1" /> <span class="optional">optional</span> 
-				License the work under the <a class="popup" href="legal/cc/">Creative Commons 2.5</a> license recommended by <?php echo $jconfig->getValue('config.sitename'); ?>. 
-				The <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/2.5/">license terms</a> support 
+				License the work under the <a class="popup" href="legal/cc/">Creative Commons 3.0</a> license recommended by <?php echo $jconfig->getValue('config.sitename'); ?>. 
+				The <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license terms</a> support 
 				non-commercial use, require attribution, and require sharing derivative works under the same license.</label>
 			
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -97,8 +97,8 @@ if ($this->progress['submitted'] == 1) {
 			
 			<?php if ($this->config->get('cc_license')) { ?>
 			<label><input class="option" type="checkbox" name="license" value="1" /> <span class="optional">optional</span> 
-			I further agree to license my work under the <a class="popup" href="legal/cc/">Creative Commons 2.5</a> license recommended by <?php echo $jconfig->getValue('config.sitename'); ?>. 
-			I have read the <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/2.5/">license terms</a>, which support 
+			I further agree to license my work under the <a class="popup" href="legal/cc/">Creative Commons 3.0</a> license recommended by <?php echo $jconfig->getValue('config.sitename'); ?>. 
+			I have read the <a class="popup" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license terms</a>, which support 
 			non-commercial use, require attribution, and require sharing derivative works under the same license.</label>
 			<?php } ?>
 			

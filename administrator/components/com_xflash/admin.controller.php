@@ -147,8 +147,17 @@ class XFlashController
 		$database->setQuery( $sql );
 		$template = $database->loadResult();
 		
+		$uploadpath = $this->config->parameters['uploadpath'];
+		if (substr($uploadpath, 0, 1) != DS) {
+			$uploadpath = DS.$uploadpath;
+		}
+		if (substr($uploadpath, -1, 1) == DS) {
+			$uploadpath = substr($uploadpath, 0, (strlen($uploadpath) - 1));
+		}
+	
+		
 		$dom = new domDocument;
-		$xml_file = is_file(JPATH_ROOT.$this->config->parameters['uploadpath'].'flashdata.xml') ?  JPATH_ROOT.$this->config->parameters['uploadpath'].'flashdata.xml':'../components/'.$this->_option.'/flashdata.xml';
+		$xml_file = is_file(JPATH_ROOT.$uploadpath.DS.'flashdata.xml') ?  JPATH_ROOT.$uploadpath.DS.'flashdata.xml':'../components/'.$this->_option.'/flashdata.xml';
 		$dom->load($xml_file);
 		if (!$dom) {
 			echo 'Error while parsing the document';
@@ -171,7 +180,7 @@ class XFlashController
 						  'transition' => 'wave',
 						  'transitionCol' => 'FFFFFF',
 						  'countdown' => '5',
-						  'imagePath' => '..'.$this->config->parameters['uploadpath'],
+						  'imagePath' => '..'.$uploadpath.DS,
 						  'serverPath' => $xhub->getCfg('hubLongURL'),
 						  'watermark' => 'waves',
 						  'headerCol' => '000000',
@@ -187,7 +196,7 @@ class XFlashController
 		
 		// output HTML
 		$document =& JFactory::getDocument();
-		$noflashfile = $this->config->parameters['uploadpath'].'noflash.jpg';
+		$noflashfile = $uploadpath.DS.'noflash.jpg';
 		$swffile = '/components'.DS.$this->_option.DS.'flashrotation';
 		
 		$document->addScript('../modules/mod_xflash/mod_xflash.js');
@@ -207,6 +216,15 @@ class XFlashController
 		$cols 		= array('sBorderCol','bColOff','bColOn','bSelected', 'bTextOff','bTextOn','transitionCol','headerCol','subtitleCol','bodyCol','linkCol');
 		$slides 	= $_POST['slide'];
 		$res 		= $_POST['res'];
+		
+		
+		$uploadpath = $this->config->parameters['uploadpath'];
+		if (substr($uploadpath, 0, 1) != DS) {
+			$uploadpath = DS.$uploadpath;
+		}
+		if (substr($uploadpath, -1, 1) == DS) {
+			$uploadpath = substr($uploadpath, 0, (strlen($uploadpath) - 1));
+		}
 	
 		// start xml output
 		$xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
@@ -308,7 +326,7 @@ class XFlashController
 		//printf($xml);
 		
 		//$fh=fopen('../components/'.$this->_option.'/flashdata.xml',"w"); 
-		$fh=fopen(JPATH_ROOT.$this->config->parameters['uploadpath'].'flashdata.xml', "w");
+		$fh=fopen(JPATH_ROOT.$uploadpath.DS.'flashdata.xml', "w");
 		fwrite($fh,utf8_encode($xml)); 
 		fclose($fh);
 		
@@ -324,17 +342,23 @@ class XFlashController
 		ximport('fileupload');
 		ximport('fileuploadutils');
 		
-		$database =& JFactory::getDBO();	
+		$database =& JFactory::getDBO();
+				
+		$uploadpath = $this->config->parameters['uploadpath'];
+		if (substr($uploadpath, 0, 1) != DS) {
+			$uploadpath = DS.$uploadpath;
+		}
+		if (substr($uploadpath, -1, 1) == DS) {
+			$uploadpath = substr($uploadpath, 0, (strlen($uploadpath) - 1));
+		}	
 	
-		$file_path = JPATH_ROOT.$this->config->parameters['uploadpath'];
-
-		if (!is_dir( $file_path )) {
-			FileUploadUtils::make_path( $file_path );
+		if (!is_dir( JPATH_ROOT.$uploadpath )) {
+			FileUploadUtils::make_path( $uploadpath  );
 		}
 		
 		// upload new files
 		$upload = new FileUpload;
-		$upload->upload_dir     = $file_path;
+		$upload->upload_dir     = $uploadpath;
 		$upload->temp_file_name = trim($_FILES['upload']['tmp_name']);
 		$upload->file_name      = trim(strtolower($_FILES['upload']['name']));
 		$upload->file_name      = str_replace(' ', '_', $upload->file_name);
@@ -357,8 +381,16 @@ class XFlashController
 		$database =& JFactory::getDBO();	
 		
 		$delFile = trim(JRequest::getVar( 'delFile', '','get'));
+		
+		$uploadpath = $this->config->parameters['uploadpath'];
+		if (substr($uploadpath, 0, 1) != DS) {
+			$uploadpath = DS.$uploadpath;
+		}
+		if (substr($uploadpath, -1, 1) == DS) {
+			$uploadpath = substr($uploadpath, 0, (strlen($uploadpath) - 1));
+		}	
 
-		$del_file = JPATH_ROOT.$this->config->parameters['uploadpath'].$delFile;
+		$del_file = JPATH_ROOT.$uploadpath.DS.$delFile;
 		unlink($del_file);
 	
 		$this->media();
@@ -404,23 +436,31 @@ class XFlashController
  
 	protected function list_files() 
 	{
-		$d = @dir(JPATH_ROOT.$this->config->parameters['uploadpath']);
+		$uploadpath = $this->config->parameters['uploadpath'];
+		if (substr($uploadpath, 0, 1) != DS) {
+			$uploadpath = DS.$uploadpath;
+		}
+		if (substr($uploadpath, -1, 1) == DS) {
+			$uploadpath = substr($uploadpath, 0, (strlen($uploadpath) - 1));
+		}	
+		
+		$d = @dir(JPATH_ROOT.$uploadpath);
 
 		if ($d) {
 			$images  = array();
 			$folders = array();
-			$docs    = array();
+			$docs    = array();		
 	
 			while (false !== ($entry = $d->read())) 
 			{
 				$img_file = $entry; 
-				if (is_file(JPATH_ROOT.$this->config->parameters['uploadpath'].$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
+				if (is_file(JPATH_ROOT.$uploadpath.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
 					if (eregi( "gif|jpg|png", $img_file )) {
 						$images[$entry] = $img_file;
 					} else {
 						$docs[$entry] = $img_file;
 					}
-				} else if(is_dir(JPATH_ROOT.$this->config->parameters['uploadpath'].$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'cvs') {
+				} else if(is_dir(JPATH_ROOT.$uploadpath.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'cvs') {
 					$folders[$entry] = $img_file;
 				}
 			}
@@ -438,11 +478,12 @@ class XFlashController
 				for ($i=0; $i<count($images); $i++) 
 				{
 					$image_name = key($images);
-					$iconfile = $this->config->parameters['iconpath'].'/'.substr($image_name,-3).'.png';
+					
+					$iconfile = $this->config->parameters['iconpath'].DS.substr($image_name,-3).'.png';
 					if (file_exists($iconfile))	{
 						$icon = $iconfile;
 					} else {
-						$icon = $this->config->parameters['iconpath'].'/unknown.png';
+						$icon = $this->config->parameters['iconpath'].DS.'unknown.png';
 					}
 
 					//$a = $this->getAttachmentID($image_name);

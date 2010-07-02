@@ -39,11 +39,17 @@ ximport('textfilter');
 ximport('xgroup');
 ximport('xuserhelper');
 ximport('xmodule');
-//ximport( 'bankaccount' );
+ximport('Hubzero_View_Helper_Html');
 
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.wishlist.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wishlist.config.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'wish.attachment.php' );
+jimport('joomla.application.component.view');
+
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.plan.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.owner.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wishlist.owner.group.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wish.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wish.rank.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wish.attachment.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'wishlist.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'wish.tags.php' );
@@ -61,5 +67,3 @@ $controller = new WishlistController();
 $controller->mainframe = $mainframe;
 $controller->execute();
 $controller->redirect();
-
-?>

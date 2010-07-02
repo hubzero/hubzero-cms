@@ -243,13 +243,12 @@ class Hubzero_Tool_Version
     private $alias = array();           // alias [array]		jos_tool_aliases
     private $middleware = array();      // middleware [array]	jos_tool_middleware
     private $hostreq = array();         // vncHostReq [array]	jos_tool_hostreq
-    private $tracperm = array();        // tracperm [array]		jos_tool_tracperm
+    private $xauthor = array();          // author [array]		jos_tool_authors
     private $author = array();          // author [array]		jos_tool_authors
     private $member = array();          // member [array]		jos_tool_groups
     private $owner = array();           // owner [array]		jos_tool_groups
 
-    private $_list_keys = array('alias', 'middleware', 'hostreq', 'author', 'member', 'owner',
-        'tracperm');
+    private $_list_keys = array('alias', 'middleware', 'hostreq', 'author', 'xauthor', 'member', 'owner');
 
     private $_ldapToolMirror = false;
     private $_updateAll = false;
@@ -259,7 +258,7 @@ class Hubzero_Tool_Version
         'unpublished'=>'unpublishDate', 'exportControl'=>'exportControl',
         'vnc_geometry'=>'vncGeometry', 'vnc_depth'=>'vncDepth', 'vnc_timeout'=>'vncTimeout',
         'vnc_command'=>'vncCommand', 'mw'=>'defaultMiddleware', 'priority'=>'priority',
-        'alias'=>'alias', 'hostreq'=>'vncHostReq', 'tracperm'=>'tracperm', 'member'=>'member',
+        'alias'=>'alias', 'hostreq'=>'vncHostReq', 'member'=>'member',
         'owner'=>'owner', 'state'=>'state', 'codeaccess'=>'sourcePublic', 'toolaccess'=>'public',
         'wikiaccess'=>'projectPublic', 'author'=>'author', 'middleware'=>'middleware');
 
@@ -662,7 +661,7 @@ class Hubzero_Tool_Version
             'defaultMiddleware', 'description', 'vncGeometry', 'vncDepth', 'vncTimeout',
             'vncCommand', 'vncHostReq', 'exportControl', 'version', 'revision', 'state',
             'sourcePublic', 'priority', 'author', 'member', 'owner', 'publishDate',
-            'unpublishDate', 'projectPublic', 'tracperm');
+            'unpublishDate', 'projectPublic');
 
         $entry = @ldap_search($conn, $dn, "(objectClass=hubTool)", $reqattr, 0, 0, 0, 3);
 
@@ -866,9 +865,9 @@ class Hubzero_Tool_Version
         $this->__unset('middleware');
         $this->__unset('hostreq');
         $this->__unset('author');
+        $this->__unset('xauthor');
         $this->__unset('member');
         $this->__unset('owner');
-        $this->__unset('tracperm');
 
         if (!$lazyloading)
         {
@@ -876,9 +875,9 @@ class Hubzero_Tool_Version
             $this->__get('middleware');
             $this->__get('hostreq');
             $this->__get('author');
+            //$this->__get('xauthor');
             $this->__get('member');
             $this->__get('owner');
-            $this->__get('tracperm');
         }
 
         $this->_updatedkeys = array();
@@ -1126,7 +1125,7 @@ class Hubzero_Tool_Version
             if (!$all && !in_array($property, $this->_updatedkeys))
                 continue;
 
-            if ($property == 'author')
+            if ($property == 'author' || $property == 'xauthor')
             {
                 $aux_table = '#__tool_authors';
             }
@@ -1155,14 +1154,15 @@ class Hubzero_Tool_Version
                     $query = "REPLACE INTO $aux_table (toolname,revision,uid,ordering," .
                         "version_id) VALUES ";
                 }
+		else if ($property == 'xauthor')
+		{
+                    $query = "REPLACE INTO $aux_table (toolname,revision,uid,ordering," .
+                        "version_idi,name,organization) VALUES ";
+		}
                 else if ($property == 'member' || $property == 'owner')
                 {
                     $query = "REPLACE INTO $aux_table (cn,toolid,role) VALUES ";
                 }
-				else if ($property == 'tracperm' && false)
-				{
-					$query = "REPLACE INTO #__trac_user_action (trac_id, user_id, action) VALUES ";
-				}
                 else
                 {
                     $query = "REPLACE INTO $aux_table (tool_version_id, " . $property .
@@ -1186,6 +1186,13 @@ class Hubzero_Tool_Version
                             $db->Quote($this->revision) . ',' . $db->Quote($value) . ',' .
                             $db->Quote($order) . ',' . $db->Quote($this->id) . ')';
                     }
+                    else if ($property == 'xauthor')
+                    {
+                        $query .= '(' . $db->Quote($this->toolname) . ',' .
+                            $db->Quote($this->revision) . ',' . $db->Quote($value['uid']) . ',' .
+                            $db->Quote($order) . ',' . $db->Quote($this->id) . ',' . 
+                            $db->Quote($value['name']) . ',' . $db->Quote($value['organization']) . ')';
+		            }
                     else if ($property == 'member')
                     {
                         $query .= '(' . $db->Quote($value) . ',' . $db->Quote($this->toolid) . ',' .
@@ -1203,10 +1210,6 @@ class Hubzero_Tool_Version
                             $query .= '(' . $db->Quote($value) . ',' . $db->Quote($this->toolid) .
                                 ',' . $db->Quote('1') . ')';
                         }
-                    }
-                    else if ($property == 'tracperm' && false)
-                    {
-                        $query .= '(null,null,' . $db->Quote($value) . ')';
                     }
                     else
                     {
@@ -1227,7 +1230,7 @@ class Hubzero_Tool_Version
 
             if (!is_array($list) || count($list) == 0)
             {
-                if ($property == 'author')
+                if ($property == 'author' || $property == 'xauthor')
                 {
                     $query = "DELETE FROM $aux_table WHERE version_id=" .
                         $db->Quote($this->id) . ";";
@@ -1262,7 +1265,7 @@ class Hubzero_Tool_Version
                     $valuelist = "''";
                 }
 
-                if ($property == 'author')
+                if ($property == 'author' || $property == 'xauthor')
                 {
                     $query = "DELETE FROM $aux_table WHERE version_id=" . $db->Quote($this->id) .
                         " AND uid NOT IN ($valuelist);";
@@ -1291,30 +1294,6 @@ class Hubzero_Tool_Version
         		$xlog->logDebug('_mysql_update_failed');
                 return false;
             }
-
-			if ($property == 'tracperm' && $this->state == 3)
-			{
-        		$xlog->logDebug('update tracperm in new tables');
-				$db->setQuery("SELECT id FROM #__trac WHERE scope='tool' AND name=" . $db->Quote($this->toolname) . ";");
-				$trac_id = $db->loadResult();
-
-				if ($trac_id)
-				{
-       				$db->setQuery("DELETE a FROM  #__trac_user_action AS a WHERE a.user_id=null AND a.trac_id=" . $db->Quote($trac_id));
-       			    $db->query();
-       			    $query = "INSERT INTO #__trac_user_action (trac_id,user_id,action) VALUES ";
-               
-					foreach ($list as $key=>$value)
-                	{
-                    	$query .= '(' . $db->Quote($trac_id) . ",null," . $db->Quote($value) . "),";
-                	}
-
-					$query = rtrim($query,',');
-       				$db->setQuery($query);
-       				$db->query();
-				}
-			}
-
         }
 
         return true;
@@ -1450,9 +1429,6 @@ class Hubzero_Tool_Version
         $db->setQuery("DELETE FROM #__tool_version_middleware WHERE tool_version_id=" .
             $db->Quote($this->id) . ";");
         $db->query();
-        $db->setQuery("DELETE FROM #__tool_version_tracperm WHERE tool_version_id=" .
-            $db->Quote($this->id) . ";");
-        $db->query();
 
 		if ($this->state == 3)
 		{
@@ -1535,7 +1511,6 @@ class Hubzero_Tool_Version
             $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
-
         if (in_array($property, $this->_list_keys))
         {
             if (!array_key_exists($property, get_object_vars($this)))
@@ -1544,7 +1519,7 @@ class Hubzero_Tool_Version
 
                 if (is_object($db))
                 {
-                    if (in_array($property, array('alias', 'middleware', 'hostreq', 'tracperm')))
+                    if (in_array($property, array('alias', 'middleware', 'hostreq')))
                     {
                         $aux_table = "#__tool_version_" . $property;
 
@@ -1555,6 +1530,11 @@ class Hubzero_Tool_Version
                     else if ($property == 'author')
                     {
                         $query = "SELECT uid FROM #__tool_authors WHERE version_id=" .
+                            $db->Quote($this->id) . " ORDER BY ordering ASC;";
+                    }
+                    else if ($property == 'xauthor')
+                    {
+                        $query = "SELECT uid,name,organization FROM #__tool_authors WHERE version_id=" .
                             $db->Quote($this->id) . " ORDER BY ordering ASC;";
                     }
                     else if ($property == 'member')
@@ -1574,7 +1554,12 @@ class Hubzero_Tool_Version
 
                     $db->setQuery($query);
 
-                    $result = $db->loadResultArray();
+                    if ($property == 'xauthor')
+					{
+						$result = $db->loadAssocList();
+					}
+					else
+						$result = $db->loadResultArray();
 
                     if ($result !== false)
                     {
@@ -1614,38 +1599,51 @@ class Hubzero_Tool_Version
             $this->$property = array_map("strtolower",
                 array_values(array_unique(array_diff((array) $value, array('')))));
         }
+		else if ($property == 'xauthor') 
+		{
+			if (array_key_exists('uid',$value))
+				$value = array($value);
+			else if (is_numeric($value))
+			{
+				$val['uid'] = $value;
+				$value[0] = $val;
+			}
+
+			foreach($value as $nvalue)
+			{
+				unset($val);
+
+				if (is_numeric($nvalue))
+					$val['uid'] = $nvalue;
+
+				$val['uid'] = isset($nvalue['uid']) ? $nvalue['uid'] : '';
+				$val['name'] = isset($nvalue['name']) ? $nvalue['name'] : '';
+				$val['organization'] = isset($nvalue['organization']) ? $nvalue['organization'] : '';
+
+				if (array_key_exists('uid',$val) && is_numeric($val['uid']))
+				{
+					$found = false;
+
+					foreach($this->$property as $prop)
+					{
+						if ($prop['uid'] == $val['uid'])
+						{
+							$found = true;
+							break;
+						}
+					}
+
+					if (!$found)
+						$this->xauthor[] = $val ;
+				}
+			}
+		}
         else if (in_array($property, $this->_list_keys))
         {
             $this->$property = array_values(array_unique(array_diff((array) $value, array(''))));
         }
         else
         {
-            if ($property == 'codeaccess')
-            {
-                if ($value == '@OPEN')
-                {
-                    $this->add("tracperm", array('BROWSER_VIEW', 'LOG_VIEW', 'FILE_VIEW',
-                        'CHANGESET_VIEW'));
-                }
-                else if ($value == '@DEV')
-                {
-                    $this->remove("tracperm", array('BROWSER_VIEW', 'LOG_VIEW', 'FILE_VIEW',
-                        'CHANGESET_VIEW'));
-                }
-            }
-            else if ($property == 'wikiaccess')
-            {
-                if ($value == '@OPEN')
-                {
-                    $this->add("tracperm", array('WIKI_VIEW', 'MILESTONE_VIEW', 'ROADMAP_VIEW',
-                        'SEARCH_VIEW'));
-                }
-                else if ($value == '@DEV')
-                {
-                    $this->remove("tracperm", array('WIKI_VIEW', 'MILESTONE_VIEW', 'ROADMAP_VIEW',
-                        'SEARCH_VIEW'));
-                }
-            }
             $this->$property = $value;
         }
 

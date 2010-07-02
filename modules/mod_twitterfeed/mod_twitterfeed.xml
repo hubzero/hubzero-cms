@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="module" version="1.5">
+    <name>Twitter Feed</name>
+    <author>Christopher Smoak</author>   
+  	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license> 
+    <authorEmail>csmoak@purdue.edu</authorEmail>   
+    <authorUrl>http://hubzero.org</authorUrl>   
+    <version>1.0.0</version>
+    <description>Loads the Twitter feed of the specified Twitter ID</description>  
+    
+    <files>    
+        <filename module="mod_twitterfeed">mod_twitterfeed.php</filename>
+		<filename>mod_twitterfeed.css</filename>  
+        <filename>index.html</filename>  
+        <filename>tmpl/default.php</filename>  
+        <filename>tmpl/index.html</filename>  
+    </files>  
+      
+    <languages>
+        <language tag="en-GB">en-GB.mod_twitterfeed.ini</language>  
+    </languages>  
+      
+    <params> 
+	 	<param name="moduleTitle" type="text" default="GET VIRTUAL HIGHLIGHTS ON NANOEHS ARTICLES" label="Module Title Text" description="The title of the module block." />
+		<param name="twitterID" type="text" default="" label="Twitter ID" description="The Twitter ID of the Twitter account to be displayed." /> 
+        <param name="tweetcount" type="text" default="3" label="Tweet Count" description="The number of latest Tweets to display." /> 
+ 		<param name="displayLink" type="list" default="yes" label="Display Link To Twitter" description="To display link to Twitter account page.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="displayIcon" type="list" default="yes" label="Display Twitter Icon" description="To display a Twitter icon next to link to Twitter page.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+    </params>  
+</install>

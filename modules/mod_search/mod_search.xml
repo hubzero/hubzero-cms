@@ -33,6 +33,8 @@
 			<option value="1">Yes</option>
 		</param>
 		<param name="button_text" type="text" default="" label="Button Text" description="PARAMBUTTONTEXT" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="set_itemid" type="text" default="" label="Set Itemid" description="PARAMSETITEMID" />
 	</params>
 	<params group="advanced">
 		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">

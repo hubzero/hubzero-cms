@@ -44,8 +44,8 @@ if (
 
 <?php if (($this->item->params->get('show_author')) && ($this->item->author != "")) : ?>
 	<span class="createby">
-		<?php JText::printf(($this->item->created_by_alias 
-			? $this->escape($this->item->created_by_alias) 
+		<?php JText::printf(($this->item->created_by_alias
+			? $this->escape($this->item->created_by_alias)
 			: $this->escape($this->item->author)) ); ?>
 	</span>
 <?php endif; ?>
@@ -128,11 +128,15 @@ if (
 
 <?php if ($this->item->params->get('show_readmore') && $this->item->readmore) : ?>
 	<a href="<?php echo $this->item->readmore_link; ?>" title="<?php echo $this->escape($this->item->title); ?>" class="readon<?php echo $this->escape($this->item->params->get('pageclass_sfx')); ?>">
-			<?php if ($this->item->readmore_register) : ?>
-				<?php echo JText::_('Register to read more...'); ?>
-			<?php else : ?>
-				<?php echo JText::_('Read more...'); ?>
-			<?php endif; ?>
+			<?php
+				if ($this->item->readmore_register) :
+					echo JText::_('Register to read more...');
+				elseif ($readmore = $this->item->params->get('readmore')) :
+					echo $readmore ;
+				else :
+					echo JText::sprintf('Read more...');
+				endif;
+			?>
 	</a>
 <?php endif; ?>
 

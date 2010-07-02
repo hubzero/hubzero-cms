@@ -30,11 +30,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_EXPLANATION'); ?></p>
 </div>
 <div class="subject" id="recommendations-subject">
-	<p><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_PLACEHOLDER'); ?></p>
+<?php if ($this->results) { ?>
 	<ul>
-		<li><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_REASON_ONE'); ?></li>
-		<li><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_REASON_TWO'); ?></li>
-		<li><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_REASON_THEREE'); ?></li>
+<?php
+	foreach ($this->results as $line)
+	{
+		// Get the SEF for the resource
+		if ($line->alias) {
+			$sef = JRoute::_('index.php?option='.$this->option.'&alias='. $line->alias);
+		} else {
+			$sef = JRoute::_('index.php?option='.$this->option.'&id='. $line->id);
+		}
+?>
+		<li>
+			<a href="<?php echo $sef; ?>"><?php echo stripslashes($line->title); ?></a>
+		</li>
+<?php } ?>
 	</ul>
+<?php } else { ?>
+	<p><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_NO_RESULTS_FOUND'); ?></p>
+<?php } ?>
+	<p id="credits"><a href="/about/hubzero#recommendations"><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_POWERED_BY'); ?></a></p>
 </div>
-<!-- <input type="hidden" name="rid" id="rid" value="<?php echo $this->resource->id; ?>" /> -->

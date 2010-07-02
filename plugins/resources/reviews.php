@@ -52,10 +52,41 @@ class plgResourcesReviews extends JPlugin
 	
 	public function &onResourcesAreas( $resource )
 	{
-		$areas = array(
-			'reviews' => JText::_('PLG_RESOURCES_REVIEWS')
-		);
+		if ($resource->_type->_params->get('plg_reviews')) {
+			$areas = array(
+				'reviews' => JText::_('PLG_RESOURCES_REVIEWS')
+			);
+		} else {
+			$areas = array();
+		}
 		return $areas;
+	}
+	
+	//-----------
+
+	public function onResourcesRateItem( $option )
+	{
+		$id = JRequest::getInt( 'rid', 0 );
+		
+		$arr = array(
+			'html'=>'',
+			'metadata'=>''
+		);
+		
+		ximport('Hubzero_View_Helper_Html');
+		ximport('Hubzero_Plugin_View');
+		
+		$database =& JFactory::getDBO();
+		$resource = new ResourcesResource($database);
+		$resource->load( $id );
+		
+		$h = new PlgResourcesReviewsHelper();
+		$h->resource = $resource;
+		$h->option = $option;
+		$h->_option = $option;
+		$h->execute();
+		
+		return $arr;
 	}
 
 	//-----------

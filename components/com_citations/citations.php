@@ -38,7 +38,10 @@ jimport('joomla.application.component.helper');
 jimport('joomla.application.component.view');
 //ximport('Hubzero_View_Helper_Html');
 
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'citations.class.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'citation.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'association.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'author.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'secondary.php' );
 require_once( JPATH_COMPONENT.DS.'citations.format.php' );
 require_once( JPATH_COMPONENT.DS.'citations.html.php' );
 require_once( JPATH_COMPONENT.DS.'controller.php' );

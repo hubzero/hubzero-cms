@@ -11,7 +11,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
-
+defined('JPATH_BASE') or die();
 /**
  * Authorization helper class, provides static methods to perform various tasks relevant
  * to the Joomla user and authorization classes

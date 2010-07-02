@@ -598,7 +598,7 @@ HUB.CompleteTags = {
 		if (el) {
 			var actags = new AppleboxList(el, {'hideempty': false, 'resizable': {'step': 8}});
 			
-			var completer2 = new Autocompleter.MultiSelectable.Ajax.Json($('maininput'), 'index2.php?option=com_tags&no_html=1&task=autocomplete', {
+			var completer2 = new Autocompleter.MultiSelectable.Ajax.Json($('maininput'), '/index.php?option=com_tags&no_html=1&task=autocomplete', {
 				'tagger': actags,
 				'minLength': 1, // We wait for at least one character
 				'overflow': true, // Overflow for more entries

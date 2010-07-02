@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: adminmenus.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: adminmenus.php 12694 2009-09-11 21:03:02Z ian $
 * @package		Joomla.Legacy
 * @subpackage	1.5
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -310,7 +310,7 @@ class mosAdminMenus
 			if ( is_dir( $i_f ) && $file <> 'CVS' && $file <> '.svn') {
 				$folders[] = JHTML::_('select.option',  $ff_ );
 				mosAdminMenus::ReadImages( $i_f, $ff_, $folders, $images );
-			} else if ( eregi( "bmp|gif|jpg|png", $file ) && is_file( $i_f ) ) {
+			} else if ( preg_match( "#bmp|gif|jpg|png#i", $file ) && is_file( $i_f ) ) {
 				// leading / we don't need
 				$imageFile = substr( $ff, 1 );
 				$images[$folderPath][] = JHTML::_('select.option',  $imageFile, $file );

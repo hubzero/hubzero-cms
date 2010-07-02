@@ -124,7 +124,20 @@ class modMySessions
 		$ms = new MwSession( $mwdb );
 		$this->sessions = $ms->getRecords( $juser->get('username'), '', false );
 		if ($this->authorized) {
+			// Add the JavaScript that does the AJAX magic to the template
+			$document =& JFactory::getDocument();
+			$document->addScript('/modules/mod_mysessions/mod_mysessions.js');
+				
 			$this->allsessions = $ms->getRecords( $juser->get('username'), '', $this->authorized );
+		}
+		
+		$rconfig = JComponentHelper::getParams( 'com_resources' );
+		$this->supportedtag = $rconfig->get('supportedtag');
+		
+		$database =& JFactory::getDBO();
+		if ($this->supportedtag) {
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.tags.php' );
+			$this->rt = new ResourcesTags( $database );
 		}
 	
 		// Push the module CSS to the template

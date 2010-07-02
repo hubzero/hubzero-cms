@@ -161,8 +161,8 @@ foreach ($this->results as $category)
 			}
 		}
 		
-		$num  = $this->total .' result';
-		$num .= ($this->total > 1) ? 's' : '';
+		$num  = $total .' result';
+		$num .= ($total > 1) ? 's' : '';
 	
 		// A function for category specific items that may be needed
 		// Check if a function exist (using old style plugins)
@@ -220,7 +220,7 @@ foreach ($this->results as $category)
 		// Initiate paging if we we're displaying an active category
 		if ($dopaging) {
 			jimport('joomla.html.pagination');
-			$pageNav = new JPagination( $this->total, $this->start, $this->limit );
+			$pageNav = new JPagination( $total, $this->start, $this->limit );
 
 			//$html .= $pageNav->getListFooter();
 			$pf = $pageNav->getListFooter();

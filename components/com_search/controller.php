@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 11676 2009-03-08 20:45:04Z willebil $
+ * @version		$Id: controller.php 13338 2009-10-27 02:15:55Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -63,21 +63,16 @@ class SearchController extends JController
 				$post['areas'][] = JFilterInput::clean($area, 'cmd');
 			}
 		}
+		
+		// set Itemid id for links from menu
+		$menu = &JSite::getMenu();
+		$items	= $menu->getItems('link', 'index.php?option=com_search&view=search');
 
-		// No need to guess Itemid if it's already present in the URL
-		if (JRequest::getInt('Itemid') > 0) {
+		if(isset($items[0])) {
+			$post['Itemid'] = $items[0]->id;
+		} else if (JRequest::getInt('Itemid') > 0) { //use Itemid from requesting page only if there is no existing menu
 			$post['Itemid'] = JRequest::getInt('Itemid');
-		} else {
-
-			// set Itemid id for links
-			$menu = &JSite::getMenu();
-			$items	= $menu->getItems('link', 'index.php?option=com_search&view=search');
-
-			if(isset($items[0])) {
-				$post['Itemid'] = $items[0]->id;
-			}
-
-		}
+		} 
 		
 		unset($post['task']);
 		unset($post['submit']);

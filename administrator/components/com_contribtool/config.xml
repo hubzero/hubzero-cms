@@ -39,9 +39,9 @@
         <param name="learn_url" type="text" menu="hide" default="http://rappture.org/wiki/FAQ_UpDownloadSrc" label="Learn More URL" description="URL to a uploading source tutorial" />
         <param name="rappture_url" type="text" menu="hide" default="http://rappture.org" label="Rappture URL" description="URL to a rappture tutorial" />
 		<param name="demo_url" type="text" menu="hide" default="" label="Demo URL" description="URL to demo explaining contribution process" />
-		<param name="doi_service" type="text" menu="hide" default="http://dir1.lib.purdue.edu:8080/axis/services/CreateHandleService?wsdl" label="DOI service path" description="URL of CreateHandle service for registering DOI" />
+		<param name="doi_service" type="text" menu="hide" default="" label="DOI service path" description="URL of CreateHandle service for registering DOI" />
 		<param name="doi_prefix" type="text" menu="hide" default="" label="DOI service prefix" description="Service prefix for DOI" />
-		<param name="ldap_save" type="radio" default="1" label="Save in LDAP?" description="Duplicate tool information in mysql and LDAP">
+		<param name="ldap_save" type="radio" default="0" label="Save in LDAP?" description="Duplicate tool information in mysql and LDAP">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>

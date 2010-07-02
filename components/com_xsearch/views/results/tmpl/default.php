@@ -250,7 +250,7 @@ foreach ($this->results as $category)
 		// Initiate paging if we we're displaying an active category
 		if ($dopaging) {
 			jimport('joomla.html.pagination');
-			$pageNav = new JPagination( $this->total, $this->start, $this->limit );
+			$pageNav = new JPagination( $total, $this->start, $this->limit );
 
 			$pgn = $pageNav->getListFooter();
 

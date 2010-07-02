@@ -231,6 +231,12 @@ class MembersController extends JObject
 		// Initiate a contributor object
 		$c = new MembersProfile( $database );
 	
+		// Get record count of ALL members
+		$total_members = $c->getCount( array('show'=>''), true );
+		
+		// Get record count of ALL members
+		$total_public_members = $c->getCount( array('show'=>'','authorized'=>false), false );
+
 		// Get record count
 		$total = $c->getCount( $filters, $admin );
 
@@ -248,6 +254,8 @@ class MembersController extends JObject
 		$view->rows = $rows;
 		$view->filters = $filters;
 		$view->total = $total;
+		$view->total_members = $total_members;
+		$view->total_public_members = $total_public_members;
 		$view->authorized = $authorized;
 		$view->pageNav = $pageNav;
 		$view->view = $this->_view;
@@ -298,7 +306,7 @@ class MembersController extends JObject
 		$profile->load( $id );
 		
 		// Check subscription to Employer Services
-		if($this->config->get('employeraccess') && $tab == 'resume') {
+		if ($this->config->get('employeraccess') && $tab == 'resume') {
 			JPluginHelper::importPlugin( 'members', 'resume' );
 			$dispatcher =& JDispatcher::getInstance();
 			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
@@ -1187,7 +1195,8 @@ class MembersController extends JObject
 	private function send_confirmation_code($login, $email, $confirm) 
 	{
 		$jconfig =& JFactory::getConfig();
-
+		$juri = JURI::getInstance();
+		
 		// Email subject
 		$subject = $jconfig->getValue('config.sitename') .' account email confirmation';
 		

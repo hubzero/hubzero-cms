@@ -90,7 +90,9 @@ function kbParseRoute($segments)
 		$title2 = urldecode($segments[1]);
 		$title2 = str_replace(':','-',$title2);
 
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'kb.class.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'article.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'category.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_kb'.DS.'tables'.DS.'helpful.php' );
 		$db =& JFactory::getDBO();
 
 		$category = new KbCategory( $db );
@@ -123,6 +125,3 @@ function kbParseRoute($segments)
 
 	return $vars;
 }
-
-?>
-

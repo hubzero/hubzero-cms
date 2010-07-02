@@ -103,7 +103,14 @@ class CitationsController extends JObject
 			'phdthesis'=>JText::_('PHDTHESIS'),
 			'proceedings'=>JText::_('PROCEEDINGS'),
 			'techreport'=>JText::_('TECHREPORT'),
-			'unpublished'=>JText::_('UNPUBLISHED')
+			'unpublished'=>JText::_('UNPUBLISHED'),
+			'patent appl'=>JText::_('PATENT'),
+			'chapter'=>JText::_('CHAPTER'),
+			'notes'=>JText::_('NOTES'),
+			'letter'=>JText::_('LETTER'),
+			'xarchive'=>JText::_('XARCHIVE'),
+			'manuscript'=>JText::_('MANUSCRIPT')
+
 		);
 		
 		$this->_task = strtolower(JRequest::getVar('task', ''));
@@ -171,6 +178,8 @@ class CitationsController extends JObject
 		$view = new JView( array('name'=>'intro') );
 		$view->title = JText::_(strtoupper($this->_name));
 		
+		$view->database = $this->database;
+		
 		// Load the object
 		$row = new CitationsCitation( $this->database );
 		$view->yearlystats = $row->getStats();
@@ -204,20 +213,23 @@ class CitationsController extends JObject
 		
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']  = JRequest::getInt( 'limit', 25, 'request' );
+		$view->filters['limit']  = JRequest::getInt( 'limit', 50, 'request' );
 		$view->filters['start']  = JRequest::getInt( 'limitstart', 0, 'get' );
 		$view->filters['type']   = JRequest::getVar( 'type', '' );
 		$view->filters['filter'] = JRequest::getVar( 'filter', '' );
 		$view->filters['year']   = JRequest::getInt( 'year', 0 );
-		$view->filters['sort']   = JRequest::getVar( 'sort', 'created DESC' );
+		$view->filters['sort']   = JRequest::getVar( 'sort', 'sec_cnt DESC' );
 		$view->filters['search'] = JRequest::getVar( 'search', '' );
+		$view->filters['reftype'] = JRequest::getVar( 'reftype', array('research'=>1,'education'=>1,'eduresearch'=>1,'cyberinfrastructure'=>1) );
+		$view->filters['geo']    = JRequest::getVar( 'geo', array('us'=>1,'na'=>1,'eu'=>1,'as'=>1) );
+		$view->filters['aff']    = JRequest::getVar( 'aff', array('university'=>1,'industry'=>1,'government'=>1) );
 
 		$view->filters['type']   = ($view->filters['type'] == 'all')   ? '' : $view->filters['type'];
 		$view->filters['filter'] = ($view->filters['filter'] == 'all') ? '' : $view->filters['filter'];
 		
 		// Instantiate a new citations object
 		$obj = new CitationsCitation( $this->database );
-		
+
 		// Get a record count
 		$total = $obj->getCount( $view->filters, false );
 
@@ -238,6 +250,7 @@ class CitationsController extends JObject
 		);
 						
 		$view->sorts = array(
+			'sec_cnt DESC'=>JText::_('Cited by'),
 			'year DESC'=>JText::_('YEAR'),
 			'created DESC'=>JText::_('NEWEST'),
 			'title ASC'=>JText::_('TITLE'),

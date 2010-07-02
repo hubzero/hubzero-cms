@@ -1,5 +1,5 @@
 ##
-# @version $Id: htaccess.txt 10492 2008-07-02 06:38:28Z ircmaxell $
+# @version $Id: htaccess.txt 13415 2009-11-03 15:53:25Z ian $
 # @package Joomla
 # @copyright Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 # @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -31,7 +31,13 @@ RewriteEngine On
 ## If you experience problems on your site block out the operations listed below
 ## This attempts to block the most common type of exploit `attempts` to Joomla!
 #
-# Block out any script trying to set a mosConfig value through the URL
+## Deny access to extension xml files (uncomment out to activate)
+#<Files ~ "\.xml$">
+#Order allow,deny
+#Deny from all
+#Satisfy all
+#</Files>
+## End of deny access to extension xml files
 RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
 # Block out any script trying to base64_encode crap to send via URL
 RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [OR]
@@ -63,5 +69,3 @@ RewriteRule (.*) index.php
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
 #
 ########## End - Joomla! core SEF Section
-
-

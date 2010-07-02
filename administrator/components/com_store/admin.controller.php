@@ -99,7 +99,8 @@ class StoreController
 	public function execute( )
 	{
 		// Get the component parameters
-		$sconfig = new StoreConfig( $this->_option );
+		//$sconfig = new StoreConfig( $this->_option );
+		$sconfig =& JComponentHelper::getParams( $this->_option );
 		$this->config = $sconfig;
 		
 		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
@@ -155,7 +156,7 @@ class StoreController
 		$database =& JFactory::getDBO();// paging limits
 		// Get configuration
 		$config = JFactory::getConfig();
-		$store_enabled = (isset($this->config->get('store_enabled'))) ? $this->config->get('store_enabled') : 0;
+		$store_enabled = $this->config->get('store_enabled');
 		
 		// Get cart object
 		$objOrder = new Order( $database );
@@ -165,8 +166,7 @@ class StoreController
 		$filters['limit'] 	= JRequest::getInt('limit', $config->getValue('config.list_limit'));
 		$filters['start'] 	= JRequest::getInt('limitstart', 0);
 		$filters['filterby']= JRequest::getVar( 'filterby', 'all');
-		$filters['sortby']  = JRequest::getVar( 'sortby', 'm.id DESC');
-	
+		$filters['sortby']  = JRequest::getVar( 'sortby', 'm.id DESC');	
 		
 		// get record count
 		$total = $objOrder->getOrders ('count', $filters);
@@ -310,20 +310,20 @@ class StoreController
 		
 		$pdf=new PDF();
 		$hubaddress = array();
-		$hubaddress[] = isset($this->config->get('hubaddress_ln1')) ? $this->config->get('hubaddress_ln1') : '' ;
-		$hubaddress[] = isset($this->config->get('hubaddress_ln2')) ? $this->config->get('hubaddress_ln2') : '' ;
-		$hubaddress[] = isset($this->config->get('hubaddress_ln3')) ? $this->config->get('hubaddress_ln3') : '' ;
-		$hubaddress[] = isset($this->config->get('hubaddress_ln4')) ? $this->config->get('hubaddress_ln4') : '' ;
-		$hubaddress[] = isset($this->config->get('hubaddress_ln5')) ? $this->config->get('hubaddress_ln5') : '' ;
-		$hubaddress[] = isset($this->config->get('hubemail')) ? $this->config->get('hubemail') : '' ;
-		$hubaddress[] = isset($this->config->get('hubphone')) ? $this->config->get('hubphone') : '' ;
+		$hubaddress[] = $this->config->get('hubaddress_ln1') ? $this->config->get('hubaddress_ln1') : '' ;
+		$hubaddress[] = $this->config->get('hubaddress_ln2') ? $this->config->get('hubaddress_ln2') : '' ;
+		$hubaddress[] = $this->config->get('hubaddress_ln3') ? $this->config->get('hubaddress_ln3') : '' ;
+		$hubaddress[] = $this->config->get('hubaddress_ln4') ? $this->config->get('hubaddress_ln4') : '' ;
+		$hubaddress[] = $this->config->get('hubaddress_ln5') ? $this->config->get('hubaddress_ln5') : '' ;
+		$hubaddress[] = $this->config->get('hubemail') ? $this->config->get('hubemail') : '' ;
+		$hubaddress[] = $this->config->get('hubphone') ? $this->config->get('hubphone') : '' ;
 		$pdf->hubaddress = $hubaddress;
 		$pdf->url = $xhub->getCfg('hubLongURL').DS.'store';
-		$pdf->headertext_ln1 = isset($this->config->get('headertext_ln1')) ? $this->config->get('headertext_ln1') : '' ;
-		$pdf->headertext_ln2 = isset($this->config->get('headertext_ln2')) ? $this->config->get('headertext_ln2') : $hubname ;
-		$pdf->footertext = isset($this->config->get('footertext')) ? $this->config->get('footertext') : 'Thank you for contributions to our HUB!' ;
-		$pdf->receipt_title = isset($this->config->get('receipt_title')) ? $this->config->get('receipt_title') : 'Your Order' ;
-		$pdf->receipt_note = isset($this->config->get('receipt_note')) ? $this->config->get('receipt_note') : '' ;
+		$pdf->headertext_ln1 = $this->config->get('headertext_ln1') ? $this->config->get('headertext_ln1') : '' ;
+		$pdf->headertext_ln2 = $this->config->get('headertext_ln2') ? $this->config->get('headertext_ln2') : $hubname ;
+		$pdf->footertext = $this->config->get('footertext') ? $this->config->get('footertext') : 'Thank you for contributions to our HUB!' ;
+		$pdf->receipt_title = $this->config->get('receipt_title') ? $this->config->get('receipt_title') : 'Your Order' ;
+		$pdf->receipt_note = $this->config->get('receipt_note') ? $this->config->get('receipt_note') : '' ;
 		$pdf->AliasNbPages();
 		$pdf->AddPage();
 		
@@ -346,10 +346,6 @@ class StoreController
 			//$pdf->Cell(0,10,'Printing line number '.$i,0,1);
 		$pdf->Output();
 		exit();
-		
-		
-		
-	
 	}
 	//-----------
 

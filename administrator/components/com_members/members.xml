@@ -308,14 +308,26 @@
 	<administration>
 		<menu>Members</menu>
 		<files>
-			<filename>admin.controller.php</filename>
-			<filename>admin.members.html.php</filename>
-			<filename>admin.members.php</filename>
+			<filename>controller.php</filename>
+			<filename>members.php</filename>
 			<filename>config.xml</filename>
-			<filename>members.class.php</filename>
 			<filename>index.html</filename>
-			<filename>toolbar.members.html.php</filename>
-			<filename>toolbar.members.php</filename>
+			<filename>tables/profile.php</filename>
+			<filename>tables/association.php</filename>
+			<filename>views/members/tmpl/default.php</filename>
+			<filename>views/members/tmpl/default.xml</filename>
+			<filename>views/member/tmpl/default.php</filename>
+			<filename>views/member/tmpl/default.xml</filename>
+			<filename>views/member/tmpl/image.php</filename>
+			<filename>views/member/tmpl/image.xml</filename>
+			<filename>views/member/tmpl/groups.php</filename>
+			<filename>views/member/tmpl/groups.xml</filename>
+			<filename>views/member/tmpl/hosts.php</filename>
+			<filename>views/member/tmpl/hosts.xml</filename>
+			<filename>views/member/tmpl/managers.php</filename>
+			<filename>views/member/tmpl/managers.xml</filename>
+			<filename>views/add/tmpl/default.php</filename>
+			<filename>views/add/tmpl/default.xml</filename>
 		</files>
 		<languages folder="admin">
 			<language tag="en-GB">en-GB.com_members.ini</language>

@@ -75,7 +75,7 @@ class modReportProblems
 		$this->juser = JFactory::getUser();
 
 		$this->verified = (!$this->juser->get('guest')) ? 1 : 0;
-		$this->referrer = $_SERVER['REQUEST_URI'];
+		$this->referrer = JRequest::getVar('REQUEST_URI','','server');
 		$this->referrer = str_replace( '&amp;', '&', $this->referrer );
 		$this->referrer = str_replace( '&', '&amp;', $this->referrer );
 		

@@ -39,7 +39,7 @@ var HUB = {};
 HUB.Position = {	
 	findPosX: function(obj) {
 		var curleft = 0;
-		if(obj.offsetParent) {
+		if (obj.offsetParent) {
 			while (obj.offsetParent) {
 				curleft += obj.offsetLeft;
 				obj = obj.offsetParent;
@@ -52,7 +52,7 @@ HUB.Position = {
 	
 	findPosY: function(obj) {
 		var curtop = 0;
-		if(obj.offsetParent) {
+		if (obj.offsetParent) {
 			while (obj.offsetParent) {
 				curtop += obj.offsetTop;
 				obj = obj.offsetParent;
@@ -69,16 +69,15 @@ HUB.Position = {
 //-----------------------------------------------------------
 
 HUB.Base = {
+	templatepath: '',
+	
 	//  Overlay for "loading", lightbox, etc.
 	overlayer: function() {
-		// the following code creates and inserts HTML into the document:
-		// <div id="overlay" onclick="function(){...}">
-		// </div>
+		// The following code creates and inserts HTML into the document:
 		// <div id="initializing" style="display:none;">
-		//   <img id="loading" src="templates/azure/images/circle_animation.gif" alt="" />
+		//   <img id="loading" src="templates/zepar/images/circle_animation.gif" alt="" />
 		// </div>
 
-		HUB.Base.templatepath = '';
 		$A(document.getElementsByTagName("script")).each( function(s) {
 			if (s.src && s.src.match(/globals\.js(\?.*)?$/)) {
 				HUB.Base.templatepath = s.src.replace(/js\/globals\.js(\?.*)?$/,'');
@@ -86,20 +85,43 @@ HUB.Base = {
 			}
 	    });
 
-		var panel = new Element('div', {'id':'initializing'});
-		var img = new Element('img', {'id':'loading','src':imgpath}).injectInside(panel);
-		var overlay = new Element('div', {'id': 'overlay'}).injectInside(document.body);
-		panel.style.display = 'none';
-		overlay.effect('opacity', {duration: 500}).hide();
-		overlay.onclick = function() {
-				panel.style.display = 'none';
-				
-				var fade = new Fx.Style(overlay, 'opacity').set(0);
+		var panel = new Element('div', {
+			id: 'initializing',
+			events: {
+				'click': function(event) {
+					this.setStyles({ display:'none' });
+					$('sbox-overlay').setStyles({ display:'none', visibility: 'hidden', opacity: '0' });
+				}
 			}
+		}).injectInside(document.body);
 		
-		document.body.appendChild(panel);
+		var img = new Element('img', {
+			id: 'loading',
+			src: imgpath
+		}).injectInside(panel);
 		
+		// Note: the rest of the code is in a separate function because it's needs to be
+		// able to be called by itself (usually after loading some HTML via AJAX).
 		HUB.Base.launchTool();
+	},
+	
+	launchTool: function() {
+		$$('.launchtool').each(function(trigger) {
+			trigger.addEvent('click', function(e) {
+				$('sbox-overlay').setStyles({
+					width: window.getScrollWidth(), 
+					height: window.getScrollHeight(), 
+					display: 'block',
+					visibility: 'visible',
+					opacity: '0.7'
+				});
+				$('initializing').setStyles({
+					top: (window.getScrollTop() + (window.getHeight() / 2) - 90), 
+					display: 'block',
+					zIndex: 65557
+				});
+			});
+		});
 	},
 	
 	launchTool: function() {
@@ -120,105 +142,60 @@ HUB.Base = {
 			}
 		});
 	},
-
-	// Amazon.com style popup menu
-	azMenu: function() {
-		var rnav = null;
-		var nav = $('nav');  // find the main navigation
-		var popup = $('resources-menu');  // find the popup's content
-		
-		if(nav && popup) {
-			// find the "Resources" link
-			var triggers = nav.getElementsByTagName('a');
-			for (i = 0; i < triggers.length; i++) {
-				if (triggers[i].href.indexOf('resources/') != -1 || triggers[i].href.indexOf('resources') != -1) {
-					rnav = triggers[i].parentNode;
-					break;
-				}
-			}
-
-			if(rnav) {
-				// set the popup's position from the top of the page
-				var h = HUB.Position.findPosY(nav);
-				popup.style.top = (h + 36) +'px';
-				// remove the popup and reattach it to the nav item
-				// this is done to make the popup contents clickable 
-				// otherwise it would disappear as soon as the
-				// cursor moved away from "resources/"
-				document.body.removeChild(popup);
-				rnav.appendChild(popup);
-				rnav.onmouseover = function() { popup.removeClass('off'); }
-				rnav.onmouseout = function() { popup.addClass('off'); }
-			}
-		}
-	},
 	
 	menu: function() {
-		lis = $('nav').getElementsByTagName('li');
-		for (i = 0; i < lis.length; i++) 
-		{
-			lis[i].onmouseover = function() { $(this).addClass('sfhover'); };
-			lis[i].onmouseout = function() { $(this).removeClass('sfhover'); };
-		}
+		$$('#nav li').each(function(li) {
+			li.addEvent('mouseover', function(e) {
+				this.addClass('sfhover');
+			});
+			li.addEvent('mouseout', function(e) {
+				this.removeClass('sfhover');
+			});
+		});
 	},
 
 	// set focus on username field for login form
 	setLoginFocus: function() {
-		if(document.login) {
-			if(document.login.username) {
-				document.login.username.focus();
-			}
+		if ($('username')) {
+			$('username').focus();
 		}
 	},
 
 	// turn links with specific classes into popups
 	popups: function() {
-		var els = document.getElementsByTagName('a');
+		var w = 760;
+		var h = 520;
+		
+		$$('a').each(function(trigger) {
+			if (trigger.hasClass('demo') 
+			 || trigger.hasClass('popinfo') 
+			 || trigger.hasClass('popup') 
+			 || trigger.hasClass('breeze')) {
+				trigger.addEvent('click', function(e) {
+					new Event(e).stop();
 
-		if(els) {
-			for(var i = 0; i < els.length; i++) 
-			{
-				if(Element.hasClass(els[i],'demo') ||
-					Element.hasClass(els[i],'popinfo') ||
-					Element.hasClass(els[i],'popup') || 
-					Element.hasClass(els[i],'breeze')
-				   ) {
-					els[i].onclick=activate;
-				}
-				
-				if(els[i].getAttribute('rel') && els[i].getAttribute('rel').indexOf('external') !=- 1) {
-					els[i].setAttribute('target','_blank');
-				}
+					if (this.getProperty('className')) {
+						var sizeString = this.getProperty('className').split(' ').pop();
+						if (sizeString) {
+							var sizeTokens = sizeString.split('x');
+							w = parseInt(sizeTokens[0]);
+							h = parseInt(sizeTokens[1]);
+						}
+					}
+					
+					window.open(this.getProperty('href'), 'popup', 'resizable=1,scrollbars=1,height='+ h + ',width=' + w); 
+				});
 			}
-		}
-	
-		function activate() 
-		{
-			var w, h;
-		
-			if(this.className) {
-				var classTokens = this.className.split(' ');
-				var sizeString = classTokens.pop();
-				if(sizeString) {
-					var sizeTokens = sizeString.split('x');
-					w = parseInt(sizeTokens[0]);
-					h = parseInt(sizeTokens[1]);
-				}
+			
+			if (trigger.getProperty('rel') && trigger.getProperty('rel').indexOf('external') !=- 1) {
+				trigger.setProperty('target','_blank');
 			}
-		
-			if(!w) { w = 760; }
-			if(!h) { h = 520; }
-
-			window.open(this.href, 'popup', 'resizable=1,scrollbars=1,height='+ h + ',width=' + w); 
-		
-			return false;
-		}
+		});
 	},
 
 	// launch functions
 	initialize: function() {
 		HUB.Base.menu();
-		HUB.Base.azMenu();
 		HUB.Base.setLoginFocus();
 		HUB.Base.overlayer();
 		HUB.Base.popups();

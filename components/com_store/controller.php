@@ -388,7 +388,7 @@ class StoreController extends JObject
 						return;
 					}
 					
-					$view->msg = JText::_('MSG_ADDED_TO_CART');	
+					$view->msg = JText::_('COM_STORE_MSG_ADDED_TO_CART');	
 				}
 			break;
 			
@@ -552,7 +552,7 @@ class StoreController extends JObject
 		
 		// Get cart items		
 		$items = $item->getCartItems($juser->get('id'));
-		if (!$items) {
+		if (!$items or $cost > $funds ) {
 			$this->cart();
 			return;
 		}
@@ -615,12 +615,6 @@ class StoreController extends JObject
 					JError::raiseError( 500, $orderitem->getError() );
 					return;
 				}
-				
-				// Delete item from cart
-				if (!$item->deleteItem($itm->itemid, $juser->get('id'))) {
-					JError::raiseError( 500, $item->getError() );
-					return;
-				}
 			}
 			
 			// Put the purchase amount on hold
@@ -656,6 +650,9 @@ class StoreController extends JObject
 				$this->setError( JText::_('COM_STORE_ERROR_MESSAGE_FAILED') );
 			}
 		}
+		
+		// Empty cart
+		$item->deleteCartItem('', $juser->get('id'), 'all');
 		
 		// Instantiate a new view
 		$view = new JView( array('name'=>'completed') );

@@ -712,10 +712,12 @@ class EventsController extends JObject
 			unset( $text );
 		} 
 		
-		$row->content = nl2br(trim($row->content));
+		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+		$row->content = preg_replace_callback("/$UrlPtrn/", array('EventsHtml','autolink'), trim(stripslashes($row->content)));
+		$row->content = nl2br($row->content);
 		$row->content = str_replace("[[BR]]",'<br />',$row->content);
 		$row->content = str_replace(" * ",'<br />&nbsp;&bull;&nbsp;',$row->content);
-		$row->content = stripslashes($row->content);
+		//$row->content = stripslashes($row->content);
 		
 		$fields = $this->config->getCfg('fields');
 		if (!empty($fields)) {

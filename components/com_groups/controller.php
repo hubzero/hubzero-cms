@@ -685,7 +685,7 @@ class GroupsController extends JObject
 		// E-mail the administrator
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
-		if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $message, $from, $group->get('managers'), $this->_option ))) {
+		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_cancelled_me', $subject, $message, $from, $group->get('managers'), $this->_option ))) {
 			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED').' '.$emailadmin );
 		}
 
@@ -1366,6 +1366,10 @@ class GroupsController extends JObject
 			$this->setError( $log->getError() );
 		}
 		
+		if ($isNew) {
+			
+		}
+		
 		// Get the administrator e-mail
 		$emailadmin = $jconfig->getValue('config.mailfrom');
 		
@@ -1493,12 +1497,16 @@ class GroupsController extends JObject
 		$applicants = $group->get('applicants');
 
 		// Explod the string of logins/e-mails into an array
-		$la = explode(',',$logins);
+		if (strstr($logins,',')) {
+			$la = explode(',',$logins);
+		} else {
+			$la = array($logins);
+		}
 		foreach ($la as $l) 
 		{
 			// Trim up the content
 			$l = trim($l);
-			
+
 			// Check if it's an e-mail address
 			if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $l)) {
 				// Try to find an account that might match this e-mail
@@ -1507,17 +1515,18 @@ class GroupsController extends JObject
 				if (!$database->query()) {
 					$this->setError( $database->getErrorMsg() );
 				}
-				
+
 				// If we found an ID, add it to the invitees list
 				if ($uid) {
 					$invitees[] = $uid;
+				} else {
+					$inviteemails[] = $l;
+					//$registeredemails[] = $l;
 				}
-				$inviteemails[] = $l;
-				$registeredemails[] = $l;
 			} else {
 				// Retrieve user's account info
 				$user = JUser::getInstance($l);
-				
+
 				// Ensure we found an account
 				if (is_object($user)) {
 					$uid = $user->get('id');
@@ -1527,8 +1536,8 @@ class GroupsController extends JObject
 							$mems[] = $uid;
 						} else {
 							$invitees[] = $uid;
-							$inviteemails[] = $user->get('email');
-							$registeredemails[] = $user->get('email');
+							//$inviteemails[] = $user->get('email');
+							//$registeredemails[] = $user->get('email');
 						}
 					}
 				}
@@ -1576,6 +1585,8 @@ class GroupsController extends JObject
 		$eview->msg = $msg;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
+		
+		$juri = JURI::getInstance();
 		
 		foreach ($inviteemails as $mbr) 
 		{
@@ -1654,6 +1665,7 @@ class GroupsController extends JObject
 		
 		// Get number of group members
 		$members = $group->get('members');
+		$managers = $group->get('managers');
 
 		// Get plugins
 		JPluginHelper::importPlugin( 'groups' );
@@ -1714,16 +1726,16 @@ class GroupsController extends JObject
 		$log .= JText::_('GROUPS_RESTRICTED_MESSAGE').': '.stripslashes($group->get('restrict_msg'))."\n";
 		
 		// Log ids of group members
-		if ($groupusers) {
+		if ($members) {
 			$log .= JText::_('GROUPS_MEMBERS').': ';
-			foreach ($groupusers as $gu) 
+			foreach ($members as $gu) 
 			{
 				$log .= $gu.' ';
 			}
 			$log .= '' ."\n";
 		}
 		$log .= JText::_('GROUPS_MANAGERS').': ';
-		foreach ($groupmanagers as $gm) 
+		foreach ($managers as $gm) 
 		{
 			$log .= $gm.' ';
 		}
@@ -1754,7 +1766,7 @@ class GroupsController extends JObject
 		
 		$gidNumber = $group->get('gidNumber');
 		$gcn = $group->get('cn');
-		$members = $group->get('members');
+		//$members = $group->get('members');
 		
 		// Delete group
 		if (!$group->delete()) {
@@ -1788,6 +1800,7 @@ class GroupsController extends JObject
 		$eview->juser = $juser;
 		$eview->gcn = $gcn;
 		$eview->msg = $msg;
+		$eview->group = $group;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 		

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 11917 2009-05-29 19:37:05Z ian $
+* @version		$Id: view.html.php 12694 2009-09-11 21:03:02Z ian $
 * @package		Joomla
 * @subpackage	Weblinks
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -48,7 +48,7 @@ class WeblinksViewCategory extends JView
 		$state		= &$this->get('state');
 
 		$model =& JModel::getInstance('categories', 'weblinksmodel');
-		$categories =& $model->getData();
+		$categories = $model->getData();
 
 		// Get the page/component configuration
 		$params = &$mainframe->getParams();

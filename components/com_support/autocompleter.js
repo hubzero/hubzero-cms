@@ -535,7 +535,7 @@ HUB.CompleteGroup = {
 		var el = $('acgroup');
 
 		if (el) {
-			var completer2 = new Autocompleter.Ajax.Json(el, 'index.php?option=com_groups&no_html=1&task=autocomplete', {
+			var completer2 = new Autocompleter.Ajax.Json(el, '/index.php?option=com_groups&no_html=1&task=autocomplete', {
 				'minLength': 1, // We wait for at least one character
 				'overflow': true, // Overflow for more entries
 				'wrapSelectionsWithSpacesInQuotes': false,

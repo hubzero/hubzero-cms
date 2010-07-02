@@ -172,7 +172,20 @@ class FeedbackController extends JObject
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
-
+	
+	public function login() 
+	{
+		$view = new JView( array('name'=>'login') );
+		$view->title = $this->_title;
+		$view->msg   = $this->_msg;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
+	
 	protected function main() 
 	{
 		$database =& JFactory::getDBO();
@@ -236,6 +249,12 @@ class FeedbackController extends JObject
 		
 		// Push some styles to the template
 		$this->_getStyles();
+		
+		if($juser->get('guest')) {
+			$this->_msg = JText::_('To submit a success story, you need to be logged in. Please login using the form below:');
+			$this->login();
+			return;
+		}
 		
 		// Output HTML
 		$view = new JView( array('name'=>'story') );
@@ -354,7 +373,7 @@ class FeedbackController extends JObject
 		
 		// Push some styles to the template
 		$this->_getStyles();
-		
+
 		// Output HTML
 		$view = new JView( array('name'=>'report') );
 		$view->title = $this->_title;
@@ -426,6 +445,7 @@ class FeedbackController extends JObject
 		$row->quote = Hubzero_View_Helper_Html::purifyText($row->quote);
 		$row->quote = str_replace( '<br>', '<br />', $row->quote );
 		$row->date  = date( 'Y-m-d H:i:s', time() );
+		$row->picture = basename($row->picture);
 		
 		// Check content
 		if (!$row->check()) {
@@ -509,7 +529,7 @@ class FeedbackController extends JObject
 			
 			// Get user's IP and domain
 			$ip = $this->_ip_address();
-			$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+			$hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 			
 			// Quick spam filter
 			$spam = $this->_detect_spam($suggestion['idea'], $ip);
@@ -549,10 +569,10 @@ class FeedbackController extends JObject
 			XHubHelper::send_email($admin, $subject, $message);
 			
 			// Get their browser and OS
-			list( $os, $os_version, $browser, $browser_ver ) = $this->_browsercheck($_SERVER['HTTP_USER_AGENT']);
+			list( $os, $os_version, $browser, $browser_ver ) = $this->_browsercheck(JRequest::getVar('HTTP_USER_AGENT','','server'));
 		
 			// Create new support ticket
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.ticket.php' );
+			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
 			
 			$data = array();
 			$data['id']        = NULL;
@@ -571,9 +591,9 @@ class FeedbackController extends JObject
 			$data['browser']   = $browser .' '. $browser_ver;
 			$data['ip']        = $ip;
 			$data['hostname']  = $hostname;
-			$data['uas']       = $_SERVER['HTTP_USER_AGENT'];
+			$data['uas']       = JRequest::getVar('HTTP_USER_AGENT','','server');
 			$data['referrer']  = NULL;
-			$data['cookies']   = (!empty($_COOKIE['sessioncookie'])) ? 1 : 0;
+			$data['cookies']   = (JRequest::getVar('sessioncookie','','cookie')) ? 1 : 0;
 			$data['instances'] = 1;
 			$data['section']   = 1;
 			
@@ -625,14 +645,15 @@ class FeedbackController extends JObject
 
 	protected function sendreport() 
 	{
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.ticket.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'attachment.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
 
 		// Incoming
 		$no_html  = JRequest::getInt( 'no_html', 0 );
 		$reporter = array_map('trim', $_POST['reporter']);
 		$problem  = array_map('trim', $_POST['problem']);
 		$reporter = array_map(array('Hubzero_View_Helper_Html','purifyText'), $reporter);
-		$problem  = array_map(array('Hubzero_View_Helper_Html','purifyText'), $problem);
+		//$problem  = array_map(array('Hubzero_View_Helper_Html','purifyText'), $problem);
 	
 		// Make sure email address is valid
 		$validemail = $this->_check_validEmail($reporter['email']);
@@ -671,7 +692,7 @@ class FeedbackController extends JObject
 		
 		// Get the user's IP
 		$ip = $this->_ip_address();
-		$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+		$hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 			
 		// Are the logged in?
 		if ($juser->get('guest')) {
@@ -759,9 +780,9 @@ class FeedbackController extends JObject
 		$data['browser']   = $problem['browser'] .' '. $problem['browserver'];
 		$data['ip']        = $ip;
 		$data['hostname']  = $hostname;
-		$data['uas']       = $_SERVER['HTTP_USER_AGENT'];
+		$data['uas']       = JRequest::getVar('HTTP_USER_AGENT','','server');
 		$data['referrer']  = $problem['referer'];
-		$data['cookies']   = (!empty($_COOKIE['sessioncookie'])) ? 1 : 0;
+		$data['cookies']   = (JRequest::getVar('sessioncookie','','cookie')) ? 1 : 0;
 		$data['instances'] = 1;
 		$data['section']   = 1;
 		$data['group']     = $group;
@@ -785,12 +806,28 @@ class FeedbackController extends JObject
 			$row->getId();
 		}
 		
+		$sconfig = JComponentHelper::getParams( 'com_support' );
+		$attachment = $this->_uploadAttachment( $row->id, $sconfig );
+		$row->report .= ($attachment) ? "\n\n".$attachment : '';
+		
+		// Save the data
+		if (!$row->store()) {
+			$this->setError( $row->getError() );
+		}
+		
 		// Get some email settings
 		$jconfig =& JFactory::getConfig();
 		$admin   = $jconfig->getValue('config.mailfrom');
 		$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_FEEDBACK_SUPPORT').', '.JText::sprintf('COM_FEEDBACK_TICKET_NUMBER',$row->id);
 		$from    = $jconfig->getValue('config.sitename').' web-robot';
 		$hub     = array('email' => $reporter['email'], 'name' => $from);
+		
+		// Parse comments for attachments
+		$xhub =& XFactory::getHub();
+		$attach = new SupportAttachment( $database );
+		$attach->webpath = $xhub->getCfg('hubLongURL').$sconfig->get('webpath').DS.$row->id;
+		$attach->uppath  = JPATH_ROOT.$sconfig->get('webpath').DS.$row->id;
+		$attach->output  = 'email';
 		
 		// Generate e-mail message
 		$message  = (!$juser->get('guest')) ? JText::_('COM_FEEDBACK_VERIFIED_USER')."\r\n\r\n" : '';
@@ -802,12 +839,12 @@ class FeedbackController extends JObject
 		$message .= JText::_('COM_FEEDBACK_REGION').': '.$source_city.', '.$source_region.', '.$source_country ."\r\n\r\n";
 		$message .= JText::_('COM_FEEDBACK_OS').': '. $problem['os'] .' '. $problem['osver'] ."\r\n";
 		$message .= JText::_('COM_FEEDBACK_BROWSER').': '. $problem['browser'] .' '. $problem['browserver'] ."\r\n";
-		$message .= JText::_('COM_FEEDBACK_UAS').': '. $_SERVER['HTTP_USER_AGENT'] ."\r\n";
+		$message .= JText::_('COM_FEEDBACK_UAS').': '. JRequest::getVar('HTTP_USER_AGENT','','server') ."\r\n";
 		$message .= JText::_('COM_FEEDBACK_COOKIES').': ';
-		$message .= (!empty($_COOKIE['sessioncookie'])) ? JText::_('COM_FEEDBACK_COOKIES_ENABLED')."\r\n" : JText::_('COM_FEEDBACK_COOKIES_DISABLED')."\r\n";
+		$message .= (JRequest::getVar('sessioncookie','','cookie')) ? JText::_('COM_FEEDBACK_COOKIES_ENABLED')."\r\n" : JText::_('COM_FEEDBACK_COOKIES_DISABLED')."\r\n";
 		$message .= JText::_('COM_FEEDBACK_REFERRER').': '. $problem['referer'] ."\r\n";
 		$message .= ($problem['tool']) ? JText::_('COM_FEEDBACK_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
-		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. stripslashes($problem['long']) ."\r\n";
+		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($row->report)) ."\r\n";
 
 		// Send e-mail
 		ximport('xhubhelper');
@@ -824,6 +861,69 @@ class FeedbackController extends JObject
 			$view->setError( $this->getError() );
 		}
 		$view->display();
+	}
+
+	private function _uploadAttachment( $listdir, $sconfig )
+	{
+		if (!$listdir) {
+			$this->setError( JText::_('SUPPORT_NO_UPLOAD_DIRECTORY') );
+			return '';
+		}
+		
+		// Incoming file
+		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
+		if (!$file['name']) {
+			return '';
+		}
+		
+		// Incoming
+		$description = ''; //JRequest::getVar( 'description', '' );
+		
+		// Construct our file path
+		$path = JPATH_ROOT.$sconfig->get('webpath').DS.$listdir;
+		
+		// Build the path if it doesn't exist
+		if (!is_dir( $path )) {
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create( $path, 0777 )) {
+				$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
+				return '';
+			}
+		}
+
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = str_replace(' ','_',$file['name']);
+		$ext = strtolower(JFile::getExt($file['name']));
+		if (!in_array($ext, array('jpg','jpeg','jpe','png','bmp','gif'))) {
+			return '';
+		}
+
+		// Perform the upload
+		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
+			$this->setError( JText::_('ERROR_UPLOADING') );
+			return '';
+		} else {
+			// File was uploaded
+			// Create database entry
+			$description = htmlspecialchars($description);
+			
+			$database =& JFactory::getDBO();
+			$row = new SupportAttachment( $database );
+			$row->bind( array('id'=>0,'ticket'=>$listdir,'filename'=>$file['name'],'description'=>$description) );
+			if (!$row->check()) {
+				$this->setError( $row->getError() );
+			}
+			if (!$row->store()) {
+				$this->setError( $row->getError() );
+			}
+			if (!$row->id) {
+				$row->getID();
+			}
+			
+			return '{attachment#'.$row->id.'}';
+		}
 	}
 
 	//-----------
@@ -934,6 +1034,13 @@ class FeedbackController extends JObject
 
 	protected function upload()
 	{
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->setError( JText::_('COM_FEEDBACK_NOTAUTH') );
+			$this->img( '', 0 );
+			return;
+		}
+		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
@@ -1006,11 +1113,25 @@ class FeedbackController extends JObject
 
 	protected function delete()
 	{
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->setError( JText::_('COM_FEEDBACK_NOTAUTH') );
+			$this->img( '', 0 );
+			return;
+		}
+		
 		// Incoming member ID
 		$id = JRequest::getInt( 'id', 0 );
 		if (!$id) {
 			$this->setError( JText::_('COM_FEEDBACK_NO_ID') );
 			$this->img( '', $id );
+			return;
+		}
+		
+		if ($juser->get('id') != $id) {
+			$this->setError( JText::_('COM_FEEDBACK_NOTAUTH') );
+			$this->img( '', $juser->get('id') );
+			return;
 		}
 		
 		// Incoming file
@@ -1018,7 +1139,10 @@ class FeedbackController extends JObject
 		if (!$file) {
 			$this->setError( JText::_('COM_FEEDBACK_NO_FILE') );
 			$this->img( '', $id );
+			return;
 		}
+		
+		$file = basename($file);
 		
 		// Build the file path
 		ximport('fileuploadutils');
@@ -1040,6 +1164,7 @@ class FeedbackController extends JObject
 			if (!JFile::delete($path.DS.$file)) {
 				$this->setError( JText::_('COM_FEEDBACK_UNABLE_TO_DELETE_FILE') );
 				$this->img( $file, $id );
+				return;
 			}
 
 			$file = '';
@@ -1099,7 +1224,7 @@ class FeedbackController extends JObject
 		$user['org']   = '';
 		$user['email'] = '';
 		$user['uid']   = '';
-		
+
 		if (!$juser->get('guest')) {
 			ximport('xprofile');
 			
@@ -1222,7 +1347,7 @@ class FeedbackController extends JObject
 			return FALSE;
 		}
 		
-		return $_SERVER[$index];
+		return TRUE;
 	}
 	
 	//-----------
@@ -1237,13 +1362,13 @@ class FeedbackController extends JObject
 	private function _ip_address()
 	{
 		if ($this->_server('REMOTE_ADDR') AND $this->_server('HTTP_CLIENT_IP')) {
-			 $ip_address = $_SERVER['HTTP_CLIENT_IP'];
+			 $ip_address = JRequest::getVar('HTTP_CLIENT_IP','','server');
 		} elseif ($this->_server('REMOTE_ADDR')) {
-			 $ip_address = $_SERVER['REMOTE_ADDR'];
+			 $ip_address = JRequest::getVar('REMOTE_ADDR','','server');
 		} elseif ($this->_server('HTTP_CLIENT_IP')) {
-			 $ip_address = $_SERVER['HTTP_CLIENT_IP'];
+			 $ip_address = JRequest::getVar('HTTP_CLIENT_IP','','server');
 		} elseif ($this->_server('HTTP_X_FORWARDED_FOR')) {
-			 $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			 $ip_address = JRequest::getVar('HTTP_X_FORWARDED_FOR','','server');
 		}
 		
 		if ($ip_address === FALSE) {

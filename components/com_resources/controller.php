@@ -71,26 +71,6 @@ class ResourcesController extends JObject
 			return $this->_data[$property];
 		}
 	}
-
-	//-----------
-	
-	private function getTask()
-	{
-		$task  = JRequest::getVar( 'task', '' );
-		$id    = JRequest::getInt( 'id', 0 );
-		$alias = JRequest::getVar( 'alias', '' );
-		$resid = JRequest::getInt( 'resid', 0 );
-		
-		if ($resid && !$task) {
-			$task = 'play';
-		}
-		if (($id || $alias) && !$task) {
-			$task = 'view';
-		}
-		$this->_task = $task;
-
-		return $task;
-	}
 	
 	//-----------
 	
@@ -99,10 +79,20 @@ class ResourcesController extends JObject
 		$config =& JComponentHelper::getParams( $this->_option );
 		$this->config = $config;
 		
-		switch ( $this->getTask() ) 
+		$this->_task  = JRequest::getVar( 'task', '' );
+		$this->_id    = JRequest::getInt( 'id', 0 );
+		$this->_alias = JRequest::getVar( 'alias', '' );
+		$this->_resid = JRequest::getInt( 'resid', 0 );
+		
+		if ($this->_resid && !$this->_task) {
+			$this->_task = 'play';
+		}
+		if (($this->_id || $this->_alias) && !$this->_task) {
+			$this->_task = 'view';
+		}
+		
+		switch ($this->_task) 
 		{
-			//case 'minimal':    $this->minimal();    break;
-			
 			// Individual resource specific actions/views
 			case 'view':       $this->view();       break;
 			case 'play':       $this->play();       break;
@@ -138,7 +128,7 @@ class ResourcesController extends JObject
 
 	//-----------
 	
-	private function getStyles() 
+	private function _getStyles() 
 	{
 		ximport('xdocument');
 		XDocument::addComponentStylesheet($this->_option);
@@ -146,12 +136,85 @@ class ResourcesController extends JObject
 	
 	//-----------
 	
-	private function getScripts()
+	private function _getScripts($script='')
 	{
 		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
+		if ($script) {
+			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$script.'.js')) {
+				$document->addScript('components'.DS.$this->_option.DS.$script.'.js');
+			}
+		} else {
+			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
+				$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
+			}
 		}
+	}
+	
+	//-----------
+	
+	private function _buildPathway() 
+	{
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option)),
+				'index.php?option='.$this->_option
+			);
+		}
+		if (count($pathway->getPathWay()) <= 1 && $this->_task) {
+			switch ($this->_task) 
+			{
+				case 'browse':
+					if ($this->_task_title) {
+						$pathway->addItem(
+							$this->_task_title,
+							'index.php?option='.$this->_option.'&task='.$this->_task
+						);
+					}
+				break;
+				case 'browsetags':
+					if ($this->_task_title) {
+						$pathway->addItem(
+							$this->_task_title,
+							'index.php?option='.$this->_option.'&type='.$this->type
+						);
+					}
+				break;
+				default:
+					$pathway->addItem(
+						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+						'index.php?option='.$this->_option.'&task='.$this->_task
+					);
+				break;
+			}
+		}
+	}
+	
+	//-----------
+	
+	private function _buildTitle() 
+	{
+		if (!$this->_title) {
+			$this->_title = JText::_(strtoupper($this->_option));
+			if ($this->_task) {
+				switch ($this->_task) 
+				{
+					case 'browse':
+					case 'browsetags':
+						if ($this->_task_title) {
+							$this->_title .= ': '.$this->_task_title;
+						}
+					break;
+					default:
+						$this->_title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+					break;
+				}
+			}
+		}
+		$document =& JFactory::getDocument();
+		$document->setTitle( $this->_title );
 	}
 
 	//----------------------------------------------------------
@@ -160,34 +223,30 @@ class ResourcesController extends JObject
 
 	protected function intro() 
 	{
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'intro') );
+		$view->title = $this->_title;
+		$view->option = $this->_option;
+		
 		$database =& JFactory::getDBO();
 		
 		// Get major types
 		$t = new ResourcesType( $database );
-		$categories = $t->getMajorTypes();
-		
-		// Push some needed styles and scripts to the template
-		$this->getStyles();
-		$this->getScripts();
-		
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)) );
-		
-		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		
-		jimport( 'joomla.application.component.view');
+		$view->categories = $t->getMajorTypes();
 		
 		// Output HTML
-		$view = new JView( array('name'=>'intro') );
-		$view->title = JText::_(strtoupper($this->_name));
-		$view->categories = $categories;
-		$view->option = $this->_option;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -198,46 +257,46 @@ class ResourcesController extends JObject
 
 	protected function browse()
 	{
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
-		
-		// Push some needed styles and scripts to the template
-		$this->getStyles();
-		$this->getScripts();
+		// Instantiate a new view
+		$view = new JView( array('name'=>'browse') );
+		$view->option = $this->_option;
+		$view->config = $this->config;
 
 		// Set the default sort
-		$xhub =& XFactory::getHub();
 		$default_sort = 'date';
 		if ($this->config->get('show_ranking')) {
 			$default_sort = 'ranking';
 		}
 
 		// Incoming
-		$filters = array();
-		$filters['tag']    = JRequest::getVar( 'tag', '' );
-		$filters['type']   = JRequest::getVar( 'type', '' );
-		$filters['sortby'] = JRequest::getVar( 'sortby', $default_sort );
-		$filters['limit']  = JRequest::getInt( 'limit', 25 );
-		$filters['start']  = JRequest::getInt( 'limitstart', 0 );
+		$view->filters = array();
+		$view->filters['tag']    = JRequest::getVar( 'tag', '' );
+		$view->filters['type']   = JRequest::getVar( 'type', '' );
+		$view->filters['sortby'] = JRequest::getVar( 'sortby', $default_sort );
+		$view->filters['limit']  = JRequest::getInt( 'limit', 25 );
+		$view->filters['start']  = JRequest::getInt( 'limitstart', 0 );
 
 		// Determine if user can edit
-		$authorized = $this->_authorize();
+		$view->authorized = $this->_authorize();
+
+		//$juser =& JFactory::getUser();
+		$database =& JFactory::getDBO();
 
 		// Get major types
 		$t = new ResourcesType( $database );
-		$types = $t->getMajorTypes();
+		$view->types = $t->getMajorTypes();
 
-		if (!is_int($filters['type'])) {
+		if (!is_int($view->filters['type'])) {
 			// Normalize the title
 			// This is so we can determine the type of resource to display from the URL
 			// For example, /resources/learningmodules => Learning Modules
-			for ($i = 0; $i < count($types); $i++) 
+			for ($i = 0; $i < count($view->types); $i++) 
 			{	
-				$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $types[$i]->type);
+				$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $view->types[$i]->type);
 				$normalized = strtolower($normalized);
 
-				if (trim($filters['type']) == $normalized) {
-					$filters['type'] = $types[$i]->id;
+				if (trim($view->filters['type']) == $normalized) {
+					$view->filters['type'] = $view->types[$i]->id;
 					break;
 				}
 			}
@@ -247,92 +306,95 @@ class ResourcesController extends JObject
 		$rr = new ResourcesResource( $database );
 		
 		// Execute count query
-		$results = $rr->getCount( $filters );
-		$total = ($results && is_array($results)) ? count($results) : 0;
+		$results = $rr->getCount( $view->filters );
+		$view->total = ($results && is_array($results)) ? count($results) : 0;
 		
 		// Run query with limit
-		$results = $rr->getRecords( $filters );
+		$view->results = $rr->getRecords( $view->filters );
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 	
 		// Get type if not given
-		$title = JText::_(strtoupper($this->_name)).': ';
-		if ($filters['type'] != '') {
-			$t->load( $filters['type'] );
-			$title .= $t->type;
+		$this->_title = JText::_(strtoupper($this->_option)).': ';
+		if ($view->filters['type'] != '') {
+			$t->load( $view->filters['type'] );
+			$this->_title .= $t->type;
+			$this->_task_title = $t->type;
 		} else {
-			$title .= JText::_('ALL');
+			$this->_title .= JText::_('COM_RESOURCES_ALL');
+			$this->_task_title = JText::_('COM_RESOURCES_ALL');
 		}
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
 
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
+		// Set page title
+		$this->_buildTitle();
 		
 		// Set the pathway
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		$pathway->addItem( JText::_('ALL'), 'index.php?option='.$this->_option.a.'task='.$this->_task );
+		$this->_buildPathway();
 		
 		// Output HTML
-		echo ResourcesHtml::browse($this->_option, $authorized, $title, $types, $filters, $pageNav, $results, $total, $this->config);
+		$view->title = $this->_title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
 
 	protected function browsetags() 
 	{
-		$database =& JFactory::getDBO();
-		
+		// Check if we're using this view type
 		if ($this->config->get('browsetags') == 'off') {
 			$this->browse();
 			return;
 		}
 		
-		// Push some needed styles and scripts to the template
-		$this->getStyles();
-		$this->getScripts();
-		
-		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'tagbrowser.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.'tagbrowser.js');
-		}
+		// Instantiate a new view
+		$view = new JView( array('name'=>'browse','layout'=>'tags') );
+		$view->option = $this->_option;
+		$view->config = $this->config;
 		
 		// Incoming
-		$tag = JRequest::getVar( 'tag', '' );
-		$tag2 = JRequest::getVar( 'with', '' );
-		$type = strtolower(JRequest::getVar( 'type', 'tools' ));
-		$activetype = 0;
-		$activetitle = '';
+		$view->tag = JRequest::getVar( 'tag', '' );
+		$view->tag2 = JRequest::getVar( 'with', '' );
+		$view->type = strtolower(JRequest::getVar( 'type', 'tools' ));
 		
-		$supportedtag = $this->config->get('supportedtag');
-		if (!$tag && $supportedtag && $type == 'tools') {
-			$tag = $supportedtag;
+		$view->supportedtag = $this->config->get('supportedtag');
+		if (!$view->tag && $view->supportedtag && $view->type == 'tools') {
+			$view->tag = $view->supportedtag;
 		}
+		
+		$database =& JFactory::getDBO();
 		
 		// Get major types
 		$t = new ResourcesType( $database );
-		$types = $t->getMajorTypes();
+		$view->types = $t->getMajorTypes();
 		
 		// Normalize the title
 		// This is so we can determine the type of resource to display from the URL
 		// For example, /resources/learningmodules => Learning Modules
-		for ($i = 0; $i < count($types); $i++) 
+		$activetype = 0;
+		$activetitle = '';
+		for ($i = 0; $i < count($view->types); $i++) 
 		{	
-			$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $types[$i]->type);
+			$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $view->types[$i]->type);
 			$normalized = strtolower($normalized);
-			$types[$i]->title = $normalized;
+			$view->types[$i]->title = $normalized;
 			
-			if (trim($type) == $normalized) {
-				$activetype = $types[$i]->id;
-				$activetitle = $types[$i]->type;
+			if (trim($view->type) == $normalized) {
+				$activetype = $view->types[$i]->id;
+				$activetitle = $view->types[$i]->type;
 			}
 		}
-		asort($types);
+		asort($view->types);
 		
 		// Ensure we have a type to display
 		if (!$activetype) {
@@ -340,57 +402,55 @@ class ResourcesController extends JObject
 			return;
 		}
 		
-		// Get type if not given
-		$title = JText::_(strtoupper($this->_name)).': ';
-		if ($activetitle) {
-			$title .= $activetitle;
-		} else {
-			$title .= JText::_('ALL');
-		}
-		
 		// Instantiate a resource object
 		$rr = new ResourcesResource( $database );
 		
 		// Determine if user can edit
-		$authorized = $this->_authorize();
+		$view->authorized = $this->_authorize();
 		
 		// Set the default sort
-		$xhub =& XFactory::getHub();
 		$default_sort = 'rating';
 		if ($this->config->get('show_ranking')) {
 			$default_sort = 'ranking';
 		}
 		
 		// Set some filters
-		$filters = array();
-		$filters['tag']    = ($tag2) ? $tag2 : '';
-		$filters['type']   = $activetype;
-		$filters['sortby'] = $default_sort;
-		$filters['limit']  = 10;
-		$filters['start']  = 0;
+		$view->filters = array();
+		$view->filters['tag']    = ($view->tag2) ? $view->tag2 : '';
+		$view->filters['type']   = $activetype;
+		$view->filters['sortby'] = $default_sort;
+		$view->filters['limit']  = 10;
+		$view->filters['start']  = 0;
 		
 		// Run query with limit
-		$results = $rr->getRecords( $filters );
+		$view->results = $rr->getRecords( $view->filters );
 		
-		// Set the page title
-		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
+		$this->type = $view->type;
+		if ($activetitle) {
+			$this->_task_title = $activetitle;
+		} else {
+			$this->_task_title = JText::_('COM_RESOURCES_ALL');
+		}
 		
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
-		}
-		if (count($pathway->getPathWay()) <= 1) {
-			if ($activetitle) {
-				$pathway->addItem( $activetitle, 'index.php?option='.$this->_option.a.'type='.$type );
-			} else {
-				$pathway->addItem( JText::_('ALL'), 'index.php?option='.$this->_option.a.'type='.$type );
-			}
-		}
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		$this->_getScripts('tagbrowser');
+		
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
 		
 		// Output HTML
-		echo ResourcesHtml::browsetags( $this->_option, $title, $types, $activetype, $results, $authorized, $this->config, $supportedtag, $tag, $tag2 );
+		$view->title = $this->_title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 	
 	//-----------
@@ -406,6 +466,7 @@ class ResourcesController extends JObject
 		// A container for info to pass to the HTML for the view
 		$bits = array();
 		$bits['supportedtag'] = $this->config->get('supportedtag');
+		
 		// Process the level
 		switch ($level)
 		{
@@ -429,19 +490,31 @@ class ResourcesController extends JObject
 				$bits['tag'] = JRequest::getVar( 'input', '' );
 				$bits['tag2'] = JRequest::getVar( 'input2', '' );
 				$bits['sortby'] = JRequest::getVar( 'sortby', 'title' );
+				$bits['filter']  = JRequest::getVar( 'filter', array('level0','level1','level2','level3','level4') );
 
 				if ($bits['tag'] == $bits['tag2']) {
 					$bits['tag2'] = '';
+				}
+				
+				// Get parameters
+				$bits['params'] = $this->config;
+				
+				// Get extra filter options
+				$bits['filters'] = array();
+				if ($this->config->get('show_audience') && $bits['type'] == 7) {
+					include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'resources.audience.php');
+					$rL = new ResourceAudienceLevel( $database );
+					$bits['filters'] = $rL->getLevels();
 				}
 				
 				$rt = new ResourcesTags( $database );
 				$bits['rt'] = $rt;
 				
 				// Get resources assigned to this tag
-				$bits['tools'] = $rt->get_objects_on_tag( $bits['tag'], $bits['id'], $bits['type'], $bits['sortby'], $bits['tag2'] );
+				$bits['tools'] = $rt->get_objects_on_tag( $bits['tag'], $bits['id'], $bits['type'], $bits['sortby'], $bits['tag2'], $bits['filter'] );
 				
 				// Set the typetitle
-				$bits['typetitle'] = JText::_('RESOURCES');
+				$bits['typetitle'] = JText::_('COM_RESOURCES');
 				
 				// See if we can load the type so we can set the typetitle
 				if (isset($bits['type']) && $bits['type'] != 0) {
@@ -449,6 +522,8 @@ class ResourcesController extends JObject
 					$t->load( $bits['type'] );
 					$bits['typetitle'] = stripslashes($t->type);
 				}
+				
+				$bits['supportedtagusage'] = $rt->getTagUsage( $bits['supportedtag'], 'id' );
 			break;
 			
 			case 3:
@@ -470,6 +545,10 @@ class ResourcesController extends JObject
 				$params->merge( $rparams );
 				$bits['params'] = $params;
 				
+				$resource->_type = new ResourcesType( $database );
+				$resource->_type->load($resource->type);
+				$resource->_type->_params = new JParameter( $resource->_type->params );
+				
 				// Version checks (tools only)
 				if ($resource->type == 7 && $resource->alias) {
 					$tables = $database->getTableList();
@@ -487,15 +566,15 @@ class ResourcesController extends JObject
 						}
 						// get contribtool params
 						$tparams =& JComponentHelper::getParams( 'com_contribtool' );
-						$tv->compileResource ($tool, '', &$resource, '', $tparams);
+						$tv->compileResource($tool, '', &$resource, '', $tparams);
 					}
 				}
 			
 				// Generate the SEF
 				if ($resource->alias) {
-					$sef = JRoute::_('index.php?option='.$this->_option.a.'alias='. $resource->alias);
+					$sef = JRoute::_('index.php?option='.$this->_option.'&alias='. $resource->alias);
 				} else {
-					$sef = JRoute::_('index.php?option='.$this->_option.a.'id='. $resource->id);
+					$sef = JRoute::_('index.php?option='.$this->_option.'&id='. $resource->id);
 				}
 				
 				// Get resource helper
@@ -521,8 +600,18 @@ class ResourcesController extends JObject
 			break;
 		}
 	
+		// Instantiate a new view
+		$view = new JView( array('name'=>'browse','layout'=>'tags_list') );
+		$view->option = $this->_option;
+		$view->config = $this->config;
+		$view->level = $level;
+		$view->bits = $bits;
+		
 		// Output HTML
-		echo ResourcesHtml::browser($level,$bits);
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//-----------
@@ -573,29 +662,34 @@ class ResourcesController extends JObject
 					}
 				}
 			}
-			
-			$sc = (isset($HTTP_COOKIE_VARS['sakaicookie'])) ? $HTTP_COOKIE_VARS['sakaicookie'] : '';
-			$activechild->path .= ($sc) ? '?sakai.session='.$sc : '';
 		}
 		
 		// Store the object in our registry
 		$this->activechild = $activechild;
 		
-		// record view?
-		/*
-		if(is_file(JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'item_pop.php')) {
-			ximport('item_pop');
-			$pop = new ItemPop( $database );
-			$pop->saveView ($id, 'resources');
-		}
-		*/	
-		
+		// Viewing via AJAX?
 		$no_html = JRequest::getInt( 'no_html', 0 );
 		if ($no_html) {
 			$resource = new ResourcesResource( $database );
 			$resource->load( $id );
 			
-			echo ResourcesHtml::play( $database, $resource, $helper, $this->resid, $activechild, '', $no_html );
+			// Instantiate a new view
+			$view = new JView( array('name'=>'view','layout'=>'play') );
+			$view->option = $this->_option;
+			$view->config = $this->config;
+			$view->database = $database;
+			$view->resource = $resource;
+			$view->helper = $helper;
+			$view->resid = $this->resid;
+			$view->activechild = $activechild;
+			$view->no_html = $no_html;
+			$view->fsize = 0;
+
+			// Output HTML
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
 		} else {
 			// Push on through to the view
 			$this->view();
@@ -606,8 +700,6 @@ class ResourcesController extends JObject
 
 	protected function view()
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$id       = JRequest::getInt( 'id', 0 );            // Rsource ID (primary method of identifying a resource)
 		$alias    = JRequest::getVar( 'alias', '' );        // Alternate method of identifying a resource
@@ -620,7 +712,9 @@ class ResourcesController extends JObject
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
-
+		
+		$database =& JFactory::getDBO();
+		
 		// Load the resource
 		$resource = new ResourcesResource( $database );
 		if ($alias) {
@@ -634,7 +728,7 @@ class ResourcesController extends JObject
 
 		// Make sure we got a result from the database
 		if (!$resource || !$resource->title) {
-			JError::raiseError( 404, JText::_('RESOURCE_NOT_FOUND') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND') );
 			return;
 		}
 		
@@ -657,7 +751,7 @@ class ResourcesController extends JObject
 		
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		$pathway->addItem($resource->getTypeTitle(),JRoute::_('index.php?option='.$this->_option.a.'type='.$typenorm));
+		$pathway->addItem($resource->getTypeTitle(),JRoute::_('index.php?option='.$this->_option.'&type='.$typenorm));
 
 		// Tool development version requested
 		$juser =& JFactory::getUser();
@@ -679,13 +773,11 @@ class ResourcesController extends JObject
 		// Let's get down to business...
 		$this->resource = $resource;
 		
-		// Send the CSS and JS to the template
-		$this->getStyles();
-		$this->getScripts();
+		// Push some styles to the template
+		$this->_getStyles();
 		
-		// Get tabbed view styling 
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
+		// Push some scripts to the template
+		$this->_getScripts();
 		
 		// Version checks (tools only)
 		$alltools = array();
@@ -696,7 +788,7 @@ class ResourcesController extends JObject
 			$tables = $database->getTableList();
 			$table = $database->_table_prefix.'tool_version';
 			
-			// get contribtool params
+			// Get contribtool params
 			$tparams =& JComponentHelper::getParams( 'com_contribtool' );
 			$ldap = $tparams->get('ldap_read');
 		
@@ -734,13 +826,13 @@ class ResourcesController extends JObject
 					}			
 				}
 			
-				// replace resource info with requested version
+				// Replace resource info with requested version
 				$tv->compileResource($thistool, $curtool, &$resource, $revision, $tparams);
 			}
 		}
 
 		// Record the hit
-		//$resource->hit( $id );
+		$resource->hit( $id );
 		
 		// Initiate a resource helper class
 		$helper = new ResourcesHelper( $resource->id, $database );
@@ -761,6 +853,10 @@ class ResourcesController extends JObject
 		$sections = array();
 		$cats = array();
 		
+		$resource->_type = new ResourcesType( $database );
+		$resource->_type->load($resource->type);
+		$resource->_type->_params = new JParameter( $resource->_type->params );
+		
 		// We need to do this here because we need some stats info to pass to the body
 		if (!$thistool) {
 			// Trigger the functions that return the areas we'll be using
@@ -770,7 +866,6 @@ class ResourcesController extends JObject
 			$sections = $dispatcher->trigger( 'onResources', array($resource, $this->_option, array($tab), 'all') );
 		}
 	
-		
 		$available = array('play');
 		foreach ($cats as $cat) 
 		{
@@ -784,7 +879,6 @@ class ResourcesController extends JObject
 		}
 		
 		// Get parameters and merge with the component params
-		//$params =& new JParameter( $resource->params );
 		$rparams =& new JParameter( $resource->params );
 		$params = $this->config;
 		$params->merge( $rparams );
@@ -807,33 +901,16 @@ class ResourcesController extends JObject
 		$body = '';
 		// Build the HTML of the "about" tab
 		if ($resource->type == 7 && $resource->alias && !$no_html && strtolower($tab) == 'about') {	
-			// tool page is rendered via toolpage view
-			$body = ResourcesHtml::abouttool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $thistool, $curtool, $alltools, $revision, $params, $attribs, $this->_option, $fsize );
-		}
-		else if (strtolower($tab) == 'about') {
-			// non-tool view of about tab
+			// Tool page view
+			$body = ResourcesHtml::abouttool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $thistool, $curtool, $alltools, $resource->revision, $params, $attribs, $this->_option, $fsize );
+		} else if (strtolower($tab) == 'about') {
+			// Default view of about tab
 			$body = ResourcesHtml::aboutnontool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $params, $attribs, $this->_option, $fsize );
-
-			/*
-			// Trigger the functions that return the sub-areas we'll be using
-			$subcats = $dispatcher->trigger( 'onResourcesSubAreas', array($resource) );
-	
-			// Get the sub sections
-			$subsections = $dispatcher->trigger( 'onResourcesSub', array($resource, $this->_option) );
-	
-			// Build the HTML for the sub sections
-			$subs = ResourcesHtml::sections( $subsections, $subcats, 'about', '', '' );
-			if ($subs) {
-				$body .= '<hr />'.n;
-				$body .= $subs;
-			}
-			*/
-		
 		}
 		
 		// Add the default "About" section to the beginning of the lists
 		$cat = array();
-		$cat['about'] = JText::_('ABOUT');
+		$cat['about'] = JText::_('COM_RESOURCES_ABOUT');
 		array_unshift($cats, $cat);
 		array_unshift($sections, array('html'=>$body,'metadata'=>''));
 		
@@ -843,10 +920,24 @@ class ResourcesController extends JObject
 			if (is_object($this->activechild)) {
 				$activechild = $this->activechild;
 			}
-			$body = ResourcesHtml::play( $database, $resource, $helper, $this->resid, $activechild, $fsize );
+			
+			$view = new JView( array('name'=>'view','layout'=>'play') );
+			$view->option = $this->_option;
+			$view->config = $this->config;
+			$view->database = $database;
+			$view->resource = $resource;
+			$view->helper = $helper;
+			$view->resid = $this->resid;
+			$view->activechild = $activechild;
+			$view->no_html = 0;
+			$view->fsize = 0;
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$body = $view->loadTemplate();
 			
 			$cat = array();
-			$cat['play'] = JText::_('PLAY');
+			$cat['play'] = JText::_('COM_RESOURCES_PLAY');
 			$cats[] = $cat;
 			$sections[] = array('html'=>$body,'metadata'=>'');
 			$tab = 'play';
@@ -863,18 +954,41 @@ class ResourcesController extends JObject
 
 		// Write title
 		$document =& JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_name)).': '.stripslashes($resource->title) );
+		$document->setTitle( JText::_(strtoupper($this->_option)).': '.stripslashes($resource->title) );
 		
-		$pathway->addItem(stripslashes($resource->title),JRoute::_('index.php?option='.$this->_option.a.'id='.$resource->id));
+		$pathway->addItem(stripslashes($resource->title),JRoute::_('index.php?option='.$this->_option.'&id='.$resource->id));
 		
-		jimport( 'joomla.application.component.view');
-		$view = ($resource->type == 7 && $resource->alias && !$no_html) ? new JView( array('name'=>'toolpage') ) : new JView( array('name'=>'nontoolpage') );
+		// Get the type
+		$t = new ResourcesType( $database );
+		$t->load($resource->type);
 		
+		// Normalize the title
+		// This is so we can determine the type of resource template to display
+		// For example, Learning Modules => learningmodules
+		$type_alias = '';
+		if ($t) {	
+			$type_alias = strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $t->type));
+		}
+		
+		// Determine the layout we're using
+		$v = array('name'=>'view');
+		$app =& JFactory::getApplication();
+		if ($type_alias 
+		 && (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->_option.DS.'view'.DS.$type_alias.'.php') 
+		 || is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'views'.DS.'view'.DS.'tmpl'.DS.$type_alias.'.php'))) {
+			$v['layout'] = $type_alias;
+		}
+		// Instantiate a new view
+		$view = new JView( $v );
+		$view->filters = $filters;
+		if ($resource->type == 7 && $resource->alias) {
+			$view->thistool = $thistool;
+			$view->curtool = $curtool;
+			$view->alltools = $alltools;
+			$view->revision = $revision;
+		}
 		$view->config = $this->config;
 		$view->option = $this->_option;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
 		$view->resource = $resource;
 		$view->params = $params;
 		$view->authorized = $authorized;
@@ -886,16 +1000,8 @@ class ResourcesController extends JObject
 		$view->database = $database;
 		$view->usersgroups = $usersgroups;
 		$view->helper = $helper;
-			
-		// tool-specific
-		if ($resource->type == 7 && $resource->alias) {				
-			$view->thistool = $thistool;
-			$view->curtool = $curtool;
-			$view->alltools = $alltools;			
-			$view->revision = $revision;
-		}
-		else {
-			$view->filters = $filters;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
 		}
 
 		// Output HTML
@@ -910,7 +1016,7 @@ class ResourcesController extends JObject
 				$css .= 'components'.DS.$this->_option.DS.'resources.css';
 			}
 			
-			$html = '<div id="nb-resource">'.$html.'</div>';
+			$html = '<div id="nb-resource">'.$view->loadTemplate().'</div>';
 			$html = str_replace( '"', '\"', $html );
 			$html = str_replace( "\n", " ", $html );
 			$html = str_replace( "\r", " ", $html );
@@ -920,11 +1026,8 @@ class ResourcesController extends JObject
 				sheet.setAttribute('type','text/css');
 				head.appendChild(sheet);");
 			print( "document.write( \"". $html ."\" );" );
-		} else {
-			//echo $html;			
+		} else {		
 			$view->display();
-			return;
-			
 		}
 	}
 
@@ -968,7 +1071,7 @@ class ResourcesController extends JObject
 
 		// Make sure we got a result from the database
 		if (!$resource) {
-			JError::raiseError( 404, JText::_('RESOURCE_NOT_FOUND') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND') );
 			return;
 		}
 		
@@ -1004,7 +1107,6 @@ class ResourcesController extends JObject
 		$rows = $helper->getStandaloneChildren( $filters );
 		
 		// Get HUB configuration
-		//$xhub =& XFactory::getHub();
 		$jconfig =& JFactory::getConfig();
 
 		$juri =& JURI::getInstance();
@@ -1014,15 +1116,12 @@ class ResourcesController extends JObject
 		}
 
 		// Build some basic RSS document information
-		//$doc->title = $jconfig->getValue('config.sitename').' '.JText::_('RESOURCES_RSS_TITLE');
-		$dtitle = $jconfig->getValue('config.sitename').' - '.ResourcesHtml::cleanText(stripslashes($resource->title));
-		$doc->title = trim(ResourcesHtml::shortenText(html_entity_decode($dtitle), 250, 0));
-		//$doc->description = JText::sprintf('RESOURCES_RSS_DESCRIPTION',$xhub->getCfg('hubShortName'));
-		$doc->description = ResourcesHtml::encode_html(html_entity_decode(ResourcesHtml::cleanText(stripslashes($resource->introtext))));
-		$doc->copyright = JText::sprintf('RESOURCES_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category = JText::_('RESOURCES_RSS_CATEGORY');
-		$doc->link = JRoute::_('index.php?option='.$this->_option.a.'id='.$resource->id);
-		//$doc->image;
+		$dtitle = $jconfig->getValue('config.sitename').' - '.Hubzero_View_Helper_Html::purifyText(stripslashes($resource->title));
+		$doc->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle), 250, 0));
+		$doc->description = Hubzero_View_Helper_Html::xhtml(html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($resource->introtext))));
+		$doc->copyright = JText::sprintf('COM_RESOURCES_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category = JText::_('COM_RESOURCES_RSS_CATEGORY');
+		$doc->link = JRoute::_('index.php?option='.$this->_option.'&id='.$resource->id);
 		
 		$rt = new ResourcesTags($database);
 		$rtags = $rt->get_tags_on_object($resource->id, 0, 0, null, 0, 1);
@@ -1046,7 +1145,7 @@ class ResourcesController extends JObject
 		}
 		$tags = implode( ', ', $tagarray );
 		//$tags = $rt->get_tag_string( $resource->id, 0, 0, 0, 0, 0 );
-		$tags = trim(ResourcesHtml::shortenText($tags, 250, 0));
+		$tags = trim(Hubzero_View_Helper_Html::shortenText($tags, 250, 0));
 		if (substr($tags,-1,1) == ',') {
 			$tags = substr($tags, 0, -1);
 		}
@@ -1063,7 +1162,7 @@ class ResourcesController extends JObject
 			}
 		}
 		
-		$doc->itunes_summary = html_entity_decode(ResourcesHtml::cleanText(stripslashes($resource->introtext)));
+		$doc->itunes_summary = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($resource->introtext)));
 		if (count($categories) > 0) {
 			$doc->itunes_category = $categories[0];
 			if (count($subcategories) > 0) {
@@ -1078,7 +1177,7 @@ class ResourcesController extends JObject
 		if ($dimg) {
 			$dimage = new XFeedImage();
 			$dimage->url = $dimg;
-			$dimage->title = trim(ResourcesHtml::shortenText(html_entity_decode($dtitle.' '.JText::_('Artwork')), 250, 0));
+			$dimage->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle.' '.JText::_('COM_RESOURCES_RSS_ARTWORK')), 250, 0));
 			$dimage->link = $base.$doc->link;
 			
 			$doc->itunes_image = $dimage;
@@ -1090,14 +1189,6 @@ class ResourcesController extends JObject
 		
 		$doc->itunes_owner = $owner;
 
-		// Build the URL for this resource
-		/*$sef = JRoute::_('index.php?option='.$this->_option.a.'id='.$resource->id);
-		if (substr($sef,0,1) == '/') {
-			$sef = substr($sef,1,strlen($sef));
-		}*/
-		
-		//$link = $juri->base().$sef;
-
 		// Start outputing results if any found
 		if (count($rows) > 0) {
 			foreach ($rows as $row)
@@ -1107,14 +1198,13 @@ class ResourcesController extends JObject
 				$title = html_entity_decode($title);
 
 				// URL link to resource
-				$link = JRoute::_('index.php?option='.$this->_option.a.'id='.$row->id);
+				$link = JRoute::_('index.php?option='.$this->_option.'&id='.$row->id);
 				if (substr($link, 0, 1) != DS) { 
 					$link = DS.$link;
 				}
-				//$link = $base.$link;
-				
+
 				// Strip html from feed item description text
-				$description = html_entity_decode(ResourcesHtml::cleanText(stripslashes($row->introtext)));
+				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($row->introtext)));
 				$author = '';
 				@$date = ( $row->publish_up ? date( 'r', strtotime($row->publish_up) ) : '' );
 				
@@ -1123,7 +1213,7 @@ class ResourcesController extends JObject
 				
 				// Get any podcast/vodcast files
 				$podcast = '';
-				//$vodcast = '';
+
 				$rhelper->getChildren();
 				if ($rhelper->children && count($rhelper->children) > 0) {
 					$grandchildren = $rhelper->children;
@@ -1131,7 +1221,7 @@ class ResourcesController extends JObject
 					{
 						$ftype = ResourcesHtml::getFileExtension($grandchild->path);
 						if (stripslashes($grandchild->introtext) != '') {
-							$gdescription = html_entity_decode(ResourcesHtml::cleanText(stripslashes($grandchild->introtext)));
+							$gdescription = html_entity_decode(Hubzero_View_Helper_Html::purifyText(stripslashes($grandchild->introtext)));
 						}
 						switch ($feedtype) 
 						{
@@ -1169,7 +1259,7 @@ class ResourcesController extends JObject
 				
 				$rtt = new ResourcesTags($database);
 				$rtags = $rtt->get_tag_string( $row->id, 0, 0, 0, 0, 0 );
-				$rtags = trim(ResourcesHtml::shortenText($rtags, 250, 0));
+				$rtags = trim(Hubzero_View_Helper_Html::shortenText($rtags, 250, 0));
 				if (substr($rtags,-1,1) == ',') {
 					$rtags = substr($rtags, 0, -1);
 				}
@@ -1187,7 +1277,7 @@ class ResourcesController extends JObject
 				if ($img) {
 					$image = new XFeedImage();
 					$image->url = $img;
-					$image->title = $title.' '.JText::_('Artwork');
+					$image->title = $title.' '.JText::_('COM_RESOURCES_RSS_ARTWORK');
 					$image->link = $base.$link;
 					
 					$item->itunes_image = $image;
@@ -1215,7 +1305,7 @@ class ResourcesController extends JObject
 					$podcastp = JPATH_ROOT.$podcastp;
 					if (file_exists( $podcastp )) {
 						$fs = filesize( $podcastp );
-						//$fs = '';
+
 						$enclosure = new XFeedEnclosure; //JObject;
 						$enclosure->url = $podcast;
 						switch ( ResourcesHtml::getFileExtension($podcast) ) 
@@ -1261,6 +1351,8 @@ class ResourcesController extends JObject
 		// Output the feed
 		echo $doc->render();
 	}
+	
+	//-----------
 	
 	private function checkForImage($filename, $upath, $created, $id) 
 	{
@@ -1335,7 +1427,7 @@ class ResourcesController extends JObject
 		
 		// Ensure we have a trigger
 		if (!$trigger) {
-			echo ResourcesHtml::error( JText::_('RESOURCES_NO_TRIGGER_FOUND') );
+			echo ResourcesHtml::error( JText::_('COM_RESOURCES_NO_TRIGGER_FOUND') );
 			return;
 		}
 		
@@ -1364,7 +1456,7 @@ class ResourcesController extends JObject
 
 		// Ensure we have a database object
 		if (!$database) {
-			JError::raiseError( 500, JText::_('DATABASE_NOT_FOUND') );
+			JError::raiseError( 500, JText::_('COM_RESOURCES_DATABASE_NOT_FOUND') );
 			return;
 		}
 		
@@ -1375,10 +1467,10 @@ class ResourcesController extends JObject
 		// Load the resource
 		$resource = new ResourcesResource( $database );
 		if ($alias && !$resource->loadAlias( $alias )) {
-			JError::raiseError( 404, JText::_('RESOURCE_NOT_FOUND') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND') );
 			return;
 		} elseif (!$resource->load( $id )) {
-			JError::raiseError( 404, JText::_('RESOURCE_NOT_FOUND') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND') );
 			return;
 		}
 
@@ -1390,7 +1482,7 @@ class ResourcesController extends JObject
 		}
 		
 		// Check if the resource is "private" and the user is allowed to view it
-		if ($resource->access == 4) {
+		if ($resource->access == 4 || $resource->access == 3 || !$resource->standalone) {
 			if ($this->checkGroupAccess($resource)) {
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 				return;
@@ -1399,30 +1491,30 @@ class ResourcesController extends JObject
 		
 		// Ensure we have a path
 		if (empty($resource->path)) {
-			JError::raiseError( 404, JText::_('FILE_NOT_FOUND') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_FILE_NOT_FOUND') );
 			return;
 		}
 		if (preg_match("/^\s*http[s]{0,1}:/i", $resource->path)) {
-			JError::raiseError( 404, JText::_('BAD_FILE_PATH') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_BAD_FILE_PATH') );
 			return;
 		}
 		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $resource->path)) {
-			JError::raiseError( 404, JText::_('BAD_FILE_PATH') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_BAD_FILE_PATH') );
 			return;
 		}
 		// Disallow windows drive letter
 		if (preg_match("/^\s*[.]:/", $resource->path)) {
-			JError::raiseError( 404, JText::_('BAD_FILE_PATH') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_BAD_FILE_PATH') );
 			return;
 		}
 		// Disallow \
 		if (strpos('\\',$resource->path)) {
-			JError::raiseError( 404, JText::_('BAD_FILE_PATH') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_BAD_FILE_PATH') );
 			return;
 		}
 		// Disallow ..
 		if (strpos('..',$resource->path)) {
-			JError::raiseError( 404, JText::_('BAD_FILE_PATH') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_BAD_FILE_PATH') );
 			return;
 		}
 		
@@ -1456,7 +1548,7 @@ class ResourcesController extends JObject
 		
 		// Ensure the file exist
 		if (!file_exists($filename)) {
-			JError::raiseError( 404, JText::_('FILE_NOT_FOUND').' '.$filename );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_FILE_NOT_FOUND').' '.$filename );
 			return;
 		}
 		
@@ -1466,23 +1558,12 @@ class ResourcesController extends JObject
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 		
-		// record view?
-		/*
-		if(is_file(JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'item_pop.php')) {	
-			ximport('item_pop');
-			$pop = new ItemPop( $database );
-			$pop->saveView ($id, 'resources', $resource);			
-		}
-		*/
-		
-		if (!$xserver->serve())
-		{
+		if (!$xserver->serve()) {
 			// Should only get here on error
-			JError::raiseError( 404, JText::_('SERVER_ERROR') );
-		}
-		else
+			JError::raiseError( 404, JText::_('COM_RESOURCES_SERVER_ERROR') );
+		} else {
 			exit;
-
+		}
 		return;
 	}
 
@@ -1492,18 +1573,18 @@ class ResourcesController extends JObject
 
 	protected function sourcecode()
 	{
-		ximport('xserver');
-		
-		$database =& JFactory::getDBO();
-		
 		// Get tool instance
 		$tool = JRequest::getVar( 'tool', 0 );
 		
 		// Ensure we have a tool
 		if (!$tool) {
-			JError::raiseError( 404, JText::_('RESOURCE_NOT_FOUND') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND') );
 			return;
 		}
+		
+		ximport('xserver');
+		
+		$database =& JFactory::getDBO();
 		
 		// Load the tool version
 		$tv = new ToolVersion( $database );
@@ -1511,7 +1592,8 @@ class ResourcesController extends JObject
 		
 		// Concat tarball name for this version
 		$tarname = $tv->toolname.'-r'.$tv->revision.'.tar.gz';
-		// get contribtool params
+		
+		// Get contribtool params
 		$tparams =& JComponentHelper::getParams( 'com_contribtool' );
 		$tarball_path = $tparams->get('sourcecodePath');
 		$tarpath = $tarball_path.DS.$tv->toolname.DS;
@@ -1520,7 +1602,7 @@ class ResourcesController extends JObject
 		// Is a tarball available?
 		if (!file_exists( $tarpath . $tarname )) {
 			// File not found
-			JError::raiseError( 404, JText::_('FILE_NOT_FOUND') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_FILE_NOT_FOUND') );
 			return;
 		}
 		
@@ -1536,11 +1618,11 @@ class ResourcesController extends JObject
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 		$xserver->saveas($tarname);
-		if (!$xserver->serve_attachment($tarpath . $tarname, $tarname, false)) // @TODO fix byte range support
-			JError::raiseError( 404, JText::_('SERVER_ERROR') );
-		else
+		if (!$xserver->serve_attachment($tarpath . $tarname, $tarname, false)) { // @TODO fix byte range support
+			JError::raiseError( 404, JText::_('COM_RESOURCES_SERVER_ERROR') );
+		} else {
 			exit;
-
+		}
 		return;
 	}
 	
@@ -1548,17 +1630,17 @@ class ResourcesController extends JObject
 	
 	protected function license()
 	{
-		$database =& JFactory::getDBO();
-		
 		// Get tool instance
 		$tool = JRequest::getVar( 'tool', '' );
 		$no_html = JRequest::getVar( 'no_html', 0 );
 		
 		// Ensure we have a tool to work with
 		if (!$tool) {
-			JError::raiseError( 404, JText::_('RESOURCE_NOT_FOUND') );
+			JError::raiseError( 404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND') );
 			return;
 		}
+		
+		$database =& JFactory::getDBO();
 		
 		// Load the tool version
 		$row = new ToolVersion( $database );
@@ -1567,21 +1649,29 @@ class ResourcesController extends JObject
 		// Output HTML
 		if ($row) {
 			// Set the page title
-			$title = stripslashes($row->title).': '.JText::_('LICENSE');
+			$title = stripslashes($row->title).': '.JText::_('COM_RESOURCES_LICENSE');
 			
 			// Write title
 			$document =& JFactory::getDocument();
 			$document->setTitle( $title );
 		} else {
 			// Set the page title
-			$title = JText::_('RESOURCES_PAGE_UNAVAILABLE');
+			$title = JText::_('COM_RESOURCES_PAGE_UNAVAILABLE');
 		}
-		
-		// Get the app
-		$app =& JFactory::getApplication();
-		
+
+		// Instantiate a new view
+		$view = new JView( array('name'=>'license') );
+		$view->option = $this->_option;
+		$view->config = $this->config;
+		$view->row = $row;
+		$view->title = $title;
+		$view->no_html = $no_html;
+
 		// Output HTML
-		echo ResourcesHtml::toollicense( $this->_option, $app, $row, $title, $no_html );
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
 	}
 
 	//----------------------------------------------------------
@@ -1657,7 +1747,7 @@ class ResourcesController extends JObject
 				{
 					case 'misc':
 					default:
-						$doc .= "%0 ".JText::_('GENERIC')."\r\n";
+						$doc .= "%0 ".JText::_('COM_RESOURCES_GENERIC')."\r\n";
 						break; // generic
 				} 
 				$doc .= "%D " . JHTML::_('date', $thedate, '%Y') . "\r\n";
@@ -1800,15 +1890,20 @@ class ResourcesController extends JObject
 
 	protected function savetags()
 	{
-	    $juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->view();
+			return;
+		}
 		
 		// Incoming
-		$id   = JRequest::getInt( 'id', 0 );
+		$id = JRequest::getInt( 'id', 0 );
 		$tags = JRequest::getVar( 'tags', '' );
 		$no_html = JRequest::getInt( 'no_html', 0 );
 		
 		// Process tags
+		$database =& JFactory::getDBO();
 		$rt = new ResourcesTags( $database );
 		$rt->tag_object($juser->get('id'), $id, $tags, 1, 0);
 	
@@ -1817,33 +1912,6 @@ class ResourcesController extends JObject
 			$this->view();
 		}
 	}
-
-	/*protected function minimal()
-	{
-		$database =& JFactory::getDBO();
-		
-		// Incoming
-		$pid = JRequest::getInt( 'id', 0 );
-		$rid = JRequest::getInt( 'resid', 0 );
-		
-		// Load parent resource
-		$parent = new ResourcesResource( $database );
-		$parent->load( $pid );
-
-		// Load resource
-		$resource = new ResourcesResource( $database );
-		$resource->load( $rid );
-	
-		// Record the hit
-		$resource->hit( $rid );
-
-		// Get some attributes
-		$attribs =& new JParameter( $resource->attribs );
-		$width  = $attribs->get( 'width', '' );
-		$height = $attribs->get( 'height', '' );
-
-		echo ResourcesHtml::minimal( $parent->title, $resource->path, $width, $height );
-	}*/
 	
 	//----------------------------------------------------------
 	//	Checks
@@ -1882,13 +1950,14 @@ class ResourcesController extends JObject
 	
 	private function checkGroupAccess($resource)
 	{	
+		//$juser =& XFactory::getUser();
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
 			// Check if they're a site admin (from Joomla)
 			if ($juser->authorize($this->_option, 'manage')) {
 				return false;
 			}
-
+			
 			ximport('xuserhelper');
 			$xgroups = XUserHelper::getGroups($juser->get('id'), 'all');
 			// Get the groups the user has access to
@@ -1917,7 +1986,7 @@ class ResourcesController extends JObject
 		
 		// Make sure they have the proper group access
 		$restricted = false;
-		if ($resource->access == 4) {
+		if ($resource->access == 4 || $resource->access == 3) {
 			// Are they logged in?
 			if ($juser->get('guest')) {
 				// Not logged in
@@ -1930,6 +1999,11 @@ class ResourcesController extends JObject
 				if (!in_array($resource->group_owner, $usersgroups) && count($common) < 1) {
 					$restricted = true;
 				}
+			}
+		}
+		if (!$resource->standalone) {
+			if ($p && ($p->access == 4 || $p->access == 3) && count($common) < 1) {
+				$restricted = true;
 			}
 		}
 		return $restricted;
@@ -2013,7 +2087,6 @@ class ResourcesController extends JObject
 		}
 
 		return false;
-
 	}
 }
 ?>

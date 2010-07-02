@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10868 2008-08-30 07:22:26Z willebil $
+* @version		$Id: helper.php 13246 2009-10-20 04:24:06Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -38,8 +38,11 @@ class modNewsFlashHelper
 			{
 				// Check to see if the user has access to view the full article
 				if ($item->access <= $user->get('aid', 0)) {
+					$itemparams=new JParameter($item->attribs);
+					$readmoretxt=$itemparams->get('readmore',JText::_('Read more text'));
+
 					$item->linkOn = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
-					$item->linkText = JText::_('Read more text');
+					$item->linkText = $readmoretxt;
 				} else {
 					$item->linkOn = JRoute::_('index.php?option=com_user&view=login');
 					$item->linkText = JText::_('Login To Read More');

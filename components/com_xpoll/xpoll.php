@@ -36,7 +36,10 @@ if ($config->getValue('config.debug')) {
 
 jimport( 'joomla.application.component.view');
 
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'xpoll.class.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'poll.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'data.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'date.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'menu.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
 // Instantiate controller

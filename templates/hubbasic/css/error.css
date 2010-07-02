@@ -1,0 +1,260 @@
+/*
+
+	-- -- -- -- -- -- --
+	error CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Start Common Styles */
+	* {
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		}
+	html {
+		height: 100%;
+		margin: 0;
+		padding: 0;
+		}
+	body {
+		margin: 0;
+		padding: 0;
+		height: 100%;
+		background: #4c4c4c;
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-size: 0.8em;
+		line-height: 1.3em;
+		color: #333;
+		text-align: center;
+		}
+	table, 
+	td, 
+	th, 
+	div, 
+	pre, 
+	blockquote, 
+	ul, 
+	ol, 
+	dl, 
+	address {
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-weight: normal;
+		}
+/* Links */
+	a, 
+	a:link, 
+	a:active, 
+	a:visited {
+		color: #fe7800;
+		text-decoration: none;
+		border-bottom: 1px dotted #fe7800;
+		}
+	a:hover {
+		color: #6699cc;
+		border-bottom: 1px solid #6699cc;
+		}
+/* Wrap */
+	#wrap {
+		width: 602px;
+		margin: 60px auto 0 auto;
+		padding: 0 0 60px 0;
+		}
+/* Header */
+	#header {
+		margin: 0;
+		padding: 0;
+		height: 76px;
+		border: 1px solid #ebebeb;
+		background: #444 url("../images/background.gif") right top repeat-y;
+		text-align: left;
+		/* Rounded corners */
+		-moz-border-radius-topright: 10px;
+		-moz-border-radius-topleft: 10px;
+		-webkit-border-top-right-radius: 10px;
+		-webkit-border-top-left-radius: 10px;
+		-khtml-border-radius-topright: 10px;	
+		-khtml-border-radius-topleft: 10px;
+		border-top-right-radius: 10px;
+		border-top-left-radius: 10px;
+		/* Shadows */
+		box-shadow: 0px 2px 4px #000;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* length length length color */
+		-moz-box-shadow: #000 0px 2px 4px; /* color length length length */
+		}
+	#header h1 { 
+		margin: 0;
+		padding: 15px 0 0 20px;
+		height: 61px;
+		text-shadow: -1px 2px 3px #2b2b2b;
+		color: #fff;
+		font-weight: normal;
+		font-size: 1.6em;
+		}
+	#header h1 a {
+		color: #fff;
+		border: none;
+		display: block;
+		width: 300px;
+		height: 40px;
+		margin: 0;
+		padding: 15px 0 0 80px;
+		letter-spacing: 1px;
+		background: url("../images/logos/yourhub.png") 0 0 no-repeat;
+		}
+	#header h1 a:hover {
+		color: #ff6600;
+		border: none;
+		}
+	#header h1 a span {
+		color: #aaa;
+		}
+/* Outline */
+	#outline {
+		margin: 0;
+		padding: 35px;
+		border: 1px solid #ebebeb;
+		border-top: 8px solid #ccc;
+		text-align: right;
+		background: #ebebeb;
+		/* Rounded corners */
+		-moz-border-radius-bottomright: 10px;
+		-moz-border-radius-bottomleft: 10px;
+		-webkit-border-bottom-right-radius: 10px;
+		-webkit-border-bottom-left-radius: 10px;
+		-khtml-border-radius-bottomright: 10px;
+		-khtml-border-radius-bottomleft: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+		/* Shadows */
+		box-shadow: 0px 2px 4px #000;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* length length length color */
+		-moz-box-shadow: #000 0px 2px 4px; /* color length length length */
+		}
+/* Error Message */
+	#errorbox {
+		margin: 0 0 5px 0;
+		padding: 10px 10px 10px 45px;
+		text-align: left;
+		border: 1px solid #EFCCC2; 
+		color: #CC0000;
+		background: #FFF2EF url("../images/icons/error-large.png") 10px 10px no-repeat;
+		/* Rounded corners */
+		-moz-border-radius-topright: 10px;
+		-moz-border-radius-topleft: 10px;
+		-webkit-border-top-right-radius: 10px;
+		-webkit-border-top-left-radius: 10px;
+		-khtml-border-radius-topright: 10px;	
+		-khtml-border-radius-topleft: 10px;
+		border-top-right-radius: 10px;
+		border-top-left-radius: 10px;
+		/* Shadows */
+		box-shadow: 0px 2px 4px #ccc;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* length length length color */
+		-moz-box-shadow: #ccc 0px 2px 4px; /* color length length length */
+		}
+	#errorbox.code-403 {
+		border-color: #EFEAC2;
+		color: #CC6633; 
+		background: #FFFDEF url("../images/icons/warning-large.png") 10px 10px no-repeat;
+		}
+	#errorbox h2 {
+		margin: 0;
+		padding: 0;
+		font-weight: bold;
+		font-size: 1.4em;
+		line-height: 1.4em;
+		}
+	#errorbox ol {
+		margin: 1em 0 1em 2em;
+		padding: 0;
+		}
+	#errorbox ol li {
+		line-height: 1.5em;
+		}
+/* Search Form */
+	form {
+		margin: 0;
+		padding: 0;
+		color: #333;
+		text-align: center;
+		}
+	fieldset {
+		margin: 0;
+		padding: 10px;
+		border: 1px solid #ccc; 
+		color: #333;
+		background: #fff;
+		/* Rounded corners */
+		-moz-border-radius-bottomright: 10px;
+		-moz-border-radius-bottomleft: 10px;
+		-webkit-border-bottom-right-radius: 10px;
+		-webkit-border-bottom-left-radius: 10px;
+		-khtml-border-radius-bottomright: 10px;	
+		-khtml-border-radius-bottomleft: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+		/* Shadows */
+		box-shadow: 0px 2px 4px #CCC;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* length length length color */
+		-moz-box-shadow: #ccc 0px 2px 4px; /* color length length length */
+		}
+	form span {
+		text-transform: uppercase;
+		color: #ccc;
+		margin: 0 2em;
+		}
+	label {
+		font-weight: bold;
+		}
+	input {
+		color: #333;
+		}
+/* Stack trace */
+	#techinfo {
+		margin: 20px 0 0 0;
+		padding: 10px;
+		text-align: left;
+		border: 1px solid #000;
+		color: #aaa;
+		background-color: #333;
+		/* Rounded corners */
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-khtml-border-radius: 10px;	
+		border-radius: 10px;
+		/* Shadows */
+		box-shadow: 0px 2px 4px #000;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* length length length color */
+		-moz-box-shadow: #000 0px 2px 4px; /* color length length length */
+		}
+	#techinfo p {
+		color: #CC6633;
+		}
+	table {
+		width: 100%;
+		text-align: left;
+		font-size: 0.85em;
+		border: none;
+		}
+	table th,
+	table td {
+		vertical-align: top;
+		line-height: 1.6em;
+		padding: 0.2em 0.5em;
+		border-bottom: 1px solid #444;
+		color: #ccc;
+		}
+	table td strong {
+		color: #fff;
+		}
+	table thead th {
+		font-weight: bold;
+		border-bottom: 1px solid #dfdfdf;
+		white-space: nowrap;
+		}
+/* IE 6 Hacks */
+	* html #header h1 a {
+		border: none;
+		}
+	* html #header h1 a:hover {
+		border: none;
+		}

@@ -49,12 +49,12 @@ class plgResourcesSupportingDocs extends JPlugin
 	{
 		if ($archive) {
 			$areas = array();			
-		} else if ($resource->type !=8) {
+		} else if ($resource->_type->_params->get('plg_supportingdocs')) {
 			$areas = array(
 				'supportingdocs' => JText::_('PLG_RESOURCES_SUPPORTINGDOCS')
 			);
 		} else {
-			$areas = array();			
+			$areas = array();
 		}
 		
 		return $areas;
@@ -81,7 +81,8 @@ class plgResourcesSupportingDocs extends JPlugin
 		
 		// Initiate a resource helper class
 		$helper = new ResourcesHelper( $resource->id, $database );
-		$helper->getChildren( $resource->id, 0, 'all', 1 );
+		//$excludeFirstChild = $resource->type == 7 ? 0 : 1;
+		$helper->getChildren( $resource->id, 0, 'all', 0 );
 		
 		$config =& JComponentHelper::getParams( $option );
 

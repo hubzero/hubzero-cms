@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: helper.php 12694 2009-09-11 21:03:02Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -81,7 +81,7 @@ class modRandomImageHelper
 			{
 				if (!is_dir($dir .DS. $img))
 				{
-					if (eregi($type, $img)) {
+					if (preg_match("#$type#i", $img)) {
 						$images[$i]->name 	= $img;
 						$images[$i]->folder	= $folder;
 						++$i;

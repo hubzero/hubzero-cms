@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: article.php 11646 2009-03-01 19:34:56Z ian $
+ * @version		$Id: article.php 13415 2009-11-03 15:53:25Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -313,6 +313,20 @@ class ContentModelArticle extends JModel
 
 		$article->title = trim( $article->title );
 
+		// get state and created_by from existing article
+		$originalState = 0;
+		if (!$isNew)
+		{
+			$query = 'SELECT state, created_by' .
+			' FROM #__content' .
+			' WHERE id = '.(int) $article->id;
+			$this->_db->setQuery($query);
+			$originalArticle = $this->_db->loadObject();
+			$originalState = $originalArticle->state;
+			// force the created_by to the existing value
+			$article->created_by = $originalArticle->created_by;
+		}
+
 		// Publishing state hardening for Authors
 		if (!$user->authorize('com_content', 'publish', 'content', 'all'))
 		{
@@ -324,18 +338,23 @@ class ContentModelArticle extends JModel
 			else
 			{
 				// For existing items keep existing state - author is not allowed to change status
-				$query = 'SELECT state' .
-						' FROM #__content' .
-						' WHERE id = '.(int) $article->id;
 
-				$this->_db->setQuery($query);
-				$state = $this->_db->loadResult();
+				$state = $originalState;
 
 				if ($state) {
 					$article->state = 1;
 				}
 				else {
 					$article->state = 0;
+				}
+
+				// if current user is author, check that the current user is really the author
+				if (!$user->authorize('com_content', 'edit', 'content', 'all'))
+				{
+					if ($originalArticle->created_by != $user->id)
+					{
+						JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+					}
 				}
 			}
 		}
@@ -364,7 +383,7 @@ class ContentModelArticle extends JModel
 		if ( (!is_array($filterGroups) && (int) $filterGroups > 0) ) { 
 			$filterGroups = array($filterGroups);
 		}
-		
+
 		if (is_array($filterGroups) && in_array( $gid, $filterGroups ))
 		{
 			$filterType		= $config->get( 'filter_type' );

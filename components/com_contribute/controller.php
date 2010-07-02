@@ -92,7 +92,7 @@ class ContributeController extends JObject
 		if ($juser->get('guest')) {
 			$this->_task = ($this->_task) ? 'login' : '';
 		}
-		
+
 		// Push some styles to the template
 		$this->_getStyles();
 		
@@ -128,6 +128,7 @@ class ContributeController extends JObject
 			case 'delete':  $this->delete(); break;
 			case 'cancel':  $this->delete(); break;
 			case 'discard': $this->delete(); break;
+			case 'retract': $this->retract(); break;
 			
 			case 'start':   $this->steps();  break;
 			case 'login':   $this->login();  break;
@@ -320,6 +321,13 @@ class ContributeController extends JObject
 	
 	protected function step_compose()
 	{
+		$xhub = XFactory::getHub();
+
+		$type = JRequest::getVar( 'type', '' );
+
+		if ($type == '7')
+			$xhub->redirect(JRoute::_('index.php?option=com_contribtool&task=create'));
+
 		$step = $this->step;
 		$next_step = $step+1;
 		
@@ -712,11 +720,13 @@ class ContributeController extends JObject
 		}
 
 		// Strip any scripting there may be
-		$row->fulltext   = $this->_txtClean($row->fulltext);
-		$row->fulltext   = $this->_txtAutoP($row->fulltext,1);
-		$row->footertext = $this->_txtClean($row->footertext);
-		$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltext, 500, 0);
-
+		if (trim($row->fulltext)) {
+			$row->fulltext   = $this->_txtClean($row->fulltext);
+			$row->fulltext   = $this->_txtAutoP($row->fulltext,1);
+			$row->footertext = $this->_txtClean($row->footertext);
+			$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltext, 500, 0);
+		}
+		
 		// Check content
 		if (!$row->check()) {
 			JError::raiseError( 500, $row->getError() );
@@ -1052,6 +1062,37 @@ class ContributeController extends JObject
 				$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			break;
 		}
+	}
+	
+	//-----------
+	
+	protected function retract() 
+	{
+		// Incoming
+		$id = JRequest::getInt( 'id', 0 );
+		
+		// Ensure we have an ID to work with
+		if (!$id) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			return;
+		}
+		
+		$database =& JFactory::getDBO();
+		
+		// Load the resource
+		$resource = new ResourcesResource( $database );
+		$resource->load( $id );
+		
+		// Check if it's in pending status
+		if ($resource->published == 3) {
+			// Set it back to "draft" status
+			$resource->published = 2;
+			// Save changes
+			$resource->store();
+		}
+		
+		// Redirect
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 	}
 	
 	//-----------
@@ -1928,7 +1969,8 @@ class ContributeController extends JObject
 		$helper->getCons();
 		
 		// Get a list of all existing contributors
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'members.class.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
 		
 		// Initiate a members object
 		$mp = new MembersProfile( $database );

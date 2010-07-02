@@ -190,10 +190,11 @@ class modFeaturedquestion
 
 	public function display() 
 	{
-		ximport('featurehistory');
+		//ximport('FeaturesHistory');
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'features.history.php' );
 		
 		$this->error = false;
-		if (!class_exists('FeatureHistory')) {
+		if (!class_exists('FeaturesHistory')) {
 			$this->error = true;
 			return false;
 		}
@@ -213,10 +214,13 @@ class modFeaturedquestion
 		
 		$row = null;
 		
-		$fh = new FeatureHistory( $database );
+		$fh = new FeaturesHistory( $database );
 
 		// Load some needed libraries
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'answers.class.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
 		
 		// Check the feature history for today's feature
 		$fh->loadActive($start, 'answers');

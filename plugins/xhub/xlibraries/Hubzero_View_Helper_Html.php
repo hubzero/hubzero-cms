@@ -136,16 +136,18 @@ class Hubzero_View_Helper_Html
 	
 	public function str_highlight($text, $needles)
 	{
-		$highlight = '<span class="highlight">\1</span>';
-	
-		$pattern = '#(?!<.*?)(%s)(?![^<>]*?>)#i';
-		$sl_pattern = '#<a\s(?:.*?)>(%s)</a>#i';
+		if (count($needles) > 0) {
+			$highlight = '<span class="highlight">\1</span>';
 
-		foreach ($needles as $needle) 
-		{
-			$needle = preg_quote($needle);
-			$regex = sprintf($pattern, $needle);
-			$text = preg_replace($regex, $highlight, $text);
+			$pattern = '#(?!<.*?)(%s)(?![^<>]*?>)#i';
+			$sl_pattern = '#<a\s(?:.*?)>(%s)</a>#i';
+
+			foreach ($needles as $needle) 
+			{
+				$needle = preg_quote($needle);
+				$regex = sprintf($pattern, $needle);
+				$text = preg_replace($regex, $highlight, $text);
+			}
 		}
 		return $text;
 	}

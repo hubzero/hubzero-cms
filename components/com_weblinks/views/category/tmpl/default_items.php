@@ -69,4 +69,5 @@
 </table>
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="viewcache" value="0" />
 </form>

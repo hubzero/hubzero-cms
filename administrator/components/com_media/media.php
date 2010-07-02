@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: media.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: media.php 12696 2009-09-12 02:08:54Z ian $
  * @package		Joomla
  * @subpackage	Media
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -31,7 +31,7 @@ $view = JRequest::getCmd('view',null);
 $popup_upload = JRequest::getCmd('pop_up',null);
 $path = "file_path";
 if(substr(strtolower($view),0,6) == "images" || $popup_upload == 1) $path = "image_path";
-define('COM_MEDIA_BASE',    JPATH_ROOT.DS.$params->get($path, 'images/stories'));
+define('COM_MEDIA_BASE',    JPath::clean(JPATH_ROOT.DS.$params->get($path, 'images'.DS.'stories')));
 define('COM_MEDIA_BASEURL', JURI::root().$params->get($path, 'images/stories'));
 
 // Require the base controller

@@ -137,13 +137,18 @@ class ResourcesTags extends Tags
 	
 	//-----------
 	
-	public function get_objects_on_tag( $tag='', $id=0, $type=0, $sortby='title', $tag2='' ) 
+	public function get_objects_on_tag( $tag='', $id=0, $type=0, $sortby='title', $tag2='', $filterby=array() ) 
 	{
 		$juser =& JFactory::getUser();
 		$now  = date( 'Y-m-d H:i:s', time() );
 		
 		if ($tag || $tag2) {
-			$query  = "SELECT C.id, C.title, TA.tag, COUNT(DISTINCT TA.tag) AS uniques ";
+			$query  = "SELECT C.id, TA.tag, COUNT(DISTINCT TA.tag) AS uniques, ";
+			if ($type == 7) {
+				$query.= "TV.title ";
+			} else {
+				$query.= "C.title ";
+			}
 			switch ($sortby) 
 			{
 				case 'users':
@@ -154,13 +159,27 @@ class ResourcesTags extends Tags
 				break;
 			}
 			$query .= "FROM #__resources AS C ";
-			//$query .= "LEFT JOIN #__resource_stats AS s ON s.resid=C.id AND s.period=12 ";
 			if ($id) {
 				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
 			}
+			if ($type == 7) {
+				//$query .= " JOIN #__tool AS TL ON C.alias=TL.toolname JOIN #__tool_version as TV on TV.toolid=TL.id AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolid=TL.id AND TV.state=1 GROUP BY TV.toolid) ";
+				if (!empty($filterby)) {
+					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
+				}
+				$query .= ", #__tool_version as TV ";
+			}
+			/*if ($id) {
+				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
+			}*/
 			$query .= ", $this->_obj_tbl AS RTA INNER JOIN #__tags AS TA ON (RTA.tagid = TA.id) ";
 		} else {
-			$query  = "SELECT C.id, C.title ";
+			$query  = "SELECT C.id,  ";
+			if ($type == 7) {
+				$query.= "TV.title ";
+			} else {
+				$query.= "C.title ";
+			}
 			switch ($sortby) 
 			{
 				case 'users':
@@ -171,14 +190,39 @@ class ResourcesTags extends Tags
 				break;
 			}
 			$query .= "FROM #__resources AS C ";
-			//$query .= "LEFT JOIN #__resource_stats AS s ON s.resid=C.id AND s.period=12 ";
 			if ($id) {
 				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
 			}
+			if ($type == 7) {
+				if (!empty($filterby)) {
+					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
+				}
+				$query .= ", #__tool_version as TV ";
+			}
 		}
+		
 		$query .= "WHERE C.published=1 AND C.standalone=1 ";
 		if ($type) {
 			$query .= "AND C.type=".$type." ";
+		}
+		if ($type == 7) {
+			$query .= " AND TV.toolname=C.alias AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolname=C.alias AND TV.state=1 GROUP BY TV.toolid) ";
+		}
+		if (!empty($filterby) && $type == 7) {
+			$fquery = " AND ((";
+			for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
+			{
+				$fquery .= " TTA.".$filterby[$i]." = '1'";
+				$fquery .= ($i + 1) == $n ? "" : " OR ";
+			}
+			$fquery .= ") OR (";
+			for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
+			{
+				$fquery .= " TTA.".$filterby[$i]." IS NULL";
+				$fquery .= ($i + 1) == $n ? "" : " OR ";
+			}
+			$fquery .= "))";
+			$query .= $fquery;
 		}
 		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '".$now."') ";
 		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '".$now."') AND ";
@@ -217,17 +261,74 @@ class ResourcesTags extends Tags
 			break;
 		}
 		$query .= " ORDER BY ".$sort.", publish_up";
-		//echo $query;
+		//echo '<!-- '.$query.' -->';
 		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
+		$rows = $this->_db->loadObjectList();
+		
+		/*if ($rows) {
+			if (!empty($filterby) && $type == 7) {
+				$results = array();
+				foreach ($rows as $key => $row)
+				{
+					$inc = false;
+					for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
+					{
+						if (isset($row->$filterby[$i]) && $row->$filterby[$i] == 1) {
+							$inc = true;
+						}
+					}
+					if ($inc) {
+						$results[] = $row;
+					}
+				}
+				$rows = $results;
+			}
+		}*/
+		
+		return $rows;
 	}
 	
 	//-----------
 	
-	public function checkTagUsage( $tag, $id ) 
+	public function checkTagUsage( $tag, $id=0, $alias='' ) 
 	{
-		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t WHERE ta.tagid=t.id AND t.tag='".$tag."' AND ta.tbl='resources' AND ta.objectid=".$id );
+		if (!$id && !$alias) {
+			return false;
+		}
+		if ($id) {
+			$query = "SELECT COUNT(*) FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t WHERE ta.tagid=t.id AND t.tag='".$tag."' AND ta.tbl='resources' AND ta.objectid=".$id;
+		}
+		if (!$id && $alias) {
+			$query = "SELECT COUNT(*) 
+						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__resources AS r 
+						WHERE ta.tagid=t.id 
+						AND t.tag='".$tag."' 
+						AND ta.tbl='resources' 
+						AND ta.objectid=r.id 
+						AND r.alias='".$alias."'";
+		}
+		
+		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
+	}
+	
+	//-----------
+	
+	public function getTagUsage( $tag, $rtrn='id' ) 
+	{
+		if (!$tag) {
+			return array();
+		}
+
+		$query = "SELECT r.$rtrn 
+					FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__resources AS r 
+					WHERE ta.tagid=t.id 
+					AND t.tag='".$tag."' 
+					AND ta.tbl='resources' 
+					AND ta.objectid=r.id";
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadResultArray();
 	}
 }
 ?>

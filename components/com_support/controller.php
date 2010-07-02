@@ -25,62 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class SupportController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-
-	//-----------
-	
+class SupportController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		// Get the component parameters
-		$this->config = new SupportConfig( $this->_option );
-
-		$this->database = JFactory::getDBO();
-
 		$this->_task = JRequest::getVar( 'task', '', 'post' );
 		if (!$this->_task) {
 			$this->_task = JRequest::getVar( 'task', '', 'get' );
@@ -97,6 +47,7 @@ class SupportController extends JObject
 			case 'feed':       $this->feed();       break;
 			case 'delete':     $this->delete();     break;
 			case 'index':      $this->index();      break;
+			case 'stats':      $this->stats();      break;
 			
 			case 'reportabuse': $this->reportabuse(); break;
 			case 'savereport':  $this->savereport();  break;
@@ -104,49 +55,10 @@ class SupportController extends JObject
 			default: $this->index(); break;
 		}
 	}
-
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
-		}
-	}
-
-	//-----------
-
-	private function _getStyles($option='') 
-	{
-		ximport('xdocument');
-		if ($option) {
-			XDocument::addComponentStylesheet('com_'.$option);
-		} else {
-			XDocument::addComponentStylesheet($this->_option);
-		}
-	}
 	
 	//-----------
 	
-	private function _getScripts($option='',$name='')
-	{
-		$document =& JFactory::getDocument();
-		if ($option) {
-			$name = ($name) ? $name : $option;
-			if (is_file(JPATH_ROOT.DS.'components'.DS.'com_'.$option.DS.$name.'.js')) {
-				$document->addScript('components'.DS.'com_'.$option.DS.$name.'.js');
-			}
-		} else {
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-				$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-			}
-		}
-	}
-	
-	//-----------
-	
-	private function _buildPathway($ticket=null) 
+	protected function _buildPathway($ticket=null) 
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -169,37 +81,164 @@ class SupportController extends JObject
 		if (is_object($ticket) && $ticket->id) {
 			$pathway->addItem(
 				'#'.$ticket->id,
-				'index.php?option='.$this->_option.a.'task=ticket'.a.'id='.$ticket->id
+				'index.php?option='.$this->_option.'&task=ticket&id='.$ticket->id
 			);
 		}
 	}
 	
 	//-----------
 	
-	private function _buildTitle($ticket=null) 
+	protected function _buildTitle($ticket=null) 
 	{
-		$title = JText::_(strtoupper($this->_name));
+		$this->_title = JText::_(strtoupper($this->_name));
 		if ($this->_task) {
-			$title .= ': '.JText::_(strtoupper($this->_task));
+			$this->_title .= ': '.JText::_(strtoupper($this->_task));
 		}
 		if (is_object($ticket) && $ticket->id) {
-			$title .= ' #'.$ticket->id;
+			$this->_title .= ' #'.$ticket->id;
 		}
 		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
+		$document->setTitle( $this->_title );
 	}
 	
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
 	
+	protected function stats() 
+	{
+		// Check authorization
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return $this->login();
+		}
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'stats') );
+		$view->option = $this->_option;
+		$view->title = JText::_(strtoupper($this->_name));
+		
+		$view->authorized = $this->authorize();
+		if ($view->authorized != 'admin') {
+			$this->_return = JRoute::_('index.php?option='.$this->_option.'&task=tickets');
+		}
+		
+		// Set the page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		$type = JRequest::getVar('type', 'submitted');
+		$view->type = ($type == 'automatic') ? 1 : 0;
+		
+		$view->group = JRequest::getVar('group', '');
+		
+		// Set up some dates
+		$jconfig =& JFactory::getConfig();
+		$this->offset = $jconfig->getValue('config.offset');
+		
+		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
+		$month = strftime("%m", time()+($this->offset*60*60));
+		$day   = strftime("%d", time()+($this->offset*60*60));
+		if ($day<="9"&ereg("(^[1-9]{1})",$day)) {
+			$day = "0$day";
+		}
+		if ($month<="9"&ereg("(^[1-9]{1})",$month)) {
+			$month = "0$month";
+		}
+		
+		$startday = 0;
+		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
+		if ($numday == -1) {
+			$numday = 6;
+		} 
+		$week_start = mktime(0, 0, 0, $month, ($day - $numday), $year );
+		$week = strftime("%d", $week_start );
+		
+		$view->year = $year;
+		$view->opened = array();
+		$view->closed = array();
+		
+		$st = new SupportTicket( $this->database );
+		
+		// Get opened ticket information
+		$view->opened['year'] = $st->getCountOfTicketsOpened($view->type, $year, '01', '01', $view->group);
+		
+		$view->opened['month'] = $st->getCountOfTicketsOpened($view->type, $year, $month, '01', $view->group);
+		
+		$view->opened['week'] = $st->getCountOfTicketsOpened($view->type, $year, $month, $week, $view->group);
+		
+		// Currently open tickets
+		$view->opened['open'] = $st->getCountOfOpenTickets($view->type, false, $view->group);
+		
+		// Currently unassigned tickets
+		$view->opened['unassigned'] = $st->getCountOfOpenTickets($view->type, true, $view->group);
+		
+		// Get closed ticket information
+		$view->closed['year'] = $st->getCountOfTicketsClosed($view->type, $year, '01', '01', null, $view->group);
+		
+		$view->closed['month'] = $st->getCountOfTicketsClosed($view->type, $year, $month, '01', null, $view->group);
+		
+		$view->closed['week'] = $st->getCountOfTicketsClosed($view->type, $year, $month, $week, null, $view->group);
+		
+		// Users
+		$query = "SELECT a.username, a.name, a.id"
+			. "\n FROM #__users AS a"
+			. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
+			. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = aro.id"	// map aro to group
+			. "\n INNER JOIN #__core_acl_aro_groups AS g ON g.id = gm.group_id"
+			. "\n WHERE a.block = '0' AND g.id=25"
+			. "\n ORDER BY a.name";
+		$this->database->setQuery( $query );
+		$view->users = $this->database->loadObjectList();
+		if ($view->users) {
+			foreach ($view->users as $user) 
+			{
+				$user->closed = array();
+				
+				// Get closed ticket information
+				$user->closed['year'] = $st->getCountOfTicketsClosed($view->type, $year, '01', '01', $user->username, $view->group);
+
+				$user->closed['month'] = $st->getCountOfTicketsClosed($view->type, $year, $month, '01', $user->username, $view->group);
+
+				$user->closed['week'] = $st->getCountOfTicketsClosed($view->type, $year, $month, $week, $user->username, $view->group);
+			}
+		}
+		
+		// Get avgerage lifetime
+		$view->lifetime = $st->getAverageLifeOfTicket($view->type, $year, $view->group);
+		
+		// Tickets over time
+		$view->closedmonths = array();
+		for ($i = 1; $i <= 12; $i++) 
+		{
+			$view->closedmonths[$i] = $st->getCountOfTicketsClosedInMonth($view->type, $year, sprintf( "%02d",$i), $view->group);
+		}
+		
+		$view->openedmonths = array();
+		for ($i = 1; $i <= 12; $i++) 
+		{
+			$view->openedmonths[$i] = $st->getCountOfTicketsOpenedInMonth($view->type, $year, sprintf( "%02d",$i), $view->group);
+		}
+		
+		// Output HTML
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
+	
 	protected function index() 
 	{
 		ximport('xmodule');
 		
 		// Instantiate a new view
-		jimport('joomla.application.component.view');
-		
 		$view = new JView( array('name'=>'index') );
 		$view->title = JText::_(strtoupper($this->_name));
 		
@@ -211,7 +250,7 @@ class SupportController extends JObject
 		
 		// Push some styles to the template
 		$this->_getStyles();
-		$this->_getStyles('answers');
+		$this->_getStyles('com_answers');
 		
 		// Output HTML
 		if ($this->getError()) {
@@ -225,8 +264,6 @@ class SupportController extends JObject
 	protected function login()
 	{
 		// Instantiate a new view
-		jimport('joomla.application.component.view');
-
 		$view = new JView( array('name'=>'login') );
 		$view->title = ucfirst($this->_name).': '.ucfirst($this->_task);
 		
@@ -242,15 +279,13 @@ class SupportController extends JObject
 	protected function tickets() 
 	{
 		// Instantiate a new view
-		jimport('joomla.application.component.view');
-		
 		$view = new JView( array('name'=>'tickets') );
 		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
 		$view->option = $this->_option;
 		$view->database = $this->database;
 
 		// Incoming
-		$view->filters = $this->getFilters();
+		$view->filters = $this->_getFilters();
 
 		// Check authorization
 		$juser =& JFactory::getUser();
@@ -314,15 +349,13 @@ class SupportController extends JObject
 		}
 		
 		// Instantiate a new view
-		jimport('joomla.application.component.view');
-		
 		$view = new JView( array('name'=>'ticket') );
 		$view->title = JText::_(strtoupper($this->_name)).': '.JText::_(strtoupper($this->_task));
 		$view->option = $this->_option;
 		$view->database = $this->database;
 		
 		// Incoming
-		$view->filters = $this->getFilters();
+		$view->filters = $this->_getFilters();
 
 		// Initiate database class and load info
 		$view->row = new SupportTicket( $this->database );
@@ -390,11 +423,19 @@ class SupportController extends JObject
 		$view->comments = $sc->getComments( $view->authorized, $view->row->id );
 
 		// Parse comment text for attachment tags
-		$xhub =& XFactory::getHub();
+		$juri =& JURI::getInstance();
+		
+		$webpath = str_replace('//','/',$juri->base().$this->config->get('webpath').DS.$id);
+		if (isset( $_SERVER['HTTPS'] )) {
+			$webpath = str_replace('http:','https:',$webpath);
+		}
+		if (!strstr( $webpath, '://' )) {
+			$webpath = str_replace(':/','://',$webpath);
+		}
 		
 		$attach = new SupportAttachment( $this->database );
-		$attach->webpath = $xhub->getCfg('hubLongURL').$this->config->parameters['webpath'].DS.$id;
-		$attach->uppath  = JPATH_ROOT.$this->config->parameters['webpath'].DS.$id;
+		$attach->webpath = $webpath;
+		$attach->uppath  = JPATH_ROOT.$this->config->get('webpath').DS.$id;
 		$attach->output  = 'web';
 		for ($i=0; $i < count($view->comments); $i++) 
 		{
@@ -409,14 +450,16 @@ class SupportController extends JObject
 			$comment->comment = $attach->parse($comment->comment);
 		}
 		
+		$view->row->report = $attach->parse($view->row->report);
+		
 		// Get severities
-		$view->lists['severities'] = $this->config->getSeverities();
+		$view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
 		
 		// Populate the list of assignees based on if the ticket belongs to a group or not
 		if (trim($view->row->group)) {
-			$view->lists['owner'] = $this->_userSelectGroup( 'owner', $view->row->owner, 1, '', trim($view->row->group) );
+			$view->lists['owner'] = $this->_userSelectGroup( 'ticket[owner]', $view->row->owner, 1, '', trim($view->row->group) );
 		} else {
-			$view->lists['owner'] = $this->_userSelect( 'owner', $view->row->owner, 1 );
+			$view->lists['owner'] = $this->_userSelect( 'ticket[owner]', $view->row->owner, 1 );
 		}
 		
 		// Set the pathway
@@ -455,7 +498,7 @@ class SupportController extends JObject
 		$doc->link = JRoute::_('index.php?option='.$this->_option.'&task=tickets');
 
 		// Incoming
-		$filters = $this->getFilters();
+		$filters = $this->_getFilters();
 
 		// Create a Ticket object
 		$obj = new SupportTicket( $this->database );
@@ -509,13 +552,22 @@ class SupportController extends JObject
 	{
 	    $juser =& JFactory::getUser();
 		
-		// make sure we are still logged in
+		// Make sure we are still logged in
 		if ($juser->get('guest')) {
 			return $this->login();
 		}
 		
 		// Incoming
-		$id = JRequest::getInt( 'id', 0 );
+		$incoming = JRequest::getVar('ticket', array(), 'post');
+		
+		// Trim all posted items
+		$incoming = array_map('trim',$incoming);
+	
+		$id = JRequest::getInt('id', 0, 'post');
+		if (!$id) {
+			JError::raiseError( 500, JText::_('No Ticket ID provided.') );
+			return;
+		}
 	
 		// Instantiate the tagging class - we'll need this a few times
 		$st = new SupportTags( $this->database );
@@ -529,12 +581,9 @@ class SupportController extends JObject
 			$oldtags = $st->get_tag_string( $id, 0, 0, NULL, 0, 1 );
 		}
 	
-		// Trim and addslashes all posted items
-		$_POST = array_map('trim',$_POST);
-	
 		// Initiate class and bind posted items to database fields
 		$row = new SupportTicket( $this->database );
-		if (!$row->bind( $_POST )) {
+		if (!$row->bind( $incoming )) {
 			echo SupportHtml::alert( $row->getError() );
 			exit();
 		}
@@ -579,7 +628,7 @@ class SupportController extends JObject
 		// Save the tags
 		$tags = trim(JRequest::getVar( 'tags', '', 'post' ));
 		if ($tags) {
-			$st->tag_object( $juser->get('id'), $row->id, $tags, 0, false );
+			$st->tag_object( $juser->get('id'), $row->id, $tags, 0, true );
 		}
 
 		// We must have a ticket ID before we can do anything else
@@ -589,6 +638,13 @@ class SupportController extends JObject
 			if ($comment) {
 				// If a comment was posted to a closed ticket, re-open it.
 				if ($old->status == 2 && $row->status == 2) {
+					$row->status = 0;
+					$row->resolved = '';
+					$row->store();
+				}
+				// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
+				$ccreated_by = JRequest::getVar( 'username', '' );
+				if ($row->status == 1 && $ccreated_by == $row->login) {
 					$row->status = 0;
 					$row->resolved = '';
 					$row->store();
@@ -629,13 +685,13 @@ class SupportController extends JObject
 			}
 
 			// Were there any changes?
-			$log = implode(n,$changelog);
+			$log = implode("\n",$changelog);
 			if ($log != '') {
-				$log = '<ul class="changelog">'.n.$log.'</ul>'.n;
+				$log = '<ul class="changelog">'."\n".$log.'</ul>'."\n";
 			}
 			
 			$attachment = $this->upload( $row->id );
-			$comment .= ($attachment) ? n.n.$attachment : '';
+			$comment .= ($attachment) ? "\n\n".$attachment : '';
 			
 			// Create a new support comment object and populate it
 			$rowc = new SupportComment( $this->database );
@@ -660,14 +716,14 @@ class SupportController extends JObject
 			
 				// Only do the following if a comment was posted
 				// otherwise, we're only recording a changelog
-				if ($comment) {
+				if ($comment || $row->owner != $old->owner) {
 					$xhub =& XFactory::getHub();
 					$jconfig =& JFactory::getConfig();
 					
 					// Parse comments for attachments
 					$attach = new SupportAttachment( $this->database );
-					$attach->webpath = $xhub->getCfg('hubLongURL').$this->config->parameters['webpath'].DS.$id;
-					$attach->uppath  = JPATH_ROOT.$this->config->parameters['webpath'].DS.$id;
+					$attach->webpath = $xhub->getCfg('hubLongURL').$this->config->get('webpath').DS.$id;
+					$attach->uppath  = JPATH_ROOT.$this->config->get('webpath').DS.$id;
 					$attach->output  = 'email';
 
 					// Build e-mail components
@@ -679,23 +735,30 @@ class SupportController extends JObject
 					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
 					$from['email'] = $jconfig->getValue('config.mailfrom');
 		
-					$message  = '----------------------------'.r.n;
-					$message .= strtoupper(JText::_('TICKET')).': '.$row->id.r.n;
-					$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary).r.n;
-					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created.r.n;
+					$message  = '----------------------------'."\r\n";
+					$message .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
+					$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
+					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
 					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name;
-					$message .= ($row->login) ? ' ('.$row->login.')'.r.n : r.n;
-					$message .= '----------------------------'.r.n.r.n;
-					$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by.r.n;
-					$message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created.r.n.r.n;
-					$message .= $attach->parse($comment).r.n.r.n;
+					$message .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
+					$message .= '----------------------------'."\r\n\r\n";
+					$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
+					$message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";
+					if ($row->owner != $old->owner) {
+						if ($old->owner == '') {
+							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'."\r\n\r\n";
+						} else {
+							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_CHANGED_FROM').' "'.$old->owner.'" to "'.$row->owner.'"'."\r\n\r\n";
+						}
+					}
+					$message .= $attach->parse($comment)."\r\n\r\n";
 
 					$juri =& JURI::getInstance();
-					$sef = JRoute::_('index.php?option='.$this->_option.a.'task=ticket'.a.'id='. $row->id);
+					$sef = JRoute::_('index.php?option='.$this->_option.'&task=ticket&id='. $row->id);
 					if (substr($sef,0,1) == '/') {
 						$sef = substr($sef,1,strlen($sef));
 					}
-					$message .= $juri->base().$sef.r.n;
+					$message .= $juri->base().$sef."\r\n";
 
 					// An array for all the addresses to be e-mailed
 					$emails = array();
@@ -710,23 +773,29 @@ class SupportController extends JObject
 					if ($email_submitter == 1) {
 						// Is the comment private? If so, we do NOT send e-mail to the 
 						// submitter regardless of the above setting
-						$zuser =& JUser::getInstance($row->login);
-						if ($rowc->access != 1 && is_object($zuser)) {
-							$type = 'support_reply_submitted';
-							if ($row->status == 1) {
-								$element = $row->id;
-								$description = 'index.php?option='.$this->_option.a.'task=ticket'.a.'id='.$row->id;
-							} else {
-								$element = null;
-								$description = '';
-								if ($row->status == 2) {
-									$type = 'support_close_submitted';
+						if ($rowc->access != 1) {
+							$zuser =& JUser::getInstance($row->login);
+							// Make sure there even IS an e-mail and it's valid
+							if (is_object($zuser) && $zuser->get('id')) {
+								$type = 'support_reply_submitted';
+								if ($row->status == 1) {
+									$element = $row->id;
+									$description = 'index.php?option='.$this->_option.'&task=ticket&id='.$row->id;
+								} else {
+									$element = null;
+									$description = '';
+									if ($row->status == 2) {
+										$type = 'support_close_submitted';
+									}
 								}
-							}
-							
-							if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $message, $from, array($zuser->get('id')), $this->_option ))) {
-								$this->setError( JText::_('Failed to message ticket submitter.') );
-							} else {
+
+								if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $message, $from, array($zuser->get('id')), $this->_option ))) {
+									$this->setError( JText::_('Failed to message ticket submitter.') );
+								} else {
+									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
+								}
+							} else if ($row->email && SupportUtilities::checkValidEmail($row->email)) {
+								$emails[] = $row->email;
 								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
 							}
 						}
@@ -769,7 +838,7 @@ class SupportController extends JObject
 									continue;
 								}
 							// Make sure it's a valid e-mail address
-							} else if (SupportUtils::check_validEmail($acc)) {
+							} else if (SupportUtilities::checkValidEmail($acc)) {
 								$emails[] = $acc;
 								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$acc.'</li>';
 							}
@@ -779,13 +848,13 @@ class SupportController extends JObject
 					// Send an e-mail to each address
 					foreach ($emails as $email)
 					{
-						SupportUtils::send_email($email, $subject, $message, $from);
+						SupportUtilities::sendEmail($email, $subject, $message, $from);
 					}
 					
 					// Were there any changes?
-					$elog = implode(n,$emaillog);
+					$elog = implode("\n",$emaillog);
 					if ($elog != '') {
-						$rowc->changelog .= '<ul class="emaillog">'.n.$elog.'</ul>'.n;
+						$rowc->changelog .= '<ul class="emaillog">'."\n".$elog.'</ul>'."\n";
 						
 						// Save the data
 						if (!$rowc->store()) {
@@ -810,7 +879,7 @@ class SupportController extends JObject
 	
 		// Check for an ID
 		if (!$id) {
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=tickets');
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=tickets');
 			return;
 		}
 		
@@ -827,7 +896,7 @@ class SupportController extends JObject
 		$ticket->delete( $id );
 		
 		// Output messsage and redirect
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=tickets');
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=tickets');
 	}
 
 	//-----------
@@ -859,12 +928,12 @@ class SupportController extends JObject
 		*/
 		
 		// trim and addslashes all posted items
-		$_POST = array_map('trim',$_POST);
-		$_POST = array_map('addslashes',$_POST);
+		$incoming = array_map('trim',$_POST);
+		$incoming = array_map('addslashes',$incoming);
 	
 		// initiate class and bind posted items to database fields
 		$row = new SupportTicket( $this->database );
-		if (!$row->bind( $_POST )) {
+		if (!$row->bind( $incoming )) {
 			return $row->getError();
 		}
 		
@@ -1028,8 +1097,6 @@ class SupportController extends JObject
 		}
 		
 		// Instantiate a new view
-		jimport('joomla.application.component.view');
-
 		$view = new JView( array('name'=>'reportabuse') );
 		$view->title = ucfirst($this->_name).': '.ucfirst($this->_task);
 		$view->option = $this->_option;
@@ -1104,8 +1171,6 @@ class SupportController extends JObject
 		$email = 0; // turn off
 		
 		// Instantiate a new view
-		jimport('joomla.application.component.view');
-
 		$view = new JView( array('name'=>'thanks') );
 		$view->title = ucfirst($this->_name).': '.ucfirst($this->_task);
 		$view->option = $this->_option;
@@ -1116,11 +1181,11 @@ class SupportController extends JObject
 		$view->returnlink = JRequest::getVar( 'link', '' );
 			
 		// Trim and addslashes all posted items
-		$_POST = array_map('trim',$_POST);
+		$incoming = array_map('trim',$_POST);
 	
 		// Initiate class and bind posted items to database fields
 		$row = new ReportAbuse( $this->database );
-		if (!$row->bind( $_POST )) {
+		if (!$row->bind( $incoming )) {
 			echo SupportHtml::alert( $row->getError() );
 			exit();
 		}
@@ -1165,8 +1230,8 @@ class SupportController extends JObject
 			
 			foreach ($tos as $to) 
 			{
-				if (SupportUtils::check_validEmail($to)) {
-					if (!SupportUtils::send_email($from, $to, $subject, $message)) {
+				if (SupportUtilities::checkValidEmail($to)) {
+					if (!SupportUtilities::sendEmail($from, $to, $subject, $message)) {
 						$this->setError( JText::sprintf('ERROR_FAILED_TO_SEND_EMAIL',$to) );
 					}
 				}
@@ -1193,7 +1258,7 @@ class SupportController extends JObject
 	// General functions
 	//----------------------------------------------------------
 
-	private function getFilters()
+	private function _getFilters()
 	{
 		// Query filters defaults
 		$filters = array();
@@ -1393,7 +1458,7 @@ class SupportController extends JObject
 		$description = JRequest::getVar( 'description', '' );
 		
 		// Construct our file path
-		$path = JPATH_ROOT.$this->config->parameters['webpath'].DS.$listdir;
+		$path = JPATH_ROOT.$this->config->get('webpath').DS.$listdir;
 		
 		// Build the path if it doesn't exist
 		if (!is_dir( $path )) {
@@ -1452,7 +1517,7 @@ class SupportController extends JObject
 		}
 		
 		// Was a specific group set in the config?
-		$group = trim($this->config->parameters['group']);
+		$group = trim($this->config->get('group'));
 		if ($group or $toolgroup) {
 			ximport('xgroup');
 			ximport('xuserhelper');
@@ -1475,4 +1540,3 @@ class SupportController extends JObject
 		return false;
 	}
 }
-?>

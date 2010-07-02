@@ -56,7 +56,7 @@ class modQuotes
 	
 	public function display() 
 	{
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_feedback'.DS.'selectedquotes.class.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_feedback'.DS.'tables'.DS.'selectedquotes.php' );
 		
 		$database =& JFactory::getDBO();
 		

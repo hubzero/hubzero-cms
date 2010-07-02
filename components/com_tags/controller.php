@@ -192,8 +192,10 @@ class TagsController extends JObject
 		
 		$addtag = trim(JRequest::getVar('addtag', ''));
 		
+		//$search = trim(JRequest::getVar('tags', ''));
+		
 		// Ensure we were passed a tag
-		if (!$tagstring && !$addtag) {
+		if (!$tagstring && !$addtag && !$search) {
 			JError::raiseError( 404, JText::_('COM_TAGS_NO_TAG') );
 			return;
 		}
@@ -205,6 +207,19 @@ class TagsController extends JObject
 		} else {
 			$tgs = array();
 		}
+		/*if ($search) {
+			// Break the string into individual tags
+			$stgs = explode(',', $search);
+			$stgs = array_map('trim',$stgs);
+		} else {
+			$stgs = array();
+		}
+		foreach ($stgs as $stg) 
+		{
+			if (!in_array($stg,$tgs)) {
+				$tgs[] = $stg;
+			}
+		}*/
 		
 		// See if we're adding any tags to the search list
 		if ($addtag && !in_array($addtag,$tgs)) {
@@ -374,7 +389,12 @@ class TagsController extends JObject
 		$this->_getStyles();
 		
 		// Output HTML
-		$view = new JView( array('name'=>'tag') );
+		$format = JRequest::getVar('format', '');
+		if ($format == 'xml') {
+			$view = new JView( array('name'=>'tag', 'layout'=>'xml') );
+		} else {
+			$view = new JView( array('name'=>'tag') );
+		}
 		$view->title = $title;
 		$view->authorized = $authorized;
 		$view->tags = $tags;
@@ -388,6 +408,7 @@ class TagsController extends JObject
 		$view->sort = $sort;
 		$view->total = $total;
 		$view->tagstring = $tagstring;
+		$view->search = implode(', ',$tgs);
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -591,7 +612,12 @@ class TagsController extends JObject
 	protected function browse()
 	{
 		// Instantiate a new view
-		$view = new JView( array('name'=>'browse') );
+		$format = JRequest::getVar('format', '');
+		if ($format == 'xml') {
+			$view = new JView( array('name'=>'browse', 'layout'=>'xml') );
+		} else {
+			$view = new JView( array('name'=>'browse') );
+		}
 		$view->option = $this->_option;
 		$view->title = JText::_(strtoupper($this->_option)) .': '. JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
 		
@@ -607,18 +633,25 @@ class TagsController extends JObject
 		$view->filters['search'] = urldecode(JRequest::getString('search'));
 		
 		$t = new TagsTag( $this->database );
+		
+		$order = JRequest::getVar('order', '');
+		if ($order == 'usage') {
+			$limit = JRequest::getInt('limit', $config->getValue('config.list_limit'));
+			
+			$view->rows = $t->getTopTags( $limit );
+		} else {
+			// Record count
+			$total = $t->getCount( $view->filters );
 
-		// Record count
-		$total = $t->getCount( $view->filters );
-		
-		$view->filters['limit']  = JRequest::getInt('limit', $config->getValue('config.list_limit'));
-		
-		// Get records
-		$view->rows = $t->getRecords( $view->filters );
-		
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination( $total, $view->filters['start'], $view->filters['limit'] );
+			$view->filters['limit']  = JRequest::getInt('limit', $config->getValue('config.list_limit'));
+
+			// Get records
+			$view->rows = $t->getRecords( $view->filters );
+
+			// Initiate paging
+			jimport('joomla.html.pagination');
+			$view->pageNav = new JPagination( $total, $view->filters['start'], $view->filters['limit'] );
+		}
 
 		// Set the pathway
 		$this->_buildPathway();

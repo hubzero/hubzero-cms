@@ -68,7 +68,7 @@ class ResourcesHelper extends JObject
 	// Contributors
 	//----------------------------------------------------------
 
-	function getUnlinkedContributors() 
+	function getUnlinkedContributors($incSubmitter=false) 
 	{
 		if (!isset($this->_contributors)) {
 			$this->getCons();
@@ -80,6 +80,9 @@ class ResourcesHelper extends JObject
 			$names = array();
 			foreach ($contributors as $contributor) 
 			{
+				if ($incSubmitter == false && $contributor->role == 'submitter') {
+					continue;
+				}
 				if ($contributor->lastname || $contributor->firstname) {
 					$name = stripslashes($contributor->firstname) .' ';
 					if ($contributor->middlename != NULL) {
@@ -323,7 +326,10 @@ class ResourcesHelper extends JObject
 			return false;
 		}
 		
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'citations.class.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'citation.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'association.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'author.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'secondary.php' );
 		$database =& JFactory::getDBO();
 		
 		$cc = new CitationsCitation( $database );
@@ -351,7 +357,10 @@ class ResourcesHelper extends JObject
 			return false;
 		}
 		
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'citations.class.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'citation.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'association.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'author.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'secondary.php' );
 		$database =& JFactory::getDBO();
 		
 		$cc = new CitationsCitation( $database );

@@ -138,6 +138,7 @@ if ($this->reviews) {
 					);
 					$view->option = $this->option;
 					$view->item = $review;
+					$view->rid = $this->resource->id;
 					$html .= $view->loadTemplate();
 					
 					$html .= "\t\t".'</p>'."\n";
@@ -148,12 +149,15 @@ if ($this->reviews) {
 				$html .= "\t\t\t".'<p>'.JText::_('PLG_RESOURCES_REVIEWS_NO_COMMENT').'</p>'."\n";
 			}
 			
-			if ((($abuse || $reply) && $review->comment) || $admin) {
+			//if ((($abuse || $reply) && $review->comment) || $admin) {
+			if (($abuse || $reply) || $admin) {
 				$html .= "\t\t\t".'<p class="comment-options">'."\n";
-				if ($abuse && $review->comment) {
+				//if ($abuse && $review->comment) {
+				if ($abuse) {
 					$html .= "\t\t\t\t".'<a class="abuse" href="'.JRoute::_('index.php?option=com_support&task=reportabuse&category=review&id='.$review->id.'&parent='.$this->resource->id).'">'.JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE').'</a> | '."\n";
 				}
-				if ($reply && $review->comment) {
+				//if ($reply && $review->comment) {
+				if ($reply) {
 					$html .= "\t\t\t\t".'<a class="';
 					if (!$juser->get('guest')) {
 						$html .= 'reply';
@@ -299,7 +303,7 @@ if ($this->reviews) {
 	}
 	$html .= "\t".'</ol>'."\n";
 } else {
-	$html .= "\t".'<p>'.JText::_('PLG_RESOURCES_REVIEWS_NO_REVIEWS_FOUND').'</p>'."\n";
+	$html = "\t".'<p>'.JText::_('PLG_RESOURCES_REVIEWS_NO_REVIEWS_FOUND').'</p>'."\n";
 }
 echo $html;
 if ($this->getError()) { ?>

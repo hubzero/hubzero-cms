@@ -200,7 +200,9 @@ if ($this->groups) {
 			</table>
 <?php
 $pn = $this->pageNav->getListFooter();
-$pn = str_replace('/?','/browse/?',$pn);
+if (!strstr($pn,'/browse')) {
+	$pn = str_replace('/?','/browse/?',$pn);
+}
 echo $pn;
 ?>
 		</div><!-- / .subject -->

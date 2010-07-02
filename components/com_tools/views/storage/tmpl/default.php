@@ -81,7 +81,7 @@ echo $this->monitor;
 				<h3>Manual</h3>
 				<div class="filebrowser">
 					Browse your storage space
-					<iframe src="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&no_html=1'); ?>" name="imgManager" id="imgManager" width="98%" height="180" border="0" frameborder="0"></iframe>
+					<iframe src="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&no_html=1'); ?>" name="filer" id="filer" width="98%" height="180" border="0" frameborder="0"></iframe>
 				</div>
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="task" value="purge" />

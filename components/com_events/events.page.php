@@ -119,10 +119,12 @@ class EventsPage extends JTable
 		switch ($move) 
 		{
 			case 'orderup':
+			case 'orderuppage':
 				$sql = "SELECT * FROM $this->_tbl WHERE event_id=".$this->event_id." AND ordering < ".$this->ordering." ORDER BY ordering DESC LIMIT 1";
 				break;
 			
 			case 'orderdown':
+			case 'orderdownpage':
 				$sql = "SELECT * FROM $this->_tbl WHERE event_id=".$this->event_id." AND ordering > ".$this->ordering." ORDER BY ordering LIMIT 1";
 				break;
 		}

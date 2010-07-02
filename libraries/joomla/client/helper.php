@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: helper.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: helper.php 13341 2009-10-27 03:03:54Z ian $
  * @package		Joomla.Framework
  * @subpackage	Client
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -9,7 +9,7 @@
  * GNU General Public License or other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
-
+defined('JPATH_BASE') or die();
 /**
  * Client helper class
  *

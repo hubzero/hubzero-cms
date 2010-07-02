@@ -307,8 +307,9 @@ class WikiHtml
 				$aside .= WikiHtml::div( WikiHtml::hed(3,JText::_('WIKI_PAGE_TABLE_OF_CONTENTS')).$output['toc'], 'article-toc' );
 			}
 			$aside .= WikiHtml::div( WikiHtml::hed(3,JText::_('WIKI_PAGE_TAGS')).WikiHtml::tagcloud( $tags ), 'article-tags' );
-
-			$output['text'] .= '<p class="timestamp">'.JText::_('WIKI_PAGE_LAST_MODIFIED').' '.JHTML::_('date',$revision->created, '%d %b, %Y').'</p>';
+			
+			$first = $page->getRevision(1);
+			$output['text'] .= '<p class="timestamp">'.JText::_('WIKI_PAGE_CREATED').' '.JHTML::_('date',$first->created, '%d %b %Y').', '.JText::_('WIKI_PAGE_LAST_MODIFIED').' '.JHTML::_('date',$revision->created, '%d %b %Y').'</p>';
 
 			$c2  = WikiHtml::div( $aside, 'aside' );
 			$c2 .= WikiHtml::subject( $output['text'] );
@@ -349,7 +350,7 @@ class WikiHtml
 			return $html;
 		}
 		
-		$html .= '<form action="index.php" method="post" id="hubForm">'.n;
+		$html .= '<form action="/index.php" method="post" id="hubForm">'.n;
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('WIKI_DELETE_PAGE_EXPLANATION').'</p>'.n;
 		$html .= t.'</div>'.n;
@@ -393,7 +394,7 @@ class WikiHtml
 			return $html;
 		}
 		
-		$html .= '<form action="index.php" method="post" id="hubForm">'.n;
+		$html .= '<form action="/index.php" method="post" id="hubForm">'.n;
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('WIKI_PAGENAME_EXPLANATION').'</p>'.n;
 		$html .= t.'</div>'.n;
@@ -462,10 +463,10 @@ class WikiHtml
 			$html .= $preview->pagehtml;
 			$html .= t.t.'</div><!-- / .subject -->'.n;
 			$html .= t.'</div><!-- / .section -->'.n;
-			$html .= '</div>'.n;
+			$html .= '</div><div class="clear"></div>'.n;
 		}
 		
-		$html .= '<form action="index.php" method="post" id="hubForm">'.n;
+		$html .= '<form action="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope).'" method="post" id="hubForm">'.n;
 		if ($page->id) {
 			$lid = $page->id;
 		} else {
@@ -474,7 +475,8 @@ class WikiHtml
 		}
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>To change the page name (the portion used for URLs), go <a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=renamepage').'">here</a>.</p>'.n;
-		$html .= t.t.'<p>To include an image, use the <a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename=Help:WikiMacros').'">image macro</a>. For example: "The following diagram illustrates my point: [[Image(diagram.jpg)]]"</p>'.n;
+		$html .= t.t.'<p><a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename=Help:WikiMacros#image').'">[[Image(filename.jpg)]]</a> to include an image.</p>'.n;
+		$html .= t.t.'<p><a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename=Help:WikiMacros#file').'">[[File(filename.pdf)]]</a> to include a file.</p>'.n;
 		if ($sub) {
 			//$src = 'index.php?option='.$option.a.'no_html=1'.a.'active=wiki'.a.'task=media'.a.'listdir='. $lid;
 			//$src = JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=media'.a.'listdir='.$lid.a.'no_html=1');
@@ -502,7 +504,7 @@ class WikiHtml
 		$html .= t.t.t.'<ul id="wiki-toolbar" class="hidden"></ul>'.n;
 		$html .= t.t.t.'<textarea name="pagetext" id="pagetext" rows="40" cols="35">'. $revision->pagetext .'</textarea>'.n;
 		$html .= t.t.'</label>'.n;
-		$html .= t.t.'<p class="ta-right hint">See <a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename=Help:WikiFormatting').'">Help: Wiki Formatting</a> for help on editing content.</p>'.n;
+		$html .= t.t.'<p class="ta-right hint">See <a class="popup" href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename=Help:WikiFormatting').'">Help: Wiki Formatting</a> for help on editing content.</p>'.n;
 		$mode = $params->get( 'mode', 'wiki' );
 		if ($authorized) {
 			$cls = '';
@@ -853,7 +855,7 @@ class WikiHtml
 	{
 		$app =& JFactory::getApplication();
 		
-		$html  = '<form action="index.php" method="post" id="hubForm" class="full">'.n;
+		$html  = '<form action="'.JRoute::_('index.php?option='.$option.a.'scope='.$scope).'" method="post" id="hubForm" class="full">'.n;
 		$html .= t.'<fieldset>'.n;
 		$html .= WikiHtml::hed(3,'<a name="commentform"></a>'.JText::_('WIKI_ADD_COMMENT'));
 		$html .= t.t.'<fieldset>'.n;
@@ -1002,7 +1004,7 @@ class WikiHtml
 		$html .= t.'</tbody>'.n;
 		$html .= '</table>'.n;
 		
-		$f  = '<form action="index.php" method="post">'.n;
+		$f  = '<form action="/index.php" method="post">'.n;
 		$f .= WikiHtml::aside( '<p><input type="submit" value="'.JText::_('WIKI_HISTORY_COMPARE').'" /></p>' );
 		$f .= WikiHtml::subject( $html );
 		$f .= t.t.'<input type="hidden" name="pagename" value="'. $page->pagename .'" />'.n;
@@ -1140,10 +1142,10 @@ class WikiHtml
 	{
 
 		$html  = WikiHtml::attachTop( $option, $name );
-		$html .= '<form action="index.php" id="adminForm" method="post" enctype="multipart/form-data">'.n;
+		$html .= '<form action="/index.php" id="adminForm" method="post" enctype="multipart/form-data">'.n;
 		$html .= t.'<fieldset>'.n;
 		$html .= t.t.'<div id="themanager" class="manager">'.n;
-		$html .= t.t.t.'<iframe style="border:1px solid #eee;margin-top: 0;" src="index.php?option='. $option .a.'no_html=1'.a.'task=list'.a.'listdir='. $listdir .'" name="imgManager" id="imgManager" width="98%" height="180"></iframe>'.n;
+		$html .= t.t.t.'<iframe style="border:1px solid #eee;margin-top: 0;" src="/index.php?option='. $option .a.'no_html=1'.a.'task=list'.a.'listdir='. $listdir .'" name="imgManager" id="imgManager" width="98%" height="180"></iframe>'.n;
 		$html .= t.t.'</div>'.n;
 		$html .= t.'</fieldset>'.n;
 			

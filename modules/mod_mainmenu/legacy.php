@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: legacy.php 10856 2008-08-30 06:35:08Z willebil $
+* @version		$Id: legacy.php 12694 2009-09-11 21:03:02Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -47,8 +47,8 @@ function mosGetMenuLink($mitem, $level = 0, & $params, $open = null)
 			break;
 
 		case 'url' :
-			if (eregi('index.php\?', $mitem->link)) {
-				if (!eregi('Itemid=', $mitem->link)) {
+			if (preg_match('#index.php\?#i', $mitem->link)) {
+				if (!preg_match('#Itemid=#i', $mitem->link)) {
 					$mitem->link .= '&amp;Itemid='.$mitem->id;
 				}
 			}

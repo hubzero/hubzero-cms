@@ -1,0 +1,414 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+	
+	#stats-filter {
+		background-color: #FFFDEF;
+	}
+	#stats-filter label {
+		font-weight: bold;
+		margin-left: 2em;
+	}
+	#stats-filter #acgroup {
+		width: 200px;
+	}
+	
+	#tktlist tbody .reporter {
+		display: block;
+		line-height: 1.5em;
+	}
+	#tktlist tbody span.status {
+		font-weight: bold;
+	}
+	#tktlist tbody span.open {
+		color: #66AA00;
+	}
+	#tktlist tbody span.new {
+		color: #ff1177;
+	}
+	#tktlist tbody span.waiting {
+		color: #AA3300;
+	}
+	#tktlist tbody span.closed {
+		color: #aaaaaa;
+	}
+	#tktlist tbody span a {
+		color: #999;
+		border-bottom: 1px solid #999;
+	}
+	
+	#tktlist tbody tr.critical,
+	#tktlist tbody tr.critical:hover { background: #fed; color: #a22; }
+	#tktlist tbody tr.critical a { color: #a22; border-bottom: 1px solid #EFC5BE; }
+	#tktlist tbody tr.major,
+	#tktlist tbody tr.major:hover { background: #ffd; color: #880; }
+	#tktlist tbody tr.major a { color: #880; border-bottom: 1px solid #EAE7B1; }
+	#tktlist tbody tr.normal {  }
+	/*#tktlist tbody tr.normal a { color: #333; border-bottom: 1px dotted #333; }*/
+	#tktlist tbody tr.minor,
+	#tktlist tbody tr.minor:hover { background: #dff; color: #099; }
+	#tktlist tbody tr.minor a { color: #099; border-bottom: 1px solid #BFEBEB; }
+	#tktlist tbody tr.trivial,
+	#tktlist tbody tr.trivial:hover { background: #dde7ff; color: #469 }
+	#tktlist tbody tr.trivial a { color: #469; border-bottom: 1px solid #C4CDEB; }
+	/*#tktlist tbody tr.closed,
+	#tktlist tbody tr.closed:hover { background: #F7F7F7; color: #999 }
+	#tktlist tbody tr.closed a { color: #999; border-bottom: 1px solid #ccc; }
+	#tktlist tbody tr.closed a:hover,*/
+	#tktlist tbody tr.critical a:hover,
+	#tktlist tbody tr.major a:hover,
+	#tktlist tbody tr.normal a:hover,
+	#tktlist tbody tr.minor a:hover,
+	#tktlist tbody tr.trivial a:hover {
+		color: #00f;
+		}
+
+	#keyword-guide {
+		border: 5px solid #eee;
+		margin: 0;
+		background-color: #fff;
+		border-collapse: collapse;
+	}
+	#keyword-guide tbody td,
+	#keyword-guide tbody th {
+		border-top: 1px solid #eee;
+		border-bottom: 1px solid #eee;
+		background-color: #fff;
+		padding: 0.2em;
+	}
+	#keyword-guide tbody th {
+		text-align: right;
+		font-weight: bold;
+	}
+	#keyword-guide thead th {
+		color: #fff;
+		background-color: #333;
+	}
+	
+	.overview {
+		background: #efefef;
+		border-top: 1px solid #ccc;
+		border-bottom: 1px solid #ccc;
+		padding: 1em;
+		margin: 0 1em;
+	}
+	.overview blockquote {
+		color: #888;
+		margin: 0;
+		padding: 0 0 0 1.7em;	
+		font: italic 1.2em Georgia, Times, serif;
+		background: url("images/quoteopen.gif") 0 0 no-repeat;
+	}
+	
+	/* Ticket details */
+	/*#ticket-details {
+		font-size: 90%;
+		color: #999;
+		border-top: 2px solid #ddd;
+		margin-top: 0;
+	}*/
+	#ticket-details caption {
+		background: url("images/information.gif") 0 1em no-repeat;
+		margin: 0;
+		padding: 1em 0 0 0;
+		padding-left: 20px;
+		cursor: pointer;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		color: #555;
+		font-size: 90%;
+		width: 100%;
+		text-align: left;
+		line-height: 1.7em;
+		white-space: nowrap;
+	}
+.hide {
+	display: none;
+}
+
+/* Comment lists */
+.add {
+	margin-top: 1em;
+}
+ol.comments {
+	list-style-type:  none !important;
+	margin: 1em 1em 2em 1em;
+	padding: 0;
+	line-height: 1.5em;
+}
+ol.comments > li {
+	clear: left;
+	margin: 0 !important;
+	padding: 0 0 2em 125px;
+	border-top: 1px solid #efefef;
+}
+ol.comments li li {
+	margin-left:  20px;
+}
+ol.comments .cwrap {
+	padding-right: 1em;
+}
+ol.comments dl.comment-details {
+	float: left;
+	margin: 1em 20px 1.7em -125px !important;
+	padding: 0;
+	width: 105px;
+	color: #777;
+	font-size: 90%; /*11px;*/
+	text-align: right;
+}
+ol.comments dl.comment-details dt {
+	font-weight: bold;
+	color: #777;
+	font-size: 12px;
+	line-height: 14px;
+	padding-bottom: 1em;
+}
+ol.comments dl.comment-details dd {
+	padding: 0;
+	margin: 0.2em 0;
+}
+ol.comments .commenter {
+	color: #777;
+	font-size: 12px;
+}
+ol.comments li.submitter dl.comment-details dt a,
+ol.comments li.submitter dl.comment-details dt a:link,
+ol.comments li.submitter dl.comment-details dt a:visited,
+ol.comments li.submitter dl.comment-details dt a:active {
+	color:  #FF54AC;
+}
+ol.comments li.author dl.comment-details dt a:hover {
+	color: #ff6600;
+}
+ol.comments li dl.comment-details dt a.comment-counter:link,
+ol.comments li dl.comment-details dt a.comment-counter:visited,
+ol.comments li dl.comment-details dt a.comment-counter:active {
+	color: #999 !important;
+}
+ol.comments li dl.comment-details dt a.comment-counter:hover {
+	color: #ff6600 !important;
+}
+ol.comments li p.comment-content-object-link {
+	font-style: italic;
+	color: #999;
+}
+ol.comments li.private {
+	background-color: #f8f2e9;
+}
+ol.comments li.submitter {
+	background-color: #f3f8e9;
+}
+ol.comments blockquote {
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	border: none;
+	color: #333;
+}
+ol.comments li dl.comment-details dt span {
+	width: 65px;
+}
+ol.comments li.submitter dl.comment-details dt span {
+	font-size: 90%;
+	 background: url("images/submitter.gif") right top no-repeat;
+}
+ol.comments li.private dl.comment-details dt span {
+	 background: url("images/private.gif") right top no-repeat;
+}
+ol.comments li.public dl.comment-details dt span {
+	 background: url("images/public.gif") right top no-repeat;
+}
+ol.comments li dl.comment-details dt span span {
+	visibility: hidden;
+}
+/* Changelog */
+ol.comments .changelog ul {
+	border-top: 1px solid #ddd;
+	padding: 0.2em 0.2em 0.2em 30px;
+	margin: 0 0 0.5em 0;
+	font-size: 90%;
+	background: url("images/page_edit.png") 10px 0.4em no-repeat;
+	list-style: none;
+}
+ol.comments .changelog li {
+	padding: 0.1em;
+	margin: 0;
+}
+ol.comments .changelog em {
+	font-style: italic;
+}
+/* Email log */
+ol.comments ul.emaillog,
+ol.comments .changelog ul.emaillog {
+	border-top: 1px solid #ddd;
+	padding: 0.2em 0.2em 0.2em 30px;
+	margin: 0;
+	font-size: 90%;
+	background: url("images/email.png") 10px 0.2em no-repeat;
+}
+ol.comments .emaillog li {
+	padding: 0.1em;
+	margin: 0;
+}
+	
+	#prev-next {
+		text-align: right;
+		margin-top: -2em;
+	}
+	#primary {
+		background-color: #f3f3f3;
+	}
+	strong.open {
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		color: #c00;
+		font-size: 1.2em;
+	}
+	strong.closed {
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		color: #000;
+		font-size: 1.2em;
+	}
+	
+	#filer { border: 2px solid #ccc; }
+	#filter span {
+		margin: 0 1em;
+	}
+	
+	.changelog div {
+		border: 1px solid #ccc;
+	}
+/* Stats */
+	#ticket-stats {
+		border-top: 1px solid #fff;
+	}
+	#ticket-stats h3 {
+		display: none;
+	}
+	#ticket-stats .aside {
+		float: right;
+		width: 475px;
+		padding-top: 1em;
+	}
+	#ticket-stats .subject {
+		margin-right: 505px;
+		padding-top: 1em;
+	}
+	#ticket-stats .aside h3,
+	#ticket-stats .subject h3 {
+		display: block;
+		margin-top: 0;
+		border-bottom: 1px solid #ccc;
+	}
+	/*#line1 {
+		border: 1px solid #c00;
+	}*/
+	.support-stats-overview {
+		border-top: none;
+		border-bottom: none;
+		margin: 1em 0;
+		width: 100%;
+		text-align: left;
+		font-size: 1em;
+		border-collapse: collapse;
+	}
+	.support-stats-overview thead th {
+		font-size: 85%;
+		color: #aaa;
+		font-weight: normal;
+		border-left: 1px solid #eee;
+		border-right: 1px solid #eee;
+		/*border-top: 1px solid #eee;*/
+		border-bottom: none;
+		padding: 5px 10px;
+		padding-bottom: 0;
+		width: 20%;
+	}
+	.support-stats-overview tbody td {
+		padding: 5px 10px;
+		padding-top: 0;
+		font-size: 3em;
+		font-weight: bold;
+		border-left: 1px solid #eee;
+		border-right: 1px solid #eee;
+		color: #777;
+		border-bottom: 1px solid #eee;
+		width: 20%;
+	}
+	.support-stats-overview thead th.block,
+	.support-stats-overview tbody td.block {
+		width: 40%;
+	}
+	.support-stats-overview tbody td.block {
+		color: #b18fbc;
+	}
+	.open-tickets tbody td.critical {
+		color: red;
+	}
+	.open-tickets tbody td.major {
+		color: #ce7d7d;
+	}
+	.closed-tickets tbody td {
+		color: green;
+	}
+	.support-stats-overview tbody td span {
+		color: #aaa;
+		font-size: 12px;
+		line-height: 12px;
+		font-weight: normal;
+		margin: 0 1.5em 0 0;
+		padding: 0;
+	}
+	
+	.support-stats-people {
+		border-top: none;
+		border-bottom: none;
+		margin: 1em 0;
+		width: 100%;
+		text-align: left;
+	}
+	.support-stats-people thead th {
+		font-size: 85%;
+		color: #aaa;
+		font-weight: normal;
+		border-bottom: 1px solid #eee;
+	}
+	.support-stats-people tbody th {
+		font-weight: bold;
+		border-bottom: 1px solid #eee;
+		text-align: left;
+	}
+	.support-stats-people thead th.group {
+		background-image: none;
+		padding-left: 10px;
+	}
+	.support-stats-people tbody td {
+		font-weight: normal;
+		border-bottom: 1px solid #eee;
+	}
+	.support-stats-people tbody tr.odd {
+		background-color: transparent; /*#f6f6f1;*/
+	}
+	/*.support-stats-people tbody tr.odd .highlight {
+		background-color: #e1eae8;
+	}*/
+	.support-stats-people tbody tr.odd .group {
+		background-color: transparent; /*#eeeee9;*/
+		background-image: none;
+		padding-left: 10px;
+	}
+	/*.support-stats-people tbody tr.even .highlight {
+		background-color: #edf3f1;
+	}*/
+	.support-stats-people tbody tr.even .group {
+		background-color: transparent; /*#f7f7f7;*/
+		background-image: none;
+		padding-left: 10px;
+	}

@@ -2,7 +2,7 @@
 /**
  * patTemplate
  *
- * $Id: patTemplate.php 10381 2008-06-01 03:35:53Z pasamio $
+ * $Id: patTemplate.php 12694 2009-09-11 21:03:02Z ian $
  *
  * powerful templating engine
  *
@@ -1421,7 +1421,7 @@ class patTemplate
 			return	patErrorManager::raiseError( PATTEMPLATE_ERROR_MODULE_NOT_FOUND, "Module file $moduleFile does not contain class $moduleClass." );
 		}
 
-		$this->_modules[$moduleType][$sig]	=	&new $moduleClass;
+		$this->_modules[$moduleType][$sig]	= new $moduleClass;
 		if( method_exists( $this->_modules[$moduleType][$sig], 'setTemplateReference' ) )
 		{
 			$this->_modules[$moduleType][$sig]->setTemplateReference( $this );

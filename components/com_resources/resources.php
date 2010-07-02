@@ -29,10 +29,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $config = JFactory::getConfig();
 
-//if ($config->getValue('config.debug')) {
+if ($config->getValue('config.debug')) {
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
-//}
+}
+
+jimport('joomla.application.component.view');
 
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resources.resource.php');
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resources.type.php');
@@ -49,6 +51,7 @@ require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'resources.extended.php' 
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
 ximport('resourcestats');
+ximport('Hubzero_View_Helper_Html');
 
 // Editor usertype check
 $jacl =& JFactory::getACL();

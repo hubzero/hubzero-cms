@@ -191,7 +191,7 @@ HUB.Mw = {
 		// This function doesn't do anything yet.
 		// It will be called from the middleware.
 		if (value) {
-			var myAjax = new Ajax('index.php?option=com_tools&task=signed&no_html=1').request();
+			var myAjax = new Ajax('/index.php?option=com_tools&task=signed&no_html=1').request();
 			var signed = $('signedapplet');
 			signed.value = 1;
 		}
@@ -361,25 +361,25 @@ HUB.Mw = {
 		
 		var app = document.getElementById('theapp');
 		if (app) {
-			var appwrap = $('app-wrap')
-			appwrap.style.height = (h+20) + 'px';
-			appwrap.style.width = (w+20) + 'px';
+			/*$('app-wrap').setStyles({
+				'width': (w + 20) + 'px',
+				'height': (h + 20) + 'px'
+			});*/
+			$('app-wrap').setStyles({
+				'width': (w) + 'px',
+				'height': (h) + 'px'
+			});
 			
-			var sizex = $('sizex');
-			var sizey = $('sizey');
-			if (sizex) {
-				sizex.value = w;
-			}
-			if (sizey) {
-				sizey.value = h;
-			}
+			$('app-size').setHTML(w+' x '+h);
 
 			app.style.width = w + 'px';
 			app.style.height = h + 'px';
+			app.width = w;
+			app.height = h;
 		}
 	},
 	
-	resizeIt: function() {
+	/*resizeIt: function() {
 		var tw = parseFloat($('sizex').value);
 		var th = parseFloat($('sizey').value);
 		
@@ -398,40 +398,15 @@ HUB.Mw = {
 			app.style.height = th + 'px';
 			app.requestResize(tw,th);
 		}
-	},
+	},*/
 	
 	editSessionTitle: function() {
 		new eip($$('.session-title'), 'index.php', {option: 'com_tools', task: 'rename', no_html: 1});
 	},
-
-	toggleSessionList: function() {
-		var alist = $('useroptions');
-		if (alist) {
-			var lists = alist.getElementsByTagName('a');
-			if (lists) {
-				for (var j=0; j < lists.length; j++) 
-				{
-					if (lists[j].title == 'My Sessions') {
-						var sl = lists[j];
-						break;
-					}
-				}
-				sl.onclick = function() {
-					var slist = $('slist');
-					if (!slist.hasClass('off')) {
-						slist.addClass('off');
-					} else {
-						slist.removeClass('off');
-					}
-					return false;
-				}
-			}
-		}
-	},
 	
 	storageMonitor: function() {
 		function fetch(){			
-			new Ajax('index.php?option=com_tools&task=diskusage&no_html=1&msgs=0',{
+			new Ajax('/index.php?option=com_tools&task=diskusage&no_html=1&msgs=0',{
 					 'method' : 'get',
 					 'update' : $('diskusage')
 					 }).request();
@@ -441,108 +416,91 @@ HUB.Mw = {
 	},
 	
 	initialize: function() {
-		//addParam($('theapp'), 'Cursor shape updates', 'Ignore');
-		// Initiate the tabs
-		var submenu = $('sub-menu');
-		if (submenu) {
-			$$('.tab').each(function(href) {
-				href.onclick = function() { 
-					var section = this.rel + '-section';
-
-					$$('.section').each(function(sect) {
-						if (sect.id == section && sect.hasClass('hide')) {
-							sect.removeClass('hide');
-						} else {
-							if (!sect.hasClass('hide')) {
-								sect.addClass('hide');
-							}
-						}
-					}, this);
-					
-					$$('#sub-menu li').each(function(h) {
-						if (h.hasClass('active')) {
-							h.removeClass('active');
-						}
-					});
-					
-					this.parentNode.addClass('active');
-					
-					return false;
-				}
-			});
-		}
-		
 		// Initiate app resizing
 		var appwrap = $('app-wrap');
 		if (appwrap) {
-			// Create new paragraph for resize
-			var resizehandle = $('resizehandle');
+			var resizehandle = $('app-btn-resizehandle');
 			if (!resizehandle) {
-				var app = document.getElementById('theapp');
-				if (app.width < 100) {
-					app.width = 100;
+				var app = document.getElementById('theapp'); //$('theapp');
+				/*if (app.getProperty('width') < 100) {
+					app.setProperty('width', 100);
 				}
-				if (app.height < 100) { 
-					app.height = 100; 
-					appwrap.style.height = (parseFloat(app.height) + 20) + 'px';
-				}
-				appwrap.style.width = (parseFloat(app.width) + 20) + 'px';
+				if (app.getProperty('height') < 100) { 
+					app.setProperty('height', 100); 
+				}*/
 				
-				// The next chunk of code generates the following HTML:
-				// <p class="resize">
-				//   <input type="text" size="4" id="sizey" value="##" onchange="function() { resizeIt(); }" />
-				//   x
-				//   <input type="text" size="4" id="sizex" value="##" onchange="function() { resizeIt(); }" />
-				//   <img id="resizehandle" src="templates/stolas/images/corner.png" alt="resize" onmousedown="dragStart('resize', event, this);" />
-				// </p>
-				var p = document.createElement('p');
-				p.setAttribute('id','resize');
-
-				var ptxt = document.createTextNode(' x ');
-				var psx = document.createElement('input');
-				psx.setAttribute('type','text');
-				psx.setAttribute('size','4');
-				psx.setAttribute('id','sizex');
-				psx.value = parseFloat(app.width);
-				psx.onchange = function() { HUB.Mw.resizeIt(); }
+				appwrap.setStyle('height', parseFloat(app.height) + 'px');
+				appwrap.setStyle('width', parseFloat(app.width) + 'px');
 				
-				var psy = document.createElement('input');
-				psy.setAttribute('type','text');
-				psy.setAttribute('size','4');
-				psy.setAttribute('id','sizey');
-				psy.value = parseFloat(app.height);
-				psy.onchange = function() { HUB.Mw.resizeIt(); }
+				var p = new Element('p', {
+					id: 'app-size',
+					alt: parseFloat(app.width) + ' x ' + parseFloat(app.height)
+				}).setHTML(parseFloat(app.width) + ' x ' + parseFloat(app.height)).injectInside(appwrap);
 				
-				var pimg = document.createElement('img');
-				pimg.setAttribute('src','/components/com_tools/images/corner.png');
-				pimg.setAttribute('alt','resize');
-				pimg.setAttribute('id','resizehandle');
-
-				p.appendChild(psx);
-				p.appendChild(ptxt);
-				p.appendChild(psy);
-				p.appendChild(pimg);
-		
-				appwrap.appendChild(p);
+				var res = new Element('div', {
+					id: 'app-btn-resizehandle',
+					alt: 'Resize',
+					title: 'Resize'
+				}).injectInside(appwrap);
+			}
+			
+			var refresh = $('app-btn-refresh');
+			if (!refresh) {
+				var res = new Element('div', {
+					id: 'app-btn-refresh',
+					alt: 'Refresh Window',
+					title: 'Refresh Window',
+					events: {
+						'click': function(event) {
+							document.theapp.refresh();
+						}
+					}
+				}).injectInside(appwrap);
+			}
+			
+			var newwindow = $('app-btn-newwindow');
+			if (!newwindow) {
+				var res = new Element('div', {
+					id: 'app-btn-newwindow',
+					alt: 'Popout',
+					title: 'Popout',
+					events: {
+						'click': function(event) {
+							document.theapp.popout();
+							/*var ap = document.getElementById('theapp');
+							alert(ap.style.visibility);
+							if (ap.style.visibility == 'visible') {
+								ap.style.visibility = 'hidden';
+							} else {
+								ap.style.visibility = 'visible';
+							}*/
+						}
+					}
+				}).injectInside(appwrap);
 			}
 			
 			// Init the resizing capabilities
 			appwrap.makeResizable({
-				handle:$('resizehandle'),
+				handle:$('app-btn-resizehandle'),
 				//limit:{x: [400, 800], y: [100, 100]},
 				onDrag: function(el) {
 					var size = el.getCoordinates();
-					$('sizex').value = size.width - 20 + 5;
-					$('sizey').value = size.height - 27 + 0;
+					$('app-size').setStyle('visibility','visible').setHTML((size.width - 20)+' x '+(size.height - 20));
 				},
 				onComplete: function(el) {
+					$('app-size').setStyle('visibility','hidden');
 					var app = document.getElementById('theapp');
 					if (app) {
 						var size = el.getCoordinates();
 						
-						app.style.width = (size.width - 15) + 'px';
+						/*app.style.width = (size.width - 15) + 'px';
 						app.style.height = (size.height - 27) + 'px';
-						app.requestResize((size.width - 15),(size.height - 27));
+						app.requestResize((size.width - 15),(size.height - 27));*/
+						app.style.width = (size.width - 20) + 'px';
+						app.style.height = (size.height - 20) + 'px';
+						app.width = (size.width - 20);
+						app.height = (size.height - 20);
+						app.requestResize((size.width - 20),(size.height - 20));
 					}
 				}
 			});

@@ -172,6 +172,11 @@ $topics = array(
 			<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_MISSING_DESCRIPTION'); ?>
 			<?php } ?>
 			
+			<label>
+				<?php echo JText::_('Attach a screenshot'); ?>:
+				<input type="file" name="upload" id="trUpload" />
+			</label>
+			
 <?php if (!$this->verified) { ?>
 			<label<?php echo ($this->getError() == 3) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::sprintf('COM_FEEDBACK_TROUBLE_MATH', $this->problem['operand1'], $this->problem['operand2']); ?>

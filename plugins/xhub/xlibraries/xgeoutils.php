@@ -81,6 +81,21 @@ class GeoUtils
 
 		return $countries;
 	}
+	
+	//-----------
+	
+	public function getCountriesByContinent($continent='') 
+	{
+		if (!$continent) {
+			return array();
+		}
+		
+		$gdb =& GeoUtils::getGODBO();
+
+		$sql = 'SELECT DISTINCT country FROM country_continent WHERE LOWER(continent) = "'.strtolower($continent).'"';
+		$gdb->setQuery( $sql );
+		return $gdb->loadResultArray();
+	}
 
 	//-----------
 

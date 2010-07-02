@@ -68,7 +68,7 @@ h3.feed_title {
 	border: none;
 }
 .youtubefeed h3 {
-	background: url("images/fc-tv.gif") 0 0 no-repeat;
+	background: url("images/fc-tv.gif") 0 2px no-repeat;
 	padding:0.3em 0;
 	padding-left: 23px;	
 }

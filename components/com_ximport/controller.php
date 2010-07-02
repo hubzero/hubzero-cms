@@ -106,6 +106,10 @@ class XImportController extends JObject
 		{
 			$this->fixnames();
 		}
+		else if ($task == 'importtrac')
+		{
+			$this->importtrac();
+		}
 		else if ($task == 'importusers')
 		{
 			$this->importusers();
@@ -175,6 +179,7 @@ class XImportController extends JObject
 		echo '<a href="/ximport/authors?override=1">Import Author Data (overwrite)</a><br>' . "\n";
 		echo '<a href="/ximport/authors">Import Author Data (update) <br>' . "\n";
 		echo '<a href="/ximport/fixnames">Import givenName/middleName/surname from name</a><br>' . "\n";
+		echo '<a href="/ximport/importtrac">Import trac permissions from old form</a><br>' . "\n";
 		echo '<a href="/ximport/importusers">Import user profiles from ldap</a><br>' . "\n";
 		echo '<a href="/ximport/importgroups">Import groups from ldap</a><br>' . "\n";
 		echo '<a href="/ximport/showusers">show users from ldap</a><br>' . "\n";
@@ -461,6 +466,12 @@ class XImportController extends JObject
 		ximport('Hubzero_Group');
 		
 		Hubzero_Group::iterate(array('XImportController','importgroup'),'ldap');
+	}
+
+	function importtrac()
+	{
+		include 'itrac.php';
+		_importtrac();
 	}
 
 	function showusers()

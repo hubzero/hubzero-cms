@@ -38,12 +38,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="aside">
 			<fieldset>
 				<label>
+					<?php echo JText::_('SORT_BY'); ?>
+					<?php echo CitationsHtml::select('sort',$this->sorts,$this->filters['sort']); ?>
+				</label>
+				
+				<label>
 					<?php echo JText::_('Type'); ?>
 					<?php echo CitationsHtml::select('type',$this->types,$this->filters['type']); ?>
 				</label>
 				
 				<label>
-					<?php echo JText::_('FILTER'); ?>
+					<?php echo JText::_('Affiliation'); ?>
 					<?php echo CitationsHtml::select('filter',$this->filter,$this->filters['filter']); ?>
 				</label>
 				
@@ -64,10 +69,61 @@ defined('_JEXEC') or die( 'Restricted access' );
 					</select>
 				</label>
 				
-				<label>
-					<?php echo JText::_('SORT_BY'); ?>
-					<?php echo CitationsHtml::select('sort',$this->sorts,$this->filters['sort']); ?>
-				</label>
+				<fieldset>
+					<legend><?php echo JText::_('Reference Type'); ?></legend>
+					<label>
+						<input class="option" type="checkbox" name="reftype[research]" value="1"<?php if (isset($this->filters['reftype']['research'])) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('Research'); ?>
+					</label>
+					<label>
+						<input class="option" type="checkbox" name="reftype[education]" value="1"<?php if (isset($this->filters['reftype']['education'])) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('Education'); ?>
+					</label>
+					<label>
+						<input class="option" type="checkbox" name="reftype[eduresearch]" value="1"<?php if (isset($this->filters['reftype']['eduresearch'])) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('Education/Research'); ?>
+					</label>
+					<label>
+						<input class="option" type="checkbox" name="reftype[cyberinfrastructure]" value="1"<?php if (isset($this->filters['reftype']['cyberinfrastructure'])) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('Cyberinfrastructure'); ?>
+					</label>
+				</fieldset>
+				
+				<fieldset>
+					<legend><?php echo JText::_('Author Geography'); ?></legend>
+					<label>
+						<input class="option" type="checkbox" name="geo[us]" value="1"<?php if (isset($this->filters['geo']['us'])) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('US'); ?>
+					</label>
+					<label>
+						<input class="option" type="checkbox" name="geo[na]" value="1"<?php if (isset($this->filters['geo']['na'])) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('North America'); ?>
+					</label>
+					<label>
+						<input class="option" type="checkbox" name="geo[eu]" value="1"<?php if (isset($this->filters['geo']['eu'])) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('Europe'); ?>
+					</label>
+					<label>
+						<input class="option" type="checkbox" name="geo[as]" value="1"<?php if (isset($this->filters['geo']['as'])) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('Asia'); ?>
+					</label>
+				</fieldset>
+				
+				<fieldset>
+					<legend><?php echo JText::_('Author Affiliation'); ?></legend>
+					<label>
+						<input class="option" type="checkbox" name="aff[university]" value="1"<?php if (isset($this->filters['aff']['university'])) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('University'); ?>
+					</label>
+					<label>
+						<input class="option" type="checkbox" name="aff[industry]" value="1"<?php if (isset($this->filters['aff']['industry'])) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('Industry'); ?>
+					</label>
+					<label>
+						<input class="option" type="checkbox" name="aff[government]" value="1"<?php if (isset($this->filters['aff']['government'])) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('Government'); ?>
+					</label>
+				</fieldset>
 				
 				<label>
 					<?php echo JText::_('SEARCH_TITLE'); ?>
@@ -85,13 +141,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$formatter = new CitationsFormat;
 		$formatter->setFormat($this->format);
 		
-		$html = '<ul class="citations results">'."\n";
+		$html = '<ol class="citations results" start="'.($this->filters['start']+1).'">'."\n";
 		foreach ($this->citations as $cite) 
 		{
 			// Get the associations
 			$assoc = new CitationsAssociation( $this->database );
 			$assocs = $assoc->getRecords( array('cid'=>$cite->id) );
-			
+
 			$html .= ' <li>'."\n";
 			//$html .= CitationsFormatter::formatReference( $cite, $cite->url );
 			$html .= $formatter->formatReference($cite, $this->filters['search']);
@@ -133,13 +189,31 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html .= "\t".'</p>'."\n";
 			$html .= ' </li>'."\n";
 		}
-		$html .= '</ul>'."\n";
+		$html .= '</ol>'."\n";
 		echo $html;
 		
 		$qs = '';
 		foreach ($this->filters as $key=>$value) 
 		{
-			$qs .= ($key != 'limit' && $key != 'start') ? $key.'='.$value.'&' : '';
+			switch ($key) 
+			{
+				case 'limit':
+				case 'start':
+				break;
+				
+				case 'reftype':
+				case 'aff':
+				case 'geo':
+					foreach ($value as $k=>$v) 
+					{
+						$qs .= $key.'['.$k.']='.$v.'&';
+					}
+				break;
+				
+				default:
+					$qs .= $key.'='.$value.'&';
+				break;
+			}
 		}
 		$paging = $this->pageNav->getListFooter();
 		$paging = str_replace('citations/?','citations/browse?'.$qs,$paging);

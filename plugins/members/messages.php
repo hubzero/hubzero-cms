@@ -162,6 +162,7 @@ class plgMembersMessages extends JPlugin
 		$components = $xmc->getComponents();
 
 		$pagenavhtml = $pageNav->getListFooter();
+		$pagenavhtml = str_replace('members?','members/'.$member->get('uidNumber').'/messages/inbox/?',$pagenavhtml);
 		$pagenavhtml = str_replace('members/?','members/'.$member->get('uidNumber').'/messages/inbox/?',$pagenavhtml);
 		$pagenavhtml = str_replace('action=inbox','',$pagenavhtml);
 		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
@@ -218,6 +219,7 @@ class plgMembersMessages extends JPlugin
 		$components = $xmc->getComponents();
 
 		$pagenavhtml = $pageNav->getListFooter();
+		$pagenavhtml = str_replace('members?','members/'.$member->get('uidNumber').'/messages/archive/?',$pagenavhtml);
 		$pagenavhtml = str_replace('members/?','members/'.$member->get('uidNumber').'/messages/archive/?',$pagenavhtml);
 		$pagenavhtml = str_replace('action=archive','',$pagenavhtml);
 		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
@@ -274,6 +276,7 @@ class plgMembersMessages extends JPlugin
 		$components = $xmc->getComponents();
 
 		$pagenavhtml = $pageNav->getListFooter();
+		$pagenavhtml = str_replace('members?','members/'.$member->get('uidNumber').'/messages/trash/?',$pagenavhtml);
 		$pagenavhtml = str_replace('members/?','members/'.$member->get('uidNumber').'/messages/trash/?',$pagenavhtml);
 		$pagenavhtml = str_replace('action=trash','',$pagenavhtml);
 		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
@@ -325,6 +328,7 @@ class plgMembersMessages extends JPlugin
 		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
 
 		$pagenavhtml = $pageNav->getListFooter();
+		$pagenavhtml = str_replace('members?','members/'.$member->get('uidNumber').'/messages/sent/?',$pagenavhtml);
 		$pagenavhtml = str_replace('members/?','members/'.$member->get('uidNumber').'/messages/sent/?',$pagenavhtml);
 		$pagenavhtml = str_replace('action=sent','',$pagenavhtml);
 		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
@@ -364,6 +368,15 @@ class plgMembersMessages extends JPlugin
 				$recipient->state = 1;
 				if (!$recipient->store()) {
 					$this->setError( $recipient->getError() );
+				}
+				
+				$xseen = new XMessageSeen( $database );
+				$xseen->mid = $mid;
+				$xseen->uid = $member->get('uidNumber');
+				$xseen->loadRecord();
+				if ($xseen->whenseen == '' || $xseen->whenseen == '0000-00-00 00:00:00' || $xseen->whenseen == NULL) {
+					$xseen->whenseen = date( 'Y-m-d H:i:s', time() );
+					$xseen->store( true );
 				}
 			}
 		}

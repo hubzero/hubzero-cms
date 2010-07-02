@@ -28,8 +28,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 $quotes = $modquotes->quotes;
 $filters = $modquotes->filters;
 
-$html = '';
-
+$html  = '';
+$html .= '<div id="content-header-extra">'."\n";
+$html .= ' <ul id="useroptions">'."\n";
+$html .= ' <li><a href="'.JRoute::_('index.php?option=com_feedback&task=success_story').'" class="add">'.JText::_('Add Your Success Story').'</a></li>'."\n";
+$html .= ' </ul>'."\n";
+$html .= '</div>'."\n";
 // Did we get any results?
 if (count($quotes) > 0) {
 	// Yes - loop through and build the HTML

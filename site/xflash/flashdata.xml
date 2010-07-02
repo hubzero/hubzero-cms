@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <flashdata>
+  <Prefs>
+ 	<sBorderCol></sBorderCol>
+ 	<bAlphaOff>30</bAlphaOff>
+ 	<bAlphaOn>40</bAlphaOn>
+ 	<bColOff>0xffffff</bColOff>
+ 	<bColOn>0xbeb19f</bColOn>
+ 	<bSelected>0xbeb19f</bSelected>
+ 	<bTextOff>0xffffff</bTextOff>
+ 	<bTextOn>0xffffff</bTextOn>
+ 	<transition>wave</transition>
+ 	<transitionCol>0xd7d1c5</transitionCol>
+ 	<countdown>7000</countdown>
+ 	<imagePath>../site/xflash/</imagePath>
+ 	<serverPath>http://hubbub.hubzero.org</serverPath>
+ 	<watermark></watermark>
+ 	<headerCol>0xFFFFFF</headerCol>
+ 	<subtitleCol>0xbeb19f</subtitleCol>
+ 	<bodyCol>0xFFFFFF</bodyCol>
+ 	<linkCol>0xbeb19f</linkCol>
+ 	<headerFont>Century Gothic</headerFont>
+ 	<bodyFont>Arial</bodyFont>
+ 	<headerSize>22</headerSize>
+ 	<subtitleSize>12</subtitleSize>
+ 	<bodySize>12</bodySize>
+  </Prefs>
+  <Slides>
+ 	<Slide>
+ 		<sType>regular</sType>
+ 		<bgcol></bgcol>
+ 		<bg>hubzero_intro.jpg</bg>
+ 		<ima></ima>
+ 		<header>Welcome to HUBzero.org</header>
+ 		<headerCol></headerCol>
+ 		<subtitle>Connecting scientific communities</subtitle>
+ 		<subtitleCol>0xbeb19f</subtitleCol>
+ 		<body></body>
+ 		<bodyCol></bodyCol>
+ 		<path>about/</path>
+ 		<pathLabel>Learn more</pathLabel>
+ 	</Slide>
+ 	<Slide>
+ 		<sType>regular</sType>
+ 		<bgcol></bgcol>
+ 		<bg>qa.jpg</bg>
+ 		<ima></ima>
+ 		<header>Got Questions?</header>
+ 		<headerCol></headerCol>
+ 		<subtitle> Check out Answers</subtitle>
+ 		<subtitleCol></subtitleCol>
+ 		<body>Get your questions answered and help others find the clues on the HUBzero Answers forum. For your participation you can even earn points and spend them in the HUBzero store.</body>
+ 		<bodyCol></bodyCol>
+ 		<path>answers/</path>
+ 		<pathLabel>Learn more</pathLabel>
+ 	</Slide>
+  </Slides>
+  <Quotes>
+  </Quotes>
+  <Resources>
+ 	<Resource>
+ 	</Resource>
+  </Resources>
+ </flashdata>

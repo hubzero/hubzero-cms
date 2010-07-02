@@ -554,7 +554,7 @@ class AnswersController extends JObject
 		if (!$view->filters['assigned'] && !$view->filters['interest']) {
 			$view->filters['mine'] = 1;
 		}
-		$view->filters['mine'] = 1;
+		//$view->filters['mine'] = 1;
 
 		$aq = new AnswersQuestion( $database );
 

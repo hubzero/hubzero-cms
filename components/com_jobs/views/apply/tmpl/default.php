@@ -115,7 +115,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= $this->task=='editapp' ? JText::_('ACTION_SAVE_CHANGES_APPLICATION') : JText::_('ACTION_APPLY_THIS_JOB');
 		$html .= '" />';
 		$html .= '<span class="cancelaction">';
-		$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.a.'task=job'.a.'id='.$job->id).'">';
+		$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.a.'task=job'.a.'id='.$job->code).'">';
 		$html .= JText::_('CANCEL').'</a></span></p>'.n;
 		$html .= t.t.t.' </form>'.n;
 		$html .= '</div>'.n;

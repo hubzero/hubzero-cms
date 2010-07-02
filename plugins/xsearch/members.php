@@ -161,7 +161,12 @@ class plgXSearchMembers extends JPlugin
 			if (substr($thumb, -1, 1) == DS) {
 				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
 			}
-			$thumb .= DS.plgXSearchMembers::niceidformat($row->id).DS.$row->category;
+			if ($row->id < 0) {
+				$id = abs($row->id);
+				$thumb .= DS.'n'.plgXSearchMembers::niceidformat($id).DS.$row->category;
+			} else {
+				$thumb .= DS.plgXSearchMembers::niceidformat($row->id).DS.$row->category;
+			}
 			
 			$thumb = plgXSearchMembers::thumbit($thumb);
 		} else {

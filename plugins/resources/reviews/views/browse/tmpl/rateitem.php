@@ -32,12 +32,12 @@ $nclass = (isset($this->item->vote) && $this->item->vote=="no") ? 'no' : 'zero';
 $this->item->helpful = ($this->item->helpful > 0) ? '+'.$this->item->helpful: '&nbsp;&nbsp;'.$this->item->helpful;
 $this->item->nothelpful = ($this->item->nothelpful > 0) ? '-'.$this->item->nothelpful: '&nbsp;&nbsp;'.$this->item->nothelpful;
 ?>
-<span class="thumbsvote">
+<span class="thumbsvote" id="rev<?php echo $this->item->id; ?>_<?php echo $this->rid; ?>">
 	<span class="<?php echo $pclass; ?>"><?php echo $this->item->helpful; ?></span>
 <?php if ($juser->get('guest')) { ?>
-		<span class="gooditem r_disabled"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=yes'); ?>" >&nbsp;</a></span>
+		<span class="gooditem r_disabled"><a href="<?php echo JRoute::_('index.php?option=com_login&return='.base64_encode(JRoute::_('index.php?option='.$this->option.'&id='.$this->rid.'&active=reviews'))); //JRoute::_('index.php?option='.$this->option.'&task=plugin&trigger=onResourcesRateItem&action=rateitem&no_html=1&rid='.$this->rid.'&refid='.$this->item->id.'&vote=yes'); ?>" >&nbsp;</a></span>
 		<span class="<?php echo $nclass; ?>"><?php echo $this->item->nothelpful; ?></span>
-		<span class="baditem r_disabled"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=no'); ?>" >&nbsp;</a></span>
+		<span class="baditem r_disabled"><a href="<?php echo JRoute::_('index.php?option=com_login&return='.base64_encode(JRoute::_('index.php?option='.$this->option.'&id='.$this->rid.'&active=reviews'))); //JRoute::_('index.php?option='.$this->option.'&task=plugin&trigger=onResourcesRateItem&action=rateitem&no_html=1&rid='.$this->rid.'refid='.$this->item->id.'&vote=no'); ?>" >&nbsp;</a></span>
 		<span class="votinghints"><span><?php echo JText::_('PLG_RESOURCES_REVIEWS_LOGIN_TO_VOTE'); ?></span></span>
 <?php } else { ?>
 		<span class="gooditem">

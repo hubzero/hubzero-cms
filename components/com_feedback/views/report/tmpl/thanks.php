@@ -26,11 +26,23 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <?php if ($this->no_html) { ?>
+<!-- <html>
+<head>
+</head>
+<body onload="window.top.window.HUB.ReportProblem.hideTimer();"> -->
+<div id="report-response">
 	<div>
 		<p><?php echo JText::_('COM_FEEDBACK_YOUR_TICKET'); ?> # <span><?php echo $this->ticket; ?></span></p>
-		<p><a href="javascript:HUB.ReportProblem.resetForm();" title="<?php echo JText::_('COM_FEEDBACK_NEW_REPORT'); ?>"><?php echo JText::_('COM_FEEDBACK_NEW_REPORT'); ?></a></p>
+		<p><button onclick="javascript:HUB.ReportProblem.resetForm();" title="<?php echo JText::_('COM_FEEDBACK_NEW_REPORT'); ?>"><?php echo JText::_('COM_FEEDBACK_NEW_REPORT'); ?></button></p>
 	</div>
-	<p><?php echo JText::_('COM_FEEDBACK_TROUBLE_THANKS'); ?></p>
+	<p>
+		<?php echo JText::_('COM_FEEDBACK_TROUBLE_THANKS'); ?><br /><br />
+		<?php echo JText::_('COM_FEEDBACK_TROUBLE_TICKET_TIMES'); ?>
+	</p>
+</div>
+<script type="text/javascript">window.top.window.HUB.ReportProblem.hideTimer();</script>
+<!-- </body>
+</html> -->
 <?php } else { ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -41,6 +53,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 	<p><?php echo JText::_('COM_FEEDBACK_TROUBLE_THANKS'); ?></p>
+	<p class="information"><?php echo JText::_('COM_FEEDBACK_TROUBLE_TICKET_TIMES'); ?></p>
 <?php if ($this->ticket) { ?>
 	<p><?php echo JText::sprintf('COM_FEEDBACK_TROUBLE_TICKET_REFERENCE',$this->ticket); ?></p>
 <?php } ?>

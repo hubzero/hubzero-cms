@@ -55,8 +55,20 @@ $juser =& JFactory::getUser();
 			$bits = explode('_',$app->appname);
 			$bit = (count($bits) > 1) ? array_pop($bits) : '';
 			$appname = implode('_',$bits);
+			
+			$cls = ($is_even) ? '' : 'even ';
+			
+			if ($modmysessions->supportedtag) {
+				if ($modmysessions->rt->checkTagUsage( $modmysessions->supportedtag, 0, $appname )) {
+					$cls .= 'supported';
+				} else {
+					$cls .= 'session';
+				}
+			} else {
+				$cls .= 'session';
+			}
 ?>
-		<li class="<?php echo ($is_even) ? '' : 'even '; ?>session">
+		<li class="<?php echo $cls; ?>">
 			<a href="<?php echo JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
 				<?php
 				echo $app->sessname;
@@ -169,8 +181,8 @@ $juser =& JFactory::getUser();
 			$amount  = ($percent > 100) ? 100 : $percent;
 
 			// Add the JavaScript file that will do the AJAX magic
-			$document =& JFactory::getDocument();
-			$document->addScript('modules/mod_mysessions/mod_mysessions.js');
+			//$document =& JFactory::getDocument();
+			//$document->addScript('modules/mod_mysessions/mod_mysessions.js');
 ?>
 <dl id="diskusage">
 	<dt><?php echo JText::_('MOD_MYSESSIONS_STORAGE'); ?> (<a href="<?php echo JRoute::_('index.php?option=com_tools&task=storage'); ?>"><?php echo JText::_('MOD_MYSESSIONS_MANAGE'); ?></a>)</dt>

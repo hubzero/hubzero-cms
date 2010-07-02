@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: form.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: form.php 13341 2009-10-27 03:03:54Z ian $
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -11,7 +11,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
-
+defined('JPATH_BASE') or die();
 /**
  * Utility class for form elements
  *

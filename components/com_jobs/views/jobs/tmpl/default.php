@@ -121,6 +121,7 @@ if(!$this->mini) {
 		
 		}
 		else {
+		$html .= '<div class="main section">'.n;
 		$html .= t.t.'<h3>'.JText::_('JOBS_LATEST_POSTINGS').'</h3> ';
 		}
 		
@@ -249,18 +250,16 @@ if(!$this->mini) {
 		}
 		
 		if(!$this->mini) {
-		// Insert page navigation
-		$pagenavhtml = $this->pageNav->getListFooter();
-		$pagenavhtml = str_replace('jobs/?','jobs/browse/?',$pagenavhtml);
-		$html .= t.t.$pagenavhtml;
-		if($allowsubscriptions) {
-		$html .= t.'</div><!-- / .subject -->'.n;		
+			// Insert page navigation
+			$pagenavhtml = $this->pageNav->getListFooter();
+			$pagenavhtml = str_replace('jobs/?','jobs/browse/?',$pagenavhtml);
+			$html .= t.t.$pagenavhtml;
+			if($allowsubscriptions) {
+			$html .= t.'</div><!-- / .subject -->'.n;		
+			}
+			$html .= t.'</form>'.n;	
 		}
-		$html .= t.'</form>'.n;	
-		$html .= t.'</div>'.n;		
-	
-		//$html .= '<div class="clear"></div></div>'.n;
-		}	
+		$html .= t.'</div>'.n;			
 		
 		echo $html;
 ?>

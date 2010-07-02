@@ -42,10 +42,10 @@ include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contr
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'contribtool.html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.utils.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'helpers'.DS.'utilities.php' );
 include_once( JPATH_ROOT.DS.'components'.DS.'com_support'.DS.'support.tags.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.ticket.php' );
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.comment.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'comment.php' );
 
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.doi.php' );

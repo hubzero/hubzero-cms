@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: manager.php 10381 2008-06-01 03:35:53Z pasamio $
+ * @version		$Id: manager.php 13297 2009-10-24 01:29:37Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -64,7 +64,6 @@ class MediaModelManager extends JModel
 
 		// Load appropriate language files
 		$lang = & JFactory::getLanguage();
-		$lang->load('', JPATH_ADMINISTRATOR);
 		$lang->load(JRequest::getCmd( 'option' ), JPATH_ADMINISTRATOR);
 
 		$document =& JFactory::getDocument();

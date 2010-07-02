@@ -180,13 +180,13 @@ class plgSupportAnswers extends JPlugin
 			case 'answer':
 				$database->setQuery( "UPDATE #__answers_responses SET state='2' WHERE id=".$referenceid );
 				if (!$database->query()) {
-					echo ReportAbuseHtml::alert( $database->getErrorMsg() );
+					echo SupportHtml::alert( $database->getErrorMsg() );
 					exit;
 				}
 				
 				$database->setQuery( "DELETE FROM #__answers_log WHERE rid=".$referenceid );
 				if (!$database->query()) {
-					echo ReportAbuseHtml::alert( $database->getErrorMsg() );
+					echo SupportHtml::alert( $database->getErrorMsg() );
 					exit;
 				}
 				
@@ -213,14 +213,14 @@ class plgSupportAnswers extends JPlugin
 						// Delete response's log entry
 						$database->setQuery( "DELETE FROM #__answers_log WHERE rid=".$answer->id );
 						if (!$database->query()) {
-							echo ReportAbuseHtml::alert( $database->getErrorMsg() );
+							echo SupportHtml::alert( $database->getErrorMsg() );
 							exit;
 						}
 					
 						// Delete response
 						$database->setQuery( "UPDATE #__answers_responses SET state='2' WHERE id=".$answer->id );
 						if (!$database->query()) {
-							echo ReportAbuseHtml::alert( $database->getErrorMsg() );
+							echo SupportHtml::alert( $database->getErrorMsg() );
 							exit;
 						}
 						
@@ -232,13 +232,13 @@ class plgSupportAnswers extends JPlugin
 				// Delete all tag associations
 				$database->setQuery( "DELETE FROM #__answers_tags WHERE questionid=".$referenceid );
 				if (!$database->query()) {
-					echo ReportAbuseHtml::alert( $database->getErrorMsg() );
+					echo SupportHtml::alert( $database->getErrorMsg() );
 					exit;
 				}
 	
 				$database->setQuery( "UPDATE #__answers_questions SET state='2', reward='0' WHERE id=".$referenceid );
 				if (!$database->query()) {
-					echo ReportAbuseHtml::alert( $database->getErrorMsg() );
+					echo SupportHtml::alert( $database->getErrorMsg() );
 					exit;
 				}
 				
@@ -251,7 +251,7 @@ class plgSupportAnswers extends JPlugin
 						{
 							$zuser =& JUser::getInstance( $r );
 							if (is_object($zuser)) {
-								if (SupportUtils::check_validEmail($zuser->get('email')) && $email) {
+								if (SupportUtilities::checkValidEmail($zuser->get('email')) && $email) {
 									$xhub =& XFactory::getHub();
 									
 									$admin_email = $xhub->getCfg('hubSupportEmail');
@@ -264,7 +264,7 @@ class plgSupportAnswers extends JPlugin
 									$mes .= '----------------------------'."\r\n\r\n";
 									$mes .= 'QUESTION: '.$referenceid."\r\n";
 
-									SupportUtils::send_email($hub, $zuser->get('email'), $sub, $mes);
+									SupportUtilities::sendEmail($hub, $zuser->get('email'), $sub, $mes);
 							 	}
 							}
 						}
@@ -285,7 +285,7 @@ class plgSupportAnswers extends JPlugin
 							$sql = "DELETE FROM #__users_transactions WHERE category='answers' AND type='hold' AND referenceid=".$parentid." AND uid='".$asker_id."'";
 							$database->setQuery( $sql);
 							if (!$database->query()) {
-								echo ReportAbuseHtml::alert( $database->getErrorMsg() );
+								echo SupportHtml::alert( $database->getErrorMsg() );
 								exit;
 							}
 									
@@ -308,7 +308,7 @@ class plgSupportAnswers extends JPlugin
 				$comment->load( $referenceid );
 				$comment->state = 2;
 				if (!$comment->store()) {
-					echo ReportAbuseHtml::alert( $comment->getError() );
+					echo SupportHtml::alert( $comment->getError() );
 					exit();
 				}
 				

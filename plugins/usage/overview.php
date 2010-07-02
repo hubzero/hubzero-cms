@@ -298,11 +298,11 @@ class plgUsageOverview extends JPlugin
 		// Set the pathway
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		$pathway->addItem(JText::_('PLG_USAGE_PERIOD_'.strtoupper($period)),'index.php?option='.$option.a.'task='.$task.a.'period='.$period);
+		$pathway->addItem(JText::_('PLG_USAGE_PERIOD_'.strtoupper($period)),'index.php?option='.$option.'&task='.$task.'&period='.$period);
 
 		// Build the HTML
 		$html  = $this->_navlinks($option, $task, $period);
-		$html .= '<form method="post" action="'. JRoute::_('index.php?option='.$option.a.'task='.$task.a.'period='.$period) .'">'."\n";
+		$html .= '<form method="post" action="'. JRoute::_('index.php?option='.$option.'&task='.$task.'&period='.$period) .'">'."\n";
 		$html .= "\t".'<fieldset class="filters"><label>'.JText::_('PLG_USAGE_SHOW_DATA_FOR').': ';
 		
 		$html .= '<select name="selectedPeriod">'."\n";
@@ -658,7 +658,7 @@ class plgUsageOverview extends JPlugin
 		$html .= "\t".'</tbody>'."\n";
 		$html .= '</table>'."\n";
 		
-		
+	/*	
 		// "and more" Usage
 		$html .= '<table summary="'.JText::_('&quot;and more&quot; Usage').'">'."\n";
 		$html .= "\t".'<caption>'.JText::_('Table 4: &quot;and more&quot; Usage').'</caption>'."\n";
@@ -744,6 +744,7 @@ class plgUsageOverview extends JPlugin
 		}
 		$html .= "\t".'</tbody>'."\n";
 		$html .= '</table>'."\n";
+*/
 
 		// Collaboration Usage
 		$html .= '<table summary="'.JText::_('Collaboration Usage').'">'."\n";

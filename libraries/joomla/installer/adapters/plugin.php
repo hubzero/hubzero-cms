@@ -81,7 +81,7 @@ class JInstallerPlugin extends JObject
 		// Set the installation path
 		$element =& $this->manifest->getElementByPath('files');
 		if (is_a($element, 'JSimpleXMLElement') && count($element->children())) {
-			$files =& $element->children();
+			$files = $element->children();
 			foreach ($files as $file) {
 				if ($file->attributes($type)) {
 					$pname = $file->attributes($type);

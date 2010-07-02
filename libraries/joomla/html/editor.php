@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: editor.php 12075 2009-06-14 18:32:10Z ian $
+ * @version		$Id: editor.php 13376 2009-10-29 01:44:22Z ian $
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -39,6 +39,13 @@ class JEditor extends JObservable
 	 * @var string
 	 */
 	var $_name = null;
+	
+	/**
+	 * Editor start and end tag
+	 * Used to tell SEF plugin not to process editor contents
+	 * @var array
+	 */
+	var $_tagForSEF = array('start' => '<!-- Start Editor -->', 'end' => '<!-- End Editor -->'); 
 
 	/**
 	 * constructor
@@ -150,7 +157,7 @@ class JEditor extends JObservable
 				$return .= $result;
 			}
 		}
-		return $return;
+		return $this->_tagForSEF['start'] . $return . $this->_tagForSEF['end'];
 	}
 
 	/**

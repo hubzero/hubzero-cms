@@ -28,6 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_Tool_Version');
 ximport('Hubzero_Tool');
 ximport('Hubzero_Group');
+ximport('Hubzero_Trac_Project');
 
 class ContribtoolController extends JObject
 {
@@ -112,11 +113,11 @@ class ContribtoolController extends JObject
 		if ($option) {
 			$name = ($name) ? $name : $option;
 			if (is_file(JPATH_ROOT.DS.'components'.DS.'com_'.$option.DS.$name.'.js')) {
-				$document->addScript('components'.DS.'com_'.$option.DS.$name.'.js');
+				$document->addScript('/components'.DS.'com_'.$option.DS.$name.'.js');
 			}
 		} else {
 			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-				$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
+				$document->addScript('/components'.DS.$this->_option.DS.$this->_name.'.js');
 			}
 		}
 	}
@@ -919,6 +920,31 @@ class ContribtoolController extends JObject
 	// Process
 	//----------------------------------------------------------
 
+	protected function setTracAccess($toolname, $codeaccess, $wikiaccess)
+	{
+		$hztrac = Hubzero_Trac_Project::find_or_create('app:' . $toolname);
+
+		if (!$hztrac) {
+			return false;
+		}
+
+		if ($codeaccess == '@OPEN') {
+			$hztrac->add_user_permission(0,array('BROWSER_VIEW','LOG_VIEW','FILE_VIEW'));
+		}
+		elseif ($codeaccess == '@DEV') {
+			$hztrac->remove_user_permission(0,array('BROWSER_VIEW','LOG_VIEW','FILE_VIEW'));
+		}
+
+		if ($wikiaccess == '@OPEN') {
+			$hztrac->add_user_permission(0,array('WIKI_VIEW','MILESTONE_VIEW','ROADMAP_VIEW','SEARCH_VIEW'));
+		}
+		elseif ($wikiaccess == '@DEV') {
+			$hztrac->remove_user_permission(0,array('WIKI_VIEW','MILESTONE_VIEW','ROADMAP_VIEW','SEARCH_VIEW'));
+		}
+
+		return true;
+	}
+
 	protected function save()
 	{
 		$database 	=& JFactory::getDBO();
@@ -1069,6 +1095,8 @@ class ContribtoolController extends JObject
 					}
 				}
 
+				$this->setTracAccess($toolname,$hztv->codeaccess,$hztv->wikiaccess);
+
 				if (!$this->_error) 
 				{
 					// create/update developers group
@@ -1082,15 +1110,13 @@ class ContribtoolController extends JObject
 						$hzg = Hubzero_Group::getInstance($gid);
 					}
 					$hzg->set('members',$tool['developers']);
-					$hzg->add('tracperm','WIKI_ADMIN');
-					$hzg->add('tracperm','MILESTONE_ADMIN');
-					$hzg->add('tracperm','BROWSER_VIEW');
-					$hzg->add('tracperm','LOG_VIEW');
-					$hzg->add('tracperm','FILE_VIEW');
-					$hzg->add('tracperm','CHANGESET_VIEW');
-					$hzg->add('tracperm','ROADMAP_VIEW');
-					$hzg->add('tracperm','TIMELINE_VIEW');
-					$hzg->add('tracperm','SEARCH_VIEW');
+					$hztrac = Hubzero_Trac_Project::find_or_create('app:' . $toolname);
+					$hztrac->add_group_permission('apps', array('WIKI_ADMIN','MILESTONE_ADMIN',
+								'BROWSER_VIEW','LOG_VIEW','FILE_VIEW','CHANGESET_VIEW','ROADMAP_VIEW',
+								'TIMELINE_VIEW','SEARCH_VIEW'));
+					$hztrac->add_group_permission($hzg->cn, array('WIKI_ADMIN','MILESTONE_ADMIN',
+								'BROWSER_VIEW','LOG_VIEW','FILE_VIEW','CHANGESET_VIEW','ROADMAP_VIEW',
+								'TIMELINE_VIEW','SEARCH_VIEW'));
 					$hztv->add('owner',$hzg->cn);
 					$hztv->add('owner','apps');
 					$hztv->add('owner',$hzg->cn);
@@ -1255,7 +1281,9 @@ class ContribtoolController extends JObject
 							
 							// save version info
 							$hztv->update();
-							
+
+							$this->setTracAccess($hztv->toolname,$hztv->codeaccess,null);
+
 							if($this->_action != 'confirm') {
 								$this->_msg = JText::_('NOTICE_CHANGE_LICENSE_SAVED');
 								$this->_task = 'status';
@@ -1775,8 +1803,8 @@ class ContribtoolController extends JObject
 
 		// include support scripts
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_support'.DS.'support.tags.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.ticket.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.comment.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'comment.php' );
 
 		$st = new SupportTags( $database );
 		$row = new SupportTicket( $database );
@@ -2018,8 +2046,8 @@ class ContribtoolController extends JObject
 		$xhub   =& XFactory::getHub();
 		$database =& JFactory::getDBO();
 		$pw 	= $xhub->getCfg('hubLDAPSearchUserPW');
-		$scriptdir = isset($this->config->parameters['addrepo_dir']) ? $this->config->parameters['addrepo_dir'] : DS.'opt'.DS.'addrepo';
-		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
+		$scriptdir = '/usr/lib/hubzero/addrepo';
+		$ldap = 0;
 		
 		// Create a Tool object
 		$obj = new Tool( $database );
@@ -2046,6 +2074,8 @@ class ContribtoolController extends JObject
 
 	protected function installTool(&$output)
 	{
+		ximport('Hubzero_Tool_Version');
+
 		if(!$this->_toolid) {
 			return false;
 		}
@@ -2068,11 +2098,11 @@ class ContribtoolController extends JObject
 				 // extract revision number
 				$rev = explode("installed revision: ", $output['msg']);
 				if(isset($rev[1]) && intval($rev[1])) {
-					$objV = new ToolVersion( $database );
-					$objV->revision = intval($rev[1]);
-					if (!$objV->save($this->_toolid, 'dev')) {
+					$hztv = Hubzero_Tool_VersionHelper::getDevelopmentToolVersion($this->_toolid);
+					$hztv->revision = intval($rev[1]);
+					if (!$hztv->update()) {
 						$output['class'] = 'error';
-						$output['msg'] .= '<br />* '.$objV->getError();
+						$output['msg'] .= '<br />* '."Error saving revision update to installed tool";
 						return false;
 					}
 					else {
@@ -2458,7 +2488,11 @@ class ContribtoolController extends JObject
 			$new_hztv->license = $status['license'];
 			$new_hztv->fulltext = $status['fulltext'];
 			$new_hztv->exportControl = $exportmap[$status['exec']];
-			
+			$new_hztv->owner = $hztv_dev->owner;
+			$new_hztv->member = $hztv_dev->member;
+			foreach($status['developers'] as $d)
+				$new_hztv->add('author',$d->uidNumber);
+
 			if (!$new_hztv->update())
 			{
 				$output['fail'] .= '<br />* ';
@@ -2466,6 +2500,8 @@ class ContribtoolController extends JObject
 			}
 			else 
 			{
+				$this->setTracAccess($new_hztv->toolname,$new_hztv->codeaccess,$new_hztv->wikiaccess);
+
 				// update tool entry
 				$hzt = Hubzero_Tool::getInstance($this->_toolid);
                 $hzt->add('version',$new_hztv->instance);
@@ -2538,6 +2574,8 @@ class ContribtoolController extends JObject
 
 	protected function edit_resource()
 	{
+		ximport('Hubzero_Tool_Version');
+
 		$database 	=& JFactory::getDBO();
 		$juser  	=& JFactory::getUser();
 		$xhub      	=& XFactory::getHub();
@@ -2580,7 +2618,8 @@ class ContribtoolController extends JObject
 		
 		// process first step
 		if($nextstep==3 && isset($_POST['nbtag'])) {
-				
+		    $hztv = Hubzero_Tool_VersionHelper::getToolRevision($this->_toolid, $version);
+			
 			$objV = new ToolVersion ($database);
 			if (!$objV->bind( $_POST )) {
 					$this->_error=$objV->getError();
@@ -2606,16 +2645,21 @@ class ContribtoolController extends JObject
 					$status['fulltext'] .= '<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>';
 				}
 			}
-		
 						
-			$objV->fulltext   = $status['fulltext'];
-			$objV->description  = $this->txt_shorten(JRequest::getVar( 'description', $status['description'], 'post'));
-			$objV->title  = $this->txt_shorten(JRequest::getVar( 'title', $status['title'], 'post'));
+			$hztv->fulltext = $objV->fulltext   = $status['fulltext'];
+			$hztv->description = $objV->description  = $this->txt_shorten(JRequest::getVar( 'description', $status['description'], 'post'));
+			$hztv->title = $objV->title  = $this->txt_shorten(JRequest::getVar( 'title', $status['title'], 'post'));
 
+			if (!$hztv->update()) {
+				$this->_error = "Error updating tool tables.";
+				return;
+			} else {
+			/*
 			if (!$objV->save($this->_toolid, $version) ) {
 				$this->_error=$objV->getError();
 				return;
 			} else {
+			*/
 				// get updated tool status
 				$obj->getToolStatus($this->_toolid, $this->_option, $status, $version, $ldap);
 					
@@ -2972,6 +3016,19 @@ class ContribtoolController extends JObject
 			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
 			$this->attachments( $pid );
 		}
+		
+		// get admin priviliges
+		$this->authorize_admin();
+		
+		// get tool object 		
+		$obj = new Tool($database);
+		$this->_toolid = $obj->getToolIdFromResource($pid);
+		
+		// make sure user is authorized to go further
+		if(!$this->check_access($this->_toolid, $juser, $this->_admin) ) { 
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return; 
+		}
 
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
@@ -3001,6 +3058,7 @@ class ContribtoolController extends JObject
 		$row->publish_up = date( 'Y-m-d H:i:s' );
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone = 0;
+		$row->path = ''; // make sure no path is specified just yet
 
 		// Check content
 		if (!$row->check()) {
@@ -3038,59 +3096,9 @@ class ContribtoolController extends JObject
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
 			$this->setError( JText::_('ERROR_UPLOADING') );
 		} else {
-			// File was uploaded
-			
+			// File was uploaded			
 			// Check the file type
 			$row->type = $this->_getChildType($file['name']);
-			
-			// If it's a package (ZIP, etc) ...
-			if ($row->type == 38) {
-				/*jimport('joomla.filesystem.archive');
-				
-				// Extract the files
-				if (!JArchive::extract( $file_to_unzip, $path )) {
-					$this->setError( JText::_('Could not extract package.') );
-				}*/
-				require_once( JPATH_ROOT.DS.'administrator'.DS.'includes'.DS.'pcl'.DS.'pclzip.lib.php' );
-		
-				if (!extension_loaded('zlib')) {
-					$this->setError( JText::_('ZLIB_PACKAGE_REQUIRED') );
-				} else {
-					// Check the table of contents and look for a Breeze viewer.swf file
-					$isbreeze = 0;
-					
-					$zip = new PclZip( $path.DS.$file['name'] );
-						
-					$file_to_unzip = preg_replace('/(.+)\..*$/', '$1', $path.DS.$file['name']);
-					
-					if (($list = $zip->listContent()) == 0) {
-						die('Error: '.$zip->errorInfo(true));
-					}
-					
-					for ($i=0; $i<sizeof($list); $i++) 
-					{
-						if (substr($list[$i]['filename'], strlen($list[$i]['filename']) - 10, strlen($list[$i]['filename'])) == 'viewer.swf') {
-							$isbreeze = $list[$i]['filename'];
-							break;
-						}
-					}
-
-					// It IS a breeze presentation
-					if ($isbreeze) {
-						// unzip the file
-						$do = $zip->extract($file_path);
-						if (!$do) {
-							$this->setError( JText::_( 'UNABLE_TO_EXTRACT_PACKAGE' ) );
-						} else {
-							$row->path = $listdir.DS.$isbreeze;
-
-							@unlink( $path.DS.$file['name'] );
-						}
-						$row->type = $this->_getChildType($row->path);
-						$row->title = $isbreeze;
-					}
-				}
-			}
 		}
 		
 		if (!$row->path) {
@@ -3139,12 +3147,26 @@ class ContribtoolController extends JObject
 	protected function attach_delete() 
 	{
 		$database =& JFactory::getDBO();
+		$juser =& JFactory::getUser();
 		
 		// Incoming parent ID
 		$pid = JRequest::getInt( 'pid', 0 );
 		if (!$pid) {
 			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
 			$this->attachments( $pid );
+		}
+		
+		// get admin priviliges
+		$this->authorize_admin();
+		
+		// get tool object 		
+		$obj = new Tool($database);
+		$this->_toolid = $obj->getToolIdFromResource($pid);
+		
+		// make sure user is authorized to go further
+		if(!$this->check_access($this->_toolid, $juser, $this->_admin) ) { 
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return; 
 		}
 		
 		// Incoming child ID
@@ -3160,14 +3182,15 @@ class ContribtoolController extends JObject
 		$row = new ResourcesResource( $database );
 		$row->load( $id );
 		
-		// Get path and delete directories
-		if ($row->path != '') {
-			$listdir = $row->path;
-		} else {
-			// No stored path, derive from created date
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );		
-			$listdir = ResourcesHtml::build_path( $row->created, $id, '' );
+		// Check for stored file
+		if ($row->path == '') {
+			$this->setError( JText::_('Error: file path not found.') );
+			$this->attachments( $pid );
 		}
+		
+		// Get resource path
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );		
+		$listdir = ResourcesHtml::build_path( $row->created, $id, '');
 		
 		// Build the path
 		$path = $this->_buildUploadPath( $listdir, '' );
@@ -3180,14 +3203,14 @@ class ContribtoolController extends JObject
 			if (!JFolder::delete($path)) {
 				$this->setError( JText::_('UNABLE_TO_DELETE_DIRECTORY') );
 			}
+			
+			// Delete associations to the resource
+			$row->deleteExistence();
+		
+			// Delete resource
+			$row->delete();
 		}
 		
-		// Delete associations to the resource
-		$row->deleteExistence();
-	
-		// Delete resource
-		$row->delete();
-
 		// Push through to the attachments view
 		$this->attachments( $pid );
 	}
@@ -3236,6 +3259,7 @@ class ContribtoolController extends JObject
 	protected function ss_reorder() 
 	{
 		$database =& JFactory::getDBO();
+		$juser =& JFactory::getUser();
 		
 		// Incoming parent ID
 		$pid = JRequest::getInt( 'pid', 0 );
@@ -3245,6 +3269,19 @@ class ContribtoolController extends JObject
 			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
 			$this->screenshots( $pid, $version );
 			return;
+		}
+		
+		// get admin priviliges
+		$this->authorize_admin();
+		
+		// get tool object 		
+		$obj = new Tool($database);
+		$this->_toolid = $obj->getToolIdFromResource($pid);
+		
+		// make sure user is authorized to go further
+		if(!$this->check_access($this->_toolid, $juser, $this->_admin) ) { 
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return; 
 		}
 		
 		// Get version id	
@@ -3265,8 +3302,7 @@ class ContribtoolController extends JObject
 		
 		$neworder_toleft = ($order_toleft != 0) ? $order_toleft - 1 : 0;
 		$neworder_toright = $order_toright + 1;
-		
-		
+				
 		// Instantiate a new screenshot object
 		$ss = new ResourceScreenshot($database);
 		$shot1 = $ss->getScreenshot($file_toright, $pid, $vid);
@@ -4203,13 +4239,6 @@ class ContribtoolController extends JObject
 					$this->setError( JText::sprintf('UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
 					continue;
 				}
-
-				$uid = $juser->get('id');
-		
-				if (!$uid) {
-					$this->setError( JText::sprintf('UNABLE_TO_FIND_USER_ACCOUNT', $cid) );
-					continue;
-				}
 				
 				// Check if they're already linked to this resource
 				$rcc = new ResourcesContributor( $database );
@@ -4222,7 +4251,8 @@ class ContribtoolController extends JObject
 				$this->_author_check($uid);
 				
 				// New record
-				$xprofile = XProfile::getInstance($juser->get('id'));
+				$xprofile = new XProfile();
+				$xprofile->load( $uid );
 				$rcc->subtable = 'resources';
 				$rcc->subid = $id;
 				$rcc->authorid = $uid;
@@ -4386,7 +4416,8 @@ class ContribtoolController extends JObject
 		}
 		
 		// Get a list of all existing contributors
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'members.class.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
 		
 		// Initiate a members object
 		$mp = new MembersProfile( $database );

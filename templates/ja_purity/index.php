@@ -64,7 +64,7 @@ var excludeModules='<?php echo $tmpTools->getParam('excludeModules'); ?>';
 <link rel="stylesheet" href="<?php echo $tmpTools->templateurl(); ?>/styles/elements/<?php echo $tmpTools->getParam('theme_elements'); ?>/style.css" type="text/css" />
 <?php endif; ?>
 
-<!--[if gte IE 7.0]>
+<!--[if IE 7.0]>
 <style type="text/css">
 .clearfix {display: inline-block;}
 </style>

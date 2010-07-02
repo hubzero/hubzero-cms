@@ -53,7 +53,7 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 					$auth = preg_replace( '/{{(.*?)}}/s', '', $auth );
 					if ($aid) {
 						$app =& JFactory::getApplication();
-							$a[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$aid).'">'.trim($auth).'</a>';
+							$a[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$aid).'">'.htmlentities(trim($auth),ENT_COMPAT,'UTF-8').'</a>';
 					} else {
 						$a[] = trim($auth);
 					}
@@ -62,8 +62,8 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 				}
 			}
 			$row->author = implode('; ', $a);
-	
-			$html .= stripslashes($row->author);
+
+			$html .= ($highlight) ? Hubzero_View_Helper_Html::str_highlight(stripslashes($row->author), array($highlight)) : stripslashes($row->author);
 		} elseif ($this->keyExistsOrIsNotEmpty('editor',$row)) {
 			$html .= stripslashes($row->editor);
 		}
@@ -76,7 +76,9 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 			if (!$row->url) {
 				$html .= ', "'.stripslashes($row->title);
 			} else {
-				$html .= ', "<a href="'.$this->cleanUrl($row->url).'">'.Hubzero_View_Helper_Html::str_highlight(stripslashes($row->title), array($highlight)).'</a>';
+				$html .= ', "<a href="'.$this->cleanUrl($row->url).'">';
+				$html .= ($highlight) ? Hubzero_View_Helper_Html::str_highlight(stripslashes($row->title), array($highlight)) : stripslashes($row->title);
+				$html .= '</a>';
 			}
 		}
 		if ($this->keyExistsOrIsNotEmpty('journal',$row) 
@@ -86,7 +88,9 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 		}
 		$html .= '"';
 		if ($this->keyExistsOrIsNotEmpty('journal',$row)) {
-			$html .= ' <i>'.Hubzero_View_Helper_Html::str_highlight(stripslashes($row->journal), array($highlight)).'</i>';
+			$html .= ' <i>';
+			$html .= ($highlight) ? Hubzero_View_Helper_Html::str_highlight(stripslashes($row->journal), array($highlight)) : stripslashes($row->journal);
+			$html .= '</i>';
 		} elseif ($this->keyExistsOrIsNotEmpty('booktitle',$row)) {
 			$html .= ' <i>'.stripslashes($row->booktitle).'</i>';
 		}
@@ -158,6 +162,7 @@ class CitationsFormatAPA extends CitationsFormatAbstract
 			$html .= ' (DOI: '.$row->doi.')';
 		}
 		$html  = $this->grammarCheck( $html, '.' );
+		$html .= ($row->search_string) ? ' Cited by: <a rel="external" href="'.$row->search_string.'">'.$row->sec_cnt.'</a>' : ' Cited by: '.$row->sec_cnt;
 		$html .= '</p>'."\n";
 
 		return $html;

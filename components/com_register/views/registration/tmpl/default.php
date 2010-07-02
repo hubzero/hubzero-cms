@@ -41,6 +41,20 @@ if (!defined("n")) {
 
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
 	}
+	
+	//-----------
+	
+	function obfuscate( $email )
+	{
+		$length = strlen($email);
+		$obfuscatedEmail = '';
+		for ($i = 0; $i < $length; $i++) 
+		{
+			$obfuscatedEmail .= '&#'. ord($email[$i]) .';';
+		}
+		
+		return $obfuscatedEmail;
+	}
 
 	//-----------
 
@@ -310,12 +324,13 @@ if (!defined("n")) {
 		
 			if ($this->registrationEmail != REG_HIDE)
 			{
+				$jconfig =& JFactory::getConfig();
 				if ($this->task == 'proxycreate') {
-					$html .= t.t.registration_warning('Important! The user <strong>must</strong> confirm receipt of confirmation e-mail in order to complete registration.');
+					$html .= t.t.registration_warning('Important! The user <strong>must</strong> confirm receipt of confirmation e-mail from '.obfuscate($jconfig->getValue('config.mailfrom')).' in order to complete registration.');
 				} else if ($this->task == 'create') {
-					$html .= t.t.registration_warning('Important! You <strong>must</strong> confirm receipt of confirmation e-mail in order to complete registration.');
+					$html .= t.t.registration_warning('Important! You <strong>must</strong> confirm receipt of confirmation e-mail from '.obfuscate($jconfig->getValue('config.mailfrom')).' in order to complete registration.');
 				} else {
-					$html .= t.t.registration_warning('Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail in order to re-activate your account.');
+					$html .= t.t.registration_warning('Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from '.obfuscate($jconfig->getValue('config.mailfrom')).' in order to re-activate your account.');
 				}
 			}
 		}
@@ -882,7 +897,7 @@ if (!defined("n")) {
 			}
 	
 			$html .= t.t.'<fieldset'.$fieldclass.'>'.n;
-			$html .= t.t.t.'<legend>Hispanic or Latino (<a class="popup 700x500" href="/components/com_myaccount/raceethnic.html">more information</a>) ';
+			$html .= t.t.t.'<legend>Hispanic or Latino (<a class="popup 700x500" href="/register/raceethnic">more information</a>) ';
 	
 			$html .= $required;
 			$html .= '</legend>'.n;
@@ -939,7 +954,7 @@ if (!defined("n")) {
 				$this->registration['race'] = array(trim($this->registration['race']));
 
 			$html .= t.t.'<fieldset'.$fieldclass.'>'.n;
-			$html .= t.t.t.'<legend>U.S. Citizens and Permanent Residents Only (<a class="popup 675x678" href="/components/com_myaccount/raceethnic.html">more information</a>) '.$required.'</legend>'.n;
+			$html .= t.t.t.'<legend>U.S. Citizens and Permanent Residents Only (<a class="popup 675x678" href="/register/raceethnic">more information</a>) '.$required.'</legend>'.n;
 			$html .= t.t.t.'<p class="hint">'.JText::_('Select one or more that apply.').'</p>'.n;
 			
 			$html .= t.t.t.'<label><input type="checkbox" class="option" name="racenativeamerican" id="racenativeamerican" value="nativeamerican" ';

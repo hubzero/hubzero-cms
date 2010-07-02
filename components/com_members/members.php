@@ -37,7 +37,8 @@ if ($config->getValue('config.debug')) {
 jimport('joomla.application.component.helper');
 jimport('joomla.application.component.view');
 
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'members.class.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'profile.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'association.php' );
 include_once( JPATH_COMPONENT.DS.'members.imghandler.php' );
 include_once( JPATH_COMPONENT.DS.'members.tags.php' );
 include_once( JPATH_COMPONENT.DS.'members.html.php' );

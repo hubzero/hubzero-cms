@@ -34,13 +34,13 @@ if (!strstr($sef,'http')) {
 	}
 }
 
-$message  = JText::_('COM_ANSWERS_EMAIL_AUTO_RENERATED')."\n";
+$message  = JText::_('COM_ANSWERS_EMAIL_AUTO_GENERATED')."\n";
 $message .= '----------------------------'."\n";
 $message .= strtoupper(JText::_('COM_ANSWERS_QUESTION')).' #'.$this->question->id."\n";
 $message .= strtoupper(JText::_('COM_ANSWERS_SUMMARY')).': '.$this->question->subject."\n";
 $message .= strtoupper(JText::_('COM_ANSWERS_CREATED')).': '.$this->question->created."\n";
 $message .= '----------------------------'."\n\n";
-$message .= 'A response has been posted to Question #'.$this->row->id.' by: ';
+$message .= 'A response has been posted to Question #'.$this->question->id.' by: ';
 $message .= ($this->row->anonymous) ? 'Anonymous'."\n" : $this->juser->get('name')."\n";
 $message .= 'Response created: '.$this->row->created."\n";
 $message .= 'Response: '."\n\n";

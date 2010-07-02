@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: html.php 12350 2009-06-24 13:42:16Z ian $
+ * @version		$Id: html.php 13341 2009-10-27 03:03:54Z ian $
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @copyright	Copyright (C) 2005 - 2007 Open Source Matters. All rights reserved.
@@ -11,7 +11,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
-
+defined('JPATH_BASE') or die();
 /**
  * Utility class for all HTML drawing classes
  *
@@ -82,8 +82,12 @@ class JHTML
 
 		if (is_callable( array( $className, $func ) ))
 		{
-			$args = func_get_args();
-			array_shift( $args );
+			$temp = func_get_args();
+			array_shift( $temp );
+			$args = array();
+			foreach ($temp as $k => $v) {
+			    $args[] = &$temp[$k];
+			}
 			return call_user_func_array( array( $className, $func ), $args );
 		}
 		else

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: help.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: help.php 13341 2009-10-27 03:03:54Z ian $
 * @package		Joomla.Framework
 * @subpackage	Language
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -11,7 +11,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
-
+defined('JPATH_BASE') or die();
 /**
  * Help system class
  *
@@ -39,7 +39,7 @@ class JHelp
 
 		if ($useComponent)
 		{
-			if (!eregi( '\.html$', $ref )) {
+			if (!preg_match( '#\.html$#i', $ref )) {
 				$ref = $ref . '.html';
 			}
 
@@ -77,7 +77,7 @@ class JHelp
 			// Included html help files
 			$helpURL = 'help/' .$lang->getTag() .'/';
 
-			if (!eregi( '\.html$', $ref )) {
+			if (!preg_match( '#\.html$#i', $ref )) {
 				$ref = $ref . '.html';
 			}
 

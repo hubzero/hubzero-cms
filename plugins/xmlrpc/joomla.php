@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: joomla.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version		$Id: joomla.php 12694 2009-09-11 21:03:02Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -102,7 +102,7 @@ class plgXMLRPCJoomlaServices
 		foreach ($results as $i=>$rows)
 		{
 			foreach ($rows as $j=>$row) {
-				$results[$i][$j]->href = eregi('^(http|https)://', $row->href) ? $row->href : JURI::root().'/'.$row->href;
+				$results[$i][$j]->href = preg_match('#^(http|https)://#i', $row->href) ? $row->href : JURI::root().'/'.$row->href;
 				$results[$i][$j]->text = SearchHelper::prepareSearchContent( $row->text, 200, $searchword);
 			}
 		}

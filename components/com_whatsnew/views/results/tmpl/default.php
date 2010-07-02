@@ -177,6 +177,7 @@ foreach ($this->results as $category)
 		}
 		
 		$num = ($total > 1) ? JText::sprintf('COM_WHATSNEW_RESULTS', $total) : JText::sprintf('COM_WHATSNEW_RESULT', $total);
+		$this->total = $num;
 	
 		// A function for category specific items that may be needed
 		// Check if a function exist (using old style plugins)

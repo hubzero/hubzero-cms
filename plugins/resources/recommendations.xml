@@ -31,11 +31,7 @@
 		<language tag="en-GB">en-GB.plg_resources_recommendations.ini</language>
 	</languages>
 	<params>
-		<param name="webservice" type="text" size="25" default="http://129.105.36.83:8080/services/recommenderService?wsdl" label="Web Service" description="The web service to retrieve records from"/>
-		<param name="host" type="text" size="25" default="" label="WS host" description="The web service host"/>
-		<param name="port" type="text" size="25" default="" label="WS port" description="The web service port"/>
-		<param name="username" type="text" size="25" default="" label="WS username" description="The web service username"/>
-		<param name="password" type="text" size="25" default="" label="WS password" description="The web service password"/>
+		<param name="threshold" type="text" size="5" default="0.21" label="Threshold" description="The threshold for returning results"/>
 		<param name="display_limit" type="text" size="5" default="10" label="Display Limit" description="Number of items to return"/>
 	</params>
 </install>

@@ -84,7 +84,9 @@ class plgGroupsForum extends JPlugin
 			return $arr;
 		}
 		
-		ximport('xforum');
+		//ximport('xforum');
+		include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'forum'.DS.'forum.helper.php');
+		include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'forum'.DS.'forum.class.php');
 		
 		$this->group = $group;
 		$this->option = $option;
@@ -109,6 +111,9 @@ class plgGroupsForum extends JPlugin
 					$action = 'topic';
 				}
 			}
+			
+			ximport('xdocument');
+			XDocument::addPluginStylesheet('groups', 'forum');
 			
 			switch ($action) 
 			{
@@ -332,6 +337,17 @@ class plgGroupsForum extends JPlugin
 	
 	protected function deletetopic() 
 	{
+		// Is the user logged in?
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$this->setError( JText::_('GROUPS_LOGIN_NOTICE') );
+			return $this->topics();
+		}
+		
+		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
+			return $this->topics();
+		}
+		
 		// Incoming
 		$id = JRequest::getInt( 'topic', 0 );
 		if (!$id) {
@@ -466,17 +482,20 @@ class plgGroupsForum extends JPlugin
 		
 		$database =& JFactory::getDBO();
 		
+		$incoming = JRequest::getVar('topic',array(),'post');
+		
 		$row = new XForum( $database );
-		if (!$row->bind( $_POST )) {
+		if (!$row->bind( $incoming )) {
 			$this->setError( $row->getError() );
 			exit();
 		}
 		
-		$row->id = JRequest::getInt( 'topic_id', 0 );
-		
 		if (!$row->id) {
 			$row->created = date( 'Y-m-d H:i:s', time() );  // use gmdate() ?
 			$row->created_by = $juser->get('id');
+		} else {
+			$row->modified = date( 'Y-m-d H:i:s', time() );  // use gmdate() ?
+			$row->modified_by = $juser->get('id');
 		}
 		
 		if (trim($row->topic) == '') {
@@ -509,7 +528,8 @@ class plgGroupsForum extends JPlugin
 	
 	public function onGroupDelete( $group ) 
 	{
-		ximport('xforum');
+		//ximport('xforum');
+		include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'forum'.DS.'forum.class.php');
 		$database =& JFactory::getDBO();
 		
 		$results = $this->getForumIDs( $group->get('cn') );

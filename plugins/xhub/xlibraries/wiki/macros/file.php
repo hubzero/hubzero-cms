@@ -65,9 +65,14 @@ class FileMacro extends WikiMacro
 			$attach->load( $id );
 			
 			// Did we get a result from the database?
-			if ($attach->filename && is_file(JPATH_ROOT.$config->filepath.DS.$attach->pageid.DS.$attach->filename)) {
+			$fp  = JPATH_ROOT.$config->filepath;
+			$fp .= ($attach->pageid) ? DS.$attach->pageid : ''; 
+			$fp .= DS.$attach->filename;
+			if ($attach->filename && is_file($fp)) {
 				$xhub =& XFactory::getHub();
-				$link = $xhub->getCfg('hubLongURL').$config->filepath.DS.$attach->pageid.DS.$attach->filename;
+				$link  = $xhub->getCfg('hubLongURL').$config->filepath;
+				$link .= ($attach->pageid) ? DS.$attach->pageid : ''; 
+				$link .= DS.$attach->filename;
 				$desc = ($attach->description) ? stripslashes($attach->description) : $attach->filename;
 
 				$bits = explode('.',$attach->filename);
@@ -87,9 +92,14 @@ class FileMacro extends WikiMacro
 			}
 		} else {
 			// Did we get a result from the database?
-			if (is_file(JPATH_ROOT.$config->filepath.DS.$this->pageid.DS.$et)) {
+			$fp  = JPATH_ROOT.$config->filepath;
+			$fp .= ($this->pageid) ? DS.$this->pageid : '';
+			$fp .= DS.$et;
+			if (is_file($fp)) {
 				$xhub =& XFactory::getHub();
-				$link = $xhub->getCfg('hubLongURL').$config->filepath.DS.$this->pageid.DS.$et;
+				$link  = $xhub->getCfg('hubLongURL').$config->filepath;
+				$link .= ($this->pageid) ? DS.$this->pageid : ''; 
+				$link .= DS.$et;
 				$desc = $et;
 
 				$bits = explode('.',$et);

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 10882 2008-08-31 17:55:14Z willebil $
+ * @version		$Id: view.php 13237 2009-10-20 01:00:39Z ian $
  * @package		Joomla
  * @subpackage	Config
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -52,7 +52,7 @@ class ConfigApplicationView
 		jimport('joomla.client.helper');
 		$ftp =& JClientHelper::setCredentialsFromRequest('ftp');
 		?>
-		<form action="index.php" method="post" name="adminForm">
+		<form action="index.php" method="post" name="adminForm" autocomplete="off">
 		<?php if ($ftp) {
 			require_once($tmplpath.DS.'ftp.php');
 		} ?>

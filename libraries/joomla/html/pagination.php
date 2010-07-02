@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: pagination.php 10707 2008-08-21 09:52:47Z eddieajau $
+ * @version		$Id: pagination.php 13242 2009-10-20 03:54:55Z ian $
  * @package		Joomla.Framework
  * @subpackage	HTML
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -148,7 +148,7 @@ class JPagination extends JObject
 		// Initialize variables
 		$html = null;
 		if ($this->get('pages.total') > 1) {
-			$html .= JText::_('Page')." ".$this->get('pages.current')." ".JText::_('of')." ".$this->get('pages.total');
+			$html .= JText::sprintf('JPAGE_CURRENT_OF_TOTAL', $this->get('pages.current'), $this->get('pages.total'));
 		}
 		return $html;
 	}

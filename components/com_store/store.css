@@ -219,6 +219,7 @@
 	
 	#hubForm h3 { padding: 0.5em 0 0.5em 0;  }
 	#hubForm fieldset { width:75%;  }
+	.loginform #hubForm fieldset { width:50%;  }
 	.hint { padding-bottom:0; margin-bottom:0; }
 	pre { margin: 1.5em 0 0 0;  }
 	.yes { color:green;}

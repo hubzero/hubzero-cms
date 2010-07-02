@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: admin.admin.html.php 11300 2008-11-22 02:19:40Z ian $
+ * @version		$Id: admin.admin.html.php 12694 2009-09-11 21:03:02Z ian $
  * @package		Joomla
  * @subpackage	Admin
  * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
@@ -145,7 +145,7 @@ class HTML_admin_misc
 			$langTag = 'en-GB';		// use english as fallback
 		}
 
-		if (!eregi( '\.html$', $page )) {
+		if (!preg_match( '#\.html$#i', $page )) {
 			$page .= '.xml';
 		}
 		?>

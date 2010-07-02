@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div>
 <?php if (!$this->config->get('allow_customization')) { ?>

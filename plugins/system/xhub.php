@@ -430,6 +430,17 @@ class XRouter extends JRouter
 	
 		//Set the variables
 
+		if (!empty($vars['option']))
+			apache_note('component',$vars['option']);
+		if (!empty($vars['view']))
+			apache_note('view',$vars['view']);
+		if (!empty($vars['task']))
+			apache_note('task',$vars['task']);
+		if (!empty($vars['action']))
+			apache_note('action',$vars['action']);
+		if (!empty($vars['id']))
+			apache_note('action',$vars['id']);
+
 		return $this->_vars;
 	}
 
@@ -468,8 +479,8 @@ class XRouter extends JRouter
 			$parts = $function($query);
 
 			// encode the route segments
-			if ($component == 'com_content')
-				$parts = $this->_encodeSegments($parts);
+			//if ($component == 'com_content')
+				//$parts = $this->_encodeSegments($parts);
 
 			$result = implode('/', $parts);
 			$tmp = ($result != "") ? '/'.$result : '';
@@ -485,6 +496,9 @@ class XRouter extends JRouter
 			if (!empty($item) && $query['option'] == $item->component) {
 				$tmp = !empty($tmp) ? $item->route.'/'.$tmp : $item->route;
 			}
+			$tmp = str_replace('default//','',$tmp);
+			$bits = split(':',$tmp);
+			$tmp = end($bits);
 		}
 		else
 		{
@@ -729,7 +743,7 @@ class XRouter extends JRouter
 			array_shift($segments);
 	
 		//decode the route segments
-		$segments = $this->_decodeSegments($segments);
+		//$segments = $this->_decodeSegments($segments);
 		$count = count($segments);
 		
 		if ($count > 3) {
@@ -944,7 +958,7 @@ class plgSystemXhub extends JPlugin
 
 		// Get the session object
 		$session =& JFactory::getSession();
-
+		$sid = $session->getId();
 		$start = $session->get('session.timer.start');
 		$now = $session->get('session.timer.now');
 		$last = $session->get('session.timer.last');
@@ -954,37 +968,29 @@ class plgSystemXhub extends JPlugin
 		$lifetime = $app->getCfg('lifetime') * 60;
 		$expired = ($now - $last) >= $lifetime;
 		$newsession = ($start == $now) && ($start == $last);
-		$knownsession = !empty($_COOKIE[$sname]) && $_COOKIE[$sname] == $session->getId();
+		$knownsession = !empty($_COOKIE[$sname]) && $_COOKIE[$sname] == $sid;
 
 		$table = & JTable::getInstance('session');
-		$table->load( $session->getId() );
+		$table->load($sid);
 		XSessionHelper::purge();
 
-		/*
-		if (!empty($_COOKIE[$sname]) && $_COOKIE[$sname] != $session->getId())
-		{
-			echo "DETECTED LOGIN SESSION CHANGE.<br>";
-			echo "OLD SESSION: $_COOKIE[$sname].<br>";
-			echo "NEW SESSION: " . $session->getId() . "<br>";
-		}
-		*/
+		$myuser = $session->get('user');
+		$jid = (is_object($myuser)) ? $myuser->get('id') : '0';
 
-		/*
-		if (($newsession && $knownsession) || $expired) // joomla started a new session or session is stale
+		if (empty($jid))
 		{
-			if (empty($table->data)) {
-				//$table->delete(); // delete the expired or improperly restarted session
-				//session_regenerate_id();
-				//unset($_COOKIE[$sname]); // make this appear as a new session below
-				//$xtable->ip = $_SERVER['REMOTE_ADDR'];
-				//$table->insert($session->getId(),0);
-				//$xtable->insert($session->getId(),0);
-				XSessionHelper::set_ip($session->getId(), $_SERVER['REMOTE_ADDR']);
-			} 
+			apache_note('userid','-');
+			apache_note('auth','-');
 		}
-		*/
+		else
+		{
+			apache_note('userid',$jid);
+			apache_note('auth','session');
+		}
 
-		if ( empty($_COOKIE[$sname]) ) // new session, log it
+		apache_note('jsession',$sid);
+
+		if ( empty($jid) )
 		{
 			ximport('xlog');
 			jimport('joomla.utilities.utility');
@@ -1000,19 +1006,18 @@ class plgSystemXhub extends JPlugin
 				$crypt = new JSimpleCrypt($key);
 				$str = $crypt->decrypt($str);
 				$user = unserialize($str);
+				// We should store userid not username in cookie, will save us a database query here
 				$username = $user['username'];
+				$myuser = JUser::getInstance($username);
+				if (is_object($myuser))
+				{
+					apache_note('userid',$myuser->get('id'));
+					apache_note('auth','cookie');
+                    $authlog = XFactory::getAuthLogger();
+                    $authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+				}
 			}
-
-			$authlog = XFactory::getAuthLogger();
-			$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
 		}
-
-		// drop/refresh an xhub session tracker cookie
-	
-		// jimport('joomla.utilities.utility');
-		// setcookie( JUtility::getHash('XHUB_TRACKER'), $session->getId(), $lifetime, '/' );
-	
-		//setcookie('b3192990284393a84bff56f22eb7042d', $session->getId(), $lifetime, '/' );
 
 		XSessionHelper::set_ip($session->getId(), $_SERVER['REMOTE_ADDR']);
 	}
@@ -1021,6 +1026,7 @@ class plgSystemXhub extends JPlugin
 	{
 		$authlog = XFactory::getAuthLogger();
 		$authlog->logAuth( $_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
+		apache_note('auth','invalid');
 
 		return true; /* we expect the Joomla user plugin to handle the rest */
 	}

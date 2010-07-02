@@ -158,7 +158,12 @@ class plgTagsMembers extends JPlugin
 			if (substr($thumb, -1, 1) == DS) {
 				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
 			}
-			$thumb .= DS.plgTagsMembers::niceidformat($row->id).DS.$row->picture;
+			if ($row->id < 0) {
+				$id = abs($row->id);
+				$thumb .= DS.'n'.plgXSearchMembers::niceidformat($id).DS.$row->picture;
+			} else {
+				$thumb .= DS.plgTagsMembers::niceidformat($row->id).DS.$row->picture;
+			}
 		} else {
 			$thumb = $config->get('defaultpic');
 			if (substr($thumb, 0, 1) != DS) {

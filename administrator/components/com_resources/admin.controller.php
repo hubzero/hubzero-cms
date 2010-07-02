@@ -783,12 +783,14 @@ class ResourcesController extends JObject
 			$filters['authorized'] = 'admin';
 			$filters['fields'] = array('cn','description','published','gidNumber','type');
 			$filters['type'] = 'hub';
+			$filters['sortby'] = 'description';
 			$groups = Hubzero_Group::find($filters);
 
 			// Build <select> of groups
 			$lists['groups'] = ResourcesHtml::selectGroup($groups, $row->group_owner);
 
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'members.class.php' );
+			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
+			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
 
 			// Get all contributors
 			$mp = new MembersProfile( $database );
@@ -1607,6 +1609,17 @@ class ResourcesController extends JObject
 			}
 			$field = implode( "\n", $txta );
 			$row->customFields = $field;
+		}
+	
+		// Get parameters
+		$params = JRequest::getVar( 'params', '', 'post' );
+		if (is_array( $params )) {
+			$txt = array();
+			foreach ( $params as $k=>$v) 
+			{
+				$txt[] = "$k=$v";
+			}
+			$row->params = implode( "\n", $txt );
 		}
 	
 		// Check content

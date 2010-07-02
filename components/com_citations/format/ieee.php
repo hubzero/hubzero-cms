@@ -63,7 +63,7 @@ class CitationsFormatIEEE extends CitationsFormatAbstract
 			}
 			$row->author = implode('; ', $a);
 	
-			$html .= stripslashes($row->author);
+			$html .= Hubzero_View_Helper_Html::str_highlight(stripslashes($row->author), array($highlight));
 		} elseif ($this->keyExistsOrIsNotEmpty('editor',$row)) {
 			$html .= stripslashes($row->editor);
 		}

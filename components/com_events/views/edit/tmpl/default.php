@@ -139,12 +139,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<fieldset>
     		<h3><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REPEATTYPE'); ?></h3>
 
-			<table>
+			<label>
+				<input class="option" id="reccurtype-no" name="reccurtype" type="radio" value="0" <?php if ($this->row->reccurtype == 0) { echo 'checked="checked"'; } ?> /> 
+				<strong><?php echo JText::_('Do not repeat'); ?></strong>
+			</label>
+			
+			<fieldset>
+				<legend><strong><?php echo JText::_('Repeat:'); ?></strong></legend>
+			<table summary="<?php echo JText::_('Repeat type'); ?>">
 				<tbody>
 					<tr>
 						<th><?php echo JText::_('EVENTS_CAL_LANG_REP_DAY'); ?></th>
 						<td colspan="2" class="frm_td_bydays">
-							<label class="option"><input class="option" id="reccurtype0" name="reccurtype" type="radio" value="0" /><?php echo JText::_('EVENTS_CAL_LANG_ALLDAYS'); ?></label>
+							<label class="option"><input class="option" id="reccurtype0" name="reccurtype" type="radio" value="0" /> <?php echo JText::_('EVENTS_CAL_LANG_ALLDAYS'); ?></label>
 						</td>
 					</tr>
 					<tr>
@@ -180,8 +187,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<td class="frm_td_byweeks"><em><?php echo JText::_('EVENTS_CAL_LANG_EVENT_WEEKOPT'); ?></em></td>
 						<td class="frm_td_byweeks">
 							<?php echo EventsHtml::buildWeeksCheck($this->row->reccurweeks, $arg); ?>
-							<label class="option"><input class="option" id="cb_wn6" name="reccurweekss" type="radio" value="pair" <?php if ($this->row->reccurweeks == 'pair') { echo 'checked="checked"'; } else { echo 'disabled="disabled"'; } ?> /><?php echo JText::_('EVENTS_CAL_LANG_REP_WEEKPAIR'); ?></label><br />
-							<label class="option"><input class="option" id="cb_wn7" name="reccurweekss" type="radio" value="impair" <?php if ($this->row->reccurweeks == 'impair') { echo 'checked="checked"'; } else { if ($this->row->reccurtype != 1 && $this->row->reccurtype != 2) { echo 'disabled="disabled"'; } } ?> /><?php echo JText::_('EVENTS_CAL_LANG_REP_WEEKIMPAIR'); ?></label>
+							<label class="option"><input class="option" id="cb_wn6" name="reccurweekss" type="radio" value="pair" <?php if ($this->row->reccurweeks == 'pair') { echo 'checked="checked"'; } else { echo 'disabled="disabled"'; } ?> /> <?php echo JText::_('EVENTS_CAL_LANG_REP_WEEKPAIR'); ?></label><br />
+							<label class="option"><input class="option" id="cb_wn7" name="reccurweekss" type="radio" value="impair" <?php if ($this->row->reccurweeks == 'impair') { echo 'checked="checked"'; } else { if ($this->row->reccurtype != 1 && $this->row->reccurtype != 2) { echo 'disabled="disabled"'; } } ?> /> <?php echo JText::_('EVENTS_CAL_LANG_REP_WEEKIMPAIR'); ?></label>
 						</td>
 					</tr>
 					<tr>
@@ -200,7 +207,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2" class="frm_td_bymonth">
+						<td class="frm_td_bymonth">
 							<label class="option"><input class="option" id="reccurtype4" name="reccurtype" type="radio" value="4" <?php if ($this->row->reccurtype == 4) { echo 'checked="checked"'; } ?> /><?php echo JText::_('EVENTS_CAL_LANG_EACH').' '.JText::_('EVENTS_CAL_LANG_ENDMONTH'); ?></label>
 						</td>
 					</tr>
@@ -221,6 +228,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					</tr>
 				</tbody>
             </table>
+			</fieldset>
 		</fieldset><div class="clear"></div>
 <?php } ?>
 		<input type="hidden" name="email" value="<?php echo stripslashes($this->row->email); ?>" />
@@ -231,6 +239,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<input type="hidden" name="created_by_alias" value="<?php echo $this->row->created_by_alias; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="save" />
-		<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+		<input type="hidden" name="id" id="event-id" value="<?php echo $this->row->id; ?>" />
 	</form>
 </div>
