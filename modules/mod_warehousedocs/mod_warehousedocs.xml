@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+    <name>Warehouse Documents</name>
+    <author>Gemez Marshall</author>
+    <version>1.5.0</version>
+    <creationDate>03/31/2010</creationDate>
+    <description>Show the documents of an entity in a project.</description>
+	<files>
+		<filename>mod_warehousedocs.xml</filename>
+		<filename module="mod_warehousedocs">mod_warehousedocs.php</filename>
+		<filename>index.html</filename>
+        	<filename>helper.php</filename>
+        	<filename>tmpl/default.php</filename>
+        	<filename>tmpl/index.html</filename>
+	</files>
+	<params>
+    </params>
+</install>

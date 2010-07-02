@@ -1,0 +1,34 @@
+<?php
+/**
+* @version		$Id: helper.php 11668 2009-03-08 20:33:38Z willebil $
+* @package		Joomla
+* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @license		GNU/GPL, see LICENSE.php
+* Joomla! is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*/
+
+// no direct access
+defined('_JEXEC') or die('Restricted access');
+
+class modWarehouseDocsHelper{
+
+  /**
+   * gets a summary of a documents for a particular entity
+   */
+  public function getDocumentSummary($p_strPath, $p_strIncludedFolders){
+	return DataFilePeer::getDocumentSummary($p_strPath, $p_strIncludedFolders);
+  }
+  
+  /**
+   * gets the documents under a particular path
+   * @param $p_strPath - parent file path
+   */
+  public function findByDirectory($p_strPath){
+  	return DataFilePeer::findByDirectory($p_strPath);
+  }
+  
+}
