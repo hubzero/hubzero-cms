@@ -131,7 +131,18 @@ if (typeof(Fx) === 'undefined') {
 					}
 				}
 			});
-			
+
+			// NEES' version of close button, should probably revert to hubzero default
+			this.closetab = $('closethis');
+			if(this.closetab) {
+				this.closetab.addEvent('click', function(event){
+					//event.stop();
+					fa.toggle();
+					this.open = false;
+					return false;
+				});
+			}
+
 			var res = new Element('div', {
 				id: 'help-btn-close',
 				alt: 'Close',
