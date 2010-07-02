@@ -62,7 +62,11 @@ class modSlidingPanes
 		//$user =& JFactory::getUser();
 		//$aid = $user->get('aid', 0);
 
-		$catid = (int) $this->params->get('catid', 0);
+		$catid 	 = (int) $this->params->get('catid', 0);
+		$random  = $this->params->get('random', 0);
+		$orderby = $random ? 'RAND()' : 'a.ordering';
+		$limit   = (int) $this->params->get('limitslides', 0);
+		$limitby = $limit ? ' LIMIT 0,'.$limit : '';
 
 		//$contentConfig =& JComponentHelper::getParams( 'com_content' );
 		//$noauth	= !$contentConfig->get('shownoauth');
@@ -87,7 +91,7 @@ class modSlidingPanes
 			' AND cc.section = s.id' .
 			' AND cc.published = 1' .
 			' AND s.published = 1' .
-			' ORDER BY a.ordering';
+			' ORDER BY '.$orderby.' '.$limitby;
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
@@ -131,5 +135,3 @@ class modSlidingPanes
 		$jdocument->addScriptDeclaration($js);
 	}
 }
-
-$modSlidingPanesMultiple = true;

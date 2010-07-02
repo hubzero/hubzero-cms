@@ -25,7 +25,9 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-$modSlidingPanesMultiple = false;
+//$modSlidingPanesMultiple = ($modSlidingPanesMultiple) ? $modSlidingPanesMultiple : 0;
+// gave Notice: Undefined variable: modSlidingPanesMultiple in /www/nanohub/modules/mod_sliding_panes/mod_sliding_panes.php on line 28
+$modSlidingPanesMultiple = 0;
 
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
@@ -35,5 +37,5 @@ require_once (dirname(__FILE__).DS.'helper.php');
 $modslidingpanes = new modSlidingPanes( $params );
 $modslidingpanes->multiple_instances = $modSlidingPanesMultiple;
 $modslidingpanes->display();
-
+$modSlidingPanesMultiple++;
 require( JModuleHelper::getLayoutPath('mod_sliding_panes') );
