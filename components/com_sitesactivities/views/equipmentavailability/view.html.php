@@ -1,0 +1,60 @@
+<?php
+/**
+ * @package		NEEShub 
+ * @author		David Benham (dbenha@purdue.edu)
+ * @copyright	Copyright 2010 by NEES
+*/
+ 
+// no direct access
+ 
+defined( '_JEXEC' ) or die( 'Restricted access' );
+ 
+jimport( 'joomla.application.component.view');
+ 
+/**
+ * 
+ * 
+ */
+ 
+class sitesactivitiesViewequipmentavailability extends JView
+{
+    function display($tpl = null)
+    {
+    	// Get the tabs for the top of the page
+        $tabs = SitesActivitiesHelper:: getSitesActivitiesTabs(2);
+        $this->assignRef('tabs', $tabs); 
+    	
+    	JHTML::_('behavior.mootools');
+    	
+    	$document =& JFactory::getDocument();
+    	$js = 'window.addEvent(\'domready\', function(){ init_calendar(); });';
+	$document->addScriptDeclaration($js);		
+
+        $mainframe = &JFactory::getApplication();
+        $document  = &JFactory::getDocument();
+        $pathway   =& $mainframe->getPathway();
+        $document->setTitle('Site Equipment Schedules');
+
+        // Get the site
+    	$facilityID = JRequest::getVar('id');
+
+        if($facilityID == null)
+        {
+            $facilityID = 226; //hardcode the first one
+            JRequest::setVar('id', '226');
+        }
+
+
+        $facility = FacilityPeer::find($facilityID);
+
+    	if($facility)
+    		$facilityName = $facility->getName();
+		else
+			$facilityName = '';
+        	
+		$this->assignRef('facilityName', $facilityName);
+			
+			
+        parent::display($tpl);
+    }
+}

@@ -1,0 +1,190 @@
+#mainpage-facilities-header {
+	border-bottom:1px solid #A3ADB8;
+	spacing-bottom:5px;
+	}
+
+#mainpage-facilities-main {
+	margin-top:30px;
+        min-width:900px;
+	}
+	
+#facility-subpage-primarycontent {
+	padding-left: 15px;
+	padding-top:15px; 
+	padding-bottom:25px;
+	width:800px;
+	}	
+	
+#mainpage-facilities-rhs {
+	position: relative;
+	width: 600px;
+        min-width: 600px;
+	float: left;
+	}
+	
+#mainpage-facilities-lhs {
+	position: relative;
+	width: 300px;
+	float: left;
+	}
+
+#mainpage-facilities-lhs ul{
+	list-style: none outside none;
+	margin-top: 0;
+   	border-top-width: 0;
+   	padding-top: 0;
+   	margin-bottom: 0;
+   	border-bottom-width: 0;
+   	padding-bottom: 0;
+	}
+
+#mainpage-facilities-lhs li{
+	margin-top: 0;
+   	border-top-width: 0;
+  	padding-top: 0;
+   	margin-bottom: 0;
+   	border-bottom-width: 0;
+   	padding-bottom: 0;
+	}
+	
+.facility-type-header-li{
+	background-image: url(/components/com_sites/images/ico_nees.gif);
+	background-repeat: no-repeat;
+	padding-left: 20px;
+	}
+
+
+.facility-header-li{
+	/*background-image: url(/components/com_sites/images/f_color.gif);*/
+	background-repeat: no-repeat;
+	/*padding-left: 20px;*/
+	}
+
+.facility-header-li-selected{
+	background-color:#ccc;
+	}
+
+		
+.facility-table-td-label{
+	font-weight: bold;
+	}		
+
+.facility-table-header{
+	background:#bbb;
+}
+
+a.imagelink-no-underline {
+	text-decoration: none;
+	border-bottom: 0px;
+}
+
+.subcomponenttable {
+	background:#eee;
+	border-top:0px;
+	border-bottom:0px;
+}
+
+table.subcomponenttable th, table.subcomponenttable td{
+	padding:1px 5px; 
+}
+
+img img-no-border{
+	border: 0px;
+}
+
+.editpage-buttons-section {
+	float:left;
+	width:100%
+}		
+		
+.requiredfieldmarker {
+	color:#f00;
+}		
+
+.feed-active {
+    border: 2px solid #f00;
+}
+
+.feed-inactive {
+    border: 2px solid #ccc;
+}
+
+
+/* Tool tip */
+
+.ToolText{position:relative; }
+.ToolTextHover{position:relative;}
+.ToolText span{display: none;}
+
+.ToolTextHover span{
+  display:block;
+  position:absolute;
+  border:1px solid black;
+  top:1.3em;
+  left:5px;
+  background-color:gray; color:white;
+  text-align: center;
+}
+
+
+		
+		
+		
+/*******************************************************************************
+ ** Button and input type="submit/button/reset":
+ ******************************************************************************/
+
+a.button2, a.button2:link, a.button2:visited, a.button2:active, a.button2:hover {
+  text-align: center;
+  color: #000000;
+  font-size: 12px;
+  font-weight: normal;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 10px;
+  cursor:pointer;
+  margin: 0 10px 10px 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+a.button2, a.button2:link, a.button2:visited {
+  background: #ededed url(http://central.nees.org/images/bg_button.gif) repeat-x bottom left;
+  border: 1px solid #666666;
+}
+
+a.button2:hover, .btn2:hover {
+  background: #eaf6fd url(http://central.nees.org/images/bg_button_hover.gif) repeat-x bottom left;
+  border: 1px solid #666666;
+}
+
+a.button2:active, .btn:active {
+  margin: 0 8px 0 2px;
+  background: #98d1ef url(http://central.nees.org/images/bg_button_select.gif) repeat-x bottom left;
+  border: 1px solid #666666;
+}
+
+
+div.sectheaderbtn {
+  background: #EEEEF0;
+  border: #CCCCCC solid 1px;
+  padding:5px;
+  text-align:right;
+  line-height: 30px;
+  margin-top: 30px;
+}
+		
+		
+.upload {
+  padding: 15px 15px 15px 100px;
+  min-height: 50px;
+  font-size: 12px;
+  font-weight:bold;
+  border: thin solid #EEEEEE;
+  background: #c8d8f9 url(/images/upload.gif) no-repeat top left;
+}		
+		
+.loading {
+    background:#FFFFFF url(/components/com_activities/images/loading.gif) no-repeat scroll left top;
+}
+		

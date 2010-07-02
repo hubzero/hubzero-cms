@@ -1,0 +1,181 @@
+div.calendar {
+  width: 462px;
+  height: 362px;
+  border: 1px solid #999;
+  margin-top:15px;
+}
+
+#calendar-title{
+	font-weight:bold;
+	font-size:large;
+}
+
+table.calendar {
+  border-collapse: collapse;
+  border: 0px;
+  
+}
+
+table.calendar tr {
+  height: 24px;
+}
+
+table.calendar tr.title {
+  height: 27px;
+  color: black;
+  background-color:#aaa;
+}
+
+table.calendar tr.week {
+  height: 52px;
+  border-top: 1px solid #888;
+  
+}
+
+table.calendar td {
+  text-align: center;
+  padding: 0px;
+}
+
+table.calendar input.button {
+  border-width: 0px;
+  background-color: white;
+  color: rgb(0, 0, 136);
+  font-size: small;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+table.calendar td.day {
+  background-color: #E5ECF9;
+  color: #000088;
+  font-size: small;
+  font-weight: bold;
+}
+
+table.calendar td.other_month {
+  color: #C0C0C0;
+}
+
+table.calendar td.today {
+  color: red;
+}
+
+div.event-info {
+  position: absolute;
+  visibility: hidden;
+  z-index: 100;
+  width: 150px;
+}
+
+div.event-info div {
+  width: 100%;
+  padding: 3px;
+  font-family: arial;
+  font-size: 12px;
+}
+
+div.event-info div.event-info-header {
+  border: 1px solid #A5CFE9;
+  color: #4B7A98;
+  background: #D5EBF9;
+  font-weight: bold;
+  text-align: center;
+}
+
+div.event-info div.event-info-body {
+  border-bottom: 1px solid #A5CFE9;
+  border-left: 1px solid #A5CFE9;
+  border-right: 1px solid #A5CFE9;
+  color: #1B4966;
+  background: white;
+  text-align:  left;
+}
+
+div.events {
+  position: relative;
+  width: 64px;
+  height: 24px;
+}
+
+div.events div {
+  width: 100%;
+}
+
+div.events div.date-day {
+  /*position: absolute;*/
+  top: 0px;
+  left: 0px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  z-index: 1;
+}
+
+div.events div.event-base {
+  height: 4px;
+}
+
+div.events div.event-0 {
+  z-index: 2;
+}
+
+div.events div.event-1 {
+  z-index: 3;
+}
+
+div.events div.event-2 {
+  z-index: 4;
+}
+
+div.events div.event-3 {
+  z-index: 5;
+}
+
+
+div.calendar-key {
+	margin-top:20px;		
+	width: 600px;
+	height: 22px;
+	border: 0px;
+	padding: 10px 10px 10px 10px;
+}
+
+table.calendar-key-table {
+  width: 100%;
+  border-collapse: collapse;
+  border:0px
+}
+
+table.calendar-key-table tr {
+  height: 18px;
+}
+
+table.calendar-key-table td {
+  text-align: left;
+  padding: 1px;
+}
+
+div.key {
+  height: 10px;
+  width: 120px;
+  font-size: small;
+  float:left;
+}
+
+div.key-color {
+  margin: 4px 0px 0px 0px;
+  height: 10px;
+  width: 10px;
+  float:left;
+  margin-right:10px;
+}
+
+div.key-container{
+  border: 1px solid #888888;
+  background-color:#888;
+}
+
+table.month-title:{
+	padding-top:4px;
+}
