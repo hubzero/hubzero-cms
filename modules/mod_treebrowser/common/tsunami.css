@@ -1,0 +1,231 @@
+
+a.tsunamigrey, a.tsunamigrey:link, a.tsunamigrey:visited {
+   color: #737E83;
+}
+
+a.tsunamigrey:visited {
+	color: #555555;
+}
+
+a.tsunamigrey:hover, a.tsunamigrey:active {
+   color: #0081A0;
+}
+
+li.tsunami_li {
+padding:0px;
+line-height: 1.4;
+}
+
+li.tsunami_attr {
+padding:0px;
+line-height: 1.2;
+color: #737E83;
+font-size: 1.05em;
+}
+
+.tsunamiResult{
+  padding:0px;
+  line-height: 1.4;
+  font-size: 90%;
+  overflow:hidden;
+  width:75%;
+}
+
+.tsunamiResultMetaData{
+  margin-left:1.2em;
+  margin-top:0.2em;
+  margin-bottom:0.2em;
+  padding-left:3px;
+  border: ridge;
+  border-width:thin;
+  border-color:#8888FF;
+  overflow:auto;
+  width:400px;
+}
+
+
+
+.tsunaminolinkgrey
+{
+   color: #737E83;
+	font-weight: bold;
+	background: transparent;
+	padding: 0;
+}
+
+.tsunamiCell td{
+	padding-top:0px;
+	padding-bottom:0px;
+	line-height: 1.2em;
+}
+
+.TsunamiTopicTitle {
+font-size: 1.2em;
+font-weight: bold;
+color: #737E83;
+}
+
+.TsunamiTopicBody {
+padding-left: 1.0em;
+
+}
+
+.TsunamiSubTopicTitle {
+
+font-size: 1.1em;
+font-weight: bold;
+color: #737E83;
+}
+
+.TsunamiSubtopicBody {
+padding-left: 1.5em;
+
+}
+
+.TsunamiAttributeTitle {
+font-weight: bold;
+color: #737E83;
+
+}
+.tsunamiSuggestion {
+margin-left: 1.5em;
+margin-top: 4em;
+}
+
+.TsunamiBatchInstructions
+{
+  font-size:110%;
+  margin-left:0.8em;
+}
+
+#tsunamiResultMetaDataItem
+{
+  padding-right:3.0em;
+  line-height:1.4;
+}
+
+#tsunamiBody2 {
+	background-image: url(/images/world_mapBW.jpg);
+	background-attachment:fixed;
+	background-repeat: no-repeat;
+	background-position: 50% 20%
+}
+
+
+
+#tsunamiTitle {
+  padding-left:20px;
+}
+
+#tsunamiPage h2 {
+	font-size: 140%;
+	color: #000000;
+	padding: 0;
+	margin: 0;
+}
+
+#dummy {
+line-height: 0.0em;
+}
+
+#tsunamiBatchContainer
+{
+  height:600px;
+  width:700px;
+  position:relative;
+
+}
+#tsunamiVerifyListContainer
+{
+  width:45%;
+  float:left;
+}
+
+#tsunamiUploadResultsContainer
+{
+  width:45%;
+  float:right;
+  margin-top:3em;
+}
+
+#tsunamiUploadResults
+{
+  width:100%;
+  height:65%;
+  line-height:1.5em;
+  overflow:auto;
+  border:solid;
+  padding-left:0.5em;
+}
+
+#tsunamiBatchVerifyForm
+{
+  clear:both;
+  width:30%;
+  margin-left:40%;
+}
+
+.tsunamiFileListTitle
+{
+
+}
+
+.tsunamiFileList
+{
+  height:20%;
+  width: 100%;
+  overflow:auto;
+  border:solid;
+  margin-bottom:1.5em;
+}
+
+
+.tsunamiEnterSurveyContainer
+{
+  margin-left:1em;
+}
+.tsunamiEnterSurveyCoPIContainer
+{
+  padding-left:1em;
+  padding-bottom:0.5em;
+  width:88.5%;
+  border-width:thin;
+  border-color:#000000;
+  border-style:solid;
+  line-height:1.8em;
+  position:relative;
+}
+
+hr.tsunamiEnterSurveyCoPIContainer
+{
+  background:gray;
+  border-width:0;
+  height:0.1pt;
+
+}
+
+.tsunamiEnterSurveyCoPI
+{
+}
+.tsunamiLableBox
+{
+}
+
+table.tsunamisite
+{
+
+  border-width:thin;
+  border-style:solid;
+  border-color:#000000;
+  font-size:100%;
+
+}
+
+th.tsunamisite,td.tsunamisite
+{
+  text-align:center;
+  vertical-align:middle;
+}
+
+
+

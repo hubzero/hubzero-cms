@@ -1,0 +1,71 @@
+.ctxmenu {
+    position:absolute;
+    border-top:#dddddd 1px solid;
+    border-left:#dddddd 1px solid;
+    border-bottom:#999999 1px solid;
+    border-right:#999999 1px solid;
+    z-index:1;
+    background-color:#ffffff;
+    padding:1px 1px 1px 1px;
+}
+
+.ctxsidebar {
+    background-color:#f0f0f0;
+    width:25px;
+    cursor:pointer;
+}
+
+.ctxtext {
+    font-family:Verdana,Arial;
+    font-size:8pt;
+    color:#333333;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.ctxitem {
+    background-color:#ffffff;
+    padding:3px 5px 3px 5px;
+    cursor:pointer;
+}
+
+.ctxitemover {
+    background-color:#dddddd;
+    padding:3px 5px 3px 5px;
+    cursor:pointer;
+}
+
+.ctxsidebarover {
+    background-color:#cccccc;
+    width:25px;
+    cursor:pointer;
+}
+
+.ctxtextover {
+    font-family:Verdana,Arial;
+    font-size:8pt;
+    color:#ffffff;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.ctxtextdisable {
+    font-family:Verdana,Arial;
+    font-size:8pt;
+    color:#999999;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.ctxtextoverdisable {
+    font-family:Verdana,Arial;
+    font-size:8pt;
+    color:#999999;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.ctxseparator {
+    border-top:#cccccc 1px solid;
+    font-size:1px
+}

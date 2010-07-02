@@ -1,0 +1,1238 @@
+/* @override https://it.nees.org/common/base2.css */
+
+/*
+NEESit Base Stylesheet v3.0 (SP2006)
+Authors: Daniel Rehn, Daniel Frysinger
+Created: November 7, 2005
+Updated: February 28, 2006
+*/
+
+/* Description: This stylesheet defines global styles for all NEESit websites and web applications based upon recommendations found in the NEESit Graphic Identity and User Interface Guidelines. */
+
+/*div { border: 1px solid #ff0000; }
+id { border: 1px solid #00ff00; }*/
+	
+	
+/* Basic Elements												 */
+/* -----------------------------------------------  */
+html, body { height: 100%; padding: 0; margin: 0; }
+
+body {
+	color: #000;
+	font: small Arial, Helvetica, sans-serif;
+}
+
+body.cs0 {
+	background: #DADADA url(images/back_body.jpg) repeat-y top center;
+	margin: 0;
+	padding: 0;
+}
+ 
+p {
+  margin:0 0 1.5em 0;
+  line-height:1.7em;
+  } 
+
+p, ul, dl, ol {
+  font-size:95%;
+  line-height:1.7em;
+}
+
+hr {
+  background:gray;
+  display:block;
+  border-width:0;
+  height:.25pt;
+}
+
+ul { 
+  margin:5px 0 15px 18px;
+  padding:0;
+  list-style-image: url(images/bullet.gif);
+  list-style-type: square;
+} 
+
+li {
+  padding: 0;
+  margin: 0;
+  line-height:200%;
+}
+
+li span {
+  color: #555555;
+}
+
+ol.toc { margin-left:10px; padding-left:0; font-size:95%; }
+
+#subcontent ul, #subcontent li { margin-left: 10px; padding-left:0; }
+
+#coredocs ul, #subcontent li { margin-left: 10px; padding-left:0; }
+ 
+dd { 
+        margin: 0; 
+        padding: 0 0 18px 25px; 
+} 
+ 
+dt {    font-weight: bold; } 
+
+.subtext { color: #999999; }
+.orange { color: #FF6600; }
+.blue { color:#0081A0; }
+.darkgrey { color:#777777; }
+.white { color:#FFFFFF; }
+
+
+/* Page Structure												 */
+/* -----------------------------------------------  */
+#mainheader {
+  display: block;
+  height: 108px;
+  width: 799px;
+  background: #5b97b1 url(images/header_back.jpg) top left repeat-x;
+}
+
+#mainheader img {
+  float: left;
+  clear: none;
+}
+
+#maincontentwrap {
+	text-align: left;
+	padding: 0;
+		margin:0;
+	background: #FFFFFF url(images/back_content.jpg) repeat-y center;
+/*	overflow: hidden;
+	clear: both; */
+	width: 799px;
+}
+
+#main {
+	padding: 15px 0 25px 20px;
+}
+
+#profilebox {
+	background: #EFEFEF url(images/bg_profile.jpg) repeat-y center;
+	width:750px;
+	height:179px;
+}
+
+#supleft {
+	float:left;
+  width:430px;
+  margin: 0 0 40px 40px;
+//margin: 0 0 40px 20px;
+	padding: 15px 50px 25px 0;
+	border-right: 1px solid #CCCCCC;
+}
+
+#subright {
+	float:left;
+	font-size:90%;
+	margin-left:20px;
+  width:220px;
+	padding: 17px 30px 30px 0px; 
+}
+
+#supright {
+	float:left;
+  width:370px;
+	margin:0 0 40px 0;
+	padding: 15px 0 25px 15px;
+	border-left: 1px solid #CCCCCC;
+}
+
+#subleft {
+	float:left;
+	font-size:90%;
+  width:300px;
+  margin: 0 0 40px 40px;
+//margin: 0 0 40px 20px;
+	padding: 15px 20px 25px 0;
+}
+
+#eqleft {
+	float:left;
+  width:320px;
+  margin: 0 0 40px 30px;
+//margin: 0 0 40px 20px;
+	padding: 15px 30px 25px 0;
+	border-right: 1px solid #CCCCCC;
+}
+
+#eqright {
+	float:right;
+  width:320px;
+	padding: 18px 40px 30px 0px; 
+}
+
+.boxhead {
+  color: #FF6600;
+  font-size: 14px;
+  padding:5px 0 4px 10px;
+  margin:25px 0 10px -10px;
+  background-color: #EDEDED;
+  
+}
+
+#pagecontent {
+  display:block;
+  height: 0;
+  clear:both;
+  border-top:#CCCCCC solid 1px;
+  margin: 0 17px 0 17px;
+  padding:20px 0 0 0;
+}
+	
+#maincontent {
+	width:480px;
+	float:left; 
+	padding: 15px 0 25px 20px;
+}
+
+#subcontent {
+	float:right;
+	font-size:88%;
+	line-height:1.7em;
+	width:200px;
+	margin-top:15px;
+	padding: 0 30px 30px 10px;
+	border-left: 1px solid #CCCCCC;
+}
+
+#subcontent .subbox {
+	border-top: solid 1px #CCCCCC;
+	padding: 7px 3px 10px 5px;
+	margin: 2em 0;
+}
+
+#sitewrap {
+padding:0;
+margin:0;
+	width:799px;
+	margin-right:auto;
+	margin-left:auto;
+}
+
+a.byline {
+     text-decoration:none;
+     color: #777777;
+}
+
+a.byline:hover {
+	color:#FF9900;
+}
+
+.byline {
+	padding-bottom: 14px;
+	text-transform:uppercase;
+} 
+
+.caption { 
+     /*padding:7px 0 14px 0;*/ 
+     text-transform:uppercase;
+     font-size:11px;
+     font-weight: bold;
+}
+
+span.pretext {
+    font-family:Courier, Monaco, Sans-Serif; font-size:13px; color:#000000;
+}
+
+code {
+    font-family:Courier, Monaco, Sans-Serif; font-size:13px; color:#000000;
+}
+
+.docfooter {
+	margin:5px 0 15px 0;
+	padding:5px;
+	border-top: solid 1px #CCCCCC;
+	border-bottom: solid 1px #CCCCCC;
+}
+
+#doc td, #doc table {
+	border: 1px solid #CCCCCC;
+}
+
+#doc td.header {
+	border: 1px solid #CCCCCC;
+	background-color: #555555;
+	color: #FFFFFF;
+}
+
+/* Following rule overcomes 3px margin bug in IE/Win floats, 
+   which fixes a lot of things, including disapearing company nav,
+   randomly appearing text, and wrappers pushed too wide.
+   http://www.positioniseverything.net/explorer/threepxtest.html
+* html #content, * html #c2, * html #c3 {
+  margin-right:-3px;
+}
+end rule */
+
+
+/* Warnings			    							 */
+/* -----------------------------------------------  */
+.notice {
+	padding: 7px 7px 7px 30px;
+	border:1px solid #FF9900;
+	background: #FFFFFF url(images/icon_notice.gif) no-repeat center left;
+}
+
+.notice2 {
+	padding: 7px 7px 7px 7px;
+	border:1px solid #FF9900;
+}
+
+.error {
+	padding: 7px 7px 7px 30px;
+	border:1px solid #FF6600;
+	background: #FFFFFF url(images/icon_error.gif) no-repeat center left;
+}
+
+a.cattag, a.cattag:visited, span.cattag {
+  font-size:90%;
+  color:#FF6600;
+  text-transform:uppercase;
+}
+
+a.cattag:hover {
+  color:#333333;
+}
+
+
+/* Headlines					    							 */
+/* -----------------------------------------------  */
+h1, h2, h3, h4, h5 {
+	font-weight: normal;
+	margin:1em 0 .5em 0;
+	line-height:130%;
+}
+
+h1 {
+	font-size: 180%;
+	color: #FF6600;
+}
+
+h2 {
+	color: #0081A0;
+	font-size:140%;
+}
+
+h3 {
+	font-size:125%;
+	font-weight:bold;
+}
+
+h4 {
+	color: #888888;
+	font-weight:bold;
+	font-size:110%;
+}
+
+#subright h2, #subleft h2 {
+	color: #FF6600;
+	font-size:140%;
+}
+
+
+/* Lists              			   						 */
+/* -----------------------------------------------  */
+ul.toc {
+	margin:0;
+	list-style: none;
+}
+
+ul.toc2 {
+	margin:0;
+	padding:0;
+	margin-left:5px;
+	list-style: none;
+}
+
+div.toc { line-height:200%; } 
+div.toc2 { margin-left:0.7em; }
+div.toc3 { margin-left:0.7em; }
+
+/* Navigation				   						       */
+/* -----------------------------------------------  */
+
+#mainnav {
+	margin: 0;
+	background: #5b97b1 url(images/tile_button.gif) top left repeat;
+	border-top: #27537C solid 1px;
+	border-bottom: #27537C solid 1px;
+	padding: 0;
+	width:100%;
+	float: left;
+}
+
+#mainnav ul {
+  margin:0;
+  padding:0;
+  list-style:none;
+  font-size:85%;
+}
+
+#mainnav li {
+  float:left;
+  margin:0;
+  padding:0;
+  background-image:none;
+  line-height:normal;
+  text-indent:0;
+  display:block;
+}
+
+#mainnav a {
+  display:block;
+  padding:6px 20px 6px;
+  border:solid #a3adb8;
+  border-width:0 1px 0 0;
+  color: #1164a2;
+  text-decoration:none;
+  white-space:nowrap;
+  background-image: none;
+  background-color: transparent;
+}
+
+* html #mainnav a {
+  width:1%;
+  }
+
+#mainnav a:hover {
+	color: #1164a2;
+	background: #fff;
+}
+
+#mainnav a.selected, a.selected:hover {
+	color: #FFFFFF;
+	background: #1164a2;
+}
+
+#subnav {
+	margin: 0;
+	background: #EEEEEE url(images/tile_subnav1.gif) top left repeat;
+	color: #777777;
+	font-weight: normal;
+	border-bottom: #CCCCCC solid 1px;
+	height: 15px;
+	padding: 5px 0 5px 0px;
+	width:100%;
+	float: left;
+	clear: both;
+}
+
+#subnav ul {
+  margin:0 2px;
+  padding:0;
+  list-style:none;
+  font-size:80%;
+}
+
+#subnav li {
+  float:left;
+  padding:0;
+  margin:0;
+  background-image:none;
+  line-height:normal;
+  text-indent:0;
+  display:block;
+}
+
+#subnav a {
+  display:block;
+  padding:2px 10px 2px;
+  margin:0;
+  border:solid #CCCCCC;
+  border-width:0 1px 0 0;
+  color: #555555;
+  text-decoration:none;
+  white-space:nowrap;
+  background-image: none;
+  background-color: transparent;
+  font-weight: normal;
+}
+
+* html #subnav a {
+  width:1%;
+  }
+
+#subnav a:hover {
+	background-color: #E4E4E4;
+}
+
+#subnav a.selected, a.selected:hover {
+	color:#333333;
+	background-color: #CCCCCC;
+}
+
+#navwrap2, #navwrap1 {
+clear:both;
+display:block;
+}
+
+.filetype {
+	color:#777777;
+	font-size:9px;
+	text-decoration:none;
+	font-weight:normal;
+}
+
+#pagehead {
+  margin:0 17px 10px 17px;
+  padding:20px 0 20px 25px; 
+  font-size:24px;
+  color: #CCCCCC;
+  border-bottom:1px #CCCCCC solid;
+  clear:both;
+}
+
+
+#pagehead a, #pagehead a:visited {
+  font-weight:normal;
+  text-decoration:none;
+  color:#FF6600;
+  line-height:0;
+}
+
+#pagehead a.parent {
+  color:#555555;
+}
+
+a.h2 {
+  font-weight:normal;
+  text-decoration:none;
+  color:#0081A0;
+}
+
+a.h2:visited {
+  color:#999999;
+}
+
+a.h2:hover {
+  color:#333333;
+}
+
+#pagehead a:hover, #pagehead a.parent:hover {
+  color:#333333;
+} 
+
+#siteheader {
+  display: block;
+  height: 81px;
+  width: 799px;
+  background: #5b97b1 url(/common/images/header_back.jpg) top left repeat-x;
+}
+
+.navsearch {
+  float: right;
+  clear: none;
+  margin-bottom: -20px;
+  margin-right: -15px;
+  padding: 0 0 0 0;
+}
+
+
+/* #subnav1 {
+	float: left;
+	background: #EEEEEE url(images/tile_subnav1.gif) top left repeat;
+	color: #777777;
+	font-weight: normal;
+	padding: 5px 0 5px 0px;
+	border-bottom: #CCCCCC solid 1px;
+	height: 15px;
+	text-align: left;
+	width:100%;
+}
+
+#subnav1 .trail {
+	font-size:81%;
+	padding-left:20px;
+}
+
+#subnav1 a, #subnav1 a:visited {
+	color: #777777;
+	font-weight: bold;
+	text-decoration: underline;
+	background-color: transparent;
+}
+
+#subnav1 a:hover {
+	color: #555555;
+	background-color: transparent;
+}
+
+#subnav1 a:active {
+	color: #555555;
+	background-color: transparent;
+} */
+
+
+/* Footer				   						       */
+/* -----------------------------------------------  */
+#footer {
+	background-color:#EEEEEE;
+	width:100%;
+	position: relative; /* needed for safari */
+	overflow:hidden;
+	clear: both;
+}
+
+#foottext {
+	font-size:85%;
+	line-height:1.5em;
+	width:559px;
+	float:left;
+	padding: 20px 0 22px 20px;
+	color:#858585;
+}
+
+#footorg {
+	float:right;
+	font-size:0;
+	/* width:220px; */
+	padding:5px 0px 10px 0
+}
+
+#foottext a, #foottext a:visited {
+	background-color: #EEEEEE;
+	font-weight:normal;
+	color:#858585;
+}
+
+#foottext a:hover {
+	color:#555555;
+}
+
+
+/* Login Elements												 */
+/* -----------------------------------------------  */
+div.loginbox {
+	padding-left:5px;
+	 clear: none;
+	 padding-top: 0;
+	 margin-top: 0;
+	overflow:auto;
+	margin-left:70px;
+	width:570px;
+	//margin-left:0;
+	//width:auto;
+	//float:right;
+}
+
+
+
+/* Form Elements												 */
+/* -----------------------------------------------  */
+#doc_browser .textentry {
+	background-color: #FFFFFF;
+	border: 1px solid #999999;
+	color: #555555;
+	font: 11px Verdana, Helvetica, Arial, sans-serif;
+	padding: 2px 4px 3px 4px;
+}
+
+#form .textentry {
+	background-color: #FFFFFF;
+	border: 1px solid #999999;
+	color: #555555;
+	font: 11px Verdana, Helvetica, Arial, sans-serif;
+	padding: 2px 3px;
+}
+
+#form input {
+	background-color: #FFFFFF;
+  border:1px solid #86A7B6;
+	color: #555555;
+	font: 11px Verdana, Helvetica, Arial, sans-serif;
+	padding: 2px 3px;
+}
+
+#form input:focus {
+  background-color:#EFFDFF;
+	border: 1px solid #999999;
+} 
+
+#form textarea {
+	color: #555555;
+	font: 11px Verdana, Helvetica, Arial, sans-serif;
+	padding: 2px 3px;
+  border:1px solid #86A7B6;
+}
+
+#form textarea:focus {  
+	border: 1px solid #999999;
+  background-color:#EFFDFF;
+}
+
+.selectbox {
+	font: 11px Verdana, Helvetica, Arial, sans-serif;
+	width: 100%;
+}
+
+table {
+  margin-left:-10px;
+}
+
+.btn {
+	color: #0081A0;
+	font-size: 11px;
+	font-weight: bold;
+	border: 1px solid #86A7B5;
+	padding: 3px 10px 3px 10px;
+	margin-right:10px;
+	background: #FFFFFF url(images/tile_button.jpg) repeat-x top left;
+}
+
+.btn-sub {
+	color: #86A7B5;
+	font-size: 11px;
+	font-weight: bold;
+	border: 1px solid #86A7B5;
+	padding: 3px 10px 3px 10px;
+	background: #FFFFFF url(images/tile_button.jpg) repeat-x top left;
+}
+
+a.button, a.button:link, a.button:visited, a.button:active {
+	color: #0081A0;
+	font-size: 80%;
+	font-weight: bold;
+	text-decoration:none;
+	border: 1px solid #86A7B5;
+	padding: 3px 8px 4px 8px;
+	margin: 0 3px 0 0;
+	background: #FFFFFF url(images/tile_button.jpg) repeat-x top left;
+}
+
+a.btnhigh, a.btnhigh:link, a.btnhigh:visited, a.btnhigh:active {
+	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration:none;
+}
+
+table.btnhigh {
+	border: 1px solid #86A7B5;
+	padding: 0 12px 1px 12px;
+	margin: 0;
+	background: #FFFFFF url(/images/tile_btnhigh.jpg) repeat-x top left;
+}
+
+td.btnhigh {
+	color: #FFFFFF;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+a.btnlo, a.btnlo:link, a.btnlo:visited, a.btnlo:active {
+	color: #0081A0;
+	font-weight: bold;
+	text-decoration:none;
+}
+
+table.btnlo {
+	border: 1px solid #86A7B5;
+	padding: 0 12px 1px 12px;
+	margin: 0;
+	background: #FFFFFF url(/images/tile_btnlo.gif) repeat-x top left;
+}
+
+td.btnlo {
+	color: #0081A0;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+
+a.button-sel, a.button-sel:visited, a.button-sel:hover, a.button-sel:active {
+	color: #FFFFFF !important;
+	background: #7CB7C5 url(images/tile_button-select.jpg) repeat-x top left !important;
+	background-color: #7CB7C5 !important;
+	padding: 3px 8px 4px 8px !important;
+} 
+
+a.button:active {
+	background: #C5D9E0 url(images/tile_button-hover3.jpg) repeat-x top left;
+	background-color: #C5D9E0;
+	padding: 4px 7px 3px 9px;
+	color: #0081A0;
+}
+
+/*
+a.button:btnhigh {
+	background: #C5D9E0 url(images/tile_button-hover3.jpg) repeat-x top left;
+	background-color: #C5D9E0;
+	padding: 4px 7px 3px 9px;
+	color: #0081A0;
+} 
+*/
+
+a.mini, a.mini:link, a.mini:visited {
+	font-weight: normal;
+	padding: 1px 6px 2px 6px;
+	margin: 0;
+}
+
+a.mini:hover, a.mini:active {
+	font-weight: normal;
+	padding: 2px 5px 1px 7px;
+	margin: 0;
+}
+
+#form table {
+	border: 1px solid #DDDDE0;
+	padding: 0;
+	background-color: #F6F6F8;
+	/*width: 100%;*/
+}
+
+
+.innerblock {
+	border: 1px solid #DDDDE0;
+	padding: 10px 15px 20px 10px;
+	background-color: #F6F6F8;
+}
+
+.innerblock a, .innerblock a:visited, .innerblock a:hover, .innerblock a:active {
+      background-color: #F6F6F8;
+ } 
+
+.innerblock h2 {
+	margin-top:1em;
+}
+
+.innerblock a.docu, .innerblock a.docu:visited, .innerblock a.docu:hover, .innerblock a.docu:active {
+	background-color: #F6F6F8;
+	font-weight: normal;
+}
+
+form {
+	margin: 0;
+	padding: 0;
+}
+
+ 
+#form {
+	border: 0;
+}
+
+#form td.header {
+	font-size:130%;
+	color: #FFFFFF;
+	background: #00819F url(images/tile_head1.gif) top left repeat;
+	margin:0;
+	padding:4px 0px 11px 10px;
+}
+
+#form td.sectheader {
+	font-size:80%;
+   text-transform: uppercase;
+	font-weight:bold;
+	background: #EEEEF0;
+	margin:0;
+	border-top:#CCCCCC solid 1px;
+	border-bottom:#CCCCCC solid 1px;
+	padding:10px 0px 7px 10px;
+}
+
+/* Following rule creates drop shadows for forms and portlets.
+   Based on Sergio Villarreal's CSS Drop Shadows II: Fuzzy Shadows at ALA
+   http://www.alistapart.com/articles/cssdrop2/ 
+
+.alpha-outerwrap {
+  margin: 15px 0 0 10px;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+}
+
+.alpha-shadow {
+  float: left;
+  background: url(shadow1.gif) no-repeat bottom right;
+ }
+
+.shadowwrap {
+  display: block;
+  background: url(shadow2.png) no-repeat left top !important;
+  background: url(shadow2.gif) no-repeat left top;
+  padding: 0px 5px 5px 0px;
+}
+
+ end rule */
+
+/* Table Elements  											 */
+/* -----------------------------------------------  */
+th, td {
+  text-align:left;
+  font-weight:normal;
+  padding: 5px 10px;
+  vertical-align: top;
+  line-height:1.5em;
+  font-size:90%;
+}
+
+td.head {
+	background-color: #A8DEE8;
+	border: 1px solid #6AB9CB;
+	font-weight: bold;
+}
+
+td.subhead {
+	background-color: #6AB9CB;
+	border: 1px solid #6AB9CB;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+td.subhead2 {
+	background-color: #A8DEE8;
+	border: 1px solid #A8DEE8;
+}
+
+.nocolor {
+	color: #555555;
+}
+
+
+/* Images        												 */
+/* -----------------------------------------------  */
+.imgleft {
+  position:relative;
+  float:left;
+  margin:.4em 1em .4em 0;
+}
+  
+.imgright {
+  position:relative;
+  float:right;
+  margin:.4em 0 .4em 1em;
+}
+img.dspblock {
+  display:block;
+  margin:.5em 0;
+}
+  
+.block {
+	border: 1px solid #555555;
+}
+
+.block2 {
+	border: 1px solid #FF9900;
+}
+
+img.subblock {
+	border: 1px solid #A8DEE8;
+}
+
+
+/* Links				          								 */
+/* -----------------------------------------------  */
+a {
+	color: #FF9900;
+	font-weight: bold;
+	text-decoration: underline;
+	background-color: transparent;
+	padding: 0;
+}
+
+a.lt {font-weight:normal;}
+a.blue {color:#0081A0;}
+a.bluelt {color:#0081A0; font-weight:normal;}
+a.orange {color:#FF6600;}
+a.orangelt {color:#FF6600; font-weight:normal;}
+a.darkgray {color:#777777;}
+a.darkgraylt {color:#777777; font-weight:normal;}
+a.darkgraylo {color:#777777; text-decoration:none;}
+
+a:visited,  a.blue:visited, a.orange:visited, a.darkgray:visited, a.inline:visited, #toc a:visited {
+	color: #777777;
+	background-color: transparent;
+	padding: 0;
+}
+
+a.blue:hover, a.bluelt:hover {
+	background: transparent;
+	color: #FF9900;
+	padding: 0;
+}
+
+a.orange:hover {
+	background: transparent;
+	color: #00819F;
+	padding: 0;
+}
+
+a.darkgray:hover, a.darkgraylo:hover {
+	background: transparent;
+	color: #333333;
+	padding: 0;
+}
+
+a:hover {
+	background-color: transparent;
+	color: #00819F;
+	padding: 0;
+}
+
+a.inline:hover, #toc a:hover {
+	color: #0E9E04;
+	background-color: transparent;
+}
+
+#coredocs a.inline:hover {
+	color: #FF9900;
+	background-color: transparent;
+}
+
+a.inline:active, #toc a:active {
+	color: #777777;
+	background-color: transparent;
+}
+
+a.inlinest, a.inline, #toc a {
+	font-weight: normal;
+	background-color: transparent;
+	color: #555555;
+}
+
+a.inlinest, a.inlinest:visited {
+	color: #999999;
+	background-color: transparent;
+}
+
+a.inlinest:hover {
+	color: #555555;
+	background-color: transparent;
+}
+
+a.inlinest:active {
+	color: #333333;
+	background-color: transparent;
+}
+
+a.subtext {
+	color: #999999;
+	background-color: transparent;
+}
+
+a.subtext:visited {
+	color: #777777;
+	background-color: transparent;
+}
+
+a.subtext:hover {
+	color: #555555;
+	background-color: transparent;
+}
+
+.loginbox a, .loginbox a:visited {
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 10px;
+  text-decoration:none;
+  margin-left: 22px;
+}
+
+.loginbox a:hover {
+  color: #153858;
+}
+
+
+span.date {
+	color: #999999;
+}
+
+span.subtext {
+	color: #999999;
+}
+
+#mainportlet {
+	border: 1px solid #DDDDE0;
+}
+
+div.subportlet {
+	border: 1px solid #DDDDE0;
+}
+
+
+
+/* Portlet Elements          				 */
+/* -----------------------------------------------  */
+div.portletcontent {
+	padding: 10px;
+}
+
+div.head1 {
+	display:block;
+	font-size:130%;
+	color: #FFFFFF;
+	background: #00819F url(images/tile_head1.gif) top left repeat;
+	margin:0;
+	padding:4px 0px 11px 10px;
+}
+
+div.head1_bg {
+	display:block;
+	font-size:125%;
+	color: #FFFFFF;
+	background: #7F8A8F url(images/tile_head1_bg.gif) top left repeat;
+	margin:0;
+	padding:4px 0px 11px 10px;
+}
+
+div.head2 {
+	display:block;
+	font-size:120%;
+	color: #FFFFFF;
+	background: #00819F url(images/tile_head2.gif) top left repeat;
+	margin:0;
+	padding:7px 0px 6px 10px;
+}
+
+div.head2_bg {
+	display:block;
+	font-size:120%;
+	color: #FFFFFF;
+	background: #00819F url(images/tile_head2_bg.gif) top left repeat;
+	margin:0;
+	padding:7px 0px 6px 10px;
+}
+
+.fileinfo {
+  margin: 10px 0 10px 0;
+  padding: 5px 20px 5px 20px;
+  border-left: #CDCDCD 1px solid;
+  font-size: 80%;
+  line-height: 160%;
+}
+
+.downloadbtn {
+  display: block;
+  margin: 0 0 10px 0;
+  border: #86a7b5 1px solid;
+}
+
+.arrow {
+  float: right;
+  clear: none;
+  position: relative;
+  top: -53px;
+  right: 3px;
+  width: 35px;
+  height: 35px;
+  background: url(images/arrow.gif) no-repeat top right;
+}
+
+a.dlbutton, a.dlbutton:link, a.dlbutton:visited, a.dlbutton:active {
+  display: block;
+  color: #0081A0;
+  font-size: 80%;
+  font-weight: bold;
+  text-decoration: none;
+  border: 1px solid #d0dee3;
+  padding: 3px 8px 4px 8px;
+  margin: 0 0 0 0;
+  background: #FFFFFF url(images/tile_button.jpg) repeat-x top left;
+}
+
+a.dlbutton:hover {
+  background: #C5D9E0 url(images/tile_button-hover3.jpg) repeat-x top left;
+  background-color: #C5D9E0;
+  font-weight: bold;
+  padding: 4px 7px 3px 9px;
+  color: #0081A0;
+}
+
+
+
+/* 2.0-related, consider retiring with v3.0         */
+/* -----------------------------------------------  */
+
+h2.rule {
+	border-bottom: 1px solid #AED1D3;
+	padding-bottom:10px;
+	width: 100%;
+}
+
+#subcontent h4 {
+/*	color: #28537D; */
+	margin-top:0;
+}
+
+/* #footwrap {
+	background-color:#EEEEEE;
+	width:799px;
+	overflow:hidden;
+	clear: both;
+	position: absolute;
+	bottom: 0;
+} */
+
+/* Following rule allows entire region of link to to be 
+   clickable in IE/Win. Holly Hack explained here:
+   http://www.positioniseverything.net/explorer/escape-floats.html
+
+
+* html #mainnav a {
+  width:1%;
+}
+#mainnav a {
+  background-repeat:no-repeat;
+}
+#mainnav a:hover {
+  color:#000;
+}
+#nav a:hover {
+  background-repeat:no-repeat;
+}
+#mainnav a.selected, a.selected:hover {
+  background:none;
+  padding:0;
+  border:none;
+}
+*/
+
+/*
+div.loginbox .btn, div.loginbox .btn-sub {
+	padding-right: 0;
+	padding-left: 0;
+	margin-right: 2px;
+}
+
+
+div.loginbox .textentry {
+	font: 11px Verdana, Helvetica, Arial, sans-serif;
+	padding: 1px 2px;
+	width:175px;
+	color:#555555;
+	border: 1px solid #999999;
+}
+
+div.loginbox a.login, div.loginbox a.login:visited {
+	color: #28537D;
+	font-weight:normal;
+	background-color:transparent;
+}
+
+div.loginbox .cross-site {
+padding-bottom:5px;
+}
+
+div.loginbox a.login-sel, div.loginbox a.login-sel:visited {
+	color: #28537D;
+	font-weight:bold;
+	background-color:transparent;
+}
+
+
+div.loginbox a.login-sub, div.loginbox a.login-sub:visited {
+	color: #86A8B4;
+	font-size:82%;
+	font-weight:normal;
+	background-color:transparent;
+}
+
+div.loginbox .hellotext {
+	font-size:11px;
+	font-weight:bold;
+}
+*/
+

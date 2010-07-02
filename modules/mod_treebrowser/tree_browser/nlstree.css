@@ -1,0 +1,75 @@
+a.prnnode  {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    color:#000000;
+    text-align: left;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    padding:2px;
+}
+
+a.prnnode:hover { background-color:#CCFFCC; font-weight:bold;}
+
+a.node {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    color:#666666;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    padding:2px;
+    border-bottom-color:#ffffff;
+}
+
+a.node:hover { text-align:left; background-color:#CCFFCC; text-decoration:underline;}
+
+a.selnode {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    color:#000000;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    background-color:#CCFFCC;
+    padding:1px 1px 1px 1px;
+    border:none;
+}
+
+a.selprnnode {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    font-weight:bold;
+    color:#000000;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    /*background-color:#0081A0;*/
+    background-color:#f4f4f4;/*ccf0ff#e0e6ef;*/
+    padding:1px 1px 1px 1px;
+    border:none;
+}
+
+div.row {
+    color:#0066cc;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+div.selrow {
+    /*background-color:#99CCFF;*/
+    cursor:pointer;
+}
+
+div.row:hover {}
+
+input.nodeedit {
+    font-family:Verdana,Arial;
+    font-size:8pt;
+    color:#666666;
+    text-decoration:none;
+    position:absolute;
+    height:20px;
+    border:#cfcfcf 1px solid;
+    z-index:1;
+}

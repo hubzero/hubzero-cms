@@ -1,0 +1,21 @@
+K 13
+bugtraq:label
+V 7
+BugzID:
+K 15
+bugtraq:message
+V 15
+BugzID: %BUGID%
+K 14
+bugtraq:number
+V 4
+true
+K 11
+bugtraq:url
+V 41
+https://bugs.nees.org/default.php?%BUGID%
+K 21
+bugtraq:warnifnoissue
+V 5
+false
+END

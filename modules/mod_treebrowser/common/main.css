@@ -1,0 +1,1333 @@
+inli/***************************************************************************************************************
+ * NEEScentral Base Stylesheet (Required)
+ *
+ * Description: This stylesheet defines the styles for NEEScentral
+ *              based upon recommendations found in the NEESit Graphic Identity and User Interface Guidelines.
+ *
+ ***************************************************************************************************************/
+
+blockquote {margin:1.5em;color:#666;font-style:italic;}
+strong {font-weight:bold;}
+em, dfn {font-style:italic;}
+dfn {font-weight:bold;}
+sup, sub {line-height:0;}
+abbr, acronym {border-bottom:1px dotted #666;}
+address {margin:0 0 1.5em;font-style:italic;}
+del {color:#666;}
+pre, code {margin:1.5em 0;white-space:pre;}
+pre, code, tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
+caption {background:#eee;}
+
+
+body {
+  
+  /*font-size:75%;*/
+  color:#222222;
+  background:#ffffff;
+  font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+/*******************************************************************************
+ ** Paragraphs and lists
+ ******************************************************************************/
+
+p {
+  margin:0 0 .75em 0;
+  line-height: 1.3em;
+}
+
+/*
+p, ul, dl, ol {
+  font-size:12px;
+  line-height:1.7em;
+}
+*/
+
+p img {float:left; margin:1.5em 1.5em 1.5em 0; padding:0;}
+p img.right {float:right; margin:1.5em 0 1.5em 1.5em;}
+
+p.indent {
+  padding-left: 30px;
+}
+
+p.justified {
+  text-align: justify;
+}
+
+li {
+  margin: 0;
+ padding: 0 0 5px 0;
+}
+
+dd {
+  margin: 0;
+  padding: 0 0 18px 25px;
+}
+
+dt {
+  font-weight: bold;
+}
+
+
+ul {
+  margin:5px 0 15px 18px;
+  padding:0;
+}
+
+
+/*******************************************************************************
+ ** Header
+ ******************************************************************************/
+
+h1, h2, h3, h4, h5, h6 {font-weight:bold;color:#333;}
+h1 {font-size:17px; margin:30px 0 20px 0 ;}
+h2 {font-size:16px; margin:20px 0 10px 0;}
+h3 {font-size:15px; margin:20px 0 10px 0;}
+h4 {font-size:14px; margin:10px 0;}
+h5 {font-size:13px; margin:10px 0;}
+h6 {font-size:12px; margin:5px 0;}
+
+h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}
+
+h1.portlet {
+  margin: 15px 0 30px 0;
+  color: #555555;
+}
+
+
+h1.facility_map {
+  margin: 15px 0 30px 0;
+  color: #333333;
+}
+
+h1.facility_map a {
+  font-weight: bold;
+  color: #1164a2;
+  text-decoration:underline;
+}
+
+
+h2.rule {
+  border-bottom: 1px solid #AED1D3;
+  padding-bottom:10px;
+  width: 100%;
+}
+
+
+/* horizontal rule */
+hr {
+  background:gray;
+  display:block;
+  border-width:0;
+  height:.25pt;
+}
+
+img, a {
+  border: none;
+}
+/*
+div.mainportlet {
+	-webkit-box-shadow: 2px 2px 2px #EAEAEA;
+	-moz-box-shadow: 2px 2px 2px #EAEAEA;
+	-webkit-border-top-left-radius:     4px;
+	-webkit-border-top-right-radius:    4px;
+	-webkit-border-bottom-left-radius:  4px;
+	-webkit-border-bottom-right-radius: 4px;
+	-moz-border-radius-topleft:     4px;
+	-moz-border-radius-topright:    4px;
+	-moz-border-radius-bottomleft:  4px;
+	-moz-border-radius-bottomright: 4px;
+}
+div.miniportlet {
+	-webkit-border-top-left-radius:     4px;
+	-webkit-border-top-right-radius:    4px;
+	-webkit-border-bottom-left-radius:  4px;
+	-webkit-border-bottom-right-radius: 4px;
+	-moz-border-radius-topleft:     4px;
+	-moz-border-radius-topright:    4px;
+	-moz-border-radius-bottomleft:  2px;
+	-moz-border-radius-bottomright: 2px;
+}
+*/
+div.description {
+  margin-left: .5em;
+  line-height: 18px;
+}
+
+
+.text-description {
+  padding: 0px 0 0 0px;
+  font-size:12px;
+  font-style:italic;
+  text-align: left;
+}
+
+
+
+/*******************************************************************************
+ ** color scheme
+ ******************************************************************************/
+.light   { background-color: #f7fcfd; color: black; }
+.head    { background-color: #DDDDDD; color: #333333;}
+.dark    { background-color: #26566e; color: white; }
+.lighthi { background-color: #26566e; color: white; }
+.headhi  { background-color: #ff9966; color: black; }
+.darkhi  { background-color: #c1e8f0; color: black; }
+
+
+.needhelpbox {
+  float:right;
+  width:300px;
+  border: 1px solid #ffcc99;
+  margin:10px 0 40px 40px;
+
+  padding: 20px 10px 10px 10px;
+}
+
+.resource_box {
+  margin-top:20px;
+  padding: 0 7px 7px 70px;
+  background: #FFFFFF url(/images/help_support.gif) no-repeat top left;
+}
+
+
+/*******************************************************************************
+ ** Column left main and column right main
+ ******************************************************************************/
+
+.column_left_main {
+  float: left;
+  margin-top: 5px;
+  width: 100%;              /* Increase this number may effects the IE6 tree layout */
+}
+
+
+.column_right_main {
+  margin-top: 5px;
+  float: right;
+  width: 70%;              /* Increase this number may effects the IE6 tree layout */
+  /*min-width: 800px;*/    /* If we use it, the div will not work for small window !!! Try another way */
+}
+
+
+.fullscreen_main {
+  padding-bottom: 0px;
+  margin: 0;
+  width: 100%;
+}
+
+/*******************************************************************************
+ ** mainportlet
+ ******************************************************************************/
+
+.mainportlet, .mainportlet_bg {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #a3adb8;
+}
+
+.mainportlet {
+  background-color: #FFFFFF;
+}
+
+.mainportlet_bg {
+  background-color: #F4F4F4;
+}
+
+.mainportlet_p, .mainportlet_bg_p {
+  overflow: hidden;
+  width: 100%;
+  font-size: 12px;
+}
+
+.mainportlet_h3, .mainportlet_bg_h3 {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  height: 27px;
+  margin: 0;
+  padding: 0;
+}
+
+.mainportlet_h3 {
+  background-color: #eef2f8;
+  border-bottom: none;
+}
+
+.mainportlet_bg_h3 {
+  background-color: #e0e6ef;
+  border-bottom: none;
+}
+
+
+.mainportlet_bg_h3 input, .mainportlet_h3 input, .miniportlet_h3 input{
+  margin-right:10px;
+}
+
+.mainportlet_title,
+.mainportlet_title a,
+.mainportlet_bg_title,
+.mainportlet_bg_title a {
+
+  text-decoration: none !important;
+  color: #555555 !important;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 5px 0 5px 5px;
+}
+
+
+/*******************************************************************************
+ ** miniportlet
+ ******************************************************************************/
+
+.miniportlet {
+  border: none;
+  background-color: #FFFFFF;
+  padding:0;
+}
+
+.miniportlet_h3 {
+  overflow: hidden;
+  padding:0;
+  width: 100%;
+  height:25px;
+  background: #e0e6ef url(/images/bg_miniportlet.gif) repeat-x;
+  border-bottom: 1px solid #6b82b2;
+}
+
+.miniportlet_title,
+.miniportlet_title a {
+  text-decoration: none !important;
+  color:#555555;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 4px 10px 0 10px;
+}
+
+.miniportlet_p {
+  background-color: #FFFFFF;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-size:12px;
+  padding:0;
+}
+
+.truncate {
+  float: left;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+
+/* colors (typically used for text elements) */
+.subtext { color: #999999; }
+.orange { color: #FF6600; }
+.white { color: #FFFFFF; }
+.lightgray {color:#aaaaaa; font-weight:normal;}
+.highlight {color: #FF6600;}
+
+.search-highlight {
+  background-color: #ffff00;
+}
+
+/*******************************************************************************
+ ** Tree Browser
+ ******************************************************************************/
+
+#tree_browser {
+  display: block;	
+  height: auto;
+  width: 100%;
+  overflow-x: hidden;/*auto;*/
+  overflow-y: hidden;
+}
+
+#tree_browser table, #tree_browser tr, #tree_browser td {
+  padding: 0px;
+  margin: 0px;
+  border: 1px;
+  text-decoration:none;
+ /* vertical-align:;*/
+}
+
+div.treeExpand {
+  margin: 0 0 10px 0;
+  padding: 10px;
+  width: auto;
+  background-color: #ffffff;
+  font-size: 12px;
+  border-top: 0px solid #CCCCCC;
+  border-bottom: 0px solid #CCCCCC;
+}
+
+.treeExpand a {
+  color:#00819f;
+  font-weight: normal;
+}
+
+.treeExpand a:hover {
+  color:#FF6600;
+}
+
+
+/*******************************************************************************
+ ** Header
+ ******************************************************************************/
+
+#centralbody {
+  overflow: hidden;
+  width: 100%;
+  margin:0 auto;
+}
+
+#tagline {
+	background: #1164a2;
+}
+
+#tagline p {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-style: italic;
+	padding: 2px 0 2px 20px;
+	margin-bottom: 0;
+	color: #ffffff;
+	letter-spacing: 1px;
+	text-align:center;
+}
+
+/* sitewrap is a wrapper that holds the presentation/UI  */
+#sitewrap {
+  width: 100%;
+  background-color: #FFFFFF;
+}
+
+
+/* maincontentwrap is a wrapper that holds the content */
+#maincontentwrap {
+  padding: 0;
+  text-align: left;
+  width: 100%;
+  overflow: hidden;
+  clear: both;
+}
+
+#mainheader {
+  display: block;
+  height: 73px;
+  background: #FFFFFF;
+  width: 100%;
+}
+
+#mainTopRight {
+  margin: 0;
+  padding: 10px 5px 0 0;
+  float: right;
+  color: #a3adb8;
+  text-align:right;
+  white-space: nowrap;
+}
+
+#mainTopRight a{
+  margin: 0;
+  padding: 10px 5px 10px 5px;
+  color: #67737c;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 12px;
+}
+
+#mainTopRight a:hover{
+  text-decoration: underline;
+}
+
+
+/*******************************************************************************
+ ** Navigation Bar:
+ ******************************************************************************/
+/* mainnav holds the large main buttons (HOME, PROJECTS, etc) */
+#mainnav {
+  background: #eef2f8;
+  margin: 0;
+  padding: 0;
+  width:100%;
+  height: 24px;
+  border-top: 1px solid #a3adb8;
+  border-bottom: 1px solid #a3adb8;
+}
+
+/* subnav holds the crumbtrail (grey bar) buttons (HOME, PROJECTS, etc) */
+#subnav {
+
+  background-color: #F4F4F4;
+  color: #999999;
+  font-weight: normal;
+  padding: 4px 0 5px 0px;
+  border-bottom: #a3adb8 solid 1px;
+  height: auto;
+  text-align: left;
+  width:100%;
+  margin-bottom: 18px;
+}
+
+#subnav .trail {
+  font-size:12px;
+  padding-left:10px;
+}
+
+#subnav a {
+  color: #666666;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+#subnav a:hover, #subnav a:active {
+  color: #333333;
+}
+
+#searchbar {
+  padding-right: 10px;
+  top: 0;
+  float:right;
+  white-space: nowrap;
+  display: block;
+  width:auto;
+  /*vertical-align:top;*/
+}
+
+#searchbar a {
+  font-size:12px;
+  color:#666666;
+  margin-right:20px;
+}
+
+.navbar {
+  display:block;
+  border-bottom: 1px solid #CBCECE;
+  background: #FFFFFF url(/images/tile_button.jpg) repeat-x top left;
+  overflow: hidden;
+  width: 100%;
+}
+
+.rightnav {
+  float: right;
+  border-left: 1px solid #CBCECE;
+}
+
+.leftnav {
+  float: left;
+  border-right: 1px solid #CBCECE;
+}
+
+/* navigation link styles */
+a.button_nav, a.button_nav:link, a.button_nav:visited, a.button_nav:active, a.button_nav:hover {
+  text-align: center;
+  display:block;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration:none;
+}
+
+a.button_nav, a.button_nav:link, a.button_nav:visited, a.button_nav:active {
+  background: #FFFFFF url(/images/tile_button.jpg) repeat-x top left;
+  padding: 5px 10px 5px 10px;
+}
+
+
+a.button_nav, a.button_nav:link, a.button_nav:visited, a.button_nav:active {
+  color: #1164a2;
+}
+
+a.button_nav:hover {
+  background: transparent;
+  background-color: #a3adb8;
+  padding:5px 9px 5px 11px;
+  color: #FFFFFF;
+}
+
+a.button-sel_nav, a.button-sel_nav:visited {
+  color: #FFFFFF !important;
+  background-image: none !important;
+  background-color: #1164a2 !important;
+}
+
+a.button-sel_nav:hover, a.button-sel_nav:active {
+  padding:5px 9px 5px 11px !important;
+  background-image: none !important;
+  background-color: #a3adb8 !important;
+}
+
+
+/*******************************************************************************
+ ** Footer:
+ ******************************************************************************/
+
+#footer {
+  display: block;
+  margin-top: 50px;
+  padding: 0;
+  height: auto;
+  color: #67737c;
+  font-size:10px;
+  line-height:1.5em;
+  width: 100%;
+  clear: both;
+}
+
+#footer-bar {
+
+  background: #eef2f8;
+  height:20px;
+  width:100%;
+  clear:both;
+  border-top: 1px solid #a3adb8;
+  border-bottom: 4px solid #a3adb8;
+}
+
+#footer-logos {
+  width:550px;
+  padding-left:20px;
+  float:left;
+}
+
+.footer-right {
+  width:auto;
+  margin:20px;
+  float:right;
+}
+
+
+
+/*******************************************************************************
+ ** Table:
+ ******************************************************************************/
+th, td {
+  text-align:left;
+  font-weight:normal;
+  padding: 5px 10px;
+  vertical-align: top;
+}
+
+td.head {
+  background-color: #DDDDDD;
+  color: #333333;
+  border: 1px solid #999999;
+  border-left: none;
+  font-weight: normal;
+}
+
+td.list {
+  border-bottom: 1px dotted #555555;
+  text-align: center;
+  padding: 8px 10px;
+ }
+
+table.data {
+  background-color:#ffffff;
+}
+
+table.data td {
+  padding: 8px 10px;
+}
+
+/*.data tr:hover  { background-image: url(/images/hovercell.gif);cursor:pointer; }*/
+.data tr        { border-top: 1px dotted #555555; font-weight: normal;}
+.data tr.rowNew { background-color: #d7ecf0; border: 1px dotted #555555; }
+
+tr.head {
+  background-image: url(/images/tile_button.jpg);
+}
+
+.head a {
+  color: #1164a2;
+  text-decoration:none;
+}
+th.head a:visited {
+  color: #1164a2;
+}
+
+tr.row0{
+  background-color:#F9F9F9;
+}
+tr.row1{
+  background-color:#F4F4F4;
+}
+tr.rowMouseOver{
+  background-color:#D7ECF0;
+}
+
+
+table.listing {
+  font-size:12px;
+  margin: 0;
+  width: 100%;
+}
+
+table.listing th {
+  border-bottom: solid 1px #CCCCCC;
+  color: #555555;
+  font-weight:bold;
+  background-color:#DDDDDD;
+  text-align:left;
+}
+
+.listing span.btn > img { height: 32px; }
+
+.listing  td input {
+  background-color: #FFFFFF;
+  border: 1px solid #999999;
+  color: #555555;
+  font-size: 12px;
+  padding: 2px 3px;
+}
+
+.listing  td select {
+  background-color: #FFFFFF;
+  border: 1px solid #999999;
+  color: #555555;
+  font-size: 12px;
+  padding: 2px 3px;
+}
+
+
+/*******************************************************************************
+ ** Message / Alert boxes:
+ ******************************************************************************/
+.notice {
+  padding: 7px 7px 7px 40px;
+  border: 1px solid #ffcc99;
+  background: #FFFFFF url(/images/icon_notice2.gif) no-repeat center left;
+}
+
+.info {
+  margin-bottom: 20px;
+  padding: 15px 15px 15px 40px;
+  border: 1px solid #487d9e;
+  background: #E6F7FF url(/images/icon_info.gif) no-repeat center left;
+}
+
+.info span.info-header {
+  font-weight:bold;
+  color:#ff6600;
+}
+
+
+.upload {
+  padding: 15px 15px 15px 100px;
+  min-height: 50px;
+  font-size: 12px;
+  font-weight:bold;
+  border: 1px solid #FF8000;
+  background: #c8d8f9 url(/images/upload.gif) no-repeat top left;
+}
+
+.error {
+  padding: 7px 7px 7px 30px;
+  border: 1px solid #FF6600;
+  background: #FFFFFF url(/images/icon_error2.gif) no-repeat center left;
+}
+
+.passed {
+  padding: 7px 7px 7px 30px;
+  border: 1px solid #99ccff;
+  background: #FFFFFF url(/images/icon_check.gif) no-repeat center left;
+}
+
+/* to be used for inline error messages */
+.fielderrorlabel {
+  padding: 7px 7px 7px 30px;
+  border: 1px solid #FF6600;
+  background: #FFFFFF url(/images/icon_error2.gif) no-repeat center left;
+  display: none;
+  font-size:90%;
+  z-index:100;
+  margin-left:10px;
+  position:absolute;
+}
+
+.relativeerrorlabel {
+  padding: 4px 4px 4px 30px;
+  border: 1px solid #FF6600;
+  background: #FFFFFF url(/images/icon_error2.gif) no-repeat center left;
+  display: none;
+  font-size:90%;
+}
+
+.good, a.good, a.good:link, a.good:visited, a.good:hover {
+  color: #0e9e04;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+
+/*******************************************************************************
+ ** Form:
+ ******************************************************************************/
+
+form {margin: 0; padding: 0;}
+
+input {
+  font-family: arial;
+  color: #555555;
+}
+
+textarea {
+  font-family: arial;
+  color: #555555;
+  background-color:#FFFFFF;
+  font-size:12px;
+  max-width:95%;
+  padding:2px 3px;
+}
+
+.disabled {
+  background-color: #F4F4F4;
+}
+
+#form .wide {
+  width: 400px;
+}
+
+#form table {
+  border: 1px solid #DDDDE0;
+  padding: 0;
+  background-color: #F6F6F8;
+  width: 100%;
+}
+
+
+#form {
+  border: 0;
+  font-family: arial;
+  color: #555555;
+}
+
+/* form header */
+#form td.header{
+  font-size:125%;
+  color: #FFFFFF;
+  background: #81a9d4 url(/images/bg_mainportlet.gif) top left repeat-x;
+  margin:0;
+  padding:4px 0px 11px 10px;
+}
+
+/* section headers for forms (chrome gradient) */
+td.sectheader, div.sectheader{
+  font-weight:bold;
+  background: #EEEEF0;
+  margin:0;
+  border-top:#CCCCCC solid 1px;
+  border-bottom:#CCCCCC solid 1px;
+  padding:10px 0px 7px 10px;
+}
+
+/* selectbox should be used for all input selection boxes, handles borders, background, etc */
+#form .selectbox {
+  color: #555555;
+  font-family: arial;
+}
+
+td.sectheaderbtn {
+  background: #EEEEF0;
+  border-top: #CCCCCC solid 1px;
+  padding:5px;
+  text-align:right;
+  line-height: 30px;
+}
+
+div.sectheaderbtn {
+  background: #EEEEF0;
+  border: #CCCCCC solid 1px;
+  padding:5px;
+  text-align:right;
+  line-height: 30px;
+  margin-top: 30px;
+}
+
+
+.innerblock {
+  margin: 35px 0;
+  padding: 15px;
+  border: 1px solid #999999;
+}
+
+.textentry {
+  background-color: #FFFFFF;
+  border: 1px solid #999999;
+  color: #555555;
+  font-size: 12px;
+  padding: 2px 3px;
+}
+
+
+/*******************************************************************************
+ ** Button and input type="submit/button/reset":
+ ******************************************************************************/
+
+a.button, a.button:link, a.button:visited, a.button:active, a.button:hover {
+  text-align: center;
+  color: #000000;
+  font-size: 12px;
+  font-weight: normal;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 10px;
+  cursor:pointer;
+  margin: 0 10px 10px 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  /*border-radius: 5px;*/
+}
+
+a.button, a.button:link, a.button:visited {
+  background: #ededed url(/images/bg_button.gif) repeat-x bottom left;
+  border: 1px solid #666666;
+}
+
+a.button:hover, .btn:hover {
+  background: #eaf6fd url(/images/bg_button_hover.gif) repeat-x bottom left;
+  border: 1px solid #666666;
+}
+
+a.button:active, .btn:active {
+  margin: 0 8px 0 2px;
+  background: #98d1ef url(/images/bg_button_select.gif) repeat-x bottom left;
+  border: 1px solid #666666;
+}
+
+
+/* btn is the standard button style for all submit buttons */
+.btn {
+  text-align: center;
+  color:#000000;
+  text-decoration: none;
+  font-weight: normal;
+  background: #ededed url(/images/bg_button.gif) repeat-x bottom left;
+  white-space: nowrap;
+  border: 1px solid #666666;
+  margin-right: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  /*border-radius: 5px;*/
+}
+
+
+.btn {
+  font-size: 12px;
+  padding: 2px 5px 2px 5px;
+}
+
+
+.btn-mini {
+  padding-top:0;
+  padding-bottom:0;
+  font-size:11px;
+}
+
+/*******************************************************************************
+ ** Link
+ ******************************************************************************/
+
+a:focus, a:hover {color:#1164a2;}
+
+a {
+  text-decoration: none;
+  color:#1164a2;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a.lo         {text-decoration:none;}
+a.lt         {font-weight:normal;}
+a.blue       {color:#1164a2;}
+a.bluelt     {color:#1164a2; font-weight:normal;}
+a.orange     {color:#FF6600;}
+a.orangelt   {color:#FF6600; font-weight:normal;}
+a.darkgray   {color:#777777;}
+a.darkgraylt {color:#777777; font-weight:normal;}
+a.darkgraylo {color:#777777; text-decoration:none;}
+
+a.blue:hover, a.bluelt:hover {
+  text-decoration: underline;
+}
+
+a.orange:hover, a.orangelt:hover {
+  background-color: transparent;
+  color: #00819F;
+  padding: 0;
+}
+
+a.darkgray:hover, a.darkgraylo:hover {
+  background-color: transparent;
+  color: #333333;
+  padding: 0;
+}
+
+a.darkgray:hover, a.darkgraylt:hover {color:#FF6600;}
+
+a.helplink {
+  cursor:help;
+  text-decoration: none;
+  padding:0;
+  margin:0;
+  border:0;
+}
+
+
+/* miniature (extra small) links */
+a.mini, a.mini:link, a.mini:visited, a.mini:hover {
+  font-weight: normal;
+  font-size:11px;
+  padding: 1px 6px 1px 6px;
+  margin: 0;
+}
+
+a.mini:active {
+  font-weight: normal;
+  font-size:11px;
+  padding: 2px 5px 1px 7px;
+  margin: 0;
+}
+
+/* big (extra large) links */
+a.big, a.big:link, a.big:visited, a.big:hover, a.big:active {
+  margin: 0 5px 0 0;
+}
+
+a.small, a.small:link, a.small:visited {
+  padding: 1px 6px 2px 6px;
+  margin: 2px 4px 0 0;
+}
+
+a.small:hover, a.small:active {
+  padding: 2px 5px 1px 7px;
+}
+
+a.grey, a.grey:link, a.grey:visited {
+  color: #737E83;
+}
+
+a.grey:hover, a.grey:active {
+  color: #1164a2;
+}
+
+/* caption span for photography, etc */
+span.caption {
+  /*padding:7px 0 14px 0;*/
+  text-transform:uppercase;
+  font-size:12px;
+  font-weight: bold;
+}
+
+.blue {color:#1164a2;}
+
+
+
+/* Main Layout Elements                             */
+/* -----------------------------------------------  */
+
+.floatright {
+  float: right;
+}
+
+.floatleft {
+  float: left;
+}
+
+
+
+/*******************************************************************************
+ ** Data File Browser
+ ******************************************************************************/
+
+.filebrowser {
+  font-weight: normal;
+}
+
+.filebrowser a, .filebrowser a:link, .filebrowser a:active, .filebrowser a:visited, .filebrowser a:hover {
+  font-weight: normal;
+  text-decoration: none;
+  background-color: transparent;
+  color: #555555;
+}
+
+.filebrowser td {
+  border-bottom: solid 1px #EFEFEF;
+}
+
+td.blabels {
+  border-bottom: solid 1px #26566e;
+}
+
+.bpath {
+  background-color: #F4F4F4;
+  padding: 5px 0 5px 15px;
+  border-bottom: solid 1px #26566e;
+  font-weight: bold;
+}
+
+.bpath a, .bpath a:link, .bpath a:active, .bpath a:visited {
+  font-weight: normal;
+  text-decoration: none;
+  background-color: transparent;
+  color: #111111;
+}
+
+.bpath a:hover {
+  font-weight: normal;
+  text-decoration: none;
+  background-color: #b8e9f4;
+  color: #333333;
+  text-decoration: underline;
+  padding: 5px 0 5px 0;
+}
+
+
+/*******************************************************************************
+ ** Project/Experiment/Trial Elements
+ ******************************************************************************/
+
+table.proj_listing {
+  background-color: transparent;
+  padding:0;
+  margin:0;
+  color: #1164a2;
+}
+
+table.proj_listing td {
+  padding: 0px 10px 0px 5px;
+}
+
+.description {
+  overflow: hidden;
+  width: 100%;
+  margin: 0 4px 15px 4px;
+}
+
+.contentpadding {
+  margin: 10px 20px 10px 15px;
+}
+
+
+.footer-info {
+  clear: both;
+  background: #fefefe;
+  margin-top:15px;
+  padding: 10px 0 10px 10px;
+  border: 1px solid #999999;
+  font-size:12px;
+  color: #858585;
+  line-height:1.5em;
+}
+
+.footer-info p {
+  padding-right:10px;
+  font-size:11px;
+}
+
+.footer-info img {
+  padding:0 20px;
+}
+
+
+
+.sublist {
+  clear: both;
+  margin: 10px 0 10px 0;
+  border: solid #888888;
+  border-width: 1px 1px 0 1px;
+  display: block;
+  overflow: hidden;
+}
+
+
+/* list link styles */
+.listlink0, .listlink1, a.listlink0, a.listlink1 {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  padding: 4px 8px 5px 8px;
+  border-bottom: 1px solid #888888;
+  font-weight: bold;
+}
+
+
+a.listlink0:link, a.listlink0:visited, a.listlink0:active {
+  background: #eeeef0;
+  color: #1164a2;
+  text-decoration: none;
+}
+
+
+a.listlink1:link, a.listlink1:visited, a.listlink1:active {
+  background: #DFDFDF;
+  color: #1164a2;
+  text-decoration: none;
+}
+
+
+a.listlink0:hover, a.listlink1:hover {
+  background: #D7ECF0;
+  color: #0081AD;
+  text-decoration: underline;
+}
+
+.link {
+  cursor:pointer;
+}
+
+.padding-right {
+  padding-right:20px;
+}
+/*******************************************************************************
+ ** input forms
+ ******************************************************************************/
+#required {
+  font: 12.75px Monospace;
+  color: black;
+  background: white;
+  border: solid 1px #538198;
+  border-bottom-color: #d8d8f0;
+  border-right-color: #d8d8f0;
+  padding: 0px;
+  margin: 1px;
+}
+
+#optional {
+  font: 12.75px Monospace;
+  color: #26566e;
+  background: white;
+  border: solid 1px #538198;
+  border-bottom-color: #d8d8f0;
+  border-right-color: #d8d8f0;
+  padding: 0px;
+  margin: 1px;
+}
+
+
+/*******************************************************************************
+ **  experiment report
+ ******************************************************************************/
+
+div.report {
+  margin: 40px 15px 0 25px;
+  padding: 5px 25px 25px 15px;
+  border: 1px solid #EFEFEF;
+  margin-left:15px;
+}
+h2.sect { margin-top: 10px; padding-top:5px; font-size:15px;}
+
+div.repetition {
+  background-color: #eeeeff;
+}
+
+.directory {
+  padding-bottom:10px;
+}
+
+.directory a {
+  color:#555555;
+}
+
+
+/*******************************************************************************
+ ** NEES Site Activities-Specific Styles
+ ******************************************************************************/
+
+div.nawi_active_wrapper {
+  border: 1px solid #FF6600;
+  padding:0 10px;
+}
+
+.nawi_camview {
+  display: inline;
+  z-index: -5;
+  width:119px;
+  float:left;
+  padding:0 5px 5px 0;
+  margin: 0 0 0 5px;
+}
+
+.loading {
+  background: #FFFFFF url(/activities/common/images/loading.gif) top left no-repeat;
+}
+
+.nawi_camview_caption {
+  background-color: #555555;
+  color: #FFFFFF;
+  opacity:0.85;
+  /*filter: alpha(opacity=85);*/
+  font-size: 10px;
+  padding: 4px 8px;
+  display: block;
+  position: relative;
+  bottom: 22px;
+  font-size:9pt;
+  width: 105px;
+  z-index: 10;
+}
+
+.nawi_camview_caption-active {
+  background-color: #FF6600;
+  color: #FFFFFF;
+  opacity:0.85;
+  /*filter: alpha(opacity=85);*/
+  font-size: 10px;
+  padding: 4px 8px;
+  display: block;
+  position: relative;
+  bottom: 22px;
+  font-size:9pt;
+  width: 105px;
+  z-index: 10;
+}
+
+.nawi_feed_slide_active {
+  border: 1px #FF6600 solid;
+  margin: 0 15px 15px 0;
+  width:119px;
+}
+
+/*******************************************************************************
+ ** Project Homepage
+ ******************************************************************************/
+
+.thumb_frame {
+  background: url(/images/frame.gif) no-repeat;
+  width: 80px;
+  height: 80px;
+  float: left;
+  padding: 10px 0 10px 0;
+  text-align: center;
+  margin-left: 10px;
+}
+
+.thumbvideo_frame {
+  background: url(/images/frame_video.gif) no-repeat;
+  width: 80px;
+  height: 80px;
+  float: left;
+  padding: 10px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.orderNum {
+  text-align:right;
+  color:#bbbbbb;
+  font-size:9px;
+}
+
+.flashcontainer {
+  border:#555555 solid 1px;
+  width:462px;
+}

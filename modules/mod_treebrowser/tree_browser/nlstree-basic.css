@@ -1,0 +1,129 @@
+roa.prnnode  {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    /*color:#000000;*/
+    color:#333333;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    padding:1px 1px 1px 1px;
+    /* border:#ffffff 1px solid; */
+    font-weight:normal;
+}
+
+a.prnnode:hover { background-color:#CCFFCC; color:#0081A0; text-decoration:underline; }
+
+a.node {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    color:#666666;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    padding:1px 1px 1px 1px;
+    /* border:#ffffff 1px solid; */
+    font-weight:normal;
+}
+
+a.node:hover { background-color:#CCFFCC; text-decoration:underline; color:#0081A0;}
+
+a.selnode {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    color:#000000;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    /*background-color:#CCFFCC;*/
+    padding:1px 1px 1px 1px;
+    /* border:#66CC66 1px solid; */
+    font-weight:normal;
+}
+
+a.selprnnode {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    font-weight:normal;
+    color:#000000;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    /*background-color:#CCFFCC;*/
+    padding:1px 1px 1px 1px;
+    /* border:#66CC66 1px solid; */
+    font-weight:normal;
+}
+
+div.row {
+	width:100%;
+	height:18px;
+    color:#0066cc;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+div.selrow {
+    background-color:#f4f4f4;/*#c8d6fb;*/
+    cursor:pointer;
+}
+
+div.row:hover {font-weight:normal; text-decoration:underline; }
+
+input.nodeedit {
+    font-family:Verdana,Arial;
+    font-size:8pt;
+    color:#666666;
+    text-decoration:none;
+    position:absolute;
+    height:20px;
+    /* border:#cfcfcf 1px solid; */
+    z-index:1;
+}
+
+
+/*Special node styles.*/
+.spcnodeprn {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    color:#cc0000;
+    text-decoration:none;
+    cursor:pointer;
+    padding:1px 1px 1px 1px;
+    /* border:#ffffff 1px solid; */
+}
+
+.spcnodeprn:hover { background-color:#CCFFCC; font-weight:normal; text-decoration:underline; }
+
+.selspcnodeprn {
+    font-family:tahoma,Arial;
+    font-size:8pt;
+    font-weight:normal;
+    color:#ff0000;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0px;
+    background-color:#CCFFCC;
+    padding:1px 1px 1px 1px;
+    /* border:#66CC66 1px solid; */
+}
+
+.spcnode {
+    font-family:Verdana;
+    font-size:11px;
+    font-style:italic;
+    text-decoration:none;
+    color:#666666;
+    background-image:url(spcnode.gif);
+    padding:2px;
+}
+
+.selspcnode {
+    font-family:Verdana;
+    font-size:11px;
+    font-style:italic;
+    font-weight:normal;
+    text-decoration:none;
+    color:#ff9900;
+    padding:2px;
+    background-image:url(spcnode.gif);
+}

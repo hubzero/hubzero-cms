@@ -1,0 +1,48 @@
+.submenu {
+position:absolute; 
+z-index:3; 
+background: #7DCBDA url(/images/tile_button.gif) top left repeat;
+}
+
+#submenu ul {
+  margin:0;
+  padding:0 0 0 0;
+  list-style:none;
+  font-size:11px;
+}
+
+#submenu li {
+  float:left;
+  margin:0;
+  padding:0;
+  line-height:normal;
+  text-indent:0;
+  display:block;
+}
+
+#submenu li a {
+  display:block;
+<!--  padding:5px 20px 6px 20px; -->
+  border:solid #538198;
+  border-width:0 0 0 0; -->
+  color: #27537C;
+  text-decoration:none;
+  white-space:nowrap;
+<!--  background-color: transparent; -->
+  background: #7DCBDA url(/images/tile_button.gif) top left repeat;
+}
+
+* html #submenu li a {
+  width:1%;
+  }
+
+#submenu li a:hover {
+  color: #27537C;
+  background: #A8DEE8 url(/images/tile_mainnav-hover.gif) top left repeat;
+  background-color: transparent;
+}
+
+#submenu li a.selected, li a.selected:hover {
+  color: #FFFFFF;
+  background: #00819F url(/images/tile_mainnav-select.gif) top left repeat;
+}

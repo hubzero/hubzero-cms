@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+    <name>Tree Browser</name>
+    <author>Tanzima Islam</author>
+    <version>1.5.0</version>
+    <creationDate>03/23/2010</creationDate>
+    <description>Show the tree browser for projects and facilities.</description>
+	<files>
+		<filename>mod_treebrowser.xml</filename>
+		<filename module="mod_treebrowser">mod_treebrowser.php</filename>
+		<filename>index.html</filename>
+        <filename>helper.php</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
+	</files>
+	<params>
+    </params>
+</install>

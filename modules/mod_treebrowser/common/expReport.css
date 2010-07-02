@@ -1,0 +1,38 @@
+.report_img
+{
+  border:0;
+  vertical-align:bottom;
+}
+
+.exp_title
+{
+ font-weight:bold;
+
+}
+.sim_title
+{
+ font-weight:bold;
+
+}
+.rep_title
+{
+ font-weight:bold;
+
+}
+
+.trial_title
+{
+ font-weight:bold;
+
+}
+
+.run_title
+{
+ font-weight:bold;
+
+}
+
+.indent
+{
+  margin-left:1em;
+}
