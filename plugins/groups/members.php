@@ -924,7 +924,7 @@ class plgGroupsMembers extends JPlugin
 		
 		// Build the SEF referenced in the message
 		$juri =& JURI::getInstance();
-		$sef = JRoute::_('index.php?option='.$this->_option.a.'gid='. $group->get('cn'));
+		$sef = JRoute::_('index.php?option='.$this->_option."&".'gid='. $group->get('cn'));
 		if (substr($sef,0,1) == '/') {
 			$sef = substr($sef,1,strlen($sef));
 		}
