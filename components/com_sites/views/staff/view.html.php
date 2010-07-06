@@ -53,7 +53,10 @@ class sitesViewStaff extends JView
         $candidates = PersonPeer::getCandidateMembersForEntity($facilityID, DomainEntityType::ENTITY_TYPE_FACILITY);
         $candidates->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         
-        
+        // See if current logged in user should be presented an edit button
+	$allowEdit = FacilityHelper::canEdit($facility);
+	$this->assignRef('allowEdit', $allowEdit);
+
         parent::display($tpl);
     }
     

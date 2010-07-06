@@ -41,16 +41,26 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	
 			$href = "";
 			//$userInfo = "<a class='button mini' style='display: inline;' href='$pageUrl&personId=$personid&viewDetail=1'>View Detail</a>";
-			
-			$editlink = JRoute::_('/index.php?option=com_sites&view=editcontactrolesandpermissions&id=' . $this->facilityID . '&editpersonid=' . $personid);   
+
+                        if($this->allowEdit)
+                            $editlink = JRoute::_('/index.php?option=com_sites&view=editcontactrolesandpermissions&id=' . $this->facilityID . '&editpersonid=' . $personid);
+                        else
+                            $editlink = '';
 			
 	?>
 		    <tr bgcolor="<?php echo $bgcolor; ?>" id="memberId_<?php echo $personid; ?>">
 		      <td><span title="PersonId: <?php echo $personid; ?>"><?php echo $fullname ;?></span></td>
 		      <td><?php echo $rolenames; ?></td>
 		      <td><a href="mailto: <?php echo $email; ?>"><?php echo $email;?></a></td>
-		      <td><a href="<?php echo $editlink?>">[edit]</a></td>
-		    </tr>
+		    
+                      <?php if($editlink != ''){ ?>
+                        <td><a href="<?php echo $editlink?>">[edit]</a></td>
+                      <?php } else {?>
+                        <td> </td>
+                      <?php } ?>
+
+
+                    </tr>
 	
 	<?php
 		} // End while

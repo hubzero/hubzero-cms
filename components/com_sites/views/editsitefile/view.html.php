@@ -22,11 +22,11 @@ class sitesVieweditsitefile extends JView
     function display($tpl = null)
     {
         // Grab facility from Oracle
-		$facilityID = JRequest::getVar('id');
+	$facilityID = JRequest::getVar('id');
     	$facility = FacilityPeer::find($facilityID);
 		
-  		$fac_name = $facility->getName();
-		$fac_shortname = $facility->getShortName();
+  	$fac_name = $facility->getName();
+	$fac_shortname = $facility->getShortName();
         $this->assignRef( 'FacilityName', $fac_name);
 
         // Page title and breadcrumb stuff
@@ -37,24 +37,21 @@ class sitesVieweditsitefile extends JView
         $pathway->addItem( $fac_name,  JRoute::_('/index.php?option=com_sites&view=site&id=' . $facilityID));
                 
         $this->assignRef('facility', $facility); 
+        $this->assignRef('facilityID', $facilityID);
         
         // Get the tabs for the top of the page
-        $tabs = FacilityHelper::getFacilityTabs(0, $facilityID);
+        $tabs = FacilityHelper::getFacilityTabs(-1, $facilityID);
         $this->assignRef('tabs', $tabs); 
 
-		$infotype = JRequest::getVar('infotype');
-		$subinfo = JRequest::getVar('subinfo');
-		$groupby = JRequest::getVar('groupby');
-        
-		$this->assignRef('infotype', $infotype);
-		$this->assignRef('subinfo', $subinfo);
-		$this->assignRef('groupby', $groupby);
+        $infotype = JRequest::getVar('infotype');
+        $subinfo = JRequest::getVar('subinfo');
+        $groupby = JRequest::getVar('groupby');
+
+        $this->assignRef('infotype', $infotype);
+        $this->assignRef('subinfo', $subinfo);
+        $this->assignRef('groupby', $groupby);
 		
         parent::display($tpl);
 	}
-    
-
-	
-	
     
 }

@@ -165,17 +165,19 @@ class FacilityHelper
 	 */
 	function canEdit($facility)
 	{
-		$user =& JFactory::getUser();
-		$username = $user->get('username');
-		
-		$auth = Authorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+            $can_edit = false;
+            $user =& JFactory::getUser();
 
-		$can_edit = $auth->canEdit($facility);
+            if($user->id > 1)
+            {
+                $username = $user->get('username');
+                $auth = Authorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+                $can_edit = $auth->canEdit($facility);
+            }
+            else
+                $can_edit = false;
 
-		if(!$can_edit)
-			return false;
-		else
-			return true;
+            return $can_edit;
 	}
 
         function canCreate($facility)
