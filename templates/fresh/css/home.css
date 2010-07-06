@@ -87,8 +87,29 @@
 		padding-bottom: 0.2em;
 		}
 /*---------------------------------------------------------------
+	EOT Intro Page
+---------------------------------------------------------------*/
+    #aca_b_trail {
+            margin: 0;
+            padding: 0em 0px;
+            background: #f8f7ee;
+            border-bottom:1px solid #dddcc7;
+            font-size: 90%;
+            line-height: 0.8em;
+            color: #2468a0;
+            }
+      .centeredImage
+      {
+    text-align:center;
+    margin-top:0px;
+    margin-bottom:0px;
+    padding:0px;
+    }
+  
+/*---------------------------------------------------------------
 	Intro Page
 ---------------------------------------------------------------*/
+
 	#home-splash { 
 		margin: 0;
 		padding: 0;		

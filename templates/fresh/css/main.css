@@ -142,7 +142,7 @@
 		border: none;
 		}
 	img, a img {
-		border:1px solid #ffffff;
+		border: none;
 	}
 /*---------------------------------------------------------------
 	Tables
@@ -187,6 +187,22 @@
 	.contentpaneopen table th p, 
 	.contentpaneopen table td p {
 		}
+		
+/*---------------------------------------------------------------
+	EOT Tables
+---------------------------------------------------------------*/
+      table.table_eot
+       {
+            width: 100%;
+            text-align: left;
+            font-size: 1em;
+            border-top: 16px solid #f6f5e8;
+            border-bottom: 16px solid #f6f5e8;
+            margin-top: -2px;
+            background-color: #fafafa;    
+      }     
+      /* end EOT Table changes */
+		
 /*---------------------------------------------------------------
 	Core classes
 ---------------------------------------------------------------*/
@@ -2043,7 +2059,7 @@
 		cursor: pointer;
 		}
 	.sbox-loading #sbox-content {
-		background-image: url("../images/anim/spinner.gif");
+		background-image: url("../images/anim/circling-ball-loading.gif");
 		background-repeat: no-repeat;
 		background-position: center;
 		}

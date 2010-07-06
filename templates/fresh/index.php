@@ -16,14 +16,14 @@ $juser =& JFactory::getUser();
 	<!--[if lte IE 6]>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/ie6win.css" />
 	<![endif]-->
-<?php if ($this->countModules( 'banner or welcome' )) { ?>
+<?php if ($this->countModules( 'banner or welcome or academybanner' )) { ?>
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/home.css" id="home_css" />
 <?php } ?>	
 	 </head>	 
 	<body<?php if ($this->countModules( 'banner or welcome' )) : echo ' id="frontpage"'; endif; ?>>
 	
 	<div id="mainwrap">
-    <div id="uc"><div>Beta 2.0</div></div>
+    <div id="uc"><div>Beta 3.0</div></div>
 	<jdoc:include type="modules" name="notices" />
 		<div id="header">
              <div id="headerwrap">
@@ -125,6 +125,14 @@ $juser =& JFactory::getUser();
 		?>
 		</div>
 	<?php endif; ?>
+	
+	<!--  EOT SECTION SPECIFIC BANNER -->
+<?php if ($this->countModules( 'academybanner' )) : ?>
+		 <div id="aca_b_trail"> 
+			<jdoc:include type="modules" name="academybanner" />
+		 </div> <!--/ #academy header-right -->
+<?php endif; ?>
+		
 	  <div id="wrap">
 		<div id="content" class="<?php echo $option; ?>">
 	<?php if ($this->countModules( 'left' )) : ?>

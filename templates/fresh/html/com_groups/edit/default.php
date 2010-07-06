@@ -84,10 +84,13 @@ $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->
 			<p class="error"><?php echo JText::_('GROUPS_ERROR_PROVIDE_TITLE'); ?></p>
 <?php } ?>
 <?php if ($this->task == 'new') { ?>
+			<fieldset>
+				<legend><?php echo JText::_('Group Data Space'); ?> <span class="optional"><?php echo JText::_('GROUPS_OPTIONAL'); ?></span></legend>
 			<label>
 				<input class="option" type="checkbox" name="shareddir" id="shareddir" value="1" /> 
-				Create a directory for shared data files.
+				Create a group space for shared data files (only group members can read or write files in the group space)
 			</label>
+			</fieldset>
 <?php } ?>
 			<label>
 				<?php echo JText::_('GROUPS_FIELD_TAGS'); ?> <span class="optional"><?php echo JText::_('GROUPS_OPTIONAL'); ?></span>

@@ -48,20 +48,19 @@ h1 {
    padding: 0;
    height: 101px;
    position: relative;
-   background: #FFFFFF url("../images/bg_nav.gif") 0 0 repeat-x;
+   /*background: #FFFFFF url("../images/bg_nav.gif") 0 0 repeat-x;*/
 }
 #logo h1 {
                 margin: 0;
                 padding: 0;
 }
 #logo h1 a {
-                background: url("../images/logos/hpc2.gif") left center no-repeat;
-                width: 693px;
+                background: url("../images/logos/neeshub.gif") center center no-repeat;
+                width: 100%;
                 height: 101px;
                 display: block;
                 position:absolute;
                 top:0;
-                left:50px;
                 text-indent: -555em;
                 border: none;
                 margin: 0;
