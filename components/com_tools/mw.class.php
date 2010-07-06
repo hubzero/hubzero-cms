@@ -255,6 +255,7 @@ class MwView extends JTable
 	var $remoteip  = null;
 	var $start     = null;
 	var $heartbeat = null;
+	var $referrer  = null;
 
 	//-----------
 
