@@ -828,18 +828,18 @@ class DataFilePeer extends BaseDataFilePeer {
   	require_once 'api/org/nees/util/PhotoHelper.php';
   	
   	$strQuery = "SELECT * 
-				 FROM (
-  				   select df.id, df.name, df.description, df.path, df.title, df.thumb_id, row_number() 
-  				   OVER (ORDER BY df.path, df.name) as rn 
-  				   from data_file df,
-  				 	    data_file_link dfl
-  				   where df.id = dfl.id
-  				     and df.deleted=0
-  				     and df.directory=0
-  				     and df.usage_type_id is null 
-  				     and dfl.deleted=0
-  				     and dfl.proj_id=?
-  				     and dfl.exp_id=?";
+                     FROM (
+                       select df.id, df.name, df.description, df.path, df.title, df.thumb_id, row_number()
+                       OVER (ORDER BY df.path, df.name) as rn
+                       from data_file df,
+                                data_file_link dfl
+                       where df.id = dfl.id
+                         and df.deleted=0
+                         and df.directory=0
+                         and df.usage_type_id is null
+                         and dfl.deleted=0
+                         and dfl.proj_id=?
+                         and dfl.exp_id=?";
   	if($p_iTrialId>0){
   	  $strQuery .= " and dfl.trial_id=?";
   	}
@@ -847,12 +847,12 @@ class DataFilePeer extends BaseDataFilePeer {
   	  $strQuery .= " and dfl.rep_id=?";
   	}
   	$strQuery .= "  and(
-  				   	     (df.name like '%.png') or 
-  				   	     (df.name like '%.jpg') or
-  				   	     (df.name like '%.gif')  
-  				     )
-  				)  
-				WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
+                             (df.name like '%.png') or
+                             (df.name like '%.jpg') or
+                             (df.name like '%.gif')
+                           )
+                        )
+                        WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
   	
   	$oReturnArray = array();
   	
@@ -868,34 +868,34 @@ class DataFilePeer extends BaseDataFilePeer {
   	}
     $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
     while($oResultSet->next()){
-  	  $strFileArray = array();
-  	  $strFileArray['ID'] = $oResultSet->getInt("ID");
-  	  $strFileArray['NAME'] = $oResultSet->getString("NAME");
-  	  $strFileArray['PATH'] = $oResultSet->getString("PATH");
-  	  $strFileArray['TITLE'] = $oResultSet->getString("TITLE");
-  	  $strFileArray['DESCRIPTION'] = $oResultSet->getString("DESCRIPTION");
+      $strFileArray = array();
+      $strFileArray['ID'] = $oResultSet->getInt("ID");
+      $strFileArray['NAME'] = $oResultSet->getString("NAME");
+      $strFileArray['PATH'] = $oResultSet->getString("PATH");
+      $strFileArray['TITLE'] = $oResultSet->getString("TITLE");
+      $strFileArray['DESCRIPTION'] = $oResultSet->getString("DESCRIPTION");
       $strFileArray['THUMB_ID'] = $oResultSet->getInt("THUMB_ID");
       
       $strSource = $strFileArray['PATH']."/".$strFileArray['NAME'];
       $strPathArray = explode("/", $strFileArray['PATH']);
-  	  $thumbpath = $strPathArray[0]."/".$strPathArray[1]."/".$strPathArray[2]."/".$strPathArray[3]."/Photos";
+      $thumbpath = $strPathArray[0]."/".$strPathArray[1]."/".$strPathArray[2]."/".$strPathArray[3]."/Photos";
       $thumbname = "thumb_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
       $strDisplayName = "display_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
-  	  $fullName = $thumbpath . "/" . $thumbname;
-  	  if( !file_exists($fullName) ){
-  	  	$bThumbCreated = PhotoHelper::resize($strSource, 90, 75, $fullName);
-  	  	if( $bThumbCreated && file_exists($fullName) ){
-          $strFullName = $thumbpath . "/" . $strDisplayName;
-  	      $bDisplayCreated = PhotoHelper::resize($strSource, 800, 600, $strFullName);
-  	  	}
-  	  }
-  	  
-  	  if( file_exists($fullName) ){
-  	    $strCaption = (strlen($strFileArray['DESCRIPTION'])===0) ? $strFileArray['NAME'] : $strFileArray['DESCRIPTION']; 
+      $fullName = $thumbpath . "/" . $thumbname;
+      if( !file_exists($fullName) ){
+            $bThumbCreated = PhotoHelper::resize($strSource, 90, 75, $fullName);
+            if( $bThumbCreated && file_exists($fullName) ){
+      $strFullName = $thumbpath . "/" . $strDisplayName;
+          $bDisplayCreated = PhotoHelper::resize($strSource, 800, 600, $strFullName);
+            }
+      }
+
+      if( file_exists($fullName) ){
+        $strCaption = (strlen($strFileArray['DESCRIPTION'])===0) ? $strFileArray['NAME'] : $strFileArray['DESCRIPTION'];
         $strFileArray['THUMBNAIL'] = "<div style='color:green'><a style='border-bottom:0px;' rel='lightbox' title='".$strFileArray['DESCRIPTION']."' target='_blank' href='" . self::getUrl($thumbpath, $strDisplayName) . "'><img src='" . self::getUrl($thumbpath, $thumbname) . "'  alt=''/></a><br>".StringHelper::neat_trim($strCaption, 15, $strDelimiter='...')."</div>";
-  	  }
-  	  array_push($oReturnArray, $strFileArray);
-  	}
+      }
+      array_push($oReturnArray, $strFileArray);
+    }
     return $oReturnArray;
   }
   
@@ -1028,25 +1028,25 @@ class DataFilePeer extends BaseDataFilePeer {
   	require_once 'api/org/nees/util/PhotoHelper.php';
   	
   	$strQuery = "SELECT * 
-				 FROM (
-  				   select df.id, df.name, df.description, df.path, df.title, df.thumb_id, row_number() 
-  				   OVER (ORDER BY df.path, df.name) as rn 
-  				   from data_file df,
-  				 	    data_file_link dfl
-  				   where df.id = dfl.id
-  				     and df.deleted=0
-  				     and df.directory=0
-  				     and dfl.deleted=0
-  				     and dfl.proj_id=? ";
+                     FROM (
+                       select df.id, df.name, df.description, df.path, df.title, df.thumb_id, row_number()
+                       OVER (ORDER BY df.path, df.name) as rn
+                       from data_file df,
+                                data_file_link dfl
+                       where df.id = dfl.id
+                         and df.deleted=0
+                         and df.directory=0
+                         and dfl.deleted=0
+                         and dfl.proj_id=? ";
   	
   	if($p_iExperimentId > 0)$strQuery .= " and dfl.exp_id = ? ";
   	if($p_iTrialId > 0)$strQuery .= " and dfl.trial_id = ? ";
   	if($p_iRepetitionId > 0)$strQuery .= " and dfl.rep_id = ? ";
   	
   	$strQuery .= "
-  				     and (
-  				       df.usage_type_id is null or 
-  				       df.usage_type_id not in (";
+                         and (
+                           df.usage_type_id is null or
+                           df.usage_type_id not in (";
   	foreach($p_strExcludeUsageArray as $iExcludeIndex=>$strExcludeUsageType){			     
   	  $strQuery .= "(select id from entity_type where n_table_name=?)";
   	  if($iExcludeIndex < sizeof($p_strExcludeUsageArray)-1){
@@ -1055,37 +1055,39 @@ class DataFilePeer extends BaseDataFilePeer {
   	}
 
   	$strQuery .= "	   )
-  					 )
-  					 and df.document_format_id in (
-					   (select dof.document_format_id from document_format dof where dof.default_extension in ('png','gif','jpg','jpeg','bmp'))
-					 )
-  				)  
-				WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
+                             )
+                             and df.document_format_id in (
+                               (select dof.document_format_id from document_format dof where dof.default_extension in ('png','gif','jpg','jpeg','bmp'))
+                             )
+                    )
+                    WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
   	
   	$oReturnArray = array();
   	
   	$iIndex = 2;
-  	
+
+        //echo $strQuery."<br>";
+
   	$oConnection = Propel::getConnection();
     $oStatement = $oConnection->prepareStatement($strQuery);
     $oStatement->setInt(1, $p_iProjectId);
     if($p_iExperimentId > 0){
-      $oStatement->setInt($iIndex, $p_iProjectId);
+      $oStatement->setInt($iIndex, $p_iExperimentId);
       ++$iIndex;
     }
-  	if($p_iTrialId > 0){
-  	  $oStatement->setInt($iIndex, $p_iProjectId);
-  	  ++$iIndex;
-  	}
-  	if($p_iRepetitionId > 0){
-  	  $oStatement->setInt($iIndex, $p_iProjectId);
-  	  ++$iIndex;
-  	}
-  	
-  	foreach($p_strExcludeUsageArray as $strExcludeUsageType){
+    if($p_iTrialId > 0){
+      $oStatement->setInt($iIndex, $p_iTrialId);
+      ++$iIndex;
+    }
+    if($p_iRepetitionId > 0){
+      $oStatement->setInt($iIndex, $p_iRepetitionId);
+      ++$iIndex;
+    }
+
+    foreach($p_strExcludeUsageArray as $strExcludeUsageType){
       $oStatement->setString($iIndex, $strExcludeUsageType);
       ++$iIndex;
-  	}
+    }
     
     $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
     while($oResultSet->next()){
@@ -1170,24 +1172,24 @@ class DataFilePeer extends BaseDataFilePeer {
     $oStatement = $oConnection->prepareStatement($strQuery);
     $oStatement->setInt(1, $p_iProjectId);
     if($p_iExperimentId > 0){
-      $oStatement->setInt($iIndex, $p_iProjectId);
+      $oStatement->setInt($iIndex, $p_iExperimentId);
       ++$iIndex;
     }
-  	if($p_iTrialId > 0){
-  	  $oStatement->setInt($iIndex, $p_iTrialId);
-  	  ++$iIndex;
-  	}
-  	if($p_iRepetitionId > 0){
-  	  $oStatement->setInt($iIndex, $p_iRepetitionId);
-  	  ++$iIndex;
-  	}
-  	
-  	foreach($p_strExcludeUsageArray as $strExcludeUsageType){
+    if($p_iTrialId > 0){
+      $oStatement->setInt($iIndex, $p_iTrialId);
+      ++$iIndex;
+    }
+    if($p_iRepetitionId > 0){
+      $oStatement->setInt($iIndex, $p_iRepetitionId);
+      ++$iIndex;
+    }
+
+    foreach($p_strExcludeUsageArray as $strExcludeUsageType){
       $oStatement->setString($iIndex, $strExcludeUsageType);
       ++$iIndex;
-  	}
+    }
   	
-  	$oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
     while($oResultSet->next()){
   	  $iCount = $oResultSet->getInt("TOTAL");
   	}
@@ -1362,20 +1364,21 @@ class DataFilePeer extends BaseDataFilePeer {
   	$oReturnArray = array();
   	
   	$strQuery = "SELECT * 
-				 FROM (
-  				   select df.id, df.name, df.description, df.path, df.title, 
-  				   dfl.proj_id, dfl.exp_id, dfl.trial_id, dfl.rep_id, 
-  				   e.name as e_name, t.name as t_name, r.name as r_name, 
-  				   e.title as e_title, row_number() 
-  				   OVER (ORDER BY df.path, df.name) as rn 
-  				   from data_file df
-  				     inner join data_file_link dfl on df.id = dfl.id 
-  					 left join experiment e on dfl.exp_id = e.expid 
-  					 left join trial t on dfl.trial_id = t.trialid 
-  					 left join repetition r on dfl.rep_id = r.repid 
-  				   where df.usage_type_id=(select id from entity_type where n_table_name=?)
-  				     and df.deleted=?
-  				     and dfl.deleted=?";
+                     FROM (
+                       select df.id, df.name, df.description, df.path, df.title,
+                       dfl.proj_id, dfl.exp_id, dfl.trial_id, dfl.rep_id,
+                       e.name as e_name, t.name as t_name, r.name as r_name,
+                       e.title as e_title, f.default_extension, row_number()
+                       OVER (ORDER BY df.path, df.name) as rn
+                       from data_file df
+                         inner join data_file_link dfl on df.id = dfl.id
+                             left join experiment e on dfl.exp_id = e.expid
+                             left join trial t on dfl.trial_id = t.trialid
+                             left join repetition r on dfl.rep_id = r.repid
+                             left join document_format f on f.document_format_id = df.document_format_id
+                       where df.usage_type_id=(select id from entity_type where n_table_name=?)
+                         and df.deleted=?
+                         and dfl.deleted=?";
   	
   	if($p_iProjectId > 0)$strQuery .= " and dfl.proj_id=?";
   	if($p_iExperimentId > 0)$strQuery .= " and dfl.exp_id=?";
@@ -1422,20 +1425,21 @@ class DataFilePeer extends BaseDataFilePeer {
     $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
     while($oResultSet->next()){
       $strFileArray = array();
-  	  $strFileArray['ID'] = $oResultSet->getInt("ID");
-  	  $strFileArray['NAME'] = $oResultSet->getString("NAME");
-  	  $strFileArray['PATH'] = $oResultSet->getString("PATH");
-  	  $strFileArray['SOURCE'] = $strFileArray['PATH']."/".$strFileArray['NAME'];
-  	  $strFileArray['DESCRIPTION'] = $oResultSet->getString("DESCRIPTION");
-  	  $strFileArray['TITLE'] = $oResultSet->getString("TITLE");
+      $strFileArray['ID'] = $oResultSet->getInt("ID");
+      $strFileArray['NAME'] = $oResultSet->getString("NAME");
+      $strFileArray['PATH'] = $oResultSet->getString("PATH");
+      $strFileArray['SOURCE'] = $strFileArray['PATH']."/".$strFileArray['NAME'];
+      $strFileArray['DESCRIPTION'] = $oResultSet->getString("DESCRIPTION");
+      $strFileArray['TITLE'] = $oResultSet->getString("TITLE");
       $strFileArray['PROJ_ID'] = $oResultSet->getInt("PROJ_ID");
       $strFileArray['EXP_ID'] = $oResultSet->getInt("EXP_ID");
       $strFileArray['TRIAL_ID'] = $oResultSet->getInt("TRIAL_ID");
       $strFileArray['REP_ID'] = $oResultSet->getInt("REP_ID");
       $strFileArray['E_TITLE'] = $oResultSet->getString("E_TITLE");
       $strFileArray['E_NAME'] = $oResultSet->getString("E_NAME");
-  	  $strFileArray['T_NAME'] = $oResultSet->getString("T_NAME");
-  	  $strFileArray['R_NAME'] = $oResultSet->getString("R_NAME");
+      $strFileArray['T_NAME'] = $oResultSet->getString("T_NAME");
+      $strFileArray['R_NAME'] = $oResultSet->getString("R_NAME");
+      $strFileArray['EXTENSION'] = $oResultSet->getString("DEFAULT_EXTENSION");
       array_push($oReturnArray, $strFileArray);	
     }
     

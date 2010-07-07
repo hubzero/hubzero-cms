@@ -371,7 +371,6 @@ class PersonPeer extends BasePersonPeer {
   
   public function findMembersForEntityWithPagination($entity_id, $entity_type_id, $p_iLowerLimit, $p_iUpperLimit) {
     //echo $entity_id."/".$entity_type_id."/". $p_iLowerLimit."/". $p_iUpperLimit;
-    /*
     $sql =
       "SELECT * 
 	   FROM (
@@ -394,10 +393,21 @@ class PersonPeer extends BasePersonPeer {
             PER.ENTITY_ID = ? AND
             PER.ENTITY_TYPE_ID = ?
        ) WHERE rn BETWEEN ? AND ?";
-    */
+    
+    $conn = Propel::getConnection();
+    $stmt = $conn->prepareStatement($sql);
+    $stmt->setInt(1, $entity_id);
+    $stmt->setInt(2, $entity_type_id);
+    $stmt->setInt(3, $p_iLowerLimit);
+    $stmt->setInt(4, $p_iUpperLimit);
+
+    return $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
+  }
+
+  public function findEditorMembersForEntityWithPagination($entity_id, $entity_type_id, $p_iLowerLimit, $p_iUpperLimit) {
     $sql =
       "SELECT *
-	   FROM (
+	FROM (
           SELECT DISTINCT
             P.ID,
             P.LAST_NAME,
