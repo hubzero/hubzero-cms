@@ -77,7 +77,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                   }
 
                   //display inDEED file below thumbnail.
-                  if($oIndeedDataFile){
+                  if(isset($oIndeedDataFile)){
                     $strIndeedPath = $oIndeedDataFile->getPath();
                     $strIndeedName = $oIndeedDataFile->getName();
                     echo "<a href='/indeed?task=process&list=$strIndeedPath/$strIndeedName'>Launch Data File</a>";

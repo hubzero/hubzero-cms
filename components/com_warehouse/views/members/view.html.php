@@ -90,8 +90,6 @@ class WarehouseViewMembers extends JView{
    * @return array
    */
   private function getMembersForEntityWithPagination($p_oMembersModel, $p_iProjectId, $p_iLowerLimit, $p_iUpperLimit){
-    $profile = new XProfile();
-     
     $oMembersResutSet = $p_oMembersModel->findMembersForEntityWithPagination($p_iProjectId, 1, $p_iLowerLimit, $p_iUpperLimit);
     $oMembersArray = array();
     while($oMembersResutSet->next()){
@@ -102,16 +100,17 @@ class WarehouseViewMembers extends JView{
       $oPersonArray['EMAIL'] = $oMembersResutSet->getString('E_MAIL');
       $oPersonArray['USER_NAME'] = $oMembersResutSet->getString('USER_NAME');
       $oPersonArray['ID'] = $oMembersResutSet->getInt('ID');
-      $oPersonArray['PERMISSIONS'] = $oMembersResutSet->getString('PERMISSIONS');
+      //$oPersonArray['PERMISSIONS'] = $oMembersResutSet->getString('PERMISSIONS');
+      $oPersonArray['PERMISSIONS'] = "";
       $oPersonArray['LINK'] = false;
-	  $oPersonArray['PICTURE'] = "/components/com_members/images/profile_thumb.gif";
-	  $oPersonArray['HUB_ID'] = 0;
-	  
+      $oPersonArray['PICTURE'] = "/components/com_members/images/profile_thumb.gif";
+      $oPersonArray['HUB_ID'] = 0;
+
       //check to see if we can show the link for this user
       $oHubUser = $p_oMembersModel->getMysqlUserByUsername($oPersonArray['USER_NAME']);
       if($oHubUser){
         $profile->load( $oHubUser->id );
-      
+
         $oPersonArray['HUB_ID'] = $oHubUser->id;
         $oPersonArray['PICTURE'] = "/site/members/0".$oHubUser->id."/".$profile->get('picture');
         if($profile->get('public') == 1){

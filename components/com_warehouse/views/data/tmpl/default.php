@@ -32,18 +32,20 @@ defined('_JEXEC') or die( 'Restricted access' );
       <?php echo $this->strTabs; ?>
       
       <div class="aside">
+        <!--
         <fieldset>
-			<label>
-				Sort by	<select name="sortby">
-					<option selected="selected" value="description ASC">Title</option>
-					<option value="cn ASC">Alias</option>
-				</select>
-			</label>
-			<label>
-				Search:	<input type="text" value="" name="search">
-			</label>
-			<input type="button" onClick="submitDataForm('frmData', '');" value="GO">
-		</fieldset>
+            <label>
+                Sort by	<select name="sortby">
+                        <option selected="selected" value="description ASC">Title</option>
+                        <option value="cn ASC">Alias</option>
+                </select>
+            </label>
+            <label>
+                    Search:	<input type="text" value="" name="search">
+            </label>
+            <input type="button" onClick="submitDataForm('frmData', '');" value="GO">
+        </fieldset>
+        -->
       </div>
       
       <div class="subject">

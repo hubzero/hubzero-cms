@@ -35,7 +35,6 @@ defined('_JEXEC') or die( 'Restricted access' );
               <th>Name</th>
               <th>Role</th>
               <th>Email</th>
-              <th>Permissions</th>
               <th></th>
             </thead>
 
@@ -56,7 +55,6 @@ defined('_JEXEC') or die( 'Restricted access' );
                   <?php } ?>
                   <td><?php echo $oMember['ROLE']; ?></td>
                   <td><?php echo $oMember['EMAIL']; ?></td>
-                  <td><?php echo $oMember['PERMISSIONS']; ?></td>
                   <td></td>
                 </tr>
               <?php

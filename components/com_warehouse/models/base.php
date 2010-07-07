@@ -18,12 +18,12 @@ class WarehouseModelBase extends JModel{
    * @since 1.5
    */
   function __construct(){
-	parent::__construct();
-	
-	$this->m_oTabArray = array("Project", "Experiments", "Data", "Team Members", "More");
-	$this->m_oSearchTabArray = array("Featured", "Search");
-	$this->m_oSearchResultsTabArray = array("Results");
-	$this->m_oTreeTabArray = array("Projects");
+    parent::__construct();
+
+    $this->m_oTabArray = array("Project", "Experiments", "Data", "Team Members", "More");
+    $this->m_oSearchTabArray = array("Featured", "Search");
+    $this->m_oSearchResultsTabArray = array("Results");
+    $this->m_oTreeTabArray = array("Projects");
   }
   
   /**
@@ -274,6 +274,24 @@ class WarehouseModelBase extends JModel{
 //  public function computeUpperLimit($p_iPageIndex, $p_iDisplay){
 //  	return $p_iDisplay * ($p_iPageIndex+1);
 //  }
+
+  public function getDisplayDescription($p_oDescriptionClob){
+    $strReturnDescription = "";
+    if(strlen($p_oDescriptionClob) > 300){
+      $strShortDescription = StringHelper::neat_trim($p_oDescriptionClob, 250);
+      $strReturnDescription = <<< ENDHTML
+              <div id="ProjectShortDescription">
+                $strShortDescription (<a href="javascript:void(0);" onClick="document.getElementById('ProjectLongDescription').style.display='';document.getElementById('ProjectShortDescription').style.display='none';">more</a>)
+              </div>
+              <div id="ProjectLongDescription" style="display:none">
+                $p_oDescriptionClob (<a href="javascript:void(0);" onClick="document.getElementById('ProjectLongDescription').style.display='none';document.getElementById('ProjectShortDescription').style.display='';">hide</a>)
+              </div>
+ENDHTML;
+    }else{
+      $strReturnDescription = $p_oDescriptionClob;
+    }
+    return $strReturnDescription;
+  }
 }
 
 ?>
