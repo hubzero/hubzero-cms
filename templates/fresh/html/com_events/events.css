@@ -188,3 +188,55 @@
 	#content ul.events li p.comment-content-object-link {
 		color: #999;
 		}
+/* Search results */
+	.results .event {
+		background-image: none;
+		}
+	.results .event p {
+		margin-left: 4em;
+		}
+	.results .event .title {
+		text-indent: 0em;
+		}
+	.results .event .event-date {
+	    text-align: center;
+		float: left;
+	    width: 3em;
+		display: block;
+		margin-left: 0;
+		}
+	.results .event .event-date span {
+	    display: block;
+	    float: left;
+	    width: 100%;
+		}
+	.results .event .event-date span.year {
+	    background: #ccc;
+	    border: 1px solid #ccc;
+	    color: #fff;
+	    text-transform: uppercase;
+	    line-height: 1.1em;
+		font-size: 85%;
+		font-weight: bold;
+	    text-align: center;
+		}
+	.results .event .event-date span.month {
+	    background: #D51007;
+	    border: 1px solid #D51007;
+	    color: #fff;
+	    text-transform: uppercase;
+	    line-height: 1.1em;
+		font-size: 85%;
+		font-weight: bold;
+	    text-align: center;
+		}
+	.results .event .event-date span.day {
+	    background: #fff;
+	    border: 1px solid #ccc;
+	    border-top: none;
+	    color: #000;
+		font-size: 120%;
+	    line-height: 1.4em;
+	    font-weight: bold;
+	    letter-spacing: -0.1em;
+		}

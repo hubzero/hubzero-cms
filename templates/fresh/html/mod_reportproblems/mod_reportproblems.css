@@ -124,40 +124,30 @@
 	}
 	#help-container li {
 		margin: 0;
-		padding: 0.5em;
+		padding: 0.7em 0em 0.7em 3em;
 		border-top: 2px solid #726545; 
-	}
-	#help-container li.wish h3 {
-		background: url("images/wishbone.png") 0 0 no-repeat;
-		padding: 0.5em 0.2em 0.2em 0.2em;
-		padding-left: 3em;
+		list-style: none;
+		}
+	#help-container li h3 {
+		padding: 0;
+		margin: 0;
 		border: none;
-	}
-	#help-container li.tickets h3 {
-		background: url("images/ticket.png") 0 0 no-repeat;
-		padding: 0.5em 0.2em 0.2em 0.2em;
-		padding-left: 3em;
-		border: none;
-	}
-	#help-container li.kb h3 {
-		background: url("images/bulb.png") 0 0 no-repeat;
-		padding: 0.5em 0.2em 0.2em 0.2em;
-		padding-left: 3em;
-		border: none;
-	}
-	#help-container li.qa h3 {
-		background: url("images/qa.png") 0 0 no-repeat;
-		padding: 0.5em 0.2em 0.2em 0.2em;
-		padding-left: 3em;
-		border: none;
-	}
+		}
+	#help-container li.wish {
+		background: url("images/wishbone.png") 0 0.7em no-repeat;
+		}
+	#help-container li.tickets {
+		background: url("images/ticket.png") 0 0.7em no-repeat;
+		}
+	#help-container li.kb {
+		background: url("images/bulb.png") 0 0.7em no-repeat;
+		}
+	#help-container li.qa {
+		background: url("images/qa.png") 0 0.7em no-repeat;
+		}
 	#help-container li p {
 		margin: 0;
-		margin-left: 3.1em;
-		margin-top: -1em;
-	}	
-	#help-container li.wish h3 a {
-	}
+		}
 	#closethis {
 		float: right;
 		padding: 0.5em 1em 0.5em 1em;

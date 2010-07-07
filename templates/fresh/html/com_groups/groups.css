@@ -7,6 +7,9 @@
 */
 
 /* Misc. */
+	.com_groups .aside legend {
+		display: none;
+	}
 	.com_groups .main .subject {
 		background: transparent;
 		padding: 1em 0 0 0;

@@ -1653,6 +1653,10 @@
 		background: #fff;
 		border: none;
 		}
+	#hubForm.full fieldset {
+		padding: 0 2% 1.75em 2%;
+		width: 66%;
+		}
 	#hubForm label {
 		display: block;
 		padding-top: 1.5em;
@@ -1663,6 +1667,7 @@
 		margin-top: 0.25em;
 		width: 100%;
 		}
+	#hubForm.full fieldset fieldset,
 	#hubForm fieldset fieldset {
 		margin: 1.75em 0 1.75em 0;
 		padding: 0 1em 1.75em 1em;
@@ -1673,6 +1678,7 @@
 	#hubForm fieldset fieldset label {
 		padding-top: 0.7em;
 		}
+	#hubForm.full fieldset fieldset fieldset,
 	#hubForm fieldset fieldset fieldset {
 		margin: 0;
 		padding: 0;
@@ -2083,6 +2089,9 @@
 		overflow: visible;
 		}
 	/* AJAX message box */
+	#sbox-content #content-header {
+		display: none;
+	}
 	#sbox-content {
 		background-color: #f0f0f0;
 		}
@@ -2099,6 +2108,7 @@
 		padding: 0;
 		border: none;
 		height: auto;
+		overflow: hidden;
 		}
 	#sbox-content fieldset {
 		padding: 0;
@@ -2242,6 +2252,7 @@
 		}
 	#nav .tags li a,
 	#nav li.active #resources-menu ol.tags li a,
+	.tags a,
 	.tags li a { 
 		margin: 0 4px 5px 0;
 		padding: 3px 5px;
@@ -2253,12 +2264,13 @@
 		width: auto;
 		height: auto;
 		}
+	.tags a.admin,
 	.tags li.admin a { 
 		background: #FFF2EF;
 		border-right: 1px solid #efccc2;
 		border-bottom: 1px solid #efccc2;
 		}
-	.tags li a:hover {
+	.tags a:hover {
 		text-decoration: none;
 		background: #F0EBD6;
 		}
@@ -2607,7 +2619,7 @@
 /*---------------------------------------------------------------
 	Buttons
 ---------------------------------------------------------------*/
-	.button,
+	/*.button,
 	a.button {
 		position: absolute;
 		border: none;
@@ -2629,7 +2641,7 @@
 		border: none;
 		background-color: #222;
 		background-position: 0 -15px;
-		}
+		}*/
 	.yesbutton,
 	a.yesbutton {
 		background: url("../images/buttons/yes.gif") 0 0 no-repeat;
