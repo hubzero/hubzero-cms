@@ -1005,16 +1005,25 @@ class plgSystemXhub extends JPlugin
 
 				$crypt = new JSimpleCrypt($key);
 				$str = $crypt->decrypt($str);
-				$user = unserialize($str);
+				$user = @unserialize($str);
 				// We should store userid not username in cookie, will save us a database query here
-				$username = $user['username'];
-				$myuser = JUser::getInstance($username);
-				if (is_object($myuser))
+				if (is_array($user))
 				{
-					apache_note('userid',$myuser->get('id'));
-					apache_note('auth','cookie');
-                    $authlog = XFactory::getAuthLogger();
-                    $authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+					$username = $user['username'];
+					$myuser = JUser::getInstance($username);
+					if (is_object($myuser))
+					{
+						apache_note('userid',$myuser->get('id'));
+						apache_note('auth','cookie');
+                    	$authlog = XFactory::getAuthLogger();
+                    	$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+					}
+				}
+				else
+				{
+						apache_note('auth','corrupt');
+                    	$authlog = XFactory::getAuthLogger();
+                    	$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' corrupt');
 				}
 			}
 		}
