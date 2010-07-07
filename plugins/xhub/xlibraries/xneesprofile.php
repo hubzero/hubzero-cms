@@ -325,8 +325,8 @@ class XNeesProfileHtml
 		
 				
 		$html .= XNeesProfileHtml::createDropdownList('neesaffiliation', 
-					'NOTAFFILIATED|UCLA|UCSB|UT|RPI|UCD|CORNELL|LEHIGH|BERKLEY|UI|UM|BUFFALO|UCSD|RENO|OREGON|NEES-PURDUE|NEES-IT|NEES-EOT|NEES-Admin|NEES-R|other',
-					'Not Affiliated|University of CA, Los Angeles|University of CA, Santa Barbara|University of Texas, Austin|Rensselaer Polytechnic Institute|University of CA, Davis|Cornell University|Lehigh University|University of CA, Berkley|University of IL, Urbana|University of Minesota|University at Buffalo, SUNY|University of CA, San Diego|University of Nevada, Reno|Oregon State University|Purdue University|NEESComm IT|NEES EOT|NEES Admin|NEESR PI|Other (specify)',
+					'NOTAFFILIATED|UCLA|UCSB|UT|RPI|UCD|CORNELL|LEHIGH|BERKELEY|UI|UM|BUFFALO|UCSD|RENO|OREGON|NEES-PURDUE|NEES-IT|NEES-EOT|NEES-Admin|NEES-R|other',
+					'Not Affiliated|University of CA, Los Angeles|University of CA, Santa Barbara|University of Texas, Austin|Rensselaer Polytechnic Institute|University of CA, Davis|Cornell University|Lehigh University|University of CA, Berkeley|University of IL, Urbana|University of Minesota|University at Buffalo, SUNY|University of CA, San Diego|University of Nevada, Reno|Oregon State University|Purdue University|NEESComm IT|NEES EOT|NEES Admin|NEESR PI|Other (specify)',
 					$neesaffiliation,
 					&$neesaffilicationfound,
 					'neesAffiliationCheck()');
