@@ -908,7 +908,7 @@ class ResourcesHtml
 					$cite->url = '';
 					$cite->type = '';
 					$cite->author = $helper->ul_contributors;
-					if ($resource->doi) {
+					if (isset($resource->doi)) {
 						$cite->doi = $config->get('doi').'r'.$resource->id.'.'.$resource->doi;
 					}
 					
