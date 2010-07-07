@@ -264,13 +264,15 @@ foreach ($this->results as $category)
 			$html .= '<p class="moreresults">'.JText::sprintf('COM_WHATSNEW_TOP_SHOWN', $amt);
 			// Add a "more" link if necessary
 			$ttl = 0;
-			if (is_array($totals[$k])) {
-				foreach ($totals[$k] as $t) 
-				{
-					$ttl += $t;
+			if (isset($this->totals[$k])) {
+				if (is_array($this->totals[$k])) {
+					foreach ($this->totals[$k] as $t) 
+					{
+						$ttl += $t;
+					}
+				} else {
+					$ttl = $this->totals[$k];
 				}
-			} else {
-				$ttl = $totals[$k];
 			}
 			if ($ttl > 5) {
 				$html .= ' | <a href="'.JRoute::_( 'index.php?option='.$this->option.'&period='.urlencode(strToLower($this->cats[$k]['category']).':'.stripslashes($this->period))).'">'.JText::_('COM_WHATSNEW_SEE_MORE_RESULTS').'</a>';

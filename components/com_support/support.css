@@ -415,10 +415,10 @@
 		color: #999;
 		}
 	ol.comments li.private {
-		background-color: #f8f2e9;
+		background: #f8f2e9;
 		}
 	ol.comments li.submitter {
-		background-color: #f3f8e9;
+		background: #f3f8e9;
 		}
 	ol.comments blockquote {
 		margin: 0;

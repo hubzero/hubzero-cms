@@ -524,9 +524,12 @@ class plgMembersMessages extends JPlugin
 		$xseen->mid = $mid;
 		$xseen->uid = $member->get('uidNumber');
 		$xseen->loadRecord();
-		if ($xseen->whenseen == '' || $xseen->whenseen == '0000-00-00 00:00:00' || $xseen->whenseen == NULL) {
-			$xseen->whenseen = date( 'Y-m-d H:i:s', time() );
-			$xseen->store( true );
+		$juser =& JFactory::getUser();
+		if ($juser->get('id') == $member->get('uidNumber')) {
+			if ($xseen->whenseen == '' || $xseen->whenseen == '0000-00-00 00:00:00' || $xseen->whenseen == NULL) {
+				$xseen->whenseen = date( 'Y-m-d H:i:s', time() );
+				$xseen->store( true );
+			}
 		}
 		
 		if (substr($xmessage->type, -8) == '_message') {
