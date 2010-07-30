@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<install version="1.5" type="plugin" group="project">
+    <name>Project Warehouse - File System</name>
+    <author>Gemez Marshall</author>
+    <creationDate>July 12, 2010</creationDate>
+    <copyright></copyright>
+    <authorEmail>gemezm@purdue.edu</authorEmail>
+    <authorUrl>neeshub.org</authorUrl>
+    <version>0.0.1</version>
+    <description>Manages the file system for the warehouse</description>
+    <files>
+        <filename plugin="filesystem">filesystem.php</filename>
+    </files>
+    <params>
+        <param name="fs_limit" type="text" size="5" default="50" label="FS Limit" description="Number of file items to return"/>
+    </params>
+</install>

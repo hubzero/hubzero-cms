@@ -346,15 +346,15 @@ class plgProjectSearch extends JPlugin{
   }
   
   private function saveSearch($p_strUsername, $p_strKeywords, $p_strQuery, $p_oCreateDate){
-  	require 'lib/data/SearchLog.php';
-  	
-  	$oSearchLog = new SearchLog();
-  	$oSearchLog->setUsername($p_strUsername);
-  	$oSearchLog->setKeyword($p_strKeywords);
-  	$oSearchLog->setQuery($p_strQuery);
-  	$oSearchLog->setCreated($p_oCreateDate);
-  	$oSearchLog->save();
-  	return $oSearchLog;
+    require 'lib/data/SearchLog.php';
+
+    $oSearchLog = new SearchLog();
+    $oSearchLog->setUsername($p_strUsername);
+    $oSearchLog->setKeyword($p_strKeywords);
+    $oSearchLog->setQuery($p_strQuery);
+    $oSearchLog->setCreated($p_oCreateDate);
+    $oSearchLog->save();
+    return $oSearchLog;
   }
  
 }
