@@ -19,7 +19,7 @@ class JConfig {
 	var $tmp_path = '/tmp';
 	var $live_site = '';
 	var $force_ssl = '0';
-	var $offset = '0';
+	var $offset = '-5';
 	var $caching = '0';
 	var $cachetime = '5';
 	var $cache_handler = 'file';
@@ -27,8 +27,8 @@ class JConfig {
 	var $ftp_enable = '0';
 	var $ftp_host = '';
 	var $ftp_port = '0';
-	var $ftp_user = '';
-	var $ftp_pass = '';
+	var $ftp_user = 'brohler';
+	var $ftp_pass = 'blrjan10';
 	var $ftp_root = '';
 	var $dbtype = 'mysql';
 	var $host = 'localhost';
@@ -36,7 +36,7 @@ class JConfig {
 	var $db = 'neeshub';
 	var $dbprefix = 'jos_';
 	var $mailer = 'mail';
-	var $mailfrom = 'nkissebe@purdue.edu';
+	var $mailfrom = 'support@neeshub.org';
 	var $fromname = 'NEEShub';
 	var $sendmail = '/usr/sbin/sendmail';
 	var $smtpauth = '0';
