@@ -53,6 +53,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
                                     <input type="hidden" name="infotype" value="<?php echo $this->infotype; ?>"></input>
                                     <input type="hidden" name="subinfo" value="<?php echo $this->subinfo; ?>"></input>
                                     <input type="hidden" name="groupby" value="<?php echo $this->groupby; ?>"></input>
+                                    <input type="hidden" name="redirectURL" value="<?php echo $this->redirectURL; ?>"></input>
                             </td>
                     </tr>
 

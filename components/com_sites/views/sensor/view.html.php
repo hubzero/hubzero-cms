@@ -22,8 +22,8 @@ class sitesViewSensor extends JView
     {
     	$facilityID = JRequest::getVar('id');
     	$facility = FacilityPeer::find($facilityID);
-  		$fac_name = $facility->getName();
-		$fac_shortname = $facility->getShortName();
+  	$fac_name = $facility->getName();
+	$fac_shortname = $facility->getShortName();
 
         // Page title and breadcrumb stuff
         $mainframe = &JFactory::getApplication();
@@ -48,21 +48,50 @@ class sitesViewSensor extends JView
 
         $sensorid = JRequest::getVar('sensorid');
         $sensor = SensorPeer::find($sensorid);
-        $this->assignRef('sensor', $sensor); 
-
+        $this->assignRef('sensor', $sensor);
+        $this->assignRef('sensorid', $sensorid);
         
         // Add the parent sensor model to the breadcrumb
         $sm = $sensor->getSensorModel();
-        $pathway->addItem( 'Model: ' . $sm->getName(),  JRoute::_('index.php?option=com_sites&view=sensor&id=' . $facilityID) . '&sensormodelid=' . $sm->getId());
+        $pathway->addItem( 'Sensor: ' . $sensor->getName(),  JRoute::_('index.php?option=com_sites&view=sensor&id=' . $facilityID) . '&sensormodelid=' . $sm->getId());
         
-        
-        
-        
-        //$sm->getId() 
-        //$sm->getName()
-        
-        
-        
+        $canedit = FacilityHelper::canEdit($facility);
+        $this->assignRef('canedit', $canedit);
+
+
+        // *********************************************
+        // Build calibrations section
+
+        $calibrationsHtml = '';
+
+        $sensorCalibrations = $sensor->getCalibrations();
+
+        if(count($sensorCalibrations) > 0)
+        {
+            foreach($sensorCalibrations as $calibration)
+            {
+                $calibId = $calibration->getid();
+                $name = $calibration->getCalibrator();
+                $measRange = $calibration->getMeasuredRange();
+                $sens = $calibration->getSensitivityWithUnit();
+                $ref = $calibration->getReferenceWithUnit();
+                $fac = $calibration->getCalibFactorWithUnit();
+
+                $calibrationsHtml .= '<tr>';
+                $calibrationsHtml .=     '<td>' . $calibration->getCalibDate() . '</td>';
+                $calibrationsHtml .=     '<td>' . $name . '</td>';
+                $calibrationsHtml .=     '<td>' . $calibration->getAdjustments() . '</td>';
+                $calibrationsHtml .=     '<td>' . $measRange . '</td>';
+                $calibrationsHtml .=     '<td>' . $sens . '</td>';
+                $calibrationsHtml .=     '<td>' . $ref . '</td>';
+                $calibrationsHtml .=     '<td>' . $fac . '</td>';
+                $calibrationsHtml .= '</tr>';
+            }
+        }
+
+        $this->assignRef('calibrationsHtml', $calibrationsHtml);
+
+
         parent::display($tpl);
     }
 }

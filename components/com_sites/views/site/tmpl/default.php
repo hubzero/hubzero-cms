@@ -34,31 +34,30 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	
 	</table>
 
-
 	<div style="padding-left:10px; padding-top:25px">
-		<?php echo $this->fileBrowserObj->getViewSimpleFileBrowser($this->introDataFileArr, "Facility Introduction") ?>	
+		<?php echo FacilityHelper::getViewSimpleFileBrowser($this->introDataFileArr, "Facility Introduction", $this->redirectURL) ?>
 	</div>
         <?php if($this->allowCreate)
-            echo '<a  style="padding-left: 0px; margin-left: 0px; float: right; margin-right: 15px;"href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=Facility&subinfo=Site%20Introduction') . '">[Add Document]</a>';
+            echo '<a  style="padding-left: 0px; margin-left: 10px; float: left;"href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=Facility&subinfo=Site%20Introduction&redirectURL=' . $this->redirectURL ) . '">[Add Document]</a>';
         ?>
 
 
 
 	<div style="padding-left:10px; padding-top:25px">
-		<?php echo $this->fileBrowserObj->getViewSimpleFileBrowser($this->descDataFileArr, "Facility Description from NEES O&M proposal") ?>	
+		<?php echo FacilityHelper::getViewSimpleFileBrowser($this->descDataFileArr, "Facility Description from NEES O&M proposal", $this->redirectURL) ?>
 	</div>
 
         <?php if($this->allowCreate)
-            echo '<a style="padding-left: 0px; margin-left: 0px; float: right; margin-right: 15px;" href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=Facility&subinfo=Site%20Description') . '">[Add Document]</a>';
+            echo '<a style="padding-left: 0px; margin-left: 10px; float: left;" href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=Facility&subinfo=Site%20Description&redirectURL=' . $this->redirectURL) . '">[Add Document]</a>';
         ?>
 
 
 	<div style="padding-left:10px; padding-top:25px">
-            <?php echo $this->fileBrowserObj->getViewSimpleFileBrowser($this->historyDataFileArr, "Site History") ?>
+            <?php echo FacilityHelper::getViewSimpleFileBrowser($this->historyDataFileArr, "Site History", $this->redirectURL) ?>
 	</div>
 
         <?php if($this->allowEdit)
-            echo '<a style="padding-left: 0px; margin-left: 0px; float: right; margin-right: 15px;" href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=Facility&subinfo=History') . '">[Add Document]</a>';
+            echo '<a style="padding-left: 0px; margin-left: 10px; float: left;" href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=Facility&subinfo=History&redirecURL=' . $this->redirectURL) . '">[Add Document]</a>';
         ?>
 
 

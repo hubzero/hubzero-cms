@@ -170,5 +170,7 @@ div.sectheaderbtn {
   background: #c8d8f9 url(/images/upload.gif) no-repeat top left;
 }		
 		
-		
+.calendar .button{
+    position: static;
+}
 		

@@ -19,12 +19,12 @@ jimport( 'joomla.application.component.view');
 class sitesViewStaff extends JView
 {
 
-	function display($tpl = null)
+    function display($tpl = null)
     {
     	$facilityID = JRequest::getVar('id');
     	$facility = FacilityPeer::find($facilityID);
-  		$fac_name = $facility->getName();
-		$fac_shortname = $facility->getShortName();
+        $fac_name = $facility->getName();
+        $fac_shortname = $facility->getShortName();
 
         // Page title and breadcrumb stuff
         $mainframe = &JFactory::getApplication();
@@ -49,21 +49,27 @@ class sitesViewStaff extends JView
         $this->assignRef('members', $facilityMembers);
         $this->assignRef('facility', $facility);
         $this->assignRef('facilityID', $facilityID);
-        
+
+        // Grab a complete list of users that can be granted rights to this site
         $candidates = PersonPeer::getCandidateMembersForEntity($facilityID, DomainEntityType::ENTITY_TYPE_FACILITY);
         $candidates->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-        
+        $this->assignRef('candidates', $candidates);
+
         // See if current logged in user should be presented an edit button
-	$allowEdit = FacilityHelper::canEdit($facility);
-	$this->assignRef('allowEdit', $allowEdit);
+	$allowGrant = FacilityHelper::canGrant($facility);
+	$this->assignRef('allowGrant', $allowGrant);
+
+        $permissionArr = AuthorizationPeer::listPermissionsForAllPeopleInEntity($facility);
+        $this->assignRef('permissionArr', $permissionArr);
 
         parent::display($tpl);
     }
     
     
-	public function getFacilityMembers($facid) {
-		return PersonPeer::findMembersPermissionsForEntity($facid, DomainEntityType::ENTITY_TYPE_FACILITY);
-  }
+    public function getFacilityMembers($facid)
+    {
+        return PersonPeer::findMembersPermissionsForEntity($facid, DomainEntityType::ENTITY_TYPE_FACILITY);
+    }
     
     
     

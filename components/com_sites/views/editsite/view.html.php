@@ -22,11 +22,11 @@ class sitesVieweditsite extends JView
     function display($tpl = null)
     {
         // Grab facility from Oracle
-		$facilityID = JRequest::getVar('id');
+	$facilityID = JRequest::getVar('id');
     	$facility = FacilityPeer::find($facilityID);
 		
-  		$fac_name = $facility->getName();
-		$fac_shortname = $facility->getShortName();
+  	$fac_name = $facility->getName();
+	$fac_shortname = $facility->getShortName();
         $this->assignRef( 'FacilityName', $fac_name);
 
         // Page title and breadcrumb stuff
@@ -37,7 +37,7 @@ class sitesVieweditsite extends JView
         $pathway->addItem( $fac_name,  JRoute::_('/index.php?option=com_sites&view=site&id=' . $facilityID));
                 
         // Get url for facility image
-		$imgFacilityURL = "/components/com_sites/images/facility_" . strtolower($fac_shortname) . ".jpg";
+	$imgFacilityURL = "/components/com_sites/images/facility_" . strtolower($fac_shortname) . ".jpg";
         $this->assignRef('imgFacilityURL', $imgFacilityURL);
   		
         // Get other facility info

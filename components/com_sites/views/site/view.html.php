@@ -63,58 +63,42 @@ class sitesViewSite extends JView
         
         $fileBrowserObj = new DataFileBrowserSimple($facility);
         $this->assignRef('fileBrowserObj', $fileBrowserObj); 
-        
-		$infotype = "Facility";
 
-		$introDF 	= $this->getFacilityDataFile($facilityID, $infotype, "Site Introduction");
-		$descDF 	= $this->getFacilityDataFile($facilityID, $infotype, "Site Description");
-		$historyDF 	= $this->getFacilityDataFile($facilityID, $infotype, "History");
+        $infotype = "Facility";
 
-		$introDataFileArr = array();
-		$descDataFileArr = array();
-		$historyDataFileArr = array();
+        $introDF 	= FacilityHelper::getFacilityDataFile($facilityID, $infotype, "Site Introduction");
+        $descDF 	= FacilityHelper::getFacilityDataFile($facilityID, $infotype, "Site Description");
+        $historyDF 	= FacilityHelper::getFacilityDataFile($facilityID, $infotype, "History");
 
-		if($introDF) $introDataFileArr[] = $introDF;
-		if($descDF) $descDataFileArr[] = $descDF;
-		if($historyDF) $historyDataFileArr[] = $historyDF;
-        
-                $this->assignRef('introDataFileArr', $introDataFileArr);
-                $this->assignRef('descDataFileArr', $descDataFileArr);
-		$this->assignRef('historyDataFileArr', $historyDataFileArr); 
-		        
-		// See if current logged in user should be presented an edit button
-		$allowEdit = FacilityHelper::canEdit($facility);
-		$this->assignRef('allowEdit', $allowEdit);
+        $introDataFileArr = array();
+        $descDataFileArr = array();
+        $historyDataFileArr = array();
 
-                $allowCreate = FacilityHelper::canCreate($facility);
-		$this->assignRef('allowCreate', $allowCreate);
+        if($introDF) $introDataFileArr[] = $introDF;
+        if($descDF) $descDataFileArr[] = $descDF;
+        if($historyDF) $historyDataFileArr[] = $historyDF;
+
+        $this->assignRef('introDataFileArr', $introDataFileArr);
+        $this->assignRef('descDataFileArr', $descDataFileArr);
+        $this->assignRef('historyDataFileArr', $historyDataFileArr);
+
+        $allowEdit = FacilityHelper::canEdit($facility);
+        $this->assignRef('allowEdit', $allowEdit);
+
+        $allowCreate = FacilityHelper::canCreate($facility);
+        $this->assignRef('allowCreate', $allowCreate);
+
+        // Code the redirect URL
+        $uri  =& JURI::getInstance();
+        $redirectURL = $uri->toString(array('path', 'query'));
+        $redirectURL = base64_encode($redirectURL);
+        $redirectURL = $redirectURL;
+        $this->assignRef('redirectURL', $redirectURL);
 
 
         parent::display($tpl);
 	}
     
     
-  /**
-   * Get a single DataFile for a facility by infoType, subInfoType and GroypBy
-   *
-   * @param String $info
-   * @param String $sub
-   * @param String $groupby
-   * @return DataFile
-   */
-	function getFacilityDataFile( $facilityid, $info, $sub, $groupby='' ){
-		$facDataFiles = FacilityDataFilePeer::findByDetails($facilityid, $info, $sub, $groupby);
-
-		if (count($facDataFiles) > 0 && $ff = $facDataFiles[0]) {
-			$df = $ff->getDataFile();
-
-			if ( !$df->getDeleted())
-			{
-				return $df;
-			} 
-		}
-
-		return null;
-	}    
-    
+   
 }

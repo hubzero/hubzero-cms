@@ -58,23 +58,34 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		
 		</table>
 	</div>
-	
 
 	<div style="padding-left:10px;">
-		<?php echo $this->fileBrowserObj->getViewSimpleFileBrowser($this->driving_datafiles, "Driving to the Facility") ?>	
+            <?php echo FacilityHelper::getViewSimpleFileBrowser($this->driving_datafiles, "Driving to the Facility", $this->redirectURL); ?>
 	</div>
+        <?php if($this->allowCreate)
+            echo '<a  style="padding-left: 0px; margin-left: 10px; float: left;"href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=VisitorInformation&subinfo=Driving%20Instruction&redirectURL=' . $this->redirectURL ) . '">[Add Document]</a>';
+        ?>
 
 	<div style="padding-left:10px; padding-top:25px">
-		<?php echo $this->fileBrowserObj->getViewSimpleFileBrowser($this->map_datafiles, "Map of the Facility Location") ?>	
+            <?php echo FacilityHelper::getViewSimpleFileBrowser($this->map_datafiles, "Map of the Facility Location", $this->redirectURL); ?>
 	</div>
+        <?php if($this->allowCreate)
+            echo '<a  style="padding-left: 0px; margin-left: 10px; float: left;"href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=VisitorInformation&subinfo=Site%20Location%20Map&redirectURL=' . $this->redirectURL ) . '">[Add Document]</a>';
+        ?>
 
 	<div style="padding-left:10px; padding-top:25px">
-		<?php echo $this->fileBrowserObj->getViewSimpleFileBrowser($this->local_datafiles, "Local Area Information (transportation, lodging, etc.)") ?>	
+            <?php echo FacilityHelper::getViewSimpleFileBrowser($this->local_datafiles, "Local Area Information (transportation, lodging, etc.)",$this->redirectURL); ?>
 	</div>
+        <?php if($this->allowCreate)
+            echo '<a  style="padding-left: 0px; margin-left: 10px; float: left;"href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=VisitorInformation&subinfo=Local%20Area%20Information&redirectURL=' . $this->redirectURL ) . '">[Add Document]</a>';
+        ?>
 
 	<div style="padding-left:10px; padding-top:25px">
-		<?php echo $this->fileBrowserObj->getViewSimpleFileBrowser($this->additional_datafiles, "Additional Documents") ?>	
+            <?php echo FacilityHelper::getViewSimpleFileBrowser($this->additional_datafiles, "Additional Documents", $this->redirectURL); ?>
 	</div>
+        <?php if($this->allowCreate)
+            echo '<a  style="padding-left: 0px; margin-left: 10px; float: left;"href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=VisitorInformation&subinfo=Additional%20Document&redirectURL=' . $this->redirectURL ) . '">[Add Document]</a>';
+        ?>
 	
 	
 	

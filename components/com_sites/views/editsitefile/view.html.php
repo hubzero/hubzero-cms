@@ -46,10 +46,12 @@ class sitesVieweditsitefile extends JView
         $infotype = JRequest::getVar('infotype');
         $subinfo = JRequest::getVar('subinfo');
         $groupby = JRequest::getVar('groupby');
+        $redirectURL = JRequest::getVar('redirectURL');
 
         $this->assignRef('infotype', $infotype);
         $this->assignRef('subinfo', $subinfo);
         $this->assignRef('groupby', $groupby);
+        $this->assignRef( 'redirectURL', $redirectURL);
 		
         parent::display($tpl);
 	}

@@ -26,8 +26,8 @@ class sitesViewsensormodel extends JView
     	$facilityID = JRequest::getVar('id');
     	$sensorModelID = JRequest::getVar('sensormodelid');
     	$facility = FacilityPeer::find($facilityID);
-  		$fac_name = $facility->getName();
-		$fac_shortname = $facility->getShortName();
+        $fac_name = $facility->getName();
+        $fac_shortname = $facility->getShortName();
 
         // Page title and breadcrumb stuff
         $mainframe = &JFactory::getApplication();
@@ -40,7 +40,8 @@ class sitesViewsensormodel extends JView
         
         // Add Sensor tab info to breadcrumb
         $pathway->addItem( "Sensors",  JRoute::_('index.php?option=com_sites&view=sensors&id=' . $facilityID));
-                    	
+
+
     	// Pass the facility to the template, just let it grab what it needs
         $this->assignRef('facility', $facility);
         
@@ -54,24 +55,52 @@ class sitesViewsensormodel extends JView
         $sensorModel = SensorModelPeer::find($sensorModelID);
         $this->assignRef('sensorModel', $sensorModel);
 
+        // Add Sensor Model into  to breadcrumb
+        $pathway->addItem( 'Sensor Model: ' . $sensorModel->getName(),  JRoute::_('index.php?option=com_sites&view=sensormodel&id=' . $facilityID . '&sensormodelid=' . $sensorModelID ));
+
         // The group values (Standard Specifications) for the model
         $groupvalues = SensorModelPeer::findGroupValues( $sensorModelID );
         $this->assignRef('groupvalues', $groupvalues);
         
-		//**** For the Sensor Model Documentation section
+        //**** For the Sensor Model Documentation section
 		
-		// Make dirs for this Sensor if we forgot to make them
+        // Make dirs for this Sensor if we forgot to make them
     	$this->sensorModel->makeSensorModelDirs();
 
     	// Setup the file browser
-		$basepath = $sensorModel->getPathname() . "/Documentation";
-		$baselink = '';
-		$rootname = "Sensor Model Documentation";
-		$dfObject = new DataFileBrowser(null, $baselink, $basepath, $rootname);
-		$datafilebrowser = $dfObject->makeDataFileBrowser();
-        $this->assignRef('datafilebrowser', $datafilebrowser);
-		
-        
+        //$basepath = $sensorModel->getPathname() . "/Documentation";
+        //$baselink = '';
+        //$rootname = "Sensor Model Documentation";
+        //$dfObject = new DataFileBrowser(null, $baselink, $basepath, $rootname);
+        //$datafilebrowser = $dfObject->makeDataFileBrowser();
+        //$this->assignRef('datafilebrowser', $datafilebrowser);
+
+
+
+        $basepath = $sensorModel->getPathname() . "/Documentation";
+        $this->assignRef('basepath', $basepath);
+        $dfs = DataFilePeer::findDataFileBrowser($basepath);
+
+        $datafiles = array();
+
+        foreach ($dfs as $df) {
+        /* @var $df DataFile */
+        //name, directory, created, filesize
+
+            $datafiles[] = $df;
+        }
+
+        // Lets pass these to the template
+        $this->assignRef('datafiles', $datafiles);
+
+
+        $uri  =& JURI::getInstance();
+        $redirectURL = $uri->toString(array('path', 'query'));
+        $redirectURL = base64_encode($redirectURL);
+        $redirectURL = $redirectURL;
+        $this->assignRef('redirectURL', $redirectURL);
+
+       
         parent::display($tpl);
     }
     

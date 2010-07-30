@@ -62,79 +62,81 @@ function swap(divName) {
 		
 		while($this->ssm->next()) {
 
-			$minMeasuredValue = $this->ssm->get('MIN_MEASURED_VALUE');
-			$maxMeasuredValue = $this->ssm->get('MAX_MEASURED_VALUE');
-			$unit = $this->ssm->get('ABBREVIATION');
-			$sensormodelid = $this->ssm->get('SENSOR_MODEL_ID');
-			$sensormodelname = $this->ssm->get('SMOD_NAME');
-			$sensorTypeName = $this->ssm->get("ST_NAME");
-			$quantity = $this->ssm->get("QUANTITY");
-			$bgcolor = ($rowcount++%2 == 0) ? "#ffffff" : "#efefef";
+                    $minMeasuredValue = $this->ssm->get('MIN_MEASURED_VALUE');
+                    $maxMeasuredValue = $this->ssm->get('MAX_MEASURED_VALUE');
+                    $unit = $this->ssm->get('ABBREVIATION');
+                    $sensormodelid = $this->ssm->get('SENSOR_MODEL_ID');
+                    $sensormodelname = $this->ssm->get('SMOD_NAME');
+                    $sensorTypeName = $this->ssm->get("ST_NAME");
+                    $quantity = $this->ssm->get("QUANTITY");
+                    $bgcolor = ($rowcount++%2 == 0) ? "#ffffff" : "#efefef";
 
-			if(empty($sensormodelname)) $sensormodelname = "No Name, (ID = " . $sensormodelid . ")";
+                    if(empty($sensormodelname)) $sensormodelname = "No Name, (ID = " . $sensormodelid . ")";
 
-			$measRange = null;
-			if ($minMeasuredValue !== null) $measRange = "from $minMeasuredValue";
-			if ($maxMeasuredValue !== null) $measRange .= " to $maxMeasuredValue";
-			if ($measRange !== null) $measRange .= " " . $unit;
+                    $measRange = null;
+                    if ($minMeasuredValue !== null) $measRange = "from $minMeasuredValue";
+                    if ($maxMeasuredValue !== null) $measRange .= " to $maxMeasuredValue";
+                    if ($measRange !== null) $measRange .= " " . $unit;
 			
-			$orderNum = 0;
-        	$sensors = SensorPeer::findByFacilityAndSensorModel($this->facilityID, $sensormodelid);
-		?>
-	
-	
-		<tr bgcolor="<?php echo $bgcolor;?>">
-	        <td><a class="imagelink-no-underline" href="javascript:swap('<?=$sensormodelid?>');"><img style="border: 0px" src="/components/com_sites/images/arrow_right.png" width="16" height="16" id="img_<?=$sensormodelid?>" title="Expand" alt="" /></a></td>
+                    $orderNum = 0;
+                    $sensors = SensorPeer::findByFacilityAndSensorModel($this->facilityID, $sensormodelid);
+                    ?>
 
 
-			<td><?php echo '<a href="' . JRoute::_('/index.php?option=com_sites&view=sensormodel&id=' . $this->facilityID . '&sensormodelid=' . $sensormodelid) . '">' . $sensormodelname;?></a></td>
-			<td><? echo $sensorTypeName; ?></td>
-			<td><? echo $measRange; ?></td>
-			<td><? echo $quantity; ?></td>
-		</tr>
-		
-		<tr id="<?=$sensormodelid?>" style="display:none;">
-			<td colspan="3" style="padding-left:64px;">
-				<table class="subcomponenttable">
-					<tr class="facility-table-header">
-						<th>&nbsp</th>
-						<th>Sensor Name</th>
-						<th>Serial Number</th>
-					</tr>
-		
-		<?php 
-		// Loop through all the senrors
-		        $orderNum = 0;
-		        foreach($sensors as $sensor) 
-		        {
-		            echo "<tr>";
-		            echo "<td>" . $orderNum++ . "</td>";
-		        	echo '<td><a href="' . JRoute::_('/index.php?option=com_sites&view=sensor&id=' . $this->facilityID. '&sensorid=' . $sensor->getId()) . '">' . $sensor->getName() . '</a></td>';
-		            echo "<td>" . $sensor->getSerialNumber() . "</td>";
-		            echo "</tr>";
-		        }
-		?>
-		        </table>
-			</td>
-		</tr>
-	
-		<?php 
+                    <tr bgcolor="<?php echo $bgcolor;?>">
+                    <td><a class="imagelink-no-underline" href="javascript:swap('<?=$sensormodelid?>');"><img style="border: 0px" src="/components/com_sites/images/arrow_right.png" width="16" height="16" id="img_<?=$sensormodelid?>" title="Expand" alt="" /></a></td>
+
+
+                            <td><?php echo '<a href="' . JRoute::_('/index.php?option=com_sites&view=sensormodel&id=' . $this->facilityID . '&sensormodelid=' . $sensormodelid) . '">' . $sensormodelname;?></a></td>
+                            <td><? echo $sensorTypeName; ?></td>
+                            <td><? echo $measRange; ?></td>
+                            <td><? echo $quantity; ?></td>
+                    </tr>
+
+                    <tr id="<?=$sensormodelid?>" style="display:none;">
+                            <td colspan="3" style="padding-left:64px;">
+                                    <table class="subcomponenttable" style="margin-top:10px; margin-bottom:10px;">
+                                            <tr class="facility-table-header">
+                                                    <th>&nbsp</th>
+                                                    <th>Sensor Name</th>
+                                                    <th>Serial Number</th>
+                                            </tr>
+
+                    <?php
+                    // Loop through all the senrors
+                            $orderNum = 0;
+                            foreach($sensors as $sensor)
+                            {
+                                echo "<tr>";
+                                echo "<td>" . $orderNum++ . "</td>";
+                                    echo '<td><a href="' . JRoute::_('/index.php?option=com_sites&view=sensor&id=' . $this->facilityID. '&sensorid=' . $sensor->getId()) . '">' . $sensor->getName() . '</a></td>';
+                                echo "<td>" . $sensor->getSerialNumber() . "</td>";
+                                echo "</tr>";
+                            }
+                    ?>
+                            </table>
+                            </td>
+                    </tr>
+
+                    <?php
 		} // End while
 		?>
 
 	</table>
 
+        <?php if($this->allowEdit) { ?>
+            <div class="sectheaderbtn" style="width:900px;">
+                    <?php //echo $this->addsensor; ?>
 
-	<div class="sectheaderbtn" style="width:900px;">
-		<?= $this->uploadSensors ?>
-		<?= $this->uploadCalibrations ?>
+                    <?php //echo $this->uploadSensors; ?>
+                    <?php //echo $this->uploadCalibrations; ?>
 
 
-		<?= $this->exportCalibrations ?>
-		<?= $this->exportSensors ?>
-		<?= $this->exportSensorModels ?>
-	</div>
-
+                    <?php echo $this->exportCalibrations; ?>
+                    <?php echo $this->exportSensors; ?>
+                    <?php echo $this->exportSensorModels; ?>
+            </div>
+        <?php } ?>
 
 </div>
 

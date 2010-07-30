@@ -30,8 +30,8 @@ class sitesViewequipment extends JView
     	$facilityID = JRequest::getVar('id');
     	$equipID = JRequest::getVar('equipid');
     	$facility = FacilityPeer::find($facilityID);
-  		$fac_name = $facility->getName();
-		$fac_shortname = $facility->getShortName();
+        $fac_name = $facility->getName();
+        $fac_shortname = $facility->getShortName();
 
         // Page title and breadcrumb stuff
         $mainframe = &JFactory::getApplication();
@@ -40,7 +40,7 @@ class sitesViewequipment extends JView
         $document->setTitle($fac_name);             
         $pathway->addItem( $fac_name,  JRoute::_('/index.php?option=com_sites&view=site&id=' . $facilityID));
                 
-        // Add Sensor tab info to breadcrumb
+        // Add to breadcrumb
         $pathway->addItem( "Equipment",  JRoute::_('index.php?option=com_sites&view=equipment&id=' . $facilityID));
         
     	// Pass the facility to the template, just let it grab what it needs
@@ -51,29 +51,33 @@ class sitesViewequipment extends JView
         $this->assignRef('tabs', $tabs); 
         
         // Other equipment related logic
-  		$equipment = EquipmentPeer::find($equipID);
-  		$isMajor = $equipment->getParent() ? "Sub-Component" : "Major Equipment";
-		$equipName = $equipment->getName();
-		$subequipList = EquipmentPeer::findAllByParent($equipID);
-		
-		if($isMajor == "Sub-Component")
-		{
-	        // Add Parent to the breadcrumb
-	        $pathway->addItem( "Major Equipment: " . $equipName,  JRoute::_('index.php?option=com_sites&view=equipment&id=' . $facilityID . '&equipid=' . $equipment->getParent()->getId()));
-		}
-		
-  		$this->assignRef('equipment', $equipment); 
-  		$this->assignRef('isMajor', $isMajor); 
-  		$this->assignRef('equipName', $equipName); 
-  		$this->assignRef('subequipList', $subequipList); 
-  		$this->assignRef('equipID', $equipID); 
-  		$this->assignRef('facilityID', $facilityID); 
-  		$this->assignRef('facility', $facility); 
-  		
-  		// This gets all documentation, both for the model and for the actual piece of equipment
-  		$fileSection = $this->printDocumentationList($equipment, $facility);
-  		$this->assignRef('fileSection', $fileSection); 
-  		
+        $equipment = EquipmentPeer::find($equipID);
+        $isMajor = $equipment->getParent() ? "Sub-Component" : "Major Equipment";
+        $equipName = $equipment->getName();
+        $subequipList = EquipmentPeer::findAllByParent($equipID);
+
+        if($isMajor == "Sub-Component")
+        {
+        // Add Parent to the breadcrumb
+        $pathway->addItem( "Major Equipment: " . $equipName,  JRoute::_('index.php?option=com_sites&view=equipment&id=' . $facilityID . '&equipid=' . $equipment->getParent()->getId()));
+        }
+
+        $this->assignRef('equipment', $equipment);
+        $this->assignRef('isMajor', $isMajor);
+        $this->assignRef('equipName', $equipName);
+        $this->assignRef('subequipList', $subequipList);
+        $this->assignRef('equipID', $equipID);
+        $this->assignRef('facilityID', $facilityID);
+        $this->assignRef('facility', $facility);
+
+        // This gets all documentation, both for the model and for the actual piece of equipment
+        $fileSection = $this->printDocumentationList($equipment, $facility);
+        $this->assignRef('fileSection', $fileSection);
+
+        $pathway->addItem( $isMajor . ' ' . $equipName,  JRoute::_('index.php?option=com_sites&view=equipment&id=' . $facilityID . '&equipid=' . $equipID));
+
+
+
         parent::display($tpl);
     }
     
