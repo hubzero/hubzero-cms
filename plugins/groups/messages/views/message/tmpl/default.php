@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (substr($this->xmessage->type, -8) == '_message') {
 	$u =& JUser::getInstance($this->xmessage->created_by);
-	$from = '<a href="'.JRoute::_('index.php?option='.$option.a.'id='.$u->get('id')).'">'.$u->get('name').'</a>'.n;
+	$from = '<a href="'.JRoute::_('index.php?option='.$option.'&id='.$u->get('id')).'">'.$u->get('name').'</a>'."\n";
 } else {
 	$from = 'System ('.$this->xmessage->component.')';
 }
