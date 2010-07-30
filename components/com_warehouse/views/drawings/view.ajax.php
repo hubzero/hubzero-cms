@@ -16,6 +16,7 @@ class WarehouseViewDrawings extends JView{
   	
   	$oDrawingsModel =& $this->getModel();
   	$oDrawingArray = $oDrawingsModel->findDataFileByEntityType("Drawing", $iProjectId, $iExperimentId);
+        $oDrawingArray = $oDrawingsModel->resizePhotos($oDrawingArray);
 	$_REQUEST["Drawings"] = serialize($oDrawingArray);
   	
   	parent::display($tpl);

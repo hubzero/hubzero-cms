@@ -22,15 +22,15 @@ class WarehouseModelMembers extends WarehouseModelBase{
    *
    */
   public function getMembersByProjectId($p_iProjectId){
-  	return PersonPeer::findMembersForEntity($p_iProjectId, 1);
+    return PersonPeer::findMembersForEntity($p_iProjectId, 1);
   }
   
   public function findMembersForEntityWithPagination($p_iProjectId, $p_iEntityId=1, $p_iLowerLimit=0, $p_iUpperLimit=25){
-  	return PersonPeer::findMembersForEntityWithPagination($p_iProjectId, $p_iEntityId, $p_iLowerLimit, $p_iUpperLimit);
+    return PersonPeer::findMembersForEntityWithPagination($p_iProjectId, $p_iEntityId, $p_iLowerLimit, $p_iUpperLimit);
   }
   
   public function findMembersForEntityCount($p_iProjectId){
-  	return PersonPeer::findMembersForEntityCount($p_iProjectId, 1);
+    return PersonPeer::findMembersForEntityCount($p_iProjectId, 1);
   }
 }
 

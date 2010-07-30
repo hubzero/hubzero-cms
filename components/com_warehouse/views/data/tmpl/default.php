@@ -13,6 +13,15 @@ defined('_JEXEC') or die( 'Restricted access' );
   $document->addScript($this->baseurl."/components/com_warehouse/js/resources.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/tips.js", 'text/javascript');
 ?>
+
+<?php
+  $strUsername = $this->strUsername;
+  $oAuthorizer = Authorizer::getInstance();
+  $oAuthorizer->setUser($strUsername);
+?>
+
+<?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
+
 <form id="frmData" method="get">
 <div class="innerwrap">
   <div class="content-header">
@@ -23,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
     <div id="treeBrowser" style="float:left;width:20%;"></div>
     
     <div id="overview_section" class="main section" style="width:100%;float:left;">
-      <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
+      
       <div id="title" style="padding-bottom:1em;">
         <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
       </div>
@@ -49,6 +58,7 @@ defined('_JEXEC') or die( 'Restricted access' );
       </div>
       
       <div class="subject">
+        <?php if($oAuthorizer->canView($oProject)){ ?>
         <div id="about" style="padding-top:1em;">
           <p style="margin-bottom:30px;" class="information">Details of each experiment may be found in the <a href="/warehouse/experiments/<?php echo $oProject->getId(); ?>">Experiments</a> tab.</p>
         
@@ -79,6 +89,12 @@ defined('_JEXEC') or die( 'Restricted access' );
           
           <?php echo $this->pagination; ?>
         </div>
+        <?php
+        }else{?>
+          <p class="error">You don't have permission to view this project.</p>
+        <?php
+        }//end canView
+      ?>
       </div>
       
     </div>
@@ -87,5 +103,3 @@ defined('_JEXEC') or die( 'Restricted access' );
   </div>  
 </div>
 </form>
-
-

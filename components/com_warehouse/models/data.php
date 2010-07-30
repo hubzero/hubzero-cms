@@ -98,15 +98,23 @@ class WarehouseModelData extends WarehouseModelBase{
 
       $strDisplay = (strlen($strTitle)==0) ? $strName : $strTitle;
       $strDescription = (strlen($strDescription)!=0) ? $strDescription : "Description not available";
+      
+      $strInDEEDPath = InDEED::LAUNCH;
 
       $strReturn .= <<< ENDHTML
               <tr class="$strRow">
-                    <td><a href="/indeed?task=process&list=$strPath/$strName" class="Tips3" title="$strDisplay :: $strDescription">$strDisplay</a></td>
+                    <td><a href="$strInDEEDPath?list=$strPath/$strName" class="Tips3" title="$strDisplay :: $strDescription">$strDisplay</a></td>
                     <td><a href="/warehouse/experiment/$iExperimentId/project/$iProjectId" class="Tips3" title="$strExperimentName :: $strExperimentTitle">$strExperimentNameDisplay</a></td>
                     <td>$strTrialName</td>
                     <td>$strRepetitionName</td>
               </tr>
 ENDHTML;
+    }
+
+    if(empty($p_strDataFileArray)){
+      $strReturn .= "<tr>
+                      <td colspan='4'><p class='warning'>No tools found.</p></td>
+                    </tr>";
     }
 
     $strReturn .= "</table>";
@@ -172,10 +180,16 @@ ENDHTML;
 
       $strReturn .= <<< ENDHTML
               <tr class="$strRow">
-                    <td><a rel="$strLightbox" href="/data/get/$strDrawingUrl" class="Tips3" title="$strDisplay :: $strDescription">$strDisplay</a></td>
+                    <td><a rel="$strLightbox" href="/data/get/$strDrawingUrl" title="$strDescription">$strDisplay</a></td>
                     <td><a href="/warehouse/experiment/$iExperimentId/project/$iProjectId" class="Tips3" title="$strExperimentName :: $strExperimentTitle">$strExperimentNameDisplay</a></td>
               </tr>
 ENDHTML;
+    }
+
+    if(empty($p_strDataFileArray)){
+      $strReturn .= "<tr>
+                      <td colspan='2'><p class='warning'>No drawings found.</p></td>
+                    </tr>";
     }
 
     $strReturn .= "</table>";

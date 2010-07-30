@@ -157,6 +157,15 @@ function WarehouseParseRoute( $segments ){
 	      	$vars['subtab'] = $segments[2];
 	      }
 	      break;  
+              
+            case 'datafiles':  //view
+              $vars['view'] = 'datafiles';
+              if(isset($segments[1])){
+                $id = explode( ':', $segments[1] );
+                $vars['id'] = (int) $id[0];
+              }
+              break;
+
 	    case 'tools':  //view
 	      $vars['view'] = 'tools';
 	      if(isset($segments[1])){

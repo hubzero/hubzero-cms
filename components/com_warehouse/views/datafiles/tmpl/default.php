@@ -9,7 +9,7 @@ defined('_JEXEC') or die( 'Restricted access' );
   <a href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a>
 <?php }else{ ?>
 <form id="frmData" action="/warehouse/download" method="post">
-<a id="hideDataLink" href="javascript:void(0);" onClick="javascript:document.getElementById('showDataLink').style.display='';document.getElementById('projectDocs').style.display='none';document.getElementById('hideDataLink').style.display='none';">Hide</a> <a id="showDataLink" style='display:none' href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a>
+<a id="hideDataLink" href="javascript:void(0);" onClick="javascript:document.getElementById('showDataLink').style.display='';document.getElementById('projectDocs').style.display='none';document.getElementById('hideDataLink').style.display='none';">Hide</a> <a id="showDataLink" style='display:none' href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a>
 <div style="border: 1px solid rgb(102, 102, 102); overflow: auto; width: 100%; padding: 0px; margin: 0px;" id="projectDocs">
   <table cellpadding="1" cellspacing="1" style="width:100%;border-bottom:0px;border-top:0px;font-size:11px;">
     <tr valign="top" style="background: #CCCCCC;">
@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
           <td><input type="checkbox" id="cbxDataFile<?php echo $iIndex;?>" name="cbxDataFile[]" value="<?php echo $oDataFile->getId(); ?>"/></td>
           <td>
             <?php if( $oDataFile->getDirectory()==1 ): ?>
-              <input type="image" src="/components/com_warehouse/images/icons/folder.gif" onClick="#">
+              <input type="image" src="/components/com_warehouse/images/icons/folder.gif" onClick=""/>
             <?php endif; ?>
           </td>
           <td>

@@ -5,6 +5,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+require_once 'lib/security/Authorizer.php';
+
 class WarehouseViewExperiments extends JView{
 	
   function display($tpl = null){
@@ -29,6 +31,9 @@ class WarehouseViewExperiments extends JView{
     $_REQUEST[Experiments::EXPERIMENT_LIST] = serialize($oExperimentArray);
     $_REQUEST[Experiments::COUNT] = sizeof($oExperimentArray);
 
+    /* @var $oHubUser JUser */
+    $oHubUser = $oExperimentsModel->getCurrentUser();
+    $this->assignRef( "strUsername", $oHubUser->username );
 
     /*
      * grab the nees pagination object.  joomla's

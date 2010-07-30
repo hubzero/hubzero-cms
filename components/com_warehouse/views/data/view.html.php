@@ -5,6 +5,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+require_once 'lib/security/Authorizer.php';
 
 class WarehouseViewData extends JView{
 	
@@ -18,9 +19,8 @@ class WarehouseViewData extends JView{
     $iTrialId = JRequest::getVar('trial', 0);
     $iRepetitionId = JRequest::getVar('repetition', 0);
 
-    //echo $iProjectId.", ".$iExperimentId.",".$iTrialId.",".$iRepetitionId."<br>";
-	
     //get the main tabs to display on the page
+    /* @var $oDataModel WarehouseModelData */
     $oDataModel =& $this->getModel();
     $strTabArray = $oDataModel->getTabArray();
     $strTabHtml = $oDataModel->getTabs( "warehouse", $iProjectId, $strTabArray, "data" );
@@ -107,8 +107,8 @@ class WarehouseViewData extends JView{
         $iLowerLimit = $oDataModel->computeLowerLimit($iPageIndex, $iDisplay);
         $iUpperLimit = $oDataModel->computeUpperLimit($iPageIndex, $iDisplay);
 
-        $iDataFileTotal = $oDataModel->findPhotoDataFilesCount(array("Drawing", "General Photo"), $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId);
-        $strDataFileArray = $oDataModel->findPhotoDataFiles(array("Drawing", "General Photo"), $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $iLowerLimit, $iUpperLimit);
+        $iDataFileTotal = $oDataModel->findPhotoDataFilesCount(array("Drawing", "Drawing-Sensor", "Drawing-Setup", "Drawing-Specimen", "General Photo"), $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId);
+        $strDataFileArray = $oDataModel->findPhotoDataFiles(array("Drawing", "Drawing-Sensor", "Drawing-Setup", "Drawing-Specimen", "General Photo"), $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $iLowerLimit, $iUpperLimit);
         $strDataFileArray = $oDataModel->findPhotoDataFilesHTML($strDataFileArray);
         //echo $iProjectId.", ".$iExperimentId.",".$iDataFileTotal."<br>";
 
@@ -166,7 +166,11 @@ class WarehouseViewData extends JView{
     }
     $this->assignRef( "strDataFileArray", $strDataFileArray );  //every subtab
     $this->displayExperimentDropDowns($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $strTool, $strUsageType);  //every subtab
-	
+
+    /* @var $oHubUser JUser */
+    $oHubUser = $oDataModel->getCurrentUser();
+    $this->assignRef( "strUsername", $oHubUser->username );
+    
     /*
      * set the breadcrumbs
      */

@@ -8,6 +8,14 @@ defined('_JEXEC') or die( 'Restricted access' );
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
 ?>
 
+<?php
+  $strUsername = $this->strUsername;
+  $oAuthorizer = Authorizer::getInstance();
+  $oAuthorizer->setUser($strUsername);
+?>
+
+<?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
+
 <div class="innerwrap">
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
@@ -17,6 +25,8 @@ defined('_JEXEC') or die( 'Restricted access' );
     <div id="treeBrowser" style="float:left;width:20%;"></div>
     
     <div id="overview_section" class="main section" style="width:100%;float:left;">
+      <form id="frmResults" style="margin:0px;padding:0px;">
+
       <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
       <div id="title" style="padding-bottom:1em;">
         <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
@@ -27,7 +37,9 @@ defined('_JEXEC') or die( 'Restricted access' );
       <div class="aside">
         
       </div>
+
       <div class="subject">
+        <?php if($oAuthorizer->canView($oProject)){ ?>
         <div id="members" style="padding-top:1em;">
           <table id="members-list" cellpadding="1" cellspacing="1">
             <thead>
@@ -66,28 +78,20 @@ defined('_JEXEC') or die( 'Restricted access' );
         <div id="membersFooter" class="topSpace20">
             <?php echo $this->pagination; ?>
         </div>
-          
-      </div>
-      
-      <div id="membersFooter">
-        <form id="frmMembersFooter">
-        <?php  
-          jimport('joomla.html.pagination');
-              
-          $lim   = $mainframe->getUserStateFromRequest("$option.limit", 'limit', 25, 'int'); //I guess getUserStateFromRequest is for session or different reasons
-		  $lim0  = JRequest::getVar('limitstart', 0, '', 'int');
-		  $iCount = $this->iMemberCount;
-			  
-		  $pageNav = new JPagination( $iCount, $lim0, $lim );
-		  
-		  echo ViewHtml::fixPaginationLinks("warehouse", $_SERVER["REQUEST_URI"], $pageNav->getListFooter());
+
+        <?php
+          }else{?>
+          <p class="error">You don't have permission to view this project.</p>
+        <?php
+        }//end canView
         ?>
         </form>
       </div>
+
     </div>
     <div class="clear"></div>
   </div>  
-</div>
+
 
 
 

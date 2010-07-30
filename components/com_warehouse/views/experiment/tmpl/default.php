@@ -107,13 +107,13 @@ defined('_JEXEC') or die( 'Restricted access' );
                       $oMaterialArray = unserialize($_REQUEST[MaterialPeer::TABLE_NAME]);
                       if(!empty($oMaterialArray)){
                         $iMaterialIndex = 0;
-                        while($iMaterialIndex < 3){
+                        while($iMaterialIndex < 3 && $iMaterialIndex < sizeof($oMaterialArray)){
                           $oMaterial = $oMaterialArray[$iMaterialIndex];
                           echo $oMaterial->getName();
                           ?> (<a href="javascript:void(0);" onClick="getMootools('/warehouse/materials/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>/detail/<?php echo $oMaterial->getId(); ?>?format=ajax', 'experimentInfo');">view</a>)<?php
 
                           if( $iMaterialIndex < (sizeof($oMaterialArray)-1) ){
-                                            ?><br><?php
+                                          ?><br><?php
                           }
                           ++$iMaterialIndex;
                         }
@@ -123,10 +123,6 @@ defined('_JEXEC') or die( 'Restricted access' );
                         }
                       }
                     ?>
-
-                    <?php if($oExperiment->getId()==28):?>
-                      Reinforced Concrete (<a href="javascript:void(0);" onClick="getMootools('/warehouse/materials/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>?format=ajax', 'experimentInfo');">view</a>)
-                    <?php endif; ?>
                   </td>
                 </tr>
                 <tr id="sensors">
@@ -161,7 +157,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                         <a rel="<?php echo $strLightbox; ?>"  title="<?php echo $oDrawing->getTitle(); ?>" href="/data/get/<?php echo $strDrawingUrl; ?>" title=""><?php echo $oDrawing->getTitle(); ?></a><br>
                       <?php
                         if($iDrawingIndex==2 && ($iDrawingIndex < sizeof($oDrawingArray)-1)){?>
-                          <a href="#" onClick="getMootools('/warehouse/drawings/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>?format=ajax', 'experimentInfo');">more...</a><br>
+                          <a href="/warehouse/drawings/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>">more...</a><br>
                         <?
                           break;
                         }
@@ -191,7 +187,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                                            $strToolDesc = "Click to launch tool ".$oToolDataFile->getOpeningTool().".";
                                          }
                                  ?>
-                                        <a href="/indeed?task=process&list=<?php echo $strToolLink; ?>" title="<?php echo $strToolDesc; ?>"><?php echo $strToolTitle; ?></a>
+                                        <a href="<?php echo InDEED::LAUNCH; ?>?list=<?php echo $strToolLink; ?>" title="<?php echo $strToolDesc; ?>"><?php echo $strToolTitle; ?></a>
                                  <?php
                                          if($iToolIndex < sizeof($oToolFileArray)-1){
                                    echo "<br>";
@@ -218,6 +214,35 @@ defined('_JEXEC') or die( 'Restricted access' );
                           </td>
                         </tr>
                    <?php
+                   }else{
+                      /*
+                       * Okay, there's not any tools,
+                       * but the user supplied some data files.
+                       */
+                      ?>
+                      <tr id="interactive">
+                       <td class="entityDetail">Data:</td>
+                           <td>
+                             <div id="dataList"><a href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a></div>
+                          </td>
+                        </tr>
+                        <tr id="photos">
+                          <td class="entityDetail">Images:</td>
+                          <td>
+                            <?php
+                              if($this->photoCount > 0):
+                            ?>
+                          <div id="imageList">Additional photos (<a href="/warehouse/photos/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>">view</a>)</div>
+                        <?php
+                              else:
+                            ?>
+                              <div id="imageList">Images may be found on the tab labeled 'More'.</div>
+                            <?php
+                              endif;
+                            ?>
+                          </td>
+                        </tr>
+                    <?php
                    }
                  }else{
                    /*
@@ -251,6 +276,14 @@ defined('_JEXEC') or die( 'Restricted access' );
                      <td class="entityDetail">Repetitions:</td>
                      <td>
                        <div id="repetitionList"><span style="color:#999999">Repetitions appear after selecting a trial.</span></div>
+                       <div id="repetitionDesc"></div>
+                     </td>
+                   </tr>
+                   <?php else: ?>
+                   <tr id="repetitions">
+                     <td class="entityDetail">Repetitions:</td>
+                     <td>
+                       <div id="repetitionList"><span style="color:#999999">0 Repetitions found.</span></div>
                        <div id="repetitionDesc"></div>
                      </td>
                    </tr>
@@ -297,6 +330,5 @@ defined('_JEXEC') or die( 'Restricted access' );
   </div>
   
 </div>
-</form>
 
 

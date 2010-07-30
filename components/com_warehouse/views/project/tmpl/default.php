@@ -9,6 +9,12 @@ defined('_JEXEC') or die( 'Restricted access' );
   $document->addScript($this->baseurl."/components/com_warehouse/js/warehouse.js", 'text/javascript');
 ?>
 
+<?php
+  $strUsername = $this->strUsername;
+  $oAuthorizer = Authorizer::getInstance();
+  $oAuthorizer->setUser($strUsername);
+?>
+
 <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
 
 <div class="innerwrap">
@@ -37,29 +43,38 @@ defined('_JEXEC') or die( 'Restricted access' );
       <?php echo $this->strTabs; ?>
       
       <div class="aside">
-        <p style="font-size:11px;color:#999999" align="center">
-          <?php 
-            $oProjectImageDataFile = unserialize($_REQUEST["oProjectImage"]);
-            if($oProjectImageDataFile!=null){
-              $strDirLink = $oProjectImageDataFile[0]->getPath()."/".$oProjectImageDataFile[0]->getName();
-              $strFileLink = str_replace("/nees/home/",  "",  $strDirLink);
-              $strFileLink = str_replace(".groups",  "",  $strFileLink);
+          <?php
+            if($oAuthorizer->canView($oProject)){
+              $oProjectImageDataFile = unserialize($_REQUEST[DataFilePeer::TABLE_NAME]);
+              if($oProjectImageDataFile!=null){
+                $strDirLink = $oProjectImageDataFile->getPath()."/".$oProjectImageDataFile->getName();
+                $strFileLink = str_replace("/nees/home/",  "",  $strDirLink);
+                $strFileLink = str_replace(".groups",  "",  $strFileLink);
             ?>
-              <img src="/data/get/<?php echo $strFileLink; ?>"/><?php echo $oProjectImageDataFile[0]->getDescription(); ?>
-            <?php }
+              <p style="font-size:11px;color:#999999" align="center">
+                <img src="/data/get/<?php echo $strFileLink; ?>"/><br><?php echo $oProjectImageDataFile->getDescription(); ?>
+              </p>
+            <?php 
+              }
+            }
           ?>
-        </p>
-      
-        <div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">
+        
+
+        <?php if($oAuthorizer->canView($oProject)){ ?>
+          <div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">
+        <?php }else{ ?>
+          <div id="stats" style="border-width: 1px; border-style: dashed; border-color: #cccccc; ">
+        <?php } ?>
           <p style="margin-left:10px; margin-top:10px;">1000 Views</p>
           
           <p style="margin-left:10px;">100 Downloads</p>    
         </div>
         
-      
+
+        <?php if($oAuthorizer->canView($oProject)){  ?>
         <div id="curation">
           <span class="curationTitle">Curation progress:</span>
-          <?php echo $this->mod_curationprogress; ?>
+             <?php echo $this->mod_curationprogress; ?>
         </div>
         
         <div class="whatisthis">
@@ -69,8 +84,13 @@ defined('_JEXEC') or die( 'Restricted access' );
             the curation history.
           </p>
         </div>
+        <?php
+          }
+        ?>
+
       </div>
       <div class="subject">
+        <?php if($oAuthorizer->canView($oProject)){  ?>
         <div id="about" style="padding-top:1em;">
           <table cellpadding="1" cellspacing="1" style="border-bottom:0px;border-top:0px;">
             <tr id="people">
@@ -231,7 +251,14 @@ defined('_JEXEC') or die( 'Restricted access' );
           </table>
     
         </div>
+          <?php
+        }else{?>
+          <p class="error">You don't have permission to view this project.</p>
+        <?php
+        }//end canView
+      ?>
       </div>
+      
     </div>
     <div class="clear"></div>
   </div>  

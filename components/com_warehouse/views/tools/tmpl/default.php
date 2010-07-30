@@ -13,8 +13,10 @@ defined('_JEXEC') or die( 'Restricted access' );
     if(strlen($strToolDesc)==0){
       $strToolDesc = "Click to launch tool ".$oToolDataFile->getOpeningTool().".";
     }
+    
+    $strLink = InDEED::LAUNCH ."?list=".$strToolLink;
 ?>
-    <a href="/indeed?task=process&list=<?php echo $strToolLink; ?>" title="<?php echo $strToolDesc; ?>"><?php echo $strToolTitle; ?></a>
+    <a href="<?php echo $strLink; ?>" title="<?php echo $strToolDesc; ?>"><?php echo $strToolTitle; ?></a>
 <?php
     if($iToolIndex < sizeof($oToolFileArray)-1){
       echo "<br>";

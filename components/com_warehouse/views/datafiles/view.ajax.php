@@ -5,7 +5,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
-class WarehouseViewData extends JView{
+class WarehouseViewDataFiles extends JView{
 	
   function display($tpl = null){
   	$oDataFileArray = array();
@@ -19,10 +19,13 @@ class WarehouseViewData extends JView{
   	
   	$iRepetitionId = JRequest::getVar("id");
   	$strPath = JRequest::getVar("path","");
+        
   	if(strlen($strPath)==0){
 
   	  //look up the repetition object and get its name
   	  $oRepetition = $oDataModel->getRepetitionById($iRepetitionId);
+          //var_dump($oRepetition);
+          
   	  $strName = trim($oRepetition->getName());
   	  
   	  //get a list of files by rep_id and examine the first element

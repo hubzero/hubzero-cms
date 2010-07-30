@@ -14,7 +14,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
 
 <form id="frmPhotos" method="get"> 
-<div class="innerwrap>
+<div class="innerwrap">
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>

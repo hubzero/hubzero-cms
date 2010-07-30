@@ -4,6 +4,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
+ximport('xprofile');
+
+require_once 'lib/security/Authorizer.php';
 
 class WarehouseViewProject extends JView{
 	
@@ -20,10 +23,12 @@ class WarehouseViewProject extends JView{
     $this->assignRef("projectCreated", $strProjectCreated);
 
     $strDisplayDescription = $this->getDisplayDescription($oProject);
+    //$strDisplayDescription = $oProject->getDescription();
     $oProject->setDescription($strDisplayDescription);
 
     $_REQUEST[Search::SELECTED] = serialize($oProject);
 
+    /* @var $oProjectModel WarehouseModelProject */
     $oProjectModel =& $this->getModel();
     $strPIs = $this->getPIandCoPIs($oProjectModel, $oProject, 1, array("Principal Investigator", "Co-PI"));
     $this->assignRef( "strPIandCoPIs", $strPIs );
@@ -38,9 +43,20 @@ class WarehouseViewProject extends JView{
     $strTabHtml = $oProjectModel->getTabs( "warehouse", $iProjectId, $strTabArray, "project" );
     $this->assignRef( "strTabs", $strTabHtml );
 
+    /* @var $oProjectImageDataFile DataFile */
     $oProjectImageDataFile = $oProjectModel->getProjectImage($iProjectId);
-    $_REQUEST["oProjectImage"] = serialize($oProjectImageDataFile);
+    //var_dump($oProjectImageDataFile);
 
+    //temporarily store the datafile as a request for the plugin
+    $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oProjectImageDataFile);
+
+    //scale the image if thumbnail and display don't exist.  return the picture for the view
+    $oProjectImageDataFile = $oProjectModel->scaleImageByWidth($oProjectImageDataFile, true, false);
+    //$oProjectImageDataFile = null;
+    
+    //update the datafile for the view
+    $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oProjectImageDataFile);
+    
     $oFacilityOrganizationArray = $oProjectModel->findProjectFacility($iProjectId);
     $_REQUEST["oFacility"] = serialize($oFacilityOrganizationArray);
 
@@ -67,6 +83,10 @@ class WarehouseViewProject extends JView{
     //$this->assignRef( "mod_warehousedocs", ComponentHtml::getModule("mod_warehousedocs") );
     $this->assignRef( "mod_warehousetags", ComponentHtml::getModule("mod_warehousetags") );
 
+    /* @var $oHubUser JUser */
+    $oHubUser = $oProjectModel->getCurrentUser();
+    $this->assignRef( "strUsername", $oHubUser->username );
+    
     $bSearch = false;
     if(isset($_SESSION[Search::KEYWORDS]))$bSearch = true;
     if(isset($_SESSION[Search::SEARCH_TYPE]))$bSearch = true;
@@ -95,8 +115,6 @@ class WarehouseViewProject extends JView{
    * @return comma seperated string of names
    */
   private function getPIandCoPIs($p_oProjectModel, $p_oProject, $p_iEntityId, $p_strRoleArray){
-  	$profile = new XProfile();
-  	
     $oPersonResultSet = PersonPeer::findMembersByRoleForEntity($p_oProject->getId(), $p_iEntityId, $p_strRoleArray);
     $strPIs = "";
     while($oPersonResultSet->next()) {
@@ -111,10 +129,11 @@ class WarehouseViewProject extends JView{
 
       //see if user exists
       if($oHubUser){
-            $profile->load( $oHubUser->id );
+        $profile = new XProfile();
+        $profile->load( $oHubUser->id );
 
-            //if the user's profile is public, provide link
-            if($profile->get('public') == 1){
+        //if the user's profile is public, provide link
+        if($profile->get('public') == 1){
           $strPIs .= <<< ENDHTML
           <a href="/members/$oHubUser->id">$strFirstName $strLastName</a>,
 ENDHTML;
@@ -196,7 +215,7 @@ ENDHTML;
   }
   
   private function getDisplayDescription($p_oProject){
-    $oDescriptionClob = $p_oProject->getDescription();
+    $oDescriptionClob = nl2br($p_oProject->getDescription());
     $strReturnDescription = "";
     if(strlen($oDescriptionClob) > 300){
       $strShortDescription = StringHelper::neat_trim($oDescriptionClob, 250);

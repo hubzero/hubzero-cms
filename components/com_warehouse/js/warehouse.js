@@ -45,7 +45,7 @@ function getData(p_strElementId, p_strTargetId, p_strReferer){
   var iObjectId = document.getElementById(p_strElementId).options[iObjectIndex].value;
 	  
   if(iObjectId != ""){
-    getMootools('/warehouse/data/'+iObjectId+'?format=ajax&referer='+p_strReferer, p_strTargetId);
+    getMootools('/warehouse/datafiles/'+iObjectId+'?format=ajax&referer='+p_strReferer, p_strTargetId);
   }	
 }
 

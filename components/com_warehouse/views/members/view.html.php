@@ -5,6 +5,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+require_once 'lib/security/Authorizer.php';
+require_once 'lib/data/Person.php';
+require_once 'lib/data/PersonEntityRolePeer.php';
+require_once 'lib/data/PersonEntityRole.php';
 
 class WarehouseViewMembers extends JView{
 	
@@ -41,7 +45,11 @@ class WarehouseViewMembers extends JView{
     $oDbPagination = new DbPagination($iIndex, $iCount, $iDisplay);
     $oDbPagination->computePageCount();
     $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmResults", "project-list"));
-	
+
+    /* @var $oHubUser JUser */
+    $oHubUser = $oMembersModel->getCurrentUser();
+    $this->assignRef( "strUsername", $oHubUser->username );
+    
     $bSearch = false;
     if(isset($_SESSION[Search::KEYWORDS]))$bSearch = true;
     if(isset($_SESSION[Search::SEARCH_TYPE]))$bSearch = true;
@@ -89,14 +97,19 @@ class WarehouseViewMembers extends JView{
    * @param int $p_iUpperLimit
    * @return array
    */
-  private function getMembersForEntityWithPagination($p_oMembersModel, $p_iProjectId, $p_iLowerLimit, $p_iUpperLimit){
+  private function getMembersForEntityWithPagination0($p_oMembersModel, $p_iProjectId, $p_iLowerLimit, $p_iUpperLimit){
+    $profile = new XProfile();
+
+    $iPreviousId = 0;
+    $strPreviousRole = "";
+
     $oMembersResutSet = $p_oMembersModel->findMembersForEntityWithPagination($p_iProjectId, 1, $p_iLowerLimit, $p_iUpperLimit);
     $oMembersArray = array();
     while($oMembersResutSet->next()){
       $oPersonArray = array();	
       $oPersonArray['FIRST_NAME'] = ucfirst($oMembersResutSet->getString('FIRST_NAME'));
       $oPersonArray['LAST_NAME'] = ucfirst($oMembersResutSet->getString('LAST_NAME'));
-      $oPersonArray['ROLE'] = $oMembersResutSet->getString('ROLENAME');
+      //$oPersonArray['ROLE'] = $oMembersResutSet->getString('ROLENAME');
       $oPersonArray['EMAIL'] = $oMembersResutSet->getString('E_MAIL');
       $oPersonArray['USER_NAME'] = $oMembersResutSet->getString('USER_NAME');
       $oPersonArray['ID'] = $oMembersResutSet->getInt('ID');
@@ -106,18 +119,84 @@ class WarehouseViewMembers extends JView{
       $oPersonArray['PICTURE'] = "/components/com_members/images/profile_thumb.gif";
       $oPersonArray['HUB_ID'] = 0;
 
+
+
       //check to see if we can show the link for this user
       $oHubUser = $p_oMembersModel->getMysqlUserByUsername($oPersonArray['USER_NAME']);
       if($oHubUser){
         $profile->load( $oHubUser->id );
 
         $oPersonArray['HUB_ID'] = $oHubUser->id;
-        $oPersonArray['PICTURE'] = "/site/members/0".$oHubUser->id."/".$profile->get('picture');
+        if(is_dir("/www/neeshub/site/members/0".$oHubUser->id)){
+          //$oPersonArray['PICTURE'] = "/site/members/0".$oHubUser->id."/".$profile->get('picture');
+        }
+
         if($profile->get('public') == 1){
           $oPersonArray['LINK'] = true;
         }
       }
       
+      array_push($oMembersArray, $oPersonArray);
+    }
+    return $oMembersArray;
+  }
+
+  /**
+   *
+   * @param WarehouseModelMembers $p_oMembersModel
+   * @param int $p_iProjectId
+   * @param int $p_iLowerLimit
+   * @param int $p_iUpperLimit
+   * @return array
+   */
+  private function getMembersForEntityWithPagination($p_oMembersModel, $p_iProjectId, $p_iLowerLimit, $p_iUpperLimit){
+    $profile = new XProfile();
+
+    $oMembersArray = array();
+
+    $oTeamMembersArray = $p_oMembersModel->findMembersForEntityWithPagination($p_iProjectId, 1, $p_iLowerLimit, $p_iUpperLimit);
+	
+    /* @var $oPerson Person */
+    foreach($oTeamMembersArray as $oPerson){
+      $oPersonArray = array();
+
+      $oPersonArray['FIRST_NAME'] = ucfirst($oPerson->getFirstName());
+      $oPersonArray['LAST_NAME'] = ucfirst($oPerson->getLastName());
+      //$oPersonArray['ROLE'] = $oMembersResutSet->getString('ROLENAME');
+      $oPersonArray['EMAIL'] = $oPerson->getEMail();
+      $oPersonArray['USER_NAME'] = $oPerson->getUserName();
+      $oPersonArray['ID'] = $oPerson->getId();
+      //$oPersonArray['PERMISSIONS'] = $oMembersResutSet->getString('PERMISSIONS');
+      $oPersonArray['PERMISSIONS'] = "";
+      $oPersonArray['LINK'] = false;
+      $oPersonArray['PICTURE'] = "/components/com_members/images/profile_thumb.gif";
+      $oPersonArray['HUB_ID'] = 0;
+
+      $strRoleArray = array();
+      $oPersonEntityRoleArray = PersonEntityRolePeer::findByPersonEntityEntityType($oPersonArray['ID'], $p_iProjectId, 1);
+      /* @var $oPersonEntityRole as PersonEntityRole */
+      foreach($oPersonEntityRoleArray as $oPersonEntityRole){
+        $strDisplayName = $oPersonEntityRole->getRole()->getDisplayName();
+        array_push($strRoleArray, $strDisplayName);
+      }
+
+      $oPersonArray['ROLE'] = implode(", ", $strRoleArray);
+      
+      //check to see if we can show the link for this user
+      $oHubUser = $p_oMembersModel->getMysqlUserByUsername($oPersonArray['USER_NAME']);
+      if($oHubUser){
+        $profile->load( $oHubUser->id );
+
+        $oPersonArray['HUB_ID'] = $oHubUser->id;
+        if(is_dir("/www/neeshub/site/members/0".$oHubUser->id)){
+          //$oPersonArray['PICTURE'] = "/site/members/0".$oHubUser->id."/".$profile->get('picture');
+        }
+
+        if($profile->get('public') == 1){
+          $oPersonArray['LINK'] = true;
+        }
+      }
+
       array_push($oMembersArray, $oPersonArray);
     }
     return $oMembersArray;

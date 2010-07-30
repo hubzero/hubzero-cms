@@ -29,6 +29,7 @@ require_once( JPATH_COMPONENT.DS.'controller.php' );
 
 require_once 'api/org/nees/static/Search.php';
 require_once 'api/org/nees/static/Experiments.php';
+require_once 'api/org/nees/static/InDEED.php';
 require_once 'api/org/nees/util/StringHelper.php';
 require_once 'api/org/nees/util/FileHelper.php';
 require_once 'api/org/nees/html/joomla/ComponentHtml.php';

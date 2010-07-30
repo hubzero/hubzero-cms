@@ -11,6 +11,7 @@ class WarehouseViewExperiment extends JView{
 	
   function display($tpl = null){
     //get the tabs to display on the page
+    /* @var $oExperimentModel WarehouseModelExperiment */
     $oExperimentModel =& $this->getModel();
 
     $iExperimentId = JRequest::getVar("id");
@@ -50,21 +51,23 @@ class WarehouseViewExperiment extends JView{
 
       //get a list of files by rep_id and examine the first element
       $oDataFileArray = DataFilePeer::getDataFilesByRepetition($oRepetitionArray[0]->getId());
-      $oDataFile = $oDataFileArray[0];
+      if(!empty($oDataFileArray)){
+        $oDataFile = $oDataFileArray[0];
 
-      //get the position of the path up to the name
-      $iIndex = strpos(trim($oDataFile->getPath()), $strName);
+        //get the position of the path up to the name
+        $iIndex = strpos(trim($oDataFile->getPath()), $strName);
 
-      //only consider the path up to the name
-      $strPath = substr($oDataFile->getPath(), 0, $iIndex + strlen($strName));
-      $this->assignRef( "strCurrentPath", $strPath );
+        //only consider the path up to the name
+        $strPath = substr($oDataFile->getPath(), 0, $iIndex + strlen($strName));
+        $this->assignRef( "strCurrentPath", $strPath );
 
-      $oDataFileArray = DataFilePeer::findByDirectory($strPath);
+        $oDataFileArray = DataFilePeer::findByDirectory($strPath);
 
-      $strPathArray = explode("/", $strPath);
-      $strBackArray = array_diff($strPathArray, array(array_pop($strPathArray)));
-      $strBackPath = implode("/", $strBackArray);
-      $this->assignRef( "strBackPath", $strBackPath );
+        $strPathArray = explode("/", $strPath);
+        $strBackArray = array_diff($strPathArray, array(array_pop($strPathArray)));
+        $strBackPath = implode("/", $strBackArray);
+        $this->assignRef( "strBackPath", $strBackPath );
+      }
     }
     $_REQUEST["ExperimentDataFiles"] = serialize($oDataFileArray);
 
@@ -75,6 +78,8 @@ class WarehouseViewExperiment extends JView{
     $_REQUEST[SpecimenPeer::TABLE_NAME] = serialize($oSpecimen);
 
     $oDrawingArray = $oExperimentModel->findDataFileByEntityType("Drawing", $iProjectId, $iExperimentId);
+    $oDrawingArray = $oExperimentModel->resizePhotos($oDrawingArray);
+
     //print_r($oDrawingArray);
     $_REQUEST["Drawings"] = serialize($oDrawingArray);
     //$_SESSION["Drawings"] = serialize(array());

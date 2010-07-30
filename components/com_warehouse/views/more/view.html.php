@@ -5,6 +5,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+require_once 'lib/security/Authorizer.php';
 
 class WarehouseViewMore extends JView{
 	
@@ -15,6 +16,7 @@ class WarehouseViewMore extends JView{
 	$this->assignRef( "projid", $iProjectId );
 	
   	//get the tabs to display on the page
+    /* @var $oMoreModel WarehouseModelMore */
     $oMoreModel =& $this->getModel();
     $strTabArray = $oMoreModel->getTabArray();
 	$strTabHtml = $oMoreModel->getTabs( "warehouse", $iProjectId, $strTabArray, "more" );
@@ -41,7 +43,11 @@ class WarehouseViewMore extends JView{
 	$oDbPagination = new DbPagination($iPageIndex, $iResultsCount, $iDisplay);
 	$oDbPagination->computePageCount();
     $this->assignRef('pagination', $oDbPagination->getFooter24($_SERVER['REQUEST_URI'], "frmPhotos", "project-list"));
-	
+
+    /* @var $oHubUser JUser */
+    $oHubUser = $oMoreModel->getCurrentUser();
+    $this->assignRef( "strUsername", $oHubUser->username );
+    
     $bSearch = false;
 	if(isset($_SESSION[Search::KEYWORDS]))$bSearch = true;
 	if(isset($_SESSION[Search::SEARCH_TYPE]))$bSearch = true;

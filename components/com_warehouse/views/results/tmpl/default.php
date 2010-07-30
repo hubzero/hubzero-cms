@@ -13,7 +13,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
 
-<div class="innerwrap>
+<div class="innerwrap">
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
@@ -55,6 +55,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         	  $strTitle = $oProject->getTitle();
         	  $strStartDate = strftime("%B %d, %Y", strtotime($oProject->getStartDate()));
         	  $oDescriptionClob = StringHelper::neat_trim($oProject->getDescription(), 250);
+                  if($oDescriptionClob=="...")$oDescriptionClob="";
           ?>
             <div id="Project" style="width:100%;">
               <div id="ProjectInfo" style="float:left;width:90%;"
@@ -92,6 +93,5 @@ defined('_JEXEC') or die( 'Restricted access' );
   </div>
   
 </div>
-</form>
 
 
