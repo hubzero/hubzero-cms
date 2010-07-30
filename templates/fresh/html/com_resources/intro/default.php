@@ -35,19 +35,18 @@ defined('_JEXEC') or die('Restricted access');
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option=com_xsearch'); ?>" method="get" class="search">
+			<form method="get" action="/search" class="search">
 				<fieldset>
 					<p>
-						<input type="text" name="searchword" value="" />
-						<input type="hidden" name="category" value="resources" />
-						<input type="submit" value="Search" />
+						<input type="text" name="terms" id="searchword" size="20" value="" />
+						<input type="submit" value="Submit" />
 					</p>
 				</fieldset>
 			</form>
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=browse'); ?>">Browse the list of available resources</a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">Browse the list of available resources</a></p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->

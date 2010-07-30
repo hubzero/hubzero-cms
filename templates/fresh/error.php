@@ -1,5 +1,8 @@
 <?php
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+ximport('xmodule');
+
 $config =& JFactory::getConfig();
 $juser =& JFactory::getUser();
 
@@ -7,7 +10,10 @@ $juser =& JFactory::getUser();
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-	<jdoc:include type="head" />
+	<link rel="stylesheet" href="/templates/fresh/css/main.css" type="text/css" />
+	<link rel="stylesheet" href="/templates/fresh/css/error.css" type="text/css" />
+	<link rel="stylesheet" href="/templates/fresh/html/mod_reportproblems/mod_reportproblems.css" type="text/css" />
+	
 	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl ?>/templates/fresh/css/print.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/dummy.css" id="dummy_css" />
 	<!--[if lte IE 7]>
@@ -16,15 +22,15 @@ $juser =& JFactory::getUser();
 	<!--[if lte IE 6]>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/ie6win.css" />
 	<![endif]-->
-<?php if ($this->countModules( 'banner or welcome or academybanner' )) { ?>
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/home.css" id="home_css" />
-<?php } ?>	
-	 </head>	 
-	<body<?php if ($this->countModules( 'banner or welcome' )) : echo ' id="frontpage"'; endif; ?>>
+	<script type="text/javascript" src="/media/system/js/mootools.js"></script>
+	<script type="text/javascript" src="/templates/fresh/js/hub.js"></script>
+	<script type="text/javascript" src="/modules/mod_reportproblems/mod_reportproblems.js"></script>
+</head>	 
+<body>
 	
 	<div id="mainwrap">
     <div id="uc"><div>Beta 3.0</div></div>
-	<jdoc:include type="modules" name="notices" />
+<?php XModuleHelper::displayModules('notices'); ?>
 		<div id="header">
              <div id="headerwrap">
                 <h1><a href="/home" title="<?php echo $config->getValue('config.sitename'); ?>"><?php echo $config->getValue('config.sitename'); ?></a></h1>			
@@ -51,54 +57,22 @@ $juser =& JFactory::getUser();
         echo "\t\t\t".'<li id="feedback"><a href="/feedback" title="Feedback"><span>Feedback</span></a></li>'."\n";        
         ?>
                 </ul>			
-                <jdoc:include type="modules" name="search" />
-        <?php if ($this->countModules( 'helppane' )) : ?>
+                <?php XModuleHelper::displayModules('search'); ?>
+
                 <p id="tab"><a href="/support/" title="Need help? Send a trouble report to our support team."><span>Support</span></a></p>
-        <?php endif; ?>
              </div>
              
             <div id="nav">
                 <h2>Navigation</h2>
-                <jdoc:include type="modules" name="user3" />
-                <jdoc:include type="modules" name="introblock" />
+ 				<?php XModuleHelper::displayModules('user3'); ?>
+				<?php XModuleHelper::displayModules('introblock'); ?>
                 <div class="clear"></div>
             </div><!-- / #nav -->
 		</div><!-- / #header -->
 	
-		<jdoc:include type="modules" name="helppane" />
+		<?php XModuleHelper::displayModules('helppane'); ?>
 		<div id="afterclear">&nbsp;</div>
-	
-	<?php if ($this->countModules( 'banner or welcome' )) : ?>
-		<div id="home-splash">	    
-			<div id="features-wrap">
-				<div id="features">
-	<?php if ($this->countModules( 'banner' )) : ?>
-					<jdoc:include type="modules" name="banner" />
-	<?php else : ?>
-					
-	<?php endif; ?>
-				</div><!-- / #features -->
-	            <?php if ($this->countModules( 'spotlight' )) : ?>
-	            <div id="spotlight">
-                	<h3>In the Spotlight</h3>
-	             <jdoc:include type="modules" name="spotlight" />            
-	               <?php if ($this->countModules( 'rightspot' )) : ?>
-	                <div id="rightspot">
-	                 <jdoc:include type="modules" name="rightspot" />
-	                </div><!-- / #rightspot -->
-	                 <?php endif; ?>
-	            </div><!-- / #spotlight -->          
-	            <?php endif; ?>
-			</div><!-- / #features-wrap -->
-			<?php if ($this->countModules( 'welcome' )) : ?>
-			<div id="welcome">
-				<jdoc:include type="modules" name="welcome" />
-			</div><!-- / #welcome -->
-	<?php endif; ?>
-		</div><!-- / #home-splash -->
-	    <div class="clear"></div>
-	<?php endif; ?>
-	<?php if (!$this->countModules( 'banner or welcome' )) : ?>
+
 		<div id="trail">
 			You are here: <?php
 		$app =& JFactory::getApplication();
@@ -124,44 +98,54 @@ $juser =& JFactory::getUser();
 		echo implode(' &raquo; ',$l);
 		?>
 		</div>
-	<?php endif; ?>
 	
 	<!--  EOT SECTION SPECIFIC BANNER -->
-<?php if ($this->countModules( 'academybanner' )) : ?>
-		 <div id="aca_b_trail"> 
-			<jdoc:include type="modules" name="academybanner" />
-		 </div> <!--/ #academy header-right -->
-<?php endif; ?>
 		
 	  <div id="wrap">
 		<div id="content" class="<?php echo $option; ?>">
-	<?php if ($this->countModules( 'left' )) : ?>
-			<div class="main section withleft">
-			<div class="aside">
-				<jdoc:include type="modules" name="left" />
-			</div><!-- / #column-left -->
-			<div class="subject">
-	<?php endif; ?>
-	<?php if ($this->countModules('right')) : ?>
-			<div class="main section">
-			<div class="aside">
-				<jdoc:include type="modules" name="right" />
-			</div><!-- / .aside -->
-			<div class="subject">
-	<?php endif; ?>
-				<!-- innerwrap is used to fix some IE 6 display bugs -->
-				<div class="innerwrap<?php if ($this->countModules('banner or welcome')) : echo ' frontpage'; endif; ?>">
-					<jdoc:include type="component" />
-				</div><!-- / .innerwrap -->
-	<?php if ($this->countModules('left or right')) : ?>
-			</div><!-- / .subject -->
-			<div class="clear"></div>
-			</div><!-- / .main section -->
-	<?php endif; ?>
+
+				<div id="outline">
+					<div id="errorbox" class="code-<?php echo $this->error->code ?>">
+						<h2><?php echo $this->error->message ?></h2>
+
+						<p><?php echo JText::_('You may not be able to visit this page because of:'); ?></p>
+
+						<ol>
+	<?php if ($this->error->code != 403) { ?>
+							<li><?php echo JText::_('An out-of-date bookmark/favourite.'); ?></li>
+							<li><?php echo JText::_('A search engine that has an out-of-date listing for this site.'); ?></li>
+							<li><?php echo JText::_('A mis-typed address.'); ?></li>
+							<li><?php echo JText::_('The requested resource was not found.'); ?></li>
+	<?php } ?>
+							<li><?php echo JText::_('You have no access to this page.'); ?></li>
+							<li><?php echo JText::_('An error has occurred while processing your request.'); ?></li>
+						</ol>
+
+						<p><?php echo JText::_('If difficulties persist, please contact the system administrator of this site.'); ?></p>
+					</div>
+
+					<form method="get" action="/search">
+						<fieldset>
+							<?php echo JText::_('Please try the'); ?> <a href="/index.php" title="<?php echo JText::_('Go to the home page'); ?>"><?php echo JText::_('Home Page'); ?></a> <span><?php echo JText::_('or'); ?></span> 
+							<label>
+								<?php echo JText::_('Search:'); ?> 
+								<input type="text" name="searchword" value="" />
+							</label>
+							<input type="submit" value="<?php echo JText::_('Go'); ?>" />
+						</fieldset>
+					</form>
+				</div>
+	<?php 
+				if ($this->debug || $juser->get('username') == 'nkissebe' || $juser->get('username') == 'zooley') :
+					echo "\t\t".'<div id="techinfo">'."\n";
+					echo $this->renderBacktrace()."\n";
+					echo "\t\t".'</div>'."\n";
+				endif;
+	?>
 		</div><!-- / #content -->
 		
 		<div id="footer">
-		    <jdoc:include type="modules" name="footer" />
+		    <?php XModuleHelper::displayModules('footer'); ?>
 		</div><!-- / #footer -->
 	  </div><!-- / #wrap -->
 	 </div> <!--  #mainwrap -->	
@@ -175,7 +159,7 @@ $juser =& JFactory::getUser();
      
 	 <script type="text/javascript">
          try{
-              var pageTracker = _gat._getTracker("UA-6278809-3");
+              var pageTracker = _gat._getTracker("UA-xxxxxx-x");
               pageTracker._trackPageview();
          } catch(err) {}
      </script>
@@ -184,8 +168,7 @@ $juser =& JFactory::getUser();
 	 
 	</body>
 </html>
-	<?php
-	$xhub =& XFactory::getHub();
-	$title = $this->getTitle();
-	$this->setTitle( $xhub->getCfg('hubShortName').' - '.$title );
+<?php
+$title = $this->getTitle();
+$this->setTitle( $config->getValue('config.sitename').' - '.$title );
 ?>

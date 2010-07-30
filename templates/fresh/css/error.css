@@ -1,0 +1,153 @@
+/*
+
+	-- -- -- -- -- -- --
+	error CSS
+	-- -- -- -- -- -- --
+
+*/
+	#nav h2,
+	#nav h3 {
+		display: none;
+	}
+/* Outline */
+	#outline {
+		width: 602px;
+		margin: 0 auto 0 auto;
+		padding: 60px 0 60px 0;
+		}
+/* Error Message */
+	#errorbox {
+		margin: 0 0 5px 0;
+		padding: 10px 10px 10px 45px;
+		text-align: left;
+		border: 1px solid #EFCCC2; 
+		color: #CC0000;
+		background: #FFF2EF url("../images/icons/error-large.png") 10px 10px no-repeat;
+		/* Rounded corners */
+		-moz-border-radius-topright: 10px;
+		-moz-border-radius-topleft: 10px;
+		-webkit-border-top-right-radius: 10px;
+		-webkit-border-top-left-radius: 10px;
+		-khtml-border-radius-topright: 10px;	
+		-khtml-border-radius-topleft: 10px;
+		border-top-right-radius: 10px;
+		border-top-left-radius: 10px;
+		/* Shadows */
+		box-shadow: 0px 2px 4px #ccc;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* length length length color */
+		-moz-box-shadow: #ccc 0px 2px 4px; /* color length length length */
+		}
+	#errorbox.code-403 {
+		border-color: #EFEAC2;
+		color: #CC6633; 
+		background: #FFFDEF url("../images/icons/warning-large.png") 10px 10px no-repeat;
+		}
+	#errorbox h2 {
+		margin: 0;
+		padding: 0;
+		font-weight: bold;
+		font-size: 1.4em;
+		line-height: 1.4em;
+		color: #CC0000;
+		}
+	#errorbox.code-403 h2 {
+		color: #CC6633; 
+		}
+	#errorbox ol {
+		margin: 1em 0 1em 2em;
+		padding: 0;
+		}
+	#errorbox ol li {
+		margin: 0;
+		padding: 0;
+		line-height: 1.5em;
+		}
+/* Search Form */
+	#outline form {
+		margin: 0;
+		padding: 0;
+		color: #333;
+		text-align: center;
+		}
+	#outline fieldset {
+		margin: 0;
+		padding: 10px;
+		border: 1px solid #ccc; 
+		color: #333;
+		background: #eeeeee;
+		/* Rounded corners */
+		-moz-border-radius-bottomright: 10px;
+		-moz-border-radius-bottomleft: 10px;
+		-webkit-border-bottom-right-radius: 10px;
+		-webkit-border-bottom-left-radius: 10px;
+		-khtml-border-radius-bottomright: 10px;	
+		-khtml-border-radius-bottomleft: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+		/* Shadows */
+		box-shadow: 0px 2px 4px #CCC;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* length length length color */
+		-moz-box-shadow: #ccc 0px 2px 4px; /* color length length length */
+		}
+	#outline form span {
+		text-transform: uppercase;
+		color: #bbb;
+		margin: 0 2em;
+		}
+	#outline label {
+		font-weight: bold;
+		}
+	#outline input {
+		color: #333;
+		width: auto;
+		}
+/* Stack trace */
+	#techinfo {
+		margin: 20px 0 0 0;
+		padding: 10px;
+		text-align: left;
+		border: 1px solid #000;
+		color: #aaa;
+		background-color: #333;
+		/* Rounded corners */
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-khtml-border-radius: 10px;	
+		border-radius: 10px;
+		/* Shadows */
+		box-shadow: 0px 2px 4px #000;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* length length length color */
+		-moz-box-shadow: #000 0px 2px 4px; /* color length length length */
+		}
+	#techinfo p {
+		color: #CC6633;
+		}
+	table {
+		width: 100%;
+		text-align: left;
+		font-size: 0.85em;
+		border: none;
+		}
+	table th,
+	table td {
+		vertical-align: top;
+		line-height: 1.6em;
+		padding: 0.2em 0.5em;
+		border-bottom: 1px solid #444;
+		color: #ccc;
+		}
+	table td strong {
+		color: #fff;
+		}
+	table thead th {
+		font-weight: bold;
+		border-bottom: 1px solid #dfdfdf;
+		white-space: nowrap;
+		}
+/* IE 6 Hacks */
+	* html #header h1 a {
+		border: none;
+		}
+	* html #header h1 a:hover {
+		border: none;
+		}

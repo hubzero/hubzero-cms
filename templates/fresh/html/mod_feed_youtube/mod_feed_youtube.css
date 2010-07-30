@@ -10,6 +10,8 @@
 	/*border-bottom: 3px solid #f7f3ee;
 	margin-bottom: 2em;
 	padding-bottom: 1em;*/
+	width: 49%;
+	float: left;
 }
 .youtubefeed img {
 	width: 80px;

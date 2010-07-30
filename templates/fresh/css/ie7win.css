@@ -36,6 +36,9 @@
 	#footer .policy a {
 		display: inline-block;
 		}
+	#useroptions {
+		width: auto;
+	}
 	
 	.fourcolumn {
 		padding: 0; /* IE seems to go crazy when percents are used for padding or margin */
@@ -96,20 +99,30 @@
 		margin: 0;
 		}
 	.columns {
-		border: 1px solid #f2f2f2;
+		border: none;
 		}
-	.controls {
+	/*.controls {
 		position: absolute;
 		top: 80px;
 		right: 45px;
-		float: none; /* float: right; works but has some strange affects, so position it absolutely */
-		}
+		float: none;  float: right; works but has some strange affects, so position it absolutely 
+		}*/
 	.withleft .aside li a {
 		background-position: 1em 1.6em;
 		}
 	.withleft .aside li.active a {
 		background-position: 1.2em 1.6em;
 		}
+	/*.aside form {
+		position: relative;
+		height: 1%;
+		}
+	.aside fieldset {
+		top: 0;
+		right: 0;
+		width: 200px;
+		}*/
+
 	#afterclear {
 		display: block;
 		height: 0px;
@@ -133,10 +146,10 @@
 		width: 32%;
 		}
 /* Members */
-	.main .subject {
+	.com_members .main .subject {
 		padding-top: 2em;
 		}
-	.subject .category-header {
+	.com_members .subject .category-header {
 		margin-top: 0;
 		}
 /* XSearch */
@@ -144,13 +157,20 @@
 	.com_tags .main .subject {
 		padding-top: 1em;
 		}
-/* MW */
+/* MW 
 	#app-options {
 		top: 30px;
 		right: 0;
-		}
+		}*/
 /* Resources */
 	.com_resources .main .subject {
 		margin-top: 0;
 		padding-top: 0;
+		}
+	.com_resources .results:after {
+		content: "."; 
+		display: block; 
+		height: 0; 
+		clear: both; 
+		visibility: hidden;
 		}

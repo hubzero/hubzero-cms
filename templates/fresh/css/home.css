@@ -1,6 +1,9 @@
 /*---------------------------------------------------------------
 	Home Page
 ---------------------------------------------------------------*/
+	.frontpage .threecolumn {
+		margin: 0 0 1em 0;
+		}
 	#frontpage #wrap {
 		background: #fff;
 		}
@@ -89,22 +92,21 @@
 /*---------------------------------------------------------------
 	EOT Intro Page
 ---------------------------------------------------------------*/
-    #aca_b_trail {
-            margin: 0;
-            padding: 0em 0px;
-            background: #f8f7ee;
-            border-bottom:1px solid #dddcc7;
-            font-size: 90%;
-            line-height: 0.8em;
-            color: #2468a0;
-            }
-      .centeredImage
-      {
-    text-align:center;
-    margin-top:0px;
-    margin-bottom:0px;
-    padding:0px;
-    }
+	#aca_b_trail {
+		margin: 0;
+		padding: 0em 0px;
+		background: #f8f7ee;
+		border-bottom:1px solid #dddcc7;
+		font-size: 90%;
+		line-height: 0.8em;
+		color: #2468a0;
+		}
+	.centeredImage {
+		text-align: center;
+		margin-top: 0px;
+		margin-bottom: 0px;
+		padding: 0px;
+		}
   
 /*---------------------------------------------------------------
 	Intro Page
@@ -114,7 +116,7 @@
 		margin: 0;
 		padding: 0;		
 		background: #fffae9;
-		height: 380px;
+		height: 365px;
 		overflow:hidden;
 		border-bottom: 2px solid #d2d2d2;	
 	}
@@ -123,7 +125,7 @@
 		margin: 0;
 		padding: 0;
 		float: left;	
-		height:380px;	
+		height:365px;	
 	}
 	#features {
 		width:650px;
@@ -142,7 +144,7 @@
 		padding: 10px 15px 30px 15px;
 		margin: 0 0 0 0;
 		overflow: hidden;
-		height:340px;
+		height:325px;
 		color:#000;
 		position:relative;
 		background: #d2dcce url("../images/homepage/bg_welcome02.gif") left top no-repeat;
@@ -268,8 +270,8 @@
 /*  Spotlight */
 
 	#spotlight {
-		width:650px;
-		height:200px;
+		width: 650px;
+		height: 185px;
 		float: left;	
 		margin: 0;
 		padding: 0;		
@@ -307,6 +309,8 @@
 		position: relative;
 	}
 	#spotlight ul {
+		margin-bottom: 0;
+		padding-bottom: 0;
 		list-style:none;
 		font-size:90%;
 	}

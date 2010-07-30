@@ -1339,18 +1339,6 @@
 		border-left: 1px solid #E0E0D7;
 		width: 61%;
 		}
-	#resources-menu .farleft {
-		width: 25.5%;
-		border-color: #E7DFD8;
-		}
-	#resources-menu .middle {
-		width: 40.5%;
-		border-color: #E7DFD8;
-		}
-	#resources-menu .farright {
-		width: 25.5%;
-		border-color: #E7DFD8;
-		}
 /* Four Columns */
 	.fourcolumn {
 		margin: 0 0 1em 0;
@@ -1359,8 +1347,6 @@
 		width: 21%;
 		padding: 0 2% 0 2%;
 		text-align: left;
-		/*border-left: 1px solid #E0E0D7;
-		border-right: 1px solid #E0E0D7;*/
 		}
 	.fourcolumn h3 { 
 		color: #2468a0; 
@@ -1386,12 +1372,11 @@
 		width: 22%;
 		border-right: none;
 		}
-
 	.fourcolumn .tags {
 		margin-left: 0;
 		padding-left: 0;
 		font-size: 90%;
-	}
+		}
 
 	.fourcolumn .animation { padding-left: 23px; background: url("../images/icons/fc-animation.gif") 0 0.2em no-repeat; }
 	.fourcolumn .download { padding-left: 23px; background: url("../images/icons/fc-download.gif") 0 0.2em no-repeat; }
@@ -1414,6 +1399,9 @@
 	.fourcolumn .donate { padding-left: 23px; background: url("../images/icons/fc-donate.gif") 0 0.2em no-repeat; }
 	.fourcolumn .webmeetings { padding-left: 23px; background: url("../images/icons/fc-webmeetings.gif") 0 0.2em no-repeat; }
 	.fourcolumn .contribute { padding-left: 23px; background: url("../images/icons/fc-contribute.gif") 0 0.2em no-repeat; }
+	.fourcolumn .activedocument { padding-left: 23px; background: url("../images/icons/fc-teachingmaterial.gif") 0 0.2em no-repeat; }
+	.fourcolumn .historicaldocument { padding-left: 23px; background: url("../images/icons/fc-teachingmaterial.gif") 0 0.2em no-repeat; }
+	
 
 	/* self-clearing floats */
 	#help-pane:after,
@@ -1566,6 +1554,8 @@
 	.columns .contribute { padding-left: 23px; background: url("../images/home/fc-contribute.gif") 0 0em no-repeat; }
 	.columns .search, #block-announcements .search { padding-left: 28px; background: url("../images/home/fc-search.gif") 0 center no-repeat; }
 	.columns .browse { padding-left: 28px; background: url("../images/home/fc-browse.gif") 0 0.2em no-repeat; }
+	.columns .activedocument { padding-left: 23px; background: url("../images/home/fc-teachingmaterial.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
+	.columns .historicaldocument { padding-left: 23px; background: url("../images/home/fc-teachingmaterial.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
 
 /*---------------------------------------------------------------
 	Tabbed sub-menus
@@ -1714,8 +1704,54 @@
 		float: left;
 		width: 50%;
 		}
+	#hubForm .group .options label {
+		display: inline;
+		float: none;
+		width: auto;
+		}
 	#hubForm .group label:first-child {
 		margin: 0 2em 0 -3.5em;
+		}
+	#hubForm fieldset .group fieldset {
+		padding: 0;
+		margin: 1.5em 0;
+		float: left;
+		width: 47%;
+		padding-left: 1.5%;
+		padding-right: 1.5%;
+		}
+	#hubForm fieldset .group fieldset:first-child {
+		margin-left: -3.5em;
+		margin-right: 2em;
+		}
+	#hubForm .top label {
+		padding-left: 0%;
+		padding-right: 3%;
+		text-align: right;
+		}
+	#hubForm fieldset .top {
+		padding-top: 1em;
+		}
+	#hubForm .threeup {
+		margin-left: -1.5%;
+		margin-right: -3%;
+		padding: 0 0 1.5em 0;
+		left: 0;
+		margin-top: 0;
+		margin-bottom: 0.5em;
+		}
+	#hubForm .threeup label {
+		padding: 0;
+		float: left;
+		width: 30%;
+		margin-left: 0;
+		margin-right: 0;
+		padding-left: 1.5%;
+		padding-right: 1.5%;
+		}
+	#hubForm .threeup label:first-child {
+		margin-left: 0;
+		margin-right: 0;
 		}
 	#hubForm .group label .error,
 	#hubForm .group label .warning {
@@ -2299,6 +2335,9 @@
 /*---------------------------------------------------------------
 	File types
 ---------------------------------------------------------------*/
+	.png { background: url("../images/icons/16x16/unknown.png") 0 0 no-repeat; padding-left: 25px; }
+	.jpg { background: url("../images/icons/16x16/jpg.png") 0 0 no-repeat; padding-left: 25px; }
+	.gif { background: url("../images/icons/16x16/gif.png") 0 0 no-repeat; padding-left: 25px; }
 	.pdf { background: url("../images/icons/16x16/pdf.png") 0 0 no-repeat; padding-left: 25px; }
 	.swf { background: url("../images/icons/16x16/swf.png") 0 0 no-repeat; padding-left: 25px; }
 	.ppt { background: url("../images/icons/16x16/ppt.png") 0 0 no-repeat; padding-left: 25px; }
@@ -2393,7 +2432,7 @@
 		color: #fff;
 		width: 310px;
 		padding: 10px;
-		height: 253px;
+		min-height: 253px;
 		z-index: 13000;
 		text-align: left;
 		background: url("../images/overlay.png") top left;
