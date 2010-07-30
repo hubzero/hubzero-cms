@@ -515,6 +515,8 @@ class Hubzero_Trac_Project
 				return false;
 			}
 		}
+		else
+			$user_id = $user;
 
 		$quoted_project_id = $db->Quote($this->id);
 		$quoted_user_id = $db->Quote($user_id);
