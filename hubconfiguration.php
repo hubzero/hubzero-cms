@@ -56,7 +56,7 @@ class HubConfig {
     var $statsDBPrefix = '';
     var $hubShortName = 'NEEShub';
     var $hubShortURL = 'NEEShub.org';
-    var $hubLongURL = 'http://stage.neeshub.org';
+    var $hubLongURL = 'http://neeshub.org';
     var $hubSupportEmail = 'nkissebe@purdue.edu';
     var $hubMonitorEmail = 'nkissebe@purdue.edu';
     var $hubHomeDir = '/home/neeshub';
@@ -66,8 +66,8 @@ class HubConfig {
     var $hubResourcePath = '/site/resources';
     var $forgeEmail = 'nkissebe@purdue.edu';
     var $forgeName = 'NEESforge';
-    var $forgeURL = 'https://stage.neeshub.org';
-    var $forgeRepoURL = 'https://stage.neeshub.org';
+    var $forgeURL = 'https://neeshub.org';
+    var $forgeRepoURL = 'https://neeshub.org';
     var $hubShowRanking = '1';
     var $ipDBDriver = 'mysql';
     var $ipDBHost = 'db.nanohub.org';
