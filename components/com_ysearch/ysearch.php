@@ -1,5 +1,10 @@
 <?php
 
+if (!function_exists('stem'))
+{
+	function stem($str) { return $str; }
+}
+
 require 'models/terms.php';
 require 'models/request.php';
 require 'models/result_set.php';

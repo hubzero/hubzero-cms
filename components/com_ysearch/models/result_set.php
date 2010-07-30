@@ -112,7 +112,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 
 		// call weighters
 		$any_all_weighters = !!count($weighters['all']);
-		list($term_plugin, $term_section) = $this->terms->get_section();
+		@list($term_plugin, $term_section) = $this->terms->get_section();
 		$flat_results = $this->processed_results;
 		foreach ($flat_results as $res)
 			foreach ($res->get_children() as $child)
@@ -281,7 +281,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 
 	public function get_plugin_list_count()
 	{
-		list($term_plugin, $term_section) = $this->terms->get_section();
+		@list($term_plugin, $term_section) = $this->terms->get_section();
 		if ($term_plugin && $term_section)
 			return $this->result_counts[$term_plugin]['sections'][$term_section]['count'];
 		if ($term_plugin)

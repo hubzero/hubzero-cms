@@ -188,7 +188,10 @@ class YSearchResultSql extends YSearchResult
 		if (!($rows = $dbh->loadAssocList()))
 		{
 			if (($error = mysql_error()))
+			{
+				echo $error;
 				throw new YSearchPluginError('Invalid SQL in '.$this->sql.': ' . $error );
+			}
 			return new YSearchResultEmpty();
 		}
 		return new YSearchResultAssocList($rows, $this->get_plugin());

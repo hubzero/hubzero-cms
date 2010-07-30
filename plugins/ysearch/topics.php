@@ -18,7 +18,7 @@ class plgYSearchTopics extends YSearchPlugin
 		$app =& JFactory::getApplication();
 
 		# TODO
-		if ($juser->get('guest') || !is_object($xuser) || !in_array(strtolower($app->getCfg('sitename', $xuser->get('admin')))))
+		if ($juser->get('guest') || !is_object($xuser) || !in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin')))
 			$authorization = 'access = 0 AND';
 
 		$rows = new YSearchResultSQL(
