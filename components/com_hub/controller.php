@@ -562,9 +562,10 @@ class HubController extends JObject
 			// Initiate profile class
 			$profile = new XProfile();
 			$profile->load( $xprofile->get('uidNumber') );
-			$profile->set('userPassword', XUserHelper::encrypt_password($newpass));
+			ximport('Hubzero_Users_Password');
+			$result = Hubzero_Users_Password::changePassword($profile->get('uidNumber'),$newpass);
 
-			if (!$profile->update()) {
+			if (!$result) {
 				$this->setError( JText::_('There was an error resetting your password.') );
 			}
 

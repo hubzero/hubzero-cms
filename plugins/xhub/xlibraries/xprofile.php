@@ -789,6 +789,7 @@ class XProfile extends JObject
 
 		foreach(XProfile::$_s_propertyattrmap as $property => $attribute)
 		{
+			if ($property == 'userPassword') continue;
 			$current = $this->get($property);
 
 			if ($current == array() || $current === null) 

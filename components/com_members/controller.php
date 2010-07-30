@@ -461,6 +461,8 @@ class MembersController extends JObject
 
 	protected function changepassword() 
 	{
+		ximport('Hubzero_Users_Password');
+
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
@@ -543,7 +545,11 @@ class MembersController extends JObject
 		$oldpass  = JRequest::getVar('oldpass', '', 'post');
 		$newpass  = JRequest::getVar('newpass', '', 'post');
 		$newpass2 = JRequest::getVar('newpass2', '', 'post');
+		$message = JRequest::getVar('message', '');
 		
+		if (!empty($message))
+			$this->setError( $message );
+
 		$view = new JView( array('name'=>'changepassword') );
 		$view->option = $this->_option;
 		$view->title = $title;
@@ -552,21 +558,44 @@ class MembersController extends JObject
 		$view->oldpass = $oldpass;
 		$view->newpass = $newpass;
 		$view->newpass2 = $newpass2;
+		$view->validated = true;
+	    ximport('Hubzero_Password_Rule');
+        $password_rules = Hubzero_Password_Rule::getRules();
+
+        $view->password_rules = array();
+
+        foreach($password_rules as $rule)
+        {
+            if (!empty($rule['description']))
+            {
+                $view->password_rules[] = $rule['description'];
+            }
+        }
+
+		if (!empty($newpass))
+			$msg = Hubzero_Password_Rule::validate($newpass,$password_rules,$profile->get('username'));
+		else
+			$msg = array();
+
 		
 		// Blank form request (no data submitted)
 		if (empty($change))  {
+			if ($this->getError())
+				$view->setError( $this->getError() );
+
 			$view->display();
 			return;
 		}
 
-		if ($profile->get('userPassword') != XUserHelper::encrypt_password($oldpass)) {
+		if (!Hubzero_Users_Password::passwordMatches($profile->get('uidNumber'),$oldpass)) {
 			$this->setError( JText::_('MEMBERS_PASS_INCORRECT') );
 		} elseif (!$newpass || !$newpass2) {
 			$this->setError( JText::_('MEMBERS_PASS_MUST_BE_ENTERED_TWICE') );
 		} elseif ($newpass != $newpass2) {
 			$this->setError( JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH') );
-		} elseif (!XRegistrationHelper::validpassword($newpass)) {
-			$this->setError( JText::_('MEMBERS_PASS_INVALID') );
+		} elseif (is_array($msg)) {
+			$this->setError( JText::_('Password does not meet site password requirements. Please choose a password meeting all the requirements listed below.') );
+			$view->validated = $msg;
 		}
 
 		if ($this->getError()) {
@@ -576,18 +605,28 @@ class MembersController extends JObject
 		}
 
 		// Encrypt the password and update the profile
-		$userPassword = XUserHelper::encrypt_password($newpass);
-		$profile->set('userPassword', $userPassword);
-
+		$result = Hubzero_Users_Password::changePassword($profile->get('uidNumber'),$newpass);
 		// Save the changes
-		if (!$profile->update()) {
+		if (!$result) {
 			$view->setError( JText::_('MEMBERS_PASS_CHANGE_FAILED') );
 			$view->display();
 			return;
 		}
 
 		// Redirect user back to main account page
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$id);
+        $return = base64_decode( JRequest::getVar('return', '',  'method', 'base64') );
+		$this->_redirect = $return ? $return : JRoute::_('index.php?option='.$this->_option.'&id='.$id);
+		$session =& JFactory::getSession();
+
+        if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
+		{
+        	$hconfig = &JComponentHelper::getParams('com_hub');
+            $r = $hconfig->get('LoginReturn');
+            $this->_redirect = ($r) ? $r : '/myhub';
+			$session->set('badpassword','0');
+			$session->set('expiredpassword','0');
+        }
+
 	}
 	
 	//-----------

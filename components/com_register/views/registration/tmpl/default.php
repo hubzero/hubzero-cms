@@ -141,7 +141,7 @@ if (!defined("n")) {
 	}
 
 	if (!empty($this->xregistration->_invalid) || !empty($this->xregistration->_missing)) {
-		$html .= '<div class="error">Please correct the indicated invalid fields in the form below.';
+		$html .= '<div class="error">Please correct the indicated invalid fields in the form below.<br />';
 	}
 	if ($this->showMissing && !empty($this->xregistration->_missing)) {
 		if ($this->task == 'update') {
@@ -200,7 +200,12 @@ if (!defined("n")) {
 		if ($this->registrationPassword != REG_HIDE) // password
 		{
 			$required = ($this->registrationPassword == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
-			$message = (!empty($this->xregistration->_invalid['password'])) ? '<span class="error">' . $this->xregistration->_invalid['password'] . '</span>' : '';
+
+			if (!empty($this->xregistration->_invalid['password']) && !is_array($this->xregistration->_invalid['password']))
+				$message ='<span class="error">' . $this->xregistration->_invalid['password'] . '</span>';
+			else
+				$message = '';
+
 			$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 			
 			$html .= t.t.'<div class="group">'.n;
@@ -224,8 +229,36 @@ if (!defined("n")) {
 			}
 
 			$html .= t.t.'</div>'.n;
+			if (count($this->password_rules) > 0) {
+				$html .= t.t."<ul>".n;
+				foreach ($this->password_rules as $rule)
+				{
+					if (!empty($rule))
+					{
+						if (!empty($this->xregistration->_invalid['password']) && is_array($this->xregistration->_invalid['password'])) {
+							$err = in_array($rule, $this->xregistration->_invalid['password']);
+						} else {
+							$err = '';
+						}
+						$mclass = ($err)  ? ' class="error"' : '';
+						$html .= t.t.t."<li $mclass>".$rule."</li>".n;
+					}
+				}
+				if (!empty($this->xregistration->_invalid['password']) && is_array($this->xregistration->_invalid['password'])) {
+					foreach ($this->xregistration->_invalid['password'] as $msg) 
+					{
+						if (!in_array($msg,$this->password_rules)) {
+							$html .= t.t.t.'<li class="error">'.$msg."</li>".n;
+						}
+					}
+				}
+				$html .= t.t."</ul>".n;
+			}
 		} 
-
+		$hconfig =& JComponentHelper::getParams('com_hub');
+		if ($hconfig->get('passwordMeter')) {
+			$html .= t.'<input type="hidden" id="passmeter" value="on" />'.n;
+		}
 		$html .= t.'</fieldset>'.n;
 		$html .= t.'<div class="clear"></div>'.n;
 	}

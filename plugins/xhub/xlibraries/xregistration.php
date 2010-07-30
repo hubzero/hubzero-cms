@@ -556,7 +556,7 @@ class XRegistration
 		{
 			if (empty($registration['password']))
 			{
-			$this->_missing['password'] = 'Password';
+				$this->_missing['password'] = 'Password';
 				$this->_invalid['password'] = 'Please provide a password.';
 			}
 		}
@@ -588,6 +588,9 @@ class XRegistration
 				$this->_invalid['confirmPassword'] = 'Passwords do not match. Please correct and try again.';
 
 		if ($registrationPassword == REG_REQUIRED) {
+
+			if (0)
+			{
 			$score = $this->scorePassword($registration['password'], $registration['login']);
 			if ($score < PASS_SCORE_MEDIOCRE) {
 				$this->_invalid['password'] = 'Password strength is too weak.';
@@ -598,6 +601,13 @@ class XRegistration
 			} else if ($score >= PASS_SCORE_STRONG) {
 				// Strong pass
 			}
+			}
+
+			ximport('Hubzero_Password_Rule');
+			$rules = Hubzero_Password_Rule::getRules();
+			$msg = Hubzero_Password_Rule::validate($registration['password'],$rules,$login,$registration['name']);
+			if (is_array($msg))
+				$this->_invalid['password'] = $msg;
 		}
 			
 		if ($registrationFullname == REG_REQUIRED)

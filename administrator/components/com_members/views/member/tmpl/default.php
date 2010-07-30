@@ -60,7 +60,7 @@ function submitbutton(pressbutton)
 			  </tr>
 			  <tr>
 			   <td class="key"><?php echo JText::_('CURRENT_PASSWORD'); ?></td>
-			   <td><?php echo $this->profile->get('userPassword'); ?></td>
+			   <td><?php echo $this->passhash; ?></td>
 			  </tr>
 			  <tr>
 			   <td class="key"><label for="vip"><?php echo JText::_('NEW_PASSWORD'); ?>:</label></td>

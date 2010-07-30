@@ -375,8 +375,9 @@ HUB.Register = {
 			}
 		}
 		
+		var passmtr = $('passmeter');
 		var passwd = $('password');
-		if (passwd) {
+		if (passmtr && passwd) {
 			/*
 			<span id="meter-container" class="hide">
 				<span id="passwd-meter" style="width:0%;" class="bad"><span>Strength</span></span>

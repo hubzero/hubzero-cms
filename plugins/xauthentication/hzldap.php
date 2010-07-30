@@ -280,6 +280,20 @@ class plgXAuthenticationHzldap extends JPlugin
 				$this->logintobreeze( $credentials['username'], $credentials['password'] );
 		}
 
+		ximport('Hubzero_Password_Rule');
+		ximport('Hubzero_Users_Password');
+		$password_rules = Hubzero_Password_Rule::getRules();
+		$msg = Hubzero_Password_Rule::validate($credentials['password'],$password_rules,$credentials['username']);
+		if (is_array($msg))
+		{
+			$session =& JFactory::getSession();
+			$session->set('badpassword','1');
+		}
+		if (Hubzero_Users_Password::isPasswordExpired($credentials['username']))
+		{
+			$session =& JFactory::getSession();
+			$session->set('expiredpassword','1');
+		}
 		@ldap_close($_ldc);
 	}
 }

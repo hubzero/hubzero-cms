@@ -417,6 +417,9 @@ class RegisterController extends JObject
 			$result = $target_xprofile->update();
 		}
 
+		if ($result)
+			$result = Hubzero_Users_Password::changePassword($target_xprofile->uidNumber, $xregistration->get('password'));
+
 		// Did we successully create/update an account?
 		if (!$result) {
 			$view = new JView( array('name'=>'error') );
@@ -628,6 +631,8 @@ class RegisterController extends JObject
 
 	protected function create($action='show')
 	{
+		ximport('Hubzero_Users_Password');
+
 		$action = ($action) ? $action : 'show';
 		
 		// Add the CSS to the template
@@ -715,8 +720,10 @@ class RegisterController extends JObject
 						$target_profile->update();
 					}
 				}
+			
+				$result = Hubzero_Users_Password::changePassword($xprofile->get('uidNumber'), $xregistration->get('password'));
 			}
-
+		
 
 			// NeesHub p1 - Insert jos_neesprofile row for extended NEES profile info
 			$neesprofile = new XNeesProfile();
@@ -1076,6 +1083,20 @@ class RegisterController extends JObject
 		}
 		
 		// Push some values to the view
+
+		ximport('Hubzero_Password_Rule');
+		$password_rules = Hubzero_Password_Rule::getRules();
+
+		$view->password_rules = array();
+
+		foreach($password_rules as $rule)
+		{
+			if (!empty($rule['description']))
+			{
+				$view->password_rules[] = $rule['description'];
+			}
+		}
+
 		$view->showMissing = true;
 		$view->registration = $view->xregistration->_registration;
 		$view->registrationUsername = $this->_registrationField('registrationUsername','RROO',$task);

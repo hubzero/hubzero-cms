@@ -22,6 +22,10 @@
 	<params>
 		<param name="LoginReturn" type="text" menu="hide" default="" label="Login Return URL" description="Redirect here after login..." />
 		<param name="ConfirmationReturn" type="text" menu="hide" default="" label="Confirmation Return URL" description="Redirect here after confirming email..." />
+		<param name="passwordMeter" type="radio" default="1" label="Password Strength Meter" description="Show a password strength indicator or not">
+			<option value="0">Off</option>
+			<option value="1">On</option>
+		</param>
 		<param name="registrationUsername"  type="text" menu="hide" default="RRUU" label="Username" description="" />
 		<param name="registrationPassword"  type="text" menu="hide" default="RRUU" label="Password" description="" />
 		<param name="registrationConfirmPassword"  type="text" menu="hide" default="RRUU" label="Password Confirmation" description="" />

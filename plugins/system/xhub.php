@@ -179,6 +179,40 @@ class XRouter extends JRouter
 
 				return $vars;
 			}
+
+			$badpassword = $session->get('badpassword',false);
+			$expiredpassword = $session->get('expiredpassword',false);
+
+			if ($badpassword || $expiredpassword)
+			{
+				if ($vars['option'] == 'com_members' && $vars['task'] == 'changepassword')
+					return $vars;
+
+				if ($vars['option'] == 'com_hub' && $vars['task'] == 'logout')
+					return $vars;
+				
+				if ($vars['option'] == 'com_user' && $vars['task'] == 'logout')
+					return $vars;
+
+				// @FIXME: should double check shadowFlag here in case password gets chanegd
+				// out of band.
+
+				// @FIXME: should we clear POST and GET data
+
+				$vars = array();
+				$vars['option'] = 'com_members';
+				$vars['task'] = 'changepassword';
+		
+				if ($badpassword)
+					$vars['message'] = "Your password does not meet current site requirements. Please change your password now.";
+				if ($expiredpassword)
+					$vars['message'] = "Your password has expired. Please change your password now.";
+
+				$this->setVars($vars);
+				JRequest::set($vars, 'get', true ); // overwrite existing
+
+				return $vars;
+			}
 		}
 
 		return $vars;

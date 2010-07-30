@@ -126,6 +126,7 @@ class MembersController extends Hubzero_Controller
 
 	protected function edit($id=0) 
 	{
+		ximport('Hubzero_Users_Password');
 		// Instantiate a new view
 		$view = new JView( array('name'=>'member') );
 		$view->option = $this->_option;
@@ -147,6 +148,9 @@ class MembersController extends Hubzero_Controller
 		$view->profile = new XProfile();
 		$view->profile->load( $id );
 		
+		$hzup = Hubzero_Users_Password::getInstance($view->profile->get('uidNumber'));
+		$view->passhash = $hzup->passhash;
+
 		// Get the user's interests (tags)
 		include_once( JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'members.tags.php' );
 		
@@ -309,10 +313,8 @@ class MembersController extends Hubzero_Controller
 		// Do we have a new pass?
 		$newpass = trim(JRequest::getVar( 'newpass', '', 'post' ));
 		if ($newpass != '') {
-			ximport('xuserhelper');
-			 // Encrypt the password and update the profile
-			$userPassword = XUserHelper::encrypt_password($newpass);
-			$profile->set('userPassword', $userPassword);
+			ximport('Hubzero_Users_Password');
+			Hubzero_Users_Password::changePassword($profile->get('uidNumber'),$newpass);
 		}
 
 		// Save the changes
@@ -367,13 +369,11 @@ class MembersController extends Hubzero_Controller
 		// Generate a new password
 		$newpass = XRegistrationHelper::userpassgen();
 		
-		// Encrypt the password and update the profile
-		$userPassword = XUserHelper::encrypt_password($newpass);
-		$profile->set('userPassword', $userPassword);
-		
+		ximport('Hubzero_Users_Password');
+		$result = Hubzero_Users_Password::changePassword($profile->get('uidNumber'),$newpass);
 		// Save the changes
-		if (!$profile->update()) {
-			JError::raiseWarning('', $profile->getError() );
+		if (!$result)) {
+			JError::raiseWarning('Password reset failure');
 			return false;
 		}
 		

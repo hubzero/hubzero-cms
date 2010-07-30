@@ -36,12 +36,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?> </p>
+	<?php } ?>
+
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber').'&task=changepassword'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('MEMBERS_CHANGEPASSWORD_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<label<?php echo ($this->change && (!$this->oldpass || XUserHelper::encrypt_password($this->oldpass) != $this->profile->get('userPassword'))) ? ' class="fieldWithErrors"' : ''; ?>>
+			<label<?php echo ($this->change && $this->oldpass && !Hubzero_Users_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass)) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('MEMBER_FIELD_CURRENT_PASS'); ?>
 				<input name="oldpass" id="oldpass" type="password" value="" />
 			</label>
@@ -49,7 +53,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					if ($this->change && !$this->oldpass) {
 						echo '<p class="error">'.JText::_('MEMBERS_PASS_BLANK').'</p>';
 					}
-					if ($this->change && $this->oldpass && XUserHelper::encrypt_password($this->oldpass) != $this->profile->get('userPassword')) {
+					if ($this->change && $this->oldpass && !Hubzero_Users_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass)) {
 						echo '<p class="error">'.JText::_('MEMBERS_PASS_INCORRECT').'</p>';
 					}
 ?>
@@ -77,6 +81,35 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 				</label>
 			</div>
+<?php
+                        if (count($this->password_rules) > 0) {
+                                echo t.t."<ul>".n;
+                                foreach ($this->password_rules as $rule)
+                                {
+                                        if (!empty($rule))
+                                        {
+
+                                                if (is_array($this->validated)) {
+                                                        $err = in_array($rule, $this->validated);
+                                                } else {
+                                                        $err = '';
+                                                }
+
+                                                $mclass = ($err)  ? ' class="error"' : '';
+                                                echo t.t.t."<li $mclass>".$rule."</li>".n;
+                                        }
+                                }
+                                if (is_array($this->validated)) {
+                                        foreach ($this->validated as $msg)
+                                        {
+                                                if (!in_array($msg,$this->password_rules)) {
+                                                        echo t.t.t.'<li class="error">'.$msg."</li>".n;
+                                                }
+                                        }
+                                }
+                                echo t.t.t."</ul>".n;
+                        }
+?>
 		</fieldset><div class="clear"></div>
 		<p class="submit">
 			<input name="change" type="submit" value="<?php echo JText::_('CHANGEPASSWORD'); ?>" />
