@@ -1,0 +1,462 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*---------------------------------------------------------------
+	Contribtool
+---------------------------------------------------------------*/
+	#whatsnext { 
+		padding:0;
+		margin:0 0 1em 3em;			
+		}		
+	#whatsnext ul, ul.youroptions { 
+		margin: 1em 0 1em 1em;
+		padding: 0 0 0 0;
+		list-style: none;
+	}
+	#whatsnext a, #whatsnext a:hover { 
+		padding:0;
+		margin:0;
+		position: relative;		
+		}
+	#whatsnext ul li {
+		padding: 0 0 0 20px;
+		margin: 0 0 1em 0;
+	}
+	#whatsnext ul li.complete, #todolist span.complete { 
+		background: url("images/bullets/task_complete.gif") 0 0 no-repeat;
+		color: #6a0;
+	}
+	#whatsnext ul li.incomplete, #todolist span.incomplete { 
+		background: url("images/bullets/task_incomplete.gif") 0 0 no-repeat;
+	}
+	#whatsnext ul li.todo { 
+		background: url("images/bullets/orangepointer.gif") 0 0.2em no-repeat;
+	}
+	#whatsnext ul li.todo_disabled { 
+		color:#999999;
+		background: url("images/bullets/greypointer.gif") 0 0.2em no-repeat;
+	}
+	#whatsnext ul li.todo_disabled a, 
+	#whatsnext ul li.todo_disabled a:hover, 
+	a.optiondisabled, a.optiondisabled:hover  { 
+		color:#999;
+		border-bottom: 1px solid #999999;
+	}
+	ul.youroptions li, #whatsnext ul li {
+		padding: 0 0 0 20px;
+		margin: 0 0 1em 0;
+		background: url("images/bullets/arrow.png") 0 0.2em no-repeat;
+	}
+/*---------------------------------------------------------------
+	Tool Status
+---------------------------------------------------------------*/
+	#ctCancel { display:none; padding: 1em 1.5em 0.5em 1.5em;  }
+	#ctComment { display:none; padding: 0.5em 0.5em 0.5em 1.5em; margin:1.5em;  background: #f0ece7; border: 1px solid #dbd5ce;  }
+	#ctComment h4 { padding:0.5em 0 0.5em 0; margin: 0; }
+	#ctComment fieldset { padding:0.3em 0 0.3em 0; margin: 0; }
+	#ctComment form { padding:0; margin: 0; }
+	#ctComment .hidemsg { margin-left: 1.5em; }
+	.closebox { float:right; position:relative; margin: -0.2em 0.5em -4em 0.5em; }
+	.hidemsg { color:#999999; font-size:130%; border:none;  }
+	
+	#commentarea {
+		padding:0;
+	}
+	#comment {
+		width:200px;
+	}
+	.cancel_warning { display:block; }
+	.boundary { padding: 0 1em 0 1em; }
+
+/*---------------------------------------------------------------
+	Admin actions
+---------------------------------------------------------------*/
+
+	#admintools h4, .admintitle {
+		padding-top:1.5em;
+	}
+	.adminactions {
+		list-style: none;
+		margin:0;
+		padding:0 0 0 1em;
+		line-height:2em;
+	}
+	.adminactions li {
+		display:inline;
+		padding: 0 0.5em 0 0.2em;
+		background:none;		
+	}
+	.adminactions li a, .adminactions li a:hover, .adminactions li span {
+		padding: 0.2em 0 0.2em 1.7em;
+		border: none;
+		font-size:x-small;
+	}
+	span.showcontrols {
+		padding: 0.2em 0 0.2em 0.2em;
+		margin: 0;
+		border: none;
+	}
+	#ctSending {
+		padding: 0.5em 1.5em 0.5em 1.5em;
+	}
+	#ctSending p {
+		color:#666666;
+	}
+	#ctSending img {
+		vertical-align:middle;
+		padding-right:0.5em;
+	}
+	#ctSuccess {
+		padding: 0.5em 1.5em 0.5em 1.5em;
+	}
+	
+	span.showcontrols a { display:inline; border: none; padding: 0.2em 0.2em 0.2em 0.2em; margin: 0 -2px 0 0; }
+
+	span.showcontrols a.expand { background:  url("images/showcontrols.gif") -3px 3px no-repeat; border:0; }
+	span.showcontrols a.collapse { background:  url("images/showcontrols.gif") -1px -12px no-repeat; padding: 0.2em 0.2em 0.2em 0.5em; border:0; }
+	
+	.history a, .history span { background: transparent url("images/history.gif") 0 0 no-repeat; }
+	.timeline a, .timeline span { background: transparent url("images/timeline.gif") 0 0 no-repeat; }
+	.wiki a, .wiki span { background: transparent url("images/wiki.gif") 0 0 no-repeat; }
+	.agenda a { background: transparent url("images/agenda.gif") 0 0 no-repeat; }
+	.agenda_new a { background: transparent url("images/agenda_new.gif") 0 0 no-repeat; }
+	.disabled { color:#999999; }
+	.sourcecode a, .sourcecode span { background: transparent url("images/sourcecode.gif") 0 0 no-repeat; }
+	.canceltool a { background: transparent url("images/delete.gif") 2px 2px no-repeat; }
+	.message a { background: transparent url("images/message.gif") 0 0 no-repeat; border:none; }
+	.newmessage a { background: transparent url("images/newmessage.gif") 0 0 no-repeat; padding: 0.2em 0.5em 0.2em 0.5em;
+		margin: 0; border:none; }
+	#createtool a, #createtool span { background: transparent url("images/create_project.gif") 0 0 no-repeat; }
+	#installtool a, #installtool span { background: transparent url("images/install_tool.gif") 0 0 no-repeat; }
+	#publishtool a, #publishtool span { background: transparent url("images/publish_tool.gif") 0 0 no-repeat; }
+	#retiretool a, #retiretool span { background: transparent url("images/retire.gif") 0 0 no-repeat; }
+	.canceltool a:hover { background-position: 2px -18px; }
+	#installtool a:hover { background-position: 0 -18px; }
+	#createtool a:hover { background-position: 0 -16px; }
+	#publishtool a:hover { background-position: 0 -20px; }
+	#retiretool a:hover { background-position: 0 -17px; }
+	
+	.conf { background: transparent url("images/configure.gif") 0 0 no-repeat; padding: 0.2em 0.6em 0.2em 0.6em; border:none; margin-left:1em; }
+	.conf:hover { background-position: 0 -17px; border:none; }
+	
+	.ticketinfo h4 {
+		margin: 1.5em 0 1em 1.4em;
+	}
+	.ticketinfo .adminlabel {
+		width: 150px;
+	}
+	
+	.item_q a {
+		background: url("images/qanda.gif") 0 0 no-repeat;
+		padding-left: 17px;
+	}
+	.item_w a {
+		background: url("images/wishlist.gif") 0 0 no-repeat;
+		padding-left: 17px;
+	}
+	.item_s a {
+		background: url("images/warning.gif") 0 0 no-repeat;
+		padding-left: 17px;
+	}
+/*---------------------------------------------------------------
+	Tool Summary
+---------------------------------------------------------------*/
+
+	.highpriority { 
+		background: transparent url("images/high_priority.gif") 2em 0.3em no-repeat;
+		width:15px;
+		height:15px;
+	}
+	.disabled_links {
+		color: #666;
+	}
+	td.showstatus a, a.showstatus, 
+	#tktlist tbody tr.published a.showstatus, 
+	#tktlist tbody tr.published_user a.showstatus,
+	#tktlist tbody tr.abandoned a.showstatus,
+	#tktlist tbody tr.retired a.showstatus,
+	#tktlist tbody tr.retired_user a.showstatus, tktlist a {
+		border:0;
+	}
+	
+	#tktlist tbody tr.abandoned,
+	#tktlist tbody tr.abandoned:hover,
+	#tktlist tbody tr.retired,
+	#tktlist tbody tr.retired:hover,
+	#tktlist tbody tr.retired_user,
+	#tktlist tbody tr.retired_user:hover { background: #eeeeee; color: #999 }
+	#tktlist tbody tr.abandoned a,
+	#tktlist tbody tr.retired a,
+	#tktlist tbody tr.retired_user a { color: #999; border-bottom: 1px solid #ccc; }
+	
+	#tktlist tbody tr.published,
+	#tktlist tbody tr.published:hover,
+	#tktlist tbody tr.published_user,
+	#tktlist tbody tr.published_user:hover { background: #f0f9ff;  }
+	#tktlist tbody tr.published a,
+	#tktlist tbody tr.published_user a { color: #469; border-bottom: 1px solid #C4CDEB; }
+	
+	#tktlist tbody tr.registered,
+	#tktlist tbody tr.registered:hover,
+	#tktlist tbody tr.updated,
+	#tktlist tbody tr.updated:hover,
+	#tktlist tbody tr.uploaded,
+	#tktlist tbody tr.uploaded:hover,
+	#tktlist tbody tr.approved,
+	#tktlist tbody tr.approved:hover,
+	#tktlist tbody tr.created_user,
+	#tktlist tbody tr.created_user:hover,
+	#tktlist tbody tr.installed_user,
+	#tktlist tbody tr.installed_user:hover,
+	table.mycontrib tr.created_user,
+	table.mycontrib tr.installed_user,
+	table.mycontrib tr.draft,
+	table.mycontrib tr.installed_user td.tool,
+	table.mycontrib tr.created_user td.tool
+	{ background-color: #fed;  }
+	
+	table.mycontrib tr.created_user td,
+	table.mycontrib tr.installed_user td,
+	table.mycontrib tr.draft td
+	{ border-bottom: 1px solid #ddd;  }
+			
+/*---------------------------------------------------------------
+	Versioning
+---------------------------------------------------------------*/
+	.toolpublished {
+		background: url("images/check.gif") 0 0 no-repeat;
+		display: block;
+		width: 15px;
+		height: 15px;
+		margin: 0 0 0 2em;
+		padding:0;
+	}
+	.toolunpublished {
+		background: url("images/minus.gif") 0 0 no-repeat;
+		display: block;
+		width: 15px;
+		height: 15px;
+		margin: 0 0 0 2em;
+		padding:0;
+	}
+	
+	.vmanage { padding: 0 0 1.5em 0; }
+	.vmanage select { float:right;}
+	.vnotice { padding: 0.5em 0.5em 0.5em 1.5em; margin:0.5em 1.5em 0 1.5em;  background: #f0ece7; border: 1px solid #dbd5ce;  }
+	.vline {line-height:0.8em; }
+	
+	.versionfield { padding:1em; background: #f0ece7; border: 1px solid #dbd5ce; margin:0.5em 0 0.5em 0; }
+	
+	.vbutton {
+		float:right; 
+		position:relative;
+		margin-right:2em;
+		}
+	#displays_0, .devversion {
+		background: url("images/bgdev.gif") 0 0 repeat-X;
+	}
+	.devversion {
+	 padding: 1em;margin: 0;
+	}
+	.config { border: none; border-bottom: 2px solid #ccc; padding-bottom:1em; }
+	.config h4, .controls h4 { margin: 0.5em 0 0 0; }
+	.config p,  .controls p { margin: 0.5em 0 0 0; }
+	.config span.heading, span.heading { color:#5d715c; font-weight:bold; margin-right: 0.5em; }
+	.config span.desc, span.desc { color:#666666; width:200px;  }
+/*---------------------------------------------------------------
+	Steps
+---------------------------------------------------------------*/
+	#steps { border-bottom:1px solid #ccc; padding:0 0 0.5em 0; list-style:none; margin:1em 0 2em 0; position:relative; margin-left:20px; }
+	#steps li {
+		margin: 0 1em 0 0;
+		padding: 0 0 0.6em 0;
+		display: inline;
+		border: none;
+		color: #666;
+		font-size: 1em;
+		font-weight: normal;
+	}
+	#steps li.intermediate{ background: url("images/fc-arrow.gif") bottom center no-repeat; padding: 0 1em 0 1em; margin: 0;}
+	#steps li.prev { color: #333; background: #fff; font-weight: bold; margin: 0; }
+	#steps li.active { color: #bd6416; background: #fff; font-weight: bold; background: url("images/arrow-up.gif") bottom center no-repeat; }
+	#steps li.future { color: #b1c1b3; }
+	#steps li.steps_hed { font-size:x-small; text-transform: uppercase; }
+	
+/*---------------------------------------------------------------
+	Screenshots
+---------------------------------------------------------------*/
+	
+	.uploading {
+		padding:1em 0.2em 1em 0.2em;
+		}
+	.ss_title {
+		margin:1em 0 1em 0;display:block;
+		}
+	.input_restricted {
+		display:inline; width:200px;
+		}
+	.last_option {
+		margin-left:2em;
+		}
+	.upload_ss {
+		background: #f3f3f3;
+		border-top:1px solid #ccc;
+		border-bottom:1px solid #ccc;
+		margin-bottom: 1em;
+		position:relative;
+		}
+	.screenshots, ul.screenshots, #content ul.screenshots {
+		margin: 0 0 1em 0;
+		padding: 0.5em 0 0 0;
+		position:relative;
+		list-style:none;
+		background-image:none;
+		}
+	.screenshots li, #small-page  .screenshots li {
+		margin: 0 10px 1em 0;
+		padding: 0.5em 7px 2em 7px;
+		float: left;
+		display: inline;
+		height:67px;
+		width:91px;		
+		position:relative;
+		background-image:none;
+		}
+	.screenshots a,
+	.screenshots a:hover,
+	.screenshots img { 
+		border: none;
+		}
+	
+	#small-page h3 {
+		margin-top:0;
+		margin-bottom:0.5em;
+		}
+	.dev_ss {
+		float:left;
+		position:relative;
+		margin-bottom:0.3em;
+		}
+	.delete_ss {
+		background: transparent url("../com_contribute/images/trash.gif") 0 2px no-repeat;
+		padding:0.2em 1.3em 0.2em 0;
+		margin-left:0.5em;
+		}
+	.edit_ss {
+		background: transparent url("images/edit.png") 0 0 no-repeat;
+		padding:0.2em 1.3em 0.2em 0;
+		}
+	#small-page .ss_pop {
+		width:100%;
+		text-align:center;
+		}
+	
+	.screenshots li .reorder_ss {
+		background: transparent url("images/reorder.gif") 0 0 no-repeat;
+		padding:0.2em 1.3em 0.2em 1em;
+		}		
+	
+/*---------------------------------------------------------------
+	Tool edit form
+---------------------------------------------------------------*/
+
+	form#toolForm tr { background: #eee; }
+	form#toolForm tr:hover { background: #e4e4e4; }
+
+	.submitform { display:block; margin: 0.5em 0 1.5em 0; }
+	#hubForm p.hint { margin-bottom:0; margin-top:0.5em; padding:0; color:#a8a8a8; } 
+	#hubForm .sameline { display:inline; width:10%; }
+	div.subject { background:none; border:none; margin-left:0; margin-top:0;padding-left:0; }
+	div.subject legend { font-size:120%; color:#333333; font-weight:bold; }
+	
+	.section .expanded {
+	width:40%;
+	}
+	.section .contracted {
+	width:55%;
+	}
+
+/*---------------------------------------------------------------
+	Tool Info
+---------------------------------------------------------------*/
+	
+	.toolinfo {
+		border: 1px solid #b1a997; 
+		color: #59554c; 
+		background: #f9f7f1;
+		margin-left:20px;
+	}
+	.toolinfo_abandoned {
+		border: 1px solid #ccc; 
+		color: #666; 
+		background: #eee;
+		margin-left:20px;
+	}
+	.toolinfo_closed {
+		border: 1px solid #ccc; 
+		color: #666; 
+		background: #f0f9ff;
+		margin-left:20px;
+	}
+	.state_hed  { color: #bd6416; }
+	.toolinfo_note { color:#666666; padding:0; margin:1em 0 0 0; margin-left:20px; }
+	.toolinfo table ul { list-style:none; }
+	#toolstatus th { color:#999; font-size:90%;}
+	#toolstatus th.toolinfo_hed { font-weight:bold; color:#333333; font-size:110%; }
+	#toolstatus span.admin_label, .admin_label { display:block; margin: 0 0 1.5em 0; }
+	
+	
+/*---------------------------------------------------------------
+	Misc
+---------------------------------------------------------------*/
+	.nextaction { margin: 0; padding: 0; border:none;  }
+	#tktlist tbody tr:hover { background:#f6f0e8; }
+	.hide { display:none;  }	
+	.shifted { position:absolute; left:200px; margin: 0 0 2em 0; font-size: 1em; }
+	#lic { display:none; padding:1.5em 0 0.5em 0; margin: 0 0 2em 0; }
+	#lic_cl { margin: 2em 0 1em 0; }
+	span.actionlink {color:#999999; text-transform:uppercase; font-size:0.8em;border-bottom:1px solid #e2e2e2; font-weight:normal; margin-left:1.5em; }
+	.actionlink a {color:#0097c3; }
+	.actionlink a:hover { border:none;color:#666666; }
+	#license_preview { 
+		height: 200px;
+		width: 90%;
+		overflow: scroll;
+		color:#666666;
+		border: 1px solid #999;
+		background-color: #e2e2e2;
+		padding: 0.5em;
+	}
+	.moveon { text-align:center; padding-top:1em; }
+	#hubForm ul { list-style:none; margin: 0; padding: 0; }
+	.opensource {
+		background: url("../com_resources/images/opensource.gif") 0 0 no-repeat;	
+	}
+	.closedsource { 
+		background: url("../com_resources/images/closedsource.gif") 0 0 no-repeat;
+	}
+	.opensource, .closedsource { 
+		text-align: left;
+		font-size:x-small;
+		padding: 0 0 1em 5.5em;
+	}
+	
+/*---------------------------------------------------------------
+	My Contributions Module
+---------------------------------------------------------------*/
+	table.mycontrib { padding:0; margin: 0 0 0.5em 0; }
+
+	.contribauthor {
+		color:#666;display:block;
+	}
+	
+	span.tstatus { float:right; }
+	span.ttitle { float:left }
+	
+	
