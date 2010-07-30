@@ -951,7 +951,7 @@ class ContribtoolController extends JObject
 		$juser 	   	=& JFactory::getUser();
 		$xlog       = &XFactory::getLogger();
 		$task  	    = $this->_task;
-		$exportmap  = array('@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
+		$exportmap  = array('@OPEN'=>null, '@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -2307,7 +2307,7 @@ class ContribtoolController extends JObject
 		$hubShortName 	= $xhub->getCfg('hubShortName');
 		$app 			=& JFactory::getApplication();
 		$livesite 		= $xhub->getCfg('hubLongURL');
-		$exportmap     = array('@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
+		$exportmap     = array('@OPEN'=>null,'@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
 		$juser =& JFactory::getUser();
 		$xlog =& XFactory::getLogger();
 
@@ -2855,12 +2855,12 @@ class ContribtoolController extends JObject
 		$tags  = JRequest::getVar( 'tags', '', 'post' );
 		$tagfa = JRequest::getVar( 'tagfa', '', 'post' );
 		// process new tags
-		if($tags or $tagfa) {
+		//if($tags or $tagfa) {
 			$newtags = '';
 			if($tagfa) { $newtags = $tagfa.', '; }
 			if($tags) { $newtags .= $tags;  }
-			$tagcloud->tag_object($juser->get('id'), $rid, $newtags, 1, 0);
-		}
+			$tagcloud->tag_object($juser->get('id'), $rid, $newtags, 1, 1);
+		//}
 		
 
 		// Get some needed libraries

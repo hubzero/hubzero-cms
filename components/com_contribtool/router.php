@@ -89,7 +89,8 @@ function ContribtoolParseRoute($segments)
 	if ($segments[0] == 'edit')
 	{
 		$vars['task'] = 'edit';
-		$vars['toolid'] = $segments[1];
+		if (!empty($segments[1]))
+			$vars['toolid'] = $segments[1];
 		return $vars;
 	}
 	if ($segments[0] == 'cancel')
