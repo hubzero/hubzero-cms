@@ -185,7 +185,7 @@ class Tags
 	{
 		$tagArray  = $this->_parse_tags($tag_string);   // array of normalized tags
 		$tagArray2 = $this->_parse_tags($tag_string,1); // array of normalized => raw tags
-		if ($admin == 1) {
+		if ($admin) {
 			$oldTags = $this->get_tags_on_object($object_id, 0, 0, 0, 0, 1); // tags currently assigned to an object
 		} else {
 			$oldTags = $this->get_tags_on_object($object_id, 0, 0, $tagger_id, 0, 0); // tags currently assigned to an object

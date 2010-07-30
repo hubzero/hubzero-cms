@@ -506,6 +506,7 @@ class TagsController extends JObject
 
 		// Get the active category
 		$area = JRequest::getVar( 'area', '' );
+		$sort = JRequest::getVar( 'sort', '' );
 
 		if (!$area) {
 			$t = array();
@@ -526,6 +527,7 @@ class TagsController extends JObject
 				$tags,
 				$limit,
 				$limitstart,
+				$sort,
 				$activeareas)
 			);
 		
