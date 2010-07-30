@@ -16,6 +16,10 @@
 */
 	div.draggable .compactlist li.group {
 		background-position: 0.7em 0.7em;
+		padding-right: 5em;
+		}
+	div.draggable .compactlist li.group a { 
+		/*margin-right: 5em;*/
 		}
 	div.draggable .compactlist li span span.status {
 		}
