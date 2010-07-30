@@ -102,7 +102,7 @@ $juser =& JFactory::getUser();
 	<!--  EOT SECTION SPECIFIC BANNER -->
 		
 	  <div id="wrap">
-		<div id="content" class="<?php echo $option; ?>">
+		<div id="content" class="<?php //echo $option; ?>">
 
 				<div id="outline">
 					<div id="errorbox" class="code-<?php echo $this->error->code ?>">
@@ -172,3 +172,4 @@ $juser =& JFactory::getUser();
 $title = $this->getTitle();
 $this->setTitle( $config->getValue('config.sitename').' - '.$title );
 ?>
+
