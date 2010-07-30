@@ -387,7 +387,7 @@ class XNeesProfileHtml
 		
 		//**** NEES Receive Materials field
 		$html.= t.'<fieldset>'.n;
-		$html.= t.t.'<legend>What materials would you like to receive? </legend>'.n;
+		$html.= t.t.'<legend>What are your areas of interest? </legend>'.n;
 		$html .= XNeesProfileHtml::createCheckboxList('receivematerials', 
 			'student,educator,researcher,materials,k12,ugrad,grad',
 			'Students,Educators,Researchers,Software Development,K - 12 (Pre-College),Undergraduate,Graduate / Professional',
