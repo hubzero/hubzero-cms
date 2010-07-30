@@ -856,7 +856,7 @@ class ResourcesController extends JObject
 		$resource->_type = new ResourcesType( $database );
 		$resource->_type->load($resource->type);
 		$resource->_type->_params = new JParameter( $resource->_type->params );
-		
+
 		// We need to do this here because we need some stats info to pass to the body
 		if (!$thistool) {
 			// Trigger the functions that return the areas we'll be using

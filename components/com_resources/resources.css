@@ -65,8 +65,9 @@
 	.extracontent .series { padding-left: 23px; background: url("../../images/home/fc-series.gif") 0 2px no-repeat; }
 	.extracontent .workshop { padding-left: 23px; background: url("../../images/home/fc-workshop.gif") 0 0em no-repeat; }
 	.extracontent .wiki { padding-left: 23px; background: url("../../images/home/fc-wiki.gif") 0 2px no-repeat; }
-	
 	.extracontent .citation { padding-left: 23px; background: url("../../images/home/fc-publication.gif") 0 0em no-repeat; }
+	.extracontent .activedocuments { padding-left: 23px; background: url("../../images/home/fc-teachingmaterial.gif") 0 2px no-repeat; }
+	.extracontent .historicaldocuments { padding-left: 23px; background: url("../../images/home/fc-teachingmaterial.gif") 0 2px no-repeat; }
 /*---------------------------------------------------------------
 	Audience skill level
 ---------------------------------------------------------------*/	

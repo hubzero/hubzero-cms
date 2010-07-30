@@ -35,15 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option=com_xsearch'); ?>" method="get" class="search">
-				<fieldset>
-					<p>
-						<input type="text" name="searchword" value="" />
-						<input type="hidden" name="category" value="resources" />
-						<input type="submit" value="Search" />
-					</p>
-				</fieldset>
-			</form>
+			<?php XModuleHelper::displayModules('search'); ?>
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
