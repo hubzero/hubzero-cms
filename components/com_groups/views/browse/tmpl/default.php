@@ -203,6 +203,12 @@ $pn = $this->pageNav->getListFooter();
 if (!strstr($pn,'/browse')) {
 	$pn = str_replace('/?','/browse/?',$pn);
 }
+if (strstr($pn,'?view=intro&amp;&amp;')) {
+	$pn = str_replace('?view=intro&amp;&amp;','/browse/?',$pn);
+}
+if (strstr($pn,'?view=intro&amp;')) {
+	$pn = str_replace('?view=intro&amp;','/browse/?',$pn);
+}
 echo $pn;
 ?>
 		</div><!-- / .subject -->

@@ -25,66 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class GroupsController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+class GroupsController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		// Load the component config
-		$component =& JComponentHelper::getComponent( $this->_option );
-		if (!trim($component->params)) {
-			return $this->abort();
-		} else {
-			$config =& JComponentHelper::getParams( $this->_option );
-		}
-		$this->config = $config;
-		
 		// Get the task
 		$this->_task = JRequest::getVar( 'task', '' );
 		$this->gid  = JRequest::getVar( 'gid', '' );
@@ -132,34 +78,6 @@ class GroupsController extends JObject
 			case 'login':   $this->login();   break;
 
 			default: $this->intro(); break;
-		}
-	}
-
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-
-	//-----------
-	
-	private function _getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-
-	//-----------
-	
-	private function _getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
 		}
 	}
 
@@ -1214,7 +1132,7 @@ class GroupsController extends JObject
 		if ($g_cn == 'new' || $g_cn == 'browse') {
 			$this->setError( JText::_('GROUPS_ERROR_INVALID_ID') );
 		}
-		if (!$this->valid_cn($g_cn)) {
+		if (!$this->_validCn($g_cn)) {
 			$this->setError( JText::_('GROUPS_ERROR_INVALID_ID') );
 		}
 		if ($isNew && Hubzero_Group::exists($g_cn)) {
@@ -1251,7 +1169,7 @@ class GroupsController extends JObject
 			$group->set('cn',$g_cn);
 			
 			$view = new JView( array('name'=>'edit') );
-			$view->valid_cn = $this->valid_cn($g_cn);
+			$view->valid_cn = $this->_validCn($g_cn);
 			$view->title = $title;
 			$view->option = $this->_option;
 			$view->group = $group;
@@ -1768,6 +1686,8 @@ class GroupsController extends JObject
 		$gcn = $group->get('cn');
 		//$members = $group->get('members');
 		
+		$deletedgroup = clone($group);
+		
 		// Delete group
 		if (!$group->delete()) {
 			$view = new JView( array('name'=>'error') );
@@ -1800,7 +1720,7 @@ class GroupsController extends JObject
 		$eview->juser = $juser;
 		$eview->gcn = $gcn;
 		$eview->msg = $msg;
-		$eview->group = $group;
+		$eview->group = $deletedgroup;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 		
@@ -2099,7 +2019,7 @@ class GroupsController extends JObject
 	// Misc Functions
 	//----------------------------------------------------------
 
-	private function _authorize($checkonlymembership=false) 
+	protected function _authorize($checkonlymembership=false) 
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
@@ -2247,18 +2167,18 @@ class GroupsController extends JObject
 
 	private function _getAutocomplete( $filters=array() ) 
 	{
-		$database =& JFactory::getDBO();
-		
 		$query = "SELECT t.gidNumber, t.cn, t.description 
 					FROM #__xgroups AS t 
 					WHERE (t.type=1 OR t.type=2) AND (LOWER( t.cn ) LIKE '%".$filters['search']."%' OR LOWER( t.description ) LIKE '%".$filters['search']."%')
 					ORDER BY t.description ASC";
 
-		$database->setQuery( $query );
-		return $database->loadObjectList();
+		$this->database->setQuery( $query );
+		return $this->database->loadObjectList();
 	}
 	
-    function valid_cn($gid) 
+	//-----------
+	
+    private function _validCn($gid) 
 	{
 		if (eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $gid)) {
 			if (is_numeric($gid) && intval($gid) == $gid && $gid >= 0) {
@@ -2271,4 +2191,3 @@ class GroupsController extends JObject
 		}
 	}
 }
-?>
