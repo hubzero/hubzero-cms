@@ -61,11 +61,21 @@ class plgGroupsExtendedform extends JPlugin
 	public function onGroupNew( $group ) 
 	{
 		// Start the log text
-		$log = JText::_('Example new log').': ';
 		
 		// Do whatever you need for post group creation processing
 		$createShare = JRequest::getVar('shareddir', 0, 'post');
 		
+		if ($createShare) {
+			$cn = trim($group->cn);
+			$datadir = '/data/groups'; // @FIXME: should be a com_groups parameter
+			exec("sudo /usr/lib/hubzero/bin/addgroupdatadir $cn $datadir", $results, $retval);
+			if ($retval == 0)
+				$log = JText::_('New data directory created').': ';
+			else
+				$log = JText::_('Failed to create new data directory').': ';
+			
+		}
+
 		// Return the log
 		return $log;
 	}
