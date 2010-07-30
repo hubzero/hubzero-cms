@@ -19,10 +19,11 @@ class modCurationProgressHelper{
 	public function getCurationStatus()
 	{
 		$oCurationProgress = new CurationProgress();
-		if(JRequest::getVar('view') == 'project')
-			$curation_status = $oCurationProgress->getProjectCurationProgress();
-		else if (JRequest::getVar('view') == 'experiment')
-			$curation_status = $oCurationProgress->getExperimentCurationProgress();	
+		if(JRequest::getVar('view') == 'project'){
+                    $curation_status = $oCurationProgress->getProjectCurationProgress();
+                }else{
+                    $curation_status = $oCurationProgress->getExperimentCurationProgress();
+                }
 		return $curation_status;
 	}
 }
