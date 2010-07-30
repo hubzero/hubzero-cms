@@ -136,9 +136,17 @@ class EquipmentPeer extends BaseEquipmentPeer {
     return self::doSelect($c);
 
   }
-  
-  public static function findByProject($p_iProjectId){
-  	require_once 'lib/data/ExperimentEquipmentPeer.php';
+
+  /**
+   * Finds the equipment used in a project.  Before Prototype 3, we found
+   * that the equipment was being duplicated in the display.  See findByProject
+   * below.
+   * @param int $p_iProjectId
+   * @return array <Equipment>
+   * @deprecated
+   */
+  public static function findByProject0($p_iProjectId){
+    require_once 'lib/data/ExperimentEquipmentPeer.php';
     require_once 'lib/data/ExperimentPeer.php';
     require_once 'lib/data/EquipmentModelPeer.php';
     require_once 'lib/data/EquipmentClassPeer.php';
@@ -154,6 +162,38 @@ class EquipmentPeer extends BaseEquipmentPeer {
     $c->addAscendingOrderByColumn(self::EQUIPMENT_ID );
 
     return self::doSelect($c);
+  }
+
+  public static function findByProject($p_iProjectId){
+    $iEquipmentIdArray = array();
+
+    $strQuery = "select distinct e.equipment_id
+                 from equipment e,
+                     experiment_equipment ee,
+                     experiment ex,
+                     equipment_model em,
+                     equipment_class ec
+                 where e.equipment_id = ee.equipment_id
+                   and ee.experiment_id = ex.expid
+                   and e.model_id = em.id
+                   and em.equipment_class_id = ec.equipment_class_id
+                   and ex.projid=?";
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iProjectId);
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultSet->next()){
+      $iEquipmentId = $oResultSet->getInt("EQUIPMENT_ID");
+      array_push($iEquipmentIdArray, $iEquipmentId);
+    }
+
+    //if we have primary keys, lookup and return the equipment
+    if(!empty($iEquipmentIdArray)){
+      return self::retrieveByPKs($iEquipmentIdArray);
+    }
+
+    //otherwise, return the empty array
+    return $iEquipmentIdArray;
   }
 
 

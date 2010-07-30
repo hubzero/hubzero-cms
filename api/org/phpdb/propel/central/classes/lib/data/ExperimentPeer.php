@@ -5,6 +5,7 @@ require_once 'lib/data/om/BaseExperimentPeer.php';
 
 // include object class
 include_once 'lib/data/Experiment.php';
+include_once 'lib/data/AuthorizationPeer.php';
 
 
 /**

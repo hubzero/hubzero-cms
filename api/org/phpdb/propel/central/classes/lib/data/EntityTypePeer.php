@@ -44,6 +44,30 @@ class EntityTypePeer extends BaseEntityTypePeer {
     return self::doSelect(new Criteria());
   }
 
+  /**
+   *
+   * @param string $p_strUsageType
+   * @return array <EntityType>
+   */
+  public static function findUsageType($p_strUsageType){
+    $p_strUsageType .= "%";
+
+    $oCriteria = new Criteria();
+    $oCriteria->add(self::N_TABLE_NAME, $p_strUsageType, Criteria::LIKE);
+    return self::doSelect($oCriteria);
+  }
+
+  /**
+   *
+   * @param string $p_strUsageType
+   * @return EntityType
+   */
+  public static function findByTableName($p_strUsageType){
+    $oCriteria = new Criteria();
+    $oCriteria->add(self::N_TABLE_NAME, $p_strUsageType);
+    return self::doSelectOne($oCriteria);
+  }
+
 
 } // EntityTypePeer
 ?>

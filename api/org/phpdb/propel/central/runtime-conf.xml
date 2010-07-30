@@ -13,16 +13,22 @@
     <adapter>oracle</adapter> <!-- sqlite, mysql, myssql, oracle, or pgsql -->
     <connection>
      <phptype>oracle</phptype>
-     <database></database> 
+     <database></database>
+     <!-- 
      <hostspec>ORCLDEV</hostspec>
      <username>gemezm</username>
      <password>gemezm</password>
-     
+     -->
+
      <!--   
      <hostspec>ORCLSTG</hostspec>
      <username>central</username>
      <password>bees4nees</password>
       -->
+
+     <hostspec>NEESPROD</hostspec>
+     <username>central</username>
+     <password>bees4nees</password>	
      
      <!-- 
      <url>oracle://devdb.neeshub.org:1521/orcldev.neeshub.org</url>

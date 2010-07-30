@@ -63,6 +63,20 @@ class SensorTypePeer extends BaseSensorTypePeer {
     return self::doSelectOne($c);
   }
 
+  /**
+   * Find ONE SensorType by Name
+   *
+   * @param String $name
+   * @return SensorType
+   */
+  public static function findByNameStartsWith($p_strName) {
+
+    $c = new Criteria();
+    $c->add(self::NAME, $p_strName."%", Criteria::LIKE);
+    $c->setIgnoreCase(true);
+    return self::doSelect($c);
+  }
+
 
   /**
    * Find all SensorTypes in an Experiment

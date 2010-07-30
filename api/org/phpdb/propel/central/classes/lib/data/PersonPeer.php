@@ -348,11 +348,9 @@ class PersonPeer extends BasePersonPeer {
       "SELECT COUNT (DISTINCT P.ID) AS TOTAL
         FROM
           PERSON P,
-          PERSON_ENTITY_ROLE PER,
-          ROLE R
+          AUTHORIZATION PER
         WHERE
           P.ID = PER.PERSON_ID AND
-          PER.ROLE_ID = R.ID AND
           PER.ENTITY_ID = ? AND
           PER.ENTITY_TYPE_ID = ?
         ORDER BY UPPER(P.LAST_NAME), UPPER(P.FIRST_NAME)";
@@ -368,41 +366,41 @@ class PersonPeer extends BasePersonPeer {
     }
     return $iCount;
   }
-  
+
   public function findMembersForEntityWithPagination($entity_id, $entity_type_id, $p_iLowerLimit, $p_iUpperLimit) {
-    //echo $entity_id."/".$entity_type_id."/". $p_iLowerLimit."/". $p_iUpperLimit;
+    $iPersonIdArray = array();
+
     $sql =
-      "SELECT * 
+      "SELECT *
 	   FROM (
           SELECT DISTINCT
-            P.ID,
-            P.LAST_NAME,
-            P.FIRST_NAME,
-            P.E_MAIL,
-            P.USER_NAME,
-            R.DISPLAY_NAME AS ROLENAME,
-            row_number()
-          OVER (ORDER BY UPPER(P.LAST_NAME), UPPER(P.FIRST_NAME)) as rn 
+            P.ID, row_number()
+          OVER (ORDER BY P.LAST_NAME) as rn
           FROM
             PERSON P,
-            PERSON_ENTITY_ROLE PER,
-            ROLE R
+            AUTHORIZATION PER
           WHERE
             P.ID = PER.PERSON_ID AND
-            PER.ROLE_ID = R.ID AND
             PER.ENTITY_ID = ? AND
             PER.ENTITY_TYPE_ID = ?
        ) WHERE rn BETWEEN ? AND ?";
-    
-    $conn = Propel::getConnection();
-    $stmt = $conn->prepareStatement($sql);
-    $stmt->setInt(1, $entity_id);
-    $stmt->setInt(2, $entity_type_id);
-    $stmt->setInt(3, $p_iLowerLimit);
-    $stmt->setInt(4, $p_iUpperLimit);
 
-    return $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    $conn = Propel::getConnection();
+    $oStatement = $conn->prepareStatement($sql);
+    $oStatement->setInt(1, $entity_id);
+    $oStatement->setInt(2, $entity_type_id);
+    $oStatement->setInt(3, $p_iLowerLimit);
+    $oStatement->setInt(4, $p_iUpperLimit);
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultSet->next()){
+      $iPersonId = $oResultSet->getInt("ID");
+      array_push($iPersonIdArray, $iPersonId);
+    }
+
+    return self::retrieveByPKs($iPersonIdArray);
   }
+
+
 
   public function findEditorMembersForEntityWithPagination($entity_id, $entity_type_id, $p_iLowerLimit, $p_iUpperLimit) {
     $sql =

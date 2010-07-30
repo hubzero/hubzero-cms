@@ -128,6 +128,20 @@ class LocationPlanPeer extends BaseLocationPlanPeer {
     return self::doSelect($c);
   }
 
+  /**
+   *
+   * @param int $p_iExperimentId
+   * @param string $p_strName
+   * @return array <LocationPlan>
+   */
+  public static function suggestLocationPlans($p_iExperimentId, $p_strName){
+    $oCriteria = new Criteria();
+    $oCriteria->add(self::EXPID, $p_iExperimentId);
+    $oCriteria->add(self::NAME, $p_strName."%", Criteria::LIKE);
+    $oCriteria->setIgnoreCase(true);
+    return self::doSelect($oCriteria);
+  }
+
 
   /**
    * Find all location plan given by trial ID

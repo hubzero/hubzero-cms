@@ -108,7 +108,7 @@ class NAWIFacilityPeer extends BaseNAWIFacilityPeer {
 
     $ret = array();
 
-    if($rs->next()) {
+    while($rs->next()) {
       $row['exp_phase'] = $rs->getString('EXP_PHASE');
       $row['total'] = $rs->getInt('TOTAL');
 

@@ -421,7 +421,7 @@ class DataFile extends BaseDataFile {
    * @param boolean $isDir
    * @return DataFile if successed or false if failed
    */
-  function newDataFileByFilesystem($filename, $path, $isDir=false) {
+  function newDataFileByFilesystem($filename, $path, $isDir=false, $p_strTitle=null, $p_strDescription=null, $p_strUsageId=null) {
 
     $destination = FileCommandAPI::set_directory($path);
 
@@ -439,7 +439,10 @@ class DataFile extends BaseDataFile {
       date('Y-m-d H:i:s'),   // created
       md5_file($fullname),   // checksum
       0,                     // directory
-      filesize($fullname));  // filesize
+      filesize($fullname),   // filesize
+      $p_strTitle,           // title
+      $p_strDescription,     // description
+      $p_strUsageId      );  //entity_type.id
   }
 
 
@@ -667,7 +670,7 @@ class DataFile extends BaseDataFile {
       $thumbname = "thumb_" . time() . "_" . $this->getName();
 
       //if($thumb->img_resize(self::getFullPath(), 60, $thumbpath . "/" . $thumbname)) {
-      if(PhotoHelper::resize(self::getFullPath(), 120, 90, $thumbpath . "/" . $thumbname)) {
+      if(PhotoHelper::resize(self::getFullPath(), PhotoHelper::EXPERIMENT_THUMB_WIDTH, PhotoHelper::EXPERIMENT_THUMB_HEIGHT, $thumbpath . "/" . $thumbname)) {
         $fullName = $thumbpath . "/" . $thumbname;
         $thumb_df = DataFilePeer::insertOrUpdateIfDuplicate($thumbname, $thumbpath, date('Y-m-d H:i:s'), md5_file($fullName), 0, filesize($fullName));
 

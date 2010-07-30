@@ -322,6 +322,66 @@ class ProjectPeer extends BaseProjectPeer {
     return self::doSelect($c);
   }
 
+  public static function getMyProjectsWithPaging($p_iPersonId, $p_iLowerLimit, $p_iUpperLimit){
+    $strQuery = "SELECT *
+                 FROM (
+                   SELECT distinct pr.projid, row_number()
+                   OVER (ORDER BY pr.projid) as rn
+                   FROM PROJECT pr,
+                        PERSON p,
+                        authorization a
+                   WHERE pr.deleted = 0
+                     AND p.id = ?
+                     AND p.id = a.person_id
+                     and a.entity_id = pr.projid
+                     and a.entity_type_id = ?
+                 )
+                 WHERE rn BETWEEN ? AND ?";
+
+    $conn = Propel::getConnection();
+    $stmt = $conn->prepareStatement($strQuery);
+    $stmt->setInt(1, $p_iPersonId);
+    $stmt->setInt(2, 1);
+    $stmt->setInt(3, $p_iLowerLimit);
+    $stmt->setInt(4, $p_iUpperLimit);
+
+    $iProjectIdArray = array();
+    $oResultsSet = $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultsSet->next()){
+      $iThisProjectId = $oResultsSet->getInt('PROJID');
+      array_push($iProjectIdArray, $iThisProjectId);
+    }
+
+    return self::retrieveByPKs($iProjectIdArray);
+  }
+
+  public static function getMyProjectsCount($p_iPersonId){
+    $iProjectCount = 0;
+
+    $strQuery = "SELECT count(pr.projid) as total
+                 FROM PROJECT pr,
+                        PERSON p,
+                        authorization a
+                 WHERE pr.deleted = 0
+                   AND p.id = ?
+                   AND p.id = a.person_id
+                   and a.entity_id = pr.projid
+                   and a.entity_type_id = ?";
+
+    $conn = Propel::getConnection();
+    $stmt = $conn->prepareStatement($strQuery);
+    $stmt->setInt(1, $p_iPersonId);
+    $stmt->setInt(2, 1);
+
+    $oResultsSet = $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultsSet->next()){
+      $iProjectCount = $oResultsSet->getInt('TOTAL');
+    }
+
+    return $iProjectCount;
+
+  }
+
 
   /**
    * Find a list of Project that are not type of SuperProject that can be viewed by any one

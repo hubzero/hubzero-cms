@@ -20,7 +20,7 @@ return array (
         array (
           'phptype' => 'oracle',
           'database' => '',
-          'hostspec' => 'ORCLSTG',
+          'hostspec' => 'NEESPROD',
           'username' => 'central',
           'password' => 'bees4nees',
         ),
