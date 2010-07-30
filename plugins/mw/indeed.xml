@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="mw">
+	<name>Middleware - inDEED</name>
+	<author>Shawn Rice</author>
+	<creationDate>July 2010</creationDate>
+	<copyright>Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>http://hubzero.org</authorUrl>
+	<version>1.5</version>
+	<description>Performs some necessary setup when launching an inDEED session</description>
+	<files>
+		<filename plugin="indeed">indeed.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_mw_indeed.ini</language>
+	</languages>
+	<params>
+		<param name="base_path" type="text" size="35" default="/apps/projects/workingdir/" label="Base path" description="Base path to write files and folders to"/>
+	</params>
+</install>
