@@ -221,10 +221,6 @@ class WishlistHtml
 		
 		return $html;
 	}
-				$item->about = trim(stripslashes($item->about));
-				$item->about = preg_replace('/<br\\s*?\/??>/i', "", $item->about);
-				$item->about = htmlspecialchars(WishlistHtml::txt_unpee($item->about));
-	//-----------
 	
 	function nicetime($date)
 	{
