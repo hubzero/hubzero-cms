@@ -10,7 +10,7 @@
 /*
 
 	-- -- -- -- -- -- --
-	com_mw CSS
+	com_tools CSS
 	-- -- -- -- -- -- --
 
 */
@@ -166,121 +166,99 @@
 		font-weight: bold;
 		}
 /*---------------------------------------------------------------
-	Session options
----------------------------------------------------------------*/
-	#app-options {
-		list-style: none;
-		margin: 1em 0 0 0;
-		padding: 5px 0 0 0;
-		position: absolute;
-		top: 40px;
-		right: 0;
-		}
-	#app-options li {
-		margin: 0;
-		padding: 0 0.7em;
-		display: inline;
-		border-right: 1px dotted #666;
-		background-image: none;
-		}
-	#app-options a { 
-		color: #333;
-		border: none;
-		}
-	#app-options .app-close {
-		text-align: right;
-		border: none;
-		}
-	#app-options .app-close a {
-		border: none;
-		margin: 0;
-		line-height: 14px;
-		height: 14px;
-		padding: 0 0 0 20px;
-		background: url("images/close-light.gif") 0 0 no-repeat;
-		}
-	#app-options .app-close>a { 
-		width: auto;
-		}
-	#app-options .app-close a:hover {
-		background-position: 0 -24px;
-		color: #c00;
-		border: none;
-		}
-/*---------------------------------------------------------------
 	App wrap
 ---------------------------------------------------------------*/
 	#app-wrap {
-		border: 1px solid #ccc;
-		padding: 0 0 10px 0;
-		margin: 1em 0 1em 0;
+		background-color: #000;
+		text-align: left;
+		margin: 2em 0 4em 0;
+		padding: 10px;
 		position: relative;
+		overflow: visible;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		-khtml-border-radius: 3px;
+		border-radius: 3px;
+		}
+	#app-content {
+		margin: 0;
+		padding: 0;
+		clear: both;
 		overflow: hidden;
+		background: transparent url("images/shade.gif") 0 0;
+		height:	100%;
 		width: 100%;
 		}
-	/*#app-wrap #resizehandle {
+	#app-content img,
+	#app-content object,
+	#app-content applet {
 		margin: 0;
 		padding: 0;
-		height: 17px;
-		width: 295px;
-		text-align:right;
-		font-size:9px;
-		line-height: 9px;
-		display:block;
-		color: #333;
-		background: none;
-		position:absolute;
-		right:-1px;
-		bottom:0;
+		border: none;
 		}
-	#app-wrap #resizehandle img {
-		vertical-align: bottom;
+	#app-btn-close {
+		position: absolute;
+		width: 30px;
+		height: 30px;
+		right: -15px;
+		top: -15px;
+		background: url("images/close.png") no-repeat top left;
+		border: none;
+		text-indent: -55em;
+		overflow: hidden;
+		}
+	#app-btn-resizehandle {
+		position: absolute;
+		width: 30px;
+		height: 30px;
+		right: -15px;
+		bottom: -15px;
+		background: url("images/resizebox.png") no-repeat top left;
+		border: none;
 		cursor: se-resize;
-		margin-left: 3px;
+		text-indent: -55em;
+		overflow: hidden;
 		}
-	#app-wrap #positions {
-		margin: 0 2px 0 0;
-		padding: 0 0 0 0;
-		color: #333;
-		}
-	#app-wrap #resizehandle input {
-		font-size:9px;
-		margin: 0; padding: 0;
-		}
-	#app-wrap>#resizehandle {
-		right:0;
-		}*/
-	#app-wrap #resize {
+	#app-size {
+		font-size: 90%;
+		position: absolute;
+		right: 0px;
+		bottom: -30px;
 		margin: 0;
 		padding: 0;
-		height: 17px;
-		width: 295px;
-		text-align:right;
-		font-size:9px;
-		line-height: 9px;
-		display:block;
-		color: #333;
-		background: none;
-		position:absolute;
-		right:-1px;
-		bottom:0;
+		white-space: nowrap;
+		color: #aaa;
+		visibility: hidden;
 		}
-	#app-wrap #resize img { 
-		vertical-align: bottom;
-		cursor: se-resize;
-		margin-left: 3px;
+	#app-btn-newwindow {
+		position: absolute;
+		width: 30px;
+		height: 30px;
+		right: 25px;
+		bottom: -15px;
+		background: url("images/newwindowbox.png") no-repeat top left;
+		border: none;
+		cursor: pointer;
+		text-indent: -55em;
+		overflow: hidden;
 		}
-	#app-wrap #positions {
-		margin: 0 2px 0 0;
-		padding: 0 0 0 0;
-		color: #333;
+	#app-btn-refresh {
+		position: absolute;
+		width: 30px;
+		height: 30px;
+		right: 55px;
+		bottom: -15px;
+		background: url("images/refreshbox.png") no-repeat top left;
+		border: none;
+		cursor: pointer;
+		text-indent: -55em;
+		overflow: hidden;
 		}
-	#app-wrap #resize input {
-		font-size:9px;
-		margin: 0; padding: 0;
-		}
-	#app-wrap>#resize {
-		right:0;
+	#app-btn-refresh:hover,
+	#app-btn-resizehandle:hover,
+	#app-btn-newwindow:hover,
+	#app-btn-close:hover {
+		background-position: 0 -30px;
 		}
 /*---------------------------------------------------------------
 	Share form
@@ -445,9 +423,6 @@
 /*---------------------------------------------------------------
 	IE 6 hacks
 ---------------------------------------------------------------*/
-	* html #app-options .app-close a { 
-		display: inline-block;
-		}
 	* html #diskusage #du-amount {
 		float: none;
 		}

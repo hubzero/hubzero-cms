@@ -502,7 +502,7 @@ class ToolsController extends JObject
 		// Needed objects
 		$juser =& JFactory::getUser();
 		$xhub =& XFactory::getHub();
-		$url = $_SERVER['REQUEST_URI'];
+		$url = JRequest::getVar('REQUEST_URI', '', 'server');
 		$xlog =& XFactory::getLogger();
 
 		// Incoming
@@ -616,9 +616,19 @@ class ToolsController extends JObject
 			$this->getDiskUsage();
 			$app['percent'] = $this->percent;
 		}
+
+		// Get plugins
+		JPluginHelper::importPlugin( 'mw', $toolname );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		// Trigger any events that need to be called before session invoke
+		$dispatcher->trigger( 'onBeforeSessionInvoke', array($toolname, $app['version']) );
 		
 		// We've passed all checks so let's actually start the session
 		$sess = $this->middleware("start user=" . $juser->get('username') . " ip=$ip app=".$app['name']." version=".$app['version'], $output);
+		
+		// Trigger any events that need to be called after session invoke
+		$dispatcher->trigger( 'onAfterSessionInvoke', array($toolname, $app['version']) );
 
 		// Get a count of the number of sessions of this specific tool
 		$appcount = $ms->getCount( $juser->get('username'), $app['name'] );
@@ -639,7 +649,7 @@ class ToolsController extends JObject
 		$app['sess'] = $sess;
 		$app['ip'] = $ip;
 		$app['username'] = $juser->get('username');
-		
+
 		// Build and display the HTML
 		//$this->session( $app, $authorized, $output, $toolname );
 		//$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess);
@@ -895,8 +905,18 @@ class ToolsController extends JObject
 		$app['ip'] = $ip;
 		$app['username'] = $row->username;
 		
+		// Get plugins
+		JPluginHelper::importPlugin( 'mw', $app['name'] );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		// Trigger any events that need to be called before session start
+		$dispatcher->trigger( 'onBeforeSessionStart', array($toolname, $tv->revision) );
+		
 		// Call the view command
 		$status = $this->middleware($command, $output);
+		
+		// Trigger any events that need to be called after session start
+		$dispatcher->trigger( 'onAfterSessionStart', array($toolname, $tv->revision) );
 
 		// Build and display the HTML
 		$this->session( $app, $authorized, $output, $toolname );
@@ -997,6 +1017,13 @@ class ToolsController extends JObject
 			return;
 		}
 		
+		// Get plugins
+		JPluginHelper::importPlugin( 'mw', $ms->appname );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		// Trigger any events that need to be called before session stop
+		$dispatcher->trigger( 'onBeforeSessionStop', array($ms->appname) );
+		
 		// Stop the session
 		$status = $this->middleware("stop $sess", $output);
 		if ($status == 0) {
@@ -1007,6 +1034,9 @@ class ToolsController extends JObject
 			}
 			echo '</p>'."\n";
 		}
+		
+		// Trigger any events that need to be called after session stop
+		$dispatcher->trigger( 'onAfterSessionStop', array($ms->appname) );
 
 		// Take us back to the main page...
 		$this->_redirect = JRoute::_('index.php?option=com_myhub');
