@@ -96,7 +96,7 @@ class SelectedQuotes extends JTable
 		if (isset($filters['id']) && $filters['id'] != 0 ) {
 			$query .= " AND id=".$filters['id'];
 		}
-		if ($filters['sortby'] == '') {
+		if (empty($filters['sortby'])) {
 			$filters['sortby'] = 'date';
 		}
 		$query .= "\n ORDER BY ".$filters['sortby']." DESC";

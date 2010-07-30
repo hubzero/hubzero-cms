@@ -235,7 +235,11 @@ class SupportTicket extends JTable
 	{
 		$filter = $this->buildQuery( $filters, $admin );
 		
-		$sql = "SELECT count(*) FROM $filter";
+		if (isset($filters['search']) && $filters['search'] != '') {
+			$sql = "SELECT count(DISTINCT id) FROM $filter";
+		} else {
+			$sql = "SELECT count(DISTINCT f.id) FROM $filter";
+		}
 
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
@@ -248,9 +252,9 @@ class SupportTicket extends JTable
 		$filter = $this->buildQuery( $filters, $admin );
 		
 		if (isset($filters['search']) && $filters['search'] != '') {
-			$sql = "SELECT `id`, `summary`, `report`, `category`, `status`, `severity`, `resolved`, `owner`, `created`, `login`, `name`, `email`, `group`";
+			$sql = "SELECT DISTINCT `id`, `summary`, `report`, `category`, `status`, `severity`, `resolved`, `owner`, `created`, `login`, `name`, `email`, `group`";
 		} else {
-			$sql = "SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.login, f.name, f.email";
+			$sql = "SELECT DISTINCT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.login, f.name, f.email";
 		}
 		$sql .= " FROM $filter";
 		$sql .= " ORDER BY ".$filters['sort'].' '.$filters['sortdir'];

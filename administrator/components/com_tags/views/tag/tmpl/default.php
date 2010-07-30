@@ -48,7 +48,7 @@ if ($this->getError()) {
 					</tr>
 					<tr>
 						<td class="key"><label for="raw_tag"><?php echo JText::_('TAG'); ?>:</label></td>
-						<td><input type="text" name="raw_tag" id="raw_tag" size="30" maxlength="250" value="<?php echo $this->tag->raw_tag; ?>" /></td>
+						<td><input type="text" name="raw_tag" id="raw_tag" size="30" maxlength="250" value="<?php echo htmlentities(stripslashes($this->tag->raw_tag), ENT_COMPAT, 'UTF-8'); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="alias"><?php echo JText::_('ALIAS'); ?>:</label></td>

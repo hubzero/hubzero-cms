@@ -455,23 +455,6 @@ class ToolsController
 		return $this->table($rows,$headers,'host_body','host_edit',$vars);
 	}
 
-	//----------------------------------------------------------
-		$op       = JRequest::getVar( 'op', '', 'get' );
-		$item     = JRequest::getVar( 'item', '', 'get' );
-		$appname  = JRequest::getVar( 'appname', '', 'get' );
-		$geometry = JRequest::getVar( 'geometry', '', 'get' );
-		$depth    = JRequest::getVar( 'depth', '', 'get' );
-		$hostreq  = JRequest::getVar( 'hostreq', '', 'get' );
-		$userreq  = JRequest::getVar( 'userreq', '', 'get' );
-		$timeout  = JRequest::getVar( 'timeout', '', 'get' );
-		$command  = JRequest::getVar( 'command', '', 'get' );
-		$description = JRequest::getVar( 'description', '', 'get' );
-		$filter_appname  = JRequest::getVar( 'filter_appname', '', 'get' );
-		$filter_hosttype = JRequest::getVar( 'filter_hosttype', '', 'get' );
-		$filter_usertype = JRequest::getVar( 'filter_usertype', '', 'get' );
-	// 'type' table entries.
-	//----------------------------------------------------------
-	
 	private function type_display() 
 	{
 		// Get the middleware database
