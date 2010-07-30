@@ -19,11 +19,11 @@ Propel::init("api/org/phpdb/propel/central/conf/central-conf.php");
 //require_once 'lib/data/EquipmentPeer.php';
 //require_once 'lib/data/FacilityPeer.php';
 //require_once 'lib/data/FacilityDataFilePeer.php';
-//require_once 'lib/security/Authorizer.php';
-//require_once 'lib/security/PermissionsViewPeer.php';
-//require_once 'lib/security/Permissions.php';
-//require_once 'lib/data/PersonEntityRolePeer.php';
-//require_once 'lib/data/PersonPeer.php';
+require_once 'lib/security/Authorizer.php';
+require_once 'lib/security/PermissionsViewPeer.php';
+require_once 'lib/security/Permissions.php';
+require_once 'lib/data/PersonEntityRolePeer.php';
+require_once 'lib/data/PersonPeer.php';
 //require_once 'lib/data/Role.php';
 //require_once 'lib/data/SensorPeer.php';
 //require_once 'lib/util/DataFileBrowserSimple.php';
@@ -55,8 +55,12 @@ $pathway   =& $mainframe->getPathway();
 // root entries when selecting the facilities from the menu
 unset($pathway->_pathway[0]);
 
-// Add our 'Root' facilities homepage
-$pathway->addItem( "NEES Site Activities", "/sitesactivities" );
+// Add our 'Root' breadcrumb items
+// Not a great way to do this, but we mix static page content
+// with the componetns, and the breadcrumb trail is kinda
+// hacked to match our top level menu
+$pathway->addItem( "Sites", "/sites-mainpage");
+$pathway->addItem( "Site Activities", "/sitesactivities" );
 
 $controller   = new SitesActivitiesController();
  

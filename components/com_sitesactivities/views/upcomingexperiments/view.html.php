@@ -28,7 +28,7 @@ class sitesactivitiesViewupcomingexperiments extends JView
         $document  = &JFactory::getDocument();
         $pathway   =& $mainframe->getPathway();
         $document->setTitle('Site Experiments');
-        
+
     	// Get the site 
         $facilityID = JRequest::getVar('id');
 
@@ -40,6 +40,12 @@ class sitesactivitiesViewupcomingexperiments extends JView
 
         $this->assign('facilityID', $facilityID);
     	$facility = FacilityPeer::find($facilityID);
+
+        
+        // Breadcrumb additions
+        $pathway->addItem( 'Site Experiments', JRoute::_('/index.php?option=com_sitesactivities&view=upcomingexperiments'));
+        $pathway->addItem( $facility->getName() . ' experiments', JRoute::_('/index.php?option=com_sitesactivities&id=' . $facilityID . '&view=upcomingexperiments'));
+
 
         // If a facility is defined for this page
     	if($facility)
@@ -75,7 +81,24 @@ class sitesactivitiesViewupcomingexperiments extends JView
 
             $this->assignRef('feedcount', $feedcount);
 
+            // Show the edit site status link
+            $canedit = SitesActivitiesHelper::canEdit($facility);
+            $this->assignRef('canedit', $canedit);
 
+            // Get the current site status
+            $sitestatus = SitesActivitiesHelper::getNawiStatus($facilityID);
+            $translatedStatus = '';
+
+
+            switch($sitestatus)
+            {
+                case('NEES'):  $translatedStatus = 'NEES Experiment Today';  break;
+                case('FLEX'): $translatedStatus = 'NEES Research Activities';  break;
+                case('SHARED'): $translatedStatus = 'NEES Support Activities';  break;
+                case('NON_NEES'): $translatedStatus = 'Non-NEES Activities';  break;
+            }
+
+            $this->assignRef('translatedStatus', $translatedStatus);
 
             // Build the summary of experiments table
             $phasetable = "";
@@ -147,7 +170,8 @@ class sitesactivitiesViewupcomingexperiments extends JView
                     $fac = $nawifac->getOrganization();
 
                     $exp_name = stripslashes( $nawi->getExperimentName() );
-                    $exp_descript = nl2br(( $nawi->getExperimentDescription() ));
+                    $exp_descript = SitesActivitiesHelper::CreateHideMoreSection( $nawi->getExperimentDescription(), 250);
+
                     $movie_url = stripslashes( $nawi->getMovieUrl() );
                     $newDate = $nawi->getTestDate();
                     $expPhase = $nawi->getExperimentPhase();
@@ -250,6 +274,7 @@ ENDHTML2;
         else // facility is not defined
         {
             $facilityName = '';
+
         }
 
         $this->assignRef('explist_act', $explist_act);

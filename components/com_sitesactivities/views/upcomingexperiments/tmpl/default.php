@@ -4,13 +4,13 @@
  
 defined('_JEXEC') or die('Restricted access'); ?>
 
+<script type="text/javascript" src="/components/com_sitesactivities/js/siteactivities.js"></script>
+
 <div id="mainpage-facilities-header">
-	<h2>NEES Site Activities</h2>
+	<h2>Site Activities</h2>
 </div>
 
-
 <?php echo $this->tabs;?>
-
 
 <div id="mainpage-facilities-main">
 
@@ -51,7 +51,16 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<div id="mainpage-facilities-rhs">
 
 	<h2><?php echo $this->facilityName . ' experiments';?></h2>
+        <hr>
 
+        <span style="font-weight:bold;">Current Site Status: </span><?php echo $this->translatedStatus; ?>
+
+        <?php
+        if($this->canedit)
+        {
+            echo '<a href="' . JRoute::_('/index.php?option=com_sitesactivities&view=editsitestatus&id=' . $this->facilityID) . '">[change]</a>';
+        }
+        ?>
 
         <?php 
         if ($this->feedcount > 0 )
@@ -73,17 +82,15 @@ defined('_JEXEC') or die('Restricted access'); ?>
                 </div>
             </div>
 
-
-
         <?php 
         }
         ?>
 
             <h3> Experiments Summary </h3>
             <hr/>
-            <div style="width:250px; border: solid 1px #efefef; margin-top:5px;">
+            <div style="width:250px; border: solid 1px #aaa; padding-top:2px; margin-top:5px;">
                 <table style="border:none">
-                    <tr><th style="background-color: #f4f4f4;">Phase</th><th style="background-color: #f4f4f4;">Experiments</th></tr>
+                    <tr><th style="background-color: #ddd;">Phase</th><th style="background-color: #ddd;">Experiments</th></tr>
                     <?php echo $this->phasetable; ?>
 
                 </table>

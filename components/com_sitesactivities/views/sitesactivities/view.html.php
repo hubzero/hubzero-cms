@@ -23,7 +23,16 @@ class sitesactivitiesViewsitesactivities extends JView
     	// Get the tabs for the top of the page
         $tabs = SitesActivitiesHelper:: getSitesActivitiesTabs(0);
         $this->assignRef('tabs', $tabs); 
-    	
+
+        $facilityID = JRequest::getVar('id');
+
+        // Page title and breadcrumb stuff
+        $mainframe = &JFactory::getApplication();
+        $document  = &JFactory::getDocument();
+        $pathway   =& $mainframe->getPathway();
+
+        // Add crrent page name to breadcrumb
+        $pathway->addItem( 'Activities Map', JRoute::_('/sitesactivities'));
     	
         parent::display($tpl);
     }

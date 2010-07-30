@@ -47,12 +47,18 @@ class sitesactivitiesViewequipmentavailability extends JView
 
         $facility = FacilityPeer::find($facilityID);
 
+
+        // Breadcrumb additions
+        $pathway->addItem( 'Site Equipment Schedules', JRoute::_('index.php?option=com_sitesactivities&view=equipmentavailability'));
+        $pathway->addItem( $facility->getName() . ' major equipment schedule', JRoute::_('/index.php?option=com_sitesactivities&id=' . $facilityID . '&view=equipmentavailability'));
+
+
     	if($facility)
-    		$facilityName = $facility->getName();
-		else
-			$facilityName = '';
+            $facilityName = $facility->getName();
+        else
+            $facilityName = '';
         	
-		$this->assignRef('facilityName', $facilityName);
+        $this->assignRef('facilityName', $facilityName);
 			
 			
         parent::display($tpl);

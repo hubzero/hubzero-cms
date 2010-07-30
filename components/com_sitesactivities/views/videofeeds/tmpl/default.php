@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <script type="text/javascript" src="/components/com_sitesactivities/js/siteactivities.js"></script>
 
 <div id="mainpage-facilities-header">
-	<h2>Site Video Feeds</h2>
+	<h2>Site Activities</h2>
 </div>
 
 <?php echo $this->tabs;?>

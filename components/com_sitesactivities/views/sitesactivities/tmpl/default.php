@@ -5,7 +5,7 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <div id="mainpage-facilities-header">
-	<h2>NEES Site Activities</h2>
+	<h2>Site Activities</h2>
 </div>
 
 
@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	
 	
 	<div id="mainpage-facilities-rhs" style="float:left;width:470px;">
-		<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="https://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="322" height="462" id="map" align="middle">
+		<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="https://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="462" height="322" id="map" align="middle">
 		<param name="allowScriptAccess" value="sameDomain" />
 		<param name="movie" value="/flash/map.swf" />
 		<param name="quality" value="best" />

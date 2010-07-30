@@ -12,11 +12,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	switch(JRequest::getInt('id'))
 	{
 		case(226): // University of CA, Los Angeles
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 
 		case(228): // University of CA, Santa Barbara
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		
 		case(280): // University of TX, Austin</a></li>
@@ -24,47 +24,47 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		break;
 		
 		case(205): // Rensselaer Polytechnic Institute</a></li>
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		
 		case(276): // University of CA, Davis</a></li>
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		
 		case(180): // Cornell University</a></li>
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		
 		case(191): // Lehigh University</a></li>
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		
 		case(275): // University of CA, Berkeley</a></li>
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		
 		case(236): // University of IL, Urbana</a></li>
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		
 		case(244): // University of Minnesota</a></li>
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		
 		case(274): // University at Buffalo, SUNY</a></li>
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		
 		case(277): // University of CA, San Diego</a></li>
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		
 		case(279): // University of Nevada, Reno</a></li>
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		
 		case(200): // Oregon State University</a></li>
-		echo 'calendar_feeds = new Array("mpel6nhmvejtj092099nea7c14%40group.calendar.google.com", "6ped6bhampbjmim9vm0lermf80%40group.calendar.google.com", "hv565jscli2o7157mscjgio2f8%40group.calendar.google.com", "mcs5h6psa5q13pobb21fklpg24%40group.calendar.google.com" );';
+		echo 'calendar_feeds = new Array("", "", "", "");';
 		break;
 		}
 

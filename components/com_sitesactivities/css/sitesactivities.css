@@ -5,7 +5,7 @@
 
 #mainpage-facilities-main {
 	margin-top:30px;
-        min-width:900px;
+        min-width:1000px;
 	}
 	
 #facility-subpage-primarycontent {
@@ -17,8 +17,8 @@
 	
 #mainpage-facilities-rhs {
 	position: relative;
-	width: 600px;
-        min-width: 600px;
+	width: 700px;
+        min-width: 700px;
 	float: left;
 	}
 	
@@ -187,4 +187,6 @@ div.sectheaderbtn {
 .loading {
     background:#FFFFFF url(/components/com_activities/images/loading.gif) no-repeat scroll left top;
 }
-		
+
+
+.morelesslink {font-size:small;}

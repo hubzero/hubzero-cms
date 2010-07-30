@@ -29,6 +29,7 @@ class sitesactivitiesViewvideofeeds extends JView
         $pathway   =& $mainframe->getPathway();
         $document->setTitle('Site Video Feeds');
 
+
     	// Get the site
         $facilityID = JRequest::getVar('id');
 
@@ -40,6 +41,11 @@ class sitesactivitiesViewvideofeeds extends JView
 
         $this->assign('facilityID', $facilityID);
     	$facility = FacilityPeer::find($facilityID);
+
+        // Breadcrum additions
+        $pathway->addItem( 'Site Video Feeds', JRoute::_('index.php?option=com_sitesactivities&view=videofeeds'));
+        $pathway->addItem( $facility->getName() . ' live video feeds', JRoute::_('/index.php?option=com_sitesactivities&id=' . $facilityID . '&view=videofeeds'));
+
 
         // If a facility is defined for this page
     	if($facility)
