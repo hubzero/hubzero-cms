@@ -194,10 +194,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	}
 	
 	//$row->report = htmlentities(stripslashes($row->report),ENT_QUOTES);
-	$row->report = htmlentities(stripslashes($row->report), ENT_COMPAT, 'UTF-8');
-	$row->report = str_replace(r,'',$row->report);
-	$row->report = str_replace(n,'',$row->report);
-	$row->report = str_replace(t,'',$row->report);
+	$row->report = stripslashes($row->report);
+	//$row->report = str_replace(r,'',$row->report);
+	//$row->report = str_replace(n,'',$row->report);
+	//$row->report = str_replace(t,'',$row->report);
 	
 	$tags = $st->get_tag_cloud( 3, 1, $row->id );
 ?>
@@ -205,7 +205,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						<td><?php echo $row->id; ?></td>
 						<td>
 							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=ticket&id='.$row->id); echo ($fstring != '') ? '?find='.$fstring : ''; ?>" title="<?php echo $row->report; ?>"><?php echo stripslashes($row->summary); ?></a>
-							<span class="reporter">by <?php echo $row->name; echo ($row->login) ? ' (<a href="'.$lnk.'">'.$row->login.'</a>)' : ''; ?>, <?php echo JText::_('TAGS'); ?>: <span class="tags"><?php echo $tags; ?></span></span>
+							<span class="reporter">by <?php echo $row->name; echo ($row->login) ? ' (<a href="'.$lnk.'">'.$row->login.'</a>)' : ''; if ($tags) { ?>, <?php echo JText::_('TAGS'); ?>: <span class="tags"><?php echo $tags; ?></span><?php } ?></span>
 						</td>
 						<td style="white-space: nowrap;"><span class="<?php echo $status; ?> status"><?php echo ($row->status == 2) ? '&radic; ' : ''; echo $status; echo ($row->status == 2) ? ' ('.$row->resolved.')' : ''; ?></span></td>
 						<td style="white-space: nowrap;"><?php echo $row->group; ?></td>

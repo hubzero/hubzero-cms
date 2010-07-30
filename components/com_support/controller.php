@@ -550,7 +550,7 @@ class SupportController extends Hubzero_Controller
 
 	protected function save() 
 	{
-	    $juser =& JFactory::getUser();
+		$juser =& JFactory::getUser();
 		
 		// Make sure we are still logged in
 		if ($juser->get('guest')) {
@@ -627,9 +627,9 @@ class SupportController extends Hubzero_Controller
 		
 		// Save the tags
 		$tags = trim(JRequest::getVar( 'tags', '', 'post' ));
-		if ($tags) {
+		//if ($tags != $oldtags) {
 			$st->tag_object( $juser->get('id'), $row->id, $tags, 0, true );
-		}
+		//}
 
 		// We must have a ticket ID before we can do anything else
 		if ($id) {
