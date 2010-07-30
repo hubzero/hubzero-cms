@@ -29,6 +29,7 @@ ximport('Hubzero_View_Helper_Html');
 $morelink = count($modannouncements->content) > 0 ? $modannouncements->content[0]->secname : 'announcements';
 $morelink = $params->get('show_viewall', '') ? $morelink : '';
 $subscribelink = $params->get('show_subscribe', '') &&  $params->get('subscribe_path', '') ?  $params->get('subscribe_path', '') : '';
+$html = '';
 ?>
 <?php if  ($morelink or $subscribelink) { ?>
   <p class="sublinks">
