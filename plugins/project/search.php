@@ -95,10 +95,6 @@ class plgProjectSearch extends JPlugin{
     if(strlen($strMemberCondition)>0){
   	  $strCondition = $strCondition . " AND ". $strMemberCondition;
   	}
-  	
-  	//find the upper and lower bounds for pagination (joomla)
-//  $iLowerLimit = $this->computeLowerLimit($iLimitStart);
-//  $iUpperLimit = $this->computeUpperLimit($iLowerLimit, $iDisplay);
     
     $iLowerLimit = $this->computeLowerLimit($iPageIndex, $iDisplay);
     $iUpperLimit = $this->computeUpperLimit($iPageIndex, $iDisplay);
@@ -172,7 +168,7 @@ class plgProjectSearch extends JPlugin{
   	  $strCondition = $strCondition . " AND ". $strMemberCondition;
   	}
   	
-  	$iLowerLimit = $this->computeLowerLimit($iLimitStart);
+  	$iLowerLimit = $this->computeLowerLimit($iLimitStart, $iDisplay);
     $iUpperLimit = $this->computeUpperLimit($iLowerLimit, $iDisplay);
   	
   	$strQuery = "SELECT COUNT(PROJECT.PROJID) AS TOTAL 

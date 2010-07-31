@@ -11,6 +11,9 @@ require_once 'lib/data/DataFile.php';
 require_once 'lib/data/DataFilePeer.php';
 require_once 'lib/data/EntityType.php';
 require_once 'lib/data/EntityTypePeer.php';
+require_once 'lib/data/Thumbnail.php';
+require_once 'lib/data/DataFileLinkPeer.php';
+require_once 'lib/data/DataFileLink.php';
 require_once 'api/org/nees/util/PhotoHelper.php';
 require_once 'api/org/nees/static/Files.php';
 require_once 'api/org/nees/lib/filesystem/FileCommandAPI.php';
@@ -162,11 +165,14 @@ class plgProjectUpload extends JPlugin{
     $bDisplay = $this->scaleImage($strSource, PhotoHelper::DEFAULT_DISPLAY_WIDTH, PhotoHelper::DEFAULT_DISPLAY_HEIGHT, $strDisplayFile);
     if($bDisplay){
       /* @var $oEntityType EntityType */
-      $oEntityType = EntityTypePeer::findByTableName("DataPhoto");
+      $oEntityType = EntityTypePeer::findByTableName("Data Photo");
 
       $oDisplayDataFile = new DataFile();
       $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId());
     }
+
+    $escSource = escapeshellarg($p_strWarehousePath);
+    exec("/nees/home/bin/fix_permissions $escSource", $output);  
   }
 
   /**
@@ -270,6 +276,8 @@ class plgProjectUpload extends JPlugin{
     $iDisplayWidth = PhotoHelper::DEFAULT_DISPLAY_WIDTH;
     $iDisplayHeight = PhotoHelper::DEFAULT_DISPLAY_HEIGHT;
 
+    $strUsageTypeName = "";
+
     /* @var $oUsageEntityType EntityType */
     $oUsageEntityType = $oDataFile->getEntityType();
     if($oUsageEntityType){
@@ -302,11 +310,14 @@ class plgProjectUpload extends JPlugin{
 
     $bDisplay = $this->scaleImage($strSource, $iDisplayWidth, $iDisplayHeight, $strDisplayFile);
     if($bDisplay){
-      $oEntityType = EntityTypePeer::findByTableName("DataPhoto");
+      $oEntityType = EntityTypePeer::findByTableName("Data Photo");
 
       $oDisplayDataFile = new DataFile();
       $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId());
     }
+
+    $escSource = escapeshellarg($strWarehousePath);
+    exec("/nees/home/bin/fix_permissions $escSource", $output);
 
     return true;
   }
@@ -336,6 +347,9 @@ class plgProjectUpload extends JPlugin{
 
     $strDisplayName = "display_".$oDataFile->getId()."_".$oDataFile->getName();
     $strDisplayFile = $strWarehousePath."/".$strDisplayName;
+
+    $strIconName = "icon_".$oDataFile->getId()."_".$oDataFile->getName();
+    $strIconFile = $strWarehousePath."/".$strIconName;
 
     $bThumbExists = false;
     if(is_file($strThumbnailFile)){
@@ -391,10 +405,32 @@ class plgProjectUpload extends JPlugin{
 
     $bDisplay = $this->scaleImageByWidth($strSource, $iDisplayWidth, $strDisplayFile);
     if($bDisplay){
-      $oEntityType = EntityTypePeer::findByTableName("DataPhoto");
+      $oEntityType = EntityTypePeer::findByTableName("Data Photo");
 
       $oDisplayDataFile = new DataFile();
       $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId());
+    }
+
+    //ONLY FOR PROJECTS. (displays in search results)
+    if ($strUsageEntityType=="Project Image"){
+      $bIcon = $this->scaleImageByWidth($strSource, PhotoHelper::DEFAULT_THUMB_WIDTH, $strIconFile);
+      if($bIcon){
+        $oEntityType = EntityTypePeer::findByTableName("Project Icon");
+
+        //store the icon into the data_file table
+        $oIconDataFile = new DataFile();
+        $oIconDataFile = $oIconDataFile->newDataFileByFilesystem($strIconName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId());
+
+        //for record keeping, ensure thumbnail table knows about data_file
+        $oDataFileLink = DataFileLinkPeer::retrieveByPK($oDataFile->getId());
+        $oThumbnail = new Thumbnail($oDataFile->getId(), $oDataFileLink->getProjectId(), 1);
+        $oThumbnail->save();
+
+        //update the project's thumb_id
+        $oDataFile->setThumbId($oIconDataFile->getId());
+        $oDataFile->setView("PUBLIC");
+        $oDataFile->save();
+      }
     }
 
     return true;

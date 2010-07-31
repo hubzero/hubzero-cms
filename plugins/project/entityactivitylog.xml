@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<install version="1.5" type="plugin" group="project">
+    <name>Project Warehouse - Entity Activity Log</name>
+    <author>Gemez Marshall</author>
+    <creationDate>July 27, 2010</creationDate>
+    <copyright></copyright>
+    <authorEmail>gemezm@purdue.edu</authorEmail>
+    <authorUrl>neeshub.org</authorUrl>
+    <version>0.0.1</version>
+    <description>Manages the activity of entities for the warehouse</description>
+    <files>
+        <filename plugin="entityactivitylog">entityactivitylog.php</filename>
+    </files>
+    <params>
+        <param name="eal_limit" type="text" size="5" default="50" label="EAL Limit" description="Number of entity activities to return"/>
+    </params>
+</install>

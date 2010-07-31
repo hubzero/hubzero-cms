@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <install version="1.5" type="plugin" group="project">
-    <name>Project Warehouse Search</name>
+    <name>Project Warehouse - Search</name>
     <author>Gemez Marshall</author>
     <creationDate>Marche 27, 2010</creationDate>
     <copyright></copyright>
