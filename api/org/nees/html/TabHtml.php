@@ -27,21 +27,15 @@
 	  return $strHtml;
     }
     
-    public static function getTabs( $p_strOption, $p_iId, $p_oTabArray, $p_strActive='default' ) {
+    public static function getTabs( $p_strOption, $p_iId, $p_oTabArray, $p_oTabViewArray, $p_strActive='default' ) {
 	  $strHtml  = '<div id="sub-menu" style="position:relative;z-index:3">';
 	  $strHtml .= '<ul>';
 	  $i = 1;
-	  foreach ($p_oTabArray as $strTabArray){
-	    //$strName = key($strTabArray);
-	    $strName = $strTabArray;
-	    $strView = $strName;
-	    $strNameArray = explode(" ", $strName);
-	    if(sizeof($strNameArray) == 2){
-	      $strView = $strNameArray[1];	
-	    }
+	  foreach ($p_oTabArray as $iTabIndex=>$strName){
+	    $strView = $p_oTabViewArray[$iTabIndex];
 	    if ($strName != '') {
 		  $strHtml .= '<li id="sm-'.$i.'"';
-		  $strHtml .= (strtolower($strName) == $p_strActive) ? ' class="active"' : '';
+		  $strHtml .= (strtolower($strView) == $p_strActive) ? ' class="active"' : '';
 		  //$strHtml .= '><a class="tab" rel="'.$strName.'" href="'.JRoute::_('index.php?option='.$p_strOption.a.'id='.$p_iId.a.'active='.$strName).'"><span>'.$strTabArray[$strName].'</span></a></li>'.n;
 		  $strHtml .= '><a class="tab" rel="'.$strName.'" href="'.$p_strOption."/".strtolower($strView)."/".$p_iId.'"><span>'.$strName.'</span></a></li>';
 		  $i++;
@@ -160,6 +154,16 @@ ENDHTML;
 		          <input type="submit" value="GO">
 		        </form>
 		      </div>
+ENDHTML;
+      return $strHTML;
+    }
+
+    public static function getSearchFormWithAction( $p_strFormId, $p_strAction ){
+      $strHTML = <<< ENDHTML
+              <div class="tabKeywordSearch" id="warehouseSearch">
+                  <input type="text" name="keywords" value="warehouse search" style="color:#999999" onClick="this.value='';">
+                  <input type="button" value="GO" onClick="document.getElementById('$p_strFormId').action='$p_strAction';document.getElementById('$p_strFormId').submit();">
+              </div>
 ENDHTML;
       return $strHTML;
     }

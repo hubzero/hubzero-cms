@@ -1020,6 +1020,13 @@ class ProjectPeer extends BaseProjectPeer {
     
   	return $strFundingArray;
   }
+
+  public static function findByFundOrg(){
+    $oCriteria = new Criteria();
+    $oCriteria->add(self::FUNDORGPROJID, null, Criteria::NOT_EQUAL);
+    $oCriteria->addAscendingOrderByColumn(self::PROJID);
+    return self::doSelect($oCriteria);
+  }
   
   public static function getTop10Searches(){
   	$oReturnArray = array();
@@ -1068,6 +1075,26 @@ class ProjectPeer extends BaseProjectPeer {
       array_push($oReturnArray, $strTool);
     }
     
+    return $oReturnArray;
+  }
+
+  public static function findByType($p_iProjectTypeId){
+    $oReturnArray = array();
+
+    $strQuery = "select p.projid
+                 from project p
+                 where p.project_type_id=$p_iProjectTypeId
+                 order by p.projid";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->createStatement();
+    //$oStatement->setInt(1, $p_iProjectTypeId);
+    $oResultsSet = $oStatement->executeQuery($strQuery, ResultSet::FETCHMODE_ASSOC);
+    while($oResultsSet->next()){
+      $iProjectId = $oResultsSet->getInt('PROJID');
+      array_push($oReturnArray, $iProjectId);
+    }
+
     return $oReturnArray;
   }
   

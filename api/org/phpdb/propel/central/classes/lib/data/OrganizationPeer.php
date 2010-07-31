@@ -191,9 +191,9 @@ class OrganizationPeer extends BaseOrganizationPeer {
   	$oCriteria->addJoin(self::ORGID, ProjectOrganizationPeer::ORGID, Criteria::INNER_JOIN);
   	$oCriteria->add(ProjectOrganizationPeer::PROJID, $p_iProjectId);
   	$oCriteria->add(self::NAME, "Default Organization", Criteria::NOT_EQUAL);
-    $oCriteria->add(self::FACILITYID, 0, Criteria::NOT_EQUAL);
-    
-  	return self::doSelect($oCriteria);
+        $oCriteria->add(self::FACILITYID, 0, Criteria::NOT_EQUAL);
+
+        return self::doSelect($oCriteria);
   }
   
   public static function findExperimentFacility($p_iExperimentId){

@@ -8,6 +8,7 @@ require_once 'lib/filesystem/FileCommandAPI.php';
 require_once "lib/interface/Data.php";
 require_once 'lib/common/ImageThumbnail.php';
 require_once 'util/PhotoHelper.php';
+require_once 'static/Files.php';
 
 /**
  * DataFile
@@ -666,20 +667,117 @@ class DataFile extends BaseDataFile {
     elseif(self::isImage()) {
       $thumb = new ImageThumbnail();
 
-      $thumbpath = "/nees/home/Public.groups";
-      $thumbname = "thumb_" . time() . "_" . $this->getName();
+      $iDataFileId = $this->getId();
 
-      //if($thumb->img_resize(self::getFullPath(), 60, $thumbpath . "/" . $thumbname)) {
-      if(PhotoHelper::resize(self::getFullPath(), PhotoHelper::EXPERIMENT_THUMB_WIDTH, PhotoHelper::EXPERIMENT_THUMB_HEIGHT, $thumbpath . "/" . $thumbname)) {
+//      $thumbpath = "/nees/home/Public.groups";
+//      $thumbname = "thumb_" . time() . "_" . $this->getName();
+
+      $thumbpath = $this->getPath()."/".Files::GENERATED_PICS;
+      if(!is_dir($thumbpath) && !is_file($thumbpath)){
+        $oFileCommand = FileCommandAPI::create($thumbpath);
+        $oFileCommand->mkdir();
+      }
+      $thumbname = "thumb_" . $iDataFileId . "_" . $this->getName();
+
+      $bResized = PhotoHelper::resize(self::getFullPath(), PhotoHelper::EXPERIMENT_THUMB_WIDTH, PhotoHelper::EXPERIMENT_THUMB_HEIGHT, $thumbpath . "/" . $thumbname);
+      if($bResized) {
+        $oExperimentEntityType = EntityTypePeer::findByTableName("Experiment Image");
+        $oThumbEntityType = EntityTypePeer::findByTableName("Thumbnail");
+        $oDisplayEntityType = EntityTypePeer::findByTableName("Data Photo");
+
         $fullName = $thumbpath . "/" . $thumbname;
         $thumb_df = DataFilePeer::insertOrUpdateIfDuplicate($thumbname, $thumbpath, date('Y-m-d H:i:s'), md5_file($fullName), 0, filesize($fullName));
 
         if($thumb_df) {
           $thumb_df->setView('PUBLIC');
+          $thumb_df->setUsageTypeId($oThumbEntityType->getId());
           $thumb_df->save();
 
           $this->setThumbId($thumb_df->getId());
+          $this->setUsageTypeId($oExperimentEntityType->getId());
           $this->save();
+        }
+
+        if(file_exists($fullName)){
+          $displayname = "display_" . $iDataFileId . "_" . $this->getName();
+          $strFullName = $thumbpath . "/" . $displayname;
+          PhotoHelper::resize(self::getFullPath(), PhotoHelper::DEFAULT_DISPLAY_WIDTH, PhotoHelper::DEFAULT_DISPLAY_HEIGHT, $strFullName);
+          $display_df = DataFilePeer::insertOrUpdateIfDuplicate($displayname, $thumbpath, date('Y-m-d H:i:s'), md5_file($strFullName), 0, filesize($strFullName), $oDisplayEntityType->getId());
+        }
+
+        $escSourc = escapeshellarg($thumbpath);
+        exec("/nees/home/bin/fix_permissions $escSourc", $output);
+
+        if($thumb_df) {
+          return $thumb_df->getId();
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Get the thumbnail of a data file if it is an image
+   * If the thumbnail is not created, create it now
+   *
+   * @return int $thumbId
+   */
+  function getProjectImageThumbnailId() {
+    $thumbId = parent::getThumbId();
+    if($thumbId) {
+      return $thumbId;
+    }
+    elseif(self::isImage()) {
+      $thumb = new ImageThumbnail();
+
+      $iDataFileId = $this->getId();
+
+      $thumbpath = $this->getPath()."/".Files::GENERATED_PICS;
+      if(!is_dir($thumbpath) && !is_file($thumbpath)){
+        $oFileCommand = FileCommandAPI::create($thumbpath);
+        $oFileCommand->mkdir();
+      }
+      $thumbname = "thumb_" . $iDataFileId . "_" . $this->getName();
+
+      $bResized = PhotoHelper::resizeByWidth(self::getFullPath(), PhotoHelper::PROJECT_THUMB_WIDTH, $thumbpath . "/" . $thumbname);
+      if($bResized) {
+        $oProjectEntityType = EntityTypePeer::findByTableName("Project Image");
+        $oThumbEntityType = EntityTypePeer::findByTableName("Thumbnail");
+        $oDisplayEntityType = EntityTypePeer::findByTableName("Data Photo");
+        $oIconEntityType = EntityTypePeer::findByTableName("Project Icon");
+
+        $fullName = $thumbpath . "/" . $thumbname;
+        $thumb_df = DataFilePeer::insertOrUpdateIfDuplicate($thumbname, $thumbpath, date('Y-m-d H:i:s'), md5_file($fullName), 0, filesize($fullName));
+
+        //set thumb's view to public and usage type to thumbnail
+        if($thumb_df) {
+          $thumb_df->setView('PUBLIC');
+          $thumb_df->setUsageTypeId($oThumbEntityType->getId());
+          $thumb_df->save();
+        }
+
+        //create display and icon images (search results)
+        if(file_exists($fullName)){
+          $displayname = "display_" . $iDataFileId . "_" . $this->getName();
+          $strFullName = $thumbpath . "/" . $displayname;
+          PhotoHelper::resize(self::getFullPath(), PhotoHelper::DEFAULT_DISPLAY_WIDTH, PhotoHelper::DEFAULT_DISPLAY_HEIGHT, $strFullName);
+          $display_df = DataFilePeer::insertOrUpdateIfDuplicate($displayname, $thumbpath, date('Y-m-d H:i:s'), md5_file($strFullName), 0, filesize($strFullName), $oDisplayEntityType->getId());
+
+          $strIconName = "icon_" . $iDataFileId . "_" . $this->getName();
+          $strIconFullName = $thumbpath . "/" . $strIconName;
+          PhotoHelper::resizeByWidth(self::getFullPath(), PhotoHelper::DEFAULT_THUMB_WIDTH, $strIconFullName);
+          $icon_df = DataFilePeer::insertOrUpdateIfDuplicate($strIconName, $thumbpath, date('Y-m-d H:i:s'), md5_file($strIconFullName), 0, filesize($strIconFullName), $oIconEntityType->getId());
+
+          //set the data_file's thumb_id and usage type to project image
+          $this->setThumbId($icon_df->getId());
+          $this->setUsageTypeId($oProjectEntityType->getId());
+          $this->save();
+        }
+
+        $escSource = escapeshellarg($thumbpath);
+        exec("/nees/home/bin/fix_permissions $escSource", $output);
+
+        if($thumb_df) {
           return $thumb_df->getId();
         }
       }

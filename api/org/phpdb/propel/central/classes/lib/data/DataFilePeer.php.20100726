@@ -2,8 +2,6 @@
 
 // include base peer class
 require_once 'lib/data/om/BaseDataFilePeer.php';
-require_once 'lib/data/EntityTypePeer.php';
-require_once 'lib/data/EntityType.php';
 require_once 'api/org/nees/static/Files.php';
 require_once 'api/org/nees/lib/filesystem/FileCommandAPI.php';
 
@@ -25,7 +23,7 @@ include_once 'lib/data/DataFile.php';
  *
  * @package    lib.data
  */
-class DataFilePeer extends BaseDataFilePeer {
+class DataFilePeer1 extends BaseDataFilePeer {
 
     /**
      * Find a DataFile object based on its ID
@@ -830,7 +828,8 @@ class DataFilePeer extends BaseDataFilePeer {
         $strQuery .= "  and(
                              (lower(df.name) like '%.png') or
                              (lower(df.name) like '%.jpg') or
-                             (lower(df.name) like '%.gif') 
+                             (lower(df.name) like '%.gif') or
+                             (lower(df.name) like '%.bmp')
                            )
                         )
                         WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
@@ -848,10 +847,6 @@ class DataFilePeer extends BaseDataFilePeer {
             $oStatement->setInt(4, $p_iRepetitionId);
         }
         $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
-
-        $oThumbEntityType = EntityTypePeer::findByTableName("Thumbnail");
-        $oDisplayEntityType = EntityTypePeer::findByTableName("Data Photo");
-
         while ($oResultSet->next()) {
             $strFileArray = array();
             $strFileArray['ID'] = $oResultSet->getInt("ID");
@@ -862,6 +857,8 @@ class DataFilePeer extends BaseDataFilePeer {
             $strFileArray['THUMB_ID'] = $oResultSet->getInt("THUMB_ID");
 
             $strSource = $strFileArray['PATH'] . "/" . $strFileArray['NAME'];
+            //$strPathArray = explode("/", $strFileArray['PATH']);
+            //$thumbpath = $strPathArray[0] . "/" . $strPathArray[1] . "/" . $strPathArray[2] . "/" . $strPathArray[3] . "/Photos";
             $thumbpath = $strFileArray['PATH'] . "/" . Files::GENERATED_PICS;
             if(!is_dir($thumbpath)){
               $oFileCommand = FileCommandAPI::create($thumbpath);
@@ -873,16 +870,8 @@ class DataFilePeer extends BaseDataFilePeer {
             if (!file_exists($fullName)) {
                 $bThumbCreated = PhotoHelper::resize($strSource, 90, 75, $fullName);
                 if ($bThumbCreated && file_exists($fullName)) {
-
-                    $oThumbDataFile = new DataFile();
-                    $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($thumbname, $thumbpath, false, $strFileArray['TITLE'], $strFileArray['DESCRIPTION'], $oThumbEntityType->getId());
-
                     $strFullName = $thumbpath . "/" . $strDisplayName;
                     $bDisplayCreated = PhotoHelper::resize($strSource, 800, 600, $strFullName);
-                    if($bDisplayCreated){
-                      $oDisplayDataFile = new DataFile();
-                      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $thumbpath, false, $strFileArray['TITLE'], $strFileArray['DESCRIPTION'], $oDisplayEntityType->getId());
-                    }
                 }
             }
 
@@ -891,11 +880,7 @@ class DataFilePeer extends BaseDataFilePeer {
                 $strCaption = str_replace("_", " ", $strCaption);
                 $strFileArray['THUMBNAIL'] = "<div style='color:green'><a style='border-bottom:0px;' rel='lightbox[hub]' title='" . $strFileArray['DESCRIPTION'] . "' target='_blank' href='" . self::getUrl($thumbpath, $strDisplayName) . "'><img src='" . self::getUrl($thumbpath, $thumbname) . "'  alt=''/></a><br>" . StringHelper::neat_trim($strCaption, 15, $strDelimiter = '...') . "</div>";
             }
-
             array_push($oReturnArray, $strFileArray);
-
-            $escSource = escapeshellarg($thumbpath);
-            exec("/nees/home/bin/fix_permissions $escSource", $output);
         }
         return $oReturnArray;
     }
@@ -920,7 +905,8 @@ class DataFilePeer extends BaseDataFilePeer {
         $strQuery .= " and(
                              (lower(df.name) like '%.png') or
                              (lower(df.name) like '%.jpg') or
-                             (lower(df.name) like '%.gif') 
+                             (lower(df.name) like '%.gif') or
+                             (lower(df.name) like '%.bmp')
   				   )";
 
         $iCount = 0;
@@ -946,19 +932,19 @@ class DataFilePeer extends BaseDataFilePeer {
         require_once 'api/org/nees/util/PhotoHelper.php';
 
         $strQuery = "SELECT *
-                     FROM (
-                       select df.id, df.name, df.description, df.path, df.title, df.thumb_id, row_number()
-                       OVER (ORDER BY df.path, df.name) as rn
-                       from data_file df,
-                                data_file_link dfl
-                       where df.id = dfl.id
-                         and df.deleted=0
-                         and df.directory=0
-                         and dfl.deleted=0
-                         and dfl.proj_id=?
-                         and df.usage_type_id=(select id from entity_type where n_table_name=?)
-                    )
-                    WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
+				 FROM (
+  				   select df.id, df.name, df.description, df.path, df.title, df.thumb_id, row_number() 
+  				   OVER (ORDER BY df.path, df.name) as rn 
+  				   from data_file df,
+  				 	    data_file_link dfl
+  				   where df.id = dfl.id
+  				     and df.deleted=0
+  				     and df.directory=0
+  				     and dfl.deleted=0
+  				     and dfl.proj_id=?
+  				     and df.usage_type_id=(select id from entity_type where n_table_name=?)
+  				)  
+				WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
 
         $oReturnArray = array();
 
@@ -988,10 +974,10 @@ class DataFilePeer extends BaseDataFilePeer {
             $strDisplayName = "display_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
             $fullName = $thumbpath . "/" . $thumbname;
             if (!file_exists($fullName)) {
-                $bThumbCreated = PhotoHelper::resize($strSource, PhotoHelper::DEFAULT_THUMB_WIDTH, PhotoHelper::DEFAULT_THUMB_HEIGHT, $fullName);
+                $bThumbCreated = PhotoHelper::resize($strSource, 90, 75, $fullName);
                 if ($bThumbCreated && file_exists($fullName)) {
                     $strFullName = $thumbpath . "/" . $strDisplayName;
-                    $bDisplayCreated = PhotoHelper::resize($strSource, PhotoHelper::DEFAULT_DISPLAY_WIDTH, PhotoHelper::DEFAULT_DISPLAY_HEIGHT, $strFullName);
+                    $bDisplayCreated = PhotoHelper::resize($strSource, 800, 600, $strFullName);
                 }
             }
 
@@ -1002,9 +988,6 @@ class DataFilePeer extends BaseDataFilePeer {
                 $strFileArray['THUMBNAIL'] = $strFileArray['NAME'] . " not found.";
             }
             array_push($oReturnArray, $strFileArray);
-
-            $escSource = escapeshellarg($thumbpath);
-            exec("/nees/home/bin/fix_permissions $escSource", $output);
         }
         return $oReturnArray;
     }
@@ -1041,7 +1024,7 @@ class DataFilePeer extends BaseDataFilePeer {
                        select df.id, df.name, df.description, df.path, df.title, df.thumb_id, row_number()
                        OVER (ORDER BY df.path, df.name) as rn
                        from data_file df,
-                            data_file_link dfl
+                                data_file_link dfl
                        where df.id = dfl.id
                          and df.deleted=0
                          and df.directory=0
@@ -1072,7 +1055,7 @@ class DataFilePeer extends BaseDataFilePeer {
         $strQuery .= "	   )
                              )
                              and df.document_format_id in (
-                               (select dof.document_format_id from document_format dof where dof.default_extension in ('png','gif','jpg','jpeg'))
+                               (select dof.document_format_id from document_format dof where dof.default_extension in ('png','gif','jpg','jpeg','bmp'))
                              )
                     )
                     WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
@@ -1105,10 +1088,6 @@ class DataFilePeer extends BaseDataFilePeer {
         }
 
         $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
-
-        $oThumbEntityType = EntityTypePeer::findByTableName("Thumbnail");
-        $oDisplayEntityType = EntityTypePeer::findByTableName("Data Photo");
-
         while ($oResultSet->next()) {
             $strFileArray = array();
             $strFileArray['ID'] = $oResultSet->getInt("ID");
@@ -1119,6 +1098,8 @@ class DataFilePeer extends BaseDataFilePeer {
             $strFileArray['THUMB_ID'] = $oResultSet->getInt("THUMB_ID");
 
             $strSource = $strFileArray['PATH'] . "/" . $strFileArray['NAME'];
+//    $strPathArray = explode("/", $strFileArray['PATH']);
+//    $thumbpath = $strPathArray[0]."/".$strPathArray[1]."/".$strPathArray[2]."/".$strPathArray[3]."/Public/Photos";
 
             $thumbpath = $strFileArray['PATH'] ."/". Files::GENERATED_PICS;
             if (!file_exists($thumbpath)) {
@@ -1129,35 +1110,22 @@ class DataFilePeer extends BaseDataFilePeer {
             $thumbname = "thumb_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
             $strDisplayName = "display_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
             $fullName = $thumbpath . "/" . $thumbname;
+            //echo $fullName."<br>";
             if (!file_exists($fullName)) {
                 $bThumbCreated = PhotoHelper::resize($strSource, 90, 75, $fullName);
                 if ($bThumbCreated && file_exists($fullName)) {
-
-                    $oThumbDataFile = new DataFile();
-                    $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($thumbname, $thumbpath, false, $strFileArray['TITLE'], $strFileArray['DESCRIPTION'], $oThumbEntityType->getId());
-
                     $strFullName = $thumbpath . "/" . $strDisplayName;
                     $bDisplayCreated = PhotoHelper::resize($strSource, 800, 600, $strFullName);
-                    if($bDisplayCreated){
-                      $oDisplayDataFile = new DataFile();
-                      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $thumbpath, false, $strFileArray['TITLE'], $strFileArray['DESCRIPTION'], $oDisplayEntityType->getId());
-                    }
                 }
             }
 
-
             if (file_exists($fullName)) {
-
                 $strCaption = (strlen($strFileArray['DESCRIPTION']) === 0) ? $strFileArray['PATH'] : $strFileArray['DESCRIPTION'];
                 $strFileArray['THUMBNAIL'] = "<div style='color:green'><a style='border-bottom:0px;' rel='lightbox[hub]' title='" . $strCaption . "' target='_blank' href='" . self::getUrl($thumbpath, $strDisplayName) . "'><img src='" . self::getUrl($thumbpath, $thumbname) . "'  alt=''/></a><br>" . StringHelper::neat_trim($strCaption, 15, $strDelimiter = '...') . "</div>";
-
             } else {
                 $strFileArray['THUMBNAIL'] = $strFileArray['NAME'] . " not found.";
             }
             array_push($oReturnArray, $strFileArray);
-
-            $escSource = escapeshellarg($thumbpath);
-            exec("/nees/home/bin/fix_permissions $escSource", $output);
         }
         return $oReturnArray;
     }
@@ -1196,7 +1164,7 @@ class DataFilePeer extends BaseDataFilePeer {
         $strQuery .= "	   )
   					 )
   					 and df.document_format_id in (
-					   (select dof.document_format_id from document_format dof where dof.default_extension in ('png','gif','jpg','jpeg'))
+					   (select dof.document_format_id from document_format dof where dof.default_extension in ('png','gif','jpg','jpeg','bmp'))
 					 )";
 
         //echo $strQuery."<br>";
@@ -1268,46 +1236,30 @@ class DataFilePeer extends BaseDataFilePeer {
 
             $strSource = $oDataFile->getPath() . "/" . $oDataFile->getName();
             $thumbpath = $oDataFile->getPath() . "/" .Files::GENERATED_PICS;
-            
             if (!file_exists($thumbpath)) {
                 $photoDir = FileCommandAPI::create($thumbpath);
                 $photoDir->mkdir(true);
             }
 
-            /* @var $oThumbEntityType EntityType */
-            $oThumbEntityType = EntityTypePeer::findByTableName("Thumbnail");
-            
-            /* @var $oDisplayEntityType EntityType */
-            $oDisplayEntityType = EntityTypePeer::findByTableName("Data Photo");
-
             $thumbname = "thumb_" . $oDataFile->getId() . "_" . $oDataFile->getName();
             $strDisplayName = "display_" . $oDataFile->getId() . "_" . $oDataFile->getName();
-            
             $fullName = $thumbpath . "/" . $thumbname;
             if (!file_exists($fullName)) {
-                $bThumbCreated = PhotoHelper::resize($strSource, PhotoHelper::DEFAULT_THUMB_WIDTH, PhotoHelper::DEFAULT_THUMB_HEIGHT, $fullName);
+                $bThumbCreated = PhotoHelper::resize($strSource, 90, 75, $fullName);
                 if ($bThumbCreated && file_exists($fullName)) {
-
-                    $thumb_df = DataFilePeer::insertOrUpdateIfDuplicate($thumbname, $thumbpath, date('Y-m-d H:i:s'), md5_file($fullName), 0, filesize($fullName), $oThumbEntityType->getId());
-
                     $strFullName = $thumbpath . "/" . $strDisplayName;
-                    $bDisplayCreated = PhotoHelper::resize($strSource, PhotoHelper::DEFAULT_DISPLAY_WIDTH, PhotoHelper::DEFAULT_DISPLAY_HEIGHT, $strFullName);
+                    $bDisplayCreated = PhotoHelper::resize($strSource, 800, 600, $strFullName);
                     if ($bDisplayCreated) {
-                        $display_df = DataFilePeer::insertOrUpdateIfDuplicate($strDisplayName, $thumbpath, date('Y-m-d H:i:s'), md5_file($strFullName), 0, filesize($strFullName), $oDisplayEntityType->getId());
-
                         $oDataFile->setPath($thumbpath);
-//                        $oDataFile->setName($strDisplayName);
+                        $oDataFile->setName($strDisplayName);
                         $p_oDataFileArray[$iIndex] = $oDataFile;
                     }
                 }
             } else {
                 $oDataFile->setPath($thumbpath);
-//                $oDataFile->setName($strDisplayName);
+                $oDataFile->setName($strDisplayName);
                 $p_oDataFileArray[$iIndex] = $oDataFile;
             }
-
-            $escSource = escapeshellarg($thumbpath);
-            exec("/nees/home/bin/fix_permissions $escSource", $output);
         }
         return $p_oDataFileArray;
     }
@@ -1504,86 +1456,7 @@ class DataFilePeer extends BaseDataFilePeer {
             )$strQuery .= " and dfl.rep_id=?";
 
         $strQuery .= "
-  				)
-				WHERE rn BETWEEN ? AND ?";
-
-        $iIndex = 4;
-
-        //echo $strQuery."<br>";
-
-        $oConnection = Propel::getConnection();
-        $oStatement = $oConnection->prepareStatement($strQuery);
-        $oStatement->setString(1, $p_strUsage."%");
-        $oStatement->setInt(2, 0);
-        $oStatement->setInt(3, 0);
-        if ($p_iProjectId > 0) {
-            $oStatement->setInt($iIndex, $p_iProjectId);
-            ++$iIndex;
-        }
-
-        if ($p_iExperimentId > 0) {
-            $oStatement->setInt($iIndex, $p_iExperimentId);
-            ++$iIndex;
-        }
-
-        if ($p_iTrialId > 0) {
-            $oStatement->setInt($iIndex, $p_iTrialId);
-            ++$iIndex;
-        }
-
-        if ($p_iRepetitionId > 0) {
-            $oStatement->setInt($iIndex, $p_iRepetitionId);
-            ++$iIndex;
-        }
-
-        $oStatement->setInt($iIndex, $p_iLowerLimit);
-        ++$iIndex;
-
-        $oStatement->setInt($iIndex, $p_iUpperLimit);
-        $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
-        while ($oResultSet->next()) {
-            $strFileArray['ID'] = $oResultSet->getInt("ID");
-            array_push($oReturnArray, $strFileArray['ID']);
-        }
-
-        return self::retrieveByPKs($oReturnArray);
-    }
-
-    public static function findDataFileByUsage0($p_strUsage, $p_iLowerLimit=1, $p_iUpperLimit=25, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
-        $oReturnArray = array();
-
-        $strQuery = "SELECT *
-                     FROM (
-                       select df.id, df.name, df.description, df.path, df.title,
-                       dfl.proj_id, dfl.exp_id, dfl.trial_id, dfl.rep_id,
-                       e.name as e_name, t.name as t_name, r.name as r_name,
-                       e.title as e_title, f.default_extension, row_number()
-                       OVER (ORDER BY df.path, df.name) as rn
-                       from data_file df
-                         inner join data_file_link dfl on df.id = dfl.id
-                             left join experiment e on dfl.exp_id = e.expid
-                             left join trial t on dfl.trial_id = t.trialid
-                             left join repetition r on dfl.rep_id = r.repid
-                             left join document_format f on f.document_format_id = df.document_format_id
-                       where df.usage_type_id in (select id from entity_type where n_table_name like ?)
-                         and df.deleted=?
-                         and dfl.deleted=?";
-
-        if ($p_iProjectId > 0
-
-            )$strQuery .= " and dfl.proj_id=?";
-        if ($p_iExperimentId > 0
-
-            )$strQuery .= " and dfl.exp_id=?";
-        if ($p_iTrialId > 0
-
-            )$strQuery .= " and dfl.trial_id=?";
-        if ($p_iRepetitionId > 0
-
-            )$strQuery .= " and dfl.rep_id=?";
-
-        $strQuery .= "
-  				)
+  				)  
 				WHERE rn BETWEEN ? AND ?";
 
         $iIndex = 4;
@@ -1650,14 +1523,14 @@ class DataFilePeer extends BaseDataFilePeer {
         $iTotal = 0;
 
         $strQuery = "select count(df.id) as total
-                     from data_file df
-                       inner join data_file_link dfl on df.id = dfl.id
-                       left join experiment e on dfl.exp_id = e.expid
-                       left join trial t on dfl.trial_id = t.trialid
-                       left join repetition r on dfl.rep_id = r.repid
-                     where df.usage_type_id in (select id from entity_type where n_table_name like ?)
-                       and df.deleted=?
-                       and dfl.deleted=?";
+  				 from data_file df
+  				   inner join data_file_link dfl on df.id = dfl.id 
+  				   left join experiment e on dfl.exp_id = e.expid 
+  				   left join trial t on dfl.trial_id = t.trialid 
+  				   left join repetition r on dfl.rep_id = r.repid 
+  				 where df.usage_type_id in (select id from entity_type where n_table_name like ?)
+  				   and df.deleted=?
+  				   and dfl.deleted=?";
 
         if ($p_iProjectId > 0
 
@@ -1773,10 +1646,6 @@ class DataFilePeer extends BaseDataFilePeer {
                              (lower(df.name) like '%.jpg') or
                              (lower(df.name) like '%.gif')
                          )
-                         and(
-                             (name not like 'thumb_%' and path not like '%Generated_Pics%') and
-                             (name not like 'display_%' and path not like '%Generated_Pics%')
-                         )
                    )WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
 
       $oConnection = Propel::getConnection();
@@ -1790,39 +1659,6 @@ class DataFilePeer extends BaseDataFilePeer {
       }
 
       return self::retrieveByPKs($iDataFileIdArray);
-    }
-
-    public static function findImagesToScaleCount($p_iProjectId){
-      $iDataFileIdArray = array();
-
-      $strQuery = "select count(df.id) as total
-                   from data_file df,
-                        data_file_link dfl
-                   where df.id = dfl.id
-                     and df.deleted=0
-                     and df.directory=0
-                     and dfl.deleted=0
-                     and dfl.proj_id=?
-                     and(
-                          (lower(df.name) like '%.png') or
-                          (lower(df.name) like '%.jpg') or
-                          (lower(df.name) like '%.gif')
-                     )
-                     and(
-                          (name not like 'thumb_%' and path not like '%Generated_Pics%') and
-                          (name not like 'display_%' and path not like '%Generated_Pics%')
-                     )";
-
-      $iCount = 0;
-      $oConnection = Propel::getConnection();
-      $oStatement = $oConnection->prepareStatement($strQuery);
-      $oStatement->setInt(1, $p_iProjectId);
-      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
-      while ($oResultSet->next()) {
-        $iCount = $oResultSet->getInt("TOTAL");
-      }
-
-      return $iCount;
     }
 }
 

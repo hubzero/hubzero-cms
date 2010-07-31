@@ -5,6 +5,8 @@
   	const PROJECT_RESULTS = "projectResults";
   	
   	const RESULTS = "results";
+
+        const THUMBNAILS = "thumbnail_list";
   	
   	const COUNT = "count";
   	

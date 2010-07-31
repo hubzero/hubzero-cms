@@ -20,4 +20,10 @@
  */
 class ProjectGrantPeer extends BaseProjectGrantPeer {
 
+  public static function findByProjectId($p_iProjectId){
+    $oCriteria = new Criteria();
+    $oCriteria->add(self::PROJID, $p_iProjectId);
+    return self::doSelect($oCriteria);
+  }
+
 } // ProjectGrantPeer

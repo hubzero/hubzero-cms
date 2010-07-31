@@ -16,7 +16,7 @@ require_once 'lib/data/om/BaseProjectGrant.php';
  */
 class ProjectGrant extends BaseProjectGrant {
 
-  function __construct($p_strFundingOrg, $p_strAwardNumber, $p_strAwardUrl="", $p_oProject=null){
+  function __construct($p_strFundingOrg=null, $p_strAwardNumber=null, $p_strAwardUrl=null, $p_oProject=null){
     $this->setFundingOrg($p_strFundingOrg);
     $this->setAwardNumber($p_strAwardNumber);
     $this->setAwardUrl($p_strAwardUrl);

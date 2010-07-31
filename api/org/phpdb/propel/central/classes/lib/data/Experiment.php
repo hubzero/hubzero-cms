@@ -638,25 +638,21 @@ ENDHTML;
 
 
   function getExperimentThumbnailHTML() {
-    //$default_thumbnail = "<img src=\"/images/default_experiment_image.gif\" width='80' height='80'  alt=''/>";
-	$default_thumbnail = "";
+    $default_thumbnail = "";
 
     $expImage = $this->getExperimentThumbnailDataFile();
 
-
     $thumbnail = null;
     if($expImage && file_exists($expImage->getFullPath())) {
-       $expThumbnailId = $expImage->getImageThumbnailId();
+      $expThumbnailId = $expImage->getImageThumbnailId();
 
       if($expThumbnailId && $expThumbnail = DataFilePeer::find($expThumbnailId)) {
-          echo '<!-- Image Debug1: ' . $expThumbnail->getFullPath() . ' -->';
-
         if(file_exists($expThumbnail->getFullPath())) {
-          $thumbnail = "<div class='thumb_frame'><a style='border-bottom:0px;' target='_blank' href='" . $expImage->get_url() . "'><img src='" . $expThumbnail->get_url() . "'  alt=''/></a></div>";
-        }
-        else
-        {
-            echo '<!--Image Debug2: failed file_exist, previous file cannot be found -->';
+          $strDisplayName = "display_".$expImage->getId()."_".$expImage->getName();
+          $expImage->setName($strDisplayName);
+          $expImage->setPath($expThumbnail->getPath());
+          //$thumbnail = "<div class='thumb_frame'><a style='border-bottom:0px;' target='_blank' href='" . $expImage->get_url() . "' rel='lightbox[experiments]'><img src='" . $expThumbnail->get_url() . "'  alt=''/></a></div>";
+          $thumbnail = "<div class='thumb_frame'><a style='border-bottom:0px;' target='_blank' href='" . $expImage->get_url() . "' rel='lightbox[experiments]'><img src='" . $expThumbnail->get_url() . "'  alt=''/></a></div>";
         }
       }
     }

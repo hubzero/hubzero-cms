@@ -53,8 +53,8 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
 	
 	public static function findDistinctExperiments($p_iProjectId, $p_strOpeningTool="", $p_strUsageType=""){
 	  $strReturnArray = array();
-		
-  	  $strQuery = "select distinct dfl.exp_id, e.name   
+
+          $strQuery = "select distinct dfl.exp_id, e.name   
 				from data_file_link dfl, experiment e, data_file df
 				where dfl.proj_id = ?
 				  and dfl.exp_id = e.expid
@@ -64,7 +64,7 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
   	  }
   	  
   	  if(strlen($p_strUsageType)>0){
-		$strQuery .= "and df.usage_type_id=(select id from entity_type where n_table_name=?) ";
+		$strQuery .= "and df.usage_type_id in (select id from entity_type where n_table_name like ?) ";
   	  }
 	  $strQuery .= "order by e.name";
 
@@ -80,7 +80,7 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
       	++$iIndex;
       }
       if(strlen($p_strUsageType)>0){
-      	$oStatement->setString($iIndex, $p_strUsageType);
+      	$oStatement->setString($iIndex, $p_strUsageType."%");
       }	
       $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
       while($oResultSet->next()){
@@ -184,6 +184,83 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
 	}
 	
 	
-  
+  public static function findDataFileByUsage($p_strUsage, $p_iLowerLimit=1, $p_iUpperLimit=25, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+        $oReturnArray = array();
+
+        $strQuery = "SELECT *
+                     FROM (
+                       select df.id, df.name, df.description, df.path, df.title,
+                       dfl.proj_id, dfl.exp_id, dfl.trial_id, dfl.rep_id,
+                       e.name as e_name, t.name as t_name, r.name as r_name,
+                       e.title as e_title, f.default_extension, row_number()
+                       OVER (ORDER BY df.path, df.name) as rn
+                       from data_file df
+                         inner join data_file_link dfl on df.id = dfl.id
+                             left join experiment e on dfl.exp_id = e.expid
+                             left join trial t on dfl.trial_id = t.trialid
+                             left join repetition r on dfl.rep_id = r.repid
+                             left join document_format f on f.document_format_id = df.document_format_id
+                       where df.usage_type_id in (select id from entity_type where n_table_name like ?)
+                         and df.deleted=?
+                         and dfl.deleted=?";
+
+        if ($p_iProjectId > 0
+
+            )$strQuery .= " and dfl.proj_id=?";
+        if ($p_iExperimentId > 0
+
+            )$strQuery .= " and dfl.exp_id=?";
+        if ($p_iTrialId > 0
+
+            )$strQuery .= " and dfl.trial_id=?";
+        if ($p_iRepetitionId > 0
+
+            )$strQuery .= " and dfl.rep_id=?";
+
+        $strQuery .= "
+  				)
+				WHERE rn BETWEEN ? AND ?";
+
+        $iIndex = 4;
+
+        //echo $strQuery."<br>";
+
+        $oConnection = Propel::getConnection();
+        $oStatement = $oConnection->prepareStatement($strQuery);
+        $oStatement->setString(1, $p_strUsage."%");
+        $oStatement->setInt(2, 0);
+        $oStatement->setInt(3, 0);
+        if ($p_iProjectId > 0) {
+            $oStatement->setInt($iIndex, $p_iProjectId);
+            ++$iIndex;
+        }
+
+        if ($p_iExperimentId > 0) {
+            $oStatement->setInt($iIndex, $p_iExperimentId);
+            ++$iIndex;
+        }
+
+        if ($p_iTrialId > 0) {
+            $oStatement->setInt($iIndex, $p_iTrialId);
+            ++$iIndex;
+        }
+
+        if ($p_iRepetitionId > 0) {
+            $oStatement->setInt($iIndex, $p_iRepetitionId);
+            ++$iIndex;
+        }
+
+        $oStatement->setInt($iIndex, $p_iLowerLimit);
+        ++$iIndex;
+
+        $oStatement->setInt($iIndex, $p_iUpperLimit);
+        $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+        while ($oResultSet->next()) {
+            $strFileArray['ID'] = $oResultSet->getInt("ID");
+            array_push($oReturnArray, $strFileArray['ID']);
+        }
+
+        return self::retrieveByPKs($oReturnArray);
+    }
 	
 } // DataFileLinkPeer

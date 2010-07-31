@@ -20,18 +20,10 @@ return array (
         array (
           'phptype' => 'oracle',
           'database' => '',
-          'hostspec' => 'ORCLSTG',
-          'username' => 'central',
-          'password' => 'bees4nees',
+          'hostspec' => 'ORCLDEV',
+          'username' => 'gemezm',
+          'password' => 'gemezm',
         ),
-
-//        array (
-//          'phptype' => 'oracle',
-//          'database' => '',
-//          'hostspec' => 'NEESPROD',
-//          'username' => 'central',
-//          'password' => 'bees4nees',
-//        ),
       ),
       'default' => 'NEEScentral',
     ),

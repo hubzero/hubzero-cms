@@ -9,6 +9,8 @@
 	const TRIAL_DESC = "trialDesc";
 	
 	const SELECTED = "selectedExperiment";
+
+        const THUMBNAILS = "thumbnail_list";
   }
 
 ?>

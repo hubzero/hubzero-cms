@@ -502,19 +502,31 @@ ENDHTML;
   }
 
 
-  function getProjectThumbnailHTML() {
-    #$default_thumbnail = "<img src=\"/images/default_project_image.gif\" width='80' height='80'  alt=''/>";
-	$default_thumbnail = "";
+  function getProjectThumbnailHTML($p_strLinkImage) {
+    $default_thumbnail = "";
 
     $projectImage = $this->getProjectThumbnailDataFile();
 
     $thumbnail = null;
     if($projectImage && file_exists($projectImage->getFullPath())) {
-      $projectThumbnailId = $projectImage->getImageThumbnailId();
+      $projectThumbnailId = $projectImage->getProjectImageThumbnailId();
 
       if($projectThumbnailId && $projectThumbnail = DataFilePeer::find($projectThumbnailId)) {
         if(file_exists($projectThumbnail->getFullPath())) {
-          $thumbnail = "<div class='thumb_frame'><a style='border-bottom:0px;' target='_blank' href='" . $projectImage->get_url() . "'><img src='" . $projectThumbnail->get_url() . "' title=\"Project Image. Click to view this project image with full size\"  alt=''/></a></div>";
+          //$thumbnail = "<div class='thumb_frame'><a style='border-bottom:0px;' target='_blank' href='" . $projectImage->get_url() . "'><img src='" . $projectThumbnail->get_url() . "' title=\"Project Image. Click to view this project image with full size\"  alt=''/></a></div>";
+
+          $strImageName = $projectImage->getName();
+
+          // display the 800x600 when user clicks on it
+          $strDisplayName = "display_".$projectImage->getId()."_".$strImageName;
+          $projectImage->setName($strDisplayName);
+          $projectImage->setPath($projectThumbnail->getPath());
+
+          // display the 90x60 (approx) image
+          $strIconName = $p_strLinkImage."_".$projectImage->getId()."_".$strImageName;
+          $projectThumbnail->setName($strIconName);
+
+          $thumbnail = "<p align='center'><a style='border-bottom:0px;' target='_blank' href='" . $projectImage->get_url() . "' rel='lightbox'><img src='" . $projectThumbnail->get_url() . "'  alt='' style='float: left; margin-left: 30px;'></a></p>";
         }
       }
     }

@@ -19,19 +19,10 @@ return array (
         'connection' => 
         array (
           'phptype' => 'oracle',
-          'database' => '',
-          'hostspec' => 'ORCLSTG',
-          'username' => 'central',
-          'password' => 'bees4nees',
+          'database' => 'oracle://devdb.neeshub.org:1521/orcldev.neeshub.org',
+          'username' => 'gemezm',
+          'password' => 'gemezm',
         ),
-
-//        array (
-//          'phptype' => 'oracle',
-//          'database' => '',
-//          'hostspec' => 'NEESPROD',
-//          'username' => 'central',
-//          'password' => 'bees4nees',
-//        ),
       ),
       'default' => 'NEEScentral',
     ),

@@ -4,7 +4,6 @@ require_once 'lib/data/Authorization.php';
 require_once 'lib/data/Person.php';
 require_once 'lib/util/DomainEntityType.php';
 require_once 'lib/data/PersonEntityRole.php';
-//require_once 'lib/data/DataFile.php';
 require_once 'lib/security/PermissionsView.php';
 
 /** ****************************************************************************

@@ -17,7 +17,10 @@
 	/**
 	 * http://www.geekpedia.com/code50_Check-if-a-string-ends-with-another-string.html
 	 */
-    function endsWith($p_strFull, $p_strEndStr){
+    function endsWith($p_strFullParam, $p_strEndStrParam){
+      $p_strFull = strtolower($p_strFullParam);
+      $p_strEndStr = strtolower($p_strEndStrParam);
+
       // Get the length of the end string
       $strLength = strlen($p_strEndStr);
    
@@ -61,10 +64,24 @@
    * @return string processed string 
    * @see http://www.justin-cook.com/wp/2006/06/27/php-trim-a-string-without-cutting-any-words/
    **/ 
-    public static function neat_trim($strInput, $iCharacterCount, $strDelimiter='...') { 
-      $iLength = strlen($strInput); 
-      if ($iLength > $iCharacterCount) { 
-        preg_match('/(.{' . $iCharacterCount . '}.*?)\b/', $strInput, $matches); 
+    public static function neat_trim($strInput, $iCharacterCount, $strDelimiter='...') {
+      $iLength = strlen($strInput);
+      if ($iLength > $iCharacterCount) {
+        $strPattern = '/(.{' . $iCharacterCount . '}.*?)\b/';
+        preg_match($strPattern, $strInput, $matches);
+        if(empty($matches)){
+          $strReturn = self::EMPTY_STRING;
+          $strInputArray = explode(" ", $strInput);
+          $iWord = 0;
+          while($iWord < 25){
+            $strReturn .= $strInputArray[$iWord]." ";
+            ++$iWord;
+          }
+          if(sizeof($strInputArray) > 25){
+            $strReturn .= $strDelimiter;
+          }
+          return $strReturn;
+        }
         return rtrim($matches[1]) . $strDelimiter; 
       }else { 
         return $strInput; 
