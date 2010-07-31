@@ -23,7 +23,7 @@ $juser =& JFactory::getUser();
 	<body<?php if ($this->countModules( 'banner or welcome' )) : echo ' id="frontpage"'; endif; ?>>
 	
 	<div id="mainwrap">
-    <div id="uc"><div>Beta 3.0</div></div>
+   
 	<jdoc:include type="modules" name="notices" />
 		<div id="header">
              <div id="headerwrap">
@@ -175,7 +175,7 @@ $juser =& JFactory::getUser();
      
 	 <script type="text/javascript">
          try{
-              var pageTracker = _gat._getTracker("UA-6278809-3");
+              var pageTracker = _gat._getTracker("UA-6278809-4");
               pageTracker._trackPageview();
          } catch(err) {}
      </script>
