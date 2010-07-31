@@ -19,26 +19,27 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 $oProject = unserialize($_REQUEST[Search::SELECTED]);
 $oExperiment = unserialize($_REQUEST[Experiments::SELECTED]);
-//$strFilmStrip = ""modWarehouseFilmStripHelper::getFilmStripByProjectExperiment($oProject->getId(), $oExperiment->getId());
-//
+$oDataFileArray = modWarehouseFilmStripHelper::getFilmStripByProjectExperiment($oProject->getId(), $oExperiment->getId());
+$strFilmStrip = modWarehouseFilmStripHelper::getFilmStripByProjectExperimentHTML($oDataFileArray);
+
 ////temporary solution
-$strFilmStrip = "";
-switch($oExperiment->getId()){
-  case 28:
-  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment28();
-	break;
-  case 29:
-  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment29();
-	break;		
-  case 30:
-  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment30();
-	break;
-  case 835:
-  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment835();
-	break;
-  case 874:
-  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment874();
-	break;			
-}
+//$strFilmStrip = "";
+//switch($oExperiment->getId()){
+//  case 28:
+//  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment28();
+//	break;
+//  case 29:
+//  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment29();
+//	break;
+//  case 30:
+//  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment30();
+//	break;
+//  case 835:
+//  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment835();
+//	break;
+//  case 874:
+//  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment874();
+//	break;
+//}
 
 require(JModuleHelper::getLayoutPath('mod_warehousefilmstrip'));

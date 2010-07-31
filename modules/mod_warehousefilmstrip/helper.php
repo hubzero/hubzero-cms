@@ -14,17 +14,90 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+require_once 'lib/data/DataFilePeer.php';
+require_once 'lib/data/DataFile.php';
+require_once 'api/org/nees/static/Files.php';
+
 class modWarehouseFilmStripHelper{
-	
+
+  /**
+   * Find the list of DataFiles.
+   * @param int $p_iProjectId
+   * @param int $p_iExperimentId
+   * @return array
+   */
   public function getFilmStripByProjectExperiment($p_iProjectId, $p_iExperimentId){
-  	$strHTML = <<< ENDHTML
-              <div class="tabKeywordSearch" id="warehouseSearch">
-		        <input type="text" name="keywords" value="warehouse search" style="color:#999999" onClick="this.value='';">
-		        <input type="button" value="GO" onClick="document.getElementById('$p_strFormId').action='$p_strAction';document.getElementById('$p_strFormId').submit();">
-		      </div>
+    $oReturnArray = array();
+
+    $oDataFileArray = DataFilePeer::findDataFileByEntityType("Film Strip", $p_iProjectId, $p_iExperimentId);
+
+    /* @var $oDataFile DataFile */
+    foreach($oDataFileArray as $oDataFile){
+      //temporarily store the datafile as a request for the plugin
+      $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oDataFile);
+
+      //scale if needed
+      JPluginHelper::importPlugin( 'project', 'upload' );
+      $oDispatcher =& JDispatcher::getInstance();
+      $strParamArray = array(0,0);
+      $bResultsArray = $oDispatcher->trigger('onScaleImageDataFile',$strParamArray);
+
+      //store DataFiles that were accurately scaled.
+      $bImageScaled = $bResultsArray[0];
+      if($bImageScaled){
+        array_push($oReturnArray, $oDataFile);
+      }
+    }
+
+    return $oReturnArray;
+  }
+
+  public function getFilmStripByProjectExperimentHTML($p_oDataFileArray){
+    $strHTML = <<< ENDHTML
+          <div class="sscontainer">
+            <div id="showcase">
+              <div id="showcase-prev" class=""></div>
+              <div id="showcase-window">
+                <div class="showcase-pane" style="left: 0px;">
+ENDHTML;
+
+    /* @var $oDataFile DataFile */
+    foreach($p_oDataFileArray as $iFilmStripIndex=>$oDataFile){
+      $iFilmStripAlt = $iFilmStripIndex+1;
+      $strDescription = $oDataFile->getDescription();
+      
+      //temporarily set path to Generated_Pics (DON'T SAVE!!!!)
+      $strPath = $oDataFile->getPath()."/".Files::GENERATED_PICS;
+      $oDataFile->setPath($strPath);
+
+      //original name
+      $strName = $oDataFile->getName();
+
+      $strThumbName = "thumb_".$oDataFile->getId()."_".$strName;
+      $oDataFile->setName($strThumbName);
+      $strThumbUrl = $oDataFile->getFriendlyPath();
+
+      $strDisplayName = "display_".$oDataFile->getId()."_".$strName;
+      $oDataFile->setName($strDisplayName);
+      $strDisplayUrl = $oDataFile->getFriendlyPath();
+
+      $strHTML .= <<< ENDHTML
+                  <a title="$strDescription" href="/data/get/$strDisplayUrl" rel="lightbox[filmstrip]">
+                    <img class="thumbima" alt="thumbnail$iFilmStripAlt" src="/data/get/$strThumbUrl">
+                  </a>
+ENDHTML;
+      }
+
+
+    $strHTML .= <<< ENDHTML
+                </div>
+              </div>
+              <div id="showcase-next" class=""></div>
+            </div>
+          </div>
 ENDHTML;
       return $strHTML;
-  }	
+  }
   
   public function getExperiment28(){
   	$strHTML = <<< ENDHTML
