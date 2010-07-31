@@ -13,6 +13,8 @@ function getTreeNodes($nodeId) {
 
   $tokenArr = explode("_", $nodeId);
 
+  //print_r($tokenArr)."<br>";
+
   if(sizeof($tokenArr) < 2) return "";
 
   $typeStr = $tokenArr[0];
@@ -28,11 +30,16 @@ function getTreeNodes($nodeId) {
   require_once 'lib/data/ProjectPeer.php';
   require_once 'lib/data/AuthorizationPeer.php';
   require_once 'lib/data/Authorization.php';
-  require_once 'lib/security/Authorizer.php';
+  require_once 'lib/data/ExperimentPeer.php';
+  require_once 'lib/data/curation/NCCuratedObjectsPeer.php';
+  //require_once 'lib/security/Authorizer.php';
+  require_once 'lib/security/TreeAuthorizer.php';
   
   if($typeStr == "projid") {
     $projid = $tokenArr[1];
+
 	$p = ProjectPeer::find($projid);
+
     if(!$p) return "";
 
     $pnodeID = $nodeId;
@@ -50,14 +57,16 @@ function getTreeNodes($nodeId) {
       //$treeHTML .= "tree.add('DataFile_Project_Analysis_$projid', '$pnodeID', 'Project Analysis', '$url&action=DisplayProjectAnalysis', ico_folder);\n";
       //$treeHTML .= "tree.add('DataFile_Project_Documentation_$projid', '$pnodeID', 'Project Documentation', '$url&action=DisplayProjectDocumentation', ico_folder);\n";
       //$treeHTML .= "tree.add('DataFile_Project_Public_$projid', '$pnodeID', 'Project Public', '$url&action=DisplayProjectPublic', ico_folder);\n";
-      $treeHTML .= "tree.add('ProjectMembers_$projid', '$pnodeID', 'Project Members', '$url/members/$projid', ico_member);\n";
-	  $treeHTML .= "tree.add('ProjectImages_$projid', '$pnodeID', 'Project Images', '$url/images/$projid', ico_folder);\n";
+      $treeHTML .= "tree.add('Data_$projid', '$pnodeID', 'Data', '$url/data/$projid', ico_data);\n";
+      $treeHTML .= "tree.add('ProjectMembers_$projid', '$pnodeID', 'Team Members', '$url/members/$projid', ico_member);\n";
+      $treeHTML .= "tree.add('More_$projid', '$pnodeID', 'More', '$url/more/$projid', ico_folder);\n";
       
      // $treeHTML .= "tree.setServerLoad('DataFile_Project_Analysis_$projid');\n";
      // $treeHTML .= "tree.setServerLoad('DataFile_Project_Documentation_$projid');\n";
      // $treeHTML .= "tree.setServerLoad('DataFile_Project_Public_$projid');\n";
 
       if($p->isStructuredProject()) {
+          
         $auth = Authorizer::getInstance();
         $uid = $auth->getUserId();
 

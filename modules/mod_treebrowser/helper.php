@@ -15,6 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 require 'TreeBrowser.php';
 
+
 class modTreeBrowserHelper{
 	public function getAllPubProjects()
 	{

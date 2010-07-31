@@ -89,9 +89,13 @@ NLSTREE.ajaxLoadChildNodes=function(id) {
 
 NLSTREE.setServerLoad=function(id, url) {
   n=this.getNodeById(id);
-  n.svrLoad=true;
-  n.loaded=0;
-  n.chUrl=url;
+
+  //TODO: Remove legacy nodes in tree from NEEScentral
+  if(n!=null){
+    n.svrLoad=true;
+    n.loaded=0;
+    n.chUrl=url;
+  }
 };
 
 NlsNode.prototype.loaded=0;
