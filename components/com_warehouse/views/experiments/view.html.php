@@ -5,7 +5,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+require_once 'lib/data/Experiment.php';
 require_once 'lib/security/Authorizer.php';
+require_once 'api/org/nees/static/Experiments.php';
+
 
 class WarehouseViewExperiments extends JView{
 	
@@ -21,7 +24,8 @@ class WarehouseViewExperiments extends JView{
 
     //get the tabs to display on the page
     $strTabArray = $oExperimentsModel->getTabArray();
-    $strTabHtml = $oExperimentsModel->getTabs( "warehouse", $iProjectId, $strTabArray, "experiments" );
+    $strTabViewArray = $oExperimentsModel->getTabViewArray();
+    $strTabHtml = $oExperimentsModel->getTabs( "warehouse", $iProjectId, $strTabArray, $strTabViewArray, "experiments" );
     $this->assignRef( "strTabs", $strTabHtml );
 
     //removed tree from display as of NEEScore meeting on 4/8/10
@@ -30,6 +34,16 @@ class WarehouseViewExperiments extends JView{
     $oExperimentArray = $oExperimentsModel->findByProject($iProjectId);
     $_REQUEST[Experiments::EXPERIMENT_LIST] = serialize($oExperimentArray);
     $_REQUEST[Experiments::COUNT] = sizeof($oExperimentArray);
+
+    //create thumbnails if needed
+    $strExperimentIconArray = array();
+
+    /* @var $oExperiment Experiment */
+    foreach($oExperimentArray as $oExperiment){
+      $strThumbnail =  $oExperiment->getExperimentThumbnailHTML();
+      array_push($strExperimentIconArray, $strThumbnail);
+    }
+    $_REQUEST[Experiments::THUMBNAILS] = $strExperimentIconArray;
 
     /* @var $oHubUser JUser */
     $oHubUser = $oExperimentsModel->getCurrentUser();

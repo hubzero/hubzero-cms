@@ -9,6 +9,9 @@ defined('_JEXEC') or die( 'Restricted access' );
   <a href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a>
 <?php }else{ ?>
 <form id="frmData" action="/warehouse/download" method="post">
+<input type="hidden" name="projectId" value="<?php echo $this->iProjectId; ?>"/>
+<input type="hidden" name="experimentId" value="<?php echo $this->iExperimentId; ?>"/>
+
 <a id="hideDataLink" href="javascript:void(0);" onClick="javascript:document.getElementById('showDataLink').style.display='';document.getElementById('projectDocs').style.display='none';document.getElementById('hideDataLink').style.display='none';">Hide</a> <a id="showDataLink" style='display:none' href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a>
 <div style="border: 1px solid rgb(102, 102, 102); overflow: auto; width: 100%; padding: 0px; margin: 0px;" id="projectDocs">
   <table cellpadding="1" cellspacing="1" style="width:100%;border-bottom:0px;border-top:0px;font-size:11px;">
@@ -66,7 +69,8 @@ defined('_JEXEC') or die( 'Restricted access' );
               if(strlen($strOpeningTool)!=0){
               	switch($strOpeningTool){
               	  case 'inDEED':
-              		$strToolLink = "<a href='".InDEED::LAUNCH."?list=".$strLink."'>".$strOpeningTool."</a>";	
+                        $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
+              		$strToolLink = "<a href='$strLaunchInEED=".$strLink."'>".$strOpeningTool."</a>";
               	  break;
                 }
               }

@@ -8,9 +8,11 @@ jimport( 'joomla.application.component.view');
 class WarehouseViewFeatured extends JView{
 	
   function display($tpl = null){
+    /* @$oWarehouseModel WarehouseModelFeatured */
     $oWarehouseModel =& $this->getModel();
 	$strTabArray = $oWarehouseModel->getSearchTabArray();
-	$strTabHtml = $oWarehouseModel->getTabs( "warehouse", 0, $strTabArray, "featured" );
+        $strTabViewArray = $oWarehouseModel->getSearchTabViewArray();
+	$strTabHtml = $oWarehouseModel->getTabs( "warehouse", 0, $strTabArray, $strTabViewArray, "featured" );
 	$this->assignRef( "strTabs", $strTabHtml );
 	
 	$strTreeTabArray = $oWarehouseModel->getTreeBrowserTabArray();
@@ -21,14 +23,8 @@ class WarehouseViewFeatured extends JView{
 	//$this->assignRef( "mod_treebrowser", ComponentHtml::getModule("mod_treebrowser") );
 	$this->assignRef( "mod_warehousepopularsearches", ComponentHtml::getModule("mod_warehousepopularsearches") );
 	
-	/*
-	 * When clicking on Project Warehouse from the menu, the text displays in the breadcrumbs.
-	 * Clicking off featured and back again removes "Project Warehouse" from the breadcrumbs.
-	 * Therefore, if the pathwaynames size == 1, add "Project Warehouse" to the breadcrumbs.
-	 */
-	if(sizeof(JFactory::getApplication()->getPathway()->getPathwayNames())===1){
-	  JFactory::getApplication()->getPathway()->addItem("Project Warehouse","/warehouse");
-	}
+
+        JFactory::getApplication()->getPathway()->addItem("Project Warehouse","/warehouse");
 	
     parent::display($tpl);
   }

@@ -137,9 +137,9 @@ class WarehouseModelProject extends WarehouseModelBase{
   }
   
   public function getProjectImage($p_iProjectId){
-  	require_once 'lib/data/DataFilePeer.php';
-  	
-  	return DataFilePeer::getProjectImage($p_iProjectId);
+    require_once 'lib/data/DataFilePeer.php';
+
+    return DataFilePeer::getProjectImage($p_iProjectId);
   }
  
 }

@@ -83,26 +83,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 	          <td colspan="2">
 	            <select id="strFunding" name="funding" class="searchInput">
 	          	  <option value="">All Projects</option>
-	          	  <option value="Caltrans">Caltrans</option>
-                          <option value="Connecticut Cooperative Highway Research Program">Connecticut Cooperative Highway Research Program</option>
-                          <option value="DARPA">DARPA</option>
-                          <option value="EERI">EERI</option>
-                          <option value="FEMA">FEMA</option>
-                          <option value="FHWA">FHWA</option>
-                          <option value="KOCED">KOCED</option>
-                          <option value="MAE Center">MAE Center</option>
-                          <option value="MCEER Center">MCEER Center</option>
-                          <option value="NCHRP">NCHRP</option>
-                          <option value="NCREE">NCREE</option>
-                          <option value="NIED">NIED (E-defense)</option>
-                          <option value="NIST">NIST</option>
-                          <option value="NSF">NSF</option>
-                          <option value="NSF NEES Program">NSF NEES Program</option>
-                          <option value="NIH">NIH</option>
-                          <option value="PCI">PCI</option>
-                          <option value="PEER Center">PEER Center</option>
-                          <option value="PITA">PITA</option>
-                          <option value="USGS">USGS</option>
+	          	  <?php 
+	          	    $strFundingTypeArray = $this->fundingTypes;
+	          	    foreach($strFundingTypeArray as $strFundOrg){ 
+	          	    ?>
+	          	      <option value="<?php echo $strFundOrg; ?>"><?php echo $strFundOrg; ?></option>	
+	          	    <?php 
+	          	    }
+	          	  ?>
 	          	</select>
 	          </td>
 	        </tr>

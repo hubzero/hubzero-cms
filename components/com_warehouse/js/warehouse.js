@@ -108,3 +108,29 @@ function submitDataForm(p_strFormId, p_strAction){
     document.getElementById(p_strFormId).submit();
   }
 }
+
+function onChangeDataTab(p_strFormId, p_strToolId, p_strExperimentId, p_strTrialId, p_strRepetitionId){
+  var iExperimentId = document.getElementById(p_strExperimentId).value;
+  document.getElementById("txtExperiment").value = iExperimentId;
+
+  var oTrial = document.getElementById(p_strTrialId);
+  if(oTrial != null){
+    var iTrialId = oTrial.value;
+    document.getElementById("txtTrial").value = iTrialId;
+  }
+
+  var oRepetition = document.getElementById(p_strTrialId);
+  if(oRepetition != null){
+    var iRepetitionId = oRepetition.value;
+    document.getElementById("txtRepetition").value = iRepetitionId;
+  }
+
+  var oTool = document.getElementById(p_strToolId);
+  if(oTool != null){
+    var strTool = oTool.value;
+    if(strTool==null)strTool="";
+    document.getElementById("txtTool").value = strTool;
+  }
+
+  document.getElementById(p_strFormId).submit();
+}

@@ -5,7 +5,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.model' );
 
 require_once('base.php');
+require_once 'neesconfiguration.php';
 require_once 'lib/data/DataFilePeer.php';
+require_once 'lib/data/DataFile.php';
+require_once 'lib/data/DataFileLinkPeer.php';
+require_once 'lib/data/DataFileLink.php';
 
 class WarehouseModelData extends WarehouseModelBase{
 	
@@ -98,12 +102,12 @@ class WarehouseModelData extends WarehouseModelBase{
 
       $strDisplay = (strlen($strTitle)==0) ? $strName : $strTitle;
       $strDescription = (strlen($strDescription)!=0) ? $strDescription : "Description not available";
-      
-      $strInDEEDPath = InDEED::LAUNCH;
+
+      $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
 
       $strReturn .= <<< ENDHTML
               <tr class="$strRow">
-                    <td><a href="$strInDEEDPath?list=$strPath/$strName" class="Tips3" title="$strDisplay :: $strDescription">$strDisplay</a></td>
+                    <td><a href="$strLaunchInEED=$strPath/$strName" class="Tips3" title="$strDisplay :: $strDescription">$strDisplay</a></td>
                     <td><a href="/warehouse/experiment/$iExperimentId/project/$iProjectId" class="Tips3" title="$strExperimentName :: $strExperimentTitle">$strExperimentNameDisplay</a></td>
                     <td>$strTrialName</td>
                     <td>$strRepetitionName</td>
@@ -129,7 +133,7 @@ ENDHTML;
     return DataFilePeer::findDataFileByUsageCount($p_strUsage, $p_iProjectId, $p_iExperimentId, $p_iTrialId, $p_iRepetitionId);
   }
   
-  public function findDataFileByUsageHTML($p_strDataFileArray){
+  public function findDataFileByUsageHTML0($p_strDataFileArray){
     $strReturn = "<table summary='A list of drawing files.' id='fileList'>
                                     <thead>
                                             <tr>
@@ -195,13 +199,106 @@ ENDHTML;
     $strReturn .= "</table>";
     return $strReturn;
   }
+
+  public function findDataFileByUsageHTML($p_oDataFileArray){
+    $strReturn = "<table summary='A list of drawing files.' id='fileList'>
+                                    <thead>
+                                            <tr>
+                                                    <th width='90%'>Drawing</th>
+                                                    <th width='10%'>Experiment</th>
+                                            </tr>
+                                    </thead>";
+
+    /* @var $oDataFile DataFile */
+    foreach($p_oDataFileArray as $iFileIndex=>$oDataFile){
+      $strRow = "odd";
+      if($iFileIndex%2==0){
+        $strRow = "even";
+      }
+
+      $iDataFileId = $oDataFile->getId();
+      $strPath = $oDataFile->getPath();
+      $strName = $oDataFile->getName();
+      $strTitle = $oDataFile->getTitle();
+      $strDescription = $oDataFile->getDescription();
+
+      /* @var $oDataFileLink DataFileLink */
+      $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
+      $iProjectId = $oDataFileLink->getProject()->getId();
+      $iExperimentId = $oDataFileLink->getExperimentId();
+      $iTrialId = $oDataFileLink->getTrialId();
+      $iRepId = $oDataFileLink->getRepId();
+
+      $strExperimentTitle = ($iExperimentId > 0) ? $oDataFileLink->getExperiment()->getTitle() : "";
+      $strExperimentName = ($iExperimentId > 0) ? $oDataFileLink->getExperiment()->getName() : "";
+      $strExperimentNameDisplay = $strExperimentName;
+
+      $strTrialName = ($iTrialId > 0) ? $oDataFileLink->getTrial()->getName() : "";
+      $strTrialNameArray = explode("-",$strTrialName);
+      $strTrialName = (sizeof($strTrialNameArray)==2) ? $strTrialNameArray[1] : "";
+
+      $strRepetitionName = ($iRepId > 0) ? $oDataFileLink->getRepetition()->getName() : "";
+      $strRepetitionNameArray = explode("-",$strRepetitionName);
+      $strRepetitionName = (sizeof($strRepetitionNameArray)==2) ? $strRepetitionNameArray[1] : "";
+
+      $strDisplay = (strlen($strTitle)==0) ? $strName : $strTitle;
+      $strDescription = (strlen($strDescription)!=0) ? $strDescription : "Description not available";
+
+      $strDrawingUrl = $strPath."/display_".$iDataFileId."_".$strName;
+      $strDrawingUrl = str_replace("/nees/home/",  "",  $strDrawingUrl);
+      $strDrawingUrl = str_replace(".groups",  "",  $strDrawingUrl);
+
+      $strLightbox = "";
+      $strNameArray = explode(".", $strName);
+      $strExtension = $strNameArray[1];
+      if($strExtension==="png" || $strExtension==="jpg" || $strExtension==="gif"){
+        $strLightbox = "lightbox[drawings]";
+      }
+
+      $strReturn .= <<< ENDHTML
+              <tr class="$strRow">
+                    <td><a rel="$strLightbox" href="/data/get/$strDrawingUrl" title="$strDescription">$strDisplay</a></td>
+                    <td><a href="/warehouse/experiment/$iExperimentId/project/$iProjectId" class="Tips3" title="$strExperimentName :: $strExperimentTitle">$strExperimentNameDisplay</a></td>
+              </tr>
+ENDHTML;
+    }
+
+    if(empty($p_oDataFileArray)){
+      $strReturn .= "<tr>
+                      <td colspan='2'><p class='warning'>No drawings found.</p></td>
+                    </tr>";
+    }
+
+    $strReturn .= "</table>";
+    return $strReturn;
+  }
   
   public function findDistinctExperiments($p_iProjectId, $p_strOpeningTool="", $p_strUsageType=""){
     return DataFileLinkPeer::findDistinctExperiments($p_iProjectId, $p_strOpeningTool, $p_strUsageType);
   }
   
-  public function findDistinctExperimentsHTML($p_oExperimentArray, $p_iProjectId, $p_iExperimentId=0){
+  public function findDistinctExperimentsHTML0($p_oExperimentArray, $p_iProjectId, $p_iExperimentId=0){
     $strReturn = "Filter:&nbsp;&nbsp; <select id=\"cboExperiment\" name=\"experiment\" onchange=\"document.getElementById('frmData').submit();\">
+                                    <option value=0>-Select Experiment-</option>";
+
+    foreach($p_oExperimentArray as $strReturnArray){
+      $iExperimentId = $strReturnArray['EXP_ID'];
+      $strExperimentName = $strReturnArray['NAME'];
+      //echo "select $iExperimentId vs. $p_iExperimentId<br>";
+      $strSelected = "";
+      if($iExperimentId==$p_iExperimentId){
+        $strSelected = "selected";
+      }
+      $strReturn .= <<< ENDHTML
+              <option value="$iExperimentId" $strSelected>$strExperimentName</option>
+ENDHTML;
+    }
+    $strReturn .= "</select>";
+    return $strReturn;
+  }
+
+  public function findDistinctExperimentsHTML($p_oExperimentArray, $p_iProjectId, $p_iExperimentId=0){
+    $strReturn = "Filter:&nbsp;&nbsp; <select id=\"cboExperiment\" name=\"experiment\" onchange=\"onChangeDataTab('frmData', 'cboTools', 'cboExperiment', 'cboTrial', 'cboRepetition');\">
                                     <option value=0>-Select Experiment-</option>";
 
     foreach($p_oExperimentArray as $strReturnArray){
@@ -224,8 +321,27 @@ ENDHTML;
   	return DataFileLinkPeer::findDistinctTrials($p_iProjectId, $p_iExperimentId, $p_strOpeningTool, $p_strUsageType);
   }
   
-  public function findDistinctTrialsHTML($p_oTrialArray, $p_iProjectId, $p_iTrialId){
+  public function findDistinctTrialsHTML0($p_oTrialArray, $p_iProjectId, $p_iTrialId){
     $strReturn = "<select id=\"cboTrial\" name=\"trial\" onchange=\"document.getElementById('frmData').submit();\">
+                                    <option selected value=0>-Select Trial-</option>";
+    foreach($p_oTrialArray as $strReturnArray){
+      $iTrialId = $strReturnArray['TRIAL_ID'];
+      $strTrialName = $strReturnArray['NAME'];
+      $strSelected = "";
+      //echo "select $iTrialId, $p_iTrialId<br>";
+      if($iTrialId==$p_iTrialId){
+        $strSelected = "selected";
+      }
+      $strReturn .= <<< ENDHTML
+              <option value="$iTrialId" $strSelected>$strTrialName</option>
+ENDHTML;
+    }
+    $strReturn .= "</select>";
+    return $strReturn;
+  }
+
+  public function findDistinctTrialsHTML($p_oTrialArray, $p_iProjectId, $p_iTrialId){
+    $strReturn = "<select id=\"cboTrial\" name=\"trial\" onchange=\"onChangeDataTab('frmData', 'cboTools', 'cboExperiment', 'cboTrial', 'cboRepetition');\">
                                     <option selected value=0>-Select Trial-</option>";
     foreach($p_oTrialArray as $strReturnArray){
       $iTrialId = $strReturnArray['TRIAL_ID'];
@@ -247,8 +363,29 @@ ENDHTML;
     return DataFileLinkPeer::findDistinctRepetitions($p_iProjectId, $p_iExperimentId, $p_iTrialId, $p_strOpeningTool, $p_strUsageType);
   }
   
-  public function findDistinctRepetitionsHTML($p_oRepetitionArray, $p_iRepetitionId=0){
+  public function findDistinctRepetitionsHTML0($p_oRepetitionArray, $p_iRepetitionId=0){
     $strReturn = "<select id=\"cboRepetition\" name=\"repetition\" onchange=\"document.getElementById('frmData').submit();\">
+                                    <option selected value=0>-Select Repetition-</option>";
+
+    foreach($p_oRepetitionArray as $strReturnArray){
+      $iRepetitionId = $strReturnArray['REP_ID'];
+      $strRepetitionName = $strReturnArray['NAME'];
+      $strSelected = "";
+      //echo "select $iRepetitionId, $p_iRepetitionId<br>";
+      if($iRepetitionId==$p_iRepetitionId){
+        $strSelected = "selected";
+      }
+
+      $strReturn .= <<< ENDHTML
+              <option value="$iRepetitionId" $strSelected>$strRepetitionName</option>
+ENDHTML;
+    }
+    $strReturn .= "</select>";
+    return $strReturn;
+  }
+
+  public function findDistinctRepetitionsHTML($p_oRepetitionArray, $p_iRepetitionId=0){
+    $strReturn = "<select id=\"cboRepetition\" name=\"repetition\" onchange=\"onChangeDataTab('frmData', 'cboTools', 'cboExperiment', 'cboTrial', 'cboRepetition');\">
                                     <option selected value=0>-Select Repetition-</option>";
 
     foreach($p_oRepetitionArray as $strReturnArray){
@@ -272,8 +409,25 @@ ENDHTML;
     return DataFilePeer::findDistinctOpeningTools($p_iProjectId, $p_iExperimentId, $p_iTrialId, $p_iRepetitionId);
   }
   
-  public function findDistinctOpeningToolsHTML($p_strToolArray, $p_strTool=""){
+  public function findDistinctOpeningToolsHTML0($p_strToolArray, $p_strTool=""){
     $strReturn = "Tools:&nbsp;&nbsp; <select id=\"cboTools\" name=\"tool\" onchange=\"document.getElementById('frmData').submit();\">
+                                    <option>-Select Tool-</option>";
+
+    foreach($p_strToolArray as $strToolName){
+      $strSelected = "";
+      if($strToolName==$p_strTool){
+            $strSelected = "selected";
+      }
+      $strReturn .= <<< ENDHTML
+              <option $strSelected value="$strToolName">$strToolName</option>
+ENDHTML;
+    }
+    $strReturn .= "</select>";
+    return $strReturn;
+  }
+
+  public function findDistinctOpeningToolsHTML($p_strToolArray, $p_strTool=""){
+    $strReturn = "Tools:&nbsp;&nbsp; <select id=\"cboTools\" name=\"tool\" onchange=\"onChangeDataTab('frmData', 'cboTools', 'cboExperiment', 'cboTrial', 'cboRepetition');\">
                                     <option>-Select Tool-</option>";
 
     foreach($p_strToolArray as $strToolName){

@@ -23,7 +23,9 @@ class WarehouseViewMembers extends JView{
 
     //get the tabs to display on the page
     $strTabArray = $oMembersModel->getTabArray();
-    $strTabHtml = $oMembersModel->getTabs( "warehouse", $iProjectId, $strTabArray, "team members" );
+    $strTabViewArray = $oMembersModel->getTabViewArray();
+    $strTabHtml = $oMembersModel->getTabs( "warehouse", $iProjectId, $strTabArray, $strTabViewArray, "members" );
+
     $this->assignRef( "strTabs", $strTabHtml );
 
     //removed tree from display as of NEEScore meeting on 4/8/10
@@ -155,7 +157,7 @@ class WarehouseViewMembers extends JView{
     $oMembersArray = array();
 
     $oTeamMembersArray = $p_oMembersModel->findMembersForEntityWithPagination($p_iProjectId, 1, $p_iLowerLimit, $p_iUpperLimit);
-	
+
     /* @var $oPerson Person */
     foreach($oTeamMembersArray as $oPerson){
       $oPersonArray = array();

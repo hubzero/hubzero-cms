@@ -11,7 +11,8 @@ class WarehouseViewResults extends JView{
     //get the tabs to display on the page
     $oResultsModel =& $this->getModel();
     $strTabArray = $oResultsModel->getSearchResultsTabArray();
-    $strTabHtml = $oResultsModel->getTabs( "warehouse", 0, $strTabArray, "results" );
+    $strTabViewArray = $oResultsModel->getSearchResultsTabViewArray();
+    $strTabHtml = $oResultsModel->getTabs( "warehouse", 0, $strTabArray, $strTabViewArray, "results" );
     $this->assignRef( "strTabs", $strTabHtml );
 
     $strTreeTabArray = $oResultsModel->getTreeBrowserTabArray();

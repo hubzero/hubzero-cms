@@ -19,11 +19,14 @@ class WarehouseViewData extends JView{
     $iTrialId = JRequest::getVar('trial', 0);
     $iRepetitionId = JRequest::getVar('repetition', 0);
 
+    //echo "p: $iProjectId, e: $iExperimentId, t: $iTrialId, r: $iRepetitionId<br>";
+
     //get the main tabs to display on the page
     /* @var $oDataModel WarehouseModelData */
     $oDataModel =& $this->getModel();
     $strTabArray = $oDataModel->getTabArray();
-    $strTabHtml = $oDataModel->getTabs( "warehouse", $iProjectId, $strTabArray, "data" );
+    $strTabViewArray = $oDataModel->getTabViewArray();
+    $strTabHtml = $oDataModel->getTabs( "warehouse", $iProjectId, $strTabArray, $strTabViewArray, "data" );
     $this->assignRef( "strTabs", $strTabHtml );
 
     //get the sub tabs to display on the page
@@ -66,8 +69,9 @@ class WarehouseViewData extends JView{
         $iUpperLimit = $oDataModel->computeUpperLimit($iPageIndex, $iDisplay);
 
         $iDataFileTotal = $oDataModel->findDataFileByUsageCount( $strUsageType, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId );
-        $strDataFileArray = $oDataModel->findDataFileByUsage( $strUsageType, $iLowerLimit, $iUpperLimit, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId );
-        $strDataFileArray = $oDataModel->findDataFileByUsageHTML( $strDataFileArray );
+        $oDataFileArray = $oDataModel->findDataFileByUsage( $strUsageType, $iLowerLimit, $iUpperLimit, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId );
+        $oDataModel->resizePhotos($oDataFileArray);
+        $strDataFileArray = $oDataModel->findDataFileByUsageHTML( $oDataFileArray );
 
         /*
          * Create the pagination

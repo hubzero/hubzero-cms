@@ -6,6 +6,7 @@ jimport('joomla.application.component.model');
 
 require_once 'api/org/nees/html/TabHtml.php';
 require_once 'lib/data/PersonPeer.php';
+require_once 'lib/data/EntityActivityLogPeer.php';
 
 class WarehouseModelBase extends JModel {
 
@@ -22,9 +23,16 @@ class WarehouseModelBase extends JModel {
         parent::__construct();
 
         $this->m_oTabArray = array("Project", "Experiments", "Data", "Team Members", "More");
-        $this->m_oSearchTabArray = array("Featured", "Search");
+        $this->m_oTabViewArray = array("project", "experiments", "data", "members", "more");
+
+        $this->m_oSearchTabArray = array("Search", "Enhanced Projects");
+        $this->m_oSearchTabViewArray = array("search","featured");
+
         $this->m_oSearchResultsTabArray = array("Results");
+        $this->m_oSearchResultsTabViewArray = array("results");
+
         $this->m_oTreeTabArray = array("Projects");
+        $this->m_oTreeTabViewArray = array("projects");
     }
 
     /**
@@ -37,6 +45,14 @@ class WarehouseModelBase extends JModel {
 
     /**
      *
+     * @return Returns an array of tab views for the selected warehouse
+     */
+    public function getTabViewArray() {
+        return $this->m_oTabViewArray;
+    }
+
+    /**
+     *
      * @return Returns an array of tabs for the search screen
      */
     public function getSearchTabArray() {
@@ -45,9 +61,24 @@ class WarehouseModelBase extends JModel {
 
     /**
      *
+     * @return Returns an array of tabs for the search screen
+     */
+    public function getSearchTabViewArray() {
+        return $this->m_oSearchTabViewArray;
+    }
+
+    /**
+     *
      */
     public function getTreeBrowserTabArray() {
         return $this->m_oTreeTabArray;
+    }
+
+    /**
+     *
+     */
+    public function getTreeBrowserTabViewArray() {
+        return $this->m_oTreeTabViewArray;
     }
 
     /**
@@ -60,10 +91,18 @@ class WarehouseModelBase extends JModel {
 
     /**
      *
+     * @return Returns an array of tabs for the search results
+     */
+    public function getSearchResultsTabViewArray() {
+        return $this->m_oSearchResultsTabViewArray;
+    }
+
+    /**
+     *
      * @return strTabs in html format
      */
-    public function getTabs($p_strOption, $p_iId, $p_strTabArray, $p_strActive) {
-        return TabHtml::getTabs($p_strOption, $p_iId, $p_strTabArray, $p_strActive);
+    public function getTabs($p_strOption, $p_iId, $p_strTabArray, $p_strTabViewArray, $p_strActive) {
+        return TabHtml::getTabs($p_strOption, $p_iId, $p_strTabArray, $p_strTabViewArray, $p_strActive);
     }
 
     /**
@@ -311,6 +350,69 @@ ENDHTML;
       }
 
       return $p_oDataFile;
+    }
+
+    /**
+     * Updates the current page view count and returns the new count.
+     * @param int $p_iEntityTypeId
+     * @param int $p_iEntityId
+     * @return int
+     */
+    public function getPageViews($p_iEntityTypeId, $p_iEntityId){
+      $_REQUEST[EntityActivityLogPeer::ENTITY_TYPE_ID] = $p_iEntityTypeId;
+      $_REQUEST[EntityActivityLogPeer::ENTITY_ID] = $p_iEntityId;
+
+      JPluginHelper::importPlugin( 'project', 'entityactivitylog' );
+      $oDispatcher =& JDispatcher::getInstance();
+      $strParamArray = array(0,0);
+
+      //set the page view count
+      $oDispatcher->trigger('onUpdateViews',$strParamArray);
+
+      //get the page view count
+      $oResultsArray = $oDispatcher->trigger('onViews',$strParamArray);
+
+      //return the updated count
+      return $oResultsArray[0];
+    }
+
+    /**
+     * Updates the current entity download count.
+     * @param int $p_iEntityTypeId
+     * @param int $p_iEntityId
+     * @return int
+     */
+    public function updateEntityDownloads($p_iEntityTypeId, $p_iEntityId){
+      $_REQUEST[EntityActivityLogPeer::ENTITY_TYPE_ID] = $p_iEntityTypeId;
+      $_REQUEST[EntityActivityLogPeer::ENTITY_ID] = $p_iEntityId;
+
+      JPluginHelper::importPlugin( 'project', 'entityactivitylog' );
+      $oDispatcher =& JDispatcher::getInstance();
+      $strParamArray = array(0,0);
+
+      //set the page view count
+      $oDispatcher->trigger('onUpdateDownloads',$strParamArray);
+    }
+
+    /**
+     * Gets the current entity download count.
+     * @param int $p_iEntityTypeId
+     * @param int $p_iEntityId
+     * @return int
+     */
+    public function getEntityDownloads($p_iEntityTypeId, $p_iEntityId){
+      $_REQUEST[EntityActivityLogPeer::ENTITY_TYPE_ID] = $p_iEntityTypeId;
+      $_REQUEST[EntityActivityLogPeer::ENTITY_ID] = $p_iEntityId;
+
+      JPluginHelper::importPlugin( 'project', 'entityactivitylog' );
+      $oDispatcher =& JDispatcher::getInstance();
+      $strParamArray = array(0,0);
+
+      //set the page view count
+      $oResultsArray = $oDispatcher->trigger('onDownloads',$strParamArray);
+
+      //return the value
+      return $oResultsArray[0];
     }
 
 }

@@ -44,6 +44,8 @@ defined('_JEXEC') or die( 'Restricted access' );
               <p class="error">You don't have permission to view this project.</p>
             <?php
             }else{
+              $strExperimentThumbnailArray = $_REQUEST[Experiments::THUMBNAILS];
+
               /* @var $oExperiment Experiment */
               /* @var $oIndeedDataFile DataFile */
               $iViewed = 0;
@@ -54,8 +56,8 @@ defined('_JEXEC') or die( 'Restricted access' );
         	  $strStartDate = strftime("%B %d, %Y", strtotime($oExperiment->getStartDate()));
         	  $oDescriptionClob = StringHelper::neat_trim($oExperiment->getDescription(), 250);
         	  $strName = $oExperiment->getName();
-        	  $strThumbnail = $oExperiment->getExperimentThumbnailHTML();
-                  //$strThumbnail = $oExperiment->getId();
+        	  $strThumbnail = $strExperimentThumbnailArray[$iExperimentIndex];
+                  
 
                   //added on July 1,2010.  Users want to see the "Main" inDEED file in experiment list
                   $oIndeedDataFileArray = $oExperiment->getExperimentIndeedFile("inDEED",
@@ -102,8 +104,10 @@ defined('_JEXEC') or die( 'Restricted access' );
                     if(sizeof($oIndeedDataFileArray) != 0){
                       $strIndeedPath = $oIndeedDataFile->getPath();
                       $strIndeedName = $oIndeedDataFile->getName();
-                      $strLaunch = InDEED::LAUNCH;
-                      echo "<a href='$strLaunch?list=$strIndeedPath/$strIndeedName'>Launch Data File</a>";
+
+                      $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
+
+                      echo "<a href='$strLaunchInEED=$strIndeedPath/$strIndeedName'>Launch Data File</a>";
                     }
                   ?>
                </div>

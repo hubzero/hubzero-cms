@@ -54,6 +54,8 @@ class WarehouseModelFileBrowser extends WarehouseModelBase{
   	return DataFilePeer::findByDirectory($p_strPath);
   }
 
+  
+
 }
 
 ?>

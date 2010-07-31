@@ -28,8 +28,8 @@ class WarehouseController extends JController{
    * @access    public
    */
   function display(){
-  	$strViewName	= JRequest::getVar('view', 'featured');
-	JRequest::setVar('view', $strViewName );
+    $strViewName	= JRequest::getVar('view', 'search');
+    JRequest::setVar('view', $strViewName );
     parent::display();
   }
   
@@ -83,7 +83,15 @@ class WarehouseController extends JController{
 	   */
 	  $_SESSION[Search::RESULTS] = serialize($oResultsArray);
 	  $_REQUEST[Search::COUNT] = $iResultsCount;
-	  $_REQUEST[Search::KEYWORDS] = $strKeyword;	  
+	  $_REQUEST[Search::KEYWORDS] = $strKeyword;
+
+          //create thumbnails if need be...
+          $strProjectIconArray = array();
+          foreach($oResultsArray as $iProjectIndex=>$oProject){
+            $strThumbnail =  $oProject->getProjectThumbnailHTML("icon");
+            array_push($strProjectIconArray, $strThumbnail);
+          }
+          $_SESSION[Search::THUMBNAILS] = $strProjectIconArray;
 	}
 	
 	JRequest::setVar("view", "results" );
@@ -114,8 +122,27 @@ class WarehouseController extends JController{
    * 
    */
   function download(){
+        /* @var $oModel WarehouseModelBase */
   	$oModel =& $this->getModel('Base');
-  	$ext = $oModel->downloadTarBall();
+
+        /*
+         * as of 20100727, downloads are on experiment page.
+         *
+         * in the future, we may monitor downloads on project page.
+         * when the time comes, experimentId should be 0.
+         */
+        $iProjectId = JRequest::getInt('projectId');
+        $iExperimentId = JRequest::getInt('experimentId');
+        
+        if($iExperimentId > 0){
+          $oModel->updateEntityDownloads(3, $iExperimentId);
+        }else{
+          if($iProjectId > 0){
+            $oModel->updateEntityDownloads(1, $iProjectId);
+          }
+        }
+
+        $ext = $oModel->downloadTarBall();
   }
   
   function getTrialDropDown(){

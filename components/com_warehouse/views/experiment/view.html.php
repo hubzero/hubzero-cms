@@ -28,7 +28,8 @@ class WarehouseViewExperiment extends JView{
     $_REQUEST[Search::SELECTED] = serialize($oProject);
 
     $strTabArray = $oExperimentModel->getTabArray();
-    $strTabHtml = $oExperimentModel->getTabs( "warehouse", $iProjectId, $strTabArray, "experiments" );
+    $strTabViewArray = $oExperimentModel->getTabViewArray();
+    $strTabHtml = $oExperimentModel->getTabs( "warehouse", $iProjectId, $strTabArray, $strTabViewArray, "experiments" );
     $this->assignRef( "strTabs", $strTabHtml );
 
     //20100529 - display the interactive files above data
@@ -99,6 +100,14 @@ class WarehouseViewExperiment extends JView{
 
     $iPhotoFileCount = $oExperimentModel->findDataFileByMimeTypeCount($iProjectId, $oExperiment->getId());
     $this->assignRef( "photoCount", $iPhotoFileCount );
+
+    // update and get the page views
+    $iEntityViews = $oExperimentModel->getPageViews(3, $oExperiment->getId());
+    $this->assignRef("iEntityActivityLogViews", $iEntityViews);
+
+    // update and get the page views
+    $iEntityDownloads = $oExperimentModel->getEntityDownloads(3, $oExperiment->getId());
+    $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
 
     $this->assignRef( "mod_warehousedocs", ComponentHtml::getModule("mod_warehousedocs") );
     $this->assignRef( "mod_warehousetags", ComponentHtml::getModule("mod_warehousetags") );

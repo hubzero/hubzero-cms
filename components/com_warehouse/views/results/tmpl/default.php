@@ -49,16 +49,25 @@ defined('_JEXEC') or die( 'Restricted access' );
                 <p class="warning">No projects found.</p> 
               <?php
             }
-             
+
+            $strProjectIconArray = $_SESSION[Search::THUMBNAILS];
             foreach($oProjectArray as $iProjectIndex=>$oProject){
           	  $iProjectId = $oProject->getId();
         	  $strTitle = $oProject->getTitle();
         	  $strStartDate = strftime("%B %d, %Y", strtotime($oProject->getStartDate()));
         	  $oDescriptionClob = StringHelper::neat_trim($oProject->getDescription(), 250);
                   if($oDescriptionClob=="...")$oDescriptionClob="";
+
+                  //$strThumbnail =  $oProject->getProjectThumbnailHTML("icon");
+                  $strThumbnail =  $strProjectIconArray[$iProjectIndex];
+                  $strWidth="100%";
+                  if( strlen($strThumbnail) > 0 ){
+                    $strWidth="85%";  
+                  }
+
           ?>
             <div id="Project" style="width:100%;">
-              <div id="ProjectInfo" style="float:left;width:90%;"
+              <div id="ProjectInfo" style="float:left;width:<?php echo $strWidth; ?>;"
                 <a href="/warehouse/project/<?php echo $iProjectId; ?>" style="font-size: 15px;"><?php echo $strTitle; ?></a>
                 <p style="color: #666666"><?php echo $strStartDate; ?></p>
                 <p><?php echo $oDescriptionClob; ?></p>
@@ -66,7 +75,6 @@ defined('_JEXEC') or die( 'Restricted access' );
               </div>
               <div align="right" id="thumbnail">
                 <?php
-                  $strThumbnail =  $oProject->getProjectThumbnailHTML();
                   if( strlen($strThumbnail) > 0 ){
                     echo $strThumbnail;
                   } 

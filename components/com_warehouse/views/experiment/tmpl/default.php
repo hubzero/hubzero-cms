@@ -34,9 +34,9 @@ defined('_JEXEC') or die( 'Restricted access' );
           <p><?php //echo $oExperiment->getExperimentThumbnailHTML(); ?></p>
 
           <div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">
-            <p style="margin-left:10px; margin-top:10px;">1000 Views</p>
+            <p style="margin-left:10px; margin-top:10px;"><?php echo $this->iEntityActivityLogViews; ?> Views</p>
 
-            <p style="margin-left:10px;">100 Downloads</p>
+            <p style="margin-left:10px;"><?php echo $this->iEntityActivityLogDownloads; ?> Downloads</p>
           </div>
 
 
@@ -144,7 +144,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                     <?php
                       $oDrawingArray =  unserialize($_REQUEST["Drawings"]);
                       foreach($oDrawingArray as $iDrawingIndex=>$oDrawing){
-                        $strDrawingUrl = $oDrawing->getPath()."/".$oDrawing->getName();
+                        $strDrawingUrl = $oDrawing->getPath()."/display_".$oDrawing->getId()."_".$oDrawing->getName();
                         $strDrawingUrl = str_replace("/nees/home/",  "",  $strDrawingUrl);
                         $strDrawingUrl = str_replace(".groups",  "",  $strDrawingUrl);
 
@@ -187,7 +187,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                                            $strToolDesc = "Click to launch tool ".$oToolDataFile->getOpeningTool().".";
                                          }
                                  ?>
-                                        <a href="<?php echo InDEED::LAUNCH; ?>?list=<?php echo $strToolLink; ?>" title="<?php echo $strToolDesc; ?>"><?php echo $strToolTitle; ?></a>
+                                        <a href="<?php echo NeesConfig::LAUNCH_INDEED; ?>=<?php echo $strToolLink; ?>" title="<?php echo $strToolDesc; ?>"><?php echo $strToolTitle; ?></a>
                                  <?php
                                          if($iToolIndex < sizeof($oToolFileArray)-1){
                                    echo "<br>";

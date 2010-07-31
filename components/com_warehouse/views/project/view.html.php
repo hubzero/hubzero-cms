@@ -7,6 +7,8 @@ jimport( 'joomla.application.component.view');
 ximport('xprofile');
 
 require_once 'lib/security/Authorizer.php';
+require_once 'lib/data/ProjectGrant.php';
+require_once 'lib/data/ProjectGrantPeer.php';
 
 class WarehouseViewProject extends JView{
 	
@@ -23,7 +25,6 @@ class WarehouseViewProject extends JView{
     $this->assignRef("projectCreated", $strProjectCreated);
 
     $strDisplayDescription = $this->getDisplayDescription($oProject);
-    //$strDisplayDescription = $oProject->getDescription();
     $oProject->setDescription($strDisplayDescription);
 
     $_REQUEST[Search::SELECTED] = serialize($oProject);
@@ -40,22 +41,31 @@ class WarehouseViewProject extends JView{
     
     //get the tabs to display on the page
     $strTabArray = $oProjectModel->getTabArray();
-    $strTabHtml = $oProjectModel->getTabs( "warehouse", $iProjectId, $strTabArray, "project" );
+    $strTabViewArray = $oProjectModel->getTabViewArray();
+    $strTabHtml = $oProjectModel->getTabs( "warehouse", $iProjectId, $strTabArray, $strTabViewArray, "project" );
     $this->assignRef( "strTabs", $strTabHtml );
+
+    //initialize NEEScentral thumbnail to empty string
+    $strProjectThumbnail = StringHelper::EMPTY_STRING;
+    $this->assignRef("strProjectThumbnail", $strProjectThumbnail);
 
     /* @var $oProjectImageDataFile DataFile */
     $oProjectImageDataFile = $oProjectModel->getProjectImage($iProjectId);
-    //var_dump($oProjectImageDataFile);
 
     //temporarily store the datafile as a request for the plugin
     $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oProjectImageDataFile);
 
-    //scale the image if thumbnail and display don't exist.  return the picture for the view
-    $oProjectImageDataFile = $oProjectModel->scaleImageByWidth($oProjectImageDataFile, true, false);
-    //$oProjectImageDataFile = null;
+    if($oProjectImageDataFile){
+      //scale the image if thumbnail and display don't exist.  return the picture for the view
+      $oProjectImageDataFile = $oProjectModel->scaleImageByWidth($oProjectImageDataFile, true, false);
     
-    //update the datafile for the view
-    $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oProjectImageDataFile);
+      //update the datafile for the view
+      $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oProjectImageDataFile);
+    }else{
+      //if $oProjectImageDataFile is null, try the NEEScentral method.
+      $strProjectThumbnail = $oProject->getProjectThumbnailHTML("thumb");
+      $this->assignRef("strProjectThumbnail", $strProjectThumbnail);
+    }
     
     $oFacilityOrganizationArray = $oProjectModel->findProjectFacility($iProjectId);
     $_REQUEST["oFacility"] = serialize($oFacilityOrganizationArray);
@@ -86,6 +96,14 @@ class WarehouseViewProject extends JView{
     /* @var $oHubUser JUser */
     $oHubUser = $oProjectModel->getCurrentUser();
     $this->assignRef( "strUsername", $oHubUser->username );
+
+    // update and get the page views
+    $iEntityViews = $oProjectModel->getPageViews(1, $oProject->getId());
+    $this->assignRef("iEntityActivityLogViews", $iEntityViews);
+
+    // update and get the page views
+    $iEntityDownloads = $oProjectModel->getEntityDownloads(1, $oProject->getId());
+    $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
     
     $bSearch = false;
     if(isset($_SESSION[Search::KEYWORDS]))$bSearch = true;
@@ -202,16 +220,43 @@ ENDHTML;
   private function getProjectLinks($p_oProject){
   	return ProjectHomepagePeer::findProjectURLsByProjectId($p_oProject->getId());
   }
-  
+
+  /**
+   * This is in progress, so we will take a 2 step approach.
+   * a) If the project has an award number, go to the project_grant table.
+   * b) If not (a), get the information from the project.  We won't provide link.
+   *
+   * @param Project $p_oProject
+   * @return string
+   */
   private function getFunding($p_oProject){
-  	$strFundingOrg = $p_oProject->getFundorg();
+      $strFundingOrg = StringHelper::EMPTY_STRING;
+      $oProjectGrantArray = ProjectGrantPeer::findByProjectId($p_oProject->getId());
+      foreach($oProjectGrantArray as $iIndex=>$oProjectGrant){
+        /* @var $oProjectGrant ProjectGrant */
+        $strSponsor = $oProjectGrant->getFundingOrg();
+        $strAwardNumber = $oProjectGrant->getAwardNumber();
+        $strUrl = $oProjectGrant->getAwardUrl();
+
+        $strFundingOrg .= $strSponsor . " - " .$strAwardNumber;
+        if($strSponsor=="NSF"){
+          $strFundingOrg .= " (<a href='".$strUrl."'>view</a>)";
+          if($iIndex < sizeof($oProjectGrantArray)-1){
+            $strFundingOrg .= "<br>";
+          }
+        }
+      }
+
+      if(strlen($strFundingOrg) === 0){
+        $strFundingOrg = $p_oProject->getFundorg();
   	if(strlen($p_oProject->getFundorgProjId())>0){
   	  $strFundingOrg = $strFundingOrg . " - " .$p_oProject->getFundorgProjId();
-  	  if($p_oProject->getFundorg()=="NSF"){
-  	  	$strFundingOrg .= " (<a href='http://www.nsf.gov/awardsearch/showAward.do?AwardNumber=".$p_oProject->getFundorgProjId()."'>view</a>)";
-  	  }
+//  	  if($p_oProject->getFundorg()=="NSF"){
+//  	  	$strFundingOrg .= " (<a href='http://www.nsf.gov/awardsearch/showAward.do?AwardNumber=".$p_oProject->getFundorgProjId()."'>view</a>)";
+//  	  }
   	}
-  	return $strFundingOrg;
+      }
+      return $strFundingOrg;
   }
   
   private function getDisplayDescription($p_oProject){

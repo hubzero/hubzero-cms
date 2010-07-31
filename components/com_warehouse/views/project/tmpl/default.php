@@ -15,7 +15,10 @@ defined('_JEXEC') or die( 'Restricted access' );
   $oAuthorizer->setUser($strUsername);
 ?>
 
-<?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
+<?php
+  /* @var $oProject Project */
+  $oProject = unserialize($_REQUEST[Search::SELECTED]);
+?>
 
 <div class="innerwrap">
   <div class="content-header">
@@ -55,8 +58,16 @@ defined('_JEXEC') or die( 'Restricted access' );
                 <img src="/data/get/<?php echo $strFileLink; ?>"/><br><?php echo $oProjectImageDataFile->getDescription(); ?>
               </p>
             <?php 
-              }
-            }
+              }else{
+                /*
+                 * Some project photos didn't go through the V&V process.
+                 * We'll have to use the old NEEScentral method.  There's no
+                 * caption
+                 */
+                echo $this->strProjectThumbnail;
+
+              }//end if-else
+            }//end canView
           ?>
         
 
@@ -65,9 +76,9 @@ defined('_JEXEC') or die( 'Restricted access' );
         <?php }else{ ?>
           <div id="stats" style="border-width: 1px; border-style: dashed; border-color: #cccccc; ">
         <?php } ?>
-          <p style="margin-left:10px; margin-top:10px;">1000 Views</p>
+          <p style="margin-left:10px; margin-top:10px;"><?php echo $this->iEntityActivityLogViews; ?> Views</p>
           
-          <p style="margin-left:10px;">100 Downloads</p>    
+          <p style="margin-left:10px;"><?php echo $this->iEntityActivityLogDownloads; ?> Downloads</p>
         </div>
         
 
@@ -262,6 +273,7 @@ defined('_JEXEC') or die( 'Restricted access' );
     </div>
     <div class="clear"></div>
   </div>  
+</div>
 </div>
 
 

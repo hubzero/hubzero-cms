@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
       </div>
   
-      <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
+      <?php echo TabHtml::getSearchFormWithAction( "frmPhotos", "/warehouse/find" ); ?>
       <?php echo $this->strTabs; ?>
       
       <div class="withleft">

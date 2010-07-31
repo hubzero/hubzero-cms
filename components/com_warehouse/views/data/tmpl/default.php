@@ -23,21 +23,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
 
 <form id="frmData" method="get">
+<input type="hidden" id="txtExperiment" name="experiment" value="0"/>
+<input type="hidden" id="txtTrial" name="trial" value="0" />
+<input type="hidden" id="txtRepetition" name="repetition" value="0" />
+<input type="hidden" id="txtTool" name="tool" value="inDEED"/>
 <div class="innerwrap">
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
   
   <div id="warehouseWindow" style="padding-top:20px;">
+    <div id="title" style="padding-bottom:1em;">
+      <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
+    </div>
+
     <div id="treeBrowser" style="float:left;width:20%;"></div>
-    
+
     <div id="overview_section" class="main section" style="width:100%;float:left;">
-      
-      <div id="title" style="padding-bottom:1em;">
-        <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
-      </div>
-  
-      <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
+      <?php echo TabHtml::getSearchFormWithAction( "frmData", "/warehouse/find" ); ?>
+
+
       <?php echo $this->strTabs; ?>
       
       <div class="aside">
