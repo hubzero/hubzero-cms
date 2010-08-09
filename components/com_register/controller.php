@@ -1270,6 +1270,8 @@ class RegisterController extends JObject
 			$view->email = $email;
 			$view->return = $return;
 			$view->show_correction_faq = true;
+			$view->hubName = $this->jconfig->getValue('config.sitename');
+
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
