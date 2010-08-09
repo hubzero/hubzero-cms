@@ -54,7 +54,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			<label>
 				<?php echo JText::_('GROUPS_INVITE_LOGINS'); ?>
-				<input type="text" name="logins" size="35" value="" />
+				<textarea name="logins" id="logins" rows="8" cols="50"></textarea>
 				<span class="hint"><?php echo JText::_('Enter logins or e-mails separated by commas'); ?></span>
 			</label>
 			<label>
