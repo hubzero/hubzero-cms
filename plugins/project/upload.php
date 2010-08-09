@@ -142,12 +142,17 @@ class plgProjectUpload extends JPlugin{
     // input file
     $strSource = $p_strWarehousePath."/".$p_strName;
 
+    $bMkDir = false;
+
     // output files
     $p_strWarehousePath .= "/".Files::GENERATED_PICS;
     if(!is_dir($p_strWarehousePath)){
       $oFileCommand = FileCommandAPI::create($p_strWarehousePath);
-      $oFileCommand->mkdir();
+      $bMkDir = $oFileCommand->mkdir();
     }
+
+    $bThumbnail = false;
+    $bDisplay = false;
 
     $strThumbName = "thumb_".$oDataFile->getId()."_".$p_strName;
     $strThumbnailFile = $p_strWarehousePath."/".$strThumbName;
@@ -171,8 +176,10 @@ class plgProjectUpload extends JPlugin{
       $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId());
     }
 
-    $escSource = escapeshellarg($p_strWarehousePath);
-    exec("/nees/home/bin/fix_permissions $escSource", $output);  
+    if($bThumbnail || $bDisplay || $bMkDir){
+      $escSource = escapeshellarg($p_strWarehousePath);
+      exec("/nees/home/bin/fix_permissions $escSource", $output);
+    }
   }
 
   /**
@@ -294,11 +301,15 @@ class plgProjectUpload extends JPlugin{
       }
     }
 
+    $bMkDir = false;
 
     if(!is_dir($strWarehousePath)){
       $oFileCommand = FileCommandAPI::create($strWarehousePath);
-      $oFileCommand->mkdir();
+      $bMkDir = $oFileCommand->mkdir();
     }
+
+    $bThumbnail = false;
+    $bDisplay = false;
 
     $bThumbnail = $this->scaleImage($strSource, $iThumbWidth, $iThumbHeight, $strThumbnailFile);
     if($bThumbnail){
@@ -316,8 +327,10 @@ class plgProjectUpload extends JPlugin{
       $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId());
     }
 
-    $escSource = escapeshellarg($strWarehousePath);
-    exec("/nees/home/bin/fix_permissions $escSource", $output);
+    if($bThumbnail || $bDisplay || $bMkDir){
+      $escSource = escapeshellarg($strWarehousePath);
+      exec("/nees/home/bin/fix_permissions $escSource", $output);
+    }
 
     return true;
   }
@@ -390,9 +403,10 @@ class plgProjectUpload extends JPlugin{
     }
 
 
+    $bMkDir = false;
     if(!is_dir($strWarehousePath)){
       $oFileCommand = FileCommandAPI::create($strWarehousePath);
-      $oFileCommand->mkdir();
+      $bMkDir = $oFileCommand->mkdir();
     }
     
     $bThumbnail = $this->scaleImageByWidth($strSource, $iThumbWidth, $strThumbnailFile);
@@ -410,6 +424,8 @@ class plgProjectUpload extends JPlugin{
       $oDisplayDataFile = new DataFile();
       $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId());
     }
+
+    $bIcon = false;
 
     //ONLY FOR PROJECTS. (displays in search results)
     if ($strUsageEntityType=="Project Image"){
@@ -431,6 +447,11 @@ class plgProjectUpload extends JPlugin{
         $oDataFile->setView("PUBLIC");
         $oDataFile->save();
       }
+    }
+
+    if($bThumbnail || $bDisplay || $bMkDir || $bIcon){
+      $escSource = escapeshellarg($p_strWarehousePath);
+      exec("/nees/home/bin/fix_permissions $escSource", $output);
     }
 
     return true;
