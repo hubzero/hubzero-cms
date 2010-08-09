@@ -41,8 +41,17 @@ class WarehouseViewPhotos extends JView {
 
         //get the tabs to display on the page
         $strTabArray = $oPhotosModel->getTabArray();
-        $strTabHtml = $oPhotosModel->getTabs("warehouse", $iProjectId, $strTabArray, "experiments");
+        $strTabViewArray = $oPhotosModel->getTabViewArray();
+        $strTabHtml = $oPhotosModel->getTabs("warehouse", $iProjectId, $strTabArray, $strTabViewArray, "experiments");
         $this->assignRef("strTabs", $strTabHtml);
+
+        // update and get the page views
+        $iEntityViews = $oPhotosModel->getEntityPageViews(3, $oExperiment->getId());
+        $this->assignRef("iEntityActivityLogViews", $iEntityViews);
+
+        // update and get the page views
+        $iEntityDownloads = $oPhotosModel->getEntityDownloads(3, $oExperiment->getId());
+        $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
 
         $this->assignRef("mod_curationprogress", ComponentHtml::getModule("mod_curationprogress"));
 

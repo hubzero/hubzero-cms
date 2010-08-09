@@ -55,14 +55,19 @@ class WarehouseViewFileBrowser extends JView{
       $oDataFileArray = DataFilePeer::getDocumentSummary($strPath, $strIncludedFolderArray);
     }
     $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oDataFileArray);
-	
-    /* @var $oDataFile DataFile */
-    $oDataFile = $oDataFileArray[0];
 
-    /* @var $oDataFileLink DataFileLink */
-    $oDataFileLink = DataFileLinkPeer::retrieveByPK($oDataFile->getId());
-    $iProjectId = $oDataFileLink->getProject()->getId();
-    $iExperimentId = $oDataFileLink->getExperiment()->getId();
+    $iProjectId = "";
+    $iExperimentId = "";
+
+    if(!empty ($oDataFileArray)){
+      /* @var $oDataFile DataFile */
+      $oDataFile = $oDataFileArray[0];
+
+      /* @var $oDataFileLink DataFileLink */
+      $oDataFileLink = DataFileLinkPeer::retrieveByPK($oDataFile->getId());
+      $iProjectId = $oDataFileLink->getProject()->getId();
+      $iExperimentId = $oDataFileLink->getExperiment()->getId();
+    }
 
     $this->assignRef( "iProjectId", $iProjectId );
     $this->assignRef( "iExperimentId", $iExperimentId );

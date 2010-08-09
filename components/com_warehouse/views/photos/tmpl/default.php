@@ -35,10 +35,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 		  <p><?php //echo $oExperiment->getExperimentThumbnailHTML(); ?></p>
 		      
 		  <div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">
-		    <p style="margin-left:10px; margin-top:10px;">1000 Views</p>
-		          
-		    <p style="margin-left:10px;">100 Downloads</p>    
-		  </div>
+                    <p style="margin-left:10px; margin-top:10px;"><?php echo $this->iEntityActivityLogViews; ?> Views</p>
+
+                    <p style="margin-left:10px;"><?php echo $this->iEntityActivityLogDownloads; ?> Downloads</p>
+                  </div>
 		        
 		      
 		  <div id="curation">

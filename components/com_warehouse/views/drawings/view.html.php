@@ -25,8 +25,17 @@ class WarehouseViewDrawings extends JView {
         $_REQUEST["Drawings"] = serialize($oDrawingArray);
 
         $strTabArray = $oDrawingsModel->getTabArray();
-        $strTabHtml = $oDrawingsModel->getTabs("warehouse", $iProjectId, $strTabArray, "experiments");
+        $strTabViewArray = $oDrawingsModel->getTabViewArray();
+        $strTabHtml = $oDrawingsModel->getTabs( "warehouse", $iProjectId, $strTabArray, $strTabViewArray, "experiments" );
         $this->assignRef("strTabs", $strTabHtml);
+
+        // update and get the page views
+        $iEntityViews = $oDrawingsModel->getEntityPageViews(3, $oExperiment->getId());
+        $this->assignRef("iEntityActivityLogViews", $iEntityViews);
+
+        // update and get the page views
+        $iEntityDownloads = $oDrawingsModel->getEntityDownloads(3, $oExperiment->getId());
+        $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
 
         $this->assignRef( "mod_curationprogress", ComponentHtml::getModule("mod_curationprogress") );
         

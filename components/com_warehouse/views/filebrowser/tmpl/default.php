@@ -35,16 +35,17 @@ defined('_JEXEC') or die( 'Restricted access' );
     </tr>
     <?php if ( !empty($oDataFileArray) ): ?>
     
-      <?php foreach($oDataFileArray as $iIndex => $oDataFile){ 
-    		$strRowBackgroundColor = "";
-    		if($iIndex %2 === 0){
-    		  $strRowBackgroundColor = "#EFEFEF;";	
-    		}
-    		
-    		$strLink = $this->strCurrentPath."/".$oDataFile->getName();
-    		$strDirLink = $this->strCurrentPath."/".$oDataFile->getName();
-            $strFileLink = str_replace("/nees/home/",  "",  $strDirLink);
-            $strFileLink = str_replace(".groups",  "",  $strFileLink);
+      <?php
+
+        /* @var $oDataFile DataFile */
+        foreach($oDataFileArray as $iIndex => $oDataFile){
+    	  $strRowBackgroundColor = "";
+    	  if($iIndex %2 === 0){
+    	    $strRowBackgroundColor = "#EFEFEF;";
+    	  }
+
+          $strFileLink = $oDataFile->get_url();
+    	  $strDirLink = $this->strCurrentPath."/".$oDataFile->getName();
       ?>
         <tr style="background: <?php echo $strRowBackgroundColor; ?>">
           <td><input type="checkbox" id="cbxDataFile<?php echo $iIndex;?>" name="cbxDataFile[]" value="<?php echo $oDataFile->getId(); ?>"/></td>
@@ -57,7 +58,7 @@ defined('_JEXEC') or die( 'Restricted access' );
             <?php if($oDataFile->getDirectory()==1): ?>
               <a href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $strDirLink; ?>&format=ajax','dataList');"><?php echo $oDataFile->getName(); ?></a>
             <?php else: ?>
-              <a href="/data/get/<?php echo $strFileLink; ?>" target="data_file"><?php echo $oDataFile->getName(); ?></a>
+              <a href="<?php echo $strFileLink; ?>" target="data_file"><?php echo $oDataFile->getName(); ?></a>
             <?php endif; ?>
           </td>
           <td><?php echo $oDataFile->getCreated(); ?></td>

@@ -119,7 +119,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                   $oProjectFacilityOrganizationArray = unserialize($_REQUEST["oFacility"]);
                   foreach($oProjectFacilityOrganizationArray as $iFacilityIndex=>$oProjectFacilityOrganization){
                     if(isset($oProjectFacilityOrganization)){ ?>
-                      <span class="nobr">
+                      <span>
                       <a href="/sites/?view=site&id=<?php echo  $oProjectFacilityOrganization->getFacilityId(); ?>"><?php echo  $oProjectFacilityOrganization->getName(); ?></a>
                       <?php 
                         if($iFacilityIndex < sizeof($oProjectFacilityOrganizationArray)-1){
@@ -139,7 +139,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                   $oOrganizationArray = unserialize($_REQUEST[OrganizationPeer::TABLE_NAME]);
                   foreach($oOrganizationArray as $iKey => $oOrganization){
                   ?>
-                    <span class="nobr">
+                    <span>
                     <?php
                       echo $oOrganization->getName();
                       if($iKey < sizeof($oOrganizationArray)-1){

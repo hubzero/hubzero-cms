@@ -377,6 +377,27 @@ ENDHTML;
     }
 
     /**
+     * Updates the current page view count and returns the new count.
+     * @param int $p_iEntityTypeId
+     * @param int $p_iEntityId
+     * @return int
+     */
+    public function getEntityPageViews($p_iEntityTypeId, $p_iEntityId){
+      $_REQUEST[EntityActivityLogPeer::ENTITY_TYPE_ID] = $p_iEntityTypeId;
+      $_REQUEST[EntityActivityLogPeer::ENTITY_ID] = $p_iEntityId;
+
+      JPluginHelper::importPlugin( 'project', 'entityactivitylog' );
+      $oDispatcher =& JDispatcher::getInstance();
+      $strParamArray = array(0,0);
+
+      //get the page view count
+      $oResultsArray = $oDispatcher->trigger('onViews',$strParamArray);
+
+      //return the updated count
+      return $oResultsArray[0];
+    }
+
+    /**
      * Updates the current entity download count.
      * @param int $p_iEntityTypeId
      * @param int $p_iEntityId

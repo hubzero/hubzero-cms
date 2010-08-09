@@ -67,7 +67,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
           ?>
             <div id="Project" style="width:100%;">
-              <div id="ProjectInfo" style="float:left;width:<?php echo $strWidth; ?>;"
+              <div id="ProjectInfo" style="float:left;width:<?php echo $strWidth; ?>;">
                 <a href="/warehouse/project/<?php echo $iProjectId; ?>" style="font-size: 15px;"><?php echo $strTitle; ?></a>
                 <p style="color: #666666"><?php echo $strStartDate; ?></p>
                 <p><?php echo $oDescriptionClob; ?></p>

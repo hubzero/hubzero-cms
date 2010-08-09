@@ -17,6 +17,7 @@ defined('_JEXEC') or die( 'Restricted access' );
   $strUsername = $this->strUsername;
   $oAuthorizer = Authorizer::getInstance();
   $oAuthorizer->setUser($strUsername);
+  echo $strUsername."<br>";
 ?>
  
 <div class="innerwrap">
@@ -67,6 +68,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                     $oIndeedDataFile = end($oIndeedDataFileArray);
                   }
 
+                  
                   if($oAuthorizer->canView($oExperiment)){
                     if($iViewed > 0){
                       ?>
@@ -75,55 +77,52 @@ defined('_JEXEC') or die( 'Restricted access' );
                       <?php
                     }
                     ++$iViewed;
+                    ?>
+                      <div id="Experiment<?php echo $iExperimentId; ?>" style="width:100%;">
+                        <div id="ExperimentInfo<?php echo $iExperimentId; ?>" style="float:left;width:90%;">
+                          <table style="width:100%;border-bottom:0px;border-top:0px;">
+                            <tr>
+                              <td><b>Experiment<?php //echo $strName; ?>:</b></td>
+                              <td><a href="/warehouse/experiment/<?php echo $iExperimentId; ?>/project/<?php echo $this->projid ?>" style="font-size: 15px;"><?php echo $strTitle; ?></a></td>
+                            </tr>
+                            <tr>
+                              <td><b>Start Date:</b></td>
+                              <td><span style="color: #666666"><?php echo $strStartDate; ?></span></td>
+                            </tr>
+                            <tr>
+                              <td><b>Description:</b></td>
+                              <td width="85%"><?php echo $oDescriptionClob; ?></td>
+                            </tr>
+                          </table>
+                        </div>
+                        <div align="right" id="thumbnail">
+                          <?php
+                            if( strlen($strThumbnail) > 0 ){
+                              echo $strThumbnail;
+                            }
 
-              ?>
-              <div id="Experiment<?php echo $iExperimentId; ?>" style="width:100%;">
-                <div id="ExperimentInfo<?php echo $iExperimentId; ?>" style="float:left;width:90%;">
-                  <table style="width:100%;border-bottom:0px;border-top:0px;">
-                    <tr>
-                      <td><b>Experiment<?php //echo $strName; ?>:</b></td>
-                      <td><a href="/warehouse/experiment/<?php echo $iExperimentId; ?>/project/<?php echo $this->projid ?>" style="font-size: 15px;"><?php echo $strTitle; ?></a></td>
-                    </tr>
-                    <tr>
-                      <td><b>Start Date:</b></td>
-                      <td><span style="color: #666666"><?php echo $strStartDate; ?></span></td>
-                    </tr>
-                    <tr>
-                      <td><b>Description:</b></td>
-                      <td width="85%"><?php echo $oDescriptionClob; ?></td>
-                    </tr>
-                  </table>
-                </div>
-                <div align="right" id="thumbnail">
-                  <?php
-                    if( strlen($strThumbnail) > 0 ){
-                      echo $strThumbnail;
-                    }
-                    
-                    //display inDEED file below thumbnail.
-                    if(sizeof($oIndeedDataFileArray) != 0){
-                      $strIndeedPath = $oIndeedDataFile->getPath();
-                      $strIndeedName = $oIndeedDataFile->getName();
+                            //display inDEED file below thumbnail.
+                            if(sizeof($oIndeedDataFileArray) != 0){
+                              $strIndeedPath = $oIndeedDataFile->getPath();
+                              $strIndeedName = $oIndeedDataFile->getName();
 
-                      $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
+                              $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
 
-                      echo "<a href='$strLaunchInEED=$strIndeedPath/$strIndeedName'>Launch Data File</a>";
-                    }
-                  ?>
-               </div>
-               <div class="clear"></div>
-              </div>
-
-            <?php
-                }//end canView
+                              echo "<a href='$strLaunchInEED=$strIndeedPath/$strIndeedName'>Launch Data File</a>";
+                            }
+                          ?>
+                       </div>
+                       <div class="clear"></div>
+                      </div>
+                    <?php
+                  }
               }//end foreach
 
               if($iViewed === 0){
-                if(empty ($oExperimentArray))  {?>
-                  <p class="warning">No experiments found.</p>
-                }else{ ?>
-                  <p class="error">You don't have permission to view this project.</p>
-                <?php
+                if(empty ($oExperimentArray))  {
+                  ?> <p class="warning">No experiments found.</p> <?php
+                }else{ 
+                  ?> <p class="error">You don't have permission to view this project.</p> <?php 
                 }
                 ?>
                   
@@ -132,16 +131,6 @@ defined('_JEXEC') or die( 'Restricted access' );
             }//end if project
             ?>
       
-            <?php
-            $lim   = $mainframe->getUserStateFromRequest("$option.limit", 'limit', 25, 'int'); //I guess getUserStateFromRequest is for session or different reasons
-            $lim0  = JRequest::getVar('limitstart', 0, '', 'int');
-            $iExperimentsCount = $_REQUEST[Experiments::COUNT];
-
-            jimport('joomla.html.pagination');
-		    $pageNav = new JPagination( $iExperimentsCount, $lim0, $lim );
-		  
-		    echo ViewHtml::fixPaginationLinks("warehouse", $_SERVER["REQUEST_URI"], $pageNav->getListFooter());
-		  ?>
         </div>
       </form>
     </div>
