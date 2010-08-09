@@ -28,6 +28,7 @@ jimport('joomla.application.component.controller');
 require_once "lib/interface/helpers.inc";
 require_once "lib/filesystem/FileCommandAPI.php";
 require_once "lib/data/DataFile.php";
+require_once "lib/security/UserManager.php";
 
 /**
  * Content Component Controller
