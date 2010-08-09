@@ -832,6 +832,7 @@ class DataFilePeer extends BaseDataFilePeer {
                              (lower(df.name) like '%.jpg') or
                              (lower(df.name) like '%.gif') 
                            )
+                        and df.path not like '%Generated_Pics'
                         )
                         WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
 
@@ -861,12 +862,18 @@ class DataFilePeer extends BaseDataFilePeer {
             $strFileArray['DESCRIPTION'] = $oResultSet->getString("DESCRIPTION");
             $strFileArray['THUMB_ID'] = $oResultSet->getInt("THUMB_ID");
 
+            $bMkDir = false;
+
             $strSource = $strFileArray['PATH'] . "/" . $strFileArray['NAME'];
             $thumbpath = $strFileArray['PATH'] . "/" . Files::GENERATED_PICS;
             if(!is_dir($thumbpath)){
               $oFileCommand = FileCommandAPI::create($thumbpath);
-              $oFileCommand->mkdir();
+              $bMkDir = $oFileCommand->mkdir();
             }
+
+            $bThumbCreated = false;
+            $bDisplayCreated = false;
+
             $thumbname = "thumb_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
             $strDisplayName = "display_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
             $fullName = $thumbpath . "/" . $thumbname;
@@ -894,8 +901,10 @@ class DataFilePeer extends BaseDataFilePeer {
 
             array_push($oReturnArray, $strFileArray);
 
-            $escSource = escapeshellarg($thumbpath);
-            exec("/nees/home/bin/fix_permissions $escSource", $output);
+            if($bThumbCreated || $bDisplayCreated || $bMkDir){
+              $escSource = escapeshellarg($thumbpath);
+              exec("/nees/home/bin/fix_permissions $escSource", $output);
+            }
         }
         return $oReturnArray;
     }
@@ -976,14 +985,17 @@ class DataFilePeer extends BaseDataFilePeer {
             $strFileArray['DESCRIPTION'] = $oResultSet->getString("DESCRIPTION");
             $strFileArray['THUMB_ID'] = $oResultSet->getInt("THUMB_ID");
 
+            $bMkDir = false;
             $strSource = $strFileArray['PATH'] . "/" . $strFileArray['NAME'];
-            //$strPathArray = explode("/", $strFileArray['PATH']);
-            //$thumbpath = $strPathArray[0] . "/" . $strPathArray[1] . "/" . $strPathArray[2] . "/" . $strPathArray[3] . "/Public/Photos";
             $thumbpath = $strFileArray['PATH'] . "/" . Files::GENERATED_PICS;
             if(!is_dir($thumbpath)){
               $oFileCommand = FileCommandAPI::create($thumbpath);
-              $oFileCommand->mkdir();
+              $bMkDir = $oFileCommand->mkdir();
             }
+
+            $bThumbCreated = false;
+            $bDisplayCreated = false;
+
             $thumbname = "thumb_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
             $strDisplayName = "display_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
             $fullName = $thumbpath . "/" . $thumbname;
@@ -1003,8 +1015,10 @@ class DataFilePeer extends BaseDataFilePeer {
             }
             array_push($oReturnArray, $strFileArray);
 
-            $escSource = escapeshellarg($thumbpath);
-            exec("/nees/home/bin/fix_permissions $escSource", $output);
+            if($bThumbCreated || $bDisplayCreated || $bMkDir){
+              $escSource = escapeshellarg($thumbpath);
+              exec("/nees/home/bin/fix_permissions $escSource", $output);
+            }
         }
         return $oReturnArray;
     }
@@ -1120,11 +1134,15 @@ class DataFilePeer extends BaseDataFilePeer {
 
             $strSource = $strFileArray['PATH'] . "/" . $strFileArray['NAME'];
 
+            $bMkDir = false;
             $thumbpath = $strFileArray['PATH'] ."/". Files::GENERATED_PICS;
             if (!file_exists($thumbpath)) {
                 $photoDir = FileCommandAPI::create($thumbpath);
-                $photoDir->mkdir(true);
+                $bMkDir = $photoDir->mkdir(true);
             }
+
+            $bThumbCreated = false;
+            $bDisplayCreated = false;
 
             $thumbname = "thumb_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
             $strDisplayName = "display_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
@@ -1156,8 +1174,10 @@ class DataFilePeer extends BaseDataFilePeer {
             }
             array_push($oReturnArray, $strFileArray);
 
-            $escSource = escapeshellarg($thumbpath);
-            exec("/nees/home/bin/fix_permissions $escSource", $output);
+            if($bThumbCreated || $bDisplayCreated || $bMkDir){
+              $escSource = escapeshellarg($thumbpath);
+              exec("/nees/home/bin/fix_permissions $escSource", $output);
+            }
         }
         return $oReturnArray;
     }
@@ -1234,7 +1254,7 @@ class DataFilePeer extends BaseDataFilePeer {
     }
 
     public static function getUrl($p_strPath, $p_strName) {
-        return "/data/show" . self::getFriendlyPath($p_strPath) . "/" . $p_strName;
+        return "/data/get" . self::getFriendlyPath($p_strPath) . "/" . rawurlencode($p_strName);
     }
 
     public static function getFriendlyPath($apath) {
@@ -1268,10 +1288,11 @@ class DataFilePeer extends BaseDataFilePeer {
 
             $strSource = $oDataFile->getPath() . "/" . $oDataFile->getName();
             $thumbpath = $oDataFile->getPath() . "/" .Files::GENERATED_PICS;
-            
+
+            $bMkDir = false;
             if (!file_exists($thumbpath)) {
                 $photoDir = FileCommandAPI::create($thumbpath);
-                $photoDir->mkdir(true);
+                $bMkDir = $photoDir->mkdir(true);
             }
 
             /* @var $oThumbEntityType EntityType */
@@ -1282,7 +1303,10 @@ class DataFilePeer extends BaseDataFilePeer {
 
             $thumbname = "thumb_" . $oDataFile->getId() . "_" . $oDataFile->getName();
             $strDisplayName = "display_" . $oDataFile->getId() . "_" . $oDataFile->getName();
-            
+
+            $bThumbCreated = false;
+            $bDisplayCreated = false;
+
             $fullName = $thumbpath . "/" . $thumbname;
             if (!file_exists($fullName)) {
                 $bThumbCreated = PhotoHelper::resize($strSource, PhotoHelper::DEFAULT_THUMB_WIDTH, PhotoHelper::DEFAULT_THUMB_HEIGHT, $fullName);
@@ -1306,8 +1330,10 @@ class DataFilePeer extends BaseDataFilePeer {
                 $p_oDataFileArray[$iIndex] = $oDataFile;
             }
 
-            $escSource = escapeshellarg($thumbpath);
-            exec("/nees/home/bin/fix_permissions $escSource", $output);
+            if($bThumbCreated || $bDisplayCreated || $bMkDir){
+              $escSource = escapeshellarg($thumbpath);
+              exec( "/nees/home/bin/fix_permissions $escSource", $output);
+            }
         }
         return $p_oDataFileArray;
     }

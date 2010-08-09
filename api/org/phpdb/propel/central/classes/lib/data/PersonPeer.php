@@ -449,7 +449,8 @@ class PersonPeer extends BasePersonPeer {
           P.FIRST_NAME,
           P.E_MAIL,
           P.USER_NAME,
-          R.DISPLAY_NAME AS ROLENAME
+          R.DISPLAY_NAME AS ROLENAME,
+          R.ID
         FROM
           PERSON P,
           PERSON_ENTITY_ROLE PER,
@@ -465,7 +466,7 @@ class PersonPeer extends BasePersonPeer {
       	$sql = $sql . " OR ";
       }
     }      
-    $sql = $sql . ") ORDER BY UPPER(P.LAST_NAME), UPPER(P.FIRST_NAME)";
+    $sql = $sql . ") ORDER BY R.ID, P.LAST_NAME, P.FIRST_NAME";
 
     $conn = Propel::getConnection();
     $stmt = $conn->prepareStatement($sql);

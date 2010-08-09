@@ -526,7 +526,7 @@ ENDHTML;
           $strIconName = $p_strLinkImage."_".$projectImage->getId()."_".$strImageName;
           $projectThumbnail->setName($strIconName);
 
-          $thumbnail = "<p align='center'><a style='border-bottom:0px;' target='_blank' href='" . $projectImage->get_url() . "' rel='lightbox'><img src='" . $projectThumbnail->get_url() . "'  alt='' style='float: left; margin-left: 30px;'></a></p>";
+          $thumbnail = "<div id='projThumb' align='center'><a style='border-bottom:0px;' target='_blank' href='" . $projectImage->get_url() . "' rel='lightbox'><img src='" . $projectThumbnail->get_url() . "'  alt='' style='float: left; margin-left: 30px;'></a></div>";
         }
       }
     }

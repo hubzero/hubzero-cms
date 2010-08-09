@@ -20,9 +20,9 @@ return array (
         array (
           'phptype' => 'oracle',
           'database' => '',
-          'hostspec' => 'ORCLDEV',
-          'username' => 'gemezm',
-          'password' => 'gemezm',
+          'hostspec' => 'ORCLSTG',
+          'username' => 'central',
+          'password' => 'bees4nees',
         ),
       ),
       'default' => 'NEEScentral',

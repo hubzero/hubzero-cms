@@ -672,10 +672,12 @@ class DataFile extends BaseDataFile {
 //      $thumbpath = "/nees/home/Public.groups";
 //      $thumbname = "thumb_" . time() . "_" . $this->getName();
 
+      $bMkDir = false;
+
       $thumbpath = $this->getPath()."/".Files::GENERATED_PICS;
       if(!is_dir($thumbpath) && !is_file($thumbpath)){
         $oFileCommand = FileCommandAPI::create($thumbpath);
-        $oFileCommand->mkdir();
+        $bMkDir = $oFileCommand->mkdir();
       }
       $thumbname = "thumb_" . $iDataFileId . "_" . $this->getName();
 
@@ -705,8 +707,10 @@ class DataFile extends BaseDataFile {
           $display_df = DataFilePeer::insertOrUpdateIfDuplicate($displayname, $thumbpath, date('Y-m-d H:i:s'), md5_file($strFullName), 0, filesize($strFullName), $oDisplayEntityType->getId());
         }
 
-        $escSourc = escapeshellarg($thumbpath);
-        exec("/nees/home/bin/fix_permissions $escSourc", $output);
+        if($bMkDir || $bResized){
+          $escSourc = escapeshellarg($thumbpath);
+          exec("/nees/home/bin/fix_permissions $escSourc", $output);
+        }
 
         if($thumb_df) {
           return $thumb_df->getId();
@@ -732,10 +736,12 @@ class DataFile extends BaseDataFile {
 
       $iDataFileId = $this->getId();
 
+      $bMkDir = false;
+
       $thumbpath = $this->getPath()."/".Files::GENERATED_PICS;
       if(!is_dir($thumbpath) && !is_file($thumbpath)){
         $oFileCommand = FileCommandAPI::create($thumbpath);
-        $oFileCommand->mkdir();
+        $bMkDir = $oFileCommand->mkdir();
       }
       $thumbname = "thumb_" . $iDataFileId . "_" . $this->getName();
 
@@ -767,6 +773,8 @@ class DataFile extends BaseDataFile {
           $strIconFullName = $thumbpath . "/" . $strIconName;
           PhotoHelper::resizeByWidth(self::getFullPath(), PhotoHelper::DEFAULT_THUMB_WIDTH, $strIconFullName);
           $icon_df = DataFilePeer::insertOrUpdateIfDuplicate($strIconName, $thumbpath, date('Y-m-d H:i:s'), md5_file($strIconFullName), 0, filesize($strIconFullName), $oIconEntityType->getId());
+          $icon_df->setView("PUBLIC");
+          $icon_df->save();
 
           //set the data_file's thumb_id and usage type to project image
           $this->setThumbId($icon_df->getId());
@@ -774,8 +782,10 @@ class DataFile extends BaseDataFile {
           $this->save();
         }
 
-        $escSource = escapeshellarg($thumbpath);
-        exec("/nees/home/bin/fix_permissions $escSource", $output);
+        if($bMkDir || $bResized){
+          $escSource = escapeshellarg($thumbpath);
+          exec("/nees/home/bin/fix_permissions $escSource", $output);
+        }
 
         if($thumb_df) {
           return $thumb_df->getId();
