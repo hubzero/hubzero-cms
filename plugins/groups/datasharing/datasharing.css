@@ -187,6 +187,17 @@
 		padding-left: 50px;
 		margin: 0 15px;
 	}
+	.option-webdav {
+		background: url("images/new_window_32x32.png") 0 0 no-repeat;
+		padding-left: 50px;
+		margin: 0 15px;
+	}
+	dt {
+		font-weight: bold;
+	}
+	dd {
+		margin: 0.5em 0 1em 2em;
+	}
 	.com_groups .main#datasharing-section h3 {
 		display: block;
 	}

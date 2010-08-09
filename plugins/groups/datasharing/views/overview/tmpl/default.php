@@ -38,7 +38,7 @@ $juser =& JFactory::getUser();
 	<p>Your dropbox folder has been created. All members of your group can access this shared folder using any of the following methods:</p>
 	<div class="option-synch">
 		<h3>SynchroNEES Tool</h3>
-		<p>This program was created by the NEES project to make it easy to access your group files and your NEEShub.org home directory from your desktop. <a rel="internal" href="/topics/synchronees">More information &rarr;</a></p>
+		<p>This program was created by the NEES project to make it easy to access your group files and your NEEShub home directory from your desktop. <a rel="internal" href="/topics/synchronees">More information &rarr;</a></p>
 	</div>
 	<div class="option-workspace">
 		<h3>Within a Workspace</h3>
@@ -48,7 +48,30 @@ $juser =& JFactory::getUser();
 	<div class="option-sftp">
 		<h3>Secure File Transfer Protocol (SFTP)</h3>
 		<p>Use any standard SFTP client to access your dropbox folder as follows:</p>
-		<p><code>% sftp <?php echo $juser->get('username'); ?>@neeshub.org</code><br />
+		<p><code>% sftp <?php echo $juser->get('username'); ?>@nees.org</code><br />
 		<code>% cd /data/groups/<?php echo $this->group->get('cn'); ?>/dropbox</code></p>
 		<p>The SFTP program is fairly standard on MacOSX and Linux machines. If you're running Windows, you'll have to download a special program to do this. One good choice is the <a rel="external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">psftp</a> utility.</p>
+	</div>
+	<div class="option-webdav">
+		<h3>WebDAV</h3>
+		<p>Configure your desktop to mount your NEEShub file storage as a remote drive via the WebDav protocol.</p>
+		<dl>
+			<dt>Windows</dt>
+			<dd>
+				Go to "My Network Places" and click on "Add a Network Place".  When prompted for the URL, enter the following:<br />
+				<a href="https://nees.org/data/groups/<?php echo $this->group->get('cn'); ?>">https://nees.org/data/groups/<?php echo $this->group->get('cn'); ?></a><br />
+				You'll be prompted for your NEEShub login name and password, and your group folder will be added as a new folder in the network places.
+			</dd>
+			<dt>Mac OS X</dt>
+			<dd>
+				Click on your desktop, then from the "Go" menu, choose "Connect to Server...".  When prompted for the URL, the the following:<br />
+				<a href="https://nees.org/data/groups/<?php echo $this->group->get('cn'); ?>">https://nees.org/data/groups/<?php echo $this->group->get('cn'); ?></a><br />
+				You'll be prompted for your NEEShub login name and password, then a Finder window will appear with your group data area.
+			</dd>
+			<dt>Linux</dt>
+			<dd>
+				Linux:  Gnome users typically use <a href="http://www.webdavsystem.com/server/access/gnome_nautilus">Nautilus</a>, while KDE users use the <a href="http://www.webdavsystem.com/server/access/konqueror">Konqueror web browser</a> to access their files.  When prompted for the URL, fill in:
+				<a href="https://nees.org/data/groups/<?php echo $this->group->get('cn'); ?>">https://nees.org/data/groups/<?php echo $this->group->get('cn'); ?></a>
+			</dd>
+		</dl>
 	</div>

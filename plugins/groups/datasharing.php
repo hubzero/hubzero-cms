@@ -188,6 +188,7 @@ class plgGroupsDatasharing extends JPlugin
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
 		$view->datadir = $datadir;
+		$view->_msg = '';
 
 		if ($name == 'overview') {
 			
@@ -287,6 +288,7 @@ class plgGroupsDatasharing extends JPlugin
 		$view->docs = $docs;
 		$view->folders = $folders;
 		$view->images = $images;
+		$view->_msg = '';
 		
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
