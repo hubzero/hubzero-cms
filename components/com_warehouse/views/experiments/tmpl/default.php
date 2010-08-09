@@ -17,7 +17,6 @@ defined('_JEXEC') or die( 'Restricted access' );
   $strUsername = $this->strUsername;
   $oAuthorizer = Authorizer::getInstance();
   $oAuthorizer->setUser($strUsername);
-  echo $strUsername."<br>";
 ?>
  
 <div class="innerwrap">
@@ -68,8 +67,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                     $oIndeedDataFile = end($oIndeedDataFileArray);
                   }
 
-                  
-                  if($oAuthorizer->canView($oExperiment)){
+                  if($oAuthorizer->canView($oExperiment)==1){
                     if($iViewed > 0){
                       ?>
                         <hr size="1" color="#cccccc"/>
