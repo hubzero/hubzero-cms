@@ -809,6 +809,7 @@ class FeedbackController extends JObject
 		$sconfig = JComponentHelper::getParams( 'com_support' );
 		$attachment = $this->_uploadAttachment( $row->id, $sconfig );
 		$row->report .= ($attachment) ? "\n\n".$attachment : '';
+		$problem['long'] .= ($attachment) ? "\n\n".$attachment : '';
 		
 		// Save the data
 		if (!$row->store()) {
@@ -844,7 +845,7 @@ class FeedbackController extends JObject
 		$message .= (JRequest::getVar('sessioncookie','','cookie')) ? JText::_('COM_FEEDBACK_COOKIES_ENABLED')."\r\n" : JText::_('COM_FEEDBACK_COOKIES_DISABLED')."\r\n";
 		$message .= JText::_('COM_FEEDBACK_REFERRER').': '. $problem['referer'] ."\r\n";
 		$message .= ($problem['tool']) ? JText::_('COM_FEEDBACK_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
-		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($row->report)) ."\r\n";
+		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($problem['long'])) ."\r\n";
 
 		// Send e-mail
 		ximport('xhubhelper');
