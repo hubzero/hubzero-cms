@@ -1,21 +1,21 @@
 <?php
 /**
- * @package		NEEShub 
+ * @package		NEEShub
  * @author		David Benham (dbenha@purdue.edu)
  * @copyright           Copyright 2010 by NEES
 */
- 
+
 // no direct access
- 
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
- 
+
 jimport( 'joomla.application.component.view');
- 
+
 /**
- * 
- * 
+ *
+ *
  */
- 
+
 class sitesactivitiesViewvideofeeds extends JView
 {
     function display($tpl = null)
@@ -58,11 +58,22 @@ class sitesactivitiesViewvideofeeds extends JView
 
             $cleanflexURL = isset($matches[2]) ? "http://" . rtrim($matches[2], '/') : "";
             $flexURL = rtrim($matches[0], '/');
-            $xmlresult = @file_get_contents("$cleanflexURL/feeds");
+
+            // To allow for timeouts from the flextps servers, one in particular (UCLA) is invalid, this
+            // supress that error plus deal with future flextps server response time/malfunctions in the
+            // future as well. DRB 8.2.2010
+            $context = stream_context_create(array(
+                'http' => array('timeout' => 3)
+            ));
+
+            // The @ is supressing errors, most likely the only error will be a timeout error
+            // as long as is empty afterwards, we're good
+            $xmlresult = '';
+            $xmlresult = @file_get_contents("$cleanflexURL/feeds", false, $context);
 
             preg_match_all("/<stream\s+id=\"([^\"]*)\"\s+xlink:href=\"([^\"]*)\">(.*)<\/stream>/Us",
                 $xmlresult, $matches, PREG_SET_ORDER);
-            
+
             $href_thumbs = "";
 
             $feed_count = count($matches);
@@ -133,5 +144,5 @@ ENDHTML;
         parent::display($tpl);
 
     }
-    
+
 }
