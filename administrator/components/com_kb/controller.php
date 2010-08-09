@@ -315,7 +315,7 @@ class KbController extends Hubzero_Controller
 		$view->row->load( $id );
 
 		// Get the sections
-		$view->sections = $row->getAllSections();
+		$view->sections = $view->row->getAllSections();
 		
 		// Set any errors
 		if ($this->getError()) {
