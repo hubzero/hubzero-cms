@@ -11,10 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-// NEES, need this to see errors, comment out when not needed
-error_reporting(E_ALL);
-ini_set('display_errors',TRUE);
-
 // Set flag that this is a parent file
 define( '_JEXEC', 1 );
 
