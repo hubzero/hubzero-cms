@@ -137,7 +137,6 @@ class XGroup extends JObject
 
 	public function __construct($group = null)
 	{
-		//$this->logDebug("XGroup::__construct($group)");
 		$this->_clear();
 		$this->select($group);
 	}
@@ -971,7 +970,6 @@ class XGroup extends JObject
 
 	function getInstance($group = null)
 	{
-		//$this->logDebug("XGroup::getInstance($group)");
 		$instance = new XGroup($group);
 		
 		$gid = $instance->get('gidNumber');
@@ -1108,8 +1106,6 @@ class XGroup extends JObject
 
 	public function get($key, $modifier = null)
 	{
-		//$this->logDebug("XGroup::get($key)");
-
 		if (in_array($key, $this->_keys))
 			return $this->$key;
 
@@ -1146,8 +1142,6 @@ class XGroup extends JObject
 
 	public function set($key,$value) 
 	{
-		//$this->logDebug("XGroup::set($key,$value)");
-
 		if (in_array($key, $this->_keys))
 			$this->$key = $value;
 
@@ -1161,7 +1155,6 @@ class XGroup extends JObject
 	public function add($key = 'members', $value)
 	{
 		jimport('joomla.user.helper');
-		//$this->logDebug("XGroup::add($key,$value)");
 
 		if (!in_array($key, array('members','applicants','managers','invitees')))
 			return false;
@@ -1191,8 +1184,6 @@ class XGroup extends JObject
 
 	public function remove($key, $value)
 	{
-		//$this->logDebug("XGroup::remove($key,$value)");
-
 		if (!in_array($key, array('members','applicants','managers','invitees')))
 			return false;
 
@@ -1260,8 +1251,6 @@ class XGroup extends JObject
 
 		$gconfig = & JComponentHelper::getParams( 'com_groups' );
 		$ldapGroupMirror = $gconfig->get('ldapGroupMirror');
-
-		//$this->logDebug("XGroup::delete()");
 
 		if (!$this->gidNumber) {
 			$this->setError( 'Error deleting group: no gidNumber.' );
