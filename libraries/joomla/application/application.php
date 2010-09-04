@@ -269,7 +269,12 @@ class JApplication extends JObject
 	 * @since	1.5
 	 * @see		JApplication::enqueueMessage()
 	 */
-	function redirect( $url, $msg='', $msgType='message' )
+	function redirect302( $url, $msg='', $msgType='message')
+	{
+		$this->redirect($url,$msg,$msgType,'HTTP/1.1 302 Found');
+	}
+	
+	function redirect( $url, $msg='', $msgType='message', $status='HTTP/1.1 301 Moved Permanently' )
 	{
 		// check for relative internal links
 		if (preg_match( '#^index[2]?.php#', $url )) {
@@ -319,7 +324,7 @@ class JApplication extends JObject
 			echo "<script>document.location.href='$url';</script>\n";
 		} else {
 			//@ob_end_clean(); // clear output buffer
-			header( 'HTTP/1.1 301 Moved Permanently' );
+			header( $status );
 			header( 'Location: ' . $url );
 		}
 		$this->close();
