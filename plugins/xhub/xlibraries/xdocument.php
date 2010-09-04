@@ -46,13 +46,15 @@ class XDocument
 
 		if (file_exists(JPATH_SITE . $templatecss))
 		{
-            		if ($augment)
-		        	$this->addStyleSheet($componentcss, $type, $media, $attribs);
-		    
+			if ($augment && file_exists(JPATH_SITE . $componentcss) ) {
+				$this->addStyleSheet($componentcss, $type, $media, $attribs);
+			}
+			
 			$jdocument->addStyleSheet($templatecss, $type, $media, $attribs);
-        	}
-		else
+        }
+		else if (file_exists(JPATH_SITE . $componentcss)) {
 		    $jdocument->addStyleSheet($componentcss, $type, $media, $attribs);
+		}
 	}
 
 	public function getComponentImage($component, $image)
