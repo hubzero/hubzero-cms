@@ -111,6 +111,12 @@ if ($this->registration->Employment != REG_HIDE) {
 			case '':
 				$html .= JText::_('n/a');
 				break;
+			case 'universityundergraduate':
+				$html .= JText::_('University / College Undergraduate');
+				break;
+			case 'universitygraduate':
+                                $html .= JText::_('University / College Graduate');
+				break;
 			case 'universitystudent':
 				$html .= JText::_('University / College Student');
 				break;
