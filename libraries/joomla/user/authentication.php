@@ -112,6 +112,10 @@ class JAuthentication extends JObservable
 		 */
 		foreach ($plugins as $plugin)
 		{
+			if (!empty($options['authenticator']) && ($plugin->name != $options['authenticator'])) {
+				continue;
+			}
+			
 			$className = 'plg'.$plugin->type.$plugin->name;
 			if (class_exists( $className )) {
 				$plugin = new $className($this, (array)$plugin);
