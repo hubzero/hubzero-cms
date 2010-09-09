@@ -21,6 +21,10 @@ require_once (JPATH_COMPONENT.DS.'controller.php');
 // Create the controller
 $controller = new UserController();
 
+ximport('xdocument');
+
+XDocument::addComponentStylesheet('com_user');
+
 // Perform the Request task
 $controller->execute( JRequest::getCmd('task'));
 
