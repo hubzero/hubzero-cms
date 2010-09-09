@@ -120,26 +120,64 @@ class UserController extends JController
 
 	function login()
 	{
-		// Check for request forgeries
-		JRequest::checkToken('request') or jexit( 'Invalid Token' );
-
 		global $mainframe;
 
-		if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
-			$return = base64_decode($return);
-			if (!JURI::isInternal($return)) {
-				$return = '';
+		$authenticator = JRequest::getVar('authenticator', '', 'method');
+
+		// If a specific authenticator is specified try to call the login method for that plugin
+		
+		if (!empty($authenticator)) {
+			JPluginHelper::importPlugin('authentication');
+
+			$plugins = JPluginHelper::getPlugin('authentication');
+
+			foreach ($plugins as $plugin)
+			{
+				$className = 'plg'.$plugin->type.$plugin->name;
+
+				if ($plugin->name != $authenticator) {
+					continue;
+				}
+
+				if (class_exists($className)) {
+					if (method_exists($className,'login')) {
+
+						$myplugin = new $className($this,(array)$plugin);
+
+						$myplugin->login($credentials, $options);
+						
+						if (isset($options['return'])) {
+								$return = $options['return'];
+						}
+					}
+
+       				break;
+	   			}
 			}
 		}
+		
+		// If no authenticator is specified, or the login method for that plugin did not exist then use joomla default
+		
+		if (!isset($myplugin)) {
+			// Check for request forgeries
+			JRequest::checkToken('request') or jexit( 'Invalid Token' );
 
-		$options = array();
-		$options['remember'] = JRequest::getBool('remember', false);
-		$options['return'] = $return;
+			if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
+				$return = base64_decode($return);
+				if (!JURI::isInternal($return)) {
+					$return = '';
+				}
+			}
 
-		$credentials = array();
-		$credentials['username'] = JRequest::getVar('username', '', 'method', 'username');
-		$credentials['password'] = JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
+			$options = array();
+			$options['remember'] = JRequest::getBool('remember', false);
+			$options['return'] = $return;
 
+			$credentials = array();
+			$credentials['username'] = JRequest::getVar('username', '', 'method', 'username');
+			$credentials['password'] = JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
+		}
+		
 		//preform the login action
 		$error = $mainframe->login($credentials, $options);
 
@@ -168,6 +206,37 @@ class UserController extends JController
 	{
 		global $mainframe;
 
+		$authenticator = JRequest::getVar('authenticator', '', 'method');
+
+		// If a specific authenticator is specified try to call the logout method for that plugin
+		
+		if (!empty($authenticator)) {
+			JPluginHelper::importPlugin('authentication');
+
+			$plugins = JPluginHelper::getPlugin('authentication');
+
+			foreach ($plugins as $plugin)
+			{
+				$className = 'plg'.$plugin->type.$plugin->name;
+
+				if ($plugin->name != $authenticator) {
+					continue;
+				}
+
+				if (class_exists($className))
+				{
+					if (method_exists($className,'logout'))
+					{
+						$myplugin = new $className($this,(array)$plugin);
+
+						$result = $myplugin->logout();
+					}
+
+					break;
+	   			}
+			}
+		}
+		
 		//preform the logout action
 		$error = $mainframe->logout();
 
