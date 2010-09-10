@@ -857,7 +857,7 @@ CREATE TABLE `#__users` (
   KEY `gid_block` (`gid`, `block`),
   KEY `username` (`username`),
   KEY `email` (`email`)
-) TYPE=MyISAM CHARACTER SET `utf8`;
+) TYPE=MyISAM AUTO_INCREMENT=1000 CHARACTER SET `utf8`;
 
 # --------------------------------------------------------
 
@@ -1290,7 +1290,7 @@ CREATE TABLE IF NOT EXISTS `#__xgroups` (
   `join_policy` tinyint(3) NULL DEFAULT '0',
   `privacy` tinyint(3) NULL DEFAULT '0',
   PRIMARY KEY (`gidNumber`)
-) TYPE=MyISAM CHARACTER SET `utf8`;
+) TYPE=MyISAM AUTO_INCREMENT=1000 CHARACTER SET `utf8`;
 
 # --------------------------------------------------------
 
