@@ -26,9 +26,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
-
 function ximport($path) {
 	return JLoader::import('.' . $path, JPATH_PLUGINS . DS . "xhub" . DS . "xlibraries");
 }
@@ -56,20 +53,15 @@ class XRouter extends JRouter
 	{
 		$vars = array();
 
-		$session = &JFactory::getSession();
-		$xhub = &XFactory::getHub();
+			// Get the application
+		$app =& JFactory::getApplication();
 
-		$redirect = $session->get('session.rewrite');
-
-		if (!empty($redirect))
-		{
-			$query = $uri->getQuery();
-
-			$session->clear('session.rewrite');
-
-			if (!empty($query))
-				$xhub->redirect($redirect . '?' . $query );
+		if($app->getCfg('force_ssl') == 2 && strtolower($uri->getScheme()) != 'https') {
+			//forward to https
+			$uri->setScheme('https');
+			$app->redirect($uri->toString());
 		}
+		
 
 		// Get the path
 		$path = $uri->getPath();
@@ -99,11 +91,10 @@ class XRouter extends JRouter
 		//Set the route
 		$uri->setPath(trim($path , '/'));
 		$vars += parent::parse($uri);
-		$juser = &JFactory::getUser();
-		//$xlog =& XFactory::getLogger();
 		
-		//$dbgname = $juser->get('guest')  ? 'guest' : $juser->get('username');
-		//$xlog->logDebug("Page load by $dbgname");
+		/* HUBzero Extensions Follow to force registration and email confirmation */
+		
+		$juser = &JFactory::getUser();
 
 		if (!$juser->get('guest'))
 		{
@@ -128,10 +119,12 @@ class XRouter extends JRouter
 				{
 					$vars = array();
 					$vars['option'] = 'com_register';
+					
 					if ($juser->get('tmp_user'))
 						$vars['task'] = 'create';
 					else
 						$vars['task'] = 'update';
+					
 					$vars['act'] = '';
 				
 					$this->setVars($vars);
@@ -144,13 +137,6 @@ class XRouter extends JRouter
 
 			if (is_object($xprofile) && ($xprofile->get('emailConfirmed') != 1) && ($xprofile->get('emailConfirmed') != 3))
 			{
-				/*if ($vars['option'] == 'com_email') 
-				{
-					if (!empty($vars['task']))
-					if ( ($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm') )
-						return $vars;
-				}
-				else*/
 				if ($vars['option'] == 'com_hub')
 				{
 					if (!empty($vars['task']))
@@ -172,9 +158,7 @@ class XRouter extends JRouter
 				}
 
 				$vars = array();
-				//$vars['option'] = 'com_email';
 				$vars['option'] = 'com_register';
-				//$vars['view'] = 'registration';
 				$vars['task'] = 'unconfirmed';
 
 				$this->setVars($vars);
@@ -255,7 +239,9 @@ class XRouter extends JRouter
 		if(count($this->getVars()) == 1)
 		{
 			$item = $menu->getItem($this->getVar('Itemid'));
-			$vars = $vars + $item->query;
+			if($item !== NULL && is_array($item->query)) {
+				$vars = $vars + $item->query;
+			}
 		}
 
 		// Set the active menu item
@@ -266,173 +252,186 @@ class XRouter extends JRouter
 
 	function _parseSefRoute(&$uri)
 	{
-		$menu =& JSite::getMenu(true);
-		$route = ltrim($uri->getPath(), '/');
+		$vars   = array();
+
+		$menu  =& JSite::getMenu(true);
+		$route = $uri->getPath();
+
+		//Get the variables from the uri
 		$vars = $uri->getQuery(true);
 
-		if (empty($route) && empty($vars['option']))
-			$route = 'home';
+		//Handle an empty URL (special case)
+		if(empty($route))
+		{
+
+			//If route is empty AND option is set in the query, assume it's non-sef url, and parse apropriately
+			if(isset($vars['option']) || isset($vars['Itemid'])) {
+				return $this->_parseRawRoute($uri);
+			}
+
+			$item = $menu->getDefault();
+
+			//Set the information in the request
+			$vars = $item->query;
+
+			//Get the itemid
+			$vars['Itemid'] = $item->id;
+
+			// Set the active menu item
+			$menu->setActive($vars['Itemid']);
+
+			return $vars;
+		}
+
+
+		/*
+		 * Parse the application route
+		 */
 		
-		//Need to reverse the array (highest sublevels first)
-		$items = array_reverse($menu->getMenu());
-		$mlen = 0;
-
-		foreach ($items as $item)
+		if(substr($route, 0, 9) == 'component')
 		{
-			$lenght = strlen($item->route); //get the lenght of the route
+			$segments	= explode('/', $route);
+			$route      = str_replace('component/'.$segments[1], '', $route);
 
-			if(($lenght > $mlen) && strpos($route.'/', $item->route.'/') === 0 && $item->type != 'menulink')
-			{
-				$mlen = $lenght;
-				$mitem = $item;
-			}
+			$vars['option'] = 'com_'.$segments[1];
+			$vars['Itemid'] = null;
 		}
-
-		if (!empty($mitem)) // route matches a menu path
+		else
 		{
-			// TODO: review this section as it may be trying to handle
-			// situations that may no longer exist
+			//Need to reverse the array (highest sublevels first)
+			$items = array_reverse($menu->getMenu());
 
-			$remainder = substr($route, $mlen+1);
-			if (empty($remainder) || ($mitem->type == 'component' && $mitem->component != 'com_content'))
-                        {
-			if (($mitem->type == 'component') || empty($remainder))
-				$route = $remainder;
-
-			$vars = $mitem->query;
-
-			if (!empty($mitem->component))
+			foreach ($items as $item)
 			{
-				$vars['option'] = $mitem->component;
+				$lenght = strlen($item->route); //get the lenght of the route
 
-				if (empty($vars['Itemid']))
-					$vars['Itemid'] = $mitem->id;
-			}
-			else if (empty($route))
-			{
-				$route = trim($mitem->link,'/');
+				if($lenght > 0 && strpos($route.'/', $item->route.'/') === 0 && $item->type != 'menulink') 
+				{
+					// HUBzero Extension to pass local URLs through menu unchanged
+					
+					if ($item->type == 'url') { // Pass local URLs through, but record Itemid
+						if (strpos("://",$item->route[0]) === false) {
+							$vars['Itemid'] = $item->id;
+							break;
+						}
+					}
+					
+					// End HUBzero Extension to pass local URLs through menu unchanged
 				
-				if (empty($vars['Itemid']))
-					$vars['Itemid'] = $mitem->id;
+					$route   = substr($route, $lenght);
+
+					$vars['Itemid'] = $item->id;
+					$vars['option'] = $item->component;
+					break;
+				}
 			}
 		}
-		}
-
-		$segments = explode('/', $route);
-
-		if (empty($segments[0]))
-			array_shift($segments);
+	
+		// HUBzero Extension to route based on unprefixed component name (if other routing fails to match)
 
 		if (empty($vars['option']))
 		{
-			if (substr($route, 0, 10) == 'component/')
-			{
-				$route = ltrim( str_replace('component/'.$segments[1], '', $route), '/');
-				$vars['option'] = 'com_'.$segments[1];
-				array_shift($segments);
-				array_shift($segments);
-			}
-			/*else if ($route == 'logout')
-			{
-				$vars['option'] = 'com_hub';
-			}
-			else if ($route == 'login')
-			{
-				$vars['option'] = 'com_hub';
-			}
-			//else if ($route == 'register' || substr($route, 0, strlen('registration')) == 'registration' || $route == 'lostusername' || $route == 'lostpassword')
-			else if ($route == 'lostusername' || $route == 'lostpassword')
-			{
-				$vars['option'] = 'com_hub';
-			}
-			else if (substr($route, 0, 6) == 'search')
-				$vars['option'] = 'com_xsearch';
-			*/
-		}
-
-		// Set the active menu item
-		if ( isset($vars['Itemid']) )
-			$menu->setActive( $vars['Itemid'] );
-
-		if (empty($vars['option']))
-		{
+			$segments	= explode('/', $route);
+			
 			$file = JPATH_BASE.DS.'components'.DS.'com_'.$segments[0].DS.$segments[0].".php";
 		
 			if (file_exists($file)) 
 			{
-				$vars['option'] = 'com_' . $segments[0];
-				array_shift($segments);
+				$vars['option'] = 'com_'.$segments[0];
+				
+				if (!isset($vars['Itemid'])) {
+					$vars['Itemid'] = null;
+				}
+			
+				$route = str_replace($segments[0], '', $route);
 			}
 		}
 
-		if (empty($vars['option']) || $vars['option'] == 'com_content')
-			$vars = array_merge($vars, $this->_parseContentRoute($segments));
+		// End HUBzero Extension to route based on unprefixed component name (if other routing fails to match)
+		
+		// Set the active menu item
+		if ( isset($vars['Itemid']) ) {
+			$menu->setActive(  $vars['Itemid'] );
+		}
 
-		// Handle component route
- 
- 		if( !empty($vars['option']) && (($vars['option'] != 'com_content') || (!empty($route))))
+		//Set the variables
+		$this->setVars($vars);
+
+		/*
+		 * Parse the component route
+		 */
+		if(!empty($route) && isset($this->_vars['option']) )
 		{
-			$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $vars['option']);
+			$segments = explode('/', $route);
+			array_shift($segments);
+
+			// Handle component	route
+			$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $this->_vars['option']);
+
 			// Use the component routing handler if it exists
-			$path = JPATH_BASE.DS.'components'.DS.$component.DS.'router.php';
-			
-			if (file_exists($path))
+			$path = JPATH_SITE.DS.'components'.DS.$component.DS.'router.php';
+
+			if (file_exists($path) && count($segments))
 			{
-				//decode the route segments
-				//$segments = $this->_decodeSegments($segments);
+				if ($component != "com_search") { // Cheap fix on searches
+					//decode the route segments
+					$segments = $this->_decodeSegments($segments);
+				}
+				else { // fix up search for URL
+					$total = count($segments);
+					for($i=0; $i<$total; $i++) {
+						// urldecode twice because it is encoded twice
+						$segments[$i] = urldecode(urldecode(stripcslashes($segments[$i])));
+					}
+				}
 
 				require_once $path;
-				$function = substr($component, 4).'ParseRoute';
+				$function =  substr($component, 4).'ParseRoute';
+				$vars =  $function($segments);
 
-				if (count($segments) || ($component != 'com_content'))
-					$vars = array_merge($vars, $function($segments));
-
-				// handle rerouting to symbolic com_content content
-
-				if (!empty($vars['option']) && ($vars['option'] == 'com_content') && (!empty($vars['route'])))
-					$vars = array_merge($vars, $this->_parseContentRoute(explode('/',ltrim($vars['route'],"/"))));
+				$this->setVars($vars);
 			}
 		}
 		else
 		{
-			//Set active menu item
-			if($item =& $menu->getActive())
-				$vars = array_merge($vars, $item->query);
-		}
+			// HUBzero Extension to parse com_content component specially
+			
+			$vars = $this->_parseContentRoute(explode('/',ltrim($route,"/")));
+			// End HUBzero Extension to parse com_content component specially
 
-		if (empty($vars['Itemid']))
-		{
-		 	$item =& $menu->getActive();
+			// HUBzero Extension to check redirection table if otherwise unable to match URL to content
+			
+			if (!isset($vars['option'])) {
+				jimport('joomla.juri');
+				$db =& JFactory::getDBO();
+				$sql = "SELECT * FROM #__redirection WHERE oldurl=" . $db->Quote($route);
+	        	$db->setQuery($sql);
+	        	$row =& $db->loadObject();
 
-			if (empty($item))
-			{
-				$item = $menu->getDefault();
-				$menu->setActive( $item->id );
+				if (!empty($row))
+				{
+					$myuri = JURI::getInstance( $row->newurl );
+					$vars = $myuri->getQuery(true);
+				
+					if ( isset($vars['Itemid']) ) {
+						$menu->setActive(  $vars['Itemid'] );
+					}
+				}
 			}
 			
-			$vars['Itemid'] = $item->id;
-		}
-			
-		if (empty($vars['option']))
-		{
-			jimport('joomla.juri');
-			$db =& JFactory::getDBO();
-			$sql = "SELECT * FROM #__redirection WHERE oldurl=" . $db->Quote($route);
-		        $db->setQuery($sql);
-		        $row =& $db->loadObject();
-
-			if (!empty($row))
+			if (!isset($vars['option']))
 			{
-				$myuri = JURI::getInstance( $row->newurl );
-				$vars = $myuri->getQuery(true);
+				//Set active menu item
+				if($item =& $menu->getActive()) {
+					$vars = $item->query;
+				}
 			}
-			else
-				JError::raiseError(404, JText::_("Page Not Found"));
+			
+			// End HUBzero Extension to check redirection table if otherwise unable to match URL to content
+		
 		}
-
-		$this->setVars($vars);
-	
-		//Set the variables
+		
+		// HUBzero Extension to pass common query parameters to apache (for logging)
 
 		if (!empty($vars['option']))
 			apache_note('component',$vars['option']);
@@ -444,10 +443,12 @@ class XRouter extends JRouter
 			apache_note('action',$vars['action']);
 		if (!empty($vars['id']))
 			apache_note('action',$vars['id']);
-
-		return $this->_vars;
+			
+		// End HUBzero Extension pass common query parameters to apache (for logging)
+		
+		return $vars;
 	}
-
+	
 	function _buildRawRoute(&$uri)
 	{
 	}
@@ -461,6 +462,29 @@ class XRouter extends JRouter
 		$query = $uri->getQuery(true);
 
 		if(!isset($query['option'])) {
+			// HUBzero Extension to handle section, category, alias routing of com_content pages
+			
+			$parts = $this->_buildContentRoute($query);
+			
+			if (empty($parts)) {
+				return;
+			}
+			
+			$query['option'] = 'com_content';
+			$parts = $this->_encodeSegments($parts);
+			$result	= implode('/', $parts);
+			$tmp	= ($result != "") ? '/'.$result : '';
+			//$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
+			$route .= '/'.$tmp;
+
+			// Unset unneeded query information
+			unset($query['Itemid']);
+			unset($query['option']);
+
+			//Set query again in the URI
+			$uri->setQuery($query);
+			$uri->setPath($route);
+			// End HUBzero Extension to handle section, category, alias routing of com_content pages
 			return;
 		}
 
@@ -469,8 +493,8 @@ class XRouter extends JRouter
 		/*
 		 * Build the component route
 		 */
-		$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $query['option']);
-		$tmp = '';
+		$component	= preg_replace('/[^A-Z0-9_\.-]/i', '', $query['option']);
+		$tmp 		= '';
 
 		// Use the component routing handler if it exists
 		$path = JPATH_BASE.DS.'components'.DS.$component.DS.'router.php';
@@ -479,37 +503,41 @@ class XRouter extends JRouter
 		if (file_exists($path) && !empty($query))
 		{
 			require_once $path;
-			$function = substr($component, 4).'BuildRoute';
-			$parts = $function($query);
+			$function	= substr($component, 4).'BuildRoute';
+			$parts		= $function($query);
 
 			// encode the route segments
-			//if ($component == 'com_content')
-				//$parts = $this->_encodeSegments($parts);
-
-			$result = implode('/', $parts);
-			$tmp = ($result != "") ? '/'.$result : '';
+			if ($component != "com_search") { // Cheep fix on searches
+				$parts = $this->_encodeSegments($parts);
+			}
+			else { // fix up search for URL
+				$total = count($parts);
+				for($i=0; $i<$total; $i++) {
+					// urlencode twice because it is decoded once after redirect
+					$parts[$i] = urlencode(urlencode(stripcslashes($parts[$i])));
+				}
+			}
+			
+			$result	= implode('/', $parts);
+			$tmp	= ($result != "") ? '/'.$result : '';
 		}
 
 		/*
 		 * Build the application route
 		 */
-		if (!empty($query['Itemid']))
+		$built = false;
+		if (isset($query['Itemid']) && !empty($query['Itemid']))
 		{
 			$item = $menu->getItem($query['Itemid']);
 
-			if (!empty($item) && $query['option'] == $item->component) {
+			if (is_object($item) && $query['option'] == $item->component) {
 				$tmp = !empty($tmp) ? $item->route.'/'.$tmp : $item->route;
+				$built = true;
 			}
-			$tmp = str_replace('default//','',$tmp);
-			$bits = split(':',$tmp);
-			$tmp = end($bits);
 		}
-		else
-		{
-			//$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
-			if ($component != 'com_hub') {
-				$tmp = substr($query['option'], 4).'/'.$tmp;
-			}
+
+		if(!$built) {
+			$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
 		}
 
 		$route .= '/'.$tmp;
@@ -591,9 +619,9 @@ class XRouter extends JRouter
 
 		if(is_null($itemid))
 		{
-			if($option = $uri->getVar('option'))
+			if($option	= $uri->getVar('option'))
 			{
-				$item = $menu->getItem($this->getVar('Itemid'));
+				$item	= $menu->getItem($this->getVar('Itemid'));
 				if(isset($item) && $item->component == $option) {
 					$uri->setVar('Itemid', $item->id);
 				}
@@ -617,7 +645,6 @@ class XRouter extends JRouter
 				$uri->setVar('option', $item->component);
 			}
 		}
-
 		return $uri;
 	}
 
@@ -665,7 +692,8 @@ class XRouter extends JRouter
 
 			unset($query['view']);
 			unset($query['id']);
-
+			unset($query['catid']);
+			
 			return $segments;
 		}
 		else {
@@ -807,31 +835,15 @@ class XRouter extends JRouter
 			$page = $segments[0];
 			$category = $segments[0];
 			$section = $segments[0];
-			//$routesegments = explode('/', $item->route);
-			//$rcount = count($routesegments);
-			//if ($rcount > 1) {
-			//	$category = $routesegments[$rcount-1];
-			//	$section = $routesegments[$rcount-2];
-			//} 
-			//else if ($rcount > 0) {
-			//	$category = $routesegments[$rcount-1];
-			//	$section = $routesegments[$rcount-1];
-			//}
 
-			$queryn = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-				"#__content.alias='" . $page . "' AND " .
-				"#__content.catid=#__categories.id AND " .
-				"#__categories.alias='" . $category . "' AND " .
-				"#__categories.section=#__sections.id AND " .
-				"#__sections.alias='" . $section . "' AND #__content.state='1' LIMIT 1;";
-				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
+			$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
 				"#__content.alias='" . $page . "' AND " .
 				"(" .
-				"(#__content.catid=#__categories.id AND " . "#__categories.alias='" . $category . "' AND " .
-				"#__content.sectionid=#__sections.id AND " . "#__sections.alias='" . $section . "')" .
-					 " OR " .
-					 "(#__content.catid=0 AND #__content.sectionid=0) " .
-					 ") AND #__content.state='1' LIMIT 1;";
+					"(#__content.catid=#__categories.id AND " . "#__categories.alias='" . $category . "' AND " .
+					"#__content.sectionid=#__sections.id AND " . "#__sections.alias='" . $section . "')" .
+					" OR " .
+					"(#__content.catid=0 AND #__content.sectionid=0) " .
+				") AND #__content.state='1' LIMIT 1;";
 
 		}
 		else if ($count == 0)
@@ -882,29 +894,6 @@ class XRouter extends JRouter
 
 		return array();
 	}
-
-	/**
-	 * Returns a reference to the global Router object, only creating it
-	 * if it doesn't already exist.
-	 *
-	 * This method must be invoked as:
-	 *	<pre> $router = &JRouter::getInstance();</pre>
-	 *
-	 * @access public
-	 * @return JRouter The Router object.
-	 * @since 1.5
-	 */
-
-	function &getInstance($options = array())
-	{
-		static $instance;
-
-		if (!is_object($instance))
-			$instance = new XRouter($options);
-
-		return $instance;
-	}
-
 }
 
 jimport('joomla.event.plugin');
@@ -927,7 +916,7 @@ class plgSystemXhub extends JPlugin
 
 	function onAfterInitialise()
 	{
-		jimport('joomla.database.table');
+		//jimport('joomla.database.table');
 		ximport('xsession');
 
 		$app = &JFactory::getApplication();
@@ -942,7 +931,7 @@ class plgSystemXhub extends JPlugin
 
 		// Create a JRouter object
 		if (get_class($router) == 'JRouterSite') {
-			$router = XRouter::getInstance($options);
+			$router = new XRouter($options);
 			$router->setMode($app->getCfg('sef'));
 			JHTML::_('behavior.mootools');
 			$jdocument =& JFactory::getDocument();
@@ -1013,14 +1002,15 @@ class plgSystemXhub extends JPlugin
 				$user = unserialize($str);
 				// We should store userid not username in cookie, will save us a database query here
 				$username = $user['username'];
+				
 				if ($id = JUserHelper::getUserId($id)) {
 					$myuser = JUser::getInstance($id);
 					if (is_object($myuser))
 					{
 						apache_note('userid',$myuser->get('id'));
 						apache_note('auth','cookie');
-						$authlog = XFactory::getAuthLogger();
-						$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+                    	$authlog = XFactory::getAuthLogger();
+                    	$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
 					}
 				}
 			}
@@ -1035,7 +1025,7 @@ class plgSystemXhub extends JPlugin
 		$authlog->logAuth( $_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
 		apache_note('auth','invalid');
 
-		return true; /* we expect the Joomla user plugin to handle the rest */
+		return true;
 	}
 }
 
