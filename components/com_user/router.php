@@ -34,13 +34,49 @@ function UserBuildRoute(&$query)
 function UserParseRoute($segments)
 {
 	$vars = array();
+	
+	//Get the active menu item
+	$menu =& JSite::getMenu();
+	$item =& $menu->getActive();
 
+	// Count route segments
 	$count = count($segments);
-	if(!empty($count)) {
-		$vars['view'] = $segments[0];
+	
+	if (isset($item)) {
+		$vars = $item->query;
 	}
+	
+	if (!empty($count) && !isset($vars['view'])) {
+		$vars['view'] = $segments[0];
+		array_shift($segments);
+		$count--;
+	}
+	
+	if ($vars['view'] == 'login') {
+		if ($count > 0) {
+			$vars['authenticator'] = array_shift($segments);
+			$count--;
+		}
+		
+		if ($count > 0) {
+			$vars['domain'] = array_shift($segments);
+			$count--;
+		}
+	
+		$uri = JFactory::getURI();
 
-	if($count > 1) {
+		// 	if there are any query parameters other than return, then this must be a login task request
+		
+		if ($uri->getQuery() != "") 
+		{		
+			if (count($uri->_vars) > 1)
+				$vars['task'] = 'login';
+			else if (!isset($uri->_vars['return']))
+				$vars['task'] = 'login';
+		}
+	}
+	
+	if ($count > 1) {
 		$vars['id']    = $segments[$count - 1];
 	}
 
