@@ -142,6 +142,15 @@ if (!$juser->get('guest')) {
 <?php endif; ?>
 			<!-- innerwrap is used to fix some IE 6 display bugs -->
 			<div class="innerwrap<?php if ($this->countModules('banner or welcome')) : echo ' frontpage'; endif; ?>">
+				<?php if ($this->getBuffer('message')) : ?>
+                                <div class="info">
+                                        <!-- <h2>
+                                                <?php echo JText::_('Message'); ?>
+                                        </h2> -->
+                                        <jdoc:include type="message" />
+                                </div>
+                                <?php endif; ?>
+
 				<jdoc:include type="component" />
 			</div><!-- / .innerwrap -->
 <?php if ($this->countModules('left or right')) : ?>
