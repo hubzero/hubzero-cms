@@ -51,122 +51,57 @@ class plgUserXusers extends JPlugin
 	* @param array array holding options (remember, autoregister, group)
 	* @return boolean True on success
 	*/
-
-	/**
-	 * This method will return a user object
-	 *
-	 * If options['autoregister'] is true, if the user doesn't exist yet he will be created
-	 *
-	 * @access public
-	 * @param array holds the user data
-	 * @param array array holding options (remember, autoregister, group)
-	 * @return object A JUser object
-	 * @since 1.5
-	 */
-
-	function &_getUser($user, $options = array(), $allowTemp = false)
-	{
-		$instance = new JUser();
-		if($id = intval(JUserHelper::getUserId($user['username']))) {
-			$instance->load($id);
-			return $instance;
-		}
-		
-		//TODO : move this out of the plugin
-		jimport('joomla.application.component.helper');
-		$config = &JComponentHelper::getParams( 'com_users' );
-		$usertype = $config->get( 'new_usertype', 'Registered' );
-		
-		$acl =& JFactory::getACL();
-		
-		$instance->set( 'id', 0 );
-		$instance->set( 'name', $user['fullname'] );
-		$instance->set( 'username', $user['username'] );
-		$instance->set( 'password_clear', $user['password_clear'] );
-		$instance->set( 'email', $user['email'] ); // Result should contain an email (check)
-		$instance->set( 'gid', $acl->get_group_id( '', $usertype));
-		$instance->set( 'usertype', $usertype );
-		
-		//If autoregister is set let's register the user
-		$autoregister = isset($options['autoregister']) ? $options['autoregister'] : $this->params->get('autoregister', 1);
-		
-		if($autoregister)
-		{
-			if(!$instance->save()) {
-				return JError::raiseError('500: Unable to register user ' . $user['email'], $instance->getError());
-			}
-		} else if ($allowTemp) {
-			// No existing user and autoregister off, this is a temporary user.
-			$instance->set( 'tmp_user', true );
-		}
-		else
-			return JError::raiseError('SOME_ERROR_CODE', 'User does not exist');
-
-		return $instance;
-	}
-
 	function onLoginUser($user, $options = array())
 	{
 		jimport('joomla.user.helper');
 		
+		$juser = &JFactory::getUser();   // get user from session (might be tmp_user, can't fetch from db)
+
+		if ($juser->get('guest') == '1') // joomla user plugin hasn't run or something went very badly
+		{
+			$plugins = JPluginHelper::getPlugin('user');
+			$xuser_order = false;
+			$joomla_order = false;
+			$i = 0;
+			
+			foreach ($plugins as $plugin)
+			{
+				if ($plugin->name == 'xusers') {
+					$xuser_order = $i;
+				}
+				
+				if ($plugin->name == 'joomla') {
+					$joomla_order = $i;
+				}
+				
+				$i++;
+			}
+			
+			if ($joomla_order === false) {
+				return JError::raiseError('SOME_ERROR_CODE', JText::_('E_JOOMLA_USER_PLUGIN_MISCONFIGURED'));
+			}
+			
+			if ($xuser_order <= $joomla_order) {
+				return JError::raiseError('SOME_ERROR_CODE', JText::_('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'));
+			}
+
+			return JError::raiseWarning('SOME_ERROR_CODE', JText::_('E_JOOMLA_USER_PLUGIN_FAILED'));
+		}
+
 		$authlog = XFactory::getAuthLogger();
 
-		$realm = isset($options['domain']) ? $options['domain'] : '';
-		$username = isset($user['username']) ? $user['username'] : '';
-
-		#SS
-      		if (($domain = JFactory::getSession()->get('session.xauth.domain')))
-			$realm = $domain;
-		#/SS
-
-		if (empty($realm) || ($realm == 'hzldap')) // local username
+		if ($juser->get('id') == '0')
 		{
-			$instance =& $this->_getUser($user, $options);
+			$authlog->logAuth( $juser->get('id') . ' ' . $_SERVER['REMOTE_ADDR'] . 'auth');
+			apache_note('auth','auth');
 
-			if ($instance === false)
-			{
-				$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . 'login_failed');
-				apache_note('auth','failed');
-
-				return JError::raiseError('SOME_ERROR_CODE', 'xHUB Internal Error: JUser record unavailable');
-			}
 		}
 		else
 		{
-			$autoregister = isset($options['autoregister']) ? $options['autoregister'] : $this->params->get('autoregister', 1);
-
-			$uid = XUserHelper::getXDomainUserId($username, $realm);
-
-			$instance =& $this->_getUser($user, $options); // create user
-
-			if ($instance === false)
-			{
-				$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . 'login_failed');
-				apache_note('auth','failed');
-
-				return JError::raiseError('SOME_ERROR_CODE', 'xHUB Internal Error: JUser record unavailable');
-			}
-
-			$parts = explode(':', $username);
-
-			if (count($parts) > 1)
-			{
-				$realm_id = intval($parts[0]);
-
-				if ($realm_id < 0)
-				{
-					$realm_id = - $realm_id;
-
-					$realm_username = pack("H*", $parts[1]);
-
-					XUserHelper::setXDomainUserId($realm_username, $realm, $instance->get('id'));
-				}
-			}
+			$authlog->logAuth( $juser->get('id') . ' [' . $juser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
+			apache_note('auth','login');
 		}
-
-		$authlog->logAuth( $instance->get('id') . ' [' . $instance->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
-		apache_note('auth','login');
-
+		
 		// drop a hub cookie
 
 		jimport('joomla.utilities.simplecrypt');
@@ -177,14 +112,48 @@ class plgUserXusers extends JPlugin
 		$key = JUtility::getHash(@$_SERVER['HTTP_USER_AGENT']);
 
 		$crypt = new JSimpleCrypt($key);
-		$ruser['username'] = $instance->get('username');
-		$ruser['id'] = $instance->get('id');
+		$ruser['username'] = $juser->get('username');
+		$ruser['id'] = $juser->get('id');
 		$rcookie = $crypt->encrypt(serialize($ruser));
 		$lifetime = time() + 365*24*60*60;
 		setcookie( JUtility::getHash('XHUB_REMEMBER'), $rcookie, $lifetime, '/' );
 
 		/* Mark registration as incomplete so it gets checked on next page load */
+		
+		$username = $juser->get('username');
 
+		if (isset($user['auth_link']) && is_object($user['auth_link'])) {
+			$hzal = $user['auth_link'];
+		}
+		else {
+			$hzal = null;
+		}
+		
+		if ($juser->get('tmp_user')) {
+			$email = $juser->get('email');
+			
+			if ($username[0] == '-') {
+				$username = trim($username,'-');
+				if ($hzal) {
+					$juser->set('username','guest;' . $username);
+					$juser->set('email', $hzal->email);
+				}
+			}
+		}
+		else
+		{
+			if ($username[0] == '-') {
+				$username = trim($username,'-');
+				if ($hzal) {
+					$hzal->user_id = $juser->get('id');
+					$hzal->update();
+				}
+			}			
+		}
+		
+		if ($hzal)
+			$juser->set('auth_link_id',$hzal->id);
+		
 		$session =& JFactory::getSession();
 		$session->set('registration.incomplete', true);
 
@@ -192,8 +161,6 @@ class plgUserXusers extends JPlugin
 	}
 
 	/**
-	 * Example store user method
-	 *
 	 * Method is called after user data is stored in the database
 	 *
 	 * @param array holds the new user data
@@ -208,7 +175,7 @@ class plgUserXusers extends JPlugin
 		$xhub =& XFactory::getHub();
 		$hubHomeDir = $xhub->getCfg('hubHomeDir');
 
-		$xprofile = XProfile::getInstance( $user['id'] );
+		$xprofile = XProfile::getInstance( $user['username'] );
 
 		if (!is_object($xprofile))
 		{
@@ -224,6 +191,14 @@ class plgUserXusers extends JPlugin
 			$xprofile->set('email', $user['email']);
 			$xprofile->set('emailConfirmed', '3');
 			$xprofile->set('username', $user['username']);
+			$xprofile->set('jobsAllowed', 3);
+			$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
+			$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1) );
+			if (isset($_SERVER['REMOTE_HOST'])) {
+				$xprofile->set('regHost', $_SERVER['REMOTE_HOST']);
+			}
+			$xprofile->set('registerDate', date('Y-m-d H:i:s'));
+
 			$result = $xprofile->create();
 
 			if (!$result)
@@ -267,8 +242,6 @@ class plgUserXusers extends JPlugin
 	}
 
 	/**
-	 * Example store user method
-	 *
 	 * Method is called after user data is deleted from the database
 	 *
 	 * @param array holds the user data
@@ -278,19 +251,25 @@ class plgUserXusers extends JPlugin
 	function onAfterDeleteUser($user, $succes, $msg)
 	{
 		ximport('xprofile');
-		ximport('xuserhelper');
-
-		XUserHelper::deleteXDomainUserId($user['id']);
+		ximport('Hubzero_Auth_Link');
 
 		$xprofile = XProfile::getInstance($user['id']);
 
 		if (is_object($xprofile))
 			$xprofile->delete();
 
+		Hubzero_Auth_Link::delete_by_user_id($user['id']);
+			
 		return true;
 	}
 
-
+	/**
+	 * This method should handle any logout logic and report back to the subject
+	 *
+	 * @access public
+	 * @param array holds the user data
+	 * @return boolean True on success
+	 */
 	function onLogoutUser($user, $options = array())
 	{
 		$authlog = XFactory::getAuthLogger();

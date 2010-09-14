@@ -268,15 +268,15 @@ class XProfile extends JObject
 			return false;
 		}
 
-		if (!is_numeric($username)) 
-		{
-			$dn = "uid=$username,ou=users," . $hubLDAPBaseDN;
-			$filter = '(objectclass=*)';
-		}
-		else
+		if (is_numeric($username) && $username >= 0) 
 		{
 			$dn = 'ou=users,' . $hubLDAPBaseDN;
 			$filter = '(uidNumber=' . $username . ')';
+		}
+		else
+		{
+			$dn = "uid=$username,ou=users," . $hubLDAPBaseDN;
+			$filter = '(objectclass=*)';
 		}
 
 		$attributes[] = 'sn';
@@ -394,7 +394,7 @@ class XProfile extends JObject
 			return false;
 		}
 
-		if (is_numeric($user))
+		if (is_numeric($user) && $user >= 0)
 			$query = "SELECT * FROM #__xprofiles WHERE uidNumber = " . $db->Quote(intval($user)) . ";";
 		else
 			$query = "SELECT * FROM #__xprofiles WHERE username = " . $db->Quote($user) . " AND uidNumber>0;";
@@ -880,8 +880,8 @@ class XProfile extends JObject
 
 			if (property_exists('XProfile', '_auxv_'.$property))
 			{
-			    	foreach($list as $key=>$value)
-				    $list[$key] = $db->Quote( $value );
+				foreach($list as $key=>$value)
+					$list[$key] = $db->Quote( $value );
 
 				$valuelist = implode($list,",");
 
@@ -909,6 +909,9 @@ class XProfile extends JObject
 
 	private function _mysql_update($mysqlonly = false)
 	{
+		if (!is_numeric($this->get('uidNumber')))
+			return false;
+		
 		$db = &JFactory::getDBO();
 
 		$query = "UPDATE #__xprofiles SET ";
@@ -1324,7 +1327,7 @@ class XProfile extends JObject
                 $this->_params = $params;
         }
 
-	private function _ldap_delete()
+	private function _ldap_delete($uid)
 	{
 		$xhub =& XFactory::getHub();
 		$conn =& XFactory::getPLDC();
@@ -1337,18 +1340,13 @@ class XProfile extends JObject
 			return false;
 		}
 
-		$userinfo = $this->_ldap_get_user($this->get('username'));
-
-		if ($userinfo === false)
-			return false;
-		
-		if (empty($userinfo['uid']))
+		if (empty($uid))
 		{
-			$this->setError("missing required field 'uidNumber'");
+			$this->setError("missing parameter 'uid'");
 			return false;
 		}
 		
-		$dn = "uid=" . $userinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
+		$dn = "uid=" . $uid . ",ou=users," . $hubLDAPBaseDN;
 		
 		if (!@ldap_delete($conn, $dn))
 		{
@@ -1399,7 +1397,7 @@ class XProfile extends JObject
 		}
 
 		$this->clear();
-
+		
 		return true;
 	}
 
@@ -1414,6 +1412,8 @@ class XProfile extends JObject
 		$mconfig = & JComponentHelper::getParams( 'com_members' );
 		$ldapProfileMirror = $mconfig->get('ldapProfileMirror');
 
+		$uid = $this->username;
+		
 		if (empty($storage))
 			$storage = ($ldapProfileMirror) ? 'all' : 'mysql';
 
@@ -1422,85 +1422,53 @@ class XProfile extends JObject
 				return false;
 
 		if ($storage == 'ldap' || $storage == 'all')
-			if ($this->_ldap_delete() === false)
+			if ($this->_ldap_delete($uid) === false)
 				return false;
 
 		return true;
 	}
 
-        function hasTransientUsername()
-        {
-                $parts = explode(':', $this->get('username'));
+    function loadRegistration(&$registration)
+    {
+		if (!is_object($registration))
+			return false;
 
-                if ( count($parts) == 3 && intval($parts[0]) < 0 )
-                        return true;
-        }
+		$keys = array('email', 'name', 'orgtype',
+                      'countryresident', 'countryorigin',
+                      'disability', 'hispanic', 'race',
+                      'phone', 'reason', 'edulevel',
+                      'role');
 
-        function getTransientUsername()
-        {
-                $parts = explode(':', $this->get('username'));
+		foreach($keys as $key)
+			if ($registration->get($key) !== null)
+				$this->set($key, $registration->get($key));
 
-                if ( count($parts) == 3 && intval($parts[0]) < 0 )
-                        return pack("H*", $parts[1]);
-        }
+		if ($registration->get('login') !== null)
+			$this->set('username', $registration->get('login'));
 
-        function hasTransientEmail()
-        {
-                if (eregi( "\.localhost\.invalid$", $this->get('email')))
-                        return true;
-        }
+		if ($registration->get('password') !== null)
+			$this->set('password', $registration->get('password'));
 
-        function getTransientEmail()
-        {
-                if (eregi( "\.localhost\.invalid$", $this->get('email')))
-                {
-                        $parts = explode('@', $this->get('email'));
-                        $parts = explode('-', $parts[0]);
-                        return pack("H*", $parts[2]);
-                }
-        }
+		if ($registration->get('org') !== null)
+			$this->set('organization', $registration->get('org'));
 
-        function loadRegistration(&$registration)
-        {
-                if (!is_object($registration))
-                        return false;
+		if ($registration->get('sex') !== null)
+			$this->set('gender', $registration->get('sex'));
 
-                $keys = array('email', 'name', 'orgtype',
-                                'countryresident', 'countryorigin',
-                                'disability', 'hispanic', 'race',
-                                'phone', 'reason', 'edulevel',
-                                'role');
+		if ($registration->get('nativetribe') !== null)
+			$this->set('nativeTribe', $registration->get('nativetribe'));
 
-                foreach($keys as $key)
-                        if ($registration->get($key) !== null)
-                                $this->set($key, $registration->get($key));
+		if ($registration->get('web') !== null)
+			$this->set('url', $registration->get('web'));
 
-                if ($registration->get('login') !== null)
-					$this->set('username', $registration->get('login'));
+		if ($registration->get('mailPreferenceOption') !== null)
+			$this->set('mailPreferenceOption', $registration->get('mailPreferenceOption') ? '2' : '0');
 
-                if ($registration->get('password') !== null)
-                	$this->set('password', $registration->get('password'));
+		if ($registration->get('usageAgreement') !== null)
+           	$this->set('usageAgreement', $registration->get('usageAgreement') ? true : false);
 
-                if ($registration->get('org') !== null)
-					$this->set('organization', $registration->get('org'));
-
-                if ($registration->get('sex') !== null)
-					$this->set('gender', $registration->get('sex'));
-
-                if ($registration->get('nativetribe') !== null)
-					$this->set('nativeTribe', $registration->get('nativetribe'));
-
-                if ($registration->get('web') !== null)
-					$this->set('url', $registration->get('web'));
-
-                if ($registration->get('mailPreferenceOption') !== null)
-                        $this->set('mailPreferenceOption', $registration->get('mailPreferenceOption') ? '2' : '0');
-
-                if ($registration->get('usageAgreement') !== null)
-                        $this->set('usageAgreement', $registration->get('usageAgreement') ? true : false);
-
-                return true;
-        }
+		return true;
+	}
 
 }
 ?>

@@ -108,10 +108,7 @@ class RegisterController extends JObject
 			case 'unconfirmed': $this->unconfirmed(); break;
 			
 			case 'raceethnic': $this->raceethnic(); break;
-			//case 'login': $this->login($act); break;
-			//case 'realm': $this->realm($act); break;
-			
-			default: $this->select(); break;
+			default: $this->create(); break;
 		}
 	}
 	
@@ -443,9 +440,12 @@ class RegisterController extends JObject
 	
 	//-----------
 	  
-	protected function update($action='show')
+	protected function update()
 	{
-		$action = ($action) ? $action : 'show';
+		ximport('Hubzero_Auth_Link');
+		
+		$force = false;
+		$updateEmail = false;
 		
 		// Add the CSS to the template
 		$this->_getStyles();
@@ -472,164 +472,187 @@ class RegisterController extends JObject
 		// Instantiate a new registration object
 		$xregistration = new XRegistration();
 
-		$xprofile    =& XFactory::getProfile(); 
+		$xprofile =& XFactory::getProfile(); 
 		$xhub     =& XFactory::getHub();
 		$jsession =& JFactory::getSession();
-
-		// Determine action
-		if ($action == 'submit') {
+		
+		$hzal = Hubzero_Auth_Link::find_by_id( $juser->get('auth_link_id'));
+		
+		if (JRequest::getMethod() == 'POST') {
 			// Load POSTed data
 			$xregistration->loadPOST();
 		} else {
 			// Load data from the user object
-			$xregistration->loadProfile($xprofile);
+			if (is_object($xprofile))
+				$xregistration->loadProfile($xprofile);
+			else {
+				$xregistration->loadAccount($juser);
+			}
+							
+			ximport('Hubzero_Auth_Link');
+			$username = $juser->get('username');
+			$email = $juser->get('email');
+				
+			if ($username[0] == '-' && is_object($hzal)) {
+					
+				$xregistration->set('login',$hzal->username);
+				$xregistration->set('email',$hzal->email);
+				$xregistration->set('confirmEmail',$hzal->email);
+				$force = true;
+			}		
+		}		
+		
+		$check = $xregistration->check('update');
+		
+		if (!$force && $check && JRequest::getMethod() == 'GET') {			
+			$jsession->set('registration.incomplete', false);
+			if ($_SERVER['REQUEST_URI'] == '/register/update')
+				$xhub->redirect('/');
+			else
+				$xhub->redirect($_SERVER['REQUEST_URI']); 
+			return(true);
 		}
 		
-		if (!$xregistration->check('update', $juser->get('id'))) {
-			// Check submitted data
-			if ($action == 'submit') {
-				if ($xprofile->hasTransientUsername()) {
-					$xregistration->_encoded['login'] = $xregistration->get('login');
-				}
-				if ($xprofile->hasTransientEmail()) {
-					$xregistration->_encoded['email'] = $xregistration->get('email');
+		if (!$force && $check && JRequest::getMethod() == 'POST') {
+				
+			$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
+			$hubHomeDir      = $xhub->getCfg('hubHomeDir');
+			$updateEmail     = false;
+			
+			if ($xprofile->get('homeDirectory') == '') {
+				$xprofile->set('homeDirectory', $hubHomeDir . '/' . $xprofile->get('username'));
+			}
+			
+			if ($xprofile->get('jobsAllowed') == '') {
+				$xprofile->set('jobsAllowed', 3);
+			}
+			
+			if ($xprofile->get('regIP') == '') {
+				$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
+			}
+			
+			if ($xprofile->get('regHost') == '') {
+				if (isset($_SERVER['REMOTE_HOST'])) {
+					$xprofile->set('regHost', $_SERVER['REMOTE_HOST']);
 				}
 			}
 			
-			// Display the form
-			return $this->_show_registration_form($xregistration, 'update');
-		}
-		
-		if (!$xprofile->hasTransientUsername() && $xprofile->get('username') != $xregistration->get('login')) {
-			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_REGISTRATION_FORM_SESSION_MISMATCH'));
-		}
-		
-		$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
-		$hubHomeDir      = $xhub->getCfg('hubHomeDir');
-		$updateEmail     = false;
-		
-		if ($xprofile->get('homeDirectory') == '') {
-			$xprofile->set('homeDirectory', $hubHomeDir . '/' . $xprofile->get('username'));
-		}
-		
-		if ($xprofile->get('jobsAllowed') == '') {
-			$xprofile->set('jobsAllowed', 3);
-		}
-		
-		if ($xprofile->get('regIP') == '') {
-			$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
-		}
-		
-		if ($xprofile->get('regHost') == '') {
-			if (isset($_SERVER['REMOTE_HOST'])) {
-				$xprofile->set('regHost', $_SERVER['REMOTE_HOST']);
+			if ($xprofile->get('registerDate') == '') {
+				$xprofile->set('registerDate', date('Y-m-d H:i:s'));
 			}
-		}
-		
-		if ($xprofile->get('registerDate') == '') {
-			$xprofile->set('registerDate', date('Y-m-d H:i:s'));
-		}
-		
-		if ($xregistration->get('email') != $xprofile->get('email')) {
-			if ($xprofile->hasTransientEmail() && $xregistration->get('email') != $xprofile->getTransientEmail()) {
-				$xprofile->set('emailConfirmed', '3');
-			} else {
-				$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1) );
-				$updateEmail = true;
+			
+			if ($xregistration->get('email') != $xprofile->get('email')) {
+				if (is_object($hzal) && $xregistration->get('email') == $hzal->email) {
+					$xprofile->set('emailConfirmed',3);
+				}
+				else {
+					$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1) );
+					$updateEmail = true;
+				}
 			}
-		}
-		
-		if ($xregistration->get('login') != $xprofile->get('username')) {
-			if ($xprofile->hasTransientUsername()) {
+			
+			if ($xregistration->get('login') != $xprofile->get('username')) {
 				$xprofile->set('homeDirectory', $hubHomeDir . '/' . $xregistration->get('login'));
 			}
-		}
-
-		$xprofile->loadRegistration($xregistration);
-		$xprofile->update();
-
-		// Update juser table
-		// TODO: only update if changed
-		$myjuser = JUser::getInstance($xprofile->get('uidNumber'));
-		$myjuser->set('username', $xprofile->get('username'));
-		$myjuser->set('email', $xprofile->get('email'));
-		$myjuser->set('name', $xprofile->get('name'));
-		$myjuser->save();
-
-		// Update current session if appropriate
-		// TODO: update all session of this user
-		// TODO: only update if changed
-		if ($myjuser->get('id') == $juser->get('id')) {
-			$sjuser = $jsession->get('user');
-			$sjuser->set('username', $xprofile->get('username'));
-			$sjuser->set('email', $xprofile->get('email'));
-			$sjuser->set('name', $xprofile->get('name'));
-			$jsession->set('user', $sjuser);
+	
+			$xprofile->loadRegistration($xregistration);
 			
-			// Get the session object
-			$table = & JTable::getInstance('session');
-			$table->load( $jsession->getId() );
-			$table->username = $xprofile->get('username');
-			$table->update();
-		}
-
-		$jsession->set('registration.incomplete', false);
-
-		// Notify the user
-		if ($updateEmail) {
-			$subject  = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_CONFIRMATION');
-
-			$eview = new JView( array('name'=>'emails','layout'=>'update') );
-			$eview->option = $this->_option;
-			$eview->hubShortName = $this->jconfig->getValue('config.sitename');
-			$eview->xprofile = $xprofile;
-			$eview->baseURL = $this->baseURL;
-			$message = $eview->loadTemplate();
-			$message = str_replace("\n", "\r\n", $message);
-
-			if (!XHubHelper::send_email($xprofile->get('username'), $subject, $message)) {
-				$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION',$hubMonitorEmail));
+			$xprofile->update();
+	
+			// Update juser table
+			// TODO: only update if changed
+			$myjuser = JUser::getInstance($xprofile->get('uidNumber'));
+			$myjuser->set('username', $xprofile->get('username'));
+			$myjuser->set('email', $xprofile->get('email'));
+			$myjuser->set('name', $xprofile->get('name'));
+			$myjuser->save();
+	
+			// Update current session if appropriate
+			// TODO: update all session of this user
+			// TODO: only update if changed
+			if ($myjuser->get('id') == $juser->get('id')) {
+				$sjuser = $jsession->get('user');
+				$sjuser->set('username', $xprofile->get('username'));
+				$sjuser->set('email', $xprofile->get('email'));
+				$sjuser->set('name', $xprofile->get('name'));
+				$jsession->set('user', $sjuser);
+				
+				// Get the session object
+				$table = & JTable::getInstance('session');
+				$table->load( $jsession->getId() );
+				$table->username = $xprofile->get('username');
+				$table->update();
 			}
-		}
-
-		// Notify administration
-		if ($action == 'submit') {
-			$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_ACCOUNT_UPDATE');
-
-			$eaview = new JView( array('name'=>'emails','layout'=>'adminupdate') );
-			$eaview->option = $this->_option;
-			$eaview->hubShortName = $this->jconfig->getValue('config.sitename');
-			$eaview->xprofile  = $xprofile;
-			$eaview->baseURL = $this->baseURL;
-			$message = $eaview->loadTemplate();
-			$message = str_replace("\n", "\r\n", $message);
-
-			XHubHelper::send_email($hubMonitorEmail, $subject, $message);
-		}
-
-		if (!$updateEmail) {
-			$xhub->redirect($_SERVER['REQUEST_URI']);
-		} else {
-			// Instantiate a new view
-			$view = new JView( array('name'=>'update') );
-			$view->option = $this->_option;
-			$view->title = JText::_('COM_REGISTER_UPDATE');
-			$view->hubShortName = $this->jconfig->getValue('config.sitename');
-			$view->xprofile = $xprofile;
-			$view->self = true;
-			if ($this->getError()) {
-				$view->setError( $this->getError() );
+	
+			$jsession->set('registration.incomplete', false);
+	
+			// Notify the user
+			if ($updateEmail) {
+				$subject  = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_CONFIRMATION');
+	
+				$eview = new JView( array('name'=>'emails','layout'=>'update') );
+				$eview->option = $this->_option;
+				$eview->hubShortName = $this->jconfig->getValue('config.sitename');
+				$eview->xprofile = $xprofile;
+				$eview->baseURL = $this->baseURL;
+				$message = $eview->loadTemplate();
+				$message = str_replace("\n", "\r\n", $message);
+	
+				if (!XHubHelper::send_email($xprofile->get('username'), $subject, $message)) {
+					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION',$hubMonitorEmail));
+				}
 			}
-			$view->display();
+	
+			// Notify administration
+			if (JRequest::getMethod() == 'POST') {
+				$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_ACCOUNT_UPDATE');
+	
+				$eaview = new JView( array('name'=>'emails','layout'=>'adminupdate') );
+				$eaview->option = $this->_option;
+				$eaview->hubShortName = $this->jconfig->getValue('config.sitename');
+				$eaview->xprofile  = $xprofile;
+				$eaview->baseURL = $this->baseURL;
+				$message = $eaview->loadTemplate();
+				$message = str_replace("\n", "\r\n", $message);
+	
+				XHubHelper::send_email($hubMonitorEmail, $subject, $message);
+			}
+	
+			if (!$updateEmail) {
+				if ($_SERVER['REQUEST_URI'] == '/register/update')
+					$xhub->redirect('/');
+				else
+					$xhub->redirect($_SERVER['REQUEST_URI']);
+			} else {
+	
+				// Instantiate a new view
+				$view = new JView( array('name'=>'update') );
+				$view->option = $this->_option;
+				$view->title = JText::_('COM_REGISTER_UPDATE');
+				$view->hubShortName = $this->jconfig->getValue('config.sitename');
+				$view->xprofile = $xprofile;
+				$view->self = true;
+				$view->updateEmail = $updateEmail;
+				if ($this->getError()) {
+					$view->setError( $this->getError() );
+				}
+				$view->display();
+			}
+			
+			return true;
 		}
+				
+		return $this->_show_registration_form($xregistration, 'update');
 	}
 	
 	//-----------
 
-	protected function create($action='show')
+	protected function create()
 	{
-		$action = ($action) ? $action : 'show';
+		ximport('Hubzero_Auth_Link');
 		
+		global $mainframe;
+	
 		// Add the CSS to the template
 		$this->_getStyles();
 
@@ -642,334 +665,213 @@ class RegisterController extends JObject
 		// Set the page title
 		$this->_buildTitle();
 		
-		if ($action != 'submit' && $action != 'show') {
-			return JError::raiseError(404, JText::_('COM_REGISTER_ERROR_INVALID_REQUEST') );
-		}
-
 		$juser =& JFactory::getUser();
-		if (!$juser->get('guest')) {
+		if (!$juser->get('guest') && !$juser->get('tmp_user')) {
 			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_NONGUEST_SESSION_CREATION') );
 		}
 		
+		if ($juser->get('auth_link_id'))
+			$hzal = Hubzero_Auth_Link::find_by_id($juser->get('auth_link_id'));
+		else 
+			$hzal = null;
+			
 		// Instantiate a new registration object
 		$xregistration = new XRegistration();
 
-		if ($action == 'submit') {
+		if (JRequest::getMethod() == 'POST') {
+			// Check for request forgeries
+			JRequest::checkToken() or jexit( 'Invalid Token' );	
+			
 			// Load POSTed data
 			$xregistration->loadPost();
 			
 			// Perform field validation
-			if (!$xregistration->check('create')) {
-				return $this->_show_registration_form($xregistration,'create');
-			}
-
-			// Get some settings
-			$xhub =& XFactory::getHub();
-			$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
-			$hubHomeDir      = $xhub->getCfg('hubHomeDir');
-	
-			jimport('joomla.application.component.helper');
-			$config   =& JComponentHelper::getParams( 'com_users' );
-			$usertype = $config->get( 'new_usertype', 'Registered' );
-
-			$acl =& JFactory::getACL();
 			
-			// Create a new Joomla user
-			$target_juser = new JUser();
-			$target_juser->set('id',0);
-			$target_juser->set('name', $xregistration->get('name'));
-			$target_juser->set('username', $xregistration->get('login'));
-			$target_juser->set('password_clear','');
-			$target_juser->set('email', $xregistration->get('email'));
-			$target_juser->set('gid', $acl->get_group_id( '', $usertype));
-			$target_juser->set('usertype', $usertype);
-			$target_juser->save();
-			
-			// Attempt to get the new user
-			$xprofile = XProfile::getInstance($target_juser->get('id'));
-
-			$result = is_object($xprofile);
-
-			// Did we successfully create an account?
-			if ($result) {
-				$xprofile->loadRegistration($xregistration);
-				$xprofile->set('homeDirectory', $hubHomeDir . '/' . $xprofile->get('username'));
-				$xprofile->set('jobsAllowed', 3);
-				$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
-				$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1) );
-				if (isset($_SERVER['REMOTE_HOST'])) {
-					$xprofile->set('regHost', $_SERVER['REMOTE_HOST']);
+			if ($xregistration->check('create')) {
+				
+				// Get required system objects
+				$user 		= clone(JFactory::getUser());
+				$pathway 	=& $mainframe->getPathway();
+				$config		=& JFactory::getConfig();
+				$authorize	=& JFactory::getACL();
+				$document   =& JFactory::getDocument();
+		
+				// If user registration is not allowed, show 403 not authorized.
+				$usersConfig = &JComponentHelper::getParams( 'com_users' );
+				if ($usersConfig->get('allowUserRegistration') == '0') {
+					JError::raiseError( 403, JText::_( 'Access Forbidden' ));
+					return;
 				}
-				$xprofile->set('registerDate', date('Y-m-d H:i:s'));
+		
+				// Initialize new usertype setting
+				$newUsertype = $usersConfig->get( 'new_usertype' );
+				if (!$newUsertype) {
+					$newUsertype = 'Registered';
+				}
+
+				$user->set('username', $xregistration->get('login'));
+				$user->set('name', $xregistration->get('name'));
+				$user->set('email', $xregistration->get('email'));
+				/*
+				// Bind the post array to the user object
+				if (!$user->bind( JRequest::get('post'), 'usertype' )) {
+					JError::raiseError( 500, $user->getError());
+				}
+				*/
 				
-				// Update the account
-				$result = $xprofile->update();
-				
-				// Do we have a return URL?
-				$regReturn = JRequest::getVar('return', ''); 
-				if ($regReturn) {
-					$target_profile =& XProfile::getInstance( $target_juser->get('id') );
-					
-					if (is_object($target_profile)) {
-						$target_profile->setParam('return', $regReturn);
-						$target_profile->update();
+				// Set some initial user values
+				$user->set('id', 0);
+				$user->set('usertype', $newUsertype);
+				$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
+		
+				$date =& JFactory::getDate();
+				$user->set('registerDate', $date->toMySQL());
+		
+				/*
+				// If user activation is turned on, we need to set the activation information
+				$useractivation = $usersConfig->get( 'useractivation' );
+				if ($useractivation == '1')
+				{
+					jimport('joomla.user.helper');
+					$user->set('activation', JUtility::getHash( JUserHelper::genRandomPassword()) );
+					$user->set('block', '1');
+				}
+				*/
+						
+				// If there was an error with registration, set the message and display form
+				if ( $user->save() )
+				{
+					/*
+					// Send registration confirmation mail
+					$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
+					$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
+					UserController::_sendMail($user, $password);
+			
+					// Everything went fine, set relevant message depending upon user activation state and display message
+					if ( $useractivation == 1 ) {
+						$message  = JText::_( 'REG_COMPLETE_ACTIVATE' );
+					} else {
+						$message = JText::_( 'REG_COMPLETE' );
 					}
+			
+					$this->setRedirect('index.php', $message);
+					*/
+					
+					// Get some settings
+					$xhub =& XFactory::getHub();
+					$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
+					$hubHomeDir      = $xhub->getCfg('hubHomeDir');
+		
+					// Attempt to get the new user
+					$xprofile = XProfile::getInstance($user->get('id'));
+	
+					$result = is_object($xprofile);
+	
+					// Did we successfully create an account?
+					if ($result) {
+						$xprofile->loadRegistration($xregistration);
+						
+						if (is_object($hzal))
+						{			
+							if ($xprofile->get('email') == $hzal->email) {
+								$xprofile->set('emailConfirmed',3);
+							}
+							else
+								$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1) );
+						}
+					
+						// Do we have a return URL?
+						$regReturn = JRequest::getVar('return', ''); 
+						if ($regReturn) {
+							$xprofile->setParam('return', $regReturn);
+							$xprofile->update();
+						}
+						
+						$result = $xprofile->update();
+					}
+				
+					// Did we successfully create/update an account?
+					if (!$result) {
+						$view = new JView( array('name'=>'error') );
+						$view->title = JText::_('COM_REGISTER_CREATE_ACCOUNT');
+						$view->setError( JText::sprintf('COM_REGISTER_ERROR_CREATING_ACCOUNT', $hubMonitorEmail) );
+						$view->display();
+						return;
+					}
+		
+					if ($xprofile->get('emailConfirmed') < 0) {
+						// Notify the user
+						$subject  = $this->jconfig->getValue('config.sitename').' '.JText::_('COM_REGISTER_EMAIL_CONFIRMATION');
+			
+						$eview = new JView( array('name'=>'emails','layout'=>'create') );
+						$eview->option = $this->_option;
+						$eview->hubShortName = $this->jconfig->getValue('config.sitename');
+						$eview->xprofile = $xprofile;
+						$eview->baseURL = $this->baseURL;
+						$eview->xregistration = $xregistration;
+						$message = $eview->loadTemplate();
+						$message = str_replace("\n", "\r\n", $message);
+				
+						if (!XHubHelper::send_email($xprofile->get('email'), $subject, $message)) {
+							$this->setError( JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $hubMonitorEmail) );
+						}
+					}
+										
+					// Notify administration
+					$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_ACCOUNT_CREATION');
+		
+					$eaview = new JView( array('name'=>'emails','layout'=>'admincreate') );
+					$eaview->option = $this->_option;
+					$eaview->hubShortName = $this->jconfig->getValue('config.sitename');
+					$eaview->xprofile = $xprofile;
+					$eaview->baseURL = $this->baseURL;
+					$message = $eaview->loadTemplate();
+					$message = str_replace("\n", "\r\n", $message);
+			
+					XHubHelper::send_email($hubMonitorEmail, $subject, $message);
+		
+					// Instantiate a new view
+					$view = new JView( array('name'=>'create') );
+					$view->option = $this->_option;
+					$view->title = JText::_('COM_REGISTER_CREATE_ACCOUNT');
+					$view->hubShortName = $this->jconfig->getValue('config.sitename');
+					$view->xprofile = $xprofile;
+					if ($this->getError()) {
+						$view->setError( $this->getError() );
+					}
+					$view->display();
+					
+					if (is_object($hzal)) {
+						$hzal->user_id = $user->get('id');
+						if ($hzal->user_id > 0)
+							$hzal->update();
+					}						
+					
+					$juser->set('auth_link_id',null);
+					$juser->set('tmp_user',null);
+					$juser->set('username', $xregistration->get('login'));
+					$juser->set('email', $xregistration->get('email'));
+					$juser->set('id', $user->get('id'));
+					return;
 				}
 			}
-			
-			// Did we successfully create/update an account?
-			if (!$result) {
-				$view = new JView( array('name'=>'error') );
-				$view->title = JText::_('COM_REGISTER_CREATE_ACCOUNT');
-				$view->setError( JText::sprintf('COM_REGISTER_ERROR_CREATING_ACCOUNT', $hubMonitorEmail) );
-				$view->display();
-				return;
-			}
-
-			// Notify the user
-			$subject  = $this->jconfig->getValue('config.sitename').' '.JText::_('COM_REGISTER_EMAIL_CONFIRMATION');
-
-			$eview = new JView( array('name'=>'emails','layout'=>'create') );
-			$eview->option = $this->_option;
-			$eview->hubShortName = $this->jconfig->getValue('config.sitename');
-			$eview->xprofile = $xprofile;
-			$eview->baseURL = $this->baseURL;
-			$eview->xregistration = $xregistration;
-			$message = $eview->loadTemplate();
-			$message = str_replace("\n", "\r\n", $message);
-	
-			if (!XHubHelper::send_email($xprofile->get('email'), $subject, $message)) {
-				$this->setError( JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $hubMonitorEmail) );
-			}
-			
-			// Notify administration
-			$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_REGISTER_EMAIL_ACCOUNT_CREATION');
-
-			$eaview = new JView( array('name'=>'emails','layout'=>'admincreate') );
-			$eaview->option = $this->_option;
-			$eaview->hubShortName = $this->jconfig->getValue('config.sitename');
-			$eaview->xprofile = $xprofile;
-			$eaview->baseURL = $this->baseURL;
-			$message = $eaview->loadTemplate();
-			$message = str_replace("\n", "\r\n", $message);
-	
-			XHubHelper::send_email($hubMonitorEmail, $subject, $message);
-
-			// Instantiate a new view
-			$view = new JView( array('name'=>'create') );
-			$view->option = $this->_option;
-			$view->title = JText::_('COM_REGISTER_CREATE_ACCOUNT');
-			$view->hubShortName = $this->jconfig->getValue('config.sitename');
-			$view->xprofile = $xprofile;
-			if ($this->getError()) {
-				$view->setError( $this->getError() );
-			}
-			$view->display();
-			return;
 		}
-
+		
+		if (JRequest::getMethod() == 'GET') {		
+			if ($juser->get('tmp_user')) {				
+				$xregistration->loadAccount($juser);
+			
+				$username = $xregistration->get('login');
+				$email = $xregistration->get('email');
+				if (is_object($hzal)) {
+					$xregistration->set('login',$hzal->username);
+					$xregistration->set('email',$hzal->email);
+					$xregistration->set('confirmEmail',$hzal->email);			
+				}
+			}
+		}
+		
 		return $this->_show_registration_form($xregistration, 'create');
-	}
-	
-	//-----------
-
-	/*protected function login($action='show')
-	{
-		$return = base64_decode( JRequest::getVar('return', '',  'method', 'base64') );
-
-		if (empty($return)) {
-			$hconfig = &JComponentHelper::getParams('com_hub');
-			$r = $hconfig->get('LoginReturn');
-			$return = ($r) ? $r : JRoute::_('index.php?option=com_myhub');
-		}
-
-		$juser =& JFactory::getUser();
-		if (!$juser->get('guest')) {
-			return $xhub->redirect($return);
-		}
-
-		if (!$this->_cookie_check()) {
-			return;
-		}
-
-		if ($action != 'show' && $action != 'submit') {
-			return JError::raiseError(404, JText::_('Invalid Request') );
-		}
-
-		$xhub =& XFactory::getHub();
-
-		if ($action == 'submit') {
-			$credentials = array();
-			$credentials['username'] = JRequest::getVar('username', '', 'method', 'username');
-			$credentials['password'] = JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
-	
-			$options = array();
-			$options['remember'] = JRequest::getBool('remember', false);
-			$options['domain'] = JRequest::getString('realm','','post');
-	       	$options['return'] = $return;
-
-			$login_attempts = JRequest::getInt('la',0,'post');
-
-			if (!empty($credentials['username']) && !empty($credentials['password'])) {
-				$app   =& JFactory::getApplication();
-				$error = $app->login($credentials, $options);
-
-	        	if (!JError::isError($error)) {
-					return $xhub->redirect( $return );
-				}
-
-				$error_message = $error->get('message');
-			} else if ($login_attempts > 0) {
-				$error_message = JText::_('E_LOGIN_AUTHENTICATE');
-			} else {
-				$error_message = '';
-			}
-			$usrnm = $credentials['username'];
-		} else {
-			$usernm = '';
-			$login_attempts = 0;
-			$error_message = '';
-		}
-
-		$plugins = JPluginHelper::getPlugin('xauthentication');
-
-		$realms = array();
-
-		foreach ($plugins as $plugin)
-		{
-			$params = new JParameter($plugin->params);
-
-			$realm = $params->get('domain');
-
-			if (empty($realm)) {
-				$realm = $plugin->name;
-
-				if (!in_array($realm, $realms)) {
-					$realms[$plugin->name] = $realm;
-				}
-			}
-		}
-
-		$login_attempts++;
-		
-		$realm = JRequest::getVar('realm', '', 'method');
-
-		if (empty($realm) && count($realms) == 1) {
-			$realm = current( array_keys($realms) );
-		}
-
-		if (!array_key_exists($realm, $realms)) {
-			return JError::raiseError( 404, JText::_('Invalid Authentication Realm Requested') );
-		}
-		
-		$realmName = $realms[$realm];
-
-		// @TODO this default should be provided by plugin and probably should be different than the realm name
-  		// it should be a variable specifically for the login prompt.
-		if ($realmName == 'hzldap') {
-			$realmName = $this->jconfig->getValue('config.sitename') . ' Account';
-		}
-		
-		$usersConfig =& JComponentHelper::getParams( 'com_users' );
-		$registration_enabled = $usersConfig->get( 'allowUserRegistration' );
-		
-		unset($credentials,$options,$realms,$params,$plugins,$plugin,$action,$usersConfig,$app,$error);
-		
-		// Instantiate a new view
-		$view = new JView( array('name'=>'login') );
-		$view->option = $this->_option;
-		$view->title = JText::_('Login');
-		$view->hubShortName = $this->jconfig->getValue('config.sitename');
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();
-	}*/
-	
-	//-----------
-
-	protected function select($action='show')
-	{
-		$action = ($action) ? $action : 'show';
-		
-		if ($action != 'submit' && $action != 'show') {
-			return JError::raiseError(404, JText::_('COM_REGISTER_ERROR_INVALID_REQUEST'));
-		}
-
-		$juser =& JFactory::getUser();
-		if (!$juser->get('guest')) {
-			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_NONGUEST_SESSION_CREATION'));
-		}
-		
-		if (!$this->_cookie_check()) {
-			return;
-		}
-
-		// Get all the authentication realms
-		$plugins = JPluginHelper::getPlugin('xauthentication');
-
-		$realms = array();
-
-		foreach ($plugins as $plugin)
-		{
-			$params = new JParameter($plugin->params);
-			
-			$realm = $params->get('domain');
-			
-			if (empty($realm)) {
-				$realm = $plugin->name;
-			}
-			
-			if (!in_array($realm, $realms) && ($plugin->name != 'hzldap')) {
-				$realms[$plugin->name] = $realm;
-			}
-		}
-		
-		// Choose action
-		if ($action == 'submit') {
-			if (JRequest::getVar('register', '', 'method')) {
-				return $this->create('show');
-			}
-
-			if (JRequest::getVar('login', '', 'method')) {
-				//return $this->login('show');
-				// Instantiate a new view
-				$view = new JView( array('name'=>'login') );
-				$view->option = $this->_option;
-				$view->title = JText::_('COM_REGISTER_LOGIN');
-				$view->display();
-				return;
-			}
-		}
-
-		unset($plugins, $params, $realm, $action);
-	
-		// Push straight to the form if no realms found
-		if (count($realms) == 0) {
-			return $this->create('show');
-		}
-		
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add some Javascript to the template
-		$this->_getScripts();
-
-		// Set the pathway
-		$this->_buildPathway();
-
-		// Set the page title
-		$this->_buildTitle();
-		
-		// Instantiate a new view
-		$view = new JView( array('name'=>'select') );
-		$view->option = $this->_option;
-		$view->title = JText::_('COM_REGISTER_SELECT_METHOD');
-		$view->hubShortName = $this->jconfig->getValue('config.sitename');
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();
 	}
 	
 	protected function raceethnic() 
@@ -1051,7 +953,7 @@ class RegisterController extends JObject
 		$juser =& JFactory::getUser();
 		$username = JRequest::getVar('username',$juser->get('username'),'get');
 		$view->self = ($juser->get('username') == $username);
-
+		
 		// Get the registration object
 		if (!is_object($xregistration)) {
 			$view->xregistration = new XRegistration();
@@ -1084,11 +986,10 @@ class RegisterController extends JObject
 		$view->registrationTOU = $this->_registrationField('registrationTOU','HHHH',$task);
 
 		if ($view->task == 'update') {
-			if (empty($view->xregistration->_encoded['login'])) {
-				$view->registrationUsername = REG_READONLY;
-			} else {
+			if (empty($view->xregistration->login)) {
 				$view->registrationUsername = REG_REQUIRED;
-				$view->registration['login'] = $view->xregistration->_encoded['login'];
+			} else {
+				$view->registrationUsername = REG_READONLY;
 			}
 
 			$view->registrationPassword = REG_HIDE;
@@ -1100,25 +1001,31 @@ class RegisterController extends JObject
 			$view->registrationPassword = REG_HIDE;
 			$view->registrationConfirmPassword = REG_HIDE;
 		}
-
-		if ($view->registrationEmail == REG_REQUIRED 
-		 || $view->registrationEmail == REG_OPTIONAL) {
-			if (!empty($view->xregistration->_encoded['email'])) {
+		
+		if ($juser->get('auth_link_id') && $view->task == 'create') {
+			$view->registrationPassword = REG_HIDE;
+			$view->registrationConfirmPassword = REG_HIDE;
+		}
+		
+		/*
+		if ($view->registrationEmail == REG_REQUIRED || $view->registrationEmail == REG_OPTIONAL) {
+			if (!empty($view->xregistration->email)) {
 				$view->registration['email'] = $view->xregistration->_encoded['email'];
 			}
 		}
 
-		if ($view->registrationConfirmEmail == REG_REQUIRED 
-		 || $view->registrationConfirmEmail == REG_OPTIONAL) {
+		if ($view->registrationConfirmEmail == REG_REQUIRED || $view->registrationConfirmEmail == REG_OPTIONAL) {
 			if (!empty($view->xregistration->_encoded['email'])) {
 				$view->registration['confirmEmail'] = $view->xregistration->_encoded['email']; 
 			}
 		}
+		*/
 		
 		// Display the view
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
+		
 		$view->display();
 	}
 

@@ -128,7 +128,10 @@ class XRouter extends JRouter
 				{
 					$vars = array();
 					$vars['option'] = 'com_register';
-					$vars['task'] = 'update';
+					if ($juser->get('tmp_user'))
+						$vars['task'] = 'create';
+					else
+						$vars['task'] = 'update';
 					$vars['act'] = '';
 				
 					$this->setVars($vars);
@@ -329,7 +332,7 @@ class XRouter extends JRouter
 				array_shift($segments);
 				array_shift($segments);
 			}
-			else if ($route == 'logout')
+			/*else if ($route == 'logout')
 			{
 				$vars['option'] = 'com_hub';
 			}
@@ -344,6 +347,7 @@ class XRouter extends JRouter
 			}
 			else if (substr($route, 0, 6) == 'search')
 				$vars['option'] = 'com_xsearch';
+			*/
 		}
 
 		// Set the active menu item
@@ -994,6 +998,7 @@ class plgSystemXhub extends JPlugin
 		{
 			ximport('xlog');
 			jimport('joomla.utilities.utility');
+			jimport('joomla.user.helper');
 			$hash = JUtility::getHash('XHUB_REMEMBER');
 			$username = '-';
 			if ($str = JRequest::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
@@ -1008,13 +1013,15 @@ class plgSystemXhub extends JPlugin
 				$user = unserialize($str);
 				// We should store userid not username in cookie, will save us a database query here
 				$username = $user['username'];
-				$myuser = JUser::getInstance($username);
-				if (is_object($myuser))
-				{
-					apache_note('userid',$myuser->get('id'));
-					apache_note('auth','cookie');
-                    $authlog = XFactory::getAuthLogger();
-                    $authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+				if ($id = JUserHelper::getUserId($id)) {
+					$myuser = JUser::getInstance($id);
+					if (is_object($myuser))
+					{
+						apache_note('userid',$myuser->get('id'));
+						apache_note('auth','cookie');
+						$authlog = XFactory::getAuthLogger();
+						$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+					}
 				}
 			}
 		}

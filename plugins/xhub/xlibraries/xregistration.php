@@ -310,9 +310,10 @@ class XRegistration
 	{
 		$this->clear();
 		
-		if (!is_object($xprofile))
+		if (!is_object($xprofile)) {
 			return;
-
+		}
+		
 		$this->set('countryresident', $xprofile->get('countryresident'));
 		$this->set('countryorigin', $xprofile->get('countryorigin'));
 		$this->set('nativetribe', $xprofile->get('nativeTribe'));
@@ -338,20 +339,23 @@ class XRegistration
 		$this->set('usageAgreement', $xprofile->get('usageAgreement'));
 		$this->set('mailPreferenceOption', $xprofile->get('mailPreferenceOption'));
 
-		$parts = explode(':', $this->_registration['login'] );
-
-		if ( count($parts) == 3 && intval($parts[0]) < 0 )
-			$this->_encoded['login'] = pack("H*", $parts[1]);
-
-		if (eregi( "\.localhost\.invalid$", $this->_registration['email']))
-		{
-			$parts = explode('@', $this->_registration['email']);
-			$parts = explode('-', $parts[0]);
-			$this->_encoded['email'] = pack("H*", $parts[2]);
-		}
-
 		$this->_checked = false;
-	}	
+	}
+
+	function loadAccount($juser = null)
+	{
+		$this->clear();
+		
+		if (!is_object($juser)) {
+			return;
+		}
+		
+		$this->set('login', $juser->get('username'));
+		$this->set('name', $juser->get('name'));
+		$this->set('email', $juser->get('email'));
+		
+		$this->_checked = false;
+	}
 
 	function get($key)
 	{
@@ -374,8 +378,8 @@ class XRegistration
 
 		$this->_registration[$key] = $value;
 
-		if (($key == 'login') || ($key == 'email'))
-			unset($this->_encoded[$key]);
+		//if (($key == 'login') || ($key == 'email'))
+			//unset($this->_encoded[$key]);
 	}
 
 	private function registrationField($name, $default, $task = 'register')
@@ -436,7 +440,7 @@ class XRegistration
 		ximport('xuserhelper');
 		ximport('xregistrationhelper');
 		ximport('Hubzero_Validate');
-
+		
 		$juser =& JFactory::getUser();
 		
 		if ($id == 0) {
@@ -474,16 +478,19 @@ class XRegistration
 
 		if ($task == 'update')
 		{
-			if ($this->_encoded['login'])
+			if (empty($registration['login'])) {
 				$registrationUsername = REG_REQUIRED;
-			else
+			}
+			else {
 				$registrationUsername = REG_READONLY;
-
+			}
+			
 			$registrationPassword = REG_HIDE;
 			$registrationConfirmPassword = REG_HIDE;
 			
-			if ($this->_encoded['email'])
+			if (empty($registration['email'])) {
 				$registrationEmail = REG_REQUIRED;
+			}
 		}
 
 		if ($task == 'edit')
@@ -492,22 +499,16 @@ class XRegistration
 			$registrationPassword = REG_HIDE;
 			$registrationConfirmPassword = REG_HIDE;
 		}
-
-		if ($this->_encoded['login'])
-			$login = $this->_encoded['login'];
-		else
-			$login = $registration['login'];
-
-		if ($this->_encoded['email'])
-		{
-			$email = $this->_encoded['email'];
-			$confirmEmail = $email;
+		
+		if ($juser->get('auth_link_id') && $task == 'create') {
+			$registrationPassword = REG_HIDE;
+			$registrationConfirmPassword = REG_HIDE;
 		}
-		else
-		{
-			$email = $registration['email'];
-			$confirmEmail = $registration['confirmEmail'];
-		}
+		
+		$login = $registration['login'];
+
+		$email = $registration['email'];
+		$confirmEmail = $registration['confirmEmail'];
 
 		if ($registrationUsername == REG_REQUIRED) 
 		{
@@ -524,10 +525,10 @@ class XRegistration
 				$this->_invalid['login'] = 'Invalid login name. Please use only alphanumeric characters.';
 		}
 		
-		if ($task == 'create' || $task == 'proxycreate' || $task == 'update')
+		if (!empty($login) && ($task == 'create' || $task == 'proxycreate' || $task == 'update'))
 		{
 			jimport('joomla.user.helper');
-
+			
 			$uid = JUserHelper::getUserId($login);
 
 			if ($uid && $uid != $id)
@@ -538,15 +539,15 @@ class XRegistration
 				
 			$puser = posix_getpwnam($login);
 			
-			 if (!empty($puser) && $uid && $uid != $puser['uid'])
-				$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
+			//if (!empty($puser) && $uid && $uid != $puser['uid'])
+				//$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
 		}
 
 		if ($registrationPassword == REG_REQUIRED)
 		{
 			if (empty($registration['password']))
 			{
-			$this->_missing['password'] = 'Password';
+				$this->_missing['password'] = 'Password';
 				$this->_invalid['password'] = 'Please provide a password.';
 			}
 		}
@@ -598,9 +599,26 @@ class XRegistration
 				$this->_invalid['name'] = 'Please provide a name.';
 			} else {
 				$bits = explode(' ',$registration['name']);
-				$givenName = array_shift($bits);
-				$surname = array_pop($bits);
-				$middleName = implode(' ',$bits);
+				$surname = null;
+				$middleName = null;
+				$givenName = null;
+				
+				if (count($bits) == 1)
+				{
+					$givenName = array_shift($bits);
+				}
+				else
+				{
+					$surname = array_pop($bits);
+				
+					if (count($bits) >= 1) {
+						$givenName = array_shift($bits);
+					}
+					if (count($bits) >= 1) {
+						$middleName = implode(' ',$bits);
+					}
+				}
+				
 				if (!$givenName) {
 					$this->_missing['name'] = 'Full Name';
 					$this->_invalid['name'] = 'Please provide a name.';
@@ -653,6 +671,7 @@ class XRegistration
 		}
 
 		if ($registrationConfirmEmail != REG_HIDE)
+		{
 			if ($email != $confirmEmail)
 			{
 				if (empty($this->_invalid['email']))
@@ -661,7 +680,8 @@ class XRegistration
 					$this->_invalid['email'] = 'Email addresses do not match. Please correct and try again.';
 				}
 			}
-
+		}
+		
 		if ($registrationURL == REG_REQUIRED)
 		{
 			if (empty($registration['web']))
@@ -697,14 +717,14 @@ class XRegistration
 			}
 		}
 
-/*
+		/*
 		if ($registrationEmployment != REG_HIDE)
 			if (empty($registration['orgtype']))
 			{
 				//if (! XRegistrationHelper::validateOrgType($registration['orgtype']) )
 					$this->_invalid['orgtype'] = 'Invalid employment status. Please make a new selection.';
 			}
-*/
+		*/
 
 		if ($registrationOrganization == REG_REQUIRED)
 		{
@@ -874,7 +894,7 @@ class XRegistration
 				$this->_invalid['usageAgreement'] = 'Usage Agreement has not been Read and Accepted';
 		*/
 
-		if (empty($this->_missing) && empty($this->_invalid) && empty($this->_encoded))
+		if (empty($this->_missing) && empty($this->_invalid))
 			return true;
 
 		return false;
