@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p class="passed">Your account has been created successfully.</p>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } else { ?>
+<?php } else if ($this->xprofile->get('emailConfirmed') < 0){ ?>
 	<p>A confirmation email has been sent to '<?php echo $this->xprofile->get('email'); ?>'. You must click the link in that email to activate your account and resume using <?php echo $this->hubShortName; ?>.</p>
 <?php } ?>
 </div><!-- / .main section -->
