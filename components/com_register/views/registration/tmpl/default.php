@@ -1028,6 +1028,7 @@ if (!defined("n")) {
 	$html .= t.'<input type="hidden" name="option" value="'.$this->option.'" />'.n;
 	$html .= t.'<input type="hidden" name="task" value="'.$this->task.'" />'.n;
 	$html .= t.'<input type="hidden" name="act" value="submit" />'.n;
+	$html .= t.JHTML::_( 'form.token' );
 
 	$return_g = JRequest::getVar('return', null, 'get');
 
