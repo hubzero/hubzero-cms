@@ -53,7 +53,7 @@ class XRegistrationHelper
 	}*/
 	function validlogin($login) 
 	{
-		if (eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $login)) {
+		if (eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z\.]*$", $login)) {
 			if (is_positiveint($login)) {
 				return(0);
 			} else {
