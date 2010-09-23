@@ -94,15 +94,15 @@ class ContribtoolController extends JObject
 
 	private function getStyles($option='')
 	{
-		ximport('xdocument');
+		ximport('Hubzero_Document');
 		if ($option) {
-			XDocument::addComponentStylesheet($option);
+			Hubzero_Document::addComponentStylesheet($option);
 		} else {
-			XDocument::addComponentStylesheet($this->_option);
+			Hubzero_Document::addComponentStylesheet($this->_option);
 		}
 
-		XDocument::addComponentStylesheet('com_support');
-		//XDocument::addComponentStylesheet('com_contribute');
+		Hubzero_Document::addComponentStylesheet('com_support');
+		//Hubzero_Document::addComponentStylesheet('com_contribute');
 	}
 
 	//-----------
@@ -280,8 +280,8 @@ class ContribtoolController extends JObject
 		
 		echo ContribtoolHtml::hed( 2, $title );
 		if($msg) { echo ContribtoolHtml::warning( $msg ); }
-		ximport('xmodule');
-		XModuleHelper::displayModules('force_mod');
+		ximport('Hubzero_Module_Helper');
+		Hubzero_Module_Helper::displayModules('force_mod');
 	
 	}
 
@@ -487,7 +487,7 @@ class ContribtoolController extends JObject
 		$features = $objR->getNotes($vid, '', 'category', 'DESC', 'note','feature');
 				
 		// get related wishes
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'wishlist.wishlist.php' );
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'models'.DS.'wishlist.php' );
 		require_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'controller.php' );
 		
 		$objWishlist = new Wishlist( $database );
@@ -689,10 +689,10 @@ class ContribtoolController extends JObject
 
 	protected function status()
 	{
-		$xprofile    	=& XFactory::getProfile();
+		$xprofile    	=& Hubzero_Factory::getProfile();
 		$juser     	=& JFactory::getUser();
 		$database 	=& JFactory::getDBO();
-		$xhub      	=& XFactory::getHub();
+		$xhub      	=& Hubzero_Factory::getHub();
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -735,6 +735,8 @@ class ContribtoolController extends JObject
 			$obj->getToolStatus( $this->_toolid, $this->_option, $status, 'dev', $ldap );
 
 			if(!$status) {
+				var_dump($obj);
+				die();
 				JError::raiseError( 404, JText::_('ERR_STATUS_CANNOT_FIND') );
 				return;
 			}
@@ -742,7 +744,10 @@ class ContribtoolController extends JObject
 			// get tickets/wishes/questions
 			if($status['published']) {
 						// get open questions
-						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'answers.class.php' );
+						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
+						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
+						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
+						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
 						$aq = new AnswersQuestion( $database );	
 						$filters = array();
 						$filters['filterby'] = 'all';
@@ -761,7 +766,7 @@ class ContribtoolController extends JObject
 						}
 						else {
 											
-							require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'wishlist.wishlist.php' );
+							require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'models'.DS.'wishlist.php' );
 							require_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'controller.php' );
 							
 							$objWishlist = new Wishlist( $database );
@@ -861,7 +866,7 @@ class ContribtoolController extends JObject
 	{
 		$database =& JFactory::getDBO();
 		$juser    =& JFactory::getUser();
-		$xhub      =& XFactory::getHub();
+		$xhub      =& Hubzero_Factory::getHub();
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -944,14 +949,16 @@ class ContribtoolController extends JObject
 
 		return true;
 	}
+	
+	//-------------
 
 	protected function save()
 	{
 		$database 	=& JFactory::getDBO();
 		$juser 	   	=& JFactory::getUser();
-		$xlog       = &XFactory::getLogger();
+		$xlog       = &Hubzero_Factory::getLogger();
 		$task  	    = $this->_task;
-		$exportmap  = array('@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
+		$exportmap  = array('@OPEN'=>null,'@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -1057,8 +1064,10 @@ class ContribtoolController extends JObject
 				if ($editversion=='dev')
 				{
 					if ($hztv === false)
+					{
+						$xlog->logDebug(__FUNCTION__ . "() HZTV createInstance dev_suffix=$dev_suffix");
 						$hztv = Hubzero_Tool_Version::createInstance($toolname,$toolname.$dev_suffix);
-
+					}
 					$oldstatus = $hztv->toArray();
 					$oldstatus['toolstate'] = $hzt->state;
 					$hztv->toolid = $this->_toolid;
@@ -1101,7 +1110,8 @@ class ContribtoolController extends JObject
 				{
 					// create/update developers group
 					$gid = $hztv->getDevelopmentGroup();
-					if ($gid == false)
+
+					if (empty($gid))
 					{
 						$hzg = Hubzero_Group::createInstance($group_prefix . $toolname);
 					}
@@ -1126,6 +1136,18 @@ class ContribtoolController extends JObject
                     {
                         $hztv->add('member', $tool['membergroups']);
                     }
+
+					// Add repo for new tools
+					$auto_addrepo = (isset($this->config->parameters['auto_addrepo'])) ? $this->config->parameters['auto_addrepo'] : 1;
+					if (!$id && $auto_addrepo)  
+					{
+						// Run add repo
+						$this->addRepo($output, array('toolname' => $toolname, 'title' => $tool['title'], 'description' => $tool['description'] ));
+						if($output['class'] != 'error') {
+							$hzt->state = 2;
+							$hzt->update();
+						}
+					}
 	
 					// get ticket information
 					if (empty($hzt->ticketid))
@@ -1140,8 +1162,11 @@ class ContribtoolController extends JObject
 					{
 						$rid = $this->createResPage($this->_toolid, $tool);
 						// save authors by default
-						$objA = new ToolAuthor( $database);
-						if(!$id) { $objA->saveAuthors($tool['developers'], 'dev', $rid, '', $tool['toolname'] ); }
+						//$objA = new ToolAuthor( $database);
+						//if(!$id) { $objA->saveAuthors($tool['developers'], 'dev', $rid, '', $tool['toolname'] ); }
+						if(!$id) {
+							$this->author_save( 0, $rid, $tool['developers'] );
+						}
 					}
 
 					$status = $hztv->toArray();
@@ -1158,7 +1183,7 @@ class ContribtoolController extends JObject
 					$this->_msg = $id ? JText::_('NOTICE_TOOL_INFO_CHANGED'): JText::_('NOTICE_TOOL_INFO_REGISTERED');
 					$hzg->update();
 					$hzt->update();
-					$hztv->update();
+					$hztv->update(); // @FIXME: look
 					$this->status();
 				}
 			} //--------end if valid
@@ -1234,7 +1259,7 @@ class ContribtoolController extends JObject
 					if (Hubzero_Tool::validateVersion($newversion, $this->_error, $hzt->id))
 					{
 						$hztv->version = $newversion;
-						$hztv->update();
+						$hztv->update(); // @FIXME: look
 
 						if($this->_action == 'confirm') 
 						{
@@ -1280,7 +1305,7 @@ class ContribtoolController extends JObject
 							$hztv->codeaccess = $this->code;
 							
 							// save version info
-							$hztv->update();
+							$hztv->update(); //@FIXME: look
 
 							$this->setTracAccess($hztv->toolname,$hztv->codeaccess,null);
 
@@ -1391,7 +1416,7 @@ class ContribtoolController extends JObject
 					
 					// save tool info
 					$hzt->update();
-					$hztv->update();
+					$hztv->update(); //@FIXME: look
 					// get tool status after updates
 					$status = $hztv->toArray();
 					$status['toolstate'] = $hzt->state;
@@ -1426,10 +1451,11 @@ class ContribtoolController extends JObject
 
 	//-----------
 
-	protected function email($toolid, $summary, $comment, $access, $action)
+	protected function email($toolid, $summary, $comment, $access, $action, $toolinfo = array())
 	{
+		ximport('Hubzero_Group');
 
-		$xhub 		=& XFactory::getHub();
+		$xhub 		=& Hubzero_Factory::getHub();
 		$juser     	=& JFactory::getUser();
 		$database 	=& JFactory::getDBO();
 		$jconfig 	=& JFactory::getConfig();
@@ -1440,7 +1466,11 @@ class ContribtoolController extends JObject
 		$obj = new Tool($database);
 		$obj->getToolStatus( $toolid, $this->_option, $status, 'dev');
 		
-			// get admin priviliges
+		if(empty($status) && !empty($toolinfo)) {
+			$status = $toolinfo;
+		}
+		
+		// get admin priviliges
 		$this->authorize_admin();
 		// Get team
 		$team = ContribtoolHelper::transform($status['developers'], 'uidNumber');
@@ -1452,14 +1482,13 @@ class ContribtoolController extends JObject
 			$admins[] = $juser->get('username');
 		}
 		$admingroup = isset($this->config->parameters['admingroup']) ? trim($this->config->parameters['admingroup']) : null;
-		$group = new XGroup();
-		$group->select( $admingroup);
+		$group = Hubzero_Group::getInstance( $admingroup );
 		$members = $group->get('members');
 		$managers = $group->get('managers');
 		$members = array_merge($members, $managers);
 		if($members) {
 			foreach($members as $member) {
-				$muser =& XProfile::getInstance( $member );
+				$muser =& Hubzero_User_Profile::getInstance( $member );
 					if (is_object($muser)) {
 							$admins[] = $member;
 					}
@@ -1550,7 +1579,7 @@ class ContribtoolController extends JObject
 	{
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
-		$xlog = &XFactory::getLogger();
+		$xlog = &Hubzero_Factory::getLogger();
 		$xlog->logDebug(__FUNCTION__ . "() started");
 		$summary = '';
 		// see what changed
@@ -1646,7 +1675,7 @@ class ContribtoolController extends JObject
 		$rowc->ticket     = $ticketid;
 		
 		if($comment) {
-			$action = $action==2 ? $action : 3;
+			//$action = $action==2 ? $action : 3;
 			$email = 1;
 			$rowc->comment    = nl2br($comment);
 			$rowc->comment    = str_replace( '<br>', '<br />', $rowc->comment );
@@ -1670,7 +1699,7 @@ class ContribtoolController extends JObject
 
 	}
 	//-----------
-	protected function updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1, $changelog=array())
+	protected function updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1, $toolinfo= array(), $changelog=array())
 	{
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
@@ -1772,7 +1801,7 @@ class ContribtoolController extends JObject
 		$rowc->ticket     = $ticketid;
 		
 		if($comment) {
-			$action = $action==2 ? $action : 3;
+			//$action = $action==2 ? $action : 3;
 			$email = 1;
 			$rowc->comment    = nl2br($comment);
 			$rowc->comment    = str_replace( '<br>', '<br />', $rowc->comment );
@@ -1788,7 +1817,8 @@ class ContribtoolController extends JObject
 		}
 		else if($email) { 
 			// send notification emails
-			$this->email($toolid, $summary, $comment, $access, $action);
+			$summary = $summary ? $summary : $comment;
+			$this->email($toolid, $summary, $comment, $access, $action, $toolinfo);
 		}
 
 		return true;
@@ -1802,7 +1832,7 @@ class ContribtoolController extends JObject
 		$database =& JFactory::getDBO();
 
 		// include support scripts
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_support'.DS.'support.tags.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_support'.DS.'helpers'.DS.'tags.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'comment.php' );
 
@@ -1836,7 +1866,7 @@ class ContribtoolController extends JObject
 				$obj->saveTicketId($toolid, $row->id);
 
 				// make a record
-				$this->updateTicket($toolid, '', '', JText::_('NOTICE_TOOL_REGISTERED'), $access=0, $email=1, $action=4);
+				$this->updateTicket($toolid, '', '', JText::_('NOTICE_TOOL_REGISTERED'), $access=0, $email=1, $action=4, $tool);
 			}
 
 		}
@@ -1945,7 +1975,7 @@ class ContribtoolController extends JObject
 		$database =& JFactory::getDBO();
 
 	    $juser     =& JFactory::getUser();
-		$xhub      =& XFactory::getHub();
+		$xhub      =& Hubzero_Factory::getHub();
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -2014,7 +2044,7 @@ class ContribtoolController extends JObject
 	protected function licenseTool($toolname)
 	{
 		$token = md5(uniqid());
-		$xhub   =& XFactory::getHub();
+		$xhub   =& Hubzero_Factory::getHub();
 		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 
 		$fname = '/tmp/license'.$toolname.$token.'txt';
@@ -2037,24 +2067,26 @@ class ContribtoolController extends JObject
 
 	//-----------
 
-	protected function addRepo(&$output)
+	protected function addRepo(&$output, $toolinfo = array())
 	{
 		if(!$this->_toolid) {
 			return false;
 		}
 				
-		$xhub   =& XFactory::getHub();
+		$xhub   =& Hubzero_Factory::getHub();
 		$database =& JFactory::getDBO();
 		$pw 	= $xhub->getCfg('hubLDAPSearchUserPW');
 		$scriptdir = '/usr/lib/hubzero/addrepo';
 		$ldap = 0;
 		
 		// Create a Tool object
-		$obj = new Tool( $database );
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev', $ldap);
+		if(empty($toolinfo)) {
+			$obj = new Tool( $database );
+			$obj->getToolStatus($this->_toolid, $this->_option, $toolinfo, 'dev', $ldap);
+		}
 		
-		if(count($status) > 0) {
-			$command = $scriptdir.DS.'addrepo '.$status['toolname'].' -title "'.$status['title'].'" -description "'.$status['description'].'" -password "'.$pw.'"' . " -hubdir " . JPATH_ROOT;
+		if(!empty($toolinfo)) {
+				$command = $scriptdir.DS.'addrepo '.$toolinfo['toolname'].' -title "'.$toolinfo['title'].'" -description "'.$toolinfo['description'].'" -password "'.$pw.'"' . " -hubdir " . JPATH_ROOT;
 
 			if(!$this->invokescript($command, JText::_('NOTICE_PROJECT_AREA_CREATED'), $output)) {
 				return false;
@@ -2081,7 +2113,7 @@ class ContribtoolController extends JObject
 		}
 				
 		$database =& JFactory::getDBO();
-		$xhub   =& XFactory::getHub();
+		$xhub   =& Hubzero_Factory::getHub();
 		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 		
@@ -2127,7 +2159,7 @@ class ContribtoolController extends JObject
 
 	protected function finalizeTool(&$out)
 	{
-		$xlog =& XFactory::getLogger();
+		$xlog =& Hubzero_Factory::getLogger();
 
 		$xlog->logDebug("finalizeTool(): checkpoint 1");
 
@@ -2136,7 +2168,7 @@ class ContribtoolController extends JObject
 		}
 		
 		$database =& JFactory::getDBO();
-		$xhub   =& XFactory::getHub();
+		$xhub   =& Hubzero_Factory::getHub();
 		$ldap = isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 
@@ -2299,17 +2331,16 @@ class ContribtoolController extends JObject
 	//-----------
 
 	protected function publish(&$output, $result = 1)
-	{
-
+	{	
 		$database 		=& JFactory::getDBO();
 		$now 			= date( 'Y-m-d H:i:s' );
-		$xhub 			=& XFactory::getHub();
+		$xhub 			=& Hubzero_Factory::getHub();
 		$hubShortName 	= $xhub->getCfg('hubShortName');
 		$app 			=& JFactory::getApplication();
 		$livesite 		= $xhub->getCfg('hubLongURL');
-		$exportmap     = array('@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
+		$exportmap     = array('@OPEN'=>null,'@GROUP'=>null,'@US'=>'us','@us'=>'us','@PU'=>'pu','@pu'=>'pu','@D1'=>'d1','@d1'=>'d1');
 		$juser =& JFactory::getUser();
-		$xlog =& XFactory::getLogger();
+		$xlog =& Hubzero_Factory::getLogger();
 
 		$xlog->logDebug("publish(): checkpoint 1:$result");
 		
@@ -2339,6 +2370,12 @@ class ContribtoolController extends JObject
 			// Create a Tool Version object
 			$objV = new ToolVersion( $database );
 			$objV->getToolVersions( $this->_toolid, $tools, '', $ldap_read, 1);
+			
+			// test - nicktest
+			if($this->_toolid == 349) {
+				$status['revision'] = 574;
+				$status['version']  = 'H';
+			}
 					
 			// make checks
 			if(!is_numeric($status['revision'])) {  // bad format
@@ -2436,7 +2473,6 @@ class ContribtoolController extends JObject
 
 		}
 
-
 		$xlog->logDebug("publish(): checkpoint 5:$result, running ldap stuff");
 		// ldap actions
 	
@@ -2490,8 +2526,9 @@ class ContribtoolController extends JObject
 			$new_hztv->exportControl = $exportmap[$status['exec']];
 			$new_hztv->owner = $hztv_dev->owner;
 			$new_hztv->member = $hztv_dev->member;
-			foreach($status['developers'] as $d)
-				$new_hztv->add('author',$d->uidNumber);
+			/*foreach($status['developers'] as $d)
+				$new_hztv->add('author',$d->uidNumber); */
+				
 
 			if (!$new_hztv->update())
 			{
@@ -2532,7 +2569,12 @@ class ContribtoolController extends JObject
 				
 				// save authors for this version
 				$objA = new ToolAuthor( $database);
-				$objA->saveAuthors($status['developers'], $currentid, $status['resourceid'], $status['revision'], $status['toolname'] );
+				if($objA->saveAuthors($status['developers'], $currentid, $status['resourceid'], $status['revision'], $status['toolname'])) {
+					$output['pass'] .= '<br />* '.JText::_('Authors saved successfully.');
+				}
+				else {
+					$output['fail'] .= '<br />* '.JText::_('There was a problem saving authors. Version ID: '.$currentid);
+				}
 				
 				// transfer screenshots
 				if($devid && $currentid) {				
@@ -2578,7 +2620,7 @@ class ContribtoolController extends JObject
 
 		$database 	=& JFactory::getDBO();
 		$juser  	=& JFactory::getUser();
-		$xhub      	=& XFactory::getHub();
+		$xhub      	=& Hubzero_Factory::getHub();
 		$ldap 		= isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 		
 		// get admin priviliges
@@ -2677,8 +2719,8 @@ class ContribtoolController extends JObject
 		$accesses = array('Public','Registered','Special','Protected','Private');		
 		$lists = array();
 		$lists['access'] = ContribtoolHtml::selectAccess($accesses, $row->access);
-		ximport('xuserhelper');			
-		$groups = XUserHelper::getGroups( $juser->get('id'), 'members' );
+		ximport('Hubzero_User_Helper');			
+		$groups = Hubzero_User_Helper::getGroups( $juser->get('id'), 'members' );
 		
 		// Tags
 		$nbtags = explode(',',$this->rconfig->get('tagstool'));
@@ -2825,7 +2867,7 @@ class ContribtoolController extends JObject
 	{
 	    $database 	=& JFactory::getDBO();
 		$juser  	=& JFactory::getUser();
-		$xhub      	=& XFactory::getHub();
+		$xhub      	=& Hubzero_Factory::getHub();
 		$ldap 		= isset($this->config->parameters['ldap_read']) ? $this->config->parameters['ldap_read'] : 0;
 		
 		// get admin priviliges
@@ -2855,24 +2897,24 @@ class ContribtoolController extends JObject
 		$tags  = JRequest::getVar( 'tags', '', 'post' );
 		$tagfa = JRequest::getVar( 'tagfa', '', 'post' );
 		// process new tags
-		if($tags or $tagfa) {
+		//if($tags or $tagfa) {
 			$newtags = '';
 			if($tagfa) { $newtags = $tagfa.', '; }
 			if($tags) { $newtags .= $tags;  }
-			$tagcloud->tag_object($juser->get('id'), $rid, $newtags, 1, 0);
-		}
+			$tagcloud->tag_object($juser->get('id'), $rid, $newtags, 1, 1);
+		//}
 		
 
 		// Get some needed libraries
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 		
 		$resource = new ResourcesResource( $database );
 		$resource->load( $rid );
 		
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
-			ximport('xuserhelper');
-			$xgroups = XUserHelper::getGroups($juser->get('id'), 'all');
+			ximport('Hubzero_User_Helper');
+			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 			// Get the groups the user has access to
 			$usersgroups = $this->_getUsersGroups($xgroups);
 		} else {
@@ -3078,7 +3120,7 @@ class ContribtoolController extends JObject
 		}
 		
 		// Build the path
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 		$listdir = ResourcesHtml::build_path( $row->created, $row->id, '' );
 		$path = $this->_buildUploadPath( $listdir, '' );
 
@@ -3189,7 +3231,7 @@ class ContribtoolController extends JObject
 		}
 		
 		// Get resource path
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );		
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );		
 		$listdir = ResourcesHtml::build_path( $row->created, $id, '');
 		
 		// Build the path
@@ -3367,7 +3409,7 @@ class ContribtoolController extends JObject
 			
 			
 		// Build the path
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 		$listdir  = ResourcesHtml::build_path( $row->created, $pid, '' );
 		$listdir .= DS.$vid;
 		$wpath = $this->rconfig->get('uploadpath').DS.$listdir;
@@ -3477,7 +3519,7 @@ class ContribtoolController extends JObject
 			return;
 		}
 			
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 			
 		// Build the path
 		$listdir  = ResourcesHtml::build_path( $row->created, $pid, '' );
@@ -3618,7 +3660,7 @@ class ContribtoolController extends JObject
 		}
 		
 		// Build the path
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 		$listdir  = ResourcesHtml::build_path( $resource->created, $pid, '' );
 		$listdir .= DS.$vid;
 		$path = $this->_buildUploadPath( $listdir, '' );
@@ -3857,7 +3899,7 @@ class ContribtoolController extends JObject
 			$resource->load( $rid );
 			
 			// Build the path
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 			$listdir  	= ResourcesHtml::build_path( $resource->created, $rid, '' );
 			$srcdir 	= $listdir.DS.$devid;
 			$destdir 	= $listdir.DS.$currentid;
@@ -3897,7 +3939,7 @@ class ContribtoolController extends JObject
 	*/
 	protected function transferScreenshots($sourceid, $destid, $rid)
 	{
-		$xlog = &XFactory::getLogger();
+		$xlog = &Hubzero_Factory::getLogger();
 		$xlog->logDebug(__FUNCTION__ . "()");
 		$database =& JFactory::getDBO();
 				
@@ -3910,7 +3952,7 @@ class ContribtoolController extends JObject
 		$shots = $ss->getFiles($rid, $sourceid);
 			
 		// Build the path
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 		$listdir  	= ResourcesHtml::build_path( $resource->created, $rid, '' );
 		$srcdir 	= $listdir.DS.$sourceid;
 		$destdir 	= $listdir.DS.$destid;
@@ -3997,7 +4039,7 @@ class ContribtoolController extends JObject
 		$shots = $ss->getScreenshots($rid, $vid);
 		
 		// Build paths
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 		$path = ResourcesHtml::build_path( $resource->created, $rid, '' );
 		$upath = JPATH_ROOT.$this->rconfig->get('uploadpath').$path;
 		$wpath = $this->rconfig->get('uploadpath').$path;
@@ -4163,24 +4205,29 @@ class ContribtoolController extends JObject
 	// contributors manager
 	//----------------------------------------------------------
 
-	protected function author_save($show=1)
+	protected function author_save( $show = 1, $id = 0, $authorsNew = array() )
 	{
 		// Incoming resource ID
-		$id = JRequest::getInt( 'pid', 0 );
+		if(!$id) {
+			$id = JRequest::getInt( 'pid', 0 );
+		}
 		if (!$id) {
 			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
 			$this->authors( $id );
 			return;
 		}
-		
-		ximport('xprofile');
+			
+		ximport('Hubzero_User_Profile');
 		
 		$database =& JFactory::getDBO();
 		
 		// Incoming authors
 		$authid = JRequest::getInt( 'authid', 0, 'post' );
-		$authorsNewstr = JRequest::getVar( 'new_authors', '', 'post' );
+		$authorsNewstr = trim(JRequest::getVar( 'new_authors', '', 'post' ));
 
+		// Turn the string into an array of usernames
+		$authorsNew = empty($authorsNew)  ? split(',',$authorsNewstr) : $authorsNew;
+		
 		// Instantiate a resource/contributor association object
 		$rc = new ResourcesContributor( $database );
 		$rc->subtable = 'resources';
@@ -4198,7 +4245,7 @@ class ContribtoolController extends JObject
 				$this->setError( JText::sprintf('USER_IS_ALREADY_AUTHOR', $authid) );
 			} else {
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
-				$xprofile = new XProfile();
+				$xprofile = new Hubzero_User_Profile();
 				$xprofile->load( $authid );
 				if ($xprofile) {
 					$this->_author_check($authid);
@@ -4206,8 +4253,9 @@ class ContribtoolController extends JObject
 					// New record
 					$rc->authorid = $authid;
 					$rc->ordering = $order;
-					$rc->name = $xprofile->get('name');
-					$rc->organization = $xprofile->get('organization');
+					$rc->role	= NULL;
+					$rc->name = addslashes($xprofile->get('name'));
+					$rc->organization = addslashes($xprofile->get('organization'));
 					$rc->createAssociation();
 
 					$order++;
@@ -4216,9 +4264,7 @@ class ContribtoolController extends JObject
 		}
 			
 		// Do we have new authors?
-		if ($authorsNewstr) {
-			// Turn the string into an array of usernames
-			$authorsNew = split(',',$authorsNewstr);
+		if (!empty($authorsNew)) {
 			
 			jimport('joomla.user.helper');
 			
@@ -4226,6 +4272,9 @@ class ContribtoolController extends JObject
 			for ($i=0, $n=count( $authorsNew ); $i < $n; $i++)
 			{
 				$cid = strtolower(trim($authorsNew[$i]));
+				if(!$cid) {
+					continue;
+				}
 			
 				// Find the user's account info
 				$uid = JUserHelper::getUserId($cid);
@@ -4247,19 +4296,23 @@ class ContribtoolController extends JObject
 					$this->setError( JText::sprintf('USER_IS_ALREADY_AUTHOR', $cid) );
 					continue;
 				}
-				
+		
 				$this->_author_check($uid);
 				
 				// New record
-				$xprofile = new XProfile();
+				$xprofile = new Hubzero_User_Profile();
 				$xprofile->load( $uid );
+			
 				$rcc->subtable = 'resources';
 				$rcc->subid = $id;
 				$rcc->authorid = $uid;
 				$rcc->ordering = $order;
-				$rcc->name = $xprofile->get('name');
-				$rcc->organization = $xprofile->get('organization');
-				$rcc->createAssociation();
+				$rcc->role	= NULL;
+				$rcc->name = addslashes($xprofile->get('name'));
+				$rcc->organization = addslashes($xprofile->get('organization'));
+				if(!$rcc->createAssociation()) {
+					$this->setError( $rcc->getError() );
+				}
 				
 				$order++;
 			}
@@ -4275,7 +4328,7 @@ class ContribtoolController extends JObject
 
 	private function _author_check($id)
 	{
-		$xprofile = XProfile::getInstance($id);
+		$xprofile = Hubzero_User_Profile::getInstance($id);
 		if ($xprofile->get('givenName') == '' && $xprofile->get('middleName') == '' && $xprofile->get('surname') == '') {
 			$bits = explode(' ', $xprofile->get('name'));
 			$xprofile->set('surname', array_pop($bits));
@@ -4528,7 +4581,7 @@ class ContribtoolController extends JObject
 
 		if (!$juser->get('guest')) {
 
-			$ugs = XUserHelper::getGroups( $juser->get('id') );
+			$ugs = Hubzero_User_Helper::getGroups( $juser->get('id') );
 
 			for ($i = 0; $i < count($ugs); $i++)
 			{
@@ -4555,7 +4608,7 @@ class ContribtoolController extends JObject
 		if ($admingroup) {
 
 			// Check if they're a member of admin group
-			$ugs = XUserHelper::getGroups( $juser->get('id') );
+			$ugs = Hubzero_User_Helper::getGroups( $juser->get('id') );
 			if ($ugs && count($ugs) > 0) {
 				foreach ($ugs as $ug)
 				{

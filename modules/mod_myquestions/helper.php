@@ -92,7 +92,7 @@ class modMyQuestions
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'members.tags.php' );
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'tags.php' );
 		
 		// Get tags of interest
 		$mt = new MembersTags( $database );
@@ -117,11 +117,12 @@ class modMyQuestions
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
-				
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'economy.php' );
+		
 		$aq = new AnswersQuestion( $database );		
 		if ($this->banking) {
 			$AE = new AnswersEconomy( $database );
-			$BT = new BankTransaction( $database );
+			$BT = new Hubzero_Bank_Transaction( $database );
 		}
 			
 		$params =& $this->params;
@@ -194,19 +195,19 @@ class modMyQuestions
 	
 	public function display() 
 	{
-		//$xhub =& XFactory::getHub();
+		//$xhub =& Hubzero_Factory::getHub();
 		
 		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
 		$this->banking = $upconfig->get('bankAccounts');
 		if ($this->banking) {
-			ximport( 'bankaccount' );
+			ximport('Hubzero_Bank');
 		}
 			
 		//$juser =& JFactory::getUser();
 	
 		// Push the module CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_myquestions');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_myquestions');
 		
 		// show assigned?
 		$show_assigned = intval( $this->params->get( 'show_assigned' ) );

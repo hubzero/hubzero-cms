@@ -25,60 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class ResourcesController extends JObject
+ximport('Hubzero_Controller');
+
+class ResourcesController extends Hubzero_Controller
 {
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
 	public function execute()
 	{
-		$config =& JComponentHelper::getParams( $this->_option );
-		$this->config = $config;
-		
 		$this->_task  = JRequest::getVar( 'task', '' );
 		$this->_id    = JRequest::getInt( 'id', 0 );
 		$this->_alias = JRequest::getVar( 'alias', '' );
@@ -115,44 +67,10 @@ class ResourcesController extends JObject
 			default: $this->intro(); break;
 		}
 	}
-	
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
 
 	//-----------
 	
-	private function _getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-	
-	//-----------
-	
-	private function _getScripts($script='')
-	{
-		$document =& JFactory::getDocument();
-		if ($script) {
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$script.'.js')) {
-				$document->addScript('components'.DS.$this->_option.DS.$script.'.js');
-			}
-		} else {
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-				$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-			}
-		}
-	}
-	
-	//-----------
-	
-	private function _buildPathway() 
+	protected function _buildPathway() 
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -194,7 +112,7 @@ class ResourcesController extends JObject
 	
 	//-----------
 	
-	private function _buildTitle() 
+	protected function _buildTitle() 
 	{
 		if (!$this->_title) {
 			$this->_title = JText::_(strtoupper($this->_option));
@@ -502,7 +420,8 @@ class ResourcesController extends JObject
 				// Get extra filter options
 				$bits['filters'] = array();
 				if ($this->config->get('show_audience') && $bits['type'] == 7) {
-					include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'resources.audience.php');
+					include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'tables'.DS.'audience.php');
+					include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'tables'.DS.'audience.level.php');
 					$rL = new ResourceAudienceLevel( $database );
 					$bits['filters'] = $rL->getLevels();
 				}
@@ -888,8 +807,8 @@ class ResourcesController extends JObject
 		
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
-			ximport('xuserhelper');
-			$xgroups = XUserHelper::getGroups($juser->get('id'), 'all');
+			ximport('Hubzero_User_Helper');
+			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 			// Get the groups the user has access to
 			$usersgroups = $this->getUsersGroups($xgroups);
 		} else {
@@ -1044,8 +963,8 @@ class ResourcesController extends JObject
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
-		ximport('xfeed');
-		$doc = new XDocumentFeed;
+		ximport('Hubzero_Document_Feed');
+		$doc = new Hubzero_Document_Feed;
 		$app =& JFactory::getApplication();
 		$params =& $app->getParams();
 
@@ -1175,7 +1094,7 @@ class ResourcesController extends JObject
 		
 		$dimg = $this->checkForImage('itunes_artwork', $this->config->get('uploadpath'), $resource->created, $resource->id);
 		if ($dimg) {
-			$dimage = new XFeedImage();
+			$dimage = new Hubzero_Document_Feed_Image();
 			$dimage->url = $dimg;
 			$dimage->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle.' '.JText::_('COM_RESOURCES_RSS_ARTWORK')), 250, 0));
 			$dimage->link = $base.$doc->link;
@@ -1183,7 +1102,7 @@ class ResourcesController extends JObject
 			$doc->itunes_image = $dimage;
 		}
 		
-		$owner = new XFeedItunesOwner;
+		$owner = new Hubzero_Document_Feed_ItunesOwner;
 		$owner->email = $jconfig->getValue('config.mailfrom');
 		$owner->name = $jconfig->getValue('config.sitename');
 		
@@ -1265,7 +1184,7 @@ class ResourcesController extends JObject
 				}
 				
 				// Load individual item creator class
-				$item = new XFeedItem();
+				$item = new Hubzero_Document_Feed_Item();
 				$item->title       = $title;
 				$item->link        = $link;
 				$item->description = $description;
@@ -1275,7 +1194,7 @@ class ResourcesController extends JObject
 				
 				$img = $this->checkForImage('itunes_artwork', $this->config->get('uploadpath'), $row->created, $row->id);
 				if ($img) {
-					$image = new XFeedImage();
+					$image = new Hubzero_Document_Feed_Image();
 					$image->url = $img;
 					$image->title = $title.' '.JText::_('COM_RESOURCES_RSS_ARTWORK');
 					$image->link = $base.$link;
@@ -1306,7 +1225,7 @@ class ResourcesController extends JObject
 					if (file_exists( $podcastp )) {
 						$fs = filesize( $podcastp );
 
-						$enclosure = new XFeedEnclosure; //JObject;
+						$enclosure = new Hubzero_Document_Feed_Enclosure; //JObject;
 						$enclosure->url = $podcast;
 						switch ( ResourcesHtml::getFileExtension($podcast) ) 
 						{
@@ -1450,7 +1369,7 @@ class ResourcesController extends JObject
 	protected function download()
 	{
 		// Get some needed libraries
-		ximport('xserver');
+		ximport('Hubzero_Content_Server');
 
 		$database =& JFactory::getDBO();
 
@@ -1553,7 +1472,7 @@ class ResourcesController extends JObject
 		}
 		
 		// Initiate a new content server and serve up the file
-		$xserver = new XContentServer();
+		$xserver = new Hubzero_Content_Server();
 		$xserver->filename($filename);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
@@ -1582,7 +1501,7 @@ class ResourcesController extends JObject
 			return;
 		}
 		
-		ximport('xserver');
+		ximport('Hubzero_Content_Server');
 		
 		$database =& JFactory::getDBO();
 		
@@ -1613,7 +1532,7 @@ class ResourcesController extends JObject
 		}
 		
 		// Serve up the file
-		$xserver = new XContentServer();
+		$xserver = new Hubzero_Content_Server();
 		$xserver->filename($tarpath . $tarname);
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
@@ -1682,9 +1601,7 @@ class ResourcesController extends JObject
 	{
 		$database =& JFactory::getDBO();
 		
-		ximport('fileuploadutils');
-		
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$hubDOIpath = $this->config->get('doi');
 		
 		// Incoming
@@ -1718,7 +1635,7 @@ class ResourcesController extends JObject
 		// Build the download path
 		$path = JPATH_ROOT.$this->config->get('webpath');
 		$date = $row->created;
-		$dir_resid = FileUploadUtils::niceidformat( $row->id );
+		$dir_resid = Hubzero_View_Helper_Html::niceidformat( $row->id );
 		if ($date && ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})", $date, $regs )) {
 			$date = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
 		}
@@ -1726,12 +1643,15 @@ class ResourcesController extends JObject
 		$dir_month = date('m', $date);
 		$path .= DS.$dir_year.DS.$dir_month.DS.$dir_resid.DS;
 
-		if (!is_dir($path)) {
-			FileUploadUtils::make_path($path);
+		if (!is_dir( $path )) {
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create( $path, 0777 )) {
+				$this->setError( 'Error. Unable to create path.' );
+			}
 		}
 		
 		// Build the URL for this resource
-		$sef = JRoute::_('index.php?option='.$this->_option.a.'id='.$row->id);
+		$sef = JRoute::_('index.php?option='.$this->_option.'&id='.$row->id);
 		if (substr($sef,0,1) == '/') {
 			$sef = substr($sef,1,strlen($sef));
 		}
@@ -1917,28 +1837,27 @@ class ResourcesController extends JObject
 	//	Checks
 	//----------------------------------------------------------
 
-	private function _authorize($contributorIDs=array()) 
+	protected function _authorize($contributorIDs=array()) 
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			return false;
 		}
 		
 		// Check if they're a site admin (from Joomla)
-		if ($juser->authorize($this->_option, 'manage')) {
+		if ($this->juser->authorize($this->_option, 'manage')) {
 			return true;
 		}
 		
 		// Check if they're the resource creator
 		$resource = $this->resource;
-		if (is_object($resource) && $resource->created_by == $juser->get('id')) {
+		if (is_object($resource) && $resource->created_by == $this->juser->get('id')) {
 			return true;
 		}
 		
 		// Check if they're a resource "contributor"
 		if (is_array($contributorIDs)) {
-			if (in_array($juser->get('id'), $contributorIDs)) {
+			if (in_array($this->juser->get('id'), $contributorIDs)) {
 				return true;
 			}
 		}
@@ -1950,7 +1869,7 @@ class ResourcesController extends JObject
 	
 	private function checkGroupAccess($resource)
 	{	
-		//$juser =& XFactory::getUser();
+		//$juser =& Hubzero_Factory::getUser();
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
 			// Check if they're a site admin (from Joomla)
@@ -1958,8 +1877,8 @@ class ResourcesController extends JObject
 				return false;
 			}
 			
-			ximport('xuserhelper');
-			$xgroups = XUserHelper::getGroups($juser->get('id'), 'all');
+			ximport('Hubzero_User_Helper');
+			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 			// Get the groups the user has access to
 			$usersgroups = $this->getUsersGroups($xgroups);
 		} else {
@@ -2089,4 +2008,3 @@ class ResourcesController extends JObject
 		return false;
 	}
 }
-?>

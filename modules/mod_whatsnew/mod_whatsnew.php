@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //-------------------------------------------------------------
 
-include_once( JPATH_ROOT.DS.'components'.DS.'com_whatsnew'.DS.'whatsnew.period.php' );
+include_once( JPATH_ROOT.DS.'components'.DS.'com_whatsnew'.DS.'helpers'.DS.'period.php' );
 
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
@@ -39,4 +39,3 @@ $modwhatsnew->module = $module;
 $modwhatsnew->display();
 
 require( JModuleHelper::getLayoutPath('mod_whatsnew') );
-?>

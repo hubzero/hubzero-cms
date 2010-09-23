@@ -35,8 +35,6 @@ if ($config->getValue('config.debug')) {
 }
 
 jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
-//ximport('Hubzero_View_Helper_Html');
 
 require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'citation.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'association.php' );
@@ -46,9 +44,13 @@ require_once( JPATH_COMPONENT.DS.'citations.format.php' );
 require_once( JPATH_COMPONENT.DS.'citations.html.php' );
 require_once( JPATH_COMPONENT.DS.'controller.php' );
 
+// Editor usertype check
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
+
 // Instantiate controller
 $controller = new CitationsController();
 $controller->execute();
 $controller->redirect();
-
-?>

@@ -76,15 +76,15 @@ class modMyPoints
 			$this->error = true;
 		} else {
 			// Find the user's most recent support tickets
-			ximport('bankaccount');
+			ximport('Hubzero_Bank');
 
-			$BTL  = new BankTeller( $database, $juser->get('id') );
+			$BTL  = new Hubzero_Bank_Teller( $database, $juser->get('id') );
 			$this->summary = $BTL->summary();
 			$this->history = $BTL->history($limit);
 
 			// Push the module CSS to the template
-			ximport('xdocument');
-			XDocument::addModuleStyleSheet('mod_mypoints');
+			ximport('Hubzero_Document');
+			Hubzero_Document::addModuleStyleSheet('mod_mypoints');
 		}
 	}
 }

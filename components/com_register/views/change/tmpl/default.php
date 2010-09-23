@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 		<fieldset>
 			<h3><?php echo JText::_('Correct Email Address'); ?></h3>
-			<label<?php if (!$this->email || !XRegistrationHelper::validemail($this->email)) { echo' class="fieldWithErrors"'; } ?>>
+			<label<?php if (!$this->email || !Hubzero_Registration_Helper::validemail($this->email)) { echo' class="fieldWithErrors"'; } ?>>
 				<?php echo JText::_('Valid E-mail:'); ?>
 				<input name="email" id="email" type="text" size="51" value="<?php echo htmlentities($email,ENT_COMPAT,'UTF-8'); ?>" />
 			</label>

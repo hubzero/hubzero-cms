@@ -27,10 +27,6 @@
 			<option value="0">no</option>
 		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		 <param name="usegoogle" type="radio" default="0" label="Use GOOGLE Checkout" description="Use GOOGLE checkout">
-			<option value="1">yes</option>
-			<option value="0">no</option>
-		</param>	
 		<param name="banking" type="radio" default="0" label="Banking" description="Turn economy functions on/off">
 			<option value="1">enabled</option>
 			<option value="0">disabled</option>

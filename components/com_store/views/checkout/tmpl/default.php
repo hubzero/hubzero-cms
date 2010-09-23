@@ -56,8 +56,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<select name="country" id="country">
 						<option value=""><?php echo JText::_('(select from list)'); ?></option>
 <?php 
-	$countries = GeoUtils::getcountries();
-	$mycountry = (isset($this->posted['country'])) ? htmlentities(($this->posted['country'])) : htmlentities(GeoUtils::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8');
+	$countries = Hubzero_Geo::getcountries();
+	$mycountry = (isset($this->posted['country'])) ? htmlentities(($this->posted['country'])) : htmlentities(Hubzero_Geo::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8');
 	foreach ($countries as $country) 
 	{
 ?>

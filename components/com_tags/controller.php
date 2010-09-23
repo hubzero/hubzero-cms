@@ -25,62 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class TagsController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+class TagsController extends Hubzero_Controller
+{
 	public function execute()
-	{	
-		$this->database = JFactory::getDBO();
-		
+	{
 		$this->_task = strtolower(JRequest::getVar('task', ''));
 
-		switch ( $this->_task ) 
+		switch ($this->_task) 
 		{
 			case 'autocomplete': $this->autocomplete(); break;
 			case 'cancel': $this->cancel(); break;
@@ -96,16 +49,6 @@ class TagsController extends JObject
 			case 'feed.rss': $this->feed(); break;
 
 			default: $this->intro(); break;
-		}
-	}
-	
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
 		}
 	}
 
@@ -227,7 +170,7 @@ class TagsController extends JObject
 		}
 
 		// Sanitize the tag
-		$t = new Tags( $this->database );
+		$t = new TagsHandler( $this->database );
 		
 		$tags = array();
 		$added = array();
@@ -472,7 +415,7 @@ class TagsController extends JObject
 		$tgs = explode(' ', $tagstring);
 		
 		// Sanitize the tag
-		$t = new Tags( $this->database );
+		$t = new TagsHandler( $this->database );
 		
 		$tags = array();
 		foreach ($tgs as $tag) 
@@ -506,6 +449,7 @@ class TagsController extends JObject
 
 		// Get the active category
 		$area = JRequest::getVar( 'area', '' );
+		$sort = JRequest::getVar( 'sort', '' );
 
 		if (!$area) {
 			$t = array();
@@ -526,6 +470,7 @@ class TagsController extends JObject
 				$tags,
 				$limit,
 				$limitstart,
+				$sort,
 				$activeareas)
 			);
 		
@@ -562,7 +507,7 @@ class TagsController extends JObject
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php' );
 			
 			foreach ($rows as $row)
 			{
@@ -736,7 +681,7 @@ class TagsController extends JObject
 		
 		$row->raw_tag = trim($row->raw_tag);
 		
-		$t = new Tags();
+		$t = new TagsHandler($this->database);
 		$row->tag = $t->normalize_tag($row->raw_tag);
 
 		// Check content
@@ -807,44 +752,8 @@ class TagsController extends JObject
 	//----------------------------------------------------------
 	// Private functions
 	//----------------------------------------------------------
-	
-	private function _authorize()
-	{
-		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
-			return false;
-		}
-		
-		// Check if they're a site admin (from Joomla)
-		if ($juser->authorize($this->_option, 'manage')) {
-			return true;
-		}
 
-		return false;
-	}
-	
-	//-----------
-	
-	private function _getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-
-	//-----------
-	
-	private function _getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-		}
-	}
-	
-	//-----------
-
-	private function _buildPathway($tags=null) 
+	protected function _buildPathway($tags=null) 
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -880,7 +789,7 @@ class TagsController extends JObject
 	
 	//-----------
 	
-	private function _buildTitle($tags=null) 
+	protected function _buildTitle($tags=null) 
 	{
 		$title = JText::_(strtoupper($this->_option));
 		if ($this->_task && $this->_task != 'view') {
@@ -899,4 +808,3 @@ class TagsController extends JObject
 		$document->setTitle( $title );
 	}
 }
-?>

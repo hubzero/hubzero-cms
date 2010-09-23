@@ -56,8 +56,8 @@ class modRapidContact
 	
 	public function display() 
 	{
-		ximport('xdocument');
-		XDocument::addModuleStylesheet('mod_rapid_contact');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStylesheet('mod_rapid_contact');
 		
 		$params = $this->params;
 		

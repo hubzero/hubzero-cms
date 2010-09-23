@@ -25,48 +25,52 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+if (!$this->parser) {
+	ximport('wiki.parser');
+
+	$this->parser = new WikiParser( stripslashes($this->question->subject), $this->option, 'answer', $this->question->id, 0, '' );
+}
+
 // Set the name of the reviewer
 $name = JText::_('COM_ANSWERS_ANONYMOUS');
+$ruser = new Hubzero_User_Profile();
+$ruser->load( $this->reply->added_by );
 if ($this->reply->anonymous != 1) {
 	$name = JText::_('COM_ANSWERS_UNKNOWN');
-	$ruser =& JUser::getInstance($this->reply->added_by);
+	//$ruser =& JUser::getInstance($this->reply->added_by);
 	if (is_object($ruser)) {
 		$name = $ruser->get('name');
 	}
 }
 ?>
-<dl class="comment-details">
-	<dt class="type"><span class="plaincomment"><span><?php echo JText::sprintf('COM_ANSWERS_COMMENT'); ?></span></span></dt>
-	<dd class="date"><?php echo JHTML::_('date',$this->reply->added, '%d %b, %Y'); ?></dd>
-	<dd class="time"><?php echo JHTML::_('date',$this->reply->added, '%I:%M %p'); ?></dd>
-</dl>
-<div class="cwrap">
-	<p class="name"><strong><?php echo $name; ?></strong> <?php echo JText::_('COM_ANSWERS_SAID'); ?>:</p>
+<a name="c<?php echo $this->reply->id; ?>"></a>
+<p class="comment-member-photo">
+	<img src="<?php echo AnswersHelperMember::getMemberPhoto($ruser, $this->reply->anonymous); ?>" alt="" />
+</p>
+<div class="comment-content">
+	<p class="comment-title">
+		<strong><?php echo $name; ?></strong> 
+		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'#c'.$this->reply->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$this->reply->added, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->reply->added, '%d %b, %Y', 0); ?></span></a>
+	</p>
 <?php if ($this->abuse && $this->reply->reports > 0) { ?>
 	<p class="warning"><?php echo JText::_('COM_ANSWERS_NOTICE_POSTING_REPORTED'); ?></p>
 <?php } else { ?>
 	<?php if ($this->reply->comment) { ?>
-		<p><?php echo stripslashes($this->reply->comment); ?></p>
+		<p><?php echo $this->parser->parse( "\n".stripslashes($this->reply->comment) ); ?></p>
 	<?php } else { ?>
 		<p><?php echo JText::_('COM_ANSWERS_NO_COMMENT'); ?></p>
 	<?php } ?>
-	
+
 	<p class="comment-options">
-<?php
+<?php if ($this->abuse) { ?>
+		<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id='.$this->reply->id.'&parent='.$this->id); ?>"><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?></a>
+<?php } ?>
+<?php 
 	// Cannot reply at third level
 	if ($this->level < 3) {
-		echo '<a ';
-		if (!$this->juser->get('guest')) {
-			echo 'class="showreplyform" href="javascript:void(0);"';
-		} else {
-			echo 'href="'.JRoute::_('index.php?option='.$this->option.'&task=reply&category=answercomment&id='.$this->id.'&refid='.$this->reply->id).'" ';
-		}
-		echo '" id="rep_'.$this->reply->id.'">'.JText::_('COM_ANSWERS_REPLY').'</a>';
+		echo '<a class="showreplyform" href="'.JRoute::_('index.php?option='.$this->option.'&task=reply&category=answercomment&id='.$this->id.'&refid='.$this->reply->id.'#c'.$this->reply->id).'" id="rep_'.$this->reply->id.'">'.JText::_('COM_ANSWERS_REPLY').'</a>';
 	}
 ?>
-	<?php if ($this->abuse) { ?>
-		<span class="abuse"><a href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id='.$this->reply->id.'&parent='.$this->id); ?>"><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?></a></span> 
-	<?php } ?>
 	</p>
 <?php 
 	// Add the reply form if needed

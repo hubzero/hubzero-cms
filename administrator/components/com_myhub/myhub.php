@@ -44,7 +44,8 @@ if (!$user->authorize( $option, 'manage' )) {
 
 // Include scripts
 require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'myhub.class.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'prefs.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'params.php' );
 
 // Initiate controller
 $controller = new MyhubController();

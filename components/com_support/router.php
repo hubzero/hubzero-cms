@@ -82,9 +82,13 @@ function supportParseRoute($segments)
 
 	$count = count($segments);
 
-	if ($count == 0) 
+	if ($count == 0) {
+		$vars['option'] = 'com_support';
+		$vars['view'] = '';
+		$vars['task'] = '';
 		return $vars;
-
+	}
+	
 	switch ($segments[0])
 	{
 		case 'report_problems':
@@ -106,7 +110,7 @@ function supportParseRoute($segments)
 		case 'delete':
 		case 'reportabuse':
 		default:
-			$vars['task'] = $segments[0];
+			$vars['task'] = (isset($segments[0])) ? $segments[0] : '';
 
 			if (!empty($segments[1])) {
 				$vars['id'] = $segments[1];

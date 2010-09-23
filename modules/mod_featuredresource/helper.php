@@ -98,9 +98,8 @@ class modFeaturedresource
 
 	public function display() 
 	{
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
-		//ximport('featurehistory');
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'features.history.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php');
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'tables'.DS.'history.php' );
 		
 		$this->error = false;
 		if (!class_exists('FeaturesHistory')) {
@@ -120,6 +119,7 @@ class modFeaturedresource
 		$filters['sortby'] = 'random';
 		$filters['minranking'] = trim($params->get( 'minranking' ));
 		$filters['tag'] = trim($params->get( 'tag' ));
+		$filters['access'] = 'public';
 		
 		$this->cls = trim($params->get( 'moduleclass_sfx' ));
 		$this->txt_length = trim($params->get( 'txt_length' ));
@@ -217,7 +217,7 @@ class modFeaturedresource
 				}
 				$rr = new ResourcesResource( $database );
 				$rr->load( $id );
-				//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.type.php');
+				//include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php');
 				//$type = new ResourcesType( $rr->type );
 				//echo $rr->type;
 				$row->typetitle = $rr->getTypetitle();

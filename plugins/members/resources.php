@@ -48,8 +48,8 @@ class plgMembersResources extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'members', 'resources' );
 		$this->_params = new JParameter( $this->_plugin->params );
 		
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.type.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
 	}
 	
 	//-----------
@@ -113,7 +113,7 @@ class plgMembersResources extends JPlugin
 		}
 
 		// Do we have a member ID?
-		if (get_class($member) == 'XProfile') {
+		if (get_class($member) == 'Hubzero_User_Profile') {
 			if (!$member->get('uidNumber')) {
 				return array();
 			} else {
@@ -136,8 +136,8 @@ class plgMembersResources extends JPlugin
 		$filters['sortby'] = $sort;
 		$filters['authorized'] = $authorized;
 
-		ximport('xuserhelper');
-		$filters['usergroups'] = XUserHelper::getGroups($uidNumber, 'all');
+		ximport('Hubzero_User_Helper');
+		$filters['usergroups'] = Hubzero_User_Helper::getGroups($uidNumber, 'all');
 
 		// Get categories
 		$categories = $this->_cats;
@@ -266,14 +266,18 @@ class plgMembersResources extends JPlugin
 			case 3: $thedate = JHTML::_('date', $row->publish_up, '%d %b %Y'); break;
 		}
 		
-		$html  = "\t".'<li class="resource">'."\n";
-		$html .= "\t\t".'<p class="';
-		if ($row->access == 4) {
-			$html .= 'private ';
-		} elseif ($row->access == 3) {
-			$html .= 'protected ';
+		$html  = "\t".'<li class="';
+		switch ($row->access)
+		{
+			case 1: $html .= 'registered'; break;
+			case 2: $html .= 'special';    break;
+			case 3: $html .= 'protected';  break;
+			case 4: $html .= 'private';    break;
+			case 0:
+			default: $html .= 'public'; break;
 		}
-		$html .= 'title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a>';
+		$html .= ' resource">'."\n";
+		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a>';
 		if ($authorized) {
 			switch ($row->state) 
 			{
@@ -362,11 +366,11 @@ class plgMembersResources extends JPlugin
 	 	//$document =& JFactory::getDocument();
 		//$document->addStyleSheet('components'.DS.'com_resources'.DS.'resources.css','text/css','screen');
 		//$document->addScript('components'.DS.'com_resources'.DS.'resources.js');
-		ximport('xdocument');
-		XDocument::addComponentStylesheet('com_resources');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet('com_resources');
 
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
-		ximport('resourcestats');
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
 	}
 	
 	//-----------
@@ -392,7 +396,7 @@ class plgMembersResources extends JPlugin
 		}
 
 		// Do we have a member ID?
-		if (get_class($member) == 'XProfile') {
+		if (get_class($member) == 'Hubzero_User_Profile') {
 			if (!$member->get('uidNumber')) {
 				return array();
 			} else {
@@ -414,8 +418,8 @@ class plgMembersResources extends JPlugin
 		$filters['favorite'] = $uidNumber;
 		$filters['sortby'] = 'date';
 		
-		ximport('xuserhelper');
-		$filters['usergroups'] = XUserHelper::getGroups($uidNumber, 'all');
+		ximport('Hubzero_User_Helper');
+		$filters['usergroups'] = Hubzero_User_Helper::getGroups($uidNumber, 'all');
 
 		// Get categories
 		$categories = $this->_cats;

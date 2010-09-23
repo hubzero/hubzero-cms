@@ -44,9 +44,12 @@ if (!$user->authorize( $option, 'manage' )) {
 
 // Include scripts
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php' );
-ximport('xprofile');
-ximport('textfilter');
-ximport('bankaccount');
+ximport('Hubzero_User_Profile');
+ximport('Hubzero_Bank');
+
+include_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'economy.php' );
+include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'economy.php' );
+include_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'helpers'.DS.'economy.php' );
 
 // Initiate controller
 $controller = new UserpointsController();

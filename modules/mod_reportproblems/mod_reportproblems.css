@@ -181,6 +181,14 @@
 		color: #FAF196;
 		margin: 1em 0 1em 0;
 		}
+	#trSuccess div span a {
+		color: #FAF196;
+		border: none;
+		}
+	#trSuccess div span a:hover {
+		color: #fff;
+		border: none;
+		}
 
 	#trSending {
 		text-align: center;

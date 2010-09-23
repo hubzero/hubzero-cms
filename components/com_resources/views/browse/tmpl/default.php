@@ -86,6 +86,7 @@ if ($this->results) {
 		default: $show_date = 3; break;
 	}
 	echo ResourcesHtml::writeResults( $database, $this->results, $this->authorized, $show_date );
+	echo '<div class="clear"></div>';
 } else { ?>
 			<p class="warning"><?php echo JText::_('COM_RESOURCES_NO_RESULTS'); ?></p>
 <?php }

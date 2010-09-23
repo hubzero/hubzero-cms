@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	/* Application Form */
 	
 	// load some classes
-	$xhub =& XFactory::getHub();
+	$xhub =& Hubzero_Factory::getHub();
 	$hubShortName = $xhub->getCfg('hubShortName');
 	$juser 	  =& JFactory::getUser();
 	

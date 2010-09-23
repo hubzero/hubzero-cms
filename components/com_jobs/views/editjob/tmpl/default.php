@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	/* Post New Job / Edit Job Form */
 	
 	// load some classes
-	$xhub =& XFactory::getHub();
+	$xhub =& Hubzero_Factory::getHub();
 	$hubShortName = $xhub->getCfg('hubShortName');
 	$juser 	  =& JFactory::getUser();
 	
@@ -68,7 +68,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$job->description = preg_replace('/<br\\s*?\/??>/i', "", $job->description);
 		$job->description = JobsHtml::txt_unpee($job->description);
 		$job->companyLocation = $id ? $job->companyLocation : $employer->companyLocation;
-		$job->companyLocationCountry = $id ? $job->companyLocationCountry : htmlentities(GeoUtils::getcountry($profile->get('countryresident')));
+		$job->companyLocationCountry = $id ? $job->companyLocationCountry : htmlentities(Hubzero_Geo::getcountry($profile->get('countryresident')));
 		$job->companyName = $id ? $job->companyName : $employer->companyName;
 		$job->companyWebsite = $id ? $job->companyWebsite : $employer->companyWebsite;
 		$usonly = (isset($this->config->parameters['usonly'])) ? $this->config->parameters['usonly'] : 0;
@@ -94,7 +94,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html .= t.t.t.'	 <label>'.JText::_('EDITJOB_COUNTRY').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
 			$html .= "\t\t\t\t".'<select name="companyLocationCountry" id="companyLocationCountry">'."\n";	
 			$html .= "\t\t\t\t".' <option value="">'.JText::_('OPTION_SELECT_FROM_LIST').'</option>'."\n";
-			$countries = GeoUtils::getcountries();
+			$countries = Hubzero_Geo::getcountries();
 				foreach($countries as $country) {
 						$html .= "\t\t\t\t".' <option value="' . htmlentities($country['name']) . '"';
 						if($country['name'] == $job->companyLocationCountry) {

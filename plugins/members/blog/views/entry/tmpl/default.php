@@ -83,7 +83,7 @@ if ($this->row) {
         </dl>
 		<h2 class="entry-title">
 			<?php echo stripslashes($this->row->title); ?>
-<?php if ($juser->get('id') == $this->row->created_by) { ?>
+<?php if ($juser->get('id') == $this->row->created_by || $this->authorized) { ?>
 			<span class="state"><?php 
 switch ($this->row->state) 
 {
@@ -146,7 +146,7 @@ if ($this->comments) {
 <?php 
 	$cls = 'even';
 	ximport('wiki.parser');
-	ximport('xprofile');
+	ximport('Hubzero_User_Profile');
 	
 	$path = $this->config->get('uploadpath');
 	$path = str_replace('{{uid}}',BlogHelperMember::niceidformat($this->member->get('uidNumber')),$path);
@@ -164,7 +164,7 @@ if ($this->comments) {
 		$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
 		if (!$comment->anonymous) {
 			//$xuser =& JUser::getInstance( $comment->created_by );
-			$xuser = new XProfile();
+			$xuser = new Hubzero_User_Profile();
 			$xuser->load( $comment->created_by );
 			if (is_object($xuser) && $xuser->get('name')) {
 				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
@@ -211,7 +211,7 @@ if ($this->comments) {
 				$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
 				if (!$reply->anonymous) {
 					//$xuser =& JUser::getInstance( $reply->created_by );
-					$xuser = new XProfile();
+					$xuser = new Hubzero_User_Profile();
 					$xuser->load( $reply->created_by );
 					if (is_object($xuser) && $xuser->get('name')) {
 						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$reply->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
@@ -258,7 +258,7 @@ if ($this->comments) {
 						$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
 						if (!$response->anonymous) {
 							//$xuser =& JUser::getInstance( $reply->created_by );
-							$xuser = new XProfile();
+							$xuser = new Hubzero_User_Profile();
 							$xuser->load( $response->created_by );
 							if (is_object($xuser) && $xuser->get('name')) {
 								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$response->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
@@ -362,7 +362,7 @@ if ($this->comments) {
 		<p class="comment-member-photo">
 <?php
 			if (!$juser->get('guest')) {
-				$jxuser = new XProfile();
+				$jxuser = new Hubzero_User_Profile();
 				$jxuser->load( $juser->get('id') );
 				$thumb = BlogHelperMember::getMemberPhoto($jxuser, 0);
 			} else {
@@ -383,7 +383,7 @@ if ($this->comments) {
 				$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
 				if (!$this->replyto->anonymous) {
 					//$xuser =& JUser::getInstance( $reply->created_by );
-					$xuser = new XProfile();
+					$xuser = new Hubzero_User_Profile();
 					$xuser->load( $this->replyto->created_by );
 					if (is_object($xuser) && $xuser->get('name')) {
 						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->created_by).'">'.stripslashes($xuser->get('name')).'</a>';

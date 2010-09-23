@@ -100,20 +100,35 @@ class plgWhatsnewContent extends JPlugin
 				
 				foreach ($rows as $key => $row) 
 				{
-					//$rows[$key]->href = ContentHelperRoute::getArticleRoute($row->slug, $row->catslug, $row->sectionid);
-					$path = '';
-					if ($row->fsection) {
-						$path .= DS.$row->fsection;
-					}
-					if ($row->category && $row->category != $row->fsection) {
-						$path .= DS.$row->category;
-					}
-					if ($row->alias) {
-						$path .= DS.$row->alias;
-					}
-					if (!$path) {
-						//$path = JRoute::_($row->href);
-						$path = '/content/article/'.$row->id;
+					//$database->setQuery( "SELECT parent FROM #__menu WHERE alias='$row->alias' LIMIT 1" );
+					$database->setQuery( "SELECT alias, parent FROM #__menu WHERE link='index.php?option=com_content&view=article&id=".$row->id."' AND published=1 LIMIT 1" );
+					$menuitem = $database->loadRow();
+					if ($menuitem[1]) {
+						$p = $this->_recursiveMenuLookup($menuitem[1]);
+						$path = implode(DS,$p);
+						if ($menuitem[0]) {
+							$path .= DS.$menuitem[0];
+						} else if ($row->alias) {
+							$path .= DS.$row->alias;
+						}
+					} else if ($menuitem[0]) {
+						$path = DS.$menuitem[0];
+					} else {
+						//$rows[$key]->href = ContentHelperRoute::getArticleRoute($row->slug, $row->catslug, $row->sectionid);
+						$path = '';
+						if ($row->fsection) {
+							$path .= DS.$row->fsection;
+						}
+						if ($row->category && $row->category != $row->fsection) {
+							$path .= DS.$row->category;
+						}
+						if ($row->alias) {
+							$path .= DS.$row->alias;
+						}
+						if (!$path) {
+							//$path = JRoute::_($row->href);
+							$path = '/content/article/'.$row->id;
+						}
 					}
 					$rows[$key]->href = $path;
 				}
@@ -125,6 +140,28 @@ class plgWhatsnewContent extends JPlugin
 			$database->setQuery( $c_count.$c_from ." WHERE ". $c_where );
 			return $database->loadResult();
 		}
+	}
+	
+	//-----------
+
+	private function _recursiveMenuLookup($id, $startnew=true) 
+	{
+	    static $aliases = array(); 
+
+		if ($startnew) {
+			unset($aliases);
+		}
+
+		$database =& JFactory::getDBO();
+		$database->setQuery( "SELECT alias, parent FROM #__menu WHERE id='$id' LIMIT 1" );
+		$level = $database->loadRow();
+		
+		$aliases[] = $level[0];
+		if ($level[1]) {
+			$a = $this->_recursiveMenuLookup($level[1], false);
+		}
+
+	    return $aliases; 
 	}
 	
 	//----------------------------------------------------------

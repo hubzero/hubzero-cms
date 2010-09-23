@@ -41,7 +41,7 @@ $juser =& JFactory::getUser();
 <?php
 		if ($this->rows) {
 			ximport('wiki.parser');
-			ximport('xprofile');
+			ximport('Hubzero_User_Profile');
 
 			$p = new WikiParser( $this->group->get('cn'), $this->option, 'group'.DS.'forum', 'group', $this->group->get('gidNumber'), '' );
 			
@@ -52,7 +52,7 @@ $juser =& JFactory::getUser();
 				$name = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 				if (!$row->anonymous) {
 					//$juser =& JUser::getInstance( $row->created_by );
-					$huser = new XProfile();
+					$huser = new Hubzero_User_Profile();
 					$huser->load( $row->created_by );
 					if (is_object($huser) && $huser->get('name')) {
 						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by).'">'.stripslashes($huser->get('name')).'</a>';
@@ -161,7 +161,7 @@ $juser =& JFactory::getUser();
 		<p class="comment-member-photo">
 <?php
 			if (!$juser->get('guest')) {
-				$jxuser = new XProfile();
+				$jxuser = new Hubzero_User_Profile();
 				$jxuser->load( $juser->get('id') );
 				$thumb = ForumHelper::getMemberPhoto($jxuser, 0);
 			} else {

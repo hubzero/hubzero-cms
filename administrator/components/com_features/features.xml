@@ -24,13 +24,13 @@
 	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
 	<files>
-		<filename>features.html.php</filename>
+		<filename>helpers/html.php</filename>
 		<filename>features.php</filename>
 		<filename>controller.php</filename>
 		<filename>index.html</filename>
 		<filename>router.php</filename>
 		<filename>features.css</filename>
-		<filename>features.history.php</filename>
+		<filename>tables/history.php</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.com_features.ini</language>

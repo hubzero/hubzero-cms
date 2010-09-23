@@ -35,10 +35,9 @@ if ($config->getValue('config.debug')) {
 }
 
 jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
 
-require_once( JPATH_COMPONENT.DS.'features.history.php' );
-require_once( JPATH_COMPONENT.DS.'features.html.php' );
+require_once( JPATH_COMPONENT.DS.'tables'.DS.'history.php' );
+require_once( JPATH_COMPONENT.DS.'helpers'.DS.'html.php' );
 require_once( JPATH_COMPONENT.DS.'controller.php' );
 ximport('Hubzero_View_Helper_Html');
 
@@ -51,4 +50,3 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 $controller = new FeaturesController();
 $controller->execute();
 $controller->redirect();
-?>

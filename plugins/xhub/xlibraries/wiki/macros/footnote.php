@@ -57,7 +57,9 @@ class FootNoteMacro extends WikiMacro
 				$fn = array();
 			}
 			
-			$note = trim($note);
+			$p = new WikiParser( 'Footnotes', $this->option, $this->scope, $this->pagename, $this->pageid, $this->filepath, $this->domain );
+			
+			$note = $p->parse(trim($note));
 			
 			$wm->footnotes_count++;
 			

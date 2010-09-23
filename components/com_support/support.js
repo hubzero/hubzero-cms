@@ -73,8 +73,10 @@ HUB.Support = {
 						es.checked = false;
 						es.disabled = true;
 					}
+					$('commentform').addClass('private');
 				} else {
 					es.disabled = false;
+					$('commentform').removeClass('private');
 				}
 			}
 		}

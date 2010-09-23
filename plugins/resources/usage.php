@@ -101,14 +101,14 @@ class plgResourcesUsage extends JPlugin
 		$dthis = JRequest::getVar('dthis',date('Y').'-'.date('m'));
 		$period = JRequest::getInt('period', $this->_params->get('period',14));
 
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resources.stats.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'stats.php' );
 		$stats = new ResourcesStatsTools( $database );
 		$stats->loadStats( $resource->id, $period, $dthis );
 
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') {
-			ximport('xdocument');
-			XDocument::addComponentStylesheet('com_usage');
+			ximport('Hubzero_Document');
+			Hubzero_Document::addComponentStylesheet('com_usage');
 			
 			// Instantiate a view
 			ximport('Hubzero_Plugin_View');

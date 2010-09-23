@@ -57,16 +57,18 @@ function UsageParseRoute($segments)
 		switch ($segments[0]) 
 		{
 			case 'maps': 
-				$vars['type'] = $segments[1];
+				if (isset($segments[1])) {
+					$vars['type'] = $segments[1];
+				}
 			break;
 			case 'overview':
 			default:
-				$vars['period'] = $segments[1];
+				if (isset($segments[1])) {
+					$vars['period'] = $segments[1];
+				}
 			break;
 		}
 	}
 	
     return $vars;
 }
-
-?>

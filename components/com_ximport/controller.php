@@ -173,7 +173,7 @@ class XImportController extends JObject
 		var_dump($result);
 		if ($result) { echo "yes";  }
 
-	    	$xprofile = new XProfile();
+	    	$xprofile = new Hubzero_User_Profile();
 		$xprofile->load(5444);
 		$regip = $xprofile->get('shadowExpire');
 		echo '<a href="/ximport/authors?override=1">Import Author Data (overwrite)</a><br>' . "\n";
@@ -190,7 +190,7 @@ class XImportController extends JObject
 
 	public function fixname($name)
 	{
-		$xprofile = new XProfile();
+		$xprofile = new Hubzero_User_Profile();
  
 		if ($xprofile->load($name) === false)
 			 echo "Error loading $name\n";
@@ -288,7 +288,7 @@ class XImportController extends JObject
 			$row = $db->loadAssoc();
 		}
 
-		$xprofile = XProfile::getInstance( $row['id'] );
+		$xprofile = Hubzero_User_Profile::getInstance( $row['id'] );
 
 		if (!is_object($xprofile))
 		{
@@ -406,7 +406,7 @@ class XImportController extends JObject
 
 	private function importuser($name)
 	{
-       		$profile = new XProfile();
+       		$profile = new Hubzero_User_Profile();
         	$profile->load($name,'ldap');
 
         	$result = $profile->create('mysql');
@@ -443,29 +443,12 @@ class XImportController extends JObject
 
 	function importgroup($group)
 	{
-        $xgroup = new XGroup();
-		$xgroup->_ldap_load($group);
-        $members    = $xgroup->_ldap_get_members('members',false);
-        $applicants = $xgroup->_ldap_get_members('applicants',false);
-        $managers   = $xgroup->_ldap_get_members('managers',false);
-        $xgroup->add('members', $members);
-        $xgroup->add('members', $managers);
-        $xgroup->add('applicants', $applicants);
-        $xgroup->add('managers', $managers);
-		$result = $xgroup->save();
-
-		if ($result === false)
-			echo "Error importing group " . $group . "<br>";
-		else
-			echo "Imported group " . $group . "<br>";
+		die('this function is now in groups admin component');
 	}
         
 	function importgroups()
 	{
-		ximport('xgroup');
-		ximport('Hubzero_Group');
-		
-		Hubzero_Group::iterate(array('XImportController','importgroup'),'ldap');
+		die('this function is now in groups admin component');
 	}
 
 	function importtrac()

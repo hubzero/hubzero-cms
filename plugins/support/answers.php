@@ -93,7 +93,7 @@ class plgSupportAnswers extends JPlugin
 	
 	public function getParentId( $parentid, $category ) 
 	{
-		ximport('xcomment');
+		ximport('Hubzero_Comment');
 		
 		$database =& JFactory::getDBO();
 		$refid = $parentid;
@@ -134,7 +134,7 @@ class plgSupportAnswers extends JPlugin
 	public function parent($parentid) 
 	{
 		$database =& JFactory::getDBO();
-		$parent = new XComment( $database );
+		$parent = new Hubzero_Comment( $database );
 		$parent->load( $parentid );
 		
 		return $parent;
@@ -243,7 +243,7 @@ class plgSupportAnswers extends JPlugin
 				}
 				
 				if ($banking && $reward) {
-					ximport('bankaccount');
+					ximport('Hubzero_Bank');
 					
 					// Send email to people who answered question with reward
 					if ($responders) {
@@ -252,11 +252,11 @@ class plgSupportAnswers extends JPlugin
 							$zuser =& JUser::getInstance( $r );
 							if (is_object($zuser)) {
 								if (SupportUtilities::checkValidEmail($zuser->get('email')) && $email) {
-									$xhub =& XFactory::getHub();
+									$jconfig =& JFactory::getConfig();
 									
-									$admin_email = $xhub->getCfg('hubSupportEmail');
-									$sub  = $xhub->getCfg('hubShortName').' Answers, Question #'.$referenceid.' was removed';
-									$from = $xhub->getCfg('hubShortName').' Answers';
+									$admin_email = $jconfig->getValue('config.mailfrom');
+									$sub  = $jconfig->getValue('config.sitename').' Answers, Question #'.$referenceid.' was removed';
+									$from = $jconfig->getValue('config.sitename').' Answers';
 									$hub  = array('email' => $admin_email, 'name' => $from);
 
 									$mes  = 'You are receiving this email because you responded to a question, which has been removed by the site administrator. ';
@@ -290,7 +290,7 @@ class plgSupportAnswers extends JPlugin
 							}
 									
 							// Make credit adjustment
-							$BTL_Q = new BankTeller( $database, $asker_id );
+							$BTL_Q = new Hubzero_Bank_Teller( $database, $asker_id );
 							$credit = $BTL_Q->credit_summary();
 							$adjusted = $credit - $reward;
 							$BTL_Q->credit_adjustment($adjusted);		
@@ -302,9 +302,9 @@ class plgSupportAnswers extends JPlugin
 			break;
 			
 			case 'answercomment':
-				ximport('xcomment');
+				ximport('Hubzero_Comment');
 				
-				$comment = new XComment( $database );
+				$comment = new Hubzero_Comment( $database );
 				$comment->load( $referenceid );
 				$comment->state = 2;
 				if (!$comment->store()) {

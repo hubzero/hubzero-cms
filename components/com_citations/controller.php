@@ -25,68 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class CitationsController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+class CitationsController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		// Load the component config
-		/*$component =& JComponentHelper::getComponent( $this->_option );
-		if (!trim($component->params)) {
-			return $this->abort();
-		} else {
-			$config =& JComponentHelper::getParams( $this->_option );
-		}*/
-		$this->config = JComponentHelper::getParams( $this->_option );
-		
-		$this->database = JFactory::getDBO();
-		
 		$this->types = array(
 			'article'=>JText::_('ARTICLE'),
 			'book'=>JText::_('BOOK'),
@@ -115,7 +59,7 @@ class CitationsController extends JObject
 		
 		$this->_task = strtolower(JRequest::getVar('task', ''));
 		
-		switch ( $this->_task ) 
+		switch ($this->_task) 
 		{
 			case 'download': $this->download(); break;
 			case 'save':     $this->save();     break;
@@ -126,35 +70,6 @@ class CitationsController extends JObject
 			case 'intro':    $this->intro();    break;
 
 			default: $this->intro(); break;
-		}
-	}
-	
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
-		}
-	}
-
-	//-----------
-	
-	private function _getStyles($option='') 
-	{
-		ximport('xdocument');
-		$option = ($option) ? $option : $this->_option;
-		XDocument::addComponentStylesheet($option);
-	}
-
-	//-----------
-	
-	private function _getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
 		}
 	}
 
@@ -477,7 +392,7 @@ class CitationsController extends JObject
 
 	//-----------
 	
-	private function delete()
+	protected function delete()
 	{
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
@@ -535,7 +450,7 @@ class CitationsController extends JObject
 		
 		// Esnure we have an ID to work with
 		if (!$id) {
-			JError::raiseError( 404, JText::_('NO_CITATION_ID') );
+			JError::raiseError( 500, JText::_('NO_CITATION_ID') );
 			return;
 		}
 		
@@ -588,10 +503,6 @@ class CitationsController extends JObject
 	
 	private function _serveup($inline = false, $p, $f, $mime)
 	{
-		$user_agent = (isset($_SERVER["HTTP_USER_AGENT"]) ) 
-					? $_SERVER["HTTP_USER_AGENT"] 
-					: $HTTP_USER_AGENT;
-
 		// Clean all output buffers (needs PHP > 4.2.0)
 		while (@ob_end_clean());
 
@@ -649,7 +560,7 @@ class CitationsController extends JObject
 
 	//-----------
 
-	private function _buildPathway() 
+	protected function _buildPathway() 
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -670,7 +581,7 @@ class CitationsController extends JObject
 	
 	//-----------
 	
-	private function _buildTitle() 
+	protected function _buildTitle() 
 	{
 		$title = JText::_(strtoupper($this->_name));
 		if ($this->_task) {
@@ -679,25 +590,4 @@ class CitationsController extends JObject
 		$document =& JFactory::getDocument();
 		$document->setTitle( $title );
 	}
-
-	//----------------------------------------------------------
-	// Authorization checks
-	//----------------------------------------------------------
-	
-	private function _authorize()
-	{
-		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
-			return false;
-		}
-		
-		// Check if they're a site admin (from Joomla)
-		if ($juser->authorize($this->_option, 'manage')) {
-			return true;
-		}
-
-		return false;
-	}
 }
-?>

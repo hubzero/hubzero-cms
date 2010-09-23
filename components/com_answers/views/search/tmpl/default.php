@@ -202,7 +202,7 @@ if (count($tf) > 0) {
 		</ul>
 		<?php echo $this->pageNav->getListFooter(); ?>
 <?php } else { ?>
-	<?php if(($filters['filterby']=="all" or !$filters['filterby']) && !$filters['tag'] && !$filters['q']) { ?>
+	<?php if(($this->filters['filterby']=="all" or !$this->filters['filterby']) && !$this->filters['tag'] && !$this->filters['q']) { ?>
 		<p class="noresults"><?php echo JText::_('COM_ANSWERS_NO_RESULTS'); ?></p>
 	<?php } else { ?>
 		<p class="noresults"><?php echo JText::_('There are currently no questions based on your search selection.'); ?></p>

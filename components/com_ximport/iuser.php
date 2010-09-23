@@ -25,15 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-ximport('xprofile');
+ximport('Hubzero_User_Profile');
 
 $mycount = 0;
 
 function _compareusers($mode = 0)
 {
 	$mycount = 0;
-	$xhub = &XFactory::getHub();
-	$conn = &XFactory::getPLDC();
+	$xhub = &Hubzero_Factory::getHub();
+	$conn = &Hubzero_Factory::getPLDC();
 	$db = &JFactory::getDBO();
 
     $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
@@ -72,7 +72,7 @@ function _compareusers($mode = 0)
 		    continue;
 		}
 
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 			
 		$result = $profile->load($attributes['uid'][0]);
 			
@@ -593,8 +593,8 @@ function printuser($name)
 	if ($mycount > 1000)
 		exit();
 
-	$profile = new XProfile();
-	$profile2 = new XProfile();
+	$profile = new Hubzero_User_Profile();
+	$profile2 = new Hubzero_User_Profile();
 
 	$profile->load($name,'ldap');
 	$profile2->load($name,'mysql');
@@ -670,7 +670,7 @@ function printuser($name)
 
 function _showusers() 
 {
-XProfileHelper::iterate_profiles('printuser','ldap');
+Hubzero_User_Profile_Helper::iterate_profiles('printuser','ldap');
 return;
 }
 ?>

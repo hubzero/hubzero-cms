@@ -51,9 +51,9 @@ include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'table
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'utilities.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php' );
-include_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'support.tags.php' );
-ximport('textfilter');
-ximport('xprofile');
+include_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php' );
+ximport('Hubzero_Filter');
+ximport('Hubzero_User_Profile');
 
 // Instantiate controller
 $controller = new SupportController();

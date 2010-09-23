@@ -69,7 +69,7 @@ class FileMacro extends WikiMacro
 			$fp .= ($attach->pageid) ? DS.$attach->pageid : ''; 
 			$fp .= DS.$attach->filename;
 			if ($attach->filename && is_file($fp)) {
-				$xhub =& XFactory::getHub();
+				$xhub =& Hubzero_Factory::getHub();
 				$link  = $xhub->getCfg('hubLongURL').$config->filepath;
 				$link .= ($attach->pageid) ? DS.$attach->pageid : ''; 
 				$link .= DS.$attach->filename;
@@ -96,7 +96,7 @@ class FileMacro extends WikiMacro
 			$fp .= ($this->pageid) ? DS.$this->pageid : '';
 			$fp .= DS.$et;
 			if (is_file($fp)) {
-				$xhub =& XFactory::getHub();
+				$xhub =& Hubzero_Factory::getHub();
 				$link  = $xhub->getCfg('hubLongURL').$config->filepath;
 				$link .= ($this->pageid) ? DS.$this->pageid : ''; 
 				$link .= DS.$et;

@@ -269,7 +269,7 @@ class CitationsCitation extends JTable
 				 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)) {
 					// Show all
 				} else {
-					ximport('xgeoutils');
+					ximport('Hubzero_Geo');
 					
 					$query .= " AND ca.cid=r.id AND";
 					
@@ -291,7 +291,7 @@ class CitationsCitation extends JTable
 						}
 					}
 					if (isset($filter['geo']['na']) && $filter['geo']['na'] == 1) {
-						$countries = GeoUtils::getCountriesByContinent('na');
+						$countries = Hubzero_Geo::getCountriesByContinent('na');
 						$c = implode("','",$countries);
 						if ($multi) {
 							$query .= ($o == 1) ? " OR" : "";
@@ -300,7 +300,7 @@ class CitationsCitation extends JTable
 						$query .= " LOWER(ca.countryresident) IN ('".strtolower($c)."')";
 					}
 					if (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1) {
-						$countries = GeoUtils::getCountriesByContinent('eu');
+						$countries = Hubzero_Geo::getCountriesByContinent('eu');
 						$c = implode("','",$countries);
 						if ($multi) {
 							$query .= ($o == 1) ? " OR" : "";
@@ -309,7 +309,7 @@ class CitationsCitation extends JTable
 						$query .= " LOWER(ca.countryresident) IN ('".strtolower($c)."')";
 					}
 					if (isset($filter['geo']['as']) && $filter['geo']['as'] == 1) {
-						$countries = GeoUtils::getCountriesByContinent('as');
+						$countries = Hubzero_Geo::getCountriesByContinent('as');
 						$c = implode("','",$countries);
 						if ($multi) {
 							$query .= ($o == 1) ? " OR" : "";

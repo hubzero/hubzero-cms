@@ -54,7 +54,7 @@ if ($this->groups) {
 		$cls = (($cls == 'even') ? 'odd' : 'even');
 ?>
 			<tr class="<?php echo $cls; ?>">
-				<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='. $group->cn); ?>"><?php echo $group->description; ?></a></td>
+				<td><a rel="<?php echo $group->gidNumber; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='. $group->cn); ?>"><?php echo $group->description; ?></a></td>
 				<td>
 <?php
 			if ($group->manager && $group->published) {

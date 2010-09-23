@@ -143,6 +143,13 @@ class WikiPage extends JTable
 		return $obj;
 	}
 	
+	public function getRevisionCount() 
+	{
+		$obj = new WikiPageRevision( $this->_db );
+		$obj->pageid = $this->id;
+		return $obj->getRevisionCount();
+	}
+	
 	//-----------
 	
 	function getCurrentRevision()
@@ -150,6 +157,14 @@ class WikiPage extends JTable
 		$obj = new WikiPageRevision( $this->_db );
 		$obj->loadByVersion( $this->id );
 		return $obj;
+	}
+	
+	//-----------
+	
+	function getTemplates()
+	{
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `scope`='$this->scope' AND `group`='$this->group' ORDER BY `pagename`" );
+		return $this->_db->loadObjectList();
 	}
 	
 	//-----------
@@ -256,6 +271,45 @@ class WikiPage extends JTable
 	{
 		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl" );
 		return $this->_db->loadResult();
+	}
+	
+	public function getPagesCount( $filters=array() )
+	{
+		$filters['limit'] = 0;
+		$filters['count'] = true;
+		
+		$this->_db->setQuery( $this->buildQuery( $filters ) );
+		return $this->_db->loadResult();
+	}
+	
+	public function getPages( $filters=array() )
+	{
+		//echo $this->buildQuery( $filters );
+		$this->_db->setQuery( $this->buildQuery( $filters ) );
+		return $this->_db->loadObjectList();
+	}
+	
+	public function buildQuery($filters) 
+	{
+		if (isset($filters['count']) && $filters['count']) {
+			$query = "SELECT count(*)";
+		} else {
+			$query = "SELECT t.*, (SELECT COUNT(*) FROM #__wiki_version AS tt WHERE tt.pageid=t.id) AS revisions";
+		}
+		$query .= " FROM $this->_tbl AS t";
+		if ($filters['search']) {
+			$query .= " WHERE (LOWER( t.pagename ) LIKE '%".$filters['search']."%' OR LOWER( t.title ) LIKE '%".$filters['search']."%')";
+		}
+		if (isset($filters['sortby']) && $filters['sortby'] != '') {
+			$query .= " ORDER BY t.".$filters['sortby'];
+		} else {
+			$query .= " ORDER BY t.id ASC GROUP BY `t.group`";
+		}
+		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') {
+			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		}
+
+		return $query;
 	}
 	
 	//-----------
@@ -391,9 +445,9 @@ class WikiPage extends JTable
 				if (isset($filters['authorized']) && $filters['authorized'] === 'admin') {
 					$query .= "";
 				} else {
-					ximport('xuserhelper');
+					ximport('Hubzero_User_Helper');
 
-					$ugs = XUserHelper::getGroups( $juser->get('id'), 'members' );
+					$ugs = Hubzero_User_Helper::getGroups( $juser->get('id'), 'members' );
 					$groups = array();
 					if ($ugs && count($ugs) > 0) {
 						foreach ($ugs as $ug) 
@@ -442,5 +496,3 @@ class WikiPage extends JTable
 		return $query;
 	}
 }
-
-?>

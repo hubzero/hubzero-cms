@@ -74,9 +74,9 @@ class plgResourcesRelated extends JPlugin
 			if ($juser->authorize('com_resources', 'manage') || $juser->authorize('com_groups', 'manage')) {
 				$sql1 .= '';
 			} else {
-				ximport('xuserhelper');
+				ximport('Hubzero_User_Helper');
 
-				$ugs = XUserHelper::getGroups( $juser->get('id'), 'members' );
+				$ugs = Hubzero_User_Helper::getGroups( $juser->get('id'), 'members' );
 				$groups = array();
 				if ($ugs && count($ugs) > 0) {
 					foreach ($ugs as $ug) 
@@ -103,11 +103,12 @@ class plgResourcesRelated extends JPlugin
 			if ($juser->authorize('com_resources', 'manage') || $juser->authorize('com_groups', 'manage')) {
 				$sql2 .= '';
 			} else {
-				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND (r.group IN ($g) OR r.created_by='".$juser->get('id')."'))) ";
+				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND (r.group_owner IN ($g) OR r.created_by='".$juser->get('id')."'))) ";
 			}
 		} else {
 			$sql2 .= "AND r.access=0 ";
 		}
+		echo '<!-- '.$sql2.' -->';
 		$sql2 .= "ORDER BY r.ranking LIMIT 10";
 
 		// Build the final query

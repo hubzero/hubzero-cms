@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <body onload="window.top.window.HUB.ReportProblem.hideTimer();"> -->
 <div id="report-response">
 	<div>
-		<p><?php echo JText::_('COM_FEEDBACK_YOUR_TICKET'); ?> # <span><?php echo $this->ticket; ?></span></p>
+		<p><?php echo JText::_('COM_FEEDBACK_YOUR_TICKET'); ?> # <span><a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id='.$this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
 		<p><button onclick="javascript:HUB.ReportProblem.resetForm();" title="<?php echo JText::_('COM_FEEDBACK_NEW_REPORT'); ?>"><?php echo JText::_('COM_FEEDBACK_NEW_REPORT'); ?></button></p>
 	</div>
 	<p>

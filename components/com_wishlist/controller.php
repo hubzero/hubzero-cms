@@ -129,7 +129,7 @@ class WishlistController extends JObject
 		$this->banking = $this->config->get('banking') && $banking ? $this->config->get('banking') : 0;
 		
 		if ($banking) {
-			ximport( 'bankaccount' );
+			ximport('Hubzero_Bank');
 		}	
 			
 		switch( $this->getTask() ) 
@@ -186,11 +186,11 @@ class WishlistController extends JObject
 
 	public function _getStyles($option='', $css='')
 	{
-		ximport('xdocument');
+		ximport('Hubzero_Document');
 		if ($option) {
-			XDocument::addComponentStylesheet($option, $css);
+			Hubzero_Document::addComponentStylesheet($option, $css);
 		} else {
-			XDocument::addComponentStylesheet($this->_option);
+			Hubzero_Document::addComponentStylesheet($this->_option);
 		}
 
 	}
@@ -249,6 +249,7 @@ class WishlistController extends JObject
 					);
 				break;				
 				case 'add':
+				case 'savewish':
 				case 'editwish':
 					$pathway->addItem( 
 						$this->_taskname, 
@@ -382,8 +383,7 @@ class WishlistController extends JObject
 				
 				// create private list for group
 				if(Hubzero_Group::exists($refid)) {
-					$group = new XGroup();
-					$group->select($refid);	
+					$group = Hubzero_Group::getInstance($refid);
 					$id = $obj->createlist($cat, $refid, 0, $group->cn.' '.JText::_('WISHLIST_NAME_GROUP'));
 				}
 			}						
@@ -613,8 +613,8 @@ class WishlistController extends JObject
 			$wish->prev = $objWish->getWishId('prev', $wishid, $wish->wishlist, $this->_admin, $juser->get('id'), $filters);
 			$wish->next = $objWish->getWishId('next', $wishid, $wish->wishlist, $this->_admin, $juser->get('id'), $filters);
 			
-			// Update average value for importance (this is tricky is MySQL)
-			$votesplit = isset($this->config->parameters['votesplit']) ? trim($this->config->parameters['votesplit']) : 0;
+			// Update average value for importance (this is tricky MySQL)
+			$votesplit = $this->config->get('votesplit')  ? trim($this->config->get('votesplit') ) : 0;
 			if(count($wishlist->advisory) > 0 && $votesplit) {
 				$objR = new WishRank ( $database );
 				$votes = $objR->get_votes($wish->id);
@@ -675,7 +675,7 @@ class WishlistController extends JObject
 
 			// check available user funds	
 			if($action == 'addbonus' && $this->banking) {	
-				$BTL 		= new BankTeller( $database, $juser->get('id') );
+				$BTL 		= new Hubzero_Bank_Teller( $database, $juser->get('id') );
 				$balance 	= $BTL->summary();
 				$credit 	= $BTL->credit_summary();
 				$funds 		= $balance - $credit;			
@@ -690,8 +690,7 @@ class WishlistController extends JObject
 				$wish->cats = $cats;
 				
 				if($wishlist->category=='group') {
-					$group = new XGroup();
-					$group->select($wishlist->referenceid);
+					$group = Hubzero_Group::getInstance($wishlist->referenceid);
 					$wishlist->cn = $group->cn;
 				}				
 			}
@@ -721,7 +720,7 @@ class WishlistController extends JObject
 		}		
 		
 		if ( $this->_task=='reply') {
-			$addcomment = & new XComment( $database );
+			$addcomment = & new Hubzero_Comment( $database );
 			$addcomment->referenceid = $this->referenceid;
 			$addcomment->category = $this->cat;
 				
@@ -810,7 +809,7 @@ class WishlistController extends JObject
 			return;
 		}
 		$obj->description  = rtrim(stripslashes($obj->description));
-		$obj->description  = TextFilter::cleanXss($obj->description);
+		$obj->description  = Hubzero_Filter::cleanXss($obj->description);
 		$obj->description  = nl2br($obj->description);
 	
 		// check content
@@ -829,7 +828,7 @@ class WishlistController extends JObject
 		$newowners = $this->makeArray(rtrim($_POST['newowners']));
 		$newgroups = $this->makeArray(rtrim($_POST['newgroups']));
 		
-		$allow_advisory = isset($this->config->parameters['allow_advisory']) ? $this->config->parameters['allow_advisory'] : 0;
+		$allow_advisory = $this->config->get('allow_advisory') ? $this->config->get('allow_advisory') : 0;
 		$newadvisory = $allow_advisory ? $this->makeArray(rtrim($_POST['newadvisory'])) : array();
 		
 		if(!empty($newowners)) {
@@ -917,7 +916,7 @@ class WishlistController extends JObject
 		$wishlist->nativeowners = $nativeowners['individuals'];
 		$wishlist->nativegroups = $nativeowners['groups'];
 		
-		$wishlist->allow_advisory = isset($this->config->parameters['allow_advisory']) ? $this->config->parameters['allow_advisory'] : 0;
+		$wishlist->allow_advisory = $this->config->get('allow_advisory') ? $this->config->get('allow_advisory') : 0;
 
 		$view = new JView( array('name'=>'settings') );
 		$view->title = $this->_title;
@@ -1049,7 +1048,7 @@ class WishlistController extends JObject
 		
 		else if ($new_assignee) {
 				// Build e-mail components
-				$xhub =& XFactory::getHub();
+				$xhub =& Hubzero_Factory::getHub();
 				$jconfig =& JFactory::getConfig();
 				$admin_email = $jconfig->getValue('config.mailfrom');
 									
@@ -1062,7 +1061,7 @@ class WishlistController extends JObject
 					
 				$name = JText::_('UNKNOWN');
 				$login = JText::_('UNKNOWN');
-				$ruser =& XProfile::getInstance($objWish->proposed_by);
+				$ruser =& Hubzero_User_Profile::getInstance($objWish->proposed_by);
 				if (is_object($ruser)) {
 					$name = $ruser->get('name');
 					$login = $ruser->get('username');
@@ -1202,7 +1201,7 @@ class WishlistController extends JObject
 		// Is banking turned on?
 		$funds = 0;
 		if ($this->banking) {
-			$BTL = new BankTeller( $database, $juser->get('id') );
+			$BTL = new Hubzero_Bank_Teller( $database, $juser->get('id') );
 			$balance = $BTL->summary();
 			$credit  = $BTL->credit_summary();
 			$funds   = $balance - $credit;			
@@ -1256,12 +1255,20 @@ class WishlistController extends JObject
 			return;
 		}
 		
+		// Get wish list info
+		$objWishlist = new Wishlist ( $database );			
+		$wishlist = $objWishlist->get_wishlist($listid);
+		
 		// trim and addslashes all posted items
 		$_POST = array_map('trim',$_POST);
 		
 		// initiate class and bind posted items to database fields
 		$row = new Wish ( $database );
-		if (!$row->bind( $_POST )) {
+		if( !JRequest::getVar( 'subject', '')) {
+			$this->setError( JText::_('WISHLIST_ERROR_NO_SUBJECT') );
+			$row->bind( $_POST );
+		}
+		else if (!$row->bind( $_POST )) {
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
@@ -1293,24 +1300,38 @@ class WishlistController extends JObject
 		// Error view
 		if($this->getError()) {
 			// Set the pathway
-			$app =& JFactory::getApplication();
-			$pathway =& $app->getPathway();
-			if (count($pathway->getPathWay()) <= 0) {
-				$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-			}
-				
-			$view = new JView( array('name'=>'error') );
+			$this->_taskpath = $wishid 
+			? 'index.php?option='.$this->_option.a.'task=editwish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid
+			: 'index.php?option='.$this->_option.a.'task=add'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid;
+			$this->_taskname = $wishid
+								? JText::_('COM_WISHLIST_EDITWISH')
+								: JText::_('COM_WISHLIST_ADD');
+			$this->_buildPathway($wishlist);
+			
+			// Get URL to page explaining virtual economy
+			$aconfig =& JComponentHelper::getParams( 'com_answers' );
+			$infolink = $aconfig->get('infolink') ? $aconfig->get('infolink') : '/kb/points/';
+			
+			$view = new JView( array('name'=>'editwish' ));
 			$view->title = JText::_(strtoupper($this->_name));
-			if ($this->getError()) {
-				$view->setError( $this->getError() );
-			}
+			$view->config = $this->config;
+			$view->option = $this->_option;
+			$view->task = $this->_task;
+			$view->admin = $this->_admin;
+			$view->juser = $juser;
+			$view->wishlist = $wishlist;
+			$view->wish = $row;
+			$view->infolink = $infolink;
+			$view->funds = $funds;
+			$view->banking = $this->banking;
+			$view->setError( $this->getError() );
 			$view->display();
-			return;				
+			return;			
 		}
 				
 		$row->anonymous 	= JRequest::getInt( 'anonymous', 0 );
 		$row->private	    = JRequest::getInt( 'private', 0 );
-		$row->about     	= TextFilter::cleanXss($row->about);
+		$row->about     	= Hubzero_Filter::cleanXss($row->about);
 		$row->proposed    	= ($wishid) ? $row->proposed : date( 'Y-m-d H:i:s', time() );
 
 		// check content
@@ -1334,15 +1355,11 @@ class WishlistController extends JObject
 		// Add/change the tags
 		$tagging = new WishTags( $database );
 		$tagging->tag_object($juser->get('id'), $row->id, $tags, 1, 1);
-
-		// Get wish list info
-		$objWishlist = new Wishlist ( $database );			
-		$wishlist = $objWishlist->get_wishlist($listid);
 			
 		// send message about a new wish
 		if(!$wishid) {
 			// Build e-mail components
-			$xhub =& XFactory::getHub();
+			$xhub =& Hubzero_Factory::getHub();
 			$jconfig =& JFactory::getConfig();
 			$admin_email = $jconfig->getValue('config.mailfrom');
 					
@@ -1391,7 +1408,7 @@ class WishlistController extends JObject
 	
 		if($reward && $this->banking) {		
 			// put the  amount on hold
-			$BTL = new BankTeller( $database, $juser->get('id') );
+			$BTL = new Hubzero_Bank_Teller( $database, $juser->get('id') );
 			$BTL->hold($reward, JText::_('BANKING_HOLD').' #'.$row->id.' '.JText::_('FOR').' '.$wishlist->title, 'wish', $row->id);
 		}
 					
@@ -1510,7 +1527,7 @@ class WishlistController extends JObject
 				
 				if($changed) {
 					// Build e-mail components
-					$xhub =& XFactory::getHub();
+					$xhub =& Hubzero_Factory::getHub();
 					$jconfig =& JFactory::getConfig();
 					$admin_email = $jconfig->getValue('config.mailfrom');
 					
@@ -1526,7 +1543,7 @@ class WishlistController extends JObject
 					
 					$name = JText::_('UNKNOWN');
 					$login = JText::_('UNKNOWN');
-					$ruser =& XProfile::getInstance($objWish->proposed_by);
+					$ruser =& Hubzero_User_Profile::getInstance($objWish->proposed_by);
 					if (is_object($ruser)) {
 						$name = $ruser->get('name');
 						$login = $ruser->get('username');
@@ -1646,9 +1663,8 @@ class WishlistController extends JObject
 			
 			// Get group id from cn
 			if($category == 'group') {
-				$group = new XGroup();
 				if(Hubzero_Group::exists($cn)) {
-					$group->select($cn);
+					$group = Hubzero_Group::getInstance($cn);
 					$refid = $group->gidNumber;
 				}
 				else {
@@ -1677,8 +1693,7 @@ class WishlistController extends JObject
 			else if($category == 'group' && !$newlist) {			
 				// create private list for group
 				if(Hubzero_Group::exists($refid)) {
-					$group = new XGroup();
-					$group->select($refid);	
+					$group = Hubzero_Group::getInstance($refid);
 					$newlist = $obj->createlist($cat, $refid, 0, $group->cn.' '.JText::_('GROUP'));
 				}				
 			}
@@ -1718,7 +1733,7 @@ class WishlistController extends JObject
 					}
 					// delete comments if option chosen
 					if(!$options['keepcomments']) {						
-						$reply = new XComment( $database );
+						$reply = new Hubzero_Comment( $database );
 						$comments1 = $reply->getResults( array('id'=>$wishid, 'category'=>'wish') );
 						if (count($comments1) > 0) {
 							foreach ($comments1 as $comment1) 
@@ -1750,7 +1765,7 @@ class WishlistController extends JObject
 					}
 					
 					// send message about transferred wish
-					$xhub =& XFactory::getHub();
+					$xhub =& Hubzero_Factory::getHub();
 					$jconfig =& JFactory::getConfig();
 					$admin_email = $jconfig->getValue('config.mailfrom');
 					
@@ -1759,7 +1774,7 @@ class WishlistController extends JObject
 					
 					$name = JText::_('UNKNOWN');
 					$login = JText::_('UNKNOWN');
-					$ruser =& XProfile::getInstance($objWish->proposed_by);
+					$ruser =& Hubzero_User_Profile::getInstance($objWish->proposed_by);
 					if (is_object($ruser)) {
 						$name = $ruser->get('name');
 						$login = $ruser->get('username');
@@ -1861,7 +1876,7 @@ class WishlistController extends JObject
 		}	
 		
 		// check available user funds		
-		$BTL 		= new BankTeller( $database, $juser->get('id') );
+		$BTL 		= new Hubzero_Bank_Teller( $database, $juser->get('id') );
 		$balance 	= $BTL->summary();
 		$credit 	= $BTL->credit_summary();
 		$funds 		= $balance - $credit;			
@@ -1882,7 +1897,7 @@ class WishlistController extends JObject
 		}
 		
 		// put the  amount on hold
-		$BTL = new BankTeller( $database, $juser->get('id') );
+		$BTL = new Hubzero_Bank_Teller( $database, $juser->get('id') );
 		$BTL->hold($amount, JText::_('BANKING_HOLD').' #'.$wishid.' '.JText::_('FOR').' '.$wishlist->title, 'wish', $wishid);
 			
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid);
@@ -2115,7 +2130,7 @@ class WishlistController extends JObject
 		$co_reg = 0.2;	
 				
 		// do we give more weight to votes coming from advisory committee?
-		$votesplit = isset($this->config->parameters['votesplit']) ? trim($this->config->parameters['votesplit']) : 0;	
+		$votesplit = $this->config->get('votesplit') ? $this->config->get('votesplit')  : 0;	
 		
 		if($wishlist->items) {
 			
@@ -2273,7 +2288,7 @@ class WishlistController extends JObject
 		}
 		
 		if ($id && $category) {
-			$row = new XComment( $database );
+			$row = new Hubzero_Comment( $database );
 			if (!$row->bind( $_POST )) {
 				JError::raiseError( 500, $row->getError() );
 				return;
@@ -2308,13 +2323,13 @@ class WishlistController extends JObject
 				$objWish->load($wishid);
 							
 				// Build e-mail components
-				$xhub =& XFactory::getHub();
+				$xhub =& Hubzero_Factory::getHub();
 				$jconfig =& JFactory::getConfig();
 				$admin_email = $jconfig->getValue('config.mailfrom');
 					
 				$name = JText::_('UNKNOWN');
 				$login = JText::_('UNKNOWN');
-				$ruser =& XProfile::getInstance($row->added_by);
+				$ruser =& Hubzero_User_Profile::getInstance($row->added_by);
 				if (is_object($ruser)) {
 					$name = $ruser->get('name');
 					$login = $ruser->get('username');
@@ -2393,7 +2408,7 @@ class WishlistController extends JObject
 				
 				// get comment author if reply is posted to a comment
 				if($category=='wishcomment') {
-					$parent = new XComment( $database );
+					$parent = new Hubzero_Comment( $database );
 					$parent->load($id);
 					$cuser =& JUser::getInstance($parent->added_by);
 					
@@ -2434,7 +2449,7 @@ class WishlistController extends JObject
 		// Incoming
 		$replyid = JRequest::getInt( 'replyid', 0 );
 		
-		$row = new XComment( $database );
+		$row = new Hubzero_Comment( $database );
 		
 		// Do we have a reply ID?
 		if (!$replyid or !$row->load($replyid)) {
@@ -2598,7 +2613,7 @@ class WishlistController extends JObject
 	
 	public function getWebPath($wishid=0)
 	{
-		$webpath = isset($this->config->parameters['webpath']) ? $this->config->parameters['webpath'] : 'site/wishes';
+		$webpath = $this->config->get('webpath')  ? $this->config->get('webpath')  : 'site/wishes';
 		
 		$webpath .= $wishid ? DS.$wishid : '';
 		
@@ -2630,7 +2645,7 @@ class WishlistController extends JObject
 			$juser =& JFactory::getUser();
 			
 			$level++;
-			$hc = new XComment( $database );
+			$hc = new Hubzero_Comment( $database );
 			$authors = array();
 			
 			$comments = $hc->getResults( array('id'=>$itemid, 'category'=>$category), 1 , 1 );
@@ -2638,7 +2653,7 @@ class WishlistController extends JObject
 			if ($comments) {
 			
 				// Parse comment text for attachment tags
-				$xhub =& XFactory::getHub();
+				$xhub =& Hubzero_Factory::getHub();
 				
 				if(!$skipattachments) {
 				$webpath = $this->getWebPath($parentid);
@@ -2722,7 +2737,7 @@ class WishlistController extends JObject
 		}
 		
 		if($listid) {
-			$admingroup = isset($this->config->parameters['group']) ? trim($this->config->parameters['group']) : 'hubadmin';
+			$admingroup = $this->config->get('group')  ? trim($this->config->get('group', 'hubadmin') ) : 'hubadmin';
 			
 			// Get list administrators
 			$database =& JFactory::getDBO();

@@ -67,7 +67,7 @@ class FileIndexMacro extends WikiMacro
 			}
 			$config = new WikiConfig( $configs );
 			
-			$xhub =& XFactory::getHub();
+			$xhub =& Hubzero_Factory::getHub();
 			
 			// Build and return the link
 			$html = '<ul>';

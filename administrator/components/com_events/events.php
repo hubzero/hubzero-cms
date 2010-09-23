@@ -41,14 +41,14 @@ if (!$juser->authorize($option, 'manage')) {
 	$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
 }
 
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.class.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.date.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.repeat.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.category.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.tags.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.config.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.page.php');
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'events.respondent.php');
+require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php');
+require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'date.php');
+require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'repeat.php');
+require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'category.php');
+require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'event.php');
+require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'config.php');
+require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'page.php');
+require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'respondent.php');
 require_once(JPATH_COMPONENT.DS.'helpers'.DS.'html.php');
 require_once(JPATH_COMPONENT.DS.'controller.php');
 

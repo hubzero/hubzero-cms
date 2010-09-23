@@ -26,7 +26,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	/* Subscription screen */
 	
-	$xhub =& XFactory::getHub();
+	$xhub =& Hubzero_Factory::getHub();
 	$hubShortName = $xhub->getCfg('hubShortName');
 	$juser 	  =& JFactory::getUser();
 	

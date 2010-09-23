@@ -41,7 +41,7 @@ function contributeParseRoute($segments)
 
 	if ($segments[0] == 'tools')
 	{
-		if (($segments[1] == 'register'))
+		if (isset($segments[1]) && $segments[1] == 'register')
 		{
 			$vars['option'] = 'com_contribtool';
 			$vars['task'] = 'create';

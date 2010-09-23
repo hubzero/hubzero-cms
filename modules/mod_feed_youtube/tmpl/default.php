@@ -12,8 +12,8 @@ if( $feed != false )
 	$layout = $params->get('layout') ? $params->get('layout') : 'vertical';
 	
 	// Push some CSS to the template
-	ximport('xdocument');
-	XDocument::addModuleStylesheet('mod_feed_youtube');
+	ximport('Hubzero_Document');
+	Hubzero_Document::addModuleStylesheet('mod_feed_youtube');
 	
 	$youtube_ima  = $params->get('imagepath');
 	if (substr($youtube_ima, 0, 1) != DS) {

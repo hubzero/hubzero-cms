@@ -34,12 +34,10 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
-jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
 
 include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'html'.DS.'html'.DS.'select.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tags.tag.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tags.class.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'handler.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
 // Editor usertype check

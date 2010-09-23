@@ -194,7 +194,7 @@ class ContribtoolHtml
 	public function getNumofTools($status, $toolnum='') 
 	{	
 		// get hub parameters
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
 		
 		$toolnum = ($status['state']!=9) ? JText::_('THIS_TOOL').'  ': '';
@@ -410,7 +410,7 @@ class ContribtoolHtml
 	public function writeWhatNext ($status, $config, $option, $title, $par='', $step2='', $step4='', $step5addon='') 
 	{			
 		// get configs
-		$xhub 			=& XFactory::getHub();
+		$xhub 			=& Hubzero_Factory::getHub();
 		$hubShortName 	= $xhub->getCfg('hubShortName');
 		$hubShortURL 	= $xhub->getCfg('hubShortURL');
 		$hubLongURL 	= $xhub->getCfg('hubLongURL');
@@ -748,7 +748,7 @@ class ContribtoolHtml
 	//-----------------------------------------------------
 	public function writeToolForm($option, $title, $admin, $juser, $defaults, $error, $id, $task, $config, $editversion='dev') 
 	{	
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
 		
 		$exec_pu = isset($config->parameters['exec_pu']) ? $config->parameters['exec_pu'] : 1;
@@ -1129,7 +1129,7 @@ class ContribtoolHtml
 		ContribtoolHtml::writeApproval(JText::_('CONFIRM_VERSION'));
 		}
 	
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		
 		$rconfig =& JComponentHelper::getParams( 'com_resources' );
 		$hubDOIpath = $rconfig->get('doi');
@@ -1282,7 +1282,7 @@ class ContribtoolHtml
 		$testpath = 'index.php?option=com_tools'.a.'task=invoke&app='.$status['toolname'].a.'version=test';
 		
 		// get configs
-		$xhub 			=& XFactory::getHub();
+		$xhub 			=& Hubzero_Factory::getHub();
 		$hubShortName 	= $xhub->getCfg('hubShortName');
 		$hubShortURL 	= $xhub->getCfg('hubShortURL');
 		$hubLongURL 	= $xhub->getCfg('hubLongURL');
@@ -1680,7 +1680,7 @@ class ContribtoolHtml
         <?php	
 
 		$dev = ($version=='dev') ? 1: 0;
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
 			
 		if($version=='dev') {
@@ -1887,7 +1887,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 	{
 		
 		$juser =& JFactory::getUser();
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
 		$hubShortURL = $xhub->getCfg('hubShortURL');
 		$license = '/legal/license';
@@ -1943,7 +1943,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		$cats = array();
 		$sections = array();
 		
-		ximport('resourcestats');
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
 		
 		$body = ResourcesHtml::about( $database, 0, $usersgroups, $resource, $helper, $config, array(), null, null, null, null, $params, $attribs, $option, 0 );
 		
@@ -2314,9 +2314,14 @@ if($tagname!='screenshots' and $tagname!='bio') {
 					$html .= ' <option value="">'.JText::_('AUTHORS_SELECT').'</option>'.n;
 					foreach ($rows as $row) 
 					{
-						$html .= t.'<option value="'.$row->uidNumber.'">'.$row->surname.', '.$row->givenName;
-						$html .= ($row->middleName) ? ' '.$row->middleName : '';
-						$html .= '</option>'.n;
+						if(trim($row->surname) != '' && trim($row->givenName) != '' 
+						&& trim($row->surname) != '&nbsp;' && trim($row->givenName) != '&npsp;'
+						&& trim($row->surname) != '.' && trim($row->givenName) != '.') 
+						{
+							$html .= t.'<option value="'.$row->uidNumber.'">'.$row->surname.', '.$row->givenName;
+							$html .= ($row->middleName) ? ' '.$row->middleName : '';
+							$html .= '</option>'.n;
+						}
 					}
 					$html .= '</select>'.n;
 					echo $html;

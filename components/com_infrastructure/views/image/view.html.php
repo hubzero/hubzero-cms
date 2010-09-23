@@ -35,19 +35,17 @@ class InfrastructureViewImage extends JView
 {
     function display($tpl = null)
     {
-    	ximport('xdocument');
+    	ximport('Hubzero_Document');
 
-    	$xhub  = & XFactory::getHub();
-	$image = JPATH_SITE . XDocument::getComponentImage('com_projects', 'forge.png', 1);
+    	$xhub  = & Hubzero_Factory::getHub();
+		$image = JPATH_SITE . Hubzero_Document::getComponentImage('com_projects', 'forge.png', 1);
 
-	if (is_readable($image)) {
-		ob_clean();
-		header("Content-Type: image/png");
-		readfile($image);
-		ob_end_flush();
-		exit;
-	}
+		if (is_readable($image)) {
+			ob_clean();
+			header("Content-Type: image/png");
+			readfile($image);
+			ob_end_flush();
+			exit;
+		}
     }
 }
-
-?>

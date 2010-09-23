@@ -86,7 +86,7 @@ class plgResourcesSupportingDocs extends JPlugin
 		
 		$config =& JComponentHelper::getParams( $option );
 
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		
 		// Instantiate a view
 		ximport('Hubzero_Plugin_View');

@@ -112,8 +112,8 @@ class plgGroupsForum extends JPlugin
 				}
 			}
 			
-			ximport('xdocument');
-			XDocument::addPluginStylesheet('groups', 'forum');
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('groups', 'forum');
 			
 			switch ($action) 
 			{

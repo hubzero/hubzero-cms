@@ -103,8 +103,8 @@ class BlogComment extends JTable
 		$comments = $this->getComments( $entry_id, 0 );
 		if ($comments) {
 			$ra = null;
-			if (is_file(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.reportabuse.php')) {
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.reportabuse.php' );
+			if (is_file(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php')) {
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php' );
 				$ra = new ReportAbuse( $this->_db );
 			}
 			foreach ($comments as $key => $row) 

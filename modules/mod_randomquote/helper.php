@@ -85,8 +85,8 @@ class modRandomQuote
 		$quote = $quotes ? $quotes[0] : '';
 
 		// Push some CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStylesheet('mod_randomquote');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStylesheet('mod_randomquote');
 
 		if ($quote) {
 			$this->quote_to_show = ($quotesrc == 'miniquote') ? stripslashes($quote->miniquote) : stripslashes($quote->short_quote);

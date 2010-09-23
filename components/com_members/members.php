@@ -35,16 +35,14 @@ if ($config->getValue('config.debug')) {
 }
 
 jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
 
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'profile.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'association.php' );
-include_once( JPATH_COMPONENT.DS.'members.imghandler.php' );
-include_once( JPATH_COMPONENT.DS.'members.tags.php' );
-include_once( JPATH_COMPONENT.DS.'members.html.php' );
+include_once( JPATH_COMPONENT.DS.'helpers'.DS.'imghandler.php' );
+include_once( JPATH_COMPONENT.DS.'helpers'.DS.'tags.php' );
+include_once( JPATH_COMPONENT.DS.'helpers'.DS.'html.php' );
 include_once( JPATH_COMPONENT.DS.'controller.php' );
-ximport('fileuploadutils');
-ximport('xprofile');
+ximport('Hubzero_User_Profile');
 ximport('Hubzero_View_Helper_Html');
 
 $jacl =& JFactory::getACL();
@@ -55,4 +53,3 @@ $jacl->addACL( $option, 'manage', 'users', 'administrator' );
 $controller = new MembersController();
 $controller->execute();
 $controller->redirect();
-?>

@@ -65,7 +65,6 @@ class ToolVersion extends  JTable
 	
 	public function check() 
 	{
-		
 		if (!$this->id && trim( $this->toolname ) == '') {
 			$this->setError( JText::_('CONTRIBTOOL_ERROR_VERSION_NO_TOOLNAME') );
 			return false;
@@ -235,7 +234,7 @@ class ToolVersion extends  JTable
 
 	public function unpublish($toolid=NULL, $vid=0)
 	{
-	    	$xlog = &XFactory::getLogger();
+	    	$xlog = &Hubzero_Factory::getLogger();
 
 		if (!$toolid) {
 			return false;
@@ -260,7 +259,8 @@ class ToolVersion extends  JTable
 
 	public function save($toolid=NULL, $version='dev', $create_new = 0)
 	{
-	    	$xlog = &XFactory::getLogger();
+		die('1');
+	    	$xlog = &Hubzero_Factory::getLogger();
 
 		if(!$this->toolid) {
 			$this->toolid= $toolid;
@@ -304,7 +304,7 @@ class ToolVersion extends  JTable
 	{
 	    	if (empty($this->id))
 		{
-	    		$xlog = &XFactory::getLogger();
+	    		$xlog = &Hubzero_Factory::getLogger();
 	    		$query = "SELECT id FROM #__tool_version WHERE toolname=" . $this->_db->Quote($this->toolname) .
 		    		" AND instance=" . $this->_db->Quote($this->instance) . ";";
         		$this->_db->setQuery($query);
@@ -325,7 +325,7 @@ class ToolVersion extends  JTable
 	public function getToolVersions( $toolid, &$versions, $toolname='', $ldap=false, $exclude_dev = 0) 
 	{
 		ximport('Hubzero_Tool');
-	    	$xlog =& XFactory::getLogger();
+	    	$xlog =& Hubzero_Factory::getLogger();
 
 		$objA = new ToolAuthor( $this->_db);	
 
@@ -369,7 +369,7 @@ class ToolVersion extends  JTable
 	
 	public function getVersionInfo($id, $version='', $toolname='', $instance='', $ldap=false)
 	{
-	    	$xlog =& XFactory::getLogger();
+	    	$xlog =& Hubzero_Factory::getLogger();
 
 	    	if ($ldap) {
 		 	$xlog->logDebug("getVersionInfo() ldap read DEPRECATED");
@@ -461,7 +461,7 @@ class ToolVersion extends  JTable
 	
 	
 		// Get some needed libraries
-		//include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
+		//include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 		$resource->tarname = $resource->alias.'-r'.$resource->revision.'.tar.gz';
 		$tarball_path = $config->get('sourcecodePath');
 		$resource->tarpath = $tarball_path.DS.$resource->alias.DS;
@@ -504,7 +504,7 @@ class ToolVersion extends  JTable
 
 	public function validToolReg(&$tool, &$err, $id, $ldap, $config, $checker=0, $result=1)
 	{
-	    	$xlog =& XFactory::getLogger();
+	    	$xlog =& Hubzero_Factory::getLogger();
 
 		if ($ldap) {
 		    	$xlog->logDebug("validToolReg() ldap read DEPRECATED");

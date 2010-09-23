@@ -170,16 +170,16 @@ class plgUserXusers extends JPlugin
 	 */
 	function onAfterStoreUser($user, $isnew, $succes, $msg)
 	{
-		ximport('xprofile');
+		ximport('Hubzero_User_Profile');
 
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$hubHomeDir = $xhub->getCfg('hubHomeDir');
 
-		$xprofile = XProfile::getInstance( $user['username'] );
+		$xprofile = Hubzero_User_Profile::getInstance( $user['id'] );
 
 		if (!is_object($xprofile))
 		{
-			$xprofile = new XProfile();
+			$xprofile = new Hubzero_User_Profile();
 			$xprofile->set('gidNumber', '3000');
 			$xprofile->set('gid','public');
 			$xprofile->set('uidNumber', $user['id']);
@@ -203,7 +203,7 @@ class plgUserXusers extends JPlugin
 
 			if (!$result)
 			{
-				return JError::raiseError('500', 'xHUB Internal Error: Unable to create XProfile record');
+				return JError::raiseError('500', 'xHUB Internal Error: Unable to create Hubzero_User_Profile record');
 			}
 		}
 		else
@@ -250,10 +250,10 @@ class plgUserXusers extends JPlugin
 	 */
 	function onAfterDeleteUser($user, $succes, $msg)
 	{
-		ximport('xprofile');
+		ximport('Hubzero_User_Profile');
 		ximport('Hubzero_Auth_Link');
 
-		$xprofile = XProfile::getInstance($user['id']);
+		$xprofile = Hubzero_User_Profile::getInstance($user['id']);
 
 		if (is_object($xprofile))
 			$xprofile->delete();
@@ -272,7 +272,7 @@ class plgUserXusers extends JPlugin
 	 */
 	function onLogoutUser($user, $options = array())
 	{
-		$authlog = XFactory::getAuthLogger();
+		$authlog = Hubzero_Factory::getAuthLogger();
 		$authlog->logAuth( $user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
 		apache_note('auth','logout');
 		return true;

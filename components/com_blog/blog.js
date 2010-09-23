@@ -54,4 +54,4 @@ HUB.Plugins.MembersBlog = {
 	} // end initialize
 }
 
-window.addEvent('domready', HUB.Plugins.MembersBlog.initialize);
+//window.addEvent('domready', HUB.Plugins.MembersBlog.initialize);

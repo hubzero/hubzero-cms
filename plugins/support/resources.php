@@ -79,7 +79,7 @@ class plgSupportResources extends JPlugin
 	
 	public function getParentId( $parentid, $category ) 
 	{
-		ximport('xcomment');
+		ximport('Hubzero_Comment');
 		
 		$database =& JFactory::getDBO();
 		$refid = $parentid;
@@ -116,7 +116,7 @@ class plgSupportResources extends JPlugin
 	public function parent($parentid) 
 	{
 		$database =& JFactory::getDBO();
-		$parent = new XComment( $database );
+		$parent = new Hubzero_Comment( $database );
 		$parent->load( $parentid );
 		
 		return $parent;
@@ -155,8 +155,8 @@ class plgSupportResources extends JPlugin
 		switch ($category)
 		{
 			case 'review': 
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php' );
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.review.php' );
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'review.php' );
 				
 				// Delete the review
 				$review = new ResourcesReview( $database );
@@ -175,9 +175,9 @@ class plgSupportResources extends JPlugin
 			break;
 			
 			case 'reviewcomment':
-				ximport('xcomment');
+				ximport('Hubzero_Comment');
 				
-				$comment = new XComment( $database );
+				$comment = new Hubzero_Comment( $database );
 				$comment->load( $referenceid );
 				$comment->state = 2;
 				if (!$comment->store()) {

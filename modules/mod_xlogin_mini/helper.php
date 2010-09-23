@@ -46,7 +46,7 @@ class modXLoginMini
 
 	function display()
 	{
-		$xhub = &XFactory::getHub();
+		$xhub = &Hubzero_Factory::getHub();
 
 		if ( !isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off' )
 		{
@@ -85,8 +85,8 @@ class modXLoginMini
 			$return = '/';
 			
 		// Push the module CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_xlogin_mini');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_xlogin_mini');
 			
 		if (count($realms) == 1) 
 		{

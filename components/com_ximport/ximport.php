@@ -35,7 +35,7 @@ if (1||$config->getValue('config.debug')) {
 }
 
 jimport('joomla.application.component.helper');
-ximport('xprofile');
+ximport('Hubzero_User_Profile');
 include('controller.php');
 
 $jacl =& JFactory::getACL();

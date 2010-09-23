@@ -154,7 +154,7 @@ class TagsController extends Hubzero_Controller
 		$row->admin = JRequest::getInt('admin', 0);
 		$row->raw_tag = trim($row->raw_tag);
 		
-		$t = new Tags();
+		$t = new TagsHandler($this->database);
 		$row->tag = $t->normalize_tag($row->raw_tag);
 
 		// Check content
@@ -305,7 +305,7 @@ class TagsController extends Hubzero_Controller
 					
 					$this->save(0);
 					
-					$tagging = new Tags( $this->database );
+					$tagging = new TagsHandler( $this->database );
 					$mtag = $tagging->get_raw_tag_id($tag_new);
 				} else {
 					// No, we're merging into an existing tag
@@ -417,7 +417,7 @@ class TagsController extends Hubzero_Controller
 					
 					$this->save(0);
 					
-					$tagging = new Tags( $this->database );
+					$tagging = new TagsHandler( $this->database );
 					$mtag = $tagging->get_raw_tag_id($tag_new);
 				} else {
 					// No, we're merging into an existing tag

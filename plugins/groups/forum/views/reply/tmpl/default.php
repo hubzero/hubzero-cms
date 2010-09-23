@@ -85,7 +85,7 @@ if ($this->row->parent) {
 <?php
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
-			$jxuser = new XProfile();
+			$jxuser = new Hubzero_User_Profile();
 			$jxuser->load( $juser->get('id') );
 			$thumb = ForumHelper::getMemberPhoto($jxuser, 0);
 		} else {

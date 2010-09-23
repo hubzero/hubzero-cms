@@ -26,14 +26,14 @@
 	<description>Manage members</description>
 	<files>
 		<filename>images/profile_thumb.gif</filename>
-		<filename>members.imghandler.php</filename>
+		<filename>helpers/imghandler.php</filename>
 		<filename>controller.php</filename>
 		<filename>index.html</filename>
 		<filename>members.css</filename>
-		<filename>members.html.php</filename>
+		<filename>helpers/html.php</filename>
 		<filename>members.js</filename>
 		<filename>members.php</filename>
-		<filename>members.tags.php</filename>
+		<filename>helpers/tags.php</filename>
 		<filename>router.php</filename>
 		<filename>images/profile.gif</filename>
 		<filename>images/1.gif</filename>

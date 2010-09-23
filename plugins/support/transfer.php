@@ -47,7 +47,7 @@ class plgSupportTransfer extends JPlugin
 		$this->banking = $banking;
 		
 		if ($banking) {
-			ximport( 'bankaccount' );
+			ximport( 'Hubzero_Bank' );
 		}
 	}
 	
@@ -77,8 +77,8 @@ class plgSupportTransfer extends JPlugin
 		$anonymous = 0;
 		
 		// get needed scripts
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_support'.DS.'support.tags.php' );
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'answers.tags.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_support'.DS.'helpers'.DS.'tags.php' );
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'tags.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'comment.php' );
 		
@@ -174,12 +174,11 @@ class plgSupportTransfer extends JPlugin
 					}
 
 					// get owner
-					ximport('xgroup');
 					$objG 	  = new WishlistOwnerGroup( $database );
 					$nativegroups = $objG->get_owner_groups($row->wishlist, $admingroup, '',1);
 					$owner = (count($nativegroups) > 0 && $nativegroups[0]!= $admingroup) ? $nativegroups[0] : ''; // tool group
 
-					$objWishlist = new Wishlist ( $database );
+					$objWishlist = new Wishlist( $database );
 					$wishlist = $objWishlist->get_wishlist($row->wishlist);
 					if (isset($wishlist->resource) && isset($wishlist->resource->alias)) {
 						$tags  = $wishlist->resource->type==7 ? 'tool:' : 'resource:';
@@ -243,7 +242,7 @@ class plgSupportTransfer extends JPlugin
 				$newrow->anonymous   = $anonymous;
 
 				// which wishlist?
-				$objWishlist = new Wishlist ( $database );
+				$objWishlist = new Wishlist( $database );
 				$mainlist = $objWishlist->get_wishlistID(1, 'general');
 				$listid = 0;
 				if (!$rid && $owner) {
@@ -306,7 +305,7 @@ class plgSupportTransfer extends JPlugin
 					break;
 					
 					case 'question':
-						$BT = new BankTransaction( $database );
+						$BT = new Hubzero_Bank_Transaction( $database );
 						$reward = $BT->getAmount( 'answers', 'hold', $from_id, $author->get('id')  );
 						
 						// Remove hold
@@ -314,7 +313,7 @@ class plgSupportTransfer extends JPlugin
 							$BT->deleteRecords( 'answers', 'hold', $from_id );
 									
 							// Make credit adjustment
-							$BTL_Q = new BankTeller( $database, $author->get('id') );
+							$BTL_Q = new Hubzero_Bank_Teller( $database, $author->get('id') );
 							$credit = $BTL_Q->credit_summary();
 							$adjusted = $credit - $reward;
 							$BTL_Q->credit_adjustment($adjusted);
@@ -322,6 +321,7 @@ class plgSupportTransfer extends JPlugin
 					break;
 					
 					case 'wish':
+						include_once(JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'helpers'.DS.'economy.php');
 						$WE = new WishlistEconomy( $database );			
 						$WE->cleanupBonus($from_id);
 					break;

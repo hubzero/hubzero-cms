@@ -133,8 +133,8 @@ class plgTagsMembers extends JPlugin
 
 	public function documents() 
 	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet('com_members');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet('com_members');
 	}
 	
 	//-----------

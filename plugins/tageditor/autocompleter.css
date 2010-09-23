@@ -71,6 +71,7 @@
 		/*width: 30px;*/
 		/* was giving really tiny selection drop-down box */
 		}
+	#commentform ul.textboxlist-holder li.bit-input input.smallinput,
 	#hubForm ul.textboxlist-holder li.bit-input input.smallinput,
 	ul.textboxlist-holder li.bit-input input.smallinput { 
 		width: 1px;

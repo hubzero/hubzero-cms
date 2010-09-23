@@ -108,8 +108,8 @@ class modSlidingPanes
 		// If so, we only want to push the CSS and JS to the template once
 		if (!$this->multiple_instances) {
 			// Push some CSS to the template
-			ximport('xdocument');
-			XDocument::addModuleStylesheet('mod_sliding_panes');
+			ximport('Hubzero_Document');
+			Hubzero_Document::addModuleStylesheet('mod_sliding_panes');
 
 			// Push some javascript to the template
 			if (is_file(JPATH_ROOT.'/modules/mod_sliding_panes/mod_sliding_panes.js')) {

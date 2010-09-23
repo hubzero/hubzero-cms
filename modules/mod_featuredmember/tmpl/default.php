@@ -40,7 +40,7 @@ if ($modfeaturedmember->error) {
 		}
 		// Do we have a picture to show?
 		if (is_file(JPATH_ROOT.$modfeaturedmember->thumb)) {
-			$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$modfeaturedmember->id).'"><img width="50" height="50" src="'.$modfeaturedmember->thumb.'" alt="" /></a></p>'."\n";
+			$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$modfeaturedmember->id).'"><img width="50" height="50" src="'.$modfeaturedmember->thumb.'" alt="'.htmlentities(stripslashes($modfeaturedmember->title)).'" /></a></p>'."\n";
 		}
 		$html .= '<p><a href="'.JRoute::_('index.php?option=com_members&id='.$modfeaturedmember->id).'">'.stripslashes($modfeaturedmember->title).'</a>: '."\n";
 		if ($modfeaturedmember->txt) {

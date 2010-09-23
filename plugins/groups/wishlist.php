@@ -84,9 +84,9 @@ class plgGroupsWishlist extends JPlugin
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			if ($rtrn == 'html') {
-				ximport('xmodule');
+				ximport('Hubzero_Module_Helper');
 				$arr['html']  = Hubzero_View_Helper_Html::warning( JText::_('GROUPS_LOGIN_NOTICE') );
-				$arr['html'] .= XModuleHelper::renderModules('force_mod');
+				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
 			}
 			return $arr;
 		}
@@ -138,8 +138,7 @@ class plgGroupsWishlist extends JPlugin
 			// create private list for group
 			ximport('Hubzero_Group');
 			if (Hubzero_Group::exists($refid)) {
-				$group = new XGroup();
-				$group->select($refid);	
+				$group = Hubzero_Group::getInstance($refid);
 				$id = $obj->createlist($cat, $refid, 0, $group->get('cn').' '.JText::_('WISHLIST_NAME_GROUP'));
 			}			
 		}

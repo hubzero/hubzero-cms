@@ -68,13 +68,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$xtra = '';
 			
 			if($params->get('show_audience')) {
-				include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resources.audience.php');
+				include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'audience.php');
+				include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'audience.level.php');
 				$ra = new ResourceAudience( $database );
 				$audience = $ra->getAudience($resource->id, $versionid = 0 , $getlabels = 1, $numlevels = 4);					
 				$xtra .= ResourcesHtml:: showSkillLevel($audience, $showtips = 1, $numlevels = 4, $params->get('audiencelink') );
 			}
 			if ($supported) {
-				include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php');
+				include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
 				$tag = new TagsTag( $database );
 				$tag->loadTag($config->get('supportedtag'));
 
@@ -256,8 +257,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 				
 		// show what's popular
 		if ($tab == 'about') {
-			ximport('xmodule');
-			$html .= XModuleHelper::renderModules('extracontent');
+			ximport('Hubzero_Module_Helper');
+			$html .= Hubzero_Module_Helper::renderModules('extracontent');
 		}
 		
 		$html .= ' </div><!-- / .aside -->'."\n";		

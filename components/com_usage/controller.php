@@ -25,57 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class UsageController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-	
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		//Set the controller name
-		if (empty( $this->_name ))
-		{
-			if (isset($config['name']))  {
-				$this->_name = $config['name'];
-			}
-			else
-			{
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		$this->_option = 'com_'.$this->_name;
-	}
-	
-	//-----------
-	
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+ximport('Hubzero_Controller');
+
+class UsageController extends Hubzero_Controller
+{
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', 'overview' );
@@ -84,34 +37,6 @@ class UsageController extends JObject
 			JError::raiseError( 500, $this->getError() );
 		} else {
 			$this->view();
-		}
-	}
-
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-	
-	//-----------
-	
-	private function _getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-
-	//-----------
-	
-	private function _getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file('components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
 		}
 	}
 
@@ -203,4 +128,3 @@ class UsageController extends JObject
 		$view->display();
 	}
 }
-?>

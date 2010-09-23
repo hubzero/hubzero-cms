@@ -415,10 +415,10 @@
 		color: #999;
 		}
 	ol.comments li.private {
-		background-color: #f8f2e9;
+		background: #f8f2e9;
 		}
 	ol.comments li.submitter {
-		background-color: #f3f8e9;
+		background: #f3f8e9;
 		}
 	ol.comments blockquote {
 		margin: 0;
@@ -493,4 +493,115 @@
 		}
 	.fixedImgTip {
 		margin-right: 1em;
+}
+/* Stats */
+	#ticket-stats {
+		border-top: 1px solid #fff;
+		}
+	#ticket-stats h3 {
+		display: none;
+		}
+	#ticket-stats .aside {
+		width: 475px;
+		padding-top: 1em;
+		}
+	#ticket-stats .subject {
+		margin-right: 505px;
+		padding-top: 1em;
+		}
+	#ticket-stats .aside h3,
+	#ticket-stats .subject h3 {
+		display: block;
+		margin-top: 0;
+		border-bottom: 1px solid #ccc;
+		}
+	.support-stats-overview {
+		border-top: none;
+		border-bottom: none;
+		margin: 1em 0;
+		}
+	.support-stats-overview thead th {
+		font-size: 85%;
+		color: #aaa;
+		font-weight: normal;
+		border-left: 1px solid #eee;
+		border-right: 1px solid #eee;
+		border-bottom: none;
+		padding-bottom: 0;
+		width: 20%;
+		}
+	.support-stats-overview tbody td {
+		padding-top: 0;
+		font-size: 3em;
+		font-weight: bold;
+		border-left: 1px solid #eee;
+		border-right: 1px solid #eee;
+		color: #777;
+		border-bottom: 1px solid #eee;
+		width: 20%;
+		}
+	.support-stats-overview thead th.block,
+	.support-stats-overview tbody td.block {
+		width: 40%;
+		}
+	.support-stats-overview tbody td.block {
+		color: #b18fbc;
+		}
+	.open-tickets tbody td.critical {
+		color: red;
+		}
+	.open-tickets tbody td.major {
+		color: #ce7d7d;
+		}
+	.closed-tickets tbody td {
+		color: green;
+		}
+	.support-stats-overview tbody td span {
+		color: #aaa;
+		font-size: 12px;
+		line-height: 12px;
+		font-weight: normal;
+		margin: 0 1.5em 0 0;
+		padding: 0;
+		}
+	/* People */
+	.support-stats-people {
+		border-top: none;
+		border-bottom: none;
+		margin: 1em 0;
+		}
+	.support-stats-people thead th {
+		font-size: 85%;
+		color: #aaa;
+		font-weight: normal;
+		border-bottom: 1px solid #eee;
+		}
+	.support-stats-people tbody th {
+		font-weight: bold;
+		border-bottom: 1px solid #eee;
+		}
+	.support-stats-people thead th.group {
+		background-image: none;
+		padding-left: 10px;
+		}
+	.support-stats-people tbody td {
+		font-weight: normal;
+		border-bottom: 1px solid #eee;
+		}
+	.support-stats-people tbody tr.odd {
+		background-color: transparent;
+		}
+	.support-stats-people tbody tr.odd .group {
+		background-color: transparent;
+		background-image: none;
+		padding-left: 10px;
+		}
+	.support-stats-people tbody tr.even .group {
+		background-color: transparent;
+		background-image: none;
+		padding-left: 10px;
+		}
+	.ticket { 
+		background: url("images/note.png") 0 0 no-repeat; 
+		padding-left: 20px; 
 		}

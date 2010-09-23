@@ -236,8 +236,6 @@ class SupportController extends Hubzero_Controller
 	
 	protected function index() 
 	{
-		ximport('xmodule');
-		
 		// Instantiate a new view
 		$view = new JView( array('name'=>'index') );
 		$view->title = JText::_(strtoupper($this->_name));
@@ -506,7 +504,7 @@ class SupportController extends Hubzero_Controller
 		// Fetch results
 		$rows = $obj->getTickets( $filters, true );
 
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		
 		$doc->title = $xhub->getCfg('hubShortName').' '.JText::_('SUPPORT_RSS_TITLE');
 		$doc->description = JText::sprintf('SUPPORT_RSS_DESCRIPTION',$xhub->getCfg('hubShortName'));
@@ -627,9 +625,9 @@ class SupportController extends Hubzero_Controller
 		
 		// Save the tags
 		$tags = trim(JRequest::getVar( 'tags', '', 'post' ));
-		if ($tags) {
+		//if ($tags) {
 			$st->tag_object( $juser->get('id'), $row->id, $tags, 0, true );
-		}
+		//}
 
 		// We must have a ticket ID before we can do anything else
 		if ($id) {
@@ -717,7 +715,7 @@ class SupportController extends Hubzero_Controller
 				// Only do the following if a comment was posted
 				// otherwise, we're only recording a changelog
 				if ($comment || $row->owner != $old->owner) {
-					$xhub =& XFactory::getHub();
+					$xhub =& Hubzero_Factory::getHub();
 					$jconfig =& JFactory::getConfig();
 					
 					// Parse comments for attachments
@@ -1048,8 +1046,9 @@ class SupportController extends Hubzero_Controller
 			}
 			
 			// clean any cross-site scripting from report
-			$row->summary = TextFilter::cleanXss($row->summary);
-			$row->report  = TextFilter::cleanXss($row->report);
+			ximport('Hubzero_Filter');
+			$row->summary = Hubzero_Filter::cleanXss($row->summary);
+			$row->report  = Hubzero_Filter::cleanXss($row->report);
 			$row->report  = str_replace( '<br>', '<br />', $row->report );
 			$row->report  = ''.$row->report;
 			
@@ -1190,7 +1189,8 @@ class SupportController extends Hubzero_Controller
 			exit();
 		}
 
-		$row->report     = TextFilter::cleanXss($row->report);
+		ximport('Hubzero_Filter');
+		$row->report     = Hubzero_Filter::cleanXss($row->report);
 		$row->report     = nl2br($row->report);
 		$row->created_by = $juser->get('id');
 		$row->created    = date( 'Y-m-d H:i:s', time() );
@@ -1301,6 +1301,18 @@ class SupportController extends Hubzero_Controller
 		// Loop through each chunk (filter:option)
 		foreach ($chunks as $chunk) 
 		{
+			if (!strstr($chunk,':')) {
+				if ((substr($chunk, 0, 1) == '"' 
+				 || substr($chunk, 0, 1) == "'") 
+				 && (substr($chunk, -1) == '"' 
+				 || substr($chunk, -1) == "'")) {
+					$chunk = substr($chunk, 1, -1);  // Remove any surrounding quotes
+				}
+
+				$filters['search'] = $chunk;
+				continue;
+			}
+			
 			// Break each chunk into its pieces (filter, option)
 			$pieces = explode(':', $chunk);
 			
@@ -1396,18 +1408,17 @@ class SupportController extends Hubzero_Controller
 	
 	private function _userSelectGroup( $name, $active, $nouser=0, $javascript=NULL, $group='' ) 
 	{
-		ximport('xgroup');
+		ximport('Hubzero_Group');
 		
-		$xgroup = new XGroup();
-		$xgroup->select( $group );
+		$hzg = Hubzero_Group::getInstance( $group );
 		
 		$users = array();
 		if ($nouser) {
 			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
 		}
 		
-		if ($xgroup->get('gidNumber')) {
-			$members = $xgroup->get('members');
+		if ($hzg->get('gidNumber')) {
+			$members = $hzg->get('members');
 
 			foreach ($members as $member) 
 			{
@@ -1519,11 +1530,10 @@ class SupportController extends Hubzero_Controller
 		// Was a specific group set in the config?
 		$group = trim($this->config->get('group'));
 		if ($group or $toolgroup) {
-			ximport('xgroup');
-			ximport('xuserhelper');
+			ximport('Hubzero_User_Helper');
 			
 			// Check if they're a member of this group
-			$ugs = XUserHelper::getGroups( $juser->get('id') );
+			$ugs = Hubzero_User_Helper::getGroups( $juser->get('id') );
 			if ($ugs && count($ugs) > 0) {
 				foreach ($ugs as $ug) 
 				{

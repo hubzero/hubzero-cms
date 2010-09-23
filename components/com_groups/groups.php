@@ -36,12 +36,11 @@ if ($config->getValue('config.debug')) {
 
 jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
-ximport('xgroup');
-ximport('xuserhelper');
+ximport('Hubzero_User_Helper');
 
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'groups.tags.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'groups.log.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'groups.reason.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'log.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'reason.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
 $jacl =& JFactory::getACL();
@@ -53,4 +52,3 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 $controller = new GroupsController();
 $controller->execute();
 $controller->redirect();
-?>

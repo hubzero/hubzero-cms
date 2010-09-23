@@ -80,33 +80,27 @@ class ToolGroup extends  JTable
 		}
 		
 		$members = ContribtoolHelper::transform($members, 'uidNumber');
-		$group = new XGroup();
+		$group = new Hubzero_Group();
+
 		if(Hubzero_Group::exists($devgroup)) {
 			$group->select($devgroup);		
 			$existing_members = ContribtoolHelper::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
-			$to_delete = array_diff($existing_members, $members);			
-			$group->_lists['delete']['managers'] = $to_delete;
-			$group->_lists['delete']['members'] = $to_delete;
+			$group->set('members',$existing_members);
+			$group->set('managers',$existing_managers);
 		}
 		else {
+			$group->create();
 			$group->set('type', 2 );
 			$group->set('published', 1 );
 			$group->set('access', 4 );
 			$group->set('description', 'Dev group for tool '.$toolid );
 			$group->set('cn', $devgroup );
+			$group->set('members',$existing_members);
+			$group->set('managers',$existing_managers);
 		}		
-		
-		if(Hubzero_Group::exists($devgroup))	{
-			$group->_lists['add']['managers'] = $members;
-			$group->_lists['add']['members'] = $members;
-			$group->update();
-		}
-		else {
-			$group->save();
-			$group->_lists['add']['managers'] = $members;
-			$group->_lists['add']['members'] = $members;
-			$group->update();			
-		}
+
+		$group->update();
+
 		if(!$exist) { $this->save($devgroup, $toolid, '1'); }
 		
 		return true;

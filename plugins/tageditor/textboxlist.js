@@ -231,7 +231,8 @@ var TextboxList = new Class({
 		if(el.retrieve('small')) el.setStyle('display', 'block');
 		if(el.retrieve('type') == 'input') {
 			this.fireEvent('onInputFocus', el);
-			if(! nofocus) this.callEvent(el.retrieve('input'), 'focus');
+			//if(! nofocus) this.callEvent(el.retrieve('input'), 'focus');
+			if(! nofocus) this.callEvent(el, 'focus');
 		}
 		else this.fireEvent('onBoxFocus', el);
 		this.current = el;

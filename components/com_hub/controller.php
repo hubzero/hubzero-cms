@@ -78,7 +78,7 @@ class HubController extends JObject
 	
 	private function _cookie_check()
 	{
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$jsession =& JFactory::getSession();
 		$jcookie = $jsession->getName();
 
@@ -120,7 +120,7 @@ class HubController extends JObject
 		$this->_task = JRequest::getVar('task','','method');
 		$this->_act  = JRequest::getVar('act','','method');
 		
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 
 		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off') {
 			$xhub->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ); 
@@ -182,7 +182,7 @@ class HubController extends JObject
 	public function logout()
 	{       
 		$app  =& JFactory::getApplication();
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		
 		// Preform the logout action
 		$error = $app->logout();
@@ -207,7 +207,7 @@ class HubController extends JObject
 
 	public function login($action = 'show')
 	{
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$juser = &JFactory::getUser();
 
 		$return = base64_decode( JRequest::getVar('return', '',  'method', 'base64') );
@@ -323,7 +323,7 @@ class HubController extends JObject
 
 	protected function realm($action = null)
 	{
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		
 		if (!$this->_cookie_check()) {
 			return;
@@ -376,7 +376,7 @@ class HubController extends JObject
 	protected function lostusername() 
 	{
 		// Load some needed libraries
-		ximport('xregistrationhelper');
+		ximport('Hubzero_Registration_Helper');
 
 		$this->_view = $this->_task;
 		
@@ -404,7 +404,7 @@ class HubController extends JObject
 		if ($resend) {
 			if (empty($email)) {
 				$this->setError( JText::_('Please provide a valid e-mail address.') );
-			} else if (!XRegistrationHelper::validemail($email)) {
+			} else if (!Hubzero_Registration_Helper::validemail($email)) {
 				$this->setError( JText::_('Invalid e-mail address. Example: someone@somewhere.com') );
 			} else {
 				// Send the account recovery
@@ -426,19 +426,18 @@ class HubController extends JObject
 
 	private function send_account_recovery($email)
 	{
-		ximport('xprofile');
-		ximport('xuserhelper');
-		ximport('xprofile');
-		ximport('xhubhelper');
+		ximport('Hubzero_User_Profile');
+		ximport('Hubzero_User_Helper');
+		ximport('Hubzero_Toolbox');
 		
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
 		$hubLongURL = $xhub->getCfg('hubLongURL');
 		$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
 		$hubHomeDir = $xhub->getCfg('hubHomeDir');
 
 		// Attempt to load an account with this email address
-		$emailusers = XProfileHelper::find_by_email($email);
+		$emailusers = Hubzero_User_Profile_Helper::find_by_email($email);
 		
 		if (empty($emailusers)) {
 			return JError::raiseError(403, 'Request Invalid: Error locating an account with the email address [' . $email . '].');
@@ -457,7 +456,7 @@ class HubController extends JObject
 		$message .= " registered to this address:\r\n";
 		foreach ($emailusers as $emailuser) 
 		{
-			$xprofile =& XProfile::getInstance($emailuser);
+			$xprofile =& Hubzero_User_Profile::getInstance($emailuser);
 
 			$message .= "\t" . $xprofile->get('username') . "\t(" . $xprofile->get('name') . ")\r\n";
 		}
@@ -475,7 +474,7 @@ class HubController extends JObject
 		$message .= $hubLongURL .DS.JRoute::_('index.php?option='.$this->_option.'&task=lostpassword') . "\r\n";
 
 		// Send the email
-		if (XHubHelper::send_email($email, $subject, $message)) {
+		if (Hubzero_Toolbox::send_email($email, $subject, $message)) {
 			// Admin email subject
 			$subject = $hubShortName . " Account Recovery";
 			
@@ -486,7 +485,7 @@ class HubController extends JObject
 			$message .= $hubLongURL . '/members/whois/?email=' . $email . "\r\n";
 			
 			// Send the admin email
-			XHubHelper::send_email($hubMonitorEmail, $subject, $message);
+			Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
 		} else { 
 			return JError::raiseError(500, 'Internal Error: Error emailing your account information to the email address [' . $email . '].');
 		}
@@ -499,12 +498,12 @@ class HubController extends JObject
 	protected function lostpassword() 
 	{
 		// Load some needed libraries
-		ximport('xregistrationhelper');
-		ximport('xuserhelper');
-		ximport('xhubhelper');
-		ximport('xprofile');
+		ximport('Hubzero_Registration_Helper');
+		ximport('Hubzero_User_Helper');
+		ximport('Hubzero_Toolbox');
+		ximport('Hubzero_User_Profile');
 		
-		$xprofile =& XFactory::getProfile();
+		$xprofile =& Hubzero_Factory::getProfile();
 
 		$this->_view = $this->_task;
 
@@ -527,7 +526,7 @@ class HubController extends JObject
 		$view->passed = false;
 
 		// Check if the user *can* reset their password
-		if ( is_object($xprofile) && (XUserHelper::isXDomainUser($xprofile->get('uidNumber'))) ) {
+		if ( is_object($xprofile) && (Hubzero_User_Helper::isXDomainUser($xprofile->get('uidNumber'))) ) {
 			$view->setError( JText::_('This is a linked account. To retrieve your password you must do so using the procedures available where the account your are linked to is managed.') );
 			$view->display();
 			return;
@@ -541,7 +540,7 @@ class HubController extends JObject
 		// Was the form submitted?
 		if ($view->reset) {
 			// Attempt to load a user with the given username
-			$xprofile =& XProfile::getInstance($view->login);
+			$xprofile =& Hubzero_User_Profile::getInstance($view->login);
 
 			// Ensure we have a user with this login and e-mail
 			if (!is_object($xprofile)) {
@@ -557,12 +556,12 @@ class HubController extends JObject
 			}
 
 			// Generate a new password
-			$newpass = XRegistrationHelper::userpassgen();
+			$newpass = Hubzero_Registration_Helper::userpassgen();
 
 			// Initiate profile class
-			$profile = new XProfile();
+			$profile = new Hubzero_User_Profile();
 			$profile->load( $xprofile->get('uidNumber') );
-			$profile->set('userPassword', XUserHelper::encrypt_password($newpass));
+			$profile->set('userPassword', Hubzero_User_Helper::encrypt_password($newpass));
 
 			if (!$profile->update()) {
 				$this->setError( JText::_('There was an error resetting your password.') );
@@ -611,12 +610,12 @@ class HubController extends JObject
 			$from['email'] = $jconfig->getValue('config.mailfrom');
 
 			// E-mail the administrator
-			if (!XHubHelper::send_email($jconfig->getValue('config.mailfrom'), $subject, $admmessage)) {
+			if (!Hubzero_Toolbox::send_email($jconfig->getValue('config.mailfrom'), $subject, $admmessage)) {
 				$this->setError(JText::_("There was an error emailing '" . htmlentities($jconfig->getValue('config.mailfrom'),ENT_COMPAT,'UTF-8') . "' about your password change request."));
 			}
 
 			// E-mail the user
-			if (!XHubHelper::send_email($xprofile->get('email'), $subject, $usrmessage)) {
+			if (!Hubzero_Toolbox::send_email($xprofile->get('email'), $subject, $usrmessage)) {
 				$this->setError(JText::_("There was an error emailing '" . htmlentities($xprofile->get('email'),ENT_COMPAT,'UTF-8') . "' your new password."));
 			}
 
@@ -632,4 +631,3 @@ class HubController extends JObject
 		$view->display();
 	}
 }
-?>

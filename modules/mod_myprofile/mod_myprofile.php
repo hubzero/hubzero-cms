@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('wiki.parser');
 
 // Include the logic only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once(dirname(__FILE__).DS.'helper.php');
 
 //-------------------------------------------------------------
 
@@ -36,4 +36,3 @@ $modmyprofile = new modMyProfile( $params );
 $modmyprofile->display();
 
 require( JModuleHelper::getLayoutPath('mod_myprofile') );
-?>

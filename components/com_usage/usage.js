@@ -28,37 +28,6 @@ if (!HUB) {
 //----------------------------------------------------------
 HUB.Usage = {
 	initialize: function() {
-		/*var r = false;
-		var chLinks = document.getElementsByClassName('charthistory');
-		if (chLinks) {
-			for (var i=0; i < chLinks.length; i++)
-			{
-				chLinks[i].onclick = function() {
-						document.getElementById('history').value = this.id;
-						document.getElementById('largechart').src = this.href;
-						UsageStats.deactivate('charthistory',0);
-						UsageStats.deactivate('chart', 1);
-						this.addClass('displaying');
-						return false;
-					}
-			}
-		}
-
-		var cLinks = document.getElementsByClassName('chart');
-		if (cLinks) {
-			for (var k=0; k < cLinks.length; k++)
-			{
-				cLinks[k].onclick = function() {
-						var h = $('history').value;
-						var p = this.href;
-						p = UsageStats.cutup(p,h);
-						document.getElementById('largechart').src = p;
-						UsageStats.deactivate('chart',0);
-						this.addClass('displaying');
-						return false;
-					}
-			}
-		}*/
 		// Init fixed position DOM: tooltips
 		var iTTips = new MooTips($$('.fixedImgTip'), {
 			showDelay: 500,			// Delay for 500 milliseconds

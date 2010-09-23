@@ -42,6 +42,7 @@ if ($this->rows) {
 		echo "\t\t" . '<tag>' . "\n";
 		echo "\t\t\t" . '<raw>' . htmlspecialchars( stripslashes($datum->raw_tag) ) . '</raw>' . "\n";
 		echo "\t\t\t" . '<normalized>' . htmlspecialchars( $datum->tag ) . '</normalized>' . "\n";
+		echo "\t\t\t" . '<total>' . htmlspecialchars( $datum->total ) . '</total>' . "\n";
 		echo "\t\t" . '</tag>' . "\n";
 	}
 }

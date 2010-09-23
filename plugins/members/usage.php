@@ -85,8 +85,8 @@ class plgMembersUsage extends JPlugin
 
 		$html = '';
 		if ($returnhtml) {
-			ximport('xdocument');
-			XDocument::addComponentStylesheet('com_usage');
+			ximport('Hubzero_Document');
+			Hubzero_Document::addComponentStylesheet('com_usage');
 			
 			//$sort = JRequest::getVar('sort','');
 			

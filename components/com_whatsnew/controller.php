@@ -25,69 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class WhatsnewController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
-	private function _getTask()
-	{
-		$task = JRequest::getVar( 'task', '' );
-		$this->_task = $task;
-		return $task;
-	}
-	
-	//----------------------------------------------------------
-	// Views
-	//----------------------------------------------------------
-	
+class WhatsnewController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		switch ($this->_getTask()) 
+		$this->_task = JRequest::getVar( 'task', '' );
+		
+		switch ($this->_task) 
 		{
 			case 'browse':   $this->browse(); break;
 			case 'feed.rss': $this->feed();   break;
@@ -101,8 +47,6 @@ class WhatsnewController extends JObject
 	
 	public function browse()
 	{
-		$database =& JFactory::getDBO();
-
 		// Determine if user has admin privledges
 		$authorized = $this->_authorize();
 
@@ -249,9 +193,6 @@ class WhatsnewController extends JObject
 		}
 		$pathway->addItem($this->_jtext($period),'index.php?option='.$this->_option.'&period='.$period);
 		
-		// Output HTML
-		//echo WhatsnewHtml::display( $period, $totals, $results, $cats, $active, $this->_option, $start, $limit, $total );
-		
 		// Build some options for the time period <select>
 		$periodlist = array();
 		$periodlist[] = JHTMLSelect::option('week',JText::_('COM_WHATSNEW_OPT_WEEK'));
@@ -298,7 +239,6 @@ class WhatsnewController extends JObject
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'document'.DS.'feed'.DS.'feed.php');
 		
 		$mainframe =& $this->mainframe;
-		$database =& JFactory::getDBO();
 		
 		// Set the mime encoding for the document
 		$jdoc =& JFactory::getDocument();
@@ -403,7 +343,7 @@ class WhatsnewController extends JObject
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php' );
 			
 			foreach ($rows as $row)
 			{
@@ -427,7 +367,7 @@ class WhatsnewController extends JObject
 				@$date = ( $row->publish_up ? date( 'r', strtotime($row->publish_up) ) : '' );
 
 				if (isset($row->ranking) || isset($row->rating)) {
-					$resourceEx = new ResourceExtended($row->id, $database);
+					$resourceEx = new ResourceExtended($row->id, $this->database);
 					$resourceEx->getCitationsCount();
 					$resourceEx->getLastCitationDate();
 					$resourceEx->getContributors();
@@ -451,16 +391,6 @@ class WhatsnewController extends JObject
 		
 		// Output the feed
 		echo $doc->render();
-	}
-
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
-		}
 	}
 	
 	//----------------------------------------------------------
@@ -499,35 +429,6 @@ class WhatsnewController extends JObject
 	
 	//-----------
 	
-	private function _getStyles($option='') 
-	{
-		ximport('xdocument');
-		if ($option) {
-			XDocument::addComponentStylesheet('com_'.$option);
-		} else {
-			XDocument::addComponentStylesheet($this->_option);
-		}
-	}
-
-	//-----------
-	
-	private function _getScripts($option='',$name='')
-	{
-		$document =& JFactory::getDocument();
-		if ($option) {
-			$name = ($name) ? $name : $option;
-			if (is_file(JPATH_ROOT.DS.'components'.DS.'com_'.$option.DS.$name.'.js')) {
-				$document->addScript('components'.DS.'com_'.$option.DS.$name.'.js');
-			}
-		} else {
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-				$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-			}
-		}
-	}
-	
-	//-----------
-	
 	private function _getAreas()
 	{
 		// Do we already have an array of areas?
@@ -556,23 +457,4 @@ class WhatsnewController extends JObject
 		// Return the array
 		return $this->searchareas;
 	}
-	
-	//-----------
-
-	private function _authorize() 
-	{
-		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
-			return false;
-		}
-	
-		// Check if they're a site admin (from Joomla)
-		if ($juser->authorize($this->_option, 'manage')) {
-			return true;
-		}
-
-		return false;
-	}
 }
-?>

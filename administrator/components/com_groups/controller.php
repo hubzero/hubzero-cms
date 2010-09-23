@@ -53,7 +53,10 @@ class GroupsController extends Hubzero_Controller
 			case 'add':      $this->add();      break;
 			case 'manage':   $this->manage();   break;
 			case 'browse':   $this->browse();   break;
-			
+			case 'system':   $this->system();   break;		
+			case 'exporttoldap': $this->exporttoldap();   break;		
+			case 'importldap': $this->importldap();   break;		
+			case 'test': $this->mytest();   break;		
 			default: $this->browse(); break;
 		}
 	}
@@ -62,6 +65,168 @@ class GroupsController extends Hubzero_Controller
 	//  Views
 	//----------------------------------------------------------
 	
+	protected function mytest()
+	{
+		die('gee');
+	}
+
+	protected function exporttoldap()
+	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'system','layout'=>'exporttoldap') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->post = (JRequest::getMethod() == 'POST');
+
+		if ($view->post)
+		{
+        	// Check for request forgeries
+        	JRequest::checkToken() or jexit( 'Invalid Token' );
+
+			// Authorization check
+			// @TODO: Should probably limit this to super admins
+
+			// Validate inputs
+
+            $replace = JRequest::getVar('replace', null, 'post', 'int');
+
+            if ($replace != 0 && $replace != 1)
+                jexit( 'Invalid POST Data' );
+
+            $update = JRequest::getVar('update', null, 'post', 'int');
+
+            if ($update != 0 && $update != 1)
+                jexit( 'Invalid POST Data' );
+
+            $objectclass = JRequest::getVar('objectclass', null, 'post', 'word');
+
+            if ($objectclass == 'posixgroup')
+                $legacy = false;
+            else if ($objectclass == 'hubgroup')
+                $legacy = true;
+            else
+                jexit( 'Invalid POST Data' );
+
+            $extended = JRequest::getVar('extended', null, 'post', 'int');
+
+            if ($extended != 0 && $extended != 1)
+                jexit( 'Invalid POST Data' );
+
+            $verbose = JRequest::getVar('verbose', null, 'post', 'int');
+
+            if ($verbose != 0 && $verbose != 1)
+                jexit( 'Invalid POST Data' );
+
+            $dryrun = JRequest::getVar('dryrun', null, 'post', 'int');
+
+            if ($dryrun != 0 && $dryrun != 1)
+                jexit( 'Invalid POST Data' );
+
+			// Execute action
+
+			Hubzero_Group::exportSQLtoLDAP($extended,$replace,$update,$legacy,$verbose,$dryrun);
+		}
+
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
+	}
+
+	protected function importldap()
+	{
+        // Instantiate a new view
+        $view = new JView( array('name'=>'system','layout'=>'importldap') );
+        $view->option = $this->_option;
+        $view->task = $this->_task;
+        $view->post = (JRequest::getMethod() == 'POST');
+
+        if ($view->post)
+        {
+            // Check for request forgeries
+            JRequest::checkToken() or jexit( 'Invalid Token' );
+
+            // Authorization check
+            // @TODO: Should probably limit this to super admins
+
+            // Validate inputs
+
+            $replace = JRequest::getVar('replace', null, 'post', 'int');
+
+            if ($replace != 0 && $replace != 1)
+                jexit( 'Invalid POST Data' );
+
+            $update = JRequest::getVar('update', null, 'post', 'int');
+
+            if ($update != 0 && $update != 1)
+                jexit( 'Invalid POST Data' );
+
+            $objectclass = JRequest::getVar('objectclass', null, 'post', 'word');
+
+            if ($objectclass == 'posixgroup')
+                $legacy = false;
+            else if ($objectclass == 'hubgroup')
+                $legacy = true;
+            else
+                jexit( 'Invalid POST Data' );
+
+            $extended = JRequest::getVar('extended', null, 'post', 'int');
+
+            if ($extended != 0 && $extended != 1)
+                jexit( 'Invalid POST Data' );
+
+            // Execute action
+
+            Hubzero_Group::importSQLfromLDAP($extended,$replace,$update,$legacy, true /* verbose */, false /* dryrun */);
+        }
+
+		
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
+	}
+
+	protected function system()
+	{
+		// Instantiate a new view
+		$view = new JView( array('name'=>'system') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		
+		// Get configuration
+		$app =& JFactory::getApplication();
+		$config = JFactory::getConfig();
+
+		$xhub = &Hubzero_Factory::getHub();
+
+		$view->ldapBaseDN = $xhub->getCfg('hubLDAPBaseDN');
+		$view->ldapURI = $xhub->getCfg('hubLDAPMasterHost');
+		$view->ldapTLS = $xhub->getCfg('hubLDAPNegotiateTLS');
+		$view->ldapSearchUserDN = $xhub->getCfg('hubLDAPSearchUserDN');
+		$view->ldapSearchUserPW = $xhub->getCfg('hubLDAPSearchUserPW');
+		$view->ldapAcctMgrDN = $xhub->getCfg('hubLDAPAcctMgrDN');
+		$view->ldapAcctMgrPW = $xhub->getCfg('hubLDAPAcctMgrPW');
+
+		$view->conn = &Hubzero_Factory::getPLDC();
+
+		$view->status = Hubzero_Group::status();
+
+		// Set any errors
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		// Output the HTML
+		$view->display();
+	}
+
 	protected function browse()
 	{
 		// Instantiate a new view
@@ -124,8 +289,8 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		// Load the group page
-		$group = new XGroup();
-		$group->select( $gid );
+		$group = new Hubzero_Group();
+		$group->read( $gid );
 		
 		$this->gid = $gid;
 		$this->group = $group;
@@ -218,8 +383,8 @@ class GroupsController extends Hubzero_Controller
 		$view->option = $this->_option;
 		$view->task = $this->_task;
 		
-		$view->group = new XGroup();
-		$view->group->select( $id );
+		$view->group = new Hubzero_Group();
+		$view->group->read( $id );
 		
 		// Set any errors
 		if ($this->getError()) {
@@ -241,8 +406,8 @@ class GroupsController extends Hubzero_Controller
 		$g = JRequest::getVar( 'group', array(), 'post' );
 		$g = array_map('trim', $g);
 		
-		// Instantiate an XGroup object
-		$group = new XGroup();
+		// Instantiate an Hubzero_Group object
+		$group = new Hubzero_Group();
 		
 		// Is this a new entry or updating?
 		$isNew = false;
@@ -256,7 +421,7 @@ class GroupsController extends Hubzero_Controller
 			$this->_task = 'edit';
 			
 			// Load the group
-			$group->select( $g['gidNumber'] );
+			$group->read( $g['gidNumber'] );
 		}
 
 		// Check for any missing info
@@ -317,6 +482,7 @@ class GroupsController extends Hubzero_Controller
 		$group->set('cn', $g['cn']);
 		$group->set('type', $g['type']);
 		if ($isNew) {
+			$group->create();
 			$group->set('published', 1 );
 			
 			$group->add('managers',array($this->juser->get('id')));
@@ -329,7 +495,7 @@ class GroupsController extends Hubzero_Controller
 		$group->set('public_desc', $g['public_desc']);
 		$group->set('private_desc', $g['private_desc']);
 		$group->set('restrict_msg', $g['restrict_msg']);
-		$group->save();
+		$group->update();
 
 		// Output messsage and redirect
 		$this->_redirect = 'index.php?option='.$this->_option;
@@ -360,8 +526,8 @@ class GroupsController extends Hubzero_Controller
 			foreach ($ids as $id) 
 			{
 				// Load the group page
-				$group = new XGroup();
-				$group->select( $id );
+				$group = new Hubzero_Group();
+				$group->read( $id );
 
 				// Ensure we found the group info
 				if (!$group) {
@@ -479,7 +645,6 @@ class GroupsController extends Hubzero_Controller
 				$this->setError( JText::_('GROUPS_USER_NOTFOUND').' '.$mbr );
 			}
 		}
-		
 		// Remove the user from any other lists they may be apart of
 		$this->group->remove('invitees',$users);
 		$this->group->remove('applicants',$users);
@@ -659,7 +824,7 @@ class GroupsController extends Hubzero_Controller
 		
 		// Get a count of the number of managers
 		$nummanagers = count($managers);
-		
+		print_r($this->group);
 		// Only admins can demote the last manager
 		if ($authorized != 'admin' && $nummanagers <= 1) {
 			$this->setError( JText::_('GROUPS_LAST_MANAGER') );
@@ -693,8 +858,9 @@ class GroupsController extends Hubzero_Controller
 		// Remove users from managers list
 		$this->group->remove('managers',$users);
 		
+		print_r($this->group);
 		// Save changes
-		$this->group->update();
+		//$this->group->update();
 	}
 	
 	//-----------

@@ -34,16 +34,18 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
-jimport( 'joomla.application.component.view');
-
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'poll.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'data.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'date.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'menu.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
+
 // Instantiate controller
 $controller = new XPollController();
 $controller->execute();
 $controller->redirect();
-?>

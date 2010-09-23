@@ -128,7 +128,8 @@ class modMyContributions
 				if ($rows[$i]->published == 1 && $i <= $limit_tools) {
 					if ($show_questions) {
 						// get open questions
-						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'answers.class.php' );
+						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
+						require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
 						$aq = new AnswersQuestion( $database );	
 						$filters = array();
 						$filters['limit']    = $limit;
@@ -266,7 +267,7 @@ class modMyContributions
 	public function display()
 	{
 		// Get the user's profile from LDAP...
-		$xprofile =& XFactory::getProfile();
+		$xprofile =& Hubzero_Factory::getProfile();
 		$juser =& JFactory::getUser();
 		$session_quota = $xprofile->get('jobsAllowed');
 		$administrator = in_array('middleware', $xprofile->get('admin'));
@@ -302,8 +303,8 @@ class modMyContributions
 		$this->limit_other = $limit_other;
 		
 		// Push the module CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_mycontributions');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_mycontributions');
 		
 		// Tools in progress
 		$this->tools = ($this->show_tools) ? $this->_getToollist($this->show_questions, $this->show_wishes, $this->show_tickets, $this->limit_tools) : array();

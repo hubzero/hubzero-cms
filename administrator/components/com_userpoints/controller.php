@@ -65,7 +65,7 @@ class UserpointsController extends Hubzero_Controller
 		$users = $this->database->loadObjectList();
 		
 		$stats = array();
-		$BT = new BankTransaction($this->database);
+		$BT = new Hubzero_Bank_Transaction($this->database);
 	
 		$thismonth = date( 'Y-m');
 		$lastmonth = date('Y-m', time() - (32 * 24 * 60 * 60));
@@ -231,7 +231,7 @@ class UserpointsController extends Hubzero_Controller
 			$view->option = $this->_option;
 			$view->task = $this->_task;
 			
-			$view->row = new BankAccount( $this->database );
+			$view->row = new Hubzero_Bank_Account( $this->database );
 			$view->row->load_uid( $uid );
 
 			if (!$view->row->balance) {
@@ -274,7 +274,7 @@ class UserpointsController extends Hubzero_Controller
 		
 		$id = JRequest::getInt( 'id', 0 );
 
-		$row = new BankAccount( $this->database );
+		$row = new Hubzero_Bank_Account( $this->database );
 		if (!$row->bind( $_POST )) {
 			JError::raiseError( 500, $row->getError() );
 			return;
@@ -310,7 +310,7 @@ class UserpointsController extends Hubzero_Controller
 
 			$data['balance'] = $row->balance;
 		
-			$BT = new BankTransaction( $this->database );
+			$BT = new Hubzero_Bank_Transaction( $this->database );
 			if ($data['description']=='') { 
 				$data['description'] = 'Reason unspecified';
 			}
@@ -435,7 +435,7 @@ class UserpointsController extends Hubzero_Controller
 		$when				= date( 'Y-m-d H:i:s', time() );
 
 		// make sure this function was not already run
-		$MH = new MarketHistory( $this->database );
+		$MH = new Hubzero_Bank_MarketHistory( $this->database );
 		$duplicate = $MH->getRecord($ref, $action, $category, '', $data['description']);
 		
 		if ($data['amount'] && $data['description'] && $users) {	
@@ -447,10 +447,10 @@ class UserpointsController extends Hubzero_Controller
 				
 				foreach ($users as $user) 
 				{
-					$validuser = XProfile::getInstance($user);
+					$validuser = Hubzero_User_Profile::getInstance($user);
 			
 					if ($user && $validuser) {
-						$BTL = new BankTeller( $this->database, $user );
+						$BTL = new Hubzero_Bank_Teller( $this->database, $user );
 						switch ($data['type'])
 						{
 							case 'withdraw':
@@ -464,7 +464,7 @@ class UserpointsController extends Hubzero_Controller
 				}
 					
 				// Save log
-				$MH = new MarketHistory( $this->database );
+				$MH = new Hubzero_Bank_MarketHistory( $this->database );
 				$data['itemid']       = $ref;
 				$data['date']         = date("Y-m-d H:i:s");
 				$data['market_value'] = $data['amount'];
@@ -517,7 +517,7 @@ class UserpointsController extends Hubzero_Controller
 		$resmsg = 'Royalties on Resources for '.$curyear.' were distributed successfully.';
 
 		// Make sure we distribute royalties only once/ month
-		$MH = new MarketHistory( $this->database );
+		$MH = new Hubzero_Bank_MarketHistory( $this->database );
 		$royaltyAnswers = $MH->getRecord('', $action, 'answers', $curyear, $this->_message);
 		$royaltyReviews = $MH->getRecord('', $action, 'reviews', $curyear, $rmsg);
 		$royaltyResources = $MH->getRecord('', $action, 'resources', $curyear, $resmsg);
@@ -538,7 +538,7 @@ class UserpointsController extends Hubzero_Controller
 				
 				// make a record of royalty payment
 				if (intval($accumulated) > 0) {
-					$MH = new MarketHistory( $this->database  );
+					$MH = new Hubzero_Bank_MarketHistory( $this->database  );
 					$data['itemid']       = $ref;
 					$data['date']         = date("Y-m-d H:i:s");
 					$data['market_value'] = $accumulated;
@@ -587,7 +587,7 @@ class UserpointsController extends Hubzero_Controller
 			
 			// make a record of royalty payment
 			if (intval($accumulated) > 0) {
-				$MH = new MarketHistory( $this->database );
+				$MH = new Hubzero_Bank_MarketHistory( $this->database );
 				$data['itemid']       = $ref;
 				$data['date']         = date("Y-m-d H:i:s");
 				$data['market_value'] = $accumulated;
@@ -628,7 +628,7 @@ class UserpointsController extends Hubzero_Controller
 			
 			// make a record of royalty payment
 			if (intval($accumulated) > 0) {
-				$MH = new MarketHistory( $this->database );
+				$MH = new Hubzero_Bank_MarketHistory( $this->database );
 				$data['itemid']       = $ref;
 				$data['date']         = date("Y-m-d H:i:s");
 				$data['market_value'] = $accumulated;

@@ -44,8 +44,7 @@ if (!$user->authorize( $option, 'manage' )) {
 
 // Include scripts
 require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tags.tag.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tags.class.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'handler.php' );
 
 // Initiate controller
 $controller = new TagsController();

@@ -72,32 +72,38 @@ if (count($this->rows) > 0) {
 		switch ($this->filters['type']) 
 		{
 			case 'profiles':
-				ximport('xprofile');
+				ximport('Hubzero_User_Profile');
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
 				$mconfig =& JComponentHelper::getParams( 'com_members' );
 			break;
 			case 'questions':
 				$aconfig =& JComponentHelper::getParams( 'com_answers' );
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'answers.class.php' );
+				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
+				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
+				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
+				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
 			break;
 			case 'tools':
 				$rconfig =& JComponentHelper::getParams( 'com_resources' );
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php');
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
 			break;
 			case 'resources':
 				$rconfig =& JComponentHelper::getParams( 'com_resources' );
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php');
 			break;
 			case 'all':
 			default:
-				ximport('xprofile');
+				ximport('Hubzero_User_Profile');
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'profile.php' );
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'answers.class.php' );
+				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
+				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
+				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
+				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
 				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
+				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php');
 				$mconfig =& JComponentHelper::getParams( 'com_members' );
 				$aconfig =& JComponentHelper::getParams( 'com_answers' );
 				$rconfig =& JComponentHelper::getParams( 'com_resources' );
@@ -260,7 +266,7 @@ if (count($this->rows) > 0) {
 					$id = $row->uidNumber;
 
 					// Load their bio
-					$profile = new XProfile();
+					$profile = new Hubzero_User_Profile();
 					$profile->load( $row->uidNumber );
 					$txt = $profile->get('bio');
 

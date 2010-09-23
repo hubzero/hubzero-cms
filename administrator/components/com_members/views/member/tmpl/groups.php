@@ -51,12 +51,12 @@ $app =& JFactory::getApplication();
 		<table class="paramlist admintable">
 			<tbody>
 		<?php
-		ximport('xuserhelper');
+		ximport('Hubzero_User_Helper');
 		
-		$applicants = XUserHelper::getGroups( $this->id, 'applicants' );
-		$invitees = XUserHelper::getGroups( $this->id, 'invitees' );
-		$members = XUserHelper::getGroups( $this->id, 'members' );
-		$managers = XUserHelper::getGroups( $this->id, 'managers' );
+		$applicants = Hubzero_User_Helper::getGroups( $this->id, 'applicants' );
+		$invitees = Hubzero_User_Helper::getGroups( $this->id, 'invitees' );
+		$members = Hubzero_User_Helper::getGroups( $this->id, 'members' );
+		$managers = Hubzero_User_Helper::getGroups( $this->id, 'managers' );
 
 		$applicants = (is_array($applicants)) ? $applicants : array();
 		$invitees = (is_array($invitees)) ? $invitees : array();

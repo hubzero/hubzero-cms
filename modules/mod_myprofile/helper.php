@@ -61,7 +61,7 @@ class modMyProfile
 		
 		$this->id = JFactory::getUser()->get('id');
 		
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 		$profile->load($this->id);
 		
 		if (!$profile->get('name')) {
@@ -73,9 +73,9 @@ class modMyProfile
 		
 		// Get the member's picture (if it exist)
 		if ($profile->get('picture')) {
-			ximport('fileuploadutils');
+			ximport('Hubzero_View_Helper_Html');
 			
-			$dir = FileUploadUtils::niceidformat( $this->id );
+			$dir = Hubzero_View_Helper_Html::niceidformat( $this->id );
 			if (!file_exists(JPATH_ROOT.$config->get('webpath').DS.$dir.DS.$profile->get('picture'))) {
 				$profile->set('picture', $config->get('defaultpic'));
 			} else {
@@ -92,7 +92,7 @@ class modMyProfile
 		$this->profile = $profile;
 		
 		// Push the module CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_myprofile');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_myprofile');
 	}
 }

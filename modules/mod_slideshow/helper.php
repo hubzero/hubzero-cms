@@ -58,7 +58,7 @@ class modSlideshow
 	public function display() 
 	{
 		$params = $this->params;
-		ximport('xdocument');	
+		ximport('Hubzero_Document');	
 		
 		$image_dir = ($params->get('image_dir')) ? $params->get('image_dir') : 'site/slideshow' ;
 		$alias = ($params->get('alias')) ? $params->get('alias') : '' ;
@@ -71,7 +71,7 @@ class modSlideshow
 		$noflash = ($params->get('stype')) ? $params->get('stype') : 0 ;
 		$noflash_link = ($params->get('noflash_link')) ? $params->get('noflash_link') : '' ;
 		
-		$swffile = rtrim( XDocument::getModuleImage('mod_slideshow', 'banner'.$width.'x'.$height.'.swf'), '.swf');
+		$swffile = rtrim( Hubzero_Document::getModuleImage('mod_slideshow', 'banner'.$width.'x'.$height.'.swf'), '.swf');
 		
 		//$swffile = 'modules'.DS.'mod_slideshow'.DS.'images'.DS.'banner600x'.$height.'.swf';
 		

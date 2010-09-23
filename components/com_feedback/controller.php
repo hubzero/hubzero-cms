@@ -25,61 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class FeedbackController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+class FeedbackController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		// Load the component config
-		$config =& JComponentHelper::getParams( $this->_option );
-		$this->config = $config;
-		
 		$this->_task = JRequest::getVar( 'task', '', 'post' );
 		if (!$this->_task) {
 			$this->_task = JRequest::getVar( 'task', '', 'get' );
@@ -109,18 +60,8 @@ class FeedbackController extends JObject
 	}
 
 	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
-		}
-	}
-
-	//-----------
 	
-	private function _buildPathway() 
+	protected function _buildPathway() 
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -141,7 +82,7 @@ class FeedbackController extends JObject
 	
 	//-----------
 	
-	private function _buildTitle() 
+	protected function _buildTitle() 
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
 		if ($this->_task) {
@@ -149,24 +90,6 @@ class FeedbackController extends JObject
 		}
 		$document =& JFactory::getDocument();
 		$document->setTitle( $this->_title );
-	}
-	
-	//-----------
-	
-	private function _getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-
-	//-----------
-	
-	private function _getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file('components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-		}
 	}
 
 	//----------------------------------------------------------
@@ -188,16 +111,14 @@ class FeedbackController extends JObject
 	
 	protected function main() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Check if wishlist component entry is there
-		$database->setQuery( "SELECT c.id FROM #__components as c WHERE c.option='com_wishlist' AND enabled=1" );
-		$wishlist = $database->loadResult();
+		$this->database->setQuery( "SELECT c.id FROM #__components as c WHERE c.option='com_wishlist' AND enabled=1" );
+		$wishlist = $this->database->loadResult();
 		$wishlist = $wishlist ? 1 : 0;
 		
 		// Check if xpoll component entry is there
-		$database->setQuery( "SELECT c.id FROM #__components as c WHERE c.option='com_xpoll' AND enabled=1" );
-		$xpoll = $database->loadResult();
+		$this->database->setQuery( "SELECT c.id FROM #__components as c WHERE c.option='com_xpoll' AND enabled=1" );
+		$xpoll = $this->database->loadResult();
 		$xpoll = $xpoll ? 1 : 0;
 
 		// Set page title
@@ -226,9 +147,6 @@ class FeedbackController extends JObject
 
 	protected function success_story()
 	{
-		// Logged-in user?
-		$juser =& JFactory::getUser();
-		
 		// Incoming
 		$quote = array();
 		$quote['long'] = JRequest::getVar('quote', '', 'post');
@@ -250,7 +168,7 @@ class FeedbackController extends JObject
 		// Push some styles to the template
 		$this->_getStyles();
 		
-		if($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->_msg = JText::_('To submit a success story, you need to be logged in. Please login using the form below:');
 			$this->login();
 			return;
@@ -264,7 +182,7 @@ class FeedbackController extends JObject
 		$view->user = $this->_getUser();
 		$view->quote = $quote;
 		$view->captcha = $captcha;
-		$view->verified = ($juser->get('guest')) ? 0 : 1;
+		$view->verified = ($this->juser->get('guest')) ? 0 : 1;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -299,9 +217,6 @@ class FeedbackController extends JObject
 
 	protected function suggestions() 
 	{
-		// Logged-in user?
-		$juser =& JFactory::getUser();
-		
 		// Incoming
 		$suggestion = array();
 		$suggestion['for'] = JRequest::getVar( 'for', '' );
@@ -329,7 +244,7 @@ class FeedbackController extends JObject
 		$view->task = $this->_task;
 		$view->user = $this->_getUser();
 		$view->suggestion = $suggestion;
-		$view->verified = ($juser->get('guest')) ? 0 : 1;
+		$view->verified = ($this->juser->get('guest')) ? 0 : 1;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -340,9 +255,6 @@ class FeedbackController extends JObject
 
 	protected function report_problems() 
 	{
-		// Logged-in user?
-		$juser =& JFactory::getUser();
-	
 		// Get browser info
 		ximport('Hubzero_Browser');
 		$browser = new Hubzero_Browser();
@@ -381,7 +293,7 @@ class FeedbackController extends JObject
 		$view->task = $this->_task;
 		$view->reporter = $this->_getUser();
 		$view->problem = $problem;
-		$view->verified = ($juser->get('guest')) ? 0 : 1;
+		$view->verified = ($this->juser->get('guest')) ? 0 : 1;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -402,11 +314,9 @@ class FeedbackController extends JObject
 	
 		// Push some styles to the template
 		$this->_getStyles();
-	
-		$database =& JFactory::getDBO();
-	
+
 		// Initiate class and bind posted items to database fields
-		$row = new FeedbackQuotes( $database );
+		$row = new FeedbackQuotes( $this->database );
 		if (!$row->bind( $_POST )) {
 			JError::raiseError( 500, $row->getError() );
 			return;
@@ -502,11 +412,9 @@ class FeedbackController extends JObject
 		$sum = $suggestion['operand1'] + $suggestion['operand2'];
 		$suggestion['key'] = $this->_generate_hash($sum,date('j'));
 		
-		$juser =& JFactory::getUser();
-	
 		if ($suggester['name'] && $suggestion['for'] && $suggestion['idea'] && $validemail) {			
 			// Are the logged in?
-			if ($juser->get('guest')) {
+			if ($this->juser->get('guest')) {
 				// No - don't trust user
 				// Check CAPTCHA
 				$key = JRequest::getInt( 'krhash', 0 );
@@ -520,7 +428,7 @@ class FeedbackController extends JObject
 					$view->task = $this->_task;
 					$view->user = $suggester;
 					$view->suggestion = $suggestion;
-					$view->verified = ($juser->get('guest')) ? 0 : 1;
+					$view->verified = ($this->juser->get('guest')) ? 0 : 1;
 					$view->setError(3);
 					$view->display();
 					return;
@@ -541,7 +449,7 @@ class FeedbackController extends JObject
 				$view->task = $this->_task;
 				$view->user = $suggester;
 				$view->suggestion = $suggestion;
-				$view->verified = ($juser->get('guest')) ? 0 : 1;
+				$view->verified = ($this->juser->get('guest')) ? 0 : 1;
 				$view->setError(1);
 				$view->display();
 				return;
@@ -556,7 +464,7 @@ class FeedbackController extends JObject
 			$hub     = array('email' => $suggester['email'], 'name' => $from);
 			
 			// Generate e-mail message
-			$message  = (!$juser->get('guest')) ? JText::_('COM_FEEDBACK_VERIFIED_USER')."\r\n" : '';
+			$message  = (!$this->juser->get('guest')) ? JText::_('COM_FEEDBACK_VERIFIED_USER')."\r\n" : '';
 			$message .= ($suggester['login']) ? JText::_('COM_FEEDBACK_USERNAME').': '. $suggester['login'] ."\r\n" : '';
 			$message .= JText::_('COM_FEEDBACK_NAME').': '. $suggester['name'] ."\r\n";
 			$message .= JText::_('COM_FEEDBACK_AFFILIATION').': '. $suggester['org'] ."\r\n";
@@ -565,8 +473,8 @@ class FeedbackController extends JObject
 			$message .= JText::_('COM_FEEDBACK_IDEA').': '. $suggestion['idea'] ."\r\n";
 	
 			// Send e-mail
-			ximport('xhubhelper');
-			XHubHelper::send_email($admin, $subject, $message);
+			ximport('Hubzero_Toolbox');
+			Hubzero_Toolbox::send_email($admin, $subject, $message);
 			
 			// Get their browser and OS
 			list( $os, $os_version, $browser, $browser_ver ) = $this->_browsercheck(JRequest::getVar('HTTP_USER_AGENT','','server'));
@@ -597,9 +505,7 @@ class FeedbackController extends JObject
 			$data['instances'] = 1;
 			$data['section']   = 1;
 			
-			$database =& JFactory::getDBO();
-			
-			$row = new SupportTicket( $database );
+			$row = new SupportTicket( $this->database );
 			if (!$row->bind( $data )) {
 				$this->setError( $row->getError() );
 			}
@@ -633,7 +539,7 @@ class FeedbackController extends JObject
 			$view->task = $this->_task;
 			$view->user = $suggester;
 			$view->suggestion = $suggestion;
-			$view->verified = ($juser->get('guest')) ? 0 : 1;
+			$view->verified = ($this->juser->get('guest')) ? 0 : 1;
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
@@ -673,8 +579,6 @@ class FeedbackController extends JObject
 		$sum = $problem['operand1'] + $problem['operand2'];
 		$problem['key'] = $this->_generate_hash($sum,date('j'));
 	
-		$juser =& JFactory::getUser();
-
 		// Check for some required fields
 		if (!$reporter['name'] || !$reporter['email'] || !$validemail || !$problem['long']) {
 			// Output form with error messages
@@ -684,7 +588,7 @@ class FeedbackController extends JObject
 			$view->task = 'report_problems';
 			$view->reporter = $reporter;
 			$view->problem = $problem;
-			$view->verified = ($juser->get('guest')) ? 0 : 1;
+			$view->verified = ($this->juser->get('guest')) ? 0 : 1;
 			$view->setError(2);
 			$view->display();
 			return;
@@ -695,7 +599,7 @@ class FeedbackController extends JObject
 		$hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 			
 		// Are the logged in?
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			// No - don't trust user
 			// Check CAPTCHA
 			$key = JRequest::getVar( 'krhash', 0 );
@@ -722,7 +626,7 @@ class FeedbackController extends JObject
 					$view->task = 'report_problems';
 					$view->reporter = $reporter;
 					$view->problem = $problem;
-					$view->verified = ($juser->get('guest')) ? 0 : 1;
+					$view->verified = ($this->juser->get('guest')) ? 0 : 1;
 					$view->setError(3);
 					$view->display();
 					return;
@@ -735,8 +639,8 @@ class FeedbackController extends JObject
 		$source_region  = 'unknown';
 		$source_country = 'unknown';
 		
-		ximport('xgeoutils');
-		$gdb =& GeoUtils::getGODBO();
+		ximport('Hubzero_Geo');
+		$gdb =& Hubzero_Geo::getGODBO();
 		if (is_object($gdb)) {
 			$gdb->setQuery( "SELECT countrySHORT, countryLONG, ipREGION, ipCITY FROM ipcitylatlong WHERE INET_ATON('$ip') BETWEEN ipFROM and ipTO" );
 			$rows = $gdb->loadObjectList();
@@ -788,8 +692,7 @@ class FeedbackController extends JObject
 		$data['group']     = $group;
 		
 		// Initiate class and bind data to database fields
-		$database =& JFactory::getDBO();
-		$row = new SupportTicket( $database );
+		$row = new SupportTicket( $this->database );
 		if (!$row->bind( $data )) {
 			$this->setError( $row->getError() );
 		}
@@ -809,6 +712,7 @@ class FeedbackController extends JObject
 		$sconfig = JComponentHelper::getParams( 'com_support' );
 		$attachment = $this->_uploadAttachment( $row->id, $sconfig );
 		$row->report .= ($attachment) ? "\n\n".$attachment : '';
+		$problem['long'] .= ($attachment) ? "\n\n".$attachment : '';
 		
 		// Save the data
 		if (!$row->store()) {
@@ -823,14 +727,14 @@ class FeedbackController extends JObject
 		$hub     = array('email' => $reporter['email'], 'name' => $from);
 		
 		// Parse comments for attachments
-		$xhub =& XFactory::getHub();
-		$attach = new SupportAttachment( $database );
+		$xhub =& Hubzero_Factory::getHub();
+		$attach = new SupportAttachment( $this->database );
 		$attach->webpath = $xhub->getCfg('hubLongURL').$sconfig->get('webpath').DS.$row->id;
 		$attach->uppath  = JPATH_ROOT.$sconfig->get('webpath').DS.$row->id;
 		$attach->output  = 'email';
 		
 		// Generate e-mail message
-		$message  = (!$juser->get('guest')) ? JText::_('COM_FEEDBACK_VERIFIED_USER')."\r\n\r\n" : '';
+		$message  = (!$this->juser->get('guest')) ? JText::_('COM_FEEDBACK_VERIFIED_USER')."\r\n\r\n" : '';
 		$message .= ($reporter['login']) ? JText::_('COM_FEEDBACK_USERNAME').': '. $reporter['login'] ."\r\n" : '';
 		$message .= JText::_('COM_FEEDBACK_NAME').': '. $reporter['name'] ."\r\n";
 		$message .= JText::_('COM_FEEDBACK_AFFILIATION').': '. $reporter['org'] ."\r\n";
@@ -844,11 +748,11 @@ class FeedbackController extends JObject
 		$message .= (JRequest::getVar('sessioncookie','','cookie')) ? JText::_('COM_FEEDBACK_COOKIES_ENABLED')."\r\n" : JText::_('COM_FEEDBACK_COOKIES_DISABLED')."\r\n";
 		$message .= JText::_('COM_FEEDBACK_REFERRER').': '. $problem['referer'] ."\r\n";
 		$message .= ($problem['tool']) ? JText::_('COM_FEEDBACK_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
-		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($row->report)) ."\r\n";
+		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($problem['long'])) ."\r\n";
 
 		// Send e-mail
-		ximport('xhubhelper');
-		XHubHelper::send_email($admin, $subject, $message);
+		ximport('Hubzero_Toolbox');
+		Hubzero_Toolbox::send_email($admin, $subject, $message);
 
 		// Output Thank You message
 		$view = new JView( array('name'=>'report', 'layout'=>'thanks') );
@@ -909,8 +813,7 @@ class FeedbackController extends JObject
 			// Create database entry
 			$description = htmlspecialchars($description);
 			
-			$database =& JFactory::getDBO();
-			$row = new SupportAttachment( $database );
+			$row = new SupportAttachment( $this->database );
 			$row->bind( array('id'=>0,'ticket'=>$listdir,'filename'=>$file['name'],'description'=>$description) );
 			if (!$row->check()) {
 				$this->setError( $row->getError() );
@@ -980,11 +883,9 @@ class FeedbackController extends JObject
 		if (!$tool) {
 			return '';
 		}
-		
-		$database =& JFactory::getDBO();
-		
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
-		$resource = new ResourcesResource( $database );
+
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php');
+		$resource = new ResourcesResource( $this->database );
 		$tool = str_replace(':','-',$tool);
 		$resource->loadAlias( $tool );
 		
@@ -993,8 +894,8 @@ class FeedbackController extends JObject
 		}
 			
 		// Get tags on the tools
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.tags.php' );
-		$rt = new ResourcesTags($database);
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
+		$rt = new ResourcesTags($this->database);
 		$tags = $rt->getTags( $resource->id, 0, 0, 1 );
 
 		if (!$tags) {
@@ -1002,8 +903,8 @@ class FeedbackController extends JObject
 		}
 
 		// Get tag/group associations
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
-		$tt = new TagsGroup( $database );
+		//include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php' );
+		$tt = new TagsGroup( $this->database );
 		$tgas = $tt->getRecords();
 			
 		if (!$tgas) {
@@ -1034,8 +935,7 @@ class FeedbackController extends JObject
 
 	protected function upload()
 	{
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->setError( JText::_('COM_FEEDBACK_NOTAUTH') );
 			$this->img( '', 0 );
 			return;
@@ -1058,8 +958,7 @@ class FeedbackController extends JObject
 		}
 
 		// Build upload path
-		ximport('fileuploadutils');
-		$dir  = FileUploadUtils::niceidformat( $id );
+		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
 		if (substr($this->config->get('uploadpath'), 0, 1) != DS) {
 			$path .= DS;
@@ -1113,8 +1012,7 @@ class FeedbackController extends JObject
 
 	protected function delete()
 	{
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->setError( JText::_('COM_FEEDBACK_NOTAUTH') );
 			$this->img( '', 0 );
 			return;
@@ -1128,9 +1026,9 @@ class FeedbackController extends JObject
 			return;
 		}
 		
-		if ($juser->get('id') != $id) {
+		if ($this->juser->get('id') != $id) {
 			$this->setError( JText::_('COM_FEEDBACK_NOTAUTH') );
-			$this->img( '', $juser->get('id') );
+			$this->img( '', $this->juser->get('id') );
 			return;
 		}
 		
@@ -1145,8 +1043,7 @@ class FeedbackController extends JObject
 		$file = basename($file);
 		
 		// Build the file path
-		ximport('fileuploadutils');
-		$dir  = FileUploadUtils::niceidformat( $id );
+		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
 		if (substr($this->config->get('uploadpath'), 0, 1) != DS) {
 			$path .= DS;
@@ -1182,8 +1079,7 @@ class FeedbackController extends JObject
 		if (!$id) {
 			$id = JRequest::getInt( 'id', 0 );
 		}
-		ximport('fileuploadutils');
-		$dir = FileUploadUtils::niceidformat( $id );
+		$dir = Hubzero_View_Helper_Html::niceidformat( $id );
 		
 		// Do we have a file or do we need to get one?
 		$file = ($file) 
@@ -1216,8 +1112,6 @@ class FeedbackController extends JObject
 
 	private function _getUser() 
 	{
-		$juser =& JFactory::getUser();
-		
 		$user = array();
 		$user['login'] = '';
 		$user['name']  = '';
@@ -1225,11 +1119,11 @@ class FeedbackController extends JObject
 		$user['email'] = '';
 		$user['uid']   = '';
 
-		if (!$juser->get('guest')) {
-			ximport('xprofile');
+		if (!$this->juser->get('guest')) {
+			ximport('Hubzero_User_Profile');
 			
-			$profile = new XProfile();
-			$profile->load( $juser->get('id') );
+			$profile = new Hubzero_User_Profile();
+			$profile->load( $this->juser->get('id') );
 			
 			if (is_object($profile)) {
 				$user['login'] = $profile->get('username');
@@ -1388,4 +1282,3 @@ class FeedbackController extends JObject
 		return $ip_address;
 	}
 }
-?>

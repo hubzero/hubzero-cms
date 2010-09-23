@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$mosConfig_bankAccounts = 0;
 		$database =& JFactory::getDBO();
 		
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
 		$banking =  $upconfig->get('bankAccounts');
 		$hubname = $xhub->getCfg('hubShortName'); 
@@ -53,7 +53,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$oldtickets = $database->loadResult();
 		
 		// get unassigned support tickets
-		$sql = "SELECT count(*) FROM #__support_tickets WHERE status=0 AND section!=2 AND type=0 AND owner is NULL AND report is NOT NULL";
+		$sql = "SELECT count(*) FROM #__support_tickets WHERE status=0 AND section!=2 AND type=0 AND (owner is NULL OR owner='') AND report != ''";
 		$database->setQuery($sql);
 		$newtickets = $database->loadResult();
 		
@@ -107,7 +107,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 		
 		// get styles
-		ximport('xdocument');
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/mod_dashboard/dashboard.css');
 

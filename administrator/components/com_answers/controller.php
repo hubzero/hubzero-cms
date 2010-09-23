@@ -35,7 +35,7 @@ class AnswersController extends Hubzero_Controller
 		$this->banking = $upconfig->get('bankAccounts');
 		
 		if ($this->banking) {
-			ximport('bankaccount');
+			ximport('Hubzero_Bank');
 		}
 		
 		$this->_task = strtolower(JRequest::getVar('task', '', 'request'));
@@ -179,6 +179,8 @@ class AnswersController extends Hubzero_Controller
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
+
+		$view->qid = $view->filters['qid'];
 		
 		// Output the HTML
 		$view->display();
@@ -270,7 +272,8 @@ class AnswersController extends Hubzero_Controller
 
 		$view->question = new AnswersQuestion( $this->database );
 		$view->question->load($qid);
-		
+		$view->qid = $qid;
+
 		// Set any errors
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -311,8 +314,6 @@ class AnswersController extends Hubzero_Controller
 		$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('username');
 
 		// Code cleaner
-		//$row->subject  = TextFilter::cleanXss($row->subject);
-		//$row->question = TextFilter::cleanXss($row->question);
 		$row->question = nl2br($row->question);
 
 		// Check content
@@ -355,7 +356,6 @@ class AnswersController extends Hubzero_Controller
 		}
 
 		// Code cleaner
-		//$row->answer = TextFilter::cleanXss($row->answer);
 		$row->answer = nl2br($row->answer);
 		$row->created = $row->created ? $row->created : date( "Y-m-d H:i:s" );
 		$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('username');
@@ -465,7 +465,7 @@ class AnswersController extends Hubzero_Controller
 			
 			if ($this->banking) {
 				// Remove hold
-				$BT = new BankTransaction( $this->database );
+				$BT = new Hubzero_Bank_Transaction( $this->database );
 				$reward = $BT->getAmount( 'answers', 'hold', $id );
 				$BT->deleteRecords( 'answers', 'hold', $id );
 				
@@ -473,7 +473,7 @@ class AnswersController extends Hubzero_Controller
 				
 				// Make credit adjustment
 				if (is_object($creator)) {
-					$BTL = new BankTeller( $this->database, $creator->get('id') );
+					$BTL = new Hubzero_Bank_Teller( $this->database, $creator->get('id') );
 					$credit = $BTL->credit_summary();
 					$adjusted = $credit - $reward;
 					$BTL->credit_adjustment($adjusted);
@@ -556,13 +556,13 @@ class AnswersController extends Hubzero_Controller
 				
 				if ($this->banking) {
 					// Remove hold
-					$BT = new BankTransaction( $this->database );
+					$BT = new Hubzero_Bank_Transaction( $this->database );
 					$reward = $BT->getAmount( 'answers', 'hold', $id );
 					$BT->deleteRecords( 'answers', 'hold', $id );
 					
 					// Make credit adjustment
 					if (is_object($creator)) {
-						$BTL = new BankTeller( $this->database, $creator->get('id') );
+						$BTL = new Hubzero_Bank_Teller( $this->database, $creator->get('id') );
 						$credit = $BTL->credit_summary();
 						$adjusted = $credit - $reward;
 						$BTL->credit_adjustment($adjusted);
@@ -691,7 +691,7 @@ class AnswersController extends Hubzero_Controller
 	private function _getPointReward($id)
 	{
 		// Check if question owner assigned a reward for answering his Q
-		$BT = new BankTransaction( $this->database );
+		$BT = new Hubzero_Bank_Transaction( $this->database );
 		return $BT->getAmount( 'answers', 'hold', $id );
 	}
 	

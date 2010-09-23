@@ -190,8 +190,7 @@ class modFeaturedquestion
 
 	public function display() 
 	{
-		//ximport('FeaturesHistory');
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'features.history.php' );
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'tables'.DS.'history.php' );
 		
 		$this->error = false;
 		if (!class_exists('FeaturesHistory')) {

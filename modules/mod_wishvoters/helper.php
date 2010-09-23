@@ -27,31 +27,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 class modWishVoters
 {
-		private $params;
+	private $params;
 
-		//-----------
+	//-----------
 
-		public function __construct( $params ) 
-		{
-			$this->params = $params;
+	public function __construct( $params ) 
+	{
+		$this->params = $params;
+	}
+
+	//-----------
+
+	public function __set($property, $value)
+	{
+		$this->attributes[$property] = $value;
+	}
+
+	//-----------
+
+	public function __get($property)
+	{
+		if (isset($this->attributes[$property])) {
+			return $this->attributes[$property];
 		}
-
-		//-----------
-
-		public function __set($property, $value)
-		{
-			$this->attributes[$property] = $value;
-		}
-
-		//-----------
-
-		public function __get($property)
-		{
-			if (isset($this->attributes[$property])) {
-				return $this->attributes[$property];
-			}
-		}
-
+	}
 
 	//-----------
 	
@@ -94,7 +93,6 @@ class modWishVoters
 		$juser =& JFactory::getUser();
 		$database =& JFactory::getDBO();
 		
-			
 		$params =& $this->params;
 		$moduleclass = $params->get( 'moduleclass' );
 		$limit = intval( $params->get( 'limit' ) );
@@ -116,12 +114,12 @@ class modWishVoters
 		$category 	= JRequest::getVar( 'category', '' );
 		
 		// figure list id
-		if($category && $refid) {
+		if ($category && $refid) {
 			$listid = $objWishlist->get_wishlistID($refid, $category);
 		}
 					
 		// cannot rank a wish if list/wish is not found
-		if(!$listid) {
+		if (!$listid) {
 			echo JText::_('Cannot locate a wish or a wish list');
 			return;
 		}	
@@ -144,8 +142,8 @@ class modWishVoters
 		}
 		
 		// Push the module CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_wishvoters');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_wishvoters');
 		
 		// Build the HTML
 		$html  = '<div';

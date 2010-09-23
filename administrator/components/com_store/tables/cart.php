@@ -1,0 +1,201 @@
+<?php
+/**
+ * @package		HUBzero CMS
+ * @author		Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ *
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+
+
+class Cart extends JTable 
+{
+	var $id         = NULL;  // @var int(11) Primary key
+	var $uid    	= NULL;  // @var int(11)
+	var $itemid     = NULL;  // @var int(11)
+	var $type    	= NULL;  // @var varchar(20)
+	var $quantity   = NULL;  // @var int(11)
+	var $added  	= NULL;  // @var datetime
+	var $selections = NULL;  // @var text
+	
+	//------------
+	
+	public function __construct( &$db ) 
+	{
+		parent::__construct( '#__cart', 'id', $db );
+	}
+	
+	//------------
+	
+	public function checkCartItem( $id=null, $uid) 
+	{
+		if ($id == null or $uid == null) {
+			return false;
+		}
+	
+		$sql = "SELECT id, quantity FROM $this->_tbl WHERE itemid='".$id."' AND uid=".$uid;
+		$this->_db->setQuery( $sql );
+		return $this->_db->loadObjectList();
+	}
+	
+	//-----------
+	
+	public function getCartItems($uid, $rtrn='')
+	{
+		$total = 0;
+		if ($uid == null) {
+			return false;
+		}
+		
+		// clean-up items with zero quantity
+		$sql = "DELETE FROM $this->_tbl WHERE quantity=0";
+		$this->_db->setQuery($sql);
+		$this->_db->query();
+		
+		$query  = "SELECT B.quantity, B.itemid, B.uid, B.added, B.selections, a.title, a.price, a.available, a.params, a.type, a.category ";		
+		$query .= " FROM $this->_tbl AS B, #__store AS a";
+		$query .= " WHERE a.id = B.itemid AND B.uid=".$uid;
+		$query .= " ORDER BY B.id DESC";
+		$this->_db->setQuery( $query);
+		$result = $this->_db->loadObjectList();
+		
+		if ($result) {
+			foreach ($result as $r) 
+			{
+				$price = $r->price * $r->quantity;
+				if ($r->available) {
+					$total = $total + $price;
+				}
+				
+				$params 	 		=& new JParameter( $r->params );
+				$selections  		=& new JParameter( $r->selections );
+				
+				// get size selection
+				$r->sizes    		= $params->get( 'size', '' );
+				$r->sizes 			= str_replace(" ","",$r->sizes);				
+				$r->selectedsize    = trim($selections->get( 'size', '' ));
+				$r->sizes    		= split(',',$r->sizes);
+				
+				// get color selection
+				$r->colors    		= $params->get( 'color', '' );
+				$r->colors 			= str_replace(" ","",$r->colors);				
+				$r->selectedcolor   = trim($selections->get( 'color', '' ));
+				$r->colors    		= split(',',$r->colors);
+			}
+		}
+		
+		if ($rtrn) {
+			$result = $total; // total cost of items in cart
+		}
+		
+		return $result;
+	}
+
+	//-----------
+	
+	public function saveCart( $posteditems, $uid)
+	{		
+		if ($uid == null) {
+			return false;
+		}
+		
+		// get current cart items
+		$items = $this->getCartItems($uid);
+		if ($items) {
+			foreach ($items as $item) 
+			{	
+				if ($item->type != 2) { // not service	
+					$size 			= (isset($item->selectedsize)) ? $item->selectedsize : '';
+					$color 			= (isset($item->color)) ? $item->color : '';
+					$sizechoice 	= (isset($posteditems['size'.$item->itemid])) ? $posteditems['size'.$item->itemid] : $size;
+					$colorchoice 	= (isset($posteditems['color'.$item->itemid])) ? $posteditems['color'.$item->itemid] : $color;
+					$newquantity 	= (isset($posteditems['num'.$item->itemid])) ? $posteditems['num'.$item->itemid] : $item->quantity;
+							
+					$selection	    = '';
+					$selection	   .= 'size=';
+					$selection 	   .= $sizechoice;
+					$selection	   .= '\n';
+					$selection	   .= 'color=';
+					$selection 	   .= $colorchoice;
+				
+					$query  = "UPDATE $this->_tbl SET quantity='".$newquantity."',";
+					$query .= " selections='".$selection."'";
+					$query .= " WHERE itemid=".$item->itemid;
+					$query .= " AND uid=".$uid;
+					$this->_db->setQuery( $query);
+					$this->_db->query();
+				}
+			}	
+		}
+	}
+	
+	//-----------
+	
+	public function deleteCartItem($id, $uid, $all=0) 
+	{
+		$sql = "DELETE FROM $this->_tbl WHERE uid='".$uid."'  ";
+		if (!$all && $id) {
+			$sql.= "AND itemid='".$id."' ";
+		}
+
+		$this->_db->setQuery( $sql);
+		$this->_db->query();
+	}
+	
+	//-----------
+	
+	public function deleteUnavail( $uid, $items)
+	{		
+		if ($uid == null) {
+			return false;
+		}
+		if (count($items) > 0) {
+			foreach ($items as $i) 
+			{
+				if ($i->available == 0) {
+					$sql = "DELETE FROM $this->_tbl WHERE itemid=".$i->itemid." AND uid=".$uid;
+					$this->_db->setQuery( $sql);
+					$this->_db->query();
+				}	
+			}
+		}
+	}
+	
+	//-----------
+	
+	public function deleteItem($itemid=null, $uid=null, $type='merchandise') 
+	{
+		if ($itemid == null) {
+			return false;
+		}
+		if ($uid == null) {
+			return false;
+		}
+		
+		$sql = "DELETE FROM $this->_tbl WHERE itemid='$itemid' AND type='$type' AND uid=$uid";
+		$this->_db->setQuery($sql);
+		if (!$this->_db->query()) {
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+		return true;
+	}
+}

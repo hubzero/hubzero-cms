@@ -65,4 +65,3 @@ function StoreParseRoute($segments)
 	
 	return $vars;
 }
-?>

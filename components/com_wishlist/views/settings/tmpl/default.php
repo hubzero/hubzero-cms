@@ -108,7 +108,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			if(count($wishlist->groups)>0) {
 				$k=1;
 				for ($i=0, $n=count( $wishlist->groups ); $i < $n; $i++) {
-				$instance = new XGroup($wishlist->groups[$i]);
+				$instance = Hubzero_Group::getInstance($wishlist->groups[$i]);
 				$cn = $instance->get('cn');
 				$members = $instance->get('members');
 				$managers = $instance->get('managers');
@@ -162,7 +162,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$k=1;					
 				for ($i=0, $n=count( $wishlist->owners ); $i < $n; $i++) {				
 					if(!in_array($wishlist->owners[$i], $allmembers)) {
-					$kuser =& XProfile::getInstance ( $wishlist->owners[$i]);
+					$kuser =& Hubzero_User_Profile::getInstance ( $wishlist->owners[$i]);
 					$html .= t.' 			<tr>'.n;
 					$html .= t.' 			 <td>'.$k.'.</td>'.n;
 					$html .= t.' 			 <td>'.$kuser->get('name').'</td>'.n;
@@ -211,7 +211,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						
 				for ($i=0, $n=count( $wishlist->advisory ); $i < $n; $i++) {					
 					if(!in_array($wishlist->advisory[$i], $allmembers)) {
-					$quser =& XProfile::getInstance ( $wishlist->advisory[$i]);
+					$quser =& Hubzero_User_Profile::getInstance ( $wishlist->advisory[$i]);
 					$html .= t.' 			<tr>'.n;
 					$html .= t.' 			 <td>'.$k.'.</td>'.n;
 					$html .= t.' 			 <td>'.$quser->get('name').'</td>'.n;

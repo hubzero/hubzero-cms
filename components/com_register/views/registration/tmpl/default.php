@@ -73,9 +73,9 @@ if (!defined("n")) {
 		return $o;
 	}
 
-	ximport('xuserhelper');
-	//ximport('xhubhelper');
-	ximport('xgeoutils');
+	ximport('Hubzero_User_Helper');
+	//ximport('Hubzero_Toolbox');
+	ximport('Hubzero_Geo');
 
 	$html  = '<div id="content-header" class="full">'.n;
 	$html .= t.'<h2>'.JText::_('COM_REGISTER_'.strtoupper($this->task)).'</h2>'.n;
@@ -122,14 +122,14 @@ if (!defined("n")) {
 			$html .= '</div>'.n;
 		break;
 	}
-	//$html .= '<form action="'. XHubHelper::thisurl() .'" method="post" id="hubForm">'.n;
+	//$html .= '<form action="'. Hubzero_Toolbox::thisurl() .'" method="post" id="hubForm">'.n;
 	if ($this->task == 'create') {
 		$html .= '<form action="'. JRoute::_('index.php?option='.$this->option) .'" method="post" id="hubForm">'.n;
 	} else {
 		$html .= '<form action="'. JRoute::_('index.php?option='.$this->option.'&task='.$this->task) .'" method="post" id="hubForm">'.n;
 	}
 	
-	$emailusers = XProfileHelper::find_by_email($this->registration['email']);
+	$emailusers = Hubzero_User_Profile_Helper::find_by_email($this->registration['email']);
 
 	if ( ($this->task == 'create' || $this->task == 'proxycreate') && $emailusers) {
 		$html .= '<div class="error">'.n;
@@ -225,7 +225,10 @@ if (!defined("n")) {
 
 			$html .= t.t.'</div>'.n;
 		} 
-
+		$hconfig =& JComponentHelper::getParams('com_hub');
+		if ($hconfig->get('passwordMeter')) {
+			$html .= t.'<input type="hidden" id="passmeter" value="on" />'.n;
+		}
 		$html .= t.'</fieldset>'.n;
 		$html .= t.'<div class="clear"></div>'.n;
 	}
@@ -471,9 +474,9 @@ if (!defined("n")) {
 			
 			$orgtext = $this->registration['org'];
 			$org_known = 0;
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_hub'.DS.'xorganization.php' );
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_register'.DS.'tables'.DS.'organization.php' );
 			$database =& JFactory::getDBO();
-			$xo = new XOrganization( $database );
+			$xo = new RegisterOrganization( $database );
 			$orgs = $xo->getOrgs();
 
 			if (count($orgs) <= 0) {
@@ -670,7 +673,7 @@ if (!defined("n")) {
 			if (!$this->registration['countryorigin'] || $this->registration['countryorigin'] == 'US')
 				$html .= t.t.t.t.t.'<option value="">'.JText::_('COM_REGISTER_FORM_SELECT_FROM_LIST').'</option>'.n;
 
-			$countries = GeoUtils::getcountries();
+			$countries = Hubzero_Geo::getcountries();
 
 			foreach ($countries as $country) 
 			{
@@ -719,7 +722,7 @@ if (!defined("n")) {
 				$html .= t.t.t.t.t.'<option value="">'.JText::_('COM_REGISTER_FORM_SELECT_FROM_LIST').'</option>'.n;
 			}
 	
-			$countries = GeoUtils::getcountries();
+			$countries = Hubzero_Geo::getcountries();
 	
 			foreach ($countries as $country) 
 			{

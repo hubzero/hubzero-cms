@@ -129,6 +129,18 @@ class SupportUtilities
 		// Loop through each chunk (filter:option)
 		foreach ($chunks as $chunk) 
 		{
+			if (!strstr($chunk,':')) {
+				if ((substr($chunk, 0, 1) == '"' 
+				 || substr($chunk, 0, 1) == "'") 
+				 && (substr($chunk, -1) == '"' 
+				 || substr($chunk, -1) == "'")) {
+					$chunk = substr($chunk, 1, -1);  // Remove any surrounding quotes
+				}
+
+				$filters['search'] = $chunk;
+				continue;
+			}
+			
 			// Break each chunk into its pieces (filter, option)
 			$pieces = explode(':', $chunk);
 			

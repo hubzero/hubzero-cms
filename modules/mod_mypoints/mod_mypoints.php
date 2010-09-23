@@ -40,4 +40,3 @@ $modmypoints = new modMyPoints( $params );
 $modmypoints->display();
 
 require( JModuleHelper::getLayoutPath('mod_mypoints') );
-?>

@@ -20,19 +20,17 @@ new URL.</p>
 
 <p>This package should contain the following files:</p>
 <ul>
- <li><code>admin.sef.html.php</code></li>
- <li><code>admin.sef.php</code></li>
- <li><code>config.sef.php</code></li>
+ <li><code>helpers/html.php</code></li>
+ <li><code>sef.php</code></li>
+ <li><code>config.xml</code></li>
  <li><code>down.png</code></li>
  <li><code>index.html</code></li>
  <li><code>install.sef.php</code></li>
  <li><code>readme.inc</code></li>
- <li><code>sef.class.php</code></li>
+ <li><code>tables/entry.php</code></li>
  <li><code>sef.php</code></li>
  <li><code>sef404.php</code></li>
  <li><code>sef.xml</code></li>
- <li><code>toolbar.sef.html.php</code></li>
- <li><code>toolbar.sef.php</code></li>
  <li><code>uninstall.sef.php</code></li>
  <li><code>up.png</code></li>
 </ul>

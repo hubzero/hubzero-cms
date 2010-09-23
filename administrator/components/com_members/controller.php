@@ -144,11 +144,11 @@ class MembersController extends Hubzero_Controller
 		}
 		
 		// Initiate database class and load info
-		$view->profile = new XProfile();
+		$view->profile = new Hubzero_User_Profile();
 		$view->profile->load( $id );
 		
 		// Get the user's interests (tags)
-		include_once( JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'members.tags.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'helpers'.DS.'tags.php' );
 		
 		$mt = new MembersTags( $this->database );
 		$view->tags = $mt->get_tag_string( $id );
@@ -189,7 +189,7 @@ class MembersController extends Hubzero_Controller
 		$p = JRequest::getVar( 'profile', array(), 'post' );
 		
 		// Load the profile
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
 		
 		// Set the new info
@@ -223,8 +223,8 @@ class MembersController extends Hubzero_Controller
 		if ($ec) {
 			$profile->set('emailConfirmed', 1);
 		} else {
-			ximport('xregistrationhelper');
-			$confirm = XRegistrationHelper::genemailconfirm();
+			ximport('Hubzero_Registration_Helper');
+			$confirm = Hubzero_Registration_Helper::genemailconfirm();
 			$profile->set('emailConfirmed', $confirm);
 		}
 		$se = JRequest::getInt( 'shadowExpire', 0, 'post' );
@@ -309,9 +309,9 @@ class MembersController extends Hubzero_Controller
 		// Do we have a new pass?
 		$newpass = trim(JRequest::getVar( 'newpass', '', 'post' ));
 		if ($newpass != '') {
-			ximport('xuserhelper');
+			ximport('Hubzero_User_Helper');
 			 // Encrypt the password and update the profile
-			$userPassword = XUserHelper::encrypt_password($newpass);
+			$userPassword = Hubzero_User_Helper::encrypt_password($newpass);
 			$profile->set('userPassword', $userPassword);
 		}
 
@@ -325,7 +325,7 @@ class MembersController extends Hubzero_Controller
 		$tags = trim(JRequest::getVar( 'tags', '' ));
 		
 		// Process tags
-		include_once( JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'members.tags.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'helpers'.DS.'tags.php' );
 		
 		$mt = new MembersTags( $this->database );
 		$mt->tag_object($id, $id, $tags, 1, 1);
@@ -361,14 +361,14 @@ class MembersController extends Hubzero_Controller
 		}
 		
 		// Load the profile
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
 		
 		// Generate a new password
-		$newpass = XRegistrationHelper::userpassgen();
+		$newpass = Hubzero_Registration_Helper::userpassgen();
 		
 		// Encrypt the password and update the profile
-		$userPassword = XUserHelper::encrypt_password($newpass);
+		$userPassword = Hubzero_User_Helper::encrypt_password($newpass);
 		$profile->set('userPassword', $userPassword);
 		
 		// Save the changes
@@ -419,7 +419,7 @@ class MembersController extends Hubzero_Controller
 				$assoc->deleteAssociations();
 				
 				// Remove the profile
-				$profile = new XProfile();
+				$profile = new Hubzero_User_Profile();
 				$profile->load( $id );
 				$profile->delete();
 			}
@@ -517,7 +517,7 @@ class MembersController extends Hubzero_Controller
 			}
 			
 			// Instantiate a profile, change some info and save
-			$profile = new XProfile();
+			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
 			$profile->set('picture', $file['name']);
 			if (!$profile->update()) {
@@ -606,7 +606,7 @@ class MembersController extends Hubzero_Controller
 			}
 			
 			// Instantiate a profile, change some info and save
-			$profile = new XProfile();
+			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
 			$profile->set('picture', '');
 			if (!$profile->update()) {
@@ -690,9 +690,8 @@ class MembersController extends Hubzero_Controller
 		}
 		
 		// Load the group page
-		ximport('xgroup');
-		$group = new XGroup();
-		$group->select( $gid );
+		ximport('Hubzero_Group');
+		$group = Hubzero_Group::getInstance( $gid );
 		
 		// Add the user to the group table
 		$group->add( $tbl, array($id) );
@@ -717,7 +716,6 @@ class MembersController extends Hubzero_Controller
 		$view->task = $this->_task;
 		
 		ximport('Hubzero_Group');
-		ximport('xgroup');
 
 		// Incoming
 		if (!$id) {
@@ -763,7 +761,7 @@ class MembersController extends Hubzero_Controller
 		}
 		
 		// Load the profile
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
 		
 		// Incoming host
@@ -801,7 +799,7 @@ class MembersController extends Hubzero_Controller
 		}
 		
 		// Load the profile
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
 		
 		// Incoming host
@@ -843,7 +841,7 @@ class MembersController extends Hubzero_Controller
 		if (!$profile) {
 			$id = JRequest::getInt('id', 0, 'get');
 			
-			$profile = new XProfile();
+			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
 		}
 		
@@ -878,7 +876,7 @@ class MembersController extends Hubzero_Controller
 		}
 		
 		// Load the profile
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
 		
 		// Incoming host
@@ -916,7 +914,7 @@ class MembersController extends Hubzero_Controller
 		}
 		
 		// Load the profile
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
 		
 		// Incoming host
@@ -958,7 +956,7 @@ class MembersController extends Hubzero_Controller
 		if (!$profile) {
 			$id = JRequest::getInt( 'id', 0, 'get' );
 			
-			$profile = new XProfile();
+			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
 		}
 		

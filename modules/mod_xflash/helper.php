@@ -43,17 +43,16 @@ class modXFlash
 		$params =& $this->params;
 		$noflash_link = $params->get('noflash_link');
 
-		ximport('xdocument');
+		ximport('Hubzero_Document');
 		
 		$dynamic = ($params->get('dynamic')) ? $params->get('dynamic') : 0 ;
 
-		if($dynamic) {
+		if ($dynamic) {
 			$noflashfile = $params->get('noflash_path');
 			$swffile = $params->get('banner_path');
-		}
-		else {
-			$noflashfile = XDocument::getModuleImage('mod_xflash','noflash.jpg');
-			$swffile = rtrim( XDocument::getModuleImage('mod_xflash', 'flashrotation.swf'), '.swf');
+		} else {
+			$noflashfile = Hubzero_Document::getModuleImage('mod_xflash','noflash.jpg');
+			$swffile = rtrim( Hubzero_Document::getModuleImage('mod_xflash', 'flashrotation.swf'), '.swf');
 		}
 
 		$document =& JFactory::getDocument();

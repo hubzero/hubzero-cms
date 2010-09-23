@@ -25,72 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
+ximport('Hubzero_Controller');
 
-class XSearchController extends JObject
+class XSearchController extends Hubzero_Controller
 {
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-	
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		$this->_option = 'com_'.$this->_name;
-	}
-	
-	//-----------
-	
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
-		}
-	}
-	
-	//----------------------------------------------------------
-	// Views
-	//----------------------------------------------------------
-	
 	public function execute()
 	{
-		$database =& JFactory::getDBO();
-		
 		$this->_stemming = 1;
 		
 		// Set the page title
@@ -105,8 +45,8 @@ class XSearchController extends JObject
 		}
 		
 		// Add some needed CSS and JS to the template
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet($this->_option);
 		
 		// Push some JS to the tmeplate
 		$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
@@ -221,9 +161,8 @@ class XSearchController extends JObject
 				$query .= ") ORDER BY relevance DESC";
 				$query .= ($limit != 'all' && $limit > 0) ? " LIMIT $limitstart, $limit" : "";
 			}
-			$database =& JFactory::getDBO();
-			$database->setQuery( $query );
-			$results = array($database->loadObjectList());
+			$this->database->setQuery( $query );
+			$results = array($this->database->loadObjectList());
 		} else {
 			$results = $dispatcher->trigger( 'onXSearch', array(
 					$searchquery,
@@ -393,4 +332,3 @@ class XSearchController extends JObject
 		return $this->searchareas;
 	}
 }
-?>

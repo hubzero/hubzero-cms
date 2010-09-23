@@ -120,7 +120,7 @@ define( 'JPATH_CONFIGURATION',     JPATH_ROOT );
 require_once( JPATH_LIBRARIES . DS . 'loader.php' );
 jimport( 'joomla.common.abstract.object' );
 jimport( 'joomla.factory' );
-ximport( 'xfactory' );
+ximport( 'Hubzero_Factory' );
 */
 // End Joomla 1.5 Core Compatibility Support *njk*
 
@@ -138,9 +138,12 @@ $database = new database( $mosConfig_host, $mosConfig_user, $mosConfig_password,
 $database->debug( $mosConfig_debug );
 */
 
-ximport('xprofile');
-ximport('textfilter');
-ximport('bankaccount');
+ximport('Hubzero_User_Profile');
+ximport('Hubzero_Bank');
+
+include_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'economy.php' );
+include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'economy.php' );
+include_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'helpers'.DS.'economy.php' );
 
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_userpoints'.DS.'controller.php' );
 

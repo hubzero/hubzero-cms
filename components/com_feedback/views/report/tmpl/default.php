@@ -105,7 +105,7 @@ $topics = array(
 			</label>
 			
 			<label<?php echo ($this->getError() && $this->reporter['name'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
-				<?php echo JText::_('NAME'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
+				<?php echo JText::_('COM_FEEDBACK_NAME'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
 				<input type="text" name="reporter[name]" value="<?php echo (isset($this->reporter['name'])) ? $this->reporter['name'] : ''; ?>" id="reporter_name" />
 			</label>
 <?php if ($this->getError() && $this->reporter['name'] == '') { ?>

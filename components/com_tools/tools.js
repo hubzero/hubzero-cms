@@ -365,6 +365,9 @@ HUB.Mw = {
 				'width': (w + 20) + 'px',
 				'height': (h + 20) + 'px'
 			});*/
+			if (w < 100) { w = 100; }
+			if (h < 100) { h = 100; }
+			
 			$('app-wrap').setStyles({
 				'width': (w) + 'px',
 				'height': (h) + 'px'
@@ -428,14 +431,19 @@ HUB.Mw = {
 				if (app.getProperty('height') < 100) { 
 					app.setProperty('height', 100); 
 				}*/
+				var w = parseFloat(app.width);
+				var h = parseFloat(app.height);
 				
-				appwrap.setStyle('height', parseFloat(app.height) + 'px');
-				appwrap.setStyle('width', parseFloat(app.width) + 'px');
+				if (w < 100) { w = 100; }
+				if (h < 100) { h = 100; }
+				
+				appwrap.setStyle('height', h + 'px');
+				appwrap.setStyle('width', w + 'px');
 				
 				var p = new Element('p', {
 					id: 'app-size',
-					alt: parseFloat(app.width) + ' x ' + parseFloat(app.height)
-				}).setHTML(parseFloat(app.width) + ' x ' + parseFloat(app.height)).injectInside(appwrap);
+					alt: w + ' x ' + h
+				}).setHTML(w + ' x ' + h).injectInside(appwrap);
 				
 				var res = new Element('div', {
 					id: 'app-btn-resizehandle',
@@ -493,14 +501,20 @@ HUB.Mw = {
 					if (app) {
 						var size = el.getCoordinates();
 						
+						var w = size.width;
+						var h = size.height;
+
+						if (w < 100) { w = 100; }
+						if (h < 100) { h = 100; }
+						
 						/*app.style.width = (size.width - 15) + 'px';
 						app.style.height = (size.height - 27) + 'px';
 						app.requestResize((size.width - 15),(size.height - 27));*/
-						app.style.width = (size.width - 20) + 'px';
-						app.style.height = (size.height - 20) + 'px';
-						app.width = (size.width - 20);
-						app.height = (size.height - 20);
-						app.requestResize((size.width - 20),(size.height - 20));
+						app.style.width = (w - 20) + 'px';
+						app.style.height = (h - 20) + 'px';
+						app.width = (w - 20);
+						app.height = (h - 20);
+						app.requestResize((w - 20),(h - 20));
 					}
 				}
 			});

@@ -69,7 +69,7 @@ function ResourcesParseRoute($segments)
 	} elseif ($segments[0] == 'browse') {
 		$vars['task'] = $segments[0];
 	} else {
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.type.php');
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php');
 		
 		$database =& JFactory::getDBO();
 		

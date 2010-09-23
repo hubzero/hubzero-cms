@@ -34,15 +34,14 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
-jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
 
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.type.php');
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.assoc.php');
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.contributor.php');
-require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.tags.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php');
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php');
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'assoc.php');
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'contributor.php');
+require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
 // Editor usertype check
@@ -55,4 +54,3 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 $controller = new ContributeController();
 $controller->execute();
 $controller->redirect();
-?>

@@ -62,10 +62,10 @@ class InfrastructureController extends JController
 		$view = $this->getView();
 		
 		if ($view == 'image') {
-        		ximport('xdocument');
+        		ximport('Hubzero_Document');
 
-		        $xhub  = & XFactory::getHub();
-		        $image = JPATH_SITE . XDocument::getComponentImage('com_projects', 'forge.png', 1);
+		        $xhub  = & Hubzero_Factory::getHub();
+		        $image = JPATH_SITE . Hubzero_Document::getComponentImage('com_projects', 'forge.png', 1);
 
 		        if (is_readable($image)) {
                			ob_clean();
@@ -79,4 +79,3 @@ class InfrastructureController extends JController
 	}
 */
 }
-?>

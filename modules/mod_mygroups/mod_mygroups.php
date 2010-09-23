@@ -30,7 +30,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // "My Groups"
 //    This module displays support tickets assigned to the 
 //    user currently logged in.
-// XGroup library REQUIRED
 //-------------------------------------------------------------
 
 // Include the logic only once

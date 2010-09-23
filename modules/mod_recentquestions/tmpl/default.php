@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $rows = $modrecentquestions->rows;
 if (count($rows) > 0) {
-	require_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'answers.tags.php' );
+	require_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'tags.php' );
 	$database =& JFactory::getDBO();
 	$tagging = new AnswersTags( $database );
 	

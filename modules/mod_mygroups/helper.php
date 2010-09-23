@@ -154,7 +154,7 @@ class modMyGroups
 		$this->groups = $groups;
 		
 		// Push the module CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_mygroups');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_mygroups');
 	}
 }

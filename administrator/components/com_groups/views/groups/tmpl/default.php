@@ -68,9 +68,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 	
-	$group = new XGroup();
-	$group->gidNumber = $row->gidNumber;
-	$group->cn = $row->cn;
+	$group = new Hubzero_Group();
+	//$group->gidNumber = $row->gidNumber;
+	//$group->cn = $row->cn;
+	$group->read($row->gidNumber);
 	
 	$applicants = count($group->get('applicants'));
 	$invitees   = count($group->get('invitees'));

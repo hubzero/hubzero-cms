@@ -47,11 +47,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<td colspan="4">
 						<div id="sub-sub-menu">
 							<ul>
-								<li<?php if ($this->filter == '' || $this->filter == 'members') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members'); ?>"><span><?php echo JText::_('PLG_GROUPS_MEMBERS_MEMBERS'); ?></span></a></li>
-								<li<?php if ($this->filter == 'managers') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&filter=managers'); ?>"><span><?php echo JText::_('PLG_GROUPS_MEMBERS_MANAGERS'); ?></span></a></li>
+								<li<?php if ($this->filter == '' || $this->filter == 'members') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members'); ?>"><span><?php echo JText::_('PLG_GROUPS_MEMBERS_MEMBERS'); ?> (<?php echo count($this->group->get('members')); ?>)</span></a></li>
+								<li<?php if ($this->filter == 'managers') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&filter=managers'); ?>"><span><?php echo JText::_('PLG_GROUPS_MEMBERS_MANAGERS'); ?> (<?php echo count($this->group->get('managers')); ?>)</span></a></li>
 <?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-								<li<?php if ($this->filter == 'pending') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&filter=pending'); ?>"><span><?php echo JText::_('PLG_GROUPS_MEMBERS_PENDING'); ?></span></a></li>
-								<li<?php if ($this->filter == 'invitees') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&filter=invitees'); ?>"><span><?php echo JText::_('PLG_GROUPS_MEMBERS_INVITEES'); ?></span></a></li>
+								<li<?php if ($this->filter == 'pending') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&filter=pending'); ?>"><span><?php echo JText::_('PLG_GROUPS_MEMBERS_PENDING'); ?> (<?php echo count($this->group->get('applicants')); ?>)</span></a></li>
+								<li<?php if ($this->filter == 'invitees') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&filter=invitees'); ?>"><span><?php echo JText::_('PLG_GROUPS_MEMBERS_INVITEES'); ?> (<?php echo count($this->group->get('invitees')); ?>)</span></a></li>
 <?php } ?>
 							</ul>
 						</div><!-- / #sub-sub-menu -->
@@ -61,23 +61,23 @@ switch ($this->filter)
 {
 	case 'invitees':
 ?>
-					<td class="message-member"><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=message&users[]=invitees'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_INVITEES'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a></td>
+					<td class="message-member"><?php if (count($this->group->get('invitees')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=invitees'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_INVITEES'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
 <?php
 	break;
 	case 'pending':
 ?>
-					<td class="message-member"><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=message&users[]=pending'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_PENDING'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a></td>
+					<td class="message-member"><?php if (count($this->group->get('applicants')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=pending'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_PENDING'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
 <?php
 	break;
 	case 'managers':
 ?>
-					<td class="message-member"><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=message&users[]=managers'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_MANAGERS'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a></td>
+					<td class="message-member"><?php if (count($this->group->get('managers')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=managers'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_MANAGERS'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
 <?php
 	break;
 	case 'members':
 	default:
 ?>
-					<td class="message-member"><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=all'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_MEMBERS'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a></td>
+					<td class="message-member"><?php if (count($this->group->get('members')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=all'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_MEMBERS'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
 <?php
 	break;
 }
@@ -106,7 +106,7 @@ if ($this->groupusers) {
 	$dfthumb = plgGroupsMembers::thumbit($dfthumb);
 	
 	// Some needed libraries
-	ximport('xprofile');
+	ximport('Hubzero_User_Profile');
 	$juser =& JFactory::getUser();
 	// Loop through the results
 	$html = '';
@@ -120,7 +120,7 @@ if ($this->groupusers) {
 		}
 		$guser = $this->groupusers[($i+$this->start)];
 
-		$u = new XProfile();
+		$u = new Hubzero_User_Profile();
 		$u->load( $guser );
 		if (!is_object($u)) {
 			continue;

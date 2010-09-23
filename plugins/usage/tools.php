@@ -101,7 +101,7 @@ class plgUsageTools extends JPlugin
 					}
 					$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
 					$html .= "\t\t\t".'<td>'.$row->rank.'</td>'."\n";
-					$html .= "\t\t\t".'<td class="textual-data"><a href="'.JRoute::_('index.php?option='.$this->_option.'&task=tools&id='.$name[0].'&period='.$period).'">'.$name[1].'</a></td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources&id='.$name[0].'&active=usage').'">'.$name[1].'</a></td>'."\n";
 					$html .= "\t\t\t".'<td>'.$value.'</td>'."\n";
 					$html .= "\t\t\t".'<td>'.round((($row->value/$total)*100),2).'%</td>'."\n";
 					$html .= "\t\t".'</tr>'."\n";
@@ -520,7 +520,7 @@ class plgUsageTools extends JPlugin
 		// Incoming
 		$period = JRequest::getVar( 'period', '12' );
 		$dthis  = JRequest::getVar( 'dthis', date('Y').'-'.date('m') );
-		$s_top  = JRequest::getVar( 'top', '1' );
+		$s_top  = JRequest::getVar( 'top', '2' );
 
 		// Build the HTML
 		$html  = $this->navlinks($period, $s_top);
@@ -572,4 +572,3 @@ class plgUsageTools extends JPlugin
 		return $html;
 	}
 }
-?>

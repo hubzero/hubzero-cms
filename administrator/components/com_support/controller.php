@@ -926,7 +926,7 @@ class SupportController extends Hubzero_Controller
 		if ($id) {
 			// Incoming comment
 			$comment = JRequest::getVar( 'comment', '' );
-			$comment = TextFilter::cleanXss($comment);
+			$comment = Hubzero_Filter::cleanXss($comment);
 			if ($comment) {
 				// If a comment was posted to a closed ticket, re-open it.
 				if ($old->status == 2 && $row->status == 2) {
@@ -1623,14 +1623,14 @@ class SupportController extends Hubzero_Controller
 		
 		// Give some points to whoever reported abuse
 		if ($banking && $gratitude) {
-			ximport('bankaccount');
+			ximport('Hubzero_Bank');
 			
-			$BC = new BankConfig( $this->database );
+			$BC = new Hubzero_Bank_Config( $this->database );
 			$ar = $BC->get('abusereport');  // How many points?
 			if ($ar) {
 				$ruser =& JUser::getInstance( $report->created_by );
 				if (is_object($ruser) && $ruser->get('id')) {
-					$BTL = new BankTeller( $this->database, $ruser->get('id') );
+					$BTL = new Hubzero_Bank_Teller( $this->database, $ruser->get('id') );
 					$BTL->deposit($ar, JText::_('ACKNOWLEDGMENT_FOR_VALID_REPORT'), 'abusereport', $id);
 				}
 			}
@@ -1674,18 +1674,17 @@ class SupportController extends Hubzero_Controller
 	
 	private function userSelectGroup( $name, $active, $nouser=0, $javascript=NULL, $group='' ) 
 	{
-		ximport('xgroup');
+		ximport('Hubzero_Group');
 		
-		$xgroup = new XGroup();
-		$xgroup->select( $group );
+		$hzg = Hubzero_Group::getInstance($group);
 		
 		$users = array();
 		if ($nouser) {
 			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
 		}
 		
-		if ($xgroup->get('gidNumber')) {
-			$members = $xgroup->get('members');
+		if ($hzg->get('gidNumber')) {
+			$members = $hzg->get('members');
 
 			foreach ($members as $member) 
 			{
@@ -1717,35 +1716,37 @@ class SupportController extends Hubzero_Controller
 		// Incoming
 		$description = JRequest::getVar( 'description', '' );
 
-		if (!$listdir || $_FILES['upload']['name'] == '') {
+		if (!$listdir) {
+			$this->setError( JText::_('COM_SUPPORT_NO_ID') );
+			return '';
+		}
+		
+		// Incoming file
+		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
+		if (!$file['name']) {
+			$this->setError( JText::_('COM_SUPPORT_NO_FILE') );
 			return '';
 		}
 
 		// Construct our file path
 		$file_path = JPATH_ROOT.$this->config->get('webpath').DS.$listdir;
 
-		ximport('fileupload');
-		ximport('fileuploadutils');
-		
-		// Build the path if it doesn't exist
 		if (!is_dir( $file_path )) {
-			FileUploadUtils::make_path( $file_path );
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create( $file_path, 0777 )) {
+				$this->setError( JText::_('COM_SUPPORT_UNABLE_TO_CREATE_UPLOAD_PATH') );
+				return '';
+			}
 		}
+
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = str_replace(' ','_',$file['name']);
 		
-		// Upload new files
-		$upload = new FileUpload;
-		$upload->upload_dir     = $file_path;
-		$upload->temp_file_name = trim($_FILES['upload']['tmp_name']);
-		$upload->file_name      = trim(strtolower($_FILES['upload']['name']));
-		$upload->file_name      = str_replace(' ', '_', $upload->file_name);
-		$upload->ext_array      = explode(',',$this->config->get('file_ext'));
-		$upload->max_file_size  = $this->config->get('maxAllowed');
-		
-		$result = $upload->upload_file_no_validation();
-		
-		if (!$result) {
-			$this->setError(JText::_('ERROR_UPLOADING').' '.$upload->err);
-			
+		// Perform the upload
+		if (!JFile::upload($file['tmp_name'], $file_path.DS.$file['name'])) {
+			$this->setError( JText::_('COM_SUPPORT_ERROR_UPLOADING') );
 			return '';
 		} else {
 			// File was uploaded
@@ -1753,7 +1754,7 @@ class SupportController extends Hubzero_Controller
 			$description = htmlspecialchars($description);
 			
 			$row = new SupportAttachment( $this->database );
-			$row->bind( array('id'=>0,'ticket'=>$listdir,'filename'=>$upload->file_name,'description'=>$description) );
+			$row->bind( array('id'=>0,'ticket'=>$listdir,'filename'=>$file['name'],'description'=>$description) );
 			if (!$row->check()) {
 				$this->setError($row->getError());
 			}
@@ -1774,8 +1775,6 @@ class SupportController extends Hubzero_Controller
 
 	protected function taggroup()
 	{
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
-		
 		// Instantiate a new view
 		$view = new JView( array('name'=>'taggroups') );
 		$view->option = $this->_option;
@@ -1816,8 +1815,7 @@ class SupportController extends Hubzero_Controller
 
 	protected function edittg() 
 	{
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
-		ximport('xgroup');
+		ximport('Hubzero_Group');
 		
 		// Instantiate a new view
 		$view = new JView( array('name'=>'taggroup') );
@@ -1834,8 +1832,7 @@ class SupportController extends Hubzero_Controller
 		$view->tag = new TagsTag( $this->database );
 		$view->tag->load( $view->row->tagid );
 
-		$view->group = new XGroup();
-		$view->group->select( $view->row->groupid );
+		$view->group = Hubzero_Group::getInstance( $view->row->groupid );
 
 		// Set any errors
 		if ($this->getError()) {
@@ -1853,8 +1850,7 @@ class SupportController extends Hubzero_Controller
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
-		ximport('xgroup');
+		ximport('Hubzero_Group');
 		
 		$taggroup = JRequest::getVar('taggroup', array(), 'post');
 		
@@ -1881,12 +1877,11 @@ class SupportController extends Hubzero_Controller
 		$group = trim(JRequest::getVar( 'group', '', 'post' ));
 		
 		// Attempt to load the group
-		$xgroup = new XGroup();
-		$xgroup->select( $group );
+		$hzg = Hubzero_Group::getInstance( $group );
 		
 		// Set the group ID
-		if ($xgroup->get('gidNumber')) {
-			$row->groupid = $xgroup->get('gidNumber');
+		if ($hzg->get('gidNumber')) {
+			$row->groupid = $hzg->get('gidNumber');
 		}
 		
 		// Check content
@@ -1912,8 +1907,6 @@ class SupportController extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
 		
 		// Incoming
 		$ids = JRequest::getVar( 'id', array(0) );
@@ -1952,8 +1945,6 @@ class SupportController extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
 		
 		// Incoming
 		$id = JRequest::getVar( 'id', array() );

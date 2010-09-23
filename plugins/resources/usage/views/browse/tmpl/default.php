@@ -61,6 +61,7 @@ $topvals = new ResourcesStatsToolsTopvals( $database );
 				<?php echo JText::_('PLG_RESOURCES_USAGE_TIME_PERIOD'); ?>
 				<?php echo plgResourcesUsage::dropDownDates( $database, $this->period, $this->resource->id, $this->dthis ); ?>
 			</label>
+			<input type="hidden" name="period" value="<?php echo $this->period; ?>" />
 			<input type="submit" value="<?php echo JText::_('PLG_RESOURCES_USAGE_GO'); ?>" />
 		</fieldset>
 	</div>

@@ -46,20 +46,20 @@ if ($this->reviews) {
 	// Set the abuse flag
 	// Determines if we're using abuse reports or not
 	$abuse = false;
-	if (is_file(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.reportabuse.php')) {
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'support.reportabuse.php' );
+	if (is_file(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php')) {
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php' );
 		$abuse = true;
 	}
 	
 	// Set the reply flag
 	// Determines if we're allowing replies to reviews
 	$reply = false;
-	if (is_file(JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'xcomment.php')) {
-		include_once( JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'xcomment.php' );
+	if (is_file(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Comment.php')) {
+		include_once( JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Comment.php' );
 		$reply = true;
 	
 		// See if we have a comment (comeone clicked a "reply" link)
-		$addcomment = new XComment( $database );
+		$addcomment = new Hubzero_Comment( $database );
 		$addcomment->referenceid = JRequest::getInt( 'refid', 0 );
 		$addcomment->category = JRequest::getVar( 'category', '' );
 	}

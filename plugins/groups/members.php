@@ -82,9 +82,9 @@ class plgGroupsMembers extends JPlugin
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			if ($return == 'html') {
-				ximport('xmodule');
+				ximport('Hubzero_Module_Helper');
 				$arr['html']  = '<p class="warning">'. JText::_('GROUPS_LOGIN_NOTICE') . '</p>';
-				$arr['html'] .= XModuleHelper::renderModules('force_mod');
+				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
 			}
 			return $arr;
 		}
@@ -631,7 +631,7 @@ class plgGroupsMembers extends JPlugin
 			return false;
 		}
 		
-		$xhub = XFactory::getHub();
+		$xhub = Hubzero_Factory::getHub();
 		$xhub->redirect( JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&task=invite&return=members') );
 	}
 

@@ -32,8 +32,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 </h3>
 <?php
 if ($this->rows) {
-	ximport('xdocument');
-	XDocument::addComponentStylesheet('com_answers');		
+	ximport('Hubzero_Document');
+	Hubzero_Document::addComponentStylesheet('com_answers');		
 	
 	/*if ($this->count > 0 && ($this->count > $this->limit)) {
 		$tag = ($this->resource->type== 7) ? 'tool'.$this->resource->alias : 'resource'.$this->resource->id;
@@ -47,7 +47,7 @@ if ($this->rows) {
 	$i=1;
 	$database =& JFactory::getDBO();
 
-	require_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'answers.tags.php' );
+	require_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'tags.php' );
 	$tagging = new AnswersTags( $database );
 	
 	// Check for abuse reports on an item

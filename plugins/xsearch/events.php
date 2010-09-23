@@ -111,8 +111,8 @@ class plgXSearchEvents extends JPlugin
 			return $database->loadResult();
 		} else {
 			if (count($areas) > 1) {
-				ximport('xdocument');
-				XDocument::addComponentStylesheet('com_events');
+				ximport('Hubzero_Document');
+				Hubzero_Document::addComponentStylesheet('com_events');
 				
 				return $e_fields.$e_rel.$e_from ." WHERE ". $e_where;
 			}
@@ -140,8 +140,8 @@ class plgXSearchEvents extends JPlugin
 
 	public function documents() 
 	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet('com_events');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet('com_events');
 	}
 	
 	//-----------

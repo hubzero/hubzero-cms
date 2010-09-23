@@ -69,9 +69,9 @@ class plgXSearchTags extends JPlugin
 		}
 		
 		$database =& JFactory::getDBO();
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.class.php');
+		include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
 
-		$tagging = new Tags();
+		$tagging = new TagsHandler($database);
 
 		$text = '';
 		if (!empty($searchquery->searchPhrases)) {

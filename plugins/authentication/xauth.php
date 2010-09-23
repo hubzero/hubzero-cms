@@ -56,7 +56,7 @@ class plgAuthenticationXauth extends JPlugin
 
 			if (($options['domain'] == $plugin->name) && class_exists( $className ))
 			{
-				ximport('xuserhelper');
+				ximport('Hubzero_User_Helper');
 
 				$xauthplugin = new $className($this, (array)$plugin);
 				$xauthplugin->onAuthenticate($credentials, $options, $response);
@@ -65,14 +65,14 @@ class plgAuthenticationXauth extends JPlugin
 				if (($options['domain'] == 'hzldap') || empty($options['domain']))
 					return;
 
-				ximport('xuserhelper');
+				ximport('Hubzero_User_Helper');
 
-				$domain_id = XUserHelper::getXDomainId($options['domain']);
+				$domain_id = Hubzero_User_Helper::getXDomainId($options['domain']);
 
 				if ($domain_id === false)
-					$domain_id = XUserHelper::createXDomain($options['domain']);
+					$domain_id = Hubzero_User_Helper::createXDomain($options['domain']);
 
-				$uid = XUserHelper::getXDomainUserId($response->username, $options['domain']);
+				$uid = Hubzero_User_Helper::getXDomainUserId($response->username, $options['domain']);
 
 				if ($uid)
 				{

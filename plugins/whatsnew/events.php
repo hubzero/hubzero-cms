@@ -117,8 +117,8 @@ class plgWhatsnewEvents extends JPlugin
 
 	public function documents() 
 	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet('com_events');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet('com_events');
 	}
 	
 	//-----------

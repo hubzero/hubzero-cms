@@ -262,7 +262,7 @@ class modToolList
 		
 		$database =& JFactory::getDBO();
 		if ($this->supportedtag) {
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.tags.php' );
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
 			$this->rt = new ResourcesTags( $database );
 			$this->supportedtagusage = $this->rt->getTagUsage( $this->supportedtag, 'alias' );
 		}
@@ -282,8 +282,8 @@ class modToolList
 			$document->addScript('/modules/mod_mytools/mod_mytools.js');
 
 			// Push the module CSS to the template
-			ximport('xdocument');
-			XDocument::addModuleStyleSheet('mod_mytools');
+			ximport('Hubzero_Document');
+			Hubzero_Document::addModuleStyleSheet('mod_mytools');
 			
 			// Get a list of recent tools
 			$rt = new RecentTool( $database );

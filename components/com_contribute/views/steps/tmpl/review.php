@@ -117,7 +117,7 @@ if ($this->progress['submitted'] == 1) {
 $cats = array();
 $sections = array();
 
-ximport('resourcestats');
+include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
 
 
 // Get attributes

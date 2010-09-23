@@ -43,13 +43,12 @@ if (!$user->authorize( $option, 'manage' )) {
 }
 
 // Include scripts
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'members.imghandler.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'imghandler.php' );
 require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'profile.php' );
 require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'association.php' );
 require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
 ximport('Hubzero_View_Helper_Html');
-ximport('misc_func');
-ximport('xprofile');
+ximport('Hubzero_User_Profile');
 
 // Initiate controller
 $controller = new MembersController();

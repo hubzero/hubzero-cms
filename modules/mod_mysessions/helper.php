@@ -102,7 +102,7 @@ class modMySessions
 		// Check if the user is an admin.
 		$this->authorized = false;
 		
-		$xprofile =& XFactory::getProfile();
+		$xprofile =& Hubzero_Factory::getProfile();
 		if (is_object($xprofile)) {
 			if (in_array('middleware', $xprofile->get('admin'))) {
 				$this->authorized = 'admin';
@@ -136,12 +136,12 @@ class modMySessions
 		
 		$database =& JFactory::getDBO();
 		if ($this->supportedtag) {
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.tags.php' );
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
 			$this->rt = new ResourcesTags( $database );
 		}
 	
 		// Push the module CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_mysessions');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_mysessions');
 	}
 }

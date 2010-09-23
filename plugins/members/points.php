@@ -93,9 +93,9 @@ class plgMembersPoints extends JPlugin
 			return $arr;
 		}
 
-		ximport('bankaccount');
+		ximport('Hubzero_Bank');
 
-		$BTL = new BankTeller( $database, $member->get('uidNumber') );
+		$BTL = new Hubzero_Bank_Teller( $database, $member->get('uidNumber') );
 
 		// Build the final HTML
 		if ($returnhtml) {

@@ -48,8 +48,8 @@ class plgGroupsResources extends JPlugin
 		$this->_plugin = JPluginHelper::getPlugin( 'groups', 'resources' );
 		$this->_params = new JParameter( $this->_plugin->params );
 		
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.type.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
+		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
 	}
 
 	//-----------
@@ -498,11 +498,11 @@ class plgGroupsResources extends JPlugin
 	 	$document =& JFactory::getDocument();
 		$document->addScript('components'.DS.'com_resources'.DS.'resources.js');
 		
-		ximport('xdocument');
-		XDocument::addComponentStylesheet('com_resources');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet('com_resources');
 
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
-		ximport('resourcestats');
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
 	}
 	
 	//-----------
@@ -545,13 +545,23 @@ class plgGroupsResources extends JPlugin
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
 
-		$html  = "\t".'<li class="resource">'."\n";
+		$html  = "\t".'<li class="';
+		switch ($row->access)
+		{
+			case 1: $html .= 'registered'; break;
+			case 2: $html .= 'special';    break;
+			case 3: $html .= 'protected';  break;
+			case 4: $html .= 'private';    break;
+			case 0:
+			default: $html .= 'public'; break;
+		}
+		$html .= ' resource">'."\n";
 		$html .= "\t\t".'<p class="';
-		if ($row->access == 4) {
+		/*if ($row->access == 4) {
 			$html .= 'private ';
 		} elseif ($row->access == 3) {
 			$html .= 'protected ';
-		}
+		}*/
 		$html .= 'title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
 			
 		if ($params->get('show_ranking')) {

@@ -25,57 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class MembersController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-	
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		//Set the controller name
-		if (empty( $this->_name ))
-		{
-			if (isset($config['name']))  {
-				$this->_name = $config['name'];
-			}
-			else
-			{
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		$this->_option = 'com_'.$this->_name;
-	}
-	
-	//-----------
-	
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+ximport('Hubzero_Controller');
+
+class MembersController extends Hubzero_Controller
+{
 	public function execute()
 	{
 		// Load the component config
@@ -119,35 +72,6 @@ class MembersController extends JObject
 			default: $this->browse(); break;
 		}
 	}
-
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-	
-	//-----------
-	
-	private function getStyles($option='') 
-	{
-		$option = ($option) ? 'com_'.$option : $this->_option;
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($option);
-	}
-
-	//-----------
-	
-	private function getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file('components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-		}
-	}
 	
 	//----------------------------------------------------------
 	// Views
@@ -180,7 +104,7 @@ class MembersController extends JObject
 	protected function browse()
 	{
 		// Include some needed styles and scripts
-		$this->getStyles();
+		$this->_getStyles();
 
 		// Incoming
 		$filters = array();
@@ -283,8 +207,8 @@ class MembersController extends JObject
 		}
 		
 		// Include some needed styles and scripts
-		$this->getStyles();
-		$this->getScripts();
+		$this->_getStyles();
+		$this->_getScripts();
 		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
@@ -302,7 +226,7 @@ class MembersController extends JObject
 		$authorized = $this->_authorize( $id );
 
 		// Get the member's info
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
 		
 		// Check subscription to Employer Services
@@ -327,6 +251,17 @@ class MembersController extends JObject
 			$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&task='.$this->_task );
 			
 			JError::raiseError( 403, JText::_('MEMBERS_NOT_PUBLIC') );
+			/*
+			$view = new JView( array('name'=>'view', 'layout'=>'private') );
+			$view->option = $this->_option;
+			$view->title = $title;
+			$view->authorized = $authorized;
+			$view->profile = $profile;
+			if ($this->getError()) {
+				$view->setError( $this->getError() );
+			}
+			$view->display();
+			*/
 			return;
 		}
 		
@@ -381,7 +316,10 @@ class MembersController extends JObject
 
 			// Get the member's picture (if it exist)
 			if ($profile->get('picture')) {
-				$dir = FileUploadUtils::niceidformat( $id );
+				$dir = Hubzero_View_Helper_Html::niceidformat( abs($id) );
+				if ($id < 0 || substr($id, 0, 1) == 'n') {
+					$dir = 'n'.$dir;
+				}
 				if (!file_exists(JPATH_ROOT.$config->get('webpath').DS.$dir.DS.$profile->get('picture'))) {
 					$profile->set('picture', $config->get('defaultpic'));
 				} else {
@@ -396,25 +334,25 @@ class MembersController extends JObject
 			}
 			
 			// Load some needed libraries
-			ximport('xregistration');
+			ximport('Hubzero_Registration');
 			
 			// Find out which fields are hidden, optional, or required
 			$registration = new JObject();
-			$registration->Fullname = $this->registrationField('registrationFullname','RRRR','edit');
-			$registration->Email = $this->registrationField('registrationEmail','RRRR','edit');
-			$registration->URL = $this->registrationField('registrationURL','HHHH','edit');
-			$registration->Phone = $this->registrationField('registrationPhone','HHHH','edit');
-			$registration->Employment = $this->registrationField('registrationEmployment','HHHH','edit');
-			$registration->Organization = $this->registrationField('registrationOrganization','HHHH','edit');
-			$registration->Citizenship = $this->registrationField('registrationCitizenship','HHHH','edit');
-			$registration->Residency = $this->registrationField('registrationResidency','HHHH','edit');
-			$registration->Sex = $this->registrationField('registrationSex','HHHH','edit');
-			$registration->Disability = $this->registrationField('registrationDisability','HHHH','edit');
-			$registration->Hispanic = $this->registrationField('registrationHispanic','HHHH','edit');
-			$registration->Race = $this->registrationField('registrationRace','HHHH','edit');
-			$registration->Interests = $this->registrationField('registrationInterests','HHHH','edit');
-			$registration->Reason = $this->registrationField('registrationReason','HHHH','edit');
-			$registration->OptIn = $this->registrationField('registrationOptIn','HHHH','edit');
+			$registration->Fullname = $this->_registrationField('registrationFullname','RRRR','edit');
+			$registration->Email = $this->_registrationField('registrationEmail','RRRR','edit');
+			$registration->URL = $this->_registrationField('registrationURL','HHHH','edit');
+			$registration->Phone = $this->_registrationField('registrationPhone','HHHH','edit');
+			$registration->Employment = $this->_registrationField('registrationEmployment','HHHH','edit');
+			$registration->Organization = $this->_registrationField('registrationOrganization','HHHH','edit');
+			$registration->Citizenship = $this->_registrationField('registrationCitizenship','HHHH','edit');
+			$registration->Residency = $this->_registrationField('registrationResidency','HHHH','edit');
+			$registration->Sex = $this->_registrationField('registrationSex','HHHH','edit');
+			$registration->Disability = $this->_registrationField('registrationDisability','HHHH','edit');
+			$registration->Hispanic = $this->_registrationField('registrationHispanic','HHHH','edit');
+			$registration->Race = $this->_registrationField('registrationRace','HHHH','edit');
+			$registration->Interests = $this->_registrationField('registrationInterests','HHHH','edit');
+			$registration->Reason = $this->_registrationField('registrationReason','HHHH','edit');
+			$registration->OptIn = $this->_registrationField('registrationOptIn','HHHH','edit');
 
 			$pview = new JView( array('name'=>'view', 'layout'=>'profile') );
 			$pview->option = $this->_option;
@@ -511,7 +449,7 @@ class MembersController extends JObject
 		}
 		
 		// Initiate profile class
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
 		
 		// Ensure we have a member
@@ -523,17 +461,17 @@ class MembersController extends JObject
 		}
 		
 		// Include some needed styles and scripts
-		$this->getStyles();
+		$this->_getStyles();
 		
 		// Add to the pathway
 		$pathway->addItem( stripslashes($profile->get('name')), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber') );
 		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.'&id='.$profile->get('uidNumber').'&task='.$this->_task );
 		
 		// Load some needed libraries
-		ximport('xregistrationhelper');
-		ximport('xuserhelper');
+		ximport('Hubzero_Registration_Helper');
+		ximport('Hubzero_User_Helper');
 		
-		if (XUserHelper::isXDomainUser($juser->get('id'))) {
+		if (Hubzero_User_Helper::isXDomainUser($juser->get('id'))) {
 			JError::raiseError( 403, JText::_('MEMBERS_PASS_CHANGE_LINKED_ACCOUNT') );
 			return;
 		}
@@ -559,13 +497,13 @@ class MembersController extends JObject
 			return;
 		}
 
-		if ($profile->get('userPassword') != XUserHelper::encrypt_password($oldpass)) {
+		if ($profile->get('userPassword') != Hubzero_User_Helper::encrypt_password($oldpass)) {
 			$this->setError( JText::_('MEMBERS_PASS_INCORRECT') );
 		} elseif (!$newpass || !$newpass2) {
 			$this->setError( JText::_('MEMBERS_PASS_MUST_BE_ENTERED_TWICE') );
 		} elseif ($newpass != $newpass2) {
 			$this->setError( JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH') );
-		} elseif (!XRegistrationHelper::validpassword($newpass)) {
+		} elseif (!Hubzero_Registration_Helper::validpassword($newpass)) {
 			$this->setError( JText::_('MEMBERS_PASS_INVALID') );
 		}
 
@@ -576,7 +514,7 @@ class MembersController extends JObject
 		}
 
 		// Encrypt the password and update the profile
-		$userPassword = XUserHelper::encrypt_password($newpass);
+		$userPassword = Hubzero_User_Helper::encrypt_password($newpass);
 		$profile->set('userPassword', $userPassword);
 
 		// Save the changes
@@ -644,10 +582,10 @@ class MembersController extends JObject
 		}
 		
 		// Include some needed styles and scripts
-		$this->getStyles();
+		$this->_getStyles();
 		
 		// Initiate profile class
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
 
 		// Ensure we have a member
@@ -744,7 +682,7 @@ class MembersController extends JObject
 		// Do we need to email admin?
 		if ($request !== null && !empty($resourcemessage)) {
 			$juri =& JURI::getInstance();
-			$xhub =& XFactory::getHub();
+			$xhub =& Hubzero_Factory::getHub();
 			$hubName = $xhub->getCfg('hubShortName');
 			$hubUrl = $xhub->getCfg('hubLongURL');
 			
@@ -790,7 +728,7 @@ class MembersController extends JObject
 			$emailadmin = $xhub->getCfg('hubSupportEmail');
 			
 			// Send an e-mail to admin
-			if (!XHubHelper::send_email($emailadmin, $subject, $message)) { 
+			if (!Hubzero_Toolbox::send_email($emailadmin, $subject, $message)) { 
 				return JError::raiseError(500, 'xHUB Internal Error: Error mailing resource request to site administrator(s).');
 			}
 			
@@ -864,12 +802,12 @@ class MembersController extends JObject
 		}
 		
 		// Include some needed styles and scripts
-		$this->getStyles();
+		$this->_getStyles();
 		
 		// Initiate profile class if we don't already have one and load info
 		// Note: if we already have one then we just came from $this->save()
 		if (!is_object($profile)) {
-			$profile = new XProfile();
+			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
 		}
 
@@ -891,38 +829,38 @@ class MembersController extends JObject
 		$pathway->addItem( JText::_(strtoupper($this->_task)), 'index.php?option='.$this->_option.a.'id='.$profile->get('uidNumber').a.'task='.$this->_task );
 
 		// Load some needed libraries
-		ximport('xhubhelper');
-		ximport('xregistration');
-		ximport('xregistrationhelper');
+		ximport('Hubzero_Toolbox');
+		ximport('Hubzero_Registration');
+		ximport('Hubzero_Registration_Helper');
 		
 		// Instantiate an xregistration object if we don't already have one
 		// Note: if we already have one then we just came from $this->save()
 		if (!is_object($xregistration)) {
-			$xregistration = new XRegistration();
+			$xregistration = new Hubzero_Registration();
 		}
 
 		// Find out which fields are hidden, optional, or required
 		$registration = new JObject();
-		$registration->Username = $this->registrationField('registrationUsername','RROO',$this->_task);
-		$registration->Password = $this->registrationField('registrationPassword','RRHH',$this->_task);
-		$registration->ConfirmPassword = $this->registrationField('registrationConfirmPassword','RRHH',$this->_task);
-		$registration->Fullname = $this->registrationField('registrationFullname','RRRR',$this->_task);
-		$registration->Email = $this->registrationField('registrationEmail','RRRR',$this->_task);
-		$registration->ConfirmEmail = $this->registrationField('registrationConfirmEmail','RRRR',$this->_task);
-		$registration->URL = $this->registrationField('registrationURL','HHHH',$this->_task);
-		$registration->Phone = $this->registrationField('registrationPhone','HHHH',$this->_task);
-		$registration->Employment = $this->registrationField('registrationEmployment','HHHH',$this->_task);
-		$registration->Organization = $this->registrationField('registrationOrganization','HHHH',$this->_task);
-		$registration->Citizenship = $this->registrationField('registrationCitizenship','HHHH',$this->_task);
-		$registration->Residency = $this->registrationField('registrationResidency','HHHH',$this->_task);
-		$registration->Sex = $this->registrationField('registrationSex','HHHH',$this->_task);
-		$registration->Disability = $this->registrationField('registrationDisability','HHHH',$this->_task);
-		$registration->Hispanic = $this->registrationField('registrationHispanic','HHHH',$this->_task);
-		$registration->Race = $this->registrationField('registrationRace','HHHH',$this->_task);
-		$registration->Interests = $this->registrationField('registrationInterests','HHHH',$this->_task);
-		$registration->Reason = $this->registrationField('registrationReason','HHHH',$this->_task);
-		$registration->OptIn = $this->registrationField('registrationOptIn','HHHH',$this->_task);
-		$registration->TOU = $this->registrationField('registrationTOU','HHHH',$this->_task);
+		$registration->Username = $this->_registrationField('registrationUsername','RROO',$this->_task);
+		$registration->Password = $this->_registrationField('registrationPassword','RRHH',$this->_task);
+		$registration->ConfirmPassword = $this->_registrationField('registrationConfirmPassword','RRHH',$this->_task);
+		$registration->Fullname = $this->_registrationField('registrationFullname','RRRR',$this->_task);
+		$registration->Email = $this->_registrationField('registrationEmail','RRRR',$this->_task);
+		$registration->ConfirmEmail = $this->_registrationField('registrationConfirmEmail','RRRR',$this->_task);
+		$registration->URL = $this->_registrationField('registrationURL','HHHH',$this->_task);
+		$registration->Phone = $this->_registrationField('registrationPhone','HHHH',$this->_task);
+		$registration->Employment = $this->_registrationField('registrationEmployment','HHHH',$this->_task);
+		$registration->Organization = $this->_registrationField('registrationOrganization','HHHH',$this->_task);
+		$registration->Citizenship = $this->_registrationField('registrationCitizenship','HHHH',$this->_task);
+		$registration->Residency = $this->_registrationField('registrationResidency','HHHH',$this->_task);
+		$registration->Sex = $this->_registrationField('registrationSex','HHHH',$this->_task);
+		$registration->Disability = $this->_registrationField('registrationDisability','HHHH',$this->_task);
+		$registration->Hispanic = $this->_registrationField('registrationHispanic','HHHH',$this->_task);
+		$registration->Race = $this->_registrationField('registrationRace','HHHH',$this->_task);
+		$registration->Interests = $this->_registrationField('registrationInterests','HHHH',$this->_task);
+		$registration->Reason = $this->_registrationField('registrationReason','HHHH',$this->_task);
+		$registration->OptIn = $this->_registrationField('registrationOptIn','HHHH',$this->_task);
+		$registration->TOU = $this->_registrationField('registrationTOU','HHHH',$this->_task);
 
 		// Ouput HTML
 		$view = new JView( array('name'=>'edit') );
@@ -941,27 +879,26 @@ class MembersController extends JObject
 
 	//-----------
 
-	private function registrationField($name, $default, $task = 'create')
+	private function _registrationField($name, $default, $task = 'create')
 	{
-		if (($task == 'register') || ($task == 'create')) {
-			$index = 0;
-		} else if ($task == 'proxy') {
-			$index = 1;
-		} else if ($task == 'update') {
-			$index = 2;
-		} else if ($task == 'edit') {
-			$index = 3;
-		} else {
-			$index = 0;
+		switch ($task) 
+		{
+			case 'register':
+			case 'create': $index = 0; break;
+			case 'proxy':  $index = 1; break;
+			case 'update': $index = 2; break;
+			case 'edit':   $index = 3; break;
+			default:       $index = 0; break;
 		}
 
 		$hconfig =& JComponentHelper::getParams('com_hub');
 		
-		$default    = str_pad($default, '-', 4);
-		$configured  = $hconfig->get($name);
-		if (empty($configured))
-		    	$configured = $default;
-		$length     = strlen($configured);
+		$default = str_pad($default, '-', 4);
+		$configured = $hconfig->get($name);
+		if (empty($configured)) {
+			$configured = $default;
+		}
+		$length = strlen($configured);
 		if ($length > $index) {
 			$value = substr($configured, $index, 1);
 		} else {
@@ -991,9 +928,9 @@ class MembersController extends JObject
 			return false;
 		}
 		
-		ximport('xhubhelper');
-		ximport('xregistration');
-		ximport('xregistrationhelper');
+		ximport('Hubzero_Toolbox');
+		ximport('Hubzero_Registration');
+		ximport('Hubzero_Registration_Helper');
 
 		// Incoming user ID
 		$id = JRequest::getInt( 'id', 0, 'post' );
@@ -1009,7 +946,7 @@ class MembersController extends JObject
 		$n = JRequest::getVar( 'name', array(), 'post' );
 		
 		// Load the profile
-		$profile = new XProfile();
+		$profile = new Hubzero_User_Profile();
 		$profile->load( $id );
 		$oldemail = $profile->get('email');
 		
@@ -1042,8 +979,8 @@ class MembersController extends JObject
 		JRequest::setVar('interests',$tags,'post');
 		JRequest::setVar('usageAgreement',1,'post');
 		
-		// Instantiate a new XRegistration
-		$xregistration = new XRegistration();
+		// Instantiate a new Hubzero_Registration
+		$xregistration = new Hubzero_Registration();
 		$xregistration->loadPOST();
 		
 		// Push the posted data to the profile
@@ -1053,7 +990,7 @@ class MembersController extends JObject
 		// Unconfirm if the email address changed
 		if ($oldemail != $xregistration->_registration['email']) {
 			// Get a new confirmation code
-			$confirm = XRegistrationHelper::genemailconfirm();
+			$confirm = Hubzero_Registration_Helper::genemailconfirm();
 
 			$profile->set('emailConfirmed',$confirm);
 		}
@@ -1172,7 +1109,7 @@ class MembersController extends JObject
 		$message = str_replace("\n", "\r\n", $message);
 		
 		// Send the email
-		if (XHubHelper::send_email($email, $subject, $message)) {
+		if (Hubzero_Toolbox::send_email($email, $subject, $message)) {
 			$msg = 'A confirmation email has been sent to "'. htmlentities($email,ENT_COMPAT,'UTF-8') .'". You must click the link in that email to re-activate your account.';
 		} else {
 			$msg = 'An error occurred emailing "'. htmlentities($email,ENT_COMPAT,'UTF-8') .'" your confirmation.';
@@ -1204,7 +1141,7 @@ class MembersController extends JObject
 		$p = JRequest::getVar( 'access', array(), 'post' );
 		if (is_array( $p )) {
 			// Load the profile
-			$profile = new XProfile();
+			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
 			
 			foreach ($p as $k=>$v) 
@@ -1240,8 +1177,8 @@ class MembersController extends JObject
 		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&task='.$this->_task);
 		
 		// Push some styles to the template
-		$this->getStyles();
-		$this->getStyles('usage');
+		$this->_getStyles();
+		$this->_getStyles('usage');
 		
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
@@ -1275,7 +1212,7 @@ class MembersController extends JObject
 			{
 				if ($prevuser != $row->username) {
 					if ($user) {
-						$xprofile = new XProfile();
+						$xprofile = new Hubzero_User_Profile();
 						$xprofile->load($prevuser);
 						
 						$users[$prevuser] = $user;
@@ -1290,7 +1227,7 @@ class MembersController extends JObject
 				array_push($user, array('host' => $row->host, 'ip' => $row->ip, 'idle' => $row->idle));
 			}
 			if ($user) {
-				$xprofile = new XProfile();
+				$xprofile = new Hubzero_User_Profile();
 				$xprofile->load($prevuser);
 				
 				$users[$prevuser] = $user;
@@ -1347,7 +1284,7 @@ class MembersController extends JObject
 		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&task='.$this->_task);
 		
 		// Push some styles to the template
-		$this->getStyles();
+		$this->_getStyles();
 		
 		// Check if they're logged in
 		$juser =& JFactory::getUser();
@@ -1670,7 +1607,7 @@ class MembersController extends JObject
 		}
 		
 		// Build upload path
-		$dir  = FileUploadUtils::niceidformat( $id );
+		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
 		if (substr($config->get('webpath'), 0, 1) != DS) {
 			$path .= DS;
@@ -1721,7 +1658,7 @@ class MembersController extends JObject
 			}
 
 			// Instantiate a profile, change some info and save
-			$profile = new XProfile();
+			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
 			$profile->set('picture', $file['name']);
 			if (!$profile->update()) {
@@ -1781,7 +1718,7 @@ class MembersController extends JObject
 		}
 		
 		// Build the file path
-		$dir  = FileUploadUtils::niceidformat( $id );
+		$dir  = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT;
 		if (substr($config->get('webpath'), 0, 1) != DS) {
 			$path .= DS;
@@ -1811,7 +1748,7 @@ class MembersController extends JObject
 			}
 			
 			// Instantiate a profile, change some info and save
-			$profile = new XProfile();
+			$profile = new Hubzero_User_Profile();
 			$profile->load( $id );
 			$profile->set('picture', '');
 			if (!$profile->update()) {
@@ -1841,7 +1778,7 @@ class MembersController extends JObject
 		}
 		
 		// Build the file path
-		$dir = FileUploadUtils::niceidformat( $id );
+		$dir = Hubzero_View_Helper_Html::niceidformat( $id );
 		$path = JPATH_ROOT.DS.$config->get('webpath').DS.$dir;
 		
 		// Output HTML
@@ -1863,7 +1800,7 @@ class MembersController extends JObject
 	//	Private functions
 	//----------------------------------------------------------
 
-	private function _authorize($uid=0)
+	protected function _authorize($uid=0)
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
@@ -1890,4 +1827,3 @@ class MembersController extends JObject
 		return false;
 	}
 }
-?>

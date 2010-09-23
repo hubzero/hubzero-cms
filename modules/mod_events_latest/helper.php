@@ -82,17 +82,17 @@ class modEventsLatest
 	public function display()
 	{
 		// Check the events component
-		if (file_exists( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'events.html.php' ) ) { 
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'events.html.php' );
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'events.date.php');
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'events.repeat.php');
+		if (file_exists( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' ) ) { 
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' );
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'date.php');
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'repeat.php');
 		} else {
 			$this->error = JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
 			return;
 		}
 
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_events_latest');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_events_latest');
 
 		$this->_displayLatestEvents();
 	}

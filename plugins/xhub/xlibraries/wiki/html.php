@@ -325,11 +325,31 @@ class WikiHtml
 	
 	//-----------
 	
-	public function doesNotExist( $pagetitle, $pagename, $scope, $option ) 
+	//public function doesNotExist( $pagetitle, $pagename, $scope, $option ) 
+	public function doesNotExist( $pagetitle, $page, $option ) 
 	{
 		$html  = WikiHtml::div( WikiHtml::hed(2,$pagetitle), 'full', 'content-header' );
 		$html .= '<div class="main section">'.n;
-		$html .= WikiHtml::warning('This page does not exist. Would you like to <a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$scope.a.'pagename='.$pagename.a.'task=new').'">create it?</a>');
+		$html .= WikiHtml::warning('This page does not exist. Would you like to <a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=new').'">create it?</a>');
+		$html .= '<p>Or choose a page template to create an already-formatted page:</p>';
+		$html .= '<ul>';
+		
+		/*$database =& JFactory::getDBO();
+		$page = new WikiPage( $database );
+		$page->scope = $scope;
+		$page->pagename = $pagename;*/
+		
+		$templates = $page->getTemplates();
+		if ($templates) {
+			foreach ($templates as $template)
+			{
+				$html .= "\t".'<li><a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=new&tplate='.stripslashes($template->pagename)).'">'.stripslashes($template->pagename).'</a>'."\n";
+			}
+		} else {
+			$html .= '<li>No templates available.</li>';
+		}
+		$html .= '</ul>';
+		
 		$html .= WikiHtml::div( '', 'clear' );
 		$html .= '</div><!-- / .main section -->'.n;
 		return $html;
@@ -350,7 +370,7 @@ class WikiHtml
 			return $html;
 		}
 		
-		$html .= '<form action="/index.php" method="post" id="hubForm">'.n;
+		$html .= '<form action="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope).'" method="post" id="hubForm">'.n;
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('WIKI_DELETE_PAGE_EXPLANATION').'</p>'.n;
 		$html .= t.'</div>'.n;
@@ -394,7 +414,7 @@ class WikiHtml
 			return $html;
 		}
 		
-		$html .= '<form action="/index.php" method="post" id="hubForm">'.n;
+		$html .= '<form action="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope).'" method="post" id="hubForm">'.n;
 		$html .= t.'<div class="explaination">'.n;
 		$html .= t.t.'<p>'.JText::_('WIKI_PAGENAME_EXPLANATION').'</p>'.n;
 		$html .= t.'</div>'.n;
@@ -426,7 +446,7 @@ class WikiHtml
 	
 	//-----------
 	
-	public function edit( $sub, $name, $authorized, $pagetitle, $page, $revision, $authors, $option, $tags, $task, $params, $preview=NULL ) 
+	public function edit( $sub, $name, $authorized, $pagetitle, $page, $revision, $authors, $option, $tags, $task, $params, $preview=NULL, $tplate='' ) 
 	{
 		$xparams =& new JParameter( $page->params );
 		
@@ -499,6 +519,52 @@ class WikiHtml
 		} else {
 			$html .= t.t.t.'<input type="hidden" name="title" value="'. $page->title .'" />'.n;
 		}
+		$html .= t.t.'<label>'.n;
+		$html .= t.t.t.JText::_('Template').':'.n;
+			$hi = array();
+			$o  = '<select name="templates" id="templates">'."\n";
+			$o .= "\t".'<option value="tc">'.JText::_('Select a template...').'</option>'."\n";
+			$templates = $page->getTemplates();
+			
+			if ($templates) {
+				$database =& JFactory::getDBO();
+				$temprev = new WikiPageRevision( $database );
+
+				foreach ($templates as $template)
+				{
+					$temprev->loadByVersion( $template->id );
+
+					$temprev->pagetext = str_replace('"','&quot;',$temprev->pagetext);
+					$temprev->pagetext = str_replace('&quote;','&quot;',$temprev->pagetext);
+
+					$o .= "\t".'<option value="t'.$template->id.'"';
+					if (strtolower($tplate) == strtolower($template->pagename)) {
+						$o .= ' selected="selected"';
+						if (!$page->id) {
+							$revision->pagetext = stripslashes($temprev->pagetext);
+							
+							$tplt = new WikiPage( $database );
+							$tplt->id = $template->id;
+							$tags = $tplt->getTags();
+							if (count($tags) > 0) {
+								$tagarray = array();
+								foreach ($tags as $tag)
+								{
+									$tagarray[] = $tag['raw_tag'];
+								}
+								$tags = implode( ', ', $tagarray );
+							}
+						}
+					}
+					$o .= '>'.stripslashes($template->pagename).'</option>'."\n";
+
+					$hi[] = '<input type="hidden" name="t'.$template->id.'" id="t'.$template->id.'" value="'.htmlentities(stripslashes($temprev->pagetext), ENT_QUOTES).'" />'."\n";
+				}
+			}
+			$o .= '</select>'."\n";
+			$hi = implode("\n",$hi);
+		$html .= $o.$hi;
+		$html .= t.t.'</label>'.n;
 		$html .= t.t.'<label>'.n;
 		$html .= t.t.t.JText::_('WIKI_FIELD_PAGETEXT').': <span class="required">'.JText::_('WIKI_REQUIRED').'</span>'.n;
 		$html .= t.t.t.'<ul id="wiki-toolbar" class="hidden"></ul>'.n;
@@ -1004,7 +1070,7 @@ class WikiHtml
 		$html .= t.'</tbody>'.n;
 		$html .= '</table>'.n;
 		
-		$f  = '<form action="/index.php" method="post">'.n;
+		$f  = '<form action="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename).'" method="post">'.n;
 		$f .= WikiHtml::aside( '<p><input type="submit" value="'.JText::_('WIKI_HISTORY_COMPARE').'" /></p>' );
 		$f .= WikiHtml::subject( $html );
 		$f .= t.t.'<input type="hidden" name="pagename" value="'. $page->pagename .'" />'.n;

@@ -40,7 +40,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$database = $this->database;
 	
 		$html = '';		
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');				
 		
 		if($wishlist) {	
@@ -134,7 +134,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html .= '</label>';
 			// get popular tags
 			if($wishlist->category=='general') {
-				require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
 				$obj = new TagsTag( $database );
 				$tags = $obj->getTopTags( 5, 'wishlist', 'tcount DESC', 0 );
 				
@@ -193,8 +192,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			
 			if(($admin==2 or $admin==3) && count($wishlist->items) >= 10 && $wishlist->category=='general' && $filters['filterby']=='all') {
 				// show what's popular
-				ximport('xmodule');
-				$html .= XModuleHelper::renderModules('wishvoters');
+				ximport('Hubzero_Module_Helper');
+				$html .= Hubzero_Module_Helper::renderModules('wishvoters');
 			}
 			$html .= t.'</div><!-- / .aside -->'.n;
 			$html .= t.'<div class="subject">'.n;		

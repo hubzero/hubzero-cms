@@ -131,14 +131,15 @@ class WikiParser
 		// We'll put this back after other processes
 		$text = $this->strip( $text );
 		
+		$text = $this->includes( $text );
 		// We need to temporarily put back and blocks we stripped and then restrip everything
 		// This is because of any blocks the macros may have outputted - otherwise they wouldn't get processed
-		//$text = $this->unstrip( $text, false );
-		//$text = $this->strip( $text );
+		$text = $this->unstrip( $text, false );
+		$text = $this->strip( $text );
 		
 		// Clean out any Cross-Site Scripting attempts on the tags we didn't strip out
 		$text = $this->cleanXss( $text );
-
+		
 		// Process LaTeX math forumlas and strip out
 		// This will return either simple HTML or an image
 		// We'll put this back after other processes
@@ -841,6 +842,62 @@ class WikiParser
 		
 		array_push($this->maths,$m);
 		return '<math></math>';
+	}
+	
+	//-------------------------------------------------------------
+	// Macros
+	//-------------------------------------------------------------
+	
+	private function includes($text)
+	{		
+		ximport('wiki.macro');
+		
+		$this->includes = array();
+		
+		// Get macros [[name(args)]]
+		$pattern = '/\[\[(?P<includename>[\w]+)(\]\]|\((?P<includeargs>.*)\)\]\])/U';
+		$text = preg_replace_callback($pattern, array(&$this,'getInclude'), $text);
+
+		return $text;
+	}
+	
+	//-----------
+
+	private function getInclude($matches) 
+	{
+		if (isset($matches[1]) && $matches[1] != '') {
+			if (strtolower($matches[1]) != 'include') {
+				return $matches[0];
+			}
+			
+			$scope = $this->scope;
+			if (strstr($matches[3], '/')) {
+				$bits = explode('/', $matches[3]);
+				$pagename = array_pop($bits);
+				$s = trim(implode('/', $bits));
+				if (substr($s, 0, 1) == DS) {
+					$s = substr($s, 1);
+				}
+				if (substr($s, -1) == DS) {
+					$s = substr($s, 0, -1);
+				}
+				$scope .= DS.$s;
+			} else {
+				$pagename = $matches[3];
+			}
+			
+			$database =& JFactory::getDBO();
+			$p = new WikiPage( $database );
+			$p->load( $pagename, $scope );
+			
+			if ($p->id) {
+				$revision = $p->getCurrentRevision();
+				
+				return $revision->pagetext;
+			} else {
+				return '';
+			}
+		}
 	}
 
 	//-------------------------------------------------------------

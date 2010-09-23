@@ -76,13 +76,13 @@ class modMyMessages
 			$this->error = true;
 		} else {
 			// Find the user's most recent support tickets
-			ximport('xmessage');
-			$recipient = new XMessageRecipient( $database );
+			ximport('Hubzero_Message');
+			$recipient = new Hubzero_Message_Recipient( $database );
 			$this->rows = $recipient->getUnreadMessages( $juser->get('id'), $limit );
 
 			// Push the module CSS to the template
-			ximport('xdocument');
-			XDocument::addModuleStyleSheet('mod_mymessages');
+			ximport('Hubzero_Document');
+			Hubzero_Document::addModuleStyleSheet('mod_mymessages');
 		}
 	}
 }

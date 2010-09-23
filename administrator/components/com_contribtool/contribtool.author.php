@@ -142,7 +142,7 @@ class ToolAuthor extends  JTable
 		if (!$rid) {
 			return false;
 		}
-		ximport('xprofile');
+		ximport('Hubzero_User_Profile');
 		
 		if($authors) { $authors = ContribtoolHelper::transform($authors, 'uidNumber'); }
 
@@ -186,43 +186,55 @@ class ToolAuthor extends  JTable
 				// Check if they're already linked to this resource
 				$rc->loadAssociation( $authid, $rid, 'resources' );
 				if (!$rc->authorid) {
-					$xprofile = new XProfile();
+					$xprofile = new Hubzero_User_Profile();
 					$xprofile->load( $authid );
-				
-					if ($xprofile) {
-						$this->_author_check($authid);
-						
-						// New record
-						$rc->authorid = $authid;
-						$rc->ordering = $order;
-						$rc->name = $xprofile->get('name');
-						$rc->organization = $xprofile->get('organization');
-						$rc->createAssociation();
-		
-						$order++;
-					}
+			
+					// New record
+					$rc->authorid = $authid;
+					$rc->ordering = $order;
+					$rc->name = addslashes($xprofile->get('name'));
+					$rc->organization = addslashes($xprofile->get('organization'));
+					$rc->createAssociation();
+	
+					$order++;
 				}			
 			}
 		}
 		else if($dev_authors) {
 			// new version is being published, transfer data from author_assoc
 			$i=0;
+			
 			foreach($dev_authors as $authid) {
-				$xprofile = new XProfile();
-				$xprofile->load( $authid );
 				
-				if($xprofile) {
-					$this->_author_check($authid);
+				// Do we have name/org info in previous version?
+				$query  = "SELECT name, organization FROM #__tool_authors ";
+				$query .= "WHERE toolname='".$toolname."' AND uid='".$authid."' AND revision < ".$revision;
+				$query .= " AND name IS NOT NULL AND organization IS NOT NULL ";
+				$query .= " ORDER BY revision DESC LIMIT 1";
+				$this->_db->setQuery( $query );
+				$info = $this->_db->loadObjectList();
+				if($info) {
+					$name 	  		= $info[0]->name;
+					$organization	= $info[0]->organization;
+				}
+				else {				
+					$xprofile = new Hubzero_User_Profile();
+					$xprofile->load( $authid );
+				
 					$name 	  		= $xprofile->get('name');
 					$organization	= $xprofile->get('organization');
-					
-					$query = "INSERT INTO #__tool_authors (toolname, revision, uid, ordering, version_id, name, organization) VALUES ('".$toolname."','".$revision."','".$authid."','".$i."', '".$version."', '".$name."', '".$organization."')";
-					$this->_db->setQuery( $query );
-					if(!$this->_db->query()) {
-						return false;
-					}
-					$i++;
 				}
+				
+				//$name = addslashes($name);
+				//$organization	= addslashes($organization);
+				
+				$query = "INSERT INTO #__tool_authors (toolname, revision, uid, ordering, version_id, name, organization) VALUES ('".$toolname."','".$revision."','".$authid."','".$i."', '".$version."', '".addslashes($name)."', '".addslashes($organization)."')";
+			//	$query = "INSERT INTO $this->_tbl (toolname, revision, uid, ordering, version_id, name, organization) VALUES('$toolname', $revision, $authorid, $i, '$version', '$name', '$organization')";
+				$this->_db->setQuery( $query );
+				if(!$this->_db->query()) {
+					return false;
+				}
+				$i++;
 			}
 		}
 		
@@ -232,7 +244,7 @@ class ToolAuthor extends  JTable
 
 	private function _author_check($id)
 	{
-		$xprofile = XProfile::getInstance($id);
+		$xprofile = Hubzero_User_Profile::getInstance($id);
 		if ($xprofile->get('givenName') == '' && $xprofile->get('middleName') == '' && $xprofile->get('surname') == '') {
 			$bits = explode(' ', $xprofile->get('name'));
 			$xprofile->set('surname', array_pop($bits));

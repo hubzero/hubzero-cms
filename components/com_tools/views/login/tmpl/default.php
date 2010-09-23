@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="main section">
 <?php
-ximport('xmodule');
-XModuleHelper::displayModules('force_mod');
+ximport('Hubzero_Module_Helper');
+Hubzero_Module_Helper::displayModules('force_mod');
 ?>
 </div><!-- / .main section -->

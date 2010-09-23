@@ -31,14 +31,18 @@ if ($this->line->alias) {
 	$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->line->id);
 }
 
-$html  = "\t".'<li>'."\n";
-$html .= "\t\t".'<p class="';
-/*if ($this->line->access == 4) {
-	$html .= 'private ';
-} elseif ($this->line->access == 3) {
-	$html .= 'protected ';
-}*/
-$html .= 'title"><a href="'.$sef.'">'. Hubzero_View_Helper_Html::xhtml($this->line->title) . '</a>'."\n";
+$html  = "\t".'<li';
+switch ($this->line->access)
+{
+	case 1: $html .= ' class="registered"'; break;
+	case 2: $html .= ' class="special"'; break;
+	case 3: $html .= ' class="protected"'; break;
+	case 4: $html .= ' class="private"'; break;
+	case 0:
+	default: $html .= ' class="public"'; break;
+}
+$html .= '>'."\n";
+$html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. Hubzero_View_Helper_Html::xhtml($this->line->title) . '</a>'."\n";
 if ($this->show_edit != 0) {
 	if ($this->line->published >= 0) {
 		if ($this->line->type == 7) {

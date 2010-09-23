@@ -97,9 +97,9 @@ class modResourceMenu
 		if (!preg_match($regex, $options, $style))
 	        $style[2] = "-2";
 
-	    ximport('xmodule');
+	    ximport('Hubzero_Module_Helper');
 
-	    return XModuleHelper::renderModules($position[2],$style[2]);
+	    return Hubzero_Module_Helper::renderModules($position[2],$style[2]);
 	}
 
 	//-----------
@@ -115,8 +115,8 @@ class modResourceMenu
 		$this->html = $this->_xHubTags( $params->get('content') );
 		
 		// Push some CSS to the tmeplate
-		ximport('xdocument');
-		XDocument::addModuleStylesheet('mod_resourcemenu');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStylesheet('mod_resourcemenu');
 		
 		// Push some javascript to the tmeplate
 		$jdocument =& JFactory::getDocument();

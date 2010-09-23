@@ -42,17 +42,24 @@ if (!$this->juser->get('guest')) {
 								<input type="hidden" name="task" value="savereply" />
 								<input type="hidden" name="referenceid" value="<?php echo $this->row->id; ?>" />
 								<input type="hidden" name="category" value="<?php echo $category; ?>" />
+								
 								<label>
+									<?php echo JText::_('COM_ANSWERS_ENTER_COMMENTS'); ?>
+									<textarea name="comment" rows="4" cols="50" class="commentarea" placeholder="<?php echo JText::_('COM_ANSWERS_ENTER_COMMENTS'); ?>"></textarea>
+								</label>
+								
+								<label class="reply-anonymous-label">
 									<input class="option" type="checkbox" name="anonymous" value="1" /> 
 									<?php echo JText::_('COM_ANSWERS_POST_COMMENT_ANONYMOUSLY'); ?>
 								</label>
-								<label>
-									<textarea name="comment" rows="4" cols="50" class="commentarea"><?php echo JText::_('COM_ANSWERS_ENTER_COMMENTS'); ?></textarea>
-								</label>
+								
+								<p class="submit">
+									<input type="submit" value="<?php echo JText::_('COM_ANSWERS_POST_COMMENT'); ?>" /> 
+									<a class="closeform cancelreply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'#c'.$this->row->id); ?>"><?php echo JText::_('COM_ANSWERS_CANCEL'); ?></a>
+								</p>
 							</fieldset>
-							<p><input type="submit" value="<?php echo JText::_('COM_ANSWERS_POST_COMMENT'); ?>" /> <a href="javascript:void(0);" class="closeform"><?php echo JText::_('COM_ANSWERS_CANCEL'); ?></a></p>
 						</form>
-					</div>
+					</div><!-- / .addcomment -->
 <?php
 }
 ?>

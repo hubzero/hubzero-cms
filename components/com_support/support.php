@@ -42,11 +42,9 @@ include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'table
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'attachment.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'reportabuse.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'utilities.php' );
-include_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'support.tags.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'support.html.php' );
+include_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-
-ximport('textfilter');
 
 $jacl =& JFactory::getACL();
 $jacl->addACL( $option, 'manage', 'users', 'super administrator' );
@@ -57,4 +55,3 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 $controller = new SupportController();
 $controller->execute();
 $controller->redirect();
-?>

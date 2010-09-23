@@ -1,0 +1,388 @@
+<?php
+/**
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ *
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+
+//----------------------------------------------------------
+//  Base Tagging class
+//  
+//  Generally, direct use is rare (and discouraged). It will 
+//  typically be extended by another component, such as 
+//  ResourcesTags or AnswersTags.
+//----------------------------------------------------------
+
+require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'tag.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'object.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'group.php' );
+
+class TagsHandler extends JObject 
+{
+	public $_db  = NULL;  // Database
+	public $_tbl = NULL;  // Secondary tag table, used for linking objects (such as resources) to tags
+	public $_oid = NULL;  // The object to be tagged
+	public $_tag_tbl = '#__tags';  // The primary tag table
+	public $_obj_tbl = '#__tags_object';
+
+	//-----------
+	
+	public function __construct( $db, $config=array() )
+	{
+		$this->_db = $db;
+	}
+
+	//-----------
+
+	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=NULL, $strength=0, $admin=0) 
+	{
+		if (!isset($object_id)) {
+			$this->setError('get_tags_on_object argument missing');
+			return array();
+		}
+		
+		$to = new TagsObject($this->_db);
+		$to->objectid = $object_id;
+		$to->tbl = $this->_tbl;
+		$to->strength = $strength;
+		$to->taggerid = $tagger_id;
+		
+		$tags = $to->getTagsOnObject($object_id, $this->_tbl, $admin, $offset, $limit);
+		if (!$tags) {
+			$this->setError( $to->getError() );
+			return array();
+		}
+		return $tags;
+	}
+
+	//-----------
+	
+	public function safe_tag($tagger_id, $object_id, $tag, $strength=1) 
+	{
+		if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) {
+			$this->setError('safe_tag argument missing');
+			return false;
+		}
+
+		if ($this->normalize_tag($tag) === '0') {
+			return true;
+		}
+		
+		$to = new TagsObject($this->_db);
+		$to->objectid = $object_id;
+		$to->tbl = $this->_tbl;
+		
+		// First see if the tag exists.
+		$t = new TagsTag($this->_db);
+		$t->loadTag($this->normalize_tag($tag));
+		if (!$t->id) {
+			// Add new tag! 
+			$t->tag = $this->normalize_tag($tag);
+			$t->raw_tag = addslashes($tag);
+			//$t->created = date( 'Y-m-d H:i:s', time() );
+			//$t->created_by = $tagger_id;
+			if (!$t->store()) {
+				$this->setError( $t->getError() );
+				return false;
+			}
+			if (!$t->id) {
+				return false;
+			}
+			$to->tagid = $t->id;
+		} else {
+			$to->tagid = $t->id;
+
+			// Check if the object has already been tagged
+			if ($to->getCountForObject() > 0) {
+				return true;
+			}
+		}
+		
+		// Add an entry linking the tag to the object it was used on
+		$to->strength = $strength;
+		$to->taggerid = $tagger_id;
+		$to->taggedon = date( 'Y-m-d H:i:s', time() );
+		//$to->state = 1;
+		if (!$to->store()) {
+			$this->setError( $to->getError() );
+			return false;
+		}
+
+		return true;
+	}
+
+	//-----------
+
+	public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin=false) 
+	{
+		$tagArray  = $this->_parse_tags($tag_string);   // array of normalized tags
+		$tagArray2 = $this->_parse_tags($tag_string,1); // array of normalized => raw tags
+		if ($admin) {
+			$oldTags = $this->get_tags_on_object($object_id, 0, 0, 0, 0, 1); // tags currently assigned to an object
+		} else {
+			$oldTags = $this->get_tags_on_object($object_id, 0, 0, $tagger_id, 0, 0); // tags currently assigned to an object
+		}
+
+		$preserveTags = array();
+
+		if (count($oldTags) > 0) {
+			foreach ($oldTags as $tagItem) 
+			{
+				if (!in_array($tagItem['tag'], $tagArray)) {
+					// We need to delete old tags that don't appear in the new parsed string.
+					$this->remove_tag($tagger_id, $object_id, $tagItem['tag'], $admin);
+				} else {
+					// We need to preserve old tags that appear (to save timestamps)
+					$preserveTags[] = $tagItem['tag'];
+				}
+			}
+		}
+		$newTags = array_diff($tagArray, $preserveTags);
+
+		foreach ($newTags as $tag) 
+		{
+			$tag = trim($tag);
+			if ($tag != '') {
+				if (get_magic_quotes_gpc()) {
+					$tag = addslashes($tag);
+				}
+				$thistag = $tagArray2[$tag];
+				$this->safe_tag($tagger_id, $object_id, $thistag, $strength);
+			}
+		}
+		return true;
+	}
+
+	//-----------
+
+	public function remove_tag($tagger_id, $object_id, $tag, $admin) 
+	{
+		if (!isset($object_id) || !isset($tag)) {
+			$this->setError('remove_tag argument missing');
+			return false;
+		}
+
+		$tag_id = $this->get_tag_id($tag);
+		if (!$tag_id) {
+			return false;
+		}
+
+		$to = new TagsObject($this->_db);
+		if (!$to->deleteObjects( $tag_id, $this->_tbl, $object_id, $tagger_id, $admin )) {
+			$this->setError( $to->getError() );
+			return false;
+		}
+		return true;
+	}
+
+	//-----------
+
+	public function remove_all_tags($object_id) 
+	{
+		if ($object_id > 0) {
+			$to = new TagsObject($this->_db);
+			if (!$to->removeAllTags( $this->_tbl, $object_id )) {
+				$this->setError( $to->getError() );
+				return false;
+			}
+			return true;
+		} else {
+			return false;	
+		}
+	}
+
+	//-----------
+	
+	public function normalize_tag($tag) 
+	{
+		return strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $tag));
+	}
+	
+	//-----------
+	
+	public function get_tag_id($tag) 
+	{
+		if (!isset($tag)) {
+			$this->setError('get_tag_id argument missing');
+			return false;
+		}
+
+		$t = new TagsTag($this->_db);
+		$t->loadTag($this->normalize_tag($tag));
+		return $t->id;
+	}
+
+	//-----------
+
+	public function get_raw_tag_id($tag) 
+	{
+		if (!isset($tag)) {
+			$this->setError('get_raw_tag_id argument missing');
+			return false;
+		}
+		return $this->get_tag_id($tag);
+	}
+	
+	//-----------
+	
+	public function count_tags($admin=0)
+	{
+		$filters = array();
+		$filters['by'] = 'user';
+		if ($admin) {
+			$filters['by'] = 'all';
+		}
+		$t = new TagsTag($this->_db);
+		return $t->getCount( $filters );
+	}
+	
+	//-----------
+	
+	public function get_tag_cloud($showsizes=0, $admin=0, $objectid=NULL)
+	{
+		// find all tags
+		/*if ($admin) {
+			$state = 2;
+		} else {
+			$state = 1;
+		}*/
+		$t = new TagsTag( $this->_db );
+		$tags = $t->getCloud($this->_tbl, $admin, $objectid);
+		
+		return $this->buildCloud($tags, 'alpha', $showsizes);
+	}
+	
+	//-----------
+	
+	public function buildCloud($tags, $sort='alpha', $showsizes=0) 
+	{
+		$html = '';
+		
+		if ($tags && count($tags) > 0) {
+			$min_font_size = 1;
+			$max_font_size = 1.8;
+			
+			if ($showsizes) {
+				$retarr = array();
+				foreach ($tags as $tag)
+				{
+					$retarr[$tag->raw_tag] = $tag->count;
+				}
+				ksort($retarr);
+
+				$max_qty = max(array_values($retarr));  // Get the max qty of tagged objects in the set
+				$min_qty = min(array_values($retarr));  // Get the min qty of tagged objects in the set
+
+				// For ever additional tagged object from min to max, we add $step to the font size.
+				$spread = $max_qty - $min_qty;
+				if (0 == $spread) { // Divide by zero
+					$spread = 1;
+				}
+				$step = ($max_font_size - $min_font_size)/($spread);
+			}
+
+			// build HTML
+			$html .= '<ol class="tags">'."\n";
+			$tll = array();
+			foreach ($tags as $tag)
+			{
+				$class = '';
+				switch ($tag->admin) 
+				{
+					/*case 0:
+						$class = ' class="restricted"';
+					break;*/
+					case 1:
+						$class = ' class="admin"';
+					break;
+				}
+
+				$tag->raw_tag = stripslashes($tag->raw_tag);
+				$tag->raw_tag = str_replace( '&amp;', '&', $tag->raw_tag );
+				$tag->raw_tag = str_replace( '&', '&amp;', $tag->raw_tag );
+				if ($showsizes == 1) {
+					$size = $min_font_size + ($tag->count - $min_qty) * $step;
+					$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=com_tags&amp;tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></span></li>'."\n";
+				} elseif ($showsizes == 2) {
+					$tll[$tag->tag] = "\t".'<li'.$class.'><a href="javascript:void(0);" onclick="addtag(\''.$tag->tag.'\');">'.stripslashes($tag->raw_tag).'</a></li>'."\n";
+				} else {
+					$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=com_tags&amp;tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></li>'."\n";
+				}
+			}
+			if ($sort == 'alpha') {
+				ksort($tll);
+				$html .= implode('',$tll);
+			}
+			$html .= '</ol>'."\n";
+		}
+		
+		return $html;
+	}
+	
+	//-----------
+	
+	public function get_tag_string( $oid, $offset=0, $limit=0, $tagger_id=NULL, $strength=0, $admin=0 ) 
+	{
+		$tags = $this->get_tags_on_object( $oid, $offset, $limit, $tagger_id, $strength, $admin );
+		
+		if ($tags && count($tags) > 0) {
+			$tagarray = array();
+			foreach ($tags as $tag)
+			{
+				$tagarray[] = $tag['raw_tag'];
+			}
+			$tags = implode( ', ', $tagarray );
+		} else {
+			$tags = (is_array($tags)) ? implode('',$tags) : '';
+		}
+		return $tags;
+	}
+	
+	//-----------
+	
+	public function _parse_tags( $tag_string, $keep=0 ) 
+	{
+		$newwords = array();
+		
+		// If the tag string is empty, return the empty set.
+		if ($tag_string == '') {
+			return $newwords;
+		}
+		
+		// Perform tag parsing
+		$tag_string = trim($tag_string);
+		$raw_tags = explode(',',$tag_string);
+		
+		foreach ($raw_tags as $raw_tag)
+		{
+			$raw_tag = trim($raw_tag);
+			$nrm_tag = $this->normalize_tag($raw_tag);
+			if ($keep != 0) {
+				$newwords[$nrm_tag] = $raw_tag;
+			} else {
+				$newwords[] = $nrm_tag;
+			}
+		}
+		return $newwords;
+	}
+}

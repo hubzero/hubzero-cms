@@ -141,8 +141,8 @@ class MyhubController extends Hubzero_Controller
 	protected function manage() 
 	{
 		// Add the CSS
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet($this->_option);
 		
 		// Add the Javascript if in "personalize" mode
 	    if ($this->_task == 'customize') {

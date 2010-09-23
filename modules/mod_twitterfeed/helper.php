@@ -74,8 +74,8 @@ class modTwitterFeedHelper
 				$i++;
 			}
 		}
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_twitterfeed');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_twitterfeed');
 		return $tweets;
 	} //end getTweets Function
 }

@@ -25,97 +25,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class FeaturesController extends JObject
+ximport('Hubzero_Controller');
+
+class FeaturesController extends Hubzero_Controller
 {
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', '' );
 		
 		switch ($this->_task) 
 		{
-			case 'delete': $this->delete(); break;
-			case 'add':    $this->edit();   break;
-			case 'edit':   $this->edit();   break;
-			case 'save':   $this->save();   break;
-			case 'browse': $this->browse(); break;
-			case 'login':  $this->login();  break;
+			case 'delete': $this->_delete(); break;
+			case 'add':    $this->_edit();   break;
+			case 'edit':   $this->_edit();   break;
+			case 'save':   $this->_save();   break;
+			case 'browse': $this->_browse(); break;
+			case 'login':  $this->_login();  break;
 
-			default: $this->browse(); break;
-		}
-	}
-	
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
-		}
-	}
-
-	//-----------
-	
-	private function _getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-
-	//-----------
-	
-	private function _getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
+			default: $this->_browse(); break;
 		}
 	}
 
@@ -123,7 +50,7 @@ class FeaturesController extends JObject
 	// Views
 	//----------------------------------------------------------
 
-	protected function login() 
+	protected function _login() 
 	{
 		$view = new JView( array('name'=>'login') );
 		$view->title = JText::_(strtoupper($this->_option)).': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
@@ -135,7 +62,7 @@ class FeaturesController extends JObject
 	
 	//-----------
 
-	protected function browse()
+	protected function _browse()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'browse') );
@@ -152,8 +79,7 @@ class FeaturesController extends JObject
 		$view->authorized = $this->_authorize();
 		
 		// Instantiate a FeaturesHistory object
-		$database =& JFactory::getDBO();
-		$obj = new FeaturesHistory( $database );
+		$obj = new FeaturesHistory( $this->database );
 		
 		// Get a record count
 		$view->total = $obj->getCount( $view->filters, $view->authorized );
@@ -188,14 +114,14 @@ class FeaturesController extends JObject
 	
 	//-----------
 	
-	protected function add() 
+	protected function _add() 
 	{
-		$this->edit();
+		$this->_edit();
 	}
 	
 	//-----------
 	
-	protected function edit() 
+	protected function _edit() 
 	{
 		// Check if they are authorized to make changes
 		if (!$this->_authorize()) {
@@ -212,8 +138,7 @@ class FeaturesController extends JObject
 		$id = JRequest::getInt( 'id', 0, 'request' );
 		
 		// Load the object
-		$database =& JFactory::getDBO();
-		$view->row = new FeaturesHistory( $database );
+		$view->row = new FeaturesHistory( $this->database );
 		$view->row->load( $id );
 		
 		if ($view->row->note == 'tools') {
@@ -249,7 +174,7 @@ class FeaturesController extends JObject
 	
 	//-----------
 	
-	protected function save() 
+	protected function _save() 
 	{
 		// Check if they are authorized to make changes
 		if (!$this->_authorize()) {
@@ -257,10 +182,8 @@ class FeaturesController extends JObject
 			return;
 		}
 		
-		$database =& JFactory::getDBO();
-		
 		// Instantiate an object and bind the incoming data
-		$row = new FeaturesHistory( $database );
+		$row = new FeaturesHistory( $this->database );
 		if (!$row->bind( $_POST )) {
 			JError::raiseError( 500, $row->getError() );
 			return;
@@ -292,7 +215,7 @@ class FeaturesController extends JObject
 	
 	//-----------
 	
-	protected function delete() 
+	protected function _delete() 
 	{
 		// Check if they are authorized to make changes
 		if (!$this->_authorize()) {
@@ -304,33 +227,12 @@ class FeaturesController extends JObject
 		$id = JRequest::getInt( 'id', 0, 'request' );
 		
 		if ($id) {
-			$database =& JFactory::getDBO();
-			
 			// Delete the object
-			$row = new FeaturesHistory( $database );
+			$row = new FeaturesHistory( $this->database );
 			$row->delete( $id );
 		}
 		
 		// Redirect
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 	}
-	
-	//-----------
-	
-	private function _authorize()
-	{
-		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
-			return false;
-		}
-		
-		// Check if they're a site admin (from Joomla)
-		if ($juser->authorize($this->_option, 'manage')) {
-			return true;
-		}
-
-		return false;
-	}
 }
-?>

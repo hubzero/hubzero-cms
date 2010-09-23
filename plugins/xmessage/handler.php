@@ -45,7 +45,7 @@ class plgXMessageHandler extends JPlugin
 
 	public function onTakeAction( $type, $uids=array(), $component='', $element=null ) 
 	{
-		ximport('xmessage');
+		ximport('Hubzero_Message');
 		
 		// Do we have the proper bits?
 		if (!$element || !$component || !$type) {
@@ -60,18 +60,18 @@ class plgXMessageHandler extends JPlugin
 			foreach ($uids as $uid) 
 			{
 				// Find any actions the user needs to take for this $component and $element
-				$action = new XMessageAction( $database );
+				$action = new Hubzero_Message_Action( $database );
 				$mids = $action->getActionItems( $type, $component, $element, $uid );
 
 				// Check if the user has any action items
 				if (count($mids) > 0) {
-					/*$recipient = new XMessageRecipient( $database );
+					/*$recipient = new Hubzero_Message_Recipient( $database );
 					if (!$recipient->setState( 1, $mids )) {
 						$this->setError( JText::sprintf('Unable to update recipient records %s for user %s', implode(',',$mids), $uid) );
 					}*/
 					foreach ($mids as $mid) 
 					{
-						$xseen = new XMessageSeen( $database );
+						$xseen = new Hubzero_Message_Seen( $database );
 						$xseen->mid = $mid;
 						$xseen->uid = $uid;
 						$xseen->loadRecord();
@@ -91,7 +91,7 @@ class plgXMessageHandler extends JPlugin
 	
 	public function onSendMessage( $type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0 ) 
 	{
-		ximport('xmessage');
+		ximport('Hubzero_Message');
 		
 		// Do we have a message?
 		if (!$message) {
@@ -102,7 +102,7 @@ class plgXMessageHandler extends JPlugin
 		$juser =& JFactory::getUser();
 		
 		// Create the message object
-		$xmessage = new XMessage( $database );
+		$xmessage = new Hubzero_Message_Message( $database );
 		
 		if ($type == 'member_message') {
 			$time_limit = intval($this->_params->get('time_limit', 30));
@@ -159,7 +159,7 @@ class plgXMessageHandler extends JPlugin
 		}
 		
 		// Does this message require an action?
-		$action = new XMessageAction( $database );
+		$action = new Hubzero_Message_Action( $database );
 		if ($element || $description) {
 			$action->class   = $component;
 			$action->element = $element;
@@ -174,12 +174,12 @@ class plgXMessageHandler extends JPlugin
 			// Load plugins
 			//JPluginHelper::importPlugin( 'xmessage' );
 			$dispatcher =& JDispatcher::getInstance();
-			ximport('xprofile');
+			ximport('Hubzero_User_Profile');
 			// Loop through each recipient
 			foreach ($to as $uid) 
 			{
 				// Create a recipient object that ties a user to a message
-				$recipient = new XMessageRecipient( $database );
+				$recipient = new Hubzero_Message_Recipient( $database );
 				$recipient->uid = $uid;
 				$recipient->mid = $xmessage->id;
 				$recipient->created = date( 'Y-m-d H:i:s', time() );
@@ -187,11 +187,11 @@ class plgXMessageHandler extends JPlugin
 				$recipient->actionid = (is_object($action)) ? $action->id : 0;
 				
 				// Get the user's methods for being notified
-				$notify = new XMessageNotify( $database );
+				$notify = new Hubzero_Message_Notify( $database );
 				$methods = $notify->getRecords( $uid, $type );
 
 				//$user =& JUser::getInstance($uid);
-				$user = new XProfile();
+				$user = new Hubzero_User_Profile();
 				$user->load( $uid );
 				if (!$user->get('username')) {
 					continue;

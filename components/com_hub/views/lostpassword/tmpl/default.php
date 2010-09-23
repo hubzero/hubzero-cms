@@ -51,10 +51,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$email_valid = false;
 			}
 		} else {
-			if (!XRegistrationHelper::validlogin($this->login)) {
+			if (!Hubzero_Registration_Helper::validlogin($this->login)) {
 				$login_valid = false;
 			}
-			if (!XRegistrationHelper::validemail($this->email)) {
+			if (!Hubzero_Registration_Helper::validemail($this->email)) {
 				$email_valid = false;
 			}
 		}

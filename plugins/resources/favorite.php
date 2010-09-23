@@ -79,14 +79,14 @@ class plgResourcesFavorite extends JPlugin
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
 			if ($rtrn == 'all' || $rtrn == 'metadata') {
-				ximport('xfavorite');
-				if (!class_exists('XFavorite')) {
+				ximport('Hubzero_Favorite');
+				if (!class_exists('Hubzero_Favorite')) {
 					return $arr;
 				}
 				
 				$database =& JFactory::getDBO();
 				
-				$fav = new XFavorite( $database );
+				$fav = new Hubzero_Favorite( $database );
 				$fav->loadFavorite( $juser->get('id'), $resource->id, 'resources' );
 				if (!$fav->id) {
 					$txt = JText::_('PLG_RESOURCES_FAVORITES_FAVORITE_THIS');
@@ -120,11 +120,11 @@ class plgResourcesFavorite extends JPlugin
 	{
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
-			ximport('xfavorite');
+			ximport('Hubzero_Favorite');
 
 			$database =& JFactory::getDBO();
 
-			$fav = new XFavorite( $database );
+			$fav = new Hubzero_Favorite( $database );
 			$fav->loadFavorite( $juser->get('id'), $oid, 'resources' );
 
 			if (!$fav->id) {

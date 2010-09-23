@@ -41,9 +41,13 @@ foreach ($this->sections as $section)
 $html .= "\t".'</div><!-- / .metadata -->'."\n";
 if ($this->profile->get('picture')) {
 	list($width,$height) = getimagesize(JPATH_ROOT.$this->profile->get('picture'));
+	$name = $this->profile->get('name');
+	$is_generic_image = preg_match('/profile.(?:gif|png)$/', $this->profile->get('picture'));
 	$html .= "\t".'<p class="portrait userImage"><img class="photo" src="'.$this->profile->get('picture').'"';
 	$html .= ($width && $width > 190) ? ' width="190"' : '';
-	$html .= ' alt="'.JText::_('MEMBER_PICTURE').'" /></p>'."\n";
+	if (!$is_generic_image)
+		$html .= ' title="'.htmlentities($name).'"';
+	$html .= ' alt="'.($is_generic_image ? JText::_('MEMBER_PICTURE') : htmlentities($name)).'" /></p>'."\n";
 	if ($this->authorized) {
 		$html .= "\t".'<p><a href="'.JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$this->profile->get('uidNumber')).'">'.JText::_('MEMBERS_UPLOAD_IMAGE').'</a></p>'."\n";
 	}

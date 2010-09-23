@@ -25,6 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+ximport('Hubzero_Group');
 
 class WishlistOwnerGroup extends JTable
 {
@@ -50,9 +51,7 @@ class WishlistOwnerGroup extends JTable
 		}
 		
 		$wishgroups = array();
-		ximport('xgroup');
 		
-		$xgroup = new XGroup();
 		$obj = new Wishlist( $this->_db );
 		
 		// if tool, get tool group
@@ -66,10 +65,13 @@ class WishlistOwnerGroup extends JTable
 				
 		// if primary list, add all site admins
 		if ($controlgroup && $wishlist->category=='general') {
-			$instance = new XGroup($controlgroup);
-			$gid = $instance->get('gidNumber');
-			if ($gid) {
-				$groups[] = $gid;
+			$instance = Hubzero_Group::getInstance($controlgroup);
+
+			if (is_object($instance)) {
+				$gid = $instance->get('gidNumber');
+				if ($gid) {
+					$groups[] = $gid;
+				}
 			}
 		}
 		
@@ -113,7 +115,6 @@ class WishlistOwnerGroup extends JTable
 		}
 		
 		$nativegroups = $this->get_owner_groups($listid, $admingroup, '', 1);
-		ximport('xgroup');	
 		
 		// cannot delete "native" owners (e.g. tool dev group)
 		if (Hubzero_Group::exists($groupid) && !in_array($groupid, $nativegroups, true)) {
@@ -132,21 +133,23 @@ class WishlistOwnerGroup extends JTable
 		}
 		
 		$groups = $this->get_owner_groups($listid, $admingroup);
-		ximport('xgroup');	
 			
 		if( count($newgroups) > 0)  {
 			foreach ($newgroups as $ng) 
 			{
-				$instance = new XGroup($ng);
-				$gid = $instance->get('gidNumber');
-				if ($gid && !in_array($gid, $groups, true)) {
-					$this->id = 0;
-					$this->groupid = $gid;
-					$this->wishlist = $listid;
+				$instance = Hubzero_Group::getInstance($ng);
+				if (is_object($instance))  {
+					$gid = $instance->get('gidNumber');
+
+					if ($gid && !in_array($gid, $groups, true)) {
+						$this->id = 0;
+						$this->groupid = $gid;
+						$this->wishlist = $listid;
 						
-					if (!$this->store()) {
-						$this->setError( JText::_('Failed to add a user.') );
-						return false;
+						if (!$this->store()) {
+							$this->setError( JText::_('Failed to add a user.') );
+							return false;
+						}
 					}
 				}			
 			}

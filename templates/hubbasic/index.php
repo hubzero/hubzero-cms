@@ -51,9 +51,9 @@ $juser =& JFactory::getUser();
 <?php
 if (!$juser->get('guest')) {
 	// Find the user's most recent support tickets
-	ximport('xmessage');
+	ximport('Hubzero_Message');
 	$database =& JFactory::getDBO();
-	$recipient = new XMessageRecipient( $database );
+	$recipient = new Hubzero_Message_Recipient( $database );
 	$rows = $recipient->getUnreadMessages( $juser->get('id'), 0 );
 	
 	echo "\t\t\t".'<li id="logout"><a href="/logout"><span>Logout</span></a></li>'."\n";

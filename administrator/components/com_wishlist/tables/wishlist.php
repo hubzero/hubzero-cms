@@ -85,7 +85,7 @@ class Wishlist extends JTable
 			return false;
 		}
 		
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$hubShortName = $xhub->getCfg('hubShortName');
 		$juser =& JFactory::getUser();
 				

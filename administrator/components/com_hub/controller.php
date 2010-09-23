@@ -589,7 +589,7 @@ class HubController extends Hubzero_Controller
 		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 
-		$obj = new XOrganization( $this->database );
+		$obj = new RegisterOrganization( $this->database );
 
 		// Get a record count
 		$view->total = $obj->getCount( $view->filters );
@@ -636,7 +636,7 @@ class HubController extends Hubzero_Controller
 		}
 		
 		// Initiate database class and load info
-		$view->org = new XOrganization( $this->database );
+		$view->org = new RegisterOrganization( $this->database );
 		$view->org->load( $id );
 		
 		// Set any errors
@@ -656,7 +656,7 @@ class HubController extends Hubzero_Controller
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		// Load the tag object and bind the incoming data to it
-		$row = new XOrganization( $this->database );
+		$row = new RegisterOrganization( $this->database );
 		if (!$row->bind( $_POST )) {
 			JError::raiseError( 500, $row->getError() );
 			return;
@@ -696,7 +696,7 @@ class HubController extends Hubzero_Controller
 
 		// Do we have any IDs?
 		if (!empty($ids)) {
-			$org = new XOrganization( $this->database );
+			$org = new RegisterOrganization( $this->database );
 			
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id) 

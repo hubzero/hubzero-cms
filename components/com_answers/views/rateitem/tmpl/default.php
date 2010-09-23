@@ -63,5 +63,4 @@ $this->item->nothelpful = ($this->item->nothelpful > 0) ? '-'.$this->item->nothe
 <?php } ?>
 			
 	</span>
-	<span class="itemtxt"><?php echo stripslashes($this->item->answer); ?>
 </span>

@@ -60,10 +60,10 @@ class modEventsCalendar
 		$Config_lang = $lang->getBackwardLang();
 
 		// Check the events component
-		if (file_exists( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'events.html.php' ) ) { 
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'events.html.php' );
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'events.date.php');
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'events.repeat.php');
+		if (file_exists( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' ) ) { 
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'html.php' );
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'date.php');
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_events'.DS.'helpers'.DS.'repeat.php');
 		} else { 
 			$this->error = JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
 			return;
@@ -172,8 +172,8 @@ class modEventsCalendar
 			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0,0,0,date("n")+1,1,date("Y")), JText::_('_CAL_LANG_NEXT_MONTH'), $day_name, $disp_nextMonth == 2);
 		}
 		
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_events_cal');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_events_cal');
 	}
 	
 	//-----------

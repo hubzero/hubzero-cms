@@ -25,55 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class EventsController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-
-	//-----------
-	
+class EventsController extends Hubzero_Controller
+{
 	public function execute()
 	{
 		$this->_setup();
@@ -102,36 +57,7 @@ class EventsController extends JObject
 	
 	//-----------
 
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-
-	//-----------
-	
-	private function _getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-
-	//-----------
-	
-	private function _getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'js'.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.'js'.DS.'calendar.rc4.js');
-			$document->addScript('components'.DS.$this->_option.DS.'js'.DS.$this->_name.'.js');
-		}
-	}
-	
-	//-----------
-
-	private function _buildPathway() 
+	protected function _buildPathway() 
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -215,7 +141,7 @@ class EventsController extends JObject
 	
 	//-----------
 	
-	private function _buildTitle() 
+	protected function _buildTitle() 
 	{
 		$this->_title = JText::_(strtoupper($this->_name));
 		switch ($this->_task) 
@@ -269,10 +195,8 @@ class EventsController extends JObject
 
 	private function _setup()
 	{
-		$database =& JFactory::getDBO();
-		
 		// Load the events configuration
-		$config = new EventsConfigs( $database );
+		$config = new EventsConfigs( $this->database );
 		$config->load();
 		
 		$this->config = $config;
@@ -298,7 +222,7 @@ class EventsController extends JObject
 			$month = "0$month";
 		}
 		
-		$ee = new EventsEvent( $database );
+		$ee = new EventsEvent( $this->database );
 		
 		// Find the date of the first event
 		$row = $ee->getFirst();
@@ -333,8 +257,7 @@ class EventsController extends JObject
 		
 		$this->category = $category;
 
-		$juser =& JFactory::getUser();
-		$this->gid = intval( $juser->get('gid') );
+		$this->gid = intval( $this->juser->get('gid') );
 	}
 	
 	//----------------------------------------------------------
@@ -343,8 +266,6 @@ class EventsController extends JObject
 
 	protected function year() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Get some needed info
 		$year   = $this->year;
 		$month  = $this->month;
@@ -360,7 +281,7 @@ class EventsController extends JObject
 		$filters['category'] = $this->category;
 
 		// Retrieve records
-		$ee = new EventsEvent( $database );
+		$ee = new EventsEvent( $this->database );
 		$rows = $ee->getEvents( 'year', $filters );
 
 		// Everyone has access unless restricted to admins in the configuration
@@ -402,8 +323,6 @@ class EventsController extends JObject
 
 	protected function month() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Get some needed info
 		$offset = $this->offset;
 		$option = $this->_option;
@@ -424,7 +343,7 @@ class EventsController extends JObject
 		$filters['category'] = $this->category;
 		
 		// Retrieve records
-		$ee = new EventsEvent( $database );
+		$ee = new EventsEvent( $this->database );
 		$rows = $ee->getEvents( 'month', $filters );
 
 		// Everyone has access unless restricted to admins in the configuration
@@ -466,8 +385,6 @@ class EventsController extends JObject
 
 	protected function week() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Get some needed info
 		$offset = $this->offset;
 		$option = $this->_option;
@@ -498,7 +415,7 @@ class EventsController extends JObject
 		$filters['gid'] = $this->gid;
 		$filters['category'] = $this->category;
 		
-		$ee = new EventsEvent( $database );
+		$ee = new EventsEvent( $this->database );
 		
 		$rows = array();
 		for ($d = 0; $d < 7; $d++) 
@@ -557,8 +474,6 @@ class EventsController extends JObject
 
 	protected function day() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Get some needed info
 		$year   = $this->year;
 		$month  = $this->month;
@@ -572,7 +487,7 @@ class EventsController extends JObject
 		$filters['select_date'] = sprintf( "%4d-%02d-%02d", $year, $month, $day );
 		$filters['category'] = $this->category;
 		
-		$ee = new EventsEvent( $database );
+		$ee = new EventsEvent( $this->database );
 		$rows = $ee->getEvents( 'day', $filters );
 
 		// Go through each event and ensure it should be displayed
@@ -626,8 +541,6 @@ class EventsController extends JObject
 
 	protected function details() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Get some needed info
 		$offset = $this->offset;
 		$year   = $this->year;
@@ -639,7 +552,7 @@ class EventsController extends JObject
 		$id = JRequest::getInt( 'id', 0, 'request' );
 		
 		// Load event
-		$row = new EventsEvent( $database );
+		$row = new EventsEvent( $this->database );
 		$row->load( $id );
 		
 		// Ensure we have an event
@@ -750,7 +663,7 @@ class EventsController extends JObject
 		$categories = $this->_getCategories();
 		
 		// Get tags on this event
-		$rt = new EventsTags( $database );
+		$rt = new EventsTags( $this->database );
 		$tags = $rt->get_tag_cloud(0, 0, $row->id);
 		
 		// Set the page title
@@ -772,7 +685,7 @@ class EventsController extends JObject
 		$alias = JRequest::getVar( 'page', '' );
 		
 		// Load the current page
-		$page = new EventsPage( $database );
+		$page = new EventsPage( $this->database );
 		if ($alias) {
 			$page->loadFromAlias( $alias, $row->id );
 		}
@@ -812,7 +725,6 @@ class EventsController extends JObject
 
 	protected function register()
 	{
-		$database =& JFactory::getDBO();
 		$document =& JFactory::getDocument();
 		
 		// Get some needed info
@@ -832,7 +744,7 @@ class EventsController extends JObject
 		}
 		
 		// Load event
-		$event = new EventsEvent( $database );
+		$event = new EventsEvent( $this->database );
 		$event->load( $id );
 		
 		// Ensure we have an event
@@ -867,7 +779,7 @@ class EventsController extends JObject
 		$pathway->addItem( stripslashes($event->title), 'index.php?option='.$this->_option.'&task=details&id='.$event->id );
 		$pathway->addItem( JText::_('EVENTS_REGISTER'),'index.php?option='.$this->_option.'&task=details&id='.$event->id.'&page=register');
 		
-		$page = new EventsPage( $database );
+		$page = new EventsPage( $this->database );
 		$page->alias = $this->_task;
 		
 		// Get the pages for this workshop
@@ -878,10 +790,9 @@ class EventsController extends JObject
 		$now = time();
 		
 		$register = array();
-		$juser =& JFactory::getUser();
-		if (!$juser->get('guest')) {
-			$profile = new XProfile();
-			$profile->load( $juser->get('id') );
+		if (!$this->juser->get('guest')) {
+			$profile = new Hubzero_User_Profile();
+			$profile->load( $this->juser->get('id') );
 			
 			$register['firstname'] = $profile->get('givenName');
 			$register['lastname'] = $profile->get('surname');
@@ -942,7 +853,6 @@ class EventsController extends JObject
 
 	protected function process() 
 	{
-		$database =& JFactory::getDBO();
 		$document =& JFactory::getDocument();
 		
 		// Get some needed info
@@ -962,7 +872,7 @@ class EventsController extends JObject
 		}
 		
 		// Load event
-		$event = new EventsEvent( $database );
+		$event = new EventsEvent( $this->database );
 		$event->load( $id );
 		$this->event = $event;
 		
@@ -983,7 +893,7 @@ class EventsController extends JObject
 		$edbits = explode(' ',$bits[2]);
 		$eday = $edbits[0];
 		
-		$page = new EventsPage( $database );
+		$page = new EventsPage( $this->database );
 		$page->alias = $this->_task;
 		
 		// Get the pages for this workshop
@@ -1090,8 +1000,7 @@ class EventsController extends JObject
 	
 	private function _log($reg)
 	{
-		$database =& JFactory::getDBO();
-		$database->setQuery(
+		$this->database->setQuery(
 			'INSERT INTO #__events_respondents(
 				event_id,
 				first_name, last_name, affiliation, title, city, state, zip, country, telephone, fax, email,
@@ -1100,23 +1009,23 @@ class EventsController extends JObject
 			)
 			VALUES ('.
 				$this->event->id . ', '.
-				$this->_getValueString($database, $reg, array(
+				$this->_getValueString($this->database, $reg, array(
 					'firstname', 'lastname', 'affiliation', 'title', 'city', 'state', 'postalcode', 'country', 'telephone', 'fax', 'email',
 					'website', 'position', 'degree', 'gender', 'arrival', 'departure', 'disability', 
 					'dietary', 'dinner', 'additional', 'comments'
 				)).
 			')'
 		);
-		$database->query();
+		$this->database->query();
 		$races = JRequest::getVar('race', NULL, 'post');
 		if (!is_null($races) && (!isset($races['refused']) || !$races['refused'])) {
-			$resp_id = $database->insertid();
+			$resp_id = $this->database->insertid();
 			foreach (array('nativeamerican', 'asian', 'black', 'hawaiian', 'white', 'hispanic') as $race) 
 			{
 				if (array_key_exists($race, $races) && $races[$race]) {
-					$database->execute(
+					$this->database->execute(
 						'INSERT INTO #__events_respondent_race_rel(respondent_id, race, tribal_affiliation) 
-						VALUES ('.$resp_id.', \''.$race.'\', '.($race == 'nativeamerican' ? $database->quote($races['nativetribe']) : 'NULL').')'
+						VALUES ('.$resp_id.', \''.$race.'\', '.($race == 'nativeamerican' ? $this->database->quote($races['nativetribe']) : 'NULL').')'
 					);
 				}
 			}
@@ -1125,7 +1034,7 @@ class EventsController extends JObject
 
 	//-----------
 
-	private function _getValueString(&$database, $reg, $values)
+	private function _getValueString($database, $reg, $values)
 	{
 		$rv = array();
 		foreach ($values as $val)
@@ -1134,7 +1043,7 @@ class EventsController extends JObject
 			{
 				case 'position':
 					$rv[] = ((isset($reg['position']) || isset($reg['position_other'])) && ($reg['position'] || $reg['position_other'])) 
-						? $database->quote(
+						? $this->database->quote(
 							$reg['position'] ? $reg['position'] : $reg['position_other']
 						) 
 						: 'NULL';
@@ -1150,12 +1059,12 @@ class EventsController extends JObject
 				break;
 				case 'dietary':
 					$rv[] = (($dietary = JRequest::getVar('dietary', NULL, 'post'))) 
-						? $database->quote($dietary['specific']) 
+						? $this->database->quote($dietary['specific']) 
 						: 'NULL';
 				break;
 				case 'arrival': case 'departure':
 					$rv[] = ($date = JRequest::getVar($val, NULL, 'post')) 
-						? $database->quote($date['day'] . ' ' . $date['time'])
+						? $this->database->quote($date['day'] . ' ' . $date['time'])
 						: 'NULL';
 				break;
 				case 'disability':
@@ -1163,7 +1072,7 @@ class EventsController extends JObject
 					$rv[] = ($disability) ? '1' : '0';
 				break;
 				default:
-					$rv[] = array_key_exists($val, $reg) && isset($reg[$val]) ? $database->quote($reg[$val]) : 'NULL';
+					$rv[] = array_key_exists($val, $reg) && isset($reg[$val]) ? $this->database->quote($reg[$val]) : 'NULL';
 			}
 		}
 		return implode($rv, ',');
@@ -1185,10 +1094,8 @@ class EventsController extends JObject
 
 	protected function edit($row=NULL)
 	{		
-		$juser =& JFactory::getUser();
-		
 		// Check if they are logged in
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$app =& JFactory::getApplication();
 			$pathway =& $app->getPathway();
 			if (count($pathway->getPathWay()) <= 0) {
@@ -1200,9 +1107,6 @@ class EventsController extends JObject
 			return;
 		}
 		
-		// Get the database connection
-		$database =& JFactory::getDBO();
-		
 		// Push some styles to the tmeplate
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('components'.DS.$this->_option.DS.'calendar.css');
@@ -1211,7 +1115,7 @@ class EventsController extends JObject
 		$this->_getScripts();
 		
 		// We need at least one category before we can proceed
-		$cat = new EventsCategory( $database );
+		$cat = new EventsCategory( $this->database );
 		if ($cat->getCategoryCount( $this->_option ) < 1) {
 			JError::raiseError( 500, JText::_('EVENTS_LANG_NEED_CATEGORY') );
 			return;
@@ -1222,7 +1126,7 @@ class EventsController extends JObject
 		
 		// Load event object
 		if (!is_object($row)) {
-			$row = new EventsEvent( $database );
+			$row = new EventsEvent( $this->database );
 			$row->load( $id );
 		}
 		
@@ -1291,8 +1195,8 @@ class EventsController extends JObject
 			$row->reccurday_month = -1;
 			$row->reccurday_week = -1;
 			$row->reccurday_year = -1;
-			$row->created_by_alias = $juser->get('username');
-			$row->created_by = $juser->get('id');
+			$row->created_by_alias = $this->juser->get('username');
+			$row->created_by = $this->juser->get('id');
 			$row->reccurtype = 0;
 			
 			$start_time = "08:00";
@@ -1368,7 +1272,7 @@ class EventsController extends JObject
 		$times['registerby_pm'] = $registerby_pm;
 		
 		// Get tags on this event
-		$rt = new EventsTags( $database );
+		$rt = new EventsTags( $this->database );
 		$lists['tags'] = $rt->get_tag_string($row->id, 0, 0, NULL, 0, 1);
 		
 		// Set the title
@@ -1415,14 +1319,11 @@ class EventsController extends JObject
 	protected function delete()
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
-		
-		$database =& JFactory::getDBO();
-		
+
 		// Incoming
 		$id = JRequest::getInt( 'id', 0, 'request' );
 		
@@ -1433,7 +1334,7 @@ class EventsController extends JObject
 		}
 		
 		// Load event object
-		$event = new EventsEvent( $database );
+		$event = new EventsEvent( $this->database );
 		$event->load( $id );
 		
 		if (!$this->_authorize($event->created_by)) {
@@ -1445,7 +1346,7 @@ class EventsController extends JObject
 		$event->delete( $id );
 		
 		// Delete any associated pages 
-		$ep = new EventsPage( $database );
+		$ep = new EventsPage( $this->database );
 		$ep->deletePages( $id );
 		
 		// Delete any associated respondents
@@ -1453,15 +1354,15 @@ class EventsController extends JObject
 		$er->deleteRespondents( $id );
 		
 		// Delete tags on this event
-		$rt = new EventsTags( $database );
+		$rt = new EventsTags( $this->database );
 		$rt->remove_all_tags($id);
 		
 		// Load the event's category and update the count
-		$category = new EventsCategory( $database );
+		$category = new EventsCategory( $this->database );
 		$category->updateCount( $event->catid );
 		
 		// Get the HUB configuration
-		//$xhub =& XFactory::getHub();
+		//$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 		
 		// E-mail subject line
@@ -1471,7 +1372,7 @@ class EventsController extends JObject
 		$eview = new JView( array('name'=>'emails','layout'=>'deleted') );
 		$eview->option = $this->_option;
 		$eview->hubShortName = $jconfig->getValue('config.sitename');
-		$eview->juser = $juser;
+		$eview->juser = $this->juser;
 		$eview->event = $event;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -1488,14 +1389,11 @@ class EventsController extends JObject
 	protected function save() 
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
-		
-		$database =& JFactory::getDBO();
-		
+
 		$offset = $this->offset;
 		
 		// Incoming
@@ -1510,7 +1408,7 @@ class EventsController extends JObject
 		$reccurday_year = JRequest::getVar( 'reccurday_year', '', 'post' );
 
 		// Bind the posted data to an event object
-		$row = new EventsEvent( $database );
+		$row = new EventsEvent( $this->database );
 		if (!$row->bind( $_POST )) {
 			JError::raiseError( 500, $row->getError() );
 			return;
@@ -1520,14 +1418,14 @@ class EventsController extends JObject
 		if ($row->id) {
 			// Existing - update modified info
 			$row->modified = strftime( "%Y-%m-%d %H:%M:%S", time()+($offset*60*60));
-			if ($juser->get('id')) {
-				$row->modified_by = $juser->get('id');
+			if ($this->juser->get('id')) {
+				$row->modified_by = $this->juser->get('id');
 			}
 		} else {
 			// New - set created info
 			$row->created = strftime( "%Y-%m-%d %H:%M:%S", time()+($offset*60*60));
-			if ($juser->get('id')) {
-				$row->created_by = $juser->get('id');
+			if ($this->juser->get('id')) {
+				$row->created_by = $this->juser->get('id');
 			}
 		}
 		
@@ -1691,8 +1589,8 @@ class EventsController extends JObject
 		$tags = JRequest::getVar( 'tags', '', 'post' );
 		
 		// Save the tags
-		$rt = new EventsTags( $database );
-		$rt->tag_object($juser->get('id'), $row->id, $tags, 1, 0);
+		$rt = new EventsTags( $this->database );
+		$rt->tag_object($this->juser->get('id'), $row->id, $tags, 1, 0);
 		
 		$jconfig =& JFactory::getConfig();
 		
@@ -1708,7 +1606,7 @@ class EventsController extends JObject
 		}
 		$eview->option = $this->_option;
 		$eview->hubShortName = $jconfig->getValue('config.sitename');
-		$eview->juser = $juser;
+		$eview->juser = $this->juser;
 		$eview->row = $row;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -1761,12 +1659,10 @@ class EventsController extends JObject
 
 	private function _getCategories() 
 	{
-		$database =& JFactory::getDBO();
-		
 		$sql = "SELECT * FROM #__categories WHERE section='".$this->_option."' AND published = '1' ORDER BY title DESC";
 
-		$database->setQuery($sql);
-		$cats = $database->loadObjectList();
+		$this->database->setQuery($sql);
+		$cats = $this->database->loadObjectList();
 		
 		$c = array();
 		foreach ($cats as $cat) 
@@ -1855,23 +1751,21 @@ class EventsController extends JObject
 	
 	//-----------
 
-	private function _authorize($id='')
+	protected function _authorize($id='')
 	{
-		$juser =& JFactory::getUser();
-		
 		// Check if they are logged in
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			return false;
 		}
 	
 		// Check if they're a site admin from Joomla
-		if ($juser->authorize($this->_option, 'manage')) {
+		if ($this->juser->authorize($this->_option, 'manage')) {
 			return true;
 		}
 	
 		// Check against events configuration
 		if (!$this->config->getCfg('adminlevel')) {
-			if ($id && $id == $juser->get('id')) {
+			if ($id && $id == $this->juser->get('id')) {
 				return true;
 			}
 		}	
@@ -1879,4 +1773,3 @@ class EventsController extends JObject
 		return false;
 	}
 }
-?>

@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-ximport('xuserhelper');
+ximport('Hubzero_User_Helper');
 
 ximport('wiki.config');
 ximport('wiki.log');

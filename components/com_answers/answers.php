@@ -34,19 +34,18 @@ $config = JFactory::getConfig();
 	@ini_set('display_errors','1');
 //}
 
-jimport('joomla.application.component.view');
-ximport('Hubzero_View_Helper_Html');
-
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'question.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'response.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'log.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'questionslog.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'answers.config.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'answers.tags.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'economy.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'member.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-ximport('textfilter');
-ximport('xcomment');
+ximport('Hubzero_View_Helper_Html');
+ximport('Hubzero_Filter');
+ximport('Hubzero_Comment');
 
 $jacl =& JFactory::getACL();
 $jacl->addACL( $option, 'manage', 'users', 'super administrator' );
@@ -57,4 +56,3 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 $controller = new AnswersController();
 $controller->execute();
 $controller->redirect();
-?>

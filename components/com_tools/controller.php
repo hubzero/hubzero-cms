@@ -25,64 +25,14 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class ToolsController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-	
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		//Set the controller name
-		if (empty( $this->_name ))
-		{
-			if (isset($config['name']))  {
-				$this->_name = $config['name'];
-			}
-			else
-			{
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		$this->_option = 'com_'.$this->_name;
-	}
-	
-	//-----------
-	
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
+ximport('Hubzero_Controller');
 
+class ToolsController extends Hubzero_Controller
+{
 	public function execute()
 	{
 		// Get the task
 		$this->_task = JRequest::getVar( 'task', '' );
-		
-		// Get the component config
-		$this->config = JComponentHelper::getParams( $this->_option );
 		
 		// Check if middleware is enabled
 		if (!$this->config->get('mw_on') && $this->_task != 'image' && $this->_task != 'css') {
@@ -97,7 +47,7 @@ class ToolsController extends JObject
 		$this->banking = ($banking && $this->config->get('banking') ) ? 1: 1;
 		
 		if ($banking) {
-			ximport( 'bankaccount' );
+			ximport('Hubzero_Bank');
 		}
 		
 		// Push some styles to the template
@@ -142,45 +92,10 @@ class ToolsController extends JObject
 			default: $this->tools(); break;
 		}
 	}
-
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-
-	//-----------
-	
-	private function _getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-
-	//-----------
-	
-	private function _getScripts($option='',$name='')
-	{
-		$document =& JFactory::getDocument();
-		if ($option) {
-			$name = ($name) ? $name : $option;
-			if (is_file(JPATH_ROOT.DS.'components'.DS.'com_'.$option.DS.$name.'.js')) {
-				$document->addScript('components'.DS.'com_'.$option.DS.$name.'.js');
-			}
-		} else {
-			if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-				$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-			}
-		}
-	}
 	
 	//-----------
 
-	private function _buildPathway($session=null) 
+	protected function _buildPathway($session=null) 
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -225,7 +140,7 @@ class ToolsController extends JObject
 	
 	//-----------
 	
-	private function _buildTitle($session=null) 
+	protected function _buildTitle($session=null) 
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
 		if ($this->app && $this->app['name']) {
@@ -256,7 +171,7 @@ class ToolsController extends JObject
 		// Push some CSS to the template
 		$this->_getStyles();
 		
-		$xhub  =& XFactory::getHub();
+		$xhub  =& Hubzero_Factory::getHub();
 		//$model =& $this->getModel();
 		include_once( JPATH_COMPONENT.DS.'models'.DS.'tools.php' );
 		$model = new ToolsModelTools();
@@ -272,8 +187,8 @@ class ToolsController extends JObject
 		$appTools = $model->getApplicationTools();
 		
 		// Get the forge image
-		ximport('xdocument');
-		$image = XDocument::getComponentImage('com_tools', 'forge.png', 1);
+		ximport('Hubzero_Document');
+		$image = Hubzero_Document::getComponentImage('com_projects', 'forge.png', 1);
 		
 		// Instantiate the view
 		$view = new JView( array('name'=>'tools') );
@@ -296,8 +211,8 @@ class ToolsController extends JObject
 	
 	protected function image() 
 	{
-		ximport('xdocument');
-		$image = JPATH_SITE . XDocument::getComponentImage('com_tools', 'forge.png', 1);
+		ximport('Hubzero_Document');
+		$image = JPATH_SITE . Hubzero_Document::getComponentImage('com_projects', 'forge.png', 1);
 
 		if (is_readable($image)) {
 			ob_clean();
@@ -312,8 +227,8 @@ class ToolsController extends JObject
 	
 	protected function css() 
 	{
-		ximport('xdocument');
-		$file = JPATH_SITE . XDocument::getComponentStylesheet('com_tools', 'site_css.cs');
+		ximport('Hubzero_Document');
+		$file = JPATH_SITE . Hubzero_Document::getComponentStylesheet('com_tools', 'site_css.cs');
 
 		if (is_readable($file)) {
 			ob_clean();
@@ -369,8 +284,7 @@ class ToolsController extends JObject
 	protected function quotaexceeded() 
 	{
 		// Check that the user is logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
@@ -378,7 +292,7 @@ class ToolsController extends JObject
 		// Build the page title
 		$title  = JText::_('Members');
 		$title .= ': '.JText::_('View');
-		$title .= ': '.stripslashes($juser->get('name'));
+		$title .= ': '.stripslashes($this->juser->get('name'));
 		$title .= ': '.JText::_(strtoupper($this->_option.'_'.$this->_task));
 		
 		// Set the page title
@@ -391,7 +305,7 @@ class ToolsController extends JObject
 		if (count($pathway->getPathWay()) <= 0) {
 			$pathway->addItem( JText::_('Members'), 'index.php?option=com_members' );
 		}
-		$pathway->addItem( stripslashes($juser->get('name')), 'index.php?option=com_members&id='.$juser->get('id') );
+		$pathway->addItem( stripslashes($this->juser->get('name')), 'index.php?option=com_members&id='.$this->juser->get('id') );
 		$pathway->addItem( JText::_(strtoupper($this->_option.'_'.$this->_task)), 'index.php?option='.$this->_option.'&task='.$this->_task );
 		
 		// Check if the user is an admin.
@@ -402,14 +316,14 @@ class ToolsController extends JObject
 		
 		// Get the user's sessions
 		$ms = new MwSession( $mwdb );
-		$sessions = $ms->getRecords( $juser->get('username'), '', false );
+		$sessions = $ms->getRecords( $this->juser->get('username'), '', false );
 		
 		// Instantiate the view
 		$view = new JView( array('name'=>'quotaexceeded') );
 		$view->option = $this->_option;
 		$view->sessions = $sessions;
 		if ($authorized) {
-			$view->allsessions = $ms->getRecords( $juser->get('username'), '', $authorized );
+			$view->allsessions = $ms->getRecords( $this->juser->get('username'), '', $authorized );
 		}
 		$view->active = JRequest::getVar( 'active', '' );
 		$view->authorized = $authorized;
@@ -424,8 +338,7 @@ class ToolsController extends JObject
 	protected function storage( $exceeded=false )
 	{
 		// Check that the user is logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
@@ -435,7 +348,7 @@ class ToolsController extends JObject
 		$title .= ': '.JText::_('MW_STORAGE_MANAGEMENT');*/
 		$title  = JText::_('Members');
 		$title .= ': '.JText::_('View');
-		$title .= ': '.stripslashes($juser->get('name'));
+		$title .= ': '.stripslashes($this->juser->get('name'));
 		$title .= ': '.JText::_(strtoupper($this->_option.'_'.$this->_task));
 		
 		// Set the page title
@@ -449,7 +362,7 @@ class ToolsController extends JObject
 			//$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option='.$this->_option );
 			$pathway->addItem( JText::_('Members'), 'index.php?option=com_members' );
 		}
-		$pathway->addItem( stripslashes($juser->get('name')), 'index.php?option=com_members&id='.$juser->get('id') );
+		$pathway->addItem( stripslashes($this->juser->get('name')), 'index.php?option=com_members&id='.$this->juser->get('id') );
 		$pathway->addItem( JText::_(strtoupper($this->_option.'_'.$this->_task)), 'index.php?option='.$this->_option.'&task=storage' );
 		
 		// Output from purging
@@ -493,17 +406,15 @@ class ToolsController extends JObject
 		ximport('Hubzero_Ldap');
 
 		// Check that the user is logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
 		
 		// Needed objects
-		$juser =& JFactory::getUser();
-		$xhub =& XFactory::getHub();
-		$url = $_SERVER['REQUEST_URI'];
-		$xlog =& XFactory::getLogger();
+		$xhub =& Hubzero_Factory::getHub();
+		$url = JRequest::getVar('REQUEST_URI','none','server');
+		$xlog =& Hubzero_Factory::getLogger();
 
 		// Incoming
 		$app = array();
@@ -515,8 +426,8 @@ class ToolsController extends JObject
 		// Get the user's IP address
 		$ip = JRequest::getVar( 'REMOTE_ADDR', '', 'server' );
 
-		$xlog->logDebug("mw::invoke URL: $url : " . $app['name'] . " by " . $juser->get('username') . " from " . $ip);
-		$xlog->logDebug("mw::invoke REFERER:" . (array_key_exists('HTTP_REFERER',$_SERVER)) ? $_SERVER['HTTP_REFERER'] : 'none');
+		//$xlog->logDebug("mw::invoke URL: $url : " . $app['name'] . " by " . $this->juser->get('username') . " from " . $ip);
+		//$xlog->logDebug("mw::invoke REFERER:" . (array_key_exists('HTTP_REFERER',$_SERVER)) ? $_SERVER['HTTP_REFERER'] : 'none');
 
 		// Make sure we have an app to invoke
 		if (trim($app['name']) == '') {
@@ -525,9 +436,8 @@ class ToolsController extends JObject
 		}
 		
 		// Get the parent toolname (appname without any revision number "_r423")
-		$database =& JFactory::getDBO();
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
-		$tv = new ToolVersion( $database );
+		$tv = new ToolVersion( $this->database );
 		
 		switch ($app['version'])
 		{
@@ -569,7 +479,7 @@ class ToolsController extends JObject
 		$hasaccess = $this->_getToolAccess($app['name']);
 		$status2 = ($hasaccess) ? "PASSED" : "FAILED";
 
-		$xlog->logDebug("mw::invoke " . $app['name'] . " by " . $juser->get('username') . " from " . $ip . " _getToolAccess " . $status2);
+		//$xlog->logDebug("mw::invoke " . $app['name'] . " by " . $this->juser->get('username') . " from " . $ip . " _getToolAccess " . $status2);
 
 		if ($this->getError()) {
 			echo '<!-- '.$this->getError().' -->';
@@ -585,22 +495,22 @@ class ToolsController extends JObject
 		$authorized = $this->_authorize();
 
 		// Log the launch attempt
-		$this->recordUsage($toolname, $juser->get('id'));
+		$this->recordUsage($toolname, $this->juser->get('id'));
 		
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
 		
 		// Find out how many sessions the user is running.
 		$ms = new MwSession( $mwdb );
-		$appcount = $ms->getCount( $juser->get('username') );
+		$appcount = $ms->getCount( $this->juser->get('username') );
 
 		// Find out how many sessions the user is ALLOWED to run.
-		$xprofile =& XFactory::getProfile();
+		$xprofile =& Hubzero_Factory::getProfile();
 		$remain = $xprofile->get('jobsAllowed') - $appcount;
 
 		if (!Hubzero_Ldap::user_exists($xprofile->get('username'))) {
-		       $xlog->logDebug("mw::invoke create ldap user for this account");
-		       $xprofile->create('ldap');
+			//$xlog->logDebug("mw::invoke create ldap user for this account");
+			$xprofile->create('ldap');
 		}
 
 		// Have they reached their session quota?
@@ -617,11 +527,21 @@ class ToolsController extends JObject
 			$app['percent'] = $this->percent;
 		}
 		
+		// Get plugins
+		JPluginHelper::importPlugin( 'mw', $toolname );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		// Trigger any events that need to be called before session invoke
+		$dispatcher->trigger( 'onBeforeSessionInvoke', array($toolname, $app['version']) );
+		
 		// We've passed all checks so let's actually start the session
-		$sess = $this->middleware("start user=" . $juser->get('username') . " ip=$ip app=".$app['name']." version=".$app['version'], $output);
+		$sess = $this->middleware("start user=" . $this->juser->get('username') . " ip=$ip app=".$app['name']." version=".$app['version'], $output);
+
+		// Trigger any events that need to be called after session invoke
+		$dispatcher->trigger( 'onAfterSessionInvoke', array($toolname, $app['version']) );
 
 		// Get a count of the number of sessions of this specific tool
-		$appcount = $ms->getCount( $juser->get('username'), $app['name'] );
+		$appcount = $ms->getCount( $this->juser->get('username'), $app['name'] );
 		// Do we have more than one session of this tool?
 		if ($appcount > 1) {
 			// We do, so let's append a number to the caption
@@ -638,12 +558,12 @@ class ToolsController extends JObject
 		
 		$app['sess'] = $sess;
 		$app['ip'] = $ip;
-		$app['username'] = $juser->get('username');
+		$app['username'] = $this->juser->get('username');
 		
 		// Build and display the HTML
 		//$this->session( $app, $authorized, $output, $toolname );
 		//$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess);
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$xhub->redirect( JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess) );
 	}
 
@@ -652,8 +572,7 @@ class ToolsController extends JObject
 	protected function share()
 	{
 		// Check that the user is logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
@@ -681,7 +600,7 @@ class ToolsController extends JObject
 		
 		// Double-check that the user can access this session.
 		$ms = new MwSession( $mwdb );
-		$row = $ms->checkSession( $sess, $juser->get('username') );
+		$row = $ms->checkSession( $sess, $this->juser->get('username') );
 		
 		// Ensure we found an active session
 		if (!$row->sesstoken) {
@@ -760,8 +679,7 @@ class ToolsController extends JObject
 	protected function unshare()
 	{
 		// Check that the user is logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
@@ -776,7 +694,7 @@ class ToolsController extends JObject
 		// If a username is given, check that the user owns this session.
 		if ($user != '') {
 			$ms = new MwSession( $mwdb );
-			$ms->load( $sess, $juser->get('username') );
+			$ms->load( $sess, $this->juser->get('username') );
 
 			if (!$ms->sesstoken) {
 				JError::raiseError( 500, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND').': '.$sess );
@@ -784,14 +702,14 @@ class ToolsController extends JObject
 			}
 		} else {
 			// Otherwise, assume that the user wants to disconnect a session that's been shared with them.
-			$user = $juser->get('username');
+			$user = $this->juser->get('username');
 		}
 
 		// Delete the viewperm
 		$mv = new MwViewperm( $mwdb );
 		$mv->deleteViewperm( $sess, $user );
 		
-		if ($user == $juser->get('username')) {
+		if ($user == $this->juser->get('username')) {
 			// Take us back to the main page...
 			$this->_redirect = JRoute::_( 'index.php?option=com_myhub' );
 			return;
@@ -806,8 +724,7 @@ class ToolsController extends JObject
 	protected function view()
 	{
 		// Check that the user is logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
@@ -846,9 +763,8 @@ class ToolsController extends JObject
 		}
 		
 		// Get parent tool name - to write correct links
-		$database =& JFactory::getDBO();
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
-		$tv = new ToolVersion( $database );
+		$tv = new ToolVersion( $this->database );
 		$parent_toolname = $tv->getToolname($row->appname);
 		$toolname = ($parent_toolname) ? $parent_toolname : $row->appname;
 
@@ -873,9 +789,7 @@ class ToolsController extends JObject
 		if ($authorized === 'admin') {
 			$command = "view user=$row->username ip=$ip sess=".$app['sess'];
 		} else {
-			$juser =& JFactory::getUser();
-			
-			$command = "view user=" . $juser->get('username') . " ip=$ip sess=".$app['sess'];
+			$command = "view user=" . $this->juser->get('username') . " ip=$ip sess=".$app['sess'];
 		}
 
 		// Check if we have access to run this tool.
@@ -895,8 +809,18 @@ class ToolsController extends JObject
 		$app['ip'] = $ip;
 		$app['username'] = $row->username;
 		
+		// Get plugins
+		JPluginHelper::importPlugin( 'mw', $app['name'] );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		// Trigger any events that need to be called before session start
+		$dispatcher->trigger( 'onBeforeSessionStart', array($toolname, $tv->revision) );
+		
 		// Call the view command
 		$status = $this->middleware($command, $output);
+
+		// Trigger any events that need to be called after session start
+		$dispatcher->trigger( 'onAfterSessionStart', array($toolname, $tv->revision) );
 
 		// Build and display the HTML
 		$this->session( $app, $authorized, $output, $toolname );
@@ -963,8 +887,7 @@ class ToolsController extends JObject
 	protected function stop() 
 	{
 		// Check that the user is logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
@@ -988,7 +911,7 @@ class ToolsController extends JObject
 		if ($authorized === 'admin') {
 			$ms->load( $sess );
 		} else {
-			$ms->load( $sess, $juser->get('username') );
+			$ms->load( $sess, $this->juser->get('username') );
 		}
 		
 		// Did we get a result form the database?
@@ -996,6 +919,13 @@ class ToolsController extends JObject
 			$this->_redirect = JRoute::_('index.php?option=com_myhub');
 			return;
 		}
+		
+		// Get plugins
+		JPluginHelper::importPlugin( 'mw', $ms->appname );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		// Trigger any events that need to be called before session stop
+		$dispatcher->trigger( 'onBeforeSessionStop', array($ms->appname) );
 		
 		// Stop the session
 		$status = $this->middleware("stop $sess", $output);
@@ -1008,6 +938,9 @@ class ToolsController extends JObject
 			echo '</p>'."\n";
 		}
 
+		// Trigger any events that need to be called after session stop
+		$dispatcher->trigger( 'onAfterSessionStop', array($ms->appname) );
+
 		// Take us back to the main page...
 		$this->_redirect = JRoute::_('index.php?option=com_myhub');
 	}
@@ -1017,8 +950,7 @@ class ToolsController extends JObject
 	protected function purge()
 	{
 		// Check that the user is logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
@@ -1030,8 +962,6 @@ class ToolsController extends JObject
 			$this->_redirect = JRoute::_('index.php?option=com_myhub' );
 		}
 		
-		$juser =& JFactory::getUser();
-		
 		$degree = JRequest::getVar('degree','default');
 		
 		$info = array();
@@ -1041,7 +971,7 @@ class ToolsController extends JObject
 			$info[] = "$errstr ($errno)\n";
 			$this->setError( "$errstr ($errno)\n" );
 		} else {
-			fwrite($fp, "purge user=". $juser->get('username') .",degree=$degree \n");
+			fwrite($fp, "purge user=". $this->juser->get('username') .",degree=$degree \n");
 			while (!feof($fp)) 
 			{
 				//$msg .= fgets($fp, 1024)."\n";
@@ -1070,15 +1000,14 @@ class ToolsController extends JObject
 	private function getDiskUsage() 
 	{
 		// Check that the user is logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
 	
 		bcscale(6);
 	
-		$du = MwUtils::getDiskUsage($juser->get('username'));
+		$du = MwUtils::getDiskUsage($this->juser->get('username'));
 		if (isset($du['space'])) {
 			$val = ($du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
 		} else {
@@ -1121,15 +1050,14 @@ class ToolsController extends JObject
 	protected function diskusage()
 	{
 		// Check that the user is logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login();
 			return;
 		}
 		
 		$msgs = JRequest::getInt( 'msgs', 0 );
 		
-		$du = MwUtils::getDiskUsage( $juser->get('username') );
+		$du = MwUtils::getDiskUsage( $this->juser->get('username') );
 		if (count($du) <=1) {
 			// error
 			$percent = 0;
@@ -1162,10 +1090,8 @@ class ToolsController extends JObject
 
 	private function recordUsage( $app, $uid ) 
 	{
-		$database =& JFactory::getDBO();
-		
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
-		$tool = new ToolVersion( $database );
+		$tool = new ToolVersion( $this->database );
 		$tool->loadFromName( $app );
 		
 		// Ensure a tool is published before recording it
@@ -1173,7 +1099,7 @@ class ToolsController extends JObject
 			$created = date( 'Y-m-d H:i:s', time() );
 			
 			// Get a list of all their recent tools
-			$rt = new RecentTool( $database );
+			$rt = new RecentTool( $this->database );
 			$rows = $rt->getRecords( $uid );
 
 			$thisapp = 0;
@@ -1256,20 +1182,19 @@ class ToolsController extends JObject
 	// Authorization checks
 	//----------------------------------------------------------
 
-	private function _authorize($uid=0)
+	protected function _authorize($uid=0)
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			return false;
 		}
 		
 		// Check if they're a site admin (from Joomla)
-		if ($juser->authorize($this->_option, 'manage')) {
+		if ($this->juser->authorize($this->_option, 'manage')) {
 			return 'admin';
 		}
 		
-		$xprofile = &XFactory::getProfile();
+		$xprofile = &Hubzero_Factory::getProfile();
 		if (is_object($xprofile)) {
 			// Check if they're a site admin (from LDAP)
 			$app =& JFactory::getApplication();
@@ -1279,7 +1204,7 @@ class ToolsController extends JObject
 		}
 
 		// Check if they're the member
-		if ($juser->get('id') == $uid) {
+		if ($this->juser->get('id') == $uid) {
 			return true;
 		}
 
@@ -1290,13 +1215,13 @@ class ToolsController extends JObject
 	
 	private function _getToolExportControl($exportcontrol)
 	{
-		$xlog =& XFactory::getLogger();
+		$xlog =& Hubzero_Factory::getLogger();
 	    $exportcontrol = strtolower($exportcontrol);
 
         switch ($exportcontrol)
         {
             case 'us':
-                if (GeoUtils::ipcountry($_SERVER['REMOTE_ADDR']) != 'us') {
+                if (Hubzero_Geo::ipcountry($_SERVER['REMOTE_ADDR']) != 'us') {
                     $this->setError('This tool may only be accessed from within the U.S. Your current location could not be confirmed.');
                     $xlog->logDebug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");
                     return false;
@@ -1304,7 +1229,7 @@ class ToolsController extends JObject
                 break;
 
             case 'd1':
-                if (GeoUtils::is_d1nation(GeoUtils::ipcountry($_SERVER['REMOTE_ADDR']))) {
+                if (Hubzero_Geo::is_d1nation(Hubzero_Geo::ipcountry($_SERVER['REMOTE_ADDR']))) {
                     $this->setError('This tool may not be accessed from your current location due to export restrictions.');
                     $xlog->logDebug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");
                     return false;
@@ -1312,7 +1237,7 @@ class ToolsController extends JObject
                 break;
 
             case 'pu':
-                if (!GeoUtils::is_iplocation($_SERVER['REMOTE_ADDR'], $exportcontrol)) {
+                if (!Hubzero_Geo::is_iplocation($_SERVER['REMOTE_ADDR'], $exportcontrol)) {
                     $this->setError('This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.');
                     $xlog->logDebug("mw::_getToolExportControl($exportControl) FAILED PURDUE export control check");
                     return false;
@@ -1320,7 +1245,7 @@ class ToolsController extends JObject
             	break;
         }
 
-        $xlog->logDebug("mw::_getToolExportControl($exportcontrol) PASSED");
+        //$xlog->logDebug("mw::_getToolExportControl($exportcontrol) PASSED");
 		return true;
 	}
 	
@@ -1328,15 +1253,14 @@ class ToolsController extends JObject
 
 	private function _getToolAccess($tool, $login='') 
 	{
-		ximport('xuserhelper');
-		ximport('xgeoutils');
+		ximport('Hubzero_User_Helper');
+		ximport('Hubzero_Geo');
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.toolgroup.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
 		
-		$xhub =& XFactory::getHub();
-		$xlog =& XFactory::getLogger();
-		$database =& JFactory::getDBO();
+		$xhub =& Hubzero_Factory::getHub();
+		$xlog =& Hubzero_Factory::getLogger();
 	    
 		// Ensure we have a tool
 		if (!$tool) {
@@ -1347,15 +1271,14 @@ class ToolsController extends JObject
 
 		// Ensure we have a login
 		if ($login == '') {
-			$juser =& JFactory::getUser();
-			$login = $juser->get('username');
+			$login = $this->juser->get('username');
 			if ($login == '') {
 				$xlog->logDebug("mw::_getToolAccess($tool,$login) FAILED null user check");
-			    	return false;
+				return false;
 			}
 		}
 		
-		$tv = new ToolVersion( $database );
+		$tv = new ToolVersion( $this->database );
 		$tv->loadFromInstance( $tool );
 
 		if (empty($tv)) {
@@ -1363,16 +1286,16 @@ class ToolsController extends JObject
 			return false;
 		}
 
-		$tg = new ToolGroup( $database );
-		$database->setQuery( "SELECT * FROM ".$tg->getTableName()." WHERE toolid=".$tv->toolid );
-		$toolgroups = $database->loadObjectList();
+		$tg = new ToolGroup( $this->database );
+		$this->database->setQuery( "SELECT * FROM ".$tg->getTableName()." WHERE toolid=".$tv->toolid );
+		$toolgroups = $this->database->loadObjectList();
 		if (empty($toolgroups)) {
-			$xlog->logDebug("mw::_getToolAccess($tool,$login) WARNING: no tool member groups");
+			//$xlog->logDebug("mw::_getToolAccess($tool,$login) WARNING: no tool member groups");
 		}
 
-		$xgroups = XUserHelper::getGroups($juser->get('id'), 'members');
+		$xgroups = Hubzero_User_Helper::getGroups($this->juser->get('id'), 'members');
 		if (empty($xgroups)) {
-			$xlog->logDebug("mw::_getToolAccess($tool,$login) WARNING: user not in any groups");
+			//$xlog->logDebug("mw::_getToolAccess($tool,$login) WARNING: user not in any groups");
 		}
 
 		// Check if the user is in any groups for this app
@@ -1410,11 +1333,11 @@ class ToolsController extends JObject
 
 		if ($tisDev) {
 			if ($indevgroup) {
-				$xlog->logDebug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
+				//$xlog->logDebug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
 				return true;
 			}
  			else if ($admin) {
-				$xlog->logDebug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
+				//$xlog->logDebug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
 				return true;
 			}
 			else
@@ -1427,11 +1350,11 @@ class ToolsController extends JObject
 		else if ($tisPublished) {
 			if ($tisGroupControlled) {
 				if ($ingroup) {
-					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ACCESS GROUP)");
+					//$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ACCESS GROUP)");
 					return true;
 				}
 				else if ($admin) {
-					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
+					//$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
 					return true;
 				}
 				else {
@@ -1446,15 +1369,15 @@ class ToolsController extends JObject
 					return false;
 				}
 				else if ($admin) {
-					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
+					//$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
 					return true;
 				}
 				else if ($indevgroup) {
-					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
+					//$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
 					return true;
 				}
 				else {
-					$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED");
+					//$xlog->logDebug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED");
 					return true;
 				}
 			}
@@ -1479,12 +1402,10 @@ class ToolsController extends JObject
 
 		// Build the path
 		$path = $this->buildUploadPath($listdir);
-		
-		$juser =& JFactory::getUser();
-		
+
 		// Get the configured upload path
 		$base_path  = $this->config->get('storagepath') ? $this->config->get('storagepath') : 'webdav'.DS.'home';
-		$base_path .= DS.$juser->get('username');
+		$base_path .= DS.$this->juser->get('username');
 		
 		$dirtree = array();
 		$subdir = $listdir;	
@@ -1565,11 +1486,9 @@ class ToolsController extends JObject
 			}
 		}
 		
-		$juser =& JFactory::getUser();
-		 
 		// Get the configured upload path
 		$base_path  = $this->config->get('storagepath') ? $this->config->get('storagepath') : 'webdav'.DS.'home';
-		$base_path .= DS.$juser->get('username');
+		$base_path .= DS.$this->juser->get('username');
 		
 		if ($base_path) {
 			// Make sure the path doesn't end with a slash
@@ -1607,8 +1526,7 @@ class ToolsController extends JObject
 	protected function deletefolder() 
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->listfiles();
 			return;
 		}
@@ -1656,8 +1574,7 @@ class ToolsController extends JObject
 	protected function deletefile() 
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->listfiles();
 			return;
 		}
@@ -1691,4 +1608,3 @@ class ToolsController extends JObject
 		$this->listfiles();
 	}
 }
-?>

@@ -61,7 +61,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
-						<input type="text" name="search" value="" />
+						<label for="csearch">Keyword or phrase:</label>
+						<input type="text" name="search" id="csearch" value="" />
 						<input type="submit" value="Search" />
 					</p>
 				</fieldset>

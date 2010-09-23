@@ -25,66 +25,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class GroupsController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
+ximport('Hubzero_Group');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+class GroupsController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		// Load the component config
-		$component =& JComponentHelper::getComponent( $this->_option );
-		if (!trim($component->params)) {
-			return $this->abort();
-		} else {
-			$config =& JComponentHelper::getParams( $this->_option );
-		}
-		$this->config = $config;
-		
 		// Get the task
 		$this->_task = JRequest::getVar( 'task', '' );
 		$this->gid  = JRequest::getVar( 'gid', '' );
@@ -132,34 +79,6 @@ class GroupsController extends JObject
 			case 'login':   $this->login();   break;
 
 			default: $this->intro(); break;
-		}
-	}
-
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-
-	//-----------
-	
-	private function _getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-
-	//-----------
-	
-	private function _getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
 		}
 	}
 
@@ -225,17 +144,15 @@ class GroupsController extends JObject
 
 		// Push some styles to the template
 		$this->_getStyles();
-		
-		$database =& JFactory::getDBO();
-		
+
 		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc, (SELECT COUNT(*) FROM #__xgroups_members AS gm WHERE gm.gidNumber=g.gidNumber) AS members
 				FROM #__xgroups AS g 
 				WHERE g.type=1
 				AND g.published=1
 				AND g.privacy!=4
 				ORDER BY members DESC LIMIT 3";
-		$database->setQuery( $sql );
-		$popular = $database->loadObjectList();
+		$this->database->setQuery( $sql );
+		$popular = $this->database->loadObjectList();
 
 		// Output HTML
 		$view = new JView( array('name'=>'intro') );
@@ -252,11 +169,8 @@ class GroupsController extends JObject
 
 	protected function browse()
 	{
-		ximport('Hubzero_Group');
-		
 		// Check if they're logged in	
-		$juser =& JFactory::getUser();
-		if (!$juser->get('guest')) {
+		if (!$this->juser->get('guest')) {
 			$authorized = true;
 		} else {
 			$authorized = false;
@@ -339,15 +253,15 @@ class GroupsController extends JObject
 		}
 
 		// Load the group page
-		$group = new XGroup();
-		$group->select( $this->gid );
-		$this->gid = $group->get('cn');
+		$group = Hubzero_Group::getInstance( $this->gid );
 		
 		// Ensure we found the group info
-		if (!$group->get('gidNumber') && !$group->get('cn')) {
+		if (!is_object($group) || (!$group->get('gidNumber') && !$group->get('cn')) ) {
 			JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
 			return;
 		}
+
+		$this->gid = $group->get('cn');
 
 		// Ensure it's an allowable group type to display
 		if ($group->get('type') != 1) {
@@ -444,11 +358,9 @@ class GroupsController extends JObject
 				$this->action,
 				array($tab))
 			);
-
-		$juser =& JFactory::getUser();
 		
 		// Show a login prompt if the group is restricted or private and the user isn't logged in
-		if ($juser->get('guest') && $group->get('privacy') > 0) {
+		if ($this->juser->get('guest') && $group->get('privacy') > 0) {
 			return $this->login( $title );
 		} else {
 			// Logged in user - does the user have authority to view this group?
@@ -472,7 +384,7 @@ class GroupsController extends JObject
 			$view->ismember = $ismember;
 			$view->public_desc = $public_desc;
 			$view->private_desc = $private_desc;
-			$view->juser = $juser;
+			$view->juser = $this->juser;
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
@@ -528,8 +440,7 @@ class GroupsController extends JObject
 		}
 
 		// Load the group page
-		$group = new XGroup();
-		$group->select( $this->gid );
+		$group = Hubzero_Group::getInstance( $this->gid );
 
 		// Ensure we found the group info
 		if (!$group || !$group->get('gidNumber')) {
@@ -549,17 +460,16 @@ class GroupsController extends JObject
 		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&gid='.$group->get('cn').'&task='.$this->_task);
 		
 		// Check if they're logged in	
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login( $title );
 			return;
 		}
 		
 		// Check if the user is already a member, applicant, invitee, or manager
-		if ($group->is_member_of('applicants',$juser->get('id')) || 
-			$group->is_member_of('members',$juser->get('id')) || 
-			$group->is_member_of('managers',$juser->get('id')) || 
-			$group->is_member_of('invitees',$juser->get('id'))) {
+		if ($group->is_member_of('applicants',$this->juser->get('id')) || 
+			$group->is_member_of('members',$this->juser->get('id')) || 
+			$group->is_member_of('managers',$this->juser->get('id')) || 
+			$group->is_member_of('invitees',$this->juser->get('id'))) {
 			// Already a member - show the group page
 			$this->view();
 			return;
@@ -607,8 +517,7 @@ class GroupsController extends JObject
 		$document->setTitle( $title );
 		
 		// Check if they're logged in	
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login( $title );
 			return;
 		}
@@ -620,8 +529,7 @@ class GroupsController extends JObject
 		}
 		
 		// Load the group
-		$group = new XGroup();
-		$group->select( $this->gid );
+		$group = Hubzero_Group::getInstance( $this->gid );
 
 		// Ensure we found the group info
 		if (!$group || !$group->get('gidNumber')) {
@@ -630,33 +538,31 @@ class GroupsController extends JObject
 		}
 		
 		// Remove the user from the group
-		$group->remove('managers',$juser->get('id'));
-		$group->remove('members',$juser->get('id'));
-		$group->remove('applicants',$juser->get('id'));
-		$group->remove('invitees',$juser->get('id'));
+		$group->remove('managers',$this->juser->get('id'));
+		$group->remove('members',$this->juser->get('id'));
+		$group->remove('applicants',$this->juser->get('id'));
+		$group->remove('invitees',$this->juser->get('id'));
 		$group->update();
 		if ($group->getError()) {
 			$this->setError( JText::_('GROUPS_ERROR_CANCEL_MEMBERSHIP_FAILED') );
 		}
 		
-		$database =& JFactory::getDBO();
-		
 		// Log the membership cancellation
-		$log = new XGroupLog( $database );
+		$log = new XGroupLog( $this->database );
 		$log->gid = $group->get('gidNumber');
-		$log->uid = $juser->get('id');
+		$log->uid = $this->juser->get('id');
 		$log->timestamp = date( 'Y-m-d H:i:s', time() );
 		$log->action = 'membership_cancelled';
-		$log->actorid = $juser->get('id');
+		$log->actorid = $this->juser->get('id');
 		if (!$log->store()) {
 			$this->setError( $log->getError() );
 		}
 		
 		// Remove record of reason wanting to join group
-		$reason = new GroupsReason( $database );
-		$reason->deleteReason( $juser->get('username'), $group->get('cn') );
+		$reason = new GroupsReason( $this->database );
+		$reason->deleteReason( $this->juser->get('username'), $group->get('cn') );
 
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 		
 		// Email subject
@@ -666,7 +572,7 @@ class GroupsController extends JObject
 		$eview = new JView( array('name'=>'emails','layout'=>'cancelled') );
 		$eview->option = $this->_option;
 		$eview->hubShortName = $jconfig->getValue('config.sitename');
-		$eview->juser = $juser;
+		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -709,8 +615,7 @@ class GroupsController extends JObject
 		$document->setTitle( $title );
 		
 		// Check if they're logged in	
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login( $title );
 			return;
 		}
@@ -721,8 +626,7 @@ class GroupsController extends JObject
 		}
 		
 		// Load the group
-		$group = new XGroup();
-		$group->select( $this->gid );
+		$group = Hubzero_Group::getInstance( $this->gid );
 
 		// Ensure we found the group info
 		if (!$group || !$group->get('gidNumber')) {
@@ -735,12 +639,12 @@ class GroupsController extends JObject
 		
 		// Auto-approve member for group without any managers
 		if (count($emailmanagers) < 1) {
-			$group->add('managers',array($juser->get('id')));
+			$group->add('managers',array($this->juser->get('id')));
 		} else {
 			if ($group->get('join_policy') == 0) {
-				$group->add('members',array($juser->get('id')));
+				$group->add('members',array($this->juser->get('id')));
 			} else {
-				$group->add('applicants',array($juser->get('id')));
+				$group->add('applicants',array($this->juser->get('id')));
 			}
 		}
 		$group->update();
@@ -748,12 +652,10 @@ class GroupsController extends JObject
 			$this->setError( JText::_('GROUPS_ERROR_REGISTER_MEMBERSHIP_FAILED') );
 		}
 
-		$database =& JFactory::getDBO();
-		
 		if ($group->get('join_policy') == 1) {
 			// Instantiate the reason object and bind the incoming data
-			$row = new GroupsReason( $database );
-			$row->uidNumber = $juser->get('id');
+			$row = new GroupsReason( $this->database );
+			$row->uidNumber = $this->juser->get('id');
 			$row->gidNumber = $group->get('gidNumber');
 			$row->reason    = JRequest::getVar( 'reason', JText::_('GROUPS_NO_REASON_GIVEN'), 'post' );
 			$row->reason    = Hubzero_View_Helper_Html::purifyText($row->reason);
@@ -771,29 +673,29 @@ class GroupsController extends JObject
 		}
 		
 		// Log the membership request
-		$log = new XGroupLog( $database );
+		$log = new XGroupLog( $this->database );
 		$log->gid = $group->get('gidNumber');
-		$log->uid = $juser->get('id');
+		$log->uid = $this->juser->get('id');
 		$log->timestamp = date( 'Y-m-d H:i:s', time() );
 		$log->action = 'membership_requested';
-		$log->actorid = $juser->get('id');
+		$log->actorid = $this->juser->get('id');
 		if (!$log->store()) {
 			$this->setError( $log->getError() );
 		}
 		// Log the membership approval if the join policy is open
 		if ($group->get('join_policy') == 0) {
-			$log2 = new XGroupLog( $database );
+			$log2 = new XGroupLog( $this->database );
 			$log2->gid = $group->get('gidNumber');
-			$log2->uid = $juser->get('id');
+			$log2->uid = $this->juser->get('id');
 			$log2->timestamp = date( 'Y-m-d H:i:s', time() );
 			$log2->action = 'membership_approved';
-			$log2->actorid = $juser->get('id');
+			$log2->actorid = $this->juser->get('id');
 			if (!$log2->store()) {
 				$this->setError( $log2->getError() );
 			}
 		}
 		
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 			
 		// E-mail subject
@@ -803,7 +705,7 @@ class GroupsController extends JObject
 		$eview = new JView( array('name'=>'emails','layout'=>'request') );
 		$eview->option = $this->_option;
 		$eview->hubShortName = $jconfig->getValue('config.sitename');
-		$eview->juser = $juser;
+		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$eview->row = $row;
 		$message = $eview->loadTemplate();
@@ -845,8 +747,7 @@ class GroupsController extends JObject
 		$document->setTitle( $title );
 		
 		// Check if they're logged in	
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login( $title );
 			return;
 		}
@@ -858,8 +759,7 @@ class GroupsController extends JObject
 		}
 		
 		// Load the group
-		$group = new XGroup();
-		$group->select( $this->gid );
+		$group = Hubzero_Group::getInstance( $this->gid );
 
 		// Ensure we found the group info
 		if (!$group || !$group->get('gidNumber')) {
@@ -868,26 +768,25 @@ class GroupsController extends JObject
 		}
 
 		// Move the member from the invitee list to the members list
-		$group->add('members',array($juser->get('id')));
-		$group->remove('invitees',array($juser->get('id')));
+		$group->add('members',array($this->juser->get('id')));
+		$group->remove('invitees',array($this->juser->get('id')));
 		$group->update();
 		if ($group->getError()) {
 			$this->setError( JText::_('GROUPS_ERROR_REGISTER_MEMBERSHIP_FAILED') );
 		}
 		
 		// Log the invite acceptance
-		$database =& JFactory::getDBO();
-		$log = new XGroupLog( $database );
+		$log = new XGroupLog( $this->database );
 		$log->gid = $group->get('gidNumber');
-		$log->uid = $juser->get('id');
+		$log->uid = $this->juser->get('id');
 		$log->timestamp = date( 'Y-m-d H:i:s', time() );
 		$log->action = 'membership_invite_accepted';
-		$log->actorid = $juser->get('id');
+		$log->actorid = $this->juser->get('id');
 		if (!$log->store()) {
 			$this->setError( $log->getError() );
 		}
 
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 		
 		// E-mail subject
@@ -897,7 +796,7 @@ class GroupsController extends JObject
 		$eview = new JView( array('name'=>'emails','layout'=>'accepted') );
 		$eview->option = $this->_option;
 		$eview->hubShortName = $jconfig->getValue('config.sitename');
-		$eview->juser = $juser;
+		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -949,8 +848,7 @@ class GroupsController extends JObject
 		$this->_getStyles();
 		
 		// Check if they're logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&task='.$this->_task);
 			
 			$this->login( $title );
@@ -966,8 +864,8 @@ class GroupsController extends JObject
 			return;
 		}
 
-		// Instantiate an XGroup object
-		$group = new XGroup();
+		// Instantiate an Hubzero_Group object
+		$group = new Hubzero_Group();
 		
 		if ($this->_task != 'new') {
 			// Ensure we have a group to work with
@@ -1004,8 +902,7 @@ class GroupsController extends JObject
 		$pathway->addItem(JText::_(strtoupper($this->_task)),$p);
 
 		// Get the group's interests (tags)
-		$database =& JFactory::getDBO();
-		$gt = new GroupsTags( $database );
+		$gt = new GroupsTags( $this->database );
 		$tags = $gt->get_tag_string( $group->get('gidNumber') );
 
 		// Output HTML
@@ -1044,8 +941,7 @@ class GroupsController extends JObject
 		}
 		
 		// Load the group
-		$group = new XGroup();
-		$group->select( $this->gid );
+		$group = Hubzero_Group::getInstance( $this->gid );
 
 		// Ensure we found the group info
 		if (!$group || !$group->get('gidNumber')) {
@@ -1055,7 +951,7 @@ class GroupsController extends JObject
 		
 		// Approve the group
 		$group->set('published',1);
-		$group->save();
+		$group->update();
 		
 		if ($group->getError()) {
 			$this->setError( JText::_('GROUPS_ERROR_APPROVING_GROUP') );
@@ -1064,19 +960,17 @@ class GroupsController extends JObject
 		}
 		
 		// Log the group approval
-		$juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
-		$log = new XGroupLog( $database );
+		$log = new XGroupLog( $this->database );
 		$log->gid = $group->get('gidNumber');
-		$log->uid = $juser->get('id');
+		$log->uid = $this->juser->get('id');
 		$log->timestamp = date( 'Y-m-d H:i:s', time() );
 		$log->action = 'group_approved';
-		$log->actorid = $juser->get('id');
+		$log->actorid = $this->juser->get('id');
 		if (!$log->store()) {
 			$this->setError( $log->getError() );
 		}
 		
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 		
 		// Get the managers' e-mails
@@ -1089,7 +983,7 @@ class GroupsController extends JObject
 		$eview = new JView( array('name'=>'emails','layout'=>'approved') );
 		$eview->option = $this->_option;
 		$eview->hubShortName = $jconfig->getValue('config.sitename');
-		$eview->juser = $juser;
+		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -1117,15 +1011,12 @@ class GroupsController extends JObject
 	
 	protected function save() 
 	{	
-		ximport('Hubzero_Group');
-		
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
 		
 		// Check if they're logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login( $title );
 			return;
 		}
@@ -1142,8 +1033,8 @@ class GroupsController extends JObject
 		$g_join_policy  = JRequest::getInt('join_policy', 0, 'post' );
 		$tags = trim(JRequest::getVar( 'tags', '' ));
 		
-		// Instantiate an XGroup object
-		$group = new XGroup();
+		// Instantiate an Hubzero_Group object
+		$group = new Hubzero_Group();
 		
 		// Is this a new entry or updating?
 		$isNew = false;
@@ -1214,7 +1105,7 @@ class GroupsController extends JObject
 		if ($g_cn == 'new' || $g_cn == 'browse') {
 			$this->setError( JText::_('GROUPS_ERROR_INVALID_ID') );
 		}
-		if (!$this->valid_cn($g_cn)) {
+		if (!$this->_validCn($g_cn)) {
 			$this->setError( JText::_('GROUPS_ERROR_INVALID_ID') );
 		}
 		if ($isNew && Hubzero_Group::exists($g_cn)) {
@@ -1251,7 +1142,7 @@ class GroupsController extends JObject
 			$group->set('cn',$g_cn);
 			
 			$view = new JView( array('name'=>'edit') );
-			$view->valid_cn = $this->valid_cn($g_cn);
+			$view->valid_cn = $this->_validCn($g_cn);
 			$view->title = $title;
 			$view->option = $this->_option;
 			$view->group = $group;
@@ -1265,7 +1156,7 @@ class GroupsController extends JObject
 		}
 		
 		// Get some needed objects
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 				
 		// Build the e-mail message
@@ -1286,7 +1177,7 @@ class GroupsController extends JObject
 		$eview = new JView( array('name'=>'emails','layout'=>'saved') );
 		$eview->option = $this->_option;
 		$eview->hubShortName = $jconfig->getValue('config.sitename');
-		$eview->juser = $juser;
+		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$eview->isNew = $isNew;
 		$eview->g_description = $g_description;
@@ -1303,11 +1194,12 @@ class GroupsController extends JObject
 		// Set the group changes and save
 		$group->set('cn', $g_cn );
 		if ($isNew) {
+			$group->create();
 			$group->set('type', 1 );
 			$group->set('published', 1 );
 			
-			$group->add('managers',array($juser->get('id')));
-			$group->add('members',array($juser->get('id')));
+			$group->add('managers',array($this->juser->get('id')));
+			$group->add('members',array($this->juser->get('id')));
 		}
 		$group->set('description', $g_description );
 		$group->set('access', $g_access );
@@ -1316,20 +1208,18 @@ class GroupsController extends JObject
 		$group->set('private_desc', $g_private_desc );
 		$group->set('restrict_msg',$g_restrict_msg);
 		$group->set('join_policy',$g_join_policy);
-		$group->save();
+		$group->update();
 		
 		// Process tags
-		$database =& JFactory::getDBO();
-		$gt = new GroupsTags( $database );
-		$gt->tag_object($juser->get('id'), $group->get('gidNumber'), $tags, 1, 1);
+		$gt = new GroupsTags( $this->database );
+		$gt->tag_object($this->juser->get('id'), $group->get('gidNumber'), $tags, 1, 1);
 		
 		// Log the group save
-		$database =& JFactory::getDBO();
-		$log = new XGroupLog( $database );
+		$log = new XGroupLog( $this->database );
 		$log->gid = $group->get('gidNumber');
-		$log->uid = $juser->get('id');
+		$log->uid = $this->juser->get('id');
 		$log->timestamp = date( 'Y-m-d H:i:s', time() );
-		$log->actorid = $juser->get('id');
+		$log->actorid = $this->juser->get('id');
 		
 		// Rename the temporary upload directory if it exist
 		if ($isNew) {
@@ -1411,8 +1301,7 @@ class GroupsController extends JObject
 		$document->setTitle( $title );
 		
 		// Check if they're logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login( $title );
 			return;
 		}
@@ -1431,8 +1320,7 @@ class GroupsController extends JObject
 		}
 
 		// Load the group page
-		$group = new XGroup();
-		$group->select( $this->gid );
+		$group = Hubzero_Group::getInstance( $this->gid );
 		
 		// Ensure we found the group info
 		if (!$group || !$group->get('gidNumber')) {
@@ -1490,8 +1378,6 @@ class GroupsController extends JObject
 		$mems = array();
 		$registeredemails = array();
 
-		$database =& JFactory::getDBO();
-
 		// Get all the group's managers
 		$members = $group->get('members');
 		$applicants = $group->get('applicants');
@@ -1510,10 +1396,10 @@ class GroupsController extends JObject
 			// Check if it's an e-mail address
 			if (eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $l)) {
 				// Try to find an account that might match this e-mail
-				$database->setQuery("SELECT u.id FROM #__users AS u WHERE u.email='". $l ."' OR u.email LIKE '".$l."\'%' LIMIT 1;");
-				$uid = $database->loadResult();
-				if (!$database->query()) {
-					$this->setError( $database->getErrorMsg() );
+				$this->database->setQuery("SELECT u.id FROM #__users AS u WHERE u.email='". $l ."' OR u.email LIKE '".$l."\'%' LIMIT 1;");
+				$uid = $this->database->loadResult();
+				if (!$this->database->query()) {
+					$this->setError( $this->database->getErrorMsg() );
 				}
 
 				// If we found an ID, add it to the invitees list
@@ -1553,19 +1439,19 @@ class GroupsController extends JObject
 		// Log the sending of invites
 		foreach ($invitees as $invite) 
 		{
-			$log = new XGroupLog( $database );
+			$log = new XGroupLog( $this->database );
 			$log->gid = $group->get('gidNumber');
 			$log->uid = $invite;
 			$log->timestamp = date( 'Y-m-d H:i:s', time() );
 			$log->action = 'membership_invites_sent';
-			$log->actorid = $juser->get('id');
+			$log->actorid = $this->juser->get('id');
 			if (!$log->store()) {
 				$this->setError( $log->getError() );
 			}
 		}
 		
 		// Get and set some vars
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 		
 		// Build the "from" info for e-mails
@@ -1580,7 +1466,7 @@ class GroupsController extends JObject
 		$eview = new JView( array('name'=>'emails','layout'=>'invite') );
 		$eview->option = $this->_option;
 		$eview->hubShortName = $jconfig->getValue('config.sitename');
-		$eview->juser = $juser;
+		$eview->juser = $this->juser;
 		$eview->group = $group;
 		$eview->msg = $msg;
 		$message = $eview->loadTemplate();
@@ -1628,8 +1514,7 @@ class GroupsController extends JObject
 		$document->setTitle( $title );
 		
 		// Check if they're logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->login( $title );
 			return;
 		}
@@ -1648,8 +1533,7 @@ class GroupsController extends JObject
 		}
 
 		// Load the group page
-		$group = new XGroup();
-		$group->select( $this->gid );
+		$group = Hubzero_Group::getInstance( $this->gid );
 		
 		// Ensure we found the group info
 		if (!$group || !$group->get('gidNumber')) {
@@ -1768,6 +1652,8 @@ class GroupsController extends JObject
 		$gcn = $group->get('cn');
 		//$members = $group->get('members');
 		
+		$deletedgroup = clone($group);
+		
 		// Delete group
 		if (!$group->delete()) {
 			$view = new JView( array('name'=>'error') );
@@ -1782,7 +1668,7 @@ class GroupsController extends JObject
 		// Get and set some vars
 		$date = date( 'Y-m-d H:i:s', time());
 
-		//$xhub =& XFactory::getHub();
+		//$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 		
 		// Build the "from" info for e-mails
@@ -1797,10 +1683,10 @@ class GroupsController extends JObject
 		$eview = new JView( array('name'=>'emails','layout'=>'deleted') );
 		$eview->option = $this->_option;
 		$eview->hubShortName = $jconfig->getValue('config.sitename');
-		$eview->juser = $juser;
+		$eview->juser = $this->juser;
 		$eview->gcn = $gcn;
 		$eview->msg = $msg;
-		$eview->group = $group;
+		$eview->group = $deletedgroup;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 		
@@ -1812,14 +1698,13 @@ class GroupsController extends JObject
 		}
 		
 		// Log the deletion
-		$database =& JFactory::getDBO();
-		$xlog = new XGroupLog( $database );
+		$xlog = new XGroupLog( $this->database );
 		$xlog->gid = $gidNumber;
-		$xlog->uid = $juser->get('id');
+		$xlog->uid = $this->juser->get('id');
 		$xlog->timestamp = date( 'Y-m-d H:i:s', time() );
 		$xlog->action = 'group_deleted';
 		$xlog->comments = $log;
-		$xlog->actorid = $juser->get('id');
+		$xlog->actorid = $this->juser->get('id');
 		if (!$xlog->store()) {
 			$this->setError( $xlog->getError() );
 		}
@@ -1835,8 +1720,7 @@ class GroupsController extends JObject
 	protected function upload()
 	{
 		// Check if they're logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->media();
 			return;
 		}
@@ -1897,8 +1781,7 @@ class GroupsController extends JObject
 	protected function deletefolder() 
 	{
 		// Check if they're logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->media();
 			return;
 		}
@@ -1940,8 +1823,7 @@ class GroupsController extends JObject
 	protected function deletefile() 
 	{
 		// Check if they're logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->media();
 			return;
 		}
@@ -2099,25 +1981,24 @@ class GroupsController extends JObject
 	// Misc Functions
 	//----------------------------------------------------------
 
-	private function _authorize($checkonlymembership=false) 
+	protected function _authorize($checkonlymembership=false) 
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			return false;
 		}
 		
 		if (!$checkonlymembership) {
 			// Check if they're a site admin (from Joomla)
-			if ($juser->authorize($this->_option, 'manage')) {
+			if ($this->juser->authorize($this->_option, 'manage')) {
 				return 'admin';
 			}
 		}
 		
 		// Get the user's groups
-		$invitees = XUserHelper::getGroups( $juser->get('id'), 'invitees' );
-		$members = XUserHelper::getGroups( $juser->get('id'), 'members' );
-		$managers = XUserHelper::getGroups( $juser->get('id'), 'managers' );
+		$invitees = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'invitees' );
+		$members = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'members' );
+		$managers = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'managers' );
 
 		$groups = array();
 		$managerids = array();
@@ -2169,10 +2050,8 @@ class GroupsController extends JObject
 
 	private function getGroups( $groups )
 	{
-		$juser =& JFactory::getUser();
-
-		if (!$juser->get('guest')) {
-			$ugs = XUserHelper::getGroups( $juser->get('id') );
+		if (!$this->juser->get('guest')) {
+			$ugs = Hubzero_User_Helper::getGroups( $this->juser->get('id') );
 
 			for ($i = 0; $i < count($groups); $i++) 
 			{
@@ -2247,18 +2126,18 @@ class GroupsController extends JObject
 
 	private function _getAutocomplete( $filters=array() ) 
 	{
-		$database =& JFactory::getDBO();
-		
 		$query = "SELECT t.gidNumber, t.cn, t.description 
 					FROM #__xgroups AS t 
 					WHERE (t.type=1 OR t.type=2) AND (LOWER( t.cn ) LIKE '%".$filters['search']."%' OR LOWER( t.description ) LIKE '%".$filters['search']."%')
 					ORDER BY t.description ASC";
 
-		$database->setQuery( $query );
-		return $database->loadObjectList();
+		$this->database->setQuery( $query );
+		return $this->database->loadObjectList();
 	}
 	
-    function valid_cn($gid) 
+	//-----------
+	
+    private function _validCn($gid) 
 	{
 		if (eregi("^[0-9a-zA-Z]+[_0-9a-zA-Z]*$", $gid)) {
 			if (is_numeric($gid) && intval($gid) == $gid && $gid >= 0) {
@@ -2271,4 +2150,3 @@ class GroupsController extends JObject
 		}
 	}
 }
-?>

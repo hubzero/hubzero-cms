@@ -44,7 +44,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="hidden" name="address2" value="<?php echo (isset($this->posted['address2'])) ? htmlentities($this->posted['address2'],ENT_COMPAT,'UTF-8') : ''; ?>" />
 				<input type="hidden" name="city" value="<?php echo (isset($this->posted['city'])) ? htmlentities($this->posted['city'],ENT_COMPAT,'UTF-8') : ''; ?>" />
 				<input type="hidden" name="state" value="<?php echo (isset($this->posted['state'])) ? htmlentities($this->posted['state'],ENT_COMPAT,'UTF-8') : ''; ?>" />
-				<input type="hidden" name="country" value="<?php echo (isset($this->posted['country'])) ? htmlentities($this->posted['country'],ENT_COMPAT,'UTF-8') : htmlentities(GeoUtils::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8'); ?>" />
+				<input type="hidden" name="country" value="<?php echo (isset($this->posted['country'])) ? htmlentities($this->posted['country'],ENT_COMPAT,'UTF-8') : htmlentities(Hubzero_Geo::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8'); ?>" />
 				<input type="hidden" name="postal" value="<?php echo (isset($this->posted['postal'])) ? htmlentities($this->posted['postal'],ENT_COMPAT,'UTF-8') : ''; ?>" />
 				<input type="hidden" name="phone" value="<?php echo (isset($this->posted['phone'])) ? htmlentities($this->posted['phone'],ENT_COMPAT,'UTF-8') : ''; ?>" />
 				<input type="hidden" name="email" value="<?php echo (isset($this->posted['email'])) ? htmlentities($this->posted['email'],ENT_COMPAT,'UTF-8') : $this->juser->get('email'); ?>" />
@@ -55,7 +55,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				 
 <?php echo (isset($this->posted['address'])) ? htmlentities($this->posted['address'],ENT_COMPAT,'UTF-8') : ''; ?>
 
-<?php echo (isset($this->posted['country'])) ? htmlentities($this->posted['country'],ENT_COMPAT,'UTF-8') : htmlentities(GeoUtils::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8'); ?></pre>				
+<?php echo (isset($this->posted['country'])) ? htmlentities($this->posted['country'],ENT_COMPAT,'UTF-8') : htmlentities(Hubzero_Geo::getcountry($this->xprofile->get('countryresident')),ENT_COMPAT,'UTF-8'); ?></pre>				
 				<p><a class="actionlink" href="javascript:void(0);" id="change_address"><?php echo JText::_('COM_STORE_CHANGE_ADDRESS'); ?></a></p>
 			</fieldset>
 			<fieldset>

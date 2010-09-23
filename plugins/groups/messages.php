@@ -81,9 +81,9 @@ class plgGroupsMessages extends JPlugin
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) {
 			if ($return == 'html') {
-				ximport('xmodule');
+				ximport('Hubzero_Module_Helper');
 				$arr['html']  = '<p class="warning">'. JText::_('GROUPS_LOGIN_NOTICE') .'</p>';
-				$arr['html'] .= XModuleHelper::renderModules('force_mod');
+				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
 			}
 			return $arr;
 		}
@@ -116,7 +116,7 @@ class plgGroupsMessages extends JPlugin
 		// Are we returning HTML?
 		if ($return == 'html') {
 			// Load some needed libraries
-			ximport('xmessage');
+			ximport('Hubzero_Message');
 			
 			$task = strtolower(trim($action));
 			
@@ -134,7 +134,7 @@ class plgGroupsMessages extends JPlugin
 				default:     $arr['html'] = $this->_sent();     break;
 			}
 		} else {
-			//$recipient = new XMessageRecipient( $database );
+			//$recipient = new Hubzero_Message_Recipient( $database );
 			//$rows = $recipient->getUnreadMessages( $member->get('uidNumber'), 0 );
 			
 			$arr['metadata'] = ''; //'<p class="messages"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=messages').'">'.JText::sprintf('%s Unread Messages', count($rows)).'</a></p>'.n;
@@ -162,7 +162,7 @@ class plgGroupsMessages extends JPlugin
 		
 		// Instantiate our message object
 		$database =& JFactory::getDBO();
-		$recipient = new XMessage( $database );
+		$recipient = new Hubzero_Message_Message( $database );
 		
 		// Retrieve data
 		$total = $recipient->getSentMessagesCount( $filters );
@@ -204,7 +204,7 @@ class plgGroupsMessages extends JPlugin
 		$database =& JFactory::getDBO();
 		
 		// Load the message and parse it
-		$xmessage = new XMessage( $database );
+		$xmessage = new Hubzero_Message_Message( $database );
 		$xmessage->load( $mid );
 		$xmessage->message = stripslashes($xmessage->message);
 		$xmessage->message = str_replace("\n","\n ",$xmessage->message);

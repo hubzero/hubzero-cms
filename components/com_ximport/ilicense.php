@@ -27,8 +27,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 function _comparelicenses()
 {
-               $xhub = &XFactory::getHub();
-               $conn = &XFactory::getPLDC();
+               $xhub = &Hubzero_Factory::getHub();
+               $conn = &Hubzero_Factory::getPLDC();
 			$db   = &JFactory::getDBO();
 
                $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');

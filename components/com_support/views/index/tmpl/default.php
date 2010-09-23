@@ -24,6 +24,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+ximport('Hubzero_Module_Helper');
 ?>
 
 <div id="content-header" class="full">
@@ -40,7 +42,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			You can find answers to frequently asked questions, helpful tips, and any 
 			other information we thought might be useful.</p>
 		</div>
-		<?php echo XModuleHelper::renderModules( 'tcleft' ); ?>
+		<?php echo Hubzero_Module_Helper::renderModules( 'tcleft' ); ?>
 	</div>
 
 	<div class="three columns second">
@@ -51,7 +53,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			for answered questions. You just may find answers to questions you didn't 
 			even know you had.</p>
 		</div>
-		<?php echo XModuleHelper::renderModules( 'tcmiddle' ); ?>
+		<?php echo Hubzero_Module_Helper::renderModules( 'tcmiddle' ); ?>
 	</div>
 
 	<div class="three columns third">

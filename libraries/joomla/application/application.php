@@ -273,7 +273,7 @@ class JApplication extends JObject
 	{
 		$this->redirect($url,$msg,$msgType,'HTTP/1.1 302 Found');
 	}
-	
+
 	function redirect( $url, $msg='', $msgType='message', $status='HTTP/1.1 301 Moved Permanently' )
 	{
 		// check for relative internal links

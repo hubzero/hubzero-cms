@@ -36,10 +36,9 @@ if ($config->getValue('config.debug')) {
 
 include_once(JPATH_ROOT.DS.'libraries/joomla/html/html/select.php');
 jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
 
-require_once( JPATH_COMPONENT.DS.'whatsnew.period.php' );
+require_once( JPATH_COMPONENT.DS.'helpers'.DS.'period.php' );
 require_once( JPATH_COMPONENT.DS.'controller.php' );
 
 $jacl =& JFactory::getACL();

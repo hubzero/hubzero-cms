@@ -51,9 +51,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 				foreach ($this->components as $component) 
 				{
 					$component = substr($component, 4);
-					$sbjt  = t.t.t.'<option value="'.$component.'"';
+					$sbjt  = "\t\t\t".'<option value="'.$component.'"';
 					$sbjt .= ($component == $this->filter) ? ' selected="selected"' : '';
-					$sbjt .= '>'.$component.'</option>'.n;
+					$sbjt .= '>'.$component.'</option>'."\n";
 					echo $sbjt;
 				}
 			}
@@ -117,7 +117,7 @@ if ($this->rows) {
 		
 		$cls = (($cls == 'even') ? 'odd' : 'even');
 		if ($row->actionid) {
-			$xma = new XMessageAction( $database );
+			$xma = new Hubzero_Message_Action( $database );
 			$xma->load( $row->actionid );
 			if ($xma) {
 				$url = JRoute::_(stripslashes($xma->description));

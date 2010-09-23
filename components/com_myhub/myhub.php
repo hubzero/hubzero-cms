@@ -43,13 +43,18 @@ if (!defined("n")) {
 	define("a","&amp;");
 }
 
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'myhub.class.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'prefs.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'params.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 jimport('joomla.application.module.helper');
-jimport('joomla.application.component.view');
+
+// Editor usertype check
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
 
 // Instantiate controller
 $controller = new MyhubController();
 $controller->execute();
 $controller->redirect();
-?>

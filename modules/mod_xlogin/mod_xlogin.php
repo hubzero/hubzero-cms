@@ -27,8 +27,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 //----------------------------------------------------------
 
-ximport('misc_func');
-
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
@@ -36,4 +34,3 @@ $modxlogin = new modXLogin();
 $modxlogin->setObject('params', $params);
 
 require( JModuleHelper::getLayoutPath('mod_xlogin') );
-?>

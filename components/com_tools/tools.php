@@ -34,8 +34,6 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
-jimport('joomla.application.component.view');
-
 require_once( JPATH_COMPONENT.DS.'mw.class.php' );
 require_once( JPATH_COMPONENT.DS.'mw.utils.php' );
 require_once( JPATH_COMPONENT.DS.'controller.php' );
@@ -49,4 +47,3 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 $controller = new ToolsController();
 $controller->execute();
 $controller->redirect();
-?>

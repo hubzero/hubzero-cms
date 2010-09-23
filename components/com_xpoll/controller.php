@@ -25,57 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class XPollController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
-	
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		//Set the controller name
-		if (empty( $this->_name ))
-		{
-			if (isset($config['name']))  {
-				$this->_name = $config['name'];
-			}
-			else
-			{
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		$this->_option = 'com_'.$this->_name;
-	}
-	
-	//-----------
-	
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+ximport('Hubzero_Controller');
+
+class XPollController extends Hubzero_Controller
+{
 	public function execute()
 	{
 		$this->_task = JRequest::getVar( 'task', 'latest' );
@@ -92,35 +45,7 @@ class XPollController extends JObject
 
 	//-----------
 
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
-	
-	//-----------
-	
-	private function _getStyles() 
-	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
-	}
-
-	//-----------
-	
-	private function _getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file('components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-		}
-	}
-	
-	//-----------
-
-	private function _buildPathway($poll=null) 
+	protected function _buildPathway($poll=null) 
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -147,7 +72,7 @@ class XPollController extends JObject
 	
 	//-----------
 	
-	private function _buildTitle($poll=null) 
+	protected function _buildTitle($poll=null) 
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
 		if ($this->_task && $this->_task != 'view') {
@@ -166,7 +91,6 @@ class XPollController extends JObject
 
 	protected function vote() 
 	{
-		$database =& JFactory::getDBO();
 		$redirect = 1;
 		
 		// Instantiate a view
@@ -178,7 +102,7 @@ class XPollController extends JObject
 		$view->pollid = $uid;
 		
 		// Load the poll
-		$poll = new XPollPoll( $database );
+		$poll = new XPollPoll( $this->database );
 		if (!$poll->load( $uid )) {
 			$view->setError( JText::_('COM_XPOLL_NOTAUTH') );
 			$view->display();
@@ -208,7 +132,7 @@ class XPollController extends JObject
 		setcookie( $cookiename, '1', time()+$poll->lag );
 
 		// Increase the hits for the item that was voted for
-		$vote = new XPollData( $database );
+		$vote = new XPollData( $this->database );
 		$vote->load( $voteid );
 		$vote->hits++;
 		if (!$vote->check()) {
@@ -229,7 +153,7 @@ class XPollController extends JObject
 	    	:  getenv(REMOTE_ADDR);
 		
 		// Store the data about this vote
-		$xpdate = new XPollDate( $database );
+		$xpdate = new XPollDate( $this->database );
 		$xpdate->date = date("Y-m-d G:i:s");
 		$xpdate->vote_id = $voteid;
 		$xpdate->poll_id = $poll->id;
@@ -262,8 +186,6 @@ class XPollController extends JObject
 
 	protected function view() 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Instantiate a view
 		$view = new JView( array('name'=>'view') );
 		$view->option = $this->_option;
@@ -272,7 +194,7 @@ class XPollController extends JObject
 		$uid = JRequest::getInt( 'id', 0 );
 
 		// Load the poll
-		$poll = new XPollPoll( $database );
+		$poll = new XPollPoll( $this->database );
 		$poll->load( $uid );
 
 		// If id value is passed and poll not published then exit
@@ -293,7 +215,7 @@ class XPollController extends JObject
 			}
 
 			// Get the first and last vote dates
-			$xpdate = new XPollDate( $database );
+			$xpdate = new XPollDate( $this->database );
 			$dates = $xpdate->getMinMaxDates( $poll->id );
 
 			if (isset($dates[0]->mindate)) {
@@ -302,7 +224,7 @@ class XPollController extends JObject
 			}
 			
 			// Get the poll data
-			$xpdata = new XPollData( $database );
+			$xpdata = new XPollData( $this->database );
 			$view->votes = $xpdata->getPollData( $poll->id );
 		}
 	
@@ -330,19 +252,17 @@ class XPollController extends JObject
 	
 	protected function latest()
 	{
-		$database =& JFactory::getDBO();
-
 		// Instantiate a new view
 		$view = new JView( array('name'=>'latest') );
 		$view->option = $this->_option;
 
 		// Load the latest poll
-		$view->poll = new XPollPoll( $database );
+		$view->poll = new XPollPoll( $this->database );
 		$view->poll->getLatestPoll();
 
 		// Did we get a result from the database?
 		if ($view->poll->id && $view->poll->title) {
-			$xpdata = new XPollData( $database );
+			$xpdata = new XPollData( $this->database );
 			$view->options = $xpdata->getPollOptions( $view->poll->id, false );
 		} else {
 			$view->options = array();
@@ -361,4 +281,3 @@ class XPollController extends JObject
 		$view->display();
 	}
 }
-?>

@@ -27,8 +27,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 function _importtrac()
 {
-	$xhub = &XFactory::getHub();
-    $conn = &XFactory::getPLDC();
+	$xhub = &Hubzero_Factory::getHub();
+    $conn = &Hubzero_Factory::getPLDC();
 	$db   = &JFactory::getDBO();
 
 if (0) {

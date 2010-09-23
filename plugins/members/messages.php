@@ -85,7 +85,7 @@ class plgMembersMessages extends JPlugin
 		$database =& JFactory::getDBO();
 
 		// Load some needed libraries
-		ximport('xmessage');
+		ximport('Hubzero_Message');
 		
 		// Are we returning HTML?
 		if ($returnhtml) {
@@ -121,7 +121,7 @@ class plgMembersMessages extends JPlugin
 				default: $arr['html'] = $this->inbox($database, $option, $member); break;
 			}
 		} else {
-			$recipient = new XMessageRecipient( $database );
+			$recipient = new Hubzero_Message_Recipient( $database );
 			$rows = $recipient->getUnreadMessages( $member->get('uidNumber'), 0 );
 			
 			$arr['metadata'] = '<p class="messages"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=messages').'">'.JText::sprintf('PLG_MEMBERS_MESSAGES_UNREAD', count($rows)).'</a></p>'.n;
@@ -149,7 +149,7 @@ class plgMembersMessages extends JPlugin
 		$filter = JRequest::getVar('filter', '');
 		$filters['filter'] = ($filter) ? 'com_'.$filter : '';
 		
-		$recipient = new XMessageRecipient( $database );
+		$recipient = new Hubzero_Message_Recipient( $database );
 		
 		$total = $recipient->getMessagesCount( $member->get('uidNumber'), $filters );
 		
@@ -158,7 +158,7 @@ class plgMembersMessages extends JPlugin
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
 
-		$xmc = new XMessageComponent( $database );
+		$xmc = new Hubzero_Message_Component( $database );
 		$components = $xmc->getComponents();
 
 		$pagenavhtml = $pageNav->getListFooter();
@@ -206,7 +206,7 @@ class plgMembersMessages extends JPlugin
 		$filter = JRequest::getVar('filter', '');
 		$filters['filter'] = ($filter) ? 'com_'.$filter : '';
 		
-		$recipient = new XMessageRecipient( $database );
+		$recipient = new Hubzero_Message_Recipient( $database );
 		
 		$total = $recipient->getMessagesCount( $member->get('uidNumber'), $filters );
 		
@@ -215,7 +215,7 @@ class plgMembersMessages extends JPlugin
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
 
-		$xmc = new XMessageComponent( $database );
+		$xmc = new Hubzero_Message_Component( $database );
 		$components = $xmc->getComponents();
 
 		$pagenavhtml = $pageNav->getListFooter();
@@ -263,7 +263,7 @@ class plgMembersMessages extends JPlugin
 		$filter = JRequest::getVar('filter', '');
 		$filters['filter'] = ($filter) ? 'com_'.$filter : '';
 		
-		$recipient = new XMessageRecipient( $database );
+		$recipient = new Hubzero_Message_Recipient( $database );
 		
 		$total = $recipient->getMessagesCount( $member->get('uidNumber'), $filters );
 		
@@ -272,7 +272,7 @@ class plgMembersMessages extends JPlugin
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
 
-		$xmc = new XMessageComponent( $database );
+		$xmc = new Hubzero_Message_Component( $database );
 		$components = $xmc->getComponents();
 
 		$pagenavhtml = $pageNav->getListFooter();
@@ -318,7 +318,7 @@ class plgMembersMessages extends JPlugin
 		$filters['start'] = JRequest::getInt('limitstart', 0);
 		$filters['created_by'] = $member->get('uidNumber');
 		
-		$recipient = new XMessage( $database );
+		$recipient = new Hubzero_Message_Message( $database );
 		
 		$total = $recipient->getSentMessagesCount( $filters );
 		
@@ -361,7 +361,7 @@ class plgMembersMessages extends JPlugin
 		if (count($mids) > 0) {
 			foreach ($mids as $mid) 
 			{
-				$recipient = new XMessageRecipient( $database );
+				$recipient = new Hubzero_Message_Recipient( $database );
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
@@ -370,7 +370,7 @@ class plgMembersMessages extends JPlugin
 					$this->setError( $recipient->getError() );
 				}
 				
-				$xseen = new XMessageSeen( $database );
+				$xseen = new Hubzero_Message_Seen( $database );
 				$xseen->mid = $mid;
 				$xseen->uid = $member->get('uidNumber');
 				$xseen->loadRecord();
@@ -393,7 +393,7 @@ class plgMembersMessages extends JPlugin
 		if (count($mids) > 0) {
 			foreach ($mids as $mid) 
 			{
-				$recipient = new XMessageRecipient( $database );
+				$recipient = new Hubzero_Message_Recipient( $database );
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
@@ -416,12 +416,12 @@ class plgMembersMessages extends JPlugin
 		if (count($mids) > 0) {
 			foreach ($mids as $mid) 
 			{
-				$recipient = new XMessageRecipient( $database );
+				$recipient = new Hubzero_Message_Recipient( $database );
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
 				
-				$xseen = new XMessageSeen( $database );
+				$xseen = new Hubzero_Message_Seen( $database );
 				$xseen->mid = $mid;
 				$xseen->uid = $member->get('uidNumber');
 				$xseen->loadRecord();
@@ -445,7 +445,7 @@ class plgMembersMessages extends JPlugin
 	
 	public function emptytrash($database, $option, $member) 
 	{
-		$recipient = new XMessageRecipient( $database );
+		$recipient = new Hubzero_Message_Recipient( $database );
 		$recipient->uid = $member->get('uidNumber');
 		if (!$recipient->deleteTrash()) {
 			$this->setError( $recipient->getError() );
@@ -463,7 +463,7 @@ class plgMembersMessages extends JPlugin
 		if (count($mids) > 0) {
 			foreach ($mids as $mid) 
 			{
-				$recipient = new XMessageRecipient( $database );
+				$recipient = new Hubzero_Message_Recipient( $database );
 				$recipient->mid = $mid;
 				$recipient->uid = $member->get('uidNumber');
 				$recipient->loadRecord();
@@ -485,7 +485,7 @@ class plgMembersMessages extends JPlugin
 		if (count($ids) > 0) {
 			foreach ($ids as $mid) 
 			{
-				$xseen = new XMessageSeen( $database );
+				$xseen = new Hubzero_Message_Seen( $database );
 				$xseen->mid = $mid;
 				$xseen->uid = $member->get('uidNumber');
 				$xseen->loadRecord();
@@ -503,11 +503,11 @@ class plgMembersMessages extends JPlugin
 	
 	public function view($database, $option, $member, $mid) 
 	{
-		$xmessage = new XMessage( $database );
+		$xmessage = new Hubzero_Message_Message( $database );
 		$xmessage->load( $mid );
 		$xmessage->message = stripslashes($xmessage->message);
 		
-		$xmr = new XMessageRecipient( $database );
+		$xmr = new Hubzero_Message_Recipient( $database );
 		$xmr->loadRecord( $mid, $member->get('uidNumber') );
 
 		$xmessage->message = str_replace("\n","\n ",$xmessage->message);
@@ -520,13 +520,16 @@ class plgMembersMessages extends JPlugin
 			$xmessage->component = substr($xmessage->component,4);
 		}
 		
-		$xseen = new XMessageSeen( $database );
+		$xseen = new Hubzero_Message_Seen( $database );
 		$xseen->mid = $mid;
 		$xseen->uid = $member->get('uidNumber');
 		$xseen->loadRecord();
-		if ($xseen->whenseen == '' || $xseen->whenseen == '0000-00-00 00:00:00' || $xseen->whenseen == NULL) {
-			$xseen->whenseen = date( 'Y-m-d H:i:s', time() );
-			$xseen->store( true );
+		$juser =& JFactory::getUser();
+		if ($juser->get('id') == $member->get('uidNumber')) {
+			if ($xseen->whenseen == '' || $xseen->whenseen == '0000-00-00 00:00:00' || $xseen->whenseen == NULL) {
+				$xseen->whenseen = date( 'Y-m-d H:i:s', time() );
+				$xseen->store( true );
+			}
 		}
 		
 		if (substr($xmessage->type, -8) == '_message') {
@@ -576,7 +579,7 @@ class plgMembersMessages extends JPlugin
 		$name = trim($href);
 		if (substr($name, 0, 7) == 'mailto:') {
 			$name = substr($name, 7, strlen($name));
-			$name = Eventshtml::obfuscate($name);
+			$name = plgMembersMessages::obfuscate($name);
 			//$href = Eventshtml::obfuscate($href);
 			$href = 'mailto:'.$name;
 		}
@@ -584,6 +587,20 @@ class plgMembersMessages extends JPlugin
 			' <a class="ext-link" href="%s" rel="external">%s</a>',$href,$name
 		);
 		return $l;
+	}
+	
+	//-----------
+	
+	public function obfuscate( $email )
+	{
+		$length = strlen($email);
+		$obfuscatedEmail = '';
+		for ($i = 0; $i < $length; $i++) 
+		{
+			$obfuscatedEmail .= '&#'. ord($email[$i]) .';';
+		}
+		
+		return $obfuscatedEmail;
 	}
 	
 	//-----------
@@ -623,7 +640,7 @@ class plgMembersMessages extends JPlugin
 			$document->addScript('plugins'.DS.'members'.DS.'messages'.DS.'messages.js');
 		}
 		
-		$xmc = new XMessageComponent( $database );
+		$xmc = new Hubzero_Message_Component( $database );
 		$components = $xmc->getRecords();
 		
 		ximport('Hubzero_Plugin_View');
@@ -661,7 +678,7 @@ class plgMembersMessages extends JPlugin
 		$default_method = null;
 		
 		// Instantiate our notify object
-		$notify = new XMessageNotify( $database );
+		$notify = new Hubzero_Message_Notify( $database );
 		
 		// Get the user's selected methods
 		$methods = $notify->getRecords( $member->get('uidNumber') );
@@ -718,7 +735,7 @@ class plgMembersMessages extends JPlugin
 				{
 					if ($v) {
 						// Instantiate a Notify object and set its values
-						$notify = new XMessageNotify( $database );
+						$notify = new Hubzero_Message_Notify( $database );
 						$notify->uid = $member->get('uidNumber');
 						$notify->method = $v;
 						$notify->type = $key;
@@ -740,7 +757,7 @@ class plgMembersMessages extends JPlugin
 				}
 			}
 
-			$notify = new XMessageNotify( $database );
+			$notify = new Hubzero_Message_Notify( $database );
 			foreach ($ids as $key=>$value) 
 			{
 				foreach ($value as $k=>$v) 
@@ -764,7 +781,7 @@ class plgMembersMessages extends JPlugin
 			// This creates a single entry to let the system know that the user has explicitly chosen "none" for all options
 			// It ensures we can know the difference between someone who has never changed their settings (thus, no database entries) 
 			// and someone who purposely wants everything turned off.
-			$notify = new XMessageNotify( $database );
+			$notify = new Hubzero_Message_Notify( $database );
 			$notify->uid = $member->get('uidNumber');
 			
 			$records = $notify->getRecords( $member->get('uidNumber'), 'all' );

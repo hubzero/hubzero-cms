@@ -29,10 +29,11 @@ $tags = $modfindresources->tags;
 $categories = $modfindresources->categories;
 			
 // search
-$html  = '<form action="/xsearch/" method="get" class="search">'."\n";
+$html  = '<form action="/search/" method="get" class="search">'."\n";
 $html .= ' <fieldset>'."\n";
 $html .= '  <p>'."\n";
-$html .= '   <input type="text" name="searchword" value="" />'."\n";
+$html .= '   <label for="rsearchword">'.JText::_('Keyword or phrase:').'</label>'."\n";
+$html .= '   <input type="text" name="searchword" id="rsearchword" value="" />'."\n";
 $html .= '   <input type="hidden" name="category" value="resources" />'."\n";
 $html .= '   <input type="submit" value="'.JText::_('Search').'" />'."\n";
 $html .= '  </p>'."\n";

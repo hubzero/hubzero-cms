@@ -81,7 +81,7 @@ class Wish extends JTable
 	
 	//----------
 
-	public function get_votes_sum ($wishid, $what) 
+	public function get_votes_sum($wishid, $what) 
 	{
 		if ($wishid === NULL) {
 			return false;
@@ -94,7 +94,7 @@ class Wish extends JTable
 	
 	//----------
 	
-	public function get_count ($listid, $filters, $admin, $juser=NULL) 
+	public function get_count($listid, $filters, $admin, $juser=NULL) 
 	{
 		if ($listid === NULL) {
 			return false;
@@ -190,7 +190,7 @@ class Wish extends JTable
 		
 		$filters['tag'] = isset($filters['tag']) ? $filters['tag'] : '';
 		
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'wish.tags.php' );
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'helpers'.DS.'tags.php' );
 				
 		$sort = 'ws.status ASC, ws.proposed DESC';	
 		// list  sorting

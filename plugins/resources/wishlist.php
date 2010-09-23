@@ -100,7 +100,7 @@ class plgResourcesWishlist extends JPlugin
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'wish.attachment.php' );
 		ximport('Hubzero_View_Helper_Html');
 		require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-		//require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'wishlist.html.php' );
+		//require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
 		
 		// Configure controller
 		WishlistController::setVar('_option', $option);
@@ -119,8 +119,8 @@ class plgResourcesWishlist extends JPlugin
 		$id = $obj->get_wishlistID($refid, $cat);
 		
 		// Create a new list if necessary
-		if(!$id) {
-			if($resource->title && $resource->standalone == 1  && $resource->published == 1) {
+		if (!$id) {
+			if ($resource->title && $resource->standalone == 1  && $resource->published == 1) {
 				$rtitle = ($resource->type=='7'  && isset($resource->alias)) ? JText::_('WISHLIST_NAME_RESOURCE_TOOL').' '.$resource->alias : JText::_('WISHLIST_NAME_RESOURCE_ID').' '.$resource->id;
 				$id = $obj->createlist($cat, $refid, 1, $rtitle, $resource->title);
 			}				
@@ -129,26 +129,23 @@ class plgResourcesWishlist extends JPlugin
 		// get wishlist data
 		$wishlist = $obj->get_wishlist($id, $refid, $cat);
 		
-		if(!$wishlist) {
+		if (!$wishlist) {
 			$html = Hubzero_View_Helper_Html::error(JText::_('ERROR_WISHLIST_NOT_FOUND'));
-		}
-		else {
+		} else {
 			// Get list owners
-			$owners   = $objOwner->get_owners($id, $this->config->get('group') , $wishlist);
+			$owners = $objOwner->get_owners($id, $this->config->get('group') , $wishlist);
 			
 			// Authorize admins & list owners
-			if(!$juser->get('guest')) {
+			if (!$juser->get('guest')) {
 				if ($juser->authorize($option, 'manage')) {
 					$admin = 1;
 				}
-				if(in_array($juser->get('id'), $owners['individuals'])) {
+				if (in_array($juser->get('id'), $owners['individuals'])) {
 					$admin = 2;
-				}
-				else if(in_array($juser->get('id'), $owners['advisory'])) {
+				} else if (in_array($juser->get('id'), $owners['advisory'])) {
 					$admin = 3;
 				}
-			}
-			else if(!$wishlist->public && $rtrn != 'metadata') {
+			} else if (!$wishlist->public && $rtrn != 'metadata') {
 				// not authorized
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 				return;
@@ -156,7 +153,7 @@ class plgResourcesWishlist extends JPlugin
 			
 			$items = $objWish->get_count ($id, $filters, $admin);	
 			
-			if($rtrn != 'metadata') {
+			if ($rtrn != 'metadata') {
 				// Add the CSS to the template
 				WishlistController::_getStyles();
 				
@@ -167,10 +164,9 @@ class plgResourcesWishlist extends JPlugin
 				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
 				
 				$title = ($admin) ?  JText::_('WISHLIST_TITLE_PRIORITIZED') : JText::_('WISHLIST_TITLE_RECENT_WISHES');
-				if(count($wishlist->items) > 0 && $items > $filters['limit']) {
+				if (count($wishlist->items) > 0 && $items > $filters['limit']) {
 					$title.= ' (<a href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid).'">'.JText::_('view all') .' '.$items.'</a>)';
-				}
-				else {
+				} else {
 					$title .= ' ('.$items.')';
 				}
 				// HTML output
@@ -198,7 +194,7 @@ class plgResourcesWishlist extends JPlugin
 	
 				// Return the output
 				$html = $view->loadTemplate();
-				}						
+			}						
 		}
 					
 		// Build the HTML meant for the "about" tab's metadata overview
@@ -215,6 +211,4 @@ class plgResourcesWishlist extends JPlugin
 
 		return $arr;
 	}
-	
-	//-------------------
 }

@@ -83,7 +83,7 @@ class plgSupportWishlist extends JPlugin
 	
 	public function getParentId( $parentid, $category ) 
 	{
-		ximport('xcomment');
+		ximport('Hubzero_Comment');
 		
 		$database =& JFactory::getDBO();
 		$refid = $parentid;
@@ -120,7 +120,7 @@ class plgSupportWishlist extends JPlugin
 	public function parent($parentid) 
 	{
 		$database =& JFactory::getDBO();
-		$parent = new XComment( $database );
+		$parent = new Hubzero_Comment( $database );
 		$parent->load( $parentid );
 		
 		return $parent;
@@ -179,9 +179,9 @@ class plgSupportWishlist extends JPlugin
 			break;
 			
 			case 'wishcomment':
-				ximport('xcomment');
+				ximport('Hubzero_Comment');
 				
-				$comment = new XComment( $database );
+				$comment = new Hubzero_Comment( $database );
 				$comment->load( $referenceid );
 				$comment->state = 2;
 				if (!$comment->store()) {

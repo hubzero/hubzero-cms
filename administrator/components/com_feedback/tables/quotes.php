@@ -103,8 +103,8 @@ class FeedbackQuotes extends JTable
 		}
 		
 		// Build the file path
-		ximport('fileuploadutils');
-		$dir  = FileUploadUtils::niceidformat( $this->id );
+		ximport('Hubzero_View_Helper_Html');
+		$dir  = Hubzero_View_Helper_Html::niceidformat( $this->id );
 		$path = JPATH_ROOT;
 		if (substr($config->get('uploadpath'), 0, 1) != DS) {
 			$path .= DS;

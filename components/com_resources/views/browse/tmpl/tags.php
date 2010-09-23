@@ -86,7 +86,7 @@ foreach ($this->types as $type)
 $database =& JFactory::getDBO();
 
 if ($this->supportedtag) {
-	include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php');
+	include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
 	
 	$tag = new TagsTag( $database );
 	$tag->loadTag($this->supportedtag);

@@ -147,9 +147,9 @@ class FeedbackController extends Hubzero_Controller
 
 		$username = trim(JRequest::getVar( 'username', '' ));
 		if ($username) {
-			ximport('xprofile');
+			ximport('Hubzero_User_Profile');
 			
-			$profile = new XProfile();
+			$profile = new Hubzero_User_Profile();
 			$profile->load( $username );
 
 			$view->row->fullname = $profile->get('name');

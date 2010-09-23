@@ -33,7 +33,7 @@ class TitleIndexMacro extends WikiMacro
 	{
 		$txt = array();
 		$txt['wiki'] = 'Inserts an alphabetic list of all wiki pages into the output. Accepts a prefix string as parameter: if provided, only pages with names that start with the prefix are included in the resulting list. If this parameter is omitted, all pages are listed.';
-		$txt['html'] = '<p>Inserts an alphabetic list of all wiki pages into the output. Accepts a prefix string as parameter: if provided, only pages with names that start with the prefix are included in the resulting list. If this parameter is omitted, all pages are listed.</p>';
+		$txt['html'] = '<p>Inserts an alphabetic list of all wiki pages into the output. Accepts a prefix string as parameter: if provided, only pages with names that start with the prefix are included in the resulting list. If this parameter is omitted, all pages are listed.</p><p>The list may have a sorting applied by adding the sort=[title,created(oldest to newest),modified(newest to oldest)] argument. For example, <code>[[TitleIndex(sort=modified)]]</code> will list all pages by their last modified date (most recent to oldest). If you have a page prefix, simply add a comma and the sort parameter <em>after</em>. For example: <code>[[TitleIndex(Help, sort=modified)]]</code></p>';
 		return $txt['html'];
 	}
 	
@@ -43,26 +43,65 @@ class TitleIndexMacro extends WikiMacro
 	{
 		$et = $this->args;
 
-		// What pages are we getting?
+		$sort = '';
 		if ($et) {
 			$et = strip_tags($et);
+			
+			if (strstr($et, ',')) {
+				$attribs = explode(',', $et);
+				$et = trim($attribs[0]);
+				$sort = strtolower(trim($attribs[1]));
+			}
+			
+			if (strtolower($et) == 'sort=modified' || strtolower($et) == 'sort=created' || strtolower($et) == 'sort=title') {
+				$sort = $et;
+				$et = '';
+			}
+		}
+		
+
+		// What pages are we getting?
+		switch ($sort) 
+		{
+			case 'sort=modified':
+				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, v.`created` AS `modified`, MAX(v.`created`) FROM #__wiki_page AS p, #__wiki_version AS v WHERE v.pageid=p.id AND v.approved=1 AND ";
+			break;
+			case 'sort=created':
+			case 'sort=title':
+			default:
+				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, v.`created` FROM #__wiki_page AS p, #__wiki_version AS v WHERE v.pageid=p.id AND v.version=1 AND ";
+			break;
+		}
+		
+		if ($et) {
 			// Get pages with a prefix
-			//$sql  = "SELECT * FROM #__wiki_page WHERE LOWER(pagename) LIKE '".strtolower($et)."%' AND scope='".$this->scope."' ORDER BY pagename ASC";
 			if ($this->domain) {
-				$sql  = "SELECT * FROM #__wiki_page WHERE LOWER(pagename) LIKE '".strtolower($et)."%' AND `group`='".$this->domain."' ORDER BY pagename ASC";
+				$sql .= "LOWER(p.pagename) LIKE '".strtolower($et)."%' AND p.`group`='".$this->domain."'";
 			} else {
-				$sql  = "SELECT * FROM #__wiki_page WHERE LOWER(pagename) LIKE '".strtolower($et)."%' ORDER BY pagename ASC";
+				$sql .= "LOWER(p.pagename) LIKE '".strtolower($et)."%'";
 			}
 		} else {
 			// Get all pages
-			//$sql  = "SELECT * FROM #__wiki_page WHERE scope='".$this->scope."' ORDER BY pagename ASC";
 			if ($this->domain) {
-				$sql  = "SELECT * FROM #__wiki_page WHERE `group`='".$this->domain."' ORDER BY pagename ASC";
+				$sql .= "p.`group`='".$this->domain."'";
 			} else {
-				$sql  = "SELECT * FROM #__wiki_page WHERE `group`='' ORDER BY pagename ASC";
+				$sql .= "p.`group`=''";
 			}
 		}
-
+		switch ($sort) 
+		{
+			case 'sort=created':
+				$sql .= " ORDER BY `created` ASC";
+			break;
+			case 'sort=modified':
+				$sql .= " GROUP BY v.pageid ORDER BY `modified` DESC";
+			break;
+			case 'sort=title':
+			default:
+				$sql .= " ORDER BY `title` ASC, `pagename` ASC";
+			break;
+		}
+//echo '<!-- '.$sql.' -->';
 		// Perform query
 		$this->_db->setQuery( $sql );
 		$rows = $this->_db->loadObjectList();
@@ -73,6 +112,9 @@ class TitleIndexMacro extends WikiMacro
 			$html = '<ul>';
 			foreach ($rows as $row) 
 			{
+				if ($row->pagename == $this->pagename) {
+					continue;
+				}
 				$title = ($row->title) ? $row->title : $row->pagename;
 				//$html .= '<li><a href="'.$this->scope.'/'.$row->pagename.'">'.$title.'</a></li>';
 				$url  = substr($this->option,4,strlen($this->option)).DS;
@@ -96,4 +138,3 @@ class TitleIndexMacro extends WikiMacro
 		}
 	}
 }
-?>

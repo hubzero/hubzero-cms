@@ -78,8 +78,8 @@ class modXPoll
 			$this->options = $xpdata->getPollOptions( $poll->id, false );
 			
 			// Push the module CSS to the template
-			ximport('xdocument');
-			XDocument::addModuleStyleSheet('mod_xpoll');
+			ximport('Hubzero_Document');
+			Hubzero_Document::addModuleStyleSheet('mod_xpoll');
 		}
 	}
 }

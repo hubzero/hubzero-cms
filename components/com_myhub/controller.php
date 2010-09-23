@@ -25,67 +25,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class MyhubController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+class MyhubController extends Hubzero_Controller
+{
 	public function execute()
 	{
-		// Load the component config
-		$config =& JComponentHelper::getParams( $this->_option );
-		$this->config = $config;
-		
 		$this->num_default = 6;
 		
 		$this->_task = JRequest::getVar( 'task', '' );
 		
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			$this->_task = '';
 		} else {
 			$this->_task = ($this->_task) ? $this->_task : 'view';
@@ -107,17 +57,7 @@ class MyhubController extends JObject
 
 	//-----------
 
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
-		}
-	}
-
-	//-----------
-
-	private function _buildPathway($question=null) 
+	protected function _buildPathway($question=null) 
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -138,7 +78,7 @@ class MyhubController extends JObject
 	
 	//-----------
 	
-	private function _buildTitle($question=null) 
+	protected function _buildTitle($question=null) 
 	{
 		$juser =& JFactory::getUser();
 		$jconfig =& JFactory::getConfig();
@@ -182,16 +122,13 @@ class MyhubController extends JObject
 	protected function restore()
 	{
 		// Load the user's info
-		$juser =& JFactory::getUser();
-		
-		// Ensure we found a user
-		if (!$juser->get('guest')) {
-			$database =& JFactory::getDBO();
 
+		// Ensure we found a user
+		if (!$this->juser->get('guest')) {
 			// Instantiate object, assign default preferences, and save
-			$myhub = new MyhubPrefs( $database );
-			$myhub->load( $juser->get('id') );
-			$myhub->prefs = $this->getDefaultModules();
+			$myhub = new MyhubPrefs( $this->database );
+			$myhub->load( $this->juser->get('id') );
+			$myhub->prefs = $this->_getDefaultModules();
 			if (!$myhub->check()) {
 				$this->setError( $myhub->getError() );
 			}
@@ -208,8 +145,8 @@ class MyhubController extends JObject
 	protected function view()
 	{
 		// Add the CSS
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet($this->_option);
 		
 		// Add the Javascript if in "personalize" mode
 		$this->_act = JRequest::getVar( 'act', '' );
@@ -225,26 +162,21 @@ class MyhubController extends JObject
 		// Set the pathway
 		$this->_buildPathway();
 		
-		// Load the current logged-in user
-		$juser =& JFactory::getUser();
-		
 		// Make sure we actually loaded someone
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			JError::raiseError( 404, JText::_('COM_MY_HUB_ERROR_NO_USER') );
 			return;
 		}
 		
-		$database =& JFactory::getDBO();
-		
 		// Select user's list of modules from database
-		$myhub = new MyhubPrefs( $database );
-		$myhub->load( $juser->get('id') );
+		$myhub = new MyhubPrefs( $this->database );
+		$myhub->load( $this->juser->get('id') );
 		
 		// No preferences found
 		if (trim($myhub->prefs) == '') {
 			// Create a default set of preferences
-			$myhub->uid = $juser->get('id');
-			$myhub->prefs = $this->getDefaultModules();
+			$myhub->uid = $this->juser->get('id');
+			$myhub->prefs = $this->_getDefaultModules();
 			if ($this->_act == 'customize' && $this->config->get('allow_customization') != 1) {
 				if (!$myhub->check()) {
 					$this->setError( $myhub->getError() );
@@ -284,10 +216,10 @@ class MyhubController extends JObject
 		$view->act = $this->_act;
 		$view->config = $this->config;
 		$view->usermods = $usermods;
-		$view->juser = $juser;
+		$view->juser = $this->juser;
 		
 		if ($this->_act == 'customize' && $this->config->get('allow_customization') != 1) {
-			$view->availmods = $this->getUnusedModules($allmods);
+			$view->availmods = $this->_getUnusedModules($allmods);
 		} else {
 			$view->availmods = null;
 		}
@@ -295,7 +227,7 @@ class MyhubController extends JObject
 		$view->columns = array();
 		for ($c = 0; $c < $cols; $c++) 
 		{
-			$view->columns[$c] = $this->output_modules($mymods[$c], $juser->get('id'), $this->_act);
+			$view->columns[$c] = $this->output_modules($mymods[$c], $this->juser->get('id'), $this->_act);
 		}
 		
 		if ($this->getError()) {
@@ -327,7 +259,7 @@ class MyhubController extends JObject
 
 		// Instantiate a view
 		$view = new JView( array('name'=>'view','layout'=>'modulelist') );
-		$view->modules = $this->getUnusedModules($allmods);
+		$view->modules = $this->_getUnusedModules($allmods);
 		$view->display();
 	}
 
@@ -347,10 +279,8 @@ class MyhubController extends JObject
 			}
 		}
 		
-		$database =& JFactory::getDBO();
-		
 		// Instantiate object, bind data, and save
-		$myhub = new MyhubPrefs( $database );
+		$myhub = new MyhubPrefs( $this->database );
 		$myhub->load( $uid );
 		$myhub->prefs = $ids;
 		$myhub->modified = date( "Y-m-d H:i:s" );
@@ -369,8 +299,6 @@ class MyhubController extends JObject
 	// Save the parameters for a module
 	protected function saveparams()
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		$uid = JRequest::getInt( 'uid', 0 );
 		$mid = JRequest::getVar( 'id', '' );
@@ -384,7 +312,7 @@ class MyhubController extends JObject
 		}
 
 		// Instantiate object, bind data, and save
-		$myparams = new MyhubParams( $database );
+		$myparams = new MyhubParams( $this->database );
 		$myparams->loadParams( $uid, $mid );
 		if (!$myparams->params) {
 			$myparams->uid = $uid;
@@ -419,11 +347,9 @@ class MyhubController extends JObject
 			$view->display();
 			return;
 		}
-		
-		$database =& JFactory::getDBO();
-		
+
 		// Get the module from the database
-		$myparams = new MyhubParams( $database );
+		$myparams = new MyhubParams( $this->database );
 		$module = $myparams->loadModule( $uid, $mid );
 
 		// If the user has special prefs, load them.
@@ -443,7 +369,7 @@ class MyhubController extends JObject
 		$view->params = $params;
 		$view->container = false;
 		$view->extras = $extras;
-		$view->database = $database;
+		$view->database = $this->database;
 		$view->option = $this->_option;
 		$view->act = $act;
 		$view->config = $this->config;
@@ -474,13 +400,11 @@ class MyhubController extends JObject
 
 	protected function output_modules($mods, $uid, $act='') 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Get the modules
 		$modules = array();
 		for ($i=0, $n=count( $mods ); $i < $n; $i++) 
 		{
-			$myparams = new MyhubParams( $database );
+			$myparams = new MyhubParams( $this->database );
 			$modules[] = $myparams->loadModule( $uid, $mods[$i] );
 		}
 
@@ -513,7 +437,7 @@ class MyhubController extends JObject
 				$view->params = $params;
 				$view->container = true;
 				$view->extras = true;
-				$view->database = $database;
+				$view->database = $this->database;
 				$view->option = $this->_option;
 				$view->act = $act;
 				$view->config = $this->config;
@@ -529,13 +453,10 @@ class MyhubController extends JObject
 	// Fetchers
 	//----------------------------------------------------------
 
-	private function getUnusedModules($mods)
+	private function _getUnusedModules($mods)
 	{
-		$database =& JFactory::getDBO();
-	
-		//jimport('joomla.database.table.module');
 		include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'database'.DS.'table'.DS.'module.php' );
-		$jmodule = new JTableModule( $database );
+		$jmodule = new JTableModule( $this->database );
 	
 		$position = ($this->config->get('position')) ? $this->config->get('position') : 'myhub';
 	
@@ -551,34 +472,32 @@ class MyhubController extends JObject
 		$query .= $querym;
 		$query .= ") ORDER BY ordering";
 
-		$database->setQuery( $query );
-		$modules = $database->loadObjectList();
+		$this->database->setQuery( $query );
+		$modules = $this->database->loadObjectList();
 	
 		return $modules;
 	}
 
 	//-----------
 
-	private function getDefaultModules()
+	private function _getDefaultModules()
 	{
 		$string = '';
 		
 		if ($this->config->get('defaults')) {
 			$string = $this->config->get('defaults');
 		} else {
-			$database =& JFactory::getDBO();
-			
 			$position = ($this->config->get('position')) ? $this->config->get('position') : 'myhub';
 			
 			include_once( JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'database'.DS.'table'.DS.'module.php' );
-			$jmodule = new JTableModule( $database );
+			$jmodule = new JTableModule( $this->database );
 			
 			$query = "SELECT m.id 
 						FROM ".$jmodule->getTableName()." AS m 
 						WHERE m.position='".$position."' AND m.published='1' AND m.client_id='0' 
 						ORDER BY m.ordering LIMIT ".$this->num_default;
-			$database->setQuery( $query );
-			$modules = $database->loadObjectList();
+			$this->database->setQuery( $query );
+			$modules = $this->database->loadObjectList();
 
 			if ($modules) {
 				$i = 0;
@@ -599,103 +518,4 @@ class MyhubController extends JObject
 		
 		return $string;
 	}
-
-	//----------------------------------------------------------
-	// Functions for getting user options/parameters for modules
-	// TODO: finish this
-	//----------------------------------------------------------
-
-	/*private function render( $params, $path='', $type='', $name='params' ) 
-	{
-		$xmlElem = NULL;
-		if ($path) {
-			if (!is_object( $xmlElem )) {
-				require_once( JPATH_ROOT.DS.'includes/domit/xml_domit_lite_include.php' );
-
-				$xmlDoc =& new DOMIT_Lite_Document();
-				$xmlDoc->resolveErrors( true );
-				if ($xmlDoc->loadXML( $path, false, true )) {
-					$element =& $xmlDoc->documentElement;
-
-					if ($element->getTagName() == 'install' && $element->getAttribute( "type" ) == $type) {
-						if ($element =& $xmlDoc->getElementsByPath( 'params', 1 )) {
-							$xmlElem =& $element;
-						}
-					}
-				}
-			}
-		}
-	
-		$html = '';
-		if (is_object( $xmlElem )) {
-			$element =& $xmlElem;
-
-			foreach ($element->childNodes as $param) 
-			{
-				$result = $this->param_render( $params, $param );
-				if ($result) {
-					if ($result[0] != '') {
-						$html .= ' <tr>'.n;
-						$html .= '  <td>' . $result[0] . '</td>'.n;
-						$html .= '  <td>' . $result[1] . '</td>'.n;
-						$html .= ' </tr>'.n;
-					}
-				}
-			}
-			if (count( $element->childNodes ) < 1) {
-				$html .= '<tr><td colspan="2"><i>'. JText::_('NO_PARAMS') .'</i></td></tr>';
-			}
-			if ($html != '') {
-				$html  = '<table class="paramlist">'.n.$html;
-				$html .= '</table>'.n;
-			}
-		}
-		return $html;
-	}
-
-	//-----------
-
-	private function param_get( $params, $key, $default='' ) 
-	{
-		if (isset( $params->_params->$key )) {
-			return $params->_params->$key === '' ? $default : $params->_params->$key;
-		} else {
-			return $default;
-		}
-	}
-
-	//-----------
-
-	private function param_render( $params, &$param ) 
-	{
-		$result = array();
-
-		$name = $param->getAttribute( 'name' );
-		if (substr($name,0,3) == 'my_') {
-			$label = $param->getAttribute( 'label' );
-
-			$default = $param->getAttribute( 'default' );
-			$value = $this->param_get( $params, $name, $param->getAttribute( 'default' ) );
-
-			$result[0] = $label ? $label : $name;
-			if ( $result[0] == '@spacer' ) {
-				$result[0] = '<hr />';
-			} else if ( $result[0] ) {
-				$result[0] .= ':';
-			}
-
-			$type = $param->getAttribute( 'type' );
-
-			$param->_methods = get_class_methods( 'JParameter' );
-		
-			if (in_array( '_form_' . $type, $param->_methods )) {
-				$result[1] = call_user_func( array( 'JParameter','_form_' . $type), $name, $value, $param );
-			} else {
-			    $result[1] = _HANDLER . ' = ' . $type;
-			}
-		}
-
-		return $result;
-	}*/
 }
-?>

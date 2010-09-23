@@ -72,8 +72,8 @@ class plgMembersUsages extends JPlugin
 		}
 
 		// Get the groups of the current logged-in user
-		ximport('xuserhelper');
-		$ugs = XUserHelper::getGroups( $juser->get('id') );
+		ximport('Hubzero_User_Helper');
+		$ugs = Hubzero_User_Helper::getGroups( $juser->get('id') );
 
 		// Get the groups that are allowed to view this plugin
 		$groups = trim($this->_params->get('groups'));

@@ -25,55 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class ContributeController extends JObject
-{	
-	private $_name  = NULL;
-	private $_data  = array();
-	private $_task  = NULL;
+ximport('Hubzero_Controller');
 
-	//-----------
-	
-	public function __construct( $config=array() )
-	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
-		$this->_messageType = 'message';
-		
-		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
-				$this->_name = $config['name'];
-			} else {
-				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
-				}
-				$this->_name = strtolower( $r[1] );
-			}
-		}
-		
-		// Set the component name
-		$this->_option = 'com_'.$this->_name;
-	}
-
-	//-----------
-
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-	
-	//-----------
-	
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
-		}
-	}
-	
-	//-----------
-	
+class ContributeController extends Hubzero_Controller
+{
 	public function execute()
 	{
 		$this->steps = array('Type','Compose','Attach','Authors','Tags','Review');
@@ -88,8 +43,8 @@ class ContributeController extends JObject
 		if ($this->step && !$this->_task) {
 			$this->_task = 'start';
 		}
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+
+		if ($this->juser->get('guest')) {
 			$this->_task = ($this->_task) ? 'login' : '';
 		}
 
@@ -136,39 +91,10 @@ class ContributeController extends JObject
 			default: $this->intro(); break;
 		}
 	}
-	
-	//-----------
-
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message );
-		}
-	}
 
 	//-----------
-	
-	private function _getStyles( $option='' ) 
-	{
-		$option = ($option) ? $option : $this->_option;
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($option);
-	}
-	
-	//-----------
-	
-	private function _getScripts()
-	{
-		$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.$this->_name.'.js')) {
-			$document->addScript('components'.DS.$this->_option.DS.$this->_name.'.js');
-		}
-	}
-	
-	//-----------
 
-	private function _buildPathway() 
+	protected function _buildPathway() 
 	{
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -195,7 +121,7 @@ class ContributeController extends JObject
 	
 	//-----------
 	
-	private function _buildTitle() 
+	protected function _buildTitle() 
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
 		if ($this->_task) {
@@ -300,8 +226,7 @@ class ContributeController extends JObject
 		$step++;
 		
 		// Get available resource types
-		$database =& JFactory::getDBO();
-		$rt = new ResourcesType( $database );
+		$rt = new ResourcesType( $this->database );
 		$types = $rt->getMajorTypes();
 		
 		// Output HTML
@@ -321,7 +246,7 @@ class ContributeController extends JObject
 	
 	protected function step_compose()
 	{
-		$xhub = XFactory::getHub();
+		$xhub = Hubzero_Factory::getHub();
 
 		$type = JRequest::getVar( 'type', '' );
 
@@ -335,8 +260,7 @@ class ContributeController extends JObject
 		$id = JRequest::getInt( 'id', 0 );
 		
 		// Instantiate a new resource object
-		$database =& JFactory::getDBO();
-		$row = new ResourcesResource( $database );
+		$row = new ResourcesResource( $this->database );
 		if ($id) {
 			// Load the resource
 			$row->load( $id );
@@ -355,7 +279,7 @@ class ContributeController extends JObject
 		$view->row = $row;
 		$view->config = $this->config;
 		$view->next_step = $next_step;
-		$view->database = $database;
+		$view->database = $this->database;
 		$view->id = $id;
 		$view->progress = $this->progress;
 		$view->task = 'start';
@@ -382,8 +306,7 @@ class ContributeController extends JObject
 		}
 		
 		// Load the resource
-		$database =& JFactory::getDBO();
-		$row = new ResourcesResource( $database );
+		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
 		
 		// Output HTML
@@ -395,7 +318,7 @@ class ContributeController extends JObject
 		$view->row = $row;
 		$view->config = $this->config;
 		$view->next_step = $next_step;
-		$view->database = $database;
+		$view->database = $this->database;
 		$view->id = $id;
 		$view->progress = $this->progress;
 		$view->task = 'start';
@@ -422,16 +345,13 @@ class ContributeController extends JObject
 		}
 		
 		// Load the resource
-		$database =& JFactory::getDBO();
-		$row = new ResourcesResource( $database );
+		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
 		
 		// Get groups
-		$juser =& JFactory::getUser();
-
-		ximport('xuserhelper');
+		ximport('Hubzero_User_Helper');
 			
-		$groups = XUserHelper::getGroups( $juser->get('id'), 'members' );
+		$groups = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'members' );
 		
 		// Output HTML
 		$view = new JView( array('name'=>'steps','layout'=>'authors') );
@@ -442,7 +362,7 @@ class ContributeController extends JObject
 		$view->row = $row;
 		$view->groups = $groups;
 		$view->next_step = $next_step;
-		$view->database = $database;
+		$view->database = $this->database;
 		$view->id = $id;
 		$view->progress = $this->progress;
 		$view->task = 'start';
@@ -483,8 +403,7 @@ class ContributeController extends JObject
 		$fa10 = $tconfig->get('focus_area_10');
 		
 		// Instantiate our tag object
-		$database =& JFactory::getDBO();
-		$tagcloud = new ResourcesTags($database);
+		$tagcloud = new ResourcesTags($this->database);
 
 		// Normalize the focus areas
 		$tagfa1 = $tagcloud->normalize_tag($fa1);
@@ -547,6 +466,11 @@ class ContributeController extends JObject
 		}
 		$tags = implode( ', ', $mytagarray );
 
+		/*$err = JRequest::getInt( 'err', 0 );
+		if ($err) {
+			$this->setError( JText::_('Please select one of the focus areas.') );
+		}*/
+
 		// Output HTML
 		$view = new JView( array('name'=>'steps','layout'=>'tags') );
 		$view->option = $this->_option;
@@ -557,7 +481,7 @@ class ContributeController extends JObject
 		$view->tagfa = $tagfa;
 		$view->fats = $fats;
 		$view->next_step = $next_step;
-		$view->database = $database;
+		$view->database = $this->database;
 		$view->id = $id;
 		$view->progress = $this->progress;
 		$view->task = 'start';
@@ -587,17 +511,15 @@ class ContributeController extends JObject
 		$this->_getStyles('com_resources');
 		
 		// Get some needed libraries
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.html.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 
 		// Load resource info
-		$database =& JFactory::getDBO();
-		$resource = new ResourcesResource( $database );
+		$resource = new ResourcesResource( $this->database );
 		$resource->load( $id );
 		
-		$juser =& JFactory::getUser();
-		if (!$juser->get('guest')) {
-			ximport('xuserhelper');
-			$xgroups = XUserHelper::getGroups($juser->get('id'), 'all');
+		if (!$this->juser->get('guest')) {
+			ximport('Hubzero_User_Helper');
+			$xgroups = Hubzero_User_Helper::getGroups($this->juser->get('id'), 'all');
 			// Get the groups the user has access to
 			$usersgroups = $this->_getUsersGroups($xgroups);
 		} else {
@@ -614,7 +536,7 @@ class ContributeController extends JObject
 		$view->config = $this->config;
 		$view->resource = $resource;
 		$view->next_step = $next_step;
-		$view->database = $database;
+		$view->database = $this->database;
 		$view->id = $id;
 		$view->progress = $this->progress;
 		$view->task = 'submit';
@@ -653,11 +575,8 @@ class ContributeController extends JObject
 	
 	protected function step_compose_process() 
 	{
-	    $juser =& JFactory::getUser();
-		$database =& JFactory::getDBO();
-
 		// Initiate extended database class
-		$row = new ResourcesResource( $database );
+		$row = new ResourcesResource( $this->database );
 		if (!$row->bind( $_POST )) {
 			JError::raiseError( 500, $row->getError() );
 			return;
@@ -665,7 +584,7 @@ class ContributeController extends JObject
 		$isNew = $row->id < 1;
 
 		$row->created = ($row->created) ? $row->created : date( 'Y-m-d H:i:s' );
-		$row->created_by = ($row->created_by) ? $row->created_by : $juser->get('id');
+		$row->created_by = ($row->created_by) ? $row->created_by : $this->juser->get('id');
 
 		// Set status to "composing"
 		if ($isNew) {
@@ -676,10 +595,10 @@ class ContributeController extends JObject
 		$row->publish_up = ($row->publish_up) ? $row->publish_up : date( 'Y-m-d H:i:s' );
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->modified = date( 'Y-m-d H:i:s' );
-		$row->modified_by = $juser->get('id');
+		$row->modified_by = $this->juser->get('id');
 
 		// Get custom areas, add wrapper tags, and compile into fulltext
-		$type = new ResourcesType( $database );
+		$type = new ResourcesType( $this->database );
 		$type->load( $row->type );
 		
 		$fields = array();
@@ -751,7 +670,7 @@ class ContributeController extends JObject
 			
 			// Automatically attach this user as the first author
 			$_REQUEST['pid'] = $row->id;
-			$_POST['authid'] = $juser->get('id');
+			$_POST['authid'] = $this->juser->get('id');
 			$_REQUEST['id'] = $row->id;
 			
 			$this->author_save(0);
@@ -778,8 +697,7 @@ class ContributeController extends JObject
 		}
 		
 		// Load the resource
-		$database =& JFactory::getDBO();
-		$row = new ResourcesResource( $database );
+		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
 		
 		// Set the group and access level
@@ -803,13 +721,42 @@ class ContributeController extends JObject
 
 	protected function step_tags_process()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
-		
 		// Incoming
 		$id    = JRequest::getInt( 'id', 0, 'post' );
 		$tags  = JRequest::getVar( 'tags', '', 'post' );
 		$tagfa = JRequest::getVar( 'tagfa', '', 'post' );
+		
+		$tagcloud = new ResourcesTags($this->database);
+
+		$tconfig =& JComponentHelper::getParams( 'com_tags' );
+		$fa = array();
+		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_01'));
+		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_02'));
+		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_03'));
+		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_04'));
+		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_05'));
+		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_06'));
+		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_07'));
+		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_08'));
+		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_09'));
+		$fa[] = $tagcloud->normalize_tag($tconfig->get('focus_area_10'));
+		$required = false;
+		foreach ($fa as $r) 
+		{
+			if ($r != '') {
+				$required = true;
+			}
+		}
+		//print_r($required);
+		if ($required) {
+			//echo $tagfa; print_r($fa); die;
+			if (!$tagfa || ($tagfa && !in_array($tagfa, $fa))) {
+				$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&step=4&id='.$id);
+				$this->_message = JText::_('Please select one of the focus areas.');
+				$this->_messageType = 'error';
+				return;
+			}
+		}
 		
 		if ($tags) {
 			$tags = $tagfa.', '.$tags;
@@ -818,8 +765,8 @@ class ContributeController extends JObject
 		}
 
 		// Tag the resource
-		$rt = new ResourcesTags($database);
-		$rt->tag_object($juser->get('id'), $id, $tags, 1, 0);
+		$rt = new ResourcesTags($this->database);
+		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
 	}
 
 	//----------------------------------------------------------
@@ -838,8 +785,7 @@ class ContributeController extends JObject
 		}
 	
 		// Load resource info
-		$database =& JFactory::getDBO();
-		$resource = new ResourcesResource( $database );
+		$resource = new ResourcesResource( $this->database );
 		$resource->load( $id );
 
 		// Set a flag for if the resource was already published or not
@@ -869,8 +815,7 @@ class ContributeController extends JObject
 				$apu = explode(',', $apu);
 				$apu = array_map('trim',$apu);
 				
-				$juser =& JFactory::getUser();
-				if (in_array($juser->get('username'),$apu)) {
+				if (in_array($this->juser->get('username'),$apu)) {
 					// Set status to published
 					$resource->published = 1;
 				} else {
@@ -880,7 +825,7 @@ class ContributeController extends JObject
 			}
 			
 			// Get the resource's contributors
-			$helper = new ResourcesHelper( $id, $database );
+			$helper = new ResourcesHelper( $id, $this->database );
 			$helper->getCons();
 
 			$contributors = $helper->_contributors;
@@ -953,13 +898,13 @@ class ContributeController extends JObject
 		$message .= JRoute::_('index.php?option=com_resources&id='.$id);
 
 		// Send e-mail
-		ximport('xhubhelper');
+		ximport('Hubzero_Toolbox');
 		foreach ($contributors as $contributor)
 		{
 			$juser = JUser::getInstance( $contributor->id );
 			if (is_object($juser)) {
 				if ($juser->get('email')) {
-					XHubHelper::send_email($from, $email, $subject, $message);
+					Hubzero_Toolbox::send_email($from, $email, $subject, $message);
 				}
 			}
 		}*/
@@ -1005,10 +950,8 @@ class ContributeController extends JObject
 					$progress[$steps[$i]] = 0;
 				}
 				
-				$database =& JFactory::getDBO();
-				
 				// Load the resource
-				$row = new ResourcesResource( $database );
+				$row = new ResourcesResource( $this->database );
 				$row->load( $id );
 				$row->typetitle = $row->getTypeTitle(0);
 
@@ -1036,11 +979,9 @@ class ContributeController extends JObject
 					$this->redirect = JRoute::_('index.php?option='.$this->_option);
 					return;
 				}
-				
-				$database =& JFactory::getDBO();
-				
+
 				// Load the resource
-				$resource = new ResourcesResource( $database );
+				$resource = new ResourcesResource( $this->database );
 				$resource->load( $id );
 				
 				// Check if the resource was "published"
@@ -1077,10 +1018,8 @@ class ContributeController extends JObject
 			return;
 		}
 		
-		$database =& JFactory::getDBO();
-		
 		// Load the resource
-		$resource = new ResourcesResource( $database );
+		$resource = new ResourcesResource( $this->database );
 		$resource->load( $id );
 		
 		// Check if it's in pending status
@@ -1099,8 +1038,6 @@ class ContributeController extends JObject
 
 	protected function markRemovedContribution( $id )
 	{
-		$database =& JFactory::getDBO();
-		
 		// Make sure we have a record to pull
 		if (!$id) {
 			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
@@ -1108,7 +1045,7 @@ class ContributeController extends JObject
 		}
 		
 		// Load resource info
-		$row = new ResourcesResource( $database );
+		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
 		
 		// Mark resource as deleted
@@ -1134,14 +1071,12 @@ class ContributeController extends JObject
 		
 		jimport('joomla.filesystem.folder');
 		
-		$database =& JFactory::getDBO();
-		
 		// Load resource info
-		$row = new ResourcesResource( $database );
+		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
 		
 		// Get the resource's children
-		$helper = new ResourcesHelper( $id, $database );
+		$helper = new ResourcesHelper( $id, $this->database );
 		$helper->getChildren();
 		$children = $helper->children;
 		
@@ -1222,8 +1157,7 @@ class ContributeController extends JObject
 	protected function attach_rename()
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			return false;
 		}
 		
@@ -1233,9 +1167,7 @@ class ContributeController extends JObject
 
 		// Ensure we have everything we need
 		if ($id && $name != '') {
-			$database =& JFactory::getDBO();
-			
-			$r = new ResourcesResource( $database );
+			$r = new ResourcesResource( $this->database );
 			$r->load( $id );
 			$r->title = $name;
 			$r->store();
@@ -1250,8 +1182,7 @@ class ContributeController extends JObject
 	protected function attach_save()
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			return false;
 		}
 
@@ -1275,10 +1206,8 @@ class ContributeController extends JObject
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ','_',$file['name']);
 
-		$database =& JFactory::getDBO();
-
 		// Instantiate a new resource object
-		$row = new ResourcesResource( $database );
+		$row = new ResourcesResource( $this->database );
 		if (!$row->bind( $_POST )) {
 			$this->setError( $row->getError() );
 			$this->attachments( $pid );
@@ -1287,7 +1216,7 @@ class ContributeController extends JObject
 		$row->title = ($row->title) ? $row->title : $file['name'];
 		$row->introtext = $row->title;
 		$row->created = date( 'Y-m-d H:i:s' );
-		$row->created_by = $juser->get('id');
+		$row->created_by = $this->juser->get('id');
 		$row->published = 1;
 		$row->publish_up = date( 'Y-m-d H:i:s' );
 		$row->publish_down = '0000-00-00 00:00:00';
@@ -1410,7 +1339,7 @@ class ContributeController extends JObject
 		}
 		
 		// Instantiate a ResourcesAssoc object
-		$assoc = new ResourcesAssoc( $database );
+		$assoc = new ResourcesAssoc( $this->database );
 
 		// Get the last child in the ordering
 		$order = $assoc->getLastOrder( $pid );
@@ -1440,12 +1369,9 @@ class ContributeController extends JObject
 	protected function attach_delete() 
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			return false;
 		}
-		
-		$database =& JFactory::getDBO();
 		
 		// Incoming parent ID
 		$pid = JRequest::getInt( 'pid', 0 );
@@ -1465,7 +1391,7 @@ class ContributeController extends JObject
 		jimport('joomla.filesystem.file');
 	
 		// Load resource info
-		$row = new ResourcesResource( $database );
+		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
 		
 		// Get path and delete directories
@@ -1544,8 +1470,7 @@ class ContributeController extends JObject
 	protected function attachments( $id=null ) 
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
+		if ($this->juser->get('guest')) {
 			return false;
 		}
 		
@@ -1561,9 +1486,7 @@ class ContributeController extends JObject
 		}
 		
 		// Initiate a resource helper class
-		$database =& JFactory::getDBO();
-		
-		$helper = new ResourcesHelper( $id, $database );
+		$helper = new ResourcesHelper( $id, $this->database );
 		$helper->getChildren();
 		
 		// Output HTML
@@ -1677,10 +1600,8 @@ class ContributeController extends JObject
 
 		$move = substr($this->_task, 0, (strlen($this->_task) - 1));
 
-		$database =& JFactory::getDBO();
-
 		// Get the element moving down - item 1
-		$resource1 = new ResourcesAssoc( $database );
+		$resource1 = new ResourcesAssoc( $this->database );
 		$resource1->loadAssoc( $pid, $id );
 
 		// Get the element directly after it in ordering - item 2
@@ -1730,16 +1651,14 @@ class ContributeController extends JObject
 			return;
 		}
 		
-		ximport('xprofile');
-		
-		$database =& JFactory::getDBO();
+		ximport('Hubzero_User_Profile');
 		
 		// Incoming authors
 		$authid = JRequest::getInt( 'authid', 0, 'post' );
 		$authorsNewstr = JRequest::getVar( 'new_authors', '', 'post' );
 
 		// Instantiate a resource/contributor association object
-		$rc = new ResourcesContributor( $database );
+		$rc = new ResourcesContributor( $this->database );
 		$rc->subtable = 'resources';
 		$rc->subid = $id;
 		
@@ -1756,7 +1675,7 @@ class ContributeController extends JObject
 			} else {
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
 				//$juser =& JUser::getInstance( $authid );
-				$xprofile = new XProfile();
+				$xprofile = new Hubzero_User_Profile();
 				$xprofile->load( $authid );
 				if ($xprofile) {
 					$this->_author_check($authid);
@@ -1806,7 +1725,7 @@ class ContributeController extends JObject
 				}
 				
 				// Check if they're already linked to this resource
-				$rcc = new ResourcesContributor( $database );
+				$rcc = new ResourcesContributor( $this->database );
 				$rcc->loadAssociation( $uid, $id, 'resources' );
 				if ($rcc->authorid) {
 					$this->setError( JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid) );
@@ -1816,7 +1735,7 @@ class ContributeController extends JObject
 				$this->_author_check($juser->get('id'));
 				
 				// New record
-				$xprofile = XProfile::getInstance($juser->get('id'));
+				$xprofile = Hubzero_User_Profile::getInstance($juser->get('id'));
 				$rcc->subtable = 'resources';
 				$rcc->subid = $id;
 				$rcc->authorid = $uid;
@@ -1839,7 +1758,7 @@ class ContributeController extends JObject
 
 	private function _author_check($id)
 	{
-		$xprofile = XProfile::getInstance($id);
+		$xprofile = Hubzero_User_Profile::getInstance($id);
 		if ($xprofile->get('givenName') == '' && $xprofile->get('middleName') == '' && $xprofile->get('surname') == '') {
 			$bits = explode(' ', $xprofile->get('name'));
 			$xprofile->set('surname', array_pop($bits));
@@ -1869,9 +1788,7 @@ class ContributeController extends JObject
 		
 		// Ensure we have the contributor's ID ($id)
 		if ($id) {
-			$database =& JFactory::getDBO();
-			
-			$rc = new ResourcesContributor( $database );
+			$rc = new ResourcesContributor( $this->database );
 			if (!$rc->deleteAssociation( $id, $pid, 'resources' )) {
 				$this->setError( $rc->getError() );
 			}
@@ -1905,10 +1822,8 @@ class ContributeController extends JObject
 
 		$move = substr($this->_task, 0, (strlen($this->_task) - 1));
 
-		$database =& JFactory::getDBO();
-
 		// Get the element moving down - item 1
-		$author1 = new ResourcesContributor( $database );
+		$author1 = new ResourcesContributor( $this->database );
 		$author1->loadAssociation( $id, $pid, 'resources' );
 
 		// Get the element directly after it in ordering - item 2
@@ -1948,8 +1863,6 @@ class ContributeController extends JObject
 
 	protected function authors( $id=null ) 
 	{
-		$database =& JFactory::getDBO();
-		
 		// Incoming
 		if (!$id) {
 			$id = JRequest::getInt( 'id', 0 );
@@ -1961,11 +1874,8 @@ class ContributeController extends JObject
 			return;
 		}
 		
-		// Initiate a resource helper class
-		$database =& JFactory::getDBO();
-		
 		// Get all contributors of this resource
-		$helper = new ResourcesHelper( $id, $database );
+		$helper = new ResourcesHelper( $id, $this->database );
 		$helper->getCons();
 		
 		// Get a list of all existing contributors
@@ -1973,7 +1883,7 @@ class ContributeController extends JObject
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_members'.DS.'tables'.DS.'association.php' );
 		
 		// Initiate a members object
-		$mp = new MembersProfile( $database );
+		$mp = new MembersProfile( $this->database );
 		
 		$filters = array();
 		$filters['search'] = '';
@@ -2020,8 +1930,7 @@ class ContributeController extends JObject
 	protected function step_attach_check( $id )
 	{
 		if ($id) {
-			$database =& JFactory::getDBO();
-			$ra = new ResourcesAssoc( $database );
+			$ra = new ResourcesAssoc( $this->database );
 			$total = $ra->getCount( $id );
 		} else {
 			$total = 0;
@@ -2034,8 +1943,7 @@ class ContributeController extends JObject
 	protected function step_authors_check( $id )
 	{
 		if ($id) {
-			$database =& JFactory::getDBO();
-			$rc = new ResourcesContributor( $database );
+			$rc = new ResourcesContributor( $this->database );
 			$contributors = $rc->getCount( $id, 'resources' );
 		} else {
 			$contributors = 0;
@@ -2048,9 +1956,7 @@ class ContributeController extends JObject
 	
 	protected function step_tags_check( $id )
 	{
-		$database =& JFactory::getDBO();
-
-		$rt = new ResourcesTags( $database );
+		$rt = new ResourcesTags( $this->database );
 		$tags = $rt->getTags( $id );
 
 		if (count($tags) > 0) {
@@ -2064,9 +1970,7 @@ class ContributeController extends JObject
 
 	protected function step_review_check( $id ) 
 	{
-		$database =& JFactory::getDBO();
-		
-		$row = new ResourcesResource( $database );
+		$row = new ResourcesResource( $this->database );
 		$row->load( $id );
 	
 		if ($row->published == 1) {
@@ -2150,4 +2054,3 @@ class ContributeController extends JObject
 		return $path;
 	}
 }
-?>

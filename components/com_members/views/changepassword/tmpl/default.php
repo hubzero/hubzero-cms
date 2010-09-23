@@ -41,7 +41,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p><?php echo JText::_('MEMBERS_CHANGEPASSWORD_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<label<?php echo ($this->change && (!$this->oldpass || XUserHelper::encrypt_password($this->oldpass) != $this->profile->get('userPassword'))) ? ' class="fieldWithErrors"' : ''; ?>>
+			<label<?php echo ($this->change && (!$this->oldpass || Hubzero_User_Helper::encrypt_password($this->oldpass) != $this->profile->get('userPassword'))) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('MEMBER_FIELD_CURRENT_PASS'); ?>
 				<input name="oldpass" id="oldpass" type="password" value="" />
 			</label>
@@ -49,7 +49,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					if ($this->change && !$this->oldpass) {
 						echo '<p class="error">'.JText::_('MEMBERS_PASS_BLANK').'</p>';
 					}
-					if ($this->change && $this->oldpass && XUserHelper::encrypt_password($this->oldpass) != $this->profile->get('userPassword')) {
+					if ($this->change && $this->oldpass && Hubzero_User_Helper::encrypt_password($this->oldpass) != $this->profile->get('userPassword')) {
 						echo '<p class="error">'.JText::_('MEMBERS_PASS_INCORRECT').'</p>';
 					}
 ?>

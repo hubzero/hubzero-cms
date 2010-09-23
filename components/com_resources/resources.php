@@ -34,23 +34,21 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
-jimport('joomla.application.component.view');
-
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resources.resource.php');
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resources.type.php');
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resources.assoc.php');
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resources.review.php');
-//require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resources.tool.php');
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'resources.doi.php');
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'resource.php');
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'type.php');
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'assoc.php');
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'review.php');
+//require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'tool.php');
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'doi.php');
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.tool.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.author.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'resources.tags.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'resources.html.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'resources.extended.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'usage.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'helper.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
-ximport('resourcestats');
 ximport('Hubzero_View_Helper_Html');
 
 // Editor usertype check
@@ -63,4 +61,3 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 $controller = new ResourcesController();
 $controller->execute();
 $controller->redirect();
-?>

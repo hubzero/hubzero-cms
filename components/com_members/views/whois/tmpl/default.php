@@ -102,7 +102,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php
 	$xprofile = null;
 	if ($this->user) {
-		$xprofile = new XProfile();
+		$xprofile = new Hubzero_User_Profile();
 		$xprofile->load( $this->user );
 	}
 	if (is_object($xprofile)) {
@@ -266,7 +266,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td><?php
 				$proxy = $xprofile->get('proxyUidNumber');
 				if ($proxy) {
-					$proxyuser = new XProfile();
+					$proxyuser = new Hubzero_User_Profile();
 					$proxyuser->load( $proxy );
 					if (!empty($proxyuser)) {
 						echo $proxyuser->get('name') . ' (<a href="'.JRoute::_('index.php?option=com_members&task=view&id=' . $proxyuser->get('uidNumber')) . '">' . $proxyuser->get('username') . '</a>)';

@@ -56,7 +56,7 @@ class modTopTags
 
 	public function display()
 	{
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php' );
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php' );
 		
 		$database =& JFactory::getDBO();
 		

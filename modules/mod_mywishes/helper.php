@@ -223,8 +223,8 @@ class modMyWishes
 		}
 		/*
 		
-		ximport('xuserhelper');
-		$xgroups = XUserHelper::getGroups($juser->get('id'), 'members');
+		ximport('Hubzero_User_Helper');
+		$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'members');
 		$groups = '';
 		if ($xgroups) {
 			$g = array();
@@ -251,8 +251,8 @@ class modMyWishes
 		*/
 		
 		// Push the module CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_mywishes');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_mywishes');
 		
 		// Build the HTML
 		$html  = '<div';

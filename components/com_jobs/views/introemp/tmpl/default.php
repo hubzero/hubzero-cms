@@ -26,7 +26,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	
 	/* Mini-login screen for employers */
 	
-	$xhub =& XFactory::getHub();
+	$xhub =& Hubzero_Factory::getHub();
 	$hubShortName = $xhub->getCfg('hubShortName');
 	// get some configs
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
@@ -59,8 +59,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$html .= t.'</div><div class="clear"></div>'.n;	
 		
 	$html .= '<div class="three columns first">'.n;				
-	ximport('xmodule');
-	$html .= XModuleHelper::renderModules('force_mod_mini');
+	ximport('Hubzero_Module_Helper');
+	$html .= Hubzero_Module_Helper::renderModules('force_mod_mini');
 	$html .= t.'<p>'.JText::_('LOGIN_NO_ACCOUNT').' <a href="/register">'.JText::_('LOGIN_REGISTER_NOW').'</a>. '.JText::_('LOGIN_IT_IS_FREE').'</p>';
 	$html .= '</div>'.n;
 		

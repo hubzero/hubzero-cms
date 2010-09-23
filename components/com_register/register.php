@@ -35,13 +35,12 @@ if ($config->getValue('config.debug')) {
 }
 
 jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
 
-ximport('xregistration');
-ximport('xregistrationhelper');
-ximport('xprofile');
-ximport('xuserhelper');
-ximport('xhubhelper');
+ximport('Hubzero_Registration');
+ximport('Hubzero_Registration_Helper');
+ximport('Hubzero_User_Profile');
+ximport('Hubzero_User_Helper');
+ximport('Hubzero_Toolbox');
 require_once( JPATH_COMPONENT.DS.'controller.php' );
 
 // Instantiate controller

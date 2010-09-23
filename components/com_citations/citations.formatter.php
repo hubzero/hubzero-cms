@@ -71,7 +71,7 @@ class CitationsFormatter
 		
 		$html = "\t".'<p>';
 		if (CitationsFormatter::keyExistsOrIsNotEmpty('author',$row)) {
-			$xprofile =& XFactory::getProfile();
+			$xprofile =& Hubzero_Factory::getProfile();
 			$app   =& JFactory::getApplication();
 			$auths = explode(';',$row->author);
 			$a = array();

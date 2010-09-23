@@ -77,7 +77,7 @@ class plgMembersTopics extends JPlugin
 		}
 
 		// Do we have a member ID?
-		if (get_class($member) == 'XProfile') {
+		if (get_class($member) == 'Hubzero_User_Profile') {
 			if (!$member->get('uidNumber')) {
 				return array();
 			} else {
@@ -184,7 +184,7 @@ class plgMembersTopics extends JPlugin
 		}
 
 		// Do we have a member ID?
-		if (get_class($member) == 'XProfile') {
+		if (get_class($member) == 'Hubzero_User_Profile') {
 			if (!$member->get('uidNumber')) {
 				return array();
 			} else {

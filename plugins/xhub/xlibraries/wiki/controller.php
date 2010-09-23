@@ -169,8 +169,8 @@ class WikiController extends JObject
 	
 	private function getStyles($option='') 
 	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet($this->_option);
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet($this->_option);
 	}
 
 	//-----------
@@ -223,7 +223,10 @@ class WikiController extends JObject
 		// Does a page exist for the given pagename?
 		if (!$this->page->exist()) {
 			// No! Ask if they want to create a new page
-			echo WikiHtml::doesNotExist( $pagetitle, $this->pagename, $this->scope, $this->_option );
+			//echo WikiHtml::doesNotExist( $pagetitle, $this->pagename, $this->scope, $this->_option );
+			$this->page->scope = $this->scope;
+			$this->page->group = $this->_group;
+			echo WikiHtml::doesNotExist( $pagetitle, $this->page, $this->_option );
 		} else {
 			if ($this->page->scope && !$this->page->group) {
 				$bits = explode('/',$this->page->scope);
@@ -327,8 +330,8 @@ class WikiController extends JObject
 		// Output HTML
 		echo WikiHtml::div( WikiHtml::hed( 2,ucwords($this->_name) ), 'full', 'content-header');
 		echo '<div class="main section">'.n;
-		ximport('xmodule');
-		XModuleHelper::displayModules('force_mod');
+		ximport('Hubzero_Module_Helper');
+		Hubzero_Module_Helper::displayModules('force_mod');
 		echo '</div><!-- / .main section -->'.n;
 	}
 	
@@ -480,12 +483,13 @@ class WikiController extends JObject
 		} else {
 			$preview = NULL;
 		}
+		$tplate = trim(JRequest::getVar( 'tplate', '' ));
 
 		// Process the page's params
 		$params =& new JParameter( $this->page->params, 'components'.DS.$this->_option.DS.$this->_name.'.xml', 'component' );
 		
 		// Output content
-		echo WikiHtml::edit( $this->_sub, JText::_(strtoupper($this->_name)), $authorized, $pagetitle, $this->page, $revision, $authors, $this->_option, $tagstring, $this->_task, $params, $preview );
+		echo WikiHtml::edit( $this->_sub, JText::_(strtoupper($this->_name)), $authorized, $pagetitle, $this->page, $revision, $authors, $this->_option, $tagstring, $this->_task, $params, $preview, $tplate );
 	}
 	
 	//-----------
@@ -726,8 +730,10 @@ class WikiController extends JObject
 						$page->delete( $this->page->id );
 
 						// Delete the page's files
-						ximport('fileuploadutils');
-						FileUploadUtils::delete_dir( $this->config->filepath .DS. $this->page->id );
+						jimport('joomla.filesystem.folder');
+						if (!JFolder::delete($this->config->filepath .DS. $this->page->id)) {
+							$this->setError( JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER') );
+						}
 						
 						// Log the action
 						$log = new WikiLog( $database );
@@ -843,43 +849,46 @@ class WikiController extends JObject
 		$newpagename = $this->normalize($newpagename);
 
 		// Make sure they actually made changes
-		if ($oldpagename == $newpagename) {
+		/*if ($oldpagename == $newpagename) {
 			echo WikiHtml::alert( JText::_('WIKI_ERROR_PAGENAME_UNCHANGED') );
+			exit();
+		}*/
+		
+		// Are they just changing case of characters?
+		if (strtolower($oldpagename) != strtolower($newpagename)) {
+			// Check that no other pages are using the new title
+			$p = new WikiPage( $database );
+			$p->load( $newpagename, $scope );
+			if ($p->exist()) {
+				echo WikiHtml::alert( JText::_('WIKI_ERROR_PAGE_EXIST').' '.JText::_('CHOOSE_ANOTHER_PAGENAME') );
+				exit();
+			}
+		}
+		
+		// Load the page, reset the name, and save
+		$page = new WikiPage( $database );
+		$page->load( $oldpagename, $scope );
+		$page->pagename = $newpagename;
+		$page->_tbl_key = 'id';
+
+		if (!$page->check()) {
+			echo WikiHtml::alert( $page->getError() );
+			exit();
+		}
+		if (!$page->store()) {
+			echo WikiHtml::alert( $page->getError() );
 			exit();
 		}
 		
-		// Check that no other pages are using the new title
-		$p = new WikiPage( $database );
-		$p->load( $newpagename, $scope );
-		if ($p->exist()) {
-			echo WikiHtml::alert( JText::_('WIKI_ERROR_PAGE_EXIST').' '.JText::_('CHOOSE_ANOTHER_PAGENAME') );
-			exit();
-		} else {
-			// Load the page, reset the name, and save
-			$page = new WikiPage( $database );
-			$page->load( $oldpagename, $scope );
-			$page->pagename = $newpagename;
-			$page->_tbl_key = 'id';
-
-			if (!$page->check()) {
-				echo WikiHtml::alert( $page->getError() );
-				exit();
-			}
-			if (!$page->store()) {
-				echo WikiHtml::alert( $page->getError() );
-				exit();
-			}
-			
-			// Log the action
-			$log = new WikiLog( $database );
-			$log->pid = $page->id;
-			$log->uid = $juser->get('id');
-			$log->timestamp = date( 'Y-m-d H:i:s', time() );
-			$log->action = 'page_renamed';
-			$log->actorid = $juser->get('id');
-			if (!$log->store()) {
-				$this->setError( $log->getError() );
-			}
+		// Log the action
+		$log = new WikiLog( $database );
+		$log->pid = $page->id;
+		$log->uid = $juser->get('id');
+		$log->timestamp = date( 'Y-m-d H:i:s', time() );
+		$log->action = 'page_renamed';
+		$log->actorid = $juser->get('id');
+		if (!$log->store()) {
+			$this->setError( $log->getError() );
 		}
 		
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'scope='.$page->scope.a.'pagename='.$page->pagename);
@@ -1187,13 +1196,13 @@ class WikiController extends JObject
 			// Check authorization
 			$authorized = $this->checkAuthorization();
 
-			ximport('xmodule');
+			ximport('Hubzero_Module_Helper');
 			
 			echo WikiHtml::hed(2,$pagetitle);
 			echo WikiHtml::subMenu( $this->_sub, $this->_option, $this->page->pagename, $this->page->scope, $this->page->state, $this->_task, $params, $authorized );
 			echo WikiHtml::warning( JText::_('WIKI_WARNING_LOGIN_REQUIRED') );
 
-			XModuleHelper::displayModules('force_mod',-1);
+			Hubzero_Module_Helper::displayModules('force_mod',-1);
 			return;
 		}
 		
@@ -1318,37 +1327,31 @@ class WikiController extends JObject
 
 	protected function upload()
 	{
-		// Get some libraries we'll need
-		ximport('fileupload');
-		
 		// Get some objects we'll need
 		$config =& $this->config;
 		
 		// Incoming
 		$listdir = JRequest::getInt( 'listdir', 0, 'post' );
+		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 
 		// Build the upload path if it doesn't exist
 		$file_path = JPATH_ROOT.$config->filepath.DS.$listdir;
 		if (!is_dir( $file_path )) {
-			$this->make_path( $file_path );
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create( $file_path, 0777 )) {
+				$this->setError( JText::_('Error uploading. Unable to create path.') );
+				$this->media();
+				return;
+			}
 		}
 		
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$file['name'] = JFile::makeSafe($file['name']);
+		
 		// Upload new files
-		$upload = new FileUpload;
-		$upload->upload_dir     = $file_path;
-		$upload->temp_file_name = trim($_FILES['upload']['tmp_name']);
-		$upload->file_name      = trim(strtolower($_FILES['upload']['name']));
-		//$upload->file_name      = str_replace(' ', '_', $upload->file_name);
-		$normalized_valid_chars = 'a-zA-Z0-9\-\_\.';
-		$upload->file_name      = preg_replace("/[^$normalized_valid_chars]/", "", $upload->file_name);
-		$upload->ext_array      = $config->file_ext;
-		$upload->max_file_size  = $config->maxAllowed;
-		
-		$result = $upload->upload_file_no_validation();
-		
-		// Was there an error?
-		if (!$result) {
-			$this->setError( JText::_('ERROR_UPLOADING').' '.$upload->err );
+		if (!JFile::upload($file['tmp_name'], $file_path.DS.$file['name'])) {
+			$this->setError( JText::_('ERROR_UPLOADING') );
 		} else {
 			// File was uploaded
 			$database =& JFactory::getDBO();
@@ -1359,7 +1362,7 @@ class WikiController extends JObject
 			$description = trim(JRequest::getVar( 'description', '', 'post' ));
 			$description = htmlspecialchars($description);
 			
-			$bits = array('id'=>'','pageid'=>$listdir,'filename'=>$upload->file_name,'description'=>$description,'created'=>date( 'Y-m-d H:i:s', time() ),'created_by'=>$juser->get('id'));
+			$bits = array('id'=>'','pageid'=>$listdir,'filename'=>$file['name'],'description'=>$description,'created'=>date( 'Y-m-d H:i:s', time() ),'created_by'=>$juser->get('id'));
 			$attachment = new WikiPageAttachment( $database );
 			$attachment->bind( $bits );
 			if (!$attachment->check()) {
@@ -1384,8 +1387,11 @@ class WikiController extends JObject
 		$listdir = JRequest::getInt( 'listdir', 0, 'get' );
 
 		// Delete the folder
-		$del_folder = JPATH_ROOT.$config->filepath.DS.$listdir.DS.$delFolder;
-		rmdir($del_folder);
+		$del_folder = JPATH_ROOT.$config->filepath.DS.$listdir;
+		jimport('joomla.filesystem.folder');
+		if (!JFolder::delete($del_folder)) {
+			$this->setError( JText::_('Unable to delete directory.') );
+		}
 		
 		$this->media();
 	}
@@ -1404,7 +1410,10 @@ class WikiController extends JObject
 
 		// Delete the file
 		$del_file = JPATH_ROOT.$config->filepath.DS.$listdir.DS.$delFile;
-		unlink($del_file);
+		jimport('joomla.filesystem.file');
+		if (!JFile::delete($del_file)) {
+			$this->setError( JText::_('Unable to delete file.') );
+		}
 		
 		// Delete the database entry for the file
 		$attachment = new WikiPageAttachment( $database );
@@ -1658,7 +1667,7 @@ class WikiController extends JObject
 					if ($this->page->access == 1 || $this->page->access == 2) {
 						// This page is a private page
 						// So, we need to check if the current user is a member of the page's group
-						$usergroups = XUserHelper::getGroups( $juser->get('id') );
+						$usergroups = Hubzero_User_Helper::getGroups( $juser->get('id') );
 						if ($usergroups && count($usergroups) > 0) {
 							foreach ($usergroups as $ug) 
 							{
@@ -1682,7 +1691,7 @@ class WikiController extends JObject
 				if ($this->page->access == 1 || $this->page->access == 2 || $this->_task == 'edit') {
 					// This page is a private page
 					// So, we need to check if the current user is a member of the page's group
-						$usergroups = XUserHelper::getGroups( $juser->get('id') );
+						$usergroups = Hubzero_User_Helper::getGroups( $juser->get('id') );
 						if ($usergroups && count($usergroups) > 0) {
 							foreach ($usergroups as $ug) 
 							{
@@ -1816,4 +1825,3 @@ class WikiController extends JObject
 		return preg_replace("/\[:($keys):]/e", '$classes["\1"]', $regexp);
 	}
 }
-?>

@@ -83,8 +83,8 @@ class plgMembersBlog extends JPlugin
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'helpers'.DS.'blog.member.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'helpers'.DS.'blog.tags.php');
 			
-			ximport('xdocument');
-			XDocument::addPluginStylesheet('members', 'blog');
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('members', 'blog');
 			
 			$document =& JFactory::getDocument();
 			//$document->addStyleSheet('plugins'.DS.'members'.DS.'blog'.DS.'blog.css');
@@ -153,6 +153,7 @@ class plgMembersBlog extends JPlugin
 		$view->option = $this->option;
 		$view->member = $this->member;
 		$view->config = $this->_params;
+		$view->authorized = $this->authorized;
 		
 		// Filters for returning results
 		$filters = array();
@@ -278,6 +279,7 @@ class plgMembersBlog extends JPlugin
 		$view->option = $this->option;
 		$view->member = $this->member;
 		$view->config = $this->_params;
+		$view->authorized = $this->authorized;
 		
 		if (isset($this->entry) && is_object($this->entry)) {
 			$view->row = $this->entry;
@@ -406,6 +408,7 @@ class plgMembersBlog extends JPlugin
 		$view->member = $this->member;
 		$view->task = $this->task;
 		$view->config = $this->_params;
+		$view->authorized = $this->authorized;
 		
 		$id = JRequest::getInt('entry', 0);
 		

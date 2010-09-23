@@ -25,7 +25,6 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
 	<files>
 		<filename>images/stophand.gif</filename>
-		<filename>support.tags.php</filename>
 		<filename>controller.php</filename>
 		<filename>index.html</filename>
 		<filename>support.css</filename>
@@ -34,8 +33,8 @@
 		<filename>autocompleter.css</filename>
 		<filename>observer.js</filename>
 		<filename>support.php</filename>
-		<filename>support.html.php</filename>
-		<filename>support.tags.php</filename>
+		<filename>helpers/html.php</filename>
+		<filename>helpers/tags.php</filename>
 		<filename>router.php</filename>
 		<filename>images/information.gif</filename>
 		<filename>images/private.gif</filename>

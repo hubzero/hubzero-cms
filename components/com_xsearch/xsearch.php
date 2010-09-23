@@ -35,12 +35,16 @@ if ($config->getValue('config.debug')) {
 }
 
 jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
 
-require_once( JPATH_COMPONENT.DS.'xsearch.stemmer.php' );
-require_once( JPATH_COMPONENT.DS.'xsearch.phrase.php' );
+require_once( JPATH_COMPONENT.DS.'helpers'.DS.'stemmer.php' );
+require_once( JPATH_COMPONENT.DS.'helpers'.DS.'phrase.php' );
 require_once( JPATH_COMPONENT.DS.'controller.php' );
+
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
 
 // Instantiate controller
 $controller = new XSearchController();

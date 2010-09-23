@@ -181,8 +181,8 @@ echo $aside;
 						<td><?php echo JHTML::_('date', $gl->timestamp, '%d %b. %Y'); ?></td>
 					</tr>
 					<tr>
-						<th>Tags:</th>
-						<td><?php echo $tags; ?></td>
+						<td colspan="2"><strong>Tags:</strong><br />
+						<?php echo $tags; ?></td>
 					</tr>
 				</tbody>
 			</table>

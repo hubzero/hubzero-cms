@@ -66,6 +66,7 @@ $step = $this->step;
 			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=view'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
+						<label for="actags">Enter tags:</label>
 						<?php 
 						JPluginHelper::importPlugin( 'tageditor' );
 						$dispatcher =& JDispatcher::getInstance();
@@ -74,7 +75,7 @@ $step = $this->step;
 						if (count($tf) > 0) {
 							echo $tf[0];
 						} else { ?>
-							<input type="text" name="tag" value="" />
+							<input type="text" name="tag" id="actags" value="" />
 						<?php } ?>
 						<input type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
 					</p>
@@ -173,7 +174,8 @@ echo $html;
 			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
-						<input type="text" name="search" value="" />
+						<label for="tsearch">Keyword or phrase:</label>
+						<input type="text" name="search" id="tsearch" value="" />
 						<input type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
 					</p>
 				</fieldset>

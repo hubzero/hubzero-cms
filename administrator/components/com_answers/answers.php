@@ -42,7 +42,8 @@ if (!$user->authorize( 'com_contact', 'manage' )) {
 }
 
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'answers.tags.php' );
+include_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'economy.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php' );
 require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
 require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'question.php' );
 require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS.'response.php' );

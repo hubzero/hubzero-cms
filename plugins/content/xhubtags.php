@@ -92,9 +92,9 @@ function plgContentXHubTagsModules($options)
 	if (!preg_match($regex, $options, $style))
         $style[2] = "-2";
 
-    ximport('xmodule');
+    ximport('Hubzero_Module_Helper');
 
-    return XModuleHelper::renderModules($position[2],$style[2]);
+    return Hubzero_Module_Helper::renderModules($position[2],$style[2]);
 }
 
 /*
@@ -185,14 +185,14 @@ function plgContentXHubTagsImage($options)
 		preg_match($regex, $options, $module);
 	}
 
-        ximport('xdocument');
+        ximport('Hubzero_Document');
 	$template = $mainframe->getTemplate();
 	if (empty($component) && empty($module))
-		return substr(XDocument::getHubImage($file[2]),1);
+		return substr(Hubzero_Document::getHubImage($file[2]),1);
 	else if (!empty($component))
-		return substr(XDocument::getComponentImage($component[2], $file[2]),1);
+		return substr(Hubzero_Document::getComponentImage($component[2], $file[2]),1);
 	else if (!empty($module))
-		return substr(XDcoument::getModuleImage($module[2],$file[2]),1);
+		return substr(Hubzero_Dcoument::getModuleImage($module[2],$file[2]),1);
 	
 	return "";
 }
@@ -203,7 +203,7 @@ function plgContentXhubTagsGetCfg($options)
 {
 	$options = trim($options," \n\t\r}");
 
-	$xhub =& XFactory::getHub();
+	$xhub =& Hubzero_Factory::getHub();
 
 	return $xhub->getCfg($options);
 }

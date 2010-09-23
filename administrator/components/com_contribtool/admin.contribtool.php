@@ -43,29 +43,24 @@ include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contr
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'contribtool.author.php' );
 
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'helpers'.DS.'utilities.php' );
-include_once( JPATH_ROOT.DS.'components'.DS.'com_support'.DS.'support.tags.php' );
+include_once( JPATH_ROOT.DS.'components'.DS.'com_support'.DS.'helpers'.DS.'tags.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
 include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'comment.php' );
 
 
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.resource.php');
-include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.doi.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.type.php');
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.assoc.php');
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'resources.contributor.php');
-require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.extended.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.tags.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php');
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'doi.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php');
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'assoc.php');
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'contributor.php');
+require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'helper.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
 
-ximport('textfilter');
-ximport('fileuploadutils');
-ximport('xmodule');
-ximport('xgroup');
-ximport('xprofile');
-ximport('misc_func');
-ximport('xuserhelper');
+ximport('Hubzero_Module_Helper');
+ximport('Hubzero_User_Profile');
+ximport('Hubzero_User_Helper');
 
 // Initiate controller
 $controller = new ContribtoolController();
 $controller->execute();
 $controller->redirect();
-?>

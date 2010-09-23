@@ -35,9 +35,9 @@ class InfrastructureViewInfrastructure extends JView
 {
     function display($tpl = null)
     {
-    	ximport('xdocument');
+    	ximport('Hubzero_Document');
 
-    	$xhub  = & XFactory::getHub();
+    	$xhub  = & Hubzero_Factory::getHub();
     	$model = & $this->getModel();
 
 	$forgeName = $xhub->getCfg('forgeName');
@@ -46,7 +46,7 @@ class InfrastructureViewInfrastructure extends JView
 	$hubShortURL = $xhub->getCfg('hubShortURL');
 	$hubLongURL = $xhub->getCfg('hubLongURL');
         $appTools = $model->getInfrastructureProjects();
-	$image = XDocument::getComponentImage('com_projects', 'forge.png', 1);
+	$image = Hubzero_Document::getComponentImage('com_projects', 'forge.png', 1);
         $this->assignRef( 'forgeName', $forgeName );
 	$this->assignRef( 'forgeURL', $forgeURL);
 	$this->assignRef( 'hubShortURL', $hubShortURL );
@@ -57,5 +57,3 @@ class InfrastructureViewInfrastructure extends JView
         parent::display($tpl);
     }
 }
-
-?>

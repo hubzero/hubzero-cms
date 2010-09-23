@@ -55,7 +55,7 @@ function tagsParseRoute($segments)
 		return $vars;
 
 	if (isset($segments[0])) {
-		if ($segments[0] == 'browse') {
+		if ($segments[0] == 'browse' || $segments[0] == 'delete' || $segments[0] == 'edit') {
 			$vars['task'] = $segments[0];
 		} else {
 			$vars['tag']  = $segments[0];

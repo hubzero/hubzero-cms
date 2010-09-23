@@ -105,9 +105,6 @@ echo $html;
 <?php if ($this->authorized) { ?>
 						<th><?php echo JText::_('Status'); ?></th>
 						<th><?php echo JText::_('Options'); ?></th>
-<?php } else { ?>
-						<th> </th>
-						<th> </th>
 <?php } ?>
 					</tr>
 				</thead>
@@ -172,9 +169,6 @@ if ($this->groups) {
 				}
 				$html .= '</td>'."\n";
 				$html .= "\t\t\t\t\t".'<td>'.$opt.'</td>'."\n";
-			} else {
-				$html .= "\t\t\t\t\t".'<td>&nbsp;</td>'."\n";
-				$html .= "\t\t\t\t\t".'<td>&nbsp;</td>'."\n";
 			}
 			$html .= "\t\t\t\t".'</tr>'."\n";
 		} else {
@@ -193,7 +187,7 @@ if ($this->groups) {
 	echo $html;
 } else { ?>
 					<tr class="odd">
-						<td colspan="4"><?php echo JText::_('NONE'); ?></td>
+						<td colspan="<?php echo ($this->authorized) ? '4' : '2'; ?>"><?php echo JText::_('NONE'); ?></td>
 					</tr>
 <?php } ?>
 				</tbody>

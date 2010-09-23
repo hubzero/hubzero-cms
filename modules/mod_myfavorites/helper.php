@@ -97,8 +97,8 @@ class modMyFavorites
 
 		$option = 'com_members';
 		
-		ximport('xprofile');
-		$member = new XProfile();
+		ximport('Hubzero_User_Profile');
+		$member = new Hubzero_User_Profile();
 		$member->load( $juser->get('id') );
 
 		// Get the search result totals
@@ -171,7 +171,7 @@ class modMyFavorites
 		$this->cats = $cats;
 		
 		// Push the module CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_myfavorites');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_myfavorites');
 	}
 }

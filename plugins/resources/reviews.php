@@ -106,6 +106,11 @@ class plgResourcesReviews extends JPlugin
 			}
 		}
 
+		$ar = $this->onResourcesAreas( $resource );
+		if (empty($ar)) {
+			$rtrn = '';
+		}
+
 		ximport('Hubzero_View_Helper_Html');
 		ximport('Hubzero_Plugin_View');
 
@@ -148,8 +153,8 @@ class plgResourcesReviews extends JPlugin
 			// Thumbs voting CSS & JS
 			$voting = $this->_params->get('voting');
 			if ($voting) {
-				ximport('xdocument');
-				XDocument::addComponentStylesheet('com_answers', 'vote.css');
+				ximport('Hubzero_Document');
+				Hubzero_Document::addComponentStylesheet('com_answers', 'vote.css');
 			}
 			
 			// Pass the view some info
@@ -193,7 +198,7 @@ class plgResourcesReviews extends JPlugin
 		
 		$level++;
 
-		$hc = new XComment( $database );
+		$hc = new Hubzero_Comment( $database );
 		$comments = $hc->getResults( array('id'=>$item->id, 'category'=>$category) );
 		
 		if ($comments) {
@@ -315,9 +320,9 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 		
 		$database =& JFactory::getDBO();
-		ximport( 'xcomment' );
+		ximport( 'Hubzero_Comment' );
 			
-		$row = new XComment( $database );
+		$row = new Hubzero_Comment( $database );
 		if (!$row->bind( $_POST )) {
 			$this->setError( $row->getError() );
 			return;
@@ -366,8 +371,8 @@ class PlgResourcesReviewsHelper extends JObject
 		}
 		
 		// Delete the review
-		ximport( 'xcomment' );
-		$reply = new XComment( $database );
+		ximport( 'Hubzero_Comment' );
+		$reply = new Hubzero_Comment( $database );
 		
 		$comments = $reply->getResults( array('id'=>$replyid, 'category'=>'reviewcomment') );
 		if (count($comments) > 0) {
@@ -612,8 +617,8 @@ class PlgResourcesReviewsHelper extends JObject
 		$review = new ResourcesReview( $database );
 		
 		// Delete the review's comments
-		ximport( 'xcomment' );
-		$reply = new XComment( $database );
+		ximport( 'Hubzero_Comment' );
+		$reply = new Hubzero_Comment( $database );
 		
 		$comments1 = $reply->getResults( array('id'=>$reviewid, 'category'=>'review') );
 		if (count($comments1) > 0) {

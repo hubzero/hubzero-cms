@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		$xtra = '';
 		if ($supported) {
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tags.tag.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
 			$tag = new TagsTag( $database );
 			$tag->loadTag($config->get('supportedtag'));
 
@@ -117,7 +117,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	} else {
 		// get launch button
 		$helper->getFirstChild();
-		$xhub =& XFactory::getHub();
+		$xhub =& Hubzero_Factory::getHub();
 		
 		switch ($resource->type)
 		{
@@ -260,7 +260,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$html .= ' </div><!-- / .aside launcharea -->'."\n";	
 	$html .= ' </div><!-- / .subject -->'."\n";
 			
-	if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) || $authorized=0)) {
+	if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) && !$authorized)) {
 		// show nothing else
 		$html .= '</div><!-- / .main section -->'."\n";		
 	} else {
@@ -286,8 +286,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 				
 		// Show what's popular
 		if ($tab == 'about') {
-			ximport('xmodule');
-			$html .= XModuleHelper::renderModules('extracontent');
+			ximport('Hubzero_Module_Helper');
+			$html .= Hubzero_Module_Helper::renderModules('extracontent');
 		}		
 		$html .= ' </div><!-- / .aside extracontent -->'."\n";		
 		

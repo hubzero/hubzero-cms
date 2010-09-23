@@ -149,7 +149,7 @@ class plgXAuthenticationHzldap extends JPlugin
 			return false;
 		}
 
-        $xhub =& XFactory::getHub();
+        $xhub =& Hubzero_Factory::getHub();
 
 		$hubShortName = $xhub->getCfg('hubShortName','');
 		$auth_method   = 'bind';

@@ -74,6 +74,8 @@ class plgXSearchMembers extends JPlugin
 		// An array for all the words and phrases
 		$words = $searchquery->searchTokens;
 
+		$juser =& JFactory::getUser();
+
 		// Build the query
 		$c_count = "SELECT COUNT(*) ";
 		$b = '';
@@ -84,11 +86,13 @@ class plgXSearchMembers extends JPlugin
 				$b .= "CASE WHEN LOWER(m.givenName) LIKE '%$word%' THEN 5 ELSE 0 END + ";
 				$b .= "CASE WHEN LOWER(m.surname) LIKE '%$word%' THEN 5 ELSE 0 END + ";
 				$b .= "CASE WHEN LOWER(m.name) LIKE '%".addslashes(implode(' ',$searchquery->searchTokens))."%' THEN 20 ELSE 0 END + ";
-				$b .= "CASE WHEN LOWER(b.bio) LIKE '%$word%' THEN 5 ELSE 0 END + ";
+				//if (!$juser->get('guest')) {
+					$b .= "CASE WHEN LOWER(b.bio) LIKE '%$word%' THEN 5 ELSE 0 END + ";
+				//}
 			}
 		}
 		$b = substr($b, 0, -3);
-		$c_fields = "SELECT m.uidNumber AS id, CONCAT(m.givenName,' ', m.middleName,' ', m.surname) AS title, m.username AS alias, b.bio AS itext,  NULL AS ftext, m.public AS state, NULL AS created, m.modifiedDate AS modified, NULL AS publish_up, NULL AS params,
+		$c_fields = "SELECT m.uidNumber AS id, CONCAT(m.givenName,' ', m.middleName,' ', m.surname) AS title, m.username AS alias, b.bio AS itext,  NULL AS ftext, m.public AS state, NULL AS created, m.modifiedDate AS modified, NULL AS publish_up, m.params AS params,
 					CONCAT( 'index.php?option=com_members&id=', m.uidNumber ) as href, 'members' AS section, m.organization AS area, m.picture AS category, NULL AS rating, NULL AS times_rated, NULL AS ranking, NULL AS access, ($b) AS relevance ";
 		$c_from = "FROM #__xprofiles AS m LEFT JOIN #__xprofiles_bio AS b ON m.uidNumber=b.uidNumber 
 				WHERE m.public=1 AND (";
@@ -96,11 +100,20 @@ class plgXSearchMembers extends JPlugin
 		{
 			if (trim($word) != '') {
 				$word = addslashes($word);
-				$c_from .= "(LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(b.bio) LIKE '%$word%') OR ";
+				if ($juser->get('guest')) {
+					$c_from .= "(LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.name) LIKE '%$word%') OR (LOWER(b.bio) LIKE '%$word%' AND m.params LIKE '%access_bio=0%') OR ";
+				} else {
+					$c_from .= "(LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.name) LIKE '%$word%') OR (LOWER(b.bio) LIKE '%$word%') OR ";
+				}
 			}
 		}
 		$c_from = substr($c_from, 0, -4);
 		$c_from .= ")";
+		/*if ($juser->get('guest')) {
+			$c_from .= " AND m.params LIKE '%access_bio=0%'";
+		} else {
+			$c_from .= " AND (m.params LIKE '%access_bio=0%' OR m.params LIKE '%access_bio=1%')";
+		}*/
 		$c_order = " ORDER BY relevance DESC";
 		$c_limit = ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
@@ -110,8 +123,8 @@ class plgXSearchMembers extends JPlugin
 			return $database->loadResult();
 		} else {
 			if (count($areas) > 1) {
-				ximport('xdocument');
-				XDocument::addComponentStylesheet('com_members');
+				ximport('Hubzero_Document');
+				Hubzero_Document::addComponentStylesheet('com_members');
 
 				return $c_fields.$c_from;
 			}
@@ -136,8 +149,8 @@ class plgXSearchMembers extends JPlugin
 
 	public function documents() 
 	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet('com_members');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet('com_members');
 	}
 
 	//-----------
@@ -187,6 +200,9 @@ class plgXSearchMembers extends JPlugin
 			$row->href = substr($row->href,1,strlen($row->href));
 		}
 		
+		$juser =& JFactory::getUser();
+		$params =& new JParameter( $row->params );
+		
 		$html  = "\t".'<li class="member">'."\n";
 		if (is_file(JPATH_ROOT.$thumb)) {
 			$p = $thumb;
@@ -197,8 +213,10 @@ class plgXSearchMembers extends JPlugin
 			$html .= "\t\t".'<p class="photo"><img width="50" height="50" src="'.$p.'" alt="" /></p>'."\n";
 		}
 		$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
-		if ($row->itext) {
-			$html .= "\t\t".'<p>&#133; '.stripslashes($row->itext).' &#133;</p>'."\n";
+		if ($params->get('access_bio') == 0 || ($params->get('access_bio') == 1 && !$juser->get('guest'))) {
+			if ($row->itext) {
+				$html .= "\t\t".'<p>&#133; '.stripslashes($row->itext).' &#133;</p>'."\n";
+			}
 		}
 		$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
 		$html .= "\t".'</li>'."\n";

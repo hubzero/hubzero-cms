@@ -44,10 +44,9 @@ if (!$user->authorize( $option, 'manage' )) {
 
 // Include scripts
 require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'controller.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'groups.log.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'groups.reason.php' );
-ximport('xgroup');
-ximport('xuserhelper');
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'log.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'reason.php' );
+ximport('Hubzero_User_Helper');
 ximport('Hubzero_Group');
 
 // Initiate controller

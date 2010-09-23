@@ -46,7 +46,7 @@ class modXLogin
 
 	function display()
 	{
-		$xhub = &XFactory::getHub();
+		$xhub = &Hubzero_Factory::getHub();
 
 		if ( !isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off' )
 		{

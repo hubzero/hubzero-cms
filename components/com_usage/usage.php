@@ -35,15 +35,19 @@ if ($config->getValue('config.debug')) {
 }
 
 jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
 
 // Include scripts
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'usage.helper.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'helper.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
+
+// Editor usertype check
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'manager' );
 
 // Instantiate controller
 $controller = new UsageController();
 $controller->execute();
 $controller->redirect();
-?>

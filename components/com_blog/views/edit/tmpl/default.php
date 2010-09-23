@@ -140,7 +140,7 @@ $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->
 		</fieldset>
 		<div class="clear"></div>
 
-		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />
+		<input type="hidden" name="lid" value="<?php //echo $lid; ?>" />
 		<input type="hidden" name="id" value="<?php echo $this->entry->created_by; ?>" />
 		<input type="hidden" name="entry[id]" value="<?php echo $this->entry->id; ?>" />
 		<input type="hidden" name="entry[alias]" value="<?php echo $this->entry->alias; ?>" />

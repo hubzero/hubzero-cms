@@ -25,7 +25,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 	/* Intro */	
-	$xhub =& XFactory::getHub();
+	$xhub =& Hubzero_Factory::getHub();
 	$hubShortName = $xhub->getCfg('hubShortName');
 	
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';

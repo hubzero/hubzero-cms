@@ -34,15 +34,16 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
-jimport('joomla.application.component.view');
-
 ximport('Hubzero_View_Helper_Html');
-ximport('bankaccount');
-ximport('xgeoutils');
-ximport('xprofile');
+ximport('Hubzero_Bank');
+ximport('Hubzero_Geo');
+ximport('Hubzero_User_Profile');
 
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'store.class.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'store.html.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'store.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'order.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'orderitem.php' );
+require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'cart.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
 // Editor usertype check
@@ -55,4 +56,3 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 $controller = new StoreController();
 $controller->execute();
 $controller->redirect();
-?>

@@ -94,8 +94,8 @@ class modReportProblems
 		$this->browser = $browser->getBrowser();
 		$this->browser_ver = $browser->getBrowserVersion();
 		
-		ximport('xdocument');
-		XDocument::addModuleStylesheet('mod_reportproblems');
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStylesheet('mod_reportproblems');
 		
 		$jdocument =& JFactory::getDocument();
 		if (is_file(JPATH_ROOT.'/modules/mod_reportproblems/mod_reportproblems.js')) {

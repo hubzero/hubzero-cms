@@ -3,7 +3,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 
-$text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
+$text = ( $this->task == 'edita' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
 
 JToolBarHelper::title( JText::_( 'Answer' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
 JToolBarHelper::save( 'savea', 'Save Answer' );
@@ -20,33 +20,6 @@ $editor =& JEditor::getInstance();
 <link rel="stylesheet" type="text/css" media="all" href="../includes/js/calendar/calendar-mos.css" title="green" />
 <script type="text/javascript" src="../includes/js/calendar/calendar.js"></script>
 <script type="text/javascript" src="../includes/js/calendar/lang/calendar-en.js"></script>
-<script type="text/javascript">
-function submitbutton(pressbutton) 
-{
-	var form = document.adminForm;
-
-	if (pressbutton =='resethelpful') {
-		if (confirm('Are you sure you want to reset the Helpful counts to zero? \nAny unsaved changes to this content will be lost.')){
-			submitform( pressbutton );
-			return;
-		} else {
-			return;
-		}
-	}
-
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	// do field validation
-	if (form.answer.value == ''){
-		alert( 'Answer must have a response' );
-	} else {
-		submitform( pressbutton );
-	}
-}
-</script>
 
 <form action="index.php" method="post" name="adminForm" class="editform">
 	<div class="col width-50">
@@ -107,7 +80,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 	
-	<input type="hidden" name="answer[qid]" value="<?php echo $this->qid; ?>" />
+	<input type="hidden" name="answer[qid]" value="<?php echo $this->question->id; ?>" />
 	<input type="hidden" name="answer[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="savea" />

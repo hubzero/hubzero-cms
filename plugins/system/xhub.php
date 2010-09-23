@@ -27,10 +27,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 function ximport($path) {
-	return JLoader::import('.' . $path, JPATH_PLUGINS . DS . "xhub" . DS . "xlibraries");
+	if (substr(strtolower($path),0,7) == 'hubzero') {
+		return JLoader::import('.' . str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
+	} else {
+		return JLoader::import('.' . $path, JPATH_PLUGINS . DS . "xhub" . DS . "xlibraries");
+	}
 }
 
-ximport('xfactory');
+ximport('Hubzero_Factory');
 
 jimport('joomla.application.router');
 
@@ -98,7 +102,7 @@ class XRouter extends JRouter
 
 		if (!$juser->get('guest'))
 		{
-			$xhub =& XFactory::getHub();
+			$xhub =& Hubzero_Factory::getHub();
 			$session =& JFactory::getSession();
 			$registration_incomplete = $session->get('registration.incomplete');
 
@@ -133,7 +137,7 @@ class XRouter extends JRouter
 				}
 			}
 
-			$xprofile = &XFactory::getProfile();
+			$xprofile = &Hubzero_Factory::getProfile();
 
 			if (is_object($xprofile) && ($xprofile->get('emailConfirmed') != 1) && ($xprofile->get('emailConfirmed') != 3))
 			{
@@ -917,7 +921,7 @@ class plgSystemXhub extends JPlugin
 	function onAfterInitialise()
 	{
 		//jimport('joomla.database.table');
-		ximport('xsession');
+		ximport('Hubzero_Session_Helper');
 
 		$app = &JFactory::getApplication();
 		$router = &$app->getRouter();
@@ -965,7 +969,7 @@ class plgSystemXhub extends JPlugin
 
 		$table = & JTable::getInstance('session');
 		$table->load($sid);
-		XSessionHelper::purge();
+		Hubzero_Session_Helper::purge();
 
 		$myuser = $session->get('user');
 		$jid = (is_object($myuser)) ? $myuser->get('id') : '0';
@@ -985,7 +989,7 @@ class plgSystemXhub extends JPlugin
 
 		if ( empty($jid) )
 		{
-			ximport('xlog');
+			ximport('Hubzero_Log');
 			jimport('joomla.utilities.utility');
 			jimport('joomla.user.helper');
 			$hash = JUtility::getHash('XHUB_REMEMBER');
@@ -1009,19 +1013,19 @@ class plgSystemXhub extends JPlugin
 					{
 						apache_note('userid',$myuser->get('id'));
 						apache_note('auth','cookie');
-                    	$authlog = XFactory::getAuthLogger();
+                    $authlog = Hubzero_Factory::getAuthLogger();
                     	$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
 					}
 				}
 			}
 		}
 
-		XSessionHelper::set_ip($session->getId(), $_SERVER['REMOTE_ADDR']);
+		Hubzero_Session_Helper::set_ip($session->getId(), $_SERVER['REMOTE_ADDR']);
 	}
 
 	function onLoginFailure($response)
 	{
-		$authlog = XFactory::getAuthLogger();
+		$authlog = Hubzero_Factory::getAuthLogger();
 		$authlog->logAuth( $_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
 		apache_note('auth','invalid');
 

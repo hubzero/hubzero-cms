@@ -27,14 +27,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juri =& JURI::getInstance();
 
-$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&active=members');
+$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->g_cn.'&active=members');
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 
 $message = $this->juser->get('name');
 $message .= ','."\n";
-$message .= $this->juser->get('username') .'" ('. $this->juser->get('email') .')'."\n";
+$message .= '"'.$this->juser->get('username') .'" ('. $this->juser->get('email') .')'."\n";
 if ($this->isNew) {
 	$message .= JText::sprintf('GROUPS_USER_HAS_REQUESTED_GROUP', $this->hubShortName) .':'."\n\n";
 	$message .= JText::_('GROUPS_ID').': '. $this->g_cn ."\n";

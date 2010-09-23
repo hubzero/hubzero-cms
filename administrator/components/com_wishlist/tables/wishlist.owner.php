@@ -84,7 +84,7 @@ class WishlistOwner extends JTable
 						return false;
 					} else {
 						// send email to added user
-						$xhub =& XFactory::getHub();
+						$xhub =& Hubzero_Factory::getHub();
 						$jconfig =& JFactory::getConfig();
 						$admin_email = $jconfig->getValue('config.mailfrom');
 							
@@ -116,6 +116,8 @@ class WishlistOwner extends JTable
 	
 	public function get_owners($listid, $admingroup, $wishlist='', $native=0, $wishid=0, $owners = array()) 
 	{
+		ximport('Hubzero_Group');
+
 		if ($listid === NULL) {
 			return false;
 		}
@@ -148,8 +150,7 @@ class WishlistOwner extends JTable
 			foreach ($groups as $g) 
 			{
 				// Load the group
-				$group = new XGroup();
-				$group->select( $g);
+				$group = Hubzero_Group::getInstance( $g );
 				$members = $group->get('members');
 				$managers = $group->get('managers');
 				$members = array_merge($members, $managers);

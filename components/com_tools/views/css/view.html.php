@@ -35,19 +35,17 @@ class ToolsViewCSS extends JView
 {
     function display($tpl = null)
     {
-    	ximport('xdocument');
+    	ximport('Hubzero_Document');
 
-    	$xhub  = & XFactory::getHub();
-	$image = JPATH_SITE . XDocument::getComponentStylesheet('com_tools', 'site_css.cs');
+    	$xhub  = & Hubzero_Factory::getHub();
+		$image = JPATH_SITE . Hubzero_Document::getComponentStylesheet('com_tools', 'site_css.cs');
 
-	if (is_readable($image)) {
-		ob_clean();
-		header("Content-Type: text/css");
-		readfile($image);
-		ob_end_flush();
-		exit;
-	}
+		if (is_readable($image)) {
+			ob_clean();
+			header("Content-Type: text/css");
+			readfile($image);
+			ob_end_flush();
+			exit;
+		}
     }
 }
-
-?>

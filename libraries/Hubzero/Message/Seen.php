@@ -1,0 +1,107 @@
+<?php
+/**
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ *
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+
+
+class Hubzero_Message_Seen extends JTable
+{
+	var $mid      = NULL;  // @var int(11)
+	var $uid      = NULL;  // @var int(11)
+	var $whenseen = NULL;  // @var datetime(0000-00-00 00:00:00)
+	
+	//-----------
+	
+	public function __construct( &$db )
+	{
+		parent::__construct( '#__xmessage_seen', 'uid', $db );
+	}
+	
+	//-----------
+	
+	public function check() 
+	{
+		if (trim( $this->mid ) == '') {
+			$this->setError( JText::_('Please provide a message ID.') );
+			return false;
+		}
+		if (trim( $this->uid ) == '') {
+			$this->setError( JText::_('Please provide a user ID.') );
+			return false;
+		}
+		return true;
+	}
+	
+	//-----------
+	
+	public function loadRecord( $mid=NULL, $uid=NULL ) 
+	{
+		if (!$mid) {
+			$mid = $this->mid;
+		}
+		if (!$uid) {
+			$uid = $this->uid;
+		}
+		if (!$mid || !$uid) {
+			return false;
+		}
+		
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE mid='$mid' AND uid='$uid'" );
+		if ($result = $this->_db->loadAssoc()) {
+			return $this->bind( $result );
+		} else {
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+	}
+	
+	//-----------
+
+	public function store( $new=false ) 
+	{
+		if (!$new) {
+			$this->_db->setQuery( "UPDATE $this->_tbl SET whenseen='$this->whenseen' WHERE mid='$this->mid' AND uid='$this->uid'");
+			if ($this->_db->query()) {
+				$ret = true;
+			} else {
+				$ret = false;
+			}
+		} else {
+			//$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+			$this->_db->setQuery( "INSERT INTO $this->_tbl (mid, uid, whenseen) VALUES ('$this->mid', '$this->uid', '$this->whenseen')");
+			if ($this->_db->query()) {
+				$ret = true;
+			} else {
+				$ret = false;
+			}
+		}
+		if (!$ret) {
+			$this->setError( strtolower(get_class( $this )).'::store failed <br />' . $this->_db->getErrorMsg() );
+			return false;
+		} else {
+			return true;
+		}
+	}
+}

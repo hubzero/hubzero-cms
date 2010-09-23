@@ -66,7 +66,7 @@ class AnswersQuestion extends JTable
 		// build body of query
 		$query  = "";
 		if ($filters['tag']) {
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'answers.tags.php' );
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_answers'.DS.'helpers'.DS.'tags.php' );
 			$tagging = new AnswersTags( $this->_db );
 			
 			$query .= "FROM $this->_tbl AS C";

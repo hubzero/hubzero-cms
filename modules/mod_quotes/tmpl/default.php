@@ -63,7 +63,6 @@ if (count($quotes) > 0) {
 		$quote->org = str_replace('&','&amp;',$quote->org);
 		$html .= '<br />'.$quote->org.'</p>'."\n\n";
 
-		$k = 1 - $k;
 	}
 } else {
 	// No - show message

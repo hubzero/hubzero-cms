@@ -35,11 +35,12 @@ defined('_JEXEC') or die('Restricted access');
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option=com_xsearch'); ?>" method="get" class="search">
+			<form action="<?php echo JRoute::_('index.php?option=com_ysearch'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
-						<input type="text" name="searchword" value="" />
-						<input type="hidden" name="category" value="resources" />
+						<label for="rsearch">Keyword or phrase:</label>
+						<input type="text" name="terms" id="rsearch" value="" />
+						<input type="hidden" name="section" value="resources" />
 						<input type="submit" value="Search" />
 					</p>
 				</fieldset>

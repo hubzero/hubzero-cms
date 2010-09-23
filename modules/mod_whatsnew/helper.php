@@ -137,7 +137,7 @@ class modWhatsNew
 				$feedlink = 'http'.$feedlink;
 			}
 			if (substr($feedlink,0,1) == '/') {
-				$xhub =& XFactory::getHub();
+				$xhub =& Hubzero_Factory::getHub();
 				$feedlink = $xhub->getCfg('hubLongURL').$feedlink;
 			}
 			$this->feedlink = $feedlink;
@@ -224,7 +224,7 @@ class modWhatsNew
 		if ($this->tagged) {
 			$juser =& JFactory::getUser();
 
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'members.tags.php' );
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'tags.php' );
 			$mt = new MembersTags( $database );
 			$tags = $mt->get_tags_on_object($juser->get('id'), 0, 0, NULL, 0, 0);
 			
@@ -234,7 +234,7 @@ class modWhatsNew
 				$tagids = array();
 				foreach ($tags as $tag) 
 				{
-					$tagids[] = $tag['tag_id'];
+					$tagids[] = $tag['id'];
 				}
 
 				// Get the search results
@@ -263,7 +263,7 @@ class modWhatsNew
 		}
 
 		// Push the module CSS to the template
-		ximport('xdocument');
-		XDocument::addModuleStyleSheet('mod_whatsnew');	
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_whatsnew');	
 	}
 }

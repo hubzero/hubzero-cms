@@ -117,9 +117,8 @@ class modFeaturedmember
 
 	public function display() 
 	{
-		//ximport('featurehistory');
-		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'features.history.php' );
-		ximport('xprofile');
+		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'tables'.DS.'history.php' );
+		ximport('Hubzero_User_Profile');
 		
 		$this->error = false;
 		if (!class_exists('FeaturesHistory')) {
@@ -220,7 +219,7 @@ class modFeaturedmember
 				}
 				
 				// Load their bio
-				$profile = new XProfile();
+				$profile = new Hubzero_User_Profile();
 				$profile->load( $row->uidNumber );
 				
 				if (trim(strip_tags($profile->get('bio'))) == '') {
@@ -242,7 +241,7 @@ class modFeaturedmember
 				$this->id = $row->created_by_alias;
 				$this->txt = $row->introtext;
 				
-				$profile = new XProfile();
+				$profile = new Hubzero_User_Profile();
 				$profile->load( $id );
 				$row->picture = $profile->get('picture');
 				
@@ -256,7 +255,7 @@ class modFeaturedmember
 				}
 			} else {
 				if (!isset($profile) && !is_object($profile)) {
-					$profile = new XProfile();
+					$profile = new Hubzero_User_Profile();
 					$profile->load( $row->uidNumber );
 				}
 				$this->txt = $profile->get('bio');
@@ -297,7 +296,7 @@ class modFeaturedmember
 					
 					if (!is_file(JPATH_ROOT.$thumb)) {
 						// Create a thumbnail image
-						include_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'members.imghandler.php' );
+						include_once( JPATH_ROOT.DS.'components'.DS.'com_members'.DS.'helpers'.DS.'imghandler.php' );
 						$ih = new MembersImgHandler();
 						$ih->set('image',$row->picture);
 						$ih->set('path',JPATH_ROOT.$config->get('webpath').DS.$this->niceidformat($row->uidNumber).DS);

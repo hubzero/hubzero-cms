@@ -72,7 +72,7 @@ function hubBuildRoute(&$query)
 
 function hubParseRoute($segments)
 {
-	$xhub = &XFactory::getHub();
+	$xhub = &Hubzero_Factory::getHub();
 
 	$vars = array();
 	$count = count($segments);

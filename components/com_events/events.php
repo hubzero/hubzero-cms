@@ -34,18 +34,17 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
-jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
 
-require_once(JPATH_COMPONENT.DS.'events.html.php');
-require_once(JPATH_COMPONENT.DS.'events.class.php');
-require_once(JPATH_COMPONENT.DS.'events.date.php');
-require_once(JPATH_COMPONENT.DS.'events.repeat.php');
-require_once(JPATH_COMPONENT.DS.'events.category.php');
-require_once(JPATH_COMPONENT.DS.'events.tags.php');
-require_once(JPATH_COMPONENT.DS.'events.config.php');
-include_once(JPATH_COMPONENT.DS.'events.page.php');
-include_once(JPATH_COMPONENT.DS.'events.respondent.php');
+require_once(JPATH_COMPONENT.DS.'helpers'.DS.'html.php');
+require_once(JPATH_COMPONENT.DS.'helpers'.DS.'date.php');
+require_once(JPATH_COMPONENT.DS.'helpers'.DS.'repeat.php');
+require_once(JPATH_COMPONENT.DS.'helpers'.DS.'tags.php');
+require_once(JPATH_COMPONENT.DS.'tables'.DS.'event.php');
+require_once(JPATH_COMPONENT.DS.'tables'.DS.'category.php');
+require_once(JPATH_COMPONENT.DS.'tables'.DS.'config.php');
+include_once(JPATH_COMPONENT.DS.'tables'.DS.'page.php');
+include_once(JPATH_COMPONENT.DS.'tables'.DS.'respondent.php');
 require_once(JPATH_COMPONENT.DS.'controller.php');
 
 $jacl =& JFactory::getACL();
@@ -57,4 +56,3 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 $controller = new EventsController();
 $controller->execute();
 $controller->redirect();
-?>

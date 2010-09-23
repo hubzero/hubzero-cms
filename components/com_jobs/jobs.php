@@ -35,18 +35,27 @@ if ($config->getValue('config.debug')) {
 	@ini_set('display_errors','1');
 }
 
-jimport('joomla.application.component.view');
-
 ximport('Hubzero_View_Helper_Html');
-ximport('bankaccount');
-ximport('xgeoutils');
-ximport('xprofile');
-ximport('subscriptions' );
+ximport('Hubzero_Geo');
+ximport('Hubzero_Bank');
+ximport('Hubzero_User_Profile');
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_services'.DS.'tables'.DS.'service.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_services'.DS.'tables'.DS.'subscription.php' );
 
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'jobs.html.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'admin.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'application.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'category.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'employer.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'job.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'prefs.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'resume.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'seeker.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'shortlist.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'stats.php' );
+include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'type.php' );
+
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'jobs.class.php' );
-require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'jobs.config.php' );
 
 $jacl =& JFactory::getACL();
 $jacl->addACL( $option, 'manage', 'users', 'super administrator' );
@@ -57,4 +66,3 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 $controller = new JobsController();
 $controller->execute();
 $controller->redirect();
-?>
