@@ -21,9 +21,9 @@ require_once (JPATH_COMPONENT.DS.'controller.php');
 // Create the controller
 $controller = new UserController();
 
-ximport('xdocument');
+ximport('Hubzero_Document');
 
-XDocument::addComponentStylesheet('com_user');
+Hubzero_Document::addComponentStylesheet('com_user');
 
 // Perform the Request task
 $controller->execute( JRequest::getCmd('task'));

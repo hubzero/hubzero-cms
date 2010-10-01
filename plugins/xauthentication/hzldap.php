@@ -154,9 +154,9 @@ class plgXAuthenticationHzldap extends JPlugin
 		$hubShortName = $xhub->getCfg('hubShortName','');
 		$auth_method   = 'bind';
 		$port          = '389';
-        $base_dn       = $xhub->getCfg('hubLDAPBaseDN','ou=Users,dc=localhost');
-        $search_string = 'uid=[search],ou=Users,' . $base_dn;
-		$users_dn      = 'uid=[username],ou=Users,' . $base_dn;
+        $base_dn       = $xhub->getCfg('hubLDAPBaseDN','ou=users,dc=localhost');
+        $search_string = 'uid=[search],ou=users,' . $base_dn;
+		$users_dn      = 'uid=[username],ou=users,' . $base_dn;
 		$use_ldapV3    = 1;
 		$no_referrals  = 1;
         $negotiate_tls = $xhub->getCfg('hubLDAPNegotiateTLS','0');
@@ -241,17 +241,18 @@ class plgXAuthenticationHzldap extends JPlugin
 		{
 			$dn = str_replace('[username]', $credentials['username'], $users_dn);
 
-			$success = @ldap_bind($_ldc, $dn, $credentials['password']);
+			$success = ldap_bind($_ldc, $dn, $credentials['password']);
        		
-			$search_result = @ldap_search($_ldc, $dn, '(objectClass=hubAccount)', array('mail','cn','uid'));
+			$search_result = ldap_search($_ldc, $dn, '(objectClass=hubAccount)', array('mail','cn','uid'));
 			
-			$userdetails = @ldap_get_entries($_ldc, $search_result);
+			$userdetails = ldap_get_entries($_ldc, $search_result);
 		}
 
 		if(!$success)
 		{
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
 			$response->error_message = 'Incorrect username/password';
+var_dump($response);die();
 		}
 		else
 		{
@@ -275,7 +276,6 @@ class plgXAuthenticationHzldap extends JPlugin
 			// Were good - So say so.
 			$response->status        = JAUTHENTICATE_STATUS_SUCCESS;
 			$response->error_message = '';
-
 			if ($hubShortName == 'nanoHUB.org')
 				$this->logintobreeze( $credentials['username'], $credentials['password'] );
 		}

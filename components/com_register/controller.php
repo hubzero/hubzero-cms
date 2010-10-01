@@ -416,7 +416,8 @@ class RegisterController extends Hubzero_Controller
 		$xprofile    =& Hubzero_Factory::getProfile(); 
 		$xhub     =& Hubzero_Factory::getHub();
 		$jsession =& JFactory::getSession();
-		
+		$juser =& JFactory::getUser();
+
 		$hzal = Hubzero_Auth_Link::find_by_id( $juser->get('auth_link_id'));
 		
 		if (JRequest::getMethod() == 'POST') {

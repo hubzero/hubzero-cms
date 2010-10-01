@@ -88,7 +88,7 @@ class plgUserXusers extends JPlugin
 			return JError::raiseWarning('SOME_ERROR_CODE', JText::_('E_JOOMLA_USER_PLUGIN_FAILED'));
 		}
 
-		$authlog = XFactory::getAuthLogger();
+		$authlog = Hubzero_Factory::getAuthLogger();
 
 		if ($juser->get('id') == '0')
 		{
