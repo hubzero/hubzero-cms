@@ -28,6 +28,8 @@
 		<param name="admingroup" type="text" menu="hide" default="apps" label="Admin group" description="Name of contribtool admin group" />
 		<param name="default_mw" type="text" menu="hide" default="narwhal" label="Default middleware" description="Name of default middleware" />
 		<param name="default_vnc" type="text" menu="hide" default="780x600" label="Default VNC size" description="Default VNC geometry values" />
+		<param name="developer_url" type="text" menu="hide" default="" label="Developer URL" description="URL of project development site" />
+                <param name="developer_site" type="text" menu="hide" default="" label="Developer Site" description="Name of project development site" />
 		<param name="developer_email" type="text" menu="hide" default="" label="Developer Email" description="Name of contribtool administrators email list" />
 		<param name="project_path" type="text" menu="hide" default="/projects/app-" label="Path to projects" description="Path to projects on development site (usually followed by the tool name)" />
 		<param name="invokescript_dir" type="text" menu="hide" default="/apps" label="Invoke script dir" description="Directory for invoke script" />
@@ -40,7 +42,6 @@
         <param name="rappture_url" type="text" menu="hide" default="http://rappture.org" label="Rappture URL" description="URL to a rappture tutorial" />
 		<param name="demo_url" type="text" menu="hide" default="" label="Demo URL" description="URL to demo explaining contribution process" />
 		<param name="doi_service" type="text" menu="hide" default="" label="DOI service path" description="URL of CreateHandle service for registering DOI" />
-		<param name="developer_site" type="text" menu="hide" default="nanoFORGE" label="Developer Site" description="Name of project development site" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="ldap_save" type="radio" default="0" label="Save in LDAP?" description="Duplicate tool information in mysql and LDAP">
 			<option value="0">No</option>
