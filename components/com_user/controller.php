@@ -157,8 +157,9 @@ class UserController extends JController
 		}
 		
 		// If no authenticator is specified, or the login method for that plugin did not exist then use joomla default
-		
+
 		if (!isset($myplugin)) {
+
 			// Check for request forgeries
 			JRequest::checkToken('request') or jexit( 'Invalid Token' );
 
@@ -169,18 +170,28 @@ class UserController extends JController
 				}
 			}
 
+			if ($freturn = JRequest::getVar('freturn', '', 'method', 'base64')) {
+				$freturn = base64_decode($freturn);
+				if (!JURI::isInternal($freturn)) {
+					$freturn = '';
+				}
+			}
+
 			$options = array();
 			$options['remember'] = JRequest::getBool('remember', false);
 			$options['return'] = $return;
+			if (!empty($authenticator))
+				$options['authenticator'] = $authenticator;
 
 			$credentials = array();
 			$credentials['username'] = JRequest::getVar('username', '', 'method', 'username');
 			$credentials['password'] = JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
 		}
-		
+
+
 		//preform the login action
 		$error = $mainframe->login($credentials, $options);
-
+		
 		if(!JError::isError($error))
 		{
 			// Redirect if the return url is not registration or login
@@ -196,6 +207,9 @@ class UserController extends JController
 			if ( ! $return ) {
 				$return	= 'index.php?option=com_user&view=login';
 			}
+
+			if (isset($freturn))
+				$return = $freturn;
 
 			// Redirect to a login form
 			$mainframe->redirect( $return );

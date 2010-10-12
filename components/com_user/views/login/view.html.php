@@ -101,6 +101,10 @@ class UserViewLogin extends JView
 			$url = base64_encode($params->get($type));
 		}
 
+		$uri = JURI::getInstance();
+		$furl = base64_encode($uri->toString());
+		$this->assign('freturn', $furl);
+
 		$errors =& JError::getErrors();
 
 		$this->assign('image' , $image);
