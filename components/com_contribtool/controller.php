@@ -1483,18 +1483,21 @@ class ContribtoolController extends JObject
 		}
 		$admingroup = isset($this->config->parameters['admingroup']) ? trim($this->config->parameters['admingroup']) : null;
 		$group = Hubzero_Group::getInstance( $admingroup );
-		$members = $group->get('members');
-		$managers = $group->get('managers');
-		$members = array_merge($members, $managers);
-		if($members) {
-			foreach($members as $member) {
-				$muser =& Hubzero_User_Profile::getInstance( $member );
-					if (is_object($muser)) {
-							$admins[] = $member;
+
+		if (is_object($group)) {
+			$members = $group->get('members');
+			$managers = $group->get('managers');
+			$members = array_merge($members, $managers);
+			if($members) {
+				foreach($members as $member) {
+					$muser =& Hubzero_User_Profile::getInstance( $member );
+						if (is_object($muser)) {
+								$admins[] = $member;
+						}
 					}
-				}
+			}
 		}
-		
+
 		$inteam = (in_array($juser->get('id'), $team)) ? 1 : 0;
 		
 		// collector for those who need to get notified
