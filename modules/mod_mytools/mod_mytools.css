@@ -39,6 +39,7 @@
 		margin: 0;
 		padding: 0.6em 3em 0.6em 0.7em;
 		position: relative;
+		background-image: none;
 		}
 	.sortable .tab_panel li.supported {
 		background-position: 0.5em 0.7em;
@@ -88,7 +89,7 @@
 		top: 0.6em;
 		text-indent: -55em;
 		border: none;
-		}
+		}	
 	.sortable .fav {
 		right: 50px;
 		background: url("images/fav_heart.gif") 0 0 no-repeat;
