@@ -36,6 +36,11 @@
 		padding-left: 0;
 		padding-right: 0;
 		}
+	/* Setting a background image seems to cause IE7 to become extrememly slow when scrolling the page */
+	html>body #content .main {
+		*background: #eee;
+	}
+
 /* Sortable Table */
 	#droppables {
 		table-layout: fixed;
