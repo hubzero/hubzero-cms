@@ -243,12 +243,11 @@ class Hubzero_Tool_Version
     private $alias = array();           // alias [array]		jos_tool_aliases
     private $middleware = array();      // middleware [array]	jos_tool_middleware
     private $hostreq = array();         // vncHostReq [array]	jos_tool_hostreq
-    private $xauthor = array();          // author [array]		jos_tool_authors
     private $author = array();          // author [array]		jos_tool_authors
     private $member = array();          // member [array]		jos_tool_groups
     private $owner = array();           // owner [array]		jos_tool_groups
 
-    private $_list_keys = array('alias', 'middleware', 'hostreq', 'author', 'xauthor', 'member', 'owner');
+    private $_list_keys = array('alias', 'middleware', 'hostreq', 'author', 'member', 'owner');
 
     private $_ldapToolMirror = false;
     private $_updateAll = false;
@@ -865,7 +864,6 @@ class Hubzero_Tool_Version
         $this->__unset('middleware');
         $this->__unset('hostreq');
         $this->__unset('author');
-        $this->__unset('xauthor');
         $this->__unset('member');
         $this->__unset('owner');
 
@@ -875,7 +873,6 @@ class Hubzero_Tool_Version
             $this->__get('middleware');
             $this->__get('hostreq');
             $this->__get('author');
-            //$this->__get('xauthor');
             $this->__get('member');
             $this->__get('owner');
         }
@@ -1555,11 +1552,11 @@ class Hubzero_Tool_Version
                     $db->setQuery($query);
 
                     if ($property == 'xauthor')
-					{
-						$result = $db->loadAssocList();
-					}
-					else
-						$result = $db->loadResultArray();
+                    {
+                        $result = $db->loadAssocList();
+                    }
+                    else
+                        $result = $db->loadResultArray();
 
                     if ($result !== false)
                     {
