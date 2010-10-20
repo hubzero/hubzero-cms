@@ -943,7 +943,7 @@ class RegisterController extends Hubzero_Controller
 			$view->registrationConfirmPassword = REG_HIDE;
 		}
 		
-		if ($juser->get('auth_link_id') && $view->task == 'create') {
+		if ($this->juser->get('auth_link_id') && $view->task == 'create') {
 			$view->registrationPassword = REG_HIDE;
 			$view->registrationConfirmPassword = REG_HIDE;
 		}
