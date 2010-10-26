@@ -7,38 +7,48 @@
  * version 2 as published by the Free Software Foundation. 
  */
 
+.results
+{
+	clear: left;
+}
 .results .summary
 {
-	padding: 1em;
+	position: relative;
+	padding-left: 1em;
 }
 .aside
 {
-	margin-top: 32px;
+	right: 0;
 }
 .aside .sub-nav
 {
 	list-style-type: none;
 }
+.tags
+{
+	float: left;
+	margin-bottom: 0.3em;
+}
 p.title { font-weight: bold; }
 .url 
-{ 
+{
+	clear: left; 
 	margin: 0;
 	padding: 1em 0 0 0; 
-	clear: both;
 	font-size: 85%;
 }
 .url a 
 {
 	color: green;
 }
+.summary
+{
+	float: left;
+}
 div.summary .details span
 {
 	display: inline-block;
 	margin: 0;
-}
-.results
-{
-	clear: both;
 }
 div.summary .details .date
 {
@@ -58,28 +68,24 @@ div.summary .details .contributors
 }
 .subject
 {
+	top: 0;
 	background: transparent;
 }
 .details span
 {
 	color: #999 !important;
 }
-.aside
-{
-	position: absolute;
-	right: 0px;
-}
 .result-pre
 {
   margin-top: 4px;
   width: 50px;
-  height: 50px;
+  min-height: 50px;
   float: left;
-  display: block;
 }
 .result-pre img
 {
-  width: 100%;
+	margin-bottom: 4px;
+	width: 100%;
 }
 .shifted
 {
@@ -88,7 +94,6 @@ div.summary .details .contributors
 .clear
 {
   margin: 0;
-  clear: both;
 }
 .event-date
 {
@@ -147,10 +152,10 @@ div.summary .details .contributors
 }
 .child-types
 {
-	border: 1px solid #ddd;
 	background: #fff;
 	margin-left: 60px !important;
 	padding: 6px !important;
+	clear: left;
 }
 .child-types, .child-result
 {

@@ -20,7 +20,7 @@ class SearchPages
 			if (!in_array($k, array('option', 'Itemid')))
 				$get[] = $k.'='.urlencode($v);
 			
-		return '/'.preg_replace('/^com_/', '', $_GET['option']).'/?'.join('&', $get);
+		return '/'.preg_replace('/^com_/', '', $_GET['option']).'/?'.join('&amp;', $get);
 	}
 
 	public function getListFooter()
@@ -47,7 +47,7 @@ class SearchPages
 		$html[] = '<select class="search-per-page-selector" name="limit">';
 		foreach (array('5', '10', '15', '20', '30', '50', '100') as $per_page)
 			$html[] = '<option value="'.$per_page.'"'.($per_page == $this->limit ? ' selected="selected"' : '').'>'.$per_page.' results per page</option>';
-		$html[] = '<option value="0">Show all results</option>';
+		$html[] = '<option value="0"'.($this->limit == 0 ? ' selected="select"' : '').'>Show all results</option>';
 		$html[] = '</select>';
 		$html[] = '<input type="hidden" name="terms" value="'.(array_key_exists('terms', $_GET) ? str_replace('"', '&quot;', $_GET['terms']) : '').'" />';
 		$html[] = '<input type="submit" class="search-per-page-submitter" value="Go" />';

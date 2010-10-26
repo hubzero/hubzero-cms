@@ -5,11 +5,9 @@ if (!function_exists('stem'))
 	function stem($str) { return $str; }
 }
 
-require 'models/terms.php';
-require 'models/request.php';
-require 'models/result_set.php';
-require 'models/result_types.php';
-require 'models/plugin.php';
+ini_set('display_errors', 1);
+
+require 'include.php';
 
 jimport('joomla.application.component.controller');
 

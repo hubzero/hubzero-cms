@@ -13,6 +13,14 @@ class ContributionSorter
 		$b_ord = $b->get('ordering');
 		return $a_ord == $b_ord ? 0 : $a_ord < $b_ord ? -1 : 1;
 	}
+
+	public static function sort_weight($a, $b)
+	{
+		$aw = $a->get_weight();
+		$bw = $b->get_weight();
+		if ($aw == $bw) return 0;
+		return $aw > $bw ? -1 : 1;
+	}
 }
 
 class plgYSearchMembers extends YSearchPlugin
@@ -33,7 +41,7 @@ class plgYSearchMembers extends YSearchPlugin
 				p.uidNumber AS id,
 				p.name AS title,
 				coalesce(b.bio, '') AS description,
-				concat('/members/', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('N', abs(p.uidNumber)) END) AS link,
+				concat('/members/', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('n', abs(p.uidNumber)) END) AS link,
 				$weight AS weight,
 				NULL AS date,
 				'Members' AS section,
@@ -42,7 +50,7 @@ class plgYSearchMembers extends YSearchPlugin
 			LEFT JOIN jos_xprofiles_bio b 
 				ON b.uidNumber = p.uidNumber
 			WHERE 
-				p.public = 1 AND $weight > 0".
+				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" ORDER BY $weight DESC"
 		));
@@ -50,6 +58,9 @@ class plgYSearchMembers extends YSearchPlugin
 
 	public static function onYSearchCustom($request, &$results)
 	{
+		if (($section = $request->get_terms()->get_section()) && $section[0] != 'members')
+			return;
+ 
 		$terms = $request->get_term_ar();
 		$addtl_where = array();
 		foreach (array($terms['mandatory'], $terms['optional']) as $pos)
@@ -63,7 +74,7 @@ class plgYSearchMembers extends YSearchPlugin
 				p.uidNumber AS id,
 				p.name AS title,
 				coalesce(b.bio, '') AS description,
-				concat('/members/', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('N', abs(p.uidNumber)) END) AS link,
+				concat('/members/', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('n', abs(p.uidNumber)) END) AS link,
 				NULL AS date,
 				'Members' AS section,
         CASE WHEN p.picture IS NOT NULL THEN concat('/site/members/', lpad(p.uidNumber, 5, '0'), '/', p.picture) ELSE NULL END AS img_href
@@ -71,12 +82,13 @@ class plgYSearchMembers extends YSearchPlugin
 			LEFT JOIN jos_xprofiles_bio b 
 				ON b.uidNumber = p.uidNumber
 			WHERE 
-				p.public = 1 AND " . join(' AND ', $addtl_where)
+				" . join(' AND ', $addtl_where)
 		);
 		$assoc = $sql->to_associative();
 		if (!count($assoc))
 			return false;
 
+		$resp = array();
 		foreach ($assoc as $row)
 		{
 			$work = new YSearchResultSQL(
@@ -117,7 +129,7 @@ class plgYSearchMembers extends YSearchPlugin
 					END AS ordering
 					FROM jos_author_assoc aa
 					LEFT JOIN jos_resources r
-						ON aa.subtable = 'resources' AND r.id = aa.subid
+						ON aa.subtable = 'resources' AND r.id = aa.subid AND r.published = 1
 					LEFT JOIN jos_resource_assoc ra
 						ON ra.child_id = r.id
 					LEFT JOIN jos_resource_types rt 
@@ -132,17 +144,24 @@ class plgYSearchMembers extends YSearchPlugin
 			);
 			$work_assoc = $work->to_associative();
 			foreach ($work_assoc as $wrow)
+			{
 				$row->add_child($wrow);
-			$row->sort_children(array(ContributionSorter, sort));
-			$results->add($row);
+				$row->add_weight(1);
+			}
+			$row->sort_children(array('ContributionSorter', 'sort'));
+			$resp[] = $row;
 		}
+		usort($resp, array('ContributionSorter', 'sort_weight'));
+		foreach ($resp as $row)
+			$results->add($row);
 		return false;
 	}
 
   public static function onBeforeYSearchRenderMembers($res)
   {
-    if (!($href = $res->get('img_href')))
+    if (!($href = $res->get('img_href')) || !is_file(JPATH_ROOT.$href))
       $href = '/components/com_members/images/profile_thumb.gif';
-    return '<img src="'.$href.'" alt="" />';
+
+    return '<img src="'.$href.'" alt="'.htmlentities($res->get_title()).'" title="'.htmlentities($res->get_title()).'" />';
   }
 }

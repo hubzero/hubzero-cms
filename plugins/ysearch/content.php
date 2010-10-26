@@ -13,6 +13,12 @@ class plgYSearchContent extends YSearchPlugin
 		foreach ($terms['forbidden'] as $forb)
 			$addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.introtext NOT LIKE '%$forb%' AND c.`fulltext` NOT LIKE '%$forb%')";
 
+		$user =& JFactory::getUser();
+		if ($user->guest)
+			$addtl_where[] = '(c.access = 1)';
+		elseif ($user->usertype != 'Super Administrator')
+			$addtl_where[] = '(c.access = 1 OR (SELECT 1 FROM #__author_assoc aa WHERE authorid = '.(int)$user->id.' AND subtable = \'content\' AND subid = c.id))';
+
 		$sql = new YSearchResultSQL(
 			"SELECT 
 				c.title,
@@ -29,8 +35,8 @@ class plgYSearchContent extends YSearchPlugin
 				$weight AS weight,
 				publish_up AS date,
 				s.name AS section,
-				(SELECT group_concat(u1.name separator '\\n') FROM jos_author_assoc anames INNER JOIN jos_users u1 ON u1.id = anames.authorid WHERE subtable = 'content' AND subid = c.id) AS contributors,
-				(SELECT group_concat(ids.authorid separator '\\n') FROM jos_author_assoc ids WHERE subtable = 'content' AND subid = c.id) AS contributor_ids
+				(SELECT group_concat(u1.name separator '\\n') FROM jos_author_assoc anames INNER JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
+				(SELECT group_concat(ids.authorid separator '\\n') FROM jos_author_assoc ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
 			FROM jos_content c 
 			LEFT JOIN jos_sections s 
 				ON s.id = c.sectionid
@@ -42,6 +48,17 @@ class plgYSearchContent extends YSearchPlugin
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" ORDER BY $weight DESC"
 		);
+		if (array_key_exists('test_contrib', $_GET))
+		{
+			foreach ($sql->to_associative() as $row)
+			{
+				if ($row->get('section') == 'Tools')
+				{
+					print_r($row->get('contributors'));
+					print_r($row->get('contributor_ids'));
+				}
+			}
+		}
 		$results->add($sql);
 	}
 }

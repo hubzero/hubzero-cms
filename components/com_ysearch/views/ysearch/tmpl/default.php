@@ -1,26 +1,15 @@
 <?php
-// Add some needed CSS and JS to the template
-ximport('xdocument');
-XDocument::addComponentStylesheet('com_ysearch');
-
-// Push some JS to the tmeplate
+// Push some resources to the tmeplate
 $document =& JFactory::getDocument();
-$document->addScript('/components'.DS.'com_ysearch'.DS.'ysearch.js');
+$document->addStyleSheet('/components/com_ysearch/ysearch.css');
+$document->addScript('/components/com_ysearch/ysearch.js');
+$show_weight = array_key_exists('show_weight', $_GET); 
 ?>
 <div id="content-header" class="full">
 	<h2>Search</h2>
 </div><!-- / #content-header -->
 
 <div class="main section">
-<form action="/ysearch/" method="get">
-	<fieldset>
-		<p>
-			<label id="search-terms" for="terms">Search terms</label>
-			<input type="text" name="terms" id="terms" <?php $this->attr('value', $this->terms) ?>/>
-			<input type="submit" value="Search" />
-		</p>
-	</fieldset>
-</form>
 	<div class="aside">
 		<?php if ($this->results->get_total_count()): ?>
 			<ul class="sub-nav">
@@ -39,11 +28,14 @@ $document->addScript('/components'.DS.'com_ysearch'.DS.'ysearch.js');
 						<?php else: ?> 
 							<a href="/ysearch/?terms=<?php echo $cat . ':' . $this->url_terms ?>"><?php echo $def['friendly_name']; ?> (<?php echo $def['count']; ?>)</a>
 						<?php endif; ?>
-						<?php if (array_key_exists('sections', $def) && count($def['sections']) > 1): ?>
+						<?php 
+						$fc_child_flag = 'plgYSearch'.$def['plugin_name'].'::FIRST_CLASS_CHILDREN';
+						if ((!defined($fc_child_flag) || constant($fc_child_flag)) && array_key_exists('sections', $def) && count($def['sections']) > 1): 
+						?>
 							<ul>
 							<?php foreach ($def['sections'] as $section_key=>$sdef): ?>
 								<?php 
-								if (!$this->plugin || !$this->section || $this->section != $section_key):
+								if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key):
 								?>
 									<li><a href="/ysearch/?terms=<?php echo $cat . ':' . $section_key . ':' . $this->url_terms ?>"><?php echo $sdef['name']; ?> (<?php echo $sdef['count']; ?>)</a></li>
 								<?php else: ?>
@@ -59,6 +51,15 @@ $document->addScript('/components'.DS.'com_ysearch'.DS.'ysearch.js');
 		<?php endif; ?>
 	</div><!-- / .aside -->
 	<div class="subject">
+		<form action="/ysearch/" method="get">
+			<fieldset>
+				<p>
+					<label id="search-terms" for="terms">Search terms</label>
+					<input type="text" name="terms" id="terms" <?php $this->attr('value', $this->terms) ?>/>
+					<input type="submit" value="Search" />
+				</p>
+			</fieldset>
+		</form>
 <?php if ($this->results->valid()) : ?>
 	<?php if (($ct = $this->results->get_custom_title())): ?>
 		<p class="information">You are viewing <strong><?php echo $ct; ?></strong> matching your query. <a href="/ysearch/?terms=<?php echo urlencode($this->terms); ?>&amp;force-generic=1">View all results.</a></p>
@@ -81,8 +82,8 @@ $document->addScript('/components'.DS.'com_ysearch'.DS.'ysearch.js');
       <div class="summary">
 				<?php if ($res->has_metadata()): ?>
 					<p class="details">
-						<span class="date"><?php if (($date = $res->get_date())) echo date('j M Y', $date); ?></span>
 						<span class="section"><?php echo $res->get_section(); ?></span>
+						<span class="date"><?php if (($date = $res->get_date())) echo date('j M Y', $date); ?></span>
 						<span class="contributors">
 							<?php if (($contributors = $res->get_contributors())): ?>
 								<?php 
@@ -104,6 +105,14 @@ $document->addScript('/components'.DS.'com_ysearch'.DS.'ysearch.js');
             <?php endforeach; ?>
           </div>
         <?php endif; ?>
+
+	<?php if ($show_weight): ?>
+	<ul class="weight-log">
+	<?php foreach ($res->get_weight_log() as $entry): ?>
+		<li><?php echo $entry; ?></li>
+	<?php endforeach; ?>
+	</ul>
+	<?php endif; ?>
         <div class="result-description<?php echo $before ? ' shifted' : ''; ?>">
   				<p><?php echo $res->get_highlighted_excerpt(); ?></p>
         </div>
@@ -115,12 +124,14 @@ $document->addScript('/components'.DS.'com_ysearch'.DS.'ysearch.js');
 					$ctypec = array();
 					foreach ($children as $child)
 					{
-						if (!array_key_exists($child->get_section(), $ctypec))
-							$ctypec[$child->get_section()] = 1;
-						else
-							++$ctypec[$child->get_section()];
+						if (($section = $child->get_section()))
+							if (!array_key_exists($section, $ctypec))
+								$ctypec[$section] = 1;
+							else
+								++$ctypec[$section];
 					}
-			?>
+					if ($ctypec):
+				?>
 				<ul class="child-types">
 					<?php foreach ($children as $idx=>$child): ?>
 						<?php 
@@ -129,13 +140,13 @@ $document->addScript('/components'.DS.'com_ysearch'.DS.'ysearch.js');
 							if (!$last_type): 
 						?>
 							<li>
-								<h4><div class="expand"></div><?php echo $current_type; ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
+								<h4><span class="expand"></span><?php echo $current_type == 'Questions' ? 'Answers' : $current_type; ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
 								<ul class="child-result">
 						<?php elseif ($last_type != $current_type): ?>
 								</ul>
 							</li>
 							<li>
-								<h4><div class="expand"></div><?php echo $current_type; ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
+								<h4><span class="expand"></span><?php echo $current_type; ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
 								<ul class="child-result">
 						<?php 
 							endif; 
@@ -149,7 +160,7 @@ $document->addScript('/components'.DS.'com_ysearch'.DS.'ysearch.js');
 						</ul>
 					</li>
 				</ul>
-
+				<?php endif; ?>
 			<?php endif; ?>
 	  		<p class="url"><a href="<?php echo $res->get_link(); ?>"><?php echo $res->get_link(); ?></a></p>
 		</li>

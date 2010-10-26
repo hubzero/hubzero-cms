@@ -4,9 +4,23 @@ abstract class YSearchResult
 	private static $intro_excerpt_len = 350;
 	private static $types = array();
 	private $excerpt, $plugin, $canonicalized_link;
-	protected $title, $description, $tag_count, $author, $weight, $section, $date, $contributors, $contributor_ids, $children = array();
+	protected $id, $title, $description, $tag_count, $author, $weight, $section, $date, $contributors, $contributor_ids, $children = array(), $weight_log = array();
+	protected $has_parent = false;
 
-	public function add_child($child) { $this->children[] = $child; }
+	public function is_in_section($section, $plugin = NULL)
+	{
+		if (is_null($plugin))
+			$plugin = $this->plugin;
+		if (!$section)
+			return true;
+		if (count($section) == 2)
+			return strtolower($section[0]) == strtolower($plugin) && strtolower($section[1]) == $this->get_section();
+		return strtolower($section[0]) == strtolower($plugin);
+	}
+	public function get_weight_log() { return $this->weight_log; }
+	public function has_parent() { return $this->has_parent; }
+	public function set_has_parent($bool) { $this->has_parent = $bool; }
+	public function add_child($child) { $this->children[] = $child; $child->set_has_parent(true); }
 	public function get_children() { return $this->children; }
 	public function sort_children($callback) { usort($this->children, $callback); }
 
@@ -24,6 +38,13 @@ abstract class YSearchResult
 					$_SERVER['HTTP_HOST'].(substr($this->link, 0, 1) == '/' ? $this->link : '/' . $this->link);
 		return $this->canonicalized_link; 
 	}
+	public function get_links()
+	{
+		$links = array($this->get_link());
+		foreach ($this->children as $child)
+			$links = array_merge($links, $child->get_links());
+		return $links;
+	}
 	public function set_link($link) { $this->link = $link; $this->canonicalized_link = NULL; }
 	public function get_description() { return $this->description; }
 	public function set_description($descr) { $this->description = $descr; }
@@ -39,9 +60,24 @@ abstract class YSearchResult
 
 	public function get_highlighted_excerpt() { return $this->get_excerpt(); }
 
-	public function adjust_weight($weight) { $this->weight *= $weight; }
-	public function scale_weight($scale) { if ($scale != 0) $this->weight /= $scale; }
-	public function add_weight($weight)	{ $weight; $this->weight += $weight; }
+	public function adjust_weight($weight, $reason = 'unknown') 
+	{ 
+		$this->weight *= $weight; 
+		$this->weight_log[] = 'adjusting by '.$weight.' to '.$this->weight.': '.$reason;
+	}
+	public function scale_weight($scale, $reason = 'unknown')
+	{ 
+		if ($scale != 0)
+		{
+			$this->weight /= $scale; 
+			$this->weight_log[] = 'scaling by '.$scale.' to '.$this->weight.': '.$reason;
+		}
+	}
+	public function add_weight($weight, $reason='unknown')
+	{ 
+		$this->weight += $weight; 
+		$this->weight_log[] = 'adding '.$weight.', total '.$this->weight.': '.$reason;
+	}
 
 	public function get_plugin() { return $this->plugin; }
 	public function set_plugin($plg, $skip_cleanup = false) 
@@ -70,7 +106,7 @@ abstract class YSearchResult
 	{
 		if (!$this->excerpt)
 		{
-			$descr = preg_replace('/[{]xhub:.*?[}]/ixms', '', $this->description);
+			$descr = preg_replace('/(?:[{]xhub:.*?[}]|[{}]|[#][!]html)/ixms', '', $this->description);
 			if (preg_match_all('/(?:^|[.?!"])\s*?(.*?'.$this->highlight_regex.'.*?(?:[.?!"]|$))/ims', $descr, $excerpt))
 				$descr = join('<small>…</small> ', array_unique($excerpt[1]));
 
@@ -101,6 +137,12 @@ class YSearchResultAssocList extends YSearchResultAssoc implements Iterator
 
 	public function is_scalar() { return false; }
 
+	public function set_plugin($plugin, $skip_cleanup = false)
+	{
+		foreach ($this->rows as $row)
+			$row->set_plugin($plugin, $skip_cleanup);
+	}
+
 	public function __construct($rows, $plugin = NULL)
 	{
 		$this->rows = is_array($rows) ? $rows : array($rows);
@@ -117,9 +159,13 @@ class YSearchResultAssocList extends YSearchResultAssoc implements Iterator
 				$scale = $weight;
 			
 			if ($scale > 1)
-				$row->scale_weight($scale);
+			{
+				$row->scale_weight($scale, 'normalizing within plugin');
+			}
 		}
 	}
+	
+	public function &at($idx) { return $this->rows[$idx]; }
 
 	public function to_associative() { return $this; }
 
@@ -160,13 +206,15 @@ class YSearchResultAssocScalar extends YSearchResult
 			if ($this->tag_count)
 				$this->weight = $this->tag_count * (self::$tag_weight_modifier / 2);
 			$this->weight = 1.0;
+			$this->weight_log[] = 'plugin did not suggest weight, guessing '.$this->weight.' based on tag count('.$this->tag_count.')';
 		}
 		else if ($this->tag_count)
 		{
-			$this->weight *= ($this->tag_count * self::$tag_weight_modifier);
+			$this->weight_log[] = 'plugin suggested weight of '.$this->weight;
+			$this->adjust_weight($this->tag_count * self::$tag_weight_modifier, 'tag count of '.$this->tag_count);
 		}
 		
-		$this->contributors = $this->contributors ? array_unique(is_array($this->contributors) ? $this->contributors : split("\n", $this->contributors)) : array();
+		$this->contributors = $this->contributors ? array_unique(is_array($this->contributors) ? $this->contributors : split("\n", $row['contributors'])) : array();
 		$this->contributor_ids = $this->contributor_ids ? array_unique(is_array($this->contributor_ids) ? $this->contributor_ids : split("\n", $row['contributor_ids'])) : array();
 
 		if ($this->date) $this->date = strtotime($row['date']);
@@ -188,10 +236,7 @@ class YSearchResultSql extends YSearchResult
 		if (!($rows = $dbh->loadAssocList()))
 		{
 			if (($error = mysql_error()))
-			{
-				echo $error;
 				throw new YSearchPluginError('Invalid SQL in '.$this->sql.': ' . $error );
-			}
 			return new YSearchResultEmpty();
 		}
 		return new YSearchResultAssocList($rows, $this->get_plugin());

@@ -2,7 +2,7 @@
 
 class plgYSearchTopics extends YSearchPlugin
 {
-	public static function onYSearch($request, &$results)
+	public static function onYSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
 		$weight = '(match(wp.title) against (\''.join(' ', $terms['stemmed']).'\') + match(wv.pagetext) against (\''.join(' ', $terms['stemmed']).'\'))';
@@ -13,13 +13,15 @@ class plgYSearchTopics extends YSearchPlugin
 		foreach ($terms['forbidden'] as $forb)
 			$addtl_where[] = "(wp.title NOT LIKE '%$forb%' AND wv.pagetext NOT LIKE '%$forb%')";
 
-		$juser =& JFactory::getUser();
-		$xuser =& XFactory::getUser();
-		$app =& JFactory::getApplication();
-
 		# TODO
-		if ($juser->get('guest') || !is_object($xuser) || !in_array(strtolower($app->getCfg('sitename')), $xuser->get('admin')))
-			$authorization = 'access = 0 AND';
+		if ($authz->is_guest())
+			$authorization = 'wp.access = 0';
+		elseif ($authz->is_super_admin())
+			$authorization = '1';
+		elseif (($gids = $authz->get_group_ids()))
+			$authorization = '(wp.access = 0 OR (wp.access = 1 AND xg.gidNumber IN ('.join(',', $gids).')))';
+		else
+			$authorization = 'wp.access = 0';
 
 		$rows = new YSearchResultSQL(
 			"SELECT 
@@ -35,8 +37,9 @@ class plgYSearchTopics extends YSearchPlugin
 			FROM jos_wiki_version wv
 			INNER JOIN jos_wiki_page wp 
 				ON wp.id = wv.pageid
+			LEFT JOIN jos_xgroups xg ON xg.cn = wp.group
 			WHERE
-				$authorization
+				$authorization AND
 				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" GROUP BY wv.pageid 

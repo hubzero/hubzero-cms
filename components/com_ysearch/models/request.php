@@ -8,6 +8,10 @@ class YSearchModelRequest
 	public function get_terms() { return $this->terms; }
 	public function get_term_ar() { return $this->term_ar; }
 	public function get_tags() { return $this->tags; }
+	public function get_tagged_ids($tbl)
+	{
+		return array_key_exists($tbl, $this->object_tags) ? $this->object_tags[$tbl] : array();
+	}
 	public function get_tag_count_sql($tbl, $alias = NULL)
 	{
 		if (!array_key_exists($tbl, $this->object_tags) || !$this->object_tags[$tbl])
@@ -61,8 +65,7 @@ class YSearchModelRequest
 				'Tags' AS section
 			FROM jos_tags t
 			WHERE 
-				NOT t.admin
-				AND $weight > 0".
+				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" ORDER BY $weight DESC"
 		);

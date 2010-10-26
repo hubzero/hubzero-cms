@@ -71,19 +71,30 @@ class YSearchModelTerms extends JModel
 	public function get_stemmed_chunks() 
 	{
 		$chunks = $this->get_positive_chunks();
-		foreach ($chunks as $chunk)
+		foreach ($chunks as $term)
 		{
-			$stem = stem($chunk);
-			// TODO this is some really naive query expansion. I'm not sure yet what to do about it
-			foreach (array($chunk, stem($chunk)) as $word)
+			while (($stemmed = stem($term)) != $term)
 			{
-				$chunks[] = substr($word, -1) == 's' ? "{$word}es" : "{$word}s";
-				if (substr($stem, -1) == 'y')
-					$chunks[] = substr($word, 0, strlen($word) -1).'ies';
-				foreach (array('', 'able', 'ible', 'al', 'ial', 'ies', 'ed', 'er', 'ers', 'ess', 'ful', 'ish', 'ishes', 'ism', 'less', 'ly', 'ology', 'ward', 'y') as $suffix)
-					$chunks[] = "{$word}$suffix";
+				$chunks[] = $stemmed;
+				$term = $stemmed;
 			}
 		}
+		$chunks = array_unique(array_merge(array_map('stem', $chunks), $chunks));
+		JFactory::getApplication()->triggerEvent('onYSearchExpandTerms', array(&$chunks));
+
+//		foreach ($chunks as $chunk)
+//		{
+//			$stem = stem($chunk);
+//			// TODO this is some really naive query expansion. I'm not sure yet what to do about it
+//			foreach (array($chunk, stem($chunk)) as $word)
+//			{
+//				$chunks[] = substr($word, -1) == 's' ? "{$word}es" : "{$word}s";
+//				if (substr($stem, -1) == 'y')
+//					$chunks[] = substr($word, 0, strlen($word) -1).'ies';
+//				foreach (array('', 'able', 'ible', 'al', 'ial', 'ies', 'ed', 'er', 'ers',   'ism', 'ly', 'y') as $suffix)
+//					$chunks[] = "{$word}$suffix";
+//			}
+//		}
 		return array_unique($chunks);
 	} 
 
@@ -103,11 +114,14 @@ class YSearchModelTerms extends JModel
 		$partial = '';
 		$sign = '';
 		$raw = trim(strtolower($this->raw));
-		if (preg_match('/^([a-z:]+):/', $raw, $match))
+		if (preg_match('/^([_.a-z:]+):/', $raw, $match))
 		{
 			$this->section = explode(':', $match[1]);
 			$raw = preg_replace('/^'.preg_quote($match[1]).':/', '', $raw);
 		}
+		else if (array_key_exists('section', $_GET))
+			$this->section = array($_GET['section']);
+
 		$raw = preg_replace('/[^-+"[:alnum:] ]/', '', preg_replace('/\s+/', ' ', trim($raw)));
 		for ($idx = 0, $len = strlen($raw); $idx < $len; ++$idx)
 		{

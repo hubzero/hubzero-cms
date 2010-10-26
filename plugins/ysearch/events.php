@@ -4,9 +4,6 @@ class plgYSearchEvents extends YSearchPlugin
 {
 	public static function onYSearch($request, &$results)
 	{
-		ximport('xdocument');
-		XDocument::addComponentStylesheet('com_events');
-
 		$terms = $request->get_term_ar();
 		$weight = 'match(e.title, e.content) against(\''.join(' ', $terms['stemmed']).'\')';
 
@@ -26,7 +23,7 @@ class plgYSearchEvents extends YSearchPlugin
 				'Events' AS section
 			FROM jos_events e
 			WHERE 
-				approved AND publish_down > CURRENT_TIMESTAMP AND $weight > 0".
+				approved AND $weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" ORDER BY $weight DESC"
 		);

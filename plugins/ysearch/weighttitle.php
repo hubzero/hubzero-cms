@@ -4,7 +4,12 @@ class plgYSearchWeightTitle
 {
 	public static function onYSearchWeightAll($terms, $res)
 	{
-		$title_stems = self::stem_list($res->get_title());
+		$title = strtolower($res->get_title());
+		$strterms = strtolower($terms->get_raw_without_section());
+		if (preg_replace('/[^a-z]/', '', $title) == preg_replace('/[^a-z]/', '', $terms))
+			return 10;
+
+		$title_stems = self::stem_list($title);
 		if (!($title_len = count($title_stems))) return 0.5;
 
 		$term_stems = array();
