@@ -43,7 +43,7 @@ if ($this->filters['_show'] != '') {
 		}
 ?>
 
-<p><strong><?php echo JText::_('TICKET_SUBMITTED_ON').' '.JHTML::_('date',$this->row->created, '%d %b, %Y').' '.JText::_('AT').' '.JHTML::_('date', $this->row->created, '%I:%M %p').' '.JText::_('BY'); ?> <?php echo $this->row->name; echo ($this->row->login) ? ' (<a href="index.php?option=com_members&amp;task=edit&amp;id[]='.$this->row->login.'">'.$this->row->login.'</a>)' : ''; ?></strong></p>
+<p><strong><?php echo JText::_('TICKET_SUBMITTED_ON').' '.JHTML::_('date',$this->row->created, '%d %b, %Y',0).' '.JText::_('AT').' '.JHTML::_('date', $this->row->created, '%I:%M %p',0).' '.JText::_('BY'); ?> <?php echo $this->row->name; echo ($this->row->login) ? ' (<a href="index.php?option=com_members&amp;task=edit&amp;id[]='.$this->row->login.'">'.$this->row->login.'</a>)' : ''; ?></strong></p>
 
 <div class="col width-70">
 	<div class="overview">
@@ -138,8 +138,8 @@ if ($this->filters['_show'] != '') {
 				$html .= $access.' comment '.$o.'" id="c'.$comment->id.'">'."\n";
 				$html .= "\t\t\t\t\t\t".'<dl class="comment-details">'."\n";
 				$html .= "\t\t\t\t\t\t\t".'<dt class="type"><span><span>'.$access.' comment</span></span></dt>'."\n";
-				$html .= "\t\t\t\t\t\t\t".'<dd class="date">'.JHTML::_('date',$comment->created, '%d %b, %Y').'</dd>'."\n";
-				$html .= "\t\t\t\t\t\t\t".'<dd class="time">'.JHTML::_('date',$comment->created, '%I:%M %p').'</dd>'."\n";
+				$html .= "\t\t\t\t\t\t\t".'<dd class="date">'.JHTML::_('date',$comment->created, '%d %b, %Y',0).'</dd>'."\n";
+				$html .= "\t\t\t\t\t\t\t".'<dd class="time">'.JHTML::_('date',$comment->created, '%I:%M %p',0).'</dd>'."\n";
 				$html .= "\t\t\t\t\t\t".'</dl>'."\n";
 				$html .= "\t\t\t\t\t\t".'<div class="cwrap">'."\n";
 				$html .= "\t\t\t\t\t\t\t".'<p class="commenter"><strong>'. $name.' ('.$comment->created_by .')</strong></p>'."\n";
