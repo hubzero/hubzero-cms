@@ -14,15 +14,22 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 require 'CurationProgress.php';
+
 class modCurationProgressHelper{
 	
 	public function getCurationStatus()
 	{
 		$oCurationProgress = new CurationProgress();
-		if(JRequest::getVar('view') == 'project'){
-                    $curation_status = $oCurationProgress->getProjectCurationProgress();
+//		if(JRequest::getVar('view') == 'project'){
+//                    $curation_status = $oCurationProgress->getProjectCurationProgress();
+//                }else{
+//                    $curation_status = $oCurationProgress->getExperimentCurationProgress();
+//                }
+                
+                if(isset($_REQUEST[Search::SELECTED])){
+                  $curation_status = $oCurationProgress->getProjectCurationProgress();
                 }else{
-                    $curation_status = $oCurationProgress->getExperimentCurationProgress();
+                  $curation_status = $oCurationProgress->getExperimentCurationProgress();
                 }
 		return $curation_status;
 	}
