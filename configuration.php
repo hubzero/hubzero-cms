@@ -18,7 +18,7 @@ class JConfig {
 	var $log_path = '/var/logs';
 	var $tmp_path = '/tmp';
 	var $live_site = '';
-	var $force_ssl = '0';
+	var $force_ssl = '1';
 	var $offset = '-5';
 	var $caching = '0';
 	var $cachetime = '5';
