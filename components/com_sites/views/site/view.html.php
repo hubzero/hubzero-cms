@@ -1,7 +1,7 @@
 <?php
 /**
- * @package		NEEShub 
- * @author		David Benham (dbenha@purdue.edu)
+ * @package	NEEShub
+ * @author	David Benham (dbenha@purdue.edu)
  * @copyright	Copyright 2010 by NEES
 */
  
@@ -61,9 +61,6 @@ class sitesViewSite extends JView
         $tabs = FacilityHelper::getFacilityTabs(0, $facilityID);
         $this->assignRef('tabs', $tabs); 
         
-        $fileBrowserObj = new DataFileBrowserSimple($facility);
-        $this->assignRef('fileBrowserObj', $fileBrowserObj); 
-
         $infotype = "Facility";
 
         $introDF 	= FacilityHelper::getFacilityDataFile($facilityID, $infotype, "Site Introduction");

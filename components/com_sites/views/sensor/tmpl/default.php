@@ -34,7 +34,11 @@ defined('_JEXEC') or die('Restricted access');
 
 
     <h3 style="padding-bottom:10px;">Calibrations</h3>
-    <hr>
+
+    <?php
+        if($this->allowCreate)
+            echo '<div style="padding-bottom:10px"> <a href="' . JRoute::_('index.php?option=com_sites&view=editcalibration&id=' . $this->facilityID . '&sensorid=' . $this->sensorid . '&calibrationid=-1') . '">[add]</a></div>';
+    ?>
 
     <?php
     if ($this->calibrationsHtml != '')
@@ -42,14 +46,16 @@ defined('_JEXEC') or die('Restricted access');
 
         <table style="width:900px; border:0px">
         <tr style="background-color:#aaa">
+            <th> ID </th>
             <th> Date </th>
-            <th> Description </th>
+            <th style="width:250px"> Description </th>
             <th> Person </th>
             <th> Adjustments </th>
             <th> Range </th>
             <th> Sensitivity </th>
             <th> Reference </th>
             <th> Factor </th>
+            <th> </th>
         </tr>
 
     <?php 
@@ -58,13 +64,21 @@ defined('_JEXEC') or die('Restricted access');
     }
     else
     {
-        echo 'No calibration data is available for this sensor';
+        echo '<hr> No calibration data is available for this sensor';
     }
     ?>
 
 
-    <h3 style="padding-bottom:10px;">Documentation</h3>
-    <hr>
+    <div>
+        <?php
+        echo FacilityHelper::getViewSimpleFileBrowser($this->fileSection, "Sensor Documentation", $this->redirectURL)
+        ?>
+    </div>
+
+    <?php if($this->allowCreate)
+        echo '<a  style="padding-left: 0px; float: left;"href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&sensorid=' . $this->sensorid . '&redirectURL=' . $this->redirectURL ) . '">[Add Document]</a>';
+    ?>
+
 
 </div>
 

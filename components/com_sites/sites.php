@@ -4,8 +4,12 @@
  * 
  * @package		NEEShub 
  * @author		David Benham (dbenha@purdue.edu)
- * @copyright	Copyright 2010 by NEESCommIT
+ * @copyright           Copyright 2010 by NEESCommIT
  */
+
+error_reporting(E_ALL);
+ini_set('display_errors',TRUE);
+
 set_include_path("/usr/local/propel/runtime/classes" . PATH_SEPARATOR . get_include_path());
 set_include_path("api/org/phpdb/propel/central/classes" . PATH_SEPARATOR . get_include_path());
 set_include_path("api/org/nees" . PATH_SEPARATOR . get_include_path());
@@ -15,7 +19,17 @@ require_once 'propel/Propel.php';
 Propel::init("api/org/phpdb/propel/central/conf/central-conf.php");
 
 
+require_once 'bulkupload/FileUploadReader.php';
+require_once 'components/com_sites/lib/siteshelper.php';
+require_once 'lib/data/Calibration.php';
+require_once 'lib/data/CalibrationPeer.php';
+require_once 'lib/data/DocumentType.php';
+require_once 'lib/data/EquipmentDocumentation.php';
+require_once 'lib/data/EquipmentAttributeValuePeer.php';
+require_once 'lib/data/EquipmentAttributeClassPeer.php';
 require_once 'lib/data/EquipmentPeer.php';
+require_once 'lib/data/EquipmentClassPeer.php';
+require_once 'lib/data/EquipmentModelPeer.php';
 require_once 'lib/data/FacilityPeer.php';
 require_once 'lib/data/FacilityDataFilePeer.php';
 require_once 'lib/data/Facility.php';
@@ -28,16 +42,10 @@ require_once 'lib/data/SensorModelPeer.php';
 require_once "lib/data/Sensor.php";
 require_once "lib/data/SensorType.php";
 require_once "lib/data/SensorModel.php";
-require_once 'lib/security/Authorizer.php';
+require_once 'lib/security/HubAuthorizer.php';
 require_once 'lib/security/PermissionsViewPeer.php';
 require_once 'lib/security/Permissions.php';
-require_once 'lib/util/DataFileBrowserSimple.php';
 require_once 'lib/util/DomainEntityType.php';
-
-
-
-require_once 'components/com_sites/lib/siteshelper.php';
-
 
 
 // No direct access
@@ -68,7 +76,9 @@ $pathway->addItem( "Sites Map", "/sites" );
 
 $controller   = new SitesController();
  
-// Perform the Request task
+// Perform the task, generally form submissions will set this, and the corresponding
+// task function will select the correct view to display depending on the outcome of
+// the task
 $controller->execute(JRequest::getCmd('task'));
  
 // Redirect if set by the controller

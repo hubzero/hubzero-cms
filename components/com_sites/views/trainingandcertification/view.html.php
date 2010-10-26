@@ -39,17 +39,16 @@ class sitesViewTrainingAndCertification extends JView {
         $pathway->addItem($fac_name, JRoute::_('index.php?option=com_sites&view=site&id=' . $facilityID));
 
         // Add Sensor tab info to breadcrumb
-        $pathway->addItem("Training and Certification", JRoute::_('index.php?option=com_sites&view=training-certification&id=' . $facilityID));
+        $pathway->addItem("Training and Certification", JRoute::_('index.php?option=com_sites&view=trainingandcertification&id=' . $facilityID));
 
 
         // Get the tabs for the top of the page
         $tabs = FacilityHelper::getFacilityTabs(5, $facilityID);
         $this->assignRef('tabs', $tabs);
 
-        $fileBrowserObj = new DataFileBrowserSimple($facility);
-        $this->assignRef('fileBrowserObj', $fileBrowserObj);
+        //$fileBrowserObj = new DataFileBrowserSimple($facility);
+        //$this->assignRef('fileBrowserObj', $fileBrowserObj);
         $infotype = "TrainingAndCertification";
-
 
         // Get all the files for the different file sections on this page
 
@@ -60,7 +59,7 @@ class sitesViewTrainingAndCertification extends JView {
             $onSiteTrainingDFs[] = $fd->getDataFile();
         }
 
-
+        
         $remoteTrainingFiles = FacilityDataFilePeer::findByDetails($facilityID, $infotype, "Remote Training", "");
         $remoteTrainingDFs = array();
         foreach ($remoteTrainingFiles as $fd) {

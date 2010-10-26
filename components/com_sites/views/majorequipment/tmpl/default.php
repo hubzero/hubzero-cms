@@ -56,7 +56,6 @@ function swap(divName) {
 			<th nowrap="nowrap">Subcomponent Count</th>
 		</tr>
 
-
 		<?php
 
 		$selectedEquip = -1;
@@ -75,11 +74,10 @@ function swap(divName) {
 	
 			<tr bgcolor="<?php echo $bgcolor; ?>">
 				<td><?php echo $expandlink;?></td>
-		        <td><?php echo '<a href="' . JRoute::_('/index.php?option=com_sites&id=' . $this->facilityID . "&view=equipment&equipid=" . $majorId) . '">' . $majorName . '</a>' ?></td>
+		        <td><?php echo '<a href="' . JRoute::_('/index.php?option=com_sites&id=' . $this->facilityID . "&view=equipment&equipmentid=" . $majorId) . '">' . $majorName . '</a>' ?></td>
 		        <td><?php echo $singleMajorEquipment->getEquipmentModel()->getEquipmentClass()->getClassName()?></td>
 		        <td><?php echo count($subcomps); ?></td>
 	      	</tr>
-	
 	
 			<tr id="<?php echo $majorId; ?>" style="display:none;">
 		        <td colspan="3" style="padding-left:64px;">
@@ -91,31 +89,38 @@ function swap(divName) {
 	
 						<?php 
 						// Loop through all the subcomponents
-				        $orderNum = 0;
-				        foreach($subcomps as $subcomp) 
-				        {
-				        	$orderNum++;
-				            echo "<tr>";
-				            echo "<td>" . $orderNum . "</td>";
-				            echo "<td>";
-				            echo '	<a href="' . JRoute::_('/index.php?option=com_sites&id=' . $this->facilityID . "&view=equipment&equipid=" . $subcomp->getId()) . '">';
-				            echo $subcomp->getName(); 
-				            echo "	</a>";
-				            echo "</td>";
-				            echo "</tr>";
-				        }
+                                                $orderNum = 0;
+                                                foreach($subcomps as $subcomp)
+                                                {
+                                                        $orderNum++;
+                                                    echo "<tr>";
+                                                    echo "<td>" . $orderNum . "</td>";
+                                                    echo "<td>";
+                                                    echo '	<a href="' . JRoute::_('/index.php?option=com_sites&id=' . $this->facilityID . "&view=equipment&equipmentid=" . $subcomp->getId()) . '">';
+                                                    echo $subcomp->getName();
+                                                    echo "	</a>";
+                                                    echo "</td>";
+                                                    echo "</tr>";
+                                                }
 						?>
 	
 		            </table>
 		        </td>
 			</tr>
 
-
 		<?php 
 		} // end foreach
 		?>
 
 	</table>
+
+        <?php if($this->canEdit || $this->canAdd) { ?>
+            <div class="sectheaderbtn" style="width:800px;">
+                <?php if($this->canAdd) echo $this->addnewequipment; ?>
+                <?php if($this->isadmin) echo $this->addnewequipmentmodel; ?>
+            </div>
+        <?php } ?>
+
 
 </div>
 

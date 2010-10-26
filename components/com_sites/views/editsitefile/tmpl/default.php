@@ -25,12 +25,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
             <table cellspacing="0" cellpadding="0" style="border:1px solid #CCCCCC;">
 
                 <tr>
-                  <td nowrap="nowrap">Brief file description</td>
-                  <td width="100%"><?= $this->infotype?> : <?= $this->subinfo ?> <?php  if($this->groupby) {echo  ": ". $this->groupby;} ?></td>
+                  <td nowrap="nowrap">File description:</td>
+                  <td width="100%"><?php echo $this->filedescription; ?></td>
                 </tr>
 
                     <tr>
-                            <td nowrap="nowrap">Document to Upload</td>
+                            <td nowrap="nowrap">Document to Upload:</td>
                             <td><input type="file" size="40" name="documentFile"/></td>
                     </tr>
 
@@ -40,16 +40,22 @@ defined('_JEXEC') or die('Restricted access'); ?>
                     </tr>
 
                     <tr>
-                            <td nowrap="nowrap">Document Description: </td>
+                            <td nowrap="nowrap">Document Description:</td>
                             <td><textarea name="documentDesc" row="5" style="width:95%"></textarea></td>
                     </tr>
                     <tr><td colspan="2" height="20">&nbsp;</td></tr>
                     <tr>
                             <td colspan="2" class="sectheaderbtn">
-                                    <input class="btn" type="button" value="Cancel" onclick="history.back();" />
                                     <input class="btn" type="submit" name="submit" value="Save Changes"  />
+                                    <input class="btn" type="button" value="Cancel" onclick="history.back();" />
                                     <input type="hidden" name="id" value="<?php echo $this->facilityID; ?>"></input>
-                                    <input type="hidden" name="task" value="savefile"></input>
+                                    <input type="hidden" name="task" value="<?php echo $this->task; ?>"></input>
+                                    <input type="hidden" name="equipmentid" value="<?php echo $this->equipmentid; ?>"></input>
+                                    <input type="hidden" name="sensorid" value="<?php echo $this->sensorid; ?>"></input>
+                                    <input type="hidden" name="sensormodelid" value="<?php echo $this->sensormodelid; ?>"></input>
+                                    <input type="hidden" name="calibrationid" value="<?php echo $this->calibrationid; ?>"></input>
+                                    <input type="hidden" name="equipmentmodelid" value="<?php echo $this->equipmentmodelid; ?>"></input>
+                                    <input type="hidden" name="equipmentmodelfiletype" value="<?php echo $this->equipmentmodelfiletype; ?>"></input>
                                     <input type="hidden" name="infotype" value="<?php echo $this->infotype; ?>"></input>
                                     <input type="hidden" name="subinfo" value="<?php echo $this->subinfo; ?>"></input>
                                     <input type="hidden" name="groupby" value="<?php echo $this->groupby; ?>"></input>

@@ -16,13 +16,21 @@ require_once "Spreadsheet/Excel/Writer.php";
 
 	<div id="facility-subpage-primarycontent">
 
-		<h2 class="portlet">Upload Sensor Calibrations</h2>
-	  
+  		<h2 class="portlet">Upload Sensor Calibrations</h2>
+
+                <?php if(JRequest::getVar('msg', '', 'get', 'string', JREQUEST_ALLOWRAW))
+                    echo '<p class="passed">' . JRequest::getVar('msg', '', 'get', 'string', JREQUEST_ALLOWRAW) . '</p>';
+                ?>
+
+                <?php if(JRequest::getVar('errorMsg'))
+                    echo '<p class="failed">' . JRequest::getVar('errorMsg', '', 'get', 'string', JREQUEST_ALLOWRAW) . '</p>';
+                ?>
+
 	   	<input type='hidden' name='submitted' value='1' />
 	
 		<div style="float:left; clear:both; border: thin solid #eee;">
 			<img valign="middle" align="left" src="/images/excel.gif" title="Excel-Book" width="100" height="100" style="padding-right:20px;" alt="" />
-			<p>To upload multiple Sensor Calibrations in this facility, download the Excel spreadsheet below and enter the information for each calibration in the appropriate spreadsheet fields.</p>
+			<p>To upload multiple Sensor Calibrations in this facility, download the Excel spreadsheet for the existing sensor calibrations as a starting point.</p>
 			<b>Accepted formats:</b> Excel (95, 97, 2000, 2003) (*.xls), and XML Spreadsheet files (*.xml), and comma-delimited text files (*.csv),	and tab-delemited text files (*.txt).</p>
 		</div>
 	
@@ -36,17 +44,14 @@ require_once "Spreadsheet/Excel/Writer.php";
 			</ul>
 		</div>
 	
-		<!--<?= $alert ?>-->
-		<!--<?= $done ?>-->
-	
-	
 		<div style="float:left; clear:both;" class='upload'>
-		Upload a calibration list file.
-			<form id='frm_UploadCalibrations' method='post' enctype="multipart/form-data" >
-				<input type='file' id="uploadFile" name="uploadFile" class="textentry" size='60'/>&nbsp;&nbsp;
-				<input class="btn" type="submit" name="save" value="Upload"/>&nbsp;&nbsp;
+		Upload a sensor calibration list file.
+			<form method='post' enctype="multipart/form-data" >
+                                <input type="hidden" name="task" value="uploadsensorcalibrations"/>
+                                <input type="hidden" name="id" value="<?php echo $this->facilityid; ?>"/>
+				<input type='file' id="uploadFile" name="uploadFile" size='60'/>
+				<input class="btn" type="submit" name="save" value="Upload"/>
 				<input class="btn" type="button" value="Cancel" onclick="history.back();" />
-				<input type="hidden" name="task" value="douploadsensorcalibration"></input>
 			</form>
 		</div>
 	</div>

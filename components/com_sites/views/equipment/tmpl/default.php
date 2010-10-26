@@ -10,10 +10,22 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <div id="facility-subpage-primarycontent">
 
-	<h3><?= $this->isMajor ?>: <?= $this->equipName ?></h3>
- 	
+	<h2><?= $this->isMajor ?>: <?= $this->equipName ?></h2>
+
+        <?php
+            if($this->canedit)
+                echo '<span style="padding-right:20px;"><a href="' .JRoute::_('/index.php?option=com_sites&id=' . $this->facilityID . '&view=editequipment&equipmentid=' . $this->equipmentID) . '">[edit]</a></span>';
+        ?>
+
+        <?php
+            if($this->isMajor && $this->canedit)
+                echo '<a href="' .JRoute::_('/index.php?option=com_sites&id=' . $this->facilityID . '&view=editequipment&equipmentid=-1&parentequipmentid=' . $this->equipmentID) . '">[add subcomponent]</a>';
+        ?>
+
+
+        <hr>
 	
-	<div style="padding-left:25px; padding-bottom:10px; margin-top:10px; border: thin solid black; width:850px;">
+	<div style="padding-left:25px; padding-bottom:10px; margin-top:10px; width:850px;">
 		
 		<div style="padding-top:10px;">
 			<table style="width:700px; border: 0px;">
@@ -21,65 +33,46 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</table>
 		</div>
 			
-		<div style="padding-left:0px;">
-			<?php echo $this->fileSection; ?>
-		</div>
 	</div>
-	
-	
+
+        <div>
+            <?php
+                echo FacilityHelper::getViewSimpleFileBrowser($this->fileSection, "Equipment Documentation", $this->redirectURL)
+            ?>
+        </div>
+
+        <?php if($this->allowCreate)
+            echo '<a  style="padding-left: 0px; float: left;"href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&equipmentid=' . $this->equipmentID . '&redirectURL=' . $this->redirectURL ) . '">[Add Document]</a>';
+        ?>
+
+
+
 	<?php 
-	if (count($this->subequipList) > 0) 
-	{
-		
-		echo '<div style="padding-top:25px;">';
-		echo '	<h3 style=\"margin-top:10px;\">Subcomponent Listing</h3>';
-    	echo '</div>';
-    	
-
-		foreach($this->subequipList as $subequip) {
-
-			echo '<div style="margin-top:10px; margin-bottom:20px; border: thin solid black; width:850px;">';
-			
-			//print $header;
-			$subEquipId = $subequip->getId();
-			$subsubEquip = EquipmentPeer::findAllByParent($subEquipId);
-			
-			echo 	'<div style="padding-left:10px; padding-bottom:10px; padding-top:10px; margin-bottom:10px; font-weight:bold; background-color:#eee;"><a href="/sites/equipment/' . $this->facilityID . 
-					'?equipid=' . $subEquipId . '">' . $subequip->getName() . '</a></div>';
-			
-					
-		/***	
-			if(count($subsubEquip) > 0) {
-	        	echo 	'&nbsp;<a href="/?facid='. $this->facilityID .
-	        			'&equipid='. $subEquipId .
-	       			'&action=DisplayEquipmentList">(view subcomponents)</a>';
-			}
-		***/
-
-			
-			echo '<div style="padding-bottom: 20px; padding-left:20px">';
-			echo '<table style="width:500px; border-width: 0px;">';
-			echo $this->showEquipInfo($subequip);
-			echo '</table>';
-			
-			echo $this->printDocumentationList($subequip, $this->facility);
-			echo '</div>';
-			    
-			echo '</div>';
-		
-			//echo '</td>';
-			//echo '<td>' . $subequip->getEquipmentModel()->getEquipmentClass()->getClassName() . '</td>';
-			//echo '</table>';
-			
-		} // end for each
-
-		
-		
-	} // end if
-
-	?>
+        if (count($this->subequipList) > 0) {
 
 
+            echo'<div style="padding-top:30px;"><h3>Subcomponent Listing</h3></div> <hr>';
+            echo'<ul>';
+            foreach ($this->subequipList as $subequip) {
+
+                //FacilityHelper::CreateHideMoreSection('');
+
+                //print $header;
+                $subEquipmentId = $subequip->getId();
+                $subsubEquip = EquipmentPeer::findAllByParent($subEquipmentId);
+
+                echo '<li><a href="' . JRoute::_('index.php?option=com_sites&view=equipment&id=' . $this->facilityID . '&equipmentid=' . $subEquipmentId) . '">' . $subequip->getName() . '</a>';
+
+                // Take out the subcomponent detail, re-add it if someone asks for it, this page was a sloppy nightmare
+                // before
+                //echo $this->showEquipInfo($subequip);
+                //echo $this->printDocumentationList($subequip, $this->facility);
+
+            } // end for each
+            echo'</ul>';
+
+        } // end if
+?>
 
 
 

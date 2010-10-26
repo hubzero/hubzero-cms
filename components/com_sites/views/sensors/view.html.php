@@ -35,7 +35,6 @@ class sitesViewSensors extends JView {
         // Add Sensor tab info to breadcrumb
         $pathway->addItem("Sensors", JRoute::_('index.php?option=com_sites&view=sensors&id=' . $facilityID));
 
-
         // Pass the facility to the template, just let it grab what it needs
         $this->assignRef('facility', $facility);
 
@@ -49,14 +48,10 @@ class sitesViewSensors extends JView {
 
         $uploadCalibrations = $uploadSensors = $addNewSensor = $addNewSensorModel = $exportCalibrations = $exportSensors = $exportSensorModels = "";
 
-        //if ( $command->canAddSensor() )
-        //{
         $uploadCalibrations = '<a class="button2" href="' . JRoute::_('/index.php?option=com_sites&view=uploadsensorcalibrations&id=' . $facilityID) . '">Upload Calibrations</a>';
         $uploadSensors = '<a class="button2" href="' . JRoute::_('/index.php?option=com_sites&view=uploadsensors&id=' . $facilityID) . '">Upload Sensors</a>';
-        $addNewSensor = '<a class="button2" href="' . JRoute::_('/index.php?option=com_sites&view=XXXX&id=' . $facilityID) . '">Add New Sensor</a>';
-        $addNewSensorModel = '<a class="button2" href="' . JRoute::_('/index.php?option=com_sites&view=XXXX&id=' . $facilityID) . '">Add New Sensor Model</a>';
-        //}
-
+        $addNewSensor = '<a class="button2" href="' . JRoute::_('/index.php?option=com_sites&view=editsensor&sensorid=-1&id=' . $facilityID) . '">Add New Sensor</a>';
+        $addNewSensorModel = '<a class="button2" href="' . JRoute::_('/index.php?option=com_sites&view=editsensormodel&sensormodelid=-1&id=' . $facilityID) . '">Add New Sensor Model</a>';
         $exportCalibrations = '<a class="button2" href="' . JRoute::_('/index.php?option=com_sites&view=exportcalibrations&facid=' . $facilityID) . '">Export Calibrations</a>';
         $exportSensors = '<a class="button2" href="' . JRoute::_('/index.php?option=com_sites&view=exportsensors&facid=' . $facilityID) . '">Export Sensors</a>';
         $exportSensorModels = '<a class="button2" href="' . JRoute::_('/index.php?option=com_sites&view=exportsensormodels&facid=' . $facilityID) . '">Export Sensor Models</a>';
@@ -75,6 +70,15 @@ class sitesViewSensors extends JView {
         // See if current logged in user can edit in this facility
 	$allowEdit = FacilityHelper::canEdit($facility);
 	$this->assignRef('allowEdit', $allowEdit);
+
+	$allowCreate = FacilityHelper::canCreate($facility);
+	$this->assignRef('allowCreate', $allowCreate);
+
+
+        // The ability to add sensor models is special, it is something that will affect all
+        // facilities
+        $allowAddSensorModel = FacilityHelper::canCreateSensorModel($facility);
+        $this->assignRef('allowaddsensormodel', $allowAddSensorModel);
 
 
         parent::display($tpl);

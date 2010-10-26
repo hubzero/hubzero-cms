@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</div>
 
         <?php if($this->allowEdit)
-            echo '<a style="padding-left: 0px; margin-left: 10px; float: left;" href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=Facility&subinfo=History&redirecURL=' . $this->redirectURL) . '">[Add Document]</a>';
+            echo '<a style="padding-left: 0px; margin-left: 10px; float: left;" href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&infotype=Facility&subinfo=History&redirectURL=' . $this->redirectURL) . '">[Add Document]</a>';
         ?>
 
 

@@ -134,23 +134,22 @@ var sensorModels = [];
 <div id="facility-subpage-primarycontent">
 
 <?php if(JRequest::getVar('msg'))
-        echo '<p class="passed">' . JRequest::getVar('msg', '', 'post', 'string', JREQUEST_ALLOWRAW) . '</p>';
+        echo '<p class="passed">' . JRequest::getVar('msg', '', 'get', 'string', JREQUEST_ALLOWRAW) . '</p>';
 ?>
 
 <?php if(JRequest::getVar('errorMsg'))
-        echo '<p class="failed">' . JRequest::getVar('errorMsg', '', 'post', 'string', JREQUEST_ALLOWRAW) . '</p>';
+        echo '<p class="failed">' . JRequest::getVar('errorMsg', '', 'get', 'string', JREQUEST_ALLOWRAW) . '</p>';
 ?>
 
-<h2>Add Sensor</h2>
+<h2><?php if($this->sensorid == -1) echo 'Add'; else echo 'Edit';?> Sensor</h2>
 <hr>
 
 <?php JHTML::_('behavior.calendar'); ?>
 
     <form method="post">
 
-        <input type="hidden" name="task" value="savesite"></input>
         <input type="hidden" name="id" value="<?php echo $this->facility->getId();?>"/>
-        <input type="hidden" name="task" value="editsensor">
+        <input type="hidden" name="task" value="savesensor">
         <input type="hidden" name="sensorid" value="<?php echo $this->sensorid;?>"/>
         <input type="hidden" name="originalName" value="<?php echo $this->originalName;?>" ?>
 
@@ -260,7 +259,6 @@ var sensorModels = [];
     </form>
 
 <div style="margin-top:50px"> <span class="requiredfieldmarker" >*</span> Denotes required field </div>
-
 
 </div>
 

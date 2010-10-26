@@ -22,8 +22,8 @@ class Sitesviewmajorequipment extends JView
     {
     	$facilityID = JRequest::getVar('id');
     	$facility = FacilityPeer::find($facilityID);
-  		$fac_name = $facility->getName();
-		$fac_shortname = $facility->getShortName();
+        $fac_name = $facility->getName();
+        $fac_shortname = $facility->getShortName();
 
         // Page title and breadcrumb stuff
         $mainframe = &JFactory::getApplication();
@@ -33,7 +33,7 @@ class Sitesviewmajorequipment extends JView
         $pathway->addItem( $fac_name,  JRoute::_('/index.php?option=com_sites&view=site&id=' . $facilityID));
                     	
         // Add Sensor tab info to breadcrumb
-        $pathway->addItem( "Equipment",  JRoute::_('index.php?option=com_sites&view=equipment&id=' . $facilityID));
+        $pathway->addItem( "Equipment",  JRoute::_('index.php?option=com_sites&view=majorequipment&id=' . $facilityID));
                 
     	// Pass the facility to the template, just let it grab what it needs
         $this->assignRef('facility', $facility);
@@ -47,7 +47,27 @@ class Sitesviewmajorequipment extends JView
         $this->assignRef('majorEquipment', $majorEquipment); 
         $this->assignRef('facilityID', $facilityID); 
         
-        
+
+        // See if current logged in user can add/edit in this facility
+	$canEdit = FacilityHelper::canEdit($facility);
+	$canAdd = FacilityHelper::canCreate($facility);
+	$this->assignRef('canEdit', $canEdit);
+	$this->assignRef('canAdd', $canAdd);
+
+        $addNewEquipment = '<a class="button2" href="' . JRoute::_('/index.php?option=com_sites&view=editequipment&id=' . $facilityID . '&equipmentid=-1') . '">Add New Equipment</a>';
+        $this->assignRef('addnewequipment', $addNewEquipment);
+
+
+        // The add new equipment model is reserved for admins and super admins only, it has a sitewide effect
+        $user =& JFactory::getUser();
+        if($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
+            $isadmin = true;
+        $this->assignRef('isadmin', $isadmin);
+
+        $addNewEquipmentModel = '<a class="button2" href="' . JRoute::_('/index.php?option=com_sites&view=editequipmentmodel&id=' . $facilityID . '&equipmentmodelid=-1') . '">Add New Equipment Model</a>';
+        $this->assignRef('addnewequipmentmodel', $addNewEquipmentModel);
+
+
         parent::display($tpl);
     }
 }

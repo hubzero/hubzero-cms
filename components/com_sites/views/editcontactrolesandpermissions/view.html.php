@@ -58,7 +58,7 @@ class sitesVieweditcontactrolesandpermissions extends JView
         $user =& JFactory::getUser();
 		$username = $user->get('username');
        
-        $auth = Authorizer::getInstanceForUseOnHub($username, $facilityID, DomainEntityType::ENTITY_TYPE_FACILITY);
+        $auth = HubAuthorizer::getInstanceForUseOnHub($username, $facilityID, DomainEntityType::ENTITY_TYPE_FACILITY);
         $this->assignref('auth',$auth);
 
         // The id of the person we are trying to edit

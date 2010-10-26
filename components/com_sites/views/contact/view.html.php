@@ -10,6 +10,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
  
 jimport( 'joomla.application.component.view');
+jimport( 'joomla.user.helper' );
+
  
 /**
  * 
@@ -46,16 +48,49 @@ class sitesViewContact extends JView
     	// Get the tabs for the top of the page
         $tabs = FacilityHelper::getFacilityTabs(1, $facilityID);
         $this->assignRef('tabs', $tabs); 
-        
-        
-	$facilityContactPerson = $this->findFacilityContactPerson($facility);      
-        $this->assignRef('facilityContactPerson', $facilityContactPerson); 
+
+        $allowEdit = FacilityHelper::canEdit($facility);
+        $this->assignRef('allowedit', $allowEdit);
+
+        /* @var $facilityContactPerson Person */
+	$facilityContactPerson = $this->findFacilityContactPerson($facility);
+        $facilityContactPerson->getUserName();
+
+
+        ximport('xprofile');
+
+        // Look up Joomla username
+        $JUserFacilityContactUserID = JUserHelper::getUserID($facilityContactPerson->getUserName());
+        $ContactJUser = new JUser();
+        $ContactJUser->load($JUserFacilityContactUserID);
+
+        $contactName = '';
+        $contactEmail = '';
+        if(!empty($ContactJUser))
+        {
+            $contactName = $ContactJUser->get('name');
+            $contactEmail = $ContactJUser->get('email');
+        }
+
+        // Attempt to load an account with this email address
+        $userXProfile = null;
+
+        $xProfiles = XProfileHelper::find_by_email($contactEmail);
+        $userXProfile = XProfile::getInstance($xProfiles[0]);
+
+        //var_dump($userXProfile);
+        $contactPhone = '';
+        if(!empty($userXProfile))
+            $contactPhone = $userXProfile->get('phone');
+
+        $this->assignRef('contactName', $contactName);
+        $this->assignRef('contactEmail', $contactEmail);
+        $this->assignRef('contactPhone', $contactPhone);
 		
         // For all the files to be included 
-        $fileBrowserObj = new DataFileBrowserSimple($facility);
-        $this->assignRef('fileBrowserObj', $fileBrowserObj); 
+        //$fileBrowserObj = new DataFileBrowserSimple($facility);
+        //$this->assignRef('fileBrowserObj', $fileBrowserObj);
         $infotype =  "VisitorInformation";
-        
         
         $drivingFDs = FacilityDataFilePeer::findByDetails($facilityID, $infotype, "Driving Instruction", "");
         $driving_datafiles = array();

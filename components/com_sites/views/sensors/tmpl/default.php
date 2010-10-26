@@ -124,19 +124,15 @@ function swap(divName) {
 
 	</table>
 
-        <?php if($this->allowEdit) { ?>
-            <div class="sectheaderbtn" style="width:900px;">
-                    <?php //echo $this->addsensor; ?>
-
-                    <?php //echo $this->uploadSensors; ?>
-                    <?php //echo $this->uploadCalibrations; ?>
-
-
-                    <?php echo $this->exportCalibrations; ?>
-                    <?php echo $this->exportSensors; ?>
-                    <?php echo $this->exportSensorModels; ?>
-            </div>
-        <?php } ?>
+        <div class="sectheaderbtn" style="width:1000px;">
+            <?php if($this->allowCreate) echo $this->addNewSensor; ?>
+            <?php if($this->allowCreate) echo $this->addNewSensorModel; ?>
+            <?php echo $this->exportCalibrations; ?>
+            <?php echo $this->exportSensors; ?>
+            <?php echo $this->exportSensorModels; ?>
+            <?php if($this->allowCreate) echo $this->uploadSensors; ?>
+            <?php if($this->allowCreate) echo $this->uploadCalibrations; ?>
+        </div>
 
 </div>
 

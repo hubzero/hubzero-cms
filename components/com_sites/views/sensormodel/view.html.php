@@ -49,7 +49,8 @@ class sitesViewsensormodel extends JView
         $tabs = FacilityHelper::getFacilityTabs(4, $facilityID);
         $this->assignRef('tabs', $tabs); 
 
-        $this->assignRef('facilityID', $facilityID); 
+        $this->assignRef('facilityID', $facilityID);
+        $this->assignRef('sensormodelid',$sensorModelID);
         
         // The sensor model info
         $sensorModel = SensorModelPeer::find($sensorModelID);
@@ -61,7 +62,15 @@ class sitesViewsensormodel extends JView
         // The group values (Standard Specifications) for the model
         $groupvalues = SensorModelPeer::findGroupValues( $sensorModelID );
         $this->assignRef('groupvalues', $groupvalues);
-        
+
+        // See if current logged in user can edit in this facility
+	$canedit = FacilityHelper::canEdit($facility);
+	$this->assignRef('canedit', $canedit);
+
+        $allowCreate = FacilityHelper::canCreate($facility);
+        $this->assignRef('allowCreate', $allowCreate);
+
+
         //**** For the Sensor Model Documentation section
 		
         // Make dirs for this Sensor if we forgot to make them
@@ -75,23 +84,9 @@ class sitesViewsensormodel extends JView
         //$datafilebrowser = $dfObject->makeDataFileBrowser();
         //$this->assignRef('datafilebrowser', $datafilebrowser);
 
-
-
-        $basepath = $sensorModel->getPathname() . "/Documentation";
-        $this->assignRef('basepath', $basepath);
-        $dfs = DataFilePeer::findDataFileBrowser($basepath);
-
-        $datafiles = array();
-
-        foreach ($dfs as $df) {
-        /* @var $df DataFile */
-        //name, directory, created, filesize
-
-            $datafiles[] = $df;
-        }
-
-        // Lets pass these to the template
-        $this->assignRef('datafiles', $datafiles);
+        // Grab the sensor model files
+        $fileSection = $this->getDocList($sensorModel,$facility);
+        $this->assignRef('fileSection', $fileSection);
 
 
         $uri  =& JURI::getInstance();
@@ -168,5 +163,22 @@ class sitesViewsensormodel extends JView
 		return $OpTRange;
 	}
 	
-	
+
+    function getDocList($sensormodel, $facility) {
+        /* @var $sensormodel SensorModel */
+        $basepath = $sensormodel->getPathname() . "/Documentation";
+
+        //$dfs = DataFilePeer::findDataFileBrowser($basepath);
+        $dfs = DataFilePeer::findAllInDir($basepath);
+
+        $datafiles = array();
+
+        foreach ($dfs as $df) {
+            /* @var $df DataFile */
+            $datafiles[] = $df;
+        }
+
+        return $datafiles;
+    }
+
 }

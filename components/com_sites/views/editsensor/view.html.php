@@ -48,8 +48,11 @@ class sitesVieweditsensor extends JView
         // Add facility name to breadcrumb
         $pathway->addItem($fac_name, JRoute::_('index.php?option=com_sites&view=site&id=' . $facilityID));
 
-        // Add Sensor tab info to breadcrumb
+        // Add Sensor to breadcrumb
         $pathway->addItem("Sensors", JRoute::_('index.php?option=com_sites&view=sensors&id=' . $facilityID));
+
+        // Add current page to breadcrumb
+        $pathway->addItem((($sensorID == -1) ? 'Add' : 'Edit'). ' Sensor' , JRoute::_('index.php?option=com_sites&view=editsensor&id=' . $facilityID) . '&sensorid=' . $sensorID);
 
         // Get the tabs for the top of the page
         $tabs = FacilityHelper::getFacilityTabs(4, $facilityID);
@@ -57,7 +60,9 @@ class sitesVieweditsensor extends JView
 
         // See if current logged in user can edit in this facility
 	$allowEdit = FacilityHelper::canEdit($facility);
+	$allowCreate = FacilityHelper::canCreate($facility);
 	$this->assignRef('$allowEdit', $allowEdit);
+	$this->assignRef('$allowCreate', $allowCreate);
 
         // Sensor type dropdown
         $this->assignRef('sensorTypes', $this->getSensorTypes());
@@ -101,12 +106,33 @@ class sitesVieweditsensor extends JView
             //Specify which sensor type to select by default (for adds)
             $selectedSensorTypeId = 2; //accelerometer
             $this->assignRef('selectedSensorTypeId', $selectedSensorTypeId);
-        }
 
-        if($allowEdit)
+            $blank = '';
+            $this->assignRef('name', $blank);
+            $this->assignRef('originalName', $blank);
+            $this->assignRef('serialNumber', $blank);
+            $this->assignRef('localId', $blank);
+            $this->assignRef('supplier', $blank);
+            $this->assignRef('commissionDate', $blank);
+            $this->assignRef('decommissionDate', $blank);
+
+            $this->assignRef('manufacturer',  $blank);
+            $this->assignRef('sensorModelId',  $blank);
+
+       }
+
+        
+        if($sensorID != -1 && $allowEdit)
             parent::display($tpl);
         else
-            echo 'You are not authorized to create or edit sensor model data';
+            echo 'You are not authorized to edit sensors';
+
+        if($sensorID == -1 && $allowCreate)
+            parent::display($tpl);
+        else
+            echo 'You are not authorized to create sensors';
+
+
     }
 
 

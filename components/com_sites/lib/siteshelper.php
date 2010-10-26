@@ -8,6 +8,19 @@ class FacilityHelper
 {
 
 
+    /*
+     * Detect admin and super admin users
+     */
+    static function isAdmin() {
+        $isadmin = false;
+
+        $user = & JFactory::getUser();
+        if ($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
+            $isadmin = true;
+
+        return $isadmin;
+    }
+
     /******************************************************************************************
      * 7 Tabs total:
      * 1 - Main
@@ -103,8 +116,10 @@ class FacilityHelper
 
         $forceGrantall = FacilityHelper::shouldDisableRevocation($facility);
 
-        $auth = Authorizer::getInstanceForUseOnHub($editorUserName, $facilityID, DomainEntityType::ENTITY_TYPE_FACILITY);
-        $can_grant = $auth->canGrant($facility);
+        $auth = HubAuthorizer::getInstanceForUseOnHub($editorUserName, $facilityID, DomainEntityType::ENTITY_TYPE_FACILITY);
+        $can_grant = FacilityHelper::canGrant($facility);
+
+        //var_dump($can_grant);
 
         if(!$can_grant)
         {
@@ -159,21 +174,91 @@ class FacilityHelper
     }
 	
 
+    /**
+    * A short way to check a person can have edit permission to create / edit a sensor model or not
+    * simply by checking if there is at least one edit permission on any Facility
+    *
+    * @return boolean
+    */
+    static function canEditSensorModel($facility)
+    {
+        $can_edit = false;
+        $user =& JFactory::getUser();
+
+        if($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
+        {
+            $can_edit = true;
+        }
+        else
+        {
+            if($user->id > 1)
+            {
+                $username = $user->get('username');
+                $auth = HubAuthorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+                $can_edit = AuthorizationPeer::CanDoInAnyFacility($auth->getUserId(), "create");
+            }
+            else
+                $can_edit = false;
+        }
+
+        return $can_edit;
+
+    }
+
+
+    /**
+    * A short way to check a person can have edit permission to create / edit a sensor model or not
+    * simply by checking if there is at least one edit permission on any Facility
+    *
+    * @return boolean
+    */
+    static function canCreateSensorModel($facility)
+    {
+        $can_create = false;
+        $user =& JFactory::getUser();
+
+        if($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
+        {
+            $can_create = true;
+        }
+        else
+        {
+            if($user->id > 1)
+            {
+                $username = $user->get('username');
+                $auth = HubAuthorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+                $can_create = AuthorizationPeer::CanDoInAnyFacility($auth->getUserId(), "create");
+            }
+            else
+                $can_create = false;
+        }
+        
+        return $can_create;
+    }
+
+
 
     static function canGrant($facility)
     {
         $can_grant = false;
-        /*$user =& JFactory::getUser();
+        $user =& JFactory::getUser();
 
-        if($user->id > 1)
+        if($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
         {
-            $username = $user->get('username');
-            $auth = Authorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
-            $can_grant = $auth->canGrant($facility);
+            $can_grant = true;
         }
         else
-            $can_grant = false;
-        */
+        {
+            if($user->id > 1)
+            {
+                $username = $user->get('username');
+                $auth = HubAuthorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+                $can_grant = $auth->canGrant($facility);
+            }
+            else
+                $can_grant = false;
+        }
+
         return $can_grant;
     }
 
@@ -181,17 +266,24 @@ class FacilityHelper
     static function canEdit($facility)
     {
         $can_edit = false;
-        /*$user =& JFactory::getUser();
+        $user =& JFactory::getUser();
 
-        if($user->id > 1)
+        if($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
         {
-            $username = $user->get('username');
-            $auth = Authorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
-            $can_edit = $auth->canEdit($facility);
+            $can_edit = true;
         }
         else
-            $can_edit = false;
-        */
+        {
+            if($user->id > 1)
+            {
+                $username = $user->get('username');
+                $auth = HubAuthorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+                $can_edit = $auth->canEdit($facility);
+            }
+            else
+                $can_edit = false;
+        }
+
         return $can_edit;
     }
 
@@ -199,15 +291,25 @@ class FacilityHelper
     static function canCreate($facility)
     {
         $can_create = false;
-        /*$user =& JFactory::getUser();
+        $user =& JFactory::getUser();
 
-        if($user->id > 1)
+        if($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
         {
-            $username = $user->get('username');
-            $auth = Authorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
-            $can_create = $auth->canCreate($facility);
+            $can_create = true;
         }
-        */
+        else
+        {
+            if($user->id > 1)
+            {
+                $username = $user->get('username');
+                $auth = HubAuthorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+                $can_create = $auth->canCreate($facility);
+            }
+            else
+                $can_create = false;
+
+        }
+        
         return $can_create;
     }
 
@@ -215,15 +317,24 @@ class FacilityHelper
     static function canDelete($facility)
     {
         $can_delete = false;
-        /*$user =& JFactory::getUser();
+        $user =& JFactory::getUser();
 
-        if($user->id > 1)
+        if($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
         {
-            $username = $user->get('username');
-            $auth = Authorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
-            $can_delete = $auth->canCreate($facility);
+            $can_delete = true;
         }
-        */
+        else
+        {
+            if($user->id > 1)
+            {
+                $username = $user->get('username');
+                $auth = HubAuthorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+                $can_delete = $auth->canCreate($facility);
+            }
+            else
+                $can_delete = false;
+        }
+
         return $can_delete;
     }
 
@@ -249,12 +360,6 @@ class FacilityHelper
 
         return null;
     }
-
-
-
-
-
-
 
 
     static function getViewSimpleFileBrowser($datafiles, $rootname, $redirectURL)
@@ -311,7 +416,7 @@ class FacilityHelper
                 $df_filesize = filesize($df_fullpath);
             }
 
-            $cleansize = cleanSize($df_filesize);
+            $cleansize = FacilityHelper::cleanSize($df_filesize);
             $file_url = $df->get_url();
 
             $canDeleteLink = ($canDelete) ? '<a onclick="return confirm(\'Are you sure you want to delete this document?\');" class="imagelink-no-underline" href="'.JRoute::_('index.php?option=com_sites&task=deletefile&id=' . $facilityID . '&fileid=' . $df_id . '&redirectURL=' . $redirectURL).'"><img title="Delete" alt="Delete" src="/components/com_sites/images/cross.png"></a>' : '';
@@ -395,6 +500,72 @@ ENDHTML;
             return $part1."...".$part2;
         }
         return $str;
+
+    }
+
+
+################################################################################
+## size cleaning function
+################################################################################
+    function cleanSize($size, $precision = null) {
+        $default_precision = 0;
+
+        if ($size >= 1099511627776) {
+            $size = $size / 1099511627776;
+            $unit = " TB";
+            $default_precision = 2;
+        } elseif ($size >= 1073741824) {
+            $size = $size / 1073741824;
+            $unit = " GB";
+            $default_precision = 1;
+        } elseif ($size >= 1048576) {
+            $size = $size / 1048576;
+            $unit = " MB";
+        } elseif ($size >= 1024) {
+            $size = $size / 1024;
+            $unit = " KB";
+        } else {
+            $unit = " b";
+        }
+
+        if (is_null($precision))
+            $precision = $default_precision;
+        $size = round($size, $precision);
+        return "$size $unit";
+    }
+
+
+
+    public static function CreateHideMoreSection($text, $defaultShowLength=250)
+    {
+
+        $rv = '';
+        $randNum = mt_rand();
+        $shortText = trim(substr($text, 0, $defaultShowLength));
+
+
+        if(strlen($text) > $defaultShowLength)
+        {
+            $rv = <<<ENDHTML
+            <div id="d$randNum-short" >
+                <p>$shortText...
+                    <a class="morelesslink" href="javascript:void(0);" onclick="document.getElementById('d$randNum-long').style.display='';document.getElementById('d$randNum-short').style.display='none';">[more]</a>
+                </p>
+            </div>
+            <div id="d$randNum-long" style="display:none;">
+                <p>
+                    $text <a class="morelesslink" href="javascript:void(0);" onclick="document.getElementById('d$randNum-short').style.display='';document.getElementById('d$randNum-long').style.display='none';">[less]</a>
+                </p>
+            </div>
+ENDHTML;
+
+        }
+        else
+        {
+            $rv = $text;
+        }
+
+        return $rv;
 
     }
 

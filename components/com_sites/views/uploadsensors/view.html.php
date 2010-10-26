@@ -23,8 +23,8 @@ class sitesViewuploadsensors extends JView
     	
     	$facilityID = JRequest::getVar('id');
     	$facility = FacilityPeer::find($facilityID);
-  		$fac_name = $facility->getName();
-		$fac_shortname = $facility->getShortName();
+        $fac_name = $facility->getName();
+        $fac_shortname = $facility->getShortName();
 
         // Page title and breadcrumb stuff
         $mainframe = &JFactory::getApplication();
@@ -37,13 +37,18 @@ class sitesViewuploadsensors extends JView
         
         // Add Sensor tab info to breadcrumb
         $pathway->addItem( "Sensors",  JRoute::_('index.php?option=com_sites&view=sensors&id=' . $facilityID));
-    	
+
+        // Add Upload Sensors tab info to breadcrumb
+        $pathway->addItem( "Upload Sensors",  JRoute::_('index.php?option=com_sites&view=uploadsensors&id=' . $facilityID));
+
+
         // Get the tabs for the top of the page
         $tabs = FacilityHelper::getFacilityTabs(4, $facilityID);
         $this->assignRef('tabs', $tabs); 
 
         // Pass the facility to the template, just let it grab what it needs
         $this->assignRef('facility', $facility);
+        $this->assignRef('facilityid', $facilityID);
         
         
         parent::display($tpl);

@@ -15,6 +15,14 @@ defined('_JEXEC') or die('Restricted access');
 <div id="facility-subpage-primarycontent">
 
 	<h2>Sensor Model: <?php echo $this->sensorModel->getName(); ?></h2>
+
+        <?php
+        if($this->canedit)
+        {
+            echo '<a href="'. JRoute::_('/index.php?option=com_sites&view=editsensormodel&sensormodelid=' . $this->sensormodelid . '&id=' . $this->facilityID) .'">[edit]</a>';
+        }
+        ?>
+
         <hr>
 
 	<table cellspacing="0" cellpadding="0" style="width:800px; border:0px;">
@@ -44,8 +52,14 @@ defined('_JEXEC') or die('Restricted access');
     </table>
 
 
-    <?php     
-        echo FacilityHelper::getViewSimpleFileBrowser($this->datafiles, "Sensor Model Documentation", $this->redirectURL)
+    <div>
+        <?php
+        echo FacilityHelper::getViewSimpleFileBrowser($this->fileSection, "Sensor Model Documentation", $this->redirectURL)
+        ?>
+    </div>
+
+    <?php if($this->allowCreate)
+        echo '<a  style="padding-left: 0px; float: left;"href="' . JRoute::_('index.php?option=com_sites&view=editsitefile&id=' . $this->facilityID . '&sensormodelid=' . $this->sensormodelid . '&redirectURL=' . $this->redirectURL ) . '">[Add Document]</a>';
     ?>
 
 
