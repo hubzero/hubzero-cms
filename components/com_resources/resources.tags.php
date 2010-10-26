@@ -105,9 +105,31 @@ class ResourcesTags extends Tags
 		if ($type) {
 			$sql .= "AND r.type=".$type." ";
 		}
-		$sql .= (!$juser->get('guest'))     
+		/*$sql .= (!$juser->get('guest'))     
 			  ? "AND (r.access=0 OR r.access=1) " 
-			  : "AND r.access=0 ";
+			  : "AND r.access=0 ";*/
+		if (!$juser->get('guest')) {
+			ximport('xuserhelper');
+			$xgroups = XUserHelper::getGroups($juser->get('id'), 'all');
+			if ($xgroups != '') {
+				$usersgroups = $this->getUsersGroups($xgroups);
+				if (count($usersgroups) > 1) {
+					$groups = implode("','",$usersgroups);
+				} else {
+					$groups = count($usersgroups) ? $usersgroups[0] : '';
+				}
+				$sql .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('".$groups."') ";
+				foreach ($usersgroups as $group)
+				{
+					$sql .= " OR r.group_access LIKE '%;".$group.";%'";
+				}
+				$sql .= "))) ";
+			} else {
+				$sql .= "AND (r.access=0 OR r.access=1 OR r.access=3) ";
+			}
+		} else {
+			$sql .= "AND (r.access=0 OR r.access=3) ";
+		}
 		if ($ids) {
 			$sql .= "AND o.objectid IN ($ids) ";
 		}
@@ -133,6 +155,22 @@ class ResourcesTags extends Tags
 			}
 		}
 		return $rows;
+	}
+	
+	//-----------
+	
+	public function getUsersGroups($groups)
+	{
+		$arr = array();
+		if (!empty($groups)) {
+			foreach ($groups as $group)
+			{
+				if ($group->regconfirmed) {
+					$arr[] = $group->cn;
+				}
+			}
+		}
+		return $arr;
 	}
 	
 	//-----------
@@ -226,9 +264,31 @@ class ResourcesTags extends Tags
 		}
 		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '".$now."') ";
 		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '".$now."') AND ";
-		$query .= (!$juser->get('guest'))     
+		/*$query .= (!$juser->get('guest'))     
 			   ? "(C.access=0 OR C.access=1) " 
-			   : "(C.access=0) ";
+			   : "(C.access=0) ";*/
+		if (!$juser->get('guest')) {
+			ximport('xuserhelper');
+			$xgroups = XUserHelper::getGroups($juser->get('id'), 'all');
+			if ($xgroups != '') {
+				$usersgroups = $this->getUsersGroups($xgroups);
+				if (count($usersgroups) > 1) {
+					$groups = implode("','",$usersgroups);
+				} else {
+					$groups = count($usersgroups) ? $usersgroups[0] : '';
+				}
+				$query .= "(C.access=0 OR C.access=1 OR C.access=3 OR (C.access=4 AND (C.group_owner IN ('".$groups."') ";
+				foreach ($usersgroups as $group)
+				{
+					$query .= " OR C.group_access LIKE '%;".$group.";%'";
+				}
+				$query .= "))) ";
+			} else {
+				$query .= "(C.access=0 OR C.access=1 OR C.access=3) ";
+			}
+		} else {
+			$query .= "(C.access=0 OR C.access=3) ";
+		}
 		if ($tag || $tag2) {
 			if ($tag && !$tag2) {
 				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('".$tag."'))";
@@ -284,7 +344,7 @@ class ResourcesTags extends Tags
 				$rows = $results;
 			}
 		}*/
-		
+		echo '<!-- '.$query.' -->';
 		return $rows;
 	}
 	
