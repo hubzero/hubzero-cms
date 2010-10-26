@@ -305,7 +305,7 @@ class AnswersController extends Hubzero_Controller
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
-		
+
 		// Updating entry
 		$row->created = $row->created ? $row->created : date( "Y-m-d H:i:s" );
 		$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('username');

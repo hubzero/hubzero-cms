@@ -3,7 +3,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 
-$text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
+$text = ( $this->task == 'edita' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
 
 JToolBarHelper::title( JText::_( 'Answer' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
 JToolBarHelper::save( 'savea', 'Save Answer' );
@@ -40,11 +40,11 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if (form.answer.value == ''){
+	/*if (form.answer.value == ''){
 		alert( 'Answer must have a response' );
-	} else {
+	} else {*/
 		submitform( pressbutton );
-	}
+	//}
 }
 </script>
 
@@ -107,7 +107,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 	
-	<input type="hidden" name="answer[qid]" value="<?php echo $this->qid; ?>" />
+	<input type="hidden" name="answer[qid]" value="<?php echo $this->row->qid; ?>" />
 	<input type="hidden" name="answer[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="savea" />

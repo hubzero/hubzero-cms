@@ -2,7 +2,7 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
+$text = ( $this->task == 'editq' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
 JToolBarHelper::title( JText::_( 'Question' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
 JToolBarHelper::spacer();
 if ($this->task == 'edit') {
@@ -33,9 +33,9 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if (form.subject.value == ''){
+	if (document.getElementById('q_subject').value == ''){
 		alert( 'Question must have a subject' );
-	} else if (form.tags.value == ''){
+	} else if (document.getElementById('q_tags').value == ''){
 		alert( 'Question must have at least one tag' );
 	} else {
 		submitform( pressbutton );
@@ -59,7 +59,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label>Subject: <span class="required">*</span></label></td>
-						<td><input type="text" name="question[subject]" size="30" maxlength="250" value="<?php echo stripslashes($this->row->subject); ?>" /></td>
+						<td><input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo stripslashes($this->row->subject); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key" style="vertical-align:top;"><label>Question:</label></td>
@@ -67,7 +67,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label>Tags: <span class="required">*</span></label></td>
-						<td><input type="text" name="question[tags]" size="30" value="<?php echo $this->tags; ?>" /></td>
+						<td><input type="text" name="question[tags]" id="q_tags" size="30" value="<?php echo $this->tags; ?>" /></td>
 					</tr>
 				</tbody>
 			</table>
@@ -80,8 +80,8 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="question[created_by]">Change Creator:</label></td>
-						<td colspan="2"><input type="text" name="created_by" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->created_by; ?>" /></td>
+						<td class="key"><label for="created_by">Change Creator:</label></td>
+						<td colspan="2"><input type="text" name="question[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->created_by; ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="created">Created Date:</label></td>
