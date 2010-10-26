@@ -92,11 +92,83 @@ class ResourcesTags extends Tags
 			$ids = implode(",",$s);
 		}
 		
+		/* OLD NO ADMIN TAGS
 		$sql = "SELECT t.id, t.tag, t.raw_tag, r.id AS rid, 0 AS ucount, NULL AS rids 
 				FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o, #__resources AS r
 				WHERE o.tbl='$this->_tbl' 
 				AND o.tagid=t.id 
 				AND t.admin=0 
+				AND o.objectid=r.id 
+				AND r.published=1 
+				AND r.standalone=1
+				AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= '$now') 
+				AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= '$now') ";
+				*/
+		$sql = "SELECT t.id, t.tag, t.raw_tag, t.admin, t.description, r.id AS rid, 0 AS ucount, NULL AS rids 
+				FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o, #__resources AS r
+				WHERE o.tbl='$this->_tbl' 
+				AND o.tagid=t.id 
+				AND o.objectid=r.id 
+				AND r.published=1 
+				AND r.standalone=1
+				AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= '$now') 
+				AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= '$now') ";
+		if ($type) {
+			$sql .= "AND r.type=".$type." ";
+		}
+		$sql .= (!$juser->get('guest'))     
+			  ? "AND (r.access=0 OR r.access=1) " 
+			  : "AND r.access=0 ";
+		if ($ids) {
+			$sql .= "AND o.objectid IN ($ids) ";
+		}
+		$sql .= "ORDER BY t.admin DESC, t.description DESC, t.raw_tag ASC"; //added in sorting by additional description and admin
+
+		$this->_db->setQuery( $sql );
+		$results = $this->_db->loadObjectList();
+		
+		$rows = array();
+		if ($results) {
+			foreach ($results as $result) 
+			{
+				if (!isset($rows[$result->id])) {
+					$rows[$result->id] = $result;
+					$rows[$result->id]->ucount++;
+					$rows[$result->id]->rids = array($result->rid);
+				} else {
+					if (!in_array($result->rid,$rows[$result->id]->rids)) {
+						$rows[$result->id]->ucount++;
+						$rows[$result->id]->rids[] = $result->rid;
+					}
+				}
+			}
+		}
+		return $rows;
+	}
+	
+	
+	//-----------
+public function get_tags_with_objects_searched($id=0, $type=0, $tag='', $terms='', $use_tag_title=false) 
+	{
+		$juser =& JFactory::getUser();
+		$now  = date( 'Y-m-d H:i:s', time() );
+		
+		$this->_db->setQuery( "SELECT objectid FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_tbl'" );
+		$objs = $this->_db->loadObjectList();
+		$ids = '';
+		if ($objs) {
+			$s = array();
+			foreach ($objs as $obj) 
+			{
+				$s[] = $obj->objectid;
+			}
+			$ids = implode(",",$s);
+		}
+		
+		$sql = "SELECT t.id, t.tag, t.raw_tag, t.admin, t.description, r.id AS rid, 0 AS ucount, NULL AS rids 
+				FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o, #__resources AS r
+				WHERE o.tbl='$this->_tbl' 
+				AND o.tagid=t.id 
 				AND o.objectid=r.id 
 				AND r.published=1 
 				AND r.standalone=1
@@ -133,7 +205,19 @@ class ResourcesTags extends Tags
 		if ($ids) {
 			$sql .= "AND o.objectid IN ($ids) ";
 		}
-		$sql .= "ORDER BY t.raw_tag ASC";
+		if ($use_tag_title)
+		{
+			$sql .= " AND t.raw_tag LIKE '";
+			$sql .= $terms;
+			$sql .= "' "; 
+		}
+		else if ($terms != '') //adding in search term
+		{
+			$sql .= " AND r.title LIKE '%";
+			$sql .= $terms;
+			$sql .= "%' ";
+		}
+		$sql .= "ORDER BY t.admin DESC, t.description DESC, t.raw_tag ASC"; //added in sorting by additional description and admin
 
 		$this->_db->setQuery( $sql );
 		$results = $this->_db->loadObjectList();
@@ -345,6 +429,165 @@ class ResourcesTags extends Tags
 			}
 		}*/
 		echo '<!-- '.$query.' -->';
+		return $rows;
+	}
+	
+//-----------
+	
+	public function get_objects_on_tag_searched( $tag='', $id=0, $type=0, $sortby='title', $tag2='', $filterby=array() , $terms = '', $category_tag = false) 
+	{
+		$juser =& JFactory::getUser();
+		$now  = date( 'Y-m-d H:i:s', time() );
+		$searchTerm = ($category_tag)? "(TA.tag IN ('" . $terms . "'))" : "C.title LIKE '%" . $terms . "%'";
+		if ($tag || $tag2) {
+			$query  = "SELECT C.id, TA.tag,  COUNT(DISTINCT TA.tag) AS uniques, ";
+			if ($type == 7) {
+				$query.= "TV.title ";
+			} else {
+				$query.= "C.title ";
+			}
+			switch ($sortby) 
+			{
+				case 'users':
+					$query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 AND ".$searchTerm."ORDER BY rs.datetime DESC LIMIT 1) AS users ";
+				break;
+				case 'jobs':
+					$query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 AND ".$searchTerm."ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
+				break;
+			}
+			$query .= "FROM #__resources AS C ";
+			if ($id) {
+				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
+			}
+			if ($type == 7) {
+				//$query .= " JOIN #__tool AS TL ON C.alias=TL.toolname JOIN #__tool_version as TV on TV.toolid=TL.id AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolid=TL.id AND TV.state=1 GROUP BY TV.toolid) ";
+				if (!empty($filterby)) {
+					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
+				}
+				$query .= ", #__tool_version as TV ";
+			}
+			/*if ($id) {
+				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
+			}*/
+			$query .= ", $this->_obj_tbl AS RTA INNER JOIN #__tags AS TA ON (RTA.tagid = TA.id) ";
+			
+		} else {
+			$query  = "SELECT C.id,  ";
+			if ($type == 7) {
+				$query.= "TV.title ";
+			} else {
+				$query.= "C.title ";
+			}
+			switch ($sortby) 
+			{
+				case 'users':
+					$query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=12 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
+				break;
+				case 'jobs':
+					$query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=12 ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
+				break;
+			}
+			$query .= "FROM #__resources AS C ";
+			if ($id) {
+				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
+			}
+			if ($type == 7) {
+				if (!empty($filterby)) {
+					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
+				}
+				$query .= ", #__tool_version as TV ";
+			}
+		}
+		
+		$query .= "WHERE C.published=1 AND C.standalone=1 ";
+		if ($type) {
+			$query .= "AND C.type=".$type." ";
+		}
+		if ($type == 7) {
+			$query .= " AND TV.toolname=C.alias AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolname=C.alias AND TV.state=1 GROUP BY TV.toolid) ";
+		}
+		if (!empty($filterby) && $type == 7) {
+			$fquery = " AND ((";
+			for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
+			{
+				$fquery .= " TTA.".$filterby[$i]." = '1'";
+				$fquery .= ($i + 1) == $n ? "" : " OR ";
+			}
+			$fquery .= ") OR (";
+			for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
+			{
+				$fquery .= " TTA.".$filterby[$i]." IS NULL";
+				$fquery .= ($i + 1) == $n ? "" : " OR ";
+			}
+			$fquery .= "))";
+			$query .= $fquery;
+		}
+		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '".$now."') ";
+		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '".$now."') AND ";
+		$query .= (!$juser->get('guest'))     
+			   ? "(C.access=0 OR C.access=1) " 
+			   : "(C.access=0) ";
+		if ($tag || $tag2) {
+			if ($tag && !$tag2) {
+				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('".$tag."'))";
+				$query .= " GROUP BY C.id HAVING uniques=1";
+			} else if ($tag2 && !$tag) {
+				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('".$tag2."'))";
+				$query .= " GROUP BY C.id HAVING uniques=1";
+			} else if ($tag && $tag2) {
+				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('".$tag."','".$tag2."'))";
+				$query .= " GROUP BY C.id HAVING uniques=2";
+			}
+		}
+		
+		//add in search term
+		$query .= " AND ". $searchTerm;
+			
+		switch ($sortby) 
+		{
+			case 'ranking':
+				$sort = "ranking DESC";
+			break;
+			case 'date':
+				$sort = "publish_up DESC";
+			break;
+			case 'users':
+				$sort = "users DESC";
+			break;
+			case 'jobs':
+				$sort = "jobs DESC";
+			break;
+			default:
+			case 'title':
+				$sort = "title ASC";
+			break;
+		}
+		$query .= " ORDER BY ".$sort.", publish_up";
+		//echo '<!-- '.$query.' -->';
+		$this->_db->setQuery( $query );
+		$rows = $this->_db->loadObjectList();
+		
+		
+		/*if ($rows) {
+			if (!empty($filterby) && $type == 7) {
+				$results = array();
+				foreach ($rows as $key => $row)
+				{
+					$inc = false;
+					for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
+					{
+						if (isset($row->$filterby[$i]) && $row->$filterby[$i] == 1) {
+							$inc = true;
+						}
+					}
+					if ($inc) {
+						$results[] = $row;
+					}
+				}
+				$rows = $results;
+			}
+		}*/
+		
 		return $rows;
 	}
 	
