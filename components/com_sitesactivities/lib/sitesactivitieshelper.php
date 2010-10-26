@@ -81,7 +81,7 @@ class SitesActivitiesHelper {
 
         $forceGrantall = FacilityHelper::shouldDisableRevocation($facility);
 
-        $auth = Authorizer::getInstanceForUseOnHub($editorUserName, $facilityID, DomainEntityType::ENTITY_TYPE_FACILITY);
+        $auth = HubAuthorizer::getInstanceForUseOnHub($editorUserName, $facilityID, DomainEntityType::ENTITY_TYPE_FACILITY);
         $can_grant = $auth->canGrant($facility);
 
         if (!$can_grant) {
@@ -128,66 +128,108 @@ class SitesActivitiesHelper {
         $msg = 'Update sucessful';
     }
 
-    static function canGrant($facility) {
-        $can_grant = false;
-        /* $user =& JFactory::getUser();
 
-          if($user->id > 1)
-          {
-          $username = $user->get('username');
-          $auth = Authorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
-          $can_grant = $auth->canGrant($facility);
-          }
-          else
-          $can_grant = false;
-         */
+    static function canGrant($facility)
+    {
+        $can_grant = false;
+        $user =& JFactory::getUser();
+
+        if($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
+        {
+            $can_grant = true;
+        }
+        else
+        {
+            if($user->id > 1)
+            {
+                $username = $user->get('username');
+                $auth = HubAuthorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+                $can_grant = $auth->canGrant($facility);
+            }
+            else
+                $can_grant = false;
+        }
+
         return $can_grant;
     }
 
-    static function canEdit($facility) {
-        $can_edit = false;
-        /* $user =& JFactory::getUser();
 
-          if($user->id > 1)
-          {
-          $username = $user->get('username');
-          $auth = Authorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
-          $can_edit = $auth->canEdit($facility);
-          }
-          else
-          $can_edit = false;
-         */
+    static function canEdit($facility)
+    {
+        $can_edit = false;
+        $user =& JFactory::getUser();
+
+        if($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
+        {
+            $can_edit = true;
+        }
+        else
+        {
+            if($user->id > 1)
+            {
+                $username = $user->get('username');
+                $auth = HubAuthorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+                $can_edit = $auth->canEdit($facility);
+            }
+            else
+                $can_edit = false;
+        }
+
         return $can_edit;
     }
 
-    static function canCreate($facility) {
-        $can_create = false;
-        /* $user =& JFactory::getUser();
 
-          if($user->id > 1)
-          {
-          $username = $user->get('username');
-          $auth = Authorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
-          $can_create = $auth->canCreate($facility);
-          }
-         */
+    static function canCreate($facility)
+    {
+        $can_create = false;
+        $user =& JFactory::getUser();
+
+        if($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
+        {
+            $can_create = true;
+        }
+        else
+        {
+            if($user->id > 1)
+            {
+                $username = $user->get('username');
+                $auth = HubAuthorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+                $can_create = $auth->canCreate($facility);
+            }
+            else
+                $can_create = false;
+
+        }
+
         return $can_create;
     }
 
-    static function canDelete($facility) {
-        $can_delete = false;
-        /* $user =& JFactory::getUser();
 
-          if($user->id > 1)
-          {
-          $username = $user->get('username');
-          $auth = Authorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
-          $can_delete = $auth->canCreate($facility);
-          }
-         */
+    static function canDelete($facility)
+    {
+        $can_delete = false;
+        $user =& JFactory::getUser();
+
+        if($user->usertype == "Super Administrator" || $user->usertype == "Administrator")
+        {
+            $can_delete = true;
+        }
+        else
+        {
+            if($user->id > 1)
+            {
+                $username = $user->get('username');
+                $auth = HubAuthorizer::getInstanceForUseOnHub($username, $facility->getId(), DomainEntityType::ENTITY_TYPE_FACILITY);
+                $can_delete = $auth->canCreate($facility);
+            }
+            else
+                $can_delete = false;
+        }
 
         return $can_delete;
     }
+
+
 
     public static function getNawiStatus($facilityid) {
 

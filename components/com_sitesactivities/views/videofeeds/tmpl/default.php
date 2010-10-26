@@ -12,7 +12,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <?php echo $this->tabs;?>
 
-
 <div id="mainpage-facilities-main" style="width:1100px; min-width: 1100px">
 
 	<div id="mainpage-facilities-lhs">
@@ -75,10 +74,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
                     <div id="flash-title" style="width:320px"><?php echo $this->first_name; ?></div>
 
+
                 </div>
 
                 <div style="width:350px;float:left;">
+
                     <?php echo $this->href_thumbs; ?>
+
                 </div>
 
             <?php
@@ -95,7 +97,15 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 	</div>
 
+    <span style="padding-top: 30px; float:left; font-size:11px;">
+        <a href="javascript:alert('If you are logged in and viewing this page, you might get a security warning. This is because the streaming image data from each of our equipment sites might not be coming from an encrypted server. It is not a cause for concern, here are the ways to remedy the issue in several popular browsers.  \n\n1. Internet Explorer - will issue a security warning popup that asks you if you only want view the webpage content that was delivered securely. Click yes. To make the change permanent, Tools->Internet Options->Security Tab. Press the Custom Level button and scroll to find the \'Display Mixed Content\' item and select \'Enable\'\n \n2. Firefox will issue a popup saying some of the content on the page is unencrypted. On the dialog box you will see a checkbox that asks you if you want to be warned about viewing encrypted pages with unencrypted content. Make sure the checkbox is unchecked, then select \'OK\' \n\n3. Chrome - By default, Chrome will not issue a popup on this page, but it will put a small red X to the left of the https in the browser address bar. Clicking the red X will display a security summary of the page, where you will be advised elements of the page are not secure. \n\n4. Safari - Safari doesn\'t not show a warning for mixed content websites ');">
+        Getting security warning messges?
+        </a>
+    </span>
+
+
 </div>
+
 
 
 

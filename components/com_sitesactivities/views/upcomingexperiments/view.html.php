@@ -41,11 +41,9 @@ class sitesactivitiesViewupcomingexperiments extends JView
         $this->assign('facilityID', $facilityID);
     	$facility = FacilityPeer::find($facilityID);
 
-        
         // Breadcrumb additions
         $pathway->addItem( 'Site Experiments', JRoute::_('/index.php?option=com_sitesactivities&view=upcomingexperiments'));
         $pathway->addItem( $facility->getName() . ' experiments', JRoute::_('/index.php?option=com_sitesactivities&id=' . $facilityID . '&view=upcomingexperiments'));
-
 
         // If a facility is defined for this page
     	if($facility)
@@ -81,9 +79,12 @@ class sitesactivitiesViewupcomingexperiments extends JView
 
             $this->assignRef('feedcount', $feedcount);
 
-            // Show the edit site status link
+            // Store off some rights for use later in edit and add links
             $canedit = SitesActivitiesHelper::canEdit($facility);
             $this->assignRef('canedit', $canedit);
+
+            $cancreate = SitesActivitiesHelper::canCreate($facility);
+            $this->assignRef('cancreate', $cancreate);
 
             // Get the current site status
             $sitestatus = SitesActivitiesHelper::getNawiStatus($facilityID);
@@ -166,6 +167,7 @@ class sitesactivitiesViewupcomingexperiments extends JView
                 foreach ( $nawiexp as $nawifac )
                 {
                     /* @var $nawifac NAWIFacility */
+                    /* @var $nawi NAWI */
                     $nawi = $nawifac->getNAWI();
                     $fac = $nawifac->getOrganization();
 
@@ -173,10 +175,19 @@ class sitesactivitiesViewupcomingexperiments extends JView
                     $exp_descript = SitesActivitiesHelper::CreateHideMoreSection( $nawi->getExperimentDescription(), 250);
 
                     $movie_url = stripslashes( $nawi->getMovieUrl() );
-                    $newDate = $nawi->getTestDate();
+                    $newDate = $nawi->getTestDate('Y-m-d H:i');
                     $expPhase = $nawi->getExperimentPhase();
                     $testTimeZone = $nawi->getTestTimeZone();
                     $nawiId = $nawi->getId();
+
+                    if($canedit)
+                    {
+                        $editlink = '<a href="' . JRoute::_('/index.php?option=com_sitesactivities&view=editexperiment&id=' . $facilityID . '&experimentid=' . $nawiId) . '">[edit]</a>';
+                    }
+                    else
+                    {
+                        $editlink = '';
+                    }
 
 
                     if ($expPhase == 'DESIGN') {
@@ -230,7 +241,8 @@ class sitesactivitiesViewupcomingexperiments extends JView
                                         </td>
                                         <td>
                                             Status: $phase_name $flink $mlink<br/>
-                                            Planned for $newDate $testTimeZone
+                                            Planned for $newDate $testTimeZone<br/>
+                                            $editlink
                                         </td>
                                     </tr>
                                 </table>
@@ -255,7 +267,8 @@ ENDHTML;
                                     </td>
                                     <td>
                                         Status: $phase_name $mlink<br/>
-                                        Planned for $newDate $testTimeZone
+                                        Planned for $newDate $testTimeZone<br/>
+                                        $editlink
                                     </td>
                                 </tr>
                             </table>

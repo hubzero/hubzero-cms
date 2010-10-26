@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</ul>
 			<li class="facility-type-header-li">Tsunami Wave Basins</li>
 				<ul>
-					<li class="facility-header-li"><a href="<?php echo JRoute::_('/index.php?option=com_sitesactivities&view=siteactivities&id=200')?>">Oregon State University</a></li>
+					<li class="facility-header-li"><a href="<?php echo JRoute::_('/index.php?option=com_sitesactivities&view=upcomingexperiments&id=200')?>">Oregon State University</a></li>
 				</ul>
 		</ul>
 	</div>
@@ -62,6 +62,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			Select a NEES site either from the left or the map above to view detailed experiment information and equipment availability
 		</div>
 		
+		<div style="padding-top:10px; width:460px;">
+                    <a href="http://widgets.yahoo.com/widgets/neesactivities">Download</a> the NEES Activities Yahoo! Widget. This widget lets you view
+                    the above map and also gives NEES site admins the ability to update their site status - all from your own desktop.
+                </div>
+
+
 
 	</div>
 

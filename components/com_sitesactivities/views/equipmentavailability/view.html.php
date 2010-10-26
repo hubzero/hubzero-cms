@@ -60,7 +60,10 @@ class sitesactivitiesViewequipmentavailability extends JView
         	
         $this->assignRef('facilityName', $facilityName);
 			
-			
+	// Page has no edit, but needs this know if it should display the KB article on how to setup the calendars
+        $canedit = SitesActivitiesHelper::canEdit($facility);
+        $this->assignRef('canedit', $canedit);
+
         parent::display($tpl);
     }
 }

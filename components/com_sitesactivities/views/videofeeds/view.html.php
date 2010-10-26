@@ -1,21 +1,21 @@
 <?php
 /**
- * @package		NEEShub
+ * @package		NEEShub 
  * @author		David Benham (dbenha@purdue.edu)
  * @copyright           Copyright 2010 by NEES
 */
-
+ 
 // no direct access
-
+ 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+ 
 jimport( 'joomla.application.component.view');
-
+ 
 /**
- *
- *
+ * 
+ * 
  */
-
+ 
 class sitesactivitiesViewvideofeeds extends JView
 {
     function display($tpl = null)
@@ -29,23 +29,21 @@ class sitesactivitiesViewvideofeeds extends JView
         $pathway   =& $mainframe->getPathway();
         $document->setTitle('Site Video Feeds');
 
-
     	// Get the site
         $facilityID = JRequest::getVar('id');
 
         if($facilityID == null)
         {
-            $facilityID = 228; //hardcode the second one (UCLA has no feeds)
+            $facilityID = 228; //if none provided, deafault to the second one (UCLA has no feeds)
             JRequest::setVar('id', '228');
         }
 
         $this->assign('facilityID', $facilityID);
     	$facility = FacilityPeer::find($facilityID);
 
-        // Breadcrum additions
+        // Breadcrumb additions
         $pathway->addItem( 'Site Video Feeds', JRoute::_('index.php?option=com_sitesactivities&view=videofeeds'));
         $pathway->addItem( $facility->getName() . ' live video feeds', JRoute::_('/index.php?option=com_sitesactivities&id=' . $facilityID . '&view=videofeeds'));
-
 
         // If a facility is defined for this page
     	if($facility)
@@ -53,33 +51,36 @@ class sitesactivitiesViewvideofeeds extends JView
             $facilityName = $facility->getName();
             $flexURL =    $facility->getFlexTpsUrl();
 
+            // Somes sites' TPSSErver have URLs that requiring cleaning before use. Not sure why we just
+            // don't update DB with sanitized version of the URL.
             preg_match("/^(https?:\/\/)?([a-zA-Z0-9\\-\\.\\/]+)(\/?site\/?|\/?feeds\/?|\/?collaboration\/?|\/?portal\/?|\/?dvr\/?)?$/Ui",
                 $flexURL, $matches);
 
             $cleanflexURL = isset($matches[2]) ? "http://" . rtrim($matches[2], '/') : "";
             $flexURL = rtrim($matches[0], '/');
 
-            // To allow for timeouts from the flextps servers, one in particular (UCLA) is invalid, this
-            // supress that error plus deal with future flextps server response time/malfunctions in the
-            // future as well. DRB 8.2.2010
+            // BUGFIX - To allow for quicker timeouts from the flextps servers
+            // Previous timeout was 30 seconds, it was aggravating users. DRB 8.2.2010
             $context = stream_context_create(array(
                 'http' => array('timeout' => 3)
             ));
 
-            // The @ is supressing errors, most likely the only error will be a timeout error
-            // as long as is empty afterwards, we're good
+            // The @ is supressing errors, most likely the only error will be a timeout error.
+            // Regardless of error, as long as $xmlresult is empty afterwards, we're good, user will only see
+            // blankness, no nasty error messages
             $xmlresult = '';
             $xmlresult = @file_get_contents("$cleanflexURL/feeds", false, $context);
 
+            // Grab each stream
             preg_match_all("/<stream\s+id=\"([^\"]*)\"\s+xlink:href=\"([^\"]*)\">(.*)<\/stream>/Us",
                 $xmlresult, $matches, PREG_SET_ORDER);
 
             $href_thumbs = "";
-
             $feed_count = count($matches);
             $this->assignRef('feed_count', $feed_count);
 
             $faccount = 1;
+            
             foreach ($matches as $key => $streams ) {
                 preg_match("/<max-connection-length>([\d]+)<\/max-connection-length>/U", $streams[3], $submatches);
                 $timeout = $submatches[1];
@@ -91,6 +92,7 @@ class sitesactivitiesViewvideofeeds extends JView
                 $name_stream_trunc = $name . ' : ' . $name_stream;
                 $name_stream_trunc = rtrim(substr($name_stream_trunc, 0, 30)) . (strlen($name_stream_trunc) > 30 ? '...' : '' );
 
+               // Default the big display to the first feed
                 if (empty($first_href)) {
                     $first_href = $stream;
                     $first_timeout = $timeout;
@@ -100,18 +102,17 @@ class sitesactivitiesViewvideofeeds extends JView
                     $this->assignRef('first_name', $first_name);
                 }
 
-                if($stream === $first_href){
+                if($stream === $first_href)
                     $stream_class = "nawi_camview_caption-active";
-                }
-                else{
+                else
                     $stream_class = "nawi_camview_caption";
-                }
 
                 if($faccount == 1)
                     $activeItemClassName = 'feed-active';
                 else
                     $activeItemClassName = 'feed-inactive';
 
+                // Generate the static thumbs
                 $href_thumbs .= <<<ENDHTML
                     <div>
 
@@ -132,17 +133,15 @@ ENDHTML;
                 $faccount++;
             } // end foreach loop
 
-
-
         }
 
+        // pass to the view
         $this->assignRef('first_href', $first_href);
         $this->assignRef('href_thumbs', $href_thumbs);
         $this->assignRef('facilityName', $facilityName);
 
-
         parent::display($tpl);
 
     }
-
+    
 }

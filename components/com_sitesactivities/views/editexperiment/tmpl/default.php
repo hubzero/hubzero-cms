@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php JHTML::_('behavior.calendar'); ?>
 
 <div id="mainpage-facilities-header">
-	<h2>Edit Experiment</h2>
+	<h2> <?php if ($this->experimentid > -1) echo 'Edit'; else echo 'Add' ?>  Experiment</h2>
 </div>
 
 
@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <div id="mainpage-facilities-main">
 
-    <h3 style="margin-bottom:28px;">Update experiment</h3>
+    <h3> <?php if ($this->experimentid > -1) echo 'Edit'; else echo 'Add' ?>  Experiment</h3>
     <hr>
 
     <?php if(JRequest::getVar('msg'))
@@ -32,6 +32,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
         <input type="hidden" name="experimentid" value="<?php echo $this->experimentid?>">
         <input type="hidden" name="id" value="<?php echo $this->facilityid?>">
         <input type="hidden" name="task" value="updateexperiment">
+        <input type="hidden" name="reEdit" value ="<?php if(strlen(JRequest::getVar('errorMsg')>0)) echo '1'; else echo '0';?>">
 
         <table id="form" style="border:0px; margin-bottom:25px; margin-top:25px;" cellpadding="0" cellspacing="0" width="800px" >
 
@@ -61,25 +62,25 @@ defined('_JEXEC') or die('Restricted access'); ?>
                 <td>Description</td>
                 <td>
                     <textarea class="textentry" name="exp_descript" rows="10" style="width:600px;" wrap="virtual"><?php echo $this->exp_descript;?></textarea>
-
+                </td>
             </tr>
 
             <tr>
                 <td>Test Date/Time<span class="requiredfieldmarker">*</span></td>
-                <td><input size="16" maxlength="16" class="textentry" type="text" id="test_dt" name="test_dt" value=""/>
+                <td><input size="16" maxlength="16" class="textentry" type="text" id="test_dt" name="test_dt" value="<?php echo $this->testDate; ?>"/>
                 <img align="absmiddle" src="/components/com_warehouse/images/calendar/calendar-blue.png" alt="Calendar" onclick="return showCalendar('test_dt', '%m-%d-%Y');" />
 
                 (MM-DD-YYYY)
 
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input size="5" maxlength="5" type="text" name="test_time">  (HH:MM)
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input size="5" maxlength="5" type="text" name="test_time" value="<?php echo $this->testTime;?>">  (HH:MM)
 
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time Zone
                 <select name="test_tz" class="selectbox">
-                  <option value="PST" >PST</option>
-                  <option value="EST" >EST</option>
-                  <option value="MST" >MST</option>
-                  <option value="CST" >CST</option>
-                  <option value="GMT" >GMT</option>
+                  <option value="PST" <?php if($this->timezone == 'PST' ) echo 'selected' ?>>PST</option>
+                  <option value="MST" <?php if($this->timezone == 'MST' ) echo 'selected' ?>>MST</option>
+                  <option value="CST" <?php if($this->timezone == 'CST' ) echo 'selected' ?>>CST</option>
+                  <option value="EST" <?php if($this->timezone == 'EST' ) echo 'selected' ?>>EST</option>
+                  <option value="GMT" <?php if($this->timezone == 'GMT' ) echo 'selected' ?>>GMT</option>
                 </select>
               </td>
             </tr>
@@ -88,37 +89,37 @@ defined('_JEXEC') or die('Restricted access'); ?>
                 <td>Start Date<span class="requiredfieldmarker">*</span></td>
 
                 <td>
-                    <input size="10" maxlength="10" class="textentry" type="text" id="test_start" name="test_start" value=""/>
+                    <input size="10" maxlength="10" class="textentry" type="text" id="test_start" name="test_start" value="<?php echo $this->startDate; ?>"/>
                     <img align="absmiddle" src="/components/com_warehouse/images/calendar/calendar-blue.png" alt="Calendar" onclick="return showCalendar('test_start', '%m-%d-%Y');" />
                     (MM-DD-YYYY)
                 </td>
             </tr>
             <tr>
                 <td>End Date</td>
-                <td><input size="10" maxlength="10" class="textentry" type="text" id="test_end" name="test_end" value=""/>
+                <td><input size="10" maxlength="10" class="textentry" type="text" id="test_end" name="test_end" value="<?php echo $this->endDate; ?>"/>
                     <img align="absmiddle" src="/components/com_warehouse/images/calendar/calendar-blue.png" alt="Calendar" onclick="return showCalendar('test_end', '%m-%d-%Y');" />
                     (MM-DD-YYYY)</td>
             </tr>
             <tr>
                 <td>Contact Name<span class="requiredfieldmarker">*</span></td>
                 <td>
-                    <input size="36" maxlength="254" class="textentry" type="text" name="contact_name" value=""/>
+                    <input size="36" maxlength="254" class="textentry" type="text" name="contact_name" value="<?php echo $this->contactName; ?>"/>
                 </td>
             </tr>
 
             <tr>
                 <td>Contact Email<span class="requiredfieldmarker">*</span></td>
-                <td><input size="36" maxlength="254" class="textentry" type="text" name="contact_email" value=""/></td>
+                <td><input size="36" maxlength="254" class="textentry" type="text" name="contact_email" value="<?php echo $this->contactEmail; ?>"/></td>
             </tr>
 
             <tr>
                 <td>Movie URL</td>
-                <td><input size="36" maxlength="254" class="textentry" type="text" name="movie_url" value=""/></td>
+                <td><input size="36" maxlength="254" class="textentry" type="text" name="movie_url" value="<?php echo $this->movieURL; ?>"/></td>
             </tr>
 
             <tr>
                 <td>Feeds available</td>
-                <td><input name="active" type="checkbox"  checked /></td>
+                <td><input name="active" type="checkbox" <?php if ($this->feedsAvailable == 1) echo 'checked'; ?>  /></td>
 
             </tr>
 

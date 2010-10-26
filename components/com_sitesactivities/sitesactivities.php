@@ -19,7 +19,7 @@ Propel::init("api/org/phpdb/propel/central/conf/central-conf.php");
 //require_once 'lib/data/EquipmentPeer.php';
 //require_once 'lib/data/FacilityPeer.php';
 //require_once 'lib/data/FacilityDataFilePeer.php';
-require_once 'lib/security/Authorizer.php';
+require_once 'lib/security/HubAuthorizer.php';
 require_once 'lib/security/PermissionsViewPeer.php';
 require_once 'lib/security/Permissions.php';
 require_once 'lib/data/PersonEntityRolePeer.php';

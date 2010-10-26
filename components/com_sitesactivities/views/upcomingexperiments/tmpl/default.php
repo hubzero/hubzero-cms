@@ -97,6 +97,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
             </div>
 
             <h3>Experiment List</h3>
+            <?php if ($this->cancreate)
+                echo '<a href="' . JRoute::_('/index.php?option=com_sitesactivities&view=editexperiment&id=' . $this->facilityID . '&experimentid=-1') . '">[add]</a>';
+            ?>
+
             <hr style="margin-bottom:25px">
             <?php echo $this->explist_act; ?>
 

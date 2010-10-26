@@ -188,5 +188,8 @@ div.sectheaderbtn {
     background:#FFFFFF url(/components/com_activities/images/loading.gif) no-repeat scroll left top;
 }
 
-
 .morelesslink {font-size:small;}
+
+.calendar .button{
+    position: static;
+}

@@ -6,8 +6,7 @@
 // in a compact calendar format. The start, finish, and title fields are
 // inserted into a hover box that appears when each event is moused over.
 //
-// Currently configured to support 1-4 calendar feeds. Future work involves
-// making this dynamic so it can support over 4 feeds.
+// Currently configured to support 1-5 calendar feeds.
 //
 
 
@@ -20,7 +19,7 @@ var month_names = new Array("January", "February", "March", "April", "May", "Jun
 var day_names = new Array("Sunday", "Monday", "Tuesday","Wednesday","Thursday","Friday","Saturday");
 var day_codes = new Array("Su", "M", "Tu", "W", "Th", "F", "Sa");
 
-var colors = new Array("#FFA500", "rgb(102,139,217)", "#800080" , "rgb(140,191,64)" );
+var colors = new Array("#FFA500", "rgb(102,139,217)", "#800080" , "rgb(140,191,64)", "rgb(200,0,0)" );
 
 var start_on_monday = false;
 var weeks = 6;
@@ -72,13 +71,16 @@ function load_events(){
 	event_text_hash = new Array();
 
 	for (var i = 0; i < calendar_feeds.length; ++i){
-		var url = 'http://www.google.com/calendar/feeds/' + calendar_feeds[i] + '/public/full';
+                // One url is used to fetch the feed securely, the other is used in the feed to identify it
+                // in our code. Unfrotunatley, they can't be the same value
+		var url = 'https://www.google.com/calendar/feeds/' + calendar_feeds[i] + '/public/full';
+		var url2 = 'http://www.google.com/calendar/feeds/' + calendar_feeds[i] + '/public/full';
 
-		calendar_url_hash[url] = i;
+		calendar_url_hash[url2] = i;
 
 		url += '?callback=feed_handler&orderby=starttime&singleevents=true';
-		url += '&start-min='+startTime;
-		url += '&start-max='+endTime;
+		url += '&start-min=' + startTime;
+		url += '&start-max=' + endTime;
 		url += '&max-results=' + maxResults;
 		url += '&alt=json-in-script';
 
@@ -89,7 +91,9 @@ function load_events(){
 	}
 }
 
+
 function feed_handler(response){
+
 	var feed = response.feed;
 
 	var feed_id = feed['id'].$t;
@@ -336,6 +340,7 @@ function get_weeks_html(d){
 			week_html += '\t\t\t\t<div id="section-' + div_id + '-1" class="event-base event-1" ></div>\n';
 			week_html += '\t\t\t\t<div id="section-' + div_id + '-2" class="event-base event-2" ></div>\n';
 			week_html += '\t\t\t\t<div id="section-' + div_id + '-3" class="event-base event-3" ></div>\n';
+			week_html += '\t\t\t\t<div id="section-' + div_id + '-4" class="event-base event-4" ></div>\n';
 			week_html += '\t\t\t</div>\n';
 			week_html += '\t\t</td>\n';
 
