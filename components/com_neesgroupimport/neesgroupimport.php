@@ -270,7 +270,7 @@ function useraddmembership($groupname, $user, $type)
 
         if($userLookup)
         {
-
+/*
             // Manager or normal user? (1-manager, 2-normal user)
             if($type == 1)
             {
@@ -304,7 +304,7 @@ function useraddmembership($groupname, $user, $type)
             }
 
             $group->save();
-
+*/
         }
         else // cannot find user
         {
