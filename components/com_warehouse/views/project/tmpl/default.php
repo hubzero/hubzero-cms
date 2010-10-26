@@ -12,7 +12,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
   $strUsername = $this->strUsername;
   $oAuthorizer = Authorizer::getInstance();
-  $oAuthorizer->setUser($strUsername);
 ?>
 
 <?php
@@ -77,10 +76,28 @@ defined('_JEXEC') or die( 'Restricted access' );
           <div id="stats" style="border-width: 1px; border-style: dashed; border-color: #cccccc; ">
         <?php } ?>
           <p style="margin-left:10px; margin-top:10px;"><?php echo $this->iEntityActivityLogViews; ?> Views</p>
-          
           <p style="margin-left:10px;"><?php echo $this->iEntityActivityLogDownloads; ?> Downloads</p>
         </div>
-        
+
+        <?php 
+          #Check to see if the current user can edit the project.
+          if($oAuthorizer->canEdit($oProject)):
+        ?>
+          <div id="editEntity" class="admin-options" style="margin-top:30px">
+            <p class="edit"><a href="/warehouse/projecteditor/project/<?php echo $oProject->getId(); ?>">Edit this project</a></p>
+	    <!--<p class="delete"><a href="/collaborate/groups/curation/delete">Delete this project</a></p>-->
+          </div>
+        <?php endif; ?>
+
+        <?php
+          #Check to see if the current user is the curator.
+          //if($oAuthorizer->canCurate($oProject)):
+          if(false):
+        ?>
+          <div id="editEntity" class="admin-options" style="margin-top:30px">
+            <p class="edit"><a href="#">Curate this project</a></p>
+          </div>
+        <?php endif; ?>
 
         <?php if($oAuthorizer->canView($oProject)){  ?>
         <div id="curation">
@@ -248,15 +265,16 @@ defined('_JEXEC') or die( 'Restricted access' );
                     </div>	
                   <?php 
                   }
-                  
+
+
                   if($this->publicationCount > 3){?>
-                  	<a href="">more...</a>
+                    <a href="/warehouse/publications/project/<?php echo $oProject->getId(); ?>">more...</a>
                   <?php }
                 ?>
               </td>
             </tr>
             <tr id="tags">
-              <td style="font-weight:bold;" nowrap="">Tags (related projects):</td>
+              <td style="font-weight:bold;" nowrap="">Tags (keywords):</td>
               <td><?php echo $this->mod_warehousetags; ?></td>
             </tr>
           </table>

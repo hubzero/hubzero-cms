@@ -41,7 +41,7 @@ class WarehouseViewMore extends JView{
      * grab the nees pagination object.  joomla's
      * pagination object doesn't handle the proper uri.
      */
-    $oDbPagination = new DbPagination($iPageIndex, $iResultsCount, $iDisplay);
+    $oDbPagination = new DbPagination($iPageIndex, $iResultsCount, $iDisplay, $iLowerLimit, $iUpperLimit);
     $oDbPagination->computePageCount();
     $this->assignRef('pagination', $oDbPagination->getFooter24($_SERVER['REQUEST_URI'], "frmPhotos", "project-list"));
 
@@ -49,26 +49,10 @@ class WarehouseViewMore extends JView{
     $oHubUser = $oMoreModel->getCurrentUser();
     $this->assignRef( "strUsername", $oHubUser->username );
     
-    $bSearch = false;
-	if(isset($_SESSION[Search::KEYWORDS]))$bSearch = true;
-	if(isset($_SESSION[Search::SEARCH_TYPE]))$bSearch = true;
-	if(isset($_SESSION[Search::FUNDING_TYPE]))$bSearch = true;
-	if(isset($_SESSION[Search::MEMBER]))$bSearch = true;
-	if(isset($_SESSION[Search::START_DATE]))$bSearch = true;
-	if(isset($_SESSION[Search::END_DATE]))$bSearch = true;
-	
-	//set the breadcrumbs
-	JFactory::getApplication()->getPathway()->addItem("Project Warehouse","/warehouse");
-	if($bSearch){
-	  JFactory::getApplication()->getPathway()->addItem("Results","/warehouse/find?keywords=".$_SESSION[Search::KEYWORDS]
-                                                                                    . "&type=".$_SESSION[Search::SEARCH_TYPE]
-                                                                                    . "&funding=".$_SESSION[Search::FUNDING_TYPE]
-                                                                                    . "&member=".$_SESSION[Search::MEMBER]
-                                                                                    . "&startdate=".$_SESSION[Search::START_DATE]
-                                                                                    . "&startdate=".$_SESSION[Search::END_DATE]);
-	}
-	JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"/warehouse/project/$iProjectId");
-	JFactory::getApplication()->getPathway()->addItem("More","#");
+    //set the breadcrumbs
+    JFactory::getApplication()->getPathway()->addItem("Project Editor","/warehouse/projecteditor");
+    JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"/warehouse/projecteditor/project/$iProjectId");
+    JFactory::getApplication()->getPathway()->addItem("More","#");
     parent::display($tpl);
   }
   

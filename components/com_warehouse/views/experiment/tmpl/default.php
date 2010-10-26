@@ -11,7 +11,17 @@ defined('_JEXEC') or die( 'Restricted access' );
   $document->addScript($this->baseurl."/components/com_warehouse/js/resources.js", 'text/javascript');
 ?>
 
-<?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
+
+
+<?php
+  $strUsername = $this->strUsername;
+  $oAuthorizer = Authorizer::getInstance();
+?>
+
+<?php
+  $oExperiment = unserialize($_REQUEST[Experiments::SELECTED]);
+  $oProject = $oExperiment->getProject();
+?>
  
 <div class="innerwrap">
   <div class="content-header">
@@ -26,19 +36,26 @@ defined('_JEXEC') or die( 'Restricted access' );
     <div id="treeBrowser" style="float:left;width:20%;"></div>
     
     <div id="overview_section" class="main section" style="width:100%;float:left;">
-      <?php $oExperiment = unserialize($_REQUEST[Experiments::SELECTED]); ?>
       
         <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
         <?php echo $this->strTabs; ?>
-        <div class="aside">
-          <p><?php //echo $oExperiment->getExperimentThumbnailHTML(); ?></p>
 
+        <?php if($oAuthorizer->canView($oExperiment)): ?>
+        <div class="aside">
           <div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">
             <p style="margin-left:10px; margin-top:10px;"><?php echo $this->iEntityActivityLogViews; ?> Views</p>
-
             <p style="margin-left:10px;"><?php echo $this->iEntityActivityLogDownloads; ?> Downloads</p>
           </div>
 
+          <?php
+            //if($oAuthorizer->canEdit($oProject)):
+            if($oAuthorizer->canEdit($oExperiment)):
+          ?>
+            <div id="editEntity" class="admin-options" style="margin-top:30px">
+              <p class="edit"><a href="/warehouse/projecteditor/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>">Edit this experiment</a></p>
+	      <!--<p class="delete"><a href="/collaborate/groups/curation/delete">Delete this project</a></p>-->
+            </div>
+          <?php endif; ?>
 
           <div id="curation">
             <span class="curationTitle">Curation progress:</span>
@@ -316,15 +333,19 @@ defined('_JEXEC') or die( 'Restricted access' );
                 ?>
 
                 <tr id="tags">
-                  <td class="entityDetail" nowrap="">Tags (related experiments):</td>
+                  <td class="entityDetail" nowrap="">Tags (keywords):</td>
                   <td><?php echo $this->mod_warehousetags; ?></td>
                 </tr>
               </table>
             </div>
           </div>
         </div>
+        <?php else: ?>
+          <p class="error">You don't have permission to view this experiment.</p>
+        <?php endif; ?>
+
     </div>
-	<!-- close overview_section -->
+    <!-- close overview_section -->
 	
     <div class="clear"></div>
   </div>

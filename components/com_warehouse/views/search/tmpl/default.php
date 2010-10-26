@@ -64,9 +64,10 @@ defined('_JEXEC') or die( 'Restricted access' );
       	  <table style="width:0px;border-bottom:0px;border-top:0px;margin-top:10px;">
 	        <tr>
 	          <td><label for="strKeywords">Keywords:</label></td>
-	          <td><input id="strKeywords" type="text" class="searchInput" name="keywords" value="earthquake"  onClick="this.value=''"/></td>
+	          <td><input id="strKeywords" type="text" class="searchInput" name="keywords" value=""  onClick="this.value=''"/></td>
 	          <td><input type="submit" value="GO"/></td>
 	        </tr>
+                <!--
 	        <tr>
 	          <td><label for="strType">Type:</label></td>
 	          <td colspan="2">
@@ -77,7 +78,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	          	  <option value="">Curated Projects</option>
 	          	</select>
 	          </td>
-	        </tr> 
+	        </tr>
+                -->
 	        <tr>
 	          <td><label for="strFunding">Funding:</label></td>
 	          <td colspan="2">

@@ -17,7 +17,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
   $strUsername = $this->strUsername;
   $oAuthorizer = Authorizer::getInstance();
-  $oAuthorizer->setUser($strUsername);
+  //$oAuthorizer->setUser($strUsername);
 ?>
 
 <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
@@ -26,7 +26,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <input type="hidden" id="txtExperiment" name="experiment" value="0"/>
 <input type="hidden" id="txtTrial" name="trial" value="0" />
 <input type="hidden" id="txtRepetition" name="repetition" value="0" />
-<input type="hidden" id="txtTool" name="tool" value="inDEED"/>
+<input type="hidden" id="txtTool" name="tool" value=""/>
 <div class="innerwrap">
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
@@ -46,20 +46,20 @@ defined('_JEXEC') or die( 'Restricted access' );
       <?php echo $this->strTabs; ?>
       
       <div class="aside">
-        <!--
         <fieldset>
             <label>
-                Sort by	<select name="sortby">
-                        <option selected="selected" value="description ASC">Title</option>
-                        <option value="cn ASC">Alias</option>
+                Find by	<select id="findby" name="findby">
+                        <option selected="selected" value="1">Title</option>
+                        <option value="2">Name</option>
                 </select>
             </label>
             <label>
-                    Search:	<input type="text" value="" name="search">
+                    Search:	<input type="text" value="" id="term" name="term">
             </label>
-            <input type="button" onClick="submitDataForm('frmData', '');" value="GO">
+            <input type="button" onClick="fileSearch('findby', 'term', 0, 'fileSearch');" value="GO">
         </fieldset>
-        -->
+
+        <div id="fileSearch"></div>
       </div>
       
       <div class="subject">
@@ -68,27 +68,21 @@ defined('_JEXEC') or die( 'Restricted access' );
           <p style="margin-bottom:30px;" class="information">Details of each experiment may be found in the <a href="/warehouse/experiments/<?php echo $oProject->getId(); ?>">Experiments</a> tab.</p>
         
           <?php echo $this->strSubTabs; ?>
-          
-          <div style="margin-top:20px; margin-bottom:10px;">
-            <div id="tools" style="float:left">
-              <?php echo $this->strToolArray; ?>
-            </div>
-            
-            <div id="filter" style="float:left; right: 0pt; position: absolute; margin-right:235px;">
-              <div id="experiments" style="float:left; margin-right:10px;">
-                <?php echo $this->strExperimentDropDown; ?>
-              </div>
-              <div id="trials" style="float:left; margin-right:10px;">
-                <?php echo $this->strTrialDropDown; ?>
-              </div>
-              <div id="repetitions" style="float:left;">
-                <?php echo $this->strRepetitionDropDown; ?>
-              </div>
-              <div class="clear"></div>
-            </div>
-            
-            <div class="clear"></div>
-          </div>
+
+          <table style="border:0px;margin-top:20px; margin-bottom:10px;">
+            <tr>
+              <td id="tools"><?php echo $this->strToolArray; ?></td>
+              <td align="right">
+                <table id="filter" style="border:0px;width:1px;">
+                  <tr>
+                    <td nowrap id="experiments"><?php echo $this->strExperimentDropDown; ?></td>
+                    <td nowrap id="trials"><?php echo $this->strTrialDropDown; ?></td>
+                    <td nowrap id="repetitions"><?php echo $this->strRepetitionDropDown; ?></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
           
           <?php echo $this->strDataFileArray; ?>
           

@@ -14,9 +14,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
 
 <?php
+  //$iPersonId = $this->iPersonId;
   $strUsername = $this->strUsername;
   $oAuthorizer = Authorizer::getInstance();
-  $oAuthorizer->setUser($strUsername);
+  //$oAuthorizer->setUser($strUsername);
 ?>
  
 <div class="innerwrap">
@@ -36,22 +37,20 @@ defined('_JEXEC') or die( 'Restricted access' );
       <?php echo $this->strTabs; ?>
         
       <form id="frmExperiments" style="margin:0px;padding:0px;">
-	    <input type="hidden" name="task" value="find"/>
-	    <input type="hidden" name="keywords" value="<?php echo $_REQUEST[Search::KEYWORDS]; ?>"/>
+        <input type="hidden" name="task" value="find"/>
+        <input type="hidden" name="keywords" value="<?php echo $_REQUEST[Search::KEYWORDS]; ?>"/>
         <div id="experiment-list" class="subject-full">
           <?php
-            if(!$oAuthorizer->canView($oProject)){?>
-              <p class="error">You don't have permission to view this project.</p>
-            <?php
-            }else{
               $strExperimentThumbnailArray = $_REQUEST[Experiments::THUMBNAILS];
 
               /* @var $oExperiment Experiment */
               /* @var $oIndeedDataFile DataFile */
               $iViewed = 0;
+              $iViewableExperiment = 0;
               $oExperimentArray = unserialize($_REQUEST[Experiments::EXPERIMENT_LIST]);
               foreach($oExperimentArray as $iExperimentIndex=>$oExperiment){
-          	  $iExperimentId = $oExperiment->getId();
+				
+              	$iExperimentId = $oExperiment->getId();
         	  $strTitle = $oExperiment->getTitle();
         	  $strStartDate = strftime("%B %d, %Y", strtotime($oExperiment->getStartDate()));
         	  $oDescriptionClob = StringHelper::neat_trim($oExperiment->getDescription(), 250);
@@ -67,7 +66,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                     $oIndeedDataFile = end($oIndeedDataFileArray);
                   }
 
-                  if($oAuthorizer->canView($oExperiment)==1){
+                  if($oAuthorizer->canView($oExperiment)){
                     if($iViewed > 0){
                       ?>
                         <hr size="1" color="#cccccc"/>
@@ -113,20 +112,29 @@ defined('_JEXEC') or die( 'Restricted access' );
                        <div class="clear"></div>
                       </div>
                     <?php
+                  }else{
+                    
                   }
               }//end foreach
-
+	
+    		          
               if($iViewed === 0){
-                if(empty ($oExperimentArray))  {
-                  ?> <p class="warning">No experiments found.</p> <?php
+                if(!$oAuthorizer->canView($oProject)){
+                ?>
+              	  <p class="error">You don't have permission to view this project.</p>
+            <?php
+                }
+            else if(empty ($oExperimentArray))  {
+                  ?> <p class="warning">No experiments found.</p> 
+                  <?php
                 }else{ 
-                  ?> <p class="error">You don't have permission to view this project.</p> <?php 
+                  ?> <p class="error">You don't have permission to view the experiments.</p> 
+                  <?php
                 }
                 ?>
                   
                 <?php
-              }
-            }//end if project
+            }//end if viewed
             ?>
       
         </div>

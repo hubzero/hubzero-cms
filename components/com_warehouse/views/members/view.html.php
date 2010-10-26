@@ -44,7 +44,7 @@ class WarehouseViewMembers extends JView{
     $iCount = $oMembersModel->findMembersForEntityCount($iProjectId);
     $this->assignRef( "iMemberCount", $iCount);
 
-    $oDbPagination = new DbPagination($iIndex, $iCount, $iDisplay);
+    $oDbPagination = new DbPagination($iIndex, $iCount, $iDisplay, $iLowerLimit, $iUpperLimit);
     $oDbPagination->computePageCount();
     $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmResults", "project-list"));
 
@@ -151,7 +151,7 @@ class WarehouseViewMembers extends JView{
    * @param int $p_iUpperLimit
    * @return array
    */
-  private function getMembersForEntityWithPagination($p_oMembersModel, $p_iProjectId, $p_iLowerLimit, $p_iUpperLimit){
+  private function getMembersForEntityWithPagination1($p_oMembersModel, $p_iProjectId, $p_iLowerLimit, $p_iUpperLimit){
     $profile = new XProfile();
 
     $oMembersArray = array();
@@ -194,6 +194,84 @@ class WarehouseViewMembers extends JView{
           //$oPersonArray['PICTURE'] = "/site/members/0".$oHubUser->id."/".$profile->get('picture');
         }
 
+        if($profile->get('public') == 1){
+          $oPersonArray['LINK'] = true;
+        }
+      }
+
+      array_push($oMembersArray, $oPersonArray);
+    }
+    return $oMembersArray;
+  }
+
+  /**
+   *
+   * @param WarehouseModelMembers $p_oMembersModel
+   * @param int $p_iProjectId
+   * @param int $p_iLowerLimit
+   * @param int $p_iUpperLimit
+   * @return array
+   */
+  private function getMembersForEntityWithPagination($p_oMembersModel, $p_iProjectId, $p_iLowerLimit, $p_iUpperLimit){
+    $profile = new XProfile();
+
+    $oMembersArray = array();
+
+    $oTeamMembersArray = $p_oMembersModel->findMembersForEntityWithPagination($p_iProjectId, 1, $p_iLowerLimit, $p_iUpperLimit);
+
+    $config =& JComponentHelper::getParams( 'com_members' );
+    $thumb = $config->get('webpath');
+    if (substr($thumb, 0, 1) != DS) {
+      $thumb = DS.$thumb;
+    }
+    if (substr($thumb, -1, 1) == DS) {
+      $thumb = substr($thumb, 0, (strlen($thumb) - 1));
+    }
+
+    // Default thumbnail
+    $dfthumb = $config->get('defaultpic');
+    if (substr($dfthumb, 0, 1) != DS) {
+      $dfthumb = DS.$dfthumb;
+    }
+
+    $dfthumb = $p_oMembersModel->createThumb($dfthumb);
+
+    /* @var $oPerson Person */
+    foreach($oTeamMembersArray as $oPerson){
+      $oPersonArray = array();
+
+      $oPersonArray['FIRST_NAME'] = ucfirst($oPerson->getFirstName());
+      $oPersonArray['LAST_NAME'] = ucfirst($oPerson->getLastName());
+      $oPersonArray['EMAIL'] = $oPerson->getEMail();
+      $oPersonArray['USER_NAME'] = $oPerson->getUserName();
+      $oPersonArray['ID'] = $oPerson->getId();
+      $oPersonArray['PERMISSIONS'] = "";
+      $oPersonArray['LINK'] = false;
+      $oPersonArray['PICTURE'] = $dfthumb;
+      $oPersonArray['HUB_ID'] = 0;
+
+      //lookup roles and permissions
+      $oMemberRoleAndPermissionsArray = $p_oMembersModel->getMemberRoleAndPermissionsCollection($oPersonArray['ID'], $p_iProjectId, 1);
+      $oMemberRoleArray = $oMemberRoleAndPermissionsArray[0];
+      $oPersonArray['ROLE'] = serialize($oMemberRoleArray);
+
+      $oHubUser = $p_oMembersModel->getMysqlUserByUsername($oPersonArray['USER_NAME']);
+      if($oHubUser){
+        //load the user
+        $profile->load( $oHubUser->id );
+
+        $oPersonArray['HUB_ID'] = $oHubUser->id;
+        $uthumb = '';
+        if ($profile->get('picture')) {
+          $uthumb = $thumb.DS.$p_oMembersModel->formatId($profile->get('uidNumber')).DS.$profile->get('picture');
+          $uthumb = $p_oMembersModel->createThumb($uthumb);
+        }
+
+        if ($uthumb && is_file(JPATH_ROOT.$uthumb)) {
+          $oPersonArray['PICTURE'] = $uthumb;
+        }
+
+        //check to see if we can show the link for this user
         if($profile->get('public') == 1){
           $oPersonArray['LINK'] = true;
         }

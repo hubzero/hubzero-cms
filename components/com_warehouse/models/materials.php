@@ -100,16 +100,16 @@ ENDHTML;
    * @returns html string
    */
   public function findMaterialPropertiesByExperimentHTML($p_oMaterial){
-  	$strPropertiesHTML = "<table style=\"border-bottom:0px;border-top:0px;margin-left:30px;\">";
-  	
-  	foreach($p_oMaterial->getMaterialProperties() as $oMaterialProperty){
-  	  $strPropertyName = $oMaterialProperty->getMaterialTypeProperty()->getName();
-  	  $strPropertyValue = $oMaterialProperty->getValue();
-  	  $strUnitName = "";
-  	  $strUnitAbbreviation = "";
-  	  $strUnits = "";
-  	  	
-  	  if( $oMaterialProperty->getUnit() ) {
+    $strPropertiesHTML = "<table style=\"border-bottom:0px;border-top:0px;margin-left:30px;\">";
+
+    foreach($p_oMaterial->getMaterialProperties() as $oMaterialProperty){
+      $strPropertyName = $oMaterialProperty->getMaterialTypeProperty()->getName();
+      $strPropertyValue = $oMaterialProperty->getValue();
+      $strUnitName = "";
+      $strUnitAbbreviation = "";
+      $strUnits = "";
+
+      if( $oMaterialProperty->getUnit() ) {
         if( $oMaterialProperty->getUnit()->getCategory()->getName() == 'Time' ) {
           $strUnitName = $oMaterialProperty->getUnit()->getName();
         } else {
@@ -118,21 +118,21 @@ ENDHTML;
       } else {
         $strUnits = $oMaterialProperty->getMaterialTypeProperty()->getUnits();
       }
-  	  	
-  	  $strPropertiesHTML .= <<< ENDHTML
-	    <tr>
-  	      <td nowrap width="1">$strPropertyName:</td>
-  	      <td>$strPropertyValue $strUnitName $strUnitAbbreviation $strUnits</td>
-  	    <tr>	            
+
+      $strPropertiesHTML .= <<< ENDHTML
+        <tr>
+          <td nowrap width="1">$strPropertyName:</td>
+          <td>$strPropertyValue $strUnitName $strUnitAbbreviation $strUnits</td>
+        <tr>
 ENDHTML;
-  	}
-  	
-  	if(sizeof($p_oMaterial->getMaterialProperties())==0){
-  	  $strPropertiesHTML .= "<tr><td>No properties listed.<td></tr>";
-  	}
-  	$strPropertiesHTML .= "</table>";
-  	  
-  	return $strPropertiesHTML;
+    }
+
+    if(sizeof($p_oMaterial->getMaterialProperties())==0){
+      $strPropertiesHTML .= "<tr><td>No properties listed.<td></tr>";
+    }
+    $strPropertiesHTML .= "</table>";
+
+    return $strPropertiesHTML;
   }
 
   /**

@@ -5,8 +5,14 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 require_once 'api/org/nees/html/TabHtml.php';
+require_once 'api/org/nees/static/Experiments.php';
 require_once 'lib/data/PersonPeer.php';
 require_once 'lib/data/EntityActivityLogPeer.php';
+require_once 'lib/data/SpecimenPeer.php';
+require_once 'lib/data/Project.php';
+require_once 'lib/data/Person.php';
+require_once 'lib/data/Experiment.php';
+require_once 'lib/security/Authorizer.php';
 
 class WarehouseModelBase extends JModel {
 
@@ -435,6 +441,89 @@ ENDHTML;
       //return the value
       return $oResultsArray[0];
     }
+
+    /**
+   * Returns an array of arrays.
+   * array[0] = roles
+   * array[1] = permissions
+   *
+   * @param int $p_iPersonId
+   * @param int $p_iEntityId
+   * @param int $p_iEntityTypeId
+   * @return array
+   */
+  public function getMemberRoleAndPermissionsCollection($p_iPersonId, $p_iEntityId, $p_iEntityTypeId){
+    $strPermissionsArray = array();
+    $oRoleArray = array();
+
+    $oPersonEntityRoleArray = PersonEntityRolePeer::findByPersonEntityEntityType($p_iPersonId, $p_iEntityId, $p_iEntityTypeId);
+    /* @var $oPersonEntityRole as PersonEntityRole */
+    foreach($oPersonEntityRoleArray as $oPersonEntityRole){
+      $oRole = $oPersonEntityRole->getRole();
+      array_push($oRoleArray, $oRole);
+
+      //get the permission string for this role
+      $strPermissions = $oPersonEntityRole->getRole()->getDefaultPermissions()->toString();
+
+      //explode string into array and push each element into temp array
+      $strExplodedPermissionsArray = explode(",", $strPermissions);
+      foreach($strExplodedPermissionsArray as $strPermission){
+        if(!array_search($strPermission, $strPermissionsArray)){
+          array_push($strPermissionsArray, $strPermission);
+        }
+      }
+
+    }//end foreach $oPersonEntityRoleArray
+
+    return array($oRoleArray, $strPermissionsArray);
+  }
+
+  public function getSpecimenByProjectId($p_iProjectId){
+    return SpecimenPeer::retrieveByPK($p_iProjectId);
+  }
+
+  /**
+   *
+   * @param Authorizer $p_oAuthorizer
+   * @param Project $p_oProject
+   * @return array
+   */
+  public function getViewableExperimentsByProject($p_oAuthorizer, $p_oProject){
+    $oViewableEntityArray = array(Experiments::SHOW => array(), Experiments::HIDE => array());
+    
+    $oExperimentArray = $p_oProject->getExperiments();
+
+
+    foreach($oExperimentArray as $oExperiment){
+      /* @var $oExperiment Experiment */
+      $bDeleted = $oExperiment->getDeleted();
+      if($p_oAuthorizer->canView($oExperiment) && !$bDeleted){
+        array_push($oViewableEntityArray[Experiments::SHOW], $oExperiment);
+      }else{
+        array_push($oViewableEntityArray[Experiments::HIDE], $oExperiment->getId());
+      }
+    }
+
+    return $oViewableEntityArray;
+  }
+
+  /**
+   *
+   * @param int $p_iProjectId
+   * @return Project
+   */
+  public function getProjectById($p_iProjectId){
+    return ProjectPeer::retrieveByPK($p_iProjectId);
+  }
+
+  /**
+   *
+   * @param int $p_iExperimentId
+   * @return Experiment
+   */
+  public function getExperimentById($p_iExperimentId){
+    return ExperimentPeer::retrieveByPK($p_iExperimentId);
+  }
 
 }
 ?>

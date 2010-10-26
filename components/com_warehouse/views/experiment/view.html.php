@@ -4,8 +4,10 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
+
 require_once 'libraries/joomla/application/module/helper.php';
 require_once 'lib/data/MaterialPeer.php';
+require_once 'lib/security/Authorizer.php';
 
 class WarehouseViewExperiment extends JView{
 	
@@ -25,7 +27,7 @@ class WarehouseViewExperiment extends JView{
     $this->assignRef( "projid", $iProjectId );
 
     $oProject = ProjectPeer::retrieveByPK($iProjectId);
-    $_REQUEST[Search::SELECTED] = serialize($oProject);
+    //$_REQUEST[Search::SELECTED] = serialize($oProject);
 
     $strTabArray = $oExperimentModel->getTabArray();
     $strTabViewArray = $oExperimentModel->getTabViewArray();
@@ -49,12 +51,10 @@ class WarehouseViewExperiment extends JView{
     $oDataFileArray = array();
     if(sizeof($oRepetitionArray)==1){
       $strName = trim($oRepetitionArray[0]->getName());
-
+      
       //get a list of files by rep_id and examine the first element
-      $oDataFileArray = DataFilePeer::getDataFilesByRepetition($oRepetitionArray[0]->getId());
-      if(!empty($oDataFileArray)){
-        $oDataFile = $oDataFileArray[0];
-
+      $oDataFile = DataFilePeer::getSingleDataFilesByRepetition($oRepetitionArray[0]->getId());
+      if($oDataFile){
         //get the position of the path up to the name
         $iIndex = strpos(trim($oDataFile->getPath()), $strName);
 
@@ -108,6 +108,10 @@ class WarehouseViewExperiment extends JView{
     // update and get the page views
     $iEntityDownloads = $oExperimentModel->getEntityDownloads(3, $oExperiment->getId());
     $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
+
+    /* @var $oHubUser JUser */
+    $oHubUser = $oExperimentModel->getCurrentUser();
+    $this->assignRef( "strUsername", $oHubUser->username );
 
     $this->assignRef( "mod_warehousedocs", ComponentHtml::getModule("mod_warehousedocs") );
     $this->assignRef( "mod_warehousetags", ComponentHtml::getModule("mod_warehousetags") );

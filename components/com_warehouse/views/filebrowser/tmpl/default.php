@@ -71,7 +71,7 @@ defined('_JEXEC') or die( 'Restricted access' );
               	switch($strOpeningTool){
               	  case 'inDEED':
                     $strLaunchInEED = NeesConfig::LAUNCH_INDEED;  
-              	    $strToolLink = "<a href='$strLaunchInEED=".$strLink."'>".$strOpeningTool."</a>";
+              	    $strToolLink = "<a href='$strLaunchInEED=".$strDirLink."'>".$strOpeningTool."</a>";
               	  break;
                 }
               }

@@ -26,8 +26,10 @@ class WarehouseViewResults extends JView{
     $iDisplay = JRequest::getVar('limit', 25);
     $iIndex = JRequest::getVar('index', 0);
     $iResultsCount = JRequest::getVar('count');
+    $iLowerLimit = JRequest::getVar('low', 0);
+    $iUpperLimit = JRequest::getVar('high', 0);
 
-    $oDbPagination = new DbPagination($iIndex, $iResultsCount, $iDisplay);
+    $oDbPagination = new DbPagination($iIndex, $iResultsCount, $iDisplay, $iLowerLimit, $iUpperLimit);
     $oDbPagination->computePageCount();
     $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmResults", "project-list"));
 

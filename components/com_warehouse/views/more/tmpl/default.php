@@ -13,7 +13,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
   $strUsername = $this->strUsername;
   $oAuthorizer = Authorizer::getInstance();
-  $oAuthorizer->setUser($strUsername);
 ?>
 
 <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
@@ -37,10 +36,11 @@ defined('_JEXEC') or die( 'Restricted access' );
       
       <div class="withleft">
         <div class="aside">
-                <ul>
-                        <li class="active"><a href="#" class="sent"><span>Images</span></a></li>
-                        <!-- <li><a href="#" class="new-message"><span>Documents</span></a></li> -->
-                </ul>
+          <ul>
+            <li class="active"><a href="/warehouse/more/<?php echo $oProject->getId(); ?>" class="sent"><span>Images</span></a></li>
+            <li><a href="/warehouse/moreanalysis/<?php echo $oProject->getId(); ?>" class="new-message"><span>Analysis</span></a></li>
+            <li><a href="/warehouse/moredocs/<?php echo $oProject->getId(); ?>" class="new-message"><span>Documents</span></a></li>
+          </ul>
         </div><!-- / .aside -->
         <div class="subject">
           <?php if($oAuthorizer->canView($oProject)){ ?>

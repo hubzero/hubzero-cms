@@ -13,13 +13,13 @@ class WarehouseController extends JController{
    * @since 1.5
    */
   function __construct(){
-	parent::__construct();
-	
-	$this->registerTask( 'find' , 'findProjects' );
-	$this->registerTask( 'get' , 'getFile' );
-	$this->registerTask( 'download' , 'download' );
-	$this->registerTask( 'trialdropdown' , 'getTrialDropDown' );
-	$this->registerTask( 'repetitiondropdown' , 'getRepetitionDropDown' );
+    parent::__construct();
+
+    $this->registerTask( 'find' , 'findProjects' );
+    $this->registerTask( 'get' , 'getFile' );
+    $this->registerTask( 'download' , 'download' );
+    $this->registerTask( 'trialdropdown' , 'getTrialDropDown' );
+    $this->registerTask( 'repetitiondropdown' , 'getRepetitionDropDown' );
   }	
 	
   /**
@@ -38,65 +38,74 @@ class WarehouseController extends JController{
    *
    */
   public function findProjects(){
-  	//set the search parameters
-  	$strKeyword = JRequest::getVar("keywords", "");
-  	$_SESSION[Search::KEYWORDS] = $strKeyword;
-  	
-  	$strType = JRequest::getVar('type');
-  	$_SESSION[Search::SEARCH_TYPE] = $strType;
-  	
-  	$strFunding = JRequest::getVar('funding');
-  	$_SESSION[Search::FUNDING_TYPE] = $strFunding;
-  	
-  	$strMember = JRequest::getVar('member');
-  	$_SESSION[Search::MEMBER] = $strMember;
-  	
-  	$strStartDate = JRequest::getVar('startdate');
-  	$_SESSION[Search::START_DATE] = $strStartDate;
-  	
-  	$strEndDate = JRequest::getVar('enddate');
-  	$_SESSION[Search::END_DATE] = $strEndDate;
-  	
-  	$iResultsCount = 0;
-  	
-  	$strParamArray = array(0,0);
-  	
-  	//invoke the search form plugin
-  	JPluginHelper::importPlugin( 'project' );
-	$oDispatcher =& JDispatcher::getInstance();
-	$iResultsCountArray = $oDispatcher->trigger('onProjectSearchFormCount',$strParamArray);
-	$strResultsArray = $oDispatcher->trigger('onProjectSearchForm',$strParamArray);
-	
-	//check to see if we have results
-	if(!empty($iResultsCountArray)){
-	  /*
-	   * if we do get the first array.  the plugin returns arrays.  
-	   * thus, what we are looking for is wrapped inside results array. 
-	   * 
-	   */
-	  $oResultsArray = $strResultsArray[0];
-	  $iResultsCount = $iResultsCountArray[0];
-	  
-	  /*
-	   * store the results in the session.
-	   * get in the view with unserialize($_REQUEST[Search::RESULTS])
-	   */
-	  $_SESSION[Search::RESULTS] = serialize($oResultsArray);
-	  $_REQUEST[Search::COUNT] = $iResultsCount;
-	  $_REQUEST[Search::KEYWORDS] = $strKeyword;
+    $dStartTime = $this->getComputeTime();
 
-          //create thumbnails if need be...
-          $strProjectIconArray = array();
-          foreach($oResultsArray as $iProjectIndex=>$oProject){
-            $strThumbnail =  $oProject->getProjectThumbnailHTML("icon");
-            array_push($strProjectIconArray, $strThumbnail);
-          }
-          $_SESSION[Search::THUMBNAILS] = $strProjectIconArray;
-	}
-	
-	JRequest::setVar("view", "results" );
-  	JRequest::setVar("count", $iResultsCount );
-  	parent::display();
+    //set the search parameters
+    $strKeyword = JRequest::getVar("keywords", "");
+    $_SESSION[Search::KEYWORDS] = $strKeyword;
+
+    $strType = JRequest::getVar('type');
+    $_SESSION[Search::SEARCH_TYPE] = $strType;
+
+    $strFunding = JRequest::getVar('funding');
+    $_SESSION[Search::FUNDING_TYPE] = $strFunding;
+
+    $strMember = JRequest::getVar('member');
+    $_SESSION[Search::MEMBER] = $strMember;
+
+    $strStartDate = JRequest::getVar('startdate');
+    $_SESSION[Search::START_DATE] = $strStartDate;
+
+    $strEndDate = JRequest::getVar('enddate');
+    $_SESSION[Search::END_DATE] = $strEndDate;
+
+    $strOrderBy = JRequest::getVar('order', 'nickname');
+
+    $iResultsCount = 0;
+
+    $strParamArray = array(0,0);
+
+    //invoke the search form plugin
+    JPluginHelper::importPlugin( 'project' );
+    $oDispatcher =& JDispatcher::getInstance();
+    $iResultsCountArray = $oDispatcher->trigger('onProjectSearchCount',$strParamArray);
+    $strResultsArray = $oDispatcher->trigger('onProjectSearch',$strParamArray);
+
+    //check to see if we have results
+    if(!empty($iResultsCountArray)){
+      /*
+       * if we do get the first array.  the plugin returns arrays.
+       * thus, what we are looking for is wrapped inside results array.
+       *
+       */
+      $oResultsArray = $strResultsArray[0];
+      $iResultsCount = $iResultsCountArray[0];
+
+      /*
+       * store the results in the session.
+       * get in the view with unserialize($_REQUEST[Search::RESULTS])
+       */
+      $_SESSION[Search::RESULTS] = serialize($oResultsArray);
+      $_REQUEST[Search::COUNT] = $iResultsCount;
+      $_REQUEST[Search::KEYWORDS] = $strKeyword;
+      $_REQUEST[Search::ORDER_BY] = $strOrderBy;
+
+      //create thumbnails if need be...
+      $strProjectIconArray = array();
+      foreach($oResultsArray as $iProjectIndex=>$oProject){
+        $strThumbnail =  $oProject->getProjectThumbnailHTML("icon");
+        array_push($strProjectIconArray, $strThumbnail);
+      }
+      $_SESSION[Search::THUMBNAILS] = $strProjectIconArray;
+    }
+
+    $dEndTime = $this->getComputeTime();
+    $dSeconds = $dEndTime - $dStartTime;
+    $_REQUEST[Search::TIMER] = round($dSeconds, 2);
+
+    JRequest::setVar("view", "results" );
+    JRequest::setVar("count", $iResultsCount );
+    parent::display();
   }
   
   /**
@@ -122,27 +131,27 @@ class WarehouseController extends JController{
    * 
    */
   function download(){
-        /* @var $oModel WarehouseModelBase */
-  	$oModel =& $this->getModel('Base');
+    /* @var $oModel WarehouseModelBase */
+    $oModel =& $this->getModel('Base');
 
-        /*
-         * as of 20100727, downloads are on experiment page.
-         *
-         * in the future, we may monitor downloads on project page.
-         * when the time comes, experimentId should be 0.
-         */
-        $iProjectId = JRequest::getInt('projectId');
-        $iExperimentId = JRequest::getInt('experimentId');
-        
-        if($iExperimentId > 0){
-          $oModel->updateEntityDownloads(3, $iExperimentId);
-        }else{
-          if($iProjectId > 0){
-            $oModel->updateEntityDownloads(1, $iProjectId);
-          }
-        }
+    /*
+     * as of 20100727, downloads are on experiment page.
+     *
+     * in the future, we may monitor downloads on project page.
+     * when the time comes, experimentId should be 0.
+     */
+    $iProjectId = JRequest::getInt('projectId');
+    $iExperimentId = JRequest::getInt('experimentId');
 
-        $ext = $oModel->downloadTarBall();
+    if($iExperimentId > 0){
+      $oModel->updateEntityDownloads(3, $iExperimentId);
+    }else{
+      if($iProjectId > 0){
+        $oModel->updateEntityDownloads(1, $iProjectId);
+      }
+    }
+
+    $ext = $oModel->downloadTarBall();
   }
   
   function getTrialDropDown(){
@@ -167,6 +176,13 @@ class WarehouseController extends JController{
   	$oModel =& $this->getModel('Data');
   	$strRepetitionArray = $oModel->findDistinctRepetitions($iProjectId, $iExperimentId, $iTrialId);
   	echo $oModel->findDistinctRepetitionsHTML($strRepetitionArray);
+  }
+
+  function getComputeTime(){
+    $mtime = microtime();
+    $mtime = explode(' ', $mtime);
+    $mtime = $mtime[1] + $mtime[0];
+    return $mtime;
   }
 }
 

@@ -28,20 +28,19 @@ defined('_JEXEC') or die( 'Restricted access' );
       <form id="frmResults" style="margin:0px;padding:0px;">
 
       <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
-      <div id="title" style="padding-bottom:1em;">
-        <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
-      </div>
+        <div id="title" style="padding-bottom:1em;">
+          <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
+        </div>
   
-      <?php echo TabHtml::getSearchFormWithAction( "frmResults", "/warehouse/find" ); ?>
-      <?php echo $this->strTabs; ?>
-      <div class="aside">
-        
-      </div>
+        <?php echo TabHtml::getSearchFormWithAction( "frmResults", "/warehouse/find" ); ?>
+        <?php echo $this->strTabs; ?>
+        <div class="aside">
+        </div>
 
-      <div class="subject">
-        <?php if($oAuthorizer->canView($oProject)){ ?>
-        <div id="members" style="padding-top:1em;">
-          <table id="members-list" cellpadding="1" cellspacing="1">
+        <div class="subject">
+          <?php if($oAuthorizer->canView($oProject)){ ?>
+          <div id="members" style="padding-top:1em;">
+            <table id="members-list" cellpadding="1" cellspacing="1">
             <thead>
               <th></th>
               <th>Name</th>
@@ -65,32 +64,43 @@ defined('_JEXEC') or die( 'Restricted access' );
                   <?php }else{ ?>
                     <td><span class="name"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></span></td>
                   <?php } ?>
-                  <td><?php echo $oMember['ROLE']; ?></td>
+                  <td>
+                    <?php
+                      $oMemberRoleArray = unserialize($oMember['ROLE']);
+                      foreach($oMemberRoleArray as $iRoleIndex=>$oRole){
+                        echo $oRole->getDisplayName();
+                        if($iRoleIndex < sizeof($oMemberRoleArray)-1){
+                          echo ", ";
+                        }
+                      }
+                    ?>
+                  </td>
                   <td><?php echo $oMember['EMAIL']; ?></td>
                   <td></td>
                 </tr>
               <?php
-              }
+              }//end foreach
             ?>
           </table>
-        </div>
+          </div>
 
-        <div id="membersFooter" class="topSpace20">
+          <div id="membersFooter" class="topSpace20">
             <?php echo $this->pagination; ?>
+          </div>
+
+          <?php
+            }else{?>
+            <p class="error">You don't have permission to view this project.</p>
+          <?php
+          }//end canView
+          ?>
         </div>
-
-        <?php
-          }else{?>
-          <p class="error">You don't have permission to view this project.</p>
-        <?php
-        }//end canView
-        ?>
-        </form>
-      </div>
-
+      </form>
     </div>
-    <div class="clear"></div>
-  </div>  
+
+  </div>
+  <div class="clear"></div>
+</div>  
 
 
 

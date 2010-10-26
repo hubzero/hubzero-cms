@@ -119,7 +119,7 @@ function onChangeDataTab(p_strFormId, p_strToolId, p_strExperimentId, p_strTrial
     document.getElementById("txtTrial").value = iTrialId;
   }
 
-  var oRepetition = document.getElementById(p_strTrialId);
+  var oRepetition = document.getElementById(p_strRepetitionId);
   if(oRepetition != null){
     var iRepetitionId = oRepetition.value;
     document.getElementById("txtRepetition").value = iRepetitionId;
@@ -133,4 +133,10 @@ function onChangeDataTab(p_strFormId, p_strToolId, p_strExperimentId, p_strTrial
   }
 
   document.getElementById(p_strFormId).submit();
+}
+
+function fileSearch(p_strSelectId, p_strInputId, p_iIndex, p_strTargetId){
+  var oFindBy = document.getElementById(p_strSelectId);
+  var oTerm = document.getElementById(p_strInputId);
+  getMootools('/warehouse/searchfiles?format=ajax&term='+oTerm.value+'&findby='+oFindBy.value+'&index='+p_iIndex, p_strTargetId);
 }

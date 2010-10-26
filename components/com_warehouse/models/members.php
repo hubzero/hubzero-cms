@@ -32,6 +32,22 @@ class WarehouseModelMembers extends WarehouseModelBase{
   public function findMembersForEntityCount($p_iProjectId){
     return PersonPeer::findMembersForEntityCount($p_iProjectId, 1);
   }
+
+  public function createThumb($p_strPhoto){
+    $image = explode('.',$p_strPhoto);
+    $n = count($image);
+    $image[$n-2] .= '_thumb';
+    $end = array_pop($image);
+    $image[] = $end;
+    return implode('.',$image);
+  }
+
+  public function formatId($someid){
+    while (strlen($someid) < 5) {
+      $someid = 0 . "$someid";
+    }
+    return $someid;
+  }
 }
 
 ?>

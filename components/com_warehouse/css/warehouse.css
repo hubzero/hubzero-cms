@@ -46,8 +46,13 @@
 	    padding-top: 10px; 
 	    z-index:4
 	}
-	
-	.resultLink {
+
+        .resultsKeyword{
+            font-style: normal;
+            font-weight: bolder;
+        }
+
+        .resultLink {
 		font-size: 14px;
 		font-weight:bold;
 	}
@@ -1037,4 +1042,5 @@
 	
 	.calendar .button{
 	  position: static;
+          z-index: 65558;
 	}

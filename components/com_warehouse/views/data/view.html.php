@@ -36,19 +36,6 @@ class WarehouseViewData extends JView{
     $strSubTabHtml = $oDataModel->getSubTabs( "warehouse/data", $iProjectId, $strSubTabArray, $strSubTab );
     $this->assignRef( "strSubTabs", $strSubTabHtml );
 
-    $strUsageType = "";
-    $strTool = "";
-	
-	/*
-     * Find the experiment, trial, and repetition drop downs for the given project.
-     * On javascript onchange event gets called when a user selects a drop down value.
-     * If we have a project, find the experiment list.
-     * If we have a project and experiment, find the trial list.  If only on trial, get reps.
-     * If we have project, expeirment, and trial, find the rep list.  
-     * 
-     * We'll initialize the drop downs to blank.  
-     * However, the experiment drop down should be on every subtab.
-     */
     $strBlankDropDown = "&nbsp;";
     $this->assignRef('strToolArray', $strBlankDropDown);
     $this->assignRef('strExperimentDropDown', $strBlankDropDown);
@@ -59,117 +46,135 @@ class WarehouseViewData extends JView{
     $iPageIndex = JRequest::getVar('index', 0);
 
     $strDataFileArray = array();
-    switch($strSubTab){
-      case "drawings":
-        $strUsageType = "Drawing";
 
-        $iDisplay = JRequest::getVar('limit', 25);
+    $strUsageType = "";
+    $strTool = "";
+    $iLowerLimit = 0;
+    $iUpperLimit = 0;
 
-        $iLowerLimit = $oDataModel->computeLowerLimit($iPageIndex, $iDisplay);
-        $iUpperLimit = $oDataModel->computeUpperLimit($iPageIndex, $iDisplay);
+    $oAuthorizer = Authorizer::getInstance();
+    $bCanViewProject = $oAuthorizer->canView($oProject);
+    if($bCanViewProject){
+      $oViewableExperimentArray = $oDataModel->getViewableExperimentsByProject($oAuthorizer, $oProject);
+      $oShowExperimentArray = $oViewableExperimentArray[Experiments::SHOW];
+      $oHideExperimentArray = $oViewableExperimentArray[Experiments::HIDE];
 
-        $iDataFileTotal = $oDataModel->findDataFileByUsageCount( $strUsageType, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId );
-        $oDataFileArray = $oDataModel->findDataFileByUsage( $strUsageType, $iLowerLimit, $iUpperLimit, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId );
-        $oDataModel->resizePhotos($oDataFileArray);
-        $strDataFileArray = $oDataModel->findDataFileByUsageHTML( $oDataFileArray );
+      switch($strSubTab){
+        case "drawings":
+          $strUsageType = "Drawing";
 
-        /*
-         * Create the pagination
-         */
-        $oDbPagination = new DbPagination($iPageIndex, $iDataFileTotal, $iDisplay);
-        $oDbPagination->computePageCount();
-        $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmData", "data-list"));
+          $iDisplay = JRequest::getVar('limit', 25);
 
-        break;
-      case "videos":
-        $iDisplay = JRequest::getVar('limit', 24);
+          $iLowerLimit = $oDataModel->computeLowerLimit($iPageIndex, $iDisplay);
+          $iUpperLimit = $oDataModel->computeUpperLimit($iPageIndex, $iDisplay);
 
-        $strDataFileArray = "<p class='warning'>TODO: Add videos.</p> ";
+          $iDataFileTotal = $oDataModel->findDataFileByUsageCount( $strUsageType, $oHideExperimentArray, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId );
+          if(!$iUpperLimit)$iUpperLimit = $iDataFileTotal;  //user may have selected All in pagination
 
-        /*
-         * Get the trial and repetition drop downs.
-         * If strRepetitions is not blank, there's only 1 trial.
-         * Thus, we don't need to find the repetitions.  It was done
-         * inside the trial method.
-         */
-        $strRepetitions = $this->displayTrialDropDowns($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $strTool, $strUsageType);
-        if($strRepetitions==""){
-          $this->displayRepetitionDropDowns($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType);
-        }
+          if($iDataFileTotal > 1000){
+            ini_set('memory_limit', '256M');
+          }
 
-        /*
-         * Create the pagination
-         */
-        $oDbPagination = new DbPagination($iPageIndex, $iDataFileTotal, $iDisplay);
-        $oDbPagination->computePageCount();
-        $this->assignRef('pagination', $oDbPagination->getFooter24($_SERVER['REQUEST_URI'], "frmData", "data-list"));
+          $oDataFileArray = $oDataModel->findDataFileByUsage( $strUsageType, $oHideExperimentArray, $iLowerLimit, $iUpperLimit, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId );
+          $oDataModel->resizePhotos($oDataFileArray);
+          $strDataFileArray = $oDataModel->findDataFileByUsageHTML( $oDataFileArray );
 
-        break;
-      case "photos":
-        $iDisplay = JRequest::getVar('limit', 24);
+          $oDbPagination = new DbPagination($iPageIndex, $iDataFileTotal, $iDisplay, $iLowerLimit, $iUpperLimit);
+          $oDbPagination->computePageCount();
+          $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmData", "data-list"));
 
-        $iLowerLimit = $oDataModel->computeLowerLimit($iPageIndex, $iDisplay);
-        $iUpperLimit = $oDataModel->computeUpperLimit($iPageIndex, $iDisplay);
+          break;
+        case "videos":
+          $iDisplay = JRequest::getVar('limit', 24);
 
-        $iDataFileTotal = $oDataModel->findPhotoDataFilesCount(array("Drawing", "Drawing-Sensor", "Drawing-Setup", "Drawing-Specimen", "General Photo"), $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId);
-        $strDataFileArray = $oDataModel->findPhotoDataFiles(array("Drawing", "Drawing-Sensor", "Drawing-Setup", "Drawing-Specimen", "General Photo"), $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $iLowerLimit, $iUpperLimit);
-        $strDataFileArray = $oDataModel->findPhotoDataFilesHTML($strDataFileArray);
-        //echo $iProjectId.", ".$iExperimentId.",".$iDataFileTotal."<br>";
+          $strDataFileArray = "<p class='warning'>TODO: Add videos.</p> ";
 
-        /*
-         * Get the trial and repetition drop downs.
-         * If strRepetitions is not blank, there's only 1 trial.
-         * Thus, we don't need to find the repetitions.  It was done
-         * inside the trial method.
-         */
-        $strRepetitions = $this->displayTrialDropDowns($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType);
-        if($strRepetitions==""){
-          $this->displayRepetitionDropDowns($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType);
-        }
 
-        /*
-         * Create the pagination
-         */
-        $oDbPagination = new DbPagination($iPageIndex, $iDataFileTotal, $iDisplay);
-        $oDbPagination->computePageCount();
-        $this->assignRef('pagination', $oDbPagination->getFooter24($_SERVER['REQUEST_URI'], "frmData", "data-list"));
+          $strRepetitions = $this->displayTrialDropDowns($oDataModel, $oHideExperimentArray, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $strTool, $strUsageType);
+          if($strRepetitions==""){
+            $this->displayRepetitionDropDowns($oDataModel, $oHideExperimentArray, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType);
+          }
 
-        break;
-      default:
-        $strTool = JRequest::getVar("tool", "inDEED");
 
-        $iDisplay = JRequest::getVar('limit', 25);
+          $oDbPagination = new DbPagination($iPageIndex, $iResultsCount, $iDisplay, $iLowerLimit, $iUpperLimit);
+          $oDbPagination->computePageCount();
+          $this->assignRef('pagination', $oDbPagination->getFooter24($_SERVER['REQUEST_URI'], "frmData", "data-list"));
 
-        $iLowerLimit = $oDataModel->computeLowerLimit($iPageIndex, $iDisplay);
-        $iUpperLimit = $oDataModel->computeUpperLimit($iPageIndex, $iDisplay);
+          break;
+        case "photos":
+          $iDisplay = JRequest::getVar('limit', 24);
 
-        $iDataFileTotal = $oDataModel->findDataFileOpeningToolsCount( $strTool, $iProjectId, $iExperimentId, $iTrialId );
-        $strDataFileArray = $oDataModel->findDataFileOpeningTools( $strTool, $iLowerLimit, $iUpperLimit, $iProjectId, $iExperimentId, $iTrialId);
-        $strDataFileArray = $oDataModel->findDataFileOpeningToolsHTML( $strDataFileArray );
+          $iLowerLimit = $oDataModel->computeLowerLimit($iPageIndex, $iDisplay);
+          $iUpperLimit = $oDataModel->computeUpperLimit($iPageIndex, $iDisplay);
 
-        $this->displayToolDropDown($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool);
+          $iDataFileTotal = $oDataModel->findPhotoDataFilesCount($oHideExperimentArray, array("Drawing", "Drawing-Sensor", "Drawing-Setup", "Drawing-Specimen", "General Photo"), $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId);
+          if(!$iUpperLimit)$iUpperLimit = $iDataFileTotal; //user may have selected All in pagination
 
-        /*
-         * Get the trial and repetition drop downs.
-         * If strRepetitions is not blank, there's only 1 trial.
-         * Thus, we don't need to find the repetitions.  It was done
-         * inside the trial method.
-         */
-        $strRepetitions = $this->displayTrialDropDowns($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType);
-        if($strRepetitions==""){
-          $this->displayRepetitionDropDowns($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType);
-        }
+          if($iDataFileTotal > 1000){
+            ini_set('memory_limit', '256M');
+          }
 
-        /*
-         * Create the pagination
-         */
-        $oDbPagination = new DbPagination($iPageIndex, $iDataFileTotal, $iDisplay);
-        $oDbPagination->computePageCount();
-        $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmData", "data-list"));
-        break;
-    }
+          $strDataFileArray = $oDataModel->findPhotoDataFiles($oHideExperimentArray, array("Drawing", "Drawing-Sensor", "Drawing-Setup", "Drawing-Specimen", "General Photo"), $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $iLowerLimit, $iUpperLimit);
+          $strDataFileArray = $oDataModel->findPhotoDataFilesHTML($strDataFileArray);
+
+          $strRepetitions = $this->displayTrialDropDowns($oDataModel, $oHideExperimentArray, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType);
+          if($strRepetitions==""){
+            $this->displayRepetitionDropDowns($oDataModel, $oHideExperimentArray, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType);
+          }
+
+          $oDbPagination = new DbPagination($iPageIndex, $iDataFileTotal, $iDisplay, $iLowerLimit, $iUpperLimit);
+          $oDbPagination->computePageCount();
+          $this->assignRef('pagination', $oDbPagination->getFooter24($_SERVER['REQUEST_URI'], "frmData", "data-list"));
+
+          break;
+        default:
+          $strTool = JRequest::getVar("tool", "inDEED");
+
+          $iDisplay = JRequest::getVar('limit', 25);
+
+          $iLowerLimit = $oDataModel->computeLowerLimit($iPageIndex, $iDisplay);
+          $iUpperLimit = $oDataModel->computeUpperLimit($iPageIndex, $iDisplay);
+
+          if($strTool != "Any" && $strTool != ""){
+            $iDataFileTotal = $oDataModel->findDataFileOpeningToolsCount( $strTool, $oHideExperimentArray, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId );
+            if(!$iUpperLimit)$iUpperLimit = $iDataFileTotal; //user may have selected All in pagination
+
+            if($iDataFileTotal > 1000){
+              ini_set('memory_limit', '256M');
+            }
+
+            $strDataFileArray = $oDataModel->findDataFileOpeningTools( $strTool, $oHideExperimentArray, $iLowerLimit, $iUpperLimit, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId);
+            $strDataFileArray = $oDataModel->findDataFileOpeningToolsHTML( $strDataFileArray );
+          }else{
+            $iDataFileTotal = $oDataModel->findDataFilesCount( $oHideExperimentArray, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId );
+            if(!$iUpperLimit)$iUpperLimit = $iDataFileTotal; //user may have selected All in pagination
+
+            if($iDataFileTotal > 1000){
+              ini_set('memory_limit', '256M');
+            }
+          
+            $strDataFileArray = $oDataModel->findDataFiles( $oHideExperimentArray, $iLowerLimit, $iUpperLimit, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId);
+            $strDataFileArray = $oDataModel->findDataFilesHTML( $strDataFileArray );
+          }
+
+          $this->displayToolDropDown($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool);
+
+          $strRepetitions = $this->displayTrialDropDowns($oDataModel, $oHideExperimentArray, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType);
+          if($strRepetitions==""){
+            $this->displayRepetitionDropDowns($oDataModel, $oHideExperimentArray, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType);
+          }
+
+          $oDbPagination = new DbPagination($iPageIndex, $iDataFileTotal, $iDisplay, $iLowerLimit, $iUpperLimit);
+          $oDbPagination->computePageCount();
+          $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmData", "data-list"));
+          break;
+      }//end switch
+    }//end canView
+
+    
+    
     $this->assignRef( "strDataFileArray", $strDataFileArray );  //every subtab
-    $this->displayExperimentDropDowns($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $strTool, $strUsageType);  //every subtab
+    $this->displayExperimentDropDowns($oDataModel, $oHideExperimentArray, $strSubTab, $iProjectId, $iExperimentId, $strTool, $strUsageType);  //every subtab
 
     /* @var $oHubUser JUser */
     $oHubUser = $oDataModel->getCurrentUser();
@@ -210,22 +215,26 @@ class WarehouseViewData extends JView{
     $this->assignRef('strToolArray', $strToolDropDownArray);
   }
   
-  private function displayExperimentDropDowns($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $strTool, $strUsageType){
-    $strExperimentArray = $oDataModel->findDistinctExperiments($iProjectId, $strTool, $strUsageType);
+  private function displayExperimentDropDowns($oDataModel, $oHideExperimentArray, $strSubTab, $iProjectId, $iExperimentId, $strTool, $strUsageType){
+    $strTool = ($strTool=="Any") ? "" : $strTool;
+
+    $strExperimentArray = $oDataModel->findDistinctExperiments($iProjectId, $oHideExperimentArray, $strTool, $strUsageType);
     $strExperiments = $oDataModel->findDistinctExperimentsHTML($strExperimentArray, $iProjectId, $iExperimentId);
     $this->assignRef('strExperimentDropDown', $strExperiments);
   }
   
-  private function displayTrialDropDowns($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetionId, $strTool, $strUsageType){
+  private function displayTrialDropDowns($oDataModel, $oHideExperimentArray, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetionId, $strTool, $strUsageType){
     $strRepetitions = "";
+
+    $strTool = ($strTool=="Any") ? "" : $strTool;
 
     $strTrials = $oDataModel->findDistinctTrialsHTML(array(), $iProjectId, $iExperimentId, $iTrialId);
     if($iExperimentId > 0){
-      $strTrialArray = $oDataModel->findDistinctTrials($iProjectId, $iExperimentId, $strTool, $strUsageType);
+      $strTrialArray = $oDataModel->findDistinctTrials($oHideExperimentArray, $iProjectId, $iExperimentId, $strTool, $strUsageType);
       $strTrials = $oDataModel->findDistinctTrialsHTML($strTrialArray, $iProjectId, $iTrialId);
       if(sizeof($strTrialArray)==1){
         $iTrialId = $strTrialArray[0]["TRIAL_ID"];
-        $strRepetitionArray = $oDataModel->findDistinctRepetitions($iProjectId, $iExperimentId, $iTrialId, $strTool, $strUsageType);
+        $strRepetitionArray = $oDataModel->findDistinctRepetitions($oHideExperimentArray, $iProjectId, $iExperimentId, $iTrialId, $strTool, $strUsageType);
         $strRepetitions = $oDataModel->findDistinctRepetitionsHTML($strRepetitionArray, $iRepetionId);
         $this->assignRef('strRepetitionDropDown', $strRepetitions);
       }
@@ -235,10 +244,12 @@ class WarehouseViewData extends JView{
     return $strRepetitions;
   }
   
-  private function displayRepetitionDropDowns($oDataModel, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType){
+  private function displayRepetitionDropDowns($oDataModel, $oHideExperimentArray, $strSubTab, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strTool, $strUsageType){
     $strRepetitions = $oDataModel->findDistinctRepetitionsHTML(array(), $iRepetitionId);
     if($iTrialId > 0){
-      $strRepetitionArray = $oDataModel->findDistinctRepetitions($iProjectId, $iExperimentId, $iTrialId, $strTool, $strUsageType);
+      $strTool = ($strTool=="Any") ? "" : $strTool;
+      
+      $strRepetitionArray = $oDataModel->findDistinctRepetitions($oHideExperimentArray, $iProjectId, $iExperimentId, $iTrialId, $strTool, $strUsageType);
       $strRepetitions = $oDataModel->findDistinctRepetitionsHTML($strRepetitionArray, $iRepetitionId);
     }
     $this->assignRef('strRepetitionDropDown', $strRepetitions);

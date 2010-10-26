@@ -6,6 +6,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.application.component.view');
 
 require_once 'lib/data/Experiment.php';
+require_once 'lib/data/Person.php';
 require_once 'lib/security/Authorizer.php';
 require_once 'api/org/nees/static/Experiments.php';
 
@@ -48,6 +49,10 @@ class WarehouseViewExperiments extends JView{
     /* @var $oHubUser JUser */
     $oHubUser = $oExperimentsModel->getCurrentUser();
     $this->assignRef( "strUsername", $oHubUser->username );
+    
+    /* @var $oPerson Person */
+//    $oPerson = $oExperimentsModel->getOracleUserByUsername($oHubUser->username);
+//    $this->assignRef( "iPersonId", $oPerson->getId() );
 
     /*
      * grab the nees pagination object.  joomla's

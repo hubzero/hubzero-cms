@@ -1,0 +1,146 @@
+<?php 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+?>
+
+<?php 
+  $document =& JFactory::getDocument();
+  $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/ajax.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/warehouse.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/resources.js", 'text/javascript');
+?>
+
+<?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
+
+<?php
+  $strUsername = $this->strUsername;
+  $oAuthorizer = Authorizer::getInstance();
+  $oAuthorizer->setUser($strUsername);
+  echo $strUsername."<br>";
+?>
+ 
+<div class="innerwrap">
+  <div class="content-header">
+	<h2 class="contentheading">NEES Project Warehouse</h2>
+  </div>
+  
+  <div id="warehouseWindow" style="padding-top:20px;">
+    <div id="title" style="padding-bottom:1em;">
+      <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
+    </div>
+      
+    <div id="treeBrowser" style="float:left;width:20%;"></div>
+    
+    <div id="overview_section" class="main section" style="width:100%;float:left;">
+      <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
+      <?php echo $this->strTabs; ?>
+        
+      <form id="frmExperiments" style="margin:0px;padding:0px;">
+	    <input type="hidden" name="task" value="find"/>
+	    <input type="hidden" name="keywords" value="<?php echo $_REQUEST[Search::KEYWORDS]; ?>"/>
+        <div id="experiment-list" class="subject-full">
+          <?php
+            if(!$oAuthorizer->canView($oProject)){?>
+              <p class="error">You don't have permission to view this project.</p>
+            <?php
+            }else{
+              $strExperimentThumbnailArray = $_REQUEST[Experiments::THUMBNAILS];
+
+              /* @var $oExperiment Experiment */
+              /* @var $oIndeedDataFile DataFile */
+              $iViewed = 0;
+              $oExperimentArray = unserialize($_REQUEST[Experiments::EXPERIMENT_LIST]);
+              foreach($oExperimentArray as $iExperimentIndex=>$oExperiment){
+          	  $iExperimentId = $oExperiment->getId();
+        	  $strTitle = $oExperiment->getTitle();
+        	  $strStartDate = strftime("%B %d, %Y", strtotime($oExperiment->getStartDate()));
+        	  $oDescriptionClob = StringHelper::neat_trim($oExperiment->getDescription(), 250);
+        	  $strName = $oExperiment->getName();
+        	  $strThumbnail = $strExperimentThumbnailArray[$iExperimentIndex];
+                  
+
+                  //added on July 1,2010.  Users want to see the "Main" inDEED file in experiment list
+                  $oIndeedDataFileArray = $oExperiment->getExperimentIndeedFile("inDEED",
+                                                                                $oExperiment->getProjectId(),
+                                                                                $oExperiment->getId());
+                  if(!empty($oIndeedDataFileArray)){
+                    $oIndeedDataFile = end($oIndeedDataFileArray);
+                  }
+
+                  echo "check: ".$oAuthorizer->canView($oExperiment)."<br>";
+                  if($oAuthorizer->canView($oExperiment)){
+                    if($iViewed > 0){
+                      ?>
+                        <hr size="1" color="#cccccc"/>
+                        <br>
+                      <?php
+                    }
+                    ++$iViewed;
+
+              ?>
+              <div id="Experiment<?php echo $iExperimentId; ?>" style="width:100%;">
+                <div id="ExperimentInfo<?php echo $iExperimentId; ?>" style="float:left;width:90%;">
+                  <table style="width:100%;border-bottom:0px;border-top:0px;">
+                    <tr>
+                      <td><b>Experiment<?php //echo $strName; ?>:</b></td>
+                      <td><a href="/warehouse/experiment/<?php echo $iExperimentId; ?>/project/<?php echo $this->projid ?>" style="font-size: 15px;"><?php echo $strTitle; ?></a></td>
+                    </tr>
+                    <tr>
+                      <td><b>Start Date:</b></td>
+                      <td><span style="color: #666666"><?php echo $strStartDate; ?></span></td>
+                    </tr>
+                    <tr>
+                      <td><b>Description:</b></td>
+                      <td width="85%"><?php echo $oDescriptionClob; ?></td>
+                    </tr>
+                  </table>
+                </div>
+                <div align="right" id="thumbnail">
+                  <?php
+                    if( strlen($strThumbnail) > 0 ){
+                      echo $strThumbnail;
+                    }
+                    
+                    //display inDEED file below thumbnail.
+                    if(sizeof($oIndeedDataFileArray) != 0){
+                      $strIndeedPath = $oIndeedDataFile->getPath();
+                      $strIndeedName = $oIndeedDataFile->getName();
+
+                      $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
+
+                      echo "<a href='$strLaunchInEED=$strIndeedPath/$strIndeedName'>Launch Data File</a>";
+                    }
+                  ?>
+               </div>
+               <div class="clear"></div>
+              </div>
+
+            <?php
+                }else{//end canView
+                  echo "block<br>";
+                }
+              }//end foreach
+
+              if($iViewed === 0){
+                if(empty ($oExperimentArray))  {
+                  ?> <p class="warning">No experiments found.</p> <?php
+                }else{ 
+                  ?> <p class="error">You don't have permission to view this project.</p> <?php 
+                }
+                ?>
+                  
+                <?php
+              }
+            }//end if project
+            ?>
+      
+        </div>
+      </form>
+    </div>
+    <div class="clear"></div>
+  </div>
+  
+</div>
+
+

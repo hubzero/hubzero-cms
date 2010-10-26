@@ -15,6 +15,10 @@ class WarehouseViewProject extends JView{
   function display($tpl = null){
     $iProjectId = JRequest::getVar("id");
     $oProject = ProjectPeer::retrieveByPK($iProjectId);
+    if(!$oProject){
+       echo ComponentHtml::showError("Unable to process request.  Project ($iProjectId) not found.");
+       return;
+    }
 
     $strProjectCreated = "";
     if(isset($_REQUEST["created"])){
@@ -239,7 +243,7 @@ ENDHTML;
         $strUrl = $oProjectGrant->getAwardUrl();
 
         $strFundingOrg .= $strSponsor . " - " .$strAwardNumber;
-        if($strSponsor=="NSF"){
+        if($strSponsor=="NSF" && StringHelper::hasText($strUrl)){
           $strFundingOrg .= " (<a href='".$strUrl."'>view</a>)";
           if($iIndex < sizeof($oProjectGrantArray)-1){
             $strFundingOrg .= "<br>";

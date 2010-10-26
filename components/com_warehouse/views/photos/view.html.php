@@ -59,7 +59,7 @@ class WarehouseViewPhotos extends JView {
          * grab the nees pagination object.  joomla's
          * pagination object doesn't handle the proper uri.
          */
-        $oDbPagination = new DbPagination($iPageIndex, $iResultsCount, $iDisplay);
+        $oDbPagination = new DbPagination($iPageIndex, $iResultsCount, $iDisplay, $iLowerLimit, $iUpperLimit);
         $oDbPagination->computePageCount();
         $this->assignRef('pagination', $oDbPagination->getFooter24($_SERVER['REQUEST_URI'], "frmPhotos", "project-list"));
 

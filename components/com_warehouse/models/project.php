@@ -50,16 +50,16 @@ class WarehouseModelProject extends WarehouseModelBase{
   	$p_strProjectName = str_replace("-",  "_",  $p_strProjectName);
   	  	
     $strQuery = "SELECT distinct(r.id), r.title 
-				 FROM #__resources r
-				 INNER JOIN #__xgroups g ON g.cn = r.group_owner
-				 LEFT OUTER JOIN #__xgroups_members gm ON gm.gidNumber = g.gidNumber
-				 LEFT OUTER JOIN #__users u ON u.id = gm.uidNumber
-				 WHERE r.group_owner = '".$p_strProjectName."'
-				   AND r.type = 3 
-				   AND (
-				   		(g.access = 0 OR u.id = $p_iUserId)
-				   	) 
-				";
+                 FROM #__resources r
+                 INNER JOIN #__xgroups g ON g.cn = r.group_owner
+                 LEFT OUTER JOIN #__xgroups_members gm ON gm.gidNumber = g.gidNumber
+                 LEFT OUTER JOIN #__users u ON u.id = gm.uidNumber
+                 WHERE r.group_owner = '".$p_strProjectName."'
+                   AND r.type = 3
+                   AND (
+                                (g.access = 0 OR u.id = $p_iUserId)
+                        ) 
+                ";
   	if($p_iLimit > 0){
   	  $strQuery .= " LIMIT $p_iLimit";
   	}
@@ -81,15 +81,30 @@ class WarehouseModelProject extends WarehouseModelBase{
   }
   
   public function findResourceAuthors($p_iPublicationId){
-  	if(!$p_iPublicationId){
-  	  return;
-  	}
-  	
-  	$strQuery = "select authorid, name from jos_author_assoc where subid=".$p_iPublicationId;
-  	
-  	$oDatabase =& JFactory::getDBO();
-  	$oDatabase->setQuery($strQuery);
-	return $oDatabase->loadAssocList();
+    if(!$p_iPublicationId){
+      return;
+    }
+
+    //$strQuery = "select authorid, name from jos_author_assoc where subid=".$p_iPublicationId." order by authorid";
+    $strQuery = "SELECT n.uidNumber AS id,
+            a.name AS name,
+            n.name AS xname,
+            n.givenName AS firstname,
+            n.middleName AS middlename,
+            n.surname AS lastname,
+            a.organization AS org,
+            n.organization AS xorg,
+            a.role, a.authorid
+            FROM #__xprofiles AS n,
+            #__author_assoc AS a
+            WHERE n.uidNumber=a.authorid
+            AND a.subtable='resources'
+            AND a.subid=".$p_iPublicationId."
+            ORDER BY ordering, surname, givenName, middleName";
+
+    $oDatabase =& JFactory::getDBO();
+    $oDatabase->setQuery($strQuery);
+    return $oDatabase->loadAssocList();
 	
   }
   

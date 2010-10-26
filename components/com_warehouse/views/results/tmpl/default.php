@@ -7,7 +7,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php 
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
-//  $document->addScript($this->baseurl."/components/com_warehouse/js/Fx.Slide/demo.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_warehouse/js/Fx.Slide/tree.js", 'text/javascript');
   $document->addScript($this->baseurl."/includes/js/joomla.javascript.js", 'text/javascript');
 ?>
@@ -34,14 +33,42 @@ defined('_JEXEC') or die( 'Restricted access' );
     <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
     <?php echo $this->strTabs; ?>
     <form id="frmResults" style="margin:0px;padding:0px;">
-	  <input type="hidden" name="task" value="find"/>
-	  <input type="hidden" name="keywords" value="<?php echo $_SESSION[Search::KEYWORDS]; ?>"/>
-	  <input type="hidden" name="type" value="<?php echo $_SESSION[Search::SEARCH_TYPE]; ?>"/>
-	  <input type="hidden" name="funding" value="<?php echo $_SESSION[Search::FUNDING_TYPE]; ?>"/>
-	  <input type="hidden" name="member" value="<?php echo $_SESSION[Search::MEMBER]; ?>"/>
-	  <input type="hidden" name="startdate" value="<?php echo $_SESSION[Search::START_DATE]; ?>"/>
-	  <input type="hidden" name="enddate" value="<?php echo $_SESSION[Search::END_DATE]; ?>"/>
+	<input type="hidden" name="task" value="find"/>
+	<input type="hidden" name="keywords" value="<?php echo $_SESSION[Search::KEYWORDS]; ?>"/>
+	<input type="hidden" name="type" value="<?php echo $_SESSION[Search::SEARCH_TYPE]; ?>"/>
+	<input type="hidden" name="funding" value="<?php echo $_SESSION[Search::FUNDING_TYPE]; ?>"/>
+	<input type="hidden" name="member" value="<?php echo $_SESSION[Search::MEMBER]; ?>"/>
+	<input type="hidden" name="startdate" value="<?php echo $_SESSION[Search::START_DATE]; ?>"/>
+	<input type="hidden" name="enddate" value="<?php echo $_SESSION[Search::END_DATE]; ?>"/>
         <div id="project-list" class="subject-full">
+          <div id="project-sort">
+            <?php
+              $strKeywords = StringHelper::EMPTY_STRING;
+              if(isset($_SESSION[Search::KEYWORDS])){
+                $strKeywords = trim($_SESSION[Search::KEYWORDS]);
+              ?>
+                <p class="information"><b>Keywords:</b> &nbsp;<?php echo $strKeywords; ?></p>
+              <?php
+              }
+            ?>
+
+            <table style="border:0px; margin-bottom:20px;">
+              <tr>
+                <td id="sort-options" width="100%">
+                  <?php
+                    $strOrderBy = $_REQUEST[Search::ORDER_BY];
+                    $iResultCount = $_REQUEST[Search::COUNT];
+                    $dTimer = $_REQUEST[Search::TIMER];
+                  ?>  
+                  <b>Sort By:</b> &nbsp;
+                  <input onClick="document.getElementById('frmResults').submit();" type="radio" name="order" value="nickname" id="nickname" <?php if($strOrderBy=="nickname")echo "checked"; ?>>&nbsp;<label for="nickname">Nickname</label> &nbsp;
+                  <input onClick="document.getElementById('frmResults').submit();" type="radio" name="order" value="start_date" id="start_date"  <?php if($strOrderBy=="start_date")echo "checked"; ?>>&nbsp;<label for="start_date">Start Date</label> &nbsp;
+                </td>
+                <td id="project-count" align="right" nowrap><b>Results:</b> &nbsp;<?php echo $iResultCount; ?> (<?php echo $dTimer; ?> seconds)</td>
+              </tr>
+            </table>
+          </div>
+
           <?php 
             $oProjectArray = unserialize($_SESSION[Search::RESULTS]);       
             if(empty($oProjectArray)){
@@ -55,8 +82,63 @@ defined('_JEXEC') or die( 'Restricted access' );
           	  $iProjectId = $oProject->getId();
         	  $strTitle = $oProject->getTitle();
         	  $strStartDate = strftime("%B %d, %Y", strtotime($oProject->getStartDate()));
+                  $strStartDate = ($strStartDate=="December 31, 1969") ? "" : $strStartDate;
         	  $oDescriptionClob = StringHelper::neat_trim($oProject->getDescription(), 250);
                   if($oDescriptionClob=="...")$oDescriptionClob="";
+
+                  //focus in on keywords
+                  if(StringHelper::hasText($strKeywords)){
+                    //original keywords
+                    $strKeywordArray = split(" ", $strKeywords);
+
+                    //convert all keyword terms to lower case
+                    foreach($strKeywordArray as $iKeywordIndex=>$strThisKeyword){
+                      $strKeywordArray[$iKeywordIndex] = trim(strtolower($strThisKeyword));
+                    }
+                    
+                    //original description terms
+                    $strDescTemp = str_replace("-", " ", $oDescriptionClob);  //replace hyphen
+                    $strDescTemp = str_replace("_", " ", $strDescTemp);       //replace underscore
+                    $strDescriptionArray = explode(" ", $strDescTemp);
+
+                    //convert all description terms to lower case
+                    $strDescriptionLowerArray = array();
+                    foreach($strDescriptionArray as $iDescIndex=>$strThisDesc){
+                      $strDescriptionLowerArray[$iDescIndex] = trim(strtolower($strThisDesc));
+                    }
+                    
+                    //original title terms
+                    $strTitleTemp = str_replace("-", " ", $strTitle);       //replace hyphen
+                    $strTitleTemp = str_replace("_", " ", $strTitleTemp);   //replace underscore
+                    $strTitleArray = explode(" ", $strTitleTemp);
+                    
+                    //convert all title terms to lower case
+                    $strTitleLowerArray = array();
+                    foreach($strTitleArray as $iTitleIndex=>$strThisTitle){
+                      $strTitleLowerArray[$iTitleIndex] = trim(strtolower($strThisTitle));
+                    }
+                    
+                    foreach($strKeywordArray as $strKeywordLowerCase){
+                      //get the keys for all of the matched (lowercase) terms
+                      $iDescriptionKeywordIndexArray = array_keys($strDescriptionLowerArray, $strKeywordLowerCase);
+
+                      //use original description array to find replace term
+                      foreach($iDescriptionKeywordIndexArray as $iDescIndex){
+                        $strReplace = "<span class='resultsKeyword'>$strDescriptionArray[$iDescIndex]</span>";
+                        $oDescriptionClob = str_ireplace($strKeywordLowerCase, $strReplace, $oDescriptionClob);
+                      }
+
+                      //get the keys for all of the matched (lowercase) terms
+                      $iTitleKeywordIndexArray = array_keys($strTitleLowerArray, $strKeywordLowerCase);
+
+                      //use original title array to find replace term
+                      foreach($iTitleKeywordIndexArray as $iTitleIndex){
+                        $strReplace = "<span class='resultsKeyword'>$strTitleArray[$iTitleIndex]</span>";
+                        $strTitle = str_ireplace($strKeywordLowerCase, $strReplace, $strTitle);
+                      }
+                    }
+                  }
+
 
                   //$strThumbnail =  $oProject->getProjectThumbnailHTML("icon");
                   $strThumbnail =  $strProjectIconArray[$iProjectIndex];
@@ -92,8 +174,8 @@ defined('_JEXEC') or die( 'Restricted access' );
           ?>
       
           <?php 
-		    echo $this->pagination;
-		  ?>
+            echo $this->pagination;
+          ?>
         </div>
       </form>
     </div>
