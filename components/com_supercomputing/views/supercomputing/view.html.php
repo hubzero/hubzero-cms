@@ -173,7 +173,7 @@ abstract class SuperComputingTicketView extends SuperComputingView
 			'cookies'   => 0,
 			'instances' => 1,
 			'section'   => 1,
-			'group'     => NULL
+			'group'     => 'supercomputingallocation'
 		);
 		$dbh =& JFactory::getDBO();
 		$ticket = new SupportTicket($dbh);
