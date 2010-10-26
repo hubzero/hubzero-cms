@@ -1132,6 +1132,7 @@ abstract class BaseProjectPeer {
 		$criteria = new Criteria(ProjectPeer::DATABASE_NAME);
 
 		$criteria->add(ProjectPeer::PROJID, $pk);
+                $criteria->add(ProjectPeer::DELETED, 0);
 
 
 		$v = ProjectPeer::doSelect($criteria, $con);

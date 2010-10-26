@@ -644,6 +644,7 @@ ENDHTML;
 
     $thumbnail = null;
     if($expImage && file_exists($expImage->getFullPath())) {
+      //creates the thumbnail if it doesn't exist
       $expThumbnailId = $expImage->getImageThumbnailId();
 
       if($expThumbnailId && $expThumbnail = DataFilePeer::find($expThumbnailId)) {
@@ -652,7 +653,7 @@ ENDHTML;
           $expImage->setName($strDisplayName);
           $expImage->setPath($expThumbnail->getPath());
           //$thumbnail = "<div class='thumb_frame'><a style='border-bottom:0px;' target='_blank' href='" . $expImage->get_url() . "' rel='lightbox[experiments]'><img src='" . $expThumbnail->get_url() . "'  alt=''/></a></div>";
-          $thumbnail = "<div class='thumb_frame'><a style='border-bottom:0px;' target='_blank' href='" . $expImage->get_url() . "' rel='lightbox[experiments]'><img src='" . $expThumbnail->get_url() . "'  alt=''/></a></div>";
+          $thumbnail = "<div class='thumb_frame'><a title='".$expImage->getDescription()."' style='border-bottom:0px;' target='_blank' href='" . $expImage->get_url() . "' rel='lightbox[experiments]'><img src='" . $expThumbnail->get_url() . "'  alt='".$expImage->getDescription()."'/></a></div>";
         }
       }
     }

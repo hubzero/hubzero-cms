@@ -138,5 +138,18 @@ class ExperimentEquipmentPeer extends BaseExperimentEquipmentPeer {
     }
   }
 
+  public static function deleteByExperientId($p_iExperientId, $p_oConnection=null){
+    $strQuery = "delete from experiment_equipment
+                 where experiment_id=?";
+
+    if(!$p_oConnection){
+      $p_oConnection = Propel::getConnection();
+    }
+    
+    $oStatement = $p_oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iExperientId);
+    $oStatement->executeUpdate();
+  }
+
 } // ExperimentEquipmentPeer
 ?>

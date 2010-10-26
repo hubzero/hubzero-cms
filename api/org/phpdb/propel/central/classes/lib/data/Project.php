@@ -3,6 +3,7 @@
 require_once 'lib/data/om/BaseProject.php';
 require_once 'lib/data/Acknowledgement.php';
 require_once 'lib/data/curation/NCCuratedObjects.php';
+require_once '/www/neeshub/api/org/nees/static/Files.php';
 
 
 /**
@@ -516,17 +517,19 @@ ENDHTML;
           //$thumbnail = "<div class='thumb_frame'><a style='border-bottom:0px;' target='_blank' href='" . $projectImage->get_url() . "'><img src='" . $projectThumbnail->get_url() . "' title=\"Project Image. Click to view this project image with full size\"  alt=''/></a></div>";
 
           $strImageName = $projectImage->getName();
+          $strImagePath = $projectImage->getPath()."/".Files::GENERATED_PICS;
 
           // display the 800x600 when user clicks on it
           $strDisplayName = "display_".$projectImage->getId()."_".$strImageName;
           $projectImage->setName($strDisplayName);
-          $projectImage->setPath($projectThumbnail->getPath());
+          $projectImage->setPath($strImagePath);
 
           // display the 90x60 (approx) image
           $strIconName = $p_strLinkImage."_".$projectImage->getId()."_".$strImageName;
           $projectThumbnail->setName($strIconName);
+          $projectThumbnail->setPath($strImagePath);
 
-          $thumbnail = "<div id='projThumb' align='center'><a style='border-bottom:0px;' target='_blank' href='" . $projectImage->get_url() . "' rel='lightbox'><img src='" . $projectThumbnail->get_url() . "'  alt='' style='float: left; margin-left: 30px;'></a></div>";
+          $thumbnail = "<div id='projThumb' align='center'><a title='".$projectImage->getDescription()."' style='border-bottom:0px;' target='_blank' href='" . $projectImage->get_url() . "' rel='lightbox'><img src='" . $projectThumbnail->get_url() . "'  alt='".$projectImage->getDescription()."' style='float: left; margin-left: 30px;'></a></div>";
         }
       }
     }

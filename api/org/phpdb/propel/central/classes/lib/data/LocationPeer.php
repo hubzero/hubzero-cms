@@ -240,7 +240,57 @@ class LocationPeer extends BaseLocationPeer {
     return self::doCount($c);
   }
 
+  /**
+   *
+   *
+   */
+  public static function getLocationType($p_oLocation){
+    $oSensorType = $p_oLocation->getSensorType();
+    if($oSensorType){
+      return $oSensorType->getName();
+    }
+    return null;
+  }
 
+  /**
+   *
+   *
+   */
+  public static function getLabel($p_oLocation){
+    $strLabel = $p_oLocation->getLabel();
+    return is_null($strLabel) ? "None" : $strLabel;
+  }
+
+  /**
+   *
+   */
+  public static function formatCoordinate($p_oLocation, $p_strCoordinate){
+  	$strGetterMethod = "get{$p_strCoordinate}";
+  	$strValue = $p_oLocation->$strGetterMethod();
+  	$strGetterMethod .= "Unit";
+  	$iUnitId =  $p_oLocation->$strGetterMethod();
+  	if($iUnitId){
+  	  $oUnit = MeasurementUnitPeer::find($iUnitId);
+  	  $strValue .= "&nbsp;" .$oUnit->getAbbreviation();
+  	}
+  	return $strValue;
+  }
+
+  /**
+   *
+   */
+  public static function getCoordinateValue($p_oLocation, $p_strCoordinate){
+    $strGetterMethod = "get{$p_strCoordinate}";
+    $strValue = $p_oLocation->$strGetterMethod();
+    return $strValue;
+  }
+
+  /**
+   *
+   */
+  public static function getOrientation($p_oLocation){
+    return $p_oLocation->getCorrectedOrientation();
+  }
 
 } // LocationPeer
 ?>

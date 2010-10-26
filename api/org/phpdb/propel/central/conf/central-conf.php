@@ -17,20 +17,12 @@ return array (
       array (
         'adapter' => 'oracle',
         'connection' => 
-//        array (
-//          'phptype' => 'oracle',
-//          'database' => '',
-//          'hostspec' => 'ORCLSTG',
-//          'username' => 'central',
-//          'password' => 'bees4nees',
-//        ),
-
         array (
           'phptype' => 'oracle',
           'database' => '',
           'hostspec' => 'NEESPROD',
           'username' => 'central',
-          'password' => 'bees4nees',
+          'password' => 'Hu64Qu4k3D4t4',
         ),
       ),
       'default' => 'NEEScentral',

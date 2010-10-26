@@ -196,6 +196,14 @@ class EquipmentPeer extends BaseEquipmentPeer {
     return $iEquipmentIdArray;
   }
 
+  public static function findByNameModelIdOrgId($p_strEquipmentName, $p_iModelId, $p_iOrganizationId){
+    $c = new Criteria();
+    $c->add(self::NAME, $p_strEquipmentName);
+    $c->add(self::MODEL_ID, $p_iModelId);
+    $c->add(self::ORGID, $p_iOrganizationId);
+    $c->add(self::DELETED, 0);
+    return self::doSelectOne($c);
+  }
 
 } // EquipmentPeer
 ?>

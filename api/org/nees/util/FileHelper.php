@@ -57,11 +57,21 @@
           $buffer = fread($fd, 8192);
           echo $buffer;
         }//end while feof
-	  }//end fd
-	  fclose ($fd);
-	  exit;
+      }//end fd
+      fclose ($fd);
+      exit;
     }//end download
+
+    public static function fixPermissions($p_strDirectory){
+      exec("/nees/home/bin/fix_permissions $p_strDirectory", $output);
+      return $output;
+    }
   	
+    public static function fixPermissionsOneFileOrDir($p_strAbsolutePath){
+      exec("/nees/home/bin/fix_onefileordir $p_strAbsolutePath", $output);
+      return $output;
+    }
+
   }//end class
 
 ?>

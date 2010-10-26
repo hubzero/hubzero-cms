@@ -33,11 +33,17 @@
 	  $i = 1;
 	  foreach ($p_oTabArray as $iTabIndex=>$strName){
 	    $strView = $p_oTabViewArray[$iTabIndex];
-	    if ($strName != '') {
+            if ($strName != '') {
 		  $strHtml .= '<li id="sm-'.$i.'"';
 		  $strHtml .= (strtolower($strView) == $p_strActive) ? ' class="active"' : '';
-		  //$strHtml .= '><a class="tab" rel="'.$strName.'" href="'.JRoute::_('index.php?option='.$p_strOption.a.'id='.$p_iId.a.'active='.$strName).'"><span>'.$strTabArray[$strName].'</span></a></li>'.n;
-		  $strHtml .= '><a class="tab" rel="'.$strName.'" href="'.$p_strOption."/".strtolower($strView)."/".$p_iId.'"><span>'.$strName.'</span></a></li>';
+		  $strHtml .= '><a class="tab" rel="'.$strName.'" href="'.$p_strOption;
+                  if($strView != ""){
+                    $strHtml .="/".strtolower($strView);
+                  }
+                  if($p_iId != ""){
+                    $strHtml .="/".$p_iId;
+                  }
+                  $strHtml .= '"><span>'.$strName.'</span></a></li>';
 		  $i++;
 	    }
 	  }
@@ -45,6 +51,27 @@
 	  $strHtml .= '<div class="clear"></div>';
 	  $strHtml .= '</div><!-- / #sub-menu -->';
 	
+	  return $strHtml;
+    }
+
+    public static function getOnClickTabs( $p_oTabArray, $p_oTabViewArray, $p_strActive='default' ) {
+	  $strHtml  = '<div id="sub-menu" style="position:relative;z-index:3">';
+	  $strHtml .= '<ul>';
+	  $i = 1;
+	  foreach ($p_oTabArray as $iTabIndex=>$strName){
+	    $strView = $p_oTabViewArray[$iTabIndex];
+	    if ($strName != '') {
+                  $onClick = (strtolower($strView) == $p_strActive) ? "" : $strView;
+		  $strHtml .= '<li id="sm-'.$i.'"';
+		  $strHtml .= (strtolower($strView) == $p_strActive) ? ' class="active"' : '';
+		  $strHtml .= '><a class="tab" rel="'.$strName.'" href="javascript:void(0);" onClick="'.$onClick.'"><span>'.$strName.'</span></a></li>';
+		  $i++;
+	    }
+	  }
+	  $strHtml .= '</ul>';
+	  $strHtml .= '<div class="clear"></div>';
+	  $strHtml .= '</div><!-- / #sub-menu -->';
+
 	  return $strHtml;
     }
     
@@ -60,16 +87,46 @@
 	      $strView = $strNameArray[1];	
 	    }
 	    if ($strName != '') {
-		  $strHtml .= '<li';
-		  $strHtml .= (strtolower($strName) == $p_strActive) ? ' class="active"' : '';
-		  $strHtml .= '><a class="tab" rel="'.$strName.'" href="'.$p_strOption."/".$p_iId."/".strtolower($strView).'"><span>'.$strName.'</span></a></li>';
-		  $i++;
+              $strHtml .= '<li';
+              $strHtml .= (strtolower($strName) == $p_strActive) ? ' class="active"' : '';
+              if($p_iId){
+                $strHtml .= '><a class="tab" rel="'.$strName.'" href="'.$p_strOption."/".$p_iId."/".strtolower($strView).'"><span>'.$strName.'</span></a></li>';
+              }else{
+                $strHtml .= '><a class="tab" rel="'.$strName.'" href="'.$p_strOption."/".strtolower($strView).'"><span>'.$strName.'</span></a></li>';
+              }
+              $i++;
 	    }
 	  }
 	  $strHtml .= '</ul>';
 	  $strHtml .= '<div class="clear"></div>';
 	  $strHtml .= '</div><!-- / #sub-sub-menu -->';
 	
+	  return $strHtml;
+    }
+
+    public static function getOnClickSubTabs( $p_strAlert, $p_oTabArray, $p_strActive='default' ) {
+	  $strHtml  = '<div id="sub-sub-menu" style="position:relative;z-index:3; border-bottom: 1px solid #cccccc; padding:0; height: 1.77em;">';
+	  $strHtml .= '<ul>';
+	  $i = 1;
+	  foreach ($p_oTabArray as $strTabArray){
+	    $strName = $strTabArray;
+	    $strView = $strName;
+	    $strNameArray = explode(" ", $strName);
+	    if(sizeof($strNameArray) == 2){
+	      $strView = $strNameArray[1];
+	    }
+	    if ($strName != '') {
+                  $strOnClick = (strtolower($strName) == $p_strActive) ? "" : $p_strAlert;
+		  $strHtml .= '<li';
+		  $strHtml .= (strtolower($strName) == $p_strActive) ? ' class="active"' : '';
+		  $strHtml .= '><a class="tab" rel="'.$strName.'" href="javascript:void(0);" onClick="'.$strOnClick.'"><span>'.$strName.'</span></a></li>';
+		  $i++;
+	    }
+	  }
+	  $strHtml .= '</ul>';
+	  $strHtml .= '<div class="clear"></div>';
+	  $strHtml .= '</div><!-- / #sub-sub-menu -->';
+
 	  return $strHtml;
     }
     

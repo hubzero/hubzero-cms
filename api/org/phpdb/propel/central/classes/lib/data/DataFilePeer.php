@@ -75,6 +75,10 @@ class DataFilePeer extends BaseDataFilePeer {
         return self::findOneMatch($name, $path);
     }
 
+    public static function findByPathName(){
+
+    }
+
     /**
      * Find DataFile id by name and path recursively
      * SELECT id FROM DataFile WHERE name=? AND path like ? AND NOT deleted
@@ -94,6 +98,139 @@ class DataFilePeer extends BaseDataFilePeer {
     }
 
     /**
+     *
+     * @param string $p_strName
+     * @param int $p_iLowerLimit
+     * @param int $p_iUpperLimit
+     * @return array
+     */
+    public static function findByName($p_strName, $p_iLowerLimit=1, $p_iUpperLimit=10) {
+        $oDataFileArray = array();
+
+      $strQuery = "SELECT *
+                   FROM (
+                      select df.id, row_number()
+                      OVER (ORDER BY df.name) as rn
+                      from data_file df
+                      where upper(df.name) like ?
+                        and df.deleted=?
+                        and df.directory=?
+                        and df.path not like ?
+                  )WHERE rn BETWEEN ? AND ?";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oStatement->setString(1, "%".strtoupper($p_strName)."%");
+      $oStatement->setInt(2, 0);
+      $oStatement->setInt(3, 0);
+      $oStatement->setString(4, "%".Files::GENERATED_PICS);
+      $oStatement->setInt(5, $p_iLowerLimit);
+      $oStatement->setInt(6, $p_iUpperLimit);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iId = $oResultSet->getInt("ID");
+        $oDataFile = self::retrieveByPK($iId);
+        array_push($oDataFileArray, $oDataFile);
+      }
+
+      return $oDataFileArray;
+    }
+
+    public static function findByNameCount($p_strName) {
+      $iCount = 0;
+
+      $strQuery = "select count(df.id) as TOTAL
+                   from data_file df
+                   where upper(df.name) like ?
+                     and df.deleted=?
+                     and df.directory=?
+                     and df.path not like ?";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oStatement->setString(1, "%".strtoupper($p_strName)."%");
+      $oStatement->setInt(2, 0);
+      $oStatement->setInt(3, 0);
+      $oStatement->setString(4, "%".Files::GENERATED_PICS);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    /**
+     *
+     * @param string $p_strTitle
+     * @param int $p_iLowerLimit
+     * @param int $p_iUpperLimit
+     * @return array
+     */
+    public static function findByTitle($p_strTitle, $p_iLowerLimit=1, $p_iUpperLimit=10) {
+      $oDataFileArray = array();
+
+      $strQuery = "SELECT *
+                   FROM (
+                      select df.id, row_number()
+                      OVER (ORDER BY df.title) as rn
+                      from data_file df
+                      where upper(df.title) like ?
+                        and df.deleted=?
+                        and df.directory=?
+                        and df.path not like ?
+                  )WHERE rn BETWEEN ? AND ?";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oStatement->setString(1, "%".strtoupper($p_strTitle)."%");
+      $oStatement->setInt(2, 0);
+      $oStatement->setInt(3, 0);
+      $oStatement->setString(4, "%".Files::GENERATED_PICS);
+      $oStatement->setInt(5, $p_iLowerLimit);
+      $oStatement->setInt(6, $p_iUpperLimit);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iId = $oResultSet->getInt("ID");
+        $oDataFile = self::retrieveByPK($iId);
+        array_push($oDataFileArray, $oDataFile);
+      }
+
+      return $oDataFileArray;
+    }
+
+    /**
+     *
+     * @param string $p_strTitle
+     * @param int $p_iLowerLimit
+     * @param int $p_iUpperLimit
+     * @return array
+     */
+    public static function findByTitleCount($p_strTitle) {
+      $iCount = 0;
+
+      $strQuery = "select count(df.id) as TOTAL
+                   from data_file df
+                   where upper(df.title) like ?
+                     and df.deleted=?
+                     and df.directory=?
+                     and df.path not like ?";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oStatement->setString(1, "%".strtoupper($p_strTitle)."%");
+      $oStatement->setInt(2, 0);
+      $oStatement->setInt(3, 0);
+      $oStatement->setString(4, "%".Files::GENERATED_PICS);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    /**
      * Find all DataFile objects (files and directories) in current path only, not in sub-directories
      * SELECT * FROM DataFile WHERE path = ? AND NOT deleted
      *
@@ -105,6 +242,8 @@ class DataFilePeer extends BaseDataFilePeer {
         $c->add(self::PATH, $path);
         $c->add(self::DELETED, 0);
         $c->addDescendingOrderByColumn(self::DIRECTORY);
+        $c->addDescendingOrderByColumn(self::NAME);
+        //$c->addAscendingOrderByColumn(self::NAME);
         return self::doSelect($c);
     }
 
@@ -485,7 +624,7 @@ class DataFilePeer extends BaseDataFilePeer {
      * @param int $filesize, the file size in byte
      * @return DataFile object
      */
-    public static function insertOrUpdateIfDuplicate($name, $path, $create, $checksum, $directory, $filesize, $p_strTitle=null, $p_strDescription=null, $p_strUsageId=null) {
+    public static function insertOrUpdateIfDuplicate($name, $path, $create, $checksum, $directory, $filesize, $p_strTitle=null, $p_strDescription=null, $p_strUsageId=null, $p_strTool=null) {
         //echo "name=".$name.", path=".$path."<br>";
 
         if (strpos($path, "/nees/home") !== 0)
@@ -503,6 +642,7 @@ class DataFilePeer extends BaseDataFilePeer {
             $df->setTitle($p_strTitle);
             $df->setDescription($p_strDescription);
             $df->setUsageTypeId($p_strUsageId);
+            $df->setOpeningTool($p_strTool);
         }
 
         if ($directory) {
@@ -517,6 +657,7 @@ class DataFilePeer extends BaseDataFilePeer {
             $df->setTitle($p_strTitle);
             $df->setDescription($p_strDescription);
             $df->setUsageTypeId($p_strUsageId);
+            $df->setOpeningTool($p_strTool);
         }
 
         $df->setDeleted(0);
@@ -666,6 +807,15 @@ class DataFilePeer extends BaseDataFilePeer {
         return DataFilePeer::doSelect($oCriteria);
     }
 
+    public static function getSingleDataFilesByRepetition($p_iRepetitionId) {
+        $oCriteria = new Criteria();
+        $oCriteria->addJoin(DataFilePeer::ID, DataFileLinkPeer::ID, Criteria::INNER_JOIN);
+        $oCriteria->add(DataFileLinkPeer::REP_ID, $p_iRepetitionId);
+        $oCriteria->add(DataFileLinkPeer::DELETED, 0);
+        $oCriteria->add(DataFilePeer::DELETED, 0);
+        return DataFilePeer::doSelectOne($oCriteria);
+    }
+
     /*
       public function getDocumentSummary($p_strPath, $p_strIncludedFolders){
       $strLikePath = "$p_strPath%";
@@ -693,6 +843,41 @@ class DataFilePeer extends BaseDataFilePeer {
       return $oDocumentArray;
       }
      */
+
+    public static function getDirectorySummary($dirPath){
+      $dirPath = get_systemPath($dirPath);
+      $dfs = DataFilePeer::findAllInDir($dirPath);
+      
+
+      $numDirs = 0;
+      $numFiles = 0;
+      $totalSize = 0;
+
+      foreach($dfs as $df) {
+        /* @var $df DataFile */
+        $fullPath = $df->getFullPath();
+        $strName = $df->getName();
+
+        if(file_exists($fullPath) &&
+           !StringHelper::contains($fullPath, Files::GENERATED_PICS) &&
+           $strName != Files::GENERATED_PICS) {
+
+          if(is_dir($fullPath)) {
+            $numDirs++;
+          }else{
+            $numFiles++;
+            $totalSize += filesize($fullPath);
+          }
+        }
+      }//end foreach
+
+      $iStatsArray = array(0,0,0);
+      $iStatsArray[0] = $numDirs;
+      $iStatsArray[1] = $numFiles;
+      $iStatsArray[2] = $totalSize;
+
+      return $iStatsArray;
+    }
 
     public static function getDocumentSummary($p_strPath, $p_strIncludedFolderArray) {
         $strNameCondition = "(df.name='" . $p_strIncludedFolderArray[0] . "' or " .
@@ -776,12 +961,20 @@ class DataFilePeer extends BaseDataFilePeer {
         $c->addJoin(self::ID, DataFileLinkPeer::ID);
         $c->addJoin(self::USAGE_TYPE_ID, EntityTypePeer::ID);
         $c->add(DataFileLinkPeer::PROJ_ID, $p_iProjectId);
-        $c->add(DataFileLinkPeer::EXP_ID, $p_iExperimentId);
-        $c->add(DataFileLinkPeer::TRIAL_ID, $p_iTrialId);
-        $c->add(DataFileLinkPeer::REP_ID, $p_iRepetitionId);
+        if($p_iExperimentId){
+          $c->add(DataFileLinkPeer::EXP_ID, $p_iExperimentId);
+        }
+        if($p_iTrialId){
+          $c->add(DataFileLinkPeer::TRIAL_ID, $p_iTrialId);
+        }
+        if($p_iRepetitionId){
+          $c->add(DataFileLinkPeer::REP_ID, $p_iRepetitionId);
+        }
+
+        $strLike = $p_strEntityTypeNTableName . "%";
         $c->add(self::DELETED, 0);
         $c->add(self::DIRECTORY, 0);
-        $c->add(EntityTypePeer::N_TABLE_NAME, $p_strEntityTypeNTableName . "%", Criteria::LIKE);
+        $c->add(EntityTypePeer::N_TABLE_NAME, $strLike, Criteria::LIKE);
         $c->addAscendingOrderByColumn(EntityTypePeer::N_TABLE_NAME);
         return self::doSelect($c);
     }
@@ -832,7 +1025,7 @@ class DataFilePeer extends BaseDataFilePeer {
                              (lower(df.name) like '%.jpg') or
                              (lower(df.name) like '%.gif') 
                            )
-                        and df.path not like '%Generated_Pics'
+                        and df.path not like '%".Files::GENERATED_PICS."'
                         )
                         WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
 
@@ -902,8 +1095,7 @@ class DataFilePeer extends BaseDataFilePeer {
             array_push($oReturnArray, $strFileArray);
 
             if($bThumbCreated || $bDisplayCreated || $bMkDir){
-              $escSource = escapeshellarg($thumbpath);
-              exec("/nees/home/bin/fix_permissions $escSource", $output);
+              FileHelper::fixPermissions($thumbpath);
             }
         }
         return $oReturnArray;
@@ -1016,8 +1208,7 @@ class DataFilePeer extends BaseDataFilePeer {
             array_push($oReturnArray, $strFileArray);
 
             if($bThumbCreated || $bDisplayCreated || $bMkDir){
-              $escSource = escapeshellarg($thumbpath);
-              exec("/nees/home/bin/fix_permissions $escSource", $output);
+              FileHelper::fixPermissions($thumbpath);
             }
         }
         return $oReturnArray;
@@ -1047,7 +1238,7 @@ class DataFilePeer extends BaseDataFilePeer {
         return $iCount;
     }
 
-    public static function findPhotoDataFiles($p_strExcludeUsageArray, $p_iProjectId, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0, $p_iLowerLimit=0, $p_iUpperLimit = 24) {
+    public static function findPhotoDataFiles($p_iHideExperimentIdArray, $p_strExcludeUsageArray, $p_iProjectId, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0, $p_iLowerLimit=0, $p_iUpperLimit = 24) {
         require_once 'api/org/nees/util/PhotoHelper.php';
 
         $strQuery = "SELECT *
@@ -1061,6 +1252,11 @@ class DataFilePeer extends BaseDataFilePeer {
                          and df.directory=0
                          and dfl.deleted=0
                          and dfl.proj_id=? ";
+
+        if(!empty ($p_iHideExperimentIdArray)){
+          $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+          $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+        }
 
         if ($p_iExperimentId > 0
 
@@ -1175,22 +1371,27 @@ class DataFilePeer extends BaseDataFilePeer {
             array_push($oReturnArray, $strFileArray);
 
             if($bThumbCreated || $bDisplayCreated || $bMkDir){
-              $escSource = escapeshellarg($thumbpath);
-              exec("/nees/home/bin/fix_permissions $escSource", $output);
+              FileHelper::fixPermissions($thumbpath);
             }
         }
         return $oReturnArray;
     }
 
-    public static function findPhotoDataFilesCount($p_strExcludeUsageArray, $p_iProjectId, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+    public static function findPhotoDataFilesCount($p_iHideExperimentIdArray, $p_strExcludeUsageArray, $p_iProjectId, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
         $strQuery = "select count(df.id) as total
-  				 from data_file df,
-  				      data_file_link dfl
-  				 where df.id = dfl.id
-  			       and df.deleted=0
-  				   and df.directory=0
-  				   and dfl.deleted=0
-  				   and dfl.proj_id=? ";
+  		     from data_file df,
+  			  data_file_link dfl
+                     where df.id = dfl.id
+  		       and df.deleted=0
+  		       and df.directory=0
+                       and df.path not like '%".Files::GENERATED_PICS."%'
+  		       and dfl.deleted=0
+  		       and dfl.proj_id=? ";
+
+        if(!empty ($p_iHideExperimentIdArray)){
+          $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+          $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+        }
 
         if ($p_iExperimentId > 0
 
@@ -1254,7 +1455,7 @@ class DataFilePeer extends BaseDataFilePeer {
     }
 
     public static function getUrl($p_strPath, $p_strName) {
-        return "/data/get" . self::getFriendlyPath($p_strPath) . "/" . rawurlencode($p_strName);
+        return "/data/get" . self::getFriendlyPath($p_strPath) . "/" . rawurldecode($p_strName);
     }
 
     public static function getFriendlyPath($apath) {
@@ -1275,6 +1476,7 @@ class DataFilePeer extends BaseDataFilePeer {
         $oCriteria->add(EntityTypePeer::N_TABLE_NAME, "Project Image");
         $oCriteria->add(self::DELETED, 0);
         $oCriteria->add(DataFileLinkPeer::PROJ_ID, $p_iProjectId);
+
         return self::doSelectOne($oCriteria);
     }
 
@@ -1331,31 +1533,36 @@ class DataFilePeer extends BaseDataFilePeer {
             }
 
             if($bThumbCreated || $bDisplayCreated || $bMkDir){
-              $escSource = escapeshellarg($thumbpath);
-              exec( "/nees/home/bin/fix_permissions $escSource", $output);
+              //FileHelper::fixPermissions($thumbpath);
+              FileHelper::fixPermissionsOneFileOrDir($thumbpath);
             }
         }
         return $p_oDataFileArray;
     }
 
-    public static function findDataFileOpeningTools($p_strName, $p_iLowerLimit=1, $p_iUpperLimit=25, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+    public static function findDataFileOpeningTools($p_strName, $p_iHideExperimentIdArray, $p_iLowerLimit=1, $p_iUpperLimit=25, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
         $oReturnArray = array();
 
         $strQuery = "SELECT *
-				 FROM (
-  				   select df.id, df.name, df.description, df.path, df.title, 
-  				   dfl.proj_id, dfl.exp_id, dfl.trial_id, dfl.rep_id, 
-  				   e.name as e_name, t.name as t_name, r.name as r_name, 
-  				   e.title as e_title, row_number() 
-  				   OVER (ORDER BY df.path, df.name) as rn 
-  				   from data_file df
-  				     inner join data_file_link dfl on df.id = dfl.id 
-  					 left join experiment e on dfl.exp_id = e.expid 
-  					 left join trial t on dfl.trial_id = t.trialid 
-  					 left join repetition r on dfl.rep_id = r.repid 
-  				   where df.opening_tool=?
-  				     and df.deleted=?
-  				     and dfl.deleted=?";
+                     FROM (
+                       select df.id, df.name, df.description, df.path, df.title,
+                       dfl.proj_id, dfl.exp_id, dfl.trial_id, dfl.rep_id,
+                       e.name as e_name, t.name as t_name, r.name as r_name,
+                       e.title as e_title, row_number()
+                       OVER (ORDER BY df.path, df.name) as rn
+                       from data_file df
+                         inner join data_file_link dfl on df.id = dfl.id
+                         left join experiment e on dfl.exp_id = e.expid
+                         left join trial t on dfl.trial_id = t.trialid
+                         left join repetition r on dfl.rep_id = r.repid
+                       where df.opening_tool=?
+                         and df.deleted=?
+                         and dfl.deleted=?";
+
+        if(!empty ($p_iHideExperimentIdArray)){
+          $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+          $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+        }
 
         if ($p_iProjectId > 0
 
@@ -1371,8 +1578,8 @@ class DataFilePeer extends BaseDataFilePeer {
             )$strQuery .= " and dfl.rep_id=?";
 
         $strQuery .= "
-  				)  
-				WHERE rn BETWEEN ? AND ?";
+                    )
+                    WHERE rn BETWEEN ? AND ?";
 
         $iIndex = 4;
 
@@ -1429,11 +1636,9 @@ class DataFilePeer extends BaseDataFilePeer {
 
 
         return $oReturnArray;
-    }
+    }//end getDataFileOpeningTools
 
-//end getDataFileOpeningTools
-
-    public static function findDataFileOpeningToolsCount($p_strName, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+    public static function findDataFileOpeningToolsCount($p_strName, $p_iHideExperimentIdArray, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
         $iTotal = 0;
 
         $strQuery = "select count(df.id) as total
@@ -1445,6 +1650,11 @@ class DataFilePeer extends BaseDataFilePeer {
   				 where df.opening_tool=?
   				   and df.deleted=?
   				   and dfl.deleted=?";
+
+        if(!empty ($p_iHideExperimentIdArray)){
+          $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+          $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+        }
 
         if ($p_iProjectId > 0
 
@@ -1492,11 +1702,177 @@ class DataFilePeer extends BaseDataFilePeer {
         }
 
         return $iTotal;
+    }//end findDataFileOpeningToolsCount
+
+    public static function findDataFiles($p_iHideExperimentIdArray, $p_iLowerLimit=1, $p_iUpperLimit=25, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+        $oReturnArray = array();
+
+        $strQuery = "SELECT *
+                     FROM (
+                       select df.id, df.name, df.description, df.path, df.title,
+                       dfl.proj_id, dfl.exp_id, dfl.trial_id, dfl.rep_id,
+                       e.name as e_name, t.name as t_name, r.name as r_name,
+                       e.title as e_title, row_number()
+                       OVER (ORDER BY df.path, df.name) as rn
+                       from data_file df
+                         inner join data_file_link dfl on df.id = dfl.id
+                         left join experiment e on dfl.exp_id = e.expid
+                         left join trial t on dfl.trial_id = t.trialid
+                         left join repetition r on dfl.rep_id = r.repid
+                       where df.deleted=?
+                         and df.directory=?
+                         and dfl.deleted=?";
+
+        if(!empty ($p_iHideExperimentIdArray)){
+          $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+          $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+        }
+
+        $strQuery .= " and df.path not like '%".Files::GENERATED_PICS."'";
+
+        if ($p_iProjectId > 0
+
+            )$strQuery .= " and dfl.proj_id=?";
+        if ($p_iExperimentId > 0
+
+            )$strQuery .= " and dfl.exp_id=?";
+        if ($p_iTrialId > 0
+
+            )$strQuery .= " and dfl.trial_id=?";
+        if ($p_iRepetitionId > 0
+
+            )$strQuery .= " and dfl.rep_id=?";
+
+        $strQuery .= "
+                    )
+                    WHERE rn BETWEEN ? AND ?";
+
+        $iIndex = 4;
+
+        //echo $strQuery."<br>";
+
+        $oConnection = Propel::getConnection();
+        $oStatement = $oConnection->prepareStatement($strQuery);
+        $oStatement->setInt(1, 0);
+        $oStatement->setInt(2, 0);
+        $oStatement->setInt(3, 0);
+        if ($p_iProjectId > 0) {
+            $oStatement->setInt($iIndex, $p_iProjectId);
+            ++$iIndex;
+        }
+
+        if ($p_iExperimentId > 0) {
+            $oStatement->setInt($iIndex, $p_iExperimentId);
+            ++$iIndex;
+        }
+
+        if ($p_iTrialId > 0) {
+            $oStatement->setInt($iIndex, $p_iTrialId);
+            ++$iIndex;
+        }
+
+        if ($p_iRepetitionId > 0) {
+            $oStatement->setInt($iIndex, $p_iRepetitionId);
+            ++$iIndex;
+        }
+
+        $oStatement->setInt($iIndex, $p_iLowerLimit);
+        ++$iIndex;
+
+        $oStatement->setInt($iIndex, $p_iUpperLimit);
+        $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+        while ($oResultSet->next()) {
+            $strFileArray = array();
+            $strFileArray['ID'] = $oResultSet->getInt("ID");
+            $strFileArray['NAME'] = $oResultSet->getString("NAME");
+            $strFileArray['PATH'] = $oResultSet->getString("PATH");
+            $strFileArray['SOURCE'] = $strFileArray['PATH'] . "/" . $strFileArray['NAME'];
+            $strFileArray['DESCRIPTION'] = $oResultSet->getString("DESCRIPTION");
+            $strFileArray['TITLE'] = $oResultSet->getString("TITLE");
+            $strFileArray['PROJ_ID'] = $oResultSet->getInt("PROJ_ID");
+            $strFileArray['EXP_ID'] = $oResultSet->getInt("EXP_ID");
+            $strFileArray['TRIAL_ID'] = $oResultSet->getInt("TRIAL_ID");
+            $strFileArray['REP_ID'] = $oResultSet->getInt("REP_ID");
+            $strFileArray['E_TITLE'] = $oResultSet->getString("E_TITLE");
+            $strFileArray['E_NAME'] = $oResultSet->getString("E_NAME");
+            $strFileArray['T_NAME'] = $oResultSet->getString("T_NAME");
+            $strFileArray['R_NAME'] = $oResultSet->getString("R_NAME");
+            array_push($oReturnArray, $strFileArray);
+        }
+
+
+        return $oReturnArray;
+    }//end getDataFileOpeningTools
+
+    public static function findDataFilesCount($p_iHideExperimentIdArray, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+        $iTotal = 0;
+
+        $strQuery = "select count(df.id) as total
+                     from data_file df
+                       inner join data_file_link dfl on df.id = dfl.id
+                       left join experiment e on dfl.exp_id = e.expid
+                       left join trial t on dfl.trial_id = t.trialid
+                       left join repetition r on dfl.rep_id = r.repid
+                     where df.deleted=?
+                       and df.directory=?
+                       and dfl.deleted=?";
+
+        if(!empty ($p_iHideExperimentIdArray)){
+          $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+          $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+        }
+
+        $strQuery .= " and df.path not like '%".Files::GENERATED_PICS."'";
+
+        if ($p_iProjectId > 0
+
+            )$strQuery .= " and dfl.proj_id=?";
+        if ($p_iExperimentId > 0
+
+            )$strQuery .= " and dfl.exp_id=?";
+        if ($p_iTrialId > 0
+
+            )$strQuery .= " and dfl.trial_id=?";
+        if ($p_iRepetitionId > 0
+
+            )$strQuery .= " and dfl.rep_id=?";
+
+        $iIndex = 4;
+
+        $oConnection = Propel::getConnection();
+        $oStatement = $oConnection->prepareStatement($strQuery);
+        $oStatement->setInt(1, 0);
+        $oStatement->setInt(2, 0);
+        $oStatement->setInt(3, 0);
+        if ($p_iProjectId > 0) {
+            $oStatement->setInt($iIndex, $p_iProjectId);
+            ++$iIndex;
+        }
+
+        if ($p_iExperimentId > 0) {
+            $oStatement->setInt($iIndex, $p_iExperimentId);
+            ++$iIndex;
+        }
+
+        if ($p_iTrialId > 0) {
+            $oStatement->setInt($iIndex, $p_iTrialId);
+            ++$iIndex;
+        }
+
+        if ($p_iRepetitionId > 0) {
+            $oStatement->setInt($iIndex, $p_iRepetitionId);
+            ++$iIndex;
+        }
+
+        $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+        while ($oResultSet->next()) {
+          $iTotal = $oResultSet->getInt("TOTAL");
+        }
+
+        return $iTotal;
     }
 
-//end findDataFileOpeningToolsCount
-
-    public static function findDataFileByUsage($p_strUsage, $p_iLowerLimit=1, $p_iUpperLimit=25, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+    public static function findDataFileByUsage($p_strUsage, $p_iHideExperimentIdArray, $p_iLowerLimit=1, $p_iUpperLimit=25, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
         $oReturnArray = array();
 
         $strQuery = "SELECT *
@@ -1515,6 +1891,11 @@ class DataFilePeer extends BaseDataFilePeer {
                        where df.usage_type_id in (select id from entity_type where n_table_name like ?)
                          and df.deleted=?
                          and dfl.deleted=?";
+
+        if(!empty ($p_iHideExperimentIdArray)){
+          $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+          $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+        }
 
         if ($p_iProjectId > 0
 
@@ -1575,104 +1956,7 @@ class DataFilePeer extends BaseDataFilePeer {
         return self::retrieveByPKs($oReturnArray);
     }
 
-    public static function findDataFileByUsage0($p_strUsage, $p_iLowerLimit=1, $p_iUpperLimit=25, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
-        $oReturnArray = array();
-
-        $strQuery = "SELECT *
-                     FROM (
-                       select df.id, df.name, df.description, df.path, df.title,
-                       dfl.proj_id, dfl.exp_id, dfl.trial_id, dfl.rep_id,
-                       e.name as e_name, t.name as t_name, r.name as r_name,
-                       e.title as e_title, f.default_extension, row_number()
-                       OVER (ORDER BY df.path, df.name) as rn
-                       from data_file df
-                         inner join data_file_link dfl on df.id = dfl.id
-                             left join experiment e on dfl.exp_id = e.expid
-                             left join trial t on dfl.trial_id = t.trialid
-                             left join repetition r on dfl.rep_id = r.repid
-                             left join document_format f on f.document_format_id = df.document_format_id
-                       where df.usage_type_id in (select id from entity_type where n_table_name like ?)
-                         and df.deleted=?
-                         and dfl.deleted=?";
-
-        if ($p_iProjectId > 0
-
-            )$strQuery .= " and dfl.proj_id=?";
-        if ($p_iExperimentId > 0
-
-            )$strQuery .= " and dfl.exp_id=?";
-        if ($p_iTrialId > 0
-
-            )$strQuery .= " and dfl.trial_id=?";
-        if ($p_iRepetitionId > 0
-
-            )$strQuery .= " and dfl.rep_id=?";
-
-        $strQuery .= "
-  				)
-				WHERE rn BETWEEN ? AND ?";
-
-        $iIndex = 4;
-
-        //echo $strQuery."<br>";
-
-        $oConnection = Propel::getConnection();
-        $oStatement = $oConnection->prepareStatement($strQuery);
-        $oStatement->setString(1, $p_strUsage."%");
-        $oStatement->setInt(2, 0);
-        $oStatement->setInt(3, 0);
-        if ($p_iProjectId > 0) {
-            $oStatement->setInt($iIndex, $p_iProjectId);
-            ++$iIndex;
-        }
-
-        if ($p_iExperimentId > 0) {
-            $oStatement->setInt($iIndex, $p_iExperimentId);
-            ++$iIndex;
-        }
-
-        if ($p_iTrialId > 0) {
-            $oStatement->setInt($iIndex, $p_iTrialId);
-            ++$iIndex;
-        }
-
-        if ($p_iRepetitionId > 0) {
-            $oStatement->setInt($iIndex, $p_iRepetitionId);
-            ++$iIndex;
-        }
-
-        $oStatement->setInt($iIndex, $p_iLowerLimit);
-        ++$iIndex;
-
-        $oStatement->setInt($iIndex, $p_iUpperLimit);
-        $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
-        while ($oResultSet->next()) {
-            $strFileArray = array();
-            $strFileArray['ID'] = $oResultSet->getInt("ID");
-            $strFileArray['NAME'] = $oResultSet->getString("NAME");
-            $strFileArray['PATH'] = $oResultSet->getString("PATH");
-            $strFileArray['SOURCE'] = $strFileArray['PATH'] . "/" . $strFileArray['NAME'];
-            $strFileArray['DESCRIPTION'] = $oResultSet->getString("DESCRIPTION");
-            $strFileArray['TITLE'] = $oResultSet->getString("TITLE");
-            $strFileArray['PROJ_ID'] = $oResultSet->getInt("PROJ_ID");
-            $strFileArray['EXP_ID'] = $oResultSet->getInt("EXP_ID");
-            $strFileArray['TRIAL_ID'] = $oResultSet->getInt("TRIAL_ID");
-            $strFileArray['REP_ID'] = $oResultSet->getInt("REP_ID");
-            $strFileArray['E_TITLE'] = $oResultSet->getString("E_TITLE");
-            $strFileArray['E_NAME'] = $oResultSet->getString("E_NAME");
-            $strFileArray['T_NAME'] = $oResultSet->getString("T_NAME");
-            $strFileArray['R_NAME'] = $oResultSet->getString("R_NAME");
-            $strFileArray['EXTENSION'] = $oResultSet->getString("DEFAULT_EXTENSION");
-            array_push($oReturnArray, $strFileArray);
-        }
-
-
-        return $oReturnArray;
-    }
-
-//end getDataFileOpeningTools
-
-    public static function findDataFileByUsageCount($p_strUsage, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+    public static function findDataFileByUsageCount($p_strUsage, $p_iHideExperimentIdArray, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
         $iTotal = 0;
 
         $strQuery = "select count(df.id) as total
@@ -1684,6 +1968,11 @@ class DataFilePeer extends BaseDataFilePeer {
                      where df.usage_type_id in (select id from entity_type where n_table_name like ?)
                        and df.deleted=?
                        and dfl.deleted=?";
+
+        if(!empty ($p_iHideExperimentIdArray)){
+          $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+          $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+        }
 
         if ($p_iProjectId > 0
 
@@ -1734,6 +2023,420 @@ class DataFilePeer extends BaseDataFilePeer {
     }
 
 //end findDataFileOpeningToolsCount
+
+  /**
+   * Finds a flat list of files within a specified directory.  If a user looks
+   * for Documentation, the query searches for any path with ../Documentation...
+   * @param string $p_strDirectory
+   * @param array $p_iHideExperimentIdArray - experiments to exclude
+   * @param int $p_iProjectId
+   * @param int $p_iLowerLimit
+   * @param int $p_iUpperLimit
+   * @param int $p_iExperimentId
+   * @param int $p_iTrialId
+   * @param int $p_iRepetitionId
+   * @return array
+   */
+  public static function findDataFileDocumentsByDirectory($p_strDirectory, $p_iHideExperimentIdArray, $p_iProjectId, $p_iLowerLimit=1, $p_iUpperLimit=25, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+    $oReturnArray = array();
+
+    //print_r($p_iHideExperimentIdArray);
+
+    $strQuery = "SELECT *
+                 FROM (
+                   select df.id, row_number()
+                   OVER (ORDER BY df.path, df.title, df.name) as rn
+                   from data_file df
+                     inner join data_file_link dfl on df.id = dfl.id
+                     left join experiment e on dfl.exp_id = e.expid
+                     left join trial t on dfl.trial_id = t.trialid
+                     left join repetition r on dfl.rep_id = r.repid
+                   where df.path like ? ";
+
+    if(!empty ($p_iHideExperimentIdArray)){
+      $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+      $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+    }
+
+    //exclude deleted files, directories, and images
+    $strQuery .= "
+                     and df.deleted=?
+                     and df.directory=?
+                     and(
+                      UPPER(df.name) not like '%.JPG' and
+                      UPPER(df.name) not like '%.JPEG' and
+                      UPPER(df.name) not like '%.JPE' and
+                      UPPER(df.name) not like '%.BMP' and
+                      UPPER(df.name) not like '%.PNG' and
+                      UPPER(df.name) not like '%.GIF'
+                    )
+                     and dfl.deleted=?";
+
+    if ($p_iProjectId > 0
+
+        )$strQuery .= " and dfl.proj_id=?";
+    if ($p_iExperimentId > 0
+
+        )$strQuery .= " and dfl.exp_id=?";
+    if ($p_iTrialId > 0
+
+        )$strQuery .= " and dfl.trial_id=?";
+    if ($p_iRepetitionId > 0
+
+        )$strQuery .= " and dfl.rep_id=?";
+
+    $strQuery .= "
+                    )
+                    WHERE rn BETWEEN ? AND ?";
+
+    $iIndex = 5;
+    
+    //echo $strQuery."<br>";
+
+    $strPath = (StringHelper::beginsWith($p_strDirectory, "/")) ? $p_strDirectory."%" : "%/".$p_strDirectory."%";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setString(1, $strPath);
+    $oStatement->setInt(2, 0);
+    $oStatement->setInt(3, 0);
+    $oStatement->setInt(4, 0);
+    if ($p_iProjectId > 0) {
+        $oStatement->setInt($iIndex, $p_iProjectId);
+        ++$iIndex;
+    }
+
+    if ($p_iExperimentId > 0) {
+        $oStatement->setInt($iIndex, $p_iExperimentId);
+        ++$iIndex;
+    }
+
+    if ($p_iTrialId > 0) {
+        $oStatement->setInt($iIndex, $p_iTrialId);
+        ++$iIndex;
+    }
+
+    if ($p_iRepetitionId > 0) {
+        $oStatement->setInt($iIndex, $p_iRepetitionId);
+        ++$iIndex;
+    }
+
+    $oStatement->setInt($iIndex, $p_iLowerLimit);
+    ++$iIndex;
+
+    $oStatement->setInt($iIndex, $p_iUpperLimit);
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while ($oResultSet->next()) {
+        $strFileArray['ID'] = $oResultSet->getInt("ID");
+        $oDocumentDataFile = self::retrieveByPK($strFileArray['ID']);
+        array_push($oReturnArray, $oDocumentDataFile);
+        //array_push($oReturnArray, $strFileArray['ID']);
+    }
+
+    //return self::retrieveByPKs($oReturnArray);
+    return $oReturnArray;
+  }
+
+  /**
+   * Finds the count of flat list of files within a specified directory.  If a user looks
+   * for Documentation, the query searches for any path with ../Documentation...
+   * @param string $p_strDirectory
+   * @param array $p_iHideExperimentIdArray
+   * @param int $p_iProjectId
+   * @param int $p_iExperimentId
+   * @param int $p_iTrialId
+   * @param int $p_iRepetitionId
+   * @return int
+   */
+  public static function findDataFileDocumentsByDirectoryCount($p_strDirectory, $p_iHideExperimentIdArray, $p_iProjectId, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+    $iTotal = 0;
+
+    $strQuery = "select count(df.id) as total
+                 from data_file df
+                   inner join data_file_link dfl on df.id = dfl.id
+                   left join experiment e on dfl.exp_id = e.expid
+                   left join trial t on dfl.trial_id = t.trialid
+                   left join repetition r on dfl.rep_id = r.repid
+                 where df.path like ? ";
+
+    if(!empty ($p_iHideExperimentIdArray)){
+      $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+      $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+    }
+
+    //exclude deleted files, directories, and images
+    $strQuery .= "
+                     and df.deleted=?
+                     and df.directory=?
+                     and(
+                      UPPER(df.name) not like '%.JPG' and
+                      UPPER(df.name) not like '%.JPEG' and
+                      UPPER(df.name) not like '%.JPE' and
+                      UPPER(df.name) not like '%.BMP' and
+                      UPPER(df.name) not like '%.PNG' and
+                      UPPER(df.name) not like '%.GIF'
+                    )
+                     and dfl.deleted=?";
+
+    if ($p_iProjectId > 0
+
+        )$strQuery .= " and dfl.proj_id=?";
+    if ($p_iExperimentId > 0
+
+        )$strQuery .= " and dfl.exp_id=?";
+    if ($p_iTrialId > 0
+
+        )$strQuery .= " and dfl.trial_id=?";
+    if ($p_iRepetitionId > 0
+
+        )$strQuery .= " and dfl.rep_id=?";
+
+    $iIndex = 5;
+
+    //echo $strQuery."<br>";
+    $strPath = (StringHelper::beginsWith($p_strDirectory, "/")) ? $p_strDirectory."%" : "%/".$p_strDirectory."%";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setString(1, $strPath);
+    $oStatement->setInt(2, 0);
+    $oStatement->setInt(3, 0);
+    $oStatement->setInt(4, 0);
+    if ($p_iProjectId > 0) {
+        $oStatement->setInt($iIndex, $p_iProjectId);
+        ++$iIndex;
+    }
+
+    if ($p_iExperimentId > 0) {
+        $oStatement->setInt($iIndex, $p_iExperimentId);
+        ++$iIndex;
+    }
+
+    if ($p_iTrialId > 0) {
+        $oStatement->setInt($iIndex, $p_iTrialId);
+        ++$iIndex;
+    }
+
+    if ($p_iRepetitionId > 0) {
+        $oStatement->setInt($iIndex, $p_iRepetitionId);
+        ++$iIndex;
+    }
+
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while ($oResultSet->next()) {
+      $iTotal = $oResultSet->getInt("TOTAL");
+    }
+
+    return $iTotal;
+  }
+
+  /**
+   * Finds a flat list of files within a specified directory.  If a user looks
+   * for Documentation, the query searches for any path with ../Documentation...
+   * @param string $p_strDirectory
+   * @param array $p_iHideExperimentIdArray - experiments to exclude
+   * @param int $p_iProjectId
+   * @param int $p_iLowerLimit
+   * @param int $p_iUpperLimit
+   * @param int $p_iExperimentId
+   * @param int $p_iTrialId
+   * @param int $p_iRepetitionId
+   * @return array
+   */
+  public static function findDataFilePhotosByDirectory($p_strDirectory, $p_iHideExperimentIdArray, $p_iProjectId, $p_iLowerLimit=1, $p_iUpperLimit=25, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+    $oReturnArray = array();
+
+    //print_r($p_iHideExperimentIdArray);
+
+    $strQuery = "SELECT *
+                 FROM (
+                   select df.id, row_number()
+                   OVER (ORDER BY df.path, df.title, df.name) as rn
+                   from data_file df
+                     inner join data_file_link dfl on df.id = dfl.id
+                     left join experiment e on dfl.exp_id = e.expid
+                     left join trial t on dfl.trial_id = t.trialid
+                     left join repetition r on dfl.rep_id = r.repid
+                   where df.path like ?
+                     and df.path not like '%".Files::GENERATED_PICS."' ";
+
+    if(!empty ($p_iHideExperimentIdArray)){
+      $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+      $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+    }
+
+    //exclude deleted files, directories, and images
+    $strQuery .= "
+                     and df.deleted=?
+                     and df.directory=?
+                     and dfl.deleted=?";
+
+    if ($p_iProjectId > 0
+
+        )$strQuery .= " and dfl.proj_id=?";
+    if ($p_iExperimentId > 0
+
+        )$strQuery .= " and dfl.exp_id=?";
+    if ($p_iTrialId > 0
+
+        )$strQuery .= " and dfl.trial_id=?";
+    if ($p_iRepetitionId > 0
+
+        )$strQuery .= " and dfl.rep_id=?";
+
+    $strQuery .= "
+                    )
+                    WHERE rn BETWEEN ? AND ?";
+
+    $iIndex = 5;
+
+    //echo $strQuery."<br>";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setString(1, "%".$p_strDirectory."%");
+    $oStatement->setInt(2, 0);
+    $oStatement->setInt(3, 0);
+    $oStatement->setInt(4, 0);
+    if ($p_iProjectId > 0) {
+        $oStatement->setInt($iIndex, $p_iProjectId);
+        ++$iIndex;
+    }
+
+    if ($p_iExperimentId > 0) {
+        $oStatement->setInt($iIndex, $p_iExperimentId);
+        ++$iIndex;
+    }
+
+    if ($p_iTrialId > 0) {
+        $oStatement->setInt($iIndex, $p_iTrialId);
+        ++$iIndex;
+    }
+
+    if ($p_iRepetitionId > 0) {
+        $oStatement->setInt($iIndex, $p_iRepetitionId);
+        ++$iIndex;
+    }
+
+    $oStatement->setInt($iIndex, $p_iLowerLimit);
+    ++$iIndex;
+
+    $oStatement->setInt($iIndex, $p_iUpperLimit);
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while ($oResultSet->next()) {
+        $strFileArray['ID'] = $oResultSet->getInt("ID");
+        $oDocumentDataFile = self::retrieveByPK($strFileArray['ID']);
+        array_push($oReturnArray, $oDocumentDataFile);
+        //array_push($oReturnArray, $strFileArray['ID']);
+    }
+
+    //return self::retrieveByPKs($oReturnArray);
+    return $oReturnArray;
+  }
+
+  /**
+   * Finds the count of flat list of files within a specified directory.  If a user looks
+   * for Documentation, the query searches for any path with ../Documentation...
+   * @param string $p_strDirectory
+   * @param array $p_iHideExperimentIdArray
+   * @param int $p_iProjectId
+   * @param int $p_iExperimentId
+   * @param int $p_iTrialId
+   * @param int $p_iRepetitionId
+   * @return int
+   */
+  public static function findDataFilePhotosByDirectoryCount($p_strDirectory, $p_iHideExperimentIdArray, $p_iProjectId, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
+    $iTotal = 0;
+
+    $strQuery = "select count(df.id) as total
+                 from data_file df
+                   inner join data_file_link dfl on df.id = dfl.id
+                   left join experiment e on dfl.exp_id = e.expid
+                   left join trial t on dfl.trial_id = t.trialid
+                   left join repetition r on dfl.rep_id = r.repid
+                 where df.path like ?
+                   and df.path not like '%".Files::GENERATED_PICS."' ";
+
+    if(!empty ($p_iHideExperimentIdArray)){
+      $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+      $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+    }
+
+    //exclude deleted files, directories, and images
+    $strQuery .= "
+                     and df.deleted=?
+                     and df.directory=?
+                     and dfl.deleted=?";
+
+    if ($p_iProjectId > 0
+
+        )$strQuery .= " and dfl.proj_id=?";
+    if ($p_iExperimentId > 0
+
+        )$strQuery .= " and dfl.exp_id=?";
+    if ($p_iTrialId > 0
+
+        )$strQuery .= " and dfl.trial_id=?";
+    if ($p_iRepetitionId > 0
+
+        )$strQuery .= " and dfl.rep_id=?";
+
+    $iIndex = 5;
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setString(1, "%".$p_strDirectory."%");
+    $oStatement->setInt(2, 0);
+    $oStatement->setInt(3, 0);
+    $oStatement->setInt(4, 0);
+    if ($p_iProjectId > 0) {
+        $oStatement->setInt($iIndex, $p_iProjectId);
+        ++$iIndex;
+    }
+
+    if ($p_iExperimentId > 0) {
+        $oStatement->setInt($iIndex, $p_iExperimentId);
+        ++$iIndex;
+    }
+
+    if ($p_iTrialId > 0) {
+        $oStatement->setInt($iIndex, $p_iTrialId);
+        ++$iIndex;
+    }
+
+    if ($p_iRepetitionId > 0) {
+        $oStatement->setInt($iIndex, $p_iRepetitionId);
+        ++$iIndex;
+    }
+
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while ($oResultSet->next()) {
+        $iTotal = $oResultSet->getInt("TOTAL");
+    }
+
+    return $iTotal;
+  }
+
+  public static function findOpeningTools(){
+    $oReturnArray = array();
+
+    $strQuery = "select distinct df.opening_tool
+                 from data_file_link dfl,
+                      data_file df
+                 where dfl.id = df.id
+                   and df.opening_tool is not null
+                 order by df.opening_tool";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->createStatement();
+    $oResultsSet = $oStatement->executeQuery($strQuery, ResultSet::FETCHMODE_ASSOC);
+    while($oResultsSet->next()){
+      $strTool = $oResultsSet->getString('OPENING_TOOL');
+      array_push($oReturnArray, $strTool);
+    }
+
+    return $oReturnArray;
+  }
 
     public static function findDistinctOpeningTools($p_iProjectId, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
         $strReturnArray = array();
@@ -1800,8 +2503,8 @@ class DataFilePeer extends BaseDataFilePeer {
                              (lower(df.name) like '%.gif')
                          )
                          and(
-                             (name not like 'thumb_%' and path not like '%Generated_Pics%') and
-                             (name not like 'display_%' and path not like '%Generated_Pics%')
+                             (name not like 'thumb_%' and path not like '%".Files::GENERATED_PICS."%') and
+                             (name not like 'display_%' and path not like '%".Files::GENERATED_PICS."%')
                          )
                    )WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
 
@@ -1835,8 +2538,8 @@ class DataFilePeer extends BaseDataFilePeer {
                           (lower(df.name) like '%.gif')
                      )
                      and(
-                          (name not like 'thumb_%' and path not like '%Generated_Pics%') and
-                          (name not like 'display_%' and path not like '%Generated_Pics%')
+                          (name not like 'thumb_%' and path not like '%".Files::GENERATED_PICS."%') and
+                          (name not like 'display_%' and path not like '%".Files::GENERATED_PICS."%')
                      )";
 
       $iCount = 0;
@@ -1850,6 +2553,117 @@ class DataFilePeer extends BaseDataFilePeer {
 
       return $iCount;
     }
+
+    public static function getProjectEditorPhotos($p_iPhotoType, $p_iProjectId, $p_iExperimentId, $p_iLowerLimit, $p_iUpperLimit){
+      $iDataFileIdArray = array();
+
+      $strQuery = self::getProjectEditorPhotosQuery($p_iPhotoType, $p_iProjectId, $p_iExperimentId, $p_iLowerLimit, $p_iUpperLimit);
+      if(strlen($strQuery)==0){
+        return $iDataFileIdArray;
+      }
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oStatement->setInt(1, 0);                    //directory
+      $oStatement->setInt(2, $p_iProjectId);
+      $oStatement->setInt(3, $p_iExperimentId);
+      $oStatement->setInt(4, 0);                    //trial
+      $oStatement->setInt(5, 0);                    //repetition
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iDataFileId = $oResultSet->getInt("ID");
+        array_push($iDataFileIdArray, $iDataFileId);
+      }
+
+      return self::retrieveByPKs($iDataFileIdArray);
+    }
+
+    public static function getProjectEditorPhotosCount($p_iPhotoType, $p_iProjectId, $p_iExperimentId){
+      $iCount = 0;
+
+      $strQuery = self::getProjectEditorPhotosCountQuery($p_iPhotoType, $p_iProjectId, $p_iExperimentId);
+      if(strlen($strQuery)==0){
+        return $iCount;
+      }
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oStatement->setInt(1, 0);                    //directory
+      $oStatement->setInt(2, $p_iProjectId);
+      $oStatement->setInt(3, $p_iExperimentId);
+      $oStatement->setInt(4, 0);                    //trial
+      $oStatement->setInt(5, 0);                    //repetition
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    private static function getProjectEditorPhotosQuery($p_iPhotoType, $p_iProjectId, $p_iExperimentId, $p_iLowerLimit, $p_iUpperLimit){
+      $strQuery = "SELECT *
+                   FROM (
+                     select df.id, row_number()
+                     OVER (ORDER BY df.path, df.name) as rn
+                     from data_file_link dfl, data_file df
+                     where dfl.id = df.id
+                       and df.directory=?
+                       and(
+                          (lower(df.name) like '%.png') or
+                          (lower(df.name) like '%.jpg') or
+                          (lower(df.name) like '%.gif')
+                       )
+                       and df.path not like '%".Files::GENERATED_PICS."'
+                       and df.path not like '%Documentation%'
+                       and df.path not like '%Analysis%'
+                       and dfl.proj_id = ?
+                       and dfl.exp_id = ?";
+      if($p_iPhotoType == self::PHOTO_TYPE_DATA){
+        $strQuery.="   and dfl.trial_id > ?
+                       and dfl.rep_id > ?";
+      }elseif($p_iPhotoType == self::PHOTO_TYPE_GENERAL) {
+        $strQuery.="   and dfl.trial_id = ?
+                       and dfl.rep_id = ?";
+      }else{
+        $strQuery = "";
+      }
+
+      if(strlen($strQuery) > 0){
+        $strQuery .= ")WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
+      }
+
+      return $strQuery;
+    }
+
+    private static function getProjectEditorPhotosCountQuery($p_iPhotoType, $p_iProjectId, $p_iExperimentId){
+      $strQuery = "select count(df.id) as TOTAL
+                   from data_file_link dfl, data_file df
+                   where dfl.id = df.id
+                     and df.directory=?
+                     and(
+                       (lower(df.name) like '%.png') or
+                       (lower(df.name) like '%.jpg') or
+                       (lower(df.name) like '%.gif')
+                     )
+                     and df.path not like '%".Files::GENERATED_PICS."'
+                     and df.path not like '%Documentation%'
+                     and df.path not like '%Analysis%'
+                     and dfl.proj_id = ?
+                     and dfl.exp_id = ?";
+      if($p_iPhotoType == self::PHOTO_TYPE_DATA){
+        $strQuery.=" and dfl.trial_id > ?
+                     and dfl.rep_id > ?";
+      }elseif($p_iPhotoType == self::PHOTO_TYPE_GENERAL) {
+        $strQuery.=" and dfl.trial_id = ?
+                     and dfl.rep_id = ?";
+      }else{
+        $strQuery = "";
+      }
+
+      return $strQuery;
+    }
+
 }
 
 // DataFilePeer

@@ -306,5 +306,18 @@ class FacilityPeer extends OrganizationPeer {
     return $ret;
   }
 
+  public static function deleteByExperimentId($p_iExperientId, $p_oConnection=null){
+    $strQuery = "delete from experiment_facility
+                 where expid=?";
+
+    if(!$p_oConnection){
+      $p_oConnection = Propel::getConnection();
+    }
+
+    $oStatement = $p_oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iExperientId);
+    $oStatement->executeUpdate();
+  }
+
 } // FacilityPeer
 ?>

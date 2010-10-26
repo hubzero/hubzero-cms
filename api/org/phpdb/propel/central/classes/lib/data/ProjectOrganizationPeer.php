@@ -93,6 +93,20 @@ class ProjectOrganizationPeer extends BaseProjectOrganizationPeer {
     return self::doSelectOne($c);
   }
 
+  public static function deleteByProject($p_iProjectId, $p_oConnection=null){
+    if(!$p_oConnection){
+      $oConnection = Propel::getConnection();
+    }else{
+      $oConnection = $p_oConnection;
+    }
+
+    $strQuery = "delete from project_organization
+                 where projid=?";
+    
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iProjectId);
+    $oStatement->executeUpdate();
+  }
 
 } // ProjectOrganizationPeer
 ?>

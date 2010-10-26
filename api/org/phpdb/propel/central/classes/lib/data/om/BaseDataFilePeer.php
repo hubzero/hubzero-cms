@@ -90,6 +90,12 @@ abstract class BaseDataFilePeer {
 	/** the column name for the USAGE_TYPE_ID field */
 	const USAGE_TYPE_ID = 'DATA_FILE.USAGE_TYPE_ID';
 
+        /** the user wants documentation photos */
+        const PHOTO_TYPE_GENERAL = 1;
+
+        /** the user wants data photos */
+        const PHOTO_TYPE_DATA = 2;
+
 	/** The PHP to DB Name Mapping */
 	private static $phpNameMap = null;
 

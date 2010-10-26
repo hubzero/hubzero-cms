@@ -50,50 +50,184 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
       
       return $oReturnArray;
 	}
-	
-	public static function findDistinctExperiments($p_iProjectId, $p_strOpeningTool="", $p_strUsageType=""){
-	  $strReturnArray = array();
 
-          $strQuery = "select distinct dfl.exp_id, e.name   
-				from data_file_link dfl, experiment e, data_file df
-				where dfl.proj_id = ?
-				  and dfl.exp_id = e.expid
-				  and dfl.id = df.id ";
-	  if(strlen($p_strOpeningTool)>0){
-		$strQuery .= "and df.opening_tool= ? ";
-  	  }
-  	  
-  	  if(strlen($p_strUsageType)>0){
-		$strQuery .= "and df.usage_type_id in (select id from entity_type where n_table_name like ?) ";
-  	  }
-	  $strQuery .= "order by e.name";
+  public static function findDistinctExperimentsByDirectory($p_strDirectory, $p_iProjectId, $p_iHideExperimentIdArray){
+    $strReturnArray = array();
 
-	  //echo $strQuery."<br>"; 
-	  
-	  $iIndex = 2;
-	  
-	  $oConnection = Propel::getConnection();
-      $oStatement = $oConnection->prepareStatement($strQuery);
-      $oStatement->setInt(1, $p_iProjectId);
-      if(strlen($p_strOpeningTool)>0){
-      	$oStatement->setString($iIndex, $p_strOpeningTool);
-      	++$iIndex;
-      }
-      if(strlen($p_strUsageType)>0){
-      	$oStatement->setString($iIndex, $p_strUsageType."%");
-      }	
-      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
-      while($oResultSet->next()){
-      	$strExperimentArray = array();
-  	    $strExperimentArray['EXP_ID'] = $oResultSet->getInt("EXP_ID");
-  	    $strExperimentArray['NAME'] = $oResultSet->getString("NAME");
-  	    array_push($strReturnArray, $strExperimentArray);
-      }
-      
-      return $strReturnArray;
-	}
+    $strQuery = "select distinct dfl.exp_id, e.name,e.title
+                from data_file_link dfl
+                inner join experiment e on dfl.exp_id = e.expid
+                inner join data_file df on dfl.id = df.id
+                left join document_format f on f.document_format_id = df.document_format_id
+                where dfl.proj_id = ?
+                  and df.path like ?
+                  and df.deleted=?
+                  and df.directory=?
+                  and f.mime_type not like 'image/%' 
+                  and dfl.deleted=? ";
+
+    if(!empty ($p_iHideExperimentIdArray)){
+      $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+      $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+    }
+    $strQuery .= "order by dfl.exp_id";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iProjectId);
+    $oStatement->setString(2, "%/".$p_strDirectory."%");
+    $oStatement->setInt(3, 0);
+    $oStatement->setInt(4, 0);
+    $oStatement->setInt(5, 0);
+
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultSet->next()){
+      $strExperimentArray = array();
+      $strExperimentArray['EXP_ID'] = $oResultSet->getInt("EXP_ID");
+      $strExperimentArray['NAME'] = $oResultSet->getString("NAME");
+      $strExperimentArray['TITLE'] = $oResultSet->getString("TITLE");
+      array_push($strReturnArray, $strExperimentArray);
+    }
+
+    return $strReturnArray;
+  }
+
+  public static function findDistinctTrialsByDirectory($p_strDirectory, $p_iProjectId, $p_iExperimentId, $p_iHideExperimentIdArray){
+    $strReturnArray = array();
+
+    $strQuery = "select distinct dfl.trial_id, t.name
+                from data_file_link dfl
+                inner join trial t on dfl.trial_id = t.trialid
+                inner join data_file df on dfl.id = df.id
+                left join document_format f on f.document_format_id = df.document_format_id
+                where dfl.proj_id = ?
+                  and dfl.exp_id = ?
+                  and df.path like ?
+                  and df.deleted=?
+                  and df.directory=?
+                  and f.mime_type not like 'image/%'
+                  and dfl.deleted=? ";
+
+    if(!empty ($p_iHideExperimentIdArray)){
+      $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+      $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+    }
+    $strQuery .= "order by dfl.trial_id";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iProjectId);
+    $oStatement->setInt(2, $p_iExperimentId);
+    $oStatement->setString(3, "%/".$p_strDirectory."%");
+    $oStatement->setInt(4, 0);
+    $oStatement->setInt(5, 0);
+    $oStatement->setInt(6, 0);
+
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultSet->next()){
+      $strTrialArray = array();
+      $strTrialArray['TRIAL_ID'] = $oResultSet->getInt("TRIAL_ID");
+      $strTrialArray['NAME'] = $oResultSet->getString("NAME");
+      array_push($strReturnArray, $strTrialArray);
+    }
+
+    return $strReturnArray;
+  }
+
+  public static function findDistinctRepetitionsByDirectory($p_strDirectory, $p_iProjectId, $p_iExperimentId, $p_iTrialId, $p_iHideExperimentIdArray){
+    $strReturnArray = array();
+
+    $strQuery = "select distinct dfl.rep_id, r.name
+                from data_file_link dfl
+                inner join repetition r on dfl.rep_id = r.repid
+                inner join data_file df on dfl.id = df.id
+                left join document_format f on f.document_format_id = df.document_format_id
+                where dfl.proj_id = ?
+                  and dfl.exp_id = ?
+                  and dfl.trial_id = ?
+                  and df.path like ?
+                  and df.deleted=?
+                  and df.directory=?
+                  and f.mime_type not like 'image/%'
+                  and dfl.deleted=? ";
+
+    if(!empty ($p_iHideExperimentIdArray)){
+      $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+      $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+    }
+    $strQuery .= "order by dfl.rep_id";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iProjectId);
+    $oStatement->setInt(2, $p_iExperimentId);
+    $oStatement->setInt(3, $p_iTrialId);
+    $oStatement->setString(4, "%/".$p_strDirectory."%");
+    $oStatement->setInt(5, 0);
+    $oStatement->setInt(6, 0);
+    $oStatement->setInt(7, 0);
+
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultSet->next()){
+      $strRepetitionArray = array();
+      $strRepetitionArray['REP_ID'] = $oResultSet->getInt("REP_ID");
+      $strRepetitionArray['NAME'] = $oResultSet->getString("NAME");
+      array_push($strReturnArray, $strRepetitionArray);
+    }
+
+    return $strReturnArray;
+  }
 	
-	public static function findDistinctTrials($p_iProjectId, $p_iExperimentId, $p_strOpeningTool="", $p_strUsageType=""){
+  public static function findDistinctExperiments($p_iProjectId, $p_iHideExperimentIdArray, $p_strOpeningTool="", $p_strUsageType=""){
+    $strReturnArray = array();
+
+    $strQuery = "select distinct dfl.exp_id, e.name, e.title
+                from data_file_link dfl, experiment e, data_file df
+                where dfl.proj_id = ?
+                  and dfl.exp_id = e.expid
+                  and dfl.id = df.id ";
+
+    if(!empty ($p_iHideExperimentIdArray)){
+      $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+      $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+    }
+
+    if(strlen($p_strOpeningTool)>0){
+      $strQuery .= "and df.opening_tool= ? ";
+    }
+
+    if(strlen($p_strUsageType)>0){
+      $strQuery .= "and df.usage_type_id in (select id from entity_type where n_table_name like ?) ";
+    }
+    $strQuery .= "order by dfl.exp_id";
+
+    //echo $strQuery."<br>";
+
+    $iIndex = 2;
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iProjectId);
+    if(strlen($p_strOpeningTool)>0){
+      $oStatement->setString($iIndex, $p_strOpeningTool);
+      ++$iIndex;
+    }
+    if(strlen($p_strUsageType)>0){
+      $oStatement->setString($iIndex, $p_strUsageType."%");
+    }
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultSet->next()){
+      $strExperimentArray = array();
+      $strExperimentArray['EXP_ID'] = $oResultSet->getInt("EXP_ID");
+      $strExperimentArray['NAME'] = $oResultSet->getString("NAME");
+      $strExperimentArray['TITLE'] = $oResultSet->getString("TITLE");
+      array_push($strReturnArray, $strExperimentArray);
+    }
+
+    return $strReturnArray;
+  }
+	
+	public static function findDistinctTrials($p_iHideExperimentIdArray, $p_iProjectId, $p_iExperimentId, $p_strOpeningTool="", $p_strUsageType=""){
 	  $strReturnArray = array();
 		
 	  $strQuery = "select distinct dfl.trial_id, t.name   
@@ -102,6 +236,12 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
 				  and dfl.exp_id = ?
 				  and dfl.trial_id = t.trialid
 				  and dfl.id = df.id ";
+
+          if(!empty ($p_iHideExperimentIdArray)){
+            $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+            $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+          }
+
 	  if(strlen($p_strOpeningTool)>0){
 		$strQuery .= "and df.opening_tool= ? ";
   	  }
@@ -109,7 +249,7 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
   	  if(strlen($p_strUsageType)>0){
 		$strQuery .= "and df.usage_type_id=(select id from entity_type where n_table_name=?) ";
   	  }
-	  $strQuery .= "order by t.name";
+	  $strQuery .= "order by dfl.trial_id";
 
 	  //echo $strQuery."<br>"; 
 	  
@@ -137,8 +277,8 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
       return $strReturnArray;	
 	}
 	
-    public static function findDistinctRepetitions($p_iProjectId, $p_iExperimentId, $p_iTrialId, $p_strOpeningTool="", $p_strUsageType=""){
-	  $strReturnArray = array();
+    public static function findDistinctRepetitions($p_iHideExperimentIdArray, $p_iProjectId, $p_iExperimentId, $p_iTrialId, $p_strOpeningTool="", $p_strUsageType=""){
+      $strReturnArray = array();
 		
       $strQuery = "select distinct dfl.rep_id, r.name   
 				from data_file_link dfl, repetition r, data_file df
@@ -147,20 +287,26 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
 				  and dfl.trial_id = ?
 				  and dfl.rep_id = r.repid
 				  and dfl.id = df.id ";
-	  if(strlen($p_strOpeningTool)>0){
-		$strQuery .= "and df.opening_tool= ? ";
-  	  }
-  	  
-  	  if(strlen($p_strUsageType)>0){
-		$strQuery .= "and df.usage_type_id=(select id from entity_type where n_table_name=?) ";
-  	  }
-	  $strQuery .= "order by r.name";
 
-	  //echo $strQuery."<br>"; 
-	  
-	  $iIndex = 4;
-	  
-	  $oConnection = Propel::getConnection();
+      if(!empty ($p_iHideExperimentIdArray)){
+        $strHideExperimentIds = implode(",", $p_iHideExperimentIdArray);
+        $strQuery .= " and dfl.exp_id not in ($strHideExperimentIds) ";
+      }
+
+      if(strlen($p_strOpeningTool)>0){
+            $strQuery .= "and df.opening_tool= ? ";
+      }
+
+      if(strlen($p_strUsageType)>0){
+            $strQuery .= "and df.usage_type_id=(select id from entity_type where n_table_name=?) ";
+      }
+      $strQuery .= "order by dfl.rep_id";
+
+      //echo $strQuery."<br>";
+
+      $iIndex = 4;
+
+      $oConnection = Propel::getConnection();
       $oStatement = $oConnection->prepareStatement($strQuery);
       $oStatement->setInt(1, $p_iProjectId);
       $oStatement->setInt(2, $p_iExperimentId);

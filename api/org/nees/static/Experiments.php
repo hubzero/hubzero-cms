@@ -11,6 +11,10 @@
 	const SELECTED = "selectedExperiment";
 
         const THUMBNAILS = "thumbnail_list";
+
+        const SHOW = "show";
+
+        const HIDE = "hide";
   }
 
 ?>

@@ -185,15 +185,23 @@ class OrganizationPeer extends BaseOrganizationPeer {
   }
 
   public static function findProjectFacility($p_iProjectId){
-  	require_once 'lib/data/ProjectOrganizationPeer.php';
-  	
-  	$oCriteria = new Criteria();
-  	$oCriteria->addJoin(self::ORGID, ProjectOrganizationPeer::ORGID, Criteria::INNER_JOIN);
-  	$oCriteria->add(ProjectOrganizationPeer::PROJID, $p_iProjectId);
-  	$oCriteria->add(self::NAME, "Default Organization", Criteria::NOT_EQUAL);
-        $oCriteria->add(self::FACILITYID, 0, Criteria::NOT_EQUAL);
+    $strQuery = "select distinct(o.orgid)
+                 from organization o ,experiment_facility ef, experiment e
+                 where orgid = ef.facilityid
+                   and e.expid = ef.expid
+                   and e.projid = ?";
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iProjectId);
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
 
-        return self::doSelect($oCriteria);
+    $iOrgIdArray = array();
+    while($oResultSet->next()){
+      $iOrgId = $oResultSet->getInt('ORGID');
+      array_push($iOrgIdArray, $iOrgId);
+    }
+
+    return self::retrieveByPKs($iOrgIdArray);
   }
   
   public static function findExperimentFacility($p_iExperimentId){
@@ -215,11 +223,9 @@ class OrganizationPeer extends BaseOrganizationPeer {
   	$p_strName = "'$p_strName%'";
   	
     $strQuery = "SELECT distinct o.ORGID 
-				 FROM ORGANIZATION o, 
-				 	  PROJECT_ORGANIZATION po   
-				 WHERE upper(o.name) like $p_strName   
-				   AND o.orgid = po.orgid
-				   AND o.facilityid != 0";
+                 FROM ORGANIZATION o
+                 WHERE upper(o.name) like $p_strName
+                   AND o.facilityid != 0";
     
     $oConnection = Propel::getConnection();
     $oStatement = $oConnection->createStatement();
@@ -241,8 +247,8 @@ class OrganizationPeer extends BaseOrganizationPeer {
    * @return array Organization
    */
   public static function suggestOrganizations($p_strName, $p_iLimit) {
-  	$p_strName = strtoupper($p_strName);
-  	$p_strName = "'$p_strName%'";
+    $p_strName = strtoupper($p_strName);
+    $p_strName = "'$p_strName%'";
   	
     $strQuery = "SELECT * 
 				 FROM (

@@ -2,20 +2,24 @@
 
   class DbPagination{
   	
-  	public $m_nTotal;
-  	public $m_nDisplayCount;
-  	public $m_nCurrentIndex;
-  	public $m_nPages;
+    public $m_nTotal;
+    public $m_nDisplayCount;
+    public $m_nCurrentIndex;
+    public $m_nPages;
+    public $m_nLowerLimit;
+    public $m_nUpperLimit;
   	
     /**
      * Constructor
      *
      */
-    function __construct($p_nCurrentIndex, $p_nTotal, $p_nDisplayCount){
+    function __construct($p_nCurrentIndex, $p_nTotal, $p_nDisplayCount, $p_nLowerLimit, $p_nUpperLimit){
       $this->m_nTotal = $p_nTotal;
       $this->m_nDisplayCount = $p_nDisplayCount;
       $this->m_nCurrentIndex = $p_nCurrentIndex;
       $this->m_nPages = 1;
+      $this->m_nLowerLimit = $p_nLowerLimit;
+      $this->m_nUpperLimit = ($p_nUpperLimit < $p_nTotal) ? $p_nUpperLimit : $p_nTotal;
     }
   	
     /**
@@ -434,10 +438,14 @@ ENDHTML;
   	 */
   	private function getFooterRight($p_nShowing, $p_nDisplayIndex, $p_strFormId, $p_strResultId){
   	  if($p_nShowing > $this->m_nTotal){
-  	  	$p_nShowing = $this->m_nTotal;
-  	  }
-  	  
-  	  #find the selected dropdown value
+  	    $p_nShowing = $this->m_nTotal;
+  	  }elseif($p_nShowing===0){
+            $p_nShowing = $this->m_nTotal;
+          }
+
+          $iTotal = $this->m_nTotal;
+
+          #find the selected dropdown value
   	  $sSelected5 = $sSelected10 = $sSelected15 = $sSelected20 = $sSelected25 = $sSelected30 = $sSelected50 = $sSelected100 = $sSelected0 = "";
   	  if($this->m_nDisplayCount==5)$sSelected5 = "selected=\"selected\"";
   	  if($this->m_nDisplayCount==10)$sSelected10 = "selected=\"selected\"";
@@ -447,7 +455,7 @@ ENDHTML;
   	  if($this->m_nDisplayCount==30)$sSelected30 = "selected=\"selected\"";
   	  if($this->m_nDisplayCount==50)$sSelected50 = "selected=\"selected\"";
   	  if($this->m_nDisplayCount==100)$sSelected100 = "selected=\"selected\"";
-  	  if($this->m_nDisplayCount==0)$sSelected0 = "selected=\"selected\"";	
+  	  if($this->m_nDisplayCount==$iTotal)$sSelected0 = "selected=\"selected\"";
   	  
   	  $sPaginationRight = <<< ENDHTML
   	  <div align="right">
@@ -464,9 +472,9 @@ ENDHTML;
            <option $sSelected30 value="30">30</option>
            <option $sSelected50 value="50">50</option>
            <option $sSelected100 value="100">100</option>
-           <option $sSelected0 value="0">All</option>
+           <option $sSelected0 value="$iTotal">All</option>
          </select>
-         <span style="padding-left:7px;">Results $p_nDisplayIndex - $p_nShowing of $this->m_nTotal</span>
+         <span style="padding-left:7px;">Results $this->m_nLowerLimit - $this->m_nUpperLimit of $this->m_nTotal</span>
        </div>
 ENDHTML;
 	  return $sPaginationRight;
@@ -496,11 +504,18 @@ ENDHTML;
            <option $sSelected15 value="72">72</option>
            <option $sSelected20 value="96">96</option>
          </select>
-         <span style="padding-left:7px;">Results $p_nDisplayIndex - $p_nShowing of $this->m_nTotal</span>
+         <span style="padding-left:7px;">Results $this->m_nLowerLimit - $this->m_nUpperLimit of $this->m_nTotal</span>
        </div>
 ENDHTML;
 	  return $sPaginationRight;
   	}
+
+    public function getFromIndex($p_iPageIndex, $p_iDisplay) {
+      if ($p_iPageIndex == 0) {
+        return $p_iDisplay;
+      }
+      return $p_iDisplay * ($p_iPageIndex + 1);
+    }
   	
   }
 

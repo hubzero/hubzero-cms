@@ -51,12 +51,23 @@ class ThumbnailPeer extends BaseThumbnailPeer {
     $c->add(self::ENTITY_ID, $entityId);
     $c->add(self::ENTITY_TYPE_ID, $entityTypeId);
 
+    $thumbObj = null;
     if(self::doCount($c) == 1) {
       $thumbObjRS = self::doSelect($c);
       $thumbObj = $thumbObjRS[0];
       $thumbObj->setDatafileId($datafileId);
       $thumbObj->save();
     }
+
+    return $thumbObj;
+  }
+
+  public static function exists($entityId, $entityTypeId){
+    $c = new Criteria();
+    $c->add(self::ENTITY_ID, $entityId);
+    $c->add(self::ENTITY_TYPE_ID, $entityTypeId);
+    $iCount = self::doCount($c);
+    return ($iCount==1) ? true : false;
   }
 
 
@@ -118,6 +129,13 @@ class ThumbnailPeer extends BaseThumbnailPeer {
     catch (Exeption $e) {
       return false;
     }
+  }
+
+  public static function findByEntityAndType($p_iEntityId, $p_iEntityTypeId){
+    $c = new Criteria();
+    $c->add(self::ENTITY_ID, $p_iEntityId);
+    $c->add(self::ENTITY_TYPE_ID, $p_iEntityTypeId);
+    return self::doSelectOne($c);
   }
   
 } // ThumbnailPeer

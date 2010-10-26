@@ -8,6 +8,7 @@ require_once 'lib/filesystem/FileCommandAPI.php';
 require_once "lib/interface/Data.php";
 require_once 'lib/common/ImageThumbnail.php';
 require_once 'util/PhotoHelper.php';
+require_once 'util/FileHelper.php';
 require_once 'static/Files.php';
 
 /**
@@ -422,7 +423,7 @@ class DataFile extends BaseDataFile {
    * @param boolean $isDir
    * @return DataFile if successed or false if failed
    */
-  function newDataFileByFilesystem($filename, $path, $isDir=false, $p_strTitle=null, $p_strDescription=null, $p_strUsageId=null) {
+  function newDataFileByFilesystem($filename, $path, $isDir=false, $p_strTitle=null, $p_strDescription=null, $p_strUsageId=null, $p_strTool=null) {
 
     $destination = FileCommandAPI::set_directory($path);
 
@@ -443,7 +444,8 @@ class DataFile extends BaseDataFile {
       filesize($fullname),   // filesize
       $p_strTitle,           // title
       $p_strDescription,     // description
-      $p_strUsageId      );  //entity_type.id
+      $p_strUsageId,         // entity_type.id
+      $p_strTool      );     // tool
   }
 
 
@@ -708,8 +710,7 @@ class DataFile extends BaseDataFile {
         }
 
         if($bMkDir || $bResized){
-          $escSourc = escapeshellarg($thumbpath);
-          exec("/nees/home/bin/fix_permissions $escSourc", $output);
+          FileHelper::fixPermissions($thumbpath);
         }
 
         if($thumb_df) {
@@ -783,8 +784,7 @@ class DataFile extends BaseDataFile {
         }
 
         if($bMkDir || $bResized){
-          $escSource = escapeshellarg($thumbpath);
-          exec("/nees/home/bin/fix_permissions $escSource", $output);
+          FileHelper::fixPermissions($thumbpath);
         }
 
         if($thumb_df) {
@@ -837,6 +837,25 @@ class DataFile extends BaseDataFile {
     $mime = exec("file -b '" . $fullpath . "'");
 
     return strpos(strtolower($mime), "ascii") !== false;
+  }
+
+  function getGeneratedPic($p_strPrefix, $p_strGeneratedPathSuffix){
+    if(!$p_strPrefix || $p_strPrefix==""){
+      return;
+    }
+
+    if(!$p_strGeneratedPathSuffix || $p_strGeneratedPathSuffix==""){
+      return;
+    }
+
+    $iId = $this->getId();
+    $strName = $p_strPrefix."_".$iId."_".$this->getName();
+    $this->setName($strName);
+
+    $strPath = $this->getPath() ."/".$p_strGeneratedPathSuffix;
+    $this->setPath($strPath);
+
+    return $this->get_url();
   }
 
 } // DataFile

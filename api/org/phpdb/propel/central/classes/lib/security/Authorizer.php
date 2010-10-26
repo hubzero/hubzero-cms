@@ -118,7 +118,6 @@ class Authorizer {
   public static function getInstance() {
     if (empty(self::$instance))
       self::$instance = new Authorizer();
-
     return self::$instance;
   }
 
@@ -137,10 +136,10 @@ class Authorizer {
     }
 
     $person = PersonPeer::findByUserName($userName);
-
     if($person) {
       $this->userName = $userName;
       $this->uid = $person->getId();
+      $this->saveState();
     }
   }
 
@@ -305,6 +304,7 @@ class Authorizer {
   private function canDo($entity, $action) {
     $ret = false;
     $function = 'can' . $action;
+    
     if( $entity ) {
       $published = $entity->isPublished();
       if ($published && $action == "View"){

@@ -128,4 +128,19 @@ class ProjectHomepagePeer extends BaseProjectHomepagePeer {
     return self::doSelect($c);
   }
 
+  public static function deleteByProject($p_iProjectId, $p_oConnection=null){
+    $strQuery = "delete from project_homepage
+                 where project_id=?";
+
+    if(!$p_oConnection){
+      $oConnection = Propel::getConnection();
+    }else{
+      $oConnection = $p_oConnection;
+    }
+    
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iProjectId);
+    $oStatement->executeUpdate();
+  }
+
 } // ProjectHomepagePeer

@@ -79,6 +79,36 @@ class PersonPeer extends BasePersonPeer {
     return self::doSelectOne($c);
   }
 
+  /**
+   * Find a Person by name (exact match)
+   * @param string $p_strFirstName
+   * @param string $p_strLastName
+   * @return Person
+   */
+  public static function findByFullName($p_strFirstName, $p_strLastName) {
+    $oPerson = null;
+
+    $strQuery = "SELECT P.ID
+                 FROM PERSON P
+                 WHERE UPPER(P.LAST_NAME) = ?
+                   AND UPPER(P.FIRST_NAME) = ?";
+
+    $conn = Propel::getConnection();
+    $stmt = $conn->prepareStatement($strQuery);
+    $stmt->setString(1, strtoupper($p_strLastName));
+    $stmt->setString(2, strtoupper($p_strFirstName));
+
+    $oResultSet = $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultSet->next()){
+      $iId = $oResultSet->getInt("ID");
+      $oPerson = self::retrieveByPK($iId);
+    }
+
+
+
+    return $oPerson;
+  }
+
 
 
   /**
@@ -368,14 +398,14 @@ class PersonPeer extends BasePersonPeer {
   }
 
   public function findMembersForEntityWithPagination($entity_id, $entity_type_id, $p_iLowerLimit, $p_iUpperLimit) {
-    $iPersonIdArray = array();
+    $oPersonArray = array();
 
     $sql =
       "SELECT *
-	   FROM (
+	  FROM (
           SELECT DISTINCT
-            P.ID, row_number()
-          OVER (ORDER BY P.LAST_NAME) as rn
+            P.ID, P.LAST_NAME, row_number()
+          OVER (ORDER BY UPPER(P.LAST_NAME), UPPER(P.FIRST_NAME)) as rn
           FROM
             PERSON P,
             AUTHORIZATION PER
@@ -383,7 +413,8 @@ class PersonPeer extends BasePersonPeer {
             P.ID = PER.PERSON_ID AND
             PER.ENTITY_ID = ? AND
             PER.ENTITY_TYPE_ID = ?
-       ) WHERE rn BETWEEN ? AND ?";
+       ) WHERE rn BETWEEN ? AND ?
+       ORDER BY rn";
 
     $conn = Propel::getConnection();
     $oStatement = $conn->prepareStatement($sql);
@@ -394,10 +425,11 @@ class PersonPeer extends BasePersonPeer {
     $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
     while($oResultSet->next()){
       $iPersonId = $oResultSet->getInt("ID");
-      array_push($iPersonIdArray, $iPersonId);
+      $oThisPerson = self::retrieveByPK($iPersonId);
+      array_push($oPersonArray, $oThisPerson);
     }
 
-    return self::retrieveByPKs($iPersonIdArray);
+    return $oPersonArray;
   }
 
 
@@ -574,6 +606,55 @@ class PersonPeer extends BasePersonPeer {
       $ret[$rs->get('CATEGORY')] = $rs->get('COUNT');
     }
     return $ret;
+  }
+
+  /**
+   *
+   * @param string $p_strName
+   * @param int $p_iLimit
+   * @return array 
+   */
+  public static function suggestMembers($p_strName, $p_iLimit) {
+    $strLastName = StringHelper::EMPTY_STRING;
+    $strFirstName = StringHelper::EMPTY_STRING;
+
+    $p_strName = strtoupper($p_strName);
+    $strNameArray = explode(",", $p_strName);
+    if(sizeof($strNameArray)==2){
+      $strLastName = "'$strNameArray[0]%'";
+      $strFirstName = (StringHelper::hasText($strNameArray[1])) ? "'$strNameArray[1]%'" : StringHelper::EMPTY_STRING;
+    }else{
+      $strLastName = "'$p_strName%'";
+    }
+
+    $strQuery = "SELECT *
+                 FROM (
+                   SELECT PERSON.LAST_NAME, PERSON.FIRST_NAME, PERSON.ID, PERSON.USER_NAME, row_number()
+                   OVER (ORDER BY PERSON.LAST_NAME, PERSON.FIRST_NAME) as rn
+                   FROM PERSON
+                   WHERE upper(PERSON.LAST_NAME) like $strLastName";
+    if(StringHelper::hasText($strFirstName)){
+      $strQuery .= " AND upper(PERSON.FIRST_NAME) like $strFirstName";
+    }
+      $strQuery .= "
+                 )
+                 WHERE rn <= $p_iLimit";
+    
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->createStatement();
+    $oResultsSet = $oStatement->executeQuery($strQuery, ResultSet::FETCHMODE_ASSOC);
+
+    $oReturnArray = array();
+    while($oResultsSet->next()){
+      $oPersonArray = array();
+      $oPersonArray['ID'] = $oResultsSet->getInt('ID');
+      $oPersonArray['LAST_NAME'] = $oResultsSet->getString('LAST_NAME');
+      $oPersonArray['FIRST_NAME'] = $oResultsSet->getString('FIRST_NAME');
+      $oPersonArray['USER_NAME'] = $oResultsSet->getString('USER_NAME');
+
+      array_push($oReturnArray, $oPersonArray);
+    }
+    return $oReturnArray;
   }
 
 

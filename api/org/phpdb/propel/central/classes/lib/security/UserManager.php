@@ -92,7 +92,6 @@ class UserManager {
    * @param String $userName
    */
   public function setUser($userName) {
-
     if ($userName == '') {
       $this->userName = "";
       $this->userFirstName = "";
@@ -108,6 +107,7 @@ class UserManager {
     $this->userFirstName = $person->getFirstName();
     $this->userId = $person->getId();
     $this->adminStatus = $person->getAdminStatus() == 1;
+    $this->saveState();
 
     return true;
   }
@@ -345,7 +345,6 @@ class UserManager {
    * @return boolean
    */
   public function isMember(BaseObject $entity) {
-
     if (! $this->userId) {
       return false;
     }
@@ -361,6 +360,14 @@ class UserManager {
   public function hasSuperRole() {
     $supper_per = PersonEntityRolePeer::findSuperPERsByPerson($this->userId);
     return is_null($supper_per) == false;
+  }
+
+  public function writeMemberCheck($p_iPersonId, $p_iEntityId, $p_iEntityTypeId){
+    $myFile = "/www/neeshub/logs/datafile.log";
+    $fh = fopen($myFile, 'a') or die("can't open file");
+    $stringData = date("r"). " - UserManager::isMember - user=".$p_iPersonId.", entity=".$p_iEntityId.", type=".$p_iEntityTypeId."\n";
+    fwrite($fh, $stringData);
+    fclose($fh);
   }
 }
 ?>

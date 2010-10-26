@@ -94,11 +94,52 @@ class SpecimenPeer extends BaseSpecimenPeer {
    * @return Specimen
    */
   public static function suggestByName($p_strName) {
+      /*
+       * We may need a specimen type table.  The
+       * commented out query can return specimen
+       * objects with the same name.
+       */
+//    $c = new Criteria();
+//    $c->add(self::NAME, $p_strName ."%", Criteria::LIKE);
+//    $c->setIgnoreCase(true);
+//    $c->addAscendingOrderByColumn(self::NAME);
+//    return self::doSelect($c);
 
-    $c = new Criteria();
-    $c->add(self::NAME, $p_strName ."%", Criteria::LIKE);
-    $c->setIgnoreCase(true);
-    $c->addAscendingOrderByColumn(self::NAME);
-    return self::doSelect($c);
+    $oSpecimenArray = array();
+
+    $p_strName = "'".strtoupper($p_strName) ."%'";
+
+    $sql =
+      "SELECT DISTINCT NAME
+       FROM
+         SPECIMEN
+       WHERE UPPER(NAME) LIKE $p_strName
+       ORDER BY NAME";
+
+    $conn = Propel::getConnection();
+    $oStatement = $conn->prepareStatement($sql);
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultSet->next()){
+      $strThisName = $oResultSet->getString("NAME");
+      $oThisSpecimen = self::findByName($strThisName);
+      array_push($oSpecimenArray, $oThisSpecimen);
+    }
+
+    return $oSpecimenArray;
+  }
+
+  public static function deleteSpecimenByProject($p_iProjectId, $p_oConnection=null){
+    $strQuery = "delete from specimen
+                 where projid=?";
+
+    if(!$p_oConnection){
+      $oConnection = Propel::getConnection();
+    }else{
+      $oConnection = $p_oConnection;
+    }
+
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iProjectId);
+    $oStatement->executeUpdate();
   }
 } // SpecimenPeer

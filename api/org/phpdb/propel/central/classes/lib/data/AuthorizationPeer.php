@@ -231,6 +231,40 @@ class AuthorizationPeer extends BaseAuthorizationPeer {
     return null;
   }
 
+  /**
+   *
+   * @param int $p_iPersonId
+   * @param array $p_iEntityIdArray
+   * @param int $p_iEntityTypeId
+   * @return array
+   */
+  public static function findPersonMembership($p_iPersonId, $p_iEntityIdArray, $p_iEntityTypeId){
+    $iReturnEntityIdArray = array();
+    if(empty($p_iEntityIdArray)){
+      return $iReturnEntityIdArray;
+    }
+
+    $strEntityIds = implode(",", $p_iEntityIdArray);
+
+    $strQuery = "select distinct entity_id
+                 from authorization a
+                 where a.entity_id in ($strEntityIds)
+                   and a.entity_type_id=?
+                   and a.person_id=?";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iEntityTypeId);
+    $oStatement->setInt(2, $p_iPersonId);
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while ($oResultSet->next()) {
+      $iEntityId = $oResultSet->getInt("ENTITY_ID");
+      array_push($iReturnEntityIdArray, $iEntityId);
+    }
+    
+    return $iReturnEntityIdArray;
+  }
+
 
   const INSERT_EXPERIMENT_AUTHS_SQL = "INSERT INTO authorization (person_id, entity_type_id, entity_id, permissions) SELECT person_id, 3 AS entity_type_id, ? AS entity_id, permissions FROM authorization WHERE entity_id=? AND entity_type_id=1 AND person_id<>?";
 

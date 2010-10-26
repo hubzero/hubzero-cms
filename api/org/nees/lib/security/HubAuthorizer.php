@@ -4,6 +4,7 @@ require_once 'lib/data/Authorization.php';
 require_once 'lib/data/Person.php';
 require_once 'lib/util/DomainEntityType.php';
 require_once 'lib/data/PersonEntityRole.php';
+require_once 'lib/data/DataFile.php';
 require_once 'lib/security/PermissionsView.php';
 
 /** ****************************************************************************
@@ -25,7 +26,7 @@ require_once 'lib/security/PermissionsView.php';
  *
  ******************************************************************************/
 
-class Authorizer {
+class HubAuthorizer {
   private static $instance;
 
 
@@ -39,19 +40,52 @@ class Authorizer {
   /**
    * Construct function
    *
+   * Usage:
+   * 0 args -	grabs info from session set by nees.org login,
+   * 		 	for use on nees.org (kept for use by original code)
+   * 3 args - 	$userName, $entitiyID, $entityTypeID (Used on NEEShub.org)
+   * 			Pass in the information needed to construct object
+   *
    */
-  private function __construct() {
+  private function __construct() 
+  {
+	$num = func_num_args();
+	$args = func_get_args();
 
-    if ( !empty($_SESSION[__CLASS__]['sessionActive']) ) {
-      $this->restoreState();
-    }
-    else {
-      $this->uid = 0;
-      $this->entityId = 0;
-      $this->entityTypeId = 0;
-    }
+	if($num == 0)
+	{	  	
+		if ( !empty($_SESSION[__CLASS__]['sessionActive']) ) 
+		{
+			$this->restoreState();
+		}
+		else 
+		{
+			$this->uid = 0;
+			$this->entityId = 0;
+			$this->entityTypeId = 0;
+		}
+  	}
+  	else
+  	{
+            //echo '<h1>' . $args[0] . '</h1>';
+
+            $person = PersonPeer::findByUserName($args[0]);
+
+            if(is_null($person))
+            {
+            // Page must be exexuted in context of Joomla for this call to work
+            //
+            // This error is pretty hard, but it needs to be, if a user cannot
+            // be completely identified, we got to stop them
+            JError::raiseError( 500, 'Authorizer constructor error, cannot find user information for:' . $userName);
+            }
+
+            // Grab these from Hub Specific locations
+            $this->uid = $person->getId();
+            $this->entityId = $args[1];
+            $this->entityTypeId = $args[2];
+  	}
   }
-
 
   /**
    * Destruct function ???
@@ -116,11 +150,30 @@ class Authorizer {
    */
   public static function getInstance() {
     if (empty(self::$instance))
-      self::$instance = new Authorizer();
+      self::$instance = new HubAuthorizer();
 
     return self::$instance;
   }
 
+  
+  /**
+   * Get an instance Authorizer object- special version of this function used to 
+   * retrienve an authorizer for use within the hub. GetInstance normally
+   * grabs userName, entitytID, and entityTypeID from session (yuck), plus
+   * we need a version that will grab user information from the hub system
+   *
+   *
+   * @return Authorizer
+   */
+  public static function getInstanceForUseOnHub($userName, $entitiyID, $entityTypeID) {
+    if (empty(self::$instance))
+      self::$instance = new HubAuthorizer($userName, $entitiyID, $entityTypeID);
+
+    return self::$instance;
+  }
+  
+  
+  
 
   /**
    * Set the current logged in user by its username
@@ -302,7 +355,7 @@ class Authorizer {
    * @return boolean
    */
   private function canDo($entity, $action) {
-    $ret = false;
+    
     $function = 'can' . $action;
     if( $entity ) {
       $published = $entity->isPublished();

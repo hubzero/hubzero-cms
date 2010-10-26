@@ -389,6 +389,37 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		return $this->description;
 	}
 
+        /**
+	 * Get the [optionally formatted] [end_date] column value.
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the integer unix timestamp will be returned.
+	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
+	 * @throws     PropelException - if unable to convert the date/time to timestamp.
+	 */
+	public function getEndDate($format = '%m/%d/%Y')
+	{
+
+		if ($this->end_date === null || $this->end_date === '') {
+			return null;
+		} elseif (!is_int($this->end_date)) {
+			// a non-timestamp value was set externally, so we convert it
+			$ts = strtotime($this->end_date);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse value of [end_date] as date/time value: " . var_export($this->end_date, true));
+			}
+		} else {
+			$ts = $this->end_date;
+		}
+		if ($format === null) {
+			return $ts;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $ts);
+		} else {
+			return date($format, $ts);
+		}
+	}
+
 	/**
 	 * Get the [optionally formatted] [end_date] column value.
 	 * 
@@ -397,7 +428,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
 	 * @throws     PropelException - if unable to convert the date/time to timestamp.
 	 */
-	public function getEndDate($format = '%Y-%m-%d')
+	public function getNCEndDate($format = '%Y-%m-%d')
 	{
 
 		if ($this->end_date === null || $this->end_date === '') {
@@ -497,6 +528,37 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		return $this->short_title;
 	}
 
+        /**
+	 * Get the [optionally formatted] [start_date] column value.
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the integer unix timestamp will be returned.
+	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
+	 * @throws     PropelException - if unable to convert the date/time to timestamp.
+	 */
+	public function getStartDate($format = '%m/%d/%Y')
+	{
+
+		if ($this->start_date === null || $this->start_date === '') {
+			return null;
+		} elseif (!is_int($this->start_date)) {
+			// a non-timestamp value was set externally, so we convert it
+			$ts = strtotime($this->start_date);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse value of [start_date] as date/time value: " . var_export($this->start_date, true));
+			}
+		} else {
+			$ts = $this->start_date;
+		}
+		if ($format === null) {
+			return $ts;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $ts);
+		} else {
+			return date($format, $ts);
+		}
+	}
+
 	/**
 	 * Get the [optionally formatted] [start_date] column value.
 	 * 
@@ -505,7 +567,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
 	 * @throws     PropelException - if unable to convert the date/time to timestamp.
 	 */
-	public function getStartDate($format = '%Y-%m-%d')
+	public function getNCStartDate($format = '%Y-%m-%d')
 	{
 
 		if ($this->start_date === null || $this->start_date === '') {

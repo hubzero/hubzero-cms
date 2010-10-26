@@ -63,6 +63,15 @@ class DocumentFormatPeer extends BaseDocumentFormatPeer {
     return self::doSelect($c);
   }
 
+  //case "findByExtension":
+  //return new Finder($finderName, "SELECT * FROM DocumentFormat WHERE default_extension=?");
+  public static function findByDefaultExtension($p_strDefaultExtension) {
+    $c = new Criteria();
+    $c->add(self::DEFAULT_EXTENSION, $p_strDefaultExtension);
+    $c->setIgnoreCase(true);
+    return self::doSelectOne($c);
+  }
+
 
   //case "findByMimeType":
   //return new Finder($finderName, "SELECT * FROM DocumentFormat WHERE  mime_type=?");

@@ -11,6 +11,10 @@ require_once 'libraries/joomla/application/module/helper.php';
       $oModule = &JModuleHelper::getModule($p_oModuleName);
       return JModuleHelper::renderModule($oModule);
     }
+
+    public static function showError($p_strMessage){
+      return "<p class='error'>$p_strMessage</p>";
+    }
   	
   }
 

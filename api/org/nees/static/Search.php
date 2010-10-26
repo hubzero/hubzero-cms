@@ -23,6 +23,10 @@
   	const START_DATE = "startDate";
   	
   	const END_DATE = "endDate";
+
+        const ORDER_BY = "orderBy";
+
+        const TIMER = "timer";
   }
 
 ?>

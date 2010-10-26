@@ -59,6 +59,17 @@ class EntityTypePeer extends BaseEntityTypePeer {
 
   /**
    *
+   * @param array $p_strUsageTypeArray
+   * @return array
+   */
+  public static function findUsageTypeList($p_strUsageTypeArray){
+    $oCriteria = new Criteria();
+    $oCriteria->add(self::N_TABLE_NAME, $p_strUsageTypeArray, Criteria::IN);
+    return self::doSelect($oCriteria);
+  }
+
+  /**
+   *
    * @param string $p_strUsageType
    * @return EntityType
    */

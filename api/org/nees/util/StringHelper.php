@@ -4,20 +4,20 @@
 
     const EMPTY_STRING = "";
     
-  	/**
-  	 * Checks if a given string begins with a specified search term.
-  	 * @param $p_strInputString - String to examine
-  	 * @param $p_strSearchString - Query string
-  	 * @see http://snippets.dzone.com/posts/show/2644
-  	 */
-	public static function beginsWith($p_strInputString, $p_strSearchString){
+    /**
+     * Checks if a given string begins with a specified search term.
+     * @param $p_strInputString - String to examine
+     * @param $p_strSearchString - Query string
+     * @see http://snippets.dzone.com/posts/show/2644
+     */
+    public static function beginsWith($p_strInputString, $p_strSearchString){
       return (strncmp($p_strInputString, $p_strSearchString, strlen($p_strSearchString)) == 0);
-	}
+    }
 	
 	/**
 	 * http://www.geekpedia.com/code50_Check-if-a-string-ends-with-another-string.html
 	 */
-    function endsWith($p_strFullParam, $p_strEndStrParam){
+    public static function endsWith($p_strFullParam, $p_strEndStrParam){
       $p_strFull = strtolower($p_strFullParam);
       $p_strEndStr = strtolower($p_strEndStrParam);
 
@@ -31,20 +31,20 @@
       return $strFullEnd == $p_strEndStr;
     }
     
-	/**
-	 * Checks if a given string contains a specified search term.
-	 * @param $p_strSubject - String to examine
-  	 * @param $p_strSearchString - Query string
-	 */
-	public static function contains($p_strSubject, $p_strSearchString){
-	  $strPattern = "/$p_strSearchString/";
-	  return preg_match($strPattern, $p_strSubject);
-	}
+    /**
+     * Checks if a given string contains a specified search term.
+     * @param $p_strSubject - String to examine
+     * @param $p_strSearchString - Query string
+     */
+    public static function contains($p_strSubject, $p_strSearchString){
+      $strPattern = "/$p_strSearchString/";
+      return preg_match($strPattern, $p_strSubject);
+    }
 	
     public static function hasString($p_strInputString, $p_strSearchString){
       $strPattern = "/$p_strSearchString/";
-	  return preg_match($strPattern, $p_strInputString);
-	}
+      return preg_match($strPattern, $p_strInputString);
+    }
 	
   /** 
    * Cut string to n symbols and add delim but do not break words. 
@@ -93,11 +93,40 @@
      *
      */
     public static function hasText($p_strInputString){
-      if(!$p_strInputString || $p_strInputString==""){
+      if(!$p_strInputString){
+        return false;
+      }
+
+      $p_strInputString = trim($p_strInputString);
+      if(strlen($p_strInputString)===0){
       	return false;
       }
       
       return true;
+    }
+
+    /**
+     * From http://www.php.net/manual/en/function.checkdate.php#90345
+     * @param string $str
+     * @return bool
+     */
+    public static function is_date( $str ){
+      $stamp = strtotime( $str );
+
+      if (!is_numeric($stamp))
+      {
+         return FALSE;
+      }
+      $month = date( 'm', $stamp );
+      $day   = date( 'd', $stamp );
+      $year  = date( 'Y', $stamp );
+
+      if (checkdate($month, $day, $year))
+      {
+         return TRUE;
+      }
+
+      return FALSE;
     }
     
   }

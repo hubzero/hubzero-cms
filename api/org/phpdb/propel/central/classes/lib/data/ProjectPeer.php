@@ -88,7 +88,7 @@ class ProjectPeer extends BaseProjectPeer {
    *
    */
   public static function searchByForm($p_strQuery){
-  	$oConnection = Propel::getConnection();
+    $oConnection = Propel::getConnection();
     $oStatement = $oConnection->createStatement();
     $oResultsSet = $oStatement->executeQuery($p_strQuery, ResultSet::FETCHMODE_ASSOC);
 
@@ -696,7 +696,27 @@ class ProjectPeer extends BaseProjectPeer {
    * @return array <Project>
    */
   public static function findViewableProjectWithOrder($orderby = self::NICKNAME) {
+    $strQuery = "SELECT DISTINCT PROJID, TITLE FROM PROJECT WHERE DELETED = 0 AND VIEWABLE = 'PUBLIC'
+    UNION
+    SELECT P1.PROJID, P1.TITLE FROM PROJECT P1, EXPERIMENT E1
+    WHERE P1.DELETED = 0 AND P1.PROJID = E1.PROJID AND E1.VIEWABLE = 'PUBLIC'";
 
+    $conn = Propel::getConnection();
+    $stmt = $conn->prepareStatement($strQuery);
+
+    $iProjectIdArray = array();
+    $oResultsSet = $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    $count=0;
+    while($oResultsSet->next()){
+      $iThisProjectId = $oResultsSet->getInt('PROJID');
+      array_push($iProjectIdArray, $iThisProjectId);
+      $count=$count+1;
+    }
+    //echo $count;
+
+    return self::retrieveByPKs($iProjectIdArray);
+  	/*
+  	 *
     $c = new Criteria();
 
     $subquery = self::PROJID . " IN (" . self::VIEWABLE_PROJECTS_SUBQUERY . ")";
@@ -708,6 +728,7 @@ class ProjectPeer extends BaseProjectPeer {
 
     return self::doSelect($c);
 
+  	 */
   }
 
 
@@ -1057,14 +1078,14 @@ class ProjectPeer extends BaseProjectPeer {
   }
   
   public static function findTools($p_iProjectId){
-  	$oReturnArray = array();
-  	
-  	$strQuery = "select distinct df.opening_tool 
-				from data_file_link dfl, 
-					 data_file df 
-			    where dfl.id = df.id
-			      and dfl.proj_id = $p_iProjectId
-			      and df.opening_tool is not null";
+    $oReturnArray = array();
+
+    $strQuery = "select distinct df.opening_tool
+                            from data_file_link dfl,
+                                     data_file df
+                        where dfl.id = df.id
+                          and dfl.proj_id = $p_iProjectId
+                          and df.opening_tool is not null";
   	
     $oConnection = Propel::getConnection();
     $oStatement = $oConnection->createStatement();
