@@ -54,8 +54,8 @@ class HubConfig {
     var $statsDBPassword = 'neeshub_stats';
     var $statsDBDatabase = 'neeshub_metrics';
     var $statsDBPrefix = '';
-    var $hubShortName = 'NEEShub';
-    var $hubShortURL = 'NEEShub.org';
+    var $hubShortName = 'NEES';
+    var $hubShortURL = 'nees.org';
     var $hubLongURL = 'http://nees.org';
     var $hubSupportEmail = 'nkissebe@purdue.edu';
     var $hubMonitorEmail = 'nkissebe@purdue.edu';
