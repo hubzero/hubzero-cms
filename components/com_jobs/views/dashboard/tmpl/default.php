@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				? ' <span class="no">('.$this->subscription->pendingunits.' '.JText::_('ADDITIONAL').' '.$this->service->unitmeasure.'MULTIPLE_S'.' '.JText::_('MONTHS_PENDING').')</span>' 
 				: '';
 	$expiredate = $this->subscription->expires 
-				? JHTML::_('date', $this->subscription->expires, '%d %b %Y') 
+				? JHTML::_('date', $this->subscription->expires, '%d %b %Y', 0) 
 				: JText::_('N/A');
 	
 	// site admins
