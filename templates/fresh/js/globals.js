@@ -257,20 +257,8 @@ HUB.Base = {
 		});
 	},
 
-	menu: function() {
-		$$('#nav li').each(function(li) {
-			li.addEvent('mouseover', function(e) {
-				this.addClass('sfhover');
-			});
-			li.addEvent('mouseout', function(e) {
-				this.removeClass('sfhover');
-			});
-		});
-	},
-
 	// launch functions
 	initialize: function() {
-		HUB.Base.menu();
 		HUB.Base.setLoginFocus();
 		HUB.Base.popups();
 		

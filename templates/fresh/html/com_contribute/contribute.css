@@ -57,6 +57,23 @@
 		border: 1px solid #fff;
 		background: #e7792c;
 		}
+/* "Next" buttons on steps */
+	#nextsubmit {
+		width: 300px;
+		color: #fff;
+		 margin-left: auto;
+    	margin-right: auto;
+    	-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;	
+		-khtml-border-radius: 5px;
+		border-radius: 5px;
+		
+	
+	}
+	#nextbutton {
+		font-size: 1.5em;
+		height: 30px;
+	}
 /* Four Columns */
 	.com_contribute .three {
 		border-top: 1px solid #e0e0d7;
@@ -106,6 +123,13 @@
 	#submissions {
 		margin: 0 0 1em 0;
 		border: none;
+		}
+		
+	#steps_div {
+		border: 1px solid #D8D8D8;
+		padding: 0 0 0 2em;
+		margin-right: auto;
+		margin-left: auto;
 		}
 	#submissions tbody td {
 		border-bottom: 1px solid #ddd;

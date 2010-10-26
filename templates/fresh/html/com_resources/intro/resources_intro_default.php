@@ -38,101 +38,26 @@ defined('_JEXEC') or die('Restricted access');
 			<form method="get" action="/search" class="search">
 				<fieldset>
 					<p>
-						<input type="text" name="terms" id="searchword" size="25" value="" style="height:20px;-moz-border-radius: 5px-webkit-border-radius: 5px;	-khtml-border-radius: 5px;border-radius: 5px;"/>
-						<input type="hidden" name="section" value="resources" />
-						<input type="submit" value="Search" style="width: 108px;height:25px;" />
+						<input type="text" name="terms" id="searchword" size="20" value="" />
+						<input type="submit" value="Submit" />
 					</p>
 				</fieldset>
 			</form>
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
-			<!-- <div class="browse">
+			<div class="browse">
 				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">Browse the list of available resources</a></p>
-			</div> -->
+			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->
 	<div class="clear"></div>
-<?php
-$eotcategories = "(learningobjects|series|multimedia)";
-$ignorecategories = "(notes)"; //categories to ignore
-$categories = $this->categories;
-if ($categories) {
-?>
-	<div class="four columns first">
-	<img id="eot-img-header" src="templates/fresh/images/logos/neesacademysmall.jpg">
-	<h2 id="eot-h2">Categories</h2>
-		
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-	<?php
-	$i = 0;
-	$clm = '';
-	/*if (count($categories)%3!=0) { 
-	    ;
-	}*/
-	foreach ($categories as $category) 
-	{
-		$i++;
-		
-		
-		
-		
-		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $category->type);
-		$normalized = strtolower($normalized);
-		
-		if (substr($normalized, -3) == 'ies') {
-			$cls = $normalized;
-		} else {
-			$cls = substr($normalized, 0, -1);
-		}
-		
-		if (!preg_match($eotcategories,strtolower($normalized))) {
-					continue;
-		}
-		
-		switch ($clm) 
-		{
-			case 'second': $clm = 'third'; break;
-			case 'first': $clm = 'second'; break;
-			case '':
-			default: $clm = 'first'; break;
-		}
-		echo ResourcesHtml::writeIntroPageCategory( $clm, $cls,  $this->option, $normalized, $category, true);
-		//( $clm, $option, $normalized, $category) 
 
-		if ($clm == 'third') {
-			echo '<div class="clear"></div>';
-			$clm = '';
-			$i = 0;
-		}
-	}
-	if ($i == 1) {
-		?>
-		<div class="three columns second">
-			<p> </p>
-		</div><!-- / .three columns second -->
-		<?php
-	}
-	if ($i == 1 || $i == 2) {
-		?>
-		<div class="three columns third">
-			<p> </p>
-		</div><!-- / .three columns third -->
-		<?php
-	}
-?>
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>	
-<?php
-} //if categories
-?>
 <?php
 $categories = $this->categories;
 if ($categories) {
 ?>
 	<div class="four columns first">
-	<img id="eot-img-header" src="/templates/fresh/images/logos/neeshubsmall.jpg">
-	<h2 id="eot-h2">Categories</h2>
+		<h2>Categories</h2>
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 <?php
@@ -144,6 +69,13 @@ if ($categories) {
 	foreach ($categories as $category) 
 	{
 		$i++;
+		switch ($clm) 
+		{
+			case 'second': $clm = 'third'; break;
+			case 'first': $clm = 'second'; break;
+			case '':
+			default: $clm = 'first'; break;
+		}
 		
 		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $category->type);
 		$normalized = strtolower($normalized);
@@ -153,20 +85,15 @@ if ($categories) {
 		} else {
 			$cls = substr($normalized, 0, -1);
 		}
-		
-		if (preg_match($eotcategories,strtolower($normalized))) { // || preg_match($ignorecategories,strtolower($normalized))) { //This is where we can ignore categories
-					continue;
-		}
-		
-		switch ($clm) 
-		{
-			case 'second': $clm = 'third'; break;
-			case 'first': $clm = 'second'; break;
-			case '':
-			default: $clm = 'first'; break;
-		}
-		echo ResourcesHtml::writeIntroPageCategory( $clm, $cls,  $this->option, $normalized, $category, false);
-
+?>
+		<div class="three columns <?php echo $clm; ?>">
+			<div class="<?php echo $cls; ?>">
+				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'type='.$normalized); ?>"><?php echo stripslashes($category->type); ?></a></h3>
+				<p><?php echo stripslashes($category->description); ?></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'type='.$normalized); ?>">Browse &rsaquo;</a>
+			</div>
+		</div><!-- / .three columns <?php echo $clm; ?> -->
+<?php
 		if ($clm == 'third') {
 			echo '<div class="clear"></div>';
 			$clm = '';
@@ -195,18 +122,3 @@ if ($categories) {
 ?>
 
 </div><!-- / .section -->
-
-<script type="text/javascript">
-$jQ("a.get-hidden-resource-info").fancybox( 
-		{
-			'hideOnContentClick': false,
-			'transitionIn'	:	'elastic',
-			'transitionOut'	:	'elastic',
-			'overlayShow' : true,
-			'autoDimensions' : false,
-			'overlayOpacity' : 0.7,
-			'width' : '80%',
-			'height' : 500
-		}
-); 
-</script>

@@ -38,9 +38,8 @@ defined('_JEXEC') or die('Restricted access');
 			<form method="get" action="/search" class="search">
 				<fieldset>
 					<p>
-						<input type="text" name="terms" id="searchword" size="25" value="" style="height:20px;-moz-border-radius: 5px-webkit-border-radius: 5px;	-khtml-border-radius: 5px;border-radius: 5px;"/>
-						<input type="hidden" name="section" value="resources" />
-						<input type="submit" value="Search" style="width: 108px;height:25px;" />
+						<input type="text" name="terms" id="searchword" size="50" value="" style="height:30px;-moz-border-radius: 5px-webkit-border-radius: 5px;	-khtml-border-radius: 5px;border-radius: 5px;"/>
+						<input type="submit" value="Search" style="width: 108px;margin: 5px 0px 0px 100px " />
 					</p>
 				</fieldset>
 			</form>

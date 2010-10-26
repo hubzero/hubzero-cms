@@ -25,72 +25,39 @@ var AppleSearch = new Class({
 	options: { 
 		element:     null,
 		input:      'searchword',
+		label:      'searchword-label',
 		labeltext:  'Search',
-		labelcolor: '#ccc',
-		dummy:      'dummy_css',
-		css:        'applesearch',
-		endcap:     'endcap',
-		endcapx:    'close',
-		clear:      'srch_clear',
-		submitq:    'submitquery'
+		labelcolor: '#ccc'
 	},
 
-	initialize: function(element, options) {
+	input: null,
+	label: null,
 
+	initialize: function(element, options) {
 		this.element = $(element);
 		this.setOptions(options);
 
-		input = $(this.options.input);
-		if (!input) {
+		this.input = $(this.options.input);
+		if (!this.input) {
 			return;
 		}
-		this.input = input;
-		this.getLabel();
+		
+		this.label = $(this.options.label);
+		if (this.label) {
+			this.options.labelcolor = this.label.getStyle('color');
+			this.options.labeltext = this.label.firstChild.nodeValue;
+		}
 
 		if (navigator.userAgent.toLowerCase().indexOf('safari') < 0  && document.getElementById) {
-			var dummy = $(this.options.dummy);
-			if (dummy) {
-				var path = dummy.href.replace(/dummy\.css(\?.*)?$/,'');
-				dummy.href = path + this.options.css + '.css';
-			}
-			
-			var fieldsets = this.element.getElementsByTagName('fieldset');
-			if (fieldsets) {
-				this.cap = new Element('span',{
-					'id':this.options.endcap
-				}).addEvent('click', this.clearField.bindWithEvent(this)).injectInside(fieldsets[0]);
-				
-				this.clr = new Element('div',{
-					'class':'clear'
-				}).injectInside(this.element);
-			}
-	
-			this.inputColor = input.getStyle('color');
+			this.inputColor = this.input.getStyle('color');
 			
 			this.input.setStyles({'color':this.options.labelcolor}).setProperties({'value':this.options.labeltext});
-			this.input.addEvent('keyup', this.eventKeyup.bindWithEvent(this));
 			this.input.addEvent('focus', this.eventFocus.bindWithEvent(this));
 			this.input.addEvent('blur', this.eventBlur.bindWithEvent(this));
 		} else {
-			var labels = this.element.getElementsByTagName('label');
-			if (labels) {
-				for (i = 0; i < labels.length; i++) 
-				{
-					if (labels[i].getAttribute('for') == this.options.input) {
-						labels[i].style.display = 'none';
-					}
-				}
-			}
-
-			submitq = $(this.options.submitq);
-			if (submitq) {
-				submitq.setStyles({
-					'display':'none'
-				});
-			}
-			
 			this.input.setStyles({
-				'width':'214px'
+				'width':'200px',
+				'padding-left': '0'
 			}).setProperties({
 				'type':'search',
 				'value':'',
@@ -99,10 +66,6 @@ var AppleSearch = new Class({
 				'results':'5'
 			});
 		}
-	},
-
-	eventKeyup: function(event) {
-		this.onChange();
 	},
 
 	eventFocus: function(event) {
@@ -115,53 +78,6 @@ var AppleSearch = new Class({
 		if (this.input.getProperty('value') == '') {
 			this.input.setStyles({'color':this.options.labelcolor}).setProperties({'value':this.options.labeltext});
 		}
-	},
-
-	getLabel: function() {
-		var labels = this.element.getElementsByTagName('label');
-		var tlabel;
-		
-		if (labels) {
-			for (i = 0; i < labels.length; i++) 
-			{
-				if (labels[i].getAttribute('for') == this.options.input) {
-					tlabel = labels[i];
-				}
-			}
-			if (!tlabel) {
-				input = $(this.options.input);
-				tlabel = input.parentNode;
-			}
-			if (tlabel.firstChild.nodeValue != null && 
-				tlabel.firstChild.nodeValue != 'null' && 
-				tlabel.firstChild.nodeValue != '') {
-				this.options.labeltext = tlabel.firstChild.nodeValue;
-			}
-			var value = tlabel.style['color'];
-			if (!value) {
-				if (document.defaultView && document.defaultView.getComputedStyle) {
-					var css = document.defaultView.getComputedStyle(tlabel, null);
-					value = css ? css.getPropertyValue('color') : null;
-				} else if (tlabel.currentStyle) {
-					value = tlabel.currentStyle['color'];
-				}
-			}
-			this.options.labelcolor = value;
-		}
-	},
-
-	onChange: function() {
-		var v = this.input.getProperty('value');
-		if (v != '' && v != this.options.labeltext) {
-			this.cap.setProperties({'class':this.options.endcapx});
-		} else if (v == '' || v == this.options.labeltext) {
-			this.cap.setProperties({'class':''});
-		}
-	},
-	
-	clearField: function(event) {
-		this.input.setStyles({'color':this.options.labelcolor}).setProperties({'value':this.options.labeltext});
-		this.onChange();
 	}
 });
 

@@ -1531,6 +1531,7 @@
 	.columns .learningobject  { padding-left: 23px; background: url("../images/icons/fc-learningmodule.gif") 0 0.2em no-repeat; padding-bottom: 0.2em; }
 	.columns .animation { padding-left: 23px; background: url("../images/home/fc-animation.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
 	.columns .video { padding-left: 23px; background: url("../images/home/fc-animation.gif") 0 0em no-repeat; padding-bottom: 0.2em; padding-bottom: 0.2em; }
+	.columns .multimedi { padding-left: 23px; background: url("../images/home/fc-animation.gif") 0 0em no-repeat; padding-bottom: 0.2em; padding-bottom: 0.2em; }
 	.columns .download { padding-left: 23px; background: url("../images/home/fc-download.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
 	.columns .course { padding-left: 23px; background: url("../images/home/fc-course.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
 	.columns .learningmodule { padding-left: 23px; background: url("../images/home/fc-learningmodule.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
@@ -2332,6 +2333,44 @@
 		color: #fff;
 		border: none;
 		}
+	#primary-document-compact {
+		margin: 0 0 1.5em 0;
+		}
+	#primary-document-compact a {
+		margin: 0;
+		padding: 6px 0 0 8px;
+		display: block;
+		width: 204px;
+		height: 26px;
+		border: none;
+		color: #fff;
+		font-weight: bold;
+		background: url("../images/buttons/compact.gif") 0 0 no-repeat;
+		}
+	#primary-document-compact a:hover { 
+		background-position: 0 -32px; 
+		color: #fff;
+		border: none;
+		}
+	#primary-document-play {
+		margin: 0 0 1.5em 0;
+		}
+	#primary-document-play a {
+		margin: 0;
+		padding: 6px 0 0 8px;
+		display: block;
+		width: 204px;
+		height: 26px;
+		border: none;
+		color: #fff;
+		font-weight: bold;
+		background: url("../images/buttons/compact_play.gif") 0 0 no-repeat;
+		}
+	#primary-document-play a:hover { 
+		background-position: 0 -32px; 
+		color: #fff;
+		border: none;
+		}
 /*---------------------------------------------------------------
 	File types
 ---------------------------------------------------------------*/
@@ -3008,4 +3047,21 @@ table.standard td p span.name {
 /* site map menu fix */
 #mainpage-facilities-rhs {
 	z-index: 0;
+}
+#hostnameheader {
+        background-color: #FCB6BE;
+        color: #000;
+        text-align: center;
+	font-weight: bold;
+	font-size: 120%;
+	height: 10px;
+	padding: 0.5em;
+	width: auto;
+	overflow: visible;
+	left: 0;
+	top: -5px;
+	position: relative;
+	border-bottom: 2px solid #b9ac96;
+	margin-bottom: 1em;
+	padding-bottom: 0.8em;
 }

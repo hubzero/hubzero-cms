@@ -9,6 +9,16 @@
 /*---------------------------------------------------------------
 	'See Also' side area
 ---------------------------------------------------------------*/
+	.type_head {
+		margin: 0;
+		padding: 0.5em 0.5em 0.5em 2em ;
+		border-left:1px solid #9da6b7;
+		border-right:1px solid #9da6b7;
+		border-bottom:1px solid #9da6b7;
+		list-style:none;	
+	} 
+
+
 	#whatsrelated ul, #whatsrelated p {
 		margin: 0;
 		padding: 0.5em 0.5em 0.5em 2em ;
@@ -486,6 +496,137 @@
 		color:#CCCCCC;
 	}
 	
+/* Compact Primary Button */
+	#primary-document-compact {
+		margin: 1em 0 0px 0px;
+		background-color: #fff;
+		text-align:center;
+		width: 204px;
+		height: 50px;
+		}
+	#primary-document-compact a {
+		margin: 0 0 19px 0px;
+		border: none;
+		color: #fff;
+		font-weight: bold;
+		/*background: url("primary.gif") 0 0 no-repeat;*/
+		}
+	#primary-document-compact  a:hover { 
+		background-position: 0 -33px;
+		color: #fff;
+		border: none;
+		}
+	#primary-document-compact .link_disabled {
+		margin: 0;
+		padding: 6px 0 0 10px;
+		display: block;
+		width: 208px;
+		height: 27px;
+		border: none;
+		color:#fff;
+		font-weight: bold;
+		background: url("primary_disabled.gif") 0 0 no-repeat;
+		cursor:pointer;
+	}
+	#primary-document-compact .caption {
+		font-size:80%;
+		font-weight:normal;
+		color:#CCCCCC;
+	}
+	#primary-document-play {
+		margin: 1em 0 0px 0px;
+		background-color: #fff;
+		text-align:center;
+		width: 204px;
+		height: 50px;
+		}
+	#primary-document-play  a:hover { 
+		background-position: 0 -33px;
+		color: #fff;
+		border: none;
+		}
+	#primary-document-play .link_disabled {
+		margin: 0;
+		padding: 6px 0 0 10px;
+		display: block;
+		width: 208px;
+		height: 27px;
+		border: none;
+		color:#fff;
+		font-weight: bold;
+		background: url("primary_disabled.gif") 0 0 no-repeat;
+		cursor:pointer;
+	}
+	#primary-document-play .caption {
+		font-size:80%;
+		font-weight:normal;
+		color:#CCCCCC;
+	}
+/*---------------------------------------------------------------
+	Resource actions (shown as buttons, converted to classes for reuse)
+---------------------------------------------------------------*/	
+
+	div.resource-action a, div.resource-action span {
+		text-align:center;
+		border: none;
+		color: #fff;
+		font-weight: bold;
+		margin-bottom: 0.5em;
+		width: 204px;
+		height: 26px;
+		padding: 6px 0 0 10px;
+		display: block;
+  	}
+
+  	div.resource-action.secondary {
+    		margin-bottom: 1.5em;
+  	}
+  
+	div.resource-action.active a {
+		background: url("../../images/buttons/primary.gif") no-repeat scroll 0 0 transparent;
+	}
+    
+    div.resource-action.disabled span {
+        background: url("../../images/buttons/primary_disabled.gif") no-repeat scroll 0 0 transparent;
+    }
+
+	div.resource-action.active a:hover {
+		background-position: 0 -33px;
+		color: #fff;
+		border: none;
+	}
+
+	div.resource-action.active a span.caption {
+		font-size:80%;
+		font-weight:normal;
+		color:#CCCCCC;
+		display: inline;
+	}
+
+	div.resource-action.disabled span {
+		background: url("../../images/buttons/primary_disabled.gif") no-repeat scroll 0 0 transparent;
+		cursor:pointer;
+	}
+
+	div.resource-action.secondary a {
+		background: url("../../images/buttons/primary.gif") 0 0 no-repeat;
+		cursor: pointer;
+	}
+
+	div.resource-action div.resource-action-popup {
+	  	display: none;
+	  	position: absolute;
+ 		width:222px;
+ 		font-size:90%;
+ 		margin:0;
+ 		padding:0;
+		z-index: 10;
+ 	}
+
+	div.resource-action div.resource-action-popup p.warning {
+		margin: 0;
+  	}		
+	
 	
 /*  Versioning */
 	.toolpublished {
@@ -510,7 +651,7 @@
 /* intro */
 	#introduction {
 		margin: 0 -15px 3em -15px;
-		padding: 25px 15px 25px 120px;
+		padding: 5px 15px 5px 120px;
 		background: #fbf8ea url("resources-large.gif") 30px 25px no-repeat;
 		border-top: 2px solid #e7dac4;
 		border-bottom: 2px solid #e7dac4;
@@ -576,6 +717,12 @@
 		line-height: 1em;
 		border-top: 2px solid #e0e0d7;
 		}
+	.com_resources #eot-h2 {
+		border-top: none;
+		}
+	.com_resources #eot-img-header {
+		border-top: 2px solid #e0e0d7;
+		}
 	.com_resources .second {
 		}
 	.com_resources .third {
@@ -587,7 +734,7 @@
 		height: 3em;
 		}
 	.com_resources .four {
-		margin-bottom: 3em;
+		margin-bottom: 0em;
 		}
 	.columns form.search { 
 		border: 1px solid #fff; 
@@ -659,14 +806,16 @@
 		float: left;
 		}
 	.resources .title { 
-		margin-right: 220px;
+		margin-right: 10px;
 		}
 	.results .rating {
-		text-align: right;
+		height: 15px;
+		text-align: left;
 		}
 	.results .rating .avgrating {
 		width: auto;
-		padding-right: 75px;
+		height: 15px;
+		padding-right: 25px;
 		}
 /* Resource's Supporting Documents list 
 	.supportingdocs { 
@@ -742,6 +891,174 @@
 		right: 0;
 		border: none;
 		}
+				
+/* Video Player Items */
+	.video_player_box {
+		align: center;
+		width: 700px;
+		height: 490px;
+		margin-left: auto ;
+  	margin-right: auto; 
+		background: #D2DCCE url(../../images/homepage/bg_welcome02.gif);		
+	}
+	a.player {	
+		display:block;
+		width:500px;
+		height:340px;
+		text-align:center;
+		color:#fff;
+		text-decoration:none;
+		cursor:pointer;
+		background:#000 url(http://static.flowplayer.org/img/global/gradient/h500.png) repeat-x 0 0;
+		background:-moz-linear-gradient(top, rgba(55, 102, 152, 0.9), rgba(6, 6, 6, 0.9));
+		-moz-box-shadow:0 0 40px rgba(100, 118, 173, 0.5);
+	}
+	#player {
+		margin:0 0 20px 90px;		
+	}
+	a.player:hover {
+		background:-moz-linear-gradient(center top, rgba(73, 122, 173, 0.898), rgba(6, 6, 6, 0.898));	
+	}
+	
+	/* splash image */
+	a.player img {
+		margin-top:125px;
+		border:0;	
+	}
+	#pl {
+		height:80px;
+		background:#f5fbfb url(http://static.flowplayer.org/img/global/gradient/h150.png) repeat-x;	
+		border:1px solid #ddd;
+		width:584px;
+		position:relative;
+		overflow:hidden;
+		padding:5px 0;
+		float:left;
+	}
+	
+	.entries {
+		height:80px;
+		position:absolute;
+		width:10000em;
+	}
+	
+	.page {
+		width:580px;
+		float:left;
+	}
+	
+	.entries a {
+		background:transparent url(http://static.flowplayer.org/img/playlist/entry.png) no-repeat scroll 0%;
+		color:#666;
+		float:left;
+		font-family:"bitstream vera sans","lucida grande","verdana";
+		font-size:11px;
+		height:60px;
+		margin:0px 4px;
+		padding:10px;
+		text-decoration:none;
+		width:117px;
+		
+	}
+	
+	.entries a:hover {
+		background-position:-140px 0;
+		color:#000;
+	}
+	
+	.entries .playing {
+		background-position:-280px 0;		
+		color:#000;
+	}
+	
+	.entries .paused {
+		background-position:-420px 0;		
+		color:#000;
+	}
+	
+	.entries .progress {
+		opacity:0.8;
+	}
+	
+	.entries em {	
+		float:right;
+		margin-top:15px;
+		color:red;
+		font-style:normal;
+	}
+	
+	.next, .prev {
+		display:block;
+		width:28px;
+		height:24px;
+		background:url(/site/fancybox/fancy_nav_left.png) no-repeat;
+		margin:30px 10px;
+		cursor:pointer;
+		float:left;
+	}
+	
+	.next:hover, .prev:hover {
+		background-position:0px -18px;		
+	}
+	
+	.next {
+		background-image:url(/site/fancybox/fancy_nav_right.png);	
+	}
+	
+	.next.disabled, .prev.disabled {
+		visibility:hidden;		
+	}
+/* Resource Highlights */
+	.resource-highlight {
+		background: #D2DCCE ;
+		background-image:url(../../images/homepage/bg_welcome02.gif);
+		background-repeat:no-repeat;
+		background-attachment:fixed;
+		background-position:center left;
+		height:100%;
+		overflow-y:scroll;
+	}
+	.highlight-thumb {
+		background: #ffffff;
+		margin: 0 0px 10px 0;
+		width: 100%;
+		height: 160px;
+		overflow-x: hidden;
+		overflow-y: hidden;
+		-moz-box-shadow:0 0 40px rgba(100, 118, 173, 0.5);
+	}
+	.highlight-thumb-list {
+		background: #ffffff;
+		margin: 0 0px 10px 0;
+		width: 100%;
+		height: 100px;
+		overflow-x: hidden;
+		overflow-y: hidden;
+		background:-moz-linear-gradient(center top, rgba(73, 122, 173, 0.898), rgba(6, 6, 6, 0.898));
+		-moz-box-shadow:0 0 40px rgba(100, 118, 173, 0.5);
+	}
+	.thumbs {
+		border-top: 0px;
+		border-bottom: 0px;
+	}
+	.resource-thumb-image {
+		margin: 5px;
+		align: left;
+	}
+	.highlight-title {
+		line-height: 1em;
+		font-size: 1.6em;
+		margin: 0 0 0 5px;
+		text-align: center;
+	}
+	#thumb-list {
+		border-bottom: 0px;
+	}
+/* Resources Extra Info */
+	.hidden-resource-info {
+		display: none;
+		height: 100%;
+	}
 /* Tool versions list */
 	.versions { 
 		margin: 0 0 1em 0;
@@ -1286,6 +1603,21 @@
 		color: #999;
 		margin: 0.2em 0 0 0;
 		}
+/* --------------------------------------------------------------
+	Historical Documents
+------------------------------------------------------------*/
+
+	#historical-document {
+		color: grey;
+		font-style:italic;
+		background: url(/templates/fresh/images/underline.gif) repeat-x 100% 100%;
+		/*text-shadow: #ff6666 1px 2px 2px;*/
+		margin-right: auto;
+	}
+	#xtra-resource-header {
+		display:inline;
+	}
+	
 /*---------------------------------------------------------------
 	Reviews
 ---------------------------------------------------------------*/
@@ -1827,6 +2159,11 @@
 	#tagbrowser #level-1 ul a.open, 
 	#tagbrowser #level-2 ul a.open {
 		background: #D0D0D0 url("arrowon.gif") right 50% no-repeat; 
+		}
+	#tagbrowser #level-1 ul a.admin_tag {
+		/* background: #C6DAFA url("arrowon.gif") right 50% no-repeat; */
+		font-weight: bold;
+		color: #02A;
 		}
 	#tagbrowser #level-1 ul a.hi, 
 	#tagbrowser #level-2 ul a.hi {

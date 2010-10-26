@@ -15,12 +15,12 @@ $juser =& JFactory::getUser();
 	<link rel="stylesheet" href="/templates/fresh/html/mod_reportproblems/mod_reportproblems.css" type="text/css" />
 	
 	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl ?>/templates/fresh/css/print.css" />
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/dummy.css" id="dummy_css" />
 	<!--[if lte IE 7]>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/ie7win.css" />
 	<![endif]-->
 	<!--[if lte IE 6]>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/ie6win.css" />
+		<script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/fresh/js/ie.js"></script>
 	<![endif]-->
 	<script type="text/javascript" src="/media/system/js/mootools.js"></script>
 	<script type="text/javascript" src="/templates/fresh/js/hub.js"></script>
@@ -29,7 +29,7 @@ $juser =& JFactory::getUser();
 <body>
 	
 	<div id="mainwrap">
-    <div id="uc"><div>Beta 3.0</div></div>
+
 <?php XModuleHelper::displayModules('notices'); ?>
 		<div id="header">
              <div id="headerwrap">

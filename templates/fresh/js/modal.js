@@ -257,12 +257,19 @@ var SqueezeBoxHub = {
 	},
 
 	onkeypress: function(e) {
-		switch (e.key) {
+		switch (e.keyCode){
+			case 27: 
+			//case 88: 
+			//case 67: 
+				this.close(); 
+			break;
+		}
+		/*switch (e.key) {
 			case 'esc':
 			case 'x':
 				this.close();
 				break;
-		}
+		}*/
 	},
 
 	reposition: function(sizes) {

@@ -16,6 +16,12 @@ $juser =& JFactory::getUser();
 	<!--[if lte IE 6]>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/ie6win.css" />
 	<![endif]-->
+		<script type="text/javascript" src="media/system/js/jquery-1.4.2.js"></script>
+		<script type="text/javascript">var $jQ = jQuery.noConflict();</script> 	
+		<script type="text/javascript" src="site/fancybox/jquery.fancybox-1.3.1.pack.js"></script>	
+		<link rel="stylesheet" href="site/fancybox/jquery.fancybox-1.3.1.css" type="text/css" media="screen" />
+	
+	
 <?php if ($this->countModules( 'banner or welcome or academybanner' )) { ?>
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/home.css" id="home_css" />
 <?php } ?>	
