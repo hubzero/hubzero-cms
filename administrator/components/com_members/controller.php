@@ -335,6 +335,7 @@ class MembersController extends Hubzero_Controller
 		// Make sure certain changes make it back to the Joomla user table
 		$juser =& JUser::getInstance($id);
 		$juser->set('name', $name);
+		$juser->set('email', $profile->get('email'));
 		if (!$juser->save()) {
 			JError::raiseWarning('', JText::_( $juser->getError() ));
 			return false;
