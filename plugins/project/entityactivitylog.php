@@ -52,7 +52,9 @@ class plgProjectEntityActivityLog extends JPlugin{
 
     /* @var $oEntityActivityLog EntityActivityLog */
     $oEntityActivityLog = EntityActivityLogPeer::getEntityActivityLog($iEntityTypeId, $iEntityId);
-
+    if(!$oEntityActivityLog){
+      return 0;
+    }
     return $oEntityActivityLog->getViewCount();
   }
 
@@ -83,7 +85,9 @@ class plgProjectEntityActivityLog extends JPlugin{
 
     /* @var $oEntityActivityLog EntityActivityLog */
     $oEntityActivityLog = EntityActivityLogPeer::getEntityActivityLog($iEntityTypeId, $iEntityId);
-
+    if(!$oEntityActivityLog){
+      return 0;
+    }
     return $oEntityActivityLog->getDownloadCount();
   }
  

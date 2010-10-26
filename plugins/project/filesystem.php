@@ -9,6 +9,7 @@ jimport('joomla.filesystem.folder');
 
 require_once 'api/org/nees/lib/filesystem/FileCommandAPI.php';
 require_once 'api/org/nees/static/Files.php';
+require_once 'api/org/nees/util/FileHelper.php';
 
  
 class plgProjectFileSystem extends JPlugin{
@@ -34,6 +35,7 @@ class plgProjectFileSystem extends JPlugin{
   function onMkDir(&$params){
     global $mainframe;
 
+    $iDirectoriesMade = 0;
     $bIsProject = $_REQUEST[Files::WAREHOUSE];
     $strProjectName = "";
     $strNewAbsoluteArray = $_REQUEST[Files::ABSOLUTE_DIRECTORY_PATH_LIST];
@@ -62,17 +64,18 @@ class plgProjectFileSystem extends JPlugin{
           if(!is_dir($strThisDirectory)){
             //remove the final slash
             $oFileCommand = FileCommandAPI::create($strThisDirectory);
-            $oFileCommand->mkdir();
+            if($oFileCommand->mkdir()){
+              ++$iDirectoriesMade;  
+            }
 
-            if(StringHelper::hasText($strProjectName)){
-              $strProjectGroupCname = FileCommandAPI::getProjectDirectoryGroup($strProjectName);
-              $escSrc = escapeshellarg($strProjectGroupCname);
-              $escDest = escapeshellarg($strThisDirectory);
-              exec("chgrp $escSrc $escDest", $output, $returncode);
-            }//end chgrp
           }//end if is_dir
         }//end foreach 2
       }//end foreach 1
+
+      if($iDirectoriesMade > 0){
+        FileHelper::fixPermissions($strNewAbsoluteArray[0]);
+      }//end chgrp
+
     }//end if $strNewAbsoluteArray
   }
 
