@@ -62,6 +62,7 @@ class modWarehouseFilmStripHelper{
 ENDHTML;
 
     /* @var $oDataFile DataFile */
+    $count = 0;
     foreach($p_oDataFileArray as $iFilmStripIndex=>$oDataFile){
       $iFilmStripAlt = $iFilmStripIndex+1;
       $strDescription = $oDataFile->getDescription();
@@ -75,19 +76,19 @@ ENDHTML;
 
       $strThumbName = "thumb_".$oDataFile->getId()."_".$strName;
       $oDataFile->setName($strThumbName);
-      $strThumbUrl = $oDataFile->getFriendlyPath();
+      $strThumbUrl = $oDataFile->get_url();
 
       $strDisplayName = "display_".$oDataFile->getId()."_".$strName;
       $oDataFile->setName($strDisplayName);
-      $strDisplayUrl = $oDataFile->getFriendlyPath();
+      $strDisplayUrl = $oDataFile->get_url();
 
       $strHTML .= <<< ENDHTML
-                  <a title="$strDescription" href="/data/get/$strDisplayUrl" rel="lightbox[filmstrip]">
-                    <img class="thumbima" alt="thumbnail$iFilmStripAlt" src="/data/get/$strThumbUrl">
+                  <a title="$strDescription" href="$strDisplayUrl" rel="lightbox[filmstrip]">
+                    <img class="thumbima" alt="thumbnail$iFilmStripAlt" src="$strThumbUrl">
                   </a>
 ENDHTML;
-      }
-
+    	$count = $count + 1;  
+    }
 
     $strHTML .= <<< ENDHTML
                 </div>
@@ -96,7 +97,12 @@ ENDHTML;
             </div>
           </div>
 ENDHTML;
-      return $strHTML;
+//echo $count;
+	if ( $count == 0 ){
+		//echo "Inside the count == 0 thing: ".$count;
+    	$strHTML = "";
+	}
+    return $strHTML;
   }
   
   public function getExperiment28(){

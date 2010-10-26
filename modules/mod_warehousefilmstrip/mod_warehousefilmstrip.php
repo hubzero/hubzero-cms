@@ -17,8 +17,10 @@ defined('_JEXEC') or die('Restricted access');
 // Include the syndicate functions only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
-$oProject = unserialize($_REQUEST[Search::SELECTED]);
 $oExperiment = unserialize($_REQUEST[Experiments::SELECTED]);
+$oProject = $oExperiment->getProject();
+//$oProject = unserialize($_REQUEST[Search::SELECTED]);
+
 $oDataFileArray = modWarehouseFilmStripHelper::getFilmStripByProjectExperiment($oProject->getId(), $oExperiment->getId());
 $strFilmStrip = modWarehouseFilmStripHelper::getFilmStripByProjectExperimentHTML($oDataFileArray);
 
