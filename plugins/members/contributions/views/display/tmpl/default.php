@@ -251,7 +251,7 @@ foreach ($this->results as $category)
 }
 echo $html;
 if (!$foundresults) {
-	echo Hubzero_View_Helper_Html::warning( JText::_('PLG_MEMBERS_FAVORITES_NONE') );
+	echo Hubzero_View_Helper_Html::warning( JText::_('PLG_MEMBERS_CONTRIBUTIONS_NONE') );
 }
 ?>
 </div><!-- / .subject -->
