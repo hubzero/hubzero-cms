@@ -1,0 +1,34 @@
+<?php
+
+defined( '_JEXEC' ) or die( 'Restricted access' );
+ 
+jimport( 'joomla.application.component.model' );
+
+require_once('base.php');
+require_once 'lib/data/MaterialTypePeer.php';
+require_once 'lib/data/SpecimenPeer.php';
+
+class ProjectEditorModelMaterials extends ProjectEditorModelBase{
+	
+
+  /**
+   * Constructor
+   *
+   * @since 1.5
+   */
+  function __construct(){
+	parent::__construct();
+  }
+  
+  public function findMaterialTypeByDisplayName($p_strName){
+  	return MaterialTypePeer::findByDisplayName($p_strName);
+  }
+  
+  public function suggestMaterialType($p_strName){
+  	return MaterialTypePeer::suggestDisplayName($p_strName);
+  }
+  
+ 
+}
+
+?>

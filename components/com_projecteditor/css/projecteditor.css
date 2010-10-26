@@ -1,0 +1,142 @@
+.suggestResults {
+	border-bottom: 1px solid #A5ACB2;
+	border-left: 1px solid #A5ACB2;
+	border-right: 1px solid #A5ACB2;
+	background-color: #FFFFFF;
+	position: absolute;
+	z-index:2;
+}
+
+.suggest_link_over {
+	background-color: #666666;
+	padding: 2px 6px 2px 6px;
+	color: #FFFFFF;
+}
+
+.editorRequired {
+ 	color: #990000;	
+}
+
+.editorLabel {
+	font-weight:bold;
+}
+
+.editorInputFloat {
+	float:left;
+}
+
+.editorInputMargin {
+	margin-right: 10px;
+}
+
+.editorInputSize{
+	width:70%;
+}
+
+.editorInputSizeFull{
+	width:90%;
+}
+
+.editorInputSizeFull2{
+	width:100%;
+}
+
+.editorInputButton {
+	margin-left: 10px;
+}
+
+.editorInputCurate {
+	width:100%;
+        background-color: #E8F1E5;
+}
+
+.editorPreviewSize{
+	width:80%;
+}
+
+.editorTextArea {
+  	width: 70%;
+  	height: 150px;
+}
+
+.editorParagraph {
+	margin:0px;
+}
+
+.noBottomBorder{
+  	border-bottom:0px;
+}
+
+.helpSpan{
+	margin-left:5px;
+}
+
+#frmProject fieldset {
+	background:none repeat scroll 0 0 #FFFFFF;
+	color:#000000;
+	float:left;
+	width:70%;
+}
+
+#frmProject fieldset fieldset  {
+	border:1px solid #999999;
+	float:none;
+	padding:0 1em 1.75em;
+	width:auto;
+}
+
+#frmProject fieldset fieldset label {
+	padding-top:0.7em;
+}
+
+#frmProject .indent {
+	display:block;
+}
+
+#frmProject .indent {
+	margin-left:1.75em;
+}
+
+.topSpace10{
+  padding-top: 10px;
+}
+
+.topSpace20{
+  padding-top: 20px;
+}
+
+.contentpaddingPopUp {
+  margin:10px 20px 10px 15px;
+}
+
+.curateSubmitted {
+  color: #FF9900;
+  font-weight:bold;
+}
+
+.curateComplete {
+  color: #008000;
+  font-weight:bold;
+}
+
+.curateIncomplete {
+  color: #990000;
+  font-weight:bold;
+}
+
+.experimentTitle{
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+#quickstart{
+    right: 0pt;
+    position: absolute;
+    margin-top:-25px;
+    z-index:4
+}
+
+.requiredfieldmarker {
+	color:#f00;
+}

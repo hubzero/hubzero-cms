@@ -1,0 +1,192 @@
+<?php 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+
+//header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
+//header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+//header( 'Cache-Control: no-store, no-cache, must-revalidate' );
+//header( 'Cache-Control: post-check=0, pre-check=0', false );
+//header( 'Pragma: no-cache' );
+?>
+
+<?php 
+  $document =& JFactory::getDocument();
+  $document->addStyleSheet($this->baseurl."/components/com_projecteditor/css/projecteditor.css",'text/css');
+  $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
+  $document->addScript($this->baseurl."/components/com_projecteditor/js/ajax.js", 'text/javascript');
+?>
+
+<?php 
+  $oUser = $this->oUser;
+?>
+
+
+<div class="innerwrap>
+  <div class="content-header">
+	<h2 class="contentheading">NEES Project Warehouse</h2>
+  </div>
+  
+  <div id="warehouseWindow" style="padding-top:20px;">
+    <div id="title" style="padding-bottom:1em;">
+      <span style="font-size:16px;font-weight:bold;">Create a New Project</span>
+    </div>
+    
+    <div id="overview_section" class="main section" style="width:100%;float:left;">      
+      <?php echo $this->strTabs; ?>
+      
+      <div class="aside">
+        <div style="border: 1px solid rgb(102, 102, 102); overflow: auto; padding: 0px; margin: 0px;" align="center">
+          upload image...
+        </div>
+      
+        <div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">
+          <p style="margin-left:10px; margin-top:10px;">1000 Views</p>
+          
+          <p style="margin-left:10px;">100 Downloads</p>    
+        </div>
+        
+      
+        <div id="curation">
+          <span class="curationTitle">Curation in progress:</span>
+          <?php echo $this->mod_curationprogress; ?>
+        </div>
+        
+        <div class="whatisthis">
+		  <h4>What's this?</h4>
+		  <p>
+		    Once the curator starts working with your submission, monitor the object's progress by reading 
+		    the curation history.
+		  </p>
+		</div>
+      </div>
+      <div class="subject">
+        <div id="about" style="padding-top:1em;">
+          <table cellpadding="1" cellspacing="1" style="border-bottom:0px;border-top:0px;">
+            <tr id="people">
+              <td style="width:1px"><label for="txtOwner" class="editorLabel editorRequired">PI(s):</label></td>
+              <td>
+                <div id="ownerInput" class="editorInputFloat editorInputSize">
+                  <input type="text" id="txtOwner" name="owner" style="width:100%;" value="<?php echo $oUser->name; ?>" />
+                </div>
+                <div id="ownerInstructions" class="editorInputFloat editorInputButton">
+                  <span style="color:#999999">project owner</span>
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            <tr id="title">
+              <td><label for="txtTitle" class="editorLabel editorRequired">Title:</label></td>
+              <td>
+                <input type="text" id="txtTitle" name="title" class="editorInputSize" />
+              </td>
+            </tr>
+            <tr id="shortTitle">
+              <td><label for="txtShortTitle" class="editorLabel editorRequired">Short Title:</label></td>
+              <td>
+                <div id="shortTitleInput" class="editorInputFloat editorInputSize">
+                  <input type="text" id="txtShortTitle" name="shortTitle" style="width:100%;" value="" maxlength="40" />
+                </div>
+                <div id="shortTitleInstructions" class="editorInputFloat editorInputButton">
+                  <span style="color:#999999">max. 40 characters</span>
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            <tr id="start_date">
+              <td><label for="strStartDate" class="editorLabel editorRequired">Start Date:</label></td>
+              <td>
+                <div id="startDateInput" class="editorInputFloat editorInputSize">
+                  <input type="text" id="strStartDate" name="startdate" style="width:100%;" value="<?php echo $this->strStartDate; ?>" />
+                </div>
+                <div id="startDateCalendar" class="editorInputFloat editorInputButton">
+                  <img class="calendar" src="/components/com_warehouse/images/calendar/calendar-blue.png" alt="calendar" onclick="return showCalendar('strStartDate', '%m/%d/%Y');" />
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            <tr id="end_date">
+              <td><label for="strEndDate" class="editorLabel">End Date:</label></td>
+              <td>
+                <div id="endDateInput" class="editorInputFloat editorInputSize">
+                  <input type="text" id="strEndDate" name="enddate" style="width:100%;" value="mm/dd/yyyy" />
+                </div>
+                <div id="endDateCalendar" class="editorInputFloat editorInputButton">
+                  <img class="calendar" src="/components/com_warehouse/images/calendar/calendar-blue.png" alt="calendar" onclick="return showCalendar('strEndDate', '%m/%d/%Y');" />
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            <tr id="facility">
+              <td><label for="txtFacility" class="editorLabel">Facility:</label></td>
+              <td>
+                <input type="text" id="txtFacility" name="facility" class="editorInputSize" onkeyup="suggest('/projecteditor/facilitysearch?format=ajax', 'facilitySearch', this.value, this.id)" onBlur="javascript:document.getElementById('facilitySearch').innerHTML=''" />
+                <div id="facilitySearch"></div>
+              </td>
+            </tr>
+            <tr id="organization">
+              <td><label for="txtOrganization" class="editorLabel">Organization(s):</label></td>
+              <td id="organizationTarget">
+                <div id="organizationInput" class="editorInputFloat editorInputSize">
+                  <input type="text" id="txtOrganization" name="organization" style="width:100%;" onkeyup="suggest('/projecteditor/organizationsearch?format=ajax', 'organizationSearch', this.value, this.id)" onBlur="javascript:document.getElementById('organizationSearch').innerHTML=''" />
+                  <div id="organizationSearch"></div>
+                </div>
+                <div id="organizationAdd" class="editorInputFloat editorInputButton">
+                  <a href="javascript:void(0);" title="Add another organization" style="border-bottom: 0px" onClick="addInputViaMootools('/projecteditor/add?format=ajax', 'organization', 'txtOrganization', 'organizationsPicked');"><img src="/components/com_projecteditor/images/icons/addButton.png" border="0"/></a>
+                </div>
+                <div class="clear"></div>
+                <div id="organizationsPicked"></div>
+              </td>
+            </tr>
+            <!-- 
+            <tr id="description">
+              <td><label for="txtDescription" class="editorLabel editorRequired">Description:</label></td>
+              <td>
+				<textarea id="txtDescription" name="description" class="editorTextArea"></textarea>
+              </td>
+            </tr>
+            <tr id="sponsor">
+              <td style="font-weight:bold;">Sponsor:</td>
+              <td>
+                <div class="editorInputFloat editorInputSize" id="sponsorInput" style="width: 40%;">
+                  <input type="text" onblur="javascript:document.getElementById('sponsorSearch').innerHTML=''" onkeyup="suggest('/projecteditor/sponsorsearch?format=ajax', 'sponsorSearch', this.value, this.id)" style="width: 95%;" name="sponsor" id="txtSponsor"> -
+                  <div id="sponsorSearch"></div>
+                </div>
+                <div style="width: 30%;" class="editorInputFloat editorInputSize" id="sponsorAwardInput">
+                  <input type="text" style="width: 98%;" name="award" id="txtSponsorAward">
+                </div>
+                <div class="editorInputFloat editorInputButton" id="sponsorAdd">
+                  <a onclick="addInputViaMootools('/projecteditor/add?format=ajax', 'sponsor', 'txtsponsor', 'sponsorsPicked');" style="border-bottom: 0px none;" title="Add another sponsor" href="javascript:void(0);"><img border="0" src="/components/com_projecteditor/images/icons/addButton.png"></a>
+                </div>
+                <div class="clear"></div>
+                <div id="sponsorsPicked"></div>
+              </td>
+            </tr>
+             -->
+            <tr id="websites">
+              <td style="font-weight:bold;">Website(s):</td>
+              <td>
+                
+              </td>
+            </tr>
+            <tr id="equipment">
+              <td style="font-weight:bold;">Equipment:</td>
+              <td>
+                
+              </td>
+            </tr>
+            <tr id="pubs">
+              <td style="font-weight:bold;">Publications:</td>
+              <td></td>
+            </tr>
+            <tr id="tags">
+              <td style="font-weight:bold;">Tags:</td>
+              <td><?php //echo $this->mod_warehousetags; ?></td>
+            </tr>
+          </table>
+    
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>  
+</div>

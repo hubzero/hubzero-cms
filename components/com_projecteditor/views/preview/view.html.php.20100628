@@ -1,0 +1,108 @@
+<?php
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+
+jimport( 'joomla.application.component.view');
+require_once 'lib/data/EquipmentPeer.php';
+
+class ProjectEditorViewPreview extends JView{
+	
+  function display($tpl = null){
+    $iProjectId = 0;
+
+    /* @var $oPreviewModel ProjectEditorModelPreview */
+    $oPreviewModel =& $this->getModel();
+    
+    //get the tabs to display on the page
+    $strTabArray = $oPreviewModel->getTabArray();
+    $strTabHtml = $oPreviewModel->getTabs( "warehouse", $iProjectId, $strTabArray, "project" );
+    $this->assignRef( "strTabs", $strTabHtml );
+
+    $this->assignRef( "oUser", $oPreviewModel->getCurrentUser() );
+    $strTitle = (isset($_REQUEST["title"])) ? $_REQUEST["title"] : "";
+    $this->assignRef( "strTitle", $strTitle );
+
+    $iProjectType = JRequest::getVar("type");
+    $this->assignRef( "iProjectType", $iProjectType );
+
+    $strShortTitle = (isset($_REQUEST["shortTitle"])) ? $_REQUEST["shortTitle"] : "";
+    $this->assignRef( "strShortTitle", $strShortTitle );
+
+    $this->assignRef( "strStartDate", date("m/d/Y") );
+
+    $strEndDate = (isset($_REQUEST["enddate"])) ? $_REQUEST["enddate"] : "";
+    $strEndDate = ($strEndDate=="mm/dd/yyyy") ? "" : $strEndDate;
+    $this->assignRef( "strEndDate", $strEndDate );
+
+    $strFacility = (isset($_REQUEST["facility"])) ? $_REQUEST["facility"] : "";
+    $this->assignRef( "strFacility", $strFacility );
+    $this->assignRef( "strFacilityPicked", $oPreviewModel->getMultipleValuesHTML("facility"));
+
+    $strOrganization = (isset($_REQUEST["organization"])) ? $_REQUEST["organization"] : "";
+    $this->assignRef( "strOrganization", $strOrganization );
+    $this->assignRef( "strOrganizationPicked", $oPreviewModel->getMultipleValuesHTML("organization"));
+
+    $strSponsor = (isset($_REQUEST["sponsor"])) ? $_REQUEST["sponsor"] : "";
+    $strAward = (isset($_REQUEST["award"])) ? $_REQUEST["award"] : "";
+    if($strSponsor=="NSF" && $strAward=="Award Number"){
+      $strSponsor = "";
+      $strAward = "";
+      $_REQUEST["hasSponsor"] = false;
+    }elseif($strSponsor=="NSF" && preg_match("/([0-9])+/", $strAward)){
+      $strAward = $strAward;
+      $strAwardLink = "<a href='http://www.nsf.gov/awardsearch/showAward.do?AwardNumber=".$strAward."' target='nsf'>".$strAward."</a>";
+      $_REQUEST["hasSponsor"] = true;
+    }else{
+      $_REQUEST["hasSponsor"] = true;
+    }
+    $this->assignRef( "strSponsor", $strSponsor );
+    $this->assignRef( "strSponsorPicked", $oPreviewModel->getTupleValuesHTML("sponsor"));
+    $this->assignRef( "strAward", $strAward );
+    $this->assignRef( "strAwardLink", $strAwardLink );
+
+    $strWebsite = (isset($_REQUEST["website"])) ? $_REQUEST["website"] : $strShortTitle;
+    $this->assignRef( "strWebsite", $strWebsite );
+    $this->assignRef( "strWebsitePicked", $oPreviewModel->getWebsiteTupleValuesHTML("website"));
+
+    $strUrl = (isset($_REQUEST["url"])) ? $_REQUEST["url"] : "https://neeshub.org/warehouse/project/[id]";
+    $this->assignRef( "strUrl", $strUrl );
+
+    $strDescription = (isset($_REQUEST["description"])) ? $_REQUEST["description"] : "";
+    $this->assignRef( "strDescription", $oPreviewModel->getDisplayDescription($strDescription ));
+
+    $iAccess = (isset($_REQUEST["access"])) ? $_REQUEST["access"] : 4;
+    $this->assignRef( "iAccess", $iAccess );
+
+    $iNees = (isset($_REQUEST["nees"])) ? $_REQUEST["nees"] : 1;
+    $this->assignRef( "iNees", $iNees );
+
+    $iEquipmentArray = $oPreviewModel->getMultipleValues("equipment");
+    $oEquipmentArray = $oPreviewModel->getEquipmentByIds($iEquipmentArray);
+    $_REQUEST[EquipmentPeer::TABLE_NAME] = serialize($oEquipmentArray);
+    $this->assignRef( "mod_warehouseequipment", ComponentHtml::getModule("mod_warehouseequipment") );
+
+    $strTags = JRequest::getVar("tags", "");
+    $this->assignRef( "strTags", $strTags );
+
+    $strTagArray = explode(",", $strTags);
+    $this->assignRef( "strTagArray", $strTagArray );
+
+
+    /*
+     * Suggested values for the parameters are below...
+     * If a user clicks on Create Project in the breadcrumbs,
+     * fill in the field values.
+     */
+    if(!$_REQUEST["hasSponsor"]){
+      $strSponsor="NSF";
+      $strAward="Award Number";
+    }
+    $strWebsite = (strlen($strWebsite)>0) ? $strWebsite : "Enter website title";
+    $strUrl = (strlen($strUrl)>0) ? $strUrl : "https://neeshub.org/warehouse/project/[id]";
+
+    JFactory::getApplication()->getPathway()->addItem("Create Project","/projecteditor?title=".$strTitle."&shortTitle=".$strShortTitle."&enddate=".$strEndDate."&organization=".$strOrganization."&sponsor=".$strSponsor."&award=".$strAward."&website=".$strWebsite."&url=".$strUrl."&description=".$strDescription."&access=".$iAccess);
+    JFactory::getApplication()->getPathway()->addItem("Confirm Project","javascript:void(0)");
+    parent::display($tpl);
+  }
+}
+?>

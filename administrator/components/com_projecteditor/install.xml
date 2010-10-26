@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install type="component" version="1.5.0">
+ <name>Project Editor</name>
+ <!-- The following elements are optional and free of formatting constraints -->
+ <creationDate>2010-05-12</creationDate>
+ <author>Gemez Marshall</author>
+ <authorEmail>gemezm@purdue.edu</authorEmail>
+ <authorUrl></authorUrl>
+ <copyright></copyright>
+ <license></license>
+ <!--  The version string is recorded in the components table -->
+ <version>0.0.1</version>
+ <!-- The description is optional and defaults to the name -->
+ <description>The component creates or modifies projects within the project warehouse.</description>
+ 
+ <!-- Site Main File Copy Section -->
+ <!-- Note the folder attribute: This attribute describes the folder
+      to copy FROM in the package to install therefore files copied
+      in this section are copied from /site/ in the package -->
+ <files folder="site">
+  <filename>controller.php</filename>
+  <filename>projecteditor.php</filename>
+  <filename>index.html</filename>
+  <filename>models/project.php</filename>
+  <filename>models/index.html</filename>
+  <filename>views/index.html</filename>
+  <filename>views/project/index.html</filename>
+  <filename>views/project/view.html.php</filename>
+  <filename>views/project/tmpl/default.php</filename>
+  <filename>views/project/tmpl/index.html</filename>
+ </files>
+ 
+ <administration>
+  <!-- Administration Menu Section -->
+  <menu>Project Editor</menu>
+ 
+  <!-- Administration Main File Copy Section -->
+  <files folder="admin">
+   <filename>controller.php</filename>
+   <filename>projecteditor.php</filename>
+   <filename>index.html</filename>
+   <filename>views/index.html</filename>
+   <filename>views/project/index.html</filename>
+   <filename>views/project/view.html.php</filename>
+   <filename>views/project/tmpl/default.php</filename>
+   <filename>views/project/tmpl/index.html</filename>
+  </files>
+  
+ </administration>
+</install>
