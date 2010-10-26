@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+    <name>Warehouse Upload</name>
+    <author>Gemez Marshall</author>
+    <version>1.0.0</version>
+    <creationDate>07/06/2010</creationDate>
+    <description>Upload files in warehouse.</description>
+	<files>
+		<filename>mod_warehouseupload.xml</filename>
+		<filename module="mod_warehouseupload">mod_warehouseupload.php</filename>
+		<filename>index.html</filename>
+        	<filename>helper.php</filename>
+        	<filename>tmpl/default.php</filename>
+        	<filename>tmpl/index.html</filename>
+	</files>
+	<params>
+    </params>
+</install>
