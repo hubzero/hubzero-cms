@@ -17,9 +17,31 @@ defined('_JEXEC') or die('Restricted access');
 
 // Require the com_content helper library
 require_once(JPATH_COMPONENT.DS.'controller.php');
+require_once 'lib/security/Authorizer.php';
+require_once 'lib/security/UserManager.php';
 
 // Component Helper
 jimport('joomla.application.component.helper');
+
+/*
+require_once('FirePHPCore/FirePHP.class.php');
+ob_start();
+
+$firephp = FirePHP::getInstance(true);
+$firephp->log('data.php');
+*/
+
+$oUser =& JFactory::getUser();
+
+$oAuthorizer = Authorizer::getInstance();
+$oAuthorizer->setUser($oUser->username);
+
+$oUserManager = UserManager::getInstance();
+$oUserManager->setUser($oUser->username);
+if($oUser->username=="gemezm"){
+  $oAuthorizer->setUser("sdyke");
+  $oUserManager->setUser("sdyke");
+}
 
 // Create the controller
 $controller = new DataController();

@@ -30,6 +30,14 @@ require_once "lib/filesystem/FileCommandAPI.php";
 require_once "lib/data/DataFile.php";
 require_once "lib/security/UserManager.php";
 
+/*
+require_once('FirePHPCore/FirePHP.class.php');
+ob_start();
+
+$firephp = FirePHP::getInstance(true);
+$firephp->log('controller.php');
+*/
+
 /**
  * Content Component Controller
  *
@@ -69,16 +77,18 @@ class DataController extends JController {
     function getFile() {
         $strSource = JRequest::getVar("path", "");
 
+        //echo "source=$strSource<br>";
+
         if (!$strSource || $strSource == "") {
             return;
         }
 
         $strPath = FileCommandAPI::set_directory($strSource);
-        echo $strPath."<br>";
+        //echo $strPath."<br>";
 
         // Datafile is not found on disk
         if (!file_exists($strPath)) {
-            echo "Data file not found<br>";
+            echo "<p class='error'>Data file not found</p>";
             return;
         } 
 
@@ -103,23 +113,24 @@ class DataController extends JController {
             }
 
             if (is_null($oDataFile)) {
-              echo "DataFile not found<br>";
+              echo "<p class='error'>Data file not found</p>";
               return;
             }
         }
 
         $bCanAccessFile = $this->hasAccess($oDataFile, $strPath);
 
-
         // See if they can view the page
         if ($bCanAccessFile) {
             $this->render($strSource);
+            exit;
         } else {
             $this->notAllowed();
         }
 
-        exit;
+        //exit;
     }
+
 
     /**
      * Grabs the file per user's request.
@@ -136,7 +147,7 @@ class DataController extends JController {
 
         // Datafile is not found on disk
         if (!file_exists($strPath)) {
-            echo "Data file not found<br>";
+            echo "<p class='error'>Data file not found</p>";
             return;
         }
 
@@ -195,23 +206,15 @@ class DataController extends JController {
 
         // Something bad happened when we tried to print the file
         if (!$bStatus) {
-            if ($_REQUEST["Mode"] == "API") {
-                echo "cannot get the file";
-                return;
-            } else {
-                header("Location: /datafile_error.php?file=$p_strSource&accsdata={$_SERVER['PATH_INFO']}");
-            }
+          echo "<p class='error'>Cannot get the file</p>";
+          return;
         }
     }
 
     private function notAllowed() {
         //  Not allowed to view the file - display an error message for API or for gui
-        if ($_REQUEST["Mode"] == "API") {
-            echo "You do not have permission to access the file";
-            return;
-        } else {
-            header("Location: /error.php?accsdata={$_SERVER['PATH_INFO']}");
-        }
+        echo "<p class='error'>You do not have permission to access the file.</p>";
+        return;
     }
 
 }
