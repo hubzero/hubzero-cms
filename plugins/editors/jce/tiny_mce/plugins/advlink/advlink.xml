@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<install version="1.5.0" type="plugin" plugin="advlink">
+	<name>Advanced Link</name>
+	<version>1.5.7.4</version>
+	<creationDate>07 June 2010</creationDate>
+	<author>Ryan Demmer</author>
+	<authorEmail>info@joomlacontenteditor.net</authorEmail>
+	<authorUrl>http://www.joomlacontenteditor.net/</authorUrl>
+	<copyright>Ryan Demmer</copyright>
+	<license>GPL</license>
+	<description><![CDATA[ 
+	<p>AdvLink 1.5.7.4</p>
+	]]></description>
+	<icon>link</icon>
+	<layout>advlink</layout>
+	<elements></elements>
+	<files></files>
+	<variables></variables>
+	<params group="defaults">
+		<param name="advlink_target" type="list" default="default" label="PARAM DEFAULT TARGET" description="PARAM DEFAULT TARGET DESC">
+        	<option value="default">NOT SET</option>
+			<option value="_self">_self</option>
+			<option value="_blank">_blank</option>
+			<option value="_parent">_parent</option>
+			<option value="_top">_top</option>	
+		</param>
+	</params>
+	<extensions>
+		<extension name="joomlalinks" title="Joomla Links for AdvLink" folder="links" />
+	</extensions>
+	<languages>
+		<language tag="en-GB">en-GB.com_jce_advlink.ini</language>
+		<language tag="en-GB">en-GB.com_jce_advlink_joomlalinks.ini</language>
+	</languages>
+	<help>
+		<topic key="advlink.about" title="Help About" />
+		<topic key="advlink.interface" title="Help Interface" />
+		<topic key="advlink.content" title="Help Links" />
+		<topic key="advlink.events" title="Help Events" />
+		<topic key="advlink.advanced" title="Help Advanced" />
+		<topic key="advlink.insert" title="Help Insert" />
+		<topic key="advlink.email" title="Help Email" />
+	</help>
+</install>

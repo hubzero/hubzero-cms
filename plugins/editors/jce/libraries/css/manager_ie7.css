@@ -1,0 +1,10 @@
+/*Search & Sort*/
+div#searchbox input {
+	margin-top: 0px;
+}
+div#browser {
+	margin: -20px 0px -15px 0px;
+}
+div#info-body .spacer {
+	height: 220px;
+}

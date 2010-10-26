@@ -1,0 +1,424 @@
+/* Manager CSS */
+@import url(files.css);
+
+img.icon {
+	border: 0px;
+	vertical-align: middle;
+}
+div.layout-header {
+	width: 100%;
+	height: 20px;
+}
+div.layout-left,
+div.layout-center, 
+div.layout-right {
+	margin: 0px 0px 1px 0px;
+	height: inherit;
+	position: relative;
+	float: left;
+}
+div.layout-left{
+	width: 30%;
+}
+div.layout-center {
+	width: 40%;
+}
+div.layout-right {
+	width: 30%;
+}
+div.action, div.button, div#message-status, div#message-info, div#searchbox {
+	background-image: url(../img/icons.gif);
+	background-repeat: no-repeat;
+}
+/*Layout Top*/
+div#message-status,  div#message-info{
+	border: 1px solid #ccc;
+	padding: 1px 0px 1px 0px;
+	height: 20px;
+	margin: 0px 0px 1px 0px;
+	width: auto;
+}
+div#message-status {
+	background-position: 0 -320px;
+}
+div#message-status.load {
+	background: url(../img/load.gif) no-repeat;
+}
+div#message-status span, div#message-info span {
+	margin-left: 22px;
+	line-height: 20px;
+	font-size: 0.9em;
+}
+div#message-info.alert{
+	background-position: 0 -20px;
+}
+div#message-info.error{
+	background-position: 0 -340px;
+}
+div#message-info.info{
+	background-position: 0 0px;
+}
+/*Layout Left*/
+div#searchbox {
+	border: 1px solid #ccc;
+    vertical-align: middle;
+	padding: 1px 25px 1px 0px;
+	background-position: 0 -440px;
+	height: 20px;
+	margin: 0px 1px 1px 0px;
+}
+div#searchbox input {
+	width: 100%;
+	margin-left: 20px;
+	margin-top: 2px;
+}
+div#tree, div#info {
+	/*position: relative;*/
+}
+div#tree, div#dir-list, div#info {
+	margin-right: 1px;
+}
+div#info {}
+div#info-body, div#tree-body {
+	border-width: 0px 1px 1px 1px;
+	border-style: solid;
+	border-color: #ccc;
+	background-color:#ffffff;
+	vertical-align: middle;
+	font-size: 7pt;
+	line-height: 10pt;
+	overflow: auto;	
+	padding: 2px;
+}
+div#tree-body {
+	height: 250px;
+}
+div#info-body {
+	height: 220px;
+	padding-bottom: 7px;
+}
+div#info-text {
+	position: absolute;
+	width: 85%;
+}
+div#info-comment {
+	position: absolute;
+	width: 80%;
+	height: 60px;
+	bottom: 30px;
+}
+div#dir-list {
+  background: #FFFFFF;
+  border: 1px solid #ccc;
+  overflow: auto;
+  clear: both;
+  height: 245px;
+  padding-bottom: 6px;
+}
+/*Layout Center*/
+div#sort-ext, div#sort-name {
+	border: 1px solid #ccc;
+    height: 20px;
+	padding: 1px 0px 1px 0px;
+	cursor:pointer;
+	margin: 0px 1px 1px 0px;
+}
+div#sort-ext {
+	width: 27px;
+	float: left;
+}
+div#sort-name {
+	width: auto;
+	margin-left: 30px;
+}
+div.asc {
+	background: url(../img/icons.gif) no-repeat 0 -40px;
+}
+div.desc {
+	background:url(../img/icons.gif) no-repeat 0 -60px;
+}
+/*Layout Right*/
+#info-body dl {
+	margin: 0pt;
+	padding: 2px 0px 0px 2px;
+}
+#info-body dt {
+	font-weight: bold;
+}
+#info-body dd {
+	margin: 0pt;
+	vertical-align: middle;
+}
+#info-body dd.comments {
+	line-height: 20px;
+}
+#info-body dd span {
+	margin-left: 20px;
+}
+dd#info-preview {
+	margin: 0pt;
+	width: 100%;
+}
+dd#info-preview dl {
+	margin: 0;
+	padding: 0;
+}
+dd#info-preview dl dd {
+	width: 100%;
+	text-align: center;
+	margin-top: 2px;
+}
+dd#info-preview dl dd.preview-error {
+	background: url(../img/empty.gif) no-repeat center;
+}
+dd#info-preview dl dd.loader {
+	background: url(../img/load.gif) no-repeat center;
+}
+#info-buttons {
+	width: 20px;
+	position: absolute;
+	right: 7px;
+	height: inherit;
+}
+#info-nav, #dir-limit {
+	height: 20px;
+	border: 1px solid #ccc;
+	background-color: #ffffff;
+	margin: 1px 0px 0px 0px;
+	padding: 1px 0px 1px 0px;
+	clear: both;
+}
+#dir-limit {
+	margin-right: 1px;
+}
+#dir-limit-text {
+	float: left;
+	text-align: center; 
+	vertical-align: middle;
+	width: 70%;	
+}
+#dir-limit-select {
+	margin: 0;
+	padding: 0;
+}
+#info-nav-text {
+	float: left;
+	visibility: hidden;
+	text-align: center; 
+	vertical-align: middle; 
+	line-height: 20px; 
+	font-weight: bold;
+	overflow: hidden;
+	width: 79%;
+}
+#info-nav-left, #info-nav-right, #dir-limit-left, #dir-limit-right, #dir-limit-left-end, #dir-limit-right-end {
+	height: 20px;
+	cursor: pointer;
+	background: url(../img/icons.gif) no-repeat;
+	visibility: hidden;
+	width: 20px;
+}
+#info-nav-left, #dir-limit-left {
+	background-position:  0 -360px;
+	float: left;	
+}
+.dir-limit-left {
+	float: left;
+	width: 40px;
+}
+.dir-limit-right {
+	float: right;
+	width: 40px;
+}
+#dir-limit-left-end {
+	background-position:  0 -720px;
+	float: left;
+}
+#dir-limit-right-end {
+	background-position:  0 -700px;
+	float: right;
+}
+#info-nav-right, #dir-limit-right {
+	background-position:  0 -380px;
+	float: right;
+}
+div.spacer {
+	border: 1px solid #ccc;
+	padding: 1px;
+}
+div.spacer.horizontal {
+	height: 20px;
+	margin: 0px 0px 1px 0px;
+}
+div.spacer.vertical {
+	width: 20px;
+	float: left;
+	height: 270px;
+	padding-bottom: 5px;
+}
+div#info-body .spacer {
+	position: absolute;
+	height: inherit;
+	padding: 0px 1px 10px 0px;
+	margin-top: -2px;
+	right: 28px;
+	background: #f0f0ee;
+	border-top: 0px;
+	border-bottom: 0px;
+}
+dd#loader {
+	height: 100px;
+	width: 100%;
+	text-align: center;
+	background: url(../img/load.gif) no-repeat center center;
+}
+span.message {
+	line-height: 20px;
+	background: url(../img/icons.gif) no-repeat;
+	padding-left: 25px;
+	display: block;
+}
+span.message.info {
+	background-position: 0 0px;
+}
+span.message.alert {
+	background-position: 0 -20px;
+}
+span.message.error {
+	background-position: 0 -340px;
+}
+div.action.view{
+	background-position: 0 -500px;
+}
+div.action.folder_new{
+	background-position: 0 -260px;
+}
+div.action.help{
+	background-position: 0 -280px;
+}
+div.action.upload{
+	background-position: 0 -460px;
+}
+div.button.rename{
+	background-position: 0 -420px;
+}
+div.button.delete{
+	background-position: 0 -180px;
+}
+div.button.cut{
+	background-position: 0 -140px;
+}
+div.button.copy{
+	background-position: 0 -120px;
+}
+div.button.paste{
+	background-position: 0 -160px;
+}
+div.button.view{
+	background-position: 0 -500px;
+}
+div.button.insert{
+	background-position: 0 -480px;
+}
+.noedit {
+	height: 20px;
+	background: url(../img/icons.gif) no-repeat 0 -680px;
+	padding-left: 25px;
+	vertical-align: middle;
+	display: block;
+}
+/*File List*/
+ul.item-list {
+	list-style: none;
+	white-space: nowrap;
+	margin: 0px;
+	padding: 0px;
+	vertical-align: middle;
+}
+ul.item-list li  {
+	cursor:	pointer;
+	margin: 1px 2px 1px 2px;
+	padding: 0px;
+	line-height: 20px;
+}
+ul.item-list li.file.hover, ul.item-list li.file:hover, ul.item-list li.folder.hover, ul.item-list li.folder:hover {
+	background-color: #ddd;
+	color: black;
+}
+ul.item-list li a{
+	margin-left: 30px;
+	text-decoration: none;
+	line-height: 20px;
+}
+ul.item-list li a:visited, ul.item-list li a:active, ul.item-list li a:link{
+	text-decoration: none;
+	color: black;
+}
+ul.item-list li.selected {
+	background-color: #eee;
+	color: black;
+	font-weight: bold;
+}
+/*extension icons*/
+li.folder.notwritable, dd.folder.notwritable {
+	background: url(../img/icons.gif) no-repeat 0 -580px;
+}
+li.folder.notsafe, dd.folder.notsafe {
+	background: url(../img/icons.gif) no-repeat 0 -600px;
+}
+li.folder {
+	background: url(../img/icons.gif) no-repeat 0 -220px;
+}
+li.folder-up {
+	background: url(../img/icons.gif) no-repeat 0 -200px;
+}
+/* File List */
+li.nofile {
+	font-size: 1.3em;
+	font-weight: bold;
+	text-align: center;
+	color: #ddd;
+	cursor: default;
+}
+
+/* end extension icons */
+div#buttons {}
+div#actions {}
+div.action, div.button {
+	color : #919B9C;
+	border: 1px solid #ccc;
+	width: 20px;
+	height: 20px;
+	padding: 1px;
+}
+div.action:hover, div.button:hover {
+	color : #C64934;
+	border: 1px solid #0A246A;
+}
+div.action{
+	float: right;
+	margin-left: 1px;
+}
+div.button{
+	margin-bottom: 1px;
+}
+/* Display */
+div.mceMiddle div.image-preview, div.media-preview {
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	cursor: pointer;
+}
+div.media-preview object {
+	background-color: #FFFFFF;
+}
+div.mceMiddle div.iframe-preview {
+	text-align: center;
+	height: 95%;
+}
+/* Loader */
+div.mceMiddle div.loader {
+	background: #ffffff  url(../img/load.gif) center 50% no-repeat;
+	margin-top: -33px;
+	height: inherit;
+}

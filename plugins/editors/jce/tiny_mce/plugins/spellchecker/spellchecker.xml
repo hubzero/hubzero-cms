@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<install version="1.5.0" type="plugin" plugin="spellchecker">
+	<name>JCE SPELLCHECKER TITLE</name>
+	<version>1.5.7.4</version>
+	<creationDate>07 June 2010</creationDate>
+	<author>Moxiecode / Ryan Demmer</author>
+	<authorEmail>info@joomlacontenteditor.net</authorEmail>
+	<authorUrl>http://www.joomlacontenteditor.net/</authorUrl>
+	<copyright>Moxiecode AB/ Ryan Demmer</copyright>
+	<license>LGPL</license>
+	<description>JCE SPELLCHECKER DESC</description>
+	<icon>spellchecker</icon>
+	<layout>spellchecker</layout>
+	<elements></elements>
+	<files>
+		<filename>editor_plugin.js</filename>
+		<filename>rpc.php</filename>
+		<filename>classes/index.html</filename>
+		<filename>classes/enchantspell.php</filename>
+        <filename>classes/googlespell.php</filename>
+		<filename>classes/pspell.php</filename>
+		<filename>classes/pspellshell.php</filename>
+		<filename>classes/spellchecker.php</filename>
+		<filename>classes/index.html</filename>
+		<filename>classes/utils/index.html</filename>
+		<filename>classes/utils/json.php</filename>
+		<filename>classes/utils/logger.php</filename>
+		<filename>includes/index.html</filename>
+		<filename>includes/general.php</filename>
+        <filename>css/content.css</filename>
+        <filename>css/index.html</filename>
+        <filename>img/spellchecker.gif</filename>
+        <filename>img/index.html</filename>
+        <filename>img/wline.gif</filename>
+        <filename>index.html</filename>
+    </files>
+	<params group="standard">
+		<param name="spellchecker_engine" type="list" default="googlespell" label="JCE SPELLCHECKER PARAM ENGINE" description="JCE SPELLCHECKER PARAM ENGINE DESC">
+  			<option value="googlespell">JCE SPELLCHECKER PARAM GOOGLE</option> 
+  			<option value="pspell">JCE SPELLCHECKER PARAM PSPELL PHP</option> 
+			<option value="pspellshell">JCE SPELLCHECKER PARAM PSPELL CLINE</option>
+			<option value="enchantspell">JCE SPELLCHECKER PARAM ENCHANT</option>
+  		</param>
+		<param name="spellchecker_languages" type="text" size="100" default="English=en" label="JCE SPELLCHECKER PARAM LANGUAGES" description="JCE SPELLCHECKER PARAM LANGUAGES DESC"/>      
+		<param name="spellchecker_pspell_mode" type="text" default="PSPELL_FAST" label="JCE SPELLCHECKER PARAM PSPELL MODE" description="JCE SPELLCHECKER PARAM PSPELL MODE DESC"/>	
+		<param name="spellchecker_pspell_spelling" type="text" default="" label="JCE SPELLCHECKER PARAM PSPELL SPELLING" description="JCE SPELLCHECKER PARAM PSPELL SPELLING DESC"/>
+		<param name="spellchecker_pspell_jargon" type="text" default="" label="JCE SPELLCHECKER PARAM PSPELL JARGON" description="JCE SPELLCHECKER PARAM PSPELL JARGON DESC"/>
+		<param name="spellchecker_pspell_encoding" type="text" default="" label="JCE SPELLCHECKER PARAM PSPELL ENCODING" description="JCE SPELLCHECKER PARAM PSPELL ENCODING DESC"/>	
+		<param name="spellchecker_pspell_dictionary" type="text" size="100" default="plugins/editors/jce/tiny_mce/plugins/spellchecker/dictionary.pws" label="JCE SPELLCHECKER PARAM PSPELL DICTIONARY" description="JCE SPELLCHECKER PARAM PSPELL DICTIONARY DESC"/>	
+		<param name="spellchecker_pspellshell_aspell" type="text" default="/usr/bin/aspell" label="JCE SPELLCHECKER PARAM PSPELLSHELL" description="JCE SPELLCHECKER PARAM PSPELLSHELL DESC"/>
+		<param name="spellchecker_pspellshell_tmp" type="text" default="/tmp" label="JCE SPELLCHECKER PARAM PSPELLSHELL TMP" description="JCE SPELLCHECKER PARAM PSPELLSHELL TMP DESC"/>
+    </params>
+	<languages>
+		<language tag="en-GB">en-GB.com_jce_spellchecker.ini</language>
+	</languages>
+</install>

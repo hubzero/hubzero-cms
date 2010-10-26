@@ -1,0 +1,66 @@
+body {
+	font-size: 8pt;
+	line-height: 10pt;
+}
+dl {
+	margin: 0px;
+	padding: 0px;
+}
+dt {
+	margin: 0px 0px 5px 0px;
+	background: url(../img/icons.gif) no-repeat 0 -100px;
+	line-height: 20px;
+}
+dt span {
+	margin: 0px 0px 0px 25px;
+	font-weight: bold;
+}
+dd {
+	margin: 0px 0px 0px 15px;
+	padding: 0px;
+	background: url(../img/icons.gif) no-repeat 0 -400px;
+	line-height: 20px; 
+	overflow: hidden;
+}
+dd a {
+	margin-left: 25px;
+}
+fieldset {
+	width: 98%;
+	height: 90%;
+}
+table {
+	width: 100%;
+	height: 96%;
+}
+td {
+	vertical-align: top;
+}
+td#help-left, td#help-right {
+	background-color: #FFFFFF;
+	height: 100%;
+	border: 1px solid #ccc;
+	padding: 1px;
+}
+td#help-middle {
+	cursor: e-resize;
+	width: 5px;
+}
+td#help-left {
+	width: 220px;
+}
+td#help-left div {
+	overflow: auto;
+	white-space: pre;
+	height: 100%;
+}
+td#help-right  {
+	width: auto;
+}
+td iframe{
+	width: 100%;
+	height: 100%;
+}
+dd.loading {
+	background: url(../img/load.gif) no-repeat;
+}

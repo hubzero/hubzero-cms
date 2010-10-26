@@ -1,0 +1,71 @@
+div.CodeMirror-line-numbers {
+	line-height:16px;
+	color: #bbb;
+	margin: 8px 3px 0px 0px;
+	text-align:	right;
+}
+fieldset {
+	height: 90%;
+}
+input, select {
+	margin: 2px 0px 2px 2px;
+	vertical-align: middle;
+}
+label {
+	vertical-align: middle;
+	margin: 2px 0px 2px 10px;
+	line-height: 20px;
+}
+textarea {
+	width: 99%; 
+	height: 90%; 
+	font-family: monospace;
+	border: 1px solid #ddd;
+}
+iframe {
+	border: 1px solid #ddd;
+}
+input.plus, input.minus {
+	background: url(../../../../libraries/img/icons.gif) no-repeat 0 -300px;
+	width: 20px;
+	height: 20px;
+	border: 0px;
+	cursor: pointer;
+	margin: 0px;
+}
+input.minus {
+	background-position: 0 -660px;
+}
+div#commands {
+	float: right;
+	margin-right: 5px;
+	display: block;
+}
+span.button {
+	display:block; 
+	border:1px solid #F0F0EE; 
+	width:20px; 
+	height:20px; 
+	margin-right:1px;
+	background: url(../../../themes/advanced/img/icons.gif) no-repeat;
+	cursor: pointer;
+	float: left;
+}
+span.button.bold {
+	background-position:0 0;
+}
+span.button.em {
+	background-position:-60px 0;
+}
+span.button.underline {
+	background-position:-140px 0;
+}
+span.button.removeformat {
+	background-position:-580px 0
+}
+span.button.undo {
+	background-position:-160px 0
+}
+span.button.redo {
+	background-position:-100px 0
+}

@@ -1,0 +1,42 @@
+.mceVisualAid {
+	border: 1px dashed #BBBBBB;
+	padding: 10px 2px 2px 5px;
+	width: inherit;
+	margin-top: 2px;
+}
+p.mceVisualAid {
+	background: url('../img/p.gif') no-repeat top left;
+}
+div.mceVisualAid {
+	background: url('../img/div.gif') no-repeat top left;
+}
+code.mceVisualAid {
+	background: url('../img/code.gif') no-repeat top left;
+}
+pre.mceVisualAid {
+	background: url('../img/pre.gif') no-repeat top left;
+}
+blockquote.mceVisualAid {
+	background: url('../img/blockquote.gif') no-repeat top left;
+}
+address.mceVisualAid {
+	background: url('../img/address.gif') no-repeat top left;
+}
+h1.mceVisualAid {
+	background: url('../img/h1.gif') no-repeat top left;
+}
+h2.mceVisualAid {
+	background: url('../img/h2.gif') no-repeat top left;
+}
+h3.mceVisualAid {
+	background: url('../img/h3.gif') no-repeat top left;
+}
+h4.mceVisualAid {
+	background: url('../img/h4.gif') no-repeat top left;
+}
+h5.mceVisualAid {
+	background: url('../img/h5.gif') no-repeat top left;
+}
+h6.mceVisualAid {
+	background: url('../img/h6.gif') no-repeat top left;
+}

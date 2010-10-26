@@ -1,0 +1,75 @@
+li.file, li.file.default {
+	background: url(../img/ext.gif) no-repeat 0 0;
+}
+li.file.css, span.css {
+	background: url(../img/ext.gif) no-repeat 0 -420px;
+}
+li.file.doc, li.file.docx, span.word {
+	background: url(../img/ext.gif) no-repeat 0 -20px;
+}
+li.file.zip, li.file.tar, li.file.gz, span.archive {
+	background: url(../img/ext.gif) no-repeat 0 -40px;
+}
+li.file.html, li.file.htm, span.html {
+	background: url(../img/ext.gif) no-repeat 0 -60px;
+}
+li.file.mp3, li.file.wav, span.audio {
+	background: url(../img/ext.gif) no-repeat 0 -80px;
+}
+li.file.pdf, span.acrobat {
+	background: url(../img/ext.gif) no-repeat 0 -100px;
+}
+li.file.ppt, span.powerpoint {
+	background: url(../img/ext.gif) no-repeat 0 -120px;
+}
+li.file.rar, span.winrar {
+	background: url(../img/ext.gif) no-repeat 0 -140px;
+}
+li.file.xls, span.excel {
+	background: url(../img/ext.gif) no-repeat 0 -160px;
+}
+li.file.rtf, li.file.txt, span.text {
+	background: url(../img/ext.gif) no-repeat 0 -180px;
+}
+li.file.php, span.php {
+	background: url(../img/ext.gif) no-repeat 0 -200px;
+}
+li.file.sql, span.sql {
+	background: url(../img/ext.gif) no-repeat 0 -220px;
+}
+li.file.gif {
+	background: url(../img/ext.gif) no-repeat 0 -240px;
+}
+li.file.jpg, li.file.jpeg, span.image {
+	background: url(../img/ext.gif) no-repeat 0 -260px;
+}
+li.file.png {
+	background: url(../img/ext.gif) no-repeat 0 -280px;
+}
+li.file.mov, li.file.mpeg, li.file.mpe, li.file.mpg, li.file.mp4, li.file.mp3, span.quicktime {
+	background: url(../img/ext.gif) no-repeat 0 -300px;
+}
+li.file.ra, li.file.rm, span.real {
+	background: url(../img/ext.gif) no-repeat 0 -320px;
+}
+li.file.swf, span.flash {
+	background: url(../img/ext.gif) no-repeat 0 -340px;
+}
+li.file.wmv, li.file.wma, li.file.asf, li.file.asx, li.file.avi, span.windowsmedia {
+	background: url(../img/ext.gif) no-repeat 0 -360px;
+}
+li.file.flv {
+	background: url(../img/ext.gif) no-repeat 0 -380px;
+}
+li.file.dcr, span.director, span.shockwave {
+	background: url(../img/ext.gif) no-repeat 0 -400px;
+}
+li.file.js, li.file.xml, span.xml {
+	background: url(../img/ext.gif) no-repeat 0 -440px;
+}
+li.file.notwritable, dd.file.notwritable, li.file.duplicate {
+	background: url(../img/icons.gif) no-repeat 0 -620px;
+}
+li.file.notsafe, dd.file.notsafe {
+	background: url(../img/icons.gif) no-repeat 0 -640px;
+}

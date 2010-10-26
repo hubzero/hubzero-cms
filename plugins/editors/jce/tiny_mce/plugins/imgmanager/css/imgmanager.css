@@ -1,0 +1,48 @@
+/* CSS file for ImageManager plugin */
+.preview {
+	overflow: hidden;
+	padding: 0px;
+	margin: 0px;
+	font-size: 0.9em;;
+	text-align:left;
+	max-height: 140px;
+}
+.panel_wrapper div.current {
+	height: 180px;
+	overflow: auto;
+}
+#prev {
+	margin:0px;
+	border: 1px solid black;
+	width: 99%;
+	height: 150px;
+	overflow: auto;
+}
+#width, #height {
+	width: 50px;
+	text-align: center;
+}
+#vspace, #hspace {
+	width: 30px;
+	text-align: center;
+}
+#constrain, #onmousemovecheck {
+	width: auto;
+}
+#id, #dir, #lang, #usemap, #longdesc, #class, #src, #title, #alt, #onmouseoutsrc, #onmouseoversrc, #classlist, #style, #classes {
+	width: 350px;
+}
+#margin_top, #margin_right, #margin_bottom, #margin_left, #border_style, #border_width, #border_color, #clear {
+	margin: 0px 5px;
+}
+#align {
+	margin-right: 5px;
+}
+#border {
+	margin-left: 0px;
+}
+#dim_loader {
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+}

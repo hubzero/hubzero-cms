@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<install version="1.5.0" type="plugin" plugin="media">
+	<name>Media Object support</name>
+	<version>1.5.7.4</version>
+	<creationDate>07 June 2010</creationDate>
+	<author>Ryan Demmer</author>
+	<authorEmail>info@joomlacontenteditor.net</authorEmail>
+	<authorUrl>http://www.joomlacontenteditor.net</authorUrl>
+	<copyright>Ryan Demmer</copyright>
+	<license>LGPL</license>
+	<description>Media Object support</description>
+	<icon></icon>
+	<layout></layout>
+	<params group="standard">
+        <param name="media_use_script" type="list" default="0" label="MEDIA PARAM SCRIPT" description="MEDIA PARAM SCRIPT DESC">
+            <option value="0">NO</option>
+            <option value="1">YES</option>
+		</param>
+		<param name="media_strict" type="list" default="0" label="MEDIA PARAM STRICT" description="MEDIA PARAM STRICT DESC">
+            <option value="0">NO</option>
+            <option value="1">YES</option>
+		</param>
+		<param name="media_html5" type="list" default="0" label="MEDIA PARAM HTML5" description="MEDIA PARAM HTML5 DESC">
+            <option value="0">NO</option>
+            <option value="1">YES</option>
+		</param>
+		<param name="media_version_flash" type="text" size="50" default="10,0,32,18" label="MEDIA VERSION FLASH" />
+		<param name="media_version_windowsmedia" type="text" size="50" default="5,1,52,701" label="MEDIA VERSION MPLAYER" />
+		<param name="media_version_quicktime" type="text" size="50" default="6,0,2,0" label="MEDIA VERSION QUICKTIME" />
+		<param name="media_version_realmedia" type="text" size="50" default="7,0,0,0" label="MEDIA VERSION REAL" />
+		<param name="media_version_shockwave" type="text" size="50" default="11,0,0,458" label="MEDIA VERSION SHOCKWAVE" />
+		<!--param name="media_extensions" type="textarea" rows="2" cols="50" default="windowsmedia=avi,wmv,wm,asf,asx,wmx,wvx;quicktime=mov,qt,mpg,mp3,mp4,mpeg;flash=swf,flv,xml;shockwave=dcr;real=rm,ra,ram;divx=divx" label="PARAM_EXTENSIONS" description="PARAM_EXTENSIONS_DESC"/-->
+	</params>
+	<languages>
+		<language tag="en-GB">en-GB.com_jce_media.ini</language>
+	</languages>
+</install>

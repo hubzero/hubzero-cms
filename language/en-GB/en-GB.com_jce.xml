@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="language">
+	<name>English(United Kingdom)</name>
+	<tag>en-GB</tag>
+	<version>1.5.7.4</version>
+	<creationDate>07 June 2010</creationDate>
+	<author>Ryan Demmer</author>
+	<authorEmail>info@joomlacontenteditor.net</authorEmail>
+	<authorUrl>www.joomlacontenteditor.net</authorUrl>
+	<copyright>(C) 2008-2009 Ryan Demmer. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description></description>
+	<site>
+		<files folder="site">
+		<file>en-GB.com_jce.ini</file>
+		<file>en-GB.com_jce_advlink.ini</file>
+		<file>en-GB.com_jce_browser.ini</file>
+		<file>en-GB.com_jce_imgmanager.ini</file>
+		<file>en-GB.com_jce_media.ini</file>
+		<file>en-GB.com_jce_paste.ini</file>
+		<file>en-GB.com_jce_spellchecker.ini</file>
+	</files>
+	</site>
+	<tinymce>
+		<files folder="tinymce">
+		<file>langs/en.js</file>
+		<file>langs/en_dlg.js</file>
+		<file>themes/advanced/langs/en.js</file>
+		<file>themes/advanced/langs/en_dlg.js</file>
+		<file>plugins/advcode/langs/en.js</file>
+		<file>plugins/advcode/langs/en_dlg.js</file>
+		<file>plugins/advlink/langs/en_dlg.js</file>
+		<file>plugins/article/langs/en.js</file>
+		<file>plugins/article/langs/en_dlg.js</file>
+		<file>plugins/browser/langs/en_dlg.js</file>
+		<file>plugins/emotions/langs/en_dlg.js</file>
+		<file>plugins/imgmanager/langs/en_dlg.js</file>
+		<file>plugins/searchreplace/langs/en_dlg.js</file>
+		<file>plugins/style/langs/en_dlg.js</file>
+		<file>plugins/table/langs/en_dlg.js</file>
+		<file>plugins/xhtmlxtras/langs/en_dlg.js</file>
+	</files>
+	</tinymce>
+	<files folder="administration">
+		<file>en-GB.com_jce.ini</file>
+		<file>en-GB.com_jce.menu.ini</file>
+		<file>en-GB.plg_editors_jce.ini</file>
+	</files>
+</install>

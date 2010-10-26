@@ -1,0 +1,7 @@
+.loader {
+	background: #FFFFFF url('../../../themes/advanced/skins/default/img/progress.gif') no-repeat center center;
+	z-index: 100;
+	position: absolute;
+	top: 0;
+	left: 0;
+}

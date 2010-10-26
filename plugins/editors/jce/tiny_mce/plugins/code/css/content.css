@@ -1,0 +1,4 @@
+span.mcePHP, span.mceSTYLE, span.mceSCRIPT {display:inline-block;width:20px;height:20px;background-image:url(../img/icons.gif);background-repeat:no-repeat;}
+span.mcePHP {background-position: 0 0px;}
+span.mceSTYLE {background-position: 0 -20px;}
+span.mceSCRIPT {background-position: 0 -40px;}

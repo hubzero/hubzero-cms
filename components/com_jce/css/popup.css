@@ -1,0 +1,30 @@
+/* CSS Document */
+body{
+	margin:0;
+	padding:0;
+}
+div#jce_popup {
+	margin:0;
+	padding:0;
+	display: block;
+}
+div#jce_popup div {
+	margin:0;
+	padding:0;
+	float:left;
+	display: block;
+}
+div#jce_popup div.contentheading{
+	width: 95%;
+}
+div#jce_popup div.buttonheading{
+	float:right;
+}
+div#jce_popup div img {
+	margin:0;
+	padding:0;
+	cursor: pointer;
+	border: 0;
+	vertical-align: middle;
+}
+

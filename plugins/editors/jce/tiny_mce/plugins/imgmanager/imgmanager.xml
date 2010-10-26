@@ -1,0 +1,168 @@
+<?xml version="1.0" ?>
+<install version="1.5.0" type="plugin" plugin="imgmanager">
+	<name>Image Manager</name>
+	<version>1.5.7.4</version>
+	<creationDate>07 June 2010</creationDate>
+	<author>Ryan Demmer</author>
+	<authorEmail>info@joomlacontenteditor.net</authorEmail>
+	<authorUrl>http://www.joomlacontenteditor.net/</authorUrl>
+	<copyright>Ryan Demmer</copyright>
+	<license>GPL</license>
+	<description><![CDATA[ 
+	<p>Image Manager 1.5.7.4</p>
+	]]></description>
+	<icon>image</icon>
+	<layout>imgmanager</layout>
+	<elements></elements>
+	<files></files>
+	<params group="standard">
+		<param name="imgmanager_dir" type="text" default="" size="50" label="MANAGER PARAM DIRECTORY" description="MANAGER PARAM DIRECTORY DESC"/>
+		<param name="imgmanager_max_size" type="text" default="" label="MANAGER PARAM UPLOAD SIZE" description="MANAGER PARAM UPLOAD SIZE DESC"/>
+		<param name="imgmanager_extensions" type="text" size="50" default="image=jpeg,jpg,png,gif" label="PARAM EXTENSIONS" description="PARAM EXTENSIONS DESC"/>
+	</params>
+	<params group="defaults">
+		<param name="imgmanager_margin_top" type="list" default="default" label="MARGIN TOP" description="MARGIN TOP DESC">
+			<option value="default">NOT SET</option>
+			<option value="0">0</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</param>
+		<param name="imgmanager_margin_right" type="list" default="default" label="MARGIN RIGHT" description="MARGIN RIGHT DESC">
+			<option value="default">NOT SET</option>
+			<option value="0">0</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</param>
+		<param name="imgmanager_margin_bottom" type="list" default="default" label="MARGIN BOTTOM" description="MARGIN BOTTOM DESC">
+			<option value="default">NOT SET</option>
+			<option value="0">0</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</param>
+		<param name="imgmanager_margin_left" type="list" default="default" label="MARGIN LEFT" description="MARGIN LEFT DESC">
+			<option value="default">NOT SET</option>
+			<option value="0">0</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</param>
+        <param name="imgmanager_border" type="list" default="0" label="BORDER ENABLE" description="BORDER ENABLE DESC">
+				<option value="1">YES</option>
+            	<option value="0">NO</option>
+		</param>
+		<param name="imgmanager_border_width" type="list" default="default" label="BORDER WIDTH" description="BORDER WIDTH DESC">
+				<option value="default">NOT SET</option>
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="thin">BORDER THIN</option>
+				<option value="medium">BORDER MEDIUM</option>
+				<option value="thick">BORDER THICK</option>
+		</param>
+		<param name="imgmanager_border_style" type="list" default="default" label="BORDER STYLE" description="BORDER STYLE DESC">
+				<option value="default">NOT SET</option>
+				<option value="none">BORDER NONE</option>
+				<option value="solid">BORDER SOLID</option>
+				<option value="dashed">BORDER DASHED</option>
+				<option value="dotted">BORDER DOTTED</option>
+				<option value="double">BORDER DOUBLE</option>
+				<option value="groove">BORDER GROOVE</option>
+				<option value="inset">BORDER INSET</option>
+				<option value="outset">BORDER OUTSET</option>
+			    <option value="ridge">BORDER RIDGE</option>
+		</param>
+		<param name="imgmanager_border_color" type="text" default="#000000" label="BORDER COLOR" description="BORDER COLOR DESC"/>
+        <param name="imgmanager_align" type="list" default="default" label="ALIGN" description="ALIGN DEFAULT DESC">
+                <option value="default">NOT SET</option>
+                <option value="top">ALIGN TOP</option>
+                <option value="middle">ALIGN MIDDLE</option>
+                <option value="bottom">ALIGN BOTTOM</option>
+                <option value="left">ALIGN LEFT</option>
+                <option value="right">ALIGN RIGHT</option>
+        </param>
+	</params>
+	<params group="access">
+        <param name="imgmanager_upload" type="list" default="1" label="UPLOAD" description="UPLOAD DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="imgmanager_upload_conflict" type="list" default="" label="PARAM UPLOAD EXISTS" description="PARAM UPLOAD EXISTS DESC">
+			<option value="">NOT SET</option>
+			<option value="overwrite">PARAM UPLOAD EXISTS OVERWRITE</option>
+			<option value="unique">PARAM UPLOAD EXISTS UNIQUE</option>
+			<option value="overwrite|unique">PARAM UPLOAD EXISTS OVERWRITE PARAM UPLOAD EXISTS UNIQUE</option>
+        </param>
+		<param name="imgmanager_folder_new" type="list" default="1" label="FOLDER CREATE" description="FOLDER CREATE DESC">
+           <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="imgmanager_folder_delete" type="list" default="1" label="FOLDER DELETE" description="FOLDER DELETE DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="imgmanager_folder_rename" type="list" default="1" label="FOLDER RENAME" description="FOLDER RENAME DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="imgmanager_file_delete" type="list" default="1" label="FILE DELETE" description="FILE DELETE DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="imgmanager_file_rename" type="list" default="1" label="FILE RENAME" description="FILE RENAME DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="imgmanager_file_move" type="list" default="1" label="FILE PASTE" description="FILE PASTE DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+    </params>
+	<languages>
+		<language tag="en-GB">en-GB.com_jce_imgmanager.ini</language>
+	</languages>
+	<help>
+		<topic key="imgmanager.about" title="Help About" />
+		<topic key="imgmanager.interface" title="Help Interface" />
+		<topic key="imgmanager.rollover" title="Help Rollover" />
+		<topic key="imgmanager.advanced" title="Help Advanced" />
+		<topic key="imgmanager.insert" title="Help Insert" />
+	</help>
+</install>

@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<install version="1.5.0" type="plugin" plugin="browser">
+	<name>File Browser</name>
+	<version>1.5.7.4</version>
+	<creationDate>07 June 2010</creationDate>
+	<author>Ryan Demmer</author>
+	<authorEmail>info@joomlacontenteditor.net</authorEmail>
+	<authorUrl>http://www.joomlacontenteditor.net/</authorUrl>
+	<copyright>Ryan Demmer</copyright>
+	<license>GPL</license>
+	<description><![CDATA[ 
+	<p>Browser 1.5.7.4</p>
+	]]></description>
+	<icon></icon>
+	<layout></layout>
+	<elements></elements>
+	<files></files>
+	<params group="standard">
+        <param name="browser_dir" type="text" default="" label="MANAGER PARAM DIRECTORY" description="MANAGER PARAM DIRECTORY DESC"/>
+		<param name="browser_max_size" type="text" default="" label="MANAGER PARAM UPLOAD SIZE" description="MANAGER PARAM UPLOAD SIZE DESC"/>
+		<param name="browser_extensions" type="textarea" rows="2" cols="50" default="xml=xml;html=htm,html;word=doc,docx;powerpoint=ppt;excel=xls;text=txt,rtf;image=gif,jpeg,jpg,png;acrobat=pdf;archive=zip,tar,gz;flash=swf;winrar=rar;quicktime=mov,mp4,qt;windowsmedia=wmv,asx,asf,avi;audio=wav,mp3,aiff;openoffice=odt,odg,odp,ods,odf" label="PARAM EXTENSIONS" description="PARAM EXTENSIONS DESC"/>
+		<param name="browser_extensions_viewable" type="textarea" rows="4" cols="50" default="html,htm,doc,docx,ppt,rtf,xls,txt,gif,jpeg,jpg,png,pdf,swf,mov,mpeg,mpg,avi,asf,asx,dcr,flv,wmv,wav,mp3" label="MANAGER VIEWABLE" description="MANAGER VIEWABLE DESC"/>
+	</params>
+	<params group="access">
+        <param name="browser_upload" type="list" default="1" label="UPLOAD" description="UPLOAD DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="browser_upload_conflict" type="list" default="" label="PARAM UPLOAD EXISTS" description="PARAM UPLOAD EXISTS DESC">
+			<option value="">NOT SET</option>
+			<option value="overwrite">PARAM UPLOAD EXISTS OVERWRITE</option>
+			<option value="unique">PARAM UPLOAD EXISTS UNIQUE</option>
+			<option value="overwrite|unique">PARAM UPLOAD EXISTS OVERWRITE PARAM UPLOAD EXISTS UNIQUE</option>
+        </param>
+		<param name="browser_folder_new" type="list" default="1" label="FOLDER CREATE" description="FOLDER CREATE DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="browser_folder_delete" type="list" default="1" label="FOLDER DELETE" description="FOLDER DELETE DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="browser_folder_rename" type="list" default="1" label="FOLDER RENAME" description="FOLDER RENAME DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="browser_file_delete" type="list" default="1" label="FILE DELETE" description="FILE DELETE DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="browser_file_rename" type="list" default="1" label="FILE RENAME" description="FILE RENAME DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="browser_file_move" type="list" default="1" label="FILE PASTE" description="FILE PASTE DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+	</params>
+	<languages>
+		<language tag="en-GB">en-GB.com_jce_browser.ini</language>
+	</languages>
+	<help>
+		<topic key="browser.about" title="Help About" />
+		<topic key="browser.interface" title="Help Interface" />
+		<topic key="browser.insert" title="Help Insert" />
+	</help>
+</install>

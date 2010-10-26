@@ -1,0 +1,23 @@
+div.tree ul {
+	margin: 0px 0px 0px -16px;
+}
+div.tree ul li {
+	clear: left;
+	margin: 0px 0px 0px 16px;
+}
+div.tree ul li div.tree-row {
+	margin: 0px 0px 0px -16px;
+}
+div.tree ul li div.tree-row div.tree-image {
+	margin-left: 0px;
+}
+div.tree ul li ul {
+	margin: 0px 0px 0px -16px;
+}
+div.tree ul li div.tree-row span {
+	float: left;
+	clear: right;
+}
+div.tree ul li div.tree-row span.open {
+	background: url(../img/icons.gif) no-repeat 0 -240px;
+}

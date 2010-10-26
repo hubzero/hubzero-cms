@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<install version="1.5" type="extension" plugin="advlink" extension="joomlalinks" folder="links">
+	<name>Joomla! Links for Advanced Link</name>
+	<version>1.2.1</version>
+	<creationDate>11 June 2009</creationDate>
+	<author>Ryan Demmer</author>
+	<authorEmail>ryandemmer@gmail.com</authorEmail>
+	<authorUrl>http://www.joomlacontenteditor.net/</authorUrl>
+	<copyright>Ryan Demmer</copyright>
+	<license>GPL</license>
+	<description>Joomla! Links for JCE Advanced Link</description>
+	<files>
+		<filename>joomlalinks.php</filename>
+		<filename>joomlalinks/index.html</filename>
+		<filename>joomlalinks/contact.php</filename>
+		<filename>joomlalinks/content.php</filename>
+		<filename>joomlalinks/weblinks.php</filename>
+		<filename>joomlalinks/menu.php</filename>
+		<filename>joomlalinks/css/index.html</filename>
+		<filename>joomlalinks/css/joomlalinks.css</filename>
+	</files>
+	<params>
+		<param name="advlink_content" type="list" default="1" label="PARAM CONTENT ACCESS" description="PARAM CONTENT ACCESS DESC">
+           	<option value="1">YES</option>
+           	<option value="0">NO</option>
+		</param>
+		<param name="advlink_static" type="list" default="1" label="PARAM STATIC ACCESS" description="PARAM STATIC ACCESS DESC">
+            <option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="advlink_contacts" type="list" default="1" label="PARAM CONTACT ACCESS" description="PARAM CONTACT ACCESS DESC">
+           	<option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="advlink_weblinks" type="list" default="1" label="PARAM WEBLINK ACCESS" description="PARAM WEBLINK ACCESS DESC">
+           	<option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+		<param name="advlink_menu" type="list" default="1" label="PARAM MENU ACCESS" description="PARAM MENU ACCESS DESC">
+           	<option value="1">YES</option>
+            <option value="0">NO</option>
+		</param>
+	</params>
+</install>

@@ -1,0 +1,37 @@
+/*Search & Sort*/
+div#searchbox {
+	padding: 1px 0px 1px 0px;
+}
+div#searchbox input {
+	width: 88%;
+}
+div#browser {
+	margin-top: -20px;
+}
+div#info-body .spacer {
+	height: 220px;
+}
+div#info-body {
+	padding-bottom: 6px;
+}
+#info-buttons {
+	right: 3px;
+}
+iframe.blocker {
+	position:absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	background-color:#fff;
+	border:none;
+	filter:alpha(opacity=0);
+}
+ul#upload-queue li div.queue-progress {
+	left: 10px;
+	padding: 3px 0px 0px 0px;
+	width: 30px;
+}
+.mceActionPanel {margin-top:-15px;}
+.dir-limit-right {
+	width: 15%;
+}

@@ -1,0 +1,177 @@
+<install type="component" version="1.5.0" method="upgrade">
+	<name>JCE</name>
+	<author>Ryan Demmer</author>
+	<creationDate>07 June 2010</creationDate>
+	<copyright>(C) 2005 - 2010 Ryan Demmer. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@joomlacontenteditor.net</authorEmail>
+	<authorUrl>www.joomlacontenteditor.net</authorUrl>
+	<version>1.5.7.4</version>
+    <description>JCE ADMIN DESC</description>
+	<installfile>install.php</installfile>
+  	<uninstallfile>install.php</uninstallfile>
+	<files folder="components/com_jce">
+		<file>controller/popup.php</file>
+		<file>css/index.html</file>
+		<file>css/popup.css</file>
+		<file>index.html</file>
+		<file>jce.php</file>
+		<file>js/index.html</file>
+		<file>js/popup.js</file>
+		<file>popup.php</file>
+		<file>views/popup/index.html</file>
+		<file>views/popup/tmpl/default.php</file>
+		<file>views/popup/tmpl/index.html</file>
+		<file>views/popup/view.html.php</file>
+	</files>
+	<languages folder="language/en-GB">
+		<language tag="en-GB">en-GB.com_jce.ini</language>
+		<language tag="en-GB">en-GB.com_jce.xml</language>
+		<language tag="en-GB">en-GB.com_jce_advlink.ini</language>
+		<language tag="en-GB">en-GB.com_jce_browser.ini</language>
+		<language tag="en-GB">en-GB.com_jce_imgmanager.ini</language>
+		<language tag="en-GB">en-GB.com_jce_media.ini</language>
+		<language tag="en-GB">en-GB.com_jce_paste.ini</language>
+		<language tag="en-GB">en-GB.com_jce_spellchecker.ini</language>
+	</languages>
+    <administration>
+        <menu img="components/com_jce/img/logo.png" link="option=com_jce">JCE</menu>
+		<submenu>
+			<menu img="templates/khepri/images/menu/icon-16-cpanel.png" link="option=com_jce">JCE MENU CPANEL</menu>
+			<menu img="templates/khepri/images/menu/icon-16-config.png" link="option=com_jce&amp;type=config">JCE MENU CONFIG</menu>
+			<menu img="templates/khepri/images/menu/icon-16-user.png" link="option=com_jce&amp;type=group">JCE MENU GROUPS</menu>
+			<menu img="templates/khepri/images/menu/icon-16-plugin.png" link="option=com_jce&amp;type=plugin">JCE MENU PLUGINS</menu>
+			<menu img="templates/khepri/images/menu/icon-16-install.png" link="option=com_jce&amp;type=install">JCE MENU INSTALL</menu>
+		</submenu>
+		<files folder="administrator/components/com_jce">
+		<file>config/controller.php</file>
+		<file>config/index.html</file>
+		<file>config/views/config/index.html</file>
+		<file>config/views/config/tmpl/default.php</file>
+		<file>config/views/config/tmpl/index.html</file>
+		<file>config/views/config/view.html.php</file>
+		<file>config/views/index.html</file>
+		<file>controller/config.php</file>
+		<file>controller/cpanel.php</file>
+		<file>controller/groups.php</file>
+		<file>controller/index.html</file>
+		<file>controller/installer.php</file>
+		<file>controller/plugin.php</file>
+		<file>cpanel/controller.php</file>
+		<file>cpanel/index.html</file>
+		<file>cpanel/views/cpanel/index.html</file>
+		<file>cpanel/views/cpanel/tmpl/default.php</file>
+		<file>cpanel/views/cpanel/tmpl/index.html</file>
+		<file>cpanel/views/cpanel/view.html.php</file>
+		<file>cpanel/views/index.html</file>
+		<file>css/icons.css</file>
+		<file>css/index.html</file>
+		<file>css/layout.css</file>
+		<file>css/styles.css</file>
+		<file>editor.php</file>
+		<file>elements/uploadsize.php</file>
+		<file>groups/controller.php</file>
+		<file>groups/groups.php</file>
+		<file>groups/helper.php</file>
+		<file>groups/index.html</file>
+		<file>groups/views/group/index.html</file>
+		<file>groups/views/group/tmpl/form.php</file>
+		<file>groups/views/group/tmpl/index.html</file>
+		<file>groups/views/group/view.html.php</file>
+		<file>groups/views/groups/index.html</file>
+		<file>groups/views/groups/tmpl/default.php</file>
+		<file>groups/views/groups/tmpl/index.html</file>
+		<file>groups/views/groups/view.html.php</file>
+		<file>groups/views/index.html</file>
+		<file>groups/views/legend/index.html</file>
+		<file>groups/views/legend/tmpl/default.php</file>
+		<file>groups/views/legend/tmpl/index.html</file>
+		<file>groups/views/legend/view.html.php</file>
+		<file>groups/views/users/index.html</file>
+		<file>groups/views/users/tmpl/default.php</file>
+		<file>groups/views/users/tmpl/index.html</file>
+		<file>groups/views/users/view.html.php</file>
+		<file>helper.php</file>
+		<file>img/add.png</file>
+		<file>img/delete.png</file>
+		<file>img/icons.png</file>
+		<file>img/index.html</file>
+		<file>img/logo.png</file>
+		<file>img/tick.png</file>
+		<file>img/toolbar/icon-32-lock.png</file>
+		<file>img/toolbar/icon-32-refresh.png</file>
+		<file>img/toolbar/index.html</file>
+		<file>index.html</file>
+		<file>install.php</file>
+		<file>installer/adapters/extension.php</file>
+		<file>installer/adapters/index.html</file>
+		<file>installer/adapters/language.php</file>
+		<file>installer/adapters/plugin.php</file>
+		<file>installer/controller.php</file>
+		<file>installer/index.html</file>
+		<file>installer/installer.php</file>
+		<file>installer/models/extension.php</file>
+		<file>installer/models/extensions.php</file>
+		<file>installer/models/index.html</file>
+		<file>installer/models/install.php</file>
+		<file>installer/models/language.php</file>
+		<file>installer/models/plugin.php</file>
+		<file>installer/views/default/index.html</file>
+		<file>installer/views/default/tmpl/default_ftp.php</file>
+		<file>installer/views/default/tmpl/default_message.php</file>
+		<file>installer/views/default/tmpl/index.html</file>
+		<file>installer/views/default/view.php</file>
+		<file>installer/views/extension/index.html</file>
+		<file>installer/views/extension/tmpl/default.php</file>
+		<file>installer/views/extension/tmpl/default_item.php</file>
+		<file>installer/views/extension/tmpl/index.html</file>
+		<file>installer/views/extension/view.php</file>
+		<file>installer/views/index.html</file>
+		<file>installer/views/install/index.html</file>
+		<file>installer/views/install/tmpl/default.php</file>
+		<file>installer/views/install/tmpl/default_form.php</file>
+		<file>installer/views/install/tmpl/index.html</file>
+		<file>installer/views/install/view.php</file>
+		<file>installer/views/language/index.html</file>
+		<file>installer/views/language/tmpl/default.php</file>
+		<file>installer/views/language/tmpl/default_item.php</file>
+		<file>installer/views/language/tmpl/index.html</file>
+		<file>installer/views/language/view.php</file>
+		<file>installer/views/plugin/index.html</file>
+		<file>installer/views/plugin/tmpl/default.php</file>
+		<file>installer/views/plugin/tmpl/default_item.php</file>
+		<file>installer/views/plugin/tmpl/index.html</file>
+		<file>installer/views/plugin/view.php</file>
+		<file>jce.php</file>
+		<file>js/index.html</file>
+		<file>js/sortables.js</file>
+		<file>plugins/controller.php</file>
+		<file>plugins/extension.php</file>
+		<file>plugins/index.html</file>
+		<file>plugins/plugin.php</file>
+		<file>plugins/views/access/index.html</file>
+		<file>plugins/views/access/tmpl/default.php</file>
+		<file>plugins/views/access/tmpl/index.html</file>
+		<file>plugins/views/access/view.html.php</file>
+		<file>plugins/views/index.html</file>
+		<file>plugins/views/layout/index.html</file>
+		<file>plugins/views/layout/tmpl/default.php</file>
+		<file>plugins/views/layout/tmpl/index.html</file>
+		<file>plugins/views/layout/view.html.php</file>
+		<file>plugins/views/plugin/index.html</file>
+		<file>plugins/views/plugin/tmpl/form.php</file>
+		<file>plugins/views/plugin/tmpl/index.html</file>
+		<file>plugins/views/plugin/view.html.php</file>
+		<file>plugins/views/plugins/index.html</file>
+		<file>plugins/views/plugins/tmpl/default.php</file>
+		<file>plugins/views/plugins/tmpl/index.html</file>
+		<file>plugins/views/plugins/view.html.php</file>
+		<file>updater.php</file>
+	</files>
+		<languages folder="administrator/language/en-GB">
+		<language tag="en-GB">en-GB.com_jce.ini</language>
+		<language tag="en-GB">en-GB.com_jce.menu.ini</language>
+		<language tag="en-GB">en-GB.plg_editors_jce.ini</language>
+	</languages>
+    </administration>
+</install>

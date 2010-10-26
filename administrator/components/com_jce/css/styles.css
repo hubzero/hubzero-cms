@@ -1,0 +1,13 @@
+/* CSS Document */
+select.inputbox.levels, select.inputbox.users {
+	width: 200px;
+}
+.adminform td.note {
+	background-color: #FFFFDD;
+	border-bottom:1px solid #E9E9E9;
+	border-right:1px solid #E9E9E9;
+	color:#666666;
+	width:50%;
+	vertical-align: top;
+	padding: 10px;
+}

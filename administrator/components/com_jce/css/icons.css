@@ -1,0 +1,44 @@
+/* CSS Document */
+.icon-32-lock { 
+	background-image: url(../img/toolbar/icon-32-lock.png); 
+}
+.icon-32-refresh { 
+	background-image: url(../img/toolbar/icon-32-refresh.png); 
+}
+span.icon-remove, span.icon-add {
+	cursor: pointer;
+}
+.icon-remove { 
+	height: 20px;
+	background: url(../img/delete.png) no-repeat;
+	padding: 2px;
+}
+.icon-add { 
+	background: url(../img/add.png) no-repeat; 
+	padding: 2px;
+}
+.icon-text {
+	margin-left: 20px;
+} 
+.icon-legend {
+	height: 20px;
+	background: url(../img/icons.png) no-repeat;
+	padding: 2px;
+}
+ul#table_status {
+	list-style: none;
+	margin:0;
+	padding:0;
+}
+ul#table_status li {
+	list-style: none;
+	margin:0;
+	padding: 5px 0 0 20px;
+	height: 20px;
+}
+ul#table_status li.error {
+	background: url(../img/delete.png) no-repeat left;
+}
+ul#table_status li.ok {
+	background: url(../img/tick.png) no-repeat left;
+}

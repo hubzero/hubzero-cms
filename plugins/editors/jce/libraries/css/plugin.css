@@ -1,0 +1,128 @@
+/*Standard*/
+select {
+	vertical-align: middle;
+}
+label {
+	vertical-align: middle;
+}
+label.disabled {
+	color: #ccc;
+}
+input {
+	vertical-align: middle;
+}
+input.checkbox {
+	
+}
+.show {
+  display: block;
+}
+.hide {
+  display: none;
+}
+.visible {
+	visibility: visible;
+}
+.hidden {
+	visibility: hidden;
+}
+img {
+  border: 0;
+}
+.loader {
+	background: url(../img/load.gif) no-repeat;
+	width: 20px;
+	height: 20px;
+	display: block;
+}
+.mceAddSelectValue {
+	background-color: #DDDDDD;
+}
+dl.alert {
+	margin: 0px;
+	padding: 0px;
+	vertical-align: middle;
+	width: 100%;
+}
+dl.alert dt {
+	height: 20px;
+	margin: 0px;
+	padding: 3px 0px 0px 25px;
+	background: url(../img/icons.gif) no-repeat;
+	font-weight: bold;
+}
+dl.alert dt.alert{
+	background-position: 0 -20px;
+}
+dl.alert dt.info{
+	background-position: 0 -300px;
+}
+dl.alert dt.error {
+	background-position: 0 -340px;
+}
+dl.alert dd {
+	margin: 0px;
+	padding: 0px;
+	width: 80%;
+}
+/*End Standard*/
+/* Dialog Form Elements */
+div.mceMiddle div.formElm {
+	margin: 5px 0px;
+}
+.formElm label {
+	width: 20%;
+	display: block;
+	float: left;
+	clear: left;
+	line-height: 18px;
+}
+.formElm input, .formElm select {
+	float: left;
+}
+.formElm input {
+	width: 60%;
+}
+/* Tooltips */
+label.hastip, span.hastip {
+	cursor: help;
+	border-bottom: 1px dashed #919B9C;
+}
+div.tooltip {
+	border: 1px solid #919B9C;
+	padding: 5px;
+	z-index: 13000;
+	background: #fff;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+div.tooltip div {
+	padding: 8px 2px 2px;
+	margin: -14px 0 0 0;
+	height: inherit;	
+}
+div.tooltip.tooltip_bottom.tooltip_right div {
+	background: url('../img/point_bottom_left.gif') no-repeat top left;
+}
+div.tooltip.tooltip_bottom.tooltip_left div {
+	background: url('../img/point_bottom_right.gif') no-repeat top right;
+}
+div.tooltip.tooltip_top.tooltip_right div, div.tooltip.tooltip_top.tooltip_left div {
+	margin: -4px 0 -14px;
+	padding: 0 2px 15px;
+}
+div.tooltip.tooltip_top.tooltip_right div {
+	background: url('../img/point_top_left.gif') no-repeat bottom left;
+}
+div.tooltip.tooltip_top.tooltip_left div {
+	background: url('../img/point_top_right.gif') no-repeat bottom right;
+}
+div.tooltip h4 {
+	font-size: 1em;
+	font-weight: bold;
+}
+div.tooltip p {
+	margin: 0;
+	font-size: 0.9em;
+}

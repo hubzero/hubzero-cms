@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>{#pagebreak_dlg.desc}</title>
+	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+	<script type="text/javascript" src="../../utils/mctabs.js"></script>
+	<script type="text/javascript" src="../../utils/form_utils.js"></script>
+	<script type="text/javascript" src="js/pagebreak.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/pagebreak.css" />
+	<base target="_self" />
+</head>
+<body style="display:none;">
+<form onsubmit="return false;" action="#">
+	<div class="panel_wrapper">
+        <table border="0" cellspacing="0" cellpadding="2">
+            <tr>
+                <td><label for="title">{#pagebreak_dlg.title}:</label></td>
+                <td><input type="text" id="title" style="width: 200px" value="" /></td>
+            </tr>
+            	<td><label for="alt">{#pagebreak_dlg.alias}:</label></td>
+                <td><input type="text" id="alt" style="width: 200px" value="" /></td>
+            <tr>
+            </tr>
+        </table>
+    </div>
+	<div class="mceActionPanel">
+		<div style="float: left">
+			<input type="button" id="insert" value="{#insert}" onclick="PageBreakDialog.insert();" />
+		</div>
+		<div style="float: right">
+			<input type="button" id="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+		</div>
+	</div>
+</form>
+</body>
+</html>

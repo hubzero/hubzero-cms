@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<install version="1.5.0" type="plugin" plugin="help">
+	<name>Paste</name>
+	<version>1.5.7.4</version>
+	<creationDate>07 June 2010</creationDate>
+	<author>Ryan Demmer</author>
+	<authorEmail>info@joomlacontenteditor.net</authorEmail>
+	<authorUrl>http://www.joomlacontenteditor.net/</authorUrl>
+	<copyright>Ryan Demmer</copyright>
+	<license>GNU/GPL</license>
+	<description><![CDATA[ 
+	<p>Help plugin for JCE 1.5.x</p>	
+	]]></description>
+	<icon>help</icon>
+	<layout>help</layout>
+	<help>
+		<topic key="help.about" title="Help About" />
+		<topic key="help.interface" title="Help Interface" />
+		<topic key="help.buttons" title="Help Buttons" />
+		<!--topic key="help.start" title="Help Start" /-->
+		<!--topic key="help.plugins" title="Help Plugins" /-->
+		<topic key="help.acknowledgements" title="Help Acknowledgements" />
+		<topic key="help.licence" title="Help Licence" />
+	</help>
+</install>

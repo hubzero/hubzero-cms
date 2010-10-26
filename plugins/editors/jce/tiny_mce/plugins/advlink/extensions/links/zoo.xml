@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<install version="1.5" type="extension" plugin="advlink" extension="zoo" folder="links">
+	<name>Zoo2 Links for Advanced Link</name>
+	<version>1.0.0</version>
+	<creationDate>11 June 2009</creationDate>
+	<author>Ryan Demmer</author>
+	<authorEmail>ryandemmer@gmail.com</authorEmail>
+	<authorUrl>http://www.joomlacontenteditor.net/</authorUrl>
+	<copyright>Ryan Demmer</copyright>
+	<license>GPL</license>
+	<description>Zoo2 Links for JCE Advanced Link</description>
+	<files>
+		<filename>zoo.php</filename>
+		<filename>zoo/index.html</filename>
+		<filename>zoo/zoo.php</filename>
+	</files>
+	<params>
+		<param name="advlink_zoo" type="list" default="1" label="PARAM ZOOLINKS ACCESS" description="PARAM ZOOLINKS ACCESS DESC">
+           	<option value="1">YES</option>
+           	<option value="0">NO</option>
+		</param>
+    </params>
+</install>

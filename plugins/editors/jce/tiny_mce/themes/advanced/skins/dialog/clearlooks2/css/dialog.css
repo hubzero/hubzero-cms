@@ -1,0 +1,35 @@
+/* Clearlooks 2 */
+
+/* Top */
+div#info .top, div#info .top div, div#tree .top, div#tree .top div {
+	height:23px;
+}
+div#tree .top .left, div#info .top .left {
+	width:6px; 
+	background:url(../img/corners.gif) -6px 0;
+	float: left;
+}
+div#tree .top .center, div#info .top .center {
+	right:6px; 
+	width: 100%;
+	height:23px; 
+	background:url(../img/horizontal.gif) 0 -23px; 
+	clip:rect(auto auto auto 12px);
+	position: absolute;
+}
+div#tree .top .right, div#info .top .right {
+	right:0; 
+	width:6px; 
+	height:23px; 
+	background:url(../img/corners.gif) -18px 0;
+	position: absolute;
+}
+div#tree .top span , div#info .top span{
+	width:100%; 
+	text-align:center; 
+	vertical-align:middle; 
+	line-height:23px; 
+	font-weight:bold; 
+	color:#FFF;
+	position: absolute;
+}

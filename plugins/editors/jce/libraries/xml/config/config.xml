@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<params group="setup">
+		<param name="editor_gzip" type="list" default="0" label="PARAM GZIP" description="PARAM GZIP DESC">
+		<option value="0">NO</option>
+		<option value="1">YES</option>
+		</param>
+	</params>
+	<params group="cleanup">
+		<param name="editor_verify_html" type="list" default="0" label="PARAM CLEANUP" description="PARAM CLEANUP DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>
+		<param name="editor_entity_encoding" type="list" default="raw" label="PARAM ENTITY ENCODING" description="PARAM ENTITY ENCODING DESC">
+			<option value="raw">raw / utf-8</option>
+			<option value="named">named</option>
+			<option value="numeric">numeric</option>
+		</param>
+		<param name="cleanup_pluginmode" type="list" default="0" label="PARAM PLUGIN MODE" description="PARAM PLUGIN MODE DESC">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+		<param name="cleanup_keep_nbsp" type="list" default="1" label="PARAM KEEP NBSP" description="PARAM KEEP NBSP DESC">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+	</params>
+	<params group="format">
+		<param name="editor_forced_root_block" type="list" default="p" label="PARAM ROOT BLOCK" description="PARAM ROOT BLOCK DESC">
+			<option value="p">PARAGRAPH</option>
+			<option value="div">DIV</option>
+			<option value="0">DISABLED</option>
+		</param>
+		<param name="editor_newlines" type="list" default="0" label="PARAM NEWLINES" description="PARAM NEWLINES DESC">
+			<option value="1">LINEBREAKS</option>
+			<option value="0">PARAGRAPHS</option>
+		</param>
+		<param name="editor_body_class_type" type="list" default="custom" label="PARAM EDITOR BODY" description="PARAM EDITOR BODY DESC">
+			<option value="contrast">PARAM EDITOR BODY CONTRAST</option>
+			<option value="custom">PARAM EDITOR BODY CUSTOM</option>
+		</param>
+		<param name="editor_body_class_custom" type="text" default="" size="100" label="PARAM EDITOR BODY CLASS" description="PARAM EDITOR BODY CLASS DESC" />
+		<param name="editor_content_css" type="list" default="1" label="PARAM TEMPLATE CSS" description="PARAM TEMPLATE CSS DESC">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+		<param name="editor_content_css_custom" type="text" size="100" default="templates/$template/css/editor_content.css" label="PARAM CSS CUSTOM" description="PARAM CSS CUSTOM DESC" />		
+	</params>
+	<params group="advanced">
+		<param name="editor_custom_config" type="textarea" rows="5" cols="57" default="" label="PARAM CUSTOM CONFIG" description="PARAM CUSTOM CONFIG DESC" />
+		<param name="editor_callback_file" type="text" default="" size="100" label="PARAM CALLBACK" description="PARAM CALLBACK DESC" />
+	</params>
+	<params group="other">
+		<param name="editor_help_url" type="text" size="100" default="http://www.joomlacontenteditor.net/index.php?option=com_content&amp;view=article" label="PARAM HELP URL" description="PARAM HELP URL DESC" />
+	</params>
+	<params group="groups-editor">
+	<!-- Cosmetic parameters -->
+		<param name="editor_width" type="text" size="5" default="" label="PARAM EDITOR WIDTH" description="PARAM EDITOR WIDTH DESC" />
+		<param name="editor_height" type="text" size="5" default="" label="PARAM EDITOR HEIGHT" description="PARAM EDITOR HEIGHT DESC" />
+		<param name="editor_theme_advanced_toolbar_location" type="list" default="top" label="PARAM TOOLBAR LOCATION" description="PARAM TOOLBAR LOCATION DESC">
+			<option value="top">TOP</option>
+			<option value="bottom">BOTTOM</option>
+			<option value="external">EXTERNAL</option>
+		</param>
+		<param name="editor_theme_advanced_toolbar_align" type="list" default="center" label="PARAM TOOLBAR ALIGN" description="PARAM TOOLBAR ALIGN DESC">
+			<option value="left">LEFT</option>
+			<option value="center">CENTER</option>
+			<option value="right">RIGHT</option>
+		</param>
+		<param name="editor_skin" type="list" default="default" label="PARAM EDITOR SKIN" description="PARAM EDITOR SKIN DESC">
+			<option value="default">PARAM EDITOR DEFAULT</option>
+			<option value="o2k7">o2k7</option>
+		</param>
+		<param name="editor_skin_variant" type="list" default="default" label="PARAM EDITOR SKIN VARIANT" description="PARAM EDITOR SKIN VARIANT DESC">
+			<option value="default">PARAM EDITOR DEFAULT</option>
+			<option value="silver">Silver</option>
+			<option value="black">Black</option>
+		</param>
+		<param name="editor_inlinepopups_skin" type="list" default="clearlooks2" label="PARAM DIALOG SKIN" description="PARAM DIALOG SKIN DESC">
+			<option value="clearlooks2">ClearLooks2</option>
+			<option value="classicblue">Classic Blue</option>
+		</param>
+		<param name="advcode_toggle" type="radio" default="1" label="PARAM EDITOR TOGGLE ALLOW" description="PARAM EDITOR TOGGLE ALLOW DESC">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+		<param name="advcode_editor_state" type="radio" default="1" label="PARAM EDITOR STATE" description="PARAM EDITOR STATE DESC">
+			<option value="1">ON</option>
+			<option value="0">OFF</option>
+		</param>
+		<param name="advcode_toggle_text" type="text" default="[show/hide]" label="PARAM EDITOR TOGGLE TEXT" description="PARAM EDITOR TOGGLE TEXT DESC" />
+		</params>
+		<params group="groups-options">
+		<!-- URLS -->
+		<param name="editor_relative_urls" type="list" default="1" label="PARAM RELATIVE" description="PARAM RELATIVE DESC">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+		<!-- Elements -->
+		<param name="editor_invalid_elements" type="text" size="100" default="" label="PARAM NO ELEMENTS" description="PARAM NO ELEMENTS DESC" />
+		<param name="editor_extended_elements" type="textarea" rows="2" cols="57" default="" label="PARAM ELEMENTS" description="PARAM ELEMENTS DESC" />
+		<param name="editor_event_elements" type="text" size="100" default="a,img" label="PARAM EVENTS" description="PARAM EVENTS DESC" />
+		<!-- Script parameters -->
+		<param name="code_allow_javascript" type="list" default="0" label="PARAM JAVASCRIPT" description="PARAM JAVASCRIPT DESC">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+		<param name="code_allow_css" type="list" default="0" label="PARAM CSS" description="PARAM CSS DESC">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+		<param name="code_allow_php" type="list" default="0" label="PARAM PHP" description="PARAM PHP DESC">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+		<param name="code_cdata" type="list" default="1" label="PARAM CDATA" description="PARAM CDATA DESC">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+		<!-- Formatting parameters -->
+		<param name="editor_theme_advanced_blockformats" type="text" size="100" default="p,div,h1,h2,h3,h4,h5,h6,blockquote,dt,dd,code,samp,pre" label="PARAM BLOCK FORMAT" description="PARAM BLOCK FORMAT DESC" />
+		<param name="editor_theme_advanced_fonts_add" type="text" size="100" default="" label="PARAM FONT ADD" description="PARAM FONT ADD DESC" />
+		<param name="editor_theme_advanced_fonts_remove" type="text" size="100" default="" label="PARAM FONT REMOVE" description="PARAM FONT REMOVE DESC" />
+		<param name="editor_theme_advanced_font_sizes" type="text" size="100" default="8pt,10pt,12pt,14pt,18pt,24pt,36pt" label="PARAM FONT STYLES" description="PARAM FONT STYLES DESC" />
+		<param name="editor_theme_advanced_default_foreground_color" type="text" size="50" default="#000000" label="PARAM COLOR FOREGROUND" description="PARAM COLOR FOREGROUND DESC" />
+		<param name="editor_theme_advanced_default_background_color" type="text" size="50" default="#FFFF00" label="PARAM COLOR BACKGROUND" description="PARAM COLOR BACKGROUND DESC" />
+	</params>
+	<params group="groups-plugins">
+		<!-- Plugin parameters -->
+		<param name="editor_dir" type="text" default="images/stories" size="50" label="MANAGER PARAM DIRECTORY" description="MANAGER PARAM DIRECTORY DESC"/>
+		<param name="editor_restrict_dir" type="text" default="administrator,cache,components,includes,language,libraries,logs,media,modules,plugins,templates,xmlrpc" size="150" label="MANAGER PARAM DIRECTORY RESTRICTED" description="MANAGER PARAM DIRECTORY RESTRICTED DESC"/>
+		<param name="editor_max_size" type="uploadsize" default="1024" label="MANAGER PARAM UPLOAD SIZE" description="MANAGER PARAM UPLOAD SIZE DESC"/>
+		<param name="editor_upload_conflict" type="list" default="" label="PARAM UPLOAD EXISTS" description="PARAM UPLOAD EXISTS DESC">
+			<option value="">NOT SET</option>
+			<option value="overwrite">PARAM UPLOAD EXISTS OVERWRITE</option>
+			<option value="unique">PARAM UPLOAD EXISTS UNIQUE</option>
+			<option value="overwrite|unique">PARAM UPLOAD EXISTS OVERWRITE PARAM UPLOAD EXISTS UNIQUE</option>
+		</param>
+		<param name="editor_preview_height" type="text" default="550" size="5" label="PARAM PREVIEW HEIGHT" description="PARAM PREVIEW HEIGHT DESC" />
+		<param name="editor_preview_width" type="text" default="750" size="5" label="PARAM PREVIEW WIDTH" description="PARAM PREVIEW WIDTH DESC" />
+		<param name="editor_custom_colors" type="textarea" rows="2" cols="57" default="" label="PARAM CUSTOM COLORS" description="PARAM CUSTOM COLORS DESC" />
+	</params>
+</config>

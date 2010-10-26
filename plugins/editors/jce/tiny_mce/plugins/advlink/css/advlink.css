@@ -1,0 +1,35 @@
+/* CSS file for advimage plugin popup */
+.mceActionPanel {
+	margin-top: 7px;
+}
+.panel_wrapper div.current {
+	height: 380px;
+}
+#href {
+	width: 350px;
+}
+#title, #anchorlist, #targetlist {
+	width: 390px;
+}
+#id, #style, #classes, #classlist, #dir, #hreflang, #lang, #charset, #type, #rel, #rev, #tabindex, #accesskey, #target {
+	width: 250px;
+}
+#events_panel input {
+	width: 260px;
+}
+#link-options {
+	height: 200px;
+	overflow: auto;
+}
+a.email span {display:block; width:20px; height:18px; background: url(../img/icons.gif) 0 0; border:1px solid #FFF; margin-left:1px;}
+a.email:hover span {border:1px solid #0A246A; background-color:#B2BBD0;}
+a.email span.disabled {border:1px solid white; -moz-opacity:0.3; opacity:0.3; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=30);}
+a.email:hover span.disabled {border:1px solid white; background-color:transparent;}
+
+div.tree ul {}
+div.tree ul li {}
+div.tree ul li span {}
+div.tree ul li div {}
+div.tree ul li span.file {
+	background-position: 0 -180px;
+}

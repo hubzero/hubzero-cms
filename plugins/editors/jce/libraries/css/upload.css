@@ -1,0 +1,151 @@
+/*UPLOAD*/
+div#upload-body {
+	padding: 4px;
+	z-index: 10;
+	width: inherit;
+}
+div#upload-body fieldset {
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+div#upload-body div.uploadButton {
+	height: 24px;
+	width: 65px;
+	border: 1px solid #cccccc;
+	cursor: pointer;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+div#upload-body div.uploadButton span {
+	top: 0px;
+	left: 0px;
+	position: relative;
+	display: block;
+	text-align: center;
+	line-height: 20px;
+	margin: 2px 0px 2px 0px;
+	padding-left: 5px;
+	cursor: pointer;
+}
+div#upload-body div.uploadButton span.addQueue {
+	background: url(../img/icons.gif) no-repeat 0 -300px;	
+}
+div#upload-body div.uploadButton span.addQueue.loading {
+	background: url(../img/load.gif) no-repeat;
+	cursor: default;
+	color: gray;
+}
+div#upload-body div.uploadButton span.removeQueue {
+	background: url(../img/icons.gif) no-repeat 0 -340px; 
+}
+div#upload-body div.uploadButton input {
+	top: 0;
+	left: 0;
+	height: inherit;
+	position: absolute;
+	cursor: pointer;
+}
+input#upload-name {
+	width: 250px;
+}
+div#upload-queue-block {
+	height: 150px;
+	overflow: auto;
+}
+ul#upload-queue, ul#upload-queue ul {
+	list-style: none;
+	white-space: nowrap;
+	margin: 0px;
+	padding: 0px;
+	vertical-align: middle;
+}
+ul#upload-queue li {
+	height: 20px;
+	margin: 1px 2px 3px 2px;
+	padding: 0px;
+	position: relative;
+}
+ul#upload-queue li span {
+	top: 0px;
+	left: 0px;
+	position: relative;
+	line-height: 20px;
+	margin: 0 0 0 22px;
+	float: left;
+	width: 60%;
+	z-index: 4;
+	background: none;
+	cursor: pointer;
+	vertical-align: middle;
+}
+ul#upload-queue li input{
+	float: left;
+	margin-left: 22px;
+	width: 75%;
+	z-index: 4;
+	height: 16px;
+}
+ul#upload-queue li span.queue-name {
+	margin: 0 0 0 24px;
+}
+ul#upload-queue li span.queue-size {
+	width: 15%;
+	cursor: default;
+	text-align: right;
+	margin: 0 10px 0 0;
+	float: right;
+}
+ul#upload-queue li span.queue-progress {
+	height: 20px;
+	width: 0;
+	background-color: #cae1ff;
+	position: absolute;
+}
+ul#upload-queue li span.rename {
+	float: right;
+	width: 20px;
+	background:	url(../img/icons.gif) no-repeat 0 -420px; 
+	margin: 0px 2px 0px 0;
+}
+ul#upload-queue li span.status {
+	float: right;
+	width: 20px;
+	background:	url(../img/icons.gif) no-repeat;
+	cursor: default;
+	margin: 0px;
+}
+ul#upload-queue li span.status.delete{
+	background-position: 0 -180px;
+	cursor: pointer;
+	z-index: 2;
+}
+ul#upload-queue li span.status.complete{
+	background-position: 0 -520px;
+	cursor: default;
+}
+ul#upload-queue li span.status.error{
+	background-position: 0 -340px;
+	cursor: default;
+}
+ul#upload-queue li span.status.load{
+	background: url(../img/load.gif) no-repeat center center;
+	cursor: default;
+}
+ul#upload-queue li.queue-error, ul#upload-queue li.queue-text.error {
+	background-color: #F5C9CF;
+	margin: 1px 2px 1px 2px;
+}
+ul#upload-queue li.queue-error span {
+	margin: 2px 0px 0px 5px;
+	width: 99%;
+	text-align: center;
+}
+div.plupload_flash, div.plupload_silverlight, div.plupload_html5, div.plupload_browserplus, div.plupload_gears {
+	z-index: 9999;
+}
+ul#upload-queue li.queue-text.exists {
+	background: url(../img/icons.gif) no-repeat 0 -640px;
+}
+ul#upload-queue li.queue-text.exists.hastip {
+	cursor: help;
+}

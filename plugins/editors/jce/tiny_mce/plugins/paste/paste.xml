@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<install version="1.5.0" type="plugin" plugin="paste">
+	<name>Paste</name>
+	<version>1.5.7.4</version>
+	<creationDate>07 June 2010</creationDate>
+	<author>Ryan Demmer</author>
+	<authorEmail>info@joomlacontenteditor.net</authorEmail>
+	<authorUrl>http://www.joomlacontenteditor.net/</authorUrl>
+	<copyright>Ryan Demmer</copyright>
+	<license>LGPL</license>
+	<description>Paste Plugin</description>
+	<icon>cut,copy,paste</icon>
+	<layout>paste</layout>
+	<params group="standard">
+		<param name="paste_dialog_width" type="text" size="5" default="450" label="PASTE PARAM WIDTH" description="PASTE PARAM WIDTH DESC" />
+		<param name="paste_dialog_height" type="text" size="5" default="400" label="PASTE PARAM HEIGHT" description="PASTE PARAM HEIGHT DESC" />
+		<param name="paste_html" type="list" default="1" label="PASTE PARAM PASTE HTML" description="PASTE PARAM PASTE HTML DESC">
+            <option value="1">YES</option>
+			<option value="0">NO</option>
+        </param>
+		<param name="paste_text" type="list" default="1" label="PASTE PARAM PASTE TEXT" description="PASTE PARAM PASTE TEXT DESC">
+            <option value="1">YES</option>
+			<option value="0">NO</option>
+        </param>
+		<param name="paste_use_dialog" type="list" default="0" label="PASTE PARAM DIALOG" description="PASTE PARAM DIALOG DESC">
+            <option value="1">YES</option>
+			<option value="0">NO</option>
+        </param>
+        <!--param name="paste_keep_linebreaks" type="list" default="1" label="PASTE PARAM LINEBREAKS" description="PASTE PARAM LINEBREAKS DESC">
+            <option value="1">YES</option>
+			<option value="0">NO</option>
+        </param-->
+		<!--param name="paste_auto_cleanup_on_paste" type="list" default="1" label="PASTE PARAM CLEANUP" description="PASTE PARAM CLEANUP DESC">
+            <option value="0">NO</option>
+            <option value="1">YES</option>
+        </param-->
+        <param name="paste_strip_class_attributes" type="list" default="all" label="PASTE PARAM CLASSES" description="PASTE PARAM CLASSES DESC">
+            <option value="all">PASTE PARAM CLASSES ALL</option>
+            <option value="none">PASTE PARAM CLASSES NONE</option>
+            <option value="mso">PASTE PARAM CLASSES MSO</option>
+        </param>
+        <param name="paste_remove_spans" type="list" default="0" label="PASTE PARAM SPANS" description="PASTE PARAM SPANS DESC">
+            <option value="1">YES</option>
+			<option value="0">NO</option>
+        </param>
+		<param name="paste_remove_styles" type="list" default="0" label="PASTE PARAM STYLES" description="PASTE PARAM STYLES DESC">
+            <option value="1">YES</option>
+			<option value="0">NO</option>           
+        </param>
+		<param name="paste_retain_style_properties" size="100" type="text" default="" label="PASTE PARAM RETAIN STYLES" description="PASTE PARAM RETAIN STYLES DESC" />
+		<param name="paste_remove_empty_paragraphs" type="list" default="1" label="PASTE PARAM REMOVE PARAGRAPHS" description="PASTE PARAM REMOVE PARAGRAPHS DESC">
+            <option value="1">YES</option>
+			<option value="0">NO</option>           
+        </param>
+		<param name="paste_remove_styles_if_webkit" type="list" default="0" label="PASTE PARAM REMOVE STYLES WEBKIT" description="PASTE PARAM REMOVE STYLES WEBKIT DESC">
+            <option value="1">YES</option>
+			<option value="0">NO</option>           
+        </param>
+    </params>
+	<languages>
+		<language tag="en-GB">en-GB.com_jce_paste.ini</language>
+	</languages>
+</install>
