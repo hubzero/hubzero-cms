@@ -293,7 +293,7 @@ ENDHTML;
         if (JRequest::getVar('view') == 'search' && $treeType == PUBLICLY_ACCESSIBLE_PROJECTS) {
             //$projects = unserialize($_SESSION[Search::RESULTS]);
 
-            $projects = ProjectPeer::getPubProjectsWithOrder($this->getOrderBy());
+            $projects = ProjectPeer::getViewableProjectsWithOrder($this->getOrderBy());
 //      $projslink = "warehouse/index.php?task=find";
 //      $treeTypeStr = "Publicly Accessible Projects";
         }

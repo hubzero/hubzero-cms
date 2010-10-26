@@ -32,8 +32,8 @@ function getTreeNodes($nodeId) {
   require_once 'lib/data/Authorization.php';
   require_once 'lib/data/ExperimentPeer.php';
   require_once 'lib/data/curation/NCCuratedObjectsPeer.php';
-  //require_once 'lib/security/Authorizer.php';
-  require_once 'lib/security/TreeAuthorizer.php';
+  require_once 'lib/security/Authorizer.php';
+  //require_once 'lib/security/TreeAuthorizer.php';
   
   if($typeStr == "projid") {
     $projid = $tokenArr[1];
