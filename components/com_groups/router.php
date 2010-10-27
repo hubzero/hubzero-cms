@@ -86,13 +86,15 @@ function GroupsParseRoute($segments)
 			break;
 		}
 	}
-	if (isset($segments[2]) && $segments[1] == 'wiki') {
-		$vars['pagename'] = array_pop($segments);
-		$s = implode(DS,$segments);
-		$vars['scope'] = $s;
+	if (isset($segments[2])) {
+		if ($segments[1] == 'wiki') {
+			$vars['pagename'] = array_pop($segments);
+			$s = implode(DS,$segments);
+			$vars['scope'] = $s;
+		} else {
+			$vars['task'] = $segments[2];
+		}
 	}
 
     return $vars;
 }
-
-?>

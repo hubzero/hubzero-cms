@@ -56,6 +56,7 @@ class GroupsController extends Hubzero_Controller
 			
 			// Autocompleter - called via AJAX
 			case 'autocomplete': $this->autocomplete(); break;
+			case 'memberslist': $this->memberslist(); break;
 			
 			// Group management
 			case 'new':     $this->edit();    break;
@@ -1477,7 +1478,7 @@ class GroupsController extends Hubzero_Controller
 		foreach ($inviteemails as $mbr) 
 		{
 			if (!in_array($mbr, $registeredemails)) {
-				$email .= JText::sprintf('GROUPS_PLEASE_REGISTER', $jconfig->getValue('config.sitename'), $juri->base() . 'register')."\r\n\r\n";
+				$message .= JText::sprintf('GROUPS_PLEASE_REGISTER', $jconfig->getValue('config.sitename'), $juri->base() . 'register')."\r\n\r\n";
 			}
 			
 			// Send the e-mail
@@ -2115,7 +2116,7 @@ class GroupsController extends Hubzero_Controller
 		if (count($rows) > 0) {
 			foreach ($rows as $row) 
 			{
-				$json[] = '["'.$row->description.'","'.$row->cn.'"]';
+				$json[] = '["'.htmlentities(stripslashes($row->description),ENT_COMPAT,'UTF-8').'","'.$row->cn.'"]';
 			}
 		}
 		
@@ -2133,6 +2134,47 @@ class GroupsController extends Hubzero_Controller
 
 		$this->database->setQuery( $query );
 		return $this->database->loadObjectList();
+	}
+	
+	//-----------
+	
+	protected function memberslist() 
+	{
+		// Fetch results
+		$filters = array();
+		$filters['cn'] = trim(JRequest::getString( 'group', '' ));
+		
+		if ($filters['cn']) {
+			$query = "SELECT u.username, u.name 
+						FROM #__users AS u, #__xgroups_members AS m, #__xgroups AS g
+						WHERE g.cn='".$filters['cn']."' AND g.gidNumber=m.gidNumber AND m.uidNumber=u.id
+						ORDER BY u.name ASC";
+		} else {
+			$query = "SELECT a.username, a.name"
+				. "\n FROM #__users AS a"
+				. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
+				. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = aro.id"	// map aro to group
+				. "\n INNER JOIN #__core_acl_aro_groups AS g ON g.id = gm.group_id"
+				. "\n WHERE a.block = '0' AND g.id=25"
+				. "\n ORDER BY a.name";
+		}
+
+		$this->database->setQuery( $query );
+		$rows = $this->database->loadObjectList();
+
+		// Output search results in JSON format
+		$json = array();
+		if ($filters['cn'] == '') {
+			$json[] = '{"username":"","name":"No User"}';
+		}
+		if (count($rows) > 0) {
+			foreach ($rows as $row) 
+			{
+				$json[] = '{"username":"'.$row->username.'","name":"'.htmlentities(stripslashes($row->name),ENT_COMPAT,'UTF-8').'"}';
+			}
+		}
+		
+		echo '{"members":['.implode(',',$json).']}';
 	}
 	
 	//-----------

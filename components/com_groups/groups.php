@@ -37,6 +37,7 @@ if ($config->getValue('config.debug')) {
 jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_User_Helper');
+ximport('Hubzero_Plugin_Params');
 
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'log.php' );
