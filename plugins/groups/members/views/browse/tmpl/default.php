@@ -61,23 +61,23 @@ switch ($this->filter)
 {
 	case 'invitees':
 ?>
-					<td class="message-member"><?php if (count($this->group->get('invitees')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=invitees'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_INVITEES'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
+					<td class="message-member"><?php if (($this->authorized == 'manager' || $this->authorized == 'admin') && count($this->group->get('invitees')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=invitees'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_INVITEES'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
 <?php
 	break;
 	case 'pending':
 ?>
-					<td class="message-member"><?php if (count($this->group->get('applicants')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=pending'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_PENDING'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
+					<td class="message-member"><?php if (($this->authorized == 'manager' || $this->authorized == 'admin') && count($this->group->get('applicants')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=pending'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_PENDING'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
 <?php
 	break;
 	case 'managers':
 ?>
-					<td class="message-member"><?php if (count($this->group->get('managers')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=managers'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_MANAGERS'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
+					<td class="message-member"><?php if (($this->authorized == 'manager' || $this->authorized == 'admin') && count($this->group->get('managers')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=managers'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_MANAGERS'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
 <?php
 	break;
 	case 'members':
 	default:
 ?>
-					<td class="message-member"><?php if (count($this->group->get('members')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=all'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_MEMBERS'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
+					<td class="message-member"><?php if (($this->authorized == 'manager' || $this->authorized == 'admin') && count($this->group->get('members')) > 0) { ?><a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]=all'); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_SEND_ALL_MEMBERS'); ?>"><?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?></a><?php } else { ?>&nbsp;<?php } ?></td>
 <?php
 	break;
 }

@@ -182,6 +182,7 @@ class plgGroupsMembers extends JPlugin
 				
 				$view->limit = JRequest::getInt('limit', 25);
 				$view->start = JRequest::getInt('limitstart', 0);
+				$view->start = ($view->limit == 0) ? 0 : $view->start;
 				$view->no_html = JRequest::getInt( 'no_html', 0 );
 				
 				// Initiate paging
