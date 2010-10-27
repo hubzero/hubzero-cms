@@ -31,6 +31,7 @@ $juser =& JFactory::getUser();
 <div class="aside">
 <?php if ($juser->get('id') == $this->member->get('uidNumber')) { ?>
 	<p><a class="add" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+	<p><a class="config" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>"><?php echo JText::_('Settings'); ?></a></p>
 <?php } ?>
 	<div class="blog-popular-entries">
 		<h4><?php echo JText::_('Popular Entries'); ?></h4>
@@ -80,11 +81,8 @@ if ($this->row) {
 <?php } else { ?>
 			<dd class="comments"><?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_OFF'); ?></dd>
 <?php } ?>
-        </dl>
-		<h2 class="entry-title">
-			<?php echo stripslashes($this->row->title); ?>
 <?php if ($juser->get('id') == $this->row->created_by || $this->authorized) { ?>
-			<span class="state"><?php 
+			<dd class="state"><?php 
 switch ($this->row->state) 
 {
 	case 1:
@@ -98,7 +96,12 @@ switch ($this->row->state)
 		echo JText::_('Private');
 	break;
 } 
-?></span>
+?></dd>
+<?php } ?>
+        </dl>
+		<h2 class="entry-title">
+			<?php echo stripslashes($this->row->title); ?>
+<?php if ($juser->get('id') == $this->row->created_by || $this->authorized) { ?>
 			<a class="edit" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task=edit&entry='.$this->row->id); ?>" title="<?php echo JText::_('Edit'); ?>"><?php echo JText::_('Edit'); ?></a>
 			<a class="delete" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task=delete&entry='.$this->row->id); ?>" title="<?php echo JText::_('Delete'); ?>"><?php echo JText::_('Delete'); ?></a>
 <?php } ?>
@@ -174,7 +177,7 @@ if ($this->comments) {
 		if ($comment->reports) {
 			$content = '<p class="warning">'.JText::_('PLG_MEMBERS_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 		} else {
-			$content = $p->parse( n.stripslashes($comment->content) );
+			$content = $p->parse( "\n".stripslashes($comment->content) );
 		}
 ?>
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $comment->id; ?>">

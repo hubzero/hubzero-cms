@@ -30,8 +30,26 @@ $juser =& JFactory::getUser();
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog&task=browse'); ?>" method="get">
 <h3><a name="blog"></a><?php echo JText::_('PLG_MEMBERS_BLOG'); ?></h3>
 <div class="aside">
+<?php
+	if ($this->config->get('feeds_enabled')) {
+		$path  = 'index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog&task=feed.rss';
+		$path .= ($this->year) ? '&year='.$this->year : '';
+		$path .= ($this->month) ? '&month='.$this->month : '';
+		$feed = JRoute::_($path);
+		if (substr($feed, 0, 4) != 'http') {
+			if (substr($feed, 0, 1) != DS) {
+				$feed = DS.$feed;
+			}
+			$jconfig =& JFactory::getConfig();
+			$feed = $jconfig->getValue('config.live_site').$feed;
+		}
+		$feed = str_replace('https:://','http://',$feed);
+?>
+	<p><a class="feed" href="<?php echo $feed; ?>"><?php echo JText::_('RSS Feed'); ?></a></p>
+<?php } ?>
 <?php if ($juser->get('id') == $this->member->get('uidNumber')) { ?>
 	<p><a class="add" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+	<p><a class="config" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>"><?php echo JText::_('Settings'); ?></a></p>
 <?php } ?>
 	<fieldset>
 		<legend>Search</legend>
@@ -139,6 +157,19 @@ if ($this->rows) {
 	foreach ($this->rows as $row) 
 	{
 		$cls = ($cls == 'even') ? 'odd' : 'even';
+		switch ($row->state) 
+		{
+			case 1:
+				$cls .= ' public';
+			break;
+			case 2:
+				$cls .= ' registered';
+			break;
+			case 0:
+			default:
+				$cls .= ' private';
+			break;
+		}
 ?>
 
 			<li class="entry <?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
@@ -150,25 +181,27 @@ if ($this->rows) {
 <?php } else { ?>
 					<dd class="comments"><?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_OFF'); ?></dd>
 <?php } ?>
+<?php if ($juser->get('id') == $row->created_by) { ?>
+					<dd class="state"><?php 
+switch ($row->state) 
+{
+	case 1:
+		echo JText::_('Public');
+	break;
+	case 2:
+		echo JText::_('Registered members');
+	break;
+	case 0:
+	default:
+		echo JText::_('Private');
+	break;
+} 
+?></dd>
+<?php } ?>
 				</dl>
 				<h4 class="entry-title">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a>
 <?php if ($juser->get('id') == $row->created_by) { ?>
-					<span class="state"><?php 
-	switch ($row->state) 
-	{
-		case 1:
-			echo JText::_('Public');
-		break;
-		case 2:
-			echo JText::_('Registered members');
-		break;
-		case 0:
-		default:
-			echo JText::_('Private');
-		break;
-	} 
-?></span>
 					<a class="edit" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>"><?php echo JText::_('Edit'); ?></a>
 					<a class="delete" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>"><?php echo JText::_('Delete'); ?></a>
 <?php } ?>

@@ -37,18 +37,13 @@
 	ol.blog-entries .odd {
 		background: transparent;
 	}
-	/*ol.blog-entries .readmore {
-		margin-left: 1em;
-		background-color: #eee;
-		padding: 0 0.2em;
-		border: 1px solid #6699cc;
-		line-height: 1em;
-	}
-	ol.blog-entries .readmore:hover {
-		color: #f60;
-		border-color: #f60;
-		background-color: #fff;
-	}*/
+	ol.blog-entries .private {
+		background: #f9f9f9 url("images/light-stripes.png");
+		}
+	ol.blog-entries .private .entry-title {
+		background: url("images/lock.png") 0 0 no-repeat;
+		padding-left: 20px;
+		}
 	ol.blog-entries li li {
 	    margin-left: 20px;
 	}
@@ -74,15 +69,6 @@
 		color: #777;
 		font-size: 12px;
 	}
-	/*ol.blog-entries li.author dl.entry-meta dt a,
-	ol.blog-entries li.author dl.entry-meta dt a:link,
-	ol.blog-entries li.author dl.entry-meta dt a:visited,
-	ol.blog-entries li.author dl.entry-meta dt a:active {
-		color:  #FF54AC;
-	}
-	ol.blog-entries li.author dl.comment-meta dt a:hover {
-		color: #ff6600;
-	}*/
 	ol.blog-entries li dl.entry-meta dt a.comment-counter:link,
 	ol.blog-entries li dl.entry-meta dt a.comment-counter:visited,
 	ol.blog-entries li dl.entry-meta dt a.comment-counter:active {
@@ -91,10 +77,6 @@
 	ol.blog-entries li dl.entry-meta dt a.comment-counter:hover {
 		color: #ff6600 !important;
 	}
-	/*ol.blog-entries li p.comment-content-object-link {
-		font-style: italic;
-		color: #999;
-	}*/
 /* Comments */
 	ol.comments {
 		list-style-type: none !important;
@@ -197,13 +179,6 @@
 		color: #bfbfbf;
 	}
 	/* Permalink */
-	/*ol.comments .permalink {
-		margin-right: 0.2em;
-		font-size: 1.5em;
-		line-height: 1em;
-		border: none;
-		color: #bbb;
-	}*/
 	ol.comments .permalink {
 		border: none;
 		color: #bfbfbf;
@@ -212,9 +187,18 @@
 		color: #000;
 		border: none;
 	}
+	/* */
 	ol.comments .odd,
 	ol.comments .even {
 		background: transparent;
+	}
+	ol.blog-entries .edit,
+	ol.blog-entries .delete {
+		visibility: hidden;
+	}
+	ol.blog-entries li:hover .edit,
+	ol.blog-entries li:hover .delete {
+		visibility: visible;
 	}
 /* Popular and Recent entries */
 	.blog-entries-years,
@@ -526,9 +510,6 @@
 	#commentform #comment-anonymous-label {
 		width: 50%;
 	}
-	/*#commentform blockquote {
-		background-color: #fff;
-	}*/
 /* Wiki Reference */
 	table.wiki-reference {
 		border: none;
