@@ -404,8 +404,8 @@ class EventsController extends Hubzero_Controller
 		$this_enddate = clone($this_date);
 		$this_enddate->addDays( +6 );
 		
-		$sdt = JHTML::_('date', $this_date->year.'-'.$this_date->month.'-'.$this_date->day.' 00:00:00', '%d %b');
-		$edt = JHTML::_('date', $this_enddate->year.'-'.$this_enddate->month.'-'.$this_enddate->day.' 00:00:00', '%d %b');
+		$sdt = JHTML::_('date', $this_date->year.'-'.$this_date->month.'-'.$this_date->day.' 00:00:00', '%d %b',0);
+		$edt = JHTML::_('date', $this_enddate->year.'-'.$this_enddate->month.'-'.$this_enddate->day.' 00:00:00', '%d %b',0);
 		
 		$this_currentdate = $this_date;
 		

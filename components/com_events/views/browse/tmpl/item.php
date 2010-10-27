@@ -57,19 +57,19 @@ $html  = "\t".'<li id="event'.$this->row->id.'">'."\n";
 $html .= "\t\t".'<dl class="event-details">'."\n";
 if ($this->row->start_date == $this->row->stop_date) {
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt>'.JHTML::_('date',$this->row->publish_up, '%d %b, %Y').'</dt>'."\n";
+		$html .= "\t\t\t".'<dt>'.JHTML::_('date',$this->row->publish_up, '%d %b, %Y', 0).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, '%I:%M %p').'</dd>'."\n";
-	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, '%I:%M %p').'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, '%I:%M %p', 0).'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, '%I:%M %p', 0).'</dd>'."\n";
 } else {
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt class="starttime">'.JHTML::_('date',$this->row->publish_up, '%d %b, %Y').'</dt>'."\n";
+		$html .= "\t\t\t".'<dt class="starttime">'.JHTML::_('date',$this->row->publish_up, '%d %b, %Y', 0).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, '%I:%M %p').'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, '%I:%M %p', 0).'</dd>'."\n";
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, '%d %b, %Y').'</dt>'."\n";
+		$html .= "\t\t\t".'<dt class="endtime">'.strtolower(JText::_('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, '%d %b, %Y', 0).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="endtime">'.JHTML::_('date',$this->row->publish_down, '%I:%M %p').'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="endtime">'.JHTML::_('date',$this->row->publish_down, '%I:%M %p', 0).'</dd>'."\n";
 }
 $html .= "\t\t".'</dl><div class="ewrap">'."\n";
 $html .= "\t\t".'<p class="title"><a href="'. JRoute::_('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'">'. stripslashes($this->row->title) .'</a></p>'."\n";
