@@ -244,6 +244,20 @@ class Hubzero_View_Helper_Html
 	
 	//-----------
 	
+	public function thumbit($thumb) 
+	{
+		$image = explode('.',$thumb);
+		$n = count($image);
+		$image[$n-2] .= '_thumb';
+		$end = array_pop($image);
+		$image[] = $end;
+		$thumb = implode('.',$image);
+		
+		return $thumb;
+	}
+	
+	//-----------
+	
 	public function getFileAttribs( $path, $base_path='' )
 	{
 		// Return nothing if no path provided
