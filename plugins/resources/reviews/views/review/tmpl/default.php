@@ -31,18 +31,83 @@ if ($this->review->id) {
 	$title = JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW');
 }
 ?>
-</div><div class="clear"></div>
-<div class="main section">
-<?php if ($this->banking) {	?>
-	<div class="aside">
-		<p class="help"><?php echo JText::_('PLG_RESOURCES_REVIEWS_DID_YOU_KNOW_YOU_CAN'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('PLG_RESOURCES_REVIEWS_EARN_POINTS'); ?></a> <?php echo JText::_('PLG_RESOURCES_REVIEWS_FOR_REVIEWS'); ?>? <?php echo JText::_('PLG_RESOURCES_REVIEWS_EARN_POINTS_EXP'); ?></p>
-	</div><!-- / .aside -->
-<?php } ?>
-	<div class="subject">
+	</div>
+</div>
+<div class="clear"></div>
+
+<div class="below section">
+	<h3 id="reviewform-title">
 		<a name="reviewform"></a>
-		<form action="index.php" method="post" id="hubForm">	
-			<fieldset style="padding-top:2em;">
-				<h4><?php echo $title; ?></h4>
+		<?php echo $title; ?>
+	</h3>
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->review->id.'&active=reviews'); ?>" method="post" id="commentform">
+		<div class="aside">
+			<table class="wiki-reference" summary="Wiki Syntax Reference">
+				<caption>Wiki Syntax Reference</caption>
+				<tbody>
+					<tr>
+						<td>'''bold'''</td>
+						<td><b>bold</b></td>
+					</tr>
+					<tr>
+						<td>''italic''</td>
+						<td><i>italic</i></td>
+					</tr>
+					<tr>
+						<td>__underline__</td>
+						<td><span style="text-decoration:underline;">underline</span></td>
+					</tr>
+					<tr>
+						<td>{{{monospace}}}</td>
+						<td><code>monospace</code></td>
+					</tr>
+					<tr>
+						<td>~~strike-through~~</td>
+						<td><del>strike-through</del></td>
+					</tr>
+					<tr>
+						<td>^superscript^</td>
+						<td><sup>superscript</sup></td>
+					</tr>
+					<tr>
+						<td>,,subscript,,</td>
+						<td><sub>subscript</sub></td>
+					</tr>
+				</tbody>
+			</table>
+<?php if ($this->banking) {	?>
+			<p class="help"><?php echo JText::_('PLG_RESOURCES_REVIEWS_DID_YOU_KNOW_YOU_CAN'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('PLG_RESOURCES_REVIEWS_EARN_POINTS'); ?></a> <?php echo JText::_('PLG_RESOURCES_REVIEWS_FOR_REVIEWS'); ?>? <?php echo JText::_('PLG_RESOURCES_REVIEWS_EARN_POINTS_EXP'); ?></p>
+<?php } ?>
+		</div><!-- / .aside -->
+		<div class="subject">
+			<p class="comment-member-photo">
+<?php
+			if (!$this->juser->get('guest')) {
+				$jxuser = new Hubzero_User_Profile();
+				$jxuser->load( $this->juser->get('id') );
+				$thumb = plgResourcesReviews::getMemberPhoto($jxuser, 0);
+			} else {
+				$config =& JComponentHelper::getParams( 'com_members' );
+				$thumb = $config->get('defaultpic');
+				if (substr($thumb, 0, 1) != DS) {
+					$thumb = DS.$dfthumb;
+				}
+				$thumb = plgResourcesReviews::thumbit($thumb);
+			}
+?>
+				<img src="<?php echo $thumb; ?>" alt="" />
+			</p>
+			<fieldset>
+				<input type="hidden" name="created" value="<?php echo $this->review->created; ?>" />
+				<input type="hidden" name="reviewid" value="<?php echo $this->review->id; ?>" />
+				<input type="hidden" name="user_id" value="<?php echo $this->review->user_id; ?>" />
+				<input type="hidden" name="resource_id" value="<?php echo $this->review->resource_id; ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="task" value="view" />
+				<input type="hidden" name="id" value="<?php echo $this->review->resource_id; ?>" />
+				<input type="hidden" name="action" value="savereview" />
+				<input type="hidden" name="active" value="reviews" />
+				
 				<fieldset>
 					<legend><?php echo JText::_('PLG_RESOURCES_REVIEWS_FORM_RATING'); ?>:</legend>
 					<label>
@@ -72,11 +137,6 @@ if ($this->review->id) {
 					</label>
 				</fieldset>
 
-				<label for="review_anon">
-					<input class="option" type="checkbox" name="anonymous" id="review_anon" value="1"<?php if ($this->review->anonymous != 0) { echo ' checked="checked"'; } ?> />
-					<?php echo JText::_('PLG_RESOURCES_REVIEWS_FORM_ANONYMOUS'); ?>
-				</label>
-
 				<label for="review_comments">
 					<?php echo JText::_('PLG_RESOURCES_REVIEWS_FORM_COMMENTS');
 		if ($this->banking) {
@@ -86,18 +146,25 @@ if ($this->review->id) {
 					<textarea name="comment" id="review_comments" rows="7" cols="35"><?php echo $this->review->comment; ?></textarea>
 				</label>
 
-				<input type="hidden" name="created" value="<?php echo $this->review->created; ?>" />
-				<input type="hidden" name="reviewid" value="<?php echo $this->review->id; ?>" />
-				<input type="hidden" name="user_id" value="<?php echo $this->review->user_id; ?>" />
-				<input type="hidden" name="resource_id" value="<?php echo $this->review->resource_id; ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="task" value="view" />
-				<input type="hidden" name="id" value="<?php echo $this->review->resource_id; ?>" />
-				<input type="hidden" name="action" value="savereview" />
-				<input type="hidden" name="active" value="reviews" />
+				<label id="review-anonymous-label">
+					<input class="option" type="checkbox" name="anonymous" id="review-anonymous" value="1"<?php if ($this->review->anonymous != 0) { echo ' checked="checked"'; } ?> />
+					<?php echo JText::_('PLG_RESOURCES_REVIEWS_FORM_ANONYMOUS'); ?>
+				</label>
 
-				<p class="submit"><input type="submit" value="<?php echo JText::_('PLG_RESOURCES_REVIEWS_SUBMIT'); ?>" /></p>
+				<p class="submit">
+					<input type="submit" value="<?php echo JText::_('PLG_RESOURCES_REVIEWS_SUBMIT'); ?>" />
+				</p>
+				
+				<div class="sidenote">
+					<p>
+						<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
+					</p>
+					<p>
+						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+					</p>
+				</div>
 			</fieldset>
-		</form>
-	</div><!-- / .subject -->
-</div><!-- / .main section -->
+		</div><!-- / .subject -->
+		<div class="clear"></div>
+	</form>
+</div><!-- / .below section -->

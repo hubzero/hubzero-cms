@@ -34,7 +34,7 @@ if (!$this->juser->get('guest')) {
 	}
 ?>
 					<div class="addcomment<?php echo $class; ?>">
-						<form action="index.php" method="post" id="commentform_<?php echo $this->row->id; ?>">
+						<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$this->row->id); ?>" method="post" id="commentform_<?php echo $this->row->id; ?>">
 							<fieldset>
 								<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 								<input type="hidden" name="rid" value="<?php echo $this->resource->id; ?>" />
@@ -43,14 +43,17 @@ if (!$this->juser->get('guest')) {
 								<input type="hidden" name="referenceid" value="<?php echo $this->row->id; ?>" />
 								<input type="hidden" name="category" value="<?php echo $category; ?>" />
 								<label>
+									<textarea name="comment" rows="4" cols="50" class="commentarea"><?php echo JText::_('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></textarea>
+								</label>
+								<label class="reply-anonymous-label">
 									<input class="option" type="checkbox" name="anonymous" value="1" /> 
 									<?php echo JText::_('PLG_RESOURCES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
 								</label>
-								<label>
-									<textarea name="comment" rows="4" cols="50" class="commentarea"><?php echo JText::_('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></textarea>
-								</label>
+								<p class="submit">
+									<input type="submit" value="<?php echo JText::_('PLG_RESOURCES_REVIEWS_POST_COMMENT'); ?>" /> 
+									<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$this->row->id); ?>" class="closeform cancelreply"><?php echo JText::_('PLG_RESOURCES_REVIEWS_CANCEL'); ?></a>
+								</p>
 							</fieldset>
-							<p><input type="submit" value="<?php echo JText::_('PLG_RESOURCES_REVIEWS_POST_COMMENT'); ?>" /> <a href="javascript:void(0);" class="closeform"><?php echo JText::_('PLG_RESOURCES_REVIEWS_CANCEL'); ?></a></p>
 						</form>
 					</div>
 <?php

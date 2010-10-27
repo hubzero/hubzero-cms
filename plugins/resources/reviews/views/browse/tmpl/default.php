@@ -37,6 +37,10 @@ $html = '';
 <?php
 // Did we get any results back?
 if ($this->reviews) {
+	ximport('wiki.parser');
+
+	$parser = new WikiParser( stripslashes($this->resource->title), $this->option, 'review', $this->resource->id, 0, '' );
+	
 	$admin = false;
 	// Check if they're a site admin (from Joomla)
 	if ($juser->authorize($this->option, 'manage')) {
@@ -88,9 +92,11 @@ if ($this->reviews) {
 
 		// Set the name of the reviewer
 		$name = JText::_('PLG_RESOURCES_REVIEWS_ANONYMOUS');
+		$ruser = new Hubzero_User_Profile();
+		$ruser->load( $review->user_id );
 		if ($review->anonymous != 1) {
 			$name = JText::_('PLG_RESOURCES_REVIEWS_UNKNOWN');
-			$ruser =& JUser::getInstance($review->user_id);
+			//$ruser =& JUser::getInstance($review->user_id);
 			if (is_object($ruser)) {
 				$name = $ruser->get('name');
 			}
@@ -111,14 +117,23 @@ if ($this->reviews) {
 
 		// Build the list item
 		$html .= "\t".'<li class="comment '.$o.'" id="c'.$review->id.'">';
-		$html .= "\t\t".'<dl class="comment-details">'."\n";
+		/*$html .= "\t\t".'<dl class="comment-details">'."\n";
 		$html .= "\t\t\t".'<dt class="type"><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_RESOURCES_REVIEWS_OUT_OF_5_STARS',$review->rating).'</span></span></dt>'."\n";
 		$html .= "\t\t\t".'<dd class="date">'.JHTML::_('date',$review->created, '%d %b %Y').'</dd>'."\n";
 		$html .= "\t\t\t".'<dd class="time">'.JHTML::_('date',$review->created, '%I:%M %p').'</dd>'."\n";
 		$html .= "\t\t".'</dl>'."\n";
 		$html .= "\t\t".'<div class="cwrap">'."\n";
-		$html .= "\t\t\t".'<p class="name"><strong>'.$name.'</strong> '.JText::_('PLG_RESOURCES_REVIEWS_SAID').':</p>'."\n";
-		
+		$html .= "\t\t\t".'<p class="name"><strong>'.$name.'</strong> '.JText::_('PLG_RESOURCES_REVIEWS_SAID').':</p>'."\n";*/
+		$html .= "\t\t".'<a name="c'.$review->id.'"></a>'."\n";
+		$html .= "\t\t".'<p class="comment-member-photo">'."\n";
+		$html .= "\t\t".'	<img src="'.plgResourcesReviews::getMemberPhoto($ruser, $review->anonymous).'" alt="" />'."\n";
+		$html .= "\t\t".'</p><!-- / .comment-member-photo -->'."\n";
+		$html .= "\t\t".'<div class="comment-content">'."\n";
+		$html .= "\t\t\t".'<p><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_RESOURCES_REVIEWS_OUT_OF_5_STARS',$review->rating).'</span></span></p>'."\n";
+		$html .= "\t\t".'<p class="comment-title">'."\n";
+		$html .= "\t\t".'	<strong>'. $name.'</strong> '."\n";
+		$html .= "\t\t".'	<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$review->id).'" title="'. JText::_('PLG_RESOURCES_REVIEWS_PERMALINK').'">@ <span class="time">'. JHTML::_('date',$review->created, '%I:%M %p', 0).'</span> on <span class="date">'.JHTML::_('date',$review->created, '%d %b, %Y', 0).'</span></a>'."\n";
+		$html .= "\t\t".'</p><!-- / .comment-title -->'."\n";
 		if ($abuse && $abuse_reports > 0) {
 			$html .= "\t\t\t".'<p class="warning">'.JText::_('PLG_RESOURCES_REVIEWS_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 			$html .= "\t\t".'</div>'."\n";
@@ -141,13 +156,16 @@ if ($this->reviews) {
 					$view->rid = $this->resource->id;
 					$html .= $view->loadTemplate();
 					
+					//$html .= "\t\t".'<span class="itemtxt">'. trim(stripslashes($review->comment)) .'</span>'."\n";
 					$html .= "\t\t".'</p>'."\n";
-				} else {
-					$html .= "\t\t\t".'<p>'.stripslashes($review->comment).'</p>'."\n";
+				//} else {
+					
 				}
+				$html .= "\t\t\t".$parser->parse( "\n".trim(stripslashes($review->comment)))."\n";
 			} else {
-				$html .= "\t\t\t".'<p>'.JText::_('PLG_RESOURCES_REVIEWS_NO_COMMENT').'</p>'."\n";
+				$html .= "\t\t\t".'<p class="comment-none">'.JText::_('PLG_RESOURCES_REVIEWS_NO_COMMENT').'</p>'."\n";
 			}
+			
 			
 			//if ((($abuse || $reply) && $review->comment) || $admin) {
 			if (($abuse || $reply) || $admin) {
@@ -159,10 +177,10 @@ if ($this->reviews) {
 				//if ($reply && $review->comment) {
 				if ($reply) {
 					$html .= "\t\t\t\t".'<a class="';
-					if (!$juser->get('guest')) {
+					//if (!$juser->get('guest')) {
 						$html .= 'reply';
-					}
-					$html .= '" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=reply&refid='.$review->id.'&category=review').'" id="rep_'.$review->id.'">'.JText::sprintf('PLG_RESOURCES_REVIEWS_REPLY_TO_USER', $name).'</a>'."\n";
+					//}
+					$html .= '" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=reply&refid='.$review->id.'&category=review').'" id="rep_'.$review->id.'" title="'.JText::sprintf('PLG_RESOURCES_REVIEWS_REPLY_TO_USER', $name).'"">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>'."\n";
 				}
 				if ($admin) {
 					$html .= "\t\t\t\t".' | <a class="deletereview" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=deletereview&reviewid='.$review->id).'">'.JText::_('PLG_RESOURCES_REVIEWS_DELETE').'</a>'."\n";
@@ -223,6 +241,7 @@ if ($this->reviews) {
 					$view->abuse = $abuse;
 					$view->resource = $this->resource;
 					$view->addcomment = $addcomment;
+					$view->parser = $parser;
 					$html .= $view->loadTemplate();
 					// Another level? 
 					if (count($reply->replies) > 0) {
@@ -253,6 +272,7 @@ if ($this->reviews) {
 							$view->abuse = $abuse;
 							$view->resource = $this->resource;
 							$view->addcomment = $addcomment;
+							$view->parser = $parser;
 							$html .= $view->loadTemplate();
 							
 							// Yet another level?? 
@@ -284,6 +304,7 @@ if ($this->reviews) {
 									$view->abuse = $abuse;
 									$view->resource = $this->resource;
 									$view->addcomment = $addcomment;
+									$view->parser = $parser;
 									$html .= $view->loadTemplate();
 									
 									$html .= "\t\t\t\t".'</li>'."\n";
@@ -325,6 +346,8 @@ if (!$juser->get('guest')) {
 		$view->review = $this->h->myreview;
 		$view->banking = $this->banking;
 		$view->infolink = $this->infolink;
+		$view->resource = $this->resource;
+		$view->juser = $juser;
 		$view->display();
 		//echo PlgResourcesReviewsHelper::reviewForm( $h->myreview, $this->option );
 	}
