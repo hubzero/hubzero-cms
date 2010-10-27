@@ -24,6 +24,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$juser =& JFactory::getUser();
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -45,7 +47,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<label>
 					<?php echo JText::_('SORT_BY'); ?>
 					<select name="sortby">
-						<option value="fullname ASC"<?php if ($this->filters['sortby'] == 'fullname ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('Name (default)'); ?></option>
+						<option value="lname ASC, fname ASC"<?php if ($this->filters['sortby'] == 'lname ASC, fname ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('Last Name (default)'); ?></option>
+						<option value="fname ASC, lname ASC"<?php if ($this->filters['sortby'] == 'fname ASC, lname ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('First Name'); ?></option>
 						<option value="organization"<?php if ($this->filters['sortby'] == 'organization') { echo ' selected="selected"'; } ?>><?php echo JText::_('OPTION_ORGANIZATION'); ?></option>
 						<option value="rcount DESC"<?php if ($this->filters['sortby'] == 'rcount DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('OPTION_CONTRIBUTIONS'); ?></option>
 					</select>
@@ -109,22 +112,39 @@ if (count($this->rows) > 0) {
 	$cols = 2;
 ?>
 			<table id="members" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
-				<thead>
+<?php 
+				/*<thead>
 					<tr>
 						<th scope="col"><?php echo JText::_('COL_NAME'); ?></th>
 						<th scope="col"><?php echo JText::_('COL_ORGANIZATION'); ?></th>
 						<th scope="col"><?php echo JText::_('COL_CONTRIBUTIONS'); ?></th>
 					</tr>
-				</thead>
+				</thead>*/ 
+?>
 				<tbody>
 <?php
 	$cls = 'even';
+
+	// Default thumbnail
+	$config =& JComponentHelper::getParams( 'com_members' );
+	$thumb = $config->get('webpath');
+	if (substr($thumb, 0, 1) != DS) {
+		$thumb = DS.$thumb;
+	}
+	if (substr($thumb, -1, 1) == DS) {
+		$thumb = substr($thumb, 0, (strlen($thumb) - 1));
+	}
+	$dfthumb = $config->get('defaultpic');
+	if (substr($dfthumb, 0, 1) != DS) {
+		$dfthumb = DS.$dfthumb;
+	}
+	$dfthumb = Hubzero_View_Helper_Html::thumbit($dfthumb);
 
 	foreach ($this->rows as $row)
 	{
 		$cls = ($cls == 'odd') ? 'even' : 'odd';
 		if ($row->public != 1) {
-			$prvt = 'locked';
+			$prvt = ' private';
 		} else {
 			$prvt = '';
 		}
@@ -209,20 +229,48 @@ if (count($this->rows) > 0) {
 			$id = $row->uidNumber;
 		}
 		
-		$name = ($row->surname) ? stripslashes($row->surname) : '';
-		if ($row->givenName) {
-			$name .= ($row->surname) ? ', ' : '';
-			$name .= stripslashes($row->givenName);
+		if ($this->filters['sortby'] == 'fname ASC, lname ASC') {
+			$name  = ($row->givenName) ? stripslashes($row->givenName) : '';
 			$name .= ($row->middleName) ? ' '.stripslashes($row->middleName) : '';
+			$name .= ($row->surname) ? ' '.stripslashes($row->surname) : '';
+		} else {
+			$name = ($row->surname) ? stripslashes($row->surname) : '';
+			if ($row->givenName) {
+				$name .= ($row->surname) ? ', ' : '';
+				$name .= stripslashes($row->givenName);
+				$name .= ($row->middleName) ? ' '.stripslashes($row->middleName) : '';
+			}
 		}
 		if (!trim($name)) {
 			$name = 'Unknown ('.$row->username.')';
 		}
+		
+		$uthumb = '';
+		if ($row->picture) {
+			$uthumb = $thumb.DS.Hubzero_View_Helper_Html::niceidformat($row->uidNumber).DS.$row->picture;
+			$uthumb = Hubzero_View_Helper_Html::thumbit($uthumb);
+		}
+
+		if ($uthumb && is_file(JPATH_ROOT.$uthumb)) {
+			$p = $uthumb;
+		} else {
+			$p = $dfthumb;
+		}
 ?>
-					<tr class="<?php echo $cls; ?>">
-						<td class="<?php echo $prvt; ?>"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$id); ?>"><?php echo $name; ?></a></td>
-						<td><?php echo Hubzero_View_Helper_Html::xhtml(stripslashes($row->organization)); ?></td>
-						<td><?php echo implode(', ',$tt); ?></td>
+					<tr class="<?php echo $cls.$prvt; ?>">
+						<td class="photo"><img width="50" height="50" src="<?php echo $p; ?>" alt="Photo for <?php echo htmlentities($name,ENT_COMPAT,'UTF-8'); ?>" /></td>
+						<td>
+							<span class="name"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$id); ?>"><?php echo $name; ?></a></span><br />
+							<span class="organization"><?php echo Hubzero_View_Helper_Html::xhtml(stripslashes($row->organization)); ?></span>
+						</td>
+						<td><span class="activity"><?php echo implode(', ',$tt); ?></span></td>
+<?php
+if (!$juser->get('guest') && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) {
+	echo "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$juser->get('id').'&active=messages&task=new&to='.$row->uidNumber).'" title="Message :: Send a message to '.htmlentities($name,ENT_COMPAT,'UTF-8').'">'.JText::_('Send a message to '.htmlentities($name,ENT_COMPAT,'UTF-8')).'</a></td>'."\n";
+} else {
+	echo "\t\t\t\t".'<td class="message-member"> </td>'."\n";
+}
+?>
 					</tr>
 <?php
 	}

@@ -44,6 +44,7 @@ include_once( JPATH_COMPONENT.DS.'helpers'.DS.'html.php' );
 include_once( JPATH_COMPONENT.DS.'controller.php' );
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_View_Helper_Html');
+ximport('Hubzero_Plugin_Params');
 
 $jacl =& JFactory::getACL();
 $jacl->addACL( $option, 'manage', 'users', 'super administrator' );

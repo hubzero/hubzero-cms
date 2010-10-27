@@ -28,11 +28,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 $juser =& JFactory::getUser();
 $no_html = JRequest::getInt( 'no_html', 0 );
 ?>
+<?php if (!$no_html) { ?>
 <div class="vcard">
 	<div id="content-header">
 		<h2><span class="fn"><?php echo stripslashes($this->profile->get('name')); ?></span></h2>
 	</div>
-<?php if (!$no_html) { ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">
 <?php if ($this->authorized) { ?>
@@ -90,4 +90,6 @@ if ($this->sections) {
 	}
 }
 ?>
+<?php if (!$no_html) { ?>
 </div><!-- / .vcard -->
+<?php } ?>

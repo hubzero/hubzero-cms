@@ -105,13 +105,14 @@ class MembersController extends Hubzero_Controller
 	{
 		// Include some needed styles and scripts
 		$this->_getStyles();
+		$this->_getScripts();
 
 		// Incoming
 		$filters = array();
 		$filters['limit']  = JRequest::getVar( 'limit', 25, 'request' );
 		$filters['start']  = JRequest::getInt( 'limitstart', 0, 'get' );
 		$filters['show']   = JRequest::getVar( 'show', $this->_view );
-		$filters['sortby'] = JRequest::getVar( 'sortby', 'fullname ASC' );
+		$filters['sortby'] = JRequest::getVar( 'sortby', 'lname ASC, fname ASC' );
 		$filters['search'] = JRequest::getVar( 'search', '' );
 		$filters['index']  = JRequest::getVar( 'index', '' );
 

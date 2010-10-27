@@ -331,7 +331,7 @@ if ($this->registration->Interests != REG_HIDE) {
 	
 	JPluginHelper::importPlugin( 'tageditor' );
 	$dispatcher =& JDispatcher::getInstance();
-	$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->tags,'')) );
+	$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',stripslashes($this->tags),'')) );
 	
 	$html .= "\t\t".'<label'.$fieldclass.'>'."\n";
 	$html .= "\t\t\t".JText::_('MEMBER_FIELD_TAGS').': '.$required."\n";

@@ -137,7 +137,7 @@ class MembersProfile extends JTable
 			if ($filters['show'] == 'contributors') {
 				$sqlsearch .= " AND";
 			}
-			$sqlsearch .= " ( (LOWER(m.surname) LIKE '".$filters['index']."%') ) ";
+			$sqlsearch .= " ( (LOWER(m.surname) LIKE '".$filters['index']."%') OR (LOWER(SUBSTRING_INDEX(m.name, ' ', -1)) LIKE '".$filters['index']."%') ) ";
 		}
 		
 		if (isset($filters['search']) && $filters['search'] != '') {
@@ -185,7 +185,7 @@ class MembersProfile extends JTable
 					$sqlsearch .= " (";
 					foreach ($words as $word) 
 					{
-						$sqlsearch .= " (LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.middleName) LIKE '%$word%') OR";
+						$sqlsearch .= " (LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.middleName) LIKE '%$word%') OR (LOWER(m.name) LIKE '%$word%') OR";
 					}
 					$sqlsearch = substr($sqlsearch, 0, -3);
 					$sqlsearch .= ") ";
@@ -253,12 +253,19 @@ class MembersProfile extends JTable
 			$filters['authorized'] = true;
 		}
 		
+		if ($filters['sortby'] == 'fullname ASC') {
+			$filters['sortby'] = 'lname ASC, fname ASC';
+		}
+		
 		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.middleName, m.surname, m.organization, m.email, m.vip, m.public, m.picture, NULL AS lastvisitDate, ";
-		$query .= "CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' AND m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&bnsp;' THEN
+		/*$query .= "CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' AND m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&bnsp;' THEN
 		   CONCAT(m.surname, ', ', m.givenName, COALESCE(CONCAT(' ', m.middleName), ''))
 		ELSE
 		   COALESCE(m.name, '')
-		END AS fullname ";
+		END AS fullname ";*/
+		$query  .= "CASE WHEN m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&nbsp;' THEN m.givenName ELSE SUBSTRING_INDEX(m.name, ' ', 1) END AS fname,
+					CASE WHEN m.middleName IS NOT NULL AND m.middleName != '' AND m.middleName != '&nbsp;' THEN m.middleName ELSE SUBSTRING_INDEX(SUBSTRING_INDEX(m.name,' ', 2), ' ',-1) END AS mname,
+					CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' THEN m.surname ELSE SUBSTRING_INDEX(m.name, ' ', -1) END AS lname ";
 		$query .= $this->buildQuery( $filters, $admin );
 		$query .= " GROUP BY m.uidNumber ORDER BY ".$filters['sortby'];
 		if (isset($filters['limit']) && $filters['limit'] != 'all') {
