@@ -20,6 +20,33 @@ $editor =& JEditor::getInstance();
 <link rel="stylesheet" type="text/css" media="all" href="../includes/js/calendar/calendar-mos.css" title="green" />
 <script type="text/javascript" src="../includes/js/calendar/calendar.js"></script>
 <script type="text/javascript" src="../includes/js/calendar/lang/calendar-en.js"></script>
+<script type="text/javascript">
+function submitbutton(pressbutton) 
+{
+	var form = document.adminForm;
+
+	if (pressbutton =='resethelpful') {
+		if (confirm('Are you sure you want to reset the Helpful counts to zero? \nAny unsaved changes to this content will be lost.')){
+			submitform( pressbutton );
+			return;
+		} else {
+			return;
+		}
+	}
+
+	if (pressbutton == 'cancel') {
+		submitform( pressbutton );
+		return;
+	}
+
+	// do field validation
+	/*if (form.answer.value == ''){
+		alert( 'Answer must have a response' );
+	} else {*/
+		submitform( pressbutton );
+	//}
+}
+</script>
 
 <form action="index.php" method="post" name="adminForm" class="editform">
 	<div class="col width-50">

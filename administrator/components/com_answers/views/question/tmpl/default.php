@@ -19,7 +19,26 @@ $editor =& JEditor::getInstance();
 <link rel="stylesheet" type="text/css" media="all" href="../includes/js/calendar/calendar-mos.css" title="green" />
 <script type="text/javascript" src="../includes/js/calendar/calendar.js"></script>
 <script type="text/javascript" src="../includes/js/calendar/lang/calendar-en.js"></script>
+<script type="text/javascript">
+function submitbutton(pressbutton) 
+{
+	var form = document.adminForm;
 
+	if (pressbutton == 'cancel') {
+		submitform( pressbutton );
+		return;
+	}
+
+	// do field validation
+	if (document.getElementById('q_subject').value == ''){
+		alert( 'Question must have a subject' );
+	} else if (document.getElementById('q_tags').value == ''){
+		alert( 'Question must have at least one tag' );
+	} else {
+		submitform( pressbutton );
+	}
+}
+</script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<div class="col width-50">
@@ -37,7 +56,7 @@ $editor =& JEditor::getInstance();
 					</tr>
 					<tr>
 						<td class="key"><label>Subject: <span class="required">*</span></label></td>
-						<td><input type="text" name="question[subject]" size="30" maxlength="250" value="<?php echo stripslashes($this->row->subject); ?>" /></td>
+						<td><input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo stripslashes($this->row->subject); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key" style="vertical-align:top;"><label>Question:</label></td>
@@ -45,7 +64,7 @@ $editor =& JEditor::getInstance();
 					</tr>
 					<tr>
 						<td class="key"><label>Tags: <span class="required">*</span></label></td>
-						<td><input type="text" name="question[tags]" size="30" value="<?php echo $this->tags; ?>" /></td>
+						<td><input type="text" name="question[tags]" id="q_tags" size="30" value="<?php echo $this->tags; ?>" /></td>
 					</tr>
 				</tbody>
 			</table>
