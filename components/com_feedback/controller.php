@@ -477,7 +477,13 @@ class FeedbackController extends Hubzero_Controller
 			Hubzero_Toolbox::send_email($admin, $subject, $message);
 			
 			// Get their browser and OS
-			list( $os, $os_version, $browser, $browser_ver ) = $this->_browsercheck(JRequest::getVar('HTTP_USER_AGENT','','server'));
+			ximport('Hubzero_Browser');
+			$hbrowser = new Hubzero_Browser();
+
+			$os = $hbrowser->getOs();
+			$os_version = $hbrowser->getOsVersion();
+			$browser = $hbrowser->getBrowser();
+			$browser_ver = $hbrowser->getBrowserVersion();
 		
 			// Create new support ticket
 			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
@@ -753,7 +759,14 @@ class FeedbackController extends Hubzero_Controller
 		// Send e-mail
 		ximport('Hubzero_Toolbox');
 		Hubzero_Toolbox::send_email($admin, $subject, $message);
-
+		
+		// Get plugins
+		JPluginHelper::importPlugin( 'support' );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		// Trigger any events that need to be called before session stop
+		$dispatcher->trigger( 'onTicketSubmission', array($row) );
+		
 		// Output Thank You message
 		$view = new JView( array('name'=>'report', 'layout'=>'thanks') );
 		$view->title = $this->_title;
