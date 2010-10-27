@@ -106,7 +106,7 @@ if ($this->row->parent) {
 <?php } else { ?>
 <?php if ($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
 		<label>
-			<input class="option" type="checkbox" name="topic[sticky]" id="forum_sticky"<?php if ($this->row->sticky == 1) { echo ' checked="checked"'; } ?> /> 
+			<input class="option" type="checkbox" name="topic[sticky]" value="1" id="forum_sticky"<?php if ($this->row->sticky == 1) { echo ' checked="checked"'; } ?> /> 
 			<?php echo JText::_('PLG_GROUPS_FORUM_FORM_STICKY'); ?>
 		</label>	
 <?php } else { ?>
@@ -142,7 +142,7 @@ if ($this->row->parent) {
 				<strong>Please keep comments polite and on topic. Offensive posts may be removed.</strong>
 			</p>
 			<p>
-				Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="#">Wiki syntax</a> is supported.
+				Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
 			</p>
 		</div>
 	</fieldset>

@@ -505,6 +505,10 @@ class plgGroupsForum extends JPlugin
 			}
 		}
 		
+		if (!isset($incoming['sticky'])) {
+			$row->sticky = 0;
+		}
+		
 		// Check content
 		if (!$row->check()) {
 			$this->setError( $row->getError() );
