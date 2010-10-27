@@ -470,6 +470,8 @@ class SupportController extends Hubzero_Controller
 		$this->_getStyles();
 		
 		// Get some needed scripts
+		$document =& JFactory::getDocument();
+		$document->addScript('/components'.DS.'com_support'.DS.'autosave.js');
 		$this->_getScripts();
 		
 		// Output HTML

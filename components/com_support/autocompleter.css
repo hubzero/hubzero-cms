@@ -42,3 +42,31 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried {
 html>body #hubForm {
 	*position: inherit;
 }
+
+#as-notify {
+	z-index: 65557;
+	/*position: absolute;
+	width: 160px;
+	left: 50%;
+	top: 30%;
+	padding: 20px;
+	margin: 0 0 0 -100px;*/
+	background: #FFFDEF url("images/save-large.png") 50% 50% no-repeat;
+	text-indent: -55em;
+	overflow: hidden;
+	position: fixed;
+	width: 24px;
+	margin: 0;
+	padding: 15px;
+	left: 25px;
+	top: 100px;
+	border: 1px solid #EFEAC2;
+	color: #CC6633;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;	
+	-khtml-border-radius: 10px;
+	border-radius: 10px;
+	/*box-shadow: 0px 2px 4px #ccc;
+	-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: #ccc 0px 2px 4px; */
+	}

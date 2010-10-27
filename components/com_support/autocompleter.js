@@ -135,6 +135,13 @@ Autocompleter.Base = new Class({
 		this.observer.clear();
 		this.fx.start(0);
 		this.fireEvent('onHide', [this.element, this.choices]);
+		if (this.element.value == '') {
+			var request = new Json.Remote('/index.php?option=com_groups&no_html=1&task=memberslist&group=', {
+				onComplete: function(jsonObj) {
+					HUB.CompleteGroup.writeMembersList(jsonObj.members);
+				}
+			}).send();
+		}
 	},
 
 	showChoices: function() {
@@ -531,10 +538,30 @@ if (!HUB) {
 // Tag Browser
 //----------------------------------------------------------
 HUB.CompleteGroup = {
+	writeMembersList: function( members ) {
+		var owner = $('ticketowner');
+		if (!owner) {
+			var owner = $('owner');
+		}
+		owner.options.length = 0;
+		
+		for (var i=0;i<members.length;i++) 
+		{
+			owner.options[i] = new Option(members[i].name,members[i].username);
+		}
+	},
+	
 	initialize: function() {
 		var el = $('acgroup');
 
 		if (el) {
+			if (el.value != '') {
+				var request = new Json.Remote('/index.php?option=com_groups&no_html=1&task=memberslist&group='+el.value, {
+					onComplete: function(jsonObj) {
+						HUB.CompleteGroup.writeMembersList(jsonObj.members);
+					}
+				}).send();
+			}
 			var completer2 = new Autocompleter.Ajax.Json(el, '/index.php?option=com_groups&no_html=1&task=autocomplete', {
 				'minLength': 1, // We wait for at least one character
 				'overflow': true, // Overflow for more entries
@@ -543,6 +570,12 @@ HUB.CompleteGroup = {
 					var el = new Element('li').setHTML(this.markQueryValue(choice[0]));
 					el.inputValue = choice[1];
 					this.addChoiceEvents(el).injectInside(this.choices);
+					
+					var request = new Json.Remote('/index.php?option=com_groups&no_html=1&task=memberslist&group='+choice[1], {
+						onComplete: function(jsonObj) {
+							HUB.CompleteGroup.writeMembersList(jsonObj.members);
+						}
+					}).send();
 				}
 			});
 		}

@@ -265,7 +265,7 @@ if (is_object($targetuser) && $targetuser->id) {
 			</p>
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-				<input type="hidden" name="ticket[id]" value="<?php echo $this->row->id; ?>" />
+				<input type="hidden" name="ticket[id]" id="ticketid" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="option" value="<?php echo $option; ?>" />
 				<input type="hidden" name="task" value="save" />
 				<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
@@ -295,7 +295,7 @@ if (count($tf) > 0) {
 <?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
 				<div class="grouping">
 					<label>
-						<?php echo JText::_('COMMENT_GROUP'); 
+						<?php echo JText::_('COMMENT_GROUP');
 						$document =& JFactory::getDocument();
 						$document->addScript('components'.DS.'com_support'.DS.'observer.js');
 						$document->addScript('components'.DS.'com_support'.DS.'autocompleter.js');

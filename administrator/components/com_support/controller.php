@@ -543,6 +543,9 @@ class SupportController extends Hubzero_Controller
 			$lists['owner'] = $this->userSelect( 'owner', $row->owner, 1 );
 		}
 		
+		//$document =& JFactory::getDocument();
+		//$document->addScript('/components'.DS.'com_support'.DS.'autosave.js');
+		
 		// Instantiate a new view
 		$view = new JView( array('name'=>'ticket') );
 		$view->option = $this->_option;
