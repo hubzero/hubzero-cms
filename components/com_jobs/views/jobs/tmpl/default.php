@@ -158,7 +158,7 @@ if(!$this->mini) {
 			for ($i=0, $n=count( $jobs ); $i < $n; $i++) {	
 			
 				$txt = $p->parse( n.stripslashes($jobs[$i]->description) );	
-				$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, '%d&nbsp;%b&nbsp;%y') : 'ASAP';
+				$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, '%d&nbsp;%b&nbsp;%y',0) : 'ASAP';
 
 				// compute relevance to search keywords
 				if($filters['search']) {
@@ -210,15 +210,15 @@ if(!$this->mini) {
 				$html .= t.t.t.t.'<td class="secondary">'.$curcat.'</td>'.n;
 				$html .= t.t.t.t.'<td class="secondary">'.$curtype.'</td>'.n;				
 				$html .= t.t.t.t.'<td class="secondary">'.n;
-				$html .= t.t.t.t.t.'<span class="datedisplay">'.JHTML::_('date',$jobs[$i]->added, '%d&nbsp;%b&nbsp;%y').'</span>'.n;				
+				$html .= t.t.t.t.t.'<span class="datedisplay">'.JHTML::_('date',$jobs[$i]->added, '%d&nbsp;%b&nbsp;%y',0).'</span>'.n;				
 				$html .= t.t.t.t.'</td>'.n;
 				$html .= t.t.t.t.'<td>'.n;
 				if($jobs[$i]->applied) {
-				$applieddate = JHTML::_('date',$jobs[$i]->applied, '%d&nbsp;%b&nbsp;%y');
+				$applieddate = JHTML::_('date',$jobs[$i]->applied, '%d&nbsp;%b&nbsp;%y',0);
 				$html .= '<span class="alreadyapplied">'.JText::_('JOB_APPLIED_ON').' <span class="datedisplay">'.$applieddate.'</span></span>';
 				}
 				else if($jobs[$i]->withdrawn) {
-				$withdrew = JHTML::_('date',$jobs[$i]->withdrawn, '%d&nbsp;%b&nbsp;%y');
+				$withdrew = JHTML::_('date',$jobs[$i]->withdrawn, '%d&nbsp;%b&nbsp;%y',0);
 				$html .= '<span class="withdrawn">'.JText::_('JOB_WITHDREW_ON').' <span class="datedisplay">'.$withdrew.'</span></span>';
 				}
 				else {

@@ -36,8 +36,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$job->cat = $job->cat ? $job->cat : 'unspecified';
 	$job->type = $job->type ? $job->type : 'unspecified';
 	
-	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, '%d %b %Y') : 'N/A';
-	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, '%d %b %Y') : 'ASAP';
+	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, '%d %b %Y',0) : 'N/A';
+	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, '%d %b %Y',0) : 'ASAP';
 	
 	ximport('wiki.parser');
 	$p = new WikiParser( $job->code, $this->option, 'job'.DS.$job->code, 'jobs', $job->code);
@@ -114,11 +114,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= '<div class="clear"></div>'.n;	
 		$html .= t.t.'<div class="apply"><p>'.n;
 		if($job->applied) {
-			$html .= t.t.'<span class="alreadyapplied">'.JText::_('JOB_APPLIED_ON').' '.JHTML::_('date',$job->applied, '%d %b %Y').'<span>'.n;
+			$html .= t.t.'<span class="alreadyapplied">'.JText::_('JOB_APPLIED_ON').' '.JHTML::_('date',$job->applied, '%d %b %Y',0).'<span>'.n;
 			$html .= t.t.'<span><a href="'.JRoute::_('index.php?option='.$option.a.'task=editapp'.a.'code='.$job->code).'">'.JText::_('ACTION_EDIT_APPLICATION').'</a> | <a href="'.JRoute::_('index.php?option='.$option.a.'task=withdraw'.a.'code='.$job->code).'" id="showconfirm">'.JText::_('ACTION_WITHDRAW_APPLICATION').'</a><span>'.n;
 		}
 		else if($job->withdrawn) {
-			$html .= t.t.'<span class="withdrawn">'.JText::_('JOB_WITHDREW_ON').' '.JHTML::_('date',$job->withdrawn, '%d %b %Y').'<span>'.n;
+			$html .= t.t.'<span class="withdrawn">'.JText::_('JOB_WITHDREW_ON').' '.JHTML::_('date',$job->withdrawn, '%d %b %Y',0).'<span>'.n;
 			$html .= t.t.'<span><a href="'.JRoute::_('index.php?option='.$option.a.'task=apply'.a.'code='.$job->code).'">'.JText::_('ACTION_REAPPLY').'</a><span>'.n;
 		}
 		else {
@@ -186,7 +186,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$k = 1;
 		for ($i=0, $n=count( $job->applications ); $i < $n; $i++) {	
 			if($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {				
-				$applied = ($job->applications[$i]->applied !='0000-00-00 00:00:00') ? JHTML::_('date',$job->applications[$i]->applied, '%d %b %Y') : JText::_('N/A');
+				$applied = ($job->applications[$i]->applied !='0000-00-00 00:00:00') ? JHTML::_('date',$job->applications[$i]->applied, '%d %b %Y',0) : JText::_('N/A');
 				$html  .= t.'<li class="applic">'.n;
 				$html  .= t.'<span class="countc">'.$k.'</span> '.$job->applications[$i]->seeker->name.' '.JText::_('applied on').' '.$applied.n;
 				$html  .= $job->applications[$i]->cover ? '<blockquote>'.trim(stripslashes($job->applications[$i]->cover)).'</blockquote>' : '';
