@@ -41,11 +41,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 if (count($this->tags) == 1) {
 	$tagobj = $this->tags[0];
 	if ($tagobj->description != '') {
-		$tagobj->description = Hubzero_View_Helper_Html::xhtml($tagobj->description);
+		//$tagobj->description = Hubzero_View_Helper_Html::xhtml($tagobj->description);
 ?>
 		<h3><?php echo JText::_('COM_TAGS_DESCRIPTION'); ?></h3>
 		<div class="tag-description">
-			<?php echo $tagobj->description; ?>
+			<?php echo stripslashes($tagobj->description); ?>
 			<div class="clear"></div>
 		</div>
 <?php

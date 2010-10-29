@@ -91,6 +91,7 @@ if ($this->rows) {
 			$pn = str_replace('/?','/?task=browse&amp;',$pn);
 			$pn = str_replace('task=browse&amp;task=browse','task=browse',$pn);
 			$pn = str_replace('&amp;&amp;','&amp;',$pn);
+			$pn = str_replace('view=browse','task=browse',$pn);
 			
 			echo $pn;
 			?>
