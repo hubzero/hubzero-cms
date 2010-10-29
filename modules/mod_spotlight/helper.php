@@ -418,7 +418,7 @@ class modSpotlight
 			
 			$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$row->uidNumber).'"><img width="30" height="30" src="'.$thumb.'" alt="'.htmlentities($title).'" /></a></span>'."\n";
 			$out .= '<span class="spotlight-item"><a href="'. JRoute::_('index.php?option=com_members&id='.$row->uidNumber).'">'.$title.'</a></span>, '.$row->organization."\n";
-			$numcontributions = $this->countContributions( $row->uidNumber, $database );
+			$numcontributions = $this->countContributions( $row->uidNumber, $row->username, $database );
 			//$ave_ranking = $this->getAverageRanking( $row->uidNumber, $database);
 			$out .= ' - '.JText::_('Contributions').':&nbsp;'.$numcontributions.''."\n";
 			//$out .= ' - '.JText::_('Contributions').': '.$numcontributions.'; '.JText::_('Average resource ranking').': '.round($ave_ranking, 2).''."\n";
@@ -560,24 +560,32 @@ class modSpotlight
 	
 	//-----------
 	
-	private function countContributions( $uid, $database ) 
+	private function countContributions( $uid, $username, $database ) 
 	{
 		if ($uid === NULL) {
 			 return 0;
 		}
+		$count = 0;
+		
 		// get contributions count
-		$query  = "SELECT COUNT(*) ";
-		$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
-		$query .= "LEFT JOIN #__resource_types AS t ON R.logical_type=t.id ";
+		$query  = "SELECT COUNT(*) as resources ";
+		$query .= ", (SELECT COUNT(*) FROM jos_wiki_page AS w WHERE (w.created_by=$uid OR w.authors LIKE '%".$username."%')) as topics ";
+		$query .= "FROM #__author_assoc AS AA, #__resources AS R ";
+		//$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
+		//$query .= "LEFT JOIN #__resource_types AS t ON R.logical_type=t.id ";
 		$query .= "WHERE AA.authorid = ". $uid ." ";
 		$query .= "AND R.id = AA.subid ";
 		$query .= "AND AA.subtable = 'resources' ";
 		$query .= "AND R.published=1 AND R.standalone=1 ";
 		//$query .= "AND R.access!=2 AND R.access!=4 ";
-		$query .= "AND R.type=rt.id ";
+		//$query .= "AND R.type=rt.id ";
 	
 		$database->setQuery( $query );
-		return $database->loadResult();					
+		$result = $database->loadObjectList();
+		if($result) {
+			$count = $result[0]->resources + $result[0]->topics;
+		}
+		return $count;					
 	}
 	
 	//-----------
