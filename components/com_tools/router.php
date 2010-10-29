@@ -50,6 +50,9 @@ function toolsBuildRoute(&$query)
 		$segments[] = $query['sess'];
 		unset($query['sess']);
 	}
+	if (isset($query['return']) && $query['return'] == '') {
+		unset($query['return']);
+	}
 
 	return $segments;
 }

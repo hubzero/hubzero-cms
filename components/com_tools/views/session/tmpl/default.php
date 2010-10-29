@@ -59,7 +59,7 @@ $juser =& JFactory::getUser();
 
 <div id="app-wrap">
 <?php if ($this->app['sess']) { ?>
-	<a id="app-btn-close" href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app['sess']); ?>" title="Terminate this session"><span>Close</span></a>
+	<a id="app-btn-close" href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app['sess'].'&return='.$this->rtrn); ?>" title="Terminate this session"><span>Close</span></a>
 <?php } ?>
 	
 	<noscript>
@@ -99,6 +99,7 @@ if (!$this->app['sess']) {
 			<input type="hidden" name="task" value="share" />
 			<input type="hidden" name="sess" value="<?php echo $this->app['sess']; ?>" />
 			<input type="hidden" name="app" value="<?php echo $this->toolname; ?>" />
+			<input type="hidden" name="return" value="<?php echo $this->rtrn; ?>" />
 			<label>
 				Share session with (enter usernames separated by spaces or commas):
 				<input type="text" name="username" value="" />
@@ -122,7 +123,7 @@ if (!$this->app['sess']) {
 		foreach ($this->shares as $row) 
 		{
 			if ($row->viewuser != $juser->get('username')) {
-				?>&nbsp; <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=unshare&sess='.$this->app['sess'].'&username='.$row->viewuser); ?>" title="Remove this user from sharing"><?php echo $row->viewuser; ?></a><?php
+				?>&nbsp; <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=unshare&sess='.$this->app['sess'].'&username='.$row->viewuser.'&return='.$this->rtrn); ?>" title="Remove this user from sharing"><?php echo $row->viewuser; ?></a><?php
 			}
 		}
 		?>

@@ -474,7 +474,7 @@ class ToolsController extends Hubzero_Controller
 		$tv->loadFromInstance( $app['name'] );
 		$app['caption'] = stripslashes($tv->title);
 		$app['title'] = stripslashes($tv->title);
-
+		
 		// Check if they have access to run this tool
 		$hasaccess = $this->_getToolAccess($app['name']);
 		$status2 = ($hasaccess) ? "PASSED" : "FAILED";
@@ -521,10 +521,17 @@ class ToolsController extends Hubzero_Controller
 		}
 		
 		// Get their disk space usage
+		$this->getDiskUsage();
+		$this->_redirect = '';
+		
 		$app['percent'] = 0;
 		if ($this->config->get('show_storage')) {
-			$this->getDiskUsage();
 			$app['percent'] = $this->percent;
+		}
+		//if ($this->_redirect != '' && $this->juser->get('username') == 'zooley') {
+		if ($this->percent >= 100 && $this->remaining == 0) {
+			$this->storage(true);
+			return;
 		}
 		
 		// Get plugins
@@ -560,11 +567,12 @@ class ToolsController extends Hubzero_Controller
 		$app['ip'] = $ip;
 		$app['username'] = $this->juser->get('username');
 		
+		$rtrn = JRequest::getVar('return', '');
 		// Build and display the HTML
 		//$this->session( $app, $authorized, $output, $toolname );
 		//$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess);
 		$xhub =& Hubzero_Factory::getHub();
-		$xhub->redirect( JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess) );
+		$xhub->redirect( JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess.'&return='.$rtrn) );
 	}
 
 	//-----------
@@ -739,6 +747,8 @@ class ToolsController extends Hubzero_Controller
 			return;
 		}
 		
+		$rtrn = JRequest::getVar('return', '');
+		
 		// Get the user's IP address
 		$ip = JRequest::getVar( 'REMOTE_ADDR', '', 'server' );
 		
@@ -823,12 +833,12 @@ class ToolsController extends Hubzero_Controller
 		$dispatcher->trigger( 'onAfterSessionStart', array($toolname, $tv->revision) );
 
 		// Build and display the HTML
-		$this->session( $app, $authorized, $output, $toolname );
+		$this->session( $app, $authorized, $output, $toolname, $rtrn );
 	}
 	
 	//-----------
 
-	private function session( $app, $authorized, $output, $toolname ) 
+	private function session( $app, $authorized, $output, $toolname, $rtrn=NULL ) 
 	{
 		// Build the page title
 		/*$title  = JText::_(strtoupper($this->_name));
@@ -868,6 +878,7 @@ class ToolsController extends Hubzero_Controller
 		$view->config = $this->config;
 		$view->output = $output;
 		$view->toolname = $toolname;
+		$view->rtrn = $rtrn;
 		if ($app['sess']) {
 			// Get the middleware database
 			$mwdb =& MwUtils::getMWDBO();
@@ -894,6 +905,7 @@ class ToolsController extends Hubzero_Controller
 		
 		// Incoming
 		$sess = JRequest::getVar( 'sess', '' );
+		$rtrn = base64_decode( JRequest::getVar('return', '', 'method', 'base64') );
 
 		// Ensure we have a session
 		if (!$sess) {
@@ -942,7 +954,11 @@ class ToolsController extends Hubzero_Controller
 		$dispatcher->trigger( 'onAfterSessionStop', array($ms->appname) );
 
 		// Take us back to the main page...
-		$this->_redirect = JRoute::_('index.php?option=com_myhub');
+		if ($rtrn) {
+			$this->_redirect = $rtrn;
+		} else {
+			$this->_redirect = JRoute::_('index.php?option=com_myhub');
+		}
 	}
 
 	//-----------
@@ -1006,7 +1022,7 @@ class ToolsController extends Hubzero_Controller
 		}
 	
 		bcscale(6);
-	
+		
 		$du = MwUtils::getDiskUsage($this->juser->get('username'));
 		if (isset($du['space'])) {
 			$val = ($du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
@@ -1019,7 +1035,8 @@ class ToolsController extends Hubzero_Controller
 		$this->remaining = (isset($du['remaining'])) ? $du['remaining'] : 0;
 		$this->percent = $percent;
 		
-		if ($this->percent >= 100 && $du['remaining'] == 0) {
+		if ($this->percent >= 100 && $this->remaining == 0) {
+		//if ($this->percent >= 100) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=storageexceeded');
 		}
 	}

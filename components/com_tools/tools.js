@@ -208,18 +208,21 @@ HUB.Mw = {
 	
 	// Tell user that we're connecting to the tool session.
 	connectingTool: function() {
-		document.getElementById('theapp').style.visibility = 'hidden';
+		//document.getElementById('theapp').style.visibility = 'hidden';
+		//$('app-content').setStyle('visibility', 'hidden');
 	},
 	
 	// Delete the "Connecting..." message.
 	cancelConnecting: function() {
 		HUB.Mw.cancelTimeout();
 		
-		var theapp = document.getElementById('theapp');
+		/*var theapp = document.getElementById('theapp');
 		if (theapp) {
 			theapp.style.visibility = 'visible';
 			$('app-wrap').style.background = '';
-		}
+		}*/
+		//$('app-content').setStyle('visibility', 'visible');
+		//$('app-wrap').setStyle('background', '');
 	},
 
 	// Start a timer to show Java failure.
@@ -253,9 +256,7 @@ HUB.Mw = {
 	
 	startAppletTimeout: function() {
 		var timeout = 30;
-		//if (HUB.Mw.checkJavaBug() == 0) {
-			HUB.Mw.appletTimeoutID = self.setTimeout("HUB.Mw.appletTimeout()", timeout * 1000);
-		//}
+		HUB.Mw.appletTimeoutID = self.setTimeout("HUB.Mw.appletTimeout()", timeout * 1000);
 	},
 
 	// Cancel the timer to show Java failure.
@@ -361,47 +362,22 @@ HUB.Mw = {
 		
 		var app = document.getElementById('theapp');
 		if (app) {
-			/*$('app-wrap').setStyles({
-				'width': (w + 20) + 'px',
-				'height': (h + 20) + 'px'
-			});*/
 			if (w < 100) { w = 100; }
 			if (h < 100) { h = 100; }
 			
 			$('app-wrap').setStyles({
-				'width': (w) + 'px',
-				'height': (h) + 'px'
+				'width': (w.toString()) + 'px',
+				'height': (h.toString()) + 'px'
 			});
 			
-			$('app-size').setHTML(w+' x '+h);
+			$('app-size').setHTML(w.toString()+' x '+h.toString());
 
-			app.style.width = w + 'px';
-			app.style.height = h + 'px';
-			app.width = w;
-			app.height = h;
+			app.style.width = w.toString() + 'px';
+			app.style.height = h.toString() + 'px';
+			app.width = w.toString();
+			app.height = h.toString();
 		}
 	},
-	
-	/*resizeIt: function() {
-		var tw = parseFloat($('sizex').value);
-		var th = parseFloat($('sizey').value);
-		
-		if (tw < 100) { tw = 100; }
-		if (th < 100) { th = 100; }
-		if (tw > 5000) { tw = 5000; }
-		if (th > 5000) { th = 5000; }
-		
-		var appwrap = $('app-wrap');
-		appwrap.style.width = (tw + 20) + 'px';
-		appwrap.style.height = (th + 23) + 'px';
-
-		var app = document.getElementById('theapp');
-		if (app) {
-			app.style.width = tw + 'px';
-			app.style.height = th + 'px';
-			app.requestResize(tw,th);
-		}
-	},*/
 	
 	editSessionTitle: function() {
 		new eip($$('.session-title'), 'index.php', {option: 'com_tools', task: 'rename', no_html: 1});
@@ -424,26 +400,23 @@ HUB.Mw = {
 		if (appwrap) {
 			var resizehandle = $('app-btn-resizehandle');
 			if (!resizehandle) {
-				var app = document.getElementById('theapp'); //$('theapp');
-				/*if (app.getProperty('width') < 100) {
-					app.setProperty('width', 100);
-				}
-				if (app.getProperty('height') < 100) { 
-					app.setProperty('height', 100); 
-				}*/
-				var w = parseFloat(app.width);
-				var h = parseFloat(app.height);
-				
+				var app = document.getElementById('theapp');
+				var w = app.getAttribute('width');
+				var h = app.getAttribute('height');
+				//var app = $('theapp');
+				//var w = app.getProperty('width');
+				//var h = app.getProperty('height');
+
 				if (w < 100) { w = 100; }
 				if (h < 100) { h = 100; }
 				
-				appwrap.setStyle('height', h + 'px');
-				appwrap.setStyle('width', w + 'px');
+				appwrap.setStyle('height', h.toString() + 'px');
+				appwrap.setStyle('width', w.toString() + 'px');
 				
 				var p = new Element('p', {
 					id: 'app-size',
-					alt: w + ' x ' + h
-				}).setHTML(w + ' x ' + h).injectInside(appwrap);
+					alt: w.toString() + ' x ' + h.toString()
+				}).setHTML(w.toString() + ' x ' + h.toString()).injectInside(appwrap);
 				
 				var res = new Element('div', {
 					id: 'app-btn-resizehandle',
@@ -475,13 +448,6 @@ HUB.Mw = {
 					events: {
 						'click': function(event) {
 							document.theapp.popout();
-							/*var ap = document.getElementById('theapp');
-							alert(ap.style.visibility);
-							if (ap.style.visibility == 'visible') {
-								ap.style.visibility = 'hidden';
-							} else {
-								ap.style.visibility = 'visible';
-							}*/
 						}
 					}
 				}).injectInside(appwrap);
@@ -490,7 +456,6 @@ HUB.Mw = {
 			// Init the resizing capabilities
 			appwrap.makeResizable({
 				handle:$('app-btn-resizehandle'),
-				//limit:{x: [400, 800], y: [100, 100]},
 				onDrag: function(el) {
 					var size = el.getCoordinates();
 					$('app-size').setStyle('visibility','visible').setHTML((size.width - 20)+' x '+(size.height - 20));
@@ -501,15 +466,12 @@ HUB.Mw = {
 					if (app) {
 						var size = el.getCoordinates();
 						
-						var w = size.width;
-						var h = size.height;
+						var w = parseFloat(size.width);
+						var h = parseFloat(size.height);
 
 						if (w < 100) { w = 100; }
 						if (h < 100) { h = 100; }
 						
-						/*app.style.width = (size.width - 15) + 'px';
-						app.style.height = (size.height - 27) + 'px';
-						app.requestResize((size.width - 15),(size.height - 27));*/
 						app.style.width = (w - 20) + 'px';
 						app.style.height = (h - 20) + 'px';
 						app.width = (w - 20);
@@ -522,9 +484,6 @@ HUB.Mw = {
 		
 		// Inititate session title editing
 		HUB.Mw.editSessionTitle();
-		
-		// Initiate the sessions list
-		//HUB.Mw.toggleSessionList();
 		
 		// Initiate the storage usage
 		HUB.Mw.storageMonitor();
