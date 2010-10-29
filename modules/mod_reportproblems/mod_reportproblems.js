@@ -125,7 +125,7 @@ if (typeof(Fx) === 'undefined') {
 					if (this.open == true) { 
 						this.open = false; 
 						this.container.setStyle('visibility','hidden');
-						this.send.setStyle('display','none');
+						//this.send.setStyle('display','none');
 					} else {
 						this.open = true;
 					}
@@ -149,7 +149,10 @@ if (typeof(Fx) === 'undefined') {
 					new Event(e).stop();
 					if (this.open == false) { 
 						this.container.setStyle('visibility','visible');
-						this.send.setStyle('display','inline');
+						this.open = true;
+					} else {
+						//this.container.setStyle('visibility','hidden');
+						this.open = false;
 					}
 					fa.toggle();
 					return false;
