@@ -1204,8 +1204,8 @@ class WikiParser
 		{
 			$h = str_repeat( '=', $i );
 
-			$patterns = array("/^{$h}(.+){$h}\s\#(.*)\\s*$/m","/^{$h}(.+){$h}\\s*$/m");
-			$replace = array("<h{$i} id=\"\\2\">\\1</h{$i}>\\3", "<h{$i}>\\1</h{$i}>\\2");
+			$patterns = array("/^(.*){$h}(.+){$h}\s\#(.*)\\s*$/m","/^(.*){$h}(.+){$h}\\s*$/m");
+			$replace = array("\\1<h{$i} id=\"\\3\">\\2</h{$i}>\\4", "\\1<h{$i}>\\2</h{$i}>\\3");
 			$text = preg_replace( $patterns, $replace, $text );
 		}
 		return $text;
@@ -2084,7 +2084,7 @@ class WikiParser
 
 	private function makeHeadline( $level, $attribs, $anchor, $text, $link ) 
 	{
-		return '<a name="'.$anchor.'"></a><h'.$level.$attribs.'<span class="tp-headline">'.$text.'</span> '.$link.'</h'.$level.'>';
+		return '<h'.$level.$attribs.'<a name="'.$anchor.'"></a><span class="tp-headline">'.$text.'</span> '.$link.'</h'.$level.'>';
 	}
 	
 	//------------

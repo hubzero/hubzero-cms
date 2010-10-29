@@ -291,7 +291,8 @@ class WikiController extends JObject
 			$contributors = $revision->getContributors();
 
 			// Check authorization
-			$authorized = $this->checkAuthorization( 'read' );
+			//$authorized = $this->checkAuthorization( 'read' );
+			$authorized = $this->checkAuthorization();
 
 			// Check if the page is group restricted and the user is authorized
 			if ($this->page->group != '' && $this->page->access != 0 && !$authorized) {
@@ -730,9 +731,12 @@ class WikiController extends JObject
 						$page->delete( $this->page->id );
 
 						// Delete the page's files
-						jimport('joomla.filesystem.folder');
-						if (!JFolder::delete($this->config->filepath .DS. $this->page->id)) {
-							$this->setError( JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER') );
+						if (is_dir($this->config->filepath .DS. $this->page->id))
+						{
+							jimport('joomla.filesystem.folder');
+							if (!JFolder::delete($this->config->filepath .DS. $this->page->id)) {
+								$this->setError( JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER') );
+							}
 						}
 						
 						// Log the action
@@ -1388,6 +1392,8 @@ class WikiController extends JObject
 
 		// Delete the folder
 		$del_folder = JPATH_ROOT.$config->filepath.DS.$listdir;
+		if (!is_dir($del_folder))
+			return;
 		jimport('joomla.filesystem.folder');
 		if (!JFolder::delete($del_folder)) {
 			$this->setError( JText::_('Unable to delete directory.') );
@@ -1592,7 +1598,7 @@ class WikiController extends JObject
 	private function normalize( $txt ) 
 	{
 		//$valid_chars = '\-\:a-zA-Z0-9';
-		$valid_chars = 'a-zA-Z0-9';
+		$valid_chars = '\:a-zA-Z0-9';
 		$normalized = preg_replace("/[^$valid_chars]/", "", $txt);
 		return $normalized;
 	}

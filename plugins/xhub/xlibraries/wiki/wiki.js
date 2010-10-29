@@ -37,6 +37,31 @@ HUB.Wiki = {
 			var hi = $(id.value).value;
 			var co = $('pagetext');
 			co.value = hi;
+			
+			var ji = $(id.value+'_tags').value;
+			var jo = $('actags');
+			jo.value = ji;
+			
+			if ($('maininput') && jo) {
+				var ul = $($('maininput').getParent().getParent());
+				var label = $($('maininput').getParent().getParent().getParent());
+				label.removeChild(ul);
+				
+				var actags = new AppleboxList(jo, {'hideempty': false, 'resizable': {'step': 8}});
+
+				var actkn = '';
+				if ($('actkn')) {
+					//actkn = '&'+$('actkn').value+'=1';
+					actkn = '&admin=true';
+				}
+
+				var completer2 = new Autocompleter.MultiSelectable.Ajax.Json($('maininput'), '/index.php?option=com_tags&no_html=1&task=autocomplete'+actkn, {
+					'tagger': actags,
+					'minLength': 1, // We wait for at least one character
+					'overflow': true, // Overflow for more entries
+					'wrapSelectionsWithSpacesInQuotes': false
+				});
+			}
 		} else {
 			var co = $('pagetext');
 			co.value = '';

@@ -537,13 +537,28 @@ class WikiHtml
 					$temprev->pagetext = str_replace('"','&quot;',$temprev->pagetext);
 					$temprev->pagetext = str_replace('&quote;','&quot;',$temprev->pagetext);
 
+					$tplt = new WikiPage( $database );
+					$tplt->id = $template->id;
+					$tmpltags = $tplt->getTags();
+					if (count($tmpltags) > 0) {
+						$tagarray = array();
+						foreach ($tmpltags as $tag)
+						{
+							$tagarray[] = $tag['raw_tag'];
+						}
+						$tmpltags = implode( ', ', $tagarray );
+						if (strtolower($tplate) == strtolower($template->pagename)) {
+							$tags = $tmpltags;
+						}
+					}
+					
 					$o .= "\t".'<option value="t'.$template->id.'"';
 					if (strtolower($tplate) == strtolower($template->pagename)) {
 						$o .= ' selected="selected"';
 						if (!$page->id) {
 							$revision->pagetext = stripslashes($temprev->pagetext);
 							
-							$tplt = new WikiPage( $database );
+							/*$tplt = new WikiPage( $database );
 							$tplt->id = $template->id;
 							$tags = $tplt->getTags();
 							if (count($tags) > 0) {
@@ -552,13 +567,16 @@ class WikiHtml
 								{
 									$tagarray[] = $tag['raw_tag'];
 								}
+								$tmpltags = implode( ', ', $tagarray );
 								$tags = implode( ', ', $tagarray );
-							}
+							}*/
 						}
 					}
 					$o .= '>'.stripslashes($template->pagename).'</option>'."\n";
 
-					$hi[] = '<input type="hidden" name="t'.$template->id.'" id="t'.$template->id.'" value="'.htmlentities(stripslashes($temprev->pagetext), ENT_QUOTES).'" />'."\n";
+					$j  = '<input type="hidden" name="t'.$template->id.'" id="t'.$template->id.'" value="'.htmlentities(stripslashes($temprev->pagetext), ENT_QUOTES).'" />'."\n";
+					$j .= '<input type="hidden" name="t'.$template->id.'_tags" id="t'.$template->id.'_tags" value="'.htmlentities(stripslashes($tmpltags), ENT_QUOTES).'" />'."\n";
+					$hi[] = $j;
 				}
 			}
 			$o .= '</select>'."\n";
@@ -578,7 +596,8 @@ class WikiHtml
 				$cls = ' class="hide"';
 			}
 
-			if (!$page->id) {
+			$juser =& JFactory::getUser();
+			if (!$page->id || $page->created_by == $juser->get('id') || $authorized === 'admin') {
 				$html .= t.t.'<label>'.n;
 				$html .= t.t.t.JText::_('WIKI_FIELD_MODE').': <span class="required">'.JText::_('WIKI_REQUIRED').'</span>'.n;
 				$html .= t.t.t.'<select name="params[mode]" id="params_mode" ';
@@ -704,7 +723,7 @@ class WikiHtml
 			if (count($tf) > 0) {
 				$html .= $tf[0];
 			} else {
-				$html .= t.t.t.'<input type="text" name="tags" value="'. $tags .'" size="38" />'.n;
+				$html .= t.t.t.'<input type="text" name="tags" id="actags" value="'. $tags .'" size="38" />'.n;
 			}
 			
 			$html .= t.t.t.'<span class="hint">'.JText::_('WIKI_FIELD_TAGS_HINT').'</span>'.n;
@@ -791,7 +810,7 @@ class WikiHtml
 		$frm .= t.'</fieldset>'.n;
 		$frm .= '</form>'.n;
 		
-		$o  = WikiHtml::hed( 3, JText::_('COMMENTS') ).n;
+		$o  = '<h3 id="commentlist-title">'.JText::_('COMMENTS') .'</h3>'.n;
 		$o .= WikiHtml::aside( $frm );
 		$o .= WikiHtml::subject( $html );
 		
@@ -811,12 +830,12 @@ class WikiHtml
 		$out .= WikiHtml::div( '', 'clear' );
 		// comment form
 		if (is_object($mycomment)) {
-			$f  = WikiHtml::aside(
+			/*$f  = WikiHtml::aside(
 					'<p>Please use <a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename=Help:WikiFormatting').'">Wiki syntax</a> for formatting. Raw <abbr title="HyperText Markup Language">HTML</abbr> is frowned upon.</p>'.
 					'<p>Please keep comments polite and on topic. We reserve the right to remove any offensive material or spam.</p>'
 				);
-			$f .= WikiHtml::subject( WikiHtml::commentForm( $sub, $mycomment, $option, $page->pagename, $page->scope ) );
-		
+			$f .= WikiHtml::subject( WikiHtml::commentForm( $sub, $mycomment, $option, $page->pagename, $page->scope ) );*/
+			$f = WikiHtml::commentForm( $sub, $mycomment, $option, $page->pagename, $page->scope );
 			$out .= WikiHtml::div( $f, 'section' );
 			$out .= WikiHtml::div( '', 'clear' );
 		}
@@ -826,27 +845,90 @@ class WikiHtml
 
 	//-----------
 	
+	public function getMemberPhoto( $member, $anonymous=0 )
+	{
+		$config =& JComponentHelper::getParams( 'com_members' );
+		
+		if (!$anonymous && $member->get('picture')) {
+			$thumb  = $config->get('webpath');
+			if (substr($thumb, 0, 1) != DS) {
+				$thumb = DS.$thumb;
+			}
+			if (substr($thumb, -1, 1) == DS) {
+				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
+			}
+			$thumb .= DS.WikiHtml::niceidformat($member->get('uidNumber')).DS.$member->get('picture');
+			
+			$thumb = WikiHtml::thumbit($thumb);
+		} else {
+			$thumb = '';
+		}
+		
+		$dfthumb = $config->get('defaultpic');
+		if (substr($dfthumb, 0, 1) != DS) {
+			$dfthumb = DS.$dfthumb;
+		}
+		$dfthumb = WikiHtml::thumbit($dfthumb);
+		
+		if ($thumb && is_file(JPATH_ROOT.$thumb)) {
+			return $thumb;
+		} else if (is_file(JPATH_ROOT.$dfthumb)) {
+			return $dfthumb;
+		}
+	}
+	
+	//-----------
+	
+	public function thumbit($thumb) 
+	{
+		$image = explode('.',$thumb);
+		$n = count($image);
+		$image[$n-2] .= '_thumb';
+		$end = array_pop($image);
+		$image[] = $end;
+		$thumb = implode('.',$image);
+		
+		return $thumb;
+	}
+	
+	//-----------
+
+	public function niceidformat($someid) 
+	{
+		while (strlen($someid) < 5) 
+		{
+			$someid = 0 . "$someid";
+		}
+		return $someid;
+	}
+	
 	public function commentList( $comments, $page, $option, $c='', $level=1 ) 
 	{
 		$c = ($c) ? $c : 'odd';
 		$i = 1;
 		$html = '';
 		if (count($comments) > 0) {
+			//ximport('wiki.parser');
+			ximport('Hubzero_User_Profile');
+			
+			$parser = new WikiParser( stripslashes($page->title), $option, 'comment', $page->id, 0, '' );
+			
 			$html .= '<ol class="comments">'.n;
 			foreach ($comments as $comment) 
 			{
-				if ($comment->anonymous) {
-					$author = JText::_('WIKI_AUTHOR_ANONYMOUS');;
-				} else {
+				$author = JText::_('WIKI_AUTHOR_ANONYMOUS');
+				$cuser = new Hubzero_User_Profile();
+				$cuser->load( $comment->created_by );
+				if ($comment->anonymous != 1) {
 					$author = JText::_('WIKI_AUTHOR_UNKNOWN');
-					$cuser =& JUser::getInstance($comment->created_by);
+					//$cuser =& JUser::getInstance($comment->created_by);
 					if (is_object($cuser)) {
 						$author = $cuser->get('name');
 					}
 				}
 
 				$html .= t.'<li class="comment '.$c.'" id="c'.$comment->id.'">'.n;
-				$html .= t.t.'<dl class="comment-details">'.n;
+				/*$html .= t.t.'<dl class="comment-details">'.n;
 				$html .= t.t.t.'<dt class="type">';
 				if ($comment->rating) {
 					$cls = WikiHtml::getRatingClass($comment->rating);
@@ -870,15 +952,34 @@ class WikiHtml
 	        	$html .= t.t.'</dl>'.n;
 				$html .= t.t.'<div class="cwrap">'.n;
 				$html .= t.t.t.'<p class="name"><strong>'.$author.'</strong> '.JText::_('SAID').':</p>'.n;
-				$html .= t.t.t;
-				$html .= (trim($chtml)) ? trim($chtml).n : JText::_('(No comment.)').n;
-				$html .= t.t.t.'<p class="actions">';
+				$html .= t.t.t;*/
+				$html .= "\t\t".'<a name="c'.$comment->id.'"></a>'."\n";
+				$html .= "\t\t".'<p class="comment-member-photo">'."\n";
+				$html .= "\t\t".'	<img src="'.WikiHtml::getMemberPhoto($cuser, $comment->anonymous).'" alt="" />'."\n";
+				$html .= "\t\t".'</p><!-- / .comment-member-photo -->'."\n";
+				$html .= "\t\t".'<div class="comment-content">'."\n";
+				if ($comment->rating) {
+					$cls = WikiHtml::getRatingClass($comment->rating);
+					$html .= "\t\t\t".'<p><span class="avgrating'.$cls.'"><span>'.JText::sprintf('WIKI_COMMENT_RATING',$comment->rating).'</span></span></p>'."\n";
+				}
+				$html .= "\t\t".'	<p class="comment-title">'."\n";
+				$html .= "\t\t".'		<strong>'. $author.'</strong> '."\n";
+				$html .= "\t\t".'		<a class="permalink" href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=comments#c'.$comment->id).'" title="'. JText::_('Permalink').'">@ <span class="time">'. JHTML::_('date',$comment->created, '%I:%M %p', 0).'</span> on <span class="date">'.JHTML::_('date',$comment->created, '%d %b, %Y', 0).'</span></a>'."\n";
+				$html .= "\t\t".'	</p><!-- / .comment-title -->'."\n";
+				//$html .= (trim($chtml)) ? trim($chtml).n : JText::_('(No comment.)').n;
+				if ($comment->ctext) {
+					$html .= "\t\t\t".$parser->parse( "\n".trim(stripslashes($comment->ctext)))."\n";
+				} else {
+					$html .= "\t\t\t".'<p class="comment-none">'.JText::_('No comment.').'</p>'."\n";
+				}
 				if (!$level < 3) {
-					$html .= t.t.t.'<a href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=addcomment'.a.'parent='.$comment->id).'">'.JText::sprintf('WIKI_COMMENT_REPLY_TO',$author).'</a>'.n;
+					$html .= t.t.t.'<p class="comment-options">'.n;
+					$html .= t.t.t.t.'<a class="reply" href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=addcomment'.a.'parent='.$comment->id).'" title="'.JText::sprintf('WIKI_COMMENT_REPLY_TO',$author).'">'.JText::_('Reply').'</a>'.n;
+					$html .= t.t.t.'</p>'.n;
 				}
 				//$html .= t.t.t.' | <a class="abuse" href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=reportcomment'.a.'id='.$comment->id).'">'.JText::_('WIKI_COMMENT_REPORT').'</a>';
-				$html .= '</p><p class="actions">&nbsp;</p>'.n;
-				$html .= t.t.'</div>'.n;
+				//$html .= '</p><p class="actions">&nbsp;</p>'.n;
+				$html .= t.t.'</div><!-- .comment-content -->'.n;
 				if (isset($comment->children)) {
 					$html .= WikiHtml::commentList($comment->children,$page,$option,$c,$level++);
 				}
@@ -921,9 +1022,65 @@ class WikiHtml
 	{
 		$app =& JFactory::getApplication();
 		
-		$html  = '<form action="'.JRoute::_('index.php?option='.$option.a.'scope='.$scope).'" method="post" id="hubForm" class="full">'.n;
+		$html  = '<div class="below section">'.n;
+		$html .= '<form action="'.JRoute::_('index.php?option='.$option.a.'scope='.$scope).'" method="post" id="commentform">'.n;
+		$html .= t.t.'<h3 id="commentform-title">'.n;
+		$html .= t.t.t.'<a name="commentform"></a>'.n;
+		$html .= t.t.t.JText::_('WIKI_ADD_COMMENT').n;
+		$html .= t.t.'</h3>'.n;
+		$html .= t.t.'<div class="aside">
+			<table class="wiki-reference" summary="Wiki Syntax Reference">
+				<caption>Wiki Syntax Reference</caption>
+				<tbody>
+					<tr>
+						<td>\'\'\'bold\'\'\'</td>
+						<td><b>bold</b></td>
+					</tr>
+					<tr>
+						<td>\'\'italic\'\'</td>
+						<td><i>italic</i></td>
+					</tr>
+					<tr>
+						<td>__underline__</td>
+						<td><span style="text-decoration:underline;">underline</span></td>
+					</tr>
+					<tr>
+						<td>{{{monospace}}}</td>
+						<td><code>monospace</code></td>
+					</tr>
+					<tr>
+						<td>~~strike-through~~</td>
+						<td><del>strike-through</del></td>
+					</tr>
+					<tr>
+						<td>^superscript^</td>
+						<td><sup>superscript</sup></td>
+					</tr>
+					<tr>
+						<td>,,subscript,,</td>
+						<td><sub>subscript</sub></td>
+					</tr>
+				</tbody>
+			</table>'.n;
+		$html .= t.t.'</div><!-- / .aside -->'.n;
+		$html .= t.t.'<div class="subject">'.n;
+		$html .= t.t.'<p class="comment-member-photo">'.n;
+			$juser = JFactory::getUser();
+			if (!$juser->get('guest')) {
+				$jxuser = new Hubzero_User_Profile();
+				$jxuser->load( $juser->get('id') );
+				$thumb = WikiHtml::getMemberPhoto($jxuser, 0);
+			} else {
+				$config =& JComponentHelper::getParams( 'com_members' );
+				$thumb = $config->get('defaultpic');
+				if (substr($thumb, 0, 1) != DS) {
+					$thumb = DS.$dfthumb;
+				}
+				$thumb = WikiHtml::thumbit($thumb);
+			}
+		$html .= t.t.'	<img src="'. $thumb .'" alt="" />'.n;
+		$html .= t.t.'</p>'.n;
 		$html .= t.'<fieldset>'.n;
-		$html .= WikiHtml::hed(3,'<a name="commentform"></a>'.JText::_('WIKI_ADD_COMMENT'));
 		$html .= t.t.'<fieldset>'.n;
 		$html .= t.t.t.'<legend>'.JText::_('WIKI_FIELD_RATING').':</legend>'.n;
 		$html .= t.t.t.'<label><input class="option" id="review_rating_1" name="rating" type="radio" value="1"';
@@ -942,13 +1099,6 @@ class WikiHtml
 		if ($comment->rating == 5) { $html .= ' checked="checked"'; }
 		$html .= ' /> <img src="/templates/'. $app->getTemplate() .'/images/stars/5.gif" alt="5 stars" /> '.JText::_('WIKI_FIELD_RATING_FIVE').'</label>'.n;
 		$html .= t.t.'</fieldset>'.n;
-
-		$html .= t.t.'<label>'.n;
-		$html .= t.t.t.'<input class="option" type="checkbox" name="anonymous" value="1"';
-		if ($comment->anonymous != 0) { $html .= ' checked="checked"'; }
-		$html .= ' />'.n;
-		$html .= t.t.t.JText::_('WIKI_FIELD_ANONYMOUS').n;
-		$html .= t.t.'</label>'.n;
 
 		$html .= t.t.'<label>'.n;
 		$html .= t.t.t.JText::_('WIKI_FIELD_COMMENTS').':'.n;
@@ -970,10 +1120,28 @@ class WikiHtml
 		if ($sub) {
 			$html .= t.t.'<input type="hidden" name="active" value="'.$sub.'" />'.n;
 		}
+		
+		$html .= t.t.'<label id="comment-anonymous-label">'.n;
+		$html .= t.t.t.'<input class="option" type="checkbox" name="anonymous" id="comment-anonymous" value="1"';
+		if ($comment->anonymous != 0) { $html .= ' checked="checked"'; }
+		$html .= ' />'.n;
+		$html .= t.t.t.JText::_('WIKI_FIELD_ANONYMOUS').n;
+		$html .= t.t.'</label>'.n;
 
-		$html .= t.t.'<p class="submit"><input type="submit" value="'.JText::_('SUBMIT').'" /></p>'.n;
-		$html .= t.'</fieldset><div class="clear"></div>'.n;
+		$html .= t.t.t.'<p class="submit"><input type="submit" value="'.JText::_('SUBMIT').'" /></p>'.n;
+		$html .= t.t.t.'<div class="sidenote">'.n;
+		$html .= t.t.t.'	<p>'.n;
+		$html .= t.t.t.'		<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>'.n;
+		$html .= t.t.t.'	</p>'.n;
+		$html .= t.t.t.'	<p>'.n;
+		$html .= t.t.t.'		Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.'.n;
+		$html .= t.t.t.'	</p>'.n;
+		$html .= t.t.t.'</div>'.n;
+		$html .= t.t.'</fieldset>'.n;
+		$html .= t.'</div><!-- / .subject -->'.n;
+		$html .= t.'<div class="clear"></div>'.n;
 		$html .= '</form>'.n;
+		$html .= '</div><!-- / .below section -->'.n;
 
 		return $html;
 	}
@@ -1399,4 +1567,3 @@ class WikiHtml
 		<?php
 	}
 }
-?>
