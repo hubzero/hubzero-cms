@@ -211,67 +211,7 @@ HUB.Resources = {
 			});
 		}
 		
-		// Reply to review or comment
-		var show = $$('.reply');
-		if (show) {
-			show.each(function(item) {
-				item.addEvent('click', function(e) {
-					new Event(e).stop();
-					
-					var f = $(this.parentNode.parentNode).getElement('.addcomment');
-					if (f.hasClass('hide')) {
-						f.removeClass('hide');
-					} else {
-						f.addClass('hide');
-					}
-				});
-			});
-			if ($$('.commentarea')) {
-				$$('.commentarea').each(function(item) {
-					// Clear the default text
-					item.addEvent('focus', function() {
-						if (item.value == 'Enter your comments...') {
-							item.value = '';
-						}
-					});
-				});
-			}
-			if ($$('.cancelreply')) {
-				$$('.cancelreply').each(function(item) {
-					item.addEvent('click', function(e) {
-						new Event(e).stop();
-						$(item.parentNode.parentNode.parentNode).addClass('hide');
-					});
-				});
-			}
-		}
-		
 		//------------------------
-		// review ratings
-		//------------------------
-		var vhints 		=  $$('.votinghints');
-		var thumbsvote  =  $$('.thumbsvote');
-		if(vhints) {
-			
-			
-			for (i = 0; i < thumbsvote.length; i++) 
-			{
-				thumbsvote[i].onmouseover=function() {
-					
-					var el = this.getLast();
-					var el = el.getLast();
-					el.style.display = "inline";
-					
-				}
-				thumbsvote[i].onmouseout=function() {
-					var el = this.getLast();
-					var el = el.getLast();
-					el.style.display = "none";
-				}
-			}
-		}
-		
-			//------------------------
 		// screenshot thumbnail slider
 		//------------------------
 		
@@ -361,60 +301,7 @@ HUB.Resources = {
 			}
 		
 		}
-		
-		
-		//--------------
-		var vote = $$('.revvote');
-		if(vote) {
-	
-			for (i = 0; i < vote.length; i++) 
-			{
-				vote[i].onclick=function() {
-					pn = $(this.parentNode.parentNode.parentNode);
-					if($(this.parentNode).hasClass('gooditem')) {
-						var s = 'yes';
-					}
-					else {
-						var s = 'no';
-					}
-				
-					var id = $(this.parentNode.parentNode.parentNode).getProperty('id').replace('reviews_','');
-	
-					var rid = $(this.parentNode.parentNode).getProperty('id').replace('rev'+id+'_','');	
-					//var myAjax1 = new Ajax('index.php?option=com_resources&task=reviews&id='+rid+'&no_html=1&action=rateitem&refid='+id+'&ajax=1&vote='+s,{update:pn}).request();
-
-					new Ajax('index.php?option=com_resources&task=plugin&trigger=onResourcesRateItem&action=rateitem&no_html=1&rid='+id+'&refid='+id+'&ajax=1&vote='+s,{
-					//new Ajax('/resources/'+rid+'/reviews/?no_html=1&action=rateitem&refid='+id+'&ajax=1&vote='+s,{
-						'method' : 'get',
-						'update' : $(pn)
-					}).request();				
-				}
-				
-			}
-		}
-		
-		
-		// Recommendations web service
-		var recoms = $('recommendations-section');
-		if (recoms) {
-			var sbjt = $('recommendations-subject')
-			if (sbjt) {
-				sbjt.empty();
-				imgpath = '/components/com_resources/images/loading.gif';
-				var p = new Element('p', {'id':'loading-section'});
-				var img = new Element('img', {'id':'loading-img','src':imgpath}).injectInside(p);
-				p.injectInside(sbjt);
-			
-				var rid = $('rid');
-				if (rid) {
-					new Ajax('index.php?option=com_resources&task=plugin&trigger=onResourcesRecoms&no_html=1&rid='+rid.value,{
-							'method' : 'get',
-							'update' : sbjt
-						}).request();
-				}
-			}
-		}
-	}
+	} // end initialize
 }
 
 window.addEvent('domready', HUB.Resources.initialize);

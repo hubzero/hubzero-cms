@@ -500,6 +500,9 @@ class ResourcesController extends Hubzero_Controller
 				$helper = new ResourcesHelper($resource->id, $database);
 				$helper->getFirstChild();
 				
+				$helper->getContributorIDs();
+				$bits['authorized'] = $this->_authorize( $helper->contributorIDs );
+				
 				// Get the first child
 				if ($helper->firstChild || $resource->type == 7) {
 					$bits['primary_child'] = ResourcesHtml::primary_child( $this->_option, $resource, $helper->firstChild, '' );
@@ -658,9 +661,11 @@ class ResourcesController extends Hubzero_Controller
 		}
 
 		// Make sure they have access to view this resource
-		if ($this->checkGroupAccess($resource)) {
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
-			return;
+		if ($resource->access == 4) {
+			if ($this->checkGroupAccess($resource)) {
+				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+				return;
+			}
 		}
 
 		// Build the pathway
@@ -1930,7 +1935,7 @@ class ResourcesController extends Hubzero_Controller
 	
 	//-----------
 
-	private function getUsersGroups($groups)
+	public function getUsersGroups($groups)
 	{
 		$arr = array();
 		if (!empty($groups)) {

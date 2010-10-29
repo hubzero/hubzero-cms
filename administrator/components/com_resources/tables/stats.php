@@ -57,6 +57,31 @@ class ResourcesStats extends JTable
 		}
 		return true;
 	}
+	
+	//-----------
+	
+	public function loadStats( $resid=NULL, $period=NULL, $dthis=NULL ) 
+	{
+		if ($resid == NULL) {
+			$resid = $this->resid;
+		}
+		if ($resid == NULL) {
+			return false;
+		}
+		
+		$sql = "SELECT * 
+				FROM $this->_tbl
+				WHERE datetime='".$dthis."-01 00:00:00' AND period = '".$period."' AND resid = '".$resid."'";
+		
+		$this->_db->setQuery( $sql );
+		//return $this->_db->loadObject( $this );
+		if ($result = $this->_db->loadAssoc()) {
+			return $this->bind( $result );
+		} else {
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+	}
 }
 
 

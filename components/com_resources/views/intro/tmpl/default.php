@@ -92,7 +92,7 @@ if ($categories) {
 			<div class="<?php echo $cls; ?>">
 				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$normalized); ?>"><?php echo stripslashes($category->type); ?></a></h3>
 				<p><?php echo stripslashes($category->description); ?></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$normalized); ?>">Browse &rsaquo;</a></p>
+				<p><a class="read-more" href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$normalized); ?>" title="Browse <?php echo htmlentities(stripslashes($category->type),ENT_COMPAT,'UTF-8'); ?>">Browse <span><?php echo stripslashes($category->type); ?> </span>&rsaquo;</a></p>
 			</div>
 		</div><!-- / .three columns <?php echo $clm; ?> -->
 <?php

@@ -153,6 +153,7 @@ switch ($this->level)
 		$params = $this->bits['params'];
 		$rt = $this->bits['rt'];
 		$config = $this->bits['config'];
+		$authorized = $this->bits['authorized'];
 	
 		$statshtml = '';
 		if ($params->get('show_ranking')) {
@@ -172,11 +173,42 @@ switch ($this->level)
 		$html .= '<h3>'.JText::_('COM_RESOURCES_INFO').'</h3>';
 		$html .= '<ul id="ulinfo">';
 		$html .= '<li>';
-		$html .= '<h4><a href="'.$sef.'">'.Hubzero_View_Helper_Html::xhtml(stripslashes($resource->title)).'</a></h4>';
+		$html .= '<h4';
+		switch ($resource->access)
+		{
+			case 1: $html .= ' class="registered"'; break;
+			case 2: $html .= ' class="special"'; break;
+			case 3: $html .= ' class="protected"'; break;
+			case 4: $html .= ' class="private"'; break;
+			case 0:
+			default: $html .= ' class="public"'; break;
+		}
+		$html .= '><a href="'.$sef.'">'.Hubzero_View_Helper_Html::xhtml(stripslashes($resource->title)).'</a></h4>';
 		$html .= '<p>'.Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 400, 0).' &nbsp; <a href="'.$sef.'">'.JText::_('COM_RESOURCES_LEARN_MORE').'</a></p>';
 
-		if ($helper->firstChild || $resource->type == 7) {
-			$html .= $primary_child;
+		$juser =& JFactory::getUser();
+		if (!$juser->get('guest')) {
+			ximport('Hubzero_User_Helper');
+			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+			// Get the groups the user has access to
+			$usersgroups = ResourcesController::getUsersGroups($xgroups);
+		} else {
+			$usersgroups = array();
+		}
+
+		if ($resource->access == 3 && !in_array($resource->group_owner, $usersgroups) && !$authorized) {
+			$ghtml = JText::_('You must be logged in and a member of one of the following groups to access the full resource:').' ';
+			$allowedgroups = $resource->getGroups();
+			foreach ($allowedgroups as $allowedgroup) 
+			{
+				$ghtml .= '<a href="'.JRoute::_('index.php?option=com_groups&gid='.$allowedgroup).'">'.$allowedgroup.'</a>, ';
+			}
+			$ghtml = substr($ghtml,0,strlen($ghtml) - 2);
+			$html .= ResourcesHtml::warning( $ghtml )."\n";
+		} else {
+			if ($helper->firstChild || $resource->type == 7) {
+				$html .= $primary_child;
+			}
 		}
 		
 		$supported = null;

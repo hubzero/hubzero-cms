@@ -76,7 +76,7 @@ class ResourcesEconomy extends JObject
 		
 			if (intval($points) > 0) {
 				$msg = ($type=='royalty') ? 'Royalty payment for your resource contributions' : '';	
-				$BTL->deposit($points, $msg, $cat, $review->id);
+				$BTL->deposit($points, $msg, $cat, 0);
 			}
 		}
 	}
