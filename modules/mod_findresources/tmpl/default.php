@@ -49,7 +49,7 @@ if (count($tags) > 0) {
 		$tl[$tag->tag] = "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).'</a></li>'."\n";
 	}
 	$html .= implode('',$tl);	
-	$html .= "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags').'" class="showmore">'.JText::_('More').' &rsaquo;</a></li>'."\n";
+	$html .= "\t".'<li><a href="'.JRoute::_('index.php?option=com_tags').'" class="showmore">'.JText::_('More tags').' &rsaquo;</a></li>'."\n";
 	$html .= '</ol>'."\n";
 } else {
 	$html .= '<p>'.JText::_('No tags found.').'</p>'."\n";
