@@ -544,7 +544,7 @@ class UserpointsController extends Hubzero_Controller
 					$data['market_value'] = $accumulated;
 					$data['category']     = 'answers';	
 					$data['action']       = $action;
-					$data['log']          = $msg;
+					$data['log']          = $this->_message;
 					
 					if (!$MH->bind( $data )) {
 						$err = $MH->getError();
