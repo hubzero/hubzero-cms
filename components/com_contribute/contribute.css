@@ -14,7 +14,9 @@
 	-- -- -- -- -- -- --
 
 */
-
+	.com_contribute .read-more span {
+		display: none;
+		}
 /* My Submissions */
 	#submissions {
 		background-color: #F0F0F0;
