@@ -119,6 +119,8 @@ HUB.Myhub = {
 HUB.Sorts = null;
 
 window.addEvent('domready', function(){
+	document.ondragstart = function() { return false; };
+	
 	HUB.Sorts = new xSortables(['sortcol_0', 'sortcol_1', 'sortcol_2'], {handle:'h3[class=handle]',onComplete:function() {
 		var ids = this.serialize('', function(element, index){
 			return element.getProperty('id').replace('mod_','');

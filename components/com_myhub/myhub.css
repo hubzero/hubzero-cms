@@ -31,8 +31,8 @@
 		width: 214px;
 		padding-right: 15px;
 		}
-	.main {
-		background: url("images/bg-myhub.gif");
+	#content .main {
+		background: #eee url("images/bg-myhub.gif");
 		padding-left: 0;
 		padding-right: 0;
 		}
