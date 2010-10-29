@@ -59,7 +59,7 @@ if ($modeventslatest->eventsByRelDay) {
 ?>
 		<tr class="<?php echo $cls; ?>">
 			<td class="event-date"><span class="month"><?php echo date('M',$eventDate); ?></span><span class="day"><?php echo date('d',$eventDate); ?></span></td>
-			<td class="event-title"><a href="<?php echo JRoute::_('index.php?option=com_events&task=details&id='.$dayEvent->id); ?>"><?php echo $dayEvent->title; ?></a></td>
+			<td class="event-title"><a href="<?php echo JRoute::_('index.php?option=com_events&task=details&id='.$dayEvent->id); ?>"><?php echo stripslashes($dayEvent->title); ?></a></td>
 		</tr>
 <?php 
 		}
