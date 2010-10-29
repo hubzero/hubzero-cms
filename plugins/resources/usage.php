@@ -76,7 +76,8 @@ class plgResourcesUsage extends JPlugin
 		
 		// Display only for tools
 		if ($resource->type != 7) {
-			return $arr;
+			//return $arr;
+			$rtrn == 'metadata';
 		}
 
 		// Check if we have a needed database table
@@ -102,7 +103,11 @@ class plgResourcesUsage extends JPlugin
 		$period = JRequest::getInt('period', $this->_params->get('period',14));
 
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'stats.php' );
-		$stats = new ResourcesStatsTools( $database );
+		if ($resource->type == 7) {
+			$stats = new ResourcesStatsTools( $database );
+		} else {
+			$stats = new ResourcesStats( $database );
+		}
 		$stats->loadStats( $resource->id, $period, $dthis );
 
 		// Are we returning HTML?
@@ -137,7 +142,13 @@ class plgResourcesUsage extends JPlugin
 		}
 
 		if ($rtrn == 'all' || $rtrn == 'metadata') {
-			$arr['metadata'] = '<p class="usage"><a href="'.$url.'">'.JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS',$stats->users).'</a></p>';
+			if ($resource->type == 7) {
+				$arr['metadata'] = '<p class="usage"><a href="'.$url.'">'.JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS',$stats->users).'</a></p>';
+			} else {
+				if ($stats->users) {
+					$arr['metadata'] = '<p class="usage">'.JText::sprintf('%s user(s)',$stats->users).'</p>';
+				}
+			}
 		}
 
 		return $arr;
