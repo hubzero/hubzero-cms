@@ -113,6 +113,8 @@ class plgResourcesReviews extends JPlugin
 
 		ximport('Hubzero_View_Helper_Html');
 		ximport('Hubzero_Plugin_View');
+		ximport('Hubzero_Comment');
+		ximport('Hubzero_User_Profile');
 
 		// Instantiate a helper object and perform any needed actions
 		$h = new PlgResourcesReviewsHelper();
@@ -128,6 +130,15 @@ class plgResourcesReviews extends JPlugin
 
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') {
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('resources', 'reviews');
+			
+			// Push some scripts to the template
+			if (is_file(JPATH_ROOT.DS.'plugins'.DS.'resources'.DS.'reviews'.DS.'reviews.js')) {
+				$document =& JFactory::getDocument();
+				$document->addScript('plugins'.DS.'resources'.DS.'reviews'.DS.'reviews.js');
+			}
+			
 			// Did they perform an action?
 			// If so, they need to be logged in first.
 			if (!$h->loggedin) {
@@ -153,7 +164,6 @@ class plgResourcesReviews extends JPlugin
 			// Thumbs voting CSS & JS
 			$voting = $this->_params->get('voting');
 			if ($voting) {
-				ximport('Hubzero_Document');
 				Hubzero_Document::addComponentStylesheet('com_answers', 'vote.css');
 			}
 			
@@ -221,6 +231,63 @@ class plgResourcesReviews extends JPlugin
 
 		$ra = new ReportAbuse( $database );
 		return $ra->getCount( array('id'=>$item, 'category'=>$category) );
+	}
+	
+	public function getMemberPhoto( $member, $anonymous=0 )
+	{
+		$config =& JComponentHelper::getParams( 'com_members' );
+		
+		if (!$anonymous && $member->get('picture')) {
+			$thumb  = $config->get('webpath');
+			if (substr($thumb, 0, 1) != DS) {
+				$thumb = DS.$thumb;
+			}
+			if (substr($thumb, -1, 1) == DS) {
+				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
+			}
+			$thumb .= DS.plgResourcesReviews::niceidformat($member->get('uidNumber')).DS.$member->get('picture');
+			
+			$thumb = plgResourcesReviews::thumbit($thumb);
+		} else {
+			$thumb = '';
+		}
+		
+		$dfthumb = $config->get('defaultpic');
+		if (substr($dfthumb, 0, 1) != DS) {
+			$dfthumb = DS.$dfthumb;
+		}
+		$dfthumb = plgResourcesReviews::thumbit($dfthumb);
+		
+		if ($thumb && is_file(JPATH_ROOT.$thumb)) {
+			return $thumb;
+		} else if (is_file(JPATH_ROOT.$dfthumb)) {
+			return $dfthumb;
+		}
+	}
+	
+	//-----------
+	
+	public function thumbit($thumb) 
+	{
+		$image = explode('.',$thumb);
+		$n = count($image);
+		$image[$n-2] .= '_thumb';
+		$end = array_pop($image);
+		$image[] = $end;
+		$thumb = implode('.',$image);
+		
+		return $thumb;
+	}
+	
+	//-----------
+
+	public function niceidformat($someid) 
+	{
+		while (strlen($someid) < 5) 
+		{
+			$someid = 0 . "$someid";
+		}
+		return $someid;
 	}
 }
 
