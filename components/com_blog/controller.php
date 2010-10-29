@@ -1145,6 +1145,11 @@ class BlogController extends Hubzero_Controller
 			break;
 			
 			case 'group':
+				jimport( 'joomla.plugin.plugin' );
+				$plugin = JPluginHelper::getPlugin( 'groups', 'blog' );
+				$params = new JParameter( $plugin->params );
+				$p = $params->get('uploadpath');
+				$p = str_replace('{{gid}}',BlogHelperMember::niceidformat($id),$p);
 			break;
 			
 			case 'site':
