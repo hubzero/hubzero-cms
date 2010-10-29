@@ -184,13 +184,13 @@ class XFlashController extends Hubzero_Controller
 				$xml .="</bgcol>\n";
 				$xml .=" 		<bg>$slide[bg]</bg>\n";
 				$xml .=" 		<ima>".htmlspecialchars($slide['ima'])."</ima>\n";
-				$xml .=" 		<header>".htmlspecialchars($slide['header'])."</header>\n";
+				$xml .=" 		<header>".htmlspecialchars(stripslashes($slide['header']))."</header>\n";
 				$xml .=" 		<headerCol>";
 				if ($slide['headerCol']) {
 					$xml .="0x$slide[headerCol]";
 				}
 				$xml .="</headerCol>\n";
-				$xml .=" 		<subtitle>".htmlspecialchars($slide['subtitle'])."</subtitle>\n";
+				$xml .=" 		<subtitle>".htmlspecialchars(stripslashes($slide['subtitle']))."</subtitle>\n";
 				$xml .=" 		<subtitleCol>";
 				if ($slide['subtitleCol']) {
 					$xml .="0x$slide[subtitleCol]";
