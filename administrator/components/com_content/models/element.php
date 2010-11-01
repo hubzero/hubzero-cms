@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: element.php 14401 2010-01-26 14:10:00Z louis $
+ * @version		$Id: element.php 17299 2010-05-27 16:06:54Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -65,7 +65,10 @@ class ContentModelElement extends JModel
 		$limit				= $mainframe->getUserStateFromRequest('global.list.limit',					'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart			= $mainframe->getUserStateFromRequest('articleelement.limitstart',			'limitstart',		0,	'int');
 		$search				= $mainframe->getUserStateFromRequest('articleelement.search',				'search',			'',	'string');
-		$search				= JString::strtolower($search);
+		if (strpos($search, '"') !== false) {
+			$search = str_replace(array('=', '<'), '', $search);
+		}
+		$search = JString::strtolower($search);
 
 		//$where[] = "c.state >= 0";
 		$where[] = "c.state != -2";

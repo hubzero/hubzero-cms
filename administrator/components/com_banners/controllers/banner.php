@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 14401 2010-01-26 14:10:00Z louis $
+ * @version		$Id: banner.php 17299 2010-05-27 16:06:54Z ian $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -51,6 +51,10 @@ class BannerControllerBanner extends JController
 		$filter_catid		= $mainframe->getUserStateFromRequest( $context.'filter_catid',		'filter_catid',		'',			'int' );
 		$filter_state		= $mainframe->getUserStateFromRequest( $context.'filter_state',		'filter_state',		'',			'word' );
 		$search				= $mainframe->getUserStateFromRequest( $context.'search',			'search',			'',			'string' );
+		if (strpos($search, '"') !== false) {
+			$search = str_replace(array('=', '<'), '', $search);
+		}
+		$search = JString::strtolower($search);
 
 		$limit		= $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
 		$limitstart = $mainframe->getUserStateFromRequest( $context.'limitstart', 'limitstart', 0, 'int' );

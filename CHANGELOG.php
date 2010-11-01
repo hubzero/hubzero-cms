@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 16504 2010-04-26 17:32:35Z dextercowley $
+* @version		$Id: CHANGELOG.php 17301 2010-05-27 21:08:11Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -35,6 +35,12 @@ $ -> Language fix or change
 ^ -> Change
 - -> Removed
 ! -> Note
+
+-------------------- 1.5.18 Stable Release [27-May-2010] ------------------
+
+25-May-2010 Ian MacLennan
+ # [#20424] Revert issue 19859 (Graceful handling of Apache plugin failures)
+ ! [#19859] Reverted 19859.
 
 -------------------- 1.5.17 Stable Release [27-April-2010] ------------------
 

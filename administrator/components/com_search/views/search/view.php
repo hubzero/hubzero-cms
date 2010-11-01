@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.php 14401 2010-01-26 14:10:00Z louis $
+* @version		$Id: view.php 17299 2010-05-27 16:06:54Z ian $
 * @package		Joomla
 * @subpackage	Search
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -50,7 +50,11 @@ class SearchViewSearch extends JView
 		$showResults	= JRequest::getInt('search_results');
 
 		$search 		= $mainframe->getUserStateFromRequest( 'com_search.search', 'search', '', 'string' );
-
+		if (strpos($search, '"') !== false) {
+			$search = str_replace(array('=', '<'), '', $search);
+		}
+		$search = JString::strtolower($search);
+        
 		$this->assignRef('items', 	$items);
 		$this->assignRef('enabled', $enabled);
 		$this->assignRef('pageNav', $pageNav);
