@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: banner.php 17299 2010-05-27 16:06:54Z ian $
+ * @version		$Id: banner.php 18162 2010-07-16 07:00:47Z ian $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -139,25 +139,25 @@ class BannersViewBanner
 						<?php echo $checked; ?>
 					</td>
 					<td>
-					<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit' );?>::<?php echo $row->name; ?>">
+					<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit' );?>::<?php echo htmlspecialchars($row->name); ?>">
 						<?php
 						if ( JTable::isCheckedOut($user->get ('id'), $row->checked_out ) ) {
-							echo $row->name;
+							echo htmlspecialchars($row->name);
 						} else {
 							?>
 
 							<a href="<?php echo $link; ?>">
-								<?php echo $row->name; ?></a>
+								<?php echo htmlspecialchars($row->name); ?></a>
 							<?php
 						}
 						?>
 						</span>
 					</td>
 					<td align="center">
-						<?php echo $row->client_name;?>
+						<?php echo htmlspecialchars($row->client_name);?>
 					</td>
 					<td align="center">
-						<?php echo $row->category_name;?>
+						<?php echo htmlspecialchars($row->category_name);?>
 					</td>
 					<td align="center">
 						<?php echo $published;?>

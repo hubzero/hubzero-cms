@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 
-<form action="index.php?option=com_menus&amp;menutype=<?php echo $this->menutype; ?>" method="post" name="adminForm">
+<form action="index.php?option=com_menus&amp;menutype=<?php echo htmlspecialchars($this->menutype); ?>" method="post" name="adminForm">
 
 	<table>
 		<tr>
@@ -83,7 +83,7 @@
 				<?php echo $row->treename; ?>
 				<?php else : ?>
 				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Menu' );?>::<?php echo $row->treename; ?>">
-				<a href="<?php echo JRoute::_( 'index.php?option=com_menus&menutype='.$row->menutype.'&task=edit&cid[]='.$row->id ); ?>"><?php echo $row->treename; ?></a></span>
+				<a href="<?php echo JRoute::_('index.php?option=com_menus&menutype=' . htmlspecialchars($row->menutype) . '&task=edit&cid[]=' . $row->id); ?>"><?php echo $row->treename; ?></a></span>
 				<?php endif; ?>
 			</td>
 			<td align="center">
@@ -121,7 +121,7 @@
 	</table>
 
 	<input type="hidden" name="option" value="com_menus" />
-	<input type="hidden" name="menutype" value="<?php echo $this->menutype; ?>" />
+	<input type="hidden" name="menutype" value="<?php echo htmlspecialchars($this->menutype); ?>" />
 	<input type="hidden" name="task" value="view" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />

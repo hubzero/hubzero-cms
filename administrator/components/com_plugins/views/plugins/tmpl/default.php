@@ -97,9 +97,9 @@
 				echo $row->name;
 			} else {
 			?>
-				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Plugin' );?>::<?php echo $row->name; ?>">
+				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Plugin' );?>::<?php echo htmlspecialchars($row->name); ?>">
 				<a href="<?php echo $link; ?>">
-					<?php echo $row->name; ?></a></span>
+					<?php echo htmlspecialchars($row->name); ?></a></span>
 			<?php } ?>
 		</td>
 		<td align="center">

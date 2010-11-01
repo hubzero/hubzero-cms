@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.sections.html.php 17299 2010-05-27 16:06:54Z ian $
+* @version		$Id: admin.sections.html.php 18162 2010-07-16 07:00:47Z ian $
 * @package		Joomla
 * @subpackage	Sections
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -118,14 +118,14 @@ class sections_html
 					<?php echo $checked; ?>
 				</td>
 				<td>
-					<span class="editlinktip hasTip" title="<?php echo JText::_( 'Title' );?>::<?php echo $row->title; ?>">
+					<span class="editlinktip hasTip" title="<?php echo JText::_( 'Title' );?>::<?php echo htmlspecialchars($row->title); ?>">
 					<?php
 					if (  JTable::isCheckedOut($user->get ('id'), $row->checked_out ) ) {
-						echo $row->title;
+						echo htmlspecialchars($row->title);
 					} else {
 						?>
 						<a href="<?php echo JRoute::_( $link ); ?>">
-							<?php echo $row->title; ?></a>
+							<?php echo htmlspecialchars($row->title); ?></a>
 						<?php
 					}
 					?></span>
@@ -250,7 +250,7 @@ class sections_html
 						</label>
 					</td>
 					<td colspan="2">
-						<input class="text_area" type="text" name="title" id="title" value="<?php echo $row->title; ?>" size="50" maxlength="50" title="<?php echo JText::_( 'TIPTITLEFIELD' ); ?>" />
+						<input class="text_area" type="text" name="title" id="title" value="<?php echo htmlspecialchars($row->title); ?>" size="50" maxlength="50" title="<?php echo JText::_( 'TIPTITLEFIELD' ); ?>" />
 					</td>
 				</tr>
 				<tr>

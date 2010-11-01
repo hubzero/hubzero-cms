@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 18134 2010-07-14 12:23:56Z ian $
+* @version		$Id: CHANGELOG.php 18172 2010-07-17 19:46:57Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -37,7 +37,14 @@ $ -> Language fix or change
 ! -> Note
 
 
+-------------------- 1.5.20 Stable Release [18-July-2010] ------------------
+
+
 -------------------- 1.5.19 Stable Release [15-July-2010] ------------------
+
+15-July-2010 Mark Dexter
+# [#21419] Incorrect Joomla! Community Magazine address
+^ [#21421] *Credits.php update for 1.5.19
 
 14-July-2010 Ian MacLennan
  + [#21404] New installation language bs-BA

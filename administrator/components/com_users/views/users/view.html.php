@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 17299 2010-05-27 16:06:54Z ian $
+* @version		$Id: view.html.php 18162 2010-07-16 07:00:47Z ian $
 * @package		Joomla
 * @subpackage	Users
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -90,6 +90,11 @@ class UsersViewUsers extends JView
 		if ($filter_logged == 1 || $filter_logged == 2)
 		{
 			$filter = ' INNER JOIN #__session AS s ON s.userid = a.id';
+		}
+
+		// ensure filter_order has a valid value.
+		if (!in_array($filter_order, array('a.name', 'a.username', 'a.block', 'groupname', 'a.email', 'a.lastvisitdate', 'a.id'))) {
+			$filter_order = 'a.name';
 		}
 
 		$orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;

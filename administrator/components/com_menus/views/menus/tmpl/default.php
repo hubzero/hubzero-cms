@@ -76,7 +76,7 @@
 		<?php
 			// Get the current iteration and set a few values
 			$link 	= 'index.php?option=com_menus&amp;task=editMenu&amp;id='. $menu->id;
-			$linkA 	= 'index.php?option=com_menus&amp;task=view&amp;menutype='. $menu->menutype;
+			$linkA 	= 'index.php?option=com_menus&amp;task=view&amp;menutype='. htmlspecialchars($menu->menutype);
 		?>
 		<tr class="<?php echo "row". $k; ?>">
 			<td align="center" width="30">
@@ -86,12 +86,12 @@
 				<input type="radio" id="cb<?php echo $i;?>" name="id" value="<?php echo $menu->id; ?>" onclick="isChecked(this.checked);" />
 			</td>
 			<td>
-			<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Menu Name' );?>::<?php echo $menu->title; ?>">
+			<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Menu Name' );?>::<?php echo htmlspecialchars($menu->title); ?>">
 				<a href="<?php echo $link; ?>">
-					<?php echo $menu->title; ?></a></span>
+					<?php echo htmlspecialchars($menu->title); ?></a></span>
 			</td>
 			<td>
-				<?php echo $menu->menutype; ?>
+				<?php echo htmlspecialchars($menu->menutype); ?>
 			</td>
 			<td align="center">
 				<a href="<?php echo $linkA; ?>" title="<?php echo JText::_( 'Edit Menu Items' ); ?>">

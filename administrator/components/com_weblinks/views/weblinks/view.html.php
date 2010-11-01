@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 17299 2010-05-27 16:06:54Z ian $
+* @version		$Id: view.html.php 18162 2010-07-16 07:00:47Z ian $
 * @package		Joomla
 * @subpackage	Weblinks
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -43,6 +43,11 @@ class WeblinksViewWeblinks extends JView
 			$search = str_replace(array('=', '<'), '', $search);
 		}
 		$search = JString::strtolower($search);
+
+		// sanitize $filter_order
+		if (!in_array($filter_order, array('a.title', 'a.published', 'a.ordering', 'category', 'a.hits', 'a.id'))) {
+			$filter_order = 'a.ordering';
+		}
 
 		// Get data from the model
 		$items		= & $this->get( 'Data');

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: menutypes.php 14401 2010-01-26 14:10:00Z louis $
+ * @version		$Id: menutypes.php 18162 2010-07-16 07:00:47Z ian $
  * @package		Joomla.Framework
  * @subpackage	Table
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -49,17 +49,8 @@ class JTableMenuTypes extends JTable
 	 */
 	function check()
 	{
-		
-		$this->menutype = str_replace('-', ' ', $this->menutype);
-
-		$lang =& JFactory::getLanguage();
-		$this->menutype = $lang->transliterate($this->menutype);
-
-		$this->menutype = preg_replace(array('/\s+/','/[^A-Za-z0-9\-\_]/'), array('-',''), $this->menutype);
-
-		$this->menutype = trim(strtolower($this->menutype));
-		
-		if(empty($this->menutype)) {
+		$this->menutype = JFilterInput::clean($this->menutype, 'menutype');
+		if (empty($this->menutype)) {
 			$this->setError( "Cannot save: Empty menu type" );
 			return false;
 		}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: client.php 17299 2010-05-27 16:06:54Z ian $
+ * @version		$Id: client.php 18162 2010-07-16 07:00:47Z ian $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -102,9 +102,9 @@ class BannersViewClients
 							echo $row->name;
 						} else {
 							?>
-								<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit' );?>::<?php echo $row->name; ?>">
+								<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit' );?>::<?php echo htmlspecialchars($row->name); ?>">
 							<a href="<?php echo $link; ?>">
-								<?php echo $row->name; ?></a>
+								<?php echo htmlspecialchars($row->name); ?></a>
 								</span>
 							<?php
 						}

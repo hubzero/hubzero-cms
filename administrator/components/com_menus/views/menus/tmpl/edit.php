@@ -41,7 +41,7 @@
 			</label>
 		</td>
 		<td>
-			<input class="inputbox" type="text" name="menutype" id="menutype" size="30" maxlength="25" value="<?php echo $this->row->menutype; ?>" />			<?php echo JHTML::_('tooltip', JText::_( 'TIPNAMEUSEDTOIDENTIFYMENU' )); ?>
+			<input class="inputbox" type="text" name="menutype" id="menutype" size="30" maxlength="25" value="<?php echo htmlspecialchars($this->row->menutype); ?>" />			<?php echo JHTML::_('tooltip', JText::_( 'TIPNAMEUSEDTOIDENTIFYMENU' )); ?>
 		</td>
 	</tr>
 	<tr>
@@ -51,7 +51,7 @@
 			</label>
 		</td>
 		<td>
-			<input class="inputbox" type="text" name="title" id="title" size="30" maxlength="255" value="<?php echo $this->row->title; ?>" />
+			<input class="inputbox" type="text" name="title" id="title" size="30" maxlength="255" value="<?php echo $this->escape($this->row->title); ?>" />
 			<?php echo JHTML::_('tooltip',  JText::_( 'A proper title for the Menu' ) ); ?>
 		</td>
 	</tr>
@@ -62,7 +62,7 @@
 			</label>
 		</td>
 		<td>
-			<input class="inputbox" type="text" name="description" id="description" size="30" maxlength="255" value="<?php echo $this->row->description; ?>" />
+			<input class="inputbox" type="text" name="description" id="description" size="30" maxlength="255" value="<?php echo $this->escape($this->row->description); ?>" />
 			<?php echo JHTML::_('tooltip',  JText::_( 'A description for the Menu' ) ); ?>
 		</td>
 	</tr>

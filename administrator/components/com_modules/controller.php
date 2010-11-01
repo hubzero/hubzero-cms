@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 17299 2010-05-27 16:06:54Z ian $
+ * @version		$Id: controller.php 18162 2010-07-16 07:00:47Z ian $
  * @package		Joomla
  * @subpackage	Modules
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -98,6 +98,11 @@ class ModulesController extends JController
 			} else if ($filter_state == 'U' ) {
 				$where[] = 'm.published = 0';
 			}
+		}
+
+		// sanitize $filter_order
+		if (!in_array($filter_order, array('m.title', 'm.published', 'm.ordering', 'groupname', 'm.position', 'pages', 'm.module', 'm.id'))) {
+			$filter_order = 'm.position';
 		}
 
 		$where 		= ' WHERE ' . implode( ' AND ', $where );

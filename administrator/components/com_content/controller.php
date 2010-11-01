@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: controller.php 17299 2010-05-27 16:06:54Z ian $
+ * @version		$Id: controller.php 18162 2010-07-16 07:00:47Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -75,9 +75,14 @@ class ContentController extends JController
 		//$where[] = "c.state >= 0";
 		$where[] = 'c.state != -2';
 
-		if (!$filter_order) {
+		// ensure we have a valid value for filter_order
+		if (!in_array($filter_order, array('c.title', 'c.state', 'frontpage', 'c.ordering', 'groupname',
+									'section_name', 'cc.title', 'author', 'c.created', 'c.hits', 'c.id')))
+		{
 			$filter_order = 'section_name';
+
 		}
+
 		if ($filter_order == 'c.ordering') {
 			$order = ' ORDER BY section_name, cc.title, c.ordering '. $filter_order_Dir;
 		} else {
@@ -200,142 +205,6 @@ class ContentController extends JController
 		$lists['search'] = $search;
 
 		ContentView::showContent($rows, $lists, $pagination, $redirect);
-	}
-
-	/**
-	* Shows a list of archived articles
-	* @param int The section id
-	*/
-	function viewArchive()
-	{
-		global $mainframe;
-
-		// Initialize variables
-		$db						=& JFactory::getDBO();
-
-		$sectionid				= JRequest::getVar( 'sectionid', 0, '', 'int' );
-		$option					= JRequest::getCmd( 'option' );
-
-		$filter_order			= $mainframe->getUserStateFromRequest("$option.$sectionid.viewarchive.filter_order",		'filter_order',		'sectname',	'cmd');
-		$filter_order_Dir		= $mainframe->getUserStateFromRequest("$option.$sectionid.viewarchive.filter_order_Dir",	'filter_order_Dir',	'',			'word');
-		$catid					= $mainframe->getUserStateFromRequest("$option.$sectionid.viewarchive.catid",				'catid',			0,			'int');
-		$limit					= $mainframe->getUserStateFromRequest('global.list.limit',									'limit',			$mainframe->getCfg('list_limit'), 'int');
-		$limitstart				= $mainframe->getUserStateFromRequest("$option.$sectionid.viewarchive.limitstart",			'limitstart',		0,			'int');
-		$filter_authorid		= $mainframe->getUserStateFromRequest("$option.$sectionid.viewarchive.filter_authorid",		'filter_authorid',	0,			'int');
-		$filter_sectionid		= $mainframe->getUserStateFromRequest("$option.$sectionid.viewarchive.filter_sectionid",	'filter_sectionid',	0,			'int');
-		$search					= $mainframe->getUserStateFromRequest("$option.$sectionid.viewarchive.search",				'search',			'',			'string');
-		if (strpos($search, '"') !== false) {
-			$search = str_replace(array('=', '<'), '', $search);
-		}
-		$search = JString::strtolower($search);
-		$redirect				= $sectionid;
-
-		// A section id of zero means view all articles [all sections]
-		if ($sectionid == 0)
-		{
-			$where = array ('c.state 	= -1', 'c.catid	= cc.id', 'cc.section = s.id', 's.scope  	= "content"');
-			$filter = ' , #__sections AS s WHERE s.id = c.section';
-			$all = 1;
-		}
-		else
-		{
-			 //We are viewing a specific section
-			$where = array ('c.state 	= -1', 'c.catid	= cc.id', 'cc.section	= s.id', 's.scope	= "content"', 'c.sectionid= '.(int) $sectionid);
-			$filter = ' WHERE section = '.$db->Quote($sectionid);
-			$all = NULL;
-		}
-
-		// Section filter
-		if ($filter_sectionid > 0)
-		{
-			$where[] = 'c.sectionid = ' . (int) $filter_sectionid;
-		}
-		// Author filter
-		if ($filter_authorid > 0)
-		{
-			$where[] = 'c.created_by = ' . (int) $filter_authorid;
-		}
-		// Category filter
-		if ($catid > 0)
-		{
-			$where[] = 'c.catid = ' . (int) $catid;
-		}
-		// Keyword filter
-		if ($search)
-		{
-			$where[] = 'LOWER( c.title ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
-		}
-
-		// TODO: Sanitise $filter_order
-		$filter_order_Dir = ($filter_order_Dir == 'ASC' ? 'ASC' : 'DESC');
-		$orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir .', sectname, cc.name, c.ordering';
-		$where = (count($where) ? ' WHERE '.implode(' AND ', $where) : '');
-
-		// get the total number of records
-		$query = 'SELECT COUNT(*)' .
-				' FROM #__content AS c' .
-				' LEFT JOIN #__categories AS cc ON cc.id = c.catid' .
-				' LEFT JOIN #__sections AS s ON s.id = c.sectionid' .
-				$where;
-		$db->setQuery($query);
-		$total = $db->loadResult();
-
-		jimport('joomla.html.pagination');
-		$pagination = new JPagination($total, $limitstart, $limit);
-
-		$query = 'SELECT c.*, g.name AS groupname, cc.name, v.name AS author, s.title AS sectname' .
-				' FROM #__content AS c' .
-				' LEFT JOIN #__categories AS cc ON cc.id = c.catid' .
-				' LEFT JOIN #__sections AS s ON s.id = c.sectionid' .
-				' LEFT JOIN #__groups AS g ON g.id = c.access' .
-				' LEFT JOIN #__users AS v ON v.id = c.created_by' .
-				$where .
-				$orderby;
-		$db->setQuery($query, $pagination->limitstart, $pagination->limit);
-		$rows = $db->loadObjectList();
-
-		// If there is a database query error, throw a HTTP 500 and exit
-		if ($db->getErrorNum())
-		{
-			JError::raiseError( 500, $db->stderr() );
-			return false;
-		}
-
-		// get list of categories for dropdown filter
-		$query = 'SELECT c.id AS value, c.title AS text' .
-				' FROM #__categories AS c' .
-				$filter .
-				' ORDER BY c.ordering';
-		$lists['catid'] = ContentHelper::filterCategory($query, $catid);
-
-		// get list of sections for dropdown filter
-		$javascript = 'onchange="document.adminForm.submit();"';
-		$lists['sectionid'] = JAdminMenus::SelectSection('filter_sectionid', $filter_sectionid, $javascript);
-
-		$section = & JTable::getInstance('section');
-		$section->load($sectionid);
-
-		// get list of Authors for dropdown filter
-		$query = 'SELECT c.created_by, u.name' .
-				' FROM #__content AS c' .
-				' INNER JOIN #__sections AS s ON s.id = c.sectionid' .
-				' LEFT JOIN #__users AS u ON u.id = c.created_by' .
-				' WHERE c.state = -1' .
-				' GROUP BY u.name' .
-				' ORDER BY u.name';
-		$db->setQuery($query);
-		$authors[] = JHTML::_('select.option', '0', '- '.JText::_('Select Author').' -', 'created_by', 'name');
-		$authors = array_merge($authors, $db->loadObjectList());
-		$lists['authorid'] = JHTML::_('select.genericlist',  $authors, 'filter_authorid', 'class="inputbox" size="1" onchange="document.adminForm.submit( );"', 'created_by', 'name', $filter_authorid);
-
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
-
-		ContentView::showArchive($rows, $section, $lists, $pagination, $option, $all, $redirect);
 	}
 
 	/**
@@ -604,7 +473,7 @@ class ContentController extends JController
 		$task		= JRequest::getCmd( 'task' );
 		$sectionid	= JRequest::getVar( 'sectionid', 0, '', 'int' );
 		$redirect	= JRequest::getVar( 'redirect', $sectionid, 'post', 'int' );
-		$menu		= JRequest::getVar( 'menu', 'mainmenu', 'post', 'cmd' );
+		$menu		= JRequest::getVar( 'menu', 'mainmenu', 'post', 'menutype' );
 		$menuid		= JRequest::getVar( 'menuid', 0, 'post', 'int' );
 		$nullDate	= $db->getNullDate();
 
@@ -763,11 +632,14 @@ class ContentController extends JController
 		switch ($task)
 		{
 			case 'go2menu' :
-				$mainframe->redirect('index.php?option=com_menus&menutype='.$menu);
+				$mainframe->redirect('index.php?option=com_menus&menutype=' . $menu);
 				break;
 
 			case 'go2menuitem' :
-				$mainframe->redirect('index.php?option=com_menus&menutype='.$menu.'&task=edit&id='.$menuid);
+				$mainframe->redirect(
+					'index.php?option=com_menus&menutype=' . $menu
+					. '&task=edit&id=' . $menuid
+				);
 				break;
 
 			case 'menulink' :

@@ -87,9 +87,9 @@
 				echo $row->title;
 			} else {
 				?>
-				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Poll' );?>::<?php echo $row->title; ?>">
+				<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Poll' );?>::<?php echo htmlspecialchars($row->title); ?>">
 				<a href="<?php echo $link  ?>">
-					<?php echo $row->title; ?></a></span>
+					<?php echo htmlspecialchars($row->title); ?></a></span>
 				<?php
 			}
 			?>

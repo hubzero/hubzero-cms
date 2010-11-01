@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 17299 2010-05-27 16:06:54Z ian $
+* @version		$Id: view.html.php 18162 2010-07-16 07:00:47Z ian $
 * @package		Joomla
 * @subpackage	Config
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -63,6 +63,12 @@ class PollViewPolls extends JView
 		}
 
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+
+		// sanitize $filter_order
+		if (!in_array($filter_order, array('m.title', 'm.published', 'a.ordering', 'catname', 'm.voters', 'numoptions', 'm.lag', 'm.id'))) {
+			$filter_order = 'm.id';
+		}
+
 		$orderby 	= ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
 
 		$query = 'SELECT COUNT(m.id)'

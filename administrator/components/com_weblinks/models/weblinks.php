@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: weblinks.php 17299 2010-05-27 16:06:54Z ian $
+ * @version		$Id: weblinks.php 18162 2010-07-16 07:00:47Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -146,6 +146,11 @@ class WeblinksModelWeblinks extends JModel
 
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'filter_order',		'filter_order',		'a.ordering',	'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'filter_order_Dir',	'filter_order_Dir',	'',				'word' );
+
+		// sanitize $filter_order
+		if (!in_array($filter_order, array('a.title', 'a.published', 'a.ordering', 'category', 'a.hits', 'a.id'))) {
+			$filter_order = 'a.ordering';
+		}
 
 		if ($filter_order == 'a.ordering'){
 			$orderby 	= ' ORDER BY category, a.ordering '.$filter_order_Dir;

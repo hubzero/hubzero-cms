@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: mod_stats.php 14401 2010-01-26 14:10:00Z louis $
+* @version		$Id: mod_stats.php 18162 2010-07-16 07:00:47Z ian $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -35,7 +35,7 @@ $rows = $db->loadObjectList();
 <?php
 foreach ($rows as $row)
 {
-	$link = 'index.php?option=com_menus&amp;task=view&amp;menutype='. $row->menutype;
+	$link = 'index.php?option=com_menus&amp;task=view&amp;menutype=' . $row->menutype;
 	?>
 	<tr>
 		<td>

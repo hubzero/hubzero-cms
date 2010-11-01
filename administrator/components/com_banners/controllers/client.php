@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: client.php 17299 2010-05-27 16:06:54Z ian $
+ * @version		$Id: client.php 18162 2010-07-16 07:00:47Z ian $
  * @package		Joomla
  * @subpackage	Banners
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -59,6 +59,11 @@ class BannerControllerClient extends JController
 		}
 
 		$where		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+
+		if (!in_array($filter_order, array('a.name', 'a.contact', 'bid', 'a.cid'))) {
+			$filter_order = 'a.name';
+		}
+
 		$orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir .', a.cid';
 
 		// get the total number of records

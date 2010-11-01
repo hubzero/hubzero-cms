@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.contact.html.php 17299 2010-05-27 16:06:54Z ian $
+* @version		$Id: admin.contact.html.php 18162 2010-07-16 07:00:47Z ian $
 * @package		Joomla
 * @subpackage	Contact
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -114,12 +114,12 @@ class HTML_contact
 					<td>
 					<?php
 					if (JTable::isCheckedOut($user->get ('id'), $row->checked_out )) :
-						echo $row->name;
+						echo htmlspecialchars($row->name);
 					else :
 						?>
-						<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Contact' );?>::<?php echo $row->name; ?>">
+						<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Contact' );?>::<?php echo htmlspecialchars($row->name); ?>">
 						<a href="<?php echo $link; ?>">
-							<?php echo $row->name; ?></a> </span>
+							<?php echo htmlspecialchars($row->name); ?></a> </span>
 						<?php
 					endif;
 					?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: helper.php 14401 2010-01-26 14:10:00Z louis $
+ * @version		$Id: helper.php 18162 2010-07-16 07:00:47Z ian $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -82,6 +82,54 @@ class ContentHelper
 		}
 		return true;
 	}
+
+	/**
+	* Applies the content tag filters to arbitrary text as per settings for current user group
+	* @param text The string to filter
+	* @return string The filtered string
+	*/
+	function filterText( $text )
+	{
+		// Filter settings
+		jimport( 'joomla.application.component.helper' );
+		$config	= JComponentHelper::getParams( 'com_content' );
+		$user	= &JFactory::getUser();
+		$gid	= $user->get( 'gid' );
+
+		$filterGroups	=  $config->get( 'filter_groups' );
+		
+		// convert to array if one group selected
+		if ( (!is_array($filterGroups) && (int) $filterGroups > 0) ) { 
+			$filterGroups = array($filterGroups);
+		}
+
+		if (is_array($filterGroups) && in_array( $gid, $filterGroups ))
+		{
+			$filterType		= $config->get( 'filter_type' );
+			$filterTags		= preg_split( '#[,\s]+#', trim( $config->get( 'filter_tags' ) ) );
+			$filterAttrs	= preg_split( '#[,\s]+#', trim( $config->get( 'filter_attritbutes' ) ) );
+			switch ($filterType)
+			{
+				case 'NH':
+					$filter	= new JFilterInput();
+					break;
+				case 'WL':
+					$filter	= new JFilterInput( $filterTags, $filterAttrs, 0, 0, 0);  // turn off xss auto clean
+					break;
+				case 'BL':
+				default:
+					$filter	= new JFilterInput( $filterTags, $filterAttrs, 1, 1 );
+					break;
+			}
+			$text	= $filter->clean( $text );
+		} elseif(empty($filterGroups) && $gid != '25') { // no default filtering for super admin (gid=25)
+			$filter = new JFilterInput( array(), array(), 1, 1 );
+			$text	= $filter->clean( $text );
+		}
+		return $text;
+	}
+
+
 
 	/**
 	* Function to reset Hit count of an article

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: search.php 17299 2010-05-27 16:06:54Z ian $
+ * @version		$Id: search.php 18162 2010-07-16 07:00:47Z ian $
  * @package		Joomla
  * @subpackage	Search
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -58,6 +58,11 @@ class SearchModelSearch extends JModel
 		$search = JString::strtolower($search);
 		$showResults		= JRequest::getInt('search_results');
 
+		// sanitize $filter_order
+		if (!in_array($filter_order, array('search_term', 'hits'))) {
+			$filter_order = 'hits';
+		}
+
 		// table ordering
 		if ( $filter_order_Dir == 'ASC' ) {
 			$this->lists['order_Dir'] = 'ASC';
@@ -75,6 +80,7 @@ class SearchModelSearch extends JModel
 		}
 
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+
 		$orderby 	= ' ORDER BY '. $filter_order .' '. $filter_order_Dir .', hits DESC';
 
 		// get the total number of records

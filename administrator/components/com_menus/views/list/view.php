@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.php 17299 2010-05-27 16:06:54Z ian $
+ * @version		$Id: view.php 18162 2010-07-16 07:00:47Z ian $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -35,7 +35,7 @@ class MenusViewList extends JView
 		/*
 		 * Set toolbar items for the page
 		 */
-		$menutype 	= $mainframe->getUserStateFromRequest( 'com_menus.menutype', 'menutype', 'mainmenu', 'string' );
+		$menutype 	= $mainframe->getUserStateFromRequest('com_menus.menutype', 'menutype', 'mainmenu', 'menutype');
 
 		JToolBarHelper::title( JText::_( 'MENU ITEM MANAGER' ) .': <small><small>['.$menutype.']</small></small>', 'menu.png' );
 
@@ -102,7 +102,7 @@ class MenusViewList extends JView
 		$document = & JFactory::getDocument();
 		$document->setTitle(JText::_('Copy Menu Items'));
 
-		$menutype 	= $mainframe->getUserStateFromRequest( 'com_menus.menutype', 'menutype', 'mainmenu', 'string' );
+		$menutype 	= $mainframe->getUserStateFromRequest('com_menus.menutype', 'menutype', 'mainmenu', 'menutype');
 
 		// Build the menutypes select list
 		$menuTypes 	= MenusHelper::getMenuTypes();
@@ -138,7 +138,7 @@ class MenusViewList extends JView
 		$document = & JFactory::getDocument();
 		$document->setTitle(JText::_('Move Menu Items'));
 
-		$menutype 	= $mainframe->getUserStateFromRequest( 'com_menus.menutype', 'menutype', 'mainmenu', 'string' );
+		$menutype 	= $mainframe->getUserStateFromRequest('com_menus.menutype', 'menutype', 'mainmenu', 'menutype');
 
 		// Build the menutypes select list
 		$menuTypes 	= MenusHelper::getMenuTypes();
@@ -162,7 +162,7 @@ class MenusViewList extends JView
 		global $mainframe;
 		$db		=& JFactory::getDBO();
 
-		$menutype			= $mainframe->getUserStateFromRequest( "com_menus.menutype",					'menutype',			'mainmenu',		'string' );
+		$menutype			= $mainframe->getUserStateFromRequest( 'com_menus.menutype',					'menutype',			'mainmenu',		'menutype' );
 		$filter_order		= $mainframe->getUserStateFromRequest( "com_menus.$menutype.filter_order",		'filter_order',		'm.ordering',	'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( "com_menus.$menutype.filter_order_Dir",	'filter_order_Dir',	'ASC',			'word' );
 		$filter_state		= $mainframe->getUserStateFromRequest( "com_menus.$menutype.filter_state",		'filter_state',		'',				'word' );
@@ -172,6 +172,11 @@ class MenusViewList extends JView
 			$search = str_replace(array('=', '<'), '', $search);
 		}
 		$search = JString::strtolower($search);
+
+		// ensure $filter_order has a good value
+		if (!in_array($filter_order, array('m.name', 'm.published', 'm.ordering', 'groupname', 'm.type', 'm.id'))) {
+			$filter_order = 'm.ordering';
+		}
 
 		// level limit filter
 		$lists['levellist'] = JHTML::_('select.integerlist',    1, 20, 1, 'levellimit', 'size="1" onchange="document.adminForm.submit();"', $levellimit );

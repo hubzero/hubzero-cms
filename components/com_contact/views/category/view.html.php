@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 14401 2010-01-26 14:10:00Z louis $
+ * @version		$Id: view.html.php 18162 2010-07-16 07:00:47Z ian $
  * @package		Joomla
  * @subpackage	Contact
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -44,6 +44,11 @@ class ContactViewCategory extends JView
 		$default_limit = $pparams->def('display_num', 20);
 
 		$limit = $mainframe->getUserStateFromRequest('com_contact.'.$this->getLayout().'.limit', 'limit', $default_limit, 'int');
+
+		// sanitize $orderBy
+		if (!in_array($filter_order, array('cd.ordering', 'cd.name', 'cd.con_position'))) {
+			$filter_order = 'cd.ordering';
+		}
 
 		// query options
 		$options['aid'] 		= $user->get('aid', 0);

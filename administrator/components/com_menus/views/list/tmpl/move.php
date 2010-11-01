@@ -44,7 +44,7 @@
 	<input type="hidden" name="option" value="com_menus" />
 	<input type="hidden" name="boxchecked" value="1" />
 	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="menutype" value="<?php echo $this->menutype; ?>" />
+	<input type="hidden" name="menutype" value="<?php echo htmlspecialchars($this->menutype); ?>" />
 <?php foreach ( $this->items as $item ) : ?>
 	<input type="hidden" name="cid[]" value="<?php echo $item->id; ?>" />
 <?php endforeach; ?>

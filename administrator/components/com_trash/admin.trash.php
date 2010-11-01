@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.trash.php 17299 2010-05-27 16:06:54Z ian $
+* @version		$Id: admin.trash.php 18162 2010-07-16 07:00:47Z ian $
 * @package		Joomla
 * @subpackage	Trash
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -94,6 +94,12 @@ function viewTrashContent( $option )
 	}
 
 	$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+
+	// ensure filter_order has a valid value
+	if (!in_array($filter_order, array('c.title', 'c.id', 'sectname', 'catname'))) {
+		$filter_order = 'sectname';
+	}
+
 	$orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir .', s.name, cc.name, c.title';
 
 	// get the total number of content
@@ -165,6 +171,12 @@ function viewTrashMenu( $option )
 	}
 
 	$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+
+	// ensure filter_order has a valid value
+	if (!in_array($filter_order, array('m.name', 'm.id', 'm.menutype', 'm.type'))) {
+		$filter_order = 'm.menutype';
+	}
+
 	$orderby 	= ' ORDER BY '. $filter_order . ' ' . $filter_order_Dir .', m.menutype, m.ordering, m.ordering,  m.name';
 
 	$query = 'SELECT count(*)'

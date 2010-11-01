@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.messages.php 17299 2010-05-27 16:06:54Z ian $
+* @version		$Id: admin.messages.php 18162 2010-07-16 07:00:47Z ian $
 * @package		Joomla
 * @subpackage	Messages
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -95,6 +95,12 @@ function showMessages( $option )
 	}
 
 	$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+
+	// sanitize $filter_order``
+	if (!in_array($filter_order, array('a.subject', 'a.state', 'user_from', 'a.date_time'))) {
+		$filter_order = 'a.date_time';
+	}
+
 	$orderby 	= ' ORDER BY '. $filter_order .' '. $filter_order_Dir .', a.date_time DESC';
 
 	$query = 'SELECT COUNT(*)'

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.sections.php 17299 2010-05-27 16:06:54Z ian $
+* @version		$Id: admin.sections.php 18162 2010-07-16 07:00:47Z ian $
 * @package		Joomla
 * @subpackage	Sections
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -132,6 +132,12 @@ function showSections( $scope, $option )
 	}
 
 	$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+
+	// ensure filter_order has a valid value
+	if (!in_array($filter_order, array('s.title', 's.published', 's.ordering', 'groupname', 's.id'))) {
+		$filter_order = 's.ordering';
+	}
+
 	$orderby 	= ' ORDER BY '.$filter_order.' '. $filter_order_Dir .', s.ordering';
 
 	// get the total number of records
@@ -277,18 +283,20 @@ function saveSection( $option, $scope, $task )
 {
 	global $mainframe;
 
+	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_content'.DS.'helper.php');
+
 	// Check for request forgeries
 	JRequest::checkToken() or jexit( 'Invalid Token' );
 
 	$db			=& JFactory::getDBO();
-	$menu		= JRequest::getVar( 'menu', 'mainmenu', 'post', 'string' );
+	$menu		= JRequest::getVar( 'menu', 'mainmenu', 'post', 'menutype' );
 	$menuid		= JRequest::getVar( 'menuid', 0, 'post', 'int' );
 	$oldtitle	= JRequest::getVar( 'oldtitle', '', '', 'post', 'string' );
 
 	$post = JRequest::get('post');
 
 	// fix up special html fields
-	$post['description'] = JRequest::getVar( 'description', '', 'post', 'string', JREQUEST_ALLOWRAW );
+	$post['description'] = ContentHelper::filterText(JRequest::getVar( 'description', '', 'post', 'string', JREQUEST_ALLOWRAW ));
 
 	$row =& JTable::getInstance('section');
 	if (!$row->bind($post)) {
@@ -298,7 +306,7 @@ function saveSection( $option, $scope, $task )
 		JError::raiseError(500, $row->getError() );
 	}
 	if ( $oldtitle ) {
-		if ( $oldtitle <> $row->title ) {
+		if ( $oldtitle != $row->title ) {
 			$query = 'UPDATE #__menu'
 			. ' SET name = '.$db->Quote($row->title)
 			. ' WHERE name = '.$db->Quote($oldtitle)
@@ -322,11 +330,16 @@ function saveSection( $option, $scope, $task )
 	switch ( $task )
 	{
 		case 'go2menu':
-			$mainframe->redirect( 'index.php?option=com_menus&menutype='. $menu );
+			$mainframe->redirect( 
+				'index.php?option=com_menus&menutype=' . $menu 
+			);
 			break;
 
 		case 'go2menuitem':
-			$mainframe->redirect( 'index.php?option=com_menus&menutype='. $menu .'&task=edit&id='. $menuid );
+			$mainframe->redirect( 
+				'index.php?option=com_menus&menutype=' . $menu
+				. '&task=edit&id=' . $menuid 
+			);
 			break;
 
 		case 'apply':

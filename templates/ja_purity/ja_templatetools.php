@@ -103,14 +103,13 @@ class JA_Tools {
 		}
 
 		$user	=& JFactory::getUser();
-		if (isset($user))
-		{
+		$sql = 'SELECT count(*) FROM #__menu AS m'
+			. ' WHERE menutype=' . $database -> Quote($menutype)
+			. ' AND published=1 AND parent=0 and ordering < ' . $ordering
+		;
+		if (isset($user)) {
 			$aid = $user->get('aid', 0);
-			$sql = "SELECT count(*) FROM #__menu AS m"
-			. "\nWHERE menutype='". $menutype ."' AND published='1' AND access <= '$aid' AND parent=0 and ordering < $ordering";
-		} else {
-			$sql = "SELECT count(*) FROM #__menu AS m"
-			. "\nWHERE menutype='". $menutype ."' AND published='1' AND parent=0 and ordering < $ordering";
+			$sql .= " AND access <= '$aid'";
 		}
 		$database->setQuery($sql);
 
