@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: category.php 12028 2009-06-10 02:06:27Z ian $
+ * @version		$Id: category.php 15201 2010-03-05 09:15:01Z ian $
  * @package		Joomla
  * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant to the
  * GNU General Public License, and as distributed it includes or is derivative
@@ -322,7 +322,7 @@ class ContentModelCategory extends JModel
 		}
 
 		// Lets load the siblings if they don't already exist
-		if (empty($this->_content[$state]))
+		if (empty($this->_data[$state]))
 		{
 			// Get the pagination request variables
 			$limit		= JRequest::getVar('limit', 0, '', 'int');

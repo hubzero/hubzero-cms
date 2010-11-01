@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: helper.php 11646 2009-03-01 19:34:56Z ian $
+ * @version		$Id: helper.php 14996 2010-02-22 23:15:13Z ian $
  * @package		Joomla
  * @subpackage	Menus
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant to the
  * GNU General Public License, and as distributed it includes or is derivative
@@ -54,7 +54,7 @@ class MenusHelper
 		$db = &JFactory::getDBO();
 		$query = 'SELECT c.id, c.name, c.link, c.option' .
 				' FROM #__components AS c' .
-				' WHERE c.link <> "" AND parent = 0' .
+				' WHERE c.link <> "" AND parent = 0 AND enabled = 1' .
 				' ORDER BY c.name';
 		$db->setQuery( $query );
 		$result = $db->loadObjectList( );
@@ -150,19 +150,19 @@ class MenusHelper
 		$published = JHTML::_('select.radiolist',  $put, 'published', '', 'value', 'text', $row->published );
 		return $published;
 	}
-	
+
 	/**
 	* clean system cache
-	*/ 
+	*/
 	function cleanCache()
 	{
 		global $mainframe;
-		
+
 		if ($mainframe->getCfg('caching')) {
 			// clean system cache
 			$cache =& JFactory::getCache('_system');
 			$cache->clean();
-			
+
 			// clean mod_mainmenu cache
 			$cache2 =& JFactory::getCache('mod_mainmenu');
 			$cache2->clean();

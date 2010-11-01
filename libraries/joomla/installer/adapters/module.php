@@ -3,7 +3,7 @@
  * @version		$Id:module.php 6961 2007-03-15 16:06:53Z tcp $
  * @package		Joomla.Framework
  * @subpackage	Installer
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -180,14 +180,19 @@ class JInstallerModule extends JObject
 			return false;
 		}
 		$id = $db->loadResult();
-
+ 		
+ 		// load module instance
+ 		$row =& JTable::getInstance('module');
+ 		
 		// Was there a module already installed with the same name?
 		// If there was then we wouldn't be here because it would have
 		// been stopped by the above. Otherwise the files weren't there
 		// (e.g. migration) or its an upgrade (files overwritten)
 		// So all we need to do is create an entry when we can't find one
-		if (!$id) {
-			$row = & JTable::getInstance('module');
+
+		if ($id) {
+			$row->load($id);
+		} else {
 			$row->title = JText::_($this->get('name'));
 			$row->ordering = $row->getNextOrder( "position='left'" );
 			$row->position = 'left';

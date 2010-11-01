@@ -1,9 +1,9 @@
 <?php
 /**
-* @version		$Id: session.php 12694 2009-09-11 21:03:02Z ian $
+* @version		$Id: session.php 16385 2010-04-23 10:44:15Z ian $
 * @package		Joomla.Framework
 * @subpackage	Session
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -521,6 +521,9 @@ class JSession extends JObject
 		// create new session id
 		$id	=	$this->_createId( strlen( $this->getId() ) );
 
+		// first we grab the session data
+		$data = $this->_store->read($this->getId());
+
 		// kill session
 		session_destroy();
 
@@ -534,7 +537,10 @@ class JSession extends JObject
 		// restart session with new id
 		session_id( $id );
 		session_start();
+		$_SESSION = $values;
 
+		//now we put the session data back
+		$this->_store->write($id, $data);
 		return true;
 	}
 

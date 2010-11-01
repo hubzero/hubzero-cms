@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: folder.php 11675 2009-03-08 20:43:54Z willebil $
+ * @version		$Id: folder.php 15203 2010-03-05 09:21:16Z ian $
  * @package		Joomla.Framework
  * @subpackage	FileSystem
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -564,8 +564,16 @@ class JFolder
 	function makeSafe($path)
 	{
 		$ds = (DS == '\\') ? '\\' . DS : DS;
-		$regex = array('#[^A-Za-z0-9:\_\-' . $ds . ' ]#');
-		return preg_replace($regex, '', $path);
+		$regex = array('#[^A-Za-z0-9:\_\-\.' . $ds . ' ]#');
+		$safepath = preg_replace($regex, '', $path);  // check if all chars are legal
+		$parts = explode('\\', $safepath);
+		$safepath = '';
+		foreach ($parts as $part) {
+		  if ( ($part !== '.') & ($part !== '..') ) {
+		    $safepath .=  '\\'. trim(str_replace('..', '.', $part),'.');
+		  }
+		}
+		return $safepath;
 	}
 
 }

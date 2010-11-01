@@ -1,9 +1,9 @@
 <?php
 /**
-* @version		$Id: helper.php 10707 2008-08-21 09:52:47Z eddieajau $
+* @version		$Id: helper.php 16381 2010-04-23 09:28:44Z ian $
 * @package		Joomla.Framework
 * @subpackage	Plugin
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -111,9 +111,18 @@ class JPluginHelper
 	function _import( &$plugin, $autocreate = true, $dispatcher = null )
 	{
 		static $paths;
+		static $shutdown_handler_installed;
+		$mainframe =& JFactory::getApplication();
 
 		if (!$paths) {
 			$paths = array();
+		}
+	
+		// Install shutdown handler if not installed yet
+		if(!$shutdown_handler_installed)
+		{
+			register_shutdown_function(array('JPluginHelper', 'shutdown'));
+			$shutdown_handler_installed = true;
 		}
 
 		$result	= false;
@@ -130,6 +139,7 @@ class JPluginHelper
 				global $_MAMBOTS, $mainframe;
 
 				jimport('joomla.plugin.plugin');
+				$mainframe->set('currentPlugin', $plugin);
 				require_once( $path );
 				$paths[$path] = true;
 
@@ -148,12 +158,10 @@ class JPluginHelper
 
 						// create the plugin
 						$instance = new $className($dispatcher, (array)($plugin));
+						
 					}
 				}
-			}
-			else
-			{
-				$paths[$path] = false;
+				$mainframe->set('currentPlugin', NULL);
 			}
 		}
 	}
@@ -202,4 +210,86 @@ class JPluginHelper
 		return $plugins;
 	}
 
+	/**
+	 * Shutdown handler called by PHP when executing plugin produces a fatal error
+	 *
+	 * @access public
+	 */
+	static function shutdown()
+	{
+		global $mainframe;
+		$currentPlugin = $mainframe->get('currentPlugin', NULL);
+
+		if($currentPlugin)
+		{
+			$error = error_get_last();
+			if($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR)
+			{
+
+				$disabled = false;
+				$cfg =& JFactory::getConfig();
+
+				/* If not in debug mode, attempt to disable the plugin */
+				if(!$cfg->getValue('config.debug'))
+				{
+					$db =& JFactory::getDBO();
+					$q = 'UPDATE #__plugins SET `published`=0 WHERE `folder`=' . $db->quote($currentPlugin->type) . 
+						 'AND `element`=' . $db->quote($currentPlugin->name) .
+						 'LIMIT 1';
+					$db->setQuery($q);
+					$disabled = $db->query();
+
+					/* Following code is based on com_weblinks */
+
+					// admin users gid
+					$gid = 25;
+
+					// list of admins
+					$query = 'SELECT email, name' .
+							' FROM #__users' .
+							' WHERE gid = ' . $gid .
+							' AND sendEmail = 1';
+					$db->setQuery($query);
+					if ($db->query()) 
+					{
+						$adminRows = $db->loadObjectList();
+						$mail =& JFactory::getMailer();
+
+						// send email notification to admins
+						foreach ($adminRows as $adminRow) 
+						{
+							$mail->addRecipient($adminRow->email, $adminRow->name);
+						}
+
+						$uri = JURI::getInstance();
+						$mail->setSubject(JText::sprintf('Problem with Joomla site at %s'), $uri->getHost());
+
+						$body = JText::sprintf('When trying to access %s, and error was detected with %s plugin %s and it has been disabled. Technical error description follows:', JURI::current(), $currentPlugin->type, $currentPlugin->name);
+						$body .= "\n";
+						$body .= "\n" . $error['message'];
+						$body .= "\n" . $error['file'] . ' : ' . $error['line'];
+						$mail->setBody($body);
+
+						$mail->send();
+					}
+				}
+
+				if($disabled)
+				{
+					$app = JFactory::getApplication();
+					$app->redirect(JURI::current());
+				}
+				else
+				{
+					JError::raise(
+							$error['type'], 
+							500, 
+							JText::sprintf('Error loading %s plugin "%s"', $currentPlugin->type, $currentPlugin->name),
+							JText::sprintf('%s : %d', $error['file'], $error['line']), 
+							$currentPlugin
+							);
+				}
+			}
+		}
+	}
 }

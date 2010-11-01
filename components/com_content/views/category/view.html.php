@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.html.php 11713 2009-03-27 09:18:26Z willebil $
+ * @version		$Id: view.html.php 15181 2010-03-04 23:06:32Z ian $
  * @package		Joomla
  * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant to the
  * GNU General Public License, and as distributed it includes or is derivative
@@ -130,7 +130,7 @@ class ContentViewCategory extends ContentView
 
 		jimport('joomla.html.pagination');
 		//In case we are in a blog view set the limit
-		if ($layout == 'blog') {
+		if ($layout == 'blog' && ($limit - $links != 0)) {
 			$pagination = new JPagination($total, $limitstart, $limit - $links);
 		} else {
 			$pagination = new JPagination($total, $limitstart, $limit);

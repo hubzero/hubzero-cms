@@ -9,3 +9,10 @@ height: 50px;
 
 }
 
+.button2-left .page a, .button2-right .page a, .button2-left .page span, .button2-right .page span, .button2-left .blank a, .button2-right .blank a, .button2-left .blank span, .button2-right .blank span{
+	float: left;
+}
+
+ #sbox-window {
+margin:30%;        
+}

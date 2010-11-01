@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: controller.php 12538 2009-07-22 17:26:51Z ian $
+ * @version		$Id: controller.php 16385 2010-04-23 10:44:15Z ian $
  * @package		Joomla
  * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant to the
  * GNU General Public License, and as distributed it includes or is derivative
@@ -486,18 +486,18 @@ class UserController extends JController
 
 		// Get the input
 		$token = JRequest::getVar('token', null, 'post', 'alnum');
+		$username = JRequest::getVar('username', null, 'post');
 
 		// Get the model
 		$model = &$this->getModel('Reset');
 
 		// Verify the token
-		if ($model->confirmReset($token) === false)
+		if ($model->confirmReset($token, $username) !== true)
 		{
 			$message = JText::sprintf('PASSWORD_RESET_CONFIRMATION_FAILED', $model->getError());
 			$this->setRedirect('index.php?option=com_user&view=reset&layout=confirm', $message);
 			return false;
 		}
-
 		$this->setRedirect('index.php?option=com_user&view=reset&layout=complete');
 	}
 

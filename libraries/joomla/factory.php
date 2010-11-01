@@ -1,8 +1,8 @@
 <?php
 /**
- * @version		$Id: factory.php 13341 2009-10-27 03:03:54Z ian $
+ * @version		$Id: factory.php 15184 2010-03-04 23:18:17Z ian $
  * @package		Joomla.Framework
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -331,6 +331,7 @@ class JFactory
 						JPATH_BASE.DS.'cache',
 						isset( $options['cache_time'] ) ? $options['cache_time'] : 0
 					);
+					$simplepie->force_feed(true);
 					$simplepie->handle_content_type();
 					if ($simplepie->init()) {
 						$doc = $simplepie;

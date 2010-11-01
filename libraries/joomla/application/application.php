@@ -1,9 +1,9 @@
 <?php
 /**
-* @version		$Id: application.php 11409 2009-01-10 02:27:08Z willebil $
+* @version		$Id: application.php 16385 2010-04-23 10:44:15Z ian $
 * @package		Joomla.Framework
 * @subpackage	Application
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -96,8 +96,7 @@ class JApplication extends JObject
 
 		//create the session if a session name is passed
 		if($config['session'] !== false) {
-			//$this->_createSession(JUtility::getHash($config['session_name']));
-			$this->_createSession($config['session_name']);
+			$this->_createSession(JUtility::getHash($config['session_name']));
 		}
 
 		$this->set( 'requestTime', gmdate('Y-m-d H:i') );
@@ -257,24 +256,20 @@ class JApplication extends JObject
 	 *
 	 * Optionally enqueues a message in the system message queue (which will be displayed
 	 * the next time a page is loaded) using the enqueueMessage method. If the headers have
-	 * not been sent the redirect will be accomplished using a "301 Moved Permanently"
-	 * code in the header pointing to the new location. If the headers have already been
-	 * sent this will be accomplished using a JavaScript statement.
+	 * not been sent the redirect will be accomplished using a "301 Moved Permanently" or "303 See Other"
+	 * code in the header pointing to the new location depending upon the moved flag. If the headers
+	 * have already been sent this will be accomplished using a JavaScript statement.
 	 *
 	 * @access	public
 	 * @param	string	$url	The URL to redirect to. Can only be http/https URL
 	 * @param	string	$msg	An optional message to display on redirect.
 	 * @param	string  $msgType An optional message type.
+	 * @param	boolean	True if the page is 301 Permanently Moved, otherwise 303 See Other is assumed.
 	 * @return	none; calls exit().
 	 * @since	1.5
 	 * @see		JApplication::enqueueMessage()
 	 */
-	function redirect302( $url, $msg='', $msgType='message')
-	{
-		$this->redirect($url,$msg,$msgType,'HTTP/1.1 302 Found');
-	}
-
-	function redirect( $url, $msg='', $msgType='message', $status='HTTP/1.1 301 Moved Permanently' )
+	function redirect( $url, $msg='', $msgType='message', $moved = false )
 	{
 		// check for relative internal links
 		if (preg_match( '#^index[2]?.php#', $url )) {
@@ -316,16 +311,13 @@ class JApplication extends JObject
 			$session->set('application.queue', $this->_messageQueue);
 		}
 
-		/*
-		 * If the headers have been sent, then we cannot send an additional location header
-		 * so we will output a javascript redirect statement.
-		 */
+		// If the headers have been sent, then we cannot send an additional location header
+		// so we will output a javascript redirect statement.
 		if (headers_sent()) {
 			echo "<script>document.location.href='$url';</script>\n";
 		} else {
-			//@ob_end_clean(); // clear output buffer
-			header( $status );
-			header( 'Location: ' . $url );
+			header($moved ? 'HTTP/1.1 301 Moved Permanently' : 'HTTP/1.1 303 See other');
+			header('Location: '.$url);
 		}
 		$this->close();
 	}
@@ -535,6 +527,11 @@ class JApplication extends JObject
 
 		if ($response->status === JAUTHENTICATE_STATUS_SUCCESS)
 		{
+			$session = &JFactory::getSession();
+
+			// we fork the session to prevent session fixation issues
+			$session->fork();
+
 			// Import the user plugin group
 			JPluginHelper::importPlugin('user');
 

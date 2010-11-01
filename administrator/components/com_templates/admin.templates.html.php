@@ -1,9 +1,9 @@
 <?php
 /**
-* @version		$Id: admin.templates.html.php 12351 2009-06-24 13:48:00Z ian $
+* @version		$Id: admin.templates.html.php 14401 2010-01-26 14:10:00Z louis $
 * @package		Joomla
 * @subpackage	Templates
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or

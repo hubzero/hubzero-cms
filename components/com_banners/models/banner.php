@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: banner.php 11393 2009-01-05 02:11:06Z ian $
+ * @version		$Id: banner.php 14401 2010-01-26 14:10:00Z louis $
  * @package  Joomla
  * @subpackage	Banners
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant to the
  * GNU General Public License, and as distributed it includes or is derivative

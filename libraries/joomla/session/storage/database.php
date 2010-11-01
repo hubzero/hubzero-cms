@@ -3,7 +3,7 @@
 * @version		$Id:database.php 6961 2007-03-15 16:06:53Z tcp $
 * @package		Joomla.Framework
 * @subpackage	Session
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -87,9 +87,17 @@ class JSessionStorageDatabase extends JSessionStorage
 		}
 
 		$session = & JTable::getInstance('session');
-		$session->load($id);
-		$session->data = $session_data;
-		$session->store();
+		if ($session->load($id)) {
+			$session->data = $session_data;
+			$session->store();
+		} else {
+			// if load failed then we assume that it is because
+			// the session doesn't exist in the database
+			// therefore we use insert instead of store
+			$app = &JFactory::getApplication();
+			$session->data = $session_data;
+			$session->insert($id, $app->getClientId());
+		}
 
 		return true;
 	}

@@ -1,5 +1,5 @@
 <?php
-// @version $Id: default.php 11215 2008-10-26 02:25:51Z ian $
+// @version $Id: default.php 15183 2010-03-04 23:15:59Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -43,4 +43,5 @@ defined('_JEXEC') or die('Restricted access');
     ?>
 	<input type="hidden" name="option" value="com_search" />
 	<input type="hidden" name="task"   value="search" />
+	<input type="hidden" name="Itemid" value="<?php echo $mitemid; ?>" />
 </form>

@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: gmail.php 11236 2008-11-02 02:44:35Z ian $
+ * @version		$Id: gmail.php 14401 2010-01-26 14:10:00Z louis $
  * @package		Joomla
  * @subpackage	JFramework
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or

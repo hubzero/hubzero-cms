@@ -1,7 +1,7 @@
 ##
-# @version $Id: htaccess.txt 13415 2009-11-03 15:53:25Z ian $
+# @version $Id: htaccess.txt 14401 2010-01-26 14:10:00Z louis $
 # @package Joomla
-# @copyright Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+# @copyright Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 # @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 # Joomla! is Free Software
 ##

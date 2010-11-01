@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: reset.php 10919 2008-09-09 20:50:29Z willebil $
+ * @version		$Id: reset.php 16385 2010-04-23 10:44:15Z ian $
  * @package		Joomla
  * @subpackage	User
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant to the
  * GNU General Public License, and as distributed it includes or is derivative
@@ -74,9 +74,11 @@ class UserModelReset extends JModel
 
 		// Generate a new token
 		$token = JUtility::getHash(JUserHelper::genRandomPassword());
+		$salt = JUserHelper::getSalt('crypt-md5');
+		$hashedToken = md5($token.$salt).':'.$salt;
 
 		$query	= 'UPDATE #__users'
-				. ' SET activation = '.$db->Quote($token)
+				. ' SET activation = '.$db->Quote($hashedToken)
 				. ' WHERE id = '.(int) $id
 				. ' AND block = 0';
 
@@ -107,9 +109,11 @@ class UserModelReset extends JModel
 	 * @param	token	An md5 hashed randomly generated string
 	 * @return	bool	True on success/false on failure
 	 */
-	function confirmReset($token)
+	function confirmReset($token, $username)
 	{
 		global $mainframe;
+
+		jimport('joomla.user.helper');
 
 		if(strlen($token) != 32) {
 			$this->setError(JText::_('INVALID_TOKEN'));
@@ -117,18 +121,36 @@ class UserModelReset extends JModel
 		}
 
 		$db	= &JFactory::getDBO();
-		$db->setQuery('SELECT id FROM #__users WHERE block = 0 AND activation = '.$db->Quote($token));
+		$db->setQuery('SELECT id, activation FROM #__users WHERE block = 0 AND username = '.$db->Quote($username));
+
+		$row = $db->loadObject();
 
 		// Verify the token
-		if (!($id = $db->loadResult()))
+		if (!($row = $db->loadObject()))
+		{
+			$this->setError(JText::_('INVALID_TOKEN'));
+			return false;
+		}
+
+		$parts	= explode( ':', $row->activation );
+		$crypt	= $parts[0];
+		if (!isset($parts[1])) {
+			$this->setError(JText::_('INVALID_TOKEN'));
+			return false;
+		}
+		$salt	= $parts[1];
+		$testcrypt = JUserHelper::getCryptedPassword($token, $salt);
+
+		// Verify the token
+		if (!($crypt == $testcrypt))
 		{
 			$this->setError(JText::_('INVALID_TOKEN'));
 			return false;
 		}
 
 		// Push the token and user id into the session
-		$mainframe->setUserState($this->_namespace.'token',	$token);
-		$mainframe->setUserState($this->_namespace.'id',	$id);
+		$mainframe->setUserState($this->_namespace.'token',	$crypt.':'.$salt);
+		$mainframe->setUserState($this->_namespace.'id',	$row->id);
 
 		return true;
 	}

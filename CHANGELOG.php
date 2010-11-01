@@ -1,8 +1,8 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 13426 2009-11-04 16:36:00Z ian $
+* @version		$Id: CHANGELOG.php 16385 2010-04-23 10:44:15Z ian $
 * @package		Joomla
-* @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -37,7 +37,78 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+-------------------- 1.5.16 Stable Release [23-April-2010] ------------------
+
+23-Apr-2010 Ian MacLennan
+ $ [#20195] Language credit update
+ $ [#20055] Language bug in "Menus"
+ # [#20043] JApplication::redirect() using a 301 error code incorrect.
+ # [#20025] Adding Reykjavik in timezone
+ $ [#20024] More updates on installation ini files
+ $ [#19966] New hi-IN installation language
+ $ [#19871] Missing string in a few installation ini files
+ # [#19859] Graceful handling of failing Apache plugins
+ # [#18046] $theURI not correctly set on IIS7 in environment\uri.php
+ # [#20184] Removal of searchwords from SEF urls to ensure cross platform compatibility
+
+07-Mar-2010 Ian MacLennan
+ # [#16930] Reverting patch from #16930 because it breaks the installer
+
+05-Mar-2010 Ian MacLennan
+ $ [#19864] Missing string in is-IS installation ini
+ # [#18648] News Feeds -> Categories can throw a SQL error when it tries to sort by section_name
+ # [#18619] Validation error of mod_search
+ # [#18570] Button select article in back-end ( RTL) ie7 + modal centering
+ # [#18403] Possible typo in mod_latestnews xml
+ # [#17762] Mod_login\helper.php: Trying to get property of non-object
+ # [#17235] SEF URL for contacts gives 404 error
+ # [#17000] Core related items and other modules non-functional with cache module on
+ # [#16974] Checking wrong cache field in com_content _loaddata() function
+ # [#16930] live_site$ in configuration.php ignored by some JS-based functions - breaks joomla 1.5 behind reverse proxy
+ # [#16506] JFolder::makeSafe removes dot
+
+04-Mar-2010 Ian MacLennan
+ $ [#19836] New Arabic Unitag installation language ar_AA
+ # [#19831] Preventing mod_login redirect to display trashed menu items
+ # [#19798] Undefined variable notice when enabling or disabling a user in com_user
+ # [#19680] Media manager folder param incorrectly named
+ # [#19245] Pagination in category blog layout not shown in specific case
+ # [#18848] Last module position in <select> is with space at end
+ # [#18683] The "search result Itemid" fix (15780) doesn't apply to beez
+ # [#18672] Issue with some feeds in release 1.5.15
+
+27-Feb-2010 Ian MacLennan
+ # [#19816] Adding a missing string in many installation ini, added helpfile listing
+ # [#19763] _JEXEC check missing from joomla file
+ # [#19681] Copying menus does not maintain parent child relationship
+ # [#19655] Poll component save task missing successful results message
+ # [#19555] Timezone code setting incorrect for 6:30 (Yagoon) and 11:30 (Norfolk) in Global Configuration
+ # [#19055] Tinymce bug prevents adding the valid id extended element for the anchor tag
+ # [#19009] Author Alias not properly escaped in Article Manager
+ # [#18936] Atom feed image url incorrect
+
+22-Feb-2010 Ian MacLennan
+ # [#17878] Installing modules with upgrade method
+ # [#18614] Incorrect bracketing in templates/system/component.php
+ # [#18617] Disabled components still show in the "menu type" tree of com_menus
+ # [#18612] Pathway error when using php4
+ # [#17986] A bug causes a space to appear after email links
+
+21-Feb-2010 Ian MacLennan
+ $ [#19715] Adding Phnom-Penh to UTC strings
+ $ [#19627] Add sr-YU in installation
+ $ [#19604] Missing ini string in installation
+ # [#19435] New caching of com_contact in 1.5.15 results in "Invalid Token"
+ # [#19405] Improvements to caption
+ # [#18987] Minor bug in module updater code
+
+
+26-Jan-2010 Louis Landry
+ ^ Updated copyright notices for 2010
+ ^ Moved testing infrastructure from the /testing/ folder into the tree.
+
 -------------------- 1.5.15 Stable Release [05-November-2009] ------------------
+
 04-Nov-2009 Ian MacLennan
  # [#17475] Fixed missing = in patch (parse error)
 
@@ -99,7 +170,7 @@ $ -> Language fix or change
  # [#17559] Change to Beez Template to make it more generic
  # [#17231] mod_newsflash doesn't honour alternative read more text
  # [#17215] Missing <blockquote> button in TinyMCE 3
- 
+
 25-Sept-2009 Ian MacLennan
  # [#16484] Password field changed in configuration.php by Administration > Global Configuration
  # [#16804] Linked image in Beez template jumps in IE8
@@ -166,7 +237,7 @@ $ -> Language fix or change
  $ [#16950] Lots of missing language strings in TinyMCE v3
  # [#16593] JFile::upload() uses chmod 777 in FTP mode
  # [#15673] Different time create date and start publishing in beez
- # [#16601] Section filter on article manager showing non content sections as well 
+ # [#16601] Section filter on article manager showing non content sections as well
  # [#16607] Mod Newsflash read more link broken with Beez template
  # [#16719] JHTML::tooltip quote problem
  # [#16753] CSS file is not updated when you edit the joomla

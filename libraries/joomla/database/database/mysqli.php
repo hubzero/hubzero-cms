@@ -1,9 +1,9 @@
 <?php
 /**
-* @version		$Id: mysqli.php 11316 2008-11-27 03:11:24Z ian $
+* @version		$Id: mysqli.php 16385 2010-04-23 10:44:15Z ian $
 * @package		Joomla.Framework
 * @subpackage	Database
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -228,7 +228,7 @@ class JDatabaseMySQLi extends JDatabase
 		// Take a local copy so that we don't modify the original query and cause issues later
 		$sql = $this->_sql;
 		if ($this->_limit > 0 || $this->_offset > 0) {
-			$sql .= ' LIMIT '.$this->_offset.', '.$this->_limit;
+			$sql .= ' LIMIT ' . max($this->_offset, 0) . ', ' . max($this->_limit, 0);
 		}
 		if ($this->_debug) {
 			$this->_ticker++;

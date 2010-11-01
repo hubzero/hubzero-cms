@@ -1,8 +1,8 @@
 <?php
 /**
- * @version		$Id: router.php 11002 2008-10-07 01:12:20Z ian $
+ * @version		$Id: router.php 16385 2010-04-23 10:44:15Z ian $
  * @package		Joomla
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -18,18 +18,6 @@
 function SearchBuildRoute( &$query )
 {
 	$segments = array();
-
-	if (isset($query['searchword'])) {
-		$segments[] = $query['searchword'];
-		unset($query['searchword']);
-	}
-
-	// Retrieve configuration options - needed to know which SEF URLs are used
-	$app =& JFactory::getApplication();
-	// Allows for searching on strings that include ".xxx" that appear to Apache as an extension
-	if (($app->getCfg('sef')) && ($app->getCfg('sef_rewrite')) && !($app->getCfg('sef_suffix'))) {
-		$segments[] .= '/';
-	}
 
 	if (isset($query['view'])) {
 		unset($query['view']);

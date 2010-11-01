@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @version		$Id: model.php 12694 2009-09-11 21:03:02Z ian $
+ * @version		$Id: model.php 16385 2010-04-23 10:44:15Z ian $
  * @package		Joomla
  * @subpackage	Installation
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -921,61 +921,83 @@ class JInstallationModel extends JModel
 
 	function checkUpload() {
 		// pie
-		$vars	=& $this->getVars();
+		$vars = &$this->getVars();
 		//print_r($vars);
-		$sqlFile	= JRequest::getVar('sqlFile', '', 'files', 'array');
-		if(JRequest::getVar( 'sqlUploaded', 0, 'post', 'bool' ) == false) {
+
+		$migratePath = JPATH_BASE . DS . 'sql' . DS . 'migration' . DS . 'migrate.sql';
+		$sqlFile = JRequest::getVar('sqlFile', '', 'files', 'array');
+		$package = false;
+		if (JRequest::getVar('sqlUploaded', 0, 'post', 'bool') == false) {
 			/*
 			 * Move uploaded file
 			 */
 			// Set permissions for tmp dir
-			JInstallationHelper::_chmod(JPATH_SITE.DS.'tmp', 0777);
+			JInstallationHelper::_chmod(JPATH_SITE . DS . 'tmp', 0777);
 			jimport('joomla.filesystem.file');
-			$uploaded = JFile::upload($sqlFile['tmp_name'], JPATH_SITE.DS.'tmp'.DS.$sqlFile['name']);
-			if(!$uploaded) {
+			$uploaded = JFile::upload(
+				$sqlFile['tmp_name'], JPATH_SITE . DS . 'tmp' . DS . $sqlFile['name']
+			);
+			if (!$uploaded) {
 				$this->setError(JText::_('WARNUPLOADFAILURE'));
 				return false;
 			}
 
-			if( !preg_match('#\.sql$#i', $sqlFile['name']) )
-			{
-				$archive = JPATH_SITE.DS.'tmp'.DS.$sqlFile['name'];
-			}
-			else
-			{
-				$script = JPATH_SITE.DS.'tmp'.DS.$sqlFile['name'];
+			if (preg_match('#\.sql$#i', $sqlFile['name'])) {
+				$script = JPATH_SITE . DS . 'tmp' . DS . $sqlFile['name'];
+			} else {
+				$archive = JPATH_SITE . DS . 'tmp' . DS . $sqlFile['name'];
 			}
 
 			// unpack archived sql files
-			if (isset($archive) && $archive )
-			{
-				$package = JInstallationHelper::unpack( $archive, $vars );
-				if ( $package === false )
-				{
+			if (isset($archive) && $archive) {
+				$package = JInstallationHelper::unpack($archive, $vars);
+				JFile::delete($archive);
+				if ($package === false) {
 					$this->setError(JText::_('WARNUNPACK'));
 					return false;
 				}
-				$script = $package['folder'].DS.$package['script'];
+				$script = $package['folder'] . DS . $package['script'];
+				// The archive has to unpack to a sql file
+				if (!preg_match('#\.sql$#i', $script)) {
+					// Remove the entire unpacked archive
+					JFolder::delete($package['folder']);
+					$this->setError(JText::_('WARNUNPACK'));
+					return false;
+				}
 			}
 		} else {
-			$script = JPATH_BASE . DS . 'sql' . DS . 'migration' . DS . 'migrate.sql';
+			$script = $migratePath;
 		}
 		$migration = JRequest::getVar( 'migration', 0, 'post', 'bool' );
 		/*
 		 * If migration perform manipulations on script file before population
 		 */
-		if ($migration == true) {
-					$db = & JInstallationHelper::getDBO($vars['DBtype'], $vars['DBhostname'], $vars['DBuserName'], $vars['DBpassword'], $vars['DBname'], $vars['DBPrefix']);
-		$script = JInstallationHelper::preMigrate($script, $vars, $db);
-		if ( $script == false )
-		{
-			$this->setError(JText::_( 'Script operations failed' ));
-			return false;
-		}
+		if ($migration) {
+			$db = &JInstallationHelper::getDBO(
+				$vars['DBtype'], $vars['DBhostname'], $vars['DBuserName'],
+				$vars['DBpassword'], $vars['DBname'], $vars['DBPrefix']
+			);
+			$migrated = JInstallationHelper::preMigrate($script, $vars, $db);
+			if (!$migrated) {
+				if ($package) {
+					// Remove the entire unpacked archive
+					JFolder::delete($package['folder']);
+				} else {
+					// Just remove the script
+					JFile::delete($script);
+				}
+				$this->setError(JText::_('Script operations failed'));
+				return false;
+			}
+			$script = $migrated;
 		} // Disable in testing */
 		// Ensure the script is always in the same location
-		if($script != JPATH_BASE . DS . 'sql' . DS . 'migration' . DS . 'migrate.sql') {
-			JFile::move($script, JPATH_BASE . DS . 'sql' . DS . 'migration' . DS . 'migrate.sql');
+		if ($script != $migratePath) {
+			JFile::move($script, $migratePath);
+		}
+		if ($package) {
+			// Remove the entire unpacked archive
+			JFolder::delete($package['folder']);
 		}
 		//$this->setData('scriptpath',$script);
 		$vars['dataloaded'] = '1';
@@ -990,13 +1012,20 @@ class JInstallationModel extends JModel
 		$args =& $this->getVars();
 		$db = & JInstallationHelper::getDBO($args['DBtype'], $args['DBhostname'], $args['DBuserName'], $args['DBpassword'], $args['DBname'], $args['DBPrefix']);
 		$migResult = JInstallationHelper::postMigrate( $db, $migErrors, $args );
-		if(!$migResult) echo JText::_("Migration Successful");
-			else {
-				echo '<div id="installer">';
-				echo '<p>'.JText::_('Migration failed').':</p>';
-				foreach($migErrors as $error) echo '<p>'.$error['msg'].'</p>';
-				echo '</div>';
-			}
+		// Clean up the migration SQL file
+		$migratePath = JPATH_BASE . DS . 'sql' . DS . 'migration' . DS . 'migrate.sql';
+		jimport('joomla.filesystem.file');
+		if (JFile::exists($migratePath)) {
+			JFile::delete($migratePath);
+		}
+		if ($migResult) {
+			echo '<div id="installer">';
+			echo '<p>'.JText::_('Migration failed').':</p>';
+			foreach($migErrors as $error) echo '<p>'.$error['msg'].'</p>';
+			echo '</div>';
+		} else {
+			echo JText::_("Migration Successful");
+		}
 		return $migResult;
 	}
 }

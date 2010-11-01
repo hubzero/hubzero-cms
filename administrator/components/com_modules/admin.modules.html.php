@@ -1,9 +1,9 @@
 <?php
 /**
-* @version		$Id: admin.modules.html.php 11672 2009-03-08 20:39:41Z willebil $
+* @version		$Id: admin.modules.html.php 15182 2010-03-04 23:11:09Z ian $
 * @package		Joomla
 * @subpackage	Modules
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -313,8 +313,7 @@ class HTML_modules
 								foreach ($positions as $position) {
 									echo '<li>'.$position.'</li>';
 								}
-							?>
-							</ul>
+							?></ul>
 							<script language="javascript" type="text/javascript">
 								window.addEvent('domready', function() { 
 									$('combobox-position-select').addEvent('change', function() {

@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: controller.php 11646 2009-03-01 19:34:56Z ian $
+ * @version		$Id: controller.php 15095 2010-02-27 14:14:06Z ian $
  * @package		Joomla
  * @subpackage	Menus
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant to the
  * GNU General Public License, and as distributed it includes or is derivative
@@ -725,9 +725,11 @@ class MenusController extends JController
 		foreach( $mids as $mid )
 		{
 			$original->load( $mid );
+			$parent = $original->parent;
+			$id = $original->id;
 			$copy 			= $original;
 			$copy->id 		= NULL;
-			$copy->parent 	= $a_ids[$original->parent];
+			$copy->parent 	= $a_ids[$parent];
 			$copy->menutype = $menu_name;
 			$copy->home 	= 0;
 
@@ -741,7 +743,7 @@ class MenusController extends JController
 				$this->setRedirect( 'index.php?option=com_menus' );
 				return;
 			}
-			$a_ids[$original->id] = $copy->id;
+			$a_ids[$id] = $copy->id;
 		}
 
 		// create the module copy

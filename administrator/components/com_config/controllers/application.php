@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: application.php 13243 2009-10-20 04:01:04Z ian $
+ * @version		$Id: application.php 15097 2010-02-27 14:19:54Z ian $
  * @package		Joomla
  * @subpackage	Config
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant to the
  * GNU General Public License, and as distributed it includes or is derivative
@@ -144,7 +144,7 @@ class ConfigControllerApplication extends ConfigController
 			JHTML::_('select.option', 5.5, JText::_('(UTC +05:30) Bombay, Calcutta, Madras, New Delhi, Colombo')),
 			JHTML::_('select.option', 5.75, JText::_('(UTC +05:45) Kathmandu')),
 			JHTML::_('select.option', 6, JText::_('(UTC +06:00) Almaty, Dhaka')),
-			JHTML::_('select.option', 6.30, JText::_('(UTC +06:30) Yagoon')),
+			JHTML::_('select.option', 6.5, JText::_('(UTC +06:30) Yagoon')),
 			JHTML::_('select.option', 7, JText::_('(UTC +07:00) Bangkok, Hanoi, Jakarta')),
 			JHTML::_('select.option', 8, JText::_('(UTC +08:00) Beijing, Perth, Singapore, Hong Kong')),
 			JHTML::_('select.option', 8.75, JText::_('(UTC +08:00) Ulaanbaatar, Western Australia')),
@@ -153,7 +153,7 @@ class ConfigControllerApplication extends ConfigController
 			JHTML::_('select.option', 10, JText::_('(UTC +10:00) Eastern Australia, Guam, Vladivostok')),
 			JHTML::_('select.option', 10.5, JText::_('(UTC +10:30) Lord Howe Island (Australia)')),
 			JHTML::_('select.option', 11, JText::_('(UTC +11:00) Magadan, Solomon Islands, New Caledonia')),
-			JHTML::_('select.option', 11.30, JText::_('(UTC +11:30) Norfolk Island')),
+			JHTML::_('select.option', 11.5, JText::_('(UTC +11:30) Norfolk Island')),
 			JHTML::_('select.option', 12, JText::_('(UTC +12:00) Auckland, Wellington, Fiji, Kamchatka')),
 			JHTML::_('select.option', 12.75, JText::_('(UTC +12:45) Chatham Island')),
 			JHTML::_('select.option', 13, JText::_('(UTC +13:00) Tonga')),

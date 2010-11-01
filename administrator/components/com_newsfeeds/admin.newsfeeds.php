@@ -1,9 +1,9 @@
 <?php
 /**
-* @version		$Id: admin.newsfeeds.php 11371 2008-12-30 01:31:50Z ian $
+* @version		$Id: admin.newsfeeds.php 14401 2010-01-26 14:10:00Z louis $
 * @package		Joomla
 * @subpackage	Newsfeeds
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or

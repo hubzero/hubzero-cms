@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		$db->setQuery($query);
 		$template = $db->loadResult();
 
- if($this->direction == 'rtl' && !file_exists(JPATH_THEMES.DS.$template.DS.'css/template_rtl.css') || !file_exists(JPATH_THEMES.DS.$template.DS.'css/template.css')) : ?>
+ if($this->direction == 'rtl' && (!file_exists(JPATH_THEMES.DS.$template.DS.'css/template_rtl.css') || !file_exists(JPATH_THEMES.DS.$template.DS.'css/template.css'))) : ?>
 	<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/template_rtl.css" type="text/css" />
 <?php elseif($this->direction == 'rtl' ) : ?>
 <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $template; ?>/css/template.css" type="text/css" />

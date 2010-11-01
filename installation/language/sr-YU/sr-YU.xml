@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5" client="installation" >
+	<name>Serbian (Latin)</name>
+	<version>1.5.16</version>
+	<creationDate>March 2009</creationDate>
+	<author>joomlaserbia.com</author>
+	<copyright>Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>Serbian (latin) language installation for Joomla</description>
+	<metadata>
+		<name>Serbian (YU)</name>
+		<tag>sr-YU</tag>
+		<rtl>0</rtl>
+		<locale>
+			sr_YU.utf8, sr_YU.UTF8, srb_YU, sr_YU, sr, srb,  Serbian, serbian, srpski, Srpski
+		</locale>
+		<winCodePage>utf-8</winCodePage>
+		<backwardLang>serbian</backwardLang>
+	</metadata>
+	<params />
+</metafile>

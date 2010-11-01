@@ -1,9 +1,9 @@
 <?php
 /**
-* version $Id: view.html.php 10498 2008-07-04 00:05:36Z ian $
+* version $Id: view.html.php 14401 2010-01-26 14:10:00Z louis $
 * @package		Joomla
 * @subpackage	Newsfeeds
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 *
 * Joomla! is free software. This version may have been modified pursuant

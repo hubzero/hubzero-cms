@@ -2,7 +2,7 @@
 /**
  * @version		$Id: router.php 7380 2007-05-06 21:26:03Z eddieajau $
  * @package		Joomla
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -79,7 +79,7 @@ function ContactBuildRoute(&$query)
 				{
 				    continue;
 				}
-				if (isset($query['view']) && $query['view'] == 'contact'
+				if (isset($query['view']) && $query['view'] == 'contact' && !isset($item->query['catid'])
 					&& isset($item->query['view']) && $item->query['view'] == 'category')
 				{
 					// Check for an undealt with contact id.

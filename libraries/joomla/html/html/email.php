@@ -1,9 +1,9 @@
 <?php
 /**
-* @version		$Id: email.php 13341 2009-10-27 03:03:54Z ian $
+* @version		$Id: email.php 14998 2010-02-22 23:32:02Z ian $
 * @package		Joomla.Framework
 * @subpackage	HTML
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -73,7 +73,7 @@ class JHTMLEmail
 			$replacement 	.= "\n document.write( addy". $rand ." );";
 		}
 		$replacement 	.= "\n //-->";
-		$replacement 	.= "\n </script> ";
+		$replacement 	.= "\n </script>";
 
 		// XHTML compliance `No Javascript` text handling
 		$replacement 	.= "<script language='JavaScript' type='text/javascript'>";

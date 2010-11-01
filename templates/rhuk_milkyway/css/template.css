@@ -300,7 +300,7 @@ td.pill_r {
 
 #maincolumn_full {
 	margin-left: 0;
-	padding: 0;	
+	padding: 0;
 	width: 100%;
 }
 
@@ -660,6 +660,10 @@ div.mosimage_caption {  font-size: .90em; color: #666; }
 div.caption       { padding: 0 10px 0 10px; }
 div.caption img   { border: 1px solid #CCC; }
 div.caption p     { font-size: .90em; color: #666; text-align: center; }
+
+div.img_caption       { padding: 0 10px 0 10px; }
+div.img_caption img   { border: 1px solid #CCC; }
+div.img_caption p     { font-size: .90em; color: #666; text-align: center; }
 
 /* Parameter Table */
 table.paramlist {

@@ -1,8 +1,8 @@
 <?php
 /**
-* @version		$Id: toolbar.php 11307 2008-11-24 00:21:48Z ian $
+* @version		$Id: toolbar.php 15180 2010-03-04 22:58:32Z ian $
 * @package		Joomla
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -155,11 +155,11 @@ class JToolBarHelper
 	* @param string The sub-drectory to upload the media to
 	* @since 1.0
 	*/
-	function media_manager($directory = '', $alt = 'Upload')
+	function media_manager($folder = '', $alt = 'Upload')
 	{
 		$bar = & JToolBar::getInstance('toolbar');
 		// Add an upload button
-		$bar->appendButton( 'Popup', 'upload', $alt, "index.php?option=com_media&tmpl=component&task=popupUpload&directory=$directory", 640, 520 );
+		$bar->appendButton( 'Popup', 'upload', $alt, "index.php?option=com_media&tmpl=component&task=popupUpload&folder=$folder", 640, 520 );
 	}
 
 	/**

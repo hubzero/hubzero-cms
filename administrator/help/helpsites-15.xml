@@ -10,5 +10,6 @@
     <site tag="ca-ES" url="http://www.joomla.cat"> Catalan - joomla.cat</site>
 	<site tag="fr-FR" url="http://help.joomla.fr"> French - Joomla.fr</site>
 	<site tag="fa-IR" url="http://joomfa.org"> Farsi - Joomfa.org</site>
+	<site tag="nb-NO" url="http://help15.joomlainorge.no/"> Norwegian - joomlainorge.no</site>
 </sites>
 </joshelp>

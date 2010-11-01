@@ -1,4 +1,4 @@
-<?php // @version $Id: confirm.php 11786 2009-04-24 17:48:08Z kdevine $
+<?php // @version $Id: confirm.php 16385 2010-04-23 10:44:15Z ian $
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -11,6 +11,14 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td colspan="2" height="40">
 				<p><?php echo JText::_('RESET_PASSWORD_CONFIRM_DESCRIPTION'); ?></p>
+			</td>
+		</tr>
+		<tr>
+			<td height="40">
+				<label for="username" class="hasTip" title="<?php echo JText::_('RESET_PASSWORD_USERNAME_TIP_TITLE'); ?>::<?php echo JText::_('RESET_PASSWORD_USERNAME_TIP_TEXT'); ?>"><?php echo JText::_('User Name'); ?>:</label>
+			</td>
+			<td>
+				<input id="username" name="username" type="text" class="required" size="36" />
 			</td>
 		</tr>
 		<tr>

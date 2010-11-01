@@ -1,8 +1,8 @@
 <?php
 /**
- * @version		$Id: tinymce.php 13338 2009-10-27 02:15:55Z ian $
+ * @version		$Id: tinymce.php 15099 2010-02-27 14:23:40Z ian $
  * @package		Joomla
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -357,7 +357,7 @@ class plgEditorTinymce extends JPlugin
 		$advlink 	= $this->params->def('advlink', 1);
 		if ($advlink) {
 			$plugins[]	= 'advlink';
-			$elements[]	= 'a[class|name|href|target|title|onclick|rel|style]';
+			$elements[]	= 'a[id|class|name|href|target|title|onclick|rel|style]';
 		}
 
 		// autosave

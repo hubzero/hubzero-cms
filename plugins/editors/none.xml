@@ -6,8 +6,8 @@
 	<author></author>
 	<authorEmail>N/A</authorEmail>
 	<authorUrl></authorUrl>
-	<copyright>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</copyright>
-	<license>LGPL</license>
+	<copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>This loads a basic text entry field</description>
 	<files>
 		<filename plugin="none">none.php</filename>

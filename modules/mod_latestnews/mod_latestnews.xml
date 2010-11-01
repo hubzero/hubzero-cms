@@ -3,7 +3,7 @@
 	<name>Latest News</name>
 	<author>Joomla! Project</author>
 	<creationDate>July 2004</creationDate>
-	<copyright>Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
@@ -14,7 +14,7 @@
 	</files>
 	<params>
 		<param name="count" type="text" default="5" label="Count" description="The number of items to display (default 5)" />
-		<param name="ordering" type="list" default="create_dsc" label="Ordering" description="Ordering options">
+		<param name="ordering" type="list" default="c_dsc" label="Ordering" description="Ordering options">
 			<option value="c_dsc">Recently Added First</option>
 			<option value="m_dsc">Recently Modified First</option>
 	  	</param>

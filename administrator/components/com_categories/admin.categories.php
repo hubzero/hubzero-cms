@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: admin.categories.php 11633 2009-02-19 23:59:09Z willebil $
+ * @version		$Id: admin.categories.php 15194 2010-03-05 08:53:57Z ian $
  * @package		Joomla
  * @subpackage	Categories
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -110,6 +110,9 @@ function showCategories( $section, $option )
 
 	$db					=& JFactory::getDBO();
 	$filter_order		= $mainframe->getUserStateFromRequest( $option.'.filter_order',					'filter_order',		'c.ordering',	'cmd' );
+	if ($filter_order == 'section_name' && ($section == 'com_newsfeeds' || $section == 'com_banner' || $section == 'com_weblinks' || $section == 'com_contact_details')){
+						     $filter_order = 'c.ordering';
+						 } 
 	$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.filter_order_Dir',				'filter_order_Dir',	'',				'word' );
 	$filter_state		= $mainframe->getUserStateFromRequest( $option.'.'.$section.'.filter_state',	'filter_state',		'',				'word' );
 	$sectionid			= $mainframe->getUserStateFromRequest( $option.'.'.$section.'.sectionid',		'sectionid',		0,				'int' );

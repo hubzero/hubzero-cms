@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: controller.php 11299 2008-11-22 01:40:44Z ian $
+ * @version		$Id: controller.php 15176 2010-03-04 21:49:55Z ian $
  * @package		Joomla
  * @subpackage	Users
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -344,6 +344,7 @@ class UsersController extends JController
 			$groups 	= $acl->get_object_groups( $objectID, 'ARO' );
 			$this_group = strtolower( $acl->get_group_name( $groups[0], 'ARO' ) );
 
+			$msg = '';
 			$success = false;
 			if ( $this_group == 'super administrator' )
 			{

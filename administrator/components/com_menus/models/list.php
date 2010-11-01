@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: list.php 11646 2009-03-01 19:34:56Z ian $
+ * @version		$Id: list.php 16380 2010-04-23 09:19:48Z ian $
  * @package		Joomla
  * @subpackage	Menus
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant to the
  * GNU General Public License, and as distributed it includes or is derivative
@@ -172,7 +172,7 @@ class MenusModelList extends JModel
 						}
 						parse_str($query['query'], $view);
 					}
-					$list[$i]->view		= $list[$i]->com_name;
+					$list[$i]->view		= JText::_($list[$i]->com_name);
 					if (isset($view['view']))
 					{
 						$list[$i]->view	.= ' &raquo; '.JText::_(ucfirst($view['view']));
