@@ -1,6 +1,6 @@
 <?php
 
-require_once '../SeleniumJoomlaTestCase.php';
+require_once 'SeleniumJoomlaTestCase.php';
 
 class ControlPanelMenu extends SeleniumJoomlaTestCase
 {

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 16385 2010-04-23 10:44:15Z ian $
+* @version		$Id: CHANGELOG.php 16504 2010-04-26 17:32:35Z dextercowley $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -19,7 +19,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 This application is opensource software released under the GPL.  Please
 see source code and the LICENSE file.
 
-
 2. Changelog
 ------------
 This is a non-exhaustive (but still near complete) changelog for
@@ -36,6 +35,22 @@ $ -> Language fix or change
 ^ -> Change
 - -> Removed
 ! -> Note
+
+-------------------- 1.5.17 Stable Release [27-April-2010] ------------------
+
+26-Apr-2010 Mark Dexter
+ # [#20219] Upgrade to 1.5.16 breaks PHP 4 compatibility
+ # [#20239] Update ru-RU installation language
+ # [#20238] Updating help sites list
+ # [#20220] en-AU installation ini folder
+ + [#20241] Fixed up system tests
+ # [#20242] Language fix for 20219 PHP 4 issue
+
+25-Apr-2010 Ian MacLennan
+ # [#20221] Can't Login When Session Handler is None
+
+24-Apr-2010 Mark Dexter
+ # Reverted [#16506] JFolder::makeSafe removes dot
 
 -------------------- 1.5.16 Stable Release [23-April-2010] ------------------
 

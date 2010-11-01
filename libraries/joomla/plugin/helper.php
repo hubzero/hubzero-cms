@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: helper.php 16381 2010-04-23 09:28:44Z ian $
+* @version		$Id: helper.php 16503 2010-04-26 17:17:33Z dextercowley $
 * @package		Joomla.Framework
 * @subpackage	Plugin
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -121,7 +121,17 @@ class JPluginHelper
 		// Install shutdown handler if not installed yet
 		if(!$shutdown_handler_installed)
 		{
-			register_shutdown_function(array('JPluginHelper', 'shutdown'));
+			// only register the shutdown function if we are capable of checking the errors (reqs PHP 5.2+)
+			if (version_compare("5.2", phpversion(), "<="))
+			{
+				// you can only register a static method if it is declared static
+				// we can't declare static b/c it breaks on PHP4
+				// therefore we instantiate the helper for this one purpose
+				$pluginHelper = new JPluginHelper;
+				register_shutdown_function(array($pluginHelper, 'shutdown'));
+			}
+			// we may not have installed the handler, but setting this to true
+			// will prevent us from continually running the version compare
 			$shutdown_handler_installed = true;
 		}
 
@@ -212,10 +222,11 @@ class JPluginHelper
 
 	/**
 	 * Shutdown handler called by PHP when executing plugin produces a fatal error
+	 * Only runs in PHP 5.2+, don't call it without checking version first
 	 *
 	 * @access public
 	 */
-	static function shutdown()
+	function shutdown()
 	{
 		global $mainframe;
 		$currentPlugin = $mainframe->get('currentPlugin', NULL);
@@ -262,9 +273,11 @@ class JPluginHelper
 						}
 
 						$uri = JURI::getInstance();
-						$mail->setSubject(JText::sprintf('Problem with Joomla site at %s'), $uri->getHost());
+						$mail->setSubject(JText::sprintf('MAIL_MSG_ADMIN_ERROR_SUBJECT'), $uri->getHost());
 
-						$body = JText::sprintf('When trying to access %s, and error was detected with %s plugin %s and it has been disabled. Technical error description follows:', JURI::current(), $currentPlugin->type, $currentPlugin->name);
+						$body = JText::sprintf(
+							'MAIL_MSG_ADMIN_ERROR', 
+							JURI::current(), $currentPlugin->type, $currentPlugin->name);
 						$body .= "\n";
 						$body .= "\n" . $error['message'];
 						$body .= "\n" . $error['file'] . ' : ' . $error['line'];

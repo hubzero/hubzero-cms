@@ -108,6 +108,8 @@ class TinyMCE0006 extends PHPUnit_Extensions_SeleniumTestCase
     print("Return to administrative back end (where we started)" . "\n");
     $this->click("//div[@id='leftcolumn']/div[2]/div/div/div/ul/li[7]/a/span");
     $this->waitForPageToLoad("30000");
+    $this->click("link=Logout");
+    $this->waitForPageToLoad("30000");
     print("Finished tinymce0006.php." . "\n");
   }
 }

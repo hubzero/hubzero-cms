@@ -7,26 +7,31 @@ set_include_path(get_include_path() . PATH_SEPARATOR . './PEAR/');
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'control_panel_menu.php';
-require_once 'com_content0001.php';
-require_once 'com_content0002.php';
-require_once 'com_content0003.php';
-require_once 'com_content0004.php';
-require_once 'com_content0005.php';
-require_once 'com_content0006.php';
-require_once 'com_content0007.php';
-require_once 'com_content0008.php';
-require_once 'com_content0009.php';
-require_once 'com_content0010.php';
-require_once 'com_media0001.php';
-require_once 'com_menu0001.php';
+require_once 'com_content/com_content0001Test.php';
+require_once 'com_content/com_content0002Test.php';
+require_once 'com_content/com_content0003Test.php';
+require_once 'com_content/com_content0004Test.php';
+require_once 'com_content/com_content0005Test.php';
+require_once 'com_content/com_content0006Test.php';
+require_once 'com_content/com_content0007Test.php';
+require_once 'com_content/com_content0008Test.php';
+require_once 'com_content/com_content0009Test.php';
+require_once 'com_content/com_content0010Test.php';
+require_once 'com_media/com_media0001Test.php';
+require_once 'com_menu/com_menu0001Test.php';
 require_once 'com_menu0002.php';
 require_once 'com_menu0003.php';
-require_once 'tinymce0001.php';
-require_once 'tinymce0002.php';
-require_once 'tinymce0003.php';
-require_once 'tinymce0004.php';
-require_once 'tinymce0005.php';
-require_once 'tinymce0006.php';
+require_once 'tinymce/tinymce0001Test.php';
+require_once 'tinymce/tinymce0002Test.php';
+require_once 'tinymce/tinymce0003Test.php';
+require_once 'tinymce/tinymce0004Test.php';
+require_once 'tinymce/tinymce0005Test.php';
+require_once 'tinymce/tinymce0006Test.php';
+require_once '1515_tests/frontend_edit.php';
+require_once '1515_tests/tinymce0007.php';
+require_once '1515_tests/tinymce0008.php';
+require_once 'doInstall.php';
+require_once '1517_tests/session_handler_test.php'
  
 class TestSuite
 {
@@ -38,6 +43,7 @@ class TestSuite
     public static function suite()
     {
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit Framework');
+        $suite->addTestSuite('DoInstall');
         $suite->addTestSuite('ControlPanelMenu');
         $suite->addTestSuite('ComContent0001');
         $suite->addTestSuite('ComContent0002');
@@ -59,6 +65,11 @@ class TestSuite
         $suite->addTestSuite('TinyMCE0004');
         $suite->addTestSuite('TinyMCE0005');
         $suite->addTestSuite('TinyMCE0006');
+        $suite->addTestSuite('TinyMCE0007');
+        $suite->addTestSuite('TinyMCE0008');
+        $suite->addTestSuite('DoInstall');
+        $suite->addTestSuite('FrontendEdit');
+        $suite->addTestSuite('SessionHandler');
 
         return $suite;
     }

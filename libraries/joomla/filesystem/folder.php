@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: folder.php 15203 2010-03-05 09:21:16Z ian $
+ * @version		$Id: folder.php 16421 2010-04-24 23:57:12Z dextercowley $
  * @package		Joomla.Framework
  * @subpackage	FileSystem
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -564,16 +564,8 @@ class JFolder
 	function makeSafe($path)
 	{
 		$ds = (DS == '\\') ? '\\' . DS : DS;
-		$regex = array('#[^A-Za-z0-9:\_\-\.' . $ds . ' ]#');
-		$safepath = preg_replace($regex, '', $path);  // check if all chars are legal
-		$parts = explode('\\', $safepath);
-		$safepath = '';
-		foreach ($parts as $part) {
-		  if ( ($part !== '.') & ($part !== '..') ) {
-		    $safepath .=  '\\'. trim(str_replace('..', '.', $part),'.');
-		  }
-		}
-		return $safepath;
+		$regex = array('#[^A-Za-z0-9:\_\-' . $ds . ' ]#');
+		return preg_replace($regex, '', $path);
 	}
 
 }

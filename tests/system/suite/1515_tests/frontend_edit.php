@@ -3,7 +3,7 @@
  * 
  */
 
-require_once '../SeleniumJoomlaTestCase.php';
+require_once 'SeleniumJoomlaTestCase.php';
 
 class FrontendEdit extends SeleniumJoomlaTestCase
 {

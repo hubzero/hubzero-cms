@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: application.php 16385 2010-04-23 10:44:15Z ian $
+* @version		$Id: application.php 16449 2010-04-25 21:17:31Z ian $
 * @package		Joomla.Framework
 * @subpackage	Application
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -531,7 +531,8 @@ class JApplication extends JObject
 
 			// we fork the session to prevent session fixation issues
 			$session->fork();
-
+			$this->_createSession($session->getId());
+			
 			// Import the user plugin group
 			JPluginHelper::importPlugin('user');
 
