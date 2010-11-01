@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 18172 2010-07-17 19:46:57Z ian $
+* @version		$Id: CHANGELOG.php 19058 2010-10-08 04:15:39Z dextercowley $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -35,6 +35,8 @@ $ -> Language fix or change
 ^ -> Change
 - -> Removed
 ! -> Note
+
+-------------------- 1.5.21 Stable Release [08-October-2010] ------------------
 
 
 -------------------- 1.5.20 Stable Release [18-July-2010] ------------------
