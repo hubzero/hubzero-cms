@@ -31,7 +31,7 @@ require_once '1515_tests/frontend_edit.php';
 require_once '1515_tests/tinymce0007.php';
 require_once '1515_tests/tinymce0008.php';
 require_once 'doInstall.php';
-require_once '1517_tests/session_handler_test.php'
+require_once '1517_tests/session_handler_test.php';
  
 class TestSuite
 {

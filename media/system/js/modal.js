@@ -368,6 +368,6 @@ var SqueezeBox = {
 	extend: $extend
 };
 
-SqueezeBox.extend(Events.prototype);
-SqueezeBox.extend(Options.prototype);
-SqueezeBox.extend(Chain.prototype);
+SqueezeBox.extend(SqueezeBox, Events.prototype);
+SqueezeBox.extend(SqueezeBox, Options.prototype);
+SqueezeBox.extend(SqueezeBox, Chain.prototype);
