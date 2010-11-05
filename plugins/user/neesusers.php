@@ -73,7 +73,7 @@ class plgUserNeesusers extends JPlugin
 
         $modifiedDate = gmdate('Y-m-d H:i:s');
 
-        //Split the username 0 - firstname, 1 - lastname
+        //Split the Joomla username 0 - firstname, 1 - lastname
         $namearray = explode(' ', $user['name']);
 
         // Look up more detailed information about this user not available from the $user object passed in
@@ -84,8 +84,25 @@ class plgUserNeesusers extends JPlugin
         $firstname = $profile->get('givenName');
         $lastname = $profile->get('surname');
 
-        //if(empty($firstname)) $firstname = '<none>';
-        //if(empty($lastname)) $lastname = '<none>';
+        // We try to get these from the hub, but sometimes the info isn't there
+        // Fallback to standard splitting of name reported by Joomla from jos_user table
+        if(empty($firstname) || empty($lastname))
+        {
+            if(count($namearray) == 2)
+            {
+                $firstname = $namearray[0];
+                $lastname = $namearray[1];
+            }
+            else
+            {
+                // middle initial case (hopefully), but this case will also fire for users with spaces in their first or last name.
+                // We can't currently account for spaces in fname or lname
+                $firstname = $namearray[0];
+                $lastname = $namearray[2];
+            }
+
+        }
+
 
         if(empty($user['email']))
             $email = '<none>';
@@ -101,8 +118,10 @@ class plgUserNeesusers extends JPlugin
             $person = new Person($user['username'], $firstname, $lastname, '', '', $email, 'Other', '', 'First onAfterStoreUser call at ' . $modifiedDate, 0);
             $person->save();
         }
-        else // save
+        else
         {
+            // save. Stopped doing this for now, until we have the name issue solved,
+            // I don't want to potentially update something we've fixed manually and mess stuff up more.
             //$personLookup->setFirstName($firstname);
             //$personLookup->setLastName($lastname);
             //$personLookup->setEMail($email);
