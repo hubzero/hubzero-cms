@@ -242,8 +242,8 @@ class DataFilePeer extends BaseDataFilePeer {
         $c->add(self::PATH, $path);
         $c->add(self::DELETED, 0);
         $c->addDescendingOrderByColumn(self::DIRECTORY);
-        $c->addDescendingOrderByColumn(self::NAME);
-        //$c->addAscendingOrderByColumn(self::NAME);
+        //$c->addDescendingOrderByColumn(self::NAME);
+        $c->addAscendingOrderByColumn(self::NAME);
         return self::doSelect($c);
     }
 
@@ -813,6 +813,7 @@ class DataFilePeer extends BaseDataFilePeer {
         $oCriteria->add(DataFileLinkPeer::REP_ID, $p_iRepetitionId);
         $oCriteria->add(DataFileLinkPeer::DELETED, 0);
         $oCriteria->add(DataFilePeer::DELETED, 0);
+        $oCriteria->add(self::NAME, "Rep-%", Criteria::NOT_LIKE);
         return DataFilePeer::doSelectOne($oCriteria);
     }
 
@@ -847,7 +848,7 @@ class DataFilePeer extends BaseDataFilePeer {
     public static function getDirectorySummary($dirPath){
       $dirPath = get_systemPath($dirPath);
       $dfs = DataFilePeer::findAllInDir($dirPath);
-      
+
 
       $numDirs = 0;
       $numFiles = 0;
@@ -885,7 +886,7 @@ class DataFilePeer extends BaseDataFilePeer {
                 "df.name='" . $p_strIncludedFolderArray[2] . "')";
 
         $strQuery = "select df.name, df.id
-				 from data_file df 
+				 from data_file df
 				 where df.path = ?
 				   and $strNameCondition";
 
@@ -904,7 +905,7 @@ class DataFilePeer extends BaseDataFilePeer {
 
     public static function findDataFileByType($p_strFileType, $p_iProjectId, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
         $strQuery = "select d.ID, d.PATH, d.NAME, d.DESCRIPTION, d.TITLE,
-  				co.description as CURATED_DESCRIPTION, co.TITLE as CURATED_TITLE   
+  				co.description as CURATED_DESCRIPTION, co.TITLE as CURATED_TITLE
 				from data_file_link dfl, data_file d, curatedncidcross_ref cr, curated_objects co
 				where dfl.proj_id = ?
 				  and dfl.exp_id = ?
@@ -1023,7 +1024,7 @@ class DataFilePeer extends BaseDataFilePeer {
         $strQuery .= "  and(
                              (lower(df.name) like '%.png') or
                              (lower(df.name) like '%.jpg') or
-                             (lower(df.name) like '%.gif') 
+                             (lower(df.name) like '%.gif')
                            )
                         and df.path not like '%".Files::GENERATED_PICS."'
                         )
@@ -1108,7 +1109,7 @@ class DataFilePeer extends BaseDataFilePeer {
   				 where df.id = dfl.id
   				   and df.deleted=0
   				   and df.directory=0
-  				   and df.usage_type_id is null 
+  				   and df.usage_type_id is null
   				   and dfl.deleted=0
   				   and dfl.proj_id=?
   				   and dfl.exp_id=?";
@@ -1121,7 +1122,7 @@ class DataFilePeer extends BaseDataFilePeer {
         $strQuery .= " and(
                              (lower(df.name) like '%.png') or
                              (lower(df.name) like '%.jpg') or
-                             (lower(df.name) like '%.gif') 
+                             (lower(df.name) like '%.gif')
   				   )";
 
         $iCount = 0;
@@ -1405,7 +1406,7 @@ class DataFilePeer extends BaseDataFilePeer {
 
         $strQuery .= "
   				     and (
-  				       df.usage_type_id is null or 
+  				       df.usage_type_id is null or
   				       df.usage_type_id not in (";
         foreach ($p_strExcludeUsageArray as $iExcludeIndex => $strExcludeUsageType) {
             $strQuery .= "(select id from entity_type where n_table_name=?)";
@@ -1480,7 +1481,13 @@ class DataFilePeer extends BaseDataFilePeer {
         return self::doSelectOne($oCriteria);
     }
 
-    public static function resizePhotos($p_oDataFileArray) {
+    /**
+     *
+     * @param array $p_oDataFileArray An array of DataFile objects
+     * @param bool $p_bSetPathAndName Update the DataFile path and name to the generated photo
+     * @return array
+     */
+    public static function resizePhotos($p_oDataFileArray, $p_bSetPathAndName=true) {
         require_once 'api/org/nees/util/PhotoHelper.php';
 
         $iIndex = -1;
@@ -1499,7 +1506,7 @@ class DataFilePeer extends BaseDataFilePeer {
 
             /* @var $oThumbEntityType EntityType */
             $oThumbEntityType = EntityTypePeer::findByTableName("Thumbnail");
-            
+
             /* @var $oDisplayEntityType EntityType */
             $oDisplayEntityType = EntityTypePeer::findByTableName("Data Photo");
 
@@ -1520,14 +1527,17 @@ class DataFilePeer extends BaseDataFilePeer {
                     $bDisplayCreated = PhotoHelper::resize($strSource, PhotoHelper::DEFAULT_DISPLAY_WIDTH, PhotoHelper::DEFAULT_DISPLAY_HEIGHT, $strFullName);
                     if ($bDisplayCreated) {
                         $display_df = DataFilePeer::insertOrUpdateIfDuplicate($strDisplayName, $thumbpath, date('Y-m-d H:i:s'), md5_file($strFullName), 0, filesize($strFullName), $oDisplayEntityType->getId());
-
-                        $oDataFile->setPath($thumbpath);
+                        if($p_bSetPathAndName){
+                          $oDataFile->setPath($thumbpath);
+                        }
 //                        $oDataFile->setName($strDisplayName);
                         $p_oDataFileArray[$iIndex] = $oDataFile;
                     }
                 }
             } else {
-                $oDataFile->setPath($thumbpath);
+                if($p_bSetPathAndName){
+                  $oDataFile->setPath($thumbpath);
+                }
 //                $oDataFile->setName($strDisplayName);
                 $p_oDataFileArray[$iIndex] = $oDataFile;
             }
@@ -1643,10 +1653,10 @@ class DataFilePeer extends BaseDataFilePeer {
 
         $strQuery = "select count(df.id) as total
   				 from data_file df
-  				   inner join data_file_link dfl on df.id = dfl.id 
-  				   left join experiment e on dfl.exp_id = e.expid 
-  				   left join trial t on dfl.trial_id = t.trialid 
-  				   left join repetition r on dfl.rep_id = r.repid 
+  				   inner join data_file_link dfl on df.id = dfl.id
+  				   left join experiment e on dfl.exp_id = e.expid
+  				   left join trial t on dfl.trial_id = t.trialid
+  				   left join repetition r on dfl.rep_id = r.repid
   				 where df.opening_tool=?
   				   and df.deleted=?
   				   and dfl.deleted=?";
@@ -2090,7 +2100,7 @@ class DataFilePeer extends BaseDataFilePeer {
                     WHERE rn BETWEEN ? AND ?";
 
     $iIndex = 5;
-    
+
     //echo $strQuery."<br>";
 
     $strPath = (StringHelper::beginsWith($p_strDirectory, "/")) ? $p_strDirectory."%" : "%/".$p_strDirectory."%";
@@ -2454,7 +2464,7 @@ class DataFilePeer extends BaseDataFilePeer {
             $strQuery .= "and dfl.rep_id=? ";
         }
         $strQuery .= " and dfl.id = df.id
-			       and df.opening_tool is not null 
+			       and df.opening_tool is not null
 				 order by df.opening_tool";
 
         $iIndex = 2;
@@ -2602,6 +2612,7 @@ class DataFilePeer extends BaseDataFilePeer {
     }
 
     private static function getProjectEditorPhotosQuery($p_iPhotoType, $p_iProjectId, $p_iExperimentId, $p_iLowerLimit, $p_iUpperLimit){
+      /*
       $strQuery = "SELECT *
                    FROM (
                      select df.id, row_number()
@@ -2617,6 +2628,23 @@ class DataFilePeer extends BaseDataFilePeer {
                        and df.path not like '%".Files::GENERATED_PICS."'
                        and df.path not like '%Documentation%'
                        and df.path not like '%Analysis%'
+                       and dfl.proj_id = ?
+                       and dfl.exp_id = ?";
+      */
+
+      $strQuery = "SELECT *
+                   FROM (
+                     select df.id, row_number()
+                     OVER (ORDER BY df.path, df.name) as rn
+                     from data_file_link dfl, data_file df
+                     where dfl.id = df.id
+                       and df.directory=?
+                       and(
+                          (lower(df.name) like '%.png') or
+                          (lower(df.name) like '%.jpg') or
+                          (lower(df.name) like '%.gif')
+                       )
+                       and df.path not like '%".Files::GENERATED_PICS."'
                        and dfl.proj_id = ?
                        and dfl.exp_id = ?";
       if($p_iPhotoType == self::PHOTO_TYPE_DATA){
@@ -2637,6 +2665,7 @@ class DataFilePeer extends BaseDataFilePeer {
     }
 
     private static function getProjectEditorPhotosCountQuery($p_iPhotoType, $p_iProjectId, $p_iExperimentId){
+      /*
       $strQuery = "select count(df.id) as TOTAL
                    from data_file_link dfl, data_file df
                    where dfl.id = df.id
@@ -2649,6 +2678,20 @@ class DataFilePeer extends BaseDataFilePeer {
                      and df.path not like '%".Files::GENERATED_PICS."'
                      and df.path not like '%Documentation%'
                      and df.path not like '%Analysis%'
+                     and dfl.proj_id = ?
+                     and dfl.exp_id = ?";
+      */
+
+      $strQuery = "select count(df.id) as TOTAL
+                   from data_file_link dfl, data_file df
+                   where dfl.id = df.id
+                     and df.directory=?
+                     and(
+                       (lower(df.name) like '%.png') or
+                       (lower(df.name) like '%.jpg') or
+                       (lower(df.name) like '%.gif')
+                     )
+                     and df.path not like '%".Files::GENERATED_PICS."'
                      and dfl.proj_id = ?
                      and dfl.exp_id = ?";
       if($p_iPhotoType == self::PHOTO_TYPE_DATA){
@@ -2664,6 +2707,358 @@ class DataFilePeer extends BaseDataFilePeer {
       return $strQuery;
     }
 
+    public static function getDirectorySize($p_strCurrentDirectory){
+      $strQuery = "select sum(df.filesize) as TOTAL
+                   from data_file df
+                   where df.path like '$p_strCurrentDirectory%'
+                     and df.path not like '%/Generated_Pics'
+                     and df.directory = 0";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    public static function getDrawingCountByDirectory($p_strCurrentDirectory){
+      $strQuery = "select count(df.id) as TOTAL
+                   from data_file df
+                   where df.path like '$p_strCurrentDirectory%'
+                     and df.path not like '%/".Files::GENERATED_PICS."'
+                     and df.usage_type_id in (select et.id from entity_type et where et.n_table_name like 'Drawing%')";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    public static function getPhotoByDirectory($p_strCurrentDirectory, $p_iLowerLimit, $p_iUpperLimit){
+      $strQuery = "SELECT *
+                   FROM (
+                     select df.id, row_number()
+                     OVER (ORDER BY df.path, df.name) as rn
+                     from data_file df
+                     where df.path like '$p_strCurrentDirectory%'
+                       and df.path not like '%/".Files::GENERATED_PICS."'
+                       and (df.usage_type_id not in (select id from entity_type where n_table_name like 'Drawing%') or df.usage_type_id is null)
+                       and df.document_format_id in (select et.document_format_id from document_format et where et.mime_type like 'image/%')
+                   )WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
+
+      $iDataFileIdArray = array();
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iId = $oResultSet->getInt("ID");
+        array_push($iDataFileIdArray, $iId);
+      }
+
+      return self::retrieveByPKs($iDataFileIdArray);
+    }
+
+    public static function getPhotoCountByDirectory($p_strCurrentDirectory){
+      $strQuery = "select count(df.id) as TOTAL
+                   from data_file df
+                   where df.path like '$p_strCurrentDirectory%'
+                     and df.path not like '%/".Files::GENERATED_PICS."'
+                     and (df.usage_type_id not in (select id from entity_type where n_table_name like 'Drawing%') or df.usage_type_id is null)
+                     and df.document_format_id in (select et.document_format_id from document_format et where et.mime_type like 'image/%')";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    public static function getFrameCaptureCountByDirectory($p_strCurrentDirectory){
+      $strQuery = "select count(df.id) as TOTAL
+                   from data_file df
+                   where df.path like '$p_strCurrentDirectory%'
+                     and df.path not like '%/".Files::GENERATED_PICS."'
+                     and df.path like '%/Video/Frames/%'
+                     and df.document_format_id in (select et.document_format_id from document_format et where et.mime_type like 'image/%')";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    public static function getMovieByDirectory($p_strCurrentDirectory, $p_iLowerLimit, $p_iUpperLimit){
+      $strQuery = "SELECT *
+                   FROM (
+                     select df.id, row_number()
+                     OVER (ORDER BY df.path, df.name) as rn
+                     from data_file df
+                     where df.path like '$p_strCurrentDirectory%'
+                       and df.document_format_id in (select et.document_format_id from document_format et where et.mime_type like 'video/%')
+                   )WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
+
+      $iDataFileIdArray = array();
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iId = $oResultSet->getInt("ID");
+        array_push($iDataFileIdArray, $iId);
+      }
+
+      return self::retrieveByPKs($iDataFileIdArray);
+    }
+
+    public static function getMovieCountByDirectory($p_strCurrentDirectory){
+      $strQuery = "select count(df.id) as TOTAL
+                   from data_file df
+                   where df.path like '$p_strCurrentDirectory%'
+                     and df.document_format_id in (select et.document_format_id from document_format et where et.mime_type like 'video/%')";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    public static function getObjectTypeByDirectory($p_strCurrentDirectory, $p_strObjectType, $p_iLowerLimit, $p_iUpperLimit){
+      $strQuery = "SELECT *
+                   FROM (
+                     select distinct df.id, row_number()
+                     OVER (ORDER BY df.path, df.name) as rn
+                     from data_file df,
+                        curatedncidcross_ref xr,
+                        curated_objects co
+                     where df.path like '$p_strCurrentDirectory%'
+                       and df.id = xr.neescentral_objectid
+                       and xr.curated_entityid = co.object_id
+                       and co.object_type = '$p_strObjectType'
+                   )WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
+
+      $iDataFileIdArray = array();
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iId = $oResultSet->getInt("ID");
+        array_push($iDataFileIdArray, $iId);
+      }
+
+      return self::retrieveByPKs($iDataFileIdArray);
+    }
+
+    public static function getObjectTypeCountByDirectory($p_strCurrentDirectory, $p_strObjectType){
+      $strQuery = "select count(df.id) as TOTAL
+                   from data_file df,
+                        curatedncidcross_ref xr,
+                        curated_objects co
+                   where df.path like '$p_strCurrentDirectory%'
+                     and df.id = xr.neescentral_objectid
+                     and xr.curated_entityid = co.object_id
+                     and co.object_type = '$p_strObjectType'";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    public static function isCuratedByTypeAndNCId($p_iNeesCentralId, $p_strObjectType){
+      $strQuery = "select count(df.id) as TOTAL
+                   from data_file df,
+                        curatedncidcross_ref xr,
+                        curated_objects co
+                   where df.id = $p_iNeesCentralId
+                     and df.id = xr.neescentral_objectid
+                     and xr.curated_entityid = co.object_id
+                     and co.object_type = '$p_strObjectType'";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    public static function getDataFileByDirectory($p_strCurrentDirectory, $p_iLowerLimit=1, $p_iUpperLimit=25) {
+        $oReturnArray = array();
+
+        $strQuery = "SELECT *
+                     FROM (
+                       select df.id, df.path, df.name, row_number()
+                       OVER (ORDER BY df.path, df.name) as rn
+                       from data_file df
+                       where df.path like '$p_strCurrentDirectory%'
+                         and df.path not like '%/".Files::GENERATED_PICS."'
+                         and df.directory = 0
+                         and df.deleted = 0
+                         and (
+                            df.path like '%/Unprocessed_Data/%' or
+                            df.path like '%/Converted_Data/%' or
+                            df.path like '%/Corrected_Data/%' or
+                            df.path like '%/Derived_Data/%'
+                         )
+                     )
+                     WHERE rn BETWEEN ? AND ?";
+
+        //echo $strQuery."<br>";
+
+        $oConnection = Propel::getConnection();
+        $oStatement = $oConnection->prepareStatement($strQuery);
+        $oStatement->setInt(1, $p_iLowerLimit);
+        $oStatement->setInt(2, $p_iUpperLimit);
+        $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+        while ($oResultSet->next()) {
+          $strFileArray['ID'] = $oResultSet->getInt("ID");
+          array_push($oReturnArray, $strFileArray['ID']);
+        }
+
+        return self::retrieveByPKs($oReturnArray);
+    }
+
+    public static function getDataFileCountByDirectory($p_strCurrentDirectory){
+      $strQuery = "select count(df.id) as TOTAL
+                   from data_file df
+                   where df.path like '$p_strCurrentDirectory%'
+                     and df.path not like '%/".Files::GENERATED_PICS."'
+                     and df.directory = 0
+                     and df.deleted = 0
+                     and (
+                       df.path like '%/Unprocessed_Data/%' or
+                       df.path like '%/Converted_Data/%' or
+                       df.path like '%/Corrected_Data/%' or
+                       df.path like '%/Derived_Data/%'
+                     )";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while ($oResultSet->next()) {
+        $iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    public static function findDataFileByUsageAndDirectory($p_strUsage, $p_strDirectory, $p_iLowerLimit=1, $p_iUpperLimit=25) {
+        $oReturnArray = array();
+
+        $strQuery = "SELECT *
+                     FROM (
+                       select df.id, df.path, df.name, row_number()
+                       OVER (ORDER BY df.path, df.name) as rn
+                       from data_file df
+                       where df.usage_type_id in (select id from entity_type where n_table_name like ?)
+                         and df.path like ?
+                         and df.path not like '%/".Files::GENERATED_PICS."'
+                         and df.deleted=?
+                     )
+                     WHERE rn BETWEEN ? AND ?";
+
+        //echo $strQuery."<br>";
+
+        $oConnection = Propel::getConnection();
+        $oStatement = $oConnection->prepareStatement($strQuery);
+        $oStatement->setString(1, $p_strUsage."%");
+        $oStatement->setString(2, $p_strDirectory."%");
+        $oStatement->setInt(3, 0);
+        $oStatement->setInt(4, $p_iLowerLimit);
+        $oStatement->setInt(5, $p_iUpperLimit);
+        $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+        while ($oResultSet->next()) {
+          $strFileArray['ID'] = $oResultSet->getInt("ID");
+          array_push($oReturnArray, $strFileArray['ID']);
+        }
+
+        return self::retrieveByPKs($oReturnArray);
+    }
+
+    public static function findDataFileByUsageAndDirectoryCount($p_strUsage, $p_strDirectory) {
+        $iTotal = 0;
+
+        $strQuery = "select count(df.id) as TOTAL
+                     from data_file df
+                     where df.usage_type_id in (select id from entity_type where n_table_name like ?)
+                       and df.path like ?
+                       and df.path not like '%/".Files::GENERATED_PICS."'
+                       and df.deleted=?";
+
+        //echo $strQuery."<br>";
+
+        $oConnection = Propel::getConnection();
+        $oStatement = $oConnection->prepareStatement($strQuery);
+        $oStatement->setString(1, $p_strUsage."%");
+        $oStatement->setString(2, $p_strDirectory."%");
+        $oStatement->setInt(3, 0);
+        $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+        while ($oResultSet->next()) {
+          $iTotal = $oResultSet->getInt("TOTAL");
+        }
+
+        return $iTotal;
+    }
+
+    /**
+     * http://my.php.net/manual/en/function.sort.php#75036
+     * @param array $p_oDataFiles
+     * @return <type>
+     */
+    public static function sortDataFiles(&$p_oDataFiles){
+      for ($i = count($p_oDataFiles) - 1; $i >= 0; $i--){
+        $swapped = false;
+        for ($j = 0; $j < $i; $j++){
+          /*
+           * @var $oThisDataFile DataFile
+           * @var $oNextDataFile DataFile
+           */
+          $oThisDataFile = $p_oDataFiles[$j];
+          $oNextDataFile = $p_oDataFiles[$j+1];
+          if($oThisDataFile->isDirectory() && $oNextDataFile->isDirectory()){
+            $strThisDataFileNameArray = split("-",$oThisDataFile->getName());
+            $strNextDataFileNameArray = split("-",$oNextDataFile->getName());
+            if(count($strThisDataFileNameArray)==2 && count($strNextDataFileNameArray)==2){
+              if($strThisDataFileNameArray[0] == $strNextDataFileNameArray[0]){
+                if (intval($strThisDataFileNameArray[1]) > intval($strNextDataFileNameArray[1])){
+                  $tmp = $oThisDataFile;
+                  $p_oDataFiles[$j] = $oNextDataFile;
+                  $p_oDataFiles[$j+1] = $tmp;
+                  $swapped = true;
+                }
+              }
+            }
+          }
+        }
+        if (!$swapped) return;
+      }
+    }
 }
 
 // DataFilePeer
