@@ -87,7 +87,7 @@ class plgGroupsMessages extends JPlugin
 			}
 			return $arr;
 		}
-		
+
 		// Return no data if the user is not authorized
 		if (!$authorized || ($authorized != 'admin' && $authorized != 'manager' && $authorized != 'member')) {
 			if ($return == 'html') {
@@ -289,9 +289,15 @@ class plgGroupsMessages extends JPlugin
 	protected function _create() 
 	{
 		// Ensure only admins and group managers can create messages
-		if ($this->authorized != 'manager' && $this->authorized != 'admin') {
+		if ($this->authorized != 'manager' && $this->authorized != 'admin' && $this->authorized != 'member') {
 			return false;
 		}
+
+		$users = JRequest::getVar( 'users', '');
+
+		//if (empty($users) && $this->authorized == 'member') {
+		//	return '<p class="error">Group members are not authorized to send messages to all members of the group.</p>';
+		//}
 		
 		// Set the page title
 		$document =& JFactory::getDocument();
@@ -311,7 +317,7 @@ class plgGroupsMessages extends JPlugin
 		$view->option = $this->_option;
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
-		$view->users = JRequest::getVar( 'users', array('all') );
+		$view->users = $users;
 		$view->no_html = JRequest::getInt( 'no_html', 0 );
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
