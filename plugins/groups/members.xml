@@ -31,6 +31,10 @@
 		<language tag="en-GB">en-GB.plg_groups_members.ini</language>
 	</languages>
 	<params>
-		<param name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+		<param name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of members to display in one page"/>
+		<param name="resort" type="radio" default="0" label="Sort alphabetically" description="Sort members alphabetically? Default is group join date.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 	</params>
 </install>

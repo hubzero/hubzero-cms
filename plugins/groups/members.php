@@ -180,9 +180,10 @@ class plgGroupsMembers extends JPlugin
 					break;
 				}
 				
-				$view->limit = JRequest::getInt('limit', 25);
+				$view->limit = JRequest::getInt('limit', $this->_params->get('display_limit'));
 				$view->start = JRequest::getInt('limitstart', 0);
 				$view->no_html = JRequest::getInt( 'no_html', 0 );
+				$view->params = $this->_params;
 				
 				// Initiate paging
 				jimport('joomla.html.pagination');
