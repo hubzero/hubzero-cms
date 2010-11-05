@@ -105,6 +105,10 @@ class plgResourcesReviews extends JPlugin
 				$rtrn = 'metadata';
 			}
 		}
+		$ar = $this->onResourcesAreas( $resource );
+		if (empty($ar)) {
+			$rtrn = '';
+		}
 
 		ximport('Hubzero_View_Helper_Html');
 		ximport('Hubzero_Plugin_View');
