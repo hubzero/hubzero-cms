@@ -333,6 +333,19 @@ class ResourcesResource extends JTable
 	
 	//-----------
 	
+	function getHighlights( $filters=array(), $admin=false ) 
+	{
+		$sql  = "SELECT C.id, C.title, C.type, C.introtext, C.fulltext, C.created, C.created_by, C.modified, C.published, C.publish_up, C.standalone, C.access, C.hits, C.rating, C.times_rated, C.params, C.alias, C.ranking, t.type AS typetitle, lt.type AS logicaltitle";
+		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
+		$sql .= $this->buildQuery( $filters, $admin );
+		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
+
+		$this->_db->setQuery( $sql );
+		return $this->_db->loadObjectList();
+	}
+	
+	//-----------
+	
 	function buildPluginQuery( $filters=array() )
 	{
 		$database =& JFactory::getDBO();

@@ -151,9 +151,9 @@ class ResourcesHtml
 
 	//-----------
 	
-	public function hed($level, $txt)
+	public function hed($level, $txt, $xtra = '')
 	{
-		return '<h'.$level.'>'.$txt.'</h'.$level.'>';
+		return '<h'.$level.' id="resource-title" >'.$txt.$xtra.'</h'.$level.'>';
 	}
 
 	//-----------
@@ -704,7 +704,16 @@ class ResourcesHtml
 		$typenorm = preg_replace("/[^$normalized_valid_chars]/", "", $resource->getTypeTitle());
 		$typenorm = strtolower($typenorm);
 		
-		$html  = ResourcesHtml::hed(2,$txt)."\n";
+		$xtra = '';
+		switch ($resource->type)
+		{
+			case 69: //historical documents
+				$xtra = ' (Historical-document) ';
+			default:
+				break;
+		}
+		
+		$html = ResourcesHtml::hed(2,$txt,$xtra)."\n";
 		
 		if ($show_posted) {
 			$html .= '<p>'.JText::_('COM_RESOURCES_POSTED').' ';
@@ -1809,6 +1818,10 @@ class ResourcesHtml
 									$liclass = ' class="swf"';
 									$class = ' class="play"';
 									break;
+								case 67:
+									$liclass = ' class="swf"';
+									$class = ' class="play"';
+									break;
 								default:
 									$liclass = ' class="'.$ftype.'"';
 									break;
@@ -1839,13 +1852,40 @@ class ResourcesHtml
 						$out .= ' <li'.$liclass.'>';
 						$out .= ' '. ResourcesHtml::getFileAttribs( $child->path, $base, $fsize );
 						$out .= '<a'.$class.' href="'.$url.'" title="'.stripslashes($child->title).'">'.$title.'</a>';
-						$out .= '</li>'."\n";
+						
+						if( $child->type == 70)
+						{
+							$out .= '&nbsp;<a class="get-hidden-resource-info" href="#resdata_'.$child->id.'" style="margin: 30px;">Get Image Embed Code &rsaquo;</a>';
+							$out .= '</li>'."\n";
+							$out .='		<div class="hidden-resource-info">'."\n";
+							$out .=' 		<div id="resdata_'.$child->id.'">'."\n";
+							$out .='		<p> Copy/paste this URL into the Editor\'s Image URL property to view this within your document </p>'."\n";
+							$out .='		<h2 style="margin: 30px;">'.$url.'</h2>'."\n";
+							$out .='		<img src=/templates/fresh/images/demopage/imageloader.jpg></img>'."\n";
+							$out .='		<p>'.'</p>'."\n";
+							$out .='		</div>'."\n";
+							$out .='		</div>'."\n";
+						}
+						
+						
 					}
 				}
 			$out .= '</ul>'."\n";
 		} else {
 			$out .= '<p>[ none ]</p>';
 		}
+		
+		$out .= '<script>'."\n";
+		$out .= '	$jQ("a.get-hidden-resource-info").fancybox( '."\n";
+		$out .= '			{'."\n";
+		$out .= '				\'hideOnContentClick\': false,'."\n";
+		$out .= '				\'transitionIn\'	:	\'elastic\','."\n";
+		$out .= '				\'transitionOut\'	:	\'elastic\','."\n";
+		$out .= '				\'overlayShow\' : true,'."\n";
+		$out .= '			}'."\n";
+		$out .= '	); '."\n";
+		$out .= '	</script>'."\n";
+		
 		return $out;		
 	}
 
@@ -1915,8 +1955,9 @@ class ResourcesHtml
 	public function primary_child( $option, $resource, $firstChild, $xact='' )
 	{
 	    $juser =& JFactory::getUser();
-		
+		$xhub =& XFactory::getHub();
 		$html = '';
+	
 		
 		switch ($resource->type)
 		{
@@ -1941,7 +1982,80 @@ class ResourcesHtml
 					}
 					
 	
-					if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) { // dev or published tool
+				// DOWNLOAD BUTTON SUPPORT --jmorris
+				ximport('Hubzero_Tool_Version');
+				$hztv = Hubzero_Tool_Version::getInstance($resource->tool);
+				
+        		
+				if ($hztv->mw == 'download') {
+					$action_button_label    = 'Launch Tool';
+					$action_button_disabled = true;
+					$action_button_class    = 'disabled';
+					$action_href            = '';
+					$action_popup_content   = ResourcesHtml::warning(JText::_('This tool is distrubuted as a downloadable file. To download, please visit the \'Supporting Documents\' section, or click the button below.'));
+					
+					$html .= ResourcesHtml::primaryButton($action_button_class, $action_href, $action_button_label, '', '', '', $action_button_disabled, $action_popup_content);
+
+					$firstChild->title = str_replace( '"', '&quot;', $firstChild->title );
+ 					$firstChild->title = str_replace( '&amp;', '&', $firstChild->title );
+ 					$firstChild->title = str_replace( '&', '&amp;', $firstChild->title );
+
+  					$mediatypes = array('11','20','34','19','37','32','15','40','41','15');
+ 					$downtypes = array('60','59','57','55');
+ 					$class = '';
+  				
+ 					if (in_array($firstChild->logicaltype,$downtypes)) {
+ 						$mesg  = 'Download';
+ 						$class = 'active secondary';
+					} elseif (in_array($firstChild->type,$mediatypes)) {
+						$mesg  = 'View Presentation';
+						$mediatypes = array('32','26');
+  						if (in_array($firstChild->type,$mediatypes)) {
+  							$class = 'play';
+  						}
+  					} else {
+  						$mesg  = 'Download';
+  						$class = 'active secondary';
+  					}
+
+					if ($firstChild->access==1 && $juser->get('guest')) { 
+						// first child is for registered users only and the visitor is not logged in
+						$pop  = '<p class="warning">This resource requires you to log in before you can proceed with the download.</p>'."\n";
+						$html .= ResourcesHtml::primaryButton('disabled', JRoute::_('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
+					} else {
+						$child_params =& new JParameter( $firstChild->params );
+						$link_action = $child_params->get( 'link_action', '' );
+
+ 						$url = ResourcesHtml::processPath($option, $firstChild, $resource->id, $link_action);
+
+						$attribs =& new JParameter( $firstChild->attribs );
+						$width  = $attribs->get( 'width', '' );
+						$height = $attribs->get( 'height', '' );
+
+						$action = '';
+						if ($link_action == 1) {
+							$action = 'rel="external"';
+						} elseif ($link_action == 2) {
+							$w = (intval($width) > 0) ? intval($width) : 400;
+ 							$h = (intval($height) > 0) ? intval($height) : 400;
+							$mesg  = 'View Resource';
+						}
+
+						if (intval($width) > 0 && intval($height) > 0) {
+							$class .= ' '.($width + 20).'x'.($height + 60);
+						}
+
+						$xtra = ' '. ResourcesHtml::getFileAttribs( $firstChild->path );
+
+						if ($xact) {
+							$action = $xact;
+						}
+
+						$html .= ResourcesHtml::primaryButton($class, $url, $mesg, $xtra, $firstChild->title, $action);
+ 					}
+				}
+				// END DOWNLOAD BUTTON SUPPORT --jmorris
+				else if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) { // dev or published tool
 						//if ($juser->get('guest')) { 
 							// Not logged-in = show message
 							//$html .= ResourcesHtml::primaryButton('launchtool disabled', $lurl, 'Launch Tool');
@@ -1949,8 +2063,10 @@ class ResourcesHtml
 						//} else {
 							$pop = ($juser->get('guest')) ? ResourcesHtml::warning(JText::_('You must login before you can run this tool.')) : '';
 							$pop = ($resource->revision =='dev') ? ResourcesHtml::warning(JText::_('Warning: This tool version is under development and may not be run until it is installed.')) : $pop;
-							$html .= ResourcesHtml::primaryButton('launchtool', $lurl, JText::_('Launch Tool'), '', '', '', 0, $pop );
+							
+							$html .= ResourcesHtml::primaryButton('launchtool secondary active', $lurl, JText::_('Launch Tool'), '', '', '', 0, $pop );
 						//}
+					
 					} else { // tool unpublished
 						$pop   = ResourcesHtml::warning(JText::_('This tool version is unpublished and cannot be run. If you would like to have this version staged, you can put a request through HUB Support.'));
 						$html .= ResourcesHtml::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
@@ -1962,18 +2078,152 @@ class ResourcesHtml
 				// write primary button and downloads for a Learning Module
 				$html .= ResourcesHtml::primaryButton('', JRoute::_('index.php?option=com_resources&id='.$resource->id.'&task=play'), 'Start learning module');
 			break;
+			
+			case 31:
+				
+				$mesg  = 'Start Series';
+				$class = '';
+				
+				if ($firstChild->standalone == 1) {
+					$mesg  = 'View Series';
+					$class = ''; //'play';
+				}
+								
+				$child_params =& new JParameter( $firstChild->params );
+				$link_action = $child_params->get( 'link_action', '' );
+
+				//$url = ResourcesHtml::processPath($option, $firstChild, $resource->id, $link_action);
+				
+				/*$action = '';
+				if ($link_action == 1) {
+					$action = 'rel="external"';
+				} elseif ($link_action == 2) {
+					$w = (intval($width) > 0) ? intval($width) : 400;
+					$h = (intval($height) > 0) ? intval($height) : 400;
+					//$action = 'onclick="popupWindow(\''.$url.'\', \''.$firstChild->title.'\', '.$w.', '.$h.', \'auto\');"';
+					$mesg  = 'View First Object';
+					//$class .= ' popup';
+				}
+				*/
+					
+				$xtra = '';
+				//if ($firstChild->type == 13 || $firstChild->type == 15 || $firstChild->type == 33) {
+					$xtra = ' '. ResourcesHtml::getFileAttribs( $firstChild->path );
+				//}
+
+				
+				//$html .= ResourcesHtml::primaryButton($class, $url, $mesg, $xtra, $firstChild->title, $action);
+				$html .= ResourcesHtml::primaryButton('active', JRoute::_('index.php?option=com_resources&id='.$resource->id).'#series', $mesg, '', $mesg, '');
+				
+			break;
 						
 			case 6:
 			case 8:
-			case 31:
+			
 			case 2:
 				// do nothing
 				$mesg  = JText::_('View').' ';
 				$mesg .= $resource->type == 6 ? 'Course Lectures' : '';
 				$mesg .= $resource->type == 2 ? 'Workshop ' : '';
 				$mesg .= $resource->type == 6 ? '' : 'Series';
-				$html .= ResourcesHtml::primaryButton('download', JRoute::_('index.php?option=com_resources&id='.$resource->id).'#series', $mesg, '', $mesg, '');
+				$html .= ResourcesHtml::primaryButton('active', JRoute::_('index.php?option=com_resources&id='.$resource->id).'#series', $mesg, '', $mesg, '');
 			break;
+			
+			case 67:
+				//Determine what kind of video are we playing, internal, youtube/vimeo?
+				$externalmediatypes = '(youtube|vimeo|dailymotion)';
+				$internal = true; //assume internal link and not mess with it unless we know its from a video site
+				$linkpath = '';
+				$xtra = '';
+				$sitematches = array();
+				$arr  = explode('.',$firstChild->path);
+				$win_type = 'iframe'; //this is required for the lightbox
+				$mtype = end($arr);
+				$mtype = (strlen($mtype) > 4) ? 'html' : $mtype;
+				$mtype = (strlen($mtype) > 3) ? substr($mtype, 0, 3) : $mtype;
+				//decide if we have internal or external video
+				if (preg_match($externalmediatypes,strtolower($firstChild->path), $sitematches)) {
+					$internal = false;
+				}
+				//if ($internal == true)
+				//{
+					//Internal neeshub video
+					$linkpath .= $xhub->getCfg('hubLongURL');
+					$linkpath .= '/index.php?option=com_resources&id='.$resource->id.''; //leave the url to about tab, just in-case script doesnt run
+					$xtra = $mtype;
+				//}
+				$linkpathEXT = '';
+				if (!$internal)
+				{	
+					//we have a youtube/dailymotion/vimeo video, make sure the path is well formatted
+					if (substr($firstChild->path, 0, 7) != 'http://' 
+				 		&& substr($firstChild->path, 0, 8) != 'https://' )
+				 		{
+				 			$linkpath = 'http://';
+				 		}
+				 	$xtra = $sitematches[0];
+				 	$linkpathEXT .= $firstChild->path;
+				 	if ($sitematches[0] == 'youtube')
+				 	{					 	
+					 	$pattern = '/watch\?v\=/';
+					 	$replace = 'v/';
+					 	$win_type = 'swf';
+					 	$linkpathEXT = preg_replace($pattern,$replace,$linkpathEXT);
+					 	
+					 	//	$linkmatch = array(); //more complicated youtube paths (channel ids etc)
+					 	//$pattern = '/\$/';  // "/something" (at end)"
+					 	//if (preg_match($pattern,$firstChild->path, $linkmatch)) {;
+					 	////	echo $linkmatch[0];
+					 	//}
+					 	//$linkpath = "http://www.youtube.com/v" . $linkmatch[0];
+				 	}
+				 	else if ($sitematches[0] == 'vimeo')
+				 	{
+					 	$pattern = '/http:\/\/(www.vimeo.com|vimeo.com)\//';
+					 	$replace = 'http://player.vimeo.com/video/';
+					 	$linkpathEXT = preg_replace($pattern,$replace,$linkpathEXT);
+				 	}
+					else if ($sitematches[0] == 'dailymotion')
+				 	{
+					 	$pattern = '/dailymotion.com\/video\//';
+					 	$replace = 'dailymotion.com/swf/';
+					 	$win_type = 'swf';
+					 	$linkpathEXT = preg_replace($pattern,$replace,$linkpathEXT);
+				 	}				 	
+				}
+				$xtra = '<span class="caption"> ('. $xtra . ')</span>';
+				$html .= 	ResourcesHtml::primaryButton("active",$linkpath, 'More Info', $xtra,  'MULTIMEDIA: '.$resource->title, '', false, '', 'vid_button_grp', 'class = "iframe_'.$resource->id. '"');
+				//($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '', $rel = '')
+				//$html .= 	ResourcesHtml::primaryButton('iframe_', $linkpath, 'View Media', $xtra,  'MULTIMEDIA: '.$resource->title, '', false, '', 'vid_button_grp');
+				
+				$html .= 		'<script type="text/javascript">'."\n";
+				if ($internal == true)
+				{	//change button into active media button
+					$html .= 		'	$jQ("a.iframe_'.$resource->id.'").attr("href", "/index.php?option=com_resources&id='.$resource->id.'&task=play&no_html=1")'."\n";
+				}
+				else
+				{
+					//change button into active media button
+					$html .= 		'	$jQ("a.iframe_'.$resource->id.'").attr("href", "'.$linkpathEXT.'")'."\n";
+				}
+				$html .= 		'	$jQ("a.iframe_'.$resource->id.'").html("View Media");'."\n";
+				$html .= '				$jQ("a.iframe_'.$resource->id.'").fancybox( {'."\n";
+				//$html .= '				$jQ("a.iframe_").fancybox( {'."\n";
+				$html .= '					\'overlayOpacity\' : 0.7,'."\n";
+				$html .= 					'\'transitionIn\'	:	\'elastic\',  '."\n";
+				$html .= '					\'transitionOut\'	:	\'linear\',  '."\n";
+				$html .= '					\'speedIn\'		:	600,   		'."\n";
+				$html .= '					\'speedOut\'		:	200,   		'."\n";
+				$html .= '					\'overlayShow\'	:	true,  		'."\n";
+				$html .= '					\'width\'	:	700,		'."\n";
+				$html .= '   				\'height\'	:	490,		'."\n";
+				$html .= '					\'type\': \''.$win_type.'\', '."\n";
+				$html .= '					 \'callbackOnClose\': function() {' ."\n";
+         		$html .= ' 					$("#fancy_content").empty();} '."\n";
+				$html .= '				}); '."\n";
+				$html .= '			</script>'."\n";
+				// 
+				break;
 						
 			default:
 				$firstChild->title = str_replace( '"', '&quot;', $firstChild->title );
@@ -1985,7 +2235,7 @@ class ResourcesHtml
 				$class = '';			
 				if (in_array($firstChild->logicaltype,$downtypes)) {
 					$mesg  = 'Download';
-					$class = 'download';
+					$class = 'active';
 				} elseif (in_array($firstChild->type,$mediatypes)) {
 					$mesg  = 'View Presentation';
 					$mediatypes = array('32','26');
@@ -1994,7 +2244,7 @@ class ResourcesHtml
 					}
 				} else {
 					$mesg  = 'Download';
-					$class = 'download';
+					$class = 'active';
 				}
 				
 				if ($firstChild->standalone == 1) {
@@ -2018,7 +2268,7 @@ class ResourcesHtml
 				if ($firstChild->access==1 && $juser->get('guest')) { 
 					// first child is for registered users only and the visitor is not logged in
 					$pop  = '<p class="warning">This resource requires you to log in before you can proceed with the download.</p>'."\n";
-					$html .= ResourcesHtml::primaryButton($class.' disabled', JRoute::_('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
+					$html .= ResourcesHtml::primaryButton('disabled', JRoute::_('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
 					//$html .= t.'<p class="warning" style="clear: none;">You must <a href="'.JRoute::_('index.php?option=com_login').'">log in</a> before you can download.</p>'."\n";
 				} else {
 					$child_params =& new JParameter( $firstChild->params );
@@ -2056,7 +2306,7 @@ class ResourcesHtml
 						$action = $xact;
 					}
 					
-					$html .= ResourcesHtml::primaryButton($class, $url, $mesg, $xtra, $firstChild->title, $action);
+					$html .= ResourcesHtml::primaryButton("active", $url, $mesg, $xtra, $firstChild->title, $action);
 				}
 			break;
 		}
@@ -2066,22 +2316,27 @@ class ResourcesHtml
 	
 	//-----------
 
-	public function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
+	public function primaryButton($class = 'active', $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '', $rel = '', $aclass = "")
 	{
 		$title = htmlentities($title, ENT_QUOTES);
-		$out = '';
+		$out = '<div class="resource-action '.$class.'">';
+
 		
 		if ($disabled) {
-			$out .= "\t".'<p id="primary-document"><span class="'.$class.'" >'.$msg.'</span></p>'."\n";
+			$out .= '<span>'.$msg.'</span>';
 		} else {
-			$out .= "\t".'<p id="primary-document"><a class="'.$class.'" href="'.$href.'" title="'.$title.'" '.$action.'>'.$msg;
+			$out .= '<a href="'.$href.'"'. $aclass . ' rel="'. $rel .'"' .'title="'.$title.'" '.$action.'>'.$msg;
+
+
 			$out .= $xtra ? $xtra : '';
-			$out .= '</a></p>'."\n";
+			$out .= '</a>';
 		}
 		
 		if ($pop) {
-			$out .= "\t".'<div id="primary-document_pop"><div>'.$pop.'</div></div>'."\n";
+			$out .= '<div class="resource-action-popup">'.$pop.'</div>';
 		}
+
+		$out .= '</div>';
 		
 		return $out;
 	}
@@ -2173,7 +2428,7 @@ class ResourcesHtml
 	// Results
 	//-------------------------------------------------------------
 
-	public function writeResults( &$database, &$lines, $show_edit=0, $show_date=3 ) 
+	public function writeResults( &$database, &$lines, $show_edit=0, $show_date=3) 
 	{
 		$juser =& JFactory::getUser();
 
@@ -2222,6 +2477,161 @@ class ResourcesHtml
 			$html .= $view->loadTemplate();
 		}
 		$html .= '</ol>'."\n";
+		
+		return $html;
+	}
+	
+	//-------------------------------------------------------------
+	// Series Results
+	//-------------------------------------------------------------
+
+	public function writeSeriesResults( &$database, &$lines, $show_edit=0, $show_date=3, $add_anchor=true)
+	{
+		$juser =& JFactory::getUser();
+
+		$config =& JComponentHelper::getParams( 'com_resources' );
+		
+		$html  = '<ol class="resources results">'."\n";
+		foreach ($lines as $line)
+		{
+			// Instantiate a helper object
+			$helper = new ResourcesHelper($line->id, $database);
+			$helper->getContributors();
+			$helper->getContributorIDs();
+				
+			// Determine if they have access to edit
+			if (!$juser->get('guest')) {
+				if ((!$show_edit && $line->created_by == $juser->get('id')) 
+				|| in_array($juser->get('id'), $helper->contributorIDs)) {
+					$show_edit = 2;
+				}
+			}
+				
+			// Get parameters
+			$params = clone($config);
+			$rparams =& new JParameter( $line->params );
+			$params->merge( $rparams );
+			
+			// Instantiate a new view
+			$view = new JView( array('name'=>'browse','layout'=>'seriesitem') );
+			$view->option = 'com_resources';
+			$view->config = $config;
+			$view->params = $params;
+			$view->juser = $juser;
+			$view->helper = $helper;
+			$view->line = $line;
+			$view->show_edit = $show_edit;
+			$view->thedate = '';
+			$view->add_anchor = $add_anchor;
+			// Set the display date
+			/*switch ($show_date) 
+			{
+				case 0: $view->thedate = ''; break;
+				case 1: $view->thedate = JHTML::_('date', $line->created, '%d %b %Y');    break;
+				case 2: $view->thedate = JHTML::_('date', $line->modified, '%d %b %Y');   break;
+				case 3: $view->thedate = JHTML::_('date', $line->publish_up, '%d %b %Y'); break;
+			}*/
+			
+			$html .= $view->loadTemplate();
+		}
+		$html .= '</ol>'."\n";
+		
+		return $html;
+	}
+	
+	//-------------------------------------------------------------
+	// Graphic Results
+	//-------------------------------------------------------------
+
+	public function writeResultsThumbs( &$database, &$lines, $show_edit=0, $show_date=3, $split_to_column=true, $minimalist ) 
+	{
+		$juser =& JFactory::getUser();
+
+		$config =& JComponentHelper::getParams( 'com_resources' );
+		
+		$html  = '<ol class="resources results thumbs">'."\n";
+		$switch = false;
+		foreach ($lines as $line)
+		{
+			if ($split_to_column) {
+				$switch = !$switch;	
+				$html  .= ($switch)?	'<div class="two columns first">'."\n" : '<div class="two columns second">'."\n" ;
+			}
+			$html  .= ($split_to_column)? '<div class="highlight-thumb">'."\n" : '<div class="highlight-thumb-list">'."\n" ;
+			
+			// Instantiate a helper object
+			$helper = new ResourcesHelper($line->id, $database);
+			$helper->getContributors();
+			$helper->getContributorIDs();
+				
+			// Determine if they have access to edit
+			if (!$juser->get('guest')) {
+				if ((!$show_edit && $line->created_by == $juser->get('id')) 
+				|| in_array($juser->get('id'), $helper->contributorIDs)) {
+					$show_edit = 2;
+				}
+			}
+				
+			// Get parameters
+			$params = clone($config);
+			$rparams =& new JParameter( $line->params );
+			$params->merge( $rparams );
+			
+			// Instantiate a new view
+			$view = new JView( array('name'=>'browse','layout'=>'highlightitem') );
+			$view->option = 'com_resources';
+			$view->config = $config;
+			$view->params = $params;
+			$view->juser = $juser;
+			$view->helper = $helper;
+			$view->line = $line;
+			$view->show_edit = $show_edit;
+			$view->thedate = '';
+			$view->minimalist = $minimalist;
+			// Set the display date
+			switch ($show_date) 
+			{
+				case 0: $view->thedate = ''; break;
+				case 1: $view->thedate = JHTML::_('date', $line->created, '%d %b %Y');    break;
+				case 2: $view->thedate = JHTML::_('date', $line->modified, '%d %b %Y');   break;
+				case 3: $view->thedate = JHTML::_('date', $line->publish_up, '%d %b %Y'); break;
+			}
+			
+			$html .= $view->loadTemplate();
+			$html  .= '</div><!-- /highlight-thumb -->'."\n";
+			
+			if ($split_to_column)
+				$html  .= '</div>'."\n";
+		}
+		$html .= '</ol>'."\n";
+		
+		
+		return $html;
+	}
+	
+	//-------------------------------------------------------------
+	// Intro Page
+	//-------------------------------------------------------------
+
+	public function writeIntroPageCategory( $clm, $cls, $option, $normalized, $category, $isEOT) 
+	{
+		$html= '';
+		$html .='		<div class="three columns '.$clm.'">'."\n";
+		$html .='		<div class="'.$cls.'">'."\n";
+		$html .='		<h3><a href="'.JRoute::_('index.php?option='.$option.a.'type='.$normalized).'">'.stripslashes($category->type).'</a></h3>'."\n";
+		if ($isEOT) {
+			$html .= '		<p id="primary-document-compact">';
+			//$html .='		<a class="get-hidden-resource-info" href="#resdata_'.$normalized.'" rel="hidden-info">Highlights</a>'."\n";
+			$html .='		<a class="get-hidden-resource-info" href="'.'/index.php?option='.$option.a.'type='.$normalized.a.'task=highlight'.a.'no_html=1'.'" rel="hidden-info">Highlights</a>'."\n";
+			$html .= '		</p>';
+			
+		}
+		$html .='		<p>'.stripslashes($category->description).'</p>'."\n";
+		$html .='		<div class="hidden-resource-info">'."\n";		
+		$html .='		</div>'."\n";
+		$html .='		<p><a href="'.JRoute::_('index.php?option='.$option.a.'type='.$normalized).'">Browse All &rsaquo;</a>'."\n"; // 
+		$html .='		</div>'."\n";
+		$html .=' 		</div><!-- / .three columns '.$clm.'-->'."\n";
 		
 		return $html;
 	}

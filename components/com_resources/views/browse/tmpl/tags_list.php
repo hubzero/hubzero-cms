@@ -35,7 +35,7 @@ switch ($this->level)
 		$type = $this->bits['type'];
 		$id = $this->bits['id'];
 		$d = 0;
-		
+
 		if ($tg2) {
 			$html .= '<h3>'.JText::_('COM_RESOURCES_TAG').' + '.$tg2.'</h3>';
 		} else {
@@ -153,6 +153,7 @@ switch ($this->level)
 		$params = $this->bits['params'];
 		$rt = $this->bits['rt'];
 		$config = $this->bits['config'];
+		$authorized = $this->bits['authorized'];
 	
 		$statshtml = '';
 		if ($params->get('show_ranking')) {
@@ -175,8 +176,29 @@ switch ($this->level)
 		$html .= '<h4><a href="'.$sef.'">'.Hubzero_View_Helper_Html::xhtml(stripslashes($resource->title)).'</a></h4>';
 		$html .= '<p>'.Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 400, 0).' &nbsp; <a href="'.$sef.'">'.JText::_('COM_RESOURCES_LEARN_MORE').'</a></p>';
 
-		if ($helper->firstChild || $resource->type == 7) {
-			$html .= $primary_child;
+		$juser =& JFactory::getUser();
+		if (!$juser->get('guest')) {
+			ximport('xuserhelper');
+			$xgroups = XUserHelper::getGroups($juser->get('id'), 'all');
+			// Get the groups the user has access to
+			$usersgroups = ResourcesController::getUsersGroups($xgroups);
+		} else {
+			$usersgroups = array();
+		}
+
+		if ($resource->access == 3 && !in_array($resource->group_owner, $usersgroups) && !$authorized) {
+			$ghtml = JText::_('ERROR_MUST_BE_PART_OF_GROUP').' ';
+			$allowedgroups = $resource->getGroups();
+			foreach ($allowedgroups as $allowedgroup) 
+			{
+				$ghtml .= '<a href="'.JRoute::_('index.php?option=com_groups&gid='.$allowedgroup).'">'.$allowedgroup.'</a>, ';
+			}
+			$ghtml = substr($ghtml,0,strlen($ghtml) - 2);
+			$html .= ResourcesHtml::warning( $ghtml )."/n";
+		} else {
+			if ($helper->firstChild || $resource->type == 7) {
+				$html .= $primary_child;
+			}
 		}
 		
 		$supported = null;

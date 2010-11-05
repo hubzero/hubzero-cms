@@ -117,4 +117,5 @@ if ($this->results) {
 }
 ?>
 	</div><!-- / .main section -->
+	
 </form>

@@ -67,8 +67,9 @@ HUB.TagBrowser = {
 		$('tbh2').parentNode.removeChild(tbh2);
 	},
 
-	nextLevel: function(type, input, input2, level, id, rid) {
+	nextLevel: function(type, input, input2, level, id, rid, terms) {
 		var browser = new HUB.TagBrowser.detect();
+		
 		if(level == 2) {
 			if(HUB.TagBrowser.col2active!='' && $(HUB.TagBrowser.col2active)) {
 				//var prevactive = $(HUB.TagBrowser.col2active);
@@ -101,7 +102,8 @@ HUB.TagBrowser = {
 				}
 			}
 		}
-		var url = HUB.TagBrowser.baseURI+'&type='+type+'&level='+level+'&input='+input+'&input2='+input2+'&id='+rid+'&sortby='+sortby+filterby;
+		var termsString = (terms != '')? '&terms='+terms : '';
+		var url = HUB.TagBrowser.baseURI+'&type='+type+'&level='+level+'&input='+input+'&input2='+input2+'&id='+rid+'&sortby='+sortby+filterby+termsString;
 		if(browser.isFirefox ==false && browser.isCamino==false && browser.isMozilla) {
 			var ev = false;
 		} else {
@@ -161,6 +163,10 @@ HUB.TagBrowser = {
 				var input2 = $('preinput2').value;
 				var type  = $('pretype').value;
 				var id = $('id').value;
+				var terms = ($('terms'))? $('terms').value : '';
+				var termsString = (terms != '')? '&terms='+terms : '';
+				var designator = ($('designator'))? $('designator').value : '';
+				var designatorString = (designator != '')? '&designator='+designator : '';
 
 				tagbrowser.style.display = 'block';
 				if ($('tbh2')) {
@@ -181,7 +187,7 @@ HUB.TagBrowser = {
 				var img2 = new Element('img', {'id':'loading-img2','src':imgpath}).injectInside($('level-2-loading'));
 				
 				//if ((browser.isFirefox==false && browser.isCamino==false && browser.isMozilla) || browser.isIE) {
-					var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&input2='+input2+'&id='+id, {
+					var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&input2='+input2+'&id='+id+termsString+designatorString, {
 						method: 'get',
 						update: $('level-1'),
 						evalScripts: false,
@@ -192,7 +198,7 @@ HUB.TagBrowser = {
 				//} else {
 				//	var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&id='+id, {method: 'get',update: $('level-1'),evalScripts:true}).request();
 				//}
-				var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=2&input='+input+'&input2='+input2+'&id='+id, {method: 'get',update: $('level-2')}).request();
+				var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=2&input='+input+'&input2='+input2+'&id='+id+termsString+designatorString, {method: 'get',update: $('level-2')}).request();
 			}
 		}
 	}
