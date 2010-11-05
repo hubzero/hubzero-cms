@@ -32,7 +32,7 @@ $app =& JFactory::getApplication();
 				<?php
 				foreach ($this->rows as $row) 
 				{
-					echo '<option value="'.$row->gidNumber.'">'.$row->description.' ('.$row->cn.')</option>'.n;
+					echo '<option value="'.$row->gidNumber.'">'.$row->description.' ('.$row->cn.')</option>'."\n";
 				}
 				?>
 			</select>
