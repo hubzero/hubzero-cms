@@ -1036,7 +1036,7 @@ class GroupsController extends Hubzero_Controller
 	protected function save() 
 	{	
 		ximport('Hubzero_Group');
-		
+
 		// Set the page title
 		$title  = JText::_(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
@@ -1128,6 +1128,13 @@ class GroupsController extends Hubzero_Controller
 			return;
 		}
 		
+                // 9.2.2010 - NEES hack, filter names to prevent a group name starting with a 'nees_'
+                // 9.27.2010 - make sure updates to existing groups allow the nees_ text
+                 if ($isNew && preg_match('/^nees_/i', $g_cn)){
+			$this->setError( JText::_('Your group name cannot start with "nees_"') );
+		}
+
+
 		// Ensure the data passed is valid
 		if ($g_cn == 'new' || $g_cn == 'browse') {
 			$this->setError( JText::_('GROUPS_ERROR_INVALID_ID') );
