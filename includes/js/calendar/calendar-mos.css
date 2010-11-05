@@ -1,17 +1,20 @@
 /* The main calendar widget.  DIV containing a table. */
 
 div.calendar {
-  position: relative;
-  z-index: 100;
+  position: absolute;
+  z-index: 65535;
+
 }
 
 .calendar, .calendar table {
+	position: relative:
   border: 1px solid #cccccc;
   font-size: 11px;
   color: #000;
   cursor: default;
   background: #efefef;
   font-family: arial,verdana,sans-serif;
+  z-index: 65535;
 }
 
 /* Header part -- contains navigation buttons and day names. */
@@ -19,6 +22,8 @@ div.calendar {
 .calendar .button { /* "<<", "<", ">", ">>" buttons have this class */
   text-align: center;    /* They are the navigation buttons */
   padding: 2px;          /* Make the buttons seem like they're pressing */
+  z-index: 65535;
+
 }
 
 .calendar thead .title { /* This holds the current "month, year" */
@@ -27,11 +32,15 @@ div.calendar {
   background: #333333;
   color: #ffffff;
   padding: 2px;
+  z-index: 65535;
+
 }
 
 .calendar thead .headrow { /* Row <TR> containing navigation buttons */
   background: #dedede;
   color: #000;
+  z-index: 65535;
+
 }
 
 .calendar thead .name { /* Cells <TD> containing the day names */
@@ -39,10 +48,14 @@ div.calendar {
   padding: 2px;
   text-align: center;
   color: #000;
+  z-index: 65535;
+
 }
 
 .calendar thead .weekend { /* How a weekend day name shows in header */
   color: #dedede;
+  z-index: 65535;
+
 }
 
 .calendar thead .hilite { /* How do the buttons in header appear when hover */
@@ -50,15 +63,21 @@ div.calendar {
   color: #000000;
   border: 1px solid #cccccc;
   padding: 1px;
+  z-index: 65535;
+
 }
 
 .calendar thead .active { /* Active (pressed) buttons in header */
   background: #c77;
   padding: 2px 0px 0px 2px;
+  z-index: 65535;
+
 }
 
 .calendar thead .daynames { /* Row <TR> containing the day names */
   background: #dddddd;
+  z-index: 65535;
+
 }
 
 /* The body part -- contains all the days in month. */
@@ -67,34 +86,46 @@ div.calendar {
   width: 2em;
   text-align: right;
   padding: 2px 4px 2px 2px;
+  z-index: 65535;
+
 }
 
 .calendar table .wn {
   padding: 2px 3px 2px 2px;
   border-right: 1px solid #cccccc;
   background: #dddddd;
+  z-index: 65535;
+
 }
 
 .calendar tbody .rowhilite td {
   background: #666666;
   color: #ffffff;
+  z-index: 65535;
+
 }
 
 .calendar tbody .rowhilite td.wn {
   background: #666666;
   color: #ffffff;
+  z-index: 65535;
+
 }
 
 .calendar tbody td.hilite { /* Hovered cells <TD> */
   background: #999999;
   padding: 1px 3px 1px 1px;
   border: 1px solid #666666;
+  z-index: 65535;
+
 }
 
 .calendar tbody td.active { /* Active (pressed) cells <TD> */
   background: #000000;
   color: #ffffff;
   padding: 2px 2px 0px 2px;
+  z-index: 65535;
+
 }
 
 .calendar tbody td.selected { /* Cell showing today date */
@@ -103,10 +134,14 @@ div.calendar {
   padding: 1px 3px 1px 1px;
   background: #000000;
   color: #ffffff;
+  z-index: 65535;
+
 }
 
 .calendar tbody td.weekend { /* Cells showing weekend days */
   color: #cccccc;
+  z-index: 65535;
+
 }
 
 .calendar tbody td.today { font-weight: bold; }
@@ -115,10 +150,14 @@ div.calendar {
 
 .calendar tbody .emptycell { /* Empty cells (the best is to hide them) */
   visibility: hidden;
+  z-index: 65535;
+
 }
 
 .calendar tbody .emptyrow { /* Empty row (some months need less than 6 rows) */
   display: none;
+  z-index: 65535;
+
 }
 
 /* The footer part -- status bar and "Close" button */
@@ -127,23 +166,31 @@ div.calendar {
   text-align: center;
   background: #cccccc;
   color: #000;
+  z-index: 65535;
+
 }
 
 .calendar tfoot .ttip { /* Tooltip (status bar) cell <TD> */
   border-top: 1px solid #cccccc;
   background: #efefef;
   color: #000000;
+  z-index: 65535;
+
 }
 
 .calendar tfoot .hilite { /* Hover style for buttons in footer */
   background: #666666;
   border: 1px solid #f40;
   padding: 1px;
+  z-index: 65535;
+
 }
 
 .calendar tfoot .active { /* Active (pressed) style for buttons in footer */
   background: #999999;
   padding: 2px 0px 0px 2px;
+  z-index: 65535;
+
 }
 
 /* Combo boxes (menus that display months/years for direct selection) */
@@ -159,15 +206,21 @@ div.calendar {
   background: #ffffff;
   color: #000;
   font-size: smaller;
+  z-index: 65535;
+
 }
 
 .combo .label {
   width: 100%;
   text-align: center;
+  z-index: 65535;
+
 }
 
 .combo .hilite {
   background: #fc8;
+  z-index: 65535;
+
 }
 
 .combo .active {
@@ -175,4 +228,6 @@ div.calendar {
   border-bottom: 1px solid #cccccc;
   background: #efefef;
   font-weight: bold;
+  z-index: 65535;
+
 }

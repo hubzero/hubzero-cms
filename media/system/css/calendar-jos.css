@@ -1,12 +1,14 @@
 /* The main calendar widget.  DIV containing a table. */
 
 div.calendar {
-  position: relative;
-  z-index: 100;
+  position: absolute;
+  z-index: 70000;
   width: 226px;
+
 }
 
 .calendar, .calendar table {
+ position: relative;
   border: 1px solid #cccccc;
   font-size: 11px;
   color: #000;
