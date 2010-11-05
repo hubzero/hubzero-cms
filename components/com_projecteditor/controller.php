@@ -3309,10 +3309,10 @@ class ProjectEditorController extends JController{
       $trialdir = $oTrial->getPathname();
 
       FileCommandAPI::create("$trialdir")->mkdir();
-      FileCommandAPI::create("$trialdir/Configuration")->mkdir();
+      //FileCommandAPI::create("$trialdir/Configuration")->mkdir();
       FileCommandAPI::create("$trialdir/Analysis")->mkdir();
       FileCommandAPI::create("$trialdir/Documentation")->mkdir();
-      FileCommandAPI::create("$trialdir/InputMotion")->mkdir();
+      //FileCommandAPI::create("$trialdir/InputMotion")->mkdir();
 
 
       $repetition = new Repetition(
