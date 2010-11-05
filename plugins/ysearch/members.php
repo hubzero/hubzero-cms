@@ -77,6 +77,7 @@ class plgYSearchMembers extends YSearchPlugin
 				concat('/members/', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('n', abs(p.uidNumber)) END) AS link,
 				NULL AS date,
 				'Members' AS section,
+				p.public = 1 AS public,
         CASE WHEN p.picture IS NOT NULL THEN concat('/site/members/', lpad(p.uidNumber, 5, '0'), '/', p.picture) ELSE NULL END AS img_href
 			FROM jos_xprofiles p
 			LEFT JOIN jos_xprofiles_bio b 
@@ -161,6 +162,8 @@ class plgYSearchMembers extends YSearchPlugin
   {
     if (!($href = $res->get('img_href')) || !is_file(JPATH_ROOT.$href))
       $href = '/components/com_members/images/profile_thumb.gif';
+    if (!$res->get('public'))
+      $href = '/components/com_members/images/profile_private.png';
 
     return '<img src="'.$href.'" alt="'.htmlentities($res->get_title()).'" title="'.htmlentities($res->get_title()).'" />';
   }
