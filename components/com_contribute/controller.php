@@ -110,10 +110,14 @@ class ContributeController extends JObject
 		{
 			case 'rename':       $this->attach_rename();  break;
 			case 'saveattach':   $this->attach_save();    break;
+			case 'saveresource': $this->attach_resource();break;
+			case 'savelink':   	 $this->attach_link();    break;
 			case 'deleteattach': $this->attach_delete();  break;
 			case 'attach':       $this->attachments();    break;
 			case 'orderupa':     $this->reorder_attach(); break;
 			case 'orderdowna':   $this->reorder_attach(); break;
+			
+
 			
 			case 'saveauthor':   $this->author_save();    break;
 			case 'removeauthor': $this->author_remove();  break;
@@ -238,6 +242,7 @@ class ContributeController extends JObject
 		}
 		$view->display();
 	}
+
 	
 	//-----------
 	
@@ -446,6 +451,7 @@ class ContributeController extends JObject
 		$view->id = $id;
 		$view->progress = $this->progress;
 		$view->task = 'start';
+		$view->type = $this->type;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -499,7 +505,7 @@ class ContributeController extends JObject
 		$tagfa10 = $tagcloud->normalize_tag($fa10);
 		
 		// Get all the tags on this resource
-		$tags_men = $tagcloud->get_tags_on_object($id, 0, 0, 0, 0);
+		$tags_men = $tagcloud->get_tags_on_object($id, 0, 0, 0, 0, 1);
 		$mytagarray = array();
 		$tagfa = '';
 
@@ -561,6 +567,12 @@ class ContributeController extends JObject
 		$view->id = $id;
 		$view->progress = $this->progress;
 		$view->task = 'start';
+		
+		$row = new ResourcesResource( $database );
+		$row->load( $id );
+		
+		$view->type = $row->type;
+		
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -1244,6 +1256,215 @@ class ContributeController extends JObject
 		// Echo the name
 		echo $name;
 	}
+	
+//-----------
+
+	protected function attach_link()
+	{
+		$juser =& JFactory::getUser();
+		$database =& JFactory::getDBO();
+
+		// Incoming
+		$pid = JRequest::getInt( 'pid', 0 );
+		if (!$pid) {
+			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
+			$this->attachments( $pid );
+		}
+		
+		// Incoming link
+		$link = JRequest::getString( 'link-address', '', 'default', 1 ); //get filtered string of html link
+		$link = htmlentities($link);
+		if (!$link) {
+			$this->setError( JText::_('CONTRIBUTE_NO_FILE') );
+			$this->attachments( $pid );
+			return;
+		}
+		
+		//Create the name for the resource
+		$linkaddress = explode('/',$link);
+		$resourcename = $link;//"Link";
+		
+		//try to get the main portion of the website
+		//if ($linkaddress.length >= 3)
+		//{
+			//trim website name - eg http://php.net/manual/en/stuff.php would become "php.net"
+		//	$resourcename = $linkaddress[3];
+		//}
+		
+
+		// Instantiate a new resource object
+		$row = new ResourcesResource( $database );
+		if (!$row->bind( $_POST )) {
+			$this->setError( $row->getError() );
+			$this->attachments( $pid );
+			return;
+		}
+		$row->title = ($row->title) ? $row->title : $resourcename;
+		$row->introtext = $row->title;
+		$row->created = date( 'Y-m-d H:i:s' );
+		$row->created_by = $juser->get('id');
+		$row->published = 1;
+		$row->publish_up = date( 'Y-m-d H:i:s' );
+		$row->publish_down = '0000-00-00 00:00:00';
+		$row->standalone = 0;
+		$row->type = 11; //external link
+		$row->path = $link;
+		
+
+		// Check content
+		if (!$row->check()) {
+			$this->setError( $row->getError() );
+			$this->attachments( $pid );
+			return;
+		}
+		// Store new content
+		if (!$row->store()) {
+			$this->setError( $row->getError() );
+			$this->attachments( $pid );
+			return;
+		}
+		
+		if (!$row->id) {
+			$row->id = $row->insertid();
+		}
+
+		
+		// Instantiate a ResourcesAssoc object
+		$assoc = new ResourcesAssoc( $database );
+
+		// Get the last child in the ordering
+		$order = $assoc->getLastOrder( $pid );
+		$order = ($order) ? $order : 0;
+		
+		// Increase the ordering - new items are always last
+		$order = $order + 1;
+		
+		// Create new parent/child association
+		$assoc->parent_id = $pid;
+		$assoc->child_id = $row->id;
+		$assoc->ordering = $order;
+		$assoc->grouping = 0;
+		if (!$assoc->check()) {
+			$this->setError( $assoc->getError() );
+		}
+		if (!$assoc->store(true)) {
+			$this->setError( $assoc->getError() );
+		}
+
+		// Push through to the attachments view
+		$this->attachments( $pid );
+	}
+//-----------
+	
+protected function attach_resource()
+	{
+		$juser =& JFactory::getUser();
+		$database =& JFactory::getDBO();
+
+		// Incoming
+		$pid = JRequest::getInt( 'pid', 0 );
+		if (!$pid) {
+			$this->setError( JText::_('CONTRIBUTE_NO_ID') );
+			$this->attachments( $pid );
+		}
+				
+		// Incoming resource
+		$childID = JRequest::getInt( 'resourceID', 0 ); //get resource ID from browser
+		
+		
+		
+		//make sure this is a correct resource		
+		// Load the resource
+		$resource = new ResourcesResource( $database );
+		//if ($alias) {
+		//	$alias = str_replace(':','-',$alias);
+		//	$resource->loadAlias( $alias );
+		//	$childID = $resource->id;
+		//} else {
+			$resource->load( $childID );
+			$alias = $resource->alias;
+		//}
+
+		// Make sure we got a result from the database
+		if (!$resource || !$resource->title) {
+			$this->setError( JText::_('COM_CONTRIBUTE_NOT_FOUND') );
+			$this->attachments( $pid );
+			return;
+		}
+		if ($resource->standalone == 0)
+		{
+			$this->setError( 'Not a Stand-Alone Resource - Cannot be part of a Series.' );
+			$this->attachments( $pid );
+			return;
+		}
+		
+		//Create the name for the resource
+		$resourcename = "Hub Resource Link: " . $resource->title;
+
+		// Instantiate a new resource object
+		/*
+		$row = new ResourcesResource( $database );
+		if (!$row->bind( $_POST )) {
+			$this->setError( $row->getError() );
+			$this->attachments( $pid );
+			return;
+		}
+		$playText = (true)? "" : "" ;
+		$row->title = ($row->title) ? $row->title : $resourcename;
+		$row->introtext = "Attached NEESHub Resource";
+		$row->created = date( 'Y-m-d H:i:s' );
+		$row->created_by = $juser->get('id');
+		$row->published = 1;
+		$row->publish_up = date( 'Y-m-d H:i:s' );
+		$row->publish_down = '0000-00-00 00:00:00';
+		$row->standalone = 1;
+		$row->type = 12; //internal link
+		$row->path = "/index.php?option=com_resources&id=". $childID;
+		
+
+		// Check content
+		if (!$row->check()) {
+			$this->setError( $row->getError() );
+			$this->attachments( $pid );
+			return;
+		}
+		// Store new content
+		if (!$row->store()) {
+			$this->setError( $row->getError() );
+			$this->attachments( $pid );
+			return;
+		}
+		
+		if (!$row->id) {
+			$row->id = $row->insertid();
+		}
+		*/
+		
+		// Instantiate a ResourcesAssoc object
+		$assoc = new ResourcesAssoc( $database );
+
+		// Get the last child in the ordering
+		$order = $assoc->getLastOrder( $pid );
+		$order = ($order) ? $order : 0;
+		
+		// Increase the ordering - new items are always last
+		$order = $order + 1;
+		
+		// Create new parent/child association
+		$assoc->parent_id = $pid;
+		$assoc->child_id = $childID;//$row->id;
+		$assoc->ordering = $order;
+		$assoc->grouping = 0;
+		if (!$assoc->check()) {
+			$this->setError( $assoc->getError() );
+		}
+		if (!$assoc->store(true)) {
+			$this->setError( $assoc->getError() );
+		}
+
+		// Push through to the attachments view
+		$this->attachments( $pid );
+	}
 
 	//-----------
 
@@ -1444,6 +1665,7 @@ class ContributeController extends JObject
 		if ($juser->get('guest')) {
 			return false;
 		}
+		$this->type = JRequest::getInt('type',0);
 		
 		$database =& JFactory::getDBO();
 		
@@ -1467,11 +1689,36 @@ class ContributeController extends JObject
 		// Load resource info
 		$row = new ResourcesResource( $database );
 		$row->load( $id );
+		$isLink = ($row->type == 11);
 		
+		//Is it stand alone? If so, we shouldn't delete it...
+		$isStandAlone = ($row->standalone == 1);
+		
+		//If Its standalone, we will find The Association and delete that instead...
+		if ($isStandAlone)
+		{
+			$assoc = new ResourcesAssoc( $database );
+			$assoc->loadAssoc( $pid, $id );
+			
+			if (!$assoc->check())
+				$this->setError( 'No valid association found to this Resource.' );
+			
+			if (!$this->getError())
+				$assoc->delete( $pid, $id );
+			$this->attachments( $pid );
+			return;
+		} 
+		
+
+		
+		
+				
 		// Get path and delete directories
 		if ($row->path != '') {
 			$listdir = $row->path;
-		} else {
+		} 
+		
+		else {
 			// No stored path, derive from created date		
 			$listdir = $this->_buildPathFromDate( $row->created, $id, '' );
 		}
@@ -1480,7 +1727,11 @@ class ContributeController extends JObject
 		$path = $this->_buildUploadPath( $listdir, '' );
 
 		// Check if the file even exists
-		if (!is_file($path) or !$path) { 
+		if ($isLink == true)
+		{
+			
+		}
+		else if (!is_file($path) or !$path) { 
 			$this->setError( JText::_('COM_CONTRIBUTE_FILE_NOT_FOUND') ); 
 		} else {
 			// Attempt to delete the file
@@ -1489,6 +1740,7 @@ class ContributeController extends JObject
 			}
 		}
 		
+		if (!$isLink == true)
 		if (!$this->getError()) {
 			$file = basename($path);
 			$path = substr($path, 0, (strlen($path) - strlen($file)));
@@ -1525,6 +1777,10 @@ class ContributeController extends JObject
 					}
 				}
 			}
+		}
+		else //is a link object 
+		{
+		
 		}
 		
 		if (!$this->getError()) {
@@ -1573,6 +1829,10 @@ class ContributeController extends JObject
 		$view->children = $helper->children;
 		$view->path = '';
 		$view->id = $id;
+		if ($this->type)
+		$view->type = $this->type;
+		else
+		$view->type = JRequest::getInt( 'type', 0 );
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -1647,11 +1907,19 @@ class ContributeController extends JObject
 			case 'zip': $type = 38; break;
 			case 'tar': $type = 38; break;
 			case 'pdf': $type = 33; break;
+			case 'flv': $type = 41; break;
+			case 'mp4': $type = 41; break;
+			case 'jpg': $type = 70; break;
+			case 'jpeg': $type = 70; break;
+			case 'gif': $type = 70; break;
+			case 'png': $type = 70; break;
 			default:    $type = 13; break;
 		}
 	
 		return $type;
 	}
+	
+	
 	
 	//-----------
 
@@ -2148,6 +2416,19 @@ class ContributeController extends JObject
 		$path = $base.DS.$dir_year.DS.$dir_month.DS.$dir_id;
 	
 		return $path;
+	}
+	
+	//----------
+	
+	private function loadAssoc( $pid, $cid ) 
+	{
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE parent_id=".$pid." AND child_id=".$cid );
+		if ($result = $this->_db->loadAssoc()) {
+			return $this->bind( $result );
+		} else {
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
 	}
 }
 ?>
