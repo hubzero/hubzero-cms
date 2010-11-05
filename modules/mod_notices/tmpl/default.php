@@ -27,6 +27,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if ($modnotices->publish) { ?>
 <div id="<?php echo $modnotices->moduleid; ?>" class="<?php echo $modnotices->alertlevel; ?>">
-	<p><?php echo stripslashes($modnotices->message); ?></p>
+	<p align="center"><?php echo stripslashes($modnotices->message); ?></p>
 </div>
 <?php } ?>
