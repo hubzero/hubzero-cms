@@ -249,6 +249,7 @@ class WishlistController extends JObject
 					);
 				break;				
 				case 'add':
+				case 'savewish':
 				case 'editwish':
 					$pathway->addItem( 
 						$this->_taskname, 
@@ -1256,12 +1257,20 @@ class WishlistController extends JObject
 			return;
 		}
 		
+		// Get wish list info
+		$objWishlist = new Wishlist ( $database );			
+		$wishlist = $objWishlist->get_wishlist($listid);
+		
 		// trim and addslashes all posted items
 		$_POST = array_map('trim',$_POST);
 		
 		// initiate class and bind posted items to database fields
 		$row = new Wish ( $database );
-		if (!$row->bind( $_POST )) {
+		if( !JRequest::getVar( 'subject', '')) {
+			$this->setError( JText::_('WISHLIST_ERROR_NO_SUBJECT') );
+			$row->bind( $_POST );
+		}
+		else if (!$row->bind( $_POST )) {
 			JError::raiseError( 500, $row->getError() );
 			return;
 		}
@@ -1293,19 +1302,33 @@ class WishlistController extends JObject
 		// Error view
 		if($this->getError()) {
 			// Set the pathway
-			$app =& JFactory::getApplication();
-			$pathway =& $app->getPathway();
-			if (count($pathway->getPathWay()) <= 0) {
-				$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-			}
-				
-			$view = new JView( array('name'=>'error') );
+			$this->_taskpath = $wishid 
+			? 'index.php?option='.$this->_option.a.'task=editwish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$wishid
+			: 'index.php?option='.$this->_option.a.'task=add'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid;
+			$this->_taskname = $wishid
+								? JText::_('COM_WISHLIST_EDITWISH')
+								: JText::_('COM_WISHLIST_ADD');
+			$this->_buildPathway($wishlist);
+			
+			// Get URL to page explaining virtual economy
+			$aconfig =& JComponentHelper::getParams( 'com_answers' );
+			$infolink = $aconfig->get('infolink') ? $aconfig->get('infolink') : '/kb/points/';
+			
+			$view = new JView( array('name'=>'editwish' ));
 			$view->title = JText::_(strtoupper($this->_name));
-			if ($this->getError()) {
-				$view->setError( $this->getError() );
-			}
+			$view->config = $this->config;
+			$view->option = $this->_option;
+			$view->task = $this->_task;
+			$view->admin = $this->_admin;
+			$view->juser = $juser;
+			$view->wishlist = $wishlist;
+			$view->wish = $row;
+			$view->infolink = $infolink;
+			$view->funds = $funds;
+			$view->banking = $this->banking;
+			$view->setError( $this->getError() );
 			$view->display();
-			return;				
+			return;
 		}
 				
 		$row->anonymous 	= JRequest::getInt( 'anonymous', 0 );
@@ -1334,10 +1357,6 @@ class WishlistController extends JObject
 		// Add/change the tags
 		$tagging = new WishTags( $database );
 		$tagging->tag_object($juser->get('id'), $row->id, $tags, 1, 1);
-
-		// Get wish list info
-		$objWishlist = new Wishlist ( $database );			
-		$wishlist = $objWishlist->get_wishlist($listid);
 			
 		// send message about a new wish
 		if(!$wishid) {

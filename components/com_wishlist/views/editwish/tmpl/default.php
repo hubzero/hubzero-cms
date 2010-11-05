@@ -75,7 +75,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 			$html .= t.'</div><!-- / .aside -->'.n;
 			$html .= t.'<div class="subject">'.n;
-			if($error) { Hubzero_View_Helper_Html::error($error).n; }
+			if($error) { $html .= Hubzero_View_Helper_Html::error($error).n; }
 				$html .= t.t.t.' <form id="hubForm" method="post" action="index.php?option='.$option.'">'.n;
 				$html .= t.t.t.'	 <fieldset>'.n;
 			if($task=='editwish') {
