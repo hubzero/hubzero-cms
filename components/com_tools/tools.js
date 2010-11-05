@@ -361,10 +361,6 @@ HUB.Mw = {
 		
 		var app = document.getElementById('theapp');
 		if (app) {
-			/*$('app-wrap').setStyles({
-				'width': (w + 20) + 'px',
-				'height': (h + 20) + 'px'
-			});*/
 			$('app-wrap').setStyles({
 				'width': (w) + 'px',
 				'height': (h) + 'px'

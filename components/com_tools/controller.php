@@ -614,6 +614,9 @@ class ToolsController extends JObject
 		$app['percent'] = 0;
 		if ($this->config->get('show_storage')) {
 			$this->getDiskUsage();
+			if ($this->_redirect) {
+				return;
+			}
 			$app['percent'] = $this->percent;
 		}
 
