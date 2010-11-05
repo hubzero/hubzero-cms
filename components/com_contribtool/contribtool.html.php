@@ -824,8 +824,8 @@ class ContribtoolHtml
 					<input type="text" name="tool[title]" id="t_title" maxlength = "127" value="<?php echo $defaults['title']; ?>" />
 					<p class="hint"><?php echo JText::_('HINT_TITLE'); ?></p>
 				</label> 
-                   <label><?php echo JText::_('VERSION') ?>: 
-                   <?php if($editversion=='current') { echo '<input type="hidden" name="tool[version]" id="t_version" value="'.$defaults['version'].'" />
+                    <label><?php echo JText::_('VERSION') ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span> 
+                    <?php if($editversion=='current') { echo '<input type="hidden" name="tool[version]" id="t_version" value="'.$defaults['version'].'" />
 						<strong>'.$defaults['version'].'</strong>
 						<p class="hint">'.JText::_('HINT_VERSION_PUBLISHED').'</p>'; }
 						else { ?>
@@ -1694,13 +1694,15 @@ class ContribtoolHtml
 	 
 		?>
 <div class="main section noborder">
-            <form action="index.php" method="post" id="hubForm" >
+            <form action="index.php" method="post" id="hubForm" name="contribtoolform"">
 			<div style="float:left; width:70%;padding:1em 0 1em 0;">
             		 <?php if($step!=1) { ?><span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('PREVIOUS')); ?> " class="returntoedit" /></span><?php } ?>
 			         <span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save & Go Next')); ?> &gt;" /></span>
 			</div>
 			
             <div class="clear"></div>
+            <script type="text/javascript" src="site/ckeditor/ckeditor.js"></script>
+            
             <?php switch ($step) {
             //  registered
             case 1: ?>
@@ -1728,7 +1730,14 @@ class ContribtoolHtml
 				<label>
 					<?php echo JText::_('COMPOSE_ABSTRACT'); ?>:
 					<textarea name="fulltext" cols="50" rows="20"><?php echo stripslashes($status['fulltext']); ?></textarea>
-                    <span class="hint"><a href="/topics/Help:WikiFormatting"><?php echo JText::_('WIKI_FORMATTING'); ?></a> <?php echo JText::_('COMPOSE_TIP_ALLOWED'); ?>.</span>
+					<script type="text/javascript">
+					CKEDITOR.replace( 'fulltext' , {
+			        toolbar : 'NEESLearningObject',
+			        height:"291", width:"100%"
+			        
+			    	});
+			    	</script>
+                   <!-- <span class="hint"><a href="/topics/Help:WikiFormatting"><?php echo JText::_('WIKI_FORMATTING'); ?></a> <?php echo JText::_('COMPOSE_TIP_ALLOWED'); ?>.</span> -->
 				</label>
 			</fieldset><div class="clear"></div>
 
@@ -1746,6 +1755,13 @@ if($tagname!='screenshots' and $tagname!='bio') {
 				<label>
 					<?php echo JText::_(strtoupper($tagname)); ?>:
 					<textarea name="<?php echo 'nbtag['.$tagname.']'; ?>" cols="50" rows="6"><?php echo stripslashes($tagcontent); ?></textarea>
+					<script type="text/javascript">
+					CKEDITOR.replace( '<?php echo 'nbtag['.$tagname.']'; ?>' , {
+			        toolbar : 'NEESAbstract',
+			        height:"70", width:"100%"
+			        
+			    	});
+					</script>
 				</label>
 <?php 
 }
@@ -1877,7 +1893,51 @@ if($tagname!='screenshots' and $tagname!='bio') {
 					?>
 				</label>
 				<p><?php echo JText::_('TAGS_NEW_EXPLANATION'); ?></p>
-			</fieldset><div class="clear"></div>
+			</fieldset>
+			
+			<script language="javascript" type="text/javascript">
+			function addtagtext(element) {
+				var newtext = document.getElementById(element).value;
+				var field = document.getElementById("maininput");
+				field.value += newtext + " ";
+				field.focus();
+				field.blur();
+			}
+			</script>
+		
+			<fieldset>
+				<h3>Tool Category</h3>
+				<p>Categories  (You may open and choose as many options from this list as you like - they will be appended to the tags list at the top)</p>
+				<select id="category" name="category" onchange="addtagtext('category');">
+					<option value="" />None</option>
+					<option value="data management" />Data Management</option>
+					<option value="downloadable" />Downloadable</option>
+					<option value="EOT" />Education, Outreach and Training</option>
+					<option value="Simulation" />Simulation</option>
+					<option value="telepresence" />Telepresence</option>
+					<option value="visualization" />Visualization</option>
+				</select>
+				<!-- <input type="submit" value="Add/Update"/>  -->
+			</fieldset>
+			
+			<fieldset>
+			<h3>Audience</h3>
+			<p>Audience Levels (You may open and choose as many options from this list as you like - they will be appended to the tags list at the top)</p>
+				<select id="audience" onchange="addtagtext('audience');">
+					<option value="" />None</option>
+					<option value="grades k-6" />Grades K-6</option>
+					<option value="grades k-12" />Grades 6-12</option>
+					<option value="undergraduate" />Undergraduate</option>
+					<option value="graduate" />Graduate</option>
+					<option value="professional" />Professional</option>
+				</select>
+			<!-- <input type="submit" value="Add/Update"/>  -->
+			</fieldset>
+
+			
+			
+			
+			<div class="clear"></div>
 		<?php
 	}
 

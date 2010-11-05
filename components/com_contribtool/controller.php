@@ -2490,8 +2490,8 @@ class ContribtoolController extends JObject
 			$new_hztv->exportControl = $exportmap[$status['exec']];
 			$new_hztv->owner = $hztv_dev->owner;
 			$new_hztv->member = $hztv_dev->member;
-			foreach($status['developers'] as $d)
-				$new_hztv->add('author',$d->uidNumber);
+			/*foreach($status['developers'] as $d)
+				$new_hztv->add('author',$d->uidNumber);*/
 
 			if (!$new_hztv->update())
 			{
@@ -2692,8 +2692,10 @@ class ContribtoolController extends JObject
 			$status['fulltext']  = str_replace('<nb:'.$nbtag.'>'.$allnbtags[$nbtag].'</nb:'.$nbtag.'>','',$status['fulltext']);
 		}
 		$status['fulltext'] = trim(stripslashes($status['fulltext']));
-		$status['fulltext'] = preg_replace('/<br\\s*?\/??>/i', "", $status['fulltext']);
-		$status['fulltext'] = ContribtoolHtml::txt_unpee($status['fulltext']);
+		
+		/* Dropped Wiki Formatting Cleaning to Mesh Well with new HTML Editor */
+		/*$status['fulltext'] = preg_replace('/<br\\s*?\/??>/i', "", $status['fulltext']);
+		$status['fulltext'] = ContribtoolHtml::txt_unpee($status['fulltext']); */
 			
 		// get authors
 		$objA = new ToolAuthor( $database);	
@@ -2742,7 +2744,7 @@ class ContribtoolController extends JObject
 		}
 		
 		// Get all the tags on this resource
-		$tags_men = $tagcloud->get_tags_on_object($rid, 0, 0, 0, 0);
+		$tags_men = $tagcloud->get_tags_on_object($rid, 0, 0, null,  0, 1);
 		$mytagarray = array();
 		/*$fas = array($tagfa1,$tagfa2,$tagfa3,$tagfa4);
 		$fats[$fa1] = $tagfa1;
