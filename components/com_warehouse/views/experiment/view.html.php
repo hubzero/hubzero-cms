@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
@@ -10,7 +10,7 @@ require_once 'lib/data/MaterialPeer.php';
 require_once 'lib/security/Authorizer.php';
 
 class WarehouseViewExperiment extends JView{
-	
+
   function display($tpl = null){
     //get the tabs to display on the page
     /* @var $oExperimentModel WarehouseModelExperiment */
@@ -50,25 +50,15 @@ class WarehouseViewExperiment extends JView{
     //if there's only 1 repetition, get the data
     $oDataFileArray = array();
     if(sizeof($oRepetitionArray)==1){
-      $strName = trim($oRepetitionArray[0]->getName());
-      
-      //get a list of files by rep_id and examine the first element
-      $oDataFile = DataFilePeer::getSingleDataFilesByRepetition($oRepetitionArray[0]->getId());
-      if($oDataFile){
-        //get the position of the path up to the name
-        $iIndex = strpos(trim($oDataFile->getPath()), $strName);
+      $strPath = $oRepetitionArray[0]->getPathname();
+      $this->assignRef( "strCurrentPath", $strPath );
 
-        //only consider the path up to the name
-        $strPath = substr($oDataFile->getPath(), 0, $iIndex + strlen($strName));
-        $this->assignRef( "strCurrentPath", $strPath );
+      $oDataFileArray = DataFilePeer::findByDirectory($strPath);
 
-        $oDataFileArray = DataFilePeer::findByDirectory($strPath);
-
-        $strPathArray = explode("/", $strPath);
-        $strBackArray = array_diff($strPathArray, array(array_pop($strPathArray)));
-        $strBackPath = implode("/", $strBackArray);
-        $this->assignRef( "strBackPath", $strBackPath );
-      }
+      $strPathArray = explode("/", $strPath);
+      $strBackArray = array_diff($strPathArray, array(array_pop($strPathArray)));
+      $strBackPath = implode("/", $strBackArray);
+      $this->assignRef( "strBackPath", $strBackPath );
     }
     $_REQUEST["ExperimentDataFiles"] = serialize($oDataFileArray);
 
@@ -141,7 +131,7 @@ class WarehouseViewExperiment extends JView{
     JFactory::getApplication()->getPathway()->addItem($oExperiment->getName(),"javascript:void(0)");
     parent::display($tpl);
   }
-  
+
   /**
    * Gets the list of organizations for the project
    * @return array of organization names
@@ -149,18 +139,18 @@ class WarehouseViewExperiment extends JView{
   private function getOrganizations($p_oExperiment){
     return OrganizationPeer::findByExperiment($p_oExperiment->getId());
   }
-  
+
   /**
    * Gets the project dates
    * @return start and end date
    */
   private function getDates($p_oExperiment){
   	//if no start date, return empty string
-    $strDates = trim($p_oExperiment->getStartDate()); 
+    $strDates = trim($p_oExperiment->getStartDate());
     if(strlen($strDates) == 0){
       return $strDates;
     }
-    
+
     //if we have start but no end date, enter Present
     if(strlen($p_oExperiment->getEndDate())>0){
       $strDates = strftime("%B %d, %Y", strtotime($strDates)) . " - ". strftime("%B %d, %Y", strtotime($p_oExperiment->getEndDate()));

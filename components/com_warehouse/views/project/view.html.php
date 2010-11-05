@@ -245,9 +245,10 @@ ENDHTML;
         $strFundingOrg .= $strSponsor . " - " .$strAwardNumber;
         if($strSponsor=="NSF" && StringHelper::hasText($strUrl)){
           $strFundingOrg .= " (<a href='".$strUrl."'>view</a>)";
-          if($iIndex < sizeof($oProjectGrantArray)-1){
-            $strFundingOrg .= "<br>";
-          }
+        }
+
+        if($iIndex < sizeof($oProjectGrantArray)-1){
+          $strFundingOrg .= "<br>";
         }
       }
 
