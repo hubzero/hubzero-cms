@@ -918,6 +918,28 @@ class plgSystemXhub extends JPlugin
 		parent::__construct($subject, NULL);
 	}
 
+        function onAfterRoute()
+        {
+                $app = &JFactory::getApplication();
+                JHTML::_('behavior.mootools');
+                $jdocument =& JFactory::getDocument();
+                $template = $app->getTemplate();
+                $router = &$app->getRouter();
+ 
+                if (get_class($router) == XRouter)
+                {
+                        if (file_exists( JPATH_ROOT . '/templates/' . $template . '/js/hub.js' ))
+                                $jdocument->addScript('/templates/' . $template . '/js/hub.js');
+                        else
+                                $jdocument->addScript('/components/com_hub/js/hub.js');
+ 
+                        if (file_exists( JPATH_ROOT . '/templates/' . $template . '/css/main.css'))
+                                $jdocument->addStyleSheet('/templates/' . $template . '/css/main.css');
+                        else
+                                $jdocument->addStyleSheet('/components/com_hub/css/main.css');
+                }
+        }
+
 	function onAfterInitialise()
 	{
 		//jimport('joomla.database.table');
@@ -937,21 +959,7 @@ class plgSystemXhub extends JPlugin
 		if (get_class($router) == 'JRouterSite') {
 			$router = new XRouter($options);
 			$router->setMode($app->getCfg('sef'));
-			JHTML::_('behavior.mootools');
-			$jdocument =& JFactory::getDocument();
-			$template = $app->getTemplate();
-
-			if (file_exists( JPATH_ROOT . '/templates/' . $template . '/js/hub.js' ))
-				$jdocument->addScript('/templates/' . $template . '/js/hub.js');
-			else
-				$jdocument->addScript('/components/com_hub/js/hub.js');
-
-			if (file_exists( JPATH_ROOT . '/templates/' . $template . '/css/main.css'))
-				$jdocument->addStyleSheet('/templates/' . $template . '/css/main.css');
-			else
-				$jdocument->addStyleSheet('/components/com_hub/css/main.css');
 		}
-
 
 		// Get the session object
 		$session =& JFactory::getSession();
