@@ -30,7 +30,7 @@ $juser =& JFactory::getUser();
 <h3><a name="blog"></a><?php echo JText::_('PLG_GROUPS_BLOG'); ?></h3>
 <div class="aside">
 <?php if ($this->canpost) { ?>
-	<p><a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&id='.$this->group->cn.'&active=blog&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+	<p><a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
 <?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 	<p><a class="config" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>"><?php echo JText::_('Settings'); ?></a></p>
 <?php } ?>
