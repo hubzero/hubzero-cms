@@ -76,7 +76,7 @@ class UserViewLogin extends JView
 			$title = JText::_( 'Logout');
 
 			// pathway item
-			$pathway->addItem($title, '' );
+			//$pathway->addItem($title, '' ); /* HUBZERO: remove extra pathway which goes to empty site url */
 			// Set page title
 			$document->setTitle( $title );
 		}
