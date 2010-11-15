@@ -347,7 +347,7 @@ class XRouter extends JRouter
 					$vars['Itemid'] = null;
 				}
 			
-				$route = str_replace($segments[0], '', $route);
+				$route = preg_replace('/^' . $segments[0]. '/', '', $route);
 			}
 		}
 
@@ -379,7 +379,9 @@ class XRouter extends JRouter
 			{
 				if ($component != "com_search") { // Cheap fix on searches
 					//decode the route segments
-					$segments = $this->_decodeSegments($segments);
+					if ($component == "com_content") { // @FIXME: HUBZERO don't do : to - conversion except in com_content
+						$segments = $this->_decodeSegments($segments);
+					}
 				}
 				else { // fix up search for URL
 					$total = count($segments);
@@ -541,7 +543,8 @@ class XRouter extends JRouter
 		}
 
 		if(!$built) {
-			$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
+			//$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
+			$tmp = substr($query['option'], 4).'/'.$tmp; /* HUBZERO: strip 'component' from url */
 		}
 
 		$route .= '/'.$tmp;
