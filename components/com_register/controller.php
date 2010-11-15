@@ -609,7 +609,7 @@ class RegisterController extends Hubzero_Controller
 			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_NONGUEST_SESSION_CREATION') );
 		}
 		
-		if ($juser->get('auth_link_id'))
+		if ($this->juser->get('auth_link_id'))
 			$hzal = Hubzero_Auth_Link::find_by_id($juser->get('auth_link_id'));
 		else 
 			$hzal = null;
@@ -800,7 +800,7 @@ class RegisterController extends Hubzero_Controller
 		}
 		
 		if (JRequest::getMethod() == 'GET') {		
-			if ($juser->get('tmp_user')) {				
+			if ($this->juser->get('tmp_user')) {				
 				$xregistration->loadAccount($juser);
 			
 				$username = $xregistration->get('login');
