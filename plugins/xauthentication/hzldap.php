@@ -252,7 +252,6 @@ class plgXAuthenticationHzldap extends JPlugin
 		{
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
 			$response->error_message = 'Incorrect username/password';
-var_dump($response);die();
 		}
 		else
 		{
