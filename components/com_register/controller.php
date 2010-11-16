@@ -416,9 +416,8 @@ class RegisterController extends Hubzero_Controller
 		$xprofile    =& Hubzero_Factory::getProfile(); 
 		$xhub     =& Hubzero_Factory::getHub();
 		$jsession =& JFactory::getSession();
-		$juser =& JFactory::getUser();
 
-		$hzal = Hubzero_Auth_Link::find_by_id( $juser->get('auth_link_id'));
+		$hzal = Hubzero_Auth_Link::find_by_id( $this->juser->get('auth_link_id'));
 		
 		if (JRequest::getMethod() == 'POST') {
 			// Load POSTed data
@@ -428,12 +427,12 @@ class RegisterController extends Hubzero_Controller
 			if (is_object($xprofile))
 				$xregistration->loadProfile($xprofile);
 			else {
-				$xregistration->loadAccount($juser);
+				$xregistration->loadAccount($this->juser);
 			}
 							
 			ximport('Hubzero_Auth_Link');
-			$username = $juser->get('username');
-			$email = $juser->get('email');
+			$username = $this->juser->get('username');
+			$email = $this->juser->get('email');
 				
 			if ($username[0] == '-' && is_object($hzal)) {
 					
@@ -512,7 +511,7 @@ class RegisterController extends Hubzero_Controller
 			// Update current session if appropriate
 			// TODO: update all session of this user
 			// TODO: only update if changed
-		if ($myjuser->get('id') == $this->juser->get('id')) {
+			if ($myjuser->get('id') == $this->juser->get('id')) {
 				$sjuser = $jsession->get('user');
 				$sjuser->set('username', $xprofile->get('username'));
 				$sjuser->set('email', $xprofile->get('email'));
@@ -540,7 +539,7 @@ class RegisterController extends Hubzero_Controller
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 	
-				if (!XHubHelper::send_email($xprofile->get('username'), $subject, $message)) {
+				if (!Hubzero_Toolbox::send_email($xprofile->get('username'), $subject, $message)) {
 					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION',$hubMonitorEmail));
 				}
 			}
@@ -557,11 +556,15 @@ class RegisterController extends Hubzero_Controller
 				$message = $eaview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 	
-			Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+				Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
 			}
 	
 			if (!$updateEmail) {
-			$xhub->redirect(JRequest::getVar('REQUEST_URI','/','server'));
+				$suri = JRequest::getVar('REQUEST_URI','/','server');
+				if ($suri == '/register/update')
+					$xhub->redirect('/');
+				else
+					$xhub->redirect($suri);
 			} else {
 	
 				// Instantiate a new view
@@ -603,14 +606,13 @@ class RegisterController extends Hubzero_Controller
 
 		// Set the page title
 		$this->_buildTitle();
-		
 
 		if (!$this->juser->get('guest') && !$this->juser->get('tmp_user')) {
 			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_NONGUEST_SESSION_CREATION') );
 		}
 		
 		if ($this->juser->get('auth_link_id'))
-			$hzal = Hubzero_Auth_Link::find_by_id($juser->get('auth_link_id'));
+			$hzal = Hubzero_Auth_Link::find_by_id($this->juser->get('auth_link_id'));
 		else 
 			$hzal = null;
 			
@@ -697,14 +699,15 @@ class RegisterController extends Hubzero_Controller
 					*/
 					
 					// Get some settings
-			$xhub =& Hubzero_Factory::getHub();
+					$xhub =& Hubzero_Factory::getHub();
 					$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
 					$hubHomeDir      = $xhub->getCfg('hubHomeDir');
 		
-			$mconfig   =& JComponentHelper::getParams( 'com_members' );
-			$public = $mconfig->get('privacy', '0');
+					$mconfig   =& JComponentHelper::getParams( 'com_members' );
+					$public = $mconfig->get('privacy', '0');
+
 					// Attempt to get the new user
-			$xprofile = Hubzero_User_Profile::getInstance($target_juser->get('id'));
+					$xprofile = Hubzero_User_Profile::getInstance($user->get('id'));
 	
 					$result = is_object($xprofile);
 	
@@ -717,11 +720,12 @@ class RegisterController extends Hubzero_Controller
 							if ($xprofile->get('email') == $hzal->email) {
 								$xprofile->set('emailConfirmed',3);
 							}
-							else
+							else {
 								$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1) );
-				$xprofile->set('public', $public);
+								$xprofile->set('public', $public);
+							}
 						}
-					
+
 						// Do we have a return URL?
 						$regReturn = JRequest::getVar('return', ''); 
 						if ($regReturn) {
@@ -754,7 +758,7 @@ class RegisterController extends Hubzero_Controller
 						$message = $eview->loadTemplate();
 						$message = str_replace("\n", "\r\n", $message);
 				
-			if (!Hubzero_Toolbox::send_email($xprofile->get('email'), $subject, $message)) {
+						if (!Hubzero_Toolbox::send_email($xprofile->get('email'), $subject, $message)) {
 							$this->setError( JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $hubMonitorEmail) );
 						}
 					}
@@ -770,7 +774,7 @@ class RegisterController extends Hubzero_Controller
 					$message = $eaview->loadTemplate();
 					$message = str_replace("\n", "\r\n", $message);
 			
-			Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
+					Hubzero_Toolbox::send_email($hubMonitorEmail, $subject, $message);
 		
 					// Instantiate a new view
 					$view = new JView( array('name'=>'create') );
@@ -789,11 +793,11 @@ class RegisterController extends Hubzero_Controller
 							$hzal->update();
 					}						
 					
-					$juser->set('auth_link_id',null);
-					$juser->set('tmp_user',null);
-					$juser->set('username', $xregistration->get('login'));
-					$juser->set('email', $xregistration->get('email'));
-					$juser->set('id', $user->get('id'));
+					$this->juser->set('auth_link_id',null);
+					$this->juser->set('tmp_user',null);
+					$this->juser->set('username', $xregistration->get('login'));
+					$this->juser->set('email', $xregistration->get('email'));
+					$this->juser->set('id', $user->get('id'));
 					return;
 				}
 			}
