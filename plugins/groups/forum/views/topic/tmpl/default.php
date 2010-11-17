@@ -113,7 +113,17 @@ $juser =& JFactory::getUser();
 		}
 ?>
 		</ol>
-		<?php echo $this->pageNav->getListFooter(); ?>
+                <?php 
+                    // @FIXME: Nick's Fix Based on Resources View
+                    echo '<input type="hidden" name="topic" value="' . $this->forum->id . '" />';
+                    $pf = $this->pageNav->getListFooter();
+                    $nm = str_replace('com_','',$this->option);
+                    $pf = str_replace($nm.'/?',$nm.'/'.$this->group->get('cn').'/'.$this->_element.'/?topic='. $this->forum->id . '&',$pf);
+                    echo $pf;
+                    //echo $this->pageNav->getListFooter(); 
+                    // @FIXME: End Nick's Fix
+                ?>
+
 	</div><!-- / .subject -->
 </form>
 

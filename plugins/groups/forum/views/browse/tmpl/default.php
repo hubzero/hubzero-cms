@@ -127,7 +127,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</table>
 	<?php 
 	if ($this->pageNav) {
-		echo $this->pageNav->getListFooter(); 
+             // @FIXME: Nick's Fix Based on Resources View
+             $pf = $this->pageNav->getListFooter();
+             $nm = str_replace('com_','',$this->option);
+             $pf = str_replace($nm.'/?',$nm.'/'.$this->group->get('cn').'/'.$this->_element.'/?',$pf);
+             echo $pf;
+             //echo $this->pageNav->getListFooter();
+             // @FIXME: End Nick's Fix
 	}
 	?>
 </form>
