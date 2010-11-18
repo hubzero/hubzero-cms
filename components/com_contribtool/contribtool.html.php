@@ -421,7 +421,9 @@ class ContribtoolHtml
 		// get configurations/ defaults
 		$developer_site = isset($config->parameters['developer_site']) ? $config->parameters['developer_site'] : 'nanoFORGE';
 		$developer_url 	= isset($config->parameters['developer_url']) ? $config->parameters['developer_url'] : 'https://developer.nanohub.org';
-		$project_path 	= isset($config->parameters['project_path']) ? $config->parameters['project_path'] : '/projects/app-';
+		$rappture_url 	= isset($config->parameters['rappture_url']) ? $config->parameters['rappture_url'] : '';
+		$learn_url 	= isset($config->parameters['learn_url']) ? $config->parameters['learn_url'] : '';
+		$project_path 	= isset($config->parameters['project_path']) ? $config->parameters['project_path'] : '/tools/app-';
 		$dev_suffix 	= isset($config->parameters['dev_suffix']) ? $config->parameters['dev_suffix'] : '_dev';
 		
 		// set common paths
@@ -450,8 +452,12 @@ class ContribtoolHtml
 			$par .= '		<a href="'.$developer_url.$project_path.$status['toolname'].'">'.$developer_url.$project_path.$status['toolname'].'</a></p>'.n;
 			$par .= '		<p>'.JText::_('WHATSNEXT_FOLLOW_STEPS').':</p>'.n;
 			$par .= '		<ul>'.n;
-			$par .= '			<li><a href="http://rappture.org/wiki/FAQ_UpDownloadSrc">'.JText::_('LEARN_MORE').'</a> '.JText::_('WHATSNEXT_ABOUT_UPLOADING').'</li>'.n;
-			$par .= '			<li>'.JText::_('LEARN_MORE').' '.strtolower(JText::_('ABOUT')).' '.JText::_('THE').' <a href="http://rappture.org">Rappture toolkit</a>.</li>'.n;
+			if (!empty($learn_url)) {
+				$par .= '			<li><a href="' . $learn_url . '">'.JText::_('LEARN_MORE').'</a> '.JText::_('WHATSNEXT_ABOUT_UPLOADING').'</li>'.n;
+			}
+			if (!empty($rappture_url)) {
+				$par .= '			<li>'.JText::_('LEARN_MORE').' '.JText::_('ABOUT').' '.JText::_('THE').' <a href="' . $rappture_url . '">Rappture toolkit</a>.</li>'.n;
+			}
 			$par .= '			<li>'.JText::_('WHATSNEXT_WHEN_READY').', <a href="'.$developer_url.$project_path.$status['toolname'].'/wiki/GettingStarted">'.JText::_('WHATSNEXT_FOLLOW_THESE_INSTRUCTIONS').'</a> '.JText::_('WHATSNEXT_TO_ACCESS_CODE').'.</li>'.n;
 			$par .= '		</ul>'.n;
 			$par .= '		<h2>'.JText::_('WHATSNEXT_WE_ARE_WAITING').'</h2>'.n;
