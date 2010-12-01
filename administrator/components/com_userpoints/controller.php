@@ -388,8 +388,7 @@ class UserpointsController extends Hubzero_Controller
 			$alias = $aliases[$i];
 			if ($point != '') {
 			    $id = intval($i);
-
-				$this->database->setQuery( "INSERT INTO #__users_points_config VALUES ($id,'$description','$alias', '$point')" );
+				$this->database->setQuery( "INSERT INTO #__users_points_config (`id`,`description`,`alias`,`points`) VALUES ($id,'$description','$alias', '$point')" );
 				$this->database->query();
 			}
 		}
