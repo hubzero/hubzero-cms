@@ -56,6 +56,12 @@
 		border: 1px solid #d4d4cd;
 		margin: 0 0 1em 0;
 		}
+	#event-categories fieldset {
+		background: transparent;
+		border: none;
+		padding: 0;
+		margin: 0;
+		}
 	.ecalendar {
 		border: none;
 		position: relative;
@@ -145,73 +151,133 @@
 		float: right;
 		color: #222;
 		}
+	.ecalendar .today a {
+		color: #000;
+		}
+	.ecalendar .today a:hover {
+		color: #f60;
+		}
 /* Events listing */
-	#content ul.events {
+	.com_events ul.events {
     	list-style-type: none !important;
-		margin-left: 0;
+		margin: 0;
 		padding-left: 0;
 		border-bottom: 1px solid #ddd;
+		list-style: none;
 		}
-	#content ul.events li ul.events {
+	.com_events ul.events li {
+		list-style: none;
+		}
+	.com_events ul.events li ul.events {
 		margin: -1px 0 0 0;
 		padding: 0;
 		border-bottom: none;
 		}
-	#content ul.events > li {
+	.com_events ul.events > li {
     	clear: left;
     	margin: 0 !important;
     	padding: 0 0 1em 0;
     	border-top: 1px solid #ddd;
 		background: none;
+		list-style: none;
 		}
-	#content ul.events > li ul.events li {
+	.com_events ul.events > li ul.events li {
 		clear: none;
 		}
-	#content ul.events li li {
+	.com_events ul.events li li {
     	margin-left:  20px;
 		}
-	#content ul.events div.ewrap {
+	.com_events ul.events div.ewrap {
 		margin: 0 0 0 125px;
 		}
-	#content ul.events dl.event-details {
+	.com_events ul.events dl.event-details {
     	float: left;
-    	margin: 1.2em 20px 2em 0 !important;
+    	margin: 1.1em 20px 2em 0 !important;
     	padding: 0;
     	width: 105px;
     	color: #777;
     	font-size: 11px;
     	text-align: right;
 		}
-	#content ul.events dl.event-details dt {
+	.com_events ul.events dl.event-details dt {
 		font-weight: bold;
 		color: #777;
 		font-size: 12px;
-		padding-bottom: 1em;
+		padding: 0;
+		margin: 1.1em 0 0 0;
 		}
-	#content ul.events .title {
+	.com_events ul.events dl.event-details dt:first-child {
+		margin: 0;
+		}
+	.com_events ul.events dl.event-details dd.starttime {
+		padding-bottom: 0;
+		margin: 0;
+		}
+	.com_events ul.events dl.event-details dd.endtime {
+		margin: 0;
+		padding: 0;
+		}
+	.com_events ul.events .title {
 		color: #777;
 		font-size: 12px;
 		font-weight: bold;
 		}
-	#content ul.events li.author dl.event-details dt a,
-	#content ul.events li.author dl.event-details dt a:link,
-	#content ul.events li.author dl.event-details dt a:visited,
-	#content ul.events li.author dl.event-details dt a:active {
-		color:  #FF54AC;
+/* Search results */
+	.results .event {
+		background-image: none;
 		}
-	#content ul.events li.author dl.comment-details dt a:hover {
-		color: #ff6600;
+	.results .event p {
+		margin-left: 4em;
 		}
-	#content ul.events li dl.event-details dt a.comment-counter:link,
-	#content ul.events li dl.event-details dt a.comment-counter:visited,
-	#content ul.events li dl.event-details dt a.comment-counter:active {
-		color: #999 !important;
+	.results .event .title {
+		text-indent: 0em;
 		}
-	#content ul.events li dl.event-details dt a.comment-counter:hover {
-		color: #ff6600 !important;
+	.results .event .event-date {
+	    text-align: center;
+		float: left;
+	    width: 3em;
+		display: block;
+		margin-left: 0;
 		}
-	#content ul.events li p.comment-content-object-link {
-		color: #999;
+	.results .event .event-date span {
+	    display: block;
+	    float: left;
+	    width: 100%;
+		}
+	.results .event .event-date span.year {
+	    background: #ccc;
+	    border: 1px solid #ccc;
+	    color: #fff;
+	    text-transform: uppercase;
+	    line-height: 1.1em;
+		font-size: 85%;
+		font-weight: bold;
+	    text-align: center;
+		}
+	.results .event .event-date span.month {
+	    background: #D51007;
+	    border: 1px solid #D51007;
+	    color: #fff;
+	    text-transform: uppercase;
+	    line-height: 1.1em;
+		font-size: 85%;
+		font-weight: bold;
+	    text-align: center;
+		}
+	.results .event .event-date span.day {
+	    background: #fff;
+	    border: 1px solid #ccc;
+	    border-top: none;
+	    color: #000;
+		font-size: 120%;
+	    line-height: 1.4em;
+	    font-weight: bold;
+	    letter-spacing: -0.1em;
+		}
+/* Misc. */
+	.com_events .last a {
+		padding-left: 20px;
+		background: url("images/date_add.png") 0 0 no-repeat;
 		}
 /* (sub) Tabs */
 	.com_events .main h3 {
@@ -286,7 +352,7 @@
 		*background-position: 0 -15px;
 		}
 /* IE 6 hacks */
-	* html #content ul.events li {
+	* html .com_events ul.events li {
 		background-image: none;
 		border-top: 1px solid #ddd;
 		}
@@ -301,6 +367,6 @@
 	* html .datenav a:hover {
 		background-position: 0 -15px;
 		}
-	* html #content ul.events div.ewrap { 
+	* html .com_events ul.events div.ewrap { 
 		height: 6em;
 		}
