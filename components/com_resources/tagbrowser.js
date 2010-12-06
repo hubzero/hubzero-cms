@@ -67,7 +67,7 @@ HUB.TagBrowser = {
 		$('tbh2').parentNode.removeChild(tbh2);
 	},
 
-	nextLevel: function(type, input, input2, level, id, rid, terms) {
+	nextLevel: function(type, input, input2, level, id, rid) {
 		var browser = new HUB.TagBrowser.detect();
 		
 		if(level == 2) {
@@ -102,8 +102,7 @@ HUB.TagBrowser = {
 				}
 			}
 		}
-		var termsString = (terms != '')? '&terms='+terms : '';
-		var url = HUB.TagBrowser.baseURI+'&type='+type+'&level='+level+'&input='+input+'&input2='+input2+'&id='+rid+'&sortby='+sortby+filterby+termsString;
+		var url = HUB.TagBrowser.baseURI+'&type='+type+'&level='+level+'&input='+input+'&input2='+input2+'&id='+rid+'&sortby='+sortby+filterby;
 		if(browser.isFirefox ==false && browser.isCamino==false && browser.isMozilla) {
 			var ev = false;
 		} else {
