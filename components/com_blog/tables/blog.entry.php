@@ -277,6 +277,9 @@ class BlogEntry extends JTable
 			$query .= " AND (LOWER(m.title) LIKE '%".$filters['search']."%' OR LOWER(m.content) LIKE '%".$filters['search']."%')";
 			//$query .= " AND ( (MATCH(m.title) AGAINST ('".addslashes($filters['search'])."') > 0) OR (MATCH(m.content) AGAINST ('".addslashes($filters['search'])."') > 0) )";
 		}
+		if (isset($filters['sql']) && $filters['sql'] != '') {
+                        $query .= " AND ".$filters['sql'];
+                }
 		if (isset($filters['order']) && $filters['order'] != '') {
 			$query .= " ORDER BY ".$filters['order'];
 		} else {
