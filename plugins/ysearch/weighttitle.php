@@ -21,7 +21,7 @@ class plgYSearchWeightTitle
 
 		$intersecting_stems = count(array_intersect($title_stems, $term_stems));
 
-		return 1 - (($term_len - $intersecting_stems) * (0.5/$term_len));
+		return 1 - (($term_len - $intersecting_stems) * (0.8/$term_len));
 	}
 
 	private static function stem_list($str)

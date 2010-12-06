@@ -28,7 +28,6 @@ class plgYSearchResources extends YSearchPlugin
 {
 	public static function onYSearch($request, &$results)
 	{
-		$dbg = array_key_exists('test', $_GET);
 		$terms = $request->get_term_ar();
 		$tag_map = array();
 		foreach ($request->get_tagged_ids('resources') as $id)
@@ -55,9 +54,9 @@ class plgYSearchResources extends YSearchPlugin
 				$weight AS weight,
 				r.publish_up AS date,
 				rt.type AS section,
-				(SELECT group_concat(u1.name order by u1.name separator '\\n') FROM jos_author_assoc anames INNER JOIN jos_users u1 ON u1.id = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
+				(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM jos_author_assoc anames LEFT JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
 				AS contributors,
-				(SELECT group_concat(anames.authorid order by u1.name separator '\\n') FROM jos_author_assoc anames INNER JOIN jos_users u1 ON u1.id = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
+				(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM jos_author_assoc anames WHERE subtable = 'resources' AND subid = r.id) 
 				AS contributor_ids,
 				(select group_concat(concat(parent_id, '|', ordering)) 
 					from jos_resource_assoc ra2 
@@ -84,7 +83,7 @@ class plgYSearchResources extends YSearchPlugin
 			$id = (int)$row->get('id');
 			if (array_key_exists($id, $tag_map))
 			{
-				$row->adjust_weight(1 + $tag_map[$id], 'tag bonus from resources plugin');
+				$row->adjust_weight((1 + $tag_map[$id])/4, 'tag bonus from resources plugin');
 				unset($tag_map[$id]);
 			}
 		}
@@ -100,10 +99,10 @@ class plgYSearchResources extends YSearchPlugin
                                 	r.publish_up AS date,
 					0.5 as weight,
 	                                rt.type AS section,
-        	                        (SELECT group_concat(u1.name order by u1.name separator '\\n') FROM jos_author_assoc anames INNER JOIN jos_users u1 ON u1.id = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
-                	                AS contributors,
-                        	        (SELECT group_concat(anames.authorid order by u1.name separator '\\n') FROM jos_author_assoc anames INNER JOIN jos_users u1 ON u1.id = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
-	                                AS contributor_ids,
+					(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM jos_author_assoc anames LEFT JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
+					AS contributors,
+					(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM jos_author_assoc anames WHERE subtable = 'resources' AND subid = r.id) 
+					AS contributor_ids,
         	                        (select group_concat(concat(parent_id, '|', ordering))
                 	                        from jos_resource_assoc ra2
                         	                left join jos_resources re3 on re3.id = ra2.parent_id and re3.standalone
@@ -118,15 +117,20 @@ class plgYSearchResources extends YSearchPlugin
 			foreach ($sql->to_associative() as $row)
 			{
 				if ($tag_map[$row->get('id')] > 1)
-					$row->adjust_weight($tag_map[$row->get('id')]/2, 'tag bonus for non-matching but tagged resources');
+					$row->adjust_weight($tag_map[$row->get('id')]/8, 'tag bonus for non-matching but tagged resources');
 				$id_assoc[$row->get('id')] = $row;
 			}
 		}
+
+		$dbg = array_key_exists('dbg', $_GET);
 		
 		// Nest child resources
 		$section = $request->get_terms()->get_section();
 		foreach ($id_assoc as $id=>$row)
 		{
+			if ($dbg && $row->get('section') === 'Tools')
+				continue;
+
 			$parents = $row->get('parents');
 			if ($parents)
 				foreach (split(',', $parents) as $parent)
@@ -136,7 +140,7 @@ class plgYSearchResources extends YSearchPlugin
 					{
 						$placed[(int)$id] = $ordering;
 						$id_assoc[(int)$parent_id]->add_child($row);
-						$id_assoc[(int)$parent_id]->add_weight($row->get_weight()/10, 'propagating child weight');
+						$id_assoc[(int)$parent_id]->add_weight($row->get_weight()/15, 'propagating child weight');
 					}
 				}
 		}

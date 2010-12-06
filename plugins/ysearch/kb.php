@@ -7,18 +7,18 @@ class plgYSearchKB extends YSearchPlugin
 	public static function onYSearch($request, &$results)
 	{
 		$terms = $request->get_term_ar();
-		$weight = 'match(f.title, f.introtext, f.`fulltext`) against (\''.join(' ', $terms['stemmed']).'\')';
+		$weight = 'match(f.title, f.`fulltext`) against (\''.join(' ', $terms['stemmed']).'\')';
 			
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
-			$addtl_where[] = "(f.title LIKE '%$mand%' OR f.introtext LIKE '%$mand%' OR f.`fulltext` LIKE '%$mand%')";
+			$addtl_where[] = "(f.title LIKE '%$mand%' OR f.`fulltext` LIKE '%$mand%')";
 		foreach ($terms['forbidden'] as $forb)
-			$addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.introtext NOT LIKE '%$forb%' AND f.`fulltext` NOT LIKE '%$forb%')";
+			$addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.`fulltext` NOT LIKE '%$forb%')";
 
 		$results->add(new YSearchResultSQL(
 			"SELECT 
 				f.title,
-				concat(coalesce(f.introtext, ''), coalesce(f.`fulltext`, '')) AS description,
+				concat(coalesce(f.`fulltext`, '')) AS description,
 				concat('/kb/', coalesce(concat(s.alias, '/'), ''), f.alias) AS link,
 				$weight AS weight,
 				created AS date,

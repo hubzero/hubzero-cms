@@ -15,9 +15,9 @@ class plgYSearchContent extends YSearchPlugin
 
 		$user =& JFactory::getUser();
 		if ($user->guest)
-			$addtl_where[] = '(c.access = 1)';
+			$addtl_where[] = '(c.access = 0)';
 		elseif ($user->usertype != 'Super Administrator')
-			$addtl_where[] = '(c.access = 1 OR (SELECT 1 FROM #__author_assoc aa WHERE authorid = '.(int)$user->id.' AND subtable = \'content\' AND subid = c.id))';
+			$addtl_where[] = '((c.access = 0 OR c.access = 1) OR (SELECT 1 FROM #__author_assoc aa WHERE authorid = '.(int)$user->id.' AND subtable = \'content\' AND subid = c.id))';
 
 		$sql = new YSearchResultSQL(
 			"SELECT 
@@ -44,7 +44,7 @@ class plgYSearchContent extends YSearchPlugin
 				ON ca.id = c.catid
 			WHERE 
 				(publish_up AND NOW() > publish_up) AND (NOT publish_down OR NOW() < publish_down) 
-				AND $weight > 0".
+				AND $weight > 0 AND state = 1".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" ORDER BY $weight DESC"
 		);
