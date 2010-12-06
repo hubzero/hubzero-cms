@@ -40,7 +40,7 @@ require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'group.php
 class TagsHandler extends JObject 
 {
 	public $_db  = NULL;  // Database
-	public $_tbl = NULL;  // Secondary tag table, used for linking objects (such as resources) to tags
+	public $_tbl = 'tags';  // Secondary tag table, used for linking objects (such as resources) to tags
 	public $_oid = NULL;  // The object to be tagged
 	public $_tag_tbl = '#__tags';  // The primary tag table
 	public $_obj_tbl = '#__tags_object';
