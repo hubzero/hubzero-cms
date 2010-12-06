@@ -653,11 +653,18 @@ class ToolsController extends JObject
 		$app['ip'] = $ip;
 		$app['username'] = $juser->get('username');
 
+		$rtrn = JRequest::getVar('return', '');
 		// Build and display the HTML
 		//$this->session( $app, $authorized, $output, $toolname );
 		//$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess);
 		$xhub =& XFactory::getHub();
-		$xhub->redirect( JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess) );
+
+		if (!empty($rtrn))
+			$ret = '&return='.$rtrn;
+		else
+			$ret = '';
+
+		$xhub->redirect( JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess.$ret) );
 	}
 
 	//-----------
@@ -834,6 +841,8 @@ class ToolsController extends JObject
 			$this->_redirect = JRoute::_( 'index.php?option=com_myhub' );
 			return;
 		}
+
+		$rtrn = JRequest::getVar('return', '');
 		
 		// Get the user's IP address
 		$ip = JRequest::getVar( 'REMOTE_ADDR', '', 'server' );
@@ -922,12 +931,12 @@ class ToolsController extends JObject
 		$dispatcher->trigger( 'onAfterSessionStart', array($toolname, $tv->revision) );
 
 		// Build and display the HTML
-		$this->session( $app, $authorized, $output, $toolname );
+		$this->session( $app, $authorized, $output, $toolname, $rtrn );
 	}
 	
 	//-----------
 
-	private function session( $app, $authorized, $output, $toolname ) 
+	private function session( $app, $authorized, $output, $toolname, $rtrn=NULL ) 
 	{
 		// Build the page title
 		/*$title  = JText::_(strtoupper($this->_name));
@@ -967,6 +976,7 @@ class ToolsController extends JObject
 		$view->config = $this->config;
 		$view->output = $output;
 		$view->toolname = $toolname;
+		$view->rtrn = $rtrn;
 		if ($app['sess']) {
 			// Get the middleware database
 			$mwdb =& MwUtils::getMWDBO();
@@ -994,6 +1004,7 @@ class ToolsController extends JObject
 		
 		// Incoming
 		$sess = JRequest::getVar( 'sess', '' );
+		$rtrn = base64_decode( JRequest::getVar('return', '', 'method', 'base64') );
 
 		// Ensure we have a session
 		if (!$sess) {
@@ -1041,8 +1052,12 @@ class ToolsController extends JObject
 		// Trigger any events that need to be called after session stop
 		$dispatcher->trigger( 'onAfterSessionStop', array($ms->appname) );
 
-		// Take us back to the main page...
-		$this->_redirect = JRoute::_('index.php?option=com_myhub');
+        // Take us back to the main page...
+        if ($rtrn) {
+            $this->_redirect = $rtrn;
+        } else {
+            $this->_redirect = JRoute::_('index.php?option=com_myhub');
+        }
 	}
 
 	//-----------
