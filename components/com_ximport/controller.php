@@ -126,6 +126,10 @@ class XImportController extends JObject
 		{
 			$this->compareusers();
 		}
+		else if ($task == 'comparepasswords')
+		{
+			$this->comparepasswords();
+		}
 		else if ($task == 'comparelicenses')
 		{
 			$this->comparelicenses();
@@ -183,6 +187,7 @@ class XImportController extends JObject
 		echo '<a href="/ximport/importusers">Import user profiles from ldap</a><br>' . "\n";
 		echo '<a href="/ximport/importgroups">Import groups from ldap</a><br>' . "\n";
 		echo '<a href="/ximport/showusers">show users from ldap</a><br>' . "\n";
+		echo '<a href="/ximport/comparepasswords">compare passwords from ldap</a><br>' . "\n";
 		echo '<a href="/ximport/compareusers">compare users from ldap</a><br>' . "\n";
 		echo '<a href="/ximport/comparelicenses">compare licenses from ldap</a><br>' . "\n";
 		echo '<a href="/ximport/comparegroups">compare groups from ldap</a><br>' . "\n";
@@ -486,6 +491,12 @@ class XImportController extends JObject
 		include 'iuser.php';
 
 		_compareusers();
+	}
+
+	function comparepasswords()
+	{
+		include 'ipassword.php';
+		_comparepasswords();
 	}
 
 	function comparelicenses()
