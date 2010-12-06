@@ -56,7 +56,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<h3><?php echo JText::_('COM_CONTRIBUTE_TAGS_ADD'); ?></h3>
 <?php if (count($this->fats) > 0) { ?>
 			<fieldset>
-				<legend><?php echo JText::_('COM_CONTRIBUTE_TAGS_SELECT_FOCUS_AREA'); ?>:</legend>
+				<legend><?php echo JText::_('COM_CONTRIBUTE_TAGS_SELECT_FOCUS_AREA'); ?>: <span class="required">required</span></legend>
 				<?php
 				foreach ($this->fats as $key => $value) 
 				{

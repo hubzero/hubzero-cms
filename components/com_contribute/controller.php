@@ -466,10 +466,14 @@ class ContributeController extends Hubzero_Controller
 		}
 		$tags = implode( ', ', $mytagarray );
 
-		/*$err = JRequest::getInt( 'err', 0 );
+		$etags = JRequest::getVar( 'tags', '' );
+		if (!$tags) {
+			$tags = $etags;
+		}
+		$err = JRequest::getInt( 'err', 0 );
 		if ($err) {
 			$this->setError( JText::_('Please select one of the focus areas.') );
-		}*/
+		}
 
 		// Output HTML
 		$view = new JView( array('name'=>'steps','layout'=>'tags') );
@@ -751,7 +755,7 @@ class ContributeController extends Hubzero_Controller
 		if ($required) {
 			//echo $tagfa; print_r($fa); die;
 			if (!$tagfa || ($tagfa && !in_array($tagfa, $fa))) {
-				$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&step=4&id='.$id);
+				$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&step=4&id='.$id.'&err=1&tags='.$tags);
 				$this->_message = JText::_('Please select one of the focus areas.');
 				$this->_messageType = 'error';
 				return;
