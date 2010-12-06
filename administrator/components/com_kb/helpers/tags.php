@@ -25,26 +25,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+require_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
+
+//----------------------------------------------------------
+// Answers Tagging class
 //----------------------------------------------------------
 
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
+class KbTags extends TagsHandler
+{
+	public function __construct( $db, $config=array() )
+	{
+		$this->_db  = $db;
+		$this->_tbl = 'kb';
+	}
 }
-
-jimport('joomla.application.component.helper');
-ximport('Hubzero_View_Helper_Html');
-
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'tags.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'comment.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'article.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'category.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'vote.php' );
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-
-// Instantiate controller
-$controller = new KbController();
-$controller->execute();
-$controller->redirect();

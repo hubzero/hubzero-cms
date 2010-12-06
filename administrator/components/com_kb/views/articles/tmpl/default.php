@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
  				<th><?php echo JText::_('QUESTION'); ?></th>
  				<th><?php echo JText::_('PUBLISHED'); ?></th>
  				<th><?php echo JText::_('CATEGORY'); ?></th>
- 				<th><?php echo JText::_('HELPFUL'); ?></th>
+ 				<th><?php echo JText::_('Votes'); ?></th>
  				<th><?php echo JText::_('CHECKED_OUT'); ?></th>
 			</tr>
 		</thead>
@@ -68,6 +68,10 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
+$database =& JFactory::getDBO();
+//$sc = new SupportComment( $database );
+$st = new KbTags( $database );
+
 for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
 {
 	$row = &$this->rows[$i];
@@ -90,10 +94,15 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			$alt = JText::_('UNPUBLISHED');
 			break;
 	}
+	
+	$tags = $st->get_tag_cloud( 3, 1, $row->id );
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=editfaq&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('EDIT_ARTICLE'); ?>"><?php echo stripslashes($row->title); ?></a></td>
+				<td>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;task=editfaq&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('EDIT_ARTICLE'); ?>"><?php echo stripslashes($row->title); ?></a><br />
+					<span>Tags: <?php echo $tags; ?></span>
+				</td>
 				<td><a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;cid=<?php echo $this->filters['id']; ?>" title="<?php echo JText::sprintf('SET_TASK',$task);?>"><span><?php echo $alt; ?></span></a></td>
 				<td><?php echo $row->ctitle; echo ($row->cctitle) ? ' ('.$row->cctitle.')' : ''; ?></td>
 				<td>+<?php echo $row->helpful; ?> -<?php echo $row->nothelpful; ?></td>

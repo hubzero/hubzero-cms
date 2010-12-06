@@ -75,20 +75,28 @@ function submitbutton(pressbutton)
 						<td><?php echo KbHtml::sectionSelect( $this->categories, $this->row->category, 'category' ); ?></td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('QUESTION'); ?>: *</label></td>
-						<td><input type="text" name="title" size="30" maxlength="100" value="<?php echo stripslashes($this->row->title); ?>" /></td>
+						<td colspan="2">
+							<label><?php echo JText::_('Title'); ?>: *</label><br />
+							<input type="text" name="title" size="100" maxlength="255" value="<?php echo stripslashes($this->row->title); ?>" />
+						</td>
 					</tr>
-					<tr>
+<?php /*					<tr>
 						<td class="key"><label><?php echo JText::_('LONG_QUESTION'); ?>:</label></td>
 						<td><?php
 						echo $editor->display('introtext', stripslashes($this->row->introtext), '360px', '200px', '50', '10');
 						?></td>
+					</tr> */ ?>
+					<tr>
+						<td colspan="2">
+							<label><?php echo JText::_('Body'); ?>: *</label><br />
+							<?php echo $editor->display('fulltext', stripslashes($this->row->fulltext), '500px', '500px', '60', '30'); ?>
+						</td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('ANSWER'); ?>: *</label></td>
-						<td><?php
-						echo $editor->display('fulltext', stripslashes($this->row->fulltext), '360px', '200px', '50', '10');
-						?></td>
+						<td colspan="2">
+							<label><?php echo JText::_('Tags'); ?>: *</label><br />
+							<input type="text" name="tags" size="100" maxlength="255" value="<?php echo stripslashes($this->tags); ?>" />
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -96,7 +104,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="col width-40">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('PARAMETERS'); ?></legend>
+			<legend><?php echo JText::_('State'); ?></legend>
 			
 			<table class="admintable">
 				<tbody>
@@ -108,7 +116,7 @@ function submitbutton(pressbutton)
 						<td class="key"><label><?php echo JText::_('ACCESS_LEVEL'); ?>:</label></td>
 						<td><?php echo JHTML::_('list.accesslevel', $this->row); ?></td>
 					</tr>
-					<tr>
+					<?php /* <tr>
 						<td class="key"><label><?php echo JText::_('CHANGE_CREATOR'); ?>:</label></td>
 						<td><?php echo JHTML::_('list.users', 'created_by', $this->row->created_by, 0, '', 'name', 1); ?></td>
 					</tr>
@@ -119,7 +127,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key"><?php echo JText::_('STATE'); ?>:</td>
 						<td><?php echo ($this->row->state == 1) ? JText::_('PUBLISHED') : JText::_('UNPUBLISHED'); ?></td>
-					</tr>
+					</tr> */ ?>
 					<tr>
 						<td class="key"><?php echo JText::_('HITS'); ?>:</td>
 						<td><?php echo $this->row->hits; ?>
@@ -129,10 +137,10 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo JText::_('HELPFUL'); ?>:</td>
+						<td class="key"><?php echo JText::_('Votes'); ?>:</td>
 						<td>+<?php echo $this->row->helpful; ?> -<?php echo $this->row->nothelpful; ?>
 						<?php if ( $this->row->helpful > 0 || $this->row->nothelpful > 0 ) { ?>
-						<input type="button" name="reset_helpful" value="<?php echo JText::_('RESET_HELPFUL'); ?>" onclick="submitbutton('resethelpful');" />
+						<input type="button" name="reset_votes" value="<?php echo JText::_('Reset Votes'); ?>" onclick="submitbutton('resetvotes');" />
 						<?php } ?>
 						</td>
 					</tr>
@@ -146,6 +154,10 @@ function submitbutton(pressbutton)
 					</tr>
 				</tbody>
 			</table>
+		</fieldset>
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('PARAMETERS'); ?></legend>
+			<?php echo $this->params->render(); ?>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

@@ -30,7 +30,7 @@ class KbArticle extends JTable
 {
 	var $id           = NULL;  // @var int(11) Primary key
 	var $title        = NULL;  // @var varchar(250)
-	var $introtext    = NULL;  // @var text
+	var $params       = NULL;  // @var text
 	var $fulltext     = NULL;  // @var text
 	var $created      = NULL;  // @var datetime (0000-00-00 00:00:00)
 	var $created_by   = NULL;  // @var int(11)
@@ -201,5 +201,88 @@ class KbArticle extends JTable
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
+	}
+	
+	//----
+	//----
+	
+	//-----------
+	
+	public function buildQuery( $filters=array() ) 
+	{
+		$sql = "FROM $this->_tbl AS m 
+				LEFT JOIN #__faq_categories AS c ON c.id = m.section 
+				LEFT JOIN #__faq_categories AS cc ON cc.id = m.category ";
+		/*if (isset($filters['search']) && $filters['search'] != '') {
+			$sql .= " LEFT JOIN #__tags_object AS tt ON tt.objectid=m.id AND tt.tbl='kb'";
+			$sql .= " LEFT JOIN #__tags AS t ON tt.tagid=t.id";
+		}*/
+		if (isset($filters['user_id']) && $filters['user_id'] > 0) {
+			$sql .= " LEFT JOIN #__faq_helpful_log AS v ON v.object_id=m.id AND v.user_id=".$filters['user_id']." AND v.type='entry' ";
+		}
+		
+		$w = array();
+		if (isset($filters['section']) && $filters['section']) {
+			$w[] = "m.section=".$filters['section'];
+		}
+		if (isset($filters['category']) && $filters['category']) {
+			$w[] = "m.category=".$filters['category'];
+		}
+		if (isset($filters['state'])) {
+			$w[] = "m.state=".$filters['state'];
+		}
+		if (isset($filters['search']) && $filters['search'] != '') {
+			/*$w[] = "(
+					m.title LIKE '%".$filters['search']."%' 
+					OR m.fulltext LIKE '%".$filters['search']."%' 
+					OR t.raw_tag LIKE '%".$filters['search']."%' 
+					OR t.tag LIKE '%".$filters['search']."%'
+			)";*/
+			$w[] = "(
+					m.title LIKE '%".$filters['search']."%' 
+					OR m.fulltext LIKE '%".$filters['search']."%' 
+				)";
+		}
+		
+		$sql .= (count($w) > 0) ? "WHERE " : "";
+		$sql .= implode(" AND ",$w);
+		
+		if (isset($filters['order']) && $filters['order'] != '') {
+			switch ($filters['order']) 
+			{
+				case 'recent': $order = 'm.modified DESC, m.created DESC'; break;
+				//case 'created': $order = $filters['orderby'].' DESC'; break;
+				case 'popularity': $order = '(m.helpful-m.nothelpful) DESC'; break;
+				default: $order = $filters['order']; break;
+			}
+			$sql .= " ORDER BY ".$order;
+		}
+		if (isset($filters['limit']) && $filters['limit'] != '') {
+			$sql .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		}
+
+		return $sql;
+	}
+	
+	public function getCount( $filters=array() ) 
+	{
+		$query = "SELECT count(*) ".$this->buildQuery( $filters );
+
+		$this->_db->setQuery( $query );
+		return $this->_db->loadResult();
+	}
+	
+	//-----------
+	
+	public function getRecords( $filters=array() ) 
+	{
+		$query = "SELECT DISTINCT(m.id), m.title, m.created, m.state, m.access, m.modified, m.section, m.category, m.helpful, m.nothelpful, m.alias, c.title AS ctitle, c.alias AS calias, cc.title AS cctitle, cc.alias AS ccalias ";
+		if (isset($filters['user_id']) && $filters['user_id'] > 0) {
+			$query .= ", v.vote, v.user_id ";
+		}
+		$query .= $this->buildQuery( $filters );
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
 	}
 }

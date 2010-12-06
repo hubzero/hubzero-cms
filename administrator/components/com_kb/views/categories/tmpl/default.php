@@ -3,6 +3,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 JToolBarHelper::title( JText::_( 'KNOWLEDGE_BASE' ), 'addedit.png' );
+JToolBarHelper::preferences($this->option, '550');
+JToolBarHelper::spacer();
 JToolBarHelper::publishList( 'publishc' );
 JToolBarHelper::unpublishList( 'unpublishc' );
 JToolBarHelper::spacer();

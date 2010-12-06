@@ -37,7 +37,7 @@ class KbController extends Hubzero_Controller
 		{
 			// Articles
 			case 'resethits':        $this->resethits();      break;
-			case 'resethelpful':     $this->resethelpful();   break;
+			case 'resetvotes':       $this->resetvotes();     break;
 			case 'newfaq':           $this->editfaq();        break;
 			case 'editfaq':          $this->editfaq();        break;
 			case 'savefaq':          $this->savefaq();        break;
@@ -276,6 +276,12 @@ class KbController extends Hubzero_Controller
 		}
 		$view->row = $row;
 		
+		$view->params = new JParameter( $view->row->params, JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->_option.DS.'config.xml' );
+		
+		// Get Tags
+		$st = new KbTags( $this->database );
+		$view->tags = $st->get_tag_string( $row->id, 0, 0, NULL, 0, 1 );
+		
 		$c = new KbCategory( $this->database );
 		
 		// Get the sections
@@ -365,6 +371,17 @@ class KbController extends Hubzero_Controller
 			$row->alias = strtolower($row->alias);
 		}
 
+		// Get parameters
+		$params = JRequest::getVar( 'params', '', 'post' );
+		if (is_array( $params )) {
+			$txt = array();
+			foreach ( $params as $k=>$v) 
+			{
+				$txt[] = "$k=$v";
+			}
+			$row->params = implode( "\n", $txt );
+		}
+
 		// Check content
 		if (!$row->check()) {
 			echo KbHtml::alert( $row->getError() );
@@ -379,7 +396,12 @@ class KbController extends Hubzero_Controller
 		}
 
 		$row->checkin();
-
+		
+		// Save the tags
+		$tags = JRequest::getVar( 'tags', '', 'post' );
+		$st = new KbTags( $this->database );
+		$st->tag_object( $this->juser->get('id'), $row->id, $tags, 0, true );
+		
 		// Set the redirect
 		$this->_redirect  = 'index.php?option='.$this->_option;
 		$this->_redirect .= ($cid) ? '&task=category&cid='.$cid : '';
@@ -718,7 +740,7 @@ class KbController extends Hubzero_Controller
 
 	//-----------
 
-	protected function resethelpful()
+	protected function resetvotes()
 	{
 		// Incoming
 		$cid = JRequest::getInt( 'cid', 0 );
@@ -744,8 +766,8 @@ class KbController extends Hubzero_Controller
 		$article->checkin();
 
 		// Delete all the entries associated with this article
-		$helpful = new KbHelpful( $this->database );
-		$helpful->deleteHelpful( $id );
+		$helpful = new KbVote( $this->database );
+		$helpful->deleteVote( $id );
 
 		// Set the redirect
 		$this->_redirect  = 'index.php?option='.$this->_option;

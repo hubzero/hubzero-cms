@@ -29,40 +29,48 @@ function kbBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (isset($query['task']))
-	{
-		if ($query['task'] == 'article')
+	if (isset($query['task'])) {
+		if ($query['task'] == 'article') {
 			unset($query['task']);
+		} else if ($query['task'] == 'vote') {
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
 	}
 
-	if (isset($query['section']))
-	{
-		if (!empty($query['section']))
+	if (isset($query['section'])) {
+		if (!empty($query['section'])) {
 			$segments[] = $query['section'];
-
+		}
 		unset($query['section']);
 	}
 
-	if (isset($query['category']))
-	{
-		if (!empty($query['category']))
+	if (isset($query['category'])) {
+		if (!empty($query['category'])) {
 			$segments[] = $query['category'];
-
+		}
 		unset($query['category']);
 	}
 
 	if (isset($query['alias'])) {
-		if (!empty($query['alias']))
+		if (!empty($query['alias'])) {
 			$segments[] = $query['alias'];
-
+		}
 		unset($query['alias']);
 	}
 
 	if (isset($query['id'])) {
-		if (!empty($query['id']))
+		if (!empty($query['id'])) {
 			$segments[] = $query['id'];
-
+		}
 		unset($query['id']);
+	}
+	
+	if (isset($query['vote'])) {
+		if (!empty($query['vote'])) {
+			$segments[] = $query['vote'];
+		}
+		unset($query['vote']);
 	}
 
 	return $segments;
@@ -118,9 +126,29 @@ function kbParseRoute($segments)
 		}
 	} else if ($count == 3) {
 		// section/category/article
-		$vars['task'] = 'article';
-		$vars['alias'] = urldecode($segments[2]);
-		$vars['alias'] = str_replace(':','-',$vars['alias']);
+		// section/article/comments.rss
+		if ($segments[2] == 'comments.rss') {
+			$vars['task'] = 'comments';
+			$vars['alias'] = urldecode($segments[1]);
+			$vars['alias'] = str_replace(':','-',$vars['alias']);
+		} else {
+			$vars['task'] = 'article';
+			$vars['alias'] = urldecode($segments[2]);
+			$vars['alias'] = str_replace(':','-',$vars['alias']);
+		}
+	} else if ($count == 4) {
+		// task/category/id/vote
+		// section/category/article/comments.rss
+		if ($segments[3] == 'comments.rss') {
+			$vars['task'] = 'comments';
+			$vars['alias'] = urldecode($segments[2]);
+			$vars['alias'] = str_replace(':','-',$vars['alias']);
+		} else {
+			$vars['task'] = $segments[0];
+			$vars['type'] = $segments[1];
+			$vars['id'] = $segments[2];
+			$vars['vote'] = $segments[3];
+		}
 	}
 
 	return $vars;
