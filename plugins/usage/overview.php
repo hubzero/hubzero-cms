@@ -79,7 +79,20 @@ class plgUsageOverview extends JPlugin
 				if ($i == 1) {
 					$cls = ' class="highlight"';
 				}
-				$html .= "\t"."\t"."\t".'<td'.$cls.'>'.trim($this->fmt_result($row->value,$row->valfmt)).'</td>'."\n";
+				if ($i == 2)
+					$res_iden = $row->value;
+				if ($i == 7)
+					$org_iden = $row->value;
+
+				if ($i == 3 || $i == 4 || $i == 5 || $i == 6) {
+					$val = ($row->value/$res_iden) * 100;
+				} else if ($i == 8 || $i == 9 || $i == 10 || $i == 11) {
+					$val = ($row->value/$org_iden) * 100;
+				} else {
+					$val = $row->value;
+				}
+
+				$html .= "\t"."\t"."\t".'<td'.$cls.'>'.trim($this->fmt_result($val,$row->valfmt)).'</td>'."\n";
 			}
 		}
 		if ($i == 1) {
