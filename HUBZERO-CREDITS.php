@@ -2,7 +2,7 @@
 /**
  * @package		HUBzero CMS
  * @author		Hub Technology Group <support@hubzero.org>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @copyright	Copyright 2005-2010 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 
