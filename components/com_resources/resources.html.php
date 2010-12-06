@@ -2495,7 +2495,8 @@ class ResourcesHtml
 		foreach ($lines as $line)
 		{
 			// Instantiate a helper object
-			$helper = new ResourcesHelper($line->id, $database);
+			$db =& JFactory::getDBO();
+			$helper = new ResourcesHelper($line->id, $db);
 			$helper->getContributors();
 			$helper->getContributorIDs();
 				
@@ -2523,6 +2524,8 @@ class ResourcesHtml
 			$view->show_edit = $show_edit;
 			$view->thedate = '';
 			$view->add_anchor = $add_anchor;
+			$view->db = $db;
+			//$view->database = $database;
 			// Set the display date
 			/*switch ($show_date) 
 			{
@@ -2563,6 +2566,7 @@ class ResourcesHtml
 			$helper = new ResourcesHelper($line->id, $database);
 			$helper->getContributors();
 			$helper->getContributorIDs();
+			$helper->getChildren();
 				
 			// Determine if they have access to edit
 			if (!$juser->get('guest')) {
