@@ -139,15 +139,18 @@ ENDHTML;
 
     //create a friendly looking path
     $strCurrentFriendlyPath = get_friendlyPath($p_strCurrentPath);
-    
+    echo $strCurrentFriendlyPath."<br>";
+
     //provide breadcrumbs for file browser
-    
-    $strLocationPath = "";
-    $strLocationArray = explode("/", $strCurrentFriendlyPath);
-    array_shift($strLocationArray);
-    $strLocationLinks = "";
+    $strLocationPath = "/nees/home";
+    $strLocationArray = self::getCurrentLocation($p_strCurrentPath);
+    $strLocationLinks = "/nees/home";
     foreach($strLocationArray as $strLocation){
       $strLocationLinks .= "/".$strLocation;
+//      $strLocationPath = $strLocationPath .<<< ENDHTML
+//       / <a href="javascript:void(0);"
+//           onClick="getMootools('/warehouse/projecteditor/filebrowser?path=$strLocationLinks&format=ajax&projid=$p_iProjectId&experimentId=$p_iExperimentId&uploadType=$p_iRequestType&parent=$p_strMainDiv&div=$p_strInnerDiv&toppath=$p_strTopPath','$p_strMainDiv');">$strLocation</a>
+//ENDHTML;
       $strLocationPath = $strLocationPath .<<< ENDHTML
        / <a href="/warehouse/projecteditor/project/$p_iProjectId/experiment/$p_iExperimentId/data?path=$strLocationLinks&uploadType=$p_iRequestType&parent=$p_strMainDiv&div=$p_strInnerDiv&toppath=$p_strTopPath">
             $strLocation
@@ -156,6 +159,21 @@ ENDHTML;
     }
 
     $strDeleteHeader = ($p_bEdit) ? "Delete" : "";
+
+    /*
+    $strGoBackLink = "";
+    if($p_strCurrentPath != $p_strTopPath){
+      $strCurrentPathArray = explode("/", $p_strCurrentPath);
+      array_pop($strCurrentPathArray);
+
+      $strGoBackPath = implode("/", $strCurrentPathArray);
+      
+      $strGoBackLink = <<< ENDHTML
+        <a href="javascript:void(0);"
+           onClick="getMootools('/warehouse/projecteditor/filebrowser?path=$strGoBackPath&format=ajax&projid=$p_iProjectId&experimentId=$p_iExperimentId&uploadType=$p_iRequestType&parent=$p_strMainDiv&div=$p_strInnerDiv&toppath=$p_strTopPath','$p_strMainDiv');">... go back</a>
+ENDHTML;
+    }
+    */
 
     $strReturn .= <<< ENDHTML
       <div style="border: 0px solid rgb(102, 102, 102); overflow: auto; width: 100%; padding: 0px; margin: 0px;">
@@ -266,6 +284,10 @@ ENDHTML;
 
                 //$strDirectory = "<img src='/components/com_warehouse/images/icons/folder.gif' border='0'/>";
 
+                $iDirectoryStatsArray = self::getDirectorySummary($strCurrentFriendlyPath, $strFileName);
+                $strDirectoryCount = $iDirectoryStatsArray[0];
+                $strFileCount = $iDirectoryStatsArray[1];
+
                 $strThisLink = <<< ENDHTML
                 <a title="$strTooltip"
                    href="/warehouse/projecteditor/project/$p_iProjectId/experiment/$p_iExperimentId/data?path=$strFileFriendlyPath&uploadType=$p_iRequestType&parent=$p_strMainDiv&div=$p_strInnerDiv&toppath=$p_strTopPath">
@@ -277,38 +299,22 @@ ENDHTML;
               
               //exclude generated pics from the listing
               if($strFileName != Files::GENERATED_PICS){
-                if(preg_match("/Trial-([0-9])+/", $strFileName) ||
-                   preg_match("/Rep-([0-9])+/", $strFileName) || 
-                   //preg_match("/Analysis/", $strFileName) ||
-                   //preg_match("/Documentation/", $strFileName) ||
-                  StringHelper::contains($strCurrentFriendlyPath, "Rep-([0-9])+")){
-                  $iDirectoryStatsArray = self::getDirectorySummary($strCurrentFriendlyPath, $strFileName);
-                  $strDirectoryCount = $iDirectoryStatsArray[0];
-                  $strFileCount = $iDirectoryStatsArray[1];
+                $strBgColor = ($iIndex%2==0) ? "even" : "odd";
 
-                  $strBgColor = ($iIndex%2==0) ? "even" : "odd";
-
-                  $strEditLink = "";
-                  if(!preg_match("/Experiment-([0-9])+/", $strFileName) &&
-                     !preg_match("/Trial-([0-9])+/", $strFileName) &&
-                     !preg_match("/Rep-([0-9])+/", $strFileName)){
-                    $strEditLink = <<< ENDHTML
-                      [<a class="modal" href="/warehouse/projecteditor/editdatafile?path=$strCurrentFriendlyPath&format=ajax&dataFileId=$iDataFileId&projectId=$p_iProjectId&experimentId=$p_iExperimentId">Edit</a>]&nbsp;&nbsp;<!--[Delete]-->
+                $strReturn .= <<< ENDHTML
+                  <tr class="$strBgColor">
+                    <td><input id="$p_iExperimentId" type="checkbox" name="dataFile[]" value="$iDataFileId"/></td>
+                    <td>$strDirectory</td>
+                    <td>$strThisLink</td>
+                    <td>$strDirectoryCount</td>
+                    <td>$strFileCount</td>
+                    <td>
+                      <!--<a href="javascript:void(0);" title="Remove $strFileName" style="border-bottom: 0px" onClick=""><img src="/components/com_projecteditor/images/icons/removeButton.png" border="0"/></a>-->
+                      [<a class="modal" href="/warehouse/projecteditor/editdatafile?path=$strCurrentFriendlyPath&format=ajax&dataFileId=$iDataFileId">Edit</a>]&nbsp;&nbsp;[Delete]
+                    </td>
+                  </tr>
 ENDHTML;
-                  }
-
-                  $strReturn .= <<< ENDHTML
-                    <tr class="$strBgColor">
-                      <td><input id="$p_iExperimentId" type="checkbox" name="dataFile[]" value="$iDataFileId"/></td>
-                      <td>$strDirectory</td>
-                      <td>$strThisLink</td>
-                      <td>$strDirectoryCount</td>
-                      <td>$strFileCount</td>
-                      <td>$strEditLink</td>
-                    </tr>
-ENDHTML;
-                }//name or path has Trial-
-              }//end .Generated_Pics
+              }
             }//end foreach
           }else{
             $strReturn .= <<< ENDHTML
@@ -322,57 +328,44 @@ ENDHTML;
 
     // Don't show buttons for the Generated_Pics directory
     $strPattern = "/".Files::GENERATED_PICS."/";
-    if(StringHelper::contains($strCurrentFriendlyPath, "Rep-([0-9])+") ||
-       StringHelper::contains($strCurrentFriendlyPath, "Documentation") ||
-       StringHelper::contains($strCurrentFriendlyPath, "Analysis")){
-      if(!preg_match($strPattern, $p_strCurrentPath)){
-        $strReturn .= <<< ENDHTML
+    if(!preg_match($strPattern, $p_strCurrentPath)){
+      $strReturn .= <<< ENDHTML
               <tr>
                 <td colspan="6">
                   <div id="$p_strInnerDiv-upload" class="editorInputFloat editorInputMargin">
-                    <a title="Upload a new file." class="modal" href="/warehouse/projecteditor/uploadform?format=ajax&div=$p_strInnerDiv&uploadType=$p_iRequestType&path=$p_strCurrentPath&projid=$p_iProjectId&experimentId=$p_iExperimentId" style="border:0px">
-                      <img src="/components/com_projecteditor/images/buttons/UploadFile.png" border="0" alt="Upload a new file."/>
+                    <a class="modal" href="/warehouse/projecteditor/uploadform?format=ajax&div=$p_strInnerDiv&uploadType=$p_iRequestType&path=$p_strCurrentPath&projid=$p_iProjectId&experimentId=$p_iExperimentId" style="border:0px">
+                      <img src="/components/com_projecteditor/images/buttons/UploadFile.png" border="0"/>
                     </a>
                   </div>
                   <div id="$p_strInnerDiv-mkdir" class="editorInputFloat editorInputMargin">
-                    <a title="Create a new directory." class="modal" href="/warehouse/projecteditor/mkdir?format=ajax&path=$p_strCurrentPath&projid=$p_iProjectId&experimentId=$p_iExperimentId" style="border:0px">
-                      <img src="/components/com_projecteditor/images/buttons/CreateDirectory.png" border="0" alt="Create a new directory."/>
+                    <a class="modal" href="/warehouse/projecteditor/mkdir?format=ajax&path=$p_strCurrentPath&projid=$p_iProjectId&experimentId=$p_iExperimentId" style="border:0px">
+                      <img src="/components/com_projecteditor/images/buttons/CreateDirectory.png" border="0"/>
                     </a>
                   </div>
                   <div id="$p_strInnerDiv-film" class="editorInputFloat editorInputMargin">
-                    <a title="Select png, jpg, or gif images for the experiment filmstrip." href="javascript:void(0);" onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savefilmstrip';document.getElementById('frmProject').submit();" style="border:0px">
-                      <img src="/components/com_projecteditor/images/buttons/FilmstripPhoto.png" border="0" alt="Upload png, jpg, gif to experiment filmstip."/>
-                    </a>
-                  </div>
-                  <!--
-                  <div id="$p_strInnerDiv-more" class="editorInputFloat editorInputMargin">
-                    <a title="Select png, jpg, or gif images for the More tab." href="javascript:void(0);" onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savemorephotos';document.getElementById('frmProject').submit();" style="border:0px">
-                      <img src="/components/com_projecteditor/images/buttons/MoreTabPhoto.png" border="0" alt="Upload png, jpg, gif to More tab."/>
+                    <a href="javascript:void(0);" onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savefilmstrip';document.getElementById('frmProject').submit();" style="border:0px">
+                      <img src="/components/com_projecteditor/images/buttons/FilmstripPhoto.png" border="0"/>
                     </a>
                   </div>
                   <div id="$p_strInnerDiv-curate" class="editorInputFloat editorInputMargin">
-                    <a title="Request a directory or file to be curated." href="javascript:void(0);" onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savedatafilecuraterequest';document.getElementById('frmProject').submit();" style="border:0px">
-                      <img src="/components/com_projecteditor/images/buttons/CurateRequest.png" border="0" alt="Request a directory or file to be curated."/>
+                    <a href="javascript:void(0);" onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savedatafilecuraterequest';document.getElementById('frmProject').submit();" style="border:0px">
+                      <img src="/components/com_projecteditor/images/buttons/CurateRequest.png" border="0"/>
                     </a>
                   </div>
-                  -->
                   <div class="clear"></div>
                 </td>
               </tr>
 ENDHTML;
-      }
     }
 
     $strReturn .= <<< ENDHTML
                 </table>
-                    <!--
                     <div id="legend" class="topSpace10">
                       <span style="font-weight:bold;">Legend:</span>  &nbsp;&nbsp;
                       <span class="curateSubmitted">*</span> Curation Requested &nbsp;&nbsp;
                       <span class="curateComplete">*</span> Curated &nbsp;&nbsp;
                       <span class="curateIncomplete">*</span> Incomplete
                     </div>
-                    -->
                    </div>
                   </fieldset>
                 </fieldset>

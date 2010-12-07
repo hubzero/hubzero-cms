@@ -19,16 +19,20 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 require_once 'api/org/nees/static/Files.php';
 
-$iProjectId = $_REQUEST[Files::PROJECT_ID];
-$iExperimentId = $_REQUEST[Files::EXPERIMENT_ID];
-$strDiv = $_REQUEST[Files::CHILD_DIV];
-$strMainDiv = $_REQUEST[Files::PARENT_DIV];
-$strCurrentPath = $_REQUEST[Files::CURRENT_DIRECTORY];
-$strTopPath = $_REQUEST[Files::TOP_DIRECTORY];
 $iRequestType = $_REQUEST[Files::REQUEST_TYPE];
-$oCurrentDataFileArray = DataFilePeer::findByDirectory($strCurrentPath);
-DataFilePeer::sortDataFiles($oCurrentDataFileArray);
-
-$strUploadForm = modWarehouseUploadHelper::getFileBrowser($strMainDiv, $strDiv, $strCurrentPath, $strTopPath, $oCurrentDataFileArray, $iRequestType, true, $iProjectId, $iExperimentId);
+$strUploadForm = "";
+switch($iRequestType){
+  case Files::DRAWING:
+    $strUsageType = $_REQUEST[Files::SEARCH_CONDITION];
+    $oUsageEntityTypeArray = modWarehouseUploadHelper::getUsageTypes($strUsageType);
+    $strUploadForm = modWarehouseUploadHelper::uploadDrawing($oUsageEntityTypeArray);
+    break;
+  case Files::DATA:
+    //$strUploadForm = modWarehouseFilmStripHelper::getExperiment28();
+    break;
+  case Files::IMAGE:
+    //$strUploadForm = modWarehouseFilmStripHelper::getExperiment28();
+    break;
+}
 
 require(JModuleHelper::getLayoutPath('mod_warehouseupload'));
