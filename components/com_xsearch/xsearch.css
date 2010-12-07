@@ -14,24 +14,23 @@
 	-- -- -- -- -- -- --
 
 */
+/* Sections */
 	.section {
-		padding: 0 0px;
-		border-bottom: 1px solid #EFEFEF;
+		padding: 0 15px;
+		}
+	.section .section {
+		padding: 0;
 		}
 	.main {
-		border-bottom: none;
+		border-top: 1px solid #efefef;
 		}
 	.below {
 		margin: 2em 0 0 0;
 		padding-top: 1em;
 		}
-	.aside {
-		float: right;
-		width: 214px;
-		padding-top: 1em;
-		}
+/* Subjects (with right aside) */
 	.subject {
-		margin: 1em 0;
+		margin: 0;
 		margin-right: 235px;
 		padding: 1.4em;
 		background: #F7F7F7;
@@ -42,6 +41,28 @@
 		border: none;
 		background: transparent;
 		padding: 1em 0 0 0;
+		}
+/* Asides (right side) */
+	.aside {
+		float: right;
+		width: 214px;
+		padding-top: 1em;
+		}
+	.aside h4,
+	.aside p {
+		color: #999;
+		}
+	.aside h4 {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		}
+	/* Fieldsets */
+	.aside fieldset {
+		margin: 1em 0 2em 0;
+		padding: 1em;
+		background: #F5F7F2;
+		border-top: 1px solid #DEE4CD;
+		border-bottom: 1px solid #DEE4CD;
 		}
 	.aside fieldset {
 		margin: 1em 0 1em 0;
@@ -62,26 +83,39 @@
 	.aside fieldset label textarea {
 		width: 100%;
 		}
+	.aside fieldset label input.option {
+		width: auto;
+		}
 	.aside fieldset legend {
 		font-weight: bold;
 		padding: 0 0 1em 0;
 		}
+	.aside fieldset fieldset {
+		margin: 1em 0 1em 0;
+		padding: 0em 1em 0.5em 1em;
+		border: 1px solid #DEE4CD;
+		}
+	/* Lists */
 	.aside .sub-nav {
-		margin: 1em 0 2em 0;
+		margin: 1em 0 1em 0;
 		padding: 1em;
 		background: #F4F4F4;
 		border-top: 1px solid #D8D8D8;
 		border-bottom: 1px solid #D8D8D8;
+		list-style: none;
 		}
 	.aside .sub-nav li {
 		margin: 0.3em 0;
-		background-image: none;
-		}
-	.aside .sub-nav li.active a {
-		font-weight: bold;
+		list-style: none;
 		}
 	.aside .sub-nav ul {
-		margin: 0;
+		margin: 0 0 0 1.5em;
+		}
+	.aside .sub-nav .active {
+		font-weight: bold;
+		}
+	.aside .sub-nav .active ul {
+		font-weight: normal;
 		}
 /* Category headers */
 	.category-header {
@@ -153,6 +187,21 @@
 		color: #999; 
 		font-size: 90%;
 		margin: 0 0 0.5em 0;
+		padding: 0;
+		}
+	.highlight {
+		margin: 0;
+		padding: 0 0.2em;
+		border: 1px solid #efd90a;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-khtml-border-radius: 5px;	
+		border-radius: 5px;
+		background: #efd90a;
+		color: #000;
+		}
+	.highlight .highlight {
+		border: none;
 		padding: 0;
 		}
 /* Misc. */
