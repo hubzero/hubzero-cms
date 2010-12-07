@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+    <name>Warehouse Files</name>
+    <author>Gemez Marshall</author>
+    <version>1.0.0</version>
+    <creationDate>10/22/2010</creationDate>
+    <description>Display files in the data model.</description>
+	<files>
+		<filename>mod_warehousefiles.xml</filename>
+		<filename module="mod_warehousefiles">mod_warehousefiles.php</filename>
+		<filename>index.html</filename>
+        	<filename>helper.php</filename>
+        	<filename>tmpl/default.php</filename>
+        	<filename>tmpl/index.html</filename>
+	</files>
+	<params>
+    </params>
+</install>
