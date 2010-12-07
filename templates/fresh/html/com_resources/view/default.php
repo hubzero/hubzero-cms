@@ -321,5 +321,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	}
 	$html .= '<div class="clear"></div>'."\n";
 	
+
+	
 	echo $html;
 ?>

@@ -159,19 +159,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$realdocs = 0;
 		$fctype = is_object($helper->firstChild) ? ResourcesHtml::getFileExtension($helper->firstChild->path) : '';
 	
-		/*	// View more link?
-			if ($ccount > 0) {
+			// View more link?
+			//if ($ccount > 0) {
 				//standalone children
-				$html .= t.t.'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.a.'#series').'">'.JText::_('Additional Series Links').' ('.$ccount.')</a></span></p>'."\n";
-			}*/
+			//	$html .= t.t.'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.a.'#series').'">'.JText::_('Additional Series Links').' ('.$ccount.')</a></span></p>'."\n";
+			//}
 			
 		// Single out featured children resources
+		
 		if ($children != NULL) {
 			$supln  = '<ul class="supdocln">'."\n";
 			$supli  = array();
 			
 			foreach ($children as $child) 
 			{
+			
 				if ($child->access == 0 || ($child->access == 1 && !$juser->get('guest')) || ($resource->type == 4 && $child->access == 1)) {
 					if (($resource->type == 4 && $child->access == 1) or $resource->type != 4) {
 						$totaldocs++;
@@ -226,6 +228,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						}
 					}
 				}
+				
 			}
 			
 			$supdocs = count( $supli ) > 2 ? 2 : count( $supli );
@@ -273,57 +276,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 		
 	if ($ccount >= 0) {
 		// Initiate paging for children
-		//jimport('joomla.html.pagination');
-		//$pageNav = new JPagination( $ccount, $filters['start'], $filters['limit'] );
+		jimport('joomla.html.pagination');
+		$pageNav = new JPagination( $ccount, $filters['start'], $filters['limit'] );
 
 		// Get children
 		$children = $helper->getStandaloneChildren( $filters );
 
 		// Build the results
-		/*
-		$sortbys = array();
-		$sortbys['date'] = JText::_('DATE');
-		$sortbys['title'] = JText::_('TITLE');
-		$sortbys['author'] = JText::_('AUTHOR');
-		if ($config->get('show_ranking')) {
-			$sortbys['ranking'] = JText::_('RANKING');
-		}
-		$sortbys['ordering'] = JText::_('ORDERING');
-		*/
 		if ($resource->alias) {
 			$url = 'index.php?option='.$option.'&alias='.$resource->alias;
 		} else {
 			$url = 'index.php?option='.$option.'&id='.$resource->id;
 		}
-		/*
-		$paging = $pageNav->getListFooter();
-		$paging = str_replace('resources/?','resources/'.$resource->id.'?',$paging);
-		$paging = str_replace('resources?','resources/'.$resource->id.'?',$paging);
-		$paging = str_replace('?/resources/'.$resource->id,'?',$paging);
-		$paging = str_replace('?','?sortby='.$filters['sortby'].'&',$paging);
-		$paging = str_replace('&&','&',$paging);
-		$paging = str_replace('&amp;&amp;','&amp;',$paging);
-		*/
-		//$html .= '<div class ="series_aside">';
-		//$html .= t.'<a name="series"></a>'."\n";
-		//$html .= '<h3>'. JText::_('In This Series') .'</h3>'."\n";
 		$html .= '<form method="get" action="'.JRoute::_($url).'">'."\n";
 		$html .= t.'<div class="aside">'."\n";
-		//$html .= t.t.'<fieldset class="controls">'."\n";
-		//$html .= t.t.t.'<label>'."\n";
-		//$html .= t.t.t.t.JText::_('COM_RESOURCES_SORT_BY').':'."\n";
-		//$html .= t.t.t.t.ResourcesHtml::formSelect('sortby', $sortbys, $filters['sortby'], '')."\n";
-		//$html .= t.t.t.'</label>'."\n";
-		//$html .= t.t.t.'<input type="submit" value="'.JText::_('COM_RESOURCES_GO').'" />'."\n";
-		//$html .= t.t.'</fieldset>'."\n";
-		//$html .= t.'</div><!-- / .aside -->'."\n";
-		//$html .= t.'<div class="subject">'."\n";
-		//$html .= ResourcesHtml::writeSeriesResults( $database, $children, $authorized );
-		//$html .= t.'<div class="clear"></div><!-- / .clear -->'."\n";
-		//$html .= $paging;
-		//$html .= t.'</div><!-- / .subject -->'."\n";
-		//$html .= t.'<div class="clear"></div><!-- / .clear -->'."\n";
-		//$html .= '</form>'."\n";
 		$html .= '</div>';
 	}
 		
@@ -341,7 +307,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				}
 			}
 		}
-				
+			
 		// Show what's popular
 		if ($tab == 'about') {
 			ximport('xmodule');
@@ -383,7 +349,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$paging = str_replace('?','?sortby='.$filters['sortby'].'&',$paging);
 					$paging = str_replace('&&','&',$paging);
 					$paging = str_replace('&amp;&amp;','&amp;',$paging);
-	
+					
 					$html .= t.'<a name="series"></a>'."\n";
 					$html .= '<h3>'. JText::_('Series Item Details') .'</h3>'."\n";
 					$html .= '<form method="get" action="'.JRoute::_($url).'">'."\n";
@@ -408,6 +374,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= '</div><!-- / .main section -->'."\n";
 		
 	}
+	
 	$html .= '<div class="clear"></div>'."\n";
 	
 	echo $html;

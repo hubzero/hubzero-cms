@@ -30,7 +30,6 @@ if ($this->line->alias) {
 } else {
 	$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->line->id);
 }
-
 $html  = "\t".'<li>'."\n";
 $html .= "\t\t".'<a name="resdata_'.$this->line->id.'"></a>'."\n";
 $html .= "\t\t".'<p class="';
@@ -107,6 +106,13 @@ if ($this->params->get('show_ranking')) {
 }
 
 $info = array();
+
+//$helper = new ResourcesHelper($this->line->id, $db);
+$this->helper->getChildren();
+$this->helper->getFirstChild();
+$firstchild = $this->helper->firstChild;
+
+
 if ($this->thedate) {
 	$info[] = $this->thedate;
 }
@@ -118,6 +124,7 @@ if ($this->helper->contributors && $this->params->get('show_authors')) {
 }
 
 $html .= "\t\t".'<p class="details">'.implode(' <span>|<br/></span> ',$info).'</p>'."\n";
+
 if (!$this->add_anchor){
 	if ($this->line->introtext) {
 		$html .= "\t\t".Hubzero_View_Helper_Html::shortenText( stripslashes($this->line->introtext) )."\n";
@@ -126,11 +133,12 @@ if (!$this->add_anchor){
 	}
 }
 else {
-	$this->helper->GetFirstChild();
+	
 	$html .='		<a class="get-hidden-resource-description" href="#resdata_'.$this->line->id.'" rel="hidden-info">View Description &rsaquo;</a>'."\n";
 	$html .= '		</p>';
 }
-$html .=		 ResourcesHtml::primary_child( $this->option, $this->line, $this->helper->firstChild);
+if ($firstchild != null)
+$html .=		 ResourcesHtml::primary_child( $this->option, $this->line, $firstchild);
 
 echo $html;
 ?>
