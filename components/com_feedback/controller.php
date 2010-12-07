@@ -754,7 +754,14 @@ class FeedbackController extends Hubzero_Controller
 		$message .= (JRequest::getVar('sessioncookie','','cookie')) ? JText::_('COM_FEEDBACK_COOKIES_ENABLED')."\r\n" : JText::_('COM_FEEDBACK_COOKIES_DISABLED')."\r\n";
 		$message .= JText::_('COM_FEEDBACK_REFERRER').': '. $problem['referer'] ."\r\n";
 		$message .= ($problem['tool']) ? JText::_('COM_FEEDBACK_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
-		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($problem['long'])) ."\r\n";
+		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($problem['long'])) ."\r\n\r\n";
+
+		$juri =& JURI::getInstance();
+		$sef = JRoute::_('index.php?option=com_support&task=ticket&id='. $row->id);
+		if (substr($sef,0,1) == '/') {
+			$sef = substr($sef,1,strlen($sef));
+		}
+		$message .= $juri->base().$sef."\r\n";
 
 		// Send e-mail
 		ximport('Hubzero_Toolbox');
