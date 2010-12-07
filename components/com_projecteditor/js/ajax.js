@@ -87,6 +87,82 @@ function suggest(p_sRequestUrl, p_sResonseDivId, p_sInputValue, p_sInputFieldId)
 }
 
 /**
+ * Perform an ajax request.
+ * @param p_sRequestUrl  - URL to process
+ * @param p_sResonseDivId - The div to place the results
+ * @param p_sValue
+ * @return
+ */
+function suggestTrial(p_sRequestUrl, p_sResonseDivId, p_sInputValue, p_iExperimentId, p_sInputFieldId){
+  if(p_sInputValue.length==0){
+	return;
+  }
+
+  xmlHttp = getAjaxRequest();
+  if (xmlHttp==null){
+    alert ("Your browser does not support AJAX!");
+    return;
+  }
+
+  xmlHttp.onreadystatechange = function(){
+    if (xmlHttp.readyState==4 && xmlHttp.status==200){
+      var ss = document.getElementById(p_sResonseDivId);
+      ss.innerHTML = '';
+      var str = xmlHttp.responseText.split("\n");
+      for(i=0; i < str.length - 1; i++) {
+        if(str[i].length > 0){
+          //Build our element string.  This is cleaner using the DOM, but			//IE doesn't support dynamically added attributes.
+          var suggest = '<div onmouseover="javascript:suggestOverTrial(this, '+p_iExperimentId+');" ';
+          suggest += 'onmouseout="javascript:suggestOut(this);" ';
+          suggest += "onclick=\"javascript:setSuggestedValue('"+p_sResonseDivId+"','"+p_sInputFieldId+"',this.innerHTML);\" ";
+          //suggest += "onClick=\"javascript:alert(this.innerHTML);\" ";
+          suggest += 'class="suggest_link">' + str[i] + '</div>';
+          ss.innerHTML += suggest;
+        }
+      }
+      //alert(ss.innerHTML);
+    }
+  }
+
+  var strQuery = p_sRequestUrl+"&term="+p_sInputValue+"&experimentId="+p_iExperimentId;
+  xmlHttp.open("GET", strQuery, true);
+  xmlHttp.send();
+}
+
+/**
+ * Perform an ajax request.
+ * @param p_sRequestUrl  - URL to process
+ * @param p_sResonseDivId - The div to place the results
+ * @param p_sValue
+ * @return
+ */
+function suggestRepetition(p_sRequestUrl, p_iRepId){
+  if(p_iRepId.length==0){
+    return;
+  }
+
+  xmlHttp = getAjaxRequest();
+  if (xmlHttp==null){
+    alert ("Your browser does not support AJAX!");
+    return;
+  }
+
+  xmlHttp.onreadystatechange = function(){
+    if (xmlHttp.readyState==4 && xmlHttp.status==200){
+      var strArray = xmlHttp.responseText.split("[repinfo]");
+      document.getElementById('strStartDate').value = strArray[0];
+      document.getElementById('strEndDate').value = strArray[1];
+      document.getElementById('repId').value = strArray[2];
+      //alert(ss.innerHTML);
+    }
+  }
+
+  var strQuery = p_sRequestUrl+"&id="+p_iRepId;
+  xmlHttp.open("GET", strQuery, true);
+  xmlHttp.send();
+}
+
+/**
  * Perform an ajax request.  
  * @param p_sRequestUrl  - URL to process
  * @param p_sResonseDivId - The div to place the results
@@ -183,7 +259,6 @@ function setSuggestedValue(p_sResonseDivId, p_sInputFieldId, p_sValue) {
   //var strShowMe = p_sResonseDivId+", input="+p_sInputFieldId+", value="+p_sValue;
   //alert(strShowMe);
   p_sValue = p_sValue.replace('&amp;','&');
-  //alert(p_sValue);
   document.getElementById(p_sInputFieldId).value = p_sValue;
   document.getElementById(p_sResonseDivId).innerHTML = '';
 }
@@ -200,7 +275,6 @@ function setSuggestedFacilityValue(p_sResonseDivId, p_sInputFieldId, p_sValue, p
   if(oEquipmentIdList != null){
     strSelectedEquipment = oEquipmentIdList.value;  
   }
-
 
   //find the equipment list for the site
   getMootools(p_strEquipmentUrl+"&term="+p_sValue+"&equipmentId="+strSelectedEquipment, p_strEquipmentTargetId);
@@ -229,6 +303,43 @@ function setSuggestedLocationPlanValue(p_sResonseDivId, p_sInputFieldId, p_sValu
   //get the sensors for the plan
 }
 
+//Mouse over function
+function suggestOverTrial(div_value, p_iExperimentId) {
+  div_value.className = 'suggest_link_over';
+
+  strDivValue = div_value.innerHTML;
+
+  if(strDivValue.length==0){
+    return;
+  }
+
+  if(p_iExperimentId == null){
+    return;
+  }
+
+  xmlHttp = getAjaxRequest();
+  if (xmlHttp==null){
+    alert ("Your browser does not support AJAX!");
+    return;
+  }
+
+  xmlHttp.onreadystatechange = function(){
+    if (xmlHttp.readyState==4 && xmlHttp.status==200){
+      var strTrialArray = xmlHttp.responseText.split("[trialinfo]");
+      document.getElementById('strStartDate').value = strTrialArray[0];
+      document.getElementById('strEndDate').value = strTrialArray[1];
+      document.getElementById('objective').value = strTrialArray[2];
+      document.getElementById('description').value = strTrialArray[3];
+      document.getElementById('trialId').value = strTrialArray[4];
+      //document.getElementById('title').value = strTrialArray[5];
+    }
+  }
+
+  var strQuery = "/projecteditor/gettrialinfo?format=ajax&term="+strDivValue+"&experimentId="+p_iExperimentId;
+  xmlHttp.open("GET", strQuery, true);
+  xmlHttp.send();
+}
+
 /**
  * Process an ajax request via mootools.
  * @param p_sUrl
@@ -236,7 +347,7 @@ function setSuggestedLocationPlanValue(p_sResonseDivId, p_sInputFieldId, p_sValu
  * @return
  */
 function getMootools(p_sUrl, p_sTargetId){
-	$(p_sTargetId).empty().addClass('ajax-loading');
+  $(p_sTargetId).empty().addClass('ajax-loading');
     var a = new Ajax( p_sUrl, {
             method: 'get',
             onComplete: function( response ) {

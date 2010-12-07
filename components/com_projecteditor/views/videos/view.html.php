@@ -63,10 +63,11 @@ class ProjectEditorViewVideos extends JView{
     $strSubTab = JRequest::getVar('subtab', 'data');
 
     $strSubTabArray = $oModel->getExperimentsSubTabArray();
-    $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTab );
+    $strSubTabViewArray = $oModel->getExperimentsSubTabViewArray();
+    $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTabViewArray, $strSubTab );
     $this->assignRef( "strSubTabs", $strSubTabHtml );
 
-    $strPath = $oExperiment->getPathname() ."/Videos";
+    $strPath = $oExperiment->getPathname() ."/Documentation/Videos";
     $this->assignRef( 'strPath', $strPath );
     //echo "$strPath<br>";
 

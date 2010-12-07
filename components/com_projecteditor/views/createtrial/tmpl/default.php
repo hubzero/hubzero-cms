@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
@@ -21,12 +21,12 @@ header("Expires: 0"); // Date in the past
   $document->addScript($this->baseurl."/plugins/tageditor/observer.js", 'text/javascript');
   $document->addScript($this->baseurl."/plugins/tageditor/autocompleter.js", 'text/javascript');
 
-  $document->addScript($this->baseurl."/media/system/js/calendar-setup.js", 'text/javascript');
-
-  $document->addScript($this->baseurl."/includes/js/calendar/calendar_mini.js", 'text/javascript');
-   $document->addScript($this->baseurl."/includes/js/calendar/lang/calendar-en-GB.js", 'text/javascript');
-  $document->addScript($this->baseurl."/includes/js/calendar/calendar.js", 'text/javascript');
-
+  $document->addScript($this->baseurl."/media/system/js/calendar-setup.js", 'text/javascript');  
+  
+  $document->addScript($this->baseurl."/includes/js/calendar/calendar_mini.js", 'text/javascript'); 
+   $document->addScript($this->baseurl."/includes/js/calendar/lang/calendar-en-GB.js", 'text/javascript'); 
+  $document->addScript($this->baseurl."/includes/js/calendar/calendar.js", 'text/javascript'); 
+      
   $document->addScript($this->baseurl."/includes/js/joomla.javascript.js", 'text/javascript');
 //  echo $this->baseurl;
   ?>
@@ -37,6 +37,7 @@ header("Expires: 0"); // Date in the past
 <input type="hidden" name="path" value="<?php echo $this->strPath; ?>" id="path"/>
 <input type="hidden" name="referer" value="<?php echo $this->strReferer; ?>" id="referer"/>
 <input type="hidden" name="experimentId" value="<?php echo $this->iExperimentId; ?>" id="experiment"/>
+<input type="hidden" name="trialId" value="0" id="trialId"/>
 
 
 <div><h2>Create Trial</h2></div>
@@ -45,11 +46,17 @@ header("Expires: 0"); // Date in the past
 <table style="border:0px;">
   <tr>
     <td width="1" nowrap>
-      <label for="title" class="editorLabel">Title: <span class="requiredfieldmarker">*</span></label>
+      <p class="editorParagraph">
+         <label for="txtTitle" class="editorLabel">Title:<span class="requiredfieldmarker">*</span></label>
+         <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Title :: For an existing trial, type its title and mouse over the suggestion."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+      </p>
     </td>
-    <td><input id="title" type="text" name="title" class="editorInputSize"/></td>
+    <td>
+      <input id="txtTitle" type="text" name="title" class="editorInputSize"autocomplete="off" value="" onkeyup="suggestTrial('/projecteditor/trialsearch?format=ajax', 'trialSearch', this.value, <?php echo $this->iExperimentId; ?>, this.id)"/>
+      <div id="trialSearch" class="suggestResults"></div>
+    </td>
   </tr>
-
+  
     <tr id="start_date">
   	<td nowrap="">
     	<p class="editorParagraph">
@@ -67,7 +74,7 @@ header("Expires: 0"); // Date in the past
         <div class="clear"></div>
     </td>
   </tr>
-
+ 
   <tr id="end_date">
    <td nowrap="">
      <p class="editorParagraph">
@@ -86,8 +93,8 @@ header("Expires: 0"); // Date in the past
       <div class="clear"></div>
     </td>
   </tr>
-
-
+ 
+ 
 
   <tr>
     <td width="1" nowrap>
@@ -103,7 +110,7 @@ header("Expires: 0"); // Date in the past
   </tr>
   <tr>
     <td colspan="2">
-      <input type="submit" value="Create Trial"/>
+      <input type="submit" value="Save Trial"/>
     </td>
   </tr>
 </table>

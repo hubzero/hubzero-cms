@@ -27,6 +27,7 @@ header("Expires: 0"); // Date in the past
 ?>
 
 <?php JHTML::_('behavior.calendar'); ?>
+<?php JHTML::_('behavior.modal'); ?>
 
 <?php
   $oUser = $this->oUser;
@@ -75,7 +76,7 @@ header("Expires: 0"); // Date in the past
           }else{
           ?>
             <p style="font-size:11px;color:#999999;" align="center">
-              <img src="<?php echo $this->strProjectImage; ?>"/><br>
+              <img src="<?php echo $this->strExperimentImage; ?>"/><br>
             </p>
           <?php
           }
@@ -331,7 +332,7 @@ header("Expires: 0"); // Date in the past
               </td>
               <td>
                 <input type="hidden" id="usage" name="usageType" value="<?php echo $this->iUsageTypeId; ?>" />
-                <input type="file" id="txtPhoto" name="upload[]" class="editorInputSize"/>
+                <input type="file" id="txtPhoto" name="upload[]"/> &nbsp; <?php echo $this->strExperimentImage; ?>
               </td>
             </tr>
             <tr id="caption">
@@ -345,7 +346,7 @@ header("Expires: 0"); // Date in the past
                 </p>
               </td>
               <td>
-                <input type="text" id="txtCaption" name="desc" value="<?php echo $this->strProjectImageCaption; ?>" class="editorInputSize" style="color:#999999;" onFocus="this.style.color='#000000'; this.value='';"/>
+                <input type="text" id="txtCaption" name="desc" value="<?php echo $this->strExperimentImageCaption; ?>" class="editorInputSize" style="color:#999999;" onFocus="this.style.color='#000000'; this.value='';"/>
               </td>
             </tr>
             <tr id="preview">

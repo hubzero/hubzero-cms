@@ -14,7 +14,7 @@ require_once 'lib/data/Organization.php';
 require_once 'lib/data/Specimen.php';
 
 class ProjectEditorViewExperiment extends JView{
-	
+
   function display($tpl = null){
     /* @var $oExperimentModel ProjectEditorModelExperiment */
     $oExperimentModel =& $this->getModel();
@@ -26,7 +26,7 @@ class ProjectEditorViewExperiment extends JView{
     if(!isset($_REQUEST['facility'])){
       $oExperimentModel->clearSession();
     }
-    
+
     $iProjectId = JRequest::getInt('projid', 0);
     $this->assignRef( "iProjectId", $iProjectId );
 
@@ -36,7 +36,7 @@ class ProjectEditorViewExperiment extends JView{
     /* @var $oProject Project */
     $oProject = $oExperimentModel->getProjectById($iProjectId);
     $this->assignRef( "strProjectTitle", $oProject->getTitle() );
-    
+
     //get the tabs to display on the page
     $strTabArray = $oExperimentModel->getTabArray();
     $strTabViewArray = $oExperimentModel->getTabViewArray();
@@ -57,9 +57,9 @@ class ProjectEditorViewExperiment extends JView{
     $strSubTab = JRequest::getVar('subtab', 'about');
 
     $strSubTabArray = $oExperimentModel->getExperimentsSubTabArray();
-    $strSubTabHtml = $oExperimentModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTab );
+    $strSubTabViewArray = $oExperimentModel->getExperimentsSubTabViewArray();
+    $strSubTabHtml = $oExperimentModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTabViewArray, $strSubTab );
     if(!$iExperimentId){
-      //$strSubTabHtml = $oExperimentModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment#", $iExperimentId, $strSubTabArray, $strSubTab );
       $strSubTabHtml = $oExperimentModel->getOnClickSubTabs( ProjectEditor::CREATE_EXPERIMENT_SUBTAB_ALERT, $strSubTabArray, $strSubTab );
     }
     $this->assignRef( "strSubTabs", $strSubTabHtml );
@@ -82,7 +82,8 @@ class ProjectEditorViewExperiment extends JView{
     $strEquipmentList = "Enter one or more facilities (NEES Sites) above.";
     $strEquipmentPicked = StringHelper::EMPTY_STRING;
     $strTags = StringHelper::EMPTY_STRING;
-    $strExperimentImage = ProjectEditor::DEFAULT_PROJECT_IMAGE;
+    //$strExperimentImage = ProjectEditor::DEFAULT_PROJECT_IMAGE;
+    $strExperimentImage = StringHelper::EMPTY_STRING;
     $strExperimentImageCaption = ProjectEditor::DEFAULT_EXPERIMENT_CAPTION;
     $bHasPhoto = false;
     $iExperimentDomainId = 0;
@@ -90,8 +91,12 @@ class ProjectEditorViewExperiment extends JView{
     $iEntityDownloads = 0;
 
     if(isset($_REQUEST['facility'])){
+      try{
       $oFacilityArray = $oExperimentModel->validateFacilitiesByName($_REQUEST['facility']);
       $strFacilityPicked = $this->getCurrentFacilitiesHTML($oFacilityArray);
+      }catch(Exception $oException){
+
+    }
     }
 
     /* @var $oExperiment Experiment */
@@ -113,10 +118,11 @@ class ProjectEditorViewExperiment extends JView{
       $strDescription = nl2br($oExperiment->getDescription());
       $iAccess = 4;
       $strSpecimenType = StringHelper::EMPTY_STRING;
+      $strExperimentImage = $this->getExperimentImageLink($oExperiment,$strExperimentImageCaption);
 
       if(!StringHelper::hasText($strFacilityPicked)){
         $oFacilityArray = $oExperimentModel->findFacilityByExperiment($iExperimentId);
-        $strFacilityPicked = $this->getCurrentFacilitiesHTML($oFacilityArray);       
+        $strFacilityPicked = $this->getCurrentFacilitiesHTML($oFacilityArray);
       }
 
       $oExperimentEquipmentArray = $oExperimentModel->findEquipmentByExperimentId($iExperimentId);
@@ -156,8 +162,8 @@ class ProjectEditorViewExperiment extends JView{
     $this->assignRef( "oExperimentDomainArray", $oExperimentDomainArray );
     $this->assignRef( "strSpecimenType", $strSpecimenType );
     $this->assignRef( "strTags", $strTags );
-    $this->assignRef( "strProjectImage", $strExperimentImage );
-    $this->assignRef( "strProjectImageCaption", $strExperimentImageCaption );
+    $this->assignRef( "strExperimentImage", $strExperimentImage );
+    $this->assignRef( "strExperimentImageCaption", $strExperimentImageCaption );
     $this->assignRef( "bHasPhoto", $bHasPhoto );
 
     $this->assignRef("iEntityActivityLogViews", $iEntityViews);
@@ -204,7 +210,7 @@ class ProjectEditorViewExperiment extends JView{
 ENDHTML;
 
     }
-    
+
     return $strReturn;
   }
 
@@ -213,6 +219,7 @@ ENDHTML;
 
     /* @var $oExperimentEquipment ExperimentEquipment */
     foreach ($p_oExperimentEquipmentArray as $iIndex=>$oExperimentEquipment){
+      $iEquipmentId = $oExperimentEquipment->getEquipment()->getId();
       $iModelId = $oExperimentEquipment->getEquipment()->getModelId();
       $iOrganizationId = $oExperimentEquipment->getEquipment()->getOrganizationId();
       $strInput = $oExperimentEquipment->getEquipment()->getName();
@@ -221,10 +228,12 @@ ENDHTML;
       $strFieldPicked = "equipmentPicked";
       $strRemoveDiv = "equipment-".$iIndex."Remove";
 
+      //silly me!  just use the equipment id
+      //<input type="hidden" name="$strFieldArray" value="$strInput:::$iModelId:::$iOrganizationId" style="width:100%"/>
       $strReturn .= <<< ENDHTML
 
           <div id="$strInputDiv" class="editorInputFloat editorInputSize">
-            <input type="hidden" name="$strFieldArray" value="$strInput:::$iModelId:::$iOrganizationId" style="width:100%"/>
+            <input type="hidden" name="$strFieldArray" value="$iEquipmentId" style="width:100%"/>
             <span style="width:100%">$strInput</span>
           </div>
           <div id="$strRemoveDiv" class="editorInputFloat editorInputButton">
@@ -238,6 +247,37 @@ ENDHTML;
 
     return $strReturn;
   }
-  
+
+  /**
+   *
+   * @param Experiment $p_oExperiment
+   * @return string
+   */
+  private function getExperimentImageLink($p_oExperiment, &$p_strCaption){
+    $default_thumbnail = "";
+
+    $expImage = $p_oExperiment->getExperimentThumbnailDataFile();
+
+    $thumbnail = null;
+    if($expImage && file_exists($expImage->getFullPath())) {
+      //creates the thumbnail if it doesn't exist
+      $expThumbnailId = $expImage->getImageThumbnailId();
+
+      if($expThumbnailId && $expThumbnail = DataFilePeer::find($expThumbnailId)) {
+        if(file_exists($expThumbnail->getFullPath())) {
+          $strDisplayName = "display_".$expImage->getId()."_".$expImage->getName();
+          $expImage->setName($strDisplayName);
+          $expImage->setPath($expThumbnail->getPath());
+          $thumbnail = "<a title='".$expImage->getDescription()."' style='border-bottom:0px;' target='_blank' href='" . $expImage->get_url() . "' rel='lightbox[experiments]'>View Photo</a>";
+          $p_strCaption = (StringHelper::hasText($expImage->getDescription())) ? $expImage->getDescription() : ProjectEditor::DEFAULT_EXPERIMENT_CAPTION;
+        }
+      }
+    }
+
+    if(!$thumbnail) $thumbnail = $default_thumbnail;
+
+    return $thumbnail;
+  }
+
 }
 ?>

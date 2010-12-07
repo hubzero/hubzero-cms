@@ -35,6 +35,7 @@ header("Expires: 0"); // Date in the past
 <input type="hidden" name="username" value="<?php echo $oUser->username; ?>" />
 <input type="hidden" name="type" value="<?php echo ProjectPeer::CLASSKEY_STRUCTUREDPROJECT; ?>" checked />
 <input type="hidden" name="projectId" value="<?php echo $this->iProjectId; ?>"/>
+<input type="hidden" name="objectId" value="<?php echo $this->iObjectId; ?>" />
 
 <!--<div class="innerwrap">-->
   <div class="content-header">
@@ -186,7 +187,9 @@ header("Expires: 0"); // Date in the past
                 </p>
               </td>
               <td>
-                <input tabindex="3" type="text" id="txtTitle" name="title" class="editorInputSize" value="<?php echo $this->strTitle; ?>" />
+                <div class="editorInputSize" id="titleInput">
+                  <input tabindex="3" type="text" id="txtTitle" name="title" class="editorInputCurate" value="<?php echo $this->strTitle; ?>" />
+                </div>
               </td>
             </tr>
             <tr id="shortTitle">
@@ -197,10 +200,9 @@ header("Expires: 0"); // Date in the past
                 </p>
               </td>  
               <td>
-                <div id="shortTitleInput" class="editorInputFloat editorInputSize">
-                  <input tabindex="4" type="text" id="txtShortTitle" name="shortTitle" style="width:100%;" value="<?php echo $this->strShortTitle; ?>" maxlength="60" onBlur="setValue('txtWebsiteTitle', this.value);" />
+                <div id="shortTitleInput" class="editorInputSize">
+                  <input tabindex="4" type="text" id="txtShortTitle" name="shortTitle" class="editorInputCurate" value="<?php echo $this->strShortTitle; ?>" maxlength="60" onBlur="setValue('txtWebsiteTitle', this.value);" />
                 </div>
-                <div class="clear"></div>
               </td>
             </tr>
             <tr id="start_date">
@@ -233,40 +235,6 @@ header("Expires: 0"); // Date in the past
                 </div>
                 <div id="endDateCalendar" class="editorInputFloat editorInputButton">
                   <img class="calendar" src="/components/com_warehouse/images/calendar/calendar-blue.png" alt="calendar" onclick="return showCalendar('strEndDate', '%m/%d/%Y');" />
-                </div>
-                <div class="clear"></div>
-              </td>
-            </tr>
-            <tr id="create_date">
-              <td nowrap="">
-                <p class="editorParagraph">
-                  <label for="strCreationDate" class="editorLabel">Creation Date:</label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Creation Date :: Please provide the date that the entity was created."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
-                </p>
-              </td>
-              <td>
-                <div id="createDateInput" class="editorInputFloat editorInputSize">
-                  <input tabindex="6" type="text" id="strCreationDate" name="enddate" style="width:100%;" value="<?php //echo $this->strEndDate; ?>" />
-                </div>
-                <div id="createDateCalendar" class="editorInputFloat editorInputButton">
-                  <img class="calendar" src="/components/com_warehouse/images/calendar/calendar-blue.png" alt="calendar" onclick="return showCalendar('strCreationDate', '%m/%d/%Y');" />
-                </div>
-                <div class="clear"></div>
-              </td>
-            </tr>
-            <tr id="curate_date">
-              <td nowrap="">
-                <p class="editorParagraph">
-                  <label for="strCurationDate" class="editorLabel">Curation Date:</label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Curation Date :: Please provide the date that the entity was created."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
-                </p>
-              </td>
-              <td>
-                <div id="curateDateInput" class="editorInputFloat editorInputSize">
-                  <input tabindex="6" type="text" id="strCurationDate" name="cureatedate" style="width:100%;" value="<?php //echo $this->strEndDate; ?>" />
-                </div>
-                <div id="createDateCalendar" class="editorInputFloat editorInputButton">
-                  <img class="calendar" src="/components/com_warehouse/images/calendar/calendar-blue.png" alt="calendar" onclick="return showCalendar('strCurationDate', '%m/%d/%Y');" />
                 </div>
                 <div class="clear"></div>
               </td>
@@ -309,6 +277,158 @@ header("Expires: 0"); // Date in the past
                 </div>
               </td>
             </tr>
+            <tr id="curationState">
+              <td nowrap="">
+                <p class="editorParagraph">
+                  <label for="txtShortTitle" class="editorLabel">Curation State:</label>
+                  <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Curation State :: Please provide a meaningful title up to 60 characters.  Prefixes such as NEESR are not allowed."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+                </p>
+              </td>
+              <td>
+                <div id="curationStateInput" class="editorInputFloat editorInputSize">
+                  <select name="curationState" class="editorInputCurate">
+                  <?php
+                    $strCurationStateArray = $this->strCurationStateArray;
+                    foreach($strCurationStateArray as $strState){
+                      $strStateSelected = ($strState==$this->strCurationState) ? "selected" : "";
+                      ?>
+                      <option value="<?php echo $strState; ?>" <?php echo $strStateSelected; ?>><?php echo $strState; ?></option>
+                      <?php
+                    }
+                  ?>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            <tr id="conformanceLevel">
+              <td nowrap="">
+                <p class="editorParagraph">
+                  <label for="cboConformanceLevels" class="editorLabel">Conformance Level:</label>
+                  <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Conformance Level :: Please provide a meaningful title up to 60 characters.  Prefixes such as NEESR are not allowed."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+                </p>
+              </td>
+              <td>
+                <div id="curationStateInput" class="editorInputFloat editorInputSize">
+                  <select id="cboConformanceLevels" name="conformanceLevel" class="editorInputCurate">
+                  <?php
+                    $strConformanceArray = $this->strConformanceLevelArray;
+                    foreach($strConformanceArray as $strConformance){
+                      $strConformanceSelected = ($strConformance==$this->strConformanceLevel) ? "selected" : "";
+                      ?>
+                      <option value="<?php echo $strConformance; ?>" <?php echo $strConformanceSelected; ?>><?php echo $strConformance; ?></option>
+                      <?php
+                    }
+                  ?>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            <tr id="objectStatus">
+              <td nowrap="">
+                <p class="editorParagraph">
+                  <label for="cboObjectStatus" class="editorLabel">Object Status:</label>
+                  <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Object Status :: Please provide a meaningful title up to 60 characters.  Prefixes such as NEESR are not allowed."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+                </p>
+              </td>
+              <td>
+                <div id="objectStatusInput" class="editorInputFloat editorInputSize">
+                  <select id="cboObjectStatus" name="objectStatus" class="editorInputCurate">
+                  <?php
+                    $strObjectStatusArray = $this->strObjectStatusArray;
+                    foreach($strObjectStatusArray as $strObjectStatus){
+                      $strObjectStatusSelected = ($strObjectStatus==$this->strObjectStatus) ? "selected" : "";
+                      ?>
+                      <option value="<?php echo $strObjectStatus; ?>" <?php echo $strObjectStatusSelected; ?>><?php echo $strConformance; ?></option>
+                      <?php
+                    }
+                  ?>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            <tr id="create_date">
+              <td nowrap="">
+                <p class="editorParagraph">
+                  <label for="strCreationDate" class="editorLabel">Creation Date:</label>
+                  <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Creation Date :: Please provide the date that the entity was created."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+                </p>
+              </td>
+              <td>
+                <div id="createDateInput" class="editorInputFloat editorInputSize">
+                  <input tabindex="6" type="text" id="strCreationDate" name="createdate" class="editorInputCurate" value="<?php echo $this->strCreationDate; ?>" />
+                </div>
+                <div id="createDateCalendar" class="editorInputFloat editorInputButton">
+                  <img class="calendar" src="/components/com_warehouse/images/calendar/calendar-blue.png" alt="calendar" onclick="return showCalendar('strCreationDate', '%m/%d/%Y');" />
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            <tr id="createdBy">
+              <td nowrap="">
+                <p class="editorParagraph">
+                  <label for="txtShortTitle" class="editorLabel">Created By:</label>
+                  <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Created By :: Please provide a meaningful title up to 60 characters.  Prefixes such as NEESR are not allowed."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+                </p>
+              </td>
+              <td>
+                <div id="createdByInput" class="editorInputFloat editorInputSize">
+                  <input tabindex="4" type="text" id="txtModifiedBy" name="createdBy" class="editorInputCurate" value="<?php echo $this->strCreatedBy; ?>" />
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            <tr id="curate_date">
+              <td nowrap="">
+                <p class="editorParagraph">
+                  <label for="strCurationDate" class="editorLabel">Curation Date:</label>
+                  <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Curation Date :: Please provide the date that the entity was created."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+                </p>
+              </td>
+              <td>
+                <div id="curateDateInput" class="editorInputFloat editorInputSize">
+                  <input tabindex="6" type="text" id="strCurationDate" name="cureatedate" class="editorInputCurate" value="<?php echo $this->strCurationDate; ?>" />
+                </div>
+                <div id="createDateCalendar" class="editorInputFloat editorInputButton">
+                  <img class="calendar" src="/components/com_warehouse/images/calendar/calendar-blue.png" alt="calendar" onclick="return showCalendar('strCurationDate', '%m/%d/%Y');" />
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            <tr id="modified_date">
+              <td nowrap="">
+                <p class="editorParagraph">
+                  <label for="strModifiedDate" class="editorLabel">Modified Date:</label>
+                  <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Modified Date :: Please provide the date that the entity was modified."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+                </p>
+              </td>
+              <td>
+                <div id="modifiedDateInput" class="editorInputFloat editorInputSize">
+                  <input tabindex="6" type="text" id="strModifiedDate" name="modifieddate" class="editorInputCurate" value="<?php echo $this->strModifiedDate; ?>" />
+                </div>
+                <div id="modifiedDateCalendar" class="editorInputFloat editorInputButton">
+                  <img class="calendar" src="/components/com_warehouse/images/calendar/calendar-blue.png" alt="calendar" onclick="return showCalendar('strModifiedDate', '%m/%d/%Y');" />
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            <tr id="modifiedBy">
+              <td nowrap="">
+                <p class="editorParagraph">
+                  <label for="txtShortTitle" class="editorLabel">Modified By:</label>
+                  <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Short Title :: Please provide a meaningful title up to 60 characters.  Prefixes such as NEESR are not allowed."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+                </p>
+              </td>
+              <td>
+                <div id="modifiedByInput" class="editorInputFloat editorInputSize">
+                  <input tabindex="4" type="text" id="txtModifiedBy" name="modifiedBy" class="editorInputCurate" value="<?php echo $this->strModifiedBy; ?>" />
+                </div>
+                <div class="clear"></div>
+              </td>
+            </tr>
+            
             <tr id="description">
               <td nowrap="">
                 <p class="editorParagraph">
@@ -410,7 +530,7 @@ header("Expires: 0"); // Date in the past
             <tr id="tags">
               <td nowrap="">
                 <p class="editorParagraph">
-                  <label for="actags" class="editorLabel">Ontology:</label>
+                  <label for="actags" class="editorLabel">Tags (keywords):</label>
                   <a style="border-bottom:0px;" href="#" onclick="return false;" 
                      class="Tips3" title="Tags :: Please provide keywords that highlight the project.  When users search, they will find your project using the tags.">
                      <img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
@@ -490,7 +610,7 @@ header("Expires: 0"); // Date in the past
             <tr id="preview">
               <td></td>
               <td>
-                  <input tabindex="21" type="submit" value="Preview Project" style="margin-top:15px"/>
+                  <input tabindex="21" type="submit" value="Preview/Save Project" style="margin-top:15px"/>
               </td>
             </tr>
           </table>

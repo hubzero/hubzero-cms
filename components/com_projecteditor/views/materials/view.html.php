@@ -58,7 +58,8 @@ class ProjectEditorViewMaterials extends JView{
     $strSubTab = JRequest::getVar('subtab', 'materials');
 
     $strSubTabArray = $oModel->getExperimentsSubTabArray();
-    $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTab );
+    $strSubTabViewArray = $oModel->getExperimentsSubTabViewArray();
+    $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTabViewArray, $strSubTab );
     $this->assignRef( "strSubTabs", $strSubTabHtml );
 
     //get the current materials

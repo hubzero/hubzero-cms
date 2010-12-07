@@ -75,7 +75,8 @@ class ProjectEditorViewSensors extends JView{
     $strSubTab = JRequest::getVar('subtab', 'sensors');
 
     $strSubTabArray = $oModel->getExperimentsSubTabArray();
-    $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTab );
+    $strSubTabViewArray = $oModel->getExperimentsSubTabViewArray();
+    $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTabViewArray, $strSubTab );
     $this->assignRef( "strSubTabs", $strSubTabHtml );
 
     $iEntityViews = $oModel->getEntityPageViews(3, $oExperiment->getId());

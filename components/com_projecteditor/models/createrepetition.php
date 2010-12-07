@@ -64,6 +64,14 @@ ENDHTML;
 
     return $strReturn;
   }
+
+  function suggestRepetition($p_iTrialId, $p_strTitle, $p_iLimit){
+    return RepetitionPeer::suggestRepetition($p_iTrialId, $p_strTitle, $p_iLimit);
+  }
+
+  function findByTrialIdAndTitle($trialid, $title) {
+    return RepetitionPeer::findByTrialIdAndTitle($trialid, $title);
+  }
   
 }
 

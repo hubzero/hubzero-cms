@@ -12,7 +12,7 @@ require_once 'lib/security/Authorizer.php';
 require_once 'api/org/nees/html/joomla/ComponentHtml.php';
 
 class ProjectEditorViewExperiments extends JView{
-	
+
   function display($tpl = null){
     if(isset($_SESSION["ERRORS"])){
       unset($_SESSION["ERRORS"]);
@@ -40,7 +40,7 @@ class ProjectEditorViewExperiments extends JView{
       //we got a valid request, store in session
       $_SESSION[ProjectEditor::ACTIVE_PROJECT] = $iProjectId;
     }
-    
+
     $this->assignRef( "iProjectId", $iProjectId );
 
     /* @var $oModel ProjectEditorModelExperiments */
@@ -78,7 +78,8 @@ class ProjectEditorViewExperiments extends JView{
     }
     $_REQUEST[Experiments::THUMBNAILS] = $strExperimentIconArray;
 
-    
+    $strReturnURL = $oModel->getReturnURL();
+    $this->assignRef( "warehouseURL", $strReturnURL );
 
     JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"/warehouse/projecteditor/project/".$oProject->getId());
     JFactory::getApplication()->getPathway()->addItem("Experiments","javascript:void(0)");

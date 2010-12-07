@@ -64,6 +64,14 @@ ENDHTML;
 
     return $strReturn;
   }
+
+  function suggestTrial($p_iExperimentId, $p_strTitle, $p_iLimit){
+    return TrialPeer::suggestTrial($p_iExperimentId, $p_strTitle, $p_iLimit);
+  }
+
+  function findByExperimentIdAndTitle($expid, $title) {
+    return TrialPeer::findByExperimentIdAndTitle($expid, $title);
+  }
   
 }
 

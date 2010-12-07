@@ -1,7 +1,7 @@
 <?php
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
- 
+
 jimport( 'joomla.application.component.model' );
 
 require_once('base.php');
@@ -23,7 +23,7 @@ require_once 'lib/data/Organization.php';
 require_once 'lib/security/Permissions.php';
 
 class ProjectEditorModelProject extends ProjectEditorModelBase{
-	
+
 
   /**
    * Constructor
@@ -33,20 +33,20 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
   function __construct(){
     parent::__construct();
   }
-  
+
   public function getProjectOwner(){
     $oUser =& JFactory::getUser();
     return $oUser;
   }
-  
+
   public function suggestFacilities($p_strName) {
     return OrganizationPeer::suggestFacilities($p_strName);
   }
-  
+
   public function suggestOrganizations($p_strName, $p_iLimit){
     return OrganizationPeer::suggestOrganizations($p_strName, $p_iLimit);
   }
-  
+
   public function suggestSponsors($p_strName, $p_iLimit){
     return SponsorPeer::suggestSponsors($p_strName, $p_iLimit);
   }
@@ -113,7 +113,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
         throw new Exception("Invalid ProjectTypeId value.");
     }
     //$project->save();
-    
+
     return $project;
   }
 
@@ -130,7 +130,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
     /* @var $auth Authorization */
     $auth  = new Authorization($p_iCreatorId, $p_iProjectId,  DomainEntityType::ENTITY_TYPE_PROJECT, $perms );
     $auth->save();
-    
+
     return $auth;
   }
 
@@ -149,10 +149,10 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
     /* @var $oPersonEntityRole PersonEntityRole */
     $oPersonEntityRole = new PersonEntityRole($p_iCreatorId, $p_iProjectId,  DomainEntityType::ENTITY_TYPE_PROJECT, $oRole);
     $oPersonEntityRole->save();
-    
+
     return $oPersonEntityRole;
   }
-  
+
   /**
    * Checks to see if a project already has a ProjectOrganization
    * @return true/false
@@ -233,7 +233,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
       $oOrganization = $this->findOrganizationByName($strOrganizationName);
       if(!$oOrganization){
         throw new ValidationException($p_strOrganizationName. " is not a valid organization.");
-      }  
+      }
 
       $oProjectOrganization = new ProjectOrganization(null, $oOrganization);
       //$p_oProject->addProjectOrganization($oProjectOrganization);
@@ -245,7 +245,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
         $p_oResultsArray = $this->setOrganizationHelper($p_oProject, $p_strOrganizationArray, $p_oResultsArray, $p_iOrganizationIndex);
       }
     }
-    
+
     //return $p_oProject;
     return $p_oResultsArray;
   }
@@ -262,7 +262,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
       $oTuple = new Tuple($oProjectHomepage->getCaption(), $oProjectHomepage->getUrl(), $strInputField1, $strInputField2);
       array_push($strInputArray, serialize($oTuple));
     }
-    
+
     $_SESSION[$strInputField1] = $strInputArray;
   }
 
@@ -300,7 +300,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
         array_push($oResultsArray, $oProjectHomepageURL);
       }//if hasText
 
-      ++$iIndex;  
+      ++$iIndex;
     }//end loop
 
     return $oResultsArray;
@@ -503,7 +503,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
           $oProjectHomepage->setProject($p_oProject);
           $oProjectHomepage->save();
         }
-      
+
         $oConnection->commit();
       }catch(Exception $e){
         $oConnection->rollback();
@@ -520,6 +520,8 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
   public function createNewGroup($p_oProject, $p_oResearcherKeywordArray, $p_oPiJuser, $p_oAdminJuser=null){
     ximport('xgroup');
     ximport('xuserhelper');
+
+    $bGroupCreated = true;
 
     $strTagArray = array();
     if(!empty($p_oResearcherKeywordArray)){
@@ -597,7 +599,10 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
     $log->action = 'group_created';
     if (!$log->store()) {
       $this->setError( $log->getError() );
+      $bGroupCreated = false;
     }
+
+    return $bGroupCreated;
   }
 
   public function getProjectImage($p_iProjectId){

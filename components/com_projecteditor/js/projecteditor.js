@@ -217,10 +217,26 @@ function saveForm(p_strFormId, p_strUrl){
 /**
  *
  */
-function uploadDataFile(p_strFormId, p_strUrl){
-  document.getElementById(p_strFormId).action=p_strUrl;
-  document.getElementById(p_strFormId).enctype="multipart/form-data";
-  document.getElementById(p_strFormId).submit();
+function uploadDataFile(p_strFormId, p_strUrl, p_strTitleId){
+  bValid = true;
+  if(p_strTitleId != null){
+    if(document.getElementById(p_strTitleId) != null){
+      strTitle = document.getElementById(p_strTitleId).value;
+      if(strTitle == null || strTitle==""){
+        bValid = false;
+      }
+    }
+  }
+
+  if(bValid){
+    document.getElementById(p_strFormId).action=p_strUrl;
+    document.getElementById(p_strFormId).enctype="multipart/form-data";
+    document.getElementById(p_strFormId).submit();
+  }else{
+    alert("Title is required.");
+  }
+
+  return bValid;
 }
 
 function editorSubmit(p_strFormId, p_strSubmitId){
@@ -270,4 +286,14 @@ function saveExperimentAccess(p_sRequestUrl, p_iPersonId, p_sTarget){
   xmlHttp.setRequestHeader("Connection", "close");
   xmlHttp.setRequestHeader("Content-length", strParameters.length);
   xmlHttp.send(strParameters);
+}
+
+function getRepetitionList(p_strElementId, p_strAlias, p_strTargetId){
+  var iTrialIndex = document.getElementById(p_strElementId).selectedIndex;
+  var strTrialText = document.getElementById(p_strElementId).options[iTrialIndex].text;
+  var iTrialId = document.getElementById(p_strElementId).options[iTrialIndex].value;
+
+  if(iTrialId != ""){
+    getMootools('/warehouse/projecteditor/'+p_strAlias+'?id='+iTrialId+'&format=ajax', p_strTargetId);
+  }
 }

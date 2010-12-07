@@ -73,7 +73,9 @@ class ProjectEditorViewDocumentation extends JView{
       //get the sub tabs to display on the page
       $strSubTab = JRequest::getVar('subtab', 'documentation');
       $strSubTabArray = $oModel->getProjectSubTabArray();
-      $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId", $iExperimentId, $strSubTabArray, $strSubTab );
+      $strSubTabViewArray = $oModel->getProjectSubTabViewArray();
+
+      $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId", "", $strSubTabArray, $strSubTabViewArray, $strSubTab );
       $this->assignRef( "strSubTabs", $strSubTabHtml );
 
       $strPath = $oProject->getPathname() ."/Documentation";
@@ -96,7 +98,8 @@ class ProjectEditorViewDocumentation extends JView{
       //get the sub tabs to display on the page
       $strSubTab = JRequest::getVar('subtab', 'documentation');
       $strSubTabArray = $oModel->getExperimentsSubTabArray();
-      $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTab );
+      $strSubTabViewArray = $oModel->getExperimentsSubTabViewArray();
+      $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTabViewArray, $strSubTab );
       $this->assignRef( "strSubTabs", $strSubTabHtml );
 
       $strPath = $oExperiment->getPathname() ."/Documentation";

@@ -17,7 +17,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
   $strUsername = $this->strUsername;
   $oAuthorizer = Authorizer::getInstance();
-  $oAuthorizer->setUser($strUsername);
+  //$oAuthorizer->setUser($strUsername);
 
   $oProject = unserialize($_REQUEST[ProjectPeer::TABLE_NAME]);
 ?>

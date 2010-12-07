@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 function ProjectEditorBuildRoute( &$query ){
   $segments = array();
@@ -6,7 +6,7 @@ function ProjectEditorBuildRoute( &$query ){
     $segments[] = $query['view'];
     unset( $query['view'] );
   }
-  
+
   $segments = array();
   if(isset($query['task'])){
     $segments[] = $query['task'];
@@ -17,52 +17,52 @@ function ProjectEditorBuildRoute( &$query ){
     $segments[] = $query['id'];
     unset( $query['id'] );
   };
-  
+
   if(isset($query['experiments'])){
     $segments[] = $query['experiments'];
     unset( $query['experiments'] );
   };
-  
+
   if(isset($query['experiment'])){
     $segments[] = $query['experiment'];
     unset( $query['experiment'] );
   };
-  
+
   if(isset($query['project'])){
     $segments[] = $query['project'];
     unset( $query['project'] );
   };
-  
+
   if(isset($query['members'])){
     $segments[] = $query['members'];
     unset( $query['members'] );
   };
-  
+
   if(isset($query['materials'])){
     $segments[] = $query['materials'];
     unset( $query['materials'] );
   };
-  
+
   if(isset($query['images'])){
     $segments[] = $query['images'];
     unset( $query['images'] );
   };
-  
+
   if(isset($query['sensors'])){
     $segments[] = $query['sensors'];
     unset( $query['sensors'] );
   };
-  
+
   if(isset($query['projid'])){
     $segments[] = $query['projid'];
     unset( $query['projid'] );
   };
-  
+
   if(isset($query['file'])){
     $segments[] = $query['file'];
     unset( $query['file'] );
   };
-  
+
   return $segments;
 }
 
@@ -102,10 +102,14 @@ function ProjectEditorParseRoute( $segments ){
              $segments[0]=="createrepetition" ||
              $segments[0]=="editdatafile" ||
              $segments[0]=="editphoto" ||
+             $segments[0]=="editvideo" ||
              $segments[0]=="editdocument" ||
              $segments[0]=="editanalysis" ||
              $segments[0]=="editexperimentaccess" ||
-             $segments[0]=="multiplefiles" ||      
+             $segments[0]=="multiplefiles" ||
+             $segments[0]=="repetitions" ||
+             $segments[0]=="sensortypes" ||
+             $segments[0]=="sensorrequired" ||
              $segments[0]=="editrole"){
             $strRequest = "view";
           }
@@ -144,8 +148,8 @@ function ProjectEditorParseRoute( $segments ){
           $vars["view"] = "project";
           break;
   }
-  
-    
+
+
   return $vars;
 }
 

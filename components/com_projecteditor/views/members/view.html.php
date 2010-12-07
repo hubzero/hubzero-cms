@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
@@ -22,7 +22,7 @@ $firephp->log('com_projecteditor/members.php');
 */
 
 class ProjectEditorViewMembers extends JView{
-
+	
   function display($tpl = null){
     $_SESSION["USER_ROLES"] = null;
     unset ($_SESSION["USER_ROLES"]);
@@ -34,7 +34,7 @@ class ProjectEditorViewMembers extends JView{
     }
 
     $iProjectId = JRequest::getInt('projid',0);
-
+    
     /*
      * if we don't have a project id from the request, go to session.
      */
@@ -79,7 +79,7 @@ class ProjectEditorViewMembers extends JView{
 
     $oJUser = $oMembersModel->getCurrentUser();
     $this->assignRef( "strUsername", $oJUser->username );
-
+	
     $iIndex = JRequest::getVar('index', 0);
     $iDisplay = JRequest::getVar('limit', 25);
 
@@ -103,7 +103,7 @@ class ProjectEditorViewMembers extends JView{
     $oDbPagination = new DbPagination($iIndex, $iCount, $iDisplay, $iLowerLimit, $iUpperLimit);
     $oDbPagination->computePageCount();
     $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmMemberAdd", "project-list"));
-
+    
     $bSearch = false;
     if(isset($_SESSION[Search::KEYWORDS]))$bSearch = true;
     if(isset($_SESSION[Search::SEARCH_TYPE]))$bSearch = true;
@@ -198,7 +198,7 @@ class ProjectEditorViewMembers extends JView{
 
         if ($uthumb && is_file(JPATH_ROOT.$uthumb)) {
           $oPersonArray['PICTURE'] = $uthumb;
-        }
+        } 
 
         //check to see if we can show the link for this user
         if($profile->get('public') == 1){
@@ -210,7 +210,7 @@ class ProjectEditorViewMembers extends JView{
     }
     return $oMembersArray;
   }
-
+  
 }
 
 ?>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
@@ -9,13 +9,13 @@ header("Expires: 0"); // Date in the past
 ?>
 
 
-<?php 
+<?php
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_projecteditor/css/projecteditor.css",'text/css');
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addStyleSheet($this->baseurl."/templates/fresh/html/com_groups/groups.css",'text/css');
   $document->addStyleSheet($this->baseurl."/plugins/tageditor/autocompleter.css",'text/css');
-  
+
   $document->addScript($this->baseurl."/components/com_projecteditor/js/ajax.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/tips.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/projecteditor.js", 'text/javascript');
@@ -42,16 +42,16 @@ header("Expires: 0"); // Date in the past
     </div>
     <div class="clear"></div>
   </div>
-  
+
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="title" style="padding-bottom:1em;">
       <span style="font-size:16px;font-weight:bold;"><?php echo $this->strProjectTitle; ?></span>
     </div>
-    
+
     <div id="overview_section" class="main section" style="width:100%;float:left;">
       <?php echo $this->strTabs; ?>
-      
-      
+
+
       <div class="subject-full">
 
         <div id="about" style="padding-top:1em;">
@@ -68,29 +68,32 @@ header("Expires: 0"); // Date in the past
             <a href="/warehouse/projecteditor/project/<?php //echo $this->iProjectId; ?>/experiment/0/about">Create New Experiment</a>
           </div>
           -->
-            
-          <?php 
+
+          <?php
             if(isset($_SESSION["ERRORS"])){
               $strErrorArray = $_SESSION["ERRORS"];
-              if(!empty($strErrorArray)){?> 
+              if(!empty($strErrorArray)){?>
                 <p class="error">
-                  <?  
+                  <?
                     foreach($strErrorArray as $strError){
                       echo $strError."<br>";
                     }
                   ?>
-                </p> 
-              <?php	
+                </p>
+              <?php
               }
             }
 
             $iViewed = 0;
             $strExperimentThumbnailArray = $_REQUEST[Experiments::THUMBNAILS];
 
+            $oAuthorizer = Authorizer::getInstance();
+
             /* @var $oExperiment Experiment */
             /* @var $oIndeedDataFile DataFile */
             $oExperimentArray = unserialize($_REQUEST[Experiments::EXPERIMENT_LIST]);
-              foreach($oExperimentArray as $iExperimentIndex=>$oExperiment){
+            foreach($oExperimentArray as $iExperimentIndex=>$oExperiment){
+              if($oAuthorizer->canView($oExperiment)){
           	  $iExperimentId = $oExperiment->getId();
         	  $strTitle = $oExperiment->getTitle();
         	  $strStartDate = strftime("%B %d, %Y", strtotime($oExperiment->getStartDate()));
@@ -121,7 +124,7 @@ header("Expires: 0"); // Date in the past
                     <div id="ExperimentInfo<?php echo $iExperimentId; ?>" style="float:left;width:85%;">
                       <table style="width:100%;border-bottom:0px;border-top:0px;">
                         <tr>
-                          <td><b>Experiment:</b></td>
+                          <td><b><?php echo $strName.":"; ?></b></td>
                           <td><a href="/warehouse/projecteditor/project/<?php echo $this->iProjectId; ?>/experiment/<?php echo $iExperimentId; ?>/about" style="font-size: 15px;"><?php echo $strTitle; ?></a></td>
                         </tr>
                         <tr>
@@ -147,7 +150,9 @@ header("Expires: 0"); // Date in the past
 
                           $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
 
-                          echo "<a href='$strLaunchInEED=$strIndeedPath/$strIndeedName'>Launch Data File</a>";
+                          $strIndeedReturn = $this->warehouseURL;
+
+                          echo "<a href='$strLaunchInEED=$strIndeedPath/$strIndeedName&$strIndeedReturn'>Launch Data File</a>";
                         }
                       ?>
                    </div>
@@ -156,14 +161,15 @@ header("Expires: 0"); // Date in the past
                 </tr>
               </table>
 
-            <?php
-              }//end foreach
-            ?>
-    
+           <?php
+              }
+            }//end foreach
+           ?>
+
         </div>
       </div>
     </div>
     <div class="clear"></div>
-  </div> 
+  </div>
 
 </form>

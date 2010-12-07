@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
@@ -20,15 +20,15 @@ header("Expires: 0"); // Date in the past
   $document->addScript($this->baseurl."/plugins/tageditor/observer.js", 'text/javascript');
   $document->addScript($this->baseurl."/plugins/tageditor/autocompleter.js", 'text/javascript');
 
-    $document->addScript($this->baseurl."/media/system/js/calendar-setup.js", 'text/javascript');
-
-  $document->addScript($this->baseurl."/includes/js/calendar/calendar_mini.js", 'text/javascript');
-  //$document->addScript($this->baseurl."/includes/js/calendar/calendar-setup.js", 'text/javascript');
-   $document->addScript($this->baseurl."/includes/js/calendar/lang/calendar-en-GB.js", 'text/javascript');
-  $document->addScript($this->baseurl."/includes/js/calendar/calendar.js", 'text/javascript');
+    $document->addScript($this->baseurl."/media/system/js/calendar-setup.js", 'text/javascript');  
+  
+  $document->addScript($this->baseurl."/includes/js/calendar/calendar_mini.js", 'text/javascript'); 
+  //$document->addScript($this->baseurl."/includes/js/calendar/calendar-setup.js", 'text/javascript');  
+   $document->addScript($this->baseurl."/includes/js/calendar/lang/calendar-en-GB.js", 'text/javascript'); 
+  $document->addScript($this->baseurl."/includes/js/calendar/calendar.js", 'text/javascript'); 
 
   $document->addScript($this->baseurl."/includes/js/joomla.javascript.js", 'text/javascript');
-
+  
   ?>
 
 
@@ -43,6 +43,7 @@ $oTrialArray = unserialize($_REQUEST[TrialPeer::TABLE_NAME]);
 <form action="/warehouse/projecteditor/saverepetition" method="post">
 <input type="hidden" name="path" value="<?php echo $this->strPath; ?>" id="path"/>
 <input type="hidden" name="referer" value="<?php echo $this->strReferer; ?>" id="referer"/>
+<input type="hidden" name="repetition" value="0" id="repId"/>
 
 <div><h2>Create Repetition</h2></div>
 
@@ -50,36 +51,59 @@ $oTrialArray = unserialize($_REQUEST[TrialPeer::TABLE_NAME]);
 
 <table style="border:0px;">
   <tr>
-    <td width="1" nowrap="">
-      <label for="trial" class="editorLabel">Trial:<span class="requiredfieldmarker">*</span></label>
+    <td nowrap="">
+      <p class="editorParagraph">
+         <label for="trial" class="editorLabel">Trial:<span class="requiredfieldmarker">*</span></label>
+         <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Trial :: Please select the trial of interest."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+      </p>
     </td>
     <td>
-      <select id="trial" name="trial" class="editorInputSize">
-        <?php
+      <select id="trial" name="trial" class="editorInputSize" onChange="getRepetitionList(this.id, 'repetitions', 'repetitionList');">
+        <?php  
           /* @var $oTrial Trial */
           foreach($oTrialArray as $oTrial){
             $strTrialName = $oTrial->getName();
-            $strTrialTitle = $oTrial->getTitle();
+            $strTrialTitle = $oTrial->getTitle();    
           ?>
             <option value="<?php echo $oTrial->getId(); ?>"><?php echo $strTrialName .": ". $strTrialTitle; ?></option>
           <?php
           }
         ?>
-      </select>
+      </select>    
     </td>
   </tr>
   <tr>
     <td width="1" nowrap>
-      <label for="title" class="editorLabel">Title:</label>
+      <p class="editorParagraph">
+         <label for="txtTitle" class="editorLabel">Name:</label>
+         <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Name :: Select an existing repetition to prefill start and end dates (if available)."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+      </p>
     </td>
-    <td><input id="title" type="text" name="title" class="editorInputSize"/></td>
+    <td>
+      <div id="repetitionList">
+        <select id="cboRepId" name="id" onchange="suggestRepetition('/warehouse/projecteditor/getrepetitioninfo?format=ajax', this.value);">
+          <option value="0">New Repetition</option>
+          <?php
+            /* @var $oRepetition Repetition */
+            $oRepititionArray = unserialize($_REQUEST[RepetitionPeer::TABLE_NAME]);
+            foreach($oRepititionArray as $oRepetition){
+              $strDisplay = $oRepetition->getName();
+            ?>
+
+              <option value="<?php echo $oRepetition->getId(); ?>"><?php echo $strDisplay; ?></option>
+            <?php
+            }
+          ?>
+        </select>
+      </div>
+    </td>
   </tr>
   <tr id="start_date">
-  	<td nowrap="">
-    	<p class="editorParagraph">
-             <label for="strStartDate" class="editorLabel">Start Date:<span class="requiredfieldmarker">*</span></label>
-             <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Start Date :: Please provide the date you started the repetition."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
-        </p>
+    <td nowrap="">
+      <p class="editorParagraph">
+         <label for="strStartDate" class="editorLabel">Start Date:<span class="requiredfieldmarker">*</span></label>
+         <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Start Date :: Please provide the date you started the repetition."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+      </p>
     </td>
     <td>
         <div id="startDateInput" class="editorInputFloat editorInputSize">
@@ -110,11 +134,11 @@ $oTrialArray = unserialize($_REQUEST[TrialPeer::TABLE_NAME]);
       <div class="clear"></div>
     </td>
   </tr>
-
+   
 
   <tr>
     <td colspan="2">
-      <input type="submit" value="Create Repetition"/>
+      <input type="submit" value="Save Repetition"/>
     </td>
   </tr>
 </table>

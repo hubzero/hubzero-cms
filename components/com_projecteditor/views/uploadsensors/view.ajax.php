@@ -43,6 +43,7 @@ class ProjectEditorViewUploadSensors extends JView{
 
     $strPlanType = "Sensor";
     $strAlert = StringHelper::EMPTY_STRING;
+    $strSensorTypeLink = ProjectEditor::SENSOR_TYPE_DOWNLOAD_LINK;
 
     /* @var $oLocationPlan LocationPlan */
     $oLocationPlan = $oModel->findLocationPlanById($iLocationPlanId);
@@ -52,6 +53,13 @@ class ProjectEditorViewUploadSensors extends JView{
     $this->assignRef( 'alert', $strAlert);
     $this->assignRef( 'iExperimentId', $iExperimentId);
     $this->assignRef( 'iLocationPlanId', $iLocationPlanId);
+    $this->assignRef( 'strSensorTypeLink', $strSensorTypeLink);
+
+    //provide a list of available coordinate spaces
+    $oCoordinateSpaceArray = CoordinateSpacePeer::findByExperiment($iExperimentId);
+    $_REQUEST[CoordinateSpacePeer::TABLE_NAME] = serialize($oCoordinateSpaceArray);
+    
+
     parent::display($tpl);
   }
   

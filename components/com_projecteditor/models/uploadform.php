@@ -67,9 +67,9 @@ class ProjectEditorModelUploadForm extends ProjectEditorModelBase{
           </tr>
           <tr>
             <td width="1" nowrap="">
-              <label for="title" class="editorLabel">Title:<span class="requiredfieldmarker">*</span></label>
+              <label for="txtTitle" class="editorLabel">Title:<span class="requiredfieldmarker">*</span></label>
             </td>
-            <td><input id="title" type="text" name="title" class="editorInputSize"/></td>
+            <td><input id="txtTitle" type="text" name="title" class="editorInputSize"/></td>
           </tr>
           <tr>
             <td width="1" nowrap="">
@@ -121,7 +121,7 @@ class ProjectEditorModelUploadForm extends ProjectEditorModelBase{
           </tr>
           <tr>
             <td colspan="2">
-              <input type="submit" id="button" value="Upload" onClick="uploadDataFile('frmPopup', '/warehouse/projecteditor/upload');"/>
+              <input type="button" id="button" value="Upload" onClick="uploadDataFile('frmPopup', '/warehouse/projecteditor/upload', 'txtTitle');"/>
             </td>
           </tr>
           <tr>
@@ -178,7 +178,7 @@ ENDHTML;
           $fileName = $_FILES[ProjectEditor::UPLOAD_FIELD_NAME]['name'][$counter];
           $uploadedFileNameParts = explode('.',$fileName);
           $uploadedFileExtension = array_pop($uploadedFileNameParts);
-          echo "$uploadedFileExtension<br>";
+          //echo "$uploadedFileExtension<br>";
           if(strtolower($uploadedFileExtension) == "zip" || 
              strtolower($uploadedFileExtension) == "gz" ||
              strtolower($uploadedFileExtension) == "tar"){
@@ -193,6 +193,32 @@ ENDHTML;
     return $bValid;
   }
   
+  /**
+   *
+   * @param EntityType $p_oEntityType
+   * @param int $p_iNumFiles
+   * @return boolean
+   */
+  public function validateVideoMovies($p_oEntityType, $p_iNumFiles){
+    $bValid = true;
+    if($p_oEntityType){
+      $strUsageType = $p_oEntityType->getDatabaseTableName();
+      if($strUsageType=="Video-Movies"){
+        $counter = 0;
+        while ($counter < $p_iNumFiles) {
+          $fileType = $_FILES[ProjectEditor::UPLOAD_FIELD_NAME]['type'][$counter];
+          if(preg_match("/video/", $fileType)){
+            //do nothing
+          }else{
+            $bValid = false;
+}
+          ++$counter;
+        }
+      }
+    }
+    return $bValid;
+  }
+
 }
 
 ?>

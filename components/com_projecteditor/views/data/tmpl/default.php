@@ -142,8 +142,8 @@ header("Expires: 0"); // Date in the past
                   </a>
                 </p>
                 <br>
-                <a class="modal" href="/warehouse/projecteditor/createtrial?format=ajax&projectId=<?php echo $this->iProjectId ?>&experimentId=<?php echo $this->iExperimentId; ?>">Create Trial</a><br>
-                <a class="modal" href="/warehouse/projecteditor/createrepetition?format=ajax&projectId=<?php echo $this->iProjectId ?>&experimentId=<?php echo $this->iExperimentId; ?>">Create Repetition</a>
+                <a class="modal" href="/warehouse/projecteditor/createtrial?format=ajax&projectId=<?php echo $this->iProjectId ?>&experimentId=<?php echo $this->iExperimentId; ?>" title="Create or edit a trial">Edit/Add Trial</a><br>
+                <a class="modal" href="/warehouse/projecteditor/createrepetition?format=ajax&projectId=<?php echo $this->iProjectId ?>&experimentId=<?php echo $this->iExperimentId; ?>" title="Create or edit a repetition">Edit/Add Repetition</a>
               </td>
               <td width="100%">
                 <div id="browser" >

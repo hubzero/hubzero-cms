@@ -19,6 +19,7 @@ class ProjectEditorViewEditPhoto extends JView{
     $iDataFileId = JRequest::getInt("dataFileId", 0);
     $iProjectId = JRequest::getInt("projectId", 0);
     $iExperimentId = JRequest::getInt("experimentId", 0);
+    $iPhotoType = JRequest::getInt("photoType", 0);
 
     if(!$iDataFileId){
       echo "Please select a data file.";
@@ -44,6 +45,7 @@ class ProjectEditorViewEditPhoto extends JView{
 
     $this->assignRef("projectId", $iProjectId);
     $this->assignRef("experimentId", $iExperimentId);
+    $this->assignRef("iPhotoType", $iPhotoType);
 
     parent::display();
   }

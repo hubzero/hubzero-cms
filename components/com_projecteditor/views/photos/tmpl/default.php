@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
@@ -9,13 +9,13 @@ header("Expires: 0"); // Date in the past
 ?>
 
 
-<?php 
+<?php
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_projecteditor/css/projecteditor.css",'text/css');
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addStyleSheet($this->baseurl."/templates/fresh/html/com_groups/groups.css",'text/css');
   $document->addStyleSheet($this->baseurl."/plugins/tageditor/autocompleter.css",'text/css');
-  
+
   $document->addScript($this->baseurl."/components/com_projecteditor/js/ajax.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/tips.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/projecteditor.js", 'text/javascript');
@@ -28,7 +28,7 @@ header("Expires: 0"); // Date in the past
 
 <?php JHTML::_('behavior.modal'); ?>
 
-<?php 
+<?php
   $oUser = $this->oUser;
   $oExperiment = unserialize($_SESSION[ExperimentPeer::TABLE_NAME]);
 
@@ -37,8 +37,8 @@ header("Expires: 0"); // Date in the past
 
 <form id="frmProject" name="frmProject" action="<?php echo $strAction; ?>" method="get">
 <!--<input type="hidden" name="username" value="<?php //echo $oUser->username; ?>" />-->
-<!--<input type="hidden" name="projid" value="<?php //echo //$this->iProjectId; ?>" />-->
-<!--<input type="hidden" name="experimentId" value="<?php //echo $this->iExperimentId; ?>" />-->
+<input type="hidden" name="projid" value="<?php echo $this->iProjectId; ?>" />
+<input type="hidden" name="experimentId" value="<?php echo $this->iExperimentId; ?>" />
 
 <div class="innerwrap">
   <div class="content-header">
@@ -54,15 +54,15 @@ header("Expires: 0"); // Date in the past
     </div>
     <div class="clear"></div>
   </div>
-  
+
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="title" style="padding-bottom:1em;">
       <span style="font-size:16px;font-weight:bold;"><?php echo $oExperiment->getProject()->getTitle(); ?></span>
     </div>
-    
+
     <div id="overview_section" class="main section" style="width:100%;float:left;">
       <?php echo $this->strTabs; ?>
-      
+
       <div class="aside">
         <div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">
           <p style="margin-left:10px; margin-top:10px;"><?php echo $this->iEntityActivityLogViews; ?> Views</p>
@@ -75,7 +75,7 @@ header("Expires: 0"); // Date in the past
           ?>
           <p class="edit"><a href="<?php echo $strProjectDisplay; ?>">View Experiment</a></p>
         </div>
-      
+
         <div id="curation">
           <span class="curationTitle">Curation in progress:</span>
           <?php if(StringHelper::hasText($this->mod_curationprogress)){ ?>
@@ -84,7 +84,7 @@ header("Expires: 0"); // Date in the past
             <p>No curation yet.</p>
           <?php } ?>
         </div>
-        
+
         <div class="whatisthis">
           <h4>What's this?</h4>
           <p>
@@ -100,22 +100,22 @@ header("Expires: 0"); // Date in the past
         <?php echo $this->strSubTabs; ?>
 
         <div id="about" style="padding-top:1em;">
-          <?php 
+          <?php
             if(isset($_SESSION["ERRORS"])){
               $strErrorArray = $_SESSION["ERRORS"];
-              if(!empty($strErrorArray)){?> 
+              if(!empty($strErrorArray)){?>
                 <p class="error">
-                  <?  
+                  <?
                     foreach($strErrorArray as $strError){
                       echo $strError."<br>";
                     }
                   ?>
-                </p> 
-              <?php	
+                </p>
+              <?php
               }
             }
           ?>
-          
+
           <table cellpadding="1" cellspacing="1" style="border-bottom:0px;border-top:0px;margin-top:20px;">
             <tr id="Photos">
               <td nowrap>
@@ -136,7 +136,7 @@ header("Expires: 0"); // Date in the past
                   <div id="dataPhoto" class="editorInputFloat editorInputMargin">
                     <input id="viewDataPhotos" type="radio" name="photoType" value="<?php echo DataFilePeer::PHOTO_TYPE_DATA; ?>" <?php if($this->iPhotoType==DataFilePeer::PHOTO_TYPE_DATA) echo "checked"; ?> onClick="document.getElementById('frmProject').submit();"/> <label for="viewDataPhotos" class="Tips3" title="Data Photos :: All image files (png, jpg, or gif) from trials and repetitions.">Data</label>
                   </div>
-                  
+
                   <div id="generalPhoto" class="editorInputFloat">
                     <input id="otherPhotos" type="radio" name="photoType" value="<?php echo DataFilePeer::PHOTO_TYPE_GENERAL; ?>" <?php if($this->iPhotoType==DataFilePeer::PHOTO_TYPE_GENERAL) echo "checked"; ?> onClick="document.getElementById('frmProject').submit();" /> <label for="otherPhotos" class="Tips3" title="Other Photos :: All image files (png, jpg, or gif) excluding data and drawings.">Other</label>
                   </div>
@@ -209,17 +209,17 @@ header("Expires: 0"); // Date in the past
                             $oDataFileLink = DataFileLinkPeer::retrieveByPK($oDataFile->getId());
                           ?>
                             <td>
-                              <?php 
+                              <?php
                                 echo $oDataFileLink->getTrial()->getName();
                               ?>
                             </td>
                             <td>
-                              <?php 
+                              <?php
                                 echo $oDataFileLink->getRepetition()->getName();
                               ?>
                             </td>
                           <?php endif; ?>
-                          <td nowrap>[<a class="modal" href="/warehouse/projecteditor/editphoto?format=ajax&projectId=<?php echo $this->iProjectId; ?>&experimentId=<?php echo $this->iExperimentId; ?>&dataFileId=<?php echo $oDataFile->getId(); ?>">Edit</a>]&nbsp&nbsp;<!--[Delete]--></td>
+                          <td nowrap>[<a class="modal" href="/warehouse/projecteditor/editphoto?format=ajax&projectId=<?php echo $this->iProjectId; ?>&experimentId=<?php echo $this->iExperimentId; ?>&dataFileId=<?php echo $oDataFile->getId(); ?>&photoType=<?php echo $this->iPhotoType; ?>">Edit</a>]&nbsp&nbsp;<!--[Delete]--></td>
                         </tr>
                       <?php
                       }
@@ -235,11 +235,13 @@ header("Expires: 0"); // Date in the past
                               <img src="/components/com_projecteditor/images/buttons/FilmstripPhoto.png" border="0" alt="Upload png, jpg, gif to experiment filmstip."/>
                             </a>
                           </div>
+                          <!--
                           <div id="general" class="editorInputFloat editorInputMargin">
                             <a title="Select general png, jpg, or gif photos for the project More tab." href="javascript:void(0);" onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savemorephotos';document.getElementById('frmProject').submit();" style="border:0px">
                               <img src="/components/com_projecteditor/images/buttons/MoreTabPhoto.png" border="0" alt="Upload png, jpg, gif to More tab."/>
                             </a>
                           </div>
+                          -->
                           <div class="clear"></div>
                         </td>
                     </tr>
@@ -249,12 +251,12 @@ header("Expires: 0"); // Date in the past
               </td>
             </tr>
           </table>
-    
+
         </div>
       </div>
     </div>
     <div class="clear"></div>
-  </div> 
+  </div>
 </div>
 
 </form>

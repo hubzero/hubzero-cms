@@ -1,17 +1,15 @@
 <?php
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
- 
+
 jimport( 'joomla.application.component.model' );
 jimport( 'joomla.application.component.view' );
 
 require_once('sensors.php');
-require_once 'lib/data/AuthorizationPeer.php';
-require_once 'lib/data/Person.php';
-require_once 'lib/data/Project.php';
+require_once 'lib/data/SensorTypePeer.php';
 
 class ProjectEditorModelUploadSensors extends ProjectEditorModelSensors{
-	
+
   /**
    * Constructor
    *
@@ -21,8 +19,10 @@ class ProjectEditorModelUploadSensors extends ProjectEditorModelSensors{
     parent::__construct();
   }
 
-  
-  
+  function getSensorTypes(){
+    return SensorTypePeer::findAll();
+  }
+
 }
 
 ?>

@@ -39,8 +39,12 @@ class ProjectEditorViewCreateRepetition extends JView{
       echo ComponentHtml::showError("Please create a trial.");
       return;
     }
-
     $_REQUEST[TrialPeer::TABLE_NAME] = serialize($oTrialArray);
+
+    /* @var $oTrial Trial */
+    $oTrial = $oTrialArray[0];
+    $oRepetitionArray = $oTrial->getRepetitions();
+    $_REQUEST[RepetitionPeer::TABLE_NAME] = serialize($oRepetitionArray);
 
     $this->assignRef("strPath", $oExperiment->getPathname());
     $this->assignRef("iProjectId", $iProjectId);

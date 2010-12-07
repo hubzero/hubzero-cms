@@ -46,6 +46,8 @@ require_once 'api/org/nees/html/joomla/ViewHtml.php';
 require_once 'lib/data/ProjectPeer.php';
 require_once 'lib/data/PersonPeer.php';
 require_once 'lib/data/OrganizationPeer.php';
+require_once 'lib/data/Organization.php';
+require_once 'lib/data/Facility.php';
 require_once 'lib/data/DataFilePeer.php';
 require_once 'lib/data/DataFileLinkPeer.php';
 require_once 'lib/data/ProjectHomepagePeer.php';
@@ -83,8 +85,8 @@ if($oUser->username=="gemezm"){
   //$oAuthorizer->setUser("mclean");
   //$oUserManager->setUser("mclean");
 
-  //$oAuthorizer->setUser("brohler");
-  //$oUserManager->setUser("brohler");
+  //$oAuthorizer->setUser("rhowell537");
+  //$oUserManager->setUser("rhowell537");
 }
 
 // Create the controller

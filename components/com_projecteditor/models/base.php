@@ -35,7 +35,9 @@ class ProjectEditorModelBase extends JModel{
   private $m_oSearchTabArray;
   private $m_oSearchResultsTabArray;
   private $m_oProjectSubTabArray;
+  private $m_oProjectSubTabViewArray;
   private $m_oExperimentsSubTabArray;
+  private $m_oExperimentsSubTabViewArray;
   
   /**
    * Constructor
@@ -54,8 +56,11 @@ class ProjectEditorModelBase extends JModel{
     $this->m_oCreateExperimentTabArray = array("Project", "Experiments", "Team Members");
     $this->m_oCreateExperimentTabViewArray = array(ProjectEditor::CREATE_EXPERIMENT_PROJECT_ALERT, "experiments", ProjectEditor::CREATE_EXPERIMENT_MEMBERS_ALERT);
 
-    $this->m_oProjectSubTabArray = array("About", "Documentation", "Analysis");
+    $this->m_oProjectSubTabArray = array("About", "Videos", "Photos","Documentation", "Analysis");
+    $this->m_oProjectSubTabViewArray = array("", "projectvideos", "projectphotos","documentation", "analysis");
+
     $this->m_oExperimentsSubTabArray = array("About", "Materials", "Sensors", "Drawings", "Data", "Videos", "Photos", "Documentation", "Analysis", "Security");
+    $this->m_oExperimentsSubTabViewArray = array("", "materials", "sensors","drawings", "data", "videos", "photos", "documentation", "analysis", "security");
 
     $this->m_oSearchTabArray = array("Search");
     $this->m_oSearchResultsTabArray = array("Results");
@@ -137,10 +142,18 @@ class ProjectEditorModelBase extends JModel{
     return $this->m_oExperimentsSubTabArray;
   }
 
+  public function getExperimentsSubTabViewArray(){
+    return $this->m_oExperimentsSubTabViewArray;
+  }
+
   public function getProjectSubTabArray(){
     return $this->m_oProjectSubTabArray;
   }
   
+  public function getProjectSubTabViewArray(){
+    return $this->m_oProjectSubTabViewArray;
+  }
+
   /**
    *
    * @return strTabs in html format
@@ -153,8 +166,8 @@ class ProjectEditorModelBase extends JModel{
    *
    * @return strTabs in html format
    */
-  public function getSubTabs($p_strOption, $p_iId, $p_strTabArray, $p_strActive){
-    return TabHtml::getSubTabs( $p_strOption, $p_iId, $p_strTabArray, $p_strActive );
+  public function getSubTabs($p_strOption, $p_iId, $p_strTabArray, $p_strSubTabViewArray, $p_strActive){
+    return TabHtml::getSubTabs( $p_strOption, $p_iId, $p_strTabArray, $p_strSubTabViewArray, $p_strActive );
   }
 
   public function getOnClickTabs($p_strTabArray, $p_strTabViewArray, $p_strActive){
@@ -487,9 +500,13 @@ ENDHTML;
     return EntityTypePeer::findUsageTypeList($p_strUsageTypeArray);
   }
 
-  public function getDataFileUsageTypesHTML($p_oUsageEntityTypeArray){
+  public function getDataFileUsageTypesHTML($p_oUsageEntityTypeArray, $p_bAddNotApplicableSelection=true){
+    $strNotApplicableOption = "<option value=''>Not Applicable</option>";
+    if(!$p_bAddNotApplicableSelection){
+      $strNotApplicableOption = StringHelper::EMPTY_STRING;
+    }
     $strEntityTypes = "<select id='cboUsage' name='usageType'>
-                        <option value=''>Not Applicable</option>";
+                        $strNotApplicableOption";
     foreach($p_oUsageEntityTypeArray as $oEntityType){
       /* @var $oEntityType EntityType */
       $iEntityTypeId = $oEntityType->getId();
@@ -894,6 +911,14 @@ ENDHTML;
     return DataFilePeer::findDataFileByUsageCount($p_strUsage, $p_iHideExperimentIdArray, $p_iProjectId, $p_iExperimentId, $p_iTrialId, $p_iRepetitionId);
   }
 
+  public function findProjectEditorVideos($p_strMimeType, $p_strCommaSeparatedVideoExtensions, $p_strDirectory, $p_iProjectId, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0, $p_iLowerLimit=1, $p_iUpperLimit=25) {
+    return DataFilePeer::findProjectEditorVideos($p_strMimeType, $p_strCommaSeparatedVideoExtensions, $p_strDirectory, $p_iProjectId, $p_iExperimentId, $p_iTrialId, $p_iRepetitionId, $p_iLowerLimit, $p_iUpperLimit);
+  }
+
+  public function findProjectEditorVideosCount($p_strMimeType, $p_strCommaSeparatedVideoExtensions, $p_strDirectory, $p_iProjectId, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0){
+    return DataFilePeer::findProjectEditorVideosCount($p_strMimeType, $p_strCommaSeparatedVideoExtensions, $p_strDirectory, $p_iProjectId, $p_iExperimentId, $p_iTrialId, $p_iRepetitionId);
+  }
+
   /**
    *
    * @param Project $p_oProject
@@ -936,6 +961,23 @@ ENDHTML;
 
   public function getObjectStatus(){
     return NCCuratedObjectsPeer::getObjectStatus();
+  }
+
+  public static function getReturnURL($p_strCurrentUrl=""){
+    // Get current page path and querystring
+    $uri  =& JURI::getInstance();
+    $redirectUrl = $uri->toString(array('path', 'query'));
+    if(StringHelper::hasText($p_strCurrentUrl)){
+      $redirectUrl = $p_strCurrentUrl;
+    }
+
+    //echo "url=$redirectUrl";
+
+    // Code the redirect URL
+    $redirectUrl = base64_encode($redirectUrl);
+    $redirectUrl = 'return=' . $redirectUrl;
+
+    return $redirectUrl;
   }
 
 }//end class

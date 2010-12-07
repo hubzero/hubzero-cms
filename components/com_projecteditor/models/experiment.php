@@ -1,7 +1,7 @@
 <?php
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
- 
+
 jimport( 'joomla.application.component.model' );
 
 require_once('base.php');
@@ -18,7 +18,7 @@ require_once 'lib/data/ExperimentDomainPeer.php';
 require_once 'lib/data/OrganizationPeer.php';
 
 class ProjectEditorModelExperiment extends ProjectEditorModelBase{
-	
+
 
   /**
    * Constructor
@@ -28,36 +28,36 @@ class ProjectEditorModelExperiment extends ProjectEditorModelBase{
   function __construct(){
     parent::__construct();
   }
-  
+
   public function getProjectOwner(){
     $oUser =& JFactory::getUser();
     return $oUser;
   }
-  
+
   public function suggestFacilities($p_strName) {
     return OrganizationPeer::suggestFacilities($p_strName);
   }
-  
+
   public function suggestSpecimen($p_strName) {
     return SpecimenPeer::suggestByName($p_strName);
   }
-  
-  
+
+
   public function createAuthorization($p_iCreatorId, $p_iProjectId){
     $perms = new Permissions( Permissions::PERMISSION_ALL );
 
     $auth  = new Authorization($p_iCreatorId, $p_iProjectId,  DomainEntityType::ENTITY_TYPE_PROJECT, $perms );
     $auth->save();
-    
+
     return $auth;
   }
-  
+
   public function createPersonEntityRole($p_iCreatorId, $p_iProjectId, $p_iRoleId){
     $oRole = RolePeer::find($p_iRoleId);
-  	
+
     $oPersonEntityRole = new PersonEntityRole($p_iCreatorId, $p_iProjectId,  DomainEntityType::ENTITY_TYPE_PROJECT, $oRole);
     $oPersonEntityRole->save();
-    
+
     return $oPersonEntityRole;
   }
 
@@ -86,7 +86,7 @@ class ProjectEditorModelExperiment extends ProjectEditorModelBase{
    */
   public function addFacilities($p_oExperiment, $p_oFacilityArray, $p_oConnection=null){
     FacilityPeer::deleteByExperimentId($p_oExperiment->getId(), $p_oConnection=null);
-    
+
     foreach($p_oFacilityArray as $oFacility){
       $p_oExperiment->addFacility($oFacility);
     }//end loop
@@ -151,7 +151,7 @@ class ProjectEditorModelExperiment extends ProjectEditorModelBase{
         if(!$oFacility){
           throw new ValidationException($p_strFacilityName. " is not a valid facility.");
         }
-        
+
         $p_oExperiment->addFacility($oFacility);
         if($p_strFacilityArray != null){
           ++$p_iFacilityIndex;
@@ -165,7 +165,7 @@ class ProjectEditorModelExperiment extends ProjectEditorModelBase{
     return $p_oExperiment;
   }
   */
-  
+
   /**
    * Sets a collection of Equipment objects.
    * @param <integer> $p_iEquipmentIdArray
@@ -198,16 +198,19 @@ class ProjectEditorModelExperiment extends ProjectEditorModelBase{
         $oEquipment = EquipmentPeer::find($oValue);
       }else{
         $strValueArray = explode(":::", $oValue);
-        $strEquipmentName = $strValueArray[0];
+
+        //query didn't like the escaped apostrophe - 20101119
+        $strEquipmentName = str_replace("\'", "'", $strValueArray[0]);
+
         $iEquipmentModel = $strValueArray[1];
         $iEquipmentOrgId = $strValueArray[2];
 
         $oEquipment = EquipmentPeer::findByNameModelIdOrgId($strEquipmentName, $iEquipmentModel, $iEquipmentOrgId);
       }
-      
+
       $oExperimentEquipment = new ExperimentEquipment($p_oExperiment, $oEquipment);
       $oExperimentEquipment->save();
-      
+
       array_push($oReturn, $oExperimentEquipment);
     }
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
@@ -20,25 +20,39 @@ defined('_JEXEC') or die( 'Restricted access' );
     <p>
     <img valign="middle" align="left" src="/components/com_projecteditor/images/icons/excel.gif" title="Excel-Book" width="100" height="100" style="padding-right:20px;" alt="" /> To upload multiple Locations to Location Plan '<?= $this->lpName ?>', download the Excel spreadsheet below and enter the information for each location in the appropriate spreadsheet fields.
     <br/><br/><b>Accepted formats:</b> Excel (95, 97, 2000, 2003) (*.xls), and XML Spreadsheet files (*.xml), and comma-delimited text files (*.csv), and tab-delemited text files (*.txt).
-    <br /><br />
     </p>
   </div>
   <div style="clear:both;"></div>
-  
+
   <div>
-    <p>
+    <?php
+      $strCoordinateSpaceInfo = StringHelper::EMPTY_STRING;
+      $oCoordinateSpaceArray = unserialize($_REQUEST[CoordinateSpacePeer::TABLE_NAME]);
+      if(count($oCoordinateSpaceArray) > 1){
+
+      }else{
+        $strCoordinateSpaceInfo = "Your experiment's coordinate space is '".$oCoordinateSpaceArray[0]->getName()."'.";
+      }
+    ?>
     <b>Note that:</b>
     <ul>
       <li>Excel 2007 (*.xlsx) is not supported, please save as a lower version before uploading.</li>
       <li>Only <i>the first worksheet</i> of Excel workbooks with multiple worksheet will be read by the system.</li>
+      <li>Current <a href="<?php echo ProjectEditor::SENSOR_TYPE_DOWNLOAD_LINK; ?>" target="availableSensorTypes">sensor types</a> and <a href="<?php echo ProjectEditor::SENSOR_REQUIRED_LINK; ?>" target="availableSensorTypes">required fields</a> . </li>
+      <?php if(StringHelper::hasText($strCoordinateSpaceInfo)){?>
+        <li><?php echo $strCoordinateSpaceInfo; ?> </li>
+      <?php }?>
     </ul>
-    </p>
+
   </div>
   Download <a href="/components/com_projecteditor/downloads/<?= $this->planType ?>Location.xls" class="bluelt"><?= $this->planType ?>Location.xls</a>
 
   <br/><br/>
-  <?= $this->alert ?>
-  <br/><br/>
+  <?php
+    if(StringHelper::hasText($this->alert)){
+      echo $this->alert."<br><br>";
+    }
+  ?>
 
   <div class='upload'>
     Upload a <?= $this->planType ?> Locations file.

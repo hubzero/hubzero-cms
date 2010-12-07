@@ -7,6 +7,7 @@ require_once 'lib/data/EquipmentPeer.php';
 require_once 'lib/data/ProjectPeer.php';
 require_once 'lib/data/Project.php';
 require_once 'lib/data/Person.php';
+require_once 'lib/security/Authorizer.php';
 
 class ProjectEditorViewConfirmProject extends JView{
 	
@@ -30,7 +31,6 @@ class ProjectEditorViewConfirmProject extends JView{
     $strOwner = JRequest::getVar("owner");
     $strAdmin = JRequest::getVar("itperson");
     $strTagsRaw = JRequest::getVar("tags");
-    
     
     /*
      * 3. Create the tabs for the view
@@ -174,6 +174,12 @@ class ProjectEditorViewConfirmProject extends JView{
     $this->assignRef( 'strAdmin', $strAdmin );
     $this->assignRef( 'strTagsRaw', $strTagsRaw );
 
+    $oAuthorizer = Authorizer::getInstance();
+    $bCanCurate = $oAuthorizer->canCurate();
+
+    if($bCanCurate){
+      $this->setLayout(ProjectEditor::CURATE_LAYOUT);
+    }
 
     if($iProjectId){
       JFactory::getApplication()->getPathway()->addItem($oProject->getName(), "/warehouse/projecteditor/project/".$oProject->getId());

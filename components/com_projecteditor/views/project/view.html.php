@@ -77,7 +77,9 @@ class ProjectEditorViewProject extends JView{
     $strSubTab = JRequest::getVar('subtab', 'about');
 
     $strSubTabArray = $oProjectModel->getProjectSubTabArray();
-    $strSubTabHtml = $oProjectModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId", "", $strSubTabArray, $strSubTab );
+    $strSubTabViewArray = $oProjectModel->getProjectSubTabViewArray();
+
+    $strSubTabHtml = $oProjectModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId", "", $strSubTabArray, $strSubTabViewArray, $strSubTab );
     if(!$iProjectId){
       $strSubTabHtml = $oProjectModel->getOnClickSubTabs( ProjectEditor::CREATE_PROJECT_SUBTAB_ALERT, $strSubTabArray, $strSubTab );
     }
