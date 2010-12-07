@@ -521,7 +521,7 @@ class ToolsController extends Hubzero_Controller
 		}
 		
 		// Get their disk space usage
-		$this->getDiskUsage();
+		$this->getDiskUsage('hard');  // Check their hardspace limit instead of the softspace
 		$this->_redirect = '';
 		
 		$app['percent'] = 0;
@@ -529,7 +529,7 @@ class ToolsController extends Hubzero_Controller
 			$app['percent'] = $this->percent;
 		}
 		//if ($this->_redirect != '' && $this->juser->get('username') == 'zooley') {
-		if ($this->percent >= 100 && $this->remaining == 0) {
+		if ($this->percent >= 100) {
 			$this->storage(true);
 			return;
 		}
@@ -1013,7 +1013,7 @@ class ToolsController extends Hubzero_Controller
 	
 	//-----------
 
-	private function getDiskUsage() 
+	private function getDiskUsage($type='soft') 
 	{
 		// Check that the user is logged in
 		if ($this->juser->get('guest')) {
@@ -1025,18 +1025,22 @@ class ToolsController extends Hubzero_Controller
 		
 		$du = MwUtils::getDiskUsage($this->juser->get('username'));
 		if (isset($du['space'])) {
-			$val = ($du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
+			if ($type == 'hard') {
+				$val = ($du['hardspace'] != 0) ? bcdiv($du['space'], $du['hardspace']) : 0;
+			} else {
+				$val = ($du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
+			}
 		} else {
 			$val = 0;
 		}
 		$percent = round( $val * 100 );
 		$percent = ($percent > 100) ? 100 : $percent;
-		
+
 		$this->remaining = (isset($du['remaining'])) ? $du['remaining'] : 0;
 		$this->percent = $percent;
 		
-		if ($this->percent >= 100 && $this->remaining == 0) {
-		//if ($this->percent >= 100) {
+		//if ($this->percent >= 100 && $this->remaining == 0) {
+		if ($this->percent >= 100) {
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=storageexceeded');
 		}
 	}

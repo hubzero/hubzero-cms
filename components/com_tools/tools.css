@@ -1,16 +1,7 @@
-/**
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
- */
-
 /*
 
 	-- -- -- -- -- -- --
-	com_tools CSS
+	com_mw CSS
 	-- -- -- -- -- -- --
 
 */
@@ -75,6 +66,7 @@
 		margin: 0;
 		padding: 0.5em 0 0 0;
 		line-height: 1em;
+		border: none;
 		border-top: 2px solid #e0e0d7;
 		}
 	.com_tools .big {
@@ -90,38 +82,16 @@
 	.closed {
 		color: #CC0000;
 		}
-/* Sections */
-	.section {
-		padding: 0 0px;
-		border-bottom: 1px solid #EFEFEF;
-		}
-	.main {
-		border-bottom: none;
-		}
-	.below {
-		margin: 2em 0 0 0;
-		padding-top: 1em;
-		}
-	.aside {
-		float: right;
-		width: 214px;
-		padding-top: 1em;
-		}
-	.subject {
-		margin: 1em 0;
-		margin-right: 235px;
-		padding: 1.4em;
-		background: #F7F7F7;
-		border-top: 1px solid #E3E3E3;
-		border-bottom: 1px solid #E3E3E3;
-		}
-	.main .subject {
-		border: none;
-		background: transparent;
-		padding: 1em 0 0 0;
-		}
+/* Columns */
 	.section>h3 {
 		display: none;
+		}
+	#content-header h2 {
+		cursor: pointer;
+		}
+	#content-header form {
+		margin: 0 0 0 15px;
+		padding: 1.5em 0 1em;
 		}
 /* Storage Management */
 	.filebrowser {
@@ -165,9 +135,7 @@
 	#small-page #filepath li span {
 		font-weight: bold;
 		}
-/*---------------------------------------------------------------
-	App wrap
----------------------------------------------------------------*/
+/* Tool Session */
 	#app-wrap {
 		background-color: #000;
 		text-align: left;
@@ -196,28 +164,30 @@
 		padding: 0;
 		border: none;
 		}
+	#app-btn-refresh,
+	#app-btn-resizehandle,
+	#app-btn-newwindow,
 	#app-btn-close {
 		position: absolute;
 		width: 30px;
 		height: 30px;
-		right: -15px;
-		top: -15px;
-		background: url("images/close.png") no-repeat top left;
 		border: none;
+		cursor: pointer;
 		text-indent: -55em;
 		overflow: hidden;
 		}
+	/* Close button */
+	#app-btn-close {
+		background: url("images/close.png") no-repeat top left;
+		right: -15px;
+		top: -15px;
+		}
+	/* Resize button */
 	#app-btn-resizehandle {
-		position: absolute;
-		width: 30px;
-		height: 30px;
+		background: url("images/resizebox.png") no-repeat top left;
 		right: -15px;
 		bottom: -15px;
-		background: url("images/resizebox.png") no-repeat top left;
-		border: none;
 		cursor: se-resize;
-		text-indent: -55em;
-		overflow: hidden;
 		}
 	#app-size {
 		font-size: 90%;
@@ -230,39 +200,25 @@
 		color: #aaa;
 		visibility: hidden;
 		}
+	/* New window button */
 	#app-btn-newwindow {
-		position: absolute;
-		width: 30px;
-		height: 30px;
+		background: url("images/newwindowbox.png") no-repeat top left;
 		right: 25px;
 		bottom: -15px;
-		background: url("images/newwindowbox.png") no-repeat top left;
-		border: none;
-		cursor: pointer;
-		text-indent: -55em;
-		overflow: hidden;
 		}
+	/* Refresh button */
 	#app-btn-refresh {
-		position: absolute;
-		width: 30px;
-		height: 30px;
+		background: url("images/refreshbox.png") no-repeat top left;
 		right: 55px;
 		bottom: -15px;
-		background: url("images/refreshbox.png") no-repeat top left;
-		border: none;
-		cursor: pointer;
-		text-indent: -55em;
-		overflow: hidden;
 		}
 	#app-btn-refresh:hover,
 	#app-btn-resizehandle:hover,
 	#app-btn-newwindow:hover,
 	#app-btn-close:hover {
 		background-position: 0 -30px;
-		}
-/*---------------------------------------------------------------
-	Share form
----------------------------------------------------------------*/
+		}	
+/* Share form */
 	#app-share {
 		margin: 0;
 		padding: 0.5em;
@@ -272,9 +228,7 @@
 	#app-share span {
 		margin-right: 1em;
 		}
-/*---------------------------------------------------------------
-	Misc.
----------------------------------------------------------------*/
+/* Misc. */
 	#powered-by {
 		color: #999;
 		font-size: 90%;
@@ -302,15 +256,6 @@
 	.hide,
 	.hidden { 
 		display: none;
-		}
-	.section,
-	#session-section,
-	#about-section,
-	#answers-section { 
-		padding: 0;
-		}
-	.innerwrap {
-		position: relative;
 		}
 /* disk usage */
 	#diskusage { 
@@ -382,7 +327,7 @@
 		-moz-box-shadow: #ccc 0px 2px 4px; /* color length length length */
 		}
 	#error-box.code-403 {
-		border-color: #fbd894; /*#EFEAC2;*/
+		border-color: #fbd894;
 		color: #CC6633; 
 		background: #FFFDEF url("images/warning-large.png") 10px 10px no-repeat;
 		}
@@ -414,15 +359,42 @@
 		padding: 1em;
 		background-color: #fff;
 		border: 1px solid #ddd;
-		/* Rounded corners */
 		-moz-border-radius: 10px;
 		-webkit-border-radius: 10px;	
 		-khtml-border-radius: 10px;
 		border-radius: 10px;
 		}
-/*---------------------------------------------------------------
-	IE 6 hacks
----------------------------------------------------------------*/
+/* Session list */
+	.com_tools table.sessions .disconnect,
+	.com_tools table.sessions .closetool {
+		display: block;
+		overflow: hidden;
+		text-indent: -55em;
+		border: none;
+		}
+	.com_tools table.sessions .disconnect {
+		width: 28px;
+		height: 14px;
+		background: url("images/disconnect.gif") 0 0 no-repeat;
+		}
+	.com_tools table.sessions .closetool {
+		width: 14px;
+		height: 14px;
+		background: url("images/close-light.gif") 0 0 no-repeat;
+		}
+	.com_tools table.sessions .disconnect:hover {
+		background-position: 0 -14px;
+		border: none;
+		}
+	.com_tools table.sessions .closetool:hover {
+		background-position: 0 -24px;
+		border: none;
+		}
+	.com_tools table.sessions .owner {
+		font-size: 90%;
+		}
+
+/* IE 6 hacks */
 	* html #diskusage #du-amount {
 		float: none;
 		}
