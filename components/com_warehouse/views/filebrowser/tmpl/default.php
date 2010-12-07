@@ -3,94 +3,85 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php $oDataFileArray = unserialize($_REQUEST[DataFilePeer::TABLE_NAME]); ?>
+<?php 
+  $document =& JFactory::getDocument();
+  $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
+  $document->addStyleSheet($this->baseurl."/components/com_projecteditor/css/projecteditor.css",'text/css');
+  $document->addStyleSheet($this->baseurl."/templates/fresh/html/com_groups/groups.css",'text/css');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/ajax.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/warehouse.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/resources.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/general.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_projecteditor/js/tips.js", 'text/javascript');
+?>
 
-<?php if ($this->referer == "repetition"){ ?>
-  <a href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a>
-<?php }else{ ?>
-<form id="frmData" action="/warehouse/download" method="post">
-<input type="hidden" name="projectId" value="<?php echo $this->iProjectId; ?>"/>
-<input type="hidden" name="experimentId" value="<?php echo $this->iExperimentId; ?>"/>
+<?php
+  $oAuthorizer = Authorizer::getInstance();
+?>
 
-<a id="hideDataLink" href="javascript:void(0);" onClick="javascript:document.getElementById('showDataLink').style.display='';document.getElementById('projectDocs').style.display='none';document.getElementById('hideDataLink').style.display='none';">Hide</a> <a id="showDataLink" style='display:none' href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a>
-<div style="border: 1px solid rgb(102, 102, 102); overflow: auto; width: 100%; padding: 0px; margin: 0px;" id="projectDocs">
-  <table cellpadding="1" cellspacing="1" style="width:100%;border-bottom:0px;border-top:0px;font-size:11px;">
-    <tr valign="top" style="background: #CCCCCC;">
-      <td colspan="6" style="font-size:11px;"><b>Current Path:</b>&nbsp;&nbsp;<?php echo $this->strCurrentPath; ?></td>
-    </tr>
-    <tr style="background: #EFEFEF;">
-      <th style="font-weight:bold;"></th>
-      <th style="font-weight:bold;"></th>
-      <th style="font-weight:bold;">Name</th>
-      <th style="font-weight:bold;">Timestamp</th>
-      <th style="font-weight:bold;">Application</th>
-      <th style="font-weight:bold;"></th>
-    </tr>
-    <tr valign="top">
-      <?php if(!StringHelper::endsWith($this->strCurrentPath, ".groups")): ?>
-        <td colspan="6"><a onclick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strBackPath; ?>&format=ajax','dataList');" href="javascript:void(0);">...go back</a></td>
-      <?php else: ?>
-        <td colspan="6"></td>
-      <?php endif; ?>
-    </tr>
-    <?php if ( !empty($oDataFileArray) ): ?>
-    
+<?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
+
+<form id="frmData" name="frmData" method="get">
+<input type="hidden" id="txtExperiment" name="experiment" value="0"/>
+<input type="hidden" id="txtTrial" name="trial" value="0" />
+<input type="hidden" id="txtRepetition" name="repetition" value="0" />
+<input type="hidden" id="txtForm" name="form" value="0"/>
+<input type="hidden" id="txtSearchType" name="type" value=""/>
+<div class="innerwrap">
+  <div class="content-header">
+	<h2 class="contentheading">NEES Project Warehouse</h2>
+  </div>
+  
+  <div id="warehouseWindow" style="padding-top:20px;">
+    <div id="title" style="padding-bottom:1em;">
+      <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
+    </div>
+
+    <div id="treeBrowser" style="float:left;width:20%;"></div>
+
+    <div id="overview_section" class="main section" style="width:100%;float:left;">
+      <?php echo TabHtml::getSearchFormWithAction( "frmData", "/warehouse/find" ); ?>
+
+      <?php echo $this->strTabs; ?>
+
       <?php
-
-        /* @var $oDataFile DataFile */
-        foreach($oDataFileArray as $iIndex => $oDataFile){
-    	  $strRowBackgroundColor = "";
-    	  if($iIndex %2 === 0){
-    	    $strRowBackgroundColor = "#EFEFEF;";
-    	  }
-
-          $strFileLink = $oDataFile->get_url();
-    	  $strDirLink = $this->strCurrentPath."/".$oDataFile->getName();
+        if(!$oAuthorizer->canView($oProject)){
       ?>
-        <tr style="background: <?php echo $strRowBackgroundColor; ?>">
-          <td><input type="checkbox" id="cbxDataFile<?php echo $iIndex;?>" name="cbxDataFile[]" value="<?php echo $oDataFile->getId(); ?>"/></td>
-          <td>
-            <?php if( $oDataFile->getDirectory()==1 ): ?>
-              <input type="image" src="/components/com_warehouse/images/icons/folder.gif" onClick="">
-            <?php endif; ?>
-          </td>
-          <td>
-            <?php if($oDataFile->getDirectory()==1): ?>
-              <a href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $strDirLink; ?>&format=ajax','dataList');"><?php echo $oDataFile->getName(); ?></a>
-            <?php else: ?>
-              <a href="<?php echo $strFileLink; ?>" target="data_file"><?php echo $oDataFile->getName(); ?></a>
-            <?php endif; ?>
-          </td>
-          <td><?php echo $oDataFile->getCreated(); ?></td>
-          <td>
-            <?php 
-              $strToolLink = "";
-              
-              $strOpeningTool = $oDataFile->getOpeningTool();
-              if(strlen($strOpeningTool)!=0){
-              	switch($strOpeningTool){
-              	  case 'inDEED':
-                    $strLaunchInEED = NeesConfig::LAUNCH_INDEED;  
-              	    $strToolLink = "<a href='$strLaunchInEED=".$strDirLink."'>".$strOpeningTool."</a>";
-              	  break;
-                }
-              }
-              
-              echo $strToolLink;
-            ?>
-          </td>
-          <td></td>
-        </tr>
-      <?php }?>
-      <tr>
-        <td colspan="6"><input type="button" onClick="validateFileBrowser('frmData', 'cbxDataFile', <?php echo sizeof($oDataFileArray); ?>);" value="Download" /></td>
-      </tr>
-    <?php else: ?>
-      <tr style="background: #EFEFEF;">
-        <td colspan="6" align="center">0 files found.</td>
-      </tr>
-    <?php endif; ?>  
-  </table>
+          <p class="error">You don't have permission to view this project.</p>
+      <?php
+        }else{
+      ?>
+      
+        <div class="aside">
+          <fieldset>
+            <label>
+                Find by	<select id="findby" name="findby">
+                        <option selected="selected" value="1">Title</option>
+                        <option value="2">Name</option>
+                </select>
+            </label>
+            <label>
+                Search:	<input type="text" value="" id="term" name="term">
+            </label>
+            <input type="button" onClick="document.getElementById('frmData').action='/warehouse/filebrowser/<?php echo $oProject->getId(); ?>';document.getElementById('txtSearchType').value='Search';document.getElementById('txtForm').value='1';document.getElementById('frmData').submit();" value="GO">
+          </fieldset>
+
+          <div id="fileByType">
+            <?php echo $this->mod_warehousefiletypes; ?>
+          </div>
+        </div>
+      
+        <div class="subject">
+          <div id="about" style="padding-top:1em;">
+            <?php echo $this->mod_warehousefiles; ?>
+          </div>
+        </div>
+
+      <?php } ?>
+
+    </div>
+    <div class="clear"></div>
+    
+  </div>  
 </div>
 </form>
-<?php } ?>

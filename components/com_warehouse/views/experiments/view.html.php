@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
@@ -12,7 +12,7 @@ require_once 'api/org/nees/static/Experiments.php';
 
 
 class WarehouseViewExperiments extends JView{
-	
+
   function display($tpl = null){
     $iProjectId = JRequest::getVar('projid');
     $this->assignRef( "projid", $iProjectId );
@@ -49,7 +49,10 @@ class WarehouseViewExperiments extends JView{
     /* @var $oHubUser JUser */
     $oHubUser = $oExperimentsModel->getCurrentUser();
     $this->assignRef( "strUsername", $oHubUser->username );
-    
+
+    $strReturnURL = $oExperimentsModel->getReturnURL();
+    $this->assignRef( "warehouseURL", $strReturnURL );
+
     /* @var $oPerson Person */
 //    $oPerson = $oExperimentsModel->getOracleUserByUsername($oHubUser->username);
 //    $this->assignRef( "iPersonId", $oPerson->getId() );
@@ -61,7 +64,7 @@ class WarehouseViewExperiments extends JView{
 //	$iDisplay = JRequest::getVar('limit', 25);
 //	$iIndex = JRequest::getVar('index', 0);
 //	$iResultsCount = JRequest::getVar('count');
-//	
+//
 //	$oDbPagination = new DbPagination($iIndex, sizeof($oExperimentArray), $iDisplay);
 //  $oDbPagination->computePageCount();
 //  $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmResults", "project-list"));

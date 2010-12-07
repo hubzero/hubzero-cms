@@ -17,6 +17,22 @@
 	#fileList{
 		margin-top: 10px;
 	}
+
+        .warehouseFloat {
+            float:left;
+        }
+
+        .warehouseMargin {
+            margin-right: 10px;
+        }
+
+        .warehouseMarginLeft {
+            margin-left: 10px;
+        }
+
+        .emptyFolder {
+            color: #7F7F7F;
+        }
 	
 	.dashes {
 		border-top: 1px dotted #D3D3D3;

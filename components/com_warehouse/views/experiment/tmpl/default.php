@@ -1,14 +1,15 @@
-<?php 
+<?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php 
+<?php
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addScript($this->baseurl."/components/com_warehouse/js/ajax.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_warehouse/js/warehouse.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_warehouse/js/resources.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/general.js", 'text/javascript');
 ?>
 
 
@@ -22,21 +23,21 @@ defined('_JEXEC') or die( 'Restricted access' );
   $oExperiment = unserialize($_REQUEST[Experiments::SELECTED]);
   $oProject = $oExperiment->getProject();
 ?>
- 
+
 <div class="innerwrap">
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
-  
+
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="title" style="padding-bottom:1em;">
       <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
     </div>
-      
+
     <div id="treeBrowser" style="float:left;width:20%;"></div>
-    
+
     <div id="overview_section" class="main section" style="width:100%;float:left;">
-      
+
         <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
         <?php echo $this->strTabs; ?>
 
@@ -196,12 +197,15 @@ defined('_JEXEC') or die( 'Restricted access' );
                        <td class="entityDetail">Data:</td>
                            <td>
                              <?php
+                                   $strIndeedReturn = $this->warehouseURL;
                                    foreach($oToolFileArray as $iToolIndex=>$oToolDataFile){
-                                         $strToolLink = $oToolDataFile->getPath()."/".$oToolDataFile->getName();
+                                         $strToolLink = $oToolDataFile->getPath()."/".$oToolDataFile->getName()."&$strIndeedReturn";
                                          $strToolTitle = $oToolDataFile->getTitle();
                                          $strToolDesc = $oToolDataFile->getDescription();
                                          if(strlen($strToolDesc)==0){
                                            $strToolDesc = "Click to launch tool ".$oToolDataFile->getOpeningTool().".";
+                                         }else{
+                                           $strToolDesc = "Click to launch inDEED: ".$oToolDataFile->getDescription();
                                          }
                                  ?>
                                         <a href="<?php echo NeesConfig::LAUNCH_INDEED; ?>=<?php echo $strToolLink; ?>" title="<?php echo $strToolDesc; ?>"><?php echo $strToolTitle; ?></a>
@@ -211,7 +215,23 @@ defined('_JEXEC') or die( 'Restricted access' );
                                  }
                                    }
                                          ?>
-                                         <div id="dataList"><a href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a></div>
+                                         <div id="dataList"><a href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=<?php echo $this->strCurrentPath; ?>&format=ajax&top=2','dataList');">more...</a></div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="entityDetail">Documentation</td>
+                          <td>
+                            <div id="docList" class="">
+                                <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Documentation&format=ajax&form=frmDocumentation&target=docList&top=1','docList');" href="javascript:void(0);">view</a>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="entityDetail">Analysis</td>
+                          <td>
+                            <div id="anaList" class="">
+                              <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList&top=1','anaList');" href="javascript:void(0);">view</a>
+                            </div>
                           </td>
                         </tr>
                         <tr id="photos">
@@ -240,7 +260,23 @@ defined('_JEXEC') or die( 'Restricted access' );
                       <tr id="interactive">
                        <td class="entityDetail">Data:</td>
                            <td>
-                             <div id="dataList"><a href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a></div>
+                             <div id="dataList"><a href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=<?php echo $this->strCurrentPath; ?>&format=ajax&top=2','dataList');">more...</a></div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="entityDetail">Documentation</td>
+                          <td>
+                            <div id="docList" class="">
+                                <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Documentation&format=ajax&form=frmDocumentation&target=docList&top=1','docList');" href="javascript:void(0);">view</a>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="entityDetail">Analysis</td>
+                          <td>
+                            <div id="anaList" class="">
+                              <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList&top=1','anaList');" href="javascript:void(0);">view</a>
+                            </div>
                           </td>
                         </tr>
                         <tr id="photos">
@@ -312,21 +348,37 @@ defined('_JEXEC') or die( 'Restricted access' );
                            <div id="dataList"></div>
                          </td>
                         </tr>
-                        <tr id="photos">
-                          <td class="entityDetail">Images:</td>
-                          <td>
-                            <?php
-                              if($this->photoCount > 0):
-                            ?>
-                          <div id="imageList">Additional photos (<a href="/warehouse/photos/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>">view</a>)</div>
+                   <tr>
+                      <td class="entityDetail">Documentation</td>
+                      <td>
+                        <div id="docList" class="">
+                            <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Documentation&format=ajax&form=frmDocumentation&target=docList&top=1','docList');" href="javascript:void(0);">view</a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="entityDetail">Analysis</td>
+                      <td>
+                        <div id="anaList" class="">
+                          <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList&top=1','anaList');" href="javascript:void(0);">view</a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr id="photos">
+                      <td class="entityDetail">Images:</td>
+                      <td>
                         <?php
-                              else:
-                            ?>
-                              <div id="imageList">Images may be found on the tab labeled 'More'.</div>
-                            <?php
-                              endif;
-                            ?>
-                          </td>
+                          if($this->photoCount > 0):
+                        ?>
+                      <div id="imageList">Additional photos (<a href="/warehouse/photos/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>">view</a>)</div>
+                    <?php
+                          else:
+                        ?>
+                          <div id="imageList">Images may be found on the tab labeled 'More'.</div>
+                        <?php
+                          endif;
+                        ?>
+                      </td>
                    </tr>
                    <?php
                  }
@@ -346,10 +398,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
     </div>
     <!-- close overview_section -->
-	
+
     <div class="clear"></div>
   </div>
-  
+
 </div>
 
 

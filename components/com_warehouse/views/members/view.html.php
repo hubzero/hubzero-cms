@@ -51,6 +51,16 @@ class WarehouseViewMembers extends JView{
     /* @var $oHubUser JUser */
     $oHubUser = $oMembersModel->getCurrentUser();
     $this->assignRef( "strUsername", $oHubUser->username );
+
+    // update and get the page views
+    $iEntityViews = $oMembersModel->getPageViews(1, $oProject->getId());
+    $this->assignRef("iEntityActivityLogViews", $iEntityViews);
+
+    // update and get the page views
+    $iEntityDownloads = $oMembersModel->getEntityDownloads(1, $oProject->getId());
+    $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
+
+    $this->assignRef( "mod_curationprogress", ComponentHtml::getModule("mod_curationprogress") );
     
     $bSearch = false;
     if(isset($_SESSION[Search::KEYWORDS]))$bSearch = true;

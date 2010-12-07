@@ -11,7 +11,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
   $strUsername = $this->strUsername;
   $oAuthorizer = Authorizer::getInstance();
-  $oAuthorizer->setUser($strUsername);
+  //$oAuthorizer->setUser($strUsername);
 ?>
 
 <?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
@@ -34,7 +34,35 @@ defined('_JEXEC') or die( 'Restricted access' );
   
         <?php echo TabHtml::getSearchFormWithAction( "frmResults", "/warehouse/find" ); ?>
         <?php echo $this->strTabs; ?>
+
         <div class="aside">
+          <!--<div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">-->
+          <div id="stats" style="border-width: 1px; border-style: dashed; border-color: #cccccc; ">
+            <p style="margin-left:10px; margin-top:10px;"><?php echo $this->iEntityActivityLogViews; ?> Views</p>
+            <p style="margin-left:10px;"><?php echo $this->iEntityActivityLogDownloads; ?> Downloads</p>
+          </div>
+
+          <?php
+            if($oAuthorizer->canEdit($oProject)):
+          ?>
+            <div id="editEntity" class="admin-options" style="margin-top:30px">
+              <p class="edit"><a href="/warehouse/projecteditor/project/<?php echo $oProject->getId(); ?>/members">Edit members</a></p>
+	      <!--<p class="delete"><a href="/collaborate/groups/curation/delete">Delete this project</a></p>-->
+            </div>
+          <?php endif; ?>
+
+          <div id="curation">
+            <span class="curationTitle">Curation progress:</span>
+            <?php echo $this->mod_curationprogress; ?>
+          </div>
+
+          <div class="whatisthis">
+            <h4>What's this?</h4>
+            <p>
+              Once the curator starts working with your submission, monitor the object's progress by reading
+              the curation history.
+            </p>
+          </div>
         </div>
 
         <div class="subject">

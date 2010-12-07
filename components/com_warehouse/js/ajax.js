@@ -97,3 +97,70 @@ function saveInput(p_sUrlPrefix, p_sInputField, p_sResultsDivId){
   var sUrl = p_sUrlPrefix+"&"+p_sInputField+"="+document.getElementById(p_sInputField).value;
   getMootools(sUrl, p_sResultsDivId);  
 }
+
+function computeDownloadSize(field, p_strCurrentValueId, p_iMaxSize, p_strMaxSize, p_sRequestUrl, p_sResonseDivId){
+  iDataFileId = field.value;
+  iCurrentSum = document.getElementById(p_strCurrentValueId).value;
+  strAction = "";
+  if(field.checked==false){
+    strAction = "subtract";
+  }else{
+    strAction = "add";
+  }
+
+  xmlHttp = getAjaxRequest();
+  if (xmlHttp==null){
+    alert ("Your browser does not support AJAX!");
+    return;
+  }
+
+  xmlHttp.onreadystatechange = function(){
+    if (xmlHttp.readyState==4 && xmlHttp.status==200){
+      strResponse = xmlHttp.responseText;
+      strResponseArray = strResponse.split(":");
+      //alert(strResponseArray[0]+", "+strResponseArray[1]);
+
+      iCurrentSum = strResponseArray[0];
+      document.getElementById(p_strCurrentValueId).value = iCurrentSum;
+      
+      strMessage = "Approximate Download File: "+strResponseArray[1]+" (max is "+p_strMaxSize+")";
+      document.getElementById(p_sResonseDivId).innerHTML = strMessage;
+    }
+  }
+
+  var strQuery = p_sRequestUrl+"&sum="+iCurrentSum+"&action="+strAction+"&id="+iDataFileId;
+  xmlHttp.open("GET", strQuery, true);
+  xmlHttp.send();
+}
+
+function computeDownloadSizeBulk(p_bAdd, p_strDataFileIds, p_strCurrentValueId, p_iMaxSize, p_strMaxSize, p_sRequestUrl, p_sResonseDivId){
+  iDataFileId = p_strDataFileIds;
+  iCurrentSum = document.getElementById(p_strCurrentValueId).value;
+  strAction = "add";
+  if(!p_bAdd){
+    strAction = "subtract";
+  }
+
+  xmlHttp = getAjaxRequest();
+  if (xmlHttp==null){
+    alert ("Your browser does not support AJAX!");
+    return;
+  }
+
+  xmlHttp.onreadystatechange = function(){
+    if (xmlHttp.readyState==4 && xmlHttp.status==200){
+      strResponse = xmlHttp.responseText;
+      strResponseArray = strResponse.split(":");
+
+      iCurrentSum = strResponseArray[0];
+      document.getElementById(p_strCurrentValueId).value = iCurrentSum;
+
+      strMessage = "Approximate Download File: "+strResponseArray[1]+" (max is "+p_strMaxSize+")";
+      document.getElementById(p_sResonseDivId).innerHTML = strMessage;
+    }
+  }
+
+  var strQuery = p_sRequestUrl+"&sum="+iCurrentSum+"&action="+strAction+"&id="+iDataFileId;
+  xmlHttp.open("GET", strQuery, true);
+  xmlHttp.send();
+}

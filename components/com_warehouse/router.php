@@ -98,6 +98,9 @@ function WarehouseParseRoute( $segments ){
 	    case 'download':  //task
 	      $vars['task'] = 'download';
 	      break;
+            case 'downloadsize':  //task
+	      $vars['task'] = 'downloadsize';
+	      break;
 	    case 'trialdropdown':  //task
 	      $vars['task'] = 'trialdropdown';
 	      $vars['projid'] = $segments[2];
@@ -118,7 +121,12 @@ function WarehouseParseRoute( $segments ){
 	      $vars['view'] = 'images';
 	      $id = explode( ':', $segments[1] );
 	      $vars['projid'] = (int) $id[0];
-	      break;  
+	      break;
+            case 'filebrowser':  //view
+	      $vars['view'] = $segments[0];
+              $id = explode( ':', $segments[1] );
+	      $vars['projid'] = (int) $id[0];
+	      break;
 	    case 'more':  //view
 	      $vars['view'] = $segments[0];
               $id = explode( ':', $segments[1] );
@@ -152,13 +160,6 @@ function WarehouseParseRoute( $segments ){
 	      $vars['view'] = 'repetitions';
 	      $id = explode( ':', $segments[1] );
 	      $vars['id'] = (int) $id[0];
-	      break;
-	    case 'filebrowser':  //view
-	      $vars['view'] = 'filebrowser';
-	      if(isset($segments[1])){
-	        $id = explode( ':', $segments[1] );
-	        $vars['id'] = (int) $id[0];
-	      }
 	      break;
 	    case 'data':  //view
 	      $vars['view'] = 'data';
@@ -208,6 +209,10 @@ function WarehouseParseRoute( $segments ){
 	      $vars['view'] = 'photos';
 	      $vars['projectId'] = (int) $segments[2];
 	      $vars['experimentId'] = (int) $segments[4];
+	      break;
+           case 'projectphotos':  //view
+	      $vars['view'] = 'projectphotos';
+	      $vars['projectId'] = (int) $segments[2];
 	      break;
             case 'publications':  //view
 	      $vars['view'] = 'publications';

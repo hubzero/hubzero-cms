@@ -6,7 +6,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php $oDataFileArray = unserialize($_REQUEST[DataFilePeer::TABLE_NAME]); ?>
 
 <?php if ($this->referer == "repetition"){ ?>
-  <a href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a>
+  <a href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=<?php echo $this->strCurrentPath; ?>&format=ajax','dataList');">more...</a>
 <?php }else{ ?>
 <form id="frmData" action="/warehouse/download" method="post">
 <input type="hidden" name="projectId" value="<?php echo $this->iProjectId; ?>"/>
@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
     </tr>
     <tr valign="top">
       <?php if(!StringHelper::endsWith($this->strCurrentPath, ".groups")): ?>
-        <td colspan="6"><a onclick="getMootools('/warehouse/filebrowser?path=<?php echo $this->strBackPath; ?>&format=ajax','dataList');" href="javascript:void(0);">...go back</a></td>
+        <td colspan="6"><a onclick="getMootools('/warehouse/data?path=<?php echo $this->strBackPath; ?>&format=ajax','dataList');" href="javascript:void(0);">...go back</a></td>
       <?php else: ?>
         <td colspan="6"></td>
       <?php endif; ?>
@@ -55,7 +55,7 @@ defined('_JEXEC') or die( 'Restricted access' );
           </td>
           <td>
             <?php if($oDataFile->getDirectory()==1): ?>
-              <a href="javascript:void(0);" onClick="getMootools('/warehouse/filebrowser?path=<?php echo $strDirLink; ?>&format=ajax','dataList');"><?php echo $oDataFile->getName(); ?></a>
+              <a href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=<?php echo $strDirLink; ?>&format=ajax','dataList');"><?php echo $oDataFile->getName(); ?></a>
             <?php else: ?>
               <a href="<?php echo $strFileLink; ?>" target="data_file"><?php echo $oDataFile->getName(); ?></a>
             <?php endif; ?>

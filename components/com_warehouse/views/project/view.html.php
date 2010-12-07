@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
@@ -11,7 +11,7 @@ require_once 'lib/data/ProjectGrant.php';
 require_once 'lib/data/ProjectGrantPeer.php';
 
 class WarehouseViewProject extends JView{
-	
+
   function display($tpl = null){
     $iProjectId = JRequest::getVar("id");
     $oProject = ProjectPeer::retrieveByPK($iProjectId);
@@ -39,10 +39,10 @@ class WarehouseViewProject extends JView{
     $this->assignRef( "strPIandCoPIs", $strPIs );
     $this->assignRef( "strDates", $this->getDates($oProject) );
     $this->assignRef( "strFundingOrg", $this->getFunding($oProject) );
-    
+
     $_REQUEST[OrganizationPeer::TABLE_NAME] = serialize($this->getOrganizations($oProject));
     $_REQUEST[ProjectHomepagePeer::URL] = serialize($this->getProjectLinks($oProject));
-    
+
     //get the tabs to display on the page
     $strTabArray = $oProjectModel->getTabArray();
     $strTabViewArray = $oProjectModel->getTabViewArray();
@@ -62,7 +62,7 @@ class WarehouseViewProject extends JView{
     if($oProjectImageDataFile){
       //scale the image if thumbnail and display don't exist.  return the picture for the view
       $oProjectImageDataFile = $oProjectModel->scaleImageByWidth($oProjectImageDataFile, true, false);
-    
+
       //update the datafile for the view
       $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oProjectImageDataFile);
     }else{
@@ -70,7 +70,7 @@ class WarehouseViewProject extends JView{
       $strProjectThumbnail = $oProject->getProjectThumbnailHTML("thumb");
       $this->assignRef("strProjectThumbnail", $strProjectThumbnail);
     }
-    
+
     $oFacilityOrganizationArray = $oProjectModel->findProjectFacility($iProjectId);
     $_REQUEST["oFacility"] = serialize($oFacilityOrganizationArray);
 
@@ -101,6 +101,9 @@ class WarehouseViewProject extends JView{
     $oHubUser = $oProjectModel->getCurrentUser();
     $this->assignRef( "strUsername", $oHubUser->username );
 
+    $iPhotoFileCount = $oProjectModel->findDataFileByMimeTypeCount($iProjectId, 0);
+    $this->assignRef( "photoCount", $iPhotoFileCount );
+
     // update and get the page views
     $iEntityViews = $oProjectModel->getPageViews(1, $oProject->getId());
     $this->assignRef("iEntityActivityLogViews", $iEntityViews);
@@ -108,7 +111,7 @@ class WarehouseViewProject extends JView{
     // update and get the page views
     $iEntityDownloads = $oProjectModel->getEntityDownloads(1, $oProject->getId());
     $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
-    
+
     $bSearch = false;
     if(isset($_SESSION[Search::KEYWORDS]))$bSearch = true;
     if(isset($_SESSION[Search::SEARCH_TYPE]))$bSearch = true;
@@ -121,17 +124,21 @@ class WarehouseViewProject extends JView{
     JFactory::getApplication()->getPathway()->addItem("Project Warehouse","/warehouse");
     if($bSearch){
       JFactory::getApplication()->getPathway()->addItem("Results","/warehouse/find?keywords=".$_SESSION[Search::KEYWORDS]
-                                                                                                                            . "&type=".$_SESSION[Search::SEARCH_TYPE]
-                                                                                                                            . "&funding=".$_SESSION[Search::FUNDING_TYPE]
-                                                                                                                            . "&member=".$_SESSION[Search::MEMBER]
-                                                                                                                            . "&startdate=".$_SESSION[Search::START_DATE]
-                                                                                                                            . "&startdate=".$_SESSION[Search::END_DATE]);
+                                                                                            . "&type=".$_SESSION[Search::SEARCH_TYPE]
+                                                                                            . "&funding=".$_SESSION[Search::FUNDING_TYPE]
+                                                                                            . "&member=".$_SESSION[Search::MEMBER]
+                                                                                            . "&startdate=".$_SESSION[Search::START_DATE]
+                                                                                            . "&startdate=".$_SESSION[Search::END_DATE]);
     }
     JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"javascript:void(0)");
-    
+
+
+//    $this->setLayout("unstructured");
+//    echo $this->getLayout();
+
     parent::display($tpl);
   }//end display
-  
+
   /**
    * Gets the list of PI and Co-PIs.
    * @return comma seperated string of names
@@ -174,18 +181,18 @@ ENDHTML;
     $strPIs = substr($strPIs, 0, $iIndexLastComma);
     return $strPIs;
   }
-  
+
   /**
    * Gets the project dates
    * @return start and end date
    */
   private function getDates($p_oProject){
   	//if no start date, return empty string
-    $strDates = trim($p_oProject->getStartDate()); 
+    $strDates = trim($p_oProject->getStartDate());
     if(strlen($strDates) == 0){
       return $strDates;
     }
-    
+
     //if we have start but no end date, enter Present
     if(strlen($p_oProject->getEndDate())>0){
       $strDates = strftime("%B %d, %Y", strtotime($strDates)) . " - ". strftime("%B %d, %Y", strtotime($p_oProject->getEndDate()));
@@ -196,7 +203,7 @@ ENDHTML;
     }
     return $strDates;
   }
-  
+
   /**
    * Gets the list of organizations for the project
    * @return array of organization names
@@ -208,7 +215,7 @@ ENDHTML;
   	}
   	return $oOrganizationArray;
   }
-  
+
   /**
    * Gets the list of organizations for the project
    * @return array of organization names
@@ -216,9 +223,9 @@ ENDHTML;
   private function getFacility($p_oProject){
   	return OrganizationPeer::findProjectFacility($p_oProject->getId());
   }
-  
+
   /**
-   * 
+   *
    *
    */
   private function getProjectLinks($p_oProject){
@@ -263,7 +270,7 @@ ENDHTML;
       }
       return $strFundingOrg;
   }
-  
+
   private function getDisplayDescription($p_oProject){
     $oDescriptionClob = nl2br($p_oProject->getDescription());
     $strReturnDescription = "";
@@ -282,7 +289,7 @@ ENDHTML;
     }
     return $strReturnDescription;
   }
-  
+
 }
 
 ?>

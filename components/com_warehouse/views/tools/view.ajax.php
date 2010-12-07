@@ -24,6 +24,9 @@ class WarehouseViewTools extends JView {
         
         $_REQUEST["TOOL_DATA_FILES"] = serialize($oToolFileArray);
 
+        $strAddressBarUrl = "/warehouse/experiment/".$oProjectExperimentArray["EXP_ID"]."/projecct/".$oProjectExperimentArray["PROJ_ID"];
+        $strReturnURL = $oToolModel->getReturnURL($strAddressBarUrl);
+        $this->assignRef( "warehouseURL", $strReturnURL );
 
         if (sizeof($oToolFileArray) === 0) {
             echo "0 interactive data files found.";

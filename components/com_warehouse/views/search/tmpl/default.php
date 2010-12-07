@@ -64,7 +64,7 @@ defined('_JEXEC') or die( 'Restricted access' );
       	  <table style="width:0px;border-bottom:0px;border-top:0px;margin-top:10px;">
 	        <tr>
 	          <td><label for="strKeywords">Keywords:</label></td>
-	          <td><input id="strKeywords" type="text" class="searchInput" name="keywords" value=""  onClick="this.value=''"/></td>
+	          <td><input id="strKeywords" type="text" class="searchInput" name="keywords" value=""/></td>
 	          <td><input type="submit" value="GO"/></td>
 	        </tr>
                 <!--

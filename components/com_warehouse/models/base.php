@@ -28,8 +28,11 @@ class WarehouseModelBase extends JModel {
     function __construct() {
         parent::__construct();
 
-        $this->m_oTabArray = array("Project", "Experiments", "Data", "Team Members", "More");
-        $this->m_oTabViewArray = array("project", "experiments", "data", "members", "more");
+//        $this->m_oTabArray = array("Project", "Experiments", "Data", "Team Members", "More");
+//        $this->m_oTabViewArray = array("project", "experiments", "data", "members", "more");
+
+        $this->m_oTabArray = array("Project", "Experiments", "Team Members", "File Browser");
+        $this->m_oTabViewArray = array("project", "experiments", "members", "filebrowser");
 
         $this->m_oSearchTabArray = array("Search", "Enhanced Projects");
         $this->m_oSearchTabViewArray = array("search","featured");
@@ -193,15 +196,14 @@ class WarehouseModelBase extends JModel {
     public function downloadTarBall() {
         $oDataFileIdArray = array();
 
-        $oSelectedDataFileArray = $_POST['cbxDataFile'];
+        $oSelectedDataFileArray = $_REQUEST['cbxDataFile'];
 
         while (list ($iIndex, $iSelectedDataFileId) = @each($oSelectedDataFileArray)) {
-            echo "array " . $iSelectedDataFileId . " <br>";
-            array_push($oDataFileIdArray, $iSelectedDataFileId);
+          array_push($oDataFileIdArray, $iSelectedDataFileId);
         }//end while $oSelectedDataFileArray
 
         if (empty($oDataFileIdArray)) {
-            throw new Exception("Data file(s) not selected");
+          throw new Exception("Data file(s) not selected");
         }
 
         //create a temporary directory for archiving the files
@@ -222,11 +224,14 @@ class WarehouseModelBase extends JModel {
         $oUser = & JFactory::getUser();
         $strUsername = $oUser->username;
         if (strlen($strUsername) === 0) {
-            $strUsername = "guest";
+          $strUsername = "guest";
         }
         $strArchiveFile = "/tmp/$strUsername-neeshub-$strCurrentTimestamp-download.tar.gz";
         $strCommandToExecute = "tar -pzcvf $strArchiveFile $strFilesToCopy";
         exec($strCommandToExecute, $output);
+
+        //delete old download files
+        FileHelper::downloadCleanup("/tmp");
 
         //download the file
         return FileHelper::downloadTarBall($strArchiveFile);
@@ -490,7 +495,7 @@ ENDHTML;
    */
   public function getViewableExperimentsByProject($p_oAuthorizer, $p_oProject){
     $oViewableEntityArray = array(Experiments::SHOW => array(), Experiments::HIDE => array());
-    
+
     $oExperimentArray = $p_oProject->getExperiments();
 
 
@@ -523,6 +528,32 @@ ENDHTML;
    */
   public function getExperimentById($p_iExperimentId){
     return ExperimentPeer::retrieveByPK($p_iExperimentId);
+  }
+
+  /**
+   *
+   * @param int $p_iDataFileId
+   * @return DataFile
+   */
+  public function getDataFileById($p_iDataFileId){
+    return DataFilePeer::retrieveByPK($p_iDataFileId);
+  }
+
+  public static function getReturnURL($p_strCurrentUrl=""){
+    // Get current page path and querystring
+    $uri  =& JURI::getInstance();
+    $redirectUrl = $uri->toString(array('path', 'query'));
+    if(StringHelper::hasText($p_strCurrentUrl)){
+      $redirectUrl = $p_strCurrentUrl;
+    }
+
+    //echo "url=$redirectUrl";
+
+    // Code the redirect URL
+    $redirectUrl = base64_encode($redirectUrl);
+    $redirectUrl = 'return=' . $redirectUrl;
+
+    return $redirectUrl;
   }
 
 }

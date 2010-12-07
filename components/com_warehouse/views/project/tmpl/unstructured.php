@@ -6,9 +6,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php 
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
-  $document->addScript($this->baseurl."/components/com_warehouse/js/ajax.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_warehouse/js/warehouse.js", 'text/javascript');
-  $document->addScript($this->baseurl."/components/com_warehouse/js/general.js", 'text/javascript');
 ?>
 
 <?php
@@ -23,7 +21,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="innerwrap">
   <div class="content-header">
-    <h2 class="contentheading">NEES Project Warehouse</h2>
+    <h2 class="contentheading">NEES Project Warehouse (Unstructured)</h2>
   </div>
   
   <div id="warehouseWindow" style="padding-top:20px;">
@@ -93,8 +91,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
         <?php
           #Check to see if the current user is the curator.
-          //if($oAuthorizer->canCurate($oProject)):
-          if(false):
+          if($oAuthorizer->canCurate($oProject)):
         ?>
           <div id="editEntity" class="admin-options" style="margin-top:30px">
             <p class="edit"><a href="#">Curate this project</a></p>
@@ -272,38 +269,6 @@ defined('_JEXEC') or die( 'Restricted access' );
                   if($this->publicationCount > 3){?>
                     <a href="/warehouse/publications/project/<?php echo $oProject->getId(); ?>">more...</a>
                   <?php }
-                ?>
-              </td>
-            </tr>
-            <tr>
-              <td class="entityDetail">Documentation</td>
-              <td>
-                <div id="docList" class="">
-                    <a onclick="getMootools('/warehouse/data?path=<?php echo $oProject->getPathname(); ?>/Documentation&format=ajax&form=frmDocumentation&target=docList','docList');" href="javascript:void(0);">view</a>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td class="entityDetail">Analysis</td>
-              <td>
-                <div id="anaList" class="">
-                  <a onclick="getMootools('/warehouse/data?path=<?php echo $oProject->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList','anaList');" href="javascript:void(0);">view</a>
-                </div>
-              </td>
-            </tr>
-            <tr id="photos">
-              <td class="entityDetail">Images:</td>
-              <td>
-                <?php
-                  if($this->photoCount > 0):
-                ?>
-                  <div id="imageList">Additional photos (<a href="/warehouse/projectphotos/project/<?php echo $oProject->getId(); ?>">view</a>)</div>
-                <?php
-                  else:
-                ?>
-                  <div id="imageList">Project images not available.</div>
-                <?php
-                  endif;
                 ?>
               </td>
             </tr>

@@ -96,6 +96,51 @@ function validateFileBrowser(p_strFormId, p_strCheckboxId, p_iNumberOfCheckboxes
   }	  
 }
 
+function downloadFileBrowser(p_strFormId, p_strCheckboxName, p_strRequestUrl, p_strApproxDownloadId, p_iMaxDownloadSize){
+  var bValid = true;
+  var iCount = 0;
+
+  var oCheckBoxArray = document.getElementById(p_strFormId).elements[p_strCheckboxName];
+  iNumberOfCheckBoxes = oCheckBoxArray.length;
+
+  for(var i=0; i < iNumberOfCheckBoxes; i++){
+    oThisCheckbox = oCheckBoxArray[i];
+    if(oThisCheckbox != null){
+      if(oThisCheckbox.checked){
+        ++iCount;
+      }
+    }
+  }
+
+
+  if(iCount==0){
+    if(!oCheckBoxArray.checked){
+      bValid = false;
+    }
+  }
+
+  iApproxDownloadSize = document.getElementById(p_strApproxDownloadId).value;
+  if(iApproxDownloadSize > p_iMaxDownloadSize){
+    bValid = false;
+  }
+
+  if(bValid){
+    document.getElementById(p_strFormId).action = p_strRequestUrl;
+    document.getElementById(p_strFormId).submit();
+    //alert("Download...");
+  }else{
+    if(iCount==0){
+      alert("Please select a folder or file.");
+    }else{
+      if(iCount==1){
+        alert("Your selected download directory/file is too large.");
+      }else{
+        alert("Your selected download directories/files are too large.");
+      }
+    }
+  }
+}
+
 function submitDataForm(p_strFormId, p_strAction){
   var bValid = true;
   if(p_strAction.length == 0){
@@ -135,8 +180,38 @@ function onChangeDataTab(p_strFormId, p_strToolId, p_strExperimentId, p_strTrial
   document.getElementById(p_strFormId).submit();
 }
 
+function onChangeFileBrowser(p_strFormId, p_strExperimentId, p_strTrialId, p_strRepetitionId){
+  var iExperimentId = document.getElementById(p_strExperimentId).value;
+  //document.getElementById("txtExperiment").value = iExperimentId;
+
+  var oTrial = document.getElementById(p_strTrialId);
+  if(oTrial != null){
+    var iTrialId = oTrial.value;
+    //document.getElementById("txtTrial").value = iTrialId;
+  }
+
+  var oRepetition = document.getElementById(p_strRepetitionId);
+  if(oRepetition != null){
+    var iRepetitionId = oRepetition.value;
+    //document.getElementById("txtRepetition").value = iRepetitionId;
+  }
+
+  document.getElementById(p_strFormId).submit();
+}
+
 function fileSearch(p_strSelectId, p_strInputId, p_iIndex, p_strTargetId){
   var oFindBy = document.getElementById(p_strSelectId);
   var oTerm = document.getElementById(p_strInputId);
   getMootools('/warehouse/searchfiles?format=ajax&term='+oTerm.value+'&findby='+oFindBy.value+'&index='+p_iIndex, p_strTargetId);
+}
+
+function displayVideoTypes(p_strElementToCheckId, p_strElementToDisplayId){
+  var iVideoDisplayValue = document.getElementById(p_strElementToCheckId).value;
+  if(iVideoDisplayValue==0){
+    document.getElementById(p_strElementToCheckId).value = 1;
+    document.getElementById(p_strElementToDisplayId).style.display='';
+  }else{
+    document.getElementById(p_strElementToCheckId).value = 0;
+    document.getElementById(p_strElementToDisplayId).style.display='none';
+  }
 }

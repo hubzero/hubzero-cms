@@ -18,8 +18,10 @@ class WarehouseController extends JController{
     $this->registerTask( 'find' , 'findProjects' );
     $this->registerTask( 'get' , 'getFile' );
     $this->registerTask( 'download' , 'download' );
+    $this->registerTask( 'downloadsize', 'getDownloadSize' );
     $this->registerTask( 'trialdropdown' , 'getTrialDropDown' );
     $this->registerTask( 'repetitiondropdown' , 'getRepetitionDropDown' );
+    $this->registerTask( 'searchfiles', 'searchFiles' );
   }	
 	
   /**
@@ -114,17 +116,17 @@ class WarehouseController extends JController{
    *
    */
   public function getFile(){
-  	$strPathToFile = JRequest::getVar("path", "");
-  	
-  	/*
-  	 * TODO: Remove this check before going to prototype 3.  
-  	 * We want to go straight to the file path!
-  	 */
-  	if(!StringHelper::beginsWith($strPathToFile, "/nees/home")){
-  	  $strPathToFile = "/www/neeshub/components/com_warehouse/".$strPathToFile;
-  	}
-  	
-  	FileHelper::download($strPathToFile);
+    $strPathToFile = JRequest::getVar("path", "");
+
+    /*
+     * TODO: Remove this check before going to prototype 3.
+     * We want to go straight to the file path!
+     */
+    if(!StringHelper::beginsWith($strPathToFile, "/nees/home")){
+      $strPathToFile = "/www/neeshub/components/com_warehouse/".$strPathToFile;
+    }
+
+    FileHelper::download($strPathToFile);
   }
   
   /**
@@ -152,6 +154,43 @@ class WarehouseController extends JController{
     }
 
     $ext = $oModel->downloadTarBall();
+  }
+
+  function getDownloadSize(){
+    /* @var $oModel WarehouseModelBase */
+    $oModel =& $this->getModel('Base');
+
+    $iDataFileId = JRequest::getVar('id', 0);
+    $iSum = JRequest::getVar('sum', 0);
+    $strAction = JRequest::getVar('action');
+
+    /* @var $oDataFile DataFile */
+    $oDataFile = null;
+      
+    $iDataFileIdArray = explode(",", $iDataFileId);
+    if(count($iDataFileIdArray)==1){
+      $oDataFile = $oModel->getDataFileById($iDataFileId);
+      $iSize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : $oDataFile->getFilesize();
+      if($strAction=='add'){
+        $iSum += $iSize;
+      }else{
+        $iSum -= $iSize;
+      }
+    }else{
+      $oDataFileArray = DataFilePeer::retrieveByPKs($iDataFileIdArray);
+      foreach($oDataFileArray as $oDataFile){
+        $iSize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : $oDataFile->getFilesize();
+        if($strAction=='add'){
+          $iSum += $iSize;
+        }else{
+          $iSum -= $iSize;
+        }
+      }
+    }
+
+    $strReturn = $iSum .":". cleanSize($iSum);
+    
+    echo $strReturn;
   }
   
   function getTrialDropDown(){

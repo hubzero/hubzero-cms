@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
@@ -6,7 +6,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.application.component.view');
 
 class WarehouseViewDataFiles extends JView{
-
+	
   function display($tpl = null){
     $oDataFileArray = array();
     $strPathArray = null;
@@ -48,7 +48,7 @@ class WarehouseViewDataFiles extends JView{
 
     /* @var $oDataFile DataFile */
     $oDataFile = $oDataFileArray[0];
-
+    
     /* @var $oDataFileLink DataFileLink */
     $oDataFileLink = DataFileLinkPeer::retrieveByPK($oDataFile->getId());
     $iProjectId = $oDataFileLink->getProject()->getId();
@@ -56,11 +56,11 @@ class WarehouseViewDataFiles extends JView{
 
     $this->assignRef( "iProjectId", $iProjectId );
     $this->assignRef( "iExperimentId", $iExperimentId );
-
+	
     parent::display($tpl);
   }//end display
-
-
+  
+  
 }
 
 ?>
