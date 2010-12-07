@@ -636,7 +636,7 @@ class PersonPeer extends BasePersonPeer {
     if(StringHelper::hasText($strFirstName)){
       $strQuery .= " AND upper(PERSON.FIRST_NAME) like $strFirstName";
     }
-      $strQuery .= "
+      $strQuery .= " AND PERSON.DELETED=0 
                  )
                  WHERE rn <= $p_iLimit";
     

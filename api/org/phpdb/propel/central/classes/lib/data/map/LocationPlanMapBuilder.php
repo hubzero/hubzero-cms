@@ -72,6 +72,8 @@ class LocationPlanMapBuilder {
 
 		$tMap->addForeignKey('TRIAL_ID', 'TrialId', 'double', CreoleTypes::NUMERIC, 'TRIAL', 'TRIALID', false, 22);
 
+		$tMap->addForeignKey('DATA_FILE_ID', 'DataFileId', 'double', CreoleTypes::NUMERIC, 'DATA_FILE', 'ID', false, 22);
+
 		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 1020);
 
 		$tMap->addColumn('PLAN_TYPE_ID', 'PlanTypeId', 'double', CreoleTypes::NUMERIC, false, 22);

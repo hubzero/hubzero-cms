@@ -2,69 +2,57 @@
 
 require_once 'propel/util/BasePeer.php';
 // The object class -- needed for instanceof checks in this class.
-// actual class may be a subclass -- as returned by PersonPeer::getOMClass()
-include_once 'lib/data/Person.php';
+// actual class may be a subclass -- as returned by EntityHistoryPeer::getOMClass()
+include_once 'lib/data/EntityHistory.php';
 
 /**
- * Base static class for performing query and update operations on the 'PERSON' table.
+ * Base static class for performing query and update operations on the 'ENTITY_HISTORY' table.
  *
  * 
  *
  * @package    lib.data.om
  */
-abstract class BasePersonPeer {
+abstract class BaseEntityHistoryPeer {
 
 	/** the default database name for this class */
 	const DATABASE_NAME = 'NEEScentral';
 
 	/** the table name for this class */
-	const TABLE_NAME = 'PERSON';
+	const TABLE_NAME = 'ENTITY_HISTORY';
 
 	/** A class that can be returned by this peer. */
-	const CLASS_DEFAULT = 'lib.data.Person';
+	const CLASS_DEFAULT = 'lib.data.EntityHistory';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 12;
+	const NUM_COLUMNS = 8;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 
 	/** the column name for the ID field */
-	const ID = 'PERSON.ID';
+	const ID = 'ENTITY_HISTORY.ID';
 
-	/** the column name for the ADDRESS field */
-	const ADDRESS = 'PERSON.ADDRESS';
+	/** the column name for the ENTITY_ID field */
+	const ENTITY_ID = 'ENTITY_HISTORY.ENTITY_ID';
 
-	/** the column name for the ADMIN_STATUS field */
-	const ADMIN_STATUS = 'PERSON.ADMIN_STATUS';
+	/** the column name for the ENTITY_TYPE_ID field */
+	const ENTITY_TYPE_ID = 'ENTITY_HISTORY.ENTITY_TYPE_ID';
 
-	/** the column name for the CATEGORY field */
-	const CATEGORY = 'PERSON.CATEGORY';
+	/** the column name for the ACTION field */
+	const ACTION = 'ENTITY_HISTORY.ACTION';
 
-	/** the column name for the COMMENTS field */
-	const COMMENTS = 'PERSON.COMMENTS';
+	/** the column name for the ACTION_DATE field */
+	const ACTION_DATE = 'ENTITY_HISTORY.ACTION_DATE';
 
-	/** the column name for the E_MAIL field */
-	const E_MAIL = 'PERSON.E_MAIL';
+	/** the column name for the ACTION_BY field */
+	const ACTION_BY = 'ENTITY_HISTORY.ACTION_BY';
 
-	/** the column name for the FAX field */
-	const FAX = 'PERSON.FAX';
+	/** the column name for the IS_CURRENT field */
+	const IS_CURRENT = 'ENTITY_HISTORY.IS_CURRENT';
 
-	/** the column name for the FIRST_NAME field */
-	const FIRST_NAME = 'PERSON.FIRST_NAME';
-
-	/** the column name for the LAST_NAME field */
-	const LAST_NAME = 'PERSON.LAST_NAME';
-
-	/** the column name for the PHONE field */
-	const PHONE = 'PERSON.PHONE';
-
-	/** the column name for the USER_NAME field */
-	const USER_NAME = 'PERSON.USER_NAME';
-
-	/** the column name for the DELETED field */
-	const DELETED = 'PERSON.DELETED';
+	/** the column name for the ACTION_COMMENT field */
+	const ACTION_COMMENT = 'ENTITY_HISTORY.ACTION_COMMENT';
 
 	/** The PHP to DB Name Mapping */
 	private static $phpNameMap = null;
@@ -77,10 +65,10 @@ abstract class BasePersonPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Address', 'AdminStatus', 'Category', 'Comment', 'EMail', 'Fax', 'FirstName', 'LastName', 'Phone', 'UserName', 'Deleted', ),
-		BasePeer::TYPE_COLNAME => array (PersonPeer::ID, PersonPeer::ADDRESS, PersonPeer::ADMIN_STATUS, PersonPeer::CATEGORY, PersonPeer::COMMENTS, PersonPeer::E_MAIL, PersonPeer::FAX, PersonPeer::FIRST_NAME, PersonPeer::LAST_NAME, PersonPeer::PHONE, PersonPeer::USER_NAME, PersonPeer::DELETED, ),
-		BasePeer::TYPE_FIELDNAME => array ('ID', 'ADDRESS', 'ADMIN_STATUS', 'CATEGORY', 'COMMENTS', 'E_MAIL', 'FAX', 'FIRST_NAME', 'LAST_NAME', 'PHONE', 'USER_NAME', 'DELETED', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'EntityId', 'EntityTypeId', 'Action', 'ActionDate', 'ActionBY', 'IsCurrent', 'ActionComment', ),
+		BasePeer::TYPE_COLNAME => array (EntityHistoryPeer::ID, EntityHistoryPeer::ENTITY_ID, EntityHistoryPeer::ENTITY_TYPE_ID, EntityHistoryPeer::ACTION, EntityHistoryPeer::ACTION_DATE, EntityHistoryPeer::ACTION_BY, EntityHistoryPeer::IS_CURRENT, EntityHistoryPeer::ACTION_COMMENT, ),
+		BasePeer::TYPE_FIELDNAME => array ('ID', 'ENTITY_ID', 'ENTITY_TYPE_ID', 'ACTION', 'ACTION_DATE', 'ACTION_BY', 'IS_CURRENT', 'ACTION_COMMENT', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
 	/**
@@ -90,10 +78,10 @@ abstract class BasePersonPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Address' => 1, 'AdminStatus' => 2, 'Category' => 3, 'Comment' => 4, 'EMail' => 5, 'Fax' => 6, 'FirstName' => 7, 'LastName' => 8, 'Phone' => 9, 'UserName' => 10, 'Deleted' => 11, ),
-		BasePeer::TYPE_COLNAME => array (PersonPeer::ID => 0, PersonPeer::ADDRESS => 1, PersonPeer::ADMIN_STATUS => 2, PersonPeer::CATEGORY => 3, PersonPeer::COMMENTS => 4, PersonPeer::E_MAIL => 5, PersonPeer::FAX => 6, PersonPeer::FIRST_NAME => 7, PersonPeer::LAST_NAME => 8, PersonPeer::PHONE => 9, PersonPeer::USER_NAME => 10, PersonPeer::DELETED => 11, ),
-		BasePeer::TYPE_FIELDNAME => array ('ID' => 0, 'ADDRESS' => 1, 'ADMIN_STATUS' => 2, 'CATEGORY' => 3, 'COMMENTS' => 4, 'E_MAIL' => 5, 'FAX' => 6, 'FIRST_NAME' => 7, 'LAST_NAME' => 8, 'PHONE' => 9, 'USER_NAME' => 10, 'DELETED' => 11, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'EntityId' => 1, 'EntityTypeId' => 2, 'Action' => 3, 'ActionDate' => 4, 'ActionBY' => 5, 'IsCurrent' => 6, 'ActionComment' => 7, ),
+		BasePeer::TYPE_COLNAME => array (EntityHistoryPeer::ID => 0, EntityHistoryPeer::ENTITY_ID => 1, EntityHistoryPeer::ENTITY_TYPE_ID => 2, EntityHistoryPeer::ACTION => 3, EntityHistoryPeer::ACTION_DATE => 4, EntityHistoryPeer::ACTION_BY => 5, EntityHistoryPeer::IS_CURRENT => 6, EntityHistoryPeer::ACTION_COMMENT => 7, ),
+		BasePeer::TYPE_FIELDNAME => array ('ID' => 0, 'ENTITY_ID' => 1, 'ENTITY_TYPE_ID' => 2, 'ACTION' => 3, 'ACTION_DATE' => 4, 'ACTION_BY' => 5, 'IS_CURRENT' => 6, 'ACTION_COMMENT' => 7, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
 	/**
@@ -103,8 +91,8 @@ abstract class BasePersonPeer {
 	 */
 	public static function getMapBuilder()
 	{
-		include_once 'lib/data/map/PersonMapBuilder.php';
-		return BasePeer::getMapBuilder('lib.data.map.PersonMapBuilder');
+		include_once 'lib/data/map/EntityHistoryMapBuilder.php';
+		return BasePeer::getMapBuilder('lib.data.map.EntityHistoryMapBuilder');
 	}
 	/**
 	 * Gets a map (hash) of PHP names to DB column names.
@@ -117,7 +105,7 @@ abstract class BasePersonPeer {
 	public static function getPhpNameMap()
 	{
 		if (self::$phpNameMap === null) {
-			$map = PersonPeer::getTableMap();
+			$map = EntityHistoryPeer::getTableMap();
 			$columns = $map->getColumns();
 			$nameMap = array();
 			foreach ($columns as $column) {
@@ -172,12 +160,12 @@ abstract class BasePersonPeer {
 	 *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
 	 * </code>
 	 * @param      string $alias The alias for the current table.
-	 * @param      string $column The column name for current table. (i.e. PersonPeer::COLUMN_NAME).
+	 * @param      string $column The column name for current table. (i.e. EntityHistoryPeer::COLUMN_NAME).
 	 * @return     string
 	 */
 	public static function alias($alias, $column)
 	{
-		return str_replace(PersonPeer::TABLE_NAME.'.', $alias.'.', $column);
+		return str_replace(EntityHistoryPeer::TABLE_NAME.'.', $alias.'.', $column);
 	}
 
 	/**
@@ -194,34 +182,26 @@ abstract class BasePersonPeer {
 	public static function addSelectColumns(Criteria $criteria)
 	{
 
-		$criteria->addSelectColumn(PersonPeer::ID);
+		$criteria->addSelectColumn(EntityHistoryPeer::ID);
 
-		$criteria->addSelectColumn(PersonPeer::ADDRESS);
+		$criteria->addSelectColumn(EntityHistoryPeer::ENTITY_ID);
 
-		$criteria->addSelectColumn(PersonPeer::ADMIN_STATUS);
+		$criteria->addSelectColumn(EntityHistoryPeer::ENTITY_TYPE_ID);
 
-		$criteria->addSelectColumn(PersonPeer::CATEGORY);
+		$criteria->addSelectColumn(EntityHistoryPeer::ACTION);
 
-		$criteria->addSelectColumn(PersonPeer::COMMENTS);
+		$criteria->addSelectColumn(EntityHistoryPeer::ACTION_DATE);
 
-		$criteria->addSelectColumn(PersonPeer::E_MAIL);
+		$criteria->addSelectColumn(EntityHistoryPeer::ACTION_BY);
 
-		$criteria->addSelectColumn(PersonPeer::FAX);
+		$criteria->addSelectColumn(EntityHistoryPeer::IS_CURRENT);
 
-		$criteria->addSelectColumn(PersonPeer::FIRST_NAME);
-
-		$criteria->addSelectColumn(PersonPeer::LAST_NAME);
-
-		$criteria->addSelectColumn(PersonPeer::PHONE);
-
-		$criteria->addSelectColumn(PersonPeer::USER_NAME);
-
-		$criteria->addSelectColumn(PersonPeer::DELETED);
+		$criteria->addSelectColumn(EntityHistoryPeer::ACTION_COMMENT);
 
 	}
 
-	const COUNT = 'COUNT(PERSON.ID)';
-	const COUNT_DISTINCT = 'COUNT(DISTINCT PERSON.ID)';
+	const COUNT = 'COUNT(ENTITY_HISTORY.ID)';
+	const COUNT_DISTINCT = 'COUNT(DISTINCT ENTITY_HISTORY.ID)';
 
 	/**
 	 * Returns the number of rows matching criteria.
@@ -239,9 +219,9 @@ abstract class BasePersonPeer {
 		// clear out anything that might confuse the ORDER BY clause
 		$criteria->clearSelectColumns()->clearOrderByColumns();
 		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->addSelectColumn(PersonPeer::COUNT_DISTINCT);
+			$criteria->addSelectColumn(EntityHistoryPeer::COUNT_DISTINCT);
 		} else {
-			$criteria->addSelectColumn(PersonPeer::COUNT);
+			$criteria->addSelectColumn(EntityHistoryPeer::COUNT);
 		}
 
 		// just in case we're grouping: add those columns to the select statement
@@ -250,7 +230,7 @@ abstract class BasePersonPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$rs = PersonPeer::doSelectRS($criteria, $con);
+		$rs = EntityHistoryPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
 			return $rs->getInt(1);
 		} else {
@@ -263,7 +243,7 @@ abstract class BasePersonPeer {
 	 *
 	 * @param      Criteria $criteria object used to create the SELECT statement.
 	 * @param      Connection $con
-	 * @return     Person
+	 * @return     EntityHistory
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
@@ -271,7 +251,7 @@ abstract class BasePersonPeer {
 	{
 		$critcopy = clone $criteria;
 		$critcopy->setLimit(1);
-		$objects = PersonPeer::doSelect($critcopy, $con);
+		$objects = EntityHistoryPeer::doSelect($critcopy, $con);
 		if ($objects) {
 			return $objects[0];
 		}
@@ -288,7 +268,7 @@ abstract class BasePersonPeer {
 	 */
 	public static function doSelect(Criteria $criteria, $con = null)
 	{
-		return PersonPeer::populateObjects(PersonPeer::doSelectRS($criteria, $con));
+		return EntityHistoryPeer::populateObjects(EntityHistoryPeer::doSelectRS($criteria, $con));
 	}
 	/**
 	 * Prepares the Criteria object and uses the parent doSelect()
@@ -312,7 +292,7 @@ abstract class BasePersonPeer {
 
 		if (!$criteria->getSelectColumns()) {
 			$criteria = clone $criteria;
-			PersonPeer::addSelectColumns($criteria);
+			EntityHistoryPeer::addSelectColumns($criteria);
 		}
 
 		// Set the correct dbName
@@ -334,7 +314,7 @@ abstract class BasePersonPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = PersonPeer::getOMClass();
+		$cls = EntityHistoryPeer::getOMClass();
 		$cls = Propel::import($cls);
 		// populate the object(s)
 		while($rs->next()) {
@@ -346,6 +326,209 @@ abstract class BasePersonPeer {
 		}
 		return $results;
 	}
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related EntityType table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinEntityType(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(EntityHistoryPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(EntityHistoryPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(EntityHistoryPeer::ENTITY_TYPE_ID, EntityTypePeer::ID);
+
+		$rs = EntityHistoryPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Selects a collection of EntityHistory objects pre-filled with their EntityType objects.
+	 *
+	 * @return     array Array of EntityHistory objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinEntityType(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		EntityHistoryPeer::addSelectColumns($c);
+		$startcol = (EntityHistoryPeer::NUM_COLUMNS - EntityHistoryPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		EntityTypePeer::addSelectColumns($c);
+
+		$c->addJoin(EntityHistoryPeer::ENTITY_TYPE_ID, EntityTypePeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = EntityHistoryPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = EntityTypePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getEntityType(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addEntityHistory($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initEntityHistorys();
+				$obj2->addEntityHistory($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining all related tables
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAll(Criteria $criteria, $distinct = false, $con = null)
+	{
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(EntityHistoryPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(EntityHistoryPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(EntityHistoryPeer::ENTITY_TYPE_ID, EntityTypePeer::ID);
+
+		$rs = EntityHistoryPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Selects a collection of EntityHistory objects pre-filled with all related objects.
+	 *
+	 * @return     array Array of EntityHistory objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAll(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		EntityHistoryPeer::addSelectColumns($c);
+		$startcol2 = (EntityHistoryPeer::NUM_COLUMNS - EntityHistoryPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		EntityTypePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + EntityTypePeer::NUM_COLUMNS;
+
+		$c->addJoin(EntityHistoryPeer::ENTITY_TYPE_ID, EntityTypePeer::ID);
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = EntityHistoryPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+
+				// Add objects for joined EntityType rows
+	
+			$omClass = EntityTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getEntityType(); // CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addEntityHistory($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initEntityHistorys();
+				$obj2->addEntityHistory($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
 	/**
 	 * Returns the TableMap related to this peer.
 	 * This method is not needed for general use but a specific application could have a need.
@@ -369,13 +552,13 @@ abstract class BasePersonPeer {
 	 */
 	public static function getOMClass()
 	{
-		return PersonPeer::CLASS_DEFAULT;
+		return EntityHistoryPeer::CLASS_DEFAULT;
 	}
 
 	/**
-	 * Method perform an INSERT on the database, given a Person or Criteria object.
+	 * Method perform an INSERT on the database, given a EntityHistory or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or Person object containing data that is used to create the INSERT statement.
+	 * @param      mixed $values Criteria or EntityHistory object containing data that is used to create the INSERT statement.
 	 * @param      Connection $con the connection to use
 	 * @return     mixed The new primary key.
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -390,10 +573,10 @@ abstract class BasePersonPeer {
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 		} else {
-			$criteria = $values->buildCriteria(); // build Criteria from Person object
+			$criteria = $values->buildCriteria(); // build Criteria from EntityHistory object
 		}
 
-		$criteria->remove(PersonPeer::ID); // remove pkey col since this table uses auto-increment
+		$criteria->remove(EntityHistoryPeer::ID); // remove pkey col since this table uses auto-increment
 
 
 		// Set the correct dbName
@@ -414,9 +597,9 @@ abstract class BasePersonPeer {
 	}
 
 	/**
-	 * Method perform an UPDATE on the database, given a Person or Criteria object.
+	 * Method perform an UPDATE on the database, given a EntityHistory or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or Person object containing data that is used to create the UPDATE statement.
+	 * @param      mixed $values Criteria or EntityHistory object containing data that is used to create the UPDATE statement.
 	 * @param      Connection $con The connection to use (specify Connection object to exert more control over transactions).
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -433,10 +616,10 @@ abstract class BasePersonPeer {
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 
-			$comparison = $criteria->getComparison(PersonPeer::ID);
-			$selectCriteria->add(PersonPeer::ID, $criteria->remove(PersonPeer::ID), $comparison);
+			$comparison = $criteria->getComparison(EntityHistoryPeer::ID);
+			$selectCriteria->add(EntityHistoryPeer::ID, $criteria->remove(EntityHistoryPeer::ID), $comparison);
 
-		} else { // $values is Person object
+		} else { // $values is EntityHistory object
 			$criteria = $values->buildCriteria(); // gets full criteria
 			$selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
 		}
@@ -448,7 +631,7 @@ abstract class BasePersonPeer {
 	}
 
 	/**
-	 * Method to DELETE all rows from the PERSON table.
+	 * Method to DELETE all rows from the ENTITY_HISTORY table.
 	 *
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 */
@@ -462,7 +645,7 @@ abstract class BasePersonPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->begin();
-			$affectedRows += BasePeer::doDeleteAll(PersonPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(EntityHistoryPeer::TABLE_NAME, $con);
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -472,9 +655,9 @@ abstract class BasePersonPeer {
 	}
 
 	/**
-	 * Method perform a DELETE on the database, given a Person or Criteria object OR a primary key value.
+	 * Method perform a DELETE on the database, given a EntityHistory or Criteria object OR a primary key value.
 	 *
-	 * @param      mixed $values Criteria or Person object or primary key or array of primary keys
+	 * @param      mixed $values Criteria or EntityHistory object or primary key or array of primary keys
 	 *              which is used to create the DELETE statement
 	 * @param      Connection $con the connection to use
 	 * @return     int 	The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -485,18 +668,18 @@ abstract class BasePersonPeer {
 	 public static function doDelete($values, $con = null)
 	 {
 		if ($con === null) {
-			$con = Propel::getConnection(PersonPeer::DATABASE_NAME);
+			$con = Propel::getConnection(EntityHistoryPeer::DATABASE_NAME);
 		}
 
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
-		} elseif ($values instanceof Person) {
+		} elseif ($values instanceof EntityHistory) {
 
 			$criteria = $values->buildPkeyCriteria();
 		} else {
 			// it must be the primary key
 			$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(PersonPeer::ID, (array) $values, Criteria::IN);
+			$criteria->add(EntityHistoryPeer::ID, (array) $values, Criteria::IN);
 		}
 
 		// Set the correct dbName
@@ -519,24 +702,24 @@ abstract class BasePersonPeer {
 	}
 
 	/**
-	 * Validates all modified columns of given Person object.
+	 * Validates all modified columns of given EntityHistory object.
 	 * If parameter $columns is either a single column name or an array of column names
 	 * than only those columns are validated.
 	 *
 	 * NOTICE: This does not apply to primary or foreign keys for now.
 	 *
-	 * @param      Person $obj The object to validate.
+	 * @param      EntityHistory $obj The object to validate.
 	 * @param      mixed $cols Column name or array of column names.
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(Person $obj, $cols = null)
+	public static function doValidate(EntityHistory $obj, $cols = null)
 	{
 		$columns = array();
 
 		if ($cols) {
-			$dbMap = Propel::getDatabaseMap(PersonPeer::DATABASE_NAME);
-			$tableMap = $dbMap->getTable(PersonPeer::TABLE_NAME);
+			$dbMap = Propel::getDatabaseMap(EntityHistoryPeer::DATABASE_NAME);
+			$tableMap = $dbMap->getTable(EntityHistoryPeer::TABLE_NAME);
 
 			if (! is_array($cols)) {
 				$cols = array($cols);
@@ -550,39 +733,15 @@ abstract class BasePersonPeer {
 			}
 		} else {
 
-		if ($obj->isNew() || $obj->isColumnModified(PersonPeer::ADDRESS))
-			$columns[PersonPeer::ADDRESS] = $obj->getAddress();
+		if ($obj->isNew() || $obj->isColumnModified(EntityHistoryPeer::ENTITY_ID))
+			$columns[EntityHistoryPeer::ENTITY_ID] = $obj->getEntityId();
 
-		if ($obj->isNew() || $obj->isColumnModified(PersonPeer::ADMIN_STATUS))
-			$columns[PersonPeer::ADMIN_STATUS] = $obj->getAdminStatus();
-
-		if ($obj->isNew() || $obj->isColumnModified(PersonPeer::CATEGORY))
-			$columns[PersonPeer::CATEGORY] = $obj->getCategory();
-
-		if ($obj->isNew() || $obj->isColumnModified(PersonPeer::COMMENTS))
-			$columns[PersonPeer::COMMENTS] = $obj->getComment();
-
-		if ($obj->isNew() || $obj->isColumnModified(PersonPeer::E_MAIL))
-			$columns[PersonPeer::E_MAIL] = $obj->getEMail();
-
-		if ($obj->isNew() || $obj->isColumnModified(PersonPeer::FAX))
-			$columns[PersonPeer::FAX] = $obj->getFax();
-
-		if ($obj->isNew() || $obj->isColumnModified(PersonPeer::FIRST_NAME))
-			$columns[PersonPeer::FIRST_NAME] = $obj->getFirstName();
-
-		if ($obj->isNew() || $obj->isColumnModified(PersonPeer::LAST_NAME))
-			$columns[PersonPeer::LAST_NAME] = $obj->getLastName();
-
-		if ($obj->isNew() || $obj->isColumnModified(PersonPeer::PHONE))
-			$columns[PersonPeer::PHONE] = $obj->getPhone();
-
-		if ($obj->isNew() || $obj->isColumnModified(PersonPeer::USER_NAME))
-			$columns[PersonPeer::USER_NAME] = $obj->getUserName();
+		if ($obj->isNew() || $obj->isColumnModified(EntityHistoryPeer::ENTITY_TYPE_ID))
+			$columns[EntityHistoryPeer::ENTITY_TYPE_ID] = $obj->getEntityTypeId();
 
 		}
 
-		return BasePeer::doValidate(PersonPeer::DATABASE_NAME, PersonPeer::TABLE_NAME, $columns);
+		return BasePeer::doValidate(EntityHistoryPeer::DATABASE_NAME, EntityHistoryPeer::TABLE_NAME, $columns);
 	}
 
 	/**
@@ -590,7 +749,7 @@ abstract class BasePersonPeer {
 	 *
 	 * @param      mixed $pk the primary key.
 	 * @param      Connection $con the connection to use
-	 * @return     Person
+	 * @return     EntityHistory
 	 */
 	public static function retrieveByPK($pk, $con = null)
 	{
@@ -598,12 +757,12 @@ abstract class BasePersonPeer {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
 
-		$criteria = new Criteria(PersonPeer::DATABASE_NAME);
+		$criteria = new Criteria(EntityHistoryPeer::DATABASE_NAME);
 
-		$criteria->add(PersonPeer::ID, $pk);
+		$criteria->add(EntityHistoryPeer::ID, $pk);
 
 
-		$v = PersonPeer::doSelect($criteria, $con);
+		$v = EntityHistoryPeer::doSelect($criteria, $con);
 
 		return !empty($v) > 0 ? $v[0] : null;
 	}
@@ -627,26 +786,26 @@ abstract class BasePersonPeer {
 			$objs = array();
 		} else {
 			$criteria = new Criteria();
-			$criteria->add(PersonPeer::ID, $pks, Criteria::IN);
-			$objs = PersonPeer::doSelect($criteria, $con);
+			$criteria->add(EntityHistoryPeer::ID, $pks, Criteria::IN);
+			$objs = EntityHistoryPeer::doSelect($criteria, $con);
 		}
 		return $objs;
 	}
 
-} // BasePersonPeer
+} // BaseEntityHistoryPeer
 
 // static code to register the map builder for this Peer with the main Propel class
 if (Propel::isInit()) {
 	// the MapBuilder classes register themselves with Propel during initialization
 	// so we need to load them here.
 	try {
-		BasePersonPeer::getMapBuilder();
+		BaseEntityHistoryPeer::getMapBuilder();
 	} catch (Exception $e) {
 		Propel::log('Could not initialize Peer: ' . $e->getMessage(), Propel::LOG_ERR);
 	}
 } else {
 	// even if Propel is not yet initialized, the map builder class can be registered
 	// now and then it will be loaded when Propel initializes.
-	require_once 'lib/data/map/PersonMapBuilder.php';
-	Propel::registerMapBuilder('lib.data.map.PersonMapBuilder');
+	require_once 'lib/data/map/EntityHistoryMapBuilder.php';
+	Propel::registerMapBuilder('lib.data.map.EntityHistoryMapBuilder');
 }

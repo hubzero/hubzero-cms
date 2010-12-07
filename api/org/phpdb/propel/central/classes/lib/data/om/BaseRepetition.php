@@ -4,6 +4,9 @@ require_once 'propel/om/BaseObject.php';
 
 require_once 'propel/om/Persistent.php';
 
+include_once 'creole/util/Clob.php';
+include_once 'creole/util/Blob.php';
+
 
 include_once 'propel/util/Criteria.php';
 
@@ -82,6 +85,20 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 	 * @var        double
 	 */
 	protected $trialid;
+
+
+	/**
+	 * The value for the description field.
+	 * @var        string
+	 */
+	protected $description;
+
+
+	/**
+	 * The value for the title field.
+	 * @var        string
+	 */
+	protected $title;
 
 	/**
 	 * @var        Trial
@@ -240,6 +257,28 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 	{
 
 		return $this->trialid;
+	}
+
+	/**
+	 * Get the [description] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getDescription()
+	{
+
+		return $this->description;
+	}
+
+	/**
+	 * Get the [title] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getTitle()
+	{
+
+		return $this->title;
 	}
 
 	/**
@@ -409,6 +448,58 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 	} // setTrialId()
 
 	/**
+	 * Set the value of [description] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     void
+	 */
+	public function setDescription($v)
+	{
+
+		// if the passed in parameter is the *same* object that
+		// is stored internally then we use the Lob->isModified()
+		// method to know whether contents changed.
+		if ($v instanceof Lob && $v === $this->description) {
+			$changed = $v->isModified();
+		} else {
+			$changed = ($this->description !== $v);
+		}
+		if ($changed) {
+			if ( !($v instanceof Lob) ) {
+				$obj = new Clob();
+				$obj->setContents($v);
+			} else {
+				$obj = $v;
+			}
+			$this->description = $obj;
+			$this->modifiedColumns[] = RepetitionPeer::DESCRIPTION;
+		}
+
+	} // setDescription()
+
+	/**
+	 * Set the value of [title] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     void
+	 */
+	public function setTitle($v)
+	{
+
+		// Since the native PHP type for this column is string,
+		// we will cast the input to a string (if it is not).
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->title !== $v) {
+			$this->title = $v;
+			$this->modifiedColumns[] = RepetitionPeer::TITLE;
+		}
+
+	} // setTitle()
+
+	/**
 	 * Hydrates (populates) the object variables with values from the database resultset.
 	 *
 	 * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -441,12 +532,16 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 
 			$this->trialid = $rs->getFloat($startcol + 7);
 
+			$this->description = $rs->getClob($startcol + 8);
+
+			$this->title = $rs->getString($startcol + 9);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 8; // 8 = RepetitionPeer::NUM_COLUMNS - RepetitionPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 10; // 10 = RepetitionPeer::NUM_COLUMNS - RepetitionPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Repetition object", $e);
@@ -716,6 +811,12 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 			case 7:
 				return $this->getTrialId();
 				break;
+			case 8:
+				return $this->getDescription();
+				break;
+			case 9:
+				return $this->getTitle();
+				break;
 			default:
 				return null;
 				break;
@@ -744,6 +845,8 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 			$keys[5] => $this->getStartDate(),
 			$keys[6] => $this->getStatus(),
 			$keys[7] => $this->getTrialId(),
+			$keys[8] => $this->getDescription(),
+			$keys[9] => $this->getTitle(),
 		);
 		return $result;
 	}
@@ -799,6 +902,12 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 			case 7:
 				$this->setTrialId($value);
 				break;
+			case 8:
+				$this->setDescription($value);
+				break;
+			case 9:
+				$this->setTitle($value);
+				break;
 		} // switch()
 	}
 
@@ -830,6 +939,8 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[5], $arr)) $this->setStartDate($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setStatus($arr[$keys[6]]);
 		if (array_key_exists($keys[7], $arr)) $this->setTrialId($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setDescription($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setTitle($arr[$keys[9]]);
 	}
 
 	/**
@@ -849,6 +960,8 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(RepetitionPeer::START_DATE)) $criteria->add(RepetitionPeer::START_DATE, $this->start_date);
 		if ($this->isColumnModified(RepetitionPeer::STATUS)) $criteria->add(RepetitionPeer::STATUS, $this->status);
 		if ($this->isColumnModified(RepetitionPeer::TRIALID)) $criteria->add(RepetitionPeer::TRIALID, $this->trialid);
+		if ($this->isColumnModified(RepetitionPeer::DESCRIPTION)) $criteria->add(RepetitionPeer::DESCRIPTION, $this->description);
+		if ($this->isColumnModified(RepetitionPeer::TITLE)) $criteria->add(RepetitionPeer::TITLE, $this->title);
 
 		return $criteria;
 	}
@@ -916,6 +1029,10 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 		$copyObj->setStatus($this->status);
 
 		$copyObj->setTrialId($this->trialid);
+
+		$copyObj->setDescription($this->description);
+
+		$copyObj->setTitle($this->title);
 
 
 		if ($deepCopy) {

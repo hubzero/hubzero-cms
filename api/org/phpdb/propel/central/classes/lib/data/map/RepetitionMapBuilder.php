@@ -82,6 +82,10 @@ class RepetitionMapBuilder {
 
 		$tMap->addForeignKey('TRIALID', 'TrialId', 'double', CreoleTypes::NUMERIC, 'TRIAL', 'TRIALID', false, 22);
 
+		$tMap->addColumn('DESCRIPTION', 'Description', 'string', CreoleTypes::CLOB, false, null);
+
+		$tMap->addColumn('TITLE', 'Title', 'string', CreoleTypes::VARCHAR, false, 255);
+
 		$tMap->addValidator('CURATION_STATUS', 'maxLength', 'propel.validator.MaxLengthValidator', '40', 'CURATION_STATUS');
 
 		$tMap->addValidator('CURATION_STATUS', 'required', 'propel.validator.RequiredValidator', '', 'CURATION_STATUS');

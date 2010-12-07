@@ -2,6 +2,13 @@
 include_once "lib/data/Person.php";
 include_once "lib/data/Project.php";
 
+/*
+require_once('/www/neeshub/FirePHPCore/FirePHP.class.php');
+ob_start();
+
+$firephp = FirePHP::getInstance(true);
+$firephp->log('UserManager.php');
+*/
 
 /* ****************
 The user manager singleton will provide global access to data in the Person table.
@@ -349,6 +356,15 @@ class UserManager {
       return false;
     }
 
+    /*
+    $firephp = FirePHP::getInstance(true);
+    $firephp->log('isMember userId=', $this->userId);
+    $firephp->log('isMember entityId=', $entity->getId());
+    $firephp->log('isMember entityTypeId=', DomainEntityType::getEntityTypeId($entity));
+     */
+
+//    $this->writeMemberCheck($this->userId, $entity->getId(), DomainEntityType::getEntityTypeId($entity));
+    
     $PERs = PersonEntityRolePeer::findByPersonEntityEntityType($this->userId, $entity->getId(), DomainEntityType::getEntityTypeId($entity));
     if (count($PERs) > 0) return true;
 

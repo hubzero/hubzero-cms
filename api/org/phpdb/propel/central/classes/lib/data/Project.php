@@ -518,7 +518,7 @@ ENDHTML;
 
           $strImageName = $projectImage->getName();
           $strImagePath = $projectImage->getPath()."/".Files::GENERATED_PICS;
-
+          
           // display the 800x600 when user clicks on it
           $strDisplayName = "display_".$projectImage->getId()."_".$strImageName;
           $projectImage->setName($strDisplayName);

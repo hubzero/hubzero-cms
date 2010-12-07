@@ -79,6 +79,27 @@ class FormValidator {
     return false;
   }
 
+  /**
+   * Get Epoch number from a String request formatted: mm/dd/yyyy
+   *
+   * @param String $date
+   * @return boolean
+   */
+  function getHubEpochFromString($date)
+  {
+    if(strlen($date) != 10) return false;
+    if(count(explode("/", $date)) != 3) return false;
+
+    list($mm, $dd, $yyyy) = explode("/", $date);
+    if (is_numeric($yyyy) && is_numeric($mm) && is_numeric($dd) && checkdate($mm,$dd,$yyyy))
+    {
+      $epoch = strtotime($mm . "/" . $dd . "/" . $yyyy);
+      if(empty($epoch)) return -1;
+      else return $epoch;
+    }
+    return false;
+  }
+
 
   public static function validateRequired($value, $nothing, $nothing2) {
     if( strlen(trim($value)) >= 1 )  {

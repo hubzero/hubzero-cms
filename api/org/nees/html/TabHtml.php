@@ -75,17 +75,14 @@
 	  return $strHtml;
     }
     
-    public static function getSubTabs( $p_strOption, $p_iId, $p_oTabArray, $p_strActive='default' ) {
+    public static function getSubTabs( $p_strOption, $p_iId, $p_oTabArray, $p_oTabViewArray, $p_strActive='default' ) {
 	  $strHtml  = '<div id="sub-sub-menu" style="position:relative;z-index:3; border-bottom: 1px solid #cccccc; padding:0; height: 1.77em;">';
 	  $strHtml .= '<ul>';
 	  $i = 1;
-	  foreach ($p_oTabArray as $strTabArray){
+	  foreach ($p_oTabArray as $iTabIndex=>$strTabArray){
 	    $strName = $strTabArray;
-	    $strView = $strName;
-	    $strNameArray = explode(" ", $strName);
-	    if(sizeof($strNameArray) == 2){
-	      $strView = $strNameArray[1];	
-	    }
+	    $strView = $p_oTabViewArray[$iTabIndex];
+
 	    if ($strName != '') {
               $strHtml .= '<li';
               $strHtml .= (strtolower($strName) == $p_strActive) ? ' class="active"' : '';

@@ -24,7 +24,7 @@ abstract class BaseLocationPlanPeer {
 	const CLASS_DEFAULT = 'lib.data.LocationPlan';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 5;
+	const NUM_COLUMNS = 6;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -38,6 +38,9 @@ abstract class BaseLocationPlanPeer {
 
 	/** the column name for the TRIAL_ID field */
 	const TRIAL_ID = 'LOCATION_PLAN.TRIAL_ID';
+
+	/** the column name for the DATA_FILE_ID field */
+	const DATA_FILE_ID = 'LOCATION_PLAN.DATA_FILE_ID';
 
 	/** the column name for the NAME field */
 	const NAME = 'LOCATION_PLAN.NAME';
@@ -83,10 +86,10 @@ abstract class BaseLocationPlanPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'ExperimentId', 'TrialId', 'Name', 'PlanTypeId', ),
-		BasePeer::TYPE_COLNAME => array (LocationPlanPeer::ID, LocationPlanPeer::EXPID, LocationPlanPeer::TRIAL_ID, LocationPlanPeer::NAME, LocationPlanPeer::PLAN_TYPE_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('ID', 'EXPID', 'TRIAL_ID', 'NAME', 'PLAN_TYPE_ID', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'ExperimentId', 'TrialId', 'DataFileId', 'Name', 'PlanTypeId', ),
+		BasePeer::TYPE_COLNAME => array (LocationPlanPeer::ID, LocationPlanPeer::EXPID, LocationPlanPeer::TRIAL_ID, LocationPlanPeer::DATA_FILE_ID, LocationPlanPeer::NAME, LocationPlanPeer::PLAN_TYPE_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('ID', 'EXPID', 'TRIAL_ID', 'DATA_FILE_ID', 'NAME', 'PLAN_TYPE_ID', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	/**
@@ -96,10 +99,10 @@ abstract class BaseLocationPlanPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ExperimentId' => 1, 'TrialId' => 2, 'Name' => 3, 'PlanTypeId' => 4, ),
-		BasePeer::TYPE_COLNAME => array (LocationPlanPeer::ID => 0, LocationPlanPeer::EXPID => 1, LocationPlanPeer::TRIAL_ID => 2, LocationPlanPeer::NAME => 3, LocationPlanPeer::PLAN_TYPE_ID => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('ID' => 0, 'EXPID' => 1, 'TRIAL_ID' => 2, 'NAME' => 3, 'PLAN_TYPE_ID' => 4, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ExperimentId' => 1, 'TrialId' => 2, 'DataFileId' => 3, 'Name' => 4, 'PlanTypeId' => 5, ),
+		BasePeer::TYPE_COLNAME => array (LocationPlanPeer::ID => 0, LocationPlanPeer::EXPID => 1, LocationPlanPeer::TRIAL_ID => 2, LocationPlanPeer::DATA_FILE_ID => 3, LocationPlanPeer::NAME => 4, LocationPlanPeer::PLAN_TYPE_ID => 5, ),
+		BasePeer::TYPE_FIELDNAME => array ('ID' => 0, 'EXPID' => 1, 'TRIAL_ID' => 2, 'DATA_FILE_ID' => 3, 'NAME' => 4, 'PLAN_TYPE_ID' => 5, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	/**
@@ -205,6 +208,8 @@ abstract class BaseLocationPlanPeer {
 		$criteria->addSelectColumn(LocationPlanPeer::EXPID);
 
 		$criteria->addSelectColumn(LocationPlanPeer::TRIAL_ID);
+
+		$criteria->addSelectColumn(LocationPlanPeer::DATA_FILE_ID);
 
 		$criteria->addSelectColumn(LocationPlanPeer::NAME);
 
@@ -417,6 +422,45 @@ abstract class BaseLocationPlanPeer {
 
 
 	/**
+	 * Returns the number of rows matching criteria, joining the related DataFile table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinDataFile(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(LocationPlanPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(LocationPlanPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(LocationPlanPeer::DATA_FILE_ID, DataFilePeer::ID);
+
+		$rs = LocationPlanPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
 	 * Selects a collection of LocationPlan objects pre-filled with their Experiment objects.
 	 *
 	 * @return     array Array of LocationPlan objects.
@@ -533,6 +577,64 @@ abstract class BaseLocationPlanPeer {
 
 
 	/**
+	 * Selects a collection of LocationPlan objects pre-filled with their DataFile objects.
+	 *
+	 * @return     array Array of LocationPlan objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinDataFile(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		LocationPlanPeer::addSelectColumns($c);
+		$startcol = (LocationPlanPeer::NUM_COLUMNS - LocationPlanPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		DataFilePeer::addSelectColumns($c);
+
+		$c->addJoin(LocationPlanPeer::DATA_FILE_ID, DataFilePeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = LocationPlanPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = DataFilePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getDataFile(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addLocationPlan($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initLocationPlans();
+				$obj2->addLocationPlan($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
 	 * @param      Criteria $c
@@ -561,6 +663,8 @@ abstract class BaseLocationPlanPeer {
 		$criteria->addJoin(LocationPlanPeer::EXPID, ExperimentPeer::EXPID);
 
 		$criteria->addJoin(LocationPlanPeer::TRIAL_ID, TrialPeer::TRIALID);
+
+		$criteria->addJoin(LocationPlanPeer::DATA_FILE_ID, DataFilePeer::ID);
 
 		$rs = LocationPlanPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -597,9 +701,14 @@ abstract class BaseLocationPlanPeer {
 		TrialPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + TrialPeer::NUM_COLUMNS;
 
+		DataFilePeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + DataFilePeer::NUM_COLUMNS;
+
 		$c->addJoin(LocationPlanPeer::EXPID, ExperimentPeer::EXPID);
 
 		$c->addJoin(LocationPlanPeer::TRIAL_ID, TrialPeer::TRIALID);
+
+		$c->addJoin(LocationPlanPeer::DATA_FILE_ID, DataFilePeer::ID);
 
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -665,6 +774,32 @@ abstract class BaseLocationPlanPeer {
 				$obj3->addLocationPlan($obj1);
 			}
 
+
+				// Add objects for joined DataFile rows
+	
+			$omClass = DataFilePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4 = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getDataFile(); // CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addLocationPlan($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initLocationPlans();
+				$obj4->addLocationPlan($obj1);
+			}
+
 			$results[] = $obj1;
 		}
 		return $results;
@@ -699,6 +834,8 @@ abstract class BaseLocationPlanPeer {
 		}
 
 		$criteria->addJoin(LocationPlanPeer::TRIAL_ID, TrialPeer::TRIALID);
+
+		$criteria->addJoin(LocationPlanPeer::DATA_FILE_ID, DataFilePeer::ID);
 
 		$rs = LocationPlanPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -739,6 +876,49 @@ abstract class BaseLocationPlanPeer {
 
 		$criteria->addJoin(LocationPlanPeer::EXPID, ExperimentPeer::EXPID);
 
+		$criteria->addJoin(LocationPlanPeer::DATA_FILE_ID, DataFilePeer::ID);
+
+		$rs = LocationPlanPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related DataFile table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptDataFile(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(LocationPlanPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(LocationPlanPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(LocationPlanPeer::EXPID, ExperimentPeer::EXPID);
+
+		$criteria->addJoin(LocationPlanPeer::TRIAL_ID, TrialPeer::TRIALID);
+
 		$rs = LocationPlanPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
 			return $rs->getInt(1);
@@ -773,7 +953,12 @@ abstract class BaseLocationPlanPeer {
 		TrialPeer::addSelectColumns($c);
 		$startcol3 = $startcol2 + TrialPeer::NUM_COLUMNS;
 
+		DataFilePeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + DataFilePeer::NUM_COLUMNS;
+
 		$c->addJoin(LocationPlanPeer::TRIAL_ID, TrialPeer::TRIALID);
+
+		$c->addJoin(LocationPlanPeer::DATA_FILE_ID, DataFilePeer::ID);
 
 
 		$rs = BasePeer::doSelect($c, $con);
@@ -810,6 +995,29 @@ abstract class BaseLocationPlanPeer {
 				$obj2->addLocationPlan($obj1);
 			}
 
+			$omClass = DataFilePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getDataFile(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addLocationPlan($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initLocationPlans();
+				$obj3->addLocationPlan($obj1);
+			}
+
 			$results[] = $obj1;
 		}
 		return $results;
@@ -840,7 +1048,12 @@ abstract class BaseLocationPlanPeer {
 		ExperimentPeer::addSelectColumns($c);
 		$startcol3 = $startcol2 + ExperimentPeer::NUM_COLUMNS;
 
+		DataFilePeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + DataFilePeer::NUM_COLUMNS;
+
 		$c->addJoin(LocationPlanPeer::EXPID, ExperimentPeer::EXPID);
+
+		$c->addJoin(LocationPlanPeer::DATA_FILE_ID, DataFilePeer::ID);
 
 
 		$rs = BasePeer::doSelect($c, $con);
@@ -877,6 +1090,124 @@ abstract class BaseLocationPlanPeer {
 				$obj2->addLocationPlan($obj1);
 			}
 
+			$omClass = DataFilePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getDataFile(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addLocationPlan($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initLocationPlans();
+				$obj3->addLocationPlan($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of LocationPlan objects pre-filled with all related objects except DataFile.
+	 *
+	 * @return     array Array of LocationPlan objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptDataFile(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		LocationPlanPeer::addSelectColumns($c);
+		$startcol2 = (LocationPlanPeer::NUM_COLUMNS - LocationPlanPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		ExperimentPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + ExperimentPeer::NUM_COLUMNS;
+
+		TrialPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + TrialPeer::NUM_COLUMNS;
+
+		$c->addJoin(LocationPlanPeer::EXPID, ExperimentPeer::EXPID);
+
+		$c->addJoin(LocationPlanPeer::TRIAL_ID, TrialPeer::TRIALID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = LocationPlanPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ExperimentPeer::getOMClass($rs, $startcol2);
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getExperiment(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addLocationPlan($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initLocationPlans();
+				$obj2->addLocationPlan($obj1);
+			}
+
+			$omClass = TrialPeer::getOMClass($rs, $startcol3);
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getTrial(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addLocationPlan($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initLocationPlans();
+				$obj3->addLocationPlan($obj1);
+			}
+
 			$results[] = $obj1;
 		}
 		return $results;
@@ -908,7 +1239,7 @@ abstract class BaseLocationPlanPeer {
 		try {
 
 			$omClass = null;
-			$classKey = $rs->getString($colnum - 1 + 5);
+			$classKey = $rs->getString($colnum - 1 + 6);
 
 			switch($classKey) {
 

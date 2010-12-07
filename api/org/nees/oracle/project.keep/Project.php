@@ -191,10 +191,10 @@
   	  $nLowerLimit = $p_nCurrentIndex * $p_nDisplaySize;
   	  $nUpperLimit = ($p_nCurrentIndex+1) * $p_nDisplaySize;
   	  
-  	  $firephp = FirePHP::getInstance(true);
-  	  $firephp->log('CurateModelProject(ajax)::getProjectsByNameWithPagination',$p_sName);
-  	  $firephp->log('CurateModelProject(ajax)::getProjectsByNameWithPagination-display',$p_nDisplaySize);
-  	  $firephp->log('CurateModelProject(ajax)::getProjectsByNameWithPagination-upper',$nUpperLimit);
+//  	  $firephp = FirePHP::getInstance(true);
+//  	  $firephp->log('CurateModelProject(ajax)::getProjectsByNameWithPagination',$p_sName);
+//  	  $firephp->log('CurateModelProject(ajax)::getProjectsByNameWithPagination-display',$p_nDisplaySize);
+//  	  $firephp->log('CurateModelProject(ajax)::getProjectsByNameWithPagination-upper',$nUpperLimit);
 
 	  /* 	
 	   * NOTE:
@@ -276,11 +276,11 @@
   	  $nLowerLimit = $p_nCurrentIndex * $p_nDisplaySize;
   	  $nUpperLimit = ($p_nCurrentIndex+1) * $p_nDisplaySize;
 
-  	  $firephp = FirePHP::getInstance(true);
-  	  $firephp->log('CurateModelProject(ajax)::getProjectsByTitleWithPagination',$p_sTitle);
-  	  $firephp->log('CurateModelProject(ajax)::getProjectsByTitleWithPagination-display',$p_nDisplaySize);
-  	  $firephp->log('CurateModelProject(ajax)::getProjectsByTitleWithPagination-lower',$nLowerLimit);
-  	  $firephp->log('CurateModelProject(ajax)::getProjectsByTitleWithPagination-upper',$nUpperLimit);
+//  	  $firephp = FirePHP::getInstance(true);
+//  	  $firephp->log('CurateModelProject(ajax)::getProjectsByTitleWithPagination',$p_sTitle);
+//  	  $firephp->log('CurateModelProject(ajax)::getProjectsByTitleWithPagination-display',$p_nDisplaySize);
+//  	  $firephp->log($firephp'CurateModelProject(ajax)::getProjectsByTitleWithPagination-lower',$nLowerLimit);
+//  	  $firephp->log('CurateModelProject(ajax)::getProjectsByTitleWithPagination-upper',$nUpperLimit);
   	  
 	  /* 	
 	   * NOTE:

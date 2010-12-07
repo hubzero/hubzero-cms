@@ -24,7 +24,7 @@ abstract class BaseRepetitionPeer {
 	const CLASS_DEFAULT = 'lib.data.Repetition';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 8;
+	const NUM_COLUMNS = 10;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -54,6 +54,12 @@ abstract class BaseRepetitionPeer {
 	/** the column name for the TRIALID field */
 	const TRIALID = 'REPETITION.TRIALID';
 
+	/** the column name for the DESCRIPTION field */
+	const DESCRIPTION = 'REPETITION.DESCRIPTION';
+
+	/** the column name for the TITLE field */
+	const TITLE = 'REPETITION.TITLE';
+
 	/** The PHP to DB Name Mapping */
 	private static $phpNameMap = null;
 
@@ -65,10 +71,10 @@ abstract class BaseRepetitionPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'CurationStatus', 'Deleted', 'EndDate', 'Name', 'StartDate', 'Status', 'TrialId', ),
-		BasePeer::TYPE_COLNAME => array (RepetitionPeer::REPID, RepetitionPeer::CURATION_STATUS, RepetitionPeer::DELETED, RepetitionPeer::END_DATE, RepetitionPeer::NAME, RepetitionPeer::START_DATE, RepetitionPeer::STATUS, RepetitionPeer::TRIALID, ),
-		BasePeer::TYPE_FIELDNAME => array ('REPID', 'CURATION_STATUS', 'DELETED', 'END_DATE', 'NAME', 'START_DATE', 'STATUS', 'TRIALID', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'CurationStatus', 'Deleted', 'EndDate', 'Name', 'StartDate', 'Status', 'TrialId', 'Description', 'Title', ),
+		BasePeer::TYPE_COLNAME => array (RepetitionPeer::REPID, RepetitionPeer::CURATION_STATUS, RepetitionPeer::DELETED, RepetitionPeer::END_DATE, RepetitionPeer::NAME, RepetitionPeer::START_DATE, RepetitionPeer::STATUS, RepetitionPeer::TRIALID, RepetitionPeer::DESCRIPTION, RepetitionPeer::TITLE, ),
+		BasePeer::TYPE_FIELDNAME => array ('REPID', 'CURATION_STATUS', 'DELETED', 'END_DATE', 'NAME', 'START_DATE', 'STATUS', 'TRIALID', 'DESCRIPTION', 'TITLE', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	/**
@@ -78,10 +84,10 @@ abstract class BaseRepetitionPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CurationStatus' => 1, 'Deleted' => 2, 'EndDate' => 3, 'Name' => 4, 'StartDate' => 5, 'Status' => 6, 'TrialId' => 7, ),
-		BasePeer::TYPE_COLNAME => array (RepetitionPeer::REPID => 0, RepetitionPeer::CURATION_STATUS => 1, RepetitionPeer::DELETED => 2, RepetitionPeer::END_DATE => 3, RepetitionPeer::NAME => 4, RepetitionPeer::START_DATE => 5, RepetitionPeer::STATUS => 6, RepetitionPeer::TRIALID => 7, ),
-		BasePeer::TYPE_FIELDNAME => array ('REPID' => 0, 'CURATION_STATUS' => 1, 'DELETED' => 2, 'END_DATE' => 3, 'NAME' => 4, 'START_DATE' => 5, 'STATUS' => 6, 'TRIALID' => 7, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CurationStatus' => 1, 'Deleted' => 2, 'EndDate' => 3, 'Name' => 4, 'StartDate' => 5, 'Status' => 6, 'TrialId' => 7, 'Description' => 8, 'Title' => 9, ),
+		BasePeer::TYPE_COLNAME => array (RepetitionPeer::REPID => 0, RepetitionPeer::CURATION_STATUS => 1, RepetitionPeer::DELETED => 2, RepetitionPeer::END_DATE => 3, RepetitionPeer::NAME => 4, RepetitionPeer::START_DATE => 5, RepetitionPeer::STATUS => 6, RepetitionPeer::TRIALID => 7, RepetitionPeer::DESCRIPTION => 8, RepetitionPeer::TITLE => 9, ),
+		BasePeer::TYPE_FIELDNAME => array ('REPID' => 0, 'CURATION_STATUS' => 1, 'DELETED' => 2, 'END_DATE' => 3, 'NAME' => 4, 'START_DATE' => 5, 'STATUS' => 6, 'TRIALID' => 7, 'DESCRIPTION' => 8, 'TITLE' => 9, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	/**
@@ -197,6 +203,10 @@ abstract class BaseRepetitionPeer {
 		$criteria->addSelectColumn(RepetitionPeer::STATUS);
 
 		$criteria->addSelectColumn(RepetitionPeer::TRIALID);
+
+		$criteria->addSelectColumn(RepetitionPeer::DESCRIPTION);
+
+		$criteria->addSelectColumn(RepetitionPeer::TITLE);
 
 	}
 

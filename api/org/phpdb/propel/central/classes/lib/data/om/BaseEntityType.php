@@ -164,6 +164,18 @@ abstract class BaseEntityType extends BaseObject  implements Persistent {
 	protected $lastEntityActivityLogCriteria = null;
 
 	/**
+	 * Collection to store aggregation of collEntityHistorys.
+	 * @var        array
+	 */
+	protected $collEntityHistorys;
+
+	/**
+	 * The criteria used to select the current contents of collEntityHistorys.
+	 * @var        Criteria
+	 */
+	protected $lastEntityHistoryCriteria = null;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -508,6 +520,14 @@ abstract class BaseEntityType extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collEntityHistorys !== null) {
+				foreach($this->collEntityHistorys as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -644,6 +664,14 @@ abstract class BaseEntityType extends BaseObject  implements Persistent {
 
 				if ($this->collEntityActivityLogs !== null) {
 					foreach($this->collEntityActivityLogs as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collEntityHistorys !== null) {
+					foreach($this->collEntityHistorys as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -903,6 +931,10 @@ abstract class BaseEntityType extends BaseObject  implements Persistent {
 
 			foreach($this->getEntityActivityLogs() as $relObj) {
 				$copyObj->addEntityActivityLog($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getEntityHistorys() as $relObj) {
+				$copyObj->addEntityHistory($relObj->copy($deepCopy));
 			}
 
 		} // if ($deepCopy)
@@ -2304,6 +2336,113 @@ abstract class BaseEntityType extends BaseObject  implements Persistent {
 	public function addEntityActivityLog(EntityActivityLog $l)
 	{
 		$this->collEntityActivityLogs[] = $l;
+		$l->setEntityType($this);
+	}
+
+	/**
+	 * Temporary storage of collEntityHistorys to save a possible db hit in
+	 * the event objects are add to the collection, but the
+	 * complete collection is never requested.
+	 * @return     void
+	 */
+	public function initEntityHistorys()
+	{
+		if ($this->collEntityHistorys === null) {
+			$this->collEntityHistorys = array();
+		}
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this EntityType has previously
+	 * been saved, it will retrieve related EntityHistorys from storage.
+	 * If this EntityType is new, it will return
+	 * an empty collection or the current collection, the criteria
+	 * is ignored on a new object.
+	 *
+	 * @param      Connection $con
+	 * @param      Criteria $criteria
+	 * @throws     PropelException
+	 */
+	public function getEntityHistorys($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseEntityHistoryPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collEntityHistorys === null) {
+			if ($this->isNew()) {
+			   $this->collEntityHistorys = array();
+			} else {
+
+				$criteria->add(EntityHistoryPeer::ENTITY_TYPE_ID, $this->getId());
+
+				EntityHistoryPeer::addSelectColumns($criteria);
+				$this->collEntityHistorys = EntityHistoryPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(EntityHistoryPeer::ENTITY_TYPE_ID, $this->getId());
+
+				EntityHistoryPeer::addSelectColumns($criteria);
+				if (!isset($this->lastEntityHistoryCriteria) || !$this->lastEntityHistoryCriteria->equals($criteria)) {
+					$this->collEntityHistorys = EntityHistoryPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastEntityHistoryCriteria = $criteria;
+		return $this->collEntityHistorys;
+	}
+
+	/**
+	 * Returns the number of related EntityHistorys.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      Connection $con
+	 * @throws     PropelException
+	 */
+	public function countEntityHistorys($criteria = null, $distinct = false, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseEntityHistoryPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(EntityHistoryPeer::ENTITY_TYPE_ID, $this->getId());
+
+		return EntityHistoryPeer::doCount($criteria, $distinct, $con);
+	}
+
+	/**
+	 * Method called to associate a EntityHistory object to this object
+	 * through the EntityHistory foreign key attribute
+	 *
+	 * @param      EntityHistory $l EntityHistory
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addEntityHistory(EntityHistory $l)
+	{
+		$this->collEntityHistorys[] = $l;
 		$l->setEntityType($this);
 	}
 

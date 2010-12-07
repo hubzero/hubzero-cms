@@ -106,6 +106,7 @@ function makezipProject($zipfilename, $project, $project) {
   $objStr = get_class($project);
 
   $auth = Authorizer::getInstance();
+
   if ( ! $auth->canView($project)) {
     require 'lib/nees.php';  // Required Login
     print_error($objStr);

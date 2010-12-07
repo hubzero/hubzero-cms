@@ -70,5 +70,14 @@ class Repetition extends BaseRepetition {
     return $this->getTrial()->getPathname() . "/" . $this->getName();
   }
 
+  /**
+   * Check if this Repetition is published or not
+   *
+   * @return boolean value
+   */
+  public function isPublished(){
+    return $this->getTrial()->getExperiment()->isPublished();
+  }
+
 } // Repetition
 ?>

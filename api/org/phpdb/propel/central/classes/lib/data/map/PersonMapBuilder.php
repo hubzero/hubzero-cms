@@ -88,6 +88,8 @@ class PersonMapBuilder {
 
 		$tMap->addColumn('USER_NAME', 'UserName', 'string', CreoleTypes::VARCHAR, false, 400);
 
+		$tMap->addColumn('DELETED', 'Deleted', 'double', CreoleTypes::NUMERIC, false, 22);
+
 		$tMap->addValidator('ADDRESS', 'maxLength', 'propel.validator.MaxLengthValidator', '1020', 'ADDRESS');
 
 		$tMap->addValidator('ADDRESS', 'required', 'propel.validator.RequiredValidator', '', 'ADDRESS');

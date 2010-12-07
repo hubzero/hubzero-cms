@@ -167,6 +167,51 @@ class NCCuratedObjectsPeer extends BaseNCCuratedObjectsPeer {
     return $map;
   }
 
+  public static function getCurationStates(){
+    $strQuery = "select distinct curation_state from curated_objects";
+
+    $conn = Propel::getConnection();
+    $stmt = $conn->prepareStatement($strQuery);
+
+    $strReturnArray = array();
+    $oResultsSet = $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultsSet->next()){
+      array_push($strReturnArray, $oResultsSet->getString('CURATION_STATE'));
+    }
+
+    return $strReturnArray;
+  }
+
+  public static function getConformanceLevels(){
+    $strQuery = "select distinct conformance_level from curated_objects";
+
+    $conn = Propel::getConnection();
+    $stmt = $conn->prepareStatement($strQuery);
+
+    $strReturnArray = array();
+    $oResultsSet = $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultsSet->next()){
+      array_push($strReturnArray, $oResultsSet->getString('CONFORMANCE_LEVEL'));
+    }
+
+    return $strReturnArray;
+  }
+
+  public static function getObjectStatus(){
+    $strQuery = "select distinct object_status from curated_objects";
+
+    $conn = Propel::getConnection();
+    $stmt = $conn->prepareStatement($strQuery);
+
+    $strReturnArray = array();
+    $oResultsSet = $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultsSet->next()){
+      array_push($strReturnArray, $oResultsSet->getString('OBJECT_STATUS'));
+    }
+
+    return $strReturnArray;
+  }
+
 
 
 } // NCCuratedObjectsPeer

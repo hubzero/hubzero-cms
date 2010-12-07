@@ -2821,6 +2821,55 @@ abstract class BaseTrial extends BaseObject  implements Persistent {
 		return $this->collLocationPlans;
 	}
 
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Trial is new, it will return
+	 * an empty collection; or if this Trial has previously
+	 * been saved, it will retrieve related LocationPlans from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Trial.
+	 */
+	public function getLocationPlansJoinDataFile($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseLocationPlanPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collLocationPlans === null) {
+			if ($this->isNew()) {
+				$this->collLocationPlans = array();
+			} else {
+
+				$criteria->add(LocationPlanPeer::TRIAL_ID, $this->getId());
+
+				$this->collLocationPlans = LocationPlanPeer::doSelectJoinDataFile($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(LocationPlanPeer::TRIAL_ID, $this->getId());
+
+			if (!isset($this->lastLocationPlanCriteria) || !$this->lastLocationPlanCriteria->equals($criteria)) {
+				$this->collLocationPlans = LocationPlanPeer::doSelectJoinDataFile($criteria, $con);
+			}
+		}
+		$this->lastLocationPlanCriteria = $criteria;
+
+		return $this->collLocationPlans;
+	}
+
 	/**
 	 * Temporary storage of collRepetitions to save a possible db hit in
 	 * the event objects are add to the collection, but the

@@ -2219,11 +2219,15 @@
     <column name="STATUS"               phpName="Status"             primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="48"   type="VARCHAR"/>
     <column name="TITLE"                phpName="Title"              primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="1020" type="VARCHAR"/>
     <column name="VIEWABLE"             phpName="View"               primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="32"   type="VARCHAR"/>
+    <column name="CREATOR_ID"           phpName="CreatorId"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC"/>
     <foreign-key foreignTable="EXPERIMENT_DOMAIN" onDelete="cascade" onUpdate="none">
       <reference foreign="ID" local="EXPERIMENT_DOMAIN_ID"/>
     </foreign-key>
     <foreign-key foreignTable="PROJECT" onDelete="cascade" onUpdate="none">
       <reference foreign="PROJID" local="PROJID"/>
+    </foreign-key>
+    <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="CREATOR_ID"/>
     </foreign-key>
     <validator column="CURATION_STATUS">
       <rule message="CURATION_STATUS" name="maxLength"/>
@@ -2717,13 +2721,14 @@
     </validator>
     <validator column="Z_UNIT">
       <rule message="Z must be associated with a unit." name="required"/>
-    </validator>
+    </validator> 
   </table>
   <table name="LOCATION_PLAN" package="lib.data" phpName="LocationPlan" idMethod="native" abstract="false" skipSql="false">
     <id-method-parameter name="default" value="LOCATION_PLAN_SEQ"/>
     <column name="ID"           phpName="Id"           primaryKey="true"  autoIncrement="true"  lazyLoad="false" required="false" size="22"   type="NUMERIC"/>
     <column name="EXPID"        phpName="ExperimentId" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC"/>
     <column name="TRIAL_ID"     phpName="TrialId"      primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC"/>
+    <column name="DATA_FILE_ID" phpName="DataFileId"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC"/>
     <column name="NAME"         phpName="Name"         primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="1020" type="VARCHAR"/>
     <column name="PLAN_TYPE_ID" phpName="PlanTypeId"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" default="0" inheritance="single">
       <inheritance class="LocationPlan" key="0"/>
@@ -2735,6 +2740,9 @@
     </foreign-key>
     <foreign-key foreignTable="TRIAL" onDelete="cascade" onUpdate="none">
       <reference foreign="TRIALID" local="TRIAL_ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="DATA_FILE" onDelete="cascade" onUpdate="none">
+      <reference foreign="ID" local="DATA_FILE_ID"/>
     </foreign-key>
     <validator column="EXPID">
       <rule message="EXPID" name="maxValue"/>
@@ -3470,6 +3478,7 @@
     <column name="LAST_NAME"    phpName="LastName"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="400"  type="VARCHAR"/>
     <column name="PHONE"        phpName="Phone"       primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="120"  type="VARCHAR"/>
     <column name="USER_NAME"    phpName="UserName"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="400"  type="VARCHAR"/>
+    <column name="DELETED"      phpName="Deleted"     primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC"/>
     <index name="SYS_C0040796">
       <index-column name="USER_NAME"/>
     </index>
@@ -3730,6 +3739,8 @@
     <column name="START_DATE"      phpName="StartDate"      primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"            type="DATE"/>
     <column name="STATUS"          phpName="Status"         primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="400" type="VARCHAR"/>
     <column name="TRIALID"         phpName="TrialId"        primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"  type="NUMERIC"/>
+    <column name="DESCRIPTION"     phpName="Description"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="CLOB"/>
+    <column name="TITLE"           phpName="Title"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="255" type="VARCHAR"/>
     <foreign-key foreignTable="TRIAL" onDelete="cascade" onUpdate="none">
       <reference foreign="TRIALID" local="TRIALID"/>
     </foreign-key>
@@ -6195,7 +6206,7 @@
 
   <table name="DATA_FILE_LINK" package="lib.data" phpName="DataFileLink" idMethod="native" abstract="false" skipSql="false">
     <column name="ID"                    phpName="Id"                         primaryKey="true"  autoIncrement="true"  lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
-    <column name="PROJ_ID" 				 phpName="ProjectId"       			  primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"  size="22" type="NUMERIC"/>
+    <column name="PROJ_ID" 	         phpName="ProjectId"       			  primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"  size="22" type="NUMERIC"/>
     <column name="EXP_ID"                phpName="ExperimentId"               primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"  size="22" type="NUMERIC"/>
     <column name="TRIAL_ID"              phpName="TrialId"		              primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"  size="22" type="NUMERIC"/>
     <column name="REP_ID"                phpName="RepId"		              primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"  size="22" type="NUMERIC"/>
@@ -6277,6 +6288,64 @@
     <column name="AWARD_URL"         phpName="AwardUrl"		      primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="512" type="VARCHAR"/>
     <foreign-key foreignTable="PROJECT" onDelete="cascade" onUpdate="none">
       <reference foreign="PROJID" local="PROJID"/>
+    </foreign-key>
+  </table>
+  
+  <table name="SPONSOR" package="lib.data" phpName="Sponsor" idMethod="native" abstract="false" skipSql="false">
+    <column name="ID"                phpName="Id"                 primaryKey="true"  autoIncrement="true"  lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
+    <column name="DISPLAY_NAME"      phpName="DisplayName"        primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="100" type="VARCHAR"/>
+    <column name="SYSTEM_NAME"       phpName="SystemName"         primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="100" type="VARCHAR"/>
+    <column name="ADDRESS"      	 phpName="Address"            primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"  size="500" type="VARCHAR"/>
+    <column name="PHONE"      	     phpName="Phone"              primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"  size="14" type="VARCHAR"/>
+    <column name="CONTACT_PERSON"    phpName="ContactPerson"      primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"  size="50" type="VARCHAR"/>
+    <column name="URL"      	     phpName="Url"                primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"  size="500" type="VARCHAR"/>
+  </table>
+  
+  <table name="DATA_FILE_ARCHIVE_LIST" package="lib.data" phpName="DataFileArchiveList" idMethod="native" abstract="false" skipSql="false">
+    <column name="ID"                phpName="Id"                 primaryKey="false"  autoIncrement="true"  lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
+    <column name="PROCESSED"         phpName="Processed"          primaryKey="false"  autoIncrement="true"  lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
+    <column name="PROCESSED_DATE"    phpName="ProcessedDate"      primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="DATE"/>
+  </table>
+
+  <table name="ENTITY_HISTORY" package="lib.data" phpName="EntityHistory" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="ENTITY_HISTORY_SEQ"/>
+    <column name="ID"                phpName="Id"                 primaryKey="true"  autoIncrement="true"  lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
+    <column name="ENTITY_ID"         phpName="EntityId"           primaryKey="false"  autoIncrement="false" lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
+    <column name="ENTITY_TYPE_ID"    phpName="EntityTypeId"       primaryKey="false"  autoIncrement="false" lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
+    <column name="ACTION"		     phpName="Action"        	  primaryKey="false"  autoIncrement="false" lazyLoad="false" required="true"   size="10" type="VARCHAR"/>
+    <column name="ACTION_DATE"    	 phpName="ActionDate"      	  primaryKey="false"  autoIncrement="false" lazyLoad="false" required="true"             type="DATE"/>
+    <column name="ACTION_BY"		 phpName="ActionBY"        	  primaryKey="false"  autoIncrement="false" lazyLoad="false" required="false"  size="20" type="VARCHAR"/>
+    <column name="IS_CURRENT"    	 phpName="IsCurrent"      	  primaryKey="false"  autoIncrement="false" lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
+    <column name="ACTION_COMMENT"	 phpName="ActionComment"      primaryKey="false"  autoIncrement="false" lazyLoad="false" required="false"  size="200" type="VARCHAR"/>
+    <foreign-key foreignTable="ENTITY_TYPE" onDelete="cascade" onUpdate="none">
+      <reference foreign="ID" local="ENTITY_TYPE_ID"/>
+    </foreign-key>
+    <validator column="ENTITY_ID">
+      <rule message="ENTITY_ID" name="maxValue"/>
+      <rule message="ENTITY_ID" name="notMatch"/>
+      <rule message="ENTITY_ID" name="required"/>
+    </validator>
+    <validator column="ENTITY_TYPE_ID">
+      <rule message="ENTITY_TYPE_ID" name="maxValue"/>
+      <rule message="ENTITY_TYPE_ID" name="notMatch"/>
+      <rule message="ENTITY_TYPE_ID" name="required"/>
+    </validator>
+    <validator column="ID">
+      <rule message="ID" name="maxValue"/>
+      <rule message="ID" name="notMatch"/>
+      <rule message="ID" name="required"/>
+      <rule message="ID" name="unique"/>
+    </validator>
+  </table>
+
+  <table name="SITEREPORTS_SITE_SETUP" package="lib.data" phpName="SiteReportsSiteSetup" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="SITEREPORTS_SITE_SETUP_SEQ"/>
+    <column name="ID"                       phpName="ID"                    primaryKey="true"   autoIncrement="true"    lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="FACILITY_ID"              phpName="EntityID"             primaryKey="false"  autoIncrement="false"   lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NEES_GROUPSPACE_PATH"     phpName="NEESGroupspacePath"    primaryKey="false"  autoIncrement="false"   lazyLoad="false" required="false" size="500" type="VARCHAR"/>
+
+    <foreign-key foreignTable="ORGANIZATION" onDelete="none" onUpdate="none">
+      <reference foreign="ORGID" local="FACILITY_ID"/>
     </foreign-key>
   </table>
 

@@ -104,6 +104,13 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	 */
 	protected $user_name;
 
+
+	/**
+	 * The value for the deleted field.
+	 * @var        double
+	 */
+	protected $deleted;
+
 	/**
 	 * Collection to store aggregation of collAuthorizations.
 	 * @var        array
@@ -115,6 +122,18 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	 * @var        Criteria
 	 */
 	protected $lastAuthorizationCriteria = null;
+
+	/**
+	 * Collection to store aggregation of collExperiments.
+	 * @var        array
+	 */
+	protected $collExperiments;
+
+	/**
+	 * The criteria used to select the current contents of collExperiments.
+	 * @var        Criteria
+	 */
+	protected $lastExperimentCriteria = null;
 
 	/**
 	 * Collection to store aggregation of collPersonEntityRoles.
@@ -309,6 +328,17 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	{
 
 		return $this->user_name;
+	}
+
+	/**
+	 * Get the [deleted] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getDeleted()
+	{
+
+		return $this->deleted;
 	}
 
 	/**
@@ -542,6 +572,22 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	} // setUserName()
 
 	/**
+	 * Set the value of [deleted] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setDeleted($v)
+	{
+
+		if ($this->deleted !== $v) {
+			$this->deleted = $v;
+			$this->modifiedColumns[] = PersonPeer::DELETED;
+		}
+
+	} // setDeleted()
+
+	/**
 	 * Hydrates (populates) the object variables with values from the database resultset.
 	 *
 	 * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -580,12 +626,14 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 
 			$this->user_name = $rs->getString($startcol + 10);
 
+			$this->deleted = $rs->getFloat($startcol + 11);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 11; // 11 = PersonPeer::NUM_COLUMNS - PersonPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 12; // 12 = PersonPeer::NUM_COLUMNS - PersonPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Person object", $e);
@@ -690,6 +738,14 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 
 			if ($this->collAuthorizations !== null) {
 				foreach($this->collAuthorizations as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collExperiments !== null) {
+				foreach($this->collExperiments as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -814,6 +870,14 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 					}
 				}
 
+				if ($this->collExperiments !== null) {
+					foreach($this->collExperiments as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 				if ($this->collPersonEntityRoles !== null) {
 					foreach($this->collPersonEntityRoles as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
@@ -919,6 +983,9 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 			case 10:
 				return $this->getUserName();
 				break;
+			case 11:
+				return $this->getDeleted();
+				break;
 			default:
 				return null;
 				break;
@@ -950,6 +1017,7 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 			$keys[8] => $this->getLastName(),
 			$keys[9] => $this->getPhone(),
 			$keys[10] => $this->getUserName(),
+			$keys[11] => $this->getDeleted(),
 		);
 		return $result;
 	}
@@ -1014,6 +1082,9 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 			case 10:
 				$this->setUserName($value);
 				break;
+			case 11:
+				$this->setDeleted($value);
+				break;
 		} // switch()
 	}
 
@@ -1048,6 +1119,7 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[8], $arr)) $this->setLastName($arr[$keys[8]]);
 		if (array_key_exists($keys[9], $arr)) $this->setPhone($arr[$keys[9]]);
 		if (array_key_exists($keys[10], $arr)) $this->setUserName($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setDeleted($arr[$keys[11]]);
 	}
 
 	/**
@@ -1070,6 +1142,7 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(PersonPeer::LAST_NAME)) $criteria->add(PersonPeer::LAST_NAME, $this->last_name);
 		if ($this->isColumnModified(PersonPeer::PHONE)) $criteria->add(PersonPeer::PHONE, $this->phone);
 		if ($this->isColumnModified(PersonPeer::USER_NAME)) $criteria->add(PersonPeer::USER_NAME, $this->user_name);
+		if ($this->isColumnModified(PersonPeer::DELETED)) $criteria->add(PersonPeer::DELETED, $this->deleted);
 
 		return $criteria;
 	}
@@ -1144,6 +1217,8 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 
 		$copyObj->setUserName($this->user_name);
 
+		$copyObj->setDeleted($this->deleted);
+
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1152,6 +1227,10 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 
 			foreach($this->getAuthorizations() as $relObj) {
 				$copyObj->addAuthorization($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getExperiments() as $relObj) {
+				$copyObj->addExperiment($relObj->copy($deepCopy));
 			}
 
 			foreach($this->getPersonEntityRoles() as $relObj) {
@@ -1375,6 +1454,211 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 		$this->lastAuthorizationCriteria = $criteria;
 
 		return $this->collAuthorizations;
+	}
+
+	/**
+	 * Temporary storage of collExperiments to save a possible db hit in
+	 * the event objects are add to the collection, but the
+	 * complete collection is never requested.
+	 * @return     void
+	 */
+	public function initExperiments()
+	{
+		if ($this->collExperiments === null) {
+			$this->collExperiments = array();
+		}
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person has previously
+	 * been saved, it will retrieve related Experiments from storage.
+	 * If this Person is new, it will return
+	 * an empty collection or the current collection, the criteria
+	 * is ignored on a new object.
+	 *
+	 * @param      Connection $con
+	 * @param      Criteria $criteria
+	 * @throws     PropelException
+	 */
+	public function getExperiments($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collExperiments === null) {
+			if ($this->isNew()) {
+			   $this->collExperiments = array();
+			} else {
+
+				$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
+
+				ExperimentPeer::addSelectColumns($criteria);
+				$this->collExperiments = ExperimentPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
+
+				ExperimentPeer::addSelectColumns($criteria);
+				if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
+					$this->collExperiments = ExperimentPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastExperimentCriteria = $criteria;
+		return $this->collExperiments;
+	}
+
+	/**
+	 * Returns the number of related Experiments.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      Connection $con
+	 * @throws     PropelException
+	 */
+	public function countExperiments($criteria = null, $distinct = false, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
+
+		return ExperimentPeer::doCount($criteria, $distinct, $con);
+	}
+
+	/**
+	 * Method called to associate a Experiment object to this object
+	 * through the Experiment foreign key attribute
+	 *
+	 * @param      Experiment $l Experiment
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addExperiment(Experiment $l)
+	{
+		$this->collExperiments[] = $l;
+		$l->setPerson($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related Experiments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getExperimentsJoinExperimentDomain($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collExperiments === null) {
+			if ($this->isNew()) {
+				$this->collExperiments = array();
+			} else {
+
+				$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
+
+				$this->collExperiments = ExperimentPeer::doSelectJoinExperimentDomain($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
+
+			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
+				$this->collExperiments = ExperimentPeer::doSelectJoinExperimentDomain($criteria, $con);
+			}
+		}
+		$this->lastExperimentCriteria = $criteria;
+
+		return $this->collExperiments;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related Experiments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getExperimentsJoinProject($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collExperiments === null) {
+			if ($this->isNew()) {
+				$this->collExperiments = array();
+			} else {
+
+				$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
+
+				$this->collExperiments = ExperimentPeer::doSelectJoinProject($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
+
+			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
+				$this->collExperiments = ExperimentPeer::doSelectJoinProject($criteria, $con);
+			}
+		}
+		$this->lastExperimentCriteria = $criteria;
+
+		return $this->collExperiments;
 	}
 
 	/**

@@ -15,7 +15,7 @@ include_once 'lib/data/ExperimentPeer.php';
 /**
  * Base class that represents a row from the 'EXPERIMENT' table.
  *
- * 
+ *
  *
  * @package    lib.data.om
  */
@@ -128,6 +128,13 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 	 */
 	protected $viewable;
 
+
+	/**
+	 * The value for the creator_id field.
+	 * @var        double
+	 */
+	protected $creator_id;
+
 	/**
 	 * @var        ExperimentDomain
 	 */
@@ -137,6 +144,11 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 	 * @var        Project
 	 */
 	protected $aProject;
+
+	/**
+	 * @var        Person
+	 */
+	protected $aPerson;
 
 	/**
 	 * Collection to store aggregation of collAcknowledgements.
@@ -334,7 +346,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [expid] column value.
-	 * 
+	 *
 	 * @return     double
 	 */
 	public function getId()
@@ -345,7 +357,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [curation_status] column value.
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function getCurationStatus()
@@ -356,7 +368,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [deleted] column value.
-	 * 
+	 *
 	 * @return     double
 	 */
 	public function getDeleted()
@@ -367,7 +379,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [description] column value.
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function getDescription()
@@ -378,44 +390,13 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [optionally formatted] [end_date] column value.
-	 * 
-	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
-	 *							If format is NULL, then the integer unix timestamp will be returned.
-	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
-	 * @throws     PropelException - if unable to convert the date/time to timestamp.
-	 */
-	public function getNCEndDate($format = '%Y-%m-%d')
-	{
-
-		if ($this->end_date === null || $this->end_date === '') {
-			return null;
-		} elseif (!is_int($this->end_date)) {
-			// a non-timestamp value was set externally, so we convert it
-			$ts = strtotime($this->end_date);
-			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
-				throw new PropelException("Unable to parse value of [end_date] as date/time value: " . var_export($this->end_date, true));
-			}
-		} else {
-			$ts = $this->end_date;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-        /**
-	 * Get the [optionally formatted] [end_date] column value.
 	 *
 	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
 	 *							If format is NULL, then the integer unix timestamp will be returned.
 	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
 	 * @throws     PropelException - if unable to convert the date/time to timestamp.
 	 */
-	public function getEndDate($format = '%m/%d/%Y')
+	public function getEndDate($format = '%Y-%m-%d')
 	{
 
 		if ($this->end_date === null || $this->end_date === '') {
@@ -440,7 +421,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [experiment_domain_id] column value.
-	 * 
+	 *
 	 * @return     double
 	 */
 	public function getExperimentDomainId()
@@ -451,7 +432,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [exp_type_id] column value.
-	 * 
+	 *
 	 * @return     double
 	 */
 	public function getExperimentTypeId()
@@ -462,7 +443,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [name] column value.
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function getName()
@@ -473,7 +454,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [objective] column value.
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function getObjective()
@@ -484,7 +465,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [projid] column value.
-	 * 
+	 *
 	 * @return     double
 	 */
 	public function getProjectId()
@@ -495,44 +476,13 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [optionally formatted] [start_date] column value.
-	 * 
-	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
-	 *							If format is NULL, then the integer unix timestamp will be returned.
-	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
-	 * @throws     PropelException - if unable to convert the date/time to timestamp.
-	 */
-	public function getNCStartDate($format = '%Y-%m-%d')
-	{
-
-		if ($this->start_date === null || $this->start_date === '') {
-			return null;
-		} elseif (!is_int($this->start_date)) {
-			// a non-timestamp value was set externally, so we convert it
-			$ts = strtotime($this->start_date);
-			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
-				throw new PropelException("Unable to parse value of [start_date] as date/time value: " . var_export($this->start_date, true));
-			}
-		} else {
-			$ts = $this->start_date;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-        /**
-	 * Get the [optionally formatted] [start_date] column value.
 	 *
 	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
 	 *							If format is NULL, then the integer unix timestamp will be returned.
 	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
 	 * @throws     PropelException - if unable to convert the date/time to timestamp.
 	 */
-        public function getStartDate($format = '%m/%d/%Y')
+	public function getStartDate($format = '%Y-%m-%d')
 	{
 
 		if ($this->start_date === null || $this->start_date === '') {
@@ -557,7 +507,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [status] column value.
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function getStatus()
@@ -568,7 +518,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [title] column value.
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function getTitle()
@@ -579,7 +529,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [viewable] column value.
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function getView()
@@ -589,8 +539,19 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [creator_id] column value.
+	 *
+	 * @return     double
+	 */
+	public function getCreatorId()
+	{
+
+		return $this->creator_id;
+	}
+
+	/**
 	 * Set the value of [expid] column.
-	 * 
+	 *
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -606,7 +567,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [curation_status] column.
-	 * 
+	 *
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -616,7 +577,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
+			$v = (string) $v;
 		}
 
 		if ($this->curation_status !== $v) {
@@ -628,7 +589,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [deleted] column.
-	 * 
+	 *
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -644,7 +605,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [description] column.
-	 * 
+	 *
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -674,7 +635,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [end_date] column.
-	 * 
+	 *
 	 * @param      int $v new value
 	 * @return     void
 	 */
@@ -698,7 +659,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [experiment_domain_id] column.
-	 * 
+	 *
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -718,7 +679,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [exp_type_id] column.
-	 * 
+	 *
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -734,7 +695,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [name] column.
-	 * 
+	 *
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -744,7 +705,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
+			$v = (string) $v;
 		}
 
 		if ($this->name !== $v) {
@@ -756,7 +717,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [objective] column.
-	 * 
+	 *
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -786,7 +747,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [projid] column.
-	 * 
+	 *
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -806,7 +767,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [start_date] column.
-	 * 
+	 *
 	 * @param      int $v new value
 	 * @return     void
 	 */
@@ -830,7 +791,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [status] column.
-	 * 
+	 *
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -840,7 +801,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
+			$v = (string) $v;
 		}
 
 		if ($this->status !== $v) {
@@ -852,7 +813,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [title] column.
-	 * 
+	 *
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -862,7 +823,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
+			$v = (string) $v;
 		}
 
 		if ($this->title !== $v) {
@@ -874,7 +835,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [viewable] column.
-	 * 
+	 *
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -884,7 +845,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
+			$v = (string) $v;
 		}
 
 		if ($this->viewable !== $v) {
@@ -893,6 +854,26 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		}
 
 	} // setView()
+
+	/**
+	 * Set the value of [creator_id] column.
+	 *
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setCreatorId($v)
+	{
+
+		if ($this->creator_id !== $v) {
+			$this->creator_id = $v;
+			$this->modifiedColumns[] = ExperimentPeer::CREATOR_ID;
+		}
+
+		if ($this->aPerson !== null && $this->aPerson->getId() !== $v) {
+			$this->aPerson = null;
+		}
+
+	} // setCreatorId()
 
 	/**
 	 * Hydrates (populates) the object variables with values from the database resultset.
@@ -939,12 +920,14 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 			$this->viewable = $rs->getString($startcol + 13);
 
+			$this->creator_id = $rs->getFloat($startcol + 14);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 14; // 14 = ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 15; // 15 = ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Experiment object", $e);
@@ -1047,6 +1030,13 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 					$affectedRows += $this->aProject->save($con);
 				}
 				$this->setProject($this->aProject);
+			}
+
+			if ($this->aPerson !== null) {
+				if ($this->aPerson->isModified()) {
+					$affectedRows += $this->aPerson->save($con);
+				}
+				$this->setPerson($this->aPerson);
 			}
 
 
@@ -1269,6 +1259,12 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->aPerson !== null) {
+				if (!$this->aPerson->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPerson->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = ExperimentPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -1469,6 +1465,9 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			case 13:
 				return $this->getView();
 				break;
+			case 14:
+				return $this->getCreatorId();
+				break;
 			default:
 				return null;
 				break;
@@ -1503,6 +1502,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			$keys[11] => $this->getStatus(),
 			$keys[12] => $this->getTitle(),
 			$keys[13] => $this->getView(),
+			$keys[14] => $this->getCreatorId(),
 		);
 		return $result;
 	}
@@ -1576,6 +1576,9 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			case 13:
 				$this->setView($value);
 				break;
+			case 14:
+				$this->setCreatorId($value);
+				break;
 		} // switch()
 	}
 
@@ -1613,6 +1616,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[11], $arr)) $this->setStatus($arr[$keys[11]]);
 		if (array_key_exists($keys[12], $arr)) $this->setTitle($arr[$keys[12]]);
 		if (array_key_exists($keys[13], $arr)) $this->setView($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setCreatorId($arr[$keys[14]]);
 	}
 
 	/**
@@ -1638,6 +1642,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ExperimentPeer::STATUS)) $criteria->add(ExperimentPeer::STATUS, $this->status);
 		if ($this->isColumnModified(ExperimentPeer::TITLE)) $criteria->add(ExperimentPeer::TITLE, $this->title);
 		if ($this->isColumnModified(ExperimentPeer::VIEWABLE)) $criteria->add(ExperimentPeer::VIEWABLE, $this->viewable);
+		if ($this->isColumnModified(ExperimentPeer::CREATOR_ID)) $criteria->add(ExperimentPeer::CREATOR_ID, $this->creator_id);
 
 		return $criteria;
 	}
@@ -1717,6 +1722,8 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		$copyObj->setTitle($this->title);
 
 		$copyObj->setView($this->viewable);
+
+		$copyObj->setCreatorId($this->creator_id);
 
 
 		if ($deepCopy) {
@@ -1931,6 +1938,57 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			 */
 		}
 		return $this->aProject;
+	}
+
+	/**
+	 * Declares an association between this object and a Person object.
+	 *
+	 * @param      Person $v
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function setPerson($v)
+	{
+
+
+		if ($v === null) {
+			$this->setCreatorId(NULL);
+		} else {
+			$this->setCreatorId($v->getId());
+		}
+
+
+		$this->aPerson = $v;
+	}
+
+
+	/**
+	 * Get the associated Person object
+	 *
+	 * @param      Connection Optional Connection object.
+	 * @return     Person The associated Person object.
+	 * @throws     PropelException
+	 */
+	public function getPerson($con = null)
+	{
+		// include the related Peer class
+		include_once 'lib/data/om/BasePersonPeer.php';
+
+		if ($this->aPerson === null && ($this->creator_id > 0)) {
+
+			$this->aPerson = PersonPeer::retrieveByPK($this->creator_id, $con);
+
+			/* The following can be used instead of the line above to
+			   guarantee the related object contains a reference
+			   to this object, but this level of coupling
+			   may be undesirable in many circumstances.
+			   As it can lead to a db query with many results that may
+			   never be used.
+			   $obj = PersonPeer::retrieveByPK($this->creator_id, $con);
+			   $obj->addPersons($this);
+			 */
+		}
+		return $this->aPerson;
 	}
 
 	/**
@@ -3671,6 +3729,55 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		return $this->collLocationPlans;
 	}
 
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Experiment is new, it will return
+	 * an empty collection; or if this Experiment has previously
+	 * been saved, it will retrieve related LocationPlans from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Experiment.
+	 */
+	public function getLocationPlansJoinDataFile($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseLocationPlanPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collLocationPlans === null) {
+			if ($this->isNew()) {
+				$this->collLocationPlans = array();
+			} else {
+
+				$criteria->add(LocationPlanPeer::EXPID, $this->getId());
+
+				$this->collLocationPlans = LocationPlanPeer::doSelectJoinDataFile($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(LocationPlanPeer::EXPID, $this->getId());
+
+			if (!isset($this->lastLocationPlanCriteria) || !$this->lastLocationPlanCriteria->equals($criteria)) {
+				$this->collLocationPlans = LocationPlanPeer::doSelectJoinDataFile($criteria, $con);
+			}
+		}
+		$this->lastLocationPlanCriteria = $criteria;
+
+		return $this->collLocationPlans;
+	}
+
 	/**
 	 * Temporary storage of collMaterials to save a possible db hit in
 	 * the event objects are add to the collection, but the
@@ -4234,6 +4341,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 				$criteria->add(TrialPeer::EXPID, $this->getId());
 
 				TrialPeer::addSelectColumns($criteria);
+                                $criteria->addAscendingOrderByColumn(TrialPeer::TRIALID);
 				$this->collTrials = TrialPeer::doSelect($criteria, $con);
 			}
 		} else {
@@ -4248,7 +4356,8 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 				TrialPeer::addSelectColumns($criteria);
 				if (!isset($this->lastTrialCriteria) || !$this->lastTrialCriteria->equals($criteria)) {
-					$this->collTrials = TrialPeer::doSelect($criteria, $con);
+                                  $criteria->addAscendingOrderByColumn(TrialPeer::TRIALID);
+				  $this->collTrials = TrialPeer::doSelect($criteria, $con);
 				}
 			}
 		}

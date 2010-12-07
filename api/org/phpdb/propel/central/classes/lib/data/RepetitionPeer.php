@@ -80,7 +80,6 @@ class RepetitionPeer extends BaseRepetitionPeer {
     $c->add(self::TRIALID, $trialid);
     $c->add(self::DELETED, 0);
     $c->addAscendingOrderByColumn(self::REPID);
-
     return self::doSelect($c);
   }
 

@@ -98,12 +98,13 @@ class ProjectPeer extends BaseProjectPeer {
      * 
      * return parent::populateObjects($oResultsSet);
      */
-    $iProjectIdArray = array();
+    $oProjectArray = array();
     while($oResultsSet->next()){
       $iProjectId = $oResultsSet->getInt('PROJID');
-      array_push($iProjectIdArray, $iProjectId);
+      $oProject = self::retrieveByPK($iProjectId);
+      array_push($oProjectArray, $oProject);
     }
-    return ProjectPeer::retrieveByPKs($iProjectIdArray);
+    return $oProjectArray;
   }
   
   /**
@@ -111,7 +112,7 @@ class ProjectPeer extends BaseProjectPeer {
    *
    */
   public static function searchByFormCount($p_strQuery, $p_strField){
-  	$oConnection = Propel::getConnection();
+    $oConnection = Propel::getConnection();
     $oStatement = $oConnection->createStatement();
     $oResultsSet = $oStatement->executeQuery($p_strQuery, ResultSet::FETCHMODE_ASSOC);
 
@@ -712,7 +713,6 @@ class ProjectPeer extends BaseProjectPeer {
       array_push($iProjectIdArray, $iThisProjectId);
       $count=$count+1;
     }
-    //echo $count;
 
     return self::retrieveByPKs($iProjectIdArray);
   	/*

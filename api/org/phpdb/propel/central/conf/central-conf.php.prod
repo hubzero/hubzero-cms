@@ -22,7 +22,7 @@ return array (
           'database' => '',
           'hostspec' => 'NEESPROD',
           'username' => 'central',
-          'password' => 'bees4nees',
+          'password' => 'Hu64Qu4k3D4t4',
         ),
       ),
       'default' => 'NEEScentral',

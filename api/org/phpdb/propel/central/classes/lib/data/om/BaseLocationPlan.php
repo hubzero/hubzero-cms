@@ -50,6 +50,13 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 
 
 	/**
+	 * The value for the data_file_id field.
+	 * @var        double
+	 */
+	protected $data_file_id;
+
+
+	/**
 	 * The value for the name field.
 	 * @var        string
 	 */
@@ -71,6 +78,11 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 	 * @var        Trial
 	 */
 	protected $aTrial;
+
+	/**
+	 * @var        DataFile
+	 */
+	protected $aDataFile;
 
 	/**
 	 * Collection to store aggregation of collLocations.
@@ -129,6 +141,17 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 	{
 
 		return $this->trial_id;
+	}
+
+	/**
+	 * Get the [data_file_id] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getDataFileId()
+	{
+
+		return $this->data_file_id;
 	}
 
 	/**
@@ -210,6 +233,26 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 	} // setTrialId()
 
 	/**
+	 * Set the value of [data_file_id] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setDataFileId($v)
+	{
+
+		if ($this->data_file_id !== $v) {
+			$this->data_file_id = $v;
+			$this->modifiedColumns[] = LocationPlanPeer::DATA_FILE_ID;
+		}
+
+		if ($this->aDataFile !== null && $this->aDataFile->getId() !== $v) {
+			$this->aDataFile = null;
+		}
+
+	} // setDataFileId()
+
+	/**
 	 * Set the value of [name] column.
 	 * 
 	 * @param      string $v new value
@@ -270,16 +313,18 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 
 			$this->trial_id = $rs->getFloat($startcol + 2);
 
-			$this->name = $rs->getString($startcol + 3);
+			$this->data_file_id = $rs->getFloat($startcol + 3);
 
-			$this->plan_type_id = $rs->getFloat($startcol + 4);
+			$this->name = $rs->getString($startcol + 4);
+
+			$this->plan_type_id = $rs->getFloat($startcol + 5);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 5; // 5 = LocationPlanPeer::NUM_COLUMNS - LocationPlanPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 6; // 6 = LocationPlanPeer::NUM_COLUMNS - LocationPlanPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating LocationPlan object", $e);
@@ -382,6 +427,13 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 					$affectedRows += $this->aTrial->save($con);
 				}
 				$this->setTrial($this->aTrial);
+			}
+
+			if ($this->aDataFile !== null) {
+				if ($this->aDataFile->isModified()) {
+					$affectedRows += $this->aDataFile->save($con);
+				}
+				$this->setDataFile($this->aDataFile);
 			}
 
 
@@ -492,6 +544,12 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->aDataFile !== null) {
+				if (!$this->aDataFile->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aDataFile->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = LocationPlanPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -548,9 +606,12 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 				return $this->getTrialId();
 				break;
 			case 3:
-				return $this->getName();
+				return $this->getDataFileId();
 				break;
 			case 4:
+				return $this->getName();
+				break;
+			case 5:
 				return $this->getPlanTypeId();
 				break;
 			default:
@@ -576,8 +637,9 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getExperimentId(),
 			$keys[2] => $this->getTrialId(),
-			$keys[3] => $this->getName(),
-			$keys[4] => $this->getPlanTypeId(),
+			$keys[3] => $this->getDataFileId(),
+			$keys[4] => $this->getName(),
+			$keys[5] => $this->getPlanTypeId(),
 		);
 		return $result;
 	}
@@ -619,9 +681,12 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 				$this->setTrialId($value);
 				break;
 			case 3:
-				$this->setName($value);
+				$this->setDataFileId($value);
 				break;
 			case 4:
+				$this->setName($value);
+				break;
+			case 5:
 				$this->setPlanTypeId($value);
 				break;
 		} // switch()
@@ -650,8 +715,9 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setExperimentId($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setTrialId($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setName($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setPlanTypeId($arr[$keys[4]]);
+		if (array_key_exists($keys[3], $arr)) $this->setDataFileId($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setName($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setPlanTypeId($arr[$keys[5]]);
 	}
 
 	/**
@@ -666,6 +732,7 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(LocationPlanPeer::ID)) $criteria->add(LocationPlanPeer::ID, $this->id);
 		if ($this->isColumnModified(LocationPlanPeer::EXPID)) $criteria->add(LocationPlanPeer::EXPID, $this->expid);
 		if ($this->isColumnModified(LocationPlanPeer::TRIAL_ID)) $criteria->add(LocationPlanPeer::TRIAL_ID, $this->trial_id);
+		if ($this->isColumnModified(LocationPlanPeer::DATA_FILE_ID)) $criteria->add(LocationPlanPeer::DATA_FILE_ID, $this->data_file_id);
 		if ($this->isColumnModified(LocationPlanPeer::NAME)) $criteria->add(LocationPlanPeer::NAME, $this->name);
 		if ($this->isColumnModified(LocationPlanPeer::PLAN_TYPE_ID)) $criteria->add(LocationPlanPeer::PLAN_TYPE_ID, $this->plan_type_id);
 
@@ -725,6 +792,8 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 		$copyObj->setExperimentId($this->expid);
 
 		$copyObj->setTrialId($this->trial_id);
+
+		$copyObj->setDataFileId($this->data_file_id);
 
 		$copyObj->setName($this->name);
 
@@ -887,6 +956,57 @@ abstract class BaseLocationPlan extends BaseObject  implements Persistent {
 			 */
 		}
 		return $this->aTrial;
+	}
+
+	/**
+	 * Declares an association between this object and a DataFile object.
+	 *
+	 * @param      DataFile $v
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function setDataFile($v)
+	{
+
+
+		if ($v === null) {
+			$this->setDataFileId(NULL);
+		} else {
+			$this->setDataFileId($v->getId());
+		}
+
+
+		$this->aDataFile = $v;
+	}
+
+
+	/**
+	 * Get the associated DataFile object
+	 *
+	 * @param      Connection Optional Connection object.
+	 * @return     DataFile The associated DataFile object.
+	 * @throws     PropelException
+	 */
+	public function getDataFile($con = null)
+	{
+		// include the related Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+
+		if ($this->aDataFile === null && ($this->data_file_id > 0)) {
+
+			$this->aDataFile = DataFilePeer::retrieveByPK($this->data_file_id, $con);
+
+			/* The following can be used instead of the line above to
+			   guarantee the related object contains a reference
+			   to this object, but this level of coupling
+			   may be undesirable in many circumstances.
+			   As it can lead to a db query with many results that may
+			   never be used.
+			   $obj = DataFilePeer::retrieveByPK($this->data_file_id, $con);
+			   $obj->addDataFiles($this);
+			 */
+		}
+		return $this->aDataFile;
 	}
 
 	/**

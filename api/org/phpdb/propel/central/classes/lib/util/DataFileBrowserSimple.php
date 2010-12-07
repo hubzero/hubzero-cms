@@ -46,6 +46,7 @@ class DataFileBrowserSimple {
     $this->entity    = $entity;
 
     $auth = Authorizer::getInstance();
+
     $this->canView = $entity ? $auth->canView($entity) : true;
 
     if(!$this->canView) {

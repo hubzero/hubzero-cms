@@ -35,7 +35,7 @@ class ProjectEditor{
   const PHOTO_CAPTION = "Photo Caption";
   const PHOTO_NAME = "Photo Name";
   const PHOTO_USAGE_TYPE_ID = "Photo Usage Type";
-  const PHOTO_DESTINATION_SUFFIX = "/Public/Photos";
+  const PHOTO_DESTINATION_SUFFIX = "/Documentation/Photos";
 
   const UPLOAD_FIELD_NAME = "upload";
 

@@ -116,6 +116,23 @@ class TrialPeer extends BaseTrialPeer {
     return self::doSelectOne($c);
   }
 
+  /**
+   * Find a Trial (or SimulationRun) (not deleted) that belong to an Experiment/Simulation given by its TITLE
+   *
+   * @param int $expid
+   * @param stirng $title
+   * @param Criteria $c
+   * @param Connection $conn
+   * @return Trial (or Simulation)
+   */
+  public static function findByExperimentIdAndTitle($expid, $title, Criteria $c = null, Connection $conn = null) {
+    if (is_null($c)) $c = new Criteria();
+    $c->add(self::EXPID, $expid);
+    $c->add(self::TITLE, $title);
+    $c->add(self::DELETED, 0);
+    return self::doSelectOne($c);
+  }
+
 
   /**
    * Find All Trial or SimulationRuns that belong to an Experiment
@@ -375,6 +392,32 @@ class TrialPeer extends BaseTrialPeer {
    */
   function findSimulationRuns($expid) {
     return self::findByExperiment($expid);
+  }
+
+  public static function suggestTrial($p_iExperimentId, $p_strTitle, $p_iLimit){
+    $p_strTitle = strtoupper($p_strTitle);
+    $p_strTitle = "'$p_strTitle%'";
+
+    $strQuery = "SELECT *
+                 FROM (
+                   SELECT TRIALID, row_number()
+                   OVER (ORDER BY TRIALID) as rn
+                   FROM TRIAL
+                   WHERE upper(TITLE) like $p_strTitle
+                     AND EXPID = $p_iExperimentId
+                 )
+                 WHERE rn <= $p_iLimit";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->createStatement();
+    $oResultsSet = $oStatement->executeQuery($strQuery, ResultSet::FETCHMODE_ASSOC);
+
+    $iIdArray = array();
+    while($oResultsSet->next()){
+      $iId = $oResultsSet->getInt('TRIALID');
+      array_push($iIdArray, $iId);
+    }
+    return self::retrieveByPKs($iIdArray);
   }
 
 

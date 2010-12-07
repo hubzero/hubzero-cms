@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -35,7 +35,9 @@ class ProjectEditor{
   const PHOTO_CAPTION = "Photo Caption";
   const PHOTO_NAME = "Photo Name";
   const PHOTO_USAGE_TYPE_ID = "Photo Usage Type";
-  const PHOTO_DESTINATION_SUFFIX = "/Public/Photos";
+  const PHOTO_DESTINATION_SUFFIX = "/Documentation/Photos";
+  const VIDEO_FRAMES_PATTERN = "/Experiment-([0-9])+\/Trial-([0-9])+\/Rep-([0-9])+\/(\w)+_Data\/Videos\/Frames/";
+  const VIDEO_MOVIES_PATTERN = "/Experiment-([0-9])+\/Trial-([0-9])+\/Rep-([0-9])+\/(\w)+_Data\/Videos\/Movies/";
 
   const UPLOAD_FIELD_NAME = "upload";
 
@@ -96,6 +98,10 @@ class ProjectEditor{
 
   const CURATE_LAYOUT = "curate";
 
+  const SENSOR_TYPE_DOWNLOAD = "/www/neeshub/components/com_projecteditor/downloads/SensorTypes.txt";
+  //const SENSOR_TYPE_DOWNLOAD_LINK = "/warehouse/projecteditor/sensortypes?tmpl=component";
+  const SENSOR_TYPE_DOWNLOAD_LINK = "/warehouse/projecteditor/sensortypes";
+  const SENSOR_REQUIRED_LINK = "/warehouse/projecteditor/sensorrequired";
 }
 
 ?>

@@ -496,6 +496,8 @@ class FileCommandAPI {
      * @return
      *   TRUE IFF directory was created without error
      *
+     * @since July 12, 2010 - changed bits from 0770 to 0750 (gemezm@purdue.edu)
+     *
      ******************************************************************************/
     public function mkdir ($recursive=false) {
 
@@ -503,7 +505,7 @@ class FileCommandAPI {
 
         umask(0000);
 
-        if ( $this->makeDirectory($this->SOURCE, 0770, $recursive) )
+        if ( $this->makeDirectory($this->SOURCE, 0750, $recursive) )
         {
             // This will need to be fixed. We're just trying to avoid whitescreens.
             try {
@@ -839,6 +841,16 @@ class FileCommandAPI {
         } else {
             return "nees/data";
         }
+    }
+
+    /**
+     *
+     * @param string $p_strProjectName
+     * @return string
+     */
+    public static function getProjectDirectoryGroup($p_strProjectName){
+      $strGroupCn = str_replace("-",  "_",  $p_strProjectName);
+      return strtolower(trim($strGroupCn));
     }
 } //end class
 ?>

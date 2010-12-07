@@ -366,6 +366,18 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 	protected $lastFacilityDataFileCriteria = null;
 
 	/**
+	 * Collection to store aggregation of collLocationPlans.
+	 * @var        array
+	 */
+	protected $collLocationPlans;
+
+	/**
+	 * The criteria used to select the current contents of collLocationPlans.
+	 * @var        Criteria
+	 */
+	protected $lastLocationPlanCriteria = null;
+
+	/**
 	 * Collection to store aggregation of collMaterialFiles.
 	 * @var        array
 	 */
@@ -1417,6 +1429,14 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collLocationPlans !== null) {
+				foreach($this->collLocationPlans as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collMaterialFiles !== null) {
 				foreach($this->collMaterialFiles as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -1665,6 +1685,14 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 
 				if ($this->collFacilityDataFiles !== null) {
 					foreach($this->collFacilityDataFiles as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collLocationPlans !== null) {
+					foreach($this->collLocationPlans as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -2176,6 +2204,10 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 
 			foreach($this->getFacilityDataFiles() as $relObj) {
 				$copyObj->addFacilityDataFile($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getLocationPlans() as $relObj) {
+				$copyObj->addLocationPlan($relObj->copy($deepCopy));
 			}
 
 			foreach($this->getMaterialFiles() as $relObj) {
@@ -5475,6 +5507,211 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 		$this->lastFacilityDataFileCriteria = $criteria;
 
 		return $this->collFacilityDataFiles;
+	}
+
+	/**
+	 * Temporary storage of collLocationPlans to save a possible db hit in
+	 * the event objects are add to the collection, but the
+	 * complete collection is never requested.
+	 * @return     void
+	 */
+	public function initLocationPlans()
+	{
+		if ($this->collLocationPlans === null) {
+			$this->collLocationPlans = array();
+		}
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this DataFile has previously
+	 * been saved, it will retrieve related LocationPlans from storage.
+	 * If this DataFile is new, it will return
+	 * an empty collection or the current collection, the criteria
+	 * is ignored on a new object.
+	 *
+	 * @param      Connection $con
+	 * @param      Criteria $criteria
+	 * @throws     PropelException
+	 */
+	public function getLocationPlans($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseLocationPlanPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collLocationPlans === null) {
+			if ($this->isNew()) {
+			   $this->collLocationPlans = array();
+			} else {
+
+				$criteria->add(LocationPlanPeer::DATA_FILE_ID, $this->getId());
+
+				LocationPlanPeer::addSelectColumns($criteria);
+				$this->collLocationPlans = LocationPlanPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(LocationPlanPeer::DATA_FILE_ID, $this->getId());
+
+				LocationPlanPeer::addSelectColumns($criteria);
+				if (!isset($this->lastLocationPlanCriteria) || !$this->lastLocationPlanCriteria->equals($criteria)) {
+					$this->collLocationPlans = LocationPlanPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastLocationPlanCriteria = $criteria;
+		return $this->collLocationPlans;
+	}
+
+	/**
+	 * Returns the number of related LocationPlans.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      Connection $con
+	 * @throws     PropelException
+	 */
+	public function countLocationPlans($criteria = null, $distinct = false, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseLocationPlanPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(LocationPlanPeer::DATA_FILE_ID, $this->getId());
+
+		return LocationPlanPeer::doCount($criteria, $distinct, $con);
+	}
+
+	/**
+	 * Method called to associate a LocationPlan object to this object
+	 * through the LocationPlan foreign key attribute
+	 *
+	 * @param      LocationPlan $l LocationPlan
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addLocationPlan(LocationPlan $l)
+	{
+		$this->collLocationPlans[] = $l;
+		$l->setDataFile($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this DataFile is new, it will return
+	 * an empty collection; or if this DataFile has previously
+	 * been saved, it will retrieve related LocationPlans from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in DataFile.
+	 */
+	public function getLocationPlansJoinExperiment($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseLocationPlanPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collLocationPlans === null) {
+			if ($this->isNew()) {
+				$this->collLocationPlans = array();
+			} else {
+
+				$criteria->add(LocationPlanPeer::DATA_FILE_ID, $this->getId());
+
+				$this->collLocationPlans = LocationPlanPeer::doSelectJoinExperiment($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(LocationPlanPeer::DATA_FILE_ID, $this->getId());
+
+			if (!isset($this->lastLocationPlanCriteria) || !$this->lastLocationPlanCriteria->equals($criteria)) {
+				$this->collLocationPlans = LocationPlanPeer::doSelectJoinExperiment($criteria, $con);
+			}
+		}
+		$this->lastLocationPlanCriteria = $criteria;
+
+		return $this->collLocationPlans;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this DataFile is new, it will return
+	 * an empty collection; or if this DataFile has previously
+	 * been saved, it will retrieve related LocationPlans from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in DataFile.
+	 */
+	public function getLocationPlansJoinTrial($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseLocationPlanPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collLocationPlans === null) {
+			if ($this->isNew()) {
+				$this->collLocationPlans = array();
+			} else {
+
+				$criteria->add(LocationPlanPeer::DATA_FILE_ID, $this->getId());
+
+				$this->collLocationPlans = LocationPlanPeer::doSelectJoinTrial($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(LocationPlanPeer::DATA_FILE_ID, $this->getId());
+
+			if (!isset($this->lastLocationPlanCriteria) || !$this->lastLocationPlanCriteria->equals($criteria)) {
+				$this->collLocationPlans = LocationPlanPeer::doSelectJoinTrial($criteria, $con);
+			}
+		}
+		$this->lastLocationPlanCriteria = $criteria;
+
+		return $this->collLocationPlans;
 	}
 
 	/**

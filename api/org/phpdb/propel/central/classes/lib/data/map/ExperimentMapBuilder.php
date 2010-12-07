@@ -94,6 +94,8 @@ class ExperimentMapBuilder {
 
 		$tMap->addColumn('VIEWABLE', 'View', 'string', CreoleTypes::VARCHAR, false, 32);
 
+		$tMap->addForeignKey('CREATOR_ID', 'CreatorId', 'double', CreoleTypes::NUMERIC, 'PERSON', 'ID', false, 22);
+
 		$tMap->addValidator('CURATION_STATUS', 'maxLength', 'propel.validator.MaxLengthValidator', '40', 'CURATION_STATUS');
 
 		$tMap->addValidator('CURATION_STATUS', 'required', 'propel.validator.RequiredValidator', '', 'CURATION_STATUS');
