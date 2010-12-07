@@ -1,7 +1,7 @@
 <?php
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
- 
+
 // Import library dependencies
 jimport('joomla.event.plugin');
 jimport('joomla.filesystem.file');
@@ -23,15 +23,15 @@ require_once 'api/org/nees/static/ProjectEditor.php';
 require_once 'api/org/nees/lib/filesystem/FileCommandAPI.php';
 
 class plgProjectUpload extends JPlugin{
-	
+
    /**
     * Constructor
     *
-    * 
+    *
     */
   function plgProjectUpload( &$subject ){
     parent::__construct( $subject );
- 
+
     // load plugin parameters
     $this->_plugin = JPluginHelper::getPlugin( 'project', 'upload' );
     $this->_params = new JParameter( $this->_plugin->params );
@@ -46,7 +46,7 @@ class plgProjectUpload extends JPlugin{
     //this is the name of the field in the html form, filedata is the default name for swfupload
     //so we will leave it as that
     $fieldName = 'upload';
-    
+
     //any errors the server registered on uploading
     //$fileError = ($p_iIndex===0) ? $_FILES[$fieldName]['error'] : $_FILES[$fieldName]['error'][$p_iIndex];
     $fileError = (is_array($_FILES[$fieldName]['error'])) ? $_FILES[$fieldName]['error'][$p_iIndex] : $_FILES[$fieldName]['error'];
@@ -97,7 +97,7 @@ class plgProjectUpload extends JPlugin{
         $extOk = true;
       }
     }
-    
+
     if ($extOk == false) {
       return ProjectEditor::UPLOAD_CODE_INVALID_EXTENSION;
     }
@@ -209,7 +209,7 @@ class plgProjectUpload extends JPlugin{
       //exit(0);
     }
 
-    
+
     return $fileName;
   }
 
@@ -388,7 +388,7 @@ class plgProjectUpload extends JPlugin{
       $oDataFile->setDocumentFormat($oDocumentFormat);
       $oDataFile->save();
     }
-    
+
     // input file
     $strSource = $p_strWarehousePath."/".$p_strName;
 
@@ -478,7 +478,7 @@ class plgProjectUpload extends JPlugin{
     $oHubUser =& JFactory::getUser();
 
     $strPath = JRequest::getVar('path','');
-    if(!StringHelper::hasText($strPath)){  
+    if(!StringHelper::hasText($strPath)){
       $strPath = ProjectEditor::PROJECT_UPLOAD_DIR."/".$oHubUser->username;
       if(!is_dir($strPath)){
         $bValidPath = mkdir($strPath, 0700);
@@ -508,7 +508,7 @@ class plgProjectUpload extends JPlugin{
       }
       ++$i;
     }
-    
+
 
     return $strName;
   }
@@ -570,12 +570,26 @@ class plgProjectUpload extends JPlugin{
       $strUsageType = $oEntityType->getDatabaseTableName();
       $strUsageTypeArray = explode("-", $strUsageType);
       if(sizeof($strUsageTypeArray)==2){
-        $strUploadedPath = $strUploadedPath. "/". $strUsageTypeArray[1];
-        JRequest::setVar('path', $strUploadedPath);
+        /*
+         * We're phasing out <Project>/Videos and <Experiment>/Videos.
+         * Thus, the video pattern check was added 20101105.  People can upload
+         * videos under the Data tab.  If the user is uploading a data video,
+         * the path should already be defined.  If a user is uploading Documentation
+         * videos, append the subdirectory to Videos.
+         */
+        if(!preg_match(ProjectEditor::VIDEO_FRAMES_PATTERN, $strUploadedPath) &&
+           !preg_match(ProjectEditor::VIDEO_MOVIES_PATTERN, $strUploadedPath)){
+          $strUploadedPath = $strUploadedPath. "/". $strUsageTypeArray[1];
+          JRequest::setVar('path', $strUploadedPath);
+        }
       }
     }else{
       $iUsageTypeId = null;
     }
+
+    /*
+     * Actually, start the upload...
+     */
 
     $iCounter = 0;
     $i=0;
@@ -594,23 +608,23 @@ class plgProjectUpload extends JPlugin{
         $strDescription = JRequest::getVar('desc');
         $strTitle = JRequest::getVar('title');
         $strFileTitle = ($iNumFiles <= 1) ? $strTitle : $strTitle." (".$ii." of ".$iNumFiles.")";
-        
+
         //store the data file
         $oDataFile = new DataFile();
         $oDataFile = $oDataFile->newDataFileByFilesystem($strFileName, $strUploadedPath, false, $strFileTitle, $strDescription, $iUsageTypeId, $strTool);
         if($oDataFile){
           ++$iCounter;
           $uploadedFileNameParts = explode('.', $strFileName);
-          if(sizeof($uploadedFileNameParts) == 2){
+          //if(sizeof($uploadedFileNameParts) == 2){
             $uploadedFileExtension = array_pop($uploadedFileNameParts);
 
             /* @var $oDocumentFormat DocumentFormat */
             $oDocumentFormat = DocumentFormatPeer::findByDefaultExtension($uploadedFileExtension);
             $oDataFile->setDocumentFormat($oDocumentFormat);
             $oDataFile->save();
+          //}
           }
         }
-      }
 
       ++$i;
     }
@@ -730,7 +744,7 @@ class plgProjectUpload extends JPlugin{
 
 
   }
-  
+
   private function scaleImage($p_strSource, $p_iWidth, $p_iHeight, $p_strSaveFile){
     return PhotoHelper::resize($p_strSource, $p_iWidth, $p_iHeight, $p_strSaveFile);
   }
@@ -755,7 +769,7 @@ class plgProjectUpload extends JPlugin{
 
     // output files
     $strWarehousePath = $oDataFile->getPath()."/".Files::GENERATED_PICS;
-    
+
     $strThumbName = "thumb_".$oDataFile->getId()."_".$oDataFile->getName();
     $strThumbnailFile = $strWarehousePath."/".$strThumbName;
 
@@ -914,7 +928,7 @@ class plgProjectUpload extends JPlugin{
       $oFileCommand = FileCommandAPI::create($strWarehousePath);
       $bMkDir = $oFileCommand->mkdir();
     }
-    
+
     $bThumbnail = $this->scaleImageByWidth($strSource, $iThumbWidth, $strThumbnailFile);
     if($bThumbnail){
       $oEntityType = EntityTypePeer::findByTableName("Thumbnail");
@@ -968,6 +982,6 @@ class plgProjectUpload extends JPlugin{
 
     return true;
   }
- 
+
 }
 ?>
