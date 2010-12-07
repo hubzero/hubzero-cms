@@ -281,8 +281,8 @@ class ResourcesController extends Hubzero_Controller
 		$view->config = $this->config;
 		
 		// Incoming
-		$view->tag = JRequest::getVar( 'tag', '' );
-		$view->tag2 = JRequest::getVar( 'with', '' );
+		$view->tag = preg_replace("/[^a-zA-Z0-9]/", "", strtolower(JRequest::getVar( 'tag', '' )));
+		$view->tag2 = preg_replace("/[^a-zA-Z0-9]/", "", strtolower(JRequest::getVar( 'with', '' )));
 		$view->type = strtolower(JRequest::getVar( 'type', 'tools' ));
 		
 		$view->supportedtag = $this->config->get('supportedtag');
