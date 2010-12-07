@@ -39,8 +39,11 @@ $oAuthorizer->setUser($oUser->username);
 $oUserManager = UserManager::getInstance();
 $oUserManager->setUser($oUser->username);
 if($oUser->username=="gemezm"){
-  $oAuthorizer->setUser("sdyke");
-  $oUserManager->setUser("sdyke");
+  //$oAuthorizer->setUser("sdyke");
+  //$oUserManager->setUser("sdyke");
+
+  $oAuthorizer->setUser("rhowell537");
+  $oUserManager->setUser("rhowell537");
 }
 
 // Create the controller
