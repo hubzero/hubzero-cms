@@ -313,6 +313,32 @@ class WishlistController extends JObject
 	// Views
 	//----------------------------------------------------------
 
+	protected function abort() 
+	{
+		// Set the page title
+		$document =& JFactory::getDocument();
+		$document->setTitle( JText::_(strtoupper($this->_name)) );
+
+		// Set the pathway
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		if (count($pathway->getPathWay()) <= 0) {
+			$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
+		}
+		
+		$this->setError( JText::_('Wishlist not configured.') );
+		
+		// Output HTML
+		$view = new JView( array('name'=>'error') );
+		$view->title = JText::_(strtoupper($this->_name));
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
+
 	public function login() 
 	{
 		$view = new JView( array('name'=>'login') );
