@@ -47,6 +47,8 @@ class plgYSearchMembers extends YSearchPlugin
 				'Members' AS section,
         CASE WHEN p.picture IS NOT NULL THEN concat('/site/members/', lpad(p.uidNumber, 5, '0'), '/', p.picture) ELSE NULL END AS img_href
 			FROM jos_xprofiles p
+			INNER JOIN jos_users u
+				ON u.id = p.uidNumber AND u.block = 0
 			LEFT JOIN jos_xprofiles_bio b 
 				ON b.uidNumber = p.uidNumber
 			WHERE 
@@ -79,6 +81,8 @@ class plgYSearchMembers extends YSearchPlugin
 				'Members' AS section,
         CASE WHEN p.picture IS NOT NULL THEN concat('/site/members/', lpad(p.uidNumber, 5, '0'), '/', p.picture) ELSE NULL END AS img_href
 			FROM jos_xprofiles p
+			INNER JOIN jos_users u
+				ON u.id = p.uidNumber AND u.block = 0
 			LEFT JOIN jos_xprofiles_bio b 
 				ON b.uidNumber = p.uidNumber
 			WHERE 
