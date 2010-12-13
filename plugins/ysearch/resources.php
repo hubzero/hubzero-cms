@@ -35,7 +35,6 @@ class plgYSearchResources extends YSearchPlugin
 				++$tag_map[$id];
 			else
 				$tag_map[$id] = 1;
-//		$tag_count = $request->get_tag_count_sql('resources', 'r');
 
 		$weight = 'match(r.title, r.introtext, r.`fulltext`) against (\''.join(' ', $terms['stemmed']).'\')';
 			
@@ -83,7 +82,7 @@ class plgYSearchResources extends YSearchPlugin
 			$id = (int)$row->get('id');
 			if (array_key_exists($id, $tag_map))
 			{
-				$row->adjust_weight(1 + $tag_map[$id], 'tag bonus from resources plugin');
+				$row->adjust_weight((1 + $tag_map[$id])/4, 'tag bonus from resources plugin');
 				unset($tag_map[$id]);
 			}
 		}
@@ -117,15 +116,20 @@ class plgYSearchResources extends YSearchPlugin
 			foreach ($sql->to_associative() as $row)
 			{
 				if ($tag_map[$row->get('id')] > 1)
-					$row->adjust_weight($tag_map[$row->get('id')]/2, 'tag bonus for non-matching but tagged resources');
+					$row->adjust_weight($tag_map[$row->get('id')]/8, 'tag bonus for non-matching but tagged resources');
 				$id_assoc[$row->get('id')] = $row;
 			}
 		}
+
+		$dbg = array_key_exists('dbg', $_GET);
 		
 		// Nest child resources
 		$section = $request->get_terms()->get_section();
 		foreach ($id_assoc as $id=>$row)
 		{
+			if ($dbg && $row->get('section') === 'Tools')
+				continue;
+
 			$parents = $row->get('parents');
 			if ($parents)
 				foreach (split(',', $parents) as $parent)
@@ -135,7 +139,7 @@ class plgYSearchResources extends YSearchPlugin
 					{
 						$placed[(int)$id] = $ordering;
 						$id_assoc[(int)$parent_id]->add_child($row);
-						$id_assoc[(int)$parent_id]->add_weight($row->get_weight()/10, 'propagating child weight');
+						$id_assoc[(int)$parent_id]->add_weight($row->get_weight()/15, 'propagating child weight');
 					}
 				}
 		}

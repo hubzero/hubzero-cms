@@ -1,0 +1,197 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+.results
+{
+	clear: left;
+}
+.results .summary
+{
+	position: relative;
+	padding-left: 1em;
+}
+.aside
+{
+	right: 0;
+}
+.aside .sub-nav
+{
+	list-style-type: none;
+}
+.tags
+{
+	float: left;
+	margin-bottom: 0.3em;
+}
+p.title { font-weight: bold; }
+.url 
+{
+	clear: left; 
+	margin: 0;
+	padding: 1em 0 0 0; 
+	font-size: 85%;
+}
+.url a 
+{
+	color: green;
+}
+.summary
+{
+	float: left;
+}
+div.summary .details span
+{
+	display: inline-block;
+	margin: 0;
+}
+div.summary .details .date
+{
+	width: 150px;
+}
+div.summary .details .section
+{
+	width: 150px;
+}
+div.summary .details .contributors
+{
+	width: 300px;
+}
+#search-terms
+{
+	display: none;
+}
+.subject
+{
+	top: 0;
+	background: transparent;
+}
+.details span
+{
+	color: #999 !important;
+}
+.result-pre
+{
+  margin-top: 4px;
+  width: 50px;
+  min-height: 50px;
+  float: left;
+}
+.result-pre img
+{
+	margin-bottom: 4px;
+	width: 100%;
+}
+.shifted
+{
+  margin-left: 58px;
+}
+.clear
+{
+  margin: 0;
+}
+.event-date
+{
+	margin: 0 !important;
+}
+.event-date span
+{
+  display: block;
+  float: left;
+  width: 100%;
+}
+.event-date .month
+{
+  background: #D51007;
+  border: 1px solid #D51007;
+  color: #FFFFFF;
+  font-size: 85%;
+  font-weight: bold;
+  line-height: 1.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.event-date .day
+{
+  background: #FFFFFF;
+  border-color: #CCCCCC;
+  border-style: none solid solid;
+  border-width: medium 1px 1px;
+  color: #000000;
+  font-size: 120%;
+  font-weight: bold;
+  letter-spacing: -0.1em;
+  line-height: 1.4em;
+  text-align: center;
+}
+.event-date .year
+{
+  background: #CCCCCC none repeat scroll 0 0;
+  border: 1px solid #CCCCCC;
+  color: #FFFFFF;
+  font-size: 85%;
+  font-weight: bold;
+  line-height: 1.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.child-types li, .child-types, .child-types h3, .child-result, .child-result li
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+.child-types li
+{
+	border: 0; 
+}
+.child-types
+{
+	background: #fff;
+	margin-left: 60px !important;
+	padding: 6px !important;
+	clear: left;
+}
+.child-types, .child-result
+{
+	margin-left: 2em;
+}
+.child-types h4
+{
+	font-weight: bold;
+}
+.expand
+{
+	width: 15px;
+	height: 15px;
+	float: left;
+	cursor: pointer;
+	margin-right: 4px;
+	background: url('/components/com_ysearch/expand.gif') no-repeat 0 0;
+	display: none;
+}
+h4
+{
+	font-weight: normal;
+	font-style: italic;
+}
+.odd
+{
+	background: #f8f8f8;
+}
+.search-per-page, .search-pages
+{
+	margin: 0;
+	padding: 0;
+	width: 49%;
+	display: inline-block;
+}
+.search-per-page
+{
+	text-align: right;
+}

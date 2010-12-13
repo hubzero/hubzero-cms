@@ -2,22 +2,6 @@
 
 jimport('joomla.application.component.model');
 
-class YSearchModelWidgetSet extends JModel implements Iterator
-{
-	private $widgets = array();
-
-	public function add_html($widget)
-	{
-		$this->widgets[] = $widget;
-	}
-
-	public function rewind() { $this->pos = 0; }
-	public function current() { return $this->widgets[$this->pos]; }
-	public function key() { return $this->pos; }
-	public function next() { ++$this->pos; }
-	public function valid() { return isset($this->widgets[$this->pos]); }
-}
-
 class YSearchModelResultSet extends JModel implements Iterator
 {
 	private static $plugin_weights;
@@ -48,7 +32,6 @@ class YSearchModelResultSet extends JModel implements Iterator
 			return;
 
 		$authz = new YSearchAuthorization();
-		
 		$req = new YSearchModelRequest($this->terms);
 		$this->tags = $req->get_tags();
 
@@ -56,6 +39,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 		$plugins = JPluginHelper::getPlugin('ysearch');
 
 		$this->custom_mode = true;
+		// Poll custom result plugins, like the one that shows matching members at the top of the list
 		if (!$force_generic)
 			foreach ($plugins as $plugin)
 				if (JPluginHelper::isEnabled('ysearch', $plugin->name))
@@ -72,34 +56,41 @@ class YSearchModelResultSet extends JModel implements Iterator
 
 		foreach ($plugins as $plugin)
 		{
-			if (JPluginHelper::isEnabled('ysearch', $plugin->name))
-			{
-				$refl = new ReflectionClass("plgYSearch$plugin->name");
-				$this->current_plugin = $plugin->name;
-				$weighters[$plugin->name] = array();
+			if (!JPluginHelper::isEnabled('ysearch', $plugin->name))
+				continue;
+			
+			$refl = new ReflectionClass("plgYSearch$plugin->name");
+			$this->current_plugin = $plugin->name;
+			$weighters[$plugin->name] = array();
 				
-				if ($refl->hasMethod('onYSearch'))
-					$refl->getMethod('onYSearch')->invokeArgs(NULL, array($req, &$this, $authz));
+			// generic resource plugin
+			if ($refl->hasMethod('onYSearch'))
+				$refl->getMethod('onYSearch')->invokeArgs(NULL, array($req, &$this, $authz));
 				
-				$this->result_counts[$plugin->name] = array(
-					'friendly_name' => 
-						$refl->hasMethod('getName') 
-							? $refl->getMethod('getName')->invoke(NULL)
-							: ucwords($plugin->name), 
-					'plugin_name' => $plugin->name,
-					'count' => 0
-				);
-				if ($refl->hasMethod('onYSearchWidget'))
-					$refl->getMethod('onYSearchWidget')->invokeArgs(NULL, array($req, &$this->widgets, $authz));
+			$this->result_counts[$plugin->name] = array(
+				'friendly_name' => 
+					$refl->hasMethod('getName') 
+						? $refl->getMethod('getName')->invoke(NULL)
+						: ucwords($plugin->name), 
+				'plugin_name' => $plugin->name,
+				'count' => 0
+			);
+
+			// custom results like Google does when you enter a stock symbol. tags used to be implemented this way, but they got moved into the core so other plugins could use them to find tagged results
+			if ($refl->hasMethod('onYSearchWidget'))
+				$refl->getMethod('onYSearchWidget')->invokeArgs(NULL, array($req, &$this->widgets, $authz));
 				
-				if ($refl->hasMethod('onYSearchSort'))
-					$this->sorters[$plugin->name] = $refl->getMethod('onYSearchSort');
-			}
+			if ($refl->hasMethod('onYSearchSort'))
+				$this->sorters[$plugin->name] = $refl->getMethod('onYSearchSort');
 		}
 
+		// Loop the plugins once more now that we have an exhaustive list of plugin types
 		$plugin_types = array_keys($weighters);
 		foreach ($plugins as $plugin)
 		{
+			if (!JPluginHelper::isEnabled('ysearch', $plugin->name))
+				continue;
+
 			$class = "plgYSearch$plugin->name";
 			$refl = new ReflectionClass($class);
 			if ($refl->hasMethod('onYSearchWeightAll'))
@@ -174,14 +165,12 @@ class YSearchModelResultSet extends JModel implements Iterator
 		$dont_show_because_nested_elsewhere = array();
 		foreach ($link_map as $rows)
 			if (count($rows) > 0)
-			{
 				foreach ($rows as $row)
 				{
 					list($id, $has_parent) = $row;
 					if ($has_parent)
 						$dont_show_because_nested_elsewhere[$id] = 1;
 				}
-			}
 
 		$this->total_count = count($this->processed_results);
 		foreach ($this->shown_results as $idx=>$res)
@@ -237,15 +226,10 @@ class YSearchModelResultSet extends JModel implements Iterator
 		
 			foreach (array_merge(array($parent), $parent->get_children()) as $idx=>$res)
 			{
-				// this is a child result that was folded in, increase the plugin count
-				// to show that there are really more results
-				# TODO pretty sure this is wrong, the counts look off with it enabled
 				if ($idx > 0)
 				{
 					--$this->total_list_count;
 					--$this->result_counts[$plugin]['list_count'];
-		#			++$this->total_count;
-		#			++$this->result_counts[$plugin]['count'];
 				}
 				
 				$section = $res->get_section();	
@@ -299,7 +283,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 		}
 		
 		$this->terms = $terms;
-		$this->widgets = new YSearchModelWidgetSet();
+		$this->widgets = array();
 	}
 
 	public function add($res)

@@ -11,6 +11,7 @@ class plgYSearchSuffixes extends YSearchPlugin
 			if (preg_match('/^(.*?)(on)?ic$/', $term, $match))
 				$add[] = count($match) == 3 ? $match[1].'ic' : $match[1].'onic';
 
+			// the fulltext indexer mangles course names, but it helps if we add a space between the letters and numbers
 			if (preg_match('/^([a-zA-Z]+)(\d+)/', $term, $course_name))
 				$add[] = $course_name[1].' '.$course_name[2];
 		}
