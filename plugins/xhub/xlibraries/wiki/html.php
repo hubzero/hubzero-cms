@@ -298,6 +298,15 @@ class WikiHtml
 			$html .= WikiHtml::authors( $page, $params );
 		}
 		$html .= '</div><!-- /#content-header -->'.n;
+
+		if ($mode &&  $mode == 'static' && $authorized === 'admin') {
+			$html .= '<div id="'.$hid.'-extra">'.n;
+			$html .= '<ul id="useroptions">'.n;
+			$html .= '<li><a class="edit" href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagen
+			$html .= '<li class="last"><a class="history" href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page
+			$html .= '</ul>'.n;
+			$html .= '</div><!-- /#content-header-extra -->'.n;
+		}
 		
 		if (!$mode || ($mode && $mode != 'static')) {
 			$html .= WikiHtml::subMenu( $sub, $option, $page->pagename, $page->scope, $page->state, $task, $params, $authorized );
@@ -612,6 +621,13 @@ class WikiHtml
 					$html .= ' selected="selected"';
 				}
 				$html .= '>Wiki page anyone can edit</option>'.n;
+				if ($authorized === 'admin') {
+					$html .= t.t.t.t.'<option value="static"';
+					if ($mode == 'static') {
+						$html .= ' selected="selected"';
+					}
+					$html .= '>Static (open layout)</option>'.n;
+				}
 				$html .= t.t.t.'</select>'.n;
 				$html .= t.t.'</label>'.n;
 			} else {
