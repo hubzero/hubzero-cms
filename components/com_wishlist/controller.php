@@ -338,6 +338,10 @@ class WishlistController extends JObject
 		$refid  = JRequest::getInt( 'rid', 0 );
 		$cat   	= JRequest::getVar( 'category', '' );
 		$saved  = JRequest::getInt( 'saved', 0 );
+
+		if (empty($id) && empty($cat) && empty($refid)) {
+			$id = $this->mainlist;
+		}
 		
 		// are we viewing this from within a plugin?
 		$plugin = (isset($this->plugin) && $this->plugin!='') ? $this->plugin : '';
