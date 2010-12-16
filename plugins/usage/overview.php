@@ -74,7 +74,7 @@ class plgUsageOverview extends JPlugin
 	
 	private function _check_for_data(&$db, $yearmonth, $period) 
 	{
-	   	$sql = "SELECT COUNT(datetime) FROM totalvals WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%' AND period = '" . mysql_escape_string($period) . "'";
+	   	$sql = "SELECT COUNT(datetime) FROM summary_user_vals WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%' AND period = '" . mysql_escape_string($period) . "'";
 		$db->setQuery( $sql );
 		$result = $db->loadResult();   	
 
@@ -102,7 +102,19 @@ class plgUsageOverview extends JPlugin
 				if ($i == 1) {
 					$cls = ' class="highlight"';
 				}
-				$html .= "\t\t\t".'<td'.$cls.'>'.trim($this->_fmt_result($row->value,$row->valfmt)).'</td>'."\n";
+				if ($i == 2)
+                    $res_iden = $row->value;
+                if ($i == 7)
+                    $org_iden = $row->value;
+
+                if ($i == 3 || $i == 4 || $i == 5 || $i == 6) {
+                    $val = ($row->value/$res_iden) * 100;
+                } else if ($i == 8 || $i == 9 || $i == 10 || $i == 11) {
+                    $val = ($row->value/$org_iden) * 100;
+                } else {
+                    $val = $row->value;
+				}
+				$html .= "\t\t\t".'<td'.$cls.'>'.trim($this->_fmt_result($val,$row->valfmt)).'</td>'."\n";
 			}
 		}
 		if ($i == 1) {
@@ -190,8 +202,18 @@ class plgUsageOverview extends JPlugin
 			$value = number_format($value).$valfmt[$fmt];
 			return $value;
 		} else if ($fmt == 5) {
-			$value = number_format(($value/86400)).' '.$valfmt[$fmt];
-			return $value;
+			if ($value < '60') {
+                $val = number_format($value).' seconds';
+            } else if ($value >= '60' && $value < '3600') {
+                $val = number_format($value/60).' minutes';
+            } else if ($value >= '3600'  && $value < '86400') {
+                $val = number_format($value/3600).' hours';
+            } else if ($value >= '86400') {
+                $val = number_format($value/86400).' days';
+            } else {
+                $val = number_format($value);
+            }
+            return $val;
 		} else if ($fmt == 6) {
 			return $value;
 		} else {
@@ -256,7 +278,7 @@ class plgUsageOverview extends JPlugin
 		$selectedPeriod = JRequest::getVar('selectedPeriod', '');
 		
 		if (!$selectedPeriod) {
-	        $sql = "SELECT MAX(datetime) FROM summary_collab_vals";
+	        $sql = "SELECT MAX(datetime) FROM summary_misc_vals";
 			$db->setQuery( $sql );
 			$lastdate = $db->loadResult();
 	        if ($lastdate) {
@@ -513,9 +535,9 @@ class plgUsageOverview extends JPlugin
 		$html .= '</form>'."\n";
 
 		//--------------------------------
-
+		$tbl_cnt = 0;
 		$html .= '<table summary="'.JText::_('A break-down of site visitors.').'">'."\n";
-		$html .= "\t".'<caption>'.JText::_('Table 1: User statistics').'</caption>'."\n";
+		$html .= "\t".'<caption>'.JText::_('Table '.++$tbl_cnt.': User statistics').'</caption>'."\n";
 		$html .= "\t".'<thead>'."\n";
 		$html .= "\t\t".'<tr>'."\n";
 		$html .= "\t\t\t".'<th scope="col" rowspan="2" colspan="2">'.JText::_('Users').'</th>'."\n";
@@ -584,7 +606,7 @@ class plgUsageOverview extends JPlugin
 
 		// Start simulation Usage
 		$html .= '<table summary="'.JText::_('Simulation Usage').'">'."\n";
-		$html .= "\t".'<caption>'.JText::_('Table 2: Simulation Usage').'</caption>'."\n";
+		$html .= "\t".'<caption>'.JText::_('Table '.++$tbl_cnt.': Simulation Usage').'</caption>'."\n";
 		$html .= "\t".'<tbody>'."\n";
 		$sql = "SELECT a.label,b.value,b.valfmt,a.plot,a.id FROM summary_simusage AS a, summary_simusage_vals AS b WHERE a.id=b.rowid AND b.period = '".$period."' AND b.datetime = '".$datetime."' ORDER BY a.id";
 		$db->setQuery( $sql );
@@ -630,7 +652,7 @@ class plgUsageOverview extends JPlugin
 
 		// Start miscellaneous
 		$html .= '<table summary="'.JText::_('Miscellaneous Statistics').'">'."\n";
-		$html .= "\t".'<caption>'.JText::_('Table 3: Miscellaneous Statistics').'</caption>'."\n";
+		$html .= "\t".'<caption>'.JText::_('Table '.++$tbl_cnt.': Miscellaneous Statistics').'</caption>'."\n";
 		$html .= "\t".'<tbody>'."\n";
 		$sql = "SELECT a.label,b.value,b.valfmt FROM summary_misc AS a, summary_misc_vals AS b WHERE a.id=b.rowid AND b.period = '".$period."' AND b.datetime = '".$datetime."' ORDER BY a.id";
 		$db->setQuery( $sql );
@@ -661,7 +683,7 @@ class plgUsageOverview extends JPlugin
 	/*	
 		// "and more" Usage
 		$html .= '<table summary="'.JText::_('&quot;and more&quot; Usage').'">'."\n";
-		$html .= "\t".'<caption>'.JText::_('Table 4: &quot;and more&quot; Usage').'</caption>'."\n";
+		$html .= "\t".'<caption>'.JText::_('Table '.++$tbl_cnt.': &quot;and more&quot; Usage').'</caption>'."\n";
 		$html .= "\t".'<thead>'."\n";
 		$html .= "\t\t".'<tr>'."\n";
 		$html .= "\t\t\t".'<th scope="col" rowspan="2">'.JText::_('Type').'</th>'."\n";
@@ -744,11 +766,11 @@ class plgUsageOverview extends JPlugin
 		}
 		$html .= "\t".'</tbody>'."\n";
 		$html .= '</table>'."\n";
-*/
+
 
 		// Collaboration Usage
 		$html .= '<table summary="'.JText::_('Collaboration Usage').'">'."\n";
-		$html .= "\t".'<caption>'.JText::_('Table 5: Collaboration Usage').'</caption>'."\n";
+		$html .= "\t".'<caption>'.JText::_('Table '.++$tbl_cnt.': Collaboration Usage').'</caption>'."\n";
 		$html .= "\t".'<tbody>'."\n";
 		$sql = "SELECT a.label,b.value,b.valfmt FROM summary_collab AS a, summary_collab_vals AS b WHERE a.id=b.rowid AND b.period = '".$period."' AND b.datetime = '".$datetime."' ORDER BY a.id";
 		$db->setQuery( $sql );
@@ -776,9 +798,10 @@ class plgUsageOverview extends JPlugin
 		$html .= "\t".'</tbody>'."\n";
 		$html .= '</table>'."\n";
 
+	*/
 
 		$html .= '<table summary="'.JText::_('User statistics by registered/unregistered').'">'."\n";
-		$html .= "\t".'<caption><a name="tot"></a>'.JText::_('Table 6: User statistics by registered/unregistered').'</caption>'."\n";
+		$html .= "\t".'<caption><a name="tot"></a>'.JText::_('Table '.++$tbl_cnt.': User statistics by registered/unregistered').'</caption>'."\n";
 		$html .= "\t".'<thead>'."\n";
 		$html .= "\t\t".'<tr>'."\n";
 		$html .= "\t\t\t".'<th scope="col" rowspan="2" colspan="2">'.JText::_('Users').'</th>'."\n";
