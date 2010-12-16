@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		break;
 		
 		case(276): // University of CA, Davis</a></li>
-		echo 'calendar_feeds = new Array("", "", "", "", "");';
+		echo 'calendar_feeds = new Array("qdh56bse12rakafmv7g0e1m8u8%40group.calendar.google.com", "", "", "", "");';
 		break;
 		
 		case(180): // Cornell University</a></li>
@@ -129,7 +129,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
         <?php if($this->canedit) {?>
             <a href="/kb/siteactivities/sitecalendarsetup">How do I setup my calendar? </a>
         <?php } ?>
-            
+
 		<?php if ($this->facilityName != ''){?>
 			
 			<div id="calendar" class="calendar">
