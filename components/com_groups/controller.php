@@ -543,8 +543,7 @@ class GroupsController extends Hubzero_Controller
 		$group->remove('members',$this->juser->get('id'));
 		$group->remove('applicants',$this->juser->get('id'));
 		$group->remove('invitees',$this->juser->get('id'));
-		$group->update();
-		if ($group->getError()) {
+		if ($group->update() === false) {
 			$this->setError( JText::_('GROUPS_ERROR_CANCEL_MEMBERSHIP_FAILED') );
 		}
 		
@@ -648,8 +647,7 @@ class GroupsController extends Hubzero_Controller
 				$group->add('applicants',array($this->juser->get('id')));
 			}
 		}
-		$group->update();
-		if ($group->getError()) {
+		if ($group->update() === false) {
 			$this->setError( JText::_('GROUPS_ERROR_REGISTER_MEMBERSHIP_FAILED') );
 		}
 
