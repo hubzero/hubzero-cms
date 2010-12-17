@@ -225,8 +225,8 @@ if ($this->comments) {
 		$comment->dislike = 0;
 ?>
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $comment->id; ?>">
-			<a name="#c<?php echo $comment->id; ?>"></a>
 			<p class="comment-member-photo">
+				<span class="comment-anchor"><a name="#c<?php echo $comment->id; ?>"></a></span>
 				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $comment->anonymous); ?>" alt="" />
 			</p>
 			<div class="comment-content">
@@ -296,8 +296,8 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 				$reply->dislike = 0;
 ?>
 				<li class="comment <?php echo $cls; ?>" id="c<?php echo $reply->id; ?>">
-					<a name="#c<?php echo $reply->id; ?>"></a>
 					<p class="comment-member-photo">
+						<span class="comment-anchor"><a name="#c<?php echo $reply->id; ?>"></a></span>
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $reply->anonymous); ?>" alt="" />
 					</p>
 					<div class="comment-content">
@@ -359,8 +359,8 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 						$response->dislike = 0;
 ?>
 						<li class="comment <?php echo $cls; ?>" id="c<?php echo $response->id; ?>">
-							<a name="#c<?php echo $response->id; ?>"></a>
 							<p class="comment-member-photo">
+								<span class="comment-anchor"><a name="#c<?php echo $response->id; ?>"></a></span>
 								<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $response->anonymous); ?>" alt="" />
 							</p>
 							<div class="comment-content">
@@ -420,7 +420,6 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 	<div class="clear"></div>
 <div class="below">
 	<h3 class="post-comment-title">
-		<a name="post-comment"></a>
 		Post a comment
 	</h3>
 	<div class="aside">
@@ -461,6 +460,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 	<div class="subject">
 		<form method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias); ?>" id="commentform">
 			<p class="comment-member-photo">
+				<span class="comment-anchor"><a name="post-comment"></a></span>
 <?php
 				if (!$this->juser->get('guest')) {
 					$jxuser = new Hubzero_User_Profile();

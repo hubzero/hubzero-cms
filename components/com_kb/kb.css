@@ -520,7 +520,19 @@
 	    color: #777;
 	    font-size: 11px;
 	    text-align: right;
-		background: url("images/comment-arrow.gif") right 15px no-repeat;
+		position: relative;
+		}
+	ol.comments .comment-anchor {
+		border-color: transparent #f2f2f2 transparent transparent;
+		border-style: dashed solid dashed dashed;
+		border-width: 10px;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 20px;
+		right: 0px;
 		}
 	/* Content */
 	ol.comments .comment-content {
@@ -547,27 +559,27 @@
 		background-color: #fdfbf8;
 		border-color: #f9f2ec;
 		}
-	ol.comments .author p.comment-member-photo,
-	ol.comments .author ol.comments .author p.comment-member-photo {
-		background: url("images/comment-arrow.gif") right -129px no-repeat;
+	ol.comments .author .comment-anchor,
+	ol.comments .author ol.comments .author .comment-anchor {
+		border-color: transparent #f9f2ec transparent transparent;
 		}
 	ol.comments .author ol.comments .comment-content,
 	ol.comments .author ol.comments .author ol.comments .comment-content {
 		background-color: #fafafa;
 		border-color: #f2f2f2;
 		}
-	ol.comments .author ol.comments p.comment-member-photo,
-	ol.comments .author ol.comments .author ol.comments p.comment-member-photo {
-		background: url("images/comment-arrow.gif") right 15px no-repeat;
+	ol.comments .author ol.comments .comment-anchor,
+	ol.comments .author ol.comments .author ol.comments .comment-anchor {
+		border-color: transparent #f2f2f2 transparent transparent;
 		}
 	/* Chosen comments */
 	ol.comments .chosen .comment-content {
 		background-color: #f9f8fd;
 		border-color: #eeecf9;
 		}
-	ol.comments .chosen p.comment-member-photo {
-		background: url("images/comment-arrow.gif") right -57px no-repeat;
-		}
+	ol.comments .chosen .comment-anchor {
+		border-color: transparent #eeecf9 transparent transparent;
+		}	
 	/* Details (date, time) */
 	ol.comments span.comment-details {
 		color: #bfbfbf;
@@ -613,7 +625,19 @@
 		color: #777;
 		font-size: 11px;
 		text-align: right;
-		background: url("images/comment-arrow.gif") right -201px no-repeat;
+		position: relative;
+		}
+	#commentform .comment-anchor {
+		border-color: transparent #DEE4CD transparent transparent;
+		border-style: dashed solid dashed dashed;
+		border-width: 10px;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 20px;
+		right: 0px;
 		}
 	#commentform .sidenote {
 		border: 1px solid #edf0e8;
@@ -699,3 +723,10 @@
 /* IE 7 hacks */
 
 /* IE 6 hacks */
+	* html ol.comments .comment-anchor,
+	* html #commentform .comment-anchor {
+		_border-top-color: pink;
+		_border-bottom-color: pink;
+		_border-left-color: pink;
+		_filter: chroma(color=pink);
+		}
