@@ -674,9 +674,24 @@ class ResourcesController extends Hubzero_Controller
 		$typenorm = strtolower($typenorm);
 		
 		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-		$pathway->addItem($resource->getTypeTitle(),JRoute::_('index.php?option='.$this->_option.'&type='.$typenorm));
+		if ($resource->group_owner) {
+			// Alter the pathway to reflect a group owned resource
+			ximport('Hubzero_Group');
+			$group = Hubzero_Group::getInstance( $resource->group_owner );
 
+			$pathway =& $app->getPathway();
+			$pathway->_pathway = array();
+			$pathway->_count = 0;
+			
+			$pathway->addItem('Groups',JRoute::_('index.php?option=com_groups'));
+			$pathway->addItem(stripslashes($group->get('description')),JRoute::_('index.php?option=com_groups&gid='.$resource->group_owner));
+			$pathway->addItem('Resources',JRoute::_('index.php?option=com_groups&gid='.$resource->group_owner.'&active=resources'));
+			$pathway->addItem($resource->getTypeTitle(),JRoute::_('index.php?option=com_groups&gid='.$resource->group_owner.'&active=resources&area='.$typenorm));
+		} else {
+			$pathway =& $app->getPathway();
+			$pathway->addItem($resource->getTypeTitle(),JRoute::_('index.php?option='.$this->_option.'&type='.$typenorm));
+		}
+		
 		// Tool development version requested
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest') && $revision=='dev') {
