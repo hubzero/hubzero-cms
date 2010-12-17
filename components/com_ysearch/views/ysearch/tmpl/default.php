@@ -51,12 +51,12 @@ $show_weight = array_key_exists('show_weight', $_GET);
 		<?php endif; ?>
 	</div><!-- / .aside -->
 	<div class="subject">
-		<form action="/ysearch/" method="get">
+		<form action="/ysearch/" method="get" class="container">
 			<fieldset>
 				<p>
+					<input type="submit" value="Search" class="search-submit" />
 					<label id="search-terms" for="terms">Search terms</label>
 					<input type="text" name="terms" id="terms" <?php $this->attr('value', $this->terms) ?>/>
-					<input type="submit" value="Search" />
 				</p>
 			</fieldset>
 		</form>
@@ -64,12 +64,25 @@ $show_weight = array_key_exists('show_weight', $_GET);
 	<?php if (($ct = $this->results->get_custom_title())): ?>
 		<p class="information">You are viewing <strong><?php echo $ct; ?></strong> matching your query. <a href="/ysearch/?terms=<?php echo urlencode($this->terms); ?>&amp;force-generic=1">View all results.</a></p>
 	<?php endif; ?>
+
+	<div class="container">
+<?php
+		$total = $this->results->get_plugin_list_count();
+		$offset = $this->results->get_offset();
+		$limit = $this->results->get_limit();
+		$current_page = $offset / $limit + 1;
+		$total_pages = ceil($total / $limit);
+?>
+		<h3>
+			Results
+			<span>(page <?php echo $current_page; ?> of <?php echo $total_pages; ?>)</span>
+		</h3>
 	<?php if (($tags = $this->results->get_tags())): ?>
-	<ol class="tags">
-		<?php foreach ($tags as $tag): ?>
-		<li><a href="<?php echo $tag->get_link(); ?>"><?php echo $tag->get_title(); ?></a></li>
-		<?php endforeach; ?>
-	</ol>
+		<ol class="tags">
+			<?php foreach ($tags as $tag): ?>
+			<li><a href="<?php echo $tag->get_link(); ?>"><?php echo $tag->get_title(); ?></a></li>
+			<?php endforeach; ?>
+		</ol>
 	<?php endif; ?>
 	<?php foreach ($this->results->get_widgets() as $widget): ?>
 		<?php echo $widget; ?>
@@ -167,6 +180,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 	<?php endforeach; ?>
 	</ol>
 	<?php echo $this->pagination->getListFooter(); ?>
+</div><!-- / .container -->
 <?php elseif (($raw = $this->terms->get_raw())): ?>
 	<p>No results were found for '<?php echo htmlspecialchars($raw); ?>'</p>
 	<?php 
