@@ -43,8 +43,8 @@ if ($this->reply->anonymous != 1) {
 	}
 }
 ?>
-<a name="c<?php echo $this->reply->id; ?>"></a>
 <p class="comment-member-photo">
+	<span class="comment-anchor"><a name="c<?php echo $this->reply->id; ?>"></a></span>
 	<img src="<?php echo AnswersHelperMember::getMemberPhoto($ruser, $this->reply->anonymous); ?>" alt="" />
 </p>
 <div class="comment-content">

@@ -115,6 +115,7 @@ $votes = ($this->question->helpful) ? $this->question->helpful: '0';
 
 			<div class="question" id="q<?php echo $this->question->id; ?>">
 				<p class="question-member-photo">
+					<span class="question-anchor"><a name="q<?php echo $this->question->id; ?>"></a></span>
 					<img src="<?php echo AnswersHelperMember::getMemberPhoto($user, $this->question->anonymous); ?>" alt="" />
 				</p><!-- / .question-member-photo -->
 				<div class="question-content">
@@ -205,102 +206,7 @@ if ($reports == 0) {
 		<div class="clear"></div>
 	</div><!-- / .subject -->
 	
-<?php /*if ($this->responding == 1 && $reports == 0) { // answer form ?>
-	
-	<div class="below section">
-		<h3>
-			<a name="answerform"></a>
-			<?php echo JText::_('COM_ANSWERS_YOUR_ANSWER'); ?>
-		</h3>
-		<form action="index.php" method="post" id="commentform">
-			<div class="aside">
-				<table class="wiki-reference" summary="Wiki Syntax Reference">
-					<caption>Wiki Syntax Reference</caption>
-					<tbody>
-						<tr>
-							<td>'''bold'''</td>
-							<td><b>bold</b></td>
-						</tr>
-						<tr>
-							<td>''italic''</td>
-							<td><i>italic</i></td>
-						</tr>
-						<tr>
-							<td>__underline__</td>
-							<td><span style="text-decoration:underline;">underline</span></td>
-						</tr>
-						<tr>
-							<td>{{{monospace}}}</td>
-							<td><code>monospace</code></td>
-						</tr>
-						<tr>
-							<td>~~strike-through~~</td>
-							<td><del>strike-through</del></td>
-						</tr>
-						<tr>
-							<td>^superscript^</td>
-							<td><sup>superscript</sup></td>
-						</tr>
-						<tr>
-							<td>,,subscript,,</td>
-							<td><sub>subscript</sub></td>
-						</tr>
-					</tbody>
-				</table>
-			</div><!-- / .aside -->
-			<div class="subject">
-				<p class="comment-member-photo">
-				<?php
-					if (!$this->juser->get('guest')) {
-						$jxuser = new Hubzero_User_Profile();
-						$jxuser->load( $this->juser->get('id') );
-						$thumb = AnswersHelperMember::getMemberPhoto($jxuser, 0);
-					} else {
-						$config =& JComponentHelper::getParams( 'com_members' );
-						$thumb = $config->get('defaultpic');
-						if (substr($thumb, 0, 1) != DS) {
-							$thumb = DS.$dfthumb;
-						}
-						$thumb = AnswersHelperMember::thumbit($thumb);
-					}
-				?>
-					<img src="<?php echo $thumb; ?>" alt="" />
-				</p>
-				<fieldset>
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="task" value="savea" />
-					<input type="hidden" name="qid" value="<?php echo $this->question->id; ?>" />
-					
-					<label>
-						<?php echo JText::_('COM_ANSWERS_YOUR_RESPONSE'); ?>:
-						<textarea name="answer" rows="10" cols="50"></textarea>
-					</label>
-					
-					<label id="answer-anonymous-label">
-						<input class="option" type="checkbox" name="anonymous" value="1" id="answer-anonymous" /> 
-						<?php echo JText::_('COM_ANSWERS_POST_ANON'); ?>
-					</label>
-					
-					<p class="submit">
-						<input type="submit" value="<?php echo JText::_('COM_ANSWERS_SUBMIT'); ?>" />
-					</p>
-					
-					<div class="sidenote">
-						<p>
-							<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
-						</p>
-						<p>
-							Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="#">Wiki syntax</a> is supported.
-						</p>
-					</div>
-				</fieldset>
-			</div><!-- / .subject -->
-			<div class="clear"></div>
-		</form>
-	</div><!-- / .below section -->
-	<div class="clear"></div>
-
-<?php } else*/ if ($this->responding == 4 && $this->question->state == 0 && $reports == 0) { // delete question ?>
+<?php if ($this->responding == 4 && $this->question->state == 0 && $reports == 0) { // delete question ?>
 
 	<div class="below section">
 		<div class="subject">
@@ -399,7 +305,6 @@ if ($reports == 0) {
 	
 	<div class="below section">
 		<h3>
-			<a name="answerform"></a>
 			<?php echo JText::_('COM_ANSWERS_YOUR_ANSWER'); ?>
 		</h3>
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="commentform">
@@ -440,6 +345,7 @@ if ($reports == 0) {
 			</div><!-- / .aside -->
 			<div class="subject">
 				<p class="comment-member-photo">
+					<span class="comment-anchor"><a name="answerform"></a></span>
 				<?php
 					if (!$this->juser->get('guest')) {
 						$jxuser = new Hubzero_User_Profile();
@@ -535,8 +441,8 @@ if ($this->responses) {
 	<div class="subject">
 		<ol class="comments">
 			<li class="comment <?php echo $cls; ?>" id="c<?php echo $row->id; ?>">
-				<a name="c<?php echo $row->id; ?>"></a>
 				<p class="comment-member-photo">
+					<span class="comment-anchor"><a name="c<?php echo $row->id; ?>"></a></span>
 					<img src="<?php echo AnswersHelperMember::getMemberPhoto($ruser, $row->anonymous); ?>" alt="" />
 				</p><!-- / .comment-member-photo -->
 				<div class="comment-content">
@@ -546,8 +452,17 @@ if ($this->responses) {
 						$view = new JView( array('name'=>'rateitem') );
 						$view->option = $this->option;
 						$view->item = $row;
+						$view->type = 'question';
+						$view->vote = '';
+						$view->id = '';
+						if (!$this->juser->get('guest')) {
+							if ($row->created_by == $this->juser->get('username')) {
+								$view->vote = $row->vote;
+								$view->id = $row->id;
+							}
+						}
 						$view->display();
-					?>			
+					?>
 					</p><!-- / .comment-voting -->
 				<?php } ?>
 					<p class="comment-title">
@@ -585,9 +500,9 @@ if ($this->responses) {
 
 					// Comment
 					$html .= '<li class="comment '.$o;
-					if ($this->abuse && $reply->reports > 0) {
+					/*if ($this->abuse && $reply->reports > 0) {
 						$html .= ' abusive';
-					}
+					}*/
 					if ($this->question->created_by == $reply->added_by) {
 						$cls .= ' author';
 					}
@@ -599,7 +514,7 @@ if ($this->responses) {
 					$view->juser = $this->juser;
 					$view->id = $this->question->id;
 					$view->level = 4;
-					$view->abuse = $this->abuse;
+					$view->abuse = (isset($this->abuse)) ? $this->abuse : '';
 					$view->question = $this->question;
 					$view->addcomment = $this->addcomment;
 					$view->parser = $parser;
@@ -613,9 +528,9 @@ if ($this->responses) {
 							$o = ($o == 'odd') ? 'even' : 'odd';
 
 							$html .= '<li class="comment '.$o;
-							if ($this->abuse && $r->reports > 0) {
+							/*if ($this->abuse && $r->reports > 0) {
 								$html .= ' abusive';
-							}
+							}*/
 							if ($this->question->created_by == $r->added_by) {
 								$cls .= ' author';
 							}
@@ -627,7 +542,7 @@ if ($this->responses) {
 							$view->juser = $this->juser;
 							$view->id = $this->question->id;
 							$view->level = 4;
-							$view->abuse = $this->abuse;
+							$view->abuse = (isset($this->abuse)) ? $this->abuse : '';
 							$view->question = $this->question;
 							$view->addcomment = $this->addcomment;
 							$view->parser = $parser;
@@ -641,9 +556,9 @@ if ($this->responses) {
 									$o = ($o == 'odd') ? 'even' : 'odd';
 
 									$html .= "\t".'<li class="comment '.$o;
-									if ($this->abuse && $rr->reports > 0) {
+									/*if ($this->abuse && $rr->reports > 0) {
 										$html .= ' abusive';
-									}
+									}*/
 									$html .= '" id="c'.$rr->id.'r">';
 									//$html .= AnswersHtml::comment($rr, $juser, $option, $id, $addcomment, 3, $abuse, $o).n;
 									$view = new JView( array('name'=>'question', 'layout'=>'comment') );
@@ -652,7 +567,7 @@ if ($this->responses) {
 									$view->juser = $this->juser;
 									$view->id = $this->question->id;
 									$view->level = 4;
-									$view->abuse = $this->abuse;
+									$view->abuse = (isset($this->abuse)) ? $this->abuse : '';
 									$view->question = $this->question;
 									$view->addcomment = $this->addcomment;
 									$view->parser = $parser;
@@ -736,8 +651,8 @@ if ($this->responses) {
 			}*/
 			?>
 				<li class="comment <?php echo $cls; ?>" id="c<?php echo $row->id; ?>">
-					<a name="c<?php echo $row->id; ?>"></a>
 					<p class="comment-member-photo">
+						<span class="comment-anchor"><a name="c<?php echo $row->id; ?>"></a></span>
 						<img src="<?php echo AnswersHelperMember::getMemberPhoto($ruser, $row->anonymous); ?>" alt="" />
 					</p><!-- / .comment-member-photo -->
 					<div class="comment-content">
@@ -788,9 +703,9 @@ if ($this->responses) {
 
 						// Comment
 						$html .= '<li class="comment '.$o;
-						if ($this->abuse && $reply->reports > 0) {
+						/*if ($this->abuse && $reply->reports > 0) {
 							$html .= ' abusive';
-						}
+						}*/
 						if ($this->question->created_by == $reply->added_by) {
 							$cls .= ' author';
 						}
@@ -802,7 +717,7 @@ if ($this->responses) {
 						$view->juser = $this->juser;
 						$view->id = $this->question->id;
 						$view->level = ($chosen) ? 4 : 1;
-						$view->abuse = $this->abuse;
+						$view->abuse = (isset($this->abuse)) ? $this->abuse : '';
 						$view->question = $this->question;
 						$view->addcomment = $this->addcomment;
 						$view->parser = $parser;
@@ -816,9 +731,9 @@ if ($this->responses) {
 								$o = ($o == 'odd') ? 'even' : 'odd';
 
 								$html .= '<li class="comment '.$o;
-								if ($this->abuse && $r->reports > 0) {
+								/*if ($this->abuse && $r->reports > 0) {
 									$html .= ' abusive';
-								}
+								}*/
 								if ($this->question->created_by == $r->added_by) {
 									$cls .= ' author';
 								}
@@ -830,7 +745,7 @@ if ($this->responses) {
 								$view->juser = $this->juser;
 								$view->id = $this->question->id;
 								$view->level = ($chosen) ? 4 : 2;
-								$view->abuse = $this->abuse;
+								$view->abuse = (isset($this->abuse)) ? $this->abuse : '';
 								$view->question = $this->question;
 								$view->addcomment = $this->addcomment;
 								$view->parser = $parser;
@@ -844,9 +759,9 @@ if ($this->responses) {
 										$o = ($o == 'odd') ? 'even' : 'odd';
 
 										$html .= "\t".'<li class="comment '.$o;
-										if ($this->abuse && $rr->reports > 0) {
+										/*if ($this->abuse && $rr->reports > 0) {
 											$html .= ' abusive';
-										}
+										}*/
 										$html .= '" id="c'.$rr->id.'r">';
 										//$html .= AnswersHtml::comment($rr, $juser, $option, $id, $addcomment, 3, $abuse, $o).n;
 										$view = new JView( array('name'=>'question', 'layout'=>'comment') );
@@ -855,7 +770,7 @@ if ($this->responses) {
 										$view->juser = $this->juser;
 										$view->id = $this->question->id;
 										$view->level = ($chosen) ? 4 : 3;
-										$view->abuse = $this->abuse;
+										$view->abuse = (isset($this->abuse)) ? $this->abuse : '';
 										$view->question = $this->question;
 										$view->addcomment = $this->addcomment;
 										$view->parser = $parser;
