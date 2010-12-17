@@ -115,8 +115,8 @@ if (is_object($targetuser) && $targetuser->id) {
 		}
 		?>
 		<div class="ticket" id="t<?php echo $this->row->id; ?>">
-			<a name="ticket"></a>
 			<p class="ticket-member-photo">
+				<span class="ticket-anchor"><a name="ticket"></a></span>
 				<img src="<?php echo SupportHtml::getMemberPhoto($submitter, $unknown); ?>" alt="" />
 			</p><!-- / .ticket-member-photo -->
 			<div class="ticket-content">
@@ -196,8 +196,8 @@ if (is_object($targetuser) && $targetuser->id) {
 				$o = ($o == 'odd') ? 'even' : 'odd';
 ?>
 			<li class="comment <?php echo $access.' '.$o; ?>" id="c<?php echo $comment->id; ?>">
-				<a name="c<?php echo $comment->id; ?>"></a>
 				<p class="comment-member-photo">
+					<span class="comment-anchor"><a name="c<?php echo $comment->id; ?>"></a></span>
 					<img src="<?php echo SupportHtml::getMemberPhoto($juseri, 0); ?>" alt="" />
 				</p>
 				<div class="comment-content">
@@ -232,7 +232,6 @@ if (is_object($targetuser) && $targetuser->id) {
 <?php if ((!$juser->get('guest') && ($juser->get('username') == $this->row->login || $this->authorized))) { ?>
 <div class="below section">
 	<h3>
-		<a name="commentform"></a>
 		<?php echo JText::_('COMMENT_FORM'); ?>
 	</h3>
 	
@@ -247,6 +246,7 @@ if (is_object($targetuser) && $targetuser->id) {
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
+				<span class="comment-anchor"><a name="commentform"></a></span>
 			<?php
 				if (!$juser->get('guest')) {
 					$jxuser = new Hubzero_User_Profile();

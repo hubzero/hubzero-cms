@@ -491,6 +491,8 @@ class SupportController extends Hubzero_Controller
 		// Populate the list of assignees based on if the ticket belongs to a group or not
 		if (trim($view->row->group)) {
 			$view->lists['owner'] = $this->_userSelectGroup( 'ticket[owner]', $view->row->owner, 1, '', trim($view->row->group) );
+		} elseif (trim($this->config->get('group'))) {
+			$view->lists['owner'] = $this->_userSelectGroup( 'ticket[owner]', $view->row->owner, 1, '', trim($this->config->get('group')) );
 		} else {
 			$view->lists['owner'] = $this->_userSelect( 'ticket[owner]', $view->row->owner, 1 );
 		}
@@ -1445,31 +1447,64 @@ class SupportController extends Hubzero_Controller
 	
 	private function _userSelectGroup( $name, $active, $nouser=0, $javascript=NULL, $group='' ) 
 	{
-		ximport('Hubzero_Group');
-		
-		$hzg = Hubzero_Group::getInstance( $group );
-		
 		$users = array();
 		if ($nouser) {
 			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
 		}
 		
-		if ($hzg->get('gidNumber')) {
-			$members = $hzg->get('members');
+		ximport('Hubzero_Group');
+		
+		if (strstr($group,',')) {
+			$groups = explode(',',$group);
+			if (is_array($groups)) {
+				foreach ($groups as $g) 
+				{
+					$hzg = Hubzero_Group::getInstance( trim($g) );
 
-			foreach ($members as $member) 
-			{
-				$u =& JUser::getInstance($member);
-				if (!is_object($u)) {
-					continue;
+					if ($hzg->get('gidNumber')) {
+						$members = $hzg->get('members');
+
+						//$users[] = '<optgroup title="'.stripslashes($hzg->description).'">';
+						$users[] = JHTML::_('select.optgroup', stripslashes($hzg->description) );
+						foreach ($members as $member) 
+						{
+							$u =& JUser::getInstance($member);
+							if (!is_object($u)) {
+								continue;
+							}
+
+							$m = new stdClass();
+							$m->value = $u->get('username');
+							$m->text  = $u->get('name');
+							$m->groupname = $g;
+
+							$users[] = $m;
+						}
+						//$users[] = '</optgroup>';
+						$users[] = JHTML::_('select.option', '</OPTGROUP>' );
+					}
 				}
+			}
+		} else {
+			$hzg = Hubzero_Group::getInstance( $group );
 
-				$m = new stdClass();
-				$m->value = $u->get('username');
-				$m->text  = $u->get('name');
-				$m->groupname = $group;
+			if ($hzg->get('gidNumber')) {
+				$members = $hzg->get('members');
 
-				$users[] = $m;
+				foreach ($members as $member) 
+				{
+					$u =& JUser::getInstance($member);
+					if (!is_object($u)) {
+						continue;
+					}
+
+					$m = new stdClass();
+					$m->value = $u->get('username');
+					$m->text  = $u->get('name');
+					$m->groupname = $group;
+
+					$users[] = $m;
+				}
 			}
 		}
 		

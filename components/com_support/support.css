@@ -163,7 +163,19 @@
 	    color: #777;
 	    font-size: 11px;
 	    text-align: right;
-		background: url("images/comment-arrow.gif") right 15px no-repeat;
+		position: relative;
+		}
+	.ticket .ticket-anchor {
+		border-color: transparent #F4F4ee transparent transparent;
+		border-style: dashed solid dashed dashed;
+		border-width: 10px;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 20px;
+		right: 0px;
 		}
 	/* Content */
 	.ticket .ticket-content {
@@ -195,7 +207,7 @@
 		margin: 0;
 		padding: 0 0 0 20px;
 		font-size: 90%;
-		background: url("../../images/icons/tag_orange.png") 0 0.2em no-repeat;
+		background: url("images/tag_orange.png") 0 0.2em no-repeat;
 		}
 	.ticket .ticket-tags .tags li {
 		margin: 0;
@@ -257,7 +269,19 @@
 	    color: #777;
 	    font-size: 11px;
 	    text-align: right;
-		background: url("images/comment-arrow.gif") right 15px no-repeat;
+		position: relative;
+		}
+	ol.comments .comment-anchor {
+		border-color: transparent #f2f2f2 transparent transparent;
+		border-style: dashed solid dashed dashed;
+		border-width: 10px;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 20px;
+		right: 0px;
 		}
 	/* Content */
 	ol.comments .comment-content {
@@ -280,26 +304,26 @@
 		background-color: #f9f8fd;
 		border-color: #eeecf9;
 		}
-	ol.comments .submitter p.comment-member-photo,
-	ol.comments .submitter ol.comments .submitter p.comment-member-photo {
-		background: url("images/comment-arrow.gif") right -57px no-repeat;
+	ol.comments .submitter .comment-anchor,
+	ol.comments .submitter ol.comments .submitter .comment-anchor {
+		border-color: transparent #eeecf9 transparent transparent;
 		}
 	ol.comments .submitter ol.comments .comment-content,
 	ol.comments .submitter ol.comments .submitter ol.comments .comment-content {
 		background-color: #f9f8fd;
 		border-color: #eeecf9;
 		}
-	ol.comments .submitter ol.comments p.comment-member-photo,
-	ol.comments .submitter ol.comments .submitter ol.comments p.comment-member-photo {
-		background: url("images/comment-arrow.gif") right 15px no-repeat;
+	ol.comments .submitter ol.comments .comment-anchor,
+	ol.comments .submitter ol.comments .submitter ol.comments .comment-anchor {
+		border-color: transparent #f2f2f2 transparent transparent;
 		}
 	/* Private comments */
 	ol.comments .private .comment-content {
 		background: #fdfbf8 url("images/light-stripes.png");
 		border-color: #f9f2ec;
 		}
-	ol.comments .private p.comment-member-photo {
-		background: url("images/comment-arrow.gif") right -129px no-repeat;
+	ol.comments .private .comment-anchor {
+		border-color: transparent #f9f2ec transparent transparent;
 		}
 	ol.comments .private p.comment-title {
 		background: url("images/lock.png") right top no-repeat;
@@ -439,13 +463,13 @@
 		color: #777;
 		}
 	#kb h3 a {
-		background: url("../../images/help-large.gif") 50% 30% no-repeat;
+		background: url("images/help-large.gif") 50% 30% no-repeat;
 		}
 	#na h3 a {
-		background: url("../../images/answers-large.gif") 50% 30% no-repeat;
+		background: url("images/answers-large.gif") 50% 30% no-repeat;
 		}
 	#rp h3 a {
-		background: url("../../images/alert-large.gif") 50% 30% no-repeat;
+		background: url("images/alert-large.gif") 50% 30% no-repeat;
 		}
 	td .delete {
 		display: block;
@@ -599,7 +623,22 @@
 		color: #777;
 		font-size: 11px;
 		text-align: right;
-		background: url("images/comment-arrow.gif") right -201px no-repeat;
+		position: relative;
+		}
+	#commentform .comment-anchor {
+		border-color: transparent #DEE4CD transparent transparent;
+		border-style: dashed solid dashed dashed;
+		border-width: 10px;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 20px;
+		right: 0px;
+		}
+	#commentform.private .comment-anchor {
+		border-color: transparent #f9f2ec transparent transparent;
 		}
 	#commentform .sidenote {
 		border: 1px solid #edf0e8;
@@ -669,7 +708,4 @@
 	#commentform.private fieldset {	
 		background: #fdfbf8 url("images/light-stripes.png");
 		border-color: #f9f2ec;
-		}
-	#commentform.private p.comment-member-photo {
-		background: url("images/comment-arrow.gif") right -129px no-repeat;
 		}
