@@ -123,6 +123,7 @@ class MembersController extends Hubzero_Controller
 		// Build the page title
 		if ($filters['show'] == 'contributors') {
 			$title = JText::_('CONTRIBUTORS');
+			$filters['sortby'] = JRequest::getVar( 'sortby', 'rcount DESC' );
 		} else {
 			$title = JText::_('MEMBERS');
 		}

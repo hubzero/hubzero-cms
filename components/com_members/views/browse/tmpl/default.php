@@ -47,8 +47,7 @@ $juser =& JFactory::getUser();
 				<label>
 					<?php echo JText::_('SORT_BY'); ?>
 					<select name="sortby">
-						<option value="lname ASC, fname ASC"<?php if ($this->filters['sortby'] == 'lname ASC, fname ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('Last Name (default)'); ?></option>
-						<option value="fname ASC, lname ASC"<?php if ($this->filters['sortby'] == 'fname ASC, lname ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('First Name'); ?></option>
+						<option value="fullname ASC"<?php if ($this->filters['sortby'] == 'fullname ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('Name (default)'); ?></option>
 						<option value="organization"<?php if ($this->filters['sortby'] == 'organization') { echo ' selected="selected"'; } ?>><?php echo JText::_('OPTION_ORGANIZATION'); ?></option>
 						<option value="rcount DESC"<?php if ($this->filters['sortby'] == 'rcount DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('OPTION_CONTRIBUTIONS'); ?></option>
 					</select>
@@ -112,15 +111,13 @@ if (count($this->rows) > 0) {
 	$cols = 2;
 ?>
 			<table id="members" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
-<?php 
-				/*<thead>
+				<!-- <thead>
 					<tr>
 						<th scope="col"><?php echo JText::_('COL_NAME'); ?></th>
 						<th scope="col"><?php echo JText::_('COL_ORGANIZATION'); ?></th>
 						<th scope="col"><?php echo JText::_('COL_CONTRIBUTIONS'); ?></th>
 					</tr>
-				</thead>*/ 
-?>
+				</thead> -->
 				<tbody>
 <?php
 	$cls = 'even';
@@ -166,7 +163,7 @@ if (count($this->rows) > 0) {
 		}
 		
 		// Get the search result totals
-		$totals = $dispatcher->trigger( 'onMembersContributions', array(
+		/*$totals = $dispatcher->trigger( 'onMembersContributions', array(
 				$row,
 				$this->option,
 				$this->authorized,
@@ -175,7 +172,17 @@ if (count($this->rows) > 0) {
 				NULL,
 				NULL,
 				$areas)
-			);
+			);*/
+		$totals = array();
+		$bits = $dispatcher->trigger( 'onMembersContributionsCount', array($this->authorized, $row->uidNumber, $row->username) );
+		if ($bits) {
+			$database =& JFactory::getDBO();
+			foreach ($bits as $bit) 
+			{
+				$database->setQuery( $bit );
+				$totals[] = $database->loadResult();
+			}
+		}
 
 		// Get the total results found (sum of all categories)
 		$i = 0;
@@ -189,7 +196,7 @@ if (count($this->rows) > 0) {
 			if (is_array($t) && !empty($t)) {
 				// They do - do some processing
 				$cats[$i]['title'] = ucfirst($c);
-				$cats[$i]['total'] = 0;
+				/*$cats[$i]['total'] = 0;
 				$cats[$i]['_sub'] = array();
 				$z = 0;
 				// Loop through each sub-category
@@ -205,7 +212,8 @@ if (count($this->rows) > 0) {
 						$cats[$i]['_sub'][$z]['total'] = $totals[$i][$z];
 					}
 					$z++;
-				}
+				}*/
+				$cats[$i]['total'] = (!is_array($totals[$i])) ? $totals[$i] : 0;
 			} else {
 				// No sub-categories - this should be easy
 				$cats[$i]['title'] = $t;
@@ -229,17 +237,11 @@ if (count($this->rows) > 0) {
 			$id = $row->uidNumber;
 		}
 		
-		if ($this->filters['sortby'] == 'fname ASC, lname ASC') {
-			$name  = ($row->givenName) ? stripslashes($row->givenName) : '';
+		$name = ($row->surname) ? stripslashes($row->surname) : '';
+		if ($row->givenName) {
+			$name .= ($row->surname) ? ', ' : '';
+			$name .= stripslashes($row->givenName);
 			$name .= ($row->middleName) ? ' '.stripslashes($row->middleName) : '';
-			$name .= ($row->surname) ? ' '.stripslashes($row->surname) : '';
-		} else {
-			$name = ($row->surname) ? stripslashes($row->surname) : '';
-			if ($row->givenName) {
-				$name .= ($row->surname) ? ', ' : '';
-				$name .= stripslashes($row->givenName);
-				$name .= ($row->middleName) ? ' '.stripslashes($row->middleName) : '';
-			}
 		}
 		if (!trim($name)) {
 			$name = 'Unknown ('.$row->username.')';
@@ -260,7 +262,7 @@ if (count($this->rows) > 0) {
 					<tr class="<?php echo $cls.$prvt; ?>">
 						<td class="photo"><img width="50" height="50" src="<?php echo $p; ?>" alt="Photo for <?php echo htmlentities($name,ENT_COMPAT,'UTF-8'); ?>" /></td>
 						<td>
-							<span class="name"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$id); ?>"><?php echo $name; ?></a></span><br />
+							<!-- rcount: <?php echo $row->rcount; ?> --> <span class="name"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$id); ?>"><?php echo $name; ?></a></span><br />
 							<span class="organization"><?php echo Hubzero_View_Helper_Html::xhtml(stripslashes($row->organization)); ?></span>
 						</td>
 						<td><span class="activity"><?php echo implode(', ',$tt); ?></span></td>
