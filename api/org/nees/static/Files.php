@@ -22,10 +22,11 @@
 
     const GENERATED_PICS = ".Generated_Pics";
 
-
     const PARENT_DIV = "PARENT_DIV";
 
     const CHILD_DIV = "CHILD_DIV";
+
+    const NOT_AVAILABLE = "No files available";
 
     const DRAWING = 1;
     const DATA = 2;
