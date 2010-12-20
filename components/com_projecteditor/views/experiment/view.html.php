@@ -23,8 +23,12 @@ class ProjectEditorViewExperiment extends JView{
      * facility is a parameter set if an error occurred.
      * If the parameter isn't set, clear session.
      */
-    if(!isset($_REQUEST['facility'])){
-      $oExperimentModel->clearSession();
+    if(isset($_SESSION["ERRORS"])){
+      //we got errors
+    }else{
+      if(!isset($_REQUEST['facility'])){
+        $oExperimentModel->clearSession();
+      }
     }
 
     $iProjectId = JRequest::getInt('projid', 0);
@@ -60,6 +64,7 @@ class ProjectEditorViewExperiment extends JView{
     $strSubTabViewArray = $oExperimentModel->getExperimentsSubTabViewArray();
     $strSubTabHtml = $oExperimentModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTabViewArray, $strSubTab );
     if(!$iExperimentId){
+      //$strSubTabHtml = $oExperimentModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment#", $iExperimentId, $strSubTabArray, $strSubTab );
       $strSubTabHtml = $oExperimentModel->getOnClickSubTabs( ProjectEditor::CREATE_EXPERIMENT_SUBTAB_ALERT, $strSubTabArray, $strSubTab );
     }
     $this->assignRef( "strSubTabs", $strSubTabHtml );
@@ -92,11 +97,11 @@ class ProjectEditorViewExperiment extends JView{
 
     if(isset($_REQUEST['facility'])){
       try{
-      $oFacilityArray = $oExperimentModel->validateFacilitiesByName($_REQUEST['facility']);
-      $strFacilityPicked = $this->getCurrentFacilitiesHTML($oFacilityArray);
+        $oFacilityArray = $oExperimentModel->validateFacilitiesByName($_REQUEST['facility']);
+        $strFacilityPicked = $this->getCurrentFacilitiesHTML($oFacilityArray);
       }catch(Exception $oException){
-
-    }
+        //controller already captured the error already
+      }
     }
 
     /* @var $oExperiment Experiment */
