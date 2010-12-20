@@ -24,9 +24,9 @@
  */
 class SensorTypePeer extends BaseSensorTypePeer {
 
-	public static function getKeywordSearchColumns() {
-	  return array();
-	}
+  public static function getKeywordSearchColumns() {
+    return array();
+  }
 
   /**
    * Find a SensorType object based on its ID
@@ -40,12 +40,26 @@ class SensorTypePeer extends BaseSensorTypePeer {
 
 
   /**
-   * Find all SensorTypes
+   * Find all SensorTypes.  The name field isn't unique
+   * in sensor_type.  Thus, we will create the SensorType object
+   * using the distinct name.
    *
    * @return array <SensorType>
    */
   public static function findAll() {
-    return self::doSelect(new Criteria());
+    $oReturnArray = array();
+
+    $strQuery = "select distinct name from sensor_type order by name";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+    while($oResultSet->next()){
+      $strName = $oResultSet->getString("NAME");
+      array_push($oReturnArray, self::findByName($strName));
+    }
+
+    return $oReturnArray;
   }
 
 
