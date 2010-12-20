@@ -107,6 +107,11 @@ class ResourcesController extends JObject
 			case 'browse':     $this->browse();     break;
 			case 'browsetags': $this->browsetags(); break;
 			
+			case 'discover':   $this->discover();	break;
+			case 'picklist':	$this->picklist();	break;
+			case 'viewpicklist':	$this->viewpicklist();break;
+			case 'preview': 	$this->preview();	break;
+			
 			// Should only be called via AJAX
 			case 'browser':    $this->browser();    break;
 			case 'plugin':     $this->plugin();     break;
@@ -116,6 +121,7 @@ class ResourcesController extends JObject
 			case 'highlight': $this->highlight(); break;
 			
 			// Get Resource Information for companion external software (write out plain text to html)
+			
 			
 			case 'getxml': $this->external_info_xml(); break;
 			
@@ -370,6 +376,12 @@ class ResourcesController extends JObject
 	//protected function external_info($field = 0)
 	protected function external_info_xml()
 	{
+		// $field key:
+		// 0 = abstract
+		// 1 = number of children
+		// 2 = path to child
+		// 3 = full text
+		//
 		
 		//$view = new JView( array('name'=>'browse','layout'=>'plain')  );
 		$view = new JView( array('name'=>'browse','layout'=>'outxml')  );
@@ -592,10 +604,10 @@ class ResourcesController extends JObject
 		$view->filters['sortby'] = $default_sort;
 		$view->filters['limit']  = 10;
 		$view->filters['start']  = 0;
-		if (JRequest::getVar( 'terms', '' ))
+		if (JRequest::getVar( 'srcterms', '' ))
 		{ 	//added for search
 			//$view->filters['terms'] = JRequest::getVar( 'terms', '' );
-			$view->terms = JRequest::getVar( 'terms', '' );
+			$view->srcterms = JRequest::getVar( 'srcterms', '' );
 		}
 		if (JRequest::getVar( 'designator', '' ))
 		{ 	
@@ -627,6 +639,249 @@ class ResourcesController extends JObject
 		
 		// Output HTML
 		$view->title = $this->_title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
+	protected function initPickList()
+	{
+		if (!isset($_SESSION['pickList'])) {
+				$_SESSION['pickList'] = array();
+				$_SESSION['pickList'][] = -1;
+			}
+	}
+	
+	//-----------
+	//should only be called via ajax
+	protected function picklist()
+	{
+		//add a resource to our current pickList session variable
+		$res_id = JRequest::getInt( 'res_id', -1 );
+		
+		$this->initPickList();
+		$res = 'fail';
+		
+		if ($res_id != -1) {
+			$key = array_search($res_id, $_SESSION['pickList']);
+			//var_dump(array_search($res_id, $_SESSION['pickList']));
+			//echo $res_id.' ::';
+			//echo $key;
+			//echo '    ';
+			if ($key != false) {
+				unset($_SESSION['pickList'][$key]);
+				$res = 'remove';
+			}
+			else {
+				$_SESSION['pickList'][] = $res_id;
+				$res = 'add';
+			}
+		}
+		
+		echo $res;
+	}
+
+	//-----------
+	protected function discover() 
+	{
+		// Check if we're using this view type
+		if ($this->config->get('browsetags') == 'off') {
+			$this->browse();
+			return;
+		}
+		
+		$this->initPickList();
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'browse','layout'=>'discover') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->config = $this->config;
+		
+		// Incoming
+		$view->tag = JRequest::getVar( 'tag', '' );
+		$view->tag2 = JRequest::getVar( 'with', '' );
+		$view->nonfilteredtags = $view->tag2;
+		
+		$view->tag2 = preg_replace('/~/','',$view->tag2);
+		
+		$view->type = strtolower(JRequest::getVar( 'type', 'tools' ));
+		$view->supportedtag = $this->config->get('supportedtag');
+		if (!$view->tag && $view->supportedtag && $view->type == 'tools') {
+			$view->tag = $view->supportedtag;
+		}
+		
+		$database =& JFactory::getDBO();
+		
+		// Get major types
+		$t = new ResourcesType( $database );
+		$view->types = $t->getMajorTypes();
+		
+		// Normalize the title
+		// This is so we can determine the type of resource to display from the URL
+		// For example, /resources/learningmodules => Learning Modules
+		$activetype = 0;
+		$activetitle = '';
+		for ($i = 0; $i < count($view->types); $i++) 
+		{	
+			$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $view->types[$i]->type);
+			$normalized = strtolower($normalized);
+			$view->types[$i]->title = $normalized;
+			
+			if (trim($view->type) == $normalized) {
+				$activetype = $view->types[$i]->id;
+				$activetitle = $view->types[$i]->type;
+			}
+		}
+		asort($view->types);
+		
+		// Ensure we have a type to display
+		if (!$activetype) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			return;
+		}
+		
+		// Instantiate a resource object
+		$rr = new ResourcesResource( $database );
+		$tagcloud = new ResourcesTags($database);
+		$view->tagcloud = $tagcloud;
+		$view->database = $database;
+		
+		// Determine if user can edit
+		$view->authorized = $this->_authorize();
+		
+		// Set the default sort
+		$default_sort = 'rating';
+		if ($this->config->get('show_ranking')) {
+			$default_sort = 'ranking';
+		}
+		
+		// Set some filters
+		$view->filters = array();
+		$view->filters['tag']    = ($view->tag2) ? $view->tag2 : '';
+		$view->filters['type']   = $activetype;
+		$view->filters['sortby'] = $default_sort;
+		//$view->filters['limit']  = 10;
+		$view->filters['start']  = 0;
+		
+		if (JRequest::getVar( 'terms', '' ))
+		{ 	//added for search
+			//$view->filters['terms'] = JRequest::getVar( 'terms', '' );
+			$view->terms = JRequest::getVar( 'terms', '' );
+		}
+		
+		// Run query with limit
+		$view->results = $rr->getRecords( $view->filters );
+		$this->type = $view->type;
+		
+		if ($activetitle) {
+			$this->_task_title = $activetitle;
+		} else {
+			$this->_task_title = JText::_('COM_RESOURCES_ALL');
+		}
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		$this->_getScripts('discover');
+		$this->_getScripts('picklist');
+
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+		
+		// Output HTML
+		$view->title = $this->_title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
+	//View your selected picklist
+	protected function viewpicklist() 
+	{
+		// Check if we're using this view type
+		if ($this->config->get('browsetags') == 'off') {
+			$this->browse();
+			return;
+		}
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'browse','layout'=>'picklist') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->config = $this->config;
+		
+		// Incoming
+		$view->res_ids = JRequest::getVar( 'res_ids', '' );
+		if ($view->res_ids == '')
+		{
+			//make sure we have a picklist
+			$this->initPickList();
+			$view->res_ids = $_SESSION['pickList'];
+		}
+		else
+		{
+				$ids = preg_split("/,/", preg_replace('/["]/', " ", $view->res_ids));
+				$view->res_ids = array();
+				foreach ($ids as $id ) {
+					$view->res_ids[] = $id;			
+				}
+		}
+		$database =& JFactory::getDBO();
+		
+		// Instantiate a resource object
+		$rr = new ResourcesResource( $database );
+		
+		// Determine if user can edit
+		$view->authorized = $this->_authorize();
+		
+		// Set the default sort
+		$default_sort = 'rating';
+		if ($this->config->get('show_ranking')) {
+			$default_sort = 'ranking';
+		}
+		
+		// Set some filters
+		$view->filters = array();
+		$view->filters['ids'] = $view->res_ids;
+		$view->filters['sortby'] = $default_sort;
+		$view->filters['start']  = 0;
+		$tagcloud = new ResourcesTags($database);
+		$view->tagcloud = $tagcloud;
+		$view->database = $database;
+		
+		// Run query with limit
+		$view->results = $rr->getRecords( $view->filters );
+	
+		$this->_task_title = 'Pick List';
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		$this->_getScripts('discover');
+		$this->_getScripts('picklist');
+		
+
+		
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();
+		
+		// Output HTML
+		$view->title = 'Pick List';//$this->_title;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -674,9 +929,9 @@ class ResourcesController extends JObject
 					else
 						$bits['tags'] = $rt->get_tags_with_objects( $bits['id'], $bits['type'], $bits['tg2'] );
 				}
-				else if (JRequest::getVar( 'terms' , '') != '')
+				else if (JRequest::getVar( 'srcterms' , '') != '')
 				{	//clean for sql injection attack
-					$terms = JRequest::getVar( 'terms' , '');
+					$terms = JRequest::getVar( 'srcterms' , '');
 					$terms = ltrim($terms);
 					$terms = rtrim($terms);  
 					$terms = mysql_real_escape_string($terms);
@@ -737,9 +992,9 @@ class ResourcesController extends JObject
 					else
 						$bits['tools'] = $rt->get_objects_on_tag( $bits['tag'], $bits['id'], $bits['type'], $bits['sortby'], $bits['tag2'], $bits['filter'] );
 				}
-				if (JRequest::getVar( 'terms' , ''))
+				if (JRequest::getVar( 'srcterms' , ''))
 				{	//clean for sql injection attack
-					$terms = JRequest::getVar( 'terms' , '');
+					$terms = JRequest::getVar( 'srcterms' , '');
 					$terms = ltrim($terms);
 					$terms = rtrim($terms);  
 					$terms = mysql_real_escape_string($terms);
@@ -849,9 +1104,9 @@ class ResourcesController extends JObject
 		$view->config = $this->config;
 		$view->level = $level;
 		$view->bits = $bits;
-		if (JRequest::getVar( 'terms' , ''))
+		if (JRequest::getVar( 'srcterms' , ''))
 		{
-			$view->terms = JRequest::getVar( 'terms' , '');
+			$view->srcterms = JRequest::getVar( 'srcterms' , '');
 		}
 		if (JRequest::getVar( 'designator' , ''))
 		{
@@ -1324,6 +1579,293 @@ class ResourcesController extends JObject
 		} else {		
 			$view->display();
 		}
+	}
+	
+
+	//-----------
+
+	protected function preview()
+	{
+		// Incoming
+		$id       = JRequest::getInt( 'id', 0 );            // Rsource ID (primary method of identifying a resource)
+		$alias    = JRequest::getVar( 'alias', '' );        // Alternate method of identifying a resource
+		$fsize    = JRequest::getVar( 'fsize', '' );        // A parameter to see file size without formatting
+		$revision = JRequest::getVar( 'rev', '' );          // Get svk revision of a tool
+		$tab      = JRequest::getVar( 'active', 'about' );  // The active tab (section)
+		
+		// Ensure we have an ID or alias to work with
+		if (!$id && !$alias) {
+			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			return;
+		}
+		
+		$database =& JFactory::getDBO();
+		
+		// Load the resource
+		$resource = new ResourcesResource( $database );
+		if ($alias) {
+			$alias = str_replace(':','-',$alias);
+			$resource->loadAlias( $alias );
+			$id = $resource->id;
+		} else {
+			$resource->load( $id );
+			$alias = $resource->alias;
+		}
+
+		// Make sure we got a result from the database
+		if (!$resource || !$resource->title) {
+			JError::raiseError( 404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND') );
+			return;
+		}
+		
+		// Make sure the resource is published and standalone
+		if ($resource->published == 0 || $resource->standalone != 1) {
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return;
+		}
+
+		// Make sure they have access to view this resource
+		if ($this->checkGroupAccess($resource)) {
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return;
+		}
+
+		// Build the pathway
+		$normalized_valid_chars = 'a-zA-Z0-9';
+		$typenorm = preg_replace("/[^$normalized_valid_chars]/", "", $resource->getTypeTitle());
+		$typenorm = strtolower($typenorm);
+		
+		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
+		$pathway->addItem($resource->getTypeTitle(),JRoute::_('index.php?option='.$this->_option.'&type='.$typenorm));
+
+		// Tool development version requested
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest') && $revision=='dev') {
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return;
+		}
+		
+		if (($revision=='dev' && $alias) or (!$revision && $resource->type==7 && $resource->published!=1) ) {
+			$objT = new Tool( $database );
+			$toolid = $objT->getToolId($alias);
+			if (!$this->check_toolaccess($toolid)) {
+				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+				return;
+			}
+		}
+
+		// Whew! Finally passed all the checks
+		// Let's get down to business...
+		$this->resource = $resource;
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getScripts();
+		
+		// Version checks (tools only)
+		$alltools = array();
+		$thistool = '';
+		$curtool  = '';
+
+		if ($resource->type == 7 && $resource->alias) {		
+			$tables = $database->getTableList();
+			$table = $database->_table_prefix.'tool_version';
+			
+			// Get contribtool params
+			$tparams =& JComponentHelper::getParams( 'com_contribtool' );
+			$ldap = $tparams->get('ldap_read');
+		
+			if (in_array($table,$tables)) {
+				$tv = new ToolVersion( $database );
+				$tv->getToolVersions( '', $alltools, $alias, $ldap); 
+
+				if ($alltools) {
+					foreach ($alltools as $tool) 
+					{
+						// Archive version, if requested
+						if (($revision && $tool->revision == $revision && $revision != 'dev') or ($revision == 'dev' and $tool->state==3) ) {
+							$thistool = $tool;
+						}
+						// Current version
+						if ($tool->state == 1 && count($alltools) > 1 &&  $alltools[1]->version == $tool->version) {
+							$curtool = $tool;
+						}
+						// Dev version
+						if (!$revision && count($alltools)==1 && $tool->state==3) {
+							$thistool = $tool;
+							$revision = 'dev';
+						}
+					}
+	
+					if (!$thistool && !$curtool && count($alltools) > 1) { 
+						// Tool is retired, display latest unpublished version
+						$thistool = $alltools[1];
+						$revision = $alltools[1]->revision;
+					}
+	
+					if ($curtool && $thistool && $thistool == $curtool) { 
+						// Display default resource page for current version
+						$thistool = '';
+					}			
+				}
+			
+				// Replace resource info with requested version
+				$tv->compileResource($thistool, $curtool, &$resource, $revision, $tparams);
+			}
+		}
+
+		// Record the hit
+		$resource->hit( $id );
+		
+		// Initiate a resource helper class
+		$helper = new ResourcesHelper( $resource->id, $database );
+
+		// Is the visitor authorized to edit this resource?
+		$helper->getContributorIDs();
+		$authorized = $this->_authorize( $helper->contributorIDs );
+		
+		// Do not show for tool versions
+		if ($thistool && $revision!='dev') {
+			$authorized = false;
+		}
+		
+		// Get Resources plugins
+		JPluginHelper::importPlugin( 'resources' );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		$sections = array();
+		$cats = array();
+		
+		$resource->_type = new ResourcesType( $database );
+		$resource->_type->load($resource->type);
+		$resource->_type->_params = new JParameter( $resource->_type->params );
+
+		// We need to do this here because we need some stats info to pass to the body
+		if (!$thistool) {
+			// Trigger the functions that return the areas we'll be using
+			$cats = $dispatcher->trigger( 'onResourcesAreas', array($resource) );
+			
+			// Get the sections
+			$sections = $dispatcher->trigger( 'onResources', array($resource, $this->_option, array($tab), 'all') );
+		}
+	
+		$available = array('play');
+		foreach ($cats as $cat) 
+		{
+			$name = key($cat);
+			if ($name != '') {
+				$available[] = $name;
+			}
+		}
+		if ($tab != 'about' && !in_array($tab, $available)) {
+			$tab = 'about';
+		}
+		
+		// Get parameters and merge with the component params
+		$rparams =& new JParameter( $resource->params );
+		$params = $this->config;
+		$params->merge( $rparams );
+		
+		// Get attributes
+		$attribs =& new JParameter( $resource->attribs );
+		
+		$juser =& JFactory::getUser();
+		if (!$juser->get('guest')) {
+			ximport('xuserhelper');
+			$xgroups = XUserHelper::getGroups($juser->get('id'), 'all');
+			// Get the groups the user has access to
+			$usersgroups = $this->getUsersGroups($xgroups);
+		} else {
+			$usersgroups = array();
+		}
+		
+		$no_html = JRequest::getInt( 'no_html', 0 );
+		
+		$body = '';
+		// Build the HTML of the "about" tab
+		if ($resource->type == 7 && $resource->alias && !$no_html && strtolower($tab) == 'about') {	
+			// Tool page view
+			$body = ResourcesHtml::abouttool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $thistool, $curtool, $alltools, $resource->revision, $params, $attribs, $this->_option, $fsize );
+		} else if (strtolower($tab) == 'about') {
+			// Default view of about tab
+			$body = ResourcesHtml::aboutnontool( $database, $authorized, $usersgroups, $resource, $helper, $this->config, $sections, $params, $attribs, $this->_option, $fsize );
+		}
+		
+		// Add the default "About" section to the beginning of the lists
+		$cat = array();
+		$cat['about'] = JText::_('COM_RESOURCES_ABOUT');
+		array_unshift($cats, $cat);
+		array_unshift($sections, array('html'=>$body,'metadata'=>''));
+		
+		
+		// Get filters (for series & workshops listing)
+		$filters = array();
+		$defaultsort = ($resource->type == 31) ? 'date' : 'ordering';
+		$defaultsort = ($resource->type == 31 && $this->config->get('show_ranking')) ? 'ranking' : $defaultsort;
+		$filters['sortby'] = JRequest::getVar( 'sortby', $defaultsort );
+		$filters['limit'] = JRequest::getInt( 'limit', 0 );
+		$filters['start'] = JRequest::getInt( 'limitstart', 0 );
+		$filters['id']    = $resource->id;
+
+		// Write title
+		$document =& JFactory::getDocument();
+		$document->setTitle( JText::_(strtoupper($this->_option)).': '.stripslashes($resource->title) );
+		
+		$pathway->addItem(stripslashes($resource->title),JRoute::_('index.php?option='.$this->_option.'&id='.$resource->id));
+		
+		// Get the type
+		$t = new ResourcesType( $database );
+		$t->load($resource->type);
+		
+		// Normalize the title
+		// This is so we can determine the type of resource template to display
+		// For example, Learning Modules => learningmodules
+		$type_alias = '';
+		if ($t) {	
+			$type_alias = strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $t->type));
+		}
+		
+		// Determine the layout we're using
+		$v = array('name'=>'view', 'layout'=>'preview');
+		$app =& JFactory::getApplication();
+		if ($type_alias 
+		 && (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->_option.DS.'view'.DS.$type_alias.'.php') 
+		 || is_file(JPATH_ROOT.DS.'components'.DS.$this->_option.DS.'views'.DS.'view'.DS.'tmpl'.DS.$type_alias.'.php'))) {
+			$v['layout'] = $type_alias;
+		}
+		// Instantiate a new view
+		$view = new JView( $v );
+		$view->filters = $filters;
+		if ($resource->type == 7 && $resource->alias) {
+			$view->thistool = $thistool;
+			$view->curtool = $curtool;
+			$view->alltools = $alltools;
+			$view->revision = $revision;
+		}
+		$view->config = $this->config;
+		$view->option = $this->_option;
+		$view->resource = $resource;
+		$view->params = $params;
+		$view->authorized = $authorized;
+		$view->attribs = $attribs;
+		$view->fsize = $fsize;
+		$view->cats = $cats;
+		$view->tab = $tab;
+		$view->sections = $sections;
+		$view->database = $database;
+		$view->usersgroups = $usersgroups;
+		$view->helper = $helper;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+
+		// Output HTML
+				
+		$view->display();
+		
 	}
 
 	//-----------

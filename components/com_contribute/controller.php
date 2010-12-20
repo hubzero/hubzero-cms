@@ -136,6 +136,8 @@ class ContributeController extends JObject
 			
 			case 'start':   $this->steps();  break;
 			case 'login':   $this->login();  break;
+			
+			case 'quickcontribute': $this->quickcontribute(); break;
 
 			default: $this->intro(); break;
 		}
@@ -212,6 +214,44 @@ class ContributeController extends JObject
 		$document =& JFactory::getDocument();
 		$document->setTitle( $this->_title );
 	}
+	
+	//----------------------------------------------------------
+	//	Quick Contribute
+	//----------------------------------------------------------
+	
+	protected function quickcontribute()
+	{
+		$step = JRequest::getInt( 'step', 0 );
+		
+		
+		
+		switch ($step) {
+			case 0:
+				$this->quickdefault();
+				break;
+			case 1:
+				$this->quickcompose();
+				break;
+			case 2:
+				$this->quickattach();
+				break;
+		}
+
+	}
+	
+	protected function quickdefault()
+	{
+		// Instantiate a view
+		$view = new JView( array('name'=>'quickcontribute' ,  'layout'=>'default' ) );
+		$view->option = $this->_option;
+		$view->title = $this->_title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		
+		$view->display();
+	}
+	
 	
 	//----------------------------------------------------------
 	// Views
@@ -1467,30 +1507,37 @@ protected function attach_resource()
 	}
 
 	//-----------
-
-	protected function attach_save()
+	function make_thumb($src,$dest,$desired_width,$isjpeg=true) 
+	{ 
+	  /* read the source image */ 
+	  $source_image = $isjpeg? imagecreatefromjpeg($src) : ImageCreateFromGIF($src);
+	  $width = imagesx($source_image);
+	  $height = imagesy($source_image);
+	  
+	  //if ($height > $width)
+	  //{ //if its a long image, cut off the height instead
+	  	 // $desired_height = $desired_width;
+	  	 // $desired_width = floor($width*($desired_height/$height));
+	 // }
+	  //else {
+		  /* find the "desired height" of this thumbnail, relative to the desired width  */ 
+		  $desired_height = floor($height*($desired_width/$width));
+	 // }
+	  /* create a new, "virtual" image */ 
+	  $virtual_image = imagecreatetruecolor($desired_width,$desired_height);
+	  /* copy source image at a resized size */ 
+	  imagecopyresized($virtual_image,$source_image,0,0,0,0,$desired_width,$desired_height,$width,$height);
+	  /* create the physical thumbnail image to its destination */ 
+	  if ($isjpeg)
+	  	imagejpeg($virtual_image,$dest);
+	  else
+	 	imagegif($virtual_image,$dest);
+	}
+	
+	private function create_hub_file($file, $pid, $doThumbnail = false)
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
-			return false;
-		}
-
-		// Incoming
-		$pid = JRequest::getInt( 'pid', 0 );
-		if (!$pid) {
-			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
-			$this->attachments( $pid );
-		}
-
-		// Incoming file
-		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
-		if (!$file['name']) {
-			$this->setError( JText::_('COM_CONTRIBUTE_NO_FILE') );
-			$this->attachments( $pid );
-			return;
-		}
-		
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
@@ -1530,7 +1577,7 @@ protected function attach_resource()
 		if (!$row->id) {
 			$row->id = $row->insertid();
 		}
-		
+		echo '3';
 		// Build the path
 		$listdir = $this->_buildPathFromDate( $row->created, $row->id, '' );
 		$path = $this->_buildUploadPath( $listdir, '' );
@@ -1554,8 +1601,27 @@ protected function attach_resource()
 			// Check the file type
 			$row->type = $this->_getChildType($file['name']);
 
+			
+			if ($doThumbnail == true) { //image to thumbnail
+					//modify image into thumbnail
+					echo 'tb';
+				$ftype = $this->_getExtension($file['name']);
+				$thumbtypes = array ( '...', 'jpg' , 'gif', 'jpeg');
+				if (array_search($ftype, $thumbtypes) != false)
+				{
+					$thumb_width = 293;	
+					$this->make_thumb($path.DS.$file['name'],$path.DS.$file['name'],$thumb_width,true);
+					$row->type = 71;
+					echo 'Thumbnail created';
+				}
+				else
+				{
+					echo 'The last file uploaded was not a gif,jpeg or jpg file extension and could not be made into a thumbnail - it is available as a regular resource';
+				}
+				
+			}
 			// If it's a package (ZIP, etc) ...
-			if ($row->type == 38) {
+			else if ($row->type == 38) {
 				/*jimport('joomla.filesystem.archive');
 				
 				// Extract the files
@@ -1651,7 +1717,47 @@ protected function attach_resource()
 		if (!$assoc->store(true)) {
 			$this->setError( $assoc->getError() );
 		}
+		
+	}
 
+	//-----------
+
+	protected function attach_save()
+	{
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+
+		// Incoming
+		$pid = JRequest::getInt( 'pid', 0 );
+		if (!$pid) {
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
+			$this->attachments( $pid );
+		}
+
+		// Incoming file
+		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
+		$fileT = $file;
+		if (!$file['name']) {
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_FILE') );
+			$this->attachments( $pid );
+			return;
+		}
+		jimport('joomla.filesystem.file');
+		$thumb = (JRequest::getVar( 'thumbnail', 'off' ) == 'on');
+		
+		if ($thumb) {
+			//$fileT['tmp_name'] = $fileT['tmp_name'];
+			//echo $fileT['tmp_name'];
+			//JFile::copy($file['tmp_name'],$fileT['tmp_name']);
+			$this->create_hub_file($file, $pid, true);
+		}
+		else
+			$this->create_hub_file($file, $pid);		
+		
+		
 		// Push through to the attachments view
 		$this->attachments( $pid );
 	}
@@ -1888,13 +1994,21 @@ protected function attach_resource()
 	}
 
 	//-----------
-
-	private function _getChildType($filename)
+	private function _getExtension($filename)
 	{
 		$filename_arr = explode('.',$filename);
 		$ftype = end($filename_arr);
 		$ftype = (strlen($ftype) > 3) ? substr($ftype, 0, 3) : $ftype;
 		$ftype = strtolower($ftype);
+		
+		return $ftype;
+	}
+
+	//-----------
+
+	private function _getChildType($filename)
+	{
+		$ftype = $this->_getExtension($filename);
 	
 		switch ($ftype) 
 		{

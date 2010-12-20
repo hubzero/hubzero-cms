@@ -25,20 +25,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-if (JRequest::getVar( 'tmpl', '' ) == "component")
- 	$this->id .= "&tmpl=component";
-			
-
 $laststep = (count($this->steps) - 1);
 
 $html  = '<div id="steps_div"><ol id="steps">'."\n";
-if (JRequest::getVar( 'tmpl', '' ) != "component") {
 if ($this->progress['submitted'] == 1) {
 	$html .= "\t".'<li id="start"><a href="'. JRoute::_('index.php?option=com_resources&id='.$this->id) .'">'.JText::_('COM_CONTRIBUTE_START').'</a></li>'."\n";
 } else {
 	$html .= "\t".'<li id="start"><a href="'. JRoute::_('index.php?option='.$this->option) .'">'.JText::_('COM_CONTRIBUTE_START').'</a></li>'."\n";
-}
 }
 for ($i=1, $n=count( $this->steps ); $i < $n; $i++) 
 {
@@ -62,7 +55,6 @@ for ($i=1, $n=count( $this->steps ); $i < $n; $i++)
 	}
 	$html .= '</li>'."\n";
 }
-if (JRequest::getVar( 'tmpl', '' ) != "component") {
 if ($this->progress['submitted'] != 1) {
 	$html .= "\t".'<li id="trash"';
 	if ($this->step == 'discard') { 
@@ -73,7 +65,6 @@ if ($this->progress['submitted'] != 1) {
 		$html .= '">'.JText::_('COM_CONTRIBUTE_CANCEL').'</a>';
 	}
 	$html .= '</li>'."\n";
-}
 }
 $html .= '</ol></div>'."\n";
 $html .= '<div class="clear"></div>'."\n";

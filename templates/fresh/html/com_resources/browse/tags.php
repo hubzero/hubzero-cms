@@ -33,6 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	<div id="content-header-extra">
 		<fieldset>
+		<strong>View Other Resource Types:</strong>
 			<label>
 				<span>hackhackhackhackhack<?php echo JText::_('COM_RESOURCES_TYPE'); ?>:</span> 
 				<select name="type">
@@ -49,14 +50,29 @@ foreach ($this->types as $type)
 			<input type="submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>"/>
 			<input type="hidden" name="task" value="browsetags" />
 			
+			<p>
+			<a href="<?php echo '/resources/'.$this->type.'/?task=discover'; ?>"class="addremovetag" title="Click to go to Resource Discovery">Try the new Resource Discovery &rarr; </a>
+			</p>				
+			
 		</fieldset>
 	</div><!-- / #content-header-extra -->
-	<form method="get" action="/search" id="searchform">
+	<?php $browser = get_browser();
+		$using_ie67 = false;
+
+		 $u_agent = $_SERVER['HTTP_USER_AGENT']; 
+
+	    if(preg_match('/MSIE [6,7]/i',$u_agent)) 
+	    { 
+	        $using_ie67 = True; 
+	    } 	
+	
+	if (!$using_ie67) { ?>
+	<form method="get" action="" id="searchform">
 	<fieldset>
-	<label for="searchword" style="display: non; ">Resource Title:</label>
-	<input type="search" name="terms" id="searchword" size="20" value="" style="width: 185px; " placeholder="Search" autosave="bsn_search" results="5">
-	<?php if (isset($this->terms)) { ?>
-			<label>Currently searching for: '<?php echo $this->terms?>'</label>
+	<label for="searchword" style="display: none; ">Resource Title:</label>
+	<input type="search" name="srcterms" id="searchword" size="20" value="" style="width: 185px; " placeholder="Search Here" autosave="bsn_search" results="5">
+	<?php if (isset($this->srcterms)) { ?>
+			<label>Currently searching for: '<?php echo $this->srcterms?>'</label>
 			<?php if (isset($this->designator)){  ?>
 			<label> and </label>
 			<?php } ?>
@@ -65,7 +81,10 @@ foreach ($this->types as $type)
 	<?php } ?>
 	<?php if (isset($this->designator)) { ?>
 			<input type="hidden" name="designator" id="designator" value="<?php echo $this->designator; ?>" />
-	<?php } ?>
+	<?php } 
+	
+	
+	}?>
 	</fieldset>
 	</form>
 	<div class="main section" id="browse-resources">
@@ -93,8 +112,8 @@ foreach ($this->types as $type)
 			<input type="hidden" name="id" id="id" value="" />
 			<input type="hidden" name="preinput" id="preinput" value="<?php echo $this->tag; ?>" />
 			<input type="hidden" name="preinput2" id="preinput2" value="<?php echo $this->tag2; ?>" />
-			<?php if (isset($this->terms)) { ?>
-			<input type="hidden" name="terms" id="terms" value="<?php echo $this->terms; ?>" />
+			<?php if (isset($this->srcterms)) { ?>
+			<input type="hidden" name="srcterms" id="srcterms" value="<?php echo $this->srcterms; ?>" />
 			<?php } ?>
 			<?php if (isset($this->designator)) { ?>
 			<input type="hidden" name="designator" id="designator" value="<?php echo $this->designator; ?>" />

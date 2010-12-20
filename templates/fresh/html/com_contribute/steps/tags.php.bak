@@ -187,22 +187,3 @@ foo();
 		</p>
 	</form>
 </div><!-- / .main section -->
-
-		
-		
-		
-		<script type="text/javascript">
-		function pulltags() {
-		if (window!=window.top) {
-
-			if (parent.parent.wargs.length > 0) {
-				var ar = parent.parent.wargs;
-				for (w=0;w<ar.length;w++) {
-					addtagtxt(ar[w]);
-				}
-			 }
-		}
-		}
-		window.onload = setTimeout("pulltags()", 1000);
-
-		</script>

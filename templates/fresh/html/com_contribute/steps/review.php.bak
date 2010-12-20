@@ -73,10 +73,6 @@ Just log in and pick up where you left off.</p>
 				<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 				<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 				<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
-				<?php 
-				if (JRequest::getVar( 'tmpl', '' ) == "component")
- 					echo '<input type="hidden" name="tmpl" value="component"/>'."\n";
-				?>
 				<input type="hidden" name="published" value="1" />
 		 	</fieldset><div class="clear"></div>
 			<p id="nextsubmit">
@@ -124,10 +120,6 @@ Just log in and pick up where you left off.</p>
 			<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 			<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
 			<input type="hidden" name="published" value="0" />
-			<?php 
-				if (JRequest::getVar( 'tmpl', '' ) == "component")
- 					echo '<input type="hidden" name="tmpl" value="component"/>'."\n";
-				?>
 	 	</fieldset><div class="clear"></div>
 		<p id="nextsubmit">
 			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_SUBMIT_CONTRIBUTION'); ?>" id="nextbutton"/>

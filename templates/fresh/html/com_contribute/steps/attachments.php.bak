@@ -54,9 +54,7 @@ $app =& JFactory::getApplication();
 				<label>
 					<input type="file" class="option" name="upload" />
 				</label>
-				
-				<input type="submit" class="option" value="<?php echo JText::_('COM_CONTRIBUTE_UPLOAD'); ?>" /><br/>
-				<input type="checkbox" name="thumbnail">Use as thumbnail instead of full image</input><br/><em>(upload it again without this checkbox to get the full resolution)</em> 
+				<input type="submit" class="option" value="<?php echo JText::_('COM_CONTRIBUTE_UPLOAD'); ?>" />
 				<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="no_html" value="1" />
@@ -155,7 +153,7 @@ $app =& JFactory::getApplication();
 				}
 ?>			
 				<tr>
-					<td width="100%" class="<?php echo $liclass; ?>"><span class="ftitle item:name id:<?php echo $child->id; ?>"><?php echo $child->title; ?> <?php if ($child->type == 71) echo ' (Resource Thumbnail) ' ?></span> <?php echo Hubzero_View_Helper_Html::getFileAttribs( $url, $base ); ?></td>
+					<td width="100%" class="<?php echo $liclass; ?>"><span class="ftitle item:name id:<?php echo $child->id; ?>"><?php echo $child->title; ?></span> <?php echo Hubzero_View_Helper_Html::getFileAttribs( $url, $base ); ?></td>
 					<td class="u"><?php
 					if ($i > 0 || ($i+0 > 0)) {
 					    echo '<a href="index.php?option=com_contribute&amp;no_html=1&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=orderupa&amp;type='.$this->type.'" class="order up" title="'.JText::_('COM_CONTRIBUTE_MOVE_UP').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_UP').'</span></a>';

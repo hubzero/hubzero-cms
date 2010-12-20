@@ -59,9 +59,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			<h4>NEESHub Resource ID?</h4>
 			<p>Every resource in the Hub has a unique ID. This is the last part of the URL when you view that resource, for example: "http://nees.org/education/academy-resources/444" indicates resource ID "444". </p>
-<?php }?>	
-			<h4>Images and Thumbnails?</h4>
-			<p>When you click "use as thumbnail" we will automatically make the image (jpeg or gif) the correct size for resource discovery. Looking at the list of attachments, the images and thumnails appearing first in the list will be used.</p>		
+<?php }?>			
 		</div>
 		<fieldset>
 			<h3><?php echo JText::_('COM_CONTRIBUTE_ATTACH_ATTACHMENTS'); ?></h3>
@@ -70,10 +68,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 			<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
-						<?php 
-				if (JRequest::getVar( 'tmpl', '' ) == "component")
- 					echo '<input type="hidden" name="tmpl" value="component"/>'."\n";
-			?>
 		</fieldset><div class="clear"></div>
 		<p id="nextsubmit">
 			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" id="nextbutton"/>

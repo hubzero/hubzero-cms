@@ -216,6 +216,11 @@ class ResourcesResource extends JTable
 		$query .= "LEFT JOIN #__resource_types AS t ON C.type=t.id ";
 		$query .= "LEFT JOIN #__resource_types AS lt ON C.logical_type=lt.id ";
 		$query .= "WHERE C.published=1 AND C.standalone=1 ";
+		
+		if (isset($filters['ids'])) {
+		$query .= "AND C.id IN (". implode(",", $filters['ids']).") " ;	
+		}
+		
 		if (isset($filters['type']) && $filters['type'] != '') {
 			if ($filters['type'] == 'nontools') {
 				$query .= "AND C.type!=7 ";
