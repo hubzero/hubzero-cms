@@ -104,8 +104,6 @@ ENDHTML;
 
           $iIndex = 0;
           if(!empty($p_oCurrentDataFileArray)){
-
-
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
               $strCurationStatus = $oDataFile->getCurationStatus();
@@ -121,14 +119,13 @@ ENDHTML;
               $strFileName = $oDataFile->getName();
               $strDataFileLinkTitle = "";
 
+              $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
               /* @var $oDataFileLink DataFileLink */
               if(preg_match("/Experiment-([0-9])+/", $strFileName)){
-                $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
                 $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getExperiment()->getTitle(), 50);
               }
 
               if(preg_match("/Trial-([0-9])+/", $strFileName)){
-                $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
                 $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getTrial()->getTitle(), 50);
               }
 
@@ -156,22 +153,30 @@ ENDHTML;
               foreach($validFileExts as $key => $value){
                 if( preg_match("/$value/i", $strFileExtension ) ){
                   $extOk = true;
+                  break;
                 }
+
               }
+
+              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
 
               //determine if scaled image is available
               $strLightbox = StringHelper::EMPTY_STRING;
               if($extOk){
                 $strDisplayName = "display_".$iDataFileId."_".$strFileName;
-                $oDataFile->setName($strDisplayName);
-
                 $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
-                $oDataFile->setPath($strDisplayPath);
 
-                $strLightbox = "rel=lightbox[data] ";
+                if(is_file($strDisplayPath."/".$strDisplayName)){
+                  $oDataFile->setName($strDisplayName);
+                  $oDataFile->setPath($strDisplayPath);
+                  $strLightbox = "rel=lightbox[data] ";
+
+                  $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                  $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+                }
               }
-              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+
 
               //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
               $strThisLink = <<< ENDHTML
@@ -373,22 +378,29 @@ ENDHTML;
               foreach($validFileExts as $key => $value){
                 if( preg_match("/$value/i", $strFileExtension ) ){
                   $extOk = true;
+                  break;
                 }
+
               }
+
+              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
 
               //determine if scaled image is available
               $strLightbox = StringHelper::EMPTY_STRING;
               if($extOk){
                 $strDisplayName = "display_".$iDataFileId."_".$strFileName;
-                $oDataFile->setName($strDisplayName);
-
                 $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
-                $oDataFile->setPath($strDisplayPath);
 
-                $strLightbox = "rel=lightbox[data] ";
+                if(is_file($strDisplayPath."/".$strDisplayName)){
+                  $oDataFile->setName($strDisplayName);
+                  $oDataFile->setPath($strDisplayPath);
+                  $strLightbox = "rel=lightbox[data] ";
+
+                  $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                  $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+                }
               }
-              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
 
               //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
               $strThisLink = <<< ENDHTML
@@ -793,22 +805,29 @@ ENDHTML;
               foreach($validFileExts as $key => $value){
                 if( preg_match("/$value/i", $strFileExtension ) ){
                   $extOk = true;
+                  break;
                 }
+
               }
+
+              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
 
               //determine if scaled image is available
               $strLightbox = StringHelper::EMPTY_STRING;
               if($extOk){
                 $strDisplayName = "display_".$iDataFileId."_".$strFileName;
-                $oDataFile->setName($strDisplayName);
-
                 $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
-                $oDataFile->setPath($strDisplayPath);
 
-                $strLightbox = "rel=lightbox[data] ";
+                if(is_file($strDisplayPath."/".$strDisplayName)){
+                  $oDataFile->setName($strDisplayName);
+                  $oDataFile->setPath($strDisplayPath);
+                  $strLightbox = "rel=lightbox[data] ";
+
+                  $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                  $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+                }
               }
-              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
 
               //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
               $strThisLink = <<< ENDHTML
@@ -1165,22 +1184,29 @@ ENDHTML;
               foreach($validFileExts as $key => $value){
                 if( preg_match("/$value/i", $strFileExtension ) ){
                   $extOk = true;
+                  break;
                 }
+
               }
+
+              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
 
               //determine if scaled image is available
               $strLightbox = StringHelper::EMPTY_STRING;
               if($extOk){
                 $strDisplayName = "display_".$iDataFileId."_".$strFileName;
-                $oDataFile->setName($strDisplayName);
-
                 $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
-                $oDataFile->setPath($strDisplayPath);
 
-                $strLightbox = "rel=lightbox[data] ";
+                if(is_file($strDisplayPath."/".$strDisplayName)){
+                  $oDataFile->setName($strDisplayName);
+                  $oDataFile->setPath($strDisplayPath);
+                  $strLightbox = "rel=lightbox[data] ";
+
+                  $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                  $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+                }
               }
-              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
 
               //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
               $strThisLink = <<< ENDHTML

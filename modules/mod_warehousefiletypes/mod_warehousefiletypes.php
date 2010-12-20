@@ -35,6 +35,7 @@ if(!StringHelper::hasText($strCurrentPath)){
 
 $iDataFileCount = modWarehouseFileTypesHelper::getDataFileCountByDirectory($strCurrentPath);
 $iInDeedDataFileCount = modWarehouseFileTypesHelper::getDataFileCountByDirectory($strCurrentPath, "inDEED");
+$iDataFileAllCount = $iDataFileCount - $iInDeedDataFileCount;
 $iDrawingCount = modWarehouseFileTypesHelper::getDrawingCountByDirectory($strCurrentPath);
 $iPhotoCount = modWarehouseFileTypesHelper::getPhotoCountByDirectory($strCurrentPath);
 $iChartCount = modWarehouseFileTypesHelper::getObjectTypeCountByDirectory($strCurrentPath, "Chart");

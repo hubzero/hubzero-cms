@@ -15,10 +15,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
       <input type="hidden" id="dataOpen" name="dataOpen" value="0"/>
       <a href="javascript:void(0);" onClick="displayVideoTypes('dataOpen', 'dataOptions');">Data Files (<? echo $iDataFileCount; ?>)</a>
       <div id="dataOptions" style="display: none">
-        <span class="warehouseMarginLeft"><a href="/warehouse/filebrowser/<?php echo $iProjectId;?>?type=DataFile&tool=inDEED&path=<?php echo $strCurrentPath; ?>">inDEED (<?php echo $iInDeedDataFileCount; ?>)</a></span><br>
-        <!--
-        <span class="warehouseMarginLeft"><a href="#">Frame Captures (<?php //echo $iFrameCount; ?>)</a></span>
-        -->
+        <span class="warehouseMarginLeft"><a href="/warehouse/filebrowser/<?php echo $iProjectId;?>?type=DataFile&path=<?php echo $strCurrentPath; ?>">All (<?php echo $iDataFileCount; ?>)</a></span><br>
+        <span class="warehouseMarginLeft"><a href="/warehouse/filebrowser/<?php echo $iProjectId;?>?type=DataFile&tool=inDEED&path=<?php echo $strCurrentPath; ?>">inDEED (<?php echo $iInDeedDataFileCount; ?>)</a></span>
       </div>
     </td>
   </tr>

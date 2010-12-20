@@ -1993,8 +1993,8 @@ class DataFilePeer extends BaseDataFilePeer {
         if ($p_iRepetitionId > 0)$strQuery .= " and dfl.rep_id=?";
 
         $strQuery .= "
-  				)
-				WHERE rn BETWEEN ? AND ?";
+                    )
+                    WHERE rn BETWEEN ? AND ?";
 
         $iIndex = 4;
 
@@ -2158,7 +2158,7 @@ class DataFilePeer extends BaseDataFilePeer {
         return self::retrieveByPKs($oReturnArray);
     }
 
-  /**
+    /**
      * Returns the query for video lookup via mime-type.
      * @param string $p_strMimeType
      * @param string $p_strCommaSeparatedVideoExtensions
@@ -2316,7 +2316,7 @@ class DataFilePeer extends BaseDataFilePeer {
                     and (d.mime_type not like 'video%' or d.mime_type is null)";
     }
     */
-    
+
     if ($p_iProjectId > 0){
       $strQuery .= " and dfl.proj_id=?";
     }
@@ -2869,6 +2869,7 @@ class DataFilePeer extends BaseDataFilePeer {
                      OVER (ORDER BY df.path, df.name) as rn
                      from data_file_link dfl, data_file df
                      where dfl.id = df.id
+                       and df.deleted=0
                        and df.directory=?
                        and(
                           (lower(df.name) like '%.png') or
@@ -2900,6 +2901,7 @@ class DataFilePeer extends BaseDataFilePeer {
       $strQuery = "select count(df.id) as TOTAL
                    from data_file_link dfl, data_file df
                    where dfl.id = df.id
+                     and df.deleted=0
                      and df.directory=?
                      and(
                        (lower(df.name) like '%.png') or
@@ -2926,9 +2928,10 @@ class DataFilePeer extends BaseDataFilePeer {
     public static function getDirectorySize($p_strCurrentDirectory){
       $strQuery = "select sum(df.filesize) as TOTAL
                    from data_file df
-                   where df.path like '$p_strCurrentDirectory%'
+                   where (df.path like '$p_strCurrentDirectory/%' or df.path = '$p_strCurrentDirectory')
                      and df.path not like '%/Generated_Pics'
-                     and df.directory = 0";
+                     and df.directory = 0
+                     and df.deleted = 0";
 
       $oConnection = Propel::getConnection();
       $oStatement = $oConnection->prepareStatement($strQuery);
@@ -2936,7 +2939,6 @@ class DataFilePeer extends BaseDataFilePeer {
       while ($oResultSet->next()) {
         $iCount = $oResultSet->getInt("TOTAL");
       }
-
       return $iCount;
     }
 
