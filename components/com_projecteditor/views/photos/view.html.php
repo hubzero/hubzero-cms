@@ -77,7 +77,7 @@ class ProjectEditorViewPhotos extends JView{
     }
 
     //get the photos
-    $iPhotoType = JRequest::getVar('photoType', DataFilePeer::PHOTO_TYPE_DATA);
+    $iPhotoType = JRequest::getVar('photoType', DataFilePeer::PHOTO_TYPE_GENERAL);
     $iDisplay = JRequest::getVar('limit', 25);
     $iPageIndex = JRequest::getVar('index', 0);
 
