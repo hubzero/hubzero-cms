@@ -170,6 +170,13 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 	 */
 	protected $usage_type_id;
 
+
+	/**
+	 * The value for the app_id field.
+	 * @var        double
+	 */
+	protected $app_id;
+
 	/**
 	 * @var        DataFile
 	 */
@@ -704,6 +711,17 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [app_id] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getAppId()
+	{
+
+		return $this->app_id;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      double $v new value
@@ -1118,6 +1136,22 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 	} // setUsageTypeId()
 
 	/**
+	 * Set the value of [app_id] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setAppId($v)
+	{
+
+		if ($this->app_id !== $v) {
+			$this->app_id = $v;
+			$this->modifiedColumns[] = DataFilePeer::APP_ID;
+		}
+
+	} // setAppId()
+
+	/**
 	 * Hydrates (populates) the object variables with values from the database resultset.
 	 *
 	 * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -1174,12 +1208,14 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 
 			$this->usage_type_id = $rs->getFloat($startcol + 19);
 
+			$this->app_id = $rs->getFloat($startcol + 20);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 20; // 20 = DataFilePeer::NUM_COLUMNS - DataFilePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 21; // 21 = DataFilePeer::NUM_COLUMNS - DataFilePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating DataFile object", $e);
@@ -1839,6 +1875,9 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 			case 19:
 				return $this->getUsageTypeId();
 				break;
+			case 20:
+				return $this->getAppId();
+				break;
 			default:
 				return null;
 				break;
@@ -1879,6 +1918,7 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 			$keys[17] => $this->getDocumentFormatId(),
 			$keys[18] => $this->getOpeningTool(),
 			$keys[19] => $this->getUsageTypeId(),
+			$keys[20] => $this->getAppId(),
 		);
 		return $result;
 	}
@@ -1970,6 +2010,9 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 			case 19:
 				$this->setUsageTypeId($value);
 				break;
+			case 20:
+				$this->setAppId($value);
+				break;
 		} // switch()
 	}
 
@@ -2013,6 +2056,7 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[17], $arr)) $this->setDocumentFormatId($arr[$keys[17]]);
 		if (array_key_exists($keys[18], $arr)) $this->setOpeningTool($arr[$keys[18]]);
 		if (array_key_exists($keys[19], $arr)) $this->setUsageTypeId($arr[$keys[19]]);
+		if (array_key_exists($keys[20], $arr)) $this->setAppId($arr[$keys[20]]);
 	}
 
 	/**
@@ -2044,6 +2088,7 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(DataFilePeer::DOCUMENT_FORMAT_ID)) $criteria->add(DataFilePeer::DOCUMENT_FORMAT_ID, $this->document_format_id);
 		if ($this->isColumnModified(DataFilePeer::OPENING_TOOL)) $criteria->add(DataFilePeer::OPENING_TOOL, $this->opening_tool);
 		if ($this->isColumnModified(DataFilePeer::USAGE_TYPE_ID)) $criteria->add(DataFilePeer::USAGE_TYPE_ID, $this->usage_type_id);
+		if ($this->isColumnModified(DataFilePeer::APP_ID)) $criteria->add(DataFilePeer::APP_ID, $this->app_id);
 
 		return $criteria;
 	}
@@ -2135,6 +2180,8 @@ abstract class BaseDataFile extends BaseObject  implements Persistent {
 		$copyObj->setOpeningTool($this->opening_tool);
 
 		$copyObj->setUsageTypeId($this->usage_type_id);
+
+		$copyObj->setAppId($this->app_id);
 
 
 		if ($deepCopy) {

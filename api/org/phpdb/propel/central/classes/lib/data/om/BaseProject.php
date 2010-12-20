@@ -15,7 +15,7 @@ include_once 'lib/data/ProjectPeer.php';
 /**
  * Base class that represents a row from the 'PROJECT' table.
  *
- *
+ * 
  *
  * @package    lib.data.om
  */
@@ -325,7 +325,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [projid] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getId()
@@ -336,7 +336,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [contact_email] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getContactEmail()
@@ -347,7 +347,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [contact_name] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getContactName()
@@ -358,7 +358,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [curation_status] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getCurationStatus()
@@ -369,7 +369,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [deleted] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getDeleted()
@@ -380,7 +380,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [description] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getDescription()
@@ -391,44 +391,13 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [optionally formatted] [end_date] column value.
-	 *
+	 * 
 	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
 	 *							If format is NULL, then the integer unix timestamp will be returned.
 	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
 	 * @throws     PropelException - if unable to convert the date/time to timestamp.
 	 */
-	public function getEndDate($format = '%m/%d/%Y')
-	{
-
-		if ($this->end_date === null || $this->end_date === '') {
-			return null;
-		} elseif (!is_int($this->end_date)) {
-			// a non-timestamp value was set externally, so we convert it
-			$ts = strtotime($this->end_date);
-			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
-				throw new PropelException("Unable to parse value of [end_date] as date/time value: " . var_export($this->end_date, true));
-			}
-		} else {
-			$ts = $this->end_date;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	/**
-	 * Get the [optionally formatted] [end_date] column value.
-	 *
-	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
-	 *							If format is NULL, then the integer unix timestamp will be returned.
-	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
-	 * @throws     PropelException - if unable to convert the date/time to timestamp.
-	 */
-	public function getNCEndDate($format = '%Y-%m-%d')
+	public function getEndDate($format = '%Y-%m-%d')
 	{
 
 		if ($this->end_date === null || $this->end_date === '') {
@@ -453,7 +422,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [fundorg] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getFundorg()
@@ -464,7 +433,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [fundorgprojid] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getFundorgProjId()
@@ -475,7 +444,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [nees] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getNEES()
@@ -486,7 +455,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [nsftitle] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getNSFTitle()
@@ -497,7 +466,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [name] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getName()
@@ -508,7 +477,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [nickname] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getNickname()
@@ -519,7 +488,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [short_title] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getShortTitle()
@@ -530,44 +499,13 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [optionally formatted] [start_date] column value.
-	 *
+	 * 
 	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
 	 *							If format is NULL, then the integer unix timestamp will be returned.
 	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
 	 * @throws     PropelException - if unable to convert the date/time to timestamp.
 	 */
-	public function getStartDate($format = '%m/%d/%Y')
-	{
-
-		if ($this->start_date === null || $this->start_date === '') {
-			return null;
-		} elseif (!is_int($this->start_date)) {
-			// a non-timestamp value was set externally, so we convert it
-			$ts = strtotime($this->start_date);
-			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
-				throw new PropelException("Unable to parse value of [start_date] as date/time value: " . var_export($this->start_date, true));
-			}
-		} else {
-			$ts = $this->start_date;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	/**
-	 * Get the [optionally formatted] [start_date] column value.
-	 *
-	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
-	 *							If format is NULL, then the integer unix timestamp will be returned.
-	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
-	 * @throws     PropelException - if unable to convert the date/time to timestamp.
-	 */
-	public function getNCStartDate($format = '%Y-%m-%d')
+	public function getStartDate($format = '%Y-%m-%d')
 	{
 
 		if ($this->start_date === null || $this->start_date === '') {
@@ -592,7 +530,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [status] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getStatus()
@@ -603,7 +541,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [sysadmin_email] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getSysadminEmail()
@@ -614,7 +552,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [sysadmin_name] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getSysadminName()
@@ -625,7 +563,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [title] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getTitle()
@@ -636,7 +574,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [viewable] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getView()
@@ -647,7 +585,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [creator_id] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getCreatorId()
@@ -658,7 +596,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [super_project_id] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getSuperProjectId()
@@ -669,7 +607,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [project_type_id] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getProjectTypeId()
@@ -680,7 +618,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [projid] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -696,7 +634,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [contact_email] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -706,7 +644,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->contact_email !== $v) {
@@ -718,7 +656,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [contact_name] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -728,7 +666,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->contact_name !== $v) {
@@ -740,7 +678,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [curation_status] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -750,7 +688,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->curation_status !== $v) {
@@ -762,7 +700,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [deleted] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -778,7 +716,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [description] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -808,7 +746,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [end_date] column.
-	 *
+	 * 
 	 * @param      int $v new value
 	 * @return     void
 	 */
@@ -832,7 +770,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [fundorg] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -842,7 +780,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->fundorg !== $v) {
@@ -854,7 +792,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [fundorgprojid] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -864,7 +802,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->fundorgprojid !== $v) {
@@ -876,7 +814,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [nees] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -892,7 +830,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [nsftitle] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -902,7 +840,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->nsftitle !== $v) {
@@ -914,7 +852,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [name] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -924,7 +862,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->name !== $v) {
@@ -936,7 +874,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [nickname] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -946,7 +884,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->nickname !== $v) {
@@ -958,7 +896,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [short_title] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -968,7 +906,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->short_title !== $v) {
@@ -980,7 +918,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [start_date] column.
-	 *
+	 * 
 	 * @param      int $v new value
 	 * @return     void
 	 */
@@ -1004,7 +942,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [status] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -1014,7 +952,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->status !== $v) {
@@ -1026,7 +964,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [sysadmin_email] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -1036,7 +974,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->sysadmin_email !== $v) {
@@ -1048,7 +986,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [sysadmin_name] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -1058,7 +996,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->sysadmin_name !== $v) {
@@ -1070,7 +1008,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [title] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -1080,7 +1018,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->title !== $v) {
@@ -1092,7 +1030,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [viewable] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -1102,7 +1040,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->viewable !== $v) {
@@ -1114,7 +1052,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [creator_id] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -1134,7 +1072,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [super_project_id] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -1154,7 +1092,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [project_type_id] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -2449,9 +2387,8 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 			} else {
 
 				$criteria->add(ExperimentPeer::PROJID, $this->getId());
-                                $criteria->add(ExperimentPeer::DELETED, 0);
+
 				ExperimentPeer::addSelectColumns($criteria);
-                                $criteria->addAscendingOrderByColumn(ExperimentPeer::EXPID);
 				$this->collExperiments = ExperimentPeer::doSelect($criteria, $con);
 			}
 		} else {
@@ -2463,9 +2400,8 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 
 				$criteria->add(ExperimentPeer::PROJID, $this->getId());
-                                $criteria->add(ExperimentPeer::DELETED, 0);
+
 				ExperimentPeer::addSelectColumns($criteria);
-                                $criteria->addAscendingOrderByColumn(ExperimentPeer::EXPID);
 				if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
 					$this->collExperiments = ExperimentPeer::doSelect($criteria, $con);
 				}

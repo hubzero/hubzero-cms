@@ -24,7 +24,7 @@ abstract class BaseDataFilePeer {
 	const CLASS_DEFAULT = 'lib.data.DataFile';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 20;
+	const NUM_COLUMNS = 21;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -90,7 +90,11 @@ abstract class BaseDataFilePeer {
 	/** the column name for the USAGE_TYPE_ID field */
 	const USAGE_TYPE_ID = 'DATA_FILE.USAGE_TYPE_ID';
 
-        private static $phpNameMap = null;
+	/** the column name for the APP_ID field */
+	const APP_ID = 'DATA_FILE.APP_ID';
+
+	/** The PHP to DB Name Mapping */
+	private static $phpNameMap = null;
 
 
 	/**
@@ -100,10 +104,10 @@ abstract class BaseDataFilePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorEmails', 'Authors', 'Checksum', 'Created', 'CurationStatus', 'Deleted', 'Description', 'Directory', 'Filesize', 'HowToCite', 'Name', 'PageCount', 'Path', 'Title', 'View', 'ThumbId', 'DocumentFormatId', 'OpeningTool', 'UsageTypeId', ),
-		BasePeer::TYPE_COLNAME => array (DataFilePeer::ID, DataFilePeer::AUTHOR_EMAILS, DataFilePeer::AUTHORS, DataFilePeer::CHECKSUM, DataFilePeer::CREATED, DataFilePeer::CURATION_STATUS, DataFilePeer::DELETED, DataFilePeer::DESCRIPTION, DataFilePeer::DIRECTORY, DataFilePeer::FILESIZE, DataFilePeer::HOW_TO_CITE, DataFilePeer::NAME, DataFilePeer::PAGE_COUNT, DataFilePeer::PATH, DataFilePeer::TITLE, DataFilePeer::VIEWABLE, DataFilePeer::THUMB_ID, DataFilePeer::DOCUMENT_FORMAT_ID, DataFilePeer::OPENING_TOOL, DataFilePeer::USAGE_TYPE_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('ID', 'AUTHOR_EMAILS', 'AUTHORS', 'CHECKSUM', 'CREATED', 'CURATION_STATUS', 'DELETED', 'DESCRIPTION', 'DIRECTORY', 'FILESIZE', 'HOW_TO_CITE', 'NAME', 'PAGE_COUNT', 'PATH', 'TITLE', 'VIEWABLE', 'THUMB_ID', 'DOCUMENT_FORMAT_ID', 'OPENING_TOOL', 'USAGE_TYPE_ID', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorEmails', 'Authors', 'Checksum', 'Created', 'CurationStatus', 'Deleted', 'Description', 'Directory', 'Filesize', 'HowToCite', 'Name', 'PageCount', 'Path', 'Title', 'View', 'ThumbId', 'DocumentFormatId', 'OpeningTool', 'UsageTypeId', 'AppId', ),
+		BasePeer::TYPE_COLNAME => array (DataFilePeer::ID, DataFilePeer::AUTHOR_EMAILS, DataFilePeer::AUTHORS, DataFilePeer::CHECKSUM, DataFilePeer::CREATED, DataFilePeer::CURATION_STATUS, DataFilePeer::DELETED, DataFilePeer::DESCRIPTION, DataFilePeer::DIRECTORY, DataFilePeer::FILESIZE, DataFilePeer::HOW_TO_CITE, DataFilePeer::NAME, DataFilePeer::PAGE_COUNT, DataFilePeer::PATH, DataFilePeer::TITLE, DataFilePeer::VIEWABLE, DataFilePeer::THUMB_ID, DataFilePeer::DOCUMENT_FORMAT_ID, DataFilePeer::OPENING_TOOL, DataFilePeer::USAGE_TYPE_ID, DataFilePeer::APP_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('ID', 'AUTHOR_EMAILS', 'AUTHORS', 'CHECKSUM', 'CREATED', 'CURATION_STATUS', 'DELETED', 'DESCRIPTION', 'DIRECTORY', 'FILESIZE', 'HOW_TO_CITE', 'NAME', 'PAGE_COUNT', 'PATH', 'TITLE', 'VIEWABLE', 'THUMB_ID', 'DOCUMENT_FORMAT_ID', 'OPENING_TOOL', 'USAGE_TYPE_ID', 'APP_ID', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
 	);
 
 	/**
@@ -113,10 +117,10 @@ abstract class BaseDataFilePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorEmails' => 1, 'Authors' => 2, 'Checksum' => 3, 'Created' => 4, 'CurationStatus' => 5, 'Deleted' => 6, 'Description' => 7, 'Directory' => 8, 'Filesize' => 9, 'HowToCite' => 10, 'Name' => 11, 'PageCount' => 12, 'Path' => 13, 'Title' => 14, 'View' => 15, 'ThumbId' => 16, 'DocumentFormatId' => 17, 'OpeningTool' => 18, 'UsageTypeId' => 19, ),
-		BasePeer::TYPE_COLNAME => array (DataFilePeer::ID => 0, DataFilePeer::AUTHOR_EMAILS => 1, DataFilePeer::AUTHORS => 2, DataFilePeer::CHECKSUM => 3, DataFilePeer::CREATED => 4, DataFilePeer::CURATION_STATUS => 5, DataFilePeer::DELETED => 6, DataFilePeer::DESCRIPTION => 7, DataFilePeer::DIRECTORY => 8, DataFilePeer::FILESIZE => 9, DataFilePeer::HOW_TO_CITE => 10, DataFilePeer::NAME => 11, DataFilePeer::PAGE_COUNT => 12, DataFilePeer::PATH => 13, DataFilePeer::TITLE => 14, DataFilePeer::VIEWABLE => 15, DataFilePeer::THUMB_ID => 16, DataFilePeer::DOCUMENT_FORMAT_ID => 17, DataFilePeer::OPENING_TOOL => 18, DataFilePeer::USAGE_TYPE_ID => 19, ),
-		BasePeer::TYPE_FIELDNAME => array ('ID' => 0, 'AUTHOR_EMAILS' => 1, 'AUTHORS' => 2, 'CHECKSUM' => 3, 'CREATED' => 4, 'CURATION_STATUS' => 5, 'DELETED' => 6, 'DESCRIPTION' => 7, 'DIRECTORY' => 8, 'FILESIZE' => 9, 'HOW_TO_CITE' => 10, 'NAME' => 11, 'PAGE_COUNT' => 12, 'PATH' => 13, 'TITLE' => 14, 'VIEWABLE' => 15, 'THUMB_ID' => 16, 'DOCUMENT_FORMAT_ID' => 17, 'OPENING_TOOL' => 18, 'USAGE_TYPE_ID' => 19, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorEmails' => 1, 'Authors' => 2, 'Checksum' => 3, 'Created' => 4, 'CurationStatus' => 5, 'Deleted' => 6, 'Description' => 7, 'Directory' => 8, 'Filesize' => 9, 'HowToCite' => 10, 'Name' => 11, 'PageCount' => 12, 'Path' => 13, 'Title' => 14, 'View' => 15, 'ThumbId' => 16, 'DocumentFormatId' => 17, 'OpeningTool' => 18, 'UsageTypeId' => 19, 'AppId' => 20, ),
+		BasePeer::TYPE_COLNAME => array (DataFilePeer::ID => 0, DataFilePeer::AUTHOR_EMAILS => 1, DataFilePeer::AUTHORS => 2, DataFilePeer::CHECKSUM => 3, DataFilePeer::CREATED => 4, DataFilePeer::CURATION_STATUS => 5, DataFilePeer::DELETED => 6, DataFilePeer::DESCRIPTION => 7, DataFilePeer::DIRECTORY => 8, DataFilePeer::FILESIZE => 9, DataFilePeer::HOW_TO_CITE => 10, DataFilePeer::NAME => 11, DataFilePeer::PAGE_COUNT => 12, DataFilePeer::PATH => 13, DataFilePeer::TITLE => 14, DataFilePeer::VIEWABLE => 15, DataFilePeer::THUMB_ID => 16, DataFilePeer::DOCUMENT_FORMAT_ID => 17, DataFilePeer::OPENING_TOOL => 18, DataFilePeer::USAGE_TYPE_ID => 19, DataFilePeer::APP_ID => 20, ),
+		BasePeer::TYPE_FIELDNAME => array ('ID' => 0, 'AUTHOR_EMAILS' => 1, 'AUTHORS' => 2, 'CHECKSUM' => 3, 'CREATED' => 4, 'CURATION_STATUS' => 5, 'DELETED' => 6, 'DESCRIPTION' => 7, 'DIRECTORY' => 8, 'FILESIZE' => 9, 'HOW_TO_CITE' => 10, 'NAME' => 11, 'PAGE_COUNT' => 12, 'PATH' => 13, 'TITLE' => 14, 'VIEWABLE' => 15, 'THUMB_ID' => 16, 'DOCUMENT_FORMAT_ID' => 17, 'OPENING_TOOL' => 18, 'USAGE_TYPE_ID' => 19, 'APP_ID' => 20, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
 	);
 
 	/**
@@ -256,6 +260,8 @@ abstract class BaseDataFilePeer {
 		$criteria->addSelectColumn(DataFilePeer::OPENING_TOOL);
 
 		$criteria->addSelectColumn(DataFilePeer::USAGE_TYPE_ID);
+
+		$criteria->addSelectColumn(DataFilePeer::APP_ID);
 
 	}
 

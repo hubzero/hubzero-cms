@@ -15,7 +15,7 @@ include_once 'lib/data/ExperimentPeer.php';
 /**
  * Base class that represents a row from the 'EXPERIMENT' table.
  *
- *
+ * 
  *
  * @package    lib.data.om
  */
@@ -346,7 +346,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [expid] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getId()
@@ -357,7 +357,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [curation_status] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getCurationStatus()
@@ -368,7 +368,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [deleted] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getDeleted()
@@ -379,7 +379,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [description] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getDescription()
@@ -390,7 +390,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [optionally formatted] [end_date] column value.
-	 *
+	 * 
 	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
 	 *							If format is NULL, then the integer unix timestamp will be returned.
 	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
@@ -421,7 +421,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [experiment_domain_id] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getExperimentDomainId()
@@ -432,7 +432,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [exp_type_id] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getExperimentTypeId()
@@ -443,7 +443,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [name] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getName()
@@ -454,7 +454,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [objective] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getObjective()
@@ -465,7 +465,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [projid] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getProjectId()
@@ -476,7 +476,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [optionally formatted] [start_date] column value.
-	 *
+	 * 
 	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
 	 *							If format is NULL, then the integer unix timestamp will be returned.
 	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
@@ -507,7 +507,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [status] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getStatus()
@@ -518,7 +518,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [title] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getTitle()
@@ -529,7 +529,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [viewable] column value.
-	 *
+	 * 
 	 * @return     string
 	 */
 	public function getView()
@@ -540,7 +540,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Get the [creator_id] column value.
-	 *
+	 * 
 	 * @return     double
 	 */
 	public function getCreatorId()
@@ -551,7 +551,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [expid] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -567,7 +567,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [curation_status] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -577,7 +577,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->curation_status !== $v) {
@@ -589,7 +589,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [deleted] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -605,7 +605,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [description] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -635,7 +635,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [end_date] column.
-	 *
+	 * 
 	 * @param      int $v new value
 	 * @return     void
 	 */
@@ -659,7 +659,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [experiment_domain_id] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -679,7 +679,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [exp_type_id] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -695,7 +695,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [name] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -705,7 +705,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->name !== $v) {
@@ -717,7 +717,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [objective] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -747,7 +747,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [projid] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -767,7 +767,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [start_date] column.
-	 *
+	 * 
 	 * @param      int $v new value
 	 * @return     void
 	 */
@@ -791,7 +791,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [status] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -801,7 +801,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->status !== $v) {
@@ -813,7 +813,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [title] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -823,7 +823,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->title !== $v) {
@@ -835,7 +835,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [viewable] column.
-	 *
+	 * 
 	 * @param      string $v new value
 	 * @return     void
 	 */
@@ -845,7 +845,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		// Since the native PHP type for this column is string,
 		// we will cast the input to a string (if it is not).
 		if ($v !== null && !is_string($v)) {
-			$v = (string) $v;
+			$v = (string) $v; 
 		}
 
 		if ($this->viewable !== $v) {
@@ -857,7 +857,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 	/**
 	 * Set the value of [creator_id] column.
-	 *
+	 * 
 	 * @param      double $v new value
 	 * @return     void
 	 */
@@ -4341,7 +4341,6 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 				$criteria->add(TrialPeer::EXPID, $this->getId());
 
 				TrialPeer::addSelectColumns($criteria);
-                                $criteria->addAscendingOrderByColumn(TrialPeer::TRIALID);
 				$this->collTrials = TrialPeer::doSelect($criteria, $con);
 			}
 		} else {
@@ -4356,8 +4355,7 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 				TrialPeer::addSelectColumns($criteria);
 				if (!isset($this->lastTrialCriteria) || !$this->lastTrialCriteria->equals($criteria)) {
-                                  $criteria->addAscendingOrderByColumn(TrialPeer::TRIALID);
-				  $this->collTrials = TrialPeer::doSelect($criteria, $con);
+					$this->collTrials = TrialPeer::doSelect($criteria, $con);
 				}
 			}
 		}
