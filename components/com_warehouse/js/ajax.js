@@ -140,6 +140,7 @@ function computeDownloadSizeBulk(p_bAdd, p_strDataFileIds, p_strCurrentValueId, 
   if(!p_bAdd){
     strAction = "subtract";
   }
+  //alert(strAction);
 
   xmlHttp = getAjaxRequest();
   if (xmlHttp==null){
