@@ -33,7 +33,7 @@ header("Expires: 0"); // Date in the past
 
 <?php JHTML::_('behavior.calendar'); ?>
 
-<form action="/warehouse/projecteditor/savetrial" method="post">
+<form id="frmTrial" action="/warehouse/projecteditor/savetrial" method="post">
 <input type="hidden" name="path" value="<?php echo $this->strPath; ?>" id="path"/>
 <input type="hidden" name="referer" value="<?php echo $this->strReferer; ?>" id="referer"/>
 <input type="hidden" name="experimentId" value="<?php echo $this->iExperimentId; ?>" id="experiment"/>
@@ -47,13 +47,33 @@ header("Expires: 0"); // Date in the past
   <tr>
     <td width="1" nowrap>
       <p class="editorParagraph">
+         <label for="txtName" class="editorLabel">Name:<span class="requiredfieldmarker">*</span></label>
+         <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Title :: For an existing trial, type its title and mouse over the suggestion."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
+      </p>
+    </td>
+    <td>
+      <select id="cboName" name="name" onChange="getTrial('/warehouse/projecteditor/gettrialinfo?format=ajax', this.value);">
+        <option value="0">New Trial</option>
+        <?php
+          $oTrialArray = unserialize($_REQUEST[TrialPeer::TABLE_NAME]);
+          /* @var $oTrial Trial */
+          foreach($oTrialArray as $oTrial){?>
+            <option value="<?php echo $oTrial->getId(); ?>"><?php echo $oTrial->getName(); ?></option>
+          <?php
+          }
+        ?>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td width="1" nowrap>
+      <p class="editorParagraph">
          <label for="txtTitle" class="editorLabel">Title:<span class="requiredfieldmarker">*</span></label>
          <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Title :: For an existing trial, type its title and mouse over the suggestion."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
       </p>
     </td>
     <td>
-      <input id="txtTitle" type="text" name="title" class="editorInputSize"autocomplete="off" value="" onkeyup="suggestTrial('/projecteditor/trialsearch?format=ajax', 'trialSearch', this.value, <?php echo $this->iExperimentId; ?>, this.id)"/>
-      <div id="trialSearch" class="suggestResults"></div>
+      <input id="txtTitle" type="text" name="title" class="editorInputSize" value=""/>
     </td>
   </tr>
   
