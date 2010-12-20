@@ -73,6 +73,7 @@ class ProjectEditor{
   const UPLOAD_CODE_INVALID_FILE_TYPE = 150;
   const UPLOAD_CODE_ERROR_MOVING_FILE = 160;
   const UPLOAD_CODE_FILE_TOO_BIG = 170;
+  const UPLOAD_BAD_FILE_NAME = 180;
 
   const UPLOAD_MESSAGE_FILE_LARGER_PHP_INI = "Upload Error - FILE LARGER THAN PHP INI ALLOWS";
   const UPLOAD_MESSAGE_FILE_LARGER_HTML_FORM = "Upload Error - FILE LARGER THAN HTML FORM ALLOWS";
@@ -81,6 +82,7 @@ class ProjectEditor{
   const UPLOAD_MESSAGE_INVALID_EXTENSION = "Upload Error - INVALID EXTENSION. Photos should be PNG, JPG, or GIF.";
   const UPLOAD_MESSAGE_INVALID_FILE_TYPE = "Upload Error - INVALID FILETYPE";
   const UPLOAD_MESSAGE_ERROR_MOVING_FILE = "Upload Error - ERROR MOVING FILE";
+  const UPLOAD_MESSAGE_BAD_FILE_NAME = "Upload Error - The following characters are not allowed in file name: %, $, \, /, #, ^, ~, *, &, and a leading . (period). ";
 
   const AUTHORIZER_PROJECT_EDIT_ERROR = "You cannot edit this project.";
   const AUTHORIZER_EXPERIMENT_CREATE_ERROR = "You cannot create an experiment for this project.";

@@ -122,7 +122,10 @@ class plgProjectUpload extends JPlugin{
     }
 
     //lose any special characters in the filename
-    $fileName = ereg_replace("[^A-Za-z0-9.]", "-", $fileName);
+    //$fileName = ereg_replace("[^A-Za-z0-9.]", "-", $fileName);
+    if(!$this->isValidFileName($fileName)){
+      return ProjectEditor::UPLOAD_BAD_FILE_NAME;
+    }
 
     //always use constants when making file paths, to avoid the possibilty of remote file inclusion
     $uploadPath = JRequest::getVar('path').DS.$fileName;
@@ -194,7 +197,10 @@ class plgProjectUpload extends JPlugin{
     $fileTemp = $_FILES[$fieldName]['tmp_name'][$p_iIndex];
 
     //lose any special characters in the filename
-    $fileName = ereg_replace("[^A-Za-z0-9.]", "-", $fileName);
+    //$fileName = ereg_replace("[^A-Za-z0-9.]", "-", $fileName);
+    if(!$this->isValidFileName($fileName)){
+      return ProjectEditor::UPLOAD_BAD_FILE_NAME;
+    }
 
     //always use constants when making file paths, to avoid the possibilty of remote file inclusion
     $uploadPath = JRequest::getVar('path').DS.$fileName;
@@ -979,6 +985,18 @@ class plgProjectUpload extends JPlugin{
     if($bThumbnail || $bDisplay || $bMkDir || $bIcon){
       FileHelper::fixPermissions($strWarehousePath);
     }
+
+    return true;
+  }
+
+  private function isValidFileName($p_strFileName){
+    $bPasses1 = preg_match("/[%$\/#^~*&\t\n\r]/", $p_strFileName);
+    $bPasses2 = preg_match("/[\\\]/", $p_strFileName);
+    $bPasses3 = preg_match("/^\./", $p_strFileName);
+
+    if($bPasses1||$bPasses2||$bPasses3){
+      return false;
+}
 
     return true;
   }
