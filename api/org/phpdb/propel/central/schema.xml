@@ -1277,7 +1277,11 @@
     <column name="DOCUMENT_FORMAT_ID"        phpName="DocumentFormatId"       primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"  type="NUMERIC"/>
     <column name="OPENING_TOOL"     phpName="OpeningTool"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="200"  type="VARCHAR"/>
     <column name="USAGE_TYPE_ID"    phpName="UsageTypeId"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"  type="NUMERIC"/>
-    <foreign-key foreignTable="DATA_FILE" onDelete="set null" onUpdate="cascade">
+    <!--
+    <column name="APP_ID"    phpName="AppId"                 primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="10"  type="NUMERIC"/>
+    -->
+    <foreign-key foreignTable="DATA_FILE" onDelete="set 
+null" onUpdate="cascade">
       <reference foreign="ID" local="THUMB_ID"/>
     </foreign-key>
     <foreign-key foreignTable="DOCUMENT_FORMAT" onDelete="cascade" onUpdate="none">
@@ -6254,11 +6258,11 @@
   </table>
 
   <table name="SEARCH_LOG" package="lib.data" phpName="SearchLog" idMethod="native" abstract="false" skipSql="false">
-    <column name="ID"                    phpName="Id"                         primaryKey="true"  autoIncrement="true"  lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
-    <column name="USERNAME" 			 phpName="Username"       			  primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="50" type="VARCHAR"/>
-    <column name="KEYWORD"               phpName="Keyword"                    primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="50" type="VARCHAR"/>
-    <column name="QUERY"                 phpName="Query"		              primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="500" type="VARCHAR"/>
-    <column name="CREATED_DT"            phpName="Created"		              primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  			type="DATE"/>
+    <column name="ID"               phpName="Id"               primaryKey="true"  autoIncrement="true"  lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
+    <column name="USERNAME"         phpName="Username"         primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="50" type="VARCHAR"/>
+    <column name="KEYWORD"          phpName="Keyword"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="50" type="VARCHAR"/>
+    <column name="QUERY"            phpName="Query"	       primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="4000" type="VARCHAR"/>
+    <column name="CREATED_DT"       phpName="Created"	       primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  	      type="DATE"/>
   </table>
   
   <table name="ENTITY_ACTIVITY_LOG" package="lib.data" phpName="EntityActivityLog" idMethod="native" abstract="false" skipSql="false">

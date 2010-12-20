@@ -1,23 +1,23 @@
 <?php
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
- 
+
 // Import library dependencies
 jimport('joomla.event.plugin');
- 
+
 class plgProjectSearch extends JPlugin{
 
   private $m_iLowerLimit;
   private $m_iUpperLimit;
-	
+
    /**
-    * Constructor
+    * Constructor 
     *
-    * 
+    *
     */
   function plgProjectSearch( &$subject ){
     parent::__construct( $subject );
- 
+
     // load plugin parameters
     $this->_plugin = JPluginHelper::getPlugin( 'project', 'search' );
     $this->_params = new JParameter( $this->_plugin->params );
@@ -181,14 +181,14 @@ class plgProjectSearch extends JPlugin{
     $this->m_iLowerLimit = $iLowerLimit;
     $this->m_iUpperLimit = $iUpperLimit;
 
-    $strQueryPrefix = "SELECT distinct projid, nickname, start_date 
-                       FROM (
-                             SELECT projid, nickname, start_date, row_number()
-                             OVER (ORDER BY $p_strOrderBy) as rn
-                             FROM(";
-    $strQuerySuffix = "      )
-                       )WHERE rn BETWEEN ".$this->m_iLowerLimit." AND ".$this->m_iUpperLimit." 
-                       ORDER BY $p_strOrderBy";
+    $strQueryPrefix = "SELECT distinct projid, nickname, start_date ".
+                      "FROM ( ".
+                            "SELECT projid, nickname, start_date, row_number() ".
+                            "OVER (ORDER BY $p_strOrderBy) as rn ".
+                            "FROM( ";
+    $strQuerySuffix = ") ".
+                      ")WHERE rn BETWEEN ".$this->m_iLowerLimit." AND ".$this->m_iUpperLimit." ".
+                      "ORDER BY $p_strOrderBy";
 
 
     //build the project conditions
@@ -204,7 +204,7 @@ class plgProjectSearch extends JPlugin{
                                               $strProjectStartDateCondition, $strProjectEndDateCondition);
 
     //build the experiment query (2/3 union statements)
-    $strExperimentQuery = $this->getExperimentQuery($p_strKeywords, $iProjectId, 
+    $strExperimentQuery = $this->getExperimentQuery($p_strKeywords, $iProjectId,
                                               $strProjectMemberCondition, $strProjectGrantCondition,
                                               $strProjectStartDateCondition, $strProjectEndDateCondition);
 
@@ -294,7 +294,7 @@ class plgProjectSearch extends JPlugin{
    * @param int $p_iLimitStart
    * @param int $p_iDisplay
    * @param int $p_iPageIndex
-   * @return string 
+   * @return string
    */
   private function buildQuery($p_strType, $p_strFunding,
                              $p_strMember, $p_strStartDate, $p_strEnd,
@@ -307,15 +307,14 @@ class plgProjectSearch extends JPlugin{
     $this->m_iLowerLimit = $iLowerLimit;
     $this->m_iUpperLimit = $iUpperLimit;
 
-    $strQueryPrefix = "SELECT distinct projid, nickname, start_date
-                       FROM (
-                             SELECT projid, nickname, start_date, row_number()
-                             OVER (ORDER BY $p_strOrderBy) as rn
-                             FROM(";
-    $strQuerySuffix = "      )
-                       )WHERE rn BETWEEN ".$this->m_iLowerLimit." AND ".$this->m_iUpperLimit." 
-                       ORDER BY $p_strOrderBy";
-
+    $strQueryPrefix = "SELECT distinct projid, nickname, start_date ".
+                      "FROM ( ".
+                             "SELECT projid, nickname, start_date, row_number() ".
+                             "OVER (ORDER BY $p_strOrderBy) as rn ".
+                             "FROM(";
+    $strQuerySuffix = " ) ".
+                      ")WHERE rn BETWEEN ".$this->m_iLowerLimit." AND ".$this->m_iUpperLimit.
+                      " ORDER BY $p_strOrderBy";
 
     //build the project conditions
     $iPersonId = $this->getPersonId();
@@ -433,20 +432,22 @@ class plgProjectSearch extends JPlugin{
     $strFirstName = StringHelper::EMPTY_STRING;
 
     $strMemberNameArray = split(",", $p_strMemberName);
-    $strLastName = strtolower($strMemberNameArray[0]);
+    $strLastName = trim(strtolower($strMemberNameArray[0]));
     if(count($strMemberNameArray) > 1){
-      $strFirstName = strtolower($strMemberNameArray[1]);
+      $strFirstName = trim(strtolower($strMemberNameArray[1]));
     }
 
-    $strMemberCondition = "inner join ".PersonEntityRolePeer::TABLE_NAME."
-                           on ".ProjectPeer::PROJID." = ".PersonEntityRolePeer::ENTITY_ID."
-                           and ".PersonEntityRolePeer::ENTITY_TYPE_ID."=1
-                           inner join ".PersonPeer::TABLE_NAME."
-                           on ".PersonEntityRolePeer::PERSON_ID." = ".PersonPeer::ID."
-                           and lower(".PersonPeer::LAST_NAME.") like '$strLastName%' ";
+    $strMemberCondition = "inner join ".PersonEntityRolePeer::TABLE_NAME.
+                          " on ".ProjectPeer::PROJID." = ".PersonEntityRolePeer::ENTITY_ID.
+                          " and ".PersonEntityRolePeer::ENTITY_TYPE_ID."=1".
+                          " inner join ".PersonPeer::TABLE_NAME.
+                          " on ".PersonEntityRolePeer::PERSON_ID." = ".PersonPeer::ID.
+                          " and lower(".PersonPeer::LAST_NAME.") like '$strLastName%' ";
     if(StringHelper::hasText($strFirstName)){
       $strMemberCondition .= "and lower(".PersonPeer::FIRST_NAME.") like '$strFirstName%' ";;
     }
+
+
 
     return $strMemberCondition;
   }
@@ -512,19 +513,19 @@ class plgProjectSearch extends JPlugin{
   private function getProjectQuery($p_strTerms, $p_iPersonId, $p_strMemberCondition, $p_strFundingCondition, $p_strStartCondition, $p_strEndCondition){
     $strKeywordConditions = $this->getKeywordDescriptionTitleConditions($p_strTerms, ProjectPeer::TABLE_NAME);
 
-    $strThisQuery = "select ".ProjectPeer::PROJID.", ".ProjectPeer::NICKNAME.", ".ProjectPeer::START_DATE."
-                     from ".ProjectPeer::TABLE_NAME."
-                     left outer join ".AuthorizationPeer::TABLE_NAME."
-                     on ".ProjectPeer::PROJID." = ".AuthorizationPeer::ENTITY_ID."
-                     and ".AuthorizationPeer::ENTITY_TYPE_ID." = 1
-                     and ".AuthorizationPeer::PERSON_ID ." = $p_iPersonId
-                     $p_strMemberCondition
-                     $p_strFundingCondition
-                     where ".ProjectPeer::DELETED."=0
-                       and (".AuthorizationPeer::ID." is not null or ".ProjectPeer::VIEWABLE."='PUBLIC')
-                       and $strKeywordConditions
-                       $p_strStartCondition
-                       $p_strEndCondition";
+    $strThisQuery = "select ".ProjectPeer::PROJID.", ".ProjectPeer::NICKNAME.", ".ProjectPeer::START_DATE." ".
+                    "from ".ProjectPeer::TABLE_NAME." ".
+                    "left outer join ".AuthorizationPeer::TABLE_NAME." ".
+                    "on ".ProjectPeer::PROJID." = ".AuthorizationPeer::ENTITY_ID." ".
+                    "and ".AuthorizationPeer::ENTITY_TYPE_ID." = 1 ".
+                    "and ".AuthorizationPeer::PERSON_ID ." = $p_iPersonId ".
+                    "$p_strMemberCondition ".
+                    "$p_strFundingCondition ".
+                    "where ".ProjectPeer::DELETED."=0 ".
+                      "and (".AuthorizationPeer::ID." is not null or ".ProjectPeer::VIEWABLE."='PUBLIC') ".
+                      "and $strKeywordConditions ".
+                      "$p_strStartCondition ".
+                      "$p_strEndCondition";
 
     return $strThisQuery;
   }
@@ -543,22 +544,22 @@ class plgProjectSearch extends JPlugin{
   private function getExperimentQuery($p_strTerms, $p_iPersonId, $p_strMemberCondition, $p_strFundingCondition, $p_strStartCondition, $p_strEndCondition){
     $strKeywordConditions = $this->getKeywordDescriptionTitleConditions($p_strTerms, ExperimentPeer::TABLE_NAME);
 
-    $strThisQuery = "select ".ProjectPeer::PROJID.", ".ProjectPeer::NICKNAME.", ".ProjectPeer::START_DATE."
-                     from ".ProjectPeer::TABLE_NAME."
-                     inner join ".ExperimentPeer::TABLE_NAME."
-                     on ".ExperimentPeer::PROJID." = ".ProjectPeer::PROJID."
-                     and ".ExperimentPeer::DELETED."=0
-                     and $strKeywordConditions
-                     $p_strMemberCondition
-                     $p_strFundingCondition
-                     left outer join ".AuthorizationPeer::TABLE_NAME."
-                     on ".ProjectPeer::PROJID." = ".AuthorizationPeer::ENTITY_ID."
-                     and ".AuthorizationPeer::ENTITY_TYPE_ID." = 1
-                     and ".AuthorizationPeer::PERSON_ID ." = $p_iPersonId
-                     where ".ProjectPeer::DELETED."=0
-                       and (".AuthorizationPeer::ID." is not null or ".ProjectPeer::VIEWABLE."='PUBLIC')
-                       $p_strStartCondition
-                       $p_strEndCondition";
+    $strThisQuery = "select ".ProjectPeer::PROJID.", ".ProjectPeer::NICKNAME.", ".ProjectPeer::START_DATE." ".
+                    "from ".ProjectPeer::TABLE_NAME." ".
+                    "inner join ".ExperimentPeer::TABLE_NAME." ".
+                    "on ".ExperimentPeer::PROJID." = ".ProjectPeer::PROJID." ".
+                    "and ".ExperimentPeer::DELETED."=0 ".
+                    "and $strKeywordConditions ".
+                    "$p_strMemberCondition ".
+                    "$p_strFundingCondition ".
+                    "left outer join ".AuthorizationPeer::TABLE_NAME." ".
+                    "on ".ProjectPeer::PROJID." = ".AuthorizationPeer::ENTITY_ID." ".
+                    "and ".AuthorizationPeer::ENTITY_TYPE_ID." = 1 ".
+                    "and ".AuthorizationPeer::PERSON_ID ." = $p_iPersonId ".
+                    "where ".ProjectPeer::DELETED."=0 ".
+                      "and (".AuthorizationPeer::ID." is not null or ".ProjectPeer::VIEWABLE."='PUBLIC') ".
+                      "$p_strStartCondition ".
+                      "$p_strEndCondition";
 
     return $strThisQuery;
   }
@@ -578,25 +579,25 @@ class plgProjectSearch extends JPlugin{
   private function getTrialQuery($p_strTerms, $p_iPersonId, $p_strMemberCondition, $p_strFundingCondition, $p_strStartCondition, $p_strEndCondition){
     $strKeywordConditions = $this->getKeywordDescriptionTitleConditions($p_strTerms, TrialPeer::TABLE_NAME);
 
-    $strThisQuery = "select ".ProjectPeer::PROJID.", ".ProjectPeer::NICKNAME.", ".ProjectPeer::START_DATE."
-                     from ".ProjectPeer::TABLE_NAME."
-                     inner join ".ExperimentPeer::TABLE_NAME."
-                     on ".ExperimentPeer::PROJID." = ".ProjectPeer::PROJID."
-                     and ".ExperimentPeer::DELETED."=0
-                     inner join ".TrialPeer::TABLE_NAME."
-                     on ".TrialPeer::EXPID." = ".ExperimentPeer::EXPID."
-                     and ".TrialPeer::DELETED."=0
-                     and $strKeywordConditions
-                     $p_strMemberCondition
-                     $p_strFundingCondition
-                     left outer join ".AuthorizationPeer::TABLE_NAME."
-                     on ".ProjectPeer::PROJID." = ".AuthorizationPeer::ENTITY_ID."
-                     and ".AuthorizationPeer::ENTITY_TYPE_ID." = 1
-                     and ".AuthorizationPeer::PERSON_ID ." = $p_iPersonId
-                     where ".ProjectPeer::DELETED."=0
-                       and (".AuthorizationPeer::ID." is not null or ".ProjectPeer::VIEWABLE."='PUBLIC')
-                       $p_strStartCondition
-                       $p_strEndCondition";
+    $strThisQuery = "select ".ProjectPeer::PROJID.", ".ProjectPeer::NICKNAME.", ".ProjectPeer::START_DATE." ".
+                    "from ".ProjectPeer::TABLE_NAME." ".
+                    "inner join ".ExperimentPeer::TABLE_NAME." ".
+                    "on ".ExperimentPeer::PROJID." = ".ProjectPeer::PROJID." ".
+                    "and ".ExperimentPeer::DELETED."=0 ".
+                    "inner join ".TrialPeer::TABLE_NAME." ".
+                    "on ".TrialPeer::EXPID." = ".ExperimentPeer::EXPID." ".
+                    "and ".TrialPeer::DELETED."=0 ".
+                    "and $strKeywordConditions ".
+                    "$p_strMemberCondition ".
+                    "$p_strFundingCondition ".
+                    "left outer join ".AuthorizationPeer::TABLE_NAME." ".
+                    "on ".ProjectPeer::PROJID." = ".AuthorizationPeer::ENTITY_ID." ".
+                    "and ".AuthorizationPeer::ENTITY_TYPE_ID." = 1 ".
+                    "and ".AuthorizationPeer::PERSON_ID ." = $p_iPersonId ".
+                    "where ".ProjectPeer::DELETED."=0 ".
+                      "and (".AuthorizationPeer::ID." is not null or ".ProjectPeer::VIEWABLE."='PUBLIC') ".
+                      "$p_strStartCondition ".
+                      "$p_strEndCondition";
 
     return $strThisQuery;
   }
@@ -638,7 +639,7 @@ class plgProjectSearch extends JPlugin{
    * @return string
    */
   private function getCountQuery($p_iPersonId, $p_strMemberCondition, $p_strFundingCondition, $p_strStartCondition, $p_strEndCondition){
-    $strThisQuery = "select count (distinct ".ProjectPeer::PROJID.") as TOTAL 
+    $strThisQuery = "select count (distinct ".ProjectPeer::PROJID.") as TOTAL
                      from ".ProjectPeer::TABLE_NAME."
                      left outer join ".AuthorizationPeer::TABLE_NAME."
                      on ".ProjectPeer::PROJID." = ".AuthorizationPeer::ENTITY_ID."
@@ -653,32 +654,32 @@ class plgProjectSearch extends JPlugin{
 
     return $strThisQuery;
   }
-  
+
   /**
     * Plugin method with the same name as the event will be called automatically.
     */
   function onProjectSearchTag($searchquery, $limit=0, $limitstart=0, $areas=null){
     global $mainframe;
- 
+
     // Plugin code goes here.
-      
+
     $temp = array();
     $temp['search']="tag";
- 	  
+
     return $temp;
   }
-  
+
   /**
     * Plugin method with the same name as the event will be called automatically.
     */
   function onProjectSearchPopular($searchquery, $limit=0, $limitstart=0, $areas=null){
     global $mainframe;
- 
+
     // Plugin code goes here.
-    
+
  	$temp = array();
  	$temp['search']="popular";
- 	  
+
     return $temp;
   }
 
@@ -724,6 +725,6 @@ class plgProjectSearch extends JPlugin{
     $oSearchLog->save();
     return $oSearchLog;
   }
- 
+
 }
 ?>
