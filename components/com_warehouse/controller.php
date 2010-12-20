@@ -116,17 +116,17 @@ class WarehouseController extends JController{
    *
    */
   public function getFile(){
-    $strPathToFile = JRequest::getVar("path", "");
-
-    /*
-     * TODO: Remove this check before going to prototype 3.
-     * We want to go straight to the file path!
-     */
-    if(!StringHelper::beginsWith($strPathToFile, "/nees/home")){
-      $strPathToFile = "/www/neeshub/components/com_warehouse/".$strPathToFile;
-    }
-
-    FileHelper::download($strPathToFile);
+  	$strPathToFile = JRequest::getVar("path", "");
+  	
+  	/*
+  	 * TODO: Remove this check before going to prototype 3.  
+  	 * We want to go straight to the file path!
+  	 */
+  	if(!StringHelper::beginsWith($strPathToFile, "/nees/home")){
+  	  $strPathToFile = "/www/neeshub/components/com_warehouse/".$strPathToFile;
+  	}
+  	
+  	FileHelper::download($strPathToFile);
   }
   
   /**
@@ -155,7 +155,7 @@ class WarehouseController extends JController{
 
     $ext = $oModel->downloadTarBall();
   }
-
+  
   function getDownloadSize(){
     /* @var $oModel WarehouseModelBase */
     $oModel =& $this->getModel('Base');
@@ -166,7 +166,7 @@ class WarehouseController extends JController{
 
     /* @var $oDataFile DataFile */
     $oDataFile = null;
-      
+
     $iDataFileIdArray = explode(",", $iDataFileId);
     if(count($iDataFileIdArray)==1){
       $oDataFile = $oModel->getDataFileById($iDataFileId);
@@ -189,10 +189,10 @@ class WarehouseController extends JController{
     }
 
     $strReturn = $iSum .":". cleanSize($iSum);
-    
+
     echo $strReturn;
   }
-  
+
   function getTrialDropDown(){
   	$iProjectId = JRequest::getVar("projid");
   	$iExperimentId = JRequest::getVar("expid");
