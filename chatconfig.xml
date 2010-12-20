@@ -1,0 +1,7 @@
+<SmartFoxClient>
+    <ip>128.46.20.42</ip>
+    <port>9339</port>
+    <zone>NH_Comm_Zone</zone>
+    <debug>false</debug>
+    <smartConnect>true</smartConnect>
+</SmartFoxClient>
