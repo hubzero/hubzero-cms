@@ -34,10 +34,14 @@ defined('_JEXEC') or die( 'Restricted access' );
    $iEntityTypeId = $oDataFile->getUsageTypeId();
  }
 
+ $strAction = "/warehouse/projecteditor/savedatafilephoto";
+ if(!$this->experimentId){
+   $strAction = "/warehouse/projecteditor/savedatafileprojectphoto";
+ }
 
 ?>
 
-<form id="frmProject" action="/warehouse/projecteditor/savedatafilephoto" method="post" enctype="multipart/form-data">
+<form id="frmProject" action="<?php echo $strAction; ?>" method="post" enctype="multipart/form-data">
   <input type="hidden" name="projectId" value="<?php echo $this->projectId; ?>"/>
   <input type="hidden" name="experimentId" value="<?php echo $this->experimentId; ?>"/>
   <input type="hidden" name="dataFileId" value="<?php echo $this->dataFileId; ?>"/>
