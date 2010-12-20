@@ -141,7 +141,9 @@ class ProjectEditorController extends JController{
     $this->registerTask( 'savedrawing', 'saveDrawing' );
     $this->registerTask( 'savedatafile', 'saveDataFile' );
     $this->registerTask( 'savedatafilephoto', 'saveDataFilePhoto' );
+    $this->registerTask( 'savedatafileprojectphoto', 'saveDataFileProjectPhoto' );
     $this->registerTask( 'savedatafilevideo', 'saveDataFileVideo' );
+    $this->registerTask( 'savedatafileprojectvideo', 'saveDataFileProjectVideo' );
     $this->registerTask( 'savetrial', 'saveTrial' );
     $this->registerTask( 'saverepetition', 'saveRepetition' );
     $this->registerTask( 'savedatafilecuraterequest', 'saveDataFileCurateRequest');
@@ -388,23 +390,51 @@ class ProjectEditorController extends JController{
     echo $strTrialList;
   }
 
+//  function getTrialInfo(){
+//    $strTrialInfo = "";
+//
+//    $strSearchTitle = JRequest::getVar('term');
+//    $iExperimentId = JRequest::getVar('experimentId');
+//
+//    /* @var $oModel ProjectEditorModelCreateTrial */
+//    $oModel =& $this->getModel('CreateTrial');
+//
+//    /* @var $oTrial Trial */
+//    $oTrial = $oModel->findByExperimentIdAndTitle($iExperimentId, $strSearchTitle);
+//    $iTrialId = ($oTrial) ? $oTrial->getId() : 0;
+//    $strTitle = (StringHelper::hasText($oTrial->getTitle())) ? $oTrial->getTitle() : "";
+//    $strStartDate = (StringHelper::hasText($oTrial->getStartDate())) ? $oTrial->getStartDate() : "";
+//    $strEndDate = (StringHelper::hasText($oTrial->getEndDate())) ? $oTrial->getEndDate() : "";
+//    $strObjective = (StringHelper::hasText($oTrial->getObjective())) ? $oTrial->getObjective() : "";
+//    $strDescription = (StringHelper::hasText($oTrial->getDescription())) ? $oTrial->getDescription() : "";
+//
+//    echo $strStartDate."[trialinfo]".$strEndDate."[trialinfo]".$strObjective."[trialinfo]".$strDescription."[trialinfo]".$iTrialId."[trialinfo]".$strTitle;
+//  }
+
   function getTrialInfo(){
     $strTrialInfo = "";
 
-    $strSearchTitle = JRequest::getVar('term');
-    $iExperimentId = JRequest::getVar('experimentId');
+    $iTrialId = JRequest::getInt('id', 0);
 
     /* @var $oModel ProjectEditorModelCreateTrial */
     $oModel =& $this->getModel('CreateTrial');
 
+    $strTitle = StringHelper::EMPTY_STRING;
+    $strStartDate = StringHelper::EMPTY_STRING;
+    $strEndDate = StringHelper::EMPTY_STRING;
+    $strObjective = StringHelper::EMPTY_STRING;
+    $strDescription = StringHelper::EMPTY_STRING;
+
     /* @var $oTrial Trial */
-    $oTrial = $oModel->findByExperimentIdAndTitle($iExperimentId, $strSearchTitle);
-    $iTrialId = ($oTrial) ? $oTrial->getId() : 0;
+    $oTrial = $oModel->getTrialById($iTrialId);
+    if($oTrial){
+      $iTrialId = $oTrial->getId();
     $strTitle = (StringHelper::hasText($oTrial->getTitle())) ? $oTrial->getTitle() : "";
-    $strStartDate = (StringHelper::hasText($oTrial->getStartDate())) ? $oTrial->getStartDate() : "";
-    $strEndDate = (StringHelper::hasText($oTrial->getEndDate())) ? $oTrial->getEndDate() : "";
+      $strStartDate = (StringHelper::hasText($oTrial->getStartDate('%m/%d/%Y'))) ? $oTrial->getStartDate('%m/%d/%Y') : "";
+      $strEndDate = (StringHelper::hasText($oTrial->getEndDate('%m/%d/%Y'))) ? $oTrial->getEndDate('%m/%d/%Y') : "";
     $strObjective = (StringHelper::hasText($oTrial->getObjective())) ? $oTrial->getObjective() : "";
     $strDescription = (StringHelper::hasText($oTrial->getDescription())) ? $oTrial->getDescription() : "";
+    }
 
     echo $strStartDate."[trialinfo]".$strEndDate."[trialinfo]".$strObjective."[trialinfo]".$strDescription."[trialinfo]".$iTrialId."[trialinfo]".$strTitle;
   }
@@ -651,14 +681,15 @@ class ProjectEditorController extends JController{
     $oOrganizationArray = array();
     if(isset($_SESSION[OrganizationPeer::TABLE_NAME])){
       $oOrganizationArray = unserialize($_SESSION[OrganizationPeer::TABLE_NAME]);
+    }
+
       $oOrganization = OrganizationPeer::findByName($strValue);
       if($oOrganization){
         array_push($oOrganizationArray, $oOrganization);
       }else{
         echo "<p class='error editorInputSize'>Submit a support ticket to add $strValue.</p>";
+      return;
       }
-
-    }
 
     $_SESSION[OrganizationPeer::TABLE_NAME] = serialize($oOrganizationArray);
 
@@ -2258,9 +2289,9 @@ class ProjectEditorController extends JController{
           echo ComponentHtml::showError($strMessage);
         }else{
           if($iExperimentId){
-            $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/photos?path=$strFilePath";
+            $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/photos?path=$strPath";
           }else{
-            $strUrl = "/warehouse/projecteditor/project/$iProjectId/projectphotos?path=$strFilePath";
+            $strUrl = "/warehouse/projecteditor/project/$iProjectId/projectphotos?path=$strPath";
           }
         }
 	break;
@@ -2486,11 +2517,11 @@ class ProjectEditorController extends JController{
                                   "$expdir/Documentation/Photos",           //20101102
                                   "$expdir/Documentation/Videos/Movies",    //20101102
                                   "$expdir/Documentation/Videos/Frames",    //20101102
-                                  "$expdir/Public",
+                                  //"$expdir/Public",
                                   "$expdir/Analysis",
                                   "$expdir/Setup",
                                   "$expdir/N3DV",
-                                  "$expdir/Models"
+                                  //"$expdir/Models"
                                   ));
 
           $requiredN3DVFiles = array('container1.iv', 'default_behaviors.bhv', 'moment.iv', 'disp.iv');
@@ -3394,6 +3425,54 @@ class ProjectEditorController extends JController{
     $this->setRedirect($strUrl);
   }
 
+  public function saveDataFileProjectPhoto(){
+    $iProjectId = JRequest::getInt("projectId" ,0);
+    if(!$iProjectId){
+      echo "Project not selected.";
+      return;
+    }
+
+    $iDataFileId = JRequest::getInt("dataFileId", 0);
+    if(!$iDataFileId){
+      echo "Data file not selected.";
+      return;
+    }
+
+    $iEntityTypeId = JRequest::getVar("usageType", 0);
+    $iUsageTypeId = ($iEntityTypeId > 0) ? $iEntityTypeId : null;
+
+    $iPhotoType = JRequest::getInt("photoType", 0);
+
+    $strUrl = JRequest::getVar("return", "");
+
+    /* @var $oModel ProjectEditorModelEditDataFile */
+    $oModel =& $this->getModel('EditDataFile');
+
+    //edit the data file
+    $strTitle = JRequest::getVar("title", "");
+    $strDescription = JRequest::getVar("desc","");
+
+    $oDataFile = DataFilePeer::retrieveByPK($iDataFileId);
+    $oDataFile->setTitle($strTitle);
+    $oDataFile->setDescription($strDescription);
+    $oDataFile->setUsageTypeId($iUsageTypeId);
+    try{
+      $oDataFile->save();
+    }catch(Exception $e){
+      echo "Unable to save data file.";
+      return;
+    }
+
+    if(!StringHelper::hasText($strUrl)){
+      $strUrl = "/warehouse/projecteditor/project/".$iProjectId."/projectphotos";
+      if($iPhotoType){
+        $strUrl .= "?photoType=".$iPhotoType;
+      }
+    }
+
+    $this->setRedirect($strUrl);
+  }
+
   public function saveDataFileVideo(){
     $iProjectId = JRequest::getInt("projectId" ,0);
     if(!$iProjectId){
@@ -3437,6 +3516,49 @@ class ProjectEditorController extends JController{
     $strUrl = "/warehouse/projecteditor/project/".$iProjectId
                         ."/experiment/".$iExperimentId
                         ."/videos";
+
+    $this->setRedirect($strUrl);
+  }
+
+  public function saveDataFileProjectVideo(){
+    $iProjectId = JRequest::getInt("projectId" ,0);
+    if(!$iProjectId){
+      echo "Project not selected.";
+      return;
+    }
+
+    $iDataFileId = JRequest::getInt("dataFileId", 0);
+    if(!$iDataFileId){
+      echo "Data file not selected.";
+      return;
+    }
+
+    $iEntityTypeId = JRequest::getVar("usageType", 0);
+    $iUsageTypeId = ($iEntityTypeId > 0) ? $iEntityTypeId : null;
+
+    $strUrl = JRequest::getVar("return", "");
+
+    /* @var $oModel ProjectEditorModelEditDataFile */
+    $oModel =& $this->getModel('EditDataFile');
+
+    //edit the data file
+    $strTitle = JRequest::getVar("title", "");
+    $strDescription = JRequest::getVar("desc","");
+
+    $oDataFile = DataFilePeer::retrieveByPK($iDataFileId);
+    $oDataFile->setTitle($strTitle);
+    $oDataFile->setDescription($strDescription);
+    $oDataFile->setUsageTypeId($iUsageTypeId);
+    try{
+      $oDataFile->save();
+    }catch(Exception $e){
+      echo "Unable to save data file.";
+      return;
+    }
+
+    if(!StringHelper::hasText($strUrl)){
+      $strUrl = "/warehouse/projecteditor/project/".$iProjectId."/projectvideos";
+    }
 
     $this->setRedirect($strUrl);
   }
