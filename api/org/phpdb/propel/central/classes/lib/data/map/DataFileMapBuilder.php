@@ -106,6 +106,8 @@ class DataFileMapBuilder {
 
 		$tMap->addForeignKey('USAGE_TYPE_ID', 'UsageTypeId', 'double', CreoleTypes::NUMERIC, 'ENTITY_TYPE', 'ID', false, 22);
 
+		$tMap->addColumn('APP_ID', 'AppId', 'double', CreoleTypes::NUMERIC, false, 10);
+
 		$tMap->addValidator('AUTHORS', 'maxLength', 'propel.validator.MaxLengthValidator', '1020', 'AUTHORS');
 
 		$tMap->addValidator('AUTHORS', 'required', 'propel.validator.RequiredValidator', '', 'AUTHORS');

@@ -72,7 +72,7 @@ class SearchLogMapBuilder {
 
 		$tMap->addColumn('KEYWORD', 'Keyword', 'string', CreoleTypes::VARCHAR, true, 50);
 
-		$tMap->addColumn('QUERY', 'Query', 'string', CreoleTypes::VARCHAR, true, 500);
+		$tMap->addColumn('QUERY', 'Query', 'string', CreoleTypes::VARCHAR, true, 4000);
 
 		$tMap->addColumn('CREATED_DT', 'Created', 'int', CreoleTypes::DATE, true, null);
 
