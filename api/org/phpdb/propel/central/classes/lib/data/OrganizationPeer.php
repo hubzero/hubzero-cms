@@ -220,7 +220,7 @@ class OrganizationPeer extends BaseOrganizationPeer {
    */
   public static function suggestFacilities($p_strName) {
   	$p_strName = strtoupper($p_strName);
-  	$p_strName = "'$p_strName%'";
+  	$p_strName = "'%$p_strName%'";
   	
     $strQuery = "SELECT distinct o.ORGID 
                  FROM ORGANIZATION o
