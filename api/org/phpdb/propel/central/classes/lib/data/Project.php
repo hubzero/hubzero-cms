@@ -2,9 +2,9 @@
 
 require_once 'lib/data/om/BaseProject.php';
 require_once 'lib/data/Acknowledgement.php';
+require_once 'lib/data/Experiment.php';
 require_once 'lib/data/curation/NCCuratedObjects.php';
 require_once '/www/neeshub/api/org/nees/static/Files.php';
-
 
 /**
  * Skeleton subclass for representing a row from the 'Project' table.
@@ -568,6 +568,20 @@ ENDHTML;
     $this->setProjectRelatedBySuperProjectId($superProject);
   }
 
+  public function hasOpenData(){
+    $bReturn = false;
+
+    $oExperimentArray = $this->getExperiments();
+    foreach($oExperimentArray as $oExperiment){
+      /* @var $oExperiment Experiment */
+      if($oExperiment->isPublished()){
+        $bReturn = true;
+        break;
+      }
+    }
+
+    return $bReturn;
+  }
 
 
   /**

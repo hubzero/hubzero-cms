@@ -81,12 +81,16 @@ defined('_JEXEC') or die( 'Restricted access' );
                           <table style="width:100%;border-bottom:0px;border-top:0px;">
                             <tr>
                               <td><b><?php echo $strName; ?>:</b></td>
-                              <!--<td><b>Experiment:</b></td>-->
-                              <td><a href="/warehouse/experiment/<?php echo $iExperimentId; ?>/project/<?php echo $this->projid ?>" style="font-size: 15px;"><?php echo $strTitle; ?></a></td>
+                              <td>
+                                <a href="/warehouse/experiment/<?php echo $iExperimentId; ?>/project/<?php echo $this->projid ?>" style="font-size: 15px;"><?php echo $strTitle; ?></a>
+                                <?php if($oProject->hasOpenData()) {?>
+                                  <a href="http://www.opendatacommons.org/licenses/by/summary/" target="openData" style="border:0px;" title="Open Data license"><img src="/components/com_warehouse/images/icons/open_data.png" style="margin-left:20px;" border="0"/></a>
+                                <?php }?>
+                              </td>
                             </tr>
                             <tr>
-                              <td><b>Start Date:</b></td>
-                              <td><span style="color: #666666"><?php echo $strStartDate; ?></span></td>
+                              <td><b>Dates:</b></td>
+                              <td><span style="color: #666666"><?php echo $oExperiment->getDates(); ?></span></td>
                             </tr>
                             <tr>
                               <td><b>Description:</b></td>

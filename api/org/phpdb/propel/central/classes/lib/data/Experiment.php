@@ -697,6 +697,32 @@ ENDHTML;
   }
 
   /**
+   * Gets the experiment dates
+   * @return start and end date
+   */
+  public function getDates(){
+  	//if no start date, return empty string
+    $strDates = trim($this->getStartDate()); 
+    if(strlen($strDates) == 0){
+      return $strDates;
+    }
+
+    //if we have start but no end date, enter Present
+    if(strlen($this->getEndDate())>0){
+      $strDates = strftime("%B %d, %Y", strtotime($strDates)) . " - ". strftime("%B %d, %Y", strtotime($this->getEndDate()));
+      //$strDates = $strDates . " to ". $p_oExperiment->getEndDate();
+    }else{
+      //$strDates = $strDates . " to Present";
+      $strDates = strftime("%B %d, %Y", strtotime($strDates)) . " to Present";
+    }
+    return $strDates;
+  }
+
+  public function hasOpenData(){
+    return $this->isPublished();
+  }
+
+  /**
    * Return friendly toString function to display Project information
    *
    * @return int $id
