@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		break;
 		
 		case(275): // University of CA, Berkeley</a></li>
-		echo 'calendar_feeds = new Array("", "", "", "", "");';
+		echo 'calendar_feeds = new Array("16f061vs67bqbdioolhuc79bl4%40group.calendar.google.com", "p54malp4v88ah3fbumc0op0ukc%40group.calendar.google.com", "a52r5rm19retadg8j9vqjdfeis%40group.calendar.google.com", "q019cbtlukda53due1g2aamuag%40group.calendar.google.com", "");';
 		break;
 		
 		case(236): // University of IL, Urbana</a></li>
