@@ -169,6 +169,10 @@ class WarehouseModelBase extends JModel {
         return RepetitionPeer::retrieveByPK($p_iRepetitionId);
     }
 
+    public function findDataFileByDirPath($p_strDirPath){
+      return DataFilePeer::findByDirectory($p_strDirPath);
+    }
+
     public function findDataFileByType($p_strFileType, $p_iProjectId, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
         return DataFilePeer::findDataFileByType($p_strFileType, $p_iProjectId, $p_iExperimentId, $p_iTrialId, $p_iRepetitionId);
     }
