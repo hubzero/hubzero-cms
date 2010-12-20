@@ -20,7 +20,6 @@ class UploadHelper{
       case ProjectEditor::UPLOAD_CODE_PARTIAL_UPLOAD:
           $strMessage = ProjectEditor::UPLOAD_MESSAGE_PARTIAL_UPLOAD;
           break;
-
       case ProjectEditor::UPLOAD_CODE_NO_FILE:
           $strMessage = ProjectEditor::UPLOAD_MESSAGE_NO_FILE;
           break;
@@ -32,6 +31,9 @@ class UploadHelper{
           break;
       case ProjectEditor::UPLOAD_CODE_ERROR_MOVING_FILE:
           $strMessage = ProjectEditor::UPLOAD_MESSAGE_ERROR_MOVING_FILE;
+          break;
+      case ProjectEditor::UPLOAD_BAD_FILE_NAME:
+          $strMessage = ProjectEditor::UPLOAD_MESSAGE_BAD_FILE_NAME;
           break;
     }
     return $strMessage;
