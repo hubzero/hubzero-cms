@@ -28,6 +28,7 @@ require_once 'api/org/nees/util/FileHelper.php';
 require_once 'api/org/nees/html/joomla/ComponentHtml.php';
 require_once 'api/org/nees/html/joomla/ViewHtml.php';
 require_once 'api/org/nees/oracle/util/DbPagination.php';
+require_once 'api/org/nees/lib/common/browser.php';
 require_once 'lib/data/ProjectPeer.php';
 require_once 'lib/data/ProjectGrantPeer.php';
 require_once 'lib/data/PersonPeer.php';
@@ -80,8 +81,8 @@ if($oUser->username=="gemezm"){
   //$oAuthorizer->setUser("jpauschk");
   //$oUserManager->setUser("jpauschk");
 
-  $oAuthorizer->setUser("rhowell537");
-  $oUserManager->setUser("rhowell537");
+  //$oAuthorizer->setUser("rhowell537");
+  //$oUserManager->setUser("rhowell537");
 }
 
 // Create the controller
