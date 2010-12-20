@@ -1277,7 +1277,7 @@
     <column name="DOCUMENT_FORMAT_ID"        phpName="DocumentFormatId"       primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"  type="NUMERIC"/>
     <column name="OPENING_TOOL"     phpName="OpeningTool"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="200"  type="VARCHAR"/>
     <column name="USAGE_TYPE_ID"    phpName="UsageTypeId"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"  type="NUMERIC"/>
-    <!--
+    <!
     <column name="APP_ID"    phpName="AppId"                 primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="10"  type="NUMERIC"/>
     -->
     <foreign-key foreignTable="DATA_FILE" onDelete="set 
