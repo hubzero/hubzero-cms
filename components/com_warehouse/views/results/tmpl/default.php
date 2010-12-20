@@ -1,10 +1,10 @@
-<?php 
+<?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<?php 
+<?php
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addScript($this->baseurl."/components/com_warehouse/js/Fx.Slide/tree.js", 'text/javascript');
@@ -16,7 +16,7 @@ defined('_JEXEC') or die( 'Restricted access' );
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
-  
+
   <div id="warehouseWindow" style="padding-top:20px;">
     <?php #tree browser section ?>
     <div id="treeBrowserMain" style="float:left;width:29%;">
@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
       </div>
     </div>
     <?php #end tree browser section ?>
-    
+
     <div id="overview_section" class="main section" style="width:71%;float:left;">
     <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
     <?php echo $this->strTabs; ?>
@@ -59,7 +59,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                     $strOrderBy = $_REQUEST[Search::ORDER_BY];
                     $iResultCount = $_REQUEST[Search::COUNT];
                     $dTimer = $_REQUEST[Search::TIMER];
-                  ?>  
+                  ?>
                   <b>Sort By:</b> &nbsp;
                   <input onClick="document.getElementById('frmResults').submit();" type="radio" name="order" value="nickname" id="nickname" <?php if($strOrderBy=="nickname")echo "checked"; ?>>&nbsp;<label for="nickname">Nickname</label> &nbsp;
                   <input onClick="document.getElementById('frmResults').submit();" type="radio" name="order" value="start_date" id="start_date"  <?php if($strOrderBy=="start_date")echo "checked"; ?>>&nbsp;<label for="start_date">Start Date</label> &nbsp;
@@ -69,11 +69,11 @@ defined('_JEXEC') or die( 'Restricted access' );
             </table>
           </div>
 
-          <?php 
-            $oProjectArray = unserialize($_SESSION[Search::RESULTS]);       
+          <?php
+            $oProjectArray = unserialize($_SESSION[Search::RESULTS]);
             if(empty($oProjectArray)){
-              ?> 
-                <p class="warning">No projects found.</p> 
+              ?>
+                <p class="warning">No projects found.</p>
               <?php
             }
 
@@ -91,11 +91,22 @@ defined('_JEXEC') or die( 'Restricted access' );
                     //original keywords
                     $strKeywordArray = split(" ", $strKeywords);
 
-                    //convert all keyword terms to lower case
+                    //a little keyword cleanup
+                    $strKeywordTempArray = array();
                     foreach($strKeywordArray as $iKeywordIndex=>$strThisKeyword){
+                      //convert all keyword terms to lower case
                       $strKeywordArray[$iKeywordIndex] = trim(strtolower($strThisKeyword));
+
+                      //remove articles and prepositions
+                      if(!SearchHelper::isArticle($strKeywordArray[$iKeywordIndex]) &&
+                         !SearchHelper::isPreposition($strKeywordArray[$iKeywordIndex])){
+                        array_push($strKeywordTempArray, $strKeywordArray[$iKeywordIndex]);
+                      }
                     }
-                    
+
+                    //keep the good keywords
+                    $strKeywordArray = $strKeywordTempArray;
+
                     //original description terms
                     $strDescTemp = str_replace("-", " ", $oDescriptionClob);  //replace hyphen
                     $strDescTemp = str_replace("_", " ", $strDescTemp);       //replace underscore
@@ -106,18 +117,18 @@ defined('_JEXEC') or die( 'Restricted access' );
                     foreach($strDescriptionArray as $iDescIndex=>$strThisDesc){
                       $strDescriptionLowerArray[$iDescIndex] = trim(strtolower($strThisDesc));
                     }
-                    
+
                     //original title terms
                     $strTitleTemp = str_replace("-", " ", $strTitle);       //replace hyphen
                     $strTitleTemp = str_replace("_", " ", $strTitleTemp);   //replace underscore
                     $strTitleArray = explode(" ", $strTitleTemp);
-                    
+
                     //convert all title terms to lower case
                     $strTitleLowerArray = array();
                     foreach($strTitleArray as $iTitleIndex=>$strThisTitle){
                       $strTitleLowerArray[$iTitleIndex] = trim(strtolower($strThisTitle));
                     }
-                    
+
                     foreach($strKeywordArray as $strKeywordLowerCase){
                       //get the keys for all of the matched (lowercase) terms
                       $iDescriptionKeywordIndexArray = array_keys($strDescriptionLowerArray, $strKeywordLowerCase);
@@ -144,7 +155,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                   $strThumbnail =  $strProjectIconArray[$iProjectIndex];
                   $strWidth="100%";
                   if( strlen($strThumbnail) > 0 ){
-                    $strWidth="85%";  
+                    $strWidth="85%";
                   }
 
           ?>
@@ -159,7 +170,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                 <?php
                   if( strlen($strThumbnail) > 0 ){
                     echo $strThumbnail;
-                  } 
+                  }
                 ?>
               </div>
               <div class="clear"></div>
@@ -168,12 +179,12 @@ defined('_JEXEC') or die( 'Restricted access' );
               <hr class="dashes"/>
               <br>
             <?php endif; ?>
-            
-          <?php 
+
+          <?php
             }
           ?>
-      
-          <?php 
+
+          <?php
             echo $this->pagination;
           ?>
         </div>
@@ -181,7 +192,7 @@ defined('_JEXEC') or die( 'Restricted access' );
     </div>
     <div class="clear"></div>
   </div>
-  
+
 </div>
 
 

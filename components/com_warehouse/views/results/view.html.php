@@ -5,6 +5,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+require_once 'api/org/nees/util/SearchHelper.php';
+
 class WarehouseViewResults extends JView{
 	
   function display($tpl = null){
