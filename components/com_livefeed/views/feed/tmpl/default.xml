@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DEFAULT FEED LAYOUT">
+		<message>
+			<![CDATA[DEFAULT LOGIN LAYOUT DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>Default Feed Layout</name>
+		<description>DEFAULT FEED LAYOUT DESC</description>
+	</state>
+</metadata>

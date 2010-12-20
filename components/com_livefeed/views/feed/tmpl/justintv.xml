@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="JUSTINTV LAYOUT">
+		<message>
+			<![CDATA[JUSTINTV LAYOUT DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>Justintv Layout</name>
+		<description>JUSTINTV LAYOUT DESC</description>
+	</state>
+</metadata>

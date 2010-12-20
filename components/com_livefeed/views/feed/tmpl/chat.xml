@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="CHAT LAYOUT">
+		<message>
+			<![CDATA[CHAT LAYOUT DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>Chat Layout</name>
+		<description>CHAT LAYOUT DESC</description>
+	</state>
+</metadata>
