@@ -82,8 +82,8 @@ class WarehouseViewProject extends JView{
     $oPublicationArray = $oProjectModel->findProjectPublications($oUser->id, $oProject->getName(), 3);
     $this->assignRef( "publications", $oPublicationArray );
 
-    $iPublicationCount = $oProjectModel->findProjectPublicationCount($oUser->id, $oProject->getName(), 3);
-    $this->assignRef( "publicationCount", $iPublicationCount );
+    //$iPublicationCount = $oProjectModel->findProjectPublicationCount($oUser->id, $oProject->getName(), 3);
+    //$this->assignRef( "publicationCount", $iPublicationCount );
 
     $oToolArray = $oProjectModel->findTools($oProject->getId());
     $this->assignRef( "tools", $oToolArray );
@@ -103,6 +103,12 @@ class WarehouseViewProject extends JView{
 
     $iPhotoFileCount = $oProjectModel->findDataFileByMimeTypeCount($iProjectId, 0);
     $this->assignRef( "photoCount", $iPhotoFileCount );
+
+    $iDocumentFileCount = count($oProjectModel->findDataFileByDirPath($oProject->getPathname()."/Documentation"));
+    $this->assignRef( "iDocumentCount", $iDocumentFileCount );
+
+    $iAnalysisFileCount = count($oProjectModel->findDataFileByDirPath($oProject->getPathname()."/Analysis"));
+    $this->assignRef( "iAnalysisCount", $iAnalysisFileCount );
 
     // update and get the page views
     $iEntityViews = $oProjectModel->getPageViews(1, $oProject->getId());

@@ -75,7 +75,14 @@ defined('_JEXEC') or die( 'Restricted access' );
         <div class="subject">
           <div id="about" style="padding-top:1em;">
             <div id="experimentTitle" style="padding-bottom:1em;font-size:14px;font-weight:bold;">
-              Experiment: <?php /*echo $oExperiment->getName() .": ".*/ echo $oExperiment->getTitle(); ?>
+              <!--Experiment: <?php //echo $oExperiment->getTitle(); ?>-->
+              <?php
+                echo $oExperiment->getName() .": ". $oExperiment->getTitle();
+                if($oExperiment->hasOpenData()) { ?>
+                  <a href="http://www.opendatacommons.org/licenses/by/summary/" target="openData" title="Open Data license" style="border:0px;"><img src="/components/com_warehouse/images/icons/open_data.png" style="margin-left:20px;" border="0"/></a>
+                <?php
+                }
+              ?>
             </div>
 
             <div id="experimentInfo">
@@ -85,7 +92,7 @@ defined('_JEXEC') or die( 'Restricted access' );
               <table cellpadding="1" cellspacing="1" style="margin-top:20px;border-bottom:0px;border-top:0px;">
                 <tr id="description">
                   <td class="entityDetail">Description:</td>
-                  <td><?php echo $oExperiment->getDescription(); ?></td>
+                  <td><?php echo nl2br($oExperiment->getDescription()); ?></td>
                 </tr>
                 <tr id="dates">
                   <td class="entityDetail">Dates:</td>
@@ -222,7 +229,12 @@ defined('_JEXEC') or die( 'Restricted access' );
                           <td class="entityDetail">Documentation</td>
                           <td>
                             <div id="docList" class="">
+                              <?php if ($this->iDocumentCount > 0): ?>
                                 <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Documentation&format=ajax&form=frmDocumentation&target=docList&top=1','docList');" href="javascript:void(0);">view</a>
+                              <?php else:
+                                 echo Files::NOT_AVAILABLE;
+                                endif;
+                              ?>
                             </div>
                           </td>
                         </tr>
@@ -230,7 +242,12 @@ defined('_JEXEC') or die( 'Restricted access' );
                           <td class="entityDetail">Analysis</td>
                           <td>
                             <div id="anaList" class="">
-                              <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList&top=1','anaList');" href="javascript:void(0);">view</a>
+                              <?php if ($this->iAnalysisCount > 0): ?>
+                                <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList&top=1','anaList');" href="javascript:void(0);">view</a>
+                              <?php else:
+                                 echo Files::NOT_AVAILABLE;
+                                endif;
+                              ?>
                             </div>
                           </td>
                         </tr>
@@ -267,7 +284,12 @@ defined('_JEXEC') or die( 'Restricted access' );
                           <td class="entityDetail">Documentation</td>
                           <td>
                             <div id="docList" class="">
+                              <?php if ($this->iDocumentCount > 0): ?>
                                 <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Documentation&format=ajax&form=frmDocumentation&target=docList&top=1','docList');" href="javascript:void(0);">view</a>
+                              <?php else:
+                                 echo Files::NOT_AVAILABLE;
+                                endif;
+                              ?>
                             </div>
                           </td>
                         </tr>
@@ -275,7 +297,12 @@ defined('_JEXEC') or die( 'Restricted access' );
                           <td class="entityDetail">Analysis</td>
                           <td>
                             <div id="anaList" class="">
-                              <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList&top=1','anaList');" href="javascript:void(0);">view</a>
+                              <?php if ($this->iAnalysisCount > 0): ?>
+                                <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList&top=1','anaList');" href="javascript:void(0);">view</a>
+                              <?php else:
+                                 echo Files::NOT_AVAILABLE;
+                                endif;
+                              ?>
                             </div>
                           </td>
                         </tr>
@@ -349,36 +376,46 @@ defined('_JEXEC') or die( 'Restricted access' );
                          </td>
                         </tr>
                    <tr>
-                      <td class="entityDetail">Documentation</td>
-                      <td>
-                        <div id="docList" class="">
-                            <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Documentation&format=ajax&form=frmDocumentation&target=docList&top=1','docList');" href="javascript:void(0);">view</a>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="entityDetail">Analysis</td>
-                      <td>
-                        <div id="anaList" class="">
-                          <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList&top=1','anaList');" href="javascript:void(0);">view</a>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr id="photos">
-                      <td class="entityDetail">Images:</td>
-                      <td>
+                          <td class="entityDetail">Documentation</td>
+                          <td>
+                            <div id="docList" class="">
+                              <?php if ($this->iDocumentCount > 0): ?>
+                                <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Documentation&format=ajax&form=frmDocumentation&target=docList&top=1','docList');" href="javascript:void(0);">view</a>
+                              <?php else:
+                                 echo Files::NOT_AVAILABLE;
+                                endif;
+                              ?>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="entityDetail">Analysis</td>
+                          <td>
+                            <div id="anaList" class="">
+                              <?php if ($this->iAnalysisCount > 0): ?>
+                                <a onclick="getMootools('/warehouse/data?path=<?php echo $oExperiment->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList&top=1','anaList');" href="javascript:void(0);">view</a>
+                              <?php else:
+                                 echo Files::NOT_AVAILABLE;
+                                endif;
+                              ?>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr id="photos">
+                          <td class="entityDetail">Images:</td>
+                          <td>
+                            <?php
+                              if($this->photoCount > 0):
+                            ?>
+                          <div id="imageList">Additional photos (<a href="/warehouse/photos/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>">view</a>)</div>
                         <?php
-                          if($this->photoCount > 0):
-                        ?>
-                      <div id="imageList">Additional photos (<a href="/warehouse/photos/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>">view</a>)</div>
-                    <?php
-                          else:
-                        ?>
-                          <div id="imageList">Images may be found on the tab labeled 'More'.</div>
-                        <?php
-                          endif;
-                        ?>
-                      </td>
+                              else:
+                            ?>
+                              <div id="imageList">Images may be found on the tab labeled 'More'.</div>
+                            <?php
+                              endif;
+                            ?>
+                          </td>
                    </tr>
                    <?php
                  }

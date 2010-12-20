@@ -106,6 +106,12 @@ class WarehouseViewExperiment extends JView{
     $strReturnURL = $oExperimentModel->getReturnURL();
     $this->assignRef( "warehouseURL", $strReturnURL );
 
+    $iDocumentFileCount = count($oExperimentModel->findDataFileByDirPath($oExperiment->getPathname()."/Documentation"));
+    $this->assignRef( "iDocumentCount", $iDocumentFileCount );
+
+    $iAnalysisFileCount = count($oExperimentModel->findDataFileByDirPath($oExperiment->getPathname()."/Analysis"));
+    $this->assignRef( "iAnalysisCount", $iAnalysisFileCount );
+
     $this->assignRef( "mod_warehousedocs", ComponentHtml::getModule("mod_warehousedocs") );
     $this->assignRef( "mod_warehousetags", ComponentHtml::getModule("mod_warehousetags") );
     $this->assignRef( "mod_curationprogress", ComponentHtml::getModule("mod_curationprogress") );
