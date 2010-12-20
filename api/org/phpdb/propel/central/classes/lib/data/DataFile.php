@@ -2,6 +2,7 @@
 
 require_once 'lib/data/om/BaseDataFile.php';
 require_once 'lib/data/FacilityPeer.php';
+require_once 'lib/data/DataFileLinkPeer.php';
 require_once 'lib/data/Project.php';
 require_once 'lib/data/Experiment.php';
 require_once 'lib/filesystem/FileCommandAPI.php';
@@ -568,6 +569,7 @@ class DataFile extends BaseDataFile {
       return null;
     }
     return "/data/get" . get_friendlyPath($this->getPath()) . "/" . rawurlencode($this->getName());
+    //return "/data/get" . get_friendlyPath($this->getPath()) . "/" . urlencode($this->getName());
   }
 
 
@@ -856,6 +858,26 @@ class DataFile extends BaseDataFile {
     $this->setPath($strPath);
 
     return $this->get_url();
+  }
+
+  /**
+   * Check if this experiment is public or not
+   *
+   * @return boolean value
+   */
+  public function isPublished(){
+    $iId = $this->getId();
+    $oDataFileLink = DataFileLinkPeer::retrieveByPK($iId);
+    $oProject = $oDataFileLink->getProject();
+    $oExperiment = $oDataFileLink->getExperiment();
+
+    if($oExperiment->getView() == "PUBLIC"){
+      return true;
+    }elseif($oProject->getView() == "PUBLIC"){
+      return true;
+    }else{
+      return false;
+    }
   }
 
 } // DataFile
