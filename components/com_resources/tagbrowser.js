@@ -162,10 +162,10 @@ HUB.TagBrowser = {
 				var input2 = $('preinput2').value;
 				var type  = $('pretype').value;
 				var id = $('id').value;
-				var terms = ($('terms'))? $('terms').value : '';
-				var termsString = (terms != '')? '&terms='+terms : '';
+				var terms = ($('srcterms'))? $('srcterms').value : '';
+				var termsString = (terms != '')? "&srcterms="+terms : '';
 				var designator = ($('designator'))? $('designator').value : '';
-				var designatorString = (designator != '')? '&designator='+designator : '';
+				var designatorString = (designator != '')? "&designator="+designator : '';
 
 				tagbrowser.style.display = 'block';
 				if ($('tbh2')) {
@@ -187,6 +187,7 @@ HUB.TagBrowser = {
 				
 				//if ((browser.isFirefox==false && browser.isCamino==false && browser.isMozilla) || browser.isIE) {
 					var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&input2='+input2+'&id='+id+termsString+designatorString, {
+					//	var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&input2='+input2+'&id='+id, {
 						method: 'get',
 						update: $('level-1'),
 						evalScripts: false,
@@ -198,6 +199,8 @@ HUB.TagBrowser = {
 				//	var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&id='+id, {method: 'get',update: $('level-1'),evalScripts:true}).request();
 				//}
 				var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=2&input='+input+'&input2='+input2+'&id='+id+termsString+designatorString, {method: 'get',update: $('level-2')}).request();
+				//alert(termsString+designatorString);
+				//var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=2&input='+input+'&input2='+input2+'&id='+id, {method: 'get',update: $('level-2')}).request();
 			}
 		}
 	}
