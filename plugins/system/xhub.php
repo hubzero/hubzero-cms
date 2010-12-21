@@ -331,6 +331,17 @@ class XRouter extends JRouter
 			}
 		}
 	
+		// HUBzero Extension to parse com_content component specially
+
+		if (empty($vars['option'])) {
+			$vars = $this->_parseContentRoute(explode('/',ltrim($route,"/")));
+			if (!empty($vars['option'])) {
+				$route = false;
+			}
+		}
+
+		// End HUBzero Extension to parse com_content component specially
+
 		// HUBzero Extension to route based on unprefixed component name (if other routing fails to match)
 
 		if (empty($vars['option']))
@@ -400,11 +411,6 @@ class XRouter extends JRouter
 		}
 		else
 		{
-			// HUBzero Extension to parse com_content component specially
-			
-			$vars = $this->_parseContentRoute(explode('/',ltrim($route,"/")));
-			// End HUBzero Extension to parse com_content component specially
-
 			// HUBzero Extension to check redirection table if otherwise unable to match URL to content
 			
 			if (!isset($vars['option'])) {
@@ -424,16 +430,14 @@ class XRouter extends JRouter
 					}
 				}
 			}
+
+			// End HUBzero Extension to check redirection table if otherwise unable to match URL to content
 			
-			if (!isset($vars['option']))
-			{
-				//Set active menu item
-				if($item =& $menu->getActive()) {
-					$vars = $item->query;
-				}
+			//Set active menu item
+			if($item =& $menu->getActive()) {
+				$vars = $item->query;
 			}
 			
-			// End HUBzero Extension to check redirection table if otherwise unable to match URL to content
 		
 		}
 		
