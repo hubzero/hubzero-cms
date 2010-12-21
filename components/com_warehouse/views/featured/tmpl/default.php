@@ -54,7 +54,10 @@ defined('_JEXEC') or die( 'Restricted access' );
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/672">672 - Deep Shear Wave Velocities in the Las Vegas Basin</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/711">711 - Earthquake Performance Evaluation Tool (EPET)</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/904">904 - Concrete Columns Reinforced with High-Strength Steel</a><br/></li>
-                </ul>
+                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/905">905 - Shear Strength Decay in Reinforced Concrete Columns</a><br/></li>
+		         		<li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/915">915 - 10 Story Reinforced Concrete Walls</a><br/></li>
+				        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/964">964 - Soil Foundation Structure Interaction Field Tests</a><br/></li>
+				</ul>
 
 			<br/><br/><br/><br/><br/><br/>
   
