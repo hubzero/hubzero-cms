@@ -4,6 +4,14 @@ window.addEvent('domready', function() {
 	$$('#team_column ul li .neescommhq').addClass('active');
 	$$('#member_column ul li').addClass('hide');
 	$$('#member_column ul .neescommhq').removeClass('hide');
+	var collection = $$('#team_column ul li a');
+	for(i=0;i<collection.length; i++) {
+		if(collection[i].hasClass('neescommhq')) {
+			desc = collection[i].getAttribute('description');
+		}
+	}
+	var team_desc = document.getElementById('team_desc');
+	team_desc.innerHTML = desc;
 	
 	
 	$$('#team_column ul li a').addEvent('click', function(el) {
@@ -13,6 +21,7 @@ window.addEvent('domready', function() {
 			team = team.replace(' active','');
 		var teamName = this.innerHTML;
 		
+		teamDesc = this.getAttribute('description');
 		
 		//$$('#member_column ul .pac .person').each( function(e){
 		//	e.setStyle('height','200px');
@@ -31,6 +40,14 @@ window.addEvent('domready', function() {
 		});
 		var head = document.getElementById('team_title');
 		head.innerHTML = teamName;
+		
+		var desc = document.getElementById('team_desc');
+		if(!teamDesc || teamDesc != '') {
+			desc.removeClass('hide');
+			desc.innerHTML = teamDesc;
+		} else {
+			desc.addClass('hide');
+		}
 		
 		return false;
 	});

@@ -87,6 +87,21 @@
   font-size: 18px;
   font-weight: normal;
 }
+
+#team_browser #member_column #member_column_inner #team_desc {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #eeefe4;
+  margin: 10px 0 0 0;
+  padding: 15px;
+  color: #afb2a9;
+  font-size: 14px;
+  font-weight: normal;
+}
+
 #team_browser #member_column #member_column_inner ul {
   overflow: hidden;
   list-style: none;
