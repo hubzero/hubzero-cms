@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.trash.php 18162 2010-07-16 07:00:47Z ian $
+* @version		$Id: admin.trash.php 19343 2010-11-03 18:12:02Z ian $
 * @package		Joomla
 * @subpackage	Trash
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -100,6 +100,10 @@ function viewTrashContent( $option )
 		$filter_order = 'sectname';
 	}
 
+	if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC'))) {
+		$filter_order_Dir = '';
+	}
+
 	$orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir .', s.name, cc.name, c.title';
 
 	// get the total number of content
@@ -175,6 +179,10 @@ function viewTrashMenu( $option )
 	// ensure filter_order has a valid value
 	if (!in_array($filter_order, array('m.name', 'm.id', 'm.menutype', 'm.type'))) {
 		$filter_order = 'm.menutype';
+	}
+
+	if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC'))) {
+		$filter_order_Dir = '';
 	}
 
 	$orderby 	= ' ORDER BY '. $filter_order . ' ' . $filter_order_Dir .', m.menutype, m.ordering, m.ordering,  m.name';

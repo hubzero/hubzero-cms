@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: session.php 16385 2010-04-23 10:44:15Z ian $
+* @version		$Id: session.php 19338 2010-11-03 14:51:55Z ian $
 * @package		Joomla.Framework
 * @subpackage	Session
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -507,40 +507,7 @@ class JSession extends JObject
 			// @TODO :: generated error here
 			return false;
 		}
-
-		// save values
-		$values	= $_SESSION;
-
-		// keep session config
-		$trans	=	ini_get( 'session.use_trans_sid' );
-		if( $trans ) {
-			ini_set( 'session.use_trans_sid', 0 );
-		}
-		$cookie	=	session_get_cookie_params();
-
-		// create new session id
-		$id	=	$this->_createId( strlen( $this->getId() ) );
-
-		// first we grab the session data
-		$data = $this->_store->read($this->getId());
-
-		// kill session
-		session_destroy();
-
-		// re-register the session store after a session has been destroyed, to avoid PHP bug
-		$this->_store->register();
-
-		// restore config
-		ini_set( 'session.use_trans_sid', $trans );
-		session_set_cookie_params( $cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure'] );
-
-		// restart session with new id
-		session_id( $id );
-		session_start();
-		$_SESSION = $values;
-
-		//now we put the session data back
-		$this->_store->write($id, $data);
+		session_regenerate_id();
 		return true;
 	}
 

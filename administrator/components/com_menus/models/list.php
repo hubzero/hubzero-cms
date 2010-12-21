@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: list.php 18162 2010-07-16 07:00:47Z ian $
+ * @version		$Id: list.php 19343 2010-11-03 18:12:02Z ian $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -79,6 +79,10 @@ class MenusModelList extends JModel
 		// ensure $filter_order has a good value
 		if (!in_array($filter_order, array('m.name', 'm.published', 'm.ordering', 'groupname', 'm.type', 'm.id'))) {
 			$filter_order = 'm.ordering';
+		}
+
+		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', ''))) {
+			$filter_order_Dir = 'ASC';
 		}
 
 		// just in case filter_order get's messed up

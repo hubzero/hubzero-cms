@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.contact.php 18162 2010-07-16 07:00:47Z ian $
+* @version		$Id: admin.contact.php 19343 2010-11-03 18:12:02Z ian $
 * @package		Joomla
 * @subpackage	Contact
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -134,6 +134,10 @@ function showContacts( $option )
 	// sanitize $filter_order
 	if (!in_array($filter_order, array('cd.name', 'cd.published', 'cd.ordering', 'cd.access', 'category', 'user', 'cd.id'))) {
 		$filter_order = 'cd.ordering';
+	}
+
+	if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC'))) {
+		$filter_order_Dir = '';
 	}
 
 	$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );

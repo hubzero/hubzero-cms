@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.newsfeeds.php 18162 2010-07-16 07:00:47Z ian $
+* @version		$Id: admin.newsfeeds.php 19343 2010-11-03 18:12:02Z ian $
 * @package		Joomla
 * @subpackage	Newsfeeds
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -117,6 +117,10 @@ function showNewsFeeds(  )
 	// sanitize $filter_order
 	if (!in_array($filter_order, array('a.name', 'a.published', 'a.ordering', 'catname', 'a.numarticles', 'a.cache_time', 'a.id'))) {
 		$filter_order = 'a.ordering';
+	}
+
+	if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC'))) {
+		$filter_order_Dir = '';
 	}
 
 	$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );

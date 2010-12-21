@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: factory.php 15184 2010-03-04 23:18:17Z ian $
+ * @version		$Id: factory.php 19176 2010-10-21 03:06:39Z ian $
  * @package		Joomla.Framework
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -563,6 +563,7 @@ class JFactory
 		$db =& JDatabase::getInstance( $options );
 
 		if ( JError::isError($db) ) {
+			header('HTTP/1.1 500 Internal Server Error');
 			jexit('Database Error: ' . $db->toString() );
 		}
 

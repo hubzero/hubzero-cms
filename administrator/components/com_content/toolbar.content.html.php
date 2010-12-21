@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: toolbar.content.html.php 14401 2010-01-26 14:10:00Z louis $
+* @version		$Id: toolbar.content.html.php 19173 2010-10-21 03:00:28Z ian $
 * @package		Joomla
 * @subpackage	Content
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -11,6 +11,9 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
+
+// no direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 /**
 * @package		Joomla

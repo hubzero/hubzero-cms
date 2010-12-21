@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: admin.sections.php 18162 2010-07-16 07:00:47Z ian $
+* @version		$Id: admin.sections.php 19343 2010-11-03 18:12:02Z ian $
 * @package		Joomla
 * @subpackage	Sections
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -136,6 +136,10 @@ function showSections( $scope, $option )
 	// ensure filter_order has a valid value
 	if (!in_array($filter_order, array('s.title', 's.published', 's.ordering', 'groupname', 's.id'))) {
 		$filter_order = 's.ordering';
+	}
+
+	if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC'))) {
+		$filter_order_Dir = '';
 	}
 
 	$orderby 	= ' ORDER BY '.$filter_order.' '. $filter_order_Dir .', s.ordering';

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: search.php 18162 2010-07-16 07:00:47Z ian $
+ * @version		$Id: search.php 19343 2010-11-03 18:12:02Z ian $
  * @package		Joomla
  * @subpackage	Search
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -63,8 +63,12 @@ class SearchModelSearch extends JModel
 			$filter_order = 'hits';
 		}
 
+		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC'))) {
+			$filter_order_Dir = '';
+		}
+
 		// table ordering
-		if ( $filter_order_Dir == 'ASC' ) {
+		if ( strtoupper($filter_order_Dir) == 'ASC' ) {
 			$this->lists['order_Dir'] = 'ASC';
 		} else {
 			$this->lists['order_Dir'] = 'DESC';

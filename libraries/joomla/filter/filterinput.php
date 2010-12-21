@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: filterinput.php 18162 2010-07-16 07:00:47Z ian $
+ * @version		$Id: filterinput.php 19339 2010-11-03 14:52:38Z ian $
  * @package		Joomla.Framework
  * @subpackage	Filter
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -175,9 +175,9 @@ class JFilterInput extends JObject
 				$lang = &JFactory::getLanguage();
 				$result = $lang->transliterate($result);
 				$result = (string) preg_replace(
-					array('/\s+/','/[^A-Za-z0-9\-\_]/'), array('-',''), $result
+					array('/\s+/','/[^A-Za-z0-9\-\_ ]/'), array('-',''), $result
 				);
-				$result = strtolower(trim($result));
+				$result = trim($result);
 				break;
 
 

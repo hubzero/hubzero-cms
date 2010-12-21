@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: view.html.php 18162 2010-07-16 07:00:47Z ian $
+* @version		$Id: view.html.php 19343 2010-11-03 18:12:02Z ian $
 * @package		Joomla
 * @subpackage	Config
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -67,6 +67,10 @@ class PollViewPolls extends JView
 		// sanitize $filter_order
 		if (!in_array($filter_order, array('m.title', 'm.published', 'a.ordering', 'catname', 'm.voters', 'numoptions', 'm.lag', 'm.id'))) {
 			$filter_order = 'm.id';
+		}
+
+		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC'))) {
+			$filter_order_Dir = '';
 		}
 
 		$orderby 	= ' ORDER BY '. $filter_order .' '. $filter_order_Dir;

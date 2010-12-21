@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: CREDITS.php 18151 2010-07-15 09:33:47Z dextercowley $
+ * @version		$Id: CREDITS.php 19327 2010-11-02 13:49:13Z infograf768 $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -69,7 +69,6 @@ Translation contributors:
 Albanian (sp-AL) - Blendi Kraja
 Arabic Unitag (ar-AA) - Arabic Unitag Translation Team - Mahmood Alhaj Kassem
 Azeri (az-AZ) - Azeri Translation Team - Mahmud and Yusif
-Basque (eu-ES) - Basque Translation Team (Basque Language School of Santurtzi) - Abel Camacho, Pedro Lonbide
 Belarusian (be-BY) - Dennis Hermacki
 Bengali (bn-BD) – Kamal Sikder
 Bosnian (bs-BA) - Bosnian Translation Team - Admir Agic
@@ -90,7 +89,6 @@ French (fr-FR) - French Translation Team - Nicolas Ogier
 German (de-DE)/(de-CH)/(de-AT) - J!German - Jan Erik Zassenhaus, Karin Nikolaj, David Jakob, Antonio Cambule\
 Greek (el-GR) - Greek Joomla Community - Aris Ntatsis
 Gujarati (gu-IN) - Gujarati Translation Team
-Hebrew (he-IL) - Joomla!Hebrew - Mati (MtK) Kochen
 Hindi (India) (hi-IN) - Hindi (India) Translation Team - Sanjeev Naroliya, Ronak Bhagdev, Aminuddin Sheikh
 Hungarian (hu-HU) - Magyar Joomla! Felhasznalok Nemzetkozi Egyesulete - Jozsef Tamas Herczeg, Annamaria Ban
 Icelandic (is-IS) - Joomlis! Icelandic Joomla Community [joomlis.net] - Magnús Guðlaugsson
@@ -106,16 +104,16 @@ Montenegrin (sr-ME) - Montenegrin Translation Team (joomlamontenegro.com) - Milj
 Norwegian bokmål (nb-NO) - Joomla! i Norge - Jens-Christian Skibakk, Rune Rasmussen
 Pashto (Afghanistan) (ps-AF) - Pashto (Afghanistan) Translation Team - Daud Nigaresh
 Persian/Farsi (fa-IR) - Joomfa Team(Joomla Farsi) - M.Alavi nik, Hamid abolhasani,Amin bagheri,Sayyed Saeed farzad,Sayyed ahmad sayyedi,Vahid Hosein Khani,Omid pileh var
-Polish - Poland (pl-PL) - Polskie Centrum Joomla! - Michał Sobkowiak, Stefan Wajda
+Polish - Poland (pl-PL) - Polskie Centrum Joomla! - Stefan Wajda
 Portuguese Brazilian (pt-BR) - Joomla! Brasil - Fabricio Elias Costa (FaBMak)
 Portuguese (pt-PT) - Joomla! Portugal - Paulo Izidoro
 Romanian (ro-RO) - Romanian Joomla! Community - Cosmin Lebu
 Russian (ru-RU) - Russian Translation Team - Serge Litvinov
-Serbian (sr-RS) - Joomla! Serbia team - Marko Milenovic
-Serbian (sr-YU) - Joomla! Serbia team - Svetlana Zec, Marko Milenovic
+Serbian (sr-RS) - Joomla! Serbia team - Svetlana Zec
+Serbian (sr-YU) - Joomla! Serbia team - Svetlana ZecSvetlana Zec
 Sindhi (sd-PK) - Raheel H. Kaghzi, Shafiq-ur-rehman Khatri
 Sinhala (si-LK) - Rashan Anushka
-Slovak (sk-SK) - Slovak Translation Team - Karol Cejka, Viliam Kmec, Alexander Horvath, Marek Sabo
+Slovak (sk-SK) - Karol Cejka
 Slovenian (sl-SI) - Slovenian Translation Team - Borut Planinc
 Spanish (es-ES) - Joomla!'s Spanish Community Translation Team - Javier Galasse
 Swedish (sv-SE) - Swedish Translation Team (SvenskJoomla!) - Sune Hultman, Christer Gerhardsson
