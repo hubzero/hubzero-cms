@@ -94,10 +94,214 @@
 		background-position: 0 0.9em;
 		border: 1px solid #fff;
 		}
-/* Item listing */
-	.com_tags .search {
-		margin: 0 1em 0.5em 1em;
+/* Misc */
+	.main {
+		border-top: 1px solid #eaeaea;
+		padding: 0 15px;
+		}
+	.clearfix {
+		border: 1px solid #f4f4f4;
+		}
+	.clearfix:after {
+		content: "."; 
+		display: block; 
+		height: 0; 
+		clear: left; 
+		visibility: hidden;
+		}
+/* Content blocks */
+	.container {
+		margin: 1em 0;
+		padding: 0;
+		border: 10px solid #f4f4f4;
+		background: #f4f4f4;
+		}
+	.container-block {
+		border: 2px solid #e9e9e9;
+		background-color: #fff;
+		margin: 0;
+		padding: 0 15px;
+		}
+	.container-block h3 {
+		margin: 0 -15px 1em -15px;
+		padding: 0.5em 0.7em;
+		background: #f8f8f8 url("images/light-stripes.png");
+		border-bottom: 2px solid #e9e9e9;
+		font-size: 135%;
+		}
+	.container-block h4 {
+		font-size: 115%;
+		border-bottom: 1px solid #eee;
+		padding: 0.2em 0;
+		font-weight: normal;
+		}
+	.container-block h4 a {
+		color: #333;
+		}
+	.container-block h4 .more {
+		float: right;
+		color: #aaa;
+		}
+	.container-block h4 a:hover,
+	.container-block h4 a:hover .more {
 		border: none;
+		color: #ff6600;
+		}
+	.container-block .columns {
+		margin-top: 0em;
+		margin-bottom: 1em;
+		}
+	.container-block .entry-content {
+		margin: 0 0 2em 0;
+		}
+	.container-block .entry-content h4 {
+		font-weight: bold;
+		}
+/* Entries search */
+	.entry-search {
+		margin: 0 1em 0 0;
+		border: none;
+		padding: 0;
+		}
+	.entry-search label {
+		display: none;
+		}
+	.entry-search ul.textboxlist-holder {
+		background: #fff url("images/tags.png") 5px 50% no-repeat;
+		padding-left: 23px;
+		}
+	.entry-search-submit {
+		float: right;
+		margin: 3px 0 0 10px;
+		}
+	.entry-search input#entry-search-text {
+		width: 95%;
+		border: 1px solid #A8A8A8;
+		background: #fff url("images/search.png") 5px 50% no-repeat;
+		padding: 5px 5px 5px 20px;
+		}
+/* Submenu styling */
+	.entries-menu {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		font-size: 85%;
+		}
+	.list-footer,
+	.entries-menu {
+		min-height: 1px;
+		}
+	.entries-menu:after {
+		content: "."; 
+		display: block; 
+		height: 2.5em; 
+		clear: left; 
+		visibility: hidden;
+		}
+	.entries-menu li {
+		float: right;
+		padding: 0 0.2em 0.5em 0.2em;
+		margin: 0;
+		}
+	.entries-menu li a,
+	.entries-menu span.nolink {
+		color: #888;
+		display: block;
+		cursor: pointer;
+		font-weight: normal;
+		line-height: 1em;
+		border: none;
+		margin: 0;
+		padding: 0.4em 0.75em;
+		text-shadow: 0px 1px 1px #fff;
+		}
+	.entries-menu span.nolink {
+		color: #999;
+		}
+	.entries-menu a.active,
+	.entries-menu span.nolink.active {
+		color: #fff;
+		background-color: #636166;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		text-decoration: none;
+		}
+	.entries-menu a:hover {
+		color: #fff;
+		background-color: #fc9022;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		text-decoration: none;
+		}
+/* Item listing */
+	.container .container-block {
+		margin: 0;
+		padding: 0;
+		border: 2px solid #e9e9e9;
+		background: #fff;
+		}
+	.container .category-wrap {
+		margin: 0;
+		padding: 0;
+		border: none;
+		}
+	.container h4 {
+		margin: 0;
+		padding: 0.5em 0.7em;
+		font-size: 1.2em;
+		background: #f8f8f8 url("images/light-stripes.png");
+		font-weight: normal;
+		color: #555;
+		}
+	.category-header small {
+		position: absolute;
+		right: 0.5em;
+		font-size: 1em;
+		}
+	.container h4 span {
+		color: #aaa;
+		font-size: 85%;
+		margin-left: 0.2em;
+		}
+	.container h4 .feed {
+		position: absolute;
+		top: 0.5em;
+		right: -0.5em;
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		text-indent: -55em;
+		}
+	.container .results {
+		border: none;
+		background: #fff;
+		margin: 0;
+		padding: 0 0 2em 0;
+		clear: left;
+		}
+	.container .results li {
+		padding: 0.5em 1em;
+		border-top: 1px solid #efefef;
+		border-bottom: none;
+		}
+	.container .results p {
+		margin-left: 1em;
+		}
+	.container .results p.title {
+		margin-left: 0;
+		}
+	.container .results .event p.title {
+		margin-left: 4em;
+		}
+	.container .results .member p.title {
+		margin-left: 60px;
 		}
 	.com_tags .sub-nav {
 		margin-top: 0;
@@ -154,15 +358,89 @@
 		text-align: right;
 		background-color: #E3E3E3;
 		}
-	#taglist {
+/*	#taglist {
 		margin-top: 1em;
+} */
+.entries {
+	border: 2px solid #e9e9e9;
+	/*border-top: none;*/
+	background-color: #fff;
+	margin: 0;
+	padding: 0;
+	}
+.entries caption {
+	font-size: 115%;
+	background: #f8f8f8 url("images/light-stripes.png");
+	border: 2px solid #e9e9e9;
+	border-bottom: 1px solid #e9e9e9;
+	margin-right: -2px; /* Fix 2px issue */
+	}
+.container-block h4 span,
+.entries caption span,
+.entries thead span {
+	color: #aaa;
+	}
+/*.entries thead th {
+	text-align: left;
+	background-color: #f9d800;
+	}*/
+	.entries thead tr {
+		background: #f8f8f8 url("images/light-stripes.png");
 		}
+	.entries thead th {
+		font-size: 115%;
+		font-weight: normal;
+		}
+.entries tbody td {
+	text-align: left;
+	border-bottom: 1px solid #eee;
+	padding: 10px;
+	}
+.entries tbody th {
+	width: 5px;
+	text-align: center;
+	border-bottom: 1px solid #eee;
+	}
+.entries tbody td a.entry-title {
+	-moz-border-radius: 6px; 
+	-webkit-border-radius: 6px; 
+	/*border: 1px solid #CAD8F3; 
+	background: #DEE7F8;*/
+	background: #FFF6D3;
+	border: 1px solid #DFD5AF;
+	padding: 1px 5px 2px;
+}		
+.entries tbody tr.admin td a.entry-title {
+	background-color: #FFF2EF;
+	border-color: #efccc2;
+}
 /* Misc. */
+	.aside .sub-nav {
+		list-style-type: none;
+		background-color: #F4F4ee;
+		border: none;
+		}
 	.moreresults {
-		margin: 0 1em 2em 1em;
-		padding: 0;
-		font-weight: bold;
-		color: #999;
+		/*margin: 0;
+		padding: 0.3em 1em 0.3em 1em;
+		font-weight: normal;
+		border: 2px solid #e9e9e9;
+		border-top: 1px solid #fff;
+		color: #aaa;
+		background-color: #fff;
+		color: #fff;
+		border: none;*/
+		display: none;
+		}
+	.moreresults span {
+		display: none;
+		}
+	.tag-description {
+		margin: 0;
+		padding: 0 1em;
+		}
+	.tag-description .clearfix {
+		border-color: #fff;
 		}
 /* IE 6 hacks */	
 	* html .category-header small {

@@ -163,7 +163,11 @@ class TagsTag extends JTable
 			}
 		}
 		if (isset($filters['sortby']) && $filters['sortby'] != '') {
-			$query .= " ORDER BY t.".$filters['sortby'];
+			if ($filters['sortby'] == 'total') {
+				$query .= " ORDER BY ".$filters['sortby']." DESC";
+			} else {
+				$query .= " ORDER BY t.".$filters['sortby'];
+			}
 		} else {
 			$query .= " ORDER BY t.raw_tag ASC";
 		}
@@ -180,6 +184,7 @@ class TagsTag extends JTable
 	{
 		$filters['limit'] = 0;
 		$filters['count'] = true;
+		$filters['sortby'] = '';
 		
 		$this->_db->setQuery( $this->buildQuery( $filters ) );
 		return $this->_db->loadResult();

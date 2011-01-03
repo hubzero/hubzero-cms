@@ -37,47 +37,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="main section">
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view'); //.'&tag='.$this->tagstring); ?>" method="get">
-<?php
-if (count($this->tags) == 1) {
-	$tagobj = $this->tags[0];
-	if ($tagobj->description != '') {
-		//$tagobj->description = Hubzero_View_Helper_Html::xhtml($tagobj->description);
-?>
-		<h3><?php echo JText::_('COM_TAGS_DESCRIPTION'); ?></h3>
-		<div class="tag-description">
-			<?php echo stripslashes($tagobj->description); ?>
-			<div class="clear"></div>
-		</div>
-<?php
-	}
-}
-?>
+		
 	<div class="aside">
-		<fieldset>
-<?php
-JPluginHelper::importPlugin( 'tageditor' );
-$dispatcher =& JDispatcher::getInstance();
-$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tag','actags','',$this->search,'')) );
-?>
-			<label>
-				<?php echo JText::_('COM_TAGS_SEARCH_WITH_TAGS'); ?>
-<?php if (count($tf) > 0) {
-			echo $tf[0];
-} else { ?>
-				<input type="text" name="tag" value="<?php echo $this->search; ?>" />
-<?php } ?>
-			</label>
-			
-			<label>
-				<?php echo JText::_('COM_TAGS_SORT_BY'); ?>
-				<select name="sort">
-					<option value=""<?php if ($this->sort == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TAGS_OPT_SELECT'); ?></option>
-					<option value="title"<?php if ($this->sort == 'title') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TAGS_OPT_TITLE'); ?></option>
-					<option value="date"<?php if ($this->sort == 'date') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TAGS_OPT_DATE'); ?></option>
-				</select>
-			</label>
-			<input type="submit" value="<?php echo JText::_('COM_TAGS_GO'); ?>" />
-		</fieldset>
 		<?php
 		// Add the "all" category
 		$all = array('category'=>'','title'=>JText::_('COM_TAGS_ALL_CATEGORIES'),'total'=>$this->total);
@@ -175,6 +136,54 @@ $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tag','actags','',$this->s
 		?>
 	</div><!-- / .aside -->
 	<div class="subject">
+		
+		<div class="container">
+			<input class="entry-search-submit" type="submit" value="Search" />
+			<fieldset class="entry-search">
+<?php
+			JPluginHelper::importPlugin( 'tageditor' );
+			$dispatcher =& JDispatcher::getInstance();
+			$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tag','actags','',$this->search,'')) );
+?>
+				<label for="actags">
+					<?php echo JText::_('COM_TAGS_SEARCH_WITH_TAGS'); ?>
+				</label>
+<?php if (count($tf) > 0) {
+						echo $tf[0];
+} else { ?>
+				<input type="text" name="tag" id="actags" value="<?php echo $this->search; ?>" />
+<?php } ?>
+			</fieldset>
+		</div><!-- / .container -->
+		
+		<?php
+		if (count($this->tags) == 1) {
+			$tagobj = $this->tags[0];
+			if ($tagobj->description != '') {
+				//$tagobj->description = Hubzero_View_Helper_Html::xhtml($tagobj->description);
+		?>
+		<div class="container">
+			<div class="container-block">
+				<h4><?php echo JText::_('COM_TAGS_DESCRIPTION'); ?></h4>
+				<div class="tag-description">
+					<?php echo stripslashes($tagobj->description); ?>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div><!-- / .container -->
+		<?php
+			}
+		}
+		?>
+		
+		<div class="container">
+			<ul class="entries-menu">
+				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&order=title'); ?>" title="Sort by title">&darr; <?php echo JText::_('COM_TAGS_OPT_TITLE'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&order=date'); ?>" title="Sort by newest to oldest">&darr; <?php echo JText::_('COM_TAGS_OPT_DATE'); ?></a></li>
+				<li><a<?php echo ($this->sort == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring); ?>" title="Sort by popularity">&darr; <?php echo JText::_('Popular'); ?></a></li>
+			</ul>
+			
+			<div class="container-block">
 <?php
 $juri =& JURI::getInstance();
 $foundresults = false;
@@ -246,8 +255,25 @@ foreach ($this->results as $category)
 		}
 		$feed = str_replace('https:://','http://',$feed);
 	
+		$ttl = 0;
+		if (is_array($this->totals[$k])) {
+			foreach ($this->totals[$k] as $t) 
+			{
+				$ttl += $t;
+			}
+		} else {
+			$ttl = $this->totals[$k];
+		}
+		$ttl = ($ttl > 5) ? 5 : $ttl;
+		
+		if (!$dopaging) {
+			$num = '1-'.$ttl.' of ';
+		} else {
+			$num = '';
+		}
+		
 		// Build the category HTML
-		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">'.$name.' <small>'.$num.' (<a class="feed" href="'.$feed.'">'.JText::_('COM_TAGS_FEED').'</a>)</small></h4>'."\n";
+		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">'.$name.' <span>('.$num.$total.')</span> <a class="feed" href="'.$feed.'" title="'.JText::_('COM_TAGS_FEED').'">'.JText::_('COM_TAGS_FEED').'</a></h4>'."\n";
 		$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
 		$html .= '<ol class="search results">'."\n";			
 		foreach ($category as $row) 
@@ -284,19 +310,7 @@ foreach ($this->results as $category)
 		}
 		$html .= '</ol>'."\n";
 		// Initiate paging if we we're displaying an active category
-		if ($dopaging) {
-			jimport('joomla.html.pagination');
-			$pageNav = new JPagination( $this->total, $this->limitstart, $this->limit );
-
-			//$html .= $pageNav->getListFooter();
-			$pf = $pageNav->getListFooter();
-			
-			$nm = str_replace('com_','',$this->option);
-
-			$pf = str_replace($nm.'/?',$nm.'/'.$this->tagstring.'/'.$this->active.'/?',$pf);
-			$pf = str_replace('%20','+',$pf);
-			$html .= $pf;
-		} else {
+		if (!$dopaging) {
 			$html .= '<p class="moreresults">'.JText::sprintf('COM_TAGS_TOTAL_RESULTS_FOUND',$amt);
 			// Add a "more" link if necessary
 			$ttl = 0;
@@ -310,7 +324,7 @@ foreach ($this->results as $category)
 			}
 			if ($ttl > 5) {
 				$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. urlencode(stripslashes($cats[$k]['category'])));
-				$html .= ' | <a href="'.$sef.'">'.JText::_('COM_TAGS_SEE_MORE_RESULTS').'</a>';
+				$html .= ' <span>|</span> <a href="'.$sef.'">'.JText::_('COM_TAGS_SEE_MORE_RESULTS').' &rarr;</a>';
 			}
 		}
 		$html .= '</p>'."\n\n";
@@ -323,6 +337,23 @@ if (!$foundresults) {
 }
 echo $html;
 ?>
+			</div><!-- / .container-block -->
+<?php
+if ($dopaging) {
+	jimport('joomla.html.pagination');
+	$pageNav = new JPagination( $this->total, $this->limitstart, $this->limit );
+
+	//$html .= $pageNav->getListFooter();
+	$pf = $pageNav->getListFooter();
+	
+	$nm = str_replace('com_','',$this->option);
+
+	$pf = str_replace($nm.'/?',$nm.'/'.$this->tagstring.'/'.$this->active.'/?',$pf);
+	$pf = str_replace('%20','+',$pf);
+	echo $pf.'<div class="clearfix"></div>';
+}
+?>
+		</div><!-- / .container -->
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 	</form>
