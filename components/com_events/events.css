@@ -16,23 +16,23 @@
 */
 
 /* Columns */
-	.section {
+	.com_events .section {
 		padding: 0;
 		border-top: 1px solid #EFEFEF;
 		}
-	.main {
+	.com_events .main {
 		border: none;
 		}
 	.below {
 		margin: 2em 0 0 0;
 		padding-top: 1em;
 		}
-	.aside {
+	.com_events .aside {
 		float: right;
 		width: 214px;
 		padding-top: 1em;
 		}
-	.subject {
+	.com_events .subject {
 		margin: 1em 0;
 		margin-right: 235px;
 		padding: 1.4em;
@@ -40,12 +40,12 @@
 		border-top: 1px solid #E3E3E3;
 		border-bottom: 1px solid #E3E3E3;
 		}
-	.main .subject {
+	.com_events .main .subject {
 		border: none;
 		background: transparent;
 		padding: 0;
 		}
-	.main {
+	.com_events .main {
 		padding-top: 2em;
 		}
 /* Date navigation */
