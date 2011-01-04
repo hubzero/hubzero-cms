@@ -71,7 +71,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 
-	<input type="hidden" name="ids" value="<?php echo $this->ids; ?>" />
+	<input type="hidden" name="ids" value="<?php echo $this->idstr; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
 	<input type="hidden" name="task" value="pierce" />
