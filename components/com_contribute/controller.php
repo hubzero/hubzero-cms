@@ -642,6 +642,8 @@ class ContributeController extends Hubzero_Controller
 			}
 		}
 
+		$row->title = $this->_txtClean($row->title);
+		
 		// Strip any scripting there may be
 		if (trim($row->fulltext)) {
 			$row->fulltext   = $this->_txtClean($row->fulltext);
@@ -1990,6 +1992,11 @@ class ContributeController extends Hubzero_Controller
 
 	private function _txtClean( &$text ) 
 	{
+		$text = str_replace('“','"', $text);
+		$text = str_replace('”','"', $text);
+		$text = str_replace("’","'", $text);
+		$text = str_replace("‘","'", $text);
+		
 		$text = preg_replace( '/{kl_php}(.*?){\/kl_php}/s', '', $text );
 		$text = preg_replace( '/{.+?}/', '', $text );
 		$text = preg_replace( "'<style[^>]*>.*?</style>'si", '', $text );
