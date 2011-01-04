@@ -2,7 +2,13 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( '<a href="index.php?option='.$this->option.'">'.JText::_('KNOWLEDGE_BASE').'</a>: '.JText::_('ARTICLES'), 'addedit.png' );
+if (isset($this->filters['orphans'])) {
+	$ttle = JText::_('ARTICLES').' (orphans)';
+} else {
+	$ttle = JText::_('ARTICLES');
+}
+
+JToolBarHelper::title( '<a href="index.php?option='.$this->option.'">'.JText::_('KNOWLEDGE_BASE').'</a>: '.$ttle, 'addedit.png' );
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
 JToolBarHelper::spacer();
@@ -27,6 +33,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm">
 	<fieldset id="filter">
+<?php if (!isset($this->filters['orphans'])) { ?>
 		<label>
 			<?php echo JText::_('CATEGORY'); ?>: 
 			<?php
@@ -37,7 +44,7 @@ function submitbutton(pressbutton)
 			}
 			?>
 		</label>
-	
+<?php } ?>
 		<label>
 			<?php echo JText::_('SORT_BY'); ?>: 
 			<select name="filterby" onchange="document.adminForm.task='articles';document.adminForm.submit();">

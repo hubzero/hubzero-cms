@@ -175,6 +175,8 @@ class KbController extends Hubzero_Controller
 		// Incoming
 		$view->filters = array();
 		$view->filters['orphans'] = true;
+		$view->filters['cid'] = JRequest::getInt( 'cid', 0 );
+		$view->filters['id'] = JRequest::getInt( 'id', 0 );
 
 		// Get configuration
 		$app =& JFactory::getApplication();
@@ -198,6 +200,10 @@ class KbController extends Hubzero_Controller
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
+
+		// Get the sections
+		$row = new KbCategory( $this->database );
+		$view->sections = $row->getAllSections();
 
 		// Set any errors
 		if ($this->getError()) {
