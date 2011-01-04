@@ -46,6 +46,8 @@ class Hubzero_Group
 	private $applicants = array();
 	private $invitees = array();
 	
+	public $error = null;
+	
 	static $_list_keys = array('members', 'managers', 'applicants', 'invitees');
 	
 	private $_ldapMirror = false;
@@ -357,7 +359,7 @@ class Hubzero_Group
 			$attr['gid'] = $data['cn'];
 		}
 
-		$attr['gidNumber'] = $data['gidNumber'];
+		$attr['gidNumber'] = (isset($data['gidNumber'])) ? $data['gidNumber'] : 0;
 		$attr['cn'] = $data['cn'];
 
 		if (!empty($data['memberUid']))
