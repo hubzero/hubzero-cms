@@ -110,6 +110,9 @@ class plgMembersGroups extends JPlugin
 
 		// Build the final HTML
 		if ($returnhtml) {
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('members', 'groups');
+			
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(

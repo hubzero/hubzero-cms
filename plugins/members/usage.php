@@ -111,7 +111,7 @@ class plgMembersUsage extends JPlugin
 			
 			$sql = "SELECT res.id, res.title, DATE_FORMAT(res.publish_up, '%d %b %Y') AS publish_up, restypes.type 
 					FROM #__resources res, #__author_assoc aa, #__resource_types restypes 
-					WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = '".$member->get('uidNumber')."' AND res.published = 1 AND res.access != 1 AND res.type = 7 AND res.access != 4 AND aa.subtable = 'resources' AND standalone = 1 ORDER BY res.publish_up DESC";
+					WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = '".$member->get('uidNumber')."' AND res.published = 1 AND res.access != 1 AND res.type = 7 AND res.access != 4 AND aa.subtable = 'resources' AND aa.role = '' AND res.standalone = 1 ORDER BY res.publish_up DESC";
 
 			$database->setQuery( $sql );
 			$view->tool_stats = $database->loadObjectList();
@@ -120,7 +120,7 @@ class plgMembersUsage extends JPlugin
 			
 			$sql = "SELECT res.id, res.title, DATE_FORMAT(res.publish_up, '%d %b %Y') AS publish_up, restypes.type 
 					FROM #__resources res, #__author_assoc aa, #__resource_types restypes 
-					WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = '".$member->get('uidNumber')."' AND res.published = 1 AND res.access != 1 AND res.type <> 7 AND res.access != 4 AND aa.subtable = 'resources' AND standalone = 1 ORDER BY res.publish_up DESC";
+					WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = '".$member->get('uidNumber')."' AND res.published = 1 AND res.access != 1 AND res.type <> 7 AND res.access != 4 AND aa.subtable = 'resources' AND aa.role = '' AND res.standalone = 1 ORDER BY res.publish_up DESC";
 
 			$database->setQuery( $sql );
 			$view->andmore_stats = $database->loadObjectList();
@@ -160,7 +160,7 @@ class plgMembersUsage extends JPlugin
 	{
 		$database =& JFactory::getDBO();
 		
-		$sql = "SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), '%d %b %Y') AS first_contrib, DATE_FORMAT(MAX(res.publish_up), '%d %b %Y') AS last_contrib FROM #__resources res, #__author_assoc aa, #__resource_types restypes WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = '".$authorid."' AND res.published = 1 AND res.access != 1 AND res.access != 4 AND aa.subtable = 'resources' AND standalone = 1";
+		$sql = 'SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), "%d %b %Y") AS first_contrib, DATE_FORMAT(MAX(res.publish_up), "%d %b %Y") AS last_contrib FROM #__resources res, #__author_assoc aa, #__resource_types restypes WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = "'.$authorid.'" AND res.published = 1 AND res.access != 1 AND res.access != 4 AND aa.subtable = "resources" AND res.standalone = 1 AND aa.role = ""';
 		
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
@@ -233,7 +233,7 @@ class plgMembersUsage extends JPlugin
 		$database =& JFactory::getDBO();
 		
 		if ($authorid) {
-			$sql = 'SELECT COUNT(DISTINCT (c.id) ) FROM #__citations c, #__citations_assoc ca, #__author_assoc aa, #__resources r WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = "resources" AND ca.table = "resource" AND r.published = "1" AND r.standalone = "1" AND aa.authorid = "'.$authorid.'"';
+			$sql = 'SELECT COUNT(DISTINCT (c.id) ) FROM #__citations c, #__citations_assoc ca, #__author_assoc aa, #__resources r WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = "resources" AND ca.table = "resource" AND r.published = "1" AND r.standalone = "1" AND aa.authorid = "'.$authorid.'" AND aa.role = ""';
 		} else {
 			$sql = 'SELECT COUNT( DISTINCT (c.id) ) AS citations FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.table = "resource" AND standalone = "1" AND r.id = "'.$resid.'"';
 		}
@@ -253,15 +253,9 @@ class plgMembersUsage extends JPlugin
 	{
 		$database =& JFactory::getDBO();
 		
-		$rank = 1;
-		$sql = "SELECT aa.authorid, COUNT(DISTINCT aa.subid) as contribs 
-				FROM #__resources res, #__author_assoc aa, #__resource_types restypes 
-				WHERE res.id = aa.subid AND res.type = restypes.id AND res.published = 1 AND res.access != 1 AND res.access != 4 AND aa.subtable = 'resources' AND standalone = 1 
-				GROUP BY aa.authorid having contribs > (
-					SELECT COUNT(DISTINCT aa.subid) as contribs 
-					FROM #__resources res, #__author_assoc aa, #__resource_types restypes 
-					WHERE res.id = aa.subid AND res.type = restypes.id AND res.published = 1 AND res.access != 1 AND res.access != 4 AND aa.subtable = 'resources' AND standalone = 1 AND aa.authorid = '".$authorid."'
-				)"; 
+		$rank = 0;
+		$i = 1;
+		$sql = 'SELECT a.uidNumber AS aid, COUNT(DISTINCT aa.subid) AS contribs FROM #__xprofiles a, #__resources res, #__author_assoc aa WHERE a.uidNumber = aa.authorid AND res.id = aa.subid AND res.published = 1 AND res.access != 1 AND res.access != 4 AND aa.subtable = "resources" AND aa.role = "" AND res.standalone = 1 GROUP BY aid ORDER BY contribs DESC';
 		
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
@@ -269,18 +263,25 @@ class plgMembersUsage extends JPlugin
 		if ($results) {
 			foreach ($results as $row) 
 			{
-				$rank++;
+				if ($row->aid == $authorid) {
+					$rank = $i;
+				}
+				$i++;
 	    	}
 		}
-		
-		$sql = "SELECT COUNT(DISTINCT a.uidNumber) as authors 
+	
+		if ($rank)  {	
+			$sql = 'SELECT COUNT(DISTINCT a.uidNumber) as authors 
 				FROM #__xprofiles a, #__author_assoc aa, #__resources res 
-				WHERE a.uidNumber=aa.authorid AND aa.subid=res.id AND aa.subtable='resources' AND res.published=1 AND res.access !=1 AND res.access!=4 AND res.standalone=1";
-		
-		$database->setQuery( $sql );
-		$total_authors = $database->loadResult();
-		
-		$rank = $rank.' / '.$total_authors;
+				WHERE a.uidNumber=aa.authorid AND aa.subid=res.id AND aa.subtable="resources" AND aa.role = "" AND res.published=1 AND res.access !=1 AND res.access!=4 AND res.standalone=1';
+
+			$database->setQuery( $sql );
+			$total_authors = $database->loadResult();
+
+			$rank = $rank.' / '.$total_authors;
+		} else {
+			$rank = "-";
+		}
 		return $rank;
 	}
 	

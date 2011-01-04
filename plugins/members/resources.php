@@ -91,9 +91,9 @@ class plgMembersResources extends JPlugin
 
 	//-----------
 
-	public function onMembersContributionsCount( $authorized ) 
+	public function onMembersContributionsCount( $authorized, $user_id='m.uidNumber', $username='m.username' ) 
 	{
-		$query = "SELECT COUNT(R.id) FROM #__resources AS R, #__author_assoc AS AA WHERE AA.authorid=m.uidNumber AND R.id = AA.subid AND AA.subtable = 'resources' AND R.published=1 AND R.standalone=1";
+		$query = "SELECT COUNT(R.id) FROM #__resources AS R, #__author_assoc AS AA WHERE AA.authorid=".$user_id." AND R.id = AA.subid AND AA.subtable = 'resources' AND R.published=1 AND R.standalone=1";
 		return $query;
 	}
 

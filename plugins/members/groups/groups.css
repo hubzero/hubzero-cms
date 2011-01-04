@@ -1,0 +1,35 @@
+/*
+
+	-- -- -- -- -- -- --
+	Members Groups plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	#grouplist {
+		margin-top: 1em;
+		}
+	#grouplist tbody span.status {
+		font-weight: bold;
+		display: inline;
+		}
+	#grouplist tbody span.member {
+		color: #66AA00;
+		}
+	#grouplist tbody span.manager {
+		color: #ff1177;
+		}
+	#grouplist tbody span.pending {
+		color: #AA3300;
+		}
+	#grouplist tbody span.invitee {
+		color: #aaaaaa;
+		}
+/*---------------------------------------------------------------
+	IE 7 hacks
+---------------------------------------------------------------*/
+
+/*---------------------------------------------------------------
+	IE 6 hacks
+---------------------------------------------------------------*/
+

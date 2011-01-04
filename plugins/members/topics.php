@@ -55,12 +55,25 @@ class plgMembersTopics extends JPlugin
 
 	//-----------
 
-	public function onMembersContributionsCount( $authorized ) 
+	public function onMembersContributionsCount( $authorized, $user_id='m.uidNumber', $username='m.username' ) 
 	{
-		$query  = "SELECT COUNT(*) FROM #__wiki_page AS w WHERE (w.created_by=m.uidNumber OR w.authors LIKE '%m.username%')";
+		//$query  = "SELECT COUNT(*) FROM #__wiki_page AS w WHERE (w.created_by='".$user_id."' OR w.authors LIKE '%".$username."%')";
+		$username = ($username == 'm.username') ? $username : "'".$username."'";
+		$query = "SELECT COUNT(*) FROM #__wiki_page AS w 
+					WHERE (CASE WHEN ".$user_id.">0 THEN (w.authors LIKE CONCAT('%',".$username.",'%') OR w.created_by=".$user_id.") ELSE w.created_by=".$user_id." END)";
 		if (!$authorized) {
 			$query .= " AND w.access!=1";
 		}
+		/*$query = "SELECT COUNT(*) FROM (
+			SELECT COUNT(DISTINCT v.pageid) FROM #__wiki_page AS w, #__wiki_version AS v 
+			WHERE w.id=v.pageid 
+			AND v.approved=1 
+			AND (w.created_by=m.uidNumber OR w.authors LIKE '%m.username%') ";
+		if (!$authorized) {
+			$query .= " AND w.access!=1";
+		}
+		$query .= " GROUP BY pageid 
+		) AS f";*/
 		return $query;
 	}
 

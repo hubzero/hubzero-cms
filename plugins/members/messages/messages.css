@@ -1,0 +1,176 @@
+/*
+
+	-- -- -- -- -- -- --
+	Members Messages plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Settings */
+	.settings {
+		border-bottom: none;
+		}
+	.settings .odd {
+		background-color: #F5F7F2;
+		}
+	.settings tfoot th,
+	.settings tfoot td {
+		border-bottom: none;
+		border-top: 2px solid #DEE4CD;
+		padding-top: 1.5em;
+		text-align: right;
+		}
+	.settings tbody tr.section-header th,
+	.settings tbody tr.section-header td {
+		padding-top: 1.5em;
+		font-weight: bold;
+		}
+	.settings .iconed {
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		text-indent: -55em;
+		margin: 0;
+		padding: 0;
+		}
+	.settings td.email {
+		background-position: 0 50%;
+		}
+	.trash {
+		background: url("images/trash.gif") 0 0 no-repeat;
+		padding-left: 20px;
+		}
+/* Inboxes */
+	#messages-section .subject {
+		padding-top: 1em;
+		}
+	#messages-section .subject table.data {
+		margin-top: 1em;
+		border-bottom: none;
+		}
+	#messages-section .subject table.data td {
+		border: none;
+		}
+	#messages-section .subject table.data td .trash {
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		text-indent: -55em;
+		margin: 0;
+		padding: 0;
+		border: none;
+		}
+	#messages-section .subject table.data tfoot td {
+		border-top: 2px solid #dfdfdf;
+		border-bottom: none;
+		}
+	#messages-section .subject #hubForm {
+		border: none;
+		}
+/* Side menu
+	NOTE: We have to be fairly explicit in some of the following delcarations 
+	to over-ride some styles in the master template 
+*/
+	#messages-section .aside li {
+		border: none;
+		margin: 0;
+		padding: 0;
+		}
+	#messages-section .aside li a {
+		margin: 0;
+		font-size: 100%;
+		text-transform: none;
+		letter-spacing: 0px;
+		border-top: 1px solid #fff;
+		border-right: 1px solid #ccc;
+		border-bottom: 1px solid #fff;
+		}
+	#messages-section .aside li a.box {
+		background: #F5F5F5 url("images/box.png") 5px 50% no-repeat; padding-left: 25px;
+		}
+	#messages-section .aside li a.archive,
+	#messages-section .withleft .aside li a.archive {
+		border: none;
+		margin: 0;
+		padding: 0.7em 1.2em;
+		background: #F5F5F5 url("images/archive.gif") 5px 50% no-repeat; padding-left: 25px;
+		border-top: 1px solid #fff;
+		border-right: 1px solid #ccc;
+		border-bottom: 1px solid #fff;
+		color: #6699cc;
+		}
+	#messages-section .aside li a.trash {
+		background: #F5F5F5 url("images/trash.gif") 5px 50% no-repeat; padding-left: 25px;
+		}
+	#messages-section .aside li a.config {
+		background: #F5F5F5 url("images/cog.png") 5px 50% no-repeat; padding-left: 25px;
+		}
+	#messages-section .aside li a.sent {
+		background: #F5F5F5 url("images/email_go.png") 5px 50% no-repeat; padding-left: 25px;
+		}
+	#messages-section .aside li.active a,
+	#messages-section .aside li.active a.archive {
+		background-color: #fff;
+		border-top: 1px solid #ccc;
+		border-right: 1px solid #fff;
+		border-bottom: 1px solid #ccc;
+		font-weight: bold;
+		}
+	#messages-section .withleft .aside li a.archive:hover,
+	#messages-section .aside li a:hover {
+		background-color: #333;
+		}
+	#messages-section table,
+	#messages-section table thead td,
+	#messages-section table thead th {
+		border-color: #ccc;
+		}
+	#messages-section table tbody td,
+	#messages-section table tbody th {
+		border-color: #ddd;
+		}
+	#messages-section table tbody tr.odd {
+		background-color: #f4f7fb; 
+		}
+/* Message status */
+	.check, 
+	.sttus {
+		width: 1em;
+		}
+	.priority,
+	.status {
+		display: block;
+		width: 16px;
+		height: 16px;
+		text-indent: -55em;
+		overflow: hidden;
+		}
+	.high {
+		background: url("images/flag_red.png") 0 0 no-repeat;
+		}
+	span.unread {
+		background: url("images/bullet_blue.png") 0 0 no-repeat;
+		}
+	a.unread {
+		font-weight: bold;
+		}
+	.actionitem span.unread {
+		background: url("images/error.gif") 0 0 no-repeat;
+		}
+	.actionitem a.unread {
+		color: #c00;
+		}
+	.message { 
+		background: url("images/email_go.png") 0 0 no-repeat; 
+		padding-left: 20px;
+		}
+/*---------------------------------------------------------------
+	IE 7 hacks
+---------------------------------------------------------------*/
+
+/*---------------------------------------------------------------
+	IE 6 hacks
+---------------------------------------------------------------*/
+

@@ -89,6 +89,9 @@ class plgMembersMessages extends JPlugin
 		
 		// Are we returning HTML?
 		if ($returnhtml) {
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('members', 'messages');
+			
 			$task = JRequest::getVar('action','');
 			if (!$task) {
 				$task = JRequest::getVar('inaction','');
