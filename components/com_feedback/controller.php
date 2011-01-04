@@ -560,6 +560,13 @@ class FeedbackController extends Hubzero_Controller
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'attachment.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
 
+		// Get plugins
+		JPluginHelper::importPlugin( 'support' );
+		$dispatcher =& JDispatcher::getInstance();
+
+		// Trigger any events that need to be called before session stop
+		$dispatcher->trigger( 'onPreTicketSubmission', array() );
+
 		// Incoming
 		$no_html  = JRequest::getInt( 'no_html', 0 );
 		$reporter = array_map('trim', $_POST['reporter']);
@@ -767,10 +774,6 @@ class FeedbackController extends Hubzero_Controller
 		ximport('Hubzero_Toolbox');
 		Hubzero_Toolbox::send_email($admin, $subject, $message);
 		
-		// Get plugins
-		JPluginHelper::importPlugin( 'support' );
-		$dispatcher =& JDispatcher::getInstance();
-		
 		// Trigger any events that need to be called before session stop
 		$dispatcher->trigger( 'onTicketSubmission', array($row) );
 		
@@ -786,6 +789,8 @@ class FeedbackController extends Hubzero_Controller
 		}
 		$view->display();
 	}
+	
+	//-----------
 
 	private function _uploadAttachment( $listdir, $sconfig )
 	{
