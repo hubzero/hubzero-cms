@@ -39,9 +39,10 @@ if ($modfeaturedblog->error) {
 			$html .= '<h3>'.JText::_('MOD_FEATUREDBLOG').'</h3>'."\n";
 		//}
 		// Do we have a picture to show?
-		if (is_file(JPATH_ROOT.$modfeaturedblog->thumb)) {
+		/*if (is_file(JPATH_ROOT.$modfeaturedblog->thumb)) {
 			$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$modfeaturedblog->id).'"><img width="50" height="50" src="'.$modfeaturedblog->thumb.'" alt="'.htmlentities(stripslashes($modfeaturedblog->title)).'" /></a></p>'."\n";
-		}
+		}*/
+		$html .= '<p class="featured-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$modfeaturedblog->row->created_by.'&active=blog&task='.JHTML::_('date',$modfeaturedblog->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$modfeaturedblog->row->publish_up, '%m', 0).'/'.$modfeaturedblog->row->alias).'"><img width="50" height="50" src="/modules/mod_featuredblog/images/blog_thumb.gif" alt="'.htmlentities(stripslashes($modfeaturedblog->title)).'" /></a></p>'."\n";
 		$html .= '<p><a href="'.JRoute::_('index.php?option=com_members&id='.$modfeaturedblog->row->created_by.'&active=blog&task='.JHTML::_('date',$modfeaturedblog->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$modfeaturedblog->row->publish_up, '%m', 0).'/'.$modfeaturedblog->row->alias).'">'.stripslashes($modfeaturedblog->title).'</a>: '."\n";
 		if ($modfeaturedblog->txt) {
 			//$p = new WikiParser( stripslashes($modfeaturedblog->title), 'com_members', 'blog', $modfeaturedmember->alias, 0, $path );
