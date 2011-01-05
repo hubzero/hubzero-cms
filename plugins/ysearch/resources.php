@@ -48,7 +48,7 @@ class plgYSearchResources extends YSearchPlugin
 			"SELECT
 				r.id,
 				r.title,
-				concat(coalesce(r.introtext, ''), coalesce(r.`fulltext`, '')) AS description,
+				coalesce(r.`fulltext`, r.introtext, '') AS description,
 				concat('/resources/', coalesce(case when r.alias = '' then null else r.alias end, r.id)) AS link,
 				$weight AS weight,
 				r.publish_up AS date,
@@ -93,7 +93,7 @@ class plgYSearchResources extends YSearchPlugin
 	                        "SELECT
         	                        r.id,
                 	                r.title,
-                        	        concat(coalesce(r.introtext, ''), coalesce(r.`fulltext`, '')) AS description,
+					coalesce(r.`fulltext`, r.introtext, '') AS description,
 	                                concat('/resources/', coalesce(case when r.alias = '' then null else r.alias end, r.id)) AS link,
                                 	r.publish_up AS date,
 					0.5 as weight,
