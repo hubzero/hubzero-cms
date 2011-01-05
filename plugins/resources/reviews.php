@@ -515,7 +515,7 @@ class PlgResourcesReviewsHelper extends JObject
 				$view->item = $response[0];
 				$view->display();
 			} else {				
-				$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&task=reviews&id='.$rid);
+				$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$rid.'&active=reviews');
 			}
 		}
 	}

@@ -40,7 +40,7 @@ if ($this->review->id) {
 		<a name="reviewform"></a>
 		<?php echo $title; ?>
 	</h3>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->review->id.'&active=reviews'); ?>" method="post" id="commentform">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->review->resource_id.'&active=reviews'); ?>" method="post" id="commentform">
 		<div class="aside">
 			<table class="wiki-reference" summary="Wiki Syntax Reference">
 				<caption>Wiki Syntax Reference</caption>
