@@ -161,6 +161,8 @@ class plgGroupsBlog extends JPlugin
 				default: $arr['html'] = $this->_browse(); break;
 			}
 		} else {
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'tables'.DS.'blog.entry.php');
+			
 			$arr['metadata'] = $this->_metadata();
 			$arr['dashboard'] = $this->_dashboard();
 		}
@@ -172,7 +174,30 @@ class plgGroupsBlog extends JPlugin
 
 	private function _metadata() 
 	{
-		$html = '<p class="blog"><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog').'">'.JText::_('Blog entries').'</a></p>'."\n";
+		$filters = array();
+		$filters['limit'] = 25;
+		$filters['start'] = 0;
+		$filters['created_by'] = 0;
+		$filters['year'] = 0;
+		$filters['month'] = 0;
+		$filters['scope'] = 'group';
+		$filters['group_id'] = $this->group->get('gidNumber');
+		$filters['search'] = '';
+		
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			$filters['state'] = 'public';
+		} else {
+			if ($this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin') {
+				$filters['state'] = 'registered';
+			}
+		}
+		
+		$be = new BlogEntry($this->database);
+		
+		$total = $be->getCount($filters);
+		
+		$html = '<a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog').'">'.$total.' '.JText::_('Blog entries').'</a>'."\n";
 		
 		return $html;
 	}
