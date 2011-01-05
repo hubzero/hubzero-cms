@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="groups">
+	<name>Groups - Usage</name>
+	<author>Shawn Rice</author>
+	<creationDate>June 2008</creationDate>
+	<copyright>Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>zooley@purdue.edu</authorEmail>
+	<authorUrl>zooley.rcac.purdue.edu</authorUrl>
+	<version>1.5</version>
+	<description>Display usage information for a group</description>
+	<files>
+		<filename plugin="usage">usage.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_groups_usage.ini</language>
+	</languages>
+	<params>
+	</params>
+</install>
