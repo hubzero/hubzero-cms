@@ -262,8 +262,8 @@ class modFeaturedmember
 				
 				// Member profile
 				$this->title = $row->name;
-				if (!trim($title)) {
-					$title = $row->givenName.' '.$row->surname;
+				if (!trim($this->title)) {
+					$this->title = $row->givenName.' '.$row->surname;
 				}
 				$this->id = $row->uidNumber;
 				
