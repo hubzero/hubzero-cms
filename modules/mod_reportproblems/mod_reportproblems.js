@@ -139,17 +139,28 @@ if (typeof(Fx) === 'undefined') {
 				events: {
 					'click': function(event) {
 						fa.toggle();
+						if ($('tab')) {
+							if ($('tab').hasClass('active')) {
+								$('tab').removeClass('active');
+							}
+						}
 					}
 				}
 			}).injectInside(this.pane);
 
 			this.tab = $('tab');
-			if (this.tab) {
-				this.tab.addEvent('click', function(e) {
+			if ($('tab')) {
+				$('tab').addEvent('click', function(e) {
 					new Event(e).stop();
+					if ($('tab').hasClass('active')) {
+						$('tab').removeClass('active');
+					} else {
+						$('tab').addClass('active');
+					}
 					if (this.open == false) { 
 						this.container.setStyle('visibility','visible');
 						this.open = true;
+						
 					} else {
 						//this.container.setStyle('visibility','hidden');
 						this.open = false;
