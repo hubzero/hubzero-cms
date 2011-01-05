@@ -131,7 +131,7 @@ class modWhatsNew
 
 		// Build the feed link if necessary
 		if ($this->feed) {
-			$feedlink = JRoute::_('index.php?option=com_whatsnew&amp;task=feed.rss&amp;period='.$period);
+			$feedlink = JRoute::_('index.php?option=com_whatsnew&amp;task=feed.rss&amp;period='.$this->period);
 			if (substr($feedlink,0,5) == 'https') {
 				$feedlink = ltrim($feedlink, 'https');
 				$feedlink = 'http'.$feedlink;
