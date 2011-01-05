@@ -73,7 +73,7 @@ class plgXSearchKb extends JPlugin
 
 		// Build the query
 		$f_count = "SELECT COUNT(*)";
-		$f_fields = "SELECT f.id, f.title, f.alias, CONCAT( f.introtext, f.fulltext ) AS itext, f.fulltext AS ftext, f.state, f.created, f.modified, f.created AS publish_up, NULL AS params,
+		$f_fields = "SELECT f.id, f.title, f.alias, f.fulltext AS itext, f.fulltext AS ftext, f.state, f.created, f.modified, f.created AS publish_up, NULL AS params,
 					CONCAT( 'index.php?option=com_kb&alias=', f.alias ) AS href, 'kb' AS section, cc.alias AS area, c.alias AS category, NULL AS rating, NULL AS times_rated, NULL AS ranking, f.access,";
 
 		$f_from = " FROM #__faq AS f
