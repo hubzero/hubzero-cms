@@ -69,7 +69,7 @@ class TitleIndexMacro extends WikiMacro
 			case 'sort=created':
 			case 'sort=title':
 			default:
-				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, v.`created` FROM #__wiki_page AS p, #__wiki_version AS v WHERE v.pageid=p.id AND v.version=1 AND ";
+				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, v.`created`, MAX(v.`version`) FROM #__wiki_page AS p, #__wiki_version AS v WHERE v.pageid=p.id AND v.approved=1 AND ";
 			break;
 		}
 		
@@ -91,14 +91,14 @@ class TitleIndexMacro extends WikiMacro
 		switch ($sort) 
 		{
 			case 'sort=created':
-				$sql .= " ORDER BY `created` ASC";
+				$sql .= " GROUP BY v.pageid ORDER BY `created` ASC";
 			break;
 			case 'sort=modified':
 				$sql .= " GROUP BY v.pageid ORDER BY `modified` DESC";
 			break;
 			case 'sort=title':
 			default:
-				$sql .= " ORDER BY `title` ASC, `pagename` ASC";
+				$sql .= " GROUP BY v.pageid ORDER BY `title` ASC, `pagename` ASC";
 			break;
 		}
 //echo '<!-- '.$sql.' -->';
