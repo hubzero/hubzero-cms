@@ -11,7 +11,7 @@ defined('_JEXEC') or die( 'Restricted access' );
   $document->addScript($this->baseurl."/components/com_warehouse/js/resources.js", 'text/javascript');
 ?>
 
-<?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
+<?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?> 
 
 <?php
   $strUsername = $this->strUsername;
@@ -83,7 +83,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                               <td><b><?php echo $strName; ?>:</b></td>
                               <td>
                                 <a href="/warehouse/experiment/<?php echo $iExperimentId; ?>/project/<?php echo $this->projid ?>" style="font-size: 15px;"><?php echo $strTitle; ?></a>
-                                <?php if($oProject->hasOpenData()) {?>
+                                <?php if($oExperiment->hasOpenData()) {?>
                                   <a href="http://www.opendatacommons.org/licenses/by/summary/" target="openData" style="border:0px;" title="Open Data license"><img src="/components/com_warehouse/images/icons/open_data.png" style="margin-left:20px;" border="0"/></a>
                                 <?php }?>
                               </td>
