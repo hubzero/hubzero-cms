@@ -92,8 +92,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			case 67:  $html .= 'Multimedia'; break;
 			case 66:  $html .= 'Learning Object'; break;
 			case 68:  $html .= 'Active Document'; break;
-			case 69:  $html .= 'Historial Document'; break;
-		
+			case 69:  $html .= 'Historical Document'; break;
+			case 36: $html .= 'Poster'; break;
 			case 4:
 			default:
 					$html .= 'Resource'; break;
