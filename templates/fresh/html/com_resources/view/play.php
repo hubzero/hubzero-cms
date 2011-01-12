@@ -256,7 +256,7 @@ else if ($this->resource->type == 67) {
 			}
 			
 			//switch between simple picture player and a better movie player (more controls)
-			$player_src = (!$isMovie)? 'http://builds.flowplayer.netdna-cdn.com/48746/21045/flowplayer-3.2.4-0.swf' : "http://builds.flowplayer.netdna-cdn.com/48746/19312/flowplayer-3.2.4-0.swf"; 
+			$player_src = ($isMovie)? 'http://builds.flowplayer.netdna-cdn.com/65034/35392/flowplayer.commercial-3.2.5-0.swf' : 'http://builds.flowplayer.netdna-cdn.com/65034/35393/flowplayer.commercial-3.2.5-0.swf' ; 
 			// now we install the player to the page
 			$html .='  $f("player", "'.$player_src.'", { clip: { scaling: "orig", onFinish: function() { parent.$jQ.fancybox.next(); }}, wmode: \'transparent\', play:{opacity:0} ';
 			$html .= "\n";
