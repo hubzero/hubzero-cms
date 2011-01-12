@@ -48,7 +48,8 @@ defined('_JEXEC') or die( 'Restricted access' );
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/411">411 - Elastomeric Structural Damper</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/412">412 - Landslides in Cohesive Slopes</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/414">414 - Using the NEES Field Shakers to Induce Liquefaction at Previous Liquefaction Sites</a><br/></li>
-                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/625">625 - Full-Scale RC Flat-Plate Structure</a><br/></li>
+                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/605">605 - International Hybrid Simulation of Tomorrow's Braced Frame Systems</a><br/></li>                        
+						<li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/625">625 - Full-Scale RC Flat-Plate Structure</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/637">637 - Vulnerable Concrete Buildings</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/665">665 - Wave Loading on Residential Structures</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/672">672 - Deep Shear Wave Velocities in the Las Vegas Basin</a><br/></li>
