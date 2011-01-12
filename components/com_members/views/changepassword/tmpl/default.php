@@ -43,6 +43,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber').'&task=changepassword'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('MEMBERS_CHANGEPASSWORD_EXPLANATION'); ?></p>
+			<p class="help">If you don't remember your password, you must <a href="/logout?return=L2xvc3RwYXNzd29yZA==">log out</a> and go to http://nees.org/lostpassword to reset it.</p>
 		</div>
 		<fieldset>
 			<label<?php echo ($this->change && $this->oldpass && !Hubzero_Users_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass)) ? ' class="fieldWithErrors"' : ''; ?>>
