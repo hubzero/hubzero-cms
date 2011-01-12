@@ -1269,21 +1269,39 @@ class EventsController extends JObject
 
 			$lists['state'] = JHTML::_('select.genericlist', $arr, 'state', '', 'value', 'text', $row->state, false, false );
 		} else {
-			// No ID - we're creating a new event
-			$year  = $this->year;
-			$month = $this->month;
-			$day   = $this->day;
-			
-			if ($year && $month && $day) {
-				$start_publish = $year.'-'.$month.'-'.$day;
-				$stop_publish = $year.'-'.$month.'-'.$day;
-				$registerby_date = $year.'-'.$month.'-'.$day;
+			if ($row->publish_up && $row->publish_up != '0000-00-00 00:00:00') {
+				$event_up = new EventsDate( $row->publish_up );
+				$start_publish = sprintf( "%4d-%02d-%02d",$event_up->year,$event_up->month,$event_up->day);
+				$start_time = $event_up->hour .':'. $event_up->minute;
+
+				$event_down = new EventsDate( $row->publish_down );
+				$stop_publish = sprintf( "%4d-%02d-%02d",$event_down->year,$event_down->month,$event_down->day);
+				$end_time = $event_down->hour .':'. $event_down->minute;
+
+				$event_registerby = new EventsDate( $row->registerby );
+				$registerby_date = sprintf( "%4d-%02d-%02d",$event_registerby->year,$event_registerby->month,$event_registerby->day);
+				$registerby_time = $event_registerby->hour .':'. $event_registerby->minute;
 			} else {
-				$offset = $this->offset;
+				// No ID - we're creating a new event
+				$year  = $this->year;
+				$month = $this->month;
+				$day   = $this->day;
+
+				if ($year && $month && $day) {
+					$start_publish = $year.'-'.$month.'-'.$day;
+					$stop_publish = $year.'-'.$month.'-'.$day;
+					$registerby_date = $year.'-'.$month.'-'.$day;
+				} else {
+					$offset = $this->offset;
+
+					$start_publish = strftime( "%Y-%m-%d", time()+($offset*60*60) ); //date( "Y-m-d" );
+					$stop_publish = strftime( "%Y-%m-%d", time()+($offset*60*60) );  //date( "Y-m-d" );
+					$registerby_date = strftime( "%Y-%m-%d", time()+($offset*60*60) );  //date( "Y-m-d" );
+				}
 				
-				$start_publish = strftime( "%Y-%m-%d", time()+($offset*60*60) ); //date( "Y-m-d" );
-				$stop_publish = strftime( "%Y-%m-%d", time()+($offset*60*60) );  //date( "Y-m-d" );
-				$registerby_date = strftime( "%Y-%m-%d", time()+($offset*60*60) );  //date( "Y-m-d" );
+				$start_time = "08:00";
+				$end_time = "17:00";
+				$registerby_time = "08:00";
 			}
 
 			// If user hits refresh, try to maintain event form state
@@ -1670,6 +1688,17 @@ class EventsController extends JObject
 
 		$row->state = 1;
 		$row->mask = 0;
+	
+		$pubdow = strtotime($row->publish_down);
+		$pubup = strtotime($row->publish_up);
+		if ($pubdow <= $pubup) {
+			// Set the error message
+			$this->setError('Event end time cannot be before event start time.');
+			// Fall through to the edit view
+			$this->edit($row);
+			return;
+			//$row->publish_down = strftime("%Y-%m-%d %H:%M:%S",strtotime("+1 hour", $pubup));
+		}
 	
 		if (!$row->check()) {
 			// Set the error message
