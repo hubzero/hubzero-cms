@@ -199,6 +199,7 @@ foo();
 				var ar = parent.parent.wargs;
 				for (w=0;w<ar.length;w++) {
 					addtagtxt(ar[w]);
+					alert("Tag automatically added: " + ar[w]);
 				}
 			 }
 		}
