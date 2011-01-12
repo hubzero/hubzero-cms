@@ -648,6 +648,13 @@ class FeedbackController extends JObject
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'attachment.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
 
+		// Get plugins
+		JPluginHelper::importPlugin( 'support' );
+		$dispatcher =& JDispatcher::getInstance();
+
+		// Trigger any events that need to be called before session stop
+		$dispatcher->trigger( 'onPreTicketSubmission', array() );
+
 		// Incoming
 		$no_html  = JRequest::getInt( 'no_html', 0 );
 		$reporter = array_map('trim', $_POST['reporter']);
@@ -675,8 +682,13 @@ class FeedbackController extends JObject
 	
 		$juser =& JFactory::getUser();
 
+		// Trigger any events that need to be called
+		$customValidation = true;
+		$result = $dispatcher->trigger( 'onValidateTicketSubmission', array($reporter, $problem) );
+		$customValidation = (is_array($result) && !empty($result)) ? $result[0] : $customValidation;
+
 		// Check for some required fields
-		if (!$reporter['name'] || !$reporter['email'] || !$validemail || !$problem['long']) {
+		if (!$reporter['name'] || !$reporter['email'] || !$validemail || !$problem['long'] || !$customValidation) {
 			// Output form with error messages
 			$view = new JView( array('name'=>'report') );
 			$view->title = $this->_title;
@@ -847,9 +859,19 @@ class FeedbackController extends JObject
 		$message .= ($problem['tool']) ? JText::_('COM_FEEDBACK_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
 		$message .= JText::_('COM_FEEDBACK_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($problem['long'])) ."\r\n";
 
+		$juri =& JURI::getInstance();
+		$sef = JRoute::_('index.php?option=com_support&task=ticket&id='. $row->id);
+		if (substr($sef,0,1) == '/') {
+			$sef = substr($sef,1,strlen($sef));
+		}
+		$message .= $juri->base().$sef."\r\n";
+
 		// Send e-mail
 		ximport('xhubhelper');
 		XHubHelper::send_email($admin, $subject, $message);
+
+		// Trigger any events that need to be called before session stop
+		$dispatcher->trigger( 'onTicketSubmission', array($row) );
 
 		// Output Thank You message
 		$view = new JView( array('name'=>'report', 'layout'=>'thanks') );
