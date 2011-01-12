@@ -147,10 +147,16 @@ class plgYSearchMembers extends YSearchPlugin
 					WHERE aa.authorid = ".$row->get('id')
 			);
 			$work_assoc = $work->to_associative();
+			$added = array();
 			foreach ($work_assoc as $wrow)
 			{
+				$link = $wrow->get_link();
+				if (array_key_exists($link, $added))
+					continue;
+
 				$row->add_child($wrow);
 				$row->add_weight(1);
+				$added[$link] = 1;
 			}
 			$row->sort_children(array('ContributionSorter', 'sort'));
 			$resp[] = $row;

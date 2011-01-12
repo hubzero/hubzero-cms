@@ -41,11 +41,11 @@ $html = '';
 <div id="<?php echo $modannouncements->container; ?>">
 	<?php if  ($params->get('show_search', '')) { 
 	// search
-			$html  .= '<form action="/xsearch/" method="get" class="search">'."\n";
+			$html  .= '<form action="/search/" method="get" class="search">'."\n";
 			$html  .= ' <fieldset>'."\n";
 			$html  .= '  <p>'."\n";
-			$html  .= '   <input type="text" name="searchword" value="" />'."\n";
-			$html  .= '   <input type="hidden" name="category" value="articles" />'."\n";
+			$html  .= '   <input type="text" name="terms" value="" />'."\n";
+			$html  .= '   <input type="hidden" name="section" value="content:announcements" />'."\n";
 			$html  .= '   <input type="submit" value="Search" />'."\n";
 			$html  .= '  </p>'."\n";
 			$html  .= ' </fieldset>'."\n";

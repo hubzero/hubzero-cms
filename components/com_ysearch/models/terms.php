@@ -113,14 +113,14 @@ class YSearchModelTerms extends JModel
 		$accumulating_phrase = false;
 		$partial = '';
 		$sign = '';
+		if (array_key_exists('section', $_GET))
+			$this->raw = $_GET['section'].':'.$this->raw;
 		$raw = trim(strtolower($this->raw));
 		if (preg_match('/^([_.a-z:]+):/', $raw, $match))
 		{
 			$this->section = explode(':', $match[1]);
 			$raw = preg_replace('/^'.preg_quote($match[1]).':/', '', $raw);
 		}
-		else if (array_key_exists('section', $_GET))
-			$this->section = array($_GET['section']);
 
 		$raw = preg_replace('/[^-+"[:alnum:] ]/', '', preg_replace('/\s+/', ' ', trim($raw)));
 		for ($idx = 0, $len = strlen($raw); $idx < $len; ++$idx)

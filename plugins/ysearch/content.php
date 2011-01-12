@@ -34,7 +34,7 @@ class plgYSearchContent extends YSearchPlugin
 				END AS link,
 				$weight AS weight,
 				publish_up AS date,
-				s.name AS section,
+				ca.title AS section,
 				(SELECT group_concat(u1.name separator '\\n') FROM jos_author_assoc anames INNER JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
 				(SELECT group_concat(ids.authorid separator '\\n') FROM jos_author_assoc ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
 			FROM jos_content c 
@@ -48,17 +48,8 @@ class plgYSearchContent extends YSearchPlugin
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" ORDER BY $weight DESC"
 		);
-		if (array_key_exists('test_contrib', $_GET))
-		{
-			foreach ($sql->to_associative() as $row)
-			{
-				if ($row->get('section') == 'Tools')
-				{
-					print_r($row->get('contributors'));
-					print_r($row->get('contributor_ids'));
-				}
-			}
-		}
+//		foreach ($sql->to_associative() as $row)
+//			print_r($row->get_section());
 		$results->add($sql);
 	}
 }
