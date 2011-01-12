@@ -413,7 +413,7 @@ if (!defined("n")) {
 		$html .= t.t.t.'<option value="LEHIGH"' . (($this->registration['neesaffiliation'] == 'LEHIGH') ? ' selected="selected"' : '') . '>Lehigh University</option>'.n;
 		$html .= t.t.t.'<option value="BERKELEY"' . (($this->registration['neesaffiliation'] == 'BERKELEY') ? ' selected="selected"' : '') . '>University of CA, Berkley</option>'.n;
 		$html .= t.t.t.'<option value="UI"' . (($this->registration['neesaffiliation'] == 'UI') ? ' selected="selected"' : '') . '>University of IL, Urbana</option>'.n;
-		$html .= t.t.t.'<option value="UM"' . (($this->registration['neesaffiliation'] == 'UM') ? ' selected="selected"' : '') . '>University of Minesota</option>'.n;
+		$html .= t.t.t.'<option value="UM"' . (($this->registration['neesaffiliation'] == 'UM') ? ' selected="selected"' : '') . '>University of Minnesota</option>'.n;
 		$html .= t.t.t.'<option value="BUFFALO"' . (($this->registration['neesaffiliation'] == 'BUFFALO') ? ' selected="selected"' : '') . '>University at Buffalo, SUNY</option>'.n;
 		$html .= t.t.t.'<option value="UCSD"' . (($this->registration['neesaffiliation'] == 'UCSD') ? ' selected="selected"' : '') . '>University of CA, San Diego</option>'.n;
 		$html .= t.t.t.'<option value="RENO"' . (($this->registration['neesaffiliation'] == 'RENO') ? ' selected="selected"' : '') . '>University of Nevada, Reno</option>'.n;
