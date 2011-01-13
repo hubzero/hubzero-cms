@@ -119,7 +119,7 @@ if ($this->comments) {
 					<th><?php echo JText::_('TICKET_DETAILS_OWNER'); ?>:</th>
 					<td><?php echo ($this->row->owner) ? $this->row->owner : 'none'; ?></td>
 				</tr>
-<?php if ($this->authorized) { ?>
+<?php if ($this->acl->check('update','tickets') > 0) { ?>
 				<tr>
 					<th><?php echo JText::_('TICKET_DETAILS_OS'); ?>:</th>
 					<td><?php echo $this->row->os; ?> / <?php echo $this->row->browser; ?> (<?php echo ($this->row->cookies) ? JText::_('COOKIES_ENABLED') : JText::_('COOKIES_DISABLED'); ?>)</td>
@@ -146,19 +146,29 @@ if ($this->comments) {
 	</div><!-- / .subject -->
 </div><!-- / .section -->
 
+<?php if ($this->acl->check('read','comments')) { ?>
 <div class="main section">
-	<h3><a name="comments"></a><?php echo JText::_('TICKET_COMMENTS'); ?></h3>
-<?php if (count($this->comments) > 0) { ?>			
+	<h3><a name="comments"></a><?php echo JText::_('TICKET_COMMENTS'); ?></h3>		
 	<div class="aside">
+<?php if ($this->acl->check('create','comments')) { ?>
 		<p class="add"><a href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a></p>
+<?php } ?>
 	</div><!-- / .aside -->
 
 	<div class="subject">
-<?php
+		<ol class="comments">
+<?php 
+		if (count($this->comments) > 0) { 
 			$o = 'even';
-			$html  = t.t.t.t.'<ol class="comments">'.n;
+			$i = 0;
+			$html = '';
 			foreach ($this->comments as $comment) 
 			{
+				if (!$this->acl->check('read','private_comments') && $comment->access == 1) {
+					continue;
+				}
+				$i++;
+				
 				if ($comment->access == 1) { 
 					$access = 'private';
 				} else {
@@ -205,27 +215,34 @@ if ($this->comments) {
 				$html .= t.t.t.t.t.t.'</div>'.n;
 				$html .= t.t.t.t.t.'</li>'.n;
 			}
-			$html .= t.t.t.t.'</ol>'.n;
 			echo $html;
+			if ($i == 0) {
 ?>
+			<li>
+				<p>No comments found.</p>
+			</li>
+<?php
+			}
+		} else { ?>
+			<li>
+				<p>No comments found.</p>
+			</li>
+<?php } ?>
+		</ol>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
-<?php } ?>
 </div><!-- / .main section -->
+<?php } // ACL can read comments ?>
 
-<?php if ((!$juser->get('guest') && ($juser->get('username') == $this->row->login || $this->authorized))) { ?>
+<?php if ($this->acl->check('create','comments')) { ?>
 <div class="section">
 	<div class="aside">
-<?php if ($this->authorized) { ?>
-		<p><?php echo JText::_('COMMENT_FORM_EXPLANATION'); ?></p>
-<?php } else { ?>
 		<p>Please remember to describe problems in detail, including any steps you may have taken before encountering an error.</p>
-<?php } ?>
 	</div><!-- / .aside -->
 	
 	<div class="subject">
 		<form action="index.php" method="post" id="hubForm" enctype="multipart/form-data">
-			<h4><?php echo JText::_('COMMENT_FORM'); ?></h4>
+			<h4><a name="commentform"></a><?php echo JText::_('COMMENT_FORM'); ?></h4>
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="ticket[id]" value="<?php echo $this->row->id; ?>" />
@@ -233,12 +250,12 @@ if ($this->comments) {
 				<input type="hidden" name="task" value="save" />
 				<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
 				<input type="hidden" name="find" value="<?php echo htmlentities(urldecode($fstring), ENT_QUOTES); ?>" />
-<?php if (!$this->authorized) { ?>
+<?php if (!$this->acl->check('create','private_comments')) { ?>
 				<input type="hidden" name="access" value="0" />
 <?php } ?>
 
-				<a name="commentform"></a>
-<?php if ($this->authorized) { ?>
+<?php if ($this->acl->check('update','tickets')) { ?>
+<?php if ($this->acl->check('update','tickets') > 0) { ?>
 				<div class="group">
 					<label>
 						<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
@@ -259,8 +276,7 @@ if (count($tf) > 0) {
 					</label>
 				</div>
 				<div class="clear"></div>
-<?php } ?>
-<?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
+
 				<div class="group threeup">
 					<label>
 						<?php echo JText::_('COMMENT_GROUP'); 
@@ -276,7 +292,7 @@ if (count($tf) > 0) {
 						<?php echo JText::_('COMMENT_OWNER'); ?>:
 						<?php echo $this->lists['owner']; ?>
 					</label>
-<?php } ?>
+<?php } // ACL can update ticket (admin) ?>
 					<label>
 						<?php echo JText::_('COMMENT_STATUS'); ?>:
 						<select name="ticket[resolved]" id="status">
@@ -291,34 +307,41 @@ if (count($tf) > 0) {
 							$html .= ' selected="selected"';
 						}
 						$html .= '>'.JText::_('COMMENT_OPT_WAITING').'</option>'.n;
-						$html .= t.'<optgroup label="Closed">'.n;
+						if ($this->acl->check('update','tickets') > 0) {
+							$html .= t.'<optgroup label="Closed">'.n;
+						}
 						$html .= t.t.'<option value="noresolution"';
 						if ($this->row->status == 2 && $this->row->resolved == 'noresolution') {
 							$html .= ' selected="selected"';
 						}
 						$html .= '>'.JText::_('COMMENT_OPT_CLOSED').'</option>'.n;
-						if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') {
-							foreach ($this->lists['resolutions'] as $anode) 
-							{
-								$selected = ($anode->alias == $this->row->resolved)
+						if ($this->acl->check('update','tickets') > 0) {
+							if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') {
+								foreach ($this->lists['resolutions'] as $anode) 
+								{
+									$selected = ($anode->alias == $this->row->resolved)
 										  ? ' selected="selected"'
 										  : '';
-								$html .= t.t.'<option value="'.$anode->alias.'"'.$selected.'>'.stripslashes($anode->title).'</option>'.n;
+									$html .= t.t.'<option value="'.$anode->alias.'"'.$selected.'>'.stripslashes($anode->title).'</option>'.n;
+								}
 							}
+							$html .= t.'</optgroup>'.n;
 						}
-						$html .= t.'</optgroup>'.n;
 						echo $html;
 						?>
 						</select>
 					</label>
-<?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
+<?php if ($this->acl->check('update','tickets') > 0) { ?>
 				</div>
 				<div class="clear"></div>
-<?php } ?>
+<?php } // ACL can update ticket (admin) ?>
+<?php } // ACL can update tickets ?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_COMMENTS'); ?>:</legend>
-<?php if ($this->authorized) { ?>
+<?php if ($this->acl->check('create','comments') > 0 || $this->acl->check('create','private_comments')) { ?>
 					<div class="top group">
+<?php } ?>
+<?php if ($this->acl->check('create','comments') > 0) { ?>
 						<label>
 							<?php
 							$hi = array();
@@ -343,14 +366,17 @@ if (count($tf) > 0) {
 							echo $o.$hi;
 							?>
 						</label>
-
+<?php } // ACL can create comment (admin) ?>
+<?php if ($this->acl->check('create','private_comments')) { ?>
 						<label>
 							<input class="option" type="checkbox" name="access" id="make-private" value="1" />
 							<?php echo JText::_('COMMENT_PRIVATE'); ?>
 						</label>
+<?php } // ACL can create private comments ?>
+<?php if ($this->acl->check('create','comments') > 0 || $this->acl->check('create','private_comments')) { ?>
 					</div>
 					<div class="clear"></div>
-<?php } ?>
+<?php } // ACL can create comments (admin) or private comments ?>
 					<textarea name="comment" id="comment" rows="13" cols="35"></textarea>
 				</fieldset>
 
@@ -369,7 +395,7 @@ if (count($tf) > 0) {
 					</div>
 				</fieldset>
 
-<?php if ($this->authorized) { ?>
+<?php if ($this->acl->check('create','comments') > 0) { ?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_EMAIL'); ?>:</legend>
 					<div class="group">
@@ -392,11 +418,11 @@ if (count($tf) > 0) {
 <?php } else { ?>
 					<input type="hidden" name="email_submitter" id="email_submitter" value="1" />
 					<input type="hidden" name="email_owner" id="email_owner" value="1" />
-<?php } ?>
+<?php } // ACL can create comments (admin) ?>
 				<p class="submit"><input type="submit" value="<?php echo JText::_('SUBMIT_COMMENT'); ?>" /></p>
 			</fieldset>
 		</form>
 	</div><!-- / .subject -->
 </div><!-- / .section -->
-<?php } ?>
+<?php } // ACL can create comments ?>
 <div class="clear"></div>

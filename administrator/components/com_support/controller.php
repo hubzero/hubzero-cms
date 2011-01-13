@@ -97,8 +97,13 @@ class SupportController extends Hubzero_Controller
 			case 'remove':     $this->remove();     break;
 			case 'cancel':     $this->cancel();     break;
 			case 'tickets':    $this->tickets();    break;
-			
 			case 'stats':      $this->stats();      break;
+			
+			// ACL
+			case 'acl':        $this->acl();        break;
+			case 'updateacl':  $this->updateacl();  break;
+			case 'deleteacl':  $this->deleteacl();  break;
+			case 'saveacl':    $this->saveacl();    break;
 			
 			default: $this->tickets(); break;
 		}
@@ -107,6 +112,209 @@ class SupportController extends Hubzero_Controller
 	//----------------------------------------------------------
 	//  Views
 	//----------------------------------------------------------
+
+	protected function acl()
+	{
+		$this->acl = SupportACL::getACL();
+		
+		// Instantiate a new view
+		$view = new JView( array('name'=>'acl') );
+		$view->option = $this->_option;
+		$view->task = $this->_task;
+		$view->acl = $this->acl;
+		$view->database = $this->database;
+		
+		// Fetch results
+		$aro = new SupportAro( $this->database );
+		$view->rows = $aro->getRecords();
+
+		// Output HTML
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
+	
+	protected function updateacl()
+	{
+		// Check for request forgeries
+		//JRequest::checkToken('get') or jexit( 'Invalid Token' );
+
+		$id = JRequest::getInt( 'id', 0 );
+		$action = JRequest::getVar( 'action', '' );
+		$value = JRequest::getInt( 'value', 0 );
+		
+		$row = new SupportAroAco( $this->database );
+		$row->load( $id );
+		
+		switch ($action) 
+		{
+			case 'create': $row->action_create = $value; break;
+			case 'read':   $row->action_read = $value;   break;
+			case 'update': $row->action_update = $value; break;
+			case 'delete': $row->action_delete = $value; break;
+		} 
+		
+		// Check content
+		if (!$row->check()) {
+			JError::raiseError( 500, $row->getError() );
+			return;
+		}
+
+		// Store new content
+		if (!$row->store()) {
+			JError::raiseError( 500, $row->getError() );
+			return;
+		}
+
+		// Output messsage and redirect
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=acl';
+		$this->_message = JText::_('ACL successfully updated');
+	}
+	
+	//-----------
+	
+	protected function deleteacl()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		$ids = JRequest::getVar( 'id', array() );
+		
+		foreach ($ids as $id) 
+		{
+			$row = new SupportAro( $this->database );
+			$row->load( $id );
+
+			if ($row->id) {
+				$aro_aco = new SupportAroAco( $this->database );
+				if (!$aro_aco->deleteRecordsByAro($row->id)) {
+					JError::raiseError( 500, $aro_aco->getError() );
+					return;
+				}
+			}
+
+			if (!$row->delete()) {
+				JError::raiseError( 500, $row->getError() );
+				return;
+			}
+		}
+
+		// Output messsage and redirect
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=acl';
+		$this->_message = JText::_('ACL successfully removed');
+	}
+	
+	//-----------
+	
+	protected function saveacl()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		// Trim and addslashes all posted items
+		$aro = JRequest::getVar('aro', array(), 'post');
+		$aro = array_map('trim',$aro);
+	
+		// Initiate class and bind posted items to database fields
+		$row = new SupportAro( $this->database );
+		if (!$row->bind( $aro )) {
+			JError::raiseError( 500, $row->getError() );
+			return;
+		}
+		
+		if (!$row->foreign_key || !$row->alias) {
+			switch ($row->model) 
+			{
+				case 'user':
+					if (!$row->foreign_key) {
+						$user = JUser::getInstance($row->alias);
+						if (!is_object($user)) {
+							JError::raiseError( 500, 'Cannot find user' );
+							return;
+						}
+						$row->foreign_key = $user->get('id');
+					} else {
+						$user = JUser::getInstance($row->foreign_key);
+						if (!is_object($user)) {
+							JError::raiseError( 500, 'Cannot find user' );
+							return;
+						}
+						$row->alias = $user->get('username');
+					}
+				break;
+				
+				case 'group':
+					ximport('Hubzero_Group');
+					if (!$row->foreign_key) {
+						$group = Hubzero_Group::getInstance($row->alias);
+						if (!is_object($group)) {
+							JError::raiseError( 500, 'Cannot find group' );
+							return;
+						}
+						$row->foreign_key = $group->gidNumber;
+					} else {
+						$group = Hubzero_Group::getInstance($row->foreign_key);
+						if (!is_object($group)) {
+							JError::raiseError( 500, 'Cannot find group' );
+							return;
+						}
+						$row->alias = $group->cn;
+					}
+				break;
+			}
+		}
+		
+		// Check content
+		if (!$row->check()) {
+			JError::raiseError( 500, $row->getError() );
+			return;
+		}
+
+		// Store new content
+		if (!$row->store()) {
+			JError::raiseError( 500, $row->getError() );
+			return;
+		}
+
+		if (!$row->id) {
+			$row->id = $this->database->insertid();
+		}
+
+		// Trim and addslashes all posted items
+		$map = JRequest::getVar('map', array(), 'post');
+
+		foreach ($map as $k=>$v) 
+		{
+			// Initiate class and bind posted items to database fields
+			$aroaco = new SupportAroAco( $this->database );
+			if (!$aroaco->bind( $v )) {
+				JError::raiseError( 500, $row->getError() );
+				return;
+			}
+			$aroaco->aro_id = (!$aroaco->aro_id) ? $row->id : $aroaco->aro_id;
+
+			// Check content
+			if (!$aroaco->check()) {
+				JError::raiseError( 500, $aroaco->getError() );
+				return;
+			}
+
+			// Store new content
+			if (!$aroaco->store()) {
+				JError::raiseError( 500, $aroaco->getError() );
+				return;
+			}
+		}
+
+		// Output messsage and redirect
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=acl';
+		$this->_message = JText::_('ACL successfully created');
+	}
+
+	//-----------
 
 	protected function stats() 
 	{

@@ -36,7 +36,7 @@ if ($this->filters['_show'] != '') {
 </div><!-- / #content-header -->
 <div id="content-header-extra">
 	<ul id="useroptions">
-<?php if ($this->authorized == 'admin') { ?>
+<?php if ($this->acl->check('read','tickets')) { ?>
 		<li><a class="stats" href="/support/stats"><?php echo JText::_('Stats'); ?></a></li>
 <?php } ?>
 		<li class="last"><a class="new-ticket" href="/feedback/report_problems/"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
@@ -130,12 +130,14 @@ if ($this->filters['_show'] != '') {
 						<th scope="col"><?php echo JText::_('SUPPORT_COL_OWNER'); ?></th>
 						<th scope="col"><?php echo JText::_('SUPPORT_COL_AGE'); ?></th>
 						<th scope="col"><?php echo JText::_('SUPPORT_COL_COMMENTS'); ?></th>
+<?php if ($this->acl->check('delete','tickets')) { ?>
 						<th scope="col"><?php echo JText::_('SUPPORT_COL_ACTION'); ?></th>
+<?php } ?>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="8"><?php 
+						<td colspan="<?php echo ($this->acl->check('delete','tickets')) ? '8' : '7'; ?>"><?php 
 						$html = $this->pageNav->getListFooter();
 						$html = str_replace('support/?','support/tickets/?',$html);
 						$html = str_replace('/?/tickets&amp;','/?',$html);
@@ -159,9 +161,9 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 	
-	$comments = $sc->countComments($this->authorized, $row->id);
+	$comments = $sc->countComments($this->acl->check('read','private_comments'), $row->id);
 	if ($comments > 0) {
-		$lastcomment = $sc->newestComment($this->authorized, $row->id);
+		$lastcomment = $sc->newestComment($this->acl->check('read','private_comments'), $row->id);
 	}
 
 	if ($row->status == 2) {
@@ -212,7 +214,9 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						<td style="white-space: nowrap;"><?php echo $row->owner; ?></td>
 						<td style="white-space: nowrap;"><?php echo $when; ?></td>
 						<td style="white-space: nowrap;"><?php echo $comments; echo ($comments > 0) ? ' ('.SupportHtml::timeAgo($lastcomment).')' : ''; ?></td>
+<?php if ($this->acl->check('delete','tickets')) { ?>
 						<td><a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&id='.$row->id); ?>" title="<?php echo JText::_('SUPPORT_DELETE'); ?>"><?php echo JText::_('SUPPORT_DELETE'); ?></a></td>
+<?php } ?>
 					</tr>
 <?php
 	$k = 1 - $k;
