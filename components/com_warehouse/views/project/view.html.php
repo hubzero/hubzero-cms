@@ -10,7 +10,7 @@ require_once 'lib/security/Authorizer.php';
 require_once 'lib/data/ProjectGrant.php';
 require_once 'lib/data/ProjectGrantPeer.php';
 
-class WarehouseViewProject extends JView{
+class WarehouseViewProject extends JView{ 
 
   function display($tpl = null){
     $iProjectId = JRequest::getVar("id");
@@ -82,8 +82,8 @@ class WarehouseViewProject extends JView{
     $oPublicationArray = $oProjectModel->findProjectPublications($oUser->id, $oProject->getName(), 3);
     $this->assignRef( "publications", $oPublicationArray );
 
-    //$iPublicationCount = $oProjectModel->findProjectPublicationCount($oUser->id, $oProject->getName(), 3);
-    //$this->assignRef( "publicationCount", $iPublicationCount );
+    $iPublicationCount = $oProjectModel->findProjectPublicationCount($oUser->id, $oProject->getName(), 3);
+    $this->assignRef( "publicationCount", $iPublicationCount );
 
     $oToolArray = $oProjectModel->findTools($oProject->getId());
     $this->assignRef( "tools", $oToolArray );

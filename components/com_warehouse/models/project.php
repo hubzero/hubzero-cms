@@ -134,12 +134,9 @@ class WarehouseModelProject extends WarehouseModelBase{
 				 WHERE r.group_owner = '".$p_strProjectName."'
 				   AND r.type = 3 
 				   AND (
-				   		(g.access = 0 OR u.id = $p_iUserId)
+                                (r.access = 0 OR u.id = $p_iUserId)
 				   	) 
 				";
-  	if($p_iLimit > 0){
-  	  $strQuery .= " LIMIT $p_iLimit";
-  	}
   	
   	$oDatabase =& JFactory::getDBO();
   	$oDatabase->setQuery($strQuery);

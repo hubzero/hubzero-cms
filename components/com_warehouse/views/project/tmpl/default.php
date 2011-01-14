@@ -272,7 +272,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                   }
 
 
-                  if(count($oPublicationArray) > 3){?>
+                  if($this->publicationCount > 3){?>
                     <a href="/warehouse/publications/project/<?php echo $oProject->getId(); ?>">more...</a>
                   <?php }
                 ?>

@@ -21,7 +21,7 @@ class WarehouseViewPublications extends JView {
     $oHubUser = $oProjectModel->getCurrentUser();
     $this->assignRef( "strUsername", $oHubUser->username );
 
-    $oPublicationArray = $oProjectModel->findProjectPublications($oHubUser->id, $oProject->getName(), 3);
+    $oPublicationArray = $oProjectModel->findProjectPublications($oHubUser->id, $oProject->getName(), 0);
     $this->assignRef( "pubArray", $oPublicationArray);
 
     //get the tabs to display on the page
