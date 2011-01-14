@@ -234,7 +234,7 @@ if ($this->comments) {
 </div><!-- / .main section -->
 <?php } // ACL can read comments ?>
 
-<?php if ($this->acl->check('create','comments')) { ?>
+<?php if ($this->acl->check('create','comments') || $this->acl->check('update','tickets')) { ?>
 <div class="section">
 	<div class="aside">
 		<p>Please remember to describe problems in detail, including any steps you may have taken before encountering an error.</p>
@@ -336,6 +336,7 @@ if (count($tf) > 0) {
 				<div class="clear"></div>
 <?php } // ACL can update ticket (admin) ?>
 <?php } // ACL can update tickets ?>
+<?php if ($this->acl->check('create','comments') || $this->acl->check('create','private_comments')) { ?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_COMMENTS'); ?>:</legend>
 <?php if ($this->acl->check('create','comments') > 0 || $this->acl->check('create','private_comments')) { ?>
@@ -379,7 +380,7 @@ if (count($tf) > 0) {
 <?php } // ACL can create comments (admin) or private comments ?>
 					<textarea name="comment" id="comment" rows="13" cols="35"></textarea>
 				</fieldset>
-
+				
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_ATTACHMENTS'); ?></legend>
 					<div class="group">
@@ -394,7 +395,7 @@ if (count($tf) > 0) {
 						</label>
 					</div>
 				</fieldset>
-
+<?php } //if ($this->acl->check('create','comments') || $this->acl->check('create','private_comments')) { ?>
 <?php if ($this->acl->check('create','comments') > 0) { ?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_EMAIL'); ?>:</legend>
