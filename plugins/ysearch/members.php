@@ -21,6 +21,11 @@ class ContributionSorter
 		if ($aw == $bw) return 0;
 		return $aw > $bw ? -1 : 1;
 	}
+
+	public static function sort_title($a, $b)
+	{
+		return strcmp($a->get_title(), $b->get_title());
+	}
 }
 
 class plgYSearchMembers extends YSearchPlugin
@@ -50,7 +55,7 @@ class plgYSearchMembers extends YSearchPlugin
 			LEFT JOIN jos_xprofiles_bio b 
 				ON b.uidNumber = p.uidNumber
 			WHERE 
-				$weight > 0".
+				public AND $weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" ORDER BY $weight DESC"
 		));
@@ -82,7 +87,7 @@ class plgYSearchMembers extends YSearchPlugin
 			LEFT JOIN jos_xprofiles_bio b 
 				ON b.uidNumber = p.uidNumber
 			WHERE 
-				" . join(' AND ', $addtl_where)
+				public AND " . join(' AND ', $addtl_where)
 		);
 		$assoc = $sql->to_associative();
 		if (!count($assoc))
@@ -93,7 +98,11 @@ class plgYSearchMembers extends YSearchPlugin
 		{
 			$work = new YSearchResultSQL(
 				"SELECT 
-					r.title,
+					CASE WHEN aa.subtable = 'resources' THEN
+						r.title
+					ELSE 
+						c.title
+					END AS title,
 					CASE 
 						WHEN aa.subtable = 'resources' THEN
 							concat(coalesce(r.introtext, ''), coalesce(r.`fulltext`, '')) 
@@ -135,7 +144,7 @@ class plgYSearchMembers extends YSearchPlugin
 					LEFT JOIN jos_resource_types rt 
 						ON rt.id = r.type
 					LEFT JOIN jos_content c
-						ON aa.subtable = 'content' AND c.id = aa.subid
+						ON aa.subtable = 'content' AND c.id = aa.subid AND c.state = 1
 					LEFT JOIN jos_sections s 
 						ON s.id = c.sectionid
 					LEFT JOIN jos_categories ca
@@ -143,10 +152,16 @@ class plgYSearchMembers extends YSearchPlugin
 					WHERE aa.authorid = ".$row->get('id')
 			);
 			$work_assoc = $work->to_associative();
+			
+			$added = array();
 			foreach ($work_assoc as $wrow)
 			{
+				$link = $wrow->get_link();
+				if (array_key_exists($link, $added))
+					continue;
 				$row->add_child($wrow);
 				$row->add_weight(1);
+				$added[$link] = 1;
 			}
 			$row->sort_children(array('ContributionSorter', 'sort'));
 			$resp[] = $row;
