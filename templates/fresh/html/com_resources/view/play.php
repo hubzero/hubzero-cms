@@ -128,9 +128,9 @@ else if ($this->resource->type == 67) {
 	$children = $this->helper->children;
 	$n = count($children);
 	$br = strtolower($_SERVER['HTTP_USER_AGENT']); // what browser they use. 
-	if(ereg("msie", $br)) { 
+	//if(ereg("msie", $br)) { 
 	    $n = $n+1; //annoying IE fix (can't display a playlist of one), put it into multi mode
-	}
+	//}
 	
 	// Get some attributes
 	$attribs =& new JParameter( $this->activechild->attribs );
@@ -160,7 +160,8 @@ else if ($this->resource->type == 67) {
 			if ($this->no_html == 1) {
 				//need these scripts if we are not including header of index.php page
 				$html .= '<script type="text/javascript" src="media/system/js/jquery-1.4.2.js"></script>'."\n";
-				$html .= '<script type="text/javascript" src="media/system/js/jquery.tools.min.js"></script>'."\n";
+				//$html .= '<script type="text/javascript" src="media/system/js/jquery.tools.min.js"></script>'."\n";
+				$html .= '<script src="http://cdn.jquerytools.org/1.2.5/jquery.tools.min.js"></script>'."\n";
 				$html .= '<script type="text/javascript">var $jQ = jQuery.noConflict();</script> '."\n";
 				$html .= '<link rel="stylesheet" type="text/css" media="screen" href="'.$this->baseurl.'/templates/fresh/css/main.css"/>';
 				$html .= '<link rel="stylesheet" type="text/css" media="screen" href="'.$this->baseurl.'/templates/fresh/html/com_resources/resources.css"/>';
@@ -191,7 +192,7 @@ else if ($this->resource->type == 67) {
 			$vidCount = 0;
 			$isMovie = ($rType == 41)? true : false; //set the movie player with controls
 			//	<!-- single playlist entry as an "template" -->
-			if ($n>1) {
+			//if ($n>1) {
 				
 				$html .= '<div class="page">'."\n";	
 				$done = false;
@@ -218,7 +219,7 @@ else if ($this->resource->type == 67) {
 						$rcType = 70;
 					}
 					if ($rcType == 41 | $rcType == 70){
-						$html .= '	<a href="'.$xhub->getCfg('hubLongURL').'/site/resources/'.$child->path.'"'.$class.' duration=5>';
+						$html .= '	<a href="'.$xhub->getCfg('hubLongURL').'/site/resources/'.$child->path.'"'.$class.' duration="5">';
 						$html .= 		substr($child->title,0,20);
 						if ($rcType == 70) //image
 						{
@@ -242,7 +243,7 @@ else if ($this->resource->type == 67) {
 						
 				}
 				$html .= '</div>'."\n";	
-			}		
+			//}		
 			$html .= '</div><!-- entries -->'."\n";
 			$html .= '</div><!-- pl -->'."\n";
 			$html .= '<a class="next"></a>'."\n";
@@ -256,7 +257,7 @@ else if ($this->resource->type == 67) {
 			}
 			
 			//switch between simple picture player and a better movie player (more controls)
-			$player_src = ($isMovie)? 'http://builds.flowplayer.netdna-cdn.com/65034/35392/flowplayer.commercial-3.2.5-0.swf' : 'http://builds.flowplayer.netdna-cdn.com/65034/35393/flowplayer.commercial-3.2.5-0.swf' ; 
+			$player_src = ($isMovie)? 'http://builds.flowplayer.netdna-cdn.com/65034/35392/flowplayer.commercial-3.2.5-2.swf' : 'http://builds.flowplayer.netdna-cdn.com/65034/35393/flowplayer.commercial-3.2.5-0.swf' ; 
 			// now we install the player to the page
 			$html .='  $f("player", "'.$player_src.'", { clip: { scaling: "orig", onFinish: function() { parent.$jQ.fancybox.next(); }}, wmode: \'transparent\', play:{opacity:0} ';
 			$html .= "\n";
