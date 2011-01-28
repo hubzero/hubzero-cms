@@ -18,7 +18,7 @@ function get_sac()
 	$dd['cols']['sacdb.Connection_Drawing'] = array('label'=>'Connection<br />Drawing', 'desc'=>'Drawing extracted from reports that shows the connection detail.', 'type'=>'image');
 	$dd['cols']['sacdb.Test_Drawing'] = array('label'=>'Test<br />Drawing', 'desc'=>'Drawing extracted from research report showing the test setup.', 'type'=>'image');
 	$dd['cols']['sacdb.Tested_Connection_Photo'] = array('label'=>'Tested<br />Connection Photo', 'desc'=>'Photo extracted from research report that shows the connection at the completion of the test or test setup.', 'type'=>'image');
-	$dd['cols']['sacdb.Moment_Rotation'] = array('label'=>'Moment Rotation', 'desc'=>'Final moment rotation plot extracted from research report that shows the overall hysteresis plot.', 'type'=>'image');
+	$dd['cols']['sacdb.Moment_Rotation'] = array('label'=>'Moment-Rotation', 'desc'=>'Final moment rotation plot extracted from research report that shows the overall hysteresis plot.', 'type'=>'image');
 	$dd['cols']['sacdb.Ref_Source'] = array('label'=>'Reference', 'desc'=>'This is the reference/citation of resources for the test performed.  The full references are listed at the following link:  http://www.sacsteel.org/connections/AppB.html');
 	$dd['cols']['sacdb.Test_Date'] = array('label'=>'Test Date', 'desc'=>'Date(s) test was performed');
 	$dd['cols']['sacdb.Lab'] = array('label'=>'Laboratory', 'desc'=>'Laboratory where test was performed');
