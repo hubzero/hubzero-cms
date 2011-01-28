@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="clear"></div>
 <?php
 $eotcategories = "(learningobjects|series|multimedia)";
-$ignorecategories = "(notes)"; //categories to ignore
+$ignorecategories = "(notes|poste)"; //categories to ignore
 $categories = $this->categories;
 if ($categories) {
 ?>
@@ -155,6 +155,9 @@ if ($categories) {
 		}
 		
 		if (preg_match($eotcategories,strtolower($normalized))) { // || preg_match($ignorecategories,strtolower($normalized))) { //This is where we can ignore categories
+					continue;
+		}
+		if (preg_match($ignorecategories,strtolower($normalized))) { 
 					continue;
 		}
 		
