@@ -178,7 +178,7 @@ echo $aside;
 					</tr>
 					<tr>
 						<th>Created:</th>
-						<td><?php echo JHTML::_('date', $gl->timestamp, '%d %b. %Y'); ?></td>
+						<td><?php echo JHTML::_('date', $gl->timestamp, '%d %b. %Y', 0); ?></td>
 					</tr>
 					<tr>
 						<th>Tags:</th>
