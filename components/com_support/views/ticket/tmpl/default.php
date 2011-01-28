@@ -54,17 +54,17 @@ if (is_object($targetuser) && $targetuser->id) {
 	<ul id="useroptions">
 		<li><?php
 		if ($this->row->prev) {
-			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->prev).'?find='.$fstring.'">'.JText::_('PREVIOUS_TICKET').'</a>';
+			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->prev).'?find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start'].'">'.JText::_('PREVIOUS_TICKET').'</a>';
 		} else {
 			echo '<span>'.JText::_('PREVIOUS_TICKET').'</span>';
 		}
 		?></li>
 <?php if (!$juser->get('guest')) { ?>
-		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=tickets').'?'.$fstring; ?>"><?php echo JText::_('TICKETS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=tickets').'?find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']; ?>"><?php echo JText::_('TICKETS'); ?></a></li>
 <?php } ?>
 		<li class="last"><?php
 		if ($this->row->next) {
-			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->next) .'?find='.$fstring.'">'.JText::_('NEXT_TICKET').'</a>';
+			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->next) .'?find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start'].'">'.JText::_('NEXT_TICKET').'</a>';
 		} else {
 			echo '<span>'.JText::_('NEXT_TICKET').'</span>';
 		}
