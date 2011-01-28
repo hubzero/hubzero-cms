@@ -1518,10 +1518,12 @@ class EventsController extends JObject
 		
 		// Incoming
 		$start_time = JRequest::getVar( 'start_time', '08:00', 'post' );
+		$state_time = ($start_time) ? $start_time : '08:00';
 		$start_pm   = JRequest::getInt( 'start_pm', 0, 'post' );
 		$end_time   = JRequest::getVar( 'end_time', '17:00', 'post' );
+		$end_time   = ($end_time) ? $end_time : '17:00';
 		$end_pm     = JRequest::getInt( 'end_pm', 0, 'post' );
-		
+	
 		$reccurweekdays = JRequest::getVar( 'reccurweekdays', array(), 'post' );
 		$reccurweeks    = JRequest::getVar( 'reccurweeks', array(), 'post' );
 		$reccurday_week = JRequest::getVar( 'reccurday_week', '', 'post' );
@@ -1624,6 +1626,7 @@ class EventsController extends JObject
 			$end_time = $hrs.':'.$mins;
 		}
 		
+		$rpup = $row->publish_up;
 		if ($row->publish_up) {
 			$publishtime = $row->publish_up.' '.$start_time.':00';
 			$row->publish_up = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime));
@@ -1635,7 +1638,9 @@ class EventsController extends JObject
 			$publishtime = $row->publish_down.' '.$end_time.':00';
 			$row->publish_down = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime));
 		} else {
-			$row->publish_down = strftime( "%Y-%m-%d 23:59:59", time()+($offset*60*60));
+			$publishtime = $rpup.' '.$end_time.':00';
+			//$row->publish_down = strftime( "%Y-%m-%d 23:59:59", time()+($offset*60*60));
+			$row->publish_down = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime));
 		}
         
 		if ($row->publish_up <> $row->publish_down) {
@@ -1699,7 +1704,7 @@ class EventsController extends JObject
 			return;
 			//$row->publish_down = strftime("%Y-%m-%d %H:%M:%S",strtotime("+1 hour", $pubup));
 		}
-	
+
 		if (!$row->check()) {
 			// Set the error message
 			$this->setError($row->getError());

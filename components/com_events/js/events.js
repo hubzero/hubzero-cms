@@ -40,6 +40,9 @@ HUB.Events = {
 					$('publish_down').value = $('publish_up').value;
 				}
 			});
+			$('publish_up').addEvent('blur', function() {
+				$('publish_down').value = this.value;
+			});
 			myCal2 = new Calendar({ publish_down: 'Y-m-d' }, { direction: 1, tweak: {x: 6, y: 0} });
 		}
 		
