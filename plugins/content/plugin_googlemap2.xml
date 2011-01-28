@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="content" method="upgrade">
+	<name>Google Maps</name>
+	<author>Mike Reumer</author>
+	<creationDate>July 2010</creationDate>
+	<copyright>(C) 2010 Reumer</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>tech@reumer.net</authorEmail>
+	<authorUrl>tech.reumer.net</authorUrl>
+	<version>2.12n</version>
+	<description>Plugin Google Maps Installation</description>
+	<files>
+		<filename plugin="plugin_googlemap2">plugin_googlemap2.php</filename>
+		<filename>plugin_googlemap2_proxy.php</filename>
+		<filename>mootools/mootools-release-1.11.js</filename>
+		<filename>mootools/index.html</filename>
+		<filename>moodalbox121/index.html</filename>
+		<filename>moodalbox121/js/modalbox1.2hack.js</filename>
+		<filename>moodalbox121/js/index.html</filename>
+		<filename>moodalbox121/css/moodalbox.css</filename>
+		<filename>moodalbox121/css/index.html</filename>
+		<filename>moodalbox121/img/closelabel.gif</filename>
+		<filename>moodalbox121/img/loading.gif</filename>
+		<filename>moodalbox121/img/index.html</filename>
+		<filename>geoxml/geoxml.js</filename>
+		<filename>geoxml/index.html</filename>
+		<filename>geoxml/images/blue_large.png</filename>
+		<filename>geoxml/images/folder.png</filename>
+		<filename>geoxml/images/ge.png</filename>
+		<filename>geoxml/images/geo.gif</filename>
+		<filename>geoxml/images/icon40.png</filename>
+		<filename>geoxml/images/shadow_large.png</filename>
+		<filename>geoxml/images/rssb.png</filename>
+		<filename>geoxml/images/pushpin_shadow.png</filename>
+		<filename>geoxml/images/msmarker.shadow.png</filename>
+		<filename>geoxml/images/icon40s.png</filename>
+		<filename>geoxml/images/index.html</filename>
+		<filename>elabel/elabel.js</filename>
+		<filename>elabel/index.html</filename>
+		<filename>StreetViewControl/StreetViewControl.js</filename>
+		<filename>StreetViewControl/index.html</filename>
+		<filename>directions/directions.css</filename>
+		<filename>directions/directions.js</filename>
+		<filename>directions/index.html</filename>
+		<filename>panoramiolayer/panoramiolayer.js</filename>
+		<filename>panoramiolayer/index.html</filename>
+	</files>
+	<languages>
+	   <language tag="en-GB">language/en-GB.plg_content_plugin_googlemap2.ini</language>
+	</languages>
+	<params>
+		<param name="publ" type="radio" size= "1" default="1" label="Published?" description="Published? (Only for Joomla 1.5 to remove tag)">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="debug" type="radio" size= "1" default="0" label="Debug?" description="Debug the plugin and show log-comments?">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="plugincode" type="text" size= "40" default="mosmap" label="Plugin code" description="The code which is used to be placed in the article between {} to trigger plugin. Default mosmap." />
+		<param name="brackets" type="radio" size= "1" default="{" label="Brackets" description="What brackets should be use aroudn the plugin code: {} (default with [] for multiple kml), [] (with () for multiple kml) or both (() for multiple kml. [] will give problems with multiple kml)">
+			<option value="{">{}</option>
+			<option value="[">[]</option>
+			<option value="both">Both {} and []</option>
+		</param>
+		<param name="Google_API_version" type="text" size= "4" default="2.x" label="Google API version" description="The version of the Google API that has to be used (2.x latest version, 2.s stable version and 2.number with number a specific version, like 2.76)." />
+		<param name="loadmootools" type="radio" size= "1" default="1" label="Load with mootools?" description="If mootools (default) should be used to load the map or a timeinterval?">
+			<option value="1">Mootools</option>
+			<option value="0">Timeinterval</option>
+		</param>
+		<param name="timeinterval" type="text" size= "4" default="500" label="Timeinterval" description="To show the map a timeinterval in ms is done to wait for the page is loaded correctly (default 500ms). Especially for IE this can prevent a fatal error." />
+		<param name="Google_API_key" type="text" size= "40" default="" label="Google API key" description="The key that's needed for using the Google API. Leave blank for multi website below." />
+		<param name="Google_Multi_API_key" type="textarea" rows="5" cols="40" default="" label="Google Multi API key" description="For a number of website needs different keys. Enter website;key for each website on new line" />
+		<param name="urlsetting" type="radio" size= "1" default="http_host" label="URL variable" description="Use HTTP_HOST or Joomla config setting (1.0.x mosConfig_live_site/1.5.x)?">
+			<option value="mosconfig">Config</option>
+			<option value="http_host">HTTP_HOST</option>
+		</param>
+		<param name="googlewebsite" type="list" size= "1" default="maps.google.com" label="Google website" description="What google website should be used for geocoding and directions">
+			<option value="maps.google.com">USA (default maps.google.com)</option>
+			<option value="maps.google.at">Austria (maps.google.at)</option>
+			<option value="maps.google.com.au">Australia (maps.google.com.au)</option>
+			<option value="maps.google.com.ba">Bosnia and Herzegovina (maps.google.com.ba)</option>
+			<option value="maps.google.be">Belgium (maps.google.be)</option>
+			<option value="maps.google.com.br">Brazil (maps.google.com.br)</option>
+			<option value="maps.google.ca">Canada (maps.google.ca)</option>
+			<option value="maps.google.ch">Switzerland (maps.google.ch)</option>
+			<option value="maps.google.cz">Czech Republic (maps.google.cz)</option>
+			<option value="maps.google.de">Germany (maps.google.de)</option>
+			<option value="maps.google.dk">Denmark (maps.google.dk)</option>
+			<option value="maps.google.es">Spain (maps.google.es)</option>
+			<option value="maps.google.fi">Finland (maps.google.fi)</option>
+			<option value="maps.google.fr">France (maps.google.fr)</option>
+			<option value="maps.google.it">Italy (maps.google.it)</option>
+			<option value="maps.google.jp">Japan (maps.google.jp)</option>
+			<option value="maps.google.nl">Netherlands (maps.google.nl)</option>
+			<option value="maps.google.no">Norway (maps.google.no)</option>
+			<option value="maps.google.co.nz">New Zealand (maps.google.co.nz)</option>
+			<option value="maps.google.pl">Poland (maps.google.pl)</option>
+			<option value="maps.google.pt">Portugal (maps.google.pt)</option>
+			<option value="maps.google.ru">Russia (maps.google.ru)</option>
+			<option value="maps.google.se">Sweden (maps.google.se)</option>
+			<option value="maps.google.tw">Taiwan (maps.google.tw)</option>
+			<option value="maps.google.co.uk">United Kingdom (maps.google.co.uk)</option>
+		</param>
+		<param name="googleindexing" type="radio" size= "1" default="1" label="Google indexing?" description="If google may index your map and markers (default Yes)">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="width" type="text" size= "10" default="500" label="Width" description="Width of the map." />
+		<param name="height" type="text" size= "10" default="400" label="Height" description="Height of the map." />
+		<param name="lat" type="text" size= "15" default="52.075581" label="Latitude" description="Lattitude for the default place" />
+		<param name="lon" type="text" size= "15" default="4.541513" label="Longitude" description="Longitude for the default place" />
+		<param name="centerlat" type="text" size= "15" default="" label="Center latitude" description="Lattitude for the center of the map" />
+		<param name="centerlon" type="text" size= "15" default="" label="Center longitude" description="Longitude for the center of the map" />
+		<param name="address" type="text" size= "80" default="" label="Address" description="Address for the default place" />
+		<param name="zoom" type="list" size= "2" default="10" label="Zoomlevel" description="The zoomlevel for the first view of the map">
+			<option value="19">19</option>
+			<option value="18">18</option>
+			<option value="17">17</option>
+			<option value="16">16</option>
+			<option value="15">15</option>
+			<option value="14">14</option>
+			<option value="13">13</option>
+			<option value="12">12</option>
+			<option value="11">11</option>
+			<option value="10">10</option>
+			<option value="9">9</option>
+			<option value="8">8</option>
+			<option value="7">7</option>
+			<option value="6">6</option>
+			<option value="5">5</option>
+			<option value="4">4</option>
+			<option value="3">3</option>
+			<option value="2">2</option>
+			<option value="1">1</option>
+		</param>
+		<param name="ovzoom" type="text" size= "3" default="" label="Overview zoomlevel" description="Correction for the zoomlevel of the overview. Difference from the zoomlevel of the map (-3 is default of google maps)." />
+		<param name="controlType" type="radio" size= "5" default="user" label="Control type" description="The type of controls can be automatic (Default User Interface maps.google.com) or user (define with parameters below).">
+			<option value="UI">Automatic</option>
+			<option value="user">User</option>
+		</param>
+		<param name="zoomType" type="radio" size= "5" default="3D-large" label="Zoomtype" description="The type of button for zoom on the map. Zoomtype can be Small, Large, 3D large, 3D Large with Streetview button, 3D small or None so there is no zoomcontrol.">
+			<option value="Large">Large</option>
+			<option value="Small">Small</option>
+			<option value="3D-large">3D-large</option>
+			<option value="3D-largeSV">3D-large StreetView</option>
+			<option value="3D-small">3D-small</option>
+			<option value="None">None</option>
+		</param>
+		<param name="rotation" type="radio" size= "1" default="0" label="Aerial Perspective Imagery" description="Show Aerial Perspective Imagery/Bird view when available">
+		  <option value="1">Yes</option>
+		  <option value="0">No</option>
+		</param>
+		<param name="zoomNew" type="radio" size= "1" default="0" label="Doubleclick and Continues zoom" description="Give the use doubleclick zoom and smooth zooming?">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="zoomWheel" type="radio" size= "1" default="0" label="Mousewheel zoom" description="Zoom map with mousewheel?">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="keyboard" type="radio" size= "1" default="0" label="Keyboard support" description="Support for keyboard zoom and Pan.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="mapType" type="radio" size= "9" default="Normal" label="Maptype" description="The first view of the map will be this type. Maptype can be Normal (default), Satellite, Hybrid, Terrain or Earth.">
+			<option value="Normal">Normal</option>
+			<option value="Satellite">Satellite</option>
+			<option value="Hybrid">Hybrid</option>
+			<option value="Terrain">Terrain</option>
+			<option value="Earth">Earth</option>
+		</param>
+		<param name="showMaptype" type="radio" size= "1" default="1" label="Show Maptype" description="Show the buttons for maptype?">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="showTerrainMaptype" type="radio" size= "1" default="1" label="Show Terrain Maptype" description="Show the button for Terrain maptype?">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="showEarthMaptype" type="radio" size= "1" default="1" label="Show Earth Maptype" description="Show the button for Earth maptype?">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="showScale" type="radio" size= "1" default="0" label="Show Scale" description="Show the scale bar on the map?">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="overview" type="radio" size= "1" default="0" label="Overview" description="Show a small overview of the map in the lower right bottom corner">
+			<option value="1">Enabled</option>
+			<option value="0">Disabled</option>
+			<option value="2">Enabled closed</option>
+		</param>
+		<param name="navlabel" type="radio" size= "1" default="0" label="Show Navlabel?" description="Show navigation label for a dynamic breadcrumb label indicating the address of the current view of the map">
+		<option value="1">Yes</option>
+		<option value="0">No</option>
+		</param>
+		<param name="dragging" type="radio" size= "1" default="1" label="Dragging" description="If the map can pan and zoom (dragging)? If you want no dragging set overview off and zoomtype to none.">
+		<option value="1">Enabled</option>
+		<option value="0">Disabled</option>
+		</param>
+		<param name="marker" type="radio" size= "1" default="1" label="Infowindow" description="If infowindow is open or closed initially?">
+		<option value="1">Open</option>
+		<option value="0">Closed</option>
+		</param>
+		<param name="icon" type="text" size="40" default="" label="Url to icon" description="The url to a icon for the marker so it can be different then default of Google" />
+		<param name="iconwidth" type="text" size="2" default="" label="Icon width" description="The width of a icon" />
+		<param name="iconheight" type="text" size="2" default="" label="Icon Height" description="The height of a icon" />
+		<param name="iconshadow" type="text" size="40" default="" label="Url to shadow" description="The url to a shadow of a icon" />
+		<param name="iconshadowwidth" type="text" size="2" default="" label="Shadow width" description="The width of a shadow of a icon" />
+		<param name="iconshadowheight" type="text" size="2" default="" label="Shadow height" description="The height of a shadow of a icon" />
+		<param name="iconshadowanchorx" type="text" size="2" default="" label="Shadow anchor x" description="Anchor x of the shadow of the info window" />
+		<param name="iconshadowanchory" type="text" size="2" default="" label="Shadow anchor y" description="Anchor y of the shadow of the info window" />
+		<param name="iconanchorx" type="text" size="2" default="" label="Icon anchor x" description="Anchor x of the icon to pin point the exact coordinates" />
+		<param name="iconanchory" type="text" size="2" default="" label="Icon anchor y" description="Anchor y of the icon to pin point the exact coordinates" />
+		<param name="iconinfoanchorx" type="text" size="2" default="" label="Info anchor x" description="Anchor x of the infowindow" />
+		<param name="iconinfoanchory" type="text" size="2" default="" label="Info anchor y" description="Anchor y of the infowindow" />
+		<param name="icontransparent" type="text" size="40" default="" label="Url to transparent" description="The url to a transparant of icon (to make it clickable)" />
+		<param name="iconimagemap" type="textarea" rows="3" cols="40" default="" label="Imagemap" description="The imagemap of a icon (to make it clickable)" />
+		<param name="dir" type="radio" size= "1" default="0" label="Directionsform" description="If in a infowindow the direction form is added and how to show it: new window/tab or in a lightbox?">
+		<option value="0">No directions</option>
+		<option value="1">External maps.google.com</option>
+		<option value="2">External directions</option>
+		<option value="3">Lightbox directions</option>
+		<option value="4">Lightbox maps.google.com</option>
+		<option value="5">On own map</option>
+		</param>
+		<param name="dirtype" type="radio" size= "1" default="D" label="Direction type" description="If walking or driving directions should be shown (Driving default)">
+		<option value="D">Driving</option>
+		<option value="W">Walking</option>
+		</param>
+		<param name="avoidhighways" type="radio" size= "1" default="0" label="Avoid highways" description="Attempt to exclude highways when computing directions. Note that directions may still include highways if there are no viable alternatives (default No)">
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+		</param>
+		<param name="showdir" type="radio" size= "1" default="1" label="Show directions" description="Show directions? (default Yes)">
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+		</param>
+		<param name="animdir" type="radio" size= "1" default="0" label="Animation of directions?" description="Show animations of directions with streetview, map and route information? (default No)">
+		  <option value="0">No</option>
+		  <option value="1">Top streetview</option>
+		  <option value="2">Bottom streetview</option>
+		</param>
+		<param name="animspeed" type="text" size="3" default="1" label="Animation speed" description="Animation speed in seconds. Can be 0.5" />
+		<param name="animautostart" type="radio" size= "1" default="0" label="Autostart of Animation?" description="Start the animation directly after load? (default No)">
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+		</param>
+		<param name="animunit" type="radio" size= "1" default="kilometers" label="Animation units" description="The units can be miles or kilometers (default)">
+		<option value="kilometers">Kilometers</option>
+		<option value="miles">Miles</option>
+		</param>
+		<param name="formspeed" type="radio" size= "1" default="0" label="Form for speed" description="Show a form for the user to set the speed of the animation (default No)">
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+		</param>
+		<param name="formdirtype" type="radio" size= "1" default="0" label="Form for route type" description="Show a form for the user to set the type of directions for the animation (drive, walking and avoid highways) (default No)">
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+		</param>
+		<param name="formaddress" type="radio" size= "1" default="0" label="Form for address" description="Show a form for the user to set the start address and end address of the animation (default No)">
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+		</param>
+		<param name="langanim" type="textarea" rows="3" cols="40" default="en;The requested panorama could not be displayed\|Could not generate a route for the current start and end addresses\|Street View coverage is not available for this route\|You have reached your destination\|miles\|miles\|ft\|kilometers\|kilometer\|meters\|In\|You will reach your destination\|Stop\|Drive\|Press Drive to follow your route\|Route\|Speed\|Fast\|Medium\|Slow" label="Language animations" description="All the labels for animation" />	
+		<param name="traffic" type="radio" size= "1" default="0" label="Traffic" description="If Traffic should be shown on the map (only USA currently)?">
+		<option value="1">Traffic</option>
+		<option value="0">No traffic</option>
+		</param>
+		<param name="panoramio" type="radio" size= "1" default="none" label="Panoramio" description="If Panoramio photo's should be shown on the map?">
+		<option value="none">No Panoramio</option>
+		<option value="all">Panoramio all</option>
+		<option value="popular">Panoramio popular</option>
+		</param>
+	    <param name="panotype" type="text" size="8" default="none" label="Panoramio type" description="This is a different layer for panoramio then the previous. Here you can set a userid for own photo's or use public or full." />
+	    <param name="panoorder" type="radio" size= "1" default="popularity" label="Panoramio order" description="The order of the photo's retrieved">
+    		  <option value="popularity">popularity</option>
+		      <option value="upload_date">upload_date</option>
+	    </param>
+		<param name="panomax" type="text" size="3" default="50" label="Panoramio max photo's" description="The maximum nimber of photo's shown on a map (max 100)" />
+		<param name="youtube" type="radio" size= "1" default="none" label="Youtube" description="If Youtube video's should be shown on the map?">
+		<option value="none">No Youtube</option>
+		<option value="all">Show Youtube</option>
+		</param>
+		<param name="wiki" type="text" size= "8" default="none" label="Wiki" description="If wikipedia articles should be shown on the map (default none)? Use extension of country to select language. For example en for org.wikipedia.en" />
+		<param name="adsmanager" type="radio" size= "1" default="0" label="Ads Manager" description="Place ads of Google on the map">
+		<option value="1">Show ads</option>
+		<option value="0">No ads</option>
+		</param>
+		<param name="maxads" type="text" size="3" default="3" label="Maximum ads" description="Maximum ads on the map" />
+		<param name="localsearch" type="radio" size= "1" default="0" label="Local Search" description="If Local Search bar should be shown?">
+		<option value="1">Local Search</option>
+		<option value="0">No Local Search</option>
+		</param>
+		<param name="adsense" type="text" size="40" default="" label="Adsense ID" description="The adsense ID like PUB-1234567890" />
+		<param name="channel" type="text" size="40" default="" label="Adsense channel" description="The channel which has to be used for the advertisements" />
+		<param name="googlebar" type="radio" size= "1" default="0" label="Googlebar" description="If Googlebar should be shown?">
+		<option value="1">Googlebar</option>
+		<option value="0">No Googlebar</option>
+		</param>
+		<param name="searchlist" type="text" size="40" default="inline" label="Searchlist type" description="This can be inline (Default), suppress, div (Searchresult will be below map) or a name of a div (with this option you have to place the div for result yourself in the article)" />
+		<param name="searchtarget" type="radio" size= "7" default="_blank" label="Search link target" description="The target for the links in the seacrh result">
+		<option value="_blank">Blank</option>
+		<option value="_self">Self</option>
+		<option value="_top">Top</option>
+		<option value="_parent">Parent</option>
+		</param>
+		<param name="searchzoompan" type="radio" size= "1" default="1" label="Search pan&amp;zoom" description="Pan and zoom to show results and show first result opened?">
+		<option value="1">Pan &amp; Zoom</option>
+		<option value="0">No pan &amp; Zoom</option>
+		</param>
+		<param name="txtdir" type="textarea" rows="3" cols="40" default="Directions: " label="Title directions" description="The title of the directions form" />
+		<param name="txtgetdir" type="textarea" rows="3" cols="40" default="Get Directions" label="Button directions" description="The text in the button of the directions form" />
+		<param name="txtfrom" type="textarea" rows="3" cols="40" default="From here" label="Text from directions" description="The text for the from option in the directionsform. Empty removes the option from the form (default empty)" />
+		<param name="txtto" type="textarea" rows="3" cols="40" default="To here" label="Text to directions" description="The text for the to option in the directionsform. Empty removes the option from the form (default empty)" />
+		<param name="txtdiraddr" type="textarea" rows="3" cols="40" default="Address: " label="Text label address" description="The text for the field with address in the directionsform" />
+		<param name="txt_driving" type="textarea" rows="3" cols="40" default="" value="Driving" label="Text label driving" description="The text for the radio group item driving in the directionsform. Empty removes the option from the form (default empty)" />
+		<param name="txt_avhighways" type="textarea" rows="3" cols="40" default="" value="Avoid highways" label="Text label avoid highways" description="The text for the radio group item avoid highways in the directionsform.  Empty removes the option from the form (default empty)" />
+		<param name="txt_walking" type="textarea" rows="3" cols="40" default="" value="Walking" label="Text label walking" description="The text for the radio group item walking in the directionsform. Empty removes the option from the form (default empty)" />
+		<param name="dirdefault" type="radio" size= "1" default="0" label="From/To Default" description="If from or to has to be the default for directions">
+		<option value="0">To</option>
+		<option value="1">From</option>
+		</param>
+		<param name="gotoaddr" type="radio" size= "1" default="0" label="Field gotoaddress" description="Show a searchfield and button so the user can search a address on the map">
+		<option value="1">Open</option>
+		<option value="0">Closed</option>
+		</param>
+		<param name="gotoaddrzoom" type="list" size= "2" default="0" label="Gotoaddress zoomlevel" description="The zoomlevel for the gotoaddress zoomlevel (zero is same as map)">
+		  <option value="19">19</option>
+		  <option value="18">18</option>
+		  <option value="17">17</option>
+		  <option value="16">16</option>
+		  <option value="15">15</option>
+		  <option value="14">14</option>
+		  <option value="13">13</option>
+		  <option value="12">12</option>
+		  <option value="11">11</option>
+		  <option value="10">10</option>
+		  <option value="9">9</option>
+		  <option value="8">8</option>
+		  <option value="7">7</option>
+		  <option value="6">6</option>
+		  <option value="5">5</option>
+		  <option value="4">4</option>
+		  <option value="3">3</option>
+		  <option value="2">2</option>
+		  <option value="1">1</option>
+		  <option value="0">0</option>
+		</param>
+		<param name="txtaddr" type="textarea" rows="3" cols="40" default="Address: ##" label="Address infowindow text" description="The text in the infowindow. Place ## where you want the entered address" />
+		<param name="erraddr" type="textarea" rows="3" cols="40" default="Address ## not found!" label="Address error text" description="The text in the alert box. Place ## where you want the entered address" />
+		<param name="clientgeotype" type="radio" size= "1" default="0" label="Client geocoding type" description="Should the normal geocoder be used or local search for finding addresses not found on server side.">
+		<option value="google">Google Geocoder</option>
+		<option value="local">Local Search</option>
+		</param>
+		<param name="align" type="list" size= "10" default="center" label="Map align" description="Alignment of the map in the content">
+		<option value="left">left</option>
+		<option value="center">center</option>
+		<option value="right">right</option>
+		<option value="none">none</option>
+		</param>
+		<param name="langtype" type="list" size= "10" default="center" label="Language setting type" description="If the language should be determined from the site language, setting below or the user. Can be override as a parameter of plugin.">
+		<option value="site">Site</option>
+		<option value="joomfish">Joomfish</option>
+		<option value="config">Config</option>
+		<option value="user">User</option>
+		</param>
+		<param name="lang" type="text" size= "3" default="" label="Language" description="Language for the buttons on the map. leave blank for user language."/>
+		<param name="lightbox" type="radio" size= "1" default="0" label="Show Link Lightbox" description="Show a link to the lightbox">
+		<option value="1">Yes</option>
+		<option value="0">No</option>
+		</param>
+		<param name="txtlightbox" type="textarea" rows="3" cols="40" default="Open lightbox" label="Text lightbox link" description="The text for the link to open the lightbox" />
+		<param name="lbxwidth" type="text" size= "10" default="500" label="Lightbox width" description="Width of the lightbox." />
+		<param name="lbxheight" type="text" size= "10" default="700" label="Lightbox height" description="Height of the lightbox." />
+		<param name="effect" type="radio" size= "1" default="none" label="Effect on Map" description="What effect has to be used on the Map (Horizontal use absolute width!)">
+		<option value="none">None</option>
+		<option value="horizontal">Horizontal</option>
+		<option value="vertical">Vertical</option>
+		</param>
+		<param name="kmlrenderer" type="list" size= "15" default="google" label="KML renderer" description="What renderer has to be used for kml, gpx etc.">
+		<option value="google">Google Maps API</option>
+		<option value="geoxml">GeoXML</option>
+		<option value="arcgis">ArcGis</option>
+		</param>
+		<param name="kmlsidebar" type="text" size="40" default="none" label="KML Sidebar type" description="This can be none (Default), left, right or a name of a div (with this option you have to place the div for sidebar yourself in the article)" />
+		<param name="kmlsbwidth" type="text" size= "10" default="200" label="KML Sidebar width" description="Width of the sidebar (default 200px)." />
+		<param name="kmlfoldersopen" type="radio" size="1" default="0" label="KML folders open" description="If folders in a kml-file should be default all opened or defined inside the kml file (default)">
+		<option value="1">Yes</option>
+		<option value="0">No</option>
+		</param>
+		<param name="kmlopenmethod" type="radio" size="1" default="click" label="KML infowindow event" description="If infowindo in a kml-file should react on a specific method (click is default)">
+		<option value="click">Click</option>
+		<option value="dblclick">Double click</option>
+		<option value="mouseover">Mouseover</option>
+		<option value="mousedown">Mousedown</option>
+		</param>
+		<param name="kmlsbsort" type="radio" size= "1" default="none" label="Sort KML sidebar items" description="Sort the items in the KML sidebar (none, asc, desc)">
+		<option value="none">None</option>
+		<option value="asc">Ascending</option>
+		<option value="desc">Descending</option>
+		</param>
+		<param name="kmllightbox" type="radio" size="1" default="0" label="KML lightbox support" description="If the scripts for lichtbox should be loaded to support a lightbox as a link in a kml-file">
+		<option value="1">Yes</option>
+		<option value="0">No</option>
+		</param>
+		<param name="kmlmessshow" type="radio" size= "1" default="0" label="Show KML render message" description="Show mesages for loading receiving etc (only for GeoXML)">
+		<option value="1">Yes</option>
+		<option value="0">No</option>
+		</param>
+		<param name="kmlclickablemarkers" type="radio" size= "1" default="1" label="Show KML infowindow" description="Show infowindow on markers of a kml-file (only for GeoXML)">
+		  <option value="1">Yes</option>
+		  <option value="0">No</option>
+		</param>
+		<param name="kmlcontentlinkmarkers" type="radio" size= "1" default="0" label="Show KML ext content" description="Show external content in infowindow of markers (only for GeoXML)">
+		  <option value="1">Yes</option>
+		  <option value="0">No</option>
+		</param>
+		<param name="kmllinkablemarkers" type="radio" size= "1" default="0" label="Use marker as link" description="Click on a marker to goto a url (only for GeoXML)">
+		  <option value="1">Yes</option>
+		  <option value="0">No</option>
+		</param>
+		<param name="kmllinktarget" type="radio" size= "1" default="_self" label="Link target for marker" description="How to open a link on a marker (only for GeoXML)">
+		  <option value="_self">Own window/tab</option>
+		  <option value="_blank">new window/tab</option>
+		</param>
+		<param name="kmllinkmethod" type="radio" size="1" default="dblclick" label="Marker link method" description="If link on a marker in a kml-file should react on a specific method (dblclick is default) (only for GeoXML)">
+		  <option value="click">Click</option>
+		  <option value="dblclick">Double click</option>
+		  <option value="mouseover">Mouseover</option>
+		  <option value="mousedown">Mousedown</option>
+		</param>
+		<param name="kmlmarkerlabel" type="text" size= "3" default="100" label="Label opacity" description="The opacity for labels of markers in a kml file (only for GeoXML)" />
+		<param name="kmlmarkerlabelclass" type="text" size= "40" default="" label="Label class" description="The class for labels of markers in a kml file (only for GeoXML)" />
+		<param name="kmlpolylabel" type="text" size= "3" default="100" label="Label opacity" description="The opacity for labels of polygons in a kml file (only for GeoXML)" />
+		<param name="kmlpolylabelclass" type="text" size= "40" default="" label="Label class" description="The class for labels of polygons in a kml file (only for GeoXML)" />
+		<param name="proxy" type="radio" size= "1" default="1" label="Use proxy for kml" description="Get kml-files with proxy when using geoxml. If you don't use proxy then the kml-file should be on your own site.">
+		<option value="1">Yes</option>
+		<option value="0">No</option>
+		</param>
+		<param name="sv" type="text" size="40" default="none" label="Streetview" description="This can be none (Default), top, bottom or a name of a div (with this option you have to place the div for streetview yourself in the article)" />
+		<param name="svwidth" type="text" size= "10" default="100%" label="Streetview width" description="Width of the streetview (default 100%). You must put the units behind the number like 100%, 400 or 400px. Minimum is 250px." />
+		<param name="svheight" type="text" size= "10" default="300" label="Streetview height" description="Height of the streetview (default 300). You must put the units behind the number like 100%, 400 or 400px. Minimum is 70px." />
+		<param name="svyaw" type="text" size= "10" default="0" label="Streetview yaw" description="Defines the rotation angle around the camera locus in degrees relative from true north (default 0 = North)" />
+		<param name="svpitch" type="text" size= "10" default="0" label="Streetview pitch" description="Defines the angle variance up or down from the camera's initial default pitch (default 0 = horizontal)" />
+		<param name="svzoom" type="text" size= "10" default="" label="Streetview zoom" description="defines the zoom level of this view (default empty)" />
+		<param name="earthtimeout" type="text" size= "4" default="100" label="Earth maptype timeout" description="Timeout for Earth maptype for next action's like lookat and camera view" />
+		<param name="earthborders" type="radio" size= "1" default="1" label="Earth borders" description="Show borders on Earth layer">
+		  <option value="1">Yes</option>
+		  <option value="0">No</option>
+		</param>
+		<param name="earthbuildings" type="radio" size= "1" default="0" label="Earth buildings" description="Show buildings on Earth layer.">
+		  <option value="1">Yes</option>
+		  <option value="0">No</option>
+		</param>
+		<param name="earthroads" type="radio" size= "1" default="0" label="Earth roads" description="Show rads on Earth layer.">
+		  <option value="1">Yes</option>
+		  <option value="0">No</option>
+		</param>
+		<param name="earthterrain" type="radio" size= "1" default="0" label="Earth terrain" description="Show terrain on Earth layer">
+		  <option value="1">Yes</option>
+		  <option value="0">No</option>
+		</param>		
+	</params>
+</install>
