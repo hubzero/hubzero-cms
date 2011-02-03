@@ -43,24 +43,25 @@ defined('_JEXEC') or die( 'Restricted access' );
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/78">78 - High-Strength-Concrete Structural Walls</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/84">84 - Sidesway Collapse of Deteriorating Structural Systems</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/116">116 - Damage-Tolerant Slab-Column Frame Systems</a><br/></li>
-                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/138">138 - Full-Scale Two-Story Wood Building</a><br/></li>
+						<li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/120">120 - MISST: Lehigh</a><br/></li>                        
+						<li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/138">138 - Full-Scale Two-Story Wood Building</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/180">180 - SFSI Testbed: Centrifuge Tests</a><br/></li>
-						<li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/361">361 - Collaboration between E-Defense and NEES: Studying Pile Stress in Laterally Spread Ground</a><br/></li>
+						<li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/361">361 - Pile Stress in Laterally Spread Ground</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/411">411 - Elastomeric Structural Damper</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/412">412 - Landslides in Cohesive Slopes</a><br/></li>
-                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/414">414 - Using the NEES Field Shakers to Induce Liquefaction at Previous Liquefaction Sites</a><br/></li>
+                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/414">414 - Using NEES Field Shakers to Induce Liquefaction</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/605">605 - International Hybrid Simulation of Tomorrow's Braced Frame Systems</a><br/></li>                        
 						<li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/625">625 - Full-Scale RC Flat-Plate Structure</a><br/></li>
-                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/637">637 - Vulnerable Concrete Buildings</a><br/></li>
+                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/637">637 - Vulnerable Reinforced Concrete Buildings</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/665">665 - Wave Loading on Residential Structures</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/672">672 - Deep Shear Wave Velocities in the Las Vegas Basin</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/679">679 - Performance-Based Design of New Masonry</a><br/></li>						
-						<li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/711">711 - Earthquake Performance Evaluation Tool (EPET)</a><br/></li>
-                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/904">904 - Concrete Columns Reinforced with High-Strength Steel</a><br/></li>
+						<li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/711">711 - Real-Time Testing of Damped Structures</a><br/></li>
+                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/904">904 - RC Columns Reinforced with High-Strength Steel</a><br/></li>
                         <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/905">905 - Shear Strength Decay in Reinforced Concrete Columns</a><br/></li>
 		         		<li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/915">915 - 10 Story Reinforced Concrete Walls</a><br/></li>
 				        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/964">964 - Soil Foundation Structure Interaction Field Tests</a><br/></li>
-                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/994">994 - An Investigation of the Unit Shear Strength of Geometrically Scaled Reinforced Concrete Beams</a><br/></li>						
+                        <li style="line-height: 1.5em; margin: 0em;"><a href="/warehouse/project/994">994 - Shear Strength of Scaled RC Beams</a><br/></li>						
 				</ul>
 
 			<br/><br/><br/><br/><br/><br/>
