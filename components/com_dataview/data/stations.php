@@ -22,7 +22,6 @@ function get_stations()
 	$dd['cols']['Stations.DownholeArray'] = array('label'=>'Downhole<br />Array', 'type'=>'image', 'resized'=>'resized');
 	$dd['cols']['Stations.VelocityLogs'] = array('label'=>'Velocity<br />Logs', 'type'=>'image', 'resized'=>'resized');
 	$dd['cols']['Stations.OnDate'] = array('label'=>'On Date', 'raw'=>"REPLACE(Stations.OnDate, 'T00:00:00.000Z', '')");
-	//$dd['cols']['Stations.OffDate'] = array('label'=>'Off Date');
 
 	$dd['show_maps'] = true;
 	$dd['maps'][] = array('title'=>'Stations.StationName', 'lat'=>'Stations.Latitude', 'lng'=>'Stations.Logitude');

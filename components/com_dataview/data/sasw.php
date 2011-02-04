@@ -9,7 +9,6 @@ function get_sasw()
 	//Data definition
 	$dd['title'] = "Shear Wave Velocity Database";
 	$dd['table'] = 'saswdb';
-	//$dd['db'] = array('host'=> 'nees.org', 'user'=>'nistequser', 'pass' => '_nist3QkE_', 'name' => 'nistearthquakedata');
 	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 
 	$dd['cols']['saswdb.Counter'] = array('label'=>'ID', 'desc'=>'Database ID', 'data_type'=>'int', 'more_info'=>'sasw|saswdb.Counter', 'compare'=>'Select two or more items to compare side-by-side', 'width'=>'50');

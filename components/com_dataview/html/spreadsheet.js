@@ -91,7 +91,7 @@ jQuery.fn.dataTableExt.oSort['cnum-desc'] = function(a,b) {
 };
 
 jQuery.fn.dataTableExt.oSort['datetime-desc'] = jQuery.fn.dataTableExt.oSort['string-desc'];
-jQuery.fn.dataTableExt.oSort['datetime-asc'] = jQuery.fn.dataTableExt.oSort['string-desc'];
+jQuery.fn.dataTableExt.oSort['datetime-asc'] = jQuery.fn.dataTableExt.oSort['string-asc'];
 
 jQuery.fn.dataTableExt.oSort['char-num-asc'] = function(x,y) {
 	x = x.replace(/[^\d\-\.\/]/g,'');
@@ -551,7 +551,7 @@ jQuery(document).ready(function($) {
 	});
 
 	$("tfoot input").keyup(function(e) {
-		if (dv_settings.serverside && e.keyCode === '13') {
+		if (dv_settings.serverside && e.keyCode === 13) {
 			dv_table.fnFilter(this.value, $("tfoot input").index(this));
 		} else if (!dv_settings.serverside){
 			var fieldtype = dv_data.aoColumns[$("tfoot input").index(this)]['sType'];
@@ -566,7 +566,7 @@ jQuery(document).ready(function($) {
 
 			dv_table.fnFilter(filter_str, $("tfoot input").index(this));
 
-			if (e.keyCode === '13') {
+			if (e.keyCode === 13) {
 				hightlight_keywords();
 			}
 		}
@@ -630,7 +630,7 @@ jQuery(document).ready(function($) {
 			}
 		}
 
-		if (e.keyCode === '13' || e.keyCode === '9') {
+		if (e.keyCode === 13 || e.keyCode === 9) {
 			dv_table.fnFilter($(this).val(), sg.columns[0]['idx']);
 		}
 	});

@@ -56,7 +56,7 @@ function filter($res)
 					$align = (!$align)? 'right': $align;
 					break;
 				default:
-					//$data_type = 'html';
+					$data_type = 'html';
 					$align = (!$align)? 'left': $align;
 					break;
 			}

@@ -77,7 +77,7 @@ function view($hash) {
 
 		<div class="dv_gallery_toolbar ui-widget ui-widget-header ui-corner-bottom">
 			<span id="dv_gallery_dl_image">
-				<a href="" target="_blank"><img src="<?=$html_path?>/download-l.png" alt="Click here to download the full size image." title="Click here to download the full size image." border="0"></a>
+				<a href="" target="_blank"><img src="<?=$html_path?>/download-l.png" alt="Click here to download the full size image." title="Download Original Image." border="0"></a>
 			</span>
 			&nbsp;
 			<input type="checkbox" id="description" checked="checked" /><label for="description">Description</label>

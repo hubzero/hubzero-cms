@@ -9,7 +9,6 @@ function get_punching()
 	$dd['title'] = "Punching Shear Databank";
 	$dd['db'] = array('host'=> 'nees.org', 'user'=>'nistequser', 'pass' => '_nist3QkE_', 'name' => 'nistearthquakedata');
 	$dd['table'] = 'Punching';
-//	$dd['serverside'] = true;
 
 	$dd['cols']['Punching.ID'] = array('label'=>'ID', 'data_type'=>'int');
 	$dd['cols']['Punching.Authors'] = array('label'=>'Authors', 'width'=>'150');

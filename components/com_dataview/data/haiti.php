@@ -6,12 +6,9 @@ function get_haiti()
 	$link = get_db();
 	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
 
-	//Data definition
 	$dd['title'] = "The Haiti Earthquake Database";
 	$dd['table'] = 'haitidb';
-	//$dd['db'] = array('host'=> 'nees.org', 'user'=>'nistequser', 'pass' => '_nist3QkE_', 'name' => 'nistearthquakedata');
 	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
-//	$dd['serverside'] = true;
 
 	$dd['cols']['haitidb.No_'] = array('label'=>'Number');
 	$dd['cols']['haitidb.Building'] = array('label'=>'Building', 'desc'=>'The Building Identification Marker.');
