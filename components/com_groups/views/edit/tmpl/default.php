@@ -96,12 +96,12 @@ $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->
 			<label>
 				<?php echo JText::_('GROUPS_EDIT_PUBLIC_TEXT'); ?> <span class="optional"><?php echo JText::_('GROUPS_OPTIONAL'); ?></span>
 				<textarea name="public_desc" rows="15" cols="50"><?php echo htmlentities(stripslashes($this->group->get('public_desc'))); ?></textarea>
-				<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+				<span class="hint"><a class="popup 400x500" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
 			<label>
 				<?php echo JText::_('GROUPS_EDIT_PRIVATE_TEXT'); ?> <span class="optional"><?php echo JText::_('GROUPS_OPTIONAL'); ?></span>
 				<textarea name="private_desc" rows="15" cols="50"><?php echo htmlentities(stripslashes($this->group->get('private_desc'))); ?></textarea>
-				<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+				<span class="hint"><a class="popup 400x500" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
 		</fieldset>
 		<div class="clear"></div>

@@ -648,6 +648,7 @@ class GroupsController extends Hubzero_Controller
 			}
 		}
 		if ($group->update() === false) {
+		if ($group->error) {
 			$this->setError( JText::_('GROUPS_ERROR_REGISTER_MEMBERSHIP_FAILED') );
 		}
 
@@ -770,7 +771,8 @@ class GroupsController extends Hubzero_Controller
 		$group->add('members',array($this->juser->get('id')));
 		$group->remove('invitees',array($this->juser->get('id')));
 		$group->update();
-		if ($group->getError()) {
+		//if ($group->getError()) {
+		if ($group->error) {
 			$this->setError( JText::_('GROUPS_ERROR_REGISTER_MEMBERSHIP_FAILED') );
 		}
 		
@@ -952,7 +954,8 @@ class GroupsController extends Hubzero_Controller
 		$group->set('published',1);
 		$group->update();
 		
-		if ($group->getError()) {
+		//if ($group->getError()) {
+		if ($group->error) {
 			$this->setError( JText::_('GROUPS_ERROR_APPROVING_GROUP') );
 			$this->view();
 			return;
@@ -1657,8 +1660,10 @@ class GroupsController extends Hubzero_Controller
 		if (!$group->delete()) {
 			$view = new JView( array('name'=>'error') );
 			$view->title = $title;
-			if ($group->getError()) {
-				$view->setError( $group->getError() );
+			//if ($group->getError()) {
+			if ($group->error) {
+				//$view->setError( $group->getError() );
+				$view->setError( $group->error );
 			}
 			$view->display();
 			return;
