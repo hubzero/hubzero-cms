@@ -385,6 +385,9 @@ ol.comments .emaillog li {
 		border-bottom: 1px solid #eee;
 		text-align: left;
 	}
+	.support-stats-people .active {
+		color: #aaa;
+	}
 	.support-stats-people thead th.group {
 		background-image: none;
 		padding-left: 10px;

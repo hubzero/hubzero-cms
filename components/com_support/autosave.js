@@ -283,4 +283,4 @@ function initAutoSave()
 
 //----------------------------------------------------------
 
-window.addEvent('domready', initAutoSave);
+//window.addEvent('domready', initAutoSave);

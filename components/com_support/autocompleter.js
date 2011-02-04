@@ -555,13 +555,13 @@ HUB.CompleteGroup = {
 		var el = $('acgroup');
 
 		if (el) {
-			if (el.value != '') {
+			/*if (el.value != '') {
 				var request = new Json.Remote('/index.php?option=com_groups&no_html=1&task=memberslist&group='+el.value, {
 					onComplete: function(jsonObj) {
 						HUB.CompleteGroup.writeMembersList(jsonObj.members);
 					}
 				}).send();
-			}
+			}*/
 			var completer2 = new Autocompleter.Ajax.Json(el, '/index.php?option=com_groups&no_html=1&task=autocomplete', {
 				'minLength': 1, // We wait for at least one character
 				'overflow': true, // Overflow for more entries

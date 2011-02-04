@@ -36,8 +36,8 @@ JToolBarHelper::title( JText::_( 'Ticket Stats' ), 'addedit.png' );
  	</div>
 	<div class="m">
 		<ul id="submenu">
-			<li><a<?php if ($this->type == 0) { echo ' class="active"'; } ?> rel="submitted" href="index.php?option=com-support&amp;task=stats"><span>Submitted Tickets</span></a></li>
-			<li><a<?php if ($this->type == 1) { echo ' class="active"'; } ?> rel="automatic" href="index.php?option=com-support&amp;task=stats&amp;type=automatic"><span>Automatic Tickets</span></a></li>
+			<li><a<?php if ($this->type == 0) { echo ' class="active"'; } ?> rel="submitted" href="index.php?option=com_support&amp;task=stats"><span>Submitted Tickets</span></a></li>
+			<li><a<?php if ($this->type == 1) { echo ' class="active"'; } ?> rel="automatic" href="index.php?option=com_support&amp;task=stats&amp;type=automatic"><span>Automatic Tickets</span></a></li>
 		</ul>
 		<div class="clr"></div>
 	</div>
@@ -141,7 +141,7 @@ $openeddata = '';
 if ($this->openedmonths) {
 	foreach ($this->openedmonths as $k=>$v) 
 	{
-		$o[$k] = $this->openedmonths[$k] - $this->closedmonths[$k];
+		$o[$k] = $this->openedmonths[$k]; // - $this->closedmonths[$k];
 	}
 	$openeddata = implode(',',$o);
 }
@@ -159,18 +159,16 @@ $max = ceil($number/10)*10;
 			line1.Set('chart.linewidth', 1);
 			line1.Set('chart.background.barcolor1', 'white');
 			line1.Set('chart.background.barcolor2', 'white');
-			line1.Set('chart.filled', 'true');
-			//line1.Set('chart.fillstyle', ['#fcc', '#cfc']);
-			line1.Set('chart.fillstyle', ['rgba(255,130,130,0.5)','rgba(128,255,128,0.5)']);
+			//line1.Set('chart.filled', 'true');
+			//line1.Set('chart.fillstyle', ['rgba(255,130,130,0.5)','rgba(128,255,128,0.5)']);
 			line1.Set('chart.text.angle', 45);
 			line1.Set('chart.text.color', '#777777');
 			line1.Set('chart.gutter', 35);
 			line1.Set('chart.noaxes', true);
 			line1.Set('chart.background.grid', true);
+			line1.Set('chart.background.grid.vsize', 36.9);
 			line1.Set('chart.yaxispos', 'left');
 			line1.Set('chart.ymax', <?php echo $max; ?>);
-			//line1.Set('chart.background.grid.hsize', 20);
-			line1.Set('chart.background.grid.vsize', 36.9);
 			line1.Set('chart.labels', ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
 			line1.Draw();
 			
@@ -201,10 +199,10 @@ $max = ceil($number/10)*10;
 		<table class="support-stats-people" summary="Breakdown of people and the number of tickets closed">
 			<thead>
 				<tr>
-					<th scope="col">Person</th>
-					<th scope="col">Closed this year</th>
-					<th scope="col">Closed this month</th>
-					<th scope="col">Closed this week</th>
+					<th scope="col"><a<?php if ($this->sort == 'name') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=name" title="Sort by name">&darr; Person</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'year') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=year" title="Sort by year count">&darr; Closed this year</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'month') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=month" title="Sort by month count">&darr; Closed this month</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'week') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=week" title="Sort by week count">&darr; Closed this week</a></th>
 				</tr>
 			</thead>
 			<tbody>

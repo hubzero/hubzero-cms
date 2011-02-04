@@ -123,6 +123,7 @@ class SupportController extends Hubzero_Controller
 		$view->type = ($type == 'automatic') ? 1 : 0;
 		
 		$view->group = JRequest::getVar('group', '');
+		$view->sort = JRequest::getVar('sort', 'name');
 		
 		// Set up some dates
 		$jconfig =& JFactory::getConfig();
@@ -173,6 +174,8 @@ class SupportController extends Hubzero_Controller
 		$view->closed['week'] = $st->getCountOfTicketsClosed($view->type, $year, $month, $week, null, $view->group);
 		
 		// Users
+		$view->users = null;
+		
 		$query = "SELECT a.username, a.name, a.id"
 			. "\n FROM #__users AS a"
 			. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
@@ -181,9 +184,12 @@ class SupportController extends Hubzero_Controller
 			. "\n WHERE a.block = '0' AND g.id=25"
 			. "\n ORDER BY a.name";
 		$this->database->setQuery( $query );
-		$view->users = $this->database->loadObjectList();
-		if ($view->users) {
-			foreach ($view->users as $user) 
+		$users = $this->database->loadObjectList();
+		if ($users) {
+			$u = array();
+			$p = array();
+			$g = array();
+			foreach ($users as $user) 
 			{
 				$user->closed = array();
 				
@@ -193,9 +199,38 @@ class SupportController extends Hubzero_Controller
 				$user->closed['month'] = $st->getCountOfTicketsClosed($view->type, $year, $month, '01', $user->username, $view->group);
 
 				$user->closed['week'] = $st->getCountOfTicketsClosed($view->type, $year, $month, $week, $user->username, $view->group);
+				
+				$p[$user->id] = $user;
+				switch ($view->sort) 
+				{
+					case 'year':
+						$u[$user->id] = $user->closed['year'];
+					break;
+					case 'month':
+						$u[$user->id] = $user->closed['month'];
+					break;
+					case 'week':
+						$u[$user->id] = $user->closed['week'];
+					break;
+					case 'name':
+					default:
+						$u[$user->id] = $user->name;
+					break;
+				}
 			}
+			if ($view->sort != 'name') {
+				arsort($u);
+			} else {
+				asort($u);
+			}
+			foreach ($u as $k=>$v) 
+			{
+				$g[] = $p[$k];
+			}
+			
+			$view->users = $g;
 		}
-		
+
 		// Get avgerage lifetime
 		$view->lifetime = $st->getAverageLifeOfTicket($view->type, $year, $view->group);
 		
