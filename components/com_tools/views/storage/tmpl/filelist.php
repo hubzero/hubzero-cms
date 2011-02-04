@@ -60,12 +60,12 @@ $app =& JFactory::getApplication();
 			}
 			function deleteFolder(folder, numFiles)
 			{
-				if (numFiles > 0) {
+				/*if (numFiles > 0) {
 					alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
 					return false;
-				}
+				}*/
 
-				if (confirm('Delete folder "'+folder+'"?')) {
+				if (confirm('Delete folder "'+folder+'" and all files it may contain?')) {
 					return true;
 				}
 
