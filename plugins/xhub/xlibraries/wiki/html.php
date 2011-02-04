@@ -302,8 +302,8 @@ class WikiHtml
 		if ($mode &&  $mode == 'static' && $authorized === 'admin') {
 			$html .= '<div id="'.$hid.'-extra">'.n;
 			$html .= '<ul id="useroptions">'.n;
-			$html .= '<li><a class="edit" href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagen
-			$html .= '<li class="last"><a class="history" href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page
+			$html .= '<li><a class="edit" href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=edit').'">Edit</a></li>'.n;
+			$html .= '<li class="last"><a class="history" href="'.JRoute::_('index.php?option='.$option.a.'scope='.$page->scope.a.'pagename='.$page->pagename.a.'task=history').'">History</a></li>'.n;
 			$html .= '</ul>'.n;
 			$html .= '</div><!-- /#content-header-extra -->'.n;
 		}

@@ -166,11 +166,11 @@ class WikiParser
 		// Do spans
 		$text = $this->span($text);
 		
-		// Do glyphs
-		$text = $this->glyphs($text);
-		
 		// Process macros
 		$text = $this->macros($text);
+		
+		// Do glyphs
+		$text = $this->glyphs($text);
 		
 		// Do links
 		$text = $this->replaceLinks( $text, $camelcase );
