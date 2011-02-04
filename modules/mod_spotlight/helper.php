@@ -137,7 +137,6 @@ class modSpotlight
 		
 		ximport('Hubzero_User_Profile');
 		ximport('Hubzero_View_Helper_Html');
-		ximport('wiki.wiki');
 		
 		if (!class_exists('FeaturesHistory')) {
 			$this->error = true;
@@ -215,6 +214,7 @@ class modSpotlight
 					$row->load( $fh->objectid );
 				}
 				else if( $fh->tbl == 'topics') {
+					include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
 					// Yes - load the topic page
 					$row = new WikiPage( $database );
 					$row->load( $fh->objectid );
@@ -530,7 +530,7 @@ class modSpotlight
 				$out .=  ' - '.JText::_('featured on').' <a href="/itunes">'.JText::_('iTunes').'&nbsp;U</a>'."\n";
 			}
 			else {
-				$out .=  ' - '.JText::_('in').' <a href="'.JRoute::_('index.php?option=com_resources'.'&type='.$normalized).'">'.$row->typetitle.'</a>'."\n";
+				$out .=  ' - '.JText::_('in').' <a href="'.JRoute::_('index.php?option=com_resources&type='.$normalized).'">'.$row->typetitle.'</a>'."\n";
 			}
 			$out .= '<div class="clear"></div>'."\n";			
 		}

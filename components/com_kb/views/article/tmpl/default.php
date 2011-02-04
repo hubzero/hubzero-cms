@@ -25,7 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//$juser =& JFactory::getUser();
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -193,9 +192,19 @@ if ($this->comments) {
 	<ol class="comments">
 <?php 
 	$cls = 'even';
-	ximport('wiki.parser');
-	
-	$p = new WikiParser( stripslashes($this->article->title), $this->option, 'kb', $this->article->alias, 0, '' );
+
+	JPluginHelper::importPlugin( 'hubzero' );
+	$dispatcher =& JDispatcher::getInstance();
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => '',
+		'pagename' => $this->article->alias,
+		'pageid'   => $this->article->id,
+		'filepath' => '',
+		'domain'   => '' 
+	);
+	$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
+	$p = (is_array($result) && !empty($result)) ? $result[0] : null;
 	
 	foreach ($this->comments as $comment) 
 	{
@@ -218,7 +227,7 @@ if ($this->comments) {
 		if ($comment->reports) {
 			$content = '<p class="warning">'.JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 		} else {
-			$content = $p->parse( "\n".stripslashes($comment->content) );
+			$content = (is_object($p)) ? $p->parse( stripslashes($comment->content) ) : nl2br(stripslashes($comment->content));
 		}
 		
 		$comment->like = 0;
@@ -289,7 +298,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 				if ($reply->reports) {
 					$content = '<p class="warning">'.JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 				} else {
-					$content = $p->parse( "\n".stripslashes($reply->content) );
+					$content = (is_object($p)) ? $p->parse( stripslashes($reply->content) ) : nl2br(stripslashes($reply->content));
 				}
 				
 				$reply->like = 0;
@@ -352,7 +361,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 						if ($response->reports) {
 							$content = '<p class="warning">'.JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 						} else {
-							$content = $p->parse( "\n".stripslashes($response->content) );
+							$content = (is_object($p)) ? $p->parse( stripslashes($response->content) ) : nl2br(stripslashes($response->content));
 						}
 						
 						$response->like = 0;

@@ -40,10 +40,20 @@ $juser =& JFactory::getUser();
 		<ol class="comments">
 <?php
 		if ($this->rows) {
-			ximport('wiki.parser');
 			ximport('Hubzero_User_Profile');
 
-			$p = new WikiParser( $this->group->get('cn'), $this->option, 'group'.DS.'forum', 'group', $this->group->get('gidNumber'), '' );
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher =& JDispatcher::getInstance();
+			$wikiconfig = array(
+				'option'   => $this->option,
+				'scope'    => 'group'.DS.'forum',
+				'pagename' => 'group',
+				'pageid'   => $this->group->get('gidNumber'),
+				'filepath' => '',
+				'domain'   => '' 
+			);
+			$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
+			$p = (is_array($result) && !empty($result)) ? $result[0] : null;
 			
 			$o = 'even';
 			$k = 0;
@@ -59,7 +69,7 @@ $juser =& JFactory::getUser();
 					}
 				}
 				
-				$comment = $p->parse( "\n".stripslashes($row->comment) );
+				$comment = (is_object($p)) ? $p->parse( stripslashes($row->comment) ) : nl2br(stripslashes($row->comment));
 				
 				$o = ($o == 'odd') ? 'even' : 'odd';
 ?>

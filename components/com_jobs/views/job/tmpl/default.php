@@ -38,10 +38,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 	
 	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, '%d %b %Y',0) : 'N/A';
 	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, '%d %b %Y',0) : 'ASAP';
-	
-	ximport('wiki.parser');
-	$p = new WikiParser( $job->code, $this->option, 'job'.DS.$job->code, 'jobs', $job->code);
-	$maintext = $p->parse( n.stripslashes($job->description) );	
+		
+	// Transform the wikitext to HTML
+	JPluginHelper::importPlugin( 'hubzero' );
+	$dispatcher =& JDispatcher::getInstance();
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => 'job'.DS.$job->code,
+		'pagename' => 'jobs',
+		'pageid'   => $job->code,
+		'filepath' => '',
+		'domain'   => '' 
+	);
+	$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($job->description), $wikiconfig) );
+	$maintext = (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($job->description));
 	
 	$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;	
 	

@@ -106,7 +106,7 @@ class plgMembersTopics extends JPlugin
 			}
 		}
 
-		ximport('wiki.page');
+		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
 		
 		// Instantiate some needed objects
 		$wp = new WikiPage( $database );
@@ -163,7 +163,7 @@ class plgMembersTopics extends JPlugin
 		if ($row->area != '' && $row->category != '') {
 			$html .= JText::_('PLG_MEMBERS_TOPICS_GROUP_WIKI').': '.$row->area;
 		} else {
-			$html .= JText::_(strtoupper($row->section));
+			$html .= JText::_('PLG_MEMBERS_TOPICS');
 		}
 		$html .= '</p>'."\n";
 		if ($row->text) {
@@ -205,11 +205,11 @@ class plgMembersTopics extends JPlugin
 				$username = $member->get('username');
 			}
 		} else {
-			if (!$member->uidNumber) {
+			if (!$member->get('uidNumber')) {
 				return array();
 			} else {
-				$uidNumber = $member->uidNumber;
-				$username = $member->username;
+				$uidNumber = $member->get('uidNumber');
+				$username = $member->get('username');
 			}
 		}
 

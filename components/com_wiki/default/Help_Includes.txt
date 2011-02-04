@@ -1,0 +1,33 @@
+Includes are standard wiki pages whose content is designed to be transcluded (embedded) inside other pages. Any wiki page may be an include. To include content from another wiki page, use the following syntax:
+
+{{{
+[[Include(PageName)]]
+}}}
+
+For example, say you had a page named '''Welcome''' with the following content:
+
+{{{
+Hello! Welcome to the wiki.
+}}}
+
+And then you created a page named '''Test''' and had the following text:
+
+{{{
+This is a test of includes!
+
+[[Include(Welcome)]]
+
+That should have included the Welcome page.
+}}}
+
+The final output would look like:
+
+{{{
+This is a test of includes!
+
+Hello! Welcome to the wiki.
+
+That should have included the Welcome page.
+}}}
+
+Any changes to an included page will be reflected on all the pages it is included. So, if you're welcome page is included on 100 pages and you decide to change the message to simply "Hi!", all 100 pages will reflect the change.

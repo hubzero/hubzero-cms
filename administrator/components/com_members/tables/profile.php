@@ -146,6 +146,9 @@ class MembersProfile extends JTable
 			if ($filters['show'] == 'contributors' || (isset($filters['index']) && $filters['index'] != '')) {
 				$sqlsearch .= " AND";
 			}
+			if (!isset($filters['search_field'])) {
+				$filters['search_field'] = 'name';
+			}
 			switch ($filters['search_field']) 
 			{
 				case 'email':
@@ -267,7 +270,23 @@ class MembersProfile extends JTable
 					CASE WHEN m.middleName IS NOT NULL AND m.middleName != '' AND m.middleName != '&nbsp;' THEN m.middleName ELSE SUBSTRING_INDEX(SUBSTRING_INDEX(m.name,' ', 2), ' ',-1) END AS mname,
 					CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' THEN m.surname ELSE SUBSTRING_INDEX(m.name, ' ', -1) END AS lname ";
 		$query .= $this->buildQuery( $filters, $admin );
-		$query .= " GROUP BY m.uidNumber ORDER BY ".$filters['sortby'];
+		$query .= " GROUP BY m.uidNumber";
+		if (isset($filters['sortby']) && $filters['sortby'] != '') {
+			$query .= " ORDER BY ";
+			switch ($filters['sortby']) 
+			{
+				case 'organization':
+					$query .= "organization ASC";
+				break;
+				case 'contributions':
+					$query .= "rcount DESC";
+				break;
+				case 'name':
+				default:
+					$query .= "lname ASC, fname ASC";
+				break;
+			}
+		}
 		if (isset($filters['limit']) && $filters['limit'] != 'all') {
 			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}

@@ -1042,9 +1042,18 @@ class WishlistController extends JObject
 		if ($old->pagetext != $page->pagetext or (!$create_revision && $pageid)) {
 				
 			// Transform the wikitext to HTML
-			ximport('wiki.parser');
-			$p = new WikiParser( $objWish->id, $this->_option, 'wishlist'.DS.$wishlist->id, $objWish->id );
-			$page->pagehtml = $p->parse( $page->pagetext );
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher =& JDispatcher::getInstance();
+			$wikiconfig = array(
+				'option'   => $this->_option,
+				'scope'    => 'wishlist'.DS.$wishlist->id,
+				'pagename' => $objWish->id,
+				'pageid'   => $objWish->id,
+				'filepath' => '',
+				'domain'   => '' 
+			);
+			$result = $dispatcher->trigger( 'onWikiParseText', array($page->pagetext, $wikiconfig) );
+			$page->pagehtml = (is_array($result) && !empty($result)) ? $result[0] : nl2br($page->pagetext);
 				
 			// Store content
 			if (!$page->store()) {

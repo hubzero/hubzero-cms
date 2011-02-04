@@ -38,6 +38,10 @@
 		border: 10px solid #f4f4f4;
 		background: #f4f4f4;
 		}
+	.data-entry {
+		border-color: #eef0e7; /*#F5F7F2;*/
+		background-color: #eef0e7; /*#F5F7F2;*/
+		}
 	.container fieldset {
 		margin: 0;
 		border: none;

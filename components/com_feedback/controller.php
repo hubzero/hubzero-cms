@@ -592,8 +592,13 @@ class FeedbackController extends Hubzero_Controller
 		$sum = $problem['operand1'] + $problem['operand2'];
 		$problem['key'] = $this->_generate_hash($sum,date('j'));
 	
+		// Trigger any events that need to be called
+		$customValidation = true;
+		$result = $dispatcher->trigger( 'onValidateTicketSubmission', array($reporter, $problem) );
+		$customValidation = (is_array($result) && !empty($result)) ? $result[0] : $customValidation;
+
 		// Check for some required fields
-		if (!$reporter['name'] || !$reporter['email'] || !$validemail || !$problem['long']) {
+		if (!$reporter['name'] || !$reporter['email'] || !$validemail || !$problem['long'] || !$customValidation) {
 			// Output form with error messages
 			$view = new JView( array('name'=>'report') );
 			$view->title = $this->_title;

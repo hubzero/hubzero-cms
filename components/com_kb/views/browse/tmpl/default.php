@@ -35,24 +35,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="aside">
 		<div class="container">
 			<h3>Community Help</h3>
-			<p>
+			<p class="starter"><span class="starter-point"></span>
 				Can't find something in the Knowledge Base? Try the community <a href="<?php echo JRoute::_('index.php?option=com_answers'); ?>">Questions &amp; Answers</a> and see if it has already been addressed by the community.
 			</p>
-			
+		</div><!-- / .container -->
+		<div class="container">
 			<h3>Feature Requests</h3>
-			<p>
+			<p class="starter"><span class="starter-point"></span>
 				Have an idea or feature request? <a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>">Let us know!</a>
 			</p>
-			
+		</div><!-- / .container -->
+		<div class="container">
 			<h3>Trouble Report</h3>
-			<p>
+			<p class="starter"><span class="starter-point"></span>
 				Found a bug? <a href="<?php echo JRoute::_('index.php?option=com_feedback&task=trouble_report'); ?>">Let us know!</a>
 			</p>
 		</div><!-- / .container -->
 	</div><!-- / .aside -->
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&section=all'); ?>" method="post">
-			<div class="container">
+			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
 					<input type="text" name="search" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />

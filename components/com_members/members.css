@@ -1,12 +1,3 @@
-/**
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
- */
-
 /*
 
 	-- -- -- -- -- -- --
@@ -15,131 +6,301 @@
 
 */
 
-/* Sections */
-	.section {
-		padding: 0 0px;
-		border-bottom: 1px solid #EFEFEF;
+/* Misc. */
+	.com_members .clearfix {
+		border: 1px solid transparent;
 		}
-	.main {
-		border-bottom: none;
+	.com_members .clearfix:after {
+		content: "."; 
+		display: block; 
+		height: 0px; 
+		clear: left; 
+		visibility: hidden;
 		}
-	.below {
-		margin: 2em 0 0 0;
-		padding-top: 1em;
-		}
-	.aside {
-		float: right;
-		width: 214px;
-		padding-top: 1em;
-		}
-	.subject {
+/* Content blocks */
+	.com_members .container {
 		margin: 1em 0;
-		margin-right: 235px;
-		padding: 1.4em;
-		background: #F7F7F7;
-		border-top: 1px solid #E3E3E3;
-		border-bottom: 1px solid #E3E3E3;
+		padding: 0;
+		border: 10px solid #f4f4f4;
+		background: #f4f4f4;
 		}
-	.main .subject {
+	.com_members .data-entry {
+		border-color: #eef0e7; /*#F5F7F2;*/
+		background-color: #eef0e7; /*#F5F7F2;*/
+		}
+	.com_members .container-block {
+		border: 2px solid #e9e9e9;
+		background-color: #fff;
+		margin: 0;
+		padding: 0 15px;
+		}
+	.com_members .container-block h3 {
+		margin: 0 -15px 1em -15px;
+		padding: 0.5em 0.7em;
+		background: #f8f8f8 url("images/light-stripes.png");
+		border-bottom: 2px solid #e9e9e9;
+		font-size: 135%;
+		}
+	.com_members .container-block h4 {
+		font-size: 115%;
+		border-bottom: 1px solid #eee;
+		padding: 0.5em 0.7em;
+		font-weight: normal;
+		}
+	.com_members .container-block .columns {
+		margin-top: 0em;
+		margin-bottom: 1em;
+		}
+	.com_members .container-block .entry-content {
+		margin: 0 0 2em 0;
+		}
+	.com_members .container-block .entry-content h4 {
+		font-weight: bold;
+		}
+/* Entries search */
+	.com_members .entry-search {
+		margin: 0 1em 0 0;
 		border: none;
-		background: transparent;
-		padding: 1em 0 0 0;
+		padding: 0;
 		}
-	.main h3 {
+	.com_members .entry-search label {
 		display: none;
 		}
-	.aside .metadata {
-		margin-top: 1em;
+	.com_members .entry-search input {
+		width: 95%;
+		border: 1px solid #A8A8A8;
+		background: #fff url("images/search.png") 5px 50% no-repeat;
+		padding: 5px 5px 5px 20px;
 		}
-	.aside .controls {
-		float: none;
-		margin: 1em 0;
-		width: auto;
+	.com_members .entry-search-submit {
+		float: right;
+		margin: 3px 0 0 0;
 		}
-	.aside .sub-nav {
-		margin: 1em 0 2em 0;
-		padding: 1em;
-		background: #F4F4F4;
-		border-top: 1px solid #D8D8D8;
-		border-bottom: 1px solid #D8D8D8;
+/* Aside */
+	.com_members .aside .container {
+		margin: 0 0 1em 0;
+		padding: 0;
+		background-color: #F4F4ee;
+		border: 10px solid #F4F4ee;
 		}
-	.aside .sub-nav ul {
-		margin: 0;
+	/* Headers */
+	.com_members .aside .container h3,
+	.com_members .aside .container h4 {
+		margin: -10px -10px 1em -10px;
+		padding: 5px 10px;
+		background-color: #999;
+		color: #fff;
+		}
+	/* Paragraphs */
+	.com_members .aside .container p {
+		margin: 1em 0 0 0;
+		}
+	.com_members .aside .container .starter {
+		padding: 0 0 0 0;
+		position: relative;
+		}
+	.com_members .aside .container .starter .starter-point {
+		border-color: #999 transparent transparent transparent;
+		border-style: solid dashed dashed dashed;
+		border-width: 10px;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: -1.2em;
+		left: 10px;
+		}
+	/* Lists */
+	.com_members .aside .container ul,
+	.com_members .aside .container li {
+		margin-left: 0;
+		padding-left: 0;
 		list-style: none;
 		}
-	.aside .sub-nav ul {
-		padding-left: 1em;
+	.com_members .aside .container ul {
+		margin: 0.5em 0 0.5em 0;
+		padding: 0;
 		}
-	.aside .sub-nav li {
-		margin: 0.3em 0;
+	.com_members .aside .container li {
+		padding: 0 0 0 0;
+		margin: 0.2em 0;
+		padding: 0 0 0 15px;
+		background: url("images/bullets_small.png") no-repeat 0px -730px; 
+		}
+	.com_members .aside .container a.active {
+		color: #777;
+		font-weight: bold;
+		}
+/* Entries (table) */
+	.com_members .entries {
+		border: 2px solid #e9e9e9;
+		border-top: none;
+		background-color: #fff;
+		margin: 0;
+		padding: 0;
+		}
+	/* caption */
+	.com_members .entries caption {
+		font-size: 115%;
+		background: #f8f8f8 url("images/light-stripes.png");
+		border: 2px solid #e9e9e9;
+		border-bottom: 1px solid #e9e9e9;
+		margin-right: -2px; /* Fix 2px issue */
+		}
+	.com_members .container-block h4 span,
+	.com_members .entries caption span {
+		color: #aaa;
+		}
+	/* thead */
+	.com_members .entries thead th {
+		text-align: center;
+		font-size: 85%;
+		background-color: #fbfbf6;
+		}
+	.com_members .entries thead th a {
+		display: inline-block;
+		padding: 0.1em 0.4em;
+		margin: 0 0.15em;
+		border: 1px solid #fbfbf6; /*#69c;*/
+		background-color: #fbfbf6; /*#eff7ff;*/
+		}
+	.com_members .entries thead th a:hover {
+		border-color: #f60;
+		color: #f60;
+		background-color: #fff;
+		}
+	.com_members .entries thead th a.active-index {
+		background-color: #eee;
+		color: #999;
+		border-color: #999;
+		}
+	/* tbody */
+	.com_members .entries tbody td {
+		text-align: left;
+		border-bottom: 1px solid #eee;
+		padding: 10px;
+		}
+	.com_members .entries tbody th {
+		width: 50px;
+		padding: 10px;
+		text-align: center;
+		border-bottom: 1px solid #eee;
+		}
+	.com_members .entries tbody tr.private {
+		/*background: #ffe url("images/light-stripes.png");*/
 		background-image: none;
 		}
-	.aside .sub-nav li.active a {
-		font-weight: bold;
+	.com_members .entries tbody tr.private .entry-title {
+		background: transparent url("images/lock.png") 0 0 no-repeat;
+		padding-left: 20px;
 		}
-	.aside .sub-nav li.active li a {
-		border: none;
-		color: #4583A6;
-		font-weight: normal;
-		background-position: 0 0.7em; 
+	.com_members .entries tbody tr.me {
+		background-color: #f6f6f1;
 		}
-	.aside .sub-nav li.active li a:hover { 
-		color: #c00;
-		background-position: 0.3em 0.7em;
+	.com_members .entry-details {
+		font-size: 85%;
+		color: #999;
 		}
-	.aside .sub-nav li ul {
+	.com_members .entry-details-divider {
+		margin-left: 0.5em;
+		margin-right: 0.5em;
+		}
+	.com_members .entries .activity {
+		color: #999;
+		}
+		
+	.com_members .entries .entry-id {
+		display: none;
+		}
+	.com_members .container-block .entry-details {
+		padding: 0.7em 0 0.7em 0;
+		}
+/* Submenu (filtering and sorting) */
+	.com_members .entries-menu {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		font-size: 85%;
+		}
+	.com_members .list-footer,
+	.com_members .entries-menu {
+		min-height: 1px;
+		}
+	.com_members .entries-menu li {
+		float: right;
+		padding: 0 0.2em 0.5em 0.2em;
 		margin: 0;
 		}
-	.aside fieldset {
-		margin: 1em 0 1em 0;
-		padding: 1em;
-		background: #F5F7F2;
-		border-top: 1px solid #DEE4CD;
-		border-bottom: 1px solid #DEE4CD;
-		}
-	.aside>fieldset {
-		margin-top: 0;
-		}
-	.aside fieldset label {
+	.com_members .entries-menu li a,
+	.com_members .entries-menu span.nolink {
+		color: #888;
 		display: block;
-		margin-bottom: 0.5em;
-		}
-	.aside fieldset label input, 
-	.aside fieldset label select, 
-	.aside fieldset label textarea {
-		width: 100%;
-		}
-	.aside fieldset legend {
-		font-weight: bold;
-		padding: 0 0 1em 0;
-		}
-	iframe {
+		cursor: pointer;
+		font-weight: normal;
+		line-height: 1em;
 		border: none;
-		}
-	#member-picture {
-		background-color: #f3f1ed;
-		}
-	#member-picture fieldset {
-		margin: 1.5em 0 2em 0;
-		padding: 0.5em 0;
-		}
-	#members {
-		margin-top: 1em;
-		}
-	#members td.locked {
-		border: none;
-		background-color: transparent;
 		margin: 0;
-		padding: 5px 10px 5px 30px;
+		padding: 0.4em 0.75em;
+		text-shadow: 0px 1px 1px #fff;
 		}
-/*---------------------------------------------------------------
-	Form stylings
----------------------------------------------------------------*/
+	.com_members .entries-menu span.nolink {
+		color: #999;
+		}
+	.com_members .entries-menu a.active,
+	.com_members .entries-menu span.nolink.active {
+		color: #fff;
+		background-color: #636166;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		text-decoration: none;
+		}
+	.com_members .entries-menu a:hover {
+		color: #fff;
+		background-color: #fc9022;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		text-decoration: none;
+		}
+	.com_members .filter-options li {
+		float: left;
+		margin: 0 0 0.2em 0;
+		}
+/* Sub sub menu */
+	#sub-sub-menu ul {
+		margin: 0 -15px;
+		padding: 0.7em 15px;
+		list-style: none;
+		border: none;
+		border-bottom: 1px solid #ddd;
+		}
+	#sub-sub-menu li {
+		margin: 0 0 0 20px;
+		padding: 0;
+		border: none;
+		display: inline;
+		}
+	#sub-sub-menu .active a {
+		color: #333;
+		border: none;
+		}
+	.com_members #sub-menu {
+		margin-bottom: -1px;
+		}
+/* Form stylings */
 	#hubForm .threeup {
 		margin-left: -1.5%;
 		margin-right: -3%;
 		padding: 0 0 1.5em 0;
 		left: 0;
+		margin-top: 1.5em;
+		margin-bottom: 1.5em;
 		}
 	#hubForm .threeup label {
 		padding: 0;
@@ -150,13 +311,54 @@
 		padding-left: 1.5%;
 		padding-right: 1.5%;
 		}
-	#hubForm .group label:first-child {
+	#hubForm .threeup label:first-child {
 		margin-left: 0;
 		margin-right: 0;
-		}	
-/*---------------------------------------------------------------
-	Profile
----------------------------------------------------------------*/
+		}
+	.full fieldset#actions,
+	.full fieldset#filters {
+		border: none;
+		background: transparent;
+		margin: 0;
+		padding: 0;
+		}
+	.full fieldset#filters {
+		float: right;
+		}
+	#hubForm #orgtextlabel {
+		display: none;
+		}
+/* Member picture (loaded via iframe) */
+	iframe {
+		border: none;
+		}
+	#member-picture {
+		background-color: #F5F7F2;
+		}
+	#member-picture fieldset {
+		margin: 1.5em 0 2em 0;
+		padding: 0.5em 0;
+		}
+/* Search results */
+	.com_members .search {
+		margin: 0 1em 0.5em 1em;
+		border: none;
+		}
+	.results .member p {
+		margin-left: 60px;
+		}
+	.results .member .title {
+		text-indent: 0em;
+		}
+	.results .member .photo {
+	    text-align: center;
+		float: left;
+	    width: 50px;
+		display: block;
+		margin: 0.5em 0 0 0;
+		padding: 0;
+		}
+/* TAB: Profile */
 	.profile {
 		margin-top: 1em;
 		border: none;
@@ -189,6 +391,11 @@
 	.profile td p:first-child {
 		margin-top: 0;
 		}
+	.profile tr.private {
+		background-color: #efefef;
+		background-image: none;
+		color: #aaa;
+		}
 		
 	.portrait {
 		border: 3px double #e5e5e5;
@@ -201,213 +408,40 @@
 		margin: 0;
 		padding: 0;
 		}
-	.metadata {
-		border: 1px dashed #bbb;
-		margin: 0 0 1.5em 0;
-		padding: 10px;
+/* Messaging */
+	.message { 
+		background: url("images/email_go.png") 0 0 no-repeat; 
+		padding-left: 20px;
 		}
-	.metadata p {
-		margin: 0.2em 0;
-		padding: 0 0 0 20px;
-		font-size: 90%;
-		}
-	.metadata .review {
-		background: url("images/1.gif") -52px 50% no-repeat;
-		}
-	.metadata .citation {
-		background: url("images/cite.gif") 0 50% no-repeat;
-		}
-	.metadata .usage { 
-		background: url("images/stats.gif") 0 50% no-repeat;
-		}
-	.metadata .answer { 
-		background: url("images/qanda.gif") 0 50% no-repeat;
-		}
-	.metadata .topics { 
-		background: url("images/topic.gif") 0 50% no-repeat;
-		}
-	.metadata .groups { 
-		background: url("images/group.gif") 0 50% no-repeat;
-		}
-	.subject>.warning,
-	.subject>.locked {
-		margin: 0 0 2em 0;
-		}
-/*---------------------------------------------------------------
-	Contributions
----------------------------------------------------------------*/
-	.results {
-		list-style: none;
-		margin: 1em 0 1em 0;
-		padding: 0;
-		position: relative;
-		border-top: 5px solid #dfdfdf;
-		border-bottom: 1px solid #dfdfdf;
-		}
-	.results li {
-		border-bottom: 1px solid #efefef;
-		padding: 1em 0 1em 1em;
+	.message-member a {
 		margin: 0;
-		}
-	.results p,
-	.results .details {
-		margin: 0.5em 0;
 		padding: 0;
-		}
-	.results .details {
-		font-size: 90%;
-		color: #999;
-		}
-	.results .details span {
-		color: #fff;
-		margin: 0 0.5em;
-		}
-	.results .title {
-		margin-left: -1em;
-		font-weight: bold;
-		}
-	.results .metadata { 
-		margin: -1.5em 0 0 0;
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		text-indent: 555em;
 		float: right;
-		width: 190px;
-		background: none;
 		}
-	.results .warning {
-		padding: 10px 10px 10px 30px;
-		}
-	.results .metadata p { 
-		color: #999; 
-		font-size: 90%;
-		margin: 0 0 0.5em 0;
-		padding: 0;
-		}
-	.search {
-		margin: 0 1em 0.5em 1em;
+	.message-member a:hover {
 		border: none;
 		}
-/* Letter index */
-	p#letter-index {
-		margin: 1em 0 1em 0;
-		padding: 0;
-		border: 1px solid #eee;
-		text-align: center;
+/* TAB: Favorites */
+	.com_members .aside legend,
+	.com_members #contributions-section>h3,
+	.com_members #favorites-section>h3,
+	.com_members #profile-section>h3 {
+		display: none !important;
 		}
-	p#letter-index a { 
-		padding: 0 0.4em;
+
+/* IE 7 hacks */
+	html>body .com_members .filter-options li {
+		*margin: -2em 0 0 0;
 		}
-	p#letter-index a.active-index {
-		font-weight: bold;
-		color: #333;
-		background-color: #eee;
+	html>body .com_members .main .subject {
+		*padding-top: 1em;
 		}
-/* Category headers */
-	.category-header {
-		position: relative;
-		padding: 0.5em 0.5em 0.5em 1.5em;
-		margin: 1em 0 0 0;
-		color: #fff;
-		background: #bbb;
+	html>body .com_members .aside .container .starter .starter-point {
+		*top: -1.3em;
 		}
-	.category-header small {
-		position: absolute;
-		right: 0.5em;
-		font-size: 1em;
-		}
-	.opened {
-		background: #bbb;
-		}
-/* Misc. */
-	.moreresults {
-		margin: 0 1em 2em 1em;
-		padding: 0;
-		font-weight: bold;
-		color: #999;
-		}
-	.category-wrap {
-		margin-bottom: 1em;
-		}
-/*---------------------------------------------------------------
-	Groups
----------------------------------------------------------------*/
-	#grouplist {
-		margin-top: 1em;
-		}
-	#grouplist tbody span.status {
-		font-weight: bold;
-		}
-	#grouplist tbody span.member {
-		color: #66AA00;
-		}
-	#grouplist tbody span.manager {
-		color: #ff1177;
-		}
-	#grouplist tbody span.pending {
-		color: #AA3300;
-		}
-	#grouplist tbody span.invitee {
-		color: #aaaaaa;
-		}
-/*---------------------------------------------------------------
-	Points
----------------------------------------------------------------*/
-	#point-balance {
-		margin-top: 0;
-		background: #F7F4F2;
-		border-top: 1px solid #E7DFD8;
-		border-bottom: 1px solid #E7DFD8;
-		text-align: center;
-		color: #333;
-		font-weight: bold;
-		font-size: 1.5em;
-		padding: 0.5em;
-		}
-	#point-balance span {
-		display: none;
-		}
-	#point-balance small {
-		color: #888;
-		}
-/* Point transactions table */
-	.transactions .withdraw {
-		color: red;
-		}
-	.transactions .deposit {
-		color: green;
-		}
-	.transactions .textual-data {
-		text-align: left;
-		}
-	.transactions .numerical-data {
-		text-align: right;
-		}
-	.transactions .odd .highlight {
-		background-color: #eee;
-		}
-	.transactions .even .highlight {
-		background-color: #f8f8f8;
-		}
-	.odd {
-		background-color: #f6f6f1;
-		}
-	.even {
-		}
-	.data .small {
-		font-size: 95%;
-		display: block;
-		color: #888;
-		}
-/* Search results */
-	.results .member p {
-		margin-left: 60px;
-		}
-	.results .member .title {
-		text-indent: 0em;
-		}
-	.results .member .photo {
-	    text-align: center;
-		float: left;
-	    width: 50px;
-		display: block;
-		margin: 0.5em 0 0 0;
-		padding: 0;
-		}
+/* IE 6 hacks */

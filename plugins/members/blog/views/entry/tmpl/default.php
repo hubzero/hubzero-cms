@@ -148,13 +148,23 @@ if ($this->comments) {
 	<ol class="comments">
 <?php 
 	$cls = 'even';
-	ximport('wiki.parser');
 	ximport('Hubzero_User_Profile');
 	
 	$path = $this->config->get('uploadpath');
 	$path = str_replace('{{uid}}',BlogHelperMember::niceidformat($this->member->get('uidNumber')),$path);
-	$p = new WikiParser( stripslashes($this->row->title), $this->option, 'blog', $this->row->alias, 0, $path );
-	//$p = new WikiParser( $this->member->get('name'), $this->option, 'members'.DS.'profile'.DS.'blog', 'member' );
+
+	JPluginHelper::importPlugin( 'hubzero' );
+	$dispatcher =& JDispatcher::getInstance();
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => 'blog',
+		'pagename' => $this->row->alias,
+		'pageid'   => 0,
+		'filepath' => $path,
+		'domain'   => '' 
+	);
+	$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
+	$p = (is_array($result) && !empty($result)) ? $result[0] : null;
 	
 	foreach ($this->comments as $comment) 
 	{
@@ -177,7 +187,7 @@ if ($this->comments) {
 		if ($comment->reports) {
 			$content = '<p class="warning">'.JText::_('PLG_MEMBERS_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 		} else {
-			$content = $p->parse( "\n".stripslashes($comment->content) );
+			$content = (is_object($p)) ? $p->parse( stripslashes($comment->content) ) : nl2br(stripslashes($comment->content));
 		}
 ?>
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $comment->id; ?>">
@@ -224,7 +234,7 @@ if ($this->comments) {
 				if ($reply->reports) {
 					$content = '<p class="warning">'.JText::_('PLG_MEMBERS_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 				} else {
-					$content = $p->parse( "\n".stripslashes($reply->content) );
+					$content = (is_object($p)) ? $p->parse( stripslashes($reply->content) ) : nl2br(stripslashes($reply->content));
 				}
 ?>
 				<li class="comment <?php echo $cls; ?>" id="c<?php echo $reply->id; ?>">
@@ -271,7 +281,7 @@ if ($this->comments) {
 						if ($response->reports) {
 							$content = '<p class="warning">'.JText::_('PLG_MEMBERS_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 						} else {
-							$content = $p->parse( "\n".stripslashes($response->content) );
+							$content = (is_object($p)) ? $p->parse( stripslashes($response->content) ) : nl2br(stripslashes($response->content));
 						}
 ?>
 						<li class="comment <?php echo $cls; ?>" id="c<?php echo $response->id; ?>">

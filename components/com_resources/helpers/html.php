@@ -1072,9 +1072,18 @@ class ResourcesHtml
 				// Do nothing
 		} else {
 				// Get the wiki parser and parse the full description
-				ximport('wiki.parser');
-				$p = new WikiParser( $resource->title, $option, 'resources'.DS.$resource->id, 'resources', $resource->id, $config->get('uploadpath'));
-				$maintext = $p->parse( "\n".stripslashes($maintext) );
+				JPluginHelper::importPlugin( 'hubzero' );
+				$dispatcher =& JDispatcher::getInstance();
+				$wikiconfig = array(
+					'option'   => $option,
+					'scope'    => 'resources'.DS.$resource->id,
+					'pagename' => 'resources',
+					'pageid'   => $resource->id,
+					'filepath' => $config->get('uploadpath'),
+					'domain'   => '' 
+				);
+				$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($maintext), $wikiconfig) );
+				$maintext = (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($maintext));
 		}
 		
 		$html  = '<div class="subject abouttab">'."\n";
@@ -1320,9 +1329,18 @@ class ResourcesHtml
 				// Do nothing
 			} else {
 				// Get the wiki parser and parse the full description
-				ximport('wiki.parser');
-				$p = new WikiParser( $resource->title, $option, 'resources'.DS.$resource->id, 'resources', $resource->id, $config->get('uploadpath'));
-				$maintext = $p->parse( "\n".stripslashes($maintext) );
+				JPluginHelper::importPlugin( 'hubzero' );
+				$dispatcher =& JDispatcher::getInstance();
+				$wikiconfig = array(
+					'option'   => $option,
+					'scope'    => 'resources'.DS.$resource->id,
+					'pagename' => 'resources',
+					'pageid'   => $resource->id,
+					'filepath' => $config->get('uploadpath'),
+					'domain'   => '' 
+				);
+				$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($maintext), $wikiconfig) );
+				$maintext = (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($maintext));
 			}
 		}
 		

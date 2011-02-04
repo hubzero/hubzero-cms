@@ -63,8 +63,6 @@ $k = 0;
 $filterstring  = ($this->filters['sortby'])   ? '&amp;sort='.$this->filters['sortby']     : '';
 $filterstring .= '&amp;category='.$this->filters['category'];
 
-ximport('wiki.parser');
-$p = new WikiParser( 'jobs', $this->option, 'jobs.browse', 'jobs', 1);
 $now = date( "Y-m-d H:i:s" );
 
 $database =& JFactory::getDBO();

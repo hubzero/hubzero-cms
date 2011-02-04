@@ -57,7 +57,7 @@ if ($this->authorized === 'admin') {
 	$html .= "\t\t".'<p>'.JText::_('The following options are available to administrators only.').'</p>'."\n";
 	$html .= "\t".'</div>'."\n";
 	$html .= "\t".'<fieldset>'."\n";
-	$html .= "\t\t".'<h3>'.JText::_('Admin Options').'</h3>'."\n";
+	$html .= "\t\t".'<legend>'.JText::_('Admin Options').'</legend>'."\n";
 	$html .= "\t\t".'<label>'."\n";
 	$html .= "\t\t\t".'<input type="checkbox" class="option" name="profile[vip]" value="1"';
 	if ($this->profile->get('vip') == 1) { 
@@ -82,7 +82,7 @@ if ($enabled) {
 }
 $html .= "\t".'</div>'."\n";
 $html .= "\t".'<fieldset>'."\n";
-$html .= "\t\t".'<h3>'.JText::_('Contact Information').'</h3>'."\n";
+$html .= "\t\t".'<legend>'.JText::_('Contact Information').'</legend>'."\n";
 $html .= "\t\t".'<input type="hidden" name="id" value="'. $this->profile->get('uidNumber') .'" />'."\n";
 $html .= "\t\t".'<input type="hidden" name="option" value="'. $this->option .'" />'."\n";
 $html .= "\t\t".'<input type="hidden" name="task" value="save" />'."\n";
@@ -191,7 +191,7 @@ if ($this->registration->Phone != REG_HIDE) {
 
 $html .= "\t".'</fieldset><div class="clear"></div>'."\n";
 $html .= "\t".'<fieldset>'."\n";
-$html .= "\t\t".'<h3>'.JText::_('Personal Information').'</h3>'."\n";
+$html .= "\t\t".'<legend>'.JText::_('Personal Information').'</legend>'."\n";
 
 if ($this->registration->Employment != REG_HIDE) {
 	$required = ($this->registration->Employment == REG_REQUIRED) ? '<span class="required">'.JText::_('REQUIRED').'</span>' : '';
@@ -360,7 +360,7 @@ if ($this->registration->Citizenship != REG_HIDE
  || $this->registration->Race != REG_HIDE) 
 {
 	$html .= t.'<fieldset>'."\n";
-	$html .= "\t\t".'<h3>'.JText::_('Demographics').'</h3>'."\n";
+	$html .= "\t\t".'<legend>'.JText::_('Demographics').'</legend>'."\n";
 	
 	if ($this->registration->Citizenship != REG_HIDE 
 	 || $this->registration->Residency != REG_HIDE) {
@@ -679,7 +679,7 @@ if ($this->registration->OptIn != REG_HIDE) // newsletter Opt-In
 	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 	
 	$html .= "\t".'<fieldset>'."\n";
-	$html .= "\t\t".'<h3>'.JText::_('Updates').'</h3>'."\n";
+	$html .= "\t\t".'<legend>'.JText::_('Updates').'</legend>'."\n";
 	$html .= "\t\t".'<input type="hidden" name="mailPreferenceOption" value="unset" />'."\n";
 	$html .= "\t\t".'<label '.$fieldclass.'><input type="checkbox" class="option" id="mailPreferenceOption" name="mailPreferenceOption" value="1" ';
 	if ($this->profile->get('mailPreferenceOption')) {
@@ -691,7 +691,7 @@ if ($this->registration->OptIn != REG_HIDE) // newsletter Opt-In
 }
 
 $html .= "\t".'<fieldset>'."\n";
-$html .= "\t\t".'<h3>'.JText::_('MEMBER_PICTURE').'</h3>'."\n";
+$html .= "\t\t".'<legend>'.JText::_('MEMBER_PICTURE').'</legend>'."\n";
 $html .= "\t\t".'<iframe width="100%" height="350" border="0" name="filer" id="filer" src="index.php?option='.$this->option.'&amp;no_html=1&amp;task=img&amp;file='.stripslashes($this->profile->get('picture')).'&amp;id='.$this->profile->get('uidNumber').'"></iframe>'."\n";
 $html .= "\t".'</fieldset><div class="clear"></div>'."\n";
 

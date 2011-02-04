@@ -101,7 +101,28 @@ class plgGroupsWiki extends JPlugin
 			global $mainframe;
 
 			// Import some needed libraries
-			ximport('wiki.wiki');
+			ximport('Hubzero_User_Helper');
+
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'attachment.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'author.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'comment.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'log.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'revision.php');
+			
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'config.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'differenceengine.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'html.php');
+			//include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'macro.php');
+			//include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'math.php');
+			//include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'parser.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'sanitizer.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'setup.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'stringutils.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'tags.php');
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'utfnormalutil.php');
+			
+			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'controller.php');
 
 			// Instantiate controller
 			$controller = new WikiController( array('name'=>'groups','sub'=>'wiki','group'=>$group->get('cn')) );
@@ -172,7 +193,7 @@ class plgGroupsWiki extends JPlugin
 		$ids = $this->getPageIDs( $group->get('cn') );
 
 		// Import needed libraries
-		ximport('wiki.page');
+		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
 		
 		// Instantiate a WikiPage object
 		$database =& JFactory::getDBO();

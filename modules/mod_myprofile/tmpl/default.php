@@ -43,8 +43,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</p>
 	<div id="myprofile-bio">
 <?php if ($modmyprofile->profile->get('bio')) {
-	$p = new WikiParser( $modmyprofile->profile->get('name'), 'com_members', 'members'.DS.'profile', 'member' );
-	echo $p->parse( "\n".stripslashes($modmyprofile->profile->get('bio')) );
+	JPluginHelper::importPlugin( 'hubzero' );
+	$dispatcher =& JDispatcher::getInstance();
+	$wikiconfig = array(
+		'option'   => 'com_members',
+		'scope'    => 'members'.DS.'profile',
+		'pagename' => 'member',
+		'pageid'   => $modmyprofile->profile->get('uidNumber'),
+		'filepath' => '',
+		'domain'   => '' 
+	);
+	$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($modmyprofile->profile->get('bio')), $wikiconfig) );
+	
+	echo (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($modmyprofile->profile->get('bio')));
 } else { 
 	echo JText::_('MOD_MYPROFILE_NO_BIO');
 } ?>

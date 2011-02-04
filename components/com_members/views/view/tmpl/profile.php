@@ -231,9 +231,19 @@ if ($this->params->get('access_bio') == 0
  || ($this->params->get('access_bio') == 2 && $this->authorized)
 ) {
 	if ($this->profile->get('bio')) {
-		ximport('wiki.parser');
-		$p = new WikiParser( $this->profile->get('name'), $this->option, 'members'.DS.'profile', 'member' );
-		$bio = $p->parse( n.stripslashes($this->profile->get('bio')), 0, 0 );
+		// Transform the wikitext to HTML
+		JPluginHelper::importPlugin( 'hubzero' );
+		$dispatcher =& JDispatcher::getInstance();
+		$wikiconfig = array(
+			'option'   => $this->option,
+			'scope'    => 'members'.DS.'profile',
+			'pagename' => 'member',
+			'pageid'   => 0,
+			'filepath' => '',
+			'domain'   => '' 
+		);
+		$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($this->profile->get('bio')), $wikiconfig) );
+		$bio = (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($this->profile->get('bio')));
 	} else {
 		$bio = JText::_('NO_BIOGRAPHY');
 	}

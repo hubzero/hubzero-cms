@@ -233,6 +233,8 @@ class YSearchResultSql extends YSearchResult
 	{
 		$dbh =& JFactory::getDBO();
 		$dbh->setQuery($this->sql);
+		if (isset($_GET['dbgsql']))
+			echo '<pre>'.$dbh->getQuery().'</pre>';
 		if (!($rows = $dbh->loadAssocList()))
 		{
 			if (($error = mysql_error()))

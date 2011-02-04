@@ -1,0 +1,698 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/* Sections */
+	.com_wiki .main {
+		border-top: 1px solid #fff;
+		border-bottom: none;
+		}
+	.com_wiki .subject {
+		margin-top: 1em;
+		}
+	.com_wiki .main .subject {
+		margin-top: 0;
+		}
+	.com_wiki .main .subject h1,
+	.com_wiki .main .subject h1,
+	.com_wiki .main .subject h2,
+	.com_wiki .main .subject h3,
+	.com_wiki .main .subject h4,
+	.com_wiki .main .subject h5,
+	.com_wiki .main .subject h6 {
+		color: #333;
+		text-shadow: none;
+		font-weight: bold;
+		padding: 0;
+		margin: 1em 0;
+		border: none;
+		}
+	.com_wiki .main .subject h1 {
+		font-size: 1.8em;
+		}
+	.com_wiki .main .subject h2 span {
+		color: #333;
+		}
+	.com_wiki .main .subject ul,
+	.com_wiki .main .subject ol {
+		padding: 0;
+		margin: 1em 0;
+		}
+	.com_wiki .main .subject ul {
+		list-style-type: disc;
+		}
+	.com_wiki .main .subject ol {
+		list-style-type: decimal;
+		}
+	.com_wiki .main .subject li {
+		padding: 0;
+		margin: 0.2em 0 0.2em 2em;
+		}
+	.com_wiki .main .subject ul li {
+		}
+	.com_wiki .main .subject dd {
+		color: #888;
+		}
+	.com_wiki .main .subject table {
+		border: 2px solid #ccc;
+		width: auto;
+		}
+	.com_wiki .main .subject table td, 
+	.com_wiki .main .subject table th {
+		border: 1px solid #ccc;
+		margin: 0;
+		padding: 0.2em 0.4em;
+		}
+	.com_wiki .main .subject blockquote {
+		margin: 2em 0 2.5em 0;
+		padding: 5px 0 5px 10px;
+		}
+	.com_wiki #hubForm.full fieldset,
+	.com_wiki .subject #hubForm.full fieldset {
+		width: auto;
+		}	
+	#revisionhistory {
+		width: 100%;
+		}
+/* Attachments */
+	#attachments {
+		margin: 0;
+		padding: 0;
+		min-width: 100px;
+		background: #fff;
+		}
+	#attachments form,
+	#attachments fieldset,
+	#attachments table {
+		padding: 0;
+		margin: 0;
+		}
+	#attachments table {
+		width: auto;
+		}
+	#attachments tbody td {
+		padding: 0.2em 0.4em;
+		}
+/* Comments */
+	.com_wiki .below .subject {
+		background: transparent;
+		padding: 1em 0 0 0;
+		border-bottom: none;
+		}
+	#commentlist-title,
+	#commentform-title,
+	.below h3 {
+		margin-left: 70px;
+		}
+	.com_wiki .main .subject ol.comments,
+	ol.comments {
+		list-style-type: none !important;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		}
+	.com_wiki .main .subject ol.comments li,
+	ol.comments li {
+		clear: left;
+		margin: 0;
+		padding: 0;
+		border-top: 1px solid #fff;
+		}
+	.com_wiki .main .subject ol.comments ol,
+	ol.comments ol {
+		margin: 0;
+		padding: 0;
+		}
+	.com_wiki .main .subject ol.comments li li,
+	ol.comments li li {
+		margin: 0;
+		padding-left: 70px !important;
+		}
+	/* Options */
+	.abuse {
+		background: url("images/abuse.gif") 0 0 no-repeat;
+		padding-left: 15px;
+		}
+	.reply {
+		background: url("images/reply.gif") 0 0 no-repeat;
+		padding-left: 15px;
+		}
+	.abuse:hover,
+	.reply:hover {
+		background-position: 0 -20px;
+		}
+	.comment-options {
+		color: #fff;
+		font-size: 90%;
+		visibility: hidden;
+		}
+	ol.comments .comment-content:hover .comment-options {
+		visibility: visible;
+		}
+	.comment-options a {
+		margin-right: 1em;
+		}		
+	.comment-options a span {
+		display: none;
+		}
+	ol.comments dl.comment-details {
+		display: none;
+		}
+	/* Member photo */
+	ol.comments p.comment-member-photo {
+	    float: left;
+	    margin: 0;
+	    padding: 0 20px 0 0; /*105px;*/
+		width: 50px;
+		height: 50px;
+		overflow: hidden;
+	    color: #777;
+	    font-size: 11px;
+	    text-align: right;
+		background: url("images/comment-arrow.gif") right 15px no-repeat;
+		}
+	/* Content */
+	ol.comments .comment-content {
+		margin: 0 0 1em 70px; /*125px;*/
+		background-color: #fafafa;
+		border: 10px solid #f2f2f2;
+		padding: 0 1em;
+		}
+	ol.comments .comment-voting {
+		margin: 0;
+		padding: 0;
+		}
+	ol.comments .comment-voting .thumbsvote {
+		margin-top: 0.5em;
+		}
+	/* Author comments */
+	ol.comments .author .comment-content,
+	ol.comments .author ol.comments .author .comment-content {
+		background-color: #fdfbf8;
+		border-color: #f9f2ec;
+		}
+	ol.comments .author p.comment-member-photo,
+	ol.comments .author ol.comments .author p.comment-member-photo {
+		background: url("images/comment-arrow.gif") right -129px no-repeat;
+		}
+	ol.comments .author ol.comments .comment-content,
+	ol.comments .author ol.comments .author ol.comments .comment-content {
+		background-color: #fafafa;
+		border-color: #f2f2f2;
+		}
+	ol.comments .author ol.comments p.comment-member-photo,
+	ol.comments .author ol.comments .author ol.comments p.comment-member-photo {
+		background: url("images/comment-arrow.gif") right 15px no-repeat;
+		}
+	/* Chosen comments */
+	ol.comments .chosen .comment-content {
+		background-color: #f9f8fd;
+		border-color: #eeecf9;
+		}
+	ol.comments .chosen p.comment-member-photo {
+		background: url("images/comment-arrow.gif") right -57px no-repeat;
+		}
+	/* Details (date, time) */
+	ol.comments span.comment-details {
+		color: #bfbfbf;
+		}
+	/* Permalink */
+	ol.comments .permalink {
+		border: none;
+		color: #bfbfbf;
+		}
+	ol.comments .permalink:hover {
+		color: #000;
+		border: none;
+		}
+	ol.comments .odd,
+	ol.comments .even {
+		background: transparent;
+		}
+	ol.comments .comment-none {
+		color: #ccc;
+		}
+	/* Stars */
+	ol.comments .no-stars        { background-position: 0 0; }
+	ol.comments .half-stars      { background-position: 0 -40px; }
+	ol.comments .one-stars       { background-position: 0 -80px; }
+	ol.comments .onehalf-stars   { background-position: 0 -120px; }
+	ol.comments .two-stars       { background-position: 0 -160px; }
+	ol.comments .twohalf-stars   { background-position: 0 -200px; }
+	ol.comments .three-stars     { background-position: 0 -240px; }
+	ol.comments .threehalf-stars { background-position: 0 -280px; }
+	ol.comments .four-stars      { background-position: 0 -320px; }
+	ol.comments .fourhalf-stars  { background-position: 0 -360px; }
+	ol.comments .five-stars      { background-position: 0 -400px; }
+/* Add comment */
+	.addcomment {
+		margin: 0 0 1em 0;
+		padding: 1em;
+		border: 10px solid #ccc;
+		background-color: #eee;
+		}
+	.addcomment label {
+		display: block;
+		}
+	.addcomment .cancelreply {
+		margin-left: 2em;
+		}
+	.addcomment .submit {
+		clear: both;
+		margin: -1.5em 0 0 0;
+		padding: 0;
+		text-align: right;
+		}
+	.addcomment input, 
+	.addcomment select, 
+	.addcomment textarea {
+		margin-top: 0.25em;
+		width: 100%;
+		}	
+	.addcomment .submit input,
+	.addcomment .option {
+		width: auto;
+		}
+	.addcomment .reply-anonymous-label {
+		width: 50%;
+		}
+/* Report abuse links */
+
+/* Comment form */
+	#commentform {
+		margin: 0 0 4em 0;
+		padding: 0;
+		}
+	#commentform fieldset {
+		background: #F5F7F2;
+		border: 10px solid #DEE4CD;
+		margin: 0;
+		padding: 0 1em 0em 1em;
+		text-align: left;
+		color: #777;
+		}
+	#commentform fieldset fieldset {
+		border-width: 1px;
+		padding: 0 1em 1em 1em;
+		margin: 1em 0;
+		}
+	#commentform p.comment-member-photo {
+		float: left;
+		margin: 0;
+		padding: 0 20px 0 0;
+		width: 50px; /*105px;*/
+		height: 50px;
+		overflow: hidden;
+		color: #777;
+		font-size: 11px;
+		text-align: right;
+		background: url("images/comment-arrow.gif") right -201px no-repeat;
+		}
+	#commentform .sidenote {
+		border: 1px solid #edf0e8;
+		padding: 0 1em;
+		margin: 0 -1em 0 -1em;
+		color: #aaa;
+		background-color: #edf0e8;
+		}
+	#commentform .required,
+	#commentform .optional {
+		text-transform: uppercase;
+		font-size: xx-small;
+		}
+	#commentform .required {
+		color: red;
+		}
+	#commentform .optional {
+		color: #999;
+		}
+	#commentform label {
+		padding-top: 1em;
+		position: relative;
+		display: block;
+		}
+	/*#commentform label span {
+		position: absolute;
+		top: 1.5em;
+		right: 0;
+		}*/
+	#commentform .grouping {
+		position: relative;
+		margin-left: -3em;
+		padding: 0 0 1.5em 5em;
+		overflow: hidden;
+		top: 1em;
+		left: 1.5em;
+		}
+	#commentform .grouping label {
+		padding: 0;
+		float: left;
+		width: 50%;
+		}
+	#commentform .grouping label:first-child {
+		margin: 0 2em 0 -3.5em;
+		}
+	#commentform .grouping label span {
+		top: 0;
+		}
+	#commentform input, 
+	#commentform select, 
+	#commentform textarea {
+		margin-top: 0.25em;
+		width: 100%;
+		}
+	#commentform .submit {
+		clear: both;
+		margin: -1.5em 0 1em 0;
+		padding: 0;
+		text-align: right;
+		}
+	#commentform .submit input,
+	#commentform .option {
+		width: auto;
+		}
+	#commentform #comment-anonymous-label {
+		width: 50%;
+		}
+/* Wiki Reference */
+	table.wiki-reference {
+		border: none;
+		font-size: 11px;
+		margin: 0;
+		}
+	table.wiki-reference caption {
+		font-weight: bold;
+		}
+	table.wiki-reference tbody td {
+		border-top: 1px solid #efefef;
+		border-bottom: 1px solid #efefef;
+		}
+/* Table of contents */
+	.article-toc,
+	.article-tags,
+	.article-search {
+		background-color: #eee;
+		margin: 0 0 1em 0;
+		padding: 0.5em;
+		}
+	.subject .article-toc {
+		width: 300px;
+		float: left;
+		}
+	.article-toc h3,
+	.article-tags h3,
+	.article-search h3 {
+		margin: 0;
+		padding: 0.4em;
+		color: #fff;
+		background: #777;
+		font-size: 1em;
+		text-shadow: none;
+		font-weight: bold;
+		}
+	.article-toc ul, 
+	.article-tags ol {
+		margin: 0;
+		padding: 0.4em;
+		max-height: 300px;
+		overflow: auto;
+		border: 1px solid #aaa;
+		background: #fff;
+		}
+	.article-toc ul li {
+		background-image: none;
+		}
+	.article-tags ol {
+		max-height: none;
+		font-size: 90%;
+		}
+	.article-tags p {
+		border: 1px solid #aaa;
+		background: #fff;
+		margin: 0;
+		padding: 0.4em;
+		}
+	.article-toc ul ul {
+		max-height: none;
+		border: none;
+		margin: 0 0 0 1em;
+		padding: 0;
+		}
+	.article-toc li {
+		margin: 0;
+		padding: 0.2em;
+		}
+	/*.tocnumber {
+		display: none;
+		}*/
+/* Diffs */
+	.diff-versions {
+		margin: 0;
+		}
+	.diff-versions dt {
+		font-weight: bold;
+		margin-top: 0.5em;
+		}
+	.diffs {
+		margin: 1em 0;
+		border: 2px solid #ccc;
+		}
+	.com_wiki .main .subject table.diffs td, 
+	.com_wiki .main .subject table.diffs th,
+	.diffs td, 
+	.diffs th {
+		border: 1px solid #fff;
+		margin: 0;
+		padding: 0.2em 0.8em;
+		}
+	.diffs th {
+		text-align: right;
+		background-color: #efefef;
+		}
+	.diff-marker {
+		width: 1em;
+		text-align: center;
+		}
+	.diff-deletedline {
+		border: 1px solid #EFCCC2; 
+		background: #FFF2EF;
+		margin: 1em 0;
+		padding: 1em;
+		color: #CC0000;
+		}
+	.diff-addedline {
+		border: 1px solid #DAE6DA;
+		background: #F2FFF2;
+		margin: 1em 0;
+		padding: 1em;
+		color: #360;
+		}
+	del.diffchange {
+		color: #CC0000;
+		}
+	ins.diffchange {
+		color: #360;
+		}
+/* Topic details */
+	.topic-details,
+	.topic-details th,
+	.topic-details td {
+		border-color: #F7F7F7;
+		}
+	.topic-details th {
+		text-align: right;
+		color: #999;
+		white-space: nowrap;
+		}
+/* Misc. */
+	.resource {
+		margin: 0;
+		border: none;
+		}
+	.resource th {
+		width: 8em;
+		text-align: right;
+		}
+	.resource td,
+	.resource th {
+		padding-bottom: 10px;
+		}
+	.com_wiki  ol.footnotes {
+		border: 1px dotted #ccc;
+		background-color: #f9f9f9;
+		font-size: 90%;
+		}
+	.com_wiki  ol.footnotes li {
+		padding: 0.2em 0;
+		}
+/* Forms */
+	.com_wiki #hubForm label.hide {
+		display: none;
+		}
+	.com_wiki #hubForm .paramlist input, 
+	.com_wiki #hubForm .paramlist select, 
+	.com_wiki #hubForm .paramlist textarea,
+	.com_wiki #hubForm .paramlist label {
+		display: inline;
+		width: auto;
+		}
+	.com_wiki #hubForm fieldset {
+		padding: 0 2% 1.75em 2%;
+		width: 66%;
+		}
+	.com_wiki #hubForm h3 {
+		display: none;
+		}
+	.com_wiki hr {
+		border-top: 1px solid #ccc;
+		background-image: none;
+		height: 1px;
+		width: auto;
+		}
+	.timestamp {
+		text-align: left;
+		color: #aaa;
+		font-size: 90%;
+		font-style: italic;
+		border-top: 1px solid #ddd;
+		padding-top: 0.5em;
+		margin: 2em 0 0 0;
+		}
+/* Links */
+	a.ext-link {
+		background: url("images/extlink.gif") 0 0.4em no-repeat;
+		padding-left: 15px;
+		}
+	a.missing {
+		background: url("images/missinglink.gif") 0 0.4em no-repeat;
+		padding-left: 7px;
+		}
+/* Preview */
+	#preview .section {
+		padding: 0;
+		}
+	#preview .main .subject {
+		max-height: 400px;
+		overflow: auto;
+		border: 2px solid #eee;
+		padding: 1em;
+		margin: 1em 1em 0 0;
+		background: url("images/draft.gif");
+		}
+/* Admonitions */
+	div.admon-caution, 
+	div.admon-important, 
+	div.admon-note, 
+	div.admon-tip, 
+	div.admon-warning {
+		border: 1pt solid #E5E5E5;
+		background-color: #F9F9FF;
+		color: black;
+		margin: 10pt 30pt 10pt 30pt;
+		background-repeat: no-repeat;
+		background-position: 8px 8px;
+		min-height: 64px; /*64=48+8+8 but doesn't work with IE*/
+		padding-left: 64px;
+		}
+	div.admon-caution p, 
+	div.admon-important p, 
+	div.admon-note p, 
+	div.admon-tip p, 
+	div.admon-warning p {
+		margin-top: 8px; /*to align text with bg graphic*/
+		}
+	div.admon-tip { background-image: url("images/admon-tip.png"); }
+	div.admon-note { background-image: url("images/admon-note.png"); }
+	div.admon-important { background-image: url("images/admon-important.png"); }
+	div.admon-caution { background-image: url("images/admon-caution.png"); }
+	div.admon-warning { background-image: url("images/admon-warning.png"); }
+/* Introduction page */
+	#introduction {
+		margin: 0 -15px 3em -15px;
+		padding: 25px 15px 25px 120px;
+		background: #fbf8ea url("images/topics-large.gif") 30px 25px no-repeat;
+		border-top: 2px solid #e7dac4;
+		border-bottom: 2px solid #e7dac4;
+		color: #7c7266;
+		}
+	#introduction .aside,
+	#introduction .subject {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		background: transparent;
+		border: none;
+		}
+	#introduction h3 {
+		margin-top: 0;
+		color: #7c7266;
+		}
+	#introduction .columns {
+		border: none;
+		}
+	#introduction ul,
+	#introduction li {
+		list-style: none;
+		margin: 1em 0;
+		padding: 0;
+		}
+	#introduction li {
+		margin: 0;
+		padding: 0 0 0 15px;
+		background: transparent url("images/bullets/arrow.gif") 0 50% no-repeat;
+		}
+/* Four Columns */
+	.com_wiki .four {
+		border-top: 1px solid #e0e0d7;
+		margin-bottom: 3em;
+		}
+	.com_wiki .four h3 { 
+		color: #000; 
+		margin-top: 1em; 
+		padding-top: 0em;
+		line-height: 1.5em;
+		}
+	.com_wiki .four h3 a { 
+		color: #000; 
+		border-bottom: none; 
+		}
+	.com_wiki .four ul {
+		margin: 1em 0;
+		}
+	.com_wiki .four li {
+		margin: 1em 0;
+		}
+	.com_wiki .first h2 { 
+		font-weight: normal;
+		margin: 0;
+		padding: 0.5em 0 0 0;
+		line-height: 1em;
+		border-top: 2px solid #e0e0d7;
+		}
+	.com_wiki .second {
+		}
+	.com_wiki .third {
+		}
+	.com_wiki .fourth { 
+		border-right: none;
+		}
+	.com_wiki .big {
+		height: 3em;
+		}
+	.com_wiki .four {
+		margin-bottom: 3em;
+		}
+	.com_wiki .browse a {
+		font-weight: bold;
+		font-size: 1.2em;
+		}
+	.com_wiki .wiki .modified-date {
+		color: #aaa;
+		font-size: 90%;
+		}

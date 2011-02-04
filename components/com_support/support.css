@@ -363,6 +363,9 @@
 	ol.comments .changelog em {
 		font-style: italic;
 		}
+	.no-comments {
+		margin-left: 70px;
+		}
 /* Email log */
 	ol.comments ul.emaillog,
 	ol.comments .changelog ul.emaillog {

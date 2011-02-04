@@ -660,9 +660,16 @@ class ResourcesController extends Hubzero_Controller
 			return;
 		}
 
+		// Initiate a resource helper class
+		$helper = new ResourcesHelper( $resource->id, $database );
+
+		// Is the visitor authorized to edit this resource?
+		$helper->getContributorIDs();
+		$authorized = $this->_authorize( $helper->contributorIDs );
+
 		// Make sure they have access to view this resource
 		if ($resource->access == 4) {
-			if ($this->checkGroupAccess($resource)) {
+			if ($this->checkGroupAccess($resource) && !$authorized) {
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 				return;
 			}

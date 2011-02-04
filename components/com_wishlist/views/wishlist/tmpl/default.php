@@ -118,6 +118,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$filterbys['mine'] = JText::_('MSG_ASSIGNED_TO_ME');
 				}
 			}
+			if(!$juser->get('guest')) {
+				$filterbys['submitter'] = JText::_('Submitted by me');
+			}
 
 			$html .= t.t.'<fieldset>'.n;
 			$html .= t.t.'<label class="tagdisplay">'.JText::_('WISH_FIND_BY_TAGS').': '.n;

@@ -1,0 +1,15 @@
+Welcome to the '''Wiki''' area. This portion of the site is currently in Beta, as we test out features and fix bugs.
+
+=== What are Wiki Pages? ===
+
+Wiki pages are user-written articles on a range of subjects. Any contributor or a group of contributors can create (and own) new articles, and there can be multiple articles on the same topic, each written by a different author.
+
+=== Who can make a wiki page? ===
+
+Anyone with an account can create a new article. When creating a new article, the initial contributor can choose to have a defined list of authors, all of whom can edit the page, or have an open, wiki-like format where anyone can contribute.
+
+=== Questions? ===
+
+ * [/wiki/?task=new Create a new article]
+ * [/wiki/Help:Index Help Articles]
+ * [/wiki/Index Full Article List]

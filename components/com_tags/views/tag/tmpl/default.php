@@ -137,7 +137,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .aside -->
 	<div class="subject">
 		
-		<div class="container">
+		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="Search" />
 			<fieldset class="entry-search">
 <?php
@@ -267,13 +267,23 @@ foreach ($this->results as $category)
 		$ttl = ($ttl > 5) ? 5 : $ttl;
 		
 		if (!$dopaging) {
-			$num = '1-'.$ttl.' of ';
+			$num = ($this->limitstart+1).'-'.$ttl.' of ';
 		} else {
-			$num = '';
+			$ttl = ($total > ($this->limit + $this->limitstart)) ? ($this->limit + $this->limitstart) : $total;
+			$num = ($this->limitstart+1).'-'.$ttl.' of ';
 		}
 		
 		// Build the category HTML
-		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">'.$name.' <span>('.$num.$total.')</span> <a class="feed" href="'.$feed.'" title="'.JText::_('COM_TAGS_FEED').'">'.JText::_('COM_TAGS_FEED').'</a></h4>'."\n";
+		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">';
+		if (!$dopaging) {
+			$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$cats[$k]['category']).'" title="'.JText::_('View all items in &quot;'.$name.'&quot;').'">';
+		}
+		$html .= $name.' <span>('.$num.$total.')</span> ';
+		if (!$dopaging) {
+			$html .= '<span class="more">&raquo;</span></a> ';
+		}
+		$html .= '<a class="feed" href="'.$feed.'" title="'.JText::_('COM_TAGS_FEED').'">'.JText::_('COM_TAGS_FEED').'</a>';
+		$html .= '</h4>'."\n";
 		$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
 		$html .= '<ol class="search results">'."\n";			
 		foreach ($category as $row) 

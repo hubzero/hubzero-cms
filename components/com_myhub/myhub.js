@@ -100,7 +100,7 @@ HUB.Myhub = {
 		HUB.Myhub.editModule($('e_'+id), 'f_'+id);
 		
 		// AJAX: send request to server-side script to generate and return contents of updated module
-		var myAjax2 = new Ajax(HUB.Myhub.baseURL+'&task=refresh&id='+id,{update:'lid'+id}).request();
+		var myAjax2 = new Ajax(HUB.Myhub.baseURL+'&task=refresh&id='+id,{update:'mod_'+id}).request();
 		return false;
 	},
 	

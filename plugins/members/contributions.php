@@ -156,6 +156,9 @@ class plgMembersContributions extends JPlugin
 
 		// Build the HTML
 		if ($returnhtml) {
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('members', 'contributions');
+			
 			$document =& JFactory::getDocument();
 			if (is_file(JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'resources.js')) {
 				$document->addScript('components'.DS.'com_resources'.DS.'resources.js');

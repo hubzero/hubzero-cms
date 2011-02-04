@@ -813,9 +813,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 							
 							$html .=t.t.t.'<div class="planbody">'.n;
 							$html .=t.t.t.'<p class="plannote">'.JText::_('PLAN_LAST_EDIT').' '.JHTML::_('date', $plan->created, '%d %b %Y').' at '.JHTML::_('date',$plan->created, '%I:%M %p').' '.JText::_('by').' '.$plan->authorname.'</p>'.n;
-							ximport('wiki.parser');
-							$p = new WikiParser( $wishlist->title, $option, 'wishlist'.DS.$wishlist->id, 'resources', $wishlist->id);
-							$maintext = $p->parse( n.stripslashes($plan->pagetext) );					
+				
+							JPluginHelper::importPlugin( 'hubzero' );
+							$dispatcher =& JDispatcher::getInstance();
+							$wikiconfig = array(
+								'option'   => $this->_option,
+								'scope'    => 'wishlist'.DS.$wishlist->id,
+								'pagename' => $wishlist->id,
+								'pageid'   => $wishlist->id,
+								'filepath' => '',
+								'domain'   => '' 
+							);
+							$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($plan->pagetext), $wikiconfig) );
+							$maintext = (is_array($result) && !empty($result)) ? $result[0] : nl2br($plan->pagetext);
+							
 							$html .=t.t.t.$maintext.n;
 							$html .=t.t.t.'</div>'.n;
 						}

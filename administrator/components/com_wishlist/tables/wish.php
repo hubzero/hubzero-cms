@@ -142,6 +142,10 @@ class Wish extends JTable
 										$sql.= ' AND ws.assigned="'.$uid.'" AND ws.status!=2';
 									}       
 									break;
+				case 'submitter':   if ($uid) {
+										$sql.= ' AND ws.proposed_by='.$uid.' AND ws.status!=2';
+									}
+									break;
 				case 'assigned':    $sql.= ' AND ws.assigned NOT NULL AND ws.status!=2';       
 									break;
 				default: 			$sql .= ' AND ws.status!=2';
@@ -302,6 +306,10 @@ class Wish extends JTable
 					case 'mine':    	if ($uid) {
 											$sql.= ' AND ws.assigned="'.$uid.'" AND ws.status!=2';
 										}       
+										break;
+					case 'submitter':   if ($uid) {
+											$sql.= ' AND ws.proposed_by='.$uid.' AND ws.status!=2';
+										}
 										break;
 					case 'assigned':    $sql.= ' AND ws.assigned NOT NULL AND ws.status!=2';       
 										break;

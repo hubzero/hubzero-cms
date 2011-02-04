@@ -71,7 +71,7 @@ class plgXSearchTopics extends JPlugin
 		
 		$database =& JFactory::getDBO();
 		
-		ximport('wiki.page');
+		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
 		
 		// Instantiate some needed objects
 		$wp = new WikiPage( $database );

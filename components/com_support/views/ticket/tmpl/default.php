@@ -54,17 +54,17 @@ if (is_object($targetuser) && $targetuser->id) {
 	<ul id="useroptions">
 		<li><?php
 		if ($this->row->prev) {
-			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->prev).'?find='.$fstring.'">'.JText::_('PREVIOUS_TICKET').'</a>';
+			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->prev.'&find='.$fstring).'">'.JText::_('PREVIOUS_TICKET').'</a>';
 		} else {
 			echo '<span>'.JText::_('PREVIOUS_TICKET').'</span>';
 		}
 		?></li>
 <?php if (!$juser->get('guest')) { ?>
-		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=tickets').'?'.$fstring; ?>"><?php echo JText::_('TICKETS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=tickets&find='.$fstring); ?>"><?php echo JText::_('TICKETS'); ?></a></li>
 <?php } ?>
 		<li class="last"><?php
 		if ($this->row->next) {
-			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->next) .'?find='.$fstring.'">'.JText::_('NEXT_TICKET').'</a>';
+			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->next.'&find='.$fstring).'">'.JText::_('NEXT_TICKET').'</a>';
 		} else {
 			echo '<span>'.JText::_('NEXT_TICKET').'</span>';
 		}
@@ -162,12 +162,13 @@ if (is_object($targetuser) && $targetuser->id) {
 
 <div class="below section">
 	<h3><a name="comments"></a><?php echo JText::_('TICKET_COMMENTS'); ?></h3>
-<?php if (count($this->comments) > 0) { ?>			
+			
 	<div class="aside">
 		<p class="add"><a href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a></p>
 	</div><!-- / .aside -->
 
 	<div class="subject">
+<?php if (count($this->comments) > 0) { ?>
 		<ol class="comments">
 <?php
 			ximport('Hubzero_User_Profile');
@@ -224,9 +225,11 @@ if (is_object($targetuser) && $targetuser->id) {
 			}
 ?>
 		</ol>
+<?php } else { ?>
+		<p class="no-comments">No comments found.</p>
+<?php } ?>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
-<?php } ?>
 </div><!-- / .below section -->
 
 <?php if ((!$juser->get('guest') && ($juser->get('username') == $this->row->login || $this->authorized))) { ?>
@@ -311,11 +314,13 @@ if (count($tf) > 0) {
 				</div>
 				<div class="clear"></div>
 <?php } ?>
+<?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
 				<div class="grouping">
 					<label>
 						<?php echo JText::_('COMMENT_SEVERITY'); ?>:
 						<?php echo SupportHtml::selectArray('ticket[severity]',$this->lists['severities'],$this->row->severity); ?>
 					</label>
+<?php } ?>
 					<label>
 						<?php echo JText::_('COMMENT_STATUS'); ?>:
 						<select name="ticket[resolved]" id="status">
@@ -350,7 +355,9 @@ if (count($tf) > 0) {
 						?>
 						</select>
 					</label>
+<?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
 				</div>
+<?php } ?>
 				<div class="clear"></div>
 				</fieldset>
 

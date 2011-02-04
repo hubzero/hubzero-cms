@@ -37,9 +37,19 @@ $html = '';
 <?php
 // Did we get any results back?
 if ($this->reviews) {
-	ximport('wiki.parser');
-
-	$parser = new WikiParser( stripslashes($this->resource->title), $this->option, 'review', $this->resource->id, 0, '' );
+	
+	JPluginHelper::importPlugin( 'hubzero' );
+	$dispatcher =& JDispatcher::getInstance();
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => 'review',
+		'pagename' => $this->resource->id,
+		'pageid'   => $this->resource->id,
+		'filepath' => '',
+		'domain'   => '' 
+	);
+	$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
+	$parser = (is_array($result) && !empty($result)) ? $result[0] : null;
 	
 	$admin = false;
 	// Check if they're a site admin (from Joomla)
@@ -161,7 +171,7 @@ if ($this->reviews) {
 				//} else {
 					
 				}
-				$html .= "\t\t\t".$parser->parse( "\n".trim(stripslashes($review->comment)))."\n";
+				$html .= (is_object($parser)) ? $parser->parse( stripslashes($review->comment) ) : nl2br(stripslashes($review->comment));
 			} else {
 				$html .= "\t\t\t".'<p class="comment-none">'.JText::_('PLG_RESOURCES_REVIEWS_NO_COMMENT').'</p>'."\n";
 			}

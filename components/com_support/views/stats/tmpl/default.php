@@ -74,7 +74,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			?>:
 			<input type="text" name="group" value="<?php echo $this->group; ?>" id="acgroup" value="" size="35" autocomplete="off" />
 		</label>
-		<input type="submit" name="submit" value="View" />
+		<input type="submit" value="View" />
 	</fieldset>
 
 	<table class="support-stats-overview open-tickets" summary="Overview of open support tickets">

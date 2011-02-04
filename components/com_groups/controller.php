@@ -290,15 +290,27 @@ class GroupsController extends Hubzero_Controller
 			$public_desc = $group->get('description');
 		}
 		if ($public_desc || $private_desc) {
-			ximport('wiki.parser');
-			$config = $this->config;
-			$p = new WikiParser( $group->get('cn'), $this->_option, $group->get('cn').DS.'wiki', 'group', $group->get('gidNumber'), $config->get('uploadpath'), $group->get('cn') );
-		}
-		if ($public_desc) {
-			$public_desc = $p->parse( "\n".stripslashes($public_desc) );
-		}
-		if ($private_desc) {
-			$private_desc = $p->parse( "\n".stripslashes($private_desc) );
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher =& JDispatcher::getInstance();
+			
+			$wikiconfig = array(
+				'option'   => $this->_option,
+				'scope'    => $group->get('cn').DS.'wiki',
+				'pagename' => 'group',
+				'pageid'   => $group->get('gidNumber'),
+				'filepath' => $this->config->get('uploadpath'),
+				'domain'   => $group->get('cn') 
+			);
+			
+			// Trigger the functions that return the areas we'll be using
+			if ($public_desc) {
+				$result = $dispatcher->trigger( 'onWikiParseText', array($public_desc, $wikiconfig) );
+				$public_desc = (is_array($result) && !empty($result)) ? $result[0] : nl2br($public_desc);
+			}
+			if ($private_desc) {
+				$result = $dispatcher->trigger( 'onWikiParseText', array($private_desc, $wikiconfig) );
+				$private_desc = (is_array($result) && !empty($result)) ? $result[0] : nl2br($private_desc);
+			}
 		}
 		
 		// Set the page title

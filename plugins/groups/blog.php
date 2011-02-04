@@ -383,15 +383,14 @@ class plgGroupsBlog extends JPlugin
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
-			ximport('wiki.parser');
-			//$p = new WikiParser( JText::_(strtoupper($this->_option)), $this->_option, 'blog', '', 0, $this->config->get('uploadpath') );
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher =& JDispatcher::getInstance();
+			
 			$path = $this->_params->get('uploadpath');
 			$path = str_replace('{{gid}}',BlogHelperMember::niceidformat($this->group->get('gidNumber')),$path);
 			
 			foreach ($rows as $row)
 			{
-				$p = new WikiParser( stripslashes($row->title), $this->option, 'blog', $row->alias, 0, $path );
-				
 				// Prepare the title
 				$title = strip_tags($row->title);
 				$title = html_entity_decode($title);
@@ -403,7 +402,16 @@ class plgGroupsBlog extends JPlugin
 				$author = $cuser->get('name');
 				
 				// Strip html from feed item description text
-				$description = $p->parse( "\n".stripslashes($row->content), 0, 0 );
+				$wikiconfig = array(
+					'option'   => $this->option,
+					'scope'    => 'blog',
+					'pagename' => $row->alias,
+					'pageid'   => 0,
+					'filepath' => $path,
+					'domain'   => '' 
+				);
+				$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($row->content), $wikiconfig, true, true) );
+				$description = (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($row->content));
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
 				if ($this->_params->get('feed_entries') == 'partial') {
 					$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
@@ -551,7 +559,6 @@ class plgGroupsBlog extends JPlugin
 		}
 		
 		if ($view->row->content) {
-			ximport('wiki.parser');
 			if ($view->row->scope == 'member') {
 				$plugin = JPluginHelper::getPlugin( 'members', 'blog' );
 				$params = new JParameter( $plugin->params );
@@ -561,8 +568,19 @@ class plgGroupsBlog extends JPlugin
 				$path = $this->_params->get('uploadpath');
 				$path = str_replace('{{gid}}',BlogHelperMember::niceidformat($this->group->get('gidNumber')),$path);
 			}
-			$p = new WikiParser( stripslashes($view->row->title), $this->option, 'blog', $view->row->alias, 0, $path );
-			$view->row->content = $p->parse( "\n".stripslashes($view->row->content), 0, 0 );
+
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher =& JDispatcher::getInstance();
+			$wikiconfig = array(
+				'option'   => $this->option,
+				'scope'    => 'blog',
+				'pagename' => $view->row->alias,
+				'pageid'   => 0,
+				'filepath' => $path,
+				'domain'   => '' 
+			);
+			$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($view->row->content), $wikiconfig) );
+			$view->row->content = (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($view->row->content));
 		}
 		
 		$bc = new BlogComment($this->database);

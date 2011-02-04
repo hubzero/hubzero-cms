@@ -395,6 +395,12 @@ class ResourcesResource extends JTable
 							. " ) AS relevance ";
 				}
 			}
+			if (isset($filters['sortby']) && ($filters['sortby'] == 'usage' || $filters['sortby'] == 'users')) {
+				$query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=r.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
+			}
+			if (isset($filters['sortby']) && $filters['sortby'] == 'jobs') {
+				$query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs WHERE rs.resid=r.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
+			}
 		}
 		$query .= "FROM $this->_tbl AS r ";
 		$query .= "LEFT JOIN ".$rt->getTableName()." AS rt ON r.type=rt.id ";
@@ -465,7 +471,9 @@ class ResourcesResource extends JTable
 				} else {
 					$xgroups = $filters['usergroups'];
 				}
-				if ($xgroups != '') {
+				if (isset($filters['author'])) {
+					//$query .= "AND (r.access=0 OR r.access=1 OR r.access=3) ";
+				} else if ($xgroups != '') {
 					$usersgroups = $this->getUsersGroups($xgroups);
 					if (count($usersgroups) > 1) {
 						$groups = implode("','",$usersgroups);
@@ -532,22 +540,27 @@ class ResourcesResource extends JTable
 		if (isset($filters['tags'])) {
 			$query .= " GROUP BY r.id HAVING uniques=".count($filters['tags'])." ";
 		}
-		if (isset($filters['sortby'])) {
-			if (isset($filters['groupby'])) {
-				$query .= "GROUP BY r.id ";
+		if (isset($filters['select']) && $filters['select'] != 'count') {
+			if (isset($filters['sortby'])) {
+				if (isset($filters['groupby'])) {
+					$query .= "GROUP BY r.id ";
+				}
+				$query .= "ORDER BY ";
+				switch ($filters['sortby']) 
+				{
+					case 'date':    $query .= 'publish_up DESC';               break;
+					case 'title':   $query .= 'title ASC, publish_up';         break;
+					case 'rating':  $query .= "rating DESC, times_rated DESC"; break;
+					case 'ranking': $query .= "ranking DESC";                  break;
+					case 'relevance': $query .= "relevance DESC";              break;
+					case 'users':
+					case 'usage':   $query .= "users DESC";              break;
+					case 'jobs':   $query .= "jobs DESC";              break;
+				}
 			}
-			$query .= "ORDER BY ";
-			switch ($filters['sortby']) 
-			{
-				case 'date':    $query .= 'publish_up DESC';               break;
-				case 'title':   $query .= 'title ASC, publish_up';         break;
-				case 'rating':  $query .= "rating DESC, times_rated DESC"; break;
-				case 'ranking': $query .= "ranking DESC";                  break;
-				case 'relevance': $query .= "relevance DESC";              break;
+			if (isset($filters['limit']) && $filters['limit'] != 'all') {
+				$query .= " LIMIT ".$filters['limitstart'].",".$filters['limit'];
 			}
-		}
-		if (isset($filters['limit']) && $filters['limit'] != 'all') {
-			$query .= " LIMIT ".$filters['limitstart'].",".$filters['limit'];
 		}
 		if (isset($filters['select']) && $filters['select'] == 'count') {
 			if (isset($filters['tags'])) {

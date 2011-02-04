@@ -281,16 +281,16 @@ class plgMembersResources extends JPlugin
 		if ($authorized) {
 			switch ($row->state) 
 			{
-				case 5: $html .= ' <span style="color: blue;">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_PENDING_INTERNAL').'</span>'; break;
-				case 4: $html .= ' <span style="color: #000;">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_DELETED').'</span>'; break;
-				case 3: $html .= ' <span style="color: blue;">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_PENDING').'</span>'; break;
-				case 2: $html .= ' <span style="color: orange;">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_DRAFT').'</span>'; break;
-				case 1: $html .= ' <span style="color: green;">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_PUBLISHED').'</span>'; break;
+				case 5: $html .= ' <span class="resource-status internal">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_PENDING_INTERNAL').'</span>'; break;
+				case 4: $html .= ' <span class="resource-status deleted">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_DELETED').'</span>'; break;
+				case 3: $html .= ' <span class="resource-status pending">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_PENDING').'</span>'; break;
+				case 2: $html .= ' <span class="resource-status draft">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_DRAFT').'</span>'; break;
+				case 1: $html .= ' <span class="resource-status published">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_PUBLISHED').'</span>'; break;
 				case 0:
-				default: $html .= ' <span style="color: red;">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_UNPUBLISHED').'</span>'; break;
+				default: $html .= ' <span class="resource-status unpublished">'.JText::_('PLG_MEMBERS_RESOURCES_STATUS_UNPUBLISHED').'</span>'; break;
 			}
 		}
-		$html .= '</p>'.n;
+		$html .= '</p>'."\n";
 		if ($params->get('show_ranking')) {
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
@@ -403,10 +403,10 @@ class plgMembersResources extends JPlugin
 				$uidNumber = $member->get('uidNumber');
 			}
 		} else {
-			if (!$member->uidNumber) {
+			if (!$member->get('uidNumber')) {
 				return array();
 			} else {
-				$uidNumber = $member->uidNumber;
+				$uidNumber = $member->get('uidNumber');
 			}
 		}
 		

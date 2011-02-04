@@ -51,7 +51,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 		<?php endif; ?>
 	</div><!-- / .aside -->
 	<div class="subject">
-		<form action="/ysearch/" method="get" class="container">
+		<form action="/ysearch/" method="get" class="container data-entry">
 			<fieldset>
 				<p>
 					<input type="submit" value="Search" class="search-submit" />

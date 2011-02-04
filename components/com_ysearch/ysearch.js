@@ -40,12 +40,12 @@ HUB.YSearch = {
 				if (list.style.display == 'block')
 				{
 					list.style.display = 'none';
-					el.style.background = 'url(\'/components/com_ysearch/expand.gif\') no-repeat 0 0';
+					el.style.background = 'url(\'/components/com_ysearch/images/expand.gif\') no-repeat 0 0';
 				}
 				else
 				{
 					list.style.display = 'block';
-					el.style.background = 'url(\'/components/com_ysearch/expand.gif\') no-repeat -20px 0';
+					el.style.background = 'url(\'/components/com_ysearch/images/expand.gif\') no-repeat -20px 0';
 				}
 			});
 		});

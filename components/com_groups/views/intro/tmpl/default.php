@@ -90,7 +90,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
 $groups = $this->groups;
 if ($groups) {
-	ximport('wiki.parser');
+	// Transform the wikitext to HTML
+	JPluginHelper::importPlugin( 'hubzero' );
+	$dispatcher =& JDispatcher::getInstance();
+	
 	$config = $this->config;
 ?>
 	<div class="four columns first">
@@ -100,7 +103,16 @@ if ($groups) {
 	$i = 1;
 	foreach ($groups as $group) 
 	{
-		$p = new WikiParser( $group->cn, $option, $group->cn.DS.'wiki', 'group', $group->gidNumber, $config->get('uploadpath') );
+		$wikiconfig = array(
+			'option'   => $option,
+			'scope'    => $group->cn.DS.'wiki',
+			'pagename' => 'group',
+			'pageid'   => $group->gidNumber,
+			'filepath' => $config->get('uploadpath'),
+			'domain'   => '' 
+		);
+		$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
+		$p = (is_array($result) && !empty($result)) ? $result[0] : null;
 		
 		switch ($i) 
 		{
@@ -111,7 +123,7 @@ if ($groups) {
 		
 		$public_desc = '(No public description available.)';
 		if ($group->public_desc) {
-			$public_desc = $p->parse( "\n".stripslashes($group->public_desc) );
+			$public_desc = (is_object($p)) ? $p->parse( stripslashes($group->public_desc) ) : nl2br(stripslashes($group->public_desc));
 			$public_desc = strip_tags($public_desc);
 			$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 			$public_desc = preg_replace("/$UrlPtrn/", '', $public_desc);

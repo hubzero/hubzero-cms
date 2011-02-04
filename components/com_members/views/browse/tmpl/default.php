@@ -34,35 +34,32 @@ $juser =& JFactory::getUser();
 <div class="main section">
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post">
 		<div class="aside">
-			<fieldset>
-<?php if ($this->view != 'contributors') { ?>
-				<label>
-					<?php echo JText::_('SHOW'); ?>
-					<select name="show">
-						<option value=""<?php if ($this->filters['show'] != 'contributors') { echo ' selected="selected"'; } ?>><?php echo JText::_('OPTION_ALL'); ?></option>
-						<option value="contributors"<?php if ($this->filters['show'] == 'contributors') { echo ' selected="selected"'; } ?>><?php echo JText::_('OPTION_CONTRIBUTORS'); ?></option>
-					</select>
-				</label>
-<?php } ?>
-				<label>
-					<?php echo JText::_('SORT_BY'); ?>
-					<select name="sortby">
-						<option value="fullname ASC"<?php if ($this->filters['sortby'] == 'fullname ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('Name (default)'); ?></option>
-						<option value="organization"<?php if ($this->filters['sortby'] == 'organization') { echo ' selected="selected"'; } ?>><?php echo JText::_('OPTION_ORGANIZATION'); ?></option>
-						<option value="rcount DESC"<?php if ($this->filters['sortby'] == 'rcount DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('OPTION_CONTRIBUTIONS'); ?></option>
-					</select>
-				</label>
-				<label>
-					<?php echo JText::_('SEARCH_NAME'); ?>
-					<input type="text" name="search" value="<?php echo $this->filters['search']; ?>" />
-				</label>
-				<input type="submit" name="go" value="<?php echo JText::_('GO'); ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="index" value="<?php echo $this->filters['index']; ?>" />
-			</fieldset>
+			<div class="container">
+				<h3>Site Members</h3>
+				<p class="starter"><span class="starter-point"></span>When people join this site and make their profiles public they will appear here.</p>
+				<p>Use the sorting and filtering options to see members listed alphabetically, by their organization, or the number of contributions they have.</p>
+				<p>Use the 'Search' to find specific members if you would like to check out their profiles, contributions or message them privately.</p>
+			</div><!-- / .container -->
+			
+			<div class="container">
+				<h3>Looking for groups?</h3>
+				<p class="starter"><span class="starter-point"></span>Go to the <a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">Groups page</a>.</p>
+			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
-			<p id="letter-index">
+			
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="Search" />
+				<fieldset class="entry-search">
+					<label for="entry-search-field">Search</label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
+					<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
+					<input type="hidden" name="show" value="<?php echo $this->filters['show']; ?>" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="index" value="<?php echo $this->filters['index']; ?>" />
+				</fieldset>
+			</div><!-- / .container -->
+			
 <?php 
 $qs = array();
 foreach ($this->filters as $f=>$v) 
@@ -80,21 +77,59 @@ $html  = '<a href="'.JRoute::_($url).'"';
 if ($this->filters['index'] == '') {
 	$html .= ' class="active-index"';
 }
-$html .= '>'.JText::_('ALL').'</a> ';
+$html .= '>'.JText::_('ALL').'</a> '."\n";
 foreach ($letters as $letter)
 {
 	$url  = 'index.php?option='.$this->option.'&index='.strtolower($letter);
 	$url .= ($qs != '') ? '&'.$qs : '';
 	
-	$html .= '<a href="'.JRoute::_($url).'"';
+	$html .= "\t\t\t\t\t\t\t\t".'<a href="'.JRoute::_($url).'"';
 	if ($this->filters['index'] == strtolower($letter)) {
 		$html .= ' class="active-index"';
 	}
-	$html .= '>'.$letter.'</a> ';
+	$html .= '>'.$letter.'</a> '."\n";
 }
-echo $html;
 ?>
-			</p>
+			<div class="container">
+				<ul class="entries-menu order-options">
+					<li><a<?php echo ($this->filters['sortby'] == 'name') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&show='.$this->filters['show'].'&sortby=name'); ?>" title="Sort by name">&darr; Name</a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'organization') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&show='.$this->filters['show'].'&sortby=organization'); ?>" title="Sort by organization">&darr; Organization</a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'contributions') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&show='.$this->filters['show'].'&sortby=contributions'); ?>" title="Sort by number of contributions">&darr; Contributions</a></li>
+				</ul>
+				
+				<ul class="entries-menu filter-options">
+					<li><a<?php echo ($this->filters['show'] != 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&sortby='.$this->filters['sortby']); ?>">All</a></li>
+					<li><a<?php echo ($this->filters['show'] == 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&show=contributors&sortby='.$this->filters['sortby']); ?>">Contributors</a></li>
+				</ul>
+				
+				<table class="members entries" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+					<caption>
+						<?php
+						$s = $this->filters['start']+1;
+						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
+
+						if ($this->filters['search'] != '') {
+							echo 'Search for "'.$this->filters['search'].'" in ';
+						}
+						?>
+						<?php if ($this->filters['show'] != 'contributors') {
+							echo JText::_('All Members'); 
+						} else {
+							echo JText::_('Contributors'); 
+						}?> 
+						<?php if ($this->filters['index']) { ?>
+							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
+						<?php } ?>
+						<span>(<?php echo $s.'-'.$e; ?> of <?php echo $this->total; ?>)</span>
+					</caption>
+					<thead>
+						<tr>
+							<th colspan="4">
+								<?php echo $html; ?>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
 <?php
 if (count($this->rows) > 0) {
 	// Get plugins
@@ -109,18 +144,8 @@ if (count($this->rows) > 0) {
 	}
 	
 	$cols = 2;
-?>
-			<table id="members" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
-				<!-- <thead>
-					<tr>
-						<th scope="col"><?php echo JText::_('COL_NAME'); ?></th>
-						<th scope="col"><?php echo JText::_('COL_ORGANIZATION'); ?></th>
-						<th scope="col"><?php echo JText::_('COL_CONTRIBUTIONS'); ?></th>
-					</tr>
-				</thead> -->
-				<tbody>
-<?php
-	$cls = 'even';
+	
+	$cls = ''; //'even';
 
 	// Default thumbnail
 	$config =& JComponentHelper::getParams( 'com_members' );
@@ -139,40 +164,13 @@ if (count($this->rows) > 0) {
 
 	foreach ($this->rows as $row)
 	{
-		$cls = ($cls == 'odd') ? 'even' : 'odd';
+		//$cls = ($cls == 'odd') ? 'even' : 'odd';
+		$cls = '';
 		if ($row->public != 1) {
-			$prvt = ' private';
-		} else {
-			$prvt = '';
-		}
-		
-		$row->name = stripslashes($row->name);
-		$row->surname = stripslashes($row->surname);
-		$row->givenName = stripslashes($row->givenName);
-		$row->middelName = stripslashes($row->middleName);
-		
-		if (!$row->surname) {
-			$bits = explode(' ', $row->name);
-			$row->surname = array_pop($bits);
-			if (count($bits) >= 1) {
-				$row->givenName = array_shift($bits);
-			}
-			if (count($bits) >= 1) {
-				$row->middleName = implode(' ',$bits);
-			}
+			$cls = 'private';
 		}
 		
 		// Get the search result totals
-		/*$totals = $dispatcher->trigger( 'onMembersContributions', array(
-				$row,
-				$this->option,
-				$this->authorized,
-				0,
-				-1, 
-				NULL,
-				NULL,
-				$areas)
-			);*/
 		$totals = array();
 		$bits = $dispatcher->trigger( 'onMembersContributionsCount', array($this->authorized, $row->uidNumber, $row->username) );
 		if ($bits) {
@@ -237,6 +235,27 @@ if (count($this->rows) > 0) {
 			$id = $row->uidNumber;
 		}
 		
+		if ($row->uidNumber == $juser->get('id')) {
+			$cls .= ($cls) ? ' me' : 'me';
+		}
+		
+		// User name
+		$row->name = stripslashes($row->name);
+		$row->surname = stripslashes($row->surname);
+		$row->givenName = stripslashes($row->givenName);
+		$row->middelName = stripslashes($row->middleName);
+		
+		if (!$row->surname) {
+			$bits = explode(' ', $row->name);
+			$row->surname = array_pop($bits);
+			if (count($bits) >= 1) {
+				$row->givenName = array_shift($bits);
+			}
+			if (count($bits) >= 1) {
+				$row->middleName = implode(' ',$bits);
+			}
+		}
+		
 		$name = ($row->surname) ? stripslashes($row->surname) : '';
 		if ($row->givenName) {
 			$name .= ($row->surname) ? ', ' : '';
@@ -247,6 +266,7 @@ if (count($this->rows) > 0) {
 			$name = 'Unknown ('.$row->username.')';
 		}
 		
+		// User picture
 		$uthumb = '';
 		if ($row->picture) {
 			$uthumb = $thumb.DS.Hubzero_View_Helper_Html::niceidformat($row->uidNumber).DS.$row->picture;
@@ -259,26 +279,37 @@ if (count($this->rows) > 0) {
 			$p = $dfthumb;
 		}
 ?>
-					<tr class="<?php echo $cls.$prvt; ?>">
-						<td class="photo"><img width="50" height="50" src="<?php echo $p; ?>" alt="Photo for <?php echo htmlentities($name,ENT_COMPAT,'UTF-8'); ?>" /></td>
-						<td>
-							<!-- rcount: <?php echo $row->rcount; ?> --> <span class="name"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$id); ?>"><?php echo $name; ?></a></span><br />
-							<span class="organization"><?php echo Hubzero_View_Helper_Html::xhtml(stripslashes($row->organization)); ?></span>
-						</td>
-						<td><span class="activity"><?php echo implode(', ',$tt); ?></span></td>
-<?php
-if (!$juser->get('guest') && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) {
-	echo "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$juser->get('id').'&active=messages&task=new&to='.$row->uidNumber).'" title="Message :: Send a message to '.htmlentities($name,ENT_COMPAT,'UTF-8').'">'.JText::_('Send a message to '.htmlentities($name,ENT_COMPAT,'UTF-8')).'</a></td>'."\n";
-} else {
-	echo "\t\t\t\t".'<td class="message-member"> </td>'."\n";
-}
-?>
-					</tr>
+						<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
+							<th class="entry-img">
+								<img width="50" height="50" src="<?php echo $p; ?>" alt="Avatar for <?php echo htmlentities($name,ENT_COMPAT,'UTF-8'); ?>" />
+							</th>
+							<td>
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$id); ?>"><?php echo $name; ?></a><br />
+								<span class="entry-details">
+									<span class="organization"><?php echo Hubzero_View_Helper_Html::xhtml(stripslashes($row->organization)); ?></span>
+								</span>
+							</td>
+							<td>
+								<!-- rcount: <?php echo $row->rcount; ?> --> 
+								<span class="activity"><?php echo implode(', ',$tt); ?></span>
+							</td>
+							<td class="message-member">
+<?php if (!$juser->get('guest') && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) { ?>
+								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$juser->get('id').'&active=messages&task=new&to='.$row->uidNumber); ?>" title="Message :: Send a message to <?php echo htmlentities($name,ENT_COMPAT,'UTF-8'); ?>"><?php echo JText::_('Send a message to '.htmlentities($name,ENT_COMPAT,'UTF-8')); ?></a></td>
+<?php } ?>
+							</td>
+						</tr>
 <?php
 	}
-?>
-				</tbody>
-			</table>
+} else { ?>
+						<tr>
+							<td colspan="4">
+								<p class="warning"><?php echo JText::_('NO_MEMBERS_FOUND'); ?></p>
+							</td>
+						</tr>
+<?php } ?>
+					</tbody>
+				</table>
 <?php
 	$pn = $this->pageNav->getListFooter();
 	$pn = str_replace('/?/&amp;','/?',$pn);
@@ -290,9 +321,10 @@ if (!$juser->get('guest') && $row->uidNumber > 0 && $row->uidNumber != $juser->g
 	$pn = str_replace('?','?'.$f,$pn);
 	$pn = str_replace('&amp;&amp;','&amp;',$pn);
 	echo $pn;
-} else { ?>
-	<p class="warning"><?php echo JText::_('NO_MEMBERS_FOUND'); ?></p>
-<?php } ?>
+?>
+				<div class="clearfix"></div>
+			</div><!-- / .container -->
 		</div><!-- / .subject -->
+		<div class="clear"></div>
 	</form>
 </div><!-- / .main section -->

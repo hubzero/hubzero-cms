@@ -80,7 +80,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->category->alias); ?>" method="post">
 		
-			<div class="container">
+			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
 					<input type="text" name="search" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />

@@ -246,16 +246,16 @@ class Hubzero_User_Helper
 				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 )";
 			break;
 			case 'applicants':
-				$query = $query1;
+				$query = $query1." ORDER BY description, cn";
 			break;
 			case 'members':
-				$query = $query2;
+				$query = $query2." ORDER BY description, cn";
 			break;
 			case 'managers':
-				$query = $query3;
+				$query = $query3." ORDER BY description, cn";
 			break;
 			case 'invitees':
-				$query = $query4;
+				$query = $query4." ORDER BY description, cn";
 			break;
 		}
 		

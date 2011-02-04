@@ -172,7 +172,7 @@ if (!defined("n")) {
 		$html .= t.'</div>'.n;
 		
 		$html .= t.'<fieldset>'.n;
-		$html .= t.t.'<h3>'.JText::_('Login Information').'</h3>'.n;
+		$html .= t.t.'<legend>'.JText::_('Login Information').'</legend>'.n;
 	
 		if ($this->registrationUsername == REG_READONLY)
 		{
@@ -248,7 +248,7 @@ if (!defined("n")) {
 		$html .= t.'</div>'.n;
 	
 		$html .= t.'<fieldset>'.n;
-		$html .= t.t.'<h3>'.JText::_('Contact Information').'</h3>'.n;
+		$html .= t.t.'<legend>'.JText::_('Contact Information').'</legend>'.n;
 
 		if ($this->registrationFullname != REG_HIDE) // name
 		{
@@ -388,7 +388,7 @@ if (!defined("n")) {
 		$html .= t.'</div>'.n;
 
 		$html .= t.'<fieldset>'.n;
-		$html .= t.t.'<h3>'.JText::_('Personal Information').'</h3>'.n;
+		$html .= t.t.'<legend>'.JText::_('Personal Information').'</legend>'.n;
 
 		if ($this->registrationEmployment != REG_HIDE) // employment status
 		{
@@ -640,7 +640,7 @@ if (!defined("n")) {
 		$html .= t.t.'<p>Please provide this information if you feel comfortable doing so. This information will not affect the level of service you receive.</p>'.n;
 		$html .= t.'</div>'.n;
 		$html .= t.'<fieldset>'.n;
-		$html .= t.t.'<h3>'.JText::_('Demographics').'</h3>'.n;
+		$html .= t.t.'<legend>'.JText::_('Demographics').'</legend>'.n;
 
 		if ($this->registrationCitizenship != REG_HIDE) // citizenship
 		{
@@ -838,7 +838,7 @@ if (!defined("n")) {
 	//if ($this->registrationHispanic != REG_HIDE || $this->registrationRace != REG_HIDE) // Racial Background Section
 	//{
 		//$html .= t.'<fieldset>'.n;
-		//$html .= t.t.'<h3>'.JText::_('Racial Background').'</h3>'.n;
+		//$html .= t.t.'<legend>'.JText::_('Racial Background').'</legend>'.n;
 
 		if ($this->registrationHispanic != REG_HIDE) // hispanic
 		{
@@ -972,7 +972,7 @@ if (!defined("n")) {
 		// interests info: role interest(s), educational level(s), reason for account
 	
 		$html .= t.'<fieldset>'.n;
-		$html .= t.t.'<h3>'.JText::_('Updates').'</h3>'.n;
+		$html .= t.t.'<legend>'.JText::_('Updates').'</legend>'.n;
 
 		if ($this->registrationOptIn != REG_HIDE) // newsletter Opt-In
 		{
@@ -996,7 +996,7 @@ if (!defined("n")) {
 	if ($this->registrationTOU != REG_HIDE)
 	{
 		$html .= t.'<fieldset>'.n;
-		$html .= t.t.'<h3>'.JText::_('Terms &amp; Conditions').'</h3>'.n;
+		$html .= t.t.'<legend>'.JText::_('Terms &amp; Conditions').'</legend>'.n;
 	
 		if ($this->registrationTOU != REG_HIDE)
 		{

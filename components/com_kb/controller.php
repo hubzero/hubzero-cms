@@ -714,8 +714,20 @@ class KbController extends Hubzero_Controller
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
-			ximport('wiki.parser');
-			$p = new WikiParser( stripslashes($entry->title), $this->_option, 'kb', $entry->alias, 0, '' );
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher =& JDispatcher::getInstance();
+			
+			$wikiconfig = array(
+				'option'   => $this->_option,
+				'scope'    => '',
+				'pagename' => $entry->alias,
+				'pageid'   => $entry->id,
+				'filepath' => '',
+				'domain'   => '' 
+			);
+			
+			$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
+			$p = (is_array($result) && !empty($result)) ? $result[0] : null;
 			
 			foreach ($rows as $row)
 			{
@@ -735,7 +747,7 @@ class KbController extends Hubzero_Controller
 				if ($row->reports) {
 					$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
 				} else {
-					$description = $p->parse( "\n".stripslashes($row->content), 0, 0 );
+					$description = (is_object($p)) ? $p->parse( stripslashes($row->content) ) : nl2br(stripslashes($row->content));
 				}
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
 				/*if ($this->config->get('feed_entries') == 'partial') {
@@ -776,7 +788,7 @@ class KbController extends Hubzero_Controller
 						if ($reply->reports) {
 							$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
 						} else {
-							$description = $p->parse( "\n".stripslashes($reply->content), 0, 0 );
+							$description = (is_object($p)) ? $p->parse( stripslashes($reply->content) ) : nl2br(stripslashes($reply->content));
 						}
 						$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
 						/*if ($this->config->get('feed_entries') == 'partial') {
@@ -816,7 +828,7 @@ class KbController extends Hubzero_Controller
 								if ($response->reports) {
 									$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
 								} else {
-									$description = $p->parse( "\n".stripslashes($response->content), 0, 0 );
+									$description = (is_object($p)) ? $p->parse( stripslashes($response->content) ) : nl2br(stripslashes($response->content));
 								}
 								$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
 								/*if ($this->config->get('feed_entries') == 'partial') {

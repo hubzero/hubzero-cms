@@ -302,6 +302,7 @@ class MyhubController extends Hubzero_Controller
 		// Incoming
 		$uid = JRequest::getInt( 'uid', 0 );
 		$mid = JRequest::getVar( 'id', '' );
+		$update = JRequest::getInt( 'update', 0 );
 		$params = JRequest::getVar( 'params', array() );
 		
 		// Process parameters
@@ -327,6 +328,10 @@ class MyhubController extends Hubzero_Controller
 		}
 		if (!$myparams->storeParams($new)) {
 			$this->setError( $myparams->getError() );
+		}
+		
+		if ($update) {
+			$this->getmodule();
 		}
 	}
 	
@@ -363,7 +368,8 @@ class MyhubController extends Hubzero_Controller
 		if ($params) {
 			$rendered = false; //$this->render( $params, $mainframe->getPath( 'mod0_xml', $module->module ), 'module' );
 		}
-		
+		$module->params = $module->myparams;
+
 		// Output the module
 		$view->module = $module;
 		$view->params = $params;

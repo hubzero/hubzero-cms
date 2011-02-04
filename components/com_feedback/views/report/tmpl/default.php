@@ -169,7 +169,7 @@ $topics = array(
 				<textarea name="problem[long]" cols="40" rows="10" id="problem_long"><?php echo (isset($this->problem['long'])) ? stripslashes($this->problem['long']) : ''; ?></textarea>
 			</label>
 			<?php if ($this->getError() && (!isset($this->problem['long']) || $this->problem['long'] == '')) { ?>
-			<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_MISSING_DESCRIPTION'); ?>
+			<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_MISSING_DESCRIPTION'); ?></p>
 			<?php } ?>
 			
 			<label>
@@ -183,7 +183,7 @@ $topics = array(
 				<input type="text" name="answer" value="" size="3" id="answer" class="option" /> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
 			</label>
 			<?php if ($this->getError() == 3) { ?>
-			<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_BAD_CAPTCHA_ANSWER'); ?>
+			<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_BAD_CAPTCHA_ANSWER'); ?></p>
 			<?php } ?>
 <?php } ?>
 		</fieldset><div class="clear"></div>

@@ -37,14 +37,11 @@ function supportBuildRoute(&$query)
 	if (!empty($query['task'])) {
 		switch ($query['task']) 
 		{
+			case 'stats':
 			case 'tickets':
-				unset($query['task']);
-				$segments[] = 'tickets';
-			break;
-			
 			case 'reportabuse':
+				$segments[] = $query['task'];
 				unset($query['task']);
-				$segments[] = 'reportabuse';
 			break;
 			
 			case 'ticket':

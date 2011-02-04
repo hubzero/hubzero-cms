@@ -144,32 +144,43 @@ if(!$this->mini) {
 			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_TYPE').'</td>'.n;
 			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_POSTED').'</td>'.n;
 			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_APPLY_BY').'</td>'.n;
-			if($filters['search']) {
-			$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_RELEVANCE').'</td>'.n;
+			if ($filters['search']) {
+				$html .= t.t.t.t.'<td>'.JText::_('JOBS_TABLE_RELEVANCE').'</td>'.n;
 			}
 			$html .= t.t.t.'</tr>'.n;
 			$html .= t.t.t.'</thead>'.n;
 			
-			ximport('wiki.parser');
-			$p = new WikiParser( 'jobs', $this->option, 'jobs.browse', 'jobs', 1);
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher =& JDispatcher::getInstance();
+			$wikiconfig = array(
+				'option'   => $this->option,
+				'scope'    => 'jobs.browse',
+				'pagename' => 'jobs',
+				'pageid'   => 1,
+				'filepath' => '',
+				'domain'   => '' 
+			);
+			$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
+			$p = (is_array($result) && !empty($result)) ? $result[0] : null;
+			
 			$maxscore = $filters['search'] && $jobs[0]->keywords > 0 ? $jobs[0]->keywords : 1;
 			
 			$html .= t.t.t.'<tbody>'.n;				
-			for ($i=0, $n=count( $jobs ); $i < $n; $i++) {	
-			
-				$txt = $p->parse( n.stripslashes($jobs[$i]->description) );	
+			for ($i=0, $n=count( $jobs ); $i < $n; $i++) 
+			{
+				$txt = (is_object($p)) ? $p->parse( stripslashes($jobs[$i]->description) ) : nl2br(stripslashes($jobs[$i]->description));
 				$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, '%d&nbsp;%b&nbsp;%y',0) : 'ASAP';
 
 				// compute relevance to search keywords
-				if($filters['search']) {
+				if ($filters['search']) {
 					$relscore = $jobs[$i]->keywords > 0 ? floor(($jobs[$i]->keywords * 100) / $maxscore) : 0;				
 				}			
 				
 				// what's the job status?
-				if($this->admin && !$this->emp && !$this->mini) {
+				if ($this->admin && !$this->emp && !$this->mini) {
 					$status = '';
 					$class =  '';
-					switch( $jobs[$i]->status ) 
+					switch ( $jobs[$i]->status ) 
 					{
 						case 0:    		$status =  JText::_('JOB_STATUS_PENDING');
 										$class  = 'post_pending';  		
@@ -194,7 +205,7 @@ if(!$this->mini) {
 				$html .= t.t.t.t.'<a href="'.JRoute::_('index.php?option='.$option.a.'task=job'.a.'code='.$jobs[$i]->code).'" title="'.Hubzero_View_Helper_Html::shortenText($txt, 250, 0).'">';
 				$html .= $jobs[$i]->title.'</a>'.n;
 				$html .= t.t.t.t.'</td>'.n;
-				if($this->admin && !$this->emp && !$this->mini) {
+				if ($this->admin && !$this->emp && !$this->mini) {
 					$html .= t.t.t.t.'<td ';
 					$html .= $class ? 'class="'.$class.'"' : '';
 					$html .='>'.n;
@@ -213,22 +224,22 @@ if(!$this->mini) {
 				$html .= t.t.t.t.t.'<span class="datedisplay">'.JHTML::_('date',$jobs[$i]->added, '%d&nbsp;%b&nbsp;%y',0).'</span>'.n;				
 				$html .= t.t.t.t.'</td>'.n;
 				$html .= t.t.t.t.'<td>'.n;
-				if($jobs[$i]->applied) {
-				$applieddate = JHTML::_('date',$jobs[$i]->applied, '%d&nbsp;%b&nbsp;%y',0);
-				$html .= '<span class="alreadyapplied">'.JText::_('JOB_APPLIED_ON').' <span class="datedisplay">'.$applieddate.'</span></span>';
+				if ($jobs[$i]->applied) {
+					$applieddate = JHTML::_('date',$jobs[$i]->applied, '%d&nbsp;%b&nbsp;%y',0);
+					$html .= '<span class="alreadyapplied">'.JText::_('JOB_APPLIED_ON').' <span class="datedisplay">'.$applieddate.'</span></span>';
 				}
-				else if($jobs[$i]->withdrawn) {
-				$withdrew = JHTML::_('date',$jobs[$i]->withdrawn, '%d&nbsp;%b&nbsp;%y',0);
-				$html .= '<span class="withdrawn">'.JText::_('JOB_WITHDREW_ON').' <span class="datedisplay">'.$withdrew.'</span></span>';
+				else if ($jobs[$i]->withdrawn) {
+					$withdrew = JHTML::_('date',$jobs[$i]->withdrawn, '%d&nbsp;%b&nbsp;%y',0);
+					$html .= '<span class="withdrawn">'.JText::_('JOB_WITHDREW_ON').' <span class="datedisplay">'.$withdrew.'</span></span>';
 				}
 				else {
-				$html .= $closedate ? '<span class="datedisplay">'.$closedate.'</span>' : '';
+					$html .= $closedate ? '<span class="datedisplay">'.$closedate.'</span>' : '';
 				}
 				$html .= t.t.t.t.'</td>'.n;
-				if($filters['search']) {
-				$html .= t.t.t.t.'<td class="relevancescore ';
-				$html .= $relscore > 0 ? 'yes' : 'no';
-				$html .= '">'.$relscore.' %</td>'.n;
+				if ($filters['search']) {
+					$html .= t.t.t.t.'<td class="relevancescore ';
+					$html .= $relscore > 0 ? 'yes' : 'no';
+					$html .= '">'.$relscore.' %</td>'.n;
 				}
 				$html .= t.t.t.'</tr>'.n;
 			}
@@ -237,8 +248,8 @@ if(!$this->mini) {
 		}
 		else {
 			$html .= t.t.t.'<p>'.JText::_('NO_JOBS_FOUND');
-			if($this->subscriptioncode) {
-				if($this->thisemployer) {
+			if ($this->subscriptioncode) {
+				if ($this->thisemployer) {
 					$html .= ' '.JText::_('FROM').' '.JText::_('EMPLOYER').' '.$this->thisemployer->companyName.' ('.$this->subscriptioncode.')';
 				}
 				else {
@@ -249,13 +260,13 @@ if(!$this->mini) {
 			$html .= '.</p>'.n;
 		}
 		
-		if(!$this->mini) {
+		if (!$this->mini) {
 			// Insert page navigation
 			$pagenavhtml = $this->pageNav->getListFooter();
 			$pagenavhtml = str_replace('jobs/?','jobs/browse/?',$pagenavhtml);
 			$html .= t.t.$pagenavhtml;
-			if($allowsubscriptions) {
-			$html .= t.'</div><!-- / .subject -->'.n;		
+			if ($allowsubscriptions) {
+				$html .= t.'</div><!-- / .subject -->'.n;		
 			}
 			$html .= t.'</form>'.n;	
 		}
