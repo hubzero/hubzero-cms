@@ -7,9 +7,13 @@
  * version 2 as published by the Free Software Foundation. 
  */
 
-/*---------------------------------------------------------------
-	Store
----------------------------------------------------------------*/
+/*
+
+	-- -- -- -- -- -- --
+	com_store CSS
+	-- -- -- -- -- -- --
+
+*/
 	.storeitems {
 		list-style: none;
 		margin: 0 0 1em 0;
@@ -37,35 +41,76 @@
 		padding-top: 0;
 		color: #666;
 		}
-	.imageholder a, .imageholder a:hover {
-		border:none;
-	}
+	.imageholder a, 
+	.imageholder a:hover {
+		border: none;
+		}
 	
 	.shoppingcart {
-		background: transparent url("images/cart.gif") 0 0 no-repeat; padding-left: 22px;padding-bottom:0.2em;
-	}
+		background: transparent url("images/cart.gif") 0 0 no-repeat; 
+		padding-left: 22px;
+		padding-bottom: 0.2em;
+		}
 	.storefront {
-		background: transparent url("images/storefront.gif") 0 0 no-repeat; padding-left: 20px;padding-bottom:0.2em; 
-	}
+		background: transparent url("images/storefront.gif") 0 0 no-repeat; 
+		padding-left: 20px;
+		padding-bottom: 0.2em; 
+		}
 	.mypoints {
-		background: #fff url("images/coin.gif") 0 0 no-repeat; padding-left: 18px;padding-bottom:0.2em;
-	}
-	#useroptions li { white-space:nowrap; }
-	.sizes { margin-right:3em; color:#888; }
+		background: #fff url("images/coin.gif") 0 0 no-repeat; 
+		padding-left: 18px;
+		padding-bottom: 0.2em;
+		}
+	#useroptions li { 
+		white-space: nowrap; 
+		}
+	.sizes { 
+		margin-right: 3em; 
+		color: #888; 
+		}
 	
-	.totals { height:30px; font-weight:bold; vertical-align:middle; }
-	.imageholder { float:left; margin: 0; padding: 0;  }
-	.infoholder  { position:absolute; left:200px; padding: 0 1em 0 1em; width:50%; }
-	.purchase  { position:absolute; right:7em; padding: 0 3em 0 1em;  }
-	a.actionlink {color:#999999; text-transform:uppercase; font-size:0.8em;border-bottom:1px solid #e2e2e2; font-weight:normal; }
-	a.actionlink:hover { border:none;color:#666666; }
+	.totals { 
+		height: 30px; 
+		font-weight: bold; 
+		vertical-align: middle; 
+		}
+	.imageholder { 
+		float: left; 
+		margin: 0; 
+		padding: 0;
+		}
+	.infoholder  { 
+		position: absolute; 
+		left: 200px; 
+		padding: 0 1em 0 1em; 
+		width: 50%; 
+		}
+	.purchase  { 
+		position: absolute; 
+		right: 7em; 
+		padding: 0 3em 0 1em;
+		}
+	a.actionlink {
+		color: #999999; 
+		text-transform: uppercase; 
+		font-size: 0.8em;
+		border-bottom: 1px solid #e2e2e2; 
+		font-weight: normal; 
+		}
+	a.actionlink:hover { 
+		border: none;
+		color: #666666;
+		}
 		
-	.sidetitle { display:block; color:#333333; font-weight:bold; }
+	.sidetitle { 
+		display: block; 
+		color: #333333; 
+		font-weight: bold;
+		}
 	.buy {
 		background: transparent url("images/buy.gif") 0 0 no-repeat;
 		margin: 0.5em 0 0 1em;
 		padding: 15px 0 0 45px;
-		
 		}
 	.update {
 		background: transparent url("images/update.gif") 0 0 no-repeat;
@@ -85,24 +130,23 @@
 	.reassure {
 		font-weight: bold;
 		margin: 3.5em -6em -4em 0;
-		font-style:italic;
+		font-style: italic;
 		color: #000000;
-		float:right;
+		float: right;
 		padding: 0;
 		}
 	.confirm {
 		font-weight: bold;
-		font-style:italic;
+		font-style: italic;
 		color: #000000;
-		float:right;
+		float: right;
 		padding: 0;
 		margin: 3.5em -4em 1em 0;
-	}	
+		}
 	.process_order {
-		background: transparent  url("images/confirm_order.gif") 0 0 no-repeat;
+		background: transparent url("images/confirm_order.gif") 0 0 no-repeat;
 		margin: 0.5em 0 0 -7em;
 		padding: 15px 30px 0 95px;
-
 		}	
 	.finalize_order {
 		background: #fff url("images/place_order.gif") 0 0 no-repeat;
@@ -114,22 +158,29 @@
 	.button:hover {
 		border: none;
 		background-color: #fff;
-		background-position: 0 -15px; }
-	.checkout_disabled, .checkout_disabled:hover {
-		background:  transparent url("images/checkout_disabled.gif") 0 0 no-repeat;
+		background-position: 0 -15px; 
+		}
+	.checkout_disabled, 
+	.checkout_disabled:hover {
+		background: transparent url("images/checkout_disabled.gif") 0 0 no-repeat;
 		margin: 0;
 		padding: 15px 0 0 66px;
 		height: 15px;
 		width: 66px;
 		}
-	.buy_disabled, .buy_disabled:hover {
+	.buy_disabled, 
+	.buy_disabled:hover {
 		background: transparent url("images/buy_disabled.gif") 0 0 no-repeat;
 		margin: 0.5em 0 0 1em;
 		padding: 15px 0 0 45px;
-		
 		}
-	.process {float:right;padding-right:6em; padding-top:0.5em; padding-left:3em; display:block; }
-	.cancelorder {}
+	.process {
+		float: right;
+		padding-right: 6em; 
+		padding-top: 0.5em; 
+		padding-left: 3em; 
+		display: block; 
+		}
 	
 	.price  {
 		color: #000;
@@ -138,24 +189,40 @@
 		margin: 0 0 1em 0;	
 		padding: 0 0 0.5em 1em;
 		border: 0;
-		display:block;
-		
-	}
+		display: block;
+		}
 	.price a {
-		background:  transparent url("images/coin.gif") 0 1px  no-repeat;
-		padding: 0 0 1em 1em;
+		background: transparent url("images/coin.gif") 0 1px  no-repeat;
+		padding: 0 0 0 0;
 		border:0;
-		width:20px;		
-	}
-	.price a:hover { border:0; }
-	.coin:hover { border:none; }
+		width:20px;
+		height: 20px;
+		display: block;
+		overflow: hidden;
+		text-indent: -55em;
+		float: left;
+		}
+	.price a:hover { 
+		border: none; 
+		}
+	.coin:hover { 
+		border: none; 
+		}
 	.coin, a.coin  {
 		margin: 0.3em 0 0 0.3em;
-		background:  transparent url("images/coin.gif") 0 0  no-repeat;
+		background: transparent url("images/coin.gif") 0 0  no-repeat;
 		padding: 0 0.5em 0 0.5em;
 		border: none;
-		display:block;
-	}
+		display: block;
+		}
+	th .coin {
+		width:20px;
+		height: 20px;
+		display: block;
+		overflow: hidden;
+		text-indent: -55em;
+		float: left;
+		}
 	.point-balance {
 		margin-top: 0;
 		background: #F7F4F2;
@@ -173,7 +240,8 @@
 	.point-balance small {
 		color: #888;
 		}
-	.order_summary, .final_summary {
+	.order_summary, 
+	.final_summary {
 		margin-top: 0;
 		background: #F7F4F2;
 		border-top: 1px solid #E7DFD8;
@@ -182,48 +250,104 @@
 		padding: 0.5em 1em 0.5em 1em;
 		}
 	.order_summary span {
-		position:absolute;
-		right:7em;
-		font-weight: bold;	
-		
-	}
+		position: absolute;
+		right: 7em;
+		font-weight: bold;
+		}
 	
 	.final_summary span {
-		float:right;
+		float: right;
 		padding-right: 4em;
-		font-weight: bold;	
-		
-	}
-	.order_summary h4, .final_summary h4 {
-		padding:0; margin-top:0;margin-bottom:0.5em;
-	}
-	.order_summary p, .final_summary p {
+		font-weight: bold;
+		}
+	.order_summary h4, 
+	.final_summary h4 {
+		padding: 0; 
+		margin-top: 0;
+		margin-bottom: 0.5em;
+		}
+	.order_summary p, 
+	.final_summary p {
 		margin: 0;
-		padding:0;
-		
-	}
+		padding: 0;
+		}
 	.totals {
 		border-top: 2px solid #E7DFD8;
-		margin-top:0.5em;
+		margin-top: 0.5em;
+		}
+	#balanceupdate { 
+		float: right; 
+		width: 30%; 
+		background: #fff; 
+		border-left: 1px solid #e4e4e4; 
+		right: 2em; 
+		padding: 0 1em 0 1em; 
+		margin: 2em 0 0 0; 
+		}
+	#cartcontent { 
+		float: left; 
+		width: 60%; 
+		padding: 0 1em 0 1em; 
+		margin:0 0 3em 0; 
+		}
+	#cartcontent h3 { 
+		margin: 0 0 0.5em 0;
+		padding: 0; 
+		}
+	.footernotes { 
+		margin: 7.5em 0 0 0;
+		padding: 0.2em 0 0.5em 0;
+		border-top: 1px solid #e4e4e4;
+		}
+	.footernotes p {
+		margin: 0;
+		padding: 0;
+		}
+	.sidenotes { 
+		padding-top: 1em;
+		color: #666666;
+		}
+	.quantity { 
+		width: 12px;
+		}
+	.removeitem a { 
+		background: transparent url("images/delete.gif") 2px 2px no-repeat; 
+		padding: 0; /*.2em 0.8em 0.2em 0.8em*/
+		margin: 0 0.8em; 
+		border:none; 
+		display: block;
+		overflow: hidden;
+		width: 16px;
+		height: 16px;
+		float: right;
+		text-indent: 55em;
+		}
+	.removeitem {
+		margin: 0 0 0 0.5em;
+		}
 	
-	}
-	#balanceupdate { float:right; width: 30%; background:#fff; border-left:1px solid #e4e4e4; right:2em; padding: 0 1em 0 1em; margin:2em 0 0 0; }
-	#cartcontent { float:left; width: 60%; padding: 0 1em 0 1em; margin:0 0 3em 0; }
-	#cartcontent h3 { margin:0 0 0.5em 0;padding: 0; }
-	.footernotes { margin: 7.5em 0 0 0; padding: 0.2em 0 0.5em 0; border-top:1px solid #e4e4e4; }
-	.footernotes p {margin:0; padding:0; }
-	.sidenotes { padding-top:1em; color:#666666;}
-	.quantity { width:12px;}
-	.removeitem a { background: transparent url("images/delete.gif") 2px 2px no-repeat; padding: 0.2em 0.8em 0.2em 0.8em;margin: 0; border:none; }
-	.removeitem {margin: 0 0 0 0.5em;}
-	
-	#hubForm h3 { padding: 0.5em 0 0.5em 0;  }
-	#hubForm fieldset { width:75%;  }
-	.loginform #hubForm fieldset { width:50%;  }
-	.hint { padding-bottom:0; margin-bottom:0; }
-	pre { margin: 1.5em 0 0 0;  }
-	.yes { color:green;}
-	.no { color:red;}
+	#hubForm h3 { 
+		padding: 0.5em 0 0.5em 0;
+		}
+	#hubForm fieldset { 
+		width: 75%;
+		}
+	.loginform #hubForm fieldset { 
+		width: 50%;
+		}
+	.hint {
+		padding-bottom: 0;
+		margin-bottom: 0;
+		}
+	pre { 
+		margin: 1.5em 0 0 0;
+		}
+	.yes { 
+		color: green;
+		}
+	.no { 
+		color: red;
+		}
 	.button {
 		position: absolute;
 		border: none;
@@ -231,22 +355,43 @@
 		height: 0;
 		width: 0;
 		border: none;
-	}
+		}
 	.quantityspecs {
-		text-align:right;
-	}
+		text-align: right;
+		}
 	
-	/* IE 6 Hacks */
-	
-	* html .infoholder { width:500px;margin-right:3em; }
-	* html .purchase { right:-15em;top:0; }
-	* html .button { 
- 	}
-	* html #hubForm fieldset { width:70%;margin-bottom:0; }
-	* html .process input { display:inline; width:100px; height:15px;  overflow:hidden; position:relative; }
-	* html .process { position:relative; padding-right:2em; padding-top:0.5em; padding-left:3em; }
+/* IE 7 Hacks */
+
+/* IE 6 Hacks */
+	* html .infoholder { 
+		width: 500px;
+		margin-right: 3em;
+		}
+	* html .purchase { 
+		right: -15em;
+		top: 0;
+		}
+	* html #hubForm fieldset { 
+		width: 70%;
+		margin-bottom: 0;
+		}
+	* html .process input { 
+		display: inline;
+		width: 100px;
+		height: 15px;
+		overflow: hidden;
+		position: relative;
+		}
+	* html .process { 
+		position: relative;
+		padding-right: 2em;
+		padding-top: 0.5em;
+		padding-left: 3em;
+		}
 	* html .reassure {		
 		margin: 3em -10em -6em 10em;
-		position:relative; padding-right:2em; padding-top:0.5em; padding-left:3em;
-		
+		position: relative;
+		padding-right: 2em;
+		padding-top: 0.5em;
+		padding-left: 3em;
 		}
