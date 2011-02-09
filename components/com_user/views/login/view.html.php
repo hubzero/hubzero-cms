@@ -117,36 +117,32 @@ class UserViewLogin extends JView
 		
 		$authenticator = JRequest::getVar('authenticator', '', 'method');
 
-		if (!empty($authenticator)) {
-			
-			JPluginHelper::importPlugin('authentication');
+		JPluginHelper::importPlugin('authentication');
 
-			$plugins = JPluginHelper::getPlugin('authentication');
+		$plugins = JPluginHelper::getPlugin('authentication');
 
-			foreach ($plugins as $plugin)
-			{	
-				$className = 'plg'.$plugin->type.$plugin->name;
+		foreach ($plugins as $plugin)
+		{	
+			$className = 'plg'.$plugin->type.$plugin->name;
 
+			if (class_exists($className))
+			{
+				$myplugin = new $className($this,(array)$plugin);
+
+				if (method_exists($className,'status'))
+				{
+					$status[$plugin->name] = $myplugin->status();
+					$this->assign('status', $status);
+				}
+					
 				if ($plugin->name != $authenticator)
 					continue;
 
-				if (class_exists($className))
+				if (method_exists($className,'display'))
 				{
-					$myplugin = new $className($this,(array)$plugin);
+					$result = $myplugin->display($this, $tpl);
 
-					if (method_exists($className,'status'))
-					{
-						$status[$plugin->name] = $myplugin->status();
-
-						$this->assign('status', $status);
-					}
-					
-					if (method_exists($className,'display'))
-					{
-						$result = $myplugin->display($this, $tpl);
-
-						return $result;
-					}
+					return $result;
 				}
 			}
 		}

@@ -45,7 +45,7 @@ function UserParseRoute($segments)
 	if (isset($item)) {
 		$vars = $item->query;
 	}
-	
+
 	if (!empty($count) && !isset($vars['view'])) {
 		$vars['view'] = $segments[0];
 		array_shift($segments);
@@ -68,10 +68,15 @@ function UserParseRoute($segments)
 		// 	if there are any query parameters other than return, then this must be a login task request
 		
 		if ($uri->getQuery() != "") 
-		{		
-			if (count($uri->_vars) > 1)
-				$vars['task'] = 'login';
-			else if (!isset($uri->_vars['return']))
+		{
+			$pcount = 0;
+			if (isset($uri->_vars['return']))
+				$pcount++;
+			if (isset($uri->_vars['authenticator']))
+				$pcount++;
+			if (isset($uri->_vars['domain']))
+				$pcount++;
+			if (count($uri->_vars) > $pcount)
 				$vars['task'] = 'login';
 		}
 	}
