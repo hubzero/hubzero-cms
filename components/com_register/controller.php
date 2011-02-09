@@ -182,7 +182,6 @@ class RegisterController extends Hubzero_Controller
 				$eview->baseURL = $this->baseURL;
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
-
 				if (!Hubzero_Toolbox::send_email($target_xprofile->get('email'), $subject, $message)) {
 					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION', $hubMonitorEmail));
 				}
@@ -539,7 +538,7 @@ class RegisterController extends Hubzero_Controller
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 	
-				if (!Hubzero_Toolbox::send_email($xprofile->get('username'), $subject, $message)) {
+				if (!Hubzero_Toolbox::send_email($xprofile->get('email'), $subject, $message)) {
 					$this->setError(JText::sprintf('COM_REGISTER_ERROR_EMAILING_CONFIRMATION',$hubMonitorEmail));
 				}
 			}
