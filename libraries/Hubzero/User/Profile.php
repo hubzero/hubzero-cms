@@ -624,7 +624,7 @@ class Hubzero_User_Profile extends JObject
 			return false;
 		}
 
-		$userinfo = $this->_ldap_get_user( $this->get('username') );
+		$userinfo = $this->_ldap_get_user( $this->get('uidNumber') );
 
 		if ($userinfo === false)
 			return false;
@@ -643,10 +643,11 @@ class Hubzero_User_Profile extends JObject
 
 		if ($userinfo['uid'] !== false && $this->get('username') != $userinfo['uid'])
 		{
-			$this->setError("changing uid attribute is currently not supported");
-			return false;
+			$olddn = "uid=" . $userinfo['uid'] . ',ou=users,' . $hubLDAPBaseDN;
+			$rdn = 'uid=' . $this->get('username');
+			ldap_rename($conn, $olddn, $rdn, 'ou=users,' . $hubLDAPBaseDN, true);
+			$userinfo['uid'] = $this->get('username');
 		}
-
 
 		if ($userinfo['uid'] === false && $this->get('username') != '')
 		{
@@ -1240,7 +1241,7 @@ class Hubzero_User_Profile extends JObject
 		
 		if (!@ldap_delete($conn, $dn))
 		{
-			$this->setError("ldap_delete() failed: " . ldap_error());
+			$this->setError("ldap_delete() failed: " . ldap_error($conn));
 			return false;
 		}
 		
