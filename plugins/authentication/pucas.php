@@ -22,13 +22,6 @@ class plgAuthenticationPUCAS
 		parent::__construct($subject, $config);
 	}
 	
-	public static function domains()
-	{
-		$domains[]  = array('1', 'pucas', 'Purdue University (CAS)', "Career Account");
-		
-		return $domains;
-	}
-	
 	public function logout()
 	{
 		global $PHPCAS_CLIENT, $mainframe;
