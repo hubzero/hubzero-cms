@@ -814,8 +814,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$html .=t.t.t.'<div class="planbody">'.n;
 							$html .=t.t.t.'<p class="plannote">'.JText::_('PLAN_LAST_EDIT').' '.JHTML::_('date', $plan->created, '%d %b %Y').' at '.JHTML::_('date',$plan->created, '%I:%M %p').' '.JText::_('by').' '.$plan->authorname.'</p>'.n;
 				
-							JPluginHelper::importPlugin( 'hubzero' );
-							$dispatcher =& JDispatcher::getInstance();
 							$wikiconfig = array(
 								'option'   => $this->_option,
 								'scope'    => 'wishlist'.DS.$wishlist->id,
@@ -824,8 +822,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 								'filepath' => '',
 								'domain'   => '' 
 							);
-							$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($plan->pagetext), $wikiconfig) );
-							$maintext = (is_array($result) && !empty($result)) ? $result[0] : nl2br($plan->pagetext);
+							ximport('Hubzero_Wiki_Parser');
+							$p =& Hubzero_Wiki_Parser::getInstance();
+							$maintext = $p->parse($plan->pagetext, $wikiconfig);
 							
 							$html .=t.t.t.$maintext.n;
 							$html .=t.t.t.'</div>'.n;

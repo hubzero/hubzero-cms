@@ -1042,8 +1042,6 @@ class WishlistController extends JObject
 		if ($old->pagetext != $page->pagetext or (!$create_revision && $pageid)) {
 				
 			// Transform the wikitext to HTML
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => 'wishlist'.DS.$wishlist->id,
@@ -1052,9 +1050,10 @@ class WishlistController extends JObject
 				'filepath' => '',
 				'domain'   => '' 
 			);
-			$result = $dispatcher->trigger( 'onWikiParseText', array($page->pagetext, $wikiconfig) );
-			$page->pagehtml = (is_array($result) && !empty($result)) ? $result[0] : nl2br($page->pagetext);
-				
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
+			$page->pagehtml = $p->parse($page->pagetext, $wikiconfig);
+			
 			// Store content
 			if (!$page->store()) {
 				JError::raiseError( 500, $page->getError() );
@@ -2403,13 +2402,13 @@ class WishlistController extends JObject
 				$subject4 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('MSG_COMMENTED_AFTER_YOU').' #'.$wishid;
 				
 					
-				$message  = JText::_('WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
+				$message  = JText::_('WISH').' #'.$wishid.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
 				$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
 				$message .= '----------------------------'.r.n;
 				$message .= JText::_('MSG_COMMENT_BY').' '.$name.' ';
 				$message .= $row->anonymous ? '' : '('.$login.')';
 				$message .= ' '.JText::_('MSG_POSTED_ON').' '.JHTML::_('date',$row->added, '%d %b, %Y').':'.r.n;
-				$message .= $attach->parse($row->comment).r.n.r.n;
+				$message .= $attach->parse( Hubzero_View_Helper_Html::purifyText($row->comment)).r.n.r.n;
 				$message .= r.n;
 					
 					

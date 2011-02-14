@@ -101,9 +101,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html .= t.t.t.'	  <textarea name="about" rows="10" cols="50">'.$wish->about.'</textarea></label>'.n;
 			$html .= t.t.t.'	  <label>'.JText::_('WISH_ADD_TAGS').': <br />'.n;
 			// Tag editor plug-in
-			JPluginHelper::importPlugin( 'tageditor' );
-			$dispatcher =& JDispatcher::getInstance();	
-			$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$wish->tags,'')) );			
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher =& JDispatcher::getInstance();
+			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$wish->tags)) );			
 			if (count($tf) > 0) {
 				$html .= $tf[0];
 			} else {

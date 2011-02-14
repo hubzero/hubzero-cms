@@ -191,9 +191,9 @@ class WishlistHtml
 		$html .= t.t.'<fieldset>'.n;
 		$html .= t.t.'<label class="tagdisplay">'.JText::_('WISH_FIND_BY_TAGS').': '.n;
 
-		JPluginHelper::importPlugin( 'tageditor' );
+		JPluginHelper::importPlugin( 'hubzero' );
 		$dispatcher =& JDispatcher::getInstance();	
-		$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$filters['tag'],'')) );
+		$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$filters['tag'])) );
 			
 		if (count($tf) > 0) {
 			$html .= $tf[0];
