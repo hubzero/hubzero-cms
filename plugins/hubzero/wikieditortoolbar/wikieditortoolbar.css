@@ -1,0 +1,90 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/* Toolbar for editing wiki text */
+	.wiki-toolbar {
+		margin: 0;
+		padding: 0;
+		border: 1px solid #ddd;
+		background-color: #eee;
+		height: 25px;
+		}
+	.wiki-toolbar li { 
+		display: block;
+		width: 22px;
+		height: 23px;
+		float: left;
+		margin: 0;
+		padding: 0;
+		background: none;
+		}
+	.wiki-toolbar a {
+		margin: 0;
+		padding: 0;
+		display: block;
+		cursor: pointer;
+		width: 22px;
+		height: 23px;
+		border: 1px solid #ddd;
+		text-indent: -55em;
+		overflow: hidden;
+		}
+	.wiki-toolbar a:hover { 
+		border-color: #000;
+		background-color: #fff;
+		}
+/* Buttons */
+	.wiki-button-bold {
+		background: url("images/text_bold.png") 50% 50% no-repeat;
+		}
+	.wiki-button-italic {
+		background: url("images/text_italic.png") 50% 50% no-repeat;
+		}
+	.wiki-button-link {
+		background: url("images/link.png") 50% 50% no-repeat;
+		}
+	.wiki-button-headline {
+		background: url("images/text_heading_2.png") 50% 50% no-repeat;
+		}
+	.wiki-button-image {
+		background: url("images/picture.png") 50% 50% no-repeat;
+		}
+	.wiki-button-file {
+		background: url("images/page_white.png") 50% 50% no-repeat;
+		}
+	.wiki-button-resource {
+		background: url("images/page.png") 50% 50% no-repeat;
+		}
+	.wiki-button-math {
+		background: url("images/text_formula.png") 50% 50% no-repeat;
+		}
+	.wiki-button-nowiki {
+		background: url("images/tag.png") 50% 50% no-repeat;
+		}
+	.wiki-button-hr {
+		background: url("images/text_horizontalrule.png") 50% 50% no-repeat;
+		}
+	.wiki-button-underline {
+		background: url("images/text_underline.png") 50% 50% no-repeat;
+		}
+	.wiki-button-superscript {
+		background: url("images/text_superscript.png") 50% 50% no-repeat;
+		}
+	.wiki-button-subscript {
+		background: url("images/text_subscript.png") 50% 50% no-repeat;
+		}
+	.wiki-button-strikethrough {
+		background: url("images/text_strikethrough.png") 50% 50% no-repeat;
+		}
+	.wiki-button-table {
+		background: url("images/table.png") 50% 50% no-repeat;
+		}
+	.wiki-button-help {
+		background: url("images/help_purple.png") 50% 50% no-repeat;
+		}
