@@ -79,7 +79,7 @@ class AnswersQuestion extends JTable
 		} else {
 			$query .= "FROM $this->_tbl AS C ";
 		}
-		
+		$query .= ", #__users AS U ";
 		
 		switch ($filters['filterby'])
 		{
@@ -90,6 +90,7 @@ class AnswersQuestion extends JTable
 			case 'none':   		$query .= "WHERE 1=2 "; 			break;
 			default:       		$query .= "WHERE C.state!=2 "; 		break;
 		}
+		$query .= "AND U.username=C.created_by ";
 		if (isset($filters['q']) && $filters['q'] != '') {
 			$words   = explode(' ', $filters['q']);
 			foreach ($words as $word) 
@@ -163,7 +164,7 @@ class AnswersQuestion extends JTable
 	{
 		$ar = new AnswersResponse( $this->_db );
 		
-		$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.state, C.anonymous, C.reward, C.helpful";
+		$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.state, C.anonymous, C.reward, C.helpful, U.name, U.id AS userid";
 		$query .= ", (SELECT COUNT(*) FROM $ar->_tbl AS a WHERE a.state!=2 AND a.qid=C.id) AS rcount";
 		$query .= ", (SELECT SUM(tr.amount) FROM #__users_transactions AS tr WHERE tr.category='answers' AND tr.type='hold' AND tr.referenceid=C.id ) AS points";
 		$query .= ($filters['tag']) ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
@@ -171,7 +172,7 @@ class AnswersQuestion extends JTable
 		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
 	
 		//$query .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
-		
+		echo '<!-- '.$query.' -->';
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

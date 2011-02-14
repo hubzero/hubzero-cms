@@ -27,8 +27,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_User_Profile');
 
-JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher =& JDispatcher::getInstance();
 $wikiconfig = array(
 	'option'   => $this->option,
 	'scope'    => 'answer',
@@ -37,8 +35,8 @@ $wikiconfig = array(
 	'filepath' => '',
 	'domain'   => '' 
 );
-$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
-$parser = (is_array($result) && !empty($result)) ? $result[0] : null;
+ximport('Hubzero_Wiki_Parser');
+$parser =& Hubzero_Wiki_Parser::getInstance();
 
 $name = JText::_('COM_ANSWERS_ANONYMOUS');
 $user = new Hubzero_User_Profile();
@@ -140,13 +138,12 @@ if (!$this->juser->get('guest')) {
 }
 if ($reports == 0) { 
 ?>
-					<p class="question-voting">
-						<span class="question_vote">
-							<?php echo $votes; ?>
+					<p class="voting">
+						<span class="vote-like">
 	<?php if (!$this->voted) { ?>
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'&vote=1'); ?>" <?php echo $addon; ?>><?php echo JText::_('COM_ANSWERS_GOOD_QUESTION'); ?></a>
+							<a class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'&vote=1'); ?>" title="Vote this up :: <?php echo $votes; ?> people liked this"><?php echo $votes; ?><span> Like</span></a>
 	<?php } else { ?>
-							<span <?php echo $addon; ?>><?php echo JText::_('COM_ANSWERS_GOOD_QUESTION'); ?></span>
+							<span class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote this up :: Please login to vote."><?php echo $votes; ?><span> Like</span></span>
 	<?php } ?>
 						</span>
 					</p><!-- / .question-voting -->
@@ -162,11 +159,11 @@ if ($reports == 0) {
 					</p>
 <?php } else { ?>
 					<div class="question-subject">
-						<?php echo (is_object($parser)) ? $parser->parse( stripslashes($this->question->subject) ) : nl2br(stripslashes($this->question->subject)); ?>
+						<?php echo $parser->parse(stripslashes($this->question->subject), $wikiconfig); ?>
 					</div><!-- / .question-subject -->
 	<?php if ($this->question->question) { ?>
 					<div class="question-long">
-						<?php echo (is_object($parser)) ? $parser->parse( stripslashes($this->question->question) ) : nl2br(stripslashes($this->question->question)); ?>
+						<?php echo $parser->parse(stripslashes($this->question->question), $wikiconfig); ?>
 					</div><!-- / .question-long -->
 	<?php } ?>
 					<?php /* <p class="details">
@@ -183,7 +180,7 @@ if ($reports == 0) {
 						{
 							$tag['raw_tag'] = str_replace( '&amp;', '&', $tag['raw_tag'] );
 							$tag['raw_tag'] = str_replace( '&', '&amp;', $tag['raw_tag'] );
-							$tagarray[] = '<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag['tag']).'" rel="tag">'.$tag['raw_tag'].'</a></li>';
+							$tagarray[] = '<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag['tag']).'" rel="tag">'.stripslashes($tag['raw_tag']).'</a></li>';
 						}
 						$tagarray[] = '';
 
@@ -379,7 +376,11 @@ if ($reports == 0) {
 
 					<label>
 						<?php echo JText::_('COM_ANSWERS_YOUR_RESPONSE'); ?>:
-						<textarea name="response[answer]" rows="10" cols="50"></textarea>
+						<?php
+						ximport('Hubzero_Wiki_Editor');
+						$editor =& Hubzero_Wiki_Editor::getInstance();
+						echo $editor->display('response[answer]', 'responseanswer', '', '', '50', '10');
+						?>
 					</label>
 
 					<label id="answer-anonymous-label">
@@ -480,7 +481,7 @@ if ($this->responses) {
 						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'#c'.$row->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$row->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$row->created, '%d %b, %Y', 0); ?></span></a>
 					</p><!-- / .comment-title -->
 				<?php if (!$abuse) { ?>
-					<?php echo (is_object($parser)) ? $parser->parse( stripslashes($row->answer) ) : nl2br(stripslashes($row->answer)); ?>
+					<?php echo $parser->parse(stripslashes($row->answer), $wikiconfig); ?>
 					<p class="comment-options">
 						<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=answer&id='.$row->id.'&parent='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?></a>
 						<?php /*<a class="showreplyform" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&category=answer&id='.$this->question->id.'&refid='.$row->id.'#c'.$row->id); ?>" id="rep_<?php echo $row->id; ?>"><?php echo JText::_('COM_ANSWERS_REPLY'); ?></a> 
@@ -681,7 +682,7 @@ if ($this->responses) {
 							<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'#c'.$row->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$row->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$row->created, '%d %b, %Y', 0); ?></span></a>
 						</p><!-- / .comment-title -->
 					<?php if (!$abuse) { ?>
-						<?php echo (is_object($parser)) ? $parser->parse( stripslashes($row->answer) ) : nl2br(stripslashes($row->answer)); ?>
+						<?php echo $parser->parse(stripslashes($row->answer), $wikiconfig); ?>
 						<p class="comment-options">
 							<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=answer&id='.$row->id.'&parent='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?></a>
 						<?php if (!$chosen) { ?>

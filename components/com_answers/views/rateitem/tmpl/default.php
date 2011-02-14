@@ -25,7 +25,41 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser =& JFactory::getUser();
+
+$this->item->helpful = ($this->item->helpful) ? $this->item->helpful : 0;
+$this->item->nothelpful = ($this->item->nothelpful) ? $this->item->nothelpful : 0;
+
+$dcls = '';
+$lcls = '';
+//if ($this->id == $this->item->id) {
+	switch ($this->item->vote)
+	{
+		case 'yes':
+		case 'positive':
+		case 'like':
+			$lcls = ' chosen';
+		break;
+	
+		case 'no':
+		case 'negative':
+		case 'dislike':
+			$dcls = ' chosen';
+		break;
+	}
+//}
+$juser = JFactory::getUser();
+if (!$juser->get('guest')) {
+	$like_title = 'Vote this up :: '.$this->item->helpful.' people liked this';
+	$dislike_title = 'Vote this down :: '.$this->item->nothelpful.' people did not like this';
+	$cls = ' tooltips';
+} else {
+	$like_title = 'Vote this up :: Please login to vote.';
+	$dislike_title = 'Vote this down :: Please login to vote.';
+	$cls = ' tooltips';
+}
+
+
+/*$juser =& JFactory::getUser();
 
 $pclass = (isset($this->item->vote) && $this->item->vote=="yes") ? 'yes' : 'zero';
 $nclass = (isset($this->item->vote) && $this->item->vote=="no") ? 'no' : 'zero';
@@ -61,6 +95,21 @@ $this->item->nothelpful = ($this->item->nothelpful > 0) ? '-'.$this->item->nothe
 		</span>
 		<span class="votinghints"><span></span></span>
 <?php } ?>
-			
 	</span>
+</span>
+*/
+?>
+<span class="vote-like<?php echo $lcls; ?>">
+<?php if ($this->item->vote || $juser->get('username') == $this->item->created_by) { ?>
+	<span class="vote-button <?php echo ($this->item->nothelpful > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>"><?php echo $this->item->helpful; ?><span> Like</span></span>
+<?php } else { ?>
+	<a class="vote-button <?php echo ($this->item->helpful > 0) ? 'like' : 'neutral'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=yes'); ?>" title="<?php echo $like_title; ?>"><?php echo $this->item->helpful; ?><span> Like</span></a>
+<?php } ?>
+</span>
+<span class="vote-dislike<?php echo $dcls; ?>">
+<?php if ($this->item->vote || $juser->get('username') == $this->item->created_by) { ?>
+	<span class="vote-button <?php echo ($this->item->nothelpful > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo $dislike_title; ?>"><?php echo $this->item->nothelpful; ?><span> Dislike</span></span>
+<?php } else { ?>
+	<a class="vote-button <?php echo ($this->item->nothelpful > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=no'); ?>" title="<?php echo $dislike_title; ?>"><?php echo $this->item->nothelpful; ?><span> Dislike</span></a>
+<?php } ?>
 </span>

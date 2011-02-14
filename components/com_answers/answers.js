@@ -42,9 +42,10 @@ HUB.Answers = {
 				if (show) {	
 					show[i].onclick=function() {
 						p = $(this.parentNode.parentNode.parentNode).getElement('.addcomment');
-						p.style.display = "inline";
+						p.style.display = "block";
 						t = p.getElement('.commentarea');
 						t.value = 'Enter your comments...';
+						return false;
 					}
 				}
 			}
@@ -65,7 +66,7 @@ HUB.Answers = {
 				$$('.closeform').each(function(item) {
 						// clear the default text						 
 						item.addEvent('click', function() {	
-							$(item.parentNode.parentNode.parentNode).style.display = 'none';
+							$(item.parentNode.parentNode.parentNode.parentNode).style.display = 'none';
 						}
 					);
 				});

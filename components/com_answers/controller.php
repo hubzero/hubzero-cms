@@ -1119,8 +1119,20 @@ class AnswersController extends Hubzero_Controller
 			return;
 		}
 
-		$row->answer     = Hubzero_Filter::cleanXss($row->answer);
-		$row->answer     = nl2br($row->answer);
+		//$row->answer     = Hubzero_Filter::cleanXss($row->answer);
+		//$row->answer     = nl2br($row->answer);
+		$wikiconfig = array(
+			'option'   => $this->_option,
+			'scope'    => 'comment',
+			'pagename' => $row->qid,
+			'pageid'   => $row->qid,
+			'filepath' => '',
+			'domain'   => '' 
+		);
+		ximport('Hubzero_Wiki_Parser');
+		$p =& Hubzero_Wiki_Parser::getInstance();
+		$row->answer = $p->parse($row->answer, $wikiconfig);
+		
 		$row->created_by = $this->juser->get('username');
 		$row->created    = date( 'Y-m-d H:i:s', time() );
 		$row->state      = 0;

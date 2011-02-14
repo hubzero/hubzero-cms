@@ -25,19 +25,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$wikiconfig = array(
+	'option'   => $this->option,
+	'scope'    => 'answer',
+	'pagename' => $this->question->id,
+	'pageid'   => $this->question->id,
+	'filepath' => '',
+	'domain'   => '' 
+);
 if (!$this->parser) {
-	JPluginHelper::importPlugin( 'hubzero' );
-	$dispatcher =& JDispatcher::getInstance();
-	$wikiconfig = array(
-		'option'   => $this->option,
-		'scope'    => 'answer',
-		'pagename' => $this->question->id,
-		'pageid'   => $this->question->id,
-		'filepath' => '',
-		'domain'   => '' 
-	);
-	$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
-	$this->parser = (is_array($result) && !empty($result)) ? $result[0] : null;
+	ximport('Hubzero_Wiki_Parser');
+	$parser =& Hubzero_Wiki_Parser::getInstance();
+	$this->parser = $parser;
 }
 
 // Set the name of the reviewer
@@ -65,7 +64,7 @@ if ($this->reply->anonymous != 1) {
 	<p class="warning"><?php echo JText::_('COM_ANSWERS_NOTICE_POSTING_REPORTED'); ?></p>
 <?php } else { ?>
 	<?php if ($this->reply->comment) { ?>
-		<p><?php echo (is_object($this->parser)) ? $this->parser->parse( stripslashes($this->reply->comment) ) : nl2br(stripslashes($this->reply->comment)); ?></p>
+		<p><?php echo $this->parser->parse(stripslashes($this->reply->comment), $wikiconfig); ?></p>
 	<?php } else { ?>
 		<p><?php echo JText::_('COM_ANSWERS_NO_COMMENT'); ?></p>
 	<?php } ?>

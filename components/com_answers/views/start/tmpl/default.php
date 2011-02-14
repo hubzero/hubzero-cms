@@ -47,9 +47,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			
 			<label class="tagdisplay">
 				<?php echo JText::_('COM_ANSWERS_AND_OR_TAG');
-JPluginHelper::importPlugin( 'tageditor' );
-$dispatcher =& JDispatcher::getInstance();	
-$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->filters['tag'],'')) );
+JPluginHelper::importPlugin( 'hubzero' );
+$dispatcher =& JDispatcher::getInstance();
+$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->filters['tag'])) );
 		
 if (count($tf) > 0) {
 	echo $tf[0];

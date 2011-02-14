@@ -65,9 +65,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label>
 				<?php echo JText::_('COM_ANSWERS_TAGS'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
 <?php
-JPluginHelper::importPlugin( 'tageditor' );
-$dispatcher =& JDispatcher::getInstance();	
-$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->tag,'')) );
+JPluginHelper::importPlugin( 'hubzero' );
+$dispatcher =& JDispatcher::getInstance();
+$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->tag)) );
 
 if (count($tf) > 0) {
 				echo $tf[0];
