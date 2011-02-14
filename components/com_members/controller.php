@@ -54,6 +54,8 @@ class MembersController extends Hubzero_Controller
 		// Execute the task
 		switch ($this->_task) 
 		{
+			case 'autocomplete': $this->autocomplete(); break;
+			
 			case 'upload':     $this->upload();     break;
 			case 'deleteimg':  $this->deleteimg();  break;
 			case 'img':        $this->img();        break;
@@ -76,6 +78,46 @@ class MembersController extends Hubzero_Controller
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
+
+	protected function autocomplete() 
+	{
+		if ($this->juser->get('guest')) {
+			return;
+		}
+		
+		$filters = array();
+		$filters['limit']  = 20;
+		$filters['start']  = 0;
+		$filters['search'] = strtolower(trim(JRequest::getString( 'value', '' )));
+		
+		// Fetch results
+		/*$query = "SELECT u.id, u.name, u.username 
+				FROM #__users AS u 
+				WHERE LOWER( u.name ) LIKE '%".$filters['search']."%' 
+				OR LOWER( u.username ) LIKE '%".$filters['search']."%'
+				OR LOWER( u.email ) LIKE '%".$filters['search']."%'
+				ORDER BY u.name ASC";*/
+		$query = "SELECT u.id, u.name, u.username 
+				FROM #__users AS u 
+				WHERE LOWER( u.name ) LIKE '%".$filters['search']."%' 
+				ORDER BY u.name ASC";
+
+		$this->database->setQuery( $query );
+		$rows = $this->database->loadObjectList();
+
+		// Output search results in JSON format
+		$json = array();
+		if (count($rows) > 0) {
+			foreach ($rows as $row) 
+			{
+				$json[] = '["'.htmlentities(stripslashes($row->name),ENT_COMPAT,'UTF-8').'","'.$row->id.'"]';
+			}
+		}
+		
+		echo '['.implode(',',$json).']';
+	}
+
+	//-----------
 
 	protected function abort() 
 	{

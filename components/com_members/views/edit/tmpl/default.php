@@ -329,9 +329,9 @@ if ($this->registration->Interests != REG_HIDE) {
 	$message = (!empty($this->xregistration->_invalid['interests'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['interests']) : '';
 	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 	
-	JPluginHelper::importPlugin( 'tageditor' );
+	JPluginHelper::importPlugin( 'hubzero' );
 	$dispatcher =& JDispatcher::getInstance();
-	$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',stripslashes($this->tags),'')) );
+	$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',stripslashes($this->tags))) );
 	
 	$html .= "\t\t".'<label'.$fieldclass.'>'."\n";
 	$html .= "\t\t\t".JText::_('MEMBER_FIELD_TAGS').': '.$required."\n";
@@ -345,9 +345,12 @@ if ($this->registration->Interests != REG_HIDE) {
 	$html .= "\t\t".'</label>'."\n";
 }
 
+ximport('Hubzero_Wiki_Editor');
+$editor =& Hubzero_Wiki_Editor::getInstance();
+
 $html .= "\t\t".'<label>'."\n";
 $html .= "\t\t\t".JText::_('BIO').':'."\n";
-$html .= "\t\t\t".'<textarea name="profile[bio]" rows="10" cols="40">'. htmlentities(stripslashes($this->profile->get('bio')),ENT_COMPAT,'UTF-8') .'</textarea>'."\n";
+$html .= "\t\t\t".$editor->display('profile[bio]', 'profilebio', stripslashes($this->profile->get('bio')), '', '40', '10');
 $html .= "\t\t\t".'<span class="hint"><a href="'.JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting').'">Wiki formatting</a> is allowed for Bios.</span>'."\n";
 $html .= "\t\t".'</label>'."\n";
 $html .= "\t".'</fieldset><div class="clear"></div>'."\n";

@@ -285,6 +285,9 @@ class MembersProfile extends JTable
 				default:
 					$query .= "lname ASC, fname ASC";
 				break;
+				case 'RAND()':
+					$query .= "RAND()";
+				break;
 			}
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 'all') {

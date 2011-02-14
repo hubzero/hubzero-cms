@@ -63,7 +63,7 @@ function membersParseRoute($segments)
 	}
 
 	if (isset($segments[0])) {
-		if ($segments[0] == 'whois' || $segments[0] == 'activity') {
+		if ($segments[0] == 'whois' || $segments[0] == 'activity' || $segments[0] == 'autocomplete') {
 			$vars['task'] = $segments[0];
 		} elseif ($segments[0] == 'vips') {
 			$vars['task'] = 'browse';

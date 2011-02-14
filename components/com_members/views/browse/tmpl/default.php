@@ -51,7 +51,8 @@ $juser =& JFactory::getUser();
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
-					<label for="entry-search-field">Search</label>
+					<legend>Search for Members</legend>
+					<label for="entry-search-field">Enter keyword or phrase</label>
 					<input type="text" name="search" id="entry-search-field" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
 					<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
 					<input type="hidden" name="show" value="<?php echo $this->filters['show']; ?>" />
@@ -98,8 +99,8 @@ foreach ($letters as $letter)
 				</ul>
 				
 				<ul class="entries-menu filter-options">
-					<li><a<?php echo ($this->filters['show'] != 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&sortby='.$this->filters['sortby']); ?>">All</a></li>
-					<li><a<?php echo ($this->filters['show'] == 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&show=contributors&sortby='.$this->filters['sortby']); ?>">Contributors</a></li>
+					<li><a<?php echo ($this->filters['show'] != 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&sortby='.$this->filters['sortby']); ?>" title="Show All members">All</a></li>
+					<li><a<?php echo ($this->filters['show'] == 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&show=contributors&sortby='.$this->filters['sortby']); ?>" title="Show only members with Contributions">Contributors</a></li>
 				</ul>
 				
 				<table class="members entries" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">

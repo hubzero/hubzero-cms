@@ -1,3 +1,12 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
 /*
 
 	-- -- -- -- -- -- --
@@ -16,6 +25,9 @@
 		height: 0px; 
 		clear: left; 
 		visibility: hidden;
+		}
+	.com_members .section-header { 
+		display: none; 
 		}
 /* Content blocks */
 	.com_members .container {
@@ -63,6 +75,7 @@
 		border: none;
 		padding: 0;
 		}
+	.com_members .entry-search legend,
 	.com_members .entry-search label {
 		display: none;
 		}
