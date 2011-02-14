@@ -1,12 +1,3 @@
-/**
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
- */
-
 /*
 
 	-- -- -- -- -- -- --
@@ -14,118 +5,164 @@
 	-- -- -- -- -- -- --
 
 */
+
+/* Intro block */
+	#introduction {
+		margin: 0 -15px 3em -15px;
+		padding: 25px 15px 25px 120px;
+		background: #fbf8ea url("images/contribute-large.gif") 30px 25px no-repeat;
+		border-top: 2px solid #e7dac4;
+		border-bottom: 2px solid #e7dac4;
+		color: #7c7266;
+		}
+	#introduction .aside,
+	#introduction .subject {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		background: transparent;
+		border: none;
+		}
+	#introduction h3 {
+		margin-top: 0;
+		color: #7c7266;
+		}
+	#introduction .columns {
+		border: none;
+		}
+/* Get started button */
+	#getstarted {
+		margin: 0em 0 0 0;
+		padding: 0;
+		}
+	#getstarted a {
+		display: inline-block;
+		zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
+		*display: inline;
+		vertical-align: baseline;
+		margin: 0 2px;
+		outline: none;
+		cursor: pointer;
+		text-align: center;
+		text-decoration: none;
+		font: 14px/100% Helvetica, Arial, sans-serif;
+		font-weight: bold;
+		padding: .5em 3.2em .55em;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		-webkit-border-radius: .5em; 
+		-moz-border-radius: .5em;
+		border-radius: .5em;
+		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		color: #fff;
+		border: solid 1px #333;
+		background: #333;
+		background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#000));
+		background: -moz-linear-gradient(top,  #666,  #000);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#666666', endColorstr='#000000');
+		}
+	#getstarted a:hover {
+		text-decoration: none;
+		color: #fef4e9;
+		border: solid 1px #da7c0c;
+		background: #f78d1d;
+		background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
+		background: -moz-linear-gradient(top,  #faa51a,  #f47a20);
+		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
+		}
+	#getstarted a:active {
+		color: #fcd3a5;
+		border: solid 1px #da7c0c;
+		background: #f78d1d;
+		background: -webkit-gradient(linear, left top, left bottom, from(#f47a20), to(#faa51a));
+		background: -moz-linear-gradient(top,  #f47a20,  #faa51a);
+		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f47a20', endColorstr='#faa51a');
+		}
+/* Four Columns */
+	.com_contribute .three {
+		border-top: 1px solid #e0e0d7;
+		margin-top: -1px;
+		margin-bottom: 1em;
+		}
+	.com_contribute .four {
+		border-top: 1px solid #e0e0d7;
+		margin-bottom: 3em;
+		}
+	.com_contribute .four h3 { 
+		color: #000; 
+		margin-top: 1em; 
+		padding-top: 0em;
+		}
+	.com_contribute .four h3 a { 
+		color: #000; 
+		border-bottom: none; 
+		}
+	.com_contribute .four ul {
+		margin: 1em 0;
+		}
+	.com_contribute .four li {
+		margin: 1em 0;
+		}
+	.com_contribute .first h2 { 
+		font-weight: normal;
+		margin: 0;
+		padding: 0.5em 0 0 0;
+		line-height: 1em;
+		border-top: 2px solid #e0e0d7;
+		}
+	.com_contribute .second {
+		}
+	.com_contribute .third {
+		}
+	.com_contribute .fourth { 
+		border-right: none;
+		}
+	.com_contribute .big {
+		height: 3em;
+		}
+	.com_contribute .four {
+		margin-bottom: 3em;
+		}
 	.com_contribute .read-more span {
 		display: none;
 		}
-/* My Submissions */
+/* My submissions */
 	#submissions {
-		background-color: #F0F0F0;
-		border: 1px solid #D8D8D8;
-		padding: 1em;
-		}
-	#submissions h3 {
-		color: #000;
-		margin: 0;
-		}
-	.submission {
-		padding: 1em;
-		}
-	.submission th,
-	.submission td {
-		background: #fff;
-		padding: 0.2em 0.5em 0.2em 0.5em;
-		}
-	.submission th {
-		text-align: right;
-		}
-	#submissions .submission .review {
-		margin: 0;
-		height: 19px;
-		padding: 0;
-		float: right;
-		}
-	#submissions .submission .discrd {
-		margin: 0 0 0 10px;
-		padding: 0;
-		height: 19px;
-		width: 19px;
+		margin: 0 0 1em 0;
 		border: none;
-		text-align: right;
-		float: right;
 		}
-	#submissions .submission .review a { 
-		margin: 0;
-		padding: 2px 0 0 0;
+	#submissions tbody td {
+		border-bottom: 1px solid #ddd;
+		}
+	#submissions .delete {
 		display: block;
-		width: 129px;
-		height: 17px;
+		width: 16px;
+		height: 16px;
 		overflow: hidden;
-		text-align: center;
-		text-decoration: none;
-		color: #000;
-		border: none;
-		background: url("images/btn_review.gif") 0 0 no-repeat;
-		}
-	#submissions .submission .discrd a { 
 		margin: 0;
 		padding: 0;
-		display: block;
-		width: 19px;
-		height: 19px;
-		overflow: hidden;
-		border: none;
-		background: url("images/btn_discard.gif") 0 0 no-repeat;
-		text-indent: -555em;
-		text-align: left;
+		text-indent: 55em;
 		}
-	#submissions .submission .review a:hover,
-	#submissions .submission .discrd a:hover {
-		border: none;
-		background-position: 0 -19px;
-		color:#fff;
-		}
-	#submissions .submission .clear {
-		margin: 0;
-		padding: 0;
-		clear: both;
-		}
-	.whatisthis { 
-		margin: 1em;
-		padding: 10px 0 0 50px;
-		background: url("images/bigarrow-up.gif") 0 0 no-repeat;
-		}
-	.whatisthis h4 { 
-		margin: 0 0 -0.7em 0;
-		padding: 0;
-		}
-/* Start button */
-	#startcontributing { 
-		margin: 0 0 3em 0;
-		padding: 0 0 2em 0;
-		border-bottom: 1px solid #E5E5E5;
-		}
-	#startcontributing p {
-		padding-left: 14em;
-		}
-	#startcontributing #startbutton { 
-		margin: 0; 
-		padding: 0; 
-		float: left; 
-		height: 3em; 
-		}
-	#startcontributing #startbutton a {
-		margin: 0;
-		padding: 0.7em 1em;
-		display: block;
-		color: #fff;
-		border: 3px double #999;
+	.status {
 		font-weight: bold;
-		background: #333; 
 		}
-	#startcontributing #startbutton a:hover {
-		color: #fff;
-		border: 3px double #fff;
-		background: #e7792c;
+	.published {
+		color: green;
+		}
+	.draft {
+		color: orange;
+		}
+	.pending {
+		color: red;
+		}
+	#submissions .type {
+		font-size: 90%;
+		color: #aaa;
+		}
+	#submissions .review {
+		font-size: 90%;
 		}
 /* Steps list */
 	#steps {
@@ -161,10 +198,8 @@
 		border-bottom: 1px solid #ddd;
 		}
 	#steps li#trash {
-		/*float: right;
-		margin: 0 30% 0 0;*/
-		position: absolute;
-		right: 15px;
+		float: right;
+		margin: 0 30% 0 0;
 		}
 /* Attachment/Contributor reordering */
 	.order {
@@ -192,7 +227,7 @@
 /* Iframed views */
 	#small-page {
 		padding-top: 2em;
-		background: #f3f1ed;
+		background: #F5F7F2;
 		}
 	#small-page table {
 		background: #fff;
@@ -217,6 +252,10 @@
 	#preview-pane {
 		padding: 1em;
 		border: 5px solid #f3f3f3;
+		}
+	#preview-pane .subject {
+		background-color: #fff;
+		border-color: #fff;
 		}
 	.withimages img {
 		float: left;
@@ -244,10 +283,4 @@
 		}
 	#small-page .list td {
 		background-position: 0.2em 0.5em;
-		}
-/* IE 6 Hacks */
-	* html #steps li#trash {
-		float: right;
-		margin: 0 26% 0 0;
-		margin-top: -1.2em;
 		}

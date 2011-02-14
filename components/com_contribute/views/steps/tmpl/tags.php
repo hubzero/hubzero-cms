@@ -74,10 +74,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label>
 				<?php echo JText::_('COM_CONTRIBUTE_TAGS_ASSIGNED'); ?>:
 				<?php
-				JPluginHelper::importPlugin( 'tageditor' );
+				JPluginHelper::importPlugin( 'hubzero' );
 				$dispatcher =& JDispatcher::getInstance();
 				
-				$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->tags,'')) );
+				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->tags)) );
 				
 				if (count($tf) > 0) {
 					echo $tf[0];
