@@ -104,6 +104,9 @@ class plgResourcesQuestions extends JPlugin
 		if ($rtrn == 'all' || $rtrn == 'html') {
 			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php');
 			
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('resources', 'questions');
+			
 			// Are we banking?
 			$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
 			$banking = $upconfig->get('bankAccounts');		

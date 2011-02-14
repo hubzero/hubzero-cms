@@ -79,6 +79,12 @@ class plgResourcesFavorite extends JPlugin
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) {
 			if ($rtrn == 'all' || $rtrn == 'metadata') {
+				// Push some scripts to the template
+				if (is_file(JPATH_ROOT.DS.'plugins'.DS.'resources'.DS.'favorite'.DS.'favorite.js')) {
+					$document =& JFactory::getDocument();
+					$document->addScript('plugins'.DS.'resources'.DS.'favorite'.DS.'favorite.js');
+				}
+				
 				ximport('Hubzero_Favorite');
 				if (!class_exists('Hubzero_Favorite')) {
 					return $arr;

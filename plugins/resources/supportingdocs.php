@@ -77,6 +77,9 @@ class plgResourcesSupportingDocs extends JPlugin
 			}
 		}
 		
+		ximport('Hubzero_Document');
+		Hubzero_Document::addPluginStylesheet('resources', 'supportingdocs');
+		
 		$database =& JFactory::getDBO();
 		
 		// Initiate a resource helper class

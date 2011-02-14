@@ -37,9 +37,6 @@ $html = '';
 <?php
 // Did we get any results back?
 if ($this->reviews) {
-	
-	JPluginHelper::importPlugin( 'hubzero' );
-	$dispatcher =& JDispatcher::getInstance();
 	$wikiconfig = array(
 		'option'   => $this->option,
 		'scope'    => 'review',
@@ -48,8 +45,8 @@ if ($this->reviews) {
 		'filepath' => '',
 		'domain'   => '' 
 	);
-	$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
-	$parser = (is_array($result) && !empty($result)) ? $result[0] : null;
+	ximport('Hubzero_Wiki_Parser');
+	$parser =& Hubzero_Wiki_Parser::getInstance();
 	
 	$admin = false;
 	// Check if they're a site admin (from Joomla)
@@ -127,15 +124,8 @@ if ($this->reviews) {
 
 		// Build the list item
 		$html .= "\t".'<li class="comment '.$o.'" id="c'.$review->id.'">';
-		/*$html .= "\t\t".'<dl class="comment-details">'."\n";
-		$html .= "\t\t\t".'<dt class="type"><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_RESOURCES_REVIEWS_OUT_OF_5_STARS',$review->rating).'</span></span></dt>'."\n";
-		$html .= "\t\t\t".'<dd class="date">'.JHTML::_('date',$review->created, '%d %b %Y').'</dd>'."\n";
-		$html .= "\t\t\t".'<dd class="time">'.JHTML::_('date',$review->created, '%I:%M %p').'</dd>'."\n";
-		$html .= "\t\t".'</dl>'."\n";
-		$html .= "\t\t".'<div class="cwrap">'."\n";
-		$html .= "\t\t\t".'<p class="name"><strong>'.$name.'</strong> '.JText::_('PLG_RESOURCES_REVIEWS_SAID').':</p>'."\n";*/
-		$html .= "\t\t".'<a name="c'.$review->id.'"></a>'."\n";
 		$html .= "\t\t".'<p class="comment-member-photo">'."\n";
+		$html .= "\t\t".'	<span class="comment-anchor"><a name="c'.$review->id.'"></a></span>'."\n";
 		$html .= "\t\t".'	<img src="'.plgResourcesReviews::getMemberPhoto($ruser, $review->anonymous).'" alt="" />'."\n";
 		$html .= "\t\t".'</p><!-- / .comment-member-photo -->'."\n";
 		$html .= "\t\t".'<div class="comment-content">'."\n";
@@ -164,14 +154,11 @@ if ($this->reviews) {
 					$view->option = $this->option;
 					$view->item = $review;
 					$view->rid = $this->resource->id;
+					
 					$html .= $view->loadTemplate();
-					
-					//$html .= "\t\t".'<span class="itemtxt">'. trim(stripslashes($review->comment)) .'</span>'."\n";
 					$html .= "\t\t".'</p>'."\n";
-				//} else {
-					
 				}
-				$html .= (is_object($parser)) ? $parser->parse( stripslashes($review->comment) ) : nl2br(stripslashes($review->comment));
+				$html .= $parser->parse(stripslashes($review->comment), $wikiconfig);
 			} else {
 				$html .= "\t\t\t".'<p class="comment-none">'.JText::_('PLG_RESOURCES_REVIEWS_NO_COMMENT').'</p>'."\n";
 			}
@@ -359,7 +346,6 @@ if (!$juser->get('guest')) {
 		$view->resource = $this->resource;
 		$view->juser = $juser;
 		$view->display();
-		//echo PlgResourcesReviewsHelper::reviewForm( $h->myreview, $this->option );
 	}
 }
 ?>

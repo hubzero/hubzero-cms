@@ -1,0 +1,71 @@
+/*
+
+	-- -- -- -- -- -- --
+	Resources Supporting Docs plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+
+/* Resource's Supporting Documents list */
+	.supportingdocs { 
+		margin: 0 0 1em 0;
+		}
+	.aside .supportingdocs h3 {
+		margin: 0;
+		padding: 0.4em 1em;
+		color: #fff;
+		font-size: 1em;
+		background: #d6ccc4; 
+		display: block;
+		}
+	.supportingdocs ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		background: #F7F4F2;
+		border-top: 1px solid #E7DFD8;
+		border-bottom: 1px solid #E7DFD8;
+		}
+	.supportingdocs ul li {
+		margin: 0 1px;
+		padding: 0.6em 1em;
+		border: none;
+		border-top: 1px solid #fff;
+		padding-left: 35px;
+		background-position: 1em 0.5em;
+		position: relative;
+		list-style: none;
+		}
+	.supportingdocs ul li a {
+		background: none;
+		color: #CC9666;
+		}
+	.supportingdocs ul li a:hover {
+		color: #f60;
+		border-bottom: 1px solid #f60;
+		}
+	.supportingdocs small,
+	.supportingdocs span {
+		color: #999;
+		display: block;
+		}
+	.supportingdocs .help {
+		background: url("images/help.gif") 0 0 no-repeat;
+		margin: 0;
+		padding: 0;
+		display: block;
+		width: 20px;
+		height: 20px;
+		overflow: hidden;
+		text-indent: -20em;
+		position: absolute; 
+		top: 0.6em; 
+		right: 0;
+		border: none;
+		}
+
+
+/* IE 7 hacks */
+
+/* IE 6 hacks */

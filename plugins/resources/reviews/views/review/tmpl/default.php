@@ -37,7 +37,6 @@ if ($this->review->id) {
 
 <div class="below section">
 	<h3 id="reviewform-title">
-		<a name="reviewform"></a>
 		<?php echo $title; ?>
 	</h3>
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->review->resource_id.'&active=reviews'); ?>" method="post" id="commentform">
@@ -81,6 +80,7 @@ if ($this->review->id) {
 		</div><!-- / .aside -->
 		<div class="subject">
 			<p class="comment-member-photo">
+				<span class="comment-anchor"><a name="reviewform"></a></span>
 <?php
 			if (!$this->juser->get('guest')) {
 				$jxuser = new Hubzero_User_Profile();
@@ -143,7 +143,11 @@ if ($this->review->id) {
 			echo ' ( <span class="required">'.JText::_('PLG_RESOURCES_REVIEWS_REQUIRED').'</span> '.JText::_('PLG_RESOURCES_REVIEWS_FOR_ELIGIBILITY').' <a href="'.$this->infolink.'">'.JText::_('PLG_RESOURCES_REVIEWS_EARN_POINTS').'</a> )';
 		}
 		?>
-					<textarea name="comment" id="review_comments" rows="7" cols="35"><?php echo $this->review->comment; ?></textarea>
+					<?php
+					ximport('Hubzero_Wiki_Editor');
+					$editor =& Hubzero_Wiki_Editor::getInstance();
+					echo $editor->display('comment', 'review_comments', $this->review->comment, '', '35', '10');
+					?>
 				</label>
 
 				<label id="review-anonymous-label">
