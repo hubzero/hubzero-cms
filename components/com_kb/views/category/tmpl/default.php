@@ -111,16 +111,6 @@ if ($this->filters['search'] != '') {
 						<?php echo stripslashes($this->category->title); ?> 
 						<span>(<?php echo $s.'-'.$e; ?> of <?php echo $this->total; ?>)</span>
 					</caption>
-					<tfoot>
-						<tr>
-							<td colspan="3"><?php 
-							$pagenavhtml = $this->pageNav->getListFooter();
-							$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
-							$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
-							echo $pagenavhtml;
-							?></td>
-						</tr>
-					</tfoot>
 					<tbody>
 <?php
 if (count($this->articles) > 0) {
@@ -166,6 +156,13 @@ if (count($this->articles) > 0) {
 ?>
 					</tbody>
 				</table>
+				<?php 
+				$pagenavhtml = $this->pageNav->getListFooter();
+				$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
+				$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
+				echo $pagenavhtml;
+				?>
+				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</form>
 	</div><!-- / .subject -->

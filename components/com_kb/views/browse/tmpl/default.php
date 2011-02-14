@@ -57,7 +57,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
-					<input type="text" name="search" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
+					<legend>Search for articles</legend>
+					<label for="entry-search-field">Enter keyword or phrase</label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
 					<input type="hidden" name="order" value="<?php echo $this->filters['order']; ?>" />
 					<input type="hidden" name="section" value="all" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

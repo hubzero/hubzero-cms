@@ -714,9 +714,6 @@ class KbController extends Hubzero_Controller
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
-			
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => '',
@@ -725,9 +722,8 @@ class KbController extends Hubzero_Controller
 				'filepath' => '',
 				'domain'   => '' 
 			);
-			
-			$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
-			$p = (is_array($result) && !empty($result)) ? $result[0] : null;
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
 			
 			foreach ($rows as $row)
 			{
@@ -747,7 +743,7 @@ class KbController extends Hubzero_Controller
 				if ($row->reports) {
 					$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
 				} else {
-					$description = (is_object($p)) ? $p->parse( stripslashes($row->content) ) : nl2br(stripslashes($row->content));
+					$description = $p->parse($row->content, $wikiconfig);
 				}
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
 				/*if ($this->config->get('feed_entries') == 'partial') {
