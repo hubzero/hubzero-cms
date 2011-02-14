@@ -45,7 +45,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p class="info"><?php echo JText::_('GROUPS_JOIN_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>	
-			<h3><?php echo JText::_('GROUPS_JOIN_HEADER'); ?></h3>
+			<legend><?php echo JText::_('GROUPS_JOIN_HEADER'); ?></legend>
 <?php if ($this->group->get('restrict_msg')) { ?>
 			<p class="warning"><?php echo JText::_('NOTE').': '.htmlentities(stripslashes($this->group->get('restrict_msg'))); ?></p>
 <?php } ?>

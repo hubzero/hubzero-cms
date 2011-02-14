@@ -42,13 +42,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
 			<div class="admin-options">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=view'); ?>"><?php echo JText::_('GROUPS_VIEW_GROUP'); ?></a></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>"><?php echo JText::_('GROUPS_EDIT_GROUP'); ?></a></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete'); ?>"><?php echo JText::_('GROUPS_DELETE_GROUP'); ?></a></p>
+				<p class="group"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=view'); ?>"><?php echo JText::_('GROUPS_VIEW_GROUP'); ?></a></p>
+				<p class="edit"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>"><?php echo JText::_('GROUPS_EDIT_GROUP'); ?></a></p>
+				<p class="delete"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete'); ?>"><?php echo JText::_('GROUPS_DELETE_GROUP'); ?></a></p>
 			</div>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('GROUPS_INVITE_HEADER'); ?></h3>
+			<legend><?php echo JText::_('GROUPS_INVITE_HEADER'); ?></legend>
 
 	 		<p><?php echo JText::sprintf('GROUPS_INVITE_EXPLANATION',$this->group->get('description')); ?></p>
 

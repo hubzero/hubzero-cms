@@ -46,6 +46,17 @@ HUB.Groups = {
 				}
 			}
 		});
+		
+		SqueezeBoxHub.initialize({ size: {x: 300, y: 375} });
+		
+		$$('a.screenshot').each(function(el) {
+			
+			el.addEvent('click',function(e) {
+				new Event(e).stop();
+				SqueezeBoxHub.fromElement(el);
+			});
+			
+		});
 	}
 }
 

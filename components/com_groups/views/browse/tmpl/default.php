@@ -34,7 +34,7 @@ $juser =& JFactory::getUser();
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="group" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>"><?php echo JText::_('GROUPS_CREATE_GROUP'); ?></a></li>
+		<li class="last"><a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>"><?php echo JText::_('GROUPS_CREATE_GROUP'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -45,24 +45,46 @@ $juser =& JFactory::getUser();
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="get">
 	<div class="main section">
 		<div class="aside">
-			<fieldset>
-				<label>
-					<?php echo JText::_('SORT_BY'); ?>
-					<select name="sortby">
-						<option value="description ASC"<?php if ($this->filters['sortby'] == 'description ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('Title'); ?></option>
-						<option value="cn ASC"<?php if ($this->filters['sortby'] == 'cn ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('Alias'); ?></option>
-					</select>
-				</label>
-				<label>
-					<?php echo JText::_('GROUPS_SEARCH'); ?>
-					<input type="text" name="search" value="<?php echo $this->filters['search']; ?>" />
-				</label>
-				<input type="submit" value="<?php echo JText::_('GO'); ?>" />
-			</fieldset>
+			<div class="container">
+				<h3>Member Groups</h3>
+				<p class="starter"><span class="starter-point"></span>When people create a group it will appear here.</p>
+				<p>Use the sorting and filtering options to see groups listed alphabetically by their title, by their alias, or join policy.</p>
+				<p>Use the 'Search' to find specific groups if you would like to check out their contributions or possibly join them.</p>
+			</div><!-- / .container -->
+			
+			<div class="container">
+				<h3>Looking for someone?</h3>
+				<p class="starter"><span class="starter-point"></span>Go to the <a href="<?php echo JRoute::_('index.php?option=com_members'); ?>">Members page</a>.</p>
+			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
 
-			<p id="letter-index">
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="Search" />
+				<fieldset class="entry-search">
+					<legend>Search for Groups</legend>
+					<label for="entry-search-field">Enter keyword or phrase</label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
+					<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
+					<input type="hidden" name="policy" value="<?php echo $this->filters['policy']; ?>" />
+					<!-- <input type="hidden" name="option" value="<?php echo $this->option; ?>" /> -->
+					<input type="hidden" name="index" value="<?php echo $this->filters['index']; ?>" />
+				</fieldset>
+			</div><!-- / .container -->
+
+			<div class="container">
+				<ul class="entries-menu order-options">
+					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&policy='.$this->filters['policy'].'&sortby=title'); ?>" title="Sort by title">&darr; Title</a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'alias') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&policy='.$this->filters['policy'].'&sortby=alias'); ?>" title="Sort by alias">&darr; Alias</a></li>
+				</ul>
+				
+				<ul class="entries-menu filter-options">
+					<li><a<?php echo ($this->filters['policy'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&sortby='.$this->filters['sortby']); ?>" title="Show All groups">All</a></li>
+					<li><a<?php echo ($this->filters['policy'] == 'open') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&policy=open&sortby='.$this->filters['sortby']); ?>" title="Show groups with an Open join policy">Open</a></li>
+					<li><a<?php echo ($this->filters['policy'] == 'restricted') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&policy=restricted&sortby='.$this->filters['sortby']); ?>" title="Show groups with a Restricted join policy">Restricted</a></li>
+					<li><a<?php echo ($this->filters['policy'] == 'invite') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&policy=invite&sortby='.$this->filters['sortby']); ?>" title="Show groups with an Invite only join policy">Invite only</a></li>
+				</ul>
+
 <?php
 $qs = array();
 foreach ($this->filters as $f=>$v) 
@@ -75,7 +97,7 @@ $qs = implode('&amp;',$qs);
 $url  = 'index.php?option='.$this->option.'&task=browse';
 $url .= ($qs) ? '&'.$qs : '';
 
-$html  = "\t\t\t\t".'<a href="'.JRoute::_($url).'"';
+$html  = '<a href="'.JRoute::_($url).'"';
 if ($this->filters['index'] == '') {
 	$html .= ' class="active-index"';
 }
@@ -87,118 +109,128 @@ foreach ($letters as $letter)
 	$url  = 'index.php?option='.$this->option.'&task=browse&index='.strtolower($letter);
 	$url .= ($qs) ? '&'.$qs : '';
 	
-	$html .= "\t\t\t\t".'<a href="'.JRoute::_($url).'"';
+	$html .= "\t\t\t\t\t\t\t\t".'<a href="'.JRoute::_($url).'"';
 	if ($this->filters['index'] == strtolower($letter)) {
 		$html .= ' class="active-index"';
 	}
 	$html .= '>'.$letter.'</a> '."\n";
 }
-echo $html;
 ?>
-			</p>
+				<div class="clearfix"></div>
 
-			<table id="grouplist" summary="<?php echo JText::_('GROUPS_BROWSE_TBL_SUMMARY'); ?>">
-				<thead>
-					<tr>
-						<th><?php echo JText::_('Title'); ?></th>
-						<th><?php echo JText::_('Join Policy'); ?></th>
-<?php if ($this->authorized) { ?>
-						<th><?php echo JText::_('Status'); ?></th>
-						<th><?php echo JText::_('Options'); ?></th>
+				<table class="groups entries" summary="<?php echo JText::_('GROUPS_BROWSE_TBL_SUMMARY'); ?>">
+					<caption>
+<?php
+						$s = $this->filters['start']+1;
+						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
+
+						if ($this->filters['search'] != '') {
+							echo 'Search for "'.$this->filters['search'].'" in ';
+						}
+?>
+						<?php echo JText::_('Groups'); ?> 
+<?php if ($this->filters['index']) { ?>
+							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
 <?php } ?>
-					</tr>
-				</thead>
-				<tbody>
+<?php if ($this->groups) { ?>
+						<span>(<?php echo $s.'-'.$e; ?> of <?php echo $this->total; ?>)</span>
+<?php } ?>
+					</caption>
+					<thead>
+						<tr>
+							<th colspan="<?php echo ($this->authorized) ? '4' : '3'; ?>">
+								<?php echo $html; ?>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
 <?php
 if ($this->groups) {
-	$cls = 'even';
-	$html = '';
 	foreach ($this->groups as $group) 
 	{
-		$cls = ($cls == 'even') ? 'odd' : 'even';
-
-		// Only display if the group is registered
-		if (isset($group->published) && $group->published) {
-			// Determine the join policy
-			switch ($group->join_policy) 
-			{
-				case 3: $policy = '<span class="closed join-policy">'.JText::_('Closed').'</span>';      break;
-				case 2: $policy = '<span class="inviteonly join-policy">'.JText::_('Invite Only').'</span>'; break;
-				case 1: $policy = '<span class="restricted join-policy">'.JText::_('Restricted').'</span>';  break;
-				case 0:
-				default: $policy = '<span class="open join-policy">'.JText::_('Open').'</span>'; break;
-			}
-			
-			$html .= "\t\t\t\t".'<tr class="'.$cls.'">'."\n";
-			$html .= "\t\t\t\t\t".'<td><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn) .'"';
-			if (trim($group->public_desc) != '') {
-				$html .= ' class="tooltips" title="Description :: '.Hubzero_View_Helper_Html::shortenText(stripslashes($group->public_desc),100,0).'"';
-			}
-			$html .= '>'. htmlentities($group->description) .'</a></td>'."\n";
-			$html .= "\t\t\t\t\t".'<td>'.$policy.'</td>'."\n";
-			if ($this->authorized) {
-				$html .= "\t\t\t\t\t".'<td>';
-				if ($group->manager && $group->published) {
-					$html .= '<span class="manager status">'.JText::_('GROUPS_STATUS_MANAGER').'</span>';
-					$opt  = '<a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&active=members') .'">'.JText::_('GROUPS_ACTION_MANAGE').'</a>';
-					$opt .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=edit') .'">'.JText::_('GROUPS_ACTION_EDIT').'</a>';
-					$opt .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=delete') .'">'.JText::_('GROUPS_ACTION_DELETE').'</a>';
+		$status = '';
+		if ($this->authorized) {
+			if ($group->manager && $group->published) {
+				$status = 'manager';
+			} else {
+				if (!$group->published) {
+					$status = 'new';
 				} else {
-					if (!$group->published) {
-						$html .= JText::_('GROUPS_STATUS_NEW_GROUP');
-					} else {
-						if ($group->registered) {
-							if ($group->regconfirmed) {
-								$html .= '<span class="member status">'.JText::_('GROUPS_STATUS_APPROVED').'</span>';
-								$opt = '<a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=cancel&return=browse') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
-							} else {
-								$html .= '<span class="pending status">'.JText::_('GROUPS_STATUS_PENDING').'</span>';
-								$opt = '<a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=cancel&return=browse') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
-							}
+					if ($group->registered) {
+						if ($group->regconfirmed) {
+							$status = 'member';
 						} else {
-							if ($group->regconfirmed) {
-								$html .= '<span class="invitee status">'.JText::_('GROUPS_STATUS_INVITED').'</span>';
-								$opt  = '<a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=accept&return=browse') .'">'.JText::_('GROUPS_ACTION_ACCEPT').'</a>';
-								$opt .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn.'&task=cancel&return=browse') .'">'.JText::_('GROUPS_ACTION_CANCEL').'</a>';
-							} else {
-								$html .= '<span class="status"> </span>';
-								$opt = '';
-							}
+							$status = 'pending';
+						}
+					} else {
+						if ($group->regconfirmed) {
+							$status = 'invitee';
 						}
 					}
 				}
-				$html .= '</td>'."\n";
-				$html .= "\t\t\t\t\t".'<td>'.$opt.'</td>'."\n";
 			}
-			$html .= "\t\t\t\t".'</tr>'."\n";
-		} else {
-			if (isset($group->cn) && $group->cn) {
-				$html .= "\t\t\t\t".'<tr class="'.$cls.'">'."\n";
-				$html .= "\t\t\t\t\t".'<td><a href="'.JRoute::_('index.php?option='.$this->option.a.'gid='. $group->cn) .'">'. htmlentities($group->description) .'</a></td>'."\n";
-				$html .= "\t\t\t\t\t".'<td>&nbsp;</td>'."\n";
-				if ($this->authorized) {
-					$html .= "\t\t\t\t\t".'<td>&nbsp;</td>'."\n";
-					$html .= "\t\t\t\t\t".'<td>&nbsp;</td>'."\n";
-				}
-				$html .= "\t\t\t\t".'</tr>'."\n";
-			}
-		}
-	}
-	echo $html;
-} else { ?>
-					<tr class="odd">
-						<td colspan="<?php echo ($this->authorized) ? '4' : '2'; ?>"><?php echo JText::_('NONE'); ?></td>
-					</tr>
+		}	
+?>
+						<tr<?php echo ($status) ? ' class="'.$status.'"' : ''; ?>>
+							<th>
+								<span class="entry-id"><?php echo $group->gidNumber; ?></span>
+							</th>
+							<td>
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$group->cn); ?>"><?php echo stripslashes($group->description); ?></a><br />
+								<span class="entry-details">
+									<span class="entry-alias"><?php echo $group->cn; ?></span>
+								</span>
+							</td>
+							<td>
+								<?php
+								switch ($group->join_policy) 
+								{
+									case 3: echo '<span class="closed join-policy">'.JText::_('Closed').'</span>'."\n"; break;
+									case 2: echo '<span class="inviteonly join-policy">'.JText::_('Invite Only').'</span>'."\n"; break;
+									case 1: echo '<span class="restricted join-policy">'.JText::_('Restricted').'</span>'."\n";  break;
+									case 0:
+									default: echo '<span class="open join-policy">'.JText::_('Open').'</span>'."\n"; break;
+								}
+?>
+							</td>
+<?php if ($this->authorized) { ?>
+							<td>
+								<span class="<?php echo $status; ?> status"><?php
+									switch ($status) 
+									{
+										case 'manager': echo JText::_('GROUPS_STATUS_MANAGER'); break;
+										case 'new': echo JText::_('GROUPS_STATUS_NEW_GROUP'); break;
+										case 'member': echo JText::_('GROUPS_STATUS_APPROVED'); break;
+										case 'pending': echo JText::_('GROUPS_STATUS_PENDING'); break;
+										case 'invitee': echo JText::_('GROUPS_STATUS_INVITED'); break;
+										default: break;
+									}
+								?></span>
+							</td>
 <?php } ?>
-				</tbody>
-			</table>
+						</tr>
+<?php 
+	} // for loop 
+} else {
+?>
+						<tr>
+							<td colspan="<?php echo ($this->authorized) ? '4' : '3'; ?>">
+								<p class="warning"><?php echo JText::_('No results found'); ?></p>
+							</td>
+						</tr>
+<?php } ?>
+					</tbody>
+				</table>
 <?php
 $pn = $this->pageNav->getListFooter();
 if (!strstr($pn,'/browse')) {
 	$pn = str_replace('/?','/browse/?',$pn);
+	$pn = str_replace('&amp;&amp;','&amp;',$pn);
 }
 echo $pn;
 ?>
+				<div class="clearfix"></div>
+			</div><!-- / .container -->
 		</div><!-- / .subject -->
 	</div><!-- / .main section -->
 	<div class="clear"></div>

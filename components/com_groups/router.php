@@ -65,7 +65,7 @@ function GroupsParseRoute($segments)
     if (empty($segments))
     	return $vars;
 
-    if ($segments[0] == 'new' || $segments[0] == 'browse') {
+    if ($segments[0] == 'new' || $segments[0] == 'browse' || $segments[0] == 'features') {
 		$vars['task'] = $segments[0];
 	} else {
 		$vars['gid'] = $segments[0];

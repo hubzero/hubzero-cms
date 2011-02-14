@@ -78,6 +78,7 @@ class GroupsController extends Hubzero_Controller
 			case 'view':    $this->view();    break;
 			case 'browse':  $this->browse();  break;
 			case 'login':   $this->login();   break;
+			case 'features':	$this->features();	break;
 
 			default: $this->intro(); break;
 		}
@@ -167,59 +168,63 @@ class GroupsController extends Hubzero_Controller
 	}
 	
 	//-----------
-
+	
 	protected function browse()
 	{
+		$view = new JView( array('name'=>'browse') );
+		$view->option = $this->_option;
+		
 		// Check if they're logged in	
 		if (!$this->juser->get('guest')) {
-			$authorized = true;
+			$view->authorized = true;
 		} else {
-			$authorized = false;
+			$view->authorized = false;
 		}
 
 		// Push some styles to the template
 		$this->_getStyles();
 		
 		// Incoming
-		$filters = array();
-		$filters['type']   = 'hub';
-		$filters['authorized'] = $authorized;
+		$view->filters = array();
+		$view->filters['type']   = 'hub';
+		$view->filters['authorized'] = $view->authorized;
 		
 		// Filters for getting a result count
-		$filters['limit']  = 'all';
-		$filters['fields'] = array('COUNT(*)');
-		$filters['search'] = JRequest::getVar('search', '');
-		$filters['sortby'] = JRequest::getVar('sortby', 'description ASC');
-		$filters['index']  = JRequest::getVar('index', '');
+		$view->filters['limit']  = 'all';
+		$view->filters['fields'] = array('COUNT(*)');
+		$view->filters['search'] = JRequest::getVar('search', '');
+		$view->filters['sortby'] = JRequest::getVar('sortby', 'title');
+		$view->filters['policy'] = JRequest::getVar('policy', '');
+		$view->filters['index']  = JRequest::getVar('index', '');
 		
 		// Get a record count
-		$total = Hubzero_Group::find($filters);
+		$view->total = Hubzero_Group::find($view->filters);
 
 		// Filters for returning results
-		$filters['limit']  = JRequest::getInt('limit', 25);
-		$filters['limit']  = ($filters['limit']) ? $filters['limit'] : 'all';
-		$filters['start']  = JRequest::getInt('limitstart', 0);
-		$filters['fields'] = array('cn','description','published','gidNumber','type','public_desc','join_policy');
+		$view->filters['limit']  = JRequest::getInt('limit', 25);
+		$view->filters['limit']  = ($view->filters['limit']) ? $view->filters['limit'] : 'all';
+		$view->filters['start']  = JRequest::getInt('limitstart', 0);
+		$view->filters['fields'] = array('cn','description','published','gidNumber','type','public_desc','join_policy');
 
 		// Get a list of all groups
-		$groups = Hubzero_Group::find($filters);
+		$view->groups = Hubzero_Group::find($view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination( $total, $filters['start'], $filters['limit'] );
+		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
 		// Run through the master list of groups and mark the user's status in that group
-		if ($authorized) {
-			$groups = $this->getGroups( $groups );
+		if ($view->authorized && $view->groups) {
+			$view->groups = $this->getGroups( $view->groups );
 		}
 		
 		// Build the page title
-		$title  = JText::_(strtoupper($this->_name));
-		$title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
+		$view->title  = JText::_(strtoupper($this->_name));
+		$view->title .= ($this->_task) ? ': '.JText::_(strtoupper($this->_task)) : '';
 		
 		// Set the page title
 		$document =& JFactory::getDocument();
-		$document->setTitle( $title );
+		$document->setTitle( $view->title );
 
 		// Set the pathway
 		$app =& JFactory::getApplication();
@@ -230,13 +235,33 @@ class GroupsController extends Hubzero_Controller
 		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&task='.$this->_task);
 
 		// Output HTML
-		$view = new JView( array('name'=>'browse') );
-		$view->title = $title;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+	
+	//-----------
+	
+	protected function features()
+	{
+		//Set page title
+		$this->_buildTitle();
+		
+		//Set the pathway
+		$this->_buildPathway();
+		
+		//load styles and scripts
+		$this->_getScripts();
+		$this->_getStyles();
+		
+	
+		// Output HTML
+		$view = new JView( array('name'=>'newfeatures') );
 		$view->option = $this->_option;
-		$view->groups = $groups;
-		$view->authorized = $authorized;
-		$view->pageNav = $pageNav;
-		$view->filters = $filters;
+		//$view->title = $this->_title;
+		$view->config = $this->_config;
+		
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -290,9 +315,6 @@ class GroupsController extends Hubzero_Controller
 			$public_desc = $group->get('description');
 		}
 		if ($public_desc || $private_desc) {
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
-			
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => $group->get('cn').DS.'wiki',
@@ -301,15 +323,15 @@ class GroupsController extends Hubzero_Controller
 				'filepath' => $this->config->get('uploadpath'),
 				'domain'   => $group->get('cn') 
 			);
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
 			
 			// Trigger the functions that return the areas we'll be using
 			if ($public_desc) {
-				$result = $dispatcher->trigger( 'onWikiParseText', array($public_desc, $wikiconfig) );
-				$public_desc = (is_array($result) && !empty($result)) ? $result[0] : nl2br($public_desc);
+				$public_desc = $p->parse($public_desc, $wikiconfig);
 			}
 			if ($private_desc) {
-				$result = $dispatcher->trigger( 'onWikiParseText', array($private_desc, $wikiconfig) );
-				$private_desc = (is_array($result) && !empty($result)) ? $result[0] : nl2br($private_desc);
+				$private_desc = $p->parse($private_desc, $wikiconfig);
 			}
 		}
 		
@@ -663,9 +685,9 @@ class GroupsController extends Hubzero_Controller
 			$this->setError( JText::_('GROUPS_ERROR_REGISTER_MEMBERSHIP_FAILED') );
 		}
 
+		$row = new GroupsReason( $this->database );
 		if ($group->get('join_policy') == 1) {
 			// Instantiate the reason object and bind the incoming data
-			$row = new GroupsReason( $this->database );
 			$row->uidNumber = $this->juser->get('id');
 			$row->gidNumber = $group->get('gidNumber');
 			$row->reason    = JRequest::getVar( 'reason', JText::_('GROUPS_NO_REASON_GIVEN'), 'post' );

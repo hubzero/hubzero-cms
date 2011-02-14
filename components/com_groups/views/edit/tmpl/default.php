@@ -31,9 +31,9 @@ if ($this->group->get('gidNumber')) {
 	$lid = time().rand(0,10000);
 }
 
-JPluginHelper::importPlugin( 'tageditor' );
+JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
-$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->tags,'')) );
+$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->tags)) );
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -60,7 +60,7 @@ $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->
 			<iframe width="100%" height="370" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=media&amp;listdir=<?php echo $lid; ?>"></iframe>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('GROUPS_EDIT_DETAILS'); ?></h3>
+			<legend><?php echo JText::_('GROUPS_EDIT_DETAILS'); ?></legend>
 <?php if ($this->task != 'new') { ?>
 			<input name="cn" type="hidden" value="<?php echo $this->group->get('cn'); ?>" />
 <?php } else { ?>
@@ -95,12 +95,18 @@ $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->
 
 			<label>
 				<?php echo JText::_('GROUPS_EDIT_PUBLIC_TEXT'); ?> <span class="optional"><?php echo JText::_('GROUPS_OPTIONAL'); ?></span>
-				<textarea name="public_desc" rows="15" cols="50"><?php echo htmlentities(stripslashes($this->group->get('public_desc'))); ?></textarea>
+				<?php
+				ximport('Hubzero_Wiki_Editor');
+				$editor =& Hubzero_Wiki_Editor::getInstance();
+				echo $editor->display('public_desc', 'public_desc', stripslashes($this->group->get('public_desc')), '', '50', '15');
+				?>
 				<span class="hint"><a class="popup 400x500" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
 			<label>
 				<?php echo JText::_('GROUPS_EDIT_PRIVATE_TEXT'); ?> <span class="optional"><?php echo JText::_('GROUPS_OPTIONAL'); ?></span>
-				<textarea name="private_desc" rows="15" cols="50"><?php echo htmlentities(stripslashes($this->group->get('private_desc'))); ?></textarea>
+				<?php
+				echo $editor->display('private_desc', 'private_desc', stripslashes($this->group->get('private_desc')), '', '50', '15');
+				?>
 				<span class="hint"><a class="popup 400x500" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
 		</fieldset>
@@ -110,7 +116,7 @@ $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->
 			<p><?php echo JText::_('GROUPS_EDIT_CREDENTIALS_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('GROUPS_EDIT_MEMBERSHIP'); ?></h3>
+			<legend><?php echo JText::_('GROUPS_EDIT_MEMBERSHIP'); ?></legend>
 			<fieldset>
 				<legend><?php echo JText::_('Who can join?'); ?> <span class="required"><?php echo JText::_('GROUPS_REQUIRED'); ?></span></legend>
 				<label>
@@ -141,7 +147,7 @@ $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->
 			<p><?php echo JText::_('GROUPS_ACCESS_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('Access Settings'); ?></h3>
+			<legend><?php echo JText::_('Access Settings'); ?></legend>
 			<fieldset>
 				<legend><?php echo JText::_('GROUPS_PRIVACY'); ?> <span class="required"><?php echo JText::_('GROUPS_REQUIRED'); ?></span></legend>
 				<label>

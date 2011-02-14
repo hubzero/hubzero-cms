@@ -84,7 +84,7 @@ if ($isApplicant) {
 	$cls = $this->ismember;
 }
 ?>
-	<h3><a name="overview"></a><?php echo JText::_('GROUPS_OVERVIEW'); ?></h3>
+	<h3 class="section-header"><a name="overview"></a><?php echo JText::_('GROUPS_OVERVIEW'); ?></h3>
 	<div class="aside">
 <?php
 $aside = '';
@@ -178,7 +178,7 @@ echo $aside;
 					</tr>
 					<tr>
 						<th>Created:</th>
-						<td><?php echo JHTML::_('date', $gl->timestamp, '%d %b. %Y'); ?></td>
+						<td><?php echo JHTML::_('date', $gl->timestamp, '%d %b. %Y', 0); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2"><strong>Tags:</strong><br />
