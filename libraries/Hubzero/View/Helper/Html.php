@@ -333,4 +333,22 @@ class Hubzero_View_Helper_Html
 		}
 		return $file_size;
 	}
+	
+	//-----------
+	
+	public function filesize_r($path) 
+	{
+		if (!file_exists($path)) {
+			return 0;
+		}
+		if (is_file($path)) {
+			return filesize($path);
+		}
+		$ret = 0;
+		foreach (glob($path."/*") as $fn) 
+		{
+			$ret += Hubzero_View_Helper_Html::filesize_r($fn);
+		}
+		return $ret;
+	}
 }
