@@ -1,0 +1,165 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Autocompleter CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Holder Stylings */
+	ul.textboxlist-holder {
+		margin: 0;
+		padding: 0;
+		border: 1px solid #999;
+		overflow: hidden;
+		height: auto !important;
+		height: 1%;
+		padding: 4px 5px 0;
+		background-color: #fff;
+		}
+	ul.textboxlist-holder li {
+		float: left;
+		list-style-type: none;
+		margin: 0 5px 4px 0;
+		padding: 0;
+		background-image: none;
+		}
+	ul.textboxlist-holder li.bit-box, 
+	ul.textboxlist-holder li.bit-input input {
+		font: 11px "Lucida Grande", "Verdana";
+		}
+	ul.textboxlist-holder li.bit-box { 
+		-moz-border-radius: 6px; 
+		-webkit-border-radius: 6px; 
+		background: #FFF6D3;
+		border: 1px solid #DFD5AF;
+		padding: 1px 5px 2px; 
+		}
+	/* Members */
+	ul.acm li.bit-box { 
+		border: 1px solid #CAD8F3; 
+		background: #DEE7F8;
+		}
+	/* Groups */
+	ul.acg li.bit-box { 
+		border: 1px solid #d1e8c0; 
+		background: #deecd4;
+		}
+		
+	ul.textboxlist-holder li.bit-box-focus {
+		border-color: #598BEC;
+		background: #598BEC;
+		color: white;
+		}
+	ul.textboxlist-holder li.bit-box {
+		padding-right: 15px;
+		position: relative;
+		color: #333;
+		}
+	ul.textboxlist-holder li.bit-input {
+		margin: 0;
+		}
+	#hubForm ul.textboxlist-holder li.bit-input input,
+	ul.textboxlist-holder li.bit-input input {
+		width: 150px;
+		margin: 0;
+		border: none;
+		outline: 0;
+		padding: 3px 0 2px 0;
+		} /* no left/right padding here please */
+	#hubForm .aside ul.textboxlist-holder li.bit-input input,
+	.aside ul.textboxlist-holder li.bit-input input {
+		/*width: 30px;*/
+		/* was giving really tiny selection drop-down box */
+		}
+	#commentform ul.textboxlist-holder li.bit-input input.smallinput,
+	#hubForm ul.textboxlist-holder li.bit-input input.smallinput,
+	ul.textboxlist-holder li.bit-input input.smallinput { 
+		width: 1px;
+		visibility: hidden;
+		}
+	ul.textboxlist-holder li.bit-hover {
+		background: #BBCEF1;
+		border: 1px solid #6D95E0;
+		}
+	ul.textboxlist-holder li.bit-box a.closebutton {
+		position: absolute;
+		right: 4px;
+		top: 5px;
+		display: block;
+		width: 7px;
+		height: 7px;
+		font-size: 1px;
+		background: url('close.gif');
+		}
+	ul.textboxlist-holder li.bit-box a.closebutton:hover {
+		background-position: 7px;
+		}
+	ul.holder li.bit-box-focus a.closebutton, 
+	ul.holder li.bit-box-focus a.closebutton:hover {
+		background-position: bottom;
+		}
+
+/* Autocompleter */
+	div.autocompleter-loading {
+		float: left;
+		clear: right;
+		background:	#fff url("spinner.gif") no-repeat center;
+		width: 20px;
+		height: 16px;
+		}
+	ul.autocompleter-choices {
+		position: absolute;
+		margin: 0;
+		padding: 0;
+		list-style:	none;
+		border:	1px solid #333;
+		background-color: #fff; /*#52616F;*/
+		border-right-color: #ddd;
+		border-bottom-color: #ddd;
+		text-align:	left;
+		z-index: 50;
+		}
+	ul.autocompleter-choices li {
+		position: relative;
+		padding: 0.1em 1.5em 0.1em 1em;
+		margin: 0;
+		cursor:	pointer;
+		font-weight: normal;
+		font-size: 1em;
+		}
+	ul.autocompleter-choices li.autocompleter-selected {
+		background-color: #444;
+		color: #fff;
+		}
+	ul.autocompleter-choices span.autocompleter-queried {
+		font-weight: bold;
+		}
+	ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried {
+		color: #9FCFFF;
+		}
+
+/* IE 7 hacks */
+	*:first-child+html ul.textboxlist-holder {
+		padding-bottom: 2px;
+		}
+	* html ul.textboxlist-holder {
+		padding-bottom: 2px;
+		}
+	html>body #hubForm ul.textboxlist-holder li.bit-input input.smallinput,
+	html>body ul.textboxlist-holder li.bit-input input.smallinput {
+		*visibility: visible;
+		}
+	html>body #hubForm ul.textboxlist-holder li.bit-input input,
+	html>body ul.textboxlist-holder li.bit-input input {
+		*border: 1px solid #fff;
+		}
