@@ -293,8 +293,6 @@ class BlogController extends Hubzero_Controller
 		}
 		
 		if ($view->row->content) {
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => 'blog',
@@ -303,8 +301,9 @@ class BlogController extends Hubzero_Controller
 				'filepath' => $this->config->get('uploadpath'),
 				'domain'   => '' 
 			);
-			$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($view->row->content), $wikiconfig) );
-			$view->row->content = (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($view->row->content));
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
+			$view->row->content = $p->parse(stripslashes($view->row->content), $wikiconfig);
 		}
 		
 		$bc = new BlogComment($this->database);
@@ -747,8 +746,6 @@ class BlogController extends Hubzero_Controller
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => 'blog',
@@ -757,8 +754,8 @@ class BlogController extends Hubzero_Controller
 				'filepath' => $this->config->get('uploadpath'),
 				'domain'   => '' 
 			);
-			$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
-			$p = (is_array($result) && !empty($result)) ? $result[0] : null;
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
 			
 			foreach ($rows as $row)
 			{
@@ -773,7 +770,7 @@ class BlogController extends Hubzero_Controller
 				$author = $cuser->get('name');
 				
 				// Strip html from feed item description text
-				$description = (is_object($p)) ? $p->parse( stripslashes($row->content) ) : nl2br(stripslashes($row->content));
+				$description = $p->parse(stripslashes($row->content), $wikiconfig);
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
 				if ($this->config->get('feed_entries') == 'partial') {
 					$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
@@ -860,8 +857,6 @@ class BlogController extends Hubzero_Controller
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => 'blog',
@@ -870,9 +865,9 @@ class BlogController extends Hubzero_Controller
 				'filepath' => $this->config->get('uploadpath'),
 				'domain'   => '' 
 			);
-			$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
-			$p = (is_array($result) && !empty($result)) ? $result[0] : null;
-			
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
+
 			foreach ($rows as $row)
 			{
 				// URL link to article
@@ -891,7 +886,7 @@ class BlogController extends Hubzero_Controller
 				if ($row->reports) {
 					$description = JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
 				} else {
-					$description = (is_object($p)) ? $p->parse( stripslashes($row->content) ) : nl2br(stripslashes($row->content));
+					$description = $p->parse(stripslashes($row->content), $wikiconfig);
 				}
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
 				/*if ($this->config->get('feed_entries') == 'partial') {

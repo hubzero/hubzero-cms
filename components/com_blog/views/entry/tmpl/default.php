@@ -201,8 +201,6 @@ if ($this->comments) {
 	$cls = 'even';
 	ximport('Hubzero_User_Profile');
 	
-	JPluginHelper::importPlugin( 'hubzero' );
-	$dispatcher =& JDispatcher::getInstance();
 	$wikiconfig = array(
 		'option'   => $this->option,
 		'scope'    => 'blog',
@@ -211,8 +209,8 @@ if ($this->comments) {
 		'filepath' => $this->config->get('uploadpath'),
 		'domain'   => '' 
 	);
-	$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
-	$p = (is_array($result) && !empty($result)) ? $result[0] : null;
+	ximport('Hubzero_Wiki_Parser');
+	$p =& Hubzero_Wiki_Parser::getInstance();
 	
 	foreach ($this->comments as $comment) 
 	{
@@ -235,7 +233,7 @@ if ($this->comments) {
 		if ($comment->reports) {
 			$content = '<p class="warning">'.JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 		} else {
-			$content = (is_object($p)) ? $p->parse( stripslashes($comment->content) ) : nl2br(stripslashes($comment->content));
+			$content = $p->parse(stripslashes($comment->content), $wikiconfig);
 		}
 ?>
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $comment->id; ?>">
@@ -290,7 +288,7 @@ if ($juser->get('guest')) {
 				if ($reply->reports) {
 					$content = '<p class="warning">'.JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 				} else {
-					$content = (is_object($p)) ? $p->parse( stripslashes($reply->content) ) : nl2br(stripslashes($reply->content));
+					$content = $p->parse(stripslashes($reply->content), $wikiconfig);
 				}
 ?>
 				<li class="comment <?php echo $cls; ?>" id="c<?php echo $reply->id; ?>">
@@ -337,7 +335,7 @@ if ($juser->get('guest')) {
 						if ($response->reports) {
 							$content = '<p class="warning">'.JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 						} else {
-							$content = (is_object($p)) ? $p->parse( stripslashes($response->content) ) : nl2br(stripslashes($response->content));
+							$content = $p->parse(stripslashes($response->content), $wikiconfig);
 						}
 ?>
 						<li class="comment <?php echo $cls; ?>" id="c<?php echo $response->id; ?>">
@@ -475,9 +473,9 @@ if ($juser->get('guest')) {
 				Your <?php echo ($this->replyto->id) ? 'reply' : 'comments'; ?>: <span class="required">required</span>
 <?php
 			if (!$juser->get('guest')) {
-?>
-				<textarea name="comment[content]" id="comment-content" rows="15" cols="40"></textarea>
-<?php
+				ximport('Hubzero_Wiki_Editor');
+				$editor =& Hubzero_Wiki_Editor::getInstance();
+				echo $editor->display('comment[content]', 'commentcontent', '', '', '40', '15');
 			} else { 
 				$rtrn = JRoute::_('index.php?option='.$this->option.'&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment');
 ?>

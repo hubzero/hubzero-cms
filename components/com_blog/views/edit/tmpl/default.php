@@ -32,9 +32,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$lid = time().rand(0,10000);
 }*/
 
-JPluginHelper::importPlugin( 'tageditor' );
+JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
-$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->tags,'')) );
+$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->tags)) );
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -105,7 +105,11 @@ $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->
 
 			<label>
 				<?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?>
-				<textarea name="entry[content]" rows="40" cols="50"><?php echo htmlentities(stripslashes($this->entry->content),ENT_COMPAT,'UTF-8'); ?></textarea>
+				<?php
+				ximport('Hubzero_Wiki_Editor');
+				$editor =& Hubzero_Wiki_Editor::getInstance();
+				echo $editor->display('entry[content]', 'entrycontent', stripslashes($this->entry->content), '', '50', '40');
+				?>
 				<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
 <?php if ($this->task == 'save' && !$this->entry->content) { ?>
