@@ -1718,6 +1718,23 @@ class Hubzero_Group
 			$where_clause .= " privacy=0";
 		}
 		
+		if (isset($filters['policy']) && $filters['policy']) {
+			if ($where_clause != '') {
+				$where_clause .= " AND";
+			}
+			else {
+				$where_clause .= "WHERE";
+			}
+			switch ($filters['policy']) 
+			{
+				case 'closed': $where_clause .= " join_policy=3"; break;
+				case 'invite': $where_clause .= " join_policy=2"; break;
+				case 'restricted': $where_clause .= " join_policy=1";  break;
+				case 'open':
+				default: $where_clause .= " join_policy=0"; break;
+			}
+		}
+		
 		if (empty($filters['fields']))
 			$filters['fields'][] = 'cn';
 		
@@ -1725,7 +1742,13 @@ class Hubzero_Group
 		
 		$query = "SELECT $field FROM #__xgroups $where_clause";
 		if (isset($filters['sortby']) && $filters['sortby'] != '') {
-			$query .= " ORDER BY " . $filters['sortby'];
+			$query .= " ORDER BY ";
+			switch ($filters['sortby']) 
+			{
+				case 'alias': $query .= 'cn ASC'; break;
+				case 'title': $query .= 'description ASC'; break;
+				default: $query .= $filters['sortby']; break;
+			}
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 'all') {
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
