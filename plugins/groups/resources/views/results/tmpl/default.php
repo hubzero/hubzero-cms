@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<h3><a name="resources"></a><?php echo JText::_('PLG_GROUPS_RESOURCES'); ?></h3>
+<h3 class="section-header"><a name="resources"></a><?php echo JText::_('PLG_GROUPS_RESOURCES'); ?></h3>
 <form method="get" action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=resources'); ?>">
 	<div class="aside">
 		<fieldset>

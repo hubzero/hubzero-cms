@@ -1,0 +1,121 @@
+/*
+
+	-- -- -- -- -- -- --
+	Groups Messages plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+/* Message lists */
+	#messages-section .subject {
+		padding-top: 1em;
+		}
+	#sbox-content #messages-section .subject {
+		padding: 0;
+		}
+	#messages-section .subject table.data {
+		margin-top: 1em;
+		border-bottom: none;
+		}
+	#messages-section .subject table.data td {
+		border: none;
+		}
+	#messages-section .subject table.data td .trash {
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		text-indent: -55em;
+		margin: 0;
+		padding: 0;
+		border: none;
+		}
+	#messages-section .subject table.data tfoot td {
+		border-top: 2px solid #dfdfdf;
+		border-bottom: none;
+		}
+	#messages-section .subject #hubForm {
+		border: none;
+		}
+	#messages-section table,
+	#messages-section table thead td,
+	#messages-section table thead th {
+		border-color: #ccc;
+		}
+	#messages-section table tbody td,
+	#messages-section table tbody th {
+		border-color: #ddd;
+		}
+	#messages-section table tbody tr.odd {
+		background-color: #f4f7fb; 
+		}
+/* Side menu */
+	#messages-section .aside li {
+		border: none;
+		margin: 0;
+		padding: 0;
+		}
+	#messages-section .aside li a {
+		margin: 0;
+		font-size: 100%;
+		text-transform: none;
+		letter-spacing: 0px;
+		border-top: 1px solid #fff;
+		border-right: 1px solid #ccc;
+		border-bottom: 1px solid #fff;
+		}
+	#messages-section .aside li a.sent {
+		background: #F5F5F5 url("images/box.png") 5px 50% no-repeat; padding-left: 25px;
+		}
+	#messages-section .aside li a.new-message {
+		background: #F5F5F5 url("images/email_go.png") 5px 50% no-repeat; padding-left: 25px;
+		}
+	#messages-section .aside li.active a {
+		background-color: #fff;
+		border-top: 1px solid #ccc;
+		border-right: 1px solid #fff;
+		border-bottom: 1px solid #ccc;
+		font-weight: bold;
+		}
+	#messages-section .aside li a:hover {
+		background-color: #333;
+		}
+	textarea#msg-message {
+		margin-bottom: 1em;
+		}
+	.com_groups .main .full fieldset h3 {
+		display: none;
+		}
+/* Message table */
+	.profile {
+		margin-top: 1em;
+		border: none;
+		background: transparent;
+		}
+	.profile th, 
+	.profile td {
+		padding-bottom: 25px;
+		border-top: 1px solid #e5e5e5;
+		border-bottom: none;
+		}
+	.profile th {
+		text-align: right;
+		color: #999;
+		white-space: nowrap;
+		}
+	.profile td {
+		padding-right: 1.5em;
+		}
+	.profile ul {
+		margin-left: 1.5em;
+		list-style: disc;
+		}
+	.profile td p {
+		margin: 1em 0;
+		}
+	.profile td p:first-child {
+		margin-top: 0;
+		}
+
+/* IE 7 hacks */
+
+/* IE 6 hacks */

@@ -1,10 +1,37 @@
 /*
 
 	-- -- -- -- -- -- --
-	Members Blog plugin CSS
+	Groups Forum plugin CSS
 	-- -- -- -- -- -- --
 
 */
+	#forum-section .subject h3 {
+		display: block;
+		}
+	.subject #hubForm fieldset {
+		padding-left: 2%;
+		}
+/* Topic list */
+	#forum-list {
+		margin: 1em 0;
+		}
+	#forum-list fieldset {
+		float: right;
+		margin: 0;
+		padding: 0;
+		}
+	#forum-list td span {
+		font-size: 90%;
+		}
+	#forum-list td span a {
+		color: #999;
+		border-bottom: 1px dotted #999;
+		}
+	#forum-list td span a:hover {
+		color: #333;
+		border-bottom: 1px solid #333;
+		}
+		
 	#forum-section {
 		padding-top: 2em;
 		border-top: 1px solid #fff;
@@ -16,6 +43,7 @@
 	#forum-section .aside legend {
 		display: none;
 	}
+	
 /* Entries listing */
 	ol.blog-entries {
 		list-style-type: none !important;

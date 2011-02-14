@@ -100,6 +100,9 @@ class plgGroupsWiki extends JPlugin
 			//$arr['html'] = $this->wiki( $group );
 			global $mainframe;
 
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('groups', 'wiki');
+
 			// Import some needed libraries
 			ximport('Hubzero_User_Helper');
 

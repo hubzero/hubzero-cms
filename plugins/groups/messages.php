@@ -115,6 +115,9 @@ class plgGroupsMessages extends JPlugin
 		
 		// Are we returning HTML?
 		if ($return == 'html') {
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('groups', 'messages');
+			
 			// Load some needed libraries
 			ximport('Hubzero_Message');
 			

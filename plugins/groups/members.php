@@ -116,6 +116,9 @@ class plgGroupsMembers extends JPlugin
 
 		// Only perform the following if this is the active tab/plugin
 		if ($return == 'html') {
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('groups', 'members');
+			
 			// Set the page title
 			$document =& JFactory::getDocument();
 			$document->setTitle( JText::_(strtoupper($this->_name)).': '.$this->group->description.': '.JText::_('PLG_GROUPS_MEMBERS') );

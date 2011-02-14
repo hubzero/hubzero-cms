@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<h3><a name="messages"></a><?php echo JText::_('MESSAGES'); ?></h3>
+<h3 class="section-header"><a name="messages"></a><?php echo JText::_('MESSAGES'); ?></h3>
 <div class="withleft">
 	<div class="aside">
 		<ul>

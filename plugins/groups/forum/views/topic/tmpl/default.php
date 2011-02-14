@@ -42,8 +42,6 @@ $juser =& JFactory::getUser();
 		if ($this->rows) {
 			ximport('Hubzero_User_Profile');
 
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
 			$wikiconfig = array(
 				'option'   => $this->option,
 				'scope'    => 'group'.DS.'forum',
@@ -52,8 +50,8 @@ $juser =& JFactory::getUser();
 				'filepath' => '',
 				'domain'   => '' 
 			);
-			$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
-			$p = (is_array($result) && !empty($result)) ? $result[0] : null;
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
 			
 			$o = 'even';
 			$k = 0;
@@ -69,7 +67,7 @@ $juser =& JFactory::getUser();
 					}
 				}
 				
-				$comment = (is_object($p)) ? $p->parse( stripslashes($row->comment) ) : nl2br(stripslashes($row->comment));
+				$comment = $p->parse(stripslashes($row->comment), $wikiconfig);
 				
 				$o = ($o == 'odd') ? 'even' : 'odd';
 ?>
@@ -198,7 +196,11 @@ $juser =& JFactory::getUser();
 		<fieldset>
 			<label>
 				<?php echo JText::_('PLG_GROUPS_FORUM_FORM_COMMENTS'); ?>
-				<textarea name="topic[comment]" id="forum_comments" rows="15" cols="35"></textarea>
+				<?php
+				ximport('Hubzero_Wiki_Editor');
+				$editor =& Hubzero_Wiki_Editor::getInstance();
+				echo $editor->display('topic[comment]', 'forum_comments', '', '', '35', '15');
+				?>
 			</label>
 			
 			<label id="comment-anonymous-label">

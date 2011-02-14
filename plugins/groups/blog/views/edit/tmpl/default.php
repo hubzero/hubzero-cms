@@ -25,9 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JPluginHelper::importPlugin( 'tageditor' );
+JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
-$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->tags,'')) );
+$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->tags)) );
 ?>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
@@ -90,7 +90,11 @@ $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->
 
 			<label>
 				<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?>
-				<textarea name="entry[content]" rows="40" cols="50"><?php echo htmlentities(stripslashes($this->entry->content),ENT_COMPAT,'UTF-8'); ?></textarea>
+				<?php
+				ximport('Hubzero_Wiki_Editor');
+				$editor =& Hubzero_Wiki_Editor::getInstance();
+				echo $editor->display('entry[content]', 'entrycontent', stripslashes($this->entry->content), '', '50', '40');
+				?>
 				<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>" class="popup 400x500">Wiki formatting</a> is allowed.</span>
 			</label>
 <?php if ($this->task == 'save' && !$this->entry->content) { ?>
