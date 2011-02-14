@@ -127,10 +127,10 @@ class WikiPage extends JTable
 	
 	//-----------
 	
-	function getTags() 
+	function getTags($admin=0) 
 	{
 		$obj = new WikiTags( $this->_db );
-		$tags = $obj->get_tags_on_object($this->id, 0, 0, '');
+		$tags = $obj->get_tags_on_object($this->id, 0, 0, '', 0, $admin);
 		return $tags;
 	}
 	

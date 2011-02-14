@@ -92,14 +92,14 @@ class WikiHtml
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&scope='.$scope.'&pagename='.$pagename).'"><span>'.JText::_('WIKI_TAB_ARTICLE').'</span></a></li>'."\n";
-		if (($state == 1 && $authorized === 'admin') || $state != 1) {
-		if (($mode == 'knol' && $params->get( 'allow_changes' )) || $authorized || $mode != 'knol') {
-			$html .= "\t\t".'<li';
-			if ($task == 'edit') { 
-				$html .= ' class="active"'."\n";
+		if (($state == 1 && ($authorized === 'admin' || ($sub && $authorized === 'manager'))) || $state != 1) {
+			if (($mode == 'knol' && $params->get( 'allow_changes' )) || $authorized || $mode != 'knol') {
+				$html .= "\t\t".'<li';
+				if ($task == 'edit') { 
+					$html .= ' class="active"'."\n";
+				}
+				$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&scope='.$scope.'&pagename='.$pagename.'&task=edit').'"><span>'.JText::_('WIKI_TAB_EDIT').'</span></a></li>'."\n";
 			}
-			$html .= '><a href="'.JRoute::_('index.php?option='.$option.'&scope='.$scope.'&pagename='.$pagename.'&task=edit').'"><span>'.JText::_('WIKI_TAB_EDIT').'</span></a></li>'."\n";
-		}
 		}
 		if (($mode == 'knol' && $params->get( 'allow_comments' )) || $mode != 'knol') {
 			$html .= "\t\t".'<li';
@@ -172,7 +172,7 @@ class WikiHtml
 	public function authors( $page, $params, $contributors=array() )
 	{
 		$html = '';
-		if ($params->get( 'mode' ) == 'knol') {
+		if ($params->get( 'mode' ) == 'knol' && !$params->get( 'hide_authors', 0 )) {
 			$authors = $page->getAuthors();
 			
 			$author = 'Unknown';

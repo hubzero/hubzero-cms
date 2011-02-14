@@ -87,7 +87,7 @@ if (count($this->versions) > 1) {
 	<div class="subject">
 <?php
 if ($this->comments) {
-	$view = new JView( array('name'=>'comments','layout'=>'list') );
+	$view = new JView( array('name'=>'comments','layout'=>'list','base_path'=>JPATH_ROOT.DS.'components'.DS.'com_wiki') );
 	$view->option = $this->option;
 	$view->page = $this->page;
 	$view->comments = $this->comments;
@@ -181,7 +181,11 @@ if ($this->comments) {
 <?php } ?>
 				<label>
 					<?php echo JText::_('WIKI_FIELD_COMMENTS'); ?>:
-					<textarea name="ctext" rows="10" cols="35"><?php echo $this->mycomment->ctext; ?></textarea>
+					<?php
+					ximport('Hubzero_Wiki_Editor');
+					$editor =& Hubzero_Wiki_Editor::getInstance();
+					echo $editor->display('ctext', 'ctext', $this->mycomment->ctext, '', '35', '10');
+					?>
 				</label>
 
 				<input type="hidden" name="created" value="<?php echo $this->mycomment->created; ?>" />

@@ -71,7 +71,7 @@ if ($this->page->id && !$this->authorized) {
 }
 ?>
 
-<?php if ($this->page->state == 1 && $this->authorized !== 'admin') { ?>
+<?php if ($this->page->state == 1 && $this->authorized !== 'admin' && $this->authorized !== 'manager') { ?>
 	<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } ?>
 
@@ -170,8 +170,11 @@ if ($templates) {
 		<label>
 			<?php echo JText::_('WIKI_FIELD_PAGETEXT'); ?>: 
 			<span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
-			<ul id="wiki-toolbar" class="hidden"></ul>
-			<textarea name="pagetext" id="pagetext" rows="40" cols="35"><?php echo $this->revision->pagetext; ?></textarea>
+			<?php
+			ximport('Hubzero_Wiki_Editor');
+			$editor =& Hubzero_Wiki_Editor::getInstance();
+			echo $editor->display('pagetext', 'pagetext', $this->revision->pagetext, '', '35', '40');
+			?>
 		</label>
 		<p class="ta-right hint">See <a class="popup 400x500" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiFormatting'); ?>">Help: Wiki Formatting</a> for help on editing content.</p>
 <?php
@@ -203,6 +206,11 @@ if ($this->authorized) {
 				<?php echo JText::_('WIKI_FIELD_AUTHORS'); ?>:
 				<input type="text" name="authors" id="params_authors" value="<?php echo $this->authors; ?>" />
 			</label>
+			<label<?php echo $cls; ?>>
+				<input class="option" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?php if ($params->get( 'hide_authors' ) == 1) { echo ' checked="checked"'; } ?> value="1" />
+				<?php echo JText::_('Hide author list'); ?>
+			</label>
+			&nbsp;
 	
 			<label<?php echo $cls; ?>>
 				<input class="option" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?php if ($params->get( 'allow_changes' ) == 1) { echo ' checked="checked"'; } ?> value="1" />
@@ -228,7 +236,8 @@ if ($this->authorized) {
 				<input class="option" type="checkbox" name="access" id="access"<?php if ($this->page->access == 1) { echo ' checked="checked"'; } ?> value="1" />
 				<?php echo JText::_('WIKI_FIELD_ACCESS'); ?>
 			</label>
-<?php } else if ($this->authorized === 'admin') { ?>
+<?php } 
+	if ($this->authorized === 'admin' || $this->authorized === 'manager') { ?>
 			<label>
 				<input class="option" type="checkbox" name="state" id="state"<?php if ($this->page->state == 1) { echo ' checked="checked"'; } ?> value="1" />
 				<?php echo JText::_('WIKI_FIELD_STATE'); ?>
@@ -245,9 +254,9 @@ if ($this->authorized) {
 			<label>
 				<?php echo JText::_('WIKI_FIELD_TAGS'); ?>:
 <?php 
-	JPluginHelper::importPlugin( 'tageditor' );
+	JPluginHelper::importPlugin( 'hubzero' );
 	$dispatcher =& JDispatcher::getInstance();
-	$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->tags,'')) );
+	$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->tags)) );
 	if (count($tf) > 0) {
 		echo $tf[0];
 	} else {

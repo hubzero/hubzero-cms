@@ -32,9 +32,6 @@ if (count($this->comments) > 0) {
 	ximport('Hubzero_User_Profile_Helper');
 	ximport('Hubzero_User_Profile');
 	
-	//$parser = new WikiParser( stripslashes($this->page->title), $this->option, 'comment', $this->page->id, 0, '' );
-	JPluginHelper::importPlugin( 'hubzero' );
-	$dispatcher =& JDispatcher::getInstance();
 	$wikiconfig = array(
 		'option'   => $this->option,
 		'scope'    => $this->page->scope,
@@ -43,8 +40,8 @@ if (count($this->comments) > 0) {
 		'filepath' => '',
 		'domain'   => $this->page->group 
 	);
-	$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
-	$parser = (is_array($result) && !empty($result)) ? $result[0] : null;
+	ximport('Hubzero_Wiki_Parser');
+	$parser =& Hubzero_Wiki_Parser::getInstance();
 	
 	$html .= '<ol class="comments">'."\n";
 	foreach ($this->comments as $comment) 
@@ -95,7 +92,8 @@ if (count($this->comments) > 0) {
 		//$html .= (trim($chtml)) ? trim($chtml).n : JText::_('(No comment.)').n;
 		if ($comment->ctext) {
 			//$html .= "\t\t\t".$parser->parse( "\n".trim(stripslashes($comment->ctext)))."\n";
-			$html .= (is_object($parser)) ? $parser->parse( "\n".trim(stripslashes($comment->ctext)) ) : nl2br( trim(stripslashes($comment->ctext)) );
+			//$html .= (is_object($parser)) ? $parser->parse( "\n".trim(stripslashes($comment->ctext)) ) : nl2br( trim(stripslashes($comment->ctext)) );
+			$html .= $parser->parse($comment->ctext, $wikiconfig);
 		} else {
 			$html .= "\t\t\t".'<p class="comment-none">'.JText::_('No comment.').'</p>'."\n";
 		}
@@ -109,7 +107,7 @@ if (count($this->comments) > 0) {
 		$html .= "\t\t".'</div><!-- .comment-content -->'."\n";
 		if (isset($comment->children)) {
 			//$html .= WikiHtml::commentList($comment->children,$this->page,$this->option,$c,$level++);
-			$view = new JView( array('name'=>'comments','layout'=>'list') );
+			$view = new JView( array('name'=>'comments','layout'=>'list','base_path'=>JPATH_ROOT.DS.'components'.DS.'com_wiki') );
 			$view->option = $this->option;
 			$view->page = $this->page;
 			$view->comments = $comment->children;

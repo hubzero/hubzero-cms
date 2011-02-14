@@ -347,9 +347,6 @@ class WikiController extends Hubzero_Controller
 		$page->load( $row->pageid );
 		
 		// Parse text
-		JPluginHelper::importPlugin( 'hubzero' );
-		$dispatcher =& JDispatcher::getInstance();
-
 		$wikiconfig = array(
 			'option'   => $this->_option,
 			'scope'    => $page->scope,
@@ -358,8 +355,9 @@ class WikiController extends Hubzero_Controller
 			'filepath' => '',
 			'domain'   => $this->_group 
 		);
-		$result = $dispatcher->trigger( 'onWikiParseText', array($row->pagetext, $wikiconfig, true, true) );
-		$row->pagehtml = (is_array($result) && !empty($result)) ? $result[0] : $row->pagetext;
+		ximport('Hubzero_Wiki_Parser');
+		$p =& Hubzero_Wiki_Parser::getInstance();
+		$row->pagehtml = $p->parse($row->pagetext, $wikiconfig);
 		
 		// Parse attachments
 		/*$a = new WikiPageAttachment( $this->database );

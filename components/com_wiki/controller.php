@@ -217,19 +217,11 @@ class WikiController extends Hubzero_Controller
 		} else {
 			$revision = $this->page->getCurrentRevision();
 		}
-		
-		// Get the page's tags
-		$tags = $this->page->getTags();
 			
 		// Up the hit counter
 		$this->page->hit();
 
-		// Parse the HTML
-		//$p = new WikiParser( $pagetitle, $this->_option, $this->scope, $this->pagename, $this->page->id, '', $this->_group );
-		//$p = new WikiParser( $this->_option, $this->scope, $this->pagename, $this->page->id, '', $this->_group );
-		JPluginHelper::importPlugin( 'hubzero' );
-		$dispatcher =& JDispatcher::getInstance();
-		
+		// Load the wiki parser
 		$wikiconfig = array(
 			'option'   => $this->_option,
 			'scope'    => $this->scope,
@@ -239,21 +231,27 @@ class WikiController extends Hubzero_Controller
 			'domain'   => $this->_group 
 		);
 		
-		$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
-		$p = (is_array($result) && !empty($result)) ? $result[0] : null;
-		// Trigger the functions that return the areas we'll be using
-		//$result = $dispatcher->trigger( 'onWikiParseText', array($revision->pagetext, $wikiconfig) );
-		//$revision->pagehtml = (is_array($result) && !empty($result)) ? $result[0] : $revision->pagetext;
-		$revision->pagehtml = (is_object($p)) ? $p->parse( $revision->pagetext ) : nl2br($revision->pagetext);
+		ximport('Hubzero_Wiki_Parser');
+		$p =& Hubzero_Wiki_Parser::getInstance();
+
+		// Parse the text
+		$revision->pagehtml = $p->parse($revision->pagetext, $wikiconfig, true, true);
 
 		// Create a linked Table of Contents
-		$output = (is_object($p)) ? $p->formatHeadings( $revision->pagehtml ) : array('text'=>$revision->pagehtml,'toc'=>'');
+		$output = (is_object($p->_parser)) ? $p->_parser->parser->formatHeadings( $revision->pagehtml ) : array('text'=>$revision->pagehtml,'toc'=>'');
 			
 		// Get non-author contributors
 		$contributors = $revision->getContributors();
 
 		// Check authorization
 		$authorized = $this->checkAuthorization();
+
+		// Get the page's tags
+		if ($authorized == 'admin') {
+			$tags = $this->page->getTags(1);
+		} else {
+			$tags = $this->page->getTags();
+		}
 
 		// Check if the page is group restricted and the user is authorized
 		if ($this->page->group != '' && $this->page->access != 0 && !$authorized) {
@@ -414,7 +412,6 @@ class WikiController extends Hubzero_Controller
 		
 		$jdocument =& JFactory::getDocument();
 		$jdocument->addStyleSheet(DS.$path.DS.'wiki.css');
-		$jdocument->addStyleSheet(DS.$path.DS.'toolbar.css');
 		
 		$this->getScripts('wiki',DS.$path.DS);
 		
@@ -440,7 +437,7 @@ class WikiController extends Hubzero_Controller
 		$authorized = $this->checkAuthorization();
 
 		// Check if the page is locked and the user is authorized
-		if ($this->page->state == 1 && $authorized !== 'admin') {
+		if ($this->page->state == 1 && $authorized !== 'admin' && $authorized !== 'manager') {
 			//echo WikiHtml::div(WikiHtml::hed( 2, $pagetitle ), 'full', 'content-header');
 			//echo WikiHtml::warning( JText::_('WIKI_WARNING_NOT_AUTH_TO_MODIFY') );
 			//JError::raiseWarning( 403, JText::_('WIKI_WARNING_NOT_AUTH') );
@@ -491,12 +488,6 @@ class WikiController extends Hubzero_Controller
 			$preview = $this->preview;
 			
 			// Parse the HTML
-			//$p = new WikiParser( $pagetitle, $this->_option, $this->scope, $this->pagename, $this->page->id, '', $this->_group );
-			//$p = new WikiParser( $this->_option, $this->scope, $this->pagename, $this->page->id, '', $this->_group );
-			//$preview->pagehtml = $p->parse( $preview->pagetext );
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
-
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => $this->scope,
@@ -505,8 +496,9 @@ class WikiController extends Hubzero_Controller
 				'filepath' => '',
 				'domain'   => $this->_group 
 			);
-			$result = $dispatcher->trigger( 'onWikiParseText', array($preview->pagetext, $wikiconfig, true, true) );
-			$preview->pagehtml = (is_array($result) && !empty($result)) ? $result[0] : $preview->pagetext;
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
+			$preview->pagehtml = $p->parse($preview->pagetext, $wikiconfig);
 			
 			$revision->pagetext   = $preview->pagetext;
 			$revision->summary    = $preview->summary;
@@ -562,7 +554,6 @@ class WikiController extends Hubzero_Controller
 	
 	protected function save()
 	{
-		//$database =& JFactory::getDBO();
 		$config =& $this->config;
 	
 		$pageid = JRequest::getInt( 'pageid', 0, 'post' );
@@ -684,9 +675,7 @@ class WikiController extends Hubzero_Controller
 				jimport('joomla.filesystem.folder');
 				if (!JFolder::move(JPATH_ROOT.$config->filepath.DS.$lid,JPATH_ROOT.$config->filepath.DS.$page->id)) {
 					$this->setError( JFolder::move(JPATH_ROOT.$config->filepath.DS.$lid,JPATH_ROOT.$config->filepath.DS.$page->id) );
-					//return;
 				}
-				//rename(JPATH_ROOT.$config->filepath.DS.$lid,JPATH_ROOT.$config->filepath.DS.$page->id);
 				$wpa = new WikiPageAttachment( $this->database );
 				$wpa->setPageID( $lid, $page->id );
 			}
@@ -713,12 +702,6 @@ class WikiController extends Hubzero_Controller
 		// We don't want to create a whole new revision if just the tags were changed
 		if ($old->pagetext != $revision->pagetext) {
 			// Transform the wikitext to HTML
-			//$p = new WikiParser( $page->pagename, $this->_option, $page->scope, $page->pagename );
-			//$p = new WikiParser( $this->_option, $page->scope, $page->pagename );
-			//$revision->pagehtml = $p->parse( $revision->pagetext );
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
-
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => $page->scope,
@@ -727,8 +710,9 @@ class WikiController extends Hubzero_Controller
 				'filepath' => '',
 				'domain'   => $this->_group 
 			);
-			$result = $dispatcher->trigger( 'onWikiParseText', array($revision->pagetext, $wikiconfig, true, true) );
-			$revision->pagehtml = (is_array($result) && !empty($result)) ? $result[0] : $revision->pagetext;
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
+			$revision->pagehtml = $p->parse($revision->pagetext, $wikiconfig);
 			
 			// Parse attachments
 			$a = new WikiPageAttachment( $this->database );
@@ -754,7 +738,6 @@ class WikiController extends Hubzero_Controller
 		$tagging->tag_object($revision->created_by, $page->id, $tags, 1, 1);
 
 		// Log the action
-		//$juser =& JFactory::getUser();
 		$log = new WikiLog( $this->database );
 		$log->pid = $page->id;
 		$log->uid = $this->juser->get('id');
@@ -769,6 +752,7 @@ class WikiController extends Hubzero_Controller
 			$this->setError( $log->getError() );
 		}
 
+		// Redirect
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&scope='.$page->scope.'&pagename='.$page->pagename);
 	}
 	
@@ -776,8 +760,6 @@ class WikiController extends Hubzero_Controller
 	
 	protected function delete()
 	{
-		//$juser =& JFactory::getUser();
-		
 		// Check if they are logged in
 		if ($this->juser->get('guest')) {
 			$this->login();
@@ -787,10 +769,7 @@ class WikiController extends Hubzero_Controller
 		// Load the page
 		$this->getPage();
 		
-		//if ($this->pagename) {
 		if (is_object($this->page)) {
-			//$database =& JFactory::getDBO();
-			
 			$authorized = $this->checkAuthorization();
 			
 			// Make sure they're authorized to delete
@@ -800,7 +779,6 @@ class WikiController extends Hubzero_Controller
 				switch ($confirmed) 
 				{
 					case 1:
-						//$database =& JFactory::getDBO();
 						$page = new WikiPage( $this->database );
 
 						// Delete the page's history, tags, comments, etc.
@@ -1243,9 +1221,6 @@ class WikiController extends Hubzero_Controller
 	
 	protected function comments()
 	{
-		//$juser =& JFactory::getUser();
-		//$database =& JFactory::getDBO();
-		
 		$this->getPage();
 		
 		// Viewing comments for a specific version?
@@ -1306,16 +1281,7 @@ class WikiController extends Hubzero_Controller
 		// Check authorization
 		$authorized = $this->checkAuthorization();
 		
-		// Output errors
-		/*if ($this->getError()) {
-			echo WikiHtml::error( $this->getError() );
-		}
-		// Output other messages
-		if ($this->_message) {
-			echo WikiHtml::passed( $this->_message );
-		}*/
 		// Output content
-		//echo WikiHtml::comments( $this->_sub, JText::_(strtoupper($this->_name)), $pagetitle, $this->page, $comments, $this->_option, $this->_task, $mycomment, $authorized, $versions, $v );
 		$view = new JView( array('base_path'=>$this->_base_path, 'name'=>'comments') );
 		$view->title = $pagetitle;
 		$view->option = $this->_option;
@@ -1342,46 +1308,11 @@ class WikiController extends Hubzero_Controller
 	
 	protected function editcomment() 
 	{
-		//$juser =& JFactory::getUser();
-		//$database =& JFactory::getDBO();
-		
 		$this->getPage();
 		
 		// Is the user logged in?
 		// If not, then we need to stop everything else and display a login form
 		if ($this->juser->get('guest')) {
-			// Include any CSS
-			/*$this->_getStyles();
-			
-			// Prep the pagename for display 
-			// e.g. "MainPage" becomes "Main Page"
-			$pagetitle = ($this->page->title) ? $this->page->title : $this->splitPagename($this->pagename);
-		
-			// Set the page's <title> tag
-			$document =& JFactory::getDocument();
-			$document->setTitle( JText::_(strtoupper($this->_name)).': '.$pagetitle.': '.JText::_('ADD_COMMENT') );
-
-			// Set the pathway
-			$app =& JFactory::getApplication();
-			$pathway =& $app->getPathway();
-			if (count($pathway->getPathWay()) <= 0) {
-				$pathway->addItem(JText::_(strtoupper($this->_name)),'index.php?option='.$this->_option);
-			}
-			$pathway->addItem($pagetitle,'index.php?option='.$this->_option.a.'scope='.$this->page->scope.a.'pagename='.$this->pagename);
-			$pathway->addItem(JText::_('ADD_COMMENT'),'index.php?option='.$this->_option.a.'scope='.$this->page->scope.a.'pagename='.$this->pagename.a.'task='.$this->_task);
-
-			$params =& new JParameter( $this->page->params );
-			
-			// Check authorization
-			$authorized = $this->checkAuthorization();
-
-			ximport('Hubzero_Module_Helper');
-			
-			echo WikiHtml::hed(2,$pagetitle);
-			echo WikiHtml::subMenu( $this->_sub, $this->_option, $this->page->pagename, $this->page->scope, $this->page->state, $this->_task, $params, $authorized );
-			echo WikiHtml::warning( JText::_('WIKI_WARNING_LOGIN_REQUIRED') );
-
-			Hubzero_Module_Helper::displayModules('force_mod',-1);*/
 			$this->login();
 			return;
 		}
@@ -1412,8 +1343,6 @@ class WikiController extends Hubzero_Controller
 	
 	protected function savecomment() 
 	{
-		//$database =& JFactory::getDBO();
-
 		$pagename = trim(JRequest::getVar( 'pagename', '', 'post' ));
 		$scope = trim(JRequest::getVar( 'scope', '', 'post' ));
 		
@@ -1425,12 +1354,6 @@ class WikiController extends Hubzero_Controller
 		}
 		
 		// Parse the wikitext and set some values
-		//$p = new WikiParser($pagename);
-		//$p = new WikiParser();
-		//$row->chtml = $p->parse($row->ctext);
-		JPluginHelper::importPlugin( 'hubzero' );
-		$dispatcher =& JDispatcher::getInstance();
-
 		$wikiconfig = array(
 			'option'   => $this->_option,
 			'scope'    => $scope,
@@ -1439,8 +1362,9 @@ class WikiController extends Hubzero_Controller
 			'filepath' => '',
 			'domain'   => $this->_group 
 		);
-		$result = $dispatcher->trigger( 'onWikiParseText', array($row->ctext, $wikiconfig, true, true) );
-		$row->chtml = (is_array($result) && !empty($result)) ? $result[0] : $row->ctext;
+		ximport('Hubzero_Wiki_Parser');
+		$p =& Hubzero_Wiki_Parser::getInstance();
+		$row->chtml = $p->parse($row->ctext, $wikiconfig);
 		
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created   = ($row->created) ? $row->created : date( "Y-m-d H:i:s" );
@@ -1477,8 +1401,6 @@ class WikiController extends Hubzero_Controller
 
 	protected function removecomment() 
 	{
-		//$database =& JFactory::getDBO();
-		
 		$id = JRequest::getInt( 'id', 0, 'request' );
 		
 		// Make sure we have a comment to delete
@@ -1501,8 +1423,6 @@ class WikiController extends Hubzero_Controller
 
 	protected function reportcomment() 
 	{
-		//$database =& JFactory::getDBO();
-		
 		$id = JRequest::getInt( 'id', 0, 'request' );
 		
 		// Make sure we have a comment to report
@@ -1853,7 +1773,6 @@ class WikiController extends Hubzero_Controller
 				$this->pagename = $this->config->homepage;
 			
 			// Load the page
-			//$database =& JFactory::getDBO();
 			$page = new WikiPage( $this->database );
 			$page->load( $this->pagename, $this->scope );
 			if (!$page->exist() && (substr(strtolower($this->pagename), 0, 4) == 'help')) {
@@ -1869,8 +1788,6 @@ class WikiController extends Hubzero_Controller
 
 	private function checkAuthorization( $type='edit' ) 
 	{
-		//$juser =& JFactory::getUser();
-
 		// Check if they are logged in
 		if ($this->juser->get('guest')) {
 			return false;
@@ -1879,6 +1796,14 @@ class WikiController extends Hubzero_Controller
 		// Check if they're a site admin (from Joomla)
 		if ($this->juser->authorize($this->_option, 'manage')) {
 			return 'admin';
+		}
+
+		if ($this->page->group != '') {
+			ximport('Hubzero_Group');
+			$group = Hubzero_Group::getInstance( $this->page->group );
+			if ($group->is_member_of('managers',$this->juser->get('id'))) {
+				return 'manager';
+			}
 		}
 
 		$params =& new JParameter( $this->page->params );
