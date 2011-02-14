@@ -141,9 +141,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input class="entry-search-submit" type="submit" value="Search" />
 			<fieldset class="entry-search">
 <?php
-			JPluginHelper::importPlugin( 'tageditor' );
+			JPluginHelper::importPlugin( 'hubzero' );
 			$dispatcher =& JDispatcher::getInstance();
-			$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tag','actags','',$this->search,'')) );
+			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tag', 'actags','',$this->search)) );
 ?>
 				<label for="actags">
 					<?php echo JText::_('COM_TAGS_SEARCH_WITH_TAGS'); ?>
@@ -231,6 +231,7 @@ foreach ($this->results as $category)
 				}
 			}
 		}
+		$this->total = $total;
 		
 		$num  = $total .' ';
 		$num .= ($total > 1) ? JText::_('COM_TAGS_RESULTS') : JText::_('COM_TAGS_RESULT');

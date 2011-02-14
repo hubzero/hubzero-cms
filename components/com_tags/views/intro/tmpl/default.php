@@ -68,9 +68,9 @@ $step = $this->step;
 					<p>
 						<label for="actags">Enter tags:</label>
 						<?php 
-						JPluginHelper::importPlugin( 'tageditor' );
+						JPluginHelper::importPlugin( 'hubzero' );
 						$dispatcher =& JDispatcher::getInstance();
-						$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tag','actags','','','')) );
+						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tag', 'actags','','')) );
 						
 						if (count($tf) > 0) {
 							echo $tf[0];

@@ -39,7 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p><?php echo JText::_('COM_TAGS_NORMALIZED_TAG_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('COM_TAGS_DETAILS'); ?></h3>
+			<legend><?php echo JText::_('COM_TAGS_DETAILS'); ?></legend>
 
 			<label>
 				<?php echo JText::_('COM_TAGS_TAG'); ?>

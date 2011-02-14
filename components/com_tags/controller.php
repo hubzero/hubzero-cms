@@ -378,7 +378,8 @@ class TagsController extends Hubzero_Controller
 		if (count($rows) > 0) {
 			foreach ($rows as $row) 
 			{
-				$json[] = '"'.$row->raw_tag.'"';
+				//$json[] = '"'.$row->raw_tag.'"';
+				$json[] = '["'.htmlentities(stripslashes($row->raw_tag),ENT_COMPAT,'UTF-8').'","'.$row->tag.'"]';
 			}
 		}
 		
@@ -576,6 +577,7 @@ class TagsController extends Hubzero_Controller
 		$view->filters = array();
 		$view->filters['start']  = JRequest::getInt('limitstart', 0);
 		$view->filters['search'] = urldecode(JRequest::getString('search'));
+		$view->total = 0;
 		
 		$t = new TagsTag( $this->database );
 		
@@ -586,16 +588,16 @@ class TagsController extends Hubzero_Controller
 			$view->rows = $t->getTopTags( $limit );
 		} else {
 			// Record count
-			$total = $t->getCount( $view->filters );
+			$view->total = $t->getCount( $view->filters );
 
-			$view->filters['limit']  = JRequest::getInt('limit', $config->getValue('config.list_limit'));
+			$view->filters['limit'] = JRequest::getInt('limit', $config->getValue('config.list_limit'));
 
 			// Get records
 			$view->rows = $t->getRecords( $view->filters );
 
 			// Initiate paging
 			jimport('joomla.html.pagination');
-			$view->pageNav = new JPagination( $total, $view->filters['start'], $view->filters['limit'] );
+			$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 		}
 
 		// Set the pathway

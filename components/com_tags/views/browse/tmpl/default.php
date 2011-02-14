@@ -38,7 +38,7 @@ $this->filters['sort'] = '';
 		</div><!-- / .aside -->
 		<div class="subject">
 			
-			<div class="container">
+			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
 					<label for="entry-search-text">
