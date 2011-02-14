@@ -53,7 +53,7 @@ class FileMacro extends WikiMacro
 			$configs['filepath'] = $this->filepath;
 		}
 		$config = new WikiConfig( $configs );
-		
+
 		// Is it numeric?
 		if (is_numeric($et)) {
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'attachment.php');

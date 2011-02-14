@@ -28,7 +28,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 //-----------
 
 jimport( 'joomla.plugin.plugin' );
-JPlugin::loadLanguage( 'plg_hubzero_wikiparser' );
 
 //-----------
 
@@ -41,10 +40,6 @@ class plgHubzeroWikiparser extends JPlugin
 	public function plgHubzeroWikiparser(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'hubzero', 'wikiparser' );
-		$this->_params = new JParameter( $this->_plugin->params );
 	}
 	
 	//-----------
