@@ -147,10 +147,11 @@ class modFeaturedmember
 		
 		$fh = new FeaturesHistory( $database );
 		
+		$juser =& JFactory::getUser();
+		
 		// Is a specific content category set?
 		if ($catid) {
 			// Yes - so we need to check if there's an active article to display
-			$juser =& JFactory::getUser();
 			$aid = $juser->get('aid', 0);
 			
 			$contentConfig =& JComponentHelper::getParams( 'com_content' );
@@ -258,7 +259,18 @@ class modFeaturedmember
 					$profile = new Hubzero_User_Profile();
 					$profile->load( $row->uidNumber );
 				}
-				$this->txt = $profile->get('bio');
+				
+				$rparams =& new JParameter( $profile->get('params') );
+				$params = $config;
+				$params->merge( $rparams );
+
+				if ($params->get('access_bio') == 0 
+				 || ($params->get('access_bio') == 1 && !$juser->get('guest'))
+				) {
+					$this->txt = $profile->get('bio');
+				} else {
+					$this->txt = '';
+				}
 				
 				// Member profile
 				$this->title = $row->name;
