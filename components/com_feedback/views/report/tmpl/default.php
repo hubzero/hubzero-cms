@@ -83,6 +83,8 @@ $topics = array(
 			<p><?php echo JText::_('COM_FEEDBACK_TROUBLE_OTHER_OPTIONS'); ?></p>
 		</div>
 		<fieldset>
+			<legend><?php echo JText::_('COM_FEEDBACK_TROUBLE_USER_INFORMATION'); ?></legend>
+			
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="sendreport" />
 			<input type="hidden" name="verified" value="<?php echo $this->verified; ?>" />
@@ -97,7 +99,6 @@ $topics = array(
 <?php if ($this->verified) { ?>
 			<input type="hidden" name="answer" value="<?php echo $this->problem['sum']; ?>" />
 <?php } ?>
-			<h3><?php echo JText::_('COM_FEEDBACK_TROUBLE_USER_INFORMATION'); ?></h3>
 			
 			<label>
 				<?php echo JText::_('COM_FEEDBACK_USERNAME'); ?>
@@ -162,7 +163,7 @@ $topics = array(
 		</div>
 <?php } ?>
 		<fieldset>
-			<h3><?php echo JText::_('COM_FEEDBACK_TROUBLE_YOUR_PROBLEM'); ?></h3>
+			<legend><?php echo JText::_('COM_FEEDBACK_TROUBLE_YOUR_PROBLEM'); ?></legend>
 			
 			<label<?php echo ($this->getError() && $this->problem['long'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('COM_FEEDBACK_TROUBLE_DESCRIPTION'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
