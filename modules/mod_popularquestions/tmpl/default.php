@@ -46,7 +46,7 @@ if (count($rows) > 0) {
 			}
 		}
 		
-		$when = $modpopularquestions->timeAgo( $modpopularquestions->mkt($row->created) );
+		//$when = $modpopularquestions->timeAgo( $modpopularquestions->mkt($row->created) );
 		
 		$tags = $tagging->get_tags_on_object($row->id, 0, 0, 0);
 ?>
@@ -55,11 +55,21 @@ if (count($rows) > 0) {
 			<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id='.$row->id); ?>"><?php echo $row->subject; ?></a>
 <?php } else { ?>
 			<h4><a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id='.$row->id); ?>"><?php echo $row->subject; ?></a></h4>
-			<p class="snippet">';
+<?php /*			<p class="snippet">
 				<?php echo Hubzero_View_Helper_Html::shortenText($row->question, 100, 0); ?>
+			</p> */ ?>
+			<p class="entry-details">
+				<?php echo JText::sprintf('MOD_POPULARQUESTIONS_ASKED_BY', $name); ?> @ 
+				<span class="entry-time"><?php echo JHTML::_('date',$row->created, '%I:%M %p', 0); ?></span> on 
+				<span class="entry-date"><?php echo JHTML::_('date',$row->created, '%d %b %Y', 0); ?></span>
+				<span class="entry-details-divider">&bull;</span>
+				<span class="entry-comments">
+					<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id='.$row->id.'#answers'); ?>" title="<?php echo JText::sprintf('MOD_RECENTQUESTIONS_RESPONSES', $row->rcount); ?>">
+						<?php echo $row->rcount; ?>
+					</a>
+				</span>
 			</p>
-			<p><?php echo JText::sprintf('MOD_POPULARQUESTIONS_ASKED_BY', $name).' - '.$when.' '.JText::_('MOD_POPULARQUESTIONS_AGO'); ?></p>
-			<p><?php echo JText::_('MOD_POPULARQUESTIONS_TAGS'); ?>:</p> 
+			<p class="entry-tags"><?php echo JText::_('MOD_POPULARQUESTIONS_TAGS'); ?>:</p> 
 			<?php
 			if (count($tags) > 0) {
 				$tagarray = array();
