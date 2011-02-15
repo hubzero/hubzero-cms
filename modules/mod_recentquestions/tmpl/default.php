@@ -40,11 +40,11 @@ if (count($rows) > 0) {
 		if ($row->anonymous == 0) {
 			$juser =& JUser::getInstance( $row->created_by );
 			if (is_object($juser)) {
-				$name = $juser->get('name');
+				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id')).'">'.stripslashes($juser->get('name')).'</a>';
 			}
 		}
 
-		$when = $modrecentquestions->timeAgo($modrecentquestions->mkt($row->created));
+		//$when = $modrecentquestions->timeAgo($modrecentquestions->mkt($row->created));
 		
 		$tags = $tagging->get_tag_cloud(0, 0, $row->id);
 		
@@ -55,16 +55,24 @@ if (count($rows) > 0) {
 			$html .= ($row->rcount == 1) ? JText::sprintf('MOD_RECENTQUESTIONS_RESPONSE', $row->rcount) : JText::sprintf('MOD_RECENTQUESTIONS_RESPONSES', $row->rcount);
 			$html .= '</span>';
 		} else {
-			$html .= "\t\t\t".'<h4><a href="'. JRoute::_('index.php?option=com_answers&task=question&id='.$row->id) .'">'.$row->subject.'</a></h4>'."\n";
-			$html .= "\t\t\t".'<p class="snippet">';
-			if ($row->question) {
+			$html .= "\t\t\t".'<h4><a href="'. JRoute::_('index.php?option=com_answers&task=question&id='.$row->id) .'" title="'.htmlentities(stripslashes($row->subject),ENT_COMPAT,'UTF-8').'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($row->subject),100,0).'</a></h4>'."\n";
+			/*if ($row->question) {
+				$html .= "\t\t\t".'<p class="snippet">';
 				$html .= Hubzero_View_Helper_Html::shortenText($row->question, 100, 0);
-			}
+				$html .= '</p>'."\n";
+			}*/
+			$html .= '<p class="entry-details">'."\n";
+			$html .= '	'. JText::sprintf('MOD_RECENTQUESTIONS_ASKED_BY', $name) .' @ '."\n";
+			$html .= '	<span class="entry-time">'. JHTML::_('date',$row->created, '%I:%M %p', 0) .'</span> on '."\n";
+			$html .= '	<span class="entry-date">'. JHTML::_('date',$row->created, '%d %b %Y', 0) .'</span>'."\n";
+			$html .= '	<span class="entry-details-divider">&bull;</span>'."\n";
+			$html .= '	<span class="entry-comments">'."\n";
+			$html .= '		<a href="'. JRoute::_('index.php?option=com_answers&task=question&id='.$row->id.'#answers') .'" title="'. JText::sprintf('MOD_RECENTQUESTIONS_RESPONSES', $row->rcount) .'">'."\n";
+			$html .= '			'.$row->rcount."\n";
+			$html .= '		</a>'."\n";
+			$html .= '	</span>'."\n";
 			$html .= '</p>'."\n";
-			$html .= "\t\t\t".'<p>'.JText::sprintf('MOD_RECENTQUESTIONS_ASKED_BY', $name).' - '.$when.' '.JText::_('MOD_RECENTQUESTIONS_AGO').' - ';
-			$html .= ($row->rcount == 1) ? JText::sprintf('MOD_RECENTQUESTIONS_RESPONSE', $row->rcount) : JText::sprintf('MOD_RECENTQUESTIONS_RESPONSES', $row->rcount);
-			$html .= '</p>'."\n";
-			$html .= "\t\t\t".'<p>'.JText::_('MOD_RECENTQUESTIONS_TAGS').':</p> '.$tags."\n";
+			$html .= "\t\t\t".'<p class="entry-tags">'.JText::_('MOD_RECENTQUESTIONS_TAGS').':</p> '.$tags."\n";
 		}
 		$html .= "\t\t".' </li>'."\n";
 	}

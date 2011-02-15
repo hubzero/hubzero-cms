@@ -158,5 +158,9 @@ class modRecentQuestions
 		
 		$database->setQuery( $query );
 		$this->rows = $database->loadObjectList();
+		
+		// Push the module CSS to the template
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet('mod_recentquestions');
 	}
 }
