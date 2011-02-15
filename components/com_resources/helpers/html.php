@@ -955,10 +955,10 @@ class ResourcesHtml
 				$document =& JFactory::getDocument();
 				$document->setMetaData('keywords',$rt->get_tag_string( $resource->id, 0, 0, null, 0, 0 ));
 					
-				JPluginHelper::importPlugin( 'tageditor' );
+				JPluginHelper::importPlugin( 'hubzero' );
 				$dispatcher =& JDispatcher::getInstance();
 
-				$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$usertags,'')) );
+				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$usertags)) );
 					
 				$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id).'">'."\n";
 				$frm .= "\t".'<fieldset>'."\n";
@@ -986,7 +986,7 @@ class ResourcesHtml
 		$html .= '</div><!-- / .subject -->'."\n";
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= '<input type="hidden" name="rid" id="rid" value="'.$resource->id.'" />'."\n";
-		
+
 		return $html;
 	}
 
@@ -1016,6 +1016,9 @@ class ResourcesHtml
 			case 1: $thedate = $resource->created;    break;
 			case 2: $thedate = $resource->modified;   break;
 			case 3: $thedate = $resource->publish_up; break;
+		}
+		if ($curtool) {
+			$thedate = $curtool->released;
 		}
 		
 		// Prepare/parse text
@@ -1072,8 +1075,6 @@ class ResourcesHtml
 				// Do nothing
 		} else {
 				// Get the wiki parser and parse the full description
-				JPluginHelper::importPlugin( 'hubzero' );
-				$dispatcher =& JDispatcher::getInstance();
 				$wikiconfig = array(
 					'option'   => $option,
 					'scope'    => 'resources'.DS.$resource->id,
@@ -1082,8 +1083,9 @@ class ResourcesHtml
 					'filepath' => $config->get('uploadpath'),
 					'domain'   => '' 
 				);
-				$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($maintext), $wikiconfig) );
-				$maintext = (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($maintext));
+				ximport('Hubzero_Wiki_Parser');
+				$p =& Hubzero_Wiki_Parser::getInstance();
+				$maintext = $p->parse($maintext, $wikiconfig);
 		}
 		
 		$html  = '<div class="subject abouttab">'."\n";
@@ -1192,10 +1194,10 @@ class ResourcesHtml
 					$document =& JFactory::getDocument();
 					$document->setMetaData('keywords',$rt->get_tag_string( $resource->id, 0, 0, null, 0, 0 ));
 					
-					JPluginHelper::importPlugin( 'tageditor' );
+					JPluginHelper::importPlugin( 'hubzero' );
 					$dispatcher =& JDispatcher::getInstance();
 
-					$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$usertags,'')) );
+					$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$usertags)) );
 					
 					$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id).'">'."\n";
 					$frm .= "\t".'<fieldset>'."\n";
@@ -1224,7 +1226,6 @@ class ResourcesHtml
 		$html .= '</div><!-- / .subject -->'."\n";
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= '<input type="hidden" name="rid" id="rid" value="'.$resource->id.'" />'."\n";
-		
 		return $html;
 		
 	}
@@ -1329,8 +1330,6 @@ class ResourcesHtml
 				// Do nothing
 			} else {
 				// Get the wiki parser and parse the full description
-				JPluginHelper::importPlugin( 'hubzero' );
-				$dispatcher =& JDispatcher::getInstance();
 				$wikiconfig = array(
 					'option'   => $option,
 					'scope'    => 'resources'.DS.$resource->id,
@@ -1339,8 +1338,9 @@ class ResourcesHtml
 					'filepath' => $config->get('uploadpath'),
 					'domain'   => '' 
 				);
-				$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($maintext), $wikiconfig) );
-				$maintext = (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($maintext));
+				ximport('Hubzero_Wiki_Parser');
+				$p =& Hubzero_Wiki_Parser::getInstance();
+				$maintext = $p->parse($maintext, $wikiconfig);
 			}
 		}
 		
@@ -1702,10 +1702,10 @@ class ResourcesHtml
 					$document =& JFactory::getDocument();
 					$document->setMetaData('keywords',$rt->get_tag_string( $resource->id, 0, 0, null, 0, 0 ));
 					
-					JPluginHelper::importPlugin( 'tageditor' );
+					JPluginHelper::importPlugin( 'hubzero' );
 					$dispatcher =& JDispatcher::getInstance();
-
-					$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$usertags,'')) );
+					
+					$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$usertags)) );
 					
 					$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id).'">'."\n";
 					$frm .= "\t".'<fieldset>'."\n";

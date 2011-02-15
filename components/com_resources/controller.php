@@ -781,11 +781,11 @@ class ResourcesController extends Hubzero_Controller
 		$resource->hit( $id );
 		
 		// Initiate a resource helper class
-		$helper = new ResourcesHelper( $resource->id, $database );
+		/*$helper = new ResourcesHelper( $resource->id, $database );
 
 		// Is the visitor authorized to edit this resource?
 		$helper->getContributorIDs();
-		$authorized = $this->_authorize( $helper->contributorIDs );
+		$authorized = $this->_authorize( $helper->contributorIDs );*/
 		
 		// Do not show for tool versions
 		if ($thistool && $revision!='dev') {

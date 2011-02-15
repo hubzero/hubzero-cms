@@ -409,7 +409,8 @@ class ResourcesResource extends JTable
 						LEFT JOIN #__xprofiles AS au ON aus.authorid=au.uidNumber ";
 		}
 		if (isset($filters['author'])) {
-			$query .= ", #__author_assoc AS aa ";
+			//$query .= ", #__author_assoc AS aa ";
+			$query .= "LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable='resources' ";
 		}
 		if (isset($filters['favorite'])) {
 			$query .= ", #__xfavorites AS xf ";
@@ -426,7 +427,10 @@ class ResourcesResource extends JTable
 			$query .= "AND r.published=1 ";
 		}
 		if (isset($filters['author'])) {
-			$query .= "AND aa.authorid='". $filters['author'] ."' AND r.id=aa.subid AND aa.subtable='resources' ";
+			/*$query .= "AND (".$filters['author']." IN (SELECT aus.authorid FROM #__author_assoc AS aus ON aus.subid=r.id AND aus.subtable='resources') 
+							OR r.created_by=". $filters['author'] .") ";*/
+			//$query .= "AND aa.authorid='". $filters['author'] ."' AND r.id=aa.subid AND aa.subtable='resources' ";
+			$query .= "AND (aa.authorid='". $filters['author'] ."' OR r.created_by=". $filters['author'] .") ";
 		}
 		if (isset($filters['favorite'])) {
 			$query .= "AND xf.uid='". $filters['favorite'] ."' AND r.id=xf.oid AND xf.tbl='resources' ";
@@ -481,10 +485,11 @@ class ResourcesResource extends JTable
 						$groups = count($usersgroups) ? $usersgroups[0] : '';
 					}
 					$query .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('".$groups."') ";
-					foreach ($usersgroups as $group)
+					/*foreach ($usersgroups as $group)
 					{
 						$query .= " OR r.group_access LIKE '%;".$group.";%'";
-					}
+					}*/
+					$query .= " OR r.created_by=".$juser->get('id');
 					$query .= "))) ";
 				} else {
 					$query .= "AND (r.access=0 OR r.access=1 OR r.access=3) ";
@@ -567,7 +572,7 @@ class ResourcesResource extends JTable
 				$query .= ") AS f";
 			}
 		}
-
+//echo '<!-- '.$query.' -->';
 		return $query;
 	}
 }
