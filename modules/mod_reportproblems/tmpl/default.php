@@ -71,7 +71,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 							<textarea name="problem[long]" id="trProblem" <?php //if (!$modreportproblems->verified) { echo 'class="long" '; } ?>rows="10" cols="40"></textarea>
 						</label>
 						
-						<label>
+						<label for="trUpload">
 							<?php echo JText::_('Attach a screenshot'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
 							<input type="file" name="upload" id="trUpload" />
 						</label>
