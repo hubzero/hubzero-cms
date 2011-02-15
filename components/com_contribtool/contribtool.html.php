@@ -1870,10 +1870,10 @@ if($tagname!='screenshots' and $tagname!='bio') {
 				<label>
 					<?php echo JText::_('TAGS_ASSIGNED'); ?>:
 					<?php
-					JPluginHelper::importPlugin( 'tageditor' );
+					JPluginHelper::importPlugin( 'hubzero' );
 					$dispatcher =& JDispatcher::getInstance();
 					
-					$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$tags,'')) );
+					$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$tags)) );
 					
 					if (count($tf) > 0) {
 						echo $tf[0];

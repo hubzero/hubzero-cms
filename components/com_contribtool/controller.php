@@ -2737,8 +2737,10 @@ class ContribtoolController extends JObject
 			$status['fulltext']  = str_replace('<nb:'.$nbtag.'>'.$allnbtags[$nbtag].'</nb:'.$nbtag.'>','',$status['fulltext']);
 		}
 		$status['fulltext'] = trim(stripslashes($status['fulltext']));
+		/*
 		$status['fulltext'] = preg_replace('/<br\\s*?\/??>/i', "", $status['fulltext']);
 		$status['fulltext'] = ContribtoolHtml::txt_unpee($status['fulltext']);
+		*/
 			
 		// get authors
 		$objA = new ToolAuthor( $database);	
