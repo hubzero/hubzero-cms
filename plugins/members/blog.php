@@ -298,8 +298,8 @@ class plgMembersBlog extends JPlugin
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
 			
 			$path = $this->_params->get('uploadpath');
 			$path = str_replace('{{uid}}',BlogHelperMember::niceidformat($this->member->get('uidNumber')),$path);
@@ -325,9 +325,7 @@ class plgMembersBlog extends JPlugin
 					'filepath' => $path,
 					'domain'   => '' 
 				);
-				$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($row->content), $wikiconfig, true, true) );
-				$description = (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($row->content));
-				
+				$description = $p->parse(stripslashes($row->content), $wikiconfig, true, true);
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
 				if ($this->_params->get('feed_entries') == 'partial') {
 					$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
@@ -452,8 +450,6 @@ class plgMembersBlog extends JPlugin
 			$path = $this->_params->get('uploadpath');
 			$path = str_replace('{{uid}}',BlogHelperMember::niceidformat($this->member->get('uidNumber')),$path);
 
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
 			$wikiconfig = array(
 				'option'   => $this->option,
 				'scope'    => 'blog',
@@ -462,8 +458,9 @@ class plgMembersBlog extends JPlugin
 				'filepath' => $path,
 				'domain'   => '' 
 			);
-			$result = $dispatcher->trigger( 'onWikiParseText', array(stripslashes($view->row->content), $wikiconfig) );
-			$view->row->content = (is_array($result) && !empty($result)) ? $result[0] : nl2br(stripslashes($view->row->content));
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
+			$view->row->content = $p->parse(stripslashes($view->row->content), $wikiconfig);
 		}
 		
 		$bc = new BlogComment($this->database);

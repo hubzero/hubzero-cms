@@ -6,6 +6,81 @@
 
 */
 
+	.com_members .groups tbody th {
+		width: 5px;
+		text-align: center;
+		border-bottom: 1px solid #eee;
+		background: url("images/group.png") right 15px no-repeat;
+		}
+	.groups .entry-id {
+		display: none;
+		}
+/* Group member status */
+	/* Table column */
+	.groups tbody .status {
+		font-size: 85%;
+		font-weight: bold;
+		display: inline-block;
+		background-color: #6a0;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		margin: 0;
+		padding: 0em 0.4em;
+		color: #fff;
+		white-space: nowrap;
+		}
+	.groups tbody .member {
+		background-color: #66AA00;
+		}
+	.groups tbody .manager {
+		background-color: #ff1177;
+		}
+	.groups tbody .pending {
+		background-color: #AA3300;
+		}
+	.groups tbody .invitee {
+		background-color: #aaaaaa;
+		}
+	/* Table row 
+	.groups tbody tr.pending {
+		background: #ffe url("images/light-stripes.png");
+		}
+	.groups tbody tr.member {
+		background: #F3FDF0 url("images/light-stripes.png");
+		}
+	.groups tbody tr.manager {
+		background: #FFF2EF url("images/light-stripes.png");
+		}
+	.groups tbody tr.invitee {
+		background: #F9F9F9 url("images/light-stripes.png");
+		}*/
+/* Join Policies */
+	.groups tbody .join-policy {
+		font-size: 85%;
+		font-weight: bold;
+		display: inline-block;
+		background-color: #6a0;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		margin: 0;
+		padding: 0em 0.4em;
+		color: #fff;
+		white-space: nowrap;
+		}
+	.groups tbody .open {
+		background-color: #66AA00;
+		}
+	.groups tbody .restricted {
+		background-color: #AA3300;
+		}
+	.groups tbody .inviteonly {
+		background-color: #aaaaaa;
+		}
+	.groups tbody .closed {
+		background-color: #c00;
+		}
 	#grouplist {
 		margin-top: 1em;
 		}

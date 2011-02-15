@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $cls = 'even';
 ?>
-<h3><a name="usage"></a><?php echo JText::_('PLG_MEMBERS_USAGE'); ?></h3>
+<h3 class="section-header"><a name="usage"></a><?php echo JText::_('PLG_MEMBERS_USAGE'); ?></h3>
 <div class="aside">
 	<p class="info"><?php echo JText::_('PLG_MEMBERS_USAGE_EXPLANATION'); ?></p>
 </div><!-- / .aside -->

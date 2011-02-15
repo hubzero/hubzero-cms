@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<h3><a name="points"></a><?php echo JText::_('PLG_MEMBERS_POINTS'); ?></h3>
+<h3 class="section-header"><a name="points"></a><?php echo JText::_('PLG_MEMBERS_POINTS'); ?></h3>
 <div class="aside">
 	<p id="point-balance">
 		<span><?php echo JText::_('PLG_MEMBERS_POINTS_YOU_HAVE'); ?> </span> <?php echo $this->sum; ?><small> <?php echo strtolower(JText::_('PLG_MEMBERS_POINTS')); ?></small><br />
