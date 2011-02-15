@@ -1457,13 +1457,13 @@ class ToolsController extends Hubzero_Controller
 			{
 				$img_file = $entry; 
 
-				if (is_file($path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
+				if (is_file($path.DS.$img_file) && substr($entry,0,1) != '.' && substr($entry,0,1) != '..' && strtolower($entry) !== 'index.html') {
 					if (eregi( "bmp|gif|jpg|png", $img_file )) {
 						$images[$entry] = $img_file;
 					} else {
 						$docs[$entry] = $img_file;
 					}
-				} else if (is_dir($path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'cvs') {
+				} else if (is_dir($path.DS.$img_file) && substr($entry,0,1) != '.' && substr($entry,0,1) != '..' && strtolower($entry) !== 'cvs') {
 					$folders[$entry] = $img_file;
 				}
 			}

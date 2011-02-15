@@ -58,7 +58,7 @@ echo $this->monitor;
 				</p>
 			</div>
 			<fieldset>	
-				<h3>Automatic</h3>
+				<legend>Automatic</legend>
 				<div class="group">
 					<label>
 						Clean up Disk Space
@@ -78,7 +78,7 @@ echo $this->monitor;
 				<p class="hint"><strong>minimally</strong> means the purge operation will delete the oldest simulation results first, and continue deleting newer and newer results, stopping as soon as you are under quota.</p>
 			</fieldset>
 			<fieldset>
-				<h3>Manual</h3>
+				<legend>Manual</legend>
 				<div class="filebrowser">
 					Browse your storage space
 					<iframe src="<?php echo JRoute::_('index.php?option='.$this->option.'&task=listfiles&no_html=1'); ?>" name="filer" id="filer" width="98%" height="180" border="0" frameborder="0"></iframe>

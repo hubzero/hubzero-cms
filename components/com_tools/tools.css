@@ -135,6 +135,10 @@
 	#small-page #filepath li span {
 		font-weight: bold;
 		}
+	.file-size {
+		white-space: nowrap;
+		text-align: right;
+		}
 /* Tool Session */
 	#app-wrap {
 		background-color: #000;
