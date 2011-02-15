@@ -331,6 +331,10 @@ class SupportController extends Hubzero_Controller
 		$view->type = ($type == 'automatic') ? 1 : 0;
 		
 		$view->group = JRequest::getVar('group', '');
+		if (!$view->group && trim($this->config->get('group'))) {
+			$view->group = trim($this->config->get('group'));
+		}
+		
 		$view->sort = JRequest::getVar('sort', 'name');
 		
 		// Set up some dates
@@ -384,13 +388,21 @@ class SupportController extends Hubzero_Controller
 		// Users
 		$view->users = null;
 		
-		$query = "SELECT a.username, a.name, a.id"
-			. "\n FROM #__users AS a"
-			. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
-			. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = aro.id"	// map aro to group
-			. "\n INNER JOIN #__core_acl_aro_groups AS g ON g.id = gm.group_id"
-			. "\n WHERE a.block = '0' AND g.id=25"
-			. "\n ORDER BY a.name";
+		if ($view->group) {
+			$query = "SELECT a.username, a.name, a.id"
+				. "\n FROM #__users AS a, #__xgroups AS g, #__xgroups_members AS gm"
+				. "\n WHERE g.cn='".$view->group."' AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id"
+				. "\n ORDER BY a.name";
+		} else {
+			$query = "SELECT a.username, a.name, a.id"
+				. "\n FROM #__users AS a"
+				. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
+				. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = aro.id"	// map aro to group
+				. "\n INNER JOIN #__core_acl_aro_groups AS g ON g.id = gm.group_id"
+				. "\n WHERE a.block = '0' AND g.id=25"
+				. "\n ORDER BY a.name";
+		}
+		
 		$this->database->setQuery( $query );
 		$users = $this->database->loadObjectList();
 		if ($users) {
@@ -1267,9 +1279,14 @@ class SupportController extends Hubzero_Controller
 					$juri =& JURI::getInstance();
 					$jconfig =& JFactory::getConfig();
 					
+					$base = $juri->base();
+					if (substr($base,-14) == 'administrator/') {
+						$base = substr($base,0,strlen($base)-14);
+					}
+					
 					// Parse comments for attachments
 					$attach = new SupportAttachment( $this->database );
-					$attach->webpath = $juri->base().$this->config->get('webpath').DS.$id;
+					$attach->webpath = $base.$this->config->get('webpath').DS.$id;
 					$attach->uppath  = JPATH_ROOT.$this->config->get('webpath').DS.$id;
 					$attach->output  = 'email';
 
@@ -1304,10 +1321,6 @@ class SupportController extends Hubzero_Controller
 					$sef = $this->_name.'/ticket/'. $row->id;
 					if (substr($sef,0,1) == '/') {
 						$sef = substr($sef,1,strlen($sef));
-					}
-					$base = $juri->base();
-					if (substr($base,-14) == 'administrator/') {
-						$base = substr($base,0,strlen($base)-14);
 					}
 					$message .= $base.$sef."\r\n";
 						

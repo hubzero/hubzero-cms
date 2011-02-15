@@ -150,8 +150,6 @@ if(!$this->mini) {
 			$html .= t.t.t.'</tr>'.n;
 			$html .= t.t.t.'</thead>'.n;
 			
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
 			$wikiconfig = array(
 				'option'   => $this->option,
 				'scope'    => 'jobs.browse',
@@ -160,15 +158,16 @@ if(!$this->mini) {
 				'filepath' => '',
 				'domain'   => '' 
 			);
-			$result = $dispatcher->trigger( 'onGetWikiParser', array($wikiconfig, true) );
-			$p = (is_array($result) && !empty($result)) ? $result[0] : null;
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
 			
 			$maxscore = $filters['search'] && $jobs[0]->keywords > 0 ? $jobs[0]->keywords : 1;
 			
 			$html .= t.t.t.'<tbody>'.n;				
 			for ($i=0, $n=count( $jobs ); $i < $n; $i++) 
 			{
-				$txt = (is_object($p)) ? $p->parse( stripslashes($jobs[$i]->description) ) : nl2br(stripslashes($jobs[$i]->description));
+				//$txt = (is_object($p)) ? $p->parse( stripslashes($jobs[$i]->description) ) : nl2br(stripslashes($jobs[$i]->description));
+				$txt = $p->parse(stripslashes($jobs[$i]->description), $wikiconfig);
 				$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, '%d&nbsp;%b&nbsp;%y',0) : 'ASAP';
 
 				// compute relevance to search keywords

@@ -31,9 +31,9 @@
 		}
 	.com_support .below .subject {
 		margin-top: 0;
-		background: #fff;
+		background: transparent;
 		border-top: 1px solid #efefef;
-		border-bottom: 1px solid #fff;
+		border-bottom: 1px solid transparent;
 		padding: 1em 0 0 0;
 		}
 	.com_support .below .aside {
@@ -248,7 +248,7 @@
 		clear: left;
 		margin: 0;
 		padding: 0;
-		border-top: 1px solid #fff;
+		border-top: 1px solid transparent;
 		}
 	ol.comments ol {
 		margin: 0;

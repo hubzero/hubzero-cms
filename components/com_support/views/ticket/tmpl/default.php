@@ -27,6 +27,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 $juser =& JFactory::getUser();
 //$database =& JFactory::getDBO();
 
+JPluginHelper::importPlugin( 'hubzero' );
+$dispatcher =& JDispatcher::getInstance();
+
 $status = SupportHtml::getStatus($this->row->status);
 
 $fstring = urlencode(trim($this->filters['_find']));
@@ -54,17 +57,17 @@ if (is_object($targetuser) && $targetuser->id) {
 	<ul id="useroptions">
 		<li><?php
 		if ($this->row->prev) {
-			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->prev.'&find='.$fstring).'">'.JText::_('PREVIOUS_TICKET').'</a>';
+			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->prev.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']).'">'.JText::_('PREVIOUS_TICKET').'</a>';
 		} else {
 			echo '<span>'.JText::_('PREVIOUS_TICKET').'</span>';
 		}
 		?></li>
 <?php if (!$juser->get('guest')) { ?>
-		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=tickets&find='.$fstring); ?>"><?php echo JText::_('TICKETS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=tickets&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>"><?php echo JText::_('TICKETS'); ?></a></li>
 <?php } ?>
 		<li class="last"><?php
 		if ($this->row->next) {
-			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->next.'&find='.$fstring).'">'.JText::_('NEXT_TICKET').'</a>';
+			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->next.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']).'">'.JText::_('NEXT_TICKET').'</a>';
 		} else {
 			echo '<span>'.JText::_('NEXT_TICKET').'</span>';
 		}
@@ -283,9 +286,7 @@ if (is_object($targetuser) && $targetuser->id) {
 					<label>
 						<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
 <?php 
-JPluginHelper::importPlugin( 'tageditor' );
-$dispatcher =& JDispatcher::getInstance();
-$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->lists['tags'],'')) );
+$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->lists['tags'])) );
 
 if (count($tf) > 0) {
 	echo $tf[0];
@@ -298,13 +299,14 @@ if (count($tf) > 0) {
 <?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
 				<div class="grouping">
 					<label>
-						<?php echo JText::_('COMMENT_GROUP');
-						$document =& JFactory::getDocument();
-						$document->addScript('components'.DS.'com_support'.DS.'observer.js');
-						$document->addScript('components'.DS.'com_support'.DS.'autocompleter.js');
-						$document->addStyleSheet('components'.DS.'com_support'.DS.'autocompleter.css');
-						?>:
+						<?php echo JText::_('COMMENT_GROUP'); ?>:
+<?php 
+$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup','',$this->row->group,'','ticketowner')) );
+if (count($gc) > 0) {
+	echo $gc[0];
+} else { ?>
 						<input type="text" name="ticket[group]" value="<?php echo $this->row->group; ?>" id="acgroup" value="" autocomplete="off" />
+<?php } ?>
 					</label>
 
 					<label>
