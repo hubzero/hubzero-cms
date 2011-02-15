@@ -132,13 +132,13 @@ if (!$contributions) {
 			$author_login = JText::_('MOD_MYCONTRIBUTIONS_UNKNOWN');
 			$author =& JUser::getInstance( $contributions[$i]->created_by );
 			if (is_object($author)) {
-				$author_login = $author->get('username');
+				$author_login = '<a href="'.JRoute::_('index.php?option=com_members&id='.$author->get('id')).'">'.stripslashes($author->get('name')).'</a>';
 			}
 			$href = '/contribute/?step=1&amp;id='.$contributions[$i]->id;
 			
 			$html .= "\t".'<li class="'.$class.'">'."\n";
 			$html .= "\t\t".'<a href="'.$href.'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($contributions[$i]->title), 40, 0).'</a>'."\n";
-			$html .= "\t\t".'<span class="under">'.JText::_('MOD_MYCONTRIBUTIONS_TYPE').': '.$modmycontributions->getType($contributions[$i]->type).' - '.JText::sprintf('MOD_MYCONTRIBUTIONS_SUBMITTED_BY',$author_login).'</span>'."\n";
+			$html .= "\t\t".'<span class="under">'.JText::_('MOD_MYCONTRIBUTIONS_TYPE').': '.$modmycontributions->getType($contributions[$i]->type).'<br />'.JText::sprintf('MOD_MYCONTRIBUTIONS_SUBMITTED_BY',$author_login).'</span>'."\n";
 			$html .= "\t".'</li>'."\n";
 		}
 	}

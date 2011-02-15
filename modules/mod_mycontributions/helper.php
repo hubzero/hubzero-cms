@@ -72,7 +72,7 @@ class modMyContributions
 		*/
 		
 		// Get "in progress" contributions
-		$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, 
+		/*$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, 
 							AA.subtable, R.created, R.created_by, R.published, R.publish_up, R.standalone, 
 							R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
 		$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
@@ -80,6 +80,13 @@ class modMyContributions
 		$query .= "WHERE AA.authorid = ". $juser->get('id') ." ";
 		$query .= "AND R.id = AA.subid ";
 		$query .= "AND AA.subtable = 'resources' ";
+		$query .= "AND R.standalone=1 AND R.type=rt.id AND (R.published=2 OR R.published=3) AND R.type!=7 ";
+		$query .= "ORDER BY published ASC, title ASC";*/
+
+		$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, R.created, R.created_by, R.published, R.publish_up, R.standalone, R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
+		$query .= "FROM #__resource_types AS rt, #__resources AS R ";
+		$query .= "LEFT JOIN #__author_assoc AS aa ON aa.subid=R.id AND aa.subtable='resources' ";
+		$query .= "WHERE (aa.authorid='". $juser->get('id') ."' OR R.created_by=". $juser->get('id') .") ";
 		$query .= "AND R.standalone=1 AND R.type=rt.id AND (R.published=2 OR R.published=3) AND R.type!=7 ";
 		$query .= "ORDER BY published ASC, title ASC";
 
