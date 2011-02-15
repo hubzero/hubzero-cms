@@ -40,56 +40,61 @@ HUB.Events = {
 					$('publish_down').value = $('publish_up').value;
 				}
 			});
+			$('publish_up').addEvent('blur', function() {
+				$('publish_down').value = this.value;
+			});
 			myCal2 = new Calendar({ publish_down: 'Y-m-d' }, { direction: 1, tweak: {x: 6, y: 0} });
 		}
 		
-		$('reccurtype0').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurtype1').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurtype2').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurtype3').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurtype4').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurtype5').onclick = function() {HUB.Events.checkDisable()};
-		
-		$('reccurday_week1').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_week2').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_week3').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_week4').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_week5').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_week6').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_week7').onclick = function() {HUB.Events.checkDisable()};
-		
-		$('reccurday_month1').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_month2').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_month3').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_month4').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_month5').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_month6').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_month7').onclick = function() {HUB.Events.checkDisable()};
-		
-		$('reccurday_year1').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_year2').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_year3').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_year4').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_year5').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_year6').onclick = function() {HUB.Events.checkDisable()};
-		$('reccurday_year7').onclick = function() {HUB.Events.checkDisable()};
-		
-		$('cb_wd0').onclick = function() {HUB.Events.checkDisable()};
-		$('cb_wd1').onclick = function() {HUB.Events.checkDisable()};
-		$('cb_wd2').onclick = function() {HUB.Events.checkDisable()};
-		$('cb_wd3').onclick = function() {HUB.Events.checkDisable()};
-		$('cb_wd4').onclick = function() {HUB.Events.checkDisable()};
-		$('cb_wd5').onclick = function() {HUB.Events.checkDisable()};
-		$('cb_wd6').onclick = function() {HUB.Events.checkDisable()};
-		
-		$('cb_wn1').onclick = function() {HUB.Events.checkDisable()};
-		$('cb_wn2').onclick = function() {HUB.Events.checkDisable()};
-		$('cb_wn3').onclick = function() {HUB.Events.checkDisable()};
-		$('cb_wn4').onclick = function() {HUB.Events.checkDisable()};
-		$('cb_wn5').onclick = function() {HUB.Events.checkDisable()};
-		
-		$('cb_wn6').onclick = function() {HUB.Events.checkDisable(this)};
-		$('cb_wn7').onclick = function() {HUB.Events.checkDisable(this)};
+		if ($('reccurtype0')) {
+			$('reccurtype0').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurtype1').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurtype2').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurtype3').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurtype4').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurtype5').onclick = function() {HUB.Events.checkDisable()};
+
+			$('reccurday_week1').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_week2').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_week3').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_week4').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_week5').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_week6').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_week7').onclick = function() {HUB.Events.checkDisable()};
+
+			$('reccurday_month1').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_month2').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_month3').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_month4').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_month5').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_month6').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_month7').onclick = function() {HUB.Events.checkDisable()};
+
+			$('reccurday_year1').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_year2').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_year3').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_year4').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_year5').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_year6').onclick = function() {HUB.Events.checkDisable()};
+			$('reccurday_year7').onclick = function() {HUB.Events.checkDisable()};
+
+			$('cb_wd0').onclick = function() {HUB.Events.checkDisable()};
+			$('cb_wd1').onclick = function() {HUB.Events.checkDisable()};
+			$('cb_wd2').onclick = function() {HUB.Events.checkDisable()};
+			$('cb_wd3').onclick = function() {HUB.Events.checkDisable()};
+			$('cb_wd4').onclick = function() {HUB.Events.checkDisable()};
+			$('cb_wd5').onclick = function() {HUB.Events.checkDisable()};
+			$('cb_wd6').onclick = function() {HUB.Events.checkDisable()};
+
+			$('cb_wn1').onclick = function() {HUB.Events.checkDisable()};
+			$('cb_wn2').onclick = function() {HUB.Events.checkDisable()};
+			$('cb_wn3').onclick = function() {HUB.Events.checkDisable()};
+			$('cb_wn4').onclick = function() {HUB.Events.checkDisable()};
+			$('cb_wn5').onclick = function() {HUB.Events.checkDisable()};
+
+			$('cb_wn6').onclick = function() {HUB.Events.checkDisable(this)};
+			$('cb_wn7').onclick = function() {HUB.Events.checkDisable(this)};
+		}
 		//$('reccurtype0').addEvent('click', HUB.Events.checkDisable());
 		//document.getElementById('reccurtype0').onclick = function() {HUB.Events.checkDisable()};
 	},

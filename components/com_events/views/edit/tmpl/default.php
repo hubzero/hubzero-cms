@@ -89,9 +89,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label>
 				<?php echo JText::_('EVENTS_E_TAGS'); ?>
 <?php
-			JPluginHelper::importPlugin( 'tageditor' );
+			JPluginHelper::importPlugin( 'hubzero' );
 			$dispatcher =& JDispatcher::getInstance();
-			$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$this->lists['tags'],'')) );
+			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->list['tags'])) );
 			if (count($tf) > 0) {
 				echo $tf[0];
 			} else {

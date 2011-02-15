@@ -115,7 +115,7 @@ var Calendar = new Class({
 			cal.el.addClass(this.classes.calendar);
 
 			// create cal button
-			cal.button.addClass(this.classes.calendar).addEvent('click', function(cal) { this.toggle(cal); }.pass(cal, this)).injectAfter(cal.el);
+			cal.button.addClass(this.classes.calendar).addEvent('click', function(cal) { cal.val = this.read(cal); this.toggle(cal); }.pass(cal, this)).injectAfter(cal.el);
 
 			// read in default value
 			cal.val = this.read(cal);
@@ -561,8 +561,8 @@ var Calendar = new Class({
 			el.addEvent('change', function(cal) { this.changed(cal); }.pass(cal, this));
 		}
 		else { // input (type text) elements restrict the user to only setting the date via the calendar
-			el.readOnly = true;
-			el.addEvent('focus', function(cal) { this.toggle(cal); }.pass(cal, this));
+			//el.readOnly = true;
+			//el.addEvent('focus', function(cal) { this.toggle(cal); }.pass(cal, this));
 		}
 
 		cal.els.push(el);
