@@ -61,6 +61,7 @@ table#spreadsheet tbody td {
 }
 
 .dataTables_processing {
+	z-index: 9999;
 	position: fixed;
 	margin: 0px;
 	width: 200px;

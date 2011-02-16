@@ -71,6 +71,7 @@ jQuery(document).ready(function($) {
 					lng = dms2dc(lng);
 				}
 				locations.push(new google.maps.LatLng(lat, lng));
+				a = new google.maps.LatLng(lat, lng);
 				location_index[idx] = (new google.maps.LatLng(lat, lng));
 
 				iw_content.push(title);
@@ -116,20 +117,21 @@ jQuery(document).ready(function($) {
 		}
 
 		function dms2dc(cood) {
-			cood = cood.split('° ');
+			cood = cood.split('°');
 			d = cood[0];
-			cood = cood[1].split('\' ');
+			cood = cood[1].split('\'');
 			m = cood[0];
-			cood = cood[1].split('" ');
+			cood = cood[1].split('"');
 			s = cood[0];
 			dir = cood[1];
 
 			var dc = +d + (+m/60) + (+s/(60*60));
 
-			if (dir == "S" || dir == "W") {
+			if (dir.trim() == "S" || dir.trim() == "W") {
 				dc = dc * -1;
 			}
-			return dc;
+
+			return dc.toFixed(6);
 		}
 
 		$('#dv_maps_panel').bind('resizestop', function(event, ui) {

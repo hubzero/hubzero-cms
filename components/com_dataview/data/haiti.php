@@ -8,7 +8,7 @@ function get_haiti()
 
 	$dd['title'] = "The Haiti Earthquake Database";
 	$dd['table'] = 'haitidb';
-	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
+//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 
 	$dd['cols']['haitidb.No_'] = array('label'=>'Number');
 	$dd['cols']['haitidb.Building'] = array('label'=>'Building', 'desc'=>'The Building Identification Marker.');
@@ -17,7 +17,7 @@ function get_haiti()
 	$dd['cols']['haitidb.Latitude'] = array('label'=>'Latitude', 'desc'=>'Building latitude.', 'raw'=>"CONCAT(haitidb.LatitudeD,'° ', haitidb.LatitudeM,\"' \",haitidb.LatitudeS,'\"', ' N')", 'width'=>'100');
 	$dd['cols']['haitidb.Longitude'] = array('label'=>'Longitude', 'desc'=>'Building Logitude.', 'raw'=>"CONCAT(haitidb.LongitudeD,'° ', haitidb.LongitudeM,\"' \",haitidb.LongitudeS,'\"', ' W')", 'width'=>'100');
 	$dd['cols']['haitidb.PicCollection'] = array('hide'=>'hide');
-	$dd['cols']['haitidb.MainPic'] = array('label'=>'Pictures', 'desc'=>'Pictures of thebuilding taken durring the examination.', 'type'=>'image', 'gallery'=>'haitidb.PicCollection', 'resized'=>'resized');
+	$dd['cols']['haitidb.MainPic'] = array('label'=>'Pictures', 'desc'=>'Pictures of the building taken durring the examination.', 'type'=>'image', 'gallery'=>'haitidb.PicCollection', 'resized'=>'resized');
 	$dd['cols']['haitidb.DiagramPreview'] = array('hide'=>'hide');
 	$dd['cols']['haitidb.Diagram'] = array('label'=>'Diagram', 'desc'=>'Diagram of the first floor of the building.', 'type'=>'link', 'width'=>'150', 'multi'=>'ul', 'sep'=>',', 'preview'=>'haitidb.DiagramPreview');
 	$dd['cols']['haitidb.PriorityIndex1'] = array('label'=>'Priority Index<br />[%]', 'desc'=>'The Priority Index of the Building.');

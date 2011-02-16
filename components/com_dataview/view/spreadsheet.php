@@ -7,6 +7,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function view($name) {
+
 	global $com_name, $dv_conf;
 
 	$settings = $_SESSION['dv']['settings'];

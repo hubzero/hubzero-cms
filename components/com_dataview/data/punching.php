@@ -7,7 +7,7 @@ function get_punching()
 	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
 
 	$dd['title'] = "Punching Shear Databank";
-	$dd['db'] = array('host'=> 'nees.org', 'user'=>'nistequser', 'pass' => '_nist3QkE_', 'name' => 'nistearthquakedata');
+//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'Punching';
 
 	$dd['cols']['Punching.ID'] = array('label'=>'ID', 'data_type'=>'int');

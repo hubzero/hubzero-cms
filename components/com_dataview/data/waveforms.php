@@ -7,7 +7,7 @@ function get_waveforms()
 	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
 
 	$dd['title'] = "Waveforms";
-	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
+//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'waveforms';
 
 	$dd['cols']['waveforms.id'] = array('label'=>'id', 'data_type'=>'int', 'more_info'=>'waveforms|waveforms.id', 'compare'=>'compare','desc'=>'Select two or more items to compare side-by-side', 'width'=>'60');

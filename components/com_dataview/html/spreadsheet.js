@@ -394,6 +394,8 @@ jQuery(document).ready(function($) {
 
  
 	if (!dv_settings.serverside) {
+		dv_settings.num_rows.values.push(1000);
+		dv_settings.num_rows.labels.push('1000');
 		dv_settings.num_rows.values.push(-1);
 		dv_settings.num_rows.labels.push('All');
 	}
@@ -403,12 +405,13 @@ jQuery(document).ready(function($) {
 		"bInfo": true,
 		"bJQueryUI": true,
 		"bAutoWidth": true,
+		"aaSorting": dv_data.aaSorting,
 		"aaData": dv_data.aaData,
 		"aoColumns": dv_data.aoColumns,
-		"bProcessing": dv_settings.serverside,
+		"bProcessing": true,
 		"bServerSide": dv_settings.serverside,
 		"sAjaxSource": (dv_settings.serverside)? dv_settings.url + '&format=json': null,
-		"sDom": '<"H"lif<"clear">>rt<"F"lip<"clear">>',
+		"sDom": '<"H"lpf<"clear">>rt<"F"lip<"clear">>',
 		"sPaginationType": "full_numbers",
 		"iDisplayLength": dv_settings.limit,
 		"aLengthMenu": [dv_settings.num_rows.values, dv_settings.num_rows.labels],
@@ -454,6 +457,7 @@ jQuery(document).ready(function($) {
 		},
 		"fnServerData": function(sSource, aoData, fnCallback) {
 			if (!first_load) {
+			//	dv_table.fnProcessingIndicator();
 				var set = dv_table.fnSettings();
 				for (i=0; i<set.aoColumns.length; i++) {
 					var fieldtype = 'fieldtype_' + i;
@@ -477,7 +481,7 @@ jQuery(document).ready(function($) {
 				});
 		}
 	});
-
+	
 	$('#dv_download').click(function() {
 		var set = dv_table.fnSettings();
 		var iColumns = set.aoColumns.length;
@@ -538,7 +542,7 @@ jQuery(document).ready(function($) {
 
 		$(".dataTables_filter input").keypress( function(e) {
 			if (!dv_settings.serverside || e.keyCode === 13) {
-				$('#indicator').fadeIn('slow');
+				//$('#indicator').fadeIn('slow');
 				dv_table.fnFilter($(".dataTables_filter input").attr('value'));
 			}
 		});
@@ -799,6 +803,82 @@ jQuery(document).ready(function($) {
 
 		return false;
 	});
+	
+	//More info. multi
+	$('.more_info_multi').live('click', function(e) {
+		e.preventDefault();
+		url = $(this).attr('href');
+		obj = getUrlVars(url, 'obj');
+		var id = '';
+		try {
+			id = getUrlVars(url, 'id');
+		} catch (err) {
+			id = '';
+		}
+
+		var tmp_table;
+
+		if ($('#more_info_' + obj + id).html() === null) {
+
+			var res = $.parseJSON($.ajax({ type: "GET", url: url, async: false }).responseText);
+			if(res.aaData.length > 0) {
+				$('#more_information').append('<div id="more_info_' + obj + id + '" style="overflow: auto;" title="More Information"></div>');
+				data = '<table class="more_info_table"><tbody>';
+
+				for (i=0; i<res['aoColumns'].length; i++) {
+	//				data += '<tr onMouseOver="this.bgColor=\'#F1EDC2\';" onMouseOut="this.bgColor=\'transparent\';">';
+					data += '<tr>';
+					data += '<td>' + res['aoColumns'][i].sTitle + '</td>';
+
+					for (j=0; j<res['aaData'].length; j++) {
+						data += '<td>' + res['aaData'][j][i] + '</td>';
+					}
+					data += '</tr>';
+				}
+
+				data += '</tbody></table>';
+				data += '<br />';
+				data +=  '<p style="float: right;">';
+				data +=  '<a style="color: #44AA44; font-weight: bold;" href="/' + dv_settings.com_name + '/spreadsheet/' + obj + '" target="_blank">Click here to view all.</a>';
+				data +=  '</p>';
+
+				$('#more_info_' + obj + id).html(data);
+
+				$('#more_info_' + obj + id).css('max-height', ($(window).height()-80)+'px');
+
+				$('#more_info_' + obj + id).css('max-width', ($(window).width() - 50) + 'px');
+				
+				$('#more_info_'+obj+id).dialog({
+					width: 'auto',
+					title: $('#more_info_'+obj+id+' h1.ss_title').html(),
+					modal: true
+				});
+			} else {
+				$('#more_information').append('<div id="more_info_'+obj+id+'" style="display: none; overflow: auto;" title="More Information"></div>');
+
+				$('#more_info_'+obj+id).html('<div class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0pt 0.7em;"><p><span class="ui-icon ui-icon-info" style="float: left; margin-right: 0.3em;"></span><strong>Notice!</strong><br />Don\'t have any data available for this item.</p></div></div>');
+
+				if (jQuery.browser.msie && parseInt(jQuery.browser.version) < 8) {
+					$('#more_info_'+obj+id).dialog();
+					return false;
+				}
+
+				$('#more_info_'+obj+id).css('max-height', ($(window).height()-80)+'px');
+
+				$('#more_info_'+obj+id).dialog({
+					width: 'auto',
+					title: $('#more_info_'+obj+id+' h1.ss_title').html(),
+					modal: true
+				});
+			}
+		} else {
+			$('#more_info_'+obj+id).dialog({
+				modal: true
+			});
+		}
+
+		return false;
+	});
 
 	// Compare
 	$('.dv_compare_chk:checkbox').live('change', function() {
@@ -981,7 +1061,8 @@ jQuery(document).ready(function($) {
 	function update_pos() {
 		$('#spreadsheet_wrapper .dataTables_filter').css("position","absolute");
 		$('#spreadsheet_wrapper .dataTables_info').css("position","absolute");
-		$('#spreadsheet_wrapper .dataTables_paginate').css("position","absolute");
+		$('#spreadsheet_wrapper .dataTables_paginate').last().css("position","absolute");
+		$('#spreadsheet_wrapper .dataTables_paginate').first().css("position","absolute");
 		$('#dv_ss_charts_container .dv_ss_charts').css("position","absolute");
 
 		var ww = $(window).width();
@@ -994,17 +1075,18 @@ jQuery(document).ready(function($) {
 		}
 		$('#spreadsheet_wrapper .dataTables_filter').css('left', ssr + 'px');
 
-		var pagew = $('#spreadsheet_wrapper .dataTables_paginate').width();
+		var pagew = $('#spreadsheet_wrapper .dataTables_paginate').last().width();
 		var spr = $(document).scrollLeft() + ww - pagew - 45;
 		if ((spr + pagew) > sw) {
 			spr = sw - pagew - 45;
 		}
-		$('#spreadsheet_wrapper .dataTables_paginate').css('left', spr + 'px');
+		$('#spreadsheet_wrapper .dataTables_paginate').last().css('left', spr + 'px');
 
 		var sstm = parseInt(($(document).scrollLeft() + $('#spreadsheet_wrapper .dataTables_filter').position().left)/2) - 110;
-		var ssbm = parseInt(($(document).scrollLeft() + $('#spreadsheet_wrapper .dataTables_paginate').position().left)/2) - 80;
-		$('#spreadsheet_wrapper .dataTables_info').first().css('left', sstm + 'px');
+		var ssbm = parseInt(($(document).scrollLeft() + $('#spreadsheet_wrapper .dataTables_paginate').last().position().left)/2) - 80;
+//		$('#spreadsheet_wrapper .dataTables_info').first().css('left', sstm + 'px');
 		$('#spreadsheet_wrapper .dataTables_info').last().css('left', ssbm + 'px');
+		$('#spreadsheet_wrapper .dataTables_paginate').first().css('left', sstm + 'px');
 		$('#dv_ss_charts_container .dv_ss_charts').css("left", $(document).scrollLeft() + 20 + 'px');
 	}
 

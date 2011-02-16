@@ -8,7 +8,7 @@ function get_events()
 
 	$dd['serverside'] = true;
 	$dd['title'] = "Events";
-	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
+//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'Events';
 
 	$dd['cols']['Events.Event_ID'] = array('label'=>'Event ID', 'more_info'=>'events|Events.Event_ID', 'compare'=>'Compare selected Events');

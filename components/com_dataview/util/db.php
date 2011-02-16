@@ -31,7 +31,7 @@ function get_results($sql, $dd) {
 	$res['data'] = array();
 	$res['total'] = 0;
 	$res['found'] = 0;
-	//	$res['sql'] = $sql;
+	//$res['sql'] = $sql;
 	$res['sql'] = '';
 
 	if ($result = mysql_query($sql)) {
@@ -384,6 +384,8 @@ function query_gen($dd)
 				}
 			}
 		}
+	} elseif (isset($dd['order_by'])) {
+		$order = $dd['order_by'];
 	}
 
 	$order_str = '';

@@ -10,7 +10,7 @@ function get_sac()
 	$dd['title'] = "The SAC Steel Project Database";
 	$dd['table'] = 'sacdb';
 	$dd['serverside'] = true;
-	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
+//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	
 //	$dd['cols']['sacdb.Rank'] = array('label'=>'Rank', 'desc'=>'Select two or more items to compare side-by-side', 'data_type'=>'int', 'more_info'=>'sac|sacdb.Rank', 'compare'=>'compare', 'width'=>'70');
 	$dd['cols']['sacdb.Test_ID'] = array('label'=>'Test ID');

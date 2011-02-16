@@ -7,7 +7,7 @@ function get_scmbp()
 	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
 
 	$dd['title'] = "Structural Control and Monitoring Benchmark Problems";
-	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
+//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'Benchmark';
 
 	$dd['cols']['Benchmark.ID'] = array('label'=>'ID', 'data_type'=>'int');

@@ -7,7 +7,7 @@ function get_spdscc()
 	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
 
 	$dd['title'] = "Structural Performance Database for Spiral Concrete Columns";
-	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
+//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'ColDat';
 
 	$dd['cols']['ColDat.ID'] = array('label'=>'ID', 'data_type'=>'int');

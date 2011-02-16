@@ -108,6 +108,10 @@ function filter($res)
 		}
 	}
 
+	if (isset($dd['order_by'])) {
+		$table['aaSorting'] = array();			
+	}
+
 	$table['sColumns'] = implode(',', $table['sColumns']);
 	$table['vis_cols'] = $vis_keys;
 	$table['field_types'] = $field_types;
@@ -267,6 +271,17 @@ function filter($res)
 					}
 
 					$val = '<a title="Click to view more information about this item" class="more_info" href="/' . $com_name . '/?task=data' . $obj . $id . '&format=json" style="color: blue;">' . $val . '</a>' . '&nbsp;&nbsp;' . $check;
+				} elseif (isset($dd['cols'][$key]['more_info_multi'])) {
+					$mi = explode('|', $dd['cols'][$key]['more_info_multi']);
+					$obj = '&obj=' . $mi[0];
+					$id = (isset($mi[1]))? '&id=' . $rec[$mi[1]]: '';
+
+					$check = '';
+					if (isset($dd['cols'][$key]['compare']) && !$single_record) {
+						$check = '<input data-colname= "' . str_replace('.', '_', $key) . '" type="checkbox" class="' . str_replace('.', '_', $key) . ' dv_compare_chk" value="' . $rec[$mi[1]] . '" style="float: right;" />';
+					}
+
+					$val = '<a title="Click to view more information about this item" class="more_info_multi" href="/' . $com_name . '/?task=data' . $obj . $id . '&format=json" style="color: blue;">' . $val . '</a>' . '&nbsp;&nbsp;' . $check;
 				}
 
 				if (isset($dd['cols'][$key]['filtered_view'])) {

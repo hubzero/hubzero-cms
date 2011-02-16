@@ -7,7 +7,7 @@ function get_sites()
 	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
 
 	$dd['title'] = "Sites";
-	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
+//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'sites';
 
 	$dd['cols']['sites.id'] = array('label'=>'id', 'data_type'=>'int', 'more_info'=>'sites|sites.id', 'compare'=>'compare','desc'=>'Select two or more items to compare side-by-side');

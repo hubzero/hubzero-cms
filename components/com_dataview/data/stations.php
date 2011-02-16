@@ -7,7 +7,7 @@ function get_stations()
 	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
 
 	$dd['title'] = "Stations";
-	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
+//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'Stations';
 
 	$dd['cols']['Stations.StationID'] = array('label'=>'Station', 'raw'=>'UPPER(Stations.StationID)', 'filtered_view'=>array('view'=>'spreadsheet', 'data'=>'events','filter'=>array('Events.Station'=>'Stations.StationID', 'Events.Magnitude'=>'>=4|float'))); // added UPPER()
