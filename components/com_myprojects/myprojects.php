@@ -26,8 +26,24 @@ Propel::init("api/org/phpdb/propel/central/conf/central-conf.php");
 // Require the com_content helper library
 require_once(JPATH_COMPONENT.DS.'controller.php');
 
+require_once 'lib/security/Authorizer.php';
+require_once 'lib/security/UserManager.php';
+
 // Component Helper
 jimport('joomla.application.component.helper');
+
+$oUser =& JFactory::getUser();
+
+$oAuthorizer = Authorizer::getInstance();
+$oAuthorizer->setUser($oUser->username);
+
+$oUserManager = UserManager::getInstance();
+$oUserManager->setUser($oUser->username);
+
+if($oUser->username=="gemezm"){
+  //$oAuthorizer->setUser("melorapark");
+  //$oUserManager->setUser("melorapark");
+}
 
 // Create the controller
 $controller = new MyProjectsController();

@@ -41,8 +41,8 @@ class MyProjectsController extends JController{
    * @access    public
    */
   function display(){
-  	$sViewName	= JRequest::getVar('view', 'get');
-	JRequest::setVar('view', $sViewName );
+    $sViewName	= JRequest::getVar('view', 'get');
+    JRequest::setVar('view', $sViewName );
     parent::display();
   }
 	

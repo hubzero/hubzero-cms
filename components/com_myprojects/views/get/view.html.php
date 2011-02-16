@@ -39,10 +39,14 @@ class MyProjectsViewGet extends JView{
     /* @var $oHubUser JUser */
     $oHubUser = $oModel->getCurrentUser();
 
+    $iLowerLimit = 0;
+    $iUpperLimit = 0;
+
     //if we have a hub user, look for projects
     if($oHubUser){
       /* @var $oPerson Person */
       $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+      //$oPerson = $oModel->getOracleUserByUsername("melorapark");
 
       //if the username is guest (person not logged in), they will not have projects
       if($oPerson){
@@ -72,7 +76,7 @@ class MyProjectsViewGet extends JView{
     }
     $_SESSION[Search::THUMBNAILS] = $strProjectIconArray;
 
-    $oDbPagination = new DbPagination($iIndex, $iProjectCount, $iDisplay);
+    $oDbPagination = new DbPagination($iIndex, $iProjectCount, $iDisplay, $iLowerLimit, $iUpperLimit);
     $oDbPagination->computePageCount();
     $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmResults", "project-list"));
 
