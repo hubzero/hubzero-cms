@@ -19,7 +19,7 @@
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
  * long as it does not already exist in the output directory.
- *
+ * 
  * @package    lib.data
  */
 class SensorTypePeer extends BaseSensorTypePeer {
@@ -40,9 +40,7 @@ class SensorTypePeer extends BaseSensorTypePeer {
 
 
   /**
-   * Find all SensorTypes.  The name field isn't unique
-   * in sensor_type.  Thus, we will create the SensorType object
-   * using the distinct name.
+   * Find all SensorTypes
    *
    * @return array <SensorType>
    */

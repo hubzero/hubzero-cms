@@ -30,7 +30,7 @@ require_once 'lib/data/Acknowledgement.php';
  *
  * @uses Project
  * @uses ExperimentDomain
- *
+ * 
  */
 abstract class Experiment extends BaseExperiment {
 
@@ -652,8 +652,7 @@ ENDHTML;
           $strDisplayName = "display_".$expImage->getId()."_".$expImage->getName();
           $expImage->setName($strDisplayName);
           $expImage->setPath($expThumbnail->getPath());
-          //$thumbnail = "<div class='thumb_frame'><a style='border-bottom:0px;' target='_blank' href='" . $expImage->get_url() . "' rel='lightbox[experiments]'><img src='" . $expThumbnail->get_url() . "'  alt=''/></a></div>";
-          $thumbnail = "<div class='thumb_frame'><a title='".$expImage->getDescription()."' style='border-bottom:0px;' target='_blank' href='" . $expImage->get_url() . "' rel='lightbox[experiments]'><img src='" . $expThumbnail->get_url() . "'  alt='".$expImage->getDescription()."'/></a></div>";
+          $thumbnail = "<div class='thumb_frame'><a title='".$expImage->getDescription()."' style='border-bottom:0px;' target='_blank' href='" . $expImage->getUrl() . "' rel='lightbox[experiments]'><img src='" . $expThumbnail->get_url() . "'  alt='".$expImage->getDescription()."'/></a></div>";
         }
       }
     }
@@ -720,6 +719,11 @@ ENDHTML;
 
   public function hasOpenData(){
     return $this->isPublished();
+  }
+
+  public function getDataFileLinkCount($p_bDirectory=1){
+    require_once 'lib/data/DataFileLinkPeer.php';
+    return DataFileLinkPeer::getCountByExperimentId($this->getId(), $p_bDirectory);
   }
 
   /**

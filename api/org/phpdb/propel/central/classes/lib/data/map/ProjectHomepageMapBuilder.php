@@ -78,7 +78,7 @@ class ProjectHomepageMapBuilder {
 
 		$tMap->addColumn('URL', 'Url', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('PROJECT_HOMEPAGE_TYPE_ID', 'ProjectHomepageTypeId', 'double', CreoleTypes::NUMERIC, true, 22);
+		$tMap->addForeignKey('PROJECT_HOMEPAGE_TYPE_ID', 'ProjectHomepageTypeId', 'double', CreoleTypes::NUMERIC, 'PROJECT_HOMEPAGE_TYPE_LOOKUP', 'ID', true, 22);
 
 	} // doBuild()
 

@@ -25,7 +25,7 @@ class Material extends BaseMaterial {
                        $name = "",
                        $description = "",
                        Material $prototype = null )
-  {
+  { 
     $this->setExperiment($experiment);
     $this->setMaterialType($materialType);
     $this->setName($name);
@@ -137,5 +137,13 @@ class Material extends BaseMaterial {
   }
 
 
+  /**
+   * Check if this material is published or not by checking its parent Experiment published status
+   *
+   * @return boolean value
+   */
+  public function isPublished(){
+    return $this->getExperiment()->isPublished();
+  }
 } // Material
 ?>

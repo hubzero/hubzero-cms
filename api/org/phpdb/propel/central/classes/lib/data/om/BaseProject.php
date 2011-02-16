@@ -179,6 +179,48 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 
 	/**
+	 * The value for the created_date field.
+	 * @var        int
+	 */
+	protected $created_date;
+
+
+	/**
+	 * The value for the modified_by_id field.
+	 * @var        double
+	 */
+	protected $modified_by_id;
+
+
+	/**
+	 * The value for the modified_date field.
+	 * @var        int
+	 */
+	protected $modified_date;
+
+
+	/**
+	 * The value for the app_id field.
+	 * @var        double
+	 */
+	protected $app_id;
+
+
+	/**
+	 * The value for the nees_research_type_id field.
+	 * @var        double
+	 */
+	protected $nees_research_type_id;
+
+
+	/**
+	 * The value for the enhanced field.
+	 * @var        double
+	 */
+	protected $enhanced;
+
+
+	/**
 	 * The value for the super_project_id field.
 	 * @var        double
 	 */
@@ -199,7 +241,22 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 	/**
 	 * @var        Person
 	 */
-	protected $aPerson;
+	protected $aPersonRelatedByCreatorId;
+
+	/**
+	 * @var        Person
+	 */
+	protected $aPersonRelatedByModifiedById;
+
+	/**
+	 * @var        NeesResearchType
+	 */
+	protected $aNeesResearchType;
+
+	/**
+	 * @var        ProjectResearchType
+	 */
+	protected $aProjectResearchType;
 
 	/**
 	 * Collection to store aggregation of collAcknowledgements.
@@ -595,6 +652,112 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [optionally formatted] [created_date] column value.
+	 * 
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the integer unix timestamp will be returned.
+	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
+	 * @throws     PropelException - if unable to convert the date/time to timestamp.
+	 */
+	public function getCreatedDate($format = '%Y-%m-%d')
+	{
+
+		if ($this->created_date === null || $this->created_date === '') {
+			return null;
+		} elseif (!is_int($this->created_date)) {
+			// a non-timestamp value was set externally, so we convert it
+			$ts = strtotime($this->created_date);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse value of [created_date] as date/time value: " . var_export($this->created_date, true));
+			}
+		} else {
+			$ts = $this->created_date;
+		}
+		if ($format === null) {
+			return $ts;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $ts);
+		} else {
+			return date($format, $ts);
+		}
+	}
+
+	/**
+	 * Get the [modified_by_id] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getModifiedById()
+	{
+
+		return $this->modified_by_id;
+	}
+
+	/**
+	 * Get the [optionally formatted] [modified_date] column value.
+	 * 
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the integer unix timestamp will be returned.
+	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
+	 * @throws     PropelException - if unable to convert the date/time to timestamp.
+	 */
+	public function getModifiedDate($format = '%Y-%m-%d')
+	{
+
+		if ($this->modified_date === null || $this->modified_date === '') {
+			return null;
+		} elseif (!is_int($this->modified_date)) {
+			// a non-timestamp value was set externally, so we convert it
+			$ts = strtotime($this->modified_date);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse value of [modified_date] as date/time value: " . var_export($this->modified_date, true));
+			}
+		} else {
+			$ts = $this->modified_date;
+		}
+		if ($format === null) {
+			return $ts;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $ts);
+		} else {
+			return date($format, $ts);
+		}
+	}
+
+	/**
+	 * Get the [app_id] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getAppId()
+	{
+
+		return $this->app_id;
+	}
+
+	/**
+	 * Get the [nees_research_type_id] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getNeesResearchTypeId()
+	{
+
+		return $this->nees_research_type_id;
+	}
+
+	/**
+	 * Get the [enhanced] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getEnhanced()
+	{
+
+		return $this->enhanced;
+	}
+
+	/**
 	 * Get the [super_project_id] column value.
 	 * 
 	 * @return     double
@@ -824,6 +987,10 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		if ($this->nees !== $v) {
 			$this->nees = $v;
 			$this->modifiedColumns[] = ProjectPeer::NEES;
+		}
+
+		if ($this->aProjectResearchType !== null && $this->aProjectResearchType->getId() !== $v) {
+			$this->aProjectResearchType = null;
 		}
 
 	} // setNEES()
@@ -1064,11 +1231,131 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = ProjectPeer::CREATOR_ID;
 		}
 
-		if ($this->aPerson !== null && $this->aPerson->getId() !== $v) {
-			$this->aPerson = null;
+		if ($this->aPersonRelatedByCreatorId !== null && $this->aPersonRelatedByCreatorId->getId() !== $v) {
+			$this->aPersonRelatedByCreatorId = null;
 		}
 
 	} // setCreatorId()
+
+	/**
+	 * Set the value of [created_date] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     void
+	 */
+	public function setCreatedDate($v)
+	{
+
+		if ($v !== null && !is_int($v)) {
+			$ts = strtotime($v);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse date/time value for [created_date] from input: " . var_export($v, true));
+			}
+		} else {
+			$ts = $v;
+		}
+		if ($this->created_date !== $ts) {
+			$this->created_date = $ts;
+			$this->modifiedColumns[] = ProjectPeer::CREATED_DATE;
+		}
+
+	} // setCreatedDate()
+
+	/**
+	 * Set the value of [modified_by_id] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setModifiedById($v)
+	{
+
+		if ($this->modified_by_id !== $v) {
+			$this->modified_by_id = $v;
+			$this->modifiedColumns[] = ProjectPeer::MODIFIED_BY_ID;
+		}
+
+		if ($this->aPersonRelatedByModifiedById !== null && $this->aPersonRelatedByModifiedById->getId() !== $v) {
+			$this->aPersonRelatedByModifiedById = null;
+		}
+
+	} // setModifiedById()
+
+	/**
+	 * Set the value of [modified_date] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     void
+	 */
+	public function setModifiedDate($v)
+	{
+
+		if ($v !== null && !is_int($v)) {
+			$ts = strtotime($v);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse date/time value for [modified_date] from input: " . var_export($v, true));
+			}
+		} else {
+			$ts = $v;
+		}
+		if ($this->modified_date !== $ts) {
+			$this->modified_date = $ts;
+			$this->modifiedColumns[] = ProjectPeer::MODIFIED_DATE;
+		}
+
+	} // setModifiedDate()
+
+	/**
+	 * Set the value of [app_id] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setAppId($v)
+	{
+
+		if ($this->app_id !== $v) {
+			$this->app_id = $v;
+			$this->modifiedColumns[] = ProjectPeer::APP_ID;
+		}
+
+	} // setAppId()
+
+	/**
+	 * Set the value of [nees_research_type_id] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setNeesResearchTypeId($v)
+	{
+
+		if ($this->nees_research_type_id !== $v) {
+			$this->nees_research_type_id = $v;
+			$this->modifiedColumns[] = ProjectPeer::NEES_RESEARCH_TYPE_ID;
+		}
+
+		if ($this->aNeesResearchType !== null && $this->aNeesResearchType->getId() !== $v) {
+			$this->aNeesResearchType = null;
+		}
+
+	} // setNeesResearchTypeId()
+
+	/**
+	 * Set the value of [enhanced] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setEnhanced($v)
+	{
+
+		if ($this->enhanced !== $v) {
+			$this->enhanced = $v;
+			$this->modifiedColumns[] = ProjectPeer::ENHANCED;
+		}
+
+	} // setEnhanced()
 
 	/**
 	 * Set the value of [super_project_id] column.
@@ -1165,16 +1452,28 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 			$this->creator_id = $rs->getFloat($startcol + 20);
 
-			$this->super_project_id = $rs->getFloat($startcol + 21);
+			$this->created_date = $rs->getDate($startcol + 21, null);
 
-			$this->project_type_id = $rs->getFloat($startcol + 22);
+			$this->modified_by_id = $rs->getFloat($startcol + 22);
+
+			$this->modified_date = $rs->getDate($startcol + 23, null);
+
+			$this->app_id = $rs->getFloat($startcol + 24);
+
+			$this->nees_research_type_id = $rs->getFloat($startcol + 25);
+
+			$this->enhanced = $rs->getFloat($startcol + 26);
+
+			$this->super_project_id = $rs->getFloat($startcol + 27);
+
+			$this->project_type_id = $rs->getFloat($startcol + 28);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 23; // 23 = ProjectPeer::NUM_COLUMNS - ProjectPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 29; // 29 = ProjectPeer::NUM_COLUMNS - ProjectPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Project object", $e);
@@ -1272,11 +1571,32 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 				$this->setProjectRelatedBySuperProjectId($this->aProjectRelatedBySuperProjectId);
 			}
 
-			if ($this->aPerson !== null) {
-				if ($this->aPerson->isModified()) {
-					$affectedRows += $this->aPerson->save($con);
+			if ($this->aPersonRelatedByCreatorId !== null) {
+				if ($this->aPersonRelatedByCreatorId->isModified()) {
+					$affectedRows += $this->aPersonRelatedByCreatorId->save($con);
 				}
-				$this->setPerson($this->aPerson);
+				$this->setPersonRelatedByCreatorId($this->aPersonRelatedByCreatorId);
+			}
+
+			if ($this->aPersonRelatedByModifiedById !== null) {
+				if ($this->aPersonRelatedByModifiedById->isModified()) {
+					$affectedRows += $this->aPersonRelatedByModifiedById->save($con);
+				}
+				$this->setPersonRelatedByModifiedById($this->aPersonRelatedByModifiedById);
+			}
+
+			if ($this->aNeesResearchType !== null) {
+				if ($this->aNeesResearchType->isModified()) {
+					$affectedRows += $this->aNeesResearchType->save($con);
+				}
+				$this->setNeesResearchType($this->aNeesResearchType);
+			}
+
+			if ($this->aProjectResearchType !== null) {
+				if ($this->aProjectResearchType->isModified()) {
+					$affectedRows += $this->aProjectResearchType->save($con);
+				}
+				$this->setProjectResearchType($this->aProjectResearchType);
 			}
 
 
@@ -1445,9 +1765,27 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->aPerson !== null) {
-				if (!$this->aPerson->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aPerson->getValidationFailures());
+			if ($this->aPersonRelatedByCreatorId !== null) {
+				if (!$this->aPersonRelatedByCreatorId->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPersonRelatedByCreatorId->getValidationFailures());
+				}
+			}
+
+			if ($this->aPersonRelatedByModifiedById !== null) {
+				if (!$this->aPersonRelatedByModifiedById->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPersonRelatedByModifiedById->getValidationFailures());
+				}
+			}
+
+			if ($this->aNeesResearchType !== null) {
+				if (!$this->aNeesResearchType->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aNeesResearchType->getValidationFailures());
+				}
+			}
+
+			if ($this->aProjectResearchType !== null) {
+				if (!$this->aProjectResearchType->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aProjectResearchType->getValidationFailures());
 				}
 			}
 
@@ -1617,9 +1955,27 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 				return $this->getCreatorId();
 				break;
 			case 21:
-				return $this->getSuperProjectId();
+				return $this->getCreatedDate();
 				break;
 			case 22:
+				return $this->getModifiedById();
+				break;
+			case 23:
+				return $this->getModifiedDate();
+				break;
+			case 24:
+				return $this->getAppId();
+				break;
+			case 25:
+				return $this->getNeesResearchTypeId();
+				break;
+			case 26:
+				return $this->getEnhanced();
+				break;
+			case 27:
+				return $this->getSuperProjectId();
+				break;
+			case 28:
 				return $this->getProjectTypeId();
 				break;
 			default:
@@ -1663,8 +2019,14 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 			$keys[18] => $this->getTitle(),
 			$keys[19] => $this->getView(),
 			$keys[20] => $this->getCreatorId(),
-			$keys[21] => $this->getSuperProjectId(),
-			$keys[22] => $this->getProjectTypeId(),
+			$keys[21] => $this->getCreatedDate(),
+			$keys[22] => $this->getModifiedById(),
+			$keys[23] => $this->getModifiedDate(),
+			$keys[24] => $this->getAppId(),
+			$keys[25] => $this->getNeesResearchTypeId(),
+			$keys[26] => $this->getEnhanced(),
+			$keys[27] => $this->getSuperProjectId(),
+			$keys[28] => $this->getProjectTypeId(),
 		);
 		return $result;
 	}
@@ -1760,9 +2122,27 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 				$this->setCreatorId($value);
 				break;
 			case 21:
-				$this->setSuperProjectId($value);
+				$this->setCreatedDate($value);
 				break;
 			case 22:
+				$this->setModifiedById($value);
+				break;
+			case 23:
+				$this->setModifiedDate($value);
+				break;
+			case 24:
+				$this->setAppId($value);
+				break;
+			case 25:
+				$this->setNeesResearchTypeId($value);
+				break;
+			case 26:
+				$this->setEnhanced($value);
+				break;
+			case 27:
+				$this->setSuperProjectId($value);
+				break;
+			case 28:
 				$this->setProjectTypeId($value);
 				break;
 		} // switch()
@@ -1809,8 +2189,14 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[18], $arr)) $this->setTitle($arr[$keys[18]]);
 		if (array_key_exists($keys[19], $arr)) $this->setView($arr[$keys[19]]);
 		if (array_key_exists($keys[20], $arr)) $this->setCreatorId($arr[$keys[20]]);
-		if (array_key_exists($keys[21], $arr)) $this->setSuperProjectId($arr[$keys[21]]);
-		if (array_key_exists($keys[22], $arr)) $this->setProjectTypeId($arr[$keys[22]]);
+		if (array_key_exists($keys[21], $arr)) $this->setCreatedDate($arr[$keys[21]]);
+		if (array_key_exists($keys[22], $arr)) $this->setModifiedById($arr[$keys[22]]);
+		if (array_key_exists($keys[23], $arr)) $this->setModifiedDate($arr[$keys[23]]);
+		if (array_key_exists($keys[24], $arr)) $this->setAppId($arr[$keys[24]]);
+		if (array_key_exists($keys[25], $arr)) $this->setNeesResearchTypeId($arr[$keys[25]]);
+		if (array_key_exists($keys[26], $arr)) $this->setEnhanced($arr[$keys[26]]);
+		if (array_key_exists($keys[27], $arr)) $this->setSuperProjectId($arr[$keys[27]]);
+		if (array_key_exists($keys[28], $arr)) $this->setProjectTypeId($arr[$keys[28]]);
 	}
 
 	/**
@@ -1843,6 +2229,12 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ProjectPeer::TITLE)) $criteria->add(ProjectPeer::TITLE, $this->title);
 		if ($this->isColumnModified(ProjectPeer::VIEWABLE)) $criteria->add(ProjectPeer::VIEWABLE, $this->viewable);
 		if ($this->isColumnModified(ProjectPeer::CREATOR_ID)) $criteria->add(ProjectPeer::CREATOR_ID, $this->creator_id);
+		if ($this->isColumnModified(ProjectPeer::CREATED_DATE)) $criteria->add(ProjectPeer::CREATED_DATE, $this->created_date);
+		if ($this->isColumnModified(ProjectPeer::MODIFIED_BY_ID)) $criteria->add(ProjectPeer::MODIFIED_BY_ID, $this->modified_by_id);
+		if ($this->isColumnModified(ProjectPeer::MODIFIED_DATE)) $criteria->add(ProjectPeer::MODIFIED_DATE, $this->modified_date);
+		if ($this->isColumnModified(ProjectPeer::APP_ID)) $criteria->add(ProjectPeer::APP_ID, $this->app_id);
+		if ($this->isColumnModified(ProjectPeer::NEES_RESEARCH_TYPE_ID)) $criteria->add(ProjectPeer::NEES_RESEARCH_TYPE_ID, $this->nees_research_type_id);
+		if ($this->isColumnModified(ProjectPeer::ENHANCED)) $criteria->add(ProjectPeer::ENHANCED, $this->enhanced);
 		if ($this->isColumnModified(ProjectPeer::SUPER_PROJECT_ID)) $criteria->add(ProjectPeer::SUPER_PROJECT_ID, $this->super_project_id);
 		if ($this->isColumnModified(ProjectPeer::PROJECT_TYPE_ID)) $criteria->add(ProjectPeer::PROJECT_TYPE_ID, $this->project_type_id);
 
@@ -1938,6 +2330,18 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		$copyObj->setView($this->viewable);
 
 		$copyObj->setCreatorId($this->creator_id);
+
+		$copyObj->setCreatedDate($this->created_date);
+
+		$copyObj->setModifiedById($this->modified_by_id);
+
+		$copyObj->setModifiedDate($this->modified_date);
+
+		$copyObj->setAppId($this->app_id);
+
+		$copyObj->setNeesResearchTypeId($this->nees_research_type_id);
+
+		$copyObj->setEnhanced($this->enhanced);
 
 		$copyObj->setSuperProjectId($this->super_project_id);
 
@@ -2094,7 +2498,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function setPerson($v)
+	public function setPersonRelatedByCreatorId($v)
 	{
 
 
@@ -2105,7 +2509,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 		}
 
 
-		$this->aPerson = $v;
+		$this->aPersonRelatedByCreatorId = $v;
 	}
 
 
@@ -2116,14 +2520,14 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 	 * @return     Person The associated Person object.
 	 * @throws     PropelException
 	 */
-	public function getPerson($con = null)
+	public function getPersonRelatedByCreatorId($con = null)
 	{
 		// include the related Peer class
 		include_once 'lib/data/om/BasePersonPeer.php';
 
-		if ($this->aPerson === null && ($this->creator_id > 0)) {
+		if ($this->aPersonRelatedByCreatorId === null && ($this->creator_id > 0)) {
 
-			$this->aPerson = PersonPeer::retrieveByPK($this->creator_id, $con);
+			$this->aPersonRelatedByCreatorId = PersonPeer::retrieveByPK($this->creator_id, $con);
 
 			/* The following can be used instead of the line above to
 			   guarantee the related object contains a reference
@@ -2132,10 +2536,163 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 			   As it can lead to a db query with many results that may
 			   never be used.
 			   $obj = PersonPeer::retrieveByPK($this->creator_id, $con);
-			   $obj->addPersons($this);
+			   $obj->addPersonsRelatedByCreatorId($this);
 			 */
 		}
-		return $this->aPerson;
+		return $this->aPersonRelatedByCreatorId;
+	}
+
+	/**
+	 * Declares an association between this object and a Person object.
+	 *
+	 * @param      Person $v
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function setPersonRelatedByModifiedById($v)
+	{
+
+
+		if ($v === null) {
+			$this->setModifiedById(NULL);
+		} else {
+			$this->setModifiedById($v->getId());
+		}
+
+
+		$this->aPersonRelatedByModifiedById = $v;
+	}
+
+
+	/**
+	 * Get the associated Person object
+	 *
+	 * @param      Connection Optional Connection object.
+	 * @return     Person The associated Person object.
+	 * @throws     PropelException
+	 */
+	public function getPersonRelatedByModifiedById($con = null)
+	{
+		// include the related Peer class
+		include_once 'lib/data/om/BasePersonPeer.php';
+
+		if ($this->aPersonRelatedByModifiedById === null && ($this->modified_by_id > 0)) {
+
+			$this->aPersonRelatedByModifiedById = PersonPeer::retrieveByPK($this->modified_by_id, $con);
+
+			/* The following can be used instead of the line above to
+			   guarantee the related object contains a reference
+			   to this object, but this level of coupling
+			   may be undesirable in many circumstances.
+			   As it can lead to a db query with many results that may
+			   never be used.
+			   $obj = PersonPeer::retrieveByPK($this->modified_by_id, $con);
+			   $obj->addPersonsRelatedByModifiedById($this);
+			 */
+		}
+		return $this->aPersonRelatedByModifiedById;
+	}
+
+	/**
+	 * Declares an association between this object and a NeesResearchType object.
+	 *
+	 * @param      NeesResearchType $v
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function setNeesResearchType($v)
+	{
+
+
+		if ($v === null) {
+			$this->setNeesResearchTypeId(NULL);
+		} else {
+			$this->setNeesResearchTypeId($v->getId());
+		}
+
+
+		$this->aNeesResearchType = $v;
+	}
+
+
+	/**
+	 * Get the associated NeesResearchType object
+	 *
+	 * @param      Connection Optional Connection object.
+	 * @return     NeesResearchType The associated NeesResearchType object.
+	 * @throws     PropelException
+	 */
+	public function getNeesResearchType($con = null)
+	{
+		// include the related Peer class
+		include_once 'lib/data/om/BaseNeesResearchTypePeer.php';
+
+		if ($this->aNeesResearchType === null && ($this->nees_research_type_id > 0)) {
+
+			$this->aNeesResearchType = NeesResearchTypePeer::retrieveByPK($this->nees_research_type_id, $con);
+
+			/* The following can be used instead of the line above to
+			   guarantee the related object contains a reference
+			   to this object, but this level of coupling
+			   may be undesirable in many circumstances.
+			   As it can lead to a db query with many results that may
+			   never be used.
+			   $obj = NeesResearchTypePeer::retrieveByPK($this->nees_research_type_id, $con);
+			   $obj->addNeesResearchTypes($this);
+			 */
+		}
+		return $this->aNeesResearchType;
+	}
+
+	/**
+	 * Declares an association between this object and a ProjectResearchType object.
+	 *
+	 * @param      ProjectResearchType $v
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function setProjectResearchType($v)
+	{
+
+
+		if ($v === null) {
+			$this->setNEES(NULL);
+		} else {
+			$this->setNEES($v->getId());
+		}
+
+
+		$this->aProjectResearchType = $v;
+	}
+
+
+	/**
+	 * Get the associated ProjectResearchType object
+	 *
+	 * @param      Connection Optional Connection object.
+	 * @return     ProjectResearchType The associated ProjectResearchType object.
+	 * @throws     PropelException
+	 */
+	public function getProjectResearchType($con = null)
+	{
+		// include the related Peer class
+		include_once 'lib/data/om/BaseProjectResearchTypePeer.php';
+
+		if ($this->aProjectResearchType === null && ($this->nees > 0)) {
+
+			$this->aProjectResearchType = ProjectResearchTypePeer::retrieveByPK($this->nees, $con);
+
+			/* The following can be used instead of the line above to
+			   guarantee the related object contains a reference
+			   to this object, but this level of coupling
+			   may be undesirable in many circumstances.
+			   As it can lead to a db query with many results that may
+			   never be used.
+			   $obj = ProjectResearchTypePeer::retrieveByPK($this->nees, $con);
+			   $obj->addProjectResearchTypes($this);
+			 */
+		}
+		return $this->aProjectResearchType;
 	}
 
 	/**
@@ -2462,6 +3019,104 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Project.
 	 */
+	public function getExperimentsJoinPersonRelatedByCreatorId($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collExperiments === null) {
+			if ($this->isNew()) {
+				$this->collExperiments = array();
+			} else {
+
+				$criteria->add(ExperimentPeer::PROJID, $this->getId());
+
+				$this->collExperiments = ExperimentPeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ExperimentPeer::PROJID, $this->getId());
+
+			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
+				$this->collExperiments = ExperimentPeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
+			}
+		}
+		$this->lastExperimentCriteria = $criteria;
+
+		return $this->collExperiments;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Project is new, it will return
+	 * an empty collection; or if this Project has previously
+	 * been saved, it will retrieve related Experiments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Project.
+	 */
+	public function getExperimentsJoinPersonRelatedByModifiedById($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collExperiments === null) {
+			if ($this->isNew()) {
+				$this->collExperiments = array();
+			} else {
+
+				$criteria->add(ExperimentPeer::PROJID, $this->getId());
+
+				$this->collExperiments = ExperimentPeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ExperimentPeer::PROJID, $this->getId());
+
+			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
+				$this->collExperiments = ExperimentPeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		}
+		$this->lastExperimentCriteria = $criteria;
+
+		return $this->collExperiments;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Project is new, it will return
+	 * an empty collection; or if this Project has previously
+	 * been saved, it will retrieve related Experiments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Project.
+	 */
 	public function getExperimentsJoinExperimentDomain($criteria = null, $con = null)
 	{
 		// include the Peer class
@@ -2492,55 +3147,6 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
 				$this->collExperiments = ExperimentPeer::doSelectJoinExperimentDomain($criteria, $con);
-			}
-		}
-		$this->lastExperimentCriteria = $criteria;
-
-		return $this->collExperiments;
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Project is new, it will return
-	 * an empty collection; or if this Project has previously
-	 * been saved, it will retrieve related Experiments from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Project.
-	 */
-	public function getExperimentsJoinPerson($criteria = null, $con = null)
-	{
-		// include the Peer class
-		include_once 'lib/data/om/BaseExperimentPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collExperiments === null) {
-			if ($this->isNew()) {
-				$this->collExperiments = array();
-			} else {
-
-				$criteria->add(ExperimentPeer::PROJID, $this->getId());
-
-				$this->collExperiments = ExperimentPeer::doSelectJoinPerson($criteria, $con);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(ExperimentPeer::PROJID, $this->getId());
-
-			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
-				$this->collExperiments = ExperimentPeer::doSelectJoinPerson($criteria, $con);
 			}
 		}
 		$this->lastExperimentCriteria = $criteria;
@@ -2667,7 +3273,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Project.
 	 */
-	public function getProjectsRelatedBySuperProjectIdJoinPerson($criteria = null, $con = null)
+	public function getProjectsRelatedBySuperProjectIdJoinPersonRelatedByCreatorId($criteria = null, $con = null)
 	{
 		// include the Peer class
 		include_once 'lib/data/om/BaseProjectPeer.php';
@@ -2686,7 +3292,7 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 				$criteria->add(ProjectPeer::SUPER_PROJECT_ID, $this->getId());
 
-				$this->collProjectsRelatedBySuperProjectId = ProjectPeer::doSelectJoinPerson($criteria, $con);
+				$this->collProjectsRelatedBySuperProjectId = ProjectPeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -2696,7 +3302,154 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 			$criteria->add(ProjectPeer::SUPER_PROJECT_ID, $this->getId());
 
 			if (!isset($this->lastProjectRelatedBySuperProjectIdCriteria) || !$this->lastProjectRelatedBySuperProjectIdCriteria->equals($criteria)) {
-				$this->collProjectsRelatedBySuperProjectId = ProjectPeer::doSelectJoinPerson($criteria, $con);
+				$this->collProjectsRelatedBySuperProjectId = ProjectPeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
+			}
+		}
+		$this->lastProjectRelatedBySuperProjectIdCriteria = $criteria;
+
+		return $this->collProjectsRelatedBySuperProjectId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Project is new, it will return
+	 * an empty collection; or if this Project has previously
+	 * been saved, it will retrieve related ProjectsRelatedBySuperProjectId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Project.
+	 */
+	public function getProjectsRelatedBySuperProjectIdJoinPersonRelatedByModifiedById($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collProjectsRelatedBySuperProjectId === null) {
+			if ($this->isNew()) {
+				$this->collProjectsRelatedBySuperProjectId = array();
+			} else {
+
+				$criteria->add(ProjectPeer::SUPER_PROJECT_ID, $this->getId());
+
+				$this->collProjectsRelatedBySuperProjectId = ProjectPeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ProjectPeer::SUPER_PROJECT_ID, $this->getId());
+
+			if (!isset($this->lastProjectRelatedBySuperProjectIdCriteria) || !$this->lastProjectRelatedBySuperProjectIdCriteria->equals($criteria)) {
+				$this->collProjectsRelatedBySuperProjectId = ProjectPeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		}
+		$this->lastProjectRelatedBySuperProjectIdCriteria = $criteria;
+
+		return $this->collProjectsRelatedBySuperProjectId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Project is new, it will return
+	 * an empty collection; or if this Project has previously
+	 * been saved, it will retrieve related ProjectsRelatedBySuperProjectId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Project.
+	 */
+	public function getProjectsRelatedBySuperProjectIdJoinNeesResearchType($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collProjectsRelatedBySuperProjectId === null) {
+			if ($this->isNew()) {
+				$this->collProjectsRelatedBySuperProjectId = array();
+			} else {
+
+				$criteria->add(ProjectPeer::SUPER_PROJECT_ID, $this->getId());
+
+				$this->collProjectsRelatedBySuperProjectId = ProjectPeer::doSelectJoinNeesResearchType($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ProjectPeer::SUPER_PROJECT_ID, $this->getId());
+
+			if (!isset($this->lastProjectRelatedBySuperProjectIdCriteria) || !$this->lastProjectRelatedBySuperProjectIdCriteria->equals($criteria)) {
+				$this->collProjectsRelatedBySuperProjectId = ProjectPeer::doSelectJoinNeesResearchType($criteria, $con);
+			}
+		}
+		$this->lastProjectRelatedBySuperProjectIdCriteria = $criteria;
+
+		return $this->collProjectsRelatedBySuperProjectId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Project is new, it will return
+	 * an empty collection; or if this Project has previously
+	 * been saved, it will retrieve related ProjectsRelatedBySuperProjectId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Project.
+	 */
+	public function getProjectsRelatedBySuperProjectIdJoinProjectResearchType($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collProjectsRelatedBySuperProjectId === null) {
+			if ($this->isNew()) {
+				$this->collProjectsRelatedBySuperProjectId = array();
+			} else {
+
+				$criteria->add(ProjectPeer::SUPER_PROJECT_ID, $this->getId());
+
+				$this->collProjectsRelatedBySuperProjectId = ProjectPeer::doSelectJoinProjectResearchType($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ProjectPeer::SUPER_PROJECT_ID, $this->getId());
+
+			if (!isset($this->lastProjectRelatedBySuperProjectIdCriteria) || !$this->lastProjectRelatedBySuperProjectIdCriteria->equals($criteria)) {
+				$this->collProjectsRelatedBySuperProjectId = ProjectPeer::doSelectJoinProjectResearchType($criteria, $con);
 			}
 		}
 		$this->lastProjectRelatedBySuperProjectIdCriteria = $criteria;
@@ -3009,6 +3762,55 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 
 			if (!isset($this->lastProjectHomepageCriteria) || !$this->lastProjectHomepageCriteria->equals($criteria)) {
 				$this->collProjectHomepages = ProjectHomepagePeer::doSelectJoinDataFile($criteria, $con);
+			}
+		}
+		$this->lastProjectHomepageCriteria = $criteria;
+
+		return $this->collProjectHomepages;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Project is new, it will return
+	 * an empty collection; or if this Project has previously
+	 * been saved, it will retrieve related ProjectHomepages from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Project.
+	 */
+	public function getProjectHomepagesJoinProjectHomepageTypeLookup($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectHomepagePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collProjectHomepages === null) {
+			if ($this->isNew()) {
+				$this->collProjectHomepages = array();
+			} else {
+
+				$criteria->add(ProjectHomepagePeer::PROJECT_ID, $this->getId());
+
+				$this->collProjectHomepages = ProjectHomepagePeer::doSelectJoinProjectHomepageTypeLookup($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ProjectHomepagePeer::PROJECT_ID, $this->getId());
+
+			if (!isset($this->lastProjectHomepageCriteria) || !$this->lastProjectHomepageCriteria->equals($criteria)) {
+				$this->collProjectHomepages = ProjectHomepagePeer::doSelectJoinProjectHomepageTypeLookup($criteria, $con);
 			}
 		}
 		$this->lastProjectHomepageCriteria = $criteria;
@@ -3638,6 +4440,55 @@ abstract class BaseProject extends BaseObject  implements Persistent {
 	{
 		$this->collProjectGrants[] = $l;
 		$l->setProject($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Project is new, it will return
+	 * an empty collection; or if this Project has previously
+	 * been saved, it will retrieve related ProjectGrants from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Project.
+	 */
+	public function getProjectGrantsJoinNeesAwardType($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectGrantPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collProjectGrants === null) {
+			if ($this->isNew()) {
+				$this->collProjectGrants = array();
+			} else {
+
+				$criteria->add(ProjectGrantPeer::PROJID, $this->getId());
+
+				$this->collProjectGrants = ProjectGrantPeer::doSelectJoinNeesAwardType($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ProjectGrantPeer::PROJID, $this->getId());
+
+			if (!isset($this->lastProjectGrantCriteria) || !$this->lastProjectGrantCriteria->equals($criteria)) {
+				$this->collProjectGrants = ProjectGrantPeer::doSelectJoinNeesAwardType($criteria, $con);
+			}
+		}
+		$this->lastProjectGrantCriteria = $criteria;
+
+		return $this->collProjectGrants;
 	}
 
 } // BaseProject

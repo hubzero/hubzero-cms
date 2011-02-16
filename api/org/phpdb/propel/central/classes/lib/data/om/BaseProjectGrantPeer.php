@@ -24,7 +24,7 @@ abstract class BaseProjectGrantPeer {
 	const CLASS_DEFAULT = 'lib.data.ProjectGrant';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 5;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -42,6 +42,9 @@ abstract class BaseProjectGrantPeer {
 	/** the column name for the AWARD_URL field */
 	const AWARD_URL = 'PROJECT_GRANT.AWARD_URL';
 
+	/** the column name for the NEES_AWARD_TYPE_ID field */
+	const NEES_AWARD_TYPE_ID = 'PROJECT_GRANT.NEES_AWARD_TYPE_ID';
+
 	/** The PHP to DB Name Mapping */
 	private static $phpNameMap = null;
 
@@ -53,10 +56,10 @@ abstract class BaseProjectGrantPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('ProjectId', 'FundingOrg', 'AwardNumber', 'AwardUrl', ),
-		BasePeer::TYPE_COLNAME => array (ProjectGrantPeer::PROJID, ProjectGrantPeer::FUND_ORG, ProjectGrantPeer::AWARD_NUM, ProjectGrantPeer::AWARD_URL, ),
-		BasePeer::TYPE_FIELDNAME => array ('PROJID', 'FUND_ORG', 'AWARD_NUM', 'AWARD_URL', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('ProjectId', 'FundingOrg', 'AwardNumber', 'AwardUrl', 'NeesAwardTypeId', ),
+		BasePeer::TYPE_COLNAME => array (ProjectGrantPeer::PROJID, ProjectGrantPeer::FUND_ORG, ProjectGrantPeer::AWARD_NUM, ProjectGrantPeer::AWARD_URL, ProjectGrantPeer::NEES_AWARD_TYPE_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('PROJID', 'FUND_ORG', 'AWARD_NUM', 'AWARD_URL', 'NEES_AWARD_TYPE_ID', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	/**
@@ -66,10 +69,10 @@ abstract class BaseProjectGrantPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('ProjectId' => 0, 'FundingOrg' => 1, 'AwardNumber' => 2, 'AwardUrl' => 3, ),
-		BasePeer::TYPE_COLNAME => array (ProjectGrantPeer::PROJID => 0, ProjectGrantPeer::FUND_ORG => 1, ProjectGrantPeer::AWARD_NUM => 2, ProjectGrantPeer::AWARD_URL => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('PROJID' => 0, 'FUND_ORG' => 1, 'AWARD_NUM' => 2, 'AWARD_URL' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('ProjectId' => 0, 'FundingOrg' => 1, 'AwardNumber' => 2, 'AwardUrl' => 3, 'NeesAwardTypeId' => 4, ),
+		BasePeer::TYPE_COLNAME => array (ProjectGrantPeer::PROJID => 0, ProjectGrantPeer::FUND_ORG => 1, ProjectGrantPeer::AWARD_NUM => 2, ProjectGrantPeer::AWARD_URL => 3, ProjectGrantPeer::NEES_AWARD_TYPE_ID => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('PROJID' => 0, 'FUND_ORG' => 1, 'AWARD_NUM' => 2, 'AWARD_URL' => 3, 'NEES_AWARD_TYPE_ID' => 4, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	/**
@@ -177,6 +180,8 @@ abstract class BaseProjectGrantPeer {
 		$criteria->addSelectColumn(ProjectGrantPeer::AWARD_NUM);
 
 		$criteria->addSelectColumn(ProjectGrantPeer::AWARD_URL);
+
+		$criteria->addSelectColumn(ProjectGrantPeer::NEES_AWARD_TYPE_ID);
 
 	}
 
@@ -347,6 +352,45 @@ abstract class BaseProjectGrantPeer {
 
 
 	/**
+	 * Returns the number of rows matching criteria, joining the related NeesAwardType table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinNeesAwardType(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ProjectGrantPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ProjectGrantPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ProjectGrantPeer::NEES_AWARD_TYPE_ID, NeesAwardTypePeer::ID);
+
+		$rs = ProjectGrantPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
 	 * Selects a collection of ProjectGrant objects pre-filled with their Project objects.
 	 *
 	 * @return     array Array of ProjectGrant objects.
@@ -405,6 +449,64 @@ abstract class BaseProjectGrantPeer {
 
 
 	/**
+	 * Selects a collection of ProjectGrant objects pre-filled with their NeesAwardType objects.
+	 *
+	 * @return     array Array of ProjectGrant objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinNeesAwardType(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ProjectGrantPeer::addSelectColumns($c);
+		$startcol = (ProjectGrantPeer::NUM_COLUMNS - ProjectGrantPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		NeesAwardTypePeer::addSelectColumns($c);
+
+		$c->addJoin(ProjectGrantPeer::NEES_AWARD_TYPE_ID, NeesAwardTypePeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ProjectGrantPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = NeesAwardTypePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getNeesAwardType(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addProjectGrant($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initProjectGrants();
+				$obj2->addProjectGrant($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
 	 * @param      Criteria $c
@@ -431,6 +533,8 @@ abstract class BaseProjectGrantPeer {
 		}
 
 		$criteria->addJoin(ProjectGrantPeer::PROJID, ProjectPeer::PROJID);
+
+		$criteria->addJoin(ProjectGrantPeer::NEES_AWARD_TYPE_ID, NeesAwardTypePeer::ID);
 
 		$rs = ProjectGrantPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -464,7 +568,12 @@ abstract class BaseProjectGrantPeer {
 		ProjectPeer::addSelectColumns($c);
 		$startcol3 = $startcol2 + ProjectPeer::NUM_COLUMNS;
 
+		NeesAwardTypePeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + NeesAwardTypePeer::NUM_COLUMNS;
+
 		$c->addJoin(ProjectGrantPeer::PROJID, ProjectPeer::PROJID);
+
+		$c->addJoin(ProjectGrantPeer::NEES_AWARD_TYPE_ID, NeesAwardTypePeer::ID);
 
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -495,6 +604,244 @@ abstract class BaseProjectGrantPeer {
 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addProjectGrant($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initProjectGrants();
+				$obj2->addProjectGrant($obj1);
+			}
+
+
+				// Add objects for joined NeesAwardType rows
+	
+			$omClass = NeesAwardTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3 = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getNeesAwardType(); // CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addProjectGrant($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initProjectGrants();
+				$obj3->addProjectGrant($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related Project table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptProject(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ProjectGrantPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ProjectGrantPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ProjectGrantPeer::NEES_AWARD_TYPE_ID, NeesAwardTypePeer::ID);
+
+		$rs = ProjectGrantPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related NeesAwardType table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptNeesAwardType(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ProjectGrantPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ProjectGrantPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ProjectGrantPeer::PROJID, ProjectPeer::PROJID);
+
+		$rs = ProjectGrantPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Selects a collection of ProjectGrant objects pre-filled with all related objects except Project.
+	 *
+	 * @return     array Array of ProjectGrant objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptProject(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ProjectGrantPeer::addSelectColumns($c);
+		$startcol2 = (ProjectGrantPeer::NUM_COLUMNS - ProjectGrantPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		NeesAwardTypePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + NeesAwardTypePeer::NUM_COLUMNS;
+
+		$c->addJoin(ProjectGrantPeer::NEES_AWARD_TYPE_ID, NeesAwardTypePeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ProjectGrantPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = NeesAwardTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getNeesAwardType(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addProjectGrant($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initProjectGrants();
+				$obj2->addProjectGrant($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of ProjectGrant objects pre-filled with all related objects except NeesAwardType.
+	 *
+	 * @return     array Array of ProjectGrant objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptNeesAwardType(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ProjectGrantPeer::addSelectColumns($c);
+		$startcol2 = (ProjectGrantPeer::NUM_COLUMNS - ProjectGrantPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		ProjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + ProjectPeer::NUM_COLUMNS;
+
+		$c->addJoin(ProjectGrantPeer::PROJID, ProjectPeer::PROJID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ProjectGrantPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ProjectPeer::getOMClass($rs, $startcol2);
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getProject(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addProjectGrant($obj1);
 					break;
 				}
 			}

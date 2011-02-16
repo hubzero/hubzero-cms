@@ -24,7 +24,7 @@ abstract class BaseExperimentPeer {
 	const CLASS_DEFAULT = 'lib.data.Experiment';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 15;
+	const NUM_COLUMNS = 19;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -75,6 +75,18 @@ abstract class BaseExperimentPeer {
 	/** the column name for the CREATOR_ID field */
 	const CREATOR_ID = 'EXPERIMENT.CREATOR_ID';
 
+	/** the column name for the CREATED_DATE field */
+	const CREATED_DATE = 'EXPERIMENT.CREATED_DATE';
+
+	/** the column name for the MODIFIED_BY_ID field */
+	const MODIFIED_BY_ID = 'EXPERIMENT.MODIFIED_BY_ID';
+
+	/** the column name for the MODIFIED_DATE field */
+	const MODIFIED_DATE = 'EXPERIMENT.MODIFIED_DATE';
+
+	/** the column name for the APP_ID field */
+	const APP_ID = 'EXPERIMENT.APP_ID';
+
 	/** A key representing a particular subclass */
 	const CLASSKEY_0 = '0';
 
@@ -122,10 +134,10 @@ abstract class BaseExperimentPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'CurationStatus', 'Deleted', 'Description', 'EndDate', 'ExperimentDomainId', 'ExperimentTypeId', 'Name', 'Objective', 'ProjectId', 'StartDate', 'Status', 'Title', 'View', 'CreatorId', ),
-		BasePeer::TYPE_COLNAME => array (ExperimentPeer::EXPID, ExperimentPeer::CURATION_STATUS, ExperimentPeer::DELETED, ExperimentPeer::DESCRIPTION, ExperimentPeer::END_DATE, ExperimentPeer::EXPERIMENT_DOMAIN_ID, ExperimentPeer::EXP_TYPE_ID, ExperimentPeer::NAME, ExperimentPeer::OBJECTIVE, ExperimentPeer::PROJID, ExperimentPeer::START_DATE, ExperimentPeer::STATUS, ExperimentPeer::TITLE, ExperimentPeer::VIEWABLE, ExperimentPeer::CREATOR_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('EXPID', 'CURATION_STATUS', 'DELETED', 'DESCRIPTION', 'END_DATE', 'EXPERIMENT_DOMAIN_ID', 'EXP_TYPE_ID', 'NAME', 'OBJECTIVE', 'PROJID', 'START_DATE', 'STATUS', 'TITLE', 'VIEWABLE', 'CREATOR_ID', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'CurationStatus', 'Deleted', 'Description', 'EndDate', 'ExperimentDomainId', 'ExperimentTypeId', 'Name', 'Objective', 'ProjectId', 'StartDate', 'Status', 'Title', 'View', 'CreatorId', 'CreatedDate', 'ModifiedById', 'ModifiedDate', 'AppId', ),
+		BasePeer::TYPE_COLNAME => array (ExperimentPeer::EXPID, ExperimentPeer::CURATION_STATUS, ExperimentPeer::DELETED, ExperimentPeer::DESCRIPTION, ExperimentPeer::END_DATE, ExperimentPeer::EXPERIMENT_DOMAIN_ID, ExperimentPeer::EXP_TYPE_ID, ExperimentPeer::NAME, ExperimentPeer::OBJECTIVE, ExperimentPeer::PROJID, ExperimentPeer::START_DATE, ExperimentPeer::STATUS, ExperimentPeer::TITLE, ExperimentPeer::VIEWABLE, ExperimentPeer::CREATOR_ID, ExperimentPeer::CREATED_DATE, ExperimentPeer::MODIFIED_BY_ID, ExperimentPeer::MODIFIED_DATE, ExperimentPeer::APP_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('EXPID', 'CURATION_STATUS', 'DELETED', 'DESCRIPTION', 'END_DATE', 'EXPERIMENT_DOMAIN_ID', 'EXP_TYPE_ID', 'NAME', 'OBJECTIVE', 'PROJID', 'START_DATE', 'STATUS', 'TITLE', 'VIEWABLE', 'CREATOR_ID', 'CREATED_DATE', 'MODIFIED_BY_ID', 'MODIFIED_DATE', 'APP_ID', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
 	);
 
 	/**
@@ -135,10 +147,10 @@ abstract class BaseExperimentPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CurationStatus' => 1, 'Deleted' => 2, 'Description' => 3, 'EndDate' => 4, 'ExperimentDomainId' => 5, 'ExperimentTypeId' => 6, 'Name' => 7, 'Objective' => 8, 'ProjectId' => 9, 'StartDate' => 10, 'Status' => 11, 'Title' => 12, 'View' => 13, 'CreatorId' => 14, ),
-		BasePeer::TYPE_COLNAME => array (ExperimentPeer::EXPID => 0, ExperimentPeer::CURATION_STATUS => 1, ExperimentPeer::DELETED => 2, ExperimentPeer::DESCRIPTION => 3, ExperimentPeer::END_DATE => 4, ExperimentPeer::EXPERIMENT_DOMAIN_ID => 5, ExperimentPeer::EXP_TYPE_ID => 6, ExperimentPeer::NAME => 7, ExperimentPeer::OBJECTIVE => 8, ExperimentPeer::PROJID => 9, ExperimentPeer::START_DATE => 10, ExperimentPeer::STATUS => 11, ExperimentPeer::TITLE => 12, ExperimentPeer::VIEWABLE => 13, ExperimentPeer::CREATOR_ID => 14, ),
-		BasePeer::TYPE_FIELDNAME => array ('EXPID' => 0, 'CURATION_STATUS' => 1, 'DELETED' => 2, 'DESCRIPTION' => 3, 'END_DATE' => 4, 'EXPERIMENT_DOMAIN_ID' => 5, 'EXP_TYPE_ID' => 6, 'NAME' => 7, 'OBJECTIVE' => 8, 'PROJID' => 9, 'START_DATE' => 10, 'STATUS' => 11, 'TITLE' => 12, 'VIEWABLE' => 13, 'CREATOR_ID' => 14, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CurationStatus' => 1, 'Deleted' => 2, 'Description' => 3, 'EndDate' => 4, 'ExperimentDomainId' => 5, 'ExperimentTypeId' => 6, 'Name' => 7, 'Objective' => 8, 'ProjectId' => 9, 'StartDate' => 10, 'Status' => 11, 'Title' => 12, 'View' => 13, 'CreatorId' => 14, 'CreatedDate' => 15, 'ModifiedById' => 16, 'ModifiedDate' => 17, 'AppId' => 18, ),
+		BasePeer::TYPE_COLNAME => array (ExperimentPeer::EXPID => 0, ExperimentPeer::CURATION_STATUS => 1, ExperimentPeer::DELETED => 2, ExperimentPeer::DESCRIPTION => 3, ExperimentPeer::END_DATE => 4, ExperimentPeer::EXPERIMENT_DOMAIN_ID => 5, ExperimentPeer::EXP_TYPE_ID => 6, ExperimentPeer::NAME => 7, ExperimentPeer::OBJECTIVE => 8, ExperimentPeer::PROJID => 9, ExperimentPeer::START_DATE => 10, ExperimentPeer::STATUS => 11, ExperimentPeer::TITLE => 12, ExperimentPeer::VIEWABLE => 13, ExperimentPeer::CREATOR_ID => 14, ExperimentPeer::CREATED_DATE => 15, ExperimentPeer::MODIFIED_BY_ID => 16, ExperimentPeer::MODIFIED_DATE => 17, ExperimentPeer::APP_ID => 18, ),
+		BasePeer::TYPE_FIELDNAME => array ('EXPID' => 0, 'CURATION_STATUS' => 1, 'DELETED' => 2, 'DESCRIPTION' => 3, 'END_DATE' => 4, 'EXPERIMENT_DOMAIN_ID' => 5, 'EXP_TYPE_ID' => 6, 'NAME' => 7, 'OBJECTIVE' => 8, 'PROJID' => 9, 'START_DATE' => 10, 'STATUS' => 11, 'TITLE' => 12, 'VIEWABLE' => 13, 'CREATOR_ID' => 14, 'CREATED_DATE' => 15, 'MODIFIED_BY_ID' => 16, 'MODIFIED_DATE' => 17, 'APP_ID' => 18, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
 	);
 
 	/**
@@ -269,6 +281,14 @@ abstract class BaseExperimentPeer {
 
 		$criteria->addSelectColumn(ExperimentPeer::CREATOR_ID);
 
+		$criteria->addSelectColumn(ExperimentPeer::CREATED_DATE);
+
+		$criteria->addSelectColumn(ExperimentPeer::MODIFIED_BY_ID);
+
+		$criteria->addSelectColumn(ExperimentPeer::MODIFIED_DATE);
+
+		$criteria->addSelectColumn(ExperimentPeer::APP_ID);
+
 	}
 
 	const COUNT = 'COUNT(EXPERIMENT.EXPID)';
@@ -398,6 +418,84 @@ abstract class BaseExperimentPeer {
 	}
 
 	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByCreatorId table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinPersonRelatedByCreatorId(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ExperimentPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ExperimentPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
+
+		$rs = ExperimentPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByModifiedById table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinPersonRelatedByModifiedById(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ExperimentPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ExperimentPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ExperimentPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$rs = ExperimentPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
 	 * Returns the number of rows matching criteria, joining the related ExperimentDomain table
 	 *
 	 * @param      Criteria $c
@@ -476,41 +574,118 @@ abstract class BaseExperimentPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related Person table
+	 * Selects a collection of Experiment objects pre-filled with their Person objects.
 	 *
-	 * @param      Criteria $c
-	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
-	 * @param      Connection $con
-	 * @return     int Number of matching rows.
+	 * @return     array Array of Experiment objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doCountJoinPerson(Criteria $criteria, $distinct = false, $con = null)
+	public static function doSelectJoinPersonRelatedByCreatorId(Criteria $c, $con = null)
 	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
+		$c = clone $c;
 
-		// clear out anything that might confuse the ORDER BY clause
-		$criteria->clearSelectColumns()->clearOrderByColumns();
-		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->addSelectColumn(ExperimentPeer::COUNT_DISTINCT);
-		} else {
-			$criteria->addSelectColumn(ExperimentPeer::COUNT);
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
 		}
 
-		// just in case we're grouping: add those columns to the select statement
-		foreach($criteria->getGroupByColumns() as $column)
-		{
-			$criteria->addSelectColumn($column);
+		ExperimentPeer::addSelectColumns($c);
+		$startcol = (ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		PersonPeer::addSelectColumns($c);
+
+		$c->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ExperimentPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addExperimentRelatedByCreatorId($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initExperimentsRelatedByCreatorId();
+				$obj2->addExperimentRelatedByCreatorId($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Experiment objects pre-filled with their Person objects.
+	 *
+	 * @return     array Array of Experiment objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinPersonRelatedByModifiedById(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
 		}
 
-		$criteria->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
+		ExperimentPeer::addSelectColumns($c);
+		$startcol = (ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		PersonPeer::addSelectColumns($c);
 
-		$rs = ExperimentPeer::doSelectRS($criteria, $con);
-		if ($rs->next()) {
-			return $rs->getInt(1);
-		} else {
-			// no rows returned; we infer that means 0 matches.
-			return 0;
+		$c->addJoin(ExperimentPeer::MODIFIED_BY_ID, PersonPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ExperimentPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addExperimentRelatedByModifiedById($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initExperimentsRelatedByModifiedById();
+				$obj2->addExperimentRelatedByModifiedById($obj1); //CHECKME
+			}
+			$results[] = $obj1;
 		}
+		return $results;
 	}
 
 
@@ -631,64 +806,6 @@ abstract class BaseExperimentPeer {
 
 
 	/**
-	 * Selects a collection of Experiment objects pre-filled with their Person objects.
-	 *
-	 * @return     array Array of Experiment objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinPerson(Criteria $c, $con = null)
-	{
-		$c = clone $c;
-
-		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
-		}
-
-		ExperimentPeer::addSelectColumns($c);
-		$startcol = (ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-		PersonPeer::addSelectColumns($c);
-
-		$c->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
-		$rs = BasePeer::doSelect($c, $con);
-		$results = array();
-
-		while($rs->next()) {
-
-			$omClass = ExperimentPeer::getOMClass($rs, 1);
-
-			$cls = Propel::import($omClass);
-			$obj1 = new $cls();
-			$obj1->hydrate($rs);
-
-			$omClass = PersonPeer::getOMClass();
-
-			$cls = Propel::import($omClass);
-			$obj2 = new $cls();
-			$obj2->hydrate($rs, $startcol);
-
-			$newObject = true;
-			foreach($results as $temp_obj1) {
-				$temp_obj2 = $temp_obj1->getPerson(); //CHECKME
-				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
-					$newObject = false;
-					// e.g. $author->addBookRelatedByBookId()
-					$temp_obj2->addExperiment($obj1); //CHECKME
-					break;
-				}
-			}
-			if ($newObject) {
-				$obj2->initExperiments();
-				$obj2->addExperiment($obj1); //CHECKME
-			}
-			$results[] = $obj1;
-		}
-		return $results;
-	}
-
-
-	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
 	 * @param      Criteria $c
@@ -714,11 +831,13 @@ abstract class BaseExperimentPeer {
 			$criteria->addSelectColumn($column);
 		}
 
+		$criteria->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(ExperimentPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
 		$criteria->addJoin(ExperimentPeer::EXPERIMENT_DOMAIN_ID, ExperimentDomainPeer::ID);
 
 		$criteria->addJoin(ExperimentPeer::PROJID, ProjectPeer::PROJID);
-
-		$criteria->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
 
 		$rs = ExperimentPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -749,20 +868,25 @@ abstract class BaseExperimentPeer {
 		ExperimentPeer::addSelectColumns($c);
 		$startcol2 = (ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		ExperimentDomainPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + ExperimentDomainPeer::NUM_COLUMNS;
-
-		ProjectPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + ProjectPeer::NUM_COLUMNS;
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
 
 		PersonPeer::addSelectColumns($c);
-		$startcol5 = $startcol4 + PersonPeer::NUM_COLUMNS;
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		ExperimentDomainPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + ExperimentDomainPeer::NUM_COLUMNS;
+
+		ProjectPeer::addSelectColumns($c);
+		$startcol6 = $startcol5 + ProjectPeer::NUM_COLUMNS;
+
+		$c->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(ExperimentPeer::MODIFIED_BY_ID, PersonPeer::ID);
 
 		$c->addJoin(ExperimentPeer::EXPERIMENT_DOMAIN_ID, ExperimentDomainPeer::ID);
 
 		$c->addJoin(ExperimentPeer::PROJID, ProjectPeer::PROJID);
-
-		$c->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
 
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -777,9 +901,9 @@ abstract class BaseExperimentPeer {
 			$obj1->hydrate($rs);
 
 
-				// Add objects for joined ExperimentDomain rows
+				// Add objects for joined Person rows
 	
-			$omClass = ExperimentDomainPeer::getOMClass();
+			$omClass = PersonPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -789,43 +913,17 @@ abstract class BaseExperimentPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getExperimentDomain(); // CHECKME
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); // CHECKME
 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
-					$temp_obj2->addExperiment($obj1); // CHECKME
+					$temp_obj2->addExperimentRelatedByCreatorId($obj1); // CHECKME
 					break;
 				}
 			}
 
 			if ($newObject) {
-				$obj2->initExperiments();
-				$obj2->addExperiment($obj1);
-			}
-
-
-				// Add objects for joined Project rows
-	
-			$omClass = ProjectPeer::getOMClass($rs, $startcol3);
-
-
-			$cls = Propel::import($omClass);
-			$obj3 = new $cls();
-			$obj3->hydrate($rs, $startcol3);
-
-			$newObject = true;
-			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
-				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getProject(); // CHECKME
-				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
-					$newObject = false;
-					$temp_obj3->addExperiment($obj1); // CHECKME
-					break;
-				}
-			}
-
-			if ($newObject) {
-				$obj3->initExperiments();
-				$obj3->addExperiment($obj1);
+				$obj2->initExperimentsRelatedByCreatorId();
+				$obj2->addExperimentRelatedByCreatorId($obj1);
 			}
 
 
@@ -835,13 +933,39 @@ abstract class BaseExperimentPeer {
 
 
 			$cls = Propel::import($omClass);
+			$obj3 = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); // CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addExperimentRelatedByModifiedById($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initExperimentsRelatedByModifiedById();
+				$obj3->addExperimentRelatedByModifiedById($obj1);
+			}
+
+
+				// Add objects for joined ExperimentDomain rows
+	
+			$omClass = ExperimentDomainPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
 			$obj4 = new $cls();
 			$obj4->hydrate($rs, $startcol4);
 
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj4 = $temp_obj1->getPerson(); // CHECKME
+				$temp_obj4 = $temp_obj1->getExperimentDomain(); // CHECKME
 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj4->addExperiment($obj1); // CHECKME
@@ -854,9 +978,117 @@ abstract class BaseExperimentPeer {
 				$obj4->addExperiment($obj1);
 			}
 
+
+				// Add objects for joined Project rows
+	
+			$omClass = ProjectPeer::getOMClass($rs, $startcol5);
+
+
+			$cls = Propel::import($omClass);
+			$obj5 = new $cls();
+			$obj5->hydrate($rs, $startcol5);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj5 = $temp_obj1->getProject(); // CHECKME
+				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj5->addExperiment($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj5->initExperiments();
+				$obj5->addExperiment($obj1);
+			}
+
 			$results[] = $obj1;
 		}
 		return $results;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByCreatorId table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptPersonRelatedByCreatorId(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ExperimentPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ExperimentPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ExperimentPeer::EXPERIMENT_DOMAIN_ID, ExperimentDomainPeer::ID);
+
+		$criteria->addJoin(ExperimentPeer::PROJID, ProjectPeer::PROJID);
+
+		$rs = ExperimentPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByModifiedById table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptPersonRelatedByModifiedById(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ExperimentPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ExperimentPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ExperimentPeer::EXPERIMENT_DOMAIN_ID, ExperimentDomainPeer::ID);
+
+		$criteria->addJoin(ExperimentPeer::PROJID, ProjectPeer::PROJID);
+
+		$rs = ExperimentPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
 	}
 
 
@@ -887,9 +1119,11 @@ abstract class BaseExperimentPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(ExperimentPeer::PROJID, ProjectPeer::PROJID);
-
 		$criteria->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(ExperimentPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$criteria->addJoin(ExperimentPeer::PROJID, ProjectPeer::PROJID);
 
 		$rs = ExperimentPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -928,51 +1162,12 @@ abstract class BaseExperimentPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(ExperimentPeer::EXPERIMENT_DOMAIN_ID, ExperimentDomainPeer::ID);
-
 		$criteria->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
 
-		$rs = ExperimentPeer::doSelectRS($criteria, $con);
-		if ($rs->next()) {
-			return $rs->getInt(1);
-		} else {
-			// no rows returned; we infer that means 0 matches.
-			return 0;
-		}
-	}
-
-
-	/**
-	 * Returns the number of rows matching criteria, joining the related Person table
-	 *
-	 * @param      Criteria $c
-	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
-	 * @param      Connection $con
-	 * @return     int Number of matching rows.
-	 */
-	public static function doCountJoinAllExceptPerson(Criteria $criteria, $distinct = false, $con = null)
-	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
-
-		// clear out anything that might confuse the ORDER BY clause
-		$criteria->clearSelectColumns()->clearOrderByColumns();
-		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->addSelectColumn(ExperimentPeer::COUNT_DISTINCT);
-		} else {
-			$criteria->addSelectColumn(ExperimentPeer::COUNT);
-		}
-
-		// just in case we're grouping: add those columns to the select statement
-		foreach($criteria->getGroupByColumns() as $column)
-		{
-			$criteria->addSelectColumn($column);
-		}
+		$criteria->addJoin(ExperimentPeer::MODIFIED_BY_ID, PersonPeer::ID);
 
 		$criteria->addJoin(ExperimentPeer::EXPERIMENT_DOMAIN_ID, ExperimentDomainPeer::ID);
 
-		$criteria->addJoin(ExperimentPeer::PROJID, ProjectPeer::PROJID);
-
 		$rs = ExperimentPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
 			return $rs->getInt(1);
@@ -984,203 +1179,13 @@ abstract class BaseExperimentPeer {
 
 
 	/**
-	 * Selects a collection of Experiment objects pre-filled with all related objects except ExperimentDomain.
+	 * Selects a collection of Experiment objects pre-filled with all related objects except PersonRelatedByCreatorId.
 	 *
 	 * @return     array Array of Experiment objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptExperimentDomain(Criteria $c, $con = null)
-	{
-		$c = clone $c;
-
-		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
-		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
-		}
-
-		ExperimentPeer::addSelectColumns($c);
-		$startcol2 = (ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-
-		ProjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + ProjectPeer::NUM_COLUMNS;
-
-		PersonPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
-
-		$c->addJoin(ExperimentPeer::PROJID, ProjectPeer::PROJID);
-
-		$c->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
-
-
-		$rs = BasePeer::doSelect($c, $con);
-		$results = array();
-
-		while($rs->next()) {
-
-			$omClass = ExperimentPeer::getOMClass($rs, 1);
-
-			$cls = Propel::import($omClass);
-			$obj1 = new $cls();
-			$obj1->hydrate($rs);
-
-			$omClass = ProjectPeer::getOMClass($rs, $startcol2);
-
-
-			$cls = Propel::import($omClass);
-			$obj2  = new $cls();
-			$obj2->hydrate($rs, $startcol2);
-
-			$newObject = true;
-			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
-				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getProject(); //CHECKME
-				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
-					$newObject = false;
-					$temp_obj2->addExperiment($obj1);
-					break;
-				}
-			}
-
-			if ($newObject) {
-				$obj2->initExperiments();
-				$obj2->addExperiment($obj1);
-			}
-
-			$omClass = PersonPeer::getOMClass();
-
-
-			$cls = Propel::import($omClass);
-			$obj3  = new $cls();
-			$obj3->hydrate($rs, $startcol3);
-
-			$newObject = true;
-			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
-				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getPerson(); //CHECKME
-				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
-					$newObject = false;
-					$temp_obj3->addExperiment($obj1);
-					break;
-				}
-			}
-
-			if ($newObject) {
-				$obj3->initExperiments();
-				$obj3->addExperiment($obj1);
-			}
-
-			$results[] = $obj1;
-		}
-		return $results;
-	}
-
-
-	/**
-	 * Selects a collection of Experiment objects pre-filled with all related objects except Project.
-	 *
-	 * @return     array Array of Experiment objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAllExceptProject(Criteria $c, $con = null)
-	{
-		$c = clone $c;
-
-		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
-		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
-		}
-
-		ExperimentPeer::addSelectColumns($c);
-		$startcol2 = (ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-
-		ExperimentDomainPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + ExperimentDomainPeer::NUM_COLUMNS;
-
-		PersonPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
-
-		$c->addJoin(ExperimentPeer::EXPERIMENT_DOMAIN_ID, ExperimentDomainPeer::ID);
-
-		$c->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
-
-
-		$rs = BasePeer::doSelect($c, $con);
-		$results = array();
-
-		while($rs->next()) {
-
-			$omClass = ExperimentPeer::getOMClass($rs, 1);
-
-			$cls = Propel::import($omClass);
-			$obj1 = new $cls();
-			$obj1->hydrate($rs);
-
-			$omClass = ExperimentDomainPeer::getOMClass();
-
-
-			$cls = Propel::import($omClass);
-			$obj2  = new $cls();
-			$obj2->hydrate($rs, $startcol2);
-
-			$newObject = true;
-			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
-				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getExperimentDomain(); //CHECKME
-				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
-					$newObject = false;
-					$temp_obj2->addExperiment($obj1);
-					break;
-				}
-			}
-
-			if ($newObject) {
-				$obj2->initExperiments();
-				$obj2->addExperiment($obj1);
-			}
-
-			$omClass = PersonPeer::getOMClass();
-
-
-			$cls = Propel::import($omClass);
-			$obj3  = new $cls();
-			$obj3->hydrate($rs, $startcol3);
-
-			$newObject = true;
-			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
-				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getPerson(); //CHECKME
-				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
-					$newObject = false;
-					$temp_obj3->addExperiment($obj1);
-					break;
-				}
-			}
-
-			if ($newObject) {
-				$obj3->initExperiments();
-				$obj3->addExperiment($obj1);
-			}
-
-			$results[] = $obj1;
-		}
-		return $results;
-	}
-
-
-	/**
-	 * Selects a collection of Experiment objects pre-filled with all related objects except Person.
-	 *
-	 * @return     array Array of Experiment objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAllExceptPerson(Criteria $c, $con = null)
+	public static function doSelectJoinAllExceptPersonRelatedByCreatorId(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -1260,6 +1265,347 @@ abstract class BaseExperimentPeer {
 			if ($newObject) {
 				$obj3->initExperiments();
 				$obj3->addExperiment($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Experiment objects pre-filled with all related objects except PersonRelatedByModifiedById.
+	 *
+	 * @return     array Array of Experiment objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptPersonRelatedByModifiedById(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ExperimentPeer::addSelectColumns($c);
+		$startcol2 = (ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		ExperimentDomainPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + ExperimentDomainPeer::NUM_COLUMNS;
+
+		ProjectPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + ProjectPeer::NUM_COLUMNS;
+
+		$c->addJoin(ExperimentPeer::EXPERIMENT_DOMAIN_ID, ExperimentDomainPeer::ID);
+
+		$c->addJoin(ExperimentPeer::PROJID, ProjectPeer::PROJID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ExperimentPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ExperimentDomainPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getExperimentDomain(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addExperiment($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initExperiments();
+				$obj2->addExperiment($obj1);
+			}
+
+			$omClass = ProjectPeer::getOMClass($rs, $startcol3);
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getProject(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addExperiment($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initExperiments();
+				$obj3->addExperiment($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Experiment objects pre-filled with all related objects except ExperimentDomain.
+	 *
+	 * @return     array Array of Experiment objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptExperimentDomain(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ExperimentPeer::addSelectColumns($c);
+		$startcol2 = (ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		ProjectPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + ProjectPeer::NUM_COLUMNS;
+
+		$c->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(ExperimentPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(ExperimentPeer::PROJID, ProjectPeer::PROJID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ExperimentPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addExperimentRelatedByCreatorId($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initExperimentsRelatedByCreatorId();
+				$obj2->addExperimentRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addExperimentRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initExperimentsRelatedByModifiedById();
+				$obj3->addExperimentRelatedByModifiedById($obj1);
+			}
+
+			$omClass = ProjectPeer::getOMClass($rs, $startcol4);
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getProject(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addExperiment($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initExperiments();
+				$obj4->addExperiment($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Experiment objects pre-filled with all related objects except Project.
+	 *
+	 * @return     array Array of Experiment objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptProject(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ExperimentPeer::addSelectColumns($c);
+		$startcol2 = (ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		ExperimentDomainPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + ExperimentDomainPeer::NUM_COLUMNS;
+
+		$c->addJoin(ExperimentPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(ExperimentPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(ExperimentPeer::EXPERIMENT_DOMAIN_ID, ExperimentDomainPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ExperimentPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addExperimentRelatedByCreatorId($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initExperimentsRelatedByCreatorId();
+				$obj2->addExperimentRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addExperimentRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initExperimentsRelatedByModifiedById();
+				$obj3->addExperimentRelatedByModifiedById($obj1);
+			}
+
+			$omClass = ExperimentDomainPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getExperimentDomain(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addExperiment($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initExperiments();
+				$obj4->addExperiment($obj1);
 			}
 
 			$results[] = $obj1;

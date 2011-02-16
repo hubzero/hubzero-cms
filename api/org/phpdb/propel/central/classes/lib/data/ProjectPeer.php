@@ -82,7 +82,446 @@ class ProjectPeer extends BaseProjectPeer {
     $c->add(self::NAME, $condStr, Criteria::CUSTOM);
     return self::doSelect($c);
   }
-  
+
+  /**
+   * Returns a primary key to identify a person's search...
+   * @param Connection $p_oConnection
+   * @return int
+   */
+  public static function getWarehouseSearchKeywordsId($p_oConnection){
+    $iSearchId = 0;
+    $strQuery = "select warehouse_search_keywords_seq.nextval as SEARCH_ID from dual";
+
+    //$oConnection = oci_connect(NeesConfig::ORACLE_USERNAME, NeesConfig::ORACLE_PASSWORD, NeesConfig::ORACLE_SERVER) or die;
+    //$oStatement  = oci_parse($oConnection, $strQuery);
+    $oStatement  = oci_parse($p_oConnection, $strQuery);
+
+    oci_execute($oStatement);
+    while ($oResultArray = oci_fetch_array($oStatement,OCI_BOTH)) {
+      $iSearchId = $oResultArray["SEARCH_ID"];
+    }
+    return $iSearchId;
+  }
+
+  /**
+   * Returns N-projects found by query.
+   * @param Connection $p_oConnection
+   * @param int $p_iSearchId
+   * @param string $p_strKeywords
+   * @param int $p_iFromIndex
+   * @param int $p_iToIndex
+   * @return array
+   */
+  public static function searchByProcedure($p_oConnection, $p_iSearchId, $p_strKeywords="", $p_strFunding="",
+                                           $p_strMemberName="", $p_iIsInvestigator=0, $p_iOrganizationId=0, $p_iProjectTypeId=0,
+                                           $p_strProjectNumbers="", $p_strAwardNumbers="", $p_strMaterials="", $p_iProjectYear=0,
+                                           $p_strOrderBy="", $p_iFromIndex=0, $p_iToIndex=0, $p_iPersonId=0){
+
+    /*
+    echo "ProjectPeer::searchByProcedure(p_iSearchId)=$p_iSearchId<br>";
+    echo "ProjectPeer::searchByProcedure(p_strKeywords)=$p_strKeywords<br>";
+    echo "ProjectPeer::searchByProcedure(p_strFunding)=$p_strFunding<br>";
+    echo "ProjectPeer::searchByProcedure(p_strMemberName)=$p_strMemberName<br>";
+    echo "ProjectPeer::searchByProcedure(p_iIsInvestigator)=$p_iIsInvestigator<br>";
+    echo "ProjectPeer::searchByProcedure(p_iOrganizationId)=$p_iOrganizationId<br>";
+    echo "ProjectPeer::searchByProcedure(p_iProjectTypeId)=$p_iProjectTypeId<br>";
+    echo "ProjectPeer::searchByProcedure(p_strProjectNumbers)=$p_strProjectNumbers<br>";
+    echo "ProjectPeer::searchByProcedure(p_strAwardNumbers)=$p_strAwardNumbers<br>";
+    echo "ProjectPeer::searchByProcedure(p_strMaterials)=$p_strMaterials<br>";
+    echo "ProjectPeer::searchByProcedure(p_iProjectYear)=$p_iProjectYear<br>";
+    echo "ProjectPeer::searchByProcedure(p_strOrderBy)=$p_strOrderBy<br>";
+    echo "ProjectPeer::searchByProcedure(p_iFromIndex)=$p_iFromIndex<br>";
+    echo "ProjectPeer::searchByProcedure(p_iToIndex)=$p_iToIndex<br>";
+    echo "ProjectPeer::searchByProcedure(p_iPersonId)=$p_iPersonId<br>";
+    */
+    $oProjectArray = array();
+
+    $strQuery = "BEGIN warehouse_pkg.search(:iSearchId, :strKeywords, :strFunding, :strMemberName, :iIsInvestigator, :iOrganizationId, :iProjectTypeId, :strProjectNumbers, :strAwardNumbers, :strMaterials, :iProjectYear, :strOrderBy, :iFrom, :iTo, :iPersonId, :searchCursor); END;";
+    //$strQuery = "BEGIN warehouse_pkg.search(:iSearchId, :strKeywords, '', '', 0, 0, '', '', '', 0, '', :iFrom, :iTo, :searchCursor); END;";
+
+    $oStatement  = oci_parse($p_oConnection, $strQuery);
+
+    // Bind the input to the PHP variables
+    oci_bind_by_name($oStatement,":iSearchId", $p_iSearchId);
+    oci_bind_by_name($oStatement,":strKeywords", $p_strKeywords);
+    oci_bind_by_name($oStatement,":strFunding", $p_strFunding);
+    oci_bind_by_name($oStatement,":strMemberName", $p_strMemberName);
+    oci_bind_by_name($oStatement,":iIsInvestigator", $p_iIsInvestigator);
+    oci_bind_by_name($oStatement,":iOrganizationId", $p_iOrganizationId);
+    oci_bind_by_name($oStatement,":iProjectTypeId", $p_iProjectTypeId);
+    oci_bind_by_name($oStatement,":strProjectNumbers", $p_strProjectNumbers);
+    oci_bind_by_name($oStatement,":strAwardNumbers", $p_strAwardNumbers);
+    oci_bind_by_name($oStatement,":strMaterials", $p_strMaterials);
+    oci_bind_by_name($oStatement,":iProjectYear", $p_iProjectYear);
+    oci_bind_by_name($oStatement,":strOrderBy", $p_strOrderBy);
+    oci_bind_by_name($oStatement,":iFrom", $p_iFromIndex);
+    oci_bind_by_name($oStatement,":iTo", $p_iToIndex);
+    oci_bind_by_name($oStatement,":iPersonId", $p_iPersonId);
+
+
+    // Create a new cursor resource
+    $oSearchCursor = oci_new_cursor($p_oConnection);
+
+    // Bind the cursor resource to the Oracle argument
+    oci_bind_by_name($oStatement,":searchCursor",$oSearchCursor,-1,OCI_B_CURSOR);
+
+    // Execute the statement
+    oci_execute($oStatement);
+
+    // Execute the cursor
+    oci_execute($oSearchCursor);
+
+    while ($oResultsArray = oci_fetch_assoc($oSearchCursor)) {
+      $iProjectId = intval($oResultsArray["PROJID"]);
+      $oProject = self::retrieveByPK($iProjectId);
+      array_push($oProjectArray, $oProject);
+    }
+
+    return $oProjectArray;
+  }
+
+  /**
+   * Returns the total number of distinct projects found in warehouse_search_keywords.
+   * @param Connection $p_oConnection
+   * @param int $p_iSearchId
+   * @param string $p_strFunding
+   * @param string $p_iOrganizationId
+   * @return int
+   */
+  public static function searchByProcedureCount($p_oConnection, $p_iSearchId, $p_strKeywords="", $p_strFunding="",
+                                           $p_strMemberName="", $p_iIsInvestigator=0, $p_iOrganizationId=0, $p_iProjectTypeId=0, $p_strProjectNumbers="",
+                                           $p_strAwardNumbers="", $p_strMaterials="", $p_iProjectYear=0, $p_iPersonId=0){
+
+    $strQuery = "SELECT count(distinct wsk.projid) as TOTAL
+                 FROM warehouse_search_keywords wsk
+                 INNER JOIN project p ON wsk.projid=p.projid AND p.viewable='PUBLIC' ";
+
+    if($p_iOrganizationId){
+      $strQuery .= "INNER JOIN project_organization po ON po.projid=wsk.projid
+                    INNER JOIN organization o ON o.orgid=po.orgid AND o.org_type_id=1 AND o.orgid=$p_iOrganizationId ";
+    }
+
+    if(StringHelper::hasText($p_strFunding)){
+      $strSponsorResult = "";
+      $strSponsorArray = explode(",", $p_strFunding);
+      foreach($strSponsorArray as $iIndex=>$strSponsor){
+        $strSponsorResult .= "'".strtolower(trim($strSponsor))."'";
+        if($iIndex < count($strSponsorArray)-1){
+          $strSponsorResult .= ",";
+        }
+      }
+      $strQuery .= "INNER JOIN project_grant pg ON pg.projid=wsk.projid AND lower(pg.fund_org) in ($strSponsorResult) ";
+    }
+
+    if(StringHelper::hasText($p_strMaterials)){
+      $strMaterialResult = "";
+      $strMaterialArray = explode(",", $p_strMaterials);
+      foreach($strMaterialArray as $iIndex=>$strMaterial){
+        $strMaterialResult .= "'".strtolower(trim($strMaterial))."'";
+        if($iIndex < count($strMaterialArray)-1){
+          $strMaterialResult .= ",";
+        }
+      }
+      $strQuery .= "INNER JOIN experiment e ON e.projid=wsk.projid AND e.deleted=0 INNER JOIN material mat on mat.expid=e.expid INNER JOIN material_type mt on mat.material_type_id=mt.id and lower(mt.display_name) in ($strMaterialResult) ";
+    }
+
+    if(StringHelper::hasText($p_strMemberName)){
+      $strNameArray = explode(",", $p_strMemberName);
+      $strLastName = strtolower(trim($strNameArray[0]));
+      $strFirstName = strtolower(trim($strNameArray[1]));
+      //$strRoleId = ($p_iIsInvestigator==0) ? "" : " and per.role_id=1 ";
+      $strRoleId = " and per.role_id=1 ";
+
+      $strQuery .= "inner join person_entity_role per on per.entity_id=wsk.projid and per.entity_type_id=1 $strRoleId inner join person m on per.person_id=m.id and lower(m.last_name) like '$strLastName%' and lower(m.first_name) like '$strFirstName%' ";
+    }
+
+    $strQuery.= "WHERE wsk.id = :iSearchId
+                   AND wsk.entity_type_id=1";
+
+    $strMembershipQuery = $strQuery;
+    $strSearch = "INNER JOIN project p ON wsk.projid=p.projid AND p.viewable='PUBLIC'";
+    $strReplace = "INNER JOIN authorization au on au.entity_id=wsk.projid and au.entity_type_id=1 and au.permissions like 'view%' and au.person_id=$p_iPersonId ";
+    $strMembershipQuery = str_replace($strSearch, $strReplace, $strMembershipQuery);
+
+    $strQuery = $strQuery ." union ".$strMembershipQuery;
+    //echo "ProjectPeer::searchByProcedureCount query=$strQuery<br>";
+
+    $iTotal = 0;
+
+    $oStatement  = oci_parse($p_oConnection, $strQuery);
+
+    // Bind the input to the PHP variables
+    oci_bind_by_name($oStatement,":iSearchId", $p_iSearchId);
+
+    // Execute the statement
+    oci_execute($oStatement);
+
+    while ($oResultArray = oci_fetch_array($oStatement,OCI_BOTH)) {
+      $iTotal = $oResultArray["TOTAL"];
+    }
+    return $iTotal;
+  }
+
+  public static function searchProjectTypeFilter($p_oConnection, $p_iSearchId, $p_iPersonId, $p_iFromIndex, $p_iToIndex){
+    $oProjectTypeArray = array();
+
+    $strQuery = "BEGIN warehouse_pkg.searchProjectTypeFilter(:iSearchId, :iPersonId, :iFrom, :iTo, :searchCursor); END;";
+
+    $oStatement  = oci_parse($p_oConnection, $strQuery);
+
+    // Bind the input to the PHP variables
+    oci_bind_by_name($oStatement,":iSearchId", $p_iSearchId);
+    oci_bind_by_name($oStatement,":iPersonId", $p_iPersonId);
+    oci_bind_by_name($oStatement,":iFrom", $p_iFromIndex);
+    oci_bind_by_name($oStatement,":iTo", $p_iToIndex);
+
+    // Create a new cursor resource
+    $oSearchCursor = oci_new_cursor($p_oConnection);
+
+    // Bind the cursor resource to the Oracle argument
+    oci_bind_by_name($oStatement,":searchCursor",$oSearchCursor,-1,OCI_B_CURSOR);
+
+    // Execute the statement
+    oci_execute($oStatement);
+
+    // Execute the cursor
+    oci_execute($oSearchCursor);
+
+    while ($oResultsArray = oci_fetch_assoc($oSearchCursor)) {
+      $iTotal = intval($oResultsArray["TOTAL"]);
+      $strMoniker = $oResultsArray["MONIKER"];
+      $oFilterArray = array("TOTAL"=>$iTotal, "MONIKER"=>$strMoniker);
+      array_push($oProjectTypeArray, $oFilterArray);
+    }
+
+    return $oProjectTypeArray;
+  }
+
+  public static function searchNeesSiteFilter($p_oConnection, $p_iSearchId, $p_iPersonId, $p_iFromIndex, $p_iToIndex){
+    $oProjectTypeArray = array();
+
+    $strQuery = "BEGIN warehouse_pkg.searchNeesSiteFilter(:iSearchId, :iPersonId, :iFrom, :iTo, :searchCursor); END;";
+
+    $oStatement  = oci_parse($p_oConnection, $strQuery);
+
+    // Bind the input to the PHP variables
+    oci_bind_by_name($oStatement,":iSearchId", $p_iSearchId);
+    oci_bind_by_name($oStatement,":iPersonId", $p_iPersonId);
+    oci_bind_by_name($oStatement,":iFrom", $p_iFromIndex);
+    oci_bind_by_name($oStatement,":iTo", $p_iToIndex);
+
+    // Create a new cursor resource
+    $oSearchCursor = oci_new_cursor($p_oConnection);
+
+    // Bind the cursor resource to the Oracle argument
+    oci_bind_by_name($oStatement,":searchCursor",$oSearchCursor,-1,OCI_B_CURSOR);
+
+    // Execute the statement
+    oci_execute($oStatement);
+
+    // Execute the cursor
+    oci_execute($oSearchCursor);
+
+    while ($oResultsArray = oci_fetch_assoc($oSearchCursor)) {
+      $iTotal = intval($oResultsArray["TOTAL"]);
+      $strMoniker = $oResultsArray["MONIKER"];
+      $iPrimaryKey = intval($oResultsArray["PKEY"]);
+      $oFilterArray = array("TOTAL"=>$iTotal, "MONIKER"=>$strMoniker, "ID"=>$iPrimaryKey);
+      array_push($oProjectTypeArray, $oFilterArray);
+    }
+
+    return $oProjectTypeArray;
+  }
+
+  public static function searchSponsorFilter($p_oConnection, $p_iSearchId, $p_iPersonId, $p_iFromIndex, $p_iToIndex){
+    $oProjectTypeArray = array();
+
+    $strQuery = "BEGIN warehouse_pkg.searchSponsorFilter(:iSearchId, :iPersonId, :iFrom, :iTo, :searchCursor); END;";
+
+    $oStatement  = oci_parse($p_oConnection, $strQuery);
+
+    // Bind the input to the PHP variables
+    oci_bind_by_name($oStatement,":iSearchId", $p_iSearchId);
+    oci_bind_by_name($oStatement,":iPersonId", $p_iPersonId);
+    oci_bind_by_name($oStatement,":iFrom", $p_iFromIndex);
+    oci_bind_by_name($oStatement,":iTo", $p_iToIndex);
+
+    // Create a new cursor resource
+    $oSearchCursor = oci_new_cursor($p_oConnection);
+
+    // Bind the cursor resource to the Oracle argument
+    oci_bind_by_name($oStatement,":searchCursor",$oSearchCursor,-1,OCI_B_CURSOR);
+
+    // Execute the statement
+    oci_execute($oStatement);
+
+    // Execute the cursor
+    oci_execute($oSearchCursor);
+
+    while ($oResultsArray = oci_fetch_assoc($oSearchCursor)) {
+      $iTotal = intval($oResultsArray["TOTAL"]);
+      $strMoniker = $oResultsArray["MONIKER"];
+      $oFilterArray = array("TOTAL"=>$iTotal, "MONIKER"=>$strMoniker);
+      array_push($oProjectTypeArray, $oFilterArray);
+    }
+
+    return $oProjectTypeArray;
+  }
+
+  public static function searchNeesResearchTypeFilter($p_oConnection, $p_iSearchId, $p_iPersonId, $p_iFromIndex, $p_iToIndex){
+    $oProjectTypeArray = array();
+
+    $strQuery = "BEGIN warehouse_pkg.searchNeesResearchTypeFilter(:iSearchId, :iPersonId, :iFrom, :iTo, :searchCursor); END;";
+
+    $oStatement  = oci_parse($p_oConnection, $strQuery);
+
+    // Bind the input to the PHP variables
+    oci_bind_by_name($oStatement,":iSearchId", $p_iSearchId);
+    oci_bind_by_name($oStatement,":iPersonId", $p_iPersonId);
+    oci_bind_by_name($oStatement,":iFrom", $p_iFromIndex);
+    oci_bind_by_name($oStatement,":iTo", $p_iToIndex);
+
+    // Create a new cursor resource
+    $oSearchCursor = oci_new_cursor($p_oConnection);
+
+    // Bind the cursor resource to the Oracle argument
+    oci_bind_by_name($oStatement,":searchCursor",$oSearchCursor,-1,OCI_B_CURSOR);
+
+    // Execute the statement
+    oci_execute($oStatement);
+
+    // Execute the cursor
+    oci_execute($oSearchCursor);
+
+    while ($oResultsArray = oci_fetch_assoc($oSearchCursor)) {
+      $iTotal = intval($oResultsArray["TOTAL"]);
+      $strMoniker = $oResultsArray["MONIKER"];
+      $iPrimaryKey = intval($oResultsArray["PKEY"]);
+      $oFilterArray = array("TOTAL"=>$iTotal, "MONIKER"=>$strMoniker, "ID"=>$iPrimaryKey);
+      array_push($oProjectTypeArray, $oFilterArray);
+    }
+
+    return $oProjectTypeArray;
+  }
+
+  public static function searchInvestigatorFilter($p_oConnection, $p_iSearchId, $p_iPersonId, $p_iFromIndex, $p_iToIndex){
+    $oProjectTypeArray = array();
+
+    $strQuery = "BEGIN warehouse_pkg.searchInvestigatorFilter(:iSearchId, :iPersonId, :iFrom, :iTo, :searchCursor); END;";
+
+    $oStatement  = oci_parse($p_oConnection, $strQuery);
+
+    // Bind the input to the PHP variables
+    oci_bind_by_name($oStatement,":iSearchId", $p_iSearchId);
+    oci_bind_by_name($oStatement,":iPersonId", $p_iPersonId);
+    oci_bind_by_name($oStatement,":iFrom", $p_iFromIndex);
+    oci_bind_by_name($oStatement,":iTo", $p_iToIndex);
+
+    // Create a new cursor resource
+    $oSearchCursor = oci_new_cursor($p_oConnection);
+
+    // Bind the cursor resource to the Oracle argument
+    oci_bind_by_name($oStatement,":searchCursor",$oSearchCursor,-1,OCI_B_CURSOR);
+
+    // Execute the statement
+    oci_execute($oStatement);
+
+    // Execute the cursor
+    oci_execute($oSearchCursor);
+
+    while ($oResultsArray = oci_fetch_assoc($oSearchCursor)) {
+      $iTotal = intval($oResultsArray["TOTAL"]);
+      $strMoniker = $oResultsArray["MONIKER"];
+      $iPrimaryKey = intval($oResultsArray["PKEY"]);
+      $oFilterArray = array("TOTAL"=>$iTotal, "MONIKER"=>$strMoniker, "ID"=>$iPrimaryKey);
+      array_push($oProjectTypeArray, $oFilterArray);
+    }
+
+    return $oProjectTypeArray;
+  }
+
+  public static function searchMaterialTypesFilter($p_oConnection, $p_iSearchId, $p_iPersonId, $p_iFromIndex, $p_iToIndex){
+    $oProjectTypeArray = array();
+
+    $strQuery = "BEGIN warehouse_pkg.searchMaterialTypesFilter(:iSearchId, :iPersonId, :iFrom, :iTo, :searchCursor); END;";
+
+    $oStatement  = oci_parse($p_oConnection, $strQuery);
+
+    // Bind the input to the PHP variables
+    oci_bind_by_name($oStatement,":iSearchId", $p_iSearchId);
+    oci_bind_by_name($oStatement,":iPersonId", $p_iPersonId);
+    oci_bind_by_name($oStatement,":iFrom", $p_iFromIndex);
+    oci_bind_by_name($oStatement,":iTo", $p_iToIndex);
+
+    // Create a new cursor resource
+    $oSearchCursor = oci_new_cursor($p_oConnection);
+
+    // Bind the cursor resource to the Oracle argument
+    oci_bind_by_name($oStatement,":searchCursor",$oSearchCursor,-1,OCI_B_CURSOR);
+
+    // Execute the statement
+    oci_execute($oStatement);
+
+    // Execute the cursor
+    oci_execute($oSearchCursor);
+
+    while ($oResultsArray = oci_fetch_assoc($oSearchCursor)) {
+      $iTotal = intval($oResultsArray["TOTAL"]);
+      $strMoniker = $oResultsArray["MONIKER"];
+      $iPrimaryKey = intval($oResultsArray["PKEY"]);
+      $oFilterArray = array("TOTAL"=>$iTotal, "MONIKER"=>$strMoniker, "ID"=>$iPrimaryKey);
+      array_push($oProjectTypeArray, $oFilterArray);
+    }
+
+    return $oProjectTypeArray;
+  }
+
+  public static function searchFilterCount($p_oConnection, $p_iSearchId, $p_iPersonId, $p_strProcedureCall){
+    $iTotal = array();
+
+    $strQuery = "BEGIN warehouse_pkg.".$p_strProcedureCall."(:iSearchId, :iPersonId, :searchCursor); END;";
+
+    $oStatement  = oci_parse($p_oConnection, $strQuery);
+
+    // Bind the input to the PHP variables
+    oci_bind_by_name($oStatement,":iSearchId", $p_iSearchId);
+    oci_bind_by_name($oStatement,":iPersonId", $p_iPersonId);
+
+    // Create a new cursor resource
+    $oSearchCursor = oci_new_cursor($p_oConnection);
+
+    // Bind the cursor resource to the Oracle argument
+    oci_bind_by_name($oStatement,":searchCursor",$oSearchCursor,-1,OCI_B_CURSOR);
+
+    // Execute the statement
+    oci_execute($oStatement);
+
+    // Execute the cursor
+    oci_execute($oSearchCursor);
+
+    while ($oResultsArray = oci_fetch_assoc($oSearchCursor)) {
+      $iTotal = intval($oResultsArray["TOTAL"]);
+    }
+    //echo "ProjectPeer::searchFilterCount($p_strProcedureCall) total=$iTotal<br>";
+
+    return $iTotal;
+  }
+
+  public static function searchByProcedureDelete($p_oConnection, $p_iSearchId){
+    $strQuery = "DELETE FROM warehouse_search_keywords
+                 WHERE id = :iSearchId";
+
+    $oStatement  = oci_parse($p_oConnection, $strQuery);
+
+    // Bind the input to the PHP variables
+    oci_bind_by_name($oStatement,":iSearchId", $p_iSearchId);
+
+    // Execute the statement
+    oci_execute($oStatement);
+
+    return true;
+  }
+
   /**
    * 
    *
@@ -1117,6 +1556,525 @@ class ProjectPeer extends BaseProjectPeer {
     }
 
     return $oReturnArray;
+  }
+
+  public static function getEnhancedProjects(){
+    $oCriteria = new Criteria();
+    $oCriteria->add(self::ENHANCED, 1);
+    $oCriteria->addAscendingOrderByColumn(self::PROJID);
+    return self::doSelect($oCriteria);
+  }
+
+  public static function searchTestWithProjectIds(){
+    $oReturnArray = array();
+
+    //$strQuery = self::getTestRawQuery();
+    //$strQuery = self::getTestTitleQuery();
+    //$strQuery = self::getTestTitleAndDescQuery();
+    //$strQuery = self::getTestTitleAndDescUnionQuery();
+    //$strQuery = self::getTestTitleAndDescUnionWithMembershipQuery();
+
+    $strQueryPrefix = "SELECT projid
+                       FROM (
+                       SELECT projid, row_number()
+                         OVER (ORDER BY PROJID) as rn
+                         FROM(";
+
+    $strQuerySuffix = "      )
+                       )
+                       WHERE rn BETWEEN 1 AND 25";
+
+    $p_strKeywordArray = array("concrete", "column");
+    $strProjectQuery = self::getTestPublicProjectQuery($p_strKeywordArray);
+    $strExperimentQuery = self::getTestPublicExperimentQuery($p_strKeywordArray);
+
+    $strQuery = $strQueryPrefix." ".$strProjectQuery." union ".$strExperimentQuery." ".$strQuerySuffix;
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->createStatement();
+    $oResultsSet = $oStatement->executeQuery($strQuery, ResultSet::FETCHMODE_ASSOC);
+    while($oResultsSet->next()){
+      $iProjectId = $oResultsSet->getInt('PROJID');
+      array_push($oReturnArray, $iProjectId);
+    }
+
+    return $oReturnArray;
+  }
+
+  public static function searchTestWithProjects(){
+    $oReturnArray = array();
+    
+    //$strQuery = self::getTestRawQuery();
+    //$strQuery = self::getTestTitleQuery();
+    //$strQuery = self::getTestTitleAndDescQuery();
+    //$strQuery = self::getTestTitleAndDescUnionQuery();
+    //$strQuery = self::getTestTitleAndDescUnionWithMembershipQuery();
+
+    $strQueryPrefix = "SELECT projid
+                       FROM (
+                       SELECT projid, row_number()
+                         OVER (ORDER BY PROJID) as rn
+                         FROM(";
+
+    $strQuerySuffix = "      )
+                       )
+                       WHERE rn BETWEEN 1 AND 25";
+
+    $p_strKeywordArray = array("concrete", "column");
+    $strProjectQuery = self::getTestPublicProjectQuery($p_strKeywordArray);
+    $strExperimentQuery = self::getTestPublicExperimentQuery($p_strKeywordArray);
+
+    $strQuery = $strQueryPrefix." ".$strProjectQuery." union ".$strExperimentQuery." ".$strQuerySuffix;
+
+    echo $strQuery."<p>";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->createStatement();
+    $oResultsSet = $oStatement->executeQuery($strQuery, ResultSet::FETCHMODE_ASSOC);
+    while($oResultsSet->next()){
+      $iProjectId = $oResultsSet->getInt('PROJID');
+      $oThisProject = self::find($iProjectId);
+      array_push($oReturnArray, $oThisProject);
+    }
+
+    return $oReturnArray;
+  }
+
+  /**
+   * Project primary keys = 25 in 0.02 secs
+   * Find 25 projects = 0.09
+   * Project objects = 25 in 0.1 secs
+   */
+  private function getTestRawQuery(){
+    $strQuery = "SELECT projid
+                FROM (
+                SELECT projid, row_number()
+                  OVER (ORDER BY PROJID) as rn
+                  FROM(
+                    -- project
+                    select distinct p.projid
+                    from project p
+                    where p.deleted=0
+
+                    union
+
+                    -- experiment
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    where p.deleted=0
+                      and e.deleted=0
+
+                    union
+
+                    -- trial
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+
+                    union
+
+                    -- repetition
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    inner join repetition r on r.trialid = t.trialid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and r.deleted=0
+                  )
+                )
+                WHERE rn BETWEEN 1 AND 25";
+    return $strQuery;
+  }
+
+  /*
+   * Project primary keys = 25 in 0.05 secs
+   * Find 25 projects = 0.08
+   * Project objects = 25 in 0.12 secs
+   */
+  private function getTestTitleQuery(){
+    $strQuery = "SELECT projid
+                FROM (
+                SELECT projid, row_number()
+                  OVER (ORDER BY PROJID) as rn
+                  FROM(
+                    -- project
+                    select distinct p.projid
+                    from project p
+                    where p.deleted=0
+                      and lower(p.title) like '%concrete%' or lower(p.title) like '%column%'
+
+                    union
+
+                    -- experiment
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and lower(e.title) like '%concrete%' or lower(e.title) like '%column%'
+
+                    union
+
+                    -- trial
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and lower(t.title) like '%concrete%' or lower(t.title) like '%column%'
+
+                    union
+
+                    -- repetition
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    inner join repetition r on r.trialid = t.trialid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and r.deleted=0
+                      and lower(r.title) like '%concrete%' or lower(r.title) like '%column%'
+                  )
+                )
+                WHERE rn BETWEEN 1 AND 25";
+    return $strQuery;
+  }
+
+  /**
+   * Project primary keys = 25 in 1.97 secs
+   * Find 25 projects = 0.08
+   *
+   * Project objects = 25 in 1.95 secs
+   */
+  private function getTestTitleAndDescQuery(){
+    $strQuery = "SELECT projid
+                FROM (
+                SELECT projid, row_number()
+                  OVER (ORDER BY PROJID) as rn
+                  FROM(
+                    -- project
+                    select distinct p.projid
+                    from project p
+                    where p.deleted=0
+                      and lower(p.title) like '%concrete%' or lower(p.title) like '%column%'
+                      or  lower(p.description) like '%concrete%' or lower(p.description) like '%column%'
+
+                    union
+
+                    -- experiment
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and lower(e.title) like '%concrete%' or lower(e.title) like '%column%'
+                      or  lower(e.description) like '%concrete%' or lower(e.description) like '%column%'
+
+                    union
+
+                    -- trial
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and lower(t.title) like '%concrete%' or lower(t.title) like '%column%'
+                      or  lower(t.description) like '%concrete%' or lower(t.description) like '%column%'
+
+                    union
+
+                    -- repetition
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    inner join repetition r on r.trialid = t.trialid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and r.deleted=0
+                      and lower(r.title) like '%concrete%' or lower(r.title) like '%column%'
+                      or  lower(r.description) like '%concrete%' or lower(r.description) like '%column%'
+                  )
+                )
+                WHERE rn BETWEEN 1 AND 25";
+    return $strQuery;
+  }
+
+  /**
+   * Project primary keys = 25 in 0.89 secs
+   * Find 25 projects = 0.09
+   * Project objects = 25 in 0.97 secs
+   */
+  private function getTestTitleAndDescUnionQuery(){
+    $strQuery = "SELECT projid
+                FROM (
+                SELECT projid, row_number()
+                  OVER (ORDER BY PROJID) as rn
+                  FROM(
+                    -- project title
+                    select distinct p.projid
+                    from project p
+                    where p.deleted=0
+                      and lower(p.title) like '%concrete%'
+
+                    union
+
+                    -- project desc
+                    select distinct p.projid
+                    from project p
+                    where p.deleted=0
+                      and lower(p.description) like '%concrete%'
+
+                    union
+
+                    -- experiment title
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and lower(e.title) like '%concrete%'
+
+                    union
+
+                    -- experiment desc
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and lower(e.description) like '%concrete%'
+
+                    union
+
+                    -- trial title
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and lower(t.title) like '%concrete%'
+
+                    union
+
+                    -- trial description
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and lower(t.description) like '%concrete%'
+
+                    union
+
+                    -- repetition title
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    inner join repetition r on r.trialid = t.trialid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and r.deleted=0
+                      and lower(r.title) like '%concrete%'
+
+                    union
+
+                    -- repetition desc
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    inner join repetition r on r.trialid = t.trialid
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and r.deleted=0
+                      and lower(r.description) like '%concrete%'
+                  )
+                )
+                WHERE rn BETWEEN 1 AND 25";
+
+    return $strQuery;
+  }
+
+  /**
+   * Project primary keys = 25 in 0.95 secs
+   * Find 25 projects = 0.09
+   *
+   * Project objects = 25 in 1.01 secs
+   */
+  private function getTestTitleAndDescUnionWithMembershipQuery(){
+    $strQuery = "SELECT projid
+                FROM (
+                SELECT projid, row_number()
+                  OVER (ORDER BY PROJID) as rn
+                  FROM(
+                    -- project title
+                    select distinct p.projid
+                    from project p
+                    left outer join authorization a on a.entity_id=p.projid and a.entity_type_id=1 and a.person_id=1378 and a.permissions like 'view%'
+                    where p.deleted=0
+                      and lower(p.title) like '%concrete%' or lower(p.title) like '%column%'
+                      and (a.id is not null or p.viewable='PUBLIC')
+
+                    union
+
+                    -- project desc
+                    select distinct p.projid
+                    from project p
+                    left outer join authorization a on a.entity_id=p.projid and a.entity_type_id=1 and a.person_id=1378 and a.permissions like 'view%'
+                    where p.deleted=0
+                      and lower(p.description) like '%concrete%' or lower(p.description) like '%column%'
+                      and (a.id is not null or p.viewable='PUBLIC')
+
+                    union
+
+                    -- experiment title
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    left outer join authorization a on a.entity_id=p.projid and a.entity_type_id=1 and a.person_id=1378 and a.permissions like 'view%'
+                    where p.deleted=0
+                      and e.deleted=0
+                      and lower(e.title) like '%concrete%' or lower(e.title) like '%column%'
+                      and (a.id is not null or p.viewable='PUBLIC')
+
+                    union
+
+                    -- experiment desc
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    left outer join authorization a on a.entity_id=p.projid and a.entity_type_id=1 and a.person_id=1378 and a.permissions like 'view%'
+                    where p.deleted=0
+                      and e.deleted=0
+                      and lower(e.description) like '%concrete%' or lower(e.description) like '%column%'
+                      and (a.id is not null or p.viewable='PUBLIC')
+
+                    union
+
+                    -- trial title
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    left outer join authorization a on a.entity_id=p.projid and a.entity_type_id=1 and a.person_id=1378 and a.permissions like 'view%'
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and lower(t.title) like '%concrete%' or lower(t.title) like '%column%'
+                      and (a.id is not null or p.viewable='PUBLIC')
+
+                    union
+
+                    -- trial description
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    left outer join authorization a on a.entity_id=p.projid and a.entity_type_id=1 and a.person_id=1378 and a.permissions like 'view%'
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and lower(t.description) like '%concrete%' or lower(t.description) like '%column%'
+                      and (a.id is not null or p.viewable='PUBLIC')
+
+                    union
+
+                    -- repetition title
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    inner join repetition r on r.trialid = t.trialid
+                    left outer join authorization a on a.entity_id=p.projid and a.entity_type_id=1 and a.person_id=1378 and a.permissions like 'view%'
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and r.deleted=0
+                      and lower(r.title) like '%concrete%' or lower(r.title) like '%column%'
+                      and (a.id is not null or p.viewable='PUBLIC')
+
+                    union
+
+                    -- repetition desc
+                    select distinct p.projid
+                    from project p
+                    inner join experiment e on e.projid = p.projid
+                    inner join trial t on t.expid = e.expid
+                    inner join repetition r on r.trialid = t.trialid
+                    left outer join authorization a on a.entity_id=p.projid and a.entity_type_id=1 and a.person_id=1378 and a.permissions like 'view%'
+                    where p.deleted=0
+                      and e.deleted=0
+                      and t.deleted=0
+                      and r.deleted=0
+                      and lower(r.description) like '%concrete%' or lower(r.description) like '%column%'
+                      and (a.id is not null or p.viewable='PUBLIC')
+                  )
+                )
+                WHERE rn BETWEEN 1 AND 25";
+
+    return $strQuery;
+  }
+
+  /**
+   * Project primary keys = 25 in 0.07 secs
+   * Find 25 projects = 0.09
+   * 
+   * Project objects = 25 in 0.14 secs
+   *
+   */
+  private function getTestPublicProjectQuery($p_strKeywordArray){
+    $strQueryInner = "";
+
+    foreach($p_strKeywordArray as $iIndex=>$strKeyword){
+      if($iIndex > 0){
+        $strQueryInner .= " union ";
+      }
+
+      $strQueryInner .= "select p.projid from project p where p.deleted=0 and lower(p.title) like '%$strKeyword%' and p.viewable='PUBLIC'";
+      $strQueryInner .= " union ";
+      $strQueryInner .= "select p.projid from project p where p.deleted=0 and lower(p.description) like '%$strKeyword%' and p.viewable='PUBLIC'";
+    }
+
+    return $strQueryInner;
+  }
+
+  private function getTestPublicExperimentQuery($p_strKeywordArray){
+    $strQueryInner = "";
+
+    foreach($p_strKeywordArray as $iIndex=>$strKeyword){
+      if($iIndex > 0){
+        $strQueryInner .= " union ";
+      }
+
+      $strQueryInner .= "select p.projid from project p inner join experiment e on e.projid=p.projid where p.deleted=0 and e.deleted=0 and lower(e.title) like '%$strKeyword%' and p.viewable='PUBLIC'";
+      $strQueryInner .= " union ";
+      $strQueryInner .= "select p.projid from project p inner join experiment e on e.projid=p.projid where p.deleted=0 and e.deleted=0 and lower(e.description) like '%$strKeyword%' and p.viewable='PUBLIC'";
+    }
+
+    return $strQueryInner;
   }
   
 } // ProjectPeer

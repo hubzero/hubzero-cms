@@ -8,7 +8,7 @@
 
 
 /**
- * Skeleton subclass for performing query and update operations on the 'Person' table.
+ * Skeleton subclass for performing query and update operations on the 'Person' table. 
  *
  *
  *
@@ -411,6 +411,7 @@ class PersonPeer extends BasePersonPeer {
             AUTHORIZATION PER
           WHERE
             P.ID = PER.PERSON_ID AND
+            P.DELETED = 0 AND
             PER.ENTITY_ID = ? AND
             PER.ENTITY_TYPE_ID = ?
        ) WHERE rn BETWEEN ? AND ?
@@ -639,7 +640,7 @@ class PersonPeer extends BasePersonPeer {
       $strQuery .= " AND PERSON.DELETED=0 
                  )
                  WHERE rn <= $p_iLimit";
-    
+
     $oConnection = Propel::getConnection();
     $oStatement = $oConnection->createStatement();
     $oResultsSet = $oStatement->executeQuery($strQuery, ResultSet::FETCHMODE_ASSOC);

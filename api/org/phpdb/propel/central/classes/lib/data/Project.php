@@ -18,7 +18,7 @@ require_once '/www/neeshub/api/org/nees/static/Files.php';
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
  * long as it does not already exist in the output directory.
- *
+ * 
  * @package    lib.data
  *
  * @todo remove HTML from here, put it in a helper.
@@ -581,6 +581,11 @@ ENDHTML;
     }
 
     return $bReturn;
+  }
+
+  public function getDataFileLinkCount($p_bDirectory=1){
+    require_once 'lib/data/DataFileLinkPeer.php';
+    return DataFileLinkPeer::getCountByProjectId($this->getId(), $p_bDirectory);
   }
 
 

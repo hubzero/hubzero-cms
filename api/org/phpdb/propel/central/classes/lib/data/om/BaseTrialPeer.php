@@ -24,7 +24,7 @@ abstract class BaseTrialPeer {
 	const CLASS_DEFAULT = 'lib.data.Trial';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 19;
+	const NUM_COLUMNS = 24;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -87,6 +87,21 @@ abstract class BaseTrialPeer {
 	/** the column name for the TRIAL_TYPE_ID field */
 	const TRIAL_TYPE_ID = 'TRIAL.TRIAL_TYPE_ID';
 
+	/** the column name for the CREATOR_ID field */
+	const CREATOR_ID = 'TRIAL.CREATOR_ID';
+
+	/** the column name for the CREATED_DATE field */
+	const CREATED_DATE = 'TRIAL.CREATED_DATE';
+
+	/** the column name for the MODIFIED_BY_ID field */
+	const MODIFIED_BY_ID = 'TRIAL.MODIFIED_BY_ID';
+
+	/** the column name for the MODIFIED_DATE field */
+	const MODIFIED_DATE = 'TRIAL.MODIFIED_DATE';
+
+	/** the column name for the APP_ID field */
+	const APP_ID = 'TRIAL.APP_ID';
+
 	/** A key representing a particular subclass */
 	const CLASSKEY_0 = '0';
 
@@ -116,10 +131,10 @@ abstract class BaseTrialPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Acceleration', 'BaseAcceleration', 'BaseAccelerationUnitId', 'Component', 'CurationStatus', 'Deleted', 'Description', 'EndDate', 'ExperimentId', 'MotionFileId', 'MotionName', 'Name', 'Objective', 'StartDate', 'Station', 'Status', 'Title', 'TrialTypeId', ),
-		BasePeer::TYPE_COLNAME => array (TrialPeer::TRIALID, TrialPeer::ACCELERATION, TrialPeer::BASE_ACCELERATION, TrialPeer::BASE_ACCELERATION_UNIT_ID, TrialPeer::COMPONENT, TrialPeer::CURATION_STATUS, TrialPeer::DELETED, TrialPeer::DESCRIPTION, TrialPeer::END_DATE, TrialPeer::EXPID, TrialPeer::MOTION_FILE_ID, TrialPeer::MOTION_NAME, TrialPeer::NAME, TrialPeer::OBJECTIVE, TrialPeer::START_DATE, TrialPeer::STATION, TrialPeer::STATUS, TrialPeer::TITLE, TrialPeer::TRIAL_TYPE_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('TRIALID', 'ACCELERATION', 'BASE_ACCELERATION', 'BASE_ACCELERATION_UNIT_ID', 'COMPONENT', 'CURATION_STATUS', 'DELETED', 'DESCRIPTION', 'END_DATE', 'EXPID', 'MOTION_FILE_ID', 'MOTION_NAME', 'NAME', 'OBJECTIVE', 'START_DATE', 'STATION', 'STATUS', 'TITLE', 'TRIAL_TYPE_ID', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Acceleration', 'BaseAcceleration', 'BaseAccelerationUnitId', 'Component', 'CurationStatus', 'Deleted', 'Description', 'EndDate', 'ExperimentId', 'MotionFileId', 'MotionName', 'Name', 'Objective', 'StartDate', 'Station', 'Status', 'Title', 'TrialTypeId', 'CreatorId', 'CreatedDate', 'ModifiedById', 'ModifiedDate', 'AppId', ),
+		BasePeer::TYPE_COLNAME => array (TrialPeer::TRIALID, TrialPeer::ACCELERATION, TrialPeer::BASE_ACCELERATION, TrialPeer::BASE_ACCELERATION_UNIT_ID, TrialPeer::COMPONENT, TrialPeer::CURATION_STATUS, TrialPeer::DELETED, TrialPeer::DESCRIPTION, TrialPeer::END_DATE, TrialPeer::EXPID, TrialPeer::MOTION_FILE_ID, TrialPeer::MOTION_NAME, TrialPeer::NAME, TrialPeer::OBJECTIVE, TrialPeer::START_DATE, TrialPeer::STATION, TrialPeer::STATUS, TrialPeer::TITLE, TrialPeer::TRIAL_TYPE_ID, TrialPeer::CREATOR_ID, TrialPeer::CREATED_DATE, TrialPeer::MODIFIED_BY_ID, TrialPeer::MODIFIED_DATE, TrialPeer::APP_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('TRIALID', 'ACCELERATION', 'BASE_ACCELERATION', 'BASE_ACCELERATION_UNIT_ID', 'COMPONENT', 'CURATION_STATUS', 'DELETED', 'DESCRIPTION', 'END_DATE', 'EXPID', 'MOTION_FILE_ID', 'MOTION_NAME', 'NAME', 'OBJECTIVE', 'START_DATE', 'STATION', 'STATUS', 'TITLE', 'TRIAL_TYPE_ID', 'CREATOR_ID', 'CREATED_DATE', 'MODIFIED_BY_ID', 'MODIFIED_DATE', 'APP_ID', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, )
 	);
 
 	/**
@@ -129,10 +144,10 @@ abstract class BaseTrialPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Acceleration' => 1, 'BaseAcceleration' => 2, 'BaseAccelerationUnitId' => 3, 'Component' => 4, 'CurationStatus' => 5, 'Deleted' => 6, 'Description' => 7, 'EndDate' => 8, 'ExperimentId' => 9, 'MotionFileId' => 10, 'MotionName' => 11, 'Name' => 12, 'Objective' => 13, 'StartDate' => 14, 'Station' => 15, 'Status' => 16, 'Title' => 17, 'TrialTypeId' => 18, ),
-		BasePeer::TYPE_COLNAME => array (TrialPeer::TRIALID => 0, TrialPeer::ACCELERATION => 1, TrialPeer::BASE_ACCELERATION => 2, TrialPeer::BASE_ACCELERATION_UNIT_ID => 3, TrialPeer::COMPONENT => 4, TrialPeer::CURATION_STATUS => 5, TrialPeer::DELETED => 6, TrialPeer::DESCRIPTION => 7, TrialPeer::END_DATE => 8, TrialPeer::EXPID => 9, TrialPeer::MOTION_FILE_ID => 10, TrialPeer::MOTION_NAME => 11, TrialPeer::NAME => 12, TrialPeer::OBJECTIVE => 13, TrialPeer::START_DATE => 14, TrialPeer::STATION => 15, TrialPeer::STATUS => 16, TrialPeer::TITLE => 17, TrialPeer::TRIAL_TYPE_ID => 18, ),
-		BasePeer::TYPE_FIELDNAME => array ('TRIALID' => 0, 'ACCELERATION' => 1, 'BASE_ACCELERATION' => 2, 'BASE_ACCELERATION_UNIT_ID' => 3, 'COMPONENT' => 4, 'CURATION_STATUS' => 5, 'DELETED' => 6, 'DESCRIPTION' => 7, 'END_DATE' => 8, 'EXPID' => 9, 'MOTION_FILE_ID' => 10, 'MOTION_NAME' => 11, 'NAME' => 12, 'OBJECTIVE' => 13, 'START_DATE' => 14, 'STATION' => 15, 'STATUS' => 16, 'TITLE' => 17, 'TRIAL_TYPE_ID' => 18, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Acceleration' => 1, 'BaseAcceleration' => 2, 'BaseAccelerationUnitId' => 3, 'Component' => 4, 'CurationStatus' => 5, 'Deleted' => 6, 'Description' => 7, 'EndDate' => 8, 'ExperimentId' => 9, 'MotionFileId' => 10, 'MotionName' => 11, 'Name' => 12, 'Objective' => 13, 'StartDate' => 14, 'Station' => 15, 'Status' => 16, 'Title' => 17, 'TrialTypeId' => 18, 'CreatorId' => 19, 'CreatedDate' => 20, 'ModifiedById' => 21, 'ModifiedDate' => 22, 'AppId' => 23, ),
+		BasePeer::TYPE_COLNAME => array (TrialPeer::TRIALID => 0, TrialPeer::ACCELERATION => 1, TrialPeer::BASE_ACCELERATION => 2, TrialPeer::BASE_ACCELERATION_UNIT_ID => 3, TrialPeer::COMPONENT => 4, TrialPeer::CURATION_STATUS => 5, TrialPeer::DELETED => 6, TrialPeer::DESCRIPTION => 7, TrialPeer::END_DATE => 8, TrialPeer::EXPID => 9, TrialPeer::MOTION_FILE_ID => 10, TrialPeer::MOTION_NAME => 11, TrialPeer::NAME => 12, TrialPeer::OBJECTIVE => 13, TrialPeer::START_DATE => 14, TrialPeer::STATION => 15, TrialPeer::STATUS => 16, TrialPeer::TITLE => 17, TrialPeer::TRIAL_TYPE_ID => 18, TrialPeer::CREATOR_ID => 19, TrialPeer::CREATED_DATE => 20, TrialPeer::MODIFIED_BY_ID => 21, TrialPeer::MODIFIED_DATE => 22, TrialPeer::APP_ID => 23, ),
+		BasePeer::TYPE_FIELDNAME => array ('TRIALID' => 0, 'ACCELERATION' => 1, 'BASE_ACCELERATION' => 2, 'BASE_ACCELERATION_UNIT_ID' => 3, 'COMPONENT' => 4, 'CURATION_STATUS' => 5, 'DELETED' => 6, 'DESCRIPTION' => 7, 'END_DATE' => 8, 'EXPID' => 9, 'MOTION_FILE_ID' => 10, 'MOTION_NAME' => 11, 'NAME' => 12, 'OBJECTIVE' => 13, 'START_DATE' => 14, 'STATION' => 15, 'STATUS' => 16, 'TITLE' => 17, 'TRIAL_TYPE_ID' => 18, 'CREATOR_ID' => 19, 'CREATED_DATE' => 20, 'MODIFIED_BY_ID' => 21, 'MODIFIED_DATE' => 22, 'APP_ID' => 23, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, )
 	);
 
 	/**
@@ -271,6 +286,16 @@ abstract class BaseTrialPeer {
 
 		$criteria->addSelectColumn(TrialPeer::TRIAL_TYPE_ID);
 
+		$criteria->addSelectColumn(TrialPeer::CREATOR_ID);
+
+		$criteria->addSelectColumn(TrialPeer::CREATED_DATE);
+
+		$criteria->addSelectColumn(TrialPeer::MODIFIED_BY_ID);
+
+		$criteria->addSelectColumn(TrialPeer::MODIFIED_DATE);
+
+		$criteria->addSelectColumn(TrialPeer::APP_ID);
+
 	}
 
 	const COUNT = 'COUNT(TRIAL.TRIALID)';
@@ -400,6 +425,84 @@ abstract class BaseTrialPeer {
 	}
 
 	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByCreatorId table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinPersonRelatedByCreatorId(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(TrialPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(TrialPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(TrialPeer::CREATOR_ID, PersonPeer::ID);
+
+		$rs = TrialPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByModifiedById table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinPersonRelatedByModifiedById(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(TrialPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(TrialPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(TrialPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$rs = TrialPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
 	 * Returns the number of rows matching criteria, joining the related DataFile table
 	 *
 	 * @param      Criteria $c
@@ -513,6 +616,122 @@ abstract class BaseTrialPeer {
 			// no rows returned; we infer that means 0 matches.
 			return 0;
 		}
+	}
+
+
+	/**
+	 * Selects a collection of Trial objects pre-filled with their Person objects.
+	 *
+	 * @return     array Array of Trial objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinPersonRelatedByCreatorId(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		TrialPeer::addSelectColumns($c);
+		$startcol = (TrialPeer::NUM_COLUMNS - TrialPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		PersonPeer::addSelectColumns($c);
+
+		$c->addJoin(TrialPeer::CREATOR_ID, PersonPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = TrialPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addTrialRelatedByCreatorId($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initTrialsRelatedByCreatorId();
+				$obj2->addTrialRelatedByCreatorId($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Trial objects pre-filled with their Person objects.
+	 *
+	 * @return     array Array of Trial objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinPersonRelatedByModifiedById(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		TrialPeer::addSelectColumns($c);
+		$startcol = (TrialPeer::NUM_COLUMNS - TrialPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		PersonPeer::addSelectColumns($c);
+
+		$c->addJoin(TrialPeer::MODIFIED_BY_ID, PersonPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = TrialPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addTrialRelatedByModifiedById($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initTrialsRelatedByModifiedById();
+				$obj2->addTrialRelatedByModifiedById($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
 	}
 
 
@@ -716,6 +935,10 @@ abstract class BaseTrialPeer {
 			$criteria->addSelectColumn($column);
 		}
 
+		$criteria->addJoin(TrialPeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(TrialPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
 		$criteria->addJoin(TrialPeer::MOTION_FILE_ID, DataFilePeer::ID);
 
 		$criteria->addJoin(TrialPeer::EXPID, ExperimentPeer::EXPID);
@@ -751,14 +974,24 @@ abstract class BaseTrialPeer {
 		TrialPeer::addSelectColumns($c);
 		$startcol2 = (TrialPeer::NUM_COLUMNS - TrialPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
 		DataFilePeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + DataFilePeer::NUM_COLUMNS;
+		$startcol5 = $startcol4 + DataFilePeer::NUM_COLUMNS;
 
 		ExperimentPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + ExperimentPeer::NUM_COLUMNS;
+		$startcol6 = $startcol5 + ExperimentPeer::NUM_COLUMNS;
 
 		MeasurementUnitPeer::addSelectColumns($c);
-		$startcol5 = $startcol4 + MeasurementUnitPeer::NUM_COLUMNS;
+		$startcol7 = $startcol6 + MeasurementUnitPeer::NUM_COLUMNS;
+
+		$c->addJoin(TrialPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(TrialPeer::MODIFIED_BY_ID, PersonPeer::ID);
 
 		$c->addJoin(TrialPeer::MOTION_FILE_ID, DataFilePeer::ID);
 
@@ -779,9 +1012,9 @@ abstract class BaseTrialPeer {
 			$obj1->hydrate($rs);
 
 
-				// Add objects for joined DataFile rows
+				// Add objects for joined Person rows
 	
-			$omClass = DataFilePeer::getOMClass();
+			$omClass = PersonPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -791,23 +1024,23 @@ abstract class BaseTrialPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getDataFile(); // CHECKME
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); // CHECKME
 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
-					$temp_obj2->addTrial($obj1); // CHECKME
+					$temp_obj2->addTrialRelatedByCreatorId($obj1); // CHECKME
 					break;
 				}
 			}
 
 			if ($newObject) {
-				$obj2->initTrials();
-				$obj2->addTrial($obj1);
+				$obj2->initTrialsRelatedByCreatorId();
+				$obj2->addTrialRelatedByCreatorId($obj1);
 			}
 
 
-				// Add objects for joined Experiment rows
+				// Add objects for joined Person rows
 	
-			$omClass = ExperimentPeer::getOMClass($rs, $startcol3);
+			$omClass = PersonPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -817,23 +1050,23 @@ abstract class BaseTrialPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getExperiment(); // CHECKME
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); // CHECKME
 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
 					$newObject = false;
-					$temp_obj3->addTrial($obj1); // CHECKME
+					$temp_obj3->addTrialRelatedByModifiedById($obj1); // CHECKME
 					break;
 				}
 			}
 
 			if ($newObject) {
-				$obj3->initTrials();
-				$obj3->addTrial($obj1);
+				$obj3->initTrialsRelatedByModifiedById();
+				$obj3->addTrialRelatedByModifiedById($obj1);
 			}
 
 
-				// Add objects for joined MeasurementUnit rows
+				// Add objects for joined DataFile rows
 	
-			$omClass = MeasurementUnitPeer::getOMClass();
+			$omClass = DataFilePeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -843,7 +1076,7 @@ abstract class BaseTrialPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj4 = $temp_obj1->getMeasurementUnit(); // CHECKME
+				$temp_obj4 = $temp_obj1->getDataFile(); // CHECKME
 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj4->addTrial($obj1); // CHECKME
@@ -856,9 +1089,147 @@ abstract class BaseTrialPeer {
 				$obj4->addTrial($obj1);
 			}
 
+
+				// Add objects for joined Experiment rows
+	
+			$omClass = ExperimentPeer::getOMClass($rs, $startcol5);
+
+
+			$cls = Propel::import($omClass);
+			$obj5 = new $cls();
+			$obj5->hydrate($rs, $startcol5);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj5 = $temp_obj1->getExperiment(); // CHECKME
+				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj5->addTrial($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj5->initTrials();
+				$obj5->addTrial($obj1);
+			}
+
+
+				// Add objects for joined MeasurementUnit rows
+	
+			$omClass = MeasurementUnitPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj6 = new $cls();
+			$obj6->hydrate($rs, $startcol6);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj6 = $temp_obj1->getMeasurementUnit(); // CHECKME
+				if ($temp_obj6->getPrimaryKey() === $obj6->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj6->addTrial($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj6->initTrials();
+				$obj6->addTrial($obj1);
+			}
+
 			$results[] = $obj1;
 		}
 		return $results;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByCreatorId table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptPersonRelatedByCreatorId(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(TrialPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(TrialPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(TrialPeer::MOTION_FILE_ID, DataFilePeer::ID);
+
+		$criteria->addJoin(TrialPeer::EXPID, ExperimentPeer::EXPID);
+
+		$criteria->addJoin(TrialPeer::BASE_ACCELERATION_UNIT_ID, MeasurementUnitPeer::ID);
+
+		$rs = TrialPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByModifiedById table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptPersonRelatedByModifiedById(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(TrialPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(TrialPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(TrialPeer::MOTION_FILE_ID, DataFilePeer::ID);
+
+		$criteria->addJoin(TrialPeer::EXPID, ExperimentPeer::EXPID);
+
+		$criteria->addJoin(TrialPeer::BASE_ACCELERATION_UNIT_ID, MeasurementUnitPeer::ID);
+
+		$rs = TrialPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
 	}
 
 
@@ -888,6 +1259,10 @@ abstract class BaseTrialPeer {
 		{
 			$criteria->addSelectColumn($column);
 		}
+
+		$criteria->addJoin(TrialPeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(TrialPeer::MODIFIED_BY_ID, PersonPeer::ID);
 
 		$criteria->addJoin(TrialPeer::EXPID, ExperimentPeer::EXPID);
 
@@ -930,6 +1305,10 @@ abstract class BaseTrialPeer {
 			$criteria->addSelectColumn($column);
 		}
 
+		$criteria->addJoin(TrialPeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(TrialPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
 		$criteria->addJoin(TrialPeer::MOTION_FILE_ID, DataFilePeer::ID);
 
 		$criteria->addJoin(TrialPeer::BASE_ACCELERATION_UNIT_ID, MeasurementUnitPeer::ID);
@@ -971,6 +1350,10 @@ abstract class BaseTrialPeer {
 			$criteria->addSelectColumn($column);
 		}
 
+		$criteria->addJoin(TrialPeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(TrialPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
 		$criteria->addJoin(TrialPeer::MOTION_FILE_ID, DataFilePeer::ID);
 
 		$criteria->addJoin(TrialPeer::EXPID, ExperimentPeer::EXPID);
@@ -986,203 +1369,13 @@ abstract class BaseTrialPeer {
 
 
 	/**
-	 * Selects a collection of Trial objects pre-filled with all related objects except DataFile.
+	 * Selects a collection of Trial objects pre-filled with all related objects except PersonRelatedByCreatorId.
 	 *
 	 * @return     array Array of Trial objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptDataFile(Criteria $c, $con = null)
-	{
-		$c = clone $c;
-
-		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
-		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
-		}
-
-		TrialPeer::addSelectColumns($c);
-		$startcol2 = (TrialPeer::NUM_COLUMNS - TrialPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-
-		ExperimentPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + ExperimentPeer::NUM_COLUMNS;
-
-		MeasurementUnitPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + MeasurementUnitPeer::NUM_COLUMNS;
-
-		$c->addJoin(TrialPeer::EXPID, ExperimentPeer::EXPID);
-
-		$c->addJoin(TrialPeer::BASE_ACCELERATION_UNIT_ID, MeasurementUnitPeer::ID);
-
-
-		$rs = BasePeer::doSelect($c, $con);
-		$results = array();
-
-		while($rs->next()) {
-
-			$omClass = TrialPeer::getOMClass($rs, 1);
-
-			$cls = Propel::import($omClass);
-			$obj1 = new $cls();
-			$obj1->hydrate($rs);
-
-			$omClass = ExperimentPeer::getOMClass($rs, $startcol2);
-
-
-			$cls = Propel::import($omClass);
-			$obj2  = new $cls();
-			$obj2->hydrate($rs, $startcol2);
-
-			$newObject = true;
-			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
-				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getExperiment(); //CHECKME
-				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
-					$newObject = false;
-					$temp_obj2->addTrial($obj1);
-					break;
-				}
-			}
-
-			if ($newObject) {
-				$obj2->initTrials();
-				$obj2->addTrial($obj1);
-			}
-
-			$omClass = MeasurementUnitPeer::getOMClass();
-
-
-			$cls = Propel::import($omClass);
-			$obj3  = new $cls();
-			$obj3->hydrate($rs, $startcol3);
-
-			$newObject = true;
-			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
-				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getMeasurementUnit(); //CHECKME
-				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
-					$newObject = false;
-					$temp_obj3->addTrial($obj1);
-					break;
-				}
-			}
-
-			if ($newObject) {
-				$obj3->initTrials();
-				$obj3->addTrial($obj1);
-			}
-
-			$results[] = $obj1;
-		}
-		return $results;
-	}
-
-
-	/**
-	 * Selects a collection of Trial objects pre-filled with all related objects except Experiment.
-	 *
-	 * @return     array Array of Trial objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAllExceptExperiment(Criteria $c, $con = null)
-	{
-		$c = clone $c;
-
-		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
-		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
-		}
-
-		TrialPeer::addSelectColumns($c);
-		$startcol2 = (TrialPeer::NUM_COLUMNS - TrialPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-
-		DataFilePeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + DataFilePeer::NUM_COLUMNS;
-
-		MeasurementUnitPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + MeasurementUnitPeer::NUM_COLUMNS;
-
-		$c->addJoin(TrialPeer::MOTION_FILE_ID, DataFilePeer::ID);
-
-		$c->addJoin(TrialPeer::BASE_ACCELERATION_UNIT_ID, MeasurementUnitPeer::ID);
-
-
-		$rs = BasePeer::doSelect($c, $con);
-		$results = array();
-
-		while($rs->next()) {
-
-			$omClass = TrialPeer::getOMClass($rs, 1);
-
-			$cls = Propel::import($omClass);
-			$obj1 = new $cls();
-			$obj1->hydrate($rs);
-
-			$omClass = DataFilePeer::getOMClass();
-
-
-			$cls = Propel::import($omClass);
-			$obj2  = new $cls();
-			$obj2->hydrate($rs, $startcol2);
-
-			$newObject = true;
-			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
-				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getDataFile(); //CHECKME
-				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
-					$newObject = false;
-					$temp_obj2->addTrial($obj1);
-					break;
-				}
-			}
-
-			if ($newObject) {
-				$obj2->initTrials();
-				$obj2->addTrial($obj1);
-			}
-
-			$omClass = MeasurementUnitPeer::getOMClass();
-
-
-			$cls = Propel::import($omClass);
-			$obj3  = new $cls();
-			$obj3->hydrate($rs, $startcol3);
-
-			$newObject = true;
-			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
-				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getMeasurementUnit(); //CHECKME
-				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
-					$newObject = false;
-					$temp_obj3->addTrial($obj1);
-					break;
-				}
-			}
-
-			if ($newObject) {
-				$obj3->initTrials();
-				$obj3->addTrial($obj1);
-			}
-
-			$results[] = $obj1;
-		}
-		return $results;
-	}
-
-
-	/**
-	 * Selects a collection of Trial objects pre-filled with all related objects except MeasurementUnit.
-	 *
-	 * @return     array Array of Trial objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAllExceptMeasurementUnit(Criteria $c, $con = null)
+	public static function doSelectJoinAllExceptPersonRelatedByCreatorId(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -1202,9 +1395,14 @@ abstract class BaseTrialPeer {
 		ExperimentPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + ExperimentPeer::NUM_COLUMNS;
 
+		MeasurementUnitPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + MeasurementUnitPeer::NUM_COLUMNS;
+
 		$c->addJoin(TrialPeer::MOTION_FILE_ID, DataFilePeer::ID);
 
 		$c->addJoin(TrialPeer::EXPID, ExperimentPeer::EXPID);
+
+		$c->addJoin(TrialPeer::BASE_ACCELERATION_UNIT_ID, MeasurementUnitPeer::ID);
 
 
 		$rs = BasePeer::doSelect($c, $con);
@@ -1262,6 +1460,605 @@ abstract class BaseTrialPeer {
 			if ($newObject) {
 				$obj3->initTrials();
 				$obj3->addTrial($obj1);
+			}
+
+			$omClass = MeasurementUnitPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getMeasurementUnit(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addTrial($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initTrials();
+				$obj4->addTrial($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Trial objects pre-filled with all related objects except PersonRelatedByModifiedById.
+	 *
+	 * @return     array Array of Trial objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptPersonRelatedByModifiedById(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		TrialPeer::addSelectColumns($c);
+		$startcol2 = (TrialPeer::NUM_COLUMNS - TrialPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		DataFilePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + DataFilePeer::NUM_COLUMNS;
+
+		ExperimentPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + ExperimentPeer::NUM_COLUMNS;
+
+		MeasurementUnitPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + MeasurementUnitPeer::NUM_COLUMNS;
+
+		$c->addJoin(TrialPeer::MOTION_FILE_ID, DataFilePeer::ID);
+
+		$c->addJoin(TrialPeer::EXPID, ExperimentPeer::EXPID);
+
+		$c->addJoin(TrialPeer::BASE_ACCELERATION_UNIT_ID, MeasurementUnitPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = TrialPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = DataFilePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getDataFile(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addTrial($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initTrials();
+				$obj2->addTrial($obj1);
+			}
+
+			$omClass = ExperimentPeer::getOMClass($rs, $startcol3);
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getExperiment(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addTrial($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initTrials();
+				$obj3->addTrial($obj1);
+			}
+
+			$omClass = MeasurementUnitPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getMeasurementUnit(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addTrial($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initTrials();
+				$obj4->addTrial($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Trial objects pre-filled with all related objects except DataFile.
+	 *
+	 * @return     array Array of Trial objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptDataFile(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		TrialPeer::addSelectColumns($c);
+		$startcol2 = (TrialPeer::NUM_COLUMNS - TrialPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		ExperimentPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + ExperimentPeer::NUM_COLUMNS;
+
+		MeasurementUnitPeer::addSelectColumns($c);
+		$startcol6 = $startcol5 + MeasurementUnitPeer::NUM_COLUMNS;
+
+		$c->addJoin(TrialPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(TrialPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(TrialPeer::EXPID, ExperimentPeer::EXPID);
+
+		$c->addJoin(TrialPeer::BASE_ACCELERATION_UNIT_ID, MeasurementUnitPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = TrialPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addTrialRelatedByCreatorId($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initTrialsRelatedByCreatorId();
+				$obj2->addTrialRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addTrialRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initTrialsRelatedByModifiedById();
+				$obj3->addTrialRelatedByModifiedById($obj1);
+			}
+
+			$omClass = ExperimentPeer::getOMClass($rs, $startcol4);
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getExperiment(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addTrial($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initTrials();
+				$obj4->addTrial($obj1);
+			}
+
+			$omClass = MeasurementUnitPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj5  = new $cls();
+			$obj5->hydrate($rs, $startcol5);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj5 = $temp_obj1->getMeasurementUnit(); //CHECKME
+				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj5->addTrial($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj5->initTrials();
+				$obj5->addTrial($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Trial objects pre-filled with all related objects except Experiment.
+	 *
+	 * @return     array Array of Trial objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptExperiment(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		TrialPeer::addSelectColumns($c);
+		$startcol2 = (TrialPeer::NUM_COLUMNS - TrialPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		DataFilePeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + DataFilePeer::NUM_COLUMNS;
+
+		MeasurementUnitPeer::addSelectColumns($c);
+		$startcol6 = $startcol5 + MeasurementUnitPeer::NUM_COLUMNS;
+
+		$c->addJoin(TrialPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(TrialPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(TrialPeer::MOTION_FILE_ID, DataFilePeer::ID);
+
+		$c->addJoin(TrialPeer::BASE_ACCELERATION_UNIT_ID, MeasurementUnitPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = TrialPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addTrialRelatedByCreatorId($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initTrialsRelatedByCreatorId();
+				$obj2->addTrialRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addTrialRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initTrialsRelatedByModifiedById();
+				$obj3->addTrialRelatedByModifiedById($obj1);
+			}
+
+			$omClass = DataFilePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getDataFile(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addTrial($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initTrials();
+				$obj4->addTrial($obj1);
+			}
+
+			$omClass = MeasurementUnitPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj5  = new $cls();
+			$obj5->hydrate($rs, $startcol5);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj5 = $temp_obj1->getMeasurementUnit(); //CHECKME
+				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj5->addTrial($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj5->initTrials();
+				$obj5->addTrial($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Trial objects pre-filled with all related objects except MeasurementUnit.
+	 *
+	 * @return     array Array of Trial objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptMeasurementUnit(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		TrialPeer::addSelectColumns($c);
+		$startcol2 = (TrialPeer::NUM_COLUMNS - TrialPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		DataFilePeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + DataFilePeer::NUM_COLUMNS;
+
+		ExperimentPeer::addSelectColumns($c);
+		$startcol6 = $startcol5 + ExperimentPeer::NUM_COLUMNS;
+
+		$c->addJoin(TrialPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(TrialPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(TrialPeer::MOTION_FILE_ID, DataFilePeer::ID);
+
+		$c->addJoin(TrialPeer::EXPID, ExperimentPeer::EXPID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = TrialPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addTrialRelatedByCreatorId($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initTrialsRelatedByCreatorId();
+				$obj2->addTrialRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addTrialRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initTrialsRelatedByModifiedById();
+				$obj3->addTrialRelatedByModifiedById($obj1);
+			}
+
+			$omClass = DataFilePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getDataFile(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addTrial($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initTrials();
+				$obj4->addTrial($obj1);
+			}
+
+			$omClass = ExperimentPeer::getOMClass($rs, $startcol5);
+
+
+			$cls = Propel::import($omClass);
+			$obj5  = new $cls();
+			$obj5->hydrate($rs, $startcol5);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj5 = $temp_obj1->getExperiment(); //CHECKME
+				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj5->addTrial($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj5->initTrials();
+				$obj5->addTrial($obj1);
 			}
 
 			$results[] = $obj1;

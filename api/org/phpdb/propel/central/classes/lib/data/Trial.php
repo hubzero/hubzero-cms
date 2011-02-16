@@ -23,7 +23,7 @@ class Trial extends BaseTrial {
    * setting the trial_type_id column to TrialPeer::CLASSKEY_TRIAL.
    */
   function __construct( Experiment $experiment = null,
-                        $name = "",
+                        $name = "", 
                         $title = "",
                         $objective = "",
                         $description = "",
@@ -322,6 +322,16 @@ ENDHTML;
   public function getDisplayName($is_lower_case = false) {
     if($is_lower_case) return $this->getExperiment()->isSimulation() ? "run" : "trial";
     else return $this->getExperiment()->isSimulation() ? "Run" : "Trial";
+  }
+
+  public function getDataFiles(){
+    require_once 'lib/data/DataFilePeer.php';
+    return DataFilePeer::getDataFilesByTrial($this->getId());
+  }
+
+  public function getDataFileLinkCount($p_bDirectory=1){
+    require_once 'lib/data/DataFileLinkPeer.php';
+    return DataFileLinkPeer::getCountByTrialId($this->getId(), $p_bDirectory);
   }
 
 

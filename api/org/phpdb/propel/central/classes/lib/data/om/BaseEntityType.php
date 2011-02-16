@@ -1259,6 +1259,104 @@ abstract class BaseEntityType extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in EntityType.
 	 */
+	public function getDataFilesJoinPersonRelatedByCreatorId($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDataFiles === null) {
+			if ($this->isNew()) {
+				$this->collDataFiles = array();
+			} else {
+
+				$criteria->add(DataFilePeer::USAGE_TYPE_ID, $this->getId());
+
+				$this->collDataFiles = DataFilePeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(DataFilePeer::USAGE_TYPE_ID, $this->getId());
+
+			if (!isset($this->lastDataFileCriteria) || !$this->lastDataFileCriteria->equals($criteria)) {
+				$this->collDataFiles = DataFilePeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
+			}
+		}
+		$this->lastDataFileCriteria = $criteria;
+
+		return $this->collDataFiles;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this EntityType is new, it will return
+	 * an empty collection; or if this EntityType has previously
+	 * been saved, it will retrieve related DataFiles from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in EntityType.
+	 */
+	public function getDataFilesJoinPersonRelatedByModifiedById($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDataFiles === null) {
+			if ($this->isNew()) {
+				$this->collDataFiles = array();
+			} else {
+
+				$criteria->add(DataFilePeer::USAGE_TYPE_ID, $this->getId());
+
+				$this->collDataFiles = DataFilePeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(DataFilePeer::USAGE_TYPE_ID, $this->getId());
+
+			if (!isset($this->lastDataFileCriteria) || !$this->lastDataFileCriteria->equals($criteria)) {
+				$this->collDataFiles = DataFilePeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		}
+		$this->lastDataFileCriteria = $criteria;
+
+		return $this->collDataFiles;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this EntityType is new, it will return
+	 * an empty collection; or if this EntityType has previously
+	 * been saved, it will retrieve related DataFiles from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in EntityType.
+	 */
 	public function getDataFilesJoinDataFileRelatedByThumbId($criteria = null, $con = null)
 	{
 		// include the Peer class

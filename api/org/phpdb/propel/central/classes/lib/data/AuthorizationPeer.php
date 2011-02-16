@@ -20,6 +20,9 @@ require_once 'lib/security/Permissions.php';
  */
 class AuthorizationPeer extends BaseAuthorizationPeer {
 
+  const ENTITY_DELETE_OK = 300;
+  const ENTITY_DELETE_ERROR = 301; 
+
   /**
    * Find an Authorization object based on its ID
    *
@@ -507,5 +510,43 @@ class AuthorizationPeer extends BaseAuthorizationPeer {
     }
   }
 
+  public static function doDelete($p_iEntityId, $p_iEntityTypeId, $p_iPersonId, $p_oConnection=null){
+    if(!$p_oConnection){
+      $oConnection = Propel::getConnection();
+    }else{
+      $oConnection = $p_oConnection;
+    }
+
+    //$strQuery = "CALL DELETE_OBJECT(?, ?)";
+    $strQuery = "CALL DELETE_OBJECT2(?, ?, ?)";     //added person.id on 20110207
+
+    try{
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oStatement->setInt(1, $p_iEntityId);
+      $oStatement->setInt(2, $p_iEntityTypeId);
+      $oStatement->setInt(3, $p_iPersonId);
+      $oStatement->executeUpdate();
+    }catch(Exception $oException){
+      return self::ENTITY_DELETE_ERROR;
+    }
+
+    return self::ENTITY_DELETE_OK;
+  }
+
+  public static function testStoredProcedure($p_iDataFileId, $p_iModifiedById, $p_oConnection=null){
+    if(!$p_oConnection){
+      $oConnection = Propel::getConnection();
+    }else{
+      $oConnection = $p_oConnection;
+    }
+
+    $strQuery = "CALL PHP_TEST(?, ?)";
+    
+    $oStatement = $oConnection->prepareStatement($strQuery);
+    $oStatement->setInt(1, $p_iDataFileId);
+    $oStatement->setInt(2, $p_iModifiedById);
+    $oStatement->executeUpdate();
+  }
+    
 } // AuthorizationPeer
 ?>

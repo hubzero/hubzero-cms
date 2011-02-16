@@ -106,7 +106,15 @@ class DataFileMapBuilder {
 
 		$tMap->addForeignKey('USAGE_TYPE_ID', 'UsageTypeId', 'double', CreoleTypes::NUMERIC, 'ENTITY_TYPE', 'ID', false, 22);
 
-		$tMap->addColumn('APP_ID', 'AppId', 'double', CreoleTypes::NUMERIC, false, 10);
+		$tMap->addForeignKey('CREATOR_ID', 'CreatorId', 'double', CreoleTypes::NUMERIC, 'PERSON', 'ID', false, 22);
+
+		$tMap->addColumn('CREATED_DATE', 'CreatedDate', 'int', CreoleTypes::DATE, false, null);
+
+		$tMap->addForeignKey('MODIFIED_BY_ID', 'ModifiedById', 'double', CreoleTypes::NUMERIC, 'PERSON', 'ID', false, 22);
+
+		$tMap->addColumn('MODIFIED_DATE', 'ModifiedDate', 'int', CreoleTypes::DATE, false, null);
+
+		$tMap->addColumn('APP_ID', 'AppId', 'double', CreoleTypes::NUMERIC, false, 22);
 
 		$tMap->addValidator('AUTHORS', 'maxLength', 'propel.validator.MaxLengthValidator', '1020', 'AUTHORS');
 

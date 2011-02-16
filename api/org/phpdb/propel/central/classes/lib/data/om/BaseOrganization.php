@@ -322,16 +322,16 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 	protected $lastCoordinatorCriteria = null;
 
 	/**
-	 * Collection to store aggregation of collSiteReportsSiteSetups.
+	 * Collection to store aggregation of collSiteReportsSites.
 	 * @var        array
 	 */
-	protected $collSiteReportsSiteSetups;
+	protected $collSiteReportsSites;
 
 	/**
-	 * The criteria used to select the current contents of collSiteReportsSiteSetups.
+	 * The criteria used to select the current contents of collSiteReportsSites.
 	 * @var        Criteria
 	 */
-	protected $lastSiteReportsSiteSetupCriteria = null;
+	protected $lastSiteReportsSiteCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -1409,8 +1409,8 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collSiteReportsSiteSetups !== null) {
-				foreach($this->collSiteReportsSiteSetups as $referrerFK) {
+			if ($this->collSiteReportsSites !== null) {
+				foreach($this->collSiteReportsSites as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -1567,8 +1567,8 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collSiteReportsSiteSetups !== null) {
-					foreach($this->collSiteReportsSiteSetups as $referrerFK) {
+				if ($this->collSiteReportsSites !== null) {
+					foreach($this->collSiteReportsSites as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -2058,8 +2058,8 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 				$copyObj->addCoordinator($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getSiteReportsSiteSetups() as $relObj) {
-				$copyObj->addSiteReportsSiteSetup($relObj->copy($deepCopy));
+			foreach($this->getSiteReportsSites() as $relObj) {
+				$copyObj->addSiteReportsSite($relObj->copy($deepCopy));
 			}
 
 		} // if ($deepCopy)
@@ -3814,15 +3814,15 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Temporary storage of collSiteReportsSiteSetups to save a possible db hit in
+	 * Temporary storage of collSiteReportsSites to save a possible db hit in
 	 * the event objects are add to the collection, but the
 	 * complete collection is never requested.
 	 * @return     void
 	 */
-	public function initSiteReportsSiteSetups()
+	public function initSiteReportsSites()
 	{
-		if ($this->collSiteReportsSiteSetups === null) {
-			$this->collSiteReportsSiteSetups = array();
+		if ($this->collSiteReportsSites === null) {
+			$this->collSiteReportsSites = array();
 		}
 	}
 
@@ -3830,7 +3830,7 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Organization has previously
-	 * been saved, it will retrieve related SiteReportsSiteSetups from storage.
+	 * been saved, it will retrieve related SiteReportsSites from storage.
 	 * If this Organization is new, it will return
 	 * an empty collection or the current collection, the criteria
 	 * is ignored on a new object.
@@ -3839,10 +3839,10 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 	 * @param      Criteria $criteria
 	 * @throws     PropelException
 	 */
-	public function getSiteReportsSiteSetups($criteria = null, $con = null)
+	public function getSiteReportsSites($criteria = null, $con = null)
 	{
 		// include the Peer class
-		include_once 'lib/data/om/BaseSiteReportsSiteSetupPeer.php';
+		include_once 'lib/data/om/BaseSiteReportsSitePeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -3851,15 +3851,15 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSiteReportsSiteSetups === null) {
+		if ($this->collSiteReportsSites === null) {
 			if ($this->isNew()) {
-			   $this->collSiteReportsSiteSetups = array();
+			   $this->collSiteReportsSites = array();
 			} else {
 
-				$criteria->add(SiteReportsSiteSetupPeer::FACILITY_ID, $this->getId());
+				$criteria->add(SiteReportsSitePeer::FACILITY_ID, $this->getId());
 
-				SiteReportsSiteSetupPeer::addSelectColumns($criteria);
-				$this->collSiteReportsSiteSetups = SiteReportsSiteSetupPeer::doSelect($criteria, $con);
+				SiteReportsSitePeer::addSelectColumns($criteria);
+				$this->collSiteReportsSites = SiteReportsSitePeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -3869,30 +3869,30 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(SiteReportsSiteSetupPeer::FACILITY_ID, $this->getId());
+				$criteria->add(SiteReportsSitePeer::FACILITY_ID, $this->getId());
 
-				SiteReportsSiteSetupPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSiteReportsSiteSetupCriteria) || !$this->lastSiteReportsSiteSetupCriteria->equals($criteria)) {
-					$this->collSiteReportsSiteSetups = SiteReportsSiteSetupPeer::doSelect($criteria, $con);
+				SiteReportsSitePeer::addSelectColumns($criteria);
+				if (!isset($this->lastSiteReportsSiteCriteria) || !$this->lastSiteReportsSiteCriteria->equals($criteria)) {
+					$this->collSiteReportsSites = SiteReportsSitePeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastSiteReportsSiteSetupCriteria = $criteria;
-		return $this->collSiteReportsSiteSetups;
+		$this->lastSiteReportsSiteCriteria = $criteria;
+		return $this->collSiteReportsSites;
 	}
 
 	/**
-	 * Returns the number of related SiteReportsSiteSetups.
+	 * Returns the number of related SiteReportsSites.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      Connection $con
 	 * @throws     PropelException
 	 */
-	public function countSiteReportsSiteSetups($criteria = null, $distinct = false, $con = null)
+	public function countSiteReportsSites($criteria = null, $distinct = false, $con = null)
 	{
 		// include the Peer class
-		include_once 'lib/data/om/BaseSiteReportsSiteSetupPeer.php';
+		include_once 'lib/data/om/BaseSiteReportsSitePeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -3901,22 +3901,22 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(SiteReportsSiteSetupPeer::FACILITY_ID, $this->getId());
+		$criteria->add(SiteReportsSitePeer::FACILITY_ID, $this->getId());
 
-		return SiteReportsSiteSetupPeer::doCount($criteria, $distinct, $con);
+		return SiteReportsSitePeer::doCount($criteria, $distinct, $con);
 	}
 
 	/**
-	 * Method called to associate a SiteReportsSiteSetup object to this object
-	 * through the SiteReportsSiteSetup foreign key attribute
+	 * Method called to associate a SiteReportsSite object to this object
+	 * through the SiteReportsSite foreign key attribute
 	 *
-	 * @param      SiteReportsSiteSetup $l SiteReportsSiteSetup
+	 * @param      SiteReportsSite $l SiteReportsSite
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addSiteReportsSiteSetup(SiteReportsSiteSetup $l)
+	public function addSiteReportsSite(SiteReportsSite $l)
 	{
-		$this->collSiteReportsSiteSetups[] = $l;
+		$this->collSiteReportsSites[] = $l;
 		$l->setOrganization($this);
 	}
 

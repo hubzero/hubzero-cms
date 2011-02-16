@@ -24,7 +24,7 @@ abstract class BaseProjectPeer {
 	const CLASS_DEFAULT = 'lib.data.Project';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 23;
+	const NUM_COLUMNS = 29;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -93,6 +93,24 @@ abstract class BaseProjectPeer {
 	/** the column name for the CREATOR_ID field */
 	const CREATOR_ID = 'PROJECT.CREATOR_ID';
 
+	/** the column name for the CREATED_DATE field */
+	const CREATED_DATE = 'PROJECT.CREATED_DATE';
+
+	/** the column name for the MODIFIED_BY_ID field */
+	const MODIFIED_BY_ID = 'PROJECT.MODIFIED_BY_ID';
+
+	/** the column name for the MODIFIED_DATE field */
+	const MODIFIED_DATE = 'PROJECT.MODIFIED_DATE';
+
+	/** the column name for the APP_ID field */
+	const APP_ID = 'PROJECT.APP_ID';
+
+	/** the column name for the NEES_RESEARCH_TYPE_ID field */
+	const NEES_RESEARCH_TYPE_ID = 'PROJECT.NEES_RESEARCH_TYPE_ID';
+
+	/** the column name for the ENHANCED field */
+	const ENHANCED = 'PROJECT.ENHANCED';
+
 	/** the column name for the SUPER_PROJECT_ID field */
 	const SUPER_PROJECT_ID = 'PROJECT.SUPER_PROJECT_ID';
 
@@ -155,10 +173,10 @@ abstract class BaseProjectPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'ContactEmail', 'ContactName', 'CurationStatus', 'Deleted', 'Description', 'EndDate', 'Fundorg', 'FundorgProjId', 'NEES', 'NSFTitle', 'Name', 'Nickname', 'ShortTitle', 'StartDate', 'Status', 'SysadminEmail', 'SysadminName', 'Title', 'View', 'CreatorId', 'SuperProjectId', 'ProjectTypeId', ),
-		BasePeer::TYPE_COLNAME => array (ProjectPeer::PROJID, ProjectPeer::CONTACT_EMAIL, ProjectPeer::CONTACT_NAME, ProjectPeer::CURATION_STATUS, ProjectPeer::DELETED, ProjectPeer::DESCRIPTION, ProjectPeer::END_DATE, ProjectPeer::FUNDORG, ProjectPeer::FUNDORGPROJID, ProjectPeer::NEES, ProjectPeer::NSFTITLE, ProjectPeer::NAME, ProjectPeer::NICKNAME, ProjectPeer::SHORT_TITLE, ProjectPeer::START_DATE, ProjectPeer::STATUS, ProjectPeer::SYSADMIN_EMAIL, ProjectPeer::SYSADMIN_NAME, ProjectPeer::TITLE, ProjectPeer::VIEWABLE, ProjectPeer::CREATOR_ID, ProjectPeer::SUPER_PROJECT_ID, ProjectPeer::PROJECT_TYPE_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('PROJID', 'CONTACT_EMAIL', 'CONTACT_NAME', 'CURATION_STATUS', 'DELETED', 'DESCRIPTION', 'END_DATE', 'FUNDORG', 'FUNDORGPROJID', 'NEES', 'NSFTITLE', 'NAME', 'NICKNAME', 'SHORT_TITLE', 'START_DATE', 'STATUS', 'SYSADMIN_EMAIL', 'SYSADMIN_NAME', 'TITLE', 'VIEWABLE', 'CREATOR_ID', 'SUPER_PROJECT_ID', 'PROJECT_TYPE_ID', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'ContactEmail', 'ContactName', 'CurationStatus', 'Deleted', 'Description', 'EndDate', 'Fundorg', 'FundorgProjId', 'NEES', 'NSFTitle', 'Name', 'Nickname', 'ShortTitle', 'StartDate', 'Status', 'SysadminEmail', 'SysadminName', 'Title', 'View', 'CreatorId', 'CreatedDate', 'ModifiedById', 'ModifiedDate', 'AppId', 'NeesResearchTypeId', 'Enhanced', 'SuperProjectId', 'ProjectTypeId', ),
+		BasePeer::TYPE_COLNAME => array (ProjectPeer::PROJID, ProjectPeer::CONTACT_EMAIL, ProjectPeer::CONTACT_NAME, ProjectPeer::CURATION_STATUS, ProjectPeer::DELETED, ProjectPeer::DESCRIPTION, ProjectPeer::END_DATE, ProjectPeer::FUNDORG, ProjectPeer::FUNDORGPROJID, ProjectPeer::NEES, ProjectPeer::NSFTITLE, ProjectPeer::NAME, ProjectPeer::NICKNAME, ProjectPeer::SHORT_TITLE, ProjectPeer::START_DATE, ProjectPeer::STATUS, ProjectPeer::SYSADMIN_EMAIL, ProjectPeer::SYSADMIN_NAME, ProjectPeer::TITLE, ProjectPeer::VIEWABLE, ProjectPeer::CREATOR_ID, ProjectPeer::CREATED_DATE, ProjectPeer::MODIFIED_BY_ID, ProjectPeer::MODIFIED_DATE, ProjectPeer::APP_ID, ProjectPeer::NEES_RESEARCH_TYPE_ID, ProjectPeer::ENHANCED, ProjectPeer::SUPER_PROJECT_ID, ProjectPeer::PROJECT_TYPE_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('PROJID', 'CONTACT_EMAIL', 'CONTACT_NAME', 'CURATION_STATUS', 'DELETED', 'DESCRIPTION', 'END_DATE', 'FUNDORG', 'FUNDORGPROJID', 'NEES', 'NSFTITLE', 'NAME', 'NICKNAME', 'SHORT_TITLE', 'START_DATE', 'STATUS', 'SYSADMIN_EMAIL', 'SYSADMIN_NAME', 'TITLE', 'VIEWABLE', 'CREATOR_ID', 'CREATED_DATE', 'MODIFIED_BY_ID', 'MODIFIED_DATE', 'APP_ID', 'NEES_RESEARCH_TYPE_ID', 'ENHANCED', 'SUPER_PROJECT_ID', 'PROJECT_TYPE_ID', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, )
 	);
 
 	/**
@@ -168,10 +186,10 @@ abstract class BaseProjectPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ContactEmail' => 1, 'ContactName' => 2, 'CurationStatus' => 3, 'Deleted' => 4, 'Description' => 5, 'EndDate' => 6, 'Fundorg' => 7, 'FundorgProjId' => 8, 'NEES' => 9, 'NSFTitle' => 10, 'Name' => 11, 'Nickname' => 12, 'ShortTitle' => 13, 'StartDate' => 14, 'Status' => 15, 'SysadminEmail' => 16, 'SysadminName' => 17, 'Title' => 18, 'View' => 19, 'CreatorId' => 20, 'SuperProjectId' => 21, 'ProjectTypeId' => 22, ),
-		BasePeer::TYPE_COLNAME => array (ProjectPeer::PROJID => 0, ProjectPeer::CONTACT_EMAIL => 1, ProjectPeer::CONTACT_NAME => 2, ProjectPeer::CURATION_STATUS => 3, ProjectPeer::DELETED => 4, ProjectPeer::DESCRIPTION => 5, ProjectPeer::END_DATE => 6, ProjectPeer::FUNDORG => 7, ProjectPeer::FUNDORGPROJID => 8, ProjectPeer::NEES => 9, ProjectPeer::NSFTITLE => 10, ProjectPeer::NAME => 11, ProjectPeer::NICKNAME => 12, ProjectPeer::SHORT_TITLE => 13, ProjectPeer::START_DATE => 14, ProjectPeer::STATUS => 15, ProjectPeer::SYSADMIN_EMAIL => 16, ProjectPeer::SYSADMIN_NAME => 17, ProjectPeer::TITLE => 18, ProjectPeer::VIEWABLE => 19, ProjectPeer::CREATOR_ID => 20, ProjectPeer::SUPER_PROJECT_ID => 21, ProjectPeer::PROJECT_TYPE_ID => 22, ),
-		BasePeer::TYPE_FIELDNAME => array ('PROJID' => 0, 'CONTACT_EMAIL' => 1, 'CONTACT_NAME' => 2, 'CURATION_STATUS' => 3, 'DELETED' => 4, 'DESCRIPTION' => 5, 'END_DATE' => 6, 'FUNDORG' => 7, 'FUNDORGPROJID' => 8, 'NEES' => 9, 'NSFTITLE' => 10, 'NAME' => 11, 'NICKNAME' => 12, 'SHORT_TITLE' => 13, 'START_DATE' => 14, 'STATUS' => 15, 'SYSADMIN_EMAIL' => 16, 'SYSADMIN_NAME' => 17, 'TITLE' => 18, 'VIEWABLE' => 19, 'CREATOR_ID' => 20, 'SUPER_PROJECT_ID' => 21, 'PROJECT_TYPE_ID' => 22, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ContactEmail' => 1, 'ContactName' => 2, 'CurationStatus' => 3, 'Deleted' => 4, 'Description' => 5, 'EndDate' => 6, 'Fundorg' => 7, 'FundorgProjId' => 8, 'NEES' => 9, 'NSFTitle' => 10, 'Name' => 11, 'Nickname' => 12, 'ShortTitle' => 13, 'StartDate' => 14, 'Status' => 15, 'SysadminEmail' => 16, 'SysadminName' => 17, 'Title' => 18, 'View' => 19, 'CreatorId' => 20, 'CreatedDate' => 21, 'ModifiedById' => 22, 'ModifiedDate' => 23, 'AppId' => 24, 'NeesResearchTypeId' => 25, 'Enhanced' => 26, 'SuperProjectId' => 27, 'ProjectTypeId' => 28, ),
+		BasePeer::TYPE_COLNAME => array (ProjectPeer::PROJID => 0, ProjectPeer::CONTACT_EMAIL => 1, ProjectPeer::CONTACT_NAME => 2, ProjectPeer::CURATION_STATUS => 3, ProjectPeer::DELETED => 4, ProjectPeer::DESCRIPTION => 5, ProjectPeer::END_DATE => 6, ProjectPeer::FUNDORG => 7, ProjectPeer::FUNDORGPROJID => 8, ProjectPeer::NEES => 9, ProjectPeer::NSFTITLE => 10, ProjectPeer::NAME => 11, ProjectPeer::NICKNAME => 12, ProjectPeer::SHORT_TITLE => 13, ProjectPeer::START_DATE => 14, ProjectPeer::STATUS => 15, ProjectPeer::SYSADMIN_EMAIL => 16, ProjectPeer::SYSADMIN_NAME => 17, ProjectPeer::TITLE => 18, ProjectPeer::VIEWABLE => 19, ProjectPeer::CREATOR_ID => 20, ProjectPeer::CREATED_DATE => 21, ProjectPeer::MODIFIED_BY_ID => 22, ProjectPeer::MODIFIED_DATE => 23, ProjectPeer::APP_ID => 24, ProjectPeer::NEES_RESEARCH_TYPE_ID => 25, ProjectPeer::ENHANCED => 26, ProjectPeer::SUPER_PROJECT_ID => 27, ProjectPeer::PROJECT_TYPE_ID => 28, ),
+		BasePeer::TYPE_FIELDNAME => array ('PROJID' => 0, 'CONTACT_EMAIL' => 1, 'CONTACT_NAME' => 2, 'CURATION_STATUS' => 3, 'DELETED' => 4, 'DESCRIPTION' => 5, 'END_DATE' => 6, 'FUNDORG' => 7, 'FUNDORGPROJID' => 8, 'NEES' => 9, 'NSFTITLE' => 10, 'NAME' => 11, 'NICKNAME' => 12, 'SHORT_TITLE' => 13, 'START_DATE' => 14, 'STATUS' => 15, 'SYSADMIN_EMAIL' => 16, 'SYSADMIN_NAME' => 17, 'TITLE' => 18, 'VIEWABLE' => 19, 'CREATOR_ID' => 20, 'CREATED_DATE' => 21, 'MODIFIED_BY_ID' => 22, 'MODIFIED_DATE' => 23, 'APP_ID' => 24, 'NEES_RESEARCH_TYPE_ID' => 25, 'ENHANCED' => 26, 'SUPER_PROJECT_ID' => 27, 'PROJECT_TYPE_ID' => 28, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, )
 	);
 
 	/**
@@ -314,6 +332,18 @@ abstract class BaseProjectPeer {
 
 		$criteria->addSelectColumn(ProjectPeer::CREATOR_ID);
 
+		$criteria->addSelectColumn(ProjectPeer::CREATED_DATE);
+
+		$criteria->addSelectColumn(ProjectPeer::MODIFIED_BY_ID);
+
+		$criteria->addSelectColumn(ProjectPeer::MODIFIED_DATE);
+
+		$criteria->addSelectColumn(ProjectPeer::APP_ID);
+
+		$criteria->addSelectColumn(ProjectPeer::NEES_RESEARCH_TYPE_ID);
+
+		$criteria->addSelectColumn(ProjectPeer::ENHANCED);
+
 		$criteria->addSelectColumn(ProjectPeer::SUPER_PROJECT_ID);
 
 		$criteria->addSelectColumn(ProjectPeer::PROJECT_TYPE_ID);
@@ -447,14 +477,14 @@ abstract class BaseProjectPeer {
 	}
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related Person table
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByCreatorId table
 	 *
 	 * @param      Criteria $c
 	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
 	 * @param      Connection $con
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinPerson(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinPersonRelatedByCreatorId(Criteria $criteria, $distinct = false, $con = null)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -486,13 +516,130 @@ abstract class BaseProjectPeer {
 
 
 	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByModifiedById table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinPersonRelatedByModifiedById(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ProjectPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ProjectPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ProjectPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$rs = ProjectPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related NeesResearchType table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinNeesResearchType(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ProjectPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ProjectPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
+
+		$rs = ProjectPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related ProjectResearchType table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinProjectResearchType(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ProjectPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ProjectPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
+
+		$rs = ProjectPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
 	 * Selects a collection of Project objects pre-filled with their Person objects.
 	 *
 	 * @return     array Array of Project objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinPerson(Criteria $c, $con = null)
+	public static function doSelectJoinPersonRelatedByCreatorId(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -525,7 +672,181 @@ abstract class BaseProjectPeer {
 
 			$newObject = true;
 			foreach($results as $temp_obj1) {
-				$temp_obj2 = $temp_obj1->getPerson(); //CHECKME
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addProjectRelatedByCreatorId($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initProjectsRelatedByCreatorId();
+				$obj2->addProjectRelatedByCreatorId($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Project objects pre-filled with their Person objects.
+	 *
+	 * @return     array Array of Project objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinPersonRelatedByModifiedById(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ProjectPeer::addSelectColumns($c);
+		$startcol = (ProjectPeer::NUM_COLUMNS - ProjectPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		PersonPeer::addSelectColumns($c);
+
+		$c->addJoin(ProjectPeer::MODIFIED_BY_ID, PersonPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ProjectPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addProjectRelatedByModifiedById($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initProjectsRelatedByModifiedById();
+				$obj2->addProjectRelatedByModifiedById($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Project objects pre-filled with their NeesResearchType objects.
+	 *
+	 * @return     array Array of Project objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinNeesResearchType(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ProjectPeer::addSelectColumns($c);
+		$startcol = (ProjectPeer::NUM_COLUMNS - ProjectPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		NeesResearchTypePeer::addSelectColumns($c);
+
+		$c->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ProjectPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = NeesResearchTypePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getNeesResearchType(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addProject($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initProjects();
+				$obj2->addProject($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Project objects pre-filled with their ProjectResearchType objects.
+	 *
+	 * @return     array Array of Project objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinProjectResearchType(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ProjectPeer::addSelectColumns($c);
+		$startcol = (ProjectPeer::NUM_COLUMNS - ProjectPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		ProjectResearchTypePeer::addSelectColumns($c);
+
+		$c->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ProjectPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ProjectResearchTypePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getProjectResearchType(); //CHECKME
 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					// e.g. $author->addBookRelatedByBookId()
@@ -571,6 +892,12 @@ abstract class BaseProjectPeer {
 
 		$criteria->addJoin(ProjectPeer::CREATOR_ID, PersonPeer::ID);
 
+		$criteria->addJoin(ProjectPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$criteria->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
+
+		$criteria->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
+
 		$rs = ProjectPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
 			return $rs->getInt(1);
@@ -603,7 +930,22 @@ abstract class BaseProjectPeer {
 		PersonPeer::addSelectColumns($c);
 		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
 
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		NeesResearchTypePeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + NeesResearchTypePeer::NUM_COLUMNS;
+
+		ProjectResearchTypePeer::addSelectColumns($c);
+		$startcol6 = $startcol5 + ProjectResearchTypePeer::NUM_COLUMNS;
+
 		$c->addJoin(ProjectPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(ProjectPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
+
+		$c->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
 
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -630,17 +972,95 @@ abstract class BaseProjectPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getPerson(); // CHECKME
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); // CHECKME
 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
-					$temp_obj2->addProject($obj1); // CHECKME
+					$temp_obj2->addProjectRelatedByCreatorId($obj1); // CHECKME
 					break;
 				}
 			}
 
 			if ($newObject) {
-				$obj2->initProjects();
-				$obj2->addProject($obj1);
+				$obj2->initProjectsRelatedByCreatorId();
+				$obj2->addProjectRelatedByCreatorId($obj1);
+			}
+
+
+				// Add objects for joined Person rows
+	
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3 = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); // CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addProjectRelatedByModifiedById($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initProjectsRelatedByModifiedById();
+				$obj3->addProjectRelatedByModifiedById($obj1);
+			}
+
+
+				// Add objects for joined NeesResearchType rows
+	
+			$omClass = NeesResearchTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4 = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getNeesResearchType(); // CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addProject($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initProjects();
+				$obj4->addProject($obj1);
+			}
+
+
+				// Add objects for joined ProjectResearchType rows
+	
+			$omClass = ProjectResearchTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj5 = new $cls();
+			$obj5->hydrate($rs, $startcol5);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj5 = $temp_obj1->getProjectResearchType(); // CHECKME
+				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj5->addProject($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj5->initProjects();
+				$obj5->addProject($obj1);
 			}
 
 			$results[] = $obj1;
@@ -678,6 +1098,12 @@ abstract class BaseProjectPeer {
 
 		$criteria->addJoin(ProjectPeer::CREATOR_ID, PersonPeer::ID);
 
+		$criteria->addJoin(ProjectPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$criteria->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
+
+		$criteria->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
+
 		$rs = ProjectPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
 			return $rs->getInt(1);
@@ -689,14 +1115,14 @@ abstract class BaseProjectPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related Person table
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByCreatorId table
 	 *
 	 * @param      Criteria $c
 	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
 	 * @param      Connection $con
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptPerson(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinAllExceptPersonRelatedByCreatorId(Criteria $criteria, $distinct = false, $con = null)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -714,6 +1140,137 @@ abstract class BaseProjectPeer {
 		{
 			$criteria->addSelectColumn($column);
 		}
+
+		$criteria->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
+
+		$criteria->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
+
+		$rs = ProjectPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByModifiedById table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptPersonRelatedByModifiedById(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ProjectPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ProjectPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
+
+		$criteria->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
+
+		$rs = ProjectPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related NeesResearchType table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptNeesResearchType(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ProjectPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ProjectPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ProjectPeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(ProjectPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$criteria->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
+
+		$rs = ProjectPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related ProjectResearchType table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptProjectResearchType(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ProjectPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ProjectPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ProjectPeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(ProjectPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$criteria->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
 
 		$rs = ProjectPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -749,7 +1306,22 @@ abstract class BaseProjectPeer {
 		PersonPeer::addSelectColumns($c);
 		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
 
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		NeesResearchTypePeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + NeesResearchTypePeer::NUM_COLUMNS;
+
+		ProjectResearchTypePeer::addSelectColumns($c);
+		$startcol6 = $startcol5 + ProjectResearchTypePeer::NUM_COLUMNS;
+
 		$c->addJoin(ProjectPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(ProjectPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
+
+		$c->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
 
 
 		$rs = BasePeer::doSelect($c, $con);
@@ -773,17 +1345,86 @@ abstract class BaseProjectPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getPerson(); //CHECKME
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
-					$temp_obj2->addProject($obj1);
+					$temp_obj2->addProjectRelatedByCreatorId($obj1);
 					break;
 				}
 			}
 
 			if ($newObject) {
-				$obj2->initProjects();
-				$obj2->addProject($obj1);
+				$obj2->initProjectsRelatedByCreatorId();
+				$obj2->addProjectRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addProjectRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initProjectsRelatedByModifiedById();
+				$obj3->addProjectRelatedByModifiedById($obj1);
+			}
+
+			$omClass = NeesResearchTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getNeesResearchType(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addProject($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initProjects();
+				$obj4->addProject($obj1);
+			}
+
+			$omClass = ProjectResearchTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj5  = new $cls();
+			$obj5->hydrate($rs, $startcol5);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj5 = $temp_obj1->getProjectResearchType(); //CHECKME
+				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj5->addProject($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj5->initProjects();
+				$obj5->addProject($obj1);
 			}
 
 			$results[] = $obj1;
@@ -793,13 +1434,13 @@ abstract class BaseProjectPeer {
 
 
 	/**
-	 * Selects a collection of Project objects pre-filled with all related objects except Person.
+	 * Selects a collection of Project objects pre-filled with all related objects except PersonRelatedByCreatorId.
 	 *
 	 * @return     array Array of Project objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptPerson(Criteria $c, $con = null)
+	public static function doSelectJoinAllExceptPersonRelatedByCreatorId(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -813,6 +1454,16 @@ abstract class BaseProjectPeer {
 		ProjectPeer::addSelectColumns($c);
 		$startcol2 = (ProjectPeer::NUM_COLUMNS - ProjectPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
+		NeesResearchTypePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + NeesResearchTypePeer::NUM_COLUMNS;
+
+		ProjectResearchTypePeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + ProjectResearchTypePeer::NUM_COLUMNS;
+
+		$c->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
+
+		$c->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
+
 
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -824,6 +1475,393 @@ abstract class BaseProjectPeer {
 			$cls = Propel::import($omClass);
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
+
+			$omClass = NeesResearchTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getNeesResearchType(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addProject($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initProjects();
+				$obj2->addProject($obj1);
+			}
+
+			$omClass = ProjectResearchTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getProjectResearchType(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addProject($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initProjects();
+				$obj3->addProject($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Project objects pre-filled with all related objects except PersonRelatedByModifiedById.
+	 *
+	 * @return     array Array of Project objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptPersonRelatedByModifiedById(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ProjectPeer::addSelectColumns($c);
+		$startcol2 = (ProjectPeer::NUM_COLUMNS - ProjectPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		NeesResearchTypePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + NeesResearchTypePeer::NUM_COLUMNS;
+
+		ProjectResearchTypePeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + ProjectResearchTypePeer::NUM_COLUMNS;
+
+		$c->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
+
+		$c->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ProjectPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = NeesResearchTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getNeesResearchType(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addProject($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initProjects();
+				$obj2->addProject($obj1);
+			}
+
+			$omClass = ProjectResearchTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getProjectResearchType(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addProject($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initProjects();
+				$obj3->addProject($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Project objects pre-filled with all related objects except NeesResearchType.
+	 *
+	 * @return     array Array of Project objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptNeesResearchType(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ProjectPeer::addSelectColumns($c);
+		$startcol2 = (ProjectPeer::NUM_COLUMNS - ProjectPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		ProjectResearchTypePeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + ProjectResearchTypePeer::NUM_COLUMNS;
+
+		$c->addJoin(ProjectPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(ProjectPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(ProjectPeer::NEES, ProjectResearchTypePeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ProjectPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addProjectRelatedByCreatorId($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initProjectsRelatedByCreatorId();
+				$obj2->addProjectRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addProjectRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initProjectsRelatedByModifiedById();
+				$obj3->addProjectRelatedByModifiedById($obj1);
+			}
+
+			$omClass = ProjectResearchTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getProjectResearchType(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addProject($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initProjects();
+				$obj4->addProject($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Project objects pre-filled with all related objects except ProjectResearchType.
+	 *
+	 * @return     array Array of Project objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptProjectResearchType(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ProjectPeer::addSelectColumns($c);
+		$startcol2 = (ProjectPeer::NUM_COLUMNS - ProjectPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		NeesResearchTypePeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + NeesResearchTypePeer::NUM_COLUMNS;
+
+		$c->addJoin(ProjectPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(ProjectPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(ProjectPeer::NEES_RESEARCH_TYPE_ID, NeesResearchTypePeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ProjectPeer::getOMClass($rs, 1);
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addProjectRelatedByCreatorId($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initProjectsRelatedByCreatorId();
+				$obj2->addProjectRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addProjectRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initProjectsRelatedByModifiedById();
+				$obj3->addProjectRelatedByModifiedById($obj1);
+			}
+
+			$omClass = NeesResearchTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getNeesResearchType(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addProject($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initProjects();
+				$obj4->addProject($obj1);
+			}
 
 			$results[] = $obj1;
 		}
@@ -856,7 +1894,7 @@ abstract class BaseProjectPeer {
 		try {
 
 			$omClass = null;
-			$classKey = $rs->getString($colnum - 1 + 23);
+			$classKey = $rs->getString($colnum - 1 + 29);
 
 			switch($classKey) {
 

@@ -96,6 +96,14 @@ class ExperimentMapBuilder {
 
 		$tMap->addForeignKey('CREATOR_ID', 'CreatorId', 'double', CreoleTypes::NUMERIC, 'PERSON', 'ID', false, 22);
 
+		$tMap->addColumn('CREATED_DATE', 'CreatedDate', 'int', CreoleTypes::DATE, false, null);
+
+		$tMap->addForeignKey('MODIFIED_BY_ID', 'ModifiedById', 'double', CreoleTypes::NUMERIC, 'PERSON', 'ID', false, 22);
+
+		$tMap->addColumn('MODIFIED_DATE', 'ModifiedDate', 'int', CreoleTypes::DATE, false, null);
+
+		$tMap->addColumn('APP_ID', 'AppId', 'double', CreoleTypes::NUMERIC, false, 22);
+
 		$tMap->addValidator('CURATION_STATUS', 'maxLength', 'propel.validator.MaxLengthValidator', '40', 'CURATION_STATUS');
 
 		$tMap->addValidator('CURATION_STATUS', 'required', 'propel.validator.RequiredValidator', '', 'CURATION_STATUS');

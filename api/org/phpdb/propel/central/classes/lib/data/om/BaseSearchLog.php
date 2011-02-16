@@ -4,6 +4,9 @@ require_once 'propel/om/BaseObject.php';
 
 require_once 'propel/om/Persistent.php';
 
+include_once 'creole/util/Clob.php';
+include_once 'creole/util/Blob.php';
+
 
 include_once 'propel/util/Criteria.php';
 
@@ -220,14 +223,22 @@ abstract class BaseSearchLog extends BaseObject  implements Persistent {
 	public function setQuery($v)
 	{
 
-		// Since the native PHP type for this column is string,
-		// we will cast the input to a string (if it is not).
-		if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
+		// if the passed in parameter is the *same* object that
+		// is stored internally then we use the Lob->isModified()
+		// method to know whether contents changed.
+		if ($v instanceof Lob && $v === $this->query) {
+			$changed = $v->isModified();
+		} else {
+			$changed = ($this->query !== $v);
 		}
-
-		if ($this->query !== $v) {
-			$this->query = $v;
+		if ($changed) {
+			if ( !($v instanceof Lob) ) {
+				$obj = new Clob();
+				$obj->setContents($v);
+			} else {
+				$obj = $v;
+			}
+			$this->query = $obj;
 			$this->modifiedColumns[] = SearchLogPeer::QUERY;
 		}
 
@@ -280,7 +291,7 @@ abstract class BaseSearchLog extends BaseObject  implements Persistent {
 
 			$this->keyword = $rs->getString($startcol + 2);
 
-			$this->query = $rs->getString($startcol + 3);
+			$this->query = $rs->getClob($startcol + 3);
 
 			$this->created_dt = $rs->getDate($startcol + 4, null);
 

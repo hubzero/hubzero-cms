@@ -84,7 +84,7 @@ class ProjectMapBuilder {
 
 		$tMap->addColumn('FUNDORGPROJID', 'FundorgProjId', 'string', CreoleTypes::VARCHAR, false, 400);
 
-		$tMap->addColumn('NEES', 'NEES', 'double', CreoleTypes::NUMERIC, false, 22);
+		$tMap->addForeignKey('NEES', 'NEES', 'double', CreoleTypes::NUMERIC, 'PROJECT_RESEARCH_TYPE', 'ID', false, 22);
 
 		$tMap->addColumn('NSFTITLE', 'NSFTitle', 'string', CreoleTypes::VARCHAR, false, 1020);
 
@@ -107,6 +107,18 @@ class ProjectMapBuilder {
 		$tMap->addColumn('VIEWABLE', 'View', 'string', CreoleTypes::VARCHAR, false, 28);
 
 		$tMap->addForeignKey('CREATOR_ID', 'CreatorId', 'double', CreoleTypes::NUMERIC, 'PERSON', 'ID', false, 22);
+
+		$tMap->addColumn('CREATED_DATE', 'CreatedDate', 'int', CreoleTypes::DATE, false, null);
+
+		$tMap->addForeignKey('MODIFIED_BY_ID', 'ModifiedById', 'double', CreoleTypes::NUMERIC, 'PERSON', 'ID', false, 22);
+
+		$tMap->addColumn('MODIFIED_DATE', 'ModifiedDate', 'int', CreoleTypes::DATE, false, null);
+
+		$tMap->addColumn('APP_ID', 'AppId', 'double', CreoleTypes::NUMERIC, false, 22);
+
+		$tMap->addForeignKey('NEES_RESEARCH_TYPE_ID', 'NeesResearchTypeId', 'double', CreoleTypes::NUMERIC, 'NEES_RESEARCH_TYPE', 'ID', false, 22);
+
+		$tMap->addColumn('ENHANCED', 'Enhanced', 'double', CreoleTypes::NUMERIC, false, 22);
 
 		$tMap->addForeignKey('SUPER_PROJECT_ID', 'SuperProjectId', 'double', CreoleTypes::NUMERIC, 'PROJECT', 'PROJID', false, 22);
 

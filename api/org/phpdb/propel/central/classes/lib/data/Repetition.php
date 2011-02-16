@@ -14,7 +14,7 @@ require_once 'lib/data/om/BaseRepetition.php';
  */
 class Repetition extends BaseRepetition {
 
-  /**
+  /** 
    * Initializes internal state of Repetition object.
    */
   function __construct(Trial $trial = null,
@@ -77,6 +77,16 @@ class Repetition extends BaseRepetition {
    */
   public function isPublished(){
     return $this->getTrial()->getExperiment()->isPublished();
+  }
+
+  public function getDataFiles($p_bExcludeDirectories=false){
+    require_once 'lib/data/DataFilePeer.php';
+    return DataFilePeer::getDataFilesByRepetition($this->getId(), $p_bExcludeDirectories);
+  }
+
+  public function getDataFileLinkCount($p_bDirectory=1){
+    require_once 'lib/data/DataFileLinkPeer.php';
+    return DataFileLinkPeer::getCountByRepetitionId($this->getId(), $p_bDirectory);
   }
 
 } // Repetition

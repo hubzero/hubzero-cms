@@ -27,7 +27,7 @@ require_once 'lib/security/PermissionsView.php';
  ******************************************************************************/
 
 class Authorizer {
-  private static $instance;
+  private static $instance; 
 
 
   private $authorization;
@@ -310,6 +310,7 @@ class Authorizer {
       if ($published && $action == "View"){
         return true;
       }
+      //echo "Authorizer::canDo: uid=".$this->uid.", entityid=".$entity->getId().", domain=".DomainEntityType::getEntityTypeId($entity).", action=$action<br>";
       return PermissionsViewPeer::canDo($this->uid, $entity->getId(), DomainEntityType::getEntityTypeId($entity), $action);
     }
     else {

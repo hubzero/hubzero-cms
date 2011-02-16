@@ -10,7 +10,7 @@
 /**
  * Skeleton subclass for performing query and update operations on the 'DATA_FILE_LINK' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -22,32 +22,32 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
 
 	public static function findRepetitionDataFileLinksByExperiment($p_iExperimentId){
 	  $oDataFileLinkArray = array();
-	  
-	  $oCriteria = new Criteria();
+
+	  $oCriteria = new Criteria(); 
 	  $oCriteria->add(self::REP_ID, 0, Criteria::NOT_EQUAL);
 	  $oCriteria->add(self::EXP_ID, $p_iExperimentId);
-	  
+
 	  return parent::doSelect($oCriteria);
-	  
+
 	  return $oDataFileLinkArray;
 	}
-	
+
 	public static function findProjectAndExperimentByRepetition($p_iRepetitionId){
 	  $oReturnArray = array();
-		
-	  $strQuery = "select distinct proj_id, exp_id 
-	  			   from data_file_link 
+
+	  $strQuery = "select distinct proj_id, exp_id
+	  			   from data_file_link
 	  			   where rep_id=?";
-	  
+
 	  $oConnection = Propel::getConnection();
       $oStatement = $oConnection->prepareStatement($strQuery);
-      $oStatement->setInt(1, $p_iRepetitionId);	
+      $oStatement->setInt(1, $p_iRepetitionId);
       $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
       while($oResultSet->next()){
   	    $oReturnArray['PROJ_ID'] = $oResultSet->getInt("PROJ_ID");
   	    $oReturnArray['EXP_ID'] = $oResultSet->getInt("EXP_ID");
       }
-      
+
       return $oReturnArray;
 	}
 
@@ -63,7 +63,7 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
                   and df.path like ?
                   and df.deleted=?
                   and df.directory=?
-                  and f.mime_type not like 'image/%' 
+                  and f.mime_type not like 'image/%'
                   and dfl.deleted=? ";
 
     if(!empty ($p_iHideExperimentIdArray)){
@@ -177,7 +177,7 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
 
     return $strReturnArray;
   }
-	
+
   public static function findDistinctExperiments($p_iProjectId, $p_iHideExperimentIdArray, $p_strOpeningTool="", $p_strUsageType=""){
     $strReturnArray = array();
 
@@ -226,11 +226,11 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
 
     return $strReturnArray;
   }
-	
+
 	public static function findDistinctTrials($p_iHideExperimentIdArray, $p_iProjectId, $p_iExperimentId, $p_strOpeningTool="", $p_strUsageType=""){
 	  $strReturnArray = array();
-		
-	  $strQuery = "select distinct dfl.trial_id, t.name   
+
+	  $strQuery = "select distinct dfl.trial_id, t.name
 				from data_file_link dfl, trial t, data_file df
 				where dfl.proj_id = ?
 				  and dfl.exp_id = ?
@@ -245,16 +245,16 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
 	  if(strlen($p_strOpeningTool)>0){
 		$strQuery .= "and df.opening_tool= ? ";
   	  }
-  	  
+
   	  if(strlen($p_strUsageType)>0){
 		$strQuery .= "and df.usage_type_id=(select id from entity_type where n_table_name=?) ";
   	  }
 	  $strQuery .= "order by dfl.trial_id";
 
-	  //echo $strQuery."<br>"; 
-	  
+	  //echo $strQuery."<br>";
+
 	  $iIndex = 3;
-	  
+
 	  $oConnection = Propel::getConnection();
       $oStatement = $oConnection->prepareStatement($strQuery);
       $oStatement->setInt(1, $p_iProjectId);
@@ -265,7 +265,7 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
       }
       if(strlen($p_strUsageType)>0){
       	$oStatement->setString($iIndex, $p_strUsageType);
-      }	
+      }
       $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
       while($oResultSet->next()){
       	$strExperimentArray = array();
@@ -273,14 +273,14 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
   	    $strExperimentArray['NAME'] = $oResultSet->getString("NAME");
   	    array_push($strReturnArray, $strExperimentArray);
       }
-      
-      return $strReturnArray;	
+
+      return $strReturnArray;
 	}
-	
+
     public static function findDistinctRepetitions($p_iHideExperimentIdArray, $p_iProjectId, $p_iExperimentId, $p_iTrialId, $p_strOpeningTool="", $p_strUsageType=""){
       $strReturnArray = array();
-		
-      $strQuery = "select distinct dfl.rep_id, r.name   
+
+      $strQuery = "select distinct dfl.rep_id, r.name
 				from data_file_link dfl, repetition r, data_file df
 				where dfl.proj_id = ?
 				  and dfl.exp_id = ?
@@ -317,7 +317,7 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
       }
       if(strlen($p_strUsageType)>0){
       	$oStatement->setString($iIndex, $p_strUsageType);
-      }	
+      }
       $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
       while($oResultSet->next()){
       	$strExperimentArray = array();
@@ -325,11 +325,11 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
   	    $strExperimentArray['NAME'] = $oResultSet->getString("NAME");
   	    array_push($strReturnArray, $strExperimentArray);
       }
-      
-      return $strReturnArray;	
+
+      return $strReturnArray;
 	}
-	
-	
+
+
   public static function findDataFileByUsage($p_strUsage, $p_iLowerLimit=1, $p_iUpperLimit=25, $p_iProjectId=0, $p_iExperimentId=0, $p_iTrialId=0, $p_iRepetitionId=0) {
         $oReturnArray = array();
 
@@ -408,5 +408,100 @@ class DataFileLinkPeer extends BaseDataFileLinkPeer {
 
         return self::retrieveByPKs($oReturnArray);
     }
-	
+
+    public static function getCountByProjectId($p_iProjectId, $p_bDirectory=1){
+      $iCount = 0;
+      $strQuery = "select count(dfl.proj_id) as TOTAL
+                   from data_file_link dfl, data_file df
+		   where dfl.proj_id = ?
+		     and df.path not like ?
+                     and df.directory = ?
+                     and dfl.exp_id = ?
+                     and dfl.trial_id = ?
+                     and dfl.rep_id = ?
+                     and dfl.id = df.id ";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oStatement->setInt(1, $p_iProjectId);
+      $oStatement->setString(2, "%.Generated_Pics%");
+      $oStatement->setInt(3, $p_bDirectory);
+      $oStatement->setInt(4, 0); //exp_id
+      $oStatement->setInt(5, 0); //trial_id
+      $oStatement->setInt(6, 0); //rep_id
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while($oResultSet->next()){
+      	$iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    public static function getCountByExperimentId($p_iExperimentId, $p_bDirectory=1){
+      $iCount = 0;
+      $strQuery = "select count(dfl.exp_id) as TOTAL
+                   from data_file_link dfl, data_file df
+		   where dfl.exp_id = ?
+		     and df.path not like ?
+                     and df.directory = ?
+                     and dfl.id = df.id ";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oStatement->setInt(1, $p_iExperimentId);
+      $oStatement->setString(2, "%.Generated_Pics%");
+      $oStatement->setInt(3, $p_bDirectory);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while($oResultSet->next()){
+      	$iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    public static function getCountByTrialId($p_iTrialId, $p_bDirectory=1){
+      $iCount = 0;
+      $strQuery = "select count(dfl.trial_id) as TOTAL
+                   from data_file_link dfl, data_file df
+		   where dfl.trial_id = ?
+		     and df.path not like ?
+                     and df.directory = ?
+                     and dfl.id = df.id ";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oStatement->setInt(1, $p_iTrialId);
+      $oStatement->setString(2, "%.Generated_Pics%");
+      $oStatement->setInt(3, $p_bDirectory);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while($oResultSet->next()){
+      	$iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
+    public static function getCountByRepetitionId($p_iRepetitionId, $p_bDirectory=1){
+      $iCount = 0;
+
+      $strQuery = "select count(dfl.rep_id) as TOTAL
+                   from data_file_link dfl, data_file df
+		   where dfl.rep_id = ?
+		     and df.path not like ?
+                     and df.directory = ?
+                     and dfl.id = df.id ";
+
+      $oConnection = Propel::getConnection();
+      $oStatement = $oConnection->prepareStatement($strQuery);
+      $oStatement->setInt(1, $p_iRepetitionId);
+      $oStatement->setString(2, "%.Generated_Pics%");
+      $oStatement->setInt(3, $p_bDirectory);
+      $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+      while($oResultSet->next()){
+      	$iCount = $oResultSet->getInt("TOTAL");
+      }
+
+      return $iCount;
+    }
+
 } // DataFileLinkPeer

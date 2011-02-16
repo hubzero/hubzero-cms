@@ -11,6 +11,8 @@ require_once 'lib/common/ImageThumbnail.php';
 require_once 'util/PhotoHelper.php';
 require_once 'util/FileHelper.php';
 require_once 'static/Files.php';
+require_once 'static/ProjectEditor.php';
+require_once 'lib/security/Authorizer.php'; 
 
 /**
  * DataFile
@@ -423,8 +425,9 @@ class DataFile extends BaseDataFile {
    * @param string $path
    * @param boolean $isDir
    * @return DataFile if successed or false if failed
+   * 
    */
-  function newDataFileByFilesystem($filename, $path, $isDir=false, $p_strTitle=null, $p_strDescription=null, $p_strUsageId=null, $p_strTool=null) {
+  function newDataFileByFilesystem($filename, $path, $isDir=false, $p_strTitle=null, $p_strDescription=null, $p_strUsageId=null, $p_strTool=null, $p_iCreatorId=null, $p_iModifiedById=null, $p_strModifiedDate=null, $p_iAppId=null) {
 
     $destination = FileCommandAPI::set_directory($path);
 
@@ -446,7 +449,12 @@ class DataFile extends BaseDataFile {
       $p_strTitle,           // title
       $p_strDescription,     // description
       $p_strUsageId,         // entity_type.id
-      $p_strTool      );     // tool
+      $p_strTool,            // tool
+      $p_iCreatorId,         // creator id
+      $p_iModifiedById,      // modified by id
+      $p_strModifiedDate,    // modified date
+      $p_iAppId              // app id
+      );
   }
 
 
@@ -568,8 +576,27 @@ class DataFile extends BaseDataFile {
     if( $this->getDirectory() ) {
       return null;
     }
-    return "/data/get" . get_friendlyPath($this->getPath()) . "/" . rawurlencode($this->getName());
-    //return "/data/get" . get_friendlyPath($this->getPath()) . "/" . urlencode($this->getName());
+    //return "/data/get" . get_friendlyPath($this->getPath()) . "/" . rawurlencode($this->getName());
+    return "/data/get" . get_friendlyPath($this->getPath()) . "/" . $this->getName();
+  }
+
+  public function getUrl(){
+    if( $this->getDirectory() ) {
+      return null;
+    }
+
+    $strCurrentPathArray = explode("/", get_friendlyPath($this->getPath()));
+    array_shift($strCurrentPathArray);  //remove empty "" from first element
+
+    /*
+     * Endocde the individual dir names...
+     */
+    $strEncodedDirsArray = array();
+    foreach($strCurrentPathArray as $strDirectoryName){
+      array_push($strEncodedDirsArray, rawurlencode($strDirectoryName));
+    }
+    $strEncodedPath = implode("/", $strEncodedDirsArray);
+    return "/data/get/" . $strEncodedPath . "/" . rawurlencode($this->getName());
   }
 
 
@@ -606,6 +633,8 @@ class DataFile extends BaseDataFile {
    */
   public function copyTo($new_path, $copySystemFile = false) {
 
+    $oAuthorizer = Authorizer::getInstance();
+
     // If destination file exists, do not overwrite it, quit now
     if(DataFilePeer::findByFullPath($new_path . "/" . $this->getName())) return null;
 
@@ -620,6 +649,9 @@ class DataFile extends BaseDataFile {
 
     $desc_df = $this->copy();
     $desc_df->setPath($new_path);
+    $desc_df->setModifiedById($oAuthorizer->getUserId());
+    $desc_df->setModifiedDate(date("m/d/Y"));
+    $desc_df->setAppId(ProjectEditor::APP_ID);
     $desc_df->save();
     return $desc_df;
   }
@@ -664,6 +696,8 @@ class DataFile extends BaseDataFile {
    * @return int $thumbId
    */
   function getImageThumbnailId() {
+    $oAuthorizer = Authorizer::getInstance();
+
     $thumbId = parent::getThumbId();
     if($thumbId) {
       return $thumbId;
@@ -697,10 +731,17 @@ class DataFile extends BaseDataFile {
         if($thumb_df) {
           $thumb_df->setView('PUBLIC');
           $thumb_df->setUsageTypeId($oThumbEntityType->getId());
+          $thumb_df->setCreatorId($oAuthorizer->getUserId());
+          $thumb_df->setModifiedById($oAuthorizer->getUserId());
+          $thumb_df->setModifiedDate(date("m/d/Y"));
+          $thumb_df->setAppId(ProjectEditor::APP_ID);
           $thumb_df->save();
 
           $this->setThumbId($thumb_df->getId());
           $this->setUsageTypeId($oExperimentEntityType->getId());
+          $this->setModifiedById($oAuthorizer->getUserId());
+          $this->setModifiedDate(date("m/d/Y"));
+          $this->setAppId(ProjectEditor::APP_ID);
           $this->save();
         }
 
@@ -730,6 +771,8 @@ class DataFile extends BaseDataFile {
    * @return int $thumbId
    */
   function getProjectImageThumbnailId() {
+    $oAuthorizer = Authorizer::getInstance();
+
     $thumbId = parent::getThumbId();
     if($thumbId) {
       return $thumbId;
@@ -762,6 +805,10 @@ class DataFile extends BaseDataFile {
         if($thumb_df) {
           $thumb_df->setView('PUBLIC');
           $thumb_df->setUsageTypeId($oThumbEntityType->getId());
+          $thumb_df->setCreatorId($oAuthorizer->getUserId());
+          $thumb_df->setModifiedById($oAuthorizer->getUserId());
+          $thumb_df->setModifiedDate(date("m/d/Y"));
+          $thumb_df->setAppId(ProjectEditor::APP_ID);
           $thumb_df->save();
         }
 
@@ -777,11 +824,18 @@ class DataFile extends BaseDataFile {
           PhotoHelper::resizeByWidth(self::getFullPath(), PhotoHelper::DEFAULT_THUMB_WIDTH, $strIconFullName);
           $icon_df = DataFilePeer::insertOrUpdateIfDuplicate($strIconName, $thumbpath, date('Y-m-d H:i:s'), md5_file($strIconFullName), 0, filesize($strIconFullName), $oIconEntityType->getId());
           $icon_df->setView("PUBLIC");
+          $icon_df->setCreatorId($oAuthorizer->getUserId());
+          $icon_df->setModifiedById($oAuthorizer->getUserId());
+          $icon_df->setModifiedDate(date("m/d/Y"));
+          $icon_df->setAppId(ProjectEditor::APP_ID);
           $icon_df->save();
 
           //set the data_file's thumb_id and usage type to project image
           $this->setThumbId($icon_df->getId());
           $this->setUsageTypeId($oProjectEntityType->getId());
+          $this->setModifiedById($oAuthorizer->getUserId());
+          $this->setModifiedDate(date("m/d/Y"));
+          $this->setAppId(ProjectEditor::APP_ID);
           $this->save();
         }
 

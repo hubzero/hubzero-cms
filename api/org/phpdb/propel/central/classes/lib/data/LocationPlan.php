@@ -13,7 +13,7 @@ require_once 'lib/data/om/BaseLocationPlan.php';
  *
  * @package    lib.data
  */
-abstract class LocationPlan extends BaseLocationPlan {
+abstract class LocationPlan extends BaseLocationPlan { 
 
   /**
    * Construct an LocationPlan Object
@@ -26,5 +26,14 @@ abstract class LocationPlan extends BaseLocationPlan {
   {
     $this->setExperiment($experiment);
     $this->setName($name);
+  }
+
+  /**
+   * Check if this locationPlan is published or not by checking its parent Experiment published status
+   *
+   * @return boolean value
+   */
+  public function isPublished(){
+    return $this->getExperiment()->isPublished();
   }
 } // LocationPlan

@@ -104,6 +104,16 @@ class TrialMapBuilder {
 
 		$tMap->addColumn('TRIAL_TYPE_ID', 'TrialTypeId', 'double', CreoleTypes::NUMERIC, false, 22);
 
+		$tMap->addForeignKey('CREATOR_ID', 'CreatorId', 'double', CreoleTypes::NUMERIC, 'PERSON', 'ID', false, 22);
+
+		$tMap->addColumn('CREATED_DATE', 'CreatedDate', 'int', CreoleTypes::DATE, false, null);
+
+		$tMap->addForeignKey('MODIFIED_BY_ID', 'ModifiedById', 'double', CreoleTypes::NUMERIC, 'PERSON', 'ID', false, 22);
+
+		$tMap->addColumn('MODIFIED_DATE', 'ModifiedDate', 'int', CreoleTypes::DATE, false, null);
+
+		$tMap->addColumn('APP_ID', 'AppId', 'double', CreoleTypes::NUMERIC, false, 22);
+
 		$tMap->addValidator('ACCELERATION', 'maxValue', 'propel.validator.MaxValueValidator', '', 'ACCELERATION');
 
 		$tMap->addValidator('ACCELERATION', 'notMatch', 'propel.validator.NotMatchValidator', '', 'ACCELERATION');

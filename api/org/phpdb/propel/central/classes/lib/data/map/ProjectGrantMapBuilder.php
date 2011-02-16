@@ -74,6 +74,8 @@ class ProjectGrantMapBuilder {
 
 		$tMap->addColumn('AWARD_URL', 'AwardUrl', 'string', CreoleTypes::VARCHAR, true, 512);
 
+		$tMap->addForeignKey('NEES_AWARD_TYPE_ID', 'NeesAwardTypeId', 'double', CreoleTypes::NUMERIC, 'NEES_AWARD_TYPE', 'ID', true, 22);
+
 	} // doBuild()
 
 } // ProjectGrantMapBuilder

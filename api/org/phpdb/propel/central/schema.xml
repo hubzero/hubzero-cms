@@ -1277,11 +1277,18 @@
     <column name="DOCUMENT_FORMAT_ID"        phpName="DocumentFormatId"       primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"  type="NUMERIC"/>
     <column name="OPENING_TOOL"     phpName="OpeningTool"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="200"  type="VARCHAR"/>
     <column name="USAGE_TYPE_ID"    phpName="UsageTypeId"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"  type="NUMERIC"/>
-    <!
-    <column name="APP_ID"    phpName="AppId"                 primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="10"  type="NUMERIC"/>
-    -->
-    <foreign-key foreignTable="DATA_FILE" onDelete="set 
-null" onUpdate="cascade">
+    <column name="CREATOR_ID"       phpName="CreatorId"      primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <column name="CREATED_DATE"     phpName="CreatedDate"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="DATE"/>
+    <column name="MODIFIED_BY_ID"   phpName="ModifiedById"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <column name="MODIFIED_DATE"    phpName="ModifiedDate"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="DATE"/>
+    <column name="APP_ID"           phpName="AppId"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="CREATOR_ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="MODIFIED_BY_ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="DATA_FILE" onDelete="set null" onUpdate="cascade">
       <reference foreign="ID" local="THUMB_ID"/>
     </foreign-key>
     <foreign-key foreignTable="DOCUMENT_FORMAT" onDelete="cascade" onUpdate="none">
@@ -2224,14 +2231,21 @@ null" onUpdate="cascade">
     <column name="TITLE"                phpName="Title"              primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="1020" type="VARCHAR"/>
     <column name="VIEWABLE"             phpName="View"               primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="32"   type="VARCHAR"/>
     <column name="CREATOR_ID"           phpName="CreatorId"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC"/>
+    <column name="CREATED_DATE"     phpName="CreatedDate"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="DATE"/>
+    <column name="MODIFIED_BY_ID"   phpName="ModifiedById"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <column name="MODIFIED_DATE"    phpName="ModifiedDate"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="DATE"/>
+    <column name="APP_ID"           phpName="AppId"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="CREATOR_ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="MODIFIED_BY_ID"/>
+    </foreign-key>
     <foreign-key foreignTable="EXPERIMENT_DOMAIN" onDelete="cascade" onUpdate="none">
       <reference foreign="ID" local="EXPERIMENT_DOMAIN_ID"/>
     </foreign-key>
     <foreign-key foreignTable="PROJECT" onDelete="cascade" onUpdate="none">
       <reference foreign="PROJID" local="PROJID"/>
-    </foreign-key>
-    <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
-      <reference foreign="ID" local="CREATOR_ID"/>
     </foreign-key>
     <validator column="CURATION_STATUS">
       <rule message="CURATION_STATUS" name="maxLength"/>
@@ -3600,6 +3614,12 @@ null" onUpdate="cascade">
     <column name="TITLE"            phpName="Title"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="1020" type="VARCHAR"/>
     <column name="VIEWABLE"         phpName="View"           primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="28"   type="VARCHAR"/>
     <column name="CREATOR_ID"       phpName="CreatorId"      primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <column name="CREATED_DATE"     phpName="CreatedDate"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="DATE"/>
+    <column name="MODIFIED_BY_ID"   phpName="ModifiedById"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <column name="MODIFIED_DATE"    phpName="ModifiedDate"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="DATE"/>
+    <column name="APP_ID"           phpName="AppId"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <column name="NEES_RESEARCH_TYPE_ID"  phpName="NeesResearchTypeId"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <column name="ENHANCED"         phpName="Enhanced"       primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
     <column name="SUPER_PROJECT_ID" phpName="SuperProjectId" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
     <column name="PROJECT_TYPE_ID"  phpName="ProjectTypeId"  primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" default="0" inheritance="single">
       <inheritance class="Project"             key="0" />
@@ -3613,6 +3633,15 @@ null" onUpdate="cascade">
     </foreign-key>
     <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
       <reference foreign="ID" local="CREATOR_ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="MODIFIED_BY_ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="NEES_RESEARCH_TYPE" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="NEES_RESEARCH_TYPE_ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="PROJECT_RESEARCH_TYPE" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="NEES"/>
     </foreign-key>
     <validator column="CONTACT_EMAIL">
       <rule message="CONTACT_EMAIL" name="maxLength" value="1020" />
@@ -3745,6 +3774,17 @@ null" onUpdate="cascade">
     <column name="TRIALID"         phpName="TrialId"        primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"  type="NUMERIC"/>
     <column name="DESCRIPTION"     phpName="Description"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="CLOB"/>
     <column name="TITLE"           phpName="Title"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="255" type="VARCHAR"/>
+    <column name="CREATOR_ID"       phpName="CreatorId"      primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <column name="CREATED_DATE"     phpName="CreatedDate"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="DATE"/>
+    <column name="MODIFIED_BY_ID"   phpName="ModifiedById"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <column name="MODIFIED_DATE"    phpName="ModifiedDate"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="DATE"/>
+    <column name="APP_ID"           phpName="AppId"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="CREATOR_ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="MODIFIED_BY_ID"/>
+    </foreign-key>
     <foreign-key foreignTable="TRIAL" onDelete="cascade" onUpdate="none">
       <reference foreign="TRIALID" local="TRIALID"/>
     </foreign-key>
@@ -4507,6 +4547,17 @@ null" onUpdate="cascade">
       <inheritance class="Trial" key="0"/>
       <inheritance class="SimulationRun" extends="lib.data.Trial" key="1"/>
     </column>
+    <column name="CREATOR_ID"       phpName="CreatorId"      primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <column name="CREATED_DATE"     phpName="CreatedDate"    primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="DATE"/>
+    <column name="MODIFIED_BY_ID"   phpName="ModifiedById"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <column name="MODIFIED_DATE"    phpName="ModifiedDate"   primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="DATE"/>
+    <column name="APP_ID"           phpName="AppId"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22"   type="NUMERIC" />
+    <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="CREATOR_ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="PERSON" onDelete="set null" onUpdate="none">
+      <reference foreign="ID" local="MODIFIED_BY_ID"/>
+    </foreign-key>
     <foreign-key foreignTable="DATA_FILE" onDelete="set null" onUpdate="none">
       <reference foreign="ID" local="MOTION_FILE_ID"/>
     </foreign-key>
@@ -6025,12 +6076,16 @@ null" onUpdate="cascade">
       <inheritance class="ProjectHomepageImage" extends="lib.data.ProjectHomepage" key="2"/>
       <inheritance class="ProjectHomepageVideo" extends="lib.data.ProjectHomepage" key="3"/>
       <inheritance class="ProjectHomepageDoc"   extends="lib.data.ProjectHomepage" key="4"/>
+      <inheritance class="ProjectHomepagePub"   extends="lib.data.ProjectHomepage" key="5"/>
     </column>
     <foreign-key foreignTable="PROJECT" onDelete="cascade" onUpdate="cascade">
       <reference foreign="PROJID" local="PROJECT_ID"/>
     </foreign-key>
     <foreign-key foreignTable="DATA_FILE" onDelete="cascade" onUpdate="cascade">
       <reference foreign="ID" local="DATA_FILE_ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="PROJECT_HOMEPAGE_TYPE_LOOKUP" onDelete="cascade" onUpdate="cascade">
+      <reference foreign="ID" local="PROJECT_HOMEPAGE_TYPE_ID"/>
     </foreign-key>
   </table>
 
@@ -6261,7 +6316,7 @@ null" onUpdate="cascade">
     <column name="ID"               phpName="Id"               primaryKey="true"  autoIncrement="true"  lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
     <column name="USERNAME"         phpName="Username"         primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="50" type="VARCHAR"/>
     <column name="KEYWORD"          phpName="Keyword"          primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="50" type="VARCHAR"/>
-    <column name="QUERY"            phpName="Query"	       primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="4000" type="VARCHAR"/>
+    <column name="QUERY"            phpName="Query"            primaryKey="false" autoIncrement="false" lazyLoad="false" required="false"             type="CLOB"/>
     <column name="CREATED_DT"       phpName="Created"	       primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  	      type="DATE"/>
   </table>
   
@@ -6287,11 +6342,15 @@ null" onUpdate="cascade">
   
   <table name="PROJECT_GRANT" package="lib.data" phpName="ProjectGrant" idMethod="native" abstract="false" skipSql="false">
     <column name="PROJID"            phpName="ProjectId"          primaryKey="false" autoIncrement="true"  lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
-    <column name="FUND_ORG" 		 phpName="FundingOrg"         primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="128" type="VARCHAR"/>
+    <column name="FUND_ORG"          phpName="FundingOrg"         primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="128" type="VARCHAR"/>
     <column name="AWARD_NUM"         phpName="AwardNumber"        primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="32" type="VARCHAR"/>
-    <column name="AWARD_URL"         phpName="AwardUrl"		      primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="512" type="VARCHAR"/>
+    <column name="AWARD_URL"         phpName="AwardUrl"		  primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="512" type="VARCHAR"/>
+    <column name="NEES_AWARD_TYPE_ID" phpName="NeesAwardTypeId"   primaryKey="false" autoIncrement="true"  lazyLoad="false" required="true"   size="22" type="NUMERIC"/>
     <foreign-key foreignTable="PROJECT" onDelete="cascade" onUpdate="none">
       <reference foreign="PROJID" local="PROJID"/>
+    </foreign-key>
+    <foreign-key foreignTable="NEES_AWARD_TYPE" onDelete="cascade" onUpdate="none">
+      <reference foreign="ID" local="NEES_AWARD_TYPE_ID"/>
     </foreign-key>
   </table>
   
@@ -6342,8 +6401,36 @@ null" onUpdate="cascade">
     </validator>
   </table>
 
-  <table name="SITEREPORTS_SITE_SETUP" package="lib.data" phpName="SiteReportsSiteSetup" idMethod="native" abstract="false" skipSql="false">
-    <id-method-parameter name="default" value="SITEREPORTS_SITE_SETUP_SEQ"/>
+  <table name="PROJECT_HOMEPAGE_TYPE_LOOKUP" package="lib.data" phpName="ProjectHomepageTypeLookup" idMethod="native" abstract="false" skipSql="false">
+    <!--<id-method-parameter name="default" value="PROJECT_HOMEPAGE_SEQ"/>-->
+    <column name="ID"                       phpName="Id"                    primaryKey="true"  autoIncrement="true"  lazyLoad="false" required="true" size="22"   type="NUMERIC"/>
+    <column name="SYSTEM_NAME"              phpName="SystemName"            primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="64"   type="VARCHAR"/>
+    <column name="DISPLAY_NAME"             phpName="DisplayName"           primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="64"   type="VARCHAR"/>
+  </table>
+
+  <table name="PROJECT_RESEARCH_TYPE" package="lib.data" phpName="ProjectResearchType" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="PROJECT_RESEARCH_TYPE_SEQ"/>
+    <column name="ID"                       phpName="Id"                    primaryKey="true"  autoIncrement="true"  lazyLoad="false" required="true" size="22"   type="NUMERIC"/>
+    <column name="SYSTEM_NAME"              phpName="SystemName"            primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="64"   type="VARCHAR"/>
+    <column name="DISPLAY_NAME"             phpName="DisplayName"           primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="64"   type="VARCHAR"/>
+  </table>
+
+  <table name="NEES_RESEARCH_TYPE" package="lib.data" phpName="NeesResearchType" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="NEES_RESEARCH_TYPE_SEQ"/>
+    <column name="ID"                       phpName="Id"                    primaryKey="true"  autoIncrement="true"  lazyLoad="false" required="true" size="22"   type="NUMERIC"/>
+    <column name="SYSTEM_NAME"              phpName="SystemName"            primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="64"   type="VARCHAR"/>
+    <column name="DISPLAY_NAME"             phpName="DisplayName"           primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="64"   type="VARCHAR"/>
+  </table>
+
+  <table name="NEES_AWARD_TYPE" package="lib.data" phpName="NeesAwardType" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="NEES_AWARD_TYPE_SEQ"/>
+    <column name="ID"                       phpName="Id"                    primaryKey="true"  autoIncrement="true"  lazyLoad="false" required="true" size="22"   type="NUMERIC"/>
+    <column name="SYSTEM_NAME"              phpName="SystemName"            primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="64"   type="VARCHAR"/>
+    <column name="DISPLAY_NAME"             phpName="DisplayName"           primaryKey="false" autoIncrement="false" lazyLoad="false" required="true"  size="64"   type="VARCHAR"/>
+  </table>
+
+  <table name="SITEREPORTS_SITE" package="lib.data" phpName="SiteReportsSite" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="SITEREPORTS_SITE_SEQ"/>
     <column name="ID"                       phpName="ID"                    primaryKey="true"   autoIncrement="true"    lazyLoad="false" required="false" size="22" type="NUMERIC"/>
     <column name="FACILITY_ID"              phpName="EntityID"             primaryKey="false"  autoIncrement="false"   lazyLoad="false" required="false" size="22" type="NUMERIC"/>
     <column name="NEES_GROUPSPACE_PATH"     phpName="NEESGroupspacePath"    primaryKey="false"  autoIncrement="false"   lazyLoad="false" required="false" size="500" type="VARCHAR"/>
@@ -6351,6 +6438,328 @@ null" onUpdate="cascade">
     <foreign-key foreignTable="ORGANIZATION" onDelete="none" onUpdate="none">
       <reference foreign="ORGID" local="FACILITY_ID"/>
     </foreign-key>
+
   </table>
+
+  <table name="SITEREPORTS_QAR" package="lib.data" phpName="SiteReportsQAR" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="SITEREPORTS_QAR_SEQ"/>
+    <column name="ID" phpName="ID" primaryKey="true" autoIncrement="true" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="FACILITY_ID" phpName="FACILITY_ID" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="YEAR" phpName="YEAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QUARTER" phpName="QUARTER" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_SS_LAST_REV_DATE_Q1" phpName="RBS_SS_LAST_REV_DATE_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+    <column name="RBS_SS_LAST_REV_DATE_Q2" phpName="RBS_SS_LAST_REV_DATE_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+    <column name="RBS_SS_LAST_REV_DATE_Q3" phpName="RBS_SS_LAST_REV_DATE_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+    <column name="RBS_SS_LAST_REV_DATE_Q4" phpName="RBS_SS_LAST_REV_DATE_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+    <column name="RBS_SS_OSHA_RI_Q1" phpName="RBS_SS_RI_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_SS_OSHA_RI_Q2" phpName="RBS_SS_RI_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_SS_OSHA_RI_Q3" phpName="RBS_SS_RI_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_SS_OSHA_RI_Q4" phpName="RBS_SS_RI_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_SS_INJURY_NAR" phpName="RBS_SS_INJURY_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="RBS_SS_PSA_NAR" phpName="RBS_SS_PSA_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="RBS_PMCR_PPM_PRG_Q1" phpName="RBS_PMCR_PPM_PRG_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PPM_PRG_Q2" phpName="RBS_PMCR_PPM_PRG_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PPM_PRG_Q3" phpName="RBS_PMCR_PPM_PRG_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PPM_PRG_Q4" phpName="RBS_PMCR_PPM_PRG_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PPM_NAR" phpName="RBS_PMCR_PPM_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="RBS_PMCR_PC_PRG_Q1" phpName="RBS_PMCR_PC_PRG_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PC_PRG_Q2" phpName="RBS_PMCR_PC_PRG_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PC_PRG_Q3" phpName="RBS_PMCR_PC_PRG_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PC_PRG_Q4" phpName="RBS_PMCR_PC_PRG_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PC_NAR" phpName="RBS_PMCR_PC_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="RBS_PMCR_PR_PRG_Q1" phpName="RBS_PMCR_PR_PRG_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PR_PRG_Q2" phpName="RBS_PMCR_PR_PRG_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PR_PRG_Q3" phpName="RBS_PMCR_PR_PRG_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PR_PRG_Q4" phpName="RBS_PMCR_PR_PRG_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="RBS_PMCR_PR_NAR" phpName="RBS_PMCR_PR_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="CB_FE_PRG_Q1" phpName="CB_FE_PRG_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CB_FE_PRG_Q2" phpName="CB_FE_PRG_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CB_FE_PRG_Q3" phpName="CB_FE_PRG_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CB_FE_PRG_Q4" phpName="CB_FE_PRG_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CB_FE_NAR" phpName="CB_FE_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="NI_ITCA_PRG_Q1" phpName="NI_ITCA_PRG_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_ITCA_PRG_Q2" phpName="NI_ITCA_PRG_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_ITCA_PRG_Q3" phpName="NI_ITCA_PRG_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_ITCA_PRG_Q4" phpName="NI_ITCA_PRG_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_ITCA_NAR" phpName="NI_ITCA_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="NI_NEOT_PRG_Q1" phpName="NI_NEOT_PRG_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_NEOT_PRG_Q2" phpName="NI_NEOT_PRG_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_NEOT_PRG_Q3" phpName="NI_NEOT_PRG_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_NEOT_PRG_Q4" phpName="NI_NEOT_PRG_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_NEOT_NAR" phpName="NI_NEOT_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="NI_NRS_PRG_Q1" phpName="NI_NRS_PRG_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_NRS_PRG_Q2" phpName="NI_NRS_PRG_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_NRS_PRG_Q3" phpName="NI_NRS_PRG_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_NRS_PRG_Q4" phpName="NI_NRS_PRG_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="NI_NRS_NAR" phpName="NI_NRS_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="FH_NAR" phpName="FH_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="AEM_NAR" phpName="AEM_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="SA1_PRG_Q1" phpName="SA1_PRG_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA1_PRG_Q2" phpName="SA1_PRG_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA1_PRG_Q3" phpName="SA1_PRG_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA1_PRG_Q4" phpName="SA1_PRG_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA1_PRG_NAR" phpName="SA1_PRG_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="SA2_PRG_Q1" phpName="SA2_PRG_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA2_PRG_Q2" phpName="SA2_PRG_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA2_PRG_Q3" phpName="SA2_PRG_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA2_PRG_Q4" phpName="SA2_PRG_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA2_PRG_NAR" phpName="SA2_PRG_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="SA3_PRG_Q1" phpName="SA3_PRG_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA3_PRG_Q2" phpName="SA3_PRG_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA3_PRG_Q3" phpName="SA3_PRG_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA3_PRG_Q4" phpName="SA3_PRG_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SA3_PRG_NAR" phpName="SA3_PRG_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="CREATED_BY" phpName="CREATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="CREATED_ON" phpName="CREATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+    <column name="UPDATED_BY" phpName="UPDATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="UPDATED_ON" phpName="UPDATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+  </table>
+
+  <table name="SITEREPORTS_QAR_EOT_EVT" package="lib.data" phpName="SiteReportsQAREotEvt" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="SITEREPORTS_QAR_EOT_EVT_SEQ"/>
+    <column name="ID" phpName="ID" primaryKey="true" autoIncrement="true" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QAR_ID" phpName="QAR_ID" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="EVENT_TYPE" phpName="EVENT_TYPE" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="ACTIVITY" phpName="ACTIVITY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="ACTIVITY_OBJECTIVES" phpName="ACTIVITY_OBJECTIVES" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="OBJECTIVE_MET" phpName="OBJECTIVE_MET" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="128" type="VARCHAR"/>
+    <column name="PARTICIPANT_CAT1" phpName="PARTICIPANT_CAT1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="NUM_OF_PARTICIPANTS1" phpName="NUM_OF_PARTICIPANTS1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PARTICIPANT_DETAILS1" phpName="PARTICIPANT_DETAILS1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="PARTICIPANT_CAT2" phpName="PARTICIPANT_CAT2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="NUM_OF_PARTICIPANTS2" phpName="NUM_OF_PARTICIPANTS2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PARTICIPANT_DETAILS2" phpName="PARTICIPANT_DETAILS2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="PARTICIPANT_CAT3" phpName="PARTICIPANT_CAT3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="NUM_OF_PARTICIPANTS3" phpName="NUM_OF_PARTICIPANTS3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PARTICIPANT_DETAILS3" phpName="PARTICIPANT_DETAILS3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="PARTICIPANT_CAT4" phpName="PARTICIPANT_CAT4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="NUM_OF_PARTICIPANTS4" phpName="NUM_OF_PARTICIPANTS4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PARTICIPANT_DETAILS4" phpName="PARTICIPANT_DETAILS4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="EVENT_NAR" phpName="EVENT_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="CREATED_BY" phpName="CREATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="CREATED_ON" phpName="CREATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+    <column name="UPDATED_BY" phpName="UPDATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="UPDATED_ON" phpName="UPDATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+
+    <foreign-key foreignTable="SITEREPORTS_QAR" onDelete="none" onUpdate="none">
+      <reference foreign="ID" local="QAR_ID"/>
+    </foreign-key>
+
+  </table>
+
+  <table name="SITEREPORTS_QAR_RPS" package="lib.data" phpName="SiteReportsQARRPS" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="SITEREPORTS_QAR_RPS_SEQ"/>
+
+    <column name="ID" phpName="ID" primaryKey="true" autoIncrement="true" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QAR_ID" phpName="QAR_ID" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PROJECT" phpName="PROJECT" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="PROJECT_WAREHOUSE_ID" phpName="PROJECT_WAREHOUSE_ID" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="1024" type="VARCHAR"/>
+    <column name="NEESR_SHARED_USE_YEAR" phpName="NEESR_SHARED_USE_YEAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="OFFICIAL_AWARD_NUMBER" phpName="OFFICIAL_AWARD_NUMBER" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="PROJECT_TITLE" phpName="PROJECT_TITLE" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="1024" type="VARCHAR"/>
+    <column name="PROJECT_NUMBER" phpName="PROJECT_NUMBER" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PI_NAME" phpName="PI_NAME" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="1024" type="VARCHAR"/>
+    <column name="INSTITUTION" phpName="INSTITUTION" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="512" type="VARCHAR"/>
+    <column name="PPP_FY_START_PRG" phpName="PPP_FY_START_PRG" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PPP_FY_END_PRG" phpName="PPP_FY_END_PRG" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="APP_Q1" phpName="APP_Q1" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="APP_Q2" phpName="APP_Q2" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="APP_Q3" phpName="APP_Q3" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="APP_Q4" phpName="APP_Q4" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q1_NAR" phpName="Q1_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="Q2_NAR" phpName="Q2_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="Q3_NAR" phpName="Q3_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="Q4_NAR" phpName="Q4_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="PROJECT_WEIGHT" phpName="PROJECT_WEIGHT" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="WEIGHTED_PROGRESS" phpName="WEIGHTED_PROGRESS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CREATED_BY" phpName="CREATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="CREATED_ON" phpName="CREATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+    <column name="UPDATED_BY" phpName="UPDATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="UPDATED_ON" phpName="UPDATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+
+    <foreign-key foreignTable="SITEREPORTS_QAR" onDelete="none" onUpdate="none">
+      <reference foreign="ID" local="QAR_ID"/>
+    </foreign-key>
+
+  </table>
+
+
+  <table name="SITEREPORTS_QFR" package="lib.data" phpName="SiteReportsQFR" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="SITEREPORTS_QFR_SEQ"/>
+    <column name="ID" phpName="ID" primaryKey="true" autoIncrement="true" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="FACILITY_ID" phpName="FACILITY_ID" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="YEAR" phpName="YEAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QUARTER" phpName="QUARTER" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PREPARED_BY" phpName="PREPARED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="PREPARERS_TITLE" phpName="PREPARERS_TITLE" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="PREPARED_DATE" phpName="PREPARED_DATE" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+    <column name="REPORT_PERIOD" phpName="REPORT_PERIOD" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="SUBAWARDED_FUNDED_AMT" phpName="SUBAWARDED_FUNDED_AMT" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_SR_P_COST" phpName="QFR_SR_P_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_SR_E_COST" phpName="QFR_SR_E_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_SR_PSC_COST" phpName="QFR_SR_PSC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_SR_ODC_COST" phpName="QFR_SR_ODC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_SR_IC_COST" phpName="QFR_SR_IC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NR_P_COST" phpName="QFR_NR_P_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NR_E_COST" phpName="QFR_NR_E_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NR_PSC_COST" phpName="QFR_NR_PSC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NR_ODC_COST" phpName="QFR_NR_ODC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NR_IC_COST" phpName="QFR_NR_IC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_ITCA_P_COST" phpName="QFR_ITCA_P_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_ITCA_E_COST" phpName="QFR_ITCA_E_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_ITCA_PSC_COST" phpName="QFR_ITCA_PSC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_ITCA_ODC_COST" phpName="QFR_ITCA_ODC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_ITCA_IC_COST" phpName="QFR_ITCA_IC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NEOT_P_COST" phpName="QFR_NEOT_P_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NEOT_E_COST" phpName="QFR_NEOT_E_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NEOT_PSC_COST" phpName="QFR_NEOT_PSC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NEOT_ODC_COST" phpName="QFR_NEOT_ODC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NEOT_IC_COST" phpName="QFR_NEOT_IC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_FEA_P_COST" phpName="QFR_FEA_P_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_FEA_E_COST" phpName="QFR_FEA_E_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_FEA_PSC_COST" phpName="QFR_FEA_PSC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_FEA_ODC_COST" phpName="QFR_FEA_ODC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_FEA_IC_COST" phpName="QFR_FEA_IC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_AEM_P_COST" phpName="QFR_AEM_P_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_AEM_E_COST" phpName="QFR_AEM_E_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_AEM_PSC_COST" phpName="QFR_AEM_PSC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_AEM_ODC_COST" phpName="QFR_AEM_ODC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_AEM_IC_COST" phpName="QFR_AEM_IC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NRS_P_COST" phpName="QFR_NRS_P_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NRS_E_COST" phpName="QFR_NRS_E_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NRS_PSC_COST" phpName="QFR_NRS_PSC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NRS_ODC_COST" phpName="QFR_NRS_ODC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_NRS_IC_COST" phpName="QFR_NRS_IC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="FY_BUDGET_SURS" phpName="FY_BUDGET_SURS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="FY_BUDGET_SR" phpName="FY_BUDGET_SR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="FY_BUDGET_NR" phpName="FY_BUDGET_NR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="FY_BUDGET_ITCA" phpName="FY_BUDGET_ITCA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="FY_BUDGET_FEA" phpName="FY_BUDGET_FEA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="FY_BUDGET_NEOT" phpName="FY_BUDGET_NEOT" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="FY_BUDGET_AEM" phpName="FY_BUDGET_AEM" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="FY_BUDGET_NRS" phpName="FY_BUDGET_NRS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q1RE_SURS" phpName="Q1RE_SURS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q1RE_SR" phpName="Q1RE_SR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q1RE_NR" phpName="Q1RE_NR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q1RE_ITCA" phpName="Q1RE_ITCA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q1RE_FEA" phpName="Q1RE_FEA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q1RE_NEOT" phpName="Q1RE_NEOT" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q1RE_AEM" phpName="Q1RE_AEM" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q1RE_NRS" phpName="Q1RE_NRS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q2RE_SURS" phpName="Q2RE_SURS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q2RE_SR" phpName="Q2RE_SR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q2RE_NR" phpName="Q2RE_NR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q2RE_ITCA" phpName="Q2RE_ITCA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q2RE_FEA" phpName="Q2RE_FEA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q2RE_NEOT" phpName="Q2RE_NEOT" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q2RE_AEM" phpName="Q2RE_AEM" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q2RE_NRS" phpName="Q2RE_NRS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q3RE_SURS" phpName="Q3RE_SURS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q3RE_SR" phpName="Q3RE_SR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q3RE_NR" phpName="Q3RE_NR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q3RE_ITCA" phpName="Q3RE_ITCA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q3RE_FEA" phpName="Q3RE_FEA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q3RE_NEOT" phpName="Q3RE_NEOT" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q3RE_AEM" phpName="Q3RE_AEM" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q3RE_NRS" phpName="Q3RE_NRS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q4RE_SURS" phpName="Q4RE_SURS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q4RE_SR" phpName="Q4RE_SR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q4RE_NR" phpName="Q4RE_NR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q4RE_ITCA" phpName="Q4RE_ITCA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q4RE_FEA" phpName="Q4RE_FEA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q4RE_NEOT" phpName="Q4RE_NEOT" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q4RE_AEM" phpName="Q4RE_AEM" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="Q4RE_NRS" phpName="Q4RE_NRS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PQA_SURS" phpName="PQA_SURS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PQA_SR" phpName="PQA_SR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PQA_NR" phpName="PQA_NR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PQA_ITCA" phpName="PQA_ITCA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PQA_FEA" phpName="PQA_FEA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PQA_NEOT" phpName="PQA_NEOT" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PQA_AEM" phpName="PQA_AEM" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PQA_NRS" phpName="PQA_NRS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CQE_SURS" phpName="CQE_SURS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CQE_SR" phpName="CQE_SR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CQE_NR" phpName="CQE_NR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CQE_ITCA" phpName="CQE_ITCA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CQE_FEA" phpName="CQE_FEA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CQE_NEOT" phpName="CQE_NEOT" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CQE_AEM" phpName="CQE_AEM" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CQE_NRS" phpName="CQE_NRS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP1_P" phpName="SUPBUD_SUP1_P" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP1_E" phpName="SUPBUD_SUP1_E" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP1_PSC" phpName="SUPBUD_SUP1_PSC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP1_ODC" phpName="SUPBUD_SUP1_ODC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP1_IC" phpName="SUPBUD_SUP1_IC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP1_SA" phpName="SUPBUD_SUP1_SA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP2_P" phpName="SUPBUD_SUP2_P" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP2_E" phpName="SUPBUD_SUP2_E" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP2_PSC" phpName="SUPBUD_SUP2_PSC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP2_ODC" phpName="SUPBUD_SUP2_ODC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP2_IC" phpName="SUPBUD_SUP2_IC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP2_SA" phpName="SUPBUD_SUP2_SA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP3_P" phpName="SUPBUD_SUP3_P" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP3_E" phpName="SUPBUD_SUP3_E" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP3_PSC" phpName="SUPBUD_SUP3_PSC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP3_ODC" phpName="SUPBUD_SUP3_ODC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP3_IC" phpName="SUPBUD_SUP3_IC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP3_SA" phpName="SUPBUD_SUP3_SA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP4_P" phpName="SUPBUD_SUP4_P" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP4_E" phpName="SUPBUD_SUP4_E" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP4_PSC" phpName="SUPBUD_SUP4_PSC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP4_ODC" phpName="SUPBUD_SUP4_ODC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP4_IC" phpName="SUPBUD_SUP4_IC" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="SUPBUD_SUP4_SA" phpName="SUPBUD_SUP4_SA" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PI_BEG_BAL" phpName="PI_BEG_BAL" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PI_PIR" phpName="PI_PIR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PI_PIE" phpName="PI_PIE" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PI_NAR" phpName="PI_NAR" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="VARCHAR"/>
+    <column name="CREATED_BY" phpName="CREATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="CREATED_ON" phpName="CREATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+    <column name="UPDATED_BY" phpName="UPDATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="UPDATED_ON" phpName="UPDATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+  </table>
+
+  <table name="SITEREPORTS_QFR_EPCD" package="lib.data" phpName="SiteReportsQFREPcd" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="SITEREPORTS_QFR_EPCD_SEQ"/>
+    <column name="ID" phpName="ID" primaryKey="true" autoIncrement="true" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_ID" phpName="QFR_ID" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="DESCRIPTION" phpName="DESCRIPTION" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="512" type="VARCHAR"/>
+    <column name="DETAILS" phpName="DETAILS" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="512" type="VARCHAR"/>
+    <column name="EST_AMT" phpName="EST_AMT" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="EQ_OR_PSC_TYPE" phpName="EQ_OR_PSC_TYPE" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CREATED_BY" phpName="CREATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="CREATED_ON" phpName="CREATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+    <column name="UPDATED_BY" phpName="UPDATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="UPDATED_ON" phpName="UPDATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+
+    <foreign-key foreignTable="SITEREPORTS_QFR" onDelete="none" onUpdate="none">
+      <reference foreign="ID" local="QFR_ID"/>
+    </foreign-key>
+
+  </table>
+
+  <table name="SITEREPORTS_QFR_PROJECT" package="lib.data" phpName="SiteReportsQFRProject" idMethod="native" abstract="false" skipSql="false">
+    <id-method-parameter name="default" value="SITEREPORTS_QFR_PROJECT_SEQ"/>
+    <column name="ID" phpName="ID" primaryKey="true" autoIncrement="true" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="QFR_ID" phpName="QFR_ID" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PI" phpName="PI" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="PROJECT_ID" phpName="PROJECT_ID" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="PROJECT_NUMBER" phpName="PROJECT_NUMBER" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="P_COST" phpName="P_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="E_COST" phpName="E_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="PSC_COST" phpName="PSC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="ODC_COST" phpName="ODC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="IC_COST" phpName="IC_COST" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="22" type="NUMERIC"/>
+    <column name="CREATED_BY" phpName="CREATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="CREATED_ON" phpName="CREATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+    <column name="UPDATED_BY" phpName="UPDATED_BY" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" size="256" type="VARCHAR"/>
+    <column name="UPDATED_ON" phpName="UPDATED_ON" primaryKey="false" autoIncrement="false" lazyLoad="false" required="false" type="DATE"/>
+
+    <foreign-key foreignTable="SITEREPORTS_QFR" onDelete="none" onUpdate="none">
+        <reference foreign="ID" local="QFR_ID"/>
+    </foreign-key>
+
+ </table>
 
 </database>

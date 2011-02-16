@@ -6989,6 +6989,104 @@ abstract class BaseMeasurementUnit extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in MeasurementUnit.
 	 */
+	public function getTrialsJoinPersonRelatedByCreatorId($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrials === null) {
+			if ($this->isNew()) {
+				$this->collTrials = array();
+			} else {
+
+				$criteria->add(TrialPeer::BASE_ACCELERATION_UNIT_ID, $this->getId());
+
+				$this->collTrials = TrialPeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(TrialPeer::BASE_ACCELERATION_UNIT_ID, $this->getId());
+
+			if (!isset($this->lastTrialCriteria) || !$this->lastTrialCriteria->equals($criteria)) {
+				$this->collTrials = TrialPeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
+			}
+		}
+		$this->lastTrialCriteria = $criteria;
+
+		return $this->collTrials;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this MeasurementUnit is new, it will return
+	 * an empty collection; or if this MeasurementUnit has previously
+	 * been saved, it will retrieve related Trials from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in MeasurementUnit.
+	 */
+	public function getTrialsJoinPersonRelatedByModifiedById($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrials === null) {
+			if ($this->isNew()) {
+				$this->collTrials = array();
+			} else {
+
+				$criteria->add(TrialPeer::BASE_ACCELERATION_UNIT_ID, $this->getId());
+
+				$this->collTrials = TrialPeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(TrialPeer::BASE_ACCELERATION_UNIT_ID, $this->getId());
+
+			if (!isset($this->lastTrialCriteria) || !$this->lastTrialCriteria->equals($criteria)) {
+				$this->collTrials = TrialPeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		}
+		$this->lastTrialCriteria = $criteria;
+
+		return $this->collTrials;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this MeasurementUnit is new, it will return
+	 * an empty collection; or if this MeasurementUnit has previously
+	 * been saved, it will retrieve related Trials from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in MeasurementUnit.
+	 */
 	public function getTrialsJoinDataFile($criteria = null, $con = null)
 	{
 		// include the Peer class

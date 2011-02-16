@@ -124,16 +124,52 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	protected $lastAuthorizationCriteria = null;
 
 	/**
-	 * Collection to store aggregation of collExperiments.
+	 * Collection to store aggregation of collDataFilesRelatedByCreatorId.
 	 * @var        array
 	 */
-	protected $collExperiments;
+	protected $collDataFilesRelatedByCreatorId;
 
 	/**
-	 * The criteria used to select the current contents of collExperiments.
+	 * The criteria used to select the current contents of collDataFilesRelatedByCreatorId.
 	 * @var        Criteria
 	 */
-	protected $lastExperimentCriteria = null;
+	protected $lastDataFileRelatedByCreatorIdCriteria = null;
+
+	/**
+	 * Collection to store aggregation of collDataFilesRelatedByModifiedById.
+	 * @var        array
+	 */
+	protected $collDataFilesRelatedByModifiedById;
+
+	/**
+	 * The criteria used to select the current contents of collDataFilesRelatedByModifiedById.
+	 * @var        Criteria
+	 */
+	protected $lastDataFileRelatedByModifiedByIdCriteria = null;
+
+	/**
+	 * Collection to store aggregation of collExperimentsRelatedByCreatorId.
+	 * @var        array
+	 */
+	protected $collExperimentsRelatedByCreatorId;
+
+	/**
+	 * The criteria used to select the current contents of collExperimentsRelatedByCreatorId.
+	 * @var        Criteria
+	 */
+	protected $lastExperimentRelatedByCreatorIdCriteria = null;
+
+	/**
+	 * Collection to store aggregation of collExperimentsRelatedByModifiedById.
+	 * @var        array
+	 */
+	protected $collExperimentsRelatedByModifiedById;
+
+	/**
+	 * The criteria used to select the current contents of collExperimentsRelatedByModifiedById.
+	 * @var        Criteria
+	 */
+	protected $lastExperimentRelatedByModifiedByIdCriteria = null;
 
 	/**
 	 * Collection to store aggregation of collPersonEntityRoles.
@@ -148,16 +184,76 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	protected $lastPersonEntityRoleCriteria = null;
 
 	/**
-	 * Collection to store aggregation of collProjects.
+	 * Collection to store aggregation of collProjectsRelatedByCreatorId.
 	 * @var        array
 	 */
-	protected $collProjects;
+	protected $collProjectsRelatedByCreatorId;
 
 	/**
-	 * The criteria used to select the current contents of collProjects.
+	 * The criteria used to select the current contents of collProjectsRelatedByCreatorId.
 	 * @var        Criteria
 	 */
-	protected $lastProjectCriteria = null;
+	protected $lastProjectRelatedByCreatorIdCriteria = null;
+
+	/**
+	 * Collection to store aggregation of collProjectsRelatedByModifiedById.
+	 * @var        array
+	 */
+	protected $collProjectsRelatedByModifiedById;
+
+	/**
+	 * The criteria used to select the current contents of collProjectsRelatedByModifiedById.
+	 * @var        Criteria
+	 */
+	protected $lastProjectRelatedByModifiedByIdCriteria = null;
+
+	/**
+	 * Collection to store aggregation of collRepetitionsRelatedByCreatorId.
+	 * @var        array
+	 */
+	protected $collRepetitionsRelatedByCreatorId;
+
+	/**
+	 * The criteria used to select the current contents of collRepetitionsRelatedByCreatorId.
+	 * @var        Criteria
+	 */
+	protected $lastRepetitionRelatedByCreatorIdCriteria = null;
+
+	/**
+	 * Collection to store aggregation of collRepetitionsRelatedByModifiedById.
+	 * @var        array
+	 */
+	protected $collRepetitionsRelatedByModifiedById;
+
+	/**
+	 * The criteria used to select the current contents of collRepetitionsRelatedByModifiedById.
+	 * @var        Criteria
+	 */
+	protected $lastRepetitionRelatedByModifiedByIdCriteria = null;
+
+	/**
+	 * Collection to store aggregation of collTrialsRelatedByCreatorId.
+	 * @var        array
+	 */
+	protected $collTrialsRelatedByCreatorId;
+
+	/**
+	 * The criteria used to select the current contents of collTrialsRelatedByCreatorId.
+	 * @var        Criteria
+	 */
+	protected $lastTrialRelatedByCreatorIdCriteria = null;
+
+	/**
+	 * Collection to store aggregation of collTrialsRelatedByModifiedById.
+	 * @var        array
+	 */
+	protected $collTrialsRelatedByModifiedById;
+
+	/**
+	 * The criteria used to select the current contents of collTrialsRelatedByModifiedById.
+	 * @var        Criteria
+	 */
+	protected $lastTrialRelatedByModifiedByIdCriteria = null;
 
 	/**
 	 * Collection to store aggregation of collPermissionsViews.
@@ -744,8 +840,32 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collExperiments !== null) {
-				foreach($this->collExperiments as $referrerFK) {
+			if ($this->collDataFilesRelatedByCreatorId !== null) {
+				foreach($this->collDataFilesRelatedByCreatorId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collDataFilesRelatedByModifiedById !== null) {
+				foreach($this->collDataFilesRelatedByModifiedById as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collExperimentsRelatedByCreatorId !== null) {
+				foreach($this->collExperimentsRelatedByCreatorId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collExperimentsRelatedByModifiedById !== null) {
+				foreach($this->collExperimentsRelatedByModifiedById as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -760,8 +880,48 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collProjects !== null) {
-				foreach($this->collProjects as $referrerFK) {
+			if ($this->collProjectsRelatedByCreatorId !== null) {
+				foreach($this->collProjectsRelatedByCreatorId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collProjectsRelatedByModifiedById !== null) {
+				foreach($this->collProjectsRelatedByModifiedById as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collRepetitionsRelatedByCreatorId !== null) {
+				foreach($this->collRepetitionsRelatedByCreatorId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collRepetitionsRelatedByModifiedById !== null) {
+				foreach($this->collRepetitionsRelatedByModifiedById as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collTrialsRelatedByCreatorId !== null) {
+				foreach($this->collTrialsRelatedByCreatorId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collTrialsRelatedByModifiedById !== null) {
+				foreach($this->collTrialsRelatedByModifiedById as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -870,8 +1030,32 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collExperiments !== null) {
-					foreach($this->collExperiments as $referrerFK) {
+				if ($this->collDataFilesRelatedByCreatorId !== null) {
+					foreach($this->collDataFilesRelatedByCreatorId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collDataFilesRelatedByModifiedById !== null) {
+					foreach($this->collDataFilesRelatedByModifiedById as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collExperimentsRelatedByCreatorId !== null) {
+					foreach($this->collExperimentsRelatedByCreatorId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collExperimentsRelatedByModifiedById !== null) {
+					foreach($this->collExperimentsRelatedByModifiedById as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -886,8 +1070,48 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collProjects !== null) {
-					foreach($this->collProjects as $referrerFK) {
+				if ($this->collProjectsRelatedByCreatorId !== null) {
+					foreach($this->collProjectsRelatedByCreatorId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collProjectsRelatedByModifiedById !== null) {
+					foreach($this->collProjectsRelatedByModifiedById as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collRepetitionsRelatedByCreatorId !== null) {
+					foreach($this->collRepetitionsRelatedByCreatorId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collRepetitionsRelatedByModifiedById !== null) {
+					foreach($this->collRepetitionsRelatedByModifiedById as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collTrialsRelatedByCreatorId !== null) {
+					foreach($this->collTrialsRelatedByCreatorId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collTrialsRelatedByModifiedById !== null) {
+					foreach($this->collTrialsRelatedByModifiedById as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1229,16 +1453,48 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 				$copyObj->addAuthorization($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getExperiments() as $relObj) {
-				$copyObj->addExperiment($relObj->copy($deepCopy));
+			foreach($this->getDataFilesRelatedByCreatorId() as $relObj) {
+				$copyObj->addDataFileRelatedByCreatorId($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getDataFilesRelatedByModifiedById() as $relObj) {
+				$copyObj->addDataFileRelatedByModifiedById($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getExperimentsRelatedByCreatorId() as $relObj) {
+				$copyObj->addExperimentRelatedByCreatorId($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getExperimentsRelatedByModifiedById() as $relObj) {
+				$copyObj->addExperimentRelatedByModifiedById($relObj->copy($deepCopy));
 			}
 
 			foreach($this->getPersonEntityRoles() as $relObj) {
 				$copyObj->addPersonEntityRole($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getProjects() as $relObj) {
-				$copyObj->addProject($relObj->copy($deepCopy));
+			foreach($this->getProjectsRelatedByCreatorId() as $relObj) {
+				$copyObj->addProjectRelatedByCreatorId($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getProjectsRelatedByModifiedById() as $relObj) {
+				$copyObj->addProjectRelatedByModifiedById($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getRepetitionsRelatedByCreatorId() as $relObj) {
+				$copyObj->addRepetitionRelatedByCreatorId($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getRepetitionsRelatedByModifiedById() as $relObj) {
+				$copyObj->addRepetitionRelatedByModifiedById($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getTrialsRelatedByCreatorId() as $relObj) {
+				$copyObj->addTrialRelatedByCreatorId($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getTrialsRelatedByModifiedById() as $relObj) {
+				$copyObj->addTrialRelatedByModifiedById($relObj->copy($deepCopy));
 			}
 
 			foreach($this->getPermissionsViews() as $relObj) {
@@ -1457,15 +1713,15 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Temporary storage of collExperiments to save a possible db hit in
+	 * Temporary storage of collDataFilesRelatedByCreatorId to save a possible db hit in
 	 * the event objects are add to the collection, but the
 	 * complete collection is never requested.
 	 * @return     void
 	 */
-	public function initExperiments()
+	public function initDataFilesRelatedByCreatorId()
 	{
-		if ($this->collExperiments === null) {
-			$this->collExperiments = array();
+		if ($this->collDataFilesRelatedByCreatorId === null) {
+			$this->collDataFilesRelatedByCreatorId = array();
 		}
 	}
 
@@ -1473,7 +1729,7 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Person has previously
-	 * been saved, it will retrieve related Experiments from storage.
+	 * been saved, it will retrieve related DataFilesRelatedByCreatorId from storage.
 	 * If this Person is new, it will return
 	 * an empty collection or the current collection, the criteria
 	 * is ignored on a new object.
@@ -1482,7 +1738,515 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	 * @param      Criteria $criteria
 	 * @throws     PropelException
 	 */
-	public function getExperiments($criteria = null, $con = null)
+	public function getDataFilesRelatedByCreatorId($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDataFilesRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+			   $this->collDataFilesRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(DataFilePeer::CREATOR_ID, $this->getId());
+
+				DataFilePeer::addSelectColumns($criteria);
+				$this->collDataFilesRelatedByCreatorId = DataFilePeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(DataFilePeer::CREATOR_ID, $this->getId());
+
+				DataFilePeer::addSelectColumns($criteria);
+				if (!isset($this->lastDataFileRelatedByCreatorIdCriteria) || !$this->lastDataFileRelatedByCreatorIdCriteria->equals($criteria)) {
+					$this->collDataFilesRelatedByCreatorId = DataFilePeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastDataFileRelatedByCreatorIdCriteria = $criteria;
+		return $this->collDataFilesRelatedByCreatorId;
+	}
+
+	/**
+	 * Returns the number of related DataFilesRelatedByCreatorId.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      Connection $con
+	 * @throws     PropelException
+	 */
+	public function countDataFilesRelatedByCreatorId($criteria = null, $distinct = false, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(DataFilePeer::CREATOR_ID, $this->getId());
+
+		return DataFilePeer::doCount($criteria, $distinct, $con);
+	}
+
+	/**
+	 * Method called to associate a DataFile object to this object
+	 * through the DataFile foreign key attribute
+	 *
+	 * @param      DataFile $l DataFile
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addDataFileRelatedByCreatorId(DataFile $l)
+	{
+		$this->collDataFilesRelatedByCreatorId[] = $l;
+		$l->setPersonRelatedByCreatorId($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related DataFilesRelatedByCreatorId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getDataFilesRelatedByCreatorIdJoinDataFileRelatedByThumbId($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDataFilesRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+				$this->collDataFilesRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(DataFilePeer::CREATOR_ID, $this->getId());
+
+				$this->collDataFilesRelatedByCreatorId = DataFilePeer::doSelectJoinDataFileRelatedByThumbId($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(DataFilePeer::CREATOR_ID, $this->getId());
+
+			if (!isset($this->lastDataFileRelatedByCreatorIdCriteria) || !$this->lastDataFileRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collDataFilesRelatedByCreatorId = DataFilePeer::doSelectJoinDataFileRelatedByThumbId($criteria, $con);
+			}
+		}
+		$this->lastDataFileRelatedByCreatorIdCriteria = $criteria;
+
+		return $this->collDataFilesRelatedByCreatorId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related DataFilesRelatedByCreatorId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getDataFilesRelatedByCreatorIdJoinDocumentFormat($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDataFilesRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+				$this->collDataFilesRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(DataFilePeer::CREATOR_ID, $this->getId());
+
+				$this->collDataFilesRelatedByCreatorId = DataFilePeer::doSelectJoinDocumentFormat($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(DataFilePeer::CREATOR_ID, $this->getId());
+
+			if (!isset($this->lastDataFileRelatedByCreatorIdCriteria) || !$this->lastDataFileRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collDataFilesRelatedByCreatorId = DataFilePeer::doSelectJoinDocumentFormat($criteria, $con);
+			}
+		}
+		$this->lastDataFileRelatedByCreatorIdCriteria = $criteria;
+
+		return $this->collDataFilesRelatedByCreatorId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related DataFilesRelatedByCreatorId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getDataFilesRelatedByCreatorIdJoinEntityType($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDataFilesRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+				$this->collDataFilesRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(DataFilePeer::CREATOR_ID, $this->getId());
+
+				$this->collDataFilesRelatedByCreatorId = DataFilePeer::doSelectJoinEntityType($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(DataFilePeer::CREATOR_ID, $this->getId());
+
+			if (!isset($this->lastDataFileRelatedByCreatorIdCriteria) || !$this->lastDataFileRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collDataFilesRelatedByCreatorId = DataFilePeer::doSelectJoinEntityType($criteria, $con);
+			}
+		}
+		$this->lastDataFileRelatedByCreatorIdCriteria = $criteria;
+
+		return $this->collDataFilesRelatedByCreatorId;
+	}
+
+	/**
+	 * Temporary storage of collDataFilesRelatedByModifiedById to save a possible db hit in
+	 * the event objects are add to the collection, but the
+	 * complete collection is never requested.
+	 * @return     void
+	 */
+	public function initDataFilesRelatedByModifiedById()
+	{
+		if ($this->collDataFilesRelatedByModifiedById === null) {
+			$this->collDataFilesRelatedByModifiedById = array();
+		}
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person has previously
+	 * been saved, it will retrieve related DataFilesRelatedByModifiedById from storage.
+	 * If this Person is new, it will return
+	 * an empty collection or the current collection, the criteria
+	 * is ignored on a new object.
+	 *
+	 * @param      Connection $con
+	 * @param      Criteria $criteria
+	 * @throws     PropelException
+	 */
+	public function getDataFilesRelatedByModifiedById($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDataFilesRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+			   $this->collDataFilesRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(DataFilePeer::MODIFIED_BY_ID, $this->getId());
+
+				DataFilePeer::addSelectColumns($criteria);
+				$this->collDataFilesRelatedByModifiedById = DataFilePeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(DataFilePeer::MODIFIED_BY_ID, $this->getId());
+
+				DataFilePeer::addSelectColumns($criteria);
+				if (!isset($this->lastDataFileRelatedByModifiedByIdCriteria) || !$this->lastDataFileRelatedByModifiedByIdCriteria->equals($criteria)) {
+					$this->collDataFilesRelatedByModifiedById = DataFilePeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastDataFileRelatedByModifiedByIdCriteria = $criteria;
+		return $this->collDataFilesRelatedByModifiedById;
+	}
+
+	/**
+	 * Returns the number of related DataFilesRelatedByModifiedById.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      Connection $con
+	 * @throws     PropelException
+	 */
+	public function countDataFilesRelatedByModifiedById($criteria = null, $distinct = false, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(DataFilePeer::MODIFIED_BY_ID, $this->getId());
+
+		return DataFilePeer::doCount($criteria, $distinct, $con);
+	}
+
+	/**
+	 * Method called to associate a DataFile object to this object
+	 * through the DataFile foreign key attribute
+	 *
+	 * @param      DataFile $l DataFile
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addDataFileRelatedByModifiedById(DataFile $l)
+	{
+		$this->collDataFilesRelatedByModifiedById[] = $l;
+		$l->setPersonRelatedByModifiedById($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related DataFilesRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getDataFilesRelatedByModifiedByIdJoinDataFileRelatedByThumbId($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDataFilesRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collDataFilesRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(DataFilePeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collDataFilesRelatedByModifiedById = DataFilePeer::doSelectJoinDataFileRelatedByThumbId($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(DataFilePeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastDataFileRelatedByModifiedByIdCriteria) || !$this->lastDataFileRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collDataFilesRelatedByModifiedById = DataFilePeer::doSelectJoinDataFileRelatedByThumbId($criteria, $con);
+			}
+		}
+		$this->lastDataFileRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collDataFilesRelatedByModifiedById;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related DataFilesRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getDataFilesRelatedByModifiedByIdJoinDocumentFormat($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDataFilesRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collDataFilesRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(DataFilePeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collDataFilesRelatedByModifiedById = DataFilePeer::doSelectJoinDocumentFormat($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(DataFilePeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastDataFileRelatedByModifiedByIdCriteria) || !$this->lastDataFileRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collDataFilesRelatedByModifiedById = DataFilePeer::doSelectJoinDocumentFormat($criteria, $con);
+			}
+		}
+		$this->lastDataFileRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collDataFilesRelatedByModifiedById;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related DataFilesRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getDataFilesRelatedByModifiedByIdJoinEntityType($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseDataFilePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDataFilesRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collDataFilesRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(DataFilePeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collDataFilesRelatedByModifiedById = DataFilePeer::doSelectJoinEntityType($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(DataFilePeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastDataFileRelatedByModifiedByIdCriteria) || !$this->lastDataFileRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collDataFilesRelatedByModifiedById = DataFilePeer::doSelectJoinEntityType($criteria, $con);
+			}
+		}
+		$this->lastDataFileRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collDataFilesRelatedByModifiedById;
+	}
+
+	/**
+	 * Temporary storage of collExperimentsRelatedByCreatorId to save a possible db hit in
+	 * the event objects are add to the collection, but the
+	 * complete collection is never requested.
+	 * @return     void
+	 */
+	public function initExperimentsRelatedByCreatorId()
+	{
+		if ($this->collExperimentsRelatedByCreatorId === null) {
+			$this->collExperimentsRelatedByCreatorId = array();
+		}
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person has previously
+	 * been saved, it will retrieve related ExperimentsRelatedByCreatorId from storage.
+	 * If this Person is new, it will return
+	 * an empty collection or the current collection, the criteria
+	 * is ignored on a new object.
+	 *
+	 * @param      Connection $con
+	 * @param      Criteria $criteria
+	 * @throws     PropelException
+	 */
+	public function getExperimentsRelatedByCreatorId($criteria = null, $con = null)
 	{
 		// include the Peer class
 		include_once 'lib/data/om/BaseExperimentPeer.php';
@@ -1494,15 +2258,15 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collExperiments === null) {
+		if ($this->collExperimentsRelatedByCreatorId === null) {
 			if ($this->isNew()) {
-			   $this->collExperiments = array();
+			   $this->collExperimentsRelatedByCreatorId = array();
 			} else {
 
 				$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
 
 				ExperimentPeer::addSelectColumns($criteria);
-				$this->collExperiments = ExperimentPeer::doSelect($criteria, $con);
+				$this->collExperimentsRelatedByCreatorId = ExperimentPeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1515,24 +2279,24 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 				$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
 
 				ExperimentPeer::addSelectColumns($criteria);
-				if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
-					$this->collExperiments = ExperimentPeer::doSelect($criteria, $con);
+				if (!isset($this->lastExperimentRelatedByCreatorIdCriteria) || !$this->lastExperimentRelatedByCreatorIdCriteria->equals($criteria)) {
+					$this->collExperimentsRelatedByCreatorId = ExperimentPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastExperimentCriteria = $criteria;
-		return $this->collExperiments;
+		$this->lastExperimentRelatedByCreatorIdCriteria = $criteria;
+		return $this->collExperimentsRelatedByCreatorId;
 	}
 
 	/**
-	 * Returns the number of related Experiments.
+	 * Returns the number of related ExperimentsRelatedByCreatorId.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      Connection $con
 	 * @throws     PropelException
 	 */
-	public function countExperiments($criteria = null, $distinct = false, $con = null)
+	public function countExperimentsRelatedByCreatorId($criteria = null, $distinct = false, $con = null)
 	{
 		// include the Peer class
 		include_once 'lib/data/om/BaseExperimentPeer.php';
@@ -1557,10 +2321,10 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addExperiment(Experiment $l)
+	public function addExperimentRelatedByCreatorId(Experiment $l)
 	{
-		$this->collExperiments[] = $l;
-		$l->setPerson($this);
+		$this->collExperimentsRelatedByCreatorId[] = $l;
+		$l->setPersonRelatedByCreatorId($this);
 	}
 
 
@@ -1569,13 +2333,13 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Person is new, it will return
 	 * an empty collection; or if this Person has previously
-	 * been saved, it will retrieve related Experiments from storage.
+	 * been saved, it will retrieve related ExperimentsRelatedByCreatorId from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Person.
 	 */
-	public function getExperimentsJoinExperimentDomain($criteria = null, $con = null)
+	public function getExperimentsRelatedByCreatorIdJoinExperimentDomain($criteria = null, $con = null)
 	{
 		// include the Peer class
 		include_once 'lib/data/om/BaseExperimentPeer.php';
@@ -1587,14 +2351,14 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collExperiments === null) {
+		if ($this->collExperimentsRelatedByCreatorId === null) {
 			if ($this->isNew()) {
-				$this->collExperiments = array();
+				$this->collExperimentsRelatedByCreatorId = array();
 			} else {
 
 				$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
 
-				$this->collExperiments = ExperimentPeer::doSelectJoinExperimentDomain($criteria, $con);
+				$this->collExperimentsRelatedByCreatorId = ExperimentPeer::doSelectJoinExperimentDomain($criteria, $con);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1603,13 +2367,13 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 
 			$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
 
-			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
-				$this->collExperiments = ExperimentPeer::doSelectJoinExperimentDomain($criteria, $con);
+			if (!isset($this->lastExperimentRelatedByCreatorIdCriteria) || !$this->lastExperimentRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collExperimentsRelatedByCreatorId = ExperimentPeer::doSelectJoinExperimentDomain($criteria, $con);
 			}
 		}
-		$this->lastExperimentCriteria = $criteria;
+		$this->lastExperimentRelatedByCreatorIdCriteria = $criteria;
 
-		return $this->collExperiments;
+		return $this->collExperimentsRelatedByCreatorId;
 	}
 
 
@@ -1618,13 +2382,13 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Person is new, it will return
 	 * an empty collection; or if this Person has previously
-	 * been saved, it will retrieve related Experiments from storage.
+	 * been saved, it will retrieve related ExperimentsRelatedByCreatorId from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Person.
 	 */
-	public function getExperimentsJoinProject($criteria = null, $con = null)
+	public function getExperimentsRelatedByCreatorIdJoinProject($criteria = null, $con = null)
 	{
 		// include the Peer class
 		include_once 'lib/data/om/BaseExperimentPeer.php';
@@ -1636,14 +2400,14 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collExperiments === null) {
+		if ($this->collExperimentsRelatedByCreatorId === null) {
 			if ($this->isNew()) {
-				$this->collExperiments = array();
+				$this->collExperimentsRelatedByCreatorId = array();
 			} else {
 
 				$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
 
-				$this->collExperiments = ExperimentPeer::doSelectJoinProject($criteria, $con);
+				$this->collExperimentsRelatedByCreatorId = ExperimentPeer::doSelectJoinProject($criteria, $con);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1652,13 +2416,218 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 
 			$criteria->add(ExperimentPeer::CREATOR_ID, $this->getId());
 
-			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
-				$this->collExperiments = ExperimentPeer::doSelectJoinProject($criteria, $con);
+			if (!isset($this->lastExperimentRelatedByCreatorIdCriteria) || !$this->lastExperimentRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collExperimentsRelatedByCreatorId = ExperimentPeer::doSelectJoinProject($criteria, $con);
 			}
 		}
-		$this->lastExperimentCriteria = $criteria;
+		$this->lastExperimentRelatedByCreatorIdCriteria = $criteria;
 
-		return $this->collExperiments;
+		return $this->collExperimentsRelatedByCreatorId;
+	}
+
+	/**
+	 * Temporary storage of collExperimentsRelatedByModifiedById to save a possible db hit in
+	 * the event objects are add to the collection, but the
+	 * complete collection is never requested.
+	 * @return     void
+	 */
+	public function initExperimentsRelatedByModifiedById()
+	{
+		if ($this->collExperimentsRelatedByModifiedById === null) {
+			$this->collExperimentsRelatedByModifiedById = array();
+		}
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person has previously
+	 * been saved, it will retrieve related ExperimentsRelatedByModifiedById from storage.
+	 * If this Person is new, it will return
+	 * an empty collection or the current collection, the criteria
+	 * is ignored on a new object.
+	 *
+	 * @param      Connection $con
+	 * @param      Criteria $criteria
+	 * @throws     PropelException
+	 */
+	public function getExperimentsRelatedByModifiedById($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collExperimentsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+			   $this->collExperimentsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(ExperimentPeer::MODIFIED_BY_ID, $this->getId());
+
+				ExperimentPeer::addSelectColumns($criteria);
+				$this->collExperimentsRelatedByModifiedById = ExperimentPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(ExperimentPeer::MODIFIED_BY_ID, $this->getId());
+
+				ExperimentPeer::addSelectColumns($criteria);
+				if (!isset($this->lastExperimentRelatedByModifiedByIdCriteria) || !$this->lastExperimentRelatedByModifiedByIdCriteria->equals($criteria)) {
+					$this->collExperimentsRelatedByModifiedById = ExperimentPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastExperimentRelatedByModifiedByIdCriteria = $criteria;
+		return $this->collExperimentsRelatedByModifiedById;
+	}
+
+	/**
+	 * Returns the number of related ExperimentsRelatedByModifiedById.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      Connection $con
+	 * @throws     PropelException
+	 */
+	public function countExperimentsRelatedByModifiedById($criteria = null, $distinct = false, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ExperimentPeer::MODIFIED_BY_ID, $this->getId());
+
+		return ExperimentPeer::doCount($criteria, $distinct, $con);
+	}
+
+	/**
+	 * Method called to associate a Experiment object to this object
+	 * through the Experiment foreign key attribute
+	 *
+	 * @param      Experiment $l Experiment
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addExperimentRelatedByModifiedById(Experiment $l)
+	{
+		$this->collExperimentsRelatedByModifiedById[] = $l;
+		$l->setPersonRelatedByModifiedById($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related ExperimentsRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getExperimentsRelatedByModifiedByIdJoinExperimentDomain($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collExperimentsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collExperimentsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(ExperimentPeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collExperimentsRelatedByModifiedById = ExperimentPeer::doSelectJoinExperimentDomain($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ExperimentPeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastExperimentRelatedByModifiedByIdCriteria) || !$this->lastExperimentRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collExperimentsRelatedByModifiedById = ExperimentPeer::doSelectJoinExperimentDomain($criteria, $con);
+			}
+		}
+		$this->lastExperimentRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collExperimentsRelatedByModifiedById;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related ExperimentsRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getExperimentsRelatedByModifiedByIdJoinProject($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collExperimentsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collExperimentsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(ExperimentPeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collExperimentsRelatedByModifiedById = ExperimentPeer::doSelectJoinProject($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ExperimentPeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastExperimentRelatedByModifiedByIdCriteria) || !$this->lastExperimentRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collExperimentsRelatedByModifiedById = ExperimentPeer::doSelectJoinProject($criteria, $con);
+			}
+		}
+		$this->lastExperimentRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collExperimentsRelatedByModifiedById;
 	}
 
 	/**
@@ -1867,15 +2836,15 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Temporary storage of collProjects to save a possible db hit in
+	 * Temporary storage of collProjectsRelatedByCreatorId to save a possible db hit in
 	 * the event objects are add to the collection, but the
 	 * complete collection is never requested.
 	 * @return     void
 	 */
-	public function initProjects()
+	public function initProjectsRelatedByCreatorId()
 	{
-		if ($this->collProjects === null) {
-			$this->collProjects = array();
+		if ($this->collProjectsRelatedByCreatorId === null) {
+			$this->collProjectsRelatedByCreatorId = array();
 		}
 	}
 
@@ -1883,7 +2852,7 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Person has previously
-	 * been saved, it will retrieve related Projects from storage.
+	 * been saved, it will retrieve related ProjectsRelatedByCreatorId from storage.
 	 * If this Person is new, it will return
 	 * an empty collection or the current collection, the criteria
 	 * is ignored on a new object.
@@ -1892,7 +2861,7 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	 * @param      Criteria $criteria
 	 * @throws     PropelException
 	 */
-	public function getProjects($criteria = null, $con = null)
+	public function getProjectsRelatedByCreatorId($criteria = null, $con = null)
 	{
 		// include the Peer class
 		include_once 'lib/data/om/BaseProjectPeer.php';
@@ -1904,15 +2873,15 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collProjects === null) {
+		if ($this->collProjectsRelatedByCreatorId === null) {
 			if ($this->isNew()) {
-			   $this->collProjects = array();
+			   $this->collProjectsRelatedByCreatorId = array();
 			} else {
 
 				$criteria->add(ProjectPeer::CREATOR_ID, $this->getId());
 
 				ProjectPeer::addSelectColumns($criteria);
-				$this->collProjects = ProjectPeer::doSelect($criteria, $con);
+				$this->collProjectsRelatedByCreatorId = ProjectPeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1925,24 +2894,24 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 				$criteria->add(ProjectPeer::CREATOR_ID, $this->getId());
 
 				ProjectPeer::addSelectColumns($criteria);
-				if (!isset($this->lastProjectCriteria) || !$this->lastProjectCriteria->equals($criteria)) {
-					$this->collProjects = ProjectPeer::doSelect($criteria, $con);
+				if (!isset($this->lastProjectRelatedByCreatorIdCriteria) || !$this->lastProjectRelatedByCreatorIdCriteria->equals($criteria)) {
+					$this->collProjectsRelatedByCreatorId = ProjectPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastProjectCriteria = $criteria;
-		return $this->collProjects;
+		$this->lastProjectRelatedByCreatorIdCriteria = $criteria;
+		return $this->collProjectsRelatedByCreatorId;
 	}
 
 	/**
-	 * Returns the number of related Projects.
+	 * Returns the number of related ProjectsRelatedByCreatorId.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      Connection $con
 	 * @throws     PropelException
 	 */
-	public function countProjects($criteria = null, $distinct = false, $con = null)
+	public function countProjectsRelatedByCreatorId($criteria = null, $distinct = false, $con = null)
 	{
 		// include the Peer class
 		include_once 'lib/data/om/BaseProjectPeer.php';
@@ -1967,10 +2936,10 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addProject(Project $l)
+	public function addProjectRelatedByCreatorId(Project $l)
 	{
-		$this->collProjects[] = $l;
-		$l->setPerson($this);
+		$this->collProjectsRelatedByCreatorId[] = $l;
+		$l->setPersonRelatedByCreatorId($this);
 	}
 
 
@@ -1979,13 +2948,13 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Person is new, it will return
 	 * an empty collection; or if this Person has previously
-	 * been saved, it will retrieve related Projects from storage.
+	 * been saved, it will retrieve related ProjectsRelatedByCreatorId from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Person.
 	 */
-	public function getProjectsJoinProjectRelatedBySuperProjectId($criteria = null, $con = null)
+	public function getProjectsRelatedByCreatorIdJoinProjectRelatedBySuperProjectId($criteria = null, $con = null)
 	{
 		// include the Peer class
 		include_once 'lib/data/om/BaseProjectPeer.php';
@@ -1997,14 +2966,14 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collProjects === null) {
+		if ($this->collProjectsRelatedByCreatorId === null) {
 			if ($this->isNew()) {
-				$this->collProjects = array();
+				$this->collProjectsRelatedByCreatorId = array();
 			} else {
 
 				$criteria->add(ProjectPeer::CREATOR_ID, $this->getId());
 
-				$this->collProjects = ProjectPeer::doSelectJoinProjectRelatedBySuperProjectId($criteria, $con);
+				$this->collProjectsRelatedByCreatorId = ProjectPeer::doSelectJoinProjectRelatedBySuperProjectId($criteria, $con);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -2013,13 +2982,1185 @@ abstract class BasePerson extends BaseObject  implements Persistent {
 
 			$criteria->add(ProjectPeer::CREATOR_ID, $this->getId());
 
-			if (!isset($this->lastProjectCriteria) || !$this->lastProjectCriteria->equals($criteria)) {
-				$this->collProjects = ProjectPeer::doSelectJoinProjectRelatedBySuperProjectId($criteria, $con);
+			if (!isset($this->lastProjectRelatedByCreatorIdCriteria) || !$this->lastProjectRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collProjectsRelatedByCreatorId = ProjectPeer::doSelectJoinProjectRelatedBySuperProjectId($criteria, $con);
 			}
 		}
-		$this->lastProjectCriteria = $criteria;
+		$this->lastProjectRelatedByCreatorIdCriteria = $criteria;
 
-		return $this->collProjects;
+		return $this->collProjectsRelatedByCreatorId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related ProjectsRelatedByCreatorId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getProjectsRelatedByCreatorIdJoinNeesResearchType($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collProjectsRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+				$this->collProjectsRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(ProjectPeer::CREATOR_ID, $this->getId());
+
+				$this->collProjectsRelatedByCreatorId = ProjectPeer::doSelectJoinNeesResearchType($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ProjectPeer::CREATOR_ID, $this->getId());
+
+			if (!isset($this->lastProjectRelatedByCreatorIdCriteria) || !$this->lastProjectRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collProjectsRelatedByCreatorId = ProjectPeer::doSelectJoinNeesResearchType($criteria, $con);
+			}
+		}
+		$this->lastProjectRelatedByCreatorIdCriteria = $criteria;
+
+		return $this->collProjectsRelatedByCreatorId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related ProjectsRelatedByCreatorId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getProjectsRelatedByCreatorIdJoinProjectResearchType($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collProjectsRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+				$this->collProjectsRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(ProjectPeer::CREATOR_ID, $this->getId());
+
+				$this->collProjectsRelatedByCreatorId = ProjectPeer::doSelectJoinProjectResearchType($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ProjectPeer::CREATOR_ID, $this->getId());
+
+			if (!isset($this->lastProjectRelatedByCreatorIdCriteria) || !$this->lastProjectRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collProjectsRelatedByCreatorId = ProjectPeer::doSelectJoinProjectResearchType($criteria, $con);
+			}
+		}
+		$this->lastProjectRelatedByCreatorIdCriteria = $criteria;
+
+		return $this->collProjectsRelatedByCreatorId;
+	}
+
+	/**
+	 * Temporary storage of collProjectsRelatedByModifiedById to save a possible db hit in
+	 * the event objects are add to the collection, but the
+	 * complete collection is never requested.
+	 * @return     void
+	 */
+	public function initProjectsRelatedByModifiedById()
+	{
+		if ($this->collProjectsRelatedByModifiedById === null) {
+			$this->collProjectsRelatedByModifiedById = array();
+		}
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person has previously
+	 * been saved, it will retrieve related ProjectsRelatedByModifiedById from storage.
+	 * If this Person is new, it will return
+	 * an empty collection or the current collection, the criteria
+	 * is ignored on a new object.
+	 *
+	 * @param      Connection $con
+	 * @param      Criteria $criteria
+	 * @throws     PropelException
+	 */
+	public function getProjectsRelatedByModifiedById($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collProjectsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+			   $this->collProjectsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(ProjectPeer::MODIFIED_BY_ID, $this->getId());
+
+				ProjectPeer::addSelectColumns($criteria);
+				$this->collProjectsRelatedByModifiedById = ProjectPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(ProjectPeer::MODIFIED_BY_ID, $this->getId());
+
+				ProjectPeer::addSelectColumns($criteria);
+				if (!isset($this->lastProjectRelatedByModifiedByIdCriteria) || !$this->lastProjectRelatedByModifiedByIdCriteria->equals($criteria)) {
+					$this->collProjectsRelatedByModifiedById = ProjectPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastProjectRelatedByModifiedByIdCriteria = $criteria;
+		return $this->collProjectsRelatedByModifiedById;
+	}
+
+	/**
+	 * Returns the number of related ProjectsRelatedByModifiedById.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      Connection $con
+	 * @throws     PropelException
+	 */
+	public function countProjectsRelatedByModifiedById($criteria = null, $distinct = false, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ProjectPeer::MODIFIED_BY_ID, $this->getId());
+
+		return ProjectPeer::doCount($criteria, $distinct, $con);
+	}
+
+	/**
+	 * Method called to associate a Project object to this object
+	 * through the Project foreign key attribute
+	 *
+	 * @param      Project $l Project
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addProjectRelatedByModifiedById(Project $l)
+	{
+		$this->collProjectsRelatedByModifiedById[] = $l;
+		$l->setPersonRelatedByModifiedById($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related ProjectsRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getProjectsRelatedByModifiedByIdJoinProjectRelatedBySuperProjectId($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collProjectsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collProjectsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(ProjectPeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collProjectsRelatedByModifiedById = ProjectPeer::doSelectJoinProjectRelatedBySuperProjectId($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ProjectPeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastProjectRelatedByModifiedByIdCriteria) || !$this->lastProjectRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collProjectsRelatedByModifiedById = ProjectPeer::doSelectJoinProjectRelatedBySuperProjectId($criteria, $con);
+			}
+		}
+		$this->lastProjectRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collProjectsRelatedByModifiedById;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related ProjectsRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getProjectsRelatedByModifiedByIdJoinNeesResearchType($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collProjectsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collProjectsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(ProjectPeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collProjectsRelatedByModifiedById = ProjectPeer::doSelectJoinNeesResearchType($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ProjectPeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastProjectRelatedByModifiedByIdCriteria) || !$this->lastProjectRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collProjectsRelatedByModifiedById = ProjectPeer::doSelectJoinNeesResearchType($criteria, $con);
+			}
+		}
+		$this->lastProjectRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collProjectsRelatedByModifiedById;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related ProjectsRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getProjectsRelatedByModifiedByIdJoinProjectResearchType($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseProjectPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collProjectsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collProjectsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(ProjectPeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collProjectsRelatedByModifiedById = ProjectPeer::doSelectJoinProjectResearchType($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ProjectPeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastProjectRelatedByModifiedByIdCriteria) || !$this->lastProjectRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collProjectsRelatedByModifiedById = ProjectPeer::doSelectJoinProjectResearchType($criteria, $con);
+			}
+		}
+		$this->lastProjectRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collProjectsRelatedByModifiedById;
+	}
+
+	/**
+	 * Temporary storage of collRepetitionsRelatedByCreatorId to save a possible db hit in
+	 * the event objects are add to the collection, but the
+	 * complete collection is never requested.
+	 * @return     void
+	 */
+	public function initRepetitionsRelatedByCreatorId()
+	{
+		if ($this->collRepetitionsRelatedByCreatorId === null) {
+			$this->collRepetitionsRelatedByCreatorId = array();
+		}
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person has previously
+	 * been saved, it will retrieve related RepetitionsRelatedByCreatorId from storage.
+	 * If this Person is new, it will return
+	 * an empty collection or the current collection, the criteria
+	 * is ignored on a new object.
+	 *
+	 * @param      Connection $con
+	 * @param      Criteria $criteria
+	 * @throws     PropelException
+	 */
+	public function getRepetitionsRelatedByCreatorId($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseRepetitionPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRepetitionsRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+			   $this->collRepetitionsRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(RepetitionPeer::CREATOR_ID, $this->getId());
+
+				RepetitionPeer::addSelectColumns($criteria);
+				$this->collRepetitionsRelatedByCreatorId = RepetitionPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(RepetitionPeer::CREATOR_ID, $this->getId());
+
+				RepetitionPeer::addSelectColumns($criteria);
+				if (!isset($this->lastRepetitionRelatedByCreatorIdCriteria) || !$this->lastRepetitionRelatedByCreatorIdCriteria->equals($criteria)) {
+					$this->collRepetitionsRelatedByCreatorId = RepetitionPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastRepetitionRelatedByCreatorIdCriteria = $criteria;
+		return $this->collRepetitionsRelatedByCreatorId;
+	}
+
+	/**
+	 * Returns the number of related RepetitionsRelatedByCreatorId.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      Connection $con
+	 * @throws     PropelException
+	 */
+	public function countRepetitionsRelatedByCreatorId($criteria = null, $distinct = false, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseRepetitionPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(RepetitionPeer::CREATOR_ID, $this->getId());
+
+		return RepetitionPeer::doCount($criteria, $distinct, $con);
+	}
+
+	/**
+	 * Method called to associate a Repetition object to this object
+	 * through the Repetition foreign key attribute
+	 *
+	 * @param      Repetition $l Repetition
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addRepetitionRelatedByCreatorId(Repetition $l)
+	{
+		$this->collRepetitionsRelatedByCreatorId[] = $l;
+		$l->setPersonRelatedByCreatorId($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related RepetitionsRelatedByCreatorId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getRepetitionsRelatedByCreatorIdJoinTrial($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseRepetitionPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRepetitionsRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+				$this->collRepetitionsRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(RepetitionPeer::CREATOR_ID, $this->getId());
+
+				$this->collRepetitionsRelatedByCreatorId = RepetitionPeer::doSelectJoinTrial($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RepetitionPeer::CREATOR_ID, $this->getId());
+
+			if (!isset($this->lastRepetitionRelatedByCreatorIdCriteria) || !$this->lastRepetitionRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collRepetitionsRelatedByCreatorId = RepetitionPeer::doSelectJoinTrial($criteria, $con);
+			}
+		}
+		$this->lastRepetitionRelatedByCreatorIdCriteria = $criteria;
+
+		return $this->collRepetitionsRelatedByCreatorId;
+	}
+
+	/**
+	 * Temporary storage of collRepetitionsRelatedByModifiedById to save a possible db hit in
+	 * the event objects are add to the collection, but the
+	 * complete collection is never requested.
+	 * @return     void
+	 */
+	public function initRepetitionsRelatedByModifiedById()
+	{
+		if ($this->collRepetitionsRelatedByModifiedById === null) {
+			$this->collRepetitionsRelatedByModifiedById = array();
+		}
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person has previously
+	 * been saved, it will retrieve related RepetitionsRelatedByModifiedById from storage.
+	 * If this Person is new, it will return
+	 * an empty collection or the current collection, the criteria
+	 * is ignored on a new object.
+	 *
+	 * @param      Connection $con
+	 * @param      Criteria $criteria
+	 * @throws     PropelException
+	 */
+	public function getRepetitionsRelatedByModifiedById($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseRepetitionPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRepetitionsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+			   $this->collRepetitionsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(RepetitionPeer::MODIFIED_BY_ID, $this->getId());
+
+				RepetitionPeer::addSelectColumns($criteria);
+				$this->collRepetitionsRelatedByModifiedById = RepetitionPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(RepetitionPeer::MODIFIED_BY_ID, $this->getId());
+
+				RepetitionPeer::addSelectColumns($criteria);
+				if (!isset($this->lastRepetitionRelatedByModifiedByIdCriteria) || !$this->lastRepetitionRelatedByModifiedByIdCriteria->equals($criteria)) {
+					$this->collRepetitionsRelatedByModifiedById = RepetitionPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastRepetitionRelatedByModifiedByIdCriteria = $criteria;
+		return $this->collRepetitionsRelatedByModifiedById;
+	}
+
+	/**
+	 * Returns the number of related RepetitionsRelatedByModifiedById.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      Connection $con
+	 * @throws     PropelException
+	 */
+	public function countRepetitionsRelatedByModifiedById($criteria = null, $distinct = false, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseRepetitionPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(RepetitionPeer::MODIFIED_BY_ID, $this->getId());
+
+		return RepetitionPeer::doCount($criteria, $distinct, $con);
+	}
+
+	/**
+	 * Method called to associate a Repetition object to this object
+	 * through the Repetition foreign key attribute
+	 *
+	 * @param      Repetition $l Repetition
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addRepetitionRelatedByModifiedById(Repetition $l)
+	{
+		$this->collRepetitionsRelatedByModifiedById[] = $l;
+		$l->setPersonRelatedByModifiedById($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related RepetitionsRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getRepetitionsRelatedByModifiedByIdJoinTrial($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseRepetitionPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRepetitionsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collRepetitionsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(RepetitionPeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collRepetitionsRelatedByModifiedById = RepetitionPeer::doSelectJoinTrial($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RepetitionPeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastRepetitionRelatedByModifiedByIdCriteria) || !$this->lastRepetitionRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collRepetitionsRelatedByModifiedById = RepetitionPeer::doSelectJoinTrial($criteria, $con);
+			}
+		}
+		$this->lastRepetitionRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collRepetitionsRelatedByModifiedById;
+	}
+
+	/**
+	 * Temporary storage of collTrialsRelatedByCreatorId to save a possible db hit in
+	 * the event objects are add to the collection, but the
+	 * complete collection is never requested.
+	 * @return     void
+	 */
+	public function initTrialsRelatedByCreatorId()
+	{
+		if ($this->collTrialsRelatedByCreatorId === null) {
+			$this->collTrialsRelatedByCreatorId = array();
+		}
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person has previously
+	 * been saved, it will retrieve related TrialsRelatedByCreatorId from storage.
+	 * If this Person is new, it will return
+	 * an empty collection or the current collection, the criteria
+	 * is ignored on a new object.
+	 *
+	 * @param      Connection $con
+	 * @param      Criteria $criteria
+	 * @throws     PropelException
+	 */
+	public function getTrialsRelatedByCreatorId($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrialsRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+			   $this->collTrialsRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(TrialPeer::CREATOR_ID, $this->getId());
+
+				TrialPeer::addSelectColumns($criteria);
+				$this->collTrialsRelatedByCreatorId = TrialPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(TrialPeer::CREATOR_ID, $this->getId());
+
+				TrialPeer::addSelectColumns($criteria);
+				if (!isset($this->lastTrialRelatedByCreatorIdCriteria) || !$this->lastTrialRelatedByCreatorIdCriteria->equals($criteria)) {
+					$this->collTrialsRelatedByCreatorId = TrialPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastTrialRelatedByCreatorIdCriteria = $criteria;
+		return $this->collTrialsRelatedByCreatorId;
+	}
+
+	/**
+	 * Returns the number of related TrialsRelatedByCreatorId.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      Connection $con
+	 * @throws     PropelException
+	 */
+	public function countTrialsRelatedByCreatorId($criteria = null, $distinct = false, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(TrialPeer::CREATOR_ID, $this->getId());
+
+		return TrialPeer::doCount($criteria, $distinct, $con);
+	}
+
+	/**
+	 * Method called to associate a Trial object to this object
+	 * through the Trial foreign key attribute
+	 *
+	 * @param      Trial $l Trial
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addTrialRelatedByCreatorId(Trial $l)
+	{
+		$this->collTrialsRelatedByCreatorId[] = $l;
+		$l->setPersonRelatedByCreatorId($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related TrialsRelatedByCreatorId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getTrialsRelatedByCreatorIdJoinDataFile($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrialsRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+				$this->collTrialsRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(TrialPeer::CREATOR_ID, $this->getId());
+
+				$this->collTrialsRelatedByCreatorId = TrialPeer::doSelectJoinDataFile($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(TrialPeer::CREATOR_ID, $this->getId());
+
+			if (!isset($this->lastTrialRelatedByCreatorIdCriteria) || !$this->lastTrialRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collTrialsRelatedByCreatorId = TrialPeer::doSelectJoinDataFile($criteria, $con);
+			}
+		}
+		$this->lastTrialRelatedByCreatorIdCriteria = $criteria;
+
+		return $this->collTrialsRelatedByCreatorId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related TrialsRelatedByCreatorId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getTrialsRelatedByCreatorIdJoinExperiment($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrialsRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+				$this->collTrialsRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(TrialPeer::CREATOR_ID, $this->getId());
+
+				$this->collTrialsRelatedByCreatorId = TrialPeer::doSelectJoinExperiment($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(TrialPeer::CREATOR_ID, $this->getId());
+
+			if (!isset($this->lastTrialRelatedByCreatorIdCriteria) || !$this->lastTrialRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collTrialsRelatedByCreatorId = TrialPeer::doSelectJoinExperiment($criteria, $con);
+			}
+		}
+		$this->lastTrialRelatedByCreatorIdCriteria = $criteria;
+
+		return $this->collTrialsRelatedByCreatorId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related TrialsRelatedByCreatorId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getTrialsRelatedByCreatorIdJoinMeasurementUnit($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrialsRelatedByCreatorId === null) {
+			if ($this->isNew()) {
+				$this->collTrialsRelatedByCreatorId = array();
+			} else {
+
+				$criteria->add(TrialPeer::CREATOR_ID, $this->getId());
+
+				$this->collTrialsRelatedByCreatorId = TrialPeer::doSelectJoinMeasurementUnit($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(TrialPeer::CREATOR_ID, $this->getId());
+
+			if (!isset($this->lastTrialRelatedByCreatorIdCriteria) || !$this->lastTrialRelatedByCreatorIdCriteria->equals($criteria)) {
+				$this->collTrialsRelatedByCreatorId = TrialPeer::doSelectJoinMeasurementUnit($criteria, $con);
+			}
+		}
+		$this->lastTrialRelatedByCreatorIdCriteria = $criteria;
+
+		return $this->collTrialsRelatedByCreatorId;
+	}
+
+	/**
+	 * Temporary storage of collTrialsRelatedByModifiedById to save a possible db hit in
+	 * the event objects are add to the collection, but the
+	 * complete collection is never requested.
+	 * @return     void
+	 */
+	public function initTrialsRelatedByModifiedById()
+	{
+		if ($this->collTrialsRelatedByModifiedById === null) {
+			$this->collTrialsRelatedByModifiedById = array();
+		}
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person has previously
+	 * been saved, it will retrieve related TrialsRelatedByModifiedById from storage.
+	 * If this Person is new, it will return
+	 * an empty collection or the current collection, the criteria
+	 * is ignored on a new object.
+	 *
+	 * @param      Connection $con
+	 * @param      Criteria $criteria
+	 * @throws     PropelException
+	 */
+	public function getTrialsRelatedByModifiedById($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrialsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+			   $this->collTrialsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(TrialPeer::MODIFIED_BY_ID, $this->getId());
+
+				TrialPeer::addSelectColumns($criteria);
+				$this->collTrialsRelatedByModifiedById = TrialPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(TrialPeer::MODIFIED_BY_ID, $this->getId());
+
+				TrialPeer::addSelectColumns($criteria);
+				if (!isset($this->lastTrialRelatedByModifiedByIdCriteria) || !$this->lastTrialRelatedByModifiedByIdCriteria->equals($criteria)) {
+					$this->collTrialsRelatedByModifiedById = TrialPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastTrialRelatedByModifiedByIdCriteria = $criteria;
+		return $this->collTrialsRelatedByModifiedById;
+	}
+
+	/**
+	 * Returns the number of related TrialsRelatedByModifiedById.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      Connection $con
+	 * @throws     PropelException
+	 */
+	public function countTrialsRelatedByModifiedById($criteria = null, $distinct = false, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(TrialPeer::MODIFIED_BY_ID, $this->getId());
+
+		return TrialPeer::doCount($criteria, $distinct, $con);
+	}
+
+	/**
+	 * Method called to associate a Trial object to this object
+	 * through the Trial foreign key attribute
+	 *
+	 * @param      Trial $l Trial
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addTrialRelatedByModifiedById(Trial $l)
+	{
+		$this->collTrialsRelatedByModifiedById[] = $l;
+		$l->setPersonRelatedByModifiedById($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related TrialsRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getTrialsRelatedByModifiedByIdJoinDataFile($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrialsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collTrialsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(TrialPeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collTrialsRelatedByModifiedById = TrialPeer::doSelectJoinDataFile($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(TrialPeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastTrialRelatedByModifiedByIdCriteria) || !$this->lastTrialRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collTrialsRelatedByModifiedById = TrialPeer::doSelectJoinDataFile($criteria, $con);
+			}
+		}
+		$this->lastTrialRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collTrialsRelatedByModifiedById;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related TrialsRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getTrialsRelatedByModifiedByIdJoinExperiment($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrialsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collTrialsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(TrialPeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collTrialsRelatedByModifiedById = TrialPeer::doSelectJoinExperiment($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(TrialPeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastTrialRelatedByModifiedByIdCriteria) || !$this->lastTrialRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collTrialsRelatedByModifiedById = TrialPeer::doSelectJoinExperiment($criteria, $con);
+			}
+		}
+		$this->lastTrialRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collTrialsRelatedByModifiedById;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Person is new, it will return
+	 * an empty collection; or if this Person has previously
+	 * been saved, it will retrieve related TrialsRelatedByModifiedById from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Person.
+	 */
+	public function getTrialsRelatedByModifiedByIdJoinMeasurementUnit($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrialsRelatedByModifiedById === null) {
+			if ($this->isNew()) {
+				$this->collTrialsRelatedByModifiedById = array();
+			} else {
+
+				$criteria->add(TrialPeer::MODIFIED_BY_ID, $this->getId());
+
+				$this->collTrialsRelatedByModifiedById = TrialPeer::doSelectJoinMeasurementUnit($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(TrialPeer::MODIFIED_BY_ID, $this->getId());
+
+			if (!isset($this->lastTrialRelatedByModifiedByIdCriteria) || !$this->lastTrialRelatedByModifiedByIdCriteria->equals($criteria)) {
+				$this->collTrialsRelatedByModifiedById = TrialPeer::doSelectJoinMeasurementUnit($criteria, $con);
+			}
+		}
+		$this->lastTrialRelatedByModifiedByIdCriteria = $criteria;
+
+		return $this->collTrialsRelatedByModifiedById;
 	}
 
 	/**

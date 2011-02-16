@@ -87,6 +87,11 @@ abstract class BaseProjectHomepage extends BaseObject  implements Persistent {
 	protected $aDataFile;
 
 	/**
+	 * @var        ProjectHomepageTypeLookup
+	 */
+	protected $aProjectHomepageTypeLookup;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -313,6 +318,10 @@ abstract class BaseProjectHomepage extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = ProjectHomepagePeer::PROJECT_HOMEPAGE_TYPE_ID;
 		}
 
+		if ($this->aProjectHomepageTypeLookup !== null && $this->aProjectHomepageTypeLookup->getId() !== $v) {
+			$this->aProjectHomepageTypeLookup = null;
+		}
+
 	} // setProjectHomepageTypeId()
 
 	/**
@@ -456,6 +465,13 @@ abstract class BaseProjectHomepage extends BaseObject  implements Persistent {
 				$this->setDataFile($this->aDataFile);
 			}
 
+			if ($this->aProjectHomepageTypeLookup !== null) {
+				if ($this->aProjectHomepageTypeLookup->isModified()) {
+					$affectedRows += $this->aProjectHomepageTypeLookup->save($con);
+				}
+				$this->setProjectHomepageTypeLookup($this->aProjectHomepageTypeLookup);
+			}
+
 
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
@@ -553,6 +569,12 @@ abstract class BaseProjectHomepage extends BaseObject  implements Persistent {
 			if ($this->aDataFile !== null) {
 				if (!$this->aDataFile->validate($columns)) {
 					$failureMap = array_merge($failureMap, $this->aDataFile->getValidationFailures());
+				}
+			}
+
+			if ($this->aProjectHomepageTypeLookup !== null) {
+				if (!$this->aProjectHomepageTypeLookup->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aProjectHomepageTypeLookup->getValidationFailures());
 				}
 			}
 
@@ -953,6 +975,57 @@ abstract class BaseProjectHomepage extends BaseObject  implements Persistent {
 			 */
 		}
 		return $this->aDataFile;
+	}
+
+	/**
+	 * Declares an association between this object and a ProjectHomepageTypeLookup object.
+	 *
+	 * @param      ProjectHomepageTypeLookup $v
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function setProjectHomepageTypeLookup($v)
+	{
+
+
+		if ($v === null) {
+			$this->setProjectHomepageTypeId(NULL);
+		} else {
+			$this->setProjectHomepageTypeId($v->getId());
+		}
+
+
+		$this->aProjectHomepageTypeLookup = $v;
+	}
+
+
+	/**
+	 * Get the associated ProjectHomepageTypeLookup object
+	 *
+	 * @param      Connection Optional Connection object.
+	 * @return     ProjectHomepageTypeLookup The associated ProjectHomepageTypeLookup object.
+	 * @throws     PropelException
+	 */
+	public function getProjectHomepageTypeLookup($con = null)
+	{
+		// include the related Peer class
+		include_once 'lib/data/om/BaseProjectHomepageTypeLookupPeer.php';
+
+		if ($this->aProjectHomepageTypeLookup === null && ($this->project_homepage_type_id > 0)) {
+
+			$this->aProjectHomepageTypeLookup = ProjectHomepageTypeLookupPeer::retrieveByPK($this->project_homepage_type_id, $con);
+
+			/* The following can be used instead of the line above to
+			   guarantee the related object contains a reference
+			   to this object, but this level of coupling
+			   may be undesirable in many circumstances.
+			   As it can lead to a db query with many results that may
+			   never be used.
+			   $obj = ProjectHomepageTypeLookupPeer::retrieveByPK($this->project_homepage_type_id, $con);
+			   $obj->addProjectHomepageTypeLookups($this);
+			 */
+		}
+		return $this->aProjectHomepageTypeLookup;
 	}
 
 } // BaseProjectHomepage

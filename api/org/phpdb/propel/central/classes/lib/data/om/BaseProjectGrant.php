@@ -55,10 +55,22 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 	 */
 	protected $award_url;
 
+
+	/**
+	 * The value for the nees_award_type_id field.
+	 * @var        double
+	 */
+	protected $nees_award_type_id;
+
 	/**
 	 * @var        Project
 	 */
 	protected $aProject;
+
+	/**
+	 * @var        NeesAwardType
+	 */
+	protected $aNeesAwardType;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -116,6 +128,17 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 	{
 
 		return $this->award_url;
+	}
+
+	/**
+	 * Get the [nees_award_type_id] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getNeesAwardTypeId()
+	{
+
+		return $this->nees_award_type_id;
 	}
 
 	/**
@@ -205,6 +228,26 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 	} // setAwardUrl()
 
 	/**
+	 * Set the value of [nees_award_type_id] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setNeesAwardTypeId($v)
+	{
+
+		if ($this->nees_award_type_id !== $v) {
+			$this->nees_award_type_id = $v;
+			$this->modifiedColumns[] = ProjectGrantPeer::NEES_AWARD_TYPE_ID;
+		}
+
+		if ($this->aNeesAwardType !== null && $this->aNeesAwardType->getId() !== $v) {
+			$this->aNeesAwardType = null;
+		}
+
+	} // setNeesAwardTypeId()
+
+	/**
 	 * Hydrates (populates) the object variables with values from the database resultset.
 	 *
 	 * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -229,12 +272,14 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 
 			$this->award_url = $rs->getString($startcol + 3);
 
+			$this->nees_award_type_id = $rs->getFloat($startcol + 4);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 4; // 4 = ProjectGrantPeer::NUM_COLUMNS - ProjectGrantPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 5; // 5 = ProjectGrantPeer::NUM_COLUMNS - ProjectGrantPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ProjectGrant object", $e);
@@ -332,6 +377,13 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 				$this->setProject($this->aProject);
 			}
 
+			if ($this->aNeesAwardType !== null) {
+				if ($this->aNeesAwardType->isModified()) {
+					$affectedRows += $this->aNeesAwardType->save($con);
+				}
+				$this->setNeesAwardType($this->aNeesAwardType);
+			}
+
 
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
@@ -424,6 +476,12 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->aNeesAwardType !== null) {
+				if (!$this->aNeesAwardType->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aNeesAwardType->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = ProjectGrantPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -474,6 +532,9 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 			case 3:
 				return $this->getAwardUrl();
 				break;
+			case 4:
+				return $this->getNeesAwardTypeId();
+				break;
 			default:
 				return null;
 				break;
@@ -498,6 +559,7 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 			$keys[1] => $this->getFundingOrg(),
 			$keys[2] => $this->getAwardNumber(),
 			$keys[3] => $this->getAwardUrl(),
+			$keys[4] => $this->getNeesAwardTypeId(),
 		);
 		return $result;
 	}
@@ -541,6 +603,9 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 			case 3:
 				$this->setAwardUrl($value);
 				break;
+			case 4:
+				$this->setNeesAwardTypeId($value);
+				break;
 		} // switch()
 	}
 
@@ -568,6 +633,7 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[1], $arr)) $this->setFundingOrg($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setAwardNumber($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setAwardUrl($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setNeesAwardTypeId($arr[$keys[4]]);
 	}
 
 	/**
@@ -583,6 +649,7 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ProjectGrantPeer::FUND_ORG)) $criteria->add(ProjectGrantPeer::FUND_ORG, $this->fund_org);
 		if ($this->isColumnModified(ProjectGrantPeer::AWARD_NUM)) $criteria->add(ProjectGrantPeer::AWARD_NUM, $this->award_num);
 		if ($this->isColumnModified(ProjectGrantPeer::AWARD_URL)) $criteria->add(ProjectGrantPeer::AWARD_URL, $this->award_url);
+		if ($this->isColumnModified(ProjectGrantPeer::NEES_AWARD_TYPE_ID)) $criteria->add(ProjectGrantPeer::NEES_AWARD_TYPE_ID, $this->nees_award_type_id);
 
 		return $criteria;
 	}
@@ -647,6 +714,8 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 		$copyObj->setAwardNumber($this->award_num);
 
 		$copyObj->setAwardUrl($this->award_url);
+
+		$copyObj->setNeesAwardTypeId($this->nees_award_type_id);
 
 
 		$copyObj->setNew(true);
@@ -740,6 +809,57 @@ abstract class BaseProjectGrant extends BaseObject  implements Persistent {
 			 */
 		}
 		return $this->aProject;
+	}
+
+	/**
+	 * Declares an association between this object and a NeesAwardType object.
+	 *
+	 * @param      NeesAwardType $v
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function setNeesAwardType($v)
+	{
+
+
+		if ($v === null) {
+			$this->setNeesAwardTypeId(NULL);
+		} else {
+			$this->setNeesAwardTypeId($v->getId());
+		}
+
+
+		$this->aNeesAwardType = $v;
+	}
+
+
+	/**
+	 * Get the associated NeesAwardType object
+	 *
+	 * @param      Connection Optional Connection object.
+	 * @return     NeesAwardType The associated NeesAwardType object.
+	 * @throws     PropelException
+	 */
+	public function getNeesAwardType($con = null)
+	{
+		// include the related Peer class
+		include_once 'lib/data/om/BaseNeesAwardTypePeer.php';
+
+		if ($this->aNeesAwardType === null && ($this->nees_award_type_id > 0)) {
+
+			$this->aNeesAwardType = NeesAwardTypePeer::retrieveByPK($this->nees_award_type_id, $con);
+
+			/* The following can be used instead of the line above to
+			   guarantee the related object contains a reference
+			   to this object, but this level of coupling
+			   may be undesirable in many circumstances.
+			   As it can lead to a db query with many results that may
+			   never be used.
+			   $obj = NeesAwardTypePeer::retrieveByPK($this->nees_award_type_id, $con);
+			   $obj->addNeesAwardTypes($this);
+			 */
+		}
+		return $this->aNeesAwardType;
 	}
 
 } // BaseProjectGrant

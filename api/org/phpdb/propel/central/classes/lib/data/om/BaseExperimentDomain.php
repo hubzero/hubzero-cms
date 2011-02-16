@@ -894,6 +894,104 @@ abstract class BaseExperimentDomain extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in ExperimentDomain.
 	 */
+	public function getExperimentsJoinPersonRelatedByCreatorId($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collExperiments === null) {
+			if ($this->isNew()) {
+				$this->collExperiments = array();
+			} else {
+
+				$criteria->add(ExperimentPeer::EXPERIMENT_DOMAIN_ID, $this->getId());
+
+				$this->collExperiments = ExperimentPeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ExperimentPeer::EXPERIMENT_DOMAIN_ID, $this->getId());
+
+			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
+				$this->collExperiments = ExperimentPeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
+			}
+		}
+		$this->lastExperimentCriteria = $criteria;
+
+		return $this->collExperiments;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ExperimentDomain is new, it will return
+	 * an empty collection; or if this ExperimentDomain has previously
+	 * been saved, it will retrieve related Experiments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ExperimentDomain.
+	 */
+	public function getExperimentsJoinPersonRelatedByModifiedById($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseExperimentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collExperiments === null) {
+			if ($this->isNew()) {
+				$this->collExperiments = array();
+			} else {
+
+				$criteria->add(ExperimentPeer::EXPERIMENT_DOMAIN_ID, $this->getId());
+
+				$this->collExperiments = ExperimentPeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ExperimentPeer::EXPERIMENT_DOMAIN_ID, $this->getId());
+
+			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
+				$this->collExperiments = ExperimentPeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		}
+		$this->lastExperimentCriteria = $criteria;
+
+		return $this->collExperiments;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ExperimentDomain is new, it will return
+	 * an empty collection; or if this ExperimentDomain has previously
+	 * been saved, it will retrieve related Experiments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ExperimentDomain.
+	 */
 	public function getExperimentsJoinProject($criteria = null, $con = null)
 	{
 		// include the Peer class
@@ -924,55 +1022,6 @@ abstract class BaseExperimentDomain extends BaseObject  implements Persistent {
 
 			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
 				$this->collExperiments = ExperimentPeer::doSelectJoinProject($criteria, $con);
-			}
-		}
-		$this->lastExperimentCriteria = $criteria;
-
-		return $this->collExperiments;
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this ExperimentDomain is new, it will return
-	 * an empty collection; or if this ExperimentDomain has previously
-	 * been saved, it will retrieve related Experiments from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in ExperimentDomain.
-	 */
-	public function getExperimentsJoinPerson($criteria = null, $con = null)
-	{
-		// include the Peer class
-		include_once 'lib/data/om/BaseExperimentPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collExperiments === null) {
-			if ($this->isNew()) {
-				$this->collExperiments = array();
-			} else {
-
-				$criteria->add(ExperimentPeer::EXPERIMENT_DOMAIN_ID, $this->getId());
-
-				$this->collExperiments = ExperimentPeer::doSelectJoinPerson($criteria, $con);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(ExperimentPeer::EXPERIMENT_DOMAIN_ID, $this->getId());
-
-			if (!isset($this->lastExperimentCriteria) || !$this->lastExperimentCriteria->equals($criteria)) {
-				$this->collExperiments = ExperimentPeer::doSelectJoinPerson($criteria, $con);
 			}
 		}
 		$this->lastExperimentCriteria = $criteria;

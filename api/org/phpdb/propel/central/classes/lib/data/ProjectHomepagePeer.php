@@ -6,6 +6,12 @@
   // include object class
   include_once 'lib/data/ProjectHomepage.php';
 
+  /*
+   * Added lookup peer because BaseProjectHomepagePeer didn't include and complained.
+   * Adding include to Base*Peer could lead to it getting overwritten by another propel-gen.
+   */
+  include_once 'lib/data/ProjectHomepageTypeLookupPeer.php';  
+
 
 /**
  * Skeleton subclass for performing query and update operations on the 'PROJECT_HOMEPAGE' table.
@@ -52,6 +58,21 @@ class ProjectHomepagePeer extends BaseProjectHomepagePeer {
     $c->addAscendingOrderByColumn(self::PROJECT_HOMEPAGE_TYPE_ID);
     $c->addAscendingOrderByColumn(self::ID);
     return self::doSelect($c);
+  }
+
+  /**
+   * Find all ProjectHomepages by a project id
+   *
+   * @param int $projid
+   * @param int $p_iDataFileId
+   * @return ProjectHomepage
+   */
+  public static function findByProjectIdAndDataFileId($projid, $p_iDataFileId) {
+    $c = new Criteria();
+    $c->addJoin(self::DATA_FILE_ID, DataFilePeer::ID);
+    $c->add(self::PROJECT_ID, $projid);
+    $c->add(self::DATA_FILE_ID, $p_iDataFileId);
+    return self::doSelectOne($c);
   }
 
 
@@ -113,6 +134,19 @@ class ProjectHomepagePeer extends BaseProjectHomepagePeer {
     $c = new Criteria();
     $c->add(self::PROJECT_ID, $projid);
     $c->add(self::PROJECT_HOMEPAGE_TYPE_ID, self::CLASSKEY_PROJECTHOMEPAGEURL);
+    return self::doSelect($c);
+  }
+
+  /**
+   * Find all ProjectHomepage Publications by a project id
+   *
+   * @param int $projid
+   * @return array <ProjectHomepage>
+   */
+  public static function findProjectPublicationsByProjectId($projid) {
+    $c = new Criteria();
+    $c->add(self::PROJECT_ID, $projid);
+    $c->add(self::PROJECT_HOMEPAGE_TYPE_ID, self::CLASSKEY_PROJECTHOMEPAGEPUB);
     return self::doSelect($c);
   }
   

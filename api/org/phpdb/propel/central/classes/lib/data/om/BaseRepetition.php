@@ -100,6 +100,51 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 	 */
 	protected $title;
 
+
+	/**
+	 * The value for the creator_id field.
+	 * @var        double
+	 */
+	protected $creator_id;
+
+
+	/**
+	 * The value for the created_date field.
+	 * @var        int
+	 */
+	protected $created_date;
+
+
+	/**
+	 * The value for the modified_by_id field.
+	 * @var        double
+	 */
+	protected $modified_by_id;
+
+
+	/**
+	 * The value for the modified_date field.
+	 * @var        int
+	 */
+	protected $modified_date;
+
+
+	/**
+	 * The value for the app_id field.
+	 * @var        double
+	 */
+	protected $app_id;
+
+	/**
+	 * @var        Person
+	 */
+	protected $aPersonRelatedByCreatorId;
+
+	/**
+	 * @var        Person
+	 */
+	protected $aPersonRelatedByModifiedById;
+
 	/**
 	 * @var        Trial
 	 */
@@ -279,6 +324,101 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 	{
 
 		return $this->title;
+	}
+
+	/**
+	 * Get the [creator_id] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getCreatorId()
+	{
+
+		return $this->creator_id;
+	}
+
+	/**
+	 * Get the [optionally formatted] [created_date] column value.
+	 * 
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the integer unix timestamp will be returned.
+	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
+	 * @throws     PropelException - if unable to convert the date/time to timestamp.
+	 */
+	public function getCreatedDate($format = '%Y-%m-%d')
+	{
+
+		if ($this->created_date === null || $this->created_date === '') {
+			return null;
+		} elseif (!is_int($this->created_date)) {
+			// a non-timestamp value was set externally, so we convert it
+			$ts = strtotime($this->created_date);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse value of [created_date] as date/time value: " . var_export($this->created_date, true));
+			}
+		} else {
+			$ts = $this->created_date;
+		}
+		if ($format === null) {
+			return $ts;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $ts);
+		} else {
+			return date($format, $ts);
+		}
+	}
+
+	/**
+	 * Get the [modified_by_id] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getModifiedById()
+	{
+
+		return $this->modified_by_id;
+	}
+
+	/**
+	 * Get the [optionally formatted] [modified_date] column value.
+	 * 
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the integer unix timestamp will be returned.
+	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
+	 * @throws     PropelException - if unable to convert the date/time to timestamp.
+	 */
+	public function getModifiedDate($format = '%Y-%m-%d')
+	{
+
+		if ($this->modified_date === null || $this->modified_date === '') {
+			return null;
+		} elseif (!is_int($this->modified_date)) {
+			// a non-timestamp value was set externally, so we convert it
+			$ts = strtotime($this->modified_date);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse value of [modified_date] as date/time value: " . var_export($this->modified_date, true));
+			}
+		} else {
+			$ts = $this->modified_date;
+		}
+		if ($format === null) {
+			return $ts;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $ts);
+		} else {
+			return date($format, $ts);
+		}
+	}
+
+	/**
+	 * Get the [app_id] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getAppId()
+	{
+
+		return $this->app_id;
 	}
 
 	/**
@@ -500,6 +640,110 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 	} // setTitle()
 
 	/**
+	 * Set the value of [creator_id] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setCreatorId($v)
+	{
+
+		if ($this->creator_id !== $v) {
+			$this->creator_id = $v;
+			$this->modifiedColumns[] = RepetitionPeer::CREATOR_ID;
+		}
+
+		if ($this->aPersonRelatedByCreatorId !== null && $this->aPersonRelatedByCreatorId->getId() !== $v) {
+			$this->aPersonRelatedByCreatorId = null;
+		}
+
+	} // setCreatorId()
+
+	/**
+	 * Set the value of [created_date] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     void
+	 */
+	public function setCreatedDate($v)
+	{
+
+		if ($v !== null && !is_int($v)) {
+			$ts = strtotime($v);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse date/time value for [created_date] from input: " . var_export($v, true));
+			}
+		} else {
+			$ts = $v;
+		}
+		if ($this->created_date !== $ts) {
+			$this->created_date = $ts;
+			$this->modifiedColumns[] = RepetitionPeer::CREATED_DATE;
+		}
+
+	} // setCreatedDate()
+
+	/**
+	 * Set the value of [modified_by_id] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setModifiedById($v)
+	{
+
+		if ($this->modified_by_id !== $v) {
+			$this->modified_by_id = $v;
+			$this->modifiedColumns[] = RepetitionPeer::MODIFIED_BY_ID;
+		}
+
+		if ($this->aPersonRelatedByModifiedById !== null && $this->aPersonRelatedByModifiedById->getId() !== $v) {
+			$this->aPersonRelatedByModifiedById = null;
+		}
+
+	} // setModifiedById()
+
+	/**
+	 * Set the value of [modified_date] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     void
+	 */
+	public function setModifiedDate($v)
+	{
+
+		if ($v !== null && !is_int($v)) {
+			$ts = strtotime($v);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse date/time value for [modified_date] from input: " . var_export($v, true));
+			}
+		} else {
+			$ts = $v;
+		}
+		if ($this->modified_date !== $ts) {
+			$this->modified_date = $ts;
+			$this->modifiedColumns[] = RepetitionPeer::MODIFIED_DATE;
+		}
+
+	} // setModifiedDate()
+
+	/**
+	 * Set the value of [app_id] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setAppId($v)
+	{
+
+		if ($this->app_id !== $v) {
+			$this->app_id = $v;
+			$this->modifiedColumns[] = RepetitionPeer::APP_ID;
+		}
+
+	} // setAppId()
+
+	/**
 	 * Hydrates (populates) the object variables with values from the database resultset.
 	 *
 	 * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -536,12 +780,22 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 
 			$this->title = $rs->getString($startcol + 9);
 
+			$this->creator_id = $rs->getFloat($startcol + 10);
+
+			$this->created_date = $rs->getDate($startcol + 11, null);
+
+			$this->modified_by_id = $rs->getFloat($startcol + 12);
+
+			$this->modified_date = $rs->getDate($startcol + 13, null);
+
+			$this->app_id = $rs->getFloat($startcol + 14);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 10; // 10 = RepetitionPeer::NUM_COLUMNS - RepetitionPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 15; // 15 = RepetitionPeer::NUM_COLUMNS - RepetitionPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Repetition object", $e);
@@ -631,6 +885,20 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 			// were passed to this object by their coresponding set
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
+
+			if ($this->aPersonRelatedByCreatorId !== null) {
+				if ($this->aPersonRelatedByCreatorId->isModified()) {
+					$affectedRows += $this->aPersonRelatedByCreatorId->save($con);
+				}
+				$this->setPersonRelatedByCreatorId($this->aPersonRelatedByCreatorId);
+			}
+
+			if ($this->aPersonRelatedByModifiedById !== null) {
+				if ($this->aPersonRelatedByModifiedById->isModified()) {
+					$affectedRows += $this->aPersonRelatedByModifiedById->save($con);
+				}
+				$this->setPersonRelatedByModifiedById($this->aPersonRelatedByModifiedById);
+			}
 
 			if ($this->aTrial !== null) {
 				if ($this->aTrial->isModified()) {
@@ -735,6 +1003,18 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
+			if ($this->aPersonRelatedByCreatorId !== null) {
+				if (!$this->aPersonRelatedByCreatorId->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPersonRelatedByCreatorId->getValidationFailures());
+				}
+			}
+
+			if ($this->aPersonRelatedByModifiedById !== null) {
+				if (!$this->aPersonRelatedByModifiedById->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPersonRelatedByModifiedById->getValidationFailures());
+				}
+			}
+
 			if ($this->aTrial !== null) {
 				if (!$this->aTrial->validate($columns)) {
 					$failureMap = array_merge($failureMap, $this->aTrial->getValidationFailures());
@@ -817,6 +1097,21 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 			case 9:
 				return $this->getTitle();
 				break;
+			case 10:
+				return $this->getCreatorId();
+				break;
+			case 11:
+				return $this->getCreatedDate();
+				break;
+			case 12:
+				return $this->getModifiedById();
+				break;
+			case 13:
+				return $this->getModifiedDate();
+				break;
+			case 14:
+				return $this->getAppId();
+				break;
 			default:
 				return null;
 				break;
@@ -847,6 +1142,11 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 			$keys[7] => $this->getTrialId(),
 			$keys[8] => $this->getDescription(),
 			$keys[9] => $this->getTitle(),
+			$keys[10] => $this->getCreatorId(),
+			$keys[11] => $this->getCreatedDate(),
+			$keys[12] => $this->getModifiedById(),
+			$keys[13] => $this->getModifiedDate(),
+			$keys[14] => $this->getAppId(),
 		);
 		return $result;
 	}
@@ -908,6 +1208,21 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 			case 9:
 				$this->setTitle($value);
 				break;
+			case 10:
+				$this->setCreatorId($value);
+				break;
+			case 11:
+				$this->setCreatedDate($value);
+				break;
+			case 12:
+				$this->setModifiedById($value);
+				break;
+			case 13:
+				$this->setModifiedDate($value);
+				break;
+			case 14:
+				$this->setAppId($value);
+				break;
 		} // switch()
 	}
 
@@ -941,6 +1256,11 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[7], $arr)) $this->setTrialId($arr[$keys[7]]);
 		if (array_key_exists($keys[8], $arr)) $this->setDescription($arr[$keys[8]]);
 		if (array_key_exists($keys[9], $arr)) $this->setTitle($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setCreatorId($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setCreatedDate($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setModifiedById($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setModifiedDate($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setAppId($arr[$keys[14]]);
 	}
 
 	/**
@@ -962,6 +1282,11 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(RepetitionPeer::TRIALID)) $criteria->add(RepetitionPeer::TRIALID, $this->trialid);
 		if ($this->isColumnModified(RepetitionPeer::DESCRIPTION)) $criteria->add(RepetitionPeer::DESCRIPTION, $this->description);
 		if ($this->isColumnModified(RepetitionPeer::TITLE)) $criteria->add(RepetitionPeer::TITLE, $this->title);
+		if ($this->isColumnModified(RepetitionPeer::CREATOR_ID)) $criteria->add(RepetitionPeer::CREATOR_ID, $this->creator_id);
+		if ($this->isColumnModified(RepetitionPeer::CREATED_DATE)) $criteria->add(RepetitionPeer::CREATED_DATE, $this->created_date);
+		if ($this->isColumnModified(RepetitionPeer::MODIFIED_BY_ID)) $criteria->add(RepetitionPeer::MODIFIED_BY_ID, $this->modified_by_id);
+		if ($this->isColumnModified(RepetitionPeer::MODIFIED_DATE)) $criteria->add(RepetitionPeer::MODIFIED_DATE, $this->modified_date);
+		if ($this->isColumnModified(RepetitionPeer::APP_ID)) $criteria->add(RepetitionPeer::APP_ID, $this->app_id);
 
 		return $criteria;
 	}
@@ -1034,6 +1359,16 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 
 		$copyObj->setTitle($this->title);
 
+		$copyObj->setCreatorId($this->creator_id);
+
+		$copyObj->setCreatedDate($this->created_date);
+
+		$copyObj->setModifiedById($this->modified_by_id);
+
+		$copyObj->setModifiedDate($this->modified_date);
+
+		$copyObj->setAppId($this->app_id);
+
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1089,6 +1424,108 @@ abstract class BaseRepetition extends BaseObject  implements Persistent {
 			self::$peer = new RepetitionPeer();
 		}
 		return self::$peer;
+	}
+
+	/**
+	 * Declares an association between this object and a Person object.
+	 *
+	 * @param      Person $v
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function setPersonRelatedByCreatorId($v)
+	{
+
+
+		if ($v === null) {
+			$this->setCreatorId(NULL);
+		} else {
+			$this->setCreatorId($v->getId());
+		}
+
+
+		$this->aPersonRelatedByCreatorId = $v;
+	}
+
+
+	/**
+	 * Get the associated Person object
+	 *
+	 * @param      Connection Optional Connection object.
+	 * @return     Person The associated Person object.
+	 * @throws     PropelException
+	 */
+	public function getPersonRelatedByCreatorId($con = null)
+	{
+		// include the related Peer class
+		include_once 'lib/data/om/BasePersonPeer.php';
+
+		if ($this->aPersonRelatedByCreatorId === null && ($this->creator_id > 0)) {
+
+			$this->aPersonRelatedByCreatorId = PersonPeer::retrieveByPK($this->creator_id, $con);
+
+			/* The following can be used instead of the line above to
+			   guarantee the related object contains a reference
+			   to this object, but this level of coupling
+			   may be undesirable in many circumstances.
+			   As it can lead to a db query with many results that may
+			   never be used.
+			   $obj = PersonPeer::retrieveByPK($this->creator_id, $con);
+			   $obj->addPersonsRelatedByCreatorId($this);
+			 */
+		}
+		return $this->aPersonRelatedByCreatorId;
+	}
+
+	/**
+	 * Declares an association between this object and a Person object.
+	 *
+	 * @param      Person $v
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function setPersonRelatedByModifiedById($v)
+	{
+
+
+		if ($v === null) {
+			$this->setModifiedById(NULL);
+		} else {
+			$this->setModifiedById($v->getId());
+		}
+
+
+		$this->aPersonRelatedByModifiedById = $v;
+	}
+
+
+	/**
+	 * Get the associated Person object
+	 *
+	 * @param      Connection Optional Connection object.
+	 * @return     Person The associated Person object.
+	 * @throws     PropelException
+	 */
+	public function getPersonRelatedByModifiedById($con = null)
+	{
+		// include the related Peer class
+		include_once 'lib/data/om/BasePersonPeer.php';
+
+		if ($this->aPersonRelatedByModifiedById === null && ($this->modified_by_id > 0)) {
+
+			$this->aPersonRelatedByModifiedById = PersonPeer::retrieveByPK($this->modified_by_id, $con);
+
+			/* The following can be used instead of the line above to
+			   guarantee the related object contains a reference
+			   to this object, but this level of coupling
+			   may be undesirable in many circumstances.
+			   As it can lead to a db query with many results that may
+			   never be used.
+			   $obj = PersonPeer::retrieveByPK($this->modified_by_id, $con);
+			   $obj->addPersonsRelatedByModifiedById($this);
+			 */
+		}
+		return $this->aPersonRelatedByModifiedById;
 	}
 
 	/**

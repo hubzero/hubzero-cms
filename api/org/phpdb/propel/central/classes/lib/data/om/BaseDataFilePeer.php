@@ -24,7 +24,7 @@ abstract class BaseDataFilePeer {
 	const CLASS_DEFAULT = 'lib.data.DataFile';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 21;
+	const NUM_COLUMNS = 25;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -90,6 +90,18 @@ abstract class BaseDataFilePeer {
 	/** the column name for the USAGE_TYPE_ID field */
 	const USAGE_TYPE_ID = 'DATA_FILE.USAGE_TYPE_ID';
 
+	/** the column name for the CREATOR_ID field */
+	const CREATOR_ID = 'DATA_FILE.CREATOR_ID';
+
+	/** the column name for the CREATED_DATE field */
+	const CREATED_DATE = 'DATA_FILE.CREATED_DATE';
+
+	/** the column name for the MODIFIED_BY_ID field */
+	const MODIFIED_BY_ID = 'DATA_FILE.MODIFIED_BY_ID';
+
+	/** the column name for the MODIFIED_DATE field */
+	const MODIFIED_DATE = 'DATA_FILE.MODIFIED_DATE';
+
 	/** the column name for the APP_ID field */
 	const APP_ID = 'DATA_FILE.APP_ID';
 
@@ -104,10 +116,10 @@ abstract class BaseDataFilePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorEmails', 'Authors', 'Checksum', 'Created', 'CurationStatus', 'Deleted', 'Description', 'Directory', 'Filesize', 'HowToCite', 'Name', 'PageCount', 'Path', 'Title', 'View', 'ThumbId', 'DocumentFormatId', 'OpeningTool', 'UsageTypeId', 'AppId', ),
-		BasePeer::TYPE_COLNAME => array (DataFilePeer::ID, DataFilePeer::AUTHOR_EMAILS, DataFilePeer::AUTHORS, DataFilePeer::CHECKSUM, DataFilePeer::CREATED, DataFilePeer::CURATION_STATUS, DataFilePeer::DELETED, DataFilePeer::DESCRIPTION, DataFilePeer::DIRECTORY, DataFilePeer::FILESIZE, DataFilePeer::HOW_TO_CITE, DataFilePeer::NAME, DataFilePeer::PAGE_COUNT, DataFilePeer::PATH, DataFilePeer::TITLE, DataFilePeer::VIEWABLE, DataFilePeer::THUMB_ID, DataFilePeer::DOCUMENT_FORMAT_ID, DataFilePeer::OPENING_TOOL, DataFilePeer::USAGE_TYPE_ID, DataFilePeer::APP_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('ID', 'AUTHOR_EMAILS', 'AUTHORS', 'CHECKSUM', 'CREATED', 'CURATION_STATUS', 'DELETED', 'DESCRIPTION', 'DIRECTORY', 'FILESIZE', 'HOW_TO_CITE', 'NAME', 'PAGE_COUNT', 'PATH', 'TITLE', 'VIEWABLE', 'THUMB_ID', 'DOCUMENT_FORMAT_ID', 'OPENING_TOOL', 'USAGE_TYPE_ID', 'APP_ID', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorEmails', 'Authors', 'Checksum', 'Created', 'CurationStatus', 'Deleted', 'Description', 'Directory', 'Filesize', 'HowToCite', 'Name', 'PageCount', 'Path', 'Title', 'View', 'ThumbId', 'DocumentFormatId', 'OpeningTool', 'UsageTypeId', 'CreatorId', 'CreatedDate', 'ModifiedById', 'ModifiedDate', 'AppId', ),
+		BasePeer::TYPE_COLNAME => array (DataFilePeer::ID, DataFilePeer::AUTHOR_EMAILS, DataFilePeer::AUTHORS, DataFilePeer::CHECKSUM, DataFilePeer::CREATED, DataFilePeer::CURATION_STATUS, DataFilePeer::DELETED, DataFilePeer::DESCRIPTION, DataFilePeer::DIRECTORY, DataFilePeer::FILESIZE, DataFilePeer::HOW_TO_CITE, DataFilePeer::NAME, DataFilePeer::PAGE_COUNT, DataFilePeer::PATH, DataFilePeer::TITLE, DataFilePeer::VIEWABLE, DataFilePeer::THUMB_ID, DataFilePeer::DOCUMENT_FORMAT_ID, DataFilePeer::OPENING_TOOL, DataFilePeer::USAGE_TYPE_ID, DataFilePeer::CREATOR_ID, DataFilePeer::CREATED_DATE, DataFilePeer::MODIFIED_BY_ID, DataFilePeer::MODIFIED_DATE, DataFilePeer::APP_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('ID', 'AUTHOR_EMAILS', 'AUTHORS', 'CHECKSUM', 'CREATED', 'CURATION_STATUS', 'DELETED', 'DESCRIPTION', 'DIRECTORY', 'FILESIZE', 'HOW_TO_CITE', 'NAME', 'PAGE_COUNT', 'PATH', 'TITLE', 'VIEWABLE', 'THUMB_ID', 'DOCUMENT_FORMAT_ID', 'OPENING_TOOL', 'USAGE_TYPE_ID', 'CREATOR_ID', 'CREATED_DATE', 'MODIFIED_BY_ID', 'MODIFIED_DATE', 'APP_ID', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, )
 	);
 
 	/**
@@ -117,10 +129,10 @@ abstract class BaseDataFilePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorEmails' => 1, 'Authors' => 2, 'Checksum' => 3, 'Created' => 4, 'CurationStatus' => 5, 'Deleted' => 6, 'Description' => 7, 'Directory' => 8, 'Filesize' => 9, 'HowToCite' => 10, 'Name' => 11, 'PageCount' => 12, 'Path' => 13, 'Title' => 14, 'View' => 15, 'ThumbId' => 16, 'DocumentFormatId' => 17, 'OpeningTool' => 18, 'UsageTypeId' => 19, 'AppId' => 20, ),
-		BasePeer::TYPE_COLNAME => array (DataFilePeer::ID => 0, DataFilePeer::AUTHOR_EMAILS => 1, DataFilePeer::AUTHORS => 2, DataFilePeer::CHECKSUM => 3, DataFilePeer::CREATED => 4, DataFilePeer::CURATION_STATUS => 5, DataFilePeer::DELETED => 6, DataFilePeer::DESCRIPTION => 7, DataFilePeer::DIRECTORY => 8, DataFilePeer::FILESIZE => 9, DataFilePeer::HOW_TO_CITE => 10, DataFilePeer::NAME => 11, DataFilePeer::PAGE_COUNT => 12, DataFilePeer::PATH => 13, DataFilePeer::TITLE => 14, DataFilePeer::VIEWABLE => 15, DataFilePeer::THUMB_ID => 16, DataFilePeer::DOCUMENT_FORMAT_ID => 17, DataFilePeer::OPENING_TOOL => 18, DataFilePeer::USAGE_TYPE_ID => 19, DataFilePeer::APP_ID => 20, ),
-		BasePeer::TYPE_FIELDNAME => array ('ID' => 0, 'AUTHOR_EMAILS' => 1, 'AUTHORS' => 2, 'CHECKSUM' => 3, 'CREATED' => 4, 'CURATION_STATUS' => 5, 'DELETED' => 6, 'DESCRIPTION' => 7, 'DIRECTORY' => 8, 'FILESIZE' => 9, 'HOW_TO_CITE' => 10, 'NAME' => 11, 'PAGE_COUNT' => 12, 'PATH' => 13, 'TITLE' => 14, 'VIEWABLE' => 15, 'THUMB_ID' => 16, 'DOCUMENT_FORMAT_ID' => 17, 'OPENING_TOOL' => 18, 'USAGE_TYPE_ID' => 19, 'APP_ID' => 20, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorEmails' => 1, 'Authors' => 2, 'Checksum' => 3, 'Created' => 4, 'CurationStatus' => 5, 'Deleted' => 6, 'Description' => 7, 'Directory' => 8, 'Filesize' => 9, 'HowToCite' => 10, 'Name' => 11, 'PageCount' => 12, 'Path' => 13, 'Title' => 14, 'View' => 15, 'ThumbId' => 16, 'DocumentFormatId' => 17, 'OpeningTool' => 18, 'UsageTypeId' => 19, 'CreatorId' => 20, 'CreatedDate' => 21, 'ModifiedById' => 22, 'ModifiedDate' => 23, 'AppId' => 24, ),
+		BasePeer::TYPE_COLNAME => array (DataFilePeer::ID => 0, DataFilePeer::AUTHOR_EMAILS => 1, DataFilePeer::AUTHORS => 2, DataFilePeer::CHECKSUM => 3, DataFilePeer::CREATED => 4, DataFilePeer::CURATION_STATUS => 5, DataFilePeer::DELETED => 6, DataFilePeer::DESCRIPTION => 7, DataFilePeer::DIRECTORY => 8, DataFilePeer::FILESIZE => 9, DataFilePeer::HOW_TO_CITE => 10, DataFilePeer::NAME => 11, DataFilePeer::PAGE_COUNT => 12, DataFilePeer::PATH => 13, DataFilePeer::TITLE => 14, DataFilePeer::VIEWABLE => 15, DataFilePeer::THUMB_ID => 16, DataFilePeer::DOCUMENT_FORMAT_ID => 17, DataFilePeer::OPENING_TOOL => 18, DataFilePeer::USAGE_TYPE_ID => 19, DataFilePeer::CREATOR_ID => 20, DataFilePeer::CREATED_DATE => 21, DataFilePeer::MODIFIED_BY_ID => 22, DataFilePeer::MODIFIED_DATE => 23, DataFilePeer::APP_ID => 24, ),
+		BasePeer::TYPE_FIELDNAME => array ('ID' => 0, 'AUTHOR_EMAILS' => 1, 'AUTHORS' => 2, 'CHECKSUM' => 3, 'CREATED' => 4, 'CURATION_STATUS' => 5, 'DELETED' => 6, 'DESCRIPTION' => 7, 'DIRECTORY' => 8, 'FILESIZE' => 9, 'HOW_TO_CITE' => 10, 'NAME' => 11, 'PAGE_COUNT' => 12, 'PATH' => 13, 'TITLE' => 14, 'VIEWABLE' => 15, 'THUMB_ID' => 16, 'DOCUMENT_FORMAT_ID' => 17, 'OPENING_TOOL' => 18, 'USAGE_TYPE_ID' => 19, 'CREATOR_ID' => 20, 'CREATED_DATE' => 21, 'MODIFIED_BY_ID' => 22, 'MODIFIED_DATE' => 23, 'APP_ID' => 24, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, )
 	);
 
 	/**
@@ -261,6 +273,14 @@ abstract class BaseDataFilePeer {
 
 		$criteria->addSelectColumn(DataFilePeer::USAGE_TYPE_ID);
 
+		$criteria->addSelectColumn(DataFilePeer::CREATOR_ID);
+
+		$criteria->addSelectColumn(DataFilePeer::CREATED_DATE);
+
+		$criteria->addSelectColumn(DataFilePeer::MODIFIED_BY_ID);
+
+		$criteria->addSelectColumn(DataFilePeer::MODIFIED_DATE);
+
 		$criteria->addSelectColumn(DataFilePeer::APP_ID);
 
 	}
@@ -393,6 +413,84 @@ abstract class BaseDataFilePeer {
 	}
 
 	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByCreatorId table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinPersonRelatedByCreatorId(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(DataFilePeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(DataFilePeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(DataFilePeer::CREATOR_ID, PersonPeer::ID);
+
+		$rs = DataFilePeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByModifiedById table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinPersonRelatedByModifiedById(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(DataFilePeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(DataFilePeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(DataFilePeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$rs = DataFilePeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
 	 * Returns the number of rows matching criteria, joining the related DocumentFormat table
 	 *
 	 * @param      Criteria $c
@@ -467,6 +565,122 @@ abstract class BaseDataFilePeer {
 			// no rows returned; we infer that means 0 matches.
 			return 0;
 		}
+	}
+
+
+	/**
+	 * Selects a collection of DataFile objects pre-filled with their Person objects.
+	 *
+	 * @return     array Array of DataFile objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinPersonRelatedByCreatorId(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		DataFilePeer::addSelectColumns($c);
+		$startcol = (DataFilePeer::NUM_COLUMNS - DataFilePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		PersonPeer::addSelectColumns($c);
+
+		$c->addJoin(DataFilePeer::CREATOR_ID, PersonPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = DataFilePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addDataFileRelatedByCreatorId($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initDataFilesRelatedByCreatorId();
+				$obj2->addDataFileRelatedByCreatorId($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of DataFile objects pre-filled with their Person objects.
+	 *
+	 * @return     array Array of DataFile objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinPersonRelatedByModifiedById(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		DataFilePeer::addSelectColumns($c);
+		$startcol = (DataFilePeer::NUM_COLUMNS - DataFilePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		PersonPeer::addSelectColumns($c);
+
+		$c->addJoin(DataFilePeer::MODIFIED_BY_ID, PersonPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = DataFilePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addDataFileRelatedByModifiedById($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initDataFilesRelatedByModifiedById();
+				$obj2->addDataFileRelatedByModifiedById($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
 	}
 
 
@@ -612,6 +826,10 @@ abstract class BaseDataFilePeer {
 			$criteria->addSelectColumn($column);
 		}
 
+		$criteria->addJoin(DataFilePeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(DataFilePeer::MODIFIED_BY_ID, PersonPeer::ID);
+
 		$criteria->addJoin(DataFilePeer::DOCUMENT_FORMAT_ID, DocumentFormatPeer::DOCUMENT_FORMAT_ID);
 
 		$criteria->addJoin(DataFilePeer::USAGE_TYPE_ID, EntityTypePeer::ID);
@@ -645,11 +863,21 @@ abstract class BaseDataFilePeer {
 		DataFilePeer::addSelectColumns($c);
 		$startcol2 = (DataFilePeer::NUM_COLUMNS - DataFilePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
 		DocumentFormatPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + DocumentFormatPeer::NUM_COLUMNS;
+		$startcol5 = $startcol4 + DocumentFormatPeer::NUM_COLUMNS;
 
 		EntityTypePeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + EntityTypePeer::NUM_COLUMNS;
+		$startcol6 = $startcol5 + EntityTypePeer::NUM_COLUMNS;
+
+		$c->addJoin(DataFilePeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(DataFilePeer::MODIFIED_BY_ID, PersonPeer::ID);
 
 		$c->addJoin(DataFilePeer::DOCUMENT_FORMAT_ID, DocumentFormatPeer::DOCUMENT_FORMAT_ID);
 
@@ -668,9 +896,9 @@ abstract class BaseDataFilePeer {
 			$obj1->hydrate($rs);
 
 
-				// Add objects for joined DocumentFormat rows
+				// Add objects for joined Person rows
 	
-			$omClass = DocumentFormatPeer::getOMClass();
+			$omClass = PersonPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -680,23 +908,23 @@ abstract class BaseDataFilePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getDocumentFormat(); // CHECKME
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); // CHECKME
 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
-					$temp_obj2->addDataFile($obj1); // CHECKME
+					$temp_obj2->addDataFileRelatedByCreatorId($obj1); // CHECKME
 					break;
 				}
 			}
 
 			if ($newObject) {
-				$obj2->initDataFiles();
-				$obj2->addDataFile($obj1);
+				$obj2->initDataFilesRelatedByCreatorId();
+				$obj2->addDataFileRelatedByCreatorId($obj1);
 			}
 
 
-				// Add objects for joined EntityType rows
+				// Add objects for joined Person rows
 	
-			$omClass = EntityTypePeer::getOMClass();
+			$omClass = PersonPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -706,22 +934,156 @@ abstract class BaseDataFilePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getEntityType(); // CHECKME
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); // CHECKME
 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
 					$newObject = false;
-					$temp_obj3->addDataFile($obj1); // CHECKME
+					$temp_obj3->addDataFileRelatedByModifiedById($obj1); // CHECKME
 					break;
 				}
 			}
 
 			if ($newObject) {
-				$obj3->initDataFiles();
-				$obj3->addDataFile($obj1);
+				$obj3->initDataFilesRelatedByModifiedById();
+				$obj3->addDataFileRelatedByModifiedById($obj1);
+			}
+
+
+				// Add objects for joined DocumentFormat rows
+	
+			$omClass = DocumentFormatPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4 = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getDocumentFormat(); // CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addDataFile($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initDataFiles();
+				$obj4->addDataFile($obj1);
+			}
+
+
+				// Add objects for joined EntityType rows
+	
+			$omClass = EntityTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj5 = new $cls();
+			$obj5->hydrate($rs, $startcol5);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj5 = $temp_obj1->getEntityType(); // CHECKME
+				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj5->addDataFile($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj5->initDataFiles();
+				$obj5->addDataFile($obj1);
 			}
 
 			$results[] = $obj1;
 		}
 		return $results;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByCreatorId table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptPersonRelatedByCreatorId(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(DataFilePeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(DataFilePeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(DataFilePeer::DOCUMENT_FORMAT_ID, DocumentFormatPeer::DOCUMENT_FORMAT_ID);
+
+		$criteria->addJoin(DataFilePeer::USAGE_TYPE_ID, EntityTypePeer::ID);
+
+		$rs = DataFilePeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByModifiedById table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptPersonRelatedByModifiedById(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(DataFilePeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(DataFilePeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(DataFilePeer::DOCUMENT_FORMAT_ID, DocumentFormatPeer::DOCUMENT_FORMAT_ID);
+
+		$criteria->addJoin(DataFilePeer::USAGE_TYPE_ID, EntityTypePeer::ID);
+
+		$rs = DataFilePeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
 	}
 
 
@@ -751,6 +1113,10 @@ abstract class BaseDataFilePeer {
 		{
 			$criteria->addSelectColumn($column);
 		}
+
+		$criteria->addJoin(DataFilePeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(DataFilePeer::MODIFIED_BY_ID, PersonPeer::ID);
 
 		$criteria->addJoin(DataFilePeer::DOCUMENT_FORMAT_ID, DocumentFormatPeer::DOCUMENT_FORMAT_ID);
 
@@ -793,6 +1159,10 @@ abstract class BaseDataFilePeer {
 			$criteria->addSelectColumn($column);
 		}
 
+		$criteria->addJoin(DataFilePeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(DataFilePeer::MODIFIED_BY_ID, PersonPeer::ID);
+
 		$criteria->addJoin(DataFilePeer::USAGE_TYPE_ID, EntityTypePeer::ID);
 
 		$rs = DataFilePeer::doSelectRS($criteria, $con);
@@ -832,6 +1202,10 @@ abstract class BaseDataFilePeer {
 			$criteria->addSelectColumn($column);
 		}
 
+		$criteria->addJoin(DataFilePeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(DataFilePeer::MODIFIED_BY_ID, PersonPeer::ID);
+
 		$criteria->addJoin(DataFilePeer::DOCUMENT_FORMAT_ID, DocumentFormatPeer::DOCUMENT_FORMAT_ID);
 
 		$rs = DataFilePeer::doSelectRS($criteria, $con);
@@ -845,13 +1219,13 @@ abstract class BaseDataFilePeer {
 
 
 	/**
-	 * Selects a collection of DataFile objects pre-filled with all related objects except DataFileRelatedByThumbId.
+	 * Selects a collection of DataFile objects pre-filled with all related objects except PersonRelatedByCreatorId.
 	 *
 	 * @return     array Array of DataFile objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptDataFileRelatedByThumbId(Criteria $c, $con = null)
+	public static function doSelectJoinAllExceptPersonRelatedByCreatorId(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -940,80 +1314,13 @@ abstract class BaseDataFilePeer {
 
 
 	/**
-	 * Selects a collection of DataFile objects pre-filled with all related objects except DocumentFormat.
+	 * Selects a collection of DataFile objects pre-filled with all related objects except PersonRelatedByModifiedById.
 	 *
 	 * @return     array Array of DataFile objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptDocumentFormat(Criteria $c, $con = null)
-	{
-		$c = clone $c;
-
-		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
-		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
-		}
-
-		DataFilePeer::addSelectColumns($c);
-		$startcol2 = (DataFilePeer::NUM_COLUMNS - DataFilePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-
-		EntityTypePeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + EntityTypePeer::NUM_COLUMNS;
-
-		$c->addJoin(DataFilePeer::USAGE_TYPE_ID, EntityTypePeer::ID);
-
-
-		$rs = BasePeer::doSelect($c, $con);
-		$results = array();
-
-		while($rs->next()) {
-
-			$omClass = DataFilePeer::getOMClass();
-
-			$cls = Propel::import($omClass);
-			$obj1 = new $cls();
-			$obj1->hydrate($rs);
-
-			$omClass = EntityTypePeer::getOMClass();
-
-
-			$cls = Propel::import($omClass);
-			$obj2  = new $cls();
-			$obj2->hydrate($rs, $startcol2);
-
-			$newObject = true;
-			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
-				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getEntityType(); //CHECKME
-				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
-					$newObject = false;
-					$temp_obj2->addDataFile($obj1);
-					break;
-				}
-			}
-
-			if ($newObject) {
-				$obj2->initDataFiles();
-				$obj2->addDataFile($obj1);
-			}
-
-			$results[] = $obj1;
-		}
-		return $results;
-	}
-
-
-	/**
-	 * Selects a collection of DataFile objects pre-filled with all related objects except EntityType.
-	 *
-	 * @return     array Array of DataFile objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAllExceptEntityType(Criteria $c, $con = null)
+	public static function doSelectJoinAllExceptPersonRelatedByModifiedById(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -1030,7 +1337,12 @@ abstract class BaseDataFilePeer {
 		DocumentFormatPeer::addSelectColumns($c);
 		$startcol3 = $startcol2 + DocumentFormatPeer::NUM_COLUMNS;
 
+		EntityTypePeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + EntityTypePeer::NUM_COLUMNS;
+
 		$c->addJoin(DataFilePeer::DOCUMENT_FORMAT_ID, DocumentFormatPeer::DOCUMENT_FORMAT_ID);
+
+		$c->addJoin(DataFilePeer::USAGE_TYPE_ID, EntityTypePeer::ID);
 
 
 		$rs = BasePeer::doSelect($c, $con);
@@ -1065,6 +1377,426 @@ abstract class BaseDataFilePeer {
 			if ($newObject) {
 				$obj2->initDataFiles();
 				$obj2->addDataFile($obj1);
+			}
+
+			$omClass = EntityTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getEntityType(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addDataFile($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initDataFiles();
+				$obj3->addDataFile($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of DataFile objects pre-filled with all related objects except DataFileRelatedByThumbId.
+	 *
+	 * @return     array Array of DataFile objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptDataFileRelatedByThumbId(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		DataFilePeer::addSelectColumns($c);
+		$startcol2 = (DataFilePeer::NUM_COLUMNS - DataFilePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		DocumentFormatPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + DocumentFormatPeer::NUM_COLUMNS;
+
+		EntityTypePeer::addSelectColumns($c);
+		$startcol6 = $startcol5 + EntityTypePeer::NUM_COLUMNS;
+
+		$c->addJoin(DataFilePeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(DataFilePeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(DataFilePeer::DOCUMENT_FORMAT_ID, DocumentFormatPeer::DOCUMENT_FORMAT_ID);
+
+		$c->addJoin(DataFilePeer::USAGE_TYPE_ID, EntityTypePeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = DataFilePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addDataFileRelatedByCreatorId($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initDataFilesRelatedByCreatorId();
+				$obj2->addDataFileRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addDataFileRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initDataFilesRelatedByModifiedById();
+				$obj3->addDataFileRelatedByModifiedById($obj1);
+			}
+
+			$omClass = DocumentFormatPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getDocumentFormat(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addDataFile($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initDataFiles();
+				$obj4->addDataFile($obj1);
+			}
+
+			$omClass = EntityTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj5  = new $cls();
+			$obj5->hydrate($rs, $startcol5);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj5 = $temp_obj1->getEntityType(); //CHECKME
+				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj5->addDataFile($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj5->initDataFiles();
+				$obj5->addDataFile($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of DataFile objects pre-filled with all related objects except DocumentFormat.
+	 *
+	 * @return     array Array of DataFile objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptDocumentFormat(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		DataFilePeer::addSelectColumns($c);
+		$startcol2 = (DataFilePeer::NUM_COLUMNS - DataFilePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		EntityTypePeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + EntityTypePeer::NUM_COLUMNS;
+
+		$c->addJoin(DataFilePeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(DataFilePeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(DataFilePeer::USAGE_TYPE_ID, EntityTypePeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = DataFilePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addDataFileRelatedByCreatorId($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initDataFilesRelatedByCreatorId();
+				$obj2->addDataFileRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addDataFileRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initDataFilesRelatedByModifiedById();
+				$obj3->addDataFileRelatedByModifiedById($obj1);
+			}
+
+			$omClass = EntityTypePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getEntityType(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addDataFile($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initDataFiles();
+				$obj4->addDataFile($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of DataFile objects pre-filled with all related objects except EntityType.
+	 *
+	 * @return     array Array of DataFile objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptEntityType(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		DataFilePeer::addSelectColumns($c);
+		$startcol2 = (DataFilePeer::NUM_COLUMNS - DataFilePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		DocumentFormatPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + DocumentFormatPeer::NUM_COLUMNS;
+
+		$c->addJoin(DataFilePeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(DataFilePeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$c->addJoin(DataFilePeer::DOCUMENT_FORMAT_ID, DocumentFormatPeer::DOCUMENT_FORMAT_ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = DataFilePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addDataFileRelatedByCreatorId($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initDataFilesRelatedByCreatorId();
+				$obj2->addDataFileRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addDataFileRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initDataFilesRelatedByModifiedById();
+				$obj3->addDataFileRelatedByModifiedById($obj1);
+			}
+
+			$omClass = DocumentFormatPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj4  = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getDocumentFormat(); //CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addDataFile($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initDataFiles();
+				$obj4->addDataFile($obj1);
 			}
 
 			$results[] = $obj1;

@@ -19,7 +19,7 @@ functions, before we can eliminate GridAuth completely from the code.
 
 class UserManager {
 
-  private static $instance;
+  private static $instance; 
   private $adminStatus;
   private $userName;
   private $userFirstName;

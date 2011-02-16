@@ -135,6 +135,44 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 	 */
 	protected $creator_id;
 
+
+	/**
+	 * The value for the created_date field.
+	 * @var        int
+	 */
+	protected $created_date;
+
+
+	/**
+	 * The value for the modified_by_id field.
+	 * @var        double
+	 */
+	protected $modified_by_id;
+
+
+	/**
+	 * The value for the modified_date field.
+	 * @var        int
+	 */
+	protected $modified_date;
+
+
+	/**
+	 * The value for the app_id field.
+	 * @var        double
+	 */
+	protected $app_id;
+
+	/**
+	 * @var        Person
+	 */
+	protected $aPersonRelatedByCreatorId;
+
+	/**
+	 * @var        Person
+	 */
+	protected $aPersonRelatedByModifiedById;
+
 	/**
 	 * @var        ExperimentDomain
 	 */
@@ -144,11 +182,6 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 	 * @var        Project
 	 */
 	protected $aProject;
-
-	/**
-	 * @var        Person
-	 */
-	protected $aPerson;
 
 	/**
 	 * Collection to store aggregation of collAcknowledgements.
@@ -550,6 +583,90 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [optionally formatted] [created_date] column value.
+	 * 
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the integer unix timestamp will be returned.
+	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
+	 * @throws     PropelException - if unable to convert the date/time to timestamp.
+	 */
+	public function getCreatedDate($format = '%Y-%m-%d')
+	{
+
+		if ($this->created_date === null || $this->created_date === '') {
+			return null;
+		} elseif (!is_int($this->created_date)) {
+			// a non-timestamp value was set externally, so we convert it
+			$ts = strtotime($this->created_date);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse value of [created_date] as date/time value: " . var_export($this->created_date, true));
+			}
+		} else {
+			$ts = $this->created_date;
+		}
+		if ($format === null) {
+			return $ts;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $ts);
+		} else {
+			return date($format, $ts);
+		}
+	}
+
+	/**
+	 * Get the [modified_by_id] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getModifiedById()
+	{
+
+		return $this->modified_by_id;
+	}
+
+	/**
+	 * Get the [optionally formatted] [modified_date] column value.
+	 * 
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the integer unix timestamp will be returned.
+	 * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
+	 * @throws     PropelException - if unable to convert the date/time to timestamp.
+	 */
+	public function getModifiedDate($format = '%Y-%m-%d')
+	{
+
+		if ($this->modified_date === null || $this->modified_date === '') {
+			return null;
+		} elseif (!is_int($this->modified_date)) {
+			// a non-timestamp value was set externally, so we convert it
+			$ts = strtotime($this->modified_date);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse value of [modified_date] as date/time value: " . var_export($this->modified_date, true));
+			}
+		} else {
+			$ts = $this->modified_date;
+		}
+		if ($format === null) {
+			return $ts;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $ts);
+		} else {
+			return date($format, $ts);
+		}
+	}
+
+	/**
+	 * Get the [app_id] column value.
+	 * 
+	 * @return     double
+	 */
+	public function getAppId()
+	{
+
+		return $this->app_id;
+	}
+
+	/**
 	 * Set the value of [expid] column.
 	 * 
 	 * @param      double $v new value
@@ -869,11 +986,95 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = ExperimentPeer::CREATOR_ID;
 		}
 
-		if ($this->aPerson !== null && $this->aPerson->getId() !== $v) {
-			$this->aPerson = null;
+		if ($this->aPersonRelatedByCreatorId !== null && $this->aPersonRelatedByCreatorId->getId() !== $v) {
+			$this->aPersonRelatedByCreatorId = null;
 		}
 
 	} // setCreatorId()
+
+	/**
+	 * Set the value of [created_date] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     void
+	 */
+	public function setCreatedDate($v)
+	{
+
+		if ($v !== null && !is_int($v)) {
+			$ts = strtotime($v);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse date/time value for [created_date] from input: " . var_export($v, true));
+			}
+		} else {
+			$ts = $v;
+		}
+		if ($this->created_date !== $ts) {
+			$this->created_date = $ts;
+			$this->modifiedColumns[] = ExperimentPeer::CREATED_DATE;
+		}
+
+	} // setCreatedDate()
+
+	/**
+	 * Set the value of [modified_by_id] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setModifiedById($v)
+	{
+
+		if ($this->modified_by_id !== $v) {
+			$this->modified_by_id = $v;
+			$this->modifiedColumns[] = ExperimentPeer::MODIFIED_BY_ID;
+		}
+
+		if ($this->aPersonRelatedByModifiedById !== null && $this->aPersonRelatedByModifiedById->getId() !== $v) {
+			$this->aPersonRelatedByModifiedById = null;
+		}
+
+	} // setModifiedById()
+
+	/**
+	 * Set the value of [modified_date] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     void
+	 */
+	public function setModifiedDate($v)
+	{
+
+		if ($v !== null && !is_int($v)) {
+			$ts = strtotime($v);
+			if ($ts === -1 || $ts === false) { // in PHP 5.1 return value changes to FALSE
+				throw new PropelException("Unable to parse date/time value for [modified_date] from input: " . var_export($v, true));
+			}
+		} else {
+			$ts = $v;
+		}
+		if ($this->modified_date !== $ts) {
+			$this->modified_date = $ts;
+			$this->modifiedColumns[] = ExperimentPeer::MODIFIED_DATE;
+		}
+
+	} // setModifiedDate()
+
+	/**
+	 * Set the value of [app_id] column.
+	 * 
+	 * @param      double $v new value
+	 * @return     void
+	 */
+	public function setAppId($v)
+	{
+
+		if ($this->app_id !== $v) {
+			$this->app_id = $v;
+			$this->modifiedColumns[] = ExperimentPeer::APP_ID;
+		}
+
+	} // setAppId()
 
 	/**
 	 * Hydrates (populates) the object variables with values from the database resultset.
@@ -922,12 +1123,20 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 
 			$this->creator_id = $rs->getFloat($startcol + 14);
 
+			$this->created_date = $rs->getDate($startcol + 15, null);
+
+			$this->modified_by_id = $rs->getFloat($startcol + 16);
+
+			$this->modified_date = $rs->getDate($startcol + 17, null);
+
+			$this->app_id = $rs->getFloat($startcol + 18);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 15; // 15 = ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 19; // 19 = ExperimentPeer::NUM_COLUMNS - ExperimentPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Experiment object", $e);
@@ -1018,6 +1227,20 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
+			if ($this->aPersonRelatedByCreatorId !== null) {
+				if ($this->aPersonRelatedByCreatorId->isModified()) {
+					$affectedRows += $this->aPersonRelatedByCreatorId->save($con);
+				}
+				$this->setPersonRelatedByCreatorId($this->aPersonRelatedByCreatorId);
+			}
+
+			if ($this->aPersonRelatedByModifiedById !== null) {
+				if ($this->aPersonRelatedByModifiedById->isModified()) {
+					$affectedRows += $this->aPersonRelatedByModifiedById->save($con);
+				}
+				$this->setPersonRelatedByModifiedById($this->aPersonRelatedByModifiedById);
+			}
+
 			if ($this->aExperimentDomain !== null) {
 				if ($this->aExperimentDomain->isModified()) {
 					$affectedRows += $this->aExperimentDomain->save($con);
@@ -1030,13 +1253,6 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 					$affectedRows += $this->aProject->save($con);
 				}
 				$this->setProject($this->aProject);
-			}
-
-			if ($this->aPerson !== null) {
-				if ($this->aPerson->isModified()) {
-					$affectedRows += $this->aPerson->save($con);
-				}
-				$this->setPerson($this->aPerson);
 			}
 
 
@@ -1247,6 +1463,18 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
+			if ($this->aPersonRelatedByCreatorId !== null) {
+				if (!$this->aPersonRelatedByCreatorId->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPersonRelatedByCreatorId->getValidationFailures());
+				}
+			}
+
+			if ($this->aPersonRelatedByModifiedById !== null) {
+				if (!$this->aPersonRelatedByModifiedById->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPersonRelatedByModifiedById->getValidationFailures());
+				}
+			}
+
 			if ($this->aExperimentDomain !== null) {
 				if (!$this->aExperimentDomain->validate($columns)) {
 					$failureMap = array_merge($failureMap, $this->aExperimentDomain->getValidationFailures());
@@ -1256,12 +1484,6 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			if ($this->aProject !== null) {
 				if (!$this->aProject->validate($columns)) {
 					$failureMap = array_merge($failureMap, $this->aProject->getValidationFailures());
-				}
-			}
-
-			if ($this->aPerson !== null) {
-				if (!$this->aPerson->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aPerson->getValidationFailures());
 				}
 			}
 
@@ -1468,6 +1690,18 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			case 14:
 				return $this->getCreatorId();
 				break;
+			case 15:
+				return $this->getCreatedDate();
+				break;
+			case 16:
+				return $this->getModifiedById();
+				break;
+			case 17:
+				return $this->getModifiedDate();
+				break;
+			case 18:
+				return $this->getAppId();
+				break;
 			default:
 				return null;
 				break;
@@ -1503,6 +1737,10 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			$keys[12] => $this->getTitle(),
 			$keys[13] => $this->getView(),
 			$keys[14] => $this->getCreatorId(),
+			$keys[15] => $this->getCreatedDate(),
+			$keys[16] => $this->getModifiedById(),
+			$keys[17] => $this->getModifiedDate(),
+			$keys[18] => $this->getAppId(),
 		);
 		return $result;
 	}
@@ -1579,6 +1817,18 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			case 14:
 				$this->setCreatorId($value);
 				break;
+			case 15:
+				$this->setCreatedDate($value);
+				break;
+			case 16:
+				$this->setModifiedById($value);
+				break;
+			case 17:
+				$this->setModifiedDate($value);
+				break;
+			case 18:
+				$this->setAppId($value);
+				break;
 		} // switch()
 	}
 
@@ -1617,6 +1867,10 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[12], $arr)) $this->setTitle($arr[$keys[12]]);
 		if (array_key_exists($keys[13], $arr)) $this->setView($arr[$keys[13]]);
 		if (array_key_exists($keys[14], $arr)) $this->setCreatorId($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setCreatedDate($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setModifiedById($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setModifiedDate($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setAppId($arr[$keys[18]]);
 	}
 
 	/**
@@ -1643,6 +1897,10 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ExperimentPeer::TITLE)) $criteria->add(ExperimentPeer::TITLE, $this->title);
 		if ($this->isColumnModified(ExperimentPeer::VIEWABLE)) $criteria->add(ExperimentPeer::VIEWABLE, $this->viewable);
 		if ($this->isColumnModified(ExperimentPeer::CREATOR_ID)) $criteria->add(ExperimentPeer::CREATOR_ID, $this->creator_id);
+		if ($this->isColumnModified(ExperimentPeer::CREATED_DATE)) $criteria->add(ExperimentPeer::CREATED_DATE, $this->created_date);
+		if ($this->isColumnModified(ExperimentPeer::MODIFIED_BY_ID)) $criteria->add(ExperimentPeer::MODIFIED_BY_ID, $this->modified_by_id);
+		if ($this->isColumnModified(ExperimentPeer::MODIFIED_DATE)) $criteria->add(ExperimentPeer::MODIFIED_DATE, $this->modified_date);
+		if ($this->isColumnModified(ExperimentPeer::APP_ID)) $criteria->add(ExperimentPeer::APP_ID, $this->app_id);
 
 		return $criteria;
 	}
@@ -1724,6 +1982,14 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 		$copyObj->setView($this->viewable);
 
 		$copyObj->setCreatorId($this->creator_id);
+
+		$copyObj->setCreatedDate($this->created_date);
+
+		$copyObj->setModifiedById($this->modified_by_id);
+
+		$copyObj->setModifiedDate($this->modified_date);
+
+		$copyObj->setAppId($this->app_id);
 
 
 		if ($deepCopy) {
@@ -1839,6 +2105,108 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Declares an association between this object and a Person object.
+	 *
+	 * @param      Person $v
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function setPersonRelatedByCreatorId($v)
+	{
+
+
+		if ($v === null) {
+			$this->setCreatorId(NULL);
+		} else {
+			$this->setCreatorId($v->getId());
+		}
+
+
+		$this->aPersonRelatedByCreatorId = $v;
+	}
+
+
+	/**
+	 * Get the associated Person object
+	 *
+	 * @param      Connection Optional Connection object.
+	 * @return     Person The associated Person object.
+	 * @throws     PropelException
+	 */
+	public function getPersonRelatedByCreatorId($con = null)
+	{
+		// include the related Peer class
+		include_once 'lib/data/om/BasePersonPeer.php';
+
+		if ($this->aPersonRelatedByCreatorId === null && ($this->creator_id > 0)) {
+
+			$this->aPersonRelatedByCreatorId = PersonPeer::retrieveByPK($this->creator_id, $con);
+
+			/* The following can be used instead of the line above to
+			   guarantee the related object contains a reference
+			   to this object, but this level of coupling
+			   may be undesirable in many circumstances.
+			   As it can lead to a db query with many results that may
+			   never be used.
+			   $obj = PersonPeer::retrieveByPK($this->creator_id, $con);
+			   $obj->addPersonsRelatedByCreatorId($this);
+			 */
+		}
+		return $this->aPersonRelatedByCreatorId;
+	}
+
+	/**
+	 * Declares an association between this object and a Person object.
+	 *
+	 * @param      Person $v
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function setPersonRelatedByModifiedById($v)
+	{
+
+
+		if ($v === null) {
+			$this->setModifiedById(NULL);
+		} else {
+			$this->setModifiedById($v->getId());
+		}
+
+
+		$this->aPersonRelatedByModifiedById = $v;
+	}
+
+
+	/**
+	 * Get the associated Person object
+	 *
+	 * @param      Connection Optional Connection object.
+	 * @return     Person The associated Person object.
+	 * @throws     PropelException
+	 */
+	public function getPersonRelatedByModifiedById($con = null)
+	{
+		// include the related Peer class
+		include_once 'lib/data/om/BasePersonPeer.php';
+
+		if ($this->aPersonRelatedByModifiedById === null && ($this->modified_by_id > 0)) {
+
+			$this->aPersonRelatedByModifiedById = PersonPeer::retrieveByPK($this->modified_by_id, $con);
+
+			/* The following can be used instead of the line above to
+			   guarantee the related object contains a reference
+			   to this object, but this level of coupling
+			   may be undesirable in many circumstances.
+			   As it can lead to a db query with many results that may
+			   never be used.
+			   $obj = PersonPeer::retrieveByPK($this->modified_by_id, $con);
+			   $obj->addPersonsRelatedByModifiedById($this);
+			 */
+		}
+		return $this->aPersonRelatedByModifiedById;
+	}
+
+	/**
 	 * Declares an association between this object and a ExperimentDomain object.
 	 *
 	 * @param      ExperimentDomain $v
@@ -1938,57 +2306,6 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 			 */
 		}
 		return $this->aProject;
-	}
-
-	/**
-	 * Declares an association between this object and a Person object.
-	 *
-	 * @param      Person $v
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function setPerson($v)
-	{
-
-
-		if ($v === null) {
-			$this->setCreatorId(NULL);
-		} else {
-			$this->setCreatorId($v->getId());
-		}
-
-
-		$this->aPerson = $v;
-	}
-
-
-	/**
-	 * Get the associated Person object
-	 *
-	 * @param      Connection Optional Connection object.
-	 * @return     Person The associated Person object.
-	 * @throws     PropelException
-	 */
-	public function getPerson($con = null)
-	{
-		// include the related Peer class
-		include_once 'lib/data/om/BasePersonPeer.php';
-
-		if ($this->aPerson === null && ($this->creator_id > 0)) {
-
-			$this->aPerson = PersonPeer::retrieveByPK($this->creator_id, $con);
-
-			/* The following can be used instead of the line above to
-			   guarantee the related object contains a reference
-			   to this object, but this level of coupling
-			   may be undesirable in many circumstances.
-			   As it can lead to a db query with many results that may
-			   never be used.
-			   $obj = PersonPeer::retrieveByPK($this->creator_id, $con);
-			   $obj->addPersons($this);
-			 */
-		}
-		return $this->aPerson;
 	}
 
 	/**
@@ -4400,6 +4717,104 @@ abstract class BaseExperiment extends BaseObject  implements Persistent {
 	{
 		$this->collTrials[] = $l;
 		$l->setExperiment($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Experiment is new, it will return
+	 * an empty collection; or if this Experiment has previously
+	 * been saved, it will retrieve related Trials from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Experiment.
+	 */
+	public function getTrialsJoinPersonRelatedByCreatorId($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrials === null) {
+			if ($this->isNew()) {
+				$this->collTrials = array();
+			} else {
+
+				$criteria->add(TrialPeer::EXPID, $this->getId());
+
+				$this->collTrials = TrialPeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(TrialPeer::EXPID, $this->getId());
+
+			if (!isset($this->lastTrialCriteria) || !$this->lastTrialCriteria->equals($criteria)) {
+				$this->collTrials = TrialPeer::doSelectJoinPersonRelatedByCreatorId($criteria, $con);
+			}
+		}
+		$this->lastTrialCriteria = $criteria;
+
+		return $this->collTrials;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Experiment is new, it will return
+	 * an empty collection; or if this Experiment has previously
+	 * been saved, it will retrieve related Trials from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Experiment.
+	 */
+	public function getTrialsJoinPersonRelatedByModifiedById($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'lib/data/om/BaseTrialPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTrials === null) {
+			if ($this->isNew()) {
+				$this->collTrials = array();
+			} else {
+
+				$criteria->add(TrialPeer::EXPID, $this->getId());
+
+				$this->collTrials = TrialPeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(TrialPeer::EXPID, $this->getId());
+
+			if (!isset($this->lastTrialCriteria) || !$this->lastTrialCriteria->equals($criteria)) {
+				$this->collTrials = TrialPeer::doSelectJoinPersonRelatedByModifiedById($criteria, $con);
+			}
+		}
+		$this->lastTrialCriteria = $criteria;
+
+		return $this->collTrials;
 	}
 
 

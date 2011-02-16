@@ -24,7 +24,7 @@ abstract class BaseRepetitionPeer {
 	const CLASS_DEFAULT = 'lib.data.Repetition';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 10;
+	const NUM_COLUMNS = 15;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -60,6 +60,21 @@ abstract class BaseRepetitionPeer {
 	/** the column name for the TITLE field */
 	const TITLE = 'REPETITION.TITLE';
 
+	/** the column name for the CREATOR_ID field */
+	const CREATOR_ID = 'REPETITION.CREATOR_ID';
+
+	/** the column name for the CREATED_DATE field */
+	const CREATED_DATE = 'REPETITION.CREATED_DATE';
+
+	/** the column name for the MODIFIED_BY_ID field */
+	const MODIFIED_BY_ID = 'REPETITION.MODIFIED_BY_ID';
+
+	/** the column name for the MODIFIED_DATE field */
+	const MODIFIED_DATE = 'REPETITION.MODIFIED_DATE';
+
+	/** the column name for the APP_ID field */
+	const APP_ID = 'REPETITION.APP_ID';
+
 	/** The PHP to DB Name Mapping */
 	private static $phpNameMap = null;
 
@@ -71,10 +86,10 @@ abstract class BaseRepetitionPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'CurationStatus', 'Deleted', 'EndDate', 'Name', 'StartDate', 'Status', 'TrialId', 'Description', 'Title', ),
-		BasePeer::TYPE_COLNAME => array (RepetitionPeer::REPID, RepetitionPeer::CURATION_STATUS, RepetitionPeer::DELETED, RepetitionPeer::END_DATE, RepetitionPeer::NAME, RepetitionPeer::START_DATE, RepetitionPeer::STATUS, RepetitionPeer::TRIALID, RepetitionPeer::DESCRIPTION, RepetitionPeer::TITLE, ),
-		BasePeer::TYPE_FIELDNAME => array ('REPID', 'CURATION_STATUS', 'DELETED', 'END_DATE', 'NAME', 'START_DATE', 'STATUS', 'TRIALID', 'DESCRIPTION', 'TITLE', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'CurationStatus', 'Deleted', 'EndDate', 'Name', 'StartDate', 'Status', 'TrialId', 'Description', 'Title', 'CreatorId', 'CreatedDate', 'ModifiedById', 'ModifiedDate', 'AppId', ),
+		BasePeer::TYPE_COLNAME => array (RepetitionPeer::REPID, RepetitionPeer::CURATION_STATUS, RepetitionPeer::DELETED, RepetitionPeer::END_DATE, RepetitionPeer::NAME, RepetitionPeer::START_DATE, RepetitionPeer::STATUS, RepetitionPeer::TRIALID, RepetitionPeer::DESCRIPTION, RepetitionPeer::TITLE, RepetitionPeer::CREATOR_ID, RepetitionPeer::CREATED_DATE, RepetitionPeer::MODIFIED_BY_ID, RepetitionPeer::MODIFIED_DATE, RepetitionPeer::APP_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('REPID', 'CURATION_STATUS', 'DELETED', 'END_DATE', 'NAME', 'START_DATE', 'STATUS', 'TRIALID', 'DESCRIPTION', 'TITLE', 'CREATOR_ID', 'CREATED_DATE', 'MODIFIED_BY_ID', 'MODIFIED_DATE', 'APP_ID', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
 	);
 
 	/**
@@ -84,10 +99,10 @@ abstract class BaseRepetitionPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CurationStatus' => 1, 'Deleted' => 2, 'EndDate' => 3, 'Name' => 4, 'StartDate' => 5, 'Status' => 6, 'TrialId' => 7, 'Description' => 8, 'Title' => 9, ),
-		BasePeer::TYPE_COLNAME => array (RepetitionPeer::REPID => 0, RepetitionPeer::CURATION_STATUS => 1, RepetitionPeer::DELETED => 2, RepetitionPeer::END_DATE => 3, RepetitionPeer::NAME => 4, RepetitionPeer::START_DATE => 5, RepetitionPeer::STATUS => 6, RepetitionPeer::TRIALID => 7, RepetitionPeer::DESCRIPTION => 8, RepetitionPeer::TITLE => 9, ),
-		BasePeer::TYPE_FIELDNAME => array ('REPID' => 0, 'CURATION_STATUS' => 1, 'DELETED' => 2, 'END_DATE' => 3, 'NAME' => 4, 'START_DATE' => 5, 'STATUS' => 6, 'TRIALID' => 7, 'DESCRIPTION' => 8, 'TITLE' => 9, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CurationStatus' => 1, 'Deleted' => 2, 'EndDate' => 3, 'Name' => 4, 'StartDate' => 5, 'Status' => 6, 'TrialId' => 7, 'Description' => 8, 'Title' => 9, 'CreatorId' => 10, 'CreatedDate' => 11, 'ModifiedById' => 12, 'ModifiedDate' => 13, 'AppId' => 14, ),
+		BasePeer::TYPE_COLNAME => array (RepetitionPeer::REPID => 0, RepetitionPeer::CURATION_STATUS => 1, RepetitionPeer::DELETED => 2, RepetitionPeer::END_DATE => 3, RepetitionPeer::NAME => 4, RepetitionPeer::START_DATE => 5, RepetitionPeer::STATUS => 6, RepetitionPeer::TRIALID => 7, RepetitionPeer::DESCRIPTION => 8, RepetitionPeer::TITLE => 9, RepetitionPeer::CREATOR_ID => 10, RepetitionPeer::CREATED_DATE => 11, RepetitionPeer::MODIFIED_BY_ID => 12, RepetitionPeer::MODIFIED_DATE => 13, RepetitionPeer::APP_ID => 14, ),
+		BasePeer::TYPE_FIELDNAME => array ('REPID' => 0, 'CURATION_STATUS' => 1, 'DELETED' => 2, 'END_DATE' => 3, 'NAME' => 4, 'START_DATE' => 5, 'STATUS' => 6, 'TRIALID' => 7, 'DESCRIPTION' => 8, 'TITLE' => 9, 'CREATOR_ID' => 10, 'CREATED_DATE' => 11, 'MODIFIED_BY_ID' => 12, 'MODIFIED_DATE' => 13, 'APP_ID' => 14, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
 	);
 
 	/**
@@ -207,6 +222,16 @@ abstract class BaseRepetitionPeer {
 		$criteria->addSelectColumn(RepetitionPeer::DESCRIPTION);
 
 		$criteria->addSelectColumn(RepetitionPeer::TITLE);
+
+		$criteria->addSelectColumn(RepetitionPeer::CREATOR_ID);
+
+		$criteria->addSelectColumn(RepetitionPeer::CREATED_DATE);
+
+		$criteria->addSelectColumn(RepetitionPeer::MODIFIED_BY_ID);
+
+		$criteria->addSelectColumn(RepetitionPeer::MODIFIED_DATE);
+
+		$criteria->addSelectColumn(RepetitionPeer::APP_ID);
 
 	}
 
@@ -338,6 +363,84 @@ abstract class BaseRepetitionPeer {
 	}
 
 	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByCreatorId table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinPersonRelatedByCreatorId(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(RepetitionPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(RepetitionPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(RepetitionPeer::CREATOR_ID, PersonPeer::ID);
+
+		$rs = RepetitionPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByModifiedById table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinPersonRelatedByModifiedById(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(RepetitionPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(RepetitionPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(RepetitionPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$rs = RepetitionPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
 	 * Returns the number of rows matching criteria, joining the related Trial table
 	 *
 	 * @param      Criteria $c
@@ -373,6 +476,122 @@ abstract class BaseRepetitionPeer {
 			// no rows returned; we infer that means 0 matches.
 			return 0;
 		}
+	}
+
+
+	/**
+	 * Selects a collection of Repetition objects pre-filled with their Person objects.
+	 *
+	 * @return     array Array of Repetition objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinPersonRelatedByCreatorId(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		RepetitionPeer::addSelectColumns($c);
+		$startcol = (RepetitionPeer::NUM_COLUMNS - RepetitionPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		PersonPeer::addSelectColumns($c);
+
+		$c->addJoin(RepetitionPeer::CREATOR_ID, PersonPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = RepetitionPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addRepetitionRelatedByCreatorId($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initRepetitionsRelatedByCreatorId();
+				$obj2->addRepetitionRelatedByCreatorId($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Repetition objects pre-filled with their Person objects.
+	 *
+	 * @return     array Array of Repetition objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinPersonRelatedByModifiedById(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		RepetitionPeer::addSelectColumns($c);
+		$startcol = (RepetitionPeer::NUM_COLUMNS - RepetitionPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		PersonPeer::addSelectColumns($c);
+
+		$c->addJoin(RepetitionPeer::MODIFIED_BY_ID, PersonPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = RepetitionPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					// e.g. $author->addBookRelatedByBookId()
+					$temp_obj2->addRepetitionRelatedByModifiedById($obj1); //CHECKME
+					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initRepetitionsRelatedByModifiedById();
+				$obj2->addRepetitionRelatedByModifiedById($obj1); //CHECKME
+			}
+			$results[] = $obj1;
+		}
+		return $results;
 	}
 
 
@@ -460,6 +679,10 @@ abstract class BaseRepetitionPeer {
 			$criteria->addSelectColumn($column);
 		}
 
+		$criteria->addJoin(RepetitionPeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(RepetitionPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
 		$criteria->addJoin(RepetitionPeer::TRIALID, TrialPeer::TRIALID);
 
 		$rs = RepetitionPeer::doSelectRS($criteria, $con);
@@ -491,8 +714,18 @@ abstract class BaseRepetitionPeer {
 		RepetitionPeer::addSelectColumns($c);
 		$startcol2 = (RepetitionPeer::NUM_COLUMNS - RepetitionPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
 		TrialPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + TrialPeer::NUM_COLUMNS;
+		$startcol5 = $startcol4 + TrialPeer::NUM_COLUMNS;
+
+		$c->addJoin(RepetitionPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(RepetitionPeer::MODIFIED_BY_ID, PersonPeer::ID);
 
 		$c->addJoin(RepetitionPeer::TRIALID, TrialPeer::TRIALID);
 
@@ -509,9 +742,9 @@ abstract class BaseRepetitionPeer {
 			$obj1->hydrate($rs);
 
 
-				// Add objects for joined Trial rows
+				// Add objects for joined Person rows
 	
-			$omClass = TrialPeer::getOMClass($rs, $startcol2);
+			$omClass = PersonPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -521,10 +754,248 @@ abstract class BaseRepetitionPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getTrial(); // CHECKME
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); // CHECKME
 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
-					$temp_obj2->addRepetition($obj1); // CHECKME
+					$temp_obj2->addRepetitionRelatedByCreatorId($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initRepetitionsRelatedByCreatorId();
+				$obj2->addRepetitionRelatedByCreatorId($obj1);
+			}
+
+
+				// Add objects for joined Person rows
+	
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3 = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); // CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addRepetitionRelatedByModifiedById($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initRepetitionsRelatedByModifiedById();
+				$obj3->addRepetitionRelatedByModifiedById($obj1);
+			}
+
+
+				// Add objects for joined Trial rows
+	
+			$omClass = TrialPeer::getOMClass($rs, $startcol4);
+
+
+			$cls = Propel::import($omClass);
+			$obj4 = new $cls();
+			$obj4->hydrate($rs, $startcol4);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj4 = $temp_obj1->getTrial(); // CHECKME
+				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj4->addRepetition($obj1); // CHECKME
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj4->initRepetitions();
+				$obj4->addRepetition($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByCreatorId table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptPersonRelatedByCreatorId(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(RepetitionPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(RepetitionPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(RepetitionPeer::TRIALID, TrialPeer::TRIALID);
+
+		$rs = RepetitionPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related PersonRelatedByModifiedById table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptPersonRelatedByModifiedById(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(RepetitionPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(RepetitionPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(RepetitionPeer::TRIALID, TrialPeer::TRIALID);
+
+		$rs = RepetitionPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related Trial table
+	 *
+	 * @param      Criteria $c
+	 * @param      boolean $distinct Whether to select only distinct columns (You can also set DISTINCT modifier in Criteria).
+	 * @param      Connection $con
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptTrial(Criteria $criteria, $distinct = false, $con = null)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// clear out anything that might confuse the ORDER BY clause
+		$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(RepetitionPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(RepetitionPeer::COUNT);
+		}
+
+		// just in case we're grouping: add those columns to the select statement
+		foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(RepetitionPeer::CREATOR_ID, PersonPeer::ID);
+
+		$criteria->addJoin(RepetitionPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+		$rs = RepetitionPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+			// no rows returned; we infer that means 0 matches.
+			return 0;
+		}
+	}
+
+
+	/**
+	 * Selects a collection of Repetition objects pre-filled with all related objects except PersonRelatedByCreatorId.
+	 *
+	 * @return     array Array of Repetition objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptPersonRelatedByCreatorId(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		RepetitionPeer::addSelectColumns($c);
+		$startcol2 = (RepetitionPeer::NUM_COLUMNS - RepetitionPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		TrialPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + TrialPeer::NUM_COLUMNS;
+
+		$c->addJoin(RepetitionPeer::TRIALID, TrialPeer::TRIALID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = RepetitionPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = TrialPeer::getOMClass($rs, $startcol2);
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getTrial(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addRepetition($obj1);
 					break;
 				}
 			}
@@ -532,6 +1003,168 @@ abstract class BaseRepetitionPeer {
 			if ($newObject) {
 				$obj2->initRepetitions();
 				$obj2->addRepetition($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Repetition objects pre-filled with all related objects except PersonRelatedByModifiedById.
+	 *
+	 * @return     array Array of Repetition objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptPersonRelatedByModifiedById(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		RepetitionPeer::addSelectColumns($c);
+		$startcol2 = (RepetitionPeer::NUM_COLUMNS - RepetitionPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		TrialPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + TrialPeer::NUM_COLUMNS;
+
+		$c->addJoin(RepetitionPeer::TRIALID, TrialPeer::TRIALID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = RepetitionPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = TrialPeer::getOMClass($rs, $startcol2);
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getTrial(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addRepetition($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initRepetitions();
+				$obj2->addRepetition($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Repetition objects pre-filled with all related objects except Trial.
+	 *
+	 * @return     array Array of Repetition objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptTrial(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+		// Set the correct dbName if it has not been overridden
+		// $c->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		RepetitionPeer::addSelectColumns($c);
+		$startcol2 = (RepetitionPeer::NUM_COLUMNS - RepetitionPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + PersonPeer::NUM_COLUMNS;
+
+		PersonPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PersonPeer::NUM_COLUMNS;
+
+		$c->addJoin(RepetitionPeer::CREATOR_ID, PersonPeer::ID);
+
+		$c->addJoin(RepetitionPeer::MODIFIED_BY_ID, PersonPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = RepetitionPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getPersonRelatedByCreatorId(); //CHECKME
+				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addRepetitionRelatedByCreatorId($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initRepetitionsRelatedByCreatorId();
+				$obj2->addRepetitionRelatedByCreatorId($obj1);
+			}
+
+			$omClass = PersonPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3  = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getPersonRelatedByModifiedById(); //CHECKME
+				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addRepetitionRelatedByModifiedById($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initRepetitionsRelatedByModifiedById();
+				$obj3->addRepetitionRelatedByModifiedById($obj1);
 			}
 
 			$results[] = $obj1;

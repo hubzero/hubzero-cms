@@ -80,6 +80,7 @@ class RepetitionPeer extends BaseRepetitionPeer {
     $c->add(self::TRIALID, $trialid);
     $c->add(self::DELETED, 0);
     $c->addAscendingOrderByColumn(self::REPID);
+
     return self::doSelect($c);
   }
 
@@ -122,6 +123,49 @@ class RepetitionPeer extends BaseRepetitionPeer {
 
     // There was error
     throw new Exception("Could not generate Repetition Name");
+  }
+
+  public static function suggestRepetition($p_iTrialId, $p_strTitle, $p_iLimit){
+    $p_strTitle = strtoupper($p_strTitle);
+    $p_strTitle = "'$p_strTitle%'";
+
+    $strQuery = "SELECT *
+                 FROM (
+                   SELECT REPID, row_number()
+                   OVER (ORDER BY REPID) as rn
+                   FROM REPETITION
+                   WHERE upper(TITLE) like $p_strTitle
+                     AND TRIALID = $p_iTrialId
+                 )
+                 WHERE rn <= $p_iLimit";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->createStatement();
+    $oResultsSet = $oStatement->executeQuery($strQuery, ResultSet::FETCHMODE_ASSOC);
+
+    $iIdArray = array();
+    while($oResultsSet->next()){
+      $iId = $oResultsSet->getInt('REPID');
+      array_push($iIdArray, $iId);
+    }
+    return self::retrieveByPKs($iIdArray);
+  }
+
+  /**
+   * Find a Trial (or SimulationRun) (not deleted) that belong to an Experiment/Simulation given by its TITLE
+   *
+   * @param int $expid
+   * @param stirng $title
+   * @param Criteria $c
+   * @param Connection $conn
+   * @return Trial (or Simulation)
+   */
+  public static function findByTrialIdAndTitle($trialid, $title, Criteria $c = null, Connection $conn = null) {
+    if (is_null($c)) $c = new Criteria();
+    $c->add(self::TRIALID, $trialid);
+    $c->add(self::TITLE, $title);
+    $c->add(self::DELETED, 0);
+    return self::doSelectOne($c);
   }
 
 } // RepetitionPeer
