@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-$xhub =& XFactory::getHub();
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
@@ -42,9 +41,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$filters 		= $this->filters;
 	
 	$juser =& JFactory::getUser();
+	$xhub =& XFactory::getHub();
 
-	$html  = '';
-	$html .= '<div class="main section upperpane">'."\n";
+	
+	
+	$html  = '<div class="main section upperpane">'."\n";
+
 	$html .= '<div class="aside rankarea">'."\n";
 	
 	// Show resource ratings
@@ -72,7 +74,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			if ($sl) {
 				$link = $sl;
 			} else {
-				$link = JRoute::_('index.php?option=com_tags'.a.'tag='.$tag->tag);
+				$link = JRoute::_('index.php?option=com_tags&tag='.$tag->tag);
 			}
 
 			$xtra = '<p class="supported"><a href="'.$link.'">'.$tag->raw_tag.'</a></p>';
@@ -85,8 +87,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 		{
 			case 31: $html .= 'Series'; break;
 			case 7:  $html .= 'Tool'; break;
-			case 41:  $html .= 'Video'; break;
+			case 67:  $html .= 'Multimedia'; break;
 			case 66:  $html .= 'Learning Object'; break;
+			case 68:  $html .= 'Active Document'; break;
+			case 69:  $html .= 'Historical Document'; break;
+			case 36: $html .= 'Poster'; break;
+			case 72: $html .= 'Database'; break;
 			case 4:
 			default:
 					$html .= 'Resource'; break;
@@ -116,9 +122,56 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 	}
 	
+		
+	$show_edit = true;
+	if ($params->get('show_assocs')) {
+			$helper->getTagCloud( $show_edit );
+
+			$juser =& JFactory::getUser();
+			$frm = '';
+			if (!$juser->get('guest') && !isset($resource->tagform)) {
+				$rt = new ResourcesTags($database);
+				$usertags = $rt->get_tag_string( $resource->id, 0, 0, $juser->get('id'), 0, 0 );
+				
+				$document =& JFactory::getDocument();
+				$document->setMetaData('keywords',$rt->get_tag_string( $resource->id, 0, 0, null, 0, 0 ));
+					
+				JPluginHelper::importPlugin( 'tageditor' );
+				$dispatcher =& JDispatcher::getInstance();
+
+				$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$usertags,'')) );
+				$frm .= '<div><input type="button" id="hubfancy-tageditswitch" ONCLICK="HUB.ViewEnhancement.showTagEdit()" value="Add/Remove Tags"></div>'."\n";
+				$frm .= '<div id="hubfancy-tagedit" style="display:none;">'."\n";
+				$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id).'">'."\n";
+				$frm .= "\t".'<fieldset>'."\n";
+				$frm .= "\t\t".'<label class="tag">'."\n";
+				$frm .= "\t\t\t".JText::_('Your tags').': '."\n";
+				if (count($tf) > 0) {
+					$frm .= $tf[0];
+				} else {
+					$frm .= "\t\t\t".'<input type="text" name="tags" id="tags-men" size="30" value="'. $usertags .'" />'."\n";
+				}
+				$frm .= "\t\t".'</label>'."\n";
+				$frm .= "\t\t".'<input type="submit" value="'.JText::_('COM_RESOURCES_SAVE').'"/>'."\n";
+				$frm .= "\t\t".'<input type="hidden" name="task" value="savetags" />'."\n";
+				$frm .= "\t".'</fieldset>'."\n";
+				$frm .= '</form>'."\n";
+				$frm .= '</div>'."\n";
+			}
+
+			if ($helper->tagCloud) {
+				$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_TAGS'),$helper->tagCloud.$frm);
+			}
+	}
+	
+	
+	
+	
+	
 	// Display "at a glance"
 	$html .= '<p class="ataglance">';
 	$html .= $resource->introtext ? Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 250, 0) : '';
+		$html .= ' <input type="button" id="hubfancy-showseealso" ONCLICK="HUB.ViewEnhancement.showSeeAlso();" value="See Related Content">';
 	//$html .= ' <a href="">'.JText::_('Learn more').' &rsaquo;</a>'."\n";
 	$html .= '</p>'."\n";
 	$html .= ' </div><!-- / .overviewcontainer -->'."\n";
@@ -139,6 +192,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= ResourcesHtml::warning( $ghtml )."\n";
 	} else {
 		// get launch button
+		
+		$xhub =& XFactory::getHub();
+		
 		$helper->getFirstChild();
 		$xhub =& XFactory::getHub();
 		
@@ -166,7 +222,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			//}
 			
 		// Single out featured children resources
-		
+		/*
 		if ($children != NULL) {
 			$supln  = '<ul class="supdocln">'."\n";
 			$supli  = array();
@@ -228,9 +284,35 @@ defined('_JEXEC') or die( 'Restricted access' );
 						}
 					}
 				}
-				
 			}
-			
+		*/	
+		/* SEE ALSO Area */
+		
+		//$html .= ' <div class="aside extracontent">'."\n";
+		$html .= ' <div class="extracontent hubfancy-seealso" style="display:none;">'."\n";	
+		// Get Releated Resources plugin
+		JPluginHelper::importPlugin( 'resources', 'related' );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		// Show related content
+		$out = $dispatcher->trigger( 'onResourcesSub', array($resource, $option, 1) );
+		if (count($out) > 0) {
+			foreach ($out as $ou) 
+			{
+				if (isset($ou['html'])) {
+					$html .= $ou['html'];
+				}
+			}
+		}
+				
+		// Show what's popular
+		if ($tab == 'about') {
+			ximport('xmodule');
+			$html .= XModuleHelper::renderModules('extracontent');
+		}		
+		$html .= ' </div><!-- / .aside extracontent -->'."\n";
+	}
+		/*	
 			$supdocs = count( $supli ) > 2 ? 2 : count( $supli );
 			$otherdocs = $realdocs - $supdocs;
 			$otherdocs = ($supdocs + $otherdocs) == 3  ? 0 : $otherdocs;
@@ -241,11 +323,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$supln .=  $i == 2 && !$otherdocs ? $supli[$i] : '';
 			}
 			
-						
+			// View more link?			
 			if ($supdocs > 0 && $otherdocs > 0) {
 				$supln .= ' <li class="otherdocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.a.'active=supportingdocs').'" title="'.JText::_('View All').' '.$realdocs.' '.JText::_('Supporting Documents').' ">'.$otherdocs.' '.JText::_('more').' &rsaquo;</a></li>'."\n";
 			} else if (!$supdocs && $realdocs > 0 && $tab != 'play' && is_object($helper->firstChild)) {
-				$html .= t.t.'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.a.'active=supportingdocs').'">'.JText::_('Additional Documents').' ('.$realdocs.')</a></span></p>'."\n";
+				$html .= "\t\t".'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.a.'active=supportingdocs').'">'.JText::_('Additional materials available').' ('.$realdocs.')</a></span></p>'."\n";
 			}
 			
 			
@@ -255,24 +337,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 		
 		// Show icons of other available formats
 		if ($supdocs) {
-			$html .= t.t.t.$supdocs."\n";		
+			$html .= "\t\t\t".$supdocs."\n";		
 		}
-		
+		*/
 		$html .= $feeds ? $feeds : '';
 		$html .= $tab != 'play' ? ResourcesHtml::license( $params->get( 'license', '' ) ) : '';			
-	} // --- end else (if group check passed)
+	//} // --- end else (if group check passed)
 	
 	$html .= ' </div><!-- / .aside launcharea -->'."\n";	
 	$html .= ' </div><!-- / .subject -->'."\n";
-			
-	if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) || $authorized=0)) {
+
+	if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) && !$authorized)) {
 		// show nothing else
 		$html .= '</div><!-- / .main section -->'."\n";		
 	} else {
-		$html .= '<div class="clear sep"></div>'."\n";	
+		$html .= '<div class="clear sep hubfancy-sep"></div>'."\n";	
 		$html .= '</div><!-- / .main section -->'."\n";		
-		$html .= '<div class="main section noborder">'."\n";
-		$html .= ' <div class="aside extracontent">'."\n";
+		$html .= '<div class="main section noborder hubfancy-resource-subject">'."\n";
 		
 	if ($ccount >= 0) {
 		// Initiate paging for children
@@ -288,13 +369,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 		} else {
 			$url = 'index.php?option='.$option.'&id='.$resource->id;
 		}
-		$html .= '<form method="get" action="'.JRoute::_($url).'">'."\n";
-		$html .= t.'<div class="aside">'."\n";
-		$html .= '</div>';
+		//$html .= '<form method="get" action="'.JRoute::_($url).'">'."\n";
+		//$html .= t.'<div class="aside">'."\n";
+		//$html .= '</div>';
 	}
 		
 		// Get Releated Resources plugin
-		JPluginHelper::importPlugin( 'resources', 'related' );
+		/*JPluginHelper::importPlugin( 'resources', 'related' );
 		$dispatcher =& JDispatcher::getInstance();
 		
 		// Show related content
@@ -313,9 +394,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 			ximport('xmodule');
 			$html .= XModuleHelper::renderModules('extracontent');
 		}		
-		$html .= ' </div><!-- / .aside extracontent -->'."\n";		
+		$html .= ' </div><!-- / .aside extracontent -->'."\n";
+		*/		
 		
-		$html .= ' <div class="subject tabbed">'."\n";
+		//$html .= ' <div class="subject tabbed">'."\n";
+		$html .= ' <div class="hubfancy-resource-tabs">'."\n";
 		$html .= ResourcesHtml::tabs( $option, $resource->id, $cats, $tab, $resource->alias );
 		$html .= ResourcesHtml::sections( $sections, $cats, $tab, 'hide', 'main' );	
 		$html .= '</div><!-- / .subject -->'."\n";

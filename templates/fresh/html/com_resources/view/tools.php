@@ -107,6 +107,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= '<div class="metaplaceholder"><p>'.$txt_meta.'</p></div>'."\n";
 	}
 	
+	
 	$html .= ' </div><!-- / .aside -->'."\n";	
 	$html .= '<div class="subject">'."\n";	
 	$html .= ' <div class="overviewcontainer">'."\n";
@@ -117,15 +118,58 @@ defined('_JEXEC') or die( 'Restricted access' );
 			// Get contributors of this version		
 			if ($alltools && $resource->revision!='dev') {
 				$helper->getToolAuthors($resource->alias, $resource->revision);			
+		}
+	}
+			
+
+	// Get contributors on this resource
+	$helper->getContributors(true, 1);
+	if ($helper->contributors && $helper->contributors != '<br />') {
+		$html .= '<div id="authorslist">'."\n";
+		$html .= $helper->contributors."\n";
+		$html .= '</div>'."\n";
+	}
+	$show_edit = true;
+	if ($params->get('show_assocs')) {
+			$helper->getTagCloud( $show_edit );
+
+			$juser =& JFactory::getUser();
+			$frm = '';
+			if (!$juser->get('guest') && !isset($resource->tagform)) {
+				$rt = new ResourcesTags($database);
+				$usertags = $rt->get_tag_string( $resource->id, 0, 0, $juser->get('id'), 0, 0 );
+					
+				$document =& JFactory::getDocument();
+				$document->setMetaData('keywords',$rt->get_tag_string( $resource->id, 0, 0, null, 0, 0 ));
+					
+				JPluginHelper::importPlugin( 'tageditor' );
+				$dispatcher =& JDispatcher::getInstance();
+
+				$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$usertags,'')) );
+				
+				$frm .= '<div><input type="button" id="hubfancy-tageditswitch" ONCLICK="HUB.ViewEnhancement.showTagEdit()" value="Add/Remove Tags"></div>'."\n";
+				$frm .= '<div id="hubfancy-tagedit" style="display:none;">'."\n";
+				
+				$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id).'">'."\n";
+				$frm .= "\t".'<fieldset>'."\n";
+				$frm .= "\t\t".'<label class="tag">'."\n";
+				$frm .= "\t\t\t".JText::_('Your tags').': '."\n";
+				if (count($tf) > 0) {
+					$frm .= $tf[0];
+				} else {
+					$frm .= "\t\t\t".'<input type="text" name="tags" id="tags-men" size="30" value="'. $usertags .'" />'."\n";
+				}
+				$frm .= "\t\t".'</label>'."\n";
+				$frm .= "\t\t".'<input type="submit" value="'.JText::_('COM_RESOURCES_SAVE').'"/>'."\n";
+				$frm .= "\t\t".'<input type="hidden" name="task" value="savetags" />'."\n";
+				$frm .= "\t".'</fieldset>'."\n";
+				$frm .= '</form>'."\n";
+				$frm .= '</div>'."\n";
+			}
+			if ($helper->tagCloud) {
+				$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_TAGS'),$helper->tagCloud.$frm);
 			}
 
-			// Get contributors on this resource
-			$helper->getContributors(true, 1);
-			if ($helper->contributors && $helper->contributors != '<br />') {
-				$html .= '<div id="authorslist">'."\n";
-				$html .= $helper->contributors."\n";
-				$html .= '</div>'."\n";
-			}
 	}
 	
 	// Display "at a glance"
@@ -133,6 +177,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$introtext = $resource->introtext ? Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 255, 0) : Hubzero_View_Helper_Html::shortenText(stripslashes($resource->fulltext), 255, 0);
 	$html .= $introtext;
 	//$html .= ' <a href="">'.JText::_('Learn more').' &rsaquo;</a>';
+	$html .= ' <input type="button" id="hubfancy-showseealso" ONCLICK="HUB.ViewEnhancement.showSeeAlso();" value="See Related Content">';
 	$html .= '</p>'."\n";
 	$html .= ' </div><!-- / .overviewcontainer -->'."\n";
 	
@@ -224,22 +269,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 			$html .= "\t\t\t".'<span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&active=supportingdocs').'">'.JText::_('View All Supporting Documents').'</a></span>'."\n";
 			$html .= "\t\t".'</p>'."\n";
-		}
-	} // --- end else (if group check passed)
-	
-	$html .= ' </div><!-- / .aside launcharea -->'."\n";	
-	$html .= ' </div><!-- / .subject -->'."\n";
-	
-			
-	if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) || $authorized=0)) {
-		// show nothing else
-		$html .= '</div><!-- / .main section -->'."\n";		
-	} else {
-		$html .= '<div class="clear sep"></div>'."\n";	
-		$html .= '</div><!-- / .main section -->'."\n";		
-		$html .= '<div class="main section noborder">'."\n";
-		$html .= ' <div class="aside extracontent">'."\n";
-		
+			$html .= ' <div class="aside extracontent">'."\n";
+		$html .= ' <div class="extracontent hubfancy-seealso" style="display:none;">'."\n";	
 		// Get Releated Resources plugin
 		JPluginHelper::importPlugin( 'resources', 'related' );
 		$dispatcher =& JDispatcher::getInstance();
@@ -254,6 +285,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 				}
 			}
 		}
+		}
+	} // --- end else (if group check passed)
+	
+	$html .= ' </div><!-- / .aside launcharea -->'."\n";	
+	$html .= ' </div><!-- / .subject -->'."\n";
+	$html .= '</div>';
+			
+	if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) || $authorized=0)) {
+		// show nothing else
+		
+		$html .= '</div><!-- / .main section -->'."\n";		
+	} else {
+		
+		$html .= '</div><!-- / .main section -->'."\n";	
+		$html .= '<div class="clear sep hubfancy-sep"></div>'."\n";		
+		$html .= '<div class="main section noborder hubfancy-resource-subject">'."\n";
+
 		
 		// Link to all resources of this type
 		/*$normalized_valid_chars = 'a-zA-Z0-9';
@@ -267,8 +315,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html .= XModuleHelper::renderModules('extracontent');
 		}
 		
-		$html .= ' </div><!-- / .aside -->'."\n";		
-		$html .= ' <div class="subject tabbed">'."\n";
+			
+		/* old see also area */
+		
+		
+		//$html .= ' <div class="subject tabbed">'."\n";
+		$html .= ' <div class="hubfancy-resource-tabs">'."\n";
 		$html .= ResourcesHtml::tabs( $option, $resource->id, $cats, $tab, $resource->alias );
 		$html .= ResourcesHtml::sections( $sections, $cats, $tab, 'hide', 'main' );	
 		$html .= '</div><!-- / .subject -->'."\n";

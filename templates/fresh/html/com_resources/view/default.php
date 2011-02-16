@@ -45,8 +45,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$xhub =& XFactory::getHub();
 
 	
-
-			
+	
 	$html  = '<div class="main section upperpane">'."\n";
 
 	$html .= '<div class="aside rankarea">'."\n";
@@ -94,6 +93,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			case 68:  $html .= 'Active Document'; break;
 			case 69:  $html .= 'Historical Document'; break;
 			case 36: $html .= 'Poster'; break;
+			case 72: $html .= 'Database'; break;
 			case 4:
 			default:
 					$html .= 'Resource'; break;
@@ -115,9 +115,59 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 	}
 	
+		
+	$show_edit = true;
+	if ($params->get('show_assocs')) {
+			$helper->getTagCloud( $show_edit );
+
+			$juser =& JFactory::getUser();
+			$frm = '';
+			if (!$juser->get('guest') && !isset($resource->tagform)) {
+				$rt = new ResourcesTags($database);
+				$usertags = $rt->get_tag_string( $resource->id, 0, 0, $juser->get('id'), 0, 0 );
+					
+				$document =& JFactory::getDocument();
+				$document->setMetaData('keywords',$rt->get_tag_string( $resource->id, 0, 0, null, 0, 0 ));
+					
+				JPluginHelper::importPlugin( 'tageditor' );
+				$dispatcher =& JDispatcher::getInstance();
+
+				$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$usertags,'')) );
+				
+				$frm .= '<div><input type="button" id="hubfancy-tageditswitch" ONCLICK="HUB.ViewEnhancement.showTagEdit()" value="Add/Remove Tags"></div>'."\n";
+				$frm .= '<div id="hubfancy-tagedit" style="display:none;">'."\n";
+				
+				$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id).'">'."\n";
+				$frm .= "\t".'<fieldset>'."\n";
+				$frm .= "\t\t".'<label class="tag">'."\n";
+				$frm .= "\t\t\t".JText::_('Your tags').': '."\n";
+				if (count($tf) > 0) {
+					$frm .= $tf[0];
+				} else {
+					$frm .= "\t\t\t".'<input type="text" name="tags" id="tags-men" size="30" value="'. $usertags .'" />'."\n";
+				}
+				$frm .= "\t\t".'</label>'."\n";
+				$frm .= "\t\t".'<input type="submit" value="'.JText::_('COM_RESOURCES_SAVE').'"/>'."\n";
+				$frm .= "\t\t".'<input type="hidden" name="task" value="savetags" />'."\n";
+				$frm .= "\t".'</fieldset>'."\n";
+				$frm .= '</form>'."\n";
+				$frm .= '</div>'."\n";
+			}
+
+			if ($helper->tagCloud) {
+				$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_TAGS'),$helper->tagCloud.$frm);
+			}
+		}
+	
+	
+	
+	
+	
 	// Display "at a glance"
 	$html .= '<p class="ataglance">';
 	$html .= $resource->introtext ? Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 250, 0) : '';
+	$html .= ' <input type="button" id="hubfancy-showseealso" ONCLICK="HUB.ViewEnhancement.showSeeAlso();" value="See Related Content">';
+	//
 	//$html .= ' <a href="">'.JText::_('Learn more').' &rsaquo;</a>'."\n";
 	$html .= '</p>'."\n";
 	$html .= ' </div><!-- / .overviewcontainer -->'."\n";
@@ -248,6 +298,33 @@ defined('_JEXEC') or die( 'Restricted access' );
 				}
 			}
 			
+			/* SEE ALSO Area */
+		
+		//$html .= ' <div class="aside extracontent">'."\n";
+		$html .= ' <div name="seealso" class="extracontent hubfancy-seealso" style="display:none;">'."\n";	
+		// Get Releated Resources plugin
+		JPluginHelper::importPlugin( 'resources', 'related' );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		// Show related content
+		$out = $dispatcher->trigger( 'onResourcesSub', array($resource, $option, 1) );
+		if (count($out) > 0) {
+			foreach ($out as $ou) 
+			{
+				if (isset($ou['html'])) {
+					$html .= $ou['html'];
+				}
+			}
+		}
+				
+		// Show what's popular
+		if ($tab == 'about') {
+			ximport('xmodule');
+			$html .= XModuleHelper::renderModules('extracontent');
+		}		
+		$html .= ' </div><!-- / .aside extracontent -->'."\n";
+			
+			
 			$supdocs = count( $supli ) > 2 ? 2 : count( $supli );
 			$otherdocs = $realdocs - $supdocs;
 			$otherdocs = ($supdocs + $otherdocs) == 3  ? 0 : $otherdocs;
@@ -285,34 +362,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 		// show nothing else
 		$html .= '</div><!-- / .main section -->'."\n";		
 	} else {
-		$html .= '<div class="clear sep"></div>'."\n";	
+		$html .= '<div class="clear sep hubfancy-sep"></div>'."\n";	
 		$html .= '</div><!-- / .main section -->'."\n";		
-		$html .= '<div class="main section noborder">'."\n";
-		$html .= ' <div class="aside extracontent">'."\n";
+		$html .= '<div class="main section noborder hubfancy-resource-subject">'."\n";
 		
-		// Get Releated Resources plugin
-		JPluginHelper::importPlugin( 'resources', 'related' );
-		$dispatcher =& JDispatcher::getInstance();
 		
-		// Show related content
-		$out = $dispatcher->trigger( 'onResourcesSub', array($resource, $option, 1) );
-		if (count($out) > 0) {
-			foreach ($out as $ou) 
-			{
-				if (isset($ou['html'])) {
-					$html .= $ou['html'];
-				}
-			}
-		}
-				
-		// Show what's popular
-		if ($tab == 'about') {
-			ximport('xmodule');
-			$html .= XModuleHelper::renderModules('extracontent');
-		}		
-		$html .= ' </div><!-- / .aside extracontent -->'."\n";		
+			
+		/* old see also area */
 		
-		$html .= ' <div class="subject tabbed">'."\n";
+		
+		//$html .= ' <div class="subject tabbed">'."\n";
+		$html .= ' <div class="hubfancy-resource-tabs">'."\n";
 		$html .= ResourcesHtml::tabs( $option, $resource->id, $cats, $tab, $resource->alias );
 		$html .= ResourcesHtml::sections( $sections, $cats, $tab, 'hide', 'main' );	
 		$html .= '</div><!-- / .subject -->'."\n";
