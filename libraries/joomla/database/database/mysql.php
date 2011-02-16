@@ -24,6 +24,8 @@ defined('JPATH_BASE') or die();
  */
 class JDatabaseMySQL extends JDatabase
 {
+        var $timer = 0;
+
 	/**
 	 * The database driver name
 	 *
@@ -214,13 +216,24 @@ class JDatabaseMySQL extends JDatabase
 		if ($this->_limit > 0 || $this->_offset > 0) {
 			$sql .= ' LIMIT '.$this->_offset.', '.$this->_limit;
 		}
-		if ($this->_debug) {
-			$this->_ticker++;
-			$this->_log[] = $sql;
-		}
+		// MOVED ABOVE if/LOG SECTION
 		$this->_errorNum = 0;
 		$this->_errorMsg = '';
+		$starttime = microtime(true); // ADDED
 		$this->_cursor = mysql_query( $sql, $this->_resource );
+		$endtime = microtime(true); // ADDED
+		if ($this->_debug) {
+			$this->_ticker++;
+			// ADDED ALL THE timediff LOGIC
+			$timediff = ($endtime - $starttime);
+			$this->timer += $timediff;
+			if($timediff > 1000)
+			{
+				$timediff = "!!!!! ".$timediff;
+			}
+			$this->_log[] = "(".$timediff."): ".$sql;
+			//$this->_log[] = $sql;
+		}
 
 		if (!$this->_cursor)
 		{
