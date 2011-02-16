@@ -16,6 +16,7 @@ require_once 'lib/data/EntityTypePeer.php';
 require_once 'lib/data/Thumbnail.php';
 require_once 'lib/data/DataFileLinkPeer.php';
 require_once 'lib/data/DataFileLink.php';
+require_once 'lib/security/Authorizer.php';
 require_once 'api/org/nees/util/PhotoHelper.php';
 require_once 'api/org/nees/util/FileHelper.php';
 require_once 'api/org/nees/static/Files.php';
@@ -113,6 +114,8 @@ class plgProjectUpload extends JPlugin{
     //types, where we might miss one (whitelisting is always better than blacklisting)
     $okMIMETypes = 'image/jpeg,image/pjpeg,image/png,image/x-png,image/gif';
     $validFileTypes = explode(",", $okMIMETypes);
+
+    //var_dump($imageinfo);
 
     //if the temp file does not have a width or a height, or it has a non ok MIME, return
     if( !is_int($imageinfo[0]) || !is_int($imageinfo[1]) ||  !in_array($imageinfo['mime'], $validFileTypes) ){
@@ -227,9 +230,10 @@ class plgProjectUpload extends JPlugin{
    * @param string $p_strDescription
    * @param string $p_strUsageId
    */
-  private function createImageDataFile($p_strName, $p_strWarehousePath, $p_strTitle, $p_strDescription, $p_strUsageId=null){
+  private function createImageDataFile($p_strName, $p_strWarehousePath, $p_strTitle, $p_strDescription, $p_strUsageId=null, $p_strTool=null, $p_iCreatorId=null, $p_iModifiedById=null, $p_strModifiedDate=null, $p_iAppId=null){
+    /* @var $oDataFile DataFile */
     $oDataFile = new DataFile();
-    $oDataFile = $oDataFile->newDataFileByFilesystem($p_strName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $p_strUsageId);
+    $oDataFile = $oDataFile->newDataFileByFilesystem($p_strName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $p_strUsageId, $p_strTool, $p_iCreatorId, $p_iModifiedById, $p_strModifiedDate, $p_iAppId);
     $uploadedFileNameParts = explode('.', $p_strName);
     if(sizeof($uploadedFileNameParts) == 2){
       $uploadedFileExtension = array_pop($uploadedFileNameParts);
@@ -263,7 +267,7 @@ class plgProjectUpload extends JPlugin{
       $oEntityType = EntityTypePeer::findByTableName("Thumbnail");
 
       $oThumbDataFile = new DataFile();
-      $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($strThumbName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId());
+      $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($strThumbName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId(), $p_strTool, $p_iCreatorId, $p_iModifiedById, $p_strModifiedDate, $p_iAppId);
     }
 
     $strDisplayName = "display_".$oDataFile->getId()."_".$p_strName;
@@ -274,7 +278,7 @@ class plgProjectUpload extends JPlugin{
       $oEntityType = EntityTypePeer::findByTableName("Data Photo");
 
       $oDisplayDataFile = new DataFile();
-      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId());
+      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId(), $p_strTool, $p_iCreatorId, $p_iModifiedById, $p_strModifiedDate, $p_iAppId);
     }
 
     if($bThumbnail || $bDisplay || $bMkDir){
@@ -282,9 +286,9 @@ class plgProjectUpload extends JPlugin{
     }
   }
 
-  private function createProjectImageDataFile($p_strName, $p_strWarehousePath, $p_strTitle, $p_strDescription, $p_strUsageId=null, $p_iFixPermissions=0){
+  private function createProjectImageDataFile($p_strName, $p_strWarehousePath, $p_strTitle, $p_strDescription, $p_strUsageId=null, $p_iFixPermissions=0, $p_strTool=null, $p_iCreatorId=null, $p_iModifiedById=null, $p_strModifiedDate=null, $p_iAppId=null){
     $oDataFile = new DataFile();
-    $oDataFile = $oDataFile->newDataFileByFilesystem($p_strName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $p_strUsageId);
+    $oDataFile = $oDataFile->newDataFileByFilesystem($p_strName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $p_strUsageId, $p_strTool, $p_iCreatorId, $p_iModifiedById, $p_strModifiedDate, $p_iAppId);
     $uploadedFileNameParts = explode('.', $p_strName);
     if(sizeof($uploadedFileNameParts) == 2){
       $uploadedFileExtension = array_pop($uploadedFileNameParts);
@@ -318,7 +322,7 @@ class plgProjectUpload extends JPlugin{
       $oEntityType = EntityTypePeer::findByTableName("Thumbnail");
 
       $oThumbDataFile = new DataFile();
-      $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($strThumbName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId());
+      $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($strThumbName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId(), null, $p_iCreatorId, null, $p_strModifiedDate, $p_iAppId);
       $oThumbDataFile->setView("PUBLIC");
       $oThumbDataFile->save();
     }
@@ -331,7 +335,7 @@ class plgProjectUpload extends JPlugin{
       $oEntityType = EntityTypePeer::findByTableName("Data Photo");
 
       $oDisplayDataFile = new DataFile();
-      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId());
+      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId(), null, $p_iCreatorId, null, $p_strModifiedDate, $p_iAppId);
       $oDisplayDataFile->setView("PUBLIC");
       $oDisplayDataFile->save();
     }
@@ -345,7 +349,7 @@ class plgProjectUpload extends JPlugin{
 
       //store the icon into the data_file table
       $oIconDataFile = new DataFile();
-      $oIconDataFile = $oIconDataFile->newDataFileByFilesystem($strIconName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId());
+      $oIconDataFile = $oIconDataFile->newDataFileByFilesystem($strIconName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId(), null, $p_iCreatorId, null, $p_strModifiedDate, $p_iAppId);
       $oIconDataFile->setView("PUBLIC");
       $oIconDataFile->save();
 
@@ -382,9 +386,9 @@ class plgProjectUpload extends JPlugin{
     return $strMessage;
   }
 
-  private function createExperimentImageDataFile($p_strName, $p_strWarehousePath, $p_strTitle, $p_strDescription, $p_strUsageId=null, $p_iFixPermissions=0){
+  private function createExperimentImageDataFile($p_strName, $p_strWarehousePath, $p_strTitle, $p_strDescription, $p_strUsageId=null, $p_iFixPermissions=0, $p_strTool=null, $p_iCreatorId=null, $p_iModifiedById=null, $p_strModifiedDate=null, $p_iAppId=null){
     $oDataFile = new DataFile();
-    $oDataFile = $oDataFile->newDataFileByFilesystem($p_strName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $p_strUsageId);
+    $oDataFile = $oDataFile->newDataFileByFilesystem($p_strName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $p_strUsageId, $p_strTool, $p_iCreatorId, $p_iModifiedById, $p_strModifiedDate, $p_iAppId);
     $uploadedFileNameParts = explode('.', $p_strName);
     if(sizeof($uploadedFileNameParts) == 2){
       $uploadedFileExtension = array_pop($uploadedFileNameParts);
@@ -418,7 +422,7 @@ class plgProjectUpload extends JPlugin{
       $oEntityType = EntityTypePeer::findByTableName("Thumbnail");
 
       $oThumbDataFile = new DataFile();
-      $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($strThumbName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId());
+      $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($strThumbName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId(), $p_strTool, $p_iCreatorId, $p_iModifiedById, $p_strModifiedDate, $p_iAppId);
       $oThumbDataFile->setView("PUBLIC");
       $oThumbDataFile->save();
     }
@@ -431,7 +435,7 @@ class plgProjectUpload extends JPlugin{
       $oEntityType = EntityTypePeer::findByTableName("Data Photo");
 
       $oDisplayDataFile = new DataFile();
-      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId());
+      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $oEntityType->getId(), $p_strTool, $p_iCreatorId, $p_iModifiedById, $p_strModifiedDate, $p_iAppId);
       $oDisplayDataFile->setView("PUBLIC");
       $oDisplayDataFile->save();
     }
@@ -482,6 +486,7 @@ class plgProjectUpload extends JPlugin{
     $bValidPath = true;
 
     $oHubUser =& JFactory::getUser();
+    $oAuthorizer = Authorizer::getInstance();
 
     $strPath = JRequest::getVar('path','');
     if(!StringHelper::hasText($strPath)){
@@ -510,7 +515,7 @@ class plgProjectUpload extends JPlugin{
         $iUsageTypeId = JRequest::getVar('usageType');
         $strFileTitle = ($iNumFiles <= 1) ? $strTitle : $strTitle." (".$ii." of ".$iNumFiles.")";
 
-        $this->createImageDataFile($strName, $strPath, $strFileTitle, $strDescription, $iUsageTypeId);
+        $this->createImageDataFile($strName, $strPath, $strFileTitle, $strDescription, $iUsageTypeId, null, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
       }
       ++$i;
     }
@@ -565,6 +570,7 @@ class plgProjectUpload extends JPlugin{
     $oDataFile = null;
 
     $oHubUser =& JFactory::getUser();
+    $oAuthorizer = Authorizer::getInstance();
 
     $iUsageTypeId = JRequest::getVar('usageType');
     $strUploadedPath = JRequest::getVar('path');
@@ -617,21 +623,19 @@ class plgProjectUpload extends JPlugin{
 
         //store the data file
         $oDataFile = new DataFile();
-        $oDataFile = $oDataFile->newDataFileByFilesystem($strFileName, $strUploadedPath, false, $strFileTitle, $strDescription, $iUsageTypeId, $strTool);
+        $oDataFile = $oDataFile->newDataFileByFilesystem($strFileName, $strUploadedPath, false, $strFileTitle, $strDescription, $iUsageTypeId, $strTool, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
         if($oDataFile){
           ++$iCounter;
           $uploadedFileNameParts = explode('.', $strFileName);
-          //if(sizeof($uploadedFileNameParts) == 2){
-            $uploadedFileExtension = array_pop($uploadedFileNameParts);
+          $uploadedFileExtension = array_pop($uploadedFileNameParts);
 
-            /* @var $oDocumentFormat DocumentFormat */
-            $oDocumentFormat = DocumentFormatPeer::findByDefaultExtension($uploadedFileExtension);
-            $oDataFile->setDocumentFormat($oDocumentFormat);
-            $oDataFile->save();
-          //}
-          }
+          /* @var $oDocumentFormat DocumentFormat */
+          $oDocumentFormat = DocumentFormatPeer::findByDefaultExtension(trim($uploadedFileExtension));
+          $oDataFile->setDocumentFormat($oDocumentFormat);
+          $oDataFile->save();
         }
-
+      }
+      
       ++$i;
     }
 
@@ -657,9 +661,12 @@ class plgProjectUpload extends JPlugin{
     $strName = JRequest::getVar('name');
     $iFixPermissions = JRequest::getVar('fixPermissions', 0);
 
+    $oAuthorizer = Authorizer::getInstance();
+
     $oDataFile = null;
     if($strName){
-      $this->createProjectImageDataFile($strName, $strPath, $strTitle, $strDesc, $iUsageTypeId, $iFixPermissions);
+        //createProjectImageDataFile($p_strName, $p_strWarehousePath, $p_strTitle, $p_strDescription, $p_strUsageId=null, $p_iFixPermissions=0, $p_strTool=null, $p_iCreatorId=null, $p_iModifiedById=null, $p_strModifiedDate=null, $p_iAppId=null)
+      $this->createProjectImageDataFile($strName, $strPath, $strTitle, $strDesc, $iUsageTypeId, $iFixPermissions, null, $oAuthorizer->getUserId(), null, null, ProjectEditor::APP_ID);
     }
 
   }
@@ -679,6 +686,7 @@ class plgProjectUpload extends JPlugin{
     $iFixPermissions = JRequest::getVar('fixPermissions', 0);
 
     $oHubUser =& JFactory::getUser();
+    $oAuthorizer = Authorizer::getInstance();
 
     $oReturn = $this->doUploadImage($oHubUser);
     if(is_numeric($oReturn)){
@@ -687,7 +695,7 @@ class plgProjectUpload extends JPlugin{
 
     $strFileName = $oReturn;
     if($strFileName){
-      $this->createExperimentImageDataFile($strFileName, $strPath, $strTitle, $strDesc, $iUsageTypeId, $iFixPermissions);
+      $this->createExperimentImageDataFile($strFileName, $strPath, $strTitle, $strDesc, $iUsageTypeId, $iFixPermissions, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
     }
 
   }
@@ -719,6 +727,7 @@ class plgProjectUpload extends JPlugin{
     }
 
     $oHubUser =& JFactory::getUser();
+    $oAuthorizer = Authorizer::getInstance();
 
     $i=0;
     while($i < $iNumFiles){
@@ -731,7 +740,7 @@ class plgProjectUpload extends JPlugin{
       $strName = $oReturn;
       $strFileTitle = ($iNumFiles <= 1) ? $strTitle : $strTitle." (".$ii." of ".$iNumFiles.")";
       if($strName){
-        $this->createImageDataFile($strName, $strPath, $strFileTitle, $strDesc, $iUsageTypeId);
+        $this->createImageDataFile($strName, $strPath, $strFileTitle, $strDesc, $iUsageTypeId, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
       }
       ++$i;
     }
@@ -822,6 +831,7 @@ class plgProjectUpload extends JPlugin{
     }
 
     $bMkDir = false;
+    $oAuthorizer = Authorizer::getInstance();
 
     if(!is_dir($strWarehousePath)){
       $oFileCommand = FileCommandAPI::create($strWarehousePath);
@@ -836,7 +846,7 @@ class plgProjectUpload extends JPlugin{
       $oEntityType = EntityTypePeer::findByTableName("Thumbnail");
 
       $oThumbDataFile = new DataFile();
-      $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($strThumbName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId());
+      $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($strThumbName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId(), null, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
     }
 
     $bDisplay = $this->scaleImage($strSource, $iDisplayWidth, $iDisplayHeight, $strDisplayFile);
@@ -844,7 +854,7 @@ class plgProjectUpload extends JPlugin{
       $oEntityType = EntityTypePeer::findByTableName("Data Photo");
 
       $oDisplayDataFile = new DataFile();
-      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId());
+      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId(), null, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
     }
 
     $bFixPermissionsLater = false;
@@ -928,7 +938,7 @@ class plgProjectUpload extends JPlugin{
       }
     }
 
-
+    $oAuthorizer = Authorizer::getInstance();
     $bMkDir = false;
     if(!is_dir($strWarehousePath)){
       $oFileCommand = FileCommandAPI::create($strWarehousePath);
@@ -940,7 +950,7 @@ class plgProjectUpload extends JPlugin{
       $oEntityType = EntityTypePeer::findByTableName("Thumbnail");
 
       $oThumbDataFile = new DataFile();
-      $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($strThumbName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId());
+      $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($strThumbName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId(), null, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
     }
 
     $bDisplay = $this->scaleImageByWidth($strSource, $iDisplayWidth, $strDisplayFile);
@@ -948,7 +958,7 @@ class plgProjectUpload extends JPlugin{
       $oEntityType = EntityTypePeer::findByTableName("Data Photo");
 
       $oDisplayDataFile = new DataFile();
-      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId());
+      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId(), null, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
     }
 
     $bIcon = false;
@@ -961,7 +971,7 @@ class plgProjectUpload extends JPlugin{
 
         //store the icon into the data_file table
         $oIconDataFile = new DataFile();
-        $oIconDataFile = $oIconDataFile->newDataFileByFilesystem($strIconName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId());
+        $oIconDataFile = $oIconDataFile->newDataFileByFilesystem($strIconName, $strWarehousePath, false, $oDataFile->getTitle(), $oDataFile->getDescription(), $oEntityType->getId(), null, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
         $oIconDataFile->setView("PUBLIC");
         $oIconDataFile->save();
 
@@ -990,13 +1000,13 @@ class plgProjectUpload extends JPlugin{
   }
 
   private function isValidFileName($p_strFileName){
-    $bPasses1 = preg_match("/[%$\/#^~*&\t\n\r]/", $p_strFileName);
+    $bPasses1 = preg_match("/[%$\/#(){}\[\]^~*&\t\n\r]/", $p_strFileName);
     $bPasses2 = preg_match("/[\\\]/", $p_strFileName);
     $bPasses3 = preg_match("/^\./", $p_strFileName);
 
     if($bPasses1||$bPasses2||$bPasses3){
       return false;
-}
+    }
 
     return true;
   }
