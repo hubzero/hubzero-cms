@@ -34,7 +34,13 @@ class DomainEntityType {
   const ENTITY_TYPE_REPETITION      = 5;
   const ENTITY_TYPE_FACILITY        = 20;
   const ENTITY_TYPE_TSUNAMI_PROJECT = 40;
+  const ENTITY_TYPE_DATA_FILE       = 112;
+  const ENTITY_TYPE_MATERIALS       = 134;
   const ENTITY_TYPE_PERSON          = 141;
+  const ENTITY_TYPE_LOCATION_PLAN   = 155;
+  const ENTITY_TYPE_SITEREPORTSSITE = 213;
+
+
 
 
   /**
@@ -99,6 +105,19 @@ class DomainEntityType {
       case "Person":
         return self::ENTITY_TYPE_PERSON;
 
+      case "DataFile":
+        return self::ENTITY_TYPE_DATA_FILE;
+
+      case "Materials":
+        return self::ENTITY_TYPE_MATERIALS;
+
+      case "SensorLocationPlan":
+        return self::ENTITY_TYPE_LOCATION_PLAN;
+
+      case "SiteReportsSite":
+        return self::ENTITY_TYPE_SITEREPORTSSITE;
+
+
       default:
         return self::ENTITY_TYPE_UNKNOWN;
     }
@@ -141,6 +160,12 @@ class DomainEntityType {
 
       case self::ENTITY_TYPE_PERSON:
         return PersonPeer::retrieveByPK($id);
+
+      case self::ENTITY_TYPE_MATERIALS:
+        return MaterialPeer::retrieveByPK($id);
+
+      case "SensorLocationPlan":
+        return LocationPlanPeer::retrieveByPK($id);
 
       case self::ENTITY_TYPE_UNKNOWN:
         throw new Exception("Can not load domain entity of unknown type out of database");
