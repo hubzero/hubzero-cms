@@ -1729,7 +1729,7 @@ class ContribtoolHtml
 				</label>
 				<label>
 					<?php echo JText::_('COMPOSE_ABSTRACT'); ?>:
-					<textarea name="fulltext" cols="50" rows="20"><?php echo stripslashes($status['fulltext']); ?></textarea>
+					<textarea name="fulltext" cols="50" rows="20"><?php echo ($status['fulltext']); ?></textarea>
 					<script type="text/javascript">
 					CKEDITOR.replace( 'fulltext' , {
 			        toolbar : 'NEESLearningObject',
@@ -1816,7 +1816,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			</div>
 			<fieldset>
 				<h3><?php echo JText::_('ATTACH_ATTACHMENTS'); ?></h3>
-				<iframe width="100%" height="200" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $option; ?>&amp;task=attach&amp;rid=<?php echo $rid; ?>&amp;no_html=1&amp;type=7&amp;allowupload=<?php echo $allowupload; ?>"></iframe>				
+				<iframe width="100%" height="400" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $option; ?>&amp;task=attach&amp;rid=<?php echo $rid; ?>&amp;no_html=1&amp;type=7&amp;allowupload=<?php echo $allowupload; ?>"></iframe>				
 			</fieldset><div class="clear"></div>
             <div class="explaination">
 				<h4><?php echo JText::_('ATTACH_WHAT_ARE_SCREENSHOTS'); ?></h4>
@@ -1825,7 +1825,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			</div>
 			<fieldset>
 				<h3><?php echo JText::_('ATTACH_SCREENSHOTS'); ?></h3>
-				<iframe width="100%" height="400" frameborder="0" name="screens" id="screens" src="index.php?option=<?php echo $option; ?>&amp;task=screenshots&amp;rid=<?php echo $rid; ?>&amp;no_html=1&amp;version=<?php echo $version; ?>"></iframe>				
+				<iframe width="100%" height="200" frameborder="0" name="screens" id="screens" src="index.php?option=<?php echo $option; ?>&amp;task=screenshots&amp;rid=<?php echo $rid; ?>&amp;no_html=1&amp;version=<?php echo $version; ?>"></iframe>				
 			</fieldset><div class="clear"></div>
 		<?php
 	}
@@ -2253,20 +2253,50 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		$out = '';
 		if($allowupload) {
 		?>
-		<form action="index.php" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
+		<!-- <form action="index.php" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<label>
 					<input type="file" class="option" name="upload" />
-					<input type="submit" class="option" value="<?php echo strtolower(JText::_('UPLOAD')); ?>" />
+					<input type="submit" class="option" value="<?php //echo strtolower(JText::_('UPLOAD')); ?>" />
 				</label>
 
+				<input type="hidden" name="option" value="<?php //echo $option; ?>" />
+				<input type="hidden" name="no_html" value="1" />
+				<input type="hidden" name="pid" id="pid" value="<?php //echo $id; ?>" />
+				<input type="hidden" name="path" id="path" value="<?php //echo $path; ?>" />
+				<input type="hidden" name="task" value="saveattach" />
+			</fieldset>
+		</form> -->
+		    <script type="text/javascript" src="media/system/js/jquery-1.4.2.js"></script>
+			<script type="text/javascript">var $jQ = jQuery.noConflict();</script> 	
+			<script type="text/javascript" src="components/com_contribute/contribute2.js"></script>
+			<script type="text/javascript" src="site/ckeditor/ckeditor.js"></script>
+			<h3>Add New Attachment</h3>
+			<input type="button" value="Upload a file from your computer" id="hubfancy-filebutton" ONCLICK="HUB.ContributeEnhancement.showFileForm();"/>
+			<form action="index.php" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data" style="display:none;">	
+			<fieldset>
+				<label>
+					<input type="file" class="option" name="upload" />
+				</label>	
 				<input type="hidden" name="option" value="<?php echo $option; ?>" />
 				<input type="hidden" name="no_html" value="1" />
 				<input type="hidden" name="pid" id="pid" value="<?php echo $id; ?>" />
 				<input type="hidden" name="path" id="path" value="<?php echo $path; ?>" />
 				<input type="hidden" name="task" value="saveattach" />
+				<br/>
+				[Optional] Type a description for the file
+				<textarea name="filedesc" cols="50" rows="15"></textarea>
+				<script type="text/javascript">
+				CKEDITOR.replace( 'filedesc' , {
+			        toolbar : 'NEESBasicDescription',
+			        height:"50", width:"85%",
+			    });
+			    </script>
+			    <input type="submit" class="option" value="<?php echo strtolower(JText::_('UPLOAD')); ?>" />
+			    <input type="button" value="Cancel" id="hubfancy-atchcancel" ONCLICK="HUB.ContributeEnhancement.cancel();"/>
 			</fieldset>
-		</form>
+			</form>
+			
 		<?php
 		}
 		else {
@@ -2291,7 +2321,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			$out .= '<p>'.JText::_('ATTACH_EDIT_TITLE_EXPLANATION').'</p>'.n;
 			}
 			$out .= '<table class="list">'.n;
-			
+			$out .= '<h3>Existing Attachments</h3>'.n;
 			foreach ($children as $child) 
 			{
 				$k++;
@@ -2332,11 +2362,18 @@ if($tagname!='screenshots' and $tagname!='bio') {
 				$out .= ' <tr>'.n;
 				$out .= '  <td width="100%">';
 				if($allowupload) {
-				$out .= '<span'.$liclass.' item:name id:'.$child->id.'">'.$child->title.'</span><br />'.ContribtoolHtml::getFileAttribs( $url, $base );
+				$out .= '<h4><span'.$liclass.' item:name id:'.$child->id.'">'.$child->title.'</span></h4><br />'.ContribtoolHtml::getFileAttribs( $url, $base );
 				}
 				else {
-				$out .= '<span>'.$child->title.'</span>'.n;
+				$out .= '<h4><span>'.$child->title.'</span></h4>'.n;
 				}
+				if ($child->introtext != '') {
+					$out.='<strong>Description: </strong><span class="fdesc hubfancy-supdocdesc item:linkdescedit id:'.$child->id.'">'.$child->introtext.'</span>';
+				 }
+				 else if($allowupload)
+				 {
+				 	$out.='<em><span class="fdesc hubfancy-supdocdesc item:linkdescedit id:'.$child->id.'">'.'Click to add description'.'</span></em>';
+				 }
 				$out .='</td>'.n;
 				if($allowupload) {
 				$out .= '  <td class="d">'.ContribtoolHtml::orderUpIcon( $i, $id, $child->id, 'a' ).'</td>'.n;
@@ -2503,6 +2540,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
   	<script type="text/javascript" src="/includes/js/joomla.javascript.js"></script>    
 	<script type="text/javascript" src="/components/<?php echo $option; ?>/contribute.js"></script>
     <script type="text/javascript" src="/components/com_contribtool/contribtool.js"></script>
+    <script type="text/javascript" src="components/com_contribute/contribute2.js"></script>
     <script type="text/javascript" src="/templates/<?php echo $app->getTemplate(); ?>/js/globals.js"></script>
  </head>
  <body id="small-page">

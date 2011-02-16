@@ -201,6 +201,7 @@ class ContribtoolController extends JObject
 
 		// managing attachments
 		case 'rename':       	$this->attach_rename();  		break;
+		case 'redescribe':	 	$this->attach_redescribe();		break;
 		case 'saveattach':   	$this->attach_save();    		break;
 		case 'deleteattach': 	$this->attach_delete();  		break;
 		case 'attach':       	$this->attachments();    		break;
@@ -2626,7 +2627,8 @@ class ContribtoolController extends JObject
 					return;
 			}
 
-			$body = stripslashes($_POST['fulltext']);
+			//$body = stripslashes($_POST['fulltext']);
+			$body = $this->txt_clean($_POST['fulltext']);
 			if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $body )) {
 				// Do nothing
 				$status['fulltext'] = trim(stripslashes($body));
@@ -2691,7 +2693,8 @@ class ContribtoolController extends JObject
 			// clean the original text of any matches
 			$status['fulltext']  = str_replace('<nb:'.$nbtag.'>'.$allnbtags[$nbtag].'</nb:'.$nbtag.'>','',$status['fulltext']);
 		}
-		$status['fulltext'] = trim(stripslashes($status['fulltext']));
+		//$status['fulltext'] = trim(stripslashes($status['fulltext']));
+		$status['fulltext'] = trim($status['fulltext']);
 		
 		/* Dropped Wiki Formatting Cleaning to Mesh Well with new HTML Editor */
 		/*$status['fulltext'] = preg_replace('/<br\\s*?\/??>/i', "", $status['fulltext']);
@@ -2798,6 +2801,7 @@ class ContribtoolController extends JObject
 		// add the CSS to the template 
 		$document = &JFactory::getDocument();
 		$document->addScript("components/com_contribute/contribute.js");
+		$document->addScript("components/com_contribute/contribute2.js");
 		$this->getStyles();	
 		$this->getScripts();
 		
@@ -3004,6 +3008,33 @@ class ContribtoolController extends JObject
 		// Echo the name
 		echo $name;
 	}
+	
+	protected function attach_redescribe()
+	{
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+		
+		// Incoming
+		$id = JRequest::getInt( 'id', 0 );
+		$name = JRequest::getVar( 'linkdescedit', '' );
+
+		// Ensure we have everything we need
+		if ($id && $name != '') {
+			$database =& JFactory::getDBO();
+			
+			$r = new ResourcesResource( $database );
+			$r->load( $id );
+			$r->introtext = $name;
+			$r->store();
+		}
+
+		
+		// Echo the description
+		echo $name;
+	}
 
 	//-----------
 
@@ -3053,7 +3084,7 @@ class ContribtoolController extends JObject
 			return;
 		}
 		$row->title = ($row->title) ? $row->title : $file['name'];
-		$row->introtext = $row->title;
+		$row->introtext = JRequest::getVar( 'filedesc', '');//$row->title;
 		$row->created = date( 'Y-m-d H:i:s' );
 		$row->created_by = $juser->get('id');
 		$row->published = 1;
@@ -3245,6 +3276,7 @@ class ContribtoolController extends JObject
 		
 		// get config
 		$cparams =& JComponentHelper::getParams( 'com_contribute' );
+		
 		
 		// Set the page title
 		$pagetitle = JText::_(strtoupper($this->_name)).': '.JText::_('TASK_ATTACH');
