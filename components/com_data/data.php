@@ -15,6 +15,14 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+set_include_path("/usr/local/propel/runtime/classes" . PATH_SEPARATOR . get_include_path());
+set_include_path("api/org/phpdb/propel/central/classes" . PATH_SEPARATOR . get_include_path());
+set_include_path("api/org/nees" . PATH_SEPARATOR . get_include_path());
+
+spl_autoload_register('__autoload');
+require_once 'propel/Propel.php';
+Propel::init("api/org/phpdb/propel/central/conf/central-conf.php");
+
 // Require the com_content helper library
 require_once(JPATH_COMPONENT.DS.'controller.php');
 require_once 'lib/security/Authorizer.php';
@@ -38,12 +46,11 @@ $oAuthorizer->setUser($oUser->username);
 
 $oUserManager = UserManager::getInstance();
 $oUserManager->setUser($oUser->username);
+
+
 if($oUser->username=="gemezm"){
   //$oAuthorizer->setUser("sdyke");
   //$oUserManager->setUser("sdyke");
-
-  $oAuthorizer->setUser("rhowell537");
-  $oUserManager->setUser("rhowell537");
 }
 
 // Create the controller

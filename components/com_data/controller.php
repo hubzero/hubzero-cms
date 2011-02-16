@@ -198,6 +198,7 @@ class DataController extends JController {
         return $bCanAccessFile;
     }
 
+    /*
     private function render($p_strSource) {
         // print file if it exists
         $oFile = FileCommandAPI::create($p_strSource);
@@ -210,6 +211,40 @@ class DataController extends JController {
           return;
         }
     }
+    */
+    
+    private function render($p_strSource) {
+        // Get some needed libraries
+        ximport('xserver');
+                
+        // print file if it exists
+        $oFile = FileCommandAPI::create($p_strSource);
+        $mime = FileCommandAPI::getmime($p_strSource);
+        
+        if (!file_exists($oFile->getPath())) {
+            //JError::raiseError( 404, JText::_('COM_RESOURCES_FILE_NOT_FOUND').' '.$filename );
+            echo "<p class='error'>Data file not found.</p>";
+            return;
+        }
+
+        // Initiate a new content server and serve up the file
+        $xserver = new XContentServer();
+        $xserver->filename($oFile->getPath());
+        $xserver->disposition('inline');
+        $xserver->mimetype($mime);
+        $xserver->acceptranges(false); // @TODO fix byte range support
+
+        if (!$xserver->serve()) {
+            // Should only get here on error
+            echo "<p class='error'>Server error.</p>";
+        } else {
+            exit;
+        }
+        
+        return TRUE;
+        
+    }
+
 
     private function notAllowed() {
         //  Not allowed to view the file - display an error message for API or for gui
