@@ -85,9 +85,9 @@ $view->display();
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="index.php" method="post" id="hubForm" onsubmit="return validate_form(this)" >
+	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
-			<h4><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_FIELDS_TITLE'); ?></h4>
+			<h4><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_TITLE'); ?></h4>
 			<p><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_EXPLANATION'); ?></p>
 
 			<p><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_ABSTRACT_HINT'); ?></p>
@@ -134,7 +134,7 @@ foreach ($fields as $field)
 				//If its full text field, make it a little bigger than the rest 
 				 ?>
 				
-				<textarea name="<?php echo $fieldName ?>" cols="50" rows="20"><?php echo htmlentities(stripslashes($tagcontent)); ?></textarea>
+				<textarea name="<?php echo $fieldName ?>" cols="50" rows="20"><?php echo htmlentities($tagcontent); ?></textarea>
 				<script type="text/javascript">
 				CKEDITOR.replace( '<?php echo $fieldName ?>' , {
 			        toolbar : 'NEESLearningObject',
@@ -163,10 +163,7 @@ foreach ($fields as $field)
 			<input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" />
 			<input type="hidden" name="publish_up" value="<?php echo $this->row->publish_up; ?>" />
 			<input type="hidden" name="publish_down" value="<?php echo $this->row->publish_down; ?>" />
-	 			<?php 
-				if (JRequest::getVar( 'tmpl', '' ) == "component")
- 					echo '<input type="hidden" name="tmpl" value="component"/>'."\n";
-			?>
+	 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 			<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />
@@ -174,31 +171,5 @@ foreach ($fields as $field)
 		<p id="nextsubmit">
 			<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_NEXT'); ?>" id="nextbutton"/>
 		</p>
-		
-		<script type="text/javascript">
-			function validate_required(field,alerttxt)
-			{
-			with (field)
-			  {
-			  if (value==null||value=="")
-			    {
-			    alert(alerttxt);return false;
-			    }
-			  else
-			    {
-			    return true;
-			    }
-			  }
-			}
-			
-			function validate_form(thisform)
-			{
-			with (thisform)
-			  {
-			  if (validate_required(title,"Your submission must have a title")==false)
-			  {title.focus();return false;}
-			  }
-			}
-		</script>
 	</form>
 </div><!-- / .main section -->

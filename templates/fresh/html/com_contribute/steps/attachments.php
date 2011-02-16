@@ -44,42 +44,71 @@ $app =& JFactory::getApplication();
 	?>
 	
     <script type="text/javascript" src="/media/system/js/mootools.js"></script>
+    <script type="text/javascript" src="media/system/js/jquery-1.4.2.js"></script>
+	<script type="text/javascript">var $jQ = jQuery.noConflict();</script> 	
 	<script type="text/javascript" src="/components/<?php echo $this->option; ?>/contribute.js"></script>
+	<script type="text/javascript" src="/components/com_contribute/contribute2.js"></script>
+	<script type="text/javascript" src="site/ckeditor/ckeditor.js"></script>
  </head>
  <body id="small-page">
+			<h3>Add New Attachment</h3>
+			<input type="button" value="Upload a file from your computer" id="hubfancy-filebutton" ONCLICK="HUB.ContributeEnhancement.showFileForm();"/>
+			<form action="index.php" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data" style="display:none;">
 			
-			<form action="index.php" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
 			<fieldset>
-			<p> Files:</p>
+			
+			
 				<label>
 					<input type="file" class="option" name="upload" />
 				</label>
 				
-				<input type="submit" class="option" value="<?php echo JText::_('COM_CONTRIBUTE_UPLOAD'); ?>" /><br/>
-				<input type="checkbox" name="thumbnail">Use as thumbnail instead of full image</input><br/><em>(upload it again without this checkbox to get the full resolution)</em> 
 				<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="no_html" value="1" />
 				<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
 				<input type="hidden" name="path" id="path" value="<?php echo $this->path; ?>" />
 				<input type="hidden" name="task" value="saveattach" />
+				<br/>
+				[Optional] Type a description for the file
+				<textarea name="filedesc" cols="50" rows="15"></textarea>
+				<script type="text/javascript">
+				CKEDITOR.replace( 'filedesc' , {
+			        toolbar : 'NEESBasicDescription',
+			        height:"50", width:"100%",
+			    });
+			    </script>
+			    <div>[Optional] Tick <input type="checkbox" name="thumb" value="false"/> here and attach an image to use it as a thumbnail</div>
+			    
+			    <input type="submit" class="option" value="<?php echo JText::_('COM_CONTRIBUTE_UPLOAD'); ?>" />
+				<input type="button" value="Cancel" id="hubfancy-atchcancel" ONCLICK="HUB.ContributeEnhancement.cancel();"/>
 			</fieldset>
 			</form>
 			<div class="clear"></div>
-			<form action="index.php" name="hubForm" id="link-attachments-form" method="post" enctype="multipart/form-data">
-			<p><br/> External Links: </p>
+			<input type="button" value="Attach a hyperlink" id="hubfancy-linkbutton" ONCLICK="HUB.ContributeEnhancement.showLinkForm();"/>
+			<form action="index.php" name="hubForm" id="link-attachments-form" method="post" enctype="multipart/form-data" style="display:none;">
 			<fieldset>
 				<label>
+				Link
 					<input type="text" class="option" name="link-address" />
 				</label>
 				
-				<input type="submit" class="option" value="Add External Link" />
 				<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="no_html" value="1" />
 				<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
 				<input type="hidden" name="path" id="path" value="<?php echo $this->path; ?>" />
 				<input type="hidden" name="task" value="savelink" />
+				<br/>
+				[Optional] Type a description for the link
+				<textarea name="linkdesc" cols="50" rows="15"></textarea>
+				<script type="text/javascript">
+				CKEDITOR.replace( 'linkdesc' , {
+			        toolbar : 'NEESBasicDescription',
+			        height:"50", width:"100%",
+			    });
+			    </script>
+			    <input type="submit" class="option" value="Add Link" />
+				<input type="button" value="Cancel" id="hubfancy-atchcancel" ONCLICK="HUB.ContributeEnhancement.cancel();"/>
 			</fieldset>
 			</form>
 			<div class="clear"></div>
@@ -101,7 +130,8 @@ $app =& JFactory::getApplication();
 			</form>
 			<?php  } ?>
 			<div class="clear"></div>
-			
+			<h3>Existing Attachments</h3>
+			<hr />
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
@@ -116,6 +146,7 @@ $app =& JFactory::getApplication();
 			$files = array(13,15,26,33,35,38);
 			$n = count( $this->children );
 ?>
+
 		<p><?php echo Jtext::_('COM_CONTRIBUTE_ATTACH_EDIT_TITLE_EXPLANATION'); ?></p>
 		<table class="list">
 			<tbody>
@@ -155,7 +186,12 @@ $app =& JFactory::getApplication();
 				}
 ?>			
 				<tr>
-					<td width="100%" class="<?php echo $liclass; ?>"><span class="ftitle item:name id:<?php echo $child->id; ?>"><?php echo $child->title; ?> <?php if ($child->type == 71) echo ' (Resource Thumbnail) ' ?></span> <?php echo Hubzero_View_Helper_Html::getFileAttribs( $url, $base ); ?></td>
+					<td width="100%" class="<?php echo $liclass; ?>"><h4><span class="ftitle item:name id:<?php echo $child->id; ?>"><?php echo $child->title; ?></span></h4> <?php echo Hubzero_View_Helper_Html::getFileAttribs( $url, $base ); ?>
+					<?php if ($child->introtext != '') {?><strong>Description:</strong><span class="hubfancy-supdocdesc fdesc item:linkdescedit id:<?php echo $child->id; ?>"><?php echo $child->introtext;?></span>
+					<?php } else { ?>
+					<em><span class="hubfancy-supdocdesc fdesc item:linkdescedit id:<?php echo $child->id; ?>">Click to add a description...</span></em>
+					<?php }  ?>
+					</td>
 					<td class="u"><?php
 					if ($i > 0 || ($i+0 > 0)) {
 					    echo '<a href="index.php?option=com_contribute&amp;no_html=1&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=orderupa&amp;type='.$this->type.'" class="order up" title="'.JText::_('COM_CONTRIBUTE_MOVE_UP').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
@@ -171,7 +207,9 @@ $app =& JFactory::getApplication();
 					}
 					?></td>
 					<td class="t"><a href="index.php?option=<?php echo $this->option; ?>&amp;task=deleteattach&amp;no_html=1&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>&type=<?php echo $this->type?>"><img src="/components/<?php echo $this->option; ?>/images/trash.gif" alt="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" /></a></td>
+					
 				</tr>
+				
 <?php
 				$i++;
 			}
