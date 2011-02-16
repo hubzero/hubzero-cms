@@ -306,7 +306,7 @@ class SupportController extends Hubzero_Controller
 		if ($juser->get('guest')) {
 			return $this->login();
 		}
-		
+
 		if (!$this->acl->check('read','tickets')) {
 			$view->filters['owner'] = $juser->get('username');
 			$view->filters['reportedby'] = $juser->get('username');
@@ -423,8 +423,8 @@ class SupportController extends Hubzero_Controller
 		}
 		
 		// Get the next and previous support tickets
-		$view->row->prev = $view->row->getTicketId('prev', $view->filters, $view->authorized);
-		$view->row->next = $view->row->getTicketId('next', $view->filters, $view->authorized);
+		$view->row->prev = $view->row->getTicketId('prev', $view->filters);
+		$view->row->next = $view->row->getTicketId('next', $view->filters);
 
 		$summary = substr($view->row->report, 0, 70);
 		if (strlen($summary) >=70 ) {

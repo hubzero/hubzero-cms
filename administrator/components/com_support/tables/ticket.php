@@ -114,17 +114,18 @@ class SupportTicket extends JTable
 			$filter .= " AND category='".$filters['category']."'";
 		}
 		if (isset($filters['owner']) && $filters['owner'] != '') {
+			$filter .= " AND ";
+			if (isset($filters['reportedby']) && $filters['reportedby'] != '') {
+				$filter .= "(";
+			}
 			if ($filters['owner'] == 'none') {
-				$filter .= " AND ((owner='' OR owner IS NULL)";
+				$filter .= "(owner='' OR owner IS NULL)";
 			} else {
-				$filter .= " AND (owner='".$filters['owner']."'";
+				$filter .= "owner='".$filters['owner']."'";
 			}
-			if (!isset($filters['reportedby']) || $filters['reportedby'] == '') {
+			/*if (!isset($filters['reportedby']) || $filters['reportedby'] == '') {
 				$filter .= ")";
-			}
-		}
-		if (isset($filters['group']) && $filters['group'] != '') {
-			$filter .= " AND `group`='".$filters['group']."'";
+			}*/
 		}
 		if (isset($filters['reportedby']) && $filters['reportedby'] != '') {
 			if (isset($filters['owner']) && $filters['owner'] != '') {
@@ -133,6 +134,12 @@ class SupportTicket extends JTable
 				$filter .= " AND ";
 			}
 			$filter .= "login='".$filters['reportedby']."'";
+			if (isset($filters['owner']) && $filters['owner'] != '') {
+				$filter .= ")";
+			}
+		}
+		if (isset($filters['group']) && $filters['group'] != '') {
+			$filter .= " AND `group`='".$filters['group']."'";
 		}
 		if ($admin == false && (!isset($filters['owner']) || $filters['owner'] != '') && (!isset($filters['reportedby']) || $filters['reportedby'] != '')) {
 			ximport('xuserhelper');
@@ -149,9 +156,9 @@ class SupportTicket extends JTable
 			}
 			$filter .= " OR `group` IN ('$groups')";
 		}
-		if ($admin == false) {
+		/*if ($admin == false) {
 			$filter .= ")";
-		}
+		}*/
 		
 		/*switch ($filters['searchin'])
 		{
@@ -266,7 +273,7 @@ class SupportTicket extends JTable
 	
 	//-----------
 	
-	public function getTicketId($which, $filters, $authorized)
+	public function getTicketId($which, $filters, $authorized=false)
 	{
 		$filter = $this->buildQuery( $filters, $authorized );
 		

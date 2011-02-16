@@ -109,15 +109,20 @@ class SupportACL extends JObject
 				}
 			}
 		}
-		
+		$grouppermission = $permission;
+		$userspecific = false;
 		// Check individual
+		$permission = 0;
 		foreach ($this->_raw_data as $line) 
 		{
 			// Get the aco permission
 			if ($line['aro_model'] == 'user' 
 			 && $line['aro_foreign_key'] == $this->_juser->get('id') 
 			 && $line['aco_model'] == $aco) {
-				$permission = ($line['action_'.$action] > $permission || ($line['action_'.$action] < 0 && $permission == 0)) ? $line['action_'.$action] : $permission;
+				if (isset($line['action_'.$action])) {
+					$permission = ($line['action_'.$action] > $permission || ($line['action_'.$action] < 0 && $permission == 0)) ? $line['action_'.$action] : $permission;
+					$userspecific = true;
+				}
 			}
 			// Get the specific aco model permission if specified (overrides aco permission)
 			if ($aco_foreign_key) {
@@ -125,16 +130,19 @@ class SupportACL extends JObject
 				 && $line['aro_foreign_key'] == $this->_juser->get('id') 
 				 && $line['aco_model'] == $aco
 				 && $line['aco_foreign_key'] == $aco_foreign_key) {
-					$permission = ($line['action_'.$action] > $permission || ($line['action_'.$action] < 0 && $permission == 0)) ? $line['action_'.$action] : $permission;
+					if (isset($line['action_'.$action])) {
+						$permission = ($line['action_'.$action] > $permission || ($line['action_'.$action] < 0 && $permission == 0)) ? $line['action_'.$action] : $permission;
+						$userspecific = true;
+					}
 				}
 			}
 		}
 		
-		/*if ($permission) {
-			return true;
-		}*/
+		if ($userspecific) {
+			return $permission;
+		}
 		
-		return $permission;
+		return $grouppermission;
 	}
 	
 	//-----------
