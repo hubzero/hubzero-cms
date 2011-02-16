@@ -47,7 +47,6 @@
 		}
 	h1 {
 		font-size: 1.8em;
-		line-height:1.1em;
 		}
 	h2,
 	.contentheading,
@@ -1543,8 +1542,6 @@
 	.columns .teachingmaterial { padding-left: 23px; background: url("../images/home/fc-teachingmaterial.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
 	.columns .tool { padding-left: 23px; background: url("../images/home/fc-tool.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
 	.columns .series { padding-left: 23px; background: url("../images/home/fc-series.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
-	.columns .poste { padding-left: 23px; background: url("../images/home/fc-teachingmaterial.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
-	.columns .database { padding-left: 23px; background: url("../images/home/fc-series.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
 	.columns .workshop { padding-left: 23px; background: url("../images/home/fc-workshop.gif") 0 0em no-repeat; }
 	.columns .wiki { padding-left: 23px; background: url("../images/home/fc-wiki.gif") 0 0em no-repeat; }
 	.columns .contact { padding-left: 23px; background: url("../images/home/fc-contact.gif") 0 0em no-repeat; }
@@ -1560,6 +1557,7 @@
 	.columns .browse { padding-left: 28px; background: url("../images/home/fc-browse.gif") 0 0.2em no-repeat; }
 	.columns .activedocument { padding-left: 23px; background: url("../images/home/fc-teachingmaterial.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
 	.columns .historicaldocument { padding-left: 23px; background: url("../images/home/fc-teachingmaterial.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
+	.columns .database { padding-left: 23px; background: url("../images/home/fc-browse.gif") 0 0em no-repeat; padding-bottom: 0.2em; }
 
 /*---------------------------------------------------------------
 	Tabbed sub-menus
@@ -2419,7 +2417,7 @@
 	.user { background: url("../images/icons/user.png") 0 0 no-repeat; padding-left: 20px; }
 	.edit-member { background: url("../images/icons/user_edit.png") 0 0 no-repeat; padding-left: 20px; }
 	.new-ticket { background: url("../images/icons/note_add.png") 0 0 no-repeat; padding-left: 20px; }
-	.supported { background: url("../images/icons/award_star_gold_1.png") 0 0 no-repeat; padding-left: 20px; }
+	.supported { background: url("../images/awards/medalSimple_20.png") 0 0 no-repeat; padding-left: 20px; }
 	.phone,
 	.smstxt { background: url("../images/icons/phone.png") 0 0 no-repeat; padding-left: 20px; }
 	.bell { background: url("../images/icons/bell.png") 0 0 no-repeat; padding-left: 20px; }
