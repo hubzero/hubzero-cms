@@ -66,7 +66,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                     <th>Publication</th>
                   </thead>
                   <?php
-
+                  $iPubIndex = 0;
                   $oPublicationArray = $this->pubArray;
                   foreach($oPublicationArray as $iPubIndex=>$oPublication){
                      $strAuthorArray = $oPublication['authors'];
@@ -94,6 +94,27 @@ defined('_JEXEC') or die( 'Restricted access' );
                   </tr>
 
                   <?php
+                  }
+
+                  if(isset($_REQUEST[ProjectHomepagePeer::TABLE_NAME])){
+                    $oProjectHomepageArray = unserialize($_REQUEST[ProjectHomepagePeer::TABLE_NAME]);
+
+                    /* @var $oProjectHomepagePub ProjectHomepage */
+                    foreach($oProjectHomepageArray as $iProjectPubIndex=>$oProjectHomepagePub){
+                      ++$iPubIndex;
+                      $strBgColor = "odd";
+                      if($iPubIndex%2 === 0){
+                        $strBgColor = "even";
+                      }
+                    ?>
+                      <tr class="<?php echo $strBgColor; ?>">
+                        <td id="publication<?php echo $iPubIndex; ?>>">
+                          <?php echo $oProjectHomepagePub->getDescription(); ?>
+                            (<a href="<?php echo $oProjectHomepagePub->getDataFile()->get_url(); ?>">download</a>)
+                        </td>
+                      </tr>
+                    <?php
+                    }
                   }
                   ?>
                 </table>

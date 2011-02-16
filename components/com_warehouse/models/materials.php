@@ -48,7 +48,7 @@ class WarehouseModelMaterials extends WarehouseModelBase{
   	foreach($p_oMaterialArray as $iMaterialIndex=>$oMaterial){
   	  $iMaterialId = $oMaterial->getId();
   	  $strMaterialName = $oMaterial->getName();
-  	  $strMaterialDesc = $oMaterial->getDescription();
+  	  $strMaterialDesc = nl2br($oMaterial->getDescription());
   	  $strMaterialType = $oMaterial->getMaterialType()->getName();
   	  
   	  //get the properties table

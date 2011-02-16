@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
@@ -6,7 +6,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.application.component.view');
 
 class WarehouseViewData extends JView{
-
+	
   function display($tpl = null){
     $strPathArray = null;
     $oRepetition = null;
@@ -41,7 +41,7 @@ class WarehouseViewData extends JView{
 //      $strPath = substr($oRepetition->getPath(), 0, $iIndex + strlen($strName));
       $strPath = $oRepetition->getPathname();
     }
-
+    
     $iProjectId = 0;
     $iExperimentId = 0;
 
@@ -56,15 +56,15 @@ class WarehouseViewData extends JView{
       $oDataFileArray = $oDataModel->findByDirectory($strParentPath);
     }
 
-    /* @var $oDataFile DataFile */
-    $oDataFile = $oDataFileArray[0];
+      /* @var $oDataFile DataFile */
+      $oDataFile = $oDataFileArray[0];
 
-    /* @var $oDataFileLink DataFileLink */
-    $oDataFileLink = DataFileLinkPeer::retrieveByPK($oDataFile->getId());
-    $iProjectId = $oDataFileLink->getProject()->getId();
-    if($oDataFileLink->getExperiment()){
-      $iExperimentId = $oDataFileLink->getExperiment()->getId();
-    }
+      /* @var $oDataFileLink DataFileLink */
+      $oDataFileLink = DataFileLinkPeer::retrieveByPK($oDataFile->getId());
+      $iProjectId = $oDataFileLink->getProject()->getId();
+      if($oDataFileLink->getExperiment()){
+        $iExperimentId = $oDataFileLink->getExperiment()->getId();
+      }
 
     /*
     if(!empty ($oDataFileArray)){
@@ -74,7 +74,7 @@ class WarehouseViewData extends JView{
       $iProjectId = $oDataFileLink->getProject()->getId();
       if($oDataFileLink->getExperiment()){
         $iExperimentId = $oDataFileLink->getExperiment()->getId();
-      }
+    }
     }else{
       //get parent directory
       $strDirectoryArray = explode("/", $strPath);
@@ -110,13 +110,13 @@ class WarehouseViewData extends JView{
     $strReturnURL = $oDataModel->getReturnURL($strAddressBarUrl);
     $this->assignRef( "warehouseURL", $strReturnURL );
     JRequest::setVar('warehouseURL', $strReturnURL);
-
+    
     $this->assignRef( "mod_warehousefiles", ComponentHtml::getModule("mod_warehousefiles") );
 
     parent::display($tpl);
   }//end display
-
-
+  
+  
 }
 
 ?>

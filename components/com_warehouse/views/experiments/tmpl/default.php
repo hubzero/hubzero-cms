@@ -1,9 +1,9 @@
-<?php
+<?php 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php
+<?php 
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addScript($this->baseurl."/components/com_warehouse/js/ajax.js", 'text/javascript');
@@ -11,30 +11,30 @@ defined('_JEXEC') or die( 'Restricted access' );
   $document->addScript($this->baseurl."/components/com_warehouse/js/resources.js", 'text/javascript');
 ?>
 
-<?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?> 
+<?php $oProject = unserialize($_REQUEST[Search::SELECTED]); ?>
 
 <?php
   $strUsername = $this->strUsername;
   $oAuthorizer = Authorizer::getInstance();
   //$oAuthorizer->setUser($strUsername);
 ?>
-
+ 
 <div class="innerwrap">
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
-
+  
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="title" style="padding-bottom:1em;">
       <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
     </div>
-
+      
     <div id="treeBrowser" style="float:left;width:20%;"></div>
-
+    
     <div id="overview_section" class="main section" style="width:100%;float:left;">
       <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
       <?php echo $this->strTabs; ?>
-
+        
       <form id="frmExperiments" style="margin:0px;padding:0px;">
 	    <input type="hidden" name="task" value="find"/>
 	    <input type="hidden" name="keywords" value="<?php echo $_REQUEST[Search::KEYWORDS]; ?>"/>
@@ -57,7 +57,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         	  $oDescriptionClob = StringHelper::neat_trim($oExperiment->getDescription(), 250);
         	  $strName = $oExperiment->getName();
         	  $strThumbnail = $strExperimentThumbnailArray[$iExperimentIndex];
-
+                  
 
                   //added on July 1,2010.  Users want to see the "Main" inDEED file in experiment list
                   $oIndeedDataFileArray = $oExperiment->getExperimentIndeedFile("inDEED",
@@ -121,29 +121,29 @@ defined('_JEXEC') or die( 'Restricted access' );
                       </div>
                     <?php
                   }else{
-
+                    
                   }
               }//end foreach
 
               if($iViewed === 0){
                 if(empty ($oExperimentArray))  {
                   ?> <p class="warning">No experiments found.</p> <?php
-                }else{
+                }else{ 
                   ?> <p class="error">You don't have permission to view the experiments.</p> <?php
                 }
                 ?>
-
+                  
                 <?php
               }
             }//end if project
             ?>
-
+      
         </div>
       </form>
     </div>
     <div class="clear"></div>
   </div>
-
+  
 </div>
 
 

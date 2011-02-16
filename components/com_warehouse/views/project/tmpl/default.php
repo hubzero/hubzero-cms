@@ -54,12 +54,10 @@ defined('_JEXEC') or die( 'Restricted access' );
             if($oAuthorizer->canView($oProject)){
               $oProjectImageDataFile = unserialize($_REQUEST[DataFilePeer::TABLE_NAME]);
               if($oProjectImageDataFile!=null){
-                $strDirLink = $oProjectImageDataFile->getPath()."/".$oProjectImageDataFile->getName();
-                $strFileLink = str_replace("/nees/home/",  "",  $strDirLink);
-                $strFileLink = str_replace(".groups",  "",  $strFileLink);
+                $strFileLink = $oProjectImageDataFile->getUrl();
             ?>
               <p style="font-size:11px;color:#999999" align="center">
-                <img src="/data/get/<?php echo $strFileLink; ?>"/><br><?php echo $oProjectImageDataFile->getDescription(); ?>
+                <img src="<?php echo $strFileLink; ?>"/><br><?php echo $oProjectImageDataFile->getDescription(); ?>
               </p>
             <?php
               }else{
@@ -179,7 +177,7 @@ defined('_JEXEC') or die( 'Restricted access' );
               <td>
                 <?php
                   $oDescriptionClob = $oProject->getDescription();
-                  echo nl2br($oDescriptionClob);
+                  echo $oDescriptionClob;
                 ?>
 
               </td>
@@ -250,8 +248,10 @@ defined('_JEXEC') or die( 'Restricted access' );
               <td style="font-weight:bold;">Publications:</td>
               <td>
                 <?php
+                  $iPubCount = 0;
                   $oPublicationArray = $this->publications;
                   foreach($oPublicationArray as $iPubIndex=>$oPublication){
+                     ++$iPubCount;
                      $strAuthorArray = $oPublication['authors'];
 
                      $strAuthors = "";
@@ -271,10 +271,42 @@ defined('_JEXEC') or die( 'Restricted access' );
                   <?php
                   }
 
-
+                  //check if resource publication count is greater than 3
                   if($this->publicationCount > 3){?>
                     <a href="/warehouse/publications/project/<?php echo $oProject->getId(); ?>">more...</a>
-                  <?php }
+                  <?php 
+                  }else{
+                    //$iPubIndex = count($oPublicationArray);
+                    
+                    //if not, display publications without authors
+                    $bShowPublicationMoreLink = false;
+                    if(isset($_REQUEST[ProjectHomepagePeer::TABLE_NAME])){
+                      $oProjectHomepageArray = unserialize($_REQUEST[ProjectHomepagePeer::TABLE_NAME]);
+                      if(($this->publicationCount + count($oProjectHomepageArray)) > 3){
+                        $bShowPublicationMoreLink = true;
+                      }
+
+                      /* @var $oProjectHomepagePub ProjectHomepage */
+                      foreach($oProjectHomepageArray as $iProjectPubIndex=>$oProjectHomepagePub){
+                        ++$iPubCount;  
+                        if($iPubCount > 3){
+                          break;
+                        }
+                      ?>
+                        <div id="publication<?php echo $iPubIndex; ?>>">
+                          <?php echo $oProjectHomepagePub->getDescription(); ?>
+                            (<a href="<?php echo $oProjectHomepagePub->getDataFile()->get_url(); ?>">download</a>)
+                        </div>
+                      <?php
+                      }
+                    }
+
+                    if($bShowPublicationMoreLink){?>
+                      <a href="/warehouse/publications/project/<?php echo $oProject->getId(); ?>">more...</a>
+                    <?php
+                    }
+
+                  }
                 ?>
               </td>
             </tr>
@@ -285,7 +317,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                   <?php if ($this->iDocumentCount > 0): ?>
                     <a onclick="getMootools('/warehouse/data?path=<?php echo $oProject->getPathname(); ?>/Documentation&format=ajax&form=frmDocumentation&target=docList','docList');" href="javascript:void(0);">view</a>
                   <?php else:
-                     echo Files::NOT_AVAILABLE;
+                     echo Files::NOT_AVAILABLE;    
                     endif;
                   ?>
                 </div>

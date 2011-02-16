@@ -16,6 +16,7 @@ class WarehouseController extends JController{
     parent::__construct();
 
     $this->registerTask( 'find' , 'findProjects' );
+    $this->registerTask( 'filter' , 'filterSearchResults' );
     $this->registerTask( 'get' , 'getFile' );
     $this->registerTask( 'download' , 'download' );
     $this->registerTask( 'downloadsize', 'getDownloadSize' );
@@ -42,24 +43,49 @@ class WarehouseController extends JController{
   public function findProjects(){
     $dStartTime = $this->getComputeTime();
 
-    //set the search parameters
-    $strKeyword = JRequest::getVar("keywords", "");
-    $_SESSION[Search::KEYWORDS] = $strKeyword;
+    $_REQUEST[Search::FILTER] = false;
 
-    $strType = JRequest::getVar('type');
-    $_SESSION[Search::SEARCH_TYPE] = $strType;
+    //set the search parameters
+    $strKeyword = JRequest::getVar("keywords", StringHelper::EMPTY_STRING);
+    $_SESSION[Search::KEYWORDS] = $strKeyword;
 
     $strFunding = JRequest::getVar('funding');
     $_SESSION[Search::FUNDING_TYPE] = $strFunding;
 
+    $iSite = JRequest::getInt('neesSite', 0);
+    $_SESSION[Search::NEES_SITE] = $iSite;
+    
     $strMember = JRequest::getVar('member');
+    if($strMember=="Last Name, First Name"){
+      $strMember = StringHelper::EMPTY_STRING;
+    }
     $_SESSION[Search::MEMBER] = $strMember;
+    $_SESSION[Search::IS_INVESTIGATOR] = 0;
 
-    $strStartDate = JRequest::getVar('startdate');
-    $_SESSION[Search::START_DATE] = $strStartDate;
+    $strMaterialType = JRequest::getVar('materialType', StringHelper::EMPTY_STRING);
+    if($strMaterialType=="(Separate by commas)"){
+      $strMaterialType = StringHelper::EMPTY_STRING;
+    }
+    $_SESSION[Search::MATERIAL_TYPES] = $strMaterialType;
 
-    $strEndDate = JRequest::getVar('enddate');
-    $_SESSION[Search::END_DATE] = $strEndDate;
+    $strAwards = JRequest::getVar('award', StringHelper::EMPTY_STRING);
+    if($strAwards=="(Separate by commas)"){
+      $strAwards = StringHelper::EMPTY_STRING;
+    }
+    $_SESSION[Search::AWARDS] = $strAwards;
+
+    $strProjectIds = JRequest::getVar('projid', "");
+    if($strProjectIds=="(Separate by commas)"){
+      $strProjectIds = StringHelper::EMPTY_STRING;
+    }
+    $_SESSION[Search::PROJECT_IDS] = $strProjectIds;
+
+    $iProjectTypeId = JRequest::getInt('projectType', 0);
+    $_SESSION[Search::PROJECT_TYPE] = $iProjectTypeId;
+
+
+    $iProjectYear = JRequest::getInt('projectYear', 0);
+    $_SESSION[Search::PROJECT_YEAR] = $iProjectYear;
 
     $strOrderBy = JRequest::getVar('order', 'nickname');
 
@@ -70,18 +96,18 @@ class WarehouseController extends JController{
     //invoke the search form plugin
     JPluginHelper::importPlugin( 'project' );
     $oDispatcher =& JDispatcher::getInstance();
-    $iResultsCountArray = $oDispatcher->trigger('onProjectSearchCount',$strParamArray);
-    $strResultsArray = $oDispatcher->trigger('onProjectSearch',$strParamArray);
+    $oProjectArray = $oDispatcher->trigger('onProjectSearch',$strParamArray);
+    $iResultsCountArray = array(0=>1);
 
     //check to see if we have results
-    if(!empty($iResultsCountArray)){
+    if(!empty($oProjectArray)){
       /*
        * if we do get the first array.  the plugin returns arrays.
        * thus, what we are looking for is wrapped inside results array.
        *
        */
-      $oResultsArray = $strResultsArray[0];
-      $iResultsCount = $iResultsCountArray[0];
+      $oResultsArray = $oProjectArray[0];
+      $iResultsCount = JRequest::getVar('total');
 
       /*
        * store the results in the session.
@@ -109,6 +135,58 @@ class WarehouseController extends JController{
     JRequest::setVar("count", $iResultsCount );
     parent::display();
   }
+
+  public function filterSearchResults(){
+    $dStartTime = $this->getComputeTime();
+
+    $_REQUEST[Search::FILTER] = true;
+
+    $strOrderBy = JRequest::getVar('order', 'nickname');
+    $iResultsCount = 0;
+    $strParamArray = array(0,0);
+
+    //invoke the search form plugin
+    JPluginHelper::importPlugin( 'project' );
+    $oDispatcher =& JDispatcher::getInstance();
+    $oProjectArray = $oDispatcher->trigger('onProjectSearch',$strParamArray);
+    $iResultsCountArray = array(0=>1);
+
+    //check to see if we have results
+    if(!empty($oProjectArray)){
+      /*
+       * if we do get the first array.  the plugin returns arrays.
+       * thus, what we are looking for is wrapped inside results array.
+       *
+       */
+      $oResultsArray = $oProjectArray[0];
+      $iResultsCount = JRequest::getVar('total');
+
+      /*
+       * store the results in the session.
+       * get in the view with unserialize($_REQUEST[Search::RESULTS])
+       */
+      $_SESSION[Search::RESULTS] = serialize($oResultsArray);
+      $_REQUEST[Search::COUNT] = $iResultsCount;
+      $_REQUEST[Search::KEYWORDS] = (isset($_SESSION[Search::KEYWORDS])) ? $_SESSION[Search::KEYWORDS] : "";
+      $_REQUEST[Search::ORDER_BY] = $strOrderBy;
+
+      //create thumbnails if need be...
+      $strProjectIconArray = array();
+      foreach($oResultsArray as $iProjectIndex=>$oProject){
+        $strThumbnail =  $oProject->getProjectThumbnailHTML("icon");
+        array_push($strProjectIconArray, $strThumbnail);
+      }
+      $_SESSION[Search::THUMBNAILS] = $strProjectIconArray;
+    }
+
+    $dEndTime = $this->getComputeTime();
+    $dSeconds = $dEndTime - $dStartTime;
+    $_REQUEST[Search::TIMER] = round($dSeconds, 2);
+
+    JRequest::setVar("view", "results" );
+    JRequest::setVar("count", $iResultsCount );
+    parent::display();
+  }
   
   /**
    * Returns displays or downloads a file using 
@@ -116,17 +194,17 @@ class WarehouseController extends JController{
    *
    */
   public function getFile(){
-  	$strPathToFile = JRequest::getVar("path", "");
-  	
-  	/*
-  	 * TODO: Remove this check before going to prototype 3.  
-  	 * We want to go straight to the file path!
-  	 */
-  	if(!StringHelper::beginsWith($strPathToFile, "/nees/home")){
-  	  $strPathToFile = "/www/neeshub/components/com_warehouse/".$strPathToFile;
-  	}
-  	
-  	FileHelper::download($strPathToFile);
+    $strPathToFile = JRequest::getVar("path", "");
+
+    /*
+     * TODO: Remove this check before going to prototype 3.
+     * We want to go straight to the file path!
+     */
+    if(!StringHelper::beginsWith($strPathToFile, "/nees/home")){
+      $strPathToFile = "/www/neeshub/components/com_warehouse/".$strPathToFile;
+    }
+
+    FileHelper::download($strPathToFile);
   }
   
   /**
@@ -155,7 +233,7 @@ class WarehouseController extends JController{
 
     $ext = $oModel->downloadTarBall();
   }
-  
+
   function getDownloadSize(){
     /* @var $oModel WarehouseModelBase */
     $oModel =& $this->getModel('Base');
@@ -166,7 +244,7 @@ class WarehouseController extends JController{
 
     /* @var $oDataFile DataFile */
     $oDataFile = null;
-
+      
     $iDataFileIdArray = explode(",", $iDataFileId);
     if(count($iDataFileIdArray)==1){
       $oDataFile = $oModel->getDataFileById($iDataFileId);
@@ -189,10 +267,10 @@ class WarehouseController extends JController{
     }
 
     $strReturn = $iSum .":". cleanSize($iSum);
-
+    
     echo $strReturn;
   }
-
+  
   function getTrialDropDown(){
   	$iProjectId = JRequest::getVar("projid");
   	$iExperimentId = JRequest::getVar("expid");

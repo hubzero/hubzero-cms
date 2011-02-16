@@ -522,7 +522,7 @@ ENDHTML;
    * @return Project
    */
   public function getProjectById($p_iProjectId){
-    return ProjectPeer::retrieveByPK($p_iProjectId);
+    return ProjectPeer::find($p_iProjectId);
   }
 
   /**
@@ -531,7 +531,7 @@ ENDHTML;
    * @return Experiment
    */
   public function getExperimentById($p_iExperimentId){
-    return ExperimentPeer::retrieveByPK($p_iExperimentId);
+    return ExperimentPeer::find($p_iExperimentId);
   }
 
   /**

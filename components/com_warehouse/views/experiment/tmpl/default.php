@@ -1,9 +1,9 @@
-<?php
+<?php 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php
+<?php 
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addScript($this->baseurl."/components/com_warehouse/js/ajax.js", 'text/javascript');
@@ -23,21 +23,21 @@ defined('_JEXEC') or die( 'Restricted access' );
   $oExperiment = unserialize($_REQUEST[Experiments::SELECTED]);
   $oProject = $oExperiment->getProject();
 ?>
-
+ 
 <div class="innerwrap">
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
-
+  
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="title" style="padding-bottom:1em;">
       <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
     </div>
-
+      
     <div id="treeBrowser" style="float:left;width:20%;"></div>
-
+    
     <div id="overview_section" class="main section" style="width:100%;float:left;">
-
+      
         <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
         <?php echo $this->strTabs; ?>
 
@@ -79,7 +79,7 @@ defined('_JEXEC') or die( 'Restricted access' );
               <?php
                 echo $oExperiment->getName() .": ". $oExperiment->getTitle();
                 if($oExperiment->hasOpenData()) { ?>
-                  <a href="http://www.opendatacommons.org/licenses/by/summary/" target="openData" title="Open Data license" style="border:0px;"><img src="/components/com_warehouse/images/icons/open_data.png" style="margin-left:20px;" border="0"/></a>
+                  <a href="http://www.opendatacommons.org/licenses/by/summary/" target="openData" style="border:0px;" title="Open Data license"><img src="/components/com_warehouse/images/icons/open_data.png" style="margin-left:20px;" border="0"/></a>
                 <?php
                 }
               ?>
@@ -168,10 +168,10 @@ defined('_JEXEC') or die( 'Restricted access' );
                   <td>
                     <?php
                       $oDrawingArray =  unserialize($_REQUEST["Drawings"]);
-                      foreach($oDrawingArray as $iDrawingIndex=>$oDrawing){
-                        $strDrawingUrl = $oDrawing->getPath()."/display_".$oDrawing->getId()."_".$oDrawing->getName();
-                        $strDrawingUrl = str_replace("/nees/home/",  "",  $strDrawingUrl);
-                        $strDrawingUrl = str_replace(".groups",  "",  $strDrawingUrl);
+                      foreach($oDrawingArray as $iDrawingIndex=>$oDrawing){                        
+                        $strDrawingName = "display_".$oDrawing->getId()."_".$oDrawing->getName();
+                        $oDrawing->setName($strDrawingName);
+                        $strDrawingUrl = $oDrawing->getUrl();
 
                         $strLightbox = "";
                         $strExtension = $oDrawing->getDocumentFormat()->getDefaultExtension();
@@ -179,7 +179,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                           $strLightbox = "lightbox[drawings]";
                         }
                       ?>
-                        <a rel="<?php echo $strLightbox; ?>"  title="<?php echo $oDrawing->getTitle(); ?>" href="/data/get/<?php echo $strDrawingUrl; ?>" title=""><?php echo $oDrawing->getTitle(); ?></a><br>
+                        <a rel="<?php echo $strLightbox; ?>"  title="<?php echo $oDrawing->getTitle(); ?>" href="<?php echo $strDrawingUrl; ?>" title=""><?php echo $oDrawing->getTitle(); ?></a><br>
                       <?php
                         if($iDrawingIndex==2 && ($iDrawingIndex < sizeof($oDrawingArray)-1)){?>
                           <a href="/warehouse/drawings/project/<?php echo $oProject->getId(); ?>/experiment/<?php echo $oExperiment->getId(); ?>">more...</a><br>
@@ -435,10 +435,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
     </div>
     <!-- close overview_section -->
-
+	
     <div class="clear"></div>
   </div>
-
+  
 </div>
 
 

@@ -86,7 +86,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                         
                         $strDrawingName = "display_".$oDrawing->getId()."_".$oDrawing->getName();
                         $oDrawing->setName($strDrawingName);
-                        $strDrawingUrl = $oDrawing->get_url();
+                        $strDrawingUrl = $oDrawing->getUrl();
                       ?>
                         <tr class="<?php echo $strBgColor; ?>">
                           <td><a rel="lightbox[drawings]"  title="<?php echo $oDrawing->getDescription(); ?>" href="<?php echo $strDrawingUrl; ?>" title=""><?php echo $oDrawing->getTitle(); ?></a></td>

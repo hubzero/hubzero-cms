@@ -5,6 +5,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.model' );
 
 require_once('base.php');
+require_once('lib/data/ProjectPeer.php');
 
 
 class WarehouseModelFeatured extends JModel{
@@ -126,6 +127,10 @@ class WarehouseModelFeatured extends JModel{
      */
     public function getTreeTab($p_strOption, $p_iId, $p_strTabArray, $p_strActive, $minimized) {
         return TabHtml::getTreeTab($p_strOption, $p_iId, $p_strTabArray, $p_strActive, $minimized);
+    }
+
+    public function getEnhancedProjects(){
+      return ProjectPeer::getEnhancedProjects();
     }
 	
 }

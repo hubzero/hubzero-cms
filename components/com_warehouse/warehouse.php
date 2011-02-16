@@ -81,8 +81,14 @@ if($oUser->username=="gemezm"){
   //$oAuthorizer->setUser("jpauschk");
   //$oUserManager->setUser("jpauschk");
 
-  //$oAuthorizer->setUser("rhowell537");
-  //$oUserManager->setUser("rhowell537");
+  //$oAuthorizer->setUser("jwv");
+  //$oUserManager->setUser("jwv");
+
+  //$oAuthorizer->setUser("sdyke");
+  //$oUserManager->setUser("sdyke");
+
+  //$oAuthorizer->setUser("melorapark");
+  //$oUserManager->setUser("melorapark");
 }
 
 // Create the controller

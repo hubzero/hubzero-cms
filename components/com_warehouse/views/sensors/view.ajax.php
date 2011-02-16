@@ -15,7 +15,7 @@ class WarehouseViewSensors extends JView{
 
     $iExperimentId = JRequest::getVar("experimentId");
     $this->assignRef('experimentId', $iExperimentId);
-	
+
     //get the trial
     $oSensorsModel =& $this->getModel();
 

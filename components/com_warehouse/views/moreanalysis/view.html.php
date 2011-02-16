@@ -12,7 +12,7 @@ class WarehouseViewMoreAnalysis extends JView{
 
   function display($tpl = null){
     $iProjectId = JRequest::getVar('projid');
-    $oProject = ProjectPeer::retrieveByPK($iProjectId);
+    $oProject = ProjectPeer::find($iProjectId);
     $_REQUEST[Search::SELECTED] = serialize($oProject);
     $this->assignRef( "projid", $iProjectId );
 

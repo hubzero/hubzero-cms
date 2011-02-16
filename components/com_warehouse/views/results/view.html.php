@@ -31,11 +31,15 @@ class WarehouseViewResults extends JView{
     $iLowerLimit = JRequest::getVar('low', 0);
     $iUpperLimit = JRequest::getVar('high', 0);
 
+    //echo "results lower=".$iLowerLimit."<br>";
+    //echo "results upper=".$iUpperLimit."<br>";
+
     $oDbPagination = new DbPagination($iIndex, $iResultsCount, $iDisplay, $iLowerLimit, $iUpperLimit);
     $oDbPagination->computePageCount();
     $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmResults", "project-list"));
 
-    $this->assignRef( "mod_treebrowser", ComponentHtml::getModule("mod_treebrowser") );
+    //$this->assignRef( "mod_treebrowser", ComponentHtml::getModule("mod_treebrowser") );
+    $this->assignRef( "mod_warehousefilter", ComponentHtml::getModule("mod_warehousefilter") );
 
     JFactory::getApplication()->getPathway()->addItem("Project Warehouse","/warehouse");
     JFactory::getApplication()->getPathway()->addItem("Results","javascript:void(0)");

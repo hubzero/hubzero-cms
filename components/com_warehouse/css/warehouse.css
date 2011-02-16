@@ -1060,3 +1060,51 @@
 	  position: static;
           z-index: 65558;
 	}
+
+        #search-filter-lhs {
+            /*
+            position: relative;
+            #width: 300px;
+            #float: left;
+            */
+            border-top: 0pt none;
+            padding: 10px; 
+            margin: 0 0 10px;
+            width: auto;
+	}
+
+        #search-filter-lhs ul{
+            list-style: none outside none;
+            margin-top: 0;
+            border-top-width: 0;
+            padding-top: 0;
+            margin-bottom: 20px;
+            border-bottom-width: 0;
+            padding-bottom: 0;
+	}
+
+        #search-filter-lhs li{
+            margin-top: 0;
+            border-top-width: 0;
+            padding-top: 0;
+            margin-bottom: 0;
+            border-bottom-width: 0;
+            padding-bottom: 0;
+	}
+
+        .search-filter-icon-header-li{
+            background-image: url(/components/com_sites/images/ico_nees.gif);
+            background-repeat: no-repeat;
+            padding-left: 20px;
+	}
+
+        .search-filter-header-span{
+            font-weight: bold;
+        }
+
+        .search-filter-header-li{
+            /*background-image: url(/components/com_sites/images/f_color.gif);*/
+            background-repeat: no-repeat;
+            /*padding-left: 20px;*/
+	}
+

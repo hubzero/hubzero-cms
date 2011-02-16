@@ -95,6 +95,12 @@ function WarehouseParseRoute( $segments ){
             case 'find':  //task
 	      $vars['task'] = 'find';
 	      break;
+            case 'filter':  //task
+	      $vars['task'] = 'filter';
+	      break;
+            case 'searchfilter':  //view
+	      $vars['view'] = 'searchfilter';
+	      break;
 	    case 'download':  //task
 	      $vars['task'] = 'download';
 	      break;
@@ -220,11 +226,17 @@ function WarehouseParseRoute( $segments ){
 	      break;
 	    case 'featured':  //view
 	      $vars['view'] = 'featured';
-	      break;    
+	      break;
+            case 'testme':  //view
+	      $vars['view'] = 'testme';
+	      break;
 	    case 'search':  //view
 	      $vars['view'] = 'search';
-	      break;    
-	      case 'sensors':  //view
+	      break;
+            case 'advancedsearch':  //view
+	      $vars['view'] = 'advancedsearch';
+	      break;
+	    case 'sensors':  //view
 	      $vars['view'] = 'sensors';
 	      $id = explode( ':', $segments[1] );
 	      $vars['locationPlanId'] = (int) $id[0];

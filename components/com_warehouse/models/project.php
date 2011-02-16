@@ -153,6 +153,26 @@ class WarehouseModelProject extends WarehouseModelBase{
 
     return DataFilePeer::getProjectImage($p_iProjectId);
   }
+
+  /**
+   *
+   * @param int $p_iProjectId
+   * @param int $p_iTypeId
+   * @return ProjectHomepage
+   */
+  public function getProjectHomepages($p_iProjectId, $p_iTypeId){
+    return ProjectHomepagePeer::findByProjectIdAndFileTypeId($p_iProjectId, $p_iTypeId);
+  }
+
+  /**
+   *
+   * @param int $p_iProjectId
+   * @param int $p_iDataFileId
+   * @return ProjectHomepage
+   */
+  public function getProjectHomepageByDataFileId($p_iProjectId, $p_iDataFileId){
+    return ProjectHomepagePeer::findByProjectIdAndDataFileId($p_iProjectId, $p_iDataFileId);
+  }
  
 }
 

@@ -13,9 +13,9 @@ Search Results<br>
 <ul>
 <?php
   foreach($oFileArray as $iIndex=>$oDataFile){
-    /* @var $strLink DataFile */
-    $strLink = $oDataFile->getFriendlyPath();
-    $strPath = $strLink;
+    /* @var $oDataFile DataFile */
+    $strLink = $oDataFile->getUrl();
+    $strPath = $oDataFile->getFriendlyPath();
     $strTitle = $oDataFile->getTitle();
     $strName = $oDataFile->getName();
     if(strlen($strName) > 30){

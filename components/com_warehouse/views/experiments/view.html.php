@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
@@ -12,12 +12,12 @@ require_once 'api/org/nees/static/Experiments.php';
 
 
 class WarehouseViewExperiments extends JView{
-
+	
   function display($tpl = null){
     $iProjectId = JRequest::getVar('projid');
     $this->assignRef( "projid", $iProjectId );
 
-    $oProject = ProjectPeer::retrieveByPK($iProjectId);
+    $oProject = ProjectPeer::find($iProjectId);
     $_REQUEST[Search::SELECTED] = serialize($oProject);
 
     /* @var $oExperimentsModel WarehouseModelExperiments */
@@ -52,7 +52,7 @@ class WarehouseViewExperiments extends JView{
 
     $strReturnURL = $oExperimentsModel->getReturnURL();
     $this->assignRef( "warehouseURL", $strReturnURL );
-
+    
     /* @var $oPerson Person */
 //    $oPerson = $oExperimentsModel->getOracleUserByUsername($oHubUser->username);
 //    $this->assignRef( "iPersonId", $oPerson->getId() );
@@ -64,28 +64,74 @@ class WarehouseViewExperiments extends JView{
 //	$iDisplay = JRequest::getVar('limit', 25);
 //	$iIndex = JRequest::getVar('index', 0);
 //	$iResultsCount = JRequest::getVar('count');
-//
+//	
 //	$oDbPagination = new DbPagination($iIndex, sizeof($oExperimentArray), $iDisplay);
 //  $oDbPagination->computePageCount();
 //  $this->assignRef('pagination', $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmResults", "project-list"));
 
     $bSearch = false;
-    if(isset($_SESSION[Search::KEYWORDS]))$bSearch = true;
-    if(isset($_SESSION[Search::SEARCH_TYPE]))$bSearch = true;
-    if(isset($_SESSION[Search::FUNDING_TYPE]))$bSearch = true;
-    if(isset($_SESSION[Search::MEMBER]))$bSearch = true;
-    if(isset($_SESSION[Search::START_DATE]))$bSearch = true;
-    if(isset($_SESSION[Search::END_DATE]))$bSearch = true;
+    if(isset($_SESSION[Search::KEYWORDS])){
+      if(StringHelper::hasText($_SESSION[Search::KEYWORDS])){
+        $bSearch = true;
+      }
+    }
+    if(isset($_SESSION[Search::FUNDING_TYPE])){
+      if(StringHelper::hasText($_SESSION[Search::FUNDING_TYPE])){
+        $bSearch = true;
+      }
+    }
+    if(isset($_SESSION[Search::MEMBER])){
+      if(StringHelper::hasText($_SESSION[Search::MEMBER])){
+        $bSearch = true;
+      }
+    }
+    if(isset($_SESSION[Search::NEES_SITE])){
+      if($_SESSION[Search::NEES_SITE]){
+        $bSearch = true;
+      }
+    }
+    if(isset($_SESSION[Search::PROJECT_TYPE])){
+      if($_SESSION[Search::PROJECT_TYPE]){
+        $bSearch = true;
+      }
+    }
+    if(isset($_SESSION[Search::PROJECT_IDS])){
+      if(StringHelper::hasText($_SESSION[Search::PROJECT_IDS])){
+        $bSearch = true;
+      }
+    }
+    if(isset($_SESSION[Search::AWARDS])){
+      if(StringHelper::hasText($_SESSION[Search::AWARDS])){
+        $bSearch = true;
+      }
+    }
+    if(isset($_SESSION[Search::MATERIAL_TYPES])){
+      if(StringHelper::hasText(Search::MATERIAL_TYPES)){
+        $bSearch = true;
+      }
+    }
+    if(isset($_SESSION[Search::PROJECT_YEAR])){
+      if($_SESSION[Search::PROJECT_YEAR]){
+        $bSearch = true;
+      }
+    }
+    //if(isset($_SESSION[Search::START_DATE]))$bSearch = true;
+    //if(isset($_SESSION[Search::END_DATE]))$bSearch = true;
 
     //set the breadcrumbs
     JFactory::getApplication()->getPathway()->addItem("Project Warehouse","/warehouse");
     if($bSearch){
       JFactory::getApplication()->getPathway()->addItem("Results","/warehouse/find?keywords=".$_SESSION[Search::KEYWORDS]
-                                                                                                                            . "&type=".$_SESSION[Search::SEARCH_TYPE]
-                                                                                                                            . "&funding=".$_SESSION[Search::FUNDING_TYPE]
-                                                                                                                            . "&member=".$_SESSION[Search::MEMBER]
-                                                                                                                            . "&startdate=".$_SESSION[Search::START_DATE]
-                                                                                                                            . "&startdate=".$_SESSION[Search::END_DATE]);
+                                                                                            . "&funding=".$_SESSION[Search::FUNDING_TYPE]
+                                                                                            . "&member=".$_SESSION[Search::MEMBER]
+                                                                                            . "&neesSite=".$_SESSION[Search::NEES_SITE]
+                                                                                            . "&projectType=".$_SESSION[Search::PROJECT_TYPE]
+                                                                                            . "&projid=".$_SESSION[Search::PROJECT_IDS]
+                                                                                            . "&award=".$_SESSION[Search::AWARDS]
+                                                                                            . "&materialType=".$_SESSION[Search::MATERIAL_TYPES]
+                                                                                            . "&projectYear=".$_SESSION[Search::PROJECT_YEAR]);
+//                                                                                            . "&startdate=".$_SESSION[Search::START_DATE]
+//                                                                                            . "&startdate=".$_SESSION[Search::END_DATE]);
     }
     JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"/warehouse/project/$iProjectId");
     JFactory::getApplication()->getPathway()->addItem("Experiments","/warehouse/experiments/$iProjectId");

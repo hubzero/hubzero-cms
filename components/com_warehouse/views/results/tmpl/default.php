@@ -1,12 +1,14 @@
-<?php
+<?php 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<?php
+<?php 
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/ajax.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_warehouse/js/warehouse.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_warehouse/js/Fx.Slide/tree.js", 'text/javascript');
   $document->addScript($this->baseurl."/includes/js/joomla.javascript.js", 'text/javascript');
 ?>
@@ -16,19 +18,20 @@ defined('_JEXEC') or die( 'Restricted access' );
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
-
+  
   <div id="warehouseWindow" style="padding-top:20px;">
     <?php #tree browser section ?>
     <div id="treeBrowserMain" style="float:left;width:29%;">
       <?php echo $this->strTreeTabs; ?>
       <div id="treeSlideWrapperJs">
         <div id="treeSliderJs">
-          <?php echo $this->mod_treebrowser; ?>
+          <?php //echo $this->mod_treebrowser; ?>
+          <?php echo $this->mod_warehousefilter; ?>
         </div>
       </div>
     </div>
     <?php #end tree browser section ?>
-
+    
     <div id="overview_section" class="main section" style="width:71%;float:left;">
     <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
     <?php echo $this->strTabs; ?>
@@ -43,37 +46,53 @@ defined('_JEXEC') or die( 'Restricted access' );
         <div id="project-list" class="subject-full">
           <div id="project-sort">
             <?php
+              $strOrderBy = $_REQUEST[Search::ORDER_BY];
+              $iResultCount = $_REQUEST[Search::COUNT];
+              $dTimer = $_REQUEST[Search::TIMER];
               $strKeywords = StringHelper::EMPTY_STRING;
               if(isset($_SESSION[Search::KEYWORDS])){
                 $strKeywords = trim($_SESSION[Search::KEYWORDS]);
+                if(StringHelper::hasText($strKeywords)){
               ?>
                 <p class="information"><b>Keywords:</b> &nbsp;<?php echo $strKeywords; ?></p>
               <?php
+                }
               }
             ?>
 
+            <p id="project-count" style="margin-bottom:30px;">
+              <?php
+                $strOrderBy = $_REQUEST[Search::ORDER_BY];
+                $iResultCount = $_REQUEST[Search::COUNT];
+                $dTimer = $_REQUEST[Search::TIMER];
+              ?>  
+              <b>Results:</b> &nbsp;<?php echo $iResultCount; ?> (<?php echo $dTimer; ?> seconds)  
+            </p>
+                
+            <!--
             <table style="border:0px; margin-bottom:20px;">
               <tr>
                 <td id="sort-options" width="100%">
                   <?php
-                    $strOrderBy = $_REQUEST[Search::ORDER_BY];
-                    $iResultCount = $_REQUEST[Search::COUNT];
-                    $dTimer = $_REQUEST[Search::TIMER];
+                    //$strOrderBy = $_REQUEST[Search::ORDER_BY];
+                    //$iResultCount = $_REQUEST[Search::COUNT];
+                    //$dTimer = $_REQUEST[Search::TIMER];
                   ?>
                   <b>Sort By:</b> &nbsp;
-                  <input onClick="document.getElementById('frmResults').submit();" type="radio" name="order" value="nickname" id="nickname" <?php if($strOrderBy=="nickname")echo "checked"; ?>>&nbsp;<label for="nickname">Nickname</label> &nbsp;
-                  <input onClick="document.getElementById('frmResults').submit();" type="radio" name="order" value="start_date" id="start_date"  <?php if($strOrderBy=="start_date")echo "checked"; ?>>&nbsp;<label for="start_date">Start Date</label> &nbsp;
+                  <input onClick="document.getElementById('frmResults').submit();" type="radio" name="order" value="nickname" id="nickname" <?php //if($strOrderBy=="nickname")echo "checked"; ?>>&nbsp;<label for="nickname">Nickname</label> &nbsp;
+                  <input onClick="document.getElementById('frmResults').submit();" type="radio" name="order" value="start_date" id="start_date"  <?php //if($strOrderBy=="start_date")echo "checked"; ?>>&nbsp;<label for="start_date">Start Date</label> &nbsp;
                 </td>
-                <td id="project-count" align="right" nowrap><b>Results:</b> &nbsp;<?php echo $iResultCount; ?> (<?php echo $dTimer; ?> seconds)</td>
+                <td id="project-count" align="right" nowrap><b>Results:</b> &nbsp;<?php //echo $iResultCount; ?> (<?php //echo $dTimer; ?> seconds)</td>
               </tr>
             </table>
+            -->
           </div>
 
-          <?php
-            $oProjectArray = unserialize($_SESSION[Search::RESULTS]);
+          <?php 
+            $oProjectArray = unserialize($_SESSION[Search::RESULTS]);       
             if(empty($oProjectArray)){
-              ?>
-                <p class="warning">No projects found.</p>
+              ?> 
+                <p class="warning">No projects found.</p> 
               <?php
             }
 
@@ -106,7 +125,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
                     //keep the good keywords
                     $strKeywordArray = $strKeywordTempArray;
-
+                    
                     //original description terms
                     $strDescTemp = str_replace("-", " ", $oDescriptionClob);  //replace hyphen
                     $strDescTemp = str_replace("_", " ", $strDescTemp);       //replace underscore
@@ -117,18 +136,18 @@ defined('_JEXEC') or die( 'Restricted access' );
                     foreach($strDescriptionArray as $iDescIndex=>$strThisDesc){
                       $strDescriptionLowerArray[$iDescIndex] = trim(strtolower($strThisDesc));
                     }
-
+                    
                     //original title terms
                     $strTitleTemp = str_replace("-", " ", $strTitle);       //replace hyphen
                     $strTitleTemp = str_replace("_", " ", $strTitleTemp);   //replace underscore
                     $strTitleArray = explode(" ", $strTitleTemp);
-
+                    
                     //convert all title terms to lower case
                     $strTitleLowerArray = array();
                     foreach($strTitleArray as $iTitleIndex=>$strThisTitle){
                       $strTitleLowerArray[$iTitleIndex] = trim(strtolower($strThisTitle));
                     }
-
+                    
                     foreach($strKeywordArray as $strKeywordLowerCase){
                       //get the keys for all of the matched (lowercase) terms
                       $iDescriptionKeywordIndexArray = array_keys($strDescriptionLowerArray, $strKeywordLowerCase);
@@ -155,7 +174,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                   $strThumbnail =  $strProjectIconArray[$iProjectIndex];
                   $strWidth="100%";
                   if( strlen($strThumbnail) > 0 ){
-                    $strWidth="85%";
+                    $strWidth="85%";  
                   }
 
           ?>
@@ -170,7 +189,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                 <?php
                   if( strlen($strThumbnail) > 0 ){
                     echo $strThumbnail;
-                  }
+                  } 
                 ?>
               </div>
               <div class="clear"></div>
@@ -179,12 +198,12 @@ defined('_JEXEC') or die( 'Restricted access' );
               <hr class="dashes"/>
               <br>
             <?php endif; ?>
-
-          <?php
+            
+          <?php 
             }
           ?>
-
-          <?php
+      
+          <?php 
             echo $this->pagination;
           ?>
         </div>
@@ -192,7 +211,7 @@ defined('_JEXEC') or die( 'Restricted access' );
     </div>
     <div class="clear"></div>
   </div>
-
+  
 </div>
 
 

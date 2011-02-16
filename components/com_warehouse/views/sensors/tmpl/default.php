@@ -5,7 +5,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <p>Sensor List</p>
 
-<?php
+<?php 
   $oLocationCollectionArray = $this->locationArray;
 
 ?>
