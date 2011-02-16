@@ -31,6 +31,7 @@ class XContentServer
 	var $_acceptranges;
 	var $_disposition;
 	var $_saveas;
+        var $_mimetype;
 
 	function saveas($saveas = null)
 	{
@@ -72,13 +73,21 @@ class XContentServer
 		return($this->_disposition);
 	}
 
+        function mimetype($mimetype = null)
+	{
+		if (!is_null($mimetype))
+			$this->_mimetype = $mimetype;
+
+		return($this->_mimetype);
+	}
+
 	function XContentServer()
 	{
 	}
 
 	function serve()
 	{
-		return XContentServer::serve_file($this->_filename, $this->_saveas, $this->_disposition, $this->_acceptranges);
+		return XContentServer::serve_file($this->_filename, $this->_saveas, $this->_disposition, $this->_acceptranges, $this->_mimetype);
 	}
 
 	function serve_attachment($filename, $saveas = null, $acceptranges = true)
@@ -91,7 +100,7 @@ class XContentServer
 		return XContentServer::serve_file($filename, null, 'inline', $acceptranges);
 	}
 
-	function serve_file($filename, $saveas=null, $disposition='inline', $acceptranges=true)
+	function serve_file($filename, $saveas=null, $disposition='inline', $acceptranges=true, $mimetype=null)
 	{
 		$fp = fopen($filename,"rb");
 
@@ -110,13 +119,17 @@ class XContentServer
 		$filesize = filesize($filename);
 
 		$extension =  $fileinfo['extension'];
-		
-		if (strcasecmp($extension, 'jnlp') == 0)
+
+                if(!is_null($mimetype)){
+                  $type = $mimetype;
+                }else{
+		  if (strcasecmp($extension, 'jnlp') == 0)
 			$type = 'application/x-java-jnlp-file';
-		else if (strcasecmp($extension, 'pdf') == 0)
+		  else if (strcasecmp($extension, 'pdf') == 0)
 			$type = 'application/pdf';
-		else
+		  else
 			$type = 'application/octet-stream';
+                }
 
 		if ($acceptranges                        && 
 		    $_SERVER['REQUEST_METHOD']=='GET' && 
