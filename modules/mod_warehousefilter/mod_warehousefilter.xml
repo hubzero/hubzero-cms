@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+    <name>Warehouse Filter</name>
+    <author>Gemez Marshall</author>
+    <version>1.0.0</version>
+    <creationDate>02/04/2011</creationDate>
+    <description>Filters search results in warehouse.</description>
+	<files>
+		<filename>mod_warehousefilter.xml</filename>
+		<filename module="mod_warehousefilter">mod_warehousefilter.php</filename>
+		<filename>index.html</filename>
+        	<filename>helper.php</filename>
+        	<filename>tmpl/default.php</filename>
+        	<filename>tmpl/index.html</filename>
+	</files>
+	<params>
+    </params>
+</install>
