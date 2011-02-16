@@ -515,6 +515,7 @@ class ResourcesController extends JObject
 		
 		// Push some scripts to the template
 		$this->_getScripts();
+		$this->_getScripts('browser2');
 
 		// Set page title
 		$this->_buildTitle();
@@ -566,6 +567,7 @@ class ResourcesController extends JObject
 		// For example, /resources/learningmodules => Learning Modules
 		$activetype = 0;
 		$activetitle = '';
+		$activeDescription = 0;
 		for ($i = 0; $i < count($view->types); $i++) 
 		{	
 			$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $view->types[$i]->type);
@@ -575,6 +577,7 @@ class ResourcesController extends JObject
 			if (trim($view->type) == $normalized) {
 				$activetype = $view->types[$i]->id;
 				$activetitle = $view->types[$i]->type;
+				$activeDescription = $view->types[$i]->description;
 			}
 		}
 		asort($view->types);
@@ -590,7 +593,7 @@ class ResourcesController extends JObject
 		
 		// Determine if user can edit
 		$view->authorized = $this->_authorize();
-		
+
 		// Set the default sort
 		$default_sort = 'rating';
 		if ($this->config->get('show_ranking')) {
@@ -616,7 +619,8 @@ class ResourcesController extends JObject
 		
 		// Run query with limit
 		$view->results = $rr->getRecords( $view->filters );
-		
+		$view->categoryTitle = $activetitle;
+		$view->categoryDescription = $activeDescription;
 		$this->type = $view->type;
 		if ($activetitle) {
 			$this->_task_title = $activetitle;
@@ -630,6 +634,7 @@ class ResourcesController extends JObject
 		// Push some scripts to the template
 		$this->_getScripts();
 		$this->_getScripts('tagbrowser');
+		$this->_getScripts('browser2');
 		
 		// Set page title
 		$this->_buildTitle();
@@ -1281,10 +1286,17 @@ class ResourcesController extends JObject
 			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 			return;
 		}
+		
+		// Initiate a resource helper class
+		$helper = new ResourcesHelper( $resource->id, $database );
+
+		// Is the visitor authorized to edit this resource?
+		$helper->getContributorIDs();
+		$authorized = $this->_authorize( $helper->contributorIDs );
 
 		// Make sure they have access to view this resource
 		if ($resource->access == 4) {
-			if ($this->checkGroupAccess($resource)) {
+			if ($this->checkGroupAccess($resource) && !$authorized) {
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 				return;
 			}
@@ -1324,6 +1336,7 @@ class ResourcesController extends JObject
 		
 		// Push some scripts to the template
 		$this->_getScripts();
+		$this->_getScripts('view2');
 		
 		// Version checks (tools only)
 		$alltools = array();
@@ -1381,11 +1394,11 @@ class ResourcesController extends JObject
 		$resource->hit( $id );
 		
 		// Initiate a resource helper class
-		$helper = new ResourcesHelper( $resource->id, $database );
+		/*$helper = new ResourcesHelper( $resource->id, $database );
 
 		// Is the visitor authorized to edit this resource?
 		$helper->getContributorIDs();
-		$authorized = $this->_authorize( $helper->contributorIDs );
+		$authorized = $this->_authorize( $helper->contributorIDs );*/
 		
 		// Do not show for tool versions
 		if ($thistool && $revision!='dev') {

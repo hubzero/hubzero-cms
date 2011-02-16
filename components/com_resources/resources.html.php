@@ -614,7 +614,7 @@ class ResourcesHtml
 	public function sections( $sections, $cats, $active='about', $h, $c ) 
 	{
 		$html = '';
-		
+
 		if (!$sections) {
 			return $html;
 		}
@@ -828,8 +828,8 @@ class ResourcesHtml
 		// Prepare/parse text
 		$introtext = stripslashes($resource->introtext);
 		$maintext  = ($resource->fulltext) 
-				   ? stripslashes($resource->fulltext) 
-				   : stripslashes($resource->introtext);
+				   ? ($resource->fulltext) 
+				   : ($resource->introtext);
 
 		$maintext = stripslashes($maintext);
 
@@ -870,13 +870,17 @@ class ResourcesHtml
 			$maintext = trim($maintext);
 		}
 		
-		$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
+		//$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
+		$maintext = ($maintext) ? ($maintext) : (trim($resource->introtext));
 		$maintext = str_replace('&amp;','&',$maintext);
+		$maintext = str_replace('&nbsp;',' ',$maintext);
 		$maintext = str_replace('&','&amp;',$maintext);
 		$maintext = str_replace('<blink>','',$maintext);
 		$maintext = str_replace('</blink>','',$maintext);
+		$maintext = str_replace('<script','',$maintext);
+		$maintext = str_replace('</script>','',$maintext);
 	
-		$html  = '<div class="subject abouttab">'."\n";		
+		$html  = '<div class="abouttab hubfancy-tabcontent">'."\n";		
 		$html .= "\t".'<table class="resource" summary="'.JText::_('RESOURCE_TBL_SUMMARY').'">'."\n";
 		$html .= "\t\t".'<tbody>'."\n";
 				
@@ -932,6 +936,7 @@ class ResourcesHtml
 				$citeinstruct .= ResourcesHtml::citationCOins($cite, $resource, $config, $helper);
 				$html .= ResourcesHtml::tableRow( '<a name="citethis"></a>'.JText::_('COM_RESOURCES_CITE_THIS'), $citeinstruct );
 			}
+			
 		}
 		// If the resource had a specific event date/time
 		if ($attribs->get( 'timeof', '' )) {
@@ -950,6 +955,7 @@ class ResourcesHtml
 			$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_LOCATION'),$attribs->get( 'location', '' ));
 		}
 		// Tags
+		/*
 		if ($params->get('show_assocs')) {
 			$helper->getTagCloud( $show_edit );
 
@@ -986,7 +992,7 @@ class ResourcesHtml
 			if ($helper->tagCloud) {
 				$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_TAGS'),$helper->tagCloud.$frm);
 			}
-		}
+		}*/
 
 		$html .= "\t".' </tbody>'."\n";
 		$html .= "\t".'</table>'."\n";
@@ -1024,14 +1030,17 @@ class ResourcesHtml
 			case 2: $thedate = $resource->modified;   break;
 			case 3: $thedate = $resource->publish_up; break;
 		}
-		
 		// Prepare/parse text
 		$introtext = stripslashes($resource->introtext);
 		$maintext  = ($resource->fulltext) 
-				   ? stripslashes($resource->fulltext) 
-				   : stripslashes($resource->introtext);
+				   ? ($resource->fulltext) 
+				   : ($resource->introtext);
 
-		$maintext = stripslashes($maintext);
+		//security deduction...		  // $maintext  = ($resource->fulltext) 
+				   //? stripslashes($resource->fulltext) 
+				  // : stripslashes($resource->introtext);
+				  //$maintext = stripslashes($maintext);
+		$maintext = ($maintext);
 
 		if ($introtext) {
 			$document =& JFactory::getDocument();
@@ -1070,10 +1079,17 @@ class ResourcesHtml
 			$maintext = trim($maintext);
 		}
 		
-		$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
-		$maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
+		$maintext = ($maintext) ? ($maintext) : (trim($resource->introtext));
+		//security deduction...
+		//$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
+		//$maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
+		$maintext = str_replace('&amp;','&',$maintext);
+		$maintext = str_replace('&nbsp;',' ',$maintext);
+		$maintext = str_replace('&','&amp;',$maintext);
 		$maintext = str_replace('<blink>','',$maintext);
 		$maintext = str_replace('</blink>','',$maintext);
+		$maintext = str_replace('<script','',$maintext);
+		$maintext = str_replace('</script>','',$maintext);
 		
 		if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) {
 				// Do nothing
@@ -1113,6 +1129,7 @@ class ResourcesHtml
 					if ($field[0] == 'citations') {
 						$citations = end($field);
 					} else {
+						//$html .= ResourcesHtml::tableRow( '', end($field) );
 						$html .= ResourcesHtml::tableRow( $field[1], end($field) );
 					}
 				}
@@ -1261,8 +1278,8 @@ class ResourcesHtml
 		// Prepare/parse text
 		$introtext = stripslashes($resource->introtext);
 		$maintext  = ($resource->fulltext) 
-				   ? stripslashes($resource->fulltext) 
-				   : stripslashes($resource->introtext);
+				   ? ($resource->fulltext) 
+				   : ($resource->introtext);
 
 		$maintext = stripslashes($maintext);
 
@@ -1316,10 +1333,20 @@ class ResourcesHtml
 
 		// Clean out any extra whitespace
 		$maintext = trim($maintext);*/
+		/*
 		$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
 		$maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
 		$maintext = str_replace('<blink>','',$maintext);
 		$maintext = str_replace('</blink>','',$maintext);
+		*/
+		$maintext = ($maintext) ? ($maintext) : (trim($resource->introtext));
+		$maintext = str_replace('&amp;','&',$maintext);
+		$maintext = str_replace('&nbsp;',' ',$maintext);
+		$maintext = str_replace('&','&amp;',$maintext);
+		$maintext = str_replace('<blink>','',$maintext);
+		$maintext = str_replace('</blink>','',$maintext);
+		$maintext = str_replace('<script','',$maintext);
+		$maintext = str_replace('</script>','',$maintext);
 		
 		if ($resource->type == 7) {
 			//if (strlen($maintext) != strlen(strip_tags($maintext)){
@@ -1677,7 +1704,10 @@ class ResourcesHtml
 		if ($attribs->get( 'location', '' )) {
 			$html .= ResourcesHtml::tableRow( JText::_('COM_RESOURCES_LOCATION'),$attribs->get( 'location', '' ));
 		}
+		
 		// Tags
+		//tag form removed by Jason Lambert (not needed in contribute review stage)
+		/*
 		if (!$thistool && $revision!='dev') {
 			if ($params->get('show_assocs')) {
 				$helper->getTagCloud( $show_edit );
@@ -1696,6 +1726,7 @@ class ResourcesHtml
 
 					$tf = $dispatcher->trigger( 'onTagsEdit', array(array('tags','actags','',$usertags,'')) );
 					
+
 					$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option='.$option.'&id='.$resource->id).'">'."\n";
 					$frm .= "\t".'<fieldset>'."\n";
 					$frm .= "\t\t".'<label class="tag">'."\n";
@@ -1709,6 +1740,7 @@ class ResourcesHtml
 					$frm .= "\t\t".'</label>'."\n";
 					$frm .= "\t\t".'<input type="submit" value="'.JText::_('COM_RESOURCES_SAVE').'"/>'."\n";
 					$frm .= "\t\t".'<input type="hidden" name="task" value="savetags" />'."\n";
+					$frm .= "\t\t".'<input type="hidden" name="step" value="5" />'."\n";
 					$frm .= "\t".'</fieldset>'."\n";
 					$frm .= '</form>'."\n";
 				}
@@ -1718,6 +1750,7 @@ class ResourcesHtml
 				}
 			}
 		}
+		*/
 		$html .= "\t".' </tbody>'."\n";
 		$html .= "\t".'</table>'."\n";
 		$html .= '</div><!-- / .subject -->'."\n";
@@ -1733,7 +1766,9 @@ class ResourcesHtml
 	{
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'citations.formatter.php' );
 
-		$html  = '<p>'.JText::_('COM_RESOURCES_CITATION_INSTRUCTIONS').'</p>'."\n";
+		$html  = '<p id="hubfancy-citationtitle">'.JText::_('COM_RESOURCES_CITATION_INSTRUCTIONS').'</p>'."\n";
+
+		
 		$html .= $citations;
 		if ($cite) {
 			$html .= '<ul class="citations results">'."\n";
@@ -1756,6 +1791,7 @@ class ResourcesHtml
 			$html .= "\t".'</li>'."\n";
 			$html .= '</ul>'."\n";
 		}*/
+		
 		return $html;
 	}
 
@@ -1852,17 +1888,17 @@ class ResourcesHtml
 						$out .= ' <li'.$liclass.'>';
 						$out .= ' '. ResourcesHtml::getFileAttribs( $child->path, $base, $fsize );
 						$out .= '<a'.$class.' href="'.$url.'" title="'.stripslashes($child->title).'">'.$title.'</a>';
-						
+						$out .='		<p><strong>Description: </strong>'.$child->introtext.'</p>'."\n";
 						if( $child->type == 70)
 						{
-							$out .= '&nbsp;<a class="get-hidden-resource-info" href="#resdata_'.$child->id.'" style="margin: 30px;">Get Image Embed Code &rsaquo;</a>';
+							$out .= '<a class="get-hidden-resource-info" href="#resdata_'.$child->id.'" style="">Get image embed code &rsaquo;</a>';
 							$out .= '</li>'."\n";
 							$out .='		<div class="hidden-resource-info">'."\n";
 							$out .=' 		<div id="resdata_'.$child->id.'">'."\n";
 							$out .='		<p> Copy/paste this URL into the Editor\'s Image URL property to view this within your document </p>'."\n";
 							$out .='		<h2 style="margin: 30px;">'.$url.'</h2>'."\n";
 							$out .='		<img src=/templates/fresh/images/demopage/imageloader.jpg></img>'."\n";
-							$out .='		<p>'.'</p>'."\n";
+
 							$out .='		</div>'."\n";
 							$out .='		</div>'."\n";
 						}
@@ -2261,7 +2297,7 @@ class ResourcesHtml
 				 || substr($firstChild->path, 0, 7) == 'news://'
 				 || substr($firstChild->path, 0, 7) == 'feed://'
 				 || substr($firstChild->path, 0, 6) == 'mms://') {
-					$mesg  = 'View Link';
+					$mesg  = ($resource->type == 72)? 'View Database' : 'View Link';
 				}
 								
 				// IF (not a simulator) THEN show the first child as the primary button

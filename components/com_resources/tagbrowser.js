@@ -73,8 +73,10 @@ HUB.TagBrowser = {
 		if(level == 2) {
 			if(HUB.TagBrowser.col2active!='' && $(HUB.TagBrowser.col2active)) {
 				//var prevactive = $(HUB.TagBrowser.col2active);
+				
 				$(HUB.TagBrowser.col2active).removeClass('open');
 			}
+			
 			var curractive = $(id);
 			curractive.addClass('open');
 			HUB.TagBrowser.col2active = id;
@@ -88,6 +90,21 @@ HUB.TagBrowser = {
 			var curractive = $(id);
 			curractive.addClass('open');
 			HUB.TagBrowser.col1active = id;
+		}
+		if (level == 1)
+		{
+			//HUB.BrowseEnhancement.showCol2();
+		}
+		if (level == 2)
+		{
+			//HUB.BrowseEnhancement.showCol2();
+			HUB.BrowseEnhancement.emptyCol3();
+			HUB.BrowseEnhancement.showPH3();
+		}
+		else if (level == 3)
+		{
+			HUB.BrowseEnhancement.hideVideo();
+			HUB.BrowseEnhancement.showCol3();
 		}
 		var sortby = '';
 		if ($('sortby')) {
