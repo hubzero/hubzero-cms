@@ -9,7 +9,8 @@ $juser =& JFactory::getUser();
 <head>
 	<jdoc:include type="head" />
 	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl ?>/templates/fresh/css/print.css" />
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/dummy.css" id="dummy_css" />
+	<!--  <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/dummy.css" id="dummy_css" /> -->
+	<link rel="stylesheet" href="site/fancybox/jquery.fancybox-1.3.1.css" type="text/css" media="screen" />
 	<!--[if lte IE 7]>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/fresh/css/ie7win.css" />
 	<![endif]-->
@@ -19,7 +20,7 @@ $juser =& JFactory::getUser();
 		<script type="text/javascript" src="media/system/js/jquery-1.4.2.js"></script>
 		<script type="text/javascript">var $jQ = jQuery.noConflict();</script> 	
 		<script type="text/javascript" src="site/fancybox/jquery.fancybox-1.3.1.pack.js"></script>	
-		<link rel="stylesheet" href="site/fancybox/jquery.fancybox-1.3.1.css" type="text/css" media="screen" />
+		
 	
 	
 <?php if ($this->countModules( 'banner or welcome or academybanner' )) { ?>
@@ -52,7 +53,7 @@ $juser =& JFactory::getUser();
             echo "\t\t\t".'<li id="login"><a href="/login" title="Login">Login</a></li>'."\n";
             echo "\t\t\t".'<li id="register"><a href="/register" title="Sign up for a free account">Register</a></li>'."\n";
         }
-        echo "\t\t\t".'<li id="aboutsite"><a href="/about" title="About NEES"><span>About NEES</span></a></li>'."\n";
+      //  echo "\t\t\t".'<li id="aboutsite"><a href="/about" title="About NEES"><span>About NEES</span></a></li>'."\n";
         echo "\t\t\t".'<li id="sitemap"><a href="/xmap" title="Sitemap"><span>Sitemap</span></a></li>'."\n";
         echo "\t\t\t".'<li id="feedback"><a href="/feedback" title="Feedback"><span>Feedback</span></a></li>'."\n";        
         ?>
