@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS `#__rsform_components`, `#__rsform_component_types`, `#__rsform_component_type_fields`, `#__rsform_config`, `#__rsform_forms`, `#__rsform_properties`, `#__rsform_submissions`, `#__rsform_submission_values`, `#__rsform_submission_columns`, `#__rsform_mappings`, `#__rsform_salesforce`;

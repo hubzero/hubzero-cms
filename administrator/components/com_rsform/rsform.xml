@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="component" version="1.5" method="upgrade">
+	<name>RSForm</name>
+	<creationDate>05/08/2010</creationDate>
+	<author>RSJoomla!</author>
+	<authorEmail>support@rsjoomla.com</authorEmail>
+	<authorUrl>www.rsjoomla.com</authorUrl>
+	<copyright>(C) 2007-2011 www.rsjoomla.com</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license> 
+	<version>1.3.0 R35</version>
+	<description>With RSForm!Pro you can quickly add forms to your Joomla! website.</description>
+	<installfile>install.rsform.php</installfile>
+	<uninstallfile>uninstall.rsform.php</uninstallfile>
+
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">install.rsform.utf8.sql</file>
+			<file driver="mysql">install.rsform.nonutf8.sql</file>
+		</sql>
+	</install>
+
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">uninstall.rsform.sql</file>
+			<file driver="mysql">uninstall.rsform.sql</file>
+		</sql>
+	</uninstall>
+
+	<files folder="site">
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>router.php</filename>
+		<filename>rsform.php</filename>
+		<folder>assets</folder>
+		<folder>controller</folder>
+		<folder>helpers</folder>
+		<folder>models</folder>
+		<folder>uploads</folder>
+		<folder>views</folder>
+	</files>
+
+	<languages>
+		<language tag="en-GB">languages/site/en-GB.com_rsform.ini</language>
+	</languages>
+
+	<administration>
+		<menu img="components/com_rsform/assets/images/rsformpro.gif">RSFormPro</menu>
+		<submenu>
+			  <menu task="forms.manage">COM_RSFORM_MANAGE_FORMS</menu>
+			  <menu task="submissions.manage">COM_RSFORM_MANAGE_SUBMISSIONS</menu>
+			  <menu task="configuration.edit">COM_RSFORM_CONFIGURATION</menu>
+			  <menu task="backup.restore">COM_RSFORM_BACKUP_RESTORE</menu>
+			  <menu task="updates.manage">COM_RSFORM_UPDATES</menu>
+			  <menu task="goto.plugins">COM_RSFORM_PLUGINS</menu>
+		</submenu>
+		
+		<files folder="admin">
+			<filename>install.rsform.utf8.sql</filename>
+			<filename>install.rsform.nonutf8.sql</filename>
+			<filename>uninstall.rsform.sql</filename>
+			<filename>sample.rsform.sql</filename>
+			
+			<filename>admin.rsform.php</filename>
+			<filename>toolbar.rsform.php</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<folder>assets</folder>
+			<folder>controllers</folder>
+			<folder>elements</folder>
+			<folder>fields</folder>
+			<folder>helpers</folder>
+			<folder>layouts</folder>
+			<folder>models</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+		</files>
+		
+		<languages>
+			<language tag="en-GB">languages/admin/en-GB.com_rsform.ini</language>
+			<language tag="en-GB">languages/admin/en-GB.com_rsform.sys.ini</language>
+			<language tag="en-GB">languages/admin/en-GB.com_rsform.menu.ini</language>
+		</languages>
+	</administration>
+
+	<params addPath="/administrator/components/com_rsform/elements">
+		<param name="formId" type="forms" default="" label="Form" description="Form" />
+	</params>
+
+</install>

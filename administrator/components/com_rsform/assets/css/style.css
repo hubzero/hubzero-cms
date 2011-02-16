@@ -1,0 +1,411 @@
+/**
+* @version 1.3.0
+* @package RSform!Pro 1.3.0
+* @copyright (C) 2007-2010 www.rsjoomla.com
+* @license GPL, http://www.gnu.org/copyleft/gpl.html
+*/
+
+.rsform_icon
+{
+	padding-left: 20px;
+	margin-right: 8px;
+	height: 16px;
+	display: inline;
+}
+
+.rsform_preview
+{
+	background: url(../images/icon-16-frontpage.png) no-repeat;
+}
+
+.rsform_add_menu
+{
+	background: url(../images/icon-16-menu.png) no-repeat;
+}
+
+.rsform_clear
+{
+	background: url(../images/icon-16-trash.png) no-repeat;
+}
+
+.rsform_edit
+{
+	background: url(../images/icon-16-edit.png) no-repeat;
+}
+
+.rsform_upload
+{
+	background: url(../images/icon-16-upload.png) no-repeat;
+}
+
+.icon-48-rsform
+{
+	background-image: url(../images/icon-48-rsform.gif);
+}
+
+td.componentPreview{
+	/*width: 500px;*/
+}
+
+td.components{
+	width: 200px;
+}
+
+table #componentPreview{
+	/*width: 600px;*/
+}
+table.componentEdit{
+	background: #FFF;
+	border-bottom: 1px solid #fff;
+	border-right: 1px solid #d8d8d8;
+	width:200px;
+}
+
+td.components a.component{
+	display: block;
+	width:200px;
+	height:20px;
+	border-top: 1px solid #d8d8d8;
+	border-bottom: 1px solid #fff;
+	border-right: 1px solid #d8d8d8;
+	/*background: #FFF;*/
+	padding-left: 25px;
+	padding-top: 2px;
+	background-position: 2px 2px;
+}
+
+td.components a.component:hover{
+	background-position: 3px 3px;
+}
+
+table.componentForm{
+	width:226px;
+	background: #FFF;
+	border-right: 1px solid #d8d8d8;
+}
+
+.wide{
+	width:200px;
+}
+
+
+a.component#textfield{background: url(../images/icons/textfield.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#password{background: url(../images/icons/password.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#textarea{background: url(../images/icons/textarea.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#select{background: url(../images/icons/select.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#check{background: url(../images/icons/check.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#radio{background: url(../images/icons/radio.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#calendar{background: url(../images/icons/calendar.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#button{background: url(../images/icons/button.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#image{background: url(../images/icons/image.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#captcha{background: url(../images/icons/captcha.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#upload{background: url(../images/icons/upload.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#freetext{background: url(../images/icons/freetext.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#hidden{background: url(../images/icons/hidden.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#ticket{background: url(../images/icons/ticket.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#emailconf{background: url(../images/icons/emailconf.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#paypal{background: url(../images/icons/paypal.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+a.component#pagebreak{background: url(../images/icons/page.gif) no-repeat #FFF;background-position: 2px 2px;}
+
+table.thisform {
+	background-color: #F7F8F9;
+	border: solid 1px #d5d5d5;
+	width: 100%;
+	padding: 10px;
+	border-collapse: collapse;
+}
+table.thisform tr.row0 {
+	background-color: #F7F8F9;
+}
+table.thisform tr.row1 {
+	background-color: #eeeeee;
+}
+table.thisform th {
+	font-size: 15px;
+	font-weight:normal;
+	font-variant:small-caps;
+	padding-top: 6px;
+	padding-bottom: 2px;
+	padding-left: 4px;
+	padding-right: 4px;
+	text-align: left;
+	height: 25px;
+	color: #666666;
+	background-repeat: repeat;
+}
+table.thisform td {
+	padding: 3px;
+	text-align: left;
+	border: 1px;
+	border-style:solid;
+	border-bottom-color:#EFEFEF;
+	border-right-color:#EFEFEF;
+	border-left-color:#EFEFEF;
+	border-top-color:#EFEFEF;
+}
+
+table.thisform2 {
+	background-color: #F7F8F9;
+	border: solid 1px #d5d5d5;
+	width: 100%;
+	padding: 5px;
+}
+table.thisform2 td {
+	padding: 5px;
+	text-align: center;
+	border: 1x;
+	border-style: solid;
+	border-bottom-color:#EFEFEF;
+	border-right-color:#EFEFEF;
+	border-left-color:#EFEFEF;
+	border-top-color:#EFEFEF;
+}
+.thisform2 td:hover {
+	background-color: #B5CDE8;
+	border:	1px solid #30559C;
+}
+
+.thisformError{
+	background-color: #FFDFDF;
+}
+
+.thisformOk{
+	background-color: #CFFFDA;
+}
+textarea.hidden {
+	display: none;
+}
+
+span.selected{
+	text-decoration: underline;
+}
+
+div.pagenav{
+	text-align:center;
+	padding: 2px;
+}
+
+div.pagenav span, div.pagenav div.statistics{
+	padding: 2px;
+	font-size:12px;
+	float:left;
+}
+div.loading{
+	background: url(../images/load.gif) #FFFFFF no-repeat;
+	background-position: top left;
+	padding: 10px;
+	padding-left:40px;
+}
+
+div.none{
+	background: url(../images/none.gif) #FFFFFF no-repeat;
+	background-position: top left;
+	padding: 10px;
+	padding-left:40px;
+}
+
+table.plugins td{
+	border-bottom: 1px solid #d8d8d8;
+}
+
+div.progressWrapper{
+	width:100%;
+	border:1px solid #cccccc;
+}
+
+div.progressBar{
+	color:white;
+	background: green;
+	width:50px;
+	text-align:center;
+	padding:2px;
+}
+
+#idVALIDATIONEXTRA
+{
+	display:none;
+}
+.showVALIDATIONEXTRA
+{
+	display:inline !important;
+}
+
+.hideVALIDATIONEXTRA
+{
+	display:none !important;
+}
+
+.rsform_error
+{
+	background: #fff;
+	border: solid 1px red;
+	padding: 4px;
+	text-align: center;
+	overflow: hidden;
+}
+
+table.adminrsform {
+	background-color: #f9f9f9;
+	border: solid 1px #d5d5d5;
+	border-collapse: collapse;
+	margin: 8px 0 10px 0;
+	margin-bottom: 15px;
+}
+
+table.adminrsform th {
+	font-size: 11px;
+	padding: 6px 2px 4px 4px;
+	text-align: left;
+	height: 25px;
+	color: #000;
+	background-repeat: repeat;
+}
+table.adminrsform td { padding: 3px; }
+
+#rsform_container
+{
+	position: relative;
+}
+
+#state
+{
+	top: 5px;
+	right: 5px;
+    position: absolute;
+    z-index:999;
+    width: 150px;
+    color: #fff;
+    font-weight: bold;
+    height: 20px;
+    text-align:right;
+    padding-top:6px;
+}
+
+#rsform_loading
+{
+	padding: 5px;
+}
+
+div.componentEdit
+{
+	background: #fff;
+}
+
+.rsform_dragged td
+{
+	background: #E7FFCC !important;
+}
+
+.rsform_dropped td
+{
+	background: red !important;
+}
+
+div.rsform_layout_box
+{
+	border: 1px solid #cccccc;
+	width: 185px;
+	margin: 5px;
+	padding: 2px;
+	float: left;
+}
+
+#formLayout
+{
+	width: 800px;
+	height: 450px;
+}
+
+#columnsContainer, .dropdownContainer
+{
+	position: relative;
+}
+
+#columnsDiv, .dropdownContainer div
+{
+	position: absolute;
+	background: #F9F9F9;
+	border: solid 1px #c7c7c7;
+	padding: 5px;
+	display: none;
+	top: 0;
+	left: 0;
+}
+
+.dropdownContainer div
+{
+	padding: 0px;
+}
+
+.dropdownContainer div a
+{
+	display: block;
+	padding: 6px;
+}
+
+.dropdownContainer div a:hover
+{
+	color: #fff;
+	background: #c7c7c7;
+	text-decoration: none;
+}
+
+#previewExportDiv
+{
+	background: #fff;
+	border: solid 1px #c7c7c7;
+}
+
+#previewExportDiv pre
+{
+	color: #000;
+}
+
+tr.rsform_page td
+{
+	border-bottom: dashed 1px #000 !important;
+}
+
+#quickFieldsDiv
+{
+	display: none;
+}
+
+#QuickAdd1, #QuickAdd2, #QuickAdd3, #QuickAdd4
+{
+	width: 200px;
+}
+
+a.folder
+{
+	background: url(../images/folder.gif) no-repeat;
+	padding-left: 20px;
+	display: block;
+	float: left;
+	margin-right: 10px;
+}
+
+a.file
+{
+	background: url(../images/file.gif) no-repeat;
+	padding-left: 20px;
+	display: block;
+	float: left;
+	margin-right: 10px;
+}

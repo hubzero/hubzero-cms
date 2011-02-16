@@ -1,0 +1,17 @@
+/**
+* @version 1.3.0
+* @package RSform!Pro 1.3.0
+* @copyright (C) 2007-2010 www.rsjoomla.com
+* @license GPL, http://www.gnu.org/copyleft/gpl.html
+*/
+
+div.current input
+{
+	float: none !important;
+}
+
+div.current label
+{
+	float: none !important;
+	display: inline !important;
+}
