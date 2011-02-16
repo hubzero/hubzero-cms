@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="RSFP_SUBMISSION_LAYOUT">
+		<message>
+			<![CDATA[RSFP_SUBMISSION_LAYOUT]]>
+		</message>
+	</layout>
+	<state>
+		<name>RSFP_SUBMISSION_LAYOUT</name>
+		<params addPath="/administrator/components/com_rsform/elements">
+			<param name="formId" type="forms" default="" label="Form" description="Form" />
+			<param name="enable_submissions" type="radio" default="0" label="RSFP_ENABLE_SUBMISSIONS" description="RSFP_ENABLE_SUBMISSIONS_DESC">
+				<option value="0">NO</option>
+				<option value="1">YES</option>
+			</param>
+			
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="userId" type="text" default="0" label="RSFP_SHOW_SUBMISSIONS_FOR_USERID" description="RSFP_SHOW_SUBMISSIONS_FOR_USERID_DESC" />
+			<param name="template_module" type="textarea" default="&lt;table width=&quot;100%&quot;&gt;{formdata}&lt;/table&gt;" label="RSFP_HTML_LAYOUT" description="RSFP_HTML_LAYOUT_DESC" cols="60" rows="7"/>
+			<param name="template_formdatarow" type="textarea" default="&lt;tr&gt;&lt;td&gt;{details}{FullName:value}{/details}&lt;/td&gt;&lt;td&gt;{Email:value}&lt;/td&gt;&lt;td&gt;{detailspdf}Download PDF{/detailspdf}&lt;/td&gt;&lt;/tr&gt;" label="RSFP_ROW_LAYOUT" description="RSFP_ROW_LAYOUT_DESC" cols="60" rows="7" />
+			<param name="template_formdetail" type="textarea" default="&lt;table width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td&gt;{FullName:value}&lt;/td&gt;&lt;td&gt;{Email:value}&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" label="RSFP_DETAILS_LAYOUT" description="RSFP_DETAILS_LAYOUT_DESC" cols="60" rows="7" />
+		</params>
+	</state>
+</metadata>

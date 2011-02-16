@@ -1,0 +1,107 @@
+/* Inputs */
+
+.rsform-input-box,
+.rsform-text-box,
+.rsform-password-box,
+.rsform-calendar-box,
+.rsform-captcha-box,
+.rsform-select-box
+{
+	border: 1px solid #DADADA;
+	background: #fbfafb url(../images/bg-input.gif) repeat-x;
+	padding: 3px;
+}
+
+.rsform-input-box:focus,
+.rsform-text-box:focus,
+.rsform-password-box:focus,
+.rsform-calendar-box:focus,
+.rsform-captcha-box:focus,
+.rsform-select-box:focus
+{
+	border: 1px solid #AEAEAE;
+}
+
+/* Buttons */
+
+.rsform-calendar-button
+{
+	background: url(../images/ico-calendar.png) no-repeat center center;
+	font-size: -30px;
+	text-indent: -1234px;
+	width: 24px;
+	height: 24px;
+	padding: 3px;
+	border: 0;
+	cursor: pointer;
+}
+
+.rsform-submit-button,
+.rsform-button
+{
+	background: #1B9544 url(../images/bg-button.gif) repeat-x;
+	border: solid 1px #9FD1C6;
+	color: #fefefe;
+	cursor: pointer;
+	padding: 5px;
+}
+
+.rsform-reset-button
+{
+	background: #DEDEDE url(../images/bg-reset-button.gif) repeat-x;
+	border: solid 1px #C6C6C6;
+	color: #fefefe;
+	padding: 5px;
+	color: #50A568;
+}
+
+/* Blocks */
+
+.rsform-block
+{
+	overflow: hidden;
+}
+
+.rsform-block:hover
+{
+	background: #EEFFEB;
+}
+
+/* Errors */
+
+.rsform-input-box.rsform-error,
+.rsform-text-box.rsform-error,
+.rsform-password-box.rsform-error,
+.rsform-calendar-box.rsform-error,
+.rsform-captcha-box.rsform-error,
+.rsform-select-box.rsform-error
+{
+	border: 1px solid #FF6B70;
+}
+
+.formError
+{
+	color: #777 !important;
+}
+
+/* Calendar */
+
+.yui-calcontainer
+{
+	border: 1px solid #DADADA !important;
+}
+
+.yui-calendar .calnavleft
+{
+	background: url(../images/ico-left.png) no-repeat center center !important;
+}
+
+.yui-calendar td.calcell.selected, .yui-calendar td.calcell.calcellhover
+{
+	background-color: #7AAFFF !important;
+}
+
+.yui-calendar .calnavright
+{
+	background: url(../images/ico-right.png) no-repeat center center !important;
+}

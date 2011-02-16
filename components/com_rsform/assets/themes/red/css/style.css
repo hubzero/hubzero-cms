@@ -1,0 +1,80 @@
+/* Inputs */
+
+.rsform-input-box,
+.rsform-text-box,
+.rsform-password-box,
+.rsform-calendar-box,
+.rsform-captcha-box,
+.rsform-select-box
+{
+	border: 1px solid #B3B3B3;
+	background: #fff;
+	padding: 3px;
+}
+
+.rsform-input-box:focus,
+.rsform-text-box:focus,
+.rsform-password-box:focus,
+.rsform-calendar-box:focus,
+.rsform-captcha-box:focus,
+.rsform-select-box:focus
+{
+	border: 1px solid #666;
+	background: #F6F6F6;
+}
+
+/* Buttons */
+
+.rsform-calendar-button
+{
+	background: url(../images/ico-calendar.png) no-repeat center center;
+	font-size: -30px;
+	text-indent: -1234px;
+	width: 24px;
+	height: 24px;
+	padding: 3px;
+	border: 0;
+	cursor: pointer;
+}
+
+.rsform-submit-button,
+.rsform-button
+{
+	background: #D24938 url(../images/bg-button.gif) repeat-x;
+	border: solid 1px #F7606E;
+	color: #fff;
+	padding: 6px 12px;
+}
+
+.rsform-reset-button
+{
+	background: #E5E3E3 url(../images/bg-reset-button.gif) repeat-x;
+	border: solid 1px #ddd;
+	color: #515151;
+	padding: 6px 12px;
+}
+
+/* Blocks */
+
+.rsform-block
+{
+	overflow: hidden;
+}
+
+.rsform-block:hover
+{
+	background: #FFF2EB;
+}
+
+/* Errors */
+
+.rsform-input-box.rsform-error,
+.rsform-text-box.rsform-error,
+.rsform-password-box.rsform-error,
+.rsform-calendar-box.rsform-error,
+.rsform-captcha-box.rsform-error,
+.rsform-select-box.rsform-error
+{
+	border: 1px solid #E1B2B3;
+	background: #FBE3E4;
+}

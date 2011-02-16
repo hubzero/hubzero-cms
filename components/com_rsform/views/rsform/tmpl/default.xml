@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_RSFORM_MENU_FORM" >
+		<message>
+			<![CDATA[COM_RSFORM_MENU_FORM_DESC]]>
+		</message>
+	</layout>
+<state>
+	<name>COM_RSFORM_MENU_FORM</name>
+	<description>COM_RSFORM_MENU_FORM_DESC</description>
+	<params addPath="/administrator/components/com_rsform/elements">
+		<param name="formId" type="forms" default="" label="Form" description="Form" />
+	</params>
+</state>
+	<fields name="request">
+		<fieldset name="request" addfieldpath="/administrator/components/com_rsform/fields">
+			<field name="formId" type="forms" default="" label="Form" description="Form" />
+		</fieldset>
+	</fields>
+</metadata>
