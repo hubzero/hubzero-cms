@@ -3,6 +3,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	//$jdocument =& JFactory::getDocument();
 	//$jdocument->addScript('/templates/fresh/html/mod_reportproblems/closetab.js');
 ?>
+
+
+
 	<div id="help-pane">
 		<div id="help-container">
 			<h1><?php echo JText::_('MOD_REPORTPROBLEMS_SUPPORT'); ?></h1>
@@ -22,6 +25,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<li class="tickets"><h3><a href="/support/tickets" ><?php echo JText::_('Support Tickets'); ?></a></h3>
 						<p><?php echo JText::_('Check on status of your tickets.'); ?></p>
 					</li>
+
+                                        <li class="si"><h3><a href="/feedback/report_problems/?isSecurityIncident=1" style="color: #AD6456;" ><?php echo JText::_('Report Security Incident'); ?></a></h3>
+                                                    <p><?php echo JText::_('Use this link to report a NEES network security incident'); ?></p>
+                                        </li>
+
+
 				</ul>	
 			</div><!-- / .threecolumn farleft -->
 			<div class="threecolumn middleright">
@@ -48,6 +57,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							<span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
 							<input type="text" name="answer" id="trAnswer" value="" size="3" /></label>
 <?php } ?>
+
 					</fieldset>
 					<fieldset>
 						<label for="trProblem">

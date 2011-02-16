@@ -145,6 +145,9 @@
 	#help-container li.qa {
 		background: url("images/qa.png") 0 0.7em no-repeat;
 		}
+	#help-container li.si {
+		background: url("images/stopsign.png") 0 0.7em no-repeat;
+		}
 	#help-container li p {
 		margin: 0;
 		}
