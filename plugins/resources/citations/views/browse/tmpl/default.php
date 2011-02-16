@@ -75,6 +75,48 @@ if ($this->citations) {
 		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=citations#affiliated'); ?>"><?php echo JText::_('PLG_RESOURCES_CITATIONS_AFF'); ?> (<?php echo $numaff; ?>)</a>
 	</span>
 </h3>
+
+		
+		
+<?php 
+	//
+	// Cite this work add-in
+	//
+	$citations = '';
+	$config = JFactory::getConfig();
+	$sef = JRoute::_('index.php?option='.$this->option.a.'id='.$this->resource->id);
+	$thedate = ($this->resource->publish_up != '0000-00-00 00:00:00') 
+				 ? $this->resource->publish_up 
+				 : $this->resource->created;
+
+	$database =& JFactory::getDBO();
+	// Initiate a resource helper class
+	$helper = new ResourcesHelper( $this->resource->id, $database );
+
+	// Citation instructions
+	$helper->getUnlinkedContributors();
+	// Build our citation object
+	$cite = new stdClass();
+	$cite->title = $this->resource->title;
+	$cite->year = JHTML::_('date', $thedate, '%Y');
+	$juri =& JURI::getInstance();
+	if (substr($sef,0,1) == '/') {
+		$sef = substr($sef,1,strlen($sef));
+	}
+	$cite->location = $juri->base().$sef;
+	$cite->date = date( "Y-m-d H:i:s" );			
+	$cite->url = '';
+	$cite->type = '';
+	$cite->author = $helper->ul_contributors;
+	if (isset($this->resource->doi)) {
+		$cite->doi = $config->get('doi').'r'.$this->resource->id.'.'.$this->resource->doi;
+	}
+	
+	$citeinstruct  = ResourcesHtml::citation( $option, $cite, $this->resource->id, $citations, $this->resource->type );
+	$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->resource, $config, $helper);
+	echo ResourcesHtml::tableRow( '<a name="citethis"></a>'.JText::_('COM_RESOURCES_CITE_THIS'), $citeinstruct );
+
+?>
 <?php
 if ($this->citations) { 
 	if ($nonaffiliated) { 
