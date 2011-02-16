@@ -9,6 +9,8 @@ require_once 'lib/data/DataFilePeer.php';
 require_once 'lib/data/DataFile.php';
 require_once 'lib/data/DataFileLinkPeer.php';
 require_once 'lib/data/DataFileLink.php';
+require_once 'lib/data/ProjectHomepage.php';
+require_once 'lib/data/ProjectHomepagePeer.php';
 
 class ProjectEditorViewEditDocument extends JView{
 	
@@ -34,6 +36,12 @@ class ProjectEditorViewEditDocument extends JView{
     /* @var $oDataFile DataFile */
     $oDataFile = $oModel->getDataFileById($iDataFileId);
     $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oDataFile);
+
+    /* @var $oProjectHomepage ProjectHomepage */
+    $oProjectHomepage = ProjectHomepagePeer::findByProjectIdAndDataFileId($iProjectId, $iDataFileId);
+    if($oProjectHomepage){
+      $_REQUEST[ProjectHomepagePeer::TABLE_NAME] = serialize($oProjectHomepage);
+    }
 
     $strPath = $oDataFile->getPath();
     $this->assignRef("path", get_friendlyPath($strPath));

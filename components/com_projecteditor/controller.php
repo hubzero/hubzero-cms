@@ -64,6 +64,7 @@ require_once 'lib/data/Trial.php';
 require_once 'lib/data/Repetition.php';
 require_once 'lib/data/DocumentFormatPeer.php';
 require_once 'lib/data/DocumentFormat.php';
+require_once 'lib/data/AuthorizationPeer.php';
 //require_once 'lib/data/EntityHistoryPeer.php';
 //require_once 'lib/data/EntityHistory.php';
 require_once 'lib/data/ThumbnailPeer.php';
@@ -112,6 +113,7 @@ class ProjectEditorController extends JController{
     $this->registerTask( 'removeorganization', 'removeOrganization' );
     $this->registerTask( 'removewebsite', 'removeWebsite' );
     $this->registerTask( 'remove', 'remove' );
+    $this->registerTask( 'removeentity', 'removeEntity' );
     $this->registerTask( 'preview', 'previewProject' );
     $this->registerTask( 'confirmproject', 'confirmProject' );
     $this->registerTask( 'previewprojectedit', 'previewExistingProject' );
@@ -153,7 +155,9 @@ class ProjectEditorController extends JController{
     $this->registerTask( 'saveanalysis', 'saveAnalysis' );
     $this->registerTask( 'savemorephotos', 'saveMorePhotos' );
     $this->registerTask( 'setexperimentaccess', 'setExperimentAccess' );
+    $this->registerTask( 'nsfawardtype', 'setNsfAwardType' );
     //$this->registerTask( 'curateconfirmproject', 'curateConfirmProject' );
+    $this->registerTask( 'curaterequest', 'setCurateRequest');
   }
 
   /*
@@ -185,10 +189,10 @@ class ProjectEditorController extends JController{
         else
             return true;
     }
-
+  
   /**
    * Method to display the view
-   *
+   * 
    * @access    public
    */
   function display(){
@@ -196,11 +200,11 @@ class ProjectEditorController extends JController{
 	JRequest::setVar('view', $sViewName );
     parent::display();
   }
-
+  
   /**
    * Gets a list of NEES facilities based upon what the user types.
-   *
-   * @return strings separated by line breaks
+   * 
+   * @return strings separated by line breaks 
    */
   function getFacilityList(){
     $strFacilityList = "";
@@ -218,11 +222,11 @@ class ProjectEditorController extends JController{
 
     echo $strFacilityList;
   }
-
+  
   /**
    * Gets a list of NEES facilities based upon what the user types.
-   *
-   * @return strings separated by line breaks
+   * 
+   * @return strings separated by line breaks 
    */
   function getOrganizationList(){
     $strOrganizationList = "";
@@ -270,12 +274,12 @@ class ProjectEditorController extends JController{
 
     echo $strMemberList;
   }
-
+  
   function getSponsorList(){
     $strSponsorList = "";
-
+  	
     $strSearchTerm	= JRequest::getVar('term');
-
+  	
     $oModel =& $this->getModel('Project');
     $oSponsorArray = $oModel->suggestSponsors($strSearchTerm, 10);
     foreach($oSponsorArray as $iIndex=>$oSponsor){
@@ -287,12 +291,12 @@ class ProjectEditorController extends JController{
 
     echo $strSponsorList;
   }
-
+  
   function getEquipmentList(){
     JRequest::setVar("view", "equipment" );
     parent::display();
   }
-
+  
   function getSpecimenTypeList(){
     $strSpecimenList = "";
 
@@ -311,7 +315,7 @@ class ProjectEditorController extends JController{
 
     echo $strSpecimenList;
   }
-
+  
   function getMaterialTypeList(){
     $strMaterialTypeList = "";
 
@@ -330,7 +334,7 @@ class ProjectEditorController extends JController{
 
     echo $strMaterialTypeList;
   }
-
+  
   function getMaterialPropertyTypeList(){
     $strMaterialPropertyTypeList = "";
 
@@ -349,7 +353,7 @@ class ProjectEditorController extends JController{
 
     echo $strMaterialPropertyTypeList;
   }
-
+  
   function getMeasurementUnitList(){
     $strMeasurementUnitList = "";
 
@@ -429,13 +433,13 @@ class ProjectEditorController extends JController{
     $oTrial = $oModel->getTrialById($iTrialId);
     if($oTrial){
       $iTrialId = $oTrial->getId();
-    $strTitle = (StringHelper::hasText($oTrial->getTitle())) ? $oTrial->getTitle() : "";
+      $strTitle = (StringHelper::hasText($oTrial->getTitle())) ? $oTrial->getTitle() : "";
       $strStartDate = (StringHelper::hasText($oTrial->getStartDate('%m/%d/%Y'))) ? $oTrial->getStartDate('%m/%d/%Y') : "";
       $strEndDate = (StringHelper::hasText($oTrial->getEndDate('%m/%d/%Y'))) ? $oTrial->getEndDate('%m/%d/%Y') : "";
-    $strObjective = (StringHelper::hasText($oTrial->getObjective())) ? $oTrial->getObjective() : "";
-    $strDescription = (StringHelper::hasText($oTrial->getDescription())) ? $oTrial->getDescription() : "";
+      $strObjective = (StringHelper::hasText($oTrial->getObjective())) ? $oTrial->getObjective() : "";
+      $strDescription = (StringHelper::hasText($oTrial->getDescription())) ? $oTrial->getDescription() : "";
     }
-
+    
     echo $strStartDate."[trialinfo]".$strEndDate."[trialinfo]".$strObjective."[trialinfo]".$strDescription."[trialinfo]".$iTrialId."[trialinfo]".$strTitle;
   }
 
@@ -462,7 +466,7 @@ class ProjectEditorController extends JController{
 
   function getRepetitionInfo(){
     $iRepId = JRequest::getVar('id', 0);
-
+    
     /* @var $oModel ProjectEditorModelCreateRepetition */
     $oModel =& $this->getModel('CreateRepetition');
 
@@ -533,47 +537,47 @@ class ProjectEditorController extends JController{
 
     echo $strLocationPlanList;
   }
-
+  
   function addMaterial(){
     $strMaterialName = JRequest::getVar('material');
     $strMaterialType = JRequest::getVar('type');
     $strMaterialDesc = JRequest::getVar('desc');
-
+    
     $oMaterialsModel =& $this->getModel('Materials');
-
+    
     $oMaterial = new Material();
     $oMaterial->setName($strMaterialName);
     $oMaterial->setDescription($strMaterialDesc);
-
+    
     $oMaterialType = null;
-
+    
     //get the material type
     $oMaterialType = $oMaterialsModel->findMaterialTypeByDisplayName($strMaterialType);
     if(!$oMaterialType){
       $oMaterialType = new MaterialType();
       $oMaterialType->setDisplayName($strMaterialType);
-
+      
       $strSystemName = strtolower($strMaterialType);
       $strSystemName = str_replace(" ", "_", $strSystemName);
-      $oMaterialType->setSystemName($strSystemName);
+      $oMaterialType->setSystemName($strSystemName);	
     }
     $oMaterial->setMaterialType($oMaterialType);
-
+    
     $oMaterialArray = null;
     if(isset($_SESSION["materials"])){
       $oMaterialArray = $_SESSION["materials"];
     }else{
       $oMaterialArray = array();
     }
-
+    
     array_push($oMaterialArray, serialize($oMaterial));
     $_SESSION["materials"] = $oMaterialArray;
-
+    
     JRequest::setVar( 'view', 'materials' );
     JRequest::setVar( 'format', 'ajax' );
     parent::display();
   }
-
+  
   function add(){
     $strInputField = JRequest::getVar('name');
     $strInputFieldValue = JRequest::getVar('value');
@@ -583,19 +587,19 @@ class ProjectEditorController extends JController{
     }else{
       $strInputArray = array();
     }
-
+    
     array_push($strInputArray, $strInputFieldValue);
     $_SESSION[$strInputField] = $strInputArray;
-
+    
     JRequest::setVar( 'view', 'add' );
     JRequest::setVar( 'format', 'ajax' );
     parent::display();
   }
-
+  
   function addPair(){
     $strInputField1 = JRequest::getVar('field1');
     $strInputFieldValue1 = JRequest::getVar('value1');
-
+    
     $strInputField2 = JRequest::getVar('field2');
     $strInputFieldValue2 = JRequest::getVar('value2');
     if(isset($_SESSION[$strInputField1])){
@@ -607,7 +611,7 @@ class ProjectEditorController extends JController{
     $oTuple = new Tuple($strInputFieldValue1, $strInputFieldValue2, $strInputField1, $strInputField2);
     array_push($strInputArray, $oTuple);
     $_SESSION[$strInputField1] = $strInputArray;
-
+    
     JRequest::setVar( 'view', 'addpair' );
     JRequest::setVar( 'format', 'ajax' );
     parent::display();
@@ -663,7 +667,7 @@ class ProjectEditorController extends JController{
       $oProjectGrant = new ProjectGrant($strSponsorName, $strAward, $strAwardUrl);
       array_push($strInputArray, $oProjectGrant);
     }
-
+    
     $_SESSION[ProjectGrantPeer::TABLE_NAME] = serialize($strInputArray);
 
     JRequest::setVar( 'view', 'addsponsor' );
@@ -683,13 +687,13 @@ class ProjectEditorController extends JController{
       $oOrganizationArray = unserialize($_SESSION[OrganizationPeer::TABLE_NAME]);
     }
 
-      $oOrganization = OrganizationPeer::findByName($strValue);
-      if($oOrganization){
-        array_push($oOrganizationArray, $oOrganization);
-      }else{
-        echo "<p class='error editorInputSize'>Submit a support ticket to add $strValue.</p>";
+    $oOrganization = OrganizationPeer::findByName($strValue);
+    if($oOrganization){
+      array_push($oOrganizationArray, $oOrganization);
+    }else{
+      echo "<p class='error editorInputSize'>Submit a support ticket to add $strValue.</p>";
       return;
-      }
+    }
 
     $_SESSION[OrganizationPeer::TABLE_NAME] = serialize($oOrganizationArray);
 
@@ -697,23 +701,233 @@ class ProjectEditorController extends JController{
     JRequest::setVar( 'format', 'ajax' );
     parent::display();
   }
-
+  
   function remove(){
     $strInputField = JRequest::getVar('name');
     $iArrayIndex = JRequest::getVar('value');
 
     //get the current field array
     $strInputArray = $_SESSION[$strInputField];
-
+    
     //remove the selected element
     unset($strInputArray[$iArrayIndex]);
-
+   
     //save the current field array
     $_SESSION[$strInputField] = $strInputArray;
-
+    
     JRequest::setVar( 'view', 'add' );
     JRequest::setVar( 'format', 'ajax' );
     parent::display();
+  }
+
+  function removeEntity(){
+    /* @var $oModel ProjectEditorModelDelete */
+    $oModel =& $this->getModel('Delete');
+
+    //incoming
+    $iEntityId = JRequest::getInt('eid',0);
+    $iEntityTypeId = JRequest::getInt('etid',0);
+    $strPath = JRequest::getVar("path", "");
+    $strUrl = JRequest::getVar("return", "");
+
+    /* @var $oEntityType EntityType */
+    $oEntityType = $oModel->getEntityTypeById($iEntityTypeId);
+    if(!$oEntityType){
+      echo ComponentHtml::showError("Not a valid Project Warehouse resource.");
+      return;
+    }
+
+    $oAuthorizer = Authorizer::getInstance();
+    $iDeletePersonId = $oAuthorizer->getUserId();
+    $bEntityFound = true;
+
+    $strClassName = $oEntityType->getClassName();
+    switch ($strClassName) {
+        case "Project":
+            /* @var $oProject Project */
+            $oProject = $oModel->getProjectById($iEntityId);
+            if(!$oProject){
+              echo ComponentHtml::showError("Unable to find the selected project ($iEntityId).");
+              return;
+            }
+
+            if(!$oAuthorizer->canDelete($oProject)){
+              echo ComponentHtml::showError("You do not have privileges to delete the selected project ($iEntityId).");
+              return;
+            }
+
+            $iDeleteCode = AuthorizationPeer::doDelete($iEntityId, DomainEntityType::ENTITY_TYPE_PROJECT, $iDeletePersonId);
+            if($iDeleteCode == AuthorizationPeer::ENTITY_DELETE_ERROR){
+              echo ComponentHtml::showError("System error: unable to delete project ($iEntityId). Please submit a ticket.");
+              return;
+            }
+
+            //get group cn
+            $strGroupCn = str_replace("-",  "_",  $oProject->getName());
+            $strGroupCn = strtolower(trim($strGroupCn));
+
+            //delete project group
+            $iHubGroupCode = $this->deleteHubGroup($strGroupCn);
+            if($iHubGroupCode == ProjectEditor::PROJECT_GROUP_DELETE_OK){
+              $strDropboxDirectory = ProjectEditor::DROPBOX_PREFIX."/".strtolower($strGroupCn);
+              if (is_dir($strDropboxDirectory)) {
+                // Attempt to delete the dropbox
+                jimport('joomla.filesystem.file');
+                if (!JFolder::delete($strDropboxDirectory)) {
+                  $this->setError( ProjectEditor::PROJECT_GROUP_DROPBOX_ERROR_MSG );
+                }
+              }
+            }
+
+            if(!StringHelper::hasText($strUrl)){
+              $strUrl = "/warehouse/myprojects";
+            }
+
+            break;
+        case "Experiment":
+            //check to see if we have a list of repetition ids
+            $strEntityIds = JRequest::getVar('eid');
+            $strEntityIdArray = explode(",", $strEntityIds);
+            if(count($strEntityIdArray) > 1){
+              foreach($strEntityIdArray as $iEntityId){
+                $strUrl = $this->deleteExperiment($oModel, $iEntityId, $iDeletePersonId, $strUrl);
+              }
+            }else{
+              $strUrl = $this->deleteExperiment($oModel, $iEntityId, $iDeletePersonId, $strUrl);
+            }
+            break;
+        case "Trial":
+            //check to see if we have a list of repetition ids
+            $strEntityIds = JRequest::getVar('eid');
+            $strEntityIdArray = explode(",", $strEntityIds);
+            if(count($strEntityIdArray) > 1){
+              foreach($strEntityIdArray as $iEntityId){
+                $strUrl = $this->deleteTrial($oModel, $iEntityId, $iDeletePersonId, $strUrl);
+              }
+            }else{
+              $strUrl = $this->deleteTrial($oModel, $iEntityId, $iDeletePersonId, $strUrl);
+            }
+            break;
+        case "Repetition":
+            //check to see if we have a list of repetition ids
+            $strEntityIds = JRequest::getVar('eid');
+            $strEntityIdArray = explode(",", $strEntityIds);
+            if(count($strEntityIdArray) > 1){
+              foreach($strEntityIdArray as $iEntityId){
+                $strUrl = $this->deleteRepetition($oModel, $iEntityId, $iDeletePersonId, $strUrl);
+              }
+            }else{
+              $strUrl = $this->deleteRepetition($oModel, $iEntityId, $iDeletePersonId, $strUrl);
+            }
+
+            break;
+        case "DataFile":
+            //check to see if we have a list of data_file ids
+            $strEntityIds = JRequest::getVar('eid');
+            $strEntityIdArray = explode(",", $strEntityIds);
+            if(count($strEntityIdArray) > 1){
+              foreach($strEntityIdArray as $iDataFileId){
+                $this->deleteDataFile($oModel, $iDataFileId, $iDeletePersonId);
+              }
+            }else{
+              $this->deleteDataFile($oModel, $iEntityId, $iDeletePersonId);
+            }
+
+            break;
+        case "Materials":
+            /* @var $oMaterial Material */
+            $oMaterial = $oModel->getMaterialById($iEntityId);
+            if(!$oMaterial){
+              echo ComponentHtml::showError("Unable to find the selected material ($iEntityId).");
+              return;
+            }
+
+            if(!$oAuthorizer->canDelete($oMaterial->getExperiment())){
+              echo ComponentHtml::showError("You do not have privileges to delete the selected material ($iEntityId).");
+              return;
+            }
+
+            $iExperimentId = $oMaterial->getExperiment()->getId();
+            $iProjectId = $oMaterial->getExperiment()->getProject()->getId();
+
+            //$oMaterial->delete();
+
+            $iDeleteCode = AuthorizationPeer::doDelete($iEntityId, DomainEntityType::ENTITY_TYPE_MATERIALS, $iDeletePersonId);
+            if($iDeleteCode == AuthorizationPeer::ENTITY_DELETE_ERROR){
+              echo ComponentHtml::showError("System error: unable to delete material ($iEntityId). Please submit a ticket.");
+              return;
+            }
+
+            if(!StringHelper::hasText($strUrl)){
+              $strUrl = "/warehouse/projecteditor/project/".$iProjectId."/experiment/".$iExperimentId."/materials";
+            }
+            break;
+        case "SensorLocationPlan":
+            /* @var $oSensorLocationPlan LocationPlan */
+            $oSensorLocationPlan = $oModel->getLocationPlanById($iEntityId);
+            if(!$oSensorLocationPlan){
+              echo ComponentHtml::showError("Unable to find the selected location plan ($iEntityId).");
+              return;
+            }
+
+            $oExperiment = $oSensorLocationPlan->getExperiment();
+            if(!$oAuthorizer->canDelete($oExperiment)){
+              echo ComponentHtml::showError("You do not have privileges to delete the selected location plan ($iEntityId).");
+              return;
+            }
+
+            $iExperimentId = $oSensorLocationPlan->getExperiment()->getId();
+            $iProjectId = $oSensorLocationPlan->getExperiment()->getProject()->getId();
+
+            //$oSensorLocationPlan->delete();
+
+            $iDeleteCode = AuthorizationPeer::doDelete($iEntityId, DomainEntityType::ENTITY_TYPE_LOCATION_PLAN, $iDeletePersonId);
+            if($iDeleteCode == AuthorizationPeer::ENTITY_DELETE_ERROR){
+              echo ComponentHtml::showError("System error: unable to delete location plan ($iEntityId). Please submit a ticket.");
+              return;
+            }
+
+            if(!StringHelper::hasText($strUrl)){
+              $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/sensors";
+            }
+            break;
+        case "SensorLocation":
+            $iExperimentId = 0;
+            $iProjectId = 0;
+
+            //check to see if we have a list of data_file ids
+            $strEntityIds = JRequest::getVar('eid');
+            $strEntityIdArray = explode(",", $strEntityIds);
+            if(count($strEntityIdArray) > 1){
+              foreach($strEntityIdArray as $iIndex=>$iEntityId){
+                /* @var $oLocation Location */
+                $oLocation = $oModel->getLocationById($iEntityId);
+                if($iIndex===0){
+                  $iExperimentId = $oLocation->getLocationPlan()->getExperiment()->getId();
+                  $iProjectId = $oLocation->getLocationPlan()->getExperiment()->getProject()->getId();
+                }
+                $oLocation->delete();
+              }
+            }else{
+              /* @var $oLocation Location */
+              $oLocation = $oModel->getLocationById($strEntityIds);
+              $iExperimentId = $oLocation->getLocationPlan()->getExperiment()->getId();
+              $iProjectId = $oLocation->getLocationPlan()->getExperiment()->getProject()->getId();
+
+              $oLocation->delete();
+            }
+
+            if(!StringHelper::hasText($strUrl)){
+              $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/sensors";
+            }
+
+            break;
+        default:
+            $bEntityFound = false;
+            break;
+    }
+
+    $this->setRedirect($strUrl);
   }
 
   /**
@@ -788,13 +1002,13 @@ class ProjectEditorController extends JController{
 
     //get the current field array
     $strInputArray = $_SESSION[$strInputField];
-
+    
     //remove the selected element
     unset($strInputArray[$iArrayIndex]);
-
+   
     //save the current field array
     $_SESSION[$strInputField] = $strInputArray;
-
+    
     JRequest::setVar( 'view', 'materials' );
     JRequest::setVar( 'format', 'ajax' );
     parent::display();
@@ -895,10 +1109,10 @@ class ProjectEditorController extends JController{
        * attempt to use the auto-suggest.  If for some reason
        * the user skipped the auto-fill, use the full name.
        */
-      if(empty($strErrorArray)){
-        //initialize the people involved
+      if(empty($strErrorArray)){        
+        //initialize the people involved  
         /* @var $oOwnerPerson Person */
-        $oOwnerPerson = null;
+        $oOwnerPerson = null;  
         $strOwnerUsername = StringHelper::EMPTY_STRING;
         $strContactName = StringHelper::EMPTY_STRING;
         $strContactEmail = StringHelper::EMPTY_STRING;
@@ -907,14 +1121,14 @@ class ProjectEditorController extends JController{
         $oThisJUser = $oModel->getCurrentUser();
         $oThisPerson = $oModel->getOracleUserByUsername($oThisJUser->username);
         $iCreatorId = $oThisPerson->getId();
-
+        
         /* @var $oAdminPerson Person */
-        $oAdminPerson = null;
+        $oAdminPerson = null;  
         $strAdminUsername = StringHelper::EMPTY_STRING;
         $strSysAdminName = StringHelper::EMPTY_STRING;
         $strSysAdminEmail = StringHelper::EMPTY_STRING;
 
-        //check if using auto-fill, otherwise use last, first name
+        //check if using auto-fill, otherwise use last, first name  
         if(preg_match(ProjectEditor::PERSON_NAME_PATTERN, $strOwner)){
           try{
             $oOwnerPerson = $oModel->getSuggestedUsername($strOwner);
@@ -1005,12 +1219,12 @@ class ProjectEditorController extends JController{
 
     if($oProject){
       $_SESSION[ProjectPeer::TABLE_NAME] = serialize($oProject);
-
+      
       /*
        * Step 3: Add the Organizations
        */
       $_SESSION[OrganizationPeer::TABLE_NAME] = serialize($oOrganizationArray);
-
+    
       /*
        * Step 4: Add the Sponsors
        */
@@ -1024,7 +1238,7 @@ class ProjectEditorController extends JController{
       $strUrlArray = $_POST['url'];
       $oProjectUrlArray = $oModel->setWebsites($strWebsiteArray, $strUrlArray);
       $_SESSION[ProjectHomepagePeer::TABLE_NAME] = serialize($oProjectUrlArray);
-
+          
       /*
        * Step 6: Add the Tags
        */
@@ -1106,7 +1320,7 @@ class ProjectEditorController extends JController{
     $_REQUEST["enddate"] = (StringHelper::hasText($strEndDate)) ? $strEndDate : "mm/dd/yyyy";
     $_REQUEST["description"] = (StringHelper::hasText($strDescription)) ? $strDescription : StringHelper::EMPTY_STRING;
     $_REQUEST["tags"] = (StringHelper::hasText($strTags)) ? $strTags : StringHelper::EMPTY_STRING;
-
+    
     JRequest::setVar( 'view', $strView );
     parent::display();
   }
@@ -1145,7 +1359,13 @@ class ProjectEditorController extends JController{
       array_push($strErrorArray, $oException->getEntityMessage("Create Project"));
     }
 
-    $strEndDate = $oModel->validateEndDate(JRequest::getVar("enddate"));
+    $strEndDate = JRequest::getVar("enddate");
+    try{
+      $strEndDate = $oModel->validateEndDate($strEndDate, $strStartDate);
+    }catch(ValidationException $oException) {
+      array_push($strErrorArray, $oException->getEntityMessage("Create Project"));
+    }
+
     $strDescription = JRequest::getVar("description", "");
     $strTags = JRequest::getVar("tags", "");
 
@@ -1164,11 +1384,15 @@ class ProjectEditorController extends JController{
     $strOwner = JRequest::getVar("owner", "");
     $strAdmin = JRequest::getVar("itperson", "");
     $iNeesProject = JRequest::getInt("nees", 0);
+    $iNeesResearchTypeId = JRequest::getInt("researchType", 0);
+    $iEnhancedProject = JRequest::getInt("enhanced", 0);
     $iProjectTypeId = JRequest::getInt("type", ProjectPeer::CLASSKEY_STRUCTUREDPROJECT);
 
     $oOrganizationArray = array();
     try{
-      $oOrganizationArray = $oModel->validateOrganizations($_POST['organization']);
+      if(isset($_POST['organization'])){
+        $oOrganizationArray = $oModel->validateOrganizations($_POST['organization']);
+      }
     }catch(ValidationException $oException){
       array_push($strErrorArray, $oException->getEntityMessage("Create Project"));
     }
@@ -1315,6 +1539,21 @@ class ProjectEditorController extends JController{
     }//end building or getting project
 
     if($oProject){
+      $oProject->setEnhanced($iEnhancedProject);
+      if($iNeesProject==1){
+        $oProject->setNeesResearchTypeId($iNeesResearchTypeId);
+      }else{
+        $oProject->setNeesResearchTypeId(null);
+      }
+
+      $oHubUser = $oModel->getCurrentUser();
+
+      /* @var $oPerson Person */
+      $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
+      $oProject->setModifiedById($oPerson->getId());
+      $oProject->setModifiedDate(date("m/d/Y"));
+      $oProject->setAppId(ProjectEditor::APP_ID);
       $_SESSION[ProjectPeer::TABLE_NAME] = serialize($oProject);
 
       /*
@@ -1325,7 +1564,7 @@ class ProjectEditorController extends JController{
       /*
        * Step 4: Add the Sponsors
        */
-      $oProjectGrantArray = $oModel->setSponsors($_POST["sponsor"], $_POST["award"]);
+      $oProjectGrantArray = $oModel->setSponsors($_POST["sponsor"], $_POST["award"], $_POST["nsfAwardType"]);
       $_SESSION[ProjectGrantPeer::TABLE_NAME] = serialize($oProjectGrantArray);
 
       /*
@@ -1422,7 +1661,7 @@ class ProjectEditorController extends JController{
     parent::display();
   }
 
-
+  
 //  function curateConfirmProject(){
 //    $strErrorArray = array();
 //    unset($_SESSION[ProjectEditor::PHOTO_NAME]);
@@ -1565,19 +1804,17 @@ class ProjectEditorController extends JController{
 //    JRequest::setVar( 'view', $strView );
 //    parent::display();
 //  }
-
+  
 
   /**
    * Creates or edits a Project and it's attributes.
-   *
+   * 
    */
   function saveProject(){
     $strErrorArray = array();
     $strOwnerUsername = StringHelper::EMPTY_STRING;
     $strAdminUsername = StringHelper::EMPTY_STRING;
 
-    //get the keywords.  if all goes well, we will use it twice.
-    $oReasearcherKeywordArray = unserialize($_SESSION[ResearcherKeywordPeer::TABLE_NAME]);
     $bUpload = false;
     $bNewDirs = false;
 
@@ -1619,7 +1856,7 @@ class ProjectEditorController extends JController{
          */
         if(!$bEditProject){
           $strOwnerUsername = $_SESSION[ProjectEditor::PROJECT_OWNER_USERNAME];
-
+        
           /*@var $oOwnerPerson Person */
           $oOwnerPerson = $oModel->getOracleUserByUsername($strOwnerUsername);
 
@@ -1628,7 +1865,7 @@ class ProjectEditorController extends JController{
 
           //create the person_entity_role entry for the pi
           $oPersonEntityRole = $oModel->createPersonEntityRole($oOwnerPerson->getId(), $oProject->getId(), "Principal Investigator");
-
+      
           $strAdminUsername = $_SESSION[ProjectEditor::PROJECT_ADMIN_USERNAME];
           if(StringHelper::hasText($strAdminUsername)){
             /*@var $oAdminPerson Person */
@@ -1652,13 +1889,35 @@ class ProjectEditorController extends JController{
         $oOrganizationArray = (isset($_POST['organization'])) ? $_POST['organization'] : array();
         $oModel->createProjectOrganizations($oProject, $oOrganizationArray, $oConnection);
 
-        $oProjectGrantArray = unserialize($_SESSION[ProjectGrantPeer::TABLE_NAME]);
-        $oModel->createProjectGrants($oProject, $oProjectGrantArray, $oConnection);
+        $strSponsor = JRequest::getVar("sponsors", "");
+        $strAward = JRequest::getVar("awards", "");
+        $strNsfAwardType = JRequest::getVar("nsfawardtypes", "");
+        if(StringHelper::hasText($strSponsor) && StringHelper::hasText($strAward)){
+          $strSponsorArray = explode(",", $strSponsor);
+          $strAwardArray = explode(",", $strAward);
+          $strNsfAwardTypeArray = explode(",", $strNsfAwardType);
+          $oProjectGrantArray = $oModel->setSponsors($strSponsorArray, $strAwardArray, $strNsfAwardTypeArray);
+          $oModel->createProjectGrants($oProject, $oProjectGrantArray, $oConnection);
+        }
 
-        $oProjectUrlArray = unserialize($_SESSION[ProjectHomepagePeer::TABLE_NAME]);
-        $oModel->createProjectHomepages($oProject, $oProjectUrlArray, $oConnection);
+        $strWebsite = JRequest::getVar("websites", "");
+        $strUrl = JRequest::getVar("urls", "");
+        if(StringHelper::hasText($strWebsite) && StringHelper::hasText($strUrl)){
+          $strWebsiteArray = explode(",", $strWebsite);
+          $strUrlArray = explode(",", $strUrl);
+          $oProjectUrlArray = $oModel->setWebsites($strWebsiteArray, $strUrlArray);
+          $oModel->createProjectHomepages($oProject, $oProjectUrlArray, $oConnection);
+        }
 
-        $oModel->createResearcherKeywords($oProject->getId(), 1, $oReasearcherKeywordArray, $oConnection);
+        $strTags = JRequest::getVar("tags", "");
+        if(StringHelper::hasText($strTags)){
+          $oHubUser = $oModel->getCurrentUser();
+
+          $strTagsArray = explode(",", $strTags);
+          $oReasearcherKeywordArray = $oModel->setTags($strTagsArray, $oHubUser->username);
+          $oModel->createResearcherKeywords($oProject->getId(), 1, $oReasearcherKeywordArray, $oConnection);
+        }
+
       }//end orgs, sponsors, websites, keywords
 
       if( empty($strErrorArray) && $oProject->getId() > 0 ){
@@ -1680,7 +1939,7 @@ class ProjectEditorController extends JController{
 
           $fileDocMovie = FileCommandAPI::create("/$strProjectName/Documentation/Videos/Movies");
           $fileDocMovie->mkdir(TRUE);
-
+          
           $fileDocFrame = FileCommandAPI::create("/$strProjectName/Documentation/Videos/Frames");
           $fileDocFrame->mkdir(TRUE);
 
@@ -1689,10 +1948,10 @@ class ProjectEditorController extends JController{
 
           $fileAna = FileCommandAPI::create("/$strProjectName/Analysis");
           $fileAna->mkdir(TRUE);
-
+          
           //$filePhotos = FileCommandAPI::create("/$strProjectName/Photos");
           //$filePhotos->mkdir(TRUE);
-
+          
           //$fileVideoMovies = FileCommandAPI::create("/$strProjectName/Videos/Movies");
           //$fileVideoMovies->mkdir(TRUE);
 
@@ -1726,9 +1985,12 @@ class ProjectEditorController extends JController{
             unlink($strSourcePath);
           }
 
-          //delete the old thumbnail and update the icon as the new thumbnail
-          $oModel->clearOldProjectImages($oProject->getId());
+          /* @var $oPerson Person */
+          $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
 
+          //delete the old thumbnail and update the icon as the new thumbnail
+          $oModel->clearOldProjectImages($oProject->getId(), $oPerson);
+          
           //setup the plugin
           JRequest::setVar('name', $strImageFileName);
           JRequest::setVar('title', $oProject->getTitle());
@@ -1794,6 +2056,7 @@ class ProjectEditorController extends JController{
 
     if(empty($strErrorArray)){
       $this->setRedirect("/warehouse/projecteditor/project/".$iProjectId."/experiments");
+      //echo "created...".$iProjectId."<br>";
     }else{
       $strView = "project";
       $_REQUEST["ERRORS"] = $strErrorArray;
@@ -1812,124 +2075,10 @@ class ProjectEditorController extends JController{
    *
    * Make sure that at least 1 member has full access.
    */
-  public function saveMember0(){
-    $_SESSION["MEMBER_ERRORS"] = null;
-    $strErrorArray = array();
-
-    /* @var $oModel ProjectEditorModelEditMember */
-    $oModel =& $this->getModel('EditMember');
-
-    $iProjectId = JRequest::getInt("projectId",0);
-    $iPersonId = JRequest::getInt("personId",0);
-    $iRoleId = JRequest::getInt("role",0);
-
-    $oCurrentRoleArray = array();
-    if(isset($_SESSION["USER_ROLES"])){
-      $oCurrentRoleArray = unserialize($_SESSION["USER_ROLES"]);
-    }
-    //echo 'current roles: <br>';
-    //var_dump($oCurrentRoleArray);
-    //echo '<br>';
-
-    /* @var $oProject Project */
-    $oProject = $oModel->getProjectById($iProjectId);
-    if(!$oProject){
-      array_push( $strErrorArray, "Project not provided." );
-    }
-
-    /* @var $oEditPerson Person */
-    $oEditPerson = $oModel->getPersonById($iPersonId);
-    if(!$oEditPerson){
-      array_push( $strErrorArray, "Person not provided." );
-    }
-
-    $bNewMember = false;
-    $oExistingProjectRoleArray = $oEditPerson->getRolesForEntity($oProject);
-    //echo 'existing roles: <br>';
-    //var_dump($oExistingProjectRoleArray);
-    //echo '<br>';
-    if(empty($oExistingProjectRoleArray)){
-      $bNewMember = true;
-    }
-
-    if(empty($strErrorArray)){
-      //clean out any previous roles
-      $oEditPerson->removeFromEntity($oProject);
-
-      /* @var $oDefaultRole Role */
-      $oDefaultRole = null;
-      $oRoleArray = array();
-      if($iRoleId === 0){
-        $oDefaultRole = RolePeer::getDefaultRoleByEntityTypeId($iProjectId);
-        array_push( $oRoleArray, $oDefaultRole );
-      }else{
-        $oDefaultRole = RolePeer::retrieveByPK($iRoleId);
-        array_push( $oRoleArray, $oDefaultRole );
-      }
-
-      $oInsertRoleArray = array_merge($oCurrentRoleArray, $oRoleArray);
-      foreach($oInsertRoleArray as $oThisRole){
-        /* @var $oThisRole Role */
-        if($oThisRole){
-          $oEditPerson->addRoleForEntity($oThisRole, $oProject);
-        }
-      }
-
-      // Make sure that at least one member has all permissions
-      $forceGrantall = $oModel->shouldDisableRevocation($oEditPerson, $oProject);
-
-      // Explicitly set permissions, if they're overridden from the Role-based defaults
-      // make sure they have at least 'view' access
-      $oPermissions = new Permissions(Permissions::PERMISSION_VIEW);
-
-      if ( JRequest::getVar("canEdit") || $forceGrantall) {
-        $oPermissions->setPermission(Permissions::PERMISSION_EDIT );
-      }
-      if ( JRequest::getVar("canDelete") || $forceGrantall) {
-        $oPermissions->setPermission(Permissions::PERMISSION_DELETE );
-      }
-      if ( JRequest::getVar("canCreate") || $forceGrantall) {
-        $oPermissions->setPermission(Permissions::PERMISSION_CREATE );
-      }
-      if ( JRequest::getVar("canGrant") || $forceGrantall) {
-        $oPermissions->setPermission(Permissions::PERMISSION_GRANT );
-      }
-
-      /* @var $oAuthorization Authorization */
-      $oAuthorization = new Authorization($oEditPerson->getId(), $oProject->getId(), 1, $oPermissions);
-      $oAuthorization->save();
-
-      // allow the project member has same access to all experiments
-      if ( JRequest::getVar("copyToExp") ) {
-        $oExperimentArray = $oProject->getExperiments();
-
-        /* @var $oExperiment Experiment */
-        foreach ($oExperimentArray as $oExperiment) {
-          $oEditPerson->removeFromEntity($oExperiment);
-          if(
-            ! AuthorizationPeer::insertProjectAuthsForAllExperiments($oProject->getId(), $oExperiment->getId(),$oEditPerson->getId()) ||
-            ! PersonEntityRolePeer::insertProjectPERforAllExperiments($oProject->getId(), $oExperiment->getId(),$oEditPerson->getId())){
-            array_push($strErrorArray, $oExperiment->getName()." - Authorization and Role errors. ");
-          }
-        }
-      }
-
-      if($bNewMember && empty($strErrorArray)){
-        /* $oModel->inviteWarehouseMemberToHubGroup($oProject, $oEditPerson); */
-        $oModel->addWarehouseMemberToHubGroup($oProject, $oEditPerson);
-      }//end if bNewMember
-
-    }//end if empty
-
-    $_SESSION["MEMBER_ERRORS"] = $strErrorArray;
-    $strUrl = "/warehouse/projecteditor/project/".$oProject->getId()."/members";
-    $this->setRedirect($strUrl);
-  }
-
   public function saveMember(){
     $_SESSION["MEMBER_ERRORS"] = null;
     unset ($_SESSION["MEMBER_ERRORS"]);
-
+    
     $strErrorArray = array();
 
     /* @var $oModel ProjectEditorModelEditMember */
@@ -2036,12 +2185,12 @@ class ProjectEditorController extends JController{
       while (list ($key,$iThisExperimentId) = @each ($iExperimentIdArray)) {
         /* @var $oExperiment Experiment */
         $oExperiment = $oModel->getExperimentById($iThisExperimentId);
-          $bAuthorizations = AuthorizationPeer::insertProjectAuthsForAllExperiments($oProject->getId(), $oExperiment->getId(),$oEditPerson->getId());
-          $bPersonEntityRoles = PersonEntityRolePeer::insertProjectPERforAllExperiments($oProject->getId(), $oExperiment->getId(),$oEditPerson->getId());
-          if(!$bAuthorizations || !$bPersonEntityRoles){
-            array_push($strErrorArray, $oExperiment->getName()." - Authorization and Role errors. ");
-          }
+        $bAuthorizations = AuthorizationPeer::insertProjectAuthsForAllExperiments($oProject->getId(), $oExperiment->getId(),$oEditPerson->getId());
+        $bPersonEntityRoles = PersonEntityRolePeer::insertProjectPERforAllExperiments($oProject->getId(), $oExperiment->getId(),$oEditPerson->getId());
+        if(!$bAuthorizations || !$bPersonEntityRoles){
+          array_push($strErrorArray, $oExperiment->getName()." - Authorization and Role errors. ");
         }
+      }
 
       if($bNewMember && empty($strErrorArray)){
         $oModel->addWarehouseMemberToHubGroup($oProject, $oEditPerson);
@@ -2050,7 +2199,7 @@ class ProjectEditorController extends JController{
     }//end if empty
 
     $_SESSION["MEMBER_ERRORS"] = $strErrorArray;
-
+    
     $strErrors = StringHelper::EMPTY_STRING;
     if(!empty($strErrorArray)){
       $strErrors = "?errors=1";
@@ -2158,7 +2307,7 @@ class ProjectEditorController extends JController{
   public function uploadFile(){
     $oModel =& $this->getModel('UploadForm');
 
-    $strUrl = "";
+    $strUrl = JRequest::getVar('return','');
 
     //Incoming
     $iRequestType = JRequest::getInt('requestType',-999);
@@ -2170,7 +2319,7 @@ class ProjectEditorController extends JController{
     $strPath = JRequest::getVar('path');
     if(!$strPath){
       echo ComponentHtml::showError("Destination path not found.");
-      return;
+      return;  
     }
 
     $strTitle = JRequest::getVar('title');
@@ -2182,6 +2331,7 @@ class ProjectEditorController extends JController{
     $_REQUEST[Files::CURRENT_DIRECTORY] = $strPath;
     $iProjectId = JRequest::getInt('projId', 0);
     $iExperimentId = JRequest::getInt('experimentId',0);
+    $iUsageTypeId = JRequest::getInt('usageType', 0);
 
     //invoke the upload plugin
     JPluginHelper::importPlugin( 'project', 'upload' );
@@ -2190,6 +2340,10 @@ class ProjectEditorController extends JController{
 
     switch ($iRequestType){
       case Files::DRAWING:
+        if($iUsageTypeId===0){
+          echo ComponentHtml::showError("Please select a drawing type.");
+          return;
+        }
         $oResultsArray = $oDispatcher->trigger('onDrawingUpload',$strParamArray);
         $oResults = $oResultsArray[0];
         if(is_numeric($oResults)){
@@ -2197,7 +2351,9 @@ class ProjectEditorController extends JController{
           $strMessage = UploadHelper::getErrorMessage($oResults);
           echo ComponentHtml::showError($strMessage);
         }else{
-          $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/drawings?path=$strFilePath";
+          if(!StringHelper::hasText($strUrl)){
+            $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/drawings?path=$strFilePath";
+          }
         }
 	break;
       case Files::DATA:
@@ -2252,7 +2408,7 @@ class ProjectEditorController extends JController{
             //get the file's extension
             $uploadedFileNameParts = explode('.', $strFileName);
             $uploadedFileExtension = array_pop($uploadedFileNameParts);
-
+            
             //validate extension
             $extOk = false;
             $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
@@ -2276,9 +2432,11 @@ class ProjectEditorController extends JController{
             }
           }
 
-          $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/data?path=$strFilePath";
+          if(!StringHelper::hasText($strUrl)){
+            $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/data?path=$strFilePath";
+          }
         }
-
+        
 	break;
       case Files::IMAGE:
         $oResultsArray = $oDispatcher->trigger('onPhotoUpload',$strParamArray);
@@ -2288,46 +2446,65 @@ class ProjectEditorController extends JController{
           $strMessage = UploadHelper::getErrorMessage($oResults);
           echo ComponentHtml::showError($strMessage);
         }else{
-          if($iExperimentId){
-            $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/photos?path=$strPath";
-          }else{
-            $strUrl = "/warehouse/projecteditor/project/$iProjectId/projectphotos?path=$strPath";
+          if(!StringHelper::hasText($strUrl)){
+            if($iExperimentId){
+              $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/photos?path=$strPath";
+            }else{
+              $strUrl = "/warehouse/projecteditor/project/$iProjectId/projectphotos?path=$strPath";
+            }
           }
         }
 	break;
       case Files::DOCUMENT:
         $oResultsArray = $oDispatcher->trigger('onDataUpload',$strParamArray);
-        if($iExperimentId){
-          $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/documentation";
+        $oResults = $oResultsArray[0];
+        if(is_numeric($oResults)){
+          //got an error code
+          $strMessage = UploadHelper::getErrorMessage($oResults);
+          echo ComponentHtml::showError($strMessage);
         }else{
-          $strUrl = "/warehouse/projecteditor/project/$iProjectId/documentation";
+          if(!StringHelper::hasText($strUrl)){
+            if($iExperimentId){
+              $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/documentation";
+            }else{
+              $strUrl = "/warehouse/projecteditor/project/$iProjectId/documentation";
+            }
+          }
         }
         break;
       case Files::ANALYSIS:
         $oResultsArray = $oDispatcher->trigger('onDataUpload',$strParamArray);
-        if($iExperimentId){
-          $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/analysis";
-        }else{
-          $strUrl = "/warehouse/projecteditor/project/$iProjectId/analysis";
+        if(!StringHelper::hasText($strUrl)){
+          if($iExperimentId){
+            $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/analysis";
+          }else{
+            $strUrl = "/warehouse/projecteditor/project/$iProjectId/analysis";
+          }
         }
         break;
-      case Files::VIDEO:
-        //addition on 20100820
+      case Files::VIDEO:  
+        if($iUsageTypeId===0){
+          echo ComponentHtml::showError("Please select a video type.");
+          return;
+        }
+
+        //addition on 20100820  
         $iNumFiles = JRequest::getInt('files_num', 1);
-        $iUsageTypeId = JRequest::getVar('usageType');
         $oEntityType = EntityTypePeer::retrieveByPK($iUsageTypeId);
         $bValid = $oModel->validateVideoFrames($oEntityType, $iNumFiles);
         if($bValid){
           $oResultsArray = $oDispatcher->trigger('onDataUpload',$strParamArray);
-          if($iExperimentId){
-            $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/videos";
-          }else{
-            $strUrl = "/warehouse/projecteditor/project/$iProjectId/projectvideos";
+          if(!StringHelper::hasText($strUrl)){
+            if($iExperimentId){
+              $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/videos";
+            }else{
+              $strUrl = "/warehouse/projecteditor/project/$iProjectId/projectvideos";
+            }
           }
         }else{
           echo ComponentHtml::showError("Please zip or tar the folder containing the frames.");
         }
-
+        
         if($oEntityType && !empty($oResultsArray)){
           $strEntityName = $oEntityType->getDatabaseTableName();
           if($strEntityName=="Video-Frames"){
@@ -2386,7 +2563,14 @@ class ProjectEditorController extends JController{
       array_push($strErrorArray, $oException->getEntityMessage("Create Experiment"));
     }
 
-    $strEndDate = $oModel->validateEndDate(JRequest::getVar("enddate"));
+//    $strEndDate = $oModel->validateEndDate(JRequest::getVar("enddate"));
+    $strEndDate = JRequest::getVar("enddate");
+    try{
+      $strEndDate = $oModel->validateEndDate($strEndDate, $strStartDate);
+    }catch(ValidationException $oException) {
+      array_push($strErrorArray, $oException->getEntityMessage("Create Experiment"));
+    }
+
     $strDescription = JRequest::getVar("description", StringHelper::EMPTY_STRING);
 
     //validate facilities
@@ -2429,6 +2613,10 @@ class ProjectEditorController extends JController{
           $oExperiment->setName(ExperimentPeer::getNextAvailableName($oExperiment));
           $oExperiment->setCreatorId($creatorId);
         }
+
+        $oExperiment->setModifiedById($creatorId);
+        $oExperiment->setModifiedDate(date("m/d/Y"));
+        $oExperiment->setAppId(ProjectEditor::APP_ID);
         $oExperiment->save();
 
         /*
@@ -2454,7 +2642,7 @@ class ProjectEditorController extends JController{
 
         // add equipment
         $oExperimentEquipmentArray = $oModel->addEquipment($oExperiment, $_REQUEST['equipment'], $oConnection);
-
+                
         //save values
         $_SESSION[ExperimentPeer::TABLE_NAME] = serialize($oExperiment);
 
@@ -2618,7 +2806,7 @@ class ProjectEditorController extends JController{
     //get the current experiment
     $iExperimentId = JRequest::getVar('experimentId');
     $oExperiment = $oModel->getExperimentById($iExperimentId);
-
+    
     //validate incoming
     $iMaterialId = JRequest::getInt('materialId', 0);
 
@@ -2675,7 +2863,7 @@ class ProjectEditorController extends JController{
       $newprops = array();
 
       $TypeProperties = $oMaterialType->getMaterialTypeProperties();
-
+      
       foreach( $TypeProperties as $TypeProperty ) {
         $propertyValue = null;
         $unit = null;
@@ -2683,7 +2871,7 @@ class ProjectEditorController extends JController{
         if( JRequest::getVar($fieldname) ) {
           $propertyValue = JRequest::getVar($fieldname);
         }
-
+        
         // Handle units.
         $category = $TypeProperty->getUnitCategory();
         if( $category ) {
@@ -2731,7 +2919,7 @@ class ProjectEditorController extends JController{
       }//end if files
 
     }//end if(empty)
-
+      
 
     $_SESSION["ERRORS"] = $strErrorArray;
     $strUrl = "/warehouse/projecteditor/project/".$oProject->getId()."/experiment/".$oExperiment->getId()."/materials";
@@ -2884,9 +3072,13 @@ class ProjectEditorController extends JController{
       $bMkDir = $oFileCommand->mkdir(TRUE);
     }//end if is_dir
 
-    if($bMkDir){
-      FileHelper::fixPermissions($strAbsolutePathofNewDirectory);
-    }
+    $strOutput = FileHelper::fixPermissionsOneFileOrDir($strAbsolutePathofNewDirectory);
+    var_dump($strOutput);
+
+    //if($bMkDir){
+      //FileHelper::fixPermissions($strAbsolutePathofNewDirectory);
+      //FileHelper::fixPermissionsOneFileOrDir($strAbsolutePathofNewDirectory);
+    //}
 
     $strUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/data?path=$strPath";
     $this->setRedirect($strUrl);
@@ -2895,6 +3087,7 @@ class ProjectEditorController extends JController{
   }
 
   public function saveLocationPlan(){
+    $iLocationPlanId = JRequest::getInt('locationPlanId',0);
     $strLocationPlanName = JRequest::getVar('lpName', '');
     $iUnitId = JRequest::getInt('unit', 0);
     $iExperimentId = JRequest::getInt('experimentId', 0);
@@ -2904,22 +3097,24 @@ class ProjectEditorController extends JController{
       return;
     }
 
-//    if(!$iUnitId){
-//      echo "Please select units.";
-//      return;
-//    }
-
     if(!$iExperimentId){
       echo "Please select an experiment.";
-      return;
+      return;  
     }
-
+    
     /* @var $oModel ProjectEditorModelCreateLocationPlan */
     $oModel =& $this->getModel('CreateLocationPlan');
     $oExperiment = $oModel->getExperimentById($iExperimentId);
 
     try{
+      /* @var $oLocationPlan LocationPlan */
+      $oLocationPlan = null;
+      if(!$iLocationPlanId){
       $oLocationPlan = new SensorLocationPlan($oExperiment, $strLocationPlanName);
+      }else{
+        $oLocationPlan = LocationPlanPeer::find($iLocationPlanId);
+        $oLocationPlan->setName($strLocationPlanName);
+      }
       $oLocationPlan->save();
     }catch(Exception $e){
       echo "Unable to create or save Sensor List.";
@@ -2934,7 +3129,7 @@ class ProjectEditorController extends JController{
    * Uploads Excel spreadsheets that represent sensors
    * for Sensor Location Plans.  Source Location Plans
    * were removed.
-   *
+   * 
    */
   public function saveSensorFile(){
     //Incoming
@@ -2943,7 +3138,7 @@ class ProjectEditorController extends JController{
     $iLocationPlanId = JRequest::getInt('locationPlanId', 0);
 
     if(!$iExperimentId){
-      echo ComponentHtml::showError("Experiment not provided.");
+      echo ComponentHtml::showError("Experiment not provided.");  
       return;
     }
 
@@ -3140,9 +3335,18 @@ class ProjectEditorController extends JController{
     //fixPermissions on uploaded file
     FileHelper::fixPermissionsOneFileOrDir($newFilePath);
 
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
     /* @var $oDataFile DataFile */
     $oDataFile = new DataFile();
     $oDataFile = $oDataFile->newDataFileByFilesystem($strFileName, $strSensorDir, false);
+    $oDataFile->setCreatorId($oPerson->getId());
+    $oDataFile->setModifiedById($oPerson->getId());
+    $oDataFile->setModifiedDate(date("m/d/Y"));
+    $oDataFile->setAppId(ProjectEditor::APP_ID);
     $oDataFile->save();
 
     //assign data file to LocationPlan
@@ -3174,11 +3378,16 @@ class ProjectEditorController extends JController{
 
 //    $iEntityTypeId = JRequest::getVar("usageType", 0);
 //    $iUsageTypeId = ($iEntityTypeId > 0) ? $iEntityTypeId : null;
-
+    
     $strTool = (StringHelper::hasText(JRequest::getVar("tool"))) ? JRequest::getVar("tool") : null;
 
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel('EditDataFile');
+
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
 
     //edit the data file
     $strTitle = JRequest::getVar("title", "");
@@ -3189,6 +3398,9 @@ class ProjectEditorController extends JController{
     $oDataFile->setDescription($strDescription);
     //$oDataFile->setUsageTypeId($iUsageTypeId);
     $oDataFile->setOpeningTool($strTool);
+    $oDataFile->setModifiedById($oPerson->getId());
+    $oDataFile->setModifiedDate(date("m/d/Y"));
+    $oDataFile->setAppId(ProjectEditor::APP_ID);
     try{
       $oDataFile->save();
     }catch(Exception $e){
@@ -3197,12 +3409,14 @@ class ProjectEditorController extends JController{
     }
 
     $strPath = JRequest::getVar("path", "");
-    $strUrl = "/warehouse/projecteditor/project/".$iProjectId
+    $strUrl = JRequest::getVar("return", "");
+    if(!StringHelper::hasText($strUrl)){
+      $strUrl = "/warehouse/projecteditor/project/".$iProjectId
                         ."/experiment/".$iExperimentId
                         ."/data";
-
-    if(StringHelper::hasText($strPath)){
-      $strUrl .= "?path=".$strPath;
+      if(StringHelper::hasText($strPath)){
+        $strUrl .= "?path=".$strPath;
+      }
     }
 
     $this->setRedirect($strUrl);
@@ -3232,6 +3446,11 @@ class ProjectEditorController extends JController{
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel('EditDataFile');
 
+    $oHubUser = $oModel->getCurrentUser();
+
+    /*@var $oPerson Person*/
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
     //edit the data file
     $strTitle = JRequest::getVar("title", "");
     $strDescription = JRequest::getVar("desc","");
@@ -3239,7 +3458,9 @@ class ProjectEditorController extends JController{
     $oDataFile = DataFilePeer::retrieveByPK($iDataFileId);
     $oDataFile->setTitle($strTitle);
     $oDataFile->setDescription($strDescription);
-
+    $oDataFile->setModifiedById($oPerson->getId());
+    $oDataFile->setModifiedDate(date("m/d/Y"));
+    $oDataFile->setAppId(ProjectEditor::APP_ID);
     try{
       $oDataFile->save();
     }catch(Exception $e){
@@ -3252,7 +3473,7 @@ class ProjectEditorController extends JController{
       $strUrl = "/warehouse/projecteditor/project/".$iProjectId
                         ."/experiment/".$iExperimentId."/analysis";
     }
-
+    
     $this->setRedirect($strUrl);
   }
 
@@ -3280,6 +3501,11 @@ class ProjectEditorController extends JController{
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel('EditDataFile');
 
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
     //edit the data file
     $strTitle = JRequest::getVar("title", "");
     $strDescription = JRequest::getVar("desc","");
@@ -3287,12 +3513,34 @@ class ProjectEditorController extends JController{
     $oDataFile = DataFilePeer::retrieveByPK($iDataFileId);
     $oDataFile->setTitle($strTitle);
     $oDataFile->setDescription($strDescription);
+    $oDataFile->setModifiedById($oPerson->getId());
+    $oDataFile->setModifiedDate(date("m/d/Y"));
+    $oDataFile->setAppId(ProjectEditor::APP_ID);
 
     try{
       $oDataFile->save();
     }catch(Exception $e){
       echo ComponentHtml::showError("Unable to save file.");
       return;
+    }
+
+    //add citation to project home page
+    $strCitation = JRequest::getVar("citation", "");
+    if(StringHelper::hasText($strCitation)){
+      /* @var $oProjectModel ProjectEditorModelProject */
+      $oProjectModel =& $this->getModel('Project');
+
+      /* @var $oProjectHomepage ProjectHomepage */
+      $oProjectHomepage = $oProjectModel->getProjectHomepageByDataFileId($iProjectId, $oDataFile->getId());
+      if(!$oProjectHomepage){
+        $oProjectHomepage = new ProjectHomepage();
+        $oProjectHomepage->setDataFile($oDataFile);
+        $oProjectHomepage->setProjectHomepageTypeId(ProjectHomepagePeer::CLASSKEY_PROJECTHOMEPAGEPUB);
+        $oProjectHomepage->setProjectId($iProjectId);
+      }
+      $oProjectHomepage->setDescription($strCitation);
+      $oProjectHomepage->setCaption($strCitation);
+      $oProjectHomepage->save();
     }
 
     $strUrl = "/warehouse/projecteditor/project/".$iProjectId."/documentation";
@@ -3324,7 +3572,7 @@ class ProjectEditorController extends JController{
     $oExperiment = $oModel->getExperimentById($iExperimentId);
 
     $iDataFileId = JRequest::getInt("dataFileId", 0);
-
+    
     //use upload plugin
     if($iDataFileId===0){
       JPluginHelper::importPlugin( 'project', 'upload' );
@@ -3342,10 +3590,19 @@ class ProjectEditorController extends JController{
       $strDescription = JRequest::getVar("desc","");
       $iEntityTypeId = JRequest::getVar("usageType","");
 
+      $oHubUser = $oModel->getCurrentUser();
+
+      /* @var $oPerson Person */
+      $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
       $oDataFile = DataFilePeer::retrieveByPK($iDataFileId);
       $oDataFile->setTitle($strTitle);
       $oDataFile->setDescription($strDescription);
       $oDataFile->setUsageTypeId($iEntityTypeId);
+      $oDataFile->setModifiedById($oPerson->getId());
+      $oDataFile->setModifiedDate(date("m/d/Y"));
+      $oDataFile->setAppId(ProjectEditor::APP_ID);
+
       $strFileName = $oDataFile->getName();
       $uploadedFileNameParts = explode('.', $strFileName);
       if(sizeof($uploadedFileNameParts) == 2){
@@ -3353,7 +3610,7 @@ class ProjectEditorController extends JController{
 
         /* @var $oDocumentFormat DocumentFormat */
         $oDocumentFormat = DocumentFormatPeer::findByDefaultExtension($uploadedFileExtension);
-        var_dump($oDocumentFormat);
+        //var_dump($oDocumentFormat);
         $oDataFile->setDocumentFormat($oDocumentFormat);
       }
       try{
@@ -3399,6 +3656,11 @@ class ProjectEditorController extends JController{
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel('EditDataFile');
 
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
     //edit the data file
     $strTitle = JRequest::getVar("title", "");
     $strDescription = JRequest::getVar("desc","");
@@ -3407,6 +3669,9 @@ class ProjectEditorController extends JController{
     $oDataFile->setTitle($strTitle);
     $oDataFile->setDescription($strDescription);
     $oDataFile->setUsageTypeId($iUsageTypeId);
+    $oDataFile->setModifiedById($oPerson->getId());
+    $oDataFile->setModifiedDate(date("m/d/Y"));
+    $oDataFile->setAppId(ProjectEditor::APP_ID);
     try{
       $oDataFile->save();
     }catch(Exception $e){
@@ -3448,6 +3713,11 @@ class ProjectEditorController extends JController{
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel('EditDataFile');
 
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
     //edit the data file
     $strTitle = JRequest::getVar("title", "");
     $strDescription = JRequest::getVar("desc","");
@@ -3456,6 +3726,9 @@ class ProjectEditorController extends JController{
     $oDataFile->setTitle($strTitle);
     $oDataFile->setDescription($strDescription);
     $oDataFile->setUsageTypeId($iUsageTypeId);
+    $oDataFile->setModifiedById($oPerson->getId());
+    $oDataFile->setModifiedDate(date("m/d/Y"));
+    $oDataFile->setAppId(ProjectEditor::APP_ID);
     try{
       $oDataFile->save();
     }catch(Exception $e){
@@ -3498,6 +3771,11 @@ class ProjectEditorController extends JController{
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel('EditDataFile');
 
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
     //edit the data file
     $strTitle = JRequest::getVar("title", "");
     $strDescription = JRequest::getVar("desc","");
@@ -3506,6 +3784,9 @@ class ProjectEditorController extends JController{
     $oDataFile->setTitle($strTitle);
     $oDataFile->setDescription($strDescription);
     $oDataFile->setUsageTypeId($iUsageTypeId);
+    $oDataFile->setModifiedById($oPerson->getId());
+    $oDataFile->setModifiedDate(date("m/d/Y"));
+    $oDataFile->setAppId(ProjectEditor::APP_ID);
     try{
       $oDataFile->save();
     }catch(Exception $e){
@@ -3541,6 +3822,11 @@ class ProjectEditorController extends JController{
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel('EditDataFile');
 
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
     //edit the data file
     $strTitle = JRequest::getVar("title", "");
     $strDescription = JRequest::getVar("desc","");
@@ -3549,6 +3835,9 @@ class ProjectEditorController extends JController{
     $oDataFile->setTitle($strTitle);
     $oDataFile->setDescription($strDescription);
     $oDataFile->setUsageTypeId($iUsageTypeId);
+    $oDataFile->setModifiedById($oPerson->getId());
+    $oDataFile->setModifiedDate(date("m/d/Y"));
+    $oDataFile->setAppId(ProjectEditor::APP_ID);
     try{
       $oDataFile->save();
     }catch(Exception $e){
@@ -3624,6 +3913,11 @@ class ProjectEditorController extends JController{
     /* @var $oModel ProjectEditorModelCreateTrial */
     $oModel =& $this->getModel('CreateTrial');
 
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
     /* @var $oExperiment Experiment */
     $oExperiment = $oModel->getExperimentById($iExperimentId);
     if(!$oExperiment){
@@ -3633,19 +3927,16 @@ class ProjectEditorController extends JController{
 
     /* @var $oTrial Trial */
     if($iTrialId){
-      var_dump($startDate);
-      echo "<br>";
-      var_dump($endDate);
       $oTrial = $oModel->getTrialById($iTrialId);
       $oTrial->setDescription($trdesc);
       $oTrial->setObjective($trobj);
       $oTrial->setTitle($trtitle);
       $oTrial->setStartDate($startDate);
       $oTrial->setEndDate($endDate);
-
+      $oTrial->setModifiedById($oPerson->getId());
+      $oTrial->setModifiedDate(date("m/d/Y"));
+      $oTrial->setAppId(ProjectEditor::APP_ID);
       $oTrial->save();
-
-      //var_dump($oTrial);
     }else{
       $oTrial = new Trial(
         $oExperiment,
@@ -3656,7 +3947,10 @@ class ProjectEditorController extends JController{
         $startDate,
         $endDate
       );
-
+      $oTrial->setCreatorId($oPerson->getId());
+      $oTrial->setModifiedById($oPerson->getId());
+      $oTrial->setModifiedDate(date("m/d/Y"));
+      $oTrial->setAppId(ProjectEditor::APP_ID);
       $oTrial->save();
 
       $trialdir = $oTrial->getPathname();
@@ -3674,7 +3968,10 @@ class ProjectEditorController extends JController{
         $startDate,
         $endDate
       );
-
+      $repetition->setCreatorId($oPerson->getId());
+      $repetition->setModifiedById($oPerson->getId());
+      $repetition->setModifiedDate(date("m/d/Y"));
+      $repetition->setAppId(ProjectEditor::APP_ID);
       $repetition->save();
 
       $repdir = $repetition->getPathname();
@@ -3723,6 +4020,11 @@ class ProjectEditorController extends JController{
 
     /* @var $repetition Repetition */
     $repetition = $oModel->getRepetitionById($iRepetitionId);
+
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
 
     ##
     ## form validation
@@ -3778,7 +4080,11 @@ class ProjectEditorController extends JController{
         $startDate,
         $endDate
       );
+      $repetition->setCreatorId($oPerson->getId());
     }
+    $repetition->setModifiedById($oPerson->getId());
+    $repetition->setModifiedDate(date("m/d/Y"));
+    $repetition->setAppId(ProjectEditor::APP_ID);
     $repetition->save();
 
     $repdir = $repetition->getPathname();
@@ -3836,10 +4142,18 @@ class ProjectEditorController extends JController{
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel('EditDataFile');
 
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
     while (list ($key,$iDataFileId) = @each ($iDataFileIdArray)) {
       /* @var $oDataFile DataFile */
       $oDataFile = $oModel->getDataFileById($iDataFileId);
       $oDataFile->setCurationStatus(ProjectEditor::CURATION_REQUEST);
+      $oDataFile->setModifiedById($oPerson->getId());
+      $oDataFile->setModifiedDate(date("m/d/Y"));
+      $oDataFile->setAppId(ProjectEditor::APP_ID);
       $oDataFile->save();
 
       if($oDataFile->getDirectory()==1){
@@ -3849,6 +4163,9 @@ class ProjectEditorController extends JController{
           $fullPath = $df->getFullPath();
           if(file_exists($fullPath)) {
             $df->setCurationStatus(ProjectEditor::CURATION_REQUEST);
+            $df->setModifiedById($oPerson->getId());
+            $df->setModifiedDate(date("m/d/Y"));
+            $df->setAppId(ProjectEditor::APP_ID);
             $df->save();
           }
         }//end foreach
@@ -3863,7 +4180,7 @@ class ProjectEditorController extends JController{
     if(StringHelper::hasText($strPath)){
       $strUrl .= "?path=".$strPath;
     }
-
+    
     $this->setRedirect($strUrl);
   }
 
@@ -3882,6 +4199,11 @@ class ProjectEditorController extends JController{
 
     /* @var $oModel ProjectEditorModelExperiment */
     $oModel =& $this->getModel('Experiment');
+
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
 
     /* @var $oExperiment Experiment */
     $oExperiment = $oModel->getExperimentById($iExperimentId);
@@ -3909,98 +4231,7 @@ class ProjectEditorController extends JController{
 
   /**
    *
-   *
-   */
-  public function saveFilmstrip1(){
-    $iProjectId = JRequest::getInt("projid" ,0);
-    if(!$iProjectId){
-      echo ComponentHtml::showError("Project not selected.");
-      return;
-    }
-
-    $iExperimentId = JRequest::getInt("experimentId", 0);
-    if(!$iExperimentId){
-      echo ComponentHtml::showError("Experiment not selected.");
-      return;
-    }
-
-    $iDataFileIdArray = null;
-    if(!isset($_POST['dataFile'])){
-      echo ComponentHtml::showError("Please select at least 1 file.");
-      return;
-    }else{
-      $iDataFileIdArray=$_POST['dataFile'];
-    }
-
-    /* @var $oModel ProjectEditorModelEditDataFile */
-    $oModel =& $this->getModel('EditDataFile');
-
-    //validate extensions
-    $strInvalidFileArray = array();
-    while (list ($key,$iDataFileId) = @each ($iDataFileIdArray)) {
-      /* @var $oDataFile DataFile */
-      $oDataFile = $oModel->getDataFileById($iDataFileId);
-      $strFileName = $oDataFile->getName();
-
-      //get the file's extension
-      $uploadedFileNameParts = explode('.', $strFileName);
-      if(sizeof($uploadedFileNameParts) != 2){
-        array_push($strInvalidFileArray, $strFileName);
-      }
-      $uploadedFileExtension = array_pop($uploadedFileNameParts);
-
-      //validate extension
-
-      $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
-      if(!in_array(strtolower($uploadedFileExtension), $validFileExts)){
-        array_push($strInvalidFileArray, $strFileName);
-      }
-    }
-
-    if(!empty($strInvalidFileArray)){
-      $strInvalidFiles = implode(",", $strInvalidFileArray);
-      echo ComponentHtml::showError("Invalid file type(s): $strInvalidFiles");
-      return;
-    }
-
-    /* @var $oPhotoEntityType EntityType */
-    $oPhotoEntityType = EntityTypePeer::findByTableName(ProjectEditor::FILMSTRIP_IMAGE);
-
-    //update and scale
-    $iCount = 0;
-    foreach($iDataFileIdArray as $iDataFileId){
-      /* @var $oDataFile DataFile */
-      $oDataFile = $oModel->getDataFileById($iDataFileId);
-      $oDataFile->setUsageTypeId($oPhotoEntityType->getId());
-      $oDataFile->save();
-
-      //invoke the upload plugin
-      JPluginHelper::importPlugin( 'project', 'upload' );
-      $oDispatcher =& JDispatcher::getInstance();
-      $strParamArray = array(0,0);
-
-      $_REQUEST["fixPermissionsLater"] = true;
-      $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oDataFile);
-      $oResultsArray = $oDispatcher->trigger('onScaleImageDataFile',$strParamArray);
-
-      ++$iCount;
-    }//end while
-
-    $strPath = JRequest::getVar('path');
-    if($iCount > 0){
-      FileHelper::fixPermissions($strPath);
-    }
-
-    $strUrl = "/warehouse/projecteditor/project/".$iProjectId
-                        ."/experiment/".$iExperimentId
-                        ."/data?path=".$strPath;
-
-    $this->setRedirect($strUrl);
-  }
-
-  /**
-   *
-   *
+   * 
    */
   public function saveFilmstrip(){
     $iProjectId = JRequest::getInt("projid" ,0);
@@ -4057,12 +4288,20 @@ class ProjectEditorController extends JController{
     /* @var $oPhotoEntityType EntityType */
     $oPhotoEntityType = EntityTypePeer::findByTableName(ProjectEditor::FILMSTRIP_IMAGE);
 
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
     //update and scale
     $iCount = 0;
     foreach($iDataFileIdArray as $iDataFileId){
       /* @var $oDataFile DataFile */
       $oDataFile = $oModel->getDataFileById($iDataFileId);
       $oDataFile->setUsageTypeId($oPhotoEntityType->getId());
+      $oDataFile->setModifiedById($oPerson->getId());
+      $oDataFile->setModifiedDate(date("m/d/Y"));
+      $oDataFile->setAppId(ProjectEditor::APP_ID);
       $oDataFile->save();
 
       //invoke the upload plugin
@@ -4076,113 +4315,25 @@ class ProjectEditorController extends JController{
 
       ++$iCount;
     }//end while
-
-    $strUrl = "/warehouse/projecteditor/project/".$iProjectId
-                        ."/experiment/".$iExperimentId
-                        ."/photos";
 
     $strPath = JRequest::getVar("path", "");
     if(StringHelper::hasText($strPath)){
       if($iCount > 0){
         FileHelper::fixPermissions($strPath);
       }
+    }
 
+    $strUrl = JRequest::getVar("return", "");
+    if(!StringHelper::hasText($strUrl)){
       $strUrl = "/warehouse/projecteditor/project/".$iProjectId
                         ."/experiment/".$iExperimentId
-                        ."/data?path=".$strPath;
-    }
-
-    $this->setRedirect($strUrl);
-  }
-
-  /**
-   *
-   *
-   */
-  public function saveMorePhotos1(){
-    $iProjectId = JRequest::getInt("projid" ,0);
-    if(!$iProjectId){
-      echo ComponentHtml::showError("Project not selected.");
-      return;
-    }
-
-    $iExperimentId = JRequest::getInt("experimentId", 0);
-    if(!$iExperimentId){
-      echo ComponentHtml::showError("Experiment not selected.");
-      return;
-    }
-
-    $iDataFileIdArray = null;
-    if(!isset($_POST['dataFile'])){
-      echo ComponentHtml::showError("Please select at least 1 file.");
-      return;
-    }else{
-      $iDataFileIdArray=$_POST['dataFile'];
-    }
-
-    /* @var $oModel ProjectEditorModelEditDataFile */
-    $oModel =& $this->getModel('EditDataFile');
-
-    //validate extensions
-    $strInvalidFileArray = array();
-    while (list ($key,$iDataFileId) = @each ($iDataFileIdArray)) {
-      /* @var $oDataFile DataFile */
-      $oDataFile = $oModel->getDataFileById($iDataFileId);
-      $strFileName = $oDataFile->getName();
-
-      //get the file's extension
-      $uploadedFileNameParts = explode('.', $strFileName);
-      if(sizeof($uploadedFileNameParts) != 2){
-        array_push($strInvalidFileArray, $strFileName);
-      }
-      $uploadedFileExtension = array_pop($uploadedFileNameParts);
-
-      //validate extension
-
-      $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
-      if(!in_array(strtolower($uploadedFileExtension), $validFileExts)){
-        array_push($strInvalidFileArray, $strFileName);
-      }
-    }
-
-    if(!empty($strInvalidFileArray)){
-      $strInvalidFiles = implode(",", $strInvalidFileArray);
-      echo ComponentHtml::showError("Invalid file type(s): $strInvalidFiles");
-      return;
-    }
-
-    /* @var $oPhotoEntityType EntityType */
-    $oPhotoEntityType = EntityTypePeer::findByTableName(ProjectEditor::GENERAL_IMAGE);
-
-    //update and scale
-    $iCount = 0;
-    foreach($iDataFileIdArray as $iDataFileId){
-      /* @var $oDataFile DataFile */
-      $oDataFile = $oModel->getDataFileById($iDataFileId);
-      $oDataFile->setUsageTypeId($oPhotoEntityType->getId());
-      $oDataFile->save();
-
-      //invoke the upload plugin
-      JPluginHelper::importPlugin( 'project', 'upload' );
-      $oDispatcher =& JDispatcher::getInstance();
-      $strParamArray = array(0,0);
-
-      $_REQUEST["fixPermissionsLater"] = true;
-      $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oDataFile);
-      $oResultsArray = $oDispatcher->trigger('onScaleImageDataFile',$strParamArray);
-
-      ++$iCount;
-    }//end while
-
-    $strPath = JRequest::getVar('path');
-    if($iCount > 0){
-      FileHelper::fixPermissions($strPath);
-    }
-
-    $strUrl = "/warehouse/projecteditor/project/".$iProjectId
+                        ."/photos";
+      if(StringHelper::hasText($strPath)){
+        $strUrl = "/warehouse/projecteditor/project/".$iProjectId
                         ."/experiment/".$iExperimentId
-                        ."/data?path=".$strPath;
-
+                        ."/data?path=".$strPath;  
+      }
+    }
     $this->setRedirect($strUrl);
   }
 
@@ -4245,12 +4396,20 @@ class ProjectEditorController extends JController{
     /* @var $oPhotoEntityType EntityType */
     $oPhotoEntityType = EntityTypePeer::findByTableName(ProjectEditor::GENERAL_IMAGE);
 
+    $oHubUser = $oModel->getCurrentUser();
+
+    /* @var $oPerson Person */
+    $oPerson = $oModel->getOracleUserByUsername($oHubUser->username);
+
     //update and scale
     $iCount = 0;
     foreach($iDataFileIdArray as $iDataFileId){
       /* @var $oDataFile DataFile */
       $oDataFile = $oModel->getDataFileById($iDataFileId);
       $oDataFile->setUsageTypeId($oPhotoEntityType->getId());
+      $oDataFile->setModifiedById($oPerson->getId());
+      $oDataFile->setModifiedDate(date("m/d/Y"));
+      $oDataFile->setAppId(ProjectEditor::APP_ID);
       $oDataFile->save();
 
       //invoke the upload plugin
@@ -4281,6 +4440,340 @@ class ProjectEditorController extends JController{
     }
 
     $this->setRedirect($strUrl);
+  }
+	
+  /**
+   *
+   * @param ProjectEditorModelDelete $p_oModel
+   * @param int $p_iEntityId
+   * @param string $p_strUrl
+   * @return string
+   */
+  private function deleteExperiment($p_oModel, $p_iEntityId, $p_iDeletePersonId, $p_strUrl=""){
+    /* @var $oExperiment Experiment */
+    $oExperiment = $p_oModel->getExperimentById($p_iEntityId);
+    if(!$oExperiment){
+      echo ComponentHtml::showError("Unable to find the selected experiment ($p_iEntityId).");
+      return AuthorizationPeer::ENTITY_DELETE_ERROR;
+    }
+
+    $iProjectId = $oExperiment->getProject()->getId();
+
+    $iDeleteCode = AuthorizationPeer::doDelete($p_iEntityId, DomainEntityType::ENTITY_TYPE_EXPERIMENT, $p_iDeletePersonId);
+    if($iDeleteCode == AuthorizationPeer::ENTITY_DELETE_ERROR){
+      return $iDeleteCode;
+    }
+
+    if(!StringHelper::hasText($p_strUrl)){
+      $p_strUrl = "/warehouse/projecteditor/project/".$iProjectId."/experiments";
+    }
+    return $p_strUrl;
+  }
+
+  /**
+   *
+   * @param ProjectEditorModelDelete $p_oModel
+   * @param int $p_iEntityId
+   * @param string $p_strUrl
+   * @return string
+   */
+  private function deleteTrial($p_oModel, $p_iEntityId, $p_iDeletePersonId, $p_strUrl=""){
+    /* @var $oTrial Trial */
+    $oTrial = $p_oModel->getTrialById($p_iEntityId);
+    if(!$oTrial){
+      echo ComponentHtml::showError("Unable to find the selected trial ($p_iEntityId).");
+      return AuthorizationPeer::ENTITY_DELETE_ERROR;
+    }
+
+    $oExperiment = $oTrial->getExperiment();
+    $iExperimentId = $oExperiment->getId();
+    $iProjectId = $oExperiment->getProject()->getId();
+
+    $iDeleteCode = AuthorizationPeer::doDelete($p_iEntityId, DomainEntityType::ENTITY_TYPE_TRIAL, $p_iDeletePersonId);
+    if($iDeleteCode == AuthorizationPeer::ENTITY_DELETE_ERROR){
+      return $iDeleteCode;
+    }
+
+    if(!StringHelper::hasText($p_strUrl)){
+      $p_strUrl = "/warehouse/projecteditor/project/".$iProjectId."/experiment/".$iExperimentId."/data";
+    }
+    return $p_strUrl;
+  }
+
+  /**
+   *
+   * @param ProjectEditorModelDelete $p_oModel
+   * @param int $p_iEntityId
+   * @param string $p_strUrl
+   * @return string
+   */
+  private function deleteRepetition($p_oModel, $p_iEntityId, $p_iDeletePersonId, $p_strUrl=""){
+    /* @var $oRepetition Repetition */
+    $oRepetition = $p_oModel->getRepetitionById($p_iEntityId);
+    if(!$oRepetition){
+      echo ComponentHtml::showError("Unable to find the selected repetition ($p_iEntityId).");
+      return AuthorizationPeer::ENTITY_DELETE_ERROR;
+    }
+
+    $oTrial = $oRepetition->getTrial();
+    $oExperiment = $oTrial->getExperiment();
+    $iExperimentId = $oExperiment->getId();
+    $iProjectId = $oExperiment->getProject()->getId();
+
+    //echo "$p_iEntityId, $p_iDeletePersonId<br>";
+
+    $iDeleteCode = AuthorizationPeer::doDelete($p_iEntityId, DomainEntityType::ENTITY_TYPE_REPETITION, $p_iDeletePersonId);
+    if($iDeleteCode == AuthorizationPeer::ENTITY_DELETE_ERROR){
+      return $iDeleteCode;
+    }
+
+    if(!StringHelper::hasText($p_strUrl)){
+      $p_strUrl = "/warehouse/projecteditor/project/".$iProjectId."/experiment/".$iExperimentId."/data";
+    }
+    return $p_strUrl;
+  }
+
+  /**
+   *
+   * @param ProjectEditorModelDelete $p_oModel
+   * @param int $p_iDataFileId
+   * @return string
+   */
+  private function deleteDataFile($p_oModel, $p_iDataFileId, $p_iDeletePersonId){
+    /* @var $oDataFile DataFile */
+    $oDataFile = $p_oModel->getDataFileById($p_iDataFileId);
+    if(!$oDataFile){
+      echo ComponentHtml::showError("Unable to find the selected directory/file ($p_iDataFileId).");
+      return;
+    }
+    return AuthorizationPeer::doDelete($p_iDataFileId, DomainEntityType::ENTITY_TYPE_DATA_FILE, $p_iDeletePersonId);
+  }
+
+  /**
+   *
+   * @param ProjectEditorModelDelete $p_oModel
+   * @param DataFile $p_oDataFile
+   */
+  private function deleteGeneratedPicsDataFiles($p_oModel, $p_oDataFile){
+    return DataFilePeer::deleteGeneratedPics($p_oDataFile);
+  }
+
+  private function deleteHubGroup($p_strGroupCn){
+    ximport('xgroup');
+    ximport('xuserhelper');
+
+    $juser =& JFactory::getUser();
+
+    // Load the group
+    $group = new XGroup();
+    $group->select( $p_strGroupCn );
+
+    // Ensure we found the group info
+    if (!$group || !$group->get('gidNumber')) {
+      JError::raiseError( 404, JText::_('GROUPS_NO_GROUP_FOUND') );
+      return ProjectEditor::PROJECT_GROUP_NOT_FOUND;
+    }
+
+    // Get number of group members
+    $members = $group->get('members');
+
+    // Get plugins
+    JPluginHelper::importPlugin( 'groups' );
+    $dispatcher =& JDispatcher::getInstance();
+
+
+    // Incoming
+    $msg = trim(JRequest::getVar( 'msg', '', 'post' ));
+
+    // Start log
+    $log  = JText::sprintf('GROUPS_SUBJECT_GROUP_DELETED', $group->get('cn'));
+    $log .= JText::_('GROUPS_TITLE').': '.$group->get('description')."\n";
+    $log .= JText::_('GROUPS_ID').': '.$group->get('cn')."\n";
+    $log .= JText::_('GROUPS_PRIVACY').': '.$group->get('access')."\n";
+    $log .= JText::_('GROUPS_PUBLIC_TEXT').': '.stripslashes($group->get('public_desc')) ."\n";
+    $log .= JText::_('GROUPS_PRIVATE_TEXT').': '.stripslashes($group->get('private_desc')) ."\n";
+    $log .= JText::_('GROUPS_RESTRICTED_MESSAGE').': '.stripslashes($group->get('restrict_msg'))."\n";
+
+    /*
+    // Log ids of group members
+    if ($groupusers) {
+      $log .= JText::_('GROUPS_MEMBERS').': ';
+      foreach ($groupusers as $gu) {
+        $log .= $gu.' ';
+      }
+      $log .= '' ."\n";
+    }
+    $log .= JText::_('GROUPS_MANAGERS').': ';
+    foreach ($groupmanagers as $gm) {
+      $log .= $gm.' ';
+    }
+    $log .= '' ."\n";
+    */
+
+    // Trigger the functions that delete associated content
+    // Should return logs of what was deleted
+    $logs = $dispatcher->trigger( 'onGroupDelete', array($group) );
+    if (count($logs) > 0) {
+      $log .= implode('',$logs);
+    }
+
+    // Build the file path
+    $path = JPATH_ROOT;
+    $strUploadPath = "/site/groups";
+    if (substr($strUploadPath, 0, 1) != DS) {
+      $path .= DS;
+    }
+    $path .= $strUploadPath.DS.$group->get('gidNumber');
+
+    if (is_dir($path)) {
+      // Attempt to delete the file
+      jimport('joomla.filesystem.file');
+      if (!JFolder::delete($path)) {
+        $this->setError( JText::_('UNABLE_TO_DELETE_DIRECTORY') );
+      }
+    }
+
+    $gidNumber = $group->get('gidNumber');
+    $gcn = $group->get('cn');
+    $members = $group->get('members');
+
+    // Delete group
+    if (!$group->delete()) {
+      return ProjectEditor::PROJECT_GROUP_NOT_DELETED;
+    }
+
+    // Get and set some vars
+    $date = date( 'Y-m-d H:i:s', time());
+
+    //$xhub =& XFactory::getHub();
+    $jconfig =& JFactory::getConfig();
+
+    // Build the "from" info for e-mails
+    $from = array();
+    $from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
+    //$from['name']  = $jconfig->getValue('config.sitename');
+    $from['email'] = $jconfig->getValue('config.mailfrom');
+
+    // E-mail subject
+    $subject = JText::sprintf('GROUPS_SUBJECT_GROUP_DELETED', $gcn);
+
+    // Build the e-mail message
+    $eview = new JView( array('name'=>'emails','layout'=>'deleted') );
+    $eview->option = $this->_option;
+    $eview->hubShortName = $jconfig->getValue('config.sitename');
+    $eview->juser = $juser;
+    $eview->gcn = $gcn;
+    $eview->msg = $msg;
+    $message = $eview->loadTemplate();
+    $message = str_replace("\n", "\r\n", $message);
+
+    // Send the message
+    JPluginHelper::importPlugin( 'xmessage' );
+    $dispatcher =& JDispatcher::getInstance();
+    if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_deleted', $subject, $message, $from, $members, $this->_option ))) {
+      $this->setError( JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED') );
+    }
+
+    // Log the deletion
+    $database =& JFactory::getDBO();
+    $xlog = new XGroupLog( $database );
+    $xlog->gid = $gidNumber;
+    $xlog->uid = $juser->get('id');
+    $xlog->timestamp = date( 'Y-m-d H:i:s', time() );
+    $xlog->action = 'group_deleted';
+    $xlog->comments = $log;
+    $xlog->actorid = $juser->get('id');
+    if (!$xlog->store()) {
+      $this->setError( $xlog->getError() );
+    }
+
+    return ProjectEditor::PROJECT_GROUP_DELETE_OK;
+  }
+
+  public function setCurateRequest(){
+    //incoming
+    $iProjectId = JRequest::getInt('projectId', 0);
+    $iExperimentId = JRequest::getInt('experimentId', 0);
+
+    $strTitle = StringHelper::EMPTY_STRING;
+    $strName = StringHelper::EMPTY_STRING;
+    $strSubject = StringHelper::EMPTY_STRING;
+    $strBody = StringHelper::EMPTY_STRING;
+    $strUrl = StringHelper::EMPTY_STRING;
+    $strLink = StringHelper::EMPTY_STRING;
+
+    /* @var $oModel ProjectEditorModelProject */
+    $oModel =& $this->getModel('Project');
+
+    if($iProjectId){
+      /* @var $oProject Project */
+      $oProject = $oModel->getProjectById($iProjectId);
+      $oProject->setCurationStatus("Submitted");
+      $oProject->save();
+
+      $strTitle = $oProject->getTitle();
+      $strName = $oProject->getName();
+      $strSubject = "Curation Request [$strName]: $strTitle";
+      $strUrl = "/warehouse/projecteditor/project/$iProjectId";
+      $strLink = "https://".$_SERVER['SERVER_NAME']."/warehouse/project/$iProjectId";
+      $strBody = "Your request to curate $strName ($strTitle) has been submitted.\n\n$strLink";
+    }elseif($iExperimentId){
+      /* @var $oExperiment Experiment */
+      $oExperiment = $oModel->getExperimentById($iExperimentId);
+      $oExperiment->setCurationStatus("Submitted");
+      $oExperiment->save();
+
+      $strTitle = $oExperiment->getTitle();
+      $strName = $oExperiment->getName();
+      $strSubject = "Curation Request [$strName]: $strTitle";
+      $strUrl = "/warehouse/projecteditor/project/".$oExperiment->getProject()->getId()."/experiment/$iExperimentId/about";
+      $strLink = "https://".$_SERVER['SERVER_NAME']."/warehouse/experiment/$iExperimentId/project/".$oExperiment->getProject()->getId();
+      $strBody = "Your request to curate $strName ($strTitle) of ".$oExperiment->getProject()->getName()." has been submitted.\n\n$strLink";
+    }else{
+      echo ComponentHtml::showError("Please submit a project or experiment for curation.");
+      return;
+    }
+
+    $mailer =& JFactory::getMailer();
+    $config =& JFactory::getConfig();
+    $sender = array( $config->getValue( 'config.mailfrom' ), $config->getValue( 'config.sitename' )." Curation" );
+    $mailer->setSender($sender);
+
+    $oAuthorizer = Authorizer::getInstance();
+    $oThisPerson = $oAuthorizer->getUser();
+    $strThisEmail = $oThisPerson->getEMail();
+
+    $oCuratorPerson = PersonPeer::findByUserName("spejsa");
+    $strCuratorEmail = $oCuratorPerson->getEMail();
+
+    $recipient = array($strThisEmail, $strCuratorEmail);
+    $mailer->addRecipient($recipient);
+
+    $mailer->setSubject($strSubject);
+    $mailer->setBody($strBody);
+
+    $send =& $mailer->Send();
+    if ( $send !== true ) {
+        echo ComponentHtml::showError('Error sending email: ' . $send->message);
+    } else {
+        $strUrl .= "?submitted=".time();
+        $this->setRedirect($strUrl);
+    }
+
+  }
+
+  public function setNsfAwardType(){
+    //incoming
+    $iIndex = JRequest::getInt("index");
+    $iNsfAwardTypeId = JRequest::getInt("typeid");
+
+    $iNsfAwardTypeIdArray = array();
+    if(isset($_SESSION["NSF_AWARD_TYPES"])){
+      $iNsfAwardTypeIdArray = $_SESSION["NSF_AWARD_TYPES"];
+    }
+    $iNsfAwardTypeIdArray[$iIndex] = $iNsfAwardTypeId;
+    
+    $_SESSION["NSF_AWARD_TYPES"] = $iNsfAwardTypeIdArray;
   }
 
 }

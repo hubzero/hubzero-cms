@@ -58,7 +58,7 @@ class ProjectEditorViewUploadSensors extends JView{
     //provide a list of available coordinate spaces
     $oCoordinateSpaceArray = CoordinateSpacePeer::findByExperiment($iExperimentId);
     $_REQUEST[CoordinateSpacePeer::TABLE_NAME] = serialize($oCoordinateSpaceArray);
-    
+
 
     parent::display($tpl);
   }

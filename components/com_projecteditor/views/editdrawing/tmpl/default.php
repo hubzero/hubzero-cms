@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<form id="frmProject" action="/warehouse/projecteditor/savedrawing" method="post" enctype="multipart/form-data">
+<form id="frmPopup" action="/warehouse/projecteditor/savedrawing" method="post" enctype="multipart/form-data">
   <input type="hidden" name="projectId" value="<?php echo $this->projectId; ?>"/>
   <input type="hidden" name="experimentId" value="<?php echo $this->experimentId; ?>"/>
   <input type="hidden" name="dataFileId" value="<?php echo $this->dataFileId; ?>"/>
@@ -103,11 +103,19 @@ defined('_JEXEC') or die( 'Restricted access' );
         </td>
       </tr>
     <?php endif; ?>
+
+    <!--
     <tr id="save">
       <td colspan="2">
         <input type="submit" value="Save Drawing"/>
       </td>
     </tr>
+    -->
+
   </table>
+
+  <div id="save" class="sectheaderbtn">
+    <a href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmPopup').submit()">Save Drawing</a>
+  </div>
 </form>
 

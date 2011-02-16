@@ -79,6 +79,15 @@ if($oUser->username=="gemezm"){
   //$oAuthorizer->setUser("rodneyp");
   //$oUserManager->setUser("rodneyp");
 
+  //$oAuthorizer->setUser("knasi");
+  //$oUserManager->setUser("knasi");
+
+  //$oAuthorizer->setUser("cfrench");
+  //$oUserManager->setUser("cfrench");
+
+  //$oAuthorizer->setUser("blkutter");
+  //$oUserManager->setUser("blkutter");
+
   //$oAuthorizer->setUser("sdyke");
   //$oUserManager->setUser("sdyke");
 

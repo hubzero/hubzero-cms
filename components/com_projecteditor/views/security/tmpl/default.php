@@ -155,7 +155,9 @@ header("Expires: 0"); // Date in the past
             <tr id="preview">
               <td></td>
               <td>
-                  <input type="submit" value="Save Security" style="margin-top:15px"/>
+                <div class="sectheaderbtn editorInputSize">
+                  <a tabindex="21" href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmProject').submit();">Save Security</a>
+                </div>
               </td>
             </tr>
           </table>

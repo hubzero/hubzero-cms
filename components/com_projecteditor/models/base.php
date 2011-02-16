@@ -20,6 +20,8 @@ require_once 'lib/data/ProjectPeer.php';
 require_once 'lib/data/ProjectGrantPeer.php';
 require_once 'lib/data/Project.php';
 require_once 'lib/data/ExperimentPeer.php';
+require_once 'lib/data/LocationPeer.php';
+require_once 'lib/data/LocationPlanPeer.php';
 require_once 'lib/data/PersonPeer.php';
 require_once 'lib/data/RolePeer.php';
 require_once 'lib/data/EntityTypePeer.php';
@@ -58,7 +60,7 @@ class ProjectEditorModelBase extends JModel{
 
     $this->m_oProjectSubTabArray = array("About", "Videos", "Photos","Documentation", "Analysis");
     $this->m_oProjectSubTabViewArray = array("", "projectvideos", "projectphotos","documentation", "analysis");
-
+    
     $this->m_oExperimentsSubTabArray = array("About", "Materials", "Sensors", "Drawings", "Data", "Videos", "Photos", "Documentation", "Analysis", "Security");
     $this->m_oExperimentsSubTabViewArray = array("", "materials", "sensors","drawings", "data", "videos", "photos", "documentation", "analysis", "security");
 
@@ -149,11 +151,11 @@ class ProjectEditorModelBase extends JModel{
   public function getProjectSubTabArray(){
     return $this->m_oProjectSubTabArray;
   }
-  
+
   public function getProjectSubTabViewArray(){
     return $this->m_oProjectSubTabViewArray;
   }
-
+  
   /**
    *
    * @return strTabs in html format
@@ -217,11 +219,11 @@ class ProjectEditorModelBase extends JModel{
   }
 
   public function getTrialById($p_iTrialId){
-    return TrialPeer::retrieveByPK($p_iTrialId);
+    return TrialPeer::find($p_iTrialId);
   }
   
   public function getRepetitionById($p_iRepetitionId){
-    return RepetitionPeer::retrieveByPK($p_iRepetitionId);
+    return RepetitionPeer::find($p_iRepetitionId);
   }
 
   /**
@@ -230,7 +232,7 @@ class ProjectEditorModelBase extends JModel{
    * @return Project
    */
   public function getProjectById($p_iProjectId){
-    return ProjectPeer::retrieveByPK($p_iProjectId);
+    return ProjectPeer::find($p_iProjectId);
   }
 
   /**
@@ -239,7 +241,52 @@ class ProjectEditorModelBase extends JModel{
    * @return Experiment
    */
   public function getExperimentById($p_iExperimentId){
-    return ExperimentPeer::retrieveByPK($p_iExperimentId);
+    return ExperimentPeer::find($p_iExperimentId);
+  }
+
+  /**
+   *
+   * @param int $p_iDataFileId
+   * @return DataFile
+   */
+  public function getDataFileById($p_iDataFileId){
+    return DataFilePeer::find($p_iDataFileId);
+  }
+
+  /**
+   *
+   * @param int $p_iMaterialId
+   * @return Material
+   */
+  public function getMaterialById($p_iMaterialId){
+    return MaterialPeer::find($p_iMaterialId);
+  }
+
+  /**
+   *
+   * @param int $p_iLocationPlan
+   * @return LocationPlan
+   */
+  public function getLocationPlanById($p_iLocationPlanId){
+    return LocationPlanPeer::find($p_iLocationPlanId);
+  }
+
+  /**
+   *
+   * @param int $p_iLocationId
+   * @return Location
+   */
+  public function getLocationById($p_iLocationId){
+    return LocationPeer::retrieveByPK($p_iLocationId);
+  }
+
+  /**
+   *
+   * @param int $p_iEntityTypeId
+   * @return EntityType
+   */
+  public function getEntityTypeById($p_iEntityTypeId){
+    return EntityTypePeer::find($p_iEntityTypeId);
   }
 
   /**
@@ -451,12 +498,25 @@ ENDHTML;
    * @param <String> $p_strDate
    * @return <String>
    */
-  public function validateEndDate($p_strDate){
+  public function validateEndDate($p_strDate, $p_strStartDate=null){
     // 1. make sure we have text
     $strEndDate = ($p_strDate != "mm/dd/yyyy") ? $p_strDate : null;
     
     // 2. make sure the value is an actual date.
     $strEndDate = (StringHelper::is_date($strEndDate)) ? $strEndDate : null;
+
+    if(StringHelper::hasText($strEndDate) && StringHelper::hasText($p_strStartDate)){
+      if(StringHelper::is_date($p_strStartDate)){
+        $oStartDate = strtotime($p_strStartDate);
+        $oEndDate = strtotime($strEndDate);
+        if ($oEndDate > $oStartDate) {
+          $valid = "yes";
+        } else {
+          throw new ValidationException("End date should be after start date.");
+        }
+      }
+    }
+
     return $strEndDate;
   }
 
@@ -827,7 +887,7 @@ ENDHTML;
    * @return array
    */
   public function setTags($p_strTagArray, $p_strCreatedByUsername){
-    unset($_SESSION[ResearcherKeywordPeer::TABLE_NAME]);
+    //unset($_SESSION[ResearcherKeywordPeer::TABLE_NAME]);
     
     $oReasearcherKeywordArray = array();
 
@@ -935,6 +995,7 @@ ENDHTML;
     unset($_SESSION["website"]);
     unset($_SESSION["SUGGESTED_FACILITY_EQUIPMENT"]);
     unset($_SESSION["ERRORS"]);
+    unset($_SESSION["NSF_AWARD_TYPES"]);
     unset($_SESSION[ProjectGrantPeer::TABLE_NAME]);
     unset($_SESSION[ProjectHomepagePeer::TABLE_NAME]);
     unset($_SESSION[ResearcherKeywordPeer::TABLE_NAME]);
@@ -963,7 +1024,7 @@ ENDHTML;
     return NCCuratedObjectsPeer::getObjectStatus();
   }
 
-  public static function getReturnURL($p_strCurrentUrl=""){
+  public function getReturnURL($p_strCurrentUrl=""){
     // Get current page path and querystring
     $uri  =& JURI::getInstance();
     $redirectUrl = $uri->toString(array('path', 'query'));
@@ -976,6 +1037,17 @@ ENDHTML;
     // Code the redirect URL
     $redirectUrl = base64_encode($redirectUrl);
     $redirectUrl = 'return=' . $redirectUrl;
+
+    return $redirectUrl;
+  }
+
+  public function getRawReturnURL($p_strCurrentUrl=""){
+    // Get current page path and querystring
+    $uri  =& JURI::getInstance();
+    $redirectUrl = $uri->toString(array('path', 'query'));
+    if(StringHelper::hasText($p_strCurrentUrl)){
+      $redirectUrl = $p_strCurrentUrl;
+    }
 
     return $redirectUrl;
   }

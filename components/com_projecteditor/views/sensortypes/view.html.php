@@ -13,7 +13,7 @@ require_once 'lib/security/Authorizer.php';
 require_once 'api/org/nees/html/joomla/ComponentHtml.php';
 
 class ProjectEditorViewSensorTypes extends JView{
-
+	
   function display($tpl = null){
     /* @var $oModel ProjectEditorModelSensorTypes */
     $oModel =& $this->getModel();
@@ -22,9 +22,9 @@ class ProjectEditorViewSensorTypes extends JView{
     $_REQUEST[SensorTypePeer::TABLE_NAME] = serialize($oSensorTypeArray);
 
     JFactory::getApplication()->getPathway()->addItem("Sensor Types","javascript:void(0)");
-
+    
     parent::display($tpl);
   }
-
+  
 }
 ?>

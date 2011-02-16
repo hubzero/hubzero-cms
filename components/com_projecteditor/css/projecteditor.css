@@ -14,7 +14,7 @@
 }
 
 .editorRequired {
- 	color: #990000;	
+ 	color: #990000;
 }
 
 .editorLabel {
@@ -69,6 +69,15 @@
 
 .helpSpan{
 	margin-left:5px;
+}
+
+#deleteLog { 
+    height: 100px;
+    width:95%;
+    overflow: auto;
+    border: 1px solid #999999;
+    background: none repeat scroll 0% 0%;
+    color: rgb(0, 0, 0);
 }
 
 #frmProject fieldset {
@@ -139,4 +148,88 @@
 
 .requiredfieldmarker {
 	color:#f00;
+}
+
+/*******************************************************************************
+ ** Button and input type="submit/button/reset":
+ ******************************************************************************/
+
+a.button2, a.button2:link, a.button2:visited, a.button2:active, a.button2:hover {
+  text-align: center;
+  color: #000000;
+  font-size: 12px;
+  font-weight: normal;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 10px;
+  cursor:pointer;
+  margin: 0 10px 10px 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+a.button2, a.button2:link, a.button2:visited {
+  background: #ededed url(/components/com_projecteditor/images/buttons/bg_button.gif) repeat-x bottom left;
+  border: 1px solid #666666;
+}
+
+a.button2:hover, .btn2:hover {
+  background: #eaf6fd url(/components/com_projecteditor/images/buttons/bg_button_hover.gif) repeat-x bottom left;
+  border: 1px solid #666666;
+}
+
+a.button2:active, .btn:active {
+  margin: 0 8px 0 2px;
+  background: #98d1ef url(/components/com_projecteditor/images/buttons/bg_button_select.gif) repeat-x bottom left;
+  border: 1px solid #666666;
+}
+
+
+div.sectheaderbtn {
+  background: #EEEEF0;
+  border: #CCCCCC solid 1px;
+  padding:5px;
+  text-align:right;
+  line-height: 30px;
+  margin-top: 30px;
+}
+
+
+.upload {
+  padding: 15px 15px 15px 100px;
+  min-height: 50px;
+  font-size: 12px;
+  font-weight:bold;
+  border: thin solid #EEEEEE;
+  background: #c8d8f9 url(/components/com_projecteditor/images/buttons/upload.gif) no-repeat top left;
+}
+
+.grayLinks {
+  color:#808080;
+  text-decoration:none;
+  border: 0px;
+}
+
+.grayLinks:link {
+  color:#808080;
+  text-decoration:none;
+  border: 0px;
+}
+
+.grayLinks:hover {
+  color:#808080;
+  text-decoration:none;
+  border: 0px;
+}
+
+.grayLinks:visited {
+  color:#808080;
+  text-decoration:none;
+  border: 0px;
+}
+
+.grayLinks:active {
+  color:#808080;
+  text-decoration:none;
+  border: 0px;
 }

@@ -240,8 +240,14 @@ header("Expires: 0"); // Date in the past
 //                $strWebsitePicked = StringHelper::EMPTY_STRING;
 //                $strUrl = ProjectEditor::DEFAULT_PROJECT_URL;
                 ?>
+                <!--
                 <input type="button" value="Edit Project" style="margin-top:15px" onClick="window.location='<?php echo $strLink . $strParams; ?>'"/>
                 <input type="submit" value="Save Project" style="margin-top:15px"/>
+                -->
+                <div class="sectheaderbtn">
+                  <a href="javascript:void(0);" class="button2"  onClick="window.location='<?php echo $strLink . $strParams; ?>'">Edit Project</a>
+                  <a href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmProject')">Save Project</a>
+                </div>
               </td>
             </tr>
           </table>

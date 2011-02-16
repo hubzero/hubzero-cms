@@ -57,7 +57,7 @@ defined('_JEXEC') or die( 'Restricted access' );
   <div class='upload'>
     Upload a <?= $this->planType ?> Locations file.
     <br/><br/>
-    <input type='file' id="uploadFile" name="uploadFile" class="textentry" size='60'/>&nbsp;&nbsp;<input type="submit" name="save" value="Upload"/>
+    <input type='file' id="uploadFile" name="uploadFile" class="textentry" size='50'/>&nbsp;&nbsp;<input type="submit" name="save" value="Upload"/>
   </div>
   <br/><br/>
 

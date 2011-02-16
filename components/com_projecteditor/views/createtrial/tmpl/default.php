@@ -33,11 +33,19 @@ header("Expires: 0"); // Date in the past
 
 <?php JHTML::_('behavior.calendar'); ?>
 
+<?php
+  $oExperiment = unserialize($_REQUEST[ExperimentPeer::TABLE_NAME]);
+  $oAuthorizer = Authorizer::getInstance();
+?>
+
+<div id="frmWrapper">
 <form id="frmTrial" action="/warehouse/projecteditor/savetrial" method="post">
 <input type="hidden" name="path" value="<?php echo $this->strPath; ?>" id="path"/>
 <input type="hidden" name="referer" value="<?php echo $this->strReferer; ?>" id="referer"/>
 <input type="hidden" name="experimentId" value="<?php echo $this->iExperimentId; ?>" id="experiment"/>
 <input type="hidden" name="trialId" value="0" id="trialId"/>
+<input type="hidden" name="eid" value="0" id="entityId"/>
+<input type="hidden" name="etid" value="4" id="entityTypeId"/>
 
 
 <div><h2>Create Trial</h2></div>
@@ -130,9 +138,31 @@ header("Expires: 0"); // Date in the past
   </tr>
   <tr>
     <td colspan="2">
-      <input type="submit" value="Save Trial"/>
+      <!--
+      1. First attempt
+      <input type="button" value="Delete Trial" onClick="deleteTrialOrRepetition('frmTrial', '/warehouse/projecteditor/removeentity', 'entityId', 'trialId');"/>
+
+      2. Second attempt
+      <a title="Delete trial." class="modal"
+         onClick="deleteEntity('frmTrial', '/warehouse/projecteditor/removeentity', 'entityId', 'trialId')"
+         href="javascript:void(0)">
+        Delete Trial
+      </a>
+      -->
+
+      <div class="sectheaderbtn">
+        <a title="Save trial." href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmTrial').submit();">Save Trial</a>
+        <?php if($oExperiment && $oAuthorizer->canDelete($oExperiment)){ ?>
+          <a title="Delete trial." class="button2"
+             onClick="getEntityDeleteForm('trial', 'entityId', 'trialId', 'frmWrapper');"
+             href="javascript:void(0)">
+            Delete Trial
+          </a>
+        <?php } ?>
+      </div>
     </td>
   </tr>
 </table>
 </form>
+</div>
 

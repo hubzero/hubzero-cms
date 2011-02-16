@@ -33,11 +33,17 @@ defined('_JEXEC') or die( 'Restricted access' );
    $strTitle = $oDataFile->getTitle();
    $iEntityTypeId = $oDataFile->getUsageTypeId();
  }
+
+ /* @var $oProjectHomepage ProjectHomepage */
+ $oProjectHomepage = null;
+ if(isset($_REQUEST[ProjectHomepagePeer::TABLE_NAME])){
+   $oProjectHomepage = unserialize($_REQUEST[ProjectHomepagePeer::TABLE_NAME]);
+ }
  
 
 ?>
 
-<form id="frmProject" action="/warehouse/projecteditor/savedocument" method="post" enctype="multipart/form-data">
+<form id="frmPopup" action="/warehouse/projecteditor/savedocument" method="post" enctype="multipart/form-data">
   <input type="hidden" name="projectId" value="<?php echo $this->projectId; ?>"/>
   <input type="hidden" name="experimentId" value="<?php echo $this->experimentId; ?>"/>
   <input type="hidden" name="dataFileId" value="<?php echo $this->dataFileId; ?>"/>
@@ -74,11 +80,40 @@ defined('_JEXEC') or die( 'Restricted access' );
         <textarea id="desc" name="desc" class="editorInputSize" style="height: 100px;"><?php echo $strDescription; ?></textarea>
       </td>
     </tr>
+
+    <!--
+    Only show citation fields if on project level.
+    -->
+    <?php if(!$this->experimentId){  ?>
+      <tr id="authorCheck">
+        <td><label for="author" class="editorLabel">Citation:</label></td>
+        <td>
+          Are any of the authors a member of NEEShub?
+          <input id="membershipCheck" type="radio" name="author" value="0" onClick="document.getElementById('citation').style.display=''"/> No &nbsp;&nbsp;
+          <input type="radio" name="author" value="1"  onClick="document.getElementById('citation').style.display='none';window.open('https://<?php echo $_SERVER['SERVER_NAME']?>/contribute/?step=1&type=3','neesContribute');"/> Yes
+        </td>
+      </tr>
+      <tr id="pubInfo">
+        <td></td>
+        <td>
+          <div id="citation" style="display: none;">
+            <textarea id="citationTextArea" name="citation" class="editorInputSize" style="height: 100px;"><?php if($oProjectHomepage) {echo $oProjectHomepage->getDescription();}?></textarea>
+            <br>
+            <span style="font-size: 9px; color: #8D8D8D">Cheng Chen; James Ricles, "Servo-Hydraulic Actuator Control for Real-Time Hybrid Simulation"</span>
+          </div>
+        </td>
+      </tr>
+    <? } ?>
+    <!--
     <tr id="save">
       <td colspan="2">
         <input type="submit" value="Save File"/>
       </td>
     </tr>
+    -->
   </table>
+  <div id="save" class="sectheaderbtn">
+      <a href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmPopup').submit()">Save File</a>
+  </div>
 </form>
 

@@ -53,6 +53,10 @@ class ProjectEditorViewSecurity extends JView{
     //get the sub tabs to display on the page
     $strSubTab = JRequest::getVar('subtab', 'security');
 
+//    $strSubTabArray = $oModel->getExperimentsSubTabArray();
+//    $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTab );
+//    $this->assignRef( "strSubTabs", $strSubTabHtml );
+
     $strSubTabArray = $oModel->getExperimentsSubTabArray();
     $strSubTabViewArray = $oModel->getExperimentsSubTabViewArray();
     $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTabViewArray, $strSubTab );

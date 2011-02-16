@@ -19,6 +19,7 @@ header("Expires: 0"); // Date in the past
   $document->addScript($this->baseurl."/components/com_projecteditor/js/ajax.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/tips.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/projecteditor.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_projecteditor/js/general.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_warehouse/js/resources.js", 'text/javascript');
   $document->addScript($this->baseurl."/plugins/tageditor/textboxlist.js", 'text/javascript');
   $document->addScript($this->baseurl."/plugins/tageditor/observer.js", 'text/javascript');
@@ -39,12 +40,15 @@ header("Expires: 0"); // Date in the past
     $iExperimentId = $oExperiment->getId();
     $iProjectId = $oExperiment->getProject()->getId();
   }
+
+  $oAuthorizer = Authorizer::getInstance();
 ?>
 
 <form id="frmProject" action="/warehouse/projecteditor/savesetup" method="post" enctype="multipart/form-data">
 <input type="hidden" name="username" value="<?php echo $oUser->username; ?>" />
 <input type="hidden" name="projid" value="<?php echo $iProjectId; ?>" />
 <input type="hidden" name="experimentId" value="<?php echo $iExperimentId; ?>" />
+<input type="hidden" id="return" name="return" value="<?php echo $this->strReturnUrl; ?>" />
 
 <div class="innerwrap">
   <div class="content-header">
@@ -164,6 +168,13 @@ header("Expires: 0"); // Date in the past
                             <table cellpadding="1" cellspacing="1">
                               <thead>
                                 <tr>
+                                  <!--
+                                  Deleting individual locations can cause the uploaded data_file to be inaccurate.
+                                  <th width="1">
+                                    <input id="checkAll" type="checkbox" name="checkAll" onClick="setAllCheckBoxes('frmProject', 'locationId[]', this.checked, <?php echo $iExperimentId; ?>);setFilesToDelete('frmProject', 'locationId[]', 'cbxDelete', <?php echo $iExperimentId; ?>, 'fileDeleteLink', 154);"/>
+                                    <input type="hidden" id="cbxDelete" name="deleteSensors" value=""/>
+                                  </th>
+                                  -->
                                   <th>Sensor ID</th>
                                   <th>Type</th>
                                   <th>Orientation</th>
@@ -191,11 +202,21 @@ header("Expires: 0"); // Date in the past
                                     }
                                     ?>
                                       <tr valign="top" class="<?php echo $strClass;?>">
+                                        <!--
+                                        <td width="1"><input id="<?php //echo $iExperimentId; ?>" type="checkbox" name="locationId[]" value="<?php //echo $oLocation->getId(); ?>"/></td>
+                                        -->
                                         <td><?php echo $strThisLabel; ?></td>
                                         <td><?php echo $strThisType; ?></td>
                                         <td><?php echo $strOrientation0.", ".$strOrientation1.", ".$strOrientation2; ?></td>
                                         <td><?php echo $strThisX.", ".$strThisY.", ".$strThisZ; ?></td>
-                                        <td>[<a href="/warehouse/projecteditor/editlocation?format=ajax&locationId=<?php echo $oLocation->getId(); ?>&experimentId=<?php echo $iExperimentId; ?>&projectId=<?php echo $iProjectId; ?>" class="modal">Edit</a>] &nbsp;&nbsp;<!--[<a href="">Delete</a>]--></td>
+                                        <td>
+                                          [<a href="/warehouse/projecteditor/editlocation?format=ajax&locationId=<?php echo $oLocation->getId(); ?>&experimentId=<?php echo $iExperimentId; ?>&projectId=<?php echo $iProjectId; ?>" class="modal">Edit</a>] &nbsp;&nbsp;
+                                          <?php if($oAuthorizer->canDelete($oExperiment)){ ?>
+                                            <!--
+                                            [<a href="/warehouse/projecteditor/delete?format=ajax&eid=<?php //echo $oLocation->getId(); ?>&etid=154&return=/warehouse/projecteditor/project/<?php //echo $iProjectId; ?>/experiment/<?php //echo $iExperimentId; ?>/sensors" class="modal">Delete</a>]
+                                            -->
+                                          <?php } ?>
+                                        </td>
                                       </tr>
                                     <?php
                                   }
@@ -209,8 +230,32 @@ header("Expires: 0"); // Date in the past
                       </td>
                     </tr>
                   </table>
+
+                  <?php #form buttons ?>
+                  <table style="border:0px;">
+                    <tr>
+                      <td>
+                        <div class="sectheaderbtn">
+                          <a id="fileDeletePlanLink" title="Edit location plan"
+                             tabindex="" href="/warehouse/projecteditor/createlocationplan?format=ajax&projid=<?php echo $oExperiment->getProject()->getId(); ?>&experimentId=<?php echo $oExperiment->getId(); ?>&lpid=<?php echo $this->iLocationPlanId; ?>" class="button2 modal">Edit Location Plan</a>
+                          <?php
+                            $bCanDelete = $oAuthorizer->canDelete($oExperiment);
+                            if($bCanDelete){?>
+                              <a id="fileDeletePlanLink" title="Delete location plan"
+                                 tabindex="" href="/warehouse/projecteditor/delete?format=ajax&eid=<?php echo $this->iLocationPlanId; ?>&etid=155" class="button2 modal">Delete Location Plan</a>
+                              <!--
+                              <a id="fileDeleteLink" title="Delete the selected sensor location(s)"
+                                 tabindex="" href="javascript:void(0);" class="button2 modal">Delete Locations</a>
+                              -->
+                            <?php
+                            }
+                          ?>
                 </div>
+                      </td>
+                    </tr>
+                  </table>
                 
+                </div>
                 <div class="clear"></div>
                 
               </td>

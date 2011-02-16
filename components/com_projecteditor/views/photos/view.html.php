@@ -111,7 +111,7 @@ class ProjectEditorViewPhotos extends JView{
 
     $this->assignRef("iEntityActivityLogViews", $iEntityViews);
     $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
-    $this->assignRef( "iPhotoType", $iPhotoType);
+    $this->assignRef("iPhotoType", $iPhotoType);
 
     JFactory::getApplication()->getPathway()->addItem($oExperiment->getProject()->getName(),"/warehouse/projecteditor/project/".$oExperiment->getProject()->getId());
     JFactory::getApplication()->getPathway()->addItem("Experiments","/warehouse/projecteditor/project/".$oExperiment->getProject()->getId()."/experiments");
@@ -125,6 +125,9 @@ class ProjectEditorViewPhotos extends JView{
       $strBlank = StringHelper::EMPTY_STRING;
       $this->assignRef( "mod_curationprogress", $strBlank );
     }
+
+    $strReturnUrl = $oModel->getRawReturnURL();
+    $this->assignRef( "strReturnUrl", $strReturnUrl );
 
     parent::display($tpl);
   }

@@ -35,6 +35,12 @@ class ProjectEditorViewCreateLocationPlan extends JView{
       return;
     }
 
+    $iLocationPlanId = JRequest::getInt('lpid',0);
+    if($iLocationPlanId){
+      $oLocationPlan = LocationPlanPeer::find($iLocationPlanId);
+      $_REQUEST[LocationPlanPeer::TABLE_NAME] = serialize($oLocationPlan);
+    }
+
     $units = $oModel->getXYZUnits();
     $unitId = $oModel->getXYZUnitId();
 

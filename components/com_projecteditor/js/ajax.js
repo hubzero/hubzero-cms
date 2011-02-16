@@ -19,7 +19,7 @@ function getAjaxRequest(){
 }
 
 /**
- * Perform an ajax request.
+ * Perform an ajax request.  
  * @param p_sRequestUrl  - URL to process
  * @param p_sResonseDivId - The div to place the results
  * @return
@@ -30,7 +30,7 @@ function getAjaxGet(p_sRequestUrl, p_sResonseDivId){
     alert ("Your browser does not support AJAX!");
     return;
   }
-
+  
   xmlHttp.onreadystatechange = function(){
     if (xmlHttp.readyState==4){
       document.getElementById(p_sResonseDivId).innerHTML = xmlHttp.responseText;
@@ -42,7 +42,7 @@ function getAjaxGet(p_sRequestUrl, p_sResonseDivId){
 }
 
 /**
- * Perform an ajax request.
+ * Perform an ajax request.  
  * @param p_sRequestUrl  - URL to process
  * @param p_sResonseDivId - The div to place the results
  * @param p_sValue
@@ -52,13 +52,13 @@ function suggest(p_sRequestUrl, p_sResonseDivId, p_sInputValue, p_sInputFieldId)
   if(p_sInputValue.length==0){
 	return;
   }
-
+  
   xmlHttp = getAjaxRequest();
   if (xmlHttp==null){
     alert ("Your browser does not support AJAX!");
     return;
   }
-
+  
   xmlHttp.onreadystatechange = function(){
     if (xmlHttp.readyState==4 && xmlHttp.status==200){
       //document.getElementById(p_sResonseDivId).innerHTML = xmlHttp.responseText;
@@ -163,7 +163,7 @@ function suggestRepetition(p_sRequestUrl, p_iRepId){
 }
 
 /**
- * Perform an ajax request.
+ * Perform an ajax request.  
  * @param p_sRequestUrl  - URL to process
  * @param p_sResonseDivId - The div to place the results
  * @param p_sValue
@@ -173,13 +173,13 @@ function suggestFacility(p_sRequestUrl, p_sResonseDivId, p_sInputValue, p_sInput
   if(p_sInputValue.length==0){
 	return;
   }
-
+  
   xmlHttp = getAjaxRequest();
   if (xmlHttp==null){
     alert ("Your browser does not support AJAX!");
     return;
   }
-
+  
   xmlHttp.onreadystatechange = function(){
     if (xmlHttp.readyState==4 && xmlHttp.status==200){
       //document.getElementById(p_sResonseDivId).innerHTML = xmlHttp.responseText;
@@ -273,7 +273,7 @@ function setSuggestedFacilityValue(p_sResonseDivId, p_sInputFieldId, p_sValue, p
   var strSelectedEquipment = "";
   var oEquipmentIdList = document.getElementById('equipmentlist');
   if(oEquipmentIdList != null){
-    strSelectedEquipment = oEquipmentIdList.value;
+    strSelectedEquipment = oEquipmentIdList.value;  
   }
 
   //find the equipment list for the site
@@ -358,7 +358,7 @@ function getMootools(p_sUrl, p_sTargetId){
 }
 
 /**
- * Adds the current value to the user's session array.  Upon completion,
+ * Adds the current value to the user's session array.  Upon completion, 
  * show the results in the div p_sTargetId.
  * @param p_sUrl - request url
  * @param p_strFieldName - name of field tag (also serves as session key)
@@ -387,7 +387,7 @@ function addInputViaMootools(p_sUrl, p_strFieldName, p_strFieldId, p_sTargetId){
 }
 
 /**
- * Adds the current value to the user's session array.  Upon completion,
+ * Adds the current value to the user's session array.  Upon completion, 
  * show the results in the div p_sTargetId.
  * @param p_sUrl - request url
  * @param p_strFieldName - name of field tag (also serves as session key)
@@ -413,12 +413,12 @@ function addInputPairViaMootools(p_sUrl, p_strFieldName, p_strFieldId, p_strFiel
             }
       }).request();
 	}else{
-	  alert(p_strFieldName+" and "+p_strFieldName2+" should not be blank");
+	  alert(p_strFieldName+" and "+p_strFieldName2+" should not be blank");	
 	}
 }
 
 /**
- * Adds the current value to the user's session array.  Upon completion,
+ * Adds the current value to the user's session array.  Upon completion, 
  * show the results in the div p_sTargetId.
  * @param p_sUrl - request url
  * @param p_strFieldName - name of field tag (also serves as session key)
@@ -433,17 +433,17 @@ function addMaterialViaMootools(p_sUrl, p_strNameId, p_strTypeId, p_strDescId, p
 	  bValid = false;
 	  alert("Material name should not be blank.");
 	}
-
+	
 	var strType = document.getElementById(p_strTypeId).value;
 	if(bValid){
 	  if(strType.length==0){
-		bValid = false;
+		bValid = false;  
 		alert("Material type should not be blank.");
 	  }
 	}
-
+	
 	var strDesc = document.getElementById(p_strDescId).value;
-
+	
 	if(bValid){
 	  $(p_sTargetId).empty().addClass('ajax-loading');
 	  var strUrl = p_sUrl+"&material="+strName+"&type="+strType+"&desc="+strDesc;
@@ -463,7 +463,7 @@ function addMaterialViaMootools(p_sUrl, p_strNameId, p_strTypeId, p_strDescId, p
 }
 
 /**
- *
+ * 
  * @param p_sUrl - request url
  * @param p_strFieldName - name of field tag (also serves as session key)
  * @param p_iArrayIndex - index within $_SESSION[p_strFieldName]
@@ -489,28 +489,28 @@ function getMootoolsForm(p_sFormId, p_sTargetId, p_sAction){
 	 */
 	//new Event(e).stop();
         e.stop();
-
+	
 	var bFormIsChildOfTarget = false;
 	var oTarget = document.getElementById(p_sTargetId);
 	if(oTarget.getElementById(p_sFormId)!=null){
 	  bFormIsChildOfTarget = true;
 	}
-
+	
 	/**
-	 * If the form is not a child of the target,
-	 * this empties the result div and shows
+	 * If the form is not a child of the target, 
+	 * this empties the result div and shows 
 	 * the spinning indicator
      */
 	var sResultsDiv = null;
 	if(!bFormIsChildOfTarget){
-	  sResultsDiv = $(p_sTargetId).empty().addClass('ajax-loading');
+	  sResultsDiv = $(p_sTargetId).empty().addClass('ajax-loading');	
 	}else{
 	  sResultsDiv = $(p_sTargetId);
 	}
-
+	
 	/**
 	 * send takes care of encoding and returns the Ajax instance.
-	 * if the form is not a child of the target, onComplete
+	 * if the form is not a child of the target, onComplete 
 	 * removes the spinner from the resulting div.
 	 */
 	this.send({
@@ -533,7 +533,7 @@ function postMootools(p_sFormId, p_sTargetId, p_sAction){
         var log = $(p_sTargetId).empty().addClass('ajax-loading');
         //Set the options of the form's Request handler.
         //("this" refers to the $('myForm') element).
-
+        
         this.set('send', {onComplete: function(response) {
                 alert(response);
                 //log.removeClass('ajax-loading');
@@ -556,7 +556,7 @@ function postMootools(p_sFormId, p_sTargetId, p_sAction){
 
 function saveInput(p_sUrlPrefix, p_sInputField, p_sResultsDivId){
   var sUrl = p_sUrlPrefix+"&"+p_sInputField+"="+document.getElementById(p_sInputField).value;
-  getMootools(sUrl, p_sResultsDivId);
+  getMootools(sUrl, p_sResultsDivId);  
 }
 
 function clearSuggestion(p_strInputField){

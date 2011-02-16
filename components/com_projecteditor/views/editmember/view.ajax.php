@@ -34,7 +34,7 @@ class ProjectEditorViewEditMember extends JView{
     }
 
     if(empty($strErrorArray)){
-      $oProject = ProjectPeer::retrieveByPK($iProjectId);
+      $oProject = ProjectPeer::find($iProjectId);
       $_REQUEST[ProjectPeer::TABLE_NAME] = serialize($oProject);
 
       /* @var $oModel ProjectEditorModelEditMember */

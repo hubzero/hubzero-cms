@@ -232,7 +232,7 @@ ENDHTML;
     return MaterialPeer::findByExperiment($p_oExperiment->getId());
   }
 
-  public function findMaterialsByExperimentHTML($p_oMaterialArray, $p_iProjectId, $p_iExperimentId, $p_iSelectedMaterialId=0){
+  public function findMaterialsByExperimentHTML0($p_oMaterialArray, $p_iProjectId, $p_iExperimentId, $p_iSelectedMaterialId=0, $p_bCanDelete=false){
         $strHTML = "<table class=\"editorInputSizeFull\"  align=\"center\">
   				  <tr>
   				    <thead>
@@ -261,6 +261,11 @@ ENDHTML;
   	    $strBgColor = "even";
   	  }
 
+          $strDeleteLink = "";
+          if($p_bCanDelete){
+            $strDeleteLink = "[<a href='/warehouse/projecteditor/delete?format=ajax&eid=$iMaterialId&etid=134' class='modal'>Delete</a>]";
+          }
+
   	  if($iMaterialId==$p_iSelectedMaterialId){
   	    $strHTML .= <<< ENDHTML
 	      <tr class="$strBgColor">
@@ -274,7 +279,10 @@ ENDHTML;
   	          $strFilesHTML
   	        </td>
                 <td>$strMaterialType</td>
-  	        <td>[<a onclick="getMootools('/warehouse/projecteditor/editmaterial?format=ajax&amp;materialId=$iMaterialId', 'experimentInfo')" href="javascript:void(0);">Edit</a>]&nbsp;&nbsp;<!--[Delete]--></td>
+  	        <td>
+                  [<a onclick="getMootools('/warehouse/projecteditor/editmaterial?format=ajax&amp;materialId=$iMaterialId', 'experimentInfo')" href="javascript:void(0);">Edit</a>]&nbsp;&nbsp;
+                  $strDeleteLink
+                </td>
   	      <tr>
 ENDHTML;
   	  }else{
@@ -283,8 +291,83 @@ ENDHTML;
   	        <td><a style="border:0px;" href="javascript:void(0);" onClick="getMootools('/warehouse/projecteditor/materialslist?projectId=$p_iProjectId&experimentId=$p_iExperimentId&materialId=$iMaterialId&format=ajax', 'experimentInfo');"><img border="0" width="16" height="16" alt="" title="Expand" src="/components/com_warehouse/images/arrow_right.png" style="border: 0px none;"></a></td>
   	        <td><a href="javascript:void(0);" onClick="getMootools('/warehouse/projecteditor/materialslist?projectId=$p_iProjectId&experimentId=$p_iExperimentId&materialId=$iMaterialId&format=ajax', 'experimentInfo');">$strMaterialName</a></td>
   	        <td>$strMaterialType</td>
-                <!--<td>[<a class="modal" href="/warehouse/projecteditor/editmaterial?format=ajax&materialId=$iMaterialId">Edit</a>]&nbsp;&nbsp;[Delete]</td>-->
-                    <td>[<a href="javascript:void(0);" onClick="getMootools('/warehouse/projecteditor/editmaterial?format=ajax&materialId=$iMaterialId', 'experimentInfo')">Edit</a>]&nbsp;&nbsp;<!--[Delete]--></td>
+                <td>
+                  [<a href="javascript:void(0);" onClick="getMootools('/warehouse/projecteditor/editmaterial?format=ajax&materialId=$iMaterialId', 'experimentInfo')">Edit</a>]&nbsp;&nbsp;
+                  $strDeleteLink
+                </td>
+  	      <tr>
+ENDHTML;
+  	  }
+  	}
+
+    $strHTML .= "</table>";
+
+    return $strHTML;
+  }
+
+  public function findMaterialsByExperimentHTML($p_oMaterialArray, $p_iProjectId, $p_iExperimentId, $p_iSelectedMaterialId=0, $p_bCanDelete=false){
+        $strHTML = "<table class=\"editorInputSizeFull\"  align=\"center\">
+  				  <tr>
+  				    <thead>
+  				      <th style=\"width:16px\"></th>
+  				      <th>Name</th>
+  				      <th>Type</th>
+                                      <th>Manage</th>
+  				    </thead>
+  				  <tr>";
+
+  	foreach($p_oMaterialArray as $iMaterialIndex=>$oMaterial){
+  	  $iMaterialId = $oMaterial->getId();
+  	  $strMaterialName = $oMaterial->getName();
+          $strMaterialDesc = nl2br($oMaterial->getDescription());
+  	  $strMaterialType = $oMaterial->getMaterialType()->getName();
+
+  	  //get the properties table
+  	  $strPropertiesHTML = $this->findMaterialPropertiesByExperimentHTML($oMaterial);
+
+  	  //get the files table
+  	  $strFilesHTML = $this->findMaterialFilesByExperimentHTML($oMaterial);
+
+  	  //set the background color
+  	  $strBgColor = "odd";
+  	  if($iMaterialIndex %2 == 0){
+  	    $strBgColor = "even";
+  	  }
+
+          $strDeleteLink = "";
+          if($p_bCanDelete){
+            $strDeleteLink = "[<a href='/warehouse/projecteditor/delete?format=ajax&eid=$iMaterialId&etid=134' class='modal'>Delete</a>]";
+          }
+
+  	  if($iMaterialId==$p_iSelectedMaterialId){
+  	    $strHTML .= <<< ENDHTML
+	      <tr class="$strBgColor">
+  	        <td><a style="border:0px;" href="/warehouse/projecteditor/project/$p_iProjectId/experiment/$p_iExperimentId/materials"><img border="0" width="16" height="16" alt="" title="Collapse" src="/components/com_warehouse/images/arrow_down.png" style="border: 0px none;"></a></td>
+  	        <td>
+  	          <a href="/warehouse/projecteditor/project/$p_iProjectId/experiment/$p_iExperimentId/materials">$strMaterialName</a>
+  	          <p>$strMaterialDesc</p>
+  	          <p><b>Properties:</b></p>
+  	          $strPropertiesHTML
+  	          <p><b>Files:</b></p>
+  	          $strFilesHTML
+  	        </td>
+                <td>$strMaterialType</td>
+  	        <td nowrap="">
+                  [<a onclick="getMootools('/warehouse/projecteditor/editmaterial?format=ajax&amp;materialId=$iMaterialId', 'experimentInfo')" href="javascript:void(0);">Edit</a>]&nbsp;&nbsp;
+                  $strDeleteLink
+                </td>
+  	      <tr>
+ENDHTML;
+  	  }else{
+  	  	$strHTML .= <<< ENDHTML
+	      <tr class="$strBgColor">
+  	        <td><a href="/warehouse/projecteditor/project/$p_iProjectId/experiment/$p_iExperimentId/materials?materialId=$iMaterialId" style="border:0px;"><img border="0" width="16" height="16" alt="" title="Expand" src="/components/com_warehouse/images/arrow_right.png" style="border: 0px none;"></a></td>
+  	        <td><a href="/warehouse/projecteditor/project/$p_iProjectId/experiment/$p_iExperimentId/materials?materialId=$iMaterialId">$strMaterialName</a></td>
+  	        <td>$strMaterialType</td>
+                <td nowrap="">
+                  [<a href="javascript:void(0);" onClick="getMootools('/warehouse/projecteditor/editmaterial?format=ajax&materialId=$iMaterialId', 'experimentInfo')">Edit</a>]&nbsp;&nbsp;
+                  $strDeleteLink
+                </td>
   	      <tr>
 ENDHTML;
   	  }
@@ -611,7 +694,7 @@ ENDHTML;
   	  $strFilePath = $oMaterialFile->getDataFile()->getPath();
   	  $strFileTitle = $oMaterialFile->getDataFile()->getTitle();
   	  $strFileDisplay = (strlen($strFileTitle) != 0) ? $strFileTitle : $strFileName;
-  	  $strFileLink = $oMaterialFile->getDataFile()->get_url();  //file to view...
+  	  $strFileLink = $oMaterialFile->getDataFile()->getUrl();  //file to view...
 
   	  $strFilesHTML .= <<< ENDHTML
 	    <tr>

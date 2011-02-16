@@ -76,12 +76,9 @@ class ProjectEditorViewData extends JView{
       $_REQUEST[Files::CURRENT_DIRECTORY] = $strPath;
     }
 
-//    $strDrawingsArray = explode("/", $strDataDir);
-//    $strPathArray = explode("/", $strPath);
-//    if(sizeof($strPathArray) > sizeof($strDrawingsArray)){
-//      $_REQUEST[Files::CURRENT_DIRECTORY] = $strPath;
-//      $_REQUEST[Files::TOP_DIRECTORY] = $strDataDir;
-//    }
+    $strReturnUrl = $oModel->getRawReturnURL();
+    $this->assignRef( "strReturnUrl", $strReturnUrl );
+    $_REQUEST[ProjectEditor::RETURN_URL] = $strReturnUrl;
 
     $_REQUEST[Files::REQUEST_TYPE] = Files::DATA;
 
@@ -95,6 +92,7 @@ class ProjectEditorViewData extends JView{
     $_REQUEST[Files::EXPERIMENT_ID] = $oExperiment->getId();
     $_REQUEST[Files::PARENT_DIV] = "browser";
     $_REQUEST[Files::CHILD_DIV] = "divId";
+    
     $this->assignRef( "mod_warehouseupload_drawings", ComponentHtml::getModule("mod_warehouseupload") );
 
     $iEntityViews = $oModel->getEntityPageViews(3, $oExperiment->getId());

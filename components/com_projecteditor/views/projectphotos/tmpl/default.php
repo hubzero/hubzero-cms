@@ -33,10 +33,13 @@ header("Expires: 0"); // Date in the past
   $oProject = unserialize($_REQUEST[ProjectPeer::TABLE_NAME]);
 
   //$strAction = "/warehouse/projecteditor/project/".$oExperiment->getProject()->getId()."/experiment/".$oExperiment->getId()."/photos";
+
+  $oAuthorizer = Authorizer::getInstance();
 ?>
 
 <form id="frmProject" name="frmProject" action="<?php //echo $strAction; ?>" method="get">
 <input type="hidden" name="projid" value="<?php echo $this->iProjectId; ?>" />
+<input type="hidden" id="return" name="return" value="<?php echo $this->strReturnUrl; ?>" />
 
 <div class="innerwrap">
   <div class="content-header">
@@ -129,7 +132,10 @@ header("Expires: 0"); // Date in the past
               <td width="100%">
                 <table cellpadding="1" cellspacing="1">
                     <thead>
-                      <th width="1"><input id="checkAll" type="checkbox" name="checkAll" onClick="setAllCheckBoxes('frmProject', 'dataFile[]', this.checked, <?php echo $this->iProject; ?>);"/></th>
+                      <th width="1">
+                        <input id="checkAll" type="checkbox" name="checkAll" onClick="setAllCheckBoxes('frmProject', 'dataFile[]', this.checked, <?php echo $this->iProjectId; ?>);setFilesToDelete('frmProject', 'dataFile[]', 'cbxDelete', <?php echo $this->iProjectId; ?>, 'fileDeleteLink', 112);"/>
+                        <input type="hidden" id="cbxDelete" name="deleteFiles" value=""/>
+                      </th>
                       <th>Title</th>
                       <th>Description</th>
                       <th>Type</th>
@@ -144,7 +150,11 @@ header("Expires: 0"); // Date in the past
                           $strBgColor = "even";
                         }
 
+
                         $strOriginalPhotoName = $oDataFile->getName();
+                        $strOriginalPhotoPath = $oDataFile->getPath();
+                        $strOriginalPhotoPath = str_replace("/".Files::GENERATED_PICS, "", $strOriginalPhotoPath);
+
                         $strPhotoFriendlyPath = $oDataFile->getFriendlyPath();
                         $strPhotoFriendlyPath = str_replace("/".Files::GENERATED_PICS, "", $strPhotoFriendlyPath);
                         $iDataFileId = $oDataFile->getId();
@@ -156,14 +166,14 @@ header("Expires: 0"); // Date in the past
                           $strPhotoPath = $oDataFile->getPath()."/".Files::GENERATED_PICS;
                         }
                         $oDataFile->setPath($strPhotoPath);
-                        $strPhotoUrl = $oDataFile->get_url();
+                        $strPhotoUrl = $oDataFile->getUrl();
 
                         $strFileTitle = (StringHelper::hasText($oDataFile->getTitle())) ? $oDataFile->getTitle() : $strOriginalPhotoName;
 
                       ?>
                         <tr class="<?php echo $strBgColor; ?>">
-                          <td width="1"><input id="<?php echo $this->iProjectId; ?>" type="checkbox" name="dataFile[]" value="<?php echo $iDataFileId ?>"/></td>
-                          <td nowrap><a rel="lightbox[Photos]" title="<?php echo $strPhotoFriendlyPath; ?>" href="<?php echo $strPhotoUrl; ?>"><?php echo $strFileTitle; ?></a></td>
+                          <td width="1"><input id="<?php echo $this->iProjectId; ?>" type="checkbox" name="dataFile[]" value="<?php echo $iDataFileId ?>" onClick="setFilesToDelete('frmProject', 'dataFile[]', 'cbxDelete', <?php echo $this->iProjectId; ?>, 'fileDeleteLink', 112);"/></td>
+                          <td><a rel="lightbox[Photos]" title="<?php echo $strPhotoFriendlyPath; ?>" href="<?php echo $strPhotoUrl; ?>"><?php echo $strFileTitle; ?></a></td>
                           <td><?php echo $oDataFile->getDescription(); ?></td>
                           <td nowrap>
                             <?php
@@ -180,7 +190,12 @@ header("Expires: 0"); // Date in the past
                               }
                             ?>
                           </td>
-                          <td nowrap>[<a class="modal" href="/warehouse/projecteditor/editphoto?format=ajax&projectId=<?php echo $this->iProjectId; ?>&dataFileId=<?php echo $oDataFile->getId(); ?>&photoType=<?php echo $this->iPhotoType; ?>">Edit</a>]&nbsp&nbsp;<!--[Delete]--></td>
+                          <td nowrap>
+                            [<a class="modal" href="/warehouse/projecteditor/editphoto?format=ajax&projectId=<?php echo $this->iProjectId; ?>&dataFileId=<?php echo $oDataFile->getId(); ?>&photoType=<?php echo $this->iPhotoType; ?>&return=<?php echo $this->strReturnUrl; ?>">Edit</a>]&nbsp&nbsp;
+                            <?php if($oAuthorizer->canDelete($oProject)){ ?>
+                              [<a class="modal" href="/warehouse/projecteditor/delete?path=<?php echo $strOriginalPhotoPath; ?>&format=ajax&eid=<?php echo $oDataFile->getId(); ?>&etid=112&return=<?php echo $this->strReturnUrl; ?>" title="Remove <?php echo $strOriginalPhotoName; ?>">Delete</a>]
+                            <?php } ?>
+                          </td>
                         </tr>
                       <?php
                       }
@@ -190,22 +205,14 @@ header("Expires: 0"); // Date in the past
                   <?php #form buttons ?>
                   <table style="border:0px;">
                     <tr>
-                        <td>
-                          <!--
-                          <div id="filmstrip" class="editorInputFloat editorInputMargin">
-                            <a title="Select png, jpg, or gif photos for the experiment filmstrip." href="javascript:void(0);" onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savefilmstrip';document.getElementById('frmProject').submit();" style="border:0px">
-                              <img src="/components/com_projecteditor/images/buttons/FilmstripPhoto.png" border="0" alt="Upload png, jpg, gif to experiment filmstip."/>
-                            </a>
-                          </div>
-
-                          <div id="general" class="editorInputFloat editorInputMargin">
-                            <a title="Select general png, jpg, or gif photos for the project More tab." href="javascript:void(0);" onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savemorephotos';document.getElementById('frmProject').submit();" style="border:0px">
-                              <img src="/components/com_projecteditor/images/buttons/MoreTabPhoto.png" border="0" alt="Upload png, jpg, gif to More tab."/>
-                            </a>
-                          </div>
-                          -->
-                          <div class="clear"></div>
-                        </td>
+                      <td>
+                        <div class="sectheaderbtn">
+                          <?php if($oProject && $oAuthorizer->canDelete($oProject)){ ?>
+                            <a id="fileDeleteLink" title="Delete the selected file(s)"
+                               tabindex="" href="/warehouse/projecteditor/delete?format=ajax" class="button2 modal">Delete</a>
+                          <?php } ?>
+                        </div>
+                      </td>
                     </tr>
                   </table>
 

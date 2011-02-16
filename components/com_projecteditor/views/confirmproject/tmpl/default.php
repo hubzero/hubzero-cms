@@ -30,7 +30,12 @@ header("Expires: 0"); // Date in the past
 <form id="frmProject" action="/warehouse/projecteditor/saveproject" method="post" enctype="multipart/form-data">
 <input type="hidden" name="username" value="<?php echo $oUser->username; ?>" />
 <input type="hidden" name="edit" value="<?php echo $this->bEditProject; ?>" />
-
+<input type="hidden" name="tags" value="<?php echo $this->strFormTags; ?>" />
+<input type="hidden" name="sponsors" value="<?php echo $this->strFormSponsor; ?>" />
+<input type="hidden" name="awards" value="<?php echo $this->strFormAward; ?>" />
+<input type="hidden" name="nsfawardtypes" value="<?php echo $this->strFormNsfAwardType; ?>" />
+<input type="hidden" name="websites" value="<?php echo $this->strFormWebsite; ?>" />
+<input type="hidden" name="urls" value="<?php echo $this->strFormUrl; ?>" />
 
 <!--<div class="innerwrap">-->
   <div class="content-header">
@@ -240,12 +245,15 @@ header("Expires: 0"); // Date in the past
 //                $strWebsitePicked = StringHelper::EMPTY_STRING;
 //                $strUrl = ProjectEditor::DEFAULT_PROJECT_URL;
                 ?>
-                <input type="button" value="Edit Project" style="margin-top:15px" onClick="window.location='<?php echo $strLink . $strParams; ?>'"/>
-                <input type="submit" value="Save Project" style="margin-top:15px"/>
+
+                <div class="sectheaderbtn">
+                  <a href="javascript:void(0);" class="button2" onClick="window.location='<?php echo $strLink . $strParams; ?>'">Edit Project</a> 
+                  <a href="javascript:void(0);" class="button2" onClick="document.getElementById('frmProject').submit();">Save Project</a>
+                </div>
               </td>
             </tr>
           </table>
-    
+
         </div>
       </div>
     </div>

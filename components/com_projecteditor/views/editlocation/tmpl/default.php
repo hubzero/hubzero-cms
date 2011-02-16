@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<form id="frmPopout" action="/warehouse/projecteditor/savesensor" method="post" enctype="multipart/form-data">
+<form id="frmPopup" action="/warehouse/projecteditor/savesensor" method="post" enctype="multipart/form-data">
   <input type="hidden" name="locId" value="<?php echo $this->locationId; ?>"/>
   <input type="hidden" name="projectId" value="<?php echo $this->projectId; ?>"/>
   <input type="hidden" name="experimentId" value="<?php echo $this->experimentId; ?>"/>
@@ -133,11 +133,17 @@ defined('_JEXEC') or die( 'Restricted access' );
         <textarea id="txtComments" name="comments"><?php echo $strComments; ?></textarea>
       </td>
     </tr>
+    <!--
     <tr id="save">
       <td colspan="2">
-        <input type="button" value="Save Sensor" onClick="document.getElementById('frmPopout').submit();window.top.setTimeout('window.parent.document.getElementById(\'sbox-window\').close()', 700);"/>
+        <input type="button" value="Save Sensor" onClick="document.getElementById('frmPopup').submit();window.top.setTimeout('window.parent.document.getElementById(\'sbox-window\').close()', 700);"/>
       </td>
     </tr>
+    -->
   </table>
+
+  <div id="save" class="sectheaderbtn">
+    <a href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmPopup').submit();window.top.setTimeout('window.parent.document.getElementById(\'sbox-window\').close()', 700);">Save Sensor</a>
+  </div>
 </form>
 

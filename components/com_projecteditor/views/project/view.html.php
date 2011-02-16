@@ -129,6 +129,7 @@ class ProjectEditorViewProject extends JView{
     $strWebsitePicked = StringHelper::EMPTY_STRING;
     $strUrl = "https://".$_SERVER['SERVER_NAME'].ProjectEditor::DEFAULT_PROJECT_URL;
     $iNees = JRequest::getInt("nees", 1);
+    $iNeesResearchTypeId = JRequest::getInt("researchType", 0);
     $strProjectImage = ProjectEditor::DEFAULT_PROJECT_IMAGE;
     $strProjectImageCaption = ProjectEditor::DEFAULT_PROJECT_CAPTION;
     $bHasPhoto = false;
@@ -137,6 +138,7 @@ class ProjectEditorViewProject extends JView{
     $iEntityDownloads = 0;
     $bCanCurate = false;
     $iProjectTypeId = ProjectPeer::CLASSKEY_STRUCTUREDPROJECT;
+    $strCurationSubmitted = JRequest::getVar("submitted", "");
 
     //check to see if tags are passed in by form
     if(StringHelper::hasText($strTags)){
@@ -173,6 +175,7 @@ class ProjectEditorViewProject extends JView{
         echo ComponentHtml::showError(ProjectEditor::PROJECT_ERROR_MESSAGE);
         return;
       }
+      $_REQUEST[ProjectPeer::TABLE_NAME] = serialize($oProject);
 
       $iProjectTypeId = $oProject->getProjectTypeId();
 
@@ -180,17 +183,17 @@ class ProjectEditorViewProject extends JView{
       $bCanCurate = $oAuthorizer->canCurate();
 
       if(!$oAuthorizer->canCurate()){
-        if(!$oAuthorizer->canEdit($oProject)){
+      if(!$oAuthorizer->canEdit($oProject)){
           echo ComponentHtml::showError(ProjectEditor::AUTHORIZER_PROJECT_EDIT_ERROR);
-          return;
-        }
+        return;
+      }
       }
       
 
       $strTitle = $oProject->getTitle();
       $strShortTitle = $oProject->getNickname();
-      $strStartDate = $oProject->getStartDate();
-      $strEndDate = $oProject->getEndDate();
+      $strStartDate = $oProject->getStartDate('%m/%d/%Y');
+      $strEndDate = $oProject->getEndDate('%m/%d/%Y');
       $strDescription = $oProject->getDescription();
 
       $strPIs = $oProjectModel->getMembersByRole($oProjectModel, $oProject, 1, array("Principal Investigator", "Co-PI"), true);
@@ -248,10 +251,15 @@ class ProjectEditorViewProject extends JView{
       }
 
       $iNees = $oProject->getNEES();
+      $iNeesResearchTypeId = $oProject->getNeesResearchTypeId();
 
       $iEntityViews = $oProjectModel->getEntityPageViews(1, $oProject->getId());
       $iEntityDownloads = $oProjectModel->getEntityDownloads(1, $oProject->getId());
     }
+
+    $oNeesResearchTypeArray = $oProjectModel->getNeesResearchTypes();
+    $_REQUEST[NeesResearchTypePeer::TABLE_NAME] = serialize($oNeesResearchTypeArray);
+
 
     $oEntityType = EntityTypePeer::findByTableName(ProjectEditor::PROJECT_IMAGE);
 
@@ -267,6 +275,7 @@ class ProjectEditorViewProject extends JView{
     $this->assignRef( "strDescription", $strDescription );
     $this->assignRef( "iAccess", $iAccess );
     $this->assignRef( "iNees", $iNees );
+    $this->assignRef( "iNeesResearchTypeId", $iNeesResearchTypeId );
     $this->assignRef( "strTags", $strTags );
     $this->assignRef( "iProjectTypeId", $iProjectTypeId );
 
@@ -287,6 +296,8 @@ class ProjectEditorViewProject extends JView{
 
     $this->assignRef("iEntityActivityLogViews", $iEntityViews);
     $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
+
+    $this->assignRef( "submitted", $strCurationSubmitted);
 
     if($oProject){
       $_REQUEST[Search::SELECTED] = serialize($oProject);

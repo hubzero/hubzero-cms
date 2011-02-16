@@ -82,14 +82,16 @@ class ProjectEditorViewProjectVideos extends JView{
     $iLowerLimit = $oModel->computeLowerLimit($iPageIndex, $iDisplay);
     $iUpperLimit = $oModel->computeUpperLimit($iPageIndex, $iDisplay);
 
-    $oVideoArray = $oModel->findDataFileByUsage("Video", array(), $iLowerLimit, $iUpperLimit, $iProjectId);
+    //$oVideoArray = $oModel->findDataFileByUsage("Video", array(), $iLowerLimit, $iUpperLimit, $iProjectId);
+    $oVideoArray = $oModel->findProjectEditorVideos("'video/%'", "'wmv'", "Videos/Frames", $iProjectId);
     $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oVideoArray);
     
     $iUploadType = Files::VIDEO;
     $this->assignRef( 'uploadType', $iUploadType );
 
     //get the total number of files
-    $iResultsCount = $oModel->findDataFileByUsageCount("Video", array(), $iProjectId);
+    //$iResultsCount = $oModel->findDataFileByUsageCount("Video", array(), $iProjectId);
+    $iResultsCount = $oModel->findProjectEditorVideosCount("'video/%'", "'wmv'", "Videos/Frames", $iProjectId);
     $this->assignRef("documentCount", $iResultsCount);
 
     /*
@@ -116,6 +118,9 @@ class ProjectEditorViewProjectVideos extends JView{
 
     JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"javascript:void(0)");
     JFactory::getApplication()->getPathway()->addItem("Videos","javascript:void(0)");
+
+    $strReturnUrl = $oModel->getRawReturnURL();
+    $this->assignRef( "strReturnUrl", $strReturnUrl );
 
     parent::display($tpl);
   }

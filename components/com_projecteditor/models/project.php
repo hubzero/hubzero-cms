@@ -1,7 +1,7 @@
 <?php
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+ 
 jimport( 'joomla.application.component.model' );
 
 require_once('base.php');
@@ -12,6 +12,8 @@ require_once 'lib/data/ProjectHomepage.php';
 require_once 'lib/data/ProjectHomepagePeer.php';
 require_once 'lib/data/ProjectGrant.php';
 require_once 'lib/data/ProjectGrantPeer.php';
+require_once 'lib/data/NeesAwardType.php';
+require_once 'lib/data/NeesAwardTypePeer.php';
 require_once 'lib/data/SponsorPeer.php';
 require_once 'lib/data/Authorization.php';
 require_once 'lib/data/Role.php';
@@ -19,11 +21,14 @@ require_once 'lib/data/RolePeer.php';
 require_once 'lib/data/PersonEntityRole.php';
 require_once 'lib/data/ThumbnailPeer.php';
 require_once 'lib/data/DataFilePeer.php';
+require_once 'lib/data/DataFile.php';
+require_once 'lib/data/EntityTypePeer.php';
 require_once 'lib/data/Organization.php';
+require_once 'lib/data/NeesResearchTypePeer.php';
 require_once 'lib/security/Permissions.php';
 
 class ProjectEditorModelProject extends ProjectEditorModelBase{
-
+	
 
   /**
    * Constructor
@@ -33,20 +38,20 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
   function __construct(){
     parent::__construct();
   }
-
+  
   public function getProjectOwner(){
     $oUser =& JFactory::getUser();
     return $oUser;
   }
-
+  
   public function suggestFacilities($p_strName) {
     return OrganizationPeer::suggestFacilities($p_strName);
   }
-
+  
   public function suggestOrganizations($p_strName, $p_iLimit){
     return OrganizationPeer::suggestOrganizations($p_strName, $p_iLimit);
   }
-
+  
   public function suggestSponsors($p_strName, $p_iLimit){
     return SponsorPeer::suggestSponsors($p_strName, $p_iLimit);
   }
@@ -113,7 +118,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
         throw new Exception("Invalid ProjectTypeId value.");
     }
     //$project->save();
-
+    
     return $project;
   }
 
@@ -130,7 +135,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
     /* @var $auth Authorization */
     $auth  = new Authorization($p_iCreatorId, $p_iProjectId,  DomainEntityType::ENTITY_TYPE_PROJECT, $perms );
     $auth->save();
-
+    
     return $auth;
   }
 
@@ -149,10 +154,10 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
     /* @var $oPersonEntityRole PersonEntityRole */
     $oPersonEntityRole = new PersonEntityRole($p_iCreatorId, $p_iProjectId,  DomainEntityType::ENTITY_TYPE_PROJECT, $oRole);
     $oPersonEntityRole->save();
-
+    
     return $oPersonEntityRole;
   }
-
+  
   /**
    * Checks to see if a project already has a ProjectOrganization
    * @return true/false
@@ -233,7 +238,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
       $oOrganization = $this->findOrganizationByName($strOrganizationName);
       if(!$oOrganization){
         throw new ValidationException($p_strOrganizationName. " is not a valid organization.");
-      }
+      }  
 
       $oProjectOrganization = new ProjectOrganization(null, $oOrganization);
       //$p_oProject->addProjectOrganization($oProjectOrganization);
@@ -245,7 +250,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
         $p_oResultsArray = $this->setOrganizationHelper($p_oProject, $p_strOrganizationArray, $p_oResultsArray, $p_iOrganizationIndex);
       }
     }
-
+    
     //return $p_oProject;
     return $p_oResultsArray;
   }
@@ -262,7 +267,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
       $oTuple = new Tuple($oProjectHomepage->getCaption(), $oProjectHomepage->getUrl(), $strInputField1, $strInputField2);
       array_push($strInputArray, serialize($oTuple));
     }
-
+    
     $_SESSION[$strInputField1] = $strInputArray;
   }
 
@@ -300,7 +305,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
         array_push($oResultsArray, $oProjectHomepageURL);
       }//if hasText
 
-      ++$iIndex;
+      ++$iIndex;  
     }//end loop
 
     return $oResultsArray;
@@ -367,7 +372,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
     return in_array($p_oProjectGrant, $p_oSponsorTupleArray);
   }
 
-  public function setSponsors($p_strSponsorNameArray, $p_strAwardNumberArray){
+  public function setSponsors($p_strSponsorNameArray, $p_strAwardNumberArray, $p_strNsfAwardTypeArray){
     $iIndex = 0;
     $oProjectGrantArray = array();
     while (list ($key,$strSponsorName) = @each ($p_strSponsorNameArray)) {
@@ -377,12 +382,22 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
           //do nothing
         }else{
           $strAwardUrl = null;
-          if($strSponsorName == "NSF" && is_numeric($strAward)){
-            $strAwardUrl =  "http://www.nsf.gov/awardsearch/showAward.do?AwardNumber=".$strAward;
+          $iNsfAwardTypeId = 0;
+          if($strSponsorName == "NSF"){
+            if(is_numeric($strAward)){
+              $strAwardUrl =  "http://www.nsf.gov/awardsearch/showAward.do?AwardNumber=".$strAward;
+            }
+
+            if(isset($p_strNsfAwardTypeArray[$iIndex])){
+              $iNsfAwardTypeId = (is_numeric($p_strNsfAwardTypeArray[$iIndex])) ? $p_strNsfAwardTypeArray[$iIndex] : 0;
+            }
           }
 
           /* @var $oOrganization Organization */
           $oProjectGrant = new ProjectGrant($strSponsorName, $strAward, $strAwardUrl);
+          if($iNsfAwardTypeId > 0){
+            $oProjectGrant->setNeesAwardTypeId($iNsfAwardTypeId);
+          }
           array_push($oProjectGrantArray, $oProjectGrant);
         }
       }
@@ -503,7 +518,7 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
           $oProjectHomepage->setProject($p_oProject);
           $oProjectHomepage->save();
         }
-
+      
         $oConnection->commit();
       }catch(Exception $e){
         $oConnection->rollback();
@@ -666,17 +681,24 @@ ENDHTML;
   public function getProjectGrantHTML($p_strPrefix, $p_oProjectGrantArray){
     $strReturn = StringHelper::EMPTY_STRING;
 
+    $oNeesAwardTypeArray = NeesAwardTypePeer::findAll();
+
     /* @var $oProjectGrant ProjectGrant */
     foreach ($p_oProjectGrantArray as $iIndex=>$oProjectGrant){
       $strAwardInput = $oProjectGrant->getAwardNumber();
       $strSponsorInput = $oProjectGrant->getFundingOrg();
       $strUrlInput = $oProjectGrant->getAwardUrl();
+      $iNeesAwardTypeId = 0;
+      if($oProjectGrant->getNeesAwardType()){
+        $iNeesAwardTypeId = $oProjectGrant->getNeesAwardType()->getId();
+      }
 
       $strAwardDisplay = (StringHelper::hasText($strAwardInput)) ? " - $strAwardInput" : "";
       $strUrlDisplay = (StringHelper::hasText($strUrlInput)) ? " (<a href=\"$strUrlInput\">view</a>)" : "";
 
       $strInputDiv = $p_strPrefix."-".$iIndex."Input";
       $strRemoveDiv = $p_strPrefix."-".$iIndex."Remove";
+      $strTypeDiv = $p_strPrefix."-".$iIndex."Type";
 
       $strAwardFieldArray = "award[]";
       $strAwardFieldPicked = $p_strPrefix."AwardPicked";
@@ -687,17 +709,48 @@ ENDHTML;
       $strUrlFieldArray = "sponsorUrl[]";
       $strUrlFieldPicked = $p_strPrefix."UrlPicked";
 
+      $strNSFAwardOptions = "<input type='hidden' name='nsfAwardType[]' value='n/a'>";
+      if(strtoupper($strSponsorInput)=="NSF"){
+        $strNSFAwardOptions = <<< ENDHTML
+          NSF Award Type: &nbsp;&nbsp;
+          <select name="nsfAwardType[]" onChange="setNsfAwardType('/warehouse/projecteditor/nsfawardtype?format=ajax&index=$iIndex', this.value, '$strTypeDiv')">
+            <option value="n/a">Non-Applicable</option>
+ENDHTML;
+        foreach($oNeesAwardTypeArray as $oNeesAwardType){
+          $strSelected = ($iNeesAwardTypeId==$oNeesAwardType->getId()) ? "selected" : "";
+          if(!StringHelper::hasText($strSelected) && isset($_SESSION["NSF_AWARD_TYPES"])){
+            $iSelectedNsfAwardTypeIdArray = $_SESSION["NSF_AWARD_TYPES"];
+            if(isset($iSelectedNsfAwardTypeIdArray[$iIndex])){
+              if(is_numeric($iSelectedNsfAwardTypeIdArray[$iIndex])){
+                $strSelected = ($iSelectedNsfAwardTypeIdArray[$iIndex]==$oNeesAwardType->getId()) ? "selected" : "";
+              }
+            }
+          }
+
+          /* @var $oNeesAwardType NeesAwardType */
+          $strNSFAwardOptions .= "<option value=".$oNeesAwardType->getId()." $strSelected>".$oNeesAwardType->getDisplayName()."</option>";
+        }
+        $strNSFAwardOptions .= "</select>";
+      }
+
       $strReturn .= <<< ENDHTML
 
           <div id="$strInputDiv" class="editorInputFloat editorInputSize">
             <input type="hidden" name="$strAwardFieldArray" value="$strAwardInput"/>
             <input type="hidden" name="$strSponsorFieldArray" value="$strSponsorInput"/>
             <input type="hidden" name="$strUrlFieldArray" value="$strUrlInput"/>
-            $strSponsorInput $strAwardDisplay $strUrlDisplay
+            <input type="hidden" name="$strUrlFieldArray" value="$strUrlInput"/>
+            <table style="border: 0pt none;">
+             <tr>
+               <td style="padding: 0pt;">$strSponsorInput $strAwardDisplay $strUrlDisplay</td>
+               <td align="right" style="padding: 0pt;">$strNSFAwardOptions</td>
+             </tr>
+            </table>
           </div>
           <div id="$strRemoveDiv" class="editorInputFloat editorInputButton">
             <a href="javascript:void(0);" title="Remove $strSponsorInput $strAwardInput." style="border-bottom: 0px" onClick="removeInputViaMootools('/projecteditor/removesponsor?format=ajax', '$p_strPrefix', $iIndex, 'sponsorPicked');"><img src="/components/com_projecteditor/images/icons/removeButton.png" border="0"/></a>
           </div>
+          <div id="$strTypeDiv" class="editorInputFloat"></div>
           <div class="clear"></div>
 
 ENDHTML;
@@ -719,7 +772,24 @@ ENDHTML;
     ProjectOrganizationPeer::deleteByProject($p_iProjectId);
   }
 
-  public function clearOldProjectImages($p_iProjectId){
+  /**
+   * NEEScentral had a thumbnail table that isn't being used any more.
+   * When changing project image, we'll want to clean up references to the
+   * table.
+   *
+   * If a project image already exists during the NEEShub era, set the
+   * usage type identifier to null.  The new uploaded file will have the
+   * proper usage type identifier.
+   * @param int $p_iProjectId
+   * @param Person $p_oPerson
+   */
+  public function clearOldProjectImages($p_iProjectId, $p_oPerson){
+    $this->clearCentralOldProjectThumbnail($p_iProjectId, $p_oPerson);
+    $this->clearHubOldProjectThumbnail($p_iProjectId, $p_oPerson);
+
+  }
+
+  private function clearCentralOldProjectThumbnail($p_iProjectId, $p_oPerson){
     //get the current thumbnail
     $oCurrentThumbnail = ThumbnailPeer::findByEntityAndType($p_iProjectId, 1);
     if($oCurrentThumbnail){
@@ -732,22 +802,51 @@ ENDHTML;
       //delete old thumb (it's bigger than 90x60)
       $strThumb = "thumb_".$iCurrentProjectImageDataFileId."_".$strCurrentProjectImageDataFileName;
       $oThumbDataFile = DataFilePeer::findOneMatch($strThumb, $strCurrentProjectImageDataFilePath."/".Files::GENERATED_PICS);
-      $iThumbUsageTypeId = $oThumbDataFile->getUsageTypeId();
-      $oThumbDataFile->delete();
+      if($oThumbDataFile){
+        $iThumbUsageTypeId = $oThumbDataFile->getUsageTypeId();
+        $oThumbDataFile->delete();
 
-      //make the icon the thumbnail
-      $strIcon = "icon_".$iCurrentProjectImageDataFileId."_".$strCurrentProjectImageDataFileName;
-      $oIconDataFile = DataFilePeer::findOneMatch($strIcon, $strCurrentProjectImageDataFilePath."/".Files::GENERATED_PICS);
-      $oIconDataFile->setName($strThumb);
-      $oIconDataFile->setUsageTypeId($iThumbUsageTypeId);
-      $oIconDataFile->save();
+        //make the icon the thumbnail
+        $strIcon = "icon_".$iCurrentProjectImageDataFileId."_".$strCurrentProjectImageDataFileName;
+        $oIconDataFile = DataFilePeer::findOneMatch($strIcon, $strCurrentProjectImageDataFilePath."/".Files::GENERATED_PICS);
+        $oIconDataFile->setName($strThumb);
+        $oIconDataFile->setUsageTypeId($iThumbUsageTypeId);
+        $oIconDataFile->setModifiedById($p_oPerson->getId());
+        $oIconDataFile->setModifiedDate(date("m/d/Y"));
+        $oIconDataFile->setAppId(ProjectEditor::APP_ID);
+        $oIconDataFile->save();
 
-      //set usage_type of current project image equal to null
-      $oCurrentProjectImageDataFile->setUsageTypeId(null);
-      $oCurrentProjectImageDataFile->save();
+
+        //set usage_type of current project image equal to null
+        $oCurrentProjectImageDataFile->setUsageTypeId(null);
+        $oCurrentProjectImageDataFile->setModifiedById($p_oPerson->getId());
+        $oCurrentProjectImageDataFile->setModifiedDate(date("m/d/Y"));
+        $oCurrentProjectImageDataFile->setAppId(ProjectEditor::APP_ID);
+        $oCurrentProjectImageDataFile->save();
+      }else{
+
+      }
     }
   }
 
+  /**
+   *
+   * @param int $p_iProjectId
+   * @param Person $p_oPerson
+   */
+  private function clearHubOldProjectThumbnail($p_iProjectId, $p_oPerson){
+    //we should only find one file, but just in case...
+    $oDataFileArray = DataFilePeer::findDataFileByUsage("Project Image", array(), 1, 100, $p_iProjectId);
+    foreach($oDataFileArray as $oCurrentProjectImageDataFile){
+      /* @var $oCurrentProjectImageDataFile DataFile */
+      $oCurrentProjectImageDataFile->setUsageTypeId(null);
+      $oCurrentProjectImageDataFile->setModifiedById($p_oPerson->getId());
+      $oCurrentProjectImageDataFile->setModifiedDate(date("m/d/Y"));
+      $oCurrentProjectImageDataFile->setAppId(ProjectEditor::APP_ID);
+      $oCurrentProjectImageDataFile->save();
+    }
+
+  }
   /**
    * Gets the HTML for a collection of ProjectGrants.
    * @param array $p_oProjectGrantArray
@@ -821,6 +920,30 @@ ENDHTML;
     }
 
     return $strReturn;
+  }
+
+  /**
+   *
+   * @param int $p_iProjectId
+   * @param int $p_iTypeId
+   * @return ProjectHomepage
+   */
+  public function getProjectHomepages($p_iProjectId, $p_iTypeId){
+    return ProjectHomepagePeer::findByProjectIdAndFileTypeId($p_iProjectId, $p_iTypeId);
+  }
+
+  /**
+   *
+   * @param int $p_iProjectId
+   * @param int $p_iDataFileId
+   * @return ProjectHomepage
+   */
+  public function getProjectHomepageByDataFileId($p_iProjectId, $p_iDataFileId){
+    return ProjectHomepagePeer::findByProjectIdAndDataFileId($p_iProjectId, $p_iDataFileId);
+  }
+
+  public function getNeesResearchTypes(){
+    return NeesResearchTypePeer::findAll();
   }
 
 }

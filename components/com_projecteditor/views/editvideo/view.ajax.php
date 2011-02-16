@@ -45,6 +45,12 @@ class ProjectEditorViewEditVideo extends JView{
     $this->assignRef("projectId", $iProjectId);
     $this->assignRef("experimentId", $iExperimentId);
 
+    $strReturnUrl = "/warehouse/projecteditor/project/$iProjectId/projectvideos";
+    if($iExperimentId){
+      $strReturnUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/videos"; 
+    }
+    $this->assignRef( "strReturnUrl", $strReturnUrl );
+
     parent::display();
   }
   

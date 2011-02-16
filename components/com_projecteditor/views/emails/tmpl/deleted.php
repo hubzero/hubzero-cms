@@ -25,19 +25,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri =& JURI::getInstance();
-
-$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn'));
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
-}
+//$juri =& JURI::getInstance();
+//
+//$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn'));
+//if (substr($sef,0,1) == '/') {
+//	$sef = substr($sef,1,strlen($sef));
+//}
 
 $message  = JText::sprintf('GROUPS_USER_HAS_DELETED_GROUP', $this->gcn, $this->juser->get('username'))."\n\n";
 if ($this->msg) {
 	$message .= stripslashes($this->msg)."\n\n";
 }
 $message .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $this->juser->get('username'), $this->juser->get('email'))."\n";
-$message .= $juri->base().$sef."\n";
+//$message .= $juri->base().$sef."\n";
 
 echo $message;
 ?>

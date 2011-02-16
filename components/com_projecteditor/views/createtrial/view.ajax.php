@@ -31,6 +31,7 @@ class ProjectEditorViewCreateTrial extends JView{
       echo "Experiment not selected.";
       return;
     }
+    $_REQUEST[ExperimentPeer::TABLE_NAME] = serialize($oExperiment);
 
     $oTrialArray = $oExperiment->getTrials();
     $_REQUEST[TrialPeer::TABLE_NAME] = serialize($oTrialArray);

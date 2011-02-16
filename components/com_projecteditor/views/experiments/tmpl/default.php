@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
@@ -9,13 +9,13 @@ header("Expires: 0"); // Date in the past
 ?>
 
 
-<?php
+<?php 
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_projecteditor/css/projecteditor.css",'text/css');
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addStyleSheet($this->baseurl."/templates/fresh/html/com_groups/groups.css",'text/css');
   $document->addStyleSheet($this->baseurl."/plugins/tageditor/autocompleter.css",'text/css');
-
+  
   $document->addScript($this->baseurl."/components/com_projecteditor/js/ajax.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/tips.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/projecteditor.js", 'text/javascript');
@@ -26,7 +26,7 @@ header("Expires: 0"); // Date in the past
 ?>
 
 <form id="frmProject" action="/warehouse/projecteditor/saveabout" method="post">
-<input type="hidden" name="username" value="<?php echo $oUser->username; ?>" />
+<!--<input type="hidden" name="username" value="<?php //echo $oUser->username; ?>" />-->
 <input type="hidden" name="projid" value="<?php echo $this->iProjectId; ?>" />
 
   <div class="content-header">
@@ -42,16 +42,16 @@ header("Expires: 0"); // Date in the past
     </div>
     <div class="clear"></div>
   </div>
-
+  
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="title" style="padding-bottom:1em;">
       <span style="font-size:16px;font-weight:bold;"><?php echo $this->strProjectTitle; ?></span>
     </div>
-
+    
     <div id="overview_section" class="main section" style="width:100%;float:left;">
       <?php echo $this->strTabs; ?>
-
-
+      
+      
       <div class="subject-full">
 
         <div id="about" style="padding-top:1em;">
@@ -68,19 +68,19 @@ header("Expires: 0"); // Date in the past
             <a href="/warehouse/projecteditor/project/<?php //echo $this->iProjectId; ?>/experiment/0/about">Create New Experiment</a>
           </div>
           -->
-
-          <?php
+            
+          <?php 
             if(isset($_SESSION["ERRORS"])){
               $strErrorArray = $_SESSION["ERRORS"];
-              if(!empty($strErrorArray)){?>
+              if(!empty($strErrorArray)){?> 
                 <p class="error">
-                  <?
+                  <?  
                     foreach($strErrorArray as $strError){
                       echo $strError."<br>";
                     }
                   ?>
-                </p>
-              <?php
+                </p> 
+              <?php	
               }
             }
 
@@ -149,7 +149,7 @@ header("Expires: 0"); // Date in the past
                           $strIndeedName = $oIndeedDataFile->getName();
 
                           $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
-
+                          
                           $strIndeedReturn = $this->warehouseURL;
 
                           echo "<a href='$strLaunchInEED=$strIndeedPath/$strIndeedName&$strIndeedReturn'>Launch Data File</a>";
@@ -165,11 +165,11 @@ header("Expires: 0"); // Date in the past
               }
             }//end foreach
            ?>
-
+    
         </div>
       </div>
     </div>
     <div class="clear"></div>
-  </div>
+  </div> 
 
 </form>

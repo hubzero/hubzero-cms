@@ -51,7 +51,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         }
       ?>
     </p>
-    <p align="center" class="topSpace20">
-      <input type="button" value="Delete Member" onClick="document.getElementById('frmPopout').submit();window.top.setTimeout('window.parent.document.getElementById(\'sbox-window\').close()', 700);"/>
-    </p>
+    <div class="sectheaderbtn">
+      <a href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmPopout').submit();window.top.setTimeout('window.parent.document.getElementById(\'sbox-window\').close()', 700);">Delete Member</a>
+    </div>
 </form>

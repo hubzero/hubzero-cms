@@ -13,7 +13,7 @@ require_once 'api/org/nees/oracle/util/DbPagination.php';
 require_once 'api/org/nees/static/Files.php';
 
 class ProjectEditorViewDrawings extends JView{
-	
+
   function display($tpl = null){
     /* @var $oModel ProjectEditorModelDrawings */
     $oModel =& $this->getModel();
@@ -51,7 +51,7 @@ class ProjectEditorViewDrawings extends JView{
     }
 
     $this->assignRef( "iExperimentId", $oExperiment->getId() );
-    
+
     //get the tabs to display on the page
     $strTabArray = $oModel->getTabArray();
     $strTabViewArray = $oModel->getTabViewArray();
@@ -61,6 +61,10 @@ class ProjectEditorViewDrawings extends JView{
 
     //get the sub tabs to display on the page
     $strSubTab = JRequest::getVar('subtab', 'data');
+
+//    $strSubTabArray = $oModel->getExperimentsSubTabArray();
+//    $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTab );
+//    $this->assignRef( "strSubTabs", $strSubTabHtml );
 
     $strSubTabArray = $oModel->getExperimentsSubTabArray();
     $strSubTabViewArray = $oModel->getExperimentsSubTabViewArray();
@@ -72,13 +76,13 @@ class ProjectEditorViewDrawings extends JView{
 
     $iRequestType = Files::DRAWING;
     $this->assignRef( 'requestType', $iRequestType );
-    
+
     //Create the directory if it doesn't exist yet.
     $_REQUEST[Files::ABSOLUTE_DIRECTORY_PATH_LIST] = array($strDrawingsDir);
     $_REQUEST[Files::WAREHOUSE] = true;
     $_REQUEST[Files::PROJECT_NAME] = $oProject->getName();
     $oModel->makeDirectory();
-    
+
     //get the videos
     $iDisplay = JRequest::getVar('limit', 25);
     $iPageIndex = JRequest::getVar('index', 0);
@@ -123,8 +127,11 @@ class ProjectEditorViewDrawings extends JView{
       $this->assignRef( "mod_curationprogress", $strBlank );
     }
 
+    $strReturnUrl = $oModel->getRawReturnURL();
+    $this->assignRef( "strReturnUrl", $strReturnUrl );
+
     parent::display($tpl);
   }
-  
+
 }
 ?>

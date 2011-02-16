@@ -33,12 +33,15 @@ header("Expires: 0"); // Date in the past
   $oExperiment = unserialize($_SESSION[ExperimentPeer::TABLE_NAME]);
 
   $strAction = "/warehouse/projecteditor/project/".$oExperiment->getProject()->getId()."/experiment/".$oExperiment->getId()."/drawings";
+
+  $oAuthorizer = Authorizer::getInstance();
 ?>
 
 <form id="frmProject" name="frmProject" action="<?php echo $strAction; ?>" method="post">
 <input type="hidden" name="username" value="<?php echo $oUser->username; ?>" />
 <input type="hidden" name="projid" value="<?php echo $this->iProjectId; ?>" />
 <input type="hidden" name="experimentId" value="<?php echo $this->iExperimentId; ?>" />
+<input type="hidden" id="return" name="return" value="<?php echo $this->strReturnUrl; ?>" />
 
 <div class="innerwrap">
   <div class="content-header">
@@ -132,6 +135,10 @@ header("Expires: 0"); // Date in the past
               <td width="100%">
                 <table cellpadding="1" cellspacing="1">
                     <thead>
+                      <th width="1">
+                        <input id="checkAll" type="checkbox" name="checkAll" onClick="setAllCheckBoxes('frmProject', 'dataFile[]', this.checked, <?php echo $this->iExperimentId; ?>);setFilesToDelete('frmProject', 'dataFile[]', 'cbxDelete', <?php echo $this->iExperimentId; ?>, 'fileDeleteLink', 112);"/>
+                        <input type="hidden" id="cbxDelete" name="deleteFiles" value=""/>
+                      </th>
                       <th>Title</th>
                       <th>Description</th>
                       <th>Type</th>
@@ -150,14 +157,17 @@ header("Expires: 0"); // Date in the past
 
                         $strDrawingFriendlyPath = $oDrawing->getFriendlyPath();
 
-                        $strDrawingName = "display_".$oDrawing->getId()."_".$oDrawing->getName();
+                        $strOriginalPhotoName = $oDrawing->getName();
+                        $strDrawingName = "display_".$oDrawing->getId()."_".$strOriginalPhotoName;
                         $oDrawing->setName($strDrawingName);
                         
-                        $strDrawingPath = $oDrawing->getPath()."/".Files::GENERATED_PICS;
+                        $strOriginalPhotoPath = $oDrawing->getPath();
+                        $strDrawingPath = $strOriginalPhotoPath."/".Files::GENERATED_PICS;
                         $oDrawing->setPath($strDrawingPath);
-                        $strDrawingUrl = $oDrawing->get_url();
+                        $strDrawingUrl = $oDrawing->getUrl();
                       ?>
                         <tr class="<?php echo $strBgColor; ?>">
+                          <td width="1"><input id="<?php echo $this->iExperimentId; ?>" type="checkbox" name="dataFile[]" value="<?php echo $oDrawing->getId(); ?>" onClick="setFilesToDelete('frmProject', 'dataFile[]', 'cbxDelete', <?php echo $this->iExperimentId; ?>, 'fileDeleteLink', 112);"/></td>
                           <td nowrap><a rel="lightbox[drawings]" title="<?php echo $strDrawingFriendlyPath; ?>" href="<?php echo $strDrawingUrl; ?>" title=""><?php echo $oDrawing->getTitle(); ?></a></td>
                           <td><?php echo $oDrawing->getDescription(); ?></td>
                           <td nowrap>
@@ -171,11 +181,34 @@ header("Expires: 0"); // Date in the past
                               echo $strDrawingType;
                             ?>
                           </td>
-                          <td nowrap>[<a class="modal" href="/warehouse/projecteditor/editdrawing?format=ajax&projectId=<?php echo $this->iProjectId; ?>&experimentId=<?php echo $this->iExperimentId; ?>&dataFileId=<?php echo $oDrawing->getId(); ?>">Edit</a>]&nbsp&nbsp;<!--[Delete]--></td>
+                          <td nowrap>
+                            [<a class="modal" href="/warehouse/projecteditor/editdrawing?format=ajax&projectId=<?php echo $this->iProjectId; ?>&experimentId=<?php echo $this->iExperimentId; ?>&dataFileId=<?php echo $oDrawing->getId(); ?>">Edit</a>]&nbsp&nbsp;
+                            <?php if($oAuthorizer->canDelete($oExperiment)){ ?>
+                              [<a class="modal" href="/warehouse/projecteditor/delete?path=<?php echo $strOriginalPhotoPath; ?>&format=ajax&eid=<?php echo $oDrawing->getId(); ?>&etid=112&return=<?php echo $this->strReturnUrl; ?>" title="Remove <?php echo $strOriginalPhotoName; ?>">Delete</a>]
+                            <?php } ?>
+                          </td>
                         </tr>
                       <?php
                       }
                     ?>
+                  </table>
+
+                  <?php #form buttons ?>
+                  <table style="border:0px;">
+                    <tr>
+                      <td>
+                        <div class="sectheaderbtn">
+                          <?php
+                            $bCanDelete = $oAuthorizer->canDelete($oExperiment);
+                            if($bCanDelete){?>
+                              <a id="fileDeleteLink" title="Delete the selected file(s)"
+                                 tabindex="" href="/warehouse/projecteditor/delete?format=ajax" class="button2 modal">Delete</a>
+                            <?php
+                            }
+                          ?>
+                        </div>
+                      </td>
+                    </tr>
                   </table>
 
                   <?php echo $this->pagination; ?>

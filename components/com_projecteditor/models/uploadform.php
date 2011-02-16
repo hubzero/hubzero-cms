@@ -22,7 +22,7 @@ class ProjectEditorModelUploadForm extends ProjectEditorModelBase{
     parent::__construct();
   }
 
-  public function getUploadFormHTML($p_strPath, $p_iRequestType, $p_strDiv, $p_strUsageTypes, $p_iProjectId=0, $p_iExperimentId=0){
+  public function getUploadFormHTML($p_strPath, $p_iRequestType, $p_strDiv, $p_strUsageTypes, $p_iProjectId=0, $p_iExperimentId=0, $p_strReturnUrl=""){
     $strHelp = "";
     $strTag = "";
     $strNotes = "";
@@ -57,14 +57,23 @@ class ProjectEditorModelUploadForm extends ProjectEditorModelBase{
         <input type="hidden" name="div" value="$p_strDiv" id="div"/>
         <input type="hidden" name="requestType" value="$p_iRequestType" id="uploadType"/>
         <input type="hidden" name="path" value="$p_strPath" id="path"/>
+        <input type="hidden" name="return" value="$p_strReturnUrl" id="return"/>
         <div class="information"><b>Destination:</b> $strFriendlyPath</div>
         <table style="border:0px;margin-top:10px;">
+ENDHTML;
+
+    if(StringHelper::hasText($p_strUsageTypes)){
+        $strReturn .= <<< ENDHTML
           <tr>
             <td width="1" nowrap="" class="editorLabel">
               $strTag
             </td>
             <td>$p_strUsageTypes</td>
           </tr>
+ENDHTML;
+    }
+
+    $strReturn .= <<< ENDHTML
           <tr>
             <td width="1" nowrap="">
               <label for="txtTitle" class="editorLabel">Title:<span class="requiredfieldmarker">*</span></label>
@@ -115,25 +124,22 @@ class ProjectEditorModelUploadForm extends ProjectEditorModelBase{
                 <div class="clear"></div>
                 <div class="topSpace20" style="font-size:11px;">
                   $strNotes
+                  <br><br>
+                  <span style="color:#666666;font-size:12px;font-weight:bold;">The maximum file size is 650.0MB.</span>
                 </div>
               </div>
             </td>
           </tr>
           <tr>
             <td colspan="2">
-              <input type="button" id="button" value="Upload" onClick="uploadDataFile('frmPopup', '/warehouse/projecteditor/upload', 'txtTitle');"/>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <hr/>
-              <!--
-              <span style="color:#666666;font-size:12px;font-weight:bold;">When uploading more than 15 files or documents larger than 650.0MB, use <a href="/resources/pen">PEN</a>.</span>
-              -->
-              <span style="color:#666666;font-size:12px;font-weight:bold;">The maximum file size is 650.0MB.</span>
+              <!--<input type="button" id="button" value="Upload" onClick="uploadDataFile('frmPopup', '/warehouse/projecteditor/upload', 'txtTitle');"/>-->
             </td>
           </tr>
         </table>
+
+        <div class="sectheaderbtn" style="margin-top:5px">
+          <a href="javascript:void(0);" class="button2"  onClick="uploadDataFile('frmPopup', '/warehouse/projecteditor/upload', 'txtTitle');">Upload</a>
+        </div>
       </form>
 ENDHTML;
 
@@ -192,7 +198,7 @@ ENDHTML;
     }
     return $bValid;
   }
-  
+
   /**
    *
    * @param EntityType $p_oEntityType
@@ -211,14 +217,14 @@ ENDHTML;
             //do nothing
           }else{
             $bValid = false;
-}
+          }
           ++$counter;
         }
       }
     }
     return $bValid;
   }
-
+  
 }
 
 ?>

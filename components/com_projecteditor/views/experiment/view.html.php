@@ -14,7 +14,7 @@ require_once 'lib/data/Organization.php';
 require_once 'lib/data/Specimen.php';
 
 class ProjectEditorViewExperiment extends JView{
-
+	
   function display($tpl = null){
     /* @var $oExperimentModel ProjectEditorModelExperiment */
     $oExperimentModel =& $this->getModel();
@@ -30,7 +30,7 @@ class ProjectEditorViewExperiment extends JView{
         $oExperimentModel->clearSession();
       }
     }
-
+    
     $iProjectId = JRequest::getInt('projid', 0);
     $this->assignRef( "iProjectId", $iProjectId );
 
@@ -40,7 +40,7 @@ class ProjectEditorViewExperiment extends JView{
     /* @var $oProject Project */
     $oProject = $oExperimentModel->getProjectById($iProjectId);
     $this->assignRef( "strProjectTitle", $oProject->getTitle() );
-
+    
     //get the tabs to display on the page
     $strTabArray = $oExperimentModel->getTabArray();
     $strTabViewArray = $oExperimentModel->getTabViewArray();
@@ -64,7 +64,6 @@ class ProjectEditorViewExperiment extends JView{
     $strSubTabViewArray = $oExperimentModel->getExperimentsSubTabViewArray();
     $strSubTabHtml = $oExperimentModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTabViewArray, $strSubTab );
     if(!$iExperimentId){
-      //$strSubTabHtml = $oExperimentModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment#", $iExperimentId, $strSubTabArray, $strSubTab );
       $strSubTabHtml = $oExperimentModel->getOnClickSubTabs( ProjectEditor::CREATE_EXPERIMENT_SUBTAB_ALERT, $strSubTabArray, $strSubTab );
     }
     $this->assignRef( "strSubTabs", $strSubTabHtml );
@@ -94,6 +93,7 @@ class ProjectEditorViewExperiment extends JView{
     $iExperimentDomainId = 0;
     $iEntityViews = 0;
     $iEntityDownloads = 0;
+    $strCurationSubmitted = JRequest::getVar("submitted", "");
 
     if(isset($_REQUEST['facility'])){
       try{
@@ -108,6 +108,8 @@ class ProjectEditorViewExperiment extends JView{
     $oExperiment = null;
     if($iExperimentId > 0){
       $oExperiment = $oExperimentModel->getExperimentById($iExperimentId);
+      $_REQUEST[ExperimentPeer::TABLE_NAME] = serialize($oExperiment);
+
       $iExperimentDomainId = $oExperiment->getExperimentDomainId();
 
       $oAuthorizer = Authorizer::getInstance();
@@ -127,7 +129,7 @@ class ProjectEditorViewExperiment extends JView{
 
       if(!StringHelper::hasText($strFacilityPicked)){
         $oFacilityArray = $oExperimentModel->findFacilityByExperiment($iExperimentId);
-        $strFacilityPicked = $this->getCurrentFacilitiesHTML($oFacilityArray);
+        $strFacilityPicked = $this->getCurrentFacilitiesHTML($oFacilityArray);       
       }
 
       $oExperimentEquipmentArray = $oExperimentModel->findEquipmentByExperimentId($iExperimentId);
@@ -174,6 +176,8 @@ class ProjectEditorViewExperiment extends JView{
     $this->assignRef("iEntityActivityLogViews", $iEntityViews);
     $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
 
+    $this->assignRef( "submitted", $strCurationSubmitted);
+
     JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"/warehouse/projecteditor/project/".$oProject->getId());
     JFactory::getApplication()->getPathway()->addItem("Experiments","/warehouse/projecteditor/project/".$oProject->getId()."/experiments");
     JFactory::getApplication()->getPathway()->addItem($strBreadCrumbs,"/warehouse/projecteditor/project/".$oProject->getId()."/experiment/".$iExperimentId);
@@ -215,7 +219,7 @@ class ProjectEditorViewExperiment extends JView{
 ENDHTML;
 
     }
-
+    
     return $strReturn;
   }
 
@@ -273,7 +277,7 @@ ENDHTML;
           $strDisplayName = "display_".$expImage->getId()."_".$expImage->getName();
           $expImage->setName($strDisplayName);
           $expImage->setPath($expThumbnail->getPath());
-          $thumbnail = "<a title='".$expImage->getDescription()."' style='border-bottom:0px;' target='_blank' href='" . $expImage->get_url() . "' rel='lightbox[experiments]'>View Photo</a>";
+          $thumbnail = "<a title='".$expImage->getDescription()."' style='border-bottom:0px;' target='_blank' href='" . $expImage->getUrl() . "' rel='lightbox[experiments]'>View Photo</a>";
           $p_strCaption = (StringHelper::hasText($expImage->getDescription())) ? $expImage->getDescription() : ProjectEditor::DEFAULT_EXPERIMENT_CAPTION;
         }
       }
@@ -283,6 +287,6 @@ ENDHTML;
 
     return $thumbnail;
   }
-
+  
 }
 ?>

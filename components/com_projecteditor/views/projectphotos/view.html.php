@@ -112,6 +112,9 @@ class ProjectEditorViewProjectPhotos extends JView{
     JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"javascript:void(0)");
     JFactory::getApplication()->getPathway()->addItem("Photos","javascript:void(0)");
 
+    $strReturnUrl = $oModel->getRawReturnURL();
+    $this->assignRef( "strReturnUrl", $strReturnUrl );
+
     parent::display($tpl);
   }
   

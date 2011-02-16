@@ -17,6 +17,7 @@ class ProjectEditorViewEditDataFile extends JView{
 
     //Incoming
     $strPath = JRequest::getString("path", "");
+    $strReturnUrl = JRequest::getString("return", "");
     $iDataFileId = JRequest::getInt("dataFileId", 0);
     $iProjectId = JRequest::getInt("projectId", 0);
     $iExperimentId = JRequest::getInt("experimentId", 0);
@@ -34,6 +35,7 @@ class ProjectEditorViewEditDataFile extends JView{
     
     $this->assignRef("dataFileId", $iDataFileId);
     $this->assignRef("path", $strPath);
+    $this->assignRef("strReturnUrl", $strReturnUrl);
     
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel();

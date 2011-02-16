@@ -12,11 +12,13 @@ function setAllCheckBoxes(FormName, FieldName, CheckValue, ObjectID){
 
   var countCheckBoxes = objCheckBoxes.length;
   if(!countCheckBoxes){
+    if(!objCheckBoxes.disabled){
     objCheckBoxes.checked = CheckValue;
+    }
   }else{
     // set the check value for all check boxes
     for(var i = 0; i < countCheckBoxes; i++) {
-      if(objCheckBoxes[i].id == ObjectID) {
+      if(objCheckBoxes[i].id == ObjectID && !objCheckBoxes[i].disabled) {
 	objCheckBoxes[i].checked = CheckValue;
       }
     }

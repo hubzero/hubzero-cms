@@ -69,7 +69,6 @@ class ProjectEditorViewVideos extends JView{
 
     $strPath = $oExperiment->getPathname() ."/Documentation/Videos";
     $this->assignRef( 'strPath', $strPath );
-    //echo "$strPath<br>";
 
     if(!is_dir($strPath)){
       $oVideosFileCommand = FileCommandAPI::create($strPath);
@@ -93,14 +92,16 @@ class ProjectEditorViewVideos extends JView{
     $iLowerLimit = $oModel->computeLowerLimit($iPageIndex, $iDisplay);
     $iUpperLimit = $oModel->computeUpperLimit($iPageIndex, $iDisplay);
 
-    $oVideoArray = $oModel->findDataFileByUsage("Video", array(), $iLowerLimit, $iUpperLimit, $iProjectId, $iExperimentId);
+    //$oVideoArray = $oModel->findDataFileByUsage("Video", array(), $iLowerLimit, $iUpperLimit, $iProjectId, $iExperimentId);
+    $oVideoArray = $oModel->findProjectEditorVideos("'video/%'", "'wmv'", "Videos/Frames", $iProjectId, $iExperimentId);
     $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oVideoArray);
     
     $iUploadType = Files::VIDEO;
     $this->assignRef( 'uploadType', $iUploadType );
 
     //get the total number of files
-    $iResultsCount = $oModel->findDataFileByUsageCount("Video", array(), $iProjectId, $iExperimentId);
+    //$iResultsCount = $oModel->findDataFileByUsageCount("Video", array(), $iProjectId, $iExperimentId);
+    $iResultsCount = $oModel->findProjectEditorVideosCount("'video/%'", "'wmv'", "Videos/Frames", $iProjectId, $iExperimentId);
     $this->assignRef("documentCount", $iResultsCount);
 
     /*
@@ -129,6 +130,9 @@ class ProjectEditorViewVideos extends JView{
       $strBlank = StringHelper::EMPTY_STRING;
       $this->assignRef( "mod_curationprogress", $strBlank );
     }
+
+    $strReturnUrl = $oModel->getRawReturnURL();
+    $this->assignRef( "strReturnUrl", $strReturnUrl );
 
     parent::display($tpl);
   }

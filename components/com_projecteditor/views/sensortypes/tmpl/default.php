@@ -11,7 +11,6 @@ header("Expires: 0"); // Date in the past
 <div style="margin-left: 15px;">
 
   <h2>Available Sensor Types</h2>
-
   <?php
   $oSensorTypeArray= unserialize($_REQUEST[SensorTypePeer::TABLE_NAME]);
   foreach ($oSensorTypeArray as $oSensorType){

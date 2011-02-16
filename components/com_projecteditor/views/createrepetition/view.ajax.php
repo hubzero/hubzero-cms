@@ -33,6 +33,7 @@ class ProjectEditorViewCreateRepetition extends JView{
       echo ComponentHtml::showError("Experiment not selected.");
       return;
     }
+    $_REQUEST[ExperimentPeer::TABLE_NAME] = serialize($oExperiment);
 
     $oTrialArray = $oExperiment->getTrials();
     if(empty($oTrialArray)){

@@ -132,12 +132,66 @@ class ProjectEditorViewConfirmProject extends JView{
     $strWebsites = $oPreviewModel->getWebsiteHTML($oWebsiteArray);
     $this->assignRef( "strWebsite", $strWebsites );
 
+    $strFormWebsite = StringHelper::EMPTY_STRING;
+    foreach($_POST['website'] as $iIndex=>$strThisWebsite){
+      $strFormWebsite .= $strThisWebsite;
+      if($iIndex < count($_POST['website'])-1){
+        $strFormWebsite .= ",";
+      }
+    }
+    $this->assignRef("strFormWebsite", $strFormWebsite);
+
+    $strFormUrl = StringHelper::EMPTY_STRING;
+    foreach($_POST['url'] as $iIndex=>$strThisUrl){
+      $strFormUrl .= $strThisUrl;
+      if($iIndex < count($_POST['url'])-1){
+        $strFormUrl .= ",";
+      }
+    }
+    $this->assignRef("strFormUrl", $strFormUrl);
+
     /*
      * 9. Setup any tags provided
      */
     $oResearcherKeywordArray = unserialize($_SESSION[ResearcherKeywordPeer::TABLE_NAME]);
     $strTags = $oPreviewModel->getResearcherKeywordsHTML($oResearcherKeywordArray);
     $this->assignRef( "strTags", $strTags );
+
+    $strTagsTemp = JRequest::getVar("tags", "");
+    $this->assignRef("strFormTags", $strTagsTemp);
+
+    $strFormSponsor = StringHelper::EMPTY_STRING;
+    foreach($_POST["sponsor"] as $iIndex=>$strThisSponsor){
+      if(StringHelper::hasText($strThisSponsor)){
+        $strFormSponsor .= $strThisSponsor;
+        if($iIndex < count($_POST["sponsor"])-1){
+          $strFormSponsor .= ",";
+        }
+      }
+    }
+    $this->assignRef("strFormSponsor", $strFormSponsor);
+
+    $strFormAward = StringHelper::EMPTY_STRING;
+    foreach($_POST["award"] as $iIndex=>$strThisAward){
+      if(StringHelper::hasText($strThisAward)){
+        $strFormAward .= $strThisAward;
+        if($iIndex < count($_POST["award"])-1){
+          $strFormAward .= ",";
+        }
+      }
+    }
+    $this->assignRef("strFormAward", $strFormAward);
+
+    $strFormNsfAwardTypeId = StringHelper::EMPTY_STRING;
+    foreach($_POST["nsfAwardType"] as $iIndex=>$strThisNsfAwardTypeId){
+      if(StringHelper::hasText($strThisNsfAwardTypeId)){
+        $strFormNsfAwardTypeId .= $strThisNsfAwardTypeId;
+        if($iIndex < count($_POST["nsfAwardType"])-1){
+          $strFormNsfAwardTypeId .= ",";
+        }
+      }
+    }
+    $this->assignRef("strFormNsfAwardType", $strFormNsfAwardTypeId);
 
     /*
      * 10. New image (if available)
@@ -174,12 +228,12 @@ class ProjectEditorViewConfirmProject extends JView{
     $this->assignRef( 'strAdmin', $strAdmin );
     $this->assignRef( 'strTagsRaw', $strTagsRaw );
 
-    $oAuthorizer = Authorizer::getInstance();
-    $bCanCurate = $oAuthorizer->canCurate();
+    //$oAuthorizer = Authorizer::getInstance();
+    //$bCanCurate = $oAuthorizer->canCurate();
 
-    if($bCanCurate){
-      $this->setLayout(ProjectEditor::CURATE_LAYOUT);
-    }
+//    if($bCanCurate){
+//      $this->setLayout(ProjectEditor::CURATE_LAYOUT);
+//    }
 
     if($iProjectId){
       JFactory::getApplication()->getPathway()->addItem($oProject->getName(), "/warehouse/projecteditor/project/".$oProject->getId());

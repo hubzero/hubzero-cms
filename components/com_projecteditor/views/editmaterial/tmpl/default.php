@@ -104,7 +104,9 @@ header("Expires: 0"); // Date in the past
     </tr>
     <tr id="preview">
       <td>
-        <input type="submit" value="Save Material" style="margin-top:15px"/>
+        <div class="sectheaderbtn editorInputSizeFull">
+          <a tabindex="21" href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmProject').submit();">Save Material</a>
+        </div>
       </td>
     </tr>
   </table>

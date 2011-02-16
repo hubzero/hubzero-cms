@@ -38,12 +38,17 @@ header("Expires: 0"); // Date in the past
 
 <?php
 $oTrialArray = unserialize($_REQUEST[TrialPeer::TABLE_NAME]);
+$oExperiment = unserialize($_REQUEST[ExperimentPeer::TABLE_NAME]);
+$oAuthorizer = Authorizer::getInstance();
 ?>
 
-<form action="/warehouse/projecteditor/saverepetition" method="post">
+<div id="frmWrapper">
+<form id="frmRepetition" action="/warehouse/projecteditor/saverepetition" method="post">
 <input type="hidden" name="path" value="<?php echo $this->strPath; ?>" id="path"/>
 <input type="hidden" name="referer" value="<?php echo $this->strReferer; ?>" id="referer"/>
 <input type="hidden" name="repetition" value="0" id="repId"/>
+<input type="hidden" name="eid" value="0" id="entityId"/>
+<input type="hidden" name="etid" value="5" id="entityTypeId"/>
 
 <div><h2>Create Repetition</h2></div>
 
@@ -138,10 +143,29 @@ $oTrialArray = unserialize($_REQUEST[TrialPeer::TABLE_NAME]);
 
   <tr>
     <td colspan="2">
+      <!--
       <input type="submit" value="Save Repetition"/>
+      <a title="Delete repetition." class="modal"
+         onClick="deleteEntity('frmRepetition', '/warehouse/projecteditor/removeentity', 'entityId', 'repId')"
+         href="javascript:void(0)">
+        Delete Repetition
+      </a>
+      -->
+
+      <div class="sectheaderbtn">
+        <a title="Save repetition." href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmRepetition').submit();">Save Repetition</a>
+        <?php if($oExperiment && $oAuthorizer->canDelete($oExperiment)){ ?>
+          <a title="Delete repetition." class="button2"
+             onClick="getEntityDeleteForm('repetition', 'entityId', 'repId', 'frmWrapper');"
+             href="javascript:void(0)">
+            Delete Repetition
+          </a>
+        <?php } ?>
+      </div>
     </td>
   </tr>
 </table>
 </form>
+</div>
 
 

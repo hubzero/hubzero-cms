@@ -52,10 +52,12 @@ class ProjectEditorViewSensorList extends JView{
           $oLocationArray = $oModel->findLocationsByPlanId($iLocationPlanId);
           break;
     }
-    echo $iLocationPlanId."<br>";
+    $this->assignRef( "iLocationPlanId", $iLocationPlanId );
+
     $_REQUEST[LocationPeer::TABLE_NAME] = serialize($oLocationArray);
 
-
+    $strReturnUrl = $oModel->getRawReturnURL();
+    $this->assignRef( "strReturnUrl", $strReturnUrl );
 
     parent::display($tpl);
   }

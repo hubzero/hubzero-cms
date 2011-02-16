@@ -26,9 +26,16 @@ header("Expires: 0"); // Date in the past
 ?>
 
 <?php JHTML::_('behavior.calendar'); ?>
+<?php JHTML::_('behavior.modal'); ?>
 
 <?php 
   $oUser = $this->oUser;
+  $oAuthorizer = Authorizer::getInstance();
+
+  $oProject = null;
+  if(isset($_REQUEST[ProjectPeer::TABLE_NAME])){
+    $oProject = unserialize($_REQUEST[ProjectPeer::TABLE_NAME]);
+  }
 ?>
 
 <form id="frmProject" action="/warehouse/projecteditor/confirmproject" method="post" enctype="multipart/form-data">
@@ -139,6 +146,11 @@ header("Expires: 0"); // Date in the past
                 </p> 
               <?php	
               }
+            }
+
+            if(StringHelper::hasText($this->submitted)){ ?>
+              <p class="information">Curation request submitted to curator.</p>
+            <?php
             }
           ?>
           <table cellpadding="1" cellspacing="1" style="border-bottom:0px;border-top:0px;">
@@ -314,6 +326,7 @@ header("Expires: 0"); // Date in the past
                   </a>
                 </div>
                 <div class="clear"></div>
+                <input id="hiddenNsfAwardType" type="hidden" value="" name="nsfAwardType[]"/>
                 <div id="sponsorPicked">
                   <?php echo $this->strSponsorPicked; ?>
                 </div>
@@ -371,7 +384,7 @@ header("Expires: 0"); // Date in the past
                   </a>
                 </p>
               </td>
-              <td>Publications are added with <a href="/contribute" target="nees_window">Contribute</a>.</td>
+              <td>Publications are added with <a href="/contribute" target="nees_window">Contribute</a> or editing a file in the project <a href="javascript:void(0);" onClick="goToProjectDocuments('<?php echo $_SERVER['SERVER_NAME']; ?>', <?php echo $this->iProjectId; ?>)">Documentation</a> tab.</td>
             </tr>
             <tr id="tags">
               <td nowrap="">
@@ -409,14 +422,45 @@ header("Expires: 0"); // Date in the past
                 <fieldset>
                 <fieldset>
                   <legend>Initiative</legend>
-                  <p>By default, the project status will be:</p>
+                  <p>By default, your project is:</p>
                   <label>
-                        <input tabindex="14" type="radio" <?php if($this->iNees==0)echo "checked='checked'"; ?> value="0" name="nees" class="option"/>
-                        <strong>NEES</strong> <span class="indent">The project is funded by NSF/NEES.</span>
+                        <input tabindex="14" type="radio" <?php if($this->iNees==1)echo "checked='checked'"; ?> value="1" name="nees" class="option" onClick="document.getElementById('neesResearchType').style.display=''"/>
+                        <strong>NEES<sup>*</sup></strong> <span class="indent">The research is fully funded through the NSF NEES Research program.</span>
+                        <?php
+                          $strResearchTypeDisplay = "display:none";
+                          if($this->iNeesResearchTypeId || $this->iProjectId===0){
+                            $strResearchTypeDisplay = "";
+                          }
+                        ?>
+                        <div id="neesResearchType" class="indent" style="<?php echo $strResearchTypeDisplay; ?>">
+                          NEES Proposal Category:&nbsp;
+                          <select id="cboNeesResearchType" name="researchType">
+                            <?php
+                              $oNeesResearchTypeArray = unserialize($_REQUEST[NeesResearchTypePeer::TABLE_NAME]);
+                              /* @var $oResearchType NeesResearchType */
+                              foreach($oNeesResearchTypeArray as $oResearchType){ ?>
+                                <option value="<?php echo $oResearchType->getId(); ?>"<?php if($oResearchType->getId()==$this->iNeesResearchTypeId) echo "selected"; ?>><?php echo $oResearchType->getDisplayName(); ?></option>
+                              <?php
+                              }
+                            ?>
+                          </select>
+                        </div>
                   </label>
                   <label>
-                        <input tabindex="15" type="radio" <?php if($this->iNees==1)echo "checked='checked'"; ?> value="1" name="nees" class="option"/>
-                        <strong>Non-NEES</strong> <span class="indent">The project is funded by someone outside of NSF/NEES.</span>
+                        <input tabindex="15" type="radio" <?php if($this->iNees==2)echo "checked='checked'"; ?> value="2" name="nees" class="option"/>
+                        <strong>Shared-Use<sup>*</sup></strong> <span class="indent">The research maybe funded through a different NSF program or directorate and an Equipment Site Utilization Form (ESUF) was signed.</span>
+                  </label>
+                  <label>
+                        <input tabindex="15" type="radio" <?php if($this->iNees==0)echo "checked='checked'"; ?> value="0" name="nees" class="option"/>
+                        <strong>Other<sup>*</sup></strong> <span class="indent">The research is conducted outside of the NEES support framework.</span>
+                  </label>
+                  <label>
+                        <input tabindex="15" type="radio" <?php if($this->iNees==3)echo "checked='checked'"; ?> value="3" name="nees" class="option"/>
+                        <strong>Demo</strong> <span class="indent">The project is created for getting familiar with NEEShub.</span>
+                  </label>
+                  <label>
+                        <input tabindex="15" type="radio" <?php if($this->iNees==4)echo "checked='checked'"; ?> value="3" name="nees" class="option"/>
+                        <strong>Internal</strong> <span class="indent">The project is created for internal to NEES needs.</span>
                   </label>
                 </fieldset>
                 </fieldset>
@@ -453,10 +497,50 @@ header("Expires: 0"); // Date in the past
                 </fieldset>
               </td>
             </tr>
+
+            <?php if($oAuthorizer->getUserName()=="neeshubuser"){?>
+            <tr>
+              <td nowrap="">
+                <p class="editorParagraph">
+                  <label for="txtStatus" class="editorLabel">Enhanced Tab:<span class="requiredfieldmarker">*</span></label>
+                  <a style="border-bottom:0px;" href="#" onclick="return false;"
+                     class="Tips3" title="Status :: Any project that is funded by the NSF/NEES initiative should be designated as NEES.  All other projects are considered Non-NEES.">
+                     <img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
+                  </a>
+                </p>
+              </td>
+              <td>
+                <fieldset>
+                <fieldset>
+                  <legend>Display</legend>
+                  <p>By default, the project enhanced status will be:</p>
+                  <label>
+                        <input type="radio" <?php if($oProject->getEnhanced()==1) echo "checked"; ?> value="1" name="enhanced" class="option"/>
+                        <strong>Yes</strong> <span class="indent">The project appears on the Enhanced tab.</span>
+                  </label>
+                  <label>
+                        <input type="radio" <?php if($oProject->getEnhanced()==0) echo "checked"; ?> value="0" name="enhanced" class="option"/>
+                        <strong>No</strong> <span class="indent">The project does not appear on the Enhanced tab.</span>
+                  </label>
+                </fieldset>
+                </fieldset>
+              </td>
+            </tr>
+            <?
+              }
+            ?>
             <tr id="preview">
               <td></td>
               <td>
-                  <input tabindex="21" type="submit" value="Preview/Save Project" style="margin-top:15px"/>
+                <div class="sectheaderbtn editorInputSize">
+                  <a tabindex="21" href="javascript:void(0);" class="button2"  onClick="checkNsfAwardType('txtSponsor', 'txtSponsorAward', 'hiddenNsfAwardType');document.getElementById('frmProject').submit();">Preview/Save Project</a>
+                  <?php if($oProject && $oAuthorizer->canDelete($oProject)){ ?>
+                    <a tabindex="22" href="/warehouse/projecteditor/delete?format=ajax&eid=<?php echo $this->iProjectId; ?>&etid=1" class="button2 modal">Delete Project</a>
+                  <?php } ?>
+                  <?php if($oProject && $oAuthorizer->canGrant($oProject)){ ?>
+                    <a tabindex="23" href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/curaterequest';document.getElementById('frmProject').submit();">Curate Project</a>
+                  <?php } ?>
+                </div>
               </td>
             </tr>
           </table>

@@ -73,8 +73,8 @@ class ProjectEditorModelConfirmProject extends ProjectEditorModelProject{
         $strComma = ", ";
       }
       $strReturn .= <<< ENDHTML
-                    <span class="nobr">
-                      $strName $strComma
+                    <span>
+                      $strName$strComma
                     </span>
                     <input type="hidden" name="organization[]" value="$iId"/>
 ENDHTML;

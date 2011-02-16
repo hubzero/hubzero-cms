@@ -217,26 +217,23 @@ function saveForm(p_strFormId, p_strUrl){
 /**
  *
  */
-function uploadDataFile(p_strFormId, p_strUrl, p_strTitleId){
+function uploadDataFile(p_strFormId, p_strUrl){
+  document.getElementById(p_strFormId).action=p_strUrl;
+  document.getElementById(p_strFormId).enctype="multipart/form-data";
+
   bValid = true;
-  if(p_strTitleId != null){
-    if(document.getElementById(p_strTitleId) != null){
-      strTitle = document.getElementById(p_strTitleId).value;
-      if(strTitle == null || strTitle==""){
-        bValid = false;
-      }
+  iUploadType = document.getElementById('uploadType').value;
+  if(iUploadType==1){  //drawing
+    iUsageType = document.getElementById('cboUsage').value;
+    if(iUsageType==""){
+      bValid = false;
+      alert("Please select drawing type.");
     }
   }
 
   if(bValid){
-    document.getElementById(p_strFormId).action=p_strUrl;
-    document.getElementById(p_strFormId).enctype="multipart/form-data";
     document.getElementById(p_strFormId).submit();
-  }else{
-    alert("Title is required.");
   }
-
-  return bValid;
 }
 
 function editorSubmit(p_strFormId, p_strSubmitId){
@@ -295,5 +292,164 @@ function getRepetitionList(p_strElementId, p_strAlias, p_strTargetId){
 
   if(iTrialId != ""){
     getMootools('/warehouse/projecteditor/'+p_strAlias+'?id='+iTrialId+'&format=ajax', p_strTargetId);
+  }
+}
+
+function deleteTrialOrRepetition(p_strFormId, p_strAction, p_strTargetId, p_strElementId){
+  bValid = true;
+  document.getElementById(p_strTargetId).value = document.getElementById(p_strElementId).value;
+  if(document.getElementById(p_strTargetId).value==0){
+    bValid = false;
+  }
+
+  if(bValid){
+    document.getElementById(p_strFormId).action = p_strAction;
+    document.getElementById(p_strFormId).submit();
+  }else{
+    alert("Please provide an existing trial to delete.");
+  }
+}
+
+function showDeleteButton(p_strAgreementId, p_strButtonId){
+  if(document.getElementById(p_strAgreementId).checked){
+    document.getElementById(p_strButtonId).style.display='';
+  }else{
+    document.getElementById(p_strButtonId).style.display='none';
+  }
+}
+
+function deleteEntity(p_strFormId, p_strAction, p_strTargetId, p_strElementId){
+  bValid = true;
+  document.getElementById(p_strTargetId).value = document.getElementById(p_strElementId).value;
+  if(document.getElementById(p_strTargetId).value==0){
+    bValid = false;
+  }
+
+  if(bValid){
+    document.getElementById(p_strFormId).action = p_strAction;
+    document.getElementById(p_strFormId).submit();
+  }else{
+    alert("Please provide an existing trial to delete.");
+  }
+}
+
+function getEntityDeleteForm(p_strEntity, p_strTargetId, p_strElementId, p_strResultsDiv){
+  bValid = true;
+  document.getElementById(p_strTargetId).value = document.getElementById(p_strElementId).value;
+  if(document.getElementById(p_strTargetId).value==0){
+    bValid = false;
+  }
+
+  if(bValid){
+    strPath = document.getElementById('path').value;
+    iEntityId = document.getElementById(p_strTargetId).value;
+    iEntityTypeId = document.getElementById('entityTypeId').value;
+    strReturn = document.getElementById('referer').value;
+
+    strUrl = "/warehouse/projecteditor/delete?path="+strPath+"&format=ajax&eid="+iEntityId+"&etid="+iEntityTypeId+"&return="+strReturn;
+    getMootools(strUrl, p_strResultsDiv);
+  }else{
+    alert("Please provide an existing "+p_strEntity+" to delete.");
+  }
+}
+
+function setFilesToDelete0(p_strFormName, p_strFieldName, p_strTargetId, ObjectID, p_strResultsDivId, p_iEntityTypeId){
+  if(!document.forms[p_strFormName])
+    return;
+
+  var objCheckBoxes = document.forms[p_strFormName].elements[p_strFieldName];
+  if(!objCheckBoxes)
+    return;
+
+  var countCheckBoxes = objCheckBoxes.length;
+  var checkedCheckBoxes = 0;
+  for(var ii = 0; ii < countCheckBoxes; ii++) {
+    if(objCheckBoxes[ii].checked && !objCheckBoxes[ii].disabled){
+      ++checkedCheckBoxes;
+    }
+  }
+
+  var strDataFileIds = "";
+
+  // set the check value for all check boxes
+  for(var i = 0; i < countCheckBoxes; i++) {
+    if(objCheckBoxes[i].id == ObjectID && !objCheckBoxes[i].disabled) {
+      if(objCheckBoxes[i].checked){
+        strDataFileIds += objCheckBoxes[i].value;
+        iNext = i;
+        if(iNext < (countCheckBoxes-1)){
+          strDataFileIds += ",";
+        }
+      }
+    }
+  }
+
+  document.getElementById(p_strTargetId).value = strDataFileIds;
+
+  var sUrl = "/warehouse/projecteditor/delete?format=ajax&eid="+document.getElementById(p_strTargetId).value+"&etid="+p_iEntityTypeId+"&return="+document.getElementById("return").value;
+  if(document.getElementById('path') != null){
+    sUrl += "&path="+document.getElementById('path').value;
+  }
+  document.getElementById(p_strResultsDivId).href=sUrl;
+}
+
+function setFilesToDelete(p_strFormName, p_strFieldName, p_strTargetId, ObjectID, p_strResultsDivId, p_iEntityTypeId){
+  if(!document.forms[p_strFormName])
+    return;
+
+  var objCheckBoxes = document.forms[p_strFormName].elements[p_strFieldName];
+  if(!objCheckBoxes)
+    return;
+
+  strDataFileIds = "";
+  var countCheckBoxes = objCheckBoxes.length;
+  if(!countCheckBoxes){
+    if(objCheckBoxes.checked==true){
+      objCheckBoxes.checked = objCheckBoxes.value;
+      strDataFileIds = ""+objCheckBoxes.value;
+    }else{
+      objCheckBoxes.checked = false;
+    }
+  }else{
+    // set the check value for all check boxes
+    for(var i = 0; i < countCheckBoxes; i++) {
+      if(objCheckBoxes[i].id == ObjectID && !objCheckBoxes[i].disabled) {
+	if(objCheckBoxes[i].checked){
+          if(strDataFileIds==""){
+            strDataFileIds = objCheckBoxes[i].value;
+          }else{
+            strDataFileIds += ","+objCheckBoxes[i].value;
+          }
+        }
+      }
+    }
+  }
+
+  document.getElementById(p_strTargetId).value = strDataFileIds;
+
+  var sUrl = "/warehouse/projecteditor/delete?format=ajax&eid="+document.getElementById(p_strTargetId).value+"&etid="+p_iEntityTypeId+"&return="+document.getElementById("return").value;
+  if(document.getElementById('path') != null){
+    sUrl += "&path="+document.getElementById('path').value;
+  }
+  document.getElementById(p_strResultsDivId).href=sUrl;
+}
+
+function goToProjectDocuments(p_strServerName, p_iProjectId){
+  if(p_iProjectId==0){
+    alert("Please create project before going to Documentation tab.");
+    return;
+  }
+  strUrl = "https://"+p_strServerName+"/warehouse/projecteditor/project/"+p_iProjectId+"/documentation"
+  window.open(strUrl,'neesContribute');
+}
+
+function setNsfAwardType(p_strUrl, p_strValue, p_strTarget){
+  strUrl = p_strUrl + "&typeid="+p_strValue;
+  getMootools(strUrl, p_strTarget);
+}
+
+function checkNsfAwardType(p_strSponsor, p_strSponsorAward, p_HiddenNsfAwardType){
+  if(document.getElementById(p_strSponsor).value != "" && document.getElementById(p_strSponsorAward).value != ""){
+    document.getElementById(p_HiddenNsfAwardType).value = "n/a";
   }
 }

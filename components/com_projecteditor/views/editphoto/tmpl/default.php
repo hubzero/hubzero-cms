@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
    $strTitle = $oDataFile->getTitle();
    $iEntityTypeId = $oDataFile->getUsageTypeId();
  }
-
+ 
  $strAction = "/warehouse/projecteditor/savedatafilephoto";
  if(!$this->experimentId){
    $strAction = "/warehouse/projecteditor/savedatafileprojectphoto";
@@ -41,16 +41,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<form id="frmProject" action="<?php echo $strAction; ?>" method="post" enctype="multipart/form-data">
+<form id="frmPopup" action="<?php echo $strAction; ?>" method="post" enctype="multipart/form-data">
   <input type="hidden" name="projectId" value="<?php echo $this->projectId; ?>"/>
   <input type="hidden" name="experimentId" value="<?php echo $this->experimentId; ?>"/>
   <input type="hidden" name="dataFileId" value="<?php echo $this->dataFileId; ?>"/>
   <input type="hidden" name="path" value="<?php echo $this->path; ?>"/>
   <input type="hidden" name="photoType" value="<?php echo $this->iPhotoType; ?>"/>
+  <input type="hidden" id="return" name="return" value="<?php echo $this->strReturnUrl; ?>" />
 
   <div><h2>Edit Data File</h2></div>
   <div class="information"><b>Destination:</b> <?php echo $this->path; ?></div>
-
+  
   <table style="margin-left: 20px; margin-top: 20px; border: 0px; width: 90%">
     <?php if( $this->dataFileId ): ?>
       <tr id="filename">
@@ -99,11 +100,16 @@ defined('_JEXEC') or die( 'Restricted access' );
         </select>
       </td>
     </tr>
+    <!--
     <tr id="save">
       <td colspan="2">
         <input type="submit" value="Save File"/>
       </td>
     </tr>
+    -->
   </table>
+  <div id="save" class="sectheaderbtn">
+      <a href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmPopup').submit()">Save File</a>
+  </div>
 </form>
 

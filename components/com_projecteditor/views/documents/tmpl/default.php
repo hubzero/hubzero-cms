@@ -138,7 +138,7 @@ header("Expires: 0"); // Date in the past
                           $strBgColor = "even";
                         }
 
-                        $strDocumentUrl = $oDataFile->get_url();
+                        $strDocumentUrl = $oDataFile->getUrl();
                         $strPath = $oDataFile->getPath();
                       ?>
                         <tr class="<?php echo $strBgColor; ?>">

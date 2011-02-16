@@ -77,6 +77,10 @@ class ProjectEditorViewSensorList extends JView{
     //get the sub tabs to display on the page
     $strSubTab = JRequest::getVar('subtab', 'sensors');
 
+    //$strSubTabArray = $oModel->getExperimentsSubTabArray();
+    //$strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTab );
+    //$this->assignRef( "strSubTabs", $strSubTabHtml );
+
     $strSubTabArray = $oModel->getExperimentsSubTabArray();
     $strSubTabViewArray = $oModel->getExperimentsSubTabViewArray();
     $strSubTabHtml = $oModel->getSubTabs( "/warehouse/projecteditor/project/$iProjectId/experiment", $iExperimentId, $strSubTabArray, $strSubTabViewArray, $strSubTab );
@@ -101,6 +105,9 @@ class ProjectEditorViewSensorList extends JView{
       $this->assignRef( "mod_curationprogress", $strBlank );
     }
     
+    $strReturnUrl = $oModel->getRawReturnURL();
+    $this->assignRef( "strReturnUrl", $strReturnUrl );
+
     parent::display($tpl);
   }
   

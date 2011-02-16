@@ -30,6 +30,8 @@ class ProjectEditorViewMaterials extends JView{
       }
     }
 
+    $bCanDelete = false;
+
     if(!$oExperiment){
       echo ComponentHtml::showError(ProjectEditor::EXPERIMENT_ERROR_MESSAGE);
       return;
@@ -39,6 +41,10 @@ class ProjectEditorViewMaterials extends JView{
         echo ComponentHtml::showError(ProjectEditor::AUTHORIZER_EXPERIMENT_EDIT_ERROR);
         return;
       }
+
+      if($oAuthorizer->canDelete($oExperiment)){
+        $bCanDelete = true;
+    }
     }
 
 
@@ -66,7 +72,7 @@ class ProjectEditorViewMaterials extends JView{
     $strMaterialHTML = "";
     $oMaterialArray = $oModel->findMaterialsByExperiment($oExperiment);
     if(!empty($oMaterialArray)){
-      $strMaterialHTML = $oModel->findMaterialsByExperimentHTML($oMaterialArray, $iProjectId, $oExperiment->getId());
+      $strMaterialHTML = $oModel->findMaterialsByExperimentHTML($oMaterialArray, $iProjectId, $oExperiment->getId(), $iMaterialId, $bCanDelete);
     }
     $this->assignRef( "materialInfo", $strMaterialHTML );
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
@@ -9,16 +9,17 @@ header("Expires: 0"); // Date in the past
 ?>
 
 
-<?php 
+<?php
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_projecteditor/css/projecteditor.css",'text/css');
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addStyleSheet($this->baseurl."/templates/fresh/html/com_groups/groups.css",'text/css');
   $document->addStyleSheet($this->baseurl."/plugins/tageditor/autocompleter.css",'text/css');
-  
+
   $document->addScript($this->baseurl."/components/com_projecteditor/js/ajax.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/tips.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/projecteditor.js", 'text/javascript');
+  $document->addScript($this->baseurl."/components/com_projecteditor/js/general.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_warehouse/js/resources.js", 'text/javascript');
   $document->addScript($this->baseurl."/plugins/tageditor/textboxlist.js", 'text/javascript');
   $document->addScript($this->baseurl."/plugins/tageditor/observer.js", 'text/javascript');
@@ -27,7 +28,7 @@ header("Expires: 0"); // Date in the past
 
 <?php JHTML::_('behavior.modal'); ?>
 
-<?php 
+<?php
   $oUser = $this->oUser;
 
   $iExperimentId = 0;
@@ -39,12 +40,15 @@ header("Expires: 0"); // Date in the past
     $iExperimentId = $oExperiment->getId();
     $iProjectId = $oExperiment->getProject()->getId();
   }
+
+  $oAuthorizer = Authorizer::getInstance();
 ?>
 
 <form id="frmProject" action="/warehouse/projecteditor/savesetup" method="post" enctype="multipart/form-data">
 <input type="hidden" name="username" value="<?php echo $oUser->username; ?>" />
 <input type="hidden" name="projid" value="<?php echo $iProjectId; ?>" />
 <input type="hidden" name="experimentId" value="<?php echo $iExperimentId; ?>" />
+<input type="hidden" id="return" name="return" value="<?php echo $this->strReturnUrl; ?>" />
 
 <div class="innerwrap">
   <div class="content-header">
@@ -60,26 +64,26 @@ header("Expires: 0"); // Date in the past
     </div>
     <div class="clear"></div>
   </div>
-  
+
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="title" style="padding-bottom:1em;">
       <span style="font-size:16px;font-weight:bold;"><?php echo $oExperiment->getProject()->getTitle(); ?></span>
     </div>
-    
+
     <div id="overview_section" class="main section" style="width:100%;float:left;">
       <?php echo $this->strTabs; ?>
-      
+
       <div class="aside">
         <!--
         <p style="font-size:11px;color:#999999; border-width: 1px; border-style: solid; border-color: #cccccc;" align="center">
           <img alt="" src="/components/com_projecteditor/images/logos/NEES-logo_grayscale.png"/><br><br>
           <span style="font-size:48px;font-weight:bold;color:#999999;">NEES</span><br><br>
         </p>
-        
+
         <input type="text" id="txtCaption" name="caption" value="Enter photo caption" style="width:210px;color:#999999;" onFocus="this.style.color='#000000'; this.value='';"/> <br><br>
         <input type="file" id="txtPhoto" name="thumbnail"/>
         -->
-        
+
         <div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">
           <p style="margin-left:10px; margin-top:10px;"><?php echo $this->iEntityActivityLogViews; ?> Views</p>
           <p style="margin-left:10px;"><?php echo $this->iEntityActivityLogDownloads; ?> Downloads</p>
@@ -91,7 +95,7 @@ header("Expires: 0"); // Date in the past
           ?>
           <p class="edit"><a href="<?php echo $strProjectDisplay; ?>">View Experiment</a></p>
         </div>
-      
+
         <div id="curation">
           <span class="curationTitle">Curation in progress:</span>
           <?php if(StringHelper::hasText($this->mod_curationprogress)){ ?>
@@ -100,7 +104,7 @@ header("Expires: 0"); // Date in the past
             <p>No curation yet.</p>
           <?php } ?>
         </div>
-        
+
         <div class="whatisthis">
           <h4>What's this?</h4>
           <p>
@@ -116,22 +120,22 @@ header("Expires: 0"); // Date in the past
         <?php echo $this->strSubTabs; ?>
 
         <div id="about" style="padding-top:1em;">
-          <?php 
+          <?php
             if(isset($_SESSION["ERRORS"])){
               $strErrorArray = $_SESSION["ERRORS"];
-              if(!empty($strErrorArray)){?> 
+              if(!empty($strErrorArray)){?>
                 <p class="error">
-                  <?  
+                  <?
                     foreach($strErrorArray as $strError){
                   	  echo $strError."<br>";
                     }
                   ?>
-                </p> 
-              <?php	
+                </p>
+              <?php
               }
             }
           ?>
-          
+
           <table cellpadding="1" cellspacing="1" style="border-bottom:0px;border-top:0px;margin-top:20px;">
             <tr id="sensor">
               <td nowrap="">
@@ -167,6 +171,13 @@ header("Expires: 0"); // Date in the past
                             <table cellpadding="1" cellspacing="1">
                               <thead>
                                 <tr>
+                                  <!--
+                                  Deleting individual locations can cause the uploaded data_file to be inaccurate.
+                                  <th width="1">
+                                    <input id="checkAll" type="checkbox" name="checkAll" onClick="setAllCheckBoxes('frmProject', 'locationId[]', this.checked, <?php echo $iExperimentId; ?>);setFilesToDelete('frmProject', 'locationId[]', 'cbxDelete', <?php echo $iExperimentId; ?>, 'fileDeleteLink', 154);"/>
+                                    <input type="hidden" id="cbxDelete" name="deleteSensors" value=""/>
+                                  </th>
+                                  -->
                                   <th>Sensor ID</th>
                                   <th>Type</th>
                                   <th>Orientation</th>
@@ -194,11 +205,21 @@ header("Expires: 0"); // Date in the past
                                     }
                                     ?>
                                       <tr valign="top" class="<?php echo $strClass;?>">
+                                        <!--
+                                        <td width="1"><input id="<?php //echo $iExperimentId; ?>" type="checkbox" name="locationId[]" value="<?php //echo $oLocation->getId(); ?>"/></td>
+                                        -->
                                         <td><?php echo $strThisLabel; ?></td>
                                         <td><?php echo $strThisType; ?></td>
                                         <td><?php echo $strOrientation0.", ".$strOrientation1.", ".$strOrientation2; ?></td>
                                         <td><?php echo $strThisX.", ".$strThisY.", ".$strThisZ; ?></td>
-                                        <td>[<a href="/warehouse/projecteditor/editlocation?format=ajax&locationId=<?php echo $oLocation->getId(); ?>&experimentId=<?php echo $iExperimentId; ?>&projectId=<?php echo $iProjectId; ?>" class="modal">Edit</a>] &nbsp;&nbsp;<!--[<a href="">Delete</a>]--></td>
+                                        <td>
+                                          [<a href="/warehouse/projecteditor/editlocation?format=ajax&locationId=<?php echo $oLocation->getId(); ?>&experimentId=<?php echo $iExperimentId; ?>&projectId=<?php echo $iProjectId; ?>" class="modal">Edit</a>] &nbsp;&nbsp;
+                                          <?php if($oAuthorizer->canDelete($oExperiment)){ ?>
+                                            <!--
+                                            [<a href="/warehouse/projecteditor/delete?format=ajax&eid=<?php //echo $oLocation->getId(); ?>&etid=154&return=/warehouse/projecteditor/project/<?php //echo $iProjectId; ?>/experiment/<?php //echo $iExperimentId; ?>/sensors" class="modal">Delete</a>]
+                                            -->
+                                          <?php } ?>
+                                        </td>
                                       </tr>
                                     <?php
                                   }
@@ -213,21 +234,44 @@ header("Expires: 0"); // Date in the past
                       </td>
                     </tr>
                   </table>
-                </div>
 
-                
+                  <?php #form buttons ?>
+                  <table style="border:0px;">
+                    <tr>
+                      <td>
+                        <div class="sectheaderbtn">
+                          <a id="fileDeletePlanLink" title="Edit location plan"
+                             tabindex="" href="/warehouse/projecteditor/createlocationplan?format=ajax&projid=<?php echo $oExperiment->getProject()->getId(); ?>&experimentId=<?php echo $oExperiment->getId(); ?>&lpid=<?php echo $this->iLocationPlanId; ?>" class="button2 modal">Edit Location Plan</a>
+                          <?php
+                            $bCanDelete = $oAuthorizer->canDelete($oExperiment);
+                            if($bCanDelete){?>
+                              <a id="fileDeletePlanLink" title="Delete location plan"
+                                 tabindex="" href="/warehouse/projecteditor/delete?format=ajax&eid=<?php echo $this->iLocationPlanId; ?>&etid=155" class="button2 modal">Delete Location Plan</a>
+                              <!--
+                              <a id="fileDeleteLink" title="Delete the selected sensor location(s)"
+                                 tabindex="" href="javascript:void(0);" class="button2 modal">Delete Locations</a>
+                              -->
+                            <?php
+                            }
+                          ?>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+
+                </div>
                 <div class="clear"></div>
-                
+
               </td>
             </tr>
-            
+
           </table>
-    
+
         </div>
       </div>
     </div>
     <div class="clear"></div>
-  </div> 
+  </div>
 </div>
 
 </form>

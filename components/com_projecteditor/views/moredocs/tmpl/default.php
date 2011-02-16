@@ -85,7 +85,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
                   $strDisplay = (strlen($strTitle)==0) ? $strName : $strTitle;
                   $strFileTooltip = (strlen($strDescription) > 0) ? $strDescription ." ::: ". $strFriendlyPath : $strFriendlyPath;
-                  $strLink = $oDataFile->get_url();
+                  $strLink = $oDataFile->getUrl();
 
                   $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
                   $oExperiment = $oDataFileLink->getExperiment();

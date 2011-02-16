@@ -355,7 +355,7 @@ ENDHTML;
   	  $strFilePath = $oMaterialFile->getDataFile()->getPath();
   	  $strFileTitle = $oMaterialFile->getDataFile()->getTitle();
   	  $strFileDisplay = (strlen($strFileTitle) != 0) ? $strFileTitle : $strFileName;
-  	  $strFileLink = $oMaterialFile->getDataFile()->get_url();  //file to view...
+  	  $strFileLink = $oMaterialFile->getDataFile()->getUrl();  //file to view...
 
   	  $strFilesHTML .= <<< ENDHTML
 	    <tr>
