@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		break;
 		
 		case(205): // Rensselaer Polytechnic Institute</a></li>
-		echo 'calendar_feeds = new Array("nqfqltefehor89k1c3gai3j43o%40group.calendar.google.com", "stegt1efagjbo16ubqqd5kgj9s%40group.calendar.google.com", "jkgh8le97tj7tgn3kom62m53nk%40group.calendar.google.com", "76scj79cuhm0q8th2cm1k9an8g%40group.calendar.google.com", "");';
+		echo 'calendar_feeds = new Array("khnuia7oo7jcj5claqfo5n3c68%40group.calendar.google.com", "r7umruofd89hb6tjtpqr01sns4%40group.calendar.google.com", "r4souqnr51hkjv46q5t3e2pn3o%40group.calendar.google.com", "5dln8bqu1k5qub2o325rsq0tog%40group.calendar.google.com", "");';
 		break;
 		
 		case(276): // University of CA, Davis</a></li>
