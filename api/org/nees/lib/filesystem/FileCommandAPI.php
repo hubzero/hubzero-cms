@@ -414,6 +414,7 @@ class FileCommandAPI {
             {
                 $buffer = fgets($handle, 4096);
                 echo $buffer;
+                //flush();
             }
 
             fclose($handle);
@@ -422,6 +423,8 @@ class FileCommandAPI {
         }
         return FALSE;
     }
+    
+
     /** ****************************************************************************
      * @title
      *   FileCommandAPI::printFileIESafe
@@ -801,7 +804,7 @@ class FileCommandAPI {
     }
 
 
-    private static function getmime( $ext = "unknown" ) {
+    public static function getmime( $ext = "unknown" ) {
         $mime = array(
         "avi"   => "video/avi",
         "bmp"   => "image/bmp",

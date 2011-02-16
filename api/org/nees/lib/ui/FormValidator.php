@@ -17,7 +17,7 @@ class FormValidator {
       }
 
       // make sure they're trying to validate a type that we
-      // have a validation function for, then run the validation.
+      // have a validation function for, then run the validation. 
       $method_to_call = 'validate' . ucfirst($type);
       if( method_exists('FormValidator', $method_to_call)) {
         $result = FormValidator::$method_to_call($data, $min, $max);

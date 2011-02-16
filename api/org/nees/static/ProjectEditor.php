@@ -1,11 +1,12 @@
 <?php
-/*
+/* 
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 class ProjectEditor{
 
-  const DEFAULT_PROJECT_URL = "/warehouse/project/[id]";
+  const APP_ID = 1;
+  const DEFAULT_PROJECT_URL = "/warehouse/project/[id]"; 
   const DEFAULT_AWARD_NUMBER = "Award Number";
   const DEFAULT_WEBSITE_TITLE = "Website Title";
   const DEFAULT_SPONSOR = "NSF";
@@ -17,6 +18,7 @@ class ProjectEditor{
   const ACTIVE_PROJECT = "Active Project";
 
   /** Message to display when a project is not selected.  */
+  const PROJECT_MISSING_MESSAGE = "Unable to handle request.  The desired project is not found.";
   const PROJECT_ERROR_MESSAGE = "Unable to handle request.  Please save project before attempting to view its details.";
   const EXPERIMENT_ERROR_MESSAGE = "Unable to handle request.  Please save experiment before attempting to view its details.";
 
@@ -82,7 +84,7 @@ class ProjectEditor{
   const UPLOAD_MESSAGE_INVALID_EXTENSION = "Upload Error - INVALID EXTENSION. Photos should be PNG, JPG, or GIF.";
   const UPLOAD_MESSAGE_INVALID_FILE_TYPE = "Upload Error - INVALID FILETYPE";
   const UPLOAD_MESSAGE_ERROR_MOVING_FILE = "Upload Error - ERROR MOVING FILE";
-  const UPLOAD_MESSAGE_BAD_FILE_NAME = "Upload Error - The following characters are not allowed in file name: %, $, \, /, #, ^, ~, *, &, and a leading . (period). ";
+  const UPLOAD_MESSAGE_BAD_FILE_NAME = "Upload Error - The following characters are not allowed in file name: %, $, \, /, #, ^, ~, *, &, (, ), {, }, [, ], and a leading . (period). ";
 
   const AUTHORIZER_PROJECT_EDIT_ERROR = "You cannot edit this project.";
   const AUTHORIZER_EXPERIMENT_CREATE_ERROR = "You cannot create an experiment for this project.";
@@ -104,6 +106,18 @@ class ProjectEditor{
   //const SENSOR_TYPE_DOWNLOAD_LINK = "/warehouse/projecteditor/sensortypes?tmpl=component";
   const SENSOR_TYPE_DOWNLOAD_LINK = "/warehouse/projecteditor/sensortypes";
   const SENSOR_REQUIRED_LINK = "/warehouse/projecteditor/sensorrequired";
+
+  const RETURN_URL = "return url";
+
+  const DROPBOX_PREFIX = "/data/groups";
+  const DROPBOX_SUFFIX = "dropbox";
+
+  const PROJECT_GROUP_DELETE_OK = 200;
+  const PROJECT_GROUP_NOT_FOUND = 201;
+  const PROJECT_GROUP_NOT_DELETED = 202;
+  const PROJECT_GROUP_GID_NOT_FOUND = 203;
+  const PROJECT_GROUP_DROPBOX_ERROR = 204;
+  const PROJECT_GROUP_DROPBOX_ERROR_MSG = "Unable to delete project group's drop box.";
 }
 
 ?>

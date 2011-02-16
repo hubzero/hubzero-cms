@@ -12,7 +12,7 @@
 	  if ($fd = fopen ($fullPath, "r")) {
         $fsize = filesize($fullPath);
         $path_parts = pathinfo($fullPath);
-        $ext = strtolower($path_parts["extension"]);
+        $ext = strtolower($path_parts["extension"]); 
         switch ($ext) {
           case "pdf":
           header("Content-type: application/pdf"); // add here more headers for diff. extensions
@@ -112,7 +112,59 @@
         unlink($p_strFilePath);
       }
     }
+
+    /**
+     * Gets the content of a file.  The file should be line terminated.
+     * @param string $p_strFilePath
+     * @return array
+     */
+    public static function readFile($p_strFilePath){
+      $strFileContentArray = array();
+      try{
+        $handle = fopen($p_strFilePath, 'r');
+        while (!feof($handle)) {
+          $data = fgets($handle, 512);
+          array_push($strFileContentArray, $data);
+        }
+        fclose($handle);
+      }catch(Exception $p_oException){
+      }
+      return $strFileContentArray;
+    }
+
+    public static function writeFile($p_strFilePath, $p_strFileContentArray){
+      $bReturn = true;
+      try{
+        $fh = fopen($p_strFilePath, 'w');
+        foreach($p_strFileContentArray as $strLine){
+          $stringData = "$strLine\n";
+          fwrite($fh, $stringData);
+        }
+        fclose($fh);
+      }catch(Exception $p_oException){
+        $bReturn = false;
+      }
+      return $bReturn;
+    }
   	
+    /**
+     *
+     * @param string $p_strDirPath
+     * @return array
+     */
+    public static function readDir($p_strDirPath){
+      $strListingArray = array();
+      if ($handle = opendir($p_strDirPath)) {
+        while (false !== ($file = readdir($handle))) {
+          if ($file != "." && $file != "..") {
+            array_push($strListingArray, $file);
+          }
+        }
+        closedir($handle);
+      }
+      return $strListingArray;
+    }
+
   }//end class
 
 ?>

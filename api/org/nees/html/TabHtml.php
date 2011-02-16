@@ -22,7 +22,7 @@
 	  }
 	  $strHtml .= '</ul>';
 	  $strHtml .= '<div class="clear"></div>';
-	  $strHtml .= '</div><!-- / #sub-menu -->';
+	  $strHtml .= '</div><!-- / #sub-menu -->'; 
 	
 	  return $strHtml;
     }
