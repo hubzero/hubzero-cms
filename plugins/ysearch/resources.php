@@ -26,8 +26,19 @@ class ResourceChildSorter
 
 class plgYSearchResources extends YSearchPlugin
 {
-	public static function onYSearch($request, &$results)
+	public static function onYSearch($request, &$results, $authz)
 	{
+		if ($authz->is_guest())
+			$access = 'access = 0';
+		else if ($authz->is_super_admin())
+			$access = '1';
+		else
+		{
+			array_map('mysql_real_escape_string', $authz->get_group_names());
+			$group_list = '(\''.join('\', \'', $groups).'\')';
+			$access = '(access = 0 OR access = 1 OR ((access = 3 OR access = 4) AND r.group_owner IN '.$group_list.'))';		
+		}
+
 		$terms = $request->get_term_ar();
 		$tag_map = array();
 		foreach ($request->get_tagged_ids('resources') as $id)
@@ -35,7 +46,6 @@ class plgYSearchResources extends YSearchPlugin
 				++$tag_map[$id];
 			else
 				$tag_map[$id] = 1;
-//		$tag_count = $request->get_tag_count_sql('resources', 'r');
 
 		$weight = 'match(r.title, r.introtext, r.`fulltext`) against (\''.join(' ', $terms['stemmed']).'\')';
 			
@@ -49,7 +59,7 @@ class plgYSearchResources extends YSearchPlugin
 			"SELECT
 				r.id,
 				r.title,
-				concat(coalesce(r.introtext, ''), coalesce(r.`fulltext`, '')) AS description,
+				coalesce(r.`fulltext`, r.introtext, '') AS description,
 				concat('/resources/', coalesce(case when r.alias = '' then null else r.alias end, r.id)) AS link,
 				$weight AS weight,
 				r.publish_up AS date,
@@ -66,7 +76,7 @@ class plgYSearchResources extends YSearchPlugin
 			LEFT JOIN jos_resource_types rt 
 				ON rt.id = r.type
 			WHERE 
-				r.published = 1 AND r.standalone AND NOT r.access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down) 
+				r.published = 1 AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down) 
 				AND ($weight > 0)".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
 		);
@@ -94,7 +104,7 @@ class plgYSearchResources extends YSearchPlugin
 	                        "SELECT
         	                        r.id,
                 	                r.title,
-                        	        concat(coalesce(r.introtext, ''), coalesce(r.`fulltext`, '')) AS description,
+					coalesce(r.`fulltext`, r.introtext, '') AS description,
 	                                concat('/resources/', coalesce(case when r.alias = '' then null else r.alias end, r.id)) AS link,
                                 	r.publish_up AS date,
 					0.5 as weight,
@@ -111,7 +121,7 @@ class plgYSearchResources extends YSearchPlugin
 		                        LEFT JOIN jos_resource_types rt
                 		                ON rt.id = r.type
 		                        WHERE
-                		                r.published = 1 AND r.standalone AND NOT r.access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down)
+                		                r.published = 1 AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down)
 					AND r.id in (".implode(',', array_keys($tag_map)).")".($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
 			);
 			foreach ($sql->to_associative() as $row)
@@ -122,15 +132,10 @@ class plgYSearchResources extends YSearchPlugin
 			}
 		}
 
-		$dbg = array_key_exists('dbg', $_GET);
-		
 		// Nest child resources
 		$section = $request->get_terms()->get_section();
 		foreach ($id_assoc as $id=>$row)
 		{
-			if ($dbg && $row->get('section') === 'Tools')
-				continue;
-
 			$parents = $row->get('parents');
 			if ($parents)
 				foreach (split(',', $parents) as $parent)
