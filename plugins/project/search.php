@@ -1,23 +1,24 @@
 <?php
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+ 
 // Import library dependencies
 jimport('joomla.event.plugin');
-
+require_once 'api/org/nees/static/Search.php';
+ 
 class plgProjectSearch extends JPlugin{
 
   private $m_iLowerLimit;
   private $m_iUpperLimit;
-
+	
    /**
-    * Constructor 
+    * Constructor
     *
-    *
+    * 
     */
   function plgProjectSearch( &$subject ){
     parent::__construct( $subject );
-
+ 
     // load plugin parameters
     $this->_plugin = JPluginHelper::getPlugin( 'project', 'search' );
     $this->_params = new JParameter( $this->_plugin->params );
@@ -32,26 +33,123 @@ class plgProjectSearch extends JPlugin{
   function onProjectSearch(&$params){
     global $mainframe;
 
-    $strQuery = $this->getSearchQuery();
-    $strResultsArray = ProjectPeer::searchByForm($strQuery);
+    $strKeyword = $_SESSION[Search::KEYWORDS];
+    $strFunding = $_SESSION[Search::FUNDING_TYPE];
+    $iSiteId = $_SESSION[Search::NEES_SITE];
+    $strMemberName = $_SESSION[Search::MEMBER];
+    $iIsInvestigator = $_SESSION[Search::IS_INVESTIGATOR];
+    $iProjectTypeId = $_SESSION[Search::PROJECT_TYPE];
+    $strProjectNumbers = $_SESSION[Search::PROJECT_IDS];
+    $strAwardNumbers = $_SESSION[Search::AWARDS];
+    $strMaterials = $_SESSION[Search::MATERIAL_TYPES];
+    $iProjectYear = $_SESSION[Search::PROJECT_YEAR];
+    $strOrderBy = "";
 
-    /*
-     * store the search for historical purposes.
-     */
-    if(!empty($strResultsArray)){
-      $oUser =& JFactory::getUser();
+    $iLimitStart = JRequest::getVar('limitstart', 0);
+    $iDisplay = JRequest::getVar('limit', 25);
+    $iPageIndex = JRequest::getVar('index', 0);
 
-      $strUsername = ($oUser->guest==0) ? $oUser->username : "guest";
-      $strKeyword =	JRequest::getVar("keywords", "");
-      if(strlen($strKeyword)>0){
-        $strDate = date("Y-m-d");
-        $oSearchLog = $this->saveSearch($strUsername, $strKeyword, $strQuery, $strDate);
+    $iLowerLimit = $this->computeLowerLimit($iPageIndex, $iDisplay);
+    $iUpperLimit = $this->computeUpperLimit($iPageIndex, $iDisplay);
+
+    $this->m_iLowerLimit = $iLowerLimit;  
+    $this->m_iUpperLimit = $iUpperLimit;
+
+    $bFilter = $_REQUEST[Search::FILTER];
+    if($bFilter){
+      $iProjectTypeIdFilter = JRequest::getInt('projectType', 0);
+      if($iProjectTypeIdFilter){
+        $iProjectTypeId = $iProjectTypeIdFilter;
+      }
+
+      $iSiteIdFilter = JRequest::getInt("neesSite", 0);
+      if($iSiteIdFilter){
+        $iSiteId = $iSiteIdFilter;
+      }
+
+      $strFundingFilter = JRequest::getVar("funding", "");
+      if(StringHelper::hasText($strFundingFilter)){
+        $strFunding = $strFundingFilter;
+      }
+
+      $strMaterialsFilter = JRequest::getVar('materialType', "");
+      if(StringHelper::hasText($strMaterialsFilter)){
+        $strMaterials = $strMaterialsFilter;
+      }
+
+      $iMemberFilter = JRequest::getInt('member', 0);
+      if($iMemberFilter){
+        $oPerson = PersonPeer::find($iMemberFilter);
+        $strMemberName = $oPerson->getLastName().", ".$oPerson->getFirstName();
       }
     }
 
-    JRequest::setVar('low', $this->m_iLowerLimit);
-    JRequest::setVar('high', $this->m_iUpperLimit);
+    $oAuthorizer = Authorizer::getInstance();
 
+    $oConnection = oci_connect(NeesConfig::ORACLE_USERNAME, NeesConfig::ORACLE_PASSWORD, NeesConfig::ORACLE_SERVER) or die;
+
+    //Perform the search
+    $iSearchId = ProjectPeer::getWarehouseSearchKeywordsId($oConnection);
+    $strResultsArray = ProjectPeer::searchByProcedure($oConnection, $iSearchId, $strKeyword, $strFunding,
+                                           $strMemberName, $iIsInvestigator, $iSiteId, $iProjectTypeId,
+                                           $strProjectNumbers, $strAwardNumbers, $strMaterials, $iProjectYear,
+                                           $strOrderBy, $iLowerLimit, $iUpperLimit, $oAuthorizer->getUserId());
+    $iTotal = ProjectPeer::searchByProcedureCount($oConnection, $iSearchId, $strKeyword, $strFunding,
+                                           $strMemberName, $iIsInvestigator, $iSiteId, $iProjectTypeId, $strProjectNumbers,
+                                           $strAwardNumbers, $strMaterials, $iProjectYear, $oAuthorizer->getUserId());
+
+    //Get the filters
+    $oProjectTypeFilterArray = ProjectPeer::searchProjectTypeFilter($oConnection, $iSearchId, $oAuthorizer->getUserId(), 0, 4);
+    $oNeesSiteFilterArray = ProjectPeer::searchNeesSiteFilter($oConnection, $iSearchId, $oAuthorizer->getUserId(), 0, 4);
+    $oSponsorFilterArray = ProjectPeer::searchSponsorFilter($oConnection, $iSearchId, $oAuthorizer->getUserId(), 0, 4);
+    $oNeesResearchTypeArray = ProjectPeer::searchNeesResearchTypeFilter($oConnection, $iSearchId,$oAuthorizer->getUserId(),  1, 4);
+    $oMaterialTypeArray = ProjectPeer::searchMaterialTypesFilter($oConnection, $iSearchId, $oAuthorizer->getUserId(), 0, 4);
+    $oInvestigatorArray = ProjectPeer::searchInvestigatorFilter($oConnection, $iSearchId, $oAuthorizer->getUserId(), 0, 4);
+
+    /*
+    $dStartTime = $this->getComputeTime();
+    $oMaterialTypeArray = ProjectPeer::searchMaterialTypesFilter($oConnection, $iSearchId, $oAuthorizer->getUserId(), 0, 4);
+    $dEndTime = $this->getComputeTime();
+    $dSeconds = $dEndTime - $dStartTime;
+    echo "search::onProjectSearch(material types)=$dSeconds sec<br>";
+
+    $dStartTime = $this->getComputeTime();
+    $oInvestigatorArray = ProjectPeer::searchInvestigatorFilter($oConnection, $iSearchId, $oAuthorizer->getUserId(), 0, 4);
+    $dEndTime = $this->getComputeTime();
+    $dSeconds = $dEndTime - $dStartTime;
+    echo "search::onProjectSearch(investigators)=$dSeconds sec<br>";
+    */
+
+    //Get the filter counts
+    $iNeesSiteFilterCount = ProjectPeer::searchFilterCount($oConnection, $iSearchId, $oAuthorizer->getUserId(), "searchNeesSiteFilterCount");
+    $iSponsorFilterCount = ProjectPeer::searchFilterCount($oConnection, $iSearchId, $oAuthorizer->getUserId(), "searchSponsorFilterCount");
+    $iMaterialTypesFilterCount = ProjectPeer::searchFilterCount($oConnection, $iSearchId, $oAuthorizer->getUserId(), "searchMaterialTypesFilterCount");
+    $iInvestigatorFilterCount = ProjectPeer::searchFilterCount($oConnection, $iSearchId, $oAuthorizer->getUserId(), "searchInvestigatorFilterCount");
+
+    $bDeleted = ProjectPeer::searchByProcedureDelete($oConnection, $iSearchId);
+
+    oci_close($oConnection);
+
+    JRequest::setVar('low', $iLowerLimit);
+    JRequest::setVar('high', $iUpperLimit);
+    JRequest::setVar('total', $iTotal);
+
+    $_SESSION[Search::PROJECT_TYPE_FILTER] = $oProjectTypeFilterArray;
+    $_SESSION[Search::NEES_SITE_FILTER] = $oNeesSiteFilterArray;
+    $_SESSION[Search::SPONSORS_FILTER] = $oSponsorFilterArray;
+    $_SESSION[Search::NEES_RESEARCH_TYPES_FILTER] = $oNeesResearchTypeArray;
+    $_SESSION[Search::MATERIAL_TYPES_FILTER] = $oMaterialTypeArray;
+    $_SESSION[Search::PRINCIPLE_INVESTIGATORS_FILTER] = $oInvestigatorArray;
+    //$_SESSION[Search::MATERIAL_TYPES_FILTER] = array();
+    //$_SESSION[Search::PRINCIPLE_INVESTIGATORS_FILTER] = array();
+
+    $_REQUEST[Search::NEES_SITE_COUNT] = $iNeesSiteFilterCount;
+    $_REQUEST[Search::SPONSORS_COUNT] = $iSponsorFilterCount;
+    $_REQUEST[Search::MATERIAL_TYPES_COUNT] = $iMaterialTypesFilterCount;
+    $_REQUEST[Search::PRINCIPLE_INVESTIGATORS_COUNT] = $iInvestigatorFilterCount;
+    //$_REQUEST[Search::MATERIAL_TYPES_COUNT] = 0;
+    //$_REQUEST[Search::PRINCIPLE_INVESTIGATORS_COUNT] = 0;
+    
     return $strResultsArray;
   }
 
@@ -204,7 +302,7 @@ class plgProjectSearch extends JPlugin{
                                               $strProjectStartDateCondition, $strProjectEndDateCondition);
 
     //build the experiment query (2/3 union statements)
-    $strExperimentQuery = $this->getExperimentQuery($p_strKeywords, $iProjectId,
+    $strExperimentQuery = $this->getExperimentQuery($p_strKeywords, $iProjectId, 
                                               $strProjectMemberCondition, $strProjectGrantCondition,
                                               $strProjectStartDateCondition, $strProjectEndDateCondition);
 
@@ -294,7 +392,7 @@ class plgProjectSearch extends JPlugin{
    * @param int $p_iLimitStart
    * @param int $p_iDisplay
    * @param int $p_iPageIndex
-   * @return string
+   * @return string 
    */
   private function buildQuery($p_strType, $p_strFunding,
                              $p_strMember, $p_strStartDate, $p_strEnd,
@@ -639,7 +737,7 @@ class plgProjectSearch extends JPlugin{
    * @return string
    */
   private function getCountQuery($p_iPersonId, $p_strMemberCondition, $p_strFundingCondition, $p_strStartCondition, $p_strEndCondition){
-    $strThisQuery = "select count (distinct ".ProjectPeer::PROJID.") as TOTAL
+    $strThisQuery = "select count (distinct ".ProjectPeer::PROJID.") as TOTAL 
                      from ".ProjectPeer::TABLE_NAME."
                      left outer join ".AuthorizationPeer::TABLE_NAME."
                      on ".ProjectPeer::PROJID." = ".AuthorizationPeer::ENTITY_ID."
@@ -654,32 +752,32 @@ class plgProjectSearch extends JPlugin{
 
     return $strThisQuery;
   }
-
+  
   /**
     * Plugin method with the same name as the event will be called automatically.
     */
   function onProjectSearchTag($searchquery, $limit=0, $limitstart=0, $areas=null){
     global $mainframe;
-
+ 
     // Plugin code goes here.
-
+      
     $temp = array();
     $temp['search']="tag";
-
+ 	  
     return $temp;
   }
-
+  
   /**
     * Plugin method with the same name as the event will be called automatically.
     */
   function onProjectSearchPopular($searchquery, $limit=0, $limitstart=0, $areas=null){
     global $mainframe;
-
+ 
     // Plugin code goes here.
-
+    
  	$temp = array();
  	$temp['search']="popular";
-
+ 	  
     return $temp;
   }
 
@@ -726,5 +824,12 @@ class plgProjectSearch extends JPlugin{
     return $oSearchLog;
   }
 
+  function getComputeTime(){
+    $mtime = microtime();
+    $mtime = explode(' ', $mtime);
+    $mtime = $mtime[1] + $mtime[0];
+    return $mtime;
+  }
+ 
 }
 ?>
