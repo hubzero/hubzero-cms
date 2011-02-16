@@ -134,26 +134,41 @@ ENDHTML;
    * @param bool $p_bEdit
    * @return string
    */
-  public function getFileBrowser($p_strMainDiv, $p_strInnerDiv, $p_strCurrentPath, $p_strTopPath, $p_oCurrentDataFileArray, $p_iRequestType, $p_bEdit, $p_iProjectId=0, $p_iExperimentId=0){
+  public function getFileBrowser($p_strMainDiv, $p_strInnerDiv, $p_strCurrentPath, $p_strTopPath, $p_oCurrentDataFileArray, $p_iRequestType, $p_bEdit, $p_iProjectId=0, $p_iExperimentId=0, $p_strReturnUrl=""){
     $strReturn = "";
+
+    $oAuthorizer = Authorizer::getInstance();
+
+    $oExperiment = null;
+    if($p_iExperimentId){
+      $oExperiment = ExperimentPeer::find($p_iExperimentId);
+    }
 
     //create a friendly looking path
     $strCurrentFriendlyPath = get_friendlyPath($p_strCurrentPath);
     
     //provide breadcrumbs for file browser
-    
     $strLocationPath = "";
     $strLocationArray = explode("/", $strCurrentFriendlyPath);
     array_shift($strLocationArray);
     $strLocationLinks = "";
-    foreach($strLocationArray as $strLocation){
+    foreach($strLocationArray as $iLocationIndex=>$strLocation){
       $strLocationLinks .= "/".$strLocation;
+      if($iLocationIndex > 0){
       $strLocationPath = $strLocationPath .<<< ENDHTML
        / <a href="/warehouse/projecteditor/project/$p_iProjectId/experiment/$p_iExperimentId/data?path=$strLocationLinks&uploadType=$p_iRequestType&parent=$p_strMainDiv&div=$p_strInnerDiv&toppath=$p_strTopPath">
             $strLocation
          </a>
 ENDHTML;
+      }else{
+        $strLocationPath = $strLocationPath .<<< ENDHTML
+       / $strLocation
+ENDHTML;
     }
+    }
+
+    $strLastDirectoryName = end($strLocationArray);
+    $iCheckAllEntityId = self::getEntityTypeIdByParent($strLastDirectoryName);
 
     $strDeleteHeader = ($p_bEdit) ? "Delete" : "";
 
@@ -172,7 +187,10 @@ ENDHTML;
                 </thead>
                 
                 <tr>
-                  <td width="1"><input id="checkAll" type="checkbox" name="checkAll" onClick="setAllCheckBoxes('frmProject', 'dataFile[]', this.checked, $p_iExperimentId);"/></td>
+                  <td width="1">
+                    <input id="checkAll" type="checkbox" name="checkAll" onClick="setAllCheckBoxes('frmProject', 'dataFile[]', this.checked, $p_iExperimentId);setFilesToDelete('frmProject', 'dataFile[]', 'cbxDelete', $p_iExperimentId, '$p_strInnerDiv-deleteLink', $iCheckAllEntityId);"/>
+                    <input type="hidden" id="cbxDelete" name="deleteFiles" value=""/>
+                  </td>
                   <td width="1"></td>
                   <td width="80%"><b>Name</b></td>
                   <td><b>Directories</b></td>
@@ -195,6 +213,25 @@ ENDHTML;
               $iDataFileId = $oDataFile->getId();
               $strFilePath = $oDataFile->getPath();
               $strFileName = $oDataFile->getName();
+
+              $iEntityId = self::getEntityId($strFileName, $iDataFileId);
+              $iEntityTypeId = self::getEntityTypeId($strFileName, $iDataFileId);
+
+              /*
+              if(preg_match("/Experiment-([0-9])+/", $strFileName)){
+                $iEntityId = $oDataFileLink->getExperimentId();
+                $iEntityTypeId = 3;
+              }elseif(preg_match("/Trial-([0-9])+/", $strFileName)){
+                $iEntityId = $oDataFileLink->getTrialId();
+                $iEntityTypeId = 4;
+              }elseif(preg_match("/Rep-([0-9])+/", $strFileName)){
+                $iEntityId = $oDataFileLink->getRepId();
+                $iEntityTypeId = 5;
+              }else{
+                $iEntityId = $iDataFileId;
+                $iEntityTypeId = 112;
+              }
+              */
 
               /*
                * Get the tooltip for this file.
@@ -278,7 +315,7 @@ ENDHTML;
               //exclude generated pics from the listing
               if($strFileName != Files::GENERATED_PICS){
                 if(preg_match("/Trial-([0-9])+/", $strFileName) ||
-                   preg_match("/Rep-([0-9])+/", $strFileName) || 
+                   preg_match("/Rep-([0-9])+/", $strFileName) ||
                    //preg_match("/Analysis/", $strFileName) ||
                    //preg_match("/Documentation/", $strFileName) ||
                   StringHelper::contains($strCurrentFriendlyPath, "Rep-([0-9])+")){
@@ -288,23 +325,40 @@ ENDHTML;
 
                   $strBgColor = ($iIndex%2==0) ? "even" : "odd";
 
+                  $strDisabled = ($strFileCount === 0) ? StringHelper::EMPTY_STRING : "disabled";
+                  $strDisabled = self::getDisabledCheckBox($strFileCount, $strFileName, $strCurrentFriendlyPath);
+
                   $strEditLink = "";
                   if(!preg_match("/Experiment-([0-9])+/", $strFileName) &&
                      !preg_match("/Trial-([0-9])+/", $strFileName) &&
                      !preg_match("/Rep-([0-9])+/", $strFileName)){
                     $strEditLink = <<< ENDHTML
-                      [<a class="modal" href="/warehouse/projecteditor/editdatafile?path=$strCurrentFriendlyPath&format=ajax&dataFileId=$iDataFileId&projectId=$p_iProjectId&experimentId=$p_iExperimentId">Edit</a>]&nbsp;&nbsp;<!--[Delete]-->
+                      [<a class="modal" href="/warehouse/projecteditor/editdatafile?path=$strCurrentFriendlyPath&format=ajax&dataFileId=$iDataFileId&projectId=$p_iProjectId&experimentId=$p_iExperimentId&return=$p_strReturnUrl">Edit</a>]&nbsp;&nbsp;
 ENDHTML;
                   }
 
+                  if($oExperiment){
+                    if($oAuthorizer->canDelete($oExperiment)){
+                      if(!StringHelper::hasText($strDisabled)){
+                        $strEditLink .= <<< ENDHTML
+                        [<a class="modal" href="/warehouse/projecteditor/delete?path=$strCurrentFriendlyPath&format=ajax&eid=$iEntityId&etid=$iEntityTypeId&return=$p_strReturnUrl" title="Remove $strFileName">Delete</a>]
+ENDHTML;
+                      }else{
+                        $strEditLink .= <<< ENDHTML
+                        [<a href="javascript:void(0);" title="Unable to delete until files are removed." class="grayLinks">Delete</a>]
+ENDHTML;
+                      }
+                    }
+                  }
+                  
                   $strReturn .= <<< ENDHTML
                     <tr class="$strBgColor">
-                      <td><input id="$p_iExperimentId" type="checkbox" name="dataFile[]" value="$iDataFileId"/></td>
+                      <td><input id="$p_iExperimentId" $strDisabled type="checkbox" name="dataFile[]" value="$iEntityId" onClick="setFilesToDelete('frmProject', 'dataFile[]', 'cbxDelete', $p_iExperimentId, '$p_strInnerDiv-deleteLink', $iEntityTypeId);"/></td>
                       <td>$strDirectory</td>
                       <td>$strThisLink</td>
                       <td>$strDirectoryCount</td>
                       <td>$strFileCount</td>
-                      <td>$strEditLink</td>
+                      <td nowrap="">$strEditLink</td>
                     </tr>
 ENDHTML;
                 }//name or path has Trial-
@@ -320,48 +374,35 @@ ENDHTML;
 ENDHTML;
           }
 
+    $strUploadButton = self::getUploadButton($strCurrentFriendlyPath, $p_strInnerDiv, $p_iRequestType, $p_strCurrentPath, $p_iProjectId, $p_iExperimentId, $p_strReturnUrl);
+    $strCreateDirButton = self::getCreateDirectoryButton($strCurrentFriendlyPath, $p_strInnerDiv, $p_strCurrentPath, $p_iProjectId, $p_iExperimentId);
+    $strFilmstripButton = self::getFilmstripButton($strCurrentFriendlyPath, $p_strInnerDiv);
+    $strDeleteButton = self::getDeleteButton($oAuthorizer, $oExperiment, $p_strInnerDiv);
+
     // Don't show buttons for the Generated_Pics directory
     $strPattern = "/".Files::GENERATED_PICS."/";
-    if(StringHelper::contains($strCurrentFriendlyPath, "Rep-([0-9])+") ||
-       StringHelper::contains($strCurrentFriendlyPath, "Documentation") ||
-       StringHelper::contains($strCurrentFriendlyPath, "Analysis")){
+
       if(!preg_match($strPattern, $p_strCurrentPath)){
         $strReturn .= <<< ENDHTML
               <tr>
                 <td colspan="6">
-                  <div id="$p_strInnerDiv-upload" class="editorInputFloat editorInputMargin">
-                    <a title="Upload a new file." class="modal" href="/warehouse/projecteditor/uploadform?format=ajax&div=$p_strInnerDiv&uploadType=$p_iRequestType&path=$p_strCurrentPath&projid=$p_iProjectId&experimentId=$p_iExperimentId" style="border:0px">
-                      <img src="/components/com_projecteditor/images/buttons/UploadFile.png" border="0" alt="Upload a new file."/>
-                    </a>
-                  </div>
-                  <div id="$p_strInnerDiv-mkdir" class="editorInputFloat editorInputMargin">
-                    <a title="Create a new directory." class="modal" href="/warehouse/projecteditor/mkdir?format=ajax&path=$p_strCurrentPath&projid=$p_iProjectId&experimentId=$p_iExperimentId" style="border:0px">
-                      <img src="/components/com_projecteditor/images/buttons/CreateDirectory.png" border="0" alt="Create a new directory."/>
-                    </a>
-                  </div>
-                  <div id="$p_strInnerDiv-film" class="editorInputFloat editorInputMargin">
-                    <a title="Select png, jpg, or gif images for the experiment filmstrip." href="javascript:void(0);" onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savefilmstrip';document.getElementById('frmProject').submit();" style="border:0px">
-                      <img src="/components/com_projecteditor/images/buttons/FilmstripPhoto.png" border="0" alt="Upload png, jpg, gif to experiment filmstip."/>
-                    </a>
-                  </div>
+                  <div class="sectheaderbtn">
+                    $strUploadButton $strCreateDirButton $strFilmstripButton $strDeleteButton
+ENDHTML;
+
+        $strReturn .= <<< ENDHTML
                   <!--
-                  <div id="$p_strInnerDiv-more" class="editorInputFloat editorInputMargin">
-                    <a title="Select png, jpg, or gif images for the More tab." href="javascript:void(0);" onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savemorephotos';document.getElementById('frmProject').submit();" style="border:0px">
-                      <img src="/components/com_projecteditor/images/buttons/MoreTabPhoto.png" border="0" alt="Upload png, jpg, gif to More tab."/>
-                    </a>
-                  </div>
                   <div id="$p_strInnerDiv-curate" class="editorInputFloat editorInputMargin">
                     <a title="Request a directory or file to be curated." href="javascript:void(0);" onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savedatafilecuraterequest';document.getElementById('frmProject').submit();" style="border:0px">
                       <img src="/components/com_projecteditor/images/buttons/CurateRequest.png" border="0" alt="Request a directory or file to be curated."/>
                     </a>
                   </div>
                   -->
-                  <div class="clear"></div>
+                  </div>
                 </td>
               </tr>
 ENDHTML;
       }
-    }
 
     $strReturn .= <<< ENDHTML
                 </table>
@@ -394,6 +435,164 @@ ENDHTML;
   private function getDirectorySummary($p_strCurrentPath, $p_strDirectoryName){
     $strLookupPath = $p_strCurrentPath."/".$p_strDirectoryName;
     return DataFilePeer::getDirectorySummary($strLookupPath);
+  }
+
+  private function getDisabledCheckBox($p_iFileCount, $p_strFileName, $p_strCurrentFriendlyPath){
+    $strReturn = "";
+//    if(preg_match("/Trial-([0-9])+/", $p_strFileName) ||
+//       preg_match("/Rep-([0-9])+/", $p_strFileName)){
+//        if($p_iFileCount > 0){
+//          $strReturn = "disabled";
+//        }
+//    }
+    if($p_iFileCount > 0){
+      $strReturn = "disabled";
+}
+    return $strReturn;
+  }
+
+  /**
+   * Gets the upload button
+   * @param string $p_strCurrentFriendlyPath
+   * @param string $p_strInnerDiv
+   * @param int $p_iRequestType
+   * @param string $p_strCurrentPath
+   * @param int $p_iProjectId
+   * @param int $p_iExperimentId
+   * @param int $p_strReturnUrl
+   * @return string
+   */
+  private function getUploadButton($p_strCurrentFriendlyPath, $p_strInnerDiv, $p_iRequestType, $p_strCurrentPath, $p_iProjectId, $p_iExperimentId, $p_strReturnUrl){
+    $strReturn = "";
+    if(StringHelper::contains($p_strCurrentFriendlyPath, "Rep-([0-9])+") ||
+       StringHelper::contains($p_strCurrentFriendlyPath, "Documentation") ||
+       StringHelper::contains($p_strCurrentFriendlyPath, "Analysis")){
+      $strReturn = <<< ENDHTML
+        <a id="$p_strInnerDiv-upload" title="Upload a new file."
+           tabindex="" class="button2 modal"
+           href="/warehouse/projecteditor/uploadform?format=ajax&div=$p_strInnerDiv&uploadType=$p_iRequestType&path=$p_strCurrentPath&projid=$p_iProjectId&experimentId=$p_iExperimentId&return=$p_strReturnUrl">
+          Upload File
+        </a>
+ENDHTML;
+    }
+    return $strReturn;
+  }
+
+  /**
+   * Gets the create directory button
+   * @param string $p_strCurrentFriendlyPath
+   * @param string $p_strInnerDiv
+   * @param string $p_strCurrentPath
+   * @param int $p_iProjectId
+   * @param int $p_iExperimentId
+   * @return string
+   */
+  private function getCreateDirectoryButton($p_strCurrentFriendlyPath, $p_strInnerDiv, $p_strCurrentPath, $p_iProjectId, $p_iExperimentId){
+    $strReturn = "";
+    if(StringHelper::contains($p_strCurrentFriendlyPath, "Rep-([0-9])+") ||
+       StringHelper::contains($p_strCurrentFriendlyPath, "Documentation") ||
+       StringHelper::contains($p_strCurrentFriendlyPath, "Analysis")){
+      $strReturn = <<< ENDHTML
+        <a id="$p_strInnerDiv-mkdir" title="Create a new directory."
+           tabindex="" class="button2 modal"
+           href="/warehouse/projecteditor/mkdir?format=ajax&path=$p_strCurrentPath&projid=$p_iProjectId&experimentId=$p_iExperimentId">
+          Create Directory
+        </a>
+ENDHTML;
+    }
+    return $strReturn;
+  }
+
+  /**
+   * Gets the filmstrip button
+   * @param string $p_strCurrentFriendlyPath
+   * @param string $p_strInnerDiv
+   * @return string
+   */
+  private function getFilmstripButton($p_strCurrentFriendlyPath, $p_strInnerDiv){
+    $strReturn = "";
+    if(StringHelper::contains($p_strCurrentFriendlyPath, "Rep-([0-9])+") ||
+       StringHelper::contains($p_strCurrentFriendlyPath, "Documentation") ||
+       StringHelper::contains($p_strCurrentFriendlyPath, "Analysis")){
+      $strReturn = <<< ENDHTML
+        <a id="$p_strInnerDiv-film" title="Select png, jpg, or gif images for the experiment filmstrip."
+           tabindex="" class="button2" href="javascript:void(0);"
+           onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/savefilmstrip';document.getElementById('frmProject').submit();">
+          Filmstrip Photo
+        </a>
+ENDHTML;
+    }
+    return $strReturn;
+  }
+
+  /**
+   * Gets the delete button
+   * @param Authorizer $p_oAuthorizer
+   * @param Experiment $p_oExperiment
+   * @param string $p_strInnerDiv
+   * @return string
+   */
+  private function getDeleteButton($p_oAuthorizer, $p_oExperiment, $p_strInnerDiv){
+    $strReturn = "";
+    if($p_oExperiment){
+      if($p_oAuthorizer->canDelete($p_oExperiment)){
+        $strReturn .= <<< ENDHTML
+              <a id="$p_strInnerDiv-deleteLink" title="Delete the selected file(s)"
+                 tabindex="" href="/warehouse/projecteditor/delete?format=ajax" class="button2 modal">Delete</a>
+ENDHTML;
+      }
+    }
+    return $strReturn;
+  }
+
+  /**
+   * Gets the entity_id of an object by the directory name
+   * @param string $p_strDataFileName
+   * @param int $p_iDataFileId
+   * @return int
+   */
+  private function getEntityId($p_strDataFileName, $p_iDataFileId){
+    /*@var $oDataFileLink DataFileLink */
+    $oDataFileLink = DataFileLinkPeer::retrieveByPK($p_iDataFileId);
+
+    if(preg_match("/Trial-([0-9])+/", $p_strDataFileName)){
+      return $oDataFileLink->getTrialId();
+    }elseif(preg_match("/Rep-([0-9])+/", $p_strDataFileName)){
+      return $oDataFileLink->getRepId();
+    }
+    return $p_iDataFileId;
+  }
+
+  /**
+   * Gets the entity_type_id of an object by the directory name
+   * @param string $p_strDataFileName
+   * @param int $p_iDataFileId
+   * @return int
+   */
+  private function getEntityTypeId($p_strDataFileName, $p_iDataFileId){
+    /*@var $oDataFileLink DataFileLink */
+    $oDataFileLink = DataFileLinkPeer::retrieveByPK($p_iDataFileId);
+
+    if(preg_match("/Trial-([0-9])+/", $p_strDataFileName)){
+      return DomainEntityType::ENTITY_TYPE_TRIAL;
+    }elseif(preg_match("/Rep-([0-9])+/", $p_strDataFileName)){
+      return DomainEntityType::ENTITY_TYPE_REPETITION;
+    }
+    return DomainEntityType::ENTITY_TYPE_DATA_FILE;
+  }
+
+  /**
+   * Gets the entity_type_id of an object by the parent directory name
+   * @param string $p_strParentDataFileName
+   * @return int
+   */
+  private function getEntityTypeIdByParent($p_strParentDataFileName){
+    if(preg_match("/Experiment-([0-9])+/", $p_strParentDataFileName)){
+      return DomainEntityType::ENTITY_TYPE_TRIAL;
+    }elseif(preg_match("/Trial-([0-9])+/", $p_strParentDataFileName)){
+      return DomainEntityType::ENTITY_TYPE_REPETITION;
+    }
+    return DomainEntityType::ENTITY_TYPE_DATA_FILE;
   }
 
 }

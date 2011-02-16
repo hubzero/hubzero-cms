@@ -16,9 +16,10 @@ defined('_JEXEC') or die('Restricted access');
 
 // Include the syndicate functions only once
 require_once (dirname(__FILE__).DS.'helper.php');
-
+                                                                                                                                                  
 require_once 'api/org/nees/static/Files.php';
 
+$strReturnUrl = $_REQUEST[ProjectEditor::RETURN_URL];
 $iProjectId = $_REQUEST[Files::PROJECT_ID];
 $iExperimentId = $_REQUEST[Files::EXPERIMENT_ID];
 $strDiv = $_REQUEST[Files::CHILD_DIV];
@@ -29,6 +30,6 @@ $iRequestType = $_REQUEST[Files::REQUEST_TYPE];
 $oCurrentDataFileArray = DataFilePeer::findByDirectory($strCurrentPath);
 DataFilePeer::sortDataFiles($oCurrentDataFileArray);
 
-$strUploadForm = modWarehouseUploadHelper::getFileBrowser($strMainDiv, $strDiv, $strCurrentPath, $strTopPath, $oCurrentDataFileArray, $iRequestType, true, $iProjectId, $iExperimentId);
+$strUploadForm = modWarehouseUploadHelper::getFileBrowser($strMainDiv, $strDiv, $strCurrentPath, $strTopPath, $oCurrentDataFileArray, $iRequestType, true, $iProjectId, $iExperimentId, $strReturnUrl);
 
 require(JModuleHelper::getLayoutPath('mod_warehouseupload'));

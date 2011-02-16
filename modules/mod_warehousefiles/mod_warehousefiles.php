@@ -32,7 +32,7 @@ require_once 'api/org/nees/oracle/util/DbPagination.php';
 require_once 'api/org/nees/lib/common/browser.php';
 
 $iProjectId = JRequest::getVar('projid');
-$oProject = ProjectPeer::retrieveByPK($iProjectId);
+$oProject = ProjectPeer::find($iProjectId);
 
 $strCurrentPath = JRequest::getVar('path', '');
 if(!StringHelper::hasText($strCurrentPath)){
@@ -147,7 +147,7 @@ switch ($strType) {
     $oCurrentDataFileArray = DataFilePeer::getMovieByDirectory($strCurrentPath, $iLowerLimit, $iUpperLimit, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId);
     $iFileCount = DataFilePeer::getMovieCountByDirectory($strCurrentPath, $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId);
     $strDataFilesHTML = modWarehouseFilesHelper::getFileBrowserByType($strType, $oCurrentDataFileArray, $oProject->getPathname(), $iProjectId, $iExperimentId, $iTrialId, $iRepetitionId, $strCurrentPath);
-
+    
     $oDbPagination = new DbPagination($iPageIndex, $iFileCount, $iDisplay, $iLowerLimit, $iUpperLimit);
     $oDbPagination->computePageCount();
     $strPagination = $oDbPagination->getFooter($_SERVER['REQUEST_URI'], "frmData", "data-list");

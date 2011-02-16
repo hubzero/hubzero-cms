@@ -79,8 +79,8 @@ class modWarehouseFilesHelper{
 ENDHTML;
     }
 
-    $iMaxDownload = 100000000;
-    $strMaxDownload = "100 MB";
+    $iMaxDownload = 500000000;
+    $strMaxDownload = "500 MB";
 
     $strReturn .= <<< ENDHTML
               <div  id="projectDocs">
@@ -176,12 +176,13 @@ ENDHTML;
                   $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
                 }
               }
-
+              
 
               //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
+              $strLinkToFileUrl = $oDataFile->getUrl();
               $strThisLink = <<< ENDHTML
                 <a title="$strTooltip"
-                   href="/data/get$strFileFriendlyPath" $strLightbox>
+                   href="$strLinkToFileUrl" $strLightbox>
                   $strFileName
                 </a>
                 $strCurationStatus
@@ -315,8 +316,8 @@ ENDHTML;
                     <div class="clearFloat"></div>
 ENDHTML;
 
-    $iMaxDownload = 100000000;
-    $strMaxDownload = "100 MB";
+    $iMaxDownload = 500000000;
+    $strMaxDownload = "500 MB";
 
     $strReturn .= <<< ENDHTML
               <table cellpadding="1" cellspacing="1" style="margin-top:15px;">
@@ -403,9 +404,10 @@ ENDHTML;
               }
 
               //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
+              $strLinkToFileUrl = $oDataFile->getUrl();
               $strThisLink = <<< ENDHTML
                 <a title="$strTooltip"
-                   href="/data/get$strFileFriendlyPath" $strLightbox>
+                   href="$strLinkToFileUrl" $strLightbox>
                   $strFileName
                 </a>
                 $strCurationStatus
@@ -529,8 +531,8 @@ ENDHTML;
                     <div class="clearFloat"></div>
 ENDHTML;
 
-    $iMaxDownload = 100000000;
-    $strMaxDownload = "100 MB";
+    $iMaxDownload = 500000000;
+    $strMaxDownload = "500 MB";
 
     $strReturn .= <<< ENDHTML
               <table cellpadding="1" cellspacing="1" style="margin-top:15px;">
@@ -742,8 +744,8 @@ ENDHTML;
                     <div class="clearFloat"></div>
 ENDHTML;
 
-    $iMaxDownload = 100000000;
-    $strMaxDownload = "100 MB";
+    $iMaxDownload = 500000000;
+    $strMaxDownload = "500 MB";
 
     $strReturn .= <<< ENDHTML
               <table cellpadding="1" cellspacing="1" style="margin-top:15px;">
@@ -830,9 +832,10 @@ ENDHTML;
               }
 
               //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
+              $strLinkToFileUrl = $oDataFile->getUrl();
               $strThisLink = <<< ENDHTML
                 <a title="$strTooltip"
-                   href="/data/get$strFileFriendlyPath" $strLightbox>
+                   href="$strLinkToFileUrl" $strLightbox>
                   $strFileName
                 </a>
                 $strCurationStatus
@@ -956,8 +959,8 @@ ENDHTML;
                     <div class="clearFloat"></div>
 ENDHTML;
 
-    $iMaxDownload = 100000000;
-    $strMaxDownload = "100 MB";
+    $iMaxDownload = 500000000;
+    $strMaxDownload = "500 MB";
 
     $strReturn .= <<< ENDHTML
               <table cellpadding="1" cellspacing="1" style="margin-top:15px;">
@@ -1009,6 +1012,7 @@ ENDHTML;
 
               $strDisplayName = "display_".$iDataFileId."_".$strFileName;
               $oDataFile->setName($strDisplayName);
+              $strLinkToFileUrl = $oDataFile->getUrl();
 
               $strFileFriendlyPath = $oDataFile->getFriendlyPath();
               $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
@@ -1024,12 +1028,11 @@ ENDHTML;
                 $strTooltip .=  " :: ".$strDirPath."/".$strFileName;
               }
 
-
-
               //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
+              
               $strThisLink = <<< ENDHTML
                 <a title="$strTooltip" alt="$strFileFriendlyPath"
-                   href="/data/get$strFileFriendlyPath" $strLightbox>
+                   href="$strLinkToFileUrl" $strLightbox>
                   <img src="$strThumbUrl" border="0"/>
                 </a><br>
                 File Size: $iFileSize<br>
@@ -1107,8 +1110,8 @@ ENDHTML;
       }
     }
 
-    $iMaxDownload = 100000000;
-    $strMaxDownload = "100 MB";
+    $iMaxDownload = 500000000;
+    $strMaxDownload = "500 MB";
 
     $strReturn .= <<< ENDHTML
               <div  id="projectDocs$p_strTarget" style="margin-top:15px;">
@@ -1201,7 +1204,8 @@ ENDHTML;
                 if(is_file($strDisplayPath."/".$strDisplayName)){
                   $oDataFile->setName($strDisplayName);
                   $oDataFile->setPath($strDisplayPath);
-                  $strLightbox = "rel=lightbox[data] ";
+                  //$strLightbox = "rel=lightbox[data] ";
+                  $strLightbox = "target='neesPhoto' ";
 
                   $strFileFriendlyPath = $oDataFile->getFriendlyPath();
                   $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
@@ -1209,9 +1213,10 @@ ENDHTML;
               }
 
               //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
+              $strLinkToFileUrl = $oDataFile->getUrl();
               $strThisLink = <<< ENDHTML
                 <a title="$strTooltip"
-                   href="/data/get$strFileFriendlyPath" $strLightbox>
+                   href="$strLinkToFileUrl" $strLightbox>
                   $strFileName
                 </a>
                 $strCurationStatus
@@ -1288,17 +1293,6 @@ ENDHTML;
                       <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
                       <td>$strThisIcon</td>
                       <td>$strThisLink</td>
-                      <td>$iFileSize</td>
-                      <td>$strFileCreated</td>
-                      <td>$strTool</td>
-                    </tr>
-ENDHTML;
-                }else{
-                  $strReturn .= <<< ENDHTML
-                    <tr class="$strBgColor">
-                      <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
-                      <td>$strThisIcon</td>
-                      <td>False</td>
                       <td>$iFileSize</td>
                       <td>$strFileCreated</td>
                       <td>$strTool</td>
@@ -1439,7 +1433,7 @@ ENDHTML;
     $oAuthorizer = Authorizer::getInstance();
 
     /* @var $oProject Project */
-    $oProject = ProjectPeer::retrieveByPK($p_iProjectId);
+    $oProject = ProjectPeer::find($p_iProjectId);
 
     $strReturn = <<< ENDHTML
                     <!--<input type="hidden" id="txtExperiment" name="experiment" value="$p_iExperimentId"/>-->

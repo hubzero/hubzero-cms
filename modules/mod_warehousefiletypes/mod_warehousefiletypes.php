@@ -26,7 +26,7 @@ require_once 'api/org/nees/static/Files.php';
 require_once 'api/org/nees/static/ProjectEditor.php';
 
 $iProjectId = JRequest::getVar('projid');
-$oProject = ProjectPeer::retrieveByPK($iProjectId);
+$oProject = ProjectPeer::find($iProjectId);
 
 $strCurrentPath = JRequest::getVar('path', '');
 if(!StringHelper::hasText($strCurrentPath)){
