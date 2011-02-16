@@ -98,7 +98,7 @@ var eip = new Class({
 				'name': target,
 				'value': el.innerHTML
 			}).injectInside(form);
-			input.style.width = '70%';
+			input.style.width = '120px';
 		}
 
 		// Need this to pass to the buttons

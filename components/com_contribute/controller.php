@@ -109,6 +109,7 @@ class ContributeController extends JObject
 		switch ($this->_task) 
 		{
 			case 'rename':       $this->attach_rename();  break;
+			case 'redescribe':	 $this->attach_redescribe(); break;
 			case 'saveattach':   $this->attach_save();    break;
 			case 'saveresource': $this->attach_resource();break;
 			case 'savelink':   	 $this->attach_link();    break;
@@ -1297,6 +1298,33 @@ class ContributeController extends JObject
 		echo $name;
 	}
 	
+	protected function attach_redescribe()
+	{
+		// Check if they are logged in
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+		
+		// Incoming
+		$id = JRequest::getInt( 'id', 0 );
+		$name = JRequest::getVar( 'linkdescedit', '' );
+
+		// Ensure we have everything we need
+		if ($id && $name != '') {
+			$database =& JFactory::getDBO();
+			
+			$r = new ResourcesResource( $database );
+			$r->load( $id );
+			$r->introtext = $name;
+			$r->store();
+		}
+
+		
+		// Echo the description
+		echo $name;
+	}
+	
 //-----------
 
 	protected function attach_link()
@@ -1340,7 +1368,8 @@ class ContributeController extends JObject
 			return;
 		}
 		$row->title = ($row->title) ? $row->title : $resourcename;
-		$row->introtext = $row->title;
+		//$row->introtext = $row->title;
+		$row->introtext = JRequest::getVar( 'linkdesc', '');
 		$row->created = date( 'Y-m-d H:i:s' );
 		$row->created_by = $juser->get('id');
 		$row->published = 1;
@@ -1507,37 +1536,30 @@ protected function attach_resource()
 	}
 
 	//-----------
-	function make_thumb($src,$dest,$desired_width,$isjpeg=true) 
-	{ 
-	  /* read the source image */ 
-	  $source_image = $isjpeg? imagecreatefromjpeg($src) : ImageCreateFromGIF($src);
-	  $width = imagesx($source_image);
-	  $height = imagesy($source_image);
-	  
-	  //if ($height > $width)
-	  //{ //if its a long image, cut off the height instead
-	  	 // $desired_height = $desired_width;
-	  	 // $desired_width = floor($width*($desired_height/$height));
-	 // }
-	  //else {
-		  /* find the "desired height" of this thumbnail, relative to the desired width  */ 
-		  $desired_height = floor($height*($desired_width/$width));
-	 // }
-	  /* create a new, "virtual" image */ 
-	  $virtual_image = imagecreatetruecolor($desired_width,$desired_height);
-	  /* copy source image at a resized size */ 
-	  imagecopyresized($virtual_image,$source_image,0,0,0,0,$desired_width,$desired_height,$width,$height);
-	  /* create the physical thumbnail image to its destination */ 
-	  if ($isjpeg)
-	  	imagejpeg($virtual_image,$dest);
-	  else
-	 	imagegif($virtual_image,$dest);
-	}
-	
-	private function create_hub_file($file, $pid, $doThumbnail = false)
+
+	protected function attach_save()
 	{
 		// Check if they are logged in
 		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) {
+			return false;
+		}
+
+		// Incoming
+		$pid = JRequest::getInt( 'pid', 0 );
+		if (!$pid) {
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
+			$this->attachments( $pid );
+		}
+
+		// Incoming file
+		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
+		if (!$file['name']) {
+			$this->setError( JText::_('COM_CONTRIBUTE_NO_FILE') );
+			$this->attachments( $pid );
+			return;
+		}
+		
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
@@ -1553,7 +1575,8 @@ protected function attach_resource()
 			return;
 		}
 		$row->title = ($row->title) ? $row->title : $file['name'];
-		$row->introtext = $row->title;
+		//$row->introtext = $row->title;
+		$row->introtext = JRequest::getVar( 'filedesc', '');
 		$row->created = date( 'Y-m-d H:i:s' );
 		$row->created_by = $juser->get('id');
 		$row->published = 1;
@@ -1577,10 +1600,12 @@ protected function attach_resource()
 		if (!$row->id) {
 			$row->id = $row->insertid();
 		}
-		echo '3';
+		
 		// Build the path
 		$listdir = $this->_buildPathFromDate( $row->created, $row->id, '' );
 		$path = $this->_buildUploadPath( $listdir, '' );
+		
+		$doThumbnail = (JRequest::getVar( 'thumb', 'false') == 'true');
 
 		// Make sure the upload path exist
 		if (!is_dir( $path )) {
@@ -1603,8 +1628,6 @@ protected function attach_resource()
 
 			
 			if ($doThumbnail == true) { //image to thumbnail
-					//modify image into thumbnail
-					echo 'tb';
 				$ftype = $this->_getExtension($file['name']);
 				$thumbtypes = array ( '...', 'jpg' , 'gif', 'jpeg');
 				if (array_search($ftype, $thumbtypes) != false)
@@ -1616,7 +1639,7 @@ protected function attach_resource()
 				}
 				else
 				{
-					echo 'The last file uploaded was not a gif,jpeg or jpg file extension and could not be made into a thumbnail - it is available as a regular resource';
+					echo 'The last file uploaded was not a gif,jpeg or jpg file extension and could not be made into a thumbnail - it is attached as a regular attachment';
 				}
 				
 			}
@@ -1717,47 +1740,7 @@ protected function attach_resource()
 		if (!$assoc->store(true)) {
 			$this->setError( $assoc->getError() );
 		}
-		
-	}
 
-	//-----------
-
-	protected function attach_save()
-	{
-		// Check if they are logged in
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
-			return false;
-		}
-
-		// Incoming
-		$pid = JRequest::getInt( 'pid', 0 );
-		if (!$pid) {
-			$this->setError( JText::_('COM_CONTRIBUTE_NO_ID') );
-			$this->attachments( $pid );
-		}
-
-		// Incoming file
-		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
-		$fileT = $file;
-		if (!$file['name']) {
-			$this->setError( JText::_('COM_CONTRIBUTE_NO_FILE') );
-			$this->attachments( $pid );
-			return;
-		}
-		jimport('joomla.filesystem.file');
-		$thumb = (JRequest::getVar( 'thumbnail', 'off' ) == 'on');
-		
-		if ($thumb) {
-			//$fileT['tmp_name'] = $fileT['tmp_name'];
-			//echo $fileT['tmp_name'];
-			//JFile::copy($file['tmp_name'],$fileT['tmp_name']);
-			$this->create_hub_file($file, $pid, true);
-		}
-		else
-			$this->create_hub_file($file, $pid);		
-		
-		
 		// Push through to the attachments view
 		$this->attachments( $pid );
 	}
