@@ -17,31 +17,13 @@ defined('_JEXEC') or die('Restricted access');
 // Include the syndicate functions only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
+$strFilmStrip = "";
 $oExperiment = unserialize($_REQUEST[Experiments::SELECTED]);
 $oProject = $oExperiment->getProject();
-//$oProject = unserialize($_REQUEST[Search::SELECTED]);
 
 $oDataFileArray = modWarehouseFilmStripHelper::getFilmStripByProjectExperiment($oProject->getId(), $oExperiment->getId());
-$strFilmStrip = modWarehouseFilmStripHelper::getFilmStripByProjectExperimentHTML($oDataFileArray);
-
-////temporary solution
-//$strFilmStrip = "";
-//switch($oExperiment->getId()){
-//  case 28:
-//  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment28();
-//	break;
-//  case 29:
-//  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment29();
-//	break;
-//  case 30:
-//  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment30();
-//	break;
-//  case 835:
-//  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment835();
-//	break;
-//  case 874:
-//  	$strFilmStrip = modWarehouseFilmStripHelper::getExperiment874();
-//	break;
-//}
+if(!empty($oDataFileArray)){
+  $strFilmStrip = modWarehouseFilmStripHelper::getFilmStripByProjectExperimentHTML($oDataFileArray);
+}
 
 require(JModuleHelper::getLayoutPath('mod_warehousefilmstrip'));
