@@ -2048,6 +2048,13 @@ class ProjectEditorController extends JController{
       }
     }
 
+    /*
+     * Call plugin to automatically create dropbox
+     * if(empty($strErrorArray)){
+     *
+     * }
+     */
+
     if(empty($strErrorArray)){
       if($bNewDirs || $bUpload || $bGroupCreated){
         FileHelper::fixPermissions($strProjectPath);

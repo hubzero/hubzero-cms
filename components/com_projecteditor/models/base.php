@@ -509,7 +509,7 @@ ENDHTML;
       if(StringHelper::is_date($p_strStartDate)){
         $oStartDate = strtotime($p_strStartDate);
         $oEndDate = strtotime($strEndDate);
-        if ($oEndDate > $oStartDate) {
+        if ($oEndDate >= $oStartDate) {
           $valid = "yes";
         } else {
           throw new ValidationException("End date should be after start date.");
