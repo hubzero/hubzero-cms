@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	switch(JRequest::getInt('id'))
 	{
 		case(226): // University of CA, Los Angeles
-		echo 'calendar_feeds = new Array("", "", "", "", "");';
+		echo 'calendar_feeds = new Array("e4rspamnqcjtsgqk2oah379120%40group.calendar.google.com", "au2l8t06qpjmbq6adgos2ejeu0%40group.calendar.google.com", "g5dogo76hi425jmqjatk27ries%40group.calendar.google.com", "sr0t9lio79arlois4k0trperbk%40group.calendar.google.com", "");';
 		break;
 		
 		case(228): // University of CA, Santa Barbara
@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		break;
 		
 		case(191): // Lehigh University</a></li>
-		echo 'calendar_feeds = new Array("nees.lehigh%40gmail.com", "", "", "", "");';
+		echo 'calendar_feeds = new Array("a60f403l061bhnh93i4h2nffq0%40group.calendar.google.com", "pu1r3e512ec0q7kcp3s5dhjtmc%40group.calendar.google.com", "1k1f81dv0numbfs5m0slrbj7v0%40group.calendar.google.com", "r20atr0dsqm8cvos43fova26g4%40group.calendar.google.com", "md2d3946io244kljget9orpc2s%40group.calendar.google.com");';
 		break;
 		
 		case(275): // University of CA, Berkeley</a></li>
