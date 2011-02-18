@@ -231,7 +231,8 @@ class WarehouseController extends JController{
       }
     }
 
-    $ext = $oModel->downloadTarBall();
+    //$ext = $oModel->downloadTarBall();
+    $ext = $oModel->downloadZip();
   }
 
   function getDownloadSize(){

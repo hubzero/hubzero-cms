@@ -1,7 +1,7 @@
-<?php 
+<?php
 
   class FileHelper{
-  	
+
   	/**
   	 * Downloads the content of a file.
   	 * @param $p_strPathToFile - absolute path to the file.
@@ -12,7 +12,7 @@
 	  if ($fd = fopen ($fullPath, "r")) {
         $fsize = filesize($fullPath);
         $path_parts = pathinfo($fullPath);
-        $ext = strtolower($path_parts["extension"]); 
+        $ext = strtolower($path_parts["extension"]);
         switch ($ext) {
           case "pdf":
           header("Content-type: application/pdf"); // add here more headers for diff. extensions
@@ -23,7 +23,7 @@
           header("Content-Disposition: filename=\"".$path_parts["basename"]."\"");
           break;
         }//end switch
-      
+
         header("Content-length: $fsize");
         header("Cache-control: private"); //use this to open files directly
         while(!feof($fd)) {
@@ -34,12 +34,12 @@
 	  fclose ($fd);
 	  exit;
     }//end download
-    
+
     /**
-  	 * Downloads the content of an archive (gz) file.
-  	 * @param $p_strPathToFile - absolute path to the file.
-  	 * @see http://www.finalwebsites.com/forums/topic/php-file-download
-  	 */
+     * Downloads the content of an archive (gz) file.
+     * @param $p_strPathToFile - absolute path to the file.
+     * @see http://www.finalwebsites.com/forums/topic/php-file-download
+     */
     public static function downloadTarBall($p_strPathToFile){
       $fullPath = $p_strPathToFile;
       if ($fd = fopen ($fullPath, "r")) {
@@ -52,13 +52,16 @@
         header("Cache-Control: cache, must-revalidate");
         header("Content-length: $fsize");
         ob_clean();
-       
+
         while(!feof($fd)) {
           $buffer = fread($fd, 8192);
           echo $buffer;
         }//end while feof
       }//end fd
-      fclose ($fd);
+
+      if($fd){
+        fclose ($fd);
+      }
       exit;
     }//end download
 
@@ -86,6 +89,7 @@
       }
     }
 
+    /*
     public static function canDeleteDownloadFile($p_strPath){
       $bDelete = false;
       if (file_exists($p_strPath)) {
@@ -99,6 +103,28 @@
           $bNeeshub = StringHelper::contains($p_strPath, "[neeshub]");
           $bDigit = StringHelper::contains($p_strPath, "[(d)+]");
           $bDownload = StringHelper::contains($p_strPath, "[download.tar.gz]");
+          if($bNeeshub && $bDigit && $bDownload){
+            $bDelete = true;
+          }
+        }
+      }
+      return $bDelete;
+    }
+    */
+
+    public static function canDeleteDownloadFile($p_strPath){
+      $bDelete = false;
+      if (file_exists($p_strPath)) {
+        $strFileModifiedDate = date ("Y-m-d", filemtime($p_strPath));
+        $strTodayDate = date("Y-m-d");
+
+        $oTodayDate = strtotime($strTodayDate);
+        $oFileModifiedDate = strtotime($strFileModifiedDate);
+
+        if ($oFileModifiedDate < $oTodayDate) {
+          $bNeeshub = StringHelper::contains($p_strPath, "[neeshub]");
+          $bDigit = StringHelper::contains($p_strPath, "[(d)+]");
+          $bDownload = StringHelper::contains($p_strPath, "[download.zip]");
           if($bNeeshub && $bDigit && $bDownload){
             $bDelete = true;
           }
@@ -146,7 +172,7 @@
       }
       return $bReturn;
     }
-  	
+
     /**
      *
      * @param string $p_strDirPath

@@ -241,6 +241,50 @@ class WarehouseModelBase extends JModel {
         return FileHelper::downloadTarBall($strArchiveFile);
     }
 
+    public function downloadZip() {
+      $oDataFileIdArray = array();
+
+      $oSelectedDataFileArray = $_REQUEST['cbxDataFile'];
+
+      while (list ($iIndex, $iSelectedDataFileId) = @each($oSelectedDataFileArray)) {
+        array_push($oDataFileIdArray, $iSelectedDataFileId);
+      }//end while $oSelectedDataFileArray
+
+      if (empty($oDataFileIdArray)) {
+        throw new Exception("Data file(s) not selected");
+      }
+
+      //create a temporary directory for archiving the files
+      $strCurrentTimestamp = time();
+      $strFilesToCopy = "";
+
+      //copy the selected files to the temp directory
+      $oDataFileArray = DataFilePeer::retrieveByPKs($oDataFileIdArray);
+      foreach ($oDataFileArray as $oDataFile) {
+        $strFilesToCopy .= $oDataFile->getPath() . "/" . $oDataFile->getName() . " ";
+      }
+
+      /*
+       * create the archive under /tmp.
+       * if user is logged in, use their username.
+       * otherwise, use "guest".
+       */
+      $oUser = & JFactory::getUser();
+      $strUsername = $oUser->username;
+      if (strlen($strUsername) === 0) {
+        $strUsername = "guest";
+      }
+      $strArchiveFile = "/tmp/$strUsername-neeshub-$strCurrentTimestamp-download.zip";
+      $strCommandToExecute = "zip -r $strArchiveFile $strFilesToCopy";
+      exec($strCommandToExecute, $output);
+
+      //delete old download files
+      FileHelper::downloadCleanup("/tmp");
+
+      //download the file
+      return FileHelper::downloadTarBall($strArchiveFile);
+    }
+
     public function getSearchTabs($activeTabIndex) {
 
         $tabArrayLinks = array("featured",
