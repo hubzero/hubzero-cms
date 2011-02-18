@@ -514,8 +514,7 @@ class plgProjectUpload extends JPlugin{
         $strDescription = JRequest::getVar('desc','');
         $iUsageTypeId = JRequest::getVar('usageType');
         $strFileTitle = ($iNumFiles <= 1) ? $strTitle : $strTitle." (".$ii." of ".$iNumFiles.")";
-
-        $this->createImageDataFile($strName, $strPath, $strFileTitle, $strDescription, $iUsageTypeId, null, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
+        $this->createImageDataFile($strName, $strPath, $strFileTitle, $strDescription, $iUsageTypeId, null, $oAuthorizer->getUserId(), $oAuthorizer->getUserId(), date("m/d/Y"), ProjectEditor::APP_ID);
       }
       ++$i;
     }
@@ -623,7 +622,7 @@ class plgProjectUpload extends JPlugin{
 
         //store the data file
         $oDataFile = new DataFile();
-        $oDataFile = $oDataFile->newDataFileByFilesystem($strFileName, $strUploadedPath, false, $strFileTitle, $strDescription, $iUsageTypeId, $strTool, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
+        $oDataFile = $oDataFile->newDataFileByFilesystem($strFileName, $strUploadedPath, false, $strFileTitle, $strDescription, $iUsageTypeId, $strTool, $oAuthorizer->getUserId(), $oAuthorizer->getUserId(), date("m/d/Y"), ProjectEditor::APP_ID);
         if($oDataFile){
           ++$iCounter;
           $uploadedFileNameParts = explode('.', $strFileName);
@@ -635,7 +634,7 @@ class plgProjectUpload extends JPlugin{
           $oDataFile->save();
         }
       }
-      
+
       ++$i;
     }
 
@@ -665,8 +664,8 @@ class plgProjectUpload extends JPlugin{
 
     $oDataFile = null;
     if($strName){
-        //createProjectImageDataFile($p_strName, $p_strWarehousePath, $p_strTitle, $p_strDescription, $p_strUsageId=null, $p_iFixPermissions=0, $p_strTool=null, $p_iCreatorId=null, $p_iModifiedById=null, $p_strModifiedDate=null, $p_iAppId=null)
-      $this->createProjectImageDataFile($strName, $strPath, $strTitle, $strDesc, $iUsageTypeId, $iFixPermissions, null, $oAuthorizer->getUserId(), null, null, ProjectEditor::APP_ID);
+      //createProjectImageDataFile($p_strName, $p_strWarehousePath, $p_strTitle, $p_strDescription, $p_strUsageId=null, $p_iFixPermissions=0, $p_strTool=null, $p_iCreatorId=null, $p_iModifiedById=null, $p_strModifiedDate=null, $p_iAppId=null)
+      $this->createProjectImageDataFile($strName, $strPath, $strTitle, $strDesc, $iUsageTypeId, $iFixPermissions, null, $oAuthorizer->getUserId(), $oAuthorizer->getUserId(), date("m/d/Y"), ProjectEditor::APP_ID);
     }
 
   }
@@ -695,7 +694,7 @@ class plgProjectUpload extends JPlugin{
 
     $strFileName = $oReturn;
     if($strFileName){
-      $this->createExperimentImageDataFile($strFileName, $strPath, $strTitle, $strDesc, $iUsageTypeId, $iFixPermissions, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
+      $this->createExperimentImageDataFile($strFileName, $strPath, $strTitle, $strDesc, $iUsageTypeId, $iFixPermissions, null, $oAuthorizer->getUserId(), $oAuthorizer->getUserId(), date("m/d/Y"), ProjectEditor::APP_ID);
     }
 
   }
@@ -740,7 +739,7 @@ class plgProjectUpload extends JPlugin{
       $strName = $oReturn;
       $strFileTitle = ($iNumFiles <= 1) ? $strTitle : $strTitle." (".$ii." of ".$iNumFiles.")";
       if($strName){
-        $this->createImageDataFile($strName, $strPath, $strFileTitle, $strDesc, $iUsageTypeId, $oAuthorizer->getUserId(), null, date("m/d/Y"), ProjectEditor::APP_ID);
+        $this->createImageDataFile($strName, $strPath, $strFileTitle, $strDesc, $iUsageTypeId, null, $oAuthorizer->getUserId(), $oAuthorizer->getUserId(), date("m/d/Y"), ProjectEditor::APP_ID);
       }
       ++$i;
     }
