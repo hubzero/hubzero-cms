@@ -933,7 +933,7 @@ class plgSystemXhub extends JPlugin
                 $template = $app->getTemplate();
                 $router = &$app->getRouter();
  
-                if (get_class($router) == XRouter)
+                if (get_class($router) == 'XRouter')
                 {
                         if (file_exists( JPATH_ROOT . '/templates/' . $template . '/js/hub.js' ))
                                 $jdocument->addScript('/templates/' . $template . '/js/hub.js');
