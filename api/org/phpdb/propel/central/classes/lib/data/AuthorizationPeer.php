@@ -21,7 +21,7 @@ require_once 'lib/security/Permissions.php';
 class AuthorizationPeer extends BaseAuthorizationPeer {
 
   const ENTITY_DELETE_OK = 300;
-  const ENTITY_DELETE_ERROR = 301; 
+  const ENTITY_DELETE_ERROR = 301;
 
   /**
    * Find an Authorization object based on its ID
@@ -264,7 +264,7 @@ class AuthorizationPeer extends BaseAuthorizationPeer {
       $iEntityId = $oResultSet->getInt("ENTITY_ID");
       array_push($iReturnEntityIdArray, $iEntityId);
     }
-    
+
     return $iReturnEntityIdArray;
   }
 
@@ -510,7 +510,7 @@ class AuthorizationPeer extends BaseAuthorizationPeer {
     }
   }
 
-  public static function doDelete($p_iEntityId, $p_iEntityTypeId, $p_iPersonId, $p_oConnection=null){
+  public static function deleteObject($p_iEntityId, $p_iEntityTypeId, $p_iPersonId, $p_oConnection=null){
     if(!$p_oConnection){
       $oConnection = Propel::getConnection();
     }else{
@@ -541,12 +541,12 @@ class AuthorizationPeer extends BaseAuthorizationPeer {
     }
 
     $strQuery = "CALL PHP_TEST(?, ?)";
-    
+
     $oStatement = $oConnection->prepareStatement($strQuery);
     $oStatement->setInt(1, $p_iDataFileId);
     $oStatement->setInt(2, $p_iModifiedById);
     $oStatement->executeUpdate();
   }
-    
+
 } // AuthorizationPeer
 ?>
