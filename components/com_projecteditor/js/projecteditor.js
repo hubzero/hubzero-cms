@@ -11,7 +11,7 @@ function hideElement(p_strElementId){
 }
 
 /**
- * Perform an ajax request.  
+ * Perform an ajax request.
  * @param p_sRequestUrl  - URL to process
  * @param p_sResonseDivId - The div to place the results
  * @return
@@ -22,20 +22,20 @@ function addNewMaterial(p_sRequestUrl, p_sResonseDivId){
     alert ("Your browser does not support AJAX!");
     return;
   }
-  
+
   xmlHttp.onreadystatechange = function(){
     if (xmlHttp.readyState==4){
       document.getElementById(p_sResonseDivId).innerHTML = xmlHttp.responseText;
     }
   }
-  
+
   var strName = document.getElementById('txtMaterial').value;
   var strType = document.getElementById('txtMaterialType').value;
   var strDesc = document.getElementById('taMaterialDesc').value;
   var oFile = document.getElementById('materialFile').value;
-  
+
   var parameters="material="+strName+"&type="+strType+"&desc="+strDesc+"&file="+oFile+"&format=ajax";
-  
+
   xmlHttp.open("POST", p_sRequestUrl, true)
   xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
   xmlHttp.setRequestHeader("Connection", "close");
@@ -44,7 +44,7 @@ function addNewMaterial(p_sRequestUrl, p_sResonseDivId){
 }
 
 /**
- * Perform an ajax request.  
+ * Perform an ajax request.
  * @param p_sRequestUrl  - URL to process
  * @param p_sResonseDivId - The div to place the results
  * @return
@@ -59,7 +59,7 @@ function addTeamMember(p_sRequestUrl, p_sResonseDivId){
   /*
    * Unfortunately because of IE, I had to come up with a hack for
    * adding new members.  Originally, I would just set the innerHTML
-   * of a row.  This works fine for all browsers but IE.  
+   * of a row.  This works fine for all browsers but IE.
    */
   xmlHttp.onreadystatechange = function(){
     if (xmlHttp.readyState==4){
@@ -100,16 +100,16 @@ function addTeamMember(p_sRequestUrl, p_sResonseDivId){
       document.getElementById('iNewMemberCount').value = iNewCount;
     }
   }
-  
+
   var strUser = document.getElementById('newMember').value;
   var iProjectId = document.getElementById('projectId').value;
   var strParameters="user="+strUser+"&format=ajax&projectId="+iProjectId;
-  
+
   xmlHttp.open("POST", p_sRequestUrl, true)
   xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
   xmlHttp.setRequestHeader("Connection", "close");
   xmlHttp.setRequestHeader("Content-length", strParameters.length);
-  xmlHttp.send(strParameters);  
+  xmlHttp.send(strParameters);
 }
 
 /**
@@ -128,7 +128,7 @@ function editTeamMember(p_sRequestUrl, p_iRowIndex){
   xmlHttp.onreadystatechange = function(){
     if (xmlHttp.readyState==4){
       var iIndex = p_iRowIndex;
-      
+
       var oMemberTable = document.getElementById("members-list");
       var oRow0 = oMemberTable.rows[0];
       var strRowText = oRow0.innerHTML; //Skip the headers "NameRoleEmailPermissionsExperiments"
@@ -141,7 +141,7 @@ function editTeamMember(p_sRequestUrl, p_iRowIndex){
       if(iNewCount > 0){
         iIndex = iIndex + 1;
       }
-      
+
       //drop current row @ iIndex
       oMemberTable.deleteRow(iIndex);
 
@@ -275,7 +275,7 @@ function saveExperimentAccess(p_sRequestUrl, p_iPersonId, p_sTarget){
       }
     }
   }
-  
+
   var strParameters="personId="+iPersonId+"&format=ajax&projectId="+iProjectId+"&experimentId="+strSelectedExperiments;
 
   xmlHttp.open("POST", p_sRequestUrl, true)
@@ -452,4 +452,39 @@ function checkNsfAwardType(p_strSponsor, p_strSponsorAward, p_HiddenNsfAwardType
   if(document.getElementById(p_strSponsor).value != "" && document.getElementById(p_strSponsorAward).value != ""){
     document.getElementById(p_HiddenNsfAwardType).value = "n/a";
   }
+}
+
+function addFacilityId(p_strFacilityIdList, p_strFacilityFieldId){
+  strFacilityIdList = document.getElementById(p_strFacilityIdList).value;
+  strFacilityName = document.getElementById(p_strFacilityFieldId).value;
+
+  if(strFacilityName==null){
+    return;
+  }
+
+  if(strFacilityName==""){
+    return;
+  }
+
+  xmlHttp = getAjaxRequest();
+  if (xmlHttp==null){
+    alert ("Your browser does not support AJAX!");
+    return;
+  }
+
+  xmlHttp.onreadystatechange = function(){
+    if (xmlHttp.readyState==4 && xmlHttp.status==200){
+      var iFacilityId = xmlHttp.responseText;
+      strFacilityIdList += ","+iFacilityId;
+      document.getElementById(p_strFacilityIdList).value = strFacilityIdList;
+    }
+  }
+
+  var strQuery = "/warehouse/projecteditor/addfacility?name="+strFacilityName;
+  xmlHttp.open("GET", strQuery, true);
+  xmlHttp.send();
+}
+
+function removeFacilityId(p_strFacilityIdList, p_strFacilityName){
+  strFacilityIdList = document.getElementById(p_strFacilityIdList).value;
 }

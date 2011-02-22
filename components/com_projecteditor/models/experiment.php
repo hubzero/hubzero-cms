@@ -16,6 +16,7 @@ require_once 'lib/data/ExperimentEquipmentPeer.php';
 require_once 'lib/data/ExperimentDomain.php';
 require_once 'lib/data/ExperimentDomainPeer.php';
 require_once 'lib/data/OrganizationPeer.php';
+require_once 'lib/data/Organization.php';
 
 class ProjectEditorModelExperiment extends ProjectEditorModelBase{
 
@@ -225,8 +226,34 @@ class ProjectEditorModelExperiment extends ProjectEditorModelBase{
     return ExperimentEquipmentPeer::findByExperiment($p_iExperimentId);
   }
 
+  public function getFacilityIdList($p_oOrganizationArray){
+    $strFacilityIds = "";
+
+    /* @var $oOrganization Organization */
+    foreach ($p_oOrganizationArray as $iIndex=>$oOrganization){
+      $strFacilityIds .= $oOrganization->getId();
+      if($iIndex < count($p_oOrganizationArray)-1){
+        $strFacilityIds .= ",";
+      }
+    }
+
+    return $strFacilityIds;
+  }
+
   public function deleteSpecimenByProject($p_iProjectId, $p_oConnection){
     SpecimenPeer::deleteSpecimenByProject($p_iProjectId, $p_oConnection);
+  }
+
+  public function findAllMajorByOrganization($p_oOrganization){
+    return EquipmentPeer::findAllMajorByOrganization($p_oOrganization->getId());
+  }
+
+  public function findAllByParent($p_iParentId) {
+    return EquipmentPeer::findAllByParent($p_iParentId);
+  }
+
+  public function findAllByOrganization($p_iOrgid) {
+    return EquipmentPeer::findAllByOrganization($p_iOrgid) ;
   }
 
 }

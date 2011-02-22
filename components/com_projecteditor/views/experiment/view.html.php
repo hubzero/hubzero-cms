@@ -14,7 +14,7 @@ require_once 'lib/data/Organization.php';
 require_once 'lib/data/Specimen.php';
 
 class ProjectEditorViewExperiment extends JView{
-	
+
   function display($tpl = null){
     /* @var $oExperimentModel ProjectEditorModelExperiment */
     $oExperimentModel =& $this->getModel();
@@ -30,7 +30,7 @@ class ProjectEditorViewExperiment extends JView{
         $oExperimentModel->clearSession();
       }
     }
-    
+
     $iProjectId = JRequest::getInt('projid', 0);
     $this->assignRef( "iProjectId", $iProjectId );
 
@@ -40,7 +40,7 @@ class ProjectEditorViewExperiment extends JView{
     /* @var $oProject Project */
     $oProject = $oExperimentModel->getProjectById($iProjectId);
     $this->assignRef( "strProjectTitle", $oProject->getTitle() );
-    
+
     //get the tabs to display on the page
     $strTabArray = $oExperimentModel->getTabArray();
     $strTabViewArray = $oExperimentModel->getTabViewArray();
@@ -79,6 +79,7 @@ class ProjectEditorViewExperiment extends JView{
     $strStartDate = JRequest::getVar("startdate", date("m/d/Y"));
     $strEndDate = JRequest::getVar("enddate", "mm/dd/yyyy");
     $strFacility = StringHelper::EMPTY_STRING;
+    $strFacilityIds = StringHelper::EMPTY_STRING;
     $strFacilityPicked = StringHelper::EMPTY_STRING;
     $strDescription = JRequest::getVar("description", StringHelper::EMPTY_STRING);
     $iAccess = 4;
@@ -129,11 +130,15 @@ class ProjectEditorViewExperiment extends JView{
 
       if(!StringHelper::hasText($strFacilityPicked)){
         $oFacilityArray = $oExperimentModel->findFacilityByExperiment($iExperimentId);
-        $strFacilityPicked = $this->getCurrentFacilitiesHTML($oFacilityArray);       
+        $strFacilityIds = $oExperimentModel->getFacilityIdList($oFacilityArray);
+        $strFacilityPicked = $this->getCurrentFacilitiesHTML($oFacilityArray);
       }
 
       $oExperimentEquipmentArray = $oExperimentModel->findEquipmentByExperimentId($iExperimentId);
-      $strEquipmentPicked = $this->getCurrentEquipmentHTML($oExperimentEquipmentArray);
+      $strEquipmentList = $this->getSelectedEquipment($oExperimentEquipmentArray);
+      //$strEquipmentPicked = $this->getCurrentEquipmentHTML($oExperimentEquipmentArray);
+      $strEquipmentPicked = $this->getCurrentEquipmentHTML($oExperimentModel, $oExperimentEquipmentArray, $oFacilityArray);
+
 
       /* @var $oSpecimen Specimen */
       $oSpecimen = $oExperimentModel->getSpecimenByProjectId($iProjectId);
@@ -161,6 +166,7 @@ class ProjectEditorViewExperiment extends JView{
     $this->assignRef( "strStartDate", $strStartDate );
     $this->assignRef( "strEndDate", $strEndDate );
     $this->assignRef( "strFacility", $strFacility );
+    $this->assignRef( "strFacilityIds", $strFacilityIds );
     $this->assignRef( "strFacilityPicked", $strFacilityPicked );
     $this->assignRef( "strDescription", $strDescription );
     $this->assignRef( "iAccess", $iAccess );
@@ -194,11 +200,14 @@ class ProjectEditorViewExperiment extends JView{
     parent::display($tpl);
   }
 
+
+
   private function getCurrentFacilitiesHTML($p_oOrganizationArray){
     $strReturn = StringHelper::EMPTY_STRING;
 
     /* @var $oOrganization Organization */
     foreach ($p_oOrganizationArray as $iIndex=>$oOrganization){
+      $iOrgId = $oOrganization->getId();
       $strInput = $oOrganization->getName();
       $strInputDiv = "facility-".$iIndex."Input";
       $strFieldArray = "facility[]";
@@ -219,11 +228,11 @@ class ProjectEditorViewExperiment extends JView{
 ENDHTML;
 
     }
-    
+
     return $strReturn;
   }
 
-  private function getCurrentEquipmentHTML($p_oExperimentEquipmentArray){
+  private function getCurrentEquipmentHTML0($p_oExperimentEquipmentArray){
     $strReturn = StringHelper::EMPTY_STRING;
 
     /* @var $oExperimentEquipment ExperimentEquipment */
@@ -253,6 +262,85 @@ ENDHTML;
 ENDHTML;
 
     }
+
+    return $strReturn;
+  }
+
+  private function getSelectedEquipment($p_oExperimentEquipmentArray){
+    $strEquipmentIds = StringHelper::EMPTY_STRING;
+
+    /* @var $oExperimentEquipment ExperimentEquipment */
+    foreach ($p_oExperimentEquipmentArray as $iIndex=>$oExperimentEquipment){
+      $iEquipmentId = $oExperimentEquipment->getEquipment()->getId();
+      $strEquipmentIds .= $iEquipmentId;
+      if($iIndex < count($p_oExperimentEquipmentArray)-1){
+        $strEquipmentIds .= ",";
+      }
+    }
+
+    return $strEquipmentIds;
+  }
+
+  private function getCurrentEquipmentHTML($p_oModel, $p_oExperimentEquipmentArray, $p_oOrganizationArray){
+    $strReturn = StringHelper::EMPTY_STRING;
+
+    $iSelectedEquipmentIdArray = array();
+    foreach ($p_oExperimentEquipmentArray as $iIndex=>$oExperimentEquipment){
+      $iEquipmentId = $oExperimentEquipment->getEquipment()->getId();
+      array_push($iSelectedEquipmentIdArray, $iEquipmentId);
+    }
+
+    $oEquipmentArray = array();
+
+    //get the major equipment if any
+    foreach($p_oOrganizationArray as $oFacility){
+      $oFacilityMajorEquipmentArray = $p_oModel->findAllMajorByOrganization($oFacility);
+      if(!empty($oFacilityMajorEquipmentArray)){
+        //ok, we have major equipment.  find the children by parent_id.
+        foreach($oFacilityMajorEquipmentArray as $oMajorEquipment){
+            $oMinorEquipmentArray = $p_oModel->findAllByParent($oMajorEquipment->getId());  //parent_id is the major_id
+
+            /*
+             * for display purpsoses override the note with the facility name.
+             * the output will be [equipment] -> [major] (facility)
+             */
+            foreach($oMinorEquipmentArray as $oMinorEquipment){
+              $oMinorEquipment->setNote($oFacility->getShortName()." - ".$oMajorEquipment->getName());
+              array_push($oEquipmentArray, $oMinorEquipment);
+            }
+        }
+      }else{
+      /*
+       * for display purpsoses override the note with the facility name.
+       * the output will be [equipment] -> (facility)
+       */
+        $oMinorEquipmentArray = $oEquipmentModel->findAllByOrganization($oFacility->getId());
+        foreach($oMinorEquipmentArray as $oMinorEquipment){
+          $oMinorEquipment->setNote($oFacility->getShortName());
+            array_push($oEquipmentArray, $oMinorEquipment);
+        }
+      }
+    }
+
+    $_SESSION["SUGGESTED_FACILITY_EQUIPMENT"] = serialize($oEquipmentArray);
+
+    $strReturn .= <<<ENDHTML
+        <p style="height: 100px; width:70%; overflow: auto; border: 1px solid #999999; background: none repeat scroll 0% 0%; color: rgb(0, 0, 0); margin-bottom: 1.5em;">
+ENDHTML;
+            foreach($oEquipmentArray as $oEquipment){
+                $strChecked = (in_array($oEquipment->getId(), $iSelectedEquipmentIdArray)) ? "checked" : "";
+                $iParentId = $oEquipment->getParentId();
+                $strLabel = "";
+                if($iParentId > 0){
+                  $strLabel = "<label><input type='checkbox' name='equipment[]' $strChecked value='".$oEquipment->getId()."' onClick=\"appendEquipment('equipmentlist', ".$oEquipment->getId().");\"> ".$oEquipment->getNote()." :: ".$oEquipment->getName()."</label><br>";
+                }else{
+                  $strLabel = "<label><input type='checkbox' name='equipment[]' value='".$oEquipment->getId()."' onClick=\"appendEquipment('equipmentlist', this.value);\"> ".$oEquipment->getNote()." :: ".$oEquipment->getName()."</label><br>";
+                }
+                $strReturn .= $strLabel;
+            }
+    $strReturn .= <<<ENDHTML
+        </p>
+ENDHTML;
 
     return $strReturn;
   }
@@ -287,6 +375,6 @@ ENDHTML;
 
     return $thumbnail;
   }
-  
+
 }
 ?>

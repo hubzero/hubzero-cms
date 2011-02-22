@@ -246,6 +246,7 @@ header("Expires: 0"); // Date in the past
               </td>
               <td>
                 <div id="facilityInput" class="editorInputFloat editorInputSize">
+                  <input type="hidden" id="facilityIdList" name="facilityList" value="<?php echo $this->strFacilityIds; ?>"/>
                   <input type="text" id="txtFacility" name="facility[]" class="editorInputSize"
                   		 onkeyup="suggestFacility('/projecteditor/facilitysearch?format=ajax', 'facilitySearch', this.value, this.id, '/projecteditor/equipment?format=ajax', 'equipmentList')" 
                   		 style="width:100%;" value="<?php echo $this->strFacility; ?>"
@@ -283,9 +284,9 @@ header("Expires: 0"); // Date in the past
                     $strEquipmentColor = "#000000";
                   }
                 ?>
-                <input type="hidden" id="equipmentlist" name="equipmentlist" value=""/>
-                <div id="equipmentList" style="color:<?php echo $strEquipmentColor; ?>;"><?php echo $this->strEquipmentList; ?></div>
-                <div id="equipmentPicked"><?php echo $this->strEquipmentPicked; ?></div>
+                <input type="hidden" id="equipmentlist" name="equipmentlist" value="<?php echo $this->strEquipmentList; ?>"/>
+                <div id="equipmentList" style="color:<?php echo $strEquipmentColor; ?>;"><?php //echo $this->strEquipmentList; ?><?php echo $this->strEquipmentPicked; ?></div>
+                <div id="equipmentPicked"><?php //echo $this->strEquipmentPicked; ?></div>
               </td>
             </tr>
             <tr id="specimentType">
