@@ -12,7 +12,7 @@ require_once 'util/PhotoHelper.php';
 require_once 'util/FileHelper.php';
 require_once 'static/Files.php';
 require_once 'static/ProjectEditor.php';
-require_once 'lib/security/Authorizer.php'; 
+require_once 'lib/security/Authorizer.php';
 
 /**
  * DataFile
@@ -425,7 +425,7 @@ class DataFile extends BaseDataFile {
    * @param string $path
    * @param boolean $isDir
    * @return DataFile if successed or false if failed
-   * 
+   *
    */
   function newDataFileByFilesystem($filename, $path, $isDir=false, $p_strTitle=null, $p_strDescription=null, $p_strUsageId=null, $p_strTool=null, $p_iCreatorId=null, $p_iModifiedById=null, $p_strModifiedDate=null, $p_iAppId=null) {
 
@@ -924,14 +924,17 @@ class DataFile extends BaseDataFile {
     $oDataFileLink = DataFileLinkPeer::retrieveByPK($iId);
     $oProject = $oDataFileLink->getProject();
     $oExperiment = $oDataFileLink->getExperiment();
-
-    if($oExperiment->getView() == "PUBLIC"){
-      return true;
-    }elseif($oProject->getView() == "PUBLIC"){
-      return true;
+    if($oExperiment){
+      if($oExperiment->getView() == "PUBLIC"){
+        return true;
+      }
     }else{
-      return false;
+      if($oProject->getView() == "PUBLIC"){
+        return true;
+      }
     }
+
+    return false;
   }
 
 } // DataFile

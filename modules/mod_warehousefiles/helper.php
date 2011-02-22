@@ -104,168 +104,173 @@ ENDHTML;
 
           $iIndex = 0;
           if(!empty($p_oCurrentDataFileArray)){
+
+            /* @var $oAuthorizer Authorizer */
+            $oAuthorizer = Authorizer::getInstance();
+
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              $strCurationStatus = $oDataFile->getCurationStatus();
-              if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
-                $strCurationStatus = "<span class='curateSubmitted'>*</span>";
-              }else{
-                $strCurationStatus = "";
-              }
-
-              $strFileTimestamp = $oDataFile->getCreated();
-              $iDataFileId = $oDataFile->getId();
-              $strFilePath = $oDataFile->getPath();
-              $strFileName = $oDataFile->getName();
-              $strDataFileLinkTitle = "";
-
-              $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
-              /* @var $oDataFileLink DataFileLink */
-              if(preg_match("/Experiment-([0-9])+/", $strFileName)){
-                $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getExperiment()->getTitle(), 50);
-              }
-
-              if(preg_match("/Trial-([0-9])+/", $strFileName)){
-                $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getTrial()->getTitle(), 50);
-              }
-
-              /*
-               * Get the tooltip for this file.
-               * a) desc
-               * b) title
-               * c) timestamp
-               */
-              $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getTitle();
-              if(!StringHelper::hasText($strTooltip)){
-                $strTooltip =  "Timestamp: ".$strFileTimestamp;
-              }
-
-              /*
-               * Figure out if we have a jpg, png, or gif.
-               * If so, link to the 800x600 file
-               */
-              $strFileNameParts = explode('.', $strFileName);
-              $strFileExtension = array_pop($strFileNameParts);
-
-              //validate extension
-              $extOk = false;
-              $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
-              foreach($validFileExts as $key => $value){
-                if( preg_match("/$value/i", $strFileExtension ) ){
-                  $extOk = true;
-                  break;
-                }
-
-              }
-
-              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
-
-              //determine if scaled image is available
-              $strLightbox = StringHelper::EMPTY_STRING;
-              if($extOk){
-                $strDisplayName = "display_".$iDataFileId."_".$strFileName;
-                $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
-
-                if(is_file($strDisplayPath."/".$strDisplayName)){
-                  $oDataFile->setName($strDisplayName);
-                  $oDataFile->setPath($strDisplayPath);
-                  $strLightbox = "rel=lightbox[data] ";
-
-                  $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-                  $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
-                }
-              }
-              
-
-              //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
-              $strLinkToFileUrl = $oDataFile->getUrl();
-              $strThisLink = <<< ENDHTML
-                <a title="$strTooltip"
-                   href="$strLinkToFileUrl" $strLightbox>
-                  $strFileName
-                </a>
-                $strCurationStatus
-ENDHTML;
-
-
-              /*
-               * If we're dealing with a directory,
-               * get the number of files and sub-folders.
-               * Also, link to the data view of the project
-               * editor, not component com_data.
-               */
-              $strFileCount = "";
-              $strDirectoryCount = "";
-              $strDirectory = "";
-              $iDirectorySize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : 0;
-              $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
-              $strFileCreated = ($oDataFile->getCreated()) ? $oDataFile->getCreated() : "";
-              $strTool = self::getTool($oDataFile);
-              $strIcon = self::getIcon($oDataFile);
-
-              if( $oDataFile->getDirectory()==1){
-                if(StringHelper::hasText($strDataFileLinkTitle)){
-                  $strDataFileLinkTitle = ": ".$strDataFileLinkTitle;
-                }
-
-                if($iDirectorySize > 0){
-                  $iFileSize = cleanSize($iDirectorySize);
-
-                  $strDirectory = <<< ENDHTML
-                    <a style="border:0px;" title="$strTooltip"
-                       href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
-                      $strIcon
-                    </a>
-                    $strCurationStatus
-ENDHTML;
-
-                  $strThisLink = <<< ENDHTML
-                    <a title="$strTooltip"
-                      href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
-                      $strFileName $strDataFileLinkTitle
-                    </a>
-                    $strCurationStatus
-ENDHTML;
+              if($oAuthorizer->canView($oDataFile)){
+                $strCurationStatus = $oDataFile->getCurationStatus();
+                if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
+                  $strCurationStatus = "<span class='curateSubmitted'>*</span>";
                 }else{
-                  $strDirectory = <<< ENDHTML
-                    $strIcon
-                    $strCurationStatus
-ENDHTML;
-
-                  $strThisLink = <<< ENDHTML
-                    <span class="emptyFolder">
-                      $strFileName $strDataFileLinkTitle (0 files)
-                    </span>
-                    $strCurationStatus
-ENDHTML;
+                  $strCurationStatus = "";
                 }
-              }
 
-              //validate if data file on file system
-              if($oDataFile->existsInFilesystem()){
-                //exclude generated pics from the listing
-                if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
-                  $strBgColor = ($iIndex%2==0) ? "even" : "odd";
-                  ++$iIndex;
+                $strFileTimestamp = $oDataFile->getCreated();
+                $iDataFileId = $oDataFile->getId();
+                $strFilePath = $oDataFile->getPath();
+                $strFileName = $oDataFile->getName();
+                $strDataFileLinkTitle = "";
 
-                  $strThisIcon = ($strDirectory=="") ? $strIcon : $strDirectory;
+                $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
+                /* @var $oDataFileLink DataFileLink */
+                if(preg_match("/Experiment-([0-9])+/", $strFileName)){
+                  $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getExperiment()->getTitle(), 50);
+                }
+
+                if(preg_match("/Trial-([0-9])+/", $strFileName)){
+                  $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getTrial()->getTitle(), 50);
+                }
+
+                /*
+                 * Get the tooltip for this file.
+                 * a) desc
+                 * b) title
+                 * c) timestamp
+                 */
+                $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getTitle();
+                if(!StringHelper::hasText($strTooltip)){
+                  $strTooltip =  "Timestamp: ".$strFileTimestamp;
+                }
+
+                /*
+                 * Figure out if we have a jpg, png, or gif.
+                 * If so, link to the 800x600 file
+                 */
+                $strFileNameParts = explode('.', $strFileName);
+                $strFileExtension = array_pop($strFileNameParts);
+
+                //validate extension
+                $extOk = false;
+                $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
+                foreach($validFileExts as $key => $value){
+                  if( preg_match("/$value/i", $strFileExtension ) ){
+                    $extOk = true;
+                    break;
+                  }
+                }
+
+                $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+
+                //determine if scaled image is available
+                $strLightbox = StringHelper::EMPTY_STRING;
+                if($extOk){
+                  $strDisplayName = "display_".$iDataFileId."_".$strFileName;
+                  $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
+
+                  if(is_file($strDisplayPath."/".$strDisplayName)){
+                    $oDataFile->setName($strDisplayName);
+                    $oDataFile->setPath($strDisplayPath);
+                    $strLightbox = "rel=lightbox[data] ";
+
+                    $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                    $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+                  }
+                }
 
 
-                  $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
-
-                  $strReturn .= <<< ENDHTML
-                    <tr class="$strBgColor">
-                      <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
-                      <td>$strThisIcon</td>
-                      <td>$strThisLink</td>
-                      <td>$iFileSize</td>
-                      <td>$strFileCreated</td>
-                      <td>$strTool</td>
-                    </tr>
+                //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
+                $strLinkToFileUrl = $oDataFile->getUrl();
+                $strThisLink = <<< ENDHTML
+                  <a title="$strTooltip"
+                     href="$strLinkToFileUrl" $strLightbox>
+                    $strFileName
+                  </a>
+                  $strCurationStatus
 ENDHTML;
-                }//end .Generated_Pics
-              }
+
+
+                /*
+                 * If we're dealing with a directory,
+                 * get the number of files and sub-folders.
+                 * Also, link to the data view of the project
+                 * editor, not component com_data.
+                 */
+                $strFileCount = "";
+                $strDirectoryCount = "";
+                $strDirectory = "";
+                $iDirectorySize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : 0;
+                $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
+                $strFileCreated = ($oDataFile->getCreated()) ? $oDataFile->getCreated() : "";
+                $strTool = self::getTool($oDataFile);
+                $strIcon = self::getIcon($oDataFile);
+
+                if( $oDataFile->getDirectory()==1){
+                  if(StringHelper::hasText($strDataFileLinkTitle)){
+                    $strDataFileLinkTitle = ": ".$strDataFileLinkTitle;
+                  }
+
+                  if($iDirectorySize > 0){
+                    $iFileSize = cleanSize($iDirectorySize);
+
+                    $strDirectory = <<< ENDHTML
+                      <a style="border:0px;" title="$strTooltip"
+                         href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
+                        $strIcon
+                      </a>
+                      $strCurationStatus
+ENDHTML;
+
+                    $strThisLink = <<< ENDHTML
+                      <a title="$strTooltip"
+                         href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
+                         $strFileName $strDataFileLinkTitle
+                      </a>
+                      $strCurationStatus
+ENDHTML;
+                  }else{
+                    $strDirectory = <<< ENDHTML
+                      $strIcon
+                      $strCurationStatus
+ENDHTML;
+
+                    $strThisLink = <<< ENDHTML
+                      <span class="emptyFolder">
+                        $strFileName $strDataFileLinkTitle (0 files)
+                      </span>
+                      $strCurationStatus
+ENDHTML;
+                  }
+                }
+
+                //validate if data file on file system
+                if($oDataFile->existsInFilesystem()){
+                  //exclude generated pics from the listing
+                  if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
+                    $strBgColor = ($iIndex%2==0) ? "even" : "odd";
+                    ++$iIndex;
+
+                    $strThisIcon = ($strDirectory=="") ? $strIcon : $strDirectory;
+
+
+                    $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
+
+                    $strReturn .= <<< ENDHTML
+                      <tr class="$strBgColor">
+                        <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
+                        <td>$strThisIcon</td>
+                        <td>$strThisLink</td>
+                        <td>$iFileSize</td>
+                        <td>$strFileCreated</td>
+                        <td>$strTool</td>
+                      </tr>
+ENDHTML;
+                  }//end .Generated_Pics
+                }
+              }//end if(canView)
             }//end foreach
           }else{
             $strReturn .= <<< ENDHTML
@@ -340,148 +345,152 @@ ENDHTML;
           if(!empty($p_oCurrentDataFileArray)){
             $iIndex = 0;
 
+            /* @var $oAuthorizer Authorizer */
+            $oAuthorizer = Authorizer::getInstance();
+
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              $strCurationStatus = $oDataFile->getCurationStatus();
-              if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
-                $strCurationStatus = "<span class='curateSubmitted'>*</span>";
-              }else{
-                $strCurationStatus = "";
-              }
-
-              $strFileTimestamp = $oDataFile->getCreated();
-              $iDataFileId = $oDataFile->getId();
-              $strFilePath = $oDataFile->getPath();
-              $strFileName = $oDataFile->getName();
-              $strDirPath = get_friendlyPath($strFilePath);
-
-              /*
-               * Get the tooltip for this file.
-               * a) desc
-               * b) title
-               * c) timestamp
-               */
-              $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getTitle();
-              if(!StringHelper::hasText($strTooltip)){
-                $strTooltip =  "Timestamp: ".$strFileTimestamp;
-              }
-
-              /*
-               * Figure out if we have a jpg, png, or gif.
-               * If so, link to the 800x600 file
-               */
-              $strFileNameParts = explode('.', $strFileName);
-              $strFileExtension = array_pop($strFileNameParts);
-
-              //validate extension
-              $extOk = false;
-              $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
-              foreach($validFileExts as $key => $value){
-                if( preg_match("/$value/i", $strFileExtension ) ){
-                  $extOk = true;
-                  break;
-                }
-
-              }
-
-              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
-
-              //determine if scaled image is available
-              $strLightbox = StringHelper::EMPTY_STRING;
-              if($extOk){
-                $strDisplayName = "display_".$iDataFileId."_".$strFileName;
-                $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
-
-                if(is_file($strDisplayPath."/".$strDisplayName)){
-                  $oDataFile->setName($strDisplayName);
-                  $oDataFile->setPath($strDisplayPath);
-                  $strLightbox = "rel=lightbox[data] ";
-
-                  $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-                  $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
-                }
-              }
-
-              //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
-              $strLinkToFileUrl = $oDataFile->getUrl();
-              $strThisLink = <<< ENDHTML
-                <a title="$strTooltip"
-                   href="$strLinkToFileUrl" $strLightbox>
-                  $strFileName
-                </a>
-                $strCurationStatus
-ENDHTML;
-
-
-              /*
-               * If we're dealing with a directory,
-               * get the number of files and sub-folders.
-               * Also, link to the data view of the project
-               * editor, not component com_data.
-               */
-              $strFileCount = "";
-              $strDirectoryCount = "";
-              $strDirectory = "";
-              $iDirectorySize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : 0;
-              $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
-              $strFileCreated = ($oDataFile->getCreated()) ? $oDataFile->getCreated() : "";
-              $strIcon = self::getIcon($oDataFile);
-
-              if( $oDataFile->getDirectory()==1){
-                if($iDirectorySize > 0){
-                  $iFileSize = cleanSize($iDirectorySize);
-
-                  $strDirectory = <<< ENDHTML
-                    <a style="border:0px;" title="$strTooltip"
-                       href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
-                      $strIcon
-                    </a>
-                    $strCurationStatus
-ENDHTML;
-
-                  $strThisLink = <<< ENDHTML
-                    <a title="$strTooltip"
-                      href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
-                      $strFileName
-                    </a>
-                    $strCurationStatus
-ENDHTML;
+              if($oAuthorizer->canView($oDataFile)){
+                $strCurationStatus = $oDataFile->getCurationStatus();
+                if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
+                  $strCurationStatus = "<span class='curateSubmitted'>*</span>";
                 }else{
-                  $strDirectory = <<< ENDHTML
-                    $strIcon
-                    $strCurationStatus
-ENDHTML;
-
-                  $strThisLink = <<< ENDHTML
-                    <span class="emptyFolder">
-                      $strFileName (0 files)
-                    </span>
-                    $strCurationStatus
-ENDHTML;
+                  $strCurationStatus = "";
                 }
-              }
 
-              //validate if data file on file system
-              if($oDataFile->existsInFilesystem()){
-                //exclude generated pics from the listing
-                if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
-                  $strBgColor = ($iIndex%2==0) ? "even" : "odd";
-                  ++$iIndex;
+                $strFileTimestamp = $oDataFile->getCreated();
+                $iDataFileId = $oDataFile->getId();
+                $strFilePath = $oDataFile->getPath();
+                $strFileName = $oDataFile->getName();
+                $strDirPath = get_friendlyPath($strFilePath);
 
-                  $strThisIcon = ($strDirectory=="") ? $strIcon : $strDirectory;
+                /*
+                 * Get the tooltip for this file.
+                 * a) desc
+                 * b) title
+                 * c) timestamp
+                 */
+                $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getTitle();
+                if(!StringHelper::hasText($strTooltip)){
+                  $strTooltip =  "Timestamp: ".$strFileTimestamp;
+                }
 
-                  $strReturn .= <<< ENDHTML
-                    <tr class="$strBgColor">
-                      <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
-                      <td>$strThisIcon</td>
-                      <td>$strThisLink</td>
-                      <td>$iFileSize</td>
-                      <td><a href="/warehouse/filebrowser/$p_iProjectId?path=$strFilePath">$strDirPath</a></td>
-                    </tr>
+                /*
+                 * Figure out if we have a jpg, png, or gif.
+                 * If so, link to the 800x600 file
+                 */
+                $strFileNameParts = explode('.', $strFileName);
+                $strFileExtension = array_pop($strFileNameParts);
+
+                //validate extension
+                $extOk = false;
+                $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
+                foreach($validFileExts as $key => $value){
+                  if( preg_match("/$value/i", $strFileExtension ) ){
+                    $extOk = true;
+                    break;
+                  }
+                }
+
+                $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+
+                //determine if scaled image is available
+                $strLightbox = StringHelper::EMPTY_STRING;
+                if($extOk){
+                  $strDisplayName = "display_".$iDataFileId."_".$strFileName;
+                  $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
+
+                  if(is_file($strDisplayPath."/".$strDisplayName)){
+                    $oDataFile->setName($strDisplayName);
+                    $oDataFile->setPath($strDisplayPath);
+                    $strLightbox = "rel=lightbox[data] ";
+
+                    $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                    $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+                  }
+                }
+
+                //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
+                $strLinkToFileUrl = $oDataFile->getUrl();
+                $strThisLink = <<< ENDHTML
+                  <a title="$strTooltip"
+                     href="$strLinkToFileUrl" $strLightbox>
+                    $strFileName
+                  </a>
+                  $strCurationStatus
 ENDHTML;
-                }//end .Generated_Pics
-              }//end file exists
+
+
+                /*
+                 * If we're dealing with a directory,
+                 * get the number of files and sub-folders.
+                 * Also, link to the data view of the project
+                 * editor, not component com_data.
+                 */
+                $strFileCount = "";
+                $strDirectoryCount = "";
+                $strDirectory = "";
+                $iDirectorySize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : 0;
+                $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
+                $strFileCreated = ($oDataFile->getCreated()) ? $oDataFile->getCreated() : "";
+                $strIcon = self::getIcon($oDataFile);
+
+                if( $oDataFile->getDirectory()==1){
+                  if($iDirectorySize > 0){
+                    $iFileSize = cleanSize($iDirectorySize);
+
+                    $strDirectory = <<< ENDHTML
+                      <a style="border:0px;" title="$strTooltip"
+                         href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
+                        $strIcon
+                      </a>
+                      $strCurationStatus
+ENDHTML;
+
+                    $strThisLink = <<< ENDHTML
+                      <a title="$strTooltip"
+                        href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
+                        $strFileName
+                      </a>
+                      $strCurationStatus
+ENDHTML;
+                  }else{
+                    $strDirectory = <<< ENDHTML
+                      $strIcon
+                      $strCurationStatus
+ENDHTML;
+
+                    $strThisLink = <<< ENDHTML
+                      <span class="emptyFolder">
+                        $strFileName (0 files)
+                      </span>
+                      $strCurationStatus
+ENDHTML;
+                  }
+                }
+
+                //validate if data file on file system
+                if($oDataFile->existsInFilesystem()){
+                  //exclude generated pics from the listing
+                  if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
+                    $strBgColor = ($iIndex%2==0) ? "even" : "odd";
+                    ++$iIndex;
+
+                    $strThisIcon = ($strDirectory=="") ? $strIcon : $strDirectory;
+
+                    $strReturn .= <<< ENDHTML
+                      <tr class="$strBgColor">
+                        <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
+                        <td>$strThisIcon</td>
+                        <td>$strThisLink</td>
+                        <td>$iFileSize</td>
+                        <td><a href="/warehouse/filebrowser/$p_iProjectId?path=$strFilePath">$strDirPath</a></td>
+                      </tr>
+ENDHTML;
+                  }//end .Generated_Pics
+                }//end file exists
+              }//end if(canView)
             }//end foreach
           }else{
             $strReturn .= <<< ENDHTML
@@ -555,145 +564,114 @@ ENDHTML;
           if(!empty($p_oCurrentDataFileArray)){
             $iIndex = 0;
 
+            /* @var $oAuthorizer Authorizer */
+            $oAuthorizer = Authorizer::getInstance();
+
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              $strCurationStatus = $oDataFile->getCurationStatus();
-              if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
-                $strCurationStatus = "<span class='curateSubmitted'>*</span>";
-              }else{
-                $strCurationStatus = "";
-              }
-
-              $strFileTimestamp = $oDataFile->getCreated();
-              $iDataFileId = $oDataFile->getId();
-              $strFilePath = $oDataFile->getPath();
-              $strFileName = $oDataFile->getName();
-              $strDirPath = get_friendlyPath($strFilePath);
-
-              /*
-               * Get the tooltip for this file.
-               * a) desc
-               * b) title
-               * c) timestamp
-               */
-//              $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getTitle();
-//              if(!StringHelper::hasText($strTooltip)){
-//                $strTooltip =  "Timestamp: ".$strFileTimestamp;
-//              }
-              $strTooltip =  "Click to launch ".$oDataFile->getOpeningTool();
-              $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $strTooltip.".: ".$oDataFile->getDescription() : $strTooltip;
-
-              /*
-               * Figure out if we have a jpg, png, or gif.
-               * If so, link to the 800x600 file
-               */
-
-              /*
-              $strFileNameParts = explode('.', $strFileName);
-              $strFileExtension = array_pop($strFileNameParts);
-
-              //validate extension
-              $extOk = false;
-              $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
-              foreach($validFileExts as $key => $value){
-                if( preg_match("/$value/i", $strFileExtension ) ){
-                  $extOk = true;
-                }
-              }
-
-              //determine if scaled image is available
-              $strLightbox = StringHelper::EMPTY_STRING;
-              if($extOk){
-                $strDisplayName = "display_".$iDataFileId."_".$strFileName;
-                $oDataFile->setName($strDisplayName);
-
-                $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
-                $oDataFile->setPath($strDisplayPath);
-
-                $strLightbox = "rel=lightbox[data] ";
-              }
-              */
-
-              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
-
-              $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
-
-              //default the link to launch inDEED
-              $strThisLink = <<< ENDHTML
-                <a href="$strLaunchInEED=$strFileSystemPath&$p_strToolReturn" title="$strTooltip">$strFileName</a>
-                $strCurationStatus
-ENDHTML;
-
-
-              /*
-               * If we're dealing with a directory,
-               * get the number of files and sub-folders.
-               * Also, link to the data view of the project
-               * editor, not component com_data.
-               */
-              $strFileCount = "";
-              $strDirectoryCount = "";
-              $strDirectory = "";
-              $iDirectorySize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : 0;
-              $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
-              $strFileCreated = ($oDataFile->getCreated()) ? $oDataFile->getCreated() : "";
-              $strIcon = self::getIcon($oDataFile);
-
-              if( $oDataFile->getDirectory()==1){
-                if($iDirectorySize > 0){
-                  $iFileSize = cleanSize($iDirectorySize);
-
-                  $strDirectory = <<< ENDHTML
-                    <a style="border:0px;" title="$strTooltip"
-                       href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
-                      $strIcon
-                    </a>
-                    $strCurationStatus
-ENDHTML;
-
-                  $strThisLink = <<< ENDHTML
-                    <a title="$strTooltip"
-                      href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
-                      $strFileName
-                    </a>
-                    $strCurationStatus
-ENDHTML;
+              if($oAuthorizer->canView($oDataFile)){
+                $strCurationStatus = $oDataFile->getCurationStatus();
+                if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
+                  $strCurationStatus = "<span class='curateSubmitted'>*</span>";
                 }else{
-                  $strDirectory = <<< ENDHTML
-                    $strIcon
-                    $strCurationStatus
-ENDHTML;
-
-                  $strThisLink = <<< ENDHTML
-                    <span class="emptyFolder">
-                      $strFileName (0 files)
-                    </span>
-                    $strCurationStatus
-ENDHTML;
+                  $strCurationStatus = "";
                 }
-              }
 
-              //validate if data file on file system
-              if($oDataFile->existsInFilesystem()){
-                //exclude generated pics from the listing
-                if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
-                  $strBgColor = ($iIndex%2==0) ? "even" : "odd";
-                  ++$iIndex;
+                $strFileTimestamp = $oDataFile->getCreated();
+                $iDataFileId = $oDataFile->getId();
+                $strFilePath = $oDataFile->getPath();
+                $strFileName = $oDataFile->getName();
+                $strDirPath = get_friendlyPath($strFilePath);
 
-                  $strThisIcon = ($strDirectory=="") ? $strIcon : $strDirectory;
+                /*
+                 * Get the tooltip for this file.
+                 * a) desc
+                 * b) title
+                 * c) timestamp
+                 */
+                $strTooltip =  "Click to launch ".$oDataFile->getOpeningTool();
+                $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $strTooltip.".: ".$oDataFile->getDescription() : $strTooltip;
 
-                  $strReturn .= <<< ENDHTML
-                    <tr class="$strBgColor">
-                      <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
-                      <td>$strThisIcon</td>
-                      <td>$strThisLink</td>
-                      <td>$iFileSize</td>
-                      <td><a href="/warehouse/filebrowser/$p_iProjectId?path=$strFilePath">$strDirPath</a></td>
-                    </tr>
+                $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+
+                $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
+
+                //default the link to launch inDEED
+                $strThisLink = <<< ENDHTML
+                  <a href="$strLaunchInEED=$strFileSystemPath&$p_strToolReturn" title="$strTooltip">$strFileName</a>
+                  $strCurationStatus
 ENDHTML;
-                }//end .Generated_Pics
-              }//end file exists
+
+                /*
+                 * If we're dealing with a directory,
+                 * get the number of files and sub-folders.
+                 * Also, link to the data view of the project
+                 * editor, not component com_data.
+                 */
+                $strFileCount = "";
+                $strDirectoryCount = "";
+                $strDirectory = "";
+                $iDirectorySize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : 0;
+                $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
+                $strFileCreated = ($oDataFile->getCreated()) ? $oDataFile->getCreated() : "";
+                $strIcon = self::getIcon($oDataFile);
+
+                if( $oDataFile->getDirectory()==1){
+                  if($iDirectorySize > 0){
+                    $iFileSize = cleanSize($iDirectorySize);
+
+                    $strDirectory = <<< ENDHTML
+                      <a style="border:0px;" title="$strTooltip"
+                         href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
+                        $strIcon
+                      </a>
+                      $strCurationStatus
+ENDHTML;
+
+                    $strThisLink = <<< ENDHTML
+                      <a title="$strTooltip"
+                        href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
+                        $strFileName
+                      </a>
+                      $strCurationStatus
+ENDHTML;
+                  }else{
+                    $strDirectory = <<< ENDHTML
+                      $strIcon
+                      $strCurationStatus
+ENDHTML;
+
+                    $strThisLink = <<< ENDHTML
+                      <span class="emptyFolder">
+                        $strFileName (0 files)
+                      </span>
+                      $strCurationStatus
+ENDHTML;
+                  }
+                }
+
+                //validate if data file on file system
+                if($oDataFile->existsInFilesystem()){
+                  //exclude generated pics from the listing
+                  if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
+                    $strBgColor = ($iIndex%2==0) ? "even" : "odd";
+                    ++$iIndex;
+
+                    $strThisIcon = ($strDirectory=="") ? $strIcon : $strDirectory;
+
+                    $strReturn .= <<< ENDHTML
+                      <tr class="$strBgColor">
+                        <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
+                        <td>$strThisIcon</td>
+                        <td>$strThisLink</td>
+                        <td>$iFileSize</td>
+                        <td><a href="/warehouse/filebrowser/$p_iProjectId?path=$strFilePath">$strDirPath</a></td>
+                      </tr>
+ENDHTML;
+                  }//end .Generated_Pics
+                }//end file exists
+              }
             }//end foreach
           }else{
             $strReturn .= <<< ENDHTML
@@ -768,148 +746,152 @@ ENDHTML;
           if(!empty($p_oCurrentDataFileArray)){
             $iIndex = 0;
 
+            /* @var $oAuthorizer Authorizer */
+            $oAuthorizer = Authorizer::getInstance();
+
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              $strCurationStatus = $oDataFile->getCurationStatus();
-              if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
-                $strCurationStatus = "<span class='curateSubmitted'>*</span>";
-              }else{
-                $strCurationStatus = "";
-              }
-
-              $strFileTimestamp = $oDataFile->getCreated();
-              $iDataFileId = $oDataFile->getId();
-              $strFilePath = $oDataFile->getPath();
-              $strFileName = $oDataFile->getName();
-              $strDirPath = get_friendlyPath($strFilePath);
-
-              /*
-               * Get the tooltip for this file.
-               * a) desc
-               * b) title
-               * c) timestamp
-               */
-              $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getTitle();
-              if(!StringHelper::hasText($strTooltip)){
-                $strTooltip =  "Timestamp: ".$strFileTimestamp;
-              }
-
-              /*
-               * Figure out if we have a jpg, png, or gif.
-               * If so, link to the 800x600 file
-               */
-              $strFileNameParts = explode('.', $strFileName);
-              $strFileExtension = array_pop($strFileNameParts);
-
-              //validate extension
-              $extOk = false;
-              $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
-              foreach($validFileExts as $key => $value){
-                if( preg_match("/$value/i", $strFileExtension ) ){
-                  $extOk = true;
-                  break;
-                }
-
-              }
-
-              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
-
-              //determine if scaled image is available
-              $strLightbox = StringHelper::EMPTY_STRING;
-              if($extOk){
-                $strDisplayName = "display_".$iDataFileId."_".$strFileName;
-                $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
-
-                if(is_file($strDisplayPath."/".$strDisplayName)){
-                  $oDataFile->setName($strDisplayName);
-                  $oDataFile->setPath($strDisplayPath);
-                  $strLightbox = "rel=lightbox[data] ";
-
-                  $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-                  $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
-                }
-              }
-
-              //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
-              $strLinkToFileUrl = $oDataFile->getUrl();
-              $strThisLink = <<< ENDHTML
-                <a title="$strTooltip"
-                   href="$strLinkToFileUrl" $strLightbox>
-                  $strFileName
-                </a>
-                $strCurationStatus
-ENDHTML;
-
-
-              /*
-               * If we're dealing with a directory,
-               * get the number of files and sub-folders.
-               * Also, link to the data view of the project
-               * editor, not component com_data.
-               */
-              $strFileCount = "";
-              $strDirectoryCount = "";
-              $strDirectory = "";
-              $iDirectorySize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : 0;
-              $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
-              $strFileCreated = ($oDataFile->getCreated()) ? $oDataFile->getCreated() : "";
-              $strIcon = self::getIcon($oDataFile);
-
-              if( $oDataFile->getDirectory()==1){
-                if($iDirectorySize > 0){
-                  $iFileSize = cleanSize($iDirectorySize);
-
-                  $strDirectory = <<< ENDHTML
-                    <a style="border:0px;" title="$strTooltip"
-                       href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
-                      $strIcon
-                    </a>
-                    $strCurationStatus
-ENDHTML;
-
-                  $strThisLink = <<< ENDHTML
-                    <a title="$strTooltip"
-                      href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
-                      $strFileName
-                    </a>
-                    $strCurationStatus
-ENDHTML;
+              if($oAuthorizer->canView($oDataFile)){
+                $strCurationStatus = $oDataFile->getCurationStatus();
+                if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
+                  $strCurationStatus = "<span class='curateSubmitted'>*</span>";
                 }else{
-                  $strDirectory = <<< ENDHTML
-                    $strIcon
-                    $strCurationStatus
-ENDHTML;
-
-                  $strThisLink = <<< ENDHTML
-                    <span class="emptyFolder">
-                      $strFileName (0 files)
-                    </span>
-                    $strCurationStatus
-ENDHTML;
+                  $strCurationStatus = "";
                 }
-              }
 
-              //validate if data file on file system
-              if($oDataFile->existsInFilesystem()){
-                //exclude generated pics from the listing
-                if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
-                  $strBgColor = ($iIndex%2==0) ? "even" : "odd";
-                  ++$iIndex;
+                $strFileTimestamp = $oDataFile->getCreated();
+                $iDataFileId = $oDataFile->getId();
+                $strFilePath = $oDataFile->getPath();
+                $strFileName = $oDataFile->getName();
+                $strDirPath = get_friendlyPath($strFilePath);
 
-                  $strThisIcon = ($strDirectory=="") ? $strIcon : $strDirectory;
+                /*
+                 * Get the tooltip for this file.
+                 * a) desc
+                 * b) title
+                 * c) timestamp
+                 */
+                $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getTitle();
+                if(!StringHelper::hasText($strTooltip)){
+                  $strTooltip =  "Timestamp: ".$strFileTimestamp;
+                }
 
-                  $strReturn .= <<< ENDHTML
-                    <tr class="$strBgColor">
-                      <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
-                      <td>$strThisIcon</td>
-                      <td>$strThisLink</td>
-                      <td>$iFileSize</td>
-                      <td><a href="/warehouse/filebrowser/$p_iProjectId?path=$strFilePath">$strDirPath</a></td>
-                    </tr>
+                /*
+                 * Figure out if we have a jpg, png, or gif.
+                 * If so, link to the 800x600 file
+                 */
+                $strFileNameParts = explode('.', $strFileName);
+                $strFileExtension = array_pop($strFileNameParts);
+
+                //validate extension
+                $extOk = false;
+                $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
+                foreach($validFileExts as $key => $value){
+                  if( preg_match("/$value/i", $strFileExtension ) ){
+                    $extOk = true;
+                    break;
+                  }
+                }
+
+                $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+
+                //determine if scaled image is available
+                $strLightbox = StringHelper::EMPTY_STRING;
+                if($extOk){
+                  $strDisplayName = "display_".$iDataFileId."_".$strFileName;
+                  $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
+
+                  if(is_file($strDisplayPath."/".$strDisplayName)){
+                    $oDataFile->setName($strDisplayName);
+                    $oDataFile->setPath($strDisplayPath);
+                    $strLightbox = "rel=lightbox[data] ";
+
+                    $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                    $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+                  }
+                }
+
+                //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
+                $strLinkToFileUrl = $oDataFile->getUrl();
+                $strThisLink = <<< ENDHTML
+                  <a title="$strTooltip"
+                     href="$strLinkToFileUrl" $strLightbox>
+                    $strFileName
+                  </a>
+                  $strCurationStatus
 ENDHTML;
-                }//end .Generated_Pics
-              }
+
+
+                /*
+                 * If we're dealing with a directory,
+                 * get the number of files and sub-folders.
+                 * Also, link to the data view of the project
+                 * editor, not component com_data.
+                 */
+                $strFileCount = "";
+                $strDirectoryCount = "";
+                $strDirectory = "";
+                $iDirectorySize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : 0;
+                $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
+                $strFileCreated = ($oDataFile->getCreated()) ? $oDataFile->getCreated() : "";
+                $strIcon = self::getIcon($oDataFile);
+
+                if( $oDataFile->getDirectory()==1){
+                  if($iDirectorySize > 0){
+                    $iFileSize = cleanSize($iDirectorySize);
+
+                    $strDirectory = <<< ENDHTML
+                      <a style="border:0px;" title="$strTooltip"
+                         href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
+                        $strIcon
+                      </a>
+                      $strCurationStatus
+ENDHTML;
+
+                    $strThisLink = <<< ENDHTML
+                      <a title="$strTooltip"
+                        href="/warehouse/filebrowser/$p_iProjectId?path=$strFileSystemPath&toppath=$p_strTopPath">
+                        $strFileName
+                      </a>
+                      $strCurationStatus
+ENDHTML;
+                  }else{
+                    $strDirectory = <<< ENDHTML
+                      $strIcon
+                      $strCurationStatus
+ENDHTML;
+
+                    $strThisLink = <<< ENDHTML
+                      <span class="emptyFolder">
+                        $strFileName (0 files)
+                      </span>
+                      $strCurationStatus
+ENDHTML;
+                  }
+                }
+
+                //validate if data file on file system
+                if($oDataFile->existsInFilesystem()){
+                  //exclude generated pics from the listing
+                  if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
+                    $strBgColor = ($iIndex%2==0) ? "even" : "odd";
+                    ++$iIndex;
+
+                    $strThisIcon = ($strDirectory=="") ? $strIcon : $strDirectory;
+
+                    $strReturn .= <<< ENDHTML
+                      <tr class="$strBgColor">
+                        <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
+                        <td>$strThisIcon</td>
+                        <td>$strThisLink</td>
+                        <td nowrap>$iFileSize</td>
+                        <td><a href="/warehouse/filebrowser/$p_iProjectId?path=$strFilePath">$strDirPath</a></td>
+                      </tr>
+ENDHTML;
+                  }//end .Generated_Pics
+                }
+              }//end if(canView)
             }//end foreach
           }else{
             $strReturn .= <<< ENDHTML
@@ -976,90 +958,95 @@ ENDHTML;
           if(!empty($p_oCurrentDataFileArray)){
             $iIndex = 0;
 
+            /* @var $oAuthorizer Authorizer */
+            $oAuthorizer = Authorizer::getInstance();
+
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              $strFileTimestamp = $oDataFile->getCreated();
-              $iDataFileId = $oDataFile->getId();
-              $strFilePath = $oDataFile->getPath();         //original path
-              $strFileName = $oDataFile->getName();         //original name
-              $strDirPath = get_friendlyPath($strFilePath); //friendly path
-              $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
+              if($oAuthorizer->canView($oDataFile)){
+                $strFileTimestamp = $oDataFile->getCreated();
+                $iDataFileId = $oDataFile->getId();
+                $strFilePath = $oDataFile->getPath();         //original path
+                $strFileName = $oDataFile->getName();         //original name
+                $strDirPath = get_friendlyPath($strFilePath); //friendly path
+                $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
 
-              /*
-               * Figure out if we have a jpg, png, or gif.
-               * If so, link to the 800x600 file
-               */
-              $strFileNameParts = explode('.', $strFileName);
-              $strFileExtension = array_pop($strFileNameParts);
+                /*
+                 * Figure out if we have a jpg, png, or gif.
+                 * If so, link to the 800x600 file
+                 */
+                $strFileNameParts = explode('.', $strFileName);
+                $strFileExtension = array_pop($strFileNameParts);
 
-              //validate extension
-              $extOk = false;
-              $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
-              foreach($validFileExts as $key => $value){
-                if( preg_match("/$value/i", $strFileExtension ) ){
-                  $extOk = true;
-                }
-              }
-
-              //determine if scaled image is available
-              $strLightbox = StringHelper::EMPTY_STRING;
-              if($extOk){
-                $strLightbox = "rel=lightbox[data] ";
-              }
-
-              $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
-              $oDataFile->setPath($strDisplayPath);
-
-              $strDisplayName = "display_".$iDataFileId."_".$strFileName;
-              $oDataFile->setName($strDisplayName);
-              $strLinkToFileUrl = $oDataFile->getUrl();
-
-              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
-
-              $strThumbName = "thumb_".$iDataFileId."_".$strFileName;
-              $oDataFile->setName($strThumbName);
-              $strThumbUrl = $oDataFile->get_url();
-
-              $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getTitle();
-              if(!StringHelper::hasText($strTooltip)){
-                $strTooltip =  $strDirPath."/".$strFileName;
-              }else{
-                $strTooltip .=  " :: ".$strDirPath."/".$strFileName;
-              }
-
-              //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
-              
-              $strThisLink = <<< ENDHTML
-                <a title="$strTooltip" alt="$strFileFriendlyPath"
-                   href="$strLinkToFileUrl" $strLightbox>
-                  <img src="$strThumbUrl" border="0"/>
-                </a><br>
-                File Size: $iFileSize<br>
-                <input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId"
-                    onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/> Download
-ENDHTML;
-
-              //validate if data file on file system
-              if($oDataFile->existsInFilesystem()){
-                //exclude generated pics from the listing
-                if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
-                  $strBgColor = ($iIndex%2==0) ? "even" : "odd";
-                  $iPhotoCounter = $iIndex + 1;
-
-                  $strReturn .= <<< ENDHTML
-                      <td align="center" style="padding-bottom:30px;">$strThisLink</td>
-ENDHTML;
-                  if($iIndex>0 && $iPhotoCounter%5===0){
-                    $strReturn .= "</tr>";
-                    if($iIndex < sizeof($p_oCurrentDataFileArray)){
-                      $strReturn .= "<tr>";
-                    }
+                //validate extension
+                $extOk = false;
+                $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
+                foreach($validFileExts as $key => $value){
+                  if( preg_match("/$value/i", $strFileExtension ) ){
+                    $extOk = true;
                   }
+                }
 
-                  ++$iIndex;
-                }//end .Generated_Pics
-              }//end file exists
+                //determine if scaled image is available
+                $strLightbox = StringHelper::EMPTY_STRING;
+                if($extOk){
+                  $strLightbox = "rel=lightbox[data] ";
+                }
+
+                $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
+                $oDataFile->setPath($strDisplayPath);
+
+                $strDisplayName = "display_".$iDataFileId."_".$strFileName;
+                $oDataFile->setName($strDisplayName);
+                $strLinkToFileUrl = $oDataFile->getUrl();
+
+                $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+
+                $strThumbName = "thumb_".$iDataFileId."_".$strFileName;
+                $oDataFile->setName($strThumbName);
+                $strThumbUrl = $oDataFile->get_url();
+
+                $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getTitle();
+                if(!StringHelper::hasText($strTooltip)){
+                  $strTooltip =  $strDirPath."/".$strFileName;
+                }else{
+                  $strTooltip .=  " :: ".$strDirPath."/".$strFileName;
+                }
+
+                //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
+
+                $strThisLink = <<< ENDHTML
+                  <a title="$strTooltip" alt="$strFileFriendlyPath"
+                     href="$strLinkToFileUrl" $strLightbox>
+                    <img src="$strThumbUrl" border="0"/>
+                  </a><br>
+                  File Size: $iFileSize<br>
+                  <input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId"
+                      onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/> Download
+ENDHTML;
+
+                //validate if data file on file system
+                if($oDataFile->existsInFilesystem()){
+                  //exclude generated pics from the listing
+                  if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
+                    $strBgColor = ($iIndex%2==0) ? "even" : "odd";
+                    $iPhotoCounter = $iIndex + 1;
+
+                    $strReturn .= <<< ENDHTML
+                        <td align="center" style="padding-bottom:30px;">$strThisLink</td>
+ENDHTML;
+                    if($iIndex>0 && $iPhotoCounter%5===0){
+                      $strReturn .= "</tr>";
+                      if($iIndex < sizeof($p_oCurrentDataFileArray)){
+                        $strReturn .= "<tr>";
+                      }
+                    }
+
+                    ++$iIndex;
+                  }//end .Generated_Pics
+                }//end file exists
+              }//end if(canView)
             }//end foreach
           }else{
             $strReturn .= <<< ENDHTML
@@ -1136,170 +1123,171 @@ ENDHTML;
           $iIndex = 0;
           if(!empty($p_oCurrentDataFileArray)){
 
+            /* @var $oAuthorizer Authorizer */
+            $oAuthorizer = Authorizer::getInstance();
 
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              $strCurationStatus = $oDataFile->getCurationStatus();
-              if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
-                $strCurationStatus = "<span class='curateSubmitted'>*</span>";
-              }else{
-                $strCurationStatus = "";
-              }
-
-              $strFileTimestamp = $oDataFile->getCreated();
-              $iDataFileId = $oDataFile->getId();
-              $strFilePath = $oDataFile->getPath();
-              $strFileName = $oDataFile->getName();
-              $strDataFileLinkTitle = "";
-
-              /* @var $oDataFileLink DataFileLink */
-              if(preg_match("/Experiment-([0-9])+/", $strFileName)){
-                $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
-                $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getExperiment()->getTitle(), 50);
-              }
-
-              if(preg_match("/Trial-([0-9])+/", $strFileName)){
-                $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
-                $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getTrial()->getTitle(), 50);
-              }
-
-              /*
-               * Get the tooltip for this file.
-               * a) desc
-               * b) title
-               * c) timestamp
-               */
-              $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getTitle();
-              if(!StringHelper::hasText($strTooltip)){
-                $strTooltip =  "Timestamp: ".$strFileTimestamp;
-              }
-
-              /*
-               * Figure out if we have a jpg, png, or gif.
-               * If so, link to the 800x600 file
-               */
-              $strFileNameParts = explode('.', $strFileName);
-              $strFileExtension = array_pop($strFileNameParts);
-
-              //validate extension
-              $extOk = false;
-              $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
-              foreach($validFileExts as $key => $value){
-                if( preg_match("/$value/i", $strFileExtension ) ){
-                  $extOk = true;
-                  break;
-                }
-
-              }
-
-              $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-              $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
-
-              //determine if scaled image is available
-              $strLightbox = StringHelper::EMPTY_STRING;
-              if($extOk){
-                $strDisplayName = "display_".$iDataFileId."_".$strFileName;
-                $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
-
-                if(is_file($strDisplayPath."/".$strDisplayName)){
-                  $oDataFile->setName($strDisplayName);
-                  $oDataFile->setPath($strDisplayPath);
-                  //$strLightbox = "rel=lightbox[data] ";
-                  $strLightbox = "target='neesPhoto' ";
-
-                  $strFileFriendlyPath = $oDataFile->getFriendlyPath();
-                  $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
-                }
-              }
-
-              //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
-              $strLinkToFileUrl = $oDataFile->getUrl();
-              $strThisLink = <<< ENDHTML
-                <a title="$strTooltip"
-                   href="$strLinkToFileUrl" $strLightbox>
-                  $strFileName
-                </a>
-                $strCurationStatus
-ENDHTML;
-
-
-              /*
-               * If we're dealing with a directory,
-               * get the number of files and sub-folders.
-               * Also, link to the data view of the project
-               * editor, not component com_data.
-               */
-              $strFileCount = "";
-              $strDirectoryCount = "";
-              $strDirectory = "";
-              $iDirectorySize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : 0;
-              $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
-              $strFileCreated = ($oDataFile->getCreated()) ? $oDataFile->getCreated() : "";
-              $strTool = self::getTool($oDataFile, $p_strToolReturnUrl);
-              $strIcon = self::getIcon($oDataFile);
-
-              if( $oDataFile->getDirectory()==1){
-                if(StringHelper::hasText($strDataFileLinkTitle)){
-                  $strDataFileLinkTitle = ": ".$strDataFileLinkTitle;
-                }
-
-                if($iDirectorySize > 0){
-                  $iFileSize = cleanSize($iDirectorySize);
-
-                  $strDirectory = <<< ENDHTML
-                    <a style="border:0px;" title="$strTooltip"
-                       href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=$strFileSystemPath&type=Ajax&format=ajax&top=$p_iTopDirectoryIndex&form=$p_strForm&target=$p_strTarget', '$p_strTarget');">
-                      $strIcon
-                    </a>
-                    $strCurationStatus
-ENDHTML;
-
-                  $strThisLink = <<< ENDHTML
-                    <a style="border:0px;" title="$strTooltip"
-                       href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=$strFileSystemPath&type=Ajax&format=ajax&top=$p_iTopDirectoryIndex&form=$p_strForm&target=$p_strTarget', '$p_strTarget');">
-                      $strFileName $strDataFileLinkTitle
-                    </a>
-                    $strCurationStatus
-ENDHTML;
+              if($oAuthorizer->canView($oDataFile)){
+                $strCurationStatus = $oDataFile->getCurationStatus();
+                if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
+                  $strCurationStatus = "<span class='curateSubmitted'>*</span>";
                 }else{
-                  $strDirectory = <<< ENDHTML
-                    $strIcon
-                    $strCurationStatus
-ENDHTML;
-
-                  $strThisLink = <<< ENDHTML
-                    <span class="emptyFolder">
-                      $strFileName $strDataFileLinkTitle (0 files)
-                    </span>
-                    $strCurationStatus
-ENDHTML;
+                  $strCurationStatus = "";
                 }
-              }
 
-              //validate if data file on file system
-              if($oDataFile->existsInFilesystem()){
-                //exclude generated pics from the listing
-                if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
-                  $strBgColor = ($iIndex%2==0) ? "even" : "odd";
-                  ++$iIndex;
+                $strFileTimestamp = $oDataFile->getCreated();
+                $iDataFileId = $oDataFile->getId();
+                $strFilePath = $oDataFile->getPath();
+                $strFileName = $oDataFile->getName();
+                $strDataFileLinkTitle = "";
 
-                  $strThisIcon = ($strDirectory=="") ? $strIcon : $strDirectory;
-
-
-                  $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
-
-                  $strReturn .= <<< ENDHTML
-                    <tr class="$strBgColor">
-                      <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
-                      <td>$strThisIcon</td>
-                      <td>$strThisLink</td>
-                      <td>$iFileSize</td>
-                      <td>$strFileCreated</td>
-                      <td>$strTool</td>
-                    </tr>
-ENDHTML;
+                /* @var $oDataFileLink DataFileLink */
+                if(preg_match("/Experiment-([0-9])+/", $strFileName)){
+                  $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
+                  $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getExperiment()->getTitle(), 50);
                 }
-                //end .Generated_Pics
+
+                if(preg_match("/Trial-([0-9])+/", $strFileName)){
+                  $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
+                  $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getTrial()->getTitle(), 50);
+                }
+
+                /*
+                 * Get the tooltip for this file.
+                 * a) desc
+                 * b) title
+                 * c) timestamp
+                 */
+                $strTooltip = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getTitle();
+                if(!StringHelper::hasText($strTooltip)){
+                  $strTooltip =  "Timestamp: ".$strFileTimestamp;
+                }
+
+                /*
+                 * Figure out if we have a jpg, png, or gif.
+                 * If so, link to the 800x600 file
+                 */
+                $strFileNameParts = explode('.', $strFileName);
+                $strFileExtension = array_pop($strFileNameParts);
+
+                //validate extension
+                $extOk = false;
+                $validFileExts = explode(',', ProjectEditor::VALID_IMAGE_EXTENSIONS);
+                foreach($validFileExts as $key => $value){
+                  if( preg_match("/$value/i", $strFileExtension ) ){
+                    $extOk = true;
+                    break;
+                  }
+                }
+
+                $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+
+                //determine if scaled image is available
+                $strLightbox = StringHelper::EMPTY_STRING;
+                if($extOk){
+                  $strDisplayName = "display_".$iDataFileId."_".$strFileName;
+                  $strDisplayPath = $strFilePath."/".Files::GENERATED_PICS;
+
+                  if(is_file($strDisplayPath."/".$strDisplayName)){
+                    $oDataFile->setName($strDisplayName);
+                    $oDataFile->setPath($strDisplayPath);
+                    //$strLightbox = "rel=lightbox[data] ";
+                    $strLightbox = "target='neesPhoto' ";
+
+                    $strFileFriendlyPath = $oDataFile->getFriendlyPath();
+                    $strFileSystemPath = $oDataFile->getPath() ."/". $oDataFile->getName();
+                  }
+                }
+
+                //default the link to a file.  if an image, put in lightbox (png,jpg,gif)
+                $strLinkToFileUrl = $oDataFile->getUrl();
+                $strThisLink = <<< ENDHTML
+                  <a title="$strTooltip"
+                     href="$strLinkToFileUrl" $strLightbox>
+                    $strFileName
+                  </a>
+                  $strCurationStatus
+ENDHTML;
+
+                /*
+                 * If we're dealing with a directory,
+                 * get the number of files and sub-folders.
+                 * Also, link to the data view of the project
+                 * editor, not component com_data.
+                 */
+                $strFileCount = "";
+                $strDirectoryCount = "";
+                $strDirectory = "";
+                $iDirectorySize = ($oDataFile->isDirectory()) ? DataFilePeer::getDirectorySize($oDataFile->getFullPath()) : 0;
+                $iFileSize = (!$oDataFile->isDirectory()) ? $oDataFile->get_friendlySize() : "";
+                $strFileCreated = ($oDataFile->getCreated()) ? $oDataFile->getCreated() : "";
+                $strTool = self::getTool($oDataFile, $p_strToolReturnUrl);
+                $strIcon = self::getIcon($oDataFile);
+
+                if( $oDataFile->getDirectory()==1){
+                  if(StringHelper::hasText($strDataFileLinkTitle)){
+                    $strDataFileLinkTitle = ": ".$strDataFileLinkTitle;
+                  }
+
+                  if($iDirectorySize > 0){
+                    $iFileSize = cleanSize($iDirectorySize);
+
+                    $strDirectory = <<< ENDHTML
+                      <a style="border:0px;" title="$strTooltip"
+                         href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=$strFileSystemPath&type=Ajax&format=ajax&top=$p_iTopDirectoryIndex&form=$p_strForm&target=$p_strTarget', '$p_strTarget');">
+                        $strIcon
+                      </a>
+                      $strCurationStatus
+ENDHTML;
+
+                    $strThisLink = <<< ENDHTML
+                      <a style="border:0px;" title="$strTooltip"
+                         href="javascript:void(0);" onClick="getMootools('/warehouse/data?path=$strFileSystemPath&type=Ajax&format=ajax&top=$p_iTopDirectoryIndex&form=$p_strForm&target=$p_strTarget', '$p_strTarget');">
+                        $strFileName $strDataFileLinkTitle
+                      </a>
+                      $strCurationStatus
+ENDHTML;
+                  }else{
+                    $strDirectory = <<< ENDHTML
+                      $strIcon
+                      $strCurationStatus
+ENDHTML;
+
+                    $strThisLink = <<< ENDHTML
+                      <span class="emptyFolder">
+                        $strFileName $strDataFileLinkTitle (0 files)
+                      </span>
+                      $strCurationStatus
+ENDHTML;
+                  }
+                }
+
+                //validate if data file on file system
+                if($oDataFile->existsInFilesystem()){
+                  //exclude generated pics from the listing
+                  if($strFileName != Files::GENERATED_PICS && self::isViewable($oDataFile)){
+                    $strBgColor = ($iIndex%2==0) ? "even" : "odd";
+                    ++$iIndex;
+
+                    $strThisIcon = ($strDirectory=="") ? $strIcon : $strDirectory;
+
+
+                    $strLaunchInEED = NeesConfig::LAUNCH_INDEED;
+
+                    $strReturn .= <<< ENDHTML
+                      <tr class="$strBgColor">
+                        <td><input id="$p_iProjectId" type="checkbox" name="cbxDataFile[]" value="$iDataFileId" onClick="computeDownloadSize(this, 'downloadSum', $iMaxDownload, '$strMaxDownload', '/warehouse/downloadsize?format=ajax', 'approxDownloadSize');"/></td>
+                        <td>$strThisIcon</td>
+                        <td>$strThisLink</td>
+                        <td>$iFileSize</td>
+                        <td>$strFileCreated</td>
+                        <td>$strTool</td>
+                      </tr>
+ENDHTML;
+                  }//end .Generated_Pics
+                }
               }
             }//end foreach
           }else{
