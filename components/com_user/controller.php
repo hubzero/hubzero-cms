@@ -34,6 +34,19 @@ class UserController extends JController
 	 */
 	function display()
 	{
+		global $mainframe;
+
+		$view = JRequest::getCmd( 'view', $this->getName() );
+
+		/* @TODO: should do this redirect based on menu parameter *njk* */
+
+		if ($view == 'login') {
+			if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off') {
+				$mainframe->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+				die('insecure connection and redirection failed');
+			}
+		}
+
 		parent::display();
 	}
 
