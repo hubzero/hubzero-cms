@@ -163,7 +163,7 @@ class WikiPage extends JTable
 	
 	function getTemplates()
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `scope`='$this->scope' AND `group`='$this->group' ORDER BY `pagename`" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `group`='$this->group' ORDER BY `pagename`" );
 		return $this->_db->loadObjectList();
 	}
 	

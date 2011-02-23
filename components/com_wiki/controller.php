@@ -351,6 +351,11 @@ class WikiController extends Hubzero_Controller
 		
 		// Load the page
 		$this->getPage();
+		$ischild = false;
+		if ($this->page->id && $this->_task == 'new') {
+			$this->page->id = 0;
+			$ischild = true;
+		}
 		
 		// Get the most recent version for editing
 		$revision = $this->page->getCurrentRevision();
@@ -400,6 +405,13 @@ class WikiController extends Hubzero_Controller
 				$this->page->group = $this->_group;
 				$this->page->access = 1;
 			}
+			
+			if ($ischild && $this->page->pagename) {
+				$this->page->scope .= ($this->page->scope) ? DS.$this->page->pagename : $this->page->pagename;
+				$this->page->pagename = '';
+				$this->page->title = 'New Page';
+			}
+			
 			$this->page->title = ($this->page->title) ? $this->page->title : $this->splitPagename($this->pagename);
 			$authors = '';
 		}
