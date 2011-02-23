@@ -31,7 +31,8 @@ $this->item->nothelpful = ($this->item->nothelpful) ? $this->item->nothelpful : 
 
 $dcls = '';
 $lcls = '';
-//if ($this->id == $this->item->id) {
+
+if (isset($this->item->vote)) {
 	switch ($this->item->vote)
 	{
 		case 'yes':
@@ -46,7 +47,10 @@ $lcls = '';
 			$dcls = ' chosen';
 		break;
 	}
-//}
+} else {
+	$this->item->vote = null;
+}
+
 $juser = JFactory::getUser();
 if (!$juser->get('guest')) {
 	$like_title = 'Vote this up :: '.$this->item->helpful.' people liked this';
@@ -57,47 +61,6 @@ if (!$juser->get('guest')) {
 	$dislike_title = 'Vote this down :: Please login to vote.';
 	$cls = ' tooltips';
 }
-
-
-/*$juser =& JFactory::getUser();
-
-$pclass = (isset($this->item->vote) && $this->item->vote=="yes") ? 'yes' : 'zero';
-$nclass = (isset($this->item->vote) && $this->item->vote=="no") ? 'no' : 'zero';
-$this->item->helpful = ($this->item->helpful > 0) ? '+'.$this->item->helpful: '&nbsp;&nbsp;'.$this->item->helpful;
-$this->item->nothelpful = ($this->item->nothelpful > 0) ? '-'.$this->item->nothelpful: '&nbsp;&nbsp;'.$this->item->nothelpful;
-?>
-<span class="thumbsvote">
-	<span class="<?php echo $pclass; ?>"><?php echo $this->item->helpful; ?></span>
-<?php if ($juser->get('guest')) { ?>
-		<span class="gooditem r_disabled"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=yes'); ?>" >&nbsp;</a></span>
-		<span class="<?php echo $nclass; ?>"><?php echo $this->item->nothelpful; ?></span>
-		<span class="baditem r_disabled"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=no'); ?>" >&nbsp;</a></span>
-		<span class="votinghints"><span><?php echo JText::_('COM_ANSWERS_LOGIN_TO_VOTE'); ?></span></span>
-<?php } else { ?>
-		<span class="gooditem">
-<?php if ($this->item->vote && $this->item->vote=="no" || $juser->get('username') == $this->item->created_by) { ?>
-			<span class="dis">&nbsp;</span>
-<?php } else if ($this->item->vote) { ?>
-			<span>&nbsp;</span>
-<?php } else { ?>
-			<a href="javascript:void(0);" class="revvote" title="<?php echo JText::_('COM_ANSWERS_THIS_HELPFUL'); ?>">&nbsp;</a>
-<?php } ?>
-		</span>
-		<span class="<?php echo $nclass; ?>"><?php echo $this->item->nothelpful; ?></span>
-		<span class="baditem">
-<?php if ($this->item->vote && $this->item->vote == 'yes' or $juser->get('username') == $this->item->created_by) { ?>
-			<span class="dis">&nbsp;</span>
-<?php } else if ($this->item->vote) { ?>
-			<span>&nbsp;</span>
-<?php } else { ?>
-			<a href="javascript:void(0);" class="revvote" title="<?php echo JText::_('COM_ANSWERS_THIS_NOT_HELPFUL'); ?>">&nbsp;</a>
-<?php } ?>
-		</span>
-		<span class="votinghints"><span></span></span>
-<?php } ?>
-	</span>
-</span>
-*/
 ?>
 <span class="vote-like<?php echo $lcls; ?>">
 <?php if ($this->item->vote || $juser->get('username') == $this->item->created_by) { ?>

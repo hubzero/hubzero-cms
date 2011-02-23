@@ -172,7 +172,7 @@ class AnswersQuestion extends JTable
 		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
 	
 		//$query .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
-		echo '<!-- '.$query.' -->';
+		//echo '<!-- '.$query.' -->';
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
