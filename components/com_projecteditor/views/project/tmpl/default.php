@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
@@ -9,13 +9,13 @@ header("Expires: 0"); // Date in the past
 ?>
 
 
-<?php 
+<?php
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_projecteditor/css/projecteditor.css",'text/css');
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addStyleSheet($this->baseurl."/templates/fresh/html/com_groups/groups.css",'text/css');
   $document->addStyleSheet($this->baseurl."/plugins/tageditor/autocompleter.css",'text/css');
-  
+
   $document->addScript($this->baseurl."/components/com_projecteditor/js/ajax.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/tips.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/projecteditor.js", 'text/javascript');
@@ -28,7 +28,7 @@ header("Expires: 0"); // Date in the past
 <?php JHTML::_('behavior.calendar'); ?>
 <?php JHTML::_('behavior.modal'); ?>
 
-<?php 
+<?php
   $oUser = $this->oUser;
   $oAuthorizer = Authorizer::getInstance();
 
@@ -58,15 +58,15 @@ header("Expires: 0"); // Date in the past
     <div class="clear"></div>
   </div>
 
-  
+
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="title" style="padding-bottom:1em;">
       <span style="font-size:16px;font-weight:bold;">
-        <?php 
+        <?php
           if(StringHelper::hasText($this->strTitle)){
-            echo $this->strTitle;  
+            echo $this->strTitle;
           }else{
-            echo "Create a New Project";  
+            echo "Create a New Project";
           }
         ?>
       </span>
@@ -76,7 +76,7 @@ header("Expires: 0"); // Date in the past
 
     <div id="overview_section" class="main section" style="width:100%;float:left;">
       <?php echo $this->strTabs; ?>
-      
+
       <div class="aside">
         <?php
           if(!$this->bHasPhoto){
@@ -99,7 +99,7 @@ header("Expires: 0"); // Date in the past
         <input tabindex="19" type="text" id="txtCaption" name="desc" value="<?php echo $this->strProjectImageCaption; ?>" style="width:210px;color:#999999;" onFocus="this.style.color='#000000'; this.value='';"/> <br><br>
         <input tabindex="20" type="file" id="txtPhoto" name="upload"/>
 
-      
+
         <div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">
           <p style="margin-left:10px; margin-top:10px;"><?php echo $this->iEntityActivityLogViews; ?> Views</p>
           <p style="margin-left:10px;"><?php echo $this->iEntityActivityLogDownloads; ?> Downloads</p>
@@ -108,7 +108,7 @@ header("Expires: 0"); // Date in the past
         <div id="editEntity" class="admin-options" style="margin-top:30px">
           <p class="edit"><a href="/warehouse/project/<?php echo $this->iProjectId; ?>">View Project</a></p>
         </div>
-      
+
         <div id="curation">
           <span class="curationTitle">Curation in progress:</span>
           <?php if(StringHelper::hasText($this->mod_curationprogress)){ ?>
@@ -117,7 +117,7 @@ header("Expires: 0"); // Date in the past
             <p>No curation yet.</p>
           <?php } ?>
         </div>
-        
+
         <div class="whatisthis">
           <h4>What's this?</h4>
           <p>
@@ -127,24 +127,24 @@ header("Expires: 0"); // Date in the past
         </div>
       </div>
       <div class="subject">
-          
+
         <p class="experimentTitle"></p>
-        
+
         <?php echo $this->strSubTabs; ?>
 
         <div id="about" style="padding-top:1em;">
-          <?php 
+          <?php
             if(isset($_REQUEST["ERRORS"])){
               $strErrorArray = $_REQUEST["ERRORS"];
-              if(!empty($strErrorArray)){?> 
+              if(!empty($strErrorArray)){?>
                 <p class="error">
-                  <?  
+                  <?
                     foreach($strErrorArray as $strError){
                       echo $strError."<br>";
                     }
                   ?>
-                </p> 
-              <?php	
+                </p>
+              <?php
               }
             }
 
@@ -207,7 +207,7 @@ header("Expires: 0"); // Date in the past
                   <label for="txtShortTitle" class="editorLabel">Short Title:<span class="requiredfieldmarker">*</span></label>
                   <a style="border-bottom:0px;" href="#" onclick="return false;" class="Tips3" title="Short Title :: Please provide a meaningful title up to 60 characters.  Prefixes such as NEESR are not allowed."><img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" /></a>
                 </p>
-              </td>  
+              </td>
               <td>
                 <div id="shortTitleInput" class="editorInputFloat editorInputSize">
                   <input tabindex="4" type="text" id="txtShortTitle" name="shortTitle" style="width:100%;" value="<?php echo $this->strShortTitle; ?>" maxlength="60" onBlur="setValue('txtWebsiteTitle', this.value);" />
@@ -253,7 +253,7 @@ header("Expires: 0"); // Date in the past
               <td nowrap="">
                 <p class="editorParagraph">
                   <label for="txtFacility" class="editorLabel">Facility:</label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" 
+                  <a style="border-bottom:0px;" href="#" onclick="return false;"
                   	 class="Tips3" title="Facility :: Please provide the name of the NEES site(s).">
                   		<img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
                   </a>
@@ -267,7 +267,7 @@ header("Expires: 0"); // Date in the past
               <td nowrap="">
                 <p class="editorParagraph">
                   <label for="txtOrganization" class="editorLabel">Organization:</label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" 
+                  <a style="border-bottom:0px;" href="#" onclick="return false;"
                      class="Tips3" title="Organization :: Please provide the name of the represented organizations.  Submit a ticket to add missing organizations.">
                        <img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
                   </a>
@@ -291,7 +291,7 @@ header("Expires: 0"); // Date in the past
               <td nowrap="">
                 <p class="editorParagraph">
                   <label for="txtDescription" class="editorLabel">Description:</label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" 
+                  <a style="border-bottom:0px;" href="#" onclick="return false;"
                      class="Tips3" title="Description :: Please provide rich text that describes the nature of work being done.">
                        <img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
                   </a>
@@ -305,7 +305,7 @@ header("Expires: 0"); // Date in the past
               <td nowrap="">
                 <p class="editorParagraph">
                   <label for="txtSponsor" class="editorLabel">Sponsor:</label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" 
+                  <a style="border-bottom:0px;" href="#" onclick="return false;"
                      class="Tips3" title="Sponsor :: Please provide any funding agencies and award numbers.">
                        <img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
                   </a>
@@ -336,7 +336,7 @@ header("Expires: 0"); // Date in the past
               <td nowrap="">
                 <p class="editorParagraph">
                   <label for="txtWebsiteTitle" class="editorLabel">Website(s):</label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" 
+                  <a style="border-bottom:0px;" href="#" onclick="return false;"
                      class="Tips3" title="Website(s) :: Please provide the title and URL to any additional resource highlighting the project.">
                      <img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
                    </a>
@@ -354,8 +354,8 @@ header("Expires: 0"); // Date in the past
                 </div>
                 <div class="clear"></div>
                 <div id="websitePicked">
-                  <?php 
-                    echo $this->strWebsitePicked; 
+                  <?php
+                    echo $this->strWebsitePicked;
                   ?>
                 </div>
               </td>
@@ -364,7 +364,7 @@ header("Expires: 0"); // Date in the past
               <td nowrap="">
                 <p class="editorParagraph">
                   <label for="cboEquipment" class="editorLabel">Equipment:</label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" 
+                  <a style="border-bottom:0px;" href="#" onclick="return false;"
                       class="Tips3" title="Equipment :: Please select the equipment used from the facility (NEES site) above.">
                       <img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
                   </a>
@@ -378,7 +378,7 @@ header("Expires: 0"); // Date in the past
               <td nowrap="">
                 <p class="editorParagraph">
                   <label for="txtPublications" class="editorLabel">Publications:</label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" 
+                  <a style="border-bottom:0px;" href="#" onclick="return false;"
                      class="Tips3" title="Pulications :: Click the Contribute link to add a publication as a resource.  Resources are searchable through NEEShub.">
                      <img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
                   </a>
@@ -390,7 +390,7 @@ header("Expires: 0"); // Date in the past
               <td nowrap="">
                 <p class="editorParagraph">
                   <label for="actags" class="editorLabel">Tags (keywords):</label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" 
+                  <a style="border-bottom:0px;" href="#" onclick="return false;"
                      class="Tips3" title="Tags :: Please provide keywords that highlight the project.  When users search, they will find your project using the tags.">
                      <img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
                   </a>
@@ -398,7 +398,7 @@ header("Expires: 0"); // Date in the past
               </td>
               <td>
                 <div id="tagInput" class="editorInputSize">
-                  <?php 
+                  <?php
                     if($this->strTags) :
                       echo $this->strTags;
                     else:
@@ -412,7 +412,7 @@ header("Expires: 0"); // Date in the past
               <td nowrap="">
                 <p class="editorParagraph">
                   <label for="txtStatus" class="editorLabel">Status:<span class="requiredfieldmarker">*</span></label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" 
+                  <a style="border-bottom:0px;" href="#" onclick="return false;"
                      class="Tips3" title="Status :: Any project that is funded by the NSF/NEES initiative should be designated as NEES.  All other projects are considered Non-NEES.">
                      <img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
                   </a>
@@ -470,8 +470,8 @@ header("Expires: 0"); // Date in the past
               <td nowrap="">
                 <p class="editorParagraph">
                   <label for="txtAccess" class="editorLabel">Access Settings:<span class="requiredfieldmarker">*</span></label>
-                  <a style="border-bottom:0px;" href="#" onclick="return false;" 
-                     class="Tips3" title="Access Settings :: Control resources the are available to users.">
+                  <a style="border-bottom:0px;" href="#" onclick="return false;"
+                     class="Tips3" title="Access Settings :: Control resources that are available to users.">
                      <img src="<?php echo $this->baseurl."/templates/fresh/images/icons/helptab.png" ?>" />
                   </a>
                 </p>
@@ -544,12 +544,12 @@ header("Expires: 0"); // Date in the past
               </td>
             </tr>
           </table>
-    
+
         </div>
       </div>
     </div>
     <div class="clear"></div>
-  </div> 
+  </div>
 <!--</div>-->
 
 </form>

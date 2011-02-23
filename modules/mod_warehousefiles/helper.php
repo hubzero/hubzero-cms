@@ -127,11 +127,19 @@ ENDHTML;
                 $oDataFileLink = DataFileLinkPeer::retrieveByPK($iDataFileId);
                 /* @var $oDataFileLink DataFileLink */
                 if(preg_match("/Experiment-([0-9])+/", $strFileName)){
-                  $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getExperiment()->getTitle(), 50);
+                  if($oDataFileLink->getExperiment()){
+                    if(StringHelper::hasText($oDataFileLink->getExperiment()->getTitle())){
+                      $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getExperiment()->getTitle(), 50);
+                    }
+                  }
                 }
 
                 if(preg_match("/Trial-([0-9])+/", $strFileName)){
-                  $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getTrial()->getTitle(), 50);
+                  if($oDataFileLink->getTrial()){
+                    if(StringHelper::hasText($oDataFileLink->getTrial()->getTitle())){
+                      $strDataFileLinkTitle = StringHelper::neat_trim($oDataFileLink->getTrial()->getTitle(), 50);
+                    }
+                  }
                 }
 
                 /*
