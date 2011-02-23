@@ -522,9 +522,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$html .= t.t.t.'	  <label>'.n;
 						
 							$document =& JFactory::getDocument();
-							$document->addScript('components'.DS.'com_support'.DS.'observer.js');
+							$document->addScript('components'.DS.'com_wishlist'.DS.'observer.js');
 							$document->addScript('components'.DS.'com_wishlist'.DS.'autocompleter.js');
-							$document->addStyleSheet('components'.DS.'com_support'.DS.'autocompleter.css');
+							$document->addStyleSheet('components'.DS.'com_wishlist'.DS.'autocompleter.css');
 						
 							$html .= t.t.t.'<input type="text" name="group" value="';
 							if($wishlist->category=='group') {
