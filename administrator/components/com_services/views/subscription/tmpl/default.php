@@ -166,7 +166,7 @@ switch ($this->subscription->status)
               
                <tr>
 			   <td class="key"><label><?php echo JText::_('Activate units'); ?>:</label></td>
-			   <td> <?php if  ($this->subscription->pendingunits > 0 ) { ?> <input type="text" name="newunits" value="<?php echo $this->subscription->pendingunits ?>"  /> <?php } else { echo $this->subscription->pendingunits;  } ?> </td>
+			   <td> <?php if  ($this->subscription->pendingunits > 0 or $this->subscription->expires < $now ) { ?> <input type="text" name="newunits" value="<?php echo $this->subscription->pendingunits ?>"  /> <?php } else { echo $this->subscription->pendingunits;  } ?> </td>
 			  </tr>
                <tr>
 			   	<td colspan="2"><input type="radio" name="action" value="cancelsub" /> <?php echo JText::_('Cancel this subscription'); ?></td>

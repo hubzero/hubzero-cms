@@ -102,7 +102,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td><?php echo $row->pendingpayment &&  ($row->pendingpayment > 0 or $row->pendingunits > 0)  ? '<span style="color:#ff0000;">'.$pending.'</span>' : $pending;  ?></td>
 				<td><?php echo $name.' ('.$login.')';  ?></td>
 				<td><?php echo JHTML::_('date', $row->added, '%d %b, %Y'); ?></td>	   
-				<td><?php echo JHTML::_('date', $row->updated, '%d %b, %Y'); ?></td>
+				<td><?php echo $row->updated ? JHTML::_('date', $row->updated, '%d %b, %Y') : 'never'; ?></td>
 				<td><?php echo $expires; ?></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=subscription&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('View Subscription Details'); ?>"><?php echo JText::_('DETAILS'); ?></a></td>
 			</tr>
