@@ -261,7 +261,8 @@ class WarehouseModelBase extends JModel {
       //copy the selected files to the temp directory
       $oDataFileArray = DataFilePeer::retrieveByPKs($oDataFileIdArray);
       foreach ($oDataFileArray as $oDataFile) {
-        $strFilesToCopy .= $oDataFile->getPath() . "/" . $oDataFile->getName() . " ";
+        $strFileAbsolutePath = "'".$oDataFile->getPath() . "/" . $oDataFile->getName()."'";
+        $strFilesToCopy .= $strFileAbsolutePath . " ";
       }
 
       /*
