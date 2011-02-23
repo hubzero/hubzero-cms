@@ -70,13 +70,16 @@ JToolBarHelper::title( JText::_( 'Ticket Stats' ), 'addedit.png' );
 		</label>
 		
 		<label>
-			<?php echo JText::_('Group'); 
-			$document =& JFactory::getDocument();
-			$document->addScript(DS.'components'.DS.'com_support'.DS.'observer.js');
-			$document->addScript(DS.'components'.DS.'com_support'.DS.'autocompleter.js');
-			$document->addStyleSheet(DS.'components'.DS.'com_support'.DS.'autocompleter.css');
-			?>:
-			<input type="text" name="group" value="<?php echo $this->group; ?>" id="acgroup" value="" autocomplete="off" />
+			<?php echo JText::_('Group'); ?>: 
+			<?php 
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher =& JDispatcher::getInstance();
+		$gc = $dispatcher->trigger( 'onGetSingleEntry', array(array('groups', 'group', 'acgroup','',$this->group)) );
+		if (count($gc) > 0) {
+			echo $gc[0];
+		} else { ?>
+			<input type="text" name="group" value="<?php echo $this->group; ?>" id="acgroup" size="35" autocomplete="off" />
+		<?php } ?>
 		</label>
 		<input type="submit" name="submit" value="View" />
 	</fieldset>
@@ -199,10 +202,10 @@ $max = ceil($number/10)*10;
 		<table class="support-stats-people" summary="Breakdown of people and the number of tickets closed">
 			<thead>
 				<tr>
-					<th scope="col"><a<?php if ($this->sort == 'name') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=name" title="Sort by name">&darr; Person</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'year') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=year" title="Sort by year count">&darr; Closed this year</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'month') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=month" title="Sort by month count">&darr; Closed this month</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'week') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=week" title="Sort by week count">&darr; Closed this week</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'name') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=name&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by name">&darr; Person</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'year') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=year&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by year count">&darr; Closed this year</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'month') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=month&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by month count">&darr; Closed this month</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'week') { echo ' class="active"'; } ?> href="index.php?option=com_support&amp;task=stats&amp;type=<?php if ($this->type == 1) { echo 'automatic'; } ?>&amp;sort=week&amp;group=<?php echo $this->group; ?>&amp;year=<?php echo $this->year; ?>" title="Sort by week count">&darr; Closed this week</a></th>
 				</tr>
 			</thead>
 			<tbody>

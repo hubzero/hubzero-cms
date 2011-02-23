@@ -66,13 +66,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</label>
 		
 		<label>
-			<?php echo JText::_('Group'); 
-			$document =& JFactory::getDocument();
-			$document->addScript(DS.'components'.DS.'com_support'.DS.'observer.js');
-			$document->addScript(DS.'components'.DS.'com_support'.DS.'autocompleter.js');
-			$document->addStyleSheet(DS.'components'.DS.'com_support'.DS.'autocompleter.css');
-			?>:
-			<input type="text" name="group" value="<?php echo $this->group; ?>" id="acgroup" value="" size="35" autocomplete="off" />
+			<?php echo JText::_('Group'); ?>: 
+			<?php 
+			JPluginHelper::importPlugin( 'hubzero' );
+			$dispatcher =& JDispatcher::getInstance();
+		$gc = $dispatcher->trigger( 'onGetSingleEntry', array(array('groups', 'group', 'acgroup','',$this->group)) );
+		if (count($gc) > 0) {
+			echo $gc[0];
+		} else { ?>
+			<input type="text" name="group" value="<?php echo $this->group; ?>" id="acgroup" size="35" autocomplete="off" />
+		<?php } ?>
 		</label>
 		<input type="submit" value="View" />
 	</fieldset>
@@ -199,10 +202,10 @@ $max = ceil($number/10)*10;
 		<table class="support-stats-people" summary="Breakdown of people and the number of tickets closed">
 			<thead>
 				<tr>
-					<th scope="col"><a<?php if ($this->sort == 'name') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=name'); ?>" title="Sort by name">&darr; Person</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'year') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=year'); ?>" title="Sort by year count">&darr; Closed this year</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'month') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=month'); ?>" title="Sort by month count">&darr; Closed this month</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'week') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=week'); ?>" title="Sort by week count">&darr; Closed this week</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'name') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=name&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by name">&darr; Person</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'year') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=year&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by year count">&darr; Closed this year</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'month') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=month&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by month count">&darr; Closed this month</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'week') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=week&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by week count">&darr; Closed this week</a></th>
 				</tr>
 			</thead>
 			<tbody>

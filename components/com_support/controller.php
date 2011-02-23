@@ -31,6 +31,8 @@ class SupportController extends Hubzero_Controller
 {
 	public function execute()
 	{
+		$this->acl = SupportACL::getACL();
+		
 		$this->_task = JRequest::getVar( 'task', '', 'post' );
 		if (!$this->_task) {
 			$this->_task = JRequest::getVar( 'task', '', 'get' );
@@ -119,7 +121,8 @@ class SupportController extends Hubzero_Controller
 		$view->title = JText::_(strtoupper($this->_name));
 		
 		$view->authorized = $this->authorize();
-		if ($view->authorized != 'admin') {
+		//if ($view->authorized != 'admin') {
+		if (!$this->acl->check('read','tickets')) {
 			$this->_return = JRoute::_('index.php?option='.$this->_option.'&task=tickets');
 		}
 		
@@ -135,10 +138,7 @@ class SupportController extends Hubzero_Controller
 		$type = JRequest::getVar('type', 'submitted');
 		$view->type = ($type == 'automatic') ? 1 : 0;
 		
-		$view->group = JRequest::getVar('group', '');
-		if (!$view->group && trim($this->config->get('group'))) {
-			$view->group = trim($this->config->get('group'));
-		}
+		$view->group = JRequest::getVar('group', trim($this->config->get('group')));
 		
 		$view->sort = JRequest::getVar('sort', 'name');
 		
@@ -336,21 +336,21 @@ class SupportController extends Hubzero_Controller
 		if ($juser->get('guest')) {
 			return $this->login();
 		}
-		
-		$view->authorized = $this->authorize();
-		if (!$view->authorized) {
+	
+		if (!$this->acl->check('read','tickets')) {
 			$view->filters['owner'] = $juser->get('username');
 			$view->filters['reportedby'] = $juser->get('username');
 		}
+		$view->authorized = $this->authorize();
 
 		// Create a Ticket object
 		$obj = new SupportTicket( $this->database );
 
 		// Record count
-		$total = $obj->getTicketsCount( $view->filters, $view->authorized );
+		$total = $obj->getTicketsCount( $view->filters, $this->acl->check('read','tickets') );
 
 		// Fetch results
-		$view->rows = $obj->getTickets( $view->filters, $view->authorized );
+		$view->rows = $obj->getTickets( $view->filters, $this->acl->check('read','tickets') );
 
 		// Initiate paging class
 		jimport('joomla.html.pagination');
@@ -367,6 +367,8 @@ class SupportController extends Hubzero_Controller
 		
 		// Get some needed scripts
 		$this->_getScripts();
+		
+		$view->acl = $this->acl;
 		
 		// Output HTML
 		if ($this->getError()) {
@@ -410,19 +412,49 @@ class SupportController extends Hubzero_Controller
 			return;
 		}
 		
+		if ($view->row->login == $juser->get('username') 
+		 || $view->row->owner == $juser->get('username')) {
+			if (!$this->acl->check('read','tickets')) {
+				$this->acl->setAccess('read','tickets',1);
+			}
+			if (!$this->acl->check('update','tickets')) {
+				$this->acl->setAccess('update','tickets',-1);
+			}
+			if (!$this->acl->check('create','comments')) {
+				$this->acl->setAccess('create','comments',-1);
+			}
+			if (!$this->acl->check('read','comments')) {
+				$this->acl->setAccess('read','comments',1);
+			}
+		}
+		
+		if ($this->acl->authorize($view->row->group)) {
+			$this->acl->setAccess('read','tickets',1);
+			$this->acl->setAccess('update','tickets',1);
+			$this->acl->setAccess('delete','tickets',1);
+			$this->acl->setAccess('create','comments',1);
+			$this->acl->setAccess('read','comments',1);
+			$this->acl->setAccess('create','private_comments',1);
+			$this->acl->setAccess('read','private_comments',1);
+		}
+		
 		// Ensure the user is authorized to view this ticket
 		$view->authorized = $this->authorize($view->row->group);
-		if ($view->row->login != $juser->get('username') 
+		/*if ($view->row->login != $juser->get('username') 
 		 && $view->row->owner != $juser->get('username') 
 		 && !$view->authorized 
 		 && $view->row->section!=2) {
 			JError::raiseError( 403, JText::_('SUPPORT_NOT_AUTH') );
 			return;
+		}*/
+		if (!$this->acl->check('read','tickets')) {
+			JError::raiseError( 403, JText::_('SUPPORT_NOT_AUTH') );
+			return;
 		}
 		
 		// Get the next and previous support tickets
-		$view->row->prev = $view->row->getTicketId('prev', $view->filters, $view->authorized);
-		$view->row->next = $view->row->getTicketId('next', $view->filters, $view->authorized);
+		$view->row->prev = $view->row->getTicketId('prev', $view->filters);
+		$view->row->next = $view->row->getTicketId('next', $view->filters);
 
 		$summary = substr($view->row->report, 0, 70);
 		if (strlen($summary) >=70 ) {
@@ -464,7 +496,7 @@ class SupportController extends Hubzero_Controller
 		
 		// Get comments
 		$sc = new SupportComment( $this->database );
-		$view->comments = $sc->getComments( $view->authorized, $view->row->id );
+		$view->comments = $sc->getComments( $this->acl->check('read','private_comments'), $view->row->id );
 
 		// Parse comment text for attachment tags
 		$juri =& JURI::getInstance();
@@ -518,9 +550,9 @@ class SupportController extends Hubzero_Controller
 		$this->_getStyles();
 		
 		// Get some needed scripts
-		$document =& JFactory::getDocument();
-		$document->addScript('/components'.DS.'com_support'.DS.'autosave.js');
 		$this->_getScripts();
+		
+		$view->acl = $this->acl;
 		
 		// Output HTML
 		if ($this->getError()) {

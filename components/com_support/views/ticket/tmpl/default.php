@@ -36,21 +36,6 @@ $fstring = urlencode(trim($this->filters['_find']));
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?>: #<?php echo $this->row->id; ?></h2>
-<?php
-/*$targetuser = null;
-if ($this->row->login) {
-	$targetuser =& JUser::getInstance($this->row->login);
-}
-if (is_object($targetuser) && $targetuser->id) {
-	?>
-	<h3><?php echo JText::_('TICKET_SUBMITTED_ON').' '.JHTML::_('date',$this->row->created, '%d %b, %Y').' '.JText::_('AT').' '.JHTML::_('date', $this->row->created, '%I:%M %p').' '.JText::_('BY'); ?> <a href="<?php echo JRoute::_('index.php?option=com_members&id='.$targetuser->id); ?>"><?php echo ($this->row->login) ? $this->row->name.' ('.$this->row->login.')' : $this->row->name; ?></a></h3>
-	<?php
-} else {
-	?>
-	<h3><?php echo JText::_('TICKET_SUBMITTED_ON').' '.JHTML::_('date',$this->row->created, '%d %b, %Y').' '.JText::_('AT').' '.JHTML::_('date', $this->row->created, '%I:%M %p').' '.JText::_('BY'); ?> <a href="mailto:<?php echo $this->row->email; ?>"><?php echo ($this->row->login) ? $this->row->name.' ('.$this->row->login.')' : $this->row->name; ?></a></h3>
-	<?php
-}*/
-?>
 </div><!-- / #content-header -->
 
 <div id="content-header-extra">
@@ -131,7 +116,7 @@ if (is_object($targetuser) && $targetuser->id) {
 					</a>
 				</p><!-- / .ticket-title -->
 				<p><?php echo $this->row->report; ?></p>
-<?php if ($this->authorized) { ?>
+<?php if ($this->acl->check('update','tickets') > 0) { ?>
 				<table id="ticket-details" summary="<?php echo JText::_('TICKET_DETAILS_TBL_SUMMARY'); ?>">
 					<caption id="toggle-details"><?php echo JText::_('TICKET_DETAILS'); ?></caption>
 					<tbody id="ticket-details-body" class="hide">
@@ -163,11 +148,14 @@ if (is_object($targetuser) && $targetuser->id) {
 	</div><!-- / .subject -->
 </div><!-- / .main section -->
 
+<?php if ($this->acl->check('read','comments')) { ?>
 <div class="below section">
 	<h3><a name="comments"></a><?php echo JText::_('TICKET_COMMENTS'); ?></h3>
 			
 	<div class="aside">
+<?php if ($this->acl->check('create','comments')) { ?>
 		<p class="add"><a href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a></p>
+<?php } ?>
 	</div><!-- / .aside -->
 
 	<div class="subject">
@@ -176,8 +164,14 @@ if (is_object($targetuser) && $targetuser->id) {
 <?php
 			ximport('Hubzero_User_Profile');
 			$o = 'even';
+			$i = 0;
 			foreach ($this->comments as $comment) 
 			{
+				if (!$this->acl->check('read','private_comments') && $comment->access == 1) {
+					continue;
+				}
+				$i++;
+				
 				if ($comment->access == 1) { 
 					$access = 'private';
 				} else {
@@ -234,19 +228,16 @@ if (is_object($targetuser) && $targetuser->id) {
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .below section -->
+<?php } // ACL can read comments ?>
 
-<?php if ((!$juser->get('guest') && ($juser->get('username') == $this->row->login || $this->authorized))) { ?>
+<?php if ($this->acl->check('create','comments') || $this->acl->check('update','tickets')) { ?>
 <div class="below section">
 	<h3>
 		<?php echo JText::_('COMMENT_FORM'); ?>
 	</h3>
 	
 	<div class="aside">
-<?php if ($this->authorized) { ?>
-		<p><?php echo JText::_('COMMENT_FORM_EXPLANATION'); ?></p>
-<?php } else { ?>
 		<p>Please remember to describe problems in detail, including any steps you may have taken before encountering an error.</p>
-<?php } ?>
 	</div><!-- / .aside -->
 	
 	<div class="subject">
@@ -276,37 +267,36 @@ if (is_object($targetuser) && $targetuser->id) {
 				<input type="hidden" name="task" value="save" />
 				<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
 				<input type="hidden" name="find" value="<?php echo htmlentities(urldecode($fstring), ENT_QUOTES); ?>" />
-<?php if (!$this->authorized) { ?>
+<?php if (!$this->acl->check('create','private_comments')) { ?>
 				<input type="hidden" name="access" value="0" />
 <?php } ?>
-				
+
+<?php if ($this->acl->check('update','tickets')) { ?>
 				<fieldset>
+<?php if ($this->acl->check('update','tickets') > 0) { ?>
 					<legend>Ticket Details</legend>
-<?php if ($this->authorized) { ?>
 					<label>
 						<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
-<?php 
-$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->lists['tags'])) );
+						<?php 
+					$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->lists['tags'])) );
 
-if (count($tf) > 0) {
-	echo $tf[0];
-} else { ?>
+					if (count($tf) > 0) {
+						echo $tf[0];
+					} else { ?>
 						<input type="text" name="tags" id="tags" value="<?php echo $this->lists['tags']; ?>" size="35" />
-<?php } ?>
+					<?php } ?>
 					</label>
 
-<?php } ?>
-<?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
 				<div class="grouping">
 					<label>
 						<?php echo JText::_('COMMENT_GROUP'); ?>:
-<?php 
-$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup','',$this->row->group,'','ticketowner')) );
-if (count($gc) > 0) {
-	echo $gc[0];
-} else { ?>
+						<?php 
+					$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup','',$this->row->group,'','ticketowner')) );
+					if (count($gc) > 0) {
+						echo $gc[0];
+					} else { ?>
 						<input type="text" name="ticket[group]" value="<?php echo $this->row->group; ?>" id="acgroup" value="" autocomplete="off" />
-<?php } ?>
+					<?php } ?>
 					</label>
 
 					<label>
@@ -315,14 +305,13 @@ if (count($gc) > 0) {
 					</label>
 				</div>
 				<div class="clear"></div>
-<?php } ?>
-<?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
+
 				<div class="grouping">
 					<label>
 						<?php echo JText::_('COMMENT_SEVERITY'); ?>:
 						<?php echo SupportHtml::selectArray('ticket[severity]',$this->lists['severities'],$this->row->severity); ?>
 					</label>
-<?php } ?>
+<?php } // ACL can update ticket (admin) ?>
 					<label>
 						<?php echo JText::_('COMMENT_STATUS'); ?>:
 						<select name="ticket[resolved]" id="status">
@@ -357,16 +346,20 @@ if (count($gc) > 0) {
 						?>
 						</select>
 					</label>
-<?php if (!$juser->get('guest') && $this->authorized && ($juser->get('username') != $this->row->login || $this->authorized == 'admin')) { ?>
+<?php if ($this->acl->check('update','tickets') > 0) { ?>
 				</div>
 <?php } ?>
 				<div class="clear"></div>
 				</fieldset>
 
+<?php } // ACL can update tickets ?>
+<?php if ($this->acl->check('create','comments') || $this->acl->check('create','private_comments')) { ?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_COMMENTS'); ?>:</legend>
-<?php if ($this->authorized) { ?>
+<?php if ($this->acl->check('create','comments') > 0 || $this->acl->check('create','private_comments')) { ?>
 					<div class="top grouping">
+<?php } ?>
+<?php if ($this->acl->check('create','comments') > 0) { ?>
 						<label>
 							<?php
 							$hi = array();
@@ -391,14 +384,17 @@ if (count($gc) > 0) {
 							echo $o.$hi;
 							?>
 						</label>
-
+<?php } // ACL can create comment (admin) ?>
+<?php if ($this->acl->check('create','private_comments')) { ?>
 						<label>
 							<input class="option" type="checkbox" name="access" id="make-private" value="1" />
 							<?php echo JText::_('COMMENT_PRIVATE'); ?>
 						</label>
+<?php } // ACL can create private comments ?>
+<?php if ($this->acl->check('create','comments') > 0 || $this->acl->check('create','private_comments')) { ?>
 					</div>
 					<div class="clear"></div>
-<?php } ?>
+<?php } // ACL can create comments (admin) or private comments ?>
 					<textarea name="comment" id="comment" rows="13" cols="35"></textarea>
 				</fieldset>
 
@@ -416,8 +412,8 @@ if (count($gc) > 0) {
 						</label>
 					</div>
 				</fieldset>
-
-<?php if ($this->authorized) { ?>
+<?php } //if ($this->acl->check('create','comments') || $this->acl->check('create','private_comments')) { ?>
+<?php if ($this->acl->check('create','comments') > 0) { ?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_EMAIL'); ?>:</legend>
 					<div class="grouping">
@@ -440,7 +436,7 @@ if (count($gc) > 0) {
 <?php } else { ?>
 				<input type="hidden" name="email_submitter" id="email_submitter" value="1" />
 				<input type="hidden" name="email_owner" id="email_owner" value="1" />
-<?php } ?>
+<?php } // ACL can create comments (admin) ?>
 				<p class="submit">
 					<input type="submit" value="<?php echo JText::_('SUBMIT_COMMENT'); ?>" />
 				</p>
@@ -448,5 +444,5 @@ if (count($gc) > 0) {
 		</form>
 	</div><!-- / .subject -->
 </div><!-- / .section -->
-<?php } ?>
+<?php } // ACL can create comments ?>
 <div class="clear"></div>

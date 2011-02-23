@@ -65,7 +65,7 @@ class SupportComment extends JTable
 		if (!$ticket) {
 			$ticket = $this->_ticket;
 		}
-		if ($authorized == 'admin') {
+		if ($authorized) {
 			$sqladmin = "";
 		} else {
 			$sqladmin = "AND access=0";
@@ -83,7 +83,7 @@ class SupportComment extends JTable
 		if (!$ticket) {
 			$ticket = $this->_ticket;
 		}
-		if ($authorized == 'admin') {
+		if ($authorized) {
 			$sqladmin = "";
 		} else {
 			$sqladmin = "AND access=0";
@@ -99,7 +99,7 @@ class SupportComment extends JTable
 		if (!$ticket) {
 			$ticket = $this->_ticket;
 		}
-		if ($authorized == 'admin') {
+		if ($authorized) {
 			$sqladmin = "";
 		} else {
 			$sqladmin = "AND access=0";

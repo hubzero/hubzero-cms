@@ -262,13 +262,15 @@ if ($this->filters['_show'] != '') {
 						<td width="33%">
 							<label>
 								<?php echo JText::_('COMMENT_GROUP'); ?>:<br />
-								<?php
-								$document =& JFactory::getDocument();
-								$document->addScript(DS.'components'.DS.'com_support'.DS.'observer.js');
-								$document->addScript(DS.'components'.DS.'com_support'.DS.'autocompleter.js');
-								$document->addStyleSheet(DS.'components'.DS.'com_support'.DS.'autocompleter.css');
-								?>
+								<?php 
+								JPluginHelper::importPlugin( 'hubzero' );
+								$dispatcher =& JDispatcher::getInstance();
+								$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','',$this->row->group,'','owner')) );
+								if (count($gc) > 0) {
+									echo $gc[0];
+								} else { ?>
 								<input type="text" name="group" value="<?php echo $this->row->group; ?>" id="acgroup" value="" size="30" autocomplete="off" />
+								<?php } ?>
 							</label>
 						</td>
 						<td width="33%">
