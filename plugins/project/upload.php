@@ -235,7 +235,7 @@ class plgProjectUpload extends JPlugin{
     $oDataFile = new DataFile();
     $oDataFile = $oDataFile->newDataFileByFilesystem($p_strName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $p_strUsageId, $p_strTool, $p_iCreatorId, $p_iModifiedById, $p_strModifiedDate, $p_iAppId);
     $uploadedFileNameParts = explode('.', $p_strName);
-    if(sizeof($uploadedFileNameParts) == 2){
+    if(!empty($uploadedFileNameParts)){
       $uploadedFileExtension = array_pop($uploadedFileNameParts);
 
       /* @var $oDocumentFormat DocumentFormat */
@@ -290,7 +290,7 @@ class plgProjectUpload extends JPlugin{
     $oDataFile = new DataFile();
     $oDataFile = $oDataFile->newDataFileByFilesystem($p_strName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $p_strUsageId, $p_strTool, $p_iCreatorId, $p_iModifiedById, $p_strModifiedDate, $p_iAppId);
     $uploadedFileNameParts = explode('.', $p_strName);
-    if(sizeof($uploadedFileNameParts) == 2){
+    if(!empty($uploadedFileNameParts)){
       $uploadedFileExtension = array_pop($uploadedFileNameParts);
 
       /* @var $oDocumentFormat DocumentFormat */
@@ -390,7 +390,7 @@ class plgProjectUpload extends JPlugin{
     $oDataFile = new DataFile();
     $oDataFile = $oDataFile->newDataFileByFilesystem($p_strName, $p_strWarehousePath, false, $p_strTitle, $p_strDescription, $p_strUsageId, $p_strTool, $p_iCreatorId, $p_iModifiedById, $p_strModifiedDate, $p_iAppId);
     $uploadedFileNameParts = explode('.', $p_strName);
-    if(sizeof($uploadedFileNameParts) == 2){
+    if(!empty($uploadedFileNameParts)){
       $uploadedFileExtension = array_pop($uploadedFileNameParts);
 
       /* @var $oDocumentFormat DocumentFormat */
