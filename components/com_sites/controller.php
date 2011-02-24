@@ -726,7 +726,7 @@ class SitesController extends JController
         if($submitbutton == 'Cancel')
         {
             JRequest::setVar('view','sensors');
-            $this->_redirect =  base64_encode(JRoute::_('index.php?option=com_sites&view=calibration&id=' . $facilityID . '&calibrationid=' . $calibrationID, false ));
+            $this->_redirect =  base64_encode(JRoute::_('index.php?option=com_sites&view=calibration&id=' . $facilityID . '&sensorid=' . $sensorID . '&calibrationid=' . $calibrationID, false ));
             $this->redirect();
             return;
         }
