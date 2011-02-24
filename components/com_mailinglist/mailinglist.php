@@ -16,7 +16,10 @@ jimport('joomla.application.component.view');
 
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 
-// Instantiate controller
+$pathway   =& $mainframe->getPathway();
+$pathway->addItem( 'Subscribe to newsletters', '/index.php?option=' . $option);
+
+
 $controller = new MailingListController();
 
 // Require user to be logged in for ANY page or request of this component
@@ -26,10 +29,9 @@ if (!$controller->userloggedin())
 }
 else
 {
-	$controller->execute();
+        $controller->execute(JRequest::getCmd('task'));
 	$controller->redirect();
 }
-
 
 ?>
 

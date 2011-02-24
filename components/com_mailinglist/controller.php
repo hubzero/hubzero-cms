@@ -4,175 +4,90 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.controller');
-ximport('xgroup');
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'lib'.DS.'mailingListHelper.php' );
 
 
-
-class MailingListController extends JObject
+class MailingListController extends JController
 {	
-	
-	private $_task  = NULL;
-	private $mailingListGroupsArray = array();
-
 	public function __construct()
 	{
-		$this->_redirect = NULL;
-		
-		$mainframe = JFactory::getApplication();
-		$params =& $mainframe->getParams();
-		$groupIDs = $params->get('grouopIDs');
-		$this->mailingListGroupsArray = explode(',', $groupIDs);
+            parent::__construct();
+            $this->_redirect = NULL;
+
+            // Register tasks
+            $this->registerTask('saveesubscriptions', 'saveesubscriptions');
+            $this->registerTask('edit', 'edit');
+            $this->registerTask('save', 'save');
+            $this->registerTask('__default', 'edit');
+
+            
 	}
 	
 
-    public function execute()
-	{
-		$this->_task = JRequest::getVar( 'task', '' );
-		
-		switch ($this->_task) 
-		{
-			case 'join':		$this->join();			break;
-			case 'dojoin':		$this->dojoin();		break;
-			default:			$this->join();			break;
-		}
-	}
-    
-    
 	public function redirect()
 	{
-		if ($this->_redirect != NULL) {
-			$app =& JFactory::getApplication();
-			$app->redirect( $this->_redirect, $this->_message, $this->_messageType );
-		}
+            if ($this->_redirect != NULL) {
+                $app =& JFactory::getApplication();
+                $app->redirect( $this->_redirect, $this->_message, $this->_messageType );
+            }
 	}
 
-	
+
+        function edit()
+        {
+            JRequest::setVar('view','join');
+            parent::display();
+        }
+
 	/*
 	 * The form submits here, to actually enroll (or unenroll) a user from the specified groups
 	 */
-	protected function dojoin()
+	function save()
 	{
-		
-		$loopCount = 0;
-		$removedFromGroups = '';
-		$addedToGroups = '';
-		$temp = '';
-		
-		$group = new XGroup();
-		$juser =& JFactory::getUser();		
-		
-		// Loop through and get each checkbox
-		foreach($this->mailingListGroupsArray as $mailingListGroup)
-		{
-			$temp = JRequest::getVar($mailingListGroup, '');
-			
-			$rv = $group->select($mailingListGroup);
-			
-			if($rv) // group select returns a valid group
-			{
-			
-				// If group name was found from query, that means it was checked 
-				if('' != $temp)
-				{
-					
-					if (!$group->is_member_of('applicants',$juser->get('id')) && 
-						!$group->is_member_of('members',$juser->get('id')) && 
-						!$group->is_member_of('managers',$juser->get('id')) && 
-						!$group->is_member_of('invitees',$juser->get('id'))) 
-					{
-						// Group must have open membershi policy, otherwise, silently ignore
-						// request
-						if ( $group->get('join_policy') == 0 ) // open membership
-						{
-							$group->add('members',array($juser->get('id')));
-							$group->update();
-						}
-					}
-					
-				}
-				else // if unavailable, remove from group membership
-				{
-					// Unenroll, don't even bother checking for previous enrollment
-					$group->remove('managers',$juser->get('id'));
-					$group->remove('members',$juser->get('id'));
-					$group->remove('applicants',$juser->get('id'));
-					$group->remove('invitees',$juser->get('id'));
-	
-					$group->update();
-				}
-			}				
-		}		
-		
-		// Instantiate a view
-		$view = new JView( array('name'=>'join') );
+            $juser =& JFactory::getUser();
 
-		$listhtml = $this->groupListHtml();
-    	$view->assignRef('listhtml', $listhtml); 
-		
-		$confirmation = 'Mailing list membership updated';
-    	$view->assignRef('confirmationMessage', $confirmation); 
-		
-    	$view->display();
-		
+            // Get groups and loop through them
+            $mailingListGroupsArray = mailingListHelper::getGroups();
+            $addedGroups = 0;
+            $removedGroups = 0;
+
+            foreach($mailingListGroupsArray as $group)
+            {
+                $groupName = $group[0];
+                $groupPW = $group[1];
+
+                // See if group has a checkbox associated with it
+                $temp = JRequest::getVar($groupName, '');
+			
+                // If group name was found from query, that means it was checked
+                if('' != $temp)
+                {
+                    //Add only if user isn't already in list
+                    if(!mailingListHelper::userMemberOfList($juser->email, $groupName, $groupPW))
+                    {
+                        mailingListHelper::addUserToList($juser->email, $groupName, $groupPW);
+                        $addedGroups++;
+                    }
+                }
+                else // if checkbox wasn't there
+                {
+                    // remove only if they were enrolled
+                    if(mailingListHelper::userMemberOfList($juser->email, $groupName, $groupPW))
+                    {
+                        mailingListHelper::removeUserFromList($juser->email, $groupName, $groupPW);
+                       $removedGroups++;
+                    }
+                }
+            }
+
+            $this->_redirect = JRoute::_('/index.php?option=com_mailinglist&task=edit');
+            $this->_message = 'Save Complete. Added to ' . $addedGroups . ' group' . ($addedGroups != 1 ? 's' : '') . ' and removed from ' . $removedGroups . ' group' . ($removedGroups != 1 ? 's' : '');
+            $this->_messageType = 'notice';
+            
+
+
+
 	}
-	
-	
-	/*
-	 * Displays the form that prompts user to select mailing list groups
-	 */
-	protected function join()
-	{
-		
-		if ($this->getError()) 
-		{
-			$view->setError( $this->getError() );
-		}
-
-    	// Instantiate a view
-		$view = new JView( array('name'=>'join') );
-		$listhtml = $this->groupListHtml();
-    	$view->assignRef('listhtml', $listhtml); 
-    	$view->display();
-	}
-
-	
-	public function groupListHtml()
-	{
-		$listhtml = null;
-		$isMember = false;
-		$juser =& JFactory::getUser();
-		
-		// build the HTML for the group checkboxes here
-    	foreach($this->mailingListGroupsArray as $groupid)
-    	{
-			$isMember = false;
-    		
-			// See if user is a member of this group
-			$group = new XGroup();
-			$group->select( $groupid );
-    		
-			if ($group->is_member_of('applicants',$juser->get('id')) || 
-				$group->is_member_of('members',$juser->get('id')) || 
-				$group->is_member_of('managers',$juser->get('id')) || 
-				$group->is_member_of('invitees',$juser->get('id'))) 
-			{
-				$isMember = true;
-			}
-			
-    		$listhtml .= '<li>' . 
-    					'<input type="checkbox"' . 
-    					($isMember == true ? 'checked="checked"' : '') . 
-    					' value="' . $groupid . '"' . 
-    					' name="' . $groupid . '"' . 
-    					'> ' . $groupid . '</input>' . 
-    					"</li>\n";
-    			
-    	}
-		
-    	return $listhtml;
-	}	
-
-	
 	
 	
 	/*
@@ -183,26 +98,26 @@ class MailingListController extends JObject
 	 */
 	function userloggedin()
 	{
-		$juser =& JFactory::getUser();
-		
-		if ($juser->get('guest')) 
-		{
-			// Get current page path and querystring
-			$uri  =& JURI::getInstance();
-			$redirectUrl = $uri->toString(array('path', 'query'));
-			
-			// Code the redirect URL
-			$redirectUrl = base64_encode($redirectUrl);  
-			$redirectUrl = '?return=' . $redirectUrl;
-			$joomlaLoginUrl = '/login';
-		    $finalUrl = $joomlaLoginUrl . $redirectUrl;
-		    $finalUrl = JRoute::_($finalUrl);
-		    $this->_redirect = $finalUrl;
-		    
-		    return false;
-		}
-		else
-			return true;
+            $juser =& JFactory::getUser();
+
+            if ($juser->get('guest'))
+            {
+                // Get current page path and querystring
+                $uri  =& JURI::getInstance();
+                $redirectUrl = $uri->toString(array('path', 'query'));
+
+                // Code the redirect URL
+                $redirectUrl = base64_encode($redirectUrl);
+                $redirectUrl = '?return=' . $redirectUrl;
+                $joomlaLoginUrl = '/login';
+                $finalUrl = $joomlaLoginUrl . $redirectUrl;
+                $finalUrl = JRoute::_($finalUrl);
+                $this->_redirect = $finalUrl;
+
+                return false;
+            }
+            else
+                return true;
 	}
 	
 	
