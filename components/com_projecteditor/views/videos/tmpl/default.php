@@ -157,20 +157,24 @@ header("Expires: 0"); // Date in the past
                         $strDocumentUrl = $oDataFile->getUrl();
                         $strPath = $oDataFile->getPath();
                         $iDataFileId = $oDataFile->getId();
+                        $strTitle = (StringHelper::hasText($oDataFile->getTitle())) ? $oDataFile->getTitle() : $oDataFile->getName();
+                        $strFileDescription = (StringHelper::hasText($oDataFile->getDescription())) ? $oDataFile->getDescription() : $oDataFile->getFriendlyPath();
                       ?>
                         <tr class="<?php echo $strBgColor; ?>">
                           <td width="1"><input id="<?php echo $this->iExperimentId; ?>" type="checkbox" name="dataFile[]" value="<?php echo $iDataFileId ?>" onClick="setFilesToDelete('frmProject', 'dataFile[]', 'cbxDelete', <?php echo $this->iExperimentId; ?>, 'fileDeleteLink', 112);"/></td>
-                          <td nowrap><a title="<?php echo $oDataFile->getFriendlyPath(); ?>" href="<?php echo $strDocumentUrl; ?>"><?php echo $oDataFile->getTitle(); ?></a></td>
-                          <td><?php echo $oDataFile->getDescription(); ?></td>
+                          <td nowrap><a title="<?php echo $oDataFile->getFriendlyPath(); ?>" href="<?php echo $strDocumentUrl; ?>"><?php echo $strTitle; ?></a></td>
+                          <td><?php echo $strFileDescription; ?></td>
                           <td nowrap>
                             <?php
                               $strMovieType = "";
-                              $strType = $oDataFile->getEntityType()->getDatabaseTableName();
-                              if($strType){
-                                $strTypeArray = explode("-", $strType);
-                                $strMovieType = (sizeof($strTypeArray)==2) ? $strTypeArray[1] : $strType;
+                              if($oDataFile->getEntityType()){
+                                $strType = $oDataFile->getEntityType()->getDatabaseTableName();
+                                if($strType){
+                                  $strTypeArray = explode("-", $strType);
+                                  $strMovieType = (sizeof($strTypeArray)==2) ? $strTypeArray[1] : $strType;
+                                }
+                                echo $strMovieType;
                               }
-                              echo $strMovieType;
                             ?>
                           </td>
                           <td nowrap>
