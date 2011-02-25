@@ -101,8 +101,8 @@ class plgGroupsBlog extends JPlugin
 			$members = $group->get('members');
 
 			//if set to nobody make sure cant access
-			if($group_plugin_acl == 'nobody') {
-				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active))."</p>";
+			if ($group_plugin_acl == 'nobody') {
+				$arr['html'] = '<p class="info">'.JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)).'</p>';
 				return $arr;
 			}
 			
@@ -435,17 +435,32 @@ class plgGroupsBlog extends JPlugin
 		switch ($this->_params->get('posting')) 
 		{
 			case 1:
-				if ($this->authorized == 'manager' || $this->authorized == 'admin') {
-					return true;
+				switch ($this->authorized) 
+				{
+					case 'manager':
+					case 'admin':
+						return true;
+					break;
+					
+					default: 
+						return false;
+					break;
 				}
 			break;
 			
 			case 0:
 			default:
-				if ($this->authorized == 'member' || $this->authorized == 'manager' || $this->authorized == 'admin') {
-					return true;
-				} else {
-					return false;
+				switch ($this->authorized) 
+				{
+					case 'member':
+					case 'manager':
+					case 'admin':
+						return true;
+					break;
+				
+					default: 
+						return false;
+					break;
 				}
 			break;
 		}
@@ -570,7 +585,7 @@ class plgGroupsBlog extends JPlugin
 			);
 			ximport('Hubzero_Wiki_Parser');
 			$p =& Hubzero_Wiki_Parser::getInstance();
-			$view->row->content = $p->parse(stripslashes($view->row->content), $wikiconfig);
+			$view->row->content = $p->parse(stripslashes($view->row->content), $wikiconfig, true, true);
 		}
 		
 		$bc = new BlogComment($this->database);
