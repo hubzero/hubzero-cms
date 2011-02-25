@@ -1,9 +1,9 @@
-<?php 
+<?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php 
+<?php
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
 ?>
@@ -20,10 +20,10 @@ defined('_JEXEC') or die( 'Restricted access' );
   <div class="content-header">
 	<h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
-  
+
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="treeBrowser" style="float:left;width:20%;"></div>
-    
+
     <div id="overview_section" class="main section" style="width:100%;float:left;">
       <form id="frmResults" style="margin:0px;padding:0px;">
 
@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         <div id="title" style="padding-bottom:1em;">
           <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
         </div>
-  
+
         <?php echo TabHtml::getSearchFormWithAction( "frmResults", "/warehouse/find" ); ?>
         <?php echo $this->strTabs; ?>
 
@@ -88,9 +88,9 @@ defined('_JEXEC') or die( 'Restricted access' );
                 <tr class="<?php echo $strBgColor; ?>">
                   <td class="photo" width="60"><img width="50" height="50" alt="Photo for <?php echo $oMember['FIRST_NAME'] ." ". $oMember['LAST_NAME']; ?>" src="<?php echo $oMember['PICTURE']; ?>"></td>
                   <?php if($oMember['LINK']){ ?>
-                    <td><span class="name"><a href="/members/<?php echo $oMember['HUB_ID']; ?>"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></a></span></td>
+                    <td><span class="name"><a href="/members/<?php echo $oMember['HUB_ID']; ?>"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></a></span><br>(<?php echo $oMember['USER_NAME']; ?>)</td>
                   <?php }else{ ?>
-                    <td><span class="name"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></span></td>
+                    <td><span class="name"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></span><br>(<?php echo $oMember['USER_NAME']; ?>)</td>
                   <?php } ?>
                   <td>
                     <?php
@@ -128,7 +128,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
   </div>
   <div class="clear"></div>
-</div>  
+</div>
 
 
 

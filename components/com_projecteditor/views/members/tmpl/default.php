@@ -1,13 +1,13 @@
-<?php 
+<?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php 
+<?php
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addStyleSheet($this->baseurl."/components/com_projecteditor/css/projecteditor.css",'text/css');
-  
+
   $document->addScript($this->baseurl."/components/com_projecteditor/js/ajax.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/projecteditor.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/tips.js", 'text/javascript');
@@ -37,15 +37,15 @@ defined('_JEXEC') or die( 'Restricted access' );
     </div>
     <div class="clear"></div>
   </div>
-  
+
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="treeBrowser" style="float:left;width:20%;"></div>
-    
+
     <div id="overview_section" class="main section" style="width:100%;float:left;">
       <div id="title" style="padding-bottom:1em;">
         <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
       </div>
-  
+
       <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
       <?php echo $this->strTabs; ?>
       <!--
@@ -70,7 +70,7 @@ defined('_JEXEC') or die( 'Restricted access' );
             }
           }
         ?>
-        
+
         <form id="frmMemberAdd" method="post">
           <input type="hidden" name="projectId" id="projectId" value="<?php echo $oProject->getId(); ?>"/>
           <input type="hidden" name="personId" id="personId" value="0"/>
@@ -123,9 +123,9 @@ defined('_JEXEC') or die( 'Restricted access' );
                 <tr class="<?php echo $strBgColor; ?>" id="memberIndex-<?php echo $iIndex; ?>">
                   <td class="photo" width="60"><img width="50" height="50" alt="Photo for <?php echo $oMember['FIRST_NAME'] ." ". $oMember['LAST_NAME']; ?>" src="<?php echo $oMember['PICTURE']; ?>"></td>
                   <?php if($oMember['LINK']){ ?>
-                    <td><span class="name"><a href="/members/<?php echo $oMember['HUB_ID']; ?>"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></a></span></td>
+                    <td><span class="name"><a href="/members/<?php echo $oMember['HUB_ID']; ?>"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></a></span><br>(<?php echo $oMember['USER_NAME'];?>)</td>
                   <?php }else{ ?>
-                    <td><span class="name"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></span></td>
+                    <td><span class="name"><?php echo $oMember['LAST_NAME'] .", ". $oMember['FIRST_NAME']; ?></span><br>(<?php echo $oMember['USER_NAME'];?>)</td>
                   <?php } ?>
                   <td>
                     <?php
@@ -173,11 +173,11 @@ defined('_JEXEC') or die( 'Restricted access' );
           </div>
         </form>
       </div>
-      
+
     <!-- Footer was here... -->
     </div>
     <div class="clear"></div>
-  </div>  
+  </div>
 
 
 
