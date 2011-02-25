@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 function WarehouseBuildRoute( &$query ){
   $segments = array();
@@ -6,13 +6,13 @@ function WarehouseBuildRoute( &$query ){
     $segments[] = $query['view'];
     unset( $query['view'] );
   }
-  
+
   $segments = array();
   if(isset($query['task'])){
     $segments[] = $query['task'];
     unset( $query['task'] );
   }
-       
+
   if(isset($query['id'])){
     $segments[] = $query['id'];
     unset( $query['id'] );
@@ -22,57 +22,57 @@ function WarehouseBuildRoute( &$query ){
     $segments[] = $query['keywords'];
     unset( $query['keywords'] );
   };
-  
+
   if(isset($query['limit'])){
     $segments[] = $query['limit'];
     unset( $query['limit'] );
   };
-  
+
   if(isset($query['experiments'])){
     $segments[] = $query['experiments'];
     unset( $query['experiments'] );
   };
-  
+
   if(isset($query['experiment'])){
     $segments[] = $query['experiment'];
     unset( $query['experiment'] );
   };
-  
+
   if(isset($query['project'])){
     $segments[] = $query['project'];
     unset( $query['project'] );
   };
-  
+
   if(isset($query['members'])){
     $segments[] = $query['members'];
     unset( $query['members'] );
   };
-  
+
   if(isset($query['materials'])){
     $segments[] = $query['materials'];
     unset( $query['materials'] );
   };
-  
+
   if(isset($query['images'])){
     $segments[] = $query['images'];
     unset( $query['images'] );
   };
-  
+
   if(isset($query['sensors'])){
     $segments[] = $query['sensors'];
     unset( $query['sensors'] );
   };
-  
+
   if(isset($query['projid'])){
     $segments[] = $query['projid'];
     unset( $query['projid'] );
   };
-  
+
   if(isset($query['file'])){
     $segments[] = $query['file'];
     unset( $query['file'] );
   };
-  
+
   return $segments;
 }
 
@@ -98,6 +98,9 @@ function WarehouseParseRoute( $segments ){
             case 'filter':  //task
 	      $vars['task'] = 'filter';
 	      break;
+            case 'materiallist':  //task
+	      $vars['task'] = 'materiallist';
+	      break;
             case 'searchfilter':  //view
 	      $vars['view'] = 'searchfilter';
 	      break;
@@ -117,7 +120,7 @@ function WarehouseParseRoute( $segments ){
 	      $vars['projid'] = $segments[2];
 	      $vars['expid'] = $segments[4];
 	      $vars['trialid'] = $segments[6];
-	      break;      
+	      break;
 	    case 'experiments':  //view
 	      $vars['view'] = 'experiments';
 	      $id = explode( ':', $segments[1] );
@@ -155,7 +158,7 @@ function WarehouseParseRoute( $segments ){
 	      $vars['view'] = 'experiment';
 	      $id = explode( ':', $segments[1] );
 	      $vars['id'] = (int) $id[0];
-	      $vars['projid'] = (int) $segments[3]; 
+	      $vars['projid'] = (int) $segments[3];
 	      break;
 	    case 'trial':  //view
 	      $vars['view'] = 'trial';
@@ -176,8 +179,8 @@ function WarehouseParseRoute( $segments ){
 	      if(isset($segments[2])){
 	      	$vars['subtab'] = $segments[2];
 	      }
-	      break;  
-              
+	      break;
+
             case 'datafiles':  //view
               $vars['view'] = 'datafiles';
               if(isset($segments[1])){
@@ -192,7 +195,7 @@ function WarehouseParseRoute( $segments ){
 	        $id = explode( ':', $segments[1] );
 	        $vars['id'] = (int) $id[0];
 	      }
-	      break;  
+	      break;
 	    case 'members':  //view
 	      $vars['view'] = 'members';
 	      $id = explode( ':', $segments[1] );
@@ -210,7 +213,7 @@ function WarehouseParseRoute( $segments ){
 	      $vars['view'] = 'drawings';
 	      $vars['projectId'] = (int) $segments[2];
 	      $vars['experimentId'] = (int) $segments[4];
-	      break; 
+	      break;
 	    case 'photos':  //view
 	      $vars['view'] = 'photos';
 	      $vars['projectId'] = (int) $segments[2];
@@ -242,15 +245,15 @@ function WarehouseParseRoute( $segments ){
 	      $vars['locationPlanId'] = (int) $id[0];
 	      $vars['projectId'] = (int) $segments[3];
 	      $vars['experimentId'] = (int) $segments[5];
-	      break;  
+	      break;
 	    case 'get':  //task
 	      $vars['task'] = 'get';
-	      
+
 	      /*
-	       * After the view, each segment element has 
-	       * a piece of the absolute file path.  Put 
+	       * After the view, each segment element has
+	       * a piece of the absolute file path.  Put
 	       * the pieces together as a single string.
-	       * Don't forget to lead the path off with 
+	       * Don't forget to lead the path off with
 	       * a leading "/".
 	       */
 	      $strPathArray = array();
@@ -260,10 +263,10 @@ function WarehouseParseRoute( $segments ){
 	      	}
 	      }
 	      $vars['path'] = "/".implode("/",$strPathArray);
-	      break;                   
+	      break;
 	  }
-  }  
-    
+  }
+
   return $vars;
 }
 

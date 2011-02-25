@@ -46,9 +46,9 @@ class MaterialTypePeer extends BaseMaterialTypePeer {
 
     return self::doSelect($c);
   }
-  
+
   /**
-   * 
+   *
    *
    */
   public static function findByDisplayName($p_strName){
@@ -56,15 +56,15 @@ class MaterialTypePeer extends BaseMaterialTypePeer {
     $c->add(self::DISPLAY_NAME, $p_strName);
     return self::doSelectOne($c);
   }
-  
-  /** 
-   * 
+
+  /**
+   *
    *
    */
   public static function suggestDisplayName($p_strName){
-  	$c = new Criteria();
-  	$c->add(self::DISPLAY_NAME, $p_strName."%", Criteria::LIKE);
-  	$c->setIgnoreCase(true);
+    $c = new Criteria();
+    $c->add(self::DISPLAY_NAME, "%".$p_strName."%", Criteria::LIKE);
+    $c->setIgnoreCase(true);
     $c->addAscendingOrderByColumn(self::DISPLAY_NAME);
     return self::doSelect($c);
   }

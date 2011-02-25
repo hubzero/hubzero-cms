@@ -69,8 +69,8 @@ class TreeBrowser {
      */
     private function addTreeJSCode($treeHTML, $treeType) {
 
-    	
-    	
+
+
     	$selectednodeJS = "";
         if ($this->selectedNodeID > -1) {
             $selectednodeJS = "tree.selectNodeById('" . $this->selectedNodeID . "');";
@@ -85,10 +85,10 @@ class TreeBrowser {
 
         global $ini_array;
         $centralhost = $ini_array['centralhost'];
-        
+
         $jstree = <<<ENDHTML
 	<div style="margin-top:10px;margin-bottom:10px">
-	
+
 	<img src="/modules/mod_treebrowser/tree_browser/img/p_curated.gif" /> Curated project<br />
 	<img src="/modules/mod_treebrowser/tree_browser/img/p_published.gif" /> Project with at least one public experiment<br />
 	<img src="/modules/mod_treebrowser/tree_browser/img/p_color.gif" /> Project with only private experiments <br />
@@ -97,13 +97,13 @@ class TreeBrowser {
 	<img src="/modules/mod_treebrowser/tree_browser/img/e_published.gif" /> Published & Not Curated Experiment <br />
 	<img src="/modules/mod_treebrowser/tree_browser/img/e_color.gif" /> Published and Not Curated Experiment <br />
 	-->
-	
+
 	</div>
-        
+
     <div class="treeExpand" style="border-top:0;">$expandAll&nbsp;&nbsp;&nbsp;<a href="javascript:tree.collapseAll();void(0);">CollapseAll</a></div>
-    
+
     <script language="javasript" type="text/javascript">
-		
+
       var tree=new NlsTree("treeBrowser");
 <!--
       tree.chUrl="/modules/mod_treebrowser/ajax/ajaxLoading.php";
@@ -158,7 +158,7 @@ class TreeBrowser {
 
       preloadIcon(ico_e, ico_ec, ico_ep, ico_ce, ico_s, ico_sc, ico_sp, ico_cs, ico_project_coordinator, ico_coordinator, ico_coordinatorRunList, ico_coordinatorRun, ico_project_specimen, ico_specimen, ico_specimen_component, ico_specCompList, ico_t, ico_tc, ico_p, ico_pc, ico_cp, ico_pp, ico_r, ico_rc,ico_person, ico_setup, ico_setup_section, ico_setup_item, ico_loading, ico_member, ico_folder, ico_dir, ico_n3dv, ico_data);
         // ADding the legends
-      
+
       function initTree()
       {
         $treeHTML
@@ -167,7 +167,7 @@ class TreeBrowser {
 // -->
       </script>
 
-      
+
       <div class="contentpadding">
         <div id="tree_browser">
           <script type="text/javascript">
@@ -313,19 +313,20 @@ ENDHTML;
             $projects = ProjectPeer::getViewableProjectsWithOrder($this->getOrderBy());
 //      $projslink = "warehouse/index.php?task=find";
 //      $treeTypeStr = "Publicly Accessible Projects";
-        }
-        else
+        }else if(JRequest::getVar('view') == 'advancedsearch' && $treeType == PUBLICLY_ACCESSIBLE_PROJECTS){
+            $projects = ProjectPeer::getViewableProjectsWithOrder($this->getOrderBy());
+        }else
             $projects = unserialize($_SESSION[Search::RESULTS]);
 
-            
-        $treeHTML='';    
-            
+
+        $treeHTML='';
+
         $projslink = "warehouse/index.php?task=find";
         $treeTypeStr = (JRequest::getVar('view') == 'get') ? "My Projects" :"Publicly Accessible Projects";
 
         $treeHTML .= "tree.add('root', 0, '&nbsp;&nbsp;NEEShub :: $treeTypeStr', '$projslink', '', true);\n";
         //$treeHTML = "tree.add('legend', 0, 'Published and Curated :: $treeTypeStr', '$projslink', '', true);\n";
-        
+
         $publishedMap = $this->getPublishedExperimentProjids();
 
         foreach ($projects as $p) {

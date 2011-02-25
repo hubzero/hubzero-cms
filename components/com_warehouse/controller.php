@@ -1,12 +1,13 @@
-<?php 
+<?php
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.controller');
+require_once 'lib/data/MaterialTypePeer.php';
 
 class WarehouseController extends JController{
-	
+
   /**
    * Constructor
    *
@@ -23,11 +24,12 @@ class WarehouseController extends JController{
     $this->registerTask( 'trialdropdown' , 'getTrialDropDown' );
     $this->registerTask( 'repetitiondropdown' , 'getRepetitionDropDown' );
     $this->registerTask( 'searchfiles', 'searchFiles' );
-  }	
-	
+    $this->registerTask( 'materiallist', 'getMaterialList' );
+  }
+
   /**
    * Method to display the view
-   * 
+   *
    * @access    public
    */
   function display(){
@@ -35,7 +37,7 @@ class WarehouseController extends JController{
     JRequest::setVar('view', $strViewName );
     parent::display();
   }
-  
+
   /**
    * Processes the search form on the main page.
    *
@@ -54,7 +56,7 @@ class WarehouseController extends JController{
 
     $iSite = JRequest::getInt('neesSite', 0);
     $_SESSION[Search::NEES_SITE] = $iSite;
-    
+
     $strMember = JRequest::getVar('member');
     if($strMember=="Last Name, First Name"){
       $strMember = StringHelper::EMPTY_STRING;
@@ -187,9 +189,9 @@ class WarehouseController extends JController{
     JRequest::setVar("count", $iResultsCount );
     parent::display();
   }
-  
+
   /**
-   * Returns displays or downloads a file using 
+   * Returns displays or downloads a file using
    * the provided absolute path.
    *
    */
@@ -206,9 +208,9 @@ class WarehouseController extends JController{
 
     FileHelper::download($strPathToFile);
   }
-  
+
   /**
-   * 
+   *
    */
   function download(){
     /* @var $oModel WarehouseModelBase */
@@ -245,7 +247,7 @@ class WarehouseController extends JController{
 
     /* @var $oDataFile DataFile */
     $oDataFile = null;
-      
+
     $iDataFileIdArray = explode(",", $iDataFileId);
     if(count($iDataFileIdArray)==1){
       $oDataFile = $oModel->getDataFileById($iDataFileId);
@@ -268,29 +270,29 @@ class WarehouseController extends JController{
     }
 
     $strReturn = $iSum .":". cleanSize($iSum);
-    
+
     echo $strReturn;
   }
-  
+
   function getTrialDropDown(){
   	$iProjectId = JRequest::getVar("projid");
   	$iExperimentId = JRequest::getVar("expid");
-  	 
+
   	$oModel =& $this->getModel('Data');
   	$strTrialArray = $oModel->findDistinctTrials($iProjectId, $iExperimentId);
   	//print_r($strTrialArray);
   	echo $oModel->findDistinctTrialsHTML($strTrialArray, $iProjectId, $iExperimentId);
-  	
+
   	//$s = $iProjectId."/".$iExperimentId;
   	//echo $s;
   	//echo "hello";
   }
-  
+
   function getRepetitionDropDown(){
   	$iProjectId = JRequest::getVar("projid");
   	$iExperimentId = JRequest::getVar("expid");
   	$iTrialId = JRequest::getVar("trialid");
-  	 
+
   	$oModel =& $this->getModel('Data');
   	$strRepetitionArray = $oModel->findDistinctRepetitions($iProjectId, $iExperimentId, $iTrialId);
   	echo $oModel->findDistinctRepetitionsHTML($strRepetitionArray);
@@ -301,6 +303,24 @@ class WarehouseController extends JController{
     $mtime = explode(' ', $mtime);
     $mtime = $mtime[1] + $mtime[0];
     return $mtime;
+  }
+
+  function getMaterialList(){
+    $strTerm = trim(JRequest::getString( 'value', '' ));
+
+    // Fetch results
+    $rows = MaterialTypePeer::suggestDisplayName($strTerm);
+
+    // Output search results in JSON format
+    $json = array();
+    if (count($rows) > 0) {
+      foreach ($rows as $row) {
+        /* @var $row MaterialType */
+        $json[] = '"'.$row->getDisplayName().'"';
+      }
+    }
+
+    echo '['.implode(',',$json).']';
   }
 }
 

@@ -134,21 +134,21 @@ Autocompleter.Base = new Class({
 		this.fx.start(0);
 		this.fireEvent('onHide', [this.element, this.choices]);
 	},
-	
+
 	showChoices: function() {
 		if (this.visible || !this.choices.getFirst()) return;
 		this.visible = true;
 		var pos = this.element.getCoordinates(this.options.overflown);
 		var left = pos.left;
 		if (Browser.detect().name == 'trident' && Browser.detect().version <= 5) {
-			
+
 			var pos2 = $('maininput').getParent().getParent().getParent().getCoordinates(this.options.overflown);
 			left = pos.left - pos2.left + 145;
 			// fix for IE7 dispay of autocompleter when used in aside right div
 			if(left < 160) {
-			left = pos.left;	
-			}			
-			
+			left = pos.left;
+			}
+
 		}
 		this.choices.setStyles({
 			left: left,
@@ -319,14 +319,14 @@ Autocompleter.Ajax.Xhtml = Autocompleter.Ajax.Base.extend({
 
 Autocompleter.MultiSelectable = {};
 Autocompleter.MultiSelectable.Base = Autocompleter.Base.extend({
-  options: {    
+  options: {
     multiSelect: true,
     wrapSelectionsWithSpacesInQuotes: true,
     useSelection: false //doesn't work well with entries containing spaces
   },
- 
+
   choiceSelect: function(el) {
-    //when multiSelect is enabled, append to field value instead of overwriting it. 
+    //when multiSelect is enabled, append to field value instead of overwriting it.
     //this.observer.value = this.element.value = this.options.multiSelect? this.element.value.trimLastElement() + el.inputValue + ", ":el.inputValue;
 	this.observer.value = this.element.value = this.options.multiSelect ? this.element.value.trimLastElement() + el.inputValue : el.inputValue;
 	if (this.options.tagger) {
@@ -336,16 +336,16 @@ Autocompleter.MultiSelectable.Base = Autocompleter.Base.extend({
 	this.hideChoices();
     this.fireEvent('onSelect', [this.element], 20);
   },
- 
-  prefetch: function() {    
+
+  prefetch: function() {
     //when multiSelect is enabled, min len test on last query element so that min len is tested for every elements.
 	var elValueToTest = this.options.multiSelect? this.element.value.lastElement(): this.element.value;
- 
+
     if (elValueToTest.length < this.options.minLength) this.hideChoices();
 		else if (elValueToTest == this.queryValue) this.showChoices();
 		else this.query();
 	},
- 
+
   onCommand: function(e, mouse) {
 		if (mouse && this.focussed) this.prefetch();
 		if (e.key && !e.shift) switch (e.key) {
@@ -375,7 +375,7 @@ Autocompleter.MultiSelectable.Base = Autocompleter.Base.extend({
 		}
 		this.value = false;
 	},
- 
+
   updateChoices: function(choices) {
 		this.choices.empty();
 		this.selected = null;
@@ -383,14 +383,14 @@ Autocompleter.MultiSelectable.Base = Autocompleter.Base.extend({
 		if (this.options.maxChoices < choices.length) choices.length = this.options.maxChoices;
 		choices.each(this.options.injectChoice || function(choice, i){
 			var el = new Element('li').setHTML(this.markQueryValue(choice));
-      //wrapping in quotes is requested/needed  
+      //wrapping in quotes is requested/needed
       el.inputValue = this.options.wrapSelectionsWithSpacesInQuotes? choice.wrapInQuotes(): choice;
       this.addChoiceEvents(el).injectInside(this.choices);
 		}, this);
 		this.showChoices();
 	}
 });
- 
+
 Autocompleter.MultiSelectable.Ajax = {};
 Autocompleter.MultiSelectable.Ajax.Base = Autocompleter.MultiSelectable.Base.extend({
   // duplicated code (same as Autocompleter.Ajax.Base)
@@ -401,7 +401,7 @@ Autocompleter.MultiSelectable.Ajax.Base = Autocompleter.MultiSelectable.Base.ext
 		onRequest: Class.empty,
 		onComplete: Class.empty
 	},
- 
+
   // duplicated code (same as Autocompleter.Ajax.Base)
   initialize: function(el, url, options) {
 		this.parent(el, options);
@@ -411,29 +411,29 @@ Autocompleter.MultiSelectable.Ajax.Base = Autocompleter.MultiSelectable.Base.ext
 		this.ajax.addEvent('onComplete', this.queryResponse.bind(this));
 		this.ajax.addEvent('onFailure', this.queryResponse.bind(this, [false]));
 	},
- 
+
   query: function(){
     var data = $extend({}, this.options.postData);
- 
+
     //query only on last element if multiSelectable is enabled if multiSelectable is enabled
 		data[this.options.postVar] = this.options.multiSelect? this.element.value.lastElement(): this.element.value;
- 
+
 		this.fireEvent('onRequest', [this.element, this.ajax]);
 		this.ajax.request(data);
 	},
- 
+
 	queryResponse: function(resp) {
     //query only on last element if multiSelectable is enabled
 		this.value = this.queryValue = this.options.multiSelect? this.element.value.lastElement(): this.element.value;
- 
+
 		this.selected = false;
 		this.hideChoices();
 		this.fireEvent(resp ? 'onComplete' : 'onFailure', [this.element, this.ajax], 20);
-	}  
+	}
 });
- 
+
 //ready to use extension for JSON queries (identical to Autocompleter.Ajax.Json)
-Autocompleter.MultiSelectable.Ajax.Json = Autocompleter.MultiSelectable.Ajax.Base.extend({ 
+Autocompleter.MultiSelectable.Ajax.Json = Autocompleter.MultiSelectable.Ajax.Base.extend({
 	queryResponse: function(resp) {
 		this.parent(resp);
 		var choices = Json.evaluate(resp || false);
@@ -441,21 +441,21 @@ Autocompleter.MultiSelectable.Ajax.Json = Autocompleter.MultiSelectable.Ajax.Bas
 		this.updateChoices(choices);
 	}
 });
- 
-//ready to use extension for Local Array queries (identical to Autocompleter.Local)	 
+
+//ready to use extension for Local Array queries (identical to Autocompleter.Local)
 Autocompleter.MultiSelectable.Local = Autocompleter.MultiSelectable.Base.extend({
 	initialize: function(el, tokens, options) {
 		this.parent(el, options);
 		this.tokens = tokens;
 		if (this.options.filterTokens) this.filterTokens = this.options.filterTokens.bind(this);
 	},
- 
+
 	query: function() {
 		this.hideChoices();
 		this.queryValue = this.element.value.lastElement();
 		this.updateChoices(this.filterTokens());
 	},
- 
+
 	filterTokens: function(token) {
 		var regex = new RegExp('^' + this.queryValue.escapeRegExp(), 'i');
 		return this.tokens.filter(function(token) {
@@ -463,22 +463,22 @@ Autocompleter.MultiSelectable.Local = Autocompleter.MultiSelectable.Base.extend(
 		});
 	}
 });
- 
+
 String.extend({
   lastElement: function(separator){
 	var txt = this.trim();
 	var index = txt.lastIndexOf(separator || ', ');
 	return (index == -1)? txt: txt.substr(index + 2, txt.length);
   },//end lastElement
- 
- 
+
+
   trimLastElement: function(separator){
 	var txt = this.trim();
 	var index = txt.lastIndexOf(separator || ', ');
 	return (index == -1)? "": txt.substr(0, index + 2);
   },//end trimLastElement
- 
- 
+
+
   wrapInQuotes: function(){
 	var index = this.trim().lastIndexOf(', ');
 	return (index == -1)? this: '"' + this + '"'
@@ -597,7 +597,7 @@ HUB.CompleteTags = {
 
 		if (el) {
 			var actags = new AppleboxList(el, {'hideempty': false, 'resizable': {'step': 8}});
-			
+
 			var completer2 = new Autocompleter.MultiSelectable.Ajax.Json($('maininput'), '/index.php?option=com_tags&no_html=1&task=autocomplete', {
 				'tagger': actags,
 				'minLength': 1, // We wait for at least one character
@@ -606,8 +606,24 @@ HUB.CompleteTags = {
 			});
 		}
 	}
+        ,
+        materials: function(){
+          var el = $('strMaterialType');
+
+		if (el) {
+			var actags = new AppleboxList(el, {'hideempty': false, 'resizable': {'step': 8}});
+
+			var completer2 = new Autocompleter.MultiSelectable.Ajax.Json($('maininput'), '/warehouse/materiallist?no_html=1', {
+				'tagger': actags,
+				'minLength': 1, // We wait for at least one character
+				'overflow': true, // Overflow for more entries
+				'wrapSelectionsWithSpacesInQuotes': false
+			});
+		}
+        }
 }
 
 //----------------------------------------------------------
 
 window.addEvent('domready', HUB.CompleteTags.initialize);
+window.addEvent('domready', HUB.CompleteTags.materials);

@@ -4,11 +4,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  
 jimport( 'joomla.application.component.model' );
 
-require_once('base.php');
+require_once('search.php');
 require_once 'lib/data/FacilityPeer.php';
 
 
-class WarehouseModelAdvancedSearch extends WarehouseModelBase{
+class WarehouseModelAdvancedSearch extends WarehouseModelSearch{
 	
   /**
    * Constructor
