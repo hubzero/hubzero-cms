@@ -18,6 +18,7 @@ class WarehouseModelBase extends JModel {
 
     private $m_oTabArray;
     private $m_oSearchTabArray;
+    private $m_oSearchTabTitleArray;
     private $m_oSearchResultsTabArray;
 
     /**
@@ -36,6 +37,7 @@ class WarehouseModelBase extends JModel {
 
         $this->m_oSearchTabArray = array("Search", "Enhanced Projects");
         $this->m_oSearchTabViewArray = array("search","featured");
+        $this->m_oSearchTabTitleArray = array("","An Enhanced project is a project that has been checked for completeness and includes: drawings; material information; complete and detailed sensor information; at least one data file that can be read and plotted by a data visualization tool (e.g. inDEED); and at least one report or publication.");
 
         $this->m_oSearchResultsTabArray = array("Results");
         $this->m_oSearchResultsTabViewArray = array("results");
@@ -78,6 +80,14 @@ class WarehouseModelBase extends JModel {
 
     /**
      *
+     * @return Returns an array of tabs for the search screen
+     */
+    public function getSearchTabTitleArray() {
+        return $this->m_oSearchTabTitleArray;
+    }
+
+    /**
+     *
      */
     public function getTreeBrowserTabArray() {
         return $this->m_oTreeTabArray;
@@ -110,8 +120,8 @@ class WarehouseModelBase extends JModel {
      *
      * @return strTabs in html format
      */
-    public function getTabs($p_strOption, $p_iId, $p_strTabArray, $p_strTabViewArray, $p_strActive) {
-        return TabHtml::getTabs($p_strOption, $p_iId, $p_strTabArray, $p_strTabViewArray, $p_strActive);
+    public function getTabs($p_strOption, $p_iId, $p_strTabArray, $p_strTabViewArray, $p_strActive, $p_strTitleArray=null) {
+        return TabHtml::getTabs($p_strOption, $p_iId, $p_strTabArray, $p_strTabViewArray, $p_strActive, $p_strTitleArray);
     }
 
     /**

@@ -11,7 +11,8 @@ class WarehouseViewSearch extends JView{
     $oWarehouseModel =& $this->getModel();
 	$strTabArray = $oWarehouseModel->getSearchTabArray();
 	$strTabViewArray = $oWarehouseModel->getSearchTabViewArray();
-	$strTabHtml = $oWarehouseModel->getTabs( "warehouse", 0, $strTabArray, $strTabViewArray, "search" );
+        $strTabTitleArray = $oWarehouseModel->getSearchTabTitleArray();
+	$strTabHtml = $oWarehouseModel->getTabs( "warehouse", 0, $strTabArray, $strTabViewArray, "search", $strTabTitleArray );
 	$this->assignRef( "strTabs", $strTabHtml );
 	
 	$strTreeTabArray = $oWarehouseModel->getTreeBrowserTabArray();
