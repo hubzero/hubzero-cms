@@ -68,6 +68,9 @@ $fstring = urlencode(trim($this->filters['_find']));
 	<div class="aside">
 		<div class="ticket-status">
 			<p class="<?php echo ($this->row->status == 2) ? 'closed' : 'open'; ?>"><strong><?php echo ($this->row->status == 2) ? JText::_('TICKET_STATUS_CLOSED_TICKET') : JText::_('TICKET_STATUS_OPEN_TICKET'); ?></strong></p>
+<?php if ($this->row->status == 2) { ?>
+			<p><strong>Note:</strong> To reopen this issue, add a comment below.</p>
+<?php } ?>
 			<!-- <p class="ticket-number">#<strong><?php echo $this->row->id; ?></strong></p> -->
 <?php
 /*if ($this->comments) {
