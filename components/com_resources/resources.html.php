@@ -831,8 +831,14 @@ class ResourcesHtml
 				   ? ($resource->fulltext) 
 				   : ($resource->introtext);
 
-		$maintext = stripslashes($maintext);
-
+		$maintext = htmlspecialchars_decode($maintext);
+		$maintext = str_replace('&amp;','&',$maintext);
+		$maintext = str_replace('&nbsp;',' ',$maintext);
+		$maintext = str_replace('&','&amp;',$maintext);
+		$maintext = str_replace('<blink>','',$maintext);
+		$maintext = str_replace('</blink>','',$maintext);
+		$maintext = str_replace('<script','',$maintext);
+		$maintext = str_replace('</script>','',$maintext);
 		if ($introtext) {
 			$document =& JFactory::getDocument();
 			$document->setDescription(ResourcesHtml::encode_html(strip_tags($introtext)));
@@ -870,8 +876,8 @@ class ResourcesHtml
 			$maintext = trim($maintext);
 		}
 		
-		//$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
-		$maintext = ($maintext) ? ($maintext) : (trim($resource->introtext));
+		
+		$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
 		$maintext = str_replace('&amp;','&',$maintext);
 		$maintext = str_replace('&nbsp;',' ',$maintext);
 		$maintext = str_replace('&','&amp;',$maintext);
@@ -1036,11 +1042,11 @@ class ResourcesHtml
 				   ? ($resource->fulltext) 
 				   : ($resource->introtext);
 
-		//security deduction...		  // $maintext  = ($resource->fulltext) 
-				   //? stripslashes($resource->fulltext) 
-				  // : stripslashes($resource->introtext);
-				  //$maintext = stripslashes($maintext);
-		$maintext = ($maintext);
+		/*$maintext  = ($resource->fulltext) 
+				   ? stripslashes($resource->fulltext) 
+				   : stripslashes($resource->introtext);
+				  $maintext = stripslashes($maintext);*/
+		
 
 		if ($introtext) {
 			$document =& JFactory::getDocument();
@@ -1080,6 +1086,7 @@ class ResourcesHtml
 		}
 		
 		$maintext = ($maintext) ? ($maintext) : (trim($resource->introtext));
+		
 		//security deduction...
 		//$maintext = ($maintext) ? stripslashes($maintext) : stripslashes(trim($resource->introtext));
 		//$maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
@@ -1090,6 +1097,7 @@ class ResourcesHtml
 		$maintext = str_replace('</blink>','',$maintext);
 		$maintext = str_replace('<script','',$maintext);
 		$maintext = str_replace('</script>','',$maintext);
+		$maintext = htmlspecialchars_decode($maintext);
 		
 		if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) {
 				// Do nothing
@@ -1278,10 +1286,11 @@ class ResourcesHtml
 		// Prepare/parse text
 		$introtext = stripslashes($resource->introtext);
 		$maintext  = ($resource->fulltext) 
-				   ? ($resource->fulltext) 
-				   : ($resource->introtext);
+				   ? stripslashes($resource->fulltext) 
+				   : stripslashes($resource->introtext);
 
-		$maintext = stripslashes($maintext);
+
+		$maintext = htmlspecialchars_decode($maintext);
 
 		if ($introtext) {
 			$document =& JFactory::getDocument();
@@ -1291,7 +1300,7 @@ class ResourcesHtml
 		// Parse for <nb: > tags
 		$type = new ResourcesType( $database );
 		$type->load( $resource->type );
-		
+		//echo print_r($resource);
 		$fields = array();
 		if (trim($type->customFields) != '') {
 			$fs = explode("\n", trim($type->customFields));
@@ -1307,7 +1316,13 @@ class ResourcesHtml
 				$fields[] = array($fld, $fld, 'textarea', 0);
 			}
 		}
-		
+		$maintext = str_replace('&amp;','&',$maintext);
+		$maintext = str_replace('&nbsp;',' ',$maintext);
+		$maintext = str_replace('&','&amp;',$maintext);
+		$maintext = str_replace('<blink>','',$maintext);
+		$maintext = str_replace('</blink>','',$maintext);
+		$maintext = str_replace('<script','',$maintext);
+		$maintext = str_replace('</script>','',$maintext);
 		if (!empty($fields)) {
 			for ($i=0, $n=count( $fields ); $i < $n; $i++) 
 			{
@@ -1316,6 +1331,7 @@ class ResourcesHtml
 				
 				// Clean the original text of any matches
 				$maintext = str_replace('<nb:'.$fields[$i][0].'>'.end($fields[$i]).'</nb:'.$fields[$i][0].'>','',$maintext);
+				
 			}
 			$maintext = trim($maintext);
 		}
@@ -2266,7 +2282,7 @@ class ResourcesHtml
 				$firstChild->title = str_replace( '&amp;', '&', $firstChild->title );
 				$firstChild->title = str_replace( '&', '&amp;', $firstChild->title );
 		
-				$mediatypes = array('11','20','34','19','37','32','15','40','41','15');
+				$mediatypes = array('20','34','19','37','32','15','40','41','15');
 				$downtypes = array('60','59','57','55');
 				$class = '';			
 				if (in_array($firstChild->logicaltype,$downtypes)) {
@@ -2287,7 +2303,7 @@ class ResourcesHtml
 					$mesg  = 'View Resource';
 					$class = ''; //'play';
 				}
-				
+				$relLink = true;
 				if (substr($firstChild->path, 0, 7) == 'http://' 
 				 || substr($firstChild->path, 0, 8) == 'https://'
 				 || substr($firstChild->path, 0, 6) == 'ftp://'
@@ -2296,10 +2312,14 @@ class ResourcesHtml
 				 || substr($firstChild->path, 0, 7) == 'file://'
 				 || substr($firstChild->path, 0, 7) == 'news://'
 				 || substr($firstChild->path, 0, 7) == 'feed://'
-				 || substr($firstChild->path, 0, 6) == 'mms://') {
-					$mesg  = ($resource->type == 72)? 'View Database' : 'View Link';
+				 || substr($firstChild->path, 0, 6) == 'mms://')
+				{
+					$relLink = false;
+					$mesg  = 'View Link';
 				}
-								
+				if ($firstChild->type == 11) $mesg  = 'View Link'; 
+				if ($resource->type == 72) $mesg =  'View Database';
+
 				// IF (not a simulator) THEN show the first child as the primary button
 				if ($firstChild->access==1 && $juser->get('guest')) { 
 					// first child is for registered users only and the visitor is not logged in
@@ -2309,7 +2329,10 @@ class ResourcesHtml
 				} else {
 					$child_params =& new JParameter( $firstChild->params );
 					$link_action = $child_params->get( 'link_action', '' );
-
+					$url = "";
+					if ($firstChild->type == 11)
+					$url = $firstChild->path;
+					else
 					$url = ResourcesHtml::processPath($option, $firstChild, $resource->id, $link_action);
 					
 					//$class .= ($firstChild->type == 32) ? ' breeze' : '';

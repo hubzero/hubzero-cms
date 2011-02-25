@@ -103,7 +103,7 @@ $view->display();
 		
 			<label>
 				<?php echo JText::_('COM_CONTRIBUTE_COMPOSE_ABSTRACT'); ?>:
-				<textarea name="fulltext" cols="50" rows="15"><?php echo htmlentities(stripslashes($this->row->fulltext)); ?></textarea>
+				<textarea name="fulltext" cols="50" rows="15"><?php echo htmlentities(($this->row->fulltext)); ?></textarea>
 				<script type="text/javascript">
 				CKEDITOR.replace( 'fulltext' , {
 			        toolbar : 'NEESAbstract',
@@ -143,11 +143,12 @@ foreach ($fields as $field)
 			    });
 				</script>
 				<?php } else {?>
-				<textarea name="<?php echo $fieldName; ?>" cols="50" rows="6"><?php echo htmlentities(stripslashes($tagcontent)); ?></textarea>
+				<textarea name="<?php echo $fieldName; ?>" cols="50" rows="6"><?php echo htmlentities($tagcontent); ?></textarea>
 				<script type="text/javascript">
 				CKEDITOR.replace( '<?php echo $fieldName ?>' , {
 			        toolbar : 'NEESAbstract',
-			        height:"80", width:"100%"
+			        height:"80", width:"100%",
+			        filebrowserBrowseUrl  : '/index.php?option=com_resources&id=<?php echo $this->row->id?>&task=view&active=supportingdocs',
 			    });
 			    </script>
 				<?php } ?>
