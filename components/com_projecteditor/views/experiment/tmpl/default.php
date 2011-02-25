@@ -369,7 +369,7 @@ header("Expires: 0"); // Date in the past
                   <?php if($oExperiment && $oAuthorizer->canDelete($oExperiment)){ ?>
                     <a tabindex="" href="/warehouse/projecteditor/delete?format=ajax&eid=<?php echo $oExperiment->getId(); ?>&etid=3" class="button2 modal">Delete Experiment</a>
                   <?php } ?>
-                  <a tabindex="" href="javascript:void(0);" class="button2"  onClick="window.location = '/warehouse/projecteditor/project/<?php echo $this->iProjectId?>/experiments'">Cancel</a>
+                  <a tabindex="" href="javascript:void(0);" class="button2" onClick="window.location = '/warehouse/projecteditor/project/<?php echo $this->iProjectId?>/experiments'">Cancel</a>
                   <?php if($oExperiment && $oAuthorizer->canGrant($oExperiment)){ ?>
                     <a tabindex="" href="javascript:void(0);" class="button2"  onClick="document.getElementById('frmProject').action='/warehouse/projecteditor/curaterequest';document.getElementById('frmProject').submit();">Curate Experiment</a>
                   <?php } ?>

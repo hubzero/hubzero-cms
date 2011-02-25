@@ -71,7 +71,7 @@
 	margin-left:5px;
 }
 
-#deleteLog { 
+#deleteLog {
     height: 100px;
     width:95%;
     overflow: auto;
@@ -192,6 +192,7 @@ div.sectheaderbtn {
   text-align:right;
   line-height: 30px;
   margin-top: 30px;
+  min-width: 500px;
 }
 
 
