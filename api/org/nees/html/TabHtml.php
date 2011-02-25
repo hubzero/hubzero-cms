@@ -1,9 +1,9 @@
-<?php 
+<?php
 
   class TabHtml{
-  	
+
   	/**
-  	 * 
+  	 *
   	 * @see com_groups/groups.html.php
   	 */
     public static function getTabsByAction( $p_strOption, $p_iId, $p_oTabArray, $p_strActive='default' ) {
@@ -22,21 +22,25 @@
 	  }
 	  $strHtml .= '</ul>';
 	  $strHtml .= '<div class="clear"></div>';
-	  $strHtml .= '</div><!-- / #sub-menu -->'; 
-	
+	  $strHtml .= '</div><!-- / #sub-menu -->';
+
 	  return $strHtml;
     }
-    
-    public static function getTabs( $p_strOption, $p_iId, $p_oTabArray, $p_oTabViewArray, $p_strActive='default' ) {
+
+    public static function getTabs( $p_strOption, $p_iId, $p_oTabArray, $p_oTabViewArray, $p_strActive='default', $p_strTitleArray=null ) {
 	  $strHtml  = '<div id="sub-menu" style="position:relative;z-index:3">';
 	  $strHtml .= '<ul>';
 	  $i = 1;
 	  foreach ($p_oTabArray as $iTabIndex=>$strName){
 	    $strView = $p_oTabViewArray[$iTabIndex];
+            $strTitle = "";
+            if($p_strTitleArray){
+              $strTitle = $p_strTitleArray[$iTabIndex];
+            }
             if ($strName != '') {
 		  $strHtml .= '<li id="sm-'.$i.'"';
 		  $strHtml .= (strtolower($strView) == $p_strActive) ? ' class="active"' : '';
-		  $strHtml .= '><a class="tab" rel="'.$strName.'" href="'.$p_strOption;
+		  $strHtml .= '><a title="'.$strTitle.'" class="tab" rel="'.$strName.'" href="'.$p_strOption;
                   if($strView != ""){
                     $strHtml .="/".strtolower($strView);
                   }
@@ -50,7 +54,7 @@
 	  $strHtml .= '</ul>';
 	  $strHtml .= '<div class="clear"></div>';
 	  $strHtml .= '</div><!-- / #sub-menu -->';
-	
+
 	  return $strHtml;
     }
 
@@ -74,7 +78,7 @@
 
 	  return $strHtml;
     }
-    
+
     public static function getSubTabs( $p_strOption, $p_iId, $p_oTabArray, $p_oTabViewArray, $p_strActive='default' ) {
 	  $strHtml  = '<div id="sub-sub-menu" style="position:relative;z-index:3; border-bottom: 1px solid #cccccc; padding:0; height: 1.77em;">';
 	  $strHtml .= '<ul>';
@@ -97,7 +101,7 @@
 	  $strHtml .= '</ul>';
 	  $strHtml .= '<div class="clear"></div>';
 	  $strHtml .= '</div><!-- / #sub-sub-menu -->';
-	
+
 	  return $strHtml;
     }
 
@@ -126,7 +130,7 @@
 
 	  return $strHtml;
     }
-    
+
     /*
     public static function getTreeTab( $p_strOption, $p_iId, $p_oTabArray, $p_strActive='default' ) {
 	  $strHtml = '<div id="treeTabLinks" style="text-align:left; margin:12px 0 0 0px">';
@@ -152,10 +156,10 @@
 	  return $strHtml;
     }
 */
-    
+
     public static function getTreeTab( $p_strOption, $p_iId, $p_oTabArray, $p_strActive='default', $minimized) {
-	  
-    	
+
+
       if($minimized == true)
       {
 	  		$strHtml = '<div id="treeTabLinks" style="text-align:left; margin:12px 0 0 0px">';
@@ -166,7 +170,7 @@
 	  		$strHtml = '<div id="treeTabLinks" style="text-align:right;">';
 	  		$strHtml .= '  <a id="h_toggle" href="javascript:void(0);" style="border-bottom: 0px"><img id="toggleArrow" src="/components/com_warehouse/images/icons/h_inArrow.png" border="0" title="Show tree browser." onClick="toggle();"/></a>';
 	  }
-	  	  
+
 	  //$strHtml .= '  <a id="h_toggle" href="#">&#171;</a>';
 	  $strHtml .= '</div>';
       $strHtml .= '<div id="sub-menu-treebrowser">';
@@ -187,9 +191,9 @@
 	  $strHtml .= '</div><!-- / #sub-menu-treebrowser -->';
 	  return $strHtml;
     }
-    
-    
-    
+
+
+
     public static function getSearch( $p_strFormId, $p_strAction ){
       $strHTML = <<< ENDHTML
               <div class="tabKeywordSearch" id="warehouseSearch">
@@ -199,7 +203,7 @@
 ENDHTML;
       return $strHTML;
     }
-    
+
     public static function getSearchForm( $p_strAction ){
       $strHTML = <<< ENDHTML
               <div class="tabKeywordSearch" id="warehouseSearch">
@@ -221,7 +225,7 @@ ENDHTML;
 ENDHTML;
       return $strHTML;
     }
-  	
+
   }
 
 ?>
