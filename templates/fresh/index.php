@@ -53,7 +53,7 @@ $juser =& JFactory::getUser();
             echo "\t\t\t".'<li id="login"><a href="/login" title="Login">Login</a></li>'."\n";
             echo "\t\t\t".'<li id="register"><a href="/register" title="Sign up for a free account">Register</a></li>'."\n";
         }
-      //  echo "\t\t\t".'<li id="aboutsite"><a href="/about" title="About NEES"><span>About NEES</span></a></li>'."\n";
+        echo "\t\t\t".'<li id="aboutsite"><a href="/about" title="About NEES"><span>About NEES</span></a></li>'."\n";
         echo "\t\t\t".'<li id="sitemap"><a href="/xmap" title="Sitemap"><span>Sitemap</span></a></li>'."\n";
         echo "\t\t\t".'<li id="feedback"><a href="/feedback" title="Feedback"><span>Feedback</span></a></li>'."\n";        
         ?>
