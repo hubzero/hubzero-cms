@@ -892,7 +892,7 @@ class WikiParser
 				return $matches[0];
 			}
 			
-			$scope = $this->scope;
+			$scope = ($this->domain) ? $this->domain.DS.'wiki' : $this->scope;
 			if (strstr($matches[3], '/')) {
 				$bits = explode('/', $matches[3]);
 				$pagename = array_pop($bits);
