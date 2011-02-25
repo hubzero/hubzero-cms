@@ -69,8 +69,9 @@ Autocompleter.Base = new Class({
 				this.choices.setStyle('display', 'none');
 				this.fix.hide();
 			}.bind(this)).set(0);
+		// "keyup" works in more browsers than "keypress"
 		this.element.setProperty('autocomplete', 'off')
-			.addEvent(window.ie ? 'keydown' : 'keypress', this.onCommand.bindWithEvent(this))
+			.addEvent(window.ie ? 'keydown' : 'keyup', this.onCommand.bindWithEvent(this))
 			.addEvent('mousedown', this.onCommand.bindWithEvent(this, [true]))
 			.addEvent('focus', this.toggleFocus.bind(this, [true]))
 			.addEvent('blur', this.toggleFocus.bind(this, [false]))
@@ -94,7 +95,7 @@ Autocompleter.Base = new Class({
 					this.choiceSelect(this.selected);
 					e.stop();
 				} return;
-			case 'up': case 'down':
+			case 'up': case 'down': 
 				if (this.observer.value != (this.value || this.queryValue)) this.prefetch();
 				else if (this.queryValue === null) break;
 				else if (!this.visible) this.showChoices();
@@ -191,11 +192,17 @@ Autocompleter.Base = new Class({
 	},
 
 	choiceOver: function(el) {
+		if (el instanceof Array) {
+			el = el[0];
+		}
 		if (this.selected) this.selected.removeClass('autocompleter-selected');
 		this.selected = el.addClass('autocompleter-selected');
 	},
 
 	choiceSelect: function(el) {
+		if (el instanceof Array) {
+			el = el[0];
+		}
 		this.observer.value = this.element.value = el.inputValue;
 		this.hideChoices();
 		this.fireEvent('onSelect', [this.element], 20);
@@ -686,6 +693,7 @@ HUB.Autocomplete = {
 						'injectChoice': function(choice) {
 							var t = (this.options.showid) ? choice[0]+' ('+choice[1]+')' : choice[0];
 							var el = new Element('li').setHTML(this.markQueryValue(t));
+							el.setProperty('rel',choice[1]);
 							el.inputValue = choice[0];
 							el.realValue = choice[1];
 							this.addChoiceEvents(el).injectInside(this.choices);
@@ -703,6 +711,7 @@ HUB.Autocomplete = {
 						'showid': showid,
 						'injectChoice': function(choice) {
 							var el = new Element('li').setHTML(this.markQueryValue(choice[0]));
+							el.setProperty('rel',choice[1]);
 							el.inputValue = choice[1]; //(this.options.showid) ? choice[1]+' ('+id+')' : choice[1];
 							el.realValue = choice[1];
 							this.addChoiceEvents(el).injectInside(this.choices);
