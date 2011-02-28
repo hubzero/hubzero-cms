@@ -209,11 +209,13 @@ class ContributeController extends Hubzero_Controller
 			$this->$preprocess();
 		}
 		
-		$id = JRequest::getInt( 'id', 0 );
+		if (!$this->getError()) {
+			$id = JRequest::getInt( 'id', 0 );
 		
-		$this->check_progress($id);
+			$this->check_progress($id);
 		
-		$this->$activestep();
+			$this->$activestep();
+		}
 	}
 	
 	//----------------------------------------------------------
@@ -244,14 +246,15 @@ class ContributeController extends Hubzero_Controller
 	
 	//-----------
 	
-	protected function step_compose()
+	protected function step_compose($row=null)
 	{
 		$xhub = Hubzero_Factory::getHub();
 
 		$type = JRequest::getVar( 'type', '' );
 
-		if ($type == '7')
+		if ($type == '7') {
 			$xhub->redirect(JRoute::_('index.php?option=com_contribtool&task=create'));
+		}
 
 		$step = $this->step;
 		$next_step = $step+1;
@@ -261,13 +264,15 @@ class ContributeController extends Hubzero_Controller
 		
 		// Instantiate a new resource object
 		$row = new ResourcesResource( $this->database );
-		if ($id) {
-			// Load the resource
-			$row->load( $id );
-		} else {
-			// Load the type and set the state
-			$row->type = JRequest::getVar( 'type', '' );
-			$row->published = 2;
+		if ($row === null) {
+			if ($id) {
+				// Load the resource
+				$row->load( $id );
+			} else {
+				// Load the type and set the state
+				$row->type = JRequest::getVar( 'type', '' );
+				$row->published = 2;
+			}
 		}
 		
 		// Output HTML
@@ -635,7 +640,9 @@ class ContributeController extends Hubzero_Controller
 				foreach ($fields as $f) 
 				{
 					if ($f[0] == $tagname && end($f) == 1) {
-						JError::raiseError( 500, JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $f[1]) );
+						$this->setError( JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $f[1]) );
+						$this->step--;
+						$this->step_compose($row);
 						return;
 					}
 				}
@@ -709,6 +716,13 @@ class ContributeController extends Hubzero_Controller
 		// Set the group and access level
 		$row->group_owner = JRequest::getVar( 'group_owner', '' );
 		$row->access = JRequest::getInt( 'access', 0 );
+		
+		if ($row->access > 0 && !$row->group_owner) {
+			$this->setError( JText::_('Please select a group to restrict access to.') );
+			$this->step--;
+			$this->step_authors();
+			return;
+		}
 		
 		// Check content
 		if (!$row->check()) {
