@@ -127,6 +127,8 @@ class XContentServer
 			$type = 'application/x-java-jnlp-file';
 		  else if (strcasecmp($extension, 'pdf') == 0)
 			$type = 'application/pdf';
+		  else if (strcasecmp($extension, 'docx') == 0)
+			$type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 		  else
 			$type = 'application/octet-stream';
                 }
