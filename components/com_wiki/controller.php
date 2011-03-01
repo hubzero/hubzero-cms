@@ -244,7 +244,7 @@ class WikiController extends Hubzero_Controller
 		$contributors = $revision->getContributors();
 
 		// Check authorization
-		$authorized = $this->checkAuthorization();
+		$authorized = $this->checkAuthorization('view');
 
 		// Get the page's tags
 		if ($authorized == 'admin') {
@@ -255,8 +255,11 @@ class WikiController extends Hubzero_Controller
 
 		// Check if the page is group restricted and the user is authorized
 		if ($this->page->group != '' && $this->page->access != 0 && !$authorized) {
-			//echo WikiHtml::warning( JText::_('WIKI_WARNING_NOT_AUTH') );
-			JError::raiseWarning( 403, JText::_('WIKI_WARNING_NOT_AUTH') );
+			if ($this->_sub) {
+				echo WikiHtml::warning( JText::_('WIKI_WARNING_NOT_AUTH') );
+			} else {
+				JError::raiseWarning( 403, JText::_('WIKI_WARNING_NOT_AUTH') );
+			}
 			return;
 		}
 
