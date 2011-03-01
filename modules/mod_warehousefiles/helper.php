@@ -110,7 +110,7 @@ ENDHTML;
 
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              if($oAuthorizer->canView($oDataFile)){
+              if(self::isViewable($oDataFile)){
                 $strCurationStatus = $oDataFile->getCurationStatus();
                 if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
                   $strCurationStatus = "<span class='curateSubmitted'>*</span>";
@@ -358,7 +358,7 @@ ENDHTML;
 
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              if($oAuthorizer->canView($oDataFile)){
+              if(self::isViewable($oDataFile)){
                 $strCurationStatus = $oDataFile->getCurationStatus();
                 if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
                   $strCurationStatus = "<span class='curateSubmitted'>*</span>";
@@ -577,7 +577,7 @@ ENDHTML;
 
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              if($oAuthorizer->canView($oDataFile)){
+              if(self::isViewable($oDataFile)){
                 $strCurationStatus = $oDataFile->getCurationStatus();
                 if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
                   $strCurationStatus = "<span class='curateSubmitted'>*</span>";
@@ -759,7 +759,7 @@ ENDHTML;
 
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              if($oAuthorizer->canView($oDataFile)){
+              if(self::isViewable($oDataFile)){
                 $strCurationStatus = $oDataFile->getCurationStatus();
                 if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
                   $strCurationStatus = "<span class='curateSubmitted'>*</span>";
@@ -971,7 +971,7 @@ ENDHTML;
 
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              if($oAuthorizer->canView($oDataFile)){
+              if(self::isViewable($oDataFile)){
                 $strFileTimestamp = $oDataFile->getCreated();
                 $iDataFileId = $oDataFile->getId();
                 $strFilePath = $oDataFile->getPath();         //original path
@@ -1136,7 +1136,7 @@ ENDHTML;
 
             /* @var $oDataFile DataFile */
             foreach($p_oCurrentDataFileArray as $oDataFile){
-              if($oAuthorizer->canView($oDataFile)){
+              if(self::isViewable($oDataFile)){
                 $strCurationStatus = $oDataFile->getCurationStatus();
                 if($strCurationStatus==ProjectEditor::CURATION_REQUEST){
                   $strCurationStatus = "<span class='curateSubmitted'>*</span>";
