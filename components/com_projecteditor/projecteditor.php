@@ -94,8 +94,8 @@ if($oUser->username=="gemezm"){
   //$oAuthorizer->setUser("mclean");
   //$oUserManager->setUser("mclean");
 
-  //$oAuthorizer->setUser("rhowell537");
-  //$oUserManager->setUser("rhowell537");
+  //$oAuthorizer->setUser("rhowell");
+  //$oUserManager->setUser("rhowell"); 
 }
 
 // Create the controller

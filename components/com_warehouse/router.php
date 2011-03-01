@@ -230,10 +230,7 @@ function WarehouseParseRoute( $segments ){
 	    case 'featured':  //view
 	      $vars['view'] = 'featured';
 	      break;
-            case 'testme':  //view
-	      $vars['view'] = 'testme';
-	      break;
-	    case 'search':  //view
+            case 'search':  //view
 	      $vars['view'] = 'search';
 	      break;
             case 'advancedsearch':  //view

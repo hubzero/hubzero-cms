@@ -20,6 +20,7 @@ Propel::init("api/org/phpdb/propel/central/conf/central-conf.php");
 
 // Require the base controller
 require_once( JPATH_COMPONENT.DS.'controller.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'warehouse.tags.php' );
 
 require_once 'api/org/nees/static/Search.php';
 require_once 'api/org/nees/static/Experiments.php';
@@ -85,10 +86,16 @@ if($oUser->username=="gemezm"){
   //$oUserManager->setUser("jwv");
 
   //$oAuthorizer->setUser("sdyke");
-  //$oUserManager->setUser("sdyke");
+  //$oUserManager->setUser("sdyke"); 
 
   //$oAuthorizer->setUser("melorapark");
   //$oUserManager->setUser("melorapark");
+
+  //$oAuthorizer->setUser("spejsa");
+  //$oUserManager->setUser("spejsa");
+
+  //$oAuthorizer->setUser("tmm3");
+  //$oUserManager->setUser("tmm3");
 }
 
 // Create the controller
