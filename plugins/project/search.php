@@ -1,24 +1,24 @@
 <?php
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
- 
+
 // Import library dependencies
 jimport('joomla.event.plugin');
 require_once 'api/org/nees/static/Search.php';
- 
+
 class plgProjectSearch extends JPlugin{
 
   private $m_iLowerLimit;
   private $m_iUpperLimit;
-	
+
    /**
     * Constructor
     *
-    * 
+    *
     */
   function plgProjectSearch( &$subject ){
     parent::__construct( $subject );
- 
+
     // load plugin parameters
     $this->_plugin = JPluginHelper::getPlugin( 'project', 'search' );
     $this->_params = new JParameter( $this->_plugin->params );
@@ -52,7 +52,7 @@ class plgProjectSearch extends JPlugin{
     $iLowerLimit = $this->computeLowerLimit($iPageIndex, $iDisplay);
     $iUpperLimit = $this->computeUpperLimit($iPageIndex, $iDisplay);
 
-    $this->m_iLowerLimit = $iLowerLimit;  
+    $this->m_iLowerLimit = $iLowerLimit;
     $this->m_iUpperLimit = $iUpperLimit;
 
     $bFilter = $_REQUEST[Search::FILTER];
@@ -81,6 +81,7 @@ class plgProjectSearch extends JPlugin{
       if($iMemberFilter){
         $oPerson = PersonPeer::find($iMemberFilter);
         $strMemberName = $oPerson->getLastName().", ".$oPerson->getFirstName();
+        $iIsInvestigator = 1;
       }
     }
 
@@ -149,7 +150,7 @@ class plgProjectSearch extends JPlugin{
     $_REQUEST[Search::PRINCIPLE_INVESTIGATORS_COUNT] = $iInvestigatorFilterCount;
     //$_REQUEST[Search::MATERIAL_TYPES_COUNT] = 0;
     //$_REQUEST[Search::PRINCIPLE_INVESTIGATORS_COUNT] = 0;
-    
+
     return $strResultsArray;
   }
 
@@ -302,7 +303,7 @@ class plgProjectSearch extends JPlugin{
                                               $strProjectStartDateCondition, $strProjectEndDateCondition);
 
     //build the experiment query (2/3 union statements)
-    $strExperimentQuery = $this->getExperimentQuery($p_strKeywords, $iProjectId, 
+    $strExperimentQuery = $this->getExperimentQuery($p_strKeywords, $iProjectId,
                                               $strProjectMemberCondition, $strProjectGrantCondition,
                                               $strProjectStartDateCondition, $strProjectEndDateCondition);
 
@@ -392,7 +393,7 @@ class plgProjectSearch extends JPlugin{
    * @param int $p_iLimitStart
    * @param int $p_iDisplay
    * @param int $p_iPageIndex
-   * @return string 
+   * @return string
    */
   private function buildQuery($p_strType, $p_strFunding,
                              $p_strMember, $p_strStartDate, $p_strEnd,
@@ -737,7 +738,7 @@ class plgProjectSearch extends JPlugin{
    * @return string
    */
   private function getCountQuery($p_iPersonId, $p_strMemberCondition, $p_strFundingCondition, $p_strStartCondition, $p_strEndCondition){
-    $strThisQuery = "select count (distinct ".ProjectPeer::PROJID.") as TOTAL 
+    $strThisQuery = "select count (distinct ".ProjectPeer::PROJID.") as TOTAL
                      from ".ProjectPeer::TABLE_NAME."
                      left outer join ".AuthorizationPeer::TABLE_NAME."
                      on ".ProjectPeer::PROJID." = ".AuthorizationPeer::ENTITY_ID."
@@ -752,32 +753,32 @@ class plgProjectSearch extends JPlugin{
 
     return $strThisQuery;
   }
-  
+
   /**
     * Plugin method with the same name as the event will be called automatically.
     */
   function onProjectSearchTag($searchquery, $limit=0, $limitstart=0, $areas=null){
     global $mainframe;
- 
+
     // Plugin code goes here.
-      
+
     $temp = array();
     $temp['search']="tag";
- 	  
+
     return $temp;
   }
-  
+
   /**
     * Plugin method with the same name as the event will be called automatically.
     */
   function onProjectSearchPopular($searchquery, $limit=0, $limitstart=0, $areas=null){
     global $mainframe;
- 
+
     // Plugin code goes here.
-    
+
  	$temp = array();
  	$temp['search']="popular";
- 	  
+
     return $temp;
   }
 
@@ -830,6 +831,6 @@ class plgProjectSearch extends JPlugin{
     $mtime = $mtime[1] + $mtime[0];
     return $mtime;
   }
- 
+
 }
 ?>
