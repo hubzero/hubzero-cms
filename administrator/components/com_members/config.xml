@@ -30,6 +30,12 @@
 		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
 		<param name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed file types" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="user_messaging" type="list" default="1" label="User-To-User Messaging" description="Allow/Disallow user-to-user messaging">
+			<option value="0">None</option>
+			<option value="1">Users with common groups</option>
+			<option value="2">Any User</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="privacy" type="list" default="0" label="Default Privacy" description="Set the default privacy for new profiles">
 			<option value="0">Private</option>
 			<option value="1">Public</option>

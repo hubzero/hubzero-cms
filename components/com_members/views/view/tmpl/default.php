@@ -27,6 +27,60 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser =& JFactory::getUser();
 $no_html = JRequest::getInt( 'no_html', 0 );
+
+$messaging = false;
+
+if ($this->config->get('user_messaging') > 0 
+ && !$juser->get('guest') 
+ && $this->profile->get('uidNumber') != $juser->get('id')) {
+	ximport('Hubzero_User_Helper');
+
+	switch ($this->config->get('user_messaging')) 
+	{
+		case 1:
+			// Get the groups the visiting user
+			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
+			$usersgroups = array();
+			if (!empty($xgroups)) {
+				foreach ($xgroups as $group)
+				{
+					if ($group->regconfirmed) {
+						$usersgroups[] = $group->cn;
+					}
+				}
+			}
+
+			// Get the groups of the profile
+			$pgroups = Hubzero_User_Helper::getGroups($this->profile->get('uidNumber'), 'all');
+			// Get the groups the user has access to
+			$profilesgroups = array();
+			if (!empty($pgroups)) {
+				foreach ($pgroups as $group)
+				{
+					if ($group->regconfirmed) {
+						$profilesgroups[] = $group->cn;
+					}
+				}
+			}
+
+			// Find the common groups
+			$common = array_intersect($usersgroups, $profilesgroups);
+
+			if (count($common) > 0) {
+				$messaging = true;
+			}
+		break;
+		
+		case 2:
+			$messaging = true;
+		break;
+		
+		case 0:
+		default:
+			$messaging = false;
+		break;
+	}
+}
 ?>
 <?php if (!$no_html) { ?>
 <div class="vcard">
@@ -39,7 +93,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 			<li<?php if ($juser->get('guest') || ($this->profile->get('uidNumber') == $juser->get('id'))) { echo ' class="last"'; } ?>><a class="edit-member" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='. $this->profile->get('uidNumber')); ?>"><?php echo JText::_('Edit profile'); ?></a></li>
 <?php 
 	} 
-	if (!$juser->get('guest') && ($this->profile->get('uidNumber') != $juser->get('id'))) {
+	if ($messaging) {
 ?>
 			<li class="last"><a class="message" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='. $juser->get('id').'&active=messages&task=new&to='.$this->profile->get('uidNumber')); ?>"><?php echo JText::_('Send Message'); ?></a></li>
 <?php } ?>

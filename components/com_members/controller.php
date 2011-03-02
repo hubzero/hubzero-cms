@@ -271,7 +271,16 @@ class MembersController extends Hubzero_Controller
 
 		// Get the member's info
 		$profile = new Hubzero_User_Profile();
-		$profile->load( $id );	
+		$profile->load( $id );
+		
+		// Check subscription to Employer Services
+		if ($this->config->get('employeraccess') && $tab == 'resume') {
+			JPluginHelper::importPlugin( 'members', 'resume' );
+			$dispatcher =& JDispatcher::getInstance();
+			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
+			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;		
+			$authorized = $emp ? 1 : $authorized;
+		}		
 
 		// Ensure we have a member
 		if (!$profile->get('name') && !$profile->get('surname')) {
@@ -279,17 +288,6 @@ class MembersController extends Hubzero_Controller
 			
 			JError::raiseError( 404, JText::_('MEMBERS_NOT_FOUND') );
 			return;
-		}
-		
-		// Get plugins
-		JPluginHelper::importPlugin( 'members' );
-		$dispatcher =& JDispatcher::getInstance();
-
-		// Check subscription to Employer Services
-		if ($this->config->get('employeraccess') && $tab == 'resume') {
-			$checkemp 	= $dispatcher->trigger( 'isEmployer', array() );
-			$emp 		= is_array($checkemp) ? $checkemp[0] : 0;		
-			$authorized = $emp ? 1 : $authorized;
 		}
 
 		// Check if the profile is public/private and the user has access
@@ -317,6 +315,10 @@ class MembersController extends Hubzero_Controller
 			$name .= $profile->get('surname');
 			$profile->set('name', $name);
 		}
+		
+		// Get plugins
+		JPluginHelper::importPlugin( 'members' );
+		$dispatcher =& JDispatcher::getInstance();
 		
 		// Get the active tab (section)
 		$tab = JRequest::getVar( 'active', 'profile' );
@@ -425,6 +427,7 @@ class MembersController extends Hubzero_Controller
 		// Output HTML
 		$view = new JView( array('name'=>'view') );
 		$view->option = $this->_option;
+		$view->config = $this->config;
 		$view->title = $title;
 		$view->authorized = $authorized;
 		$view->cats = $cats;
