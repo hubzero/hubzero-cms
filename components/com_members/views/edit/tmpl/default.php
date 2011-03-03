@@ -394,7 +394,7 @@ if ($this->registration->Citizenship != REG_HIDE
 
 	if ($this->registration->Citizenship != REG_HIDE) {
 		$required = ($this->registration->Citizenship == REG_REQUIRED) ? ' <span class="required">'.JText::_('REQUIRED').'</span>' : '';
-		$message = (!empty($this->xregistration->_invalid['countryorigin'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['countryorigin']) : '';
+		$message = (!empty($this->xregistration->_missing['countryorigin'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_missing['countryorigin']) : '';
 		$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
 		$countryorigin = $this->profile->get('countryorigin');
@@ -433,7 +433,7 @@ if ($this->registration->Citizenship != REG_HIDE
 
 	if ($this->registration->Residency != REG_HIDE) {
 		$required = ($this->registration->Residency == REG_REQUIRED) ? ' <span class="required">'.JText::_('REQUIRED').'</span>' : '';
-		$message = (!empty($this->xregistration->_invalid['countryresident'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['countryresident']) : '';
+		$message = (!empty($this->xregistration->_missing['countryresident'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_missing['countryresident']) : '';
 		$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
 		$countryresident = $this->profile->get('countryresident');
