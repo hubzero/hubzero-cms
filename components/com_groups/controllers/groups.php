@@ -1005,7 +1005,7 @@ class GroupsController extends Hubzero_Controller
 		
 		// Check authorization
 		$authorized = $this->_authorize();
-		if (!$authorized && $this->_task != 'new') {
+		if ($authorized != 'admin' && $authorized != 'manager' && $this->_task != 'new') {
 			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
@@ -1067,6 +1067,13 @@ class GroupsController extends Hubzero_Controller
 		// Check if they're logged in
 		if ($this->juser->get('guest')) {
 			$this->login( $title );
+			return;
+		}
+		
+		// Check authorization
+		$authorized = $this->_authorize();
+		if ($authorized != 'admin' && $authorized != 'manager') {
+			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
 
@@ -1316,7 +1323,7 @@ class GroupsController extends Hubzero_Controller
 		
 		// Check authorization
 		$authorized = $this->_authorize();
-		if (!$authorized) {
+		if ($authorized != 'admin' && $authorized != 'manager') {
 			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
@@ -1599,7 +1606,7 @@ class GroupsController extends Hubzero_Controller
 		
 		// Check authorization
 		$authorized = $this->_authorize();
-		if (!$authorized) {
+		if ($authorized != 'admin' && $authorized != 'manager') {
 			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
@@ -1903,7 +1910,7 @@ class GroupsController extends Hubzero_Controller
 		
 		// Check authorization
 		$authorized = $this->_authorize();
-		if (!$authorized) {
+		if ($authorized != 'admin' && $authorized != 'manager') {
 			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
@@ -1989,8 +1996,6 @@ class GroupsController extends Hubzero_Controller
 	
 	protected function saveCustomization()
 	{
-		$gid = JRequest::getVar('gid','','POST');
-		
 		// Check if they're logged in
 		if ($this->juser->get('guest')) {
 			$this->login( $title );
@@ -1999,10 +2004,13 @@ class GroupsController extends Hubzero_Controller
 		
 		// Check authorization
 		$authorized = $this->_authorize();
-		if (!$authorized) {
+		if ($authorized != 'admin' && $authorized != 'manager') {
 			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
+		
+		//get the group 
+		$gid = JRequest::getVar('gidNumber','','POST');
 
 		// Ensure we have a group to work with
 		if (!$gid) {
@@ -2077,7 +2085,7 @@ class GroupsController extends Hubzero_Controller
 		
 		// Check authorization
 		$authorized = $this->_authorize();
-		if (!$authorized) {
+		if ($authorized != 'admin' && $authorized != 'manager') {
 			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
@@ -2574,6 +2582,13 @@ class GroupsController extends Hubzero_Controller
 			return;
 		}
 		
+		// Check authorization
+		$authorized = $this->_authorize();
+		if ($authorized != 'admin' && $authorized != 'manager') {
+			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
+			return;
+		}
+		
 		// Load the component config
 		$config = $this->config;
 		
@@ -2638,6 +2653,13 @@ class GroupsController extends Hubzero_Controller
 			return;
 		}
 		
+		// Check authorization
+		$authorized = $this->_authorize();
+		if ($authorized != 'admin' && $authorized != 'manager') {
+			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
+			return;
+		}
+		
 		// Load the component config
 		$config = $this->config;
 		
@@ -2680,6 +2702,13 @@ class GroupsController extends Hubzero_Controller
 		// Check if they're logged in
 		if ($this->juser->get('guest')) {
 			$this->media();
+			return;
+		}
+		
+		// Check authorization
+		$authorized = $this->_authorize();
+		if ($authorized != 'admin' && $authorized != 'manager') {
+			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
 			return;
 		}
 		
@@ -2876,6 +2905,8 @@ class GroupsController extends Hubzero_Controller
 				}
 			}
 		}
+		
+		
 		// Check if they're a member of this group
 		if ($groups && count($groups) > 0) {
 			foreach ($groups as $ug) 

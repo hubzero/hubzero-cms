@@ -157,6 +157,6 @@ $levels = array(
 		
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>">
 		<input type="hidden" name="task" value="savecustomization">
-		<input type="hidden" name="gid" value="<?php echo $this->group->get('gidNumber'); ?>">
+		<input type="hidden" name="gidNumber" value="<?php echo $this->group->get('gidNumber'); ?>">
 	</form>
 </div>
