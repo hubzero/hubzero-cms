@@ -30,6 +30,9 @@ class WarehouseViewSearchFilter extends JView {
           case "pi":
             $oFilterArray = $_SESSION[Search::PRINCIPLE_INVESTIGATORS_FILTER];
             break;
+          case "researchtype":
+            $oFilterArray = $_SESSION[Search::NEES_RESEARCH_TYPES_FILTER];
+            break;
           default:
               break;
       }
@@ -42,7 +45,7 @@ class WarehouseViewSearchFilter extends JView {
 
       /* @var $oModel WarehouseModelSearchFilter */
       $oModel = & $this->getModel();
-        
+
       parent::display($tpl);
     }
 

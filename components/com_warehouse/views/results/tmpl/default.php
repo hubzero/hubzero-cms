@@ -66,33 +66,15 @@ defined('_JEXEC') or die( 'Restricted access' );
                 $iResultCount = $_REQUEST[Search::COUNT];
                 $dTimer = $_REQUEST[Search::TIMER];
               ?>  
-              <b>Results:</b> &nbsp;<?php echo $iResultCount; ?> (<?php echo $dTimer; ?> seconds)  
+              <b>Results:</b> &nbsp;<?php echo $iResultCount; ?>  
             </p>
-                
-            <!--
-            <table style="border:0px; margin-bottom:20px;">
-              <tr>
-                <td id="sort-options" width="100%">
-                  <?php
-                    //$strOrderBy = $_REQUEST[Search::ORDER_BY];
-                    //$iResultCount = $_REQUEST[Search::COUNT];
-                    //$dTimer = $_REQUEST[Search::TIMER];
-                  ?>
-                  <b>Sort By:</b> &nbsp;
-                  <input onClick="document.getElementById('frmResults').submit();" type="radio" name="order" value="nickname" id="nickname" <?php //if($strOrderBy=="nickname")echo "checked"; ?>>&nbsp;<label for="nickname">Nickname</label> &nbsp;
-                  <input onClick="document.getElementById('frmResults').submit();" type="radio" name="order" value="start_date" id="start_date"  <?php //if($strOrderBy=="start_date")echo "checked"; ?>>&nbsp;<label for="start_date">Start Date</label> &nbsp;
-                </td>
-                <td id="project-count" align="right" nowrap><b>Results:</b> &nbsp;<?php //echo $iResultCount; ?> (<?php //echo $dTimer; ?> seconds)</td>
-              </tr>
-            </table>
-            -->
           </div>
 
           <?php 
             $oProjectArray = unserialize($_SESSION[Search::RESULTS]);       
             if(empty($oProjectArray)){
               ?> 
-                <p class="warning">No projects found.</p> 
+                <p class="warning">No projects found.  Go to <a href="/warehouse/advancedsearch">Advanced Search</a></p>
               <?php
             }
 

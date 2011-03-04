@@ -113,7 +113,7 @@ class ProjectPeer extends BaseProjectPeer {
    * @return array
    */
   public static function searchByProcedure($p_oConnection, $p_iSearchId, $p_strKeywords="", $p_strFunding="",
-                                           $p_strMemberName="", $p_iIsInvestigator=0, $p_iOrganizationId=0, $p_iProjectTypeId=0,
+                                           $p_strMemberName="", $p_iIsInvestigator=0, $p_iOrganizationId=0, $p_iProjectTypeId=0, $p_iResearchTypeId=0,
                                            $p_strProjectNumbers="", $p_strAwardNumbers="", $p_strMaterials="", $p_iProjectYear=0,
                                            $p_strOrderBy="", $p_iFromIndex=0, $p_iToIndex=0, $p_iPersonId=0){
 
@@ -133,11 +133,12 @@ class ProjectPeer extends BaseProjectPeer {
     echo "ProjectPeer::searchByProcedure(p_iFromIndex)=$p_iFromIndex<br>";
     echo "ProjectPeer::searchByProcedure(p_iToIndex)=$p_iToIndex<br>";
     echo "ProjectPeer::searchByProcedure(p_iPersonId)=$p_iPersonId<br>";
+    echo "ProjectPeer::searchByProcedure(p_iResearchTypeId)=$p_iResearchTypeId<br>";
     */
+
     $oProjectArray = array();
 
-    $strQuery = "BEGIN warehouse_pkg.search(:iSearchId, :strKeywords, :strFunding, :strMemberName, :iIsInvestigator, :iOrganizationId, :iProjectTypeId, :strProjectNumbers, :strAwardNumbers, :strMaterials, :iProjectYear, :strOrderBy, :iFrom, :iTo, :iPersonId, :searchCursor); END;";
-    //$strQuery = "BEGIN warehouse_pkg.search(:iSearchId, :strKeywords, '', '', 0, 0, '', '', '', 0, '', :iFrom, :iTo, :searchCursor); END;";
+    $strQuery = "BEGIN warehouse_pkg.search(:iSearchId, :strKeywords, :strFunding, :strMemberName, :iIsInvestigator, :iOrganizationId, :iProjectTypeId, :strProjectNumbers, :strAwardNumbers, :strMaterials, :iProjectYear, :strOrderBy, :iFrom, :iTo, :iPersonId, :iResearchTypeId, :searchCursor); END;";
 
     $oStatement  = oci_parse($p_oConnection, $strQuery);
 
@@ -157,7 +158,7 @@ class ProjectPeer extends BaseProjectPeer {
     oci_bind_by_name($oStatement,":iFrom", $p_iFromIndex);
     oci_bind_by_name($oStatement,":iTo", $p_iToIndex);
     oci_bind_by_name($oStatement,":iPersonId", $p_iPersonId);
-
+    oci_bind_by_name($oStatement,":iResearchTypeId", $p_iResearchTypeId);
 
     // Create a new cursor resource
     $oSearchCursor = oci_new_cursor($p_oConnection);
@@ -189,16 +190,25 @@ class ProjectPeer extends BaseProjectPeer {
    * @return int
    */
   public static function searchByProcedureCount($p_oConnection, $p_iSearchId, $p_strKeywords="", $p_strFunding="",
-                                           $p_strMemberName="", $p_iIsInvestigator=0, $p_iOrganizationId=0, $p_iProjectTypeId=0, $p_strProjectNumbers="",
-                                           $p_strAwardNumbers="", $p_strMaterials="", $p_iProjectYear=0, $p_iPersonId=0){
+                                           $p_strMemberName="", $p_iIsInvestigator=0, $p_iOrganizationId=0, $p_iProjectTypeId=0, $p_iResearchTypeId=0,
+                                           $p_strProjectNumbers="", $p_strAwardNumbers="", $p_strMaterials="", $p_iProjectYear=0, $p_iPersonId=0){
+
+    $strProjectType = StringHelper::EMPTY_STRING;
+    if($p_iProjectTypeId){
+      $strProjectType = " AND p.project_type_id=$p_iProjectTypeId ";
+    }
 
     $strQuery = "SELECT count(distinct wsk.projid) as TOTAL
                  FROM warehouse_search_keywords wsk
-                 INNER JOIN project p ON wsk.projid=p.projid AND p.viewable='PUBLIC' ";
+                 INNER JOIN project p ON wsk.projid=p.projid AND p.viewable='PUBLIC' $strProjectType ";
 
     if($p_iOrganizationId){
       $strQuery .= "INNER JOIN project_organization po ON po.projid=wsk.projid
                     INNER JOIN organization o ON o.orgid=po.orgid AND o.org_type_id=1 AND o.orgid=$p_iOrganizationId ";
+    }
+
+    if($p_iResearchTypeId){
+      $strQuery .= "INNER JOIN nees_research_type nrt on p.nees_research_type_id=nrt.id and nrt.id=$p_iResearchTypeId ";
     }
 
     if(StringHelper::hasText($p_strFunding)){
@@ -240,8 +250,9 @@ class ProjectPeer extends BaseProjectPeer {
 
     $strMembershipQuery = $strQuery;
     $strSearch = "INNER JOIN project p ON wsk.projid=p.projid AND p.viewable='PUBLIC'";
-    $strReplace = "INNER JOIN authorization au on au.entity_id=wsk.projid and au.entity_type_id=1 and au.permissions like 'view%' and au.person_id=$p_iPersonId ";
+    $strReplace = "INNER JOIN project p ON wsk.projid=p.projid INNER JOIN authorization au on au.entity_id=wsk.projid and au.entity_type_id=1 and au.permissions like 'view%' and au.person_id=$p_iPersonId ";
     $strMembershipQuery = str_replace($strSearch, $strReplace, $strMembershipQuery);
+    $strMembershipQuery .
 
     $strQuery = $strQuery ." union ".$strMembershipQuery;
     //echo "ProjectPeer::searchByProcedureCount query=$strQuery<br>";

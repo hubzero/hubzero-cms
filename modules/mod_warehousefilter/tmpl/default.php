@@ -107,9 +107,16 @@ defined('_JEXEC') or die('Restricted access'); ?>
       <?php
         foreach($oResearchTypeFilterArray as $iResearchTypeIndex=>$strResearchTypeArray){
         ?>
-          <a href=""><?php echo $strResearchTypeArray["MONIKER"] ." (".$strResearchTypeArray["TOTAL"].")"; ?></a>
+          <a href="/warehouse/filter?researchType=<?php echo urlencode($strResearchTypeArray["ID"]); ?>"><?php echo $strResearchTypeArray["MONIKER"] ." (".$strResearchTypeArray["TOTAL"].")"; ?></a>
         <?
-          if($iResearchTypeIndex < $iResearchTypeCount){
+          if($iResearchTypeIndex > 2){
+            if($iResearchTypeCount > 4){
+            ?>
+              <br><a href="javascript:void(0);" onClick="getMootools('/warehouse/searchfilter?type=researchtype&action=show&format=ajax&target=search-filter-research&field=researchType', 'search-filter-research');">more...</a>
+            <?php
+            }
+            break;
+          }else{
             echo "<br>";
           }
         }

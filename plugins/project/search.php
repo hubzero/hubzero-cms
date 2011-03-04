@@ -39,6 +39,7 @@ class plgProjectSearch extends JPlugin{
     $strMemberName = $_SESSION[Search::MEMBER];
     $iIsInvestigator = $_SESSION[Search::IS_INVESTIGATOR];
     $iProjectTypeId = $_SESSION[Search::PROJECT_TYPE];
+    $iResearchTypeId = $_SESSION[Search::NEES_RESEARCH_TYPES];
     $strProjectNumbers = $_SESSION[Search::PROJECT_IDS];
     $strAwardNumbers = $_SESSION[Search::AWARDS];
     $strMaterials = $_SESSION[Search::MATERIAL_TYPES];
@@ -72,6 +73,11 @@ class plgProjectSearch extends JPlugin{
         $strFunding = $strFundingFilter;
       }
 
+      $strResearchTypeFilter = JRequest::getInt("researchType", 0);
+      if($strResearchTypeFilter){
+        $iResearchTypeId = $strResearchTypeFilter;
+      }
+
       $strMaterialsFilter = JRequest::getVar('materialType', "");
       if(StringHelper::hasText($strMaterialsFilter)){
         $strMaterials = $strMaterialsFilter;
@@ -92,12 +98,12 @@ class plgProjectSearch extends JPlugin{
     //Perform the search
     $iSearchId = ProjectPeer::getWarehouseSearchKeywordsId($oConnection);
     $strResultsArray = ProjectPeer::searchByProcedure($oConnection, $iSearchId, $strKeyword, $strFunding,
-                                           $strMemberName, $iIsInvestigator, $iSiteId, $iProjectTypeId,
+                                           $strMemberName, $iIsInvestigator, $iSiteId, $iProjectTypeId, $iResearchTypeId,
                                            $strProjectNumbers, $strAwardNumbers, $strMaterials, $iProjectYear,
                                            $strOrderBy, $iLowerLimit, $iUpperLimit, $oAuthorizer->getUserId());
     $iTotal = ProjectPeer::searchByProcedureCount($oConnection, $iSearchId, $strKeyword, $strFunding,
-                                           $strMemberName, $iIsInvestigator, $iSiteId, $iProjectTypeId, $strProjectNumbers,
-                                           $strAwardNumbers, $strMaterials, $iProjectYear, $oAuthorizer->getUserId());
+                                           $strMemberName, $iIsInvestigator, $iSiteId, $iProjectTypeId, $iResearchTypeId,
+                                           $strProjectNumbers, $strAwardNumbers, $strMaterials, $iProjectYear, $oAuthorizer->getUserId());
 
     //Get the filters
     $oProjectTypeFilterArray = ProjectPeer::searchProjectTypeFilter($oConnection, $iSearchId, $oAuthorizer->getUserId(), 0, 4);

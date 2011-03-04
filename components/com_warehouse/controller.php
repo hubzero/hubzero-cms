@@ -89,6 +89,10 @@ class WarehouseController extends JController{
     $iProjectYear = JRequest::getInt('projectYear', 0);
     $_SESSION[Search::PROJECT_YEAR] = $iProjectYear;
 
+    //currently not searching on research type...
+    $iResearchTypeId = JRequest::getVar('researchType', "");
+    $_SESSION[Search::NEES_RESEARCH_TYPES] = $iResearchTypeId;
+
     $strOrderBy = JRequest::getVar('order', 'nickname');
 
     $iResultsCount = 0;
