@@ -226,7 +226,10 @@ class sitesactivitiesViewupcomingexperiments extends JView
 
                         if($feedcount)
                         {
-                            $flink = "<strong>[<a style='font-weight: normal;' href='?facid=$facilityID&eloc=Feeds'>Video&nbsp;Stream</a>]</strong>";
+
+
+
+                            $flink = "<strong>[<a style='font-weight: normal;' href='/index.php?option=com_sitesactivities&view=videofeeds&id=$facilityID'>Video Stream</a>]</strong>";
                         }
                     
                         $explist_act .= <<<ENDHTML
