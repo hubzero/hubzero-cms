@@ -8,11 +8,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $config = JFactory::getConfig();
 
-/** remove comment to display errors and warnings
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
-**/
 
 mb_internal_encoding('UTF-8');
 
@@ -38,6 +36,8 @@ $min = '.min';
 if ($is_debug) {
 	$min = '';
 }
+
+$document->addScript($html_path . '/util.js');
 
 $document->addScript($html_path . '/excanvas' . $min . '.js');
 
@@ -83,7 +83,8 @@ db_clean_input($C_POST);
 db_clean_input($C_REQUEST);
 
 // Instantiate controller
-$controller = new Controller();$controller = new Controller();
+$controller = new Controller();
+$mainframe = &JFactory::getApplication();
 $controller->mainframe = $mainframe;
 $controller->execute();
 $controller->redirect();

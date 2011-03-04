@@ -23,6 +23,8 @@ function filter($res)
 	$table['aaData'] = array();
 	$table['iTotalRecords'] = $total;
 	$table['iTotalDisplayRecords'] = $found;
+	$table['filters'] = isset($dd['filters'])? $dd['filters']: array();
+	$table['cols'] = array();
 	$vis_keys = array();
 	$field_types = array();
 
@@ -36,9 +38,12 @@ function filter($res)
 		} else {
 			$field_type = 'string';
 		}
-		
+
+		$table['cols']['all'][] = $key;
 		$field_offset++;
+
 		if (!isset($dd['cols'][$key]['hide'])) {
+			$table['cols']['visible'][] = $key;
 			$vis_keys[] = $key;
 			$align = (isset($dd['cols'][$key]['align']))? $dd['cols'][$key]['align']: false;
 			$data_type = (isset($dd['cols'][$key]['data_type']))? $dd['cols'][$key]['data_type']: false;
@@ -48,7 +53,11 @@ function filter($res)
 				case 'int':
 				case 'float':
 				case 'real':
-					$data_type = 'int';
+					$data_type = 'number';
+					$align = (!$align)? 'right': $align;
+					break;
+				case 'numrange':
+					$data_type = 'numrange';
 					$align = (!$align)? 'right': $align;
 					break;
 				case 'cint':
@@ -74,6 +83,7 @@ function filter($res)
 
 			$label = '<strong class="dv_label_text" title="' . $tool_tip . '">';
 			$label .= (isset($dd['cols'][$key]['label']))? $dd['cols'][$key]['label'] : $key;
+			$label .= (isset($dd['cols'][$key]['units']))? '&nbsp;<small>[' . $dd['cols'][$key]['units'] . ']</small>': '';
 			$label .= '</strong>';
 
 			$table['col_labels'][] = (isset($dd['cols'][$key]['label']))? $dd['cols'][$key]['label'] : $key;
@@ -107,7 +117,7 @@ function filter($res)
 			$field_types[$key] = $data_type;
 		}
 	}
-
+	
 	if (isset($dd['order_by'])) {
 		$table['aaSorting'] = array();			
 	}
@@ -115,6 +125,9 @@ function filter($res)
 	$table['sColumns'] = implode(',', $table['sColumns']);
 	$table['vis_cols'] = $vis_keys;
 	$table['field_types'] = $field_types;
+	if(isset($dd['charts_list'])) {
+		$table['charts_list'] = $dd['charts_list'];
+	}
 
 	// Chart info
 	if (isset($dd['charts']) && count($dd['charts']) > 0) {
@@ -258,6 +271,22 @@ function filter($res)
 					}
 
 					$val = $label . '&nbsp;&nbsp;&nbsp;' . $tool_link . '&nbsp;&nbsp;' . $dl . '&nbsp;&nbsp;' . $check;
+				} elseif (isset($dd['cols'][$key]['filtered_view'])) {
+					$fv = $dd['cols'][$key]['filtered_view'];
+					$filter = array();
+					foreach ($fv['filter'] as $c => $k) {
+						$filter[] = "$c|" . (isset($rec[$k])? $rec[$k]: $k);
+					}
+					$filter = '?filter=' . implode('||', $filter);
+
+					$val = '<a class="filtered_view" title="View filtered spreadsheet" target="_blank" href="/' .$com_name . '/' . $fv['view'] . '/' . $fv['data'] . '/' . $filter . '#dv_top">' . $val . '</a>';
+				}
+				
+				if (isset($dd['cols'][$key]['numrange'])) {
+					$min = $rec[$dd['cols'][$key]['numrange']['min']];
+					$max = $rec[$dd['cols'][$key]['numrange']['max']];
+					$range = ($min == $max)? $min: "$min to $max";
+					$val = "<span data-min='$min' data-max='$max' class='range-data'>$range</span>";
 				}
 
 				if (isset($dd['cols'][$key]['more_info'])) {
@@ -282,17 +311,6 @@ function filter($res)
 					}
 
 					$val = '<a title="Click to view more information about this item" class="more_info_multi" href="/' . $com_name . '/?task=data' . $obj . $id . '&format=json" style="color: blue;">' . $val . '</a>' . '&nbsp;&nbsp;' . $check;
-				}
-
-				if (isset($dd['cols'][$key]['filtered_view'])) {
-					$fv = $dd['cols'][$key]['filtered_view'];
-					$filter = array();
-					foreach ($fv['filter'] as $c => $k) {
-						$filter[] = "$c|" . (isset($rec[$k])? $rec[$k]: $k);
-					}
-					$filter = '?filter=' . implode('||', $filter);
-
-					$val = '<a class="filtered_view" title="View filtered spreadsheet" target="_blank" href="/' .$com_name . '/' . $fv['view'] . '/' . $fv['data'] . '/' . $filter . '#dv_top">' . $val . '</a>';
 				}
 
 				if (isset($dd['cols'][$key]['abbr'])) {
@@ -325,17 +343,17 @@ function filter($res)
 					$label = isset($dd['cols'][$key]['label'])? $dd['cols'][$key]['label']: $key;
 					if ($val != "-" && isset($dd['cols'][$key]['truncate'])) {
 						$len = $dd['cols'][$key]['width'];
-						$len = intval($len/8);
+						$len = intval($len/7);
 						$val_t = substr($val, 0, $len);
 						if ($val_t != $val) {
 							$title = $val;
-							preg_match('/(http:\/\/[^\s]+)/', $title, $text);
+							/*preg_match('/(http:\/\/[^\s]+)/', $title, $text);
 							if (isset($text[0])) {
 								//$url = parse_url($text[0]);
 								$html = "<a target=\"_blank\" href=\"". $text[0] . "\" style=\"color: blue; word-wrap: break-word;\">" . $text[0] . "</a>";
 								$newString = preg_replace('/(http:\/\/[^\s]+)/', $html, $title);
 								$title = $newString;
-							}
+							} */
 
 							$title = "title=" . '"' . str_replace('"', '&#34;', $title) . '"';
 							$class = 'class="truncate hand"';
@@ -390,7 +408,7 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
 		}
 	}
 
-	if (!$label) {
+	if (!$label || isset($dd['cols'][$key]['full_url'])) {
 		$label = $link;
 	}
 

@@ -15,6 +15,7 @@ function get_db($db = false)
 	}
 
 	$link = mysql_connect($db['host'] , $db['user'], $db['pass']);
+
 	if (!mysql_select_db($db['name'], $link)) {
 		print("DB error" . mysql_errno($link) . ": " . mysql_error($link));
 		exit();
@@ -31,8 +32,8 @@ function get_results($sql, $dd) {
 	$res['data'] = array();
 	$res['total'] = 0;
 	$res['found'] = 0;
-	//$res['sql'] = $sql;
-	$res['sql'] = '';
+	$res['sql'] = $sql;
+	//$res['sql'] = '';
 
 	if ($result = mysql_query($sql)) {
 		$res['data'] = $result;
@@ -86,7 +87,19 @@ function query_gen($dd)
 
 	if (isset($dd['joins'])) {
 		foreach ($dd['joins'] as $j) {
-			$sql .= 'LEFT JOIN ' . $j['table'] . ' on (' . $j['ids'][0] . '=' . $j['ids'][1] . ') ';
+			$sql .= 'LEFT JOIN ' . $j['table'] . ' ON (' . $j['ids'][0] . '=' . $j['ids'][1] . ') ';
+		}
+	}
+	
+	if (isset($dd['join'])) {
+		foreach ($dd['join'] as $j) {
+			$type = isset($j['type'])? $j['type']: 'LEFT JOIN';
+			$con = array();
+			foreach ($j['fields'] as $f1=>$f2) {
+				$con[] = "$f1=$f2";
+			}
+			$con = implode(' AND ', $con);
+			$sql .= "$type " . $j['table'] . ' ON (' . $con .  ') ';
 		}
 	}
 
@@ -148,7 +161,7 @@ function query_gen($dd)
 				if (isset($where_filter[$col])) {
 					$c = $where_filter[$col]['col'];
 					$v = $where_filter[$col]['val'];
-					if ($where_filter[$col]['fieldtype'] == 'int' || $where_filter[$col]['fieldtype'] == 'float' || $where_filter[$col]['fieldtype'] == 'real') {
+					if ($where_filter[$col]['fieldtype'] == 'number') {
 						$v = strtolower($v);
 						if (strstr($v, 'to')) {
 							$vals = explode('to', $v);
@@ -165,6 +178,29 @@ function query_gen($dd)
 							$v = trim(str_replace('=', '', $v));
 							$having_sg[] = $c . " LIKE '" . $v . "'";
 						}
+					} elseif ($where_filter[$col]['fieldtype'] == 'numrange') {
+						$v = strtolower($v);
+						$min_col = $dd['cols'][$col]['numrange']['min'];
+						$max_col = $dd['cols'][$col]['numrange']['max'];
+						if (strstr($v, 'to')) {
+							$vals = explode('to', $v);
+							$min = trim($vals[0]);
+							$max = trim($vals[1]);
+							if ($min < $max) {
+								$where_sg[] = $min_col . " >= $min";
+								$where_sg[] = $max_col . " <= $max";
+							} else {
+								$where_sg[] = $min_col . " >= $max";
+								$where_sg[] = $max_col . " <= $min";
+							}
+						} elseif (strstr($v, '<')) {
+							$where_sg[] = $max_col . " $v";
+						} elseif(strstr($v, '>')) {
+							$where_sg[] = $min_col . " $v";
+						} elseif (strstr($v, '=')) {
+							$v = trim(str_replace('=', '', $v));
+							$where_sg[] = $c . " LIKE '" . $v . "'";
+						}
 					} else {
 						$where_sg[] = $c . " LIKE '%" . $v . "%'";
 					}
@@ -174,7 +210,7 @@ function query_gen($dd)
 				if (isset($having_filter[$col])) {
 					$c = $having_filter[$col]['col'];
 					$v = $having_filter[$col]['val'];
-					if ($having_filter[$col]['fieldtype'] == 'int' || $having_filter[$col]['fieldtype'] == 'float' || $having_filter[$col]['fieldtype'] == 'real') {
+					if ($having_filter[$col]['fieldtype'] == 'number') {
 						$v = strtolower($v);
 						if (strstr($v, 'to')) {
 							$vals = explode('to', $v);
@@ -187,6 +223,29 @@ function query_gen($dd)
 							}
 						} elseif (strstr($v, '<') || strstr($v, '>')) {
 							$having_sg[] = $c . " $v";
+						} elseif (strstr($v, '=')) {
+							$v = trim(str_replace('=', '', $v));
+							$having_sg[] = $c . " LIKE '" . $v . "'";
+						}
+					} elseif ($where_filter[$col]['fieldtype'] == 'numrange') {
+						$v = strtolower($v);
+						$min_col = $dd['cols'][$col]['numrange']['min'];
+						$max_col = $dd['cols'][$col]['numrange']['max'];
+						if (strstr($v, 'to')) {
+							$vals = explode('to', $v);
+							$min = trim($vals[0]);
+							$max = trim($vals[1]);
+							if ($min < $max) {
+								$having_sg[] = $min_col . " >= $min";
+								$having_sg[] = $max_col . " <= $max";
+							} else {
+								$having_sg[] = $min_col . " >= $max";
+								$having_sg[] = $max_col . " <= $min";
+							}
+						} elseif (strstr($v, '<')) {
+							$having_sg[] = $max_col . " $v";
+						} elseif(strstr($v, '>')) {
+							$having_sg[] = $min_col . " $v";
 						} elseif (strstr($v, '=')) {
 							$v = trim(str_replace('=', '', $v));
 							$having_sg[] = $c . " LIKE '" . $v . "'";
@@ -219,7 +278,7 @@ function query_gen($dd)
 	if (count($where_filter) > 0) {
 		$where_filter_arr = array();
 		foreach ($where_filter as $key=>$val) {
-			if ($val['fieldtype'] == 'int' || $val['fieldtype'] == 'float' || $val['fieldtype'] == 'real') {
+			if ($val['fieldtype'] == 'number') {
 				$val['val'] = strtolower($val['val']);
 				if (strstr($val['val'], 'to')) {
 					$vals = explode('to', $val['val']);
@@ -235,6 +294,34 @@ function query_gen($dd)
 				} elseif (strstr($val['val'], '=')) {
 					$val['val'] = trim(str_replace('=', '', $val['val']));
 					$where_filter_arr[] = $val['col'] . " LIKE '" . $val['val'] . "'";
+				} else {
+					$where_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
+				}
+			} elseif ($val['fieldtype'] == 'numrange') {
+				$val['val'] = strtolower($val['val']);
+				
+				$min_col = $dd['cols'][$key]['numrange']['min'];
+				$max_col = $dd['cols'][$key]['numrange']['max'];
+				if (strstr($val['val'], 'to')) {
+					$vals = explode('to', $val['val']);
+					$min = trim($vals[0]);
+					$max = trim($vals[1]);
+					if ($min < $max) {
+						$where_filter_arr[] = $min_col . " >= $min";
+						$where_filter_arr[] = $max_col . " <= $max";
+					} else {
+						$where_filter_arr[] = $min_col . " >= $max";
+						$where_filter_arr[] = $max_col . " <= $min";
+					}
+				} elseif (strstr($val['val'], '<')) {
+					$where_filter_arr[] = $max_col . " " . $val['val'];
+				} elseif (strstr($val['val'], '>')) {
+					$where_filter_arr[] = $min_col . " " . $val['val'];
+				} elseif (strstr($val['val'], '=')) {
+					$val['val'] = trim(str_replace('=', '', $val['val']));
+					$where_filter_arr[] = $val['col'] . " LIKE '" . $val['val'] . "'";
+				} else {
+					$where_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
 				}
 			} elseif (isset($val['filtered_view'])) {
 				$where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
@@ -255,25 +342,46 @@ function query_gen($dd)
 	if (count($having_filter) > 0) {
 		$having_filter_arr = array();
 		foreach ($having_filter as $key=>$val) {
-			if ($val['fieldtype'] == 'int' || $val['fieldtype'] == 'float' || $val['fieldtype'] == 'real') {
+			$val['val'] = strtolower($val['val']);
+			if ($val['fieldtype'] == 'number') {
 				$val['val'] = strtolower($val['val']);
-				if ($val['fieldtype'] == 'int' || $val['fieldtype'] == 'float' || $val['fieldtype'] == 'real') {
-					$val['val'] = strtolower($val['val']);
-					if (strstr($val['val'], 'to')) {
-						$vals = explode('to', $val['val']);
-						$min = trim($vals[0]);
-						$max = trim($vals[1]);
-						if ($min < $max) {
-							$having_filter_arr[] = $val['col'] . " BETWEEN $min AND $max";
-						} else {
-							$having_filter_arr[] = $val['col'] . " BETWEEN $max AND $min";
-						}
-					} elseif (strstr($val['val'], '<') || strstr($val['val'], '>')) {
-						$having_filter_arr[] = $val['col'] . " " . $val['val'];
-					} elseif (strstr($val['val'], '=')) {
-						$val['val'] = trim(str_replace('=', '', $val['val']));
-						$having_filter_arr[] = $val['col'] . " LIKE '" . $val['val'] . "'";
+				if (strstr($val['val'], 'to')) {
+					$vals = explode('to', $val['val']);
+					$min = trim($vals[0]);
+					$max = trim($vals[1]);
+					if ($min < $max) {
+						$having_filter_arr[] = $val['col'] . " BETWEEN $min AND $max";
+					} else {
+						$having_filter_arr[] = $val['col'] . " BETWEEN $max AND $min";
 					}
+				} elseif (strstr($val['val'], '<') || strstr($val['val'], '>')) {
+					$having_filter_arr[] = $val['col'] . " " . $val['val'];
+				} elseif (strstr($val['val'], '=')) {
+					$val['val'] = trim(str_replace('=', '', $val['val']));
+					$having_filter_arr[] = $val['col'] . " LIKE '" . $val['val'] . "'";
+				}				
+			} elseif ($val['fieldtype'] == 'numrange') {
+				$val['val'] = strtolower($val['val']);
+				$min_col = $dd['cols'][$key]['numrange']['min'];
+				$max_col = $dd['cols'][$key]['numrange']['max'];
+				if (strstr($val['val'], 'to')) {
+					$vals = explode('to', $val['val']);
+					$min = trim($vals[0]);
+					$max = trim($vals[1]);
+					if ($min < $max) {
+						$having_filter_arr[] = $min_col . " >= $min";
+						$having_filter_arr[] = $max_col . " <= $max";
+					} else {
+						$having_filter_arr[] = $min_col . " >= $max";
+						$having_filter_arr[] = $max_col . " <= $min";
+					}
+				} elseif (strstr($val['val'], '<')) {
+					$having_filter_arr[] = $max_col . " " . $val['val'];
+				} elseif (strstr($val['val'], '>')) {
+					$having_filter_arr[] = $min_col . " " . $val['val'];
+				} elseif (strstr($val['val'], '=')) {
+					$val['val'] = trim(str_replace('=', '', $val['val']));
+					$having_filter_arr[] = $val['col'] . " LIKE '" . $val['val'] . "'";
 				}
 			} else {
 				$having_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";

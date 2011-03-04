@@ -8,11 +8,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function view($hash) {
 	global $html_path, $com_name;
-	
-	if(!isset($_SESSION['dv']['gallery']['list'][$hash])) {
-		print "<h3>The session has expired, please close this and refresh the parent page.</h3>";
-		return;
-	}
 
 	$http_path = $_SESSION['dv']['gallery']['list'][$hash];
 	$real_path = explode('/site/', $http_path);

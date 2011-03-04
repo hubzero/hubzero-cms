@@ -3,13 +3,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function get_chile_buildings()
 {
-	$link = get_db();
-	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
-
 	$dd['title'] = "The Chile Earthquake Database: Buildings";
 	$dd['table'] = 'chile_buildings';
-	$dd['db'] = array('host'=> 'stage.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
-	
+	$dd['pk'] = 'chile_buildings.Number';
 	$dd['cols']['chile_buildings.Number'] = array('label'=>'ID');
 	$dd['cols']['chile_buildings.Building'] = array('label'=>'Building Name', 'desc'=>'Select two or more items to compare side-by-side', 'more_info'=>'chile_buildings|chile_buildings.Number', 'compare'=>'compare');
 	$dd['cols']['"Damage"'] = array('label'=>'Damage', 'more_info_multi'=>'chile_damage|chile_buildings.Number');
@@ -23,7 +19,6 @@ function get_chile_buildings()
 	$dd['cols']['chile_buildings.Height'] = array('label'=>'Height<br />[m]');
 	$dd['cols']['chile_buildings.Drawings'] = array('hide'=>'hide');
 	$dd['cols']['chile_buildings.main_pic'] = array('label'=>'Drawings', 'type'=>'image', 'gallery'=>'chile_buildings.Drawings', 'resized'=>'resized');		// IF(me==sleeping) THEN pls update the fieldname and uncomment to use the mainpic when it's added
-//	$dd['cols']['"/site/collections/haiti/mainpics/small/A001.JPG"'] = array('label'=>'Drawings', 'type'=>'image', 'gallery'=>'chile_buildings.Drawings');	// temp. gallery column
 	$dd['cols']['chile_buildings.Date_of_Construction'] = array('label'=>'Date of<br />Construction');
 	$dd['cols']['chile_buildings.Constructed_Area'] = array('label'=>'Constructed<br />Area [m²]');
 	$dd['cols']['chile_buildings.Area_of_Columns'] = array('label'=>'Area of<br />Columns [m²]');
@@ -51,15 +46,6 @@ function get_chile_buildings()
 	$dd['show_maps'] = true;
 	$dd['maps'][] = array('title'=>'chile_buildings.Building', 'lat'=>'chile_buildings.Coordinates_Lat', 'lng'=>'chile_buildings.Coordinates_Long', 'cood_type'=>'dms');
 
-	if ($id) {
-		$dd['where'][] = array('field'=>'chile_buildings.Number', 'value'=>$id);
-		$dd['single'] = true;
-	}
-
-	$sql = query_gen($dd);
-
-	$res = get_results($sql, $dd);
-
-	return $res;
+	return $dd;
 }
 ?>

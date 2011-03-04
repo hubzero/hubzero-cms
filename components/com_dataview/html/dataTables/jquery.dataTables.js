@@ -4034,9 +4034,7 @@
 			}
 			
 			var iIndexCorrector = 0;
-			if (sInput.indexOf("#range#") == 0) {
-				sInput = sInput.split('#range#');
-				sInput = sInput[1];
+			if ((oSettings.aoColumns[iColumn].sType === 'number' || oSettings.aoColumns[iColumn].sType === 'numrange') && sInput.indexOf("to") !== -1) {
 				var minmax = sInput.split('to');
 				minmax[0] = minmax[0] * 1;
 				minmax[1] = minmax[1] * 1;
@@ -4048,12 +4046,17 @@
 					mi = minmax[1];
 					ma = minmax[0];
 				}
-
-				for ( var i=oSettings.aiDisplay.length-1 ; i>=0 ; i-- )
-				{
-					var sData = _fnDataToSearch( oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType );
-					if (!(mi < sData && sData < ma))
-					{
+				
+				for (var i=oSettings.aiDisplay.length-1 ; i>=0 ; i--) {
+					var sData = _fnDataToSearch(oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType);
+					if (oSettings.aoColumns[iColumn].sType === 'numrange') {
+						var d_min = +jQuery(sData).data('min');
+						var d_max = +jQuery(sData).data('max');
+						if (!(mi >= d_min && d_max >= ma)) {
+							oSettings.aiDisplay.splice( i, 1 );
+							iIndexCorrector++;
+						}
+					} else if (!(mi <= sData && sData <= ma)) {
 						oSettings.aiDisplay.splice( i, 1 );
 						iIndexCorrector++;
 					}
@@ -4063,11 +4066,12 @@
 				sInput = sInput[1];
 				sInput = sInput * 1;
 
-				for ( var i=oSettings.aiDisplay.length-1 ; i>=0 ; i-- )
-				{
-					var sData = _fnDataToSearch( oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType );
-					if (!((sData*1) <= sInput))
-					{
+				for (var i=oSettings.aiDisplay.length-1 ; i>=0 ; i--) {
+					var sData = _fnDataToSearch(oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType);
+					if (oSettings.aoColumns[iColumn].sType === 'numrange') {
+						sData = +jQuery(sData).data('min');
+					}
+					if (!((sData*1) <= sInput)) {
 						oSettings.aiDisplay.splice( i, 1 );
 						iIndexCorrector++;
 					}
@@ -4077,11 +4081,12 @@
 				sInput = sInput[1];
 				sInput = sInput * 1;
 
-				for ( var i=oSettings.aiDisplay.length-1 ; i>=0 ; i-- )
-				{
-					var sData = _fnDataToSearch( oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType );
-					if (!((sData*1) >= sInput))
-					{
+				for (var i=oSettings.aiDisplay.length-1 ; i>=0 ; i--) {
+					var sData = _fnDataToSearch(oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType);
+					if (oSettings.aoColumns[iColumn].sType === 'numrange') {
+						sData = +jQuery(sData).data('max');
+					}
+					if (!((sData*1) >= sInput)) {
 						oSettings.aiDisplay.splice( i, 1 );
 						iIndexCorrector++;
 					}
@@ -4091,12 +4096,13 @@
 				sInput = sInput[1];
 				sInput = sInput * 1;
 
-				for ( var i=oSettings.aiDisplay.length-1 ; i>=0 ; i-- )
-				{
-					var sData = _fnDataToSearch( oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType );
-					if (!((sData*1) < sInput))
-					{
-						oSettings.aiDisplay.splice( i, 1 );
+				for (var i=oSettings.aiDisplay.length-1 ; i>=0 ; i--) {
+					var sData = _fnDataToSearch(oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType);
+					if (oSettings.aoColumns[iColumn].sType === 'numrange') {
+						sData = +jQuery(sData).data('min');
+					}
+					if (!((sData*1) < sInput)) {
+						oSettings.aiDisplay.splice(i, 1);
 						iIndexCorrector++;
 					}
 				}
@@ -4105,12 +4111,13 @@
 				sInput = sInput[1];
 				sInput = sInput * 1;
 
-				for ( var i=oSettings.aiDisplay.length-1 ; i>=0 ; i-- )
-				{
-					var sData = _fnDataToSearch( oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType );
-					if (!((sData*1) > sInput))
-					{
-						oSettings.aiDisplay.splice( i, 1 );
+				for (var i=oSettings.aiDisplay.length-1 ; i>=0 ; i--) {
+					var sData = _fnDataToSearch(oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType);
+					if (oSettings.aoColumns[iColumn].sType === 'numrange') {
+						sData = +jQuery(sData).data('max');
+					}
+					if (!((sData*1) > sInput)) {
+						oSettings.aiDisplay.splice(i, 1);
 						iIndexCorrector++;
 					}
 				}
@@ -4119,26 +4126,27 @@
 				sInput = sInput[1];
 				sInput = sInput * 1;
 
-				for ( var i=oSettings.aiDisplay.length-1 ; i>=0 ; i-- )
-				{
-					var sData = _fnDataToSearch( oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType );
-					if (!((sData*1) == sInput))
-					{
-						oSettings.aiDisplay.splice( i, 1 );
+				for (var i=oSettings.aiDisplay.length-1; i>=0; i--) {
+					var sData = _fnDataToSearch(oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType);
+					if (oSettings.aoColumns[iColumn].sType === 'numrange') {
+						var d_min = +jQuery(sData).data('min');
+						var d_max = +jQuery(sData).data('max');
+						if (!(d_min <= sInput && d_max >= sInput)) {
+							oSettings.aiDisplay.splice(i, 1);
+							iIndexCorrector++;
+						}
+					} else if (!((sData*1) == sInput)) {
+						oSettings.aiDisplay.splice(i, 1);
 						iIndexCorrector++;
 					}
 				}
 			} else {
+				var rpSearch = _fnFilterCreateSearch(sInput, bRegex, bSmart);
 			
-				var rpSearch = _fnFilterCreateSearch( sInput, bRegex, bSmart );
-			
-				for ( var i=oSettings.aiDisplay.length-1 ; i>=0 ; i-- )
-				{
-					var sData = _fnDataToSearch( oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn],
-						oSettings.aoColumns[iColumn].sType );
-					if ( ! rpSearch.test( sData ) )
-					{
-						oSettings.aiDisplay.splice( i, 1 );
+				for (var i=oSettings.aiDisplay.length-1; i>=0; i--) {
+					var sData = _fnDataToSearch(oSettings.aoData[ oSettings.aiDisplay[i] ]._aData[iColumn], oSettings.aoColumns[iColumn].sType);
+					if (!rpSearch.test(sData)) {
+						oSettings.aiDisplay.splice(i, 1);
 						iIndexCorrector++;
 					}
 				}

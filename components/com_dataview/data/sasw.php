@@ -3,13 +3,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function get_sasw()
 {
-	$link = get_db();
-	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
-
-	//Data definition
 	$dd['title'] = "Shear Wave Velocity Database";
 	$dd['table'] = 'saswdb';
-//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
+	$dd['pk'] = 'saswdb.Counter';
 
 	$dd['cols']['saswdb.Counter'] = array('label'=>'ID', 'desc'=>'Database ID', 'data_type'=>'int', 'more_info'=>'sasw|saswdb.Counter', 'compare'=>'Select two or more items to compare side-by-side', 'width'=>'50');
 	$dd['cols']['saswdb.NEESR_ID'] = array('label'=>'NEESR-ID', 'hide'=>'hide');
@@ -38,15 +34,6 @@ function get_sasw()
 	$dd['show_maps'] = true;
 	$dd['maps'][] = array('title'=>'saswdb.Counter', 'lat'=>'saswdb.Latitude_full', 'lng'=>'saswdb.Longitude_full', 'cood_type'=>'dms');
 
-	if ($id) {
-		$dd['where'][] = array('field'=>'saswdb.Counter', 'value'=>$id);
-		$dd['single'] = true;
-	}
-
-	$sql = query_gen($dd);
-
-	$res = get_results($sql, $dd);
-
-	return $res;
+	return $dd;
 }
 ?>

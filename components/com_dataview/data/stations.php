@@ -3,12 +3,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function get_stations()
 {
-	$link = get_db();
-	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
-
 	$dd['title'] = "Stations";
-//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'Stations';
+	$dd['pk'] = 'Stations.StationID';
 
 	$dd['cols']['Stations.StationID'] = array('label'=>'Station', 'raw'=>'UPPER(Stations.StationID)', 'filtered_view'=>array('view'=>'spreadsheet', 'data'=>'events','filter'=>array('Events.Station'=>'Stations.StationID', 'Events.Magnitude'=>'>=4|float'))); // added UPPER()
 	$dd['cols']['Stations.StationName'] = array('label'=>'Station Name', 'width'=>'185');
@@ -26,15 +23,6 @@ function get_stations()
 	$dd['show_maps'] = true;
 	$dd['maps'][] = array('title'=>'Stations.StationName', 'lat'=>'Stations.Latitude', 'lng'=>'Stations.Logitude');
 
-	if ($id) {
-		$dd['where'][] = array('field'=>'Stations.StationID', 'value'=>$id);
-		$dd['single'] = true;
-	}
-	
-	$sql = query_gen($dd);
-
-	$res = get_results($sql, $dd);
-
-	return $res;
+	return $dd;
 }
 ?>

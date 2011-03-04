@@ -3,12 +3,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function get_haiti()
 {
-	$link = get_db();
-	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
-
 	$dd['title'] = "The Haiti Earthquake Database";
 	$dd['table'] = 'haitidb';
-//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
+	$dd['pk'] = 'haitidb.No_';
 
 	$dd['cols']['haitidb.No_'] = array('label'=>'Number');
 	$dd['cols']['haitidb.Building'] = array('label'=>'Building', 'desc'=>'The Building Identification Marker.');
@@ -46,15 +43,6 @@ function get_haiti()
 	$dd['show_maps'] = true;
 	$dd['maps'][] = array('title'=>'haitidb.Building', 'lat'=>'haitidb.Latitude', 'lng'=>'haitidb.Longitude', 'cood_type'=>'dms');
 
-	if ($id) {
-		$dd['where'][] = array('field'=>'haitidb.No_', 'value'=>$id);
-		$dd['single'] = true;
-	}
-
-	$sql = query_gen($dd);
-
-	$res = get_results($sql, $dd);
-
-	return $res;
+	return $dd;
 }
 ?>

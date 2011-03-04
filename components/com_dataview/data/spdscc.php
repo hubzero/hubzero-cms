@@ -3,12 +3,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function get_spdscc()
 {
-	$link = get_db();
-	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
-
 	$dd['title'] = "Structural Performance Database for Spiral Concrete Columns";
-//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'ColDat';
+	$dd['pk'] = 'ColDat.ID';
 
 	$dd['cols']['ColDat.ID'] = array('label'=>'ID', 'data_type'=>'int');
 	$dd['cols']['ColDat.Author'] = array('label'=>'Author', 'width'=>'130');
@@ -39,15 +36,6 @@ function get_spdscc()
 	$dd['cols']['ColDat.rhov'] = array('label'=>'rhov<br />( % )', 'align'=>'right');
 	$dd['cols']['ColDat.Comment'] = array('label'=>'Comment', 'width'=>'200', 'truncate'=>'truncate');
 
-	if ($id) {
-		$dd['where'][] = array('field'=>'ColDat.ID', 'value'=>$id);
-		$dd['single'] = true;
-	}
-	
-	$sql = query_gen($dd);
-
-	$res = get_results($sql, $dd);
-
-	return $res;
+	return $dd;
 }
 ?>

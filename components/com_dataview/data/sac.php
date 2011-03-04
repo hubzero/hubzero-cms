@@ -3,14 +3,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function get_sac()
 {
-	$link = get_db();
-	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
-
-	//Data definition
 	$dd['title'] = "The SAC Steel Project Database";
 	$dd['table'] = 'sacdb';
 	$dd['serverside'] = true;
-//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
+	$dd['pk'] = 'sacdb.Test_ID';
 	
 //	$dd['cols']['sacdb.Rank'] = array('label'=>'Rank', 'desc'=>'Select two or more items to compare side-by-side', 'data_type'=>'int', 'more_info'=>'sac|sacdb.Rank', 'compare'=>'compare', 'width'=>'70');
 	$dd['cols']['sacdb.Test_ID'] = array('label'=>'Test ID');
@@ -90,15 +86,6 @@ function get_sac()
 	$dd['cols']['sacdb.Dtmx_Lcl'] = array('label'=>'Total Story Drift', 'desc'=>'Total story drift is calculated as the ratio of ∆max to the relevant length (column height or beam cantilever length) and expressed as a percentage. For the range of interest here, total story drift is approximately equivalent to the relative chord rotation between beam and column centerlines, expressed in radians.');
 	$dd['cols']['sacdb.Add_l_Result'] = array('label'=>'Additional Result', 'desc'=>'Additional results in other formats');
 
-	if ($id) {
-		$dd['where'][] = array('field'=>'sacdb.Rank', 'value'=>$id);
-		$dd['single'] = true;
-	}
-	
-	$sql = query_gen($dd);
-
-	$res = get_results($sql, $dd);
-
-	return $res;
+	return $dd;
 }
 ?>

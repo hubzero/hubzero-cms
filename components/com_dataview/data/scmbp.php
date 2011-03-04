@@ -3,12 +3,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function get_scmbp()
 {
-	$link = get_db();
-	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
-
 	$dd['title'] = "Structural Control and Monitoring Benchmark Problems";
-//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'Benchmark';
+	$dd['pk'] = 'Benchmark.ID';
 
 	$dd['cols']['Benchmark.ID'] = array('label'=>'ID', 'data_type'=>'int');
 	$dd['cols']['Benchmark.Long_Title'] = array('hide'=>'hide');
@@ -25,15 +22,6 @@ function get_scmbp()
 	$dd['cols']['Benchmark.Matlab_Zip'] = array('hide'=>'hide');
 	$dd['cols']['Benchmark.Matlab_Zip_Link'] = array('label'=>'Matlab Zip', 'type'=>'link', 'link_label'=>'Benchmark.Matlab_Zip');
 
-	if ($id) {
-		$dd['where'][] = array('field'=>'Benchmark.ID', 'value'=>$id);
-		$dd['single'] = true;
-	}
-	
-	$sql = query_gen($dd);
-
-	$res = get_results($sql, $dd);
-
-	return $res;
+	return $dd;
 }
 ?>

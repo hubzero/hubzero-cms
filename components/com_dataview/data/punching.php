@@ -3,12 +3,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function get_punching()
 {
-	$link = get_db();
-	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
-
 	$dd['title'] = "Punching Shear Databank";
-//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'Punching';
+	$dd['pk'] = 'Punching.ID';
 
 	$dd['cols']['Punching.ID'] = array('label'=>'ID', 'data_type'=>'int');
 	$dd['cols']['Punching.Authors'] = array('label'=>'Authors', 'width'=>'150');
@@ -57,15 +54,6 @@ function get_punching()
 	$dd['cols']['Punching.Reported_Failure_Mode'] = array('label'=>'Reported Failure Mode');
 	$dd['cols']['Punching.Observations'] = array('label'=>'Observations', 'width'=>'100', 'truncate'=>'truncate');
 
-	if ($id) {
-		$dd['where'][] = array('field'=>'Punching.ID', 'value'=>$id);
-		$dd['single'] = true;
-	}
-	
-	$sql = query_gen($dd);
-
-	$res = get_results($sql, $dd);
-
-	return $res;
+	return $dd;
 }
 ?>

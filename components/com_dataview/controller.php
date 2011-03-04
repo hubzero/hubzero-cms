@@ -102,23 +102,45 @@ class Controller
 			return;
 		}
 
-		$obj = $_GET['obj'];
-		$file = (JPATH_COMPONENT.DS."data".DS."$obj.php");
+		global $dv_conf;
+
+		$name = $_GET['obj'];
+		
+		$dd = false;
+		$dd_json_file = (isset($dv_conf['dd_json']) && file_exists($dv_conf['dd_json'] . '/' . $name . '.json'))? $dv_conf['dd_json'] . '/' . $name . '.json': false;
+		$dd_php_file = (file_exists(JPATH_COMPONENT.DS."data".DS."$name.php"))? JPATH_COMPONENT.DS."data".DS."$name.php": false;
+
+		if ($dd_json_file) {
+			$dd = json_decode(file_get_contents($dd_json_file), true);
+		} elseif ($dd_php_file) {
+			require_once ($dd_php_file);
+			$dd_func = 'get_' . $name;
+			if (function_exists($dd_func)) {
+				$dd = $dd_func();
+			}
+		}
 
 		$filter = strtolower(JRequest::getVar('format', 'json'));
 		require_once(JPATH_COMPONENT.DS."filter/$filter.php");
 
-		if (file_exists($file)) {
-			require_once ($file);
-			$func = 'get_' . $obj;
-			if (function_exists($func)) {
-				$res = $func();
-				print filter($res);
-				exit(0);
-			} else {
-				print "<h3>Error: Not Implemented</h3>";
-				exit(1);
+		if ($dd) {
+			$link = get_db();
+			$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
+
+			if ($id) {
+				$dd['where'][] = array('field'=>$dd['pk'], 'value'=>$id);
+				$dd['single'] = true;
 			}
+	
+			$sql = query_gen($dd);
+
+			$res = get_results($sql, $dd);
+	
+			print filter($res);
+			exit(0);
+		} else {
+			print "<h3>Error: Not Implemented</h3>";
+			exit(1);
 		}
 	}
 

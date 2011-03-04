@@ -17,4 +17,6 @@ $hcfg = new HubConfig;
 $dv_conf['db'] = array('host'=>$hcfg->databasesHost, 'user'=>$hcfg->databasesUser, 'pass'=>$hcfg->databasesPass, 'name'=>$hcfg->databasesName);
 
 $dv_conf['help_file_base_path'] = '/www/neeshub/site/collections/help-files/';
+
+$dv_conf['dd_json'] = '/data/databases/data-definitions';
 ?>

@@ -7,22 +7,37 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function view($name) {
-
 	global $com_name, $dv_conf;
 
 	$settings = $_SESSION['dv']['settings'];
 	$settings['url'] = "/?option=com_$com_name&task=data&obj=$name";
 
-	$file = (JPATH_COMPONENT.DS."data".DS."$name.php");
+	$dd = false;
+	$dd_json_file = (isset($dv_conf['dd_json']) && file_exists($dv_conf['dd_json'] . '/' . $name . '.json'))? $dv_conf['dd_json'] . '/' . $name . '.json': false;
+	$dd_php_file = (file_exists(JPATH_COMPONENT.DS."data".DS."$name.php"))? JPATH_COMPONENT.DS."data".DS."$name.php": false;
 
-	if (file_exists($file)) {
-		require_once ($file);
-	} 
+	if ($dd_json_file) {
+		$dd = json_decode(file_get_contents($dd_json_file), true);
+	} elseif ($dd_php_file) {
+		require_once ($dd_php_file);
+		$dd_func = 'get_' . $name;
+		if (function_exists($dd_func)) {
+			$dd = $dd_func();
+		}
+	}
 
-	$res_func = 'get_' . $name;
+	if ($dd) {
+		$link = get_db();
+		$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
 
-	if (function_exists($res_func)) {
-		$res = $res_func();
+		if ($id) {
+			$dd['where'][] = array('field'=>$dd['pk'], 'value'=>$id);
+			$dd['single'] = true;
+		}
+
+		$sql = query_gen($dd);
+
+		$res = get_results($sql, $dd);
 
 		$sg_arr = get_sg($res['dd']);
 		$settings['sg'] = $sg_arr;
@@ -49,8 +64,16 @@ function view($name) {
 			}
 		}
 		
-
 		$document->setTitle($res['dd']['title']);
+		$mainframe = &JFactory::getApplication();
+		$pathway =& $mainframe->getPathway();
+
+		if(isset($_SERVER['HTTP_REFERER'])) {
+			$ref_title = isset($_GET['ref_title'])? htmlentities(strip_tags($_GET['ref_title']), ENT_QUOTES): $res['dd']['title'] . " Resource";
+			$pathway->addItem($ref_title, $_SERVER['HTTP_REFERER']);	
+		}
+		
+		$pathway->addItem($res['dd']['title'], $_SERVER['REQUEST_URI']);
 	?>
 	<a name="dv_top"></a>
 	<div id="spreadsheet_container" class="ss_wrapper">
@@ -61,7 +84,7 @@ function view($name) {
 				<?php if($help_file): ?>
 				<button id="dv_show_help">Help</button>
 				<?php endif; ?>
-				<?php if(isset($res['dd']['show_charts'])): ?>
+				<?php if(isset($res['dd']['custom_charts']) || isset($res['dd']['charts_list'])): ?>
 				<input type="checkbox" id="dv_charts" class="dv_panel_btn" /><label for="dv_charts">Charts</label>
 				<?php endif; ?>
 				<?php if(isset($res['dd']['show_maps'])): ?>
@@ -71,51 +94,76 @@ function view($name) {
 			</span>
 		</div>
 
-		<?php if(isset($res['dd']['show_charts'])): ?>
-		<div id="dv_charts_panel" style="display: none; clear: both; width: 800px; height: 300px; padding: 5px 10px 10px 5px; margin-top: 0;" class="ui-widget ui-widget-header ui-corner-bottom dv_top_pannel">
-			<div style="float:left;">
-				Select X:<br />
-				<select id="dv_charts_x" style="width: 210px;">
-				<?php
-				$colid = 0;
-				foreach ($res['dd']['cols'] as $id => $conf) {
-					if (!isset($conf['hide'])) {
-						$label = isset($conf['label']) ? $conf['label'] : $id;
-						$label = str_replace('<br />', ' ', $label);
-						print '<option value="' . $colid . '" />' . $label . '</option>';
-						$colid++;
-					}
-				}
-				?>
-				</select>
-				<br />
-				<br />
-				Select Y:<br />
-				<select id="dv_charts_y" multiple="multiple" size="10"  style="width: 210px;">
-				<?php
-				$colid = 0;
-				foreach ($res['dd']['cols'] as $id => $conf) {
-					if (!isset($conf['hide'])) {
-						if ($d_arr['aoColumns'][$colid]["sType"] == 'int' || $d_arr['aoColumns'][$colid]["sType"] == 'float' || $d_arr['aoColumns'][$colid]["sType"] == 'real' || $d_arr['aoColumns'][$colid]["sType"] == 'number') {
+		<?php if(isset($res['dd']['custom_charts']) || isset($res['dd']['charts_list'])): ?>
+		<div id="dv_charts_panel" style="display: none; clear: both; width: 860px; height: 380px; padding: 5px 10px 10px 5px; margin-top: 0;" class="ui-widget ui-widget-header ui-corner-bottom dv_top_pannel">
+			<div style="float:left; height: 280px; width: 245px;">
+				<div id="dv_charts_control_panel">
+				<?php if(isset($res['dd']['charts_list'])): ?>
+				<h3><a href="#">Predefined Charts</a></h3>
+				<div>
+					<strong title='Please Select a chart from the list and click \"View Chart\"'>Select a Chart:</strong><br />
+					<select id="dv_chart_name" style="width: 180px;">
+						<option value="-1">Select Chart</option>
+						<?php $pd_id = 0; foreach($res['dd']['charts_list'] as $cl): ?>
+						<option value="<?=$pd_id?>"><?=$cl['title']?></option>
+						<?php $pd_id++; endforeach; ?>
+					</select>
+					<br />
+					<input type="button" value="View Chart" id="dv_pdcharts_draw_btn" style="margin-top: 10px; margin-bottom: 10px;" />
+					<br />
+					<div id="dv_chart_desc" class="ui-widget ui-widget-content ui-corner-all" style="font-size: 0.9em; border-style: inset; padding: 2px; width: 180px; height: 185px; overflow: auto;"></div>
+				</div>
+				<?php endif; ?>
+				<?php if(isset($res['dd']['custom_charts'])): ?>
+				<h3><a href="#">Custom Charts</a></h3>
+				<div>
+					Chart Type:<br />
+					<select id="dv_charts_type" style="width: 180px;">
+						<option value="3">Scatter</option>
+						<option value="2">Bar</option>
+						<option value="0">Line</option>
+						<option value="1">Line2</option>
+					</select>
+					<br /><br />
+					Select X:<br />
+					<select id="dv_charts_x" style="width: 180px;">
+					<?php
+					$colid = 0;
+					foreach ($res['dd']['cols'] as $id => $conf) {
+						if (!isset($conf['hide'])) {
 							$label = isset($conf['label']) ? $conf['label'] : $id;
 							$label = str_replace('<br />', ' ', $label);
 							print '<option value="' . $colid . '" />' . $label . '</option>';
+							$colid++;
 						}
-						$colid++;
 					}
-				}
-				?>
-				</select>
-				<br /><br />
-				<select id="dv_charts_type">
-					<option value="2">Bar</option>
-					<option value="0">Line</option>
-					<option value="1">Line2</option>
-				</select>
-				&nbsp;&nbsp;
-				<input type="button" value="Draw" id="dv_charts_draw_btn" />
+					?>
+					</select>
+					<br />
+					<br />
+					Select Y:<br />
+					<select id="dv_charts_y" multiple="multiple" size="5" style="width: 180px;">
+					<?php
+					$colid = 0;
+					foreach ($res['dd']['cols'] as $id => $conf) {
+						if (!isset($conf['hide'])) {
+							if ($d_arr['aoColumns'][$colid]["sType"] == 'int' || $d_arr['aoColumns'][$colid]["sType"] == 'float' || $d_arr['aoColumns'][$colid]["sType"] == 'real' || $d_arr['aoColumns'][$colid]["sType"] == 'number') {
+								$label = isset($conf['label']) ? $conf['label'] : $id;
+								$label = str_replace('<br />', ' ', $label);
+								print '<option value="' . $colid . '" />' . $label . '</option>';
+							}
+							$colid++;
+						}
+					}
+					?>
+					</select>
+					<br /><br />
+					<input type="button" value="Draw Chart" id="dv_charts_draw_btn" />
+				</div>
+				<?php endif; ?>
+				</div>
 			</div>
-			<div id="dv_charts_preview_chart" style="height:100%; width:auto; margin-left: 225px;" class="ui-widget-content ui-corner-all"></div>
+			<div id="dv_charts_preview_chart" style="height:100%; width:auto; margin-left: 248px;" class="ui-widget-content ui-corner-all"></div>
 		</div>
 		<?php endif; ?>
 
@@ -167,14 +215,13 @@ function view($name) {
 				
 				$filter_hint = "[Column: $label]  \n\n" . "Enter a word or a phrase to filter this column by.";
 
-				if ($d_arr['field_types'][$id] == 'int' || $d_arr['field_types'][$id] == 'float' || $d_arr['field_types'][$id] == 'real' || $d_arr['field_types'][$id] == 'number') {
+				if ($d_arr['field_types'][$id] == 'number' || $d_arr['field_types'][$id] == 'numrange') {
 					$filter_hint = "[Column: $label]  \n\n" . "Enter a number to filter this column by.";
 					$filter_hint .= "  \n\nFollowing filter options are also supported,";
 					$filter_hint .= "    \nRange filtering - ( e.g. 15.7 to 25 )";
 					$filter_hint .= "    \nLess than, greater than ( e.g. <100 ), (e.g. >25)";
-					$filter_hint .= "    \nLess than or equal, greater than or equal ( e.g. <=100 ), (e.g. >=25)";
 					$filter_hint .= "    \nLess than or equal, greater than or equal ( e.g. <=-12.5 ), (e.g. >=0.3)";
-					$filter_hint .= "    \nEqual ( e.g. =-2.55 )\n\n";
+					$filter_hint .= "    \nEqual ( e.g. =-2.55 )";
 				}
 				
 				$title = $filter_hint . $filter_msg;
@@ -226,9 +273,13 @@ function view($name) {
 			jQuery = dv_jQuery; // Replacing jQuery if jQuery older version was loaded
 			dv_data = <?=$f_data?>;
 			dv_settings = <?=json_encode($settings)?>;
+			dv_show_filters = <?=(isset($_GET['show_filters']) && $_GET['show_filters'] == 'true')? 'true': 'false';?>
 
 			jQuery(function($) {
-				$("#dv_charts_panel").resizable();
+				$("#dv_charts_panel").resizable({
+					minHeight: 380,
+					minWidth: 800
+				});
 				$("#dv_maps_panel").resizable();
 
 				$("#dv_download").button({
@@ -265,6 +316,10 @@ function view($name) {
 						primary: "ui-icon-flag"
 					}
 				});
+				
+				$('#dv_charts_control_panel').accordion({
+					fillSpace: true
+				});
 
 			});
 
@@ -274,10 +329,15 @@ function view($name) {
 			</form>
 		</div>
 		<div id="truncated_text_dialog" style="display: none;" title="Full Text"></div>
+		<div id="dv_filters_dialog" title="<?=$res['dd']['title']?> : Filters">
+			<div id="dv_filters_tabs">
+				<ul></ul>
+			</div>
+		</div>
 	</div>
 	<?php
 	} else {
-		print "Error: Not impelemted";
+		print "Error: Not implemented";
 	}
 }
 

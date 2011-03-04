@@ -1,7 +1,8 @@
 /*
+* Modified (for dataview) version of jquery.highlight by 
 * Johann Burkard [http://johannburkard.de, jb@eaio.com]
+* (original @ : http://johannburkard.de/resources/Johann/jquery.highlight-3.js)
 * MIT license.
-* Modified for dv (original @ : http://johannburkard.de/resources/Johann/jquery.highlight-3.js)
 */
 
 jQuery.fn.highlight = function(pat, style_class) {

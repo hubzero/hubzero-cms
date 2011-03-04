@@ -3,12 +3,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function get_sites()
 {
-	$link = get_db();
-	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
-
 	$dd['title'] = "Sites";
-//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'sites';
+	$dd['pk'] = 'sites.id';
 
 	$dd['cols']['sites.id'] = array('label'=>'id', 'data_type'=>'int', 'more_info'=>'sites|sites.id', 'compare'=>'compare','desc'=>'Select two or more items to compare side-by-side');
 	$dd['cols']['sites.staname'] = array('label'=>'Station Name', 'width'=>'220', 'more_info'=>'stations|sites.sta');
@@ -22,15 +19,6 @@ function get_sites()
 	$dd['show_maps'] = true;
 	$dd['maps'][] = array('title'=>'sites.staname', 'lat'=>'sites.lat', 'lng'=>'sites.lon');
 
-	if ($id) {
-		$dd['where'][] = array('field'=>'sites.id', 'value'=>$id);
-		$dd['single'] = true;
-	}
-	
-	$sql = query_gen($dd);
-
-	$res = get_results($sql, $dd);
-
-	return $res;
+	return $dd;
 }
 ?>

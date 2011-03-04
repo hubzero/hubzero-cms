@@ -3,13 +3,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function get_shear_wall()
 {
-	$link = get_db();
-	$id = isset($_REQUEST['id'])? mysql_real_escape_string($_REQUEST['id']): false;
-
-	//Data definition
 	$dd['title'] = "Shear Wall Database";
-//	$dd['db'] = array('host'=> 'neesud.neeshub.org', 'user'=>'userDB', 'pass' => 'userDB1_pass', 'name' => 'earthquakedata');
 	$dd['table'] = 'ShearWallDat';
+	$dd['pk'] = 'ShearWallDat.ID';
 
 	$dd['cols']['ShearWallDat.ID'] = array('label'=>'ID', 'data_type'=>'int');
 	$dd['cols']['ShearWallDat.Author'] = array('label'=>'Author', 'width'=>'130');
@@ -57,15 +53,6 @@ function get_shear_wall()
 	$dd['cols']['ShearWallDat.delta_u_hw'] = array('label'=>'delta.u/hw');
 	$dd['cols']['ShearWallDat.Comment'] = array('label'=>'Comment', 'width'=>'200', 'truncate'=>'truncate');
 
-	if ($id) {
-		$dd['where'][] = array('field'=>'ShearWallDat.ID', 'value'=>$id);
-		$dd['single'] = true;
-	}
-	
-	$sql = query_gen($dd);
-
-	$res = get_results($sql, $dd);
-
-	return $res;
+	return $dd;
 }
 ?>
