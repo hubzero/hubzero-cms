@@ -39,6 +39,11 @@
 	#useroptions {
 		width: auto;
 	}
+	#nav {
+		margin: 0;
+		padding-top: 6px;
+		background: none;
+	}
 	
 	.fourcolumn {
 		padding: 0; /* IE seems to go crazy when percents are used for padding or margin */

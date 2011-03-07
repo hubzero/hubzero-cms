@@ -734,196 +734,136 @@
 	Navigation
 ---------------------------------------------------------------*/
 	#nav {
-		height: 34px;
+		background: #1164a2;
+		border: none;
+		font-size: 90%;
+		margin: 6px 0 0 0;
+		padding: 0 65px;
+		}
+	#nav h2 {
+		display: none;
+		}
+	#nav ul.menu,
+	#nav ul.menu li,
+	#nav ul.menu ul {
+		list-style: none;
 		margin: 0;
 		padding: 0;
-		position:absolute;
-		top:76px;
-		left:65px;
 		}
-	#nav h2 { display: none; }
-	#nav ul {
-		margin: 0;
+	#nav ul.menu {
+		position: relative;
+		z-index: 597;
+		float: left;
+		}
+	#nav ul.menu li {
+		float: left;
+		line-height: 1.3em;
+		vertical-align: middle;
+		zoom: 1;
+		}
+	#nav ul.menu li.sfhover,
+	#nav ul.menu li:hover,
+	#nav ul.menu li:focus {
+		position: relative;
+		z-index: 599;
+		cursor: default;
+		}
+	#nav ul.menu ul {
+		visibility: hidden;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		z-index: 598;
+		width: 100%;
+		}
+	#nav ul.menu ul li {
+		float: none;
+		}
+	#nav ul.menu ul ul {
+		top: 1px;
+		left: 99%;
+		}
+	#nav ul.menu li:hover > ul,
+	#nav ul.menu li:focus > ul {
+		visibility: visible;
+		}
+/* Drop-Down Menu Theme */
+	#nav ul.menu {
+		font-weight: normal;
+		}
+	#nav ul.menu li {
 		padding: 0;
-		height: 34px;
 		border: none;
-		}
-	#nav a {
-		display: block;
-		height: 20px;
-		padding: 11px 1em 3px 1em;
-		display: block;
-		line-height: 1em;
-		color: #ffffff;
-		text-shadow: 0px 1px 0px #333333;
-		border: none;
+		color: #333;
+		background: #1164a2;
 		border-right: 1px solid #1f7fc2;
 		}
-	#nav li {
-		margin: 0;
-		padding: 0;
-		float: left;
-		height: 34px;
+	#nav ul.menu li.sfhover,
+	#nav ul.menu li:hover {
+		color: #f4f2d3;
+		}
+	#nav ul.menu>li.active>a,
+	#nav ul.menu li.active a {
+		color: #ECECC4;
+		background: #1f7fc2;
+		}
+	#nav ul.menu li.active li a {
+		color: #fff;
+		background: transparent;
+		}
+	#nav ul.menu span.separator {
 		display: block;
-		background: none;
-		/*text-transform:uppercase;*/
-		font-size:90%;
-		}
-	#nav li a:hover {
-		color: #f4f2d3 !important;
-		background: #1f7fc2;
-		}
-	#nav li.active a {
-		color: #f4f2d3 !important;
-		background: #1f7fc2;
-		}
-	#nav li ul {
-		position: absolute;
-		left: -999em;
-		height: auto;
-		width: 16em;
-		font-weight: normal;
-		margin: 0 0;
-		padding: 0 2px 2px 2px;
-		background: #1164a2;
+		padding: 7px 10px;
 		border: 1px solid #1164a2;
-		border-top: 2px solid #0f568c;
+		}
+	#nav ul.menu a {
+		display: block;
+		border: none;
+		padding: 10px;
+		color: #fff;
+		text-shadow: 0px 1px 0px #333333;
+		}
+	#nav ul.menu ul li a {
+		font-size: 95%;
+		padding: 5px 10px;
+		}
+	#nav ul.menu li:hover > a,
+	#nav ul.menu li:focus > a { 
+		color: #f4f2d3;
+		background: #1f7fc2;
+		}
+	#nav ul.menu li.active li a:hover,
+	#nav ul.menu li.active li a:focus,
+	#nav ul.menu a:hover,
+	#nav ul.menu a:focus { 
+		color: #f4f2d3;
+		background-color: #1f7fc2;
+		}
+	#nav ul.menu ul li a:hover,
+	#nav ul.menu ul li a:focus { 
+		color: #f4f2d3;
+		background: #1f7fc2;
+		}
+	#nav ul.menu a:active { 
+		color: #ECECC4;
+		}
+	#nav ul.menu ul {
+		width: 200px;
+		padding: 0 0 5px 0;
+		background-color: #1164a2;
 		-moz-border-radius-bottomright: 8px;
 		-moz-border-radius-bottomleft: 8px;
 		-webkit-border-bottom-right-radius: 8px;
 		-webkit-border-bottom-left-radius: 8px;
+		-khtml-border-radius-bottomright: 8px;	
+		-khtml-border-radius-bottomleft: 8px;
+		border-bottom-right-radius: 8px;
+		border-bottom-left-radius: 8px;
 		}
-	#nav li li {
-		border: none;
-		height: auto;
-		padding-right: 0;
-		width: 18em;
-		background: none;
-		margin-top:1px;	
-		}
-	#nav li.active ul a, 
-	#nav li ul a {		
-		height: auto;
-		font-size: 1.1em;
+	#nav ul.menu ul li {
 		font-weight: normal;
-		line-height: 2.3em;
-		text-transform: none;
-		color: #fff;
-		border: none;
-		padding: 0 0.5em;
-		background: #1164a2;
-		}
-	#nav li ul a:hover {
-		background: #1f7fc2;
-		color: #fff;
-		border: none;
-		}
-	#nav li ul ul {
-		margin: -2em 0 0 21em;
-		}
-	#nav li:hover ul ul, 
-	#nav li:hover ul ul ul, 
-	#nav li.sfhover ul ul, 
-	#nav li.sfhover ul ul ul {
-		left: -999em;
-		}
-	#nav li:hover ul, 
-	#nav li li:hover ul, 
-	#nav li li li:hover ul, 
-	#nav li.sfhover ul, 
-	#nav li li.sfhover ul, 
-	#nav li li li.sfhover ul {
-		z-index: 666;
-		left: auto;
-		}
-	#nav li li:hover,
-	#nav li.sfhover {
-		border: none;
-		background: #1f7fc2;
-		color: #FFFFFF;
-		}
-	#nav li.sfhover {
-		background: #1f7fc2;
-		}
-	#nav li li.sfhover {
-		background: #1f7fc2;
-		}
-	#nav li li:hover a,
-	#nav li.sfhover a,
-	#nav li.sfhover ul li.sfhover a,
-	#nav li li:hover ul li:hover a,
-	#nav li.sfhover ul li.sfhover ul li.sfhover a,
-	#nav li li:hover ul li:hover ul li:hover a {
-		color: #fff;
-		}
-	#nav li li:hover ul a,
-	#nav li.sfhover ul a,
-	#nav li.sfhover ul li.sfhover ul a,
-	#nav li li:hover ul li:hover ul a {
-		color: #fff;
-		}
-	#nav li li:hover ul li a,
-	#nav li.sfhover ul li.sfhover a {
-		color: #000;
-		}
-	#resources-menu { 
-		width: 586px; 
-		padding: 10px; 
-		background: #fff;
-		border: 1px solid #261712;
-		position: absolute;
-		z-index: 900;
-		margin-top:-5px;
-		left: 65px;
-		font-size: 105%;
-		}
-	#resources-menu h3 { 
-		margin: 0 0 0.5em 0;
-		padding: 0;
-		border: none;
-		font-weight: bold;
-		}
-	#resources-menu h4 { margin: 0; padding: 0; } 
-	#resources-menu ul { 
-		margin: 0 0 1em 0;
-		padding: 0;
-		background: transparent;
-		height: auto;
-		border: none;
-		}
-	#resources-menu ul li {
-		display: block;
-		float: none;
-		width: auto;
-		height: auto;
-		margin: 0;
-		padding: 0;
-		border: none;
 		background: none;
 		}
-	#resources-menu a,
-	#nav li.active #resources-menu a { 
-		width: auto;
-		height: auto;
-		display: inline;
-		position: inherit;
-		padding: 0;
-		margin: 0;
-		line-height: normal;
-		color: #CC9666;
-		text-transform: none;
-		letter-spacing: normal;
-		font-size: 1em;
-		border: none;
-		background: transparent;
-		}
-	#resources-menu li a:hover,
-	#nav li.active #resources-menu a:hover {
-		color: #ff6600;
-		border-bottom: 1px solid #ff6600;
-		background: transparent;
-		}
-	
 /*---------------------------------------------------------------
 	Content wrap
 ---------------------------------------------------------------*/
