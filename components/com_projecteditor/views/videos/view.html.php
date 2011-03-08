@@ -13,7 +13,7 @@ require_once 'api/org/nees/oracle/util/DbPagination.php';
 require_once 'api/org/nees/static/Files.php';
 
 class ProjectEditorViewVideos extends JView{
-	
+
   function display($tpl = null){
     /* @var $oModel ProjectEditorModelDrawings */
     $oModel =& $this->getModel();
@@ -51,7 +51,7 @@ class ProjectEditorViewVideos extends JView{
     }
 
     $this->assignRef( "iExperimentId", $oExperiment->getId() );
-    
+
     //get the tabs to display on the page
     $strTabArray = $oModel->getTabArray();
     $strTabViewArray = $oModel->getTabViewArray();
@@ -79,7 +79,7 @@ class ProjectEditorViewVideos extends JView{
       $oVideosMovieFileCommand = FileCommandAPI::create($strPath."/Movies");
       $oVideosMovieFileCommand->mkdir(TRUE);
     }
-    
+
     if(!is_dir($strPath."/Frames")){
       $oVideosFramesFileCommand = FileCommandAPI::create($strPath."/Frames");
       $oVideosFramesFileCommand->mkdir(TRUE);
@@ -93,9 +93,9 @@ class ProjectEditorViewVideos extends JView{
     $iUpperLimit = $oModel->computeUpperLimit($iPageIndex, $iDisplay);
 
     //$oVideoArray = $oModel->findDataFileByUsage("Video", array(), $iLowerLimit, $iUpperLimit, $iProjectId, $iExperimentId);
-    $oVideoArray = $oModel->findProjectEditorVideos("'video/%'", "'wmv'", "Videos/Frames", $iProjectId, $iExperimentId);
+    $oVideoArray = $oModel->findProjectEditorVideos("'video/%'", "'wmv'", "Videos/Frames", $iProjectId, $iExperimentId, 0, 0, $iLowerLimit, $iUpperLimit);
     $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oVideoArray);
-    
+
     $iUploadType = Files::VIDEO;
     $this->assignRef( 'uploadType', $iUploadType );
 
@@ -136,6 +136,6 @@ class ProjectEditorViewVideos extends JView{
 
     parent::display($tpl);
   }
-  
+
 }
 ?>
