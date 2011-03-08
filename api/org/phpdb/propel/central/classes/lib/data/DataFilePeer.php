@@ -2326,6 +2326,8 @@ class DataFilePeer extends BaseDataFilePeer {
                     self::getProjectEditorVideosByDirectoryQuery($p_strDirectory) .
                     $strQuerySuffix;
 
+        //echo "$strQuery<br>";
+
         $oConnection = Propel::getConnection();
         $oStatement = $oConnection->prepareStatement($strQuery);
         $oStatement->setInt(1, $p_iProjectId);
@@ -2388,8 +2390,8 @@ class DataFilePeer extends BaseDataFilePeer {
                     where df.id = dfl.id
                       and dfl.proj_id=?
                       and dfl.exp_id=?
-                      and dfl.trial_id=?
-                      and dfl.rep_id=?
+                      and dfl.trial_id>=?
+                      and dfl.rep_id>=?
                       and df.deleted = ?
                       and df.path like $p_strDirectory";
       return $strQuery;
@@ -3067,11 +3069,11 @@ class DataFilePeer extends BaseDataFilePeer {
                        and df.deleted=0 ";
 
       if($p_iPhotoType != self::PHOTO_TYPE_PROJECT){
-        $strQuery.="   and df.usage_type_id not between 200 and 203 ";
+        $strQuery.="   and (df.usage_type_id not between 200 and 203  or df.usage_type_id is null) ";
       }
 
       $strQuery.="     and df.directory=?
-                       and(
+                       and (
                           (lower(df.name) like '%.png') or 
                           (lower(df.name) like '%.jpg') or
                           (lower(df.name) like '%.gif')
@@ -3105,9 +3107,9 @@ class DataFilePeer extends BaseDataFilePeer {
                    from data_file_link dfl, data_file df
                    where dfl.id = df.id
                      and df.deleted=0
-                     and df.usage_type_id not between 200 and 203
+                     and (df.usage_type_id not between 200 and 203 or df.usage_type_id is null)
                      and df.directory=?
-                     and(
+                     and (
                        (lower(df.name) like '%.png') or
                        (lower(df.name) like '%.jpg') or
                        (lower(df.name) like '%.gif')
