@@ -84,10 +84,10 @@ class plgMembersGroups extends JPlugin
 		);
 
 		ximport('Hubzero_User_Helper');
-		$applicants = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'applicants', 1 );
-		$invitees = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'invitees', 1 );
-		$members = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'members', 1 );
-		$managers = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'managers', 1 );
+		$applicants = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'applicants', 1);
+		$invitees = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'invitees', 1);
+		$members = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'members', 1);
+		$managers = Hubzero_User_Helper::getGroups( $member->get('uidNumber'), 'managers', 1);
 		
 		$applicants = (is_array($applicants)) ? $applicants : array();
 		$invitees = (is_array($invitees)) ? $invitees : array();

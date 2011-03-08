@@ -225,13 +225,13 @@ class Hubzero_User_Helper
 	
 	//-----------
 
-	public function getGroups($uid, $type='all', $cat=null)
+	public function getGroups($uid, $type='all', $cat = null)
 	{
 		$db =& JFactory::getDBO();
 		
 		$g = '';
 		if ($cat) {
-			$g = "g.type='".$cat."' AND";
+			$g .= "(g.type='".$cat."' OR g.type='3') AND";
 		}
 
 		// Get all groups the user is a member of
