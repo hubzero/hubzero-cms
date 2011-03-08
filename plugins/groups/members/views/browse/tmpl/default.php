@@ -81,8 +81,8 @@ if($this->role_filter) {
 						<input type="hidden" name="gid" value="<?php echo $this->group->gidNumber; ?>" />
 					</form>
 				</div>
+				<p class="invite"><a href="/groups/<?php echo $this->group->cn ?>/invite">Invite Members to Group</a></p>
 			<?php } ?>
-			<p class="invite"><a href="/groups/<?php echo $this->group->cn ?>/invite">Invite Members to Group</a></p>
 		</div><!-- / .aside -->
 		
 		<form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&filter='.$this->filter); ?>" method="post">
