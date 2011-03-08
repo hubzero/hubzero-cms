@@ -261,7 +261,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                         <?php
                               else:
                             ?>
-                              <div id="imageList">Images may be found on the tab labeled 'More'.</div>
+                              <div id="imageList">Images may be found in the 'File Browser'.</div>
                             <?php
                               endif;
                             ?>
@@ -316,7 +316,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                         <?php
                               else:
                             ?>
-                              <div id="imageList">Images may be found on the tab labeled 'More'.</div>
+                              <div id="imageList">Images may be found in the 'File Browser'.</div>
                             <?php
                               endif;
                             ?>
@@ -411,7 +411,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                         <?php
                               else:
                             ?>
-                              <div id="imageList">Images may be found on the tab labeled 'More'.</div>
+                              <div id="imageList">Images may be found in the 'File Browser'.</div>
                             <?php
                               endif;
                             ?>
