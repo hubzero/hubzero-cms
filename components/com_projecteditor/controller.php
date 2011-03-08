@@ -111,6 +111,8 @@ class ProjectEditorController extends JController{
     $this->registerTask( 'addwebsite', 'addWebsite' );
     $this->registerTask( 'addorganization', 'addOrganization' );
     $this->registerTask( 'addfacility', 'addFacility' );
+    $this->registerTask( 'removeequipment', 'removeEquipment' );
+    $this->registerTask( 'updateequipment', 'updateEquipmentList' );
     $this->registerTask( 'removeorganization', 'removeOrganization' );
     $this->registerTask( 'removewebsite', 'removeWebsite' );
     $this->registerTask( 'remove', 'remove' );
@@ -296,6 +298,55 @@ class ProjectEditorController extends JController{
   function getEquipmentList(){
     JRequest::setVar("view", "equipment" );
     parent::display();
+  }
+
+  function removeEquipment(){
+    $strFacilityName = JRequest::getVar("name", "");
+    $strFacilityList = JRequest::getVar("facilityList", "");
+    $strEquipmentList = JRequest::getVar("equipmentId", "");
+    $oCurrentEquipmentArray = unserialize($_SESSION["SUGGESTED_FACILITY_EQUIPMENT"]);
+
+    /* @var $oModel ProjectEditorModelExperiment */
+    $oModel =& $this->getModel('Experiment');
+
+    $oEquipmentArray = array();
+    foreach($oCurrentEquipmentArray as $oEquipment){
+      /* @var $oEquipment Equipment */
+      $strThisFacilityName = $oEquipment->getOrganization()->getName();
+      if($strFacilityName != $strThisFacilityName){
+        array_push($oEquipmentArray, $oEquipment);
+      }
+    }
+
+    //var_dump($oEquipmentArray);
+    $_SESSION["SUGGESTED_FACILITY_EQUIPMENT"] = serialize($oEquipmentArray);
+
+    JRequest::setVar("view", "equipment" );
+    parent::display();
+  }
+
+  function updateEquipmentList(){
+    $strFacilityName = JRequest::getVar("name", "");
+    $strEquipmentIds = JRequest::getVar("equipmentId", "");
+    $oCurrentEquipmentArray = unserialize($_SESSION["SUGGESTED_FACILITY_EQUIPMENT"]);
+
+    /* @var $oModel ProjectEditorModelExperiment */
+    $oModel =& $this->getModel('Experiment');
+
+    $iSelectedEquipmentIdArray = explode(",", $strEquipmentIds);
+    $iCurrentEquipmentIdArray = array();
+
+    foreach($oCurrentEquipmentArray as $oEquipment){
+      /* @var $oEquipment Equipment */
+      $strThisFacilityName = $oEquipment->getOrganization()->getName();
+      if($strFacilityName != $strThisFacilityName){
+        if(array_search($oEquipment->getId(), $iSelectedEquipmentIdArray)){
+          array_push($iCurrentEquipmentIdArray, $oEquipment->getId());
+        }
+      }
+    }
+
+    echo implode(",", $iCurrentEquipmentIdArray);
   }
 
   function getSpecimenTypeList(){
