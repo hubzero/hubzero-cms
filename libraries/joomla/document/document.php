@@ -147,7 +147,8 @@ class JDocument extends JObject
 	 * @access   private
 	 */
 	var $_scripts = array();
-
+	var $_foot_scripts = array();
+	
 	/**
 	 * Array of scripts placed in the header
 	 *
@@ -155,7 +156,8 @@ class JDocument extends JObject
 	 * @access   private
 	 */
 	var $_script = array();
-
+	var $_foot_script = array();
+	
 	 /**
 	 * Array of linked style sheets
 	 *
@@ -425,6 +427,10 @@ class JDocument extends JObject
 	function addScript($url, $type="text/javascript") {
 		$this->_scripts[$url] = $type;
 	}
+	
+	function addFootScript($url, $type="text/javascript") {
+		$this->_foot_scripts[$url] = $type;
+	}
 
 	/**
 	 * Adds a script to the page
@@ -440,6 +446,15 @@ class JDocument extends JObject
 			$this->_script[strtolower($type)] = $content;
 		} else {
 			$this->_script[strtolower($type)] .= chr(13).$content;
+		}
+	}
+	
+	function addFootScriptDeclaration($content, $type = 'text/javascript')
+	{
+		if (!isset($this->_foot_script[strtolower($type)])) {
+			$this->_foot_script[strtolower($type)] = $content;
+		} else {
+			$this->_foot_script[strtolower($type)] .= chr(13).$content;
 		}
 	}
 
