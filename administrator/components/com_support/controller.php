@@ -1973,7 +1973,7 @@ class SupportController extends Hubzero_Controller
 		} else {
 			$hzg = Hubzero_Group::getInstance( $group );
 
-			if ($hzg->get('gidNumber')) {
+			if ($hzg && $hzg->get('gidNumber')) {
 				$members = $hzg->get('members');
 
 				foreach ($members as $member) 
