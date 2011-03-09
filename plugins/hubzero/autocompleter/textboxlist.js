@@ -78,7 +78,7 @@ Element.extend({
 var ResizableTextbox = new Class({
 	
 	options: {
-		min: 5,
+		min: 150,
 		max: 500,
 		step: 7
 	},
@@ -305,7 +305,8 @@ var TextboxList = new Class({
 	
 	makeResizable: function(li) {
 		var el = li.retrieve('input');
-		el.store('resizable', new ResizableTextbox(el, $extend(this.options.resizable, {min: el.offsetWidth, max: this.element.getStyle('width').toInt()})));
+		var minw = (el.offsetWidth > 150) ? el.offsetWidth : 150;
+		el.store('resizable', new ResizableTextbox(el, $extend(this.options.resizable, {min: minw, max: this.element.getStyle('width').toInt()})));
 		return this;
 	},
   

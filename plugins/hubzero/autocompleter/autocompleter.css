@@ -128,6 +128,8 @@
 		border-bottom-color: #ddd;
 		text-align:	left;
 		z-index: 50;
+		list-style: none;
+		background-image: none;
 		}
 	ul.autocompleter-choices li {
 		position: relative;
@@ -136,6 +138,9 @@
 		cursor:	pointer;
 		font-weight: normal;
 		font-size: 1em;
+		list-style: none;
+		background-image: none;
+		border-top: 1px solid #ddd;
 		}
 	ul.autocompleter-choices li.autocompleter-selected {
 		background-color: #444;
