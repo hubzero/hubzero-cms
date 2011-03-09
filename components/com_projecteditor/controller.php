@@ -1968,7 +1968,7 @@ class ProjectEditorController extends JController{
           $strWebsiteArray = explode(",", $strWebsite);
           $strUrlArray = explode(",", $strUrl);
           $oProjectUrlArray = $oModel->setWebsites($strWebsiteArray, $strUrlArray);
-          $oModel->createProjectHomepages($oProject, $oProjectUrlArray, $oConnection);
+          $oModel->createProjectHomepages($oProject, $oProjectUrlArray, ProjectHomepagePeer::CLASSKEY_1, $oConnection);
         }
 
         $strTags = JRequest::getVar("tags", "");

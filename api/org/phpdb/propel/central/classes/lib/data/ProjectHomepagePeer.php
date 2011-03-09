@@ -10,7 +10,7 @@
    * Added lookup peer because BaseProjectHomepagePeer didn't include and complained.
    * Adding include to Base*Peer could lead to it getting overwritten by another propel-gen.
    */
-  include_once 'lib/data/ProjectHomepageTypeLookupPeer.php';  
+  include_once 'lib/data/ProjectHomepageTypeLookupPeer.php';
 
 
 /**
@@ -149,7 +149,7 @@ class ProjectHomepagePeer extends BaseProjectHomepagePeer {
     $c->add(self::PROJECT_HOMEPAGE_TYPE_ID, self::CLASSKEY_PROJECTHOMEPAGEPUB);
     return self::doSelect($c);
   }
-  
+
   /**
    * Find all ProjectHomepage URLs by a project id
    *
@@ -162,18 +162,20 @@ class ProjectHomepagePeer extends BaseProjectHomepagePeer {
     return self::doSelect($c);
   }
 
-  public static function deleteByProject($p_iProjectId, $p_oConnection=null){
+  public static function deleteByProject($p_iProjectId, $p_iProjectHomepageTypeId, $p_oConnection=null){
     $strQuery = "delete from project_homepage
-                 where project_id=?";
+                 where project_id=?
+                   and project_homepage_type_id=?";
 
     if(!$p_oConnection){
       $oConnection = Propel::getConnection();
     }else{
       $oConnection = $p_oConnection;
     }
-    
+
     $oStatement = $oConnection->prepareStatement($strQuery);
     $oStatement->setInt(1, $p_iProjectId);
+    $oStatement->setInt(2, $p_iProjectHomepageTypeId);
     $oStatement->executeUpdate();
   }
 
