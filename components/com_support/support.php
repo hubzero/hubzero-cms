@@ -50,7 +50,7 @@ require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
 $jacl =& JFactory::getACL();
 $jacl->addACL( $option, 'manage', 'users', 'super administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
+//$jacl->addACL( $option, 'manage', 'users', 'manager' );
 
 // Instantiate controller
 $controller = new SupportController();

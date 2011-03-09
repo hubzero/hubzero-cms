@@ -46,6 +46,7 @@ if ($this->filters['_show'] != '') {
 <div class="main section">
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=tickets'); ?>" method="post" name="adminForm">
 			<fieldset class="filters">
+<?php if ($this->acl->check('read','tickets')) { ?>
 				<label>
 					<?php echo JText::_('SUPPORT_FIND'); ?>:
 					<input type="text" name="find" id="find" value="<?php echo ($this->filters['_show'] == '') ? htmlentities($this->filters['_find']) : ''; ?>" />
@@ -96,6 +97,7 @@ if ($this->filters['_show'] != '') {
 					</table>
 				</div>
 				<?php echo JText::_('OR'); ?>
+<?php } ?>
 				<label>
 					<?php echo JText::_('SHOW'); ?>:
 					<select name="show">
