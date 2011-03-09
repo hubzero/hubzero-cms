@@ -1355,7 +1355,7 @@ class SupportController extends Hubzero_Controller
 								} else {
 									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
 								}
-							} else if ($row->email && SupportUtilities::check_validEmail($row->email)) {
+							} else if ($row->email && SupportUtilities::checkValidEmail($row->email)) {
 								$emails[] = $row->email;
 								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
 							}
