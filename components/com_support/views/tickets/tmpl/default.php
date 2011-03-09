@@ -46,6 +46,7 @@ if ($this->filters['_show'] != '') {
 <div class="main section">
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=tickets'); ?>" method="post" name="adminForm">
 			<fieldset class="filters">
+				<?php if ($this->acl->check('read','tickets')) { ?>
 				<label>
 					<?php echo JText::_('SUPPORT_FIND'); ?>:
 					<input type="text" name="find" id="find" value="<?php echo ($this->filters['_show'] == '') ? htmlentities($this->filters['_find']) : ''; ?>" />
@@ -96,6 +97,7 @@ if ($this->filters['_show'] != '') {
 					</table>
 				</div>
 				<?php echo JText::_('OR'); ?>
+				<?php } ?>
 				<label>
 					<?php echo JText::_('SHOW'); ?>:
 					<select name="show">
@@ -106,7 +108,7 @@ if ($this->filters['_show'] != '') {
 						<option value="status:waiting"<?php if ($this->filters['_show'] == 'status:waiting') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_WAITING'); ?></option>
 						<option value="status:closed"<?php if ($this->filters['_show'] == 'status:closed') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_CLOSED'); ?></option>
 						<option value="status:all"<?php if ($this->filters['_show'] == 'status:all') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_ALL'); ?></option>
-						<?php if ($this->authorized) { ?>
+						<?php if ($this->acl->check('read','tickets')) { ?>
 						<option value="reportedby:me"<?php if ($this->filters['_show'] == 'reportedby:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_REPORTED_BY_ME'); ?></option>
 						<option value="status:open owner:me"<?php if ($this->filters['_show'] == 'status:open owner:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_MINE_OPEN'); ?></option>
 						<option value="status:closed owner:me"<?php if ($this->filters['_show'] == 'status:closed owner:me') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUPPORT_OPT_MINE_CLOSED'); ?></option>
