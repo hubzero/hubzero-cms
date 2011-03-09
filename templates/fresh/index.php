@@ -173,7 +173,7 @@ $juser =& JFactory::getUser();
 	  </div><!-- / #wrap -->
 	 </div> <!--  #mainwrap -->	
 	 
-	 
+	
 	 <!--  Google Analytics Begin -->	
 	 <script type="text/javascript">
          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -188,7 +188,8 @@ $juser =& JFactory::getUser();
      </script>
 	 
 	<!--  Google Analytics End -->	
-	 
+	
+	<jdoc:include type="foot" /> 
 	</body>
 </html>
 	<?php
