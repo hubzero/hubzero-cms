@@ -55,7 +55,7 @@ if (is_object($druser)) {
 	<?php echo WikiHtml::authors( $this->page, $params ); ?>
 </div><!-- /#content-header -->
 
-<?php echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $params, $this->authorized ); ?>
+<?php echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $params, $this->editauthorized ); ?>
 
 <div class="section">
 	<div class="aside">

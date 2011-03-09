@@ -46,7 +46,7 @@ if ($this->page->id) {
 
 <?php 
 if ($this->page->id) {
-	echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $params, $this->authorized );
+	echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $params, $this->editauthorized );
 } else {
 ?>
 <div id="<?php echo $sid; ?>">

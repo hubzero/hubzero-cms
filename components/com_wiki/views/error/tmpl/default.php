@@ -41,7 +41,7 @@ if ($this->sub) {
 	<h2><?php echo $this->title; ?></h2>
 </div>
 
-<?php echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $params, $this->authorized ); ?>
+<?php echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $params, $this->editauthorized ); ?>
 
 <div class="main section">
 <?php if ($this->getError()) { ?>

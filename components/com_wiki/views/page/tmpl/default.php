@@ -70,7 +70,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 
 <?php
 if (!$mode || ($mode && $mode != 'static')) {
-	echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $params, $this->authorized );
+	echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $params, $this->editauthorized );
 	
 	$first = $this->page->getRevision(1);
 ?>

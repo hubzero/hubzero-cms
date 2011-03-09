@@ -44,7 +44,7 @@ if ($this->sub) {
 
 <?php
 if ($this->page->id) {
-	echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $xparams, $this->authorized );
+	echo WikiHtml::subMenu( $this->sub, $this->option, $this->page->pagename, $this->page->scope, $this->page->state, $this->task, $xparams, $this->editauthorized );
 }
 ?>
 

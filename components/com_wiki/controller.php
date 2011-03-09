@@ -206,7 +206,8 @@ class WikiController extends Hubzero_Controller
 				$view->sub = $this->_sub;
 				$view->page = $this->page;
 				$view->version = $version;
-				$view->authorized = $this->checkAuthorization();
+				$view->authorized = $this->checkAuthorization('view');
+				$view->editauthorized = $this->checkAuthorization('edit');
 
 				if ($this->getError()) {
 					$view->setError( $this->getError() );
@@ -245,6 +246,7 @@ class WikiController extends Hubzero_Controller
 
 		// Check authorization
 		$authorized = $this->checkAuthorization('view');
+		$editauthorized = $this->checkAuthorization('edit');
 
 		// Get the page's tags
 		if ($authorized == 'admin') {
@@ -284,6 +286,7 @@ class WikiController extends Hubzero_Controller
 		$view->revision = $revision;
 		$view->sub = $this->_sub;
 		$view->authorized = $authorized;
+		$view->editauthorized = $editauthorized;
 		$view->output = $output;
 		$view->tags = $tags;
 		$view->contributors = $contributors;
@@ -449,7 +452,8 @@ class WikiController extends Hubzero_Controller
 		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&scope='.$this->page->scope.'&pagename='.$this->pagename.'&task='.$this->_task);
 		
 		// Check authorization
-		$authorized = $this->checkAuthorization();
+		$authorized = $this->checkAuthorization('view');
+		$editauthorized = $this->checkAuthorization('edit');
 
 		// Check if the page is locked and the user is authorized
 		if ($this->page->state == 1 && $authorized !== 'admin' && $authorized !== 'manager') {
@@ -464,6 +468,7 @@ class WikiController extends Hubzero_Controller
 			$view->warning = JText::_('WIKI_WARNING_NOT_AUTH_EDITOR');
 			$view->page = $this->page;
 			$view->authorized = $authorized;
+			$view->editauthorized = $editauthorized;
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
@@ -486,6 +491,7 @@ class WikiController extends Hubzero_Controller
 			$view->warning = JText::_('WIKI_WARNING_NOT_AUTH_EDITOR');
 			$view->page = $this->page;
 			$view->authorized = $authorized;
+			$view->editauthorized = $editauthorized;
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
@@ -553,6 +559,7 @@ class WikiController extends Hubzero_Controller
 		$view->page = $this->page;
 		$view->name = JText::_(strtoupper($this->_name));
 		$view->authorized = $authorized;
+		$view->editauthorized = $editauthorized;
 		$view->revision = $revision;
 		$view->authors = $authors;
 		$view->params = $params;
@@ -785,7 +792,8 @@ class WikiController extends Hubzero_Controller
 		$this->getPage();
 		
 		if (is_object($this->page)) {
-			$authorized = $this->checkAuthorization();
+			$authorized = $this->checkAuthorization('view');
+			$editauthorized = $this->checkAuthorization('edit');
 			
 			// Make sure they're authorized to delete
 			if ($authorized) {
@@ -851,6 +859,7 @@ class WikiController extends Hubzero_Controller
 						$view->page = $this->page;
 						$view->name = JText::_(strtoupper($this->_name));
 						$view->authorized = $authorized;
+						$view->editauthorized = $editauthorized;
 						if ($this->getError()) {
 							$view->setError( $this->getError() );
 						}
@@ -904,7 +913,8 @@ class WikiController extends Hubzero_Controller
 		$pathway->addItem(JText::_(strtoupper('RENAME')),'index.php?option='.$this->_option.'&scope='.$this->page->scope.'&pagename='.$this->pagename.'&task='.$this->_task);
 		
 		// Check authorization
-		$authorized = $this->checkAuthorization();
+		$authorized = $this->checkAuthorization('view');
+		$editauthorized = $this->checkAuthorization('edit');
 		if (!$authorized) {
 			//echo WikiHtml::error( JText::_('WIKI_ERROR_NOTAUTH') );
 			//JError::raiseWarning( 403, JText::_('WIKI_WARNING_NOT_AUTH') );
@@ -916,6 +926,7 @@ class WikiController extends Hubzero_Controller
 			$view->warning = JText::_('WIKI_WARNING_NOT_AUTH_TO_MODIFY');
 			$view->page = $this->page;
 			$view->authorized = $authorized;
+			$view->editauthorized = $editauthorized;
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}
@@ -933,6 +944,7 @@ class WikiController extends Hubzero_Controller
 		$view->page = $this->page;
 		$view->name = JText::_(strtoupper($this->_name));
 		$view->authorized = $authorized;
+		$view->editauthorized = $editauthorized;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -1036,7 +1048,8 @@ class WikiController extends Hubzero_Controller
 		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&scope='.$this->page->scope.'&pagename='.$this->pagename.'&task='.$this->_task);
 		
 		// Check authorization
-		$authorized = $this->checkAuthorization();
+		$authorized = $this->checkAuthorization('view');
+		$editauthorized = $this->checkAuthorization('edit');
 		
 		// Output content
 		$view = new JView( array('base_path'=>$this->_base_path, 'name'=>'history') );
@@ -1048,6 +1061,7 @@ class WikiController extends Hubzero_Controller
 		$view->page = $this->page;
 		$view->revisions = $revisions;
 		$view->authorized = $authorized;
+		$view->editauthorized = $editauthorized;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -1110,7 +1124,8 @@ class WikiController extends Hubzero_Controller
 		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&scope='.$this->page->scope.'&pagename='.$this->pagename.'&task='.$this->_task);
 		
 		// Check authorization
-		$authorized = $this->checkAuthorization();
+		$authorized = $this->checkAuthorization('view');
+		$editauthorized = $this->checkAuthorization('edit');
 		
 		// Output content
 		$view = new JView( array('base_path'=>$this->_base_path, 'name'=>'history','layout'=>'compare') );
@@ -1124,6 +1139,7 @@ class WikiController extends Hubzero_Controller
 		$view->dr = $dr;
 		$view->name = JText::_(strtoupper($this->_name));
 		$view->authorized = $authorized;
+		$view->editauthorized = $editauthorized;
 		$view->content = $content;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -1294,7 +1310,8 @@ class WikiController extends Hubzero_Controller
 		$pathway->addItem(JText::_(strtoupper($this->_task)),'index.php?option='.$this->_option.'&scope='.$this->page->scope.'&pagename='.$this->pagename.'&task='.$this->_task);
 		
 		// Check authorization
-		$authorized = $this->checkAuthorization();
+		$authorized = $this->checkAuthorization('view');
+		$editauthorized = $this->checkAuthorization('edit');
 		
 		// Output content
 		$view = new JView( array('base_path'=>$this->_base_path, 'name'=>'comments') );
@@ -1310,6 +1327,7 @@ class WikiController extends Hubzero_Controller
 		$view->comments = $comments;
 		$view->mycomment = $mycomment;
 		$view->authorized = $authorized;
+		$view->editauthorized = $editauthorized;
 		$view->versions = $versions;
 		$view->v = $v;
 
