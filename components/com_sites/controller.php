@@ -729,6 +729,7 @@ class SitesController extends JController
             $this->_redirect =  base64_encode(JRoute::_('index.php?option=com_sites&view=calibration&id=' . $facilityID . '&sensorid=' . $sensorID . '&calibrationid=' . $calibrationID, false ));
             $this->redirect();
             return;
+	    // Will we get here?
         }
 
         // These two errors are hard enough to warrant 500 codes, no legit reason to get here unless
