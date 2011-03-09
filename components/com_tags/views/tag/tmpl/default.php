@@ -178,9 +178,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 		
 		<div class="container">
 			<ul class="entries-menu">
-				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&order=title'); ?>" title="Sort by title">&darr; <?php echo JText::_('COM_TAGS_OPT_TITLE'); ?></a></li>
-				<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&order=date'); ?>" title="Sort by newest to oldest">&darr; <?php echo JText::_('COM_TAGS_OPT_DATE'); ?></a></li>
-				<li><a<?php echo ($this->sort == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring); ?>" title="Sort by popularity">&darr; <?php echo JText::_('Popular'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=title'); ?>" title="Sort by title">&darr; <?php echo JText::_('COM_TAGS_OPT_TITLE'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=date'); ?>" title="Sort by newest to oldest">&darr; <?php echo JText::_('COM_TAGS_OPT_DATE'); ?></a></li>
+				<li><a<?php echo ($this->sort == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active); ?>" title="Sort by popularity">&darr; <?php echo JText::_('Popular'); ?></a></li>
 			</ul>
 			
 			<div class="container-block">
