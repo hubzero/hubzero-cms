@@ -541,7 +541,7 @@ class RegisterController extends JObject
 				$updateEmail = true;
 			}
 		}
-		
+
 		if ($xregistration->get('login') != $xprofile->get('username')) {
 			if ($xprofile->hasTransientUsername()) {
 				$xprofile->set('homeDirectory', $hubHomeDir . '/' . $xregistration->get('login'));
@@ -550,6 +550,13 @@ class RegisterController extends JObject
 
 		$xprofile->loadRegistration($xregistration);
 		$xprofile->update();
+
+                // NEES update
+                /* @var $neesprofile XNeesProfile */
+                $neesprofile = new XNeesProfile();
+                $neesprofile->set('uid', $juser->get('id'));
+                $neesprofile->set('NeesAffiliation', $xregistration->get('neesaffiliation'));
+                $neesprofile->update();
 
 		// Update juser table
 		// TODO: only update if changed
@@ -1081,8 +1088,14 @@ class RegisterController extends JObject
 		} else {
 			$view->xregistration = $xregistration;
 		}
-		
+
 		// Push some values to the view
+               
+                // Nees extended info
+                $xneesprofile = new XNeesProfile();
+                $xneesprofile->set('uid', $juser->get('id'));
+                $xneesprofile->load();
+                $view->neesprofileinfo = $xneesprofile;
 
 		ximport('Hubzero_Password_Rule');
 		$password_rules = Hubzero_Password_Rule::getRules();

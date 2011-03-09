@@ -400,32 +400,31 @@ if (!defined("n")) {
 
 		$html .= t.'<fieldset>'.n;
 		$html .= t.t.'<h3>'.JText::_('NEES Information').'</h3>'.n;
-		$html .= t.t.t.'<label '.$fieldclass.'>'.n;
+		$html .= t.t.t.'<label>'.n;
 		$html .= t.t.'NEES Affiliation: <span class="required">required</span>';
 		$html .= t.t.'<select name="nees_affiliation" id="nees_affiliation">';
-		$html .= t.t.t.'<option value="OTHER"' . (($this->registration['neesaffiliation'] == 'OTHER') ? ' selected="selected"' : '') . '>Not Affiliated</option>' .n;
-		$html .= t.t.t.'<option value="UCLA"' . (($this->registration['neesaffiliation'] == 'UCLA') ? ' selected="selected"' : '') . '>University of CA, Los Angeles</option>'.n;
-		$html .= t.t.t.'<option value="UCSB"' . (($this->registration['neesaffiliation'] == 'UCSB') ? ' selected="selected"' : '') . '>University of CA, Santa Barbara</option>'.n;
-		$html .= t.t.t.'<option value="UT"' . (($this->registration['neesaffiliation'] == 'UT') ? ' selected="selected"' : '') . '>University of Texas, Austin</option>'.n;
-		$html .= t.t.t.'<option value="RPI"' . (($this->registration['neesaffiliation'] == 'RPI') ? ' selected="selected"' : '') . '>Rensselaer Polytechnic Institute</option>'.n;
-		$html .= t.t.t.'<option value="UCD"' . (($this->registration['neesaffiliation'] == 'UCD') ? ' selected="selected"' : '') . '>University of CA, Davis</option>'.n;
-		$html .= t.t.t.'<option value="CORNELL"' . (($this->registration['neesaffiliation'] == 'CORNELL') ? ' selected="selected"' : '') . '>Cornell University</option>'.n;
-		$html .= t.t.t.'<option value="LEHIGH"' . (($this->registration['neesaffiliation'] == 'LEHIGH') ? ' selected="selected"' : '') . '>Lehigh University</option>'.n;
-		$html .= t.t.t.'<option value="BERKELEY"' . (($this->registration['neesaffiliation'] == 'BERKELEY') ? ' selected="selected"' : '') . '>University of CA, Berkley</option>'.n;
-		$html .= t.t.t.'<option value="UI"' . (($this->registration['neesaffiliation'] == 'UI') ? ' selected="selected"' : '') . '>University of IL, Urbana</option>'.n;
-		$html .= t.t.t.'<option value="UM"' . (($this->registration['neesaffiliation'] == 'UM') ? ' selected="selected"' : '') . '>University of Minnesota</option>'.n;
-		$html .= t.t.t.'<option value="BUFFALO"' . (($this->registration['neesaffiliation'] == 'BUFFALO') ? ' selected="selected"' : '') . '>University at Buffalo, SUNY</option>'.n;
-		$html .= t.t.t.'<option value="UCSD"' . (($this->registration['neesaffiliation'] == 'UCSD') ? ' selected="selected"' : '') . '>University of CA, San Diego</option>'.n;
-		$html .= t.t.t.'<option value="RENO"' . (($this->registration['neesaffiliation'] == 'RENO') ? ' selected="selected"' : '') . '>University of Nevada, Reno</option>'.n;
-		$html .= t.t.t.'<option value="OREGON"' . (($this->registration['neesaffiliation'] == 'OREGON') ? ' selected="selected"' : '') . '>Oregon State University </option>'.n;
-		$html .= t.t.t.'<option value="NEES-PURDUE"' . (($this->registration['neesaffiliation'] == 'NEES-PURDUE') ? ' selected="selected"' : '') . '>Purdue University </option>'.n;
-		$html .= t.t.t.'<option value="NEES-IT"' . (($this->registration['neesaffiliation'] == 'NEES-IT') ? ' selected="selected"' : '') . '>NEESComm IT</option>'.n;
-		$html .= t.t.t.'<option value="NEES-EOT"' . (($this->registration['neesaffiliation'] == 'NEES-EOT') ? ' selected="selected"' : '') . '>NEES EOT</option>'.n;
-		$html .= t.t.t.'<option value="NEES-Admin"' . (($this->registration['neesaffiliation'] == 'NEES-Admin') ? ' selected="selected"' : '') . '>NEES Admin</option>'.n;
-		$html .= t.t.t.'<option value="NEES-R"' . (($this->registration['neesaffiliation'] == 'NEES-R') ? ' selected="selected"' : '') . '>NEESR PI</option>'.n;
+		$html .= t.t.t.'<option value="OTHER"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'OTHER') ? ' selected="selected"' : '') . '>Not Affiliated</option>' .n;
+		$html .= t.t.t.'<option value="UCLA"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'UCLA') ? ' selected="selected"' : '') . '>University of CA, Los Angeles</option>'.n;
+		$html .= t.t.t.'<option value="UCSB"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'UCSB') ? ' selected="selected"' : '') . '>University of CA, Santa Barbara</option>'.n;
+		$html .= t.t.t.'<option value="UT"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'UT') ? ' selected="selected"' : '') . '>University of Texas, Austin</option>'.n;
+		$html .= t.t.t.'<option value="RPI"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'RPI') ? ' selected="selected"' : '') . '>Rensselaer Polytechnic Institute</option>'.n;
+		$html .= t.t.t.'<option value="UCD"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'UCD') ? ' selected="selected"' : '') . '>University of CA, Davis</option>'.n;
+		$html .= t.t.t.'<option value="CORNELL"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'CORNELL') ? ' selected="selected"' : '') . '>Cornell University</option>'.n;
+		$html .= t.t.t.'<option value="LEHIGH"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'LEHIGH') ? ' selected="selected"' : '') . '>Lehigh University</option>'.n;
+		$html .= t.t.t.'<option value="BERKELEY"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'BERKELEY') ? ' selected="selected"' : '') . '>University of CA, Berkley</option>'.n;
+		$html .= t.t.t.'<option value="UI"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'UI') ? ' selected="selected"' : '') . '>University of IL, Urbana</option>'.n;
+		$html .= t.t.t.'<option value="UM"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'UM') ? ' selected="selected"' : '') . '>University of Minnesota</option>'.n;
+		$html .= t.t.t.'<option value="BUFFALO"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'BUFFALO') ? ' selected="selected"' : '') . '>University at Buffalo, SUNY</option>'.n;
+		$html .= t.t.t.'<option value="UCSD"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'UCSD') ? ' selected="selected"' : '') . '>University of CA, San Diego</option>'.n;
+		$html .= t.t.t.'<option value="RENO"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'RENO') ? ' selected="selected"' : '') . '>University of Nevada, Reno</option>'.n;
+		$html .= t.t.t.'<option value="OREGON"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'OREGON') ? ' selected="selected"' : '') . '>Oregon State University </option>'.n;
+		$html .= t.t.t.'<option value="NEES-PURDUE"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'NEES-PURDUE') ? ' selected="selected"' : '') . '>Purdue University </option>'.n;
+		$html .= t.t.t.'<option value="NEES-IT"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'NEES-IT') ? ' selected="selected"' : '') . '>NEESComm IT</option>'.n;
+		$html .= t.t.t.'<option value="NEES-EOT"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'NEES-EOT') ? ' selected="selected"' : '') . '>NEES EOT</option>'.n;
+		$html .= t.t.t.'<option value="NEES-Admin"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'NEES-Admin') ? ' selected="selected"' : '') . '>NEES Admin</option>'.n;
+		$html .= t.t.t.'<option value="NEES-R"' . (($this->neesprofileinfo->get('NeesAffiliation') == 'NEES-R') ? ' selected="selected"' : '') . '>NEESR PI</option>'.n;
 		$html .= t.t.'</select>';
 		$html .= t.t.'</label>';
-		$html .= t.t.br.br.($message) ? t.t.$message.n : '';
 	
 		$html .= t.'</fieldset>';
 		$html .= '<div class="clear"></div>'.n;
@@ -710,7 +709,7 @@ if (!defined("n")) {
 		if ($this->registrationCitizenship != REG_HIDE) // citizenship
 		{
 			$required = ($this->registrationCitizenship == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
-			$message = (!empty($this->xregistration->_invalid['countryorigin'])) ? registration_error($this->xregistration->_invalid['countryorigin']) : '';
+			$message = (!empty($this->xregistration->_missing['countryorigin'])) ? registration_error($this->xregistration->_missing['countryorigin']) : '';
 			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 			
 			$html .= t.t.'<fieldset'.$fieldclass.'>'.n;
@@ -761,7 +760,7 @@ if (!defined("n")) {
 		if ($this->registrationResidency != REG_HIDE)
 		{
 			$required = ($this->registrationResidency == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
-			$message = (!empty($this->xregistration->_invalid['countryresident'])) ? registration_error($this->xregistration->_invalid['countryresident']) : '';
+			$message = (!empty($this->xregistration->_missing['countryresident'])) ? registration_error($this->xregistration->_missing['countryresident']) : '';
 			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 			
 			$html .= t.t.'<fieldset'.$fieldclass.'>'.n;
