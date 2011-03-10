@@ -1,0 +1,589 @@
+<refentry id="{@id}"> 
+ <refnamediv>
+  <refname>Data structures</refname>
+ </refnamediv>
+
+ {@toc}
+
+<refsect1 id="{@id intro}">
+  <title>Introduction</title>
+
+    <para>
+	This section describes database structure and gives some examples of 
+	variables used by feedback module functions.
+    </para>
+
+ </refsect1>
+
+
+ <refsect1 id="{@id database}">
+  <title>Database Structure</title>
+  	<para >
+<programlisting>
+<para style="line-height: 150%; white-space:pre;">
+#
+# Tabellenstruktur für Tabelle `prefix_feedback`
+#
+
+CREATE TABLE `prefix_feedback` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `course` int(10) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `summary` text NOT NULL,
+  `anonymous` int(1) NOT NULL default '1',
+  `email_notification` int(1) NOT NULL default '1',
+  `timemodified` int(10) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `course` (`course`)
+) TYPE=MyISAM COMMENT='feedback modul';
+
+#
+# Tabellenstruktur für Tabelle `prefix_feedback_template`
+#
+
+CREATE TABLE `prefix_feedback_template` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `course` int(10) NOT NULL default '0',
+  `public` int(1) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `course` (`course`)
+) TYPE=MyISAM COMMENT='templates of feedbackstructures';
+
+#
+# Tabellenstruktur für Tabelle `prefix_feedback_item`
+#
+
+CREATE TABLE `prefix_feedback_item` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `feedback` int(10) NOT NULL default '0',
+  `template` int(10) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `presentation` text NOT NULL,
+  `typ` varchar(255) NOT NULL default '0',
+  `hasvalue` int(1) NOT NULL default '0',
+  `position` int(3) NOT NULL default '0',
+  `required` int(1) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `feedback` (`feedback`),
+  KEY `template` (`template`)
+) TYPE=MyISAM COMMENT='feedback items';
+
+#
+# Tabellenstruktur für Tabelle `prefix_feedback_completed`
+#
+
+CREATE TABLE `prefix_feedback_completed` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `feedback` int(10) NOT NULL default '0',
+  `userid` int(10) NOT NULL default '0',
+  `timemodified` int(10) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `feedback` (`feedback`),
+  KEY `userid` (`userid`)
+) TYPE=MyISAM COMMENT='filled out feedbacks';
+
+#
+# Tabellenstruktur für Tabelle `prefix_feedback_value`
+#
+
+CREATE TABLE `prefix_feedback_value` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `item` int(10) NOT NULL default '0',
+  `completed` int(10) NOT NULL default '0',
+  `value` text NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `item` (`item`),
+  KEY `completed` (`completed`)
+) TYPE=MyISAM COMMENT='feedback values';
+
+</para>
+</programlisting>
+    </para>
+ </refsect1>
+
+ <refsect1 id="{@id dependencies}">
+  <title>Database Dependencies</title>
+  	<para >
+<programlisting>
+<para style="line-height: 150%; white-space:pre;">
+
+    //This is the "graphical" structure of the feedback mod:
+    //
+    //                     feedback----------------------------------------
+    //                    (CL,pk->id)                                     |
+    //                        |                                           |
+    //                        |                                           |
+    //                        |                                           |
+    //                 feedback_template                            feedback_completed
+    //                   (CL,pk->id)                           (UL, pk->id, fk->feedback)
+    //                        |                                           |
+    //                        |                                           |
+    //                        |                                           |
+    //                 feedback_item---------------------------------feedback_value
+    //        (ML,pk->id, fk->feedback, fk->template)       (UL, pk->id, fk->item, fk->completed)
+    //
+    // Meaning: pk->primary key field of the table
+    //          fk->foreign key to link with parent
+    //          CL->course level info
+    //          ML->modul level info
+    //          UL->userid level info
+    //          message->text of each feedback_posting
+    //
+    //-----------------------------------------------------------
+
+</para>
+</programlisting>
+  </para>
+  </refsect1>
+
+ <refsect1 id="{@id itemdata}">
+  <title>Example contents of $item variable</title>
+  
+  <para >  
+	$item is a commonly used argument to functions in feedback module.
+	$item is actually an object presentation of a record in database table prefix_feedback_item.
+	It contains the details of the feedback item the function will be working on.
+  </para>
+
+  <para >  
+	The following shows $item details corresponding to a picture item.
+  </para>
+
+  <para >
+<programlisting>
+<para style="line-height: 150%; white-space:pre;">
+
+stdClass Object
+(
+    [id] => 7
+    [feedback] => 1
+    [template] => 0
+    [name] => What is the flag of Andorra?
+    [presentation] => afghanistan.png|albania.png|algeria.png|andorra.png|angola.png
+    [typ] => picture
+    [hasvalue] => 1
+    [position] => 3
+    [required] => 1
+)
+
+</para>
+</programlisting>
+   </para>
+   </refsect1>
+
+ <refsect1 id="{@id submittedformdata}">
+  <title>Example of submitted feedback form data</title>
+  <para >
+	Example of $_POST variable after submitting a form
+	that has radio, picture, textfield and checkbox items (complete.php).
+  </para >
+  <para >
+<programlisting>
+<para style="line-height: 150%; white-space:pre;">
+
+Array
+(
+    [sesskey] => N9yUh5xoQp
+    [anonymous] => 1
+    [radio_2] => 1
+    [picture_7] => 3
+    [textfield_6] => Arnold
+    [check_9] => Array
+        (
+            [0] => 1
+            [1] => 2
+            [2] => 3
+            [3] => 
+        )
+
+    [id] => 117
+    [feedbackid] => 1
+    [completedid] => 
+    [savevalues] => 1
+)
+
+</para>
+</programlisting>
+   </para>
+   </refsect1>
+
+
+ <refsect1 id="{@id datasubmitted}">
+  <title>Example of submitted variables by edit_item.php</title>
+  <para >
+	Example of submitted variables from edit_item.php
+	as obtained from $formdata=data_submitted() function
+  </para >
+  <para >
+<programlisting>
+<para style="line-height: 150%; white-space:pre;">
+
+stdClass Object
+(
+    [sesskey] => NBoL0ZSqYp
+    [itemname] => What is the flag of Andorra?
+    [itemvalues] => Array
+        (
+            [0] => afghanistan.png
+            [1] => andorra.png
+            [2] => antiguabarbuda.png
+            [3] => argentina.png
+        )
+
+    [id] => 117
+    [position] => 5
+    [itemid] => 
+    [typ] => picture
+    [feedbackid] => 1
+    [saveitem] => 1
+)
+
+</para>
+</programlisting>
+   </para>
+   </refsect1>
+
+
+ <refsect1 id="{@id sessiondata}">
+  <title>Example of Moodle $SESSION global variable</title>
+  <para >
+<programlisting>
+<para style="line-height: 150%; white-space:pre;">
+
+object Object
+(
+    [session_test] => m7Lr0V1nWB
+    [fromurl] => http://localhost/moodle15/
+    [logincount] => 0
+    [cal_course_referer] => 0
+    [cal_show_global] => 1
+    [cal_show_groups] => 1
+    [cal_show_course] => 1
+    [cal_show_user] => 1
+    [cal_courses_shown] => Array
+        (
+            [1] => 
+        )
+
+    [cal_users_shown] => 3
+    [fromdiscussion] => http://localhost/moodle15/course/view.php?id=8
+    [lstgroupid] => -2
+    [encoding] => iso-8859-1
+)
+
+</para>
+</programlisting>
+   </para>
+   </refsect1>
+
+ <refsect1 id="{@id userdata}">
+  <title>Example of Moodle $USER global variable</title>
+  <para >
+<programlisting>
+<para style="line-height: 150%; white-space:pre;">
+
+stdClass Object
+(
+    [id] => 3
+    [auth] => manual
+    [confirmed] => 1
+    [policyagreed] => 0
+    [deleted] => 0
+    [username] => r1o1
+    [password] => c111d464049d419384c9d5ecfb773c93
+    [idnumber] => 
+    [firstname] => r1o1
+    [lastname] => r1o1
+    [email] => r1o1@myweb.com
+    [emailstop] => 0
+    [icq] => 
+    [skype] => 
+    [yahoo] => 
+    [aim] => 
+    [msn] => 
+    [phone1] => 
+    [phone2] => 
+    [institution] => 
+    [department] => 
+    [address] => 
+    [city] => SomeCity
+    [country] => FI
+    [lang] => fi
+    [theme] => 
+    [timezone] => 99
+    [firstaccess] => 0
+    [lastaccess] => 1125996541
+    [lastlogin] => 1125996532
+    [currentlogin] => 1126357078
+    [lastIP] => 127.0.0.1
+    [secret] => 
+    [picture] => 
+    [url] => 
+    [description] => 
+    [mailformat] => 1
+    [maildigest] => 0
+    [maildisplay] => 2
+    [htmleditor] => 1
+    [autosubscribe] => 1
+    [trackforums] => 0
+    [timemodified] => 1122360618
+    [student] => Array
+        (
+            [1] => 1
+            [8] => 1
+        )
+
+    [timeaccess] => Array
+        (
+            [8] => 1125996541
+        )
+
+    [display] => Array
+        (
+            [2] => 0
+            [3] => 0
+            [4] => 0
+            [8] => 0
+        )
+
+    [preference] => Array
+        (
+            [email_bounce_count] => 1
+            [email_send_count] => 1
+        )
+
+    [loggedin] => 1
+    [site] => http://localhost/moodle15
+    [sesskey] => hKvk9oeerw
+    [sessionIP] => f528764d624db129b32c21fbca0cb8d6
+    [editing] => 
+    [message_lastpopup] => 0
+)
+
+</para>
+</programlisting>
+   </para>
+   </refsect1>
+
+
+ <refsect1 id="{@id cfgdata}">
+  <title>Example of Moodle $CFG global variable</title>
+  <para >
+	Well, this is a long one.
+  </para >
+  <para >
+<programlisting>
+<para style="line-height: 150%; white-space:pre;">
+
+stdClass Object
+(
+    [dbtype] => mysql
+    [dbhost] => localhost
+    [dbname] => moodle15
+    [dbuser] => moodle
+    [dbpass] => topsecret
+    [dbpersist] => 
+    [prefix] => mdl_
+    [wwwroot] => http://localhost/moodle15
+    [dirroot] => C:\Inetpub\wwwroot\moodle15
+    [dataroot] => C:\Inetpub\wwwroot\moodle15data
+    [admin] => admin
+    [directorypermissions] => 511
+    [httpswwwroot] => http://localhost/moodle15
+    [libdir] => C:\Inetpub\wwwroot\moodle15/lib
+    [version] => 2005060222
+    [release] => 1.5.2 +
+    [allowcoursethemes] => 0
+    [allowemailaddresses] => 
+    [allowobjectembed] => 0
+    [allowunenroll] => 1
+    [allowuserthemes] => 0
+    [allowuserblockhiding] => 1
+    [allusersaresitestudents] => 1
+    [alternateloginurl] => 
+    [aspellpath] => 
+    [auth] => email
+    [auth_pop3mailbox] => INBOX
+    [autologinguests] => 0
+    [cachetext] => 60
+    [changepassword] => 1
+    [country] => 0
+    [clamfailureonupload] => donothing
+    [dbsessions] => 0
+    [deleteunconfirmed] => 168
+    [denyemailaddresses] => 
+    [digestmailtime] => 17
+    [displayloginfailures] => 
+    [enablerssfeeds] => 0
+    [extendedusernamechars] => 0
+    [editorbackgroundcolor] => #ffffff
+    [editorfontfamily] => Trebuchet MS,Verdana,Arial,Helvetica,sans-serif
+    [editorfontsize] => 
+    [editorkillword] => 1
+    [editorspelling] => 0
+    [editorfontlist] => Trebuchet:Trebuchet MS,Verdana,Arial,Helvetica,sans-serif;Arial:arial,helvetica,sans-serif;Courier New:courier new,courier,monospace;Georgia:georgia,times new roman,times,serif;Tahoma:tahoma,arial,helvetica,sans-serif;Times New Roman:times new roman,times,serif;Verdana:verdana,arial,helvetica,sans-serif;Impact:impact;Wingdings:wingdings
+    [editorhidebuttons] => 
+    [filterall] => 
+    [filteruploadedfiles] => 1
+    [forcelogin] => 0
+    [forceloginforprofiles] => 0
+    [forcetimezone] => 99
+    [fullnamedisplay] => firstname lastname
+    [frontpage] => 1
+    [gdversion] => 0
+    [guestloginbutton] => 1
+    [htmleditor] => 1
+    [langcache] => 1
+    [langmenu] => 0
+    [langlist] => 
+    [loginhttps] => 
+    [loglifetime] => 0
+    [longtimenosee] => 0
+    [maxbytes] => 2097152
+    [maxeditingtime] => 1800
+    [messaging] => 1
+    [noreplyaddress] => noreply@localhost
+    [notifyloginfailures] => 
+    [notifyloginthreshold] => 10
+    [opentogoogle] => 0
+    [pathtoclam] => 
+    [proxyhost] => 
+    [proxyport] => 
+    [quarantinedir] => 
+    [runclamonupload] => 0
+    [secureforms] => 0
+    [sessiontimeout] => 7200
+    [showsiteparticipantslist] => 0
+    [showblocksonmodpages] => 0
+    [sitepolicy] => 
+    [slasharguments] => 1
+    [smtphosts] => 
+    [smtppass] => 
+    [smtpuser] => 
+    [style] => default
+    [tabselectedtofront] => 0
+    [teacherassignteachers] => 1
+    [template] => default
+    [textfilters] => mod/glossary/dynalink.php
+    [themelist] => 
+    [timezone] => 99
+    [unzip] => 
+    [zip] => 
+    [lang] => en
+    [locale] => fi_FI
+    [framename] => _top
+    [sessioncookie] => 
+    [debug] => 7
+    [sesskey] => LOX87rZ7zZ
+    [assignment_maxbytes] => 1024000
+    [assignment_online_version] => 2005042900
+    [chat_refresh_room] => 5
+    [chat_refresh_userlist] => 10
+    [chat_old_ping] => 35
+    [chat_method] => header_js
+    [chat_serverhost] => localhost
+    [chat_serverip] => 127.0.0.1
+    [chat_serverport] => 9111
+    [chat_servermax] => 100
+    [forum_displaymode] => 3
+    [forum_shortpost] => 300
+    [forum_longpost] => 600
+    [forum_manydiscussions] => 100
+    [forum_maxbytes] => 512000
+    [forum_trackreadposts] => 1
+    [forum_oldpostdays] => 14
+    [forum_usermarksread] => 
+    [forum_cleanreadtime] => 2
+    [forum_replytouser] => 1
+    [glossary_studentspost] => 1
+    [glossary_dupentries] => 0
+    [glossary_allowcomments] => 0
+    [glossary_linkbydefault] => 1
+    [glossary_defaultapproval] => 1
+    [glossary_entbypage] => 10
+    [hotpot_initialdisable] => 1
+    [journal_showrecentactivity] => 1
+    [journal_initialdisable] => 1
+    [quiz_review] => 16777215
+    [quiz_attemptonlast] => 0
+    [quiz_attempts] => 0
+    [quiz_grademethod] => 
+    [quiz_decimalpoints] => 2
+    [quiz_maximumgrade] => 10
+    [quiz_password] => 
+    [quiz_popup] => 0
+    [quiz_questionsperpage] => 0
+    [quiz_shuffleanswers] => 1
+    [quiz_shufflequestions] => 0
+    [quiz_subnet] => 
+    [quiz_timelimit] => 0
+    [quiz_optionflags] => 1
+    [quiz_penaltyscheme] => 1
+    [quiz_adaptive] => 1
+    [quiz_fix_review] => 0
+    [quiz_fix_attemptonlast] => 0
+    [quiz_fix_attempts] => 0
+    [quiz_fix_grademethod] => 0
+    [quiz_fix_decimalpoints] => 0
+    [quiz_fix_password] => 0
+    [quiz_fix_popup] => 0
+    [quiz_fix_questionsperpage] => 0
+    [quiz_fix_shuffleanswers] => 0
+    [quiz_fix_shufflequestions] => 0
+    [quiz_fix_subnet] => 0
+    [quiz_fix_timelimit] => 0
+    [quiz_fix_adaptive] => 0
+    [quiz_fix_penaltyscheme] => 0
+    [resource_framesize] => 130
+    [resource_websearch] => http://google.com/
+    [resource_defaulturl] => http://
+    [resource_filterexternalpages] => 
+    [resource_secretphrase] => 9sTRKgVMDzecGLmNbzoo
+    [resource_popup] => 
+    [resource_windowsettings] => 0
+    [resource_parametersettings] => 0
+    [resource_allowlocalfiles] => 0
+    [resource_popupresizable] => checked
+    [resource_popupscrollbars] => checked
+    [resource_popupdirectories] => checked
+    [resource_popuplocation] => checked
+    [resource_popupmenubar] => checked
+    [resource_popuptoolbar] => checked
+    [resource_popupstatus] => checked
+    [resource_popupheight] => 450
+    [resource_popupwidth] => 620
+    [scorm_frameheight] => 600
+    [scorm_framewidth] => 800
+    [backup_version] => 2005070500
+    [backup_release] => 1.5.1
+    [blocks_version] => 2005022400
+    [enrol_authorize_version] => 2005071600
+    [enrol_paypal_version] => 2004081800
+    [siteidentifier] => ShMiNDGnbwxznprqN5PE0PV8gtddQX8x
+    [session_error_counter] => 12
+    [theme] => standard
+    [enrol] => internal
+    [wordlist] => C:\Inetpub\wwwroot\moodle15/lib/wordlist.txt
+    [javascript] => C:\Inetpub\wwwroot\moodle15/lib/javascript.php
+    [moddata] => moddata
+    [themedir] => C:\Inetpub\wwwroot\moodle15/theme/
+    [themewww] => http://localhost/moodle15/theme/
+    [pixpath] => http://localhost/moodle15/pix
+    [modpixpath] => http://localhost/moodle15/mod
+    [header] => C:\Inetpub\wwwroot\moodle15/theme/ahaavision/header.html
+    [footer] => C:\Inetpub\wwwroot\moodle15/theme/ahaavision/footer.html
+    [stylesheets] => Array
+        (
+            [0] => http://localhost/moodle15/theme/standard/styles.php
+        )
+
+)
+
+</para>
+</programlisting>
+   </para>
+
+ </refsect1>
+
+</refentry>

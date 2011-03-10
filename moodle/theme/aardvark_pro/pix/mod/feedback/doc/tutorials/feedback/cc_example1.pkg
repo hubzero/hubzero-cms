@@ -1,0 +1,506 @@
+<refentry id="{@id}"> 
+ <refnamediv>
+  <refname>Example: Picture Item</refname>
+ </refnamediv>
+
+ {@toc}
+
+  <refsect1 id="{@id target}">
+  <title>Target Setting</title>
+
+  <para>
+	We want to create a feedback item that allows a user to answer a question by choosing a
+	picture. The functionality is very similar to that of a radio item,
+	only the text description of each radio button is replaced by a picture.
+  </para>
+
+  <para>
+	The item will enable us to state questions like this:
+  </para>
+
+  <para style="border: thin solid #AAAAAA;">
+	<graphic fileref="../media/images/tutorials/flag_example.gif" format="gif" />
+  </para>
+
+  <para>
+	When defining a new picture feedback item, an administrator can choose  
+	pictures from a number of files stored in feedback/item/picture/library directory.
+  </para>
+
+  <para>
+	<graphic fileref="../media/images/tutorials/picture_edit_item.gif" format="gif" />
+  </para>
+
+  <para>
+	The functionality of the item will be limited, because this is just meant to be
+ 	a simple example showing the main steps you need to do. For example, it will not be possible
+	to define the order of the pictures, they will always appear in alphabetical order. Neither
+	is it possible to view the pictures when creating the item.
+  </para>
+
+  <para>
+	The picture feedback item code is provided together with
+	this documentation. So, when going through this example, you do not have to do 
+	any editing, if you don't want to.
+  </para>
+
+ </refsect1>
+
+
+ <refsect1 id="{@id createdir}">
+  <title>Step (1): Create a duplicate item</title>
+
+  <para>
+	The easiest way to get started is to create a duplicate of an existing feedback item.
+	In order to minimize the customization work we want to choose an item 
+	that best matches our targeted functionality. 
+  </para>
+
+  <para>
+	A key issue is to consider the value or the values that the item will return as 
+	an answer to the question it states. The following table gives some guidance:
+  </para>
+
+    <para>
+      <table style="width: 800px; border: thin solid #AAAAAA;">
+        <tgroup cols="2" align="left">
+	  <colspec colnum="1" colname="col1" colwidth="2*"/>
+	  <colspec colnum="2" colname="col2" colwidth="2*"/>
+          <thead>
+            <row  style="font-weight: bold;">
+              <entry style="width: 200px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Existing item name
+              </entry>
+              <entry style="width: 600px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                is a suitable choice if
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+          
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                radio
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                our item returns one value from a given set of values
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                checkbox
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                our item returns one or more values from a given set of values
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                textfield
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                our item returns some data, about which we do not know much about
+              </entry>
+            </row>
+
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+
+  <para>
+	So, for us the choice is easy: our picture item returns one value from a given set of values,
+	so we choose the radio item as our template.
+  </para>
+
+  <para>
+	Do the following:
+  </para>
+
+   <para>
+	  <itemizedlist>
+
+	   <listitem><para>
+		create a new directory 'picture' in feedback/item/
+	   </para></listitem>
+
+	   <listitem><para>
+		copy lib.php from feedback/item/radio to the directory you just created
+	   </para></listitem>
+
+	   <listitem><para>
+		open the copied file in a text editor and use find/replace to change all ocurrances of 
+		'_radio' by '_picture' (there should be 12 matches in total)
+ 	   </para></listitem>
+
+ 	</itemizedlist>
+   </para>
+
+  <para>
+	Now you should be able to test how the copied item works. Open your Moodle as an administrator, 
+	create an instance of feedback activity module, open the activity and click on 'Edit elements...'. In the dropdown  selection list under 
+	'Add element' you should see your picture item:
+  </para>
+
+    <para style="border: thin solid #AAAAAA;">
+	<graphic fileref="../media/images/tutorials/picture_dropdown.gif" format="gif" />
+    </para>
+
+  <para>
+	This was not that difficult, was it?
+  </para>
+
+
+ </refsect1>
+
+
+ <refsect1 id="{@id modify1}">
+  <title>Step (2): Defining item properties</title>
+
+  <para>
+	Now we have a copy of the radio item with a new name, which is not very useful. It is the time to modify 
+	the functionality of the item. This can be achieved by rewriting or modifying some of the 
+	functions in feedback/item/picture/lib.php. We will start with show_edit_picture function,
+	which is called when creating a new instance of the picture item. In show_edit_picture we are defining
+	the item properties.
+  </para>
+
+  <para>
+	So here is what we are going to do: we just replace the existing code for function show_edit_picture
+	with the following lines:
+  </para>
+
+  <para>
+  <programlisting role="php">
+        <![CDATA[
+define ('feedback_PICTURE_FILES', '/mod/feedback/item/picture/library');
+
+function show_edit_picture($item, $usehtmleditor = false) {
+
+	global $CFG;
+	$picdir=$CFG->dirroot . feedback_PICTURE_FILES; 
+	$itemvalues = explode('|', $item->presentation);
+		
+	// Let's compose the HTML select for picture filenames
+	$fselect="";
+	$picfiles=read_feedback_picture_list($picdir, "jpg;png;gif");
+	
+	if($itemvalues == "") { 	
+		// we do not have anything selected yet
+		foreach ($picfiles as $picfile){
+			$fselect = '<option value="'. $picfile . '">' . $picfile . '</option>'. $fselect;
+		}
+	} else {                 				
+		// we are updating an item, some picture file names are already selected
+		foreach ($picfiles as $picfile){
+			if (in_array($picfile,$itemvalues)) {
+				$fselect = $fselect . '<option value="'. $picfile . '" selected="selected">' . $picfile . '</option>' ;
+			} else {
+				$fselect = $fselect . '<option value="'. $picfile . '" >' . $picfile . '</option>';
+			} 
+		} 
+	} 
+	//The rest of this function will produce a HTML table and will fill in the elements we need
+?>
+   <table>
+      <tr>
+         <th colspan="2"><?php print_string('picture', 'feedback');?>
+            &nbsp;(<input type="checkbox" name="required" value="1" <?php echo ($item->required==1?'checked="checked"':'');?> />&nbsp;<?php print_string('required', 'feedback');?>)
+         </th>
+      </tr>
+	  <tr>
+         <td><?php print_string('item_name', 'feedback');?></td>
+         <td><input type="text" id="itemname" name="itemname" size="40" maxlength="255" value="<?php echo $item->name;?>" /></td>
+      </tr>
+
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr><td></td><td> <?php print_string('picture_file_list', 'feedback')?></td></tr>
+	  <tr>
+         <td valign="top">
+            <?php print_string('picture_values', 'feedback');?>
+         </td>
+         <td>
+			<?php $itemvalues = str_replace('|', "\n", $item->presentation); ?>
+            <select name="itemvalues[]" size="10" multiple><?php echo $fselect; ?></select>
+         </td>
+      </tr>
+   </table>
+<?php
+}
+       ]]>
+  </programlisting>
+  </para>
+
+  <para>
+	Uh, so what is all that code above? 
+  </para>	
+
+  <para>
+	To start with, variable $item is just an object presentation of a MySQL record
+	in table 'prefix_feedback_item' (where prefix is something, which is defined during
+	Moodle set-up, default prefix is mdl). So, that's the item we are currently looking at.
+	If we are creating a new item, then $item has no value. 
+  </para>	
+
+  <para>
+	An example of data in an $item object:
+  </para>	
+
+  <para >
+    <programlisting>
+<para style="line-height: 150%; white-space:pre;">stdClass Object
+(
+    [id] => 7
+    [feedback] => 1
+    [template] => 0
+    [name] => What is the flag of Andorra?
+    [presentation] => afghanistan.png|albania.png|algeria.png|andorra.png|angola.png
+    [typ] => picture
+    [hasvalue] => 1
+    [position] => 3
+    [required] => 1
+)</para></programlisting>
+  </para>
+
+
+  <para>
+	Lines 5-25 of function show_edit_picture generate HTML code in variable $fselect 
+	for a HTML select block
+	which will show all the file names we have in our picture library. 
+	Lines 26-50 create the table 
+	layout and show the page content.
+  </para>
+
+  <para>
+	Function print_string obtains a translated text string, which can be then written to browser window.
+	Print_string is aware of the language pack chosen in Moodle, so the text will appear in correct
+	language (if supported by our module). We will come back to this issue in our last step.
+  </para>
+
+
+
+ </refsect1>
+
+ <refsect1 id="{@id modify2}">
+  <title>Step (3): Defining the appearance of the item</title>
+
+  <para>
+	Now we do a similar thing with function print_feedback_picture, which produces the 
+	HTML code presentation of the item. This will define how the item appears in a browser window. 
+	We replace the existing print_feedback_picture -function by the lines below:
+  </para>
+
+  <para>
+  <programlisting role="php">
+        <![CDATA[
+function print_feedback_picture($item, $value = false, $readonly = false){
+
+   global $CFG;
+
+   $presentation = explode ("|", $item->presentation);
+   $requiredmark =  ($item->required == 1)?'<font color="red">*</font>':'';
+?>
+   <td valign="top" align="left" style="padding-right: 40px;"><?php echo text_to_html($item->name . $requiredmark, true, false, false);?></td>
+   <td valign="top" align="left">
+<?php
+   $index = 1;
+   $checked = '';
+   if($readonly){
+	  //here we want to show the selected picture only, $value must be provided
+	  //this is used by feedback/show_entries.php, for example
+      foreach($presentation as $pic){
+         if($value == $index){
+            print_simple_box_start('left');
+            echo '<img style="padding-left: 20px;" src="'.$CFG->wwwroot.feedback_PICTURE_FILES.'/'.$pic.'">';
+            print_simple_box_end();
+            break;
+         }
+         $index++;
+      }
+   } else {
+	  //below is what we want most of the time, to show the full functionality of picture item
+	  //item may have already a value, after a failed saving attempt, say)
+      foreach($presentation as $pic){
+         if($value == $index){
+            $checked = 'checked="checked"';
+         }else{
+            $checked = '';
+         }
+?>
+         <table><tr>
+         <td valign="TOP"><input type="radio"
+               name="<?php echo $item->typ . '_' . $item->id?>"
+               value="<?php echo $index;?>" <?php echo $checked;?>>
+         </td><td><?php echo '<img style="padding-left: 20px;" src="'.$CFG->wwwroot.feedback_PICTURE_FILES.'/'.$pic.'">'; ?>&nbsp;
+         </td></tr></table>
+<?php
+         $index++;
+      }
+   }
+?>
+   </td>
+<?php
+}
+       ]]>
+  </programlisting>
+  </para>
+
+ </refsect1>
+
+ <refsect1 id="{@id analyze}">
+  <title>Step (4): Defining how submitted results are shown</title>
+
+  <para>
+	Then we modify function print_analysed_picture, which produces the 
+	HTML code showing summarized data from submitted forms. We replace the existing function
+	print_analysed_picture by the lines below:
+  </para>
+
+  <para>
+  <programlisting role="php">
+        <![CDATA[
+function print_analysed_picture($item, $itemnr = 0, $groupid = false) {
+   
+   global $CFG;
+   $analysedItem = get_analysed_picture($item, $groupid);  //compute the distribution of received answers
+   //do we have anlyzed items to show?
+   if($analysedItem) {
+      $itemnr++;
+	  //outputs running index of item together with the question associated with the item
+      echo '<tr><th colspan="2">'. $itemnr . '.)&nbsp;' . $analysedItem[1] .'</th></tr>';
+      $analysedVals = $analysedItem[2];
+      $pixnr = 0;
+      //create suitably wide picture to present a horizontal bar proportional to the number of answers received
+      foreach($analysedVals as $val) {
+         if( function_exists("bcmod")) {
+            $pix = 'pics/' . bcmod($pixnr, 10) . '.gif'; // define the colour of the bar
+         }else {
+            $pix = 'pics/0.gif';
+         }
+         $pixnr++;
+         $pixwidth = $val->quotient * feedback_MAX_PIX_LENGTH;
+         $quotient = number_format(($val->quotient * 100), 2, ',', '.');
+		 list($picname)=explode('.',trim($val->answertext));//removing file name extension
+		 //create HTML for a horizontal graph showing distribution of answers
+         echo   '<tr><td align="right" valign="bottom"><b>' . 
+		 		$picname . '<img style="padding-right: 20px;padding-left: 20px;" src="'.
+				$CFG->wwwroot.feedback_PICTURE_FILES.'/'. trim($val->answertext).'">'  . 
+				':</b></td><td valign="bottom"><img src="'.$pix.'" height="5" width="'.$pixwidth.'">&nbsp;' 
+				. $val->answercount . (($val->quotient > 0)?'&nbsp;('. $quotient . '&nbsp;%)':'').'</td></tr>';
+      }
+   }
+   return $itemnr;
+}
+       ]]>
+  </programlisting>
+  </para>
+
+ </refsect1>
+
+ <refsect1 id="{@id strings}">
+  <title>Step (5): Defining the strings needed in the functions we just created</title>
+
+  <para>
+	We are almost there. Only some text string definitions are missing. They need to be placed in the 
+	moodle/lang/en/feedback.php file. The file content looks like the following:
+  </para>
+
+  	<para >
+<programlisting>
+<para style="line-height: 150%; white-space:pre;">
+
+$string['add_item'] = 'Add element';
+$string['add_items'] = 'Add element';
+$string['all_old_values_will_be_deleted'] = 'All old values will be deleted';
+$string['all_related_values_will_be_deleted'] = 'All related values will be deleted';
+and many more similar entries....
+
+</para>
+</programlisting>
+    </para>
+
+  <para>
+	At present we have some problems, because we have not defined
+	the strings we used in function show_edit_picture in as arguments to print_string() function.
+	You can reveal the problem, when you try to create a new picture item (problem areas
+	highlighted in red):
+  </para>
+
+  <para>
+	<graphic fileref="../media/images/tutorials/language_problem.gif" format="gif" />
+  </para>
+
+  <para>
+	In order to make things right, we should append the following lines to the end of moodle/lang/en/feedback.php file:
+  </para>
+
+	<para >
+<programlisting>
+<para style="line-height: 150%; white-space:pre;">
+
+$string['picture_file_list'] = 'List of pictures';
+$string['picture_values'] = 'Choose one or more<br />picture files from the list:';
+$string['picture'] = 'Picture';
+
+</para>
+</programlisting>
+    </para>
+
+  <para>
+	The moodle/lang/en/feedback.php file defines strings in very self-explanatory way. 
+	If we had wanted to build support for some other language,
+	Finnish for example, we would have created a feedback.php file in moodle/lang/fi instead.
+  </para>
+
+  <para>
+	Now we can check the situation again. It looks like this:
+  </para>
+
+  <para>
+	<graphic fileref="../media/images/tutorials/language_ok.gif" format="gif" />
+  </para>
+
+  <para>
+	OK, problem solved.
+  </para>
+
+
+ </refsect1>
+
+ <refsect1 id="{@id conclusion}">
+  <title>Concluding remarks</title>
+
+  <para>
+	We have now completed our customized feedback item in five steps. Maybe you want to try it
+	by creating one feedback form containing a picture item and submitting some answers.
+	Hopefully this examle has encouraged you to create new feedback items yourself!
+  </para>
+
+  <para>
+	The reason why we need to do nothing more, relies on the fact that our picture -item 
+	is so similar to the radio item. When producing output to browser window the radio button description
+	is just replaced by a picture. And the real "radio button description" stored in 
+	the database is actually the picture file name. Hence we did not need to touch the way the data
+	is stored in the database.
+  </para>
+
+  <para>
+	Our approach has several shortcomings. For example the output to Excel is just a plain picture file name.
+	It would be nice to have the pictures in the Excel file as well. It's also easy to cheat with the 
+	flags example, because the country can be checked from the picture file name in HTML source code.
+	There will be also problems if a picture feedback item is restored, but for some reason
+	such pictures in feedback/picture/library do not exists.
+  </para>
+
+  <para>
+	
+  </para>
+
+ </refsect1>
+
+</refentry>
+
+

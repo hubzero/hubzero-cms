@@ -1,0 +1,498 @@
+<?php
+
+    // set to defaults if undefined
+    if (!isset($config->host_url))
+        { $config->host_url = ''; }
+    if (empty($config->ldapencoding))
+        { $config->ldapencoding = 'utf-8'; }
+    if (!isset($config->contexts))
+        { $config->contexts = ''; }
+    if (!isset($config->user_type))
+        { $config->user_type = 'default'; }
+    if (!isset($config->user_attribute))
+        { $config->user_attribute = ''; }
+    if (!isset($config->search_sub))
+        { $config->search_sub = ''; }
+    if (!isset($config->opt_deref))
+        { $config->opt_deref = LDAP_DEREF_NEVER; }
+    if (!isset($config->preventpassindb))
+        { $config->preventpassindb = 1; }
+    if (!isset($config->bind_dn))
+        {$config->bind_dn = ''; }
+    if (!isset($config->bind_pw))
+        {$config->bind_pw = ''; }
+    if (!isset($config->version))
+        {$config->version = '2'; }
+    if (!isset($config->objectclass))
+        {$config->objectclass = ''; }
+    if (!isset($config->memberattribute))
+        {$config->memberattribute = ''; }
+    if (!isset($config->memberattribute_isdn))
+        {$config->memberattribute_isdn = ''; }
+    if (!isset($config->creators))
+        {$config->creators = ''; }
+    if (!isset($config->create_context))
+        {$config->create_context = ''; }
+    if (!isset($config->expiration))
+        {$config->expiration = ''; }
+    if (!isset($config->expiration_warning))
+        {$config->expiration_warning = '10'; }
+    if (!isset($config->expireattr))
+        {$config->expireattr = ''; }
+    if (!isset($config->gracelogins))
+        {$config->gracelogins = ''; }
+    if (!isset($config->graceattr))
+        {$config->graceattr = ''; }
+    if (!isset($config->auth_user_create))
+        {$config->auth_user_create = ''; }
+    if (!isset($config->forcechangepassword))
+        {$config->forcechangepassword = 0; }
+    if (!isset($config->stdchangepassword))
+        {$config->stdchangepassword = 0; }
+    if (!isset($config->passtype)) 
+        {$config->passtype = 'plaintext';}
+    if (!isset($config->changepasswordurl))
+        {$config->changepasswordurl = ''; }
+    if (!isset($config->removeuser))
+        {$config->removeuser = 0; }
+    if (!isset($config->ntlmsso_enabled))
+        {$config->ntlmsso_enabled = 0; }
+    if (!isset($config->ntlmsso_subnet))
+        {$config->ntlmsso_subnet = ''; }
+    if (!isset($config->ntlmsso_ie_fastpath))
+        {$config->ntlmsso_ie_fastpath = 0; }
+
+    $yesno = array( get_string('no'), get_string('yes') );
+
+if (!function_exists('ldap_connect')) { // Is php4-ldap really there?
+    notify(get_string('auth_ldap_noextension','auth'));
+}
+
+?>
+<table cellspacing="0" cellpadding="5" border="0">
+
+<tr>
+   <td colspan="2">
+        <h4><?php print_string('auth_ldap_server_settings', 'auth') ?> </h4>
+   </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="host_url"><?php print_string('auth_ldap_host_url_key','auth') ?></label></td>
+    <td>
+        <input name="host_url" id="host_url" type="text" size="30" value="<?php echo $config->host_url?>" />
+    <?php  if (isset($err['host_url'])) formerr($err['host_url']); ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_host_url','auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="menuversion"><?php print_string('auth_ldap_version_key','auth') ?></label></td>
+    <td>
+    <?php
+       $versions = array();
+       $versions[2] = '2';
+       $versions[3] = '3';
+       choose_from_menu($versions, 'version', $config->version, '');
+       if (isset($err['version'])) formerr($err['version']);
+    ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_version','auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="ldapencoding"><?php print_string("auth_ldap_ldap_encoding_key", "auth") ?></label></td>
+    <td>
+        <input id="ldapencoding" name="ldapencoding" type="text" value="<?php echo $config->ldapencoding ?>" />
+        <?php
+
+        if (isset($err['ldapencoding'])) {
+            formerr($err['ldapencoding']);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string('auth_ldap_ldap_encoding', 'auth') ?></td>
+</tr>
+
+<tr>
+   <td colspan="2">
+        <h4><?php print_string('auth_ldap_bind_settings', 'auth') ?> </h4>
+   </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="menupreventpassindb"><?php print_string('auth_ldap_preventpassindb_key','auth') ?></label></td>
+    <td>
+        <?php choose_from_menu($yesno, 'preventpassindb', $config->preventpassindb, ''); ?>
+    </td><td>
+    <?php print_string('auth_ldap_preventpassindb','auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="bind_dn"><?php print_string('auth_ldap_bind_dn_key','auth') ?></label></td>
+    <td>
+    <input name="bind_dn" id="bind_dn" type="text" size="30" value="<?php echo $config->bind_dn?>" />
+    <?php  if (isset($err['bind_dn'])) formerr($err['bind_dn']); ?>
+    </td><td>
+    <?php print_string('auth_ldap_bind_dn','auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="bind_pw"><?php print_string('auth_ldap_bind_pw_key','auth') ?></label></td>
+    <td>
+    <input name="bind_pw" id="bind_pw" type="password" size="30" value="<?php echo $config->bind_pw?>" />
+    <?php  if (isset($err['bind_pw'])) formerr($err['bind_pw']); ?>
+    </td><td>
+    <?php print_string('auth_ldap_bind_pw','auth') ?>
+    </td>
+</tr>
+
+<tr>
+   <td colspan="2">
+        <h4><?php print_string('auth_ldap_user_settings', 'auth') ?> </h4>
+   </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="menuuser_type"><?php print_string('auth_ldap_user_type_key','auth') ?></label></td>
+    <td>
+    <?php choose_from_menu($this->ldap_suppported_usertypes(), 'user_type', $config->user_type, ''); ?>
+    <?php  if (isset($err['user_type'])) formerr($err['user_type']); ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_user_type', 'auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="contexts"><?php print_string('auth_ldap_contexts_key','auth') ?></label></td>
+    <td>
+    <input name="contexts" id="contexts"  type="text" size="30" value="<?php echo $config->contexts?>" />
+    <?php  if (isset($err['contexts'])) formerr($err['contexts']); ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_contexts', 'auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="menusearch_sub"><?php print_string('auth_ldap_search_sub_key','auth') ?></label></td>
+    <td>
+        <?php choose_from_menu($yesno, 'search_sub', $config->search_sub, ''); ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_search_sub','auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="menuopt_deref"><?php print_string('auth_ldap_opt_deref_key','auth') ?></label></td>
+    <td>
+    <?php
+       $opt_deref = array();
+       $opt_deref[LDAP_DEREF_NEVER] = get_string('no');
+       $opt_deref[LDAP_DEREF_ALWAYS] = get_string('yes');
+       choose_from_menu($opt_deref, 'opt_deref', $config->opt_deref, '');
+       if (isset($err['opt_deref'])) formerr($err['opt_deref']);
+    ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_opt_deref','auth') ?>
+    </td>
+</tr>
+
+
+
+<tr valign="top" class="required">
+    <td align="right"><label for="user_attribute"><?php print_string('auth_ldap_user_attribute_key','auth') ?></label></td>
+    <td>
+    <input name="user_attribute" id="user_attribute" type="text" size="30" value="<?php echo $config->user_attribute?>" />
+    <?php  if (isset($err['user_attribute'])) formerr($err['user_attribute']); ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_user_attribute','auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+        <td align="right"><label for="memberattribute"><?php print_string('auth_ldap_memberattribute_key','auth') ?></label></td>
+        <td>
+    <input name="memberattribute" id="memberattribute" type="text" size="30" value="<?php echo $config->memberattribute?>" />
+    <?php  if (isset($err['memberattribute'])) formerr($err['memberattribute']); ?>
+    </td><td>
+    <?php print_string('auth_ldap_memberattribute','auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+        <td align="right"><label for="memberattribute_isdn"><?php print_string('auth_ldap_memberattribute_isdn_key','auth') ?></label></td>
+        <td>
+    <input name="memberattribute_isdn" id="memberattribute_isdn" type="text" size="30" value="<?php echo $config->memberattribute_isdn?>" />
+    <?php  if (isset($err['memberattribute_isdn'])) formerr($err['memberattribute_isdn']); ?>
+    </td><td>
+    <?php print_string('auth_ldap_memberattribute_isdn','auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="objectclass"><?php print_string('auth_ldap_objectclass_key','auth') ?></label></td>
+    <td>
+    <input name="objectclass" id="objectclass" type="text" size="30" value="<?php echo $config->objectclass?>" />
+    <?php  if (isset($err['objectclass'])) formerr($err['objectclass']); ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_objectclass','auth') ?>
+    </td>
+</tr>
+
+<tr>
+   <td colspan="2">
+        <h4><?php print_string('forcechangepassword', 'auth') ?> </h4>
+   </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right" valign="top"><label for="menuforcechangepassword"><?php print_string('forcechangepassword', 'auth') ?></label></td>
+    <td>
+        <?php choose_from_menu($yesno, 'forcechangepassword', $config->forcechangepassword, ''); ?>
+    </td>
+    <td align="left" valign="top">
+        <p><?php print_string('forcechangepasswordfirst_help', 'auth') ?></p>
+    </td>
+</tr>
+
+<tr valign="top"  class="required">
+    <td align="right" valign="top"><label for="menustdchangepassword"><?php print_string('stdchangepassword', 'auth') ?></label></td>
+    <td>
+        <?php choose_from_menu($yesno, 'stdchangepassword', $config->stdchangepassword, ''); ?>
+    </td>
+    <td align="left" valign="top">
+        <p><?php print_string('stdchangepassword_expl', 'auth') ?></p>
+        <p><?php print_string('stdchangepassword_explldap', 'auth') ?></p>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="menupasstype"><?php print_string('auth_ldap_passtype_key', 'auth') ?></label></td>
+    <td>
+        <?php
+        $passtype = array();
+        $passtype['plaintext'] = get_string('plaintext', 'auth');
+        $passtype['md5']       = get_string('md5', 'auth');
+        $passtype['sha1']      = get_string('sha1', 'auth');
+        choose_from_menu($passtype, 'passtype', $config->passtype, '');
+
+        ?>
+    </td>
+    <td><?php print_string('auth_ldap_passtype', 'auth') ?></td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><label for="changepasswordurl"><?php print_string('auth_ldap_changepasswordurl_key','auth') ?></label></td>
+    <td>
+        <input name="changepasswordurl" id="changepasswordurl" type="text" value="<?php echo $config->changepasswordurl ?>" />
+        <?php
+
+        if (isset($err['changepasswordurl'])) {
+            formerr($err['changepasswordurl']);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string('changepasswordhelp', 'auth') ?></td>
+</tr>
+
+<tr>
+   <td colspan="2">
+        <h4><?php print_string('auth_ldap_passwdexpire_settings', 'auth') ?> </h4>
+   </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="menuexpiration"><?php print_string('auth_ldap_expiration_key','auth') ?></label></td>
+    <td>
+    <?php
+       $expiration = array();
+       $expiration['0'] = 'no';
+       $expiration['1'] = 'LDAP';
+       choose_from_menu($expiration, 'expiration', $config->expiration, '');
+       if (isset($err['expiration'])) formerr($err['expiration']);
+    ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_expiration_desc','auth') ?>
+    </td>
+</tr>
+
+
+<tr valign="top" class="required">
+    <td align="right"><label for="expiration_warning"><?php print_string('auth_ldap_expiration_warning_key','auth') ?></label></td>
+    <td>
+    <input name="expiration_warning" id="expiration_warning" type="text" size="2" value="<?php echo $config->expiration_warning?>" />
+    <?php   if (isset($err['expiration_warning'])) formerr($err['expiration_warning']);
+    ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_expiration_warning_desc','auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="expireattr"><?php print_string('auth_ldap_expireattr_key','auth') ?></label></td>
+    <td>
+    <input name="expireattr" id="expireattr" type="text" size="30" value="<?php echo $config->expireattr?>" />
+    <?php  if (isset($err['expireattr'])) formerr($err['expireattr']);
+    ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_expireattr_desc','auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="menugracelogins"><?php print_string('auth_ldap_gracelogins_key','auth') ?></label></td>
+    <td>
+        <?php choose_from_menu($yesno, 'gracelogins', $config->gracelogins, ''); ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_gracelogins_desc','auth') ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="graceattr"><?php print_string('auth_ldap_gracelogin_key','auth') ?></label></td>
+    <td>
+    <input name="graceattr" id="graceattr" type="text" size="30" value="<?php echo $config->graceattr?>" />
+    <?php   if (isset($err['graceattr'])) formerr($err['graceattr']);
+    ?>
+    </td>
+    <td>
+    <?php print_string('auth_ldap_graceattr_desc','auth') ?>
+    </td>
+</tr>
+
+
+
+<tr>
+   <td colspan="2">
+        <h4><?php print_string('auth_user_create', 'auth') ?> </h4>
+   </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><label for="menuauth_user_create"><?php print_string('auth_ldap_auth_user_create_key','auth') ?></label></td>
+    <td>
+      <?php choose_from_menu($yesno, 'auth_user_create', $config->auth_user_create, ''); ?>
+    </td>
+    <td>
+        <?php print_string("auth_user_creation","auth"); ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="create_context"><?php print_string('auth_ldap_create_context_key','auth') ?></label></td>
+    <td>
+    <input name="create_context" id="create_context" type="text" size="30" value="<?php echo $config->create_context?>" />
+    <?php  if (isset($err['create_context'])) formerr($err['create_context']); ?>
+    </td><td>
+    <?php print_string('auth_ldap_create_context','auth') ?>
+    </td>
+</tr>
+
+
+<tr>
+   <td colspan="2">
+        <h4><?php print_string('coursecreators') ?> </h4>
+   </td>
+</tr>
+
+<tr valign="top" class="required">
+        <td align="right"><label for="creators"><?php print_string('auth_ldap_creators_key','auth') ?></label></td>
+        <td>
+    <input name="creators" id="creators" type="text" size="30" value="<?php echo $config->creators?>" />
+    <?php  if (isset($err['creators'])) formerr($err['creators']); ?>
+    </td><td>
+    <?php print_string('auth_ldap_creators','auth') ?>
+    </td>
+</tr>
+
+<tr>
+   <td colspan="2">
+        <h4><?php print_string('auth_sync_script', 'auth') ?> </h4>
+   </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><label for="menuremoveuser"><?php print_string('auth_remove_user_key','auth') ?></label></td>
+    <td>
+    <?php
+       $deleteopt = array();
+       $deleteopt['0'] = get_string('auth_remove_keep','auth');
+       $deleteopt['1'] = get_string('auth_remove_suspend','auth');
+       $deleteopt['2'] = get_string('auth_remove_delete','auth');
+       choose_from_menu($deleteopt, 'removeuser', $config->removeuser, '');
+    ?>
+    </td>
+    <td>
+    <?php print_string('auth_remove_user','auth') ?>
+    </td>
+</tr>
+
+<tr>
+   <td colspan="2">
+        <h4><?php print_string('auth_ntlmsso', 'auth') ?> </h4>
+   </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><label for="menuntlmsso_enabled"><?php print_string('auth_ntlmsso_enabled_key','auth') ?></label></td>
+    <td>
+    <?php
+       choose_from_menu($yesno, 'ntlmsso_enabled', $config->ntlmsso_enabled, '0');
+    ?>
+    </td>
+    <td>
+    <?php print_string('auth_ntlmsso_enabled','auth') ?>
+    </td>
+</tr>
+<tr valign="top">
+    <td align="right"><label for="ntlmsso_subnet"><?php print_string('auth_ntlmsso_subnet_key','auth') ?></label></td>
+    <td><input name="ntlmsso_subnet" id="ntlmsso_subnet" type="text" size="30" value="<?php p($config->ntlmsso_subnet) ?>" />
+    </td>
+    <td>
+    <?php print_string('auth_ntlmsso_subnet','auth') ?>
+    </td>
+</tr>
+<tr valign="top">
+    <td align="right"><label for="menuntlmsso_ie_fastpath"><?php print_string('auth_ntlmsso_ie_fastpath_key','auth') ?></label></td>
+    <td>
+    <?php
+       choose_from_menu($yesno, 'ntlmsso_ie_fastpath', $config->ntlmsso_ie_fastpath, '0');
+    ?>
+    </td>
+    <td>
+    <?php print_string('auth_ntlmsso_ie_fastpath','auth') ?>
+    </td>
+</tr>
+
+<?php
+
+$help  = get_string('auth_ldapextrafields','auth');
+$help .= get_string('auth_updatelocal_expl','auth');
+$help .= get_string('auth_fieldlock_expl','auth');
+$help .= get_string('auth_updateremote_expl','auth');
+$help .= '<hr />';
+$help .= get_string('auth_updateremote_ldap','auth');
+
+print_auth_lock_options('ldap', $user_fields, $help, true, true);
+
+?>
+
+</table>

@@ -1,0 +1,93 @@
+<?php
+
+// set to defaults if undefined
+if (!isset($config->host)) {
+    $config->host = '127.0.0.1';
+}
+if (!isset($config->type)) {
+    $config->type = 'imap';
+}
+if (!isset($config->port)) {
+    $config->port = '143';
+}
+if (!isset($config->changepasswordurl)) {
+    $config->changepasswordurl = '';
+}
+
+?>
+<table cellspacing="0" cellpadding="5" border="0">
+
+<tr valign="top" class="required">
+    <td align="right"><?php print_string('auth_imaphost_key', 'auth') ?>: </td>
+    <td>
+        <input name="host" type="text" size="30" value="<?php echo $config->host ?>" />
+        <?php
+
+        if (isset($err['host'])) {
+            formerr($err['host']);
+        }
+
+        ?>
+    </td>
+    <td>
+        <?php
+
+        print_string('auth_imaphost', 'auth');
+        print_string('auth_multiplehosts', 'auth');
+
+        ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><?php print_string('auth_imaptype_key', 'auth') ?>: </td>
+    <td>
+        <?php
+
+        $imaptypes = array('imap', 'imapssl', 'imapcert', 'imaptls');
+        foreach ($imaptypes as $imaptype) {
+            $imapoptions[$imaptype] = $imaptype;
+        }
+        choose_from_menu($imapoptions, 'type', $config->type, '');
+
+        ?>
+    </td>
+    <td><?php print_string('auth_imaptype', 'auth') ?></td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><?php print_string('auth_imapport_key', 'auth') ?>: </td>
+    <td>
+        <input name="port" type="text" size="6" value="<?php echo $config->port ?>" />
+        <?php
+
+        if (isset($err['port'])) {
+            formerr($err['port']);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string('auth_imapport', 'auth') ?></td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><?php print_string('auth_imapchangepasswordurl_key', 'auth') ?>: </td>
+    <td>
+        <input name="changepasswordurl" type="text" value="<?php echo $config->changepasswordurl ?>" />
+        <?php
+
+        if (isset($err['changepasswordurl'])) {
+            formerr($err['changepasswordurl']);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string('changepasswordhelp', 'auth') ?></td>
+</tr>
+
+<?php
+
+print_auth_lock_options('imap', $user_fields, get_string('auth_fieldlocks_help', 'auth'), false, false);
+
+?>
+</table>

@@ -1,0 +1,19 @@
+<?php
+
+    print_container_end(); // content container
+
+    print_container_start(false, '', 'footer');
+    echo '<hr />';
+
+    echo '<p class="helplink">';
+    echo page_doc_link(get_string('moodledocslink'));
+    echo '</p>';
+
+    echo $loggedinas;
+    echo $homelink;
+
+    print_container_end();
+?>
+</div>
+</body>
+</html>

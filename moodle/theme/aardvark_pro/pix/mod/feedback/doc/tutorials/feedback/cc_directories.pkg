@@ -1,0 +1,134 @@
+<refentry id="{@id}"> 
+ <refnamediv>
+  <refname>Directories and Files</refname>
+ </refnamediv>
+
+ {@toc}
+
+<refsect1 id="{@id intro}">
+  <title>Introduction</title>
+
+    <para>
+	This section briefly describes feedback module directories and files.
+    </para>
+
+ </refsect1>
+
+ <refsect1 id="{@id directories}">
+  <title>Directory Tree</title>
+
+  <para>
+	This is the directory structure inside $CFG->dirroot/mod/feedback/ where feedback module PHP code lives in:
+  </para>
+
+  <para>
+	<graphic fileref="../media/images/tutorials/feedback_dir.gif" format="gif" />
+  </para>
+
+    <para>
+      <table style="width: 800px; border: thin solid #AAAAAA;">
+        <tgroup cols="2" align="left">
+	  <colspec colnum="1" colname="col1" colwidth="2*"/>
+	  <colspec colnum="2" colname="col2" colwidth="2*"/>
+          <thead>
+            <row  style="font-weight: bold;">
+              <entry style="width: 200px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Directory entry
+              </entry>
+              <entry style="width: 600px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Description
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                feedback/db
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		contains database related files
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                feedback/doc
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		contains documentation related information, the source files for 
+		phpDocumentor can be found in feedback/doc/tutorials/feedback, see
+		Documentation section for more details
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                feedback/item
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		contains subdirectories of all feedback items, each entry contains
+		a lib.php file, which defines the functionality of that particular item
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                feedback/lang
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		contains language pack files, files should be copied or moved to corresponding 
+		directory under moodle/, see Language Packs section for more details
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                feedback/pic
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		picture files for feedback module 
+              </entry>
+            </row>
+
+          </tbody>
+        </tgroup> 
+      </table>
+    </para>
+
+ </refsect1>
+
+ <refsect1 id="{@id modify}">
+  <title>Files You Need to Edit</title>
+
+    <para>
+	Now you roughly know the directory structure in moodle/mod/feedback. So, what files do you 
+	need to modify in order to create a new feedback item?
+    </para>
+
+    <para>
+	To make it simple, you create a new entry in moodle/mod/feedback/item/, give it a short and descriptive
+	name, copy a lib.php file from an existing feedback item to the newly created directory and rename the functions
+	in that lib.php using your item name.
+    </para>
+
+    <para>
+	If you need new strings in your item, you should define them in lang/en/feedback.php, or in some other 
+	language pack file.
+    </para>
+
+    <para>
+	That's all there is to it. You can have a look at a step-by-step instruction in the Example section.
+    </para>
+
+    <para>
+	Situations may arise, where you find out that you need to touch also PHP code outside feedback/item directory
+	in order to achieve the functionality you want. However, such an approach will lead into difficulties,
+	because then you cannot directly use new versions of feedback module. You need to do your
+	modification all over again after update.
+    </para>
+
+
+ </refsect1>
+
+</refentry>

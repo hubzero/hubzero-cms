@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="auth/joomdle/db" VERSION="20100101" COMMENT="XMLDB file for Moodle block tables"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+<TABLES>
+<TABLE NAME="joomdle_dummytable" COMMENT="It appears it is mandatory to have a dummy table. ">
+<FIELDS>
+<FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false"/>
+</FIELDS>
+<KEYS>
+<KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+</KEYS>
+</TABLE>
+</TABLES>
+<STATEMENTS>
+
+<STATEMENT NAME="insert mnet_host2service" TYPE="insert" TABLE="mnet_host2service" COMMENT="This adds localhost as a valid user for Joomdle services" NEXT="Lock firstname">
+<SENTENCES>
+<SENTENCE TEXT="(hostid, serviceid, publish) VALUES ('0', '4', '1')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock firstname" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="insert mnet_host2service" NEXT="Lock lastname">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_firstname', 'locked')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock lastname" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock firstname" NEXT="Lock email">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_lastname', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock email" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock lastname" NEXT="Lock city">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_email', 'locked')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock city" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock email" NEXT="Lock country">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_city', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock country" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock city" NEXT="Lock lang">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_country', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock lang" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock country" NEXT="Lock description">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_lang', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock description" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock lang" NEXT="Lock url">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_description', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock url" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock description" NEXT="Lock institution">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_url', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock institution" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock url" NEXT="Lock phone1">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_institution', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock phone1" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock institution" NEXT="Lock phone2">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_phone1', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock phone2" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock phone1" NEXT="Lock address">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_phone2', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock address" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock phone2" NEXT="Lock icq">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_address', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock icq" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock address" NEXT="Lock skype">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_icq', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock skype" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock icq" NEXT="Lock aim">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_skype', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock aim" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock skype" NEXT="Lock yahoo">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_aim', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock yahoo" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock aim" NEXT="Lock msn">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_yahoo', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock msn" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock yahoo" NEXT="Lock idnumber">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_msn', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock idnumber" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock msn" NEXT="Lock department">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_idnumber', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+<STATEMENT NAME="Lock department" TYPE="insert" TABLE="config_plugins" COMMENT="Locks Moodle profile" PREVIOUS="Lock idnumber">
+<SENTENCES>
+<SENTENCE TEXT="(plugin, name, value) VALUES ('auth/joomdle', 'field_lock_department', 'unlockedifempty')"/>
+</SENTENCES>
+</STATEMENT>
+
+</STATEMENTS>
+</XMLDB>

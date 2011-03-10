@@ -1,0 +1,21 @@
+<?php
+admin_externalpage_print_header();
+
+$currenttab = 'mnetdetails';
+require_once($CFG->dirroot .'/admin/mnet/tabs.php');
+
+print_simple_box_start("center", "");
+?>
+<table cellpadding="9" cellspacing="0" >
+<tr>
+    <td align="right" valign="top"><?php print_string('site'); ?>:</td>
+    <td valign="top"><?php echo $mnet_peer->name; ?></td>
+</tr>
+<tr>
+    <td align="right" valign="top" colspan="2"><?php print_string('allhosts_no_options','mnet'); ?></td>
+</tr>
+</table>
+<?php
+print_simple_box_end();
+admin_externalpage_print_footer();
+?>

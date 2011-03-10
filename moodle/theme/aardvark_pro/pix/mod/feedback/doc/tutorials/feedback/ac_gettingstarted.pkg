@@ -1,0 +1,395 @@
+<refentry id="{@id}"> 
+
+  <refnamediv>
+    <refname>Getting Started</refname>
+    <refpurpose>Moodle basics for feedback module</refpurpose>
+  </refnamediv>
+
+  {@toc}
+
+  <refsect1 id="{@id introduction}">
+    <title>Introduction</title>
+
+    <para>
+      Feedback module is a contributed activity module for 
+      Moodle course management system. It provides an easy-to-use user interface for 
+      creating feedback forms and analyzing the data received from submitted forms. 
+    <para></para>
+      If you are looking for a general tool for creating
+      forms that can be viewed, filled in and submitted by any internet user, just keep on reading.
+      Moodle and feedback module can be configured so that logging into Moodle is not necessary for accessing feedback forms. 
+      In such a configuration providing an URL to students is sufficient.
+    </para>
+    <para></para>
+  </refsect1>
+
+  <refsect1 id="{@id documentation}">
+    <title>Documentation</title>
+
+
+    <para>
+	Feedback module documentation Tutorial(s)/Manual(s), Package-Level section is structured as follows:
+    </para>
+
+    <para>
+      <table style="width: 800px; border: thin solid #AAAAAA;">
+        <tgroup cols="2" align="left">
+	  <colspec colnum="1" colname="col1" colwidth="2*"/>
+	  <colspec colnum="2" colname="col2" colwidth="2*"/>
+          <thead>
+            <row  style="font-weight: bold;">
+              <entry style="width: 200px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Section name
+              </entry>
+              <entry style="width: 600px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Information
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                Getting Started
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                pointers to additional information and brief summary of basic concepts
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                Administrator Guide
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                creating new feedback forms and analyzing results
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                Developer Guide
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                  extending the capabilities of feedback module 
+                  by creating a new feedback item (question type) that can be used
+		  in any feedback form, a working example is included
+              </entry>
+            </row>
+
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+
+   
+    <para>
+      If you are familiar with Moodle, it is recommended that you directly jump
+      to Administrator or Developer Guide rather than continue reading this Getting Started -section. 
+      The following paragraphs will only give pointers to useful information and introduce 
+      some of the key concepts you need to know about Moodle when working with feedback module.
+    </para>
+
+    <para></para>
+  </refsect1>
+
+  <refsect1 id="{@id useraccounts}">
+    <title>User Accounts</title>
+    <para>
+      To start with, you must have a Moodle user account. Typically a user creates
+      a new account by e-mail confirmation procedure starting from login screen. 
+    </para>
+
+    <para style="border: thin solid #AAAAAA;">
+	<graphic fileref="../media/images/tutorials/login.gif" format="gif" />
+    </para>
+
+    <para>
+      Other supported authentication methods are:
+      external database, POP3, LDAP and manual entry of account information.  
+    </para>
+
+    <para>
+      Once the user account exists, system administrator can give the account owner permissions to accomplish
+      specific tasks depending on user's role. The following user 
+      account types are available:
+    </para>
+
+    <para>
+      <table style="width: 800px; border: thin solid #AAAAAA;">
+        <tgroup cols="2" align="left">
+	  <colspec colnum="1" colname="col1" colwidth="2*"/>
+	  <colspec colnum="2" colname="col2" colwidth="2*"/>
+          <thead>
+            <row  style="font-weight: bold;">
+              <entry style="width: 200px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Account type
+              </entry>
+              <entry style="width: 600px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Allowed tasks
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                guest
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                general guest account (not associated with any particular Moodle user),
+                useful for allowing anonymous access to selected parts of Moodle
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                student
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                default account type, can interact with course content only
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                teacher with editing permissions
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                  can populate a course with activities and provide learner feedback - for example grades, assignment comments
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                 teacher without editing permissions
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                can provide learner feedback only - for example grades and assignment comments
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                 course creator
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                can create new courses, teach within them and assign teachers
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+                 administrator
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; ">
+		administrator has full control over Moodle,
+                primary administrator account is created during Moodle install,
+                afterwards additional administrator accounts can be created
+              </entry>
+            </row>
+
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+
+    <para>
+ 	If you want to create new feedback forms you must be logged in with administrator or editing teacher permissions.
+	If you want to view and fill in a form, you must use a student or guest account. 
+	This is to say that you cannot completely test the functionality of a newly created feedback form under 
+	an administrator account. You will need to use a student account as well.
+    </para>
+
+    <para>
+	There is a small catch when testing Moodle functionality simultaneously as an administrator and a student.
+	If you use the same browser, you cannot have two active sessions with different user identities. A 
+	workaround is to use different browsers for the two sessions. Then the sessions work as expected and testing is easier.
+    </para>
+    
+    <para></para>
+  </refsect1>
+
+  <refsect1 id="{@id courses}">
+    <title>Courses</title>
+    <para>
+	Okay, now you know that the differences in user accounts determine the login permissions given to 
+	a specific Moodle user. But what about the information inside Moodle? How does the
+	system know what information is accessible to a user after logging in?
+    </para><para>
+	For our purposes, the key concept is a course. A courses is a container for information and activities in
+	Moodle. Every course has its own defined set of teachers and students. 
+	For example, a Moodle user can be a teacher
+	in one course, a student in a second course and have no permission to a third course.
+	Thus an administrator can control access rights by suitably setting user account types, 
+	assigning teachers to courses and controlling the way how students can enrol courses.
+	
+    </para>
+
+    <para>
+	The picture below shows a view to a course named "Feedback Module Course".
+    </para>
+
+    <para style="border: thin solid #AAAAAA;">	
+	<graphic fileref="../media/images/tutorials/courseview.gif" format="gif" />
+    </para>
+
+    <para></para>
+  </refsect1>
+
+ <refsect1 id="{@id modules}">
+   <title>Activity Modules</title>
+   <para>
+	Activity modules, or modules for short, are the building blocks of Moodle courses. 
+	Feedback module is an example of such a module, so let's have a closer look at their common properties.
+   </para>
+
+   <para>
+	An activity module needs to know how to handle following action requests:
+   </para>   
+
+   <para>
+	  <itemizedlist>
+
+	   <listitem><para>
+		   create or update a module instance
+	   </para></listitem>
+
+	   <listitem><para>
+		   delete a module instance
+	   </para></listitem>
+
+	   <listitem><para>
+		   list all module instances
+	   </para></listitem>
+
+	   <listitem><para>
+		   view a particular module instance
+	   </para></listitem>
+
+	   <listitem><para>
+		   show the user interface using different language packs
+	   </para></listitem>
+
+ 	</itemizedlist>
+   </para>
+
+   <para>
+	Only users who want to extend the functionality of a module by programming in PHP 
+	need to know the internal details of an activity module. 
+   </para>   
+
+   <para></para>   
+
+  </refsect1>
+
+  <refsect1 id="{@id section5}">
+    <title>Directory Structure</title>
+
+    <para>
+	You should be familiar with the following directories:
+    </para>
+
+    <para>
+      <table style="width: 800px; border: thin solid #AAAAAA;">
+        <tgroup cols="2" align="left">
+	  <colspec colnum="1" colname="col1" colwidth="2*"/>
+	  <colspec colnum="2" colname="col2" colwidth="2*"/>
+          <thead>
+            <row  style="font-weight: bold;">
+              <entry style="width: 200px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Directory
+              </entry>
+              <entry style="width: 600px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Description
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                moodle
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                main directory of Moodle installation on a web server,<br />
+		PHP variable $CFG->dirroot points to this folder
+             </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                moodle/mod
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		directory for activity modules, their PHP code lives here
+              </entry>
+            </row>
+
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                moodle/mod/feedback
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		directory for feedback module files
+              </entry>
+            </row>
+
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                moodle/lang
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		directory for language packs, the picture below shows two language packs,
+		English (en) and Finnish (fi)
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                moodle/lang/en
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		the place for files named "activity_module_name.php", each file contains English translations of 
+		strings belonging to that particular activity module
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                moodle/lang/en/help
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		 contains the context-sensitive help files that pop-up when you click the help icons in Moodle
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                moodle/lang/en/doc
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		 contains the basic Moodle documentation pages (not related to specific a module)
+              </entry>
+            </row>
+
+          </tbody>
+        </tgroup>
+      </table>
+
+    </para>
+
+    <para>
+	The picture below shows the structure of a Moodle root directory on a web server: 
+    </para>
+
+    <para style="border: thin solid #AAAAAA;">
+	<graphic fileref="../media/images/tutorials/moodlefiles.gif" format="gif" />
+    </para>
+    <para></para>
+  </refsect1>
+
+</refentry>

@@ -1,0 +1,114 @@
+<?php
+
+// Is Auth/RADIUS really there?
+if (!extension_loaded('radius')) {
+    print '<div class="box errorbox errorboxcontent"><p class="errormessage"><strong>Warning: The PHP RADIUS extension is not present. Please ensure it is installed and enabled.</strong></p></div>';
+}
+include_once 'Auth/RADIUS.php';
+if (!class_exists('Auth_RADIUS')) {
+    print '<div class="box errorbox errorboxcontent"><p class="errormessage"><strong>Warning: There is a problem with the PHP Pear Auth_RADIUS package. Please ensure it is installed correctly.</strong></p></div>';
+}
+
+// set to defaults if undefined
+if (!isset($config->host)) {
+    $config->host = '127.0.0.1';
+}
+if (!isset($config->nasport)) {
+    $config->nasport = '1812';
+}
+if (!isset($config->radiustype)) {
+    $config->radiustype = 'PAP';
+}
+if (!isset($config->secret)) {
+    $config->secret = '';
+}
+if (!isset($config->changepasswordurl)) {
+    $config->changepasswordurl = '';
+}
+
+?>
+<table cellspacing="0" cellpadding="5" border="0">
+
+<tr valign="top">
+    <td align="right"><?php print_string('auth_radiushost_key', 'auth') ?>: </td>
+    <td>
+        <input name="host" type="text" size="30" value="<?php echo $config->host ?>" />
+        <?php
+
+        if (isset($err['host'])) {
+            formerr($err['host']);
+        }
+
+        ?>
+        </td>
+    <td><?php print_string('auth_radiushost', 'auth') ?></td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><?php print_string('auth_radiusnasport_key', 'auth') ?>: </td>
+    <td>
+        <input name="nasport" type="text" size="6" value="<?php echo $config->nasport ?>" />
+        <?php
+
+        if (isset($err['nasport'])) {
+            formerr($err['nasport']);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string('auth_radiusnasport', 'auth') ?></td>
+</tr>
+
+<tr valign="top" >
+    <td align="right"><?php print_string('auth_radiustype_key', 'auth') ?>: </td>
+    <td>
+<?php
+
+    $radiustype = array();
+    $radiustype['PAP']      = get_string('auth_radiustypepap', 'auth');
+    $radiustype['CHAP_MD5'] = get_string('auth_radiustypechapmd5', 'auth');
+    $radiustype['MSCHAPv1'] = get_string('auth_radiustypemschapv1', 'auth');
+    $radiustype['MSCHAPv2'] = get_string('auth_radiustypemschapv2', 'auth');
+    choose_from_menu($radiustype, 'radiustype', $config->radiustype, '');
+
+    if (isset($err['radiustype'])) {
+        formerr($err['radiustype']);
+    }
+
+?>
+    </td>
+    <td><?php print_string('auth_radiustype', 'auth') ?></td>
+</tr>
+
+
+<tr valign="top" >
+    <td align="right"><?php print_string('auth_radiussecret_key', 'auth') ?>: </td>
+    <td>
+        <input name="secret" type="text" size="6" value="<?php echo $config->secret ?>" />
+        <?php
+
+        if (isset($err['secret'])) {
+            formerr($err['secret']);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string('auth_radiussecret', 'auth') ?></td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><?php print_string('auth_radiuschangepasswordurl_key', 'auth') ?>: </td>
+    <td>
+        <input name="changepasswordurl" type="text" value="<?php echo $config->changepasswordurl ?>" />
+        <?php
+
+        if (isset($err['changepasswordurl'])) {
+            formerr($err['changepasswordurl']);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string('changepasswordhelp', 'auth') ?></td>
+</tr>
+
+</table>

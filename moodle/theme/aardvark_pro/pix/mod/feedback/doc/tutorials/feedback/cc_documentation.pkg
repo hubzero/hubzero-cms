@@ -1,0 +1,355 @@
+<refentry id="{@id}"> 
+ <refnamediv>
+  <refname>Documentation</refname>
+ </refnamediv>
+
+ {@toc}
+
+ <refsect1 id="{@id documentation_intro}">
+  <title>Introduction</title>
+ 
+  <para>
+	This section will show you how to regenerate feedback module documentation using phpDocumentor.
+  </para>
+
+  <para>
+	The use of phpDocumentor relies on following issues:
+  </para>
+
+   <para>
+	  <itemizedlist>
+
+	   <listitem><para>
+		PHP source files must contain comments in a special format (much like javadoc format),
+		examples of which can be found at {@link http://www.phpdoc.org/ phpdoc.org }
+	   </para></listitem>
+
+	   <listitem><para>
+		tutorial files must be separately defined in XHTML files (in our case these files live in
+  		moodle\mod\feedback\doc\tutorials\feedback)
+	   </para></listitem>
+
+	   <listitem><para>
+		media files, in our case some gif-pictures, must be in 
+		phpdoc\feedback\doc\media\images\tutorials (you will create the phpdoc directory during the installation step)
+	   </para></listitem>
+
+ 	</itemizedlist>
+   </para>
+
+  <para>
+	If all the issues above are taken care of, documentation can be regenerated from
+	a web browser following the instructions below.
+  </para>
+
+ </refsect1>
+
+ <refsect1 id="{@id documentation_install}">
+  <title>Step (1): Installing phpDocumentor</title>
+ 
+  <para>
+	phpDocumentor is an auto-documentation tool similar to javadoc but written in PHP. 
+	Some of its features are:
+  </para>
+
+   <para>
+	  <itemizedlist>
+
+	   <listitem><para>
+		   recognizes javadoc-style documentation
+	   </para></listitem>
+
+	   <listitem><para>
+		   customizable source code highlighting
+	   </para></listitem>
+
+	   <listitem><para>
+		   documentation can be created in HTML, PDF (directly), CHM (with windows help compiler), or XML DocBook formats
+	   </para></listitem>
+
+	   <listitem><para>
+		   enables you to write tutorials and link them to API documentation 
+	   </para></listitem>
+
+ 	</itemizedlist>
+   </para>
+
+  <para>
+	You can download phpDocumentor following links and instructions at {@link http://www.phpdoc.org/ phpdoc.org }
+  </para>
+
+  <para>
+	After download, you are ready to extract the phpDocumentor files into a suitable directory.
+	The place where you want to put your files depends on your needs. The solution below worked for me,	
+	but it is quite likely that there is a better way to do this. 
+  </para>
+
+
+    <para>
+      <table style="width: 800px; border: thin solid #AAAAAA;">
+        <tgroup cols="2" align="left">
+	  <colspec colnum="1" colname="col1" colwidth="2*"/>
+	  <colspec colnum="2" colname="col2" colwidth="2*"/>
+          <thead>
+            <row  style="font-weight: bold;">
+              <entry style="width: 200px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Directory entry
+              </entry>
+              <entry style="width: 600px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Files 
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                wwwroot\phpdoc
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		the place for phpDocumentor files you downloaded from phpdoc.org
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                wwwroot\phpdoc\user
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		the place for feedback.ini file which defines the documentation task for phpDocumentor,
+		for an example, click FEEDBACK_INI (should appear top left in your browser window).
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                wwwroot\phpdoc\feedback\doc
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		the place for the output of phpDocumentor, if you are using the feedback.ini file
+		that comes together with this documentation
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                wwwroot\moodle\mod\feedback\doc\tutorials\feedback
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		the place for the tutorial files (*.pkg, *.pkg.ini to be parsed with API documentation),
+              </entry>
+            </row>
+
+
+          </tbody>
+        </tgroup> 
+      </table>
+    </para>
+
+
+  <para>
+	phpDocumentor processes all input files on the web server and that will take some time. It may be  
+	necessary for you to increase the timeout value of your server.
+	For IIS you can do it from Control Panel | Administrative Tools 
+	| Internet Information Services, right-click on your web site and make connection timeout long enough:
+  </para>
+
+  <para>
+	  <graphic fileref="../media/images/tutorials/iis.gif" format="gif" />
+  </para>
+
+  <para>
+	  For Apache, setting  Timeout large enough in httpd.conf should do the same thing.
+  </para>
+
+  <para>
+	Remember to grant your web server sufficient privileges for creating files in
+	phpDocumentor output directory wwwroot\phpdoc\feedback\doc.	
+  </para>
+
+
+ </refsect1>
+
+
+ <refsect1 id="{@id documentation_files}">
+  <title>Step (2): Arranging files</title>
+
+  <para>
+	You need to make sure that following file arrangements are done:
+  </para>
+
+    <para>
+      <table style="width: 800px; border: thin solid #AAAAAA;">
+        <tgroup cols="2" align="left">
+	  <colspec colnum="1" colname="col1" colwidth="2*"/>
+	  <colspec colnum="2" colname="col2" colwidth="2*"/>
+
+          <thead>
+            <row  style="font-weight: bold;">
+              <entry style="width: 300px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                File or directory you need to create
+              </entry>
+              <entry style="width: 500px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                From where to find it
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                phpdoc\user\feedback.ini
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		copy from moodle\mod\feedback\doc\media\feedback.ini to phpdoc\user\feedback.ini
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                phpdoc\feedback\doc\media directory
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		copy all files and subdirectories from moodle\mod\feedback\doc\media to phpdoc\feedback\doc\media
+              </entry>
+            </row>
+
+          </tbody>
+        </tgroup> 
+      </table>
+    </para>
+
+ <para>
+
+  </para>
+
+
+  <para>
+	In the end, delete all files and directories from feedback\doc other than directory labelled 'tutorials'
+	and its contents (in other words, leave directory tutorials and its contents, delete rest of the files).
+  </para>
+
+ </refsect1>
+
+ <refsect1 id="{@id style}">
+  <title>Step (3): Defining output format and style</title>
+
+  <para>
+	There are numerous of ways to influence the output of phpDocumentor. Below of 
+	is a short list of some of those:
+  </para>
+
+    <para>
+      <table style="width: 800px; border: thin solid #AAAAAA;">
+        <tgroup cols="2" align="left">
+	  <colspec colnum="1" colname="col1" colwidth="2*"/>
+	  <colspec colnum="2" colname="col2" colwidth="2*"/>
+
+          <thead>
+            <row  style="font-weight: bold;">
+              <entry style="width: 400px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Subject to change
+              </entry>
+              <entry style="width: 400px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                File to modify
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                format of documentation (HTML, HTML with Javascript, PDF, .chm)
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		parameter 'output' in the end of feedback.ini file
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                style of documentation
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		again parameter 'output' in the end of feedback.ini file, you can choose from a number of
+		predefined styles, this documentation is produced by setting output=HTML:frames:DOM/earthli
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                details of predefined styles
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		try adjusting style sheet in 
+		phpdoc\phpDocumentor\Converters_ \HTML\frames\templates\DOM\earthli\templates\media\stylesheet.css
+		(applies if you are using output=HTML:frames:DOM/earthli)
+              </entry>
+            </row>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                define new rules for parsing XHTML tags in your .pkg files
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+		try modifying options.ini in
+		phpdoc\phpDocumentor\Converters_ \HTML\frames\templates\DOM\earthli
+		(applies if you are using output=HTML:frames:DOM/earthli)
+              </entry>
+            </row>
+
+
+          </tbody>
+        </tgroup> 
+      </table>
+    </para>
+
+ </refsect1>
+
+
+ <refsect1 id="{@id documentation_generate}">
+  <title>Step (4): Regenerating the documentation</title>
+
+  <para>
+	Now you are in the position to point your web browser to file phpdoc\new_phpdoc.php. You should see
+	a web page similar to this one:
+  </para>
+
+  <para style="border: thin solid #AAAAAA;">
+	  <graphic fileref="../media/images/tutorials/phpdoc_web.gif" format="gif" />
+  </para>
+
+  <para>
+	Make sure that feedback.ini is selected and click "Go". Processing of PHP files should start.
+	It will take some time, several minutes even, but in the end you should find the newly created 
+	documentation in phpdoc\feedback\doc. Provided of course, that everything was set up correctly. 
+	You can then open the file phpdoc\feedback\doc\index.html to check the result.
+  </para>
+
+
+  <para>
+	Congratulations if you succeeded. I had to try it several times, before I got it right.
+  </para>
+
+
+ </refsect1>
+
+ <refsect1 id="{@id documentation_conclusion}">
+  <title>Concluding remarks</title>
+
+  <para>
+	The nice part of using phpDocumentor is that, if you manage to do it right one time,
+	then it is easy to reproduce the documentation again after some modifications have been made to
+	source files.
+  </para>
+
+  <para>
+	The hard part is to get it right for the first time and to get documentation layout that you are happy with.
+  </para>
+
+ </refsect1>
+
+
+</refentry>

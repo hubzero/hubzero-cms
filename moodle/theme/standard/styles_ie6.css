@@ -1,0 +1,68 @@
+/*
+ * These styles are ONLY included for IE 6 (via meta.php)
+ */
+
+.tabtree {
+  height: 100%;
+}
+
+.tabrow0 {
+  padding-top: 10px;
+}
+
+.tabrow0 li {
+  margin-left: 0;
+}
+
+.tabrow0 li.first {
+  margin-left: -4px;
+  margin-right: -4px;
+}
+
+.tabrow0 li.last a {
+  margin-right: 0;
+}
+
+.tabrow0 li.onerow {
+  margin-right: 0;
+}
+
+.tabrow0 a {
+  padding: 0 0 0 13px;
+}
+
+.tabrow0 a span {
+  padding: 12px 1em 4px 0;
+}
+
+.tabrow0 div,
+.tabrow0 ul {
+  top: 3.5em;
+  padding: 0.2em 0;
+}
+
+form.mform input {
+  margin-left: expression((this.type=="text"||this.type=="file"||this.type=="password")?'-10px':'0');
+}
+
+#admin-user-user_bulk form.mform input,
+#admin-user form.mform input {
+  margin-left: 0;
+}
+
+form.mform textarea {
+ margin-left: -10px;
+}
+
+.que .info {
+  margin-left: 0.6em;
+}
+
+#adminsettings .form-setting,
+#adminsettings .form-description {
+  display:inline-block; padding-left:2px;
+}
+
+.drag select {
+    visibility: visible;
+}

@@ -1,0 +1,107 @@
+<?php
+$config = get_config('', 'joomla_url');
+// set to defaults if undefined
+if (!isset($config)) {
+	$config = 'http://localhost/joomla';
+}
+
+$connection_method = get_config('auth/joomdle', 'connection_method');
+if (!isset($connection_method))
+	$connection_method = 'fgc';
+
+$cms = array ( 'fgc' => 'file_get_contents', 'curl' => 'cURL' );
+
+$sync_to_joomla = get_config('auth/joomdle', 'sync_to_joomla');
+if (!isset($sync_to_joomla))
+	$sync_to_joomla = 0;
+$jomsocial_activities = get_config('auth/joomdle', 'jomsocial_activities');
+if (!isset($jomsocial_activities))
+	$jomsocial_activities = 0;
+$jomsocial_groups = get_config('auth/joomdle', 'jomsocial_groups');
+if (!isset($jomsocial_groups))
+	$jomsocial_groups = 0;
+$enrol_parents = get_config('auth/joomdle', 'enrol_parents');
+if (!isset($enrol_parents))
+	$enrol_parents = 0;
+$parent_role_id = get_config('auth/joomdle', 'parent_role_id');
+if (!isset($parent_role_id))
+	$parent_role_id = '';
+
+?>
+<table cellspacing="0" cellpadding="5" border="0">
+
+<tr valign="top" class="required">
+    <td align="right"><label for="joomla_url"> <?php print_string("auth_joomla_url", "auth_joomdle") ?></label></td>
+    <td>
+        <input id="joomla_url" name="joomla_url" type="text" size="30" value="<?php echo $config ?>" />
+    </td>
+    <td><?php print_string("auth_joomla_url_desc", "auth_joomdle") ?></td>
+</tr>
+
+<tr>
+	<td align="right"><label for="menuconnection_method"><?php print_string('auth_joomla_connection_method', 'auth_joomdle') ?></label></td>
+	<td><?php choose_from_menu($cms, 'connection_method', $connection_method, ''); ?></td>
+	<td><?php print_string('auth_joomla_connection_method_description', 'auth_joomdle') ?></td>
+</tr>
+
+<tr>
+	<td align="right"><label for="menusync_to_joomla"><?php print_string('auth_joomla_sync_to_joomla', 'auth_joomdle') ?></label></td>
+	<td>
+	<?
+		$yesno = array( get_string('no'), get_string('yes') );
+		choose_from_menu($yesno, 'sync_to_joomla', $sync_to_joomla, '');
+
+	?>
+	</td>
+	<td><?php print_string('auth_joomla_sync_to_joomla_description', 'auth_joomdle') ?></td>
+</tr>
+
+<tr>
+	<td align="right"><label for="menujomsocial_activities"><?php print_string('auth_joomla_jomsocial_activities', 'auth_joomdle') ?></label></td>
+	<td>
+	<?
+		$yesno = array( get_string('no'), get_string('yes') );
+		choose_from_menu($yesno, 'jomsocial_activities', $jomsocial_activities, '');
+
+	?>
+	</td>
+	<td><?php print_string('auth_joomla_jomsocial_activities_description', 'auth_joomdle') ?></td>
+</tr>
+<tr>
+	<td align="right"><label for="menujomsocial_groups"><?php print_string('auth_joomla_jomsocial_groups', 'auth_joomdle') ?></label></td>
+	<td>
+	<?
+		$yesno = array( get_string('no'), get_string('yes') );
+		choose_from_menu($yesno, 'jomsocial_groups', $jomsocial_groups, '');
+
+	?>
+	</td>
+	<td><?php print_string('auth_joomla_jomsocial_groups_description', 'auth_joomdle') ?></td>
+</tr>
+<tr>
+	<td align="right"><label for="menuenrol_parents"><?php print_string('auth_joomla_enrol_parents', 'auth_joomdle') ?></label></td>
+	<td>
+	<?
+		$yesno = array( get_string('no'), get_string('yes') );
+		choose_from_menu($yesno, 'enrol_parents', $enrol_parents, '');
+
+	?>
+	</td>
+	<td><?php print_string('auth_joomla_enrol_parents_description', 'auth_joomdle') ?></td>
+</tr>
+<tr>
+    <td align="right"><label for="parent_role_id"> <?php print_string("auth_joomla_parent_role_id", "auth_joomdle") ?></label></td>
+    <td>
+        <input id="parent_role_id" name="parent_role_id" type="text" size="3" value="<?php echo $parent_role_id ?>" />
+    </td>
+    <td><?php print_string("auth_joomla_parent_role_id_description", "auth_joomdle") ?></td>
+</tr>
+
+<tr>
+<td>
+<? print_auth_lock_options('joomdle', $user_fields, get_string('auth_fieldlocks_help', 'auth'), false, false); ?>
+
+
+</td>
+</tr>
+</table>

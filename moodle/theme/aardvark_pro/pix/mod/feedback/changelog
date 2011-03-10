@@ -1,0 +1,42 @@
+version = 2005072000
+20.07.2005 01:09
+adding group-ability
+fixed missing bcmod()-Function-Problem
+fixed referer-problem under https
+
+03.08.2005 01:20
+item specific functions were moved into the items-librarys
+now developers can create individual feedback-items
+javascript based filling-control was replaced by php-based control
+
+11.08.2005 22:00
+added email-notification
+anonymous feedbacks can be filled out by anonymous users
+
+12.08.2005 21:38
+fixed problem with IE
+If feedback is not anonym now guest is it not allowed to fill it out
+
+16.08.2005 14:07
+fixed html-syntax in edit.php
+
+22.08.2005 19:12
+fixed problem with secureforms-option
+
+14.09.2005 00:20
+fixed problem with restoring
+new feature user-tracking (prevent multiple_submit)
+new feature deleting of some completeds
+
+30.09.2005 00:00, CVS TAG: FEEDBACK_2005093000 (Markku)
+version 2005300900
+action handling functions added
+picture item (an example for action handling added)
+XHTML compliance improved
+number of PHP Notify-level errors reduced
+source code transferred to CVS
+
+03.10.2005 13:00 FEEDBACK_2005100300(Markku)
+action handling error recovery improved (failed when debug=false)
+function feedback_action_handler() argument list changed
+added action handler debug modes: silent, normal, verbose

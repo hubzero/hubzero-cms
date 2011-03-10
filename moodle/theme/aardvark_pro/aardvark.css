@@ -1,0 +1,547 @@
+/**
+  *  This is what makes the Aardvark unique
+  *
+  */
+
+
+
+/***
+ ***	Core: Body
+ ***/
+
+body {
+	/* background: #c0deed url(images/core/overlay.png) center top repeat-x;
+	background-color: transparent;
+	color:#4b4b4b;
+	font-family: Arial, Helvetica, sans-serif;
+    font-size : 14px; */
+	background-color: transparent;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 0.8em;
+	line-height: 1.3em;
+	color: black;
+}
+.breadcrumb li {
+	color: #1164A2;
+	border-bottom: 1px solid #1164A2;
+	font-weight: normal;
+}
+.breadcrumb .last {
+	color: #1164A2;
+	border-bottom: 0px solid #1164A2;
+	font-weight: normal;
+}
+.arrowsep {
+	border-bottom: 0px;
+	color: #1164A2;
+}
+a:link,
+a:visited {
+    /*color:#008db0;*/
+	color:#2468A0;
+	/*text-decoration: none;*/
+}
+
+a:hover {
+    color: #f12711;
+	text-decoration: none;
+	
+}
+
+a.dimmed:link,
+a.dimmed:visited {
+	color:#aaaaaa;
+	text-decoration: none;
+
+}
+
+#page {
+	border: 0px solid #ffffff;
+	margin-left: auto; 
+	margin-right: auto;
+	background-color: transparent;
+}
+
+#pagelayout {
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#layout-table {
+	margin-top:0;
+	padding-top:10px;
+}
+
+#layout-table #middle-column{
+  background-image: url('images/core/citybg.jpg');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  vertical-align:top;
+  padding-left:7px;
+  padding-right:5px;
+}
+
+#layout-table #left-column{
+  vertical-align:top;
+  padding-left:4px;
+  padding-right:0px;
+}
+
+#layout-table #right-column{
+  vertical-align:top;
+  padding-left:0px;
+  padding-right:6px;
+}
+
+
+#content {
+    
+    margin-top:0;
+	/*padding-top:10px;*/
+
+}
+
+hr {
+	border-bottom:1px dotted gray;
+	border-top:0px;
+}
+
+h1.main,
+h2.main,
+h3.main,
+h4.main,
+h5.main,
+h6.main {
+	text-align: center;
+	margin:0px;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+th.header,
+td.header,
+h1.header,
+h2.header,
+h3.header,
+div.header {     
+    background: #ffffff url(images/core/h2grad.jpg) top repeat-x; 
+	border-top: gray 1px dotted;
+	border-left: 0px;
+	border-right: 0px;
+	border-bottom: 0px;
+	color: #505050;
+}
+
+.generalbox {
+    background: transparent; 
+	border: 0px;
+}
+
+/***
+ ***	Core: Header
+ ***/
+
+#header {
+	height: 80px;
+}
+
+#logo { 
+	/*background: url(images/header/logo.png) no-repeat left top;*/
+	background: #F8F7EE;
+	width: 100%;
+	height: 80px;
+	clear:both;
+	/*float: left;
+	left: 0px;*/
+} 
+
+/***
+ ***	Core: Footer
+ ***/
+
+#footer {
+	background: #ffffff;
+	margin-top: 0px;
+	padding:10px;
+}
+
+#footer .footerlogos { 
+	margin-top: 5px;
+	border-top: 1px dotted gray;
+}
+
+#footer .footerlogos ul li { 
+	padding-left: 5px;
+	padding-right: 5px;
+	display: inline; 
+	margin:2px;
+}
+
+/***
+ ***	Core: ProfileBlock
+ ***/
+
+#profileblock {
+	float: right;
+	text-align: right;
+	max-width: 550px;
+	right: 0px;
+}
+
+#profilepic {
+	text-align:right;
+	float: right;
+	margin: 8px;
+	width: 80px;
+	height: 80px;
+	border: 1px solid #ffffff;
+}
+
+#profilename {
+	background-color: transparent;
+	text-align:right;
+	width: 440px;
+	margin-right: 5px;
+	margin-top:12px;
+	margin-bottom:0px;
+	float: left;
+}
+
+.profilename, .profilename a {
+	background-color: #ffffff;
+	color:#2f2f2f;
+    	font-size:1.4em;
+	letter-spacing: -3px;
+	text-decoration: none;
+	font-weight:bold;
+	margin-right:5px;
+
+}
+
+.profilename, .profilename a:hover {
+	background-color: #ffffff;
+	color: #f12711;
+	text-decoration:none;
+}
+
+#profileoptions {
+	text-align:right;
+	width: 440px;
+	margin-right: 10px;
+	margin-top: 0px;
+	float: left;
+}
+
+#profileoptions ul li { 
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	background-color: #ffffff;
+	display: inline; 
+	margin-right:5px;
+}
+
+.profileoptions {
+	background-color: transparent;
+	color:#2f2f2f;
+	text-decoration: none;
+	letter-spacing: -1px;
+}
+
+.profileoptions, .profileoptions a {
+	background-color: transparent;
+	color:#2f2f2f;
+}
+
+.profileoptions a:hover {
+	background-color: transparent;
+	color: #f12711;
+	text-decoration:none;
+}
+
+
+/***
+ ***	Core: Aardvark Menu
+ ***/
+
+#aardvark_menu {
+	background:#2f2f2f url('images/menu/menugrad.jpg') repeat-x top center;
+	height:46px;
+	clear:both;
+	margin-right:0px;
+	margin-left:0px;
+	
+}	
+
+#aardvark_menu ul {
+	padding:0;
+	margin:0;
+	list-style:none;
+	float:left;
+}
+#aardvark_menu ul li {
+	background:transparent;
+	list-style:none;
+	float:left;
+	height:43px;
+	white-space:nowrap;
+	z-index: 9999;
+}
+#aardvark_menu ul li div{
+	position:relative;
+	zoom:1;
+}
+
+#aardvark_menu ul li a {
+	display:block;
+	height:30px;
+	margin-left:0px;
+	padding: 16px 17px 0 17px;
+	color: #ffffff;
+	background:none;
+	text-shadow:0 1px 1px #101010;
+	}
+	
+#aardvark_menu ul li a:hover{
+	color:#ffffff;
+	background:#f12711 url('images/menu/hovergrad.jpg') repeat-x top center;
+	text-shadow:0 1px 1px #870802;
+
+}
+
+#aardvark_menu ul li.line {
+	padding:0;
+}
+
+#aardvark_menu ul ul{
+	padding:20px;
+	margin:0;
+	list-style:none;
+	position:absolute;
+	background:transparent url('images/menu/flyout.png') no-repeat scroll 0 0;
+	height:260px;
+	width:389px;
+	display:none;
+	top:40px;
+	z-index: 1000;
+}
+
+#aardvark_menu ul li:hover ul{
+	display: block;
+}
+
+#aardvark_menu li ul li{
+	list-style:none;
+	float:left;
+	background:transparent;
+	padding-left:9px;
+	height: auto;
+	font-size:0.9em;
+	width:12em;
+}
+
+#aardvark_menu li ul li a {
+	margin:0;
+	display:block;
+	height: auto;
+	color:#008db0;
+	background:transparent;
+	text-shadow:none; !important
+}
+
+#aardvark_menu li ul li a:hover {
+	background:transparent;
+	color:#f12711;
+	text-shadow:none; !important
+}
+
+#aardvark_menu h4 {
+	color:#505050;
+	font-size:1em;
+	font-weight:bold;
+	margin:0 0 0px 10px;
+}
+
+#aardvark_menu_date a {
+	float:right;
+	padding: 16px 5px 0 17px;
+	height:30px;
+	color: #ffffff;
+	text-decoration:none;
+	text-shadow:0 1px 1px #101010;
+	background:#555555 url('images/menu/dategrad.jpg') repeat-x top center;
+}
+
+#aardvark_menu_date a:hover {
+	color: #ffffff;
+	text-decoration:none;
+	background:#f12711 url('images/menu/hovergrad.jpg') repeat-x top center;
+	text-shadow:0 1px 1px #870802;
+}
+
+/***
+ ***	Core: NavBar
+ ***/
+
+.navbar {
+    /*background:#ffffff;     */
+	background: #F8F7EE;
+	border-top:1px solid #DDDCC7;
+	/*border-bottom:solid 1px gray;*/
+	border-bottom: 1px solid #DDDCC7;
+	border-left:1px solid #DDDCC7;
+	border-right:1px solid #DDDCC7;
+}
+
+/***
+ ***	Core: Side Block
+ ***/
+
+.sideblock {
+	color:#555555;
+	border: #0065a4 1px solid !important;
+        /* border: gray 1px dotted !important; */
+  	background: #ffffff url('images/sideblocks/sidegrad.jpg') repeat-x !important;
+}
+
+.sideblock .content {
+	color:#555555;
+	padding: 4px;
+	border: 0px;
+}
+
+.sideblock .header {
+  	background: transparent !important;
+}
+
+.sideblock .header h2 {
+	padding-top: 4px;
+  	background: transparent !important;
+
+ }
+
+.sideblock .header .hide-show-image {
+	padding-top: 4px;
+}
+ 
+.sideblock .footer {
+	border:0px;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	font-size:0.85em;
+	text-align: left;
+}
+
+.sideblock .header, .sideblock .header h2 {
+	color: #505050;
+	font-size:1em;
+	border: 0px;
+  	background: transparent !important;
+}
+
+
+
+.sideblock .content .post .head .date,
+.sideblock .content .post .head .name {
+	color: #555555;
+}
+
+/***
+ ***	Core: Course (the middle bit)
+ ***/
+
+.coursebox {
+	/* background: #ffffff; */
+	border: 0px;    
+	margin-bottom: 0px;
+	margin-right: 2px;
+}
+
+body#site-index .headingblock,
+body#course-view .headingblock {
+	margin-bottom: 0px;
+}
+
+.section {
+	background: #ffffff;
+}
+
+#course-view .section td.content {
+	border-top:0px;
+	border-left:0px;
+	border-right:0px;
+	border-bottom:1px dashed #dbdbdb;
+}
+
+#course-view .section td.side {
+  border-width:0px;
+}
+
+/***
+ ***	Modules: Forum
+ ***/
+
+.forumpost {
+	border: 0px;    
+	width: auto;
+	overflow:none;
+}
+
+.forumpost .left {
+	background:#ffffff url('images/forum/leftpost.png') no-repeat top left;
+}
+
+.forumpost .picture,
+.forumpost .topic {
+	background:#c0deed url('images/forum/forumheader.png');
+	border:0px;
+}
+
+.forumpost .topic a:link,
+.forumpost .topic a:visited {
+}
+
+.forumpost img {
+  max-width: 100%;
+}
+
+/***
+ ***	Modules: Calendar
+***/
+
+/* colors for calendar events */
+#calendar .event_global,
+.minicalendar .event_global,
+.block_calendar_month .event_global {
+  border-color:#def2ba !important;
+  background-color:#def2ba;
+}
+
+#calendar .event_course,
+.minicalendar .event_course,
+.block_calendar_month .event_course {
+  border-color:#c6dfeb !important;
+  background-color:#c6dfeb;
+}
+
+#calendar .event_group,
+.minicalendar .event_group,
+.block_calendar_month .event_group {
+  border-color:#feffc2 !important;
+  background-color:#feffc2;
+}
+
+#calendar .event_user,
+.minicalendar .event_user,
+.block_calendar_month .event_user {
+  border-color:#d9c6e2 !important;
+  background-color:#d9c6e2;
+}
+
+table.minicalendar tr td.weekend {
+  color: red;
+  }
+#moodlecontentindicator {
+	font-size: 8pt;
+}

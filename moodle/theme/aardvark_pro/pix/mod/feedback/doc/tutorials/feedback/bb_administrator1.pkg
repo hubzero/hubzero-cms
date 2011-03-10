@@ -1,0 +1,13 @@
+<refentry id="{@id}"> 
+ <refnamediv>
+  <refname>Administrator Guide</refname>
+ </refnamediv>
+
+ {@toc}
+
+<refsect1 id="{@id section1}">
+  <title>Introduction</title>
+  <para>This part of documentation is not ready yet.</para>
+ </refsect1>
+
+</refentry>

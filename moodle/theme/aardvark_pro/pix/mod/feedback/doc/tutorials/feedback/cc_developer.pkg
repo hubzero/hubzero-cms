@@ -1,0 +1,53 @@
+<refentry id="{@id}">  
+
+ <refnamediv>
+  <refname>Developer Guide</refname>
+  <refpurpose>Learn how to create new feedback items</refpurpose>
+ </refnamediv>
+
+ <refsect1 id="{@id intro}">
+  <title>Introduction</title>
+
+  <para>
+	This Developer Guide shows you how to extend the capabilites of feedback module. 
+	In the end there is a simple
+	example, which shows you how to create an item like this:
+  </para>
+
+  <para>
+	<graphic fileref="../media/images/tutorials/flag_example.gif" format="gif" />
+  </para>
+
+  <para>
+	Did you get interested in trying something on your own? Here are some more ideas to stimulate your imagination about what could be done:
+  </para>
+
+  <para>
+  </para>
+
+   <para>
+	  <itemizedlist>
+
+	   <listitem><para>
+		   slider control using Javascript
+	   </para></listitem>
+
+	   <listitem><para>
+		   knob control using an interactive Flash movie
+	   </para></listitem>
+
+	   <listitem><para>
+		   feedback item containing a short sound sample
+	   </para></listitem>
+
+	   <listitem><para>
+		   feedback item that derives its contents from an external database
+	   </para></listitem>
+
+ 	</itemizedlist>
+   </para>
+
+
+ </refsect1>
+
+</refentry>

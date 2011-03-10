@@ -1,0 +1,75 @@
+<refentry id="{@id}">
+ 
+  <refnamediv>
+    <refname>Version Information</refname>
+    <refpurpose>Feedback module documentation</refpurpose>
+  </refnamediv>
+
+ <refsynopsisdiv>
+
+ </refsynopsisdiv>
+
+
+  <refsect1 id="{@id versioninfo}">
+    <title></title>
+
+    <para>
+    
+    </para>
+
+    <para>
+      <table style="width: 800px; border: thin solid #AAAAAA;">
+        <tgroup cols="2" align="left">
+	  <colspec colnum="1" colname="col1" colwidth="2*"/>
+	  <colspec colnum="2" colname="col2" colwidth="2*"/>
+	  <colspec colnum="3" colname="col3" colwidth="2*"/>
+	  <colspec colnum="4" colname="col4" colwidth="2*"/>
+	  <colspec colnum="5" colname="col5" colwidth="2*"/>
+
+          <thead>
+            <row  style="font-weight: bold;">
+              <entry style="width: 75px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Documentation version
+              </entry>
+              <entry style="width: 100px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Feedback module version
+              </entry>
+              <entry style="width: 125px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+
+              </entry>
+              <entry style="width: 500px; border-bottom: thin solid #AAAAAA; padding-left: 15px;">
+                Notes
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+
+            <row>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                20050911
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                2005082201
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+
+              </entry>
+              <entry style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+                first draft of feedback module documentation, Administrator Guide not ready,
+		source code Javadoc-like comments not ready, contributed by Markku Lahtinen
+              </entry>
+            </row>
+
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+
+   <para>
+	This documentation is provided "as is" with no guarantee that the information is accurate or
+	useful to any purpose.
+   </para>
+  </refsect1>
+
+</refentry>

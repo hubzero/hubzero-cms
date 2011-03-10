@@ -1,0 +1,17 @@
+<refentry id="{@id}"> 
+
+ <refnamediv>
+  <refname>Administrator Guide</refname>
+  <refpurpose>Learn how to create feedback forms</refpurpose>
+ </refnamediv>
+
+
+ <refsect1 id="{@id intro}">
+  <title>Introduction</title>
+  <para>
+	This part of documentation is not ready yet.
+  </para>
+ </refsect1>
+
+
+</refentry>
