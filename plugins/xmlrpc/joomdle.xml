@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="xmlrpc">
+	<name>XML-RPC - Joomdle</name>
+	<author>Antonio Duran Terres</author>
+	<authorEmail>antonio.duran.terres@gmail.com</authorEmail>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>antonio.duran.terres@gmail.com</authorEmail>
+	<authorUrl>www.joomdle.com</authorUrl>
+	<version>0.23</version>
+	<description>Joomdle services for Moodle Single Sign On</description>
+	<files>
+		<folder>joomdle</folder>
+		<filename plugin="joomdle">joomdle.php</filename>
+	</files>
+	 <languages folder="language">
+                <language tag="es-ES">es-ES.plg_xmlrpc_joomdle.ini</language>
+                <language tag="en-GB">en-GB.plg_xmlrpc_joomdle.ini</language>
+                <language tag="fr-FR">fr-FR.plg_xmlrpc_joomdle.ini</language>
+                <language tag="ro-RO">ro-RO.plg_xmlrpc_joomdle.ini</language>
+                <language tag="de-DE">de-DE.plg_xmlrpc_joomdle.ini</language>
+                <language tag="it-IT">it-IT.plg_xmlrpc_joomdle.ini</language>
+        </languages>
+	<params>
+	</params>
+</install>

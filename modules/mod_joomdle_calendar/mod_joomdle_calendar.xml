@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+	<name>Joomdle Calendar</name>
+	<author>Carlos Mansilla</author>
+	<creationDate>Marzo 2010</creationDate>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>h4lk0n@gmail.com</authorEmail>
+	<authorUrl>crea.ulagos.cl</authorUrl>
+	<version>0.3</version>
+	<description>Shows Moodle calendar block</description>
+	<files>
+		<filename module="mod_joomdle_calendar">mod_joomdle_calendar.php</filename>
+		<filename module="mod_joomdle_calendar">index.html</filename>
+		<filename module="mod_joomdle_calendar">helper.php</filename>
+		<filename module="mod_joomdle_calendar">cal_functions.js</filename>
+		<filename module="mod_joomdle_calendar">cal_events.js</filename>
+		<filename module="mod_joomdle_calendar">cal_styles.js</filename>
+		<filename module="mod_joomdle_calendar">tmpl/default.php</filename>
+		<filename module="mod_joomdle_calendar">tmpl/index.html</filename>
+	</files>
+	  <languages>
+		<language tag="en-GB">language/en-GB.mod_joomdle_calendar.ini</language>
+		<language tag="es-ES">language/es-ES.mod_joomdle_calendar.ini</language>
+		<language tag="fr-FR">languages/fr-FR.mod_joomdle_calendar.ini</language>
+                <language tag="ro-RO">languages/ro-RO.mod_joomdle_calendar.ini</language>
+                <language tag="de-DE">languages/de-DE.mod_joomdle_calendar.ini</language>
+                <language tag="it-IT">languages/it-IT.mod_joomdle_calendar.ini</language>
+
+	  </languages>
+	<params>
+		<param name="start_day" type="radio" default="0" label="CJ START WEEK DAY" description="CJ START WEEK DAY DESCRIPTION">
+                        <option value="0">Sunday</option>
+                        <option value="1">Monday</option>
+                </param>
+		<param name="guests_see_global" type="radio" default="0" label="CJ GUESTS SEE GLOBAL EVENTS" description="CJ GUESTS SEE GLOBAL EVENTS DESCRIPTION">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                </param>
+    <param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+	</params>
+</install>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+	<name>Joomdle Mentees</name>
+	<author>Antonio Duran</author>
+	<creationDate>August 2010</creationDate>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>antonio.duran.terres@gmail.com</authorEmail>
+	<authorUrl>www.joomdle.com</authorUrl>
+	<version>0.3</version>
+	<description>Shows Moodle mentees for the logged user</description>
+	<files>
+		<filename module="mod_joomdle_mentees">mod_joomdle_mentees.php</filename>
+		<filename module="mod_joomdle_mentees">index.html</filename>
+		<filename module="mod_joomdle_mentees">helper.php</filename>
+		<filename module="mod_joomdle_mentees">tmpl/default.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB.mod_joomdle_mentees.ini</language>
+		<language tag="es-ES">language/es-ES.mod_joomdle_mentees.ini</language>
+		<language tag="fr-FR">language/fr-FR.mod_joomdle_mentees.ini</language>
+		<language tag="ro-RO">language/ro-RO.mod_joomdle_mentees.ini</language>
+		<language tag="de-DE">language/de-DE.mod_joomdle_mentees.ini</language>
+		<language tag="it-IT">language/it-IT.mod_joomdle_mentees.ini</language>
+
+	</languages>
+	<params >
+		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+	</params>
+</install>

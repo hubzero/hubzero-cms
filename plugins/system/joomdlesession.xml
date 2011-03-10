@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="system">
+	<name>System - Joomdlesession</name>
+	<author>Joomdle</author>
+	<creationDate>2010</creationDate>
+	<copyright>Copyright (C) 2010 Antonio Duran Terres.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>antonio.duran.terres@gmail.com</authorEmail>
+	<authorUrl>www.joomdle.com</authorUrl>
+	<version>1.5</version>
+	<description>Provides Moodle/Joomla session synchronization</description>
+	<files>
+		<filename plugin="joomdlesession">joomdlesession.php</filename>
+	</files>
+	<params>
+	</params>
+</install>
