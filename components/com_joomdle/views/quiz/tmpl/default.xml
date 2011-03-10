@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Quiz Layout">
+		<message>
+			<![CDATA[JOOMDLE QUIZ LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Quiz Layout</name>
+		<description>Joomdle QUIZ LAYOUT DESCRIPTION</description>
+		<params addpath="/administrator/components/com_joomdle/elements">
+			
+			<param name="course_id" type="course" default="" disable="separator" label="CJ COURSE"
+				description="CJ COURSE DESCRIPTION">
+			</param>
+		<param name="quiz_id" type="quiz" default="" label="Quiz" description="Pick an Quiz"></param></params>
+		<advanced>
+
+		</advanced>
+	</state>
+</metadata>

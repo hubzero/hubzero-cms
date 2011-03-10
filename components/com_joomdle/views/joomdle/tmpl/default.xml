@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Default Layout">
+		<message>
+			<![CDATA[JOOMDLE DEFAULT LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Default Layout</name>
+		<description>Joomdle DEFAULT LAYOUT DESCRIPTION</description>
+		<params>
+			<param name="enrollable_only" type="radio" default="0" label="CJ ENROLLABLE ONLY" description="CJ ENROLLABLE ONLY DESCRIPTION">
+                                <option value="0">No</option>
+                                <option value="1">Si</option>
+                        </param>
+
+		</params>
+		<advanced>
+
+		</advanced>
+	</state>
+</metadata>

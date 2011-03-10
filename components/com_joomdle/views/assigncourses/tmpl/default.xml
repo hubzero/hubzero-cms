@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Assigncourses Layout">
+		<message>
+			<![CDATA[JOOMDLE ASSIGNCOURSES LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Assigncourses Layout</name>
+		<description>Joomdle ASSIGNCOURSES LAYOUT DESCRIPTION</description>
+		<params>
+		</params>
+		<advanced>
+
+		</advanced>
+	</state>
+</metadata>

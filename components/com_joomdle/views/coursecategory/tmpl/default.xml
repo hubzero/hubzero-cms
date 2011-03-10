@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Coursecategory Layout">
+		<message>
+			<![CDATA[JOOMDLE COURSECATEGORY LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Coursecategory Layout</name>
+		<description>Joomdle COURSECATEGORY LAYOUT DESCRIPTION</description>
+		<params addpath="/administrator/components/com_joomdle/elements">
+			<param type="coursecategory" name="cat_id"  label="CJ CATEGORY" description="CJ CATEGORY DESCRIPTION" />
+		</params>
+		<advanced>
+
+		</advanced>
+	</state>
+</metadata>

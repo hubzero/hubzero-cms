@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Coursegrades Layout">
+		<message>
+			<![CDATA[JOOMDLE COURSEGRADES LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Coursegrades Layout</name>
+		<description>Joomdle COURSEGRADES LAYOUT DESCRIPTION</description>
+		 <params addpath="/administrator/components/com_joomdle/elements">
+			<param type="course" name="course_id" size="3" label="CJ COURSE" description="CJ COURSE DESCRIPTION" />
+		 </params>
+	</state>
+</metadata>

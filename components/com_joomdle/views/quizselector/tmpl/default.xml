@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Quiz Assignment Layout">
+		<message>
+			<![CDATA[JOOMDLE QUIZ LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Quiz Selector Layout</name>
+		<description>Joomdle QUIZ SELECTOR LAYOUT DESCRIPTION</description>
+		<advanced>
+
+		</advanced>
+	</state>
+</metadata>

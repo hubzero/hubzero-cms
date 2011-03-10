@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Assignment Layout">
+		<message>
+			<![CDATA[JOOMDLE ASSIGNMENT LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Assignment Layout</name>
+		<description>Joomdle ASSIGNMENT LAYOUT DESCRIPTION</description>
+		<params addpath="/administrator/components/com_joomdle/elements">
+			
+			<param name="course_id" type="course" default="" disable="separator" label="CJ COURSE"
+				description="CJ COURSE DESCRIPTION">
+			</param>
+		<param name="assignment_id" type="text" default="" label="Assignment" description="Pick an Assignment" first="0" last="999999" step="1"></param></params>
+		<advanced>
+
+		</advanced>
+	</state>
+</metadata>

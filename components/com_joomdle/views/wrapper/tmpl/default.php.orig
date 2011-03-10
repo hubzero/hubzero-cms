@@ -1,0 +1,24 @@
+<?php defined('_JEXEC') or die('Restricted access'); ?>
+<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+
+<body onload="resizeFrame(document.getElementById('iframe'))" bgcolor="#cccccc">
+<script type=”text/javascript”>
+function resizeFrame(f) {
+f.style.height = f.contentWindow.document.body.scrollHeight + “px”;
+}
+</script>
+
+<iframe <?php echo $this->wrapper->load; ?>
+        id="blockrandom"
+        name="iframe"
+        src="<?php echo $this->wrapper->url; ?>"
+        width="<?php echo $this->params->get( 'width' ); ?>"
+        height="<?php echo $this->params->get( 'height' ); ?>"
+        scrolling="<?php echo $this->params->get( 'scrolling' ); ?>"
+        align="top"
+        frameborder="0"
+        class="wrapper<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+        <?php echo JText::_( 'NO_IFRAMES' ); ?>
+</iframe>
+</div>
+

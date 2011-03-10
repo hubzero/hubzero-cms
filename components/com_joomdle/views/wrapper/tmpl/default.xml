@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Wrapper Layout">
+		<message>
+			<![CDATA[JOOMDLE WRAPPER LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Wrapper Layout</name>
+		<description>JOOMDLE WRAPPER LAYOUT DESCRIPTION</description>
+		<params addpath="/administrator/components/com_joomdle/elements">
+		<param name="moodle_page_type" type="radio" default="moodle" label="CJ PAGE TYPE" description="CJ PAGE TYPE DESCRIPTION">
+                        <option value="moodle">Moodle home</option>
+                        <option value="course">Course</option>
+                </param>
+		 <param type="course" name="course_id" label="CJ COURSE" description="CJ COURSE DESCRIPTION" />
+
+		</params>
+	</state>
+</metadata>

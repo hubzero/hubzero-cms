@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Mynews Layout">
+		<message>
+			<![CDATA[JOOMDLE MYNEWS LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Mynews Layout</name>
+		<description>Joomdle MYNEWS LAYOUT DESCRIPTION</description>
+		<params>
+		</params>
+		<advanced>
+
+		</advanced>
+	</state>
+</metadata>

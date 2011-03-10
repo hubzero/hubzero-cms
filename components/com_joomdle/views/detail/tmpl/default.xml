@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Detail Layout">
+		<message>
+			<![CDATA[JOOMDLE DETAIL LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Detail Layout</name>
+		<description>Joomdle DETAIL LAYOUT DESCRIPTION</description>
+		<params addpath="/administrator/components/com_joomdle/elements">
+			<param name="course_id" type="course" default="" disable="separator" label="CJ COURSE" description="CJ COURSE DESCRIPTION" />
+		</params>
+		<advanced>
+
+		</advanced>
+	</state>
+</metadata>

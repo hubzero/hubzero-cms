@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Coursesbycategory Layout">
+		<message>
+			<![CDATA[JOOMDLE COURSESBYCATEGORY LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Coursesbycategory Layout</name>
+		<description>Joomdle COURSESBYCATEGORY LAYOUT DESCRIPTION</description>
+		<advanced>
+
+		</advanced>
+	</state>
+</metadata>

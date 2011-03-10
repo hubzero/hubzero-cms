@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Joomdle Myevents Layout">
+		<message>
+			<![CDATA[JOOMDLE MYEVENTS LAYOUT DESCRIPTION]]>
+		</message>
+	</layout>
+	<state>
+		<name>Joomdle Myevents Layout</name>
+		<description>Joomdle MYEVENTS LAYOUT DESCRIPTION</description>
+		<params>
+		</params>
+		<advanced>
+
+		</advanced>
+	</state>
+</metadata>

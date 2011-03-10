@@ -1,0 +1,30 @@
+/*
+
+	-- -- -- -- -- -- --
+	com_resources CSS
+	-- -- -- -- -- -- --
+
+*/
+#joomdlesectionheader {
+	background-image:url('images/gear.gif');
+	background-repeat:no-repeat;
+	background-position:right;
+}
+
+.joomdlenewsheader {
+
+}
+
+.joomdlecourseheader {
+	/*background-image:url('images/coursebg.gif');*/
+	background-repeat:no-repeat;
+	padding-left:15px;
+	padding-top: 1px;
+}
+.joomdlecoursedec {
+	
+}
+#joomdlecatdescription {
+	background: #F8F7EE;
+	border-bottom: 1px solid #DDDCC7;
+}
