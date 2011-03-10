@@ -115,6 +115,9 @@ class SupportTicket extends JTable
 		}
 		if (isset($filters['owner']) && $filters['owner'] != '') {
 			$filter .= " AND ";
+			if ($admin == false && (!isset($filters['owner']) || $filters['owner'] != '') && (!isset($filters['reportedby']) || $filters['reportedby'] != '')) {
+				$filter .= "(";
+			}
 			if (isset($filters['reportedby']) && $filters['reportedby'] != '') {
 				$filter .= "(";
 			}
@@ -155,7 +158,7 @@ class SupportTicket extends JTable
 				$groups = implode("','",$g);
 			}
 			if ($groups) {
-				$filter .= " OR `group` IN ('$groups')";
+				$filter .= " OR `group` IN ('$groups'))";
 			}
 		}
 		/*if ($admin == false) {
