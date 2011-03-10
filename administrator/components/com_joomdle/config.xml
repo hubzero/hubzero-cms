@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <params>
+	     <param type="text" name="MOODLE_URL" size="50" label="CJ MOODLE SERVER URL" description="CJ MOODLE SERVER URL DESCRIPTION" />
+	<param name="moodle_version" type="radio" default="19" label="CJ MOODLE VERSION" description="CJ MOODLE VERSION DESCRIPTION">
+		 <option value="19">Moodle 1.9.x</option>
+		  <option value="20">Moodle 2.0.x</option>
+	   </param>
+	     <param type="text" name="auth_token" size="50" label="CJ MOODLE AUTH TOKEN" description="CJ MOODLE AUTH TOKEN DESCRIPTION" />
+		<param name="auto_create_users" type="radio" default="1" label="CJ AUTO CREATE USERS" description="CJ AUTO CREATE USERS DESCRIPTION">
+			  <option value="1">Yes</option>
+			 <option value="0">No</option>
+		   </param>
+		<param name="auto_delete_users" type="radio" default="1" label="CJ AUTO DELETE USERS" description="CJ AUTO DELETE USERS DESCRIPTION">
+			  <option value="1">Yes</option>
+			 <option value="0">No</option>
+		   </param>
+		<param name="auto_login_users" type="radio" default="0" label="CJ AUTO LOGIN USERS" description="CJ AUTO LOGIN USERS DESCRIPTION">
+			 <option value="0">No</option>
+			  <option value="1">Yes</option>
+		   </param>
+		<param name="connection_method" type="radio" default="fgc" label="CJ CONNECTION METHOD" description="CJ CONNECTION METHOD DESCRIPTION">
+			  <option value="fgc">file_get_contents</option>
+			 <option value="curl">cURL</option>
+		   </param>
+	<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="linkstarget" type="radio" default="self" label="CJ OPEN MOODLE LINKS" description="CJ OPEN MOODLE LINKS DESCRIPTION">
+                                <option value="self">Same window</option>
+                                <option value="new">New window</option>
+                                <option value="wrapper">Wrapper</option>
+                        </param>
+
+
+	      <param name="@spacer" type="spacer" default="" label="" description="" />
+                        <param name="scrolling" type="radio" default="auto" label="CJ WRAPPER SCROLL BARS" description="CJ WRAPPER SCROLL BARS DESCRIPTION">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                                <option value="auto">Auto</option>
+                        </param>
+	<param name="width" type="text" size="5" default="100%" label="CJ WRAPPER WIDTH" description="CJ WRAPPER WIDTH DESCRIPTION" />
+	<param name="height" type="text" size="5" default="1000" label="CJ WRAPPER HEIGHT" description="CJ WRAPPER HEIGHT DESCRIPTION" />
+	<param name="autoheight" type="radio" default="1" label="CJ WRAPPER AUTOHEIGHT" description="CJ WRAPPER AUTOHEIGHT DESCRIPTION">
+		 <option value="0">No</option>
+		  <option value="1">Yes</option>
+	   </param>
+	<param name="transparency" type="radio" default="0" label="CJ WRAPPER TRANSPARENCY" description="CJ WRAPPER TRANSPARENCY DESCRIPTION">
+		 <option value="0">No</option>
+		  <option value="1">Yes</option>
+	   </param>
+	<param name="default_itemid" type="text" size="3" default="" label="CJ DEFAULT ITEMID" description="CJ DEFAULT ITEMID DESCRIPTION" />
+
+	      <param name="@spacer" type="spacer" default="" label="" description="" />
+   <param name="show_topìcs_link" type="radio" default="1" label="CJ SHOW TOPICS LINKS" description="CJ SHOW TOPICS LINKS DESCRIPTION">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                        </param>
+        <param name="show_grading_system_link" type="radio" default="0" label="CJ SHOW GRADING SYSTEM LINKS" description="CJ SHOW GRADING SYSTEM LINKS DESCRIPTION">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                        </param>
+	<param name="show_teachers_link" type="radio" default="0" label="CJ SHOW TEACHERS LINKS" description="CJ SHOW TEACHERS LINKS DESCRIPTION">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                        </param>
+	<param name="show_enrol_link" type="radio" default="1" label="CJ SHOW ENROL LINKS" description="CJ SHOW ENROL LINKS DESCRIPTION">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                        </param>
+	<param name="show_paypal_button" type="radio" default="0" label="CJ SHOW PAYPAL BUTTON" description="CJ SHOW PAYPAL BUTTON DESCRIPTION">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                        </param>
+      <param name="@spacer" type="spacer" default="" label="" description="" />
+	<param name="shop_integration" type="radio" default="0" label="CJ USE VIRTUEMART INTEGRATION" description="CJ USE VIRTUEMART INTEGRATION DESCRIPTION">
+                                <option value="0">None</option>
+                                <option value="tienda">Tienda</option>
+                                <option value="virtuemart">Virtuemart</option>
+	</param>
+     <param type="text" name="courses_category" size="5" label="CJ VIRTUEMART CATEGORY FOR COURSES" description="CJ VIRTUEMART CATEGORY FOR COURSES DESCRIPTION" />
+	<param name="buy_for_children" type="radio" default="0" label="CJ BUY FOR CHILDREN" description="CJ BUY FOR CHILDREN DESCRIPTION">
+		 <option value="0">No</option>
+		  <option value="1">Yes</option>
+	   </param>
+    <param name="enrol_email_subject" type="text" size="50"  default="" label="CJ ENROL EMAIL SUBJECT" rows="3" cols="30" description="CJ ENROL EMAIL SUBJECT DESCRIPTION" />
+    <param name="enrol_email_text" type="textarea" default="" label="CJ ENROL EMAIL TEXT" rows="3" cols="30" description="CJ ENROL EMAIL TEXT DESCRIPTION" />
+      <param name="@spacer" type="spacer" default="" label="" description="" />
+	<param name="additional_data_source" type="radio" default="none" label="CJ ADDITIONAL DATA SOURCE" description="CJ ADDITIONAL DATA SOURCE DESCRIPTION">
+                                <option value="none">None</option>
+                                <option value="jomsocial">Jomsocial</option>
+                                <option value="virtuemart">Virtuemart</option>
+                                <option value="tienda">Tienda</option>
+	</param>
+
+	<param name="use_xipt_integration" type="radio" default="0" label="CJ USE XIPT INTEGRATION" description="CJ USE XIPT INTEGRATION DESCRIPTION">
+		 <option value="0">No</option>
+		  <option value="1">Yes</option>
+	   </param>
+    </params>
+</config>
