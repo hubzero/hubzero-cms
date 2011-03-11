@@ -157,7 +157,7 @@ class SupportTicket extends JTable
 				}
 				$groups = implode("','",$g);
 			}
-			$filter .= " OR `group` IN ('$groups'))";
+			$filter .= ($groups) ? " OR `group` IN ('$groups'))" : ")";
 		}
 		/*if ($admin == false) {
 			$filter .= ")";

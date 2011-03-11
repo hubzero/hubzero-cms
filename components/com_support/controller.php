@@ -306,7 +306,7 @@ class SupportController extends Hubzero_Controller
 		if ($juser->get('guest')) {
 			return $this->login();
 		}
-
+		
 		if (!$this->acl->check('read','tickets')) {
 			$view->filters['owner'] = $juser->get('username');
 			$view->filters['reportedby'] = $juser->get('username');
