@@ -618,7 +618,11 @@ class RegisterController extends JObject
 		}
 
 		if (!$updateEmail) {
-			$xhub->redirect($_SERVER['REQUEST_URI']);
+			$suri = JRequest::getVar('REQUEST_URI','/','server');
+			if ($suri == '/register/update')
+				$xhub->redirect('/');
+			else
+				$xhub->redirect($suri);
 		} else {
 			// Instantiate a new view
 			$view = new JView( array('name'=>'update') );
