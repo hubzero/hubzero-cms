@@ -7,7 +7,7 @@ function get_stations()
 	$dd['table'] = 'Stations';
 	$dd['pk'] = 'Stations.StationID';
 
-	$dd['cols']['Stations.StationID'] = array('label'=>'Station', 'raw'=>'UPPER(Stations.StationID)', 'filtered_view'=>array('view'=>'spreadsheet', 'data'=>'events','filter'=>array('Events.Station'=>'Stations.StationID', 'Events.Magnitude'=>'>=4|float'))); // added UPPER()
+	$dd['cols']['Stations.StationID'] = array('label'=>'Station', 'raw'=>'UPPER(Stations.StationID)', 'filtered_view'=>array('view'=>'spreadsheet', 'data'=>'events','filter'=>array('Events.Station'=>'Stations.StationID', 'Events.Magnitude'=>'>=4|number'))); // added UPPER()
 	$dd['cols']['Stations.StationName'] = array('label'=>'Station Name', 'width'=>'185');
 	$dd['cols']['Stations.Elevation'] = array('label'=>'Elevation<br />[m]');
 	$dd['cols']['Stations.Latitude'] = array('label'=>'Latitude', 'data_type'=>'float');
