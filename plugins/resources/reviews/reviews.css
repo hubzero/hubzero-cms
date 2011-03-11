@@ -316,8 +316,8 @@
 	#commentform .option {
 		width: auto;
 		}
-	#commentform #comment-anonymous-label {
-		width: 50%;
+	#commentform #review-anonymous-label {
+		width: 70%;
 		}
 /* Wiki Reference */
 	table.wiki-reference {
