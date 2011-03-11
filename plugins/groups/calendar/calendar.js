@@ -83,12 +83,12 @@ HUB.Plugins.GroupCalendar = {
 		if($('event_start_date')) {
 			var myCal1 = new Calendar(
 				{ event_start_date: 'm/d/Y' }, 
-				{ classes: ['mini-cal'], direction: 1 }
+				{ classes: ['mini-cal'], direction: 0.5 }
 			);
 		
 			var myCal2 = new Calendar(
 				{ event_end_date: 'm/d/Y' }, 
-				{ classes: ['mini-cal'], direction: 1 }
+				{ classes: ['mini-cal'], direction: 0.5 }
 			);
 		
 			if(myCal1 && myCal2) {
