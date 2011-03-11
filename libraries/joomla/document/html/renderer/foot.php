@@ -84,7 +84,7 @@ class JDocumentRendererFoot extends JDocumentRenderer
 			$strHtml .= $tab.'</script>'.$lnEnd;
 		}
 		
-		$strHtml .= "<script src=\"youtube.js\"></script>";
+		//$strHtml .= "<script src=\"youtube.js\"></script>";
 
 		return $strHtml;
 	}
