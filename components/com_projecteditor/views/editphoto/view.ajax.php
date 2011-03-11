@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
@@ -11,7 +11,7 @@ require_once 'lib/data/DataFileLinkPeer.php';
 require_once 'lib/data/DataFileLink.php';
 
 class ProjectEditorViewEditPhoto extends JView{
-	
+
   function display($tpl = null){
     $strErrorArray = array();
 
@@ -20,16 +20,20 @@ class ProjectEditorViewEditPhoto extends JView{
     $iProjectId = JRequest::getInt("projectId", 0);
     $iExperimentId = JRequest::getInt("experimentId", 0);
     $iPhotoType = JRequest::getInt("photoType", 0);
+    $iIndex = JRequest::getInt("index", 0);
+    $iDisplay = JRequest::getInt("display", 25);
     $strReturnUrl = JRequest::getString("return", "");
+
+    $strReturnUrl = $this->getReturnUrl($strReturnUrl, $iIndex, $iDisplay);
 
     if(!$iDataFileId){
       echo "Please select a data file.";
       return;
     }
-    
+
     $this->assignRef("dataFileId", $iDataFileId);
-    
-    
+
+
     /* @var $oModel ProjectEditorModelEditPhoto */
     $oModel =& $this->getModel();
 
@@ -39,7 +43,7 @@ class ProjectEditorViewEditPhoto extends JView{
 
     $strPath = $oDataFile->getFriendlyPath();
     $this->assignRef("path", $strPath);
-    
+
     $strUsageTypeArray = array("Film Strip", "General Photo");
     $oEntityTypeArray = $oModel->findUsageTypeList($strUsageTypeArray);
     $_REQUEST[EntityTypePeer::TABLE_NAME] = serialize($oEntityTypeArray);
@@ -51,7 +55,27 @@ class ProjectEditorViewEditPhoto extends JView{
 
     parent::display();
   }
-  
+
+  private function getReturnUrl($strReturnUrl, $iIndex, $iDisplay){
+    if(StringHelper::hasText($strReturnUrl)){
+      if(StringHelper::contains($strReturnUrl, "\?")){
+        if(!StringHelper::contains($strReturnUrl, "index=") && !StringHelper::contains($strReturnUrl, "limit=")){
+          $strReturnUrl .= "&index=$iIndex&limit=$iDisplay";
+        }else{
+          if(!StringHelper::contains($strReturnUrl, "index=")){
+            $strReturnUrl .= "&index=$iIndex";
+          }
+          if(!StringHelper::contains($strReturnUrl, "limit=")){
+            $strReturnUrl .= "&limit=$iDisplay";
+          }
+        }
+      }else{
+        $strReturnUrl .= "?index=$iIndex&limit=$iDisplay";
+      }
+    }
+    return $strReturnUrl;
+  }
+
 }
 
 ?>

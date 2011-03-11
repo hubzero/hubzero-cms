@@ -13,7 +13,7 @@ require_once 'api/org/nees/oracle/util/DbPagination.php';
 require_once 'api/org/nees/static/Files.php';
 
 class ProjectEditorViewProjectVideos extends JView{
-	
+
   function display($tpl = null){
     /* @var $oModel ProjectEditorModelDrawings */
     $oModel =& $this->getModel();
@@ -37,7 +37,7 @@ class ProjectEditorViewProjectVideos extends JView{
       }
     }
     $_REQUEST[ProjectPeer::TABLE_NAME] = serialize($oProject);
-    
+
     //get the tabs to display on the page
     $strTabArray = $oModel->getTabArray();
     $strTabViewArray = $oModel->getTabViewArray();
@@ -69,7 +69,7 @@ class ProjectEditorViewProjectVideos extends JView{
       $oVideosMovieFileCommand = FileCommandAPI::create($strPath."/Movies");
       $oVideosMovieFileCommand->mkdir(TRUE);
     }
-    
+
     if(!is_dir($strPath."/Frames")){
       $oVideosFramesFileCommand = FileCommandAPI::create($strPath."/Frames");
       $oVideosFramesFileCommand->mkdir(TRUE);
@@ -85,7 +85,7 @@ class ProjectEditorViewProjectVideos extends JView{
     //$oVideoArray = $oModel->findDataFileByUsage("Video", array(), $iLowerLimit, $iUpperLimit, $iProjectId);
     $oVideoArray = $oModel->findProjectEditorVideos("'video/%'", "'wmv'", "Videos/Frames", $iProjectId);
     $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oVideoArray);
-    
+
     $iUploadType = Files::VIDEO;
     $this->assignRef( 'uploadType', $iUploadType );
 
@@ -119,11 +119,14 @@ class ProjectEditorViewProjectVideos extends JView{
     JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"javascript:void(0)");
     JFactory::getApplication()->getPathway()->addItem("Videos","javascript:void(0)");
 
+    $this->assignRef("iDisplay", $iDisplay);
+    $this->assignRef("iPageIndex", $iPageIndex);
+
     $strReturnUrl = $oModel->getRawReturnURL();
     $this->assignRef( "strReturnUrl", $strReturnUrl );
 
     parent::display($tpl);
   }
-  
+
 }
 ?>

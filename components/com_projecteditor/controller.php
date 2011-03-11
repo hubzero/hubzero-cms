@@ -3722,6 +3722,8 @@ class ProjectEditorController extends JController{
 
     $iPhotoType = JRequest::getInt("photoType", 0);
 
+    $strUrl = JRequest::getVar("return", "");
+
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel('EditDataFile');
 
@@ -3748,12 +3750,13 @@ class ProjectEditorController extends JController{
       return;
     }
 
+    if(!StringHelper::hasText($strUrl)){
     $strUrl = "/warehouse/projecteditor/project/".$iProjectId
                         ."/experiment/".$iExperimentId
                         ."/photos";
-
     if($iPhotoType){
       $strUrl .= "?photoType=".$iPhotoType;
+    }
     }
 
     $this->setRedirect($strUrl);
@@ -3834,6 +3837,8 @@ class ProjectEditorController extends JController{
       return;
     }
 
+    $strUrl = JRequest::getString("return", "");
+
     $iEntityTypeId = JRequest::getVar("usageType", 0);
     $iUsageTypeId = ($iEntityTypeId > 0) ? $iEntityTypeId : null;
 
@@ -3863,10 +3868,11 @@ class ProjectEditorController extends JController{
       return;
     }
 
+    if(!StringHelper::hasText($strUrl)){
     $strUrl = "/warehouse/projecteditor/project/".$iProjectId
                         ."/experiment/".$iExperimentId
                         ."/videos";
-
+    }
     $this->setRedirect($strUrl);
   }
 

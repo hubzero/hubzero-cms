@@ -14,7 +14,7 @@ require_once 'api/org/nees/oracle/util/DbPagination.php';
 require_once 'api/org/nees/static/Files.php';
 
 class ProjectEditorViewProjectPhotos extends JView{
-	
+
   function display($tpl = null){
     /* @var $oModel ProjectEditorModelProjectPhotos */
     $oModel =& $this->getModel();
@@ -38,7 +38,7 @@ class ProjectEditorViewProjectPhotos extends JView{
       }
     }
     $_REQUEST[ProjectPeer::TABLE_NAME] = serialize($oProject);
-    
+
     //get the tabs to display on the page
     $strTabArray = $oModel->getTabArray();
     $strTabViewArray = $oModel->getTabViewArray();
@@ -66,7 +66,7 @@ class ProjectEditorViewProjectPhotos extends JView{
     //get the photos
     $iPhotoType = JRequest::getVar('photoType', DataFilePeer::PHOTO_TYPE_PROJECT);
     $this->assignRef("iPhotoType", $iPhotoType);
-    
+
     $iDisplay = JRequest::getVar('limit', 25);
     $iPageIndex = JRequest::getVar('index', 0);
 
@@ -112,11 +112,14 @@ class ProjectEditorViewProjectPhotos extends JView{
     JFactory::getApplication()->getPathway()->addItem($oProject->getName(),"javascript:void(0)");
     JFactory::getApplication()->getPathway()->addItem("Photos","javascript:void(0)");
 
+    $this->assignRef("iDisplay", $iDisplay);
+    $this->assignRef("iPageIndex", $iPageIndex);
+
     $strReturnUrl = $oModel->getRawReturnURL();
     $this->assignRef( "strReturnUrl", $strReturnUrl );
 
     parent::display($tpl);
   }
-  
+
 }
 ?>

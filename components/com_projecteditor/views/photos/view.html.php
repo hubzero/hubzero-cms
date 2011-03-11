@@ -17,7 +17,7 @@ class ProjectEditorViewPhotos extends JView{
 	
   function display($tpl = null){
     /* @var $oModel ProjectEditorModelPhotos */
-    $oModel =& $this->getModel();
+    $oModel =& $this->getModel(); 
 
     $oHubUser = $oModel->getCurrentUser();
     $this->assignRef("oUser", $oHubUser);
@@ -112,6 +112,8 @@ class ProjectEditorViewPhotos extends JView{
     $this->assignRef("iEntityActivityLogViews", $iEntityViews);
     $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
     $this->assignRef("iPhotoType", $iPhotoType);
+    $this->assignRef("iDisplay", $iDisplay);
+    $this->assignRef("iPageIndex", $iPageIndex);
 
     JFactory::getApplication()->getPathway()->addItem($oExperiment->getProject()->getName(),"/warehouse/projecteditor/project/".$oExperiment->getProject()->getId());
     JFactory::getApplication()->getPathway()->addItem("Experiments","/warehouse/projecteditor/project/".$oExperiment->getProject()->getId()."/experiments");

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
@@ -13,7 +13,7 @@ require_once 'lib/data/ProjectHomepage.php';
 require_once 'lib/data/ProjectHomepagePeer.php';
 
 class ProjectEditorViewEditDocument extends JView{
-	
+
   function display($tpl = null){
     $strErrorArray = array();
 
@@ -22,14 +22,19 @@ class ProjectEditorViewEditDocument extends JView{
     $iProjectId = JRequest::getInt("projectId", 0);
     $iExperimentId = JRequest::getInt("experimentId", 0);
     $iRequestType = JRequest::getInt("requestType", 0);
+    $iIndex = JRequest::getInt("index", 0);
+    $iDisplay = JRequest::getInt("display", 25);
+    $strReturnUrl = JRequest::getString("return", "");
+
+    $strReturnUrl = $this->getReturnUrl($strReturnUrl, $iIndex, $iDisplay);
 
     if(!$iDataFileId){
       echo "Please select a data file.";
       return;
     }
     $this->assignRef("dataFileId", $iDataFileId);
-    
-    
+
+
     /* @var $oModel ProjectEditorModelEditDocument */
     $oModel =& $this->getModel();
 
@@ -48,10 +53,31 @@ class ProjectEditorViewEditDocument extends JView{
     $this->assignRef("projectId", $iProjectId);
     $this->assignRef("experimentId", $iExperimentId);
     $this->assignRef("requestType", $iRequestType);
+    $this->assignRef( "strReturnUrl", $strReturnUrl );
 
     parent::display();
   }
-  
+
+  private function getReturnUrl($strReturnUrl, $iIndex, $iDisplay){
+    if(StringHelper::hasText($strReturnUrl)){
+      if(StringHelper::contains($strReturnUrl, "\?")){
+        if(!StringHelper::contains($strReturnUrl, "index=") && !StringHelper::contains($strReturnUrl, "limit=")){
+          $strReturnUrl .= "&index=$iIndex&limit=$iDisplay";
+        }else{
+          if(!StringHelper::contains($strReturnUrl, "index=")){
+            $strReturnUrl .= "&index=$iIndex";
+          }
+          if(!StringHelper::contains($strReturnUrl, "limit=")){
+            $strReturnUrl .= "&limit=$iDisplay";
+          }
+        }
+      }else{
+        $strReturnUrl .= "?index=$iIndex&limit=$iDisplay";
+      }
+    }
+    return $strReturnUrl;
+  }
+
 }
 
 ?>

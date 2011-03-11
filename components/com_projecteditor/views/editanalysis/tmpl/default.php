@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
    $strTitle = $oDataFile->getTitle();
    $iEntityTypeId = $oDataFile->getUsageTypeId();
  }
- 
+
 
 ?>
 
@@ -43,10 +43,11 @@ defined('_JEXEC') or die( 'Restricted access' );
   <input type="hidden" name="dataFileId" value="<?php echo $this->dataFileId; ?>"/>
   <input type="hidden" name="path" value="<?php echo $this->path; ?>"/>
   <input type="hidden" name="requestType" value="<?php echo $this->requestType; ?>"/>
+  <input type="hidden" id="return" name="return" value="<?php echo $this->strReturnUrl; ?>" />
 
   <div><h2>Edit Data File</h2></div>
   <div class="information"><b>Destination:</b> <?php echo $this->path; ?></div>
-  
+
   <table style="margin-left: 20px; margin-top: 20px; border: 0px; width: 90%">
     <?php if( $this->dataFileId ): ?>
       <tr id="filename">

@@ -19,6 +19,11 @@ class ProjectEditorViewEditVideo extends JView{
     $iDataFileId = JRequest::getInt("dataFileId", 0);
     $iProjectId = JRequest::getInt("projectId", 0);
     $iExperimentId = JRequest::getInt("experimentId", 0);
+    $iIndex = JRequest::getInt("index", 0);
+    $iDisplay = JRequest::getInt("display", 25);
+    $strReturnUrl = JRequest::getString("return", "");
+
+    $strReturnUrl = $this->getReturnUrl($strReturnUrl, $iIndex, $iDisplay);
 
     if(!$iDataFileId){
       echo "Please select a data file.";
@@ -45,15 +50,37 @@ class ProjectEditorViewEditVideo extends JView{
     $this->assignRef("projectId", $iProjectId);
     $this->assignRef("experimentId", $iExperimentId);
 
+    if(!StringHelper::hasText($strReturnUrl)){
     $strReturnUrl = "/warehouse/projecteditor/project/$iProjectId/projectvideos";
     if($iExperimentId){
       $strReturnUrl = "/warehouse/projecteditor/project/$iProjectId/experiment/$iExperimentId/videos"; 
+    }
     }
     $this->assignRef( "strReturnUrl", $strReturnUrl );
 
     parent::display();
   }
   
+  private function getReturnUrl($strReturnUrl, $iIndex, $iDisplay){
+    if(StringHelper::hasText($strReturnUrl)){
+      if(StringHelper::contains($strReturnUrl, "\?")){
+        if(!StringHelper::contains($strReturnUrl, "index=") && !StringHelper::contains($strReturnUrl, "limit=")){
+          $strReturnUrl .= "&index=$iIndex&limit=$iDisplay";
+        }else{
+          if(!StringHelper::contains($strReturnUrl, "index=")){
+            $strReturnUrl .= "&index=$iIndex";
+}
+          if(!StringHelper::contains($strReturnUrl, "limit=")){
+            $strReturnUrl .= "&limit=$iDisplay";
+          }
+        }
+      }else{
+        $strReturnUrl .= "?index=$iIndex&limit=$iDisplay";
+      }
+    }
+    return $strReturnUrl;
+  }
+
 }
 
 ?>

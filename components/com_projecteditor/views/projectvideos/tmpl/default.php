@@ -172,7 +172,7 @@ header("Expires: 0"); // Date in the past
                             ?>
                           </td>
                           <td nowrap>
-                            [<a class="modal" href="/warehouse/projecteditor/editvideo?format=ajax&projectId=<?php echo $this->iProjectId; ?>&dataFileId=<?php echo $oDataFile->getId(); ?>&path=<?php echo get_friendlyPath($strPath); ?>&requestType=<?php echo $this->uploadType; ?>&return=<?php echo $this->strReturnUrl; ?>">Edit</a>]&nbsp&nbsp;
+                            [<a class="modal" href="/warehouse/projecteditor/editvideo?format=ajax&projectId=<?php echo $this->iProjectId; ?>&dataFileId=<?php echo $oDataFile->getId(); ?>&path=<?php echo get_friendlyPath($strPath); ?>&requestType=<?php echo $this->uploadType; ?>&return=<?php echo $this->strReturnUrl; ?>&index=<?php echo $this->iPageIndex; ?>&display=<?php echo $this->iDisplay; ?>">Edit</a>]&nbsp&nbsp;
                             <?php if($oAuthorizer->canDelete($oProject)){ ?>
                               [<a class="modal" href="/warehouse/projecteditor/delete?path=<?php echo $oDataFile->getPath(); ?>&format=ajax&eid=<?php echo $oDataFile->getId(); ?>&etid=112&return=<?php echo $this->strReturnUrl; ?>" title="Remove <?php echo $oDataFile->getName(); ?>">Delete</a>]
                             <?php } ?>

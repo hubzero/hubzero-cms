@@ -163,6 +163,9 @@ class ProjectEditorViewDocumentation extends JView{
       $this->assignRef( "mod_curationprogress", $strBlank );
     }
 
+    $this->assignRef("iDisplay", $iDisplay);
+    $this->assignRef("iPageIndex", $iPageIndex);
+
     $strReturnUrl = $oModel->getRawReturnURL();
     $this->assignRef( "strReturnUrl", $strReturnUrl );
 

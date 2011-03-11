@@ -12,7 +12,7 @@ header("Expires: 0"); // Date in the past
 <?php 
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_projecteditor/css/projecteditor.css",'text/css');
-  $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
+  $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css'); 
   $document->addStyleSheet($this->baseurl."/templates/fresh/html/com_groups/groups.css",'text/css');
   $document->addStyleSheet($this->baseurl."/plugins/tageditor/autocompleter.css",'text/css');
   
@@ -227,7 +227,7 @@ header("Expires: 0"); // Date in the past
                             </td>
                           <?php endif; ?>
                           <td nowrap>
-                            [<a class="modal" href="/warehouse/projecteditor/editphoto?format=ajax&projectId=<?php echo $this->iProjectId; ?>&experimentId=<?php echo $this->iExperimentId; ?>&dataFileId=<?php echo $oDataFile->getId(); ?>&photoType=<?php echo $this->iPhotoType; ?>">Edit</a>]&nbsp&nbsp;
+                            [<a class="modal" href="/warehouse/projecteditor/editphoto?format=ajax&projectId=<?php echo $this->iProjectId; ?>&experimentId=<?php echo $this->iExperimentId; ?>&dataFileId=<?php echo $oDataFile->getId(); ?>&photoType=<?php echo $this->iPhotoType; ?>&return=<?php echo $this->strReturnUrl; ?>&index=<?php echo $this->iPageIndex; ?>&display=<?php echo $this->iDisplay; ?>">Edit</a>]&nbsp&nbsp;
                             <?php if($oAuthorizer->canDelete($oExperiment)){ ?>
                               [<a class="modal" href="/warehouse/projecteditor/delete?path=<?php echo $strOriginalPhotoPath; ?>&format=ajax&eid=<?php echo $oDataFile->getId(); ?>&etid=112&return=<?php echo $this->strReturnUrl; ?>" title="Remove <?php echo $strOriginalPhotoName; ?>">Delete</a>]
                             <?php } ?>

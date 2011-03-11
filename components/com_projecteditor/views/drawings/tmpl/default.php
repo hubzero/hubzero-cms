@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
@@ -9,13 +9,13 @@ header("Expires: 0"); // Date in the past
 ?>
 
 
-<?php 
+<?php
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_projecteditor/css/projecteditor.css",'text/css');
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addStyleSheet($this->baseurl."/templates/fresh/html/com_groups/groups.css",'text/css');
   $document->addStyleSheet($this->baseurl."/plugins/tageditor/autocompleter.css",'text/css');
-  
+
   $document->addScript($this->baseurl."/components/com_projecteditor/js/ajax.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/tips.js", 'text/javascript');
   $document->addScript($this->baseurl."/components/com_projecteditor/js/projecteditor.js", 'text/javascript');
@@ -28,7 +28,7 @@ header("Expires: 0"); // Date in the past
 
 <?php JHTML::_('behavior.modal'); ?>
 
-<?php 
+<?php
   $oUser = $this->oUser;
   $oExperiment = unserialize($_SESSION[ExperimentPeer::TABLE_NAME]);
 
@@ -57,28 +57,28 @@ header("Expires: 0"); // Date in the past
     </div>
     <div class="clear"></div>
   </div>
-  
+
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="title" style="padding-bottom:1em;">
       <span style="font-size:16px;font-weight:bold;"><?php echo $oExperiment->getProject()->getTitle(); ?></span>
     </div>
-    
+
     <div id="overview_section" class="main section" style="width:100%;float:left;">
       <?php echo $this->strTabs; ?>
-      
+
       <div class="aside">
         <div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">
           <p style="margin-left:10px; margin-top:10px;"><?php echo $this->iEntityActivityLogViews; ?> Views</p>
           <p style="margin-left:10px;"><?php echo $this->iEntityActivityLogDownloads; ?> Downloads</p>
         </div>
-        
+
         <div id="editEntity" class="admin-options" style="margin-top:30px">
           <?php
             $strProjectDisplay = "/warehouse/experiment/".$oExperiment->getId()."/project/".$oExperiment->getProjectId();
           ?>
           <p class="edit"><a href="<?php echo $strProjectDisplay; ?>">View Experiment</a></p>
         </div>
-          
+
         <div id="curation">
           <span class="curationTitle">Curation in progress:</span>
           <?php if(StringHelper::hasText($this->mod_curationprogress)){ ?>
@@ -87,7 +87,7 @@ header("Expires: 0"); // Date in the past
             <p>No curation yet.</p>
           <?php } ?>
         </div>
-        
+
         <div class="whatisthis">
           <h4>What's this?</h4>
           <p>
@@ -103,22 +103,22 @@ header("Expires: 0"); // Date in the past
         <?php echo $this->strSubTabs; ?>
 
         <div id="about" style="padding-top:1em;">
-          <?php 
+          <?php
             if(isset($_SESSION["ERRORS"])){
               $strErrorArray = $_SESSION["ERRORS"];
-              if(!empty($strErrorArray)){?> 
+              if(!empty($strErrorArray)){?>
                 <p class="error">
-                  <?  
+                  <?
                     foreach($strErrorArray as $strError){
                       echo $strError."<br>";
                     }
                   ?>
-                </p> 
-              <?php	
+                </p>
+              <?php
               }
             }
           ?>
-          
+
           <table cellpadding="1" cellspacing="1" style="border-bottom:0px;border-top:0px;margin-top:20px;">
             <tr id="drawings">
               <td nowrap>
@@ -160,7 +160,7 @@ header("Expires: 0"); // Date in the past
                         $strOriginalPhotoName = $oDrawing->getName();
                         $strDrawingName = "display_".$oDrawing->getId()."_".$strOriginalPhotoName;
                         $oDrawing->setName($strDrawingName);
-                        
+
                         $strOriginalPhotoPath = $oDrawing->getPath();
                         $strDrawingPath = $strOriginalPhotoPath."/".Files::GENERATED_PICS;
                         $oDrawing->setPath($strDrawingPath);
@@ -182,7 +182,7 @@ header("Expires: 0"); // Date in the past
                             ?>
                           </td>
                           <td nowrap>
-                            [<a class="modal" href="/warehouse/projecteditor/editdrawing?format=ajax&projectId=<?php echo $this->iProjectId; ?>&experimentId=<?php echo $this->iExperimentId; ?>&dataFileId=<?php echo $oDrawing->getId(); ?>">Edit</a>]&nbsp&nbsp;
+                            [<a class="modal" href="/warehouse/projecteditor/editdrawing?format=ajax&projectId=<?php echo $this->iProjectId; ?>&experimentId=<?php echo $this->iExperimentId; ?>&dataFileId=<?php echo $oDrawing->getId(); ?>&return=<?php echo $this->strReturnUrl; ?>&index=<?php echo $this->iPageIndex; ?>&display=<?php echo $this->iDisplay; ?>">Edit</a>]&nbsp&nbsp;
                             <?php if($oAuthorizer->canDelete($oExperiment)){ ?>
                               [<a class="modal" href="/warehouse/projecteditor/delete?path=<?php echo $strOriginalPhotoPath; ?>&format=ajax&eid=<?php echo $oDrawing->getId(); ?>&etid=112&return=<?php echo $this->strReturnUrl; ?>" title="Remove <?php echo $strOriginalPhotoName; ?>">Delete</a>]
                             <?php } ?>
@@ -215,12 +215,12 @@ header("Expires: 0"); // Date in the past
               </td>
             </tr>
           </table>
-    
+
         </div>
       </div>
     </div>
     <div class="clear"></div>
-  </div> 
+  </div>
 </div>
 
 </form>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
@@ -12,7 +12,7 @@ require_once 'lib/data/EntityTypePeer.php';
 require_once 'api/org/nees/lib/interface/Data.php';
 
 class ProjectEditorViewEditDrawing extends JView{
-	
+
   function display($tpl = null){
     $strErrorArray = array();
 
@@ -39,6 +39,12 @@ class ProjectEditorViewEditDrawing extends JView{
     $this->assignRef("projectId", $iProjectId);
     $this->assignRef("experimentId", $iExperimentId);
 
+    $iIndex = JRequest::getInt("index", 0);
+    $iDisplay = JRequest::getInt("display", 25);
+    $strReturnUrl = JRequest::getString("return", "");
+
+    $strReturnUrl = $this->getReturnUrl($strReturnUrl, $iIndex, $iDisplay);
+
     /* @var $oModel ProjectEditorModelEditDrawing */
     $oModel =& $this->getModel();
 
@@ -58,9 +64,31 @@ class ProjectEditorViewEditDrawing extends JView{
     $strDrawingsDir = $oDataFile->getPath();
     $this->assignRef("strDrawingsDir", $strDrawingsDir);
 
+    $this->assignRef( "strReturnUrl", $strReturnUrl );
+
     parent::display();
   }
-  
+
+  private function getReturnUrl($strReturnUrl, $iIndex, $iDisplay){
+    if(StringHelper::hasText($strReturnUrl)){
+      if(StringHelper::contains($strReturnUrl, "\?")){
+        if(!StringHelper::contains($strReturnUrl, "index=") && !StringHelper::contains($strReturnUrl, "limit=")){
+          $strReturnUrl .= "&index=$iIndex&limit=$iDisplay";
+        }else{
+          if(!StringHelper::contains($strReturnUrl, "index=")){
+            $strReturnUrl .= "&index=$iIndex";
+          }
+          if(!StringHelper::contains($strReturnUrl, "limit=")){
+            $strReturnUrl .= "&limit=$iDisplay";
+          }
+        }
+      }else{
+        $strReturnUrl .= "?index=$iIndex&limit=$iDisplay";
+      }
+    }
+    return $strReturnUrl;
+  }
+
 }
 
 ?>

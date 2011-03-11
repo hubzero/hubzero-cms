@@ -132,7 +132,7 @@ class ProjectEditorViewAnalysis extends JView{
     $this->assignRef("iEntityActivityLogDownloads", $iEntityDownloads);
 
     $strProjectName = $oProject->getName();
-    
+
     JFactory::getApplication()->getPathway()->addItem($strProjectName,"/warehouse/projecteditor/project/$iProjectId");
     if($iExperimentId){
       $strExperimentTitle = $oExperiment->getTitle();
@@ -152,6 +152,9 @@ class ProjectEditorViewAnalysis extends JView{
       $strBlank = StringHelper::EMPTY_STRING;
       $this->assignRef( "mod_curationprogress", $strBlank );
     }
+
+    $this->assignRef("iDisplay", $iDisplay);
+    $this->assignRef("iPageIndex", $iPageIndex);
 
     $strReturnUrl = $oModel->getRawReturnURL();
     $this->assignRef( "strReturnUrl", $strReturnUrl );
