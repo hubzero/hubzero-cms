@@ -3512,6 +3512,8 @@ class ProjectEditorController extends JController{
       return;
     }
 
+    $strUrl = JRequest::getVar("return", "");
+
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel('EditDataFile');
 
@@ -3537,12 +3539,13 @@ class ProjectEditorController extends JController{
       return;
     }
 
-    $strUrl = "/warehouse/projecteditor/project/".$iProjectId."/analysis";
-    if($iExperimentId){
-      $strUrl = "/warehouse/projecteditor/project/".$iProjectId
+    if(!StringHelper::hasText($strUrl)){
+      $strUrl = "/warehouse/projecteditor/project/".$iProjectId."/analysis";
+      if($iExperimentId){
+        $strUrl = "/warehouse/projecteditor/project/".$iProjectId
                         ."/experiment/".$iExperimentId."/analysis";
+      }
     }
-
     $this->setRedirect($strUrl);
   }
 
@@ -3566,6 +3569,8 @@ class ProjectEditorController extends JController{
       echo ComponentHtml::showError("Request type not provided.");
       return;
     }
+
+    $strUrl = JRequest::getVar("return", "");
 
     /* @var $oModel ProjectEditorModelEditDataFile */
     $oModel =& $this->getModel('EditDataFile');
@@ -3612,10 +3617,12 @@ class ProjectEditorController extends JController{
       $oProjectHomepage->save();
     }
 
-    $strUrl = "/warehouse/projecteditor/project/".$iProjectId."/documentation";
-    if($iExperimentId){
-      $strUrl = "/warehouse/projecteditor/project/".$iProjectId
+    if(!StringHelper::hasText($strUrl)){
+      $strUrl = "/warehouse/projecteditor/project/".$iProjectId."/documentation";
+      if($iExperimentId){
+        $strUrl = "/warehouse/projecteditor/project/".$iProjectId
                         ."/experiment/".$iExperimentId."/documentation";
+      }
     }
 
     $this->setRedirect($strUrl);
@@ -3633,6 +3640,8 @@ class ProjectEditorController extends JController{
       echo "Experiment not selected.";
       return;
     }
+
+    $strUrl = JRequest::getVar("return", "");
 
     /* @var $oModel ProjectEditorModelEditDrawing */
     $oModel =& $this->getModel('EditDrawing');
@@ -3690,10 +3699,12 @@ class ProjectEditorController extends JController{
       }
     }
 
+    if(!StringHelper::hasText($strUrl)){
     $strUrl = "/warehouse/projecteditor/project/"
                         .$oExperiment->getProject()->getId()
                         ."/experiment/".$oExperiment->getId()
                         ."/drawings";
+    }
 
     $this->setRedirect($strUrl);
   }
