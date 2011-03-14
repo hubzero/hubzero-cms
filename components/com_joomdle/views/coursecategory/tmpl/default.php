@@ -68,7 +68,7 @@ foreach ($this->cursos as  $curso) : ?>
         $urlSafeString = "/index.php?option=com_joomdle&view=detail&cat_id=".$curso['cat_id']."&course_id=".$curso['remoteid']."&Itemid=".$itemid;
 		$url = JRoute::_($urlSafeString); 
 		
-		$wrapperSafeString = "/index.php?option=com_joomdle&task=enrol&course_id=".$curso['remoteid']."&Itemid=".$itemid;
+		$wrapperSafeString = "/index.php?option=com_joomdle&task=course&course_id=".$curso['remoteid']."&Itemid=".$itemid;
 		$wrapper = JRoute::_($wrapperSafeString); 
 		?>
 		<div class="joomdlecourseheader">

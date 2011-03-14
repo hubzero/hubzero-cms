@@ -59,13 +59,43 @@ class JoomdleController extends JController {
 		$course_id = JRequest::getVar( 'course_id' );
 		$course_id = (int) $course_id;
 		$params = &$mainframe->getParams();
-
-		$user = & JFactory::getUser();
 		$username = $user->get('username');
 		JoomdleHelperContent::enrolUser ($username, $course_id);
 
 		// Redirect to course
 
+		$session                =& JFactory::getSession();
+		$token = md5 ($session->getId());
+		
+		$itemid = JRequest::getVar( 'Itemid' );
+
+		$open_in_wrapper = JRequest::getVar( 'wrapper', '' );
+		$params = &$mainframe->getParams();
+		if ($open_in_wrapper == '')
+		{		if ($params->get( 'linkstarget' ) == 'wrapper')
+			$open_in_wrapper = 1;
+		else
+			$open_in_wrapper = 0;
+		}
+		$moodle_auth_land_url = $params->get( 'MOODLE_URL' ).'auth/joomdle/land.php';
+
+		$url = $moodle_auth_land_url."?username=$username&token=$token&mtype=course&id=$course_id&use_wrapper=$open_in_wrapper&Itemid=$itemid";
+
+		$mainframe->redirect ($url);
+	}
+	
+	function course()
+	{
+		global $mainframe;
+		$user = & JFactory::getUser();
+
+		if (!$user->id)
+			$mainframe->redirect(JURI::base ().'index.php?option=com_user&view=login');
+		$course_id = JRequest::getVar( 'course_id' );
+		$course_id = (int) $course_id;
+		$params = &$mainframe->getParams();
+		$username = $user->get('username');
+		
 		$session                =& JFactory::getSession();
 		$token = md5 ($session->getId());
 		
