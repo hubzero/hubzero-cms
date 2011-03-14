@@ -966,6 +966,10 @@ class WikiParser
 			
 			$macroname = $matches[1].'Macro';
 
+			if (!$this->domain && strtolower(substr($macroname, 0, 5)) == 'group') {
+				return '<strong>Macro "'.$macroname.'" can only be used in a group wiki.</strong>';
+			}
+
 			if (class_exists($macroname)) {
 				$macro = new $macroname();
 
