@@ -54,7 +54,10 @@ function GroupsBuildRoute(&$query)
         $segments[] = $query['pagename'];
         unset($query['pagename']);
     }
- 
+ 	if (!empty($query['roomid'])) {
+        $segments[] = $query['roomid'];
+        unset($query['roomid']);
+    }
     return $segments;
 }
 
@@ -94,6 +97,8 @@ function GroupsParseRoute($segments)
 			$vars['pagename'] = array_pop($segments);
 			$s = implode(DS,$segments);
 			$vars['scope'] = $s;
+		} elseif ($segments[1] == 'chat') {
+			$vars['roomid'] = $segments[2]; 
 		} else {
 			$vars['task'] = $segments[2];
 		}

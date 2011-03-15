@@ -169,3 +169,42 @@
 	padding:2px 0;
 	}
 	
+	
+/* Wiki Resource Tool embed */
+.resource {
+	}
+.resource .extra {
+	display:none;
+	}
+.tool_resource {
+	display:block;
+	background:#fff;
+	border:1px solid #fff;
+	color:#fff;
+	padding:5px;
+	overflow:hidden;
+	}
+.tool_resource .extra {
+	display:none;
+	}
+.tool_resource:hover {
+	background:#444;
+	border:1px solid #000;
+	color:#fff;
+	}
+.tool_resource:hover .title {
+	color:#fff;
+	}
+.tool_resource:hover .extra {
+	color:#ccc;
+	display:block;
+	}
+.tool_resource .screenshot {
+	float:left;
+	margin-right:10px;
+	}
+.tool_resource .title {
+	float:left;
+	color:#444;
+	font-weight:bold;
+	}	

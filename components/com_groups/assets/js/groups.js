@@ -191,6 +191,15 @@ HUB.Groups = {
 		HUB.Groups.Pick_Logo();
 		HUB.Groups.Pick_Content();
 		
+		//function that hides all p tags without content
+		$$('p').each(function(el) {
+			var text = el.innerHTML;
+			if(escape(text) == '%3Cbr%3E%0A') {
+				el.addClass('hide');
+			}
+		});
+		
+		
 		//group features screenshots
 		$$('a.screenshot').addEvent('click', function(e) {
 			new Event(e).stop();

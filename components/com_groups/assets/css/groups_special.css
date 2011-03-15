@@ -4,15 +4,52 @@
 #help-pane,
 #after-clear,
 #trail,
-#wrap #bottom-nav {
+#wrap 
+#bottom-nav,
+#footer {
 	display:none;
 }
 
-#page_container.hasToolbar {
-	margin-top:40px;
+
+/* Hub within a Group Styling */
+#content_banner {
+	border:1px solid #ccc;
+	overflow:hidden;
+	padding:10px;
+	background:#efefef;
+	-webkit-border-radius:5px;
+	}
+#content_banner .second {
+	border-left:1px solid #ccc;
+	}
+#content_banner h2,
+#content_banner h3 {
+	margin-top:0;
+	border-bottom:none;
+	}
+
+/* Enlarge size for logo */
+#page_identity {
+	margin:15px 20px 10px 10px;
+	}
+#page_identity img { 
+	width:100%;
+	max-height:150px;
+	}
+
+/* */
+#content_aside {
+	display:none;
+	border:1px solid #F00;
+	}
+#content_main {
+	width:100%;
 }
 
-
+/* Nano Toolbar */
+#page_container.hasToolbar {
+	margin-top:40px;
+	}
 #nanoHUB_toolbar { 
 	position:absolute;
 	z-index:888; 
@@ -25,18 +62,15 @@
 	-webkit-border-bottom-left-radius:5px;
 	-webkit-box-shadow: 0px 0px 3px #444;
 	*/
-}
-
+	}
 #nanoHUB_toolbar ul {
 	margin:0px; 
 	list-style:none;
 	float:right;
-}
-
+	}
 #nanoHUB_toolbar ul li {
 	margin:0px;
-}
-
+	}
 #nanoHUB_toolbar ul li a {
 	display:block;
 	padding:10px 40px 10px 15px;
