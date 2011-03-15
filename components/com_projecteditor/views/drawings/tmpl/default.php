@@ -168,7 +168,7 @@ header("Expires: 0"); // Date in the past
                       ?>
                         <tr class="<?php echo $strBgColor; ?>">
                           <td width="1"><input id="<?php echo $this->iExperimentId; ?>" type="checkbox" name="dataFile[]" value="<?php echo $oDrawing->getId(); ?>" onClick="setFilesToDelete('frmProject', 'dataFile[]', 'cbxDelete', <?php echo $this->iExperimentId; ?>, 'fileDeleteLink', 112);"/></td>
-                          <td nowrap><a rel="lightbox[drawings]" title="<?php echo $strDrawingFriendlyPath; ?>" href="<?php echo $strDrawingUrl; ?>" title=""><?php echo $oDrawing->getTitle(); ?></a></td>
+                          <td><a rel="lightbox[drawings]" title="<?php echo $strDrawingFriendlyPath; ?>" href="<?php echo $strDrawingUrl; ?>" title=""><?php echo $oDrawing->getTitle(); ?></a></td>
                           <td><?php echo $oDrawing->getDescription(); ?></td>
                           <td nowrap>
                             <?php
