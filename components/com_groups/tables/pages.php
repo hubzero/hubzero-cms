@@ -193,7 +193,7 @@ Class GroupPages extends JTable
 			//split the picture into parts
 			$pic_parts = explode(".", $picture);
 			
-			if(strlen($uid) == 3) {
+			if(strlen($uid) == 4) {
 				$uid = '0'.$uid;
 			}
 			
