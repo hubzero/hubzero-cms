@@ -54,7 +54,7 @@ class JoomdleController extends JController {
 		$user = & JFactory::getUser();
 
 		if (!$user->id)
-			$mainframe->redirect(JURI::base ().'index.php?option=com_user&view=login');
+			$mainframe->redirect(JURI::base ().'/login');
 
 		$course_id = JRequest::getVar( 'course_id' );
 		$course_id = (int) $course_id;
@@ -90,7 +90,7 @@ class JoomdleController extends JController {
 		$user = & JFactory::getUser();
 
 		if (!$user->id)
-			$mainframe->redirect(JURI::base ().'index.php?option=com_user&view=login');
+			$mainframe->redirect(JURI::base ().'/login');
 		$course_id = JRequest::getVar( 'course_id' );
 		$course_id = (int) $course_id;
 		$params = &$mainframe->getParams();
