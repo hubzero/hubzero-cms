@@ -3312,7 +3312,11 @@ class ProjectEditorController extends JController{
       $sTypeName = $cells[$row][2];
 
       if( ! isset($sTypeNames[strtolower($sTypeName)])) {
-        echo ComponentHtml::showError("Error Line $row: " . $strPlanType . "Type cannot be found in database.");
+        $strEmptyCell = StringHelper::EMPTY_STRING;
+        if(!StringHelper::hasText($sTypeName)){
+          $strEmptyCell = "A cell is empty.";
+        }
+        echo ComponentHtml::showError("Error Line $row: " . $strPlanType . "Type cannot be found in database.  $strEmptyCell");
         return;
       }
 
