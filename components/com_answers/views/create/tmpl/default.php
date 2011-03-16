@@ -28,7 +28,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
-
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=myquestions'); ?>" class="myquestions"><span><?php echo JText::_('COM_ANSWERS_MY_QUESTIONS'); ?></span></a></li>
@@ -75,6 +74,9 @@ if (count($tf) > 0) {
 				<textarea name="tags" id="tags-men" rows="6" cols="35"><?php echo $this->tag; ?></textarea>
 <?php } ?>
 			</label>
+			<?php if (($resid = JRequest::getVar( 'resid',"" )) != "") {?>
+			<input type="hidden" name="resid" value="<?php echo $resid;?>" />
+			<?php }?>
 			<label>
 				<?php echo JText::_('COM_ANSWERS_ASK_ONE_LINER'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
 				<input type="text" name="subject" value="" />

@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <h3>
 	<a name="questions"></a>
-	<span><a href="/answers/question/new/?tag=tool:<?php echo $this->resource->alias; ?>" class="add"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION_ABOUT_TOOL'); ?></a></span>
+	<span><a href="/answers/question/new/?resid=<?php echo ($this->resource->type == 7)? "tool:" . $this->resource->alias : "resource:" . $this->resource->id; ?>" class="add"><?php echo ($this->resource->type == 7)? JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION_ABOUT_TOOL'): JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION_ABOUT_RESOURCE'); ?></a></span>
 	<?php echo JText::_('PLG_RESOURCES_QUESTIONS_RECENT_QUESTIONS'); ?> 
 </h3>
 <?php

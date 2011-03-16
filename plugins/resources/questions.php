@@ -75,9 +75,10 @@ class plgResourcesQuestions extends JPlugin
 		}
 		
 		// Display only for tools
-		if ($resource->type != 7) {
-			return $arr;
-		}
+		// (Restriction removed 3/16/11 by Jason Lambert)
+		//if ($resource->type != 7) {
+		//	return $arr;
+		//}
 
 		$database =& JFactory::getDBO();
 

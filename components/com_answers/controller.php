@@ -1086,6 +1086,11 @@ class AnswersController extends JObject
 		$tags  = JRequest::getVar( 'tags', '' );
 		$funds = JRequest::getVar( 'funds', '0' );
 		$reward = JRequest::getVar( 'reward', '0' );
+		$resid = JRequest::getVar( 'resid', "" );
+		
+		if ($resid != "")
+			$tags .= ", ".$resid;
+
 		
 		// If offering a reward, do some checks
 		if ($reward) {

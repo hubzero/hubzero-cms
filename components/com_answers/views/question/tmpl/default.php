@@ -45,7 +45,6 @@ $votes = ($this->question->helpful) ? $this->question->helpful: '0';
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
-
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=myquestions'); ?>" class="myquestions"><span><?php echo JText::_('COM_ANSWERS_MY_QUESTIONS'); ?></span></a></li>
