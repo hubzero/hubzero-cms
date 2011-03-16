@@ -3461,7 +3461,10 @@ public static function getMovieByDirectory($p_strCurrentDirectory, $p_iLowerLimi
       $strQuery = "select count(df.id) as TOTAL
                    from data_file df, data_file_link dfl
                    where df.path like '$p_strCurrentDirectory%'
-                     and df.document_format_id in (select et.document_format_id from document_format et where et.mime_type like 'video/%')
+                     and (
+                       df.document_format_id in (select et.document_format_id from document_format et where et.mime_type like 'video/%') or
+                       df.document_format_id = (select et.document_format_id from document_format et where lower(et.default_extension) = 'wmv')
+                     )
                      and df.id = dfl.id
                      and df.deleted = 0 ";
 
