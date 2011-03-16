@@ -725,9 +725,18 @@ class SitesController extends JController
         $submitbutton = JRequest::getVar('submitbutton', '');
         if($submitbutton == 'Cancel')
         {
-            JRequest::setVar('view','sensors');
-            $this->_redirect =  base64_encode(JRoute::_('index.php?option=com_sites&view=calibration&id=' . $facilityID . '&sensorid=' . $sensorID . '&calibrationid=' . $calibrationID, false ));
-            $this->redirect();
+            if($calibrationID == -1) // user was adding a calibration, don't send them to
+            {
+                $this->_redirect =  base64_encode(JRoute::_('index.php?option=com_sites&view=sensor&id=' . $facilityID . '&sensorid=' . $sensorID, false ));
+                $this->redirect();
+
+            }
+            else
+            {
+                $this->_redirect =  base64_encode(JRoute::_('index.php?option=com_sites&view=calibration&id=' . $facilityID . '&sensorid=' . $sensorID . '&calibrationid=' . $calibrationID, false ));
+                $this->redirect();
+            }
+
             return;
 	    // Will we get here?
         }
