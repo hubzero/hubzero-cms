@@ -19,7 +19,7 @@ function getAjaxRequest(){
 }
 
 /**
- * Perform an ajax request.  
+ * Perform an ajax request.
  * @param p_sRequestUrl  - URL to process
  * @param p_sResonseDivId - The div to place the results
  * @return
@@ -30,7 +30,7 @@ function getAjaxGet(p_sRequestUrl, p_sResonseDivId){
     alert ("Your browser does not support AJAX!");
     return;
   }
-  
+
   xmlHttp.onreadystatechange = function(){
     if (xmlHttp.readyState==4){
       document.getElementById(p_sResonseDivId).innerHTML = xmlHttp.responseText;
@@ -58,28 +58,28 @@ function getMootoolsForm(p_sFormId, p_sTargetId, p_sAction){
 	 * Prevent the submit event
 	 */
 	new Event(e).stop();
- 
+
 	var bFormIsChildOfTarget = false;
 	var oTarget = document.getElementById(p_sTargetId);
 	if(oTarget.getElementById(p_sFormId)!=null){
 	  bFormIsChildOfTarget = true;
 	}
-	
+
 	/**
-	 * If the form is not a child of the target, 
-	 * this empties the result div and shows 
+	 * If the form is not a child of the target,
+	 * this empties the result div and shows
 	 * the spinning indicator
      */
 	var sResultsDiv = null;
 	if(!bFormIsChildOfTarget){
-	  sResultsDiv = $(p_sTargetId).empty().addClass('ajax-loading');	
+	  sResultsDiv = $(p_sTargetId).empty().addClass('ajax-loading');
 	}else{
 	  sResultsDiv = $(p_sTargetId);
 	}
-	
+
 	/**
 	 * send takes care of encoding and returns the Ajax instance.
-	 * if the form is not a child of the target, onComplete 
+	 * if the form is not a child of the target, onComplete
 	 * removes the spinner from the resulting div.
 	 */
 	this.send({
@@ -95,7 +95,7 @@ function getMootoolsForm(p_sFormId, p_sTargetId, p_sAction){
 
 function saveInput(p_sUrlPrefix, p_sInputField, p_sResultsDivId){
   var sUrl = p_sUrlPrefix+"&"+p_sInputField+"="+document.getElementById(p_sInputField).value;
-  getMootools(sUrl, p_sResultsDivId);  
+  getMootools(sUrl, p_sResultsDivId);
 }
 
 function computeDownloadSize(field, p_strCurrentValueId, p_iMaxSize, p_strMaxSize, p_sRequestUrl, p_sResonseDivId){
@@ -122,8 +122,9 @@ function computeDownloadSize(field, p_strCurrentValueId, p_iMaxSize, p_strMaxSiz
 
       iCurrentSum = strResponseArray[0];
       document.getElementById(p_strCurrentValueId).value = iCurrentSum;
-      
-      strMessage = "Approximate Download File: "+strResponseArray[1]+" (max is "+p_strMaxSize+")";
+
+      //strMessage = "Approximate Download File: "+strResponseArray[1]+" (max is "+p_strMaxSize+")"; 
+      strMessage = "Approximate Download File: "+strResponseArray[1];
       document.getElementById(p_sResonseDivId).innerHTML = strMessage;
     }
   }
@@ -156,7 +157,8 @@ function computeDownloadSizeBulk(p_bAdd, p_strDataFileIds, p_strCurrentValueId, 
       iCurrentSum = strResponseArray[0];
       document.getElementById(p_strCurrentValueId).value = iCurrentSum;
 
-      strMessage = "Approximate Download File: "+strResponseArray[1]+" (max is "+p_strMaxSize+")";
+      //strMessage = "Approximate Download File: "+strResponseArray[1]+" (max is "+p_strMaxSize+")";
+      strMessage = "Approximate Download File: "+strResponseArray[1];
       document.getElementById(p_sResonseDivId).innerHTML = strMessage;
     }
   }

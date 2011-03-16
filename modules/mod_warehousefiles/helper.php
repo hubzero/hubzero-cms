@@ -1322,11 +1322,21 @@ ENDHTML;
   }
 
   public function getDownloadDiv($p_iMaxDownloadSize, $p_strMaxDownloadSize, $p_strForm="frmData"){
+    /*
     $strReturn = <<< ENDHTML
                 <div id="downloads">
                   <input type="hidden" id="downloadSum" name="downloadSum" value="0"/>
                   <div id="downloadButton" class="warehouseFloat warehouseMargin"><input type="button" value="Download" onClick="downloadFileBrowser('$p_strForm', 'cbxDataFile[]', '/warehouse/download', 'downloadSum', $p_iMaxDownloadSize);"/></div>
                   <div id="approxDownloadSize" class="warehouseFloat">Approximate Download File: 0 b (max is $p_strMaxDownloadSize)</div>
+                  <div class="clearFloat"></div>
+                </div>
+ENDHTML;
+     */
+    $strReturn = <<< ENDHTML
+                <div id="downloads">
+                  <input type="hidden" id="downloadSum" name="downloadSum" value="0"/>
+                  <div id="downloadButton" class="warehouseFloat warehouseMargin"><input type="button" value="Download" onClick="downloadFileBrowser('$p_strForm', 'cbxDataFile[]', '/warehouse/download', 'downloadSum', $p_iMaxDownloadSize);"/></div>
+                  <div id="approxDownloadSize" class="warehouseFloat">Approximate Download File: 0 b</div>
                   <div class="clearFloat"></div>
                 </div>
 ENDHTML;
