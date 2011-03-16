@@ -31,11 +31,13 @@ class WarehouseViewPhotos extends JView {
         $iUpperLimit = $oPhotosModel->computeUpperLimit($iPageIndex, $iDisplay);
         //echo "limits=".$iLowerLimit."/".$iUpperLimit."<br>";
 
-        $oPhotoDataFileArray = $oPhotosModel->findDataFileByMimeType($iProjectId, $iExperimentId, 0, 0, $iLowerLimit, $iUpperLimit);
+        //$oPhotoDataFileArray = $oPhotosModel->findDataFileByMimeType($iProjectId, $iExperimentId, 0, 0, $iLowerLimit, $iUpperLimit);
+        $oPhotoDataFileArray = $oPhotosModel->findAdditionalExperimentPhoto($iProjectId, $iExperimentId, 0, 0, $iLowerLimit, $iUpperLimit);
         $_REQUEST[DataFilePeer::TABLE_NAME] = serialize($oPhotoDataFileArray);
         //echo "photo count=".sizeof($oPhotoDataFileArray)."<br>";
 
-        $iResultsCount = $oPhotosModel->findDataFileByMimeTypeCount($iProjectId, $iExperimentId);
+        //$iResultsCount = $oPhotosModel->findDataFileByMimeTypeCount($iProjectId, $iExperimentId);
+        $iResultsCount = $oPhotosModel->findAdditionalExperimentPhotoCount($iProjectId, $iExperimentId);
         //echo "results = ".$iResultsCount."<br>";
         $this->assignRef("photoCount", $iResultsCount);
 

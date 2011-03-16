@@ -1236,6 +1236,154 @@ class DataFilePeer extends BaseDataFilePeer {
         return $iCount;
     }
 
+    public static function findAdditionalExperimentPhoto($p_iProjectId, $p_iExperimentId, $p_iTrialId=0, $p_iRepetitionId=0, $p_iLowerLimit=0, $p_iUpperLimit = 24) {
+        require_once 'api/org/nees/util/PhotoHelper.php';
+
+        $strQuery = "SELECT *
+                     FROM (
+                       select df.id, df.name, df.description, df.path, df.title, df.thumb_id, row_number()
+                       OVER (ORDER BY df.path, df.name) as rn
+                       from data_file_link dfl
+                       inner join data_file df on dfl.id = df.id
+                       left outer join entity_type et on df.usage_type_id = et.id and et.n_table_name not like 'Drawing%' and et.n_table_name !='Experiment Image' and et.n_table_name != 'Film Strip'
+                       where df.id = dfl.id
+                         and df.deleted=0
+                         and df.directory=0
+                         and dfl.deleted=0
+                         and dfl.proj_id=?
+                         and dfl.exp_id=?";
+        if ($p_iTrialId > 0) {
+            $strQuery .= " and dfl.trial_id=?";
+        }
+        if ($p_iRepetitionId > 0) {
+            $strQuery .= " and dfl.rep_id=?";
+        }
+
+        $strQuery .= "  and(
+                             (lower(df.name) like '%.png') or
+                             (lower(df.name) like '%.jpg') or
+                             (lower(df.name) like '%.gif')
+                           )
+                        and df.path not like '%".Files::GENERATED_PICS."'
+                        )
+                        WHERE rn BETWEEN $p_iLowerLimit AND $p_iUpperLimit";
+
+        $oReturnArray = array();
+
+        $oConnection = Propel::getConnection();
+        $oStatement = $oConnection->prepareStatement($strQuery);
+        $oStatement->setInt(1, $p_iProjectId);
+        $oStatement->setInt(2, $p_iExperimentId);
+        if ($p_iTrialId > 0) {
+            $oStatement->setInt(3, $p_iTrialId);
+        }
+        if ($p_iRepetitionId > 0) {
+            $oStatement->setInt(4, $p_iRepetitionId);
+        }
+        $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+
+        $oThumbEntityType = EntityTypePeer::findByTableName("Thumbnail");
+        $oDisplayEntityType = EntityTypePeer::findByTableName("Data Photo");
+
+        while ($oResultSet->next()) {
+            $strFileArray = array();
+            $strFileArray['ID'] = $oResultSet->getInt("ID");
+            $strFileArray['NAME'] = $oResultSet->getString("NAME");
+            $strFileArray['PATH'] = $oResultSet->getString("PATH");
+            $strFileArray['TITLE'] = $oResultSet->getString("TITLE");
+            $strFileArray['DESCRIPTION'] = $oResultSet->getString("DESCRIPTION");
+            $strFileArray['THUMB_ID'] = $oResultSet->getInt("THUMB_ID");
+
+            $bMkDir = false;
+
+            $strSource = $strFileArray['PATH'] . "/" . $strFileArray['NAME'];
+            $thumbpath = $strFileArray['PATH'] . "/" . Files::GENERATED_PICS;
+            if(!is_dir($thumbpath)){
+              $oFileCommand = FileCommandAPI::create($thumbpath);
+              $bMkDir = $oFileCommand->mkdir();
+            }
+
+            $bThumbCreated = false;
+            $bDisplayCreated = false;
+
+            $thumbname = "thumb_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
+            $strDisplayName = "display_" . $strFileArray['ID'] . "_" . $strFileArray['NAME'];
+            $fullName = $thumbpath . "/" . $thumbname;
+            if (!file_exists($fullName)) {
+                $bThumbCreated = PhotoHelper::resize($strSource, 90, 75, $fullName);
+                if ($bThumbCreated && file_exists($fullName)) {
+
+                    $oThumbDataFile = new DataFile();
+                    $oThumbDataFile = $oThumbDataFile->newDataFileByFilesystem($thumbname, $thumbpath, false, $strFileArray['TITLE'], $strFileArray['DESCRIPTION'], $oThumbEntityType->getId());
+
+                    $strFullName = $thumbpath . "/" . $strDisplayName;
+                    $bDisplayCreated = PhotoHelper::resize($strSource, 800, 600, $strFullName);
+                    if($bDisplayCreated){
+                      $oDisplayDataFile = new DataFile();
+                      $oDisplayDataFile = $oDisplayDataFile->newDataFileByFilesystem($strDisplayName, $thumbpath, false, $strFileArray['TITLE'], $strFileArray['DESCRIPTION'], $oDisplayEntityType->getId());
+                    }
+                }
+            }
+
+            if (file_exists($fullName)) {
+                $strCaption = (strlen($strFileArray['DESCRIPTION']) === 0) ? $strFileArray['NAME'] : $strFileArray['DESCRIPTION'];
+                $strCaption = str_replace("_", " ", $strCaption);
+                $strFileArray['THUMBNAIL'] = "<div style='color:green'><a style='border-bottom:0px;' rel='lightbox[hub]' title='" . $strFileArray['DESCRIPTION'] . "' target='_blank' href='" . self::getUrl($thumbpath, $strDisplayName) . "'><img src='" . self::getUrl($thumbpath, $thumbname) . "'  alt=''/></a><br>" . StringHelper::neat_trim($strCaption, 15, $strDelimiter = '...') . "</div>";
+            }
+
+            array_push($oReturnArray, $strFileArray);
+
+            if($bThumbCreated || $bDisplayCreated || $bMkDir){
+              FileHelper::fixPermissions($thumbpath);
+            }
+        }
+        return $oReturnArray;
+    }
+
+    public static function findAdditionalExperimentPhotoCount($p_iProjectId, $p_iExperimentId, $p_iTrialId=0, $p_iRepetitionId=0) {
+        $strQuery = "select count(distinct df.id) as TOTAL
+                     from data_file_link dfl
+                     inner join data_file df on dfl.id = df.id
+                     left outer join entity_type et on df.usage_type_id = et.id and et.n_table_name not like 'Drawing%' and et.n_table_name !='Experiment Image' and et.n_table_name != 'Film Strip'
+                     where df.deleted=0
+                       and df.directory=0
+                       and df.path not like '%/".Files::GENERATED_PICS."'
+                       and dfl.deleted=0
+                       and dfl.proj_id=?
+                       and dfl.exp_id=?";
+        if ($p_iTrialId > 0) {
+            $strQuery .= " and dfl.trial_id=?";
+        }
+        if ($p_iRepetitionId > 0) {
+            $strQuery .= " and dfl.rep_id=?";
+        }
+        $strQuery .= " and(
+                             (lower(df.name) like '%.png') or
+                             (lower(df.name) like '%.jpg') or
+                             (lower(df.name) like '%.gif')
+                       )";
+
+        $iCount = 0;
+
+        //echo $strQuery."<br>";
+
+        $oConnection = Propel::getConnection();
+        $oStatement = $oConnection->prepareStatement($strQuery);
+        $oStatement->setInt(1, $p_iProjectId);
+        $oStatement->setInt(2, $p_iExperimentId);
+        if ($p_iTrialId > 0) {
+            $oStatement->setInt(3, $p_iTrialId);
+        }
+        if ($p_iRepetitionId > 0) {
+            $oStatement->setInt(4, $p_iRepetitionId);
+        }
+        $oResultSet = $oStatement->executeQuery(ResultSet::FETCHMODE_ASSOC);
+        while ($oResultSet->next()) {
+            $iCount = $oResultSet->getInt("TOTAL");
+        }
+        return $iCount;
+    }
+
     public static function findProjectPhotoDataFiles($p_iProjectId, $p_iLowerLimit=0, $p_iUpperLimit = 24) {
         require_once 'api/org/nees/util/PhotoHelper.php';
 
@@ -2365,8 +2513,8 @@ class DataFilePeer extends BaseDataFilePeer {
                     where df.id = dfl.id
                       and dfl.proj_id=?
                       and dfl.exp_id=?
-                      and dfl.trial_id=?
-                      and dfl.rep_id=?
+                      and dfl.trial_id>=?
+                      and dfl.rep_id>=?
                       and df.deleted = ?
                       and df.document_format_id = dfo.document_format_id
                       and (dfo.mime_type like $p_strMimeType or dfo.default_extension in ($p_strCommaSeparatedVideoExtensions))";

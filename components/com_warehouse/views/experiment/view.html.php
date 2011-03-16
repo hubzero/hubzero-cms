@@ -88,7 +88,8 @@ class WarehouseViewExperiment extends JView{
     $oMaterialArray = $oExperimentModel->findMaterialsByExperiment($oExperiment->getId());
     $_REQUEST[MaterialPeer::TABLE_NAME] = serialize($oMaterialArray);
 
-    $iPhotoFileCount = $oExperimentModel->findDataFileByMimeTypeCount($iProjectId, $oExperiment->getId());
+    //$iPhotoFileCount = $oExperimentModel->findDataFileByMimeTypeCount($iProjectId, $oExperiment->getId());
+    $iPhotoFileCount = $oExperimentModel->findAdditionalExperimentPhotoCount($iProjectId, $oExperiment->getId());
     $this->assignRef( "photoCount", $iPhotoFileCount );
 
     // update and get the page views
