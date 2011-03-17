@@ -1,0 +1,13 @@
+.group_resources {
+	}
+.group_resources .subject {
+	border:none;
+	background:none;
+	padding:0;
+	}
+.group_resources .aside {
+	padding-top:0;
+	}
+.group_resources .section-header {
+	display:none;
+	}

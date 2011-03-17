@@ -91,10 +91,30 @@ class plgGroupsMembers extends JPlugin
 			
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
+			
+			//Create user object
+			$juser =& JFactory::getUser();
+		
+			//get the group members
+			$members = $group->get('members');
 
 			//if set to nobody make sure cant access
 			if($group_plugin_acl == 'nobody') {
-				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_OFF',ucfirst($active))."</p>";
+				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active))."</p>";
+				return $arr;
+			}
+			
+			//check if guest and force login if plugin access is registered or members
+			if ($juser->get('guest') && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) {
+				ximport('Hubzero_Module_Helper');
+				$arr['html']  = "<p class=\"warning\">".JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active))."</p>";
+				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
+				return $arr;
+			}
+			
+			//check to see if user is member and plugin access requires members
+			if(!in_array($juser->get('id'),$members) && $group_plugin_acl == 'members' && $authorized != 'admin') {
+				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))."</p>";
 				return $arr;
 			}
 			
