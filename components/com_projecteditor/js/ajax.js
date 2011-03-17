@@ -68,14 +68,21 @@ function suggest(p_sRequestUrl, p_sResonseDivId, p_sInputValue, p_sInputFieldId)
 	  //alert("results: "+xmlHttp.responseText);
 	  for(i=0; i < str.length - 1; i++) {
 		if(str[i].length > 0){
-	      //Build our element string.  This is cleaner using the DOM, but			//IE doesn't support dynamically added attributes.
-	      var suggest = '<div onmouseover="javascript:suggestOver(this);" ';
+	      //Build our element string.  This is cleaner using the DOM, but
+              //IE doesn't support dynamically added attributes.
+              var suggest = "";
+              if(str[i] != "more..."){
+	        suggest = '<div onmouseover="javascript:suggestOver(this);" ';
 	      suggest += 'onmouseout="javascript:suggestOut(this);" ';
 	      suggest += "onclick=\"javascript:setSuggestedValue('"+p_sResonseDivId+"','"+p_sInputFieldId+"',this.innerHTML);\" ";
 	      //suggest += "onClick=\"javascript:alert(this.innerHTML);\" ";
 	      suggest += 'class="suggest_link">' + str[i] + '</div>';
 	      ss.innerHTML += suggest;
+              }else{
+                suggest = '<div class="suggest_link suggest_more">' + str[i] + '</div>';
+                ss.innerHTML += suggest;
 		}
+	  }
 	  }
 	  //alert(ss.innerHTML);
     }
@@ -398,15 +405,54 @@ function addInputViaMootools(p_sUrl, p_strFieldName, p_strFieldId, p_sTargetId){
  * @param p_sUrl - request url
  * @param p_strFieldName - name of field tag (also serves as session key)
  * @param p_strFieldId - id of field tag
+ * @param p_strFieldName2 - name of field tag (also serves as session key)
+ * @param p_strFieldId2 - id of field tag
  * @param p_sTargetId - where to display results
  * @return
  */
 function addInputPairViaMootools(p_sUrl, p_strFieldName, p_strFieldId, p_strFieldName2, p_strFieldId2, p_sTargetId){
 	var strValue = document.getElementById(p_strFieldId).value;
 	var strValue2 = document.getElementById(p_strFieldId2).value;
+  if(p_strFieldName=="sponsor"){
+    if(strValue.toLowerCase()=="nsf" && (strValue2.length==0 || strValue2.toLowerCase()=="award number")){
+      alert(p_strFieldName+" and "+p_strFieldName2+" should not be blank for NSF awards. "+strValue);
+      return;
+    }
+
+    if(strValue2.toLowerCase()=="award number"){
+      strValue2 = "";
+    }
+
+    addInputPair(p_sUrl, p_strFieldName, p_strFieldId, p_strFieldName2, p_strFieldId2, p_sTargetId, strValue, strValue2);
+  }else{
 	  if(strValue.length > 0 && strValue2.length > 0){
+      addInputPair(p_sUrl, p_strFieldName, p_strFieldId, p_strFieldName2, p_strFieldId2, p_sTargetId, strValue, strValue2);
+    }else{
+      alert(p_strFieldName+" and "+p_strFieldName2+" should not be blank.");
+    }
+  }
+//  if(strValue.length > 0 && strValue2.length > 0){
+//    $(p_sTargetId).empty().addClass('ajax-loading');
+//	  var strUrl = p_sUrl+"&field1="+p_strFieldName+"&value1="+strValue+"&field2="+p_strFieldName2+"&value2="+strValue2;
+//      var a = new Ajax( strUrl, {
+//            method: 'get',
+//            onComplete: function( response ) {
+//              // Other code to execute when the request completes.
+//              $(p_sTargetId).removeClass('ajax-loading').setHTML( response );
+//              if( response != null ){
+//                document.getElementById(p_strFieldId).value="";
+//                document.getElementById(p_strFieldId2).value="";
+//              }
+//            }
+//      }).request();
+//  }else{
+//    alert(p_strFieldName+" and "+p_strFieldName2+" should not be blank");
+//  }
+}
+
+function addInputPair(p_sUrl, p_strFieldName, p_strFieldId, p_strFieldName2, p_strFieldId2, p_sTargetId, p_strValue, p_strValue2){
 	  $(p_sTargetId).empty().addClass('ajax-loading');
-	  var strUrl = p_sUrl+"&field1="+p_strFieldName+"&value1="+strValue+"&field2="+p_strFieldName2+"&value2="+strValue2;
+  var strUrl = p_sUrl+"&field1="+p_strFieldName+"&value1="+p_strValue+"&field2="+p_strFieldName2+"&value2="+p_strValue2;
       var a = new Ajax( strUrl, {
             method: 'get',
             onComplete: function( response ) {
@@ -418,10 +464,7 @@ function addInputPairViaMootools(p_sUrl, p_strFieldName, p_strFieldId, p_strFiel
               }
             }
       }).request();
-	}else{
-	  alert(p_strFieldName+" and "+p_strFieldName2+" should not be blank");
 	}
-}
 
 /**
  * Adds the current value to the user's session array.  Upon completion,

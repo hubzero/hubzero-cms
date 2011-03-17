@@ -256,6 +256,7 @@ class ProjectEditorController extends JController{
   function getMemberList(){
     $strMemberList = "";
 
+    $iLimit = 15;
     $strSearchTerm	= JRequest::getVar('term');
     $strNameArray = explode(",", $strSearchTerm);
 
@@ -266,13 +267,18 @@ class ProjectEditorController extends JController{
 
     /* @var $oModel ProjectEditorModelMembers */
     $oModel =& $this->getModel('Members');
-    $oMemberCollectionArray = $oModel->suggestMembers($strSearchTerm, 10);
+    $oMemberCollectionArray = $oModel->suggestMembers($strSearchTerm, $iLimit);
 
     foreach($oMemberCollectionArray as $iIndex=>$oPersonArray){
       $strMemberList .= ucfirst($oPersonArray['LAST_NAME']).", ".ucfirst($oPersonArray['FIRST_NAME'])." (".$oPersonArray['USER_NAME'].")";
-      if($iIndex < 10){
+      if($iIndex < $iLimit){
         $strMemberList .= "\n";
       }
+    }
+
+    $iTotal = $oModel->suggestMembersCount($strSearchTerm);
+    if($iTotal > $iLimit){
+      $strMemberList .= "\nmore...\n";
     }
 
     echo $strMemberList;
@@ -2125,7 +2131,6 @@ class ProjectEditorController extends JController{
 
     if(empty($strErrorArray)){
       $this->setRedirect("/warehouse/projecteditor/project/".$iProjectId."/experiments");
-      //echo "created...".$iProjectId."<br>";
     }else{
       $strView = "project";
       $_REQUEST["ERRORS"] = $strErrorArray;

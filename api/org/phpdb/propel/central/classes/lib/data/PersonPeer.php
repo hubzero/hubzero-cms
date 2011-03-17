@@ -8,7 +8,7 @@
 
 
 /**
- * Skeleton subclass for performing query and update operations on the 'Person' table. 
+ * Skeleton subclass for performing query and update operations on the 'Person' table.
  *
  *
  *
@@ -370,10 +370,10 @@ class PersonPeer extends BasePersonPeer {
 
     return $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
   }
-  
+
   public function findMembersForEntityCount($entity_id, $entity_type_id) {
     $iCount = 0;
-    
+
     $sql =
       "SELECT COUNT (DISTINCT P.ID) AS TOTAL
         FROM
@@ -472,7 +472,7 @@ class PersonPeer extends BasePersonPeer {
 
     return $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
   }
-  
+
   public function findMembersByRoleForEntity($entity_id, $entity_type_id, $p_strRoleArray) {
 
     $sql =
@@ -492,25 +492,25 @@ class PersonPeer extends BasePersonPeer {
           P.ID = PER.PERSON_ID AND
           PER.ROLE_ID = R.ID AND
           PER.ENTITY_ID = ? AND
-          PER.ENTITY_TYPE_ID = ? AND (";  
+          PER.ENTITY_TYPE_ID = ? AND (";
     foreach($p_strRoleArray as $iKey=>$strRole){
       $sql = $sql . "UPPER(R.DISPLAY_NAME)=?";
       if($iKey < (sizeof($p_strRoleArray)-1)){
       	$sql = $sql . " OR ";
       }
-    }      
+    }
     $sql = $sql . ") ORDER BY R.ID, P.LAST_NAME, P.FIRST_NAME";
 
     $conn = Propel::getConnection();
     $stmt = $conn->prepareStatement($sql);
     $stmt->setInt(1, $entity_id);
     $stmt->setInt(2, $entity_type_id);
-	
+
     $iIndex=3;
     foreach($p_strRoleArray as $strRole){
-      $stmt->setString($iIndex, strtoupper($strRole));	
+      $stmt->setString($iIndex, strtoupper($strRole));
       ++$iIndex;
-    } 
+    }
     return $stmt->executeQuery(ResultSet::FETCHMODE_ASSOC);
   }
 
@@ -613,7 +613,7 @@ class PersonPeer extends BasePersonPeer {
    *
    * @param string $p_strName
    * @param int $p_iLimit
-   * @return array 
+   * @return array
    */
   public static function suggestMembers($p_strName, $p_iLimit) {
     $strLastName = StringHelper::EMPTY_STRING;
@@ -637,7 +637,7 @@ class PersonPeer extends BasePersonPeer {
     if(StringHelper::hasText($strFirstName)){
       $strQuery .= " AND upper(PERSON.FIRST_NAME) like $strFirstName";
     }
-      $strQuery .= " AND PERSON.DELETED=0 
+      $strQuery .= " AND PERSON.DELETED=0
                  )
                  WHERE rn <= $p_iLimit";
 
@@ -658,6 +658,37 @@ class PersonPeer extends BasePersonPeer {
     return $oReturnArray;
   }
 
+  public static function suggestMembersCount($p_strName) {
+    $strLastName = StringHelper::EMPTY_STRING;
+    $strFirstName = StringHelper::EMPTY_STRING;
+
+    $p_strName = strtoupper($p_strName);
+    $strNameArray = explode(",", $p_strName);
+    if(sizeof($strNameArray)==2){
+      $strLastName = "'$strNameArray[0]%'";
+      $strFirstName = (StringHelper::hasText($strNameArray[1])) ? "'$strNameArray[1]%'" : StringHelper::EMPTY_STRING;
+    }else{
+      $strLastName = "'$p_strName%'";
+    }
+
+    $strQuery = "SELECT COUNT(PERSON.ID) AS TOTAL
+                 FROM PERSON
+                 WHERE upper(PERSON.LAST_NAME) like $strLastName";
+    if(StringHelper::hasText($strFirstName)){
+      $strQuery .= " AND upper(PERSON.FIRST_NAME) like $strFirstName";
+    }
+      $strQuery .= " AND PERSON.DELETED=0";
+
+    $oConnection = Propel::getConnection();
+    $oStatement = $oConnection->createStatement();
+    $oResultsSet = $oStatement->executeQuery($strQuery, ResultSet::FETCHMODE_ASSOC);
+
+    $iTotal = 0;
+    while($oResultsSet->next()){
+      $iTotal = $oResultsSet->getInt('TOTAL');
+    }
+    return $iTotal;
+  }
 
 } // PersonPeer
 ?>
