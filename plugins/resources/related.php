@@ -108,7 +108,7 @@ class plgResourcesRelated extends JPlugin
 		} else {
 			$sql2 .= "AND r.access=0 ";
 		}
-		echo '<!-- '.$sql2.' -->';
+		//echo '<!-- '.$sql2.' -->';
 		$sql2 .= "ORDER BY r.ranking LIMIT 10";
 
 		// Build the final query
