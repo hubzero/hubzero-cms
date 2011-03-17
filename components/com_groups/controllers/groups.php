@@ -2672,24 +2672,26 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		// Incoming file
-		$file = trim(JRequest::getVar( 'folder', '', 'get' ));
-		if (!$file) {
+		$folder = trim(JRequest::getVar( 'folder', '', 'get' ));
+		if (!$folder) {
 			$this->setNotification( JText::_('GROUPS_NO_DIRECTORY'), 'error' );
 			$this->media();
 			return;
 		}
+			
+		$del_folder = $this->config->get('uploadpath') . DS . $listdir . $folder;
 
 		// Delete the folder
-		if (is_dir($del_folder)) { 
+		if (is_dir(JPATH_ROOT . DS . $del_folder)) { 
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFolder::delete($del_folder)) {
+			if (!JFolder::delete(JPATH_ROOT . DS . $del_folder)) {
 				$this->setNotification( JText::_('UNABLE_TO_DELETE_DIRECTORY'), 'error' );
+			} else {
+				//push a success message
+				$this->setNotification('You successfully deleted the folder.', 'passed');
 			}
 		}
-		
-		//push a success message
-		$this->setNotification('You successfully deleted the folder.', 'passed');
 		
 		// Push through to the media view
 		$this->media();

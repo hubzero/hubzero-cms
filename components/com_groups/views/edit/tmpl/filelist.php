@@ -115,14 +115,14 @@ for ($i=0; $i<count($folders); $i++)
 		$d->close();
 	}
 	
-	if ($listdir == '/') {
-		$listdir = '';
+	if ($this->listdir == '/') {
+		$this->listdir = '';
 	}
 ?>
 					<tr>
-						<td><img src="/components/<?php echo $this->option; ?>/images/icons/folder.gif" alt="<?php echo $folder_name; ?>" width="16" height="16" /></td>
+						<td><img src="<?php echo $this->config->get('iconpath'); ?>/folder.gif" alt="<?php echo $folder_name; ?>" width="16" height="16" /></td>
 						<td width="100%"><?php echo $folder_name; ?></td>
-						<td><a href="/index.php?option=<?php echo $this->option; ?>'&amp;task=deletefolder&amp;folder=<?php echo DS.$folders[$folder_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFolder('<?php echo $folder_name; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
+						<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;folder=<?php echo DS.$folders[$folder_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFolder('<?php echo $folder_name; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
 					</tr>
 <?php
 	next($folders);
