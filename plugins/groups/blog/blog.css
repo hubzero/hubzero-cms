@@ -25,6 +25,9 @@
 .group_blog .main {
 	border:none;
 	}
+.group_blog .section {
+	padding:0;
+	}
 .group_blog .config {
 	padding-left:20px;
 	background:url('images/cog.png') no-repeat 0 0;
