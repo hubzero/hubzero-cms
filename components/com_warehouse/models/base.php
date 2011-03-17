@@ -17,7 +17,7 @@ require_once 'lib/security/Authorizer.php';
 class WarehouseModelBase extends JModel {
 
     private $m_oTabArray;
-    private $m_oSearchTabArray;
+    private $m_oSearchTabArray; 
     private $m_oSearchTabTitleArray;
     private $m_oSearchResultsTabArray;
 
@@ -34,6 +34,12 @@ class WarehouseModelBase extends JModel {
 
         $this->m_oTabArray = array("Project", "Experiments", "Team Members", "File Browser");
         $this->m_oTabViewArray = array("project", "experiments", "members", "filebrowser");
+
+        /*
+        $this->m_oSearchTabArray = array("Search", "Enhanced Projects", "User Guide");
+        $this->m_oSearchTabViewArray = array("search","featured", "userguide");
+        $this->m_oSearchTabTitleArray = array("","An Enhanced project is a project that has been checked for completeness and includes: drawings; material information; complete and detailed sensor information; at least one data file that can be read and plotted by a data visualization tool (e.g. inDEED); and at least one report or publication.", "");
+        */
 
         $this->m_oSearchTabArray = array("Search", "Enhanced Projects");
         $this->m_oSearchTabViewArray = array("search","featured");
@@ -248,7 +254,7 @@ class WarehouseModelBase extends JModel {
         FileHelper::downloadCleanup("/tmp");
 
         //download the file
-        return FileHelper::downloadTarBall($strArchiveFile);
+        $this->download($strArchiveFile);
     }
 
     public function downloadZip() {
@@ -293,7 +299,24 @@ class WarehouseModelBase extends JModel {
       FileHelper::downloadCleanup("/tmp");
 
       //download the file
-      return FileHelper::downloadTarBall($strArchiveFile);
+      $this->download($strArchiveFile);
+    }
+
+    public function download($p_strAbsolutePath){
+      ximport('xserver');
+
+      // Serve up the file
+      $xserver = new XContentServer();
+      $xserver->filename($p_strAbsolutePath);
+      $xserver->disposition('attachment');
+      $xserver->acceptranges(false); // @TODO fix byte range support
+
+      if (!$xserver->serve()) {
+            // Should only get here on error
+            JError::raiseError( 404, JText::_('COM_RESOURCES_SERVER_ERROR') );
+      } else {
+            exit;
+      }
     }
 
     public function getSearchTabs($activeTabIndex) {
