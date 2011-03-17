@@ -78,15 +78,6 @@ class plgGroupsWiki extends JPlugin
 			}
 		}
 		
-		//set group members plugin access level
-		$group_plugin_acl = $access[$active];
-
-		//if set to nobody make sure cant access
-		if($group_plugin_acl == 'nobody') {
-			$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_OFF',ucfirst($active))."</p>";
-			return $arr;
-		}
-		
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') {
 			// Set some variables for the wiki
@@ -100,12 +91,9 @@ class plgGroupsWiki extends JPlugin
 			//$arr['html'] = $this->wiki( $group );
 			global $mainframe;
 
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('groups', 'wiki');
-
 			// Import some needed libraries
 			ximport('Hubzero_User_Helper');
-
+			
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'attachment.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'author.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'comment.php');
@@ -130,58 +118,19 @@ class plgGroupsWiki extends JPlugin
 			// Instantiate controller
 			$controller = new WikiController( array('name'=>'groups','sub'=>'wiki','group'=>$group->get('cn')) );
 			$controller->mainframe = $mainframe;
-
+			
 			// Catch any echoed content with ob
 			ob_start();
 			$controller->execute();
 			$controller->redirect();
 			$content = ob_get_contents();
 			ob_end_clean();
+			
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('groups', 'wiki');
 
 			// Return the content
 			$arr['html'] = $content;
-		} else {
-			// Get a count of the number of pages
-			$database =& JFactory::getDBO();
-			
-			$access = " AND w.access!=1";
-			if ($authorized) {
-				$access = "";
-			}
-
-			$query = "SELECT v.pageid, w.title, w.pagename, w.scope, w.group, w.access, v.version, v.created_by, v.created
-						FROM #__wiki_page AS w, #__wiki_version AS v
-						WHERE w.id=v.pageid AND v.approved=1 AND w.group='".$group->get('cn')."' AND w.scope='".$group->get('cn').DS.$active."' $access
-						ORDER BY created DESC LIMIT $limitstart,$limit";
-			$database->setQuery( $query );
-			$rows = $database->loadObjectList();
-
-			$database->setQuery( "SELECT COUNT(*) FROM #__wiki_page AS w WHERE w.scope='".$group->get('cn').DS.'wiki'."' AND w.group='".$group->get('cn')."' $access" );
-			$num = $database->loadResult();
-
-			// Build the HTML meant for the "profile" tab's metadata overview
-			$arr['metadata'] = '<a href="'.JRoute::_('index.php?option='.$option.'&gid='.$group->get('cn').'&active=wiki').'">'.JText::sprintf('PLG_GROUPS_WIKI_NUMBER_PAGES',$num).'</a>'."\n";
-			//$arr['dashboard'] = $this->dashboard( $group, $rows, $authorized, $option );
-			
-			// Instantiate a vew
-			ximport('Hubzero_Plugin_View');
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'=>'groups',
-					'element'=>'wiki',
-					'name'=>'dashboard'
-				)
-			);
-
-			// Pass the view some info
-			$view->option = $option;
-			$view->group = $group;
-			$view->authorized = $authorized;
-			$view->rows = $rows;
-			if ($this->getError()) {
-				$view->setError( $this->getError() );
-			}
-			$arr['dashboard'] = $view->loadTemplate();
 		}
 		
 		// Return the output

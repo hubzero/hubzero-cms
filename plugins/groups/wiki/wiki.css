@@ -1,353 +1,506 @@
-/*
+.group_wiki {
+	}
+.group_wiki #hubForm fieldset {
+	padding-left:2%;
+	width:66%;
+	}
+.group_wiki #hubForm h3 {
+	display:none;
+	}
+.com_groups .group_wiki h3 {
+	display:block;
+	}
+.group_wiki #commentform .subject {
+	background:none;
+	padding:10px 0 0 0;
+	}
+.group_wiki .subject {
+	margin-top:1em;
+}
+.group_wiki .main,
+.group_wiki .section {
+	border:none;
+	}
+.group_wiki .section {
+	padding:0;
+	}
+.group_wiki .avgrating { 
+	background: url("../../../templates/hubbasic/images/stars/stars.gif") right 0 no-repeat;  
+	}
+	
+/* Wiki Reference */
+table.wiki-reference {
+    border: none;
+    font-size: 11px;
+    margin: 0;
+    }
+table.wiki-reference caption {
+    font-weight: bold;
+    }
+table.wiki-reference tbody td {
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+    }
 
-	-- -- -- -- -- -- --
-	Groups Messages plugin CSS
-	-- -- -- -- -- -- --
 
-*/
-/*---------------------------------------------------------------
-	Wiki tab
----------------------------------------------------------------*/
-	#wiki-section .hide {
-		display: block;
-		}
-	#wiki-section .section {
-		padding: 0;
-		}
-	#wiki-section .subject li {
-		background-image: none;
-		padding-left: 0;
-		}
-	#wiki-section .subject ol {
-		list-style-type: decimal;
-		}
-	#wiki-section .subject ul {
-		list-style-type: disc;
-		}
-	#wiki-section #hubForm .paramlist input, 
-	#wiki-section #hubForm .paramlist select, 
-	#wiki-section #hubForm .paramlist textarea,
-	#wiki-section #hubForm .paramlist label {
-		display: inline;
-		width: auto;
-		}
-	#wiki-section #hubForm fieldset {
-		padding: 0 2% 1.75em 2%;
-		width: 66%;
-		}
-	#wiki-section #hubForm.full fieldset {
-		padding: 0 2% 1.75em 2%;
-		width: 96%;
-		}
-	#wiki-section #hubForm .hide {
-		display: none;
-		}
-	#wiki-section #hubForm h3 {
-		display: none;
-		}
-	#wiki-section h2 {
-		border: none;
-		}
-	#wiki-section #hubForm .explaination .admin-options p {
-		margin: 0.2em 0;
-		padding: 0;
-		font-size: 90%;
-		}
+/* Comment form */
+#commentform {
+    margin: 0 0 4em 0;
+    padding: 0;
+    }
+#commentform fieldset {
+    background: #F5F7F2;
+    border: 10px solid #DEE4CD;
+    margin: 0;
+    padding: 0 1em 0em 1em;
+    text-align: left;
+    color: #777;
+    }
+#commentform fieldset fieldset {
+    border-width: 1px;
+    padding: 0 1em 1em 1em;
+    margin: 1em 0;
+    }
+#commentform p.comment-member-photo {
+    float: left;
+    margin: 0;
+    padding: 0 20px 0 0;
+    width: 50px; /*105px;*/
+    height: 50px;
+    overflow: hidden;
+    color: #777;
+    font-size: 11px;
+    text-align: right;
+    background: url("../../../components/com_wiki/images/comment-arrow.gif") right -201px no-repeat;
+    }
+#commentform .sidenote {
+    border: 1px solid #edf0e8;
+    padding: 0 1em;
+    margin: 0 -1em 0 -1em;
+    color: #aaa;
+    background-color: #edf0e8;
+    }
+#commentform .required,
+#commentform .optional {
+    text-transform: uppercase;
+    font-size: xx-small;
+    }
+#commentform .required {
+    color: red;
+    }
+#commentform .optional {
+    color: #999;
+    }
+#commentform label {
+    padding-top: 1em;
+    position: relative;
+    display: block;
+    }
+/*#commentform label span {
+    position: absolute;
+    top: 1.5em;
+    right: 0;
+    }*/
+#commentform .grouping {
+    position: relative;
+    margin-left: -3em;
+    padding: 0 0 1.5em 5em;
+    overflow: hidden;
+    top: 1em;
+    left: 1.5em;
+    }
+#commentform .grouping label {
+    padding: 0;
+    float: left;
+    width: 50%;
+    }
+#commentform .grouping label:first-child {
+    margin: 0 2em 0 -3.5em;
+    }
+#commentform .grouping label span {
+    top: 0;
+    }
+#commentform input, 
+#commentform select, 
+#commentform textarea {
+    margin-top: 0.25em;
+    width: 100%;
+    }
+#commentform .submit {
+    clear: both;
+    margin: -1.5em 0 1em 0;
+    padding: 0;
+    text-align: right;
+    }
+#commentform .submit input,
+#commentform .option {
+    width: auto;
+    }
+#commentform #comment-anonymous-label {
+    width: 50%;
+    }
+
+
+/* Attachments */
+#attachments {
+    margin: 0;
+    padding: 0;
+    min-width: 100px;
+    background: #fff;
+    }
+#attachments form,
+#attachments fieldset,
+#attachments table {
+    padding: 0;
+    margin: 0;
+    }
+#attachments table {
+    width: auto;
+    }
+#attachments tbody td {
+    padding: 0.2em 0.4em;
+    }
+
+/* Comments */
+		    .group_wiki .below .subject {
+    background: transparent;
+    padding: 1em 0 0 0;
+    border-bottom: none;
+    }
+#commentlist-title,
+#commentform-title,
+.below h3 {
+    margin-left: 70px;
+    }
+.com_wiki .main .subject ol.comments,
+ol.comments {
+    list-style-type: none !important;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+border:0;
+    }
+.com_wiki .main .subject ol.comments li,
+ol.comments li {
+    clear: left;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid #fff;
+    }
+.com_wiki .main .subject ol.comments ol,
+ol.comments ol {
+    margin: 0;
+    padding: 0;
+    }
+.com_wiki .main .subject ol.comments li li,
+ol.comments li li {
+    margin: 0;
+    padding-left: 70px !important;
+    }
+/* Options */
+.abuse {
+    background: url("../../../components/com_wiki/images/abuse.gif") 0 0 no-repeat;
+    padding-left: 15px;
+    }
+.reply {
+    background: url("../../../components/com_wiki/images/reply.gif") 0 0 no-repeat;
+    padding-left: 15px;
+    }
+.abuse:hover,
+.reply:hover {
+    background-position: 0 -20px;
+    }
+.comment-options {
+    color: #fff;
+    font-size: 90%;
+    visibility: hidden;
+    }
+ol.comments .comment-content:hover .comment-options {
+    visibility: visible;
+    }
+.comment-options a {
+    margin-right: 1em;
+    }       
+.comment-options a span {
+    display: none;
+    }
+ol.comments dl.comment-details {
+    display: none;
+    }
+/* Member photo */
+ol.comments p.comment-member-photo {
+    float: left;
+    margin: 0;
+    padding: 0 20px 0 0; /*105px;*/
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    color: #777;
+    font-size: 11px;
+    text-align: right;
+    background: url("../../../components/com_wiki/images/comment-arrow.gif") right 15px no-repeat;
+    }
+/* Content */
+ol.comments .comment-content {
+    margin: 0 0 1em 70px; /*125px;*/
+    background-color: #fafafa;
+    border: 10px solid #f2f2f2;
+    padding: 0 1em;
+    }
+ol.comments .comment-voting {
+    margin: 0;
+    padding: 0;
+    }
+ol.comments .comment-voting .thumbsvote {
+    margin-top: 0.5em;
+    }
+/* Author comments */
+ol.comments .author .comment-content,
+ol.comments .author ol.comments .author .comment-content {
+    background-color: #fdfbf8;
+    border-color: #f9f2ec;
+    }
+ol.comments .author p.comment-member-photo,
+ol.comments .author ol.comments .author p.comment-member-photo {
+    background: url("../../../components/com_wiki/images/comment-arrow.gif") right -129px no-repeat;
+    }
+ol.comments .author ol.comments .comment-content,
+ol.comments .author ol.comments .author ol.comments .comment-content {
+    background-color: #fafafa;
+    border-color: #f2f2f2;
+    }
+ol.comments .author ol.comments p.comment-member-photo,
+ol.comments .author ol.comments .author ol.comments p.comment-member-photo {
+    background: url("../../../components/com_wiki/images/comment-arrow.gif") right 15px no-repeat;
+    }
+/* Chosen comments */
+ol.comments .chosen .comment-content {
+    background-color: #f9f8fd;
+    border-color: #eeecf9;
+    }
+ol.comments .chosen p.comment-member-photo {
+    background: url("../../../components/com_wiki/images/comment-arrow.gif") right -57px no-repeat;
+    }
+/* Details (date, time) */
+ol.comments span.comment-details {
+    color: #bfbfbf;
+    }
+/* Permalink */
+ol.comments .permalink {
+    border: none;
+    color: #bfbfbf;
+    }
+ol.comments .permalink:hover {
+    color: #000;
+    border: none;
+    }
+ol.comments .odd,
+ol.comments .even {
+    background: transparent;
+    }
+ol.comments .comment-none {
+    color: #ccc;
+    }
+/* Stars */
+ol.comments .no-stars        { background-position: 0 0; }
+ol.comments .half-stars      { background-position: 0 -40px; }
+ol.comments .one-stars       { background-position: 0 -80px; }
+ol.comments .onehalf-stars   { background-position: 0 -120px; }
+ol.comments .two-stars       { background-position: 0 -160px; }
+ol.comments .twohalf-stars   { background-position: 0 -200px; }
+ol.comments .three-stars     { background-position: 0 -240px; }
+ol.comments .threehalf-stars { background-position: 0 -280px; }
+ol.comments .four-stars      { background-position: 0 -320px; }
+ol.comments .fourhalf-stars  { background-position: 0 -360px; }
+ol.comments .five-stars      { background-position: 0 -400px; }
+
+
 /* (sub) Tabs */
-	#sub-section-menu {
-		height: auto;
-		padding: 0;
-		background: none;
-		border: 3px double #ccc;
-		}
-	#sub-section-menu ul {
-		background: none;
-		border: none;
-		height: auto;
-		padding: 0;
-		margin: 0;
-		}
-	#sub-section-menu li {
-		height: auto;
-		padding: 0.2em 1em;
-		float: left;
-		display: block;
-		margin: 0;
-		background-image: none;
-		}
-	#sub-section-menu li a {
-		background: none;
-		height: auto;
-		padding: 0;
-		color: #BA7A75;
-		}
-	#sub-section-menu li a span {
-		background: none;
-		height: auto;
-		padding: 0;
-		}
-	#sub-section-menu li.active a {
-		color: #333;
-		border: none;
-		}
-/* Table of contents */
-	.article-toc,
-	.article-tags,
-	.article-search {
-		background-color: #eee;
-		margin: 0 0 1em 0;
-		padding: 0.5em;
-		}
-	.article-toc h3,
-	.article-tags h3,
-	.article-search h3 {
-		margin: 0;
-		padding: 0.4em;
-		color: #fff;
-		background: #777;
-		font-size: 1em;
-		font-weight: bold;
-		}
-	.article-toc ul, 
-	.article-tags ol {
-		margin: 0;
-		padding: 0.4em;
-		max-height: 300px;
-		overflow: auto;
-		border: 1px solid #aaa;
-		background: #fff;
-		}
-	.article-toc ul li {
-		background-image: none;
-		}
-	.article-tags ol {
-		max-height: none;
-		font-size: 90%;
-		}
-	.article-tags p {
-		border: 1px solid #aaa;
-		background: #fff;
-		margin: 0;
-		padding: 0.4em;
-		}
-	.article-toc ul ul {
-		max-height: none;
-		border: none;
-		margin: 0 0 0 1em;
-		padding: 0;
-		}
-	.article-toc li {
-		margin: 0;
-		padding: 0.2em;
-		}
-	.tocnumber {
-		display: none;
-		}
-/* Timestamp */
-	.timestamp {
-		text-align: left;
-		color: #aaa;
-		font-size: 90%;
-		font-style: italic;
-		border-top: 1px solid #ddd;
-		padding-top: 0.5em;
-		margin: 2em 0 0 0;
-		}
-	a.ext-link {
-		background: url("images/extlink.gif") 0 0.4em no-repeat;
-		padding-left: 15px;
-		}
-	a.missing {
-		background: url("images/missinglink.gif") 0 0.4em no-repeat;
-		padding-left: 7px;
-		}
+#sub-section-menu {
+    height: auto;
+    padding: 0;
+    background: none;
+    border: 3px double #ccc;
+    }
+#sub-section-menu ul {
+    background: none;
+    border: none;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    }
+#sub-section-menu li {
+    height: auto;
+    padding: 0.2em 1em;
+    float: left;
+    display: block;
+    margin: 0;
+    background-image: none;
+    }
+#sub-section-menu li a {
+    background: none;
+    height: auto;
+    padding: 0;
+    color: #BA7A75;
+    }
+#sub-section-menu li a span {
+    background: none;
+    height: auto;
+    padding: 0;
+    }
+#sub-section-menu li.active a {
+    color: #333;
+    border: none;
+    }
+
+
 /* User options */
-	#section-useroptions {
-		list-style: none;
-		float: right;
-		margin: -2.5em 0 0 0;
-		padding: 0;
-		}
-	#section-useroptions a {
-		border: none;
-		color: #7F7F7F;
-		}
-	#section-useroptions a:hover {
-		border: none;
-		color: #000;
-		}
-	#section-useroptions li { 
-		margin: 0;
-		padding: 0.2em 0.5em;
-		float: left;
-		border-right: 1px solid #DDDDDD;
-		background-image: none;
-		}
-	#section-useroptions li.last {
-		border: none;
-		padding-right: 0;
-		}
+#section-useroptions {
+    list-style: none;
+    float: right;
+    margin: -2.5em 0 0 0;
+    padding: 0;
+    }
+#section-useroptions a {
+    border: none;
+    color: #7F7F7F;
+    }
+#section-useroptions a:hover {
+    border: none;
+    color: #000;
+    }
+#section-useroptions li { 
+    margin: 0;
+    padding: 0.2em 0.5em;
+    float: left;
+    border-right: 1px solid #DDDDDD;
+    background-image: none;
+    }
+#section-useroptions li.last {
+    border: none;
+    padding-right: 0;
+    }
+		
+/* Table of contents */
+.article-toc,
+.article-tags,
+.article-search {
+    background-color: #eee;
+    margin: 0 0 1em 0;
+    padding: 0.5em;
+    }
+.article-toc h3,
+.article-tags h3,
+.article-search h3 {
+    margin: 0;
+    padding: 0.4em;
+    color: #fff;
+    background: #777;
+    font-size: 1em;
+    font-weight: bold;
+    }
+.article-toc ul, 
+.article-tags ol {
+    margin: 0;
+    padding: 0.4em;
+    max-height: 300px;
+    overflow: auto;
+    border: 1px solid #aaa;
+    background: #fff;
+    }
+.article-toc ul li {
+    background-image: none;
+    }
+.article-tags ol {
+    max-height: none;
+    font-size: 90%;
+    }
+.article-tags p {
+    border: 1px solid #aaa;
+    background: #fff;
+    margin: 0;
+    padding: 0.4em;
+    }
+.article-toc ul ul {
+    max-height: none;
+    border: none;
+    margin: 0 0 0 1em;
+    padding: 0;
+    }
+.article-toc li {
+    margin: 0;
+    padding: 0.2em;
+    }
+.tocnumber {
+    display: none;
+    }
+				
+				
+/* Timestamp */
+.timestamp {
+    text-align: left;
+    color: #aaa;
+    font-size: 90%;
+    font-style: italic;
+    border-top: 1px solid #ddd;
+    padding-top: 0.5em;
+    margin: 2em 0 0 0;
+    }
+a.ext-link {
+    background: url("../../../../components/com_groups/images/extlink.gif") 0 0.4em no-repeat;
+    padding-left: 15px;
+    }
+a.missing {
+    background: url("../../../../components/com_groups/images/missinglink.gif") 0 0.4em no-repeat;
+    padding-left: 7px;
+    }
+						
+
 /* Diffs */
-	.diff-versions {
-		margin: 0;
-		}
-	.diff-versions dt {
-		font-weight: bold;
-		margin-top: 0.5em;
-		}
-	.diffs {
-		margin: 1em 0;
-		border: 2px solid #ccc;
-		}
-	.com_groups .main .subject table.diffs td, 
-	.com_groups .main .subject table.diffs th,
-	.diffs td, 
-	.diffs th {
-		border: 1px solid #fff;
-		margin: 0;
-		padding: 0.2em 0.8em;
-		}
-	.diffs th {
-		text-align: right;
-		background-color: #efefef;
-		}
-	.diff-marker {
-		width: 1em;
-		text-align: center;
-		}
-	.diff-deletedline {
-		border: 1px solid #EFCCC2; 
-		background: #FFF2EF;
-		margin: 1em 0;
-		padding: 1em;
-		color: #CC0000;
-		}
-	.diff-addedline {
-		border: 1px solid #DAE6DA;
-		background: #F2FFF2;
-		margin: 1em 0;
-		padding: 1em;
-		color: #360;
-		}
-	del.diffchange {
-		color: #CC0000;
-		}
-	ins.diffchange {
-		color: #360;
-		}
-/* Wiki Comments */
-	ol.comments {
-		list-style-type: none !important;
-		margin-left: 0;
-		padding-left: 0;
-		}
-	ol.comments > li {
-		margin: 0 !important;
-		padding: 0 0 2em 115px;
-		border-top: 1px solid #efefef;
-		}
-	ol.comments li li {
-		margin-left: 50px;
-		}
-	.com_groups .main .subject ol.comments ol.comments,
-	ol.comments ol.comments {
-		margin-left: 50px;
-		}
-	ol.comments div.cwrap {
-		margin: 0 0 0 115px;
-		min-height: 6em;
-		}
-	ol.comments dl.comment-details {
-		float: left;
-		margin: 1.2em 20px 2em 0 !important;
-		padding: 0;
-		width: 95px;
-		color: #777;
-		font-size: 11px;
-		text-align: right;
-		}
-	ol.comments dl.comment-details dt {
-		font-weight: bold;
-		color: #777;
-		font-size: 12px;
-		margin: 0;
-		padding: 0 0 1em 0;
-		}
-	ol.comments dl.comment-details dt span {
-		width: 95px;
-		display: block;
-		margin: 0;
-		padding: 0;
-		}
-	ol.comments dl.comment-details dd {
-		margin-bottom: 0;
-		}
-	ol.comments .name {
-		color: #777;
-		font-size: 12px;
-		}
-	ol.comments .none      { background-position: right 0; }
-	ol.comments .half      { background-position: right -40px; }
-	ol.comments .one       { background-position: right -80px; }
-	ol.comments .onehalf   { background-position: right -120px; }
-	ol.comments .two       { background-position: right -160px; }
-	ol.comments .twohalf   { background-position: right -200px; }
-	ol.comments .three     { background-position: right -240px; }
-	ol.comments .threehalf { background-position: right -280px; }
-	ol.comments .four      { background-position: right -320px; }
-	ol.comments .fourhalf  { background-position: right -360px; }
-	ol.comments .five      { background-position: right -400px; }
-	.avgreview {
-		}
-	.plaincomment {
-		background: url("images/comment.gif") right top no-repeat;
-		}
-	.authorcomment {
-		background: url("images/author.gif") right top no-repeat;
-		}
-	.avgreview span,
-	.plaincomment span,
-	.authorcomment span {
-		visibility: hidden;
-		}
-/* Misc. */
-	#wiki-section pre {
-		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
-		line-height: 1.45em;
-		color: #555;
-		margin: 1em 0 1em 1.5em;
-		padding: 0.2em;
-		border: 1px solid #ccc;
-		font-size: 110%;
-		overflow: auto;
-		background-color: #eee;
-		}
-	#wiki-section code,
-	#wiki-section tt {
-		font-family: Monaco, ProFont, "Bitstream Vera Sans Mono", "American Typewriter", "Andale Mono", monospace;
-		font-size: 1.09em;
-		}
-	#wiki-section table td, 
-	#wiki-section table th {
-		border: 1px solid #ccc;
-		margin: 0;
-		padding: 0.2em 0.4em;
-		}
-/* Preview */
-	#preview .section {
-		padding: 0;
-		}
-	#preview .main .aside {
-		}
-	#preview .main .subject {
-		max-height: 400px;
-		overflow: auto;
-		border: 2px solid #eee;
-		padding: 1em;
-		margin: 1em 1em 0 0;
-		background: url("images/draft.gif");
-		}
-
-/* IE 7 hacks */
-
-/* IE 6 hacks */
+.diff-versions {
+    margin: 0;
+    }
+.diff-versions dt {
+    font-weight: bold;
+    margin-top: 0.5em;
+    }
+.diffs {
+    margin: 1em 0;
+    border: 2px solid #ccc;
+    }
+.com_groups .main .subject table.diffs td, 
+.com_groups .main .subject table.diffs th,
+.diffs td, 
+.diffs th {
+    border: 1px solid #fff;
+    margin: 0;
+    padding: 0.2em 0.8em;
+    }
+.diffs th {
+    text-align: right;
+    background-color: #efefef;
+    }
+.diff-marker {
+    width: 1em;
+    text-align: center;
+    }
+.diff-deletedline {
+    border: 1px solid #EFCCC2; 
+    background: #FFF2EF;
+    margin: 1em 0;
+    padding: 1em;
+    color: #CC0000;
+    }
+.diff-addedline {
+    border: 1px solid #DAE6DA;
+    background: #F2FFF2;
+    margin: 1em 0;
+    padding: 1em;
+    color: #360;
+    }
+del.diffchange {
+    color: #CC0000;
+    }
+ins.diffchange {
+    color: #360;
+    }
