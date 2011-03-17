@@ -62,9 +62,11 @@ if($this->role_filter) {
 							<?php $cls = ($role['id'] == $this->role_filter) ? 'active' : ''; ?>
 							<li>
 								<a class="role <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&role_filter='.$role['id']); ?>"><?php echo $role['role']; ?></a>
-								<span class="remove-role">
-									<a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=removerole&role='.$role['id']); ?>">x</a>
-								</span>
+								<?php if($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+									<span class="remove-role">
+										<a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=removerole&role='.$role['id']); ?>">x</a>
+									</span>
+								<?php } ?>
 							</li>
 						<?php } ?>
 					</ul>

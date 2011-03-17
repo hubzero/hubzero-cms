@@ -16,7 +16,7 @@ HUB.Plugins.GroupsMembers = {
 		
 		$$('.remove-role a').addEvent('click', function(e) {
 			new Event(e).stop();
-			var answer = confirm('Are you sure you want to delete this member role. It will also delete any associations members have with the role.');
+			var answer = confirm('Are you sure you want to delete this member role? It will also delete any associations members have with the role.');
 			if(answer) { 
 				window.location = this.href;
 			}
