@@ -519,7 +519,7 @@ class WikiController extends Hubzero_Controller
 			);
 			ximport('Hubzero_Wiki_Parser');
 			$p =& Hubzero_Wiki_Parser::getInstance();
-			$preview->pagehtml = $p->parse($preview->pagetext, $wikiconfig);
+			$preview->pagehtml = $p->parse($preview->pagetext, $wikiconfig, true, true);
 			
 			$revision->pagetext   = $preview->pagetext;
 			$revision->summary    = $preview->summary;

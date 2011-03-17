@@ -176,7 +176,7 @@ if ($templates) {
 			echo $editor->display('pagetext', 'pagetext', $this->revision->pagetext, '', '35', '40');
 			?>
 		</label>
-		<p class="ta-right hint">See <a class="popup 400x500" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiFormatting'); ?>">Help: Wiki Formatting</a> for help on editing content.</p>
+		<p class="ta-right hint">See <a class="popup 400x500" href="/topics/Help:WikiFormatting">Help: Wiki Formatting</a> for help on editing content.</p>
 <?php
 $mode = $params->get( 'mode', 'wiki' );
 if ($this->authorized) {

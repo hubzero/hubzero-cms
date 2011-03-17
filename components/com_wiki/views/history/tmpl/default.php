@@ -153,7 +153,14 @@ foreach ($this->revisions as $revision)
 	$html .= "\t\t\t".'<td>'.$status.'</td>'."\n";
 	if (($this->page->state == 1 && $this->authorized === 'admin') 
 	 || ($this->page->state != 1 && $this->authorized)) {
-		$html .= "\t\t\t".'<td><a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=deleterevision&oldid='.$revision->id).'" title="'.JText::_('WIKI_REVISION_DELETE').'"><img src="/components/'.$this->option.'/images/icons/trash.gif" alt="'.JText::_('DELETE').'" /></a></td>'."\n";
+		$html .= "\t\t\t".'<td><a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=deleterevision&oldid='.$revision->id).'" title="'.JText::_('WIKI_REVISION_DELETE').'">'."\n";
+		if($this->option == 'com_groups') {
+			$group_config = JComponentHelper::getParams( $this->option );
+			$html .= "\t\t\t\t".'<img src="'.$group_config->get('iconpath').'/trash.gif" alt="'.JText::_('DELETE').'" />'."\n";
+		} else { 
+			$html .= "\t\t\t\t".'<img src="/components/'.$this->option.'/images/icons/trash.gif" alt="'.JText::_('DELETE').'" />'."\n";
+		}
+		$html .= "\t\t\t".'</a></td>'."\n";
 	}
 	$html .= "\t\t".'</tr>'."\n";
 	echo $html;
