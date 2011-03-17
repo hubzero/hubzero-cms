@@ -50,7 +50,7 @@ class plgGroupsBlog extends JPlugin
 		$area = array(
 			'name' => 'blog',
 			'title' => JText::_('PLG_GROUPS_BLOG'),
-			'default_access' => 'members'
+			'default_access' => 'anyone'
 		);
 		
 		return $area;
@@ -67,7 +67,7 @@ class plgGroupsBlog extends JPlugin
 		$arr = array(
 			'html'=>''
 		);
-		
+
 		//get this area details
 		$this_area = $this->onGroupAreas();
 		
@@ -77,46 +77,67 @@ class plgGroupsBlog extends JPlugin
 				return;
 			}
 		}
-		
-		// Set some variables so other functions have access
-		$this->authorized = $authorized;
-		$this->action = $action;
-		$this->option = $option;
-		$this->group = $group;
-		$this->name = substr($option,4,strlen($option));
-		$this->database = JFactory::getDBO();
 
-		$p = new Hubzero_Plugin_Params( $this->database );
-		$this->_params = $p->getParams( $group->gidNumber, 'groups', 'blog' );
-
+		//are we returning html
 		if ($return == 'html') {
 			
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
-
+			
 			//Create user object
 			$juser =& JFactory::getUser();
-
+		
 			//get the group members
 			$members = $group->get('members');
 
 			//if set to nobody make sure cant access
-			if ($group_plugin_acl == 'nobody') {
-				$arr['html'] = '<p class="info">'.JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)).'</p>';
+			if($group_plugin_acl == 'nobody') {
+				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active))."</p>";
 				return $arr;
 			}
 			
+			//check if guest and force login if plugin access is registered or members
+			if ($juser->get('guest') && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) {
+				ximport('Hubzero_Module_Helper');
+				$arr['html']  = "<p class=\"warning\">".JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active))."</p>";
+				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
+				return $arr;
+			}
+			
+			//check to see if user is member and plugin access requires members
+			if(!in_array($juser->get('id'),$members) && $group_plugin_acl == 'members' && $authorized != 'admin') {
+				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))."</p>";
+				return $arr;
+			}
+			
+			//user vars
+			$this->juser = $juser;
+			$this->authorized = $authorized;
+			
+			//group vars
+			$this->group = $group;
+			$this->members = $members;
+			
+			// Set some variables so other functions have access
+			$this->action = $action;
+			$this->option = $option;
+			$this->name = substr($option,4,strlen($option));
+			$this->database = JFactory::getDBO();
+
+			//get the plugins params
+			$p = new Hubzero_Plugin_Params( $this->database );
+			$this->_params = $p->getParams( $group->gidNumber, 'groups', 'blog' );
+			
+			//push the css to the doc
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('groups', 'blog');
+			
+			//include helpers
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'tables'.DS.'blog.entry.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'tables'.DS.'blog.comment.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'helpers'.DS.'blog.member.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'helpers'.DS.'blog.tags.php');
 			
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('groups', 'blog');
-			
-			$document =& JFactory::getDocument();
-			//$document->addStyleSheet('plugins'.DS.'members'.DS.'blog'.DS.'blog.css');
-			$document->setTitle( $document->getTitle().': '.JText::_('PLG_GROUPS_BLOG') );
 			
 			//$this->task = JRequest::getVar('action','');
 			if (is_numeric($this->action)) {
@@ -152,71 +173,9 @@ class plgGroupsBlog extends JPlugin
 				case 'browse': 
 				default: $arr['html'] = $this->_browse(); break;
 			}
-		} else {
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'tables'.DS.'blog.entry.php');
-			
-			$arr['metadata'] = $this->_metadata();
-			$arr['dashboard'] = $this->_dashboard();
 		}
 
 		return $arr;
-	}
-	
-	//-----------
-
-	private function _metadata() 
-	{
-		$filters = array();
-		$filters['limit'] = 25;
-		$filters['start'] = 0;
-		$filters['created_by'] = 0;
-		$filters['year'] = 0;
-		$filters['month'] = 0;
-		$filters['scope'] = 'group';
-		$filters['group_id'] = $this->group->get('gidNumber');
-		$filters['search'] = '';
-		
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
-			$filters['state'] = 'public';
-		} else {
-			if ($this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin') {
-				$filters['state'] = 'registered';
-			}
-		}
-		
-		$be = new BlogEntry($this->database);
-		
-		$total = $be->getCount($filters);
-		
-		$html = '<a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog').'">'.$total.' '.JText::_('Blog entries').'</a>'."\n";
-		
-		return $html;
-	}
-	
-	//-----------
-
-	private function _dashboard() 
-	{
-		ximport('Hubzero_Plugin_View');
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'=>'groups',
-				'element'=>'blog',
-				'name'=>'dashboard'
-			)
-		);
-		$view->option = $this->option;
-		$view->group = $this->group;
-		$view->authorized = $this->authorized;
-		$view->entries = null;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-
-		$html = $view->loadTemplate();
-		
-		return $html;
 	}
 	
 	//-----------
@@ -231,6 +190,7 @@ class plgGroupsBlog extends JPlugin
 				'name'=>'browse'
 			)
 		);
+		$view->juser = $this->juser;
 		$view->option = $this->option;
 		$view->group = $this->group;
 		$view->config = $this->_params;
@@ -287,6 +247,9 @@ class plgGroupsBlog extends JPlugin
 		$pagenavhtml = str_replace('action=browse','',$pagenavhtml);
 		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
 		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
+		
+		$path = $this->_params->get('uploadpath');
+		$view->path = str_replace('{{gid}}',BlogHelperMember::niceidformat($this->group->get('gidNumber')),$path);
 		
 		$view->firstentry = $be->getDateOfFirstEntry($filters);
 		
@@ -375,14 +338,15 @@ class plgGroupsBlog extends JPlugin
 
 		// Start outputing results if any found
 		if (count($rows) > 0) {
-			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
-			
+			ximport('wiki.parser');
+			//$p = new WikiParser( JText::_(strtoupper($this->_option)), $this->_option, 'blog', '', 0, $this->config->get('uploadpath') );
 			$path = $this->_params->get('uploadpath');
 			$path = str_replace('{{gid}}',BlogHelperMember::niceidformat($this->group->get('gidNumber')),$path);
 			
 			foreach ($rows as $row)
 			{
+				$p = new WikiParser( stripslashes($row->title), $this->option, 'blog', $row->alias, 0, $path );
+				
 				// Prepare the title
 				$title = strip_tags($row->title);
 				$title = html_entity_decode($title);
@@ -394,15 +358,7 @@ class plgGroupsBlog extends JPlugin
 				$author = $cuser->get('name');
 				
 				// Strip html from feed item description text
-				$wikiconfig = array(
-					'option'   => $this->option,
-					'scope'    => 'blog',
-					'pagename' => $row->alias,
-					'pageid'   => 0,
-					'filepath' => $path,
-					'domain'   => '' 
-				);
-				$description = $p->parse(stripslashes($row->content), $wikiconfig, true, true);
+				$description = $p->parse( "\n".stripslashes($row->content), 0, 0 );
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
 				if ($this->_params->get('feed_entries') == 'partial') {
 					$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
@@ -435,32 +391,17 @@ class plgGroupsBlog extends JPlugin
 		switch ($this->_params->get('posting')) 
 		{
 			case 1:
-				switch ($this->authorized) 
-				{
-					case 'manager':
-					case 'admin':
-						return true;
-					break;
-					
-					default: 
-						return false;
-					break;
+				if ($this->authorized == 'manager' || $this->authorized == 'admin') {
+					return true;
 				}
 			break;
 			
 			case 0:
 			default:
-				switch ($this->authorized) 
-				{
-					case 'member':
-					case 'manager':
-					case 'admin':
-						return true;
-					break;
-				
-					default: 
-						return false;
-					break;
+				if ($this->authorized == 'member' || $this->authorized == 'manager' || $this->authorized == 'admin') {
+					return true;
+				} else {
+					return false;
 				}
 			break;
 		}
@@ -531,6 +472,7 @@ class plgGroupsBlog extends JPlugin
 		$view->group = $this->group;
 		$view->config = $this->_params;
 		$view->authorized = $this->authorized;
+		$view->juser = $this->juser;
 		
 		if (isset($this->entry) && is_object($this->entry)) {
 			$view->row = $this->entry;
@@ -565,6 +507,9 @@ class plgGroupsBlog extends JPlugin
 		}
 		
 		if ($view->row->content) {
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
+
 			if ($view->row->scope == 'member') {
 				$plugin = JPluginHelper::getPlugin( 'members', 'blog' );
 				$params = new JParameter( $plugin->params );
@@ -577,15 +522,15 @@ class plgGroupsBlog extends JPlugin
 
 			$wikiconfig = array(
 				'option'   => $this->option,
-				'scope'    => 'blog',
-				'pagename' => $view->row->alias,
-				'pageid'   => 0,
+				'scope'    => $this->group->get('gidNumber') . DS . 'blog',
+				'pagename' => 'group',
+				'pageid'   => '',
 				'filepath' => $path,
-				'domain'   => '' 
+				'domain'   => $this->group->get('cn')
 			);
-			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
-			$view->row->content = $p->parse(stripslashes($view->row->content), $wikiconfig, true, true);
+			
+			//$p = new WikiParser( stripslashes($view->row->title), $this->option, 'blog', $view->row->alias, 0, $path );
+			$view->row->content = $p->parse( "\n".stripslashes($view->row->content), $wikiconfig, true, true);
 		}
 		
 		$bc = new BlogComment($this->database);
@@ -640,6 +585,9 @@ class plgGroupsBlog extends JPlugin
 			$document->addScript('plugins'.DS.'groups'.DS.'blog'.DS.'blog.js');
 		}*/
 		$view->canpost = $this->_getPostingPermissions();
+		
+		$view->p = $p;
+		$view->wikiconfig = $wikiconfig;
 		
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -1080,8 +1028,13 @@ class plgGroupsBlog extends JPlugin
 			return $this->_settings();
 		}
 		
-		$this->message = JText::_('Settings successfully saved!');
-		
-		return $this->_settings();
+		//$this->message = JText::_('Settings successfully saved!');
+		//return $this->_settings();
+		$app =& JFactory::getApplication();
+		$app->enqueueMessage('Settings successfully saved!','passed');
+		$app->redirect( JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=blog&task=settings') );
 	}
+
+
+
 }

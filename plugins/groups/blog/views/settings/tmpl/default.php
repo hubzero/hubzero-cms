@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 			
 			<p class="help">
-				Group managers can add/edit/delete any post. Standard group members can only edit <strong>their</strong> posts.
+				Group managers can add/edit/delete any post. Standard group members can only edit/delete <strong>their own</strong> posts.
 			</p>
 			
 			<label>
