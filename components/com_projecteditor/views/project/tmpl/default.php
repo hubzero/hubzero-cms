@@ -326,7 +326,7 @@ header("Expires: 0"); // Date in the past
                   </a>
                 </div>
                 <div class="clear"></div>
-                <input id="hiddenNsfAwardType" type="hidden" value="" name="nsfAwardType[]"/>
+                <input id="hiddenNsfAwardType" type="hidden" value="n/a" name="nsfAwardType[]"/>
                 <div id="sponsorPicked">
                   <?php echo $this->strSponsorPicked; ?>
                 </div>

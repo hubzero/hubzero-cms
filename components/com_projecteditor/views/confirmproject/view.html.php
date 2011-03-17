@@ -122,6 +122,7 @@ class ProjectEditorViewConfirmProject extends JView{
     if(empty($oSponsorArray)){
       $_REQUEST["hasSponsor"] = false;
     }
+
     $strSponsor = $oPreviewModel->getSponsorsHTML($oSponsorArray);
     $this->assignRef( "strSponsor", $strSponsor );
 
@@ -161,25 +162,24 @@ class ProjectEditorViewConfirmProject extends JView{
     $this->assignRef("strFormTags", $strTagsTemp);
 
     $strFormSponsor = StringHelper::EMPTY_STRING;
-    foreach($_POST["sponsor"] as $iIndex=>$strThisSponsor){
-      if(StringHelper::hasText($strThisSponsor)){
-        $strFormSponsor .= $strThisSponsor;
-        if($iIndex < count($_POST["sponsor"])-1){
-          $strFormSponsor .= ",";
-        }
-      }
-    }
-    $this->assignRef("strFormSponsor", $strFormSponsor);
-
     $strFormAward = StringHelper::EMPTY_STRING;
-    foreach($_POST["award"] as $iIndex=>$strThisAward){
-      if(StringHelper::hasText($strThisAward)){
-        $strFormAward .= $strThisAward;
-        if($iIndex < count($_POST["award"])-1){
+    foreach($oSponsorArray as $iIndex=>$oProjectGrant){
+      /* @var $oProjectGrant ProjectGrant */
+      if(StringHelper::hasText($oProjectGrant->getFundingOrg())){
+        $strFormSponsor .= $oProjectGrant->getFundingOrg();
+        if(StringHelper::hasText($oProjectGrant->getAwardNumber())){
+          $strFormAward .= $oProjectGrant->getAwardNumber();
+        }else{
+          $strFormAward .= "n/a";
+        }
+
+        if($iIndex < count($oSponsorArray)-1){
+          $strFormSponsor .= ",";
           $strFormAward .= ",";
         }
       }
     }
+    $this->assignRef("strFormSponsor", $strFormSponsor);
     $this->assignRef("strFormAward", $strFormAward);
 
     $strFormNsfAwardTypeId = StringHelper::EMPTY_STRING;

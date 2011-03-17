@@ -377,12 +377,22 @@ class ProjectEditorModelProject extends ProjectEditorModelBase{
     $oProjectGrantArray = array();
     while (list ($key,$strSponsorName) = @each ($p_strSponsorNameArray)) {
       $strAward = (isset($p_strAwardNumberArray[$iIndex])) ? $p_strAwardNumberArray[$iIndex] : null;
-      if(StringHelper::hasText($strSponsorName) && StringHelper::hasText($strAward)){
+      if(StringHelper::hasText($strSponsorName) /*&& StringHelper::hasText($strAward)*/){
         if($strAward == "Award Number" && $strSponsorName == "NSF"){
           //do nothing
         }else{
           $strAwardUrl = null;
           $iNsfAwardTypeId = 0;
+
+          /*
+           * If $strAward == "Award Number", the user left the award field untouched.
+           * If $strAward == "n/a", handle the value from the confirmation page.
+           *    See strFormAward from com_projecteditor/views/confirmproject/view.html.php.
+           */
+          if($strAward == "Award Number" || $strAward == "n/a"){
+            $strAward = null;
+          }
+
           if($strSponsorName == "NSF"){
             if(is_numeric($strAward)){
               $strAwardUrl =  "http://www.nsf.gov/awardsearch/showAward.do?AwardNumber=".$strAward;
@@ -709,7 +719,7 @@ ENDHTML;
       $strUrlFieldArray = "sponsorUrl[]";
       $strUrlFieldPicked = $p_strPrefix."UrlPicked";
 
-      $strNSFAwardOptions = "<input type='hidden' name='nsfAwardType[]' value='n/a'>";
+      $strNSFAwardOptions = "";
       if(strtoupper($strSponsorInput)=="NSF"){
         $strNSFAwardOptions = <<< ENDHTML
           NSF Award Type: &nbsp;&nbsp;
@@ -731,6 +741,8 @@ ENDHTML;
           $strNSFAwardOptions .= "<option value=".$oNeesAwardType->getId()." $strSelected>".$oNeesAwardType->getDisplayName()."</option>";
         }
         $strNSFAwardOptions .= "</select>";
+      }else{
+        $strNSFAwardOptions = "<input type='hidden' name='nsfAwardType[]' value='n/a'>";
       }
 
       $strReturn .= <<< ENDHTML
@@ -738,7 +750,6 @@ ENDHTML;
           <div id="$strInputDiv" class="editorInputFloat editorInputSize">
             <input type="hidden" name="$strAwardFieldArray" value="$strAwardInput"/>
             <input type="hidden" name="$strSponsorFieldArray" value="$strSponsorInput"/>
-            <input type="hidden" name="$strUrlFieldArray" value="$strUrlInput"/>
             <input type="hidden" name="$strUrlFieldArray" value="$strUrlInput"/>
             <table style="border: 0pt none;">
              <tr>
