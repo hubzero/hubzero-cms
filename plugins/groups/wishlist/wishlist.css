@@ -176,22 +176,22 @@
 
 .entries .ensemble_right .voting .gooditem a {
 	padding:1px 10px 2px 5px;
-	background:url('../../../components/com_answers/images/thumbup.gif') no-repeat top right;
+	background:url('images/thumbup.gif') no-repeat top right;
 	}
 .entries .ensemble_right .voting .gooditem span,
 .entries .ensemble_right .voting .gooditem a:hover {
 	padding:1px 10px 2px 5px;
-	background:url('../../../components/com_answers/images/thumbup.gif') no-repeat bottom right;
+	background:url('images/thumbup.gif') no-repeat bottom right;
 	border:none;
 	}
 .entries .ensemble_right .voting .baditem a {
 	padding:1px 10px 2px 5px;
-	background:url('../../../components/com_answers/images/thumbdown.gif') no-repeat top right;
+	background:url('images/thumbdown.gif') no-repeat top right;
 	}
 .entries .ensemble_right .voting .baditem span,
 .entries .ensemble_right .voting .baditem a:hover {
 	padding:1px 10px 2px 5px;
-	background:url('../../../components/com_answers/images/thumbdown.gif') no-repeat bottom right;
+	background:url('images/thumbdown.gif') no-repeat bottom right;
 	border:none;
 	}
 .entries .ensemble_right .voting .gooditem span.dis,

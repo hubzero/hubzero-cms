@@ -53,7 +53,11 @@ else {
 				</p>
 			<?php } else { ?>
 				<?php $return = JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=wishlist'); ?>
-				<p class="warning">You must <a href="/login?return=<?php echo base64_encode($return); ?>">log in</a> and be a member to add a wish.</p>
+				<?php if($this->juser->get('guest')) { ?>
+					<p class="warning">You must <a href="/login?return=<?php echo base64_encode($return); ?>">log in</a> and be a group member to add a wish.</p>
+				<?php } else { ?>
+					<p class="warning">You must be a group member to add a wish.
+				<?php } ?>
 			<?php } ?>
 		</div>
 	</div><!-- /.aside -->
