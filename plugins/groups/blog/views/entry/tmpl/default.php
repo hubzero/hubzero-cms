@@ -34,23 +34,25 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 <h3 class="heading"><?php echo JText::_('PLG_GROUPS_BLOG'); ?></h3>
 <div class="main section">
 	<div class="aside">
-		<div class="container">
-			<h4>Blog Actions</h4>
-			<?php if ($this->canpost) { ?>
-				<p class="add">
-					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
-						<?php echo JText::_('New entry'); ?>
-					</a>
-				</p>
-			<?php } ?>
-			<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-				<p class="config">
-					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
-						<?php echo JText::_('Settings'); ?>
-					</a>
-				</p>
-			<?php } ?>
-		</div>
+		<?php if($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+			<div class="container">
+				<h4>Blog Actions</h4>
+				<?php if ($this->canpost) { ?>
+					<p class="add">
+						<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
+							<?php echo JText::_('New entry'); ?>
+						</a>
+					</p>
+				<?php } ?>
+				<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+					<p class="config">
+						<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+							<?php echo JText::_('Settings'); ?>
+						</a>
+					</p>
+				<?php } ?>
+			</div>
+		<?php } ?>
 		
 		<div class="blog-popular-entries">
 			<h4><?php echo JText::_('Popular Entries'); ?></h4>
@@ -376,7 +378,12 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 									<strong><?php echo $name; ?></strong> 
 									@ <span class="time"><?php echo JHTML::_('date',$this->replyto->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->replyto->created, '%d %b, %Y', 0); ?></span>
 								</p>
-								<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0); ?></p>
+								<p>
+									<?php 
+										$reply_content = Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0); 
+										echo $this->p->parse( "\n".stripslashes($reply_content), $this->wikiconfig );
+									?>
+								</p>
 							</blockquote>
 					<?php } ?>
 				

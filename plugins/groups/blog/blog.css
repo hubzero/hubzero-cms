@@ -25,9 +25,6 @@
 .group_blog .main {
 	border:none;
 	}
-.group_blog .section {
-	padding:0;
-	}
 .group_blog .config {
 	padding-left:20px;
 	background:url('images/cog.png') no-repeat 0 0;
@@ -95,7 +92,7 @@
     }
 .entries tbody td img {
 	width:100%;
-}
+	}
 .entries tbody th {
 	width: 50px;
     padding: 10px;
@@ -437,7 +434,7 @@ div.entry .entry-author {
 	}
 div.entry .entry-content {
 	margin: 0 0 0 125px;
-	}
+	}	
 div.entry .entry-content img {
 	width:100%;
 	}
@@ -597,7 +594,7 @@ div.entry .entry-title .delete {
 	}
 #commentform blockquote {
 	padding-left:20px;
-	background:url('images/quoteopen.gif') no-repeat 0px left;
+	background:url('images/quoteopen.gif') no-repeat 13px left;
 	border:none;
 	}
 

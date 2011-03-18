@@ -45,44 +45,45 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 
 <div class="main section">
 	<div class="aside">
-		<div class="container">
-			<h4>Blog Actions</h4>
-			<?php
-				if ($this->config->get('feeds_enabled')) {
-					$path  = 'index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope=feed.rss';
-					$path .= ($this->year) ? '&year='.$this->year : '';
-					$path .= ($this->month) ? '&month='.$this->month : '';
-					$feed = JRoute::_($path);
-					if (substr($feed, 0, 4) != 'http') {
-						if (substr($feed, 0, 1) != DS) {
-							$feed = DS.$feed;
+		<?php if($this->config->get('feeds_enabled') || $this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+			<div class="container">
+				<h4>Blog Actions</h4>
+				<?php
+					if ($this->config->get('feeds_enabled')) {
+						$path  = 'index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope=feed.rss';
+						$path .= ($this->year) ? '&year='.$this->year : '';
+						$path .= ($this->month) ? '&month='.$this->month : '';
+						$feed = JRoute::_($path);
+						if (substr($feed, 0, 4) != 'http') {
+							if (substr($feed, 0, 1) != DS) {
+								$feed = DS.$feed;
+							}
+							$jconfig =& JFactory::getConfig();
+							$feed = $jconfig->getValue('config.live_site').$feed;
 						}
-						$jconfig =& JFactory::getConfig();
-						$feed = $jconfig->getValue('config.live_site').$feed;
+						$feed = str_replace('https:://','http://',$feed);
+			
+						echo "<p class=\"feed\"><a href=\"{$feed}\">".JText::_('Subscribe RSS')."</a></p>";
 					}
-					$feed = str_replace('https:://','http://',$feed);
+				?>
 			
-					echo "<p class=\"feed\"><a href=\"{$feed}\">".JText::_('Subscribe RSS')."</a></p>";
-				}
-			?>
+				<?php if ($this->canpost) { ?>
+					<p class="add">
+						<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
+							<?php echo JText::_('New entry'); ?>
+						</a>
+					</p>
+				<?php } ?>
 			
-			<?php if ($this->canpost) { ?>
-				<p class="add">
-					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
-						<?php echo JText::_('New entry'); ?>
-					</a>
-				</p>
-			<?php } ?>
-			
-			<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-				<p class="config">
-					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
-						<?php echo JText::_('Settings'); ?>
-					</a>
-				</p>
-			<?php } ?>
-			
-		</div>
+				<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+					<p class="config">
+						<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+							<?php echo JText::_('Settings'); ?>
+						</a>
+					</p>
+				<?php } ?>
+			</div>
+		<?php } ?>
 		
 		<div class="blog-entries-years">
 			<h4><?php echo JText::_('Entries By Year'); ?></h4>
@@ -226,11 +227,9 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 										<p class="entry-author">Posted by <cite><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo stripslashes($row->name); ?></a></cite></p>
 										<p>
 											<?php 
-												$content = Hubzero_View_Helper_Html::shortenText($row->content, 300, 0); 
-												echo $p->parse( "\n".stripslashes($content), $wikiconfig, true, true );
-												
-												//$content = $p->parse( "\n".stripslashes($row->content), $wikiconfig, true, true );
-												//echo  Hubzero_View_Helper_Html::shortenText($content, 300, 0); 
+												$content = plgGroupsBlog::stripWiki($row->content);
+												echo Hubzero_View_Helper_Html::shortenText($content, 300, 0); 
+												//echo $p->parse( "\n".stripslashes($content), $wikiconfig, true, true );
 											?> 
 											<a class="readmore" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>" title="<?php echo JText::sprintf('PLG_GROUPS_BLOG_READMORE', strip_tags(stripslashes($row->title))) ?>">Continue reading &rarr;</a>
 										</p>

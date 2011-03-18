@@ -607,19 +607,22 @@ class plgGroupsBlog extends JPlugin
 	private function _edit() 
 	{
 		$juser =& JFactory::getUser();
+		$app =& JFactory::getApplication();
+		$blog = JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=blog');
+		
 		if ($juser->get('guest')) {
-			$this->setError( JText::_('GROUPS_LOGIN_NOTICE') );
-			return $this->_login();
+			//$app->enqueueMessage( JText::_('GROUPS_LOGIN_NOTICE'), 'warning' );
+			$app->redirect('/login?return='.base64_encode($blog));
 		}
 		
 		if (!$this->authorized) {
-			$this->setError( JText::_('PLG_GROUPS_BLOG_NOT_AUTHORIZED') );
-			return $this->_browse();
+			$app->enqueueMessage( JText::_('You are not authorized to edit this blog entry.'), 'error' );
+			$app->redirect($blog);
 		}
 		
 		if (!$this->_getPostingPermissions()) {
-			$this->setError( JText::_('You do not have permission to post entries.') );
-			return $this->_browse();
+			$app->enqueueMessage( JText::_('You do not have permission to post entries.'), 'error' );
+			$app->redirect($blog);
 		}
 		
 		ximport('Hubzero_Plugin_View');
@@ -630,6 +633,7 @@ class plgGroupsBlog extends JPlugin
 				'name'=>'edit'
 			)
 		);
+		
 		$view->option = $this->option;
 		$view->group = $this->group;
 		$view->task = $this->action;
@@ -651,9 +655,6 @@ class plgGroupsBlog extends JPlugin
 		$bt = new BlogTags($this->database);
 		$view->tags = $bt->get_tag_string($view->entry->id);
 		
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
 		return $view->loadTemplate();
 	}
 	
@@ -869,42 +870,6 @@ class plgGroupsBlog extends JPlugin
 			return $this->_entry();
 		}
 		
-		/*
-		if ($row->created_by != $this->member->get('uidNumber)) {
-			$this->entry = new BlogEntry($this->database);
-			$this->entry->load($row->entry_id);
-			
-			// Get the site configuration
-			$jconfig =& JFactory::getConfig();
-
-			// Build the "from" data for the e-mail
-			$from = array();
-			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('PLG_MEMBERS_BLOG');
-			$from['email'] = $jconfig->getValue('config.mailfrom');
-
-			$subject = JText::_('PLG_MEMBERS_BLOG_SUBJECT_COMMENT_POSTED');
-
-			// Build the SEF referenced in the message
-			$juri =& JURI::getInstance();
-			$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->member->get('uidNumber').'&active=blog&task='.JHTML::_('date',$this->entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->entry->publish_up, '%m', 0).'/'.$this->entry->alias.'#comments);
-			if (substr($sef,0,1) == '/') {
-				$sef = substr($sef,1,strlen($sef));
-			}
-
-			// Message
-			$message  = "The following comment has been posted to your blog entry:\r\n\r\n";
-			$message .= stripslashes($row->content)."\r\n\r\n";
-			$message .= "To view all comments on the blog entry, go to:\r\n";
-			$message .= $juri->base().$sef . "\r\n";
-
-			// Send the message
-			JPluginHelper::importPlugin( 'xmessage' );
-			$dispatcher =& JDispatcher::getInstance();
-			if (!$dispatcher->trigger( 'onSendMessage', array( 'blog_comment', $subject, $message, $from, array($this->member->get('uidNumber')), $this->option ))) {
-				$this->setError( JText::_('PLG_MEMBERS_BLOG_ERROR_MSG_MEMBER_FAILED') );
-			}
-		}
-		*/
 		
 		return $this->_entry();
 	}
@@ -1035,6 +1000,18 @@ class plgGroupsBlog extends JPlugin
 		$app->redirect( JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=blog&task=settings') );
 	}
 
-
+	//-----------
+	
+	public static function stripWiki( $text )
+	{
+		$wiki = array("'''","''","'''''","__","{{{","}}}","~~","^",",,","==","===","====","||","----");
+		
+		$stripped_text = preg_replace('/\[\[\S{1,}\]\]/', "", $text);
+		
+		$stripped_text = str_replace($wiki, "", $stripped_text);
+		
+		return nl2br($stripped_text);
+		
+	}
 
 }
