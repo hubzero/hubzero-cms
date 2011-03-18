@@ -1071,11 +1071,11 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		// Check authorization
-		$authorized = $this->_authorize();
-		if ($authorized != 'admin' && $authorized != 'manager') {
-			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
-			return;
-		}
+		//$authorized = $this->_authorize();
+		//if ($authorized != 'admin' && $authorized != 'manager') {
+		//	JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
+		//	return;
+		//}
 
 		// Incoming
 		$g_cn           = strtolower(trim(JRequest::getVar( 'cn', '', 'post' )));
@@ -1131,7 +1131,6 @@ class GroupsController extends Hubzero_Controller
 			
 			$this->group = $group;
 			$this->tags = $tags;
-			$this->_task = 'new';
 			$this->edit();
 			return;
 		}
@@ -1162,7 +1161,6 @@ class GroupsController extends Hubzero_Controller
 			
 			$this->group = $group;
 			$this->tags = $tags;
-			$this->_task = 'new';
 			$this->edit();
 			return;
 		}
