@@ -1697,13 +1697,12 @@ class ContribtoolHtml
 		}
 		
 		ContribtoolHtml::writeResourceEditStage($step, $version, $option, $rid, $status['published'], $v);
-	 
 		?>
 <div class="main section noborder">
             <form action="index.php" method="post" id="hubForm" >
 			<div style="float:left; width:70%;padding:1em 0 1em 0;">
             		 <?php if($step!=1) { ?><span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('PREVIOUS')); ?> " class="returntoedit" /></span><?php } ?>
-			         <span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save & Go Next')); ?> &gt;" /></span>
+			         <span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save &amp; Go Next')); ?> &gt;" /></span>
 			</div>
 			
             <div class="clear"></div>
@@ -1729,7 +1728,7 @@ class ContribtoolHtml
 				</label>
 				<label>
 					<?php echo JText::_('COMPOSE_AT_A_GLANCE'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
-					<input type="text" name="description"  maxlength="256" value="<?php echo stripslashes($status['description']); ?>" />
+					<input type="text" name="description"  maxlength="256" value="<?php echo stripslashes(htmlentities($status['description'])); ?>" />
 				</label>
 				<label>
 					<?php echo JText::_('COMPOSE_ABSTRACT'); ?>:
@@ -1786,7 +1785,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
             <div class="clear"></div>
  			<div style="float:left; width:70%;padding:1em 0 1em 0;">
             		 <?php if($step!=1) { ?><span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('PREVIOUS')); ?> " class="returntoedit" /></span><?php } ?>
-			           <span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save & Go Next')); ?> &gt;" /></span>
+			           <span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save &amp; Go Next')); ?> &gt;" /></span>
 			</div>
 			
 		</form>

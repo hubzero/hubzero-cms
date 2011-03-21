@@ -2654,12 +2654,10 @@ class ContribtoolController extends JObject
 		// get tool version (dev or current) information
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, $version, $ldap);
 	
-
 		// get resource information
 		$row = new ResourcesResource( $database );
 		$row->load( $rid );
 		if(!$status['fulltext'])  { $status['fulltext'] = $row->fulltext; }
-
 		
 		// process first step
 		if($nextstep==3 && isset($_POST['nbtag'])) {
