@@ -1042,32 +1042,39 @@ class AnswersController extends Hubzero_Controller
 		$tagging = new AnswersTags( $this->database );
 		$tagging->tag_object($this->juser->get('id'), $row->id, $tags, 1, 0);
 		
-		// Send a message about the new question to authorized users (specified admins or related content authors)
-		//-------
-		$jconfig =& JFactory::getConfig();
-		$hub = array(
-			'email' => $jconfig->getValue('config.mailfrom'), 
-			'name' => $jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_ANSWERS')
-		);
-		
-		// Build the message subject
-		$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_ANSWERS').', '.JText::_('COM_ANSWERS_NEW_QUESTION_POSTED');
-		
-		// Build the message	
-		$eview = new JView( array('name'=>'emails','layout'=>'question') );
-		$eview->option = $this->_option;
-		$eview->hubShortName = $jconfig->getValue('config.sitename');
-		$eview->juser = $this->juser;
-		$eview->row = $row;
-		$eview->id = $row->id ? $row->id : 0;
-		$message = $eview->loadTemplate();
-		$message = str_replace("\n", "\r\n", $message);
-		
+		// Get users who need to be notified on every question
 		$apu = ($this->config->get('notify_users')) ? $this->config->get('notify_users') : '';
 		$apu = explode(',', $apu);
 		$apu = array_map('trim',$apu);
 		$receivers = array();
-		
+
+		// Get tool contributors if question is about a tool
+		if($tags) {
+			$tags = explode(",", $tags);
+			if(count($tags) > 0) {
+				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.author.php' );
+				require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
+				$TA = new ToolAuthor($this->database);
+				$objV = new ToolVersion($this->database);
+
+				foreach($tags as $tag) {
+					if($tag == '') { continue; }
+					if(preg_match('/tool:/', $tag)) {
+						$toolname = preg_replace('/tool:/', '', $tag);
+						if(trim($toolname)) {
+							$rev = $objV->getCurrentVersionProperty ($toolname, 'revision'); 
+							$authors = $TA->getToolAuthors('', 0, $toolname, $rev);
+							if(count($authors) > 0) {
+								foreach($authors as $author) {
+									$receivers[] = $author->uidNumber;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		if (!empty($apu)) {
 			foreach ($apu as $u) 
 			{
@@ -1076,11 +1083,33 @@ class AnswersController extends Hubzero_Controller
 					$receivers[] = $user->get('id');
 				}
 			}
-			$receivers = array_unique($receivers);
 		}
+		$receivers = array_unique($receivers);
 		
+		// Send the message
 		if (!empty($receivers)) {
-			// Send the message
+			
+			// Send a message about the new question to authorized users (specified admins or related content authors)
+			//-------
+			$jconfig =& JFactory::getConfig();
+			$hub = array(
+				'email' => $jconfig->getValue('config.mailfrom'), 
+				'name' => $jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_ANSWERS')
+			);
+
+			// Build the message subject
+			$subject = JText::_('COM_ANSWERS_ANSWERS').', '.JText::_('new question about content you author or manage');
+
+			// Build the message	
+			$eview = new JView( array('name'=>'emails','layout'=>'question') );
+			$eview->option = $this->_option;
+			$eview->hubShortName = $jconfig->getValue('config.sitename');
+			$eview->juser = $this->juser;
+			$eview->row = $row;
+			$eview->id = $row->id ? $row->id : 0;
+			$message = $eview->loadTemplate();
+			$message = str_replace("\n", "\r\n", $message);
+			
 			JPluginHelper::importPlugin( 'xmessage' );
 			$dispatcher =& JDispatcher::getInstance();
 			if (!$dispatcher->trigger( 'onSendMessage', array( 'new_question_admin', $subject, $message, $hub, $receivers, $this->_option))) {
