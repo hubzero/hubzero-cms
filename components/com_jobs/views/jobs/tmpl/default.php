@@ -36,6 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	}
 	
 	$html  = '';
+	$now = date( 'Y-m-d H:i:s', time() );
 		
 if(!$this->mini) {	
 ?>
@@ -103,12 +104,13 @@ if(!$this->mini) {
 		$html .= t.t.t.'</label> '.n;
 		$html .= t.t.t.'&nbsp;&nbsp;<label>'.JText::_('SORTBY').':'.n;
 		$html .= '<select name="sortby" id="sortby">'.n;
+		$add = ($filters['search'] != '') ? 'Relevance and ' : '';
 		foreach ($sortbys as $avalue => $alabel) 
 		{
 			$selected = ($avalue == $filters['sortby'] || $alabel == $filters['sortby'])
 					  ? ' selected="selected"'
 					  : '';
-			$html .= ' <option value="'.$avalue.'"'.$selected.'>'.$alabel.'</option>'.n;
+			$html .= ' <option value="'.$avalue.'"'.$selected.'>'.$add.$alabel.'</option>'.n;
 		}
 		$html .= '</select>'.n;
 		$html .= t.t.t.'</label>'.n;
@@ -128,8 +130,8 @@ if(!$this->mini) {
 		if(count($jobs) > 0 ) {
 			$jt = new JobType ( $this->database );
 			$jc = new JobCategory ( $this->database );
-			$curtype = $jobs[0]->type > 0 ? $jt->getType($jobs[0]->type) : '';
-			$curcat = $jobs[0]->cid > 0 ? $jc->getCat($jobs[0]->cid) : '';
+	//		$curtype = $jobs[0]->type > 0 ? $jt->getType($jobs[0]->type) : '';
+	//		$curcat = $jobs[0]->cid > 0 ? $jc->getCat($jobs[0]->cid) : '';
 			
 			$html .= t.t.'<table class="postings">'.n;
 			$html .= t.t.t.'<thead>'.n;
@@ -169,11 +171,13 @@ if(!$this->mini) {
 				//$txt = (is_object($p)) ? $p->parse( stripslashes($jobs[$i]->description) ) : nl2br(stripslashes($jobs[$i]->description));
 				$txt = $p->parse(stripslashes($jobs[$i]->description), $wikiconfig);
 				$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, '%d&nbsp;%b&nbsp;%y',0) : 'ASAP';
-
+				$curtype = $jt->getType($jobs[$i]->type);
+				$curcat = $jc->getCat($jobs[$i]->cid);				
+				
 				// compute relevance to search keywords
 				if ($filters['search']) {
 					$relscore = $jobs[$i]->keywords > 0 ? floor(($jobs[$i]->keywords * 100) / $maxscore) : 0;				
-				}			
+				}		
 				
 				// what's the job status?
 				if ($this->admin && !$this->emp && !$this->mini) {
@@ -184,10 +188,10 @@ if(!$this->mini) {
 						case 0:    		$status =  JText::_('JOB_STATUS_PENDING');
 										$class  = 'post_pending';  		
 																				break;
-						case 1:    		$status =  $jobs[$i]->inactive 
+						case 1:    		$status =  $jobs[$i]->inactive &&  $jobs[$i]->inactive < $now
 										? JText::_('JOB_STATUS_INVALID') 
 										: JText::_('JOB_STATUS_ACTIVE'); 
-										$class  = $jobs[$i]->inactive 
+										$class  = $jobs[$i]->inactive &&  $jobs[$i]->inactive < $now 
 										? 'post_invalidsub'
 										: 'post_active';  			
 																				break;

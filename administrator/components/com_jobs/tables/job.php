@@ -167,7 +167,9 @@ class Job extends JTable
 		}		
 	
 		$sql = "SELECT DISTINCT j.id, j.*, c.category AS categoryname, c.category IS NULL AS isnull, j.type=0 as typenull, ";
-		$sql.= $admin ? "s.expires IS NULL AS inactive,  " : ' NULL AS inactive, ';
+//		$sql.= $admin ? "s.expires IS NULL AS inactive,  " : ' NULL AS inactive, ';
+		$sql.= $admin ? "s.expires  AS inactive,  " : ' NULL AS inactive, ';
+		
 		if ($uid) {
 			$sql.= "\n (SELECT count(*) FROM #__jobs_admins AS B WHERE B.jid=j.id AND B.uid=".$uid.") AS manager,";
 		} else {

@@ -1285,6 +1285,10 @@ class JobsController extends Hubzero_Controller
 			$job->title   			= rtrim(stripslashes($_POST['title']));
 			$job->companyName   	= rtrim(stripslashes($_POST['companyName']));
 			$job->companyLocation   = rtrim(stripslashes($_POST['companyLocation']));
+			$applyInternal			= JRequest::getInt( 'applyInternal', 0 );
+			$applyExternalUrl		= JRequest::getVar( 'applyExternalUrl', '' );
+			// Need at least one way to apply to a job
+			$job->applyInternal    	= ($applyInternal or !$applyExternalUrl) ? 1 : 0;
 			
 			// missing required information
 			if (!$job->description or !$job->title or !$job->companyName or !$job->companyLocation) {
