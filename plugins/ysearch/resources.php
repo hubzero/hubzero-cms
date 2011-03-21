@@ -67,8 +67,13 @@ class plgYSearchResources extends YSearchPlugin
 		else
 		{
 			$groups = array_map('mysql_real_escape_string', $authz->get_group_names());
-			$group_list = '(\''.join('\', \'', $groups).'\')';
-			$access = '(access = 0 OR access = 1 OR ((access = 3 OR access = 4) AND r.group_owner IN '.$group_list.'))';		
+			if ($groups)
+			{
+				$group_list = '(\''.join('\', \'', $groups).'\')';
+				$access = '(access = 0 OR access = 1 OR ((access = 3 OR access = 4) AND r.group_owner IN '.$group_list.'))';		
+			}
+			else 
+				$access = '(access = 0 OR access = 1)';
 		}
 
 		$term_parser = $request->get_terms();
