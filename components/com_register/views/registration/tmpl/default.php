@@ -636,7 +636,7 @@ if (!defined("n")) {
 				$this->registration['role'] = array();
 
 			$html .= t.t.'<fieldset'.$fieldclass.'>'.n;
-			$html .= t.t.t.'<legend>'.JText::_('What are you interested in?').' '.$required.'</legend>'.n;
+			$html .= t.t.t.'<legend>'.JText::_('What are your areas of interest?').' '.$required.'</legend>'.n;
 				
 			$html .= t.t.t.'<p class="hint">'.JText::_('Materials for ... (Check all roles and levels you are interested in.)').'</p>'.n;
 			

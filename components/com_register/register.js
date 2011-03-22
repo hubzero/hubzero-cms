@@ -68,7 +68,7 @@ HUB.Register = {
 	setNonUSCountryOrigin: function() {
 		var form = $('hubForm');
 		form.corigin_usno.checked = true;
-		HUB.Register.disableRacialBackground();
+		//HUB.Register.disableRacialBackground();
 	},
 
 	setNonUSCountryResident: function() {
@@ -87,7 +87,7 @@ HUB.Register = {
 			form.corigin.disabled = false;
 			form.corigin.selectedIndex = HUB.Register.country_origin;
 		}
-		HUB.Register.disableRacialBackground();
+		//HUB.Register.disableRacialBackground();
 	},
 
 	disableCountryResidentSubgroups: function() {
