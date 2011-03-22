@@ -1,9 +1,9 @@
-<?php
+<?php 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php
+<?php 
   $document =& JFactory::getDocument();
   $document->addStyleSheet($this->baseurl."/components/com_warehouse/css/warehouse.css",'text/css');
   $document->addScript($this->baseurl."/components/com_warehouse/js/ajax.js", 'text/javascript');
@@ -25,18 +25,15 @@ defined('_JEXEC') or die( 'Restricted access' );
   <div class="content-header">
     <h2 class="contentheading">NEES Project Warehouse</h2>
   </div>
-
+  
   <div id="warehouseWindow" style="padding-top:20px;">
     <div id="title" style="padding-bottom:1em;">
       <span style="font-size:16px;font-weight:bold;"><?php echo $oProject->getTitle(); ?></span>
-      <?php if($oProject->hasOpenData()) {?>
-        <a href="http://www.opendatacommons.org/licenses/by/summary/" target="openData" style="border:0px;" title="Open Data license"><img src="/components/com_warehouse/images/icons/open_data.png" style="margin-left:20px;" border="0"/></a>
-      <?php }?>
     </div>
-
+      
     <div id="treeBrowser" style="float:left;width:20%;"></div>
-
-    <div id="overview_section" class="main section" style="width:100%;float:left;">
+    
+    <div id="overview_section" class="main section" style="width:100%;float:left;">      
       <?php echo TabHtml::getSearchForm( "/warehouse/find" ); ?>
 
       <?php
@@ -48,18 +45,20 @@ defined('_JEXEC') or die( 'Restricted access' );
       ?>
 
       <?php echo $this->strTabs; ?>
-
+      
       <div class="aside">
           <?php
             if($oAuthorizer->canView($oProject)){
               $oProjectImageDataFile = unserialize($_REQUEST[DataFilePeer::TABLE_NAME]);
               if($oProjectImageDataFile!=null){
-                $strFileLink = $oProjectImageDataFile->getUrl();
+                $strDirLink = $oProjectImageDataFile->getPath()."/".$oProjectImageDataFile->getName();
+                $strFileLink = str_replace("/nees/home/",  "",  $strDirLink);
+                $strFileLink = str_replace(".groups",  "",  $strFileLink);
             ?>
               <p style="font-size:11px;color:#999999" align="center">
-                <img src="<?php echo $strFileLink; ?>"/><br><?php echo $oProjectImageDataFile->getDescription(); ?>
+                <img src="/data/get/<?php echo $strFileLink; ?>"/><br><?php echo $oProjectImageDataFile->getDescription(); ?>
               </p>
-            <?php
+            <?php 
               }else{
                 /*
                  * Some project photos didn't go through the V&V process.
@@ -71,7 +70,7 @@ defined('_JEXEC') or die( 'Restricted access' );
               }//end if-else
             }//end canView
           ?>
-
+        
 
         <?php if($oAuthorizer->canView($oProject)){ ?>
           <div id="stats" style="margin-top:30px; border-width: 1px; border-style: dashed; border-color: #cccccc; ">
@@ -82,7 +81,7 @@ defined('_JEXEC') or die( 'Restricted access' );
           <p style="margin-left:10px;"><?php echo $this->iEntityActivityLogDownloads; ?> Downloads</p>
         </div>
 
-        <?php
+        <?php 
           #Check to see if the current user can edit the project.
           if($oAuthorizer->canEdit($oProject)):
         ?>
@@ -94,8 +93,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
         <?php
           #Check to see if the current user is the curator.
-          //if($oAuthorizer->canCurate($oProject)):
-          if(false):
+          if($oAuthorizer->canCurate($oProject)):
         ?>
           <div id="editEntity" class="admin-options" style="margin-top:30px">
             <p class="edit"><a href="#">Curate this project</a></p>
@@ -107,7 +105,7 @@ defined('_JEXEC') or die( 'Restricted access' );
           <span class="curationTitle">Curation progress:</span>
              <?php echo $this->mod_curationprogress; ?>
         </div>
-
+        
         <div class="whatisthis">
           <h4>What's this?</h4>
           <p>
@@ -125,7 +123,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         <div id="about" style="padding-top:1em;">
           <table cellpadding="1" cellspacing="1" style="border-bottom:0px;border-top:0px;">
             <tr id="people">
-              <td style="font-weight:bold;width:1px;" nowrap="">PI(s):</td>
+              <td style="font-weight:bold;" nowrap="">PI(s):</td>
               <td><?php echo $this->strPIandCoPIs; ?></td>
             </tr>
             <tr id="dates">
@@ -135,15 +133,15 @@ defined('_JEXEC') or die( 'Restricted access' );
             <tr id="facility">
               <td style="font-weight:bold;">Facility:</td>
               <td>
-                <?php
+                <?php 
                   $oProjectFacilityOrganizationArray = unserialize($_REQUEST["oFacility"]);
                   foreach($oProjectFacilityOrganizationArray as $iFacilityIndex=>$oProjectFacilityOrganization){
                     if(isset($oProjectFacilityOrganization)){ ?>
                       <span>
                       <a href="/sites/?view=site&id=<?php echo  $oProjectFacilityOrganization->getFacilityId(); ?>"><?php echo  $oProjectFacilityOrganization->getName(); ?></a>
-                      <?php
+                      <?php 
                         if($iFacilityIndex < sizeof($oProjectFacilityOrganizationArray)-1){
-                      	  echo ",</span> ";
+                      	  echo ",</span> "; 
                         }?>
                       </span>
                 <?php
@@ -155,7 +153,7 @@ defined('_JEXEC') or die( 'Restricted access' );
             <tr id="organization">
               <td style="font-weight:bold;" nowrap="">Organization(s):</td>
               <td>
-                <?php
+                <?php 
                   $oOrganizationArray = unserialize($_REQUEST[OrganizationPeer::TABLE_NAME]);
                   foreach($oOrganizationArray as $iKey => $oOrganization){
                   ?>
@@ -165,10 +163,10 @@ defined('_JEXEC') or die( 'Restricted access' );
                       if($iKey < sizeof($oOrganizationArray)-1){
                   	    echo ", ";
                       }
-                    ?>
+                    ?> 
                     </span>
-                  <?php
-                  }
+                  <?php    
+                  }                  
                 ?>
               </td>
             </tr>
@@ -179,7 +177,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                   $oDescriptionClob = $oProject->getDescription();
                   echo $oDescriptionClob;
                 ?>
-
+                
               </td>
             </tr>
             <tr id="sponsor">
@@ -189,13 +187,13 @@ defined('_JEXEC') or die( 'Restricted access' );
             <tr id="websites">
               <td style="font-weight:bold;">Website(s):</td>
               <td>
-                <?php
+                <?php 
                   $oProjectLinksArray = unserialize($_REQUEST[ProjectHomepagePeer::URL]);
                   foreach($oProjectLinksArray as $oProjectLink){
                     echo $oProjectLink->getCaption();
                 ?>
                     (<a href="<?php echo $oProjectLink->getUrl(); ?>">view</a>) <br>
-                <?php
+                <?php 
                   }
                 ?>
               </td>
@@ -204,10 +202,10 @@ defined('_JEXEC') or die( 'Restricted access' );
               <td style="font-weight:bold;">Equipment:</td>
               <td>
                 <?php
-                  $oEquipmentArray = unserialize($_REQUEST[EquipmentPeer::TABLE_NAME]);
-                  if(!empty($oEquipmentArray)):
-                ?>
-                <a id="viewEquipmentLink" href="javascript:void(0);" onClick="hideElement('viewEquipmentLink');showElement('projectEquipment');showElement('hideEquipmentLink');">View Details</a>
+                  $oEquipmentArray = unserialize($_REQUEST[EquipmentPeer::TABLE_NAME]); 
+                  if(!empty($oEquipmentArray)): 
+                ?> 
+                <a id="viewEquipmentLink" href="javascript:void(0);" onClick="hideElement('viewEquipmentLink');showElement('projectEquipment');showElement('hideEquipmentLink');">View Details</a>  
                 <a id="hideEquipmentLink" href="javascript:void(0);" onClick="hideElement('hideEquipmentLink');hideElement('projectEquipment');showElement('viewEquipmentLink');" style="display:none;">Hide Details</a>
                 <div style="border: 1px solid rgb(102, 102, 102); overflow: auto; width: 100%; padding: 0px; margin: 0px; display:none" id="projectEquipment">
 				  <table cellpadding="1" cellspacing="1" style="width:100%;border-bottom:0px;border-top:0px;">
@@ -215,7 +213,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				      <th style="font-weight:bold;">Equipment Class</th>
 				      <th style="font-weight:bold;">Description</th>
 				    </tr>
-                	<?php foreach($oEquipmentArray as $iIndex=>$oEquipment){
+                	<?php foreach($oEquipmentArray as $iIndex=>$oEquipment){ 
 				      $bgColor = "";
 				      if($iIndex%2==0){
 				      	$bgColor = "#EFEFEF";
@@ -247,66 +245,32 @@ defined('_JEXEC') or die( 'Restricted access' );
             <tr id="pubs">
               <td style="font-weight:bold;">Publications:</td>
               <td>
-                <?php
-                  $iPubCount = 0;
+                <?php 
                   $oPublicationArray = $this->publications;
                   foreach($oPublicationArray as $iPubIndex=>$oPublication){
-                     ++$iPubCount;
                      $strAuthorArray = $oPublication['authors'];
-
+                     
                      $strAuthors = "";
                      foreach($strAuthorArray as $iAuthorIndex=>$strAuthor){
                        $strAuthors .= "<a href='/members/".$strAuthor['authorid']."'>".$strAuthor['name']."</a>";
                        if($iAuthorIndex < (sizeof($strAuthorArray)-1)){
                        	 $strAuthors .= "; ";
-                       }
+                       }	
                      }
-
+                     
                   	?>
-
+                    
                     <div id="publication<?php echo $iPubIndex; ?>>">
-                      <?php echo $strAuthors .", \"". $oPublication['title'] ."\""; ?>
+                      <?php echo $strAuthors .", \"". $oPublication['title'] ."\""; ?> 
                       (<a href="/resources/<?php echo $oPublication['id']; ?>">view</a>)
-                    </div>
-                  <?php
+                    </div>	
+                  <?php 
                   }
 
-                  //check if resource publication count is greater than 3
+
                   if($this->publicationCount > 3){?>
                     <a href="/warehouse/publications/project/<?php echo $oProject->getId(); ?>">more...</a>
-                  <?php 
-                  }else{
-                    //$iPubIndex = count($oPublicationArray);
-                    
-                    //if not, display publications without authors
-                    $bShowPublicationMoreLink = false;
-                    if(isset($_REQUEST[ProjectHomepagePeer::TABLE_NAME])){
-                      $oProjectHomepageArray = unserialize($_REQUEST[ProjectHomepagePeer::TABLE_NAME]);
-                      if(($this->publicationCount + count($oProjectHomepageArray)) > 3){
-                        $bShowPublicationMoreLink = true;
-                      }
-
-                      /* @var $oProjectHomepagePub ProjectHomepage */
-                      foreach($oProjectHomepageArray as $iProjectPubIndex=>$oProjectHomepagePub){
-                        ++$iPubCount;  
-                        if($iPubCount > 3){
-                          break;
-                        }
-                      ?>
-                        <div id="publication<?php echo $iPubIndex; ?>>">
-                          <?php echo $oProjectHomepagePub->getDescription(); ?>
-                            (<a href="<?php echo $oProjectHomepagePub->getDataFile()->get_url(); ?>">download</a>)
-                        </div>
-                      <?php
-                      }
-                    }
-
-                    if($bShowPublicationMoreLink){?>
-                      <a href="/warehouse/publications/project/<?php echo $oProject->getId(); ?>">more...</a>
-                    <?php
-                    }
-
-                  }
+                  <?php }
                 ?>
               </td>
             </tr>
@@ -314,12 +278,7 @@ defined('_JEXEC') or die( 'Restricted access' );
               <td class="entityDetail">Documentation</td>
               <td>
                 <div id="docList" class="">
-                  <?php if ($this->iDocumentCount > 0): ?>
                     <a onclick="getMootools('/warehouse/data?path=<?php echo $oProject->getPathname(); ?>/Documentation&format=ajax&form=frmDocumentation&target=docList','docList');" href="javascript:void(0);">view</a>
-                  <?php else:
-                     echo Files::NOT_AVAILABLE;    
-                    endif;
-                  ?>
                 </div>
               </td>
             </tr>
@@ -327,12 +286,7 @@ defined('_JEXEC') or die( 'Restricted access' );
               <td class="entityDetail">Analysis</td>
               <td>
                 <div id="anaList" class="">
-                  <?php if ($this->iAnalysisCount > 0): ?>
-                    <a onclick="getMootools('/warehouse/data?path=<?php echo $oProject->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList','anaList');" href="javascript:void(0);">view</a>
-                  <?php else:
-                     echo Files::NOT_AVAILABLE;
-                    endif;
-                  ?>
+                  <a onclick="getMootools('/warehouse/data?path=<?php echo $oProject->getPathname(); ?>/Analysis&format=ajax&form=frmAnalysis&target=anaList','anaList');" href="javascript:void(0);">view</a>
                 </div>
               </td>
             </tr>
@@ -357,7 +311,7 @@ defined('_JEXEC') or die( 'Restricted access' );
               <td><?php echo $this->mod_warehousetags; ?></td>
             </tr>
           </table>
-
+    
         </div>
           <?php
         }else{?>
@@ -366,10 +320,10 @@ defined('_JEXEC') or die( 'Restricted access' );
         }//end canView
       ?>
       </div>
-
+      
     </div>
     <div class="clear"></div>
-  </div>
+  </div>  
 </div>
 </div>
 

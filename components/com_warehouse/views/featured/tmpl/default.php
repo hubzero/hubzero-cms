@@ -40,10 +40,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 			- At least one data file that can be read and plotted by a data visualization tool (e.g. inDEED)<br>
 			- At least one report or publication <br>
 			</p>
-
-
-      		<h2 style="margin-top:0px">Quick Links to Enhanced Projects</h2>
-
+			
+			<br>
+	        <font size="4.5"><b>Quick Links to Enhanced Projects</b></font>
+      		<br>
+			
       		<ul>
                     <?php
                       $oProjectArray = array();

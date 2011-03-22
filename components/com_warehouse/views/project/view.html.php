@@ -86,7 +86,7 @@ class WarehouseViewProject extends JView{
     $this->assignRef( "publicationCount", $iPublicationCount );
 
     //find publications without authors
-    if($iPublicationCount < 3){
+    if($iPublicationCount < 4){
       $oProjectHomepageArray = $oProjectModel->getProjectHomepages($iProjectId, ProjectHomepagePeer::CLASSKEY_PROJECTHOMEPAGEPUB);
       $_REQUEST[ProjectHomepagePeer::TABLE_NAME] = serialize($oProjectHomepageArray);
     }
@@ -112,7 +112,7 @@ class WarehouseViewProject extends JView{
 
     $iDocumentFileCount = count($oProjectModel->findDataFileByDirPath($oProject->getPathname()."/Documentation"));
     $this->assignRef( "iDocumentCount", $iDocumentFileCount );
-    
+
     $iAnalysisFileCount = count($oProjectModel->findDataFileByDirPath($oProject->getPathname()."/Analysis"));
     $this->assignRef( "iAnalysisCount", $iAnalysisFileCount );
 
@@ -143,7 +143,7 @@ class WarehouseViewProject extends JView{
     if(isset($_SESSION[Search::NEES_SITE])){
       if($_SESSION[Search::NEES_SITE]){
         $bSearch = true;
-      }  
+      }
     }
     if(isset($_SESSION[Search::PROJECT_TYPE])){
       if($_SESSION[Search::PROJECT_TYPE]){

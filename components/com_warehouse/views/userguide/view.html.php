@@ -6,7 +6,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport( 'joomla.application.component.view');
 require_once 'lib/data/ProjectPeer.php';
 
-class WarehouseViewFeatured extends JView{
+class WarehouseViewUserGuide extends JView{
 	
   function display($tpl = null){
     /* @var $oWarehouseModel WarehouseModelFeatured */
@@ -14,16 +14,12 @@ class WarehouseViewFeatured extends JView{
     $strTabArray = $oWarehouseModel->getSearchTabArray(); 
     $strTabViewArray = $oWarehouseModel->getSearchTabViewArray();
     $strTabTitleArray = $oWarehouseModel->getSearchTabTitleArray();
-    $strTabHtml = $oWarehouseModel->getTabs( "warehouse", 0, $strTabArray, $strTabViewArray, "featured", $strTabTitleArray );
+    $strTabHtml = $oWarehouseModel->getTabs( "warehouse", 0, $strTabArray, $strTabViewArray, "userguide", $strTabTitleArray );
     $this->assignRef( "strTabs", $strTabHtml );
 
     $strTreeTabArray = $oWarehouseModel->getTreeBrowserTabArray();
     $strTreeTabHtml = $oWarehouseModel->getTreeTab( "warehouse", 0, $strTreeTabArray, "projects", true );
     $this->assignRef( "strTreeTabs", $strTreeTabHtml );
-
-
-    $oProjectArray = $oWarehouseModel->getEnhancedProjects();
-    $_REQUEST[ProjectPeer::TABLE_NAME] = serialize($oProjectArray);
 
     $this->assignRef( "mod_warehousepopularsearches", ComponentHtml::getModule("mod_warehousepopularsearches") );
 

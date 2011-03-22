@@ -37,12 +37,22 @@ defined('_JEXEC') or die( 'Restricted access' );
     </div>
     <?php #end tree browser section ?>
 
-
     <div id="overview_section" class="main section" style="width:97%;float:left;">
       <?php #main tabs for current page ?>
       <?php echo $this->strTabs; ?>
+	  
+	  <br/>
 
+	     <p>The <strong>NEES Project Warehouse </strong>is the centralized data repository for sharing and publishing earthquake engineering research data 
+		 from experimental and numerical studies. <br><br>The data in the Project Warehouse are associated with research projects funded by a variety of agencies, 
+		 including the National Science Foundation (NSF), and include experiments performed at NEES and non-NEES equipment sites.</p>
 
+		 <br>
+		 
+		 <font size="4.5"><b>Search Project Warehouse</b></font>
+		 
+		 <br><br>
+		 
   	  <?php #right side of page ?>
   	  <div class="aside">
         <div id="popularTags">
@@ -64,6 +74,8 @@ defined('_JEXEC') or die( 'Restricted access' );
       <form id="frmSearch" action="/warehouse/find" method="get">
         <fieldset>
           <div id="searchFormTable" style="margin-top:10px;">
+		  
+		  
       	    <table style="width:0px;border:0px;margin-top:10px;">
               <tr>
                 <td><label for="strKeywords">Keywords:</label></td>

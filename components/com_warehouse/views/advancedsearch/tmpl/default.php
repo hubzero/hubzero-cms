@@ -64,12 +64,31 @@ defined('_JEXEC') or die( 'Restricted access' );
       <form id="frmSearch" action="/warehouse/find" method="get">
         <fieldset>
           <div id="searchFormTable" style="margin-top:10px;">
+		  
+		 <br>
+		 
+		 <p>The <strong>NEES Project Warehouse </strong>is the centralized data repository for sharing and publishing earthquake engineering research data 
+		 from experimental and numerical studies. <br><br>The data in the Project Warehouse are associated with research projects funded by a variety of agencies, 
+		 including the National Science Foundation (NSF), and include experiments performed at NEES and non-NEES equipment sites.</p>
+
+		 <br>
+		 
+		 <font size="4.5"><b>Advanced Search Project Warehouse</b></font>
+		 
+		 <br><br>
+		  
+		  
+		  
+		  
+		  
+		  
+		  
       	    <table style="width:0px;border:0px;margin-top:10px;">
               <tr>
                 <td><label for="strKeywords">Keywords:</label></td>
                 <td><input id="strKeywords" type="text" class="searchInput" name="keywords" value=""/></td>
                 <td><input type="submit" value="GO"/></td>
-                <td nowrap>&nbsp;&nbsp;<a href="/warehouse">Search</a></td>
+                <td nowrap>&nbsp;&nbsp;<a href="/warehouse/search">Search</a></td>
               </tr>
               <tr>
                 <td nowrap><label for="strFunding">Funding:</label></td>

@@ -17,7 +17,7 @@ function WarehouseBuildRoute( &$query ){
     $segments[] = $query['id'];
     unset( $query['id'] );
   };
-  
+
   if(isset($query['keywords'])){
     $segments[] = $query['keywords'];
     unset( $query['keywords'] );
@@ -229,6 +229,9 @@ function WarehouseParseRoute( $segments ){
 	      break;
 	    case 'featured':  //view
 	      $vars['view'] = 'featured';
+	      break;
+            case 'userguide':  //view
+	      $vars['view'] = 'userguide';
 	      break;
             case 'search':  //view
 	      $vars['view'] = 'search';
