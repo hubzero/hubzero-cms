@@ -209,9 +209,13 @@ class XRegistration
 		{
 			$race = array();
 			$racenativetribe = null;
-
-			if (strcasecmp($corigin, 'US') == 0)
-			{
+			
+			// DRB - NEES - Short term fix (hack) to collect race info for international users
+			// Also added [] following $race for hawaiian and white cases. It was missing and
+			// previously white or hawaiian would overwrite the array with a single value giving
+			// unpredictable results
+			//if (strcasecmp($corigin, 'US') == 0)
+			//{
 				if ($racenativeamerican_p)
 				{
 					$race[] = 'nativeamerican';
@@ -222,12 +226,12 @@ class XRegistration
 				if ($raceblack_p)
 					$race[] = 'black';
 				if ($racehawaiian_p)
-					$race = 'hawaiian';
+					$race[] = 'hawaiian';
 				if ($racewhite_p)
-					$race = 'white';
+					$race[] = 'white';
 				if ($racerefused_p)
 					$race = 'refused';
-			}
+			//}
 		}
 
 		if ($interests_p === null) // field not on form
