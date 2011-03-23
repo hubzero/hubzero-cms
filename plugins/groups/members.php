@@ -973,16 +973,16 @@ class plgGroupsMembers extends JPlugin
 	
 	private function submitrole()
 	{
-		$uid = JRequest::getVar('uid');
-		$role = JRequest::getVar('role');
-		$no_html = JRequest::getVar('no_html');
+		$uid = JRequest::getVar('uid', '','post');
+		$role = JRequest::getVar('role','','post');
+		$no_html = JRequest::getInt('no_html', 0,'post');
 		
 		if(!$uid || !$role) {
 			$this->setError('You must select a role.');
 			$this->assignrole();
 			return;
 		}
-		
+			
 		$db =& JFactory::getDBO();
 		$sql = "INSERT INTO #__xgroups_member_roles(role,uidNumber) VALUES('".$role."','".$uid."')";
 		$db->setQuery($sql);

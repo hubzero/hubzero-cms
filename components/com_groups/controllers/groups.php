@@ -548,8 +548,6 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		// Push the overview view to the array of sections we're going to output
-		$cat = array();
-		$cat['overview'] = JText::_('GROUPS_OVERVIEW');
 		array_unshift($sections, array('html'=>$body,'metadata'=>''));
 		
 		if($group->get('type') == 3) {
@@ -2314,7 +2312,7 @@ class GroupsController extends Hubzero_Controller
 			$pages = $GPage->getPages($group->get('gidNumber'));
 			
 			//get unique page name
-			$page['url'] = $this->uniquePageURL($page['url'],$pages);
+			$page['url'] = $this->uniquePageURL($page['url'],$pages, $group);
 		}
 		
 		//save the page
@@ -2522,10 +2520,18 @@ class GroupsController extends Hubzero_Controller
 	
 	//-----
 	
-	private function uniquePageURL( $current_url, $group_pages )
+	private function uniquePageURL( $current_url, $group_pages, $group )
 	{
 		//get the page urls
 		$page_urls = array_keys($group_pages);
+		
+		//get plugin names
+		$plugin_names = array_keys($group->getPluginAccess($group));
+		
+		if(in_array($current_url,$plugin_names)) {
+			$current_url = $current_url . "_page";
+			return $this->uniquePageURL( $current_url, $group_pages, $group );
+		}
 		
 		//check if current url is already taken
 		//otherwise return current url
@@ -2550,7 +2556,7 @@ class GroupsController extends Hubzero_Controller
 			}
 
 			//run the function again to see if we now have a unique url
-			return $this->uniquePageURL( $url, $group_pages );
+			return $this->uniquePageURL( $url, $group_pages, $group );
 		} else {
 			return $current_url;
 		}

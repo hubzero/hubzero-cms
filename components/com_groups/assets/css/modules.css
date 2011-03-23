@@ -1,0 +1,171 @@
+/*---------------------------------------------------------------
+	Group Modules
+---------------------------------------------------------------*/
+
+
+.group_module_custom { 
+	border:1px solid #cfcfcf; 
+	padding:10px; 
+	margin-bottom:10px; 
+}
+
+.group_module_custom h3 { 
+	margin:0 0 5px 0; 
+	background-color:#efefef; 
+	padding:5px; 
+}
+
+/* ----------------------- */
+
+#modules .metadata { 
+	border:1px solid #cfcfcf; 
+	margin-bottom:20px; 
+}
+
+#modules .metadata table { 
+	border:none; 
+}
+
+#modules .metadata table tr th { 
+	font-weight:500;
+	padding:3px 5px;
+}
+
+#modules .metadata table tr td { 
+	color:#999; 
+	padding:3px 5px;
+}
+
+/* ----------------------- */
+
+.group_module_calendar { 
+	border:1px solid #cfcfcf; 
+	width:100%; 
+	margin-bottom:10px; 
+}
+
+.group_module_calendar caption { 
+	color:#000; 
+	text-align:right; 
+	background-color:#efefef; 
+	font-weight:bold; 
+	padding:3px 10px; 
+	margin-right:-1px; 
+	border-right:1px solid #cfcfcf; 
+	border-left:1px solid #cfcfcf; 
+	border-top:1px solid #cfcfcf; 
+}
+
+.group_module_calendar thead tr td { 
+	font-weight:bold; 
+	padding:4px 0; 
+	text-align:center; 
+	border-bottom:1px solid #cfcfcf; 
+}
+
+.group_module_calendar tbody tr td { 
+	text-align:center; 
+	padding:4px 0; 
+	color:#ccc; 
+	border-bottom:1px solid #cfcfcf; 
+	border-right:1px solid #cfcfcf;
+}
+
+.group_module_calendar tbody tr .calendar-day {}
+
+.group_module_calendar tbody tr .calendar-day-today { 
+	background-color:#e0efff;
+}
+
+.group_module_calendar tbody tr .calendar-day-weekend {}
+
+.group_module_calendar tbody tr .calendar-day-np { 
+	background-color:#efefef;
+}
+
+/* ----------------------- */
+
+#twitter_feed {
+	border:1px solid #cfcfcf;
+	padding:15px;
+	margin-bottom:20px;
+}
+
+#twitter_feed #user {
+	background:url('../img/twitter.png') no-repeat 100% 50%;
+	height:27px;
+	margin-bottom:10px;
+}
+
+#twitter_feed #user a {
+	font-size:16px;
+	font-weight:200;
+	color:#444;
+	border-bottom:1px solid #ccc;
+}
+
+#twitter_feed #user a:hover {
+	border-bottom:1px solid #444;
+}
+
+#twitter_feed ul {
+	list-style:none;
+	margin:0px;
+}
+
+#twitter_feed ul li {
+	margin-bottom:5px;
+	background-color:#f5f5f5;
+	padding:5px;
+	border:1px solid #efefef;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	-o-border-radius:5px;
+	border-radius:5px;
+}
+
+#twitter_feed ul li .twitterStatus {
+	font-size:12px;
+	color:#777;
+}
+
+#twitter_feed ul li .twitterTime {
+	display:block;
+	font-size:10px;
+	text-align:right;
+	color:#ccc;
+	text-decoration:none;
+}
+
+/* ----------------------- */
+
+.upcoming_events {
+	}
+.upcoming_events .event {
+	padding:8px 0 8px 25px;
+	background-position:0px 8px;
+	border-bottom:1px solid #ccc;
+	}
+.upcoming_events .event:last-child {
+	border-bottom:1px solid #Fff;
+	}
+.upcoming_events .event .title {
+	font-weight:bold;
+	color:#777;
+	border-bottom:1px dotted #444;
+	}
+.upcoming_events .event .title:hover {
+	border:none;
+	color:#444;
+	}
+.upcoming_events .event .details {
+	display:block;
+	}
+.upcoming_events .event .date {
+	display:block;
+	font-style:italic;
+	color:#aaa;
+	font-size:90%;
+	padding:2px 0;
+	}
+	

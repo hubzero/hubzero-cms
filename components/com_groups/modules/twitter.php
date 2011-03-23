@@ -19,7 +19,7 @@ Class TwitterModule
 			'name' => 'twitter',
 			'title' => 'Twitter Feed',
 			'description' => 'The Twitter module displays a mini feed for the supplied Twitter username',
-			'input_title' => "Twitter Username & Number of Tweets (ex. username: # of tweets): <span class=\"required\">Required</span>",
+			'input_title' => "Twitter Username & Number of Tweets (ex. nanohub:3): <span class=\"required\">Required</span>",
 			'input' => "<input type=\"text\" name=\"module[content]\" value=\"{{VALUE}}\" />"
 		);
 		
@@ -29,7 +29,8 @@ Class TwitterModule
 	
 	//-----
 	
-	function render()
+	/*
+	function render_PHP()
 	{
 		//var to hold content being returned
 		$content  = '';
@@ -53,36 +54,82 @@ Class TwitterModule
 		$url = 'http://twitter.com/statuses/user_timeline.json?screen_name='.$username.'&count='.$num_tweets;
 		
 		//check if username entered will return a valid result
-		if(!file_get_contents($url)) {
-			return;
-		}
+		$twitter_status = get_headers($url, 1);
 		
-		//get the contents from Twitter
-		$tweets = file_get_contents($url);
-		
-		//decode the from JSON format
-		$tweets = json_decode($tweets);
-		
-		//build the twitter feed container with link to usernames twitter account
-		$content .= "<div id=\"twitter_feed\">";
-		$content .= "<div id=\"user\"><a rel=\"external\" href=\"http://www.twitter.com/".$username."\">@".$username."</a></div>";
-		
-		//foreach tweet show tweet and date/time with link
-		foreach($tweets as $tweet) {
-			$content .= "<div class=\"tweet\">";
-			$content .= $tweet->text;
-			$content .= "<a rel=\"external\" class=\"time\" href=\"http://twitter.com/$username/statuses/$tweet->id_str\">".date("m/d/y g:ia", strtotime($tweet->created_at))."</a>";
+		//if we have a bad request on the url
+		if($twitter_status['Status'] == '400 Bad Request') {
+			$content = "<div class=\"group_module_custom\"><p class=\"error\">Error while trying to get twitter feed.</p></div>";
+		} else {
+			//get the contents from Twitter
+			$tweets = file_get_contents($url);
+
+			//decode the from JSON format
+			$tweets = json_decode($tweets);
+
+			//build the twitter feed container with link to usernames twitter account
+			$content .= "<div id=\"twitter_feed\">";
+			$content .= "<div id=\"user\"><a rel=\"external\" href=\"http://www.twitter.com/".$username."\">@".$username."</a></div>";
+
+			//foreach tweet show tweet and date/time with link
+			foreach($tweets as $tweet) {
+				$content .= "<div class=\"tweet\">";
+				$content .= $tweet->text;
+				$content .= "<a rel=\"external\" class=\"time\" href=\"http://twitter.com/$username/statuses/$tweet->id_str\">".date("m/d/y g:ia", strtotime($tweet->created_at))."</a>";
+				$content .= "</div>";
+			}
+
+			//close twitter feed container
 			$content .= "</div>";
 		}
-		
-		//close twitter feed container
-		$content .= "</div>";
 		
 		//return the content
 		return $content;
 	}
+	*/
 	
 	//-----
+	
+	function render()
+	{
+		//default # of tweets to display
+		$default_tweets = 4;
+		
+		//split the content into username and number of tweets
+		$parts = explode(":", $this->content);
+		
+		//set username
+		$username = $parts[0];
+		
+		//set user defined number of tweets
+		$user_tweets = $parts[1];
+		
+		//determine limit of tweets based on if set by user
+		$num_tweets = ($user_tweets != '' && is_numeric($user_tweets)) ? $user_tweets : $default_tweets;
+		
+		//get the document
+		$document =& JFactory::getDocument();
+		
+		//add the twitter js to the page
+		$document->addScript("http://twitterjs.googlecode.com/svn/trunk/src/twitter.min.js");
+		
+		//add the twitter js call to the page.
+		$document->addScriptDeclaration(
+			"getTwitters('tweets', { 
+		  		id: '{$username}', 
+		  		count: {$user_tweets}, 
+		  		enableLinks: true, 
+		  		ignoreReplies: true, 
+		  		clearContents: true,
+			});"
+		);
+		
+		$content  = "<div class=\"group_module_custom\" id=\"twitter_feed\">";
+		$content .= "<div id=\"user\"><a rel=\"external\" href=\"http://www.twitter.com/".$username."\">@".$username."</a></div>";
+		$content .= "<div id=\"tweets\"><p>Please wait while the tweets load.</p><img src=\"/components/com_groups/assets/img/circling-ball-black.gif\" /></div>";
+		$content .= "</div>";
+		
+		return $content;
+	}
 }
 
 ?>

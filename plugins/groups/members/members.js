@@ -27,6 +27,7 @@ HUB.Plugins.GroupsMembers = {
 				SqueezeBoxHub.initialize({ size: {x: 300, y: 375} });
 			}
 		
+			
 			$$('a.message').each(function(el) {
 				if (el.href.indexOf('?') == -1) {
 					el.href = el.href + '?no_html=1';
@@ -35,7 +36,6 @@ HUB.Plugins.GroupsMembers = {
 				}
 				el.addEvent('click', function(e) {
 					new Event(e).stop();
-
 					SqueezeBoxHub.fromElement(el,{
 						handler: 'url', 
 						size: {x: 300, y: 405}, 
