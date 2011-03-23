@@ -45,61 +45,37 @@ class plgGroupsBlog extends JPlugin
 	
 	//-----------
 	
-	public function &onGroupAreas( $authorized )
+	public function &onGroupAreas()
 	{
-		$areas = array(
-			'blog' => JText::_('PLG_GROUPS_BLOG')
+		$area = array(
+			'name' => 'blog',
+			'title' => JText::_('PLG_GROUPS_BLOG'),
+			'default_access' => 'members'
 		);
-		return $areas;
+		
+		return $area;
 	}
 
 	//-----------
 
-	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $areas=null )
+	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
-		
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ) && $limit) {
-			if (!array_intersect( $areas, $this->onGroupAreas( $authorized ) ) 
-			&& !array_intersect( $areas, array_keys( $this->onGroupAreas( $authorized ) ) )) {
-				$return = '';
-			}
-		}
+		$active = 'blog';
 		
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
-			'metadata'=>'',
-			'dashboard'=>''
+			'html'=>''
 		);
-
-		/*$juser =& JFactory::getUser();
-		if ($juser->get('guest')) {
-			if ($return == 'html') {
-				ximport('Hubzero_Module_Helper');
-				$arr['html']  = '<p class="warning">'. JText::_('GROUPS_LOGIN_NOTICE'). '</p>';
-				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
-			}
-			return $arr;
-		}
 		
-		// Return no data if the user is not authorized
-		if (!$authorized || ($authorized != 'admin' && $authorized != 'manager' && $authorized != 'member')) {
-			if ($return == 'html') {
-				$arr['html'] = '<p class="warning">'. JText::_('PLG_GROUPS_MESSAGES_ERROR_NOT_AUTHORIZED'). '</p>';
-			}
-			return $arr;
-		}
-		*/
-		// Are we on the overview page?
-		if ($areas[0] == 'overview') {
-			$return = 'metadata';
-		}
+		//get this area details
+		$this_area = $this->onGroupAreas();
 		
-		// Do we need to return any data?
-		if ($return != 'html' && $return != 'metadata') {
-			return $arr;
+		// Check if our area is in the array of areas we want to return results for
+		if (is_array( $areas ) && $limit) {
+			if(!in_array($this_area['name'],$areas)) {
+				return;
+			}
 		}
 		
 		// Set some variables so other functions have access
@@ -114,6 +90,22 @@ class plgGroupsBlog extends JPlugin
 		$this->_params = $p->getParams( $group->gidNumber, 'groups', 'blog' );
 
 		if ($return == 'html') {
+			
+			//set group members plugin access level
+			$group_plugin_acl = $access[$active];
+
+			//Create user object
+			$juser =& JFactory::getUser();
+
+			//get the group members
+			$members = $group->get('members');
+
+			//if set to nobody make sure cant access
+			if($group_plugin_acl == 'nobody') {
+				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active))."</p>";
+				return $arr;
+			}
+			
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'tables'.DS.'blog.entry.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'tables'.DS.'blog.comment.php');
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'helpers'.DS.'blog.member.php');

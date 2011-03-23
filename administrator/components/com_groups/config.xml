@@ -28,8 +28,8 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="uploadpath" type="text" menu="hide" default="/site/groups" label="Upload path" description="File path for pictures" />
-		<param name="iconpath" type="text" menu="hide" default="/components/com_groups/images/icons" label="Icons" description="File path for icons" />
+		<param name="uploadpath" type="text" menu="hide" default="/site/groups" label="Upload path" description="File path for pictures" size="50" />
+		<param name="iconpath" type="text" menu="hide" default="/components/com_groups/images/icons" label="Icons" description="File path for icons" size="50" />
 		<param name="join_policy" type="list" default="0" label="Default Join Policy" description="The default default join policy for new groups.">
 			<option value="0">Public</option>
 			<option value="1">Restricted</option>
@@ -41,10 +41,15 @@
 			<option value="1">Protected</option>
 			<option value="4">Private</option>
 		</param>
-		<param name="access" type="list" default="0" label="Default Content Privacy" description="The default privacy setting for content associated with groups.">
+		<!--<param name="access" type="list" default="0" label="Default Content Privacy" description="The default privacy setting for content associated with groups.">
 			<option value="0">Public</option>
 			<option value="3">Protected</option>
 			<option value="4">Private</option>
+		</param>-->
+		<param type="spacer" />
+		<param name="auto_approve" type="list" default="1" label="Auto Approve Groups:?" description="Groups are auto approved at creation. Otherwise Hub administrator must manually approve group.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
 		</param>
 	</params>
 </config>

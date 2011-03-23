@@ -37,18 +37,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
+	<?php
+		foreach($this->notifications as $notification) {
+			echo $notification;
+		}
+	?>
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
 			<p class="info"><?php echo JText::_('GROUPS_JOIN_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>	
-			<legend><?php echo JText::_('GROUPS_JOIN_HEADER'); ?></legend>
-<?php if ($this->group->get('restrict_msg')) { ?>
-			<p class="warning"><?php echo JText::_('NOTE').': '.htmlentities(stripslashes($this->group->get('restrict_msg'))); ?></p>
-<?php } ?>
+			<h3><?php echo JText::_('GROUPS_JOIN_HEADER'); ?></h3>
+			<p>&nbsp;</p>
+			<?php if ($this->group->get('restrict_msg')) { ?>
+				<p class="warning"><?php echo JText::_('NOTE').': '.htmlentities(stripslashes($this->group->get('restrict_msg'))); ?></p>
+			<?php } ?>
+			
 			<label>
 				<?php echo JText::_('GROUPS_JOIN_REASON'); ?>
 				<textarea name="reason" id="reason" rows="10" cols="50"></textarea>

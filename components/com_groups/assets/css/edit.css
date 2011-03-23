@@ -1,0 +1,19 @@
+#asset_browser {
+	margin-top:7px;
+	-webkit-box-shadow:0 0 2px #444;
+	-moz-box-shadow:0 0 2px #444;
+	box-shadow:0 0 2px #444;
+	background:#efefef url('../img/file_manager.png') no-repeat 97% 3%;
+	padding:2%;
+	width:96%;
+}
+
+#asset_browser p:first-child {
+	margin-top:0px;
+}
+
+iframe {
+	border:0px;
+	margin: 0;
+	padding: 0;
+}

@@ -1,121 +1,259 @@
-/*
+.group_messages {
+	}
 
-	-- -- -- -- -- -- --
-	Groups Messages plugin CSS
-	-- -- -- -- -- -- --
+.group_messages h3 {
+	display:none;
+	}
 
-*/
-/* Message lists */
-	#messages-section .subject {
-		padding-top: 1em;
-		}
-	#sbox-content #messages-section .subject {
-		padding: 0;
-		}
-	#messages-section .subject table.data {
-		margin-top: 1em;
-		border-bottom: none;
-		}
-	#messages-section .subject table.data td {
-		border: none;
-		}
-	#messages-section .subject table.data td .trash {
-		display: block;
-		width: 16px;
-		height: 16px;
-		overflow: hidden;
-		text-indent: -55em;
-		margin: 0;
-		padding: 0;
-		border: none;
-		}
-	#messages-section .subject table.data tfoot td {
-		border-top: 2px solid #dfdfdf;
-		border-bottom: none;
-		}
-	#messages-section .subject #hubForm {
-		border: none;
-		}
-	#messages-section table,
-	#messages-section table thead td,
-	#messages-section table thead th {
-		border-color: #ccc;
-		}
-	#messages-section table tbody td,
-	#messages-section table tbody th {
-		border-color: #ddd;
-		}
-	#messages-section table tbody tr.odd {
-		background-color: #f4f7fb; 
-		}
-/* Side menu */
-	#messages-section .aside li {
-		border: none;
-		margin: 0;
-		padding: 0;
-		}
-	#messages-section .aside li a {
-		margin: 0;
-		font-size: 100%;
-		text-transform: none;
-		letter-spacing: 0px;
-		border-top: 1px solid #fff;
-		border-right: 1px solid #ccc;
-		border-bottom: 1px solid #fff;
-		}
-	#messages-section .aside li a.sent {
-		background: #F5F5F5 url("images/box.png") 5px 50% no-repeat; padding-left: 25px;
-		}
-	#messages-section .aside li a.new-message {
-		background: #F5F5F5 url("images/email_go.png") 5px 50% no-repeat; padding-left: 25px;
-		}
-	#messages-section .aside li.active a {
-		background-color: #fff;
-		border-top: 1px solid #ccc;
-		border-right: 1px solid #fff;
-		border-bottom: 1px solid #ccc;
-		font-weight: bold;
-		}
-	#messages-section .aside li a:hover {
-		background-color: #333;
-		}
-	textarea#msg-message {
-		margin-bottom: 1em;
-		}
-	.com_groups .main .full fieldset h3 {
-		display: none;
-		}
-/* Message table */
-	.profile {
-		margin-top: 1em;
-		border: none;
-		background: transparent;
-		}
-	.profile th, 
-	.profile td {
-		padding-bottom: 25px;
-		border-top: 1px solid #e5e5e5;
-		border-bottom: none;
-		}
-	.profile th {
-		text-align: right;
-		color: #999;
-		white-space: nowrap;
-		}
-	.profile td {
-		padding-right: 1.5em;
-		}
-	.profile ul {
-		margin-left: 1.5em;
-		list-style: disc;
-		}
-	.profile td p {
-		margin: 1em 0;
-		}
-	.profile td p:first-child {
-		margin-top: 0;
-		}
+.group_messages .subject {
+	border:none;
+	padding:0.7em 1em 1em 1em;
+	margin:0px;
+	}
 
-/* IE 7 hacks */
+.entries {
+	border: 2px solid #e9e9e9;
+    border-top: none;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    }
 
-/* IE 6 hacks */
+/* caption */
+.entries caption {
+	font-size: 115%;
+	background: #f8f8f8 url('../../../components/com_groups/assets/img/light-stripes.png');
+    border: 2px solid #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
+    margin-right: -2px; /* Fix 2px issue */
+    }
+
+.container-block h4 span,
+.entries caption span {
+	color: #aaa;
+    }
+
+.entries caption span a {
+	color:#aaa;
+	border-bottom:1px dotted #555;
+}
+
+.entries caption span a:hover {
+	color:#555;
+	border-bottom:1px solid #555;
+}
+
+/* thead */
+.entries thead th {
+	text-align: left;
+    font-size: 85%;
+    background-color: #fbfbf6;
+    }
+
+.entries thead th a {
+	display: inline-block;
+    padding: 0.1em 0.4em;
+    margin: 0 0.15em;
+    border: 1px solid #fbfbf6; /*#69c;*/
+    background-color: #fbfbf6; /*#eff7ff;*/
+    }
+
+.entries thead th a:hover {
+	border-color: #f60;
+    color: #f60;
+    background-color: #fff;
+    }
+    
+.entries thead th a.active-index {
+	background-color: #eee;
+    color: #999;
+    border-color: #999;
+    }
+
+/* tbody */
+.entries tbody td {
+	text-align: left;
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    background-color:#fff;
+    }
+
+.entries tbody th {
+	width: 50px;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    }
+
+.entries tbody tr.private {
+	/*background: #ffe url("images/light-stripes.png");*/
+    background-image: none;
+    }
+
+.entries tbody tr.private .entry-title {
+    background: transparent url("images/lock.png") 0 0 no-repeat;
+    padding-left: 20px;
+    }
+
+.entries tbody tr.me td {
+    background-color: #f1f8ff;
+    }
+
+.entry-details {
+    font-size: 85%;
+    color: #999;
+    }
+
+.entry-details-divider {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    }
+
+
+	
+
+/* Asides */
+.group_messages .aside {
+	padding-top:0px;
+	}
+
+.aside .container {
+	margin: 0 0 1em 0;
+	padding: 0;
+	background-color: #F4F4ee;
+	border: 10px solid #F4F4ee;
+	}
+
+.aside .container h3,
+.aside .container h4 {
+	margin: -10px -10px 1em -10px;
+	padding: 5px 10px;
+	background-color: #999;
+	color: #fff;
+	}
+	
+	.aside .container p {
+	margin: 1em 0 0 0;
+	}
+
+.aside .container .starter {
+	padding: 0 0 0 0;
+	position: relative;
+	}
+
+.aside .container .starter .starter-point {
+	border-color: #999 transparent transparent transparent;
+	border-style: solid dashed dashed dashed;
+	border-width: 10px;
+	height: 0;
+	width: 0;
+	display: block;
+	overflow: hidden;
+	position: absolute;
+	top: -1.2em;
+	left: 10px;
+	}
+
+
+
+
+/* Entries Menu */
+.entries-menu {
+	list-style: none;
+	float:left;
+	padding: 0;
+	margin: 0 0 1em 0;
+	font-size: 85%;
+	}
+
+.list-footer,
+.entries-menu {
+	min-height: 1px;
+	}
+
+.list-footer {
+	margin-bottom:20px;
+}
+
+.entries-menu li {
+	float: left;
+	margin: 0;
+	}
+
+.entries-menu li a {
+	color: #888;
+	display: block;
+	cursor: pointer;
+	font-weight: normal;
+	line-height: 1em;
+	border: none;
+	margin:0 5px 0 0;
+	padding: 5px 10px;
+	text-shadow: 0px 1px 1px #fff;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius:5px;
+	}
+
+.entries-menu a:hover {
+	color: #fff;
+    background-color: #636166;
+	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+	text-decoration: none;
+	}
+
+.entries-menu .active { color:#ffffff; text-shadow: 0 1px 1px rgba(0,0,0,.3); background-color:#AAA; }	
+
+
+
+/* View Message */
+.entries tbody th {
+	width:15%;
+	text-align:right;
+	font-weight:bold;
+}
+
+
+/* Send Message */
+#message {
+	background:#f5f5f5;
+	-webkit-box-shadow:0 0 3px #ccc;
+	-moz-box-shadow:0 0 3px #ccc;
+	box-shadow:0 0 3px #ccc;
+	border:1px solid #CCC;
+	padding:0 20px;
+	}
+#message .mail { 
+	background:url('mail-send.png') no-repeat 100% 10px;
+	}
+#message .half {
+	width:50%;
+	}	
+#message label {
+	font-weight:bold;
+	color:#444;
+	}	
+#message label span {
+	font-weight:normal;
+	}
+#message .required {
+	color:#F00;
+	font-size:80%;
+	text-transform:uppercase;
+	}
+#message input,
+#message select,
+#message textarea {
+	display:block;
+	width:100%;
+	}	
+#message p.submit {
+	overflow:hidden;
+	}
+#message input[type=submit] {
+	width:auto;
+	float:right;
+	}
+#message p.send {
+	text-align:right;
+}

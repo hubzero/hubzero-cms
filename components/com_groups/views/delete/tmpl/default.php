@@ -36,19 +36,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
+	<?php
+		foreach($this->notifications as $notification) {
+			echo $notification;
+		}
+	?>
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
 			<div class="admin-options">
-				<p class="group"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=view'); ?>"><?php echo JText::_('GROUPS_VIEW_GROUP'); ?></a></p>
-				<p class="edit"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>"><?php echo JText::_('GROUPS_EDIT_GROUP'); ?></a></p>
-				<p class="invite"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite'); ?>"><?php echo JText::_('GROUPS_INVITE_USERS'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=view'); ?>"><?php echo JText::_('GROUPS_VIEW_GROUP'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>"><?php echo JText::_('GROUPS_EDIT_GROUP'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize'); ?>"><?php echo JText::_('GROUPS_CUSTOMIZE_GROUP'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite'); ?>"><?php echo JText::_('GROUPS_INVITE_USERS'); ?></a></p>
 			</div>
 		</div>
 		<fieldset>
-			<legend><?php echo JText::_('GROUPS_DELETE_HEADER'); ?></legend>
+			<h3><?php echo JText::_('GROUPS_DELETE_HEADER'); ?></h3>
 
 	 		<p class="warning"><?php echo JText::sprintf('GROUPS_DELETE_WARNING',$this->group->get('description')).'<br /><br />'.$this->log; ?></p>
 

@@ -56,6 +56,8 @@ if ($this->isNew) {
 		case 0: $privacy = JText::_('GROUPS_ACCESS_PUBLIC');    break;
 	}
 	$message .= JText::_('GROUPS_PRIVACY').': '. $privacy ."\n";
+	
+	/*
 	switch ($this->group->get('access')) 
 	{
 		case 4: $access = JText::_('GROUPS_ACCESS_PRIVATE');   break;
@@ -63,6 +65,8 @@ if ($this->isNew) {
 		case 0: $access = JText::_('GROUPS_ACCESS_PUBLIC');    break;
 	}
 	$message .= JText::_('GROUPS_CONTENT_PRIVACY').': '. $access ."\n";
+	*/
+	
 	$message .= "\n";
 	$message .= JText::_('GROUPS_NOW_DEFINED_AS').':'."\n";
 }
@@ -82,6 +86,8 @@ switch ($this->g_privacy)
 	case 0: $privacy = JText::_('GROUPS_ACCESS_PUBLIC');    break;
 }
 $message .= JText::_('GROUPS_PRIVACY').': '. $privacy ."\n";
+
+/*
 switch ($this->g_access) 
 {
 	case 4: $access = JText::_('GROUPS_ACCESS_PRIVATE');   break;
@@ -89,6 +95,8 @@ switch ($this->g_access)
 	case 0: $access = JText::_('GROUPS_ACCESS_PUBLIC');    break;
 }
 $message .= JText::_('GROUPS_CONTENT_PRIVACY').': '. $access ."\n";
+*/
+
 $message .= "\n";
 $message .= JText::_('GROUPS_USE_LINK_TO_REVIEW_GROUP')."\n";
 $message .= $juri->base().$sef."\n";

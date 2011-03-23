@@ -83,6 +83,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 		case '0': $type = 'system';  break;
 		case '1': $type = 'hub';     break;
 		case '2': $type = 'project'; break;
+		case '3': $type = 'special'; break;
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -91,7 +92,17 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td><?php echo $row->cn; ?></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>"><?php echo stripslashes($row->description); ?></a></td>
 				<td><?php echo $type; ?></td>
-				<td><?php echo ($row->published) ? '<span class="check">'.JText::_('YES').'</span>' : '&nbsp;'; ?></td>
+				<td>
+					<?php 
+						if($row->published) {
+							//echo '<span class="check">'.JText::_('YES').'</span>';
+							echo ' <a href="index.php?option='.$this->option.'&amp;task=unpublish&amp;id[]='.$row->cn.'"><img src="/administrator/images/publish_x.png" /></a>';
+						} else {
+							//echo '<span class="off">'.JText::_('No').'</span>';
+							echo ' <a href="index.php?option='.$this->option.'&amp;task=publish&amp;id[]='.$row->cn.'"><img src="/administrator/images/publish_g.png" /></a>';
+						}
+					?>
+				</td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>"><?php echo $applicants; ?></a></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>"><?php echo $invitees; ?></a></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=manage&amp;gid=<? echo $row->cn; ?>"><?php echo $managers; ?></a></td>

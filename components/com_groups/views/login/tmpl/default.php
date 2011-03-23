@@ -30,6 +30,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header -->
 
 <div class="main section">
+	<?php
+		foreach($this->notifications as $notification) {
+			echo $notification;
+		}
+	?>
 	<p class="warning"><?php echo JText::_('GROUPS_NOT_LOGGEDIN'); ?></p>
 <?php
 ximport('Hubzero_Module_Helper');

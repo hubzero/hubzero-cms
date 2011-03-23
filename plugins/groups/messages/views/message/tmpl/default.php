@@ -27,43 +27,46 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (substr($this->xmessage->type, -8) == '_message') {
 	$u =& JUser::getInstance($this->xmessage->created_by);
-	$from = '<a href="'.JRoute::_('index.php?option='.$option.'&id='.$u->get('id')).'">'.$u->get('name').'</a>'.n;
+	$from = '<a href="'.JRoute::_('index.php?option='.$option.'&id='.$u->get('id')).'">'.$u->get('name').'</a>';
 } else {
 	$from = 'System ('.$this->xmessage->component.')';
 }
+
 ?>
-<h3><a name="messages"></a><?php echo JText::_('MESSAGES'); ?></h3>
-<div class="withleft">
-	<div class="aside">
-		<ul>
-			<li><a class="sent" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
-			<li><a class="new-message" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages&task=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
-		</ul>
-	</div><!-- / .aside -->
-	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option='.$option.a.'gid='.$this->group->get('cn').a.'active=messages'); ?>" method="post" id="hubForm" class="full">
-			
-			<table class="profile" summary="<?php echo JText::_('TBL_SUMMARY_OVERVIEW'); ?>">
-				<tbody>
-					<tr>
-						<th><?php echo JText::_('Received'); ?></th>
-						<td><?php echo JHTML::_('date', $this->xmessage->created, '%d %b, %Y'); ?></td>
-					</tr>
-					<tr>
-						<th><?php echo JText::_('From'); ?></th>
-						<td><?php echo $from; ?></td>
-					</tr>
-					<tr>
-						<th><?php echo JText::_('Subject'); ?></th>
-						<td><?php echo stripslashes($this->xmessage->subject); ?></td>
-					</tr>
-					<tr>
-						<th><?php echo JText::_('Message'); ?></th>
-						<td><?php echo $this->xmessage->message; ?></td>
-					</tr>
-				</tbody>
-			</table>
-			
+<a name="messages"></a>
+<h3><?php echo JText::_('MESSAGES'); ?></h3>
+
+<div class="subject">
+	<ul class="entries-menu">
+		<li><a class="active" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
+		<?php if($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
+			<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages&task=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
+		<?php } ?>
+	</ul>
+	<div class="container">
+		<form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>" method="post">
+		<table class="groups entries" summary="Groups this person is a member of">
+			<caption><?php echo JText::_('PLG_GROUPS_MESSAGE'); ?> <span><small>( <a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>">&lsaquo; Back to Sent Messages</a> )</small></span></caption>
+			<tbody>
+				<tr>
+					<th><?php echo JText::_('PLG_GROUPS_MESSAGES_RECEIVED'); ?>:</th>
+					<td><?php echo JHTML::_('date', $this->xmessage->created, '%d %b, %Y'); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('PLG_GROUPS_MESSAGES_FROM'); ?>:</th>
+					<td><?php echo $from; ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('PLG_GROUPS_MESSAGES_SUBJECT'); ?>:</th>
+					<td><?php echo stripslashes($this->xmessage->subject); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('PLG_GROUPS_MESSAGES_MESSAGE'); ?>:</th>
+					<td><?php echo $this->xmessage->message; ?></td>
+				</tr>
+			</tbody>
+		</table>
 		</form>
-	</div><!-- / .subject -->
-</div>
+	</div>
+</div><!-- // .subject -->
+

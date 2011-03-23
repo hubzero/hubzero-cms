@@ -35,14 +35,20 @@ if ($config->getValue('config.debug')) {
 }
 
 jimport('joomla.application.component.view');
+jimport('joomla.filesystem.folder');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_User_Helper');
 ximport('Hubzero_Plugin_Params');
 
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'tags.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'tags.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'log.php' );
 require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'reason.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controller.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'pages.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'modules.php' );
+
+require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controllers'.DS.'groups.php' );
+
+JHTML::addIncludePath(JPATH_COMPONENT.DS.'helpers');
 
 $jacl =& JFactory::getACL();
 $jacl->addACL( $option, 'manage', 'users', 'super administrator' );
@@ -52,4 +58,5 @@ $jacl->addACL( $option, 'manage', 'users', 'manager' );
 // Instantiate controller
 $controller = new GroupsController();
 $controller->execute();
+//$option = "com_groups"; // @FIXME: WTF do I have to set this back?
 $controller->redirect();

@@ -46,19 +46,25 @@ if ($this->logs) {
 			$target_name = JText::_('UNKNOWN');
 			//$target_username = JText::_('UNKNOWN');
 
-			$target_user =& JUser::getInstance( $log->uid );
-			if (is_object($target_user) && $target_user->get('name')) {
-				$target_name = $target_user->get('name');
-				//$target_username = $target_user->get('username');
+			if(is_numeric($log->uid)) {
+				$target_user =& JUser::getInstance( $log->uid );
+				if (is_object($target_user) && $target_user->get('name')) {
+					$target_name = $target_user->get('name');
+					//$target_username = $target_user->get('username');
+				}
+				$info .= ' <a href="'.JRoute::_('index.php?option=com_members&id='.$log->uid).'">'.$target_name.'</a>';
+			} else {
+				$info .= $log->uid;
 			}
 
-			$info .= ' <a href="'.JRoute::_('index.php?option=com_members&id='.$log->uid).'">'.$target_name.'</a>';
+			
 		}
 		
 		switch ($log->action) 
 		{
 			case 'membership_cancelled':
 			case 'membership_invites_sent':
+			case 'membership_email_sent':
 			case 'membership_invite_accepted':
 			case 'membership_invite_cancelled':
 			case 'membership_requested':
@@ -98,7 +104,7 @@ if ($this->logs) {
 			<th scope="row"><?php echo $area; ?></th>
 			<td class="author"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$log->actorid); ?>"><?php echo stripslashes($name); ?></a></td>
 			<td class="action"><?php echo JText::_('PLG_GROUPS_'.strtoupper($log->action)).$info; ?></td>
-			<td class="date"><?php echo JHTML::_('date', $log->timestamp, '%b. %d, %Y @%I:%M %p', 0); ?></td>
+			<td class="date"><?php echo JHTML::_('date', $log->timestamp, '%b. %d, %Y @%I:%M %p'); ?></td>
 		</tr>
 <?php
 	}

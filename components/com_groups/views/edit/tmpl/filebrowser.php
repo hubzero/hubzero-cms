@@ -33,17 +33,24 @@ $app =& JFactory::getApplication();
 		<title><?php echo JText::_('GROUPS_FILE_MANAGER'); ?></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" type="text/css" media="screen" href="/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
-<?php if (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'groups.css')) { ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS; ?>groups.css" />
-<?php } else { ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo DS.'components'.DS.$this->option.DS; ?>groups.css" />
-<?php } ?>
+		<?php
+			$template_css = DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'media.css';
+			$component_css = DS.'components'.DS.'com_groups'.DS.'assets'.DS.'css'.DS.'media.css';
+		?>
+		<?php if(is_file( JPATH_ROOT . $template_css)) { ?>
+			<link rel="stylesheet" type="text/css" href="<?php echo $template_css; ?>" />
+		<?php } else { ?>
+			<link rel="stylesheet" type="text/css" href="<?php echo $component_css; ?>" />
+		<?php } ?>
 	</head>
-	<body id="attachments">
+	<body id="file_browser">
+		<?php if ($this->getError()) { ?>
+				<p class="error"><?php echo $this->getError(); ?></p>
+		<?php } ?>
 		<form action="index.php" id="adminForm" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="themanager" class="manager">
-					<iframe src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=listfiles&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+					<iframe src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=listfiles&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="99%" height="180"></iframe>
 				</div>
 			</fieldset>
 			<fieldset>
@@ -56,8 +63,5 @@ $app =& JFactory::getApplication();
 				<input type="hidden" name="no_html" value="1" />
 			</fieldset>
 		</form>
-<?php if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
 	</body>
 </html>

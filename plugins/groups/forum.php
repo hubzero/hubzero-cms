@@ -45,43 +45,38 @@ class plgGroupsForum extends JPlugin
 	
 	//-----------
 	
-	public function &onGroupAreas( $authorized )
+	public function &onGroupAreas()
 	{
-		$areas = array(
-			'forum' => JText::_('PLG_GROUPS_FORUM')
+		$area = array(
+			'name' => 'forum',
+			'title' => JText::_('PLG_GROUPS_FORUM'),
+			'default_access' => 'members'
 		);
-		return $areas;
+		
+		return $area;
 	}
 
 	//-----------
 
-	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $areas=null )
+	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
-
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ) && $limit) {
-			if (!array_intersect( $areas, $this->onGroupAreas( $authorized ) ) 
-			&& !array_intersect( $areas, array_keys( $this->onGroupAreas( $authorized ) ) )) {
-				$return = '';
-			}
-		}
-		
-		// Are we on the overview page?
-		if ($areas[0] == 'overview') {
-			$return = 'metadata';
-		}
+		$active = 'forum';
 		
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
-			'metadata'=>'',
-			'dashboard'=>''
+			'html'=>''
 		);
-
-		// Do we need to return any data?
-		if ($return != 'html' && $return != 'metadata') {
-			return $arr;
+		
+		
+		//get this area details
+		$this_area = $this->onGroupAreas();
+		
+		// Check if our area is in the array of areas we want to return results for
+		if (is_array( $areas ) && $limit) {
+			if(!in_array($this_area['name'],$areas)) {
+				return;
+			}
 		}
 		
 		//ximport('xforum');
@@ -97,6 +92,16 @@ class plgGroupsForum extends JPlugin
 		
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') {
+			
+			//set group members plugin access level
+			$group_plugin_acl = $access[$active];
+
+			//if set to nobody make sure cant access
+			if($group_plugin_acl == 'nobody') {
+				$arr['html'] = "<p class=\"info\">".JText::sprintf('GROUPS_PLUGIN_OFF', 'Discussion')."</p>";
+				return $arr;
+			}
+			
 			// Set the page title
 			$document =& JFactory::getDocument();
 			$document->setTitle( JText::_(strtoupper($this->name)).': '.$this->group->get('description').': '.JText::_('PLG_GROUPS_FORUM') );

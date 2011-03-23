@@ -36,6 +36,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</ul>
 </div><!-- / #content-header-extra -->
 
+<?php
+	foreach($this->notifications as $notification) {
+		echo $notification;
+	}
+?>
+
 <div id="introduction" class="section">
 	<div class="aside">
 		<h3>Questions?</h3>
@@ -90,10 +96,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
 $groups = $this->groups;
 if ($groups) {
-	// Transform the wikitext to HTML
 	ximport('Hubzero_Wiki_Parser');
 	$p =& Hubzero_Wiki_Parser::getInstance();
-	
 	$config = $this->config;
 ?>
 	<div class="four columns first">
@@ -109,9 +113,11 @@ if ($groups) {
 			'pagename' => 'group',
 			'pageid'   => $group->gidNumber,
 			'filepath' => $config->get('uploadpath'),
-			'domain'   => '' 
+			'domain'   => $group->cn 
 		);
-
+		
+		//$p = new WikiParser( $group->cn, $option, $group->cn.DS.'wiki', 'group', $group->gidNumber, $config->get('uploadpath') );
+		
 		switch ($i) 
 		{
 			case 1: $cls = 'second'; break;
@@ -121,7 +127,7 @@ if ($groups) {
 		
 		$public_desc = '(No public description available.)';
 		if ($group->public_desc) {
-			$public_desc = $p->parse($group->public_desc, $wikiconfig, true, true);
+			$public_desc = $p->parse( "\n".stripslashes($group->public_desc), $wikiconfig );
 			$public_desc = strip_tags($public_desc);
 			$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 			$public_desc = preg_replace("/$UrlPtrn/", '', $public_desc);
@@ -133,7 +139,7 @@ if ($groups) {
 			<h3><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$group->cn); ?>"><?php echo stripslashes($group->description); ?></a></h3>
 			<!-- <p><?php echo $group->members; ?> Members</p> -->
 			<p><?php echo $public_desc; ?></p>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$group->cn); ?>" title="Learn more about group &quot;<?php echo htmlentities(stripslashes($group->description),ENT_COMPAT,'UTF-8'); ?>&quot;">Learn more &rsaquo;</a></p>
+			<p><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$group->cn); ?>">Learn more &rsaquo;</a></p>
 		</div>
 	</div><!-- / .four columns second -->
 <?php

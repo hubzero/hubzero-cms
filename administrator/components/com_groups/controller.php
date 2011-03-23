@@ -53,9 +53,11 @@ class GroupsController extends Hubzero_Controller
 			case 'add':      $this->add();      break;
 			case 'manage':   $this->manage();   break;
 			case 'browse':   $this->browse();   break;
-			case 'system':   $this->system();   break;		
-			case 'exporttoldap': $this->exporttoldap();   break;		
-			case 'importldap': $this->importldap();   break;		
+			case 'system':   $this->system();   break;	
+			case 'publish':	 $this->publish();	break;	
+			case 'unpublish':	 $this->unpublish();		break;
+			case 'exporttoldap': $this->exporttoldap();     break;		
+			case 'importldap':   $this->importldap();       break;		
 			case 'test': $this->mytest();   break;		
 			default: $this->browse(); break;
 		}
@@ -495,6 +497,10 @@ class GroupsController extends Hubzero_Controller
 		$group->set('public_desc', $g['public_desc']);
 		$group->set('private_desc', $g['private_desc']);
 		$group->set('restrict_msg', $g['restrict_msg']);
+		$group->set('logo',$g['logo']);
+		$group->set('overview_type',$g['overview_type']);
+		$group->set('overview_content',$g['overview_content']);
+		$group->set('plugins',$g['plugins']);
 		$group->update();
 
 		// Output messsage and redirect
@@ -589,6 +595,106 @@ class GroupsController extends Hubzero_Controller
 	protected function cancel()
 	{
 		$this->_redirect = 'index.php?option='.$this->_option;
+	}
+	
+	//-----
+	
+	protected function publish()
+	{
+		// Check for request forgeries
+		//JRequest::checkToken() or jexit( 'Invalid Token' );
+		
+		// Incoming
+		$ids = JRequest::getVar( 'id', array() );
+
+		// Get the single ID we're working with
+		if (!is_array($ids)) {
+			$ids = array();
+		}
+
+		// Do we have any IDs?
+		if (!empty($ids)) {
+			//foreach group id passed in
+			foreach($ids as $id) {
+				// Load the group page
+				$group = new Hubzero_Group();
+				$group->read( $id );
+
+				// Ensure we found the group info
+				if (!$group) {
+					continue;
+				}
+				
+				//set the group to be published and update
+				$group->set('published',1);
+				$group->update();
+				
+				// Log the group approval
+				$log = new XGroupLog( $this->database );
+				$log->gid = $group->get('gidNumber');
+				$log->uid = $this->juser->get('id');
+				$log->timestamp = date( 'Y-m-d H:i:s', time() );
+				$log->action = 'group_published';
+				$log->actorid = $this->juser->get('id');
+				if (!$log->store()) {
+					$this->setError( $log->getError() );
+				}
+				
+				// Output messsage and redirect
+				$this->_redirect = 'index.php?option='.$this->_option;
+				$this->_message = JText::_('Group has been published.');
+			}
+		}
+	}
+	
+	//-----
+	
+	protected function unpublish()
+	{
+		// Check for request forgeries
+		//JRequest::checkToken() or jexit( 'Invalid Token' );
+		
+		// Incoming
+		$ids = JRequest::getVar( 'id', array() );
+
+		// Get the single ID we're working with
+		if (!is_array($ids)) {
+			$ids = array();
+		}
+
+		// Do we have any IDs?
+		if (!empty($ids)) {
+			//foreach group id passed in
+			foreach($ids as $id) {
+				// Load the group page
+				$group = new Hubzero_Group();
+				$group->read( $id );
+
+				// Ensure we found the group info
+				if (!$group) {
+					continue;
+				}
+				
+				//set the group to be published and update
+				$group->set('published',0);
+				$group->update();
+				
+				// Log the group approval
+				$log = new XGroupLog( $this->database );
+				$log->gid = $group->get('gidNumber');
+				$log->uid = $this->juser->get('id');
+				$log->timestamp = date( 'Y-m-d H:i:s', time() );
+				$log->action = 'group_unpublished';
+				$log->actorid = $this->juser->get('id');
+				if (!$log->store()) {
+					$this->setError( $log->getError() );
+				}
+				
+				// Output messsage and redirect
+				$this->_redirect = 'index.php?option='.$this->_option;
+				$this->_message = JText::_('Group has been unpublished.');
+			}
+		}
 	}
 	
 	//----------------------------------------------------------

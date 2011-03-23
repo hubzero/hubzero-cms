@@ -38,8 +38,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 $names = array();
 foreach ($this->users as $user) 
 {
-	$u =& JUser::getInstance($user);
-	$names[] = $u->get('name');
+	if(eregi("^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$", $user)) {
+		$names[] = $user;
+	} else {
+		$u =& JUser::getInstance($user);
+		$names[] = $u->get('name');
+	}
 ?>
 			<input type="hidden" name="users[]" value="<?php echo $user; ?>" />
 <?php

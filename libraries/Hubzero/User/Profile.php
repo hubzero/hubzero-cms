@@ -1372,4 +1372,24 @@ class Hubzero_User_Profile extends JObject
 		
 		return true;
 	}
+	
+	
+	
+	/* Member Roles */
+	public function getGroupMemberRoles( $uid )
+	{
+		$user_roles = '';
+		
+		$db = & JFactory::getDBO();
+		$sql = "SELECT r.id, r.role FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id=m.role AND m.uidNumber='".$uid."'";
+		$db->setQuery($sql);
+		
+		$roles = $db->loadAssocList();
+		
+		if($roles) {
+			return $roles;
+		}
+	}
+	
+	
 }

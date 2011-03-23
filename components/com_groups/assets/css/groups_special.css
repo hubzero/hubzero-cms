@@ -1,0 +1,88 @@
+/* Hide all the unwanted elements */
+#header,
+#nav,
+#help-pane,
+#after-clear,
+#trail,
+#wrap #bottom-nav {
+	display:none;
+}
+
+#page_container.hasToolbar {
+	margin-top:40px;
+}
+
+
+#nanoHUB_toolbar { 
+	position:absolute;
+	z-index:888; 
+	top:0px; right:0px; 
+	width:100%; height:40px; 
+	background:#47697f url('../img/powered_by_nanohub.png') no-repeat top left;
+	/*
+	background:#47697f url('images/powered_by_nanohub.png') no-repeat top left;
+	-webkit-border-bottom-right-radius:5px;
+	-webkit-border-bottom-left-radius:5px;
+	-webkit-box-shadow: 0px 0px 3px #444;
+	*/
+}
+
+#nanoHUB_toolbar ul {
+	margin:0px; 
+	list-style:none;
+	float:right;
+}
+
+#nanoHUB_toolbar ul li {
+	margin:0px;
+}
+
+#nanoHUB_toolbar ul li a {
+	display:block;
+	padding:10px 40px 10px 15px;
+	color:#8aadb9;
+	font-weight:200;
+	font-size:14px;
+	background: url('../img/powered_by_nanohub_arrow.png') no-repeat 93% 50%;
+	border-left:1px solid #8aadb9;
+	width:120px;
+}
+
+#nanoHUB_toolbar ul li a:hover {
+	border-bottom:none;
+	color:#FFF;
+	background:#97bdcc url('../img/powered_by_nanohub_arrow_hover.png') no-repeat 93% 50%;
+}
+
+#nanoHUB_toolbar ul ul {
+	position:absolute;
+	left:-9999px;
+}
+
+#nanoHUB_toolbar ul ul li a {
+	display:block;
+	text-indent:0px;
+	width:145px;
+	height:auto;
+	padding:5px 15px;
+	font-weight:normal;
+	color:#97bdcc;
+	font-size:12px;
+	background: #47697f;
+	opacity:0.92;
+}
+
+#nanoHUB_toolbar ul ul li a:hover {
+	background:#97bdcc;
+	color:#444;
+	opacity:1.0;
+}
+
+#nanoHUB_toolbar ul :hover ul {
+	left:auto;
+}
+
+#nanoHUB_toolbar ul :hover > a {
+	color:#FFF;
+	background:#97bdcc url('../img/powered_by_nanohub_arrow_hover.png') no-repeat 93% 50%;
+}

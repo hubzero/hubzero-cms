@@ -59,6 +59,7 @@ if ($this->getError()) {
 								<option value="1"<?php echo ($this->group->type == '1') ? ' selected="selected"' : ''; ?>>hub</option>
 								<option value="0"<?php echo ($this->group->type == '0') ? ' selected="selected"' : ''; ?>>system</option>
 								<option value="2"<?php echo ($this->group->type == '2') ? ' selected="selected"' : ''; ?>>project</option>
+								<option value="3"<?php echo ($this->group->type == '3') ? ' selected="selected"' : ''; ?>>Special Unbranded Group</option>
 							</select>
 						</td>
 					</tr>
@@ -87,6 +88,7 @@ if ($this->getError()) {
 							<input type="radio" name="group[privacy]" value="4"<?php if ($this->group->privacy == 4) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('GROUPS_ACCESS_PRIVATE'); ?>
 						</td>
 					</tr>
+					<!--
 					<tr>
 						<td class="key"><label for="access"><?php echo JText::_('GROUPS_CONTENT_PRIVACY'); ?>:</label></td>
 						<td>
@@ -95,6 +97,7 @@ if ($this->getError()) {
 							<input type="radio" name="group[access]" value="4"<?php if ($this->group->access == 4) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('GROUPS_ACCESS_PRIVATE'); ?>
 						</td>
 					</tr>
+					-->
 					<tr>
 						<td class="key" valign="top"><label for="restrict_msg"><?php echo JText::_('GROUPS_EDIT_CREDENTIALS'); ?>:</label></td>
 						<td>
@@ -113,6 +116,38 @@ if ($this->getError()) {
 							<?php echo $editor->display('group[private_desc]', htmlentities(stripslashes($this->group->private_desc)), '360px', '200px', '40', '10'); ?>
 						</td>
 					</tr>
+					
+					<tr>
+						<td colspan="2"><hr /></td>
+					</tr>
+					<tr>
+						<td class="key" valign="top"><label for="group_logo"><?php echo JText::_('Group Logo'); ?>:</label></td>
+						<td>
+							<input type="text" name="group[logo]" value="<?php echo $this->group->logo; ?>" size="50" />
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><label for="overview_type"><?php echo JText::_('Overview Type'); ?>:</label></td>
+						<td>
+							<select name="group[overview_type]">
+								<option value="0"<?php echo ($this->group->overview_type == '0') ? ' selected="selected"' : ''; ?>>Default Content</option>
+								<option value="1"<?php echo ($this->group->overview_type == '1') ? ' selected="selected"' : ''; ?>>Custom Content</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td class="key" valign="top"><label for="overview_content"><?php echo JText::_('Overview Content'); ?>:</label></td>
+						<td>
+							<?php echo $editor->display('group[overview_content]', htmlentities(stripslashes($this->group->overview_content)), '360px', '200px', '40', '10'); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key" valign="top"><label for="plugin_params"><?php echo JText::_('Plugin Access'); ?>:</label></td>
+						<td>
+							<textarea name="group[plugins]" rows="10" cols="50"><?php echo $this->group->plugins; ?></textarea>
+						</td>
+					</tr>
+					
 				</tbody>
 			</table>
 		</fieldset>

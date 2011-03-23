@@ -45,45 +45,37 @@ class plgGroupsUsage extends JPlugin
 	
 	//-----------
 	
-	public function &onGroupAreas( $authorized ) 
+	public function &onGroupAreas() 
 	{
-		$areas = array(
-			'usage' => JText::_('USAGE')
+		$area = array(
+			'name' => 'usage',
+			'title' => JText::_('USAGE'),
+			'default_access' => 'members'
 		);
-		return $areas;
+		
+		return $area;
 	}
 
 	//-----------
 
-	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $areas=null )
+	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null )
 	{
 		$return = 'html';
 		$active = 'usage';
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ) && $limit) {
-			if (!array_intersect( $areas, $this->onGroupAreas( $authorized ) ) 
-			&& !array_intersect( $areas, array_keys( $this->onGroupAreas( $authorized ) ) )) {
-				$return = '';
-				//$active = $areas[0];
-			}
-		}
-		
-		// Are we on the overview page?
-		if ($areas[0] == 'overview') {
-			$return = 'metadata';
-			
-		}
 		
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
-			'metadata'=>'',
-			'dashboard'=>''
+			'html'=>''
 		);
-
-		// Do we need to return any data?
-		if ($return != 'html' && $return != 'metadata') {
-			return $arr;
+		
+		//get this area details
+		$this_area = $this->onGroupAreas();
+		
+		// Check if our area is in the array of areas we want to return results for
+		if (is_array( $areas ) && $limit) {
+			if(!in_array($this_area['name'],$areas)) {
+				$return = '';
+			}
 		}
 		
 		if ($return == 'html') {

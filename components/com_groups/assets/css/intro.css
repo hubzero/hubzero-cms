@@ -1,0 +1,67 @@
+/* Introduction page */
+	#introduction {
+		/*margin: 0 -45px 3em -45px;*/
+		margin:0 -15px 3em -15px;
+		padding: 25px 45px 25px 120px;
+		background: #fbf8ea url("../img/groups-large.gif") 45px 25px no-repeat;
+		border-top: 2px solid #e7dac4;
+		border-bottom: 2px solid #e7dac4;
+		color: #7c7266;
+		}
+	#introduction .aside,
+	#introduction .subject {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		background: transparent;
+		border: none;
+		}
+	#introduction h3 {
+		margin-top: 0;
+		color: #7c7266;
+		}
+	#introduction .columns {
+		border: none;
+		}
+	#introduction ul,
+	#introduction li {
+		list-style: none;
+		margin: 1em 0;
+		padding: 0;
+		}
+	#introduction li {
+		margin: 0;
+		padding: 0 0 0 15px;
+		background: transparent url("../img/bullets/arrow.gif") 0 50% no-repeat;
+		}
+	.com_groups .first h2 { 
+		font-weight: normal;
+		margin: 0;
+		padding: 0.5em 0 0 0;
+		line-height: 1em;
+		border: none;
+		border-top: 2px solid #e0e0d7;
+		}
+	.com_groups .four {
+		border-top: 1px solid #e0e0d7;
+		margin-bottom: 3em;
+		}
+	.com_groups .three {
+		border-top: 1px solid #e0e0d7;
+		margin-top: -1px;
+		}
+	.com_groups .big {
+		height: 3em;
+		}
+	.com_groups .four {
+		margin-bottom: 3em;
+		}
+	.columns form.search { 
+		border: 1px solid #fff; 
+		background-position: 0 1em;
+		}
+	.com_groups .browse a {
+		font-weight: bold;
+		font-size: 1.2em;
+		}

@@ -24,80 +24,97 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-?>
-<div class="withleft">
-	<div class="aside">
-		<ul>
-			<li><a class="sent" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
-			<li class="active"><a class="new-message" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages&task=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
-		</ul>
-	</div><!-- / .aside -->
-	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>" method="post" class="full" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
-			<fieldset>
-				<h3><?php echo JText::_('GROUP_MESSAGE_MEMBERS'); ?></h3>
 
-				<label>
-					<?php echo JText::_('GROUP_MESSAGE_USERS'); ?> 
-<?php 
-		$names = array();
-		switch ($this->users[0]) 
-		{
-			case 'invitees':
-			$names[] = JText::_('GROUP_MESSAGE_ALL_INVITEES');
-?>
-						<input type="hidden" name="users[]" value="<?php echo $this->users[0]; ?>" />
-<?php
-			break;
-			case 'pending':
-			$names[] = JText::_('GROUP_MESSAGE_ALL_PENDING_MEMBERS');
-?>
-				<input type="hidden" name="users[]" value="<?php echo $this->users[0]; ?>" />
-<?php
-			break;
-			case 'managers':
-			$names[] = JText::_('GROUP_MESSAGE_ALL_MANAGERS');
-?>
-				<input type="hidden" name="users[]" value="<?php echo $this->users[0]; ?>" />
-<?php
-			break;
-			case 'all':
-			$names[] = JText::_('GROUP_MESSAGE_ALL_MEMBERS');
-?>
-				<input type="hidden" name="users[]" value="<?php echo $this->users[0]; ?>" />
-<?php
-			break;
-			default:
-			foreach ($this->users as $user) 
-			{
-				$u =& JUser::getInstance($user);
-				$names[] = $u->get('name');
-?>
-						<input type="hidden" name="users[]" value="<?php echo $user; ?>" />
-<?php
-			}
+$group_statuses = array(
+	'all' => JText::_('Group Members'),
+	'managers' => JText::_('Group Managers'),
+	'invitees' => JText::_('Group Invitees'),
+	'applicants' => JText::_('Group Applicants')
+);
+
+$role_id = JRequest::getVar('role_id');
+if($role_id) {
+	foreach($this->member_roles as $role) { 
+		if($role['id'] == $role_id) {
+			$role_name = $role['role'];
 			break;
 		}
+	}
+}
+
 ?>
-					<strong><?php echo implode(', ',$names); ?></strong>
-				</label>
-				<label>
-					<?php echo JText::_('GROUP_MESSAGE_SUBJECT'); ?>
-					<input type="text" name="subject" id="msg-subject" value="<?php echo JText::_('PLG_GROUPS_MESSAGES_SUBJECT'); ?>" />
-				</label>
-				<label>
-					<?php echo JText::_('GROUP_MESSAGE'); ?>
-					<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
-				</label>
-			</fieldset><div class="clear"></div>
-			<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
-			<input type="hidden" name="active" value="messages" />
-			<input type="hidden" name="option" value="<?php echo $option; ?>" />
-			<input type="hidden" name="task" value="send" />
-			<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
-			<p class="submit">
-				<input type="submit" value="<?php echo JText::_('GROUP_MESSAGE_SEND'); ?>" />
-			</p>
-		</form>
-	</div><!-- / .subject -->
-</div><!-- / .withleft-->
+
+
+<a name="messages"></a>
+<h3><?php echo JText::_('MESSAGES'); ?></h3>
+
+<div class="subject">
+	<ul class="entries-menu">
+		<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
+		<li><a class="active" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages&task=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
+	</ul>
+	<br class="clear" />
+	<div class="container">
+		<table class="groups entries" summary="Groups this person is a member of">
+			<caption><?php echo JText::_('Send New Message'); ?> <span></span></caption>
+			<tbody>
+				<td>
+					<form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>" method="post" id="message<?php if ($this->no_html) { echo '-ajax'; }; ?>">
+						<fieldset class="mail">
+							<p class="half">
+								<label><?php echo JText::_('GROUP_MESSAGE_USERS'); ?>  <span class="required">Required</span>
+									<select name="users[]">
+										<optgroup label="Group Status">
+											<?php foreach($group_statuses as $val => $name) { ?>
+												<?php $sel = ($val == $this->users[0]) ? "selected" : ""; ?> 
+												<option <?php echo $sel; ?> value="<?php echo $val; ?>"><?php echo $name; ?></option>
+											<?php } ?>
+										</optgroup>
+										<?php if(count($this->member_roles) > 0) { ?>
+											<optgroup label="Group Member Roles">
+												<?php foreach($this->member_roles as $role) { ?>
+													<?php $sel = ($role['role'] == $role_name) ? "selected" : ""; ?>
+													<option <?php echo $sel; ?> value="role_<?php echo $role['id']; ?>"><?php echo $role['role']; ?></option>
+												<?php } ?>
+											</optgroup>
+										<?php } ?>
+										<?php if(count($this->members) > 0) { ?>
+											<optgroup label="Group Members">
+												<?php foreach($this->members as $m) { ?>
+													<?php $u =& JUser::getInstance($m); ?>
+													<?php $sel = ($u->get('id') == $this->users[0]) ? "selected" : ""; ?> 
+													<option <?php echo $sel; ?> value="<?php echo $u->get('id'); ?>"><?php echo $u->get('name'); ?></option>
+												<?php } ?>
+											</optgroup>
+										<?php } ?>
+									</select>
+								</label>
+							</p>
+							<p class="half">
+								<label><?php echo JText::_('GROUP_MESSAGE_SUBJECT'); ?> <span class="required">Required</span>
+									<input type="text" name="subject" id="msg-subject" value="" />
+								</label>
+							</p>
+							<p>
+								<label><?php echo JText::_('GROUP_MESSAGE'); ?> <span class="required">Required</span>
+									<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
+								</label>
+							</p>
+							
+						</fieldset>
+						<p class="submit">
+							<input type="submit" value="<?php echo JText::_('GROUP_MESSAGE_SEND'); ?>" />
+						</p>
+						<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+						<input type="hidden" name="active" value="messages" />
+						<input type="hidden" name="option" value="<?php echo $option; ?>" />
+						<input type="hidden" name="task" value="send" />
+						<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
+					</form>
+				</td>
+			</tbody>
+		</table>
+		
+	</div>
+</div><!-- // .subject -->
+

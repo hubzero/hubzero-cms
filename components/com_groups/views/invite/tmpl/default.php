@@ -24,6 +24,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+JPluginHelper::importPlugin( 'hubzero' );
+$dispatcher =& JDispatcher::getInstance();
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -36,26 +39,35 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
+	<?php
+		foreach($this->notifications as $notification) {
+			echo $notification;
+		}
+	?>
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
 			<div class="admin-options">
-				<p class="group"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=view'); ?>"><?php echo JText::_('GROUPS_VIEW_GROUP'); ?></a></p>
-				<p class="edit"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>"><?php echo JText::_('GROUPS_EDIT_GROUP'); ?></a></p>
-				<p class="delete"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete'); ?>"><?php echo JText::_('GROUPS_DELETE_GROUP'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=view'); ?>"><?php echo JText::_('GROUPS_VIEW_GROUP'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>"><?php echo JText::_('GROUPS_EDIT_GROUP'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize'); ?>"><?php echo JText::_('GROUPS_CUSTOMIZE_GROUP'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete'); ?>"><?php echo JText::_('GROUPS_DELETE_GROUP'); ?></a></p>
 			</div>
 		</div>
 		<fieldset>
-			<legend><?php echo JText::_('GROUPS_INVITE_HEADER'); ?></legend>
+			<h3><?php echo JText::_('GROUPS_INVITE_HEADER'); ?></h3>
 
 	 		<p><?php echo JText::sprintf('GROUPS_INVITE_EXPLANATION',$this->group->get('description')); ?></p>
 
 			<label>
 				<?php echo JText::_('GROUPS_INVITE_LOGINS'); ?>
-				<textarea name="logins" id="logins" rows="8" cols="50"></textarea>
-				<span class="hint"><?php echo JText::_('Enter logins or e-mails separated by commas'); ?></span>
+				<?php 
+					$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'logins', 'acmembers')) ); 
+					if (count($mc) > 0) {
+						echo $mc[0];
+					} else { ?>
+						<input type="text" name="logins" id="acmembers" value="" size="35" />
+					<?php } ?>
+				<span class="hint"><?php echo JText::_('Enter names or e-mails separated by commas'); ?></span>
 			</label>
 			<label>
 				<?php echo JText::_('GROUPS_INVITE_MESSAGE'); ?>

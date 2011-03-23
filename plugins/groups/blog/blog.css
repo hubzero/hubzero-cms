@@ -5,18 +5,23 @@
 	-- -- -- -- -- -- --
 
 */
-	#blog-section {
-		padding-top: 2em;
-		border-top: 1px solid #fff;
-	}
-	#blog-section .subject,
-	#blog-section .aside {
+	.group_blog {
 		padding-top: 0;
 	}
-	#blog-section .aside legend {
+	.group_blog .subject,
+	.group_blog .aside {
+		padding-top: 0;
+	}
+	
+	.group_blog .subject { 
+		background:none;
+		border:none;
+		}
+	
+	.group_blog .aside legend {
 		display: none;
 	}
-	.com_groups #blog-section #blogentries h3 {
+	.group_blog h3 {
 		display: none;
 	}
 /* Entries listing */
@@ -33,7 +38,8 @@
 	ol.blog-entries > li {
 		clear: left;
 		margin: 0 !important;
-		padding: 0 0 2em 125px;
+		/*padding: 0 0 2em 125px;*/
+		padding: 0 0 2em 0;
 		border-top: 1px solid #efefef;
 		position: relative;
 	}
@@ -72,7 +78,7 @@
 		color: #777;
 		font-size: 12px;
 	}
-	#blog-section .entry-author {
+ 	ol.blog-entries .entry-author {
 		color: #aaa;
 		font-size: 85%;
 		margin: -0.5em 0 0 0;
@@ -378,7 +384,7 @@
 	}
 /* Sections */
 	.section h3 {
-		display: none;
+		display: block;
 	}
 	.section .section h3 {
 		display: block;
@@ -405,30 +411,31 @@
 		border-bottom: 1px solid #E3E3E3;
 		padding: 1em;
 	}
-	#blog-section .below {
+	
+	.group_blog .below {
 		display: block;
 		margin: 0;
 		padding: 0;
 		border-top: none;
 	}
-	#blog-section .below .subject {
+	.group_blog .below .subject {
 		margin-top: 0;
 		background: #fff;
 		border-top: 1px solid #efefef;
 		border-bottom: 1px solid #fff;
 		padding: 1em 0 0 0;
 	}
-	#blog-section .below .aside {
+	.group_blog .below .aside {
 		padding: 1em 0 0 0;
 	}
-	#blog-section .below h3 {
+	.group_blog .below h3 {
 		font-weight: normal;
 		text-transform: uppercase;
 		letter-spacing: 1px;
 		margin: 2em 0 0 125px;
 		padding: 0.5em 0;
 	}
-	#blog-section .below form h3 {
+	.group_blog .below form h3 {
 		padding: 0;
 		margin: 1em 0;
 		letter-spacing: normal;

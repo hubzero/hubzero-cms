@@ -26,54 +26,99 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $no_html = JRequest::getInt( 'no_html', 0 );
+if (!$no_html) { 
+?>
 
-if (!$no_html) { ?>
-	<div id="content-header">
-		<h2><?php echo $this->group->get('description'); ?></h2>
-	</div><!-- / #content-header -->
-	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li class="last"><a class="group" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>"><?php echo JText::_('GROUPS_ALL_GROUPS'); ?></a></li>
-		</ul>
-	</div><!-- / #content-header-extra -->
-	<div id="sub-menu">
-		<ul>
-<?php
-	$i = 1;
-	foreach ($this->cats as $cat)
-	{
-		$name = key($cat);
-		if ($name != '') {
-?>
-			<li id="sm-<?php echo $i; ?>"<?php if (strtolower($name) == $this->tab) { echo ' class="active"'; } ?>><a class="tab" rel="<?php echo $name; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active='.$name); ?>"><span><?php echo $cat[$name]; ?></span></a></li>
-<?php
-			$i++;
-		}
-	}
-?>
-		</ul>
-		<div class="clear"></div>
-	</div><!-- / #sub-menu -->
 <?php 
-}
+	//special groups hub menu at top
+	if($this->group->get('type') == 3) { ?>
+	<div id="nanoHUB_toolbar">
+		<ul>
+			<li><a href="#">Main Menu</a>
+				<ul>
+					<?php foreach($this->menu as $menu) { ?>
+						<li><a href="<?php echo $menu['alias']; ?>">&raquo; <?php echo $menu['name']; ?></a></li>
+					<?php } ?>
+				</ul>
+			</li>
+		</ul>
+	</div>
+<?php } ?>
 
-$html = '';
-$h = 'hide';
-$c = 'main';
-if ($this->sections) {
-	$k = 0;
-	foreach ($this->sections as $section) 
-	{
-		if ($section['html'] != '') {
-			$cls  = ($c) ? $c.' ' : '';
-			if (key($this->cats[$k]) != $this->tab) {
-				$cls .= ($h) ? $h.' ' : '';
-			}
-			$html .= '<div class="'.$cls.'section'.'" id="'.key($this->cats[$k]).'-section'.'">'.$section['html'].'</div>';
-		}
-		$k++;
-	}
-}
+	<div id="page_container" <?php if($this->group->get('type') == 3) { echo 'class="hasToolbar"'; } ?>>
+		<div id="page_container_inner">
 
-echo $html;
-?>
+			<div id="page_sidebar">
+				<div id="page_sidebar_inner">
+					<?php
+						//default logo
+						$default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'group_default_logo.png';
+						
+						//logo link - links to group overview page
+						$link = JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn')); 
+
+						//path to group uploaded logo
+						$path = '/site/groups/'.$this->group->get('gidNumber').DS.$this->group->get('logo');
+
+						//if logo exists and file is uploaded use that logo instead of default
+						$src = ($this->group->get('logo') != '' && is_file(JPATH_ROOT.$path)) ? $path : $default_logo;
+					?>
+					<a id="page_identity" href="<?php echo $link; ?>">
+						<img src="<?php echo $src; ?>" />
+					</a>
+
+					<ul id="page_menu">
+						<?php 
+							foreach($this->hub_group_plugins as $plugin) {
+								echo JHTML::_(
+									'view_html.displayMenu',
+									$this->user,
+									$this->authorized,
+									$this->option,
+									$this->group,
+									$this->pages,
+									$this->tab,
+									$this->group_plugin_access[$plugin['name']],
+									$plugin['name'],
+									$plugin['title']
+								);
+							} 
+						?>
+					</ul><!-- //end page menu -->
+
+				</div><!-- //end page sidebar inner -->
+			</div><!-- //end page sidebar -->
+
+			<div id="page_main">
+				<div id="page_header">
+					<h2><?php echo $this->group->get('description'); ?></h2>
+				</div><!-- // end page header -->
+				<div id="page_notifications">
+					<?php 
+						foreach($this->notifications as $notification) {
+							echo $notification;
+						}
+						?>
+				</div>
+				<div id="page_content" class="group_<?php echo $this->tab; ?>">
+					<?php
+			 			} 
+			
+						echo JHTML::_(
+							'view_html.displayContent',
+							$this->user,
+							$this->group,
+							$this->tab,
+							$this->sections,
+							$this->hub_group_plugins,
+							$this->group_plugin_access
+						);
+						
+						if (!$no_html) { 
+					?>
+				</div>
+			</div> <!-- //close page main -->
+
+		</div> <!-- //close page container inner -->
+	</div> <!-- //close page container -->
+<?php } ?>

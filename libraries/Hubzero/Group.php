@@ -41,6 +41,10 @@ class Hubzero_Group
 	private $restrict_msg = null;
 	private $join_policy = null;
 	private $privacy = null;
+	private $logo = null;
+	private $overview_type = null;
+	private $overview_content = null;
+	private $plugins = null;
 	private $members = array();
 	private $managers = array();
 	private $applicants = array();
@@ -135,6 +139,7 @@ class Hubzero_Group
 				
 				if (!$deltaonly || in_array($key, $this->_updatedkeys)) {
 					$result[$value] = $current;
+                    //echo "setting result[$value] = $current <br>";
 				}
 			}
 			
@@ -906,8 +911,9 @@ class Hubzero_Group
 		if (empty($conn) || empty($xhub))
 			return false;
 		
-		if (empty($info))
-			return false;
+		if (empty($info)) {
+			return true;
+		}
 
 		if (empty($cn))
 			return false;
@@ -920,7 +926,6 @@ class Hubzero_Group
 		{
 			return(0x20); // LDAP_NO_SUCH_OBJECT
 		}
-
 		if ($legacy) {
 			$dn = 'gid=' . $cn . ',ou=groups,' . $hubLDAPBaseDN;
 		}
@@ -1207,6 +1212,7 @@ class Hubzero_Group
 		}
 		
 		if ($result === true && ($storage == 'ldap' || $storage == 'all')) {
+
 			$result = self::_ldap_update($this->cn, $this->toArray('ldap',$legacy,!$this->_updateAll), $this->_ldapLegacy);
 			
 			if ($result === false) {
@@ -2187,4 +2193,101 @@ class Hubzero_Group
 
         mysql_free_result($result);
     }
+
+	//----
+	// New function for new groups (Chris)
+	//----
+	
+	public function search_roles($role='') 
+	{
+		if ($role == '')
+			return false;
+		
+		$roles = '#__xgroups_roles';
+		$member_roles = '#__xgroups_member_roles';
+		
+		$db = & JFactory::getDBO();
+		
+		$query = "SELECT uidNumber FROM $roles as r, $member_roles as m WHERE r.id='".$role."' AND r.id=m.role AND r.gidNumber='".$this->gidNumber."'";
+
+		$db->setQuery($query);
+		$result = $db->loadResultArray();
+		
+		$result = array_intersect($result,$this->members);
+	
+		if(count($result) > 0) {
+			return $result;
+		}
+	}
+	
+	//----
+	// New function with new groups (Chris)
+	//----
+	
+	public function getPluginAccess( $group, $get_plugin = '' )
+	{
+		// Get plugins
+		JPluginHelper::importPlugin( 'groups' );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		// Trigger the functions that return the areas we'll be using
+		//then add overview to array
+		$hub_group_plugins = $dispatcher->trigger( 'onGroupAreas', array( ) );
+		array_unshift($hub_group_plugins, array('name'=>'overview','title'=>'Overview','default_access'=>'anyone'));
+		
+		//array to store plugin preferences when after retrieved from db
+		$active_group_plugins = array();
+		
+		//get the group plugin preferences
+		//returns array of tabs and their access level (ex. [overview] => 'anyone', [messages] => 'registered')
+		$group_plugins = $group->get('plugins');
+		if($group_plugins) {
+			$group_plugins = explode(',',$group_plugins);
+			foreach($group_plugins as $plugin) {
+				$temp = explode('=',trim($plugin));
+				if($temp[0]) {
+					$active_group_plugins[$temp[0]] = trim($temp[1]);
+				}
+			}
+		}
+		
+		//array to store final group plugin preferences
+		//array of acceptable access levels
+		$group_plugin_access = array();
+		$acceptable_levels = array('nobody','anyone','registered','members');
+		
+		//if we have already set some 
+		if($active_group_plugins) {
+			//for each plugin that is active on the hub
+			foreach($hub_group_plugins as $hgp) {
+				//if group defined access level is not an acceptable value or not set use default value that is set per plugin
+				//else use group defined access level
+				if(!in_array($active_group_plugins[$hgp['name']], $acceptable_levels)) {
+					$value = $hgp['default_access'];
+				} else {
+					$value = $active_group_plugins[$hgp['name']];
+				}
+
+				//store final  access level in array of access levels
+				$group_plugin_access[$hgp['name']] = $value;
+			}
+		} else {
+			//for each plugin that is active on the hub
+			foreach($hub_group_plugins as $hgp) {
+				$value = $hgp['default_access'];
+				
+				//store final  access level in array of access levels
+				$group_plugin_access[$hgp['name']] = $value;
+			}
+		}
+		
+		//if we wanted to return only a specific level return that otherwise return all access levels
+		if($get_plugin != '') {
+			return $group_plugin_access[$get_plugin];
+		} else {
+			return $group_plugin_access;
+		}
+	}
+
+
 }

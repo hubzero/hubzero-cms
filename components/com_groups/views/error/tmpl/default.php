@@ -31,7 +31,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div>
 
 <div class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
+<?php
+	foreach($this->notifications as $notification) {
+		echo $notification;
+	}
+?>
 </div><!-- / .section -->

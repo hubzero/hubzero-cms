@@ -65,7 +65,7 @@ function GroupsParseRoute($segments)
     if (empty($segments))
     	return $vars;
 
-    if ($segments[0] == 'new' || $segments[0] == 'browse' || $segments[0] == 'features') {
+    if ($segments[0] == 'new' || $segments[0] == 'browse') {
 		$vars['task'] = $segments[0];
 	} else {
 		$vars['gid'] = $segments[0];
@@ -79,6 +79,9 @@ function GroupsParseRoute($segments)
 			case 'accept':
 			case 'cancel':
 			case 'invite':
+			case 'customize':
+			case 'managepages':
+			case 'managemodules':
 				$vars['task'] = $segments[1];
 			break;
 			default:

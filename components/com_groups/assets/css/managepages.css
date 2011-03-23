@@ -1,0 +1,140 @@
+#asset_browser {
+	margin-top:7px;
+	-webkit-box-shadow:0 0 2px #444;
+	-moz-box-shadow:0 0 2px #444;
+	box-shadow:0 0 2px #444;
+	background:#efefef url('../img/file_manager.png') no-repeat 97% 3%;
+	padding:2%;
+	width:96%;
+}
+
+#asset_browser p:first-child {
+	margin-top:0px;
+}
+
+iframe {
+	border:0px;
+	margin: 0;
+	padding: 0;
+}
+
+#hubForm fieldset fieldset {
+	padding-bottom:1em;
+	background:#FFF;
+}
+
+#hubForm fieldset fieldset legend {
+	font-weight:bold;
+	color:#444;
+}
+
+#hubForm table {
+	border:none;
+	margin-top:10px;
+}
+
+table td {
+	padding:5px;
+	border-bottom:none;
+	border-top:1px solid #CCC;
+}
+
+table tr:first-child td {
+	border-top:none;
+}
+
+.title {
+	width:65%;
+}
+
+
+.order,
+.up,
+.down,
+.edit,
+.deactivate,
+.activate {
+	width:20px;	
+}
+
+.order a,
+.up a,
+.down a,
+.edit a,
+.deactivate a,
+.activate a {
+	display:block;
+	text-indent:-9999px;
+	width:20px;
+	height:20px;
+}
+
+.order a:hover,
+.up a:hover,
+.down a:hover,
+.edit a:hover,
+.deactivate a:hover,
+.activate a:hover {
+	border:none;
+}
+
+.up a { background:url('../img/arrow_up.png') no-repeat 50% 50%; }
+.down a { background:url('../img/arrow_down.png') no-repeat 50% 50%; }
+.activate a { background:url('../img/activate.png') no-repeat 50% 50%; }
+.deactivate a { background:url('../img/deactivate.png') no-repeat 50% 50%; }
+.edit { background:none; padding:5px; margin:0px; }
+.edit a { background:url('../img/edit.png') no-repeat 50% 50%; }
+
+.order {
+	padding:2px;
+}
+
+#hubForm table .order input[type=text] {
+	background:#FFF;
+	border:1px solid #CCC;
+	padding:3px;
+	text-align:center;
+	width:20px;
+}
+
+.quick {
+	width:20px;
+}
+
+.quick-view {
+	display:block;
+	width:20px;
+	text-indent:-9999px;
+	background:url('../img/preview.gif') no-repeat 50% 50%;
+}
+
+.quick-view:hover {
+	border:none;
+}
+
+.preview {
+	display:none;
+	background-color:#FFF;
+}
+
+.preview h3 {
+	margin:0px;
+	background:#444;
+	margin: 0;
+	padding: 0.5em 1em;
+	border-bottom: 1px solid #757575;
+	color: #555;
+	text-shadow: 0px 1px 0px #e5e5ee;
+	background: #a2a2a2;
+    background: -webkit-gradient(linear, left top, left bottom, from(#c4c4c4), to(#a2a2a2));
+    background: -moz-linear-gradient(top, #c4c4c4, #a2a2a2);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c4c4c4', endColorstr='#a2a2a2');
+}
+
+.parsed {
+	padding:10px 15px;
+}
+
+#sbox-content .preview {
+	display:block;
+}
