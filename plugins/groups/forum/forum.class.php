@@ -95,8 +95,7 @@ class XForum extends JTable
 					$query .= " ORDER BY c.sticky DESC, lastpost DESC, c.created DESC";
 				}
 			}
-		}
-				
+		}	
 		return $query;
 	}
 	
@@ -123,6 +122,9 @@ class XForum extends JTable
 		}
 		$query .= $this->buildQuery( $filters );
 		
+		if($filters['limit'] != 0) {
+			$query .= ' LIMIT '.$filters['start'].','.$filters['limit'];
+		}
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

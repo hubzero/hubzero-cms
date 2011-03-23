@@ -36,12 +36,16 @@ if ($this->row->parent) {
 	}
 }
 ?>
-<div class="below">
-<h3><a name="topicform"></a><?php echo $title; ?></h3>
+<div class="main section">
+<h3 class="title"><a name="topicform"></a><?php echo $title; ?></h3>
 	<div class="aside">
-<?php if (!$this->row->parent && $this->row->id) { ?>
-		<p class="add"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&task=newtopic'); ?>"><?php echo JText::_('PLG_GROUPS_FORUM_NEW_TOPIC'); ?></a></p>
-<?php } ?>
+		<?php if (!$this->row->parent && $this->row->id) { ?>
+			<p class="add">
+				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&task=newtopic'); ?>">
+					<?php echo JText::_('PLG_GROUPS_FORUM_NEW_TOPIC'); ?>
+				</a>
+			</p>
+		<?php } ?>
 		<table class="wiki-reference" summary="Wiki Syntax Reference">
 			<caption>Wiki Syntax Reference</caption>
 			<tbody>
@@ -75,87 +79,87 @@ if ($this->row->parent) {
 				</tr>
 			</tbody>
 		</table>
-	</div>
-	<div class="subject">
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum'); ?>" method="post" id="commentform">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
-	<p class="comment-member-photo">
-<?php
-		$juser =& JFactory::getUser();
-		if (!$juser->get('guest')) {
-			$jxuser = new Hubzero_User_Profile();
-			$jxuser->load( $juser->get('id') );
-			$thumb = ForumHelper::getMemberPhoto($jxuser, 0);
-		} else {
-			$config =& JComponentHelper::getParams( 'com_members' );
-			$thumb = $config->get('defaultpic');
-			if (substr($thumb, 0, 1) != DS) {
-				$thumb = DS.$dfthumb;
-			}
-			$thumb = ForumHelper::thumbit($thumb);
-		}
-?>
-		<img src="<?php echo $thumb; ?>" alt="" />
-	</p>
-	<fieldset>
-<?php if ($this->row->parent) { ?>
-		<input type="hidden" name="topic[sticky]" id="forum_sticky" value="<?php echo $this->row->sticky; ?>" />
-		<input type="hidden" name="topic[topic]" id="forum_topic" value="<?php echo htmlentities(stripslashes($this->row->topic), ENT_QUOTES); ?>" />
-<?php } else { ?>
-<?php if ($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
-		<label>
-			<input class="option" type="checkbox" name="topic[sticky]" value="1" id="forum_sticky"<?php if ($this->row->sticky == 1) { echo ' checked="checked"'; } ?> /> 
-			<?php echo JText::_('PLG_GROUPS_FORUM_FORM_STICKY'); ?>
-		</label>	
-<?php } else { ?>
-		<input type="hidden" name="topic[sticky]" id="forum_sticky" value="<?php echo $this->row->sticky; ?>" />
-<?php } ?>
-			
-		<label>
-			<input class="option" type="checkbox" name="topic[access]" id="forum_access"<?php if ($this->row->access != 4) { echo ' checked="checked"'; } ?> /> 
-			<?php echo JText::_('PLG_GROUPS_FORUM_FORM_ACCESS'); ?>
-		</label>
-
-		<label>
-			<?php echo JText::_('PLG_GROUPS_FORUM_FORM_TOPIC'); ?>
-			<input type="text" name="topic[topic]" id="forum_topic" value="<?php echo htmlentities(stripslashes($this->row->topic), ENT_QUOTES); ?>" size="38" />
-		</label>
-<?php } ?>
-		<label>
-			<?php echo JText::_('PLG_GROUPS_FORUM_FORM_COMMENTS'); ?>
-			<textarea name="topic[comment]" id="forum_comments" rows="15" cols="35"><?php echo stripslashes($this->row->comment); ?></textarea>
-		</label>
-		
-		<label id="comment-anonymous-label">
-			<input class="option" type="checkbox" name="topic[anonymous]" id="forum_anonymous" value="1"<?php echo ($this->row->anonymous) ? ' checked="checked"' : ''; ?> /> 
-			<?php echo JText::_('PLG_GROUPS_FORUM_FORM_ANONYMOUS'); ?>
-		</label>
-		
-		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
-		</p>
-		
-		<div class="sidenote">
-			<p>
-				<strong>Please keep comments polite and on topic. Offensive posts may be removed.</strong>
-			</p>
-			<p>
-				Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
-			</p>
-		</div>
-	</fieldset>
-	<input type="hidden" name="topic[created]" value="<?php echo $this->row->created; ?>" />
-	<input type="hidden" name="topic[created_by]" value="<?php echo $this->row->created_by; ?>" />
-	<input type="hidden" name="topic[parent]" value="<?php echo $this->row->parent; ?>" />
-	<input type="hidden" name="topic[id]" value="<?php echo $this->row->id; ?>" />
-	<input type="hidden" name="topic[group]" value="<?php echo $this->group->get('gidNumber'); ?>" />
+	</div><!-- /.aside -->
 	
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
-	<input type="hidden" name="task" value="savetopic" />
-	<input type="hidden" name="active" value="forum" />
-</form>
-</div><!-- / .subject -->
-</div>
+	<div class="subject">
+		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum'); ?>" method="post" id="commentform">
+			<p class="comment-member-photo">
+				<?php
+					$juser =& JFactory::getUser();
+					if (!$juser->get('guest')) {
+						$jxuser = new Hubzero_User_Profile();
+						$jxuser->load( $juser->get('id') );
+						$thumb = ForumHelper::getMemberPhoto($jxuser, 0);
+					} else {
+						$config =& JComponentHelper::getParams( 'com_members' );
+						$thumb = $config->get('defaultpic');
+						if (substr($thumb, 0, 1) != DS) {
+							$thumb = DS.$dfthumb;
+						}
+						$thumb = ForumHelper::thumbit($thumb);
+					}
+				?>
+				<img src="<?php echo $thumb; ?>" alt="" />
+			</p>
+			
+			<fieldset>
+				<?php if ($this->row->parent) { ?>
+					<input type="hidden" name="topic[sticky]" id="forum_sticky" value="<?php echo $this->row->sticky; ?>" />
+					<input type="hidden" name="topic[topic]" id="forum_topic" value="<?php echo htmlentities(stripslashes($this->row->topic), ENT_QUOTES); ?>" />
+				<?php } else { ?>
+					<?php if ($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
+						<label>
+							<input class="option" type="checkbox" name="topic[sticky]" value="1" id="forum_sticky"<?php if ($this->row->sticky == 1) { echo ' checked="checked"'; } ?> /> 
+							<?php echo JText::_('PLG_GROUPS_FORUM_FORM_STICKY'); ?>
+						</label>	
+					<?php } else { ?>
+						<input type="hidden" name="topic[sticky]" id="forum_sticky" value="<?php echo $this->row->sticky; ?>" />
+					<?php } ?>
+					<label>
+						<input class="option" type="checkbox" name="topic[access]" id="forum_access"<?php if ($this->row->access != 4) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('PLG_GROUPS_FORUM_FORM_ACCESS'); ?>
+					</label>
+					<label>
+						<?php echo JText::_('PLG_GROUPS_FORUM_FORM_TOPIC'); ?>
+						<input type="text" name="topic[topic]" id="forum_topic" value="<?php echo htmlentities(stripslashes($this->row->topic), ENT_QUOTES); ?>" size="38" />
+					</label>
+				<?php } ?>
+		
+				<label>
+					<?php echo JText::_('PLG_GROUPS_FORUM_FORM_COMMENTS'); ?>
+					<?php
+						ximport('Hubzero_Wiki_Editor');
+						$editor =& Hubzero_Wiki_Editor::getInstance();
+						echo $editor->display('topic[comment]', 'forum_comments', stripslashes($this->row->comment), '', '40', '15');
+					?>
+				</label>
+				<label id="comment-anonymous-label">
+					<input class="option" type="checkbox" name="topic[anonymous]" id="forum_anonymous" value="1"<?php echo ($this->row->anonymous) ? ' checked="checked"' : ''; ?> /> 
+					<?php echo JText::_('PLG_GROUPS_FORUM_FORM_ANONYMOUS'); ?>
+				</label>
+				<p class="submit">
+					<input type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
+				</p>
+		
+				<div class="sidenote">
+					<p>
+						<strong>Please keep comments polite and on topic. Offensive posts may be removed.</strong>
+					</p>
+					<p>
+						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+					</p>
+				</div>
+			</fieldset>
+			<input type="hidden" name="topic[created]" value="<?php echo $this->row->created; ?>" />
+			<input type="hidden" name="topic[created_by]" value="<?php echo $this->row->created_by; ?>" />
+			<input type="hidden" name="topic[parent]" value="<?php echo $this->row->parent; ?>" />
+			<input type="hidden" name="topic[id]" value="<?php echo $this->row->id; ?>" />
+			<input type="hidden" name="topic[group]" value="<?php echo $this->group->get('gidNumber'); ?>" />
+	
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+			<input type="hidden" name="task" value="savetopic" />
+			<input type="hidden" name="active" value="forum" />
+		</form>
+	</div><!-- / .subject -->
+</div><!-- / .main -->
