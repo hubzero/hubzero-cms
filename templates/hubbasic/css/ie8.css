@@ -1,0 +1,56 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Hubbasic CSS
+	IE 8 Windows hacks
+	-- -- -- -- -- -- --
+
+*/
+
+/* Header */
+	#header-wrap {
+		height: 80px;
+		}
+	#header h1 {
+		padding: 0;
+		margin: -10px 0 0 0;
+		}
+	#header h1 a {
+		margin-top: 0;
+		}
+/* Content */
+	#content {
+		-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=75, Color='#aaaaaa')";
+		}
+/* Content header */
+	#content-header {
+		margin-top: -15px;
+		}
+/* Footer */
+	#bottom-nav {
+		margin-top: -20px;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=130, Color='#292929')";
+		}
+/* Forms */
+	#hubForm legend {
+		margin-top: -2em;
+		padding-top: 3.25em;
+		background: transparent;
+		}
+	#hubForm fieldset fieldset {
+		position: inherit;
+		}
+	#hubForm fieldset fieldset legend {
+		margin: 0;
+		padding: 0.2em 0.5em;
+		position: static;
+		}

@@ -13,13 +13,13 @@ echo $this->params->get('type');
                 <?php echo JText::_('REGISTER'); ?></a>. It's free!</p>
 
                 <h4>Is this really free?</h4>
-                <p>Yes! Use of <?php echo $this->hubShortName;?> resources and tools is <em>free</em> for registered users. There are no hidden costs or fees.</p>
+                <p>Yes! Use of hubbub resources and tools is <em>free</em> for registered users. There are no hidden costs or fees.</p>
 
-                <h4>Why is registration required for parts of the <?php echo $this->hubShortName; ?>?</h4>
+                <h4>Why is registration required for parts of hubbub?</h4>
 
-                <p>Our sponsors ask us who uses the <?php echo $this->hubShortName;?> and what they use it for. Registration
+                <p>Our sponsors ask us who uses hubbub and what they use it for. Registration
                 helps us answer these questions. Usage statistics also focus our attention on improvements, making the
-                <?php echo $this->hubShortName; ?> experience better for <em>you</em>.</p>
+                hubbub experience better for <em>you</em>.</p>
                 <?php endif; ?>
 
         </div>

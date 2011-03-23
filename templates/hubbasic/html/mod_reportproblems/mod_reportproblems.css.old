@@ -1,3 +1,12 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
 /*
 
 	-- -- -- -- -- -- --
@@ -16,9 +25,6 @@
 		text-align: center;
 		width: 100%;
 		}
-	#help-pane .threecolumn {
-		border: none;
-		}
 	#help-container {
 		padding: 0 30px;
 		border: 8px solid #000;
@@ -27,9 +33,6 @@
 		background: #151515;
 		visibility: hidden;
 		}
-	#help-container h1 {
-		display: none;
-		}
 	#help-container a { 
 		color: #D0C7B1; 
 		border-bottom: 1px solid #726545; 
@@ -37,6 +40,9 @@
 	#help-container a:hover { 
 		color: #DAC887; 
 		border-bottom: 1px solid #D0C7B1; 
+		}
+	#help-container h1 {
+		display: none;
 		}
 	#help-container h2 { 
 		color: #fff; 
@@ -51,39 +57,6 @@
 		background: transparent;
 		margin-bottom: 1em;
 		}
-
-	#help-container ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		}
-	#help-container li {
-		margin: 0;
-		padding: 0.7em 0em 0.7em 3em;
-		border-bottom: 1px solid #222;
-		list-style: none;
-		}
-	#help-container li h3 {
-		padding: 0;
-		border: none;
-		margin: 0;
-		}
-	#help-container li.help-wish {
-		background: url("../../../../modules/mod_reportproblems/images/wishbone.png") 0 0.7em no-repeat;
-		}
-	#help-container li.help-tickets {
-		background: url("../../../../modules/mod_reportproblems/images/ticket.png") 0 0.7em no-repeat;
-		}
-	#help-container li.help-kb {
-		background: url("../../../../modules/mod_reportproblems/images/bulb.png") 0 0.7em no-repeat;
-		}
-	#help-container li.help-qa {
-		background: url("../../../../modules/mod_reportproblems/images/qa.png") 0 0.7em no-repeat;
-		}
-	#help-container li p {
-		margin: 0;
-		}
-
 	#help-container form {
 		margin: 0;
 		padding: 0;
@@ -120,9 +93,7 @@
 	#help-container label {
 		padding-top: 1.2em;
 		position: relative;
-		display: inline-block;
-		margin: 0;
-		width: 100%;
+		display: block;
 		}
 	#help-container label span.required,
 	#help-container label span.optional {
@@ -148,15 +119,11 @@
 	#help-container textarea.long {
 		height: 166px;
 		}
-	#trUpload {
-		margin-bottom: 1.5em;
-		}
 	#help-container .submit {
 		clear: both;
 		margin: 0.5em -0.5em 0.5em 0;
-		padding: 0.2em 0 0 0;
+		padding: 0;
 		text-align: right;
-		border-top: 1px solid #333; 
 		}
 	#help-container .submit input,
 	#help-container .option {
@@ -183,13 +150,17 @@
 		color: #FAF196;
 		margin: 1em 0 1em 0;
 		}
-	#trSuccess div span a {
-		color: #FAF196;
-		border: none;
+	#trSuccess div a {
+		display: block;
+		background: #ccc;
+		width: 93px;
+		height: 19px;
+		border: 1px solid #ccc;
+		margin: 0 auto;
+		padding: 3px 0 0 0;
 		}
-	#trSuccess div span a:hover {
-		color: #fff;
-		border: none;
+	#trSuccess div a:hover {
+		border: 1px solid #fff;
 		}
 
 	#trSending {
@@ -205,21 +176,6 @@
 	#trSending,
 	#trSuccess {
 		display: none;
-		}
-	#help-btn-close {
-		position: absolute;
-		width: 30px;
-		height: 30px;
-		right: 40px;
-		top: 15px;
-		background: url("../../../../modules/mod_reportproblems/images/close.png") no-repeat top left;
-		border: none;
-		text-indent: -55em;
-		overflow: hidden;
-		cursor: pointer;
-		}
-	#help-btn-close:hover {
-		background-position: 0 -30px;
 		}
 /* Help Tab */
 	#tab {

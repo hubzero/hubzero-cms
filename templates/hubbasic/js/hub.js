@@ -34,7 +34,7 @@ var HUBzero = {
       if (s.src && s.src.match(/hub\.js(\?.*)?$/)) {
 	  var path = s.src.replace(/hub\.js(\?.*)?$/,'');
       var includes = s.src.match(/\?.*load=([a-z,]*)/);
-      (includes ? includes[1] : 'modal,growl,tooltips,globals,applesearch,slimbox').split(',').each(
+      (includes ? includes[1] : 'modal,growl,tooltips,slimbox,globals').split(',').each(
        function(include) { HUBzero.require(path+include+'.js') });
 	  }
     });

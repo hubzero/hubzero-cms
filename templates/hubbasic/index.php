@@ -34,20 +34,42 @@ $juser =& JFactory::getUser();
  <head>
 <jdoc:include type="head" />
 <link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/print.css" />
+<!--[if IE 8]>
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/ie8.css" />
+<![endif]-->
 <!--[if lte IE 7]>
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/ie7.css" />
 <![endif]-->
-<!--[if lte IE 6]>
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/hubbasic/css/ie6.css" />
-<![endif]-->
  </head>
  
- <body>
+<body <?php if ($this->countModules( 'banner or welcome' )) { echo "class=\"frontpage\""; } ?>>
 <jdoc:include type="modules" name="notices" />
+	<div id="top">
+		<a name="top"></a>
+		<p class="skip" id="to-content"><a href="#content">Skip to content</a></p>
+<?php if ($this->countModules( 'helppane' )) : ?>
+		<p id="tab">
+			<a href="/support/" title="Need help? Send a trouble report to our support team.">
+				<span>Need Help?</span>
+			</a>
+		</p>
+<?php endif; ?>
+		<div class="clear"></div>
+	</div><!-- / #top -->
+	
+	<jdoc:include type="modules" name="helppane" />
+	
 	<div id="header">
-		<h1><a href="<?php echo $this->baseurl ?>" title="<?php echo $config->getValue('config.sitename'); ?>"><?php echo $config->getValue('config.sitename'); ?></a></h1>
+		<div id="header-wrap">
+			<a name="header"></a>
+			<h1>
+				<a href="<?php echo $this->baseurl ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
+					<?php echo $config->getValue('config.sitename'); ?> 
+					<span id="tagline">powered by HUBzero&reg;</span>
+				</a>
+			</h1>
 		
-		<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
+			<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
 <?php
 if (!$juser->get('guest')) {
 	// Find the user's most recent support tickets
@@ -56,32 +78,27 @@ if (!$juser->get('guest')) {
 	$recipient = new Hubzero_Message_Recipient( $database );
 	$rows = $recipient->getUnreadMessages( $juser->get('id'), 0 );
 	
-	echo "\t\t\t".'<li id="logout"><a href="/logout"><span>Logout</span></a></li>'."\n";
-	echo "\t\t\t".'<li id="myaccount"><a href="/members/'.$juser->get('id').'"><span>My Account</span></a></li>'."\n";
-	echo "\t\t\t".'<li id="username"><a href="/members/'.$juser->get('id').'"><span>'.$juser->get('name').' ('.$juser->get('username').')</span></a></li>'."\n";
-	echo "\t\t\t".'<li id="usermessages"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox').'">'.count($rows).' New Message(s)</a></li>'."\n";
+	echo "\t\t\t\t".'<li id="logout"><a href="/logout"><span>Logout</span></a></li>'."\n";
+	echo "\t\t\t\t".'<li id="myaccount"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id')).'"><span>My Account</span></a></li>'."\n";
+	echo "\t\t\t\t".'<li id="username"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id')).'"><span>'.$juser->get('name').' ('.$juser->get('username').')</span></a></li>'."\n";
+	echo "\t\t\t\t".'<li id="usermessages"><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox').'">'.count($rows).' New Message(s)</a></li>'."\n";
 } else {
-	echo "\t\t\t".'<li id="login"><a href="/login" title="Login">Login</a></li>'."\n";
-	echo "\t\t\t".'<li id="register"><a href="/register" title="Sign up for a free account">Register</a></li>'."\n";
+	echo "\t\t\t\t".'<li id="login"><a href="/login" title="Login">Login</a></li>'."\n";
+	echo "\t\t\t\t".'<li id="register"><a href="/register" title="Sign up for a free account">Register</a></li>'."\n";
 }
 ?>
-		</ul>
+			</ul>
 		
-		<jdoc:include type="modules" name="search" />
-<?php if ($this->countModules( 'helppane' )) : ?>
-		<p id="tab"><a href="/support/" title="Need help? Send a trouble report to our support team."><span>Help!</span></a></p>
-<?php endif; ?>
+			<jdoc:include type="modules" name="search" />
+		</div><!-- / #header-wrap -->
 	</div><!-- / #header -->
 	
 	<div id="nav">
+		<a name="nav"></a>
 		<h2>Navigation</h2>
 		<jdoc:include type="modules" name="user3" />
-		<jdoc:include type="modules" name="introblock" />
 		<div class="clear"></div>
 	</div><!-- / #nav -->
-
-	<jdoc:include type="modules" name="helppane" />
-	<div id="afterclear">&nbsp;</div>
 
 <?php if ($this->countModules( 'banner or welcome' ) && $option == 'com_content') : ?>
 	<div id="home-splash">
@@ -99,6 +116,7 @@ if (!$juser->get('guest')) {
 <?php endif; ?>
 	</div><!-- / #home-splash -->
 <?php endif; ?>
+
 <?php if (!$this->countModules( 'banner or welcome' )) : ?>
 	<div id="trail">
 		You are here: <?php
@@ -122,48 +140,45 @@ if (!$juser->get('guest')) {
 	}
 	echo implode(' &rsaquo; ',$l);
 	?>
-	</div>
+	</div><!-- / #trail -->
 <?php endif; ?>
-  <div id="wrap">
-	<div id="content" class="<?php echo $option; ?>">
+
+	<div id="wrap">
+		<div id="content" class="<?php echo $option; ?>">
+			<div id="content-wrap">
+			<a name="content"></a>
 <?php if ($this->countModules( 'left' )) : ?>
-		<div class="main section withleft">
-		<div class="aside">
-			<jdoc:include type="modules" name="left" />
-		</div><!-- / #column-left -->
-		<div class="subject">
+				<div class="main section withleft">
+					<div class="aside">
+						<jdoc:include type="modules" name="left" />
+					</div><!-- / .aside -->
+					<div class="subject">
 <?php endif; ?>
 <?php if ($this->countModules('right')) : ?>
-		<div class="main section">
-		<div class="aside">
-			<jdoc:include type="modules" name="right" />
-		</div><!-- / .aside -->
-		<div class="subject">
+				<div class="main section">
+					<div class="aside">
+						<jdoc:include type="modules" name="right" />
+					</div><!-- / .aside -->
+					<div class="subject">
 <?php endif; ?>
-			<!-- innerwrap is used to fix some IE 6 display bugs -->
-			<div class="innerwrap<?php if ($this->countModules('banner or welcome')) : echo ' frontpage'; endif; ?>">
-				<?php if ($this->getBuffer('message')) : ?>
-                                <div class="info">
-                                        <!-- <h2>
-                                                <?php echo JText::_('Message'); ?>
-                                        </h2> -->
-                                        <jdoc:include type="message" />
-                                </div>
-                                <?php endif; ?>
-
+				<!-- Start component output -->
 				<jdoc:include type="component" />
-			</div><!-- / .innerwrap -->
+				<!-- End component output -->
 <?php if ($this->countModules('left or right')) : ?>
-		</div><!-- / .subject -->
-		<div class="clear"></div>
-		</div><!-- / .main section -->
+					</div><!-- / .subject -->
+					<div class="clear"></div>
+				</div><!-- / .main section -->
 <?php endif; ?>
-	</div><!-- / #content -->
+			</div><!-- / #content-wrap -->
+		</div><!-- / #content -->
+	</div><!-- / #wrap -->
 	
 	<div id="footer">
-	    <jdoc:include type="modules" name="footer" />
+		<a name="footer"></a>
+		<!-- Start footer modules output -->
+		<jdoc:include type="modules" name="footer" />
+		<!-- End footer modules output -->
 	</div><!-- / #footer -->
-  </div><!-- / #wrap -->
  </body>
 </html>
 <?php

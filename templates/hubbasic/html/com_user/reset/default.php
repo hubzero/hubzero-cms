@@ -11,7 +11,6 @@
 			<h3><?php echo JText::_('Email Verification Token'); ?></h3>
 			
 			<p><?php echo JText::_('RESET_PASSWORD_REQUEST_DESCRIPTION'); ?></p>			
-			
 			<label for="email" class="hasTip" title="<?php echo JText::_('RESET_PASSWORD_EMAIL_TIP_TITLE'); ?>::<?php echo JText::_('RESET_PASSWORD_EMAIL_TIP_TEXT'); ?>"><?php echo JText::_('Email Address'); ?>:</label>
 			<input id="email" name="email" type="text" class="required validate-email" size="25" />
 	

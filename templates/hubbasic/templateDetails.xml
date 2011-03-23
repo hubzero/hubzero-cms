@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
  All rights reserved.
 
  This program is free software; you can redistribute it and/or
@@ -20,165 +20,24 @@
 
 <install type="template" version="1.5">
 	<name>hubbasic</name>
-	<author>Zooley</author>
-	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<creationDate>03/11/11</creationDate>
+	<copyright>Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
-	<description>HUBbasic</description>
+	<authorEmail>zooley@purdue.edu</authorEmail>
+	<authorUrl>http://hubzero.org/</authorUrl>
+	<version>2.0</version>
+	<description>HUBbasic 2011</description>
 	<files>
-	<filename>html/com_groups/groups.css</filename>
-	<filename>images/icons/point.gif</filename>
-	<filename>html/com_kb/minus_small.gif</filename>
-	<filename>html/com_kb/plus_small.gif</filename>
-	<filename>html/com_citations/citations.css</filename>
-	<filename>html/com_events/calendar-next.png</filename>
-	<filename>html/com_events/calendar-previous.png</filename>
-	<filename>html/com_events/events.css</filename>
-	<filename>html/com_members/members.css</filename>
-	<filename>html/com_tags/tags.css</filename>
-	<filename>html/com_whatsnew/whatsnew.css</filename>
-	<filename>html/com_xpoll/xpoll.css</filename>
-	<filename>html/com_xsearch/xsearch.css</filename>
-	<filename>html/pagination.php</filename>
-	<filename>images/buttons/edit.png</filename>
-	<filename>images/icons/accept.gif</filename>
-	<filename>images/icons/16x16/asf.png</filename>
-	<filename>images/icons/16x16/asx.png</filename>
-	<filename>images/icons/16x16/avi.png</filename>
-	<filename>images/icons/16x16/chart.gif</filename>
-	<filename>images/icons/16x16/chart.png</filename>
-	<filename>images/icons/16x16/dmg.png</filename>
-	<filename>images/icons/16x16/doc.png</filename>
-	<filename>images/icons/16x16/feed-icon.gif</filename>
-	<filename>images/icons/16x16/folder.gif</filename>
-	<filename>images/icons/16x16/gif.png</filename>
-	<filename>images/icons/16x16/group.png</filename>
-	<filename>images/icons/16x16/html.png</filename>
-	<filename>images/icons/16x16/jpg.png</filename>
-	<filename>images/icons/16x16/mov.png</filename>
-	<filename>images/icons/16x16/page_check.gif</filename>
-	<filename>images/icons/16x16/page_check.png</filename>
-	<filename>images/icons/16x16/paperclip.gif</filename>
-	<filename>images/icons/16x16/paperclip.png</filename>
-	<filename>images/icons/16x16/pdf.png</filename>
-	<filename>images/icons/16x16/pencil.gif</filename>
-	<filename>images/icons/16x16/pencil.png</filename>
-	<filename>images/icons/16x16/podcast.gif</filename>
-	<filename>images/icons/16x16/podcast.png</filename>
-	<filename>images/icons/16x16/pps.png</filename>
-	<filename>images/icons/16x16/ppt.png</filename>
-	<filename>images/icons/16x16/profile.gif</filename>
-	<filename>images/icons/16x16/profile.png</filename>
-	<filename>images/icons/16x16/rar.png</filename>
-	<filename>images/icons/16x16/swf.png</filename>
-	<filename>images/icons/16x16/tiff.png</filename>
-	<filename>images/icons/16x16/trash.gif</filename>
-	<filename>images/icons/16x16/txt.png</filename>
-	<filename>images/icons/16x16/unknown.png</filename>
-	<filename>images/icons/16x16/vodcast.gif</filename>
-	<filename>images/icons/16x16/wmv.png</filename>
-	<filename>images/icons/16x16/xls.png</filename>
-	<filename>images/icons/16x16/zip.png</filename>
-	<filename>images/icons/cite.gif</filename>
-	<filename>images/icons/close.gif</filename>
-	<filename>images/icons/disconnect_dark.gif</filename>
-	<filename>images/icons/group.gif</filename>
-	<filename>images/icons/help.png</filename>
-	<filename>images/icons/lifepreserver.gif</filename>
-	<filename>images/icons/qanda.gif</filename>
-	<filename>images/icons/resource.gif</filename>
-	<filename>images/icons/stats.gif</filename>
-	<filename>images/icons/topic.gif</filename>
-	<filename>images/logos/yourhub.png</filename>
-	<filename>images/logos/closedsource.gif</filename>
-	<filename>images/logos/opensource.gif</filename>
-	<filename>images/bubble.png</filename>
-	<filename>images/nav-background-hover.gif</filename>
-	<filename>images/nav-background.gif</filename>
-	<filename>images/nav-shadow-bottom.png</filename>
-	<filename>images/nav-shadow-top.png</filename>
-	<filename>images/quoteopen.gif</filename>
-	<filename>images/tabs.gif</filename>
-	<filename>images/tabs_bg.gif</filename>
-	<filename>images/toolbar-bg-loggedin.gif</filename>
-	<filename>images/toolbar-bg-loggedin.png</filename>
-	<filename>images/toolbar-bg-loggedout.gif</filename>
-	<filename>images/toolbar-bg-loggedout.png</filename>
-	<filename>images/toolbar-button.gif</filename>
-	<filename>images/toolbar-button.png</filename>
-	<filename>images/useroptions-background.gif</filename>
-	<filename>images/whitearrow.png</filename>
 		<filename>index.php</filename>
 		<filename>template_thumbnail.png</filename>
-		<filename>images/icons/favorite.gif</filename>
-		<filename>images/bezel.png</filename>
-		<filename>images/smoke.png</filename>
-		<filename>images/closelabel.gif</filename>
-		<filename>images/nextlabel.gif</filename>
-		<filename>images/prevlabel.gif</filename>
-		<filename>images/background.gif</filename>
-		<filename>images/ranking_bar_base.gif</filename>
-		<filename>images/ranking_bar.gif</filename>
-		<filename>images/ranking_popup.gif</filename>
-		<filename>images/ranking_popup.png</filename>
-		<filename>images/overlay.png</filename>
-		<filename>images/tagbrowser/arrowhi.gif</filename>
-		<filename>images/tagbrowser/arrowoff.gif</filename>
-		<filename>images/tagbrowser/arrowon.gif</filename>
-		<filename>images/balloon_bot.png</filename>
-		<filename>images/balloon_mid.png</filename>
-		<filename>images/balloon_top.png</filename>
-		<filename>images/anim/circling-ball-black.gif</filename>
 		<filename>images/anim/circling-ball-loading.gif</filename>
-		<filename>images/anim/circling-ball.gif</filename>
-		<filename>images/anim/progressbar.gif</filename>
-		<filename>images/applesearch/srch_l.png</filename>
-		<filename>images/applesearch/srch_r_x.png</filename>
-		<filename>images/applesearch/srch_r.png</filename>
-		<filename>images/applesearch/srch_bg.gif</filename>
-		<filename>images/bullets/bullet_yellow.gif</filename>
-		<filename>images/bullets/newspaper.gif</filename>
-		<filename>images/bullets/new.gif</filename>
+		<filename>images/anim/spinner.gif</filename>
 		<filename>images/bullets/arrow.gif</filename>
-		<filename>images/bullets/bullet.png</filename>
-		<filename>images/buttons/primary.gif</filename>
-		<filename>images/buttons/submit.gif</filename>
-		<filename>images/buttons/x.gif</filename>
-		<filename>images/buttons/btn_discard.gif</filename>
-		<filename>images/buttons/btn_review.gif</filename>
-		<filename>images/buttons/no.gif</filename>
-		<filename>images/buttons/yes.gif</filename>
-		<filename>images/icons/error.gif</filename>
-		<filename>images/icons/help.gif</filename>
-		<filename>images/icons/warning.gif</filename>
-		<filename>images/icons/user_edit.gif</filename>
-		<filename>images/icons/lock.gif</filename>
-		<filename>images/icons/lock_open.gif</filename>
+		<filename>images/icons/accept.gif</filename>
+		<filename>images/icons/arrowpointer.gif</filename>
 		<filename>images/icons/citation.gif</filename>
-		<filename>images/icons/feed.png</filename>
-		<filename>images/icons/information.png</filename>
-		<filename>images/icons/add.png</filename>
-		<filename>images/logos/creativecommons.gif</filename>
-		<filename>images/stars/stars_hover.gif</filename>
-		<filename>images/stars/stars.gif</filename>
-		<filename>images/stars/1.gif</filename>
-		<filename>images/stars/2.gif</filename>
-		<filename>images/stars/3.gif</filename>
-		<filename>images/stars/4.gif</filename>
-		<filename>images/stars/5.gif</filename>
-		<filename>images/buttons/order_down.gif</filename>
-		<filename>images/buttons/order_up.gif</filename>
-		<filename>images/demopage/arrow.gif</filename>
-		<filename>images/demopage/balloon_bot_rotated.png</filename>
-		<filename>images/demopage/icon_i.gif</filename>
-		<filename>images/demopage/num1.gif</filename>
-		<filename>images/demopage/num2.gif</filename>
-		<filename>images/demopage/num3.gif</filename>
-		<filename>images/demopage/num4.gif</filename>
-		<filename>images/demopage/num5.gif</filename>
-		<filename>images/demopage/start.gif</filename>
-		<filename>images/demopage/top_presentations.jpg</filename>
-		<filename>images/demopage/top_publications.jpg</filename>
-		<filename>images/hubzero-logo.png</filename>
+		<filename>images/icons/cite.gif</filename>
+		<filename>images/icons/error.gif</filename>
 		<filename>images/icons/fc-animation.gif</filename>
 		<filename>images/icons/fc-arrow.gif</filename>
 		<filename>images/icons/fc-contact.gif</filename>
@@ -194,6 +53,7 @@
 		<filename>images/icons/fc-poll.gif</filename>
 		<filename>images/icons/fc-presentation.gif</filename>
 		<filename>images/icons/fc-publication.gif</filename>
+		<filename>images/icons/fc-search.gif</filename>
 		<filename>images/icons/fc-series.gif</filename>
 		<filename>images/icons/fc-tag.gif</filename>
 		<filename>images/icons/fc-teachingmaterial.gif</filename>
@@ -201,48 +61,81 @@
 		<filename>images/icons/fc-webmeetings.gif</filename>
 		<filename>images/icons/fc-wiki.gif</filename>
 		<filename>images/icons/fc-workshop.gif</filename>
-		<filename>images/alert-large.gif</filename>
-		<filename>images/answers-large.gif</filename>
-		<filename>images/help-large.gif</filename>
+		<filename>images/icons/help.gif</filename>
+		<filename>images/icons/lock_open.gif</filename>
+		<filename>images/icons/lock.gif</filename>
+		<filename>images/icons/point.gif</filename>
+		<filename>images/icons/qanda.gif</filename>
+		<filename>images/icons/resource.gif</filename>
+		<filename>images/icons/stats.gif</filename>
+		<filename>images/icons/topic.gif</filename>
+		<filename>images/icons/user_edit.gif</filename>
+		<filename>images/icons/warning.gif</filename>
+		<filename>images/icons/add.png</filename>
+		<filename>images/icons/feed.png</filename>
+		<filename>images/icons/help.png</filename>
+		<filename>images/icons/information.png</filename>
+		<filename>images/layout/body_bg.gif</filename>
+		<filename>images/layout/nav_bg_hover.gif</filename>
+		<filename>images/layout/nav_bg.gif</filename>
+		<filename>images/layout/nav_dropdown_bg.gif</filename>
+		<filename>images/layout/nav_seperator.gif</filename>
+		<filename>images/layout/toolbar_bg.gif</filename>
+		<filename>images/layout/trail_bg.gif</filename>
+		<filename>images/layout/header_bg.gif</filename>
+		<filename>images/layout/toolbar_button.png</filename>
+		<filename>images/layout/wrap_bg.png</filename>
+		<filename>images/lightbox/closelabel.gif</filename>
+		<filename>images/lightbox/grey-fade.gif</filename>
+		<filename>images/lightbox/nextlabel.gif</filename>
+		<filename>images/lightbox/prevlabel.gif</filename>
+		<filename>images/lightbox/close.png</filename>
+		<filename>images/lightbox/closebox.png</filename>
+		<filename>images/lightbox/newwindowbox.png</filename>
+		<filename>images/lightbox/refreshbox.png</filename>
+		<filename>images/lightbox/resizebox.png</filename>
+		<filename>images/logos/creativecommons.gif</filename>
+		<filename>images/logos/hubzero.png</filename>
+		<filename>images/stars/1.gif</filename>
+		<filename>images/stars/2.gif</filename>
+		<filename>images/stars/3.gif</filename>
+		<filename>images/stars/4.gif</filename>
+		<filename>images/stars/5.gif</filename>
+		<filename>images/stars/stars_hover.gif</filename>
+		<filename>images/stars/stars.gif</filename>
+		<filename>images/quoteopen.gif</filename>
+		<filename>images/tabs_bg.gif</filename>
+		<filename>images/tabs.gif</filename>
+		<filename>images/bezel.png</filename>
+		<filename>images/bubble.png</filename>
+		<filename>images/help.png</filename>
+		<filename>images/hubzero-logo.png</filename>
+		<filename>images/search.png</filename>
+		<filename>images/skip_to_content.png</filename>
+		<filename>images/skip_to_top.png</filename>
+		<filename>images/smoke.png</filename>
 		<filename>css/reset.css</filename>
 		<filename>css/main.css</filename>
-		<filename>css/ie6win.css</filename>
-		<filename>css/ie7win.css</filename>
-		<filename>css/applesearch.css</filename>
-		<filename>css/dummy.css</filename>
-		<filename>css/tagbrowser.css</filename>
+		<filename>css/ie8.css</filename>
+		<filename>css/ie7.css</filename>
+		<filename>css/error.css</filename>
+		<filename>css/home.css</filename>
 		<filename>css/print.css</filename>
-		<filename>css/howtocontribute.css</filename>
-		<filename>html/com_kb/kb.css</filename>
-		<filename>html/com_myhub/myhub.css</filename>
-	     <filename>html/com_myhub/x.gif</filename>
-		<filename>html/mod_xflash/images/noflash.jpg</filename>
-		<filename>html/mod_xflash/images/flashrotation.swf</filename>
-	<filename>html/com_resources/abuse.gif</filename>
-	<filename>html/com_resources/arrowhi.gif</filename>
-	<filename>html/com_resources/arrowoff.gif</filename>
-	<filename>html/com_resources/arrowon.gif</filename>
-	<filename>html/com_resources/cite.gif</filename>
-	<filename>html/com_resources/resources.css</filename>
-		<filename>js/balloons.js</filename>
-		<filename>js/applesearch.js</filename>
+		<filename>html/com_content/article/default.php</filename>
+		<filename>html/com_content/article/form.php</filename>
+		<filename>html/mod_events_cal/mod_events_cal.css</filename>
+		<filename>html/pagination.php</filename>
 		<filename>js/globals.js</filename>
-		<filename>js/slimbox.js</filename>
-		<filename>js/hub.js</filename>
-		<filename>js/insertflash.js</filename>
-		<filename>js/tagbrowser.js</filename>
-		<filename>js/troublereport.js</filename>
 		<filename>js/growl.js</filename>
+		<filename>js/hub.js</filename>
 		<filename>js/modal.js</filename>
+		<filename>js/slimbox.js</filename>
 		<filename>js/tooltips.js</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.tpl_hubbasic.ini</language>
 	</languages>
 	<administration>
-		<languages folder="admin">
-			<language tag="en-GB">en-GB.tpl_hubbasic.ini</language>
-		</languages>
 	</administration>
 	<positions>
 		<position>footer</position>
@@ -252,7 +145,6 @@
 		<position>right</position>
 		<position>helppane</position>
 		<position>user3</position>
-		<position>introblock</position>
 		<position>notices</position>
 		<position>search</position>
 	</positions>
