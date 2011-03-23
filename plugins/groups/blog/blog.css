@@ -39,9 +39,12 @@
 .group_blog .below .subject {
 	background:transparent;
 	border:none;
-}
-
-	/* Entries search */
+	}
+.group_blog .section {
+	padding:0;
+	}
+	
+/* Entries search */
 .group_blog .data-entry {
 	margin:0 0 1em 0;
 	border-color: #eef0e7; /*#F5F7F2;*/
