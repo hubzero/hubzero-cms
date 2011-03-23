@@ -31,7 +31,7 @@ ximport('Hubzero_Group_InviteEmail');
 
 class GroupsController extends Hubzero_Controller
 {
-	var $notifications = array();
+	//var $notifications = array();
 	
 	public function execute()
 	{
@@ -92,30 +92,41 @@ class GroupsController extends Hubzero_Controller
 			case 'browse': 			$this->browse();  			break;
 			case 'login':   		$this->login();   			break;
 			case 'intro':			$this->intro();   			break;
+			case 'features':		$this->features();			break;
 			default: 				$this->intro(); 			break;
 		}
 	}
 	
 	//------
 	
-	function setNotification( $type, $message ) 
+	function setNotification( $message, $type ) 
 	{
+		//get the app
+		$app =& JFactory::getApplication();
+		
 		//if type is not set, set to error message
 		$type = ($type == '') ? 'error' : $type;
 		
 		//if message is set push to notifications
 		if($message != '') {
-			$notification = "<p class=\"{$type}\">{$message}</p>";
-			array_push($this->notifications, $notification);
+			$app->enqueueMessage($message, $type);
 		}
-		
 	}
 	
 	//------
 	
 	function getNotifications() 
 	{
-		return $this->notifications;
+		//get the app
+		$app =& JFactory::getApplication();
+		
+		//getmessages in quene 
+		$messages = $app->getMessageQueue();
+		
+		//if we have any messages return them
+		if($messages) {
+			return $messages;
+		}
 	}
 	
 	//------
@@ -266,7 +277,7 @@ class GroupsController extends Hubzero_Controller
 		$this->_buildPathway();
 		
 		//set an error
-		$this->setNotification('error', JText::_('GROUPS_NOT_CONFIGURED') );
+		$this->setNotification( JText::_('GROUPS_NOT_CONFIGURED'), 'error' );
 		
 		// Output HTML
 		$view = new JView( array('name'=>'error') );
@@ -376,6 +387,29 @@ class GroupsController extends Hubzero_Controller
 		$this->_buildPathway();
 
 		// Output HTML
+		$view->title = $this->_title;
+		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+		$view->display();
+	}
+	
+	//-----------
+	
+	protected function features() 
+	{
+		//build the title
+		$this->_buildTitle();
+		
+		//build pathway
+		$this->_buildPathway();
+		
+		// Push some needed styles to the template
+		$this->_getGroupStyles();
+		
+		// Push some needed scripts to the template
+		$this->_getGroupScripts();
+		
+		// Output HTML
+		$view = new JView( array('name'=>'newfeatures') );
 		$view->title = $this->_title;
 		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$view->display();
@@ -659,7 +693,7 @@ class GroupsController extends Hubzero_Controller
 		$group->remove('applicants',$this->juser->get('id'));
 		$group->remove('invitees',$this->juser->get('id'));
 		if ($group->update() === false) {
-			$this->setError( JText::_('GROUPS_ERROR_CANCEL_MEMBERSHIP_FAILED') );
+			$this->setNotification( JText::_('GROUPS_ERROR_CANCEL_MEMBERSHIP_FAILED'), 'error' );
 		}
 		
 		// Log the membership cancellation
@@ -670,12 +704,12 @@ class GroupsController extends Hubzero_Controller
 		$log->action = 'membership_cancelled';
 		$log->actorid = $this->juser->get('id');
 		if (!$log->store()) {
-			$this->setError( $log->getError() );
+			$this->setNotification( $log->getError(), 'error' );
 		}
 		
 		// Remove record of reason wanting to join group
 		$reason = new GroupsReason( $this->database );
-		$reason->deleteReason( $this->juser->get('username'), $group->get('cn') );
+		$reason->deleteReason( $this->juser->get('id'), $group->get('gidNumber') );
 
 		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
@@ -1071,10 +1105,10 @@ class GroupsController extends Hubzero_Controller
 
 		// Check for any missing info
 		if (!$g_cn) {
-			$this->setNotification( 'error', JText::_('GROUPS_ERROR_MISSING_INFORMATION').': '.JText::_('GROUPS_ID') );
+			$this->setNotification( JText::_('GROUPS_ERROR_MISSING_INFORMATION').': '.JText::_('GROUPS_ID'), 'error' );
 		}
 		if (!$g_description) {
-			$this->setNotification( 'error', JText::_('GROUPS_ERROR_MISSING_INFORMATION').': '.JText::_('GROUPS_TITLE') );
+			$this->setNotification( JText::_('GROUPS_ERROR_MISSING_INFORMATION').': '.JText::_('GROUPS_TITLE'), 'error' );
 		}
 		
 		// Push back into edit mode if any errors
@@ -1099,13 +1133,13 @@ class GroupsController extends Hubzero_Controller
 		
 		// Ensure the data passed is valid
 		if ($g_cn == 'new' || $g_cn == 'browse') {
-			$this->setNotification( 'error', JText::_('GROUPS_ERROR_INVALID_ID') );
+			$this->setNotification( JText::_('GROUPS_ERROR_INVALID_ID'), 'error' );
 		}
 		if (!$this->_validCn($g_cn)) {
-			$this->setNotification( 'error', JText::_('GROUPS_ERROR_INVALID_ID') );
+			$this->setNotification( JText::_('GROUPS_ERROR_INVALID_ID'), 'error' );
 		}
 		if ($isNew && Hubzero_Group::exists($g_cn)) {
-			$this->setNotification( 'error', JText::_('GROUPS_ERROR_GROUP_ALREADY_EXIST') );
+			$this->setNotification( JText::_('GROUPS_ERROR_GROUP_ALREADY_EXIST'), 'error' );
 		}
 		
 		// Push back into edit mode if any errors
@@ -1229,7 +1263,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		if (!$log->store()) {
-			$this->setNotification( 'error', $log->getError() );
+			$this->setNotification( $log->getError(), 'error' );
 		}
 		
 		// Get the administrator e-mail
@@ -1244,7 +1278,7 @@ class GroupsController extends Hubzero_Controller
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger( 'onSendMessage', array( $type, $subject, $message, $from, $group->get('managers'), $this->_option ))) {
-			$this->setNotification( 'error', JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') );
+			$this->setNotification( JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED'), 'error' );
 		}
 		
 		if ($this->getNotifications()) {
@@ -1253,6 +1287,13 @@ class GroupsController extends Hubzero_Controller
 			$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 			$view->display();
 			return;
+		}
+		
+		//show success message to user
+		if ($isNew) {
+			$this->setNotification( "You have successfully created the \"{$group->get('description')}\" group" , 'passed' );
+		} else {
+			$this->setNotification( "You have successfully updated the \"{$group->get('description')}\" group" , 'passed' );	
 		}
 		
 		// Redirect back to the group page
@@ -1319,7 +1360,7 @@ class GroupsController extends Hubzero_Controller
 		// Did they confirm delete?
 		if (!$process || !$confirmdel) {
 			if ($process && !$confirmdel) {
-				$this->setNotification( 'error', JText::_('GROUPS_ERROR_CONFIRM_DELETION') );
+				$this->setNotification( JText::_('GROUPS_ERROR_CONFIRM_DELETION'), 'error' );
 			}
 			
 			$log = JText::sprintf('GROUPS_MEMBERS_LOG',count($members));
@@ -1387,7 +1428,7 @@ class GroupsController extends Hubzero_Controller
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
 			if (!JFolder::delete($path)) {
-				$this->setError( JText::_('UNABLE_TO_DELETE_DIRECTORY') );
+				$this->setNotification( JText::_('UNABLE_TO_DELETE_DIRECTORY'), 'error' );
 			}
 		}
 		
@@ -1403,7 +1444,7 @@ class GroupsController extends Hubzero_Controller
 			$view = new JView( array('name'=>'error') );
 			$view->title = $title;
 			if ($group->error) {
-				$this->setNotification( 'error', $group->error );
+				$this->setNotification( $group->error, 'error' );
 			}
 			$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 			$view->display();
@@ -1439,7 +1480,7 @@ class GroupsController extends Hubzero_Controller
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_deleted', $subject, $message, $from, $members, $this->_option ))) {
-			$this->setError( JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED') );
+			$this->setNotification( JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'), 'error' );
 		}
 		
 		// Log the deletion
@@ -1451,10 +1492,11 @@ class GroupsController extends Hubzero_Controller
 		$xlog->comments = $log;
 		$xlog->actorid = $this->juser->get('id');
 		if (!$xlog->store()) {
-			$this->setError( $xlog->getError() );
+			$this->setNotification( $xlog->getError(), 'error' );
 		}
 								
 		// Redirect back to the groups page
+		$this->setNotification( "You successfully deleted the \"{$deletedgroup->get('description')}\" group", 'passed' );
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 	}
 
@@ -1588,7 +1630,7 @@ class GroupsController extends Hubzero_Controller
 		// Did they confirm delete?
 		if (!$process || !$logins) {
 			if ($process && !$logins) {
-				$this->setNotification( 'error', JText::_('GROUPS_ERROR_PROVIDE_LOGINS') );
+				$this->setNotification( JText::_('GROUPS_ERROR_PROVIDE_LOGINS'), 'error' );
 			}
 			
 			//build the page title
@@ -1673,7 +1715,7 @@ class GroupsController extends Hubzero_Controller
 					$this->database->setQuery("SELECT u.id FROM #__users AS u WHERE u.email='". $l ."' OR u.email LIKE '".$l."\'%' LIMIT 1;");
 					$uid = $this->database->loadResult();
 					if (!$this->database->query()) {
-						$this->setNotification( 'error', $this->database->getErrorMsg() );
+						$this->setNotification( $this->database->getErrorMsg(), 'error' );
 					}
 
 					// If we found an ID, add it to the invitees list
@@ -1729,7 +1771,7 @@ class GroupsController extends Hubzero_Controller
 				$log->action = 'membership_invites_sent';
 				$log->actorid = $this->juser->get('id');
 				if (!$log->store()) {
-					$this->setNotification( 'error', $log->getError() );
+					$this->setNotification( $log->getError(), 'error' );
 				}
 			}
 		}
@@ -1745,7 +1787,7 @@ class GroupsController extends Hubzero_Controller
 				$log->action = 'membership_email_sent';
 				$log->actorid = $this->juser->get('id');
 				if (!$log->store()) {
-					$this->setNotification( 'error', $log->getError() );
+					$this->setNotification( $log->getError(), 'error' );
 				}
 			}
 		}
@@ -1790,7 +1832,7 @@ class GroupsController extends Hubzero_Controller
 			
 			// Send the e-mail
 			if (!$this->email($mbr[0], $jconfig->getValue('config.sitename').' '.$subject, $message2, $from)) {
-				$this->setNotification( 'error', JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED').' '.$mbr[0] );
+				$this->setNotification( JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED').' '.$mbr[0], 'error' );
 			}
 		}
 		
@@ -1798,7 +1840,7 @@ class GroupsController extends Hubzero_Controller
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger( 'onSendMessage', array( 'groups_invite', $subject, $message, $from, $invitees, $this->_option ))) {
-			$this->setNotification( 'error', JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED') );
+			$this->setNotification( JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED'), 'error' );
 		}
 		
 		// Do we need to redirect?
@@ -1841,12 +1883,12 @@ class GroupsController extends Hubzero_Controller
 			}
 		}
 		
-		$this->setNotification('passed', $success_message);
-		$this->setNotification('error', $error_message);
+		//push some notifications to the view
+		$this->setNotification( $success_message, 'passed' );
+		$this->setNotification( $error_message, 'error');
 		
-		// Push through to the group page
-		$this->_task = 'view';
-		$this->view();
+		//redirect back to view group
+		$this->_redirect = JRoute::_("index.php?option=".$this->_option."&gid=".$group->get('cn'));
 	}
 
 	//----------------------------------------------------------
@@ -1885,6 +1927,9 @@ class GroupsController extends Hubzero_Controller
 		
 		//path to group assets
 		$asset_path = JPATH_ROOT . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
+		
+		//declare an empty array to hold logo paths
+		$logo_fullpaths = array();
 		
 		//if path is a directory then load images
 		if(is_dir($asset_path)) {
@@ -2000,7 +2045,7 @@ class GroupsController extends Hubzero_Controller
 		$group->update();
 		
 		if($group->error) {
-			$this->setNofiction('error',$group->error);
+			$this->setNotification( $group->error, 'error');
 		}
 		
 		// Log the group save
@@ -2012,8 +2057,11 @@ class GroupsController extends Hubzero_Controller
 		$log->action = 'group_customized';
 		
 		if (!$log->store()) {
-			$this->setNotification( 'error', $log->getError() );
+			$this->setNotification( $log->getError(), 'error' );
 		}
+		
+		//push a success message
+		$this->setNotification("You have successfully customized the \"{$group->get('description')}\" group.", 'passed');
 		
 		// Redirect back to the group page
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&gid='.$group->get('cn'));
@@ -2091,7 +2139,10 @@ class GroupsController extends Hubzero_Controller
 		$page_id = JRequest::getVar('page');
 		$module_id = JRequest::getVar('module');
 		
-		$sub_task = ($this->sub_task == 'nothing') ? '' : $sub_task;
+		//$sub_task = ($this->sub_task == 'nothing') ? '' : $sub_task;
+		
+		//set the grou for changing state
+		$this->_group = $group;
 		
 		//perform task based on sub task
 		switch($sub_task)
@@ -2150,7 +2201,6 @@ class GroupsController extends Hubzero_Controller
 		
 		//get the highest module order
 		$high_order_modules = $GModule->getHighestModuleOrder($group->get('gidNumber'));
-		
 		
 		// Output HTML
 		$view = new JView( array('name'=>'customize', 'layout'=>'managepages') );
@@ -2228,19 +2278,25 @@ class GroupsController extends Hubzero_Controller
 			return;
 		}
 		
+		//get the page vars being posted
 		$page = JRequest::getVar('page','','post');
 		
+		//check if the page title is set
 		if($page['title'] == '') {
-			$this->setNotification('error','You must enter a page title.');
+			$this->setNotification('You must enter a page title.','error');
 			$this->page = $page;
 			$this->editPage($group);
 			return;
 		}
 		
-
+		//default task
+		$task = 'update';
+		
+		//instantiate db and group page objects
 		$db =& JFactory::getDBO();
 		$GPage = new GroupPages($db);
 		
+		//if new page we must create extra vars
 		if($page['new']) {
 			$high = $GPage->getHighestPageOrder($group->get('gidNumber'));
 		
@@ -2252,16 +2308,23 @@ class GroupsController extends Hubzero_Controller
 			$page['url'] = str_replace("'","",$page['url']);
 			$page['url'] = str_replace('"','',$page['url']);
 			$page['url'] = str_replace($invalid_chrs,"",$page['url']);
+			$task = 'create';
+			 
+			//get the group pages
+			$pages = $GPage->getPages($group->get('gidNumber'));
+			
+			//get unique page name
+			$page['url'] = $this->uniquePageURL($page['url'],$pages);
 		}
 		
-		
+		//save the page
 		if(!$GPage->save($page)) {
-			$this->setNotification('error','An error occurred while trying to save the page.');
+			$this->setNotification("An error occurred while trying to {$task} the page.", 'error');
 		}
 		
-		$this->sub_task = 'nothing';
-		$this->setNotification('passed','You have successfully saved the group page.');
-		$this->managePages();
+		//push success message and redirect
+		$this->setNotification( "You have successfully {$task}d the page.", 'passed');
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&gid='.$group->get('cn').'&task=managepages');
 	}
 	
 	//-----
@@ -2288,27 +2351,29 @@ class GroupsController extends Hubzero_Controller
 			$module['content'] = $GModule->content;
 			$module['morder'] = $GModule->morder;
 			$module['active'] = $GModule->active;
+		} else {
+			$all_mod_details = array();
+			$path = JPATH_COMPONENT . DS . 'modules' . DS;
+			$module_types = JFolder::files($path);
+
+			foreach($module_types as $type) {
+				include_once($path . $type);
+				$name = explode('.',$type);
+
+				$class_name = ucfirst($name[0]).'Module';
+
+				$mod = new $class_name($group);
+				$all_mod_details[$name[0]] = $mod->onManageModules();
+			}
+			
+			$view->all_mod_details = $all_mod_details;
 		}
 		
-		$all_mod_details = array();
-		$path = JPATH_COMPONENT . DS . 'modules' . DS;
-		$module_types = JFolder::files($path);
-		
-		foreach($module_types as $type) {
-			include_once($path . $type);
-			$name = explode('.',$type);
-			
-			$class_name = ucfirst($name[0]).'Module';
-			
-			$mod = new $class_name($group);
-			$all_mod_details[$name[0]] = $mod->onManageModules();
-		}
 		
 		if($this->module) {
 			$module = $this->module;
 		}
 		
-		$view->all_mod_details = $all_mod_details;
 		$view->module = $module;
 		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$view->display();
@@ -2333,11 +2398,15 @@ class GroupsController extends Hubzero_Controller
 			return;
 		}
 		
+		//get the post module vars
 		$module = JRequest::getVar('module');
 		
+		//instantiate database and group module objects
 		$db =& JFactory::getDBO();
 		$GModule = new GroupModules($db);
 		
+		//default task
+		$task = 'update';
 		
 		if($module['new']) {
 			$high = $GModule->getHighestModuleOrder($group->get('gidNumber'));
@@ -2346,35 +2415,42 @@ class GroupsController extends Hubzero_Controller
 			$module['active'] = 1;
 			$module['morder'] = ($high + 1);
 			$module['content'] = $module['content'];
+			
+			$task = 'create';
 		}
 	
 		if(!$GModule->save($module)) {
-			$this->setNotification('error','An error occurred while trying to save the module.');
+			$this->setNotification( "An error occurred while trying to {$task} the module.", 'error');
 		}
 			
-		$this->sub_task = 'nothing';
-		$this->setNotification('passed','You have successfully saved the group module.');
-		$this->managePages();
+		$this->setNotification( "You have successfully {$task}d the group module.", 'passed');
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&gid='.$group->get('cn').'&task=managepages');
 	}
 	
 	//-----
 	
 	protected function change_state( $type, $status, $id )
 	{
+		//based on passed in status either activate or deactivate
 		if($status == 'deactivate') {
 			$active = 0;
 		} else {
 			$active = 1;
 		}
 		
+		//create and set query
 		$sql = "UPDATE #__xgroups_".$type."s SET active='".$active."' WHERE id='".$id."'";
 		$this->database->setQuery($sql);
 		
+		//run query and set message
 		if(!$this->database->Query()) {
-			$this->setNotification('error','An error occurred while trying to '.$status.' the '.$type.'. Please try again');
+			$this->setNotification('An error occurred while trying to '.$status.' the '.$type.'. Please try again', 'error');
 		} else {
-			$this->setNotification('passed','The '.$type.' was successfully '.$status.'d.');
+			$this->setNotification('The '.$type.' was successfully '.$status.'d.','passed');
 		}
+		
+		//redirect back to manage pages area
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&gid='.$this->_group->get('cn').'&task=managepages');
 	}
 	
 	//-----
@@ -2410,7 +2486,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		//check to see if another object holds the order we are trying to move to
-		$sql = "SELECT *  FROM #__xgroups_".$type."s WHERE $order_field='".$new_order."'";
+		$sql = "SELECT *  FROM #__xgroups_".$type."s WHERE $order_field='".$new_order."' AND gid='".$this->_group->get('gidNumber')."'";
 		$this->database->setQuery($sql);
 		$new = $this->database->loadAssoc();
 	
@@ -2420,9 +2496,9 @@ class GroupsController extends Hubzero_Controller
 			$this->database->setQuery($sql);
 
 			if(!$this->database->Query()) {
-				$this->setNotification('error','An error occurred while trying to reorder the '.$type.'. Please try again');
+				$this->setNotification( 'An error occurred while trying to reorder the '.$type.'. Please try again', 'error');
 			} else {
-				$this->setNotification('passed','The '.$type.' was successfully reordered.');
+				$this->setNotification( 'The '.$type.' was successfully reordered.', 'passed');
 			}
 		} else {
 			//otherwise basically switch the two objects orders
@@ -2434,13 +2510,51 @@ class GroupsController extends Hubzero_Controller
 			$this->database->setQuery($sql);
 
 			if(!$this->database->Query()) {
-				$this->setNotification('error','An error occurred while trying to reorder the '.$type.'. Please try again');
+				$this->setNotification( 'An error occurred while trying to reorder the '.$type.'. Please try again','error' );
 			} else {
-				$this->setNotification('passed','The '.$type.' was successfully reordered.');
+				$this->setNotification( 'The '.$type.' was successfully reordered.', 'passed');
 			}
 		}
+		
+		//redirect back to manage pages area
+		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&gid='.$this->_group->get('cn').'&task=managepages');
 	}
 	
+	//-----
+	
+	private function uniquePageURL( $current_url, $group_pages )
+	{
+		//get the page urls
+		$page_urls = array_keys($group_pages);
+		
+		//check if current url is already taken
+		//otherwise return current url
+		if(in_array($current_url,$page_urls)) {
+			//split up the current url
+			$url_parts = explode("_", $current_url);
+			
+			//get the last part of the split url
+			$num = end($url_parts);
+
+			//if last part is numeric we need to remove that part from array and increment number then append back on end of url
+			//else append a number to the end of the url
+			if(is_numeric($num)) {
+				$num++;
+				$oldNum = array_pop($url_parts);
+				$url  = implode("_",$url_parts);
+				$url .= "_{$num}";
+			} else {
+				$count = 1;
+				$url  = implode("_",$url_parts);
+				$url .= "_{$count}";
+			}
+
+			//run the function again to see if we now have a unique url
+			return $this->uniquePageURL( $url, $group_pages );
+		} else {
+			return $current_url;
+		}
+	}
 
 	//----------------------------------------------------------
 	// media manager
@@ -2462,7 +2576,7 @@ class GroupsController extends Hubzero_Controller
 
 		// Ensure we have an ID to work with
 		if (!$listdir) {
-			$this->setError( JText::_('GROUPS_NO_ID') );
+			$this->setNotification( JText::_('GROUPS_NO_ID'), 'error' );
 			$this->media();
 			return;
 		}
@@ -2470,7 +2584,7 @@ class GroupsController extends Hubzero_Controller
 		// Incoming file
 		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
 		if (!$file['name']) {
-			$this->setError( JText::_('GROUPS_NO_FILE') );
+			$this->setNotification( JText::_('GROUPS_NO_FILE'), 'error' );
 			$this->media();
 			return;
 		}
@@ -2485,7 +2599,7 @@ class GroupsController extends Hubzero_Controller
 		if (!is_dir( $path )) {
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create( $path, 0777 )) {
-				$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
+				$this->setNotification( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'), 'error' );
 				$this->media();
 				return;
 			}
@@ -2498,8 +2612,11 @@ class GroupsController extends Hubzero_Controller
 
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) {
-			$this->setError( JText::_('ERROR_UPLOADING') );
+			$this->setNotification( JText::_('ERROR_UPLOADING'), 'error' );
 		}
+		
+		//push a success message
+		$this->setNotification('You successfully uploaded the file.', 'passed');
 		
 		// Push through to the media view
 		$this->media();
@@ -2521,7 +2638,7 @@ class GroupsController extends Hubzero_Controller
 		// Incoming group ID
 		$listdir = JRequest::getInt( 'listdir', 0, 'get' );
 		if (!$listdir) {
-			$this->setError( JText::_('GROUPS_NO_ID') );
+			$this->setNotification( JText::_('GROUPS_NO_ID'), 'error' );
 			$this->media();
 			return;
 		}
@@ -2529,7 +2646,7 @@ class GroupsController extends Hubzero_Controller
 		// Incoming file
 		$file = trim(JRequest::getVar( 'folder', '', 'get' ));
 		if (!$file) {
-			$this->setError( JText::_('GROUPS_NO_DIRECTORY') );
+			$this->setNotification( JText::_('GROUPS_NO_DIRECTORY'), 'error' );
 			$this->media();
 			return;
 		}
@@ -2539,9 +2656,12 @@ class GroupsController extends Hubzero_Controller
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
 			if (!JFolder::delete($del_folder)) {
-				$this->setError( JText::_('UNABLE_TO_DELETE_DIRECTORY') );
+				$this->setNotification( JText::_('UNABLE_TO_DELETE_DIRECTORY'), 'error' );
 			}
 		}
+		
+		//push a success message
+		$this->setNotification('You successfully deleted the folder.', 'passed');
 		
 		// Push through to the media view
 		$this->media();
@@ -2563,7 +2683,7 @@ class GroupsController extends Hubzero_Controller
 		// Incoming group ID
 		$listdir = JRequest::getInt( 'listdir', 0, 'get' );
 		if (!$listdir) {
-			$this->setError( JText::_('GROUPS_NO_ID') );
+			$this->setNotification( JText::_('GROUPS_NO_ID'), 'error' );
 			$this->media();
 			return;
 		}
@@ -2571,7 +2691,7 @@ class GroupsController extends Hubzero_Controller
 		// Incoming file
 		$file = trim(JRequest::getVar( 'file', '', 'get' ));
 		if (!$file) {
-			$this->setError( JText::_('GROUPS_NO_FILE') );
+			$this->setNotification( JText::_('GROUPS_NO_FILE'), 'error' );
 			$this->media();
 			return;
 		}
@@ -2584,16 +2704,19 @@ class GroupsController extends Hubzero_Controller
 		$path .= $config->get('uploadpath').DS.$listdir;
 
 		if (!file_exists($path.DS.$file) or !$file) { 
-			$this->setError( JText::_('FILE_NOT_FOUND') );
+			$this->setNotification( JText::_('FILE_NOT_FOUND'), 'error' );
 			$this->media();
 			return;
 		} else {
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path.DS.$file)) {
-				$this->setError( JText::_('UNABLE_TO_DELETE_FILE') );
+				$this->setNotification( JText::_('UNABLE_TO_DELETE_FILE'), 'error' );
 			}
 		}
+		
+		//push a success message
+		$this->setNotification( 'The file was successfully deleted.', 'passed' );
 		
 		// Push through to the media view
 		$this->media();
@@ -2609,7 +2732,7 @@ class GroupsController extends Hubzero_Controller
 		// Incoming
 		$listdir = JRequest::getInt( 'listdir', 0 );
 		if (!$listdir) {
-			$this->setError( JText::_('GROUPS_NO_ID') );
+			$this->setNotification( JText::_('GROUPS_NO_ID'), 'error' );
 		}
 		
 		// Output HTML
@@ -2617,9 +2740,7 @@ class GroupsController extends Hubzero_Controller
 		$view->option = $this->_option;
 		$view->config = $this->config;
 		$view->listdir = $listdir;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
+		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$view->display();
 	}
 
@@ -2658,7 +2779,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		if (!$listdir) {
-			$this->setError( JText::_('GROUPS_NO_ID') );
+			$this->setNotification( JText::_('GROUPS_NO_ID'), 'error' );
 		}
 		
 		$path = JPATH_ROOT;
@@ -2705,9 +2826,7 @@ class GroupsController extends Hubzero_Controller
 		$view->images = $images;
 		$view->config = $this->config;
 		$view->listdir = $listdir;
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
+		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$view->display();
 	}
 

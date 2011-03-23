@@ -39,7 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div class="main section">
 	<?php
 		foreach($this->notifications as $notification) {
-			echo $notification;
+			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
 	<form action="index.php" method="post" id="hubForm">

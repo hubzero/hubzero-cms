@@ -40,7 +40,7 @@ $base_link = 'index.php?option=com_groups&gid='.$this->group->get('cn').'&task=m
 
 	<?php
 		foreach($this->notifications as $notification) {
-			echo $notification;
+			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
 

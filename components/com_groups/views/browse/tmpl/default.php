@@ -38,9 +38,11 @@ $juser =& JFactory::getUser();
 	</ul>
 </div><!-- / #content-header-extra -->
 
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
+<?php
+	foreach($this->notifications as $notification) {
+		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+	}
+?>
 
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="get">
 	<div class="main section">

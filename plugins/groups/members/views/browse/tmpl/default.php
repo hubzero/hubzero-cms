@@ -274,7 +274,7 @@ if($this->role_filter) {
 								if($this->filter == 'members' || $this->filter == 'managers') {
 									$html .= '<span class="roles">';
 									$all_roles = '';
-									$roles = $u->getGroupMemberRoles($u->get('uidNumber'));
+									$roles = $u->getGroupMemberRoles($u->get('uidNumber'),$this->group->gidNumber);
 								
 									if($roles) {
 										$html .= '<strong>Member Roles:</strong> ';

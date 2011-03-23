@@ -170,7 +170,7 @@ class plgGroupsCalendar extends JPlugin
 	
 	public function onGroupDeleteCount($group)
 	{
-		return JText::_('Calendar Events').': '.count($this->getCalendarEvents($group));
+		//return JText::_('Calendar Events').': '.count($this->getCalendarEvents($group));
 	}
 	
 	

@@ -85,9 +85,11 @@ $app =& JFactory::getApplication();
 		</script>
 	</head>
 	<body id="file_list">
-		<?php if ($this->getError()) { ?>
-				<p class="error"><?php echo $this->getError(); ?></p>
-		<?php } ?>
+		<?php
+			foreach($this->notifications as $notification) {
+				echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+			}
+		?>
 		<form action="index.php" method="post" id="filelist">
 <?php if (count($this->images) == 0 && count($this->folders) == 0 && count($this->docs) == 0) { ?>
 			<p><?php echo JText::_('NO_FILES_FOUND'); ?></p>

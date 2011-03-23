@@ -94,11 +94,11 @@ if (!$no_html) {
 					<h2><?php echo $this->group->get('description'); ?></h2>
 				</div><!-- // end page header -->
 				<div id="page_notifications">
-					<?php 
+					<?php
 						foreach($this->notifications as $notification) {
-							echo $notification;
+							echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 						}
-						?>
+					?>
 				</div>
 				<div id="page_content" class="group_<?php echo $this->tab; ?>">
 					<?php

@@ -44,9 +44,11 @@ $app =& JFactory::getApplication();
 		<?php } ?>
 	</head>
 	<body id="file_browser">
-		<?php if ($this->getError()) { ?>
-				<p class="error"><?php echo $this->getError(); ?></p>
-		<?php } ?>
+		<?php
+			foreach($this->notifications as $notification) {
+				echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+			}
+		?>
 		<form action="index.php" id="adminForm" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="themanager" class="manager">

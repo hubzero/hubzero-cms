@@ -191,6 +191,18 @@ HUB.Groups = {
 		HUB.Groups.Pick_Logo();
 		HUB.Groups.Pick_Content();
 		
+		//group features screenshots
+		$$('a.screenshot').addEvent('click', function(e) {
+			new Event(e).stop();
+			
+			SqueezeBoxHub.fromElement(this,{
+				handler: 'adopt',
+				size: {x: 850 ,y: 446},
+			});
+			
+		});
+		
+		
 		$$('a.quick-view').addEvent('click', function(e) {
 			new Event(e).stop();
 			var id = this.getProperty('rel');

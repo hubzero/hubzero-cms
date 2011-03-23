@@ -49,7 +49,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 <div class="main section">
 	<?php
 		foreach($this->notifications as $notification) {
-			echo $notification;
+			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
 

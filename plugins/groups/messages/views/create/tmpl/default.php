@@ -53,7 +53,9 @@ if($role_id) {
 		<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
 		<li><a class="active" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages&task=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
 	</ul>
-	<br class="clear" />
+	<?php if (!$this->no_html) { ?>
+		<br class="clear" />
+	<?php } ?>
 	<div class="container">
 		<table class="groups entries" summary="Groups this person is a member of">
 			<caption><?php echo JText::_('Send New Message'); ?> <span></span></caption>

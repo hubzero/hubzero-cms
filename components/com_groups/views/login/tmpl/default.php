@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div class="main section">
 	<?php
 		foreach($this->notifications as $notification) {
-			echo $notification;
+			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
 	<p class="warning"><?php echo JText::_('GROUPS_NOT_LOGGEDIN'); ?></p>

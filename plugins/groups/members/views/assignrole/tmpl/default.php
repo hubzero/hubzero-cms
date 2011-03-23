@@ -40,7 +40,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$u->load( $this->uid );
 				
 				$current_roles = array();
-				$roles = $u->getGroupMemberRoles($u->get('uidNumber'));
+				$roles = $u->getGroupMemberRoles($u->get('uidNumber'), $this->group->get('gidNumber'));
 				if($roles) {
 					foreach($roles as $role) {
 						$current_roles[] = $role['role'];

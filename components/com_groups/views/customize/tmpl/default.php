@@ -30,11 +30,11 @@ $default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'group_
 
 //access levels
 $levels = array(
-	'anyone' => 'Enabled/On',
-	'nobody' => 'Disabled/Off',
-	//'anyone' => 'Any HUB Visitor',
-	//'registered' => 'Only Registered User of the HUB',
-	//'members' => 'Only Group Members'
+	//'anyone' => 'Enabled/On',
+	'anyone' => 'Any HUB Visitor',
+	'registered' => 'Only Registered User of the HUB',
+	'members' => 'Only Group Members',
+	'nobody' => 'Disabled/Off'
 );
 ?>
 
@@ -49,7 +49,7 @@ $levels = array(
 </div><!-- / #content-header-extra -->
 	<?php
 		foreach($this->notifications as $notification) {
-			echo $notifcation;
+			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
 <div class="main section">

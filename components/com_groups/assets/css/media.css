@@ -25,6 +25,8 @@ iframe {
 	margin-left:1em;
 }
 
-p.error {
+p.error, 
+p.passed,
+p.warning {
 	margin-top:0px;
 }
