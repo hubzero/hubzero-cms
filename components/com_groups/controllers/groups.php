@@ -925,10 +925,10 @@ class GroupsController extends Hubzero_Controller
 			// Move the member from the invitee list to the members list
 			$group->add('members',array($this->juser->get('id')));
 			$group->remove('invitees',array($this->juser->get('id')));
-		if ($group->update() === false) {
-			$this->setError( JText::_('GROUPS_ERROR_REGISTER_MEMBERSHIP_FAILED') );
+			if ($group->update() === false) {
+				$this->setError( JText::_('GROUPS_ERROR_REGISTER_MEMBERSHIP_FAILED') );
+			}
 		}
-		
 		// Log the invite acceptance
 		$log = new XGroupLog( $this->database );
 		$log->gid = $group->get('gidNumber');
