@@ -78,4 +78,5 @@ if ($this->xpoll && $this->wishlist) {
 			<p><?php echo JText::_('COM_FEEDBACK_TROUBLE_INTRO'); ?></p>
 		</div>
 	</div>
+	<br class="clear" />
 </div><!-- / .main section -->

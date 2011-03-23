@@ -61,6 +61,7 @@
 		}
 	.com_kb .container-block h4 a {
 		color: #333;
+		border:none; /*  Fix */
 		}
 	.com_kb .container-block h4 .more {
 		float: right;
