@@ -176,6 +176,7 @@ class modYoutubeHelper
 				$desc = $feed['subtitle']['$t'];
 			}
 			$logo = $feed['logo']['$t'];
+			$logo = str_replace("http://", "https://",$logo);
 			
 			//show title based on params
 			if($show_title) {
@@ -216,7 +217,9 @@ class modYoutubeHelper
 				if($counter <= $num_videos) {
 					$media = $entry['media$group'];
 					$html .= "<li>";
-					$html .= "<a class=\"entry-thumb\" rel=\"external\" href=\"{$entry['link'][0]['href']}\"><img src=\"{$media['media$thumbnail'][3]['url']}\" alt=\"\" /></a>";
+					$thumb = $media['media$thumbnail'][3]['url'];
+					$thumb = str_replace("http://", "https://",$thumb);
+					$html .= "<a class=\"entry-thumb\" rel=\"external\" href=\"{$entry['link'][0]['href']}\"><img src=\"{$thumb}\" alt=\"\" /></a>";
 					$html .= "<a class=\"entry-title\" rel=\"external\" href=\"{$entry['link'][0]['href']}\">{$entry['title']['$t']}</a>";
 					$html .= "<br /><span class=\"entry-duration\">".$this->formatTime($media['yt$duration']['seconds'])."</span>";
 					$html .= "</li>";

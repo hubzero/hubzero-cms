@@ -30,7 +30,8 @@ HUB.Modules.Youtube = {
 		if(options.type == 'playlists') {
 			var desc = options.feed.subtitle.$t;
 		}
-		var logo = options.feed.logo.$t;
+		var logo = new String(options.feed.logo.$t);
+		var logo = logo.replace("http://","https://");
 		
 		//check to see if we are to display a title and which title to display
 		if(options.showTitle) {
@@ -73,7 +74,9 @@ HUB.Modules.Youtube = {
 			if(entry) {
 				var media = entry.media$group;
 				html += "<li>";
-				html += "<a class=\"entry-thumb\" rel=\"external\" href=\"" + entry.link[0].href + "\"><img src=\"" + media.media$thumbnail[3].url + "\" alt=\"\" /></a>";
+				var thumb = media.media$thumbnail[3].url;
+				var thumb = thumb.replace("http://","https://");
+				html += "<a class=\"entry-thumb\" rel=\"external\" href=\"" + entry.link[0].href + "\"><img src=\"" + thumb + "\" alt=\"\" /></a>";
 				html += "<a class=\"entry-title\" rel=\"external\" href=\"" + entry.link[0].href + "\">" + entry.title.$t + "</a>";
 				html += "<br /><span class=\"entry-duration\">" + HUB.Modules.Youtube.formatDuration(media.yt$duration.seconds) + "</span>";
 				html+="</li>";
