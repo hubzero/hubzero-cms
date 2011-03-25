@@ -629,8 +629,8 @@ class JSession extends JObject
 	{
 		// set name
 		if( isset( $options['name'] ) ) {
-			//session_name( md5($options['name']) );
-			session_name( $options['name'] );
+			//session_name( md5($options['name']) ); /* Joomla! version */
+			session_name( $options['name'] );        /* HUBzero version */
 		}
 
 		// set id
