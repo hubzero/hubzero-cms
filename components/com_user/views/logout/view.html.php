@@ -2,7 +2,6 @@
 /**
  * @package      hubzero-cms-joomla
  * @file         components/com_user/views/logout/view.html.php
- * @author       Louis Landry <louis.landry@joomla.org>
  * @author       Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright    Copyright (c) 2010-2011 Purdue University. All rights reserved.
  * @license      http://www.gnu.org/licenses/gpl-3.0.html GPLv3

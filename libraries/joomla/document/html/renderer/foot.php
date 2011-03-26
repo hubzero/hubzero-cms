@@ -2,7 +2,6 @@
 /**
  * @package      hubzero-cms-joomla
  * @file         libraries/joomla/document/html/renderer/foot.php
- * @author       Louis Landry <louis.landry@joomla.org>
  * @author       Chris Smoak <csmoak@purdue.edu>
  * @copyright    Copyright (c) 2011 Purdue University. All rights reserved.
  * @license      http://www.gnu.org/licenses/gpl2.html GPLv2
