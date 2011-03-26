@@ -332,6 +332,10 @@ Print & Email Front End Icons
 Copyright:	Copyright (C) 2005 Plone Foundation
 License:	GNU Lesser General Public License (LGPL)
 
+HUBzero(R) Joomla! Core Patches
+-------------------------------
+Copyright:      Copyright (C) 2005-2011 Purdue University. All rights reserved.
+License:        GNU General Public License (GPL) 3.0 or later
 
 
 -------------------- Joomla! 1.0 Credits ---------------------
