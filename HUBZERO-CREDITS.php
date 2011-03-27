@@ -236,4 +236,12 @@ defined('_JEXEC') or die( 'Restricted access' );
  * @license		Licensed under the MIT License
  * @link		http://code.google.com/p/tweener/
  *
+ * iCalcreator
+ *
+ * @package     iCalcreator
+ * @author      Kjell-Inge Gustafsson kigkonsult
+ * @version     2.6
+ * @copyright   copyright (c) 2007-2008 Kjell-Inge Gustafsson kigkonsult
+ * @license     LGPL-2
+ * @link        www.kigkonsult.se/iCalcreator/index.php
  */
