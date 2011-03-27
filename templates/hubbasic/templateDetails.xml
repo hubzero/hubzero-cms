@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
 @package        hubzero-cms
 @file           templates/hubbasic/templateDetails.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
@@ -22,30 +25,12 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 HUBzero is a registered trademark of Purdue University.
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
- Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
- All rights reserved.
-
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License,
- Version 2 as published by the Free Software Foundation.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
 <install type="template" version="1.5">
 	<name>hubbasic</name>
 	<creationDate>03/11/11</creationDate>
-	<copyright>Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<authorEmail>zooley@purdue.edu</authorEmail>
 	<authorUrl>http://hubzero.org/</authorUrl>
@@ -175,3 +160,4 @@ HUBzero is a registered trademark of Purdue University.
 	<params>
 	</params>
 </install>
+

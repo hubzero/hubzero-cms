@@ -30,7 +30,7 @@ HUBzero is a registered trademark of Purdue University.
 <install version="1.5" type="plugin" group="hubzero">
 	<name>HUBzero - Wiki Parser</name>
 	<author>Shawn Rice</author>
-	<copyright>Copyright 2005-2010 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Loads a wiki parser and performs any called actions on text passed to it</description>
 	<files>
@@ -43,3 +43,4 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
 	</params>
 </install>
+

@@ -30,7 +30,7 @@ HUBzero is a registered trademark of Purdue University.
 <install version="1.5" type="plugin" group="groups">
 	<name>Groups - Calendar</name>
 	<author>Christopher Smoak</author>
-	<copyright>Copyright 2009-2010 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Displays a Group Calendar</description>
 	<files>
@@ -47,3 +47,4 @@ HUBzero is a registered trademark of Purdue University.
 		
 	</params>
 </install>
+
