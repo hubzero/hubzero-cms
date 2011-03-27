@@ -1,10 +1,3 @@
-/**
- * @package     hubzero-cms
- * @file        components/com_poll/assets/poll_bars.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- */
-
 /* polls Bar Colors/Formats - Follow the format to add your own.
 	Then update the maxcolors setting for polls in
 	components/com_poll/poll.php -> $polls_maxcolors
