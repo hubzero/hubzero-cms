@@ -5,4 +5,3 @@
 </div>
 <?php endif; ?>
 <?php echo $this->loadTemplate($this->type); ?>
-

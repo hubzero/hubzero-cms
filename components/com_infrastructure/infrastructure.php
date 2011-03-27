@@ -54,4 +54,3 @@ $controller->execute( JRequest::getVar( 'task' ) );
 $controller->redirect();
 
 ?>
-

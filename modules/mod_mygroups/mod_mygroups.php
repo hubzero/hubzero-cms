@@ -46,4 +46,3 @@ $modmygroups->display();
 
 require( JModuleHelper::getLayoutPath('mod_mygroups') );
 ?>
-

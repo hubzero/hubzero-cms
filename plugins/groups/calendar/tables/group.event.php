@@ -50,4 +50,3 @@ Class GroupEvent extends JTable
 }
 
 ?>
-

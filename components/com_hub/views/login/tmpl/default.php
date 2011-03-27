@@ -95,4 +95,3 @@ defined('_JEXEC') or die( 'Restricted access' );
 	if (!empty($this->login_attempts) && $this->login_attempts >= 2) 
 		echo '<p class="hint">Having trouble logging in? <a href="support/report_problems/">Report problems to Support</a>.</p>';
 ?>
-

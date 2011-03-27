@@ -451,4 +451,3 @@ class RecentTool extends JTable
 	}
 }
 ?>
-

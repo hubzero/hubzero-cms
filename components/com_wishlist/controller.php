@@ -3167,4 +3167,3 @@ class WishlistController extends JObject
 	}
 }
 ?>
-

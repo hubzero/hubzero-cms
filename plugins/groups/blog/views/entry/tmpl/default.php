@@ -433,4 +433,3 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 	</div><!-- / .below -->
 	<br class="clear" />
 <?php } //end if allow comments ?>
-

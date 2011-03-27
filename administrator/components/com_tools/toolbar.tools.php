@@ -44,4 +44,3 @@ switch ($task)
 	default: ToolsToolbar::_DEFAULT(); break;
 }
 ?>
-

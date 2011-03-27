@@ -69,4 +69,3 @@ jimport( 'joomla.application.component.model' );
 }
 
 ?>
-

@@ -91,4 +91,3 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 <?php } ?>
-

@@ -249,4 +249,3 @@ function hubParseRoute($segments)
 }
 
 ?>
-

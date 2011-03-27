@@ -145,4 +145,3 @@ $metadata .= '</div>'."\n";
 
 echo $metadata;
 ?>
-

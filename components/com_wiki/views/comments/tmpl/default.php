@@ -228,4 +228,3 @@ if ($this->comments) {
 	</form>
 </div><!-- / .below section -->
 <?php } ?>
-

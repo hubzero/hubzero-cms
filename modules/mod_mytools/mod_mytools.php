@@ -50,4 +50,3 @@ $modtoollist->display();
 
 require( JModuleHelper::getLayoutPath('mod_mytools') );
 ?>
-

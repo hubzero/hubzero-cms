@@ -52,4 +52,3 @@ $controller = new XImportController();
 $controller->execute();
 $controller->redirect();
 ?>
-

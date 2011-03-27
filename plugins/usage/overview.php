@@ -897,4 +897,3 @@ class plgUsageOverview extends JPlugin
 	}
 }
 ?>
-

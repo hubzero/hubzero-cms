@@ -288,4 +288,3 @@ class plgXAuthenticationHzldap extends JPlugin
 }
 
 ?>
-

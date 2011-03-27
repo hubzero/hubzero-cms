@@ -76,4 +76,3 @@ if (count($quotes) > 0) {
 // Output HTML
 echo $html;
 ?>
-

@@ -1053,4 +1053,3 @@ class plgSystemXhub extends JPlugin
 }
 
 ?>
-

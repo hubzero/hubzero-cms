@@ -36,4 +36,3 @@ if ($this->xprofile->get('organization')) {
 
 Click the following link to review this user's account:
 <?php echo $this->baseURL . JRoute::_('index.php?option=com_members&task=whois&username=' . $this->xprofile->get('username')); ?>
-

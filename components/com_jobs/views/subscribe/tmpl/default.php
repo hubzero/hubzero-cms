@@ -192,4 +192,3 @@ defined('_JEXEC') or die( 'Restricted access' );
   currency="USD">
 </script>
 <?php } ?>
-

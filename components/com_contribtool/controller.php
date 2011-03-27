@@ -4658,4 +4658,3 @@ class ContribtoolController extends JObject
 }
 
 ?>
-

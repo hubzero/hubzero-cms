@@ -144,4 +144,3 @@ Class InformationModule
 	
 }
 ?>
-

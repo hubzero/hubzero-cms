@@ -60,4 +60,3 @@ function com_install()
 }
 
 ?>
-

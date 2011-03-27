@@ -32,4 +32,3 @@ defined('_JEXEC') or die( 'Restricted access' );
 $modxflash->display();
 
 ?>
-

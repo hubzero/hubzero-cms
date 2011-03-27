@@ -35,4 +35,3 @@ class HubViewLogin extends JView
 {
 }
 ?>
-

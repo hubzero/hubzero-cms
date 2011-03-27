@@ -281,4 +281,3 @@ if(!$this->mini) {
 		
 		echo $html;
 ?>
-

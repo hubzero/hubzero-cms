@@ -123,4 +123,3 @@ Class JHTMLView_html {
 }
 
 ?>
-

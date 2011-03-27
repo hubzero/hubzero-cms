@@ -426,4 +426,3 @@ $html .= '<div class="clear"></div>'."\n";
 
 echo $html;
 ?>
-

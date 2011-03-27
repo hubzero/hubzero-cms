@@ -197,4 +197,3 @@ if (!$juser->get('guest')) {
 $title = $this->getTitle();
 $this->setTitle( $config->getValue('config.sitename').' - '.$title );
 ?>
-

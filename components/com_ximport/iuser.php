@@ -678,4 +678,3 @@ Hubzero_User_Profile_Helper::iterate_profiles('printuser','ldap');
 return;
 }
 ?>
-

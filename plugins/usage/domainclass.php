@@ -264,4 +264,3 @@ class plgUsageDomainclass extends JPlugin
 	}
 }
 ?>
-

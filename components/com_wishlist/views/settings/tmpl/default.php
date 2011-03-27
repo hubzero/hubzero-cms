@@ -256,4 +256,3 @@ defined('_JEXEC') or die( 'Restricted access' );
 		// HTML output
 		echo $html;
 ?>
-

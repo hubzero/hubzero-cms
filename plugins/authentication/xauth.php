@@ -133,4 +133,3 @@ class plgAuthenticationXauth extends JPlugin
 }
 
 ?>
-

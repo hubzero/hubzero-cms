@@ -475,4 +475,3 @@ class Tool extends JTable
 
 
 ?>
-

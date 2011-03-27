@@ -1768,4 +1768,3 @@ class Hubzero_Tool_Version
     }
 }
 ?>
-
