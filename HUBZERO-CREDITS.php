@@ -1,9 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Hub Technology Group <support@hubzero.org>
- * @copyright	Copyright 2005-2010 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @package     hubzero-cms
+ * @copyright   Copyright (c) 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -15,9 +14,9 @@ defined('_JEXEC') or die( 'Restricted access' );
  * CMS - Joomla!
  *
  * @author		Open Source Matters
- * @copyright	Copyright (C) 2005 - 2009 Open Source Matters. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license:	GNU/GPL, see lICENSE.php
- * @version		1.5.12
+ * @version		1.5.22
  * @link		http://joomlacode.org/gf/download/frsrelease/10547/41305/Joomla_1.5.12-Stable-Full_Package.zip
  *
  * Library - Open Flash Chart
