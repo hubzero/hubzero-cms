@@ -1,4 +1,11 @@
 /**
+ * @package     hubzero-cms
+ * @file        components/com_support/autosave.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/**
  * Autosave MooTools 1.11 plugin based off of Rik Lomas' (rikrikrik.com) jQuery plugin
  *
  */

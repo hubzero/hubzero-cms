@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/usage/maps/js/Clusterer2.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 // Clusterer.js - marker clustering routines for Google Maps apps
 //
 // Using these routines is very easy.
@@ -487,3 +494,4 @@ GMarker.prototype.showMapBlowup = function ( opts )
     else
 	return this.origShowMapBlowup( opts );
     };
+

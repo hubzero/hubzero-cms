@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_slideshow/images/AC_RunActiveContent.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 //v1.7
 // Flash Player Version Detection
 // Detect Client Browser type
@@ -291,3 +298,4 @@ function AC_GetArgs(args, ext, srcParamName, classid, mimeType){
   if (mimeType) ret.embedAttrs["type"] = mimeType;
   return ret;
 }
+

@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_support/scripts/excanvas/excanvas.original.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 // Copyright 2006 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -1419,3 +1426,4 @@ if (!document.createElement('canvas').getContext) {
 })();
 
 } // if
+

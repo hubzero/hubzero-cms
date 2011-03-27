@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_hub/js/insertflash.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 // Flash Player Version Detection - Rev 1.5
 // Detect Client Browser type
 // Copyright(c) 2005-2006 Adobe Macromedia Software, LLC. All rights reserved.
@@ -256,3 +263,4 @@ var AC = {
 		return ret;
 	}
 }
+

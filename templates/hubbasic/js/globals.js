@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic/js/globals.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 //-----------------------------------------------------------
 //  Extend Element to add some of our own functionality
 //-----------------------------------------------------------
@@ -194,3 +201,4 @@ HUB.Base = {
 //----------------------------------------------------------
 
 window.addEvent('domready', HUB.Base.initialize);
+

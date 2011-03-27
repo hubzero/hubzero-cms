@@ -1,4 +1,11 @@
-    /**
+/**
+ * @package     hubzero-cms
+ * @file        components/com_support/scripts/rgraph/RGraph.meter.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/**
     * o------------------------------------------------------------------------------o
     * | This file is part of the RGraph package - you can learn more at:             |
     * |                                                                              |
@@ -362,3 +369,4 @@
         context.fill();
         context.stroke();
     }
+

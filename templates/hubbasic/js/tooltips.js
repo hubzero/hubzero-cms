@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic/js/tooltips.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 /*
 Script: MooTips.js
 	Tooltips, BubbleTips, whatever they are, they will appear on mouseover

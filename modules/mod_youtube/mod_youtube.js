@@ -1,4 +1,11 @@
 /**
+ * @package     hubzero-cms
+ * @file        modules/mod_youtube/mod_youtube.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/**
  * Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
  *

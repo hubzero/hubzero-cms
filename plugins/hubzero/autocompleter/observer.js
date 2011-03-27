@@ -1,4 +1,11 @@
 /**
+ * @package     hubzero-cms
+ * @file        plugins/hubzero/autocompleter/observer.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/**
  * Observer - Observe formelements for changes
  *
  * @version		1.0rc1

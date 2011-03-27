@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic/js/growl.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 //-----------------------------------------------------------
 //  Window.Growl, version 2.0: http://icebeat.bitacoras.com
 //  Daniel Mota aka IceBeat <daniel.mota@gmail.com>
@@ -115,3 +122,4 @@ var Growl = function(options) {
 	if(Growl[options.type]) Growl[options.type].call(options);
 	else Growl.Smoke(options);
 };
+

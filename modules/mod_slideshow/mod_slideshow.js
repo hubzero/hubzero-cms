@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_slideshow/mod_slideshow.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 //----------------------------------------------------------
 // Establish the namespace if it doesn't exist
 //----------------------------------------------------------
@@ -318,3 +325,4 @@ HUB.ModSlideshow = {
 //----------------------------------------------------------
 
 window.addEvent('domready', HUB.ModSlideshow.initialize);
+

@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic/js/slimbox.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 /*
 	Slimbox v1.41 - The ultimate lightweight Lightbox clone
 	by Christophe Beyls (http://www.digitalia.be) - MIT-style license.
@@ -190,3 +197,4 @@ var Lightbox = {
 };
 
 window.addEvent('domready', Lightbox.init.bind(Lightbox));
+
