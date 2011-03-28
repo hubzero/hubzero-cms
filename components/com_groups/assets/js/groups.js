@@ -245,16 +245,18 @@ HUB.Groups = {
 				special_pane.setStyle('visibility','visible');
 				sp.toggle();
 			});
+			
+			var w = $(window);
+			var wh = w.getSize().size.y;
+			var p = $('page_container_inner');
+			var ph = p.getSize().size.y;
+
+			if(wh > ph) {
+				p.setStyle('height',wh);
+			}
 		}
 		
-		var w = $(window);
-		var wh = w.getSize().size.y;
-		var p = $('page_container_inner');
-		var ph = p.getSize().size.y;
 		
-		if(wh > ph) {
-			p.setStyle('height',wh);
-		}
 		
 	}
 }

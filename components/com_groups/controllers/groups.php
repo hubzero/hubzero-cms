@@ -140,10 +140,16 @@ class GroupsController extends Hubzero_Controller
 		$task = $this->_task;
 		$doc =& JFactory::getDocument();
 		
+		$mainframe =& JFactory::getApplication();
+		$template  = $mainframe->getTemplate();
+		
+		$template_css 	= "/templates".DS.$template.DS."html".DS."com_groups".DS.$task.".css";
 		$view_css = "/components".DS."com_groups".DS."assets".DS."css".DS.$task.".css";
 		$component_css = "/components".DS."com_groups".DS."assets".DS."css".DS."groups.css";
 
-		if(file_exists(JPATH_ROOT . $view_css)) {
+		if(file_exists(JPATH_ROOT . $template_css)) {
+			$doc->addStyleSheet($template_css);
+		} elseif(file_exists(JPATH_ROOT . $view_css)) {
 			$doc->addStyleSheet($view_css);
 		} elseif(file_exists(JPATH_ROOT . $component_css)) {
 			$doc->addStyleSheet($component_css);
