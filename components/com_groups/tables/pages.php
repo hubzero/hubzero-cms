@@ -151,7 +151,7 @@ Class GroupPages extends JTable
 		$about  = '<div class="group-content-header">';
 			$about .= '<h3>'.JText::_('GROUPS_ABOUT_HEADING').'</h3>';
 		
-		if($isMember) {
+		if($isMember && $group->get('private_desc') != '') {
 			$about .= '<div class="group-content-header-extra">';
 				$about .= '<a id="toggle_description" class="hide" href="#">Show Public Description (+)</a>';
 			$about .= '</div>';

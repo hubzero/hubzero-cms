@@ -54,9 +54,10 @@ iframe {
 
 /* ----------------------- */
 
-#page_identity { 
+#page_identity {
 	display:block; 
-	margin:10px 25px 10px 29px; 
+	margin:10px 8%;
+	width:84%; 
 }
 
 #page_identity:hover { 
@@ -64,7 +65,9 @@ iframe {
 }
 
 #page_identity img { 
-	max-height:73px;
+	max-width:100%;
+	max-height:200px;
+	/*max-height:73px;*/
 }
 
 /* ----------------------- */
