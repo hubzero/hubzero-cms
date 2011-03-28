@@ -232,8 +232,10 @@ Autocompleter.Base = new Class({
 	//
 	addChoiceEvents: function(el) {
 		return el.addEvents({
-			mouseover: this.choiceOver.bind(this, [el]),
-			mousedown: this.choiceSelect.bind(this, [el])
+			//mouseover: this.choiceOver.bind(this, [el]),
+			//mousedown: this.choiceSelect.bind(this, [el])
+			mouseover: this.choiceOver.bind(this, el),
+			mousedown: this.choiceSelect.bind(this, el)
 		});
 	}
 });
