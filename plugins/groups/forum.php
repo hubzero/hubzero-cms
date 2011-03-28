@@ -343,7 +343,7 @@ class plgGroupsForum extends JPlugin
 	protected function edittopic()
 	{
 		//check to make sure editor is a member
-		if(!in_array($this->juser->get('id'),$this->members)) {
+		if(!in_array($this->juser->get('id'),$this->members) && $this->authorized != 'admin') {
 			// Return the topics list
 			$app =& JFactory::getApplication();
 			$app->enqueueMessage( JText::sprintf('PLG_GROUPS_FORUM_MUST_MEMBER', 'create/edit a topic'),'warning');
@@ -404,7 +404,7 @@ class plgGroupsForum extends JPlugin
 	protected function savetopic() 
 	{
 		//check to make sure editor is a member
-		if(!in_array($this->juser->get('id'),$this->members)) {
+		if(!in_array($this->juser->get('id'),$this->members) && $this->authorized != 'admin') {
 			// Return the topics list
 			$app =& JFactory::getApplication();
 			$app->enqueueMessage( JText::sprintf('PLG_GROUPS_FORUM_MUST_MEMBER', 'create/edit a topic or reply'),'warning');
