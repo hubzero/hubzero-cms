@@ -37,7 +37,7 @@ $juser =& JFactory::getUser();
 			<h3>Start Your Own</h3>
 			<p class="starter"><span class="starter-point"></span></p>
 			<p class="starter">Create your own discussion where you and other users can discuss related topics.</p>
-			<?php if(in_array($this->juser->get('id'),$this->members)) { ?>
+			<?php if(in_array($this->juser->get('id'),$this->members) || $this->authorized == 'admin') { ?>
 				<p class="add">
 					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=forum&task=newtopic'); ?>">Add Topic</a>
 				</p>
