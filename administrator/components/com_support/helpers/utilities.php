@@ -45,7 +45,7 @@ class SupportUtilities
 			$headers .= 'Reply-To: ' . $from['name'] .' <'. $from['email'] . ">\n";
 			$headers .= "X-Priority: 3\n";
 			$headers .= "X-MSMail-Priority: High\n";
-			$headers .= 'X-Mailer: '. $from['name'] .n;
+			$headers .= 'X-Mailer: '. $from['name'] ."\n";
 			if (mail($email, $subject, $message, $headers, $args)) {
 				return(1);
 			}

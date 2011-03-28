@@ -1863,9 +1863,9 @@ class SupportController extends Hubzero_Controller
 			
 			// Build the email message
 			if ($note) {
-				$message .= '---------------------------'."\r\n";
+				$message .= "\r\n".'---------------------------'."\r\n";
 				$message .= $note;
-				$message .= '---------------------------'."\r\n";
+				$message .= "\r\n".'---------------------------'."\r\n";
 			}
 			$message .= "\r\n";
 			$message .= JText::_('YOUR_POSTING').': '."\r\n";
@@ -1875,7 +1875,8 @@ class SupportController extends Hubzero_Controller
 
 			// Send the email
 			if (SupportUtilities::checkValidEmail($juser->get('email'))) {
-				SupportUtilities::sendEmail($from, $juser->get('email'), $subject, $message);
+				//SupportUtilities::sendEmail($from, $juser->get('email'), $subject, $message);
+				SupportUtilities::sendEmail($juser->get('email'), $subject, $message, $from);
 			}
 		}
 		
