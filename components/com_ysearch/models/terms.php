@@ -71,13 +71,18 @@ abstract class DocumentMetadata
 
 class YSearchModelTerms extends JModel
 {
-	private $raw, $positive_chunks, $optional_chunks = array(), $forbidden_chunks = array(), $mandatory_chunks = array(), $section = NULL;
+	private $raw, $positive_chunks, $optional_chunks = array(), $forbidden_chunks = array(), $mandatory_chunks = array(), $section = NULL, $quoted = array();
 
 	public function __construct($raw)
 	{
 		$this->raw = preg_replace('/^\s+|\s+$/', '', preg_replace('/\s+/', ' ', $raw));
 		if ($this->is_set())
 			$this->parse_searchable_chunks();
+	}
+
+	public function is_quoted($idx)
+	{
+		return isset($this->quoted[$idx]) ? $this->quoted[$idx] : false;
 	}
 
 	public function get_raw() { return $this->raw; }
@@ -111,19 +116,6 @@ class YSearchModelTerms extends JModel
 		$chunks = array_unique(array_merge(array_map('stem', $chunks), $chunks));
 		JFactory::getApplication()->triggerEvent('onYSearchExpandTerms', array(&$chunks));
 
-//		foreach ($chunks as $chunk)
-//		{
-//			$stem = stem($chunk);
-//			// TODO this is some really naive query expansion. I'm not sure yet what to do about it
-//			foreach (array($chunk, stem($chunk)) as $word)
-//			{
-//				$chunks[] = substr($word, -1) == 's' ? "{$word}es" : "{$word}s";
-//				if (substr($stem, -1) == 'y')
-//					$chunks[] = substr($word, 0, strlen($word) -1).'ies';
-//				foreach (array('', 'able', 'ible', 'al', 'ial', 'ies', 'ed', 'er', 'ers',   'ism', 'ly', 'y') as $suffix)
-//					$chunks[] = "{$word}$suffix";
-//			}
-//		}
 		return array_unique($chunks);
 	} 
 
@@ -151,7 +143,7 @@ class YSearchModelTerms extends JModel
 		else if (array_key_exists('section', $_GET))
 			$this->section = array($_GET['section']);
 
-		$raw = preg_replace('/[^-+"[:alnum:] ]/', '', preg_replace('/\s+/', ' ', trim($raw)));
+		$raw = preg_replace('#[^-:/\\+"[:alnum:] ]#', '', preg_replace('/\s+/', ' ', trim($raw)));
 		for ($idx = 0, $len = strlen($raw); $idx < $len; ++$idx)
 		{
 			$cur = $raw[$idx];
@@ -160,7 +152,7 @@ class YSearchModelTerms extends JModel
 				if ($cur == '"')
 				{
 					$accumulating_phrase = false;
-					$this->add_chunk($partial, $sign);
+					$this->add_chunk($partial, $sign, true);
 				}
 				else
 					$partial .= $cur;
@@ -183,7 +175,7 @@ class YSearchModelTerms extends JModel
 		$this->add_chunk($partial, $sign);
 	}
 
-	private function add_chunk(&$partial, &$sign = '')
+	private function add_chunk(&$partial, &$sign = '', $quoted = false)
 	{
 		if (!$partial) return;
 		if (DocumentMetadata::is_stop_word($partial))
@@ -197,7 +189,10 @@ class YSearchModelTerms extends JModel
 		else if ($sign == '+')
 			$this->mandatory_chunks[] = $partial;
 		else
+		{
 			$this->optional_chunks[] = $partial;
+			$this->quoted[count($this->optional_chunks) - 1] = $quoted;
+		}
 
 		$partial = '';
 		$sign = '';

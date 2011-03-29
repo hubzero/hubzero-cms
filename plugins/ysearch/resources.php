@@ -67,16 +67,23 @@ class plgYSearchResources extends YSearchPlugin
 		else
 		{
 			$groups = array_map('mysql_real_escape_string', $authz->get_group_names());
-			if ($groups)
-			{
-				$group_list = '(\''.join('\', \'', $groups).'\')';
-				$access = '(access = 0 OR access = 1 OR ((access = 3 OR access = 4) AND r.group_owner IN '.$group_list.'))';		
-			}
-			else 
-				$access = '(access = 0 OR access = 1)';
+			$group_list = '(\''.join('\', \'', $groups).'\')';
+			$access = '(access = 0 OR access = 1 OR ((access = 3 OR access = 4) AND r.group_owner IN '.$group_list.'))';		
 		}
 
+		$term_parser = $request->get_terms();
 		$terms = $request->get_term_ar();
+		
+		$quoted_terms = array();
+		foreach ($terms['optional'] as $idx=>$term)
+			if ($term_parser->is_quoted($idx))
+			{
+				foreach ($terms['stemmed'] as $sidx=>$stem)
+					if (strpos($term, $stem) === 0 || strpos($stem, $term) === 0)
+						unset($terms['stemmed'][$sidx]);
+				$quoted_terms[] = $term;
+			}
+
 		$tag_map = array();
 		foreach ($request->get_tagged_ids('resources') as $id)
 			if (array_key_exists($id, $tag_map))
@@ -84,14 +91,16 @@ class plgYSearchResources extends YSearchPlugin
 			else
 				$tag_map[$id] = 1;
 
-		$weight = 'match(r.title, r.introtext, r.`fulltext`) against (\''.join(' ', $terms['stemmed']).'\')';
+		$weight = $terms['stemmed'] ? 'match(r.title, r.introtext, r.`fulltext`) against (\''.join(' ', $terms['stemmed']).'\')' : '0';
+		foreach ($quoted_terms as $term)
+			$weight .= " + (CASE WHEN r.title LIKE '%$term%' OR r.introtext LIKE '%$term%' OR r.`fulltext` LIKE '%$term%' THEN 1 ELSE 0 END)";
 			
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
 			$addtl_where[] = "(r.title LIKE '%$mand%' OR r.introtext LIKE '%$mand%' OR r.`fulltext` LIKE '%$mand%')";
 		foreach ($terms['forbidden'] as $forb)
-			$addtl_where[] = "(r.title NOT LIKE '%$forb%' AND r.introtext NOT LIKE '%$forb%' AND r.`fulltext` NOT LIKE '%$forb%')";
-		
+			$addtl_where[] = "(r.title NOT LIKE '%$forb%' AND r.introtext NOT LIKE '%$forb%' AND r.`fulltext` NOT LIKE '%$forb%')";		
+
 		$sql = new YSearchResultSQL(
 			"SELECT
 				r.id,
@@ -122,50 +131,53 @@ class plgYSearchResources extends YSearchPlugin
 		$id_assoc = array();
 		foreach ($assoc as $row)
 			$id_assoc[$row->get('id')] = $row;
-		
+	
 		$placed = array();
-		// Find ids of tagged resources that did not match regular fulltext searching
-		foreach ($assoc as $row)
-		{
-			$id = (int)$row->get('id');
-			if (array_key_exists($id, $tag_map))
+		if (!$quoted_terms)
+		{	
+			// Find ids of tagged resources that did not match regular fulltext searching
+			foreach ($assoc as $row)
 			{
-				$row->adjust_weight((1 + $tag_map[$id])/4, 'tag bonus from resources plugin');
-				unset($tag_map[$id]);
+				$id = (int)$row->get('id');
+				if (array_key_exists($id, $tag_map))
+				{
+					$row->adjust_weight((1 + $tag_map[$id])/4, 'tag bonus from resources plugin');
+					unset($tag_map[$id]);
+				}
 			}
-		}
-		// Fill in tagged resources that did not match on fulltext
-		if ($tag_map)
-		{
-			$sql = new YSearchResultSQL(
-	                        "SELECT
-        	                        r.id,
-                	                r.title,
-					coalesce(r.`fulltext`, r.introtext, '') AS description,
-	                                concat('/resources/', coalesce(case when r.alias = '' then null else r.alias end, r.id)) AS link,
-                                	r.publish_up AS date,
-					0.5 as weight,
-	                                rt.type AS section,
-					(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM jos_author_assoc anames LEFT JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
-					AS contributors,
-					(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM jos_author_assoc anames WHERE subtable = 'resources' AND subid = r.id) 
-					AS contributor_ids,
-        	                        (select group_concat(concat(parent_id, '|', ordering))
-                	                        from jos_resource_assoc ra2
-                        	                left join jos_resources re3 on re3.id = ra2.parent_id and re3.standalone
-                                	        where ra2.child_id = r.id) AS parents
-		                        FROM jos_resources r
-		                        LEFT JOIN jos_resource_types rt
-                		                ON rt.id = r.type
-		                        WHERE
-                		                r.published = 1 AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down)
-					AND r.id in (".implode(',', array_keys($tag_map)).")".($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
-			);
-			foreach ($sql->to_associative() as $row)
+			// Fill in tagged resources that did not match on fulltext
+			if ($tag_map)
 			{
-				if ($tag_map[$row->get('id')] > 1)
-					$row->adjust_weight($tag_map[$row->get('id')]/8, 'tag bonus for non-matching but tagged resources');
-				$id_assoc[$row->get('id')] = $row;
+				$sql = new YSearchResultSQL(
+		                        "SELECT
+	       	 	                        r.id,
+       		         	                r.title,
+						coalesce(r.`fulltext`, r.introtext, '') AS description,
+		                                concat('/resources/', coalesce(case when r.alias = '' then null else r.alias end, r.id)) AS link,
+                	                	r.publish_up AS date,
+						0.5 as weight,
+	               	                 rt.type AS section,
+						(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM jos_author_assoc anames LEFT JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
+						AS contributors,
+						(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM jos_author_assoc anames WHERE subtable = 'resources' AND subid = r.id) 
+						AS contributor_ids,
+        	               	         (select group_concat(concat(parent_id, '|', ordering))
+                	       	                 from jos_resource_assoc ra2
+                        		                left join jos_resources re3 on re3.id = ra2.parent_id and re3.standalone
+                               		 	        where ra2.child_id = r.id) AS parents
+		               	         FROM jos_resources r
+		               	         LEFT JOIN jos_resource_types rt
+                			                ON rt.id = r.type
+		                	        WHERE
+                			                r.published = 1 AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down)
+						AND r.id in (".implode(',', array_keys($tag_map)).")".($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
+				);
+				foreach ($sql->to_associative() as $row)
+				{
+					if ($tag_map[$row->get('id')] > 1)
+						$row->adjust_weight($tag_map[$row->get('id')]/8, 'tag bonus for non-matching but tagged resources');
+					$id_assoc[$row->get('id')] = $row;
+				}
 			}
 		}
 

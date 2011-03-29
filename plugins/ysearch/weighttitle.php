@@ -43,15 +43,24 @@ class plgYSearchWeightTitle
 		if (!($title_len = count($title_stems))) return 0.5;
 
 		$term_stems = array();
-		foreach ($terms->get_positive_chunks() as $chunk)
-			foreach (self::stem_list($chunk) as $stem)
-				$term_stems[] = $stem;
+		$quoted_weight = 0;
+		foreach ($terms->get_positive_chunks() as $idx=>$chunk)
+			if ($terms->is_quoted($idx))
+			{
+				if (strpos($title, $chunk) !== false)
+				{
+					echo "$chunk in $title: ".count(explode(' ', $chunk));
+					$quoted_weight += count(explode(' ', $chunk));
+				}
+			}
+			else
+				foreach (self::stem_list($chunk) as $stem)
+					$term_stems[] = $stem;
 		$term_stems = array_unique($term_stems);
-		if (!($term_len = count($term_stems))) return 0.5;
+		if (!($term_len = count($term_stems))) return $quoted_weight ? $quoted_weight : 0.5;
 
 		$intersecting_stems = count(array_intersect($title_stems, $term_stems));
-
-		return 1 - (($term_len - $intersecting_stems) * (0.8/$term_len));
+		return $quoted_weight + (1 - (($term_len - $intersecting_stems) * (0.8/$term_len)));
 	}
 
 	private static function stem_list($str)
