@@ -48,10 +48,7 @@ class plgYSearchWeightTitle
 			if ($terms->is_quoted($idx))
 			{
 				if (strpos($title, $chunk) !== false)
-				{
-					echo "$chunk in $title: ".count(explode(' ', $chunk));
 					$quoted_weight += count(explode(' ', $chunk));
-				}
 			}
 			else
 				foreach (self::stem_list($chunk) as $stem)
