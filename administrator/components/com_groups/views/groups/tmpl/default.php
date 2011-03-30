@@ -56,10 +56,11 @@ function submitbutton(pressbutton)
 		<label>
 			<?php echo JText::_('TYPE'); ?>:
 			<select name="type">
-				<option value="all"<?php echo ($this->filters['type'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('ALL'); ?></option>
-				<option value="hub"<?php echo ($this->filters['type'] == 'hub') ? ' selected="selected"' : ''; ?>>hub</option>
-				<option value="system"<?php echo ($this->filters['type'] == 'system') ? ' selected="selected"' : ''; ?>>system</option>
-				<option value="project"<?php echo ($this->filters['type'] == 'project') ? ' selected="selected"' : ''; ?>>project</option>
+				<option value="all"<?php echo ($this->filters['type'][0] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('ALL'); ?></option>
+				<option value="hub"<?php echo ($this->filters['type'][0] == 'hub') ? ' selected="selected"' : ''; ?>>hub</option>
+				<option value="system"<?php echo ($this->filters['type'][0] == 'system') ? ' selected="selected"' : ''; ?>>system</option>
+				<option value="project"<?php echo ($this->filters['type'][0] == 'project') ? ' selected="selected"' : ''; ?>>project</option>
+				<option value="partner"<?php echo ($this->filters['type'][0] == 'partner') ? ' selected="selected"' : ''; ?>>partner</option>
 			</select>
 		</label>
 		
@@ -108,7 +109,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 		case '0': $type = 'system';  break;
 		case '1': $type = 'hub';     break;
 		case '2': $type = 'project'; break;
-		case '3': $type = 'special'; break;
+		case '3': $type = 'partner'; break;
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -121,10 +122,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php 
 						if($row->published) {
 							//echo '<span class="check">'.JText::_('YES').'</span>';
-							echo ' <a href="index.php?option='.$this->option.'&amp;task=unpublish&amp;id[]='.$row->cn.'"><img src="/administrator/images/publish_x.png" /></a>';
+							echo ' <a href="index.php?option='.$this->option.'&amp;task=unpublish&amp;id[]='.$row->cn.'" title="Unpublish Group"><img src="/administrator/images/publish_x.png" /></a>';
 						} else {
 							//echo '<span class="off">'.JText::_('No').'</span>';
-							echo ' <a href="index.php?option='.$this->option.'&amp;task=publish&amp;id[]='.$row->cn.'"><img src="/administrator/images/publish_g.png" /></a>';
+							echo ' <a href="index.php?option='.$this->option.'&amp;task=publish&amp;id[]='.$row->cn.'" title="Publish Group"><img src="/administrator/images/publish_g.png" /></a>';
 						}
 					?>
 				</td>
