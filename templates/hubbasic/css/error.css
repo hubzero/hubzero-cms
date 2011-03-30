@@ -14,6 +14,7 @@
 */
 
 /* Start Common Styles */
+/*
 	* {
 		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		}
@@ -46,7 +47,7 @@
 		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		font-weight: normal;
 		}
-/* Links */
+
 	a, 
 	a:link, 
 	a:active, 
@@ -59,13 +60,14 @@
 		color: #6699cc;
 		border-bottom: 1px solid #6699cc;
 		}
-/* Wrap */
+
 	#wrap {
 		width: 602px;
 		margin: 60px auto 0 auto;
 		padding: 0 0 60px 0;
 		}
 /* Header */
+/*
 	#header {
 		margin: 0;
 		padding: 0;
@@ -73,7 +75,7 @@
 		border: 1px solid #ebebeb;
 		background: #444 url("../images/background.gif") right top repeat-y;
 		text-align: left;
-		/* Rounded corners */
+
 		-moz-border-radius-topright: 10px;
 		-moz-border-radius-topleft: 10px;
 		-webkit-border-top-right-radius: 10px;
@@ -82,10 +84,10 @@
 		-khtml-border-radius-topleft: 10px;
 		border-top-right-radius: 10px;
 		border-top-left-radius: 10px;
-		/* Shadows */
+
 		box-shadow: 0px 2px 4px #000;
-		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* length length length color */
-		-moz-box-shadow: #000 0px 2px 4px; /* color length length length */
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+		-moz-box-shadow: #000 0px 2px 4px;
 		}
 	#header h1 { 
 		margin: 0;
@@ -114,15 +116,23 @@
 	#header h1 a span {
 		color: #aaa;
 		}
+/* Wrap */                    
+#wrap {
+      margin:0 auto;
+      padding:0 45px;
+      }
+
 /* Outline */
 	#outline {
-		margin: 0;
-		padding: 35px;
+                width:600px;
+		margin: 20px auto;
+		padding: 0;
+                /*
 		border: 1px solid #ebebeb;
 		border-top: 8px solid #ccc;
 		text-align: right;
 		background: #ebebeb;
-		/* Rounded corners */
+
 		-moz-border-radius-bottomright: 10px;
 		-moz-border-radius-bottomleft: 10px;
 		-webkit-border-bottom-right-radius: 10px;
@@ -131,10 +141,11 @@
 		-khtml-border-radius-bottomleft: 10px;
 		border-bottom-right-radius: 10px;
 		border-bottom-left-radius: 10px;
-		/* Shadows */
+
 		box-shadow: 0px 2px 4px #000;
-		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* length length length color */
-		-moz-box-shadow: #000 0px 2px 4px; /* color length length length */
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);/
+		-moz-box-shadow: #000 0px 2px 4px;
+                */
 		}
 /* Error Message */
 	#errorbox {
@@ -265,3 +276,4 @@
 	* html #header h1 a:hover {
 		border: none;
 		}
+
