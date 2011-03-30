@@ -249,10 +249,12 @@ HUB.Groups = {
 			var w = $(window);
 			var wh = w.getSize().size.y;
 			var p = $('page_container_inner');
-			var ph = p.getSize().size.y;
-
-			if(wh > ph) {
-				p.setStyle('height',wh);
+			
+			if(p) {
+				var ph = p.getSize().size.y;
+				if(wh > ph) {
+					p.setStyle('height',wh);
+				}
 			}
 		}
 		

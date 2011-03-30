@@ -92,6 +92,9 @@ $links = array(
 	//if the template file exists use their custom template
 	if(is_file(JPATH_ROOT . DS . $temp_path)) {
 		
+		//partner template exists
+		$tmpl = true;
+		
 		//get the document
 		$doc =& JFactory::getDocument();
 
@@ -109,6 +112,9 @@ $links = array(
 		include JPATH_ROOT . DS . $temp_path;
 		
 	} else {
+		//partner template doesnt exist
+		$tmpl = false;
+		
 		//include the default template
 		include JPATH_ROOT . DS . $default_path;
 	}
@@ -129,27 +135,28 @@ $links = array(
 	$return = base64_encode($return);
 ?>
 
-	
-<div id="special_management">
-	<?php if(!$this->user->get('guest')) { ?>
-		<ul>
-			<?php if($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-				<li>Manage this group: </li>
-				<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>">Edit</a></li>
-				<li>|</li>
-				<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize'); ?>">Customize</a></li>
-				<li>|</li>
-				<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages'); ?>">Manage Group Pages</a></li>
-				<li>|</li>
-				<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite'); ?>">Invite Users</a></li>
-				<li>|</li>
-				<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete'); ?>">Delete</a></li>
-			<?php } else { ?>
-				<li>Welcome <?php echo $this->user->get('name'); ?>, </li>
-			<?php } ?>
-			<li><a href="/logout?return=<?php echo $return; ?>" class="logout">Logout</a>
-		</ul>
-	<?php } else { ?>
-		Want to edit this group? <a href="/login?return=<?php echo $return; ?>">Login now!</a>
-	<?php } ?>
-</div><!-- /#special_management -->
+<?php if($tmpl) { ?>	
+	<div id="special_management">
+		<?php if(!$this->user->get('guest')) { ?>
+			<ul>
+				<?php if($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+					<li>Manage this group: </li>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>">Edit</a></li>
+					<li>|</li>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize'); ?>">Customize</a></li>
+					<li>|</li>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages'); ?>">Manage Group Pages</a></li>
+					<li>|</li>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite'); ?>">Invite Users</a></li>
+					<li>|</li>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete'); ?>">Delete</a></li>
+				<?php } else { ?>
+					<li>Welcome <?php echo $this->user->get('name'); ?>, </li>
+				<?php } ?>
+				<li><a href="/logout?return=<?php echo $return; ?>" class="logout">Logout</a>
+			</ul>
+		<?php } else { ?>
+			Want to edit this group? <a href="/login?return=<?php echo $return; ?>">Login now!</a>
+		<?php } ?>
+	</div><!-- /#special_management -->
+<?php } ?>
