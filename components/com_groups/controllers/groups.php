@@ -346,11 +346,10 @@ class GroupsController extends Hubzero_Controller
 		$view = new JView( array('name'=>'browse') );
 		$view->option = $this->_option;
 		
-		// Check if they're logged in	
-		if (!$this->juser->get('guest')) {
-			$view->authorized = true;
-		} else {
-			$view->authorized = false;
+		$authorized = $this->_authorize();
+		$view->authorized = '';
+		if ($authorized) {
+			$view->authorized = $authorized;
 		}
 
 		// Push some styles to the template
@@ -358,7 +357,7 @@ class GroupsController extends Hubzero_Controller
 		
 		// Incoming
 		$view->filters = array();
-		$view->filters['type']   = 'hub';
+		$view->filters['type']   = array(1,3);
 		$view->filters['authorized'] = $view->authorized;
 		
 		// Filters for getting a result count
@@ -559,21 +558,14 @@ class GroupsController extends Hubzero_Controller
 
 		// Push the overview view to the array of sections we're going to output
 		array_unshift($sections, array('html'=>$body,'metadata'=>''));
-		
+	
+		//if we are a special group load special template
 		if($group->get('type') == 3) {
-			$sql = "SELECT * FROM #__menu WHERE menutype='mainmenu' AND parent='0' AND published='1' ORDER BY ordering ASC";
-			$this->database->setQuery($sql);
-			$menu = $this->database->loadAssocList();
-			
 			$view = new JView( array('name'=>'view', 'layout'=>'special') );
-			$view->group = $group;
-			$view->menu = $menu;
-			$special = $view->loadTemplate();	
+		} else {
+			$view = new JView( array('name'=>'view') );
 		}
 		
-
-		// Output HTML
-		$view = new JView( array('name'=>'view') );
 		$view->option = $this->_option;
 		$view->group = $group;
 		$view->user = $this->juser;
@@ -585,8 +577,6 @@ class GroupsController extends Hubzero_Controller
 		
 		$view->sections = $sections;
 		$view->tab = $tab;
-		
-		$view->special = $special;
 		
 		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$view->display();
@@ -2867,7 +2857,7 @@ class GroupsController extends Hubzero_Controller
 					} else {
 						$docs[$entry] = $img_file;
 					}
-				} else if (is_dir($path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'cvs') {
+				} else if (is_dir($path.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'cvs' && strtolower($entry) !== 'template') {
 					$folders[$entry] = $img_file;
 				}
 			}
