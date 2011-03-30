@@ -31,24 +31,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 $no_html = JRequest::getInt( 'no_html', 0 );
 if (!$no_html) { 
 ?>
-
-<?php 
-	//special groups hub menu at top
-	if($this->group->get('type') == 3) { ?>
-	<div id="nanoHUB_toolbar">
-		<ul>
-			<li><a href="#">Main Menu</a>
-				<ul>
-					<?php foreach($this->menu as $menu) { ?>
-						<li><a href="<?php echo $menu['alias']; ?>">&raquo; <?php echo $menu['name']; ?></a></li>
-					<?php } ?>
-				</ul>
-			</li>
-		</ul>
-	</div>
-<?php } ?>
-
-	<div id="page_container" <?php if($this->group->get('type') == 3) { echo 'class="hasToolbar"'; } ?>>
+<?php echo $this->special; ?>
+	<div class="innerwrap">
+	<div id="page_container">
 		<div id="page_container_inner">
 
 			<div id="page_sidebar">
@@ -93,6 +78,9 @@ if (!$no_html) {
 			</div><!-- //end page sidebar -->
 
 			<div id="page_main">
+				<?php if($this->group->get('type') == 3) { ?>
+					<a id="special-group-tab" href="/" title="nanoHUB.org Content :: Learn more about this group page and access to more nanoHUB.org content." class="tooltips">nanoHUB.org<span></span></a>
+				<?php } ?>
 				<div id="page_header">
 					<h2><?php echo $this->group->get('description'); ?></h2>
 				</div><!-- // end page header -->
@@ -124,4 +112,5 @@ if (!$no_html) {
 
 		</div> <!-- //close page container inner -->
 	</div> <!-- //close page container -->
+	</div>
 <?php } ?>

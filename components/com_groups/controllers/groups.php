@@ -152,7 +152,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		if($group_type == 3) {
-			$doc->addStyleSheet( "/components".DS."com_groups".DS."assets".DS."css".DS."groups_special.css" );
+			$doc->addStyleSheet( "/components".DS."com_groups".DS."assets".DS."css".DS."special.css" );
 		}
 	
 	}
@@ -555,11 +555,14 @@ class GroupsController extends Hubzero_Controller
 		array_unshift($sections, array('html'=>$body,'metadata'=>''));
 		
 		if($group->get('type') == 3) {
-			$sql = "SELECT * FROM #__menu WHERE menutype='mainmenu' AND parent='0' AND published='1'";
+			$sql = "SELECT * FROM #__menu WHERE menutype='mainmenu' AND parent='0' AND published='1' ORDER BY ordering ASC";
 			$this->database->setQuery($sql);
 			$menu = $this->database->loadAssocList();
-		} else {
-			$menu = '';
+			
+			$view = new JView( array('name'=>'view', 'layout'=>'special') );
+			$view->group = $group;
+			$view->menu = $menu;
+			$special = $view->loadTemplate();	
 		}
 		
 
@@ -576,7 +579,9 @@ class GroupsController extends Hubzero_Controller
 		
 		$view->sections = $sections;
 		$view->tab = $tab;
-		$view->menu = $menu;
+		
+		$view->special = $special;
+		
 		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$view->display();
 	}
@@ -910,6 +915,11 @@ class GroupsController extends Hubzero_Controller
 			return;
 		}
 		
+		if($group->get('type') == 2) {
+			JError::raiseError( 404, JText::_('You do not have permission to join this group.') );
+			return;
+		}
+		
 		$token = JRequest::getVar('token','','get');
 		if($token) {
 			//echo $token;
@@ -926,6 +936,12 @@ class GroupsController extends Hubzero_Controller
 				$db->query();
 			}
 		} else {
+			$invitees = $group->get('invitees');
+			if(!in_array($this->juser->get('id'), $invitees)) {
+				JError::raiseError( 404, JText::_('You do not have permission to join this group.') );
+				return;
+			}
+			
 			// Move the member from the invitee list to the members list
 			$group->add('members',array($this->juser->get('id')));
 			$group->remove('invitees',array($this->juser->get('id')));

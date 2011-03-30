@@ -83,9 +83,12 @@ iframe {
 }
 
 #page_menu li.protected {
+	height:1%;
 	padding:12px 10px 12px 20px; 
-	opacity:0.5;
 	background: url('../img/lock.png') no-repeat 95% 50%;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity:0.5;
 }
 
 #page_menu li a { 

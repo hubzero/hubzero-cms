@@ -1,0 +1,189 @@
+/* Hide all the unwanted elements */
+#header,
+#nav,
+#help-pane,
+#after-clear,
+#trail,
+#bottom-nav,
+#footer {
+	display:none;
+}
+
+/* Remove spacing from bottom */
+.innerwrap {
+	overflow:hidden;
+	margin-bottom:-16px;
+}
+
+/* Enlarge size for logo */
+#page_identity {
+	margin:15px 20px 10px 10px;
+	}
+#page_identity img { 
+	width:100%;
+	max-height:150px;
+	max-width:100%;
+	}
+
+/* */
+#content_aside {
+	display:none;
+	}
+#content_main {
+	width:100%;
+}
+
+/* Special Group Sliding Pane */
+#special-group-pane {
+	visibility:hidden;
+	height:0px;
+	overflow:hidden;
+	}
+#special-group-container { 
+	overflow:hidden;
+	background:#313131 url('../img/special/pane_bg.png') no-repeat bottom right;
+	padding:20px;
+	border:10px solid #000;
+	}
+#special-group-container p {
+	color:#b8b8b8;
+	text-shadow:#222 1px 1px 2px;
+	}
+#special-group-container h2 {
+	color:#d0c7b1;
+	text-shadow:#000 1px 1px 4px;
+	font-size:16px;
+	font-weight:400;
+	border:none;
+	line-height:1em;
+	margin-top:0px;
+	}
+#special-group-container a { 
+	color:#be7272;
+	border-bottom:1px dotted #b8b8b8;
+	}	
+#special-group-container a:hover {
+	border-bottom:1px solid #FFF;
+	color:#FFF;
+	}	
+	
+/* Column 1*/
+#special-group-container .first h1 {
+
+	}
+#special-group-container .first h1 a {
+	display:block;
+	height:70px;
+	text-indent:-555em;
+	background:url('../img/special/powered_by_nanohub.png') no-repeat top left;
+	border:none;
+	}
+#special-group-container .first h1 a:hover {
+	border:none;
+	}	
+#special-group-container .first .intro {
+	margin:0;
+	}
+#special-group-container .first h2 {
+	margin-top:25px;
+	}
+
+/* Column 2*/
+#special-group-container .usage {
+	margin:0;
+	padding:8px;
+	background:#666363;
+	-webkit-box-shadow:0 0 5px #000;
+	-moz-box-shadow:0 0 5px #000;
+	box-shadow:0 0 5px #000;
+	}
+#special-group-container .usage .usage_inner {
+	display:block;
+	height:120px;
+	border:1px solid #000;
+	background:url('../img/special/usage.png') no-repeat 50% 50%;
+	}
+#special-group-container .usage .usage_inner:hover {
+	border:1px solid #000
+	}
+	
+/* Column 3 */
+#special-group-container .nanohub-menu {
+	margin:10px 0 0 5px;
+	padding:0;
+	list-style:none;
+	}
+#special-group-container .nanohub-menu li {
+	margin:0.7em 0;
+	padding:0;
+	}
+#special-group-container .nanohub-menu li a {
+	border-bottom:none;
+	font-size:16px;
+	padding-left:20px;
+	background:url('../img/special/nanohub_menu_pointer.png') no-repeat 0% 50%;
+	}
+
+/* Special Group Pane Tab */
+#special-group-tab {
+	position:absolute;
+	display:block;
+	top:0;
+	right:20px;
+	z-index:9999px;
+	background:#47697f;
+	padding:4px 35px 4px 15px;
+	color:#FFF;
+	-webkit-box-shadow:0 0 4px #000;
+	-webkit-border-bottom-right-radius:5px;
+	-webkit-border-bottom-left-radius:5px;
+	-moz-box-shadow:0 0 4px #000;
+	-moz-border-radius-bottomright:5px;
+	-moz-border-radius-bottomleft:5px;
+	box-shadow:0 0 4px #000;
+	border-bottom-right-radius:5px;
+	border-bottom-left-radius:5px;
+	}
+#special-group-tab span {
+	position:absolute;
+	top:8px;
+	right:15px;
+	border-color: #000 transparent transparent transparent;
+	border-style: solid dashed dashed dashed;
+	border-width: 6px;
+	}
+#special-group-tab:hover {
+	border:none;
+	}
+#special-group-tab.active {
+	background:#000;
+	}
+#special-group-tab.active span {	
+	border-color: transparent transparent #FFF transparent;
+	border-style: dashed dashed solid dashed;
+	border-width: 6px;
+	top:4px;
+	}
+
+/******************************************************/
+/*	Special Group CSS classes for WIKI markup		  */
+	
+/******************************************************/
+
+#content_banner {
+	border:1px solid #ccc;
+	overflow:hidden;
+	padding:10px;
+	background:#efefef;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	border-radius:5px;
+	}
+#content_banner .second {
+	
+	}
+#content_banner h2,
+#content_banner h3 {
+	margin-top:0;
+	border-bottom:none;
+	}

@@ -195,7 +195,7 @@ HUB.Groups = {
 			
 			SqueezeBoxHub.fromElement(this,{
 				handler: 'adopt',
-				size: {x: 850 ,y: 446},
+				size: {x: 850 ,y: 446}
 			});
 			
 		});
@@ -209,12 +209,12 @@ HUB.Groups = {
 			
 			if(patt.test(id)) { 
 				SqueezeBoxHub.fromElement(el,{
-					handler: 'adopt',
+					handler: 'adopt'
 				});
 			} else {
 				SqueezeBoxHub.fromElement(el,{
 					handler: 'adopt',
-					size: {x: 300 ,y: 250},
+					size: {x: 300 ,y: 250}
 				});
 			}
 		});
@@ -229,15 +229,33 @@ HUB.Groups = {
 			}
 		});
 		
-		var tables = document.getElements('.dataset');
-		tables.each(function(table) {
-			var inputs = table.getElementsByTagName('input');
-			for (var i=0; i<inputs.length; i++) {
-				if (inputs[i].type == 'checkbox') {
-					inputs[i].onclick = function() { HUB.Groups.checkRow(this); }
+		var special_pane = $('special-group-pane');
+		var special_tab = $('special-group-tab');
+		
+		if(special_tab) {
+			var sp = new Fx.Slider( special_pane, {duration: 800} );
+			
+			special_tab.addEvent('click',function(e) {
+				new Event(e).stop();
+				if(special_tab.hasClass('active')) { 
+					special_tab.removeClass('active')
+				} else {
+					special_tab.addClass('active')	
 				}
-			}
-		});
+				special_pane.setStyle('visibility','visible');
+				sp.toggle();
+			});
+		}
+		
+		var w = $(window);
+		var wh = w.getSize().size.y;
+		var p = $('page_container_inner');
+		var ph = p.getSize().size.y;
+		
+		if(wh > ph) {
+			p.setStyle('height',wh);
+		}
+		
 	}
 }
 
