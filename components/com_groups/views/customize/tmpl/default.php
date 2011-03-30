@@ -71,9 +71,12 @@ $levels = array(
 			<label>
 				<select name="group[logo]" id="group_logo" rel="<?php echo $this->group->get('gidNumber'); ?>">
 					<option value="">Select a group logo...</option>
-					<?php for($i=0; $i<count($this->logo_names); $i++) { ?>
-						<?php $sel = ($this->logo_names[$i] == $this->group->get('logo')) ? 'selected' : ''; ?>
-						<option <?php echo $sel; ?> value="<?php echo $this->logo_fullpaths[$i]; ?>"><?php echo $this->logo_names[$i]; ?></option>
+					<?php foreach($this->logos as $logo) { ?>
+						<?php 
+							$remove = JPATH_SITE . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS; 
+							$sel = (str_replace($remove,"",$logo) == $this->group->get('logo')) ? 'selected' : ''; 
+						?>
+						<option <?php echo $sel; ?> value="<?php echo str_replace(JPATH_SITE,"",$logo); ?>"><?php echo str_replace($remove,"",$logo); ?></option>
 					<?php } ?>
 				</select>
 			</label>

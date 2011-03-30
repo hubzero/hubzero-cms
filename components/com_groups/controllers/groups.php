@@ -1953,17 +1953,8 @@ class GroupsController extends Hubzero_Controller
 		//if path is a directory then load images
 		if(is_dir($asset_path)) {
 			//get all images that are in group asset folder and could be a possible group logo
-			$logo_names = JFolder::files($asset_path,'.jpg|.jpeg|.png|.gif',true, false);
-
-			//get the path for images in sub folders
-			$logo_choices_fullpath = JFolder::files($asset_path,'.jpg|.jpeg|.png|.gif',true, true);
-			foreach($logo_choices_fullpath as $lfp) {
-				$logo_fullpaths[] = str_replace(JPATH_SITE,'',$lfp);
-			}
-		} else {
-			$logo_fullpaths = array();
+			$logos = JFolder::files($asset_path,'.jpg|.jpeg|.png|.gif',false, true);
 		}
-		
 		
 		// Get plugins
 		JPluginHelper::importPlugin( 'groups' );
@@ -1997,8 +1988,7 @@ class GroupsController extends Hubzero_Controller
 		$view->title = $this->_title;
 		$view->group = $group;
 		
-		$view->logo_names = $logo_names;
-		$view->logo_fullpaths = $logo_fullpaths;
+		$view->logos = $logos;
 		$view->hub_group_plugins = $hub_group_plugins;
 		$view->group_plugin_access = $group_plugin_access;
 		
