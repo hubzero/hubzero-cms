@@ -80,8 +80,8 @@ class ContributeController extends Hubzero_Controller
 			case 'orderupc':     $this->reorder_author(); break;
 			case 'orderdownc':   $this->reorder_author(); break;
 			
-			case 'new':     $this->edit();   break;
-			case 'edit':    $this->edit();   break;
+			/*case 'new':     $this->edit();   break;
+			case 'edit':    $this->edit();   break;*/
 			case 'save':    $this->save();   break;
 			case 'submit':  $this->submit(); break;
 			case 'delete':  $this->delete(); break;
@@ -217,7 +217,7 @@ class ContributeController extends Hubzero_Controller
 			$id = JRequest::getInt( 'id', 0 );
 		
 			$this->check_progress($id);
-		
+
 			$this->$activestep();
 		}
 	}
@@ -268,15 +268,13 @@ class ContributeController extends Hubzero_Controller
 		
 		// Instantiate a new resource object
 		$row = new ResourcesResource( $this->database );
-		if ($row === null) {
-			if ($id) {
-				// Load the resource
-				$row->load( $id );
-			} else {
-				// Load the type and set the state
-				$row->type = JRequest::getVar( 'type', '' );
-				$row->published = 2;
-			}
+		if ($id) {
+			// Load the resource
+			$row->load( $id );
+		} else {
+			// Load the type and set the state
+			$row->type = JRequest::getVar( 'type', '' );
+			$row->published = 2;
 		}
 		
 		// Output HTML
