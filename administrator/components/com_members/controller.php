@@ -730,7 +730,7 @@ class MembersController extends Hubzero_Controller
 		
 		// Get a list of all groups
 		$filters = array();
-		$filters['type'] = 'all';
+		$filters['type'] = array('all');
 		$filters['limit'] = 'all';
 		$filters['search'] = '';
 		$filters['limit'] = 'all';

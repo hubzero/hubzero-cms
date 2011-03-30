@@ -1665,22 +1665,28 @@ class Hubzero_Group
 	{
 		$db = &JFactory::getDBO();
 		
-		$type = !empty($filters['type']) ? $filters['type'] : 'all';
+		// Type 0 - System Group
+		// Type 1 - HUB Group
+		// Type 2 - Project Group
+		// Type 3 - Partner "Special" Group
+		$gTypes = array('all','system','hub','project','partner','0','1','2','3');
 		
-		if (!in_array($type, array('system', 'hub', 'project', 'all', '0', '1', '2')))
-			return false;
+		$types = !empty($filters['type']) ? $filters['type'] : array('all');
 		
-		if ($type == 'all')
+ 		foreach($types as $type) {
+			if (!in_array($type, $gTypes))
+				return false;
+		}
+		
+		if(in_array('all',$types)) {
 			$where_clause = '';
-		else {
-			if ($type == 'system')
-				$type = '0';
-			elseif ($type == 'hub')
-				$type = '1';
-			elseif ($type == 'project')
-				$type = '2';
-			
-			$where_clause = 'WHERE type=' . $db->Quote($type);
+		} else {
+			$t = implode(",",$types);
+			if($t == 'hub') $t = 1;
+			if($t == 'project') $t = 2;
+			if($t == 'partner') $t = 3;
+			if($t == 'system') $t = 0;
+			$where_clause = 'WHERE type IN (' . $t . ')';
 		}
 		
 		if (isset($filters['search']) && $filters['search'] != '') {
@@ -1704,21 +1710,9 @@ class Hubzero_Group
 			$where_clause .= " (LOWER(description) LIKE '" . $filters['index'] . "%') ";
 		}
 		
-		if (isset($filters['authorized']) && $filters['authorized']) {
-			if ($filters['authorized'] === 'admin') {
-				$where_clause .= "";
-			}
-			else {
-				if ($where_clause != '') {
-					$where_clause .= " AND";
-				}
-				else {
-					$where_clause .= "WHERE";
-				}
-				$where_clause .= " privacy<=1";
-			}
-		}
-		else {
+		if(isset($filters['authorized']) && $filters['authorized'] === 'admin') {
+			$where_clause .= "";
+		} else {
 			if ($where_clause != '') {
 				$where_clause .= " AND";
 			}

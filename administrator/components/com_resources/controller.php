@@ -730,7 +730,7 @@ class ResourcesController extends Hubzero_Controller
 			$filters = array();
 			$filters['authorized'] = 'admin';
 			$filters['fields'] = array('cn','description','published','gidNumber','type');
-			$filters['type'] = 'hub';
+			$filters['type'] = array(1,3);
 			$filters['sortby'] = 'description';
 			$groups = Hubzero_Group::find($filters);
 
