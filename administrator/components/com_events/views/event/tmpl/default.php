@@ -147,7 +147,7 @@ var HUB = {};
 							<?php } ?>
 						</td>
 					</tr>
-					<!-- REPEAT -->
+					<!-- REPEAT
 					<tr>
 						<td class="key" style="vertical-align:top;"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REPEATTYPE'); ?></td>
 						<td colspan="3">
@@ -243,7 +243,7 @@ var HUB = {};
 							</table>
 						</td>
 					</tr>
-				<!-- END REPEAT -->
+				END REPEAT -->
 				</tbody>
 			</table>
 		</fieldset>
