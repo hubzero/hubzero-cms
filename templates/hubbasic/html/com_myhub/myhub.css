@@ -1,0 +1,293 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_myhub
+	-- -- -- -- -- -- --
+
+*/
+	#personalize,
+	#finish {
+		padding-left: 20px;
+		background: url("../../../../components/com_myhub/images/cog.png") 0 0 no-repeat;
+		}
+/* Fix some content container problems */
+	#content {
+		position: static;
+		}
+	#content-header-extra {
+		/*position: static;
+		margin-top: -5em;
+		float: right;
+		display: block;
+		width: 214px;
+		padding-right: 15px;
+		*/
+		}
+	#content .main {
+		background: #eee url("../../../../components/com_myhub/images/bg-myhub.gif");
+		padding-left: 0;
+		padding-right: 0;
+		}
+	/* Setting a background image seems to cause IE7 to become extrememly slow when scrolling the page */
+	html>body #content .main {
+		*background: #eee;
+	}
+
+/* Sortable Table */
+	#droppables {
+		table-layout: fixed;
+		border: none;
+		empty-cells: show;
+		width: 100%;
+		}
+	#droppables tbody,
+	#droppables tbody tr td {
+		border: none;
+		}
+	.sortable {
+		vertical-align: top;
+		padding: 5px;
+		}
+	.sortable ul {
+		margin: 1em 0 1em 1.5em;
+		}
+	.sortable li {
+		margin: 0;
+		padding: 0;
+		}
+	#droppables tbody tr td#sortcol_0 {
+		padding-left: 20px;
+		padding-right: 0px;
+		}
+	#droppables tbody tr td#sortcol_1 {
+		padding-left: 10px;
+		padding-right: 10px;
+		}
+	#droppables tbody tr td#sortcol_2 {
+		padding-left: 0px;
+		padding-right: 20px;
+		}
+/* Dragables */
+	div.draggable {
+		position: relative;
+		top: 0px;
+		left: 0px;
+		padding: 0px;
+		margin: 20px 5px;
+		}
+	div.draggable .cwrap {
+		margin: 0;
+		padding: 0;
+		position: relative;
+		border: 1px solid #ccc;
+		background-color: #fff;
+		/* Rounded corners */
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-khtml-border-radius: 10px;	
+		border-radius: 10px;
+		/* Shadows */
+		box-shadow: 0px 2px 4px #CCC;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* length length length color */
+		-moz-box-shadow: #ccc 0px 2px 4px; /* color length length length */
+		}
+	div.draggable .handle {
+		position: relative;
+		font-size: 12px;
+		font-weight: bold;
+		line-height: 1em;
+		background-color: #939eaf;
+		margin: 0;
+		padding: 6px 10px;
+		color: #fff;
+		border: 1px solid #939eaf;
+		border-bottom: none;
+		/* Rounded corners */
+		-moz-border-radius-topright: 10px;
+		-moz-border-radius-topleft: 10px;
+		-webkit-border-top-right-radius: 10px;
+		-webkit-border-top-left-radius: 10px;
+		-khtml-border-radius-topright: 10px;	
+		-khtml-border-radius-topleft: 10px;
+		border-top-right-radius: 10px;
+		border-top-left-radius: 10px;
+		}
+	div.draggable .emphasis .handle {
+		background-color: #777;
+		border-color: #777;
+		}
+	div.draggable li {
+		padding-left: 13px;
+		}
+	div.draggable div.body {
+		min-height: 50px;
+		padding: 0;
+		margin: 0;
+		}
+	div.draggable .emphasis {
+		background-color: #909090;
+		color: #ccc;
+		border-color: #777;
+		}
+	div.draggable .emphasis a,
+	div.draggable .emphasis .expandedlist li a,
+	div.draggable .emphasis .compactlist li a {
+		color: #fff;
+		}
+	div.draggable div.body p {
+		margin-right: 1em;
+		margin-left: 1em;
+		}
+	div.draggable div.body h4 {
+		background-color: #efefef;
+		margin: 0;
+		padding: 0.2em 0.5em;
+		}
+	div.draggable .close { 
+		background: url("../../../../components/com_myhub/images/close.png") 0 0 no-repeat; 
+		margin: -13px 0 0 0;
+		padding: 0;
+		width: 30px; 
+		height: 30px;
+		text-indent: -400em;
+		overflow: hidden;
+		border: none;
+		position: absolute;
+		left: -15px;
+		display: block;
+		z-index: 9999;
+		}
+	div.draggable .close:hover {
+		background-position: 0 -30px;
+		border: none;
+		}
+/* Module dock */
+	#modules-dock {
+		padding: 0;
+		margin: 0;
+		background-color: #fff;
+		}
+	#modules-dock form {
+		margin: 0 10px 0 0;
+		padding: 1em;
+		background-color: #fff;
+		}
+	#modules-dock h3 {
+		margin: 0;
+		padding: 0;
+		display: none;
+		}
+	#cpnlc ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		}
+	#cpnlc li {
+		margin: 0.2em 0;
+		padding: 0.5em 0 0.5em 0;
+		clear: both;
+		background-image: none;
+		}
+	#cpnlc li input {
+		float: right;
+		margin-top: 0;
+		}
+	#cpnlc li label {
+		float: left;
+		}
+	.undo {
+		background: url('../../../../components/com_myhub/images/arrow_undo.png') 0 0 no-repeat;
+		padding-left: 20px;
+		}
+/* Module nav buttons */
+	div.draggable .module-nav {
+		margin-left: 1em;
+		margin-right: 1em;
+		}
+	div.draggable .module-nav li {
+		display: inline;
+		padding: 0;
+		margin: 0 0.2em 0 0;
+		}
+	div.draggable .module-nav li a,
+	div.draggable .more a {
+		font-size: 90%;
+		border: 1px solid #ccc;
+		padding: 0.2em 0.5em;
+		background-color: #c1c1c1;
+		color: #fff;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-khtml-border-radius: 10px;	
+		border-radius: 10px;
+		}
+	div.draggable .module-nav li a:hover,
+	div.draggable .more a:hover {
+		background-color: #333;
+		color: #fff;
+		}
+/* Module info list */
+	div.draggable .expandedlist {
+		position: relative;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		}
+	div.draggable .expandedlist li {
+		border: none;
+		border-bottom: 1px solid #ddd;
+		margin: 0;
+		padding: 0.6em 0 0.6em 2.5em;
+		background-position: 0.7em 1em;
+		}
+	div.draggable .expandedlist li a {
+		}
+	div.draggable .expandedlist li span {
+		font-size: 85%;
+		color: #999;
+		display: block;
+		}
+	div.draggable .expandedlist li span span {
+		color: #999;
+		margin-left: 0;
+		margin-right: 1.5em;
+		font-size: 1em;
+		display: inline;
+		}
+/* Module compact list */
+	div.draggable .compactlist {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		}
+	div.draggable .compactlist li {
+		border: none;
+		border-bottom: 1px solid #ddd;
+		margin: 0;
+		padding: 0.6em 0 0.6em 2.5em;
+		position: relative;
+		}
+	div.draggable .compactlist li a {
+		margin-right: 4em;
+		}
+	div.draggable .compactlist li span {
+		color: #999;
+		margin-left: 20px;
+		}
+	div.draggable .compactlist li span span {
+		color: #999;
+		display: block;
+		position: absolute;
+		top: 0.7em;
+		right: 10px;
+		font-size: 90%;
+		}
