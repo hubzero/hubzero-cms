@@ -73,7 +73,7 @@ $juser =& JFactory::getUser();
 		<div id="header-wrap">
 			<a name="header"></a>
 			<h1>
-				<a href="<?php echo $this->baseurl ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
+				<a href="." title="<?php echo $config->getValue('config.sitename'); ?>">
 					<?php echo $config->getValue('config.sitename'); ?> 
 					<span id="tagline">A HUBzero site</span>
 				</a>
