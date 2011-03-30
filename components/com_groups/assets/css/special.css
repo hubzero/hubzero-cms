@@ -120,7 +120,7 @@
 	background:#47697f url('../img/special/special-tab-test.png') no-repeat 0% 100%;
 	padding:0;
 	color:#FFF;
-	-webkit-box-shadow:0 0 20px #000;
+	-webkit-box-shadow:0px 3px 5px #000;
 	-webkit-border-bottom-right-radius:5px;
 	-webkit-border-bottom-left-radius:5px;
 	text-indent:-555em;
