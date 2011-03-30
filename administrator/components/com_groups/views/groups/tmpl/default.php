@@ -122,10 +122,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php 
 						if($row->published) {
 							//echo '<span class="check">'.JText::_('YES').'</span>';
-							echo ' <a href="index.php?option='.$this->option.'&amp;task=unpublish&amp;id[]='.$row->cn.'" title="Unpublish Group"><img src="/administrator/images/publish_x.png" /></a>';
+							echo ' <a href="index.php?option='.$this->option.'&amp;task=unpublish&amp;id[]='.$row->cn.'" title="Unpublish Group"><img src="/administrator/images/publish_g.png" /></a>';
 						} else {
 							//echo '<span class="off">'.JText::_('No').'</span>';
-							echo ' <a href="index.php?option='.$this->option.'&amp;task=publish&amp;id[]='.$row->cn.'" title="Publish Group"><img src="/administrator/images/publish_g.png" /></a>';
+							echo ' <a href="index.php?option='.$this->option.'&amp;task=publish&amp;id[]='.$row->cn.'" title="Publish Group"><img src="/administrator/images/publish_x.png" /></a>';
 						}
 					?>
 				</td>
