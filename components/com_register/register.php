@@ -47,6 +47,10 @@ ximport('Hubzero_User_Helper');
 ximport('Hubzero_Toolbox');
 require_once( JPATH_COMPONENT.DS.'controller.php' );
 
+$jacl =& JFactory::getACL();
+$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+
 // Instantiate controller
 $controller = new RegisterController();
 $controller->execute();
