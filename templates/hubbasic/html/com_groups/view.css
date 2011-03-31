@@ -1,0 +1,467 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_groups/assets/css/view.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*---------------------------------------------------------------
+	Group Page Structure
+---------------------------------------------------------------*/
+
+@import url("../../../../components/com_groups/assets/css/modules.css");
+
+/* ----------------------- */
+
+iframe {
+	border:none;
+}
+
+/* ----------------------- */
+
+/* Fix for HUBbasic Template */
+.com_groups #content-wrap {
+	overflow:hidden;
+	padding:0 0 0 0;
+}
+
+.com_groups #content-wrap a { 
+	border:none;
+	}
+
+/* ----------------------- */
+
+#content { 
+	padding:0px; 
+	margin:0px; 
+}
+
+#page_container { 
+	width:100%; 
+	float:left; 
+	overflow:hidden; 
+	background-color:#fff;
+}
+
+#page_container_inner { 
+	width:100%; 
+	float:left; 
+	position:relative; 
+	right:82%;
+	background:#efefef url('../../../../components/com_groups/assets/img/border-right.jpg') repeat-y top right; 
+}
+
+/* ----------------------- */
+
+#page_sidebar { 
+	float:left; 
+	width:18%; 
+	position:relative; 
+	left:82%; 
+}
+
+#page_sidebar_inner {
+	padding:10px 0 10px 0;
+}
+
+/* ----------------------- */
+
+#page_identity {
+	display:block; 
+	margin:10px 8%;
+	width:84%; 
+}
+
+#page_identity:hover { 
+	border:none; 
+}
+
+#page_identity img { 
+	max-width:100%;
+	max-height:200px;
+	/*max-height:73px;*/
+}
+
+/* ----------------------- */
+
+#page_menu { 
+	margin:0px; 
+	padding:0px; 
+	list-style:none; 
+	margin-bottom:50px;
+} 
+
+#page_menu li { 
+	float:none; 
+	line-height:1em; 
+	margin:0; 
+}
+
+#page_menu li.protected {
+	height:1%;
+	padding:12px 10px 12px 20px; 
+	background: url('../../../../components/com_groups/assets/img/lock.png') no-repeat 95% 50%;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity:0.5;
+}
+
+#page_menu li a { 
+	display:block; 
+	padding:12px 10px 12px 20px; 
+	color:#444; 
+	margin:0; 
+	font-size:14px; 
+	margin-right:0px;
+}
+
+#page_menu li a span {
+	float:right;
+	color:#ccc;
+}
+
+#page_menu li a:hover { 
+	color:#444; 
+	border:none; 
+	background:#ccc;
+	margin-right:0px;
+}
+
+#page_menu li a:hover span {
+	color:#444;
+}
+
+#page_menu li .active,
+#page_menu li .active:hover { 
+	background-color:#fff; 
+	color:#444; 
+	font-weight:bold; 
+	border-bottom:1px solid #bbb; 
+	border-top:1px solid #bbb; 
+	border-right:1px solid #fff;
+	background-image:none; 
+	margin-right:-1px;
+}
+
+#page_menu li .active span,
+#page_menu li .active:hover span {
+	display:none;
+}
+
+#page_menu ul { 
+	padding:0px; 
+	margin:0 0 0 20px; 
+	list-style:none; 
+}
+
+#page_menu ul li { 
+	float:none; 
+	line-height:1em; 
+	margin:0px;
+}
+
+#page_menu ul li a { 
+	display:block; 
+	padding:8px 10px 8px 35px; 
+	background: url('../../../../components/com_groups/assets/img/page.png') no-repeat 10px 50%;
+	color:#777;
+	font-size:11px; 
+}
+
+#page_menu ul li a:hover {
+	border:none;
+	text-decoration:underline; 
+	background: url('../../../../components/com_groups/assets/img/page.png') no-repeat 10px 50%;
+}
+
+#page_menu ul li .active,
+#page_menu ul li .active:hover { 
+	font-weight:bold; 
+	text-decoration:none; 
+	border:none; 
+	background:#fff url('../../../../components/com_groups/assets/img/page.png') no-repeat 10px 50%; 
+	color:#444; 
+	border-bottom:1px solid #999; 
+	border-top:1px solid #999; 
+	border-left:1px solid #999; 
+}
+
+/* ----------------------- */
+
+#page_main { 
+	float:left; 
+	width:82%; 
+	position:relative; 
+	left:82%; 
+}
+
+#page_content { 
+	overflow:hidden; 
+	margin:15px 20px 20px 20px;
+}
+
+#page_notifications { 
+	margin:0 20px; 
+}
+
+/* ----------------------- */
+
+#page_header { 
+	color:#444; 
+	margin:0 20px; 
+	border-bottom:3px double #ccc;
+}
+
+#page_header h2 { 
+	margin:0px; 	
+	border-bottom:0px;
+	line-height:1em;
+	padding:20px 0 15px;
+}
+
+/* ----------------------- */
+
+
+#content_aside { 
+	float:right; 
+	width:25%; 
+}
+
+#modules { 
+	margin:0 0 0 20px; 
+}
+
+
+#content_main { 
+	float:left; 
+	width:75%;
+}
+
+#content_main h2,
+#content_main h3 {
+	border-bottom:none;
+}
+
+#content_main img { 
+	max-width:100%; 
+}
+
+
+.group-content-header { 
+	padding:5px 0; 
+	border-bottom:1px solid #cfcfcf; 
+	overflow:hidden;
+}
+
+.group-content-header h3 {
+	float:left;
+	margin:0;
+	font-size:16px;
+	font-weight:normal; 
+	color:#999;
+}
+
+.group-content-header-extra {
+	float:right;
+}
+
+.group-content-header-extra a {
+	padding:2px 8px;
+	font-size:11px;
+	color:#000;
+}
+
+.group-content-header-extra a:hover {
+	border:none;
+	background-color:#FC9022;
+	text-shadow:0px 1px 1px #888;
+	color:#FFF;
+	-webkit-border-radius:15px;
+	-moz-border-radius:15px;
+	-o-border-radius:15px;
+	border-radius:15px;
+}
+
+#description {
+	border:1px solid #fff;
+}
+
+#member_browser { 
+	overflow:hidden; 
+	margin:10px 0;
+}
+
+#member_browser .member { 
+	float:left; 
+	width:12%; 
+	text-align:center; 
+	padding:0 1%;
+}
+
+#member_browser .member:hover {
+	border:none;
+}
+
+#member_browser .member img { 
+	width:48px; 
+	height:48px; 
+	overflow:hidden;
+}
+
+#member_browser .member-border {
+	border:1px solid #ccc;
+	padding:1px;
+}
+
+
+
+/* ----------------------- */
+
+a#accept,
+a#join { 
+	margin:5px; 
+	color:#FFF;
+	border:1px solid #fff; 
+	background-color:#e07a14; 
+	display:block; 
+	padding:7px 0; 
+	text-align:center; 
+	font-size:14px; 
+}
+
+a#accept:hover,
+a#join:hover { 
+	background-color:#e69443; 
+}
+
+p#invite,
+p#closed { 
+	margin:5px; 
+	color:#FFF; 
+	border:1px solid #fff; 
+	background-color:#444;  
+	padding:7px 0;
+	text-align:center; 
+	background-image:none; 
+	font-size:14px; 
+}
+
+/* ----------------------- */
+
+#controller { 
+	border:1px solid #cfcfcf; 
+	background-color:#efefef; 
+	list-style:none; 
+	margin:0px 0px 15px 20px; 
+	padding:0px; 
+	overflow:hidden; 
+}
+
+#controller #status { 
+	background-color:#fff; 
+	border-bottom:1px solid #cfcfcf; 
+	padding:10px 0; 
+	text-align:center; 
+	font-size:16px; 
+	font-weight:200; 
+	margin:0px; 
+}
+
+#controller #controls {
+	text-align:center; 
+	background:url('../../../../components/com_groups/assets/img/controller_bg.png') repeat-x top left; 
+}
+
+#controls #toggle-controls { 
+	border-top:1px solid #dedddd; 
+	margin:0 5px; 
+	padding:2px 0; 
+	display:none; 
+	background:url('../../../../components/com_groups/assets/img/controller_arrow.png') no-repeat 88% 50%; 
+	color:#666; 
+	font-size:90%; 
+}
+
+#controls #toggle-controls:hover { 
+	border:none; 
+	border-top:1px solid #dedddd; 
+	color:#000; 
+}
+
+#controls #toggle-controls.active {
+	background:url('../../../../components/com_groups/assets/img/controller_arrow_active.png') no-repeat 88% 50%;
+}
+
+#controls ul { 
+	margin:0px; 
+	padding:5px 0; 
+	list-style:none; 
+}
+
+#controls ul li { 
+	float:none; 
+	margin:0px; 
+}
+
+#controls ul li a { 
+	display:block; 
+	padding:2px 4px; 
+	margin:0 5px; 
+	color:#767576; 
+	text-align:left; 
+}
+
+#controls ul li a:hover { 
+	background-color:#cfcfcf; 
+	border:none; 
+	color:#444;
+}
+
+#controller li a.cancel_group_membership { 
+	background: url('../../../../components/com_groups/assets/img/group_cancel.png') 98% 50% no-repeat;  
+	padding-right:25px; 
+	float:none; 
+	width:auto;
+	height:auto; 
+	text-indent:0px; 
+}
+
+#controller li a.join { 
+	background: url('../../../../components/com_groups/assets/img/user_add.png') 98% 50% no-repeat; 
+}
+
+#controller li a.invite { 
+	background: url('../../../../components/com_groups/assets/img/group_invite.png') 98% 50% no-repeat; 
+}
+
+#controller li a.edit { 
+	background: url('../../../../components/com_groups/assets/img/group_edit.png') 98% 50% no-repeat;
+}
+
+#controller li a.customize { 
+	background: url('../../../../components/com_groups/assets/img/group_customize.png') 98% 50% no-repeat;
+}
+ 
+#controller li a.delete { 
+	background: url('../../../../components/com_groups/assets/img/group_delete.png') 98% 50% no-repeat;
+} 
+
+#controller li a.accept { 
+	background: url('../../../../components/com_groups/assets/img/group_accept.png') 98% 50% no-repeat;
+}
+
+#controller .manager { 
+	color:#ff00c6;
+}
+
+#controller .member { 
+	color:#14d000;
+}
+
+#controller .pending { 
+	color:#970404;
+}
+
+#controller .invitee { 
+	color:#2d548e;
+}
