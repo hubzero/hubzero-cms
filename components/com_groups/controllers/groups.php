@@ -2031,7 +2031,7 @@ class GroupsController extends Hubzero_Controller
 			return;
 		}
 		
-		$customization = JRequest::getVar('group','','POST');
+		$customization = JRequest::getVar('group','','POST','none',2);
 		$plugins = JRequest::getVar('group_plugin','','POST');
 		
 		//get the logo
@@ -2289,7 +2289,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		//get the page vars being posted
-		$page = JRequest::getVar('page','','post');
+		$page = JRequest::getVar('page',array(),'post','none',2);
 		
 		//check if the page title is set
 		if($page['title'] == '') {
@@ -2409,7 +2409,7 @@ class GroupsController extends Hubzero_Controller
 		}
 		
 		//get the post module vars
-		$module = JRequest::getVar('module');
+		$module = JRequest::getVar('module',array(),'post','none',2);
 		
 		//instantiate database and group module objects
 		$db =& JFactory::getDBO();
