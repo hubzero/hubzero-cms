@@ -706,9 +706,6 @@ class RegisterController extends Hubzero_Controller
 					$hubMonitorEmail = $xhub->getCfg('hubMonitorEmail');
 					$hubHomeDir      = $xhub->getCfg('hubHomeDir');
 		
-					$mconfig   =& JComponentHelper::getParams( 'com_members' );
-					$public = $mconfig->get('privacy', '0');
-
 					// Attempt to get the new user
 					$xprofile = Hubzero_User_Profile::getInstance($user->get('id'));
 	
@@ -725,9 +722,10 @@ class RegisterController extends Hubzero_Controller
 							}
 							else {
 								$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1) );
-								$xprofile->set('public', $public);
 							}
 						}
+
+						$xprofile->set('public', JComponentHelper::getParams('com_members')->get('privacy', '0'));
 
 						// Do we have a return URL?
 						$regReturn = JRequest::getVar('return', ''); 
