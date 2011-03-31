@@ -302,7 +302,7 @@ class Hubzero_Factory
 			ximport('Hubzero_Log');
 
 			$instances[0] =& new Hubzero_Log();
-			$handler =& new Hubzero_Log_FileHandler("/var/log/hub/xhub.log");
+			$handler =& new Hubzero_Log_FileHandler("/var/log/hubzero/cmsdebug.log");
 			$instances[0]->attach(HUBZERO_LOG_DEBUG, $handler);
 		}
 
@@ -320,7 +320,7 @@ class Hubzero_Factory
 			ximport('Hubzero_Log');
 
 			$instances[] =& new Hubzero_Log();
-			$handler =& new Hubzero_Log_FileHandler("/var/log/hub/auth.log");
+			$handler =& new Hubzero_Log_FileHandler("/var/log/hubzero/cmsauth.log");
 			$instances[0]->attach(HUBZERO_LOG_AUTH, $handler);
 		}
 
