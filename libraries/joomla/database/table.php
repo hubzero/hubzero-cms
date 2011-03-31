@@ -664,7 +664,7 @@ class JTable extends JObject
 			$this->$k = intval( $oid );
 		}
 
-		$query = 'UPDATE '. $this->_tbl
+		$query = 'UPDATE LOW_PRIORITY '. $this->_tbl
 		. ' SET hits = ( hits + 1 )'
 		. ' WHERE '. $this->_tbl_key .'='. $this->_db->Quote($this->$k);
 		$this->_db->setQuery( $query );
