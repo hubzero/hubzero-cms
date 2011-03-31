@@ -987,8 +987,8 @@ class RegisterController extends Hubzero_Controller
 	{
 		// Incoming
 		$no_html = JRequest::getInt('no_html',0);
-		$password = JRequest::getVar('pass','');
-		$username = JRequest::getVar('user','');
+		$password = JRequest::getVar('pass','','post');
+		$username = JRequest::getVar('user','','post');
 		
 		// Instantiate a new registration object
 		$xregistration = new Hubzero_Registration();

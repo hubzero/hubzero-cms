@@ -403,8 +403,9 @@ HUB.Register = {
 		}
 		passwd = $('password').value;
 
-		var checked = new Ajax('/register/passwordstrength?no_html=1&pass='+passwd+'&user='+usernm, {
-			method: 'get',
+		var checked = new Ajax('/register/passwordstrength', {
+			method: 'post',
+			data: 'no_html=1&pass='+passwd+'&user='+usernm,
 			update: $('meter-container')
 		}).request();
 	}
