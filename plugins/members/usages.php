@@ -51,14 +51,7 @@ class plgMembersUsages extends JPlugin
 	
 	public function &onMembersAreas( $authorized ) 
 	{
-		if (!$this->_authorize()) {
-			return array();
-		}
-		
-		$areas = array(
-			'usages' => JText::_('PLG_MEMBERS_USAGES')
-		);
-		
+		$areas = $this->_authorize() ? array('usages' => JText::_('PLG_MEMBERS_USAGES')) : array();
 		return $areas;
 	}
 	
