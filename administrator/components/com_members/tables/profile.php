@@ -141,7 +141,8 @@ class MembersProfile extends JTable
 			if ($filters['show'] == 'contributors') {
 				$sqlsearch .= " AND";
 			}
-			$sqlsearch .= " ( (LOWER(m.surname) LIKE '".$filters['index']."%') OR (LOWER(SUBSTRING_INDEX(m.name, ' ', -1)) LIKE '".$filters['index']."%') ) ";
+			$sqlsearch .= 'MATCH(m.name) AGAINST (\''.$filters['index'].'\' IN BOOLEAN MODE)';
+			//" ( (LOWER(m.surname) LIKE '".$filters['index']."%') OR (LOWER(SUBSTRING_INDEX(m.name, ' ', -1)) LIKE '".$filters['index']."%') ) ";
 		}
 		
 		if (isset($filters['search']) && $filters['search'] != '') {
@@ -192,7 +193,7 @@ class MembersProfile extends JTable
 					$sqlsearch .= " (";
 					foreach ($words as $word) 
 					{
-						$sqlsearch .= " (LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.middleName) LIKE '%$word%') OR (LOWER(m.name) LIKE '%$word%') OR";
+						$sqlsearch .= ' MATCH (m.name) AGAINST (\''.$word.'\' IN BOOLEAN MODE) OR'; //" (LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.middleName) LIKE '%$word%') OR (LOWER(m.name) LIKE '%$word%') OR";
 					}
 					$sqlsearch = substr($sqlsearch, 0, -3);
 					$sqlsearch .= ") ";
