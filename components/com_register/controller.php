@@ -267,6 +267,12 @@ class RegisterController extends Hubzero_Controller
 	{
 		$action = ($action) ? $action : 'show';
 		
+                $admin = $this->juser->authorize($this->_option, 'manage');
+
+		if (!$admin) {
+			return JError::raiseError(404, JText::_('COM_REGISTER_ERROR_INVALID_REQUEST'));
+		}
+
 		if ($action != 'submit' && $action != 'show') {
 			return JError::raiseError(404, JText::_('COM_REGISTER_ERROR_INVALID_REQUEST'));
 		}
