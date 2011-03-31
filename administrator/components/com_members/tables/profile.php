@@ -120,35 +120,35 @@ class MembersProfile extends JTable
 		
 		// Build the query
 		$sqlsearch = "";
+		$contrib_filter = '';
 		if ($filters['show'] == 'contributors') {
 			if ($bits) {
 				$s = array();
-				$sqlsearch .= " (";
+				$contrib_filter .= " (";
 				foreach ($bits as $bit) 
 				{
 					$s[] = ($bit != '') ? "(".$bit.")" : '';
 				}
-				$sqlsearch .= implode(" + ",$s);
+				$contrib_filter .= implode(" + ",$s);
 				if (isset($filters['contributions']) && $filters['contributions'] > 0) {
-					$sqlsearch .= " > ".$filters['contributions'].")";
+					$contrib_filter .= " > ".$filters['contributions'].")";
 				} else {
-					$sqlsearch .= " > 0)";
+					$contrib_filter .= " > 0)";
 				}
 			}
 		} 
 		
 		if (isset($filters['index']) && $filters['index'] != '') {
-			if ($filters['show'] == 'contributors') {
+			if ($sqlsearch) {
 				$sqlsearch .= " AND";
 			}
-			$sqlsearch .= 'MATCH(m.name) AGAINST (\''.$filters['index'].'\' IN BOOLEAN MODE)';
-			//" ( (LOWER(m.surname) LIKE '".$filters['index']."%') OR (LOWER(SUBSTRING_INDEX(m.name, ' ', -1)) LIKE '".$filters['index']."%') ) ";
+			$sqlsearch .= " ( (LEFT(m.surname, 1) = '".$filters['index']."') OR (LEFT(SUBSTRING_INDEX(m.name, ' ', -1), 1) = '".$filters['index']."%') ) ";
 		}
 		
 		if (isset($filters['search']) && $filters['search'] != '') {
 			//$show = '';
 			$words = explode(' ', $filters['search']);
-			if ($filters['show'] == 'contributors' || (isset($filters['index']) && $filters['index'] != '')) {
+			if ($sqlsearch) {
 				$sqlsearch .= " AND";
 			}
 			if (!isset($filters['search_field'])) {
@@ -212,7 +212,7 @@ class MembersProfile extends JTable
 		}
 		
 		if ($sqlsearch) {
-			$query .= ' WHERE'.$sqlsearch;
+			$query .= ' WHERE'.$sqlsearch.($contrib_filter ? ' AND '.$contrib_filter : '');
 			if (!$admin || $filters['show'] == 'contributors' || (isset($filters['sortby']) && $filters['sortby'] == "RAND()")) {
 				$query .= " AND m.public=1";
 			}
