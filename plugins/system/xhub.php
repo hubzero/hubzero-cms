@@ -522,7 +522,9 @@ class XRouter extends JRouter
 
 			// encode the route segments
 			if ($component != "com_search") { // Cheep fix on searches
-				$parts = $this->_encodeSegments($parts);
+				if ($component == "com_content") { // @FIXME: quick fix for joomla breaking ':' in urls in com_wiki/com_topics (others?) {
+					$parts = $this->_encodeSegments($parts);
+				}
 			}
 			else { // fix up search for URL
 				$total = count($parts);
