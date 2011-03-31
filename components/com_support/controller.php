@@ -457,8 +457,8 @@ class SupportController extends Hubzero_Controller
 		}
 		
 		// Get the next and previous support tickets
-		$view->row->prev = $view->row->getTicketId('prev', $view->filters);
-		$view->row->next = $view->row->getTicketId('next', $view->filters);
+		$view->row->prev = $view->row->getTicketId('prev', $view->filters, $view->authorized);
+		$view->row->next = $view->row->getTicketId('next', $view->filters, $view->authorized);
 
 		$summary = substr($view->row->report, 0, 70);
 		if (strlen($summary) >=70 ) {
