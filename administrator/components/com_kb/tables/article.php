@@ -69,6 +69,15 @@ class KbArticle extends JTable
 		}
 		return true;
 	}
+
+	public function store()
+	{
+		if (empty($this->modified)) {
+			$this->modified = $this->created;
+		}
+
+		return parent::store();
+	}
 	
 	//-----------
 	
