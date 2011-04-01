@@ -155,6 +155,9 @@
 	#help-container textarea.long {
 		height: 166px;
 		}
+	#help-container input[type=file] {
+		color:#777;
+		}
 	#trUpload {
 		margin-bottom: 1.5em;
 		}
