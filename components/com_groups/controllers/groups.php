@@ -2589,7 +2589,8 @@ class GroupsController extends Hubzero_Controller
 		// Check authorization
 		$authorized = $this->_authorize();
 		if ($authorized != 'admin' && $authorized != 'manager') {
-			JError::raiseError( 403, JText::_('GROUPS_NOT_AUTH') );
+			$this->setNotification( JText::_('GROUPS_NOT_AUTH'), 'error' );
+			$this->media();
 			return;
 		}
 		
@@ -2776,10 +2777,13 @@ class GroupsController extends Hubzero_Controller
 			$this->setNotification( JText::_('GROUPS_NO_ID'), 'error' );
 		}
 		
+		$group = Hubzero_Group::getInstance( $listdir );
+		
 		// Output HTML
 		$view = new JView( array('name'=>'edit', 'layout'=>'filebrowser') );
 		$view->option = $this->_option;
 		$view->config = $this->config;
+		$view->group = $group;
 		$view->listdir = $listdir;
 		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$view->display();
