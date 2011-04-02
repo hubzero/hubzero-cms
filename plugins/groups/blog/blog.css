@@ -446,7 +446,7 @@ div.entry .entry-content {
 	margin: 0 0 0 125px;
 	}	
 div.entry .entry-content img {
-	width:100%;
+	max-width:100%;
 	}
 .main .subject .entry h3 {
 	display: block;
