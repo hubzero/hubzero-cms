@@ -595,7 +595,7 @@ class JUser extends JObject
 
 		 // Load the JUserModel object based on the user id or throw a warning.
 		 if(!$table->load($id)) {
-			JError::raiseWarning( 'SOME_ERROR_CODE', 'JUser::_load: Unable to load user with id: '.$id );
+			// JError::raiseWarning( 'SOME_ERROR_CODE', 'JUser::_load: Unable to load user with id: '.$id );
 			return false;
 		}
 
