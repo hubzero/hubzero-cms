@@ -2586,6 +2586,7 @@ class GroupsController extends Hubzero_Controller
 			return;
 		}
 		
+		/*
 		// Check authorization
 		$authorized = $this->_authorize();
 		if ($authorized != 'admin' && $authorized != 'manager') {
@@ -2593,6 +2594,7 @@ class GroupsController extends Hubzero_Controller
 			$this->media();
 			return;
 		}
+		*/
 		
 		// Load the component config
 		$config = $this->config;
@@ -2783,7 +2785,9 @@ class GroupsController extends Hubzero_Controller
 		$view = new JView( array('name'=>'edit', 'layout'=>'filebrowser') );
 		$view->option = $this->_option;
 		$view->config = $this->config;
-		$view->group = $group;
+		if(is_object($group)) {
+			$view->group = $group;
+		}	
 		$view->listdir = $listdir;
 		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$view->display();
