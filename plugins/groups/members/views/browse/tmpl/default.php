@@ -364,7 +364,7 @@ if($this->role_filter) {
 									$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
 									$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
 								}
-								if ($juser->get('id') == $u->get('uidNumber')) {
+								if ($juser->get('id') == $u->get('uidNumber') || $this->filter == 'invitees' || $this->filter == 'pending') {
 									$html .= "\t\t\t\t".'<td class="message-member"> </td>'."\n";
 								} else {
 									if(!$inviteemail && ($this->authorized == 'manager' || $this->authorized == 'admin') && $this->messages_acl != 'nobody') {
