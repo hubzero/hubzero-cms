@@ -163,11 +163,11 @@ html>body .pane-pause:hover {
 /* Individual pane styling */	
 #slideone { 
  	border:none;
-	background: url('../../../../site/sliding_panes/slideone.png') no-repeat top left;
+	background: url('images/slideone.png') no-repeat top left;
 	}
 #slidetwo {
  	border:none;
-	background: url('../../../../site/sliding_panes/slidetwo.png') no-repeat top left;
+	background: url('images/slidetwo.png') no-repeat top left;
 	}
 #slidetwo p {
 	padding-left:225px;
@@ -175,7 +175,7 @@ html>body .pane-pause:hover {
 #slidethree { 
 	padding-top:20px;
  	border:none;
-	background: url('../../../../site/sliding_panes/slidethree.png') no-repeat top left;
+	background: url('images/slidethree.png') no-repeat top left;
 	}
 #slidethree p {
 	padding-left:190px;
@@ -183,7 +183,7 @@ html>body .pane-pause:hover {
 #slidefour { 
 	padding-top:20px;
 	border:none;
-	background: url('../../../../site/sliding_panes/slidefour.png') no-repeat top left;
+	background: url('images/slidefour.png') no-repeat top left;
 	}
 #slidefour p {
 	padding-left:170px;
