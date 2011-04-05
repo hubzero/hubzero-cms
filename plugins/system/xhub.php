@@ -774,11 +774,11 @@ class XRouter extends JRouter
 			if (!empty($alias)) {
 
 				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-					"#__content.alias='" . $alias . "' AND ";
+					"#__content.alias='" . mysql_real_escape_string($alias) . "' AND ";
 
 				if (!empty($category))
-					$query .= "#__content.catid=#__categories.id AND " . "#__categories.alias='" . $category . "' AND " .
-						"#__content.sectionid=#__sections.id AND " . "#__sections.alias='" . $section . "'";
+					$query .= "#__content.catid=#__categories.id AND " . "#__categories.alias='" . mysql_real_escape_string($category) . "' AND " .
+						"#__content.sectionid=#__sections.id AND " . "#__sections.alias='" . mysql_real_escape_string($section) . "'";
 				else 
 					$query .= "#__content.catid=0 AND #__content.sectionid=0";
 
@@ -808,6 +808,7 @@ class XRouter extends JRouter
 			"FROM `#__content`,`#__categories`,`#__sections` " .
 			"WHERE `#__content`.catid=`#__categories`.id AND `#__content`.sectionid=`#__sections`.id ";
 
+		$segments = array_map('mysql_real_escape_string', $segments);
 		if ($count == 3)
 		{
 			if (is_numeric($segments[2]))
