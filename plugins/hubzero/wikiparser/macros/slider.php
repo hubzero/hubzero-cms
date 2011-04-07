@@ -33,7 +33,11 @@ class SliderMacro extends WikiMacro
 	{
 		$txt = array();
 		$txt['wiki'] = "Creates a slider with the images passed in.";
-		$txt['html'] = '<p>Creates a slider with the images passed in. Enter uploaded image names seperated by commas.</p>';
+		$txt['html'] = '<p>Creates a slider with the images passed in. Enter uploaded image names seperated by commas.</p>
+						<p>Examples:</p>
+						<ul>
+							<li><code>[[Slider(image1.jpg, image2.gif, image3.png)]]</code></li>
+						</ul>';
 		
 		return $txt['html'];
 	}
