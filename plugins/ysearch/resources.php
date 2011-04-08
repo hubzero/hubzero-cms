@@ -127,7 +127,7 @@ class plgYSearchResources extends YSearchPlugin
 			LEFT JOIN jos_resource_types rt 
 				ON rt.id = r.type
 			WHERE 
-				r.published = 1 AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down) 
+				r.published = 1 AND r.standalone AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down) 
 				AND ($weight > 0)".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
 		);
@@ -174,7 +174,7 @@ class plgYSearchResources extends YSearchPlugin
 		               	         LEFT JOIN jos_resource_types rt
                 			                ON rt.id = r.type
 		                	        WHERE
-                			                r.published = 1 AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down)
+                			                r.published = 1 AND r.standalone AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down)
 						AND r.id in (".implode(',', array_keys($tag_map)).")".($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
 				);
 				foreach ($sql->to_associative() as $row)
