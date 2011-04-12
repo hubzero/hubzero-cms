@@ -210,9 +210,11 @@ class MembersProfile extends JTable
 		if (isset($filters['sortby']) && $filters['sortby'] == "RAND()") {
 			$query .= " LEFT JOIN #__xprofiles_bio AS b ON b.uidNumber=m.uidNumber";
 		}
-		
+	
+		if ($contrib_filter)
+			$sqlsearch = $sqlsearch ? $sqlsearch. ' AND '.$contrib_filter : $contrib_filter;	
 		if ($sqlsearch) {
-			$query .= ' WHERE'.$sqlsearch.($contrib_filter ? ' AND '.$contrib_filter : '');
+			$query .= ' WHERE'.$sqlsearch;
 			if (!$admin || $filters['show'] == 'contributors' || (isset($filters['sortby']) && $filters['sortby'] == "RAND()")) {
 				$query .= " AND m.public=1";
 			}
