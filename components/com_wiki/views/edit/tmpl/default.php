@@ -78,7 +78,9 @@ if ($this->page->id && !$this->authorized) {
 <?php if ($this->page->state == 1 && $this->authorized !== 'admin' && $this->authorized !== 'manager') { ?>
 	<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } ?>
-
+<?php if ($this->getError()) { ?>
+	<p class="error"><?php echo $this->getError(); ?></p>
+<?php } ?>
 <?php if ($this->preview) { ?>
 	<div id="preview">
 		<div class="main section">

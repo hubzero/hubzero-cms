@@ -507,8 +507,10 @@ class WikiController extends Hubzero_Controller
 		
 		$revision->summary = '';
 
+		$preview = NULL;
 		// Are we previewing?
-		if (is_object($this->preview)) {
+		if (is_object($this->preview) || $this->getError()) {
+			if (!$this->getError()) {
 			// Yes - get the preview so we can parse it and display
 			$preview = $this->preview;
 			
@@ -521,13 +523,14 @@ class WikiController extends Hubzero_Controller
 				'filepath' => '',
 				'domain'   => $this->_group 
 			);
-			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
-			$preview->pagehtml = $p->parse($preview->pagetext, $wikiconfig, true, true);
-			
-			$revision->pagetext   = $preview->pagetext;
-			$revision->summary    = $preview->summary;
-			$revision->minor_edit = $preview->minor_edit;
+				ximport('Hubzero_Wiki_Parser');
+				$p =& Hubzero_Wiki_Parser::getInstance();
+				$preview->pagehtml = $p->parse($this->preview->pagetext, $wikiconfig, true, true);
+			}
+		
+			$revision->pagetext   = $this->preview->pagetext;
+			$revision->summary    = $this->preview->summary;
+			$revision->minor_edit = $this->preview->minor_edit;
 			
 			// Get title
 			$this->page->title = trim(JRequest::getVar( 'title', '', 'post' ));
@@ -545,8 +548,6 @@ class WikiController extends Hubzero_Controller
 			
 			$tagstring = trim(JRequest::getVar( 'tags', '' ));
 			$authors = trim(JRequest::getVar( 'authors', '' ));
-		} else {
-			$preview = NULL;
 		}
 
 		// Process the page's params
@@ -623,16 +624,42 @@ class WikiController extends Hubzero_Controller
 				// No pagename so let's generate one from the title
 				$page->pagename = trim(JRequest::getVar( 'title', '', 'post' ));
 				if (!$page->pagename) {
-					echo WikiHtml::alert( JText::_('WIKI_ERROR_NO_PAGE_TITLE') );
-					exit();
+					//echo WikiHtml::alert( JText::_('WIKI_ERROR_NO_PAGE_TITLE') );
+					//exit();
+					$revision = new WikiPageRevision( $this->database );
+					$revision->pageid     = $pageid;
+					$revision->created    = date( 'Y-m-d H:i:s', time() );
+					$revision->created_by = JRequest::getInt( 'created_by', 0, 'post' );
+					$revision->version    = JRequest::getInt( 'version', 0, 'post' );
+					$revision->pagetext   = stripslashes(rtrim($_POST['pagetext']));
+					$revision->summary    = trim(JRequest::getVar( 'summary', '', 'post' ));
+					$revision->minor_edit = JRequest::getInt( 'minor_edit', 0, 'post' );
+					$this->preview = $revision;
+					$this->_task = 'new';
+					$this->setError( JText::_('WIKI_ERROR_NO_PAGE_TITLE') );
+					$this->edit();
+					return;
 				}
 				$page->pagename = $this->normalize($page->pagename);
 				// Check that no other pages are using the new title
 				$g = new WikiPage( $this->database );
 				$g->load( $page->pagename, $page->scope );
 				if ($g->exist()) {
-					echo WikiHtml::alert( JText::_('WIKI_ERROR_PAGE_EXIST') );
-					exit();
+					//echo WikiHtml::alert( JText::_('WIKI_ERROR_PAGE_EXIST') );
+					//exit();
+					$revision = new WikiPageRevision( $this->database );
+					$revision->pageid     = $pageid;
+					$revision->created    = date( 'Y-m-d H:i:s', time() );
+					$revision->created_by = JRequest::getInt( 'created_by', 0, 'post' );
+					$revision->version    = JRequest::getInt( 'version', 0, 'post' );
+					$revision->pagetext   = stripslashes(rtrim($_POST['pagetext']));
+					$revision->summary    = trim(JRequest::getVar( 'summary', '', 'post' ));
+					$revision->minor_edit = JRequest::getInt( 'minor_edit', 0, 'post' );
+					$this->preview = $revision;
+					$this->_task = 'new';
+					$this->setError( JText::_('WIKI_ERROR_PAGE_EXIST') );
+					$this->edit();
+					return;
 				}
 			}
 			$page->hits = 0;
