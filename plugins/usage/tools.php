@@ -63,7 +63,7 @@ class plgUsageTools extends JPlugin
 	{
 		$html = '';
 		
-		$sql = "SELECT * FROM #__stats_topvals WHERE top = '".$s_top."' AND datetime = '".$dthis."-00' AND period = '".$period."' ORDER BY rank";
+		$sql = "SELECT * FROM #__stats_topvals WHERE top = '".$s_top."' AND datetime = '".$dthis."-00' AND period = '".$period."' ORDER BY value DESC";
 		$database->setQuery( $sql );
 		$results = $database->loadObjectList();
 		
