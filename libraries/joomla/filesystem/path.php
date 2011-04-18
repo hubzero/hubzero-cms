@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: path.php 14401 2010-01-26 14:10:00Z louis $
+ * @version		$Id: path.php 21066 2011-04-03 22:19:02Z dextercowley $
  * @package		Joomla.Framework
  * @subpackage	FileSystem
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -244,8 +244,13 @@ class JPath
 			{
 				// not a stream, so do a realpath() to avoid directory
 				// traversal attempts on the local file system.
-				$path = realpath($path); // needed for substr() later
-				$fullname = realpath($fullname);
+				if (file_exists($path)) {
+					$path = realpath($path); // needed for substr() later
+					$fullname = realpath($fullname);
+				} else {
+					$path = '';
+					$fullname = '';
+				}
 			}
 
 			// the substr() check added to make sure that the realpath()

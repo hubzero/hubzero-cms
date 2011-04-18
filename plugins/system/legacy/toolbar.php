@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: toolbar.php 14401 2010-01-26 14:10:00Z louis $
+* @version		$Id: toolbar.php 21062 2011-04-03 22:03:07Z dextercowley $
 * @package		Joomla.Legacy
 * @subpackage	1.5
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -11,6 +11,9 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
+
+// Check to ensure this file is within the rest of the framework
+defined('JPATH_BASE') or die();
 
 /**
  * Legacy class

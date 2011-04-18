@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 14401 2010-01-26 14:10:00Z louis $
+ * @version		$Id: view.html.php 21040 2011-03-31 15:54:16Z dextercowley $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -104,7 +104,7 @@ class ContentViewArchive extends ContentView
 		// Year Field
 		$years = array();
 		$years[] = JHTML::_('select.option',  null, JText::_( 'Year' ) );
-		for ($i=2000; $i <= 2010; $i++) {
+		for ($l = date('Y'), $i = $l - 10; $i <= $l; $i++) {
 			$years[] = JHTML::_('select.option',  $i, $i );
 		}
 		$form->yearField	= JHTML::_('select.genericlist',   $years, 'year', 'size="1" class="inputbox"', 'value', 'text', $year );

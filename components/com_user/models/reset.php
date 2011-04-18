@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: reset.php 16385 2010-04-23 10:44:15Z ian $
+ * @version		$Id: reset.php 21046 2011-03-31 16:11:40Z dextercowley $
  * @package		Joomla
  * @subpackage	User
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -126,7 +126,7 @@ class UserModelReset extends JModel
 		$row = $db->loadObject();
 
 		// Verify the token
-		if (!($row = $db->loadObject()))
+		if (!$row)
 		{
 			$this->setError(JText::_('INVALID_TOKEN'));
 			return false;

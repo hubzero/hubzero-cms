@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: uri.php 19058 2010-10-08 04:15:39Z dextercowley $
+ * @version		$Id: uri.php 21079 2011-04-04 20:54:40Z dextercowley $
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -240,11 +240,15 @@ class JURI extends JObject
 				$uri	         =& JURI::getInstance();
 				$base['prefix'] = $uri->toString( array('scheme', 'host', 'port'));
 
-				if (strpos(php_sapi_name(), 'cgi') !== false && !empty($_SERVER['REQUEST_URI'])) {
-					//Apache CGI
+				if (strpos(php_sapi_name(), 'cgi') !== false && !empty($_SERVER['REQUEST_URI']) &&
+				    (!ini_get('cgi.fix_pathinfo') || version_compare(PHP_VERSION, '5.2.4', '<'))) {
+					// CGI on PHP pre-5.2.4 with cgi.fix_pathinfo = 0.
+
+					// In pre-rev. 240885 of main_cgi.c, SCRIPT_NAME doesn't conform the PHP spec.,
+					// therefore we use PHP_SELF instead.
 					$base['path'] =  rtrim(dirname(str_replace(array('"', '<', '>', "'"), '', $_SERVER["PHP_SELF"])), '/\\');
 				} else {
-					//Others
+					// Since PHP 5.2.4 we can trust SCRIPT_NAME;  it conforms the spec.
 					$base['path'] =  rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
 				}
 			}

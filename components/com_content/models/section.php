@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: section.php 19343 2010-11-03 18:12:02Z ian $
+ * @version		$Id: section.php 21043 2011-03-31 16:01:13Z dextercowley $
  * @package		Joomla
  * @subpackage	Content
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -347,7 +347,7 @@ class ContentModelSection extends JModel
 				JError::raiseError(500, $this->_db->stderror());
 				return false;
 			}
-			
+
 
 			// special handling required as Uncategorized content does not have a section / category id linkage
 			$i = $limitstart;
@@ -436,22 +436,30 @@ class ContentModelSection extends JModel
 		return $query;
 	}
 
+	/**
+	 * Build the SQL ORDER BY for the section listing.
+	 *
+	 * @param	int		$state	The published state of the articles being listed.
+	 *
+	 * @return	string	The full ORDER BY clause.
+	 * @since	1.5
+	 */
 	function _buildContentOrderBy($state = 1)
 	{
 		$filter_order		= JRequest::getCmd('filter_order');
 		$filter_order_Dir	= JRequest::getWord('filter_order_Dir');
+		$orderby			= '';
 
-		if (!in_array($filter_order, array('a.id', 'a.title', 'a.alias', 'a.title_alias', 'a.introtext', 'a.fulltext', 'a.sectionid', 'a.state',
+		if (!in_array($filter_order, array('a.id', 'a.title', 'a.alias', 'a.title_alias', 'a.sectionid', 'a.state',
 			'a.catid', 'a.created', 'a.created_by', 'a.created_by_alias', 'a.modified', 'a.modified_by', 'a.checked_out', 'a.checked_out_time',
-			'a.hits', 'a.ordering', 'a.metakey', 'a.access'))) {
-			$filter_order = 'a.ordering';
+			'a.hits', 'a.ordering', 'a.access'))) {
+			$filter_order = null;
 		}
 
 		if (!in_array(trim(strtoupper($filter_order_Dir)), array('ASC', 'DESC'))) {
 			$filter_order_Dir = 'ASC';
 		}
 
-		$orderby = ' ORDER BY ';
 		if ($filter_order) {
 			$orderby .= $filter_order .' '. $filter_order_Dir.', ';
 		}
@@ -480,7 +488,7 @@ class ContentModelSection extends JModel
 		}
 		$orderby .= "$primary $secondary";
 
-		return $orderby;
+		return trim($orderby) ? ' ORDER BY '.$orderby : null;
 	}
 
 	function _buildContentWhere($state = 1)

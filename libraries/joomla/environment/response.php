@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: response.php 14401 2010-01-26 14:10:00Z louis $
+ * @version		$Id: response.php 21044 2011-03-31 16:03:23Z dextercowley $
  * @package		Joomla.Framework
  * @subpackage	Environment
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -198,7 +198,8 @@ class JResponse
 		{
 			JResponse::setHeader( 'Expires', 'Mon, 1 Jan 2001 00:00:00 GMT', true ); 				// Expires in the past
 			JResponse::setHeader( 'Last-Modified', gmdate("D, d M Y H:i:s") . ' GMT', true ); 		// Always modified
-			JResponse::setHeader( 'Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0', false );
+			JResponse::setHeader( 'Cache-Control', 'no-store, no-cache, must-revalidate', true ); 	// Extra CYA
+			JResponse::setHeader( 'Cache-Control', 'post-check=0, pre-check=0', false );			// HTTP/1.1
 			JResponse::setHeader( 'Pragma', 'no-cache' ); 											// HTTP 1.0
 		}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: ilink.php 18162 2010-07-16 07:00:47Z ian $
+ * @version		$Id: ilink.php 21067 2011-04-03 22:21:04Z dextercowley $
  * @package		Joomla
  * @subpackage	Menus
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
@@ -221,9 +221,7 @@ class iLink extends JTree
 					if ($data) {
 						if ($data->attributes('hidden') != 'true') {
 							$m = $data->getElementByPath('message');
-							if ($m) {
-								$message = $m->data();
-							}
+							$message = ($m) ? $m->data() : '';
 							unset($node);
 							$node = new iLinkNode($data->attributes('title'), $url, $message);
 							$this->addChild($node);

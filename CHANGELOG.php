@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 19340 2010-11-03 15:00:55Z ian $
+* @version		$Id: CHANGELOG.php 21080 2011-04-04 22:01:17Z dextercowley $
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
@@ -36,6 +36,30 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+-------------------- 1.5.23 Stable Release [04-March-2011] ------------------
+
+04-Apr-2011 Mark Dexter
+ # [#25450] Mootools 1.2.4 Squeezebox Problems in MSIE 9
+ # [#24289] com_mailto Spam Email Relay
+ # [#22629] Joomla! broken on CGI web servers
+
+03-Apr-2011 Mark Dexter
+ # [#20234] security string missing on file toolbar.php
+ # [#23746] Add a system plugin event called onBeforeCompileHead
+ # [#25090] Improve .htaccess rewrite efficency
+ # [#21676] Article Manager - Select Author
+ # [#20423] Warning: realpath() [function.realpath]: Unable to access .../path.php 
+ # [#16605] PHP notice when selecting a menu type
+ # [#20536] Category Blog Layout - View Article - Editing Article - Click Images - 500 Layout "blog" not found
+
+31-Mar-2011 Mark Dexter
+ # [#22520] Articles archive years are HARDCODED!!!
+ # [#25162] *SQL installation issue with TYPE
+ # [#23053] 1.5.21 admin template params.ini error
+ # [#23135] Section blog ordering changed in 1.5.22
+ # [#16149] **PDFs not showing when icon clicked in IE...
+ # [#25024] Upgrade Geshi to 1.0.8.10
+ # [#21252] Password reset invalid token
 
 -------------------- 1.5.22 Stable Release [03-November-2010] ------------------
 

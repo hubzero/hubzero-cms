@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: image.php 14401 2010-01-26 14:10:00Z louis $
+ * @version		$Id: image.php 21069 2011-04-03 22:58:48Z dextercowley $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php
@@ -51,7 +51,7 @@ class plgButtonImage extends JPlugin
 		$params =& JComponentHelper::getParams('com_media');
 		//Find out who has permission to upload and change the acl to let them.
 		$acl = & JFactory::getACL();
-		switch ($params->get('allowed_media_usergroup')) 
+		switch ($params->get('allowed_media_usergroup'))
 		{
 			case '1':
 				$acl->addACL( 'com_media', 'upload', 'users', 'publisher' );
@@ -60,19 +60,19 @@ class plgButtonImage extends JPlugin
 				$acl->addACL( 'com_media', 'upload', 'users', 'publisher' );
 				$acl->addACL( 'com_media', 'upload', 'users', 'editor' );
 				break;
-			case '3': 
+			case '3':
 				$acl->addACL( 'com_media', 'upload', 'users', 'publisher' );
-				$acl->addACL( 'com_media', 'upload', 'users', 'editor' );				
+				$acl->addACL( 'com_media', 'upload', 'users', 'editor' );
 				$acl->addACL( 'com_media', 'upload', 'users', 'author' );
-				break;								
+				break;
 			case '4':
-				$acl->addACL( 'com_media', 'upload', 'users', 'publisher' );				
+				$acl->addACL( 'com_media', 'upload', 'users', 'publisher' );
 				$acl->addACL( 'com_media', 'upload', 'users', 'editor' );
 				$acl->addACL( 'com_media', 'upload', 'users', 'author' );
 				$acl->addACL( 'com_media', 'upload', 'users', 'registered' );
 				break;
 		}
-	
+
 		//Make sure the user is authorized to view this page
 		$user = & JFactory::getUser();
 		if (!$user->authorize( 'com_media', 'popup' )) {
@@ -81,7 +81,7 @@ class plgButtonImage extends JPlugin
 		$doc 		=& JFactory::getDocument();
 		$template 	= $mainframe->getTemplate();
 
-		$link = 'index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;e_name='.$name;
+		$link = 'index.php?option=com_media&amp;view=images&amp;layout=default&amp;tmpl=component&amp;e_name='.$name;
 
 		JHTML::_('behavior.modal');
 
