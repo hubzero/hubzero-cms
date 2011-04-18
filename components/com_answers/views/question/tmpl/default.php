@@ -171,7 +171,7 @@ if ($reports == 0) {
 					</div><!-- / .question-long -->
 	<?php } ?>
 					<?php /* <p class="details">
-						<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> - <?php echo JText::sprintf('COM_ANSWERS_TIME_AGO', $when); ?> - <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'#answers'); ?>'" title="<?php echo JText::_('COM_ANSWERS_READ_RESPONSES'); ?>"><?php echo (count($this->responses) == 1) ? JText::sprintf('COM_ANSWERS_NUMBER_RESPONSES', count($this->responses)) : JText::sprintf('COM_ANSWERS_NUMBER_RESPONSES', count($this->responses)); ?></a>
+						<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> - <?php echo JText::sprintf('COM_ANSWERS_TIME_AGO', $when); ?> - <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->question->id.'#answers'); ?>" title="<?php echo JText::_('COM_ANSWERS_READ_RESPONSES'); ?>"><?php echo (count($this->responses) == 1) ? JText::sprintf('COM_ANSWERS_NUMBER_RESPONSES', count($this->responses)) : JText::sprintf('COM_ANSWERS_NUMBER_RESPONSES', count($this->responses)); ?></a>
 					</p> */ ?>
 	<?php if (count($this->tags) > 0) { ?>
 					<div class="question-tags">

@@ -2673,7 +2673,7 @@ class ContribtoolController extends JObject
 					return;
 			}
 
-			$body = stripslashes($_POST['fulltext']);
+			$body = $this->txt_clean($_POST['fulltext']);
 			if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $body )) {
 				// Do nothing
 				$status['fulltext'] = trim(stripslashes($body));

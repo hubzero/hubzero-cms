@@ -143,7 +143,11 @@ class SupportController extends Hubzero_Controller
 		$view->type = ($type == 'automatic') ? 1 : 0;
 		
 		$view->group = JRequest::getVar('group', '');
-		
+
+		if (!$view->group && trim($this->config->get('group'))) {
+			$view->group = trim($this->config->get('group'));
+		}
+
 		$view->sort = JRequest::getVar('sort', 'name');
 		
 		// Set up some dates
