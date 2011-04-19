@@ -106,7 +106,7 @@ class modYoutubeHelper
 		
 		//if we are lazy loading
 		if($lazy_loading) {
-			$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'youtube.js');
+			$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'mod_youtube.js');
 			$jdocument->addScriptDeclaration("
 				window.addEvent('domready', function() {
 					var youtubefeed = new HUB.Youtube('youtube_feed_".$id."',{
