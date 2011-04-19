@@ -229,10 +229,9 @@ if ($this->groups) {
 				</table>
 <?php
 $pn = $this->pageNav->getListFooter();
-if (!strstr($pn,'/browse')) {
-	$pn = str_replace('/?','/browse/?',$pn);
-	$pn = str_replace('&amp;&amp;','&amp;',$pn);
-}
+$pn = str_replace('/?','/browse/?',$pn);
+$pn = str_replace('&amp;&amp;','&amp;',$pn);
+$pn = preg_replace('/(&amp;sortby=\D{0,5})\&?/', '$1&', $pn);
 echo $pn;
 ?>
 				<div class="clearfix"></div>
