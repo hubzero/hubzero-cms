@@ -176,65 +176,6 @@ if (count($this->rows) > 0) {
 			$cls = 'private';
 		}
 		
-		// Get the search result totals
-		$totals = array();
-		$bits = $dispatcher->trigger( 'onMembersContributionsCount', array($this->authorized, $row->uidNumber, $row->username) );
-		if ($bits) {
-			$database =& JFactory::getDBO();
-			foreach ($bits as $bit) 
-			{
-				$database->setQuery( $bit );
-				$totals[] = $database->loadResult();
-			}
-		}
-
-		// Get the total results found (sum of all categories)
-		$i = 0;
-		$total = 0;
-		$cats = array();
-		foreach ($areas as $c=>$t) 
-		{
-			$cats[$i]['category'] = $c;
-
-			// Do sub-categories exist?
-			if (is_array($t) && !empty($t)) {
-				// They do - do some processing
-				$cats[$i]['title'] = ucfirst($c);
-				/*$cats[$i]['total'] = 0;
-				$cats[$i]['_sub'] = array();
-				$z = 0;
-				// Loop through each sub-category
-				foreach ($t as $s=>$st) 
-				{
-					// Ensure a matching array of totals exist
-					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) {
-						// Add to the parent category's total
-						$cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
-						// Get some info for each sub-category
-						$cats[$i]['_sub'][$z]['category'] = $s;
-						$cats[$i]['_sub'][$z]['title'] = $st;
-						$cats[$i]['_sub'][$z]['total'] = $totals[$i][$z];
-					}
-					$z++;
-				}*/
-				$cats[$i]['total'] = (!is_array($totals[$i])) ? $totals[$i] : 0;
-			} else {
-				// No sub-categories - this should be easy
-				$cats[$i]['title'] = $t;
-				$cats[$i]['total'] = (!is_array($totals[$i])) ? $totals[$i] : 0;
-			}
-
-			// Add to the overall total
-			$total = $total + intval($cats[$i]['total']);
-			$i++;
-		}
-
-		$tt = array();
-		foreach ($cats as $cat) 
-		{
-			$tt[] = $cat['total'].' '.$cat['title'];
-		}
-
 		if ($row->uidNumber < 0) {
 			$id = 'n' . -$row->uidNumber;
 		} else {
@@ -297,7 +238,7 @@ if (count($this->rows) > 0) {
 							</td>
 							<td>
 								<!-- rcount: <?php echo $row->rcount; ?> --> 
-								<span class="activity"><?php echo implode(', ',$tt); ?></span>
+								<span class="activity"><?php echo $row->resource_count.' Resources, '.$row->wiki_count.' Topics'; ?></span>
 							</td>
 							<td class="message-member">
 <?php if (!$juser->get('guest') && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) { ?>
