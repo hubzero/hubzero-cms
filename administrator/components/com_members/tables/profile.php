@@ -297,7 +297,7 @@ class MembersProfile extends JTable
 				break;
 			}
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 'all') {
+		if (isset($filters['limit']) && $filters['limit'] && $filters['limit'] != 'all') {
 			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}
 

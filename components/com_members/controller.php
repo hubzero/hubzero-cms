@@ -162,9 +162,9 @@ class MembersController extends Hubzero_Controller
 		$filters['search'] = JRequest::getVar( 'search', '' );
 		$filters['index']  = JRequest::getVar( 'index', '' );
 
-		if ($filters['limit'] == 0) {
+		/*if ($filters['limit'] == 0) {
 			$filters['limit'] = 100;
-		}
+		}*/
 
 		// Build the page title
 		if ($filters['show'] == 'contributors') {

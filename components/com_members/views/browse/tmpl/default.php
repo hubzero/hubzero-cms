@@ -112,6 +112,7 @@ foreach ($letters as $letter)
 						<?php
 						$s = $this->filters['start']+1;
 						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
+						$e = ($this->filters['limit'] == 0) ? $this->total : $e;
 
 						if ($this->filters['search'] != '') {
 							echo 'Search for "'.$this->filters['search'].'" in ';
