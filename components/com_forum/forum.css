@@ -1,0 +1,380 @@
+.com_forum .subject {
+	border:none;
+	padding:0.7em 1em 1em 1em;
+	background:none;
+	border-bottom:0;
+	padding:10px 0 0 0;
+	}
+.com_forum .subject:after {
+	clear:none;
+	}
+.com_forum .container {
+	background-color:#f4f4f4;
+	border:10px solid #f4f4f4;
+	}
+	
+/* Entries search */
+.com_forum .data-entry {
+	margin:1em 0;
+	border-color: #eef0e7; /*#F5F7F2;*/
+   	background-color: #eef0e7; /*#F5F7F2;*/
+   	}
+.com_forum .entry-search {
+    margin: 0 1em 0 0;
+    border: none;
+    padding: 0;
+    }
+.com_forum .entry-search legend,
+.com_forum .entry-search label {
+    display: none;
+    }
+.com_forum .entry-search input {
+    width: 95%;
+    border: 1px solid #A8A8A8;
+    background: #fff url("images/search.png") 5px 50% no-repeat;
+    padding: 5px 5px 5px 20px;
+    }
+.com_forum .entry-search-submit {
+    float: right;
+    margin: 3px 0 0 0;
+    }	
+
+
+/* Entries Table */
+.entries {
+	border: 2px solid #e9e9e9;
+    border-top: none;
+    background-color: #f00;
+    margin: 0;
+    padding: 0;
+    }
+.entries caption {
+	font-size: 115%;
+	background: #f8f8f8 url('../../../components/com_groups/assets/img/light-stripes.png');
+    border: 2px solid #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
+    margin-right: -2px; /* Fix 2px issue */
+    }
+.container-block h4 span,
+.entries caption span {
+	color: #aaa;
+    }
+
+/* tbody */
+.entries tbody td {
+	text-align: left;
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    background-color:#fff;
+	position:relative;
+	display:block;
+    }
+.entries tbody th {
+	width: 50px;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    }
+.entries .sticky {
+	background:url('images/sticky.png') no-repeat 0px 2px;
+	padding-left:20px;
+	}
+.entries .topic {
+	font-weight:bold;
+	margin:0;
+	}
+.entries .details {
+	margin:7px 0 0 20px;
+	color:#777;
+	font-size:90%;
+	}
+.entries .created {
+	}
+.entries .created .created_on {
+	padding-right:15px;
+	}
+.entries .created .created_by {
+	padding-right:10px;
+	}
+.entries .replies {
+	padding:0 10px;
+	}	
+.entries .lastpost {
+	padding-left:10px;
+	}
+.entries .lastpost .lastpost_by {
+	
+	}
+.entries .lastpost .lastpost_on {
+	padding-right:15px;
+	}
+.entries .options {
+	position:absolute;
+	top:10px;
+	right:10px;
+}
+	
+	/* Aside */
+	    .com_forum .aside .container {
+	        margin: 0 0 1em 0;
+	        padding: 0;
+	        background-color: #F4F4ee;
+	        border: 10px solid #F4F4ee;
+	        }
+	    /* Headers */
+	    .com_forum .aside .container h3,
+	    .com_forum .aside .container h4 {
+	        margin: -10px -10px 1em -10px;
+	        padding: 5px 10px;
+	        background-color: #999;
+	        color: #fff;
+	        font-size: 1em;
+	        }
+	    /* Paragraphs */
+	    .com_forum .aside .container p {
+	        margin: 1em 0 0 0;
+	        }
+	    .com_forum .aside .container .starter {
+	        padding: 0 0 0 0;
+	        position: relative;
+	        }
+	    .com_forum .aside .container .starter .starter-point {
+	        border-color: #999 transparent transparent transparent;
+	        border-style: solid dashed dashed dashed;
+	        border-width: 10px;
+	        height: 0;
+	        width: 0;
+	        display: block;
+	        overflow: hidden;
+	        position: absolute;
+	        top: -1em;
+	        left: 10px;
+	        }
+
+
+	/* Comment form */
+		#commentform {
+			margin: 0;
+			padding: 0;
+		}
+		#commentform fieldset {
+			background: #F5F7F2;
+			border: 10px solid #DEE4CD;
+			margin: 0;
+			padding: 0 1em 0em 1em;
+			text-align: left;
+			color: #777;
+		}
+		#commentform p.comment-member-photo {
+			float: left;
+			margin: 0;
+			padding: 0 20px 0 0;
+			width: 50px;
+			height: 50px;
+			overflow: hidden;
+			color: #777;
+			font-size: 11px;
+			text-align: right;
+			background: url("images/comment-arrow.gif") right -201px no-repeat;
+		}
+		#commentform .sidenote {
+			border: 1px solid #edf0e8;
+			padding: 0 1em;
+			margin: 0 -1em 0 -1em;
+			color: #aaa;
+			background-color: #edf0e8;
+		}
+		#commentform .required,
+		#commentform .optional {
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			font-size: 80%;
+		}
+		#commentform .required {
+			color: #AD6456;
+		}
+		#commentform .optional {
+			color: #888;
+		}
+		#commentform label {
+			padding-top: 1em;
+			position: relative;
+			display: block;
+		}
+		#commentform label span {
+			position: absolute;
+			top: 1.5em;
+			right: 0;
+			display: none;
+		}
+		#commentform .grouping {
+			position: relative;
+			margin-left: -3em;
+			padding: 0 0 1.5em 5em;
+			overflow: hidden;
+			top: 1em;
+			left: 1.5em;
+		}
+		#commentform .grouping label {
+			padding: 0;
+			float: left;
+			width: 50%;
+		}
+		#commentform .grouping label:first-child {
+			margin: 0 2em 0 -3.5em;
+		}
+		#commentform .grouping label span {
+			top: 0;
+		}
+		#commentform input, 
+		#commentform select, 
+		#commentform textarea {
+			margin-top: 0.25em;
+			width: 100%;
+		}
+		#commentform .submit {
+			clear: both;
+			margin: -1.5em 0 1em 0;
+			padding: 0;
+			text-align: right;
+		}
+		#commentform .submit input,
+		#commentform .option {
+			width: auto;
+		}
+		#commentform #comment-anonymous-label {
+			width: 50%;
+		}
+		/* Wiki Reference */
+		    table.wiki-reference {
+		        border: none;
+		        font-size: 11px;
+		        margin: 0;
+		    }
+		    table.wiki-reference caption {
+		        font-weight: bold;
+		    }
+		    table.wiki-reference tbody td {
+		        border-top: 1px solid #efefef;
+		        border-bottom: 1px solid #efefef;
+		    }
+		
+			/* Comments */
+				ol.comments {
+					list-style-type: none !important;
+					margin: 0;
+					padding: 0;
+					background: transparent;
+					border: none;
+				}
+				ol.comments li {
+					clear: left;
+					margin: 0;
+					padding: 0;
+					border-top: 1px solid #fff;
+				}
+				ol.comments ol {
+					margin: 0;
+					padding: 0;
+				}
+				.com_groups .main .subject ol.comments li ol.comments li,
+				ol.comments li ol.comments li {
+					padding-left: 70px;
+				}
+				/* Options */
+				.abuse {
+					background: url("images/abuse.gif") 0 0 no-repeat;
+					padding-left: 15px;
+				}
+				.reply {
+					background: url("images/reply.gif") 0 0 no-repeat;
+					padding-left: 15px;
+				}
+				.abuse:hover,
+				.reply:hover {
+					background-position: 0 -20px;
+				}
+				.comment-options {
+					color: #fff;
+					font-size: 90%;
+					visibility: hidden;
+				}
+				ol.comments .comment-content:hover .comment-options {
+					visibility: visible;
+				}
+				.comment-options a {
+					margin-right: 1em;
+				}		
+				.comment-options a span {
+					display: none;
+				}
+				ol.comments dl.comment-details {
+					display: none;
+				}
+				/* Member photo */
+				ol.comments p.comment-member-photo {
+				    float: left;
+				    margin: 0;
+				    padding: 0 20px 0 0;
+				    width: 50px;
+					height: 50px;
+					overflow: hidden;
+				    color: #777;
+				    font-size: 11px;
+				    text-align: right;
+					background: url("images/comment-arrow.gif") right 15px no-repeat;
+				}
+				/* Content */
+				ol.comments .comment-content {
+					margin: 0 0 1em 70px;
+					background-color: #fafafa;
+					border: 10px solid #f2f2f2;
+					padding: 0 1em;
+				}
+				/* Author comments */
+				ol.comments .author .comment-content,
+				ol.comments .author ol.comments .author .comment-content {
+					background-color: #fdfbf8;
+					border-color: #f9f2ec;
+				}
+				ol.comments .author p.comment-member-photo,
+				ol.comments .author ol.comments .author p.comment-member-photo {
+					background: url("images/comment-arrow.gif") right -129px no-repeat;
+				}
+				ol.comments .author ol.comments .comment-content,
+				ol.comments .author ol.comments .author ol.comments .comment-content {
+					background-color: #fafafa;
+					border-color: #f2f2f2;
+				}
+				ol.comments .author ol.comments p.comment-member-photo,
+				ol.comments .author ol.comments .author ol.comments p.comment-member-photo {
+					background: url("images/comment-arrow.gif") right 15px no-repeat;
+				}
+				/* Private comments */
+				ol.comments .private .comment-content {
+					background-color: #f9f8fd;
+					border-color: #eeecf9;
+				}
+				ol.comments .private p.comment-member-photo {
+					background: url("images/comment-arrow.gif") right -57px no-repeat;
+				}
+				/* Details (date, time) */
+				ol.comments span.comment-details {
+					color: #bfbfbf;
+				}
+				/* Permalink */
+				/*ol.comments .permalink {
+					margin-right: 0.2em;
+					font-size: 1.5em;
+					line-height: 1em;
+					border: none;
+					color: #bbb;
+				}*/
+				ol.comments .permalink {
+					border: none;
+					color: #bfbfbf;
+				}
+				ol.comments .permalink:hover {
+					color: #000;
+					border: none;
+				}
