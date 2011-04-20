@@ -106,43 +106,13 @@ class MembersProfile extends JTable
 		
 		$select = "";
 		if (!isset($filters['count'])) {
-			if ($bits) {
-				$s = array();
-				$select .= ", (";
-				foreach ($bits as $bit) 
-				{
-					$s[] = ($bit != '') ? "(".$bit.")" : '';
-				}
-				$select .= implode(" + ",$s);
-				$select .= " ) AS rcount ";
-			}
+			$select .= ', COALESCE(cv.total_count, 0) AS rcount, COALESCE(cv.resource_count, 0) AS resource_count, COALESCE(cv.wiki_count, 0) AS wiki_count ';
 		}
 		
 		// Build the query
 		$sqlsearch = "";
-		$contrib_filter = '';
-		if ($filters['show'] == 'contributors') {
-			if ($bits) {
-				$s = array();
-				$contrib_filter .= " (";
-				foreach ($bits as $bit) 
-				{
-					$s[] = ($bit != '') ? "(".$bit.")" : '';
-				}
-				$contrib_filter .= implode(" + ",$s);
-				if (isset($filters['contributions']) && $filters['contributions'] > 0) {
-					$contrib_filter .= " > ".$filters['contributions'].")";
-				} else {
-					$contrib_filter .= " > 0)";
-				}
-			}
-		} 
-		
 		if (isset($filters['index']) && $filters['index'] != '') {
-			if ($sqlsearch) {
-				$sqlsearch .= " AND";
-			}
-			$sqlsearch .= " ( (LEFT(m.surname, 1) = '".$filters['index']."') OR (LEFT(SUBSTRING_INDEX(m.name, ' ', -1), 1) = '".$filters['index']."%') ) ";
+			$sqlsearch = " ( (LEFT(m.surname, 1) = '".$filters['index']."') OR (LEFT(SUBSTRING_INDEX(m.name, ' ', -1), 1) = '".$filters['index']."%') ) ";
 		}
 		
 		if (isset($filters['search']) && $filters['search'] != '') {
@@ -204,15 +174,12 @@ class MembersProfile extends JTable
 		if (isset($filters['sortby']) && $filters['sortby'] == "RAND()") {
 			$select .= ", b.bio ";
 		}
-
-		$query  = $select."FROM $this->_tbl AS m";
+		
+		$query  = $select."FROM $this->_tbl AS m ".($filters['show'] == 'contributors' ? 'INNER' : 'LEFT').' JOIN #__contributors_view AS cv ON m.uidNumber = cv.uidNumber';
 		//$query .= " LEFT JOIN #__users AS u ON u.id=m.uidNumber";
 		if (isset($filters['sortby']) && $filters['sortby'] == "RAND()") {
 			$query .= " LEFT JOIN #__xprofiles_bio AS b ON b.uidNumber=m.uidNumber";
 		}
-	
-		if ($contrib_filter)
-			$sqlsearch = $sqlsearch ? $sqlsearch. ' AND '.$contrib_filter : $contrib_filter;	
 		if ($sqlsearch) {
 			$query .= ' WHERE'.$sqlsearch;
 			if (!$admin || $filters['show'] == 'contributors' || (isset($filters['sortby']) && $filters['sortby'] == "RAND()")) {
