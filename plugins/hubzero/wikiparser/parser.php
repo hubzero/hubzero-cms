@@ -126,7 +126,7 @@ class WikiParser
 	
 	public function parse( $text, $fullparse=true, $linestart=0, $camelcase=1 ) 
 	{
-		$text = "\n".$text;
+		//$text = "\n".$text;
 
 		// Clean out any carriage returns.
 		// These can screw up some block parsing, such as tables
