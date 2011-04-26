@@ -146,7 +146,7 @@ class plgYSearchResources extends YSearchPlugin
 				$id = (int)$row->get('id');
 				if (array_key_exists($id, $tag_map))
 				{
-					$row->adjust_weight((1 + $tag_map[$id])/4, 'tag bonus from resources plugin');
+					$row->add_weight((1 + $tag_map[$id])/12, 'tag bonus from resources plugin');
 					unset($tag_map[$id]);
 				}
 			}
