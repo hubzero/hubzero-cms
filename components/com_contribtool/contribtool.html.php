@@ -2281,10 +2281,10 @@ if($tagname!='screenshots' and $tagname!='bio') {
 				$out .= ' <tr>'.n;
 				$out .= '  <td width="100%">';
 				if($allowupload) {
-				$out .= '<span'.$liclass.' item:name id:'.$child->id.'">'.$child->title.'</span><br />'.ContribtoolHtml::getFileAttribs( $url, $base );
+				$out .= '<span'.$liclass.' item:name id:'.$child->id.'">'.$child->title.'</span><br /><span class="caption">(<a href="'.JRoute::_('index.php?option=com_resources'.a.'task=download'.a.'id='.$child->id).'" title="'.$child->title.'">'.ContribtoolHtml::getFileAttribs( $url, $base ).'</a>)</span>';
 				}
 				else {
-				$out .= '<span>'.$child->title.'</span>'.n;
+				$out .= '<span><a href="'.JRoute::_('index.php?option=com_resources'.a.'task=download'.a.'id='.$child->id).'">'.$child->title.'</a></span>'.n;
 				}
 				$out .='</td>'.n;
 				if($allowupload) {
@@ -2549,7 +2549,7 @@ if($tagname!='screenshots' and $tagname!='bio') {
 			$fs = filesize( $path );
 		}
 		
-		$html  = '<span class="caption">('.$type;
+		$html  = $type;
 		if ($fs) {
 			switch ($type)
 			{
@@ -2565,7 +2565,6 @@ if($tagname!='screenshots' and $tagname!='bio') {
 		
 			$html .= ($fs) ? ', '.$fs : '';
 		}
-		$html .= ')</span>';
 		
 		return $html;
 	}
