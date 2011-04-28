@@ -58,6 +58,7 @@ iframe {
 	display:block; 
 	margin:10px 8%;
 	width:84%; 
+	border:none;
 }
 
 #page_identity:hover { 
@@ -101,6 +102,7 @@ iframe {
 	margin:0; 
 	font-size:14px; 
 	margin-right:0px;
+	border:none;
 }
 
 #page_menu li a span {
@@ -154,6 +156,7 @@ iframe {
 	background: url('../img/page.png') no-repeat 10px 50%;
 	color:#777;
 	font-size:11px; 
+	border:none;
 }
 
 #page_menu ul li a:hover {
