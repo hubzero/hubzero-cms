@@ -39,48 +39,81 @@ $isApplicant = $this->group->isApplicant($this->user->get('id'));
 if ($isApplicant) {
 	$cls = 'pending';
 }
+
+$access = $this->group->getPluginAccess('overview');
 ?>
 
 <div id="content_aside">
-	<div id="controller">
-	<?php
-		$controller = '';
-		switch ($this->group->get('join_policy')) {
-			case 3:
-				if ($isApplicant || $this->ismember) {
-					if ($this->ismember == 'invitee') {
-						$controller .= '<a id="accept" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT').'</a>'."\n";
-					} else {
-						$controller .= '<div id="status" class="'.$cls.'"><span id="group_status_unnecessary">Group </span>'.$cls.'</div>'."\n";
-						$controller .= '<div id="controls">'."\n";
-						$controller .= '<ul id="control_items">'."\n";
-						if ($this->ismember == 'manager' && count($this->group->get('managers')) == 1) {
-							$controller .= '';
+	<?php if(($access == 'anyone') || ($access == 'registered' && $registered) || ($access == 'members' && in_array($this->user->get('id'), $this->group->get('members')))) : ?>
+		<div id="controller">
+		<?php
+			$controller = '';
+			switch ($this->group->get('join_policy')) {
+				case 3:
+					if ($isApplicant || $this->ismember) {
+						if ($this->ismember == 'invitee') {
+							$controller .= '<a id="accept" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT').'</a>'."\n";
 						} else {
-							$controller .= '<li><a class="cancel_group_membership" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=cancel').'">'.JText::_('GROUPS_CANCEL_LINK').'</a></li>'."\n";
+							$controller .= '<div id="status" class="'.$cls.'"><span id="group_status_unnecessary">Group </span>'.$cls.'</div>'."\n";
+							$controller .= '<div id="controls">'."\n";
+							$controller .= '<ul id="control_items">'."\n";
+							if ($this->ismember == 'manager' && count($this->group->get('managers')) == 1) {
+								$controller .= '';
+							} else {
+								$controller .= '<li><a class="cancel_group_membership" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=cancel').'">'.JText::_('GROUPS_CANCEL_LINK').'</a></li>'."\n";
+							}
+							if ($this->authorized == 'admin' || $this->authorized == 'manager') {
+								$controller .= '<li><a class="invite" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite').'">'.JText::_('GROUPS_INVITE_LINK').'</a></li>';
+								$controller .= '<li><a class="edit" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit').'">'.JText::_('GROUPS_EDIT_LINK').'</a></li>';
+								$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize').'">'.JText::_('GROUPS_CUSTOMIZE_LINK').'</a></li>';
+								$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages').'">'.JText::_('GROUPS_PAGES_LINK').'</a></li>';
+								$controller .= '<li><a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete').'">'.JText::_('GROUPS_DELETE_LINK').'</a></li>';
+							}	
+							$controller .= '</ul>'."\n";
+							$controller .= '<a href="#" id="toggle-controls">'.JText::sprintf('GROUPS_TOGGLE_CONTROLS', ucfirst($cls)).'</a>';
+							$controller .= '</div>'."\n";
 						}
-						if ($this->authorized == 'admin' || $this->authorized == 'manager') {
-							$controller .= '<li><a class="invite" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite').'">'.JText::_('GROUPS_INVITE_LINK').'</a></li>';
-							$controller .= '<li><a class="edit" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit').'">'.JText::_('GROUPS_EDIT_LINK').'</a></li>';
-							$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize').'">'.JText::_('GROUPS_CUSTOMIZE_LINK').'</a></li>';
-							$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages').'">'.JText::_('GROUPS_PAGES_LINK').'</a></li>';
-							$controller .= '<li><a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete').'">'.JText::_('GROUPS_DELETE_LINK').'</a></li>';
-						}	
-						$controller .= '</ul>'."\n";
-						$controller .= '<a href="#" id="toggle-controls">'.JText::sprintf('GROUPS_TOGGLE_CONTROLS', ucfirst($cls)).'</a>';
-						$controller .= '</div>'."\n";
-					}
-				} else {
-					$controller .= '<p id="closed">'.JText::_('GROUPS_CLOSED').'</p>'."\n";
-				}
-				break;
-				
-			case 2:
-				if ($isApplicant || $this->ismember) {
-					if ($this->ismember == 'invitee') {
-						$controller .= '<a id="accept" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT').'</a>'."\n";
 					} else {
-						if ($isApplicant || $this->ismember == 'manager' || $this->ismember == 'member') {
+						$controller .= '<p id="closed">'.JText::_('GROUPS_CLOSED').'</p>'."\n";
+					}
+					break;
+				
+				case 2:
+					if ($isApplicant || $this->ismember) {
+						if ($this->ismember == 'invitee') {
+							$controller .= '<a id="accept" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT').'</a>'."\n";
+						} else {
+							if ($isApplicant || $this->ismember == 'manager' || $this->ismember == 'member') {
+								$controller .= '<div id="status" class="'.$cls.'"><span id="group_status_unnecessary">Group </span>'.$cls.'</div>'."\n";
+								$controller .= '<div id="controls">'."\n";
+								$controller .= '<ul id="control_items">'."\n";
+								if ($this->ismember == 'manager' && count($this->group->get('managers')) == 1) {
+									$controller .= '';
+								} else {
+									$controller .= '<li><a class="cancel_group_membership" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=cancel').'">'.JText::_('GROUPS_CANCEL_LINK').'</a></li>'."\n";
+								}
+								if ($this->authorized == 'admin' || $this->authorized == 'manager') {
+									$controller .= '<li><a class="invite" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite').'">'.JText::_('GROUPS_INVITE_LINK').'</a></li>';
+									$controller .= '<li><a class="edit" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit').'">'.JText::_('GROUPS_EDIT_LINK').'</a></li>';
+									$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize').'">'.JText::_('GROUPS_CUSTOMIZE_LINK').'</a></li>';
+									$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages').'">'.JText::_('GROUPS_PAGES_LINK').'</a></li>';
+									$controller .= '<li><a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete').'">'.JText::_('GROUPS_DELETE_LINK').'</a></li>';
+								}
+								$controller .= '</ul>'."\n";
+								$controller .= '<a href="#" id="toggle-controls">'.JText::sprintf('GROUPS_TOGGLE_CONTROLS', ucfirst($cls)).'</a>';	
+								$controller .= '</div>'."\n";
+							}
+						}
+					} else {
+						$controller .= '<p id="invite">'.JText::_('GROUPS_INVITE_ONLY').'</p>'."\n";
+					}
+					break;
+			
+				case 1:
+					if ($isApplicant || $this->ismember) {
+						if ($this->ismember == 'invitee') {
+							$controller .= '<a id="accept" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT').'</a>'."\n";
+						} else {
 							$controller .= '<div id="status" class="'.$cls.'"><span id="group_status_unnecessary">Group </span>'.$cls.'</div>'."\n";
 							$controller .= '<div id="controls">'."\n";
 							$controller .= '<ul id="control_items">'."\n";
@@ -100,107 +133,77 @@ if ($isApplicant) {
 							$controller .= '<a href="#" id="toggle-controls">'.JText::sprintf('GROUPS_TOGGLE_CONTROLS', ucfirst($cls)).'</a>';	
 							$controller .= '</div>'."\n";
 						}
-					}
-				} else {
-					$controller .= '<p id="invite">'.JText::_('GROUPS_INVITE_ONLY').'</p>'."\n";
-				}
-				break;
-			
-			case 1:
-				if ($isApplicant || $this->ismember) {
-					if ($this->ismember == 'invitee') {
-						$controller .= '<a id="accept" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT').'</a>'."\n";
 					} else {
-						$controller .= '<div id="status" class="'.$cls.'"><span id="group_status_unnecessary">Group </span>'.$cls.'</div>'."\n";
-						$controller .= '<div id="controls">'."\n";
-						$controller .= '<ul id="control_items">'."\n";
-						if ($this->ismember == 'manager' && count($this->group->get('managers')) == 1) {
-							$controller .= '';
-						} else {
-							$controller .= '<li><a class="cancel_group_membership" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=cancel').'">'.JText::_('GROUPS_CANCEL_LINK').'</a></li>'."\n";
-						}
-						if ($this->authorized == 'admin' || $this->authorized == 'manager') {
-							$controller .= '<li><a class="invite" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite').'">'.JText::_('GROUPS_INVITE_LINK').'</a></li>';
-							$controller .= '<li><a class="edit" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit').'">'.JText::_('GROUPS_EDIT_LINK').'</a></li>';
-							$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize').'">'.JText::_('GROUPS_CUSTOMIZE_LINK').'</a></li>';
-							$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages').'">'.JText::_('GROUPS_PAGES_LINK').'</a></li>';
-							$controller .= '<li><a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete').'">'.JText::_('GROUPS_DELETE_LINK').'</a></li>';
-						}
-						$controller .= '</ul>'."\n";
-						$controller .= '<a href="#" id="toggle-controls">'.JText::sprintf('GROUPS_TOGGLE_CONTROLS', ucfirst($cls)).'</a>';	
-						$controller .= '</div>'."\n";
+						$controller .= '<a id="join" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=join').'">'.JText::_('GROUPS_REQUEST_LINK').'</a>'."\n";
 					}
-				} else {
-					$controller .= '<a id="join" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=join').'">'.JText::_('GROUPS_REQUEST_LINK').'</a>'."\n";
-				}
-				break;
+					break;
 				
-			case 0:
-			//default:
-				if ($isApplicant || $this->ismember) {
-					if ($this->ismember == 'invitee') {
-						$controller .= '<a id="accept" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT').'</a>'."\n";
-					} else {
-						$controller .= '<div id="status" class="'.$cls.'"><span id="group_status_unnecessary">Group </span>'.$cls.'</div>'."\n";
-						$controller .= '<div id="controls">'."\n";
-						$controller .= '<ul id="control_items">'."\n";
-						if ($this->ismember == 'manager' && count($this->group->get('managers')) == 1) {
-							$controller .= '';
+				case 0:
+				//default:
+					if ($isApplicant || $this->ismember) {
+						if ($this->ismember == 'invitee') {
+							$controller .= '<a id="accept" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=accept').'">'.JText::_('GROUPS_ACCEPT').'</a>'."\n";
 						} else {
-							$controller .= '<li><a class="cancel_group_membership" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=cancel').'">'.JText::_('GROUPS_CANCEL_LINK').'</a></li>'."\n";
-						}
-						if ($this->authorized == 'admin' || $this->authorized == 'manager') {
-							$controller .= '<li><a class="invite" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite').'">'.JText::_('GROUPS_INVITE_LINK').'</a></li>';
-							$controller .= '<li><a class="edit" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit').'">'.JText::_('GROUPS_EDIT_LINK').'</a></li>';
-							$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize').'">'.JText::_('GROUPS_CUSTOMIZE_LINK').'</a></li>';
-							$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages').'">'.JText::_('GROUPS_PAGES_LINK').'</a></li>';
-							$controller .= '<li><a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete').'">'.JText::_('GROUPS_DELETE_LINK').'</a></li>';
-						}
+							$controller .= '<div id="status" class="'.$cls.'"><span id="group_status_unnecessary">Group </span>'.$cls.'</div>'."\n";
+							$controller .= '<div id="controls">'."\n";
+							$controller .= '<ul id="control_items">'."\n";
+							if ($this->ismember == 'manager' && count($this->group->get('managers')) == 1) {
+								$controller .= '';
+							} else {
+								$controller .= '<li><a class="cancel_group_membership" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=cancel').'">'.JText::_('GROUPS_CANCEL_LINK').'</a></li>'."\n";
+							}
+							if ($this->authorized == 'admin' || $this->authorized == 'manager') {
+								$controller .= '<li><a class="invite" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite').'">'.JText::_('GROUPS_INVITE_LINK').'</a></li>';
+								$controller .= '<li><a class="edit" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit').'">'.JText::_('GROUPS_EDIT_LINK').'</a></li>';
+								$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize').'">'.JText::_('GROUPS_CUSTOMIZE_LINK').'</a></li>';
+								$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages').'">'.JText::_('GROUPS_PAGES_LINK').'</a></li>';
+								$controller .= '<li><a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete').'">'.JText::_('GROUPS_DELETE_LINK').'</a></li>';
+							}
 						
-						$controller .= '</ul>'."\n";
-						$controller .= '<a href="#" id="toggle-controls">'.JText::sprintf('GROUPS_TOGGLE_CONTROLS', ucfirst($cls)).'</a>';
-						$controller .= '</div>'."\n";
+							$controller .= '</ul>'."\n";
+							$controller .= '<a href="#" id="toggle-controls">'.JText::sprintf('GROUPS_TOGGLE_CONTROLS', ucfirst($cls)).'</a>';
+							$controller .= '</div>'."\n";
+						}
+					} else {
+						$controller .= '<a id="join" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=join').'">'.JText::_('GROUPS_JOIN_LINK').'</a>'."\n";
 					}
-				} else {
-					$controller .= '<a id="join" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=join').'">'.JText::_('GROUPS_JOIN_LINK').'</a>'."\n";
-				}
-				break;
-		}
-		
-		
-		
-		if($this->authorized == 'admin' && strpos($controller,"status") === false) {
-			$controller  = '<div id="status" class="'.$cls.'"><span id="group_status_unnecessary">Joomla </span>Admin</div>'."\n";
-			$controller .= '<div id="controls">'."\n";
-			$controller .= '<ul id="control_items">'."\n";
-			
-			if($this->group->get('join_policy') == 0) {
-				$controller .= '<li><a class="join" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=join').'">'.JText::_('GROUPS_JOIN_CONTROLLER_LINK').'</a></li>'."\n";
-			} elseif($this->group->get('join_policy') == 1) {
-				$controller .= '<li><a class="join" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=join').'">'.JText::_('GROUPS_REQUEST_CONTROLLER_LINK').'</a></li>'."\n";
+					break;
 			}
-			
-			$controller .= '<li><a class="invite" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite').'">'.JText::_('GROUPS_INVITE_LINK').'</a></li>';
-			$controller .= '<li><a class="edit" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit').'">'.JText::_('GROUPS_EDIT_LINK').'</a></li>';
-			$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize').'">'.JText::_('GROUPS_CUSTOMIZE_LINK').'</a></li>';
-			$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages').'">'.JText::_('GROUPS_PAGES_LINK').'</a></li>';
-			$controller .= '<li><a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete').'">'.JText::_('GROUPS_DELETE_LINK').'</a></li>';
-			
-			
-			$controller .= '</ul>'."\n";
-			$controller .= '<a href="#" id="toggle-controls">'.JText::sprintf('GROUPS_TOGGLE_CONTROLS', 'Admin').'</a>';
-			$controller .= '</div>'."\n";
-		}
 		
-		echo $controller;
+		
+		
+			if($this->authorized == 'admin' && strpos($controller,"status") === false) {
+				$controller  = '<div id="status" class="'.$cls.'"><span id="group_status_unnecessary">Joomla </span>Admin</div>'."\n";
+				$controller .= '<div id="controls">'."\n";
+				$controller .= '<ul id="control_items">'."\n";
+			
+				if($this->group->get('join_policy') == 0) {
+					$controller .= '<li><a class="join" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=join').'">'.JText::_('GROUPS_JOIN_CONTROLLER_LINK').'</a></li>'."\n";
+				} elseif($this->group->get('join_policy') == 1) {
+					$controller .= '<li><a class="join" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=join').'">'.JText::_('GROUPS_REQUEST_CONTROLLER_LINK').'</a></li>'."\n";
+				}
+			
+				$controller .= '<li><a class="invite" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite').'">'.JText::_('GROUPS_INVITE_LINK').'</a></li>';
+				$controller .= '<li><a class="edit" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit').'">'.JText::_('GROUPS_EDIT_LINK').'</a></li>';
+				$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize').'">'.JText::_('GROUPS_CUSTOMIZE_LINK').'</a></li>';
+				$controller .= '<li><a class="customize" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=managepages').'">'.JText::_('GROUPS_PAGES_LINK').'</a></li>';
+				$controller .= '<li><a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete').'">'.JText::_('GROUPS_DELETE_LINK').'</a></li>';
+			
+			
+				$controller .= '</ul>'."\n";
+				$controller .= '<a href="#" id="toggle-controls">'.JText::sprintf('GROUPS_TOGGLE_CONTROLS', 'Admin').'</a>';
+				$controller .= '</div>'."\n";
+			}
+		
+			echo $controller;
 	
-	?>
-	</div><!-- // end controller -->
+		?>
+		</div><!-- // end controller -->
 
-	<div id="modules">
-		<?php echo $this->group_modules; ?>
-	</div><!-- // end modules -->
-	
+		<div id="modules">
+			<?php echo $this->group_modules; ?>
+		</div><!-- // end modules -->
+	<?php endif; ?>
 </div><!-- //end content aside -->
 
 

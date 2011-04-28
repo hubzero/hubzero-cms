@@ -89,7 +89,7 @@ iframe {
 #page_menu li.protected {
 	height:1%;
 	padding:12px 10px 12px 20px; 
-	background: url('../img/lock.png') no-repeat 95% 50%;
+	background: url('../img/lock.png') no-repeat 95% 10px;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 	filter: alpha(opacity=50);
 	opacity:0.5;
@@ -175,6 +175,34 @@ iframe {
 	border-bottom:1px solid #999; 
 	border-top:1px solid #999; 
 	border-left:1px solid #999; 
+}
+
+#page_menu ul li.sub_protected {
+	height:1%;
+	display:block; 
+	padding:8px 10px 8px 35px; 
+	background: url('../img/page.png') no-repeat 10px 50%;
+	color:#777;
+	font-size:11px;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter:alpha(opacity=50);
+	opacity:0.5;
+	overflow:hidden;
+}
+
+#page_menu ul li.sub_protected span {
+	float:right;
+	width:10px;
+	height:10px;
+	background: url('../img/page_protected.png') no-repeat 0 0;
+}
+
+#page_menu .overview_protected {
+	margin:10px 0 0 0;
+}
+
+#page_menu .overview_protected .sub_protected {
+	padding-right:0;
 }
 
 /* ----------------------- */

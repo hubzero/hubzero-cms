@@ -44,6 +44,7 @@ $content = '';
 $url = '';
 $order = '';
 $active = '';
+$privacy = '';
 
 //if we are in edit mode
 if($this->page) {
@@ -58,6 +59,7 @@ if($this->page) {
 	$url = $this->page['url'];
 	$order = $this->page['porder'];
 	$active = $this->page['active'];
+	$privacy = $this->page['privacy'];
 }
 
 //set var for asset browser
@@ -96,7 +98,22 @@ $lid = $this->group->get('gidNumber');
 				$editor =& Hubzero_Wiki_Editor::getInstance();
 				echo $editor->display('page[content]', 'page[content]', stripslashes($content), '', '50', '15');
 			?>
-			<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+			<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+		</label>
+		<label>Page Privacy: <span class="required">Required</span>
+			<?php
+				$access = $this->group->getPluginAccess('overview');
+				switch($access)
+				{
+					case 'anyone':		$name = "Any HUB Visitor";		break;
+					case 'registered':	$name = "Registered HUB Users";	break;
+					case 'members':		$name = "Group Members Only";	break;
+				}
+			?>
+			<select name="page[privacy]">
+				<option value="default" <?php if($privacy == "default") { echo "selected"; } ?>>Inherits overview tab's privacy setting (Currently set to: <?php echo $name; ?>)</option>
+				<option value="members" <?php if($privacy == "members") { echo "selected"; } ?>>Private Page (Accessible to members only)</option>
+			</select>
 		</label>
 		<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
 		<input type="hidden" name="page[gid]" value="<?php echo $gid; ?>" />

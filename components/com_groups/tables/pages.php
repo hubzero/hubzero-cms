@@ -37,6 +37,7 @@ Class GroupPages extends JTable
 	var $content = NULL;
 	var $porder = NULL;
 	var $active = NULL;
+	var $privacy = NULL;
 	
 	function __construct( &$db)
 	{
@@ -68,7 +69,8 @@ Class GroupPages extends JTable
 					'title' => $page['title'],
 					'content' => $page['content'],
 					'order' => $page['porder'],
-					'active' => $page['active'] 
+					'active' => $page['active'],
+					'privacy' => $page['privacy'] 
 					);
 			}
 		} else {
@@ -91,44 +93,102 @@ Class GroupPages extends JTable
 	
 	//------
 	
-	public function displayOverviewPage( $group, $authorized, $tab, $pages, $parser, $wikiconfig, $option, $user )
+	public function displayPage()
 	{
+		$this->juser =& JFactory::getUser();
+
+		//var to hold page content
 		$page = '';
 		
-		//$this->print_pretty($pages);
-		if(array_key_exists($tab,$pages)) {
-			$page = $parser->parse("\n".stripslashes($pages[$tab]['content']), $wikiconfig);
-		} else {
-			$overview_type = $group->get('overview_type');
-			switch($overview_type)
-			{
-				case 1:		$page = $parser->parse("\n".stripslashes($group->get('overview_content')), $wikiconfig);		break;
-				case 0:
-				default:	$page = $this->defaultPage($authorized, $group, $parser, $wikiconfig, $option, $user );			break;
+		//var to hold if user has access
+		$access = true;
+		
+		//get overview page access
+		$overview_access = $this->group->getPluginAccess('overview');
+
+		//get group discoverability
+		$discoverability = $this->group->get('privacy');
+
+		//get the group members
+		$members = $this->group->get('members');
+		
+		//if user isnt logged in and access level is set to registered users or members only
+		if($this->juser->get('guest') && ($overview_access == 'registered' || $overview_access == 'members')) {
+			$access = false;
+		}
+
+		//if the user isnt a group member or joomla admin
+		if(!in_array($this->juser->get('id'),$members) && $overview_access == 'members' && $this->authorized != 'admin') {
+			$access = false;
+		}
+		
+		//if we have failed access and we are on the overview tab or one on the group pages
+		if(!$access && ($this->tab == 'overview' || array_key_exists($this->tab,$this->pages))) {
+			if($discoverability == 1) {
+				JError::raiseError( 404, JText::_('Group Access Denied') );
+				return;
+			} else {
+				return $page = "<p class=\"info\">You do not have the permissions to access this page.</p>";
 			}
 		}
 		
+		//var to hold content and page id
+		$pContent = "";
+		$pID = "";
+
+		//if overview type is set to custom, use custom content
+		if($this->group->get('overview_type') == 1) {
+			$pContent = $this->group->get('overview_content');
+			$pID = 0;
+		} else {
+			$page = $this->defaultPage();
+			$pID = 0;
+		}
+
+		//if we have a page use that content
+		if(array_key_exists( $this->tab, $this->pages )) {
+			$privacy = $this->pages[$this->tab]['privacy'];
+			$privacy = ($privacy != '') ? $privacy : $overview_access;
+
+			if(($privacy == 'registered' && $this->juser->get('guest')) || ($privacy == 'members' && !in_array($this->juser->get('id'), $members))) {
+				$pContent = "";
+				$page = "<p class=\"info\">You currently dont have the permissions to access this group page.</p>";
+			} else {
+				$pContent = $this->pages[$this->tab]['content'];
+			}
+
+			$pID = $this->pages[$this->tab]['id'];
+		}
+
+		//if we have some content
+		if($pContent != "") {
+			$page = $this->parser->parse( $pContent, $this->config);
+		}
+
+		//mark page hit
+		if($this->tab == 'overview' || array_key_exists($this->tab, $this->pages)) {
+			$this->pageHit($pID);
+		}
+		
+		//return the page content
 		return $page;
 	}
 	
 	//-----------
 	
-	public function defaultPage(  $authorized, $group, $parser, $wikiconfig, $option, $user ) 
+	public function defaultPage() 
 	{
 		//get the group members
-		$members = $group->get('members');
+		$members = $this->group->get('members');
 		shuffle($members); 
 		
 		//get the public and private desc from group object
-		$public_desc = $group->get('public_desc');
-		$private_desc = $group->get('private_desc');
-		
-		//Get overview page content
-		$overview_page = $group->get('overview_content');
+		$public_desc = $this->group->get('public_desc');
+		$private_desc = $this->group->get('private_desc');
 		
 		//if there is no public desc use group name
 		if ($public_desc == '') {
-			$public_desc = $group->get('description');
+			$public_desc = $this->group->get('description');
 		}
 		
 		//if there is no private desc use the public desc
@@ -137,21 +197,20 @@ Class GroupPages extends JTable
 		}
 		
 		//parse the content with the wiki parser
-		$public_desc = $parser->parse( "\n".stripslashes($public_desc), $wikiconfig );
-		$private_desc = $parser->parse( "\n".stripslashes($private_desc), $wikiconfig );
-		$overview_page = $parser->parse( "\n".stripslashes($overview_page), $wikiconfig );
+		$public_desc = $this->parser->parse( stripslashes($public_desc), $this->config );
+		$private_desc = $this->parser->parse( stripslashes($private_desc), $this->config );
 		
 		//load the member profile lib
 		ximport('Hubzero_User_Profile');
 		
 		//check if member or manager or Joomla admin
-		$isMember = ($authorized != 'admin' && $authorized != 'manager' && $authorized != 'member') ? false : true;
+		$isMember = ($this->authorized != 'admin' && $this->authorized != 'manager' && $this->authorized != 'member') ? false : true;
 		
 		//$about  = '<h3 class="default">'.JText::_('GROUPS_ABOUT_HEADING').'</h3>'; 
 		$about  = '<div class="group-content-header">';
 			$about .= '<h3>'.JText::_('GROUPS_ABOUT_HEADING').'</h3>';
 		
-		if($isMember && $group->get('private_desc') != '') {
+		if($isMember && $this->group->get('private_desc') != '') {
 			$about .= '<div class="group-content-header-extra">';
 				$about .= '<a id="toggle_description" class="hide" href="#">Show Public Description (+)</a>';
 			$about .= '</div>';
@@ -169,16 +228,16 @@ Class GroupPages extends JTable
 		$about .= '<br />';
 		
 		//get the members plugin access for this group
-		$access = $group->getPluginAccess($group, 'members');
+		$access = $this->group->getPluginAccess('members');
 		
 		//check to make sure we should be showing the mini member browser
-		if($access == 'nobody' || ($access == 'registered' && $user->get('guest')) || ($access == 'members' && !$isMember)) {
+		if($access == 'nobody' || ($access == 'registered' && $this->user->get('guest')) || ($access == 'members' && !$isMember)) {
 			$member_browser = '';
 		} else {
 			$member_browser  = '<div class="group-content-header">';
 				$member_browser .= '<h3>'.JText::_('GROUPS_GROUP_MEMBERS').'</h3>';
 				$member_browser .= '<div class="group-content-header-extra">';
-					$member_browser .= '<a href="'.JRoute::_('index.php?option='.$option.'&gid='.$group->get('cn').'&active=members').'">'.JText::_('VIEW_ALL_MEMBERS').' &rarr;</a>';
+					$member_browser .= '<a href="'.JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=members').'">'.JText::_('VIEW_ALL_MEMBERS').' &rarr;</a>';
 				$member_browser .= '</div>';
 			$member_browser .= '</div>';
 		
@@ -206,6 +265,24 @@ Class GroupPages extends JTable
 	}
 	
 	//------------
+	
+	private function pageHit( $pid ) 
+	{
+		//instantiate database
+		$db =& JFactory::getDBO();
+
+		//query to insert page hit
+		$sql = "INSERT INTO #__xgroups_pages_hits(gid,pid,uid,datetime,ip)
+				VALUES('".$this->group->get('gidNumber')."','".$pid."','".$this->juser->get('id')."',NOW(),'".$_SERVER['REMOTE_ADDR']."')";
+
+		//set the query
+		$db->setQuery($sql);
+
+		//perform query
+		$db->query();
+	}
+		
+	//------
 	
 	private function thumbit( $uid, $picture )
 	{

@@ -476,8 +476,16 @@ class GroupsController extends Hubzero_Controller
 		$GPages = new GroupPages($this->database);
 		$pages = $GPages->getPages($group->get('gidNumber'), true);
 		
+		//push some vars to the group pages
+		$GPages->parser = $p;
+		$GPages->config = $wikiconfig;
+		$GPages->group = $group;
+		$GPages->authorized = $authorized;
+		$GPages->tab = $tab;
+		$GPages->pages = $pages;
+		
 		//get the content to display group pages
-		$group_overview = $GPages->displayOverviewPage($group, $authorized, $tab, $pages, $p, $wikiconfig, $this->_option, $this->juser);
+		$group_overview = $GPages->displayPage();
 		
 		//instantiate group modules object
 		$GModules = new GroupModules($this->database);
@@ -499,7 +507,7 @@ class GroupsController extends Hubzero_Controller
 		array_unshift($hub_group_plugins, array('name'=>'overview','title'=>'Overview','default_access'=>'anyone'));
 		
 		//get plugin access
-		$group_plugin_access = $group->getPluginAccess($group);
+		$group_plugin_access = $group->getPluginAccess();
 		
 		//if active tab not overview and an not one of available tabs
 		if ($tab != 'overview' && !in_array($tab, array_keys($group_plugin_access))) {
@@ -1966,7 +1974,7 @@ class GroupsController extends Hubzero_Controller
 		array_unshift($hub_group_plugins, array('name'=>'overview','title'=>'Overview','default_access'=>'anyone'));
 		
 		//get plugin access
-		$group_plugin_access = $group->getPluginAccess($group);
+		$group_plugin_access = $group->getPluginAccess();
 	
 		
 		//build the page title
@@ -2258,6 +2266,7 @@ class GroupsController extends Hubzero_Controller
 			$page['content'] = $GPage->content;
 			$page['porder'] = $GPage->porder;
 			$page['active'] = $GPage->active;
+			$page['privacy'] =  $GPage->privacy;
 		}
 		
 		if($this->page) {
@@ -2538,7 +2547,7 @@ class GroupsController extends Hubzero_Controller
 		$page_urls = array_keys($group_pages);
 		
 		//get plugin names
-		$plugin_names = array_keys($group->getPluginAccess($group));
+		$plugin_names = array_keys($group->getPluginAccess());
 		
 		if(in_array($current_url,$plugin_names)) {
 			$current_url = $current_url . "_page";
