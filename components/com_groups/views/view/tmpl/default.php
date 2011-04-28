@@ -31,7 +31,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 $no_html = JRequest::getInt( 'no_html', 0 );
 if (!$no_html) { 
 ?>
-<?php echo $this->special; ?>
 	<div class="innerwrap">
 	<div id="page_container">
 		<div id="page_container_inner">
