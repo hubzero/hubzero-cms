@@ -163,6 +163,10 @@ HUB.Twitter = new Class ({
 				img = feed[i].user.profile_image_url;
 				user = feed[i].user.screen_name;
 			}
+			
+			//load images through https
+			img = img.replace(/http:\/\/\w{2}.twimg.com/, 'https://s3.amazonaws.com/twitter_production');
+			
 			html += "<li>";
 			html += "<span class=\"tweetProfilePicture\">";
 			html += "<img src=\"" + img + "\" />";
