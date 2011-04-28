@@ -108,9 +108,9 @@ class SliderMacro extends WikiMacro
 		
 		
 		$document =& JFactory::getDocument();
-		$document->addStyleSheet('plugins/hubzero/wikiparser/macros/macro-assets/slider.css');
+		$document->addStyleSheet('plugins/hubzero/wikiparser/macros/macro-assets/slider/slider.css');
 		$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js');
-		$document->addScript('plugins/hubzero/wikiparser/macros/macro-assets/slider.js');
+		$document->addScript('plugins/hubzero/wikiparser/macros/macro-assets/slider/slider.js');
 		$document->addScriptDeclaration('
 			var $jQ = jQuery.noConflict();
 			
