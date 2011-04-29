@@ -183,7 +183,7 @@ HUB.Groups = {
 		//function that hides all p tags without content
 		$$('p').each(function(el) {
 			var text = el.innerHTML;
-			if(escape(text) == '%3Cbr%3E%0A') {
+			if(escape(text) == '%3Cbr%3E%0A' || text == "") {
 				el.addClass('hide');
 			}
 		});
