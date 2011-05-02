@@ -32,8 +32,28 @@ class TwitterMacro extends WikiMacro
 	public function description() 
 	{
 		$txt = array();
-		$txt['wiki'] = "Embeds a Youtube Video into the Page";
-		$txt['html'] = '<p>Embeds a Youtube Video into the Page</p>';
+		$txt['wiki'] = "Embeds a Twitter Feed into the page";
+		$txt['html'] = '<p>Embeds a Twitter Feed into the page. Can be a user feed(@nanohub) or search by trend(#nanotechnology), followed by a comma(,) and then the number of tweets to display.</p>
+						<p>Examples:</p>
+						<ul>
+							<li><code>[[Twitter(@nanohub,2)]]</code></li>
+							<li><code>[[Twitter(#nanotechnology,5)]]</code></li>
+						</ul>
+						<p>Displays:</p>
+						<link type="text/css" rel="stylesheet" href="/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.css" />
+						<script src="/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.js"></script>
+						<script>
+							window.addEvent("domready",function() {
+											var twitterFeed = new HUB.Twitter("twitterMacroList", {
+												type: "user",
+												username: "@nanohub",
+												trend: "",
+												tweets: 2,
+												linkify:true
+											});
+										});
+						</script>
+						<div id="twitterMacroList" class="twitter_feed_container">Loading Twitter Feed...</div><br><br>';
 		
 		return $txt['html'];
 	}
