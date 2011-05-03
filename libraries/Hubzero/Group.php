@@ -49,6 +49,8 @@ class Hubzero_Group
 	private $overview_type = null;
 	private $overview_content = null;
 	private $plugins = null;
+	private $created = null;
+	private $created_by = null;
 	private $members = array();
 	private $managers = array();
 	private $applicants = array();

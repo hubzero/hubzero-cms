@@ -1233,6 +1233,8 @@ class GroupsController extends Hubzero_Controller
 			$group->create();
 			$group->set('type', 1 );
 			$group->set('published', $g_published );
+			$group->set('created', date("Y-m-d H:i:s"));
+			$group->set('created_by', $this->juser->get('id'));
 			
 			$group->add('managers',array($this->juser->get('id')));
 			$group->add('members',array($this->juser->get('id')));

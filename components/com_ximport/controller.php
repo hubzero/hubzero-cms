@@ -80,27 +80,25 @@ class XImportController extends JObject
 
         //-----------
 
-	public function execute()
+		public function execute()
         {
-                // Load the component config
-                //$config = new XImportConfig( $this->_option );
-                //$this->config = $config;
+			// Load the component config
+            //$config = new XImportConfig( $this->_option );
+            //$this->config = $config;
+            
+			$default = 'browse';
                 
-                $default = 'browse';
-                
-                $task = strtolower(JRequest::getVar('task', '', 'default'));
-                
-                $this->_task = $task;
+           	$task = strtolower(JRequest::getVar('task', '', 'default'));
+            $this->_task = $task;
 
-		if (!$this->authorize())
-		{
-			echo "Access Restricted";
-			return;
-		}
+			if (!$this->authorize()) {
+				echo "Access Restricted";
+				return;
+			}
 
 		// ximport/authors?override=1
 
-                if ($task == 'authors')
+           if ($task == 'authors')
 		{
 			$override = JRequest::getVar('override',false,'get');
 			$override = $override ? true : false;
@@ -137,6 +135,10 @@ class XImportController extends JObject
 		else if ($task == 'comparegroups')
 		{
 			$this->comparegroups();
+		}
+		else if ($task == 'groupcreated')
+		{
+			$this->moveGroupCreatedDate();
 		}
 		else
 			$this->showlist();
@@ -190,6 +192,8 @@ class XImportController extends JObject
 		echo '<a href="/ximport/compareusers">compare users from ldap</a><br>' . "\n";
 		echo '<a href="/ximport/comparelicenses">compare licenses from ldap</a><br>' . "\n";
 		echo '<a href="/ximport/comparegroups">compare groups from ldap</a><br>' . "\n";
+		echo "<br>";
+		echo '<a href="/ximport/groupcreated">Take group create date from group logs</a><br>' . "\n";
 	}
 
 	public function fixname($name)
@@ -486,5 +490,36 @@ class XImportController extends JObject
         include 'igroups.php';
         _comparegroups();
     }
+
+	//------
+	
+	//function to add created date and created by to xgroups table
+	//take this data from xgroups_logs table
+	//Added May 3, 2011 by Chris Smoak
+	
+	function moveGroupCreatedDate()
+	{
+		//instatiate database
+		$db =& JFactory::getDBO();
+		
+		//import group library
+		ximport('Hubzero_Group');
+		
+		//select all logs where group was created
+		$sql = "SELECT * FROM #__xgroups_log WHERE action='group_created'";
+		$db->setQuery($sql);
+		$logs = $db->loadAssocList();
+		
+		foreach($logs as $log) {
+			echo $log['gid'];
+			$group = Hubzero_Group::getInstance($log['gid']);
+			if(is_object($group)) {
+				$group->set('created',$log['timestamp']);
+				$group->set('created_by', $log['actorid']);
+				$group->update();
+			}
+		}
+	}
+	
 }
 
