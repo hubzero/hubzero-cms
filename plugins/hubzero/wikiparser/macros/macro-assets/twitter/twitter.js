@@ -213,7 +213,7 @@ HUB.Twitter = new Class ({
 			parsed_date = Date.parse(values[2] + " " + values[1] + ", " + values[3] + " " + values[4]),
             date = new Date(parsed_date),
             relative_to = (arguments.length > 1) ? arguments[1] : new Date(),
-            delta = parseInt((relative_to.getTime() - parsed_date) / 1000),
+            delta = parseInt((relative_to.getTime() - parsed_date) / 1000);
 		}
         
         function formatTime(date) {
