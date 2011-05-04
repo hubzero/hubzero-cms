@@ -250,6 +250,11 @@ class YSearchModelResultSet extends JModel implements Iterator
 		foreach ($this->processed_results as $parent)
 		{
 			$plugin = $parent->get_plugin();
+
+			$ccount = count($parent->get_children());
+			$this->total_list_count -= $ccount;
+			--$this->result_counts[$plugin]['list_count'];
+
 			if (!array_key_exists('sections', $this->result_counts[$plugin]))
 				$this->result_counts[$plugin]['sections'] = array();
 		
