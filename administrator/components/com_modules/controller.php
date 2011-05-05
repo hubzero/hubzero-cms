@@ -301,6 +301,7 @@ class ModulesController extends JController
 		}
 		$row->checkin();
 
+		$other = JRequest::getVar( 'menus-other', '0', 'post', 'int');
 		$menus = JRequest::getVar( 'menus', '', 'post', 'word' );
 		$selections = JRequest::getVar( 'selections', array(), 'post', 'array' );
 		JArrayHelper::toInteger($selections);
@@ -328,6 +329,16 @@ class ModulesController extends JController
 		}
 		else
 		{
+			if ( $other == '1' ) {
+			    // assign new module to `other` menu item associations
+			    $query = 'INSERT INTO #__modules_menu'
+			    . ' SET moduleid = '.(int) $row->id.' , menuid = -1'
+			    ;
+			    $db->setQuery( $query );
+			    if (!$db->query()) {
+				    return JError::raiseWarning( 500, $db->getError() );
+			    }
+			}
 			foreach ($selections as $menuid)
 			{
 				// this check for the blank spaces in the select box that have been added for cosmetic reasons
@@ -451,7 +462,7 @@ class ModulesController extends JController
 		if ( $cid[0] ) {
 			$query = 'SELECT menuid AS value'
 			. ' FROM #__modules_menu'
-			. ' WHERE moduleid = '.(int) $row->id
+			. ' WHERE moduleid = '.(int) $row->id.' ORDER BY menuid'
 			;
 			$db->setQuery( $query );
 			$lookup = $db->loadObjectList();
@@ -462,6 +473,10 @@ class ModulesController extends JController
 				$row->pages = 'all';
 			} else {
 				$row->pages = null;
+			}
+			if (!empty($lookup) && $lookup[0]->value == -1) {
+				$lists['other'] = '1';
+				array_shift($lookup);
 			}
 		} else {
 			$lookup = array( JHTML::_('select.option',  0, JText::_( 'All' ) ) );

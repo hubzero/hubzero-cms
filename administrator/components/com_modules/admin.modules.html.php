@@ -372,7 +372,13 @@ class HTML_modules
 				<legend><?php echo JText::_( 'Menu Assignment' ); ?></legend>
 				<script type="text/javascript">
 					function allselections() {
-						var e = document.getElementById('selections');
+						var e = document.getElementById('menus-other0');
+						e.disabled = true;
+						e.checked = false;
+						e = document.getElementById('menus-other1');
+						e.disabled = true;
+						e.checked = true;
+						e = document.getElementById('selections');
 							e.disabled = true;
 						var i = 0;
 						var n = e.options.length;
@@ -382,7 +388,13 @@ class HTML_modules
 						}
 					}
 					function disableselections() {
-						var e = document.getElementById('selections');
+						var e = document.getElementById('menus-other0');
+						e.disabled = true;
+						e.checked = true;
+						e = document.getElementById('menus-other1');
+						e.disabled = true;
+						e.checked = false;
+						e = document.getElementById('selections');
 							e.disabled = true;
 						var i = 0;
 						var n = e.options.length;
@@ -392,7 +404,11 @@ class HTML_modules
 						}
 					}
 					function enableselections() {
-						var e = document.getElementById('selections');
+						var e = document.getElementById('menus-other0');
+						e.disabled = false;
+						e = document.getElementById('menus-other1');
+						e.disabled = false;
+						e = document.getElementById('selections');
 							e.disabled = false;
 						var i = 0;
 						var n = e.options.length;
@@ -430,6 +446,31 @@ class HTML_modules
 						</td>
 						<td>
 							<?php echo $lists['selections']; ?>
+						</td>
+					</tr>
+					<tr>
+						<td valign="top" class="key">
+							<?php echo JText::_( 'No Menu' ); ?>:
+						</td>
+						<td>
+						<?php if ($row->client_id != 1) : ?>
+							<?php if ($row->pages == 'all') { ?>
+							<input type="radio" name="menus-other" id="menus-other0" disabled="true" value="0" class="inputbox" /> 
+							<label for="menus-other0">Hide</label> 
+							<input type="radio" name="menus-other" id="menus-other1" disabled="true" value="1" checked="checked" class="inputbox" /> 
+							<label for="menus-other1">Show</label>
+							<?php } elseif ($row->pages == 'none') { ?>
+							<input type="radio" name="menus-other" id="menus-other0" disabled="true" value="0" checked="checked" class="inputbox" /> 
+							<label for="menus-other0">Hide</label> 
+							<input type="radio" name="menus-other" id="menus-other1" disabled="true" value="1" class="inputbox" /> 
+							<label for="menus-other1">Show</label> 
+							<?php } else { ?>
+							<input type="radio" name="menus-other" id="menus-other0" value="0" <?php if (empty($lists['other'])) echo "checked=\"checked\""; ?> class="inputbox" /> 
+							<label for="menus-other0">Hide</label> 
+							<input type="radio" name="menus-other" id="menus-other1" value="1" <?php if (!empty($lists['other'])) echo "checked=\"checked\""; ?> class="inputbox" /> 
+							<label for="menus-other1">Show</label> 
+							<?php } ?>
+						<?php endif; ?>
 						</td>
 					</tr>
 				</table>

@@ -444,7 +444,10 @@ class XRouter extends JRouter
 			
 		
 		}
-		
+		if (empty($vars['Itemid'])) {
+			$vars['Itemid'] =  '-1';
+		}
+
 		// HUBzero Extension to pass common query parameters to apache (for logging)
 
 		if (!empty($vars['option']))
