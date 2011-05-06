@@ -70,10 +70,10 @@ class plgYSearchTopics extends YSearchPlugin
 			LEFT JOIN jos_xgroups xg ON xg.cn = wp.group
 			WHERE
 				$authorization AND
-				$weight > 0".
+				$weight > 0 AND 
+				wv.id = (SELECT MAX(wv2.id) FROM jos_wiki_version wv2 WHERE wv2.pageid = wv.pageid) ".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
-			" GROUP BY wv.pageid 
-			ORDER BY $weight DESC"
+			" ORDER BY $weight DESC"
 		);
 		foreach ($rows->to_associative() as $row)
 		{
