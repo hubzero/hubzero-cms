@@ -173,7 +173,7 @@ class plgGroupsMembers extends JPlugin
 				}
 				
 				//get messages plugin access level
-				$view->messages_acl = $group->getPluginAccess($group,'messages');
+				$view->messages_acl = $group->getPluginAccess('messages');
 				
 				//get all member roles
 				$db =& JFactory::getDBO();

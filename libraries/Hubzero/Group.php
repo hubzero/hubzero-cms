@@ -2222,7 +2222,7 @@ class Hubzero_Group
 	// New function with new groups (Chris)
 	//----
 	
-	public function getPluginAccess( $group, $get_plugin = '' )
+	public function getPluginAccess( $get_plugin = '' )
 	{
 		// Get plugins
 		JPluginHelper::importPlugin( 'groups' );
@@ -2238,7 +2238,7 @@ class Hubzero_Group
 		
 		//get the group plugin preferences
 		//returns array of tabs and their access level (ex. [overview] => 'anyone', [messages] => 'registered')
-		$group_plugins = $group->get('plugins');
+		$group_plugins = $this->get('plugins');
 		if($group_plugins) {
 			$group_plugins = explode(',',$group_plugins);
 			foreach($group_plugins as $plugin) {

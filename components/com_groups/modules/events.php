@@ -71,7 +71,7 @@ Class EventsModule
 		$members = $group->get('members');
 		
 		//get the calendar plugins access level
-		$calendar_plugin_preference = $group->getPluginAccess($group, 'calendar');
+		$calendar_plugin_preference = $group->getPluginAccess('calendar');
 		
 		//if there isnt a preference set or there calendar plugin is set to hidden return nothing
 		if($calendar_plugin_preference == 'nobody') {
