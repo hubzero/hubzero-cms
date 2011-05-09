@@ -54,7 +54,7 @@ if (!empty($error_message))
 		</label>
 		
 		<p class="hint">
-			<?php if ($realm == 'hzldap') { ?>
+			<?php if (($realm == 'hzldap') || ($realm == 'hubzero')) { ?>
 				<a href="<?php echo JRoute::_('index.php?option=com_hub&task=lostusername'); ?>"><?php echo JText::_('_LOST_USERNAME');?></a><br />
 			<?php } 
 			echo JText::_('_NO_USERNAME'); 
@@ -67,7 +67,7 @@ if (!empty($error_message))
 			<input type="password" tabindex="2" name="passwd" id="passwd" />
 		</label>
 		
-		<?php if ($realm == 'hzldap') { ?>
+		<?php if (($realm == 'hzldap') || ($realm == 'hubzero')) { ?>
 		<p class="hint">
 			<a href="<?php echo JRoute::_('index.php?option=com_hub&task=lostpassword'); ?>"><?php echo JText::_('_LOST_PASSWORD'); ?></a>
 		</p>

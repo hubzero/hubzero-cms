@@ -304,7 +304,7 @@ class HubController extends JObject
 
 		// @TODO this default should be provided by plugin and probably should be different than the realm name
   		// it should be a variable specifically for the login prompt.
-		if ($realmName == 'hzldap')
+		if (($realmName == 'hzldap') || ($realmName == 'hubzero'))
 		{
 			$app =& JFactory::getApplication();
 			$realmName = $app->getCfg('sitename') . ' Account';

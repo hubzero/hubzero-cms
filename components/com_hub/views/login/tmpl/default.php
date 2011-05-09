@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</label>
 		
 		<p class="hint">
-			<?php if ($this->realm == 'hzldap') { ?>
+			<?php if (($this->realm == 'hzldap') || ($this->realm == 'hubzero')) { ?>
 				<a href="/myaccount/resend"><?php echo JText::_('_LOST_USERNAME');?></a><br />
 			<?php } 
 			echo JText::_('_NO_USERNAME'); 
@@ -65,7 +65,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="password" tabindex="2" name="passwd" id="passwd" />
 		</label>
 		
-		<?php if ($this->realm == 'hzldap') { ?>
+		<?php if (($this->realm == 'hzldap') || ($this->realm == 'hubzero')) { ?>
 		<p class="hint">
 			<a href="/password/lost"><?php echo JText::_('_LOST_PASSWORD'); ?></a>
 		</p>
