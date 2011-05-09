@@ -5,112 +5,220 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
+Author:
+-----------------		
+Christopher Smoak <csmoak@purdue.edu>
+
+Created:
+-----------------
+April 2011
+
+Requires:
+-----------------
+Mootools 1.1
+
+**/
+
+if(!HUB) {
 	var HUB = {};
 }
 
-//-----
+//----------------------
 
-if(!HUB.Modules) {
-	HUB.Modules = {};
-}
+var youtube_feed = 0;
 
-//-----------------------------------------------------------
-//  Youtube feed js
-//-----------------------------------------------------------
+//----------------------
 
-HUB.Modules.Youtube = { 
-	buildFeed: function(options) {
-		var html = "";
-		var entries = options.feed.entry;
-		var title = options.feed.title.$t;
-		if(options.type == 'playlists') {
-			var desc = options.feed.subtitle.$t;
+HUB.Youtube = new Class ({
+	
+	//options set by call to class
+	options: {
+		type: "playlist",
+		search: "",
+		count: 3,
+		random: false,
+		details: {
+			showLogo: true,
+			altLogo: "",
+			showTitle: true,
+			altTitle: "",
+			showDesc: true,
+			altDesc: "",
+			showLink: true,
+			altLink: ""
 		}
-		var logo = new String(options.feed.logo.$t);
-		var logo = logo.replace("http://","https://");
-		
-		//check to see if we are to display a title and which title to display
-		if(options.showTitle) {
-			if(options.altTitle != '') {
-				html += '<h3>' + options.altTitle + '</h3>';
-			} else {
-				html += '<h3>' + title + '</h3>';
-			}
-		}
-		
-		//check to see if we are to display a title and which title to display
-		if(options.showDesc) {
-			if(options.altDesc != '') {
-				html += '<p class="description">' + options.altDesc + '</p>';
-			} else if(options.type == 'playlists') {
-				html += '<p class="description">' + desc + '</p>';
-			}
-		}
-		
-		//check to see if we are to display a title and which title to display
-		if(options.showImage) {
-			if(options.altImage != '') {
-				html += '<img class="logo" src="' + options.altImage + '" alt="Youtube" />';
-			} else {
-				html += '<img class="logo" src="' + logo + '" alt="Youtube" />';
-			}
-		}
-		
-		//check to see if we should randomize entries
-		if(options.random) {
-			entries.sort(function() {return 0.5 - Math.random()});
-		}
-		
-		//console.log(entries);
-		
-		//create the list of videos
-		html += '<ul>';
-		for(var i = 0; i < options.number; i++) {
-			var entry = entries[i];
-			if(entry) {
-				var media = entry.media$group;
-				html += "<li>";
-				var thumb = media.media$thumbnail[3].url;
-				var thumb = thumb.replace("http://","https://");
-				html += "<a class=\"entry-thumb\" rel=\"external\" href=\"" + entry.link[0].href + "\"><img src=\"" + thumb + "\" alt=\"\" /></a>";
-				html += "<a class=\"entry-title\" rel=\"external\" href=\"" + entry.link[0].href + "\">" + entry.title.$t + "</a>";
-				html += "<br /><span class=\"entry-duration\">" + HUB.Modules.Youtube.formatDuration(media.yt$duration.seconds) + "</span>";
-				html+="</li>";
-			}
-		}
-		html += '</ul>';
-		
-		//check to see if we are to display a title and which title to display
-		if(options.showLink) {
-			if(options.altLink != '') {
-				html += '<p class="more"><a rel="external" href="' + options.altLink + '" title="Youtube">More Videos</a></p><br class="clear" />';
-			} else {
-				switch(options.type)
-				{
-					case 'playlists':
-						link = "http://www.youtube.com/view_play_list?p=" + options.content;
-						break;
-					case 'users':
-						link = "http://www.youtube.com/user/" + options.content;
-						break;
-					case 'videos':
-						link = "http://www.youtube.com/results?search_query=" + options.content;
-						break;
-				}
-				
-				html += '<p class="more"><a rel="external" href="' + link + '" title="Youtube">More Videos</a></p><br class="clear" />';
-			}
-		}
-		
-		//set the content of the container
-		$('youtube_feed_' + options.id).innerHTML = html;
 	},
 	
-	formatDuration: function( seconds ) {
+	//base Youtube API URL
+	youtube_base_url: "https://gdata.youtube.com/feeds/api/",
+	
+	//querystring for Youtube API Call
+	youtube_querystring: "?v=2&alt=jsonc&callback={CALLBACK}",
+	
+	//takes container and options
+	initialize: function(container, options) {
+		//set our container in this namespace
+		this.container = $(container);
+	
+		//verify the container exists
+		if(!this.container) {
+			console.log("no container");
+			return;
+		}
+		
+		//set our options from defaults and user defined
+		this.setOptions(options);
+		
+		//incriment the feed count
+		youtube_feed++;
+		
+		//append the type of feed we want to load to base url
+		var url  = this.youtube_base_url + this.options.type;
+		
+		//build url based on type
+		if(this.options.type == 'videos') {
+			url += this.youtube_querystring.replace("{CALLBACK}", "YoutubeCallback" + youtube_feed);
+			url += "&q=" + this.options.search;
+		} else {
+			url += "/" + this.options.search;
+			if(this.options.type == 'users') url += "/uploads"; 
+			url += this.youtube_querystring.replace("{CALLBACK}", "YoutubeCallback" + youtube_feed);
+		}
+		
+		//push the script to the bottom of the head element
+		var script = Asset.javascript(url, {
+			id: 'youtube_script_' + youtube_feed
+		});
+	
+		//create a callback function for each youtube feed
+		window['YoutubeCallback' + youtube_feed] = function( json ) {
+			this.Format(json);
+		}.bind(this);
+	},
+	
+	//format json data into youtube feed
+	Format: function( json ) {
+		var html = "";
+		var feed = json.data;
+		var videos = feed.items;
+		
+		//if we want random
+		if(this.options.random) {
+			videos.sort(function() {return 0.5 - Math.random()});
+		}
+		
+		//build the feed details
+		html += this.FeedDetails( feed );
+		
+		//build html
+		html += "<ul>";
+		for(var i=0; i<this.options.count; i++) {
+			if(this.options.type == "playlists") {
+				var video = videos[i].video;
+			} else {
+				var video = videos[i];
+			}
+			
+			html += "<li>";
+			html += "<a class=\"entry-thumb\" rel=\"external\" title=\"" + video.title + "\" href=\"http://youtube.com/watch?v=" + video.id + "\"><img src=\"" + video.thumbnail.hqDefault.replace('http','https') + "\" alt=\"" + video.title + "\" width=\"80\" /></a>";
+			html += "<a class=\"entry-title\" rel=\"external\" title=\"" + video.title + "\" href=\"http://youtube.com/watch?v=" + video.id + "\">" + video.title + "</a>";
+			html += "<br /><span class=\"entry-duration\">" + this.Duration(video.duration) + "</span>";
+			html += "</li>";
+		}
+		html += "</ul>";
+		
+		//build the feed link
+		html += this.FeedLink( feed );
+		
+		this.container.innerHTML = html;
+	},
+	
+	FeedDetails: function( feed ) {
+		var topHTML = "";
+		var title, description, logo;
+		var details = this.options.details;
+		
+		//if we have no details return nothing
+		if(!details)
+			return "";
+		
+		//set title based on if we have an alternative title
+		if(details.altTitle && details.altTitle != "") {
+			title = details.altTitle;
+		} else {
+			title = feed.title;
+		}
+		
+		//set description based on if we have an alternative desc
+		if(details.altDesc && details.altDesc != "") {
+			description = details.altDesc;
+		} else {
+			description = feed.description;
+		}
+		
+		//set the logo based on if we have an alternative image
+		if(details.altLogo && details.altLogo != "") {
+			logo = details.altLogo;
+		} else {
+			logo = "https://www.youtube.com/img/pic_youtubelogo_123x63.gif";
+		}
+		
+		//do we want to show the title
+		if(details.showTitle) {
+			topHTML += "<h3>" + title + "</h3>";
+		}
+		
+		//do we want to show the description
+		if(details.showDesc) {
+			topHTML += "<p class=\"description\">" + description + "</p>";
+		}
+		
+		//do we want to show the logo
+		if(details.showLogo) {
+			topHTML += "<img class=\"logo\" src=\"" + logo + "\" alt=\"Youtube Feed\" />";
+		}
+		
+		//return html for feed details
+		return topHTML;
+	},
+	
+	FeedLink: function( feed ) {
+		var bottomHTML = "";
+		var link;
+		var details = this.options.details;
+		
+		//if we have no details return nothing
+		if(!details)
+			return "";
+		
+		//set link based on if we have an alternative link
+		if(details.altLink != "" && details.altLink) {
+			link = details.altLink;
+		} else {
+			switch(this.options.type)
+			{
+				case 'playlists':
+					link = "http://www.youtube.com/view_play_list?p=" + this.options.search;
+					break;
+				case 'users':
+					link = "http://www.youtube.com/user/" + this.options.search;
+					break;
+				case 'videos':
+					link = "http://www.youtube.com/results?search_query=" + this.options.search;
+					break;
+			}
+		}
+		
+		//do we want to show the link
+		if(details.showLink) {
+			bottomHTML += "<p class=\"more\"><a href=\"" + link + "\" rel=\"external\">View More &rsaquo;</a></p>";
+		}
+		
+		//return the html for the bottom link
+		return bottomHTML;
+	},
+	
+	Duration: function (seconds) {
 		minutes = Math.floor(seconds/60); 	
 		seconds = seconds % 60;
 		if(seconds < 10) {
@@ -118,6 +226,7 @@ HUB.Modules.Youtube = {
 		}
 		return "<span>" + minutes + ":" + seconds + "</span>";
 	}
-	
-}
 
+});
+
+HUB.Youtube.implement(new Events, new Options);

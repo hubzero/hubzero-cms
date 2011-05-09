@@ -7,17 +7,14 @@
 
 /* Youtube Feed Vertical */
 
-.youtube_vertical,
-.youtube_horizontal {
+.youtube_vertical {
 	position:relative;
 	}
-.youtube_vertical h3,
-.youtube_horizontal h3 {
+.youtube_vertical h3 {
 	background:url('images/fc-tv.gif') no-repeat top left;	
 	padding-left:23px;
 	}
-.youtube_vertical .description,
-.youtube_horizontal .description {
+.youtube_vertical .description {
 	font-size:11px;
 	color:#777;
 	margin-top:0;
@@ -25,8 +22,7 @@
 	padding-bottom:0.5em;
 	margin-bottom:0.5em;
 	}
-.youtube_vertical .logo,
-.youtube_horizontal .logo {
+.youtube_vertical .logo {
 	position:absolute;
 	right:0px;
 	top:-3px;
@@ -57,42 +53,6 @@
 .youtube_vertical ul li .entry-duration span {
 	border-bottom:1px dotted #444;
 	}
-/* horizontal */
-.youtube_horizontal ul {
-	overflow:hidden;
-	}
-.youtube_horizontal ul li {
-	float:left;
-	border-left:1px solid #CCC;
-	text-align:center;
-	width:30%;
-	padding:0 1.65%;
-	}
-.youtube_horizontal ul li:first-child {
-	border-left:none;
-}
-.youtube_horizontal ul li .entry-thumb {
-	width:100px;
-	text-align:center;
-	display:block;
-	}
-.youtube_horizontal ul li .entry-thumb:hover { 
-	border:none;
-	}
-.youtube_horizontal ul li .entry-thumb img {
-	width:100%;
-	border:1px solid #CCC;
-	padding:1px;
-	}
-.youtube_horizontal ul li .entry-duration  { 
-	font-size:11px;
-	}
-.youtube_horizontal ul li .entry-duration span {
-	border-bottom:1px dotted #444;
-	}
-	
-.youtube_vertical .more,
-.youtube_horizontal .more { 
+.youtube_vertical .more { 
 	margin:1em 0;
 	}
-

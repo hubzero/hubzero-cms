@@ -106,36 +106,27 @@ class modYoutubeHelper
 		
 		//if we are lazy loading
 		if($lazy_loading) {
-			//append the the return type and the callback function
-			$youtube_url .= "&alt=json-in-script&callback=showVideos$id";
-			
-			//build the callback script that builds feed asyncronously
-			$script = '
-			function showVideos'.$id.'(entries) {
-				HUB.Modules.Youtube.buildFeed({
-					id: "'.$id.'",
-					type: "'.$type.'",
-					content: "'.$content.'",
-					feed: entries.feed,
-					showTitle: '.$show_title.',
-					altTitle: "'.$alt_title.'",
-					showDesc: '.$show_desc.',
-					altDesc: "'.$alt_desc.'",
-					showImage: '.$show_image.',
-					altImage: "'.$alt_image.'",
-					showLink: '.$show_link.',
-					altLink: "'.$alt_link.'",
-					random: '.$random.',
-					number: '.$num_videos.'
+			$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'youtube.js');
+			$jdocument->addScriptDeclaration("
+				window.addEvent('domready', function() {
+					var youtubefeed = new HUB.Youtube('youtube_feed_".$id."',{
+						type: '".$type."',
+						search: '".$content."',
+						count: ".$num_videos.",
+						random: ".$random.",
+						details: {
+							showLogo: ".$show_image.",
+							altLogo: '".$alt_image."',
+							showTitle: ".$show_title.",
+							altTitle: '".$alt_title."',
+							showDesc: ".$show_desc.",
+							altDesc: '".$alt_desc."',
+							showLink: ".$show_link.",
+							altLink: '".$alt_link."'
+						}
+					});
 				});
-			}';
-							
-			//push the script to the document head
-			$jdocument->addScript('modules'.DS.'mod_youtube'.DS.'mod_youtube.js');
-			$jdocument->addScriptDeclaration($script);
-		
-			//push the youtube script to the document foot
-			$jdocument->addFootScript($youtube_url);
+			");
 		} else {
 			//append the the return type and the callback function
 			$youtube_url .= "&alt=json";
@@ -176,7 +167,6 @@ class modYoutubeHelper
 				$desc = $feed['subtitle']['$t'];
 			}
 			$logo = $feed['logo']['$t'];
-			$logo = str_replace("http://", "https://",$logo);
 			
 			//show title based on params
 			if($show_title) {
@@ -217,9 +207,7 @@ class modYoutubeHelper
 				if($counter <= $num_videos) {
 					$media = $entry['media$group'];
 					$html .= "<li>";
-					$thumb = $media['media$thumbnail'][3]['url'];
-					$thumb = str_replace("http://", "https://",$thumb);
-					$html .= "<a class=\"entry-thumb\" rel=\"external\" href=\"{$entry['link'][0]['href']}\"><img src=\"{$thumb}\" alt=\"\" /></a>";
+					$html .= "<a class=\"entry-thumb\" rel=\"external\" href=\"{$entry['link'][0]['href']}\"><img src=\"{$media['media$thumbnail'][3]['url']}\" alt=\"\" /></a>";
 					$html .= "<a class=\"entry-title\" rel=\"external\" href=\"{$entry['link'][0]['href']}\">{$entry['title']['$t']}</a>";
 					$html .= "<br /><span class=\"entry-duration\">".$this->formatTime($media['yt$duration']['seconds'])."</span>";
 					$html .= "</li>";
