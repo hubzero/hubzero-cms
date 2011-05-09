@@ -50,6 +50,7 @@ class plgXAuthenticationHzldap extends JPlugin
 
         function logintobreeze($login, $passwd)
         {
+				$buffer = '';
                 //Get login and password from a different file and do the stuff here
 
                 //Logout any user first

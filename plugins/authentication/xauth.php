@@ -66,7 +66,7 @@ class plgAuthenticationXauth extends JPlugin
 				$xauthplugin->onAuthenticate($credentials, $options, $response);
 				$response->type = 'xauth';
 
-				if (($options['domain'] == 'hzldap') || empty($options['domain']))
+				if (($options['domain'] == 'hzldap') || empty($options['domain']) || ($options['domain'] == 'hubzero'))
 					return;
 
 				ximport('Hubzero_User_Helper');
