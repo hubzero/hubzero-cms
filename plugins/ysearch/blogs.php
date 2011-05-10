@@ -71,7 +71,9 @@ class plgYSearchBlogs extends YSearchPlugin
 				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
 		);
-		$rows = $rows->to_associative();
+		if (($rows = $rows->to_associative()) instanceof YSearchResultEmpty)
+			return;
+
 		$id_map = array();
 		foreach ($rows as $idx=>$row)
 			$id_map[$row->get('id')] = $idx;
