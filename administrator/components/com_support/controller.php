@@ -1286,7 +1286,7 @@ class SupportController extends Hubzero_Controller
 					
 					$base = $juri->base();
 					if (substr($base,-14) == 'administrator/') {
-						$base = substr($base,0,strlen($base)-14);
+						$base = substr($base,0,strlen($base)-15); //fixed on 5/13/2011 - remove ending slash in base url - already included in param(webpath)
 					}
 					
 					// Parse comments for attachments
