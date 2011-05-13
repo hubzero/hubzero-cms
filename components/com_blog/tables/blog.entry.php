@@ -59,7 +59,7 @@ class BlogEntry extends JTable
 	
 	//-----------
 	
-	public function loadAlias( $oid=NULL, $scope=NULL, $created_by=NULL, $group_id=NULL ) 
+	public function loadAlias( $oid=NULL, $scope=NULL ) 
 	{
 		if ($oid === NULL) {
 			return false;
@@ -70,34 +70,7 @@ class BlogEntry extends JTable
 		if (!$scope) {
 			return false;
 		}
-		switch ($scope) 
-		{
-			case 'member':
-				if ($created_by === NULL) {
-					$created_by = $this->created_by;
-				}
-				if (!$created_by) {
-					return false;
-				}
-				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope' AND created_by='$created_by'";
-			break;
-			
-			case 'group':
-				if ($group_id === NULL) {
-					$group_id = $this->group_id;
-				}
-				if (!$group_id) {
-					return false;
-				}
-				//$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope' AND group_id='$group_id'";
-				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND group_id='$group_id'";
-			break;
-			
-			default:
-				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope'";
-			break;
-		}
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope'" );
 		if ($result = $this->_db->loadAssoc()) {
 			return $this->bind( $result );
 		} else {
@@ -159,8 +132,8 @@ class BlogEntry extends JTable
 		$now = $date->toMySQL();
 
 		$query  = "FROM $this->_tbl AS m,
-					#__users AS u  
-					WHERE m.scope='".$filters['scope']."' AND m.created_by=u.id ";
+					#__xprofiles AS u  
+					WHERE m.scope='".$filters['scope']."' AND m.created_by=u.uidNumber ";
 		if (isset($filters['created_by']) && $filters['created_by'] != 0) {
 			$query .= " AND m.created_by=".$filters['created_by'];
 		}
@@ -229,8 +202,8 @@ class BlogEntry extends JTable
 		$now = $date->toMySQL();
 
 		$query  = "FROM $this->_tbl AS m,
-					#__users AS u  
-					WHERE m.scope='".$filters['scope']."' AND m.created_by=u.id ";
+					#__xprofiles AS u  
+					WHERE m.scope='".$filters['scope']."' AND m.created_by=u.uidNumber ";
 					
 		if (isset($filters['year']) && $filters['year'] != 0) {
 			if (isset($filters['month']) && $filters['month'] != 0) {
@@ -266,7 +239,7 @@ class BlogEntry extends JTable
 			switch ($filters['state']) 
 			{
 				case 'public':
-					$query .= " AND m.state=1";
+					$query .= " AND m.state=1 AND u.public=1 ";
 				break;
 				case 'registered':
 					$query .= " AND m.state>0";
@@ -280,9 +253,6 @@ class BlogEntry extends JTable
 			$filters['search'] = strtolower(stripslashes($filters['search']));
 			$query .= " AND (LOWER(m.title) LIKE '%".$filters['search']."%' OR LOWER(m.content) LIKE '%".$filters['search']."%')";
 			//$query .= " AND ( (MATCH(m.title) AGAINST ('".addslashes($filters['search'])."') > 0) OR (MATCH(m.content) AGAINST ('".addslashes($filters['search'])."') > 0) )";
-		}
-		if (isset($filters['sql']) && $filters['sql'] != '') {
-			$query .= " AND ".$filters['sql'];
 		}
 		if (isset($filters['order']) && $filters['order'] != '') {
 			$query .= " ORDER BY ".$filters['order'];

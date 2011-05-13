@@ -48,6 +48,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="topics">Topics</option>
 			<option value="itunes">iTunes</option>
 			<option value="answers">Question</option>
+			<option value="blog">Blog</option>
 		</param>
 		<param name="spottwo" type="radio" default="nontools" label="Spot 2 Content" description="Select content type for the second featured item.">
 			<option value="tools">Tools</option>
@@ -56,6 +57,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="topics">Topics</option>
 			<option value="itunes">iTunes</option>
 			<option value="answers">Question</option>
+			<option value="blog">Blog</option>
 		</param>
 		<param name="spotthree" type="radio" default="contributors" label="Spot 3 Content" description="Select content type for the third featured item.">
 			<option value="tools">Tools</option>
@@ -64,6 +66,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="topics">Topics</option>
 			<option value="itunes">iTunes</option>
 			<option value="answers">Question</option>
+			<option value="blog">Blog</option>
 		</param>
 		<param name="spotfour" type="radio" default="topics" label="Spot 4 Content" description="Select content type for the fourth featured item.">
 			<option value="tools">Tools</option>
@@ -72,6 +75,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="topics">Topics</option>
 			<option value="itunes">iTunes</option>
 			<option value="answers">Question</option>
+			<option value="blog">Blog</option>
 		</param>
 		<param name="spotfive" type="radio" default="" label="Spot 5 Content" description="Select content type for the fifth featured item.">
 			<option value="tools">Tools</option>
@@ -80,6 +84,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="topics">Topics</option>
 			<option value="itunes">iTunes</option>
 			<option value="answers">Question</option>
+			<option value="blog">Blog</option>
 		</param>
 		<param name="spotsix" type="radio" default="" label="Spot 6 Content" description="Select content type for the sixth featured item.">
 			<option value="tools">Tools</option>
@@ -88,6 +93,16 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="topics">Topics</option>
 			<option value="itunes">iTunes</option>
 			<option value="answers">Question</option>
+			<option value="blog">Blog</option>
+		</param>
+		<param name="spotseven" type="radio" default="" label="Spot 7 Content" description="Select content type for the seventh featured item.">
+			<option value="tools">Tools</option>
+			<option value="nontools">Non-tools</option>
+			<option value="members">Members</option>
+			<option value="topics">Topics</option>
+			<option value="itunes">iTunes</option>
+			<option value="answers">Question</option>
+			<option value="blog">Blog</option>
 		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="numspots" type="radio" default="3" label="Number of Spots" description="How many features to display">
@@ -97,6 +112,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="4">4</option>
 			<option value="5">5</option>
 			<option value="6">6</option>
+			<option value="7">7</option>
 		</param>
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
 		<param name="txt_length" type="text" default="200" label="Text Length" description="Length of the bio text to show" />	
@@ -117,6 +133,8 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="default_topicpic" type="text" default="" label="Default Topics Picture" description="URL to default picture for featured topics" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="default_questionpic" type="text" default="" label="Default Question Picture" description="URL to default picture for featured question" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="default_blogpic" type="text" default="" label="Default Blog Picture" description="URL to default picture for featured blog" />
 	</params>
 	<params group="advanced">
 		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">

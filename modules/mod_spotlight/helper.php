@@ -138,6 +138,8 @@ class modSpotlight
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
 		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
 		require_once( JPATH_ROOT.DS.'components'.DS.'com_features'.DS.'tables'.DS.'history.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'tables'.DS.'blog.entry.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_blog'.DS.'tables'.DS.'blog.comment.php' );	
 		
 		ximport('Hubzero_User_Profile');
 		ximport('Hubzero_View_Helper_Html');
@@ -151,7 +153,7 @@ class modSpotlight
 
 		$params =& $this->params;
 
-		//Get the admin configured settings
+		// Get the admin configured settings
 		$filters = array();
 		$filters['limit'] = 5;
 		$filters['start'] = 0;
@@ -165,6 +167,7 @@ class modSpotlight
 		$spots[3] = trim($params->get( 'spotfour' ));
 		$spots[4] = trim($params->get( 'spotfive' ));
 		$spots[5] = trim($params->get( 'spotsix' ));
+		$spots[6] = trim($params->get( 'spotseven' ));
 		$numspots = $params->get( 'numspots' ) ? $params->get( 'numspots' ) : 3;			
 		
 		// some collectors
@@ -196,13 +199,14 @@ class modSpotlight
 			$tbl = $spot == 'topics' ? 'topics' : $tbl;
 			$tbl = $spot == 'itunes' ? 'itunes' : $tbl;
 			$tbl = $spot == 'answers' ? 'answers' : $tbl;
+			$tbl = $spot == 'blog' ? 'blog' : $tbl;
 			$tbl = !$tbl ? array_rand($tbls, 1) : $tbl;
 					
 			// Check the feature history for today's feature
 			$fh->loadActive($start, $tbl, $spot.$k);
 			
 			// Did we find a feature for today?
-			if ($fh->id ) {
+			if ($fh->id && $fh->objectid) {
 				
 				if($fh->tbl == 'resources') {
 					// Yes - load the resource
@@ -239,6 +243,11 @@ class modSpotlight
 					$ar = new AnswersResponse( $database );
 					$row->rcount = count($ar->getIds( $row->id ));
 				}
+				else if( $fh->tbl == 'blog') {			
+					// Yes - load the blog
+					$row = new BlogEntry( $database );
+					$row->load( $fh->objectid );
+				}
 			}
 			else {
 				// No - so we need to randomly choose one					
@@ -261,6 +270,7 @@ class modSpotlight
 					$filters['start'] = 0;
 					$filters['sortby'] = "RAND()";
 					$filters['search'] = '';
+					$filters['state'] = 'public';
 					$filters['authorized'] = false;
 					$filters['tag'] = '';
 					$filters['contributions'] = trim($params->get( 'min_contributions' ));
@@ -289,8 +299,7 @@ class modSpotlight
 					$rows[$spot] = isset($rows[$spot]) ? $rows[$spot] : $database->loadObjectList();					
 				}
 				
-				if($tbl == 'itunes') {
-				
+				if($tbl == 'itunes') {			
 					// Initiate a resource object
 					$rr = new ResourcesResource( $database );
 					$filters['start'] = 0;
@@ -303,14 +312,29 @@ class modSpotlight
 				if($tbl == 'answers') {
 					$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.anonymous  ";
 					$query .= ", (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.qid=C.id) AS rcount ";
-					//$query .= ", (SELECT SUM(tr.amount) FROM #__users_transactions AS tr WHERE tr.category='answers' AND tr.type='hold' AND tr.referenceid=C.id ) AS points";
 					$query .= " FROM #__answers_questions AS C ";
 					$query .= " WHERE C.state=0 ";	
-					$query .= " AND (C.reward=1 OR C.helpful>1) ";		
+					$query .= " AND (C.reward > 0 OR C.helpful > 0) ";		
 					$query .= " ORDER BY RAND() ";
 					$database->setQuery( $query );
 	
 					$rows[$spot] = isset($rows[$spot]) ? $rows[$spot] : $database->loadObjectList();	
+				}
+				if($tbl == 'blog') {
+					$filters = array();
+					$filters['limit'] = 1;
+					$filters['start'] = 0;
+					$filters['state'] = 'public';
+					$filters['order'] = "RAND()";
+					$filters['search'] = '';
+					$filters['scope'] = 'member';
+					$filters['group_id'] = 0;
+					$filters['authorized'] = false;
+					$filters['sql'] = '';
+					$mp = new BlogEntry( $database );
+					$entry = $mp->getRecords( $filters );
+
+					$rows[$spot] = isset($rows[$spot]) ? $rows[$spot] : $entry;	
 				}
 				
 				if ($rows && count($rows[$spot]) > 0) {
@@ -324,7 +348,7 @@ class modSpotlight
 			}
 							
 			// pull info
-			if($row) {					
+			if($row) {				
 				$out = $this->composeEntry ($row, $tbl, $txt_length ,$database);
 				$itemid = $this->composeEntry ($row, $tbl, 0, $database, 1);
 				$activespots[] = $spot;		
@@ -335,7 +359,7 @@ class modSpotlight
 				$html .= '<li class="spot_'.$k.'">'.$out.'</li>'."\n";
 									
 				// Check if this has been saved in the feature history					
-				if (!$fh->id) {
+				if (!$fh->id or !$fh->objectid) {
 					$fh->featured = $start;
 					$fh->objectid = $itemid;
 					$fh->tbl = $tbl;
@@ -369,18 +393,10 @@ class modSpotlight
 			$profile = new Hubzero_User_Profile();
 			$profile->load( $row->uidNumber );
 			
-			if($getid) {
-				return $row->uidNumber;
-			}
-			
-			$title = $row->name;
-			if (!trim($title)) {
-				$title = $row->givenName.' '.$row->surname;
-			}
+			$mconfig =& JComponentHelper::getParams( 'com_members' );
 			
 			if (isset($row->picture) && $row->picture != '') {
 				// Yes - so build the path to it
-				$mconfig =& JComponentHelper::getParams( 'com_members' );
 				$thumb  = $mconfig->get('webpath');
 				if (substr($thumb, 0, 1) != DS) {
 					$thumb = DS.$thumb;
@@ -408,32 +424,58 @@ class modSpotlight
 						$ih->set('outputName', $ih->createThumbName());
 					}
 				}
-				
-				// No - use default picture
-				if (!is_file(JPATH_ROOT.$thumb)) {
-					$thumb = $mconfig->get('defaultpic');
-					if (substr($thumb, 0, 1) != DS) {
-						$thumb = DS.$thumb;
-					}
-					// Build a thumbnail filename based off the picture name
-					$thumb = $this->thumb( $thumb );
+			}	
+			// No - use default picture
+			if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
+				$thumb = $mconfig->get('defaultpic');
+				if (substr($thumb, 0, 1) != DS) {
+					$thumb = DS.$thumb;
 				}
-			}				
+			}	
 			
+			if($getid) {
+				return $row->uidNumber;
+			}
+		
+			$title = $row->name;
+			if (!trim($title)) {
+				$title = $row->givenName.' '.$row->surname;
+			}
 			$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$row->uidNumber).'"><img width="30" height="30" src="'.$thumb.'" alt="'.htmlentities($title).'" /></a></span>'."\n";
 			$out .= '<span class="spotlight-item"><a href="'. JRoute::_('index.php?option=com_members&id='.$row->uidNumber).'">'.$title.'</a></span>, '.$row->organization."\n";
 			$numcontributions = $this->countContributions( $row->uidNumber, $row->username, $database );
 			//$ave_ranking = $this->getAverageRanking( $row->uidNumber, $database);
 			$out .= ' - '.JText::_('Contributions').':&nbsp;'.$numcontributions.''."\n";
 			//$out .= ' - '.JText::_('Contributions').': '.$numcontributions.'; '.JText::_('Average resource ranking').': '.round($ave_ranking, 2).''."\n";
-			$out .= '<div class="clear"></div>'."\n";			
+			$out .= '<div class="clear"></div>'."\n";
+												
+		}
+		// blog
+		else if ($tbl == 'blog') {
+			$thumb = trim($this->params->get( 'default_blogpic', 'modules/mod_spotlight/default.gif' ));
+
+			$profile = new Hubzero_User_Profile();
+			$profile->load( $row->created_by );
+			
+			if($getid) {
+				return $row->id;
+			}				
+			if(!$row->title) {
+				$out = '';
+			}
+			else {
+				$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias).'"><img width="30" height="30" src="'.$thumb.'" alt="'.htmlentities(stripslashes($row->title)).'" /></a></span>'."\n";
+				$out .= '<span class="spotlight-item"><a href="'.JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias).'">'.$row->title.'</a></span> ';
+				$out .=  ' by <a href="'. JRoute::_('index.php?option=com_members&id='.$row->created_by).'">'.$profile->get('name').'</a> - '.JText::_('in Blogs')."\n";
+				$out .= '<div class="clear"></div>'."\n";
+			}
 		}
 		// topics
 		else if ($tbl == 'topics') {
 			if($getid) {
 				return $row->id;
 			}
-			$thumb = trim($this->params->get( 'default_topicpic' ));
+			$thumb = trim($this->params->get( 'default_topicpic', 'modules/mod_spotlight/default.gif' ));
 			$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_topics&pagename='.$row->pagename).'"><img width="30" height="30" src="'.$thumb.'" alt="'.htmlentities(stripslashes($row->title)).'" /></a></span>'."\n";
 			$out .= '<span class="spotlight-item"><a href="'.JRoute::_('index.php?option=com_topics&pagename='.$row->pagename).'">'.stripslashes($row->title).'</a></span> ';
 			$out .=  ' - '.JText::_('in').' <a href="'.JRoute::_('index.php?option=com_topics').'">'.JText::_('Topics').'</a>'."\n";
@@ -444,7 +486,7 @@ class modSpotlight
 			if($getid) {
 				return $row->id;
 			}
-			$thumb = trim($this->params->get( 'default_questionpic' ));
+			$thumb = trim($this->params->get( 'default_questionpic', 'modules/mod_spotlight/default.gif' ));
 			
 			$name = JText::_('Anonymous');
 			if ($row->anonymous == 0) {
@@ -453,8 +495,6 @@ class modSpotlight
 					$name = $juser->get('name');
 				}
 			}
-			//$when = Hubzero_View_Helper_Html::timeAgo(Hubzero_View_Helper_Html::mkt($row->created)).' '.JText::_('ago');
-			
 			$out .= '<span class="spotlight-img"><a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$row->id).'"><img width="30" height="30" src="'.$thumb.'" alt="'.htmlentities(stripslashes($row->subject)).'" /></a></span>'."\n";
 			$out .= '<span class="spotlight-item"><a href="'.JRoute::_('index.php?option=com_answers&task=question&id='.$row->id).'">'.stripslashes($row->subject).'</a></span> ';
 			$out .=  ' - '.JText::_('asked by').' '.$name.', '.JText::_('in').' <a href="'.JRoute::_('index.php?option=com_answers').'">'.JText::_('Answers').'</a>'."\n";
@@ -467,7 +507,7 @@ class modSpotlight
 			}
 			
 			if($tbl == 'itunes') {
-				$thumb = trim($this->params->get( 'default_itunespic' ));
+				$thumb = trim($this->params->get( 'default_itunespic', 'modules/mod_spotlight/default.gif' ));
 			}	
 			else {		
 			
@@ -497,7 +537,7 @@ class modSpotlight
 
 				if (!is_file(JPATH_ROOT.$thumb) or !$picture) {
 
-					$thumb = $rconfig->get('defaultpic');
+					$thumb = $rconfig->get('defaultpic', 'modules/mod_spotlight/default.gif');
 					if (substr($thumb, 0, 1) != DS) {
 						$thumb = DS.$thumb;
 					}
