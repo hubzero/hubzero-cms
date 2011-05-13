@@ -87,7 +87,7 @@ if($this->event->id) {
 			<span class="cal-date-help">( Date Format mm/dd/yyyy )<br></span>
 			<input type="text" name="event[end_time]" id="event_end_time" value="<?php echo $end_time; ?>" /> ( 24 hour time ex. 17:30 for 5:30pm )
 		
-		<input type="hidden" name="event[id]" value="<?php echo $id; ?>"
+		<input type="hidden" name="event[id]" value="<?php echo $id; ?>" />
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="active" value="calendar" />
 		<input type="hidden" name="task" value="save" />
