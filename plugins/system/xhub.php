@@ -351,6 +351,10 @@ class XRouter extends JRouter
 		if (empty($vars['option']))
 		{
 			$segments	= explode('/', $route);
+
+			if ($segments[0] == 'search') {   // @FIXME: search component should probably be configurable
+				$segments[0] = 'ysearch';
+			}
 			
 			$file = JPATH_BASE.DS.'components'.DS.'com_'.$segments[0].DS.$segments[0].".php";
 		
