@@ -96,7 +96,7 @@ HUB.Myhub = {
 	_setHandles: function(w) {
 		var v = w ? 'move' : 'auto';
 		var handles = document.getElementsByClassName('handle');
-		for (var i=0; i < handles.length; i++)
+		for (var i=0, max = handles.length; i < max; i++)
 		{
 			handles[i].style.cursor = v;
 		}
