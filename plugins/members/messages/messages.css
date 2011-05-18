@@ -20,6 +20,14 @@
 	.settings .odd {
 		background-color: #F5F7F2;
 		}
+	.settings caption {
+		text-align: right;
+		margin: 0;
+		padding-top: 0;
+		}
+	.settings caption input {
+		margin: 0 0 1em 0;
+		}
 	.settings tfoot th,
 	.settings tfoot td {
 		border-bottom: none;

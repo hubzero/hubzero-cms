@@ -50,6 +50,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post" id="hubForm" class="full">
 			<input type="hidden" name="action" value="savesettings" />
 			<table class="settings" summary="<?php echo JText::_('PLG_MEMBERS_MESSAGES_TBL_SUMMARY_METHODS'); ?>">
+				<caption>
+					<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SAVE_SETTINGS'); ?>" />
+				</caption>
 				<thead>
 					<tr>
 						<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SENT_WHEN'); ?></th>
