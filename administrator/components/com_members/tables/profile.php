@@ -115,6 +115,9 @@ class MembersProfile extends JTable
 			$sqlsearch = " ( (LEFT(m.surname, 1) = '".$filters['index']."') OR (LEFT(SUBSTRING_INDEX(m.name, ' ', -1), 1) = '".$filters['index']."%') ) ";
 		}
 		
+		if (isset($filters['contributions']))
+			$sqlsearch .= ($sqlsearch ? ' AND ' : ' ') . 'cv.resource_count + cv.wiki_count >= '. $filters['contributions'];
+	
 		if (isset($filters['search']) && $filters['search'] != '') {
 			//$show = '';
 			$words = explode(' ', $filters['search']);
