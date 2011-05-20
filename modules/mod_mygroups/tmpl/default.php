@@ -45,6 +45,12 @@ $groups = $modmygroups->groups;
 		<li class="group">
 			<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$group->cn); ?>"><?php echo $group->description; ?></a>
 			<span><span class="<?php echo $status; ?> status"><?php echo JText::_('MOD_MYGROUPS_STATUS_'.strtoupper($status)); ?></span></span>
+<?php if ($group->regconfirmed && !$group->registered) { ?>
+			<span class="actions">
+				<a class="action-accept" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$group->cn.'&task=accept'); ?>"><?php echo JText::_('MOD_MYGROUPS_ACTION_ACCEPT'); ?></a> 
+<?php /*				<a class="action-cancel" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$group->cn.'&task=cancel'); ?>"><?php echo JText::_('MOD_MYGROUPS_ACTION_CANCEL'); ?></a> */ ?>
+			</span>
+<?php } ?>
 		</li>
 <?php
 			$i++;

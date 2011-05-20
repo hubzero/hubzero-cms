@@ -14,10 +14,9 @@
 */
 	div.draggable .compactlist li.group {
 		background-position: 0.7em 0.7em;
-		padding-right: 5em;
 		}
 	div.draggable .compactlist li.group a { 
-		/*margin-right: 5em;*/
+		margin-right: 5em;
 		}
 	div.draggable .compactlist li span span.status {
 		}
@@ -32,4 +31,30 @@
 		}
 	div.draggable .compactlist li span span.invitee {
 		color: #aaaaaa;
+		}
+	div.draggable .compactlist li.group .actions {
+		text-align: right;
+		display: block;
+		padding-right: 1em;
+		}
+	div.draggable .compactlist li.group .actions a {
+		font-size: 90%;
+		border: none;
+		padding: 0.2em 0.5em;
+		background-color: #777;
+		color: #fff;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-khtml-border-radius: 5px;	
+		border-radius: 5px;
+		margin: 0;
+		}
+	div.draggable .compactlist li.group .actions a:hover {
+		border: none;
+		}
+	div.draggable .compactlist li.group .actions a.action-accept:hover {
+		background-color: #66AA00;
+		}
+	div.draggable .compactlist li.group .actions a.action-cancel:hover {
+		background-color: #c30;
 		}
